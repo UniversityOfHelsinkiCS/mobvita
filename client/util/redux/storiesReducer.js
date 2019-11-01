@@ -3,6 +3,12 @@ import callBuilder from '../apiConnection'
  * Actions and reducers are in the same file for readability
  */
 
+export const getStoryAction = (storyId) => {
+  const route = `/stories/${storyId}`
+  const prefix = 'GET_STORY'
+  return callBuilder(route, prefix)
+}
+
 export const getStoriesAction = () => {
   const route = '/stories'
   const prefix = 'GET_STORIES'
@@ -17,6 +23,13 @@ export default (state = { data: [] }, action) => {
       return {
         ...state,
         data: action.response,
+        pending: false,
+        error: false,
+      }
+    case 'GET_STORY_SUCCESS':
+      return {
+        ...state,
+        focused: action.response,
         pending: false,
         error: false,
       }

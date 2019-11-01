@@ -8,14 +8,18 @@ const axiosInstance = axios.create({
   }),
 })
 
-/**
- * Simple example for backend
- */
 const getAll = async (req, res) => {
   const response = await axiosInstance.get('https://revita-test.cs.helsinki.fi/api/stories?language=finnish')
   res.send(response.data.stories)
 }
 
+const getOne = async (req, res) => {
+  const { id } = req.params
+  const response = await axiosInstance.get(`https://revita-test.cs.helsinki.fi/api/stories/${id}`)
+  res.send(response.data)
+}
+
 module.exports = {
+  getOne,
   getAll,
 }

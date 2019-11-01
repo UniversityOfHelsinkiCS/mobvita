@@ -1,12 +1,15 @@
 import React from 'react'
 import { Route, Switch } from 'react-router-dom'
 
-import OnlyView from 'Components/OnlyView'
+import StoryListView from 'Components/StoryListView'
+import SingleStoryView from 'Components/SingleStoryView'
 
 export default () => (
   <div className="content">
     <Switch>
-      <Route path="/" component={OnlyView} />
+      <Route exact path="/" component={StoryListView} />
+      <Route exact path="/stories" component={StoryListView} />
+      <Route exact path="/stories/:id" component={SingleStoryView} />
     </Switch>
   </div>
 )

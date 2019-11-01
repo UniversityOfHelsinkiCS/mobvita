@@ -5,9 +5,9 @@ services:
     build:
       context: ./
       dockerfile: config/dev.Dockerfile
-    image: toska/mobvita:latest
+    image: mobvita_dev
     volumes:
       - ./:/usr/src/app
     ports:
       - 8000:8000
-    container_name: toskaboiler_dev
+    container_name: mobvita_dev
