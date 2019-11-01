@@ -13,7 +13,7 @@ const StoryComponent = ({ stories, getStories }) => {
         Get!
       </Button>
       <List>
-        {stories.map(m => <List.Item key={m.id}>{m.body}</List.Item>)}
+        {stories.map(m => <List.Item key={m._id}>{m.title}</List.Item>)}
       </List>
     </div>
   )
