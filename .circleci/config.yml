@@ -1,0 +1,29 @@
+version: 2.1
+
+executors:
+  my-executor:
+    working_directory: ~/app
+    machine:
+      image: ubuntu-1604:201903-01
+
+jobs:
+  build:
+    executor: my-executor
+    steps:
+      - checkout
+      - run: npm ci
+      - run: docker-compose build
+      - deploy:
+          command: |
+            echo "$DOCKER_PASS" > DOCKER_PASS
+            cat DOCKER_PASS | docker login -u $DOCKER_USER --password-stdin
+            docker-compose push
+            
+workflows:
+  version: 2
+  build:
+    jobs:
+      - build:
+          filters:
+            tags:
+              only: /.*/
