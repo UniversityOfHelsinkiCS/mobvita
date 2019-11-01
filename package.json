@@ -1,7 +1,7 @@
 {
-  "name": "toskaboiler",
+  "name": "mobvita",
   "version": "1.0.0",
-  "description": "Boilerplate for future toska frontend projects",
+  "description": "Mobile frontend for Revita",
   "main": "index.js",
   "scripts": {
     "dev": "docker-compose up",
