@@ -10,4 +10,4 @@ Run `npm ci`
 
 Run `npm run dev` or `docker-compose up` whichever you prefer
 
-# Production deployment will happen automatically from master branch (TODO)
+# Production deployment will happen automatically from master branch
