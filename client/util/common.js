@@ -1,12 +1,10 @@
 /**
  * Insert common items here
  */
-import toscalogoColor from 'Assets/toscalogo_color.svg'
-import toscalogoGrayscale from 'Assets/toscalogo_grayscale.svg'
+import revitaLogoTransparent from 'Assets/revita_logo_transparent.png'
 
 export const images = {
-  toska_color: toscalogoColor,
-  toska_grayscale: toscalogoGrayscale,
+  revitaLogoTransparent,
 }
 
 export const colors = {
