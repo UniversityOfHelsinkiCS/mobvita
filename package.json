@@ -55,10 +55,12 @@
     "redux-thunk": "^2.3.0",
     "semantic-ui-css": "^2.4.1",
     "semantic-ui-react": "^0.85.0",
+    "swagger-ui-express": "^4.1.2",
     "uglifyjs-webpack-plugin": "^2.1.1",
     "webpack": "^4.29.3",
     "webpack-cli": "^3.2.3",
-    "winston": "^3.2.1"
+    "winston": "^3.2.1",
+    "yamljs": "^0.3.0"
   },
   "devDependencies": {
     "babel-preset-stage-2": "^6.24.1",

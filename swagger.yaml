@@ -1,0 +1,114 @@
+swagger: '2.0'
+info:
+  title: Mobvita / Revita
+host: mobvita.cs.helsinki.fi
+basePath: "/api"
+tags:
+- name: story
+- name: user
+schemes:
+- http
+paths:
+  "/stories":
+    get:
+      tags:
+      - story
+      summary: Get metadata for stories
+      operationId: getAllStories
+      responses:
+        '200':
+          description: successful operation
+          schema:
+            "$ref": "#/definitions/StoryMeta"
+      parameters:
+      - name: language
+        in: query
+        required: true
+        type: string
+  "/stories/{storyId}":
+    get:
+      tags:
+      - story
+      summary: Find story by ID
+      operationId: getStoryById
+      parameters:
+      - name: storyId
+        in: path
+        description: ID of story to return
+        required: true
+        type: string
+      responses:
+        '200':
+          description: successful operation
+          schema:
+            "$ref": "#/definitions/Story"
+        '404':
+          description: Story not found
+      security:
+      - Bearer: []
+securityDefinitions:
+  Bearer:
+    type: apiKey
+    name: Authorization
+    in: header
+definitions:
+  StoryMeta:
+    type: object
+    properties:
+      message:
+        type: integer
+      page:
+        type: integer
+      page_size:
+        type: integer
+      total_num:
+        type: integer
+      stories:
+        type: array
+        items:
+          type: object
+  Story:
+    type: object
+    properties:
+      author:
+        type: string
+      message:
+        type: string
+      title:
+        type: string
+      url:
+        type: string
+      paragraph:
+        type: array
+        items:
+          type: object
+  Paragraph:
+    type: object
+    properties:
+      ID:
+        type: integer
+      bases:
+        type: string
+      lemmas:
+        type: string
+      name:
+        type: boolean
+      pos:
+        type: string
+      pref_lemma:
+        type: string
+      sentence_id:
+        type: integer
+      snippet_id:
+        type: integer
+      surface:
+        type: string
+  User:
+    type: object
+    properties:
+      id:
+        type: integer
+      username:
+        type: string
+      password:
+        type: string
