@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
-import { Input, Divider, Segment } from 'semantic-ui-react'
+import { Input, Divider, Segment, Header } from 'semantic-ui-react'
 
 import { getStoryAction } from 'Utilities/redux/storiesReducer'
 
@@ -23,9 +23,11 @@ const SingleStoryView = ({ match }) => {
 
   return (
     <div style={{ paddingTop: '1em' }}>
+      <Header>{story.title}</Header>
+      <a href={story.url}>{story.url}</a>
       {story.paragraph.map(paragraph => (
         <div key={paragraph[0].ID}>
-          <Divider/>
+          <Divider />
           <Segment>
             {paragraph.map(word => wordInputRandomizer(word))}
           </Segment>
