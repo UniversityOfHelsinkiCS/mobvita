@@ -6,7 +6,9 @@ const OptimizeCssAssetsPlugin = require('optimize-css-assets-webpack-plugin')
 const webpack = require('webpack')
 
 module.exports = (env, argv) => {
-  const { mode } = argv
+
+  const {mode} = argv
+
   const additionalPlugins = mode === 'production'
     ? []
     : [new webpack.HotModuleReplacementPlugin()] // Enable hot module replacement
@@ -24,7 +26,10 @@ module.exports = (env, argv) => {
 
   const BASE_PATH = process.env.BASE_PATH || '/'
 
+  const devtool = mode === "production" ? false : "source-map"
+
   return {
+    devtool,
     mode,
     output: {
       publicPath: BASE_PATH,
