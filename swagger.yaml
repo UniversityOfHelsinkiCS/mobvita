@@ -1,7 +1,7 @@
 swagger: '2.0'
 info:
   title: Mobvita / Revita
-host: mobvita.cs.helsinki.fi
+host: svm-83.cs.helsinki.fi
 basePath: "/api"
 tags:
 - name: story
