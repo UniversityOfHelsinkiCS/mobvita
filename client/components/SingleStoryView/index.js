@@ -28,7 +28,6 @@ const SingleStoryView = ({ match }) => {
     <div style={{ paddingTop: '1em' }}>
       <Link to={'/stories'}>Go back to home page</Link>
       <Header>{story.title}</Header>
-      <Button onClick={handleClick}>what the fuckj</Button>
       <a href={story.url}>{story.url}</a>
       {story.paragraph.map(paragraph => (
         <div key={paragraph[0].ID}>
