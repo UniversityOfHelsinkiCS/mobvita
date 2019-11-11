@@ -80,7 +80,7 @@ module.exports = (env, argv) => {
       }),
       // Skip the part where we would make a html template
       new HtmlWebpackPlugin({
-        title: 'Mobvita',
+        title: 'MobVita',
         favicon: path.resolve(__dirname, 'client/assets/favicon-32x32.png'),
         inject: false,
         template: htmlTemplate,
