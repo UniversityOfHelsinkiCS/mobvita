@@ -30,14 +30,14 @@ const SingleStoryView = ({ match }) => {
 
       <Header>{story.title}</Header>
       <a href={story.url}>{story.url}</a>
+      <Divider />
+      <Segment>
       {story.paragraph.map(paragraph => (
         <div key={paragraph[0].ID}>
-          <Divider />
-          <Segment>
-            {paragraph.map(word => wordVoice(word))}
-          </Segment>
+          {paragraph.map(word => wordVoice(word))}
         </div>
       ))}
+      </Segment>
     </div>
   )
 }
