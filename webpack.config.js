@@ -7,7 +7,7 @@ const webpack = require('webpack')
 
 module.exports = (env, argv) => {
 
-  const {mode} = argv
+  const { mode } = argv
 
   const additionalPlugins = mode === 'production'
     ? []
@@ -85,6 +85,7 @@ module.exports = (env, argv) => {
         inject: false,
         template: htmlTemplate,
         appMountId: 'root',
+        headHtmlSnippet: '<meta name="viewport" content="width=device-width, initial-scale=1.0">',
       }),
       // Extract css
       new MiniCssExtractPlugin({
