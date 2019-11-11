@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import { Link } from 'react-router-dom'
-import { Input, Divider, Segment, Header } from 'semantic-ui-react'
+import { Divider, Segment, Header } from 'semantic-ui-react'
 
 import { getStoryAction } from 'Utilities/redux/storiesReducer'
 
@@ -13,15 +13,12 @@ const SingleStoryView = ({ match }) => {
   }, [])
   if (!story) return 'No story (yet?)'
 
-  const wordInputRandomizer = (word) => {
+  const wordVoice = (word) => {
 
-    if (Math.ceil(Math.random() * 4) === 4 && word.bases !== '') {
-      return <Input key={word.ID} defaultValue={word.bases.split('|')[0]}></Input>
-    }
+    // add responsivevoice implementation here    
 
     return word.surface
   }
-
   return (
     <div style={{ paddingTop: '1em' }}>
       <Link to={'/stories'}>Go back to home page</Link>
@@ -31,7 +28,7 @@ const SingleStoryView = ({ match }) => {
         <div key={paragraph[0].ID}>
           <Divider />
           <Segment>
-            {paragraph.map(word => wordInputRandomizer(word))}
+            {paragraph.map(word => wordVoice(word))}
           </Segment>
         </div>
       ))}
