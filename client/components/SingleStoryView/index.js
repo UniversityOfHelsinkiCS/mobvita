@@ -19,7 +19,7 @@ const SingleStoryView = ({ match }) => {
 
   const wordVoice = (word) => {
     if (word.bases) {
-      return <span key={word.ID} onClick={e => handleClick(word.surface)}>{word.surface}</span>
+      return <span className="word-interactive" key={word.ID} onClick={e => handleClick(word.surface)}>{word.surface}</span>
     }
     return word.surface
   }
@@ -32,11 +32,11 @@ const SingleStoryView = ({ match }) => {
       <a href={story.url}>{story.url}</a>
       <Divider />
       <Segment>
-      {story.paragraph.map(paragraph => (
-        <div key={paragraph[0].ID}>
-          {paragraph.map(word => wordVoice(word))}
-        </div>
-      ))}
+        {story.paragraph.map(paragraph => (
+          <div key={paragraph[0].ID}>
+            {paragraph.map(word => wordVoice(word))}
+          </div>
+        ))}
       </Segment>
     </div>
   )
