@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import { Link } from 'react-router-dom'
-import { Divider, Segment, Header, Button, Input } from 'semantic-ui-react'
+import { Divider, Segment, Header, Button, Input, Dropdown } from 'semantic-ui-react'
 
 import { getStoryAction } from 'Utilities/redux/storiesReducer'
 
@@ -26,7 +26,7 @@ const PracticeView = ({ match }) => {
           array.push(word.ID)
         }
       })
-      const rand = Math.ceil(Math.floor()*array.length) - 1
+      const rand = Math.ceil(Math.random() * array.length)
       setRandIdx(rand)
       setRandomized(array)
 
@@ -38,11 +38,15 @@ const PracticeView = ({ match }) => {
   const checkAnswers = () => {
     // TODO send this to backend
     console.log('answer', answer)
-    if(story.paragraph[index + 1]) {
+    if (story.paragraph[index + 1]) {
       setIndex(index + 1)
     } else {
       setIndex(0)
     }
+  }
+
+  const handleClick = (word) => {
+    window.responsiveVoice.speak(word, 'Finnish Female')
   }
 
   const handleChange = (e, ID) => {
@@ -58,13 +62,14 @@ const PracticeView = ({ match }) => {
   }
 
   const wordInput = (word) => {
-    if(randomized[randIdx] === word.ID) {
-      return <Input key={word.ID} onChange={e => handleChange(e, word.ID)}></Input>
+    if (randomized[randIdx] === word.ID) {
+      const options = [{ key: 100000, value: '2', text: word.surface }]
+      return <Dropdown key={word.ID} options={options} selection onClick={e => handleClick(word.surface)}/>
     } else if (randomized.includes(word.ID)) {
       // TODO turn right answers to green and wrongs to red
-      return <Input key={word.ID} onChange={e => handleChange(e, word.ID)}></Input>
-    } 
-    return word.surface
+      return <Input key={word.ID} onChange={e => handleChange(e, word.ID)} onClick={e => handleClick(word.surface)}></Input>
+    }
+    return <span key={word.ID} onClick={e => handleClick(word.surface)}>{word.surface}</span>
   }
   return (
     <div style={{ paddingTop: '1em' }}>

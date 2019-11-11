@@ -10,7 +10,7 @@ const panes = [
 ]
 
 const Tabs = () => (
-    <div style={{ minWidth: "60em", maxWidth: "60em", margin: "0 auto" }}>
+    <div style={{ minWidth: "20em", maxWidth: "60em", margin: "0 auto" }}>
         <Tab panes={panes} renderActiveOnly={true} defaultActiveIndex={1} />
     </div>
 )
