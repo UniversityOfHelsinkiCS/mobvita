@@ -85,7 +85,7 @@ module.exports = (env, argv) => {
         inject: false,
         template: htmlTemplate,
         appMountId: 'root',
-        headHtmlSnippet: '<meta name="viewport" content="width=device-width, initial-scale=1.0">',
+        headHtmlSnippet: '<meta name="viewport" content="width=device-width, initial-scale=1.0"><script src="https://code.responsivevoice.org/responsivevoice.js"></script>',
       }),
       // Extract css
       new MiniCssExtractPlugin({
