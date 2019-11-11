@@ -7,7 +7,7 @@ import { LanguageSelectView } from './languageSelectView/LanguageSelectView'
 import MenuTabs from "Components/StoryListView/MenuTabs"
 
 export default () => (
-  <div className="content">
+  <div className="content" style={{ minWidth: "60em", maxWidth: "60em", margin: "0 auto" }}>
     <Switch>
       <Route exact path="/" component={LanguageSelectView} />
       <Route exact path="/stories" component={MenuTabs} />
