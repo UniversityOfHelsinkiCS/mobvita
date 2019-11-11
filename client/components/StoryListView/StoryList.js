@@ -1,24 +1,49 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { connect } from 'react-redux'
 import { Link } from 'react-router-dom'
-import { Button, List } from 'semantic-ui-react'
-
+import { Button, Placeholder, Container, Header, Card, Tab } from 'semantic-ui-react'
 import { getStoriesAction } from 'Utilities/redux/storiesReducer'
 
 const StoryList = ({ stories, getStories }) => {
-  if (!stories) return null
+
+  useEffect(() => {
+    getStories()
+  }, [])
+
+  if (stories.length === 0) {
+    return (
+      <Placeholder>
+        <Placeholder.Line />
+      </Placeholder>
+
+    )
+  }
 
   return (
-    <div style={{ paddingTop: '1em' }}>
-      <Button color="purple" onClick={() => getStories()}>
-        Get!
-      </Button>
-      <List>
-        {stories.map(m => <List.Item key={m._id}><Link to={`/stories/${m._id}`}> {m.title}</Link></List.Item>)}
-      </List>
-    </div>
+
+
+    <Card.Group>
+      {stories.map(story => {
+
+        return (
+          <Card fluid key={story._id}>
+            <Card.Content extra>
+              <Header>{story.title}</Header>
+            </Card.Content>
+            <Card.Content extra>
+              <div>
+                <Button secondary>Read</Button>
+                <Link to={`/stories/${story._id}`}><Button primary>Practice</Button></Link>
+              </div>
+            </Card.Content>
+          </Card>
+        )
+
+      })}
+    </Card.Group>
   )
 }
+
 
 const mapStateToProps = ({ stories }) => ({
   stories: stories.data,

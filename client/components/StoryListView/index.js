@@ -2,6 +2,7 @@ import React, { useState } from 'react'
 import { Button } from 'semantic-ui-react'
 
 import StoryList from 'Components/StoryListView/StoryList'
+import MenuTabs from 'Components/StoryListView/MenuTabs'
 
 const generateData = (amount) => {
   const res = []
@@ -39,7 +40,7 @@ export default () => {
 
   return (
     <div style={{ flex: 1, display: 'flex', flexDirection: 'column' }}>
-      <StoryList />
+      <MenuTabs />
       {/*
       <VirtualizedTable
         searchable
