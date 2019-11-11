@@ -7,7 +7,9 @@ import { getStoriesAction } from 'Utilities/redux/storiesReducer'
 const StoryList = ({ stories, getStories }) => {
 
   useEffect(() => {
-    getStories()
+    if (stories.length === 0) {
+      getStories()
+    }
   }, [])
 
   if (stories.length === 0) {
