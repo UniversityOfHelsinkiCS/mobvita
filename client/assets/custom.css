@@ -14,3 +14,7 @@
   height: 5em;
   background-color: whitesmoke;
 }
+
+.word-interactive:hover {
+  background-color: #10d3ff;
+}
