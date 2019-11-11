@@ -26,6 +26,8 @@ const PracticeView = ({ match }) => {
           array.push(word.ID)
         }
       })
+
+      // TODO also remove this
       const rand = Math.ceil(Math.random() * array.length)
       setRandIdx(rand)
       setRandomized(array)
@@ -38,9 +40,12 @@ const PracticeView = ({ match }) => {
   const checkAnswers = () => {
     // TODO send this to backend
     console.log('answer', answer)
+
     if (story.paragraph[index + 1]) {
+      // TODO GET /snippet/next
       setIndex(index + 1)
     } else {
+      // TODO GET /snippet/reset
       setIndex(0)
     }
   }
@@ -63,13 +68,14 @@ const PracticeView = ({ match }) => {
 
   const wordInput = (word) => {
     if (randomized[randIdx] === word.ID) {
+      // TODO actual dropdown options
       const options = [{ key: 100000, value: '2', text: word.surface }]
       return <Dropdown key={word.ID} options={options} selection onClick={e => handleClick(word.surface)}/>
     } else if (randomized.includes(word.ID)) {
       // TODO turn right answers to green and wrongs to red
       return <Input key={word.ID} onChange={e => handleChange(e, word.ID)} onClick={e => handleClick(word.surface)}></Input>
     }
-    return <span key={word.ID} onClick={e => handleClick(word.surface)}>{word.surface}</span>
+    return <span className="word-interactive" key={word.ID} onClick={e => handleClick(word.surface)}>{word.surface}</span>
   }
   return (
     <div style={{ paddingTop: '1em' }}>
