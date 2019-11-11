@@ -9,6 +9,7 @@ const PracticeView = ({ match }) => {
   const [answer, setAnswer] = useState({})
   const [randomized, setRandomized] = useState([])
   const [index, setIndex] = useState(0)
+  const [randIdx, setRandIdx] = useState(0)
 
   const dispatch = useDispatch()
   const { story } = useSelector(({ stories }) => ({ story: stories.focused }))
@@ -21,10 +22,12 @@ const PracticeView = ({ match }) => {
       const array = []
       story.paragraph[index].map(word => {
         // TODO remove this once we get actual words to change from backend
-        if (Math.ceil(Math.random() * 4) === 4 && word.bases) {
+        if (Math.ceil(Math.random() * 5) === 5 && word.bases) {
           array.push(word.ID)
         }
       })
+      const rand = Math.ceil(Math.floor()*array.length) - 1
+      setRandIdx(rand)
       setRandomized(array)
 
     }
@@ -55,15 +58,17 @@ const PracticeView = ({ match }) => {
   }
 
   const wordInput = (word) => {
-    if (randomized.includes(word.ID)) {
+    if(randomized[randIdx] === word.ID) {
+      return <Input key={word.ID} onChange={e => handleChange(e, word.ID)}></Input>
+    } else if (randomized.includes(word.ID)) {
       // TODO turn right answers to green and wrongs to red
       return <Input key={word.ID} onChange={e => handleChange(e, word.ID)}></Input>
-    }
+    } 
     return word.surface
   }
   return (
     <div style={{ paddingTop: '1em' }}>
-      <Link to={'/stories'}>Go back to home page</Link>
+      <Link to={'/stories'}>Go back to story list</Link>
       <Header>{story.title}</Header>
       <a href={story.url}>{story.url}</a>
       <Divider />

@@ -31,8 +31,8 @@ const StoryList = ({ stories, getStories }) => {
             </Card.Content>
             <Card.Content extra>
               <div>
-                <Button secondary>Read</Button>
-                <Link to={`/stories/${story._id}`}><Button primary>Practice</Button></Link>
+                <Link to={`/stories/${story._id}/`}><Button primary>Read</Button></Link>
+                <Link to={`/stories/${story._id}/snippet`}><Button primary>Practice</Button></Link>
               </div>
             </Card.Content>
           </Card>

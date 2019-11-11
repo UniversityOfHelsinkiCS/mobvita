@@ -26,7 +26,7 @@ const SingleStoryView = ({ match }) => {
 
   return (
     <div style={{ paddingTop: '1em' }}>
-      <Link to={'/stories'}>Back to storylist</Link>
+      <Link to={'/stories'}>Back to story list</Link>
 
       <Header>{story.title}</Header>
       <a href={story.url}>{story.url}</a>
