@@ -3,14 +3,18 @@ import { Route, Switch } from 'react-router-dom'
 
 import SingleStoryView from 'Components/SingleStoryView'
 import PracticeView from 'Components/PracticeView'
-import { LanguageSelectView } from './languageSelectView/LanguageSelectView'
-import MenuTabs from "Components/StoryListView/MenuTabs"
+import MenuTabs from 'Components/StoryListView/MenuTabs'
+import { LanguageSelectView } from 'Components/languageSelectView/LanguageSelectView'
+import LoginPlaceholder from 'Components/LoginPlaceholder'
 
 export default () => (
-  <Switch>
-    <Route exact path="/" component={LanguageSelectView} />
-    <Route exact path="/stories" component={MenuTabs} />
-    <Route exact path="/stories/:id" component={SingleStoryView} />
-    <Route exact path="/stories/:id/snippet/" component={PracticeView} />
-  </Switch>
+  <>
+    <Switch>
+      <Route exact path="/" component={LanguageSelectView} />
+      <Route exact path="/stories" component={MenuTabs} />
+      <Route exact path="/stories/:id" component={SingleStoryView} />
+      <Route exact path="/stories/:id/snippet/" component={PracticeView} />
+    </Switch>
+    <LoginPlaceholder />
+  </>
 )

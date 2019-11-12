@@ -1,5 +1,4 @@
 import axios from 'axios'
-import { getHeaders } from 'Utilities/mockHeaders'
 import { basePath, inProduction } from 'Utilities/common'
 
 /**
@@ -8,9 +7,9 @@ import { basePath, inProduction } from 'Utilities/common'
 
 const getAxios = axios.create({ baseURL: `${basePath}api` })
 
-const callApi = async (url, method = 'get', data) => {
-  const defaultHeaders = !inProduction ? getHeaders() : {}
-  const headers = { ...defaultHeaders }
+export const callApi = async (url, method = 'get', data) => {
+  const token = localStorage.getItem('token')
+  const headers = token ? { Authorization: `Bearer ${token}` } : {}
   return getAxios({
     method,
     url,
