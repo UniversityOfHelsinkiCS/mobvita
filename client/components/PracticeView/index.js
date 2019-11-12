@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import { Link } from 'react-router-dom'
-import { Divider, Segment, Header, Button, Input } from 'semantic-ui-react'
+import { Divider, Segment, Header, Button, Input, Dropdown } from 'semantic-ui-react'
 
 import { getStoryAction } from 'Utilities/redux/storiesReducer'
 
@@ -10,6 +10,7 @@ const PracticeView = ({ match }) => {
   const [randomized, setRandomized] = useState([])
   const [index, setIndex] = useState(0)
   const [randIdx, setRandIdx] = useState(0)
+  const [randIdxSnd, setRandIdxSnd] = useState(0)
 
   const dispatch = useDispatch()
   const { story } = useSelector(({ stories }) => ({ story: stories.focused }))
@@ -26,7 +27,17 @@ const PracticeView = ({ match }) => {
           array.push(word.ID)
         }
       })
-      const rand = Math.ceil(Math.floor()*array.length) - 1
+
+      // TODO also remove this
+      const rand = Math.ceil(Math.random() * array.length) - 1
+
+      if (rand - 1 === 0) {
+        setRandIdxSnd(rand + 1)
+      } else if (rand + 1 === array.length) {
+        setRandIdxSnd(rand - 1)
+      } else {
+        setRandIdxSnd(rand - 1)
+      }
       setRandIdx(rand)
       setRandomized(array)
 
@@ -38,11 +49,18 @@ const PracticeView = ({ match }) => {
   const checkAnswers = () => {
     // TODO send this to backend
     console.log('answer', answer)
-    if(story.paragraph[index + 1]) {
+
+    if (story.paragraph[index + 1]) {
+      // TODO GET /snippet/next
       setIndex(index + 1)
     } else {
+      // TODO GET /snippet/reset
       setIndex(0)
     }
+  }
+
+  const handleClick = (word) => {
+    window.responsiveVoice.speak(word, 'Finnish Female')
   }
 
   const handleChange = (e, ID) => {
@@ -58,13 +76,18 @@ const PracticeView = ({ match }) => {
   }
 
   const wordInput = (word) => {
-    if(randomized[randIdx] === word.ID) {
-      return <Input key={word.ID} onChange={e => handleChange(e, word.ID)}></Input>
+    if (randomized[randIdx] === word.ID) {
+      // TODO actual dropdown options
+      const options = [{ key: 100000, value: '2', text: word.surface }]
+      return <Dropdown key={word.ID} options={options} selection onClick={e => handleClick(word.surface)} />
+    } else if (randomized[randIdxSnd] === word.ID) {
+      // input without writen hint
+      return <Input key={word.ID} onChange={e => handleChange(e, word.ID)} onClick={e => handleClick(word.surface)}></Input>
     } else if (randomized.includes(word.ID)) {
-      // TODO turn right answers to green and wrongs to red
-      return <Input key={word.ID} onChange={e => handleChange(e, word.ID)}></Input>
-    } 
-    return word.surface
+      // TODO turn right answers to green and wrongs to red real base
+      return <Input key={word.ID} defaultValue={word.bases.split('|')[0]} onChange={e => handleChange(e, word.ID)} onClick={e => handleClick(word.surface)}></Input>
+    }
+    return <span className="word-interactive" key={word.ID} onClick={e => handleClick(word.surface)}>{word.surface}</span>
   }
   return (
     <div style={{ paddingTop: '1em' }}>

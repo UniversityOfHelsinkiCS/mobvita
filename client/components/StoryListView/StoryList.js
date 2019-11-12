@@ -23,9 +23,8 @@ const StoryList = ({ stories, getStories }) => {
 
   return (
 
-    <Card.Group>
+    <Card.Group >
       {stories.map(story => {
-
         return (
           <Card fluid key={story._id}>
             <Card.Content extra>
