@@ -8,6 +8,8 @@
   min-height: calc(100vh - 10em);
   display: flex;
   flex-direction: column;
+  max-width: 60em;
+  margin: 0 auto;
 }
 
 .footer {

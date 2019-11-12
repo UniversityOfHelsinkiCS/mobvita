@@ -6,7 +6,9 @@ import Router from 'Components/Router'
 export default () => (
   <div>
     <NavBar />
-    <Router />
+    <div className="content">
+      <Router />
+    </div>
     <Footer />
   </div>
 )
