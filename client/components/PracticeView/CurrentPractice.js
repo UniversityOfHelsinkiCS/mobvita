@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import { Segment, Button } from 'semantic-ui-react'
-import { getCurrentSnippet } from 'Utilities/redux/snippetsReducer'
+import { getCurrentSnippet, getAnswers } from 'Utilities/redux/snippetsReducer'
 
 import ExerciseCloze from 'Components/PracticeView/ExerciseCloze'
 import ExerciseMultipleChoice from 'Components/PracticeView/ExerciseMultipleChoice'
@@ -18,7 +18,8 @@ const CurrentPractice = ({ storyId }) => {
   }, [])
 
   const checkAnswers = () => {
-    console.log('answer', answer)
+    dispatch(getAnswers(storyId))
+    // TODO: Analyze results once endpoint actually exists
   }
 
   const handleClick = (word) => {
@@ -62,7 +63,6 @@ const CurrentPractice = ({ storyId }) => {
     <Segment>
       <div>
         {practice.map(word => wordInput(word))}
-
         <Button onClick={checkAnswers}> check answers </Button>
       </div>
     </Segment>

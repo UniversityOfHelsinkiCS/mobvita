@@ -15,6 +15,12 @@ export const resetCurrentSnippet = (storyId) => {
   return callBuilder(route, prefix, 'post')
 }
 
+export const getAnswers = (storyId) => {
+  const route = `/stories/${storyId}/snippets/answers`
+  const prefix = "GET_SNIPPET_ANSWERS"
+  return callBuilder(route, prefix, "post")
+}
+
 // Reducer
 // You can include more app wide actions such as "selected: []" into the state
 export default (state = { data: [] }, action) => {
@@ -32,6 +38,10 @@ export default (state = { data: [] }, action) => {
         focused: action.response,
         pending: false,
         error: false,
+      }
+    case "GET_SNIPPET_ANSWERS":
+      return {
+        ...state
       }
     default:
       return state

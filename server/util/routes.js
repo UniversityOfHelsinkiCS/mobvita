@@ -12,6 +12,7 @@ router.get('/stories/:id', stories.getOne)
 
 router.get('/snippets/story/:storyId/current', snippets.getCurrent)
 router.post('/snippets/story/:storyId/reset', snippets.reset)
+router.post('/stories/:storyId/snippets/answers', snippets.getAnswers)
 
 router.post('/session', session.create)
 
