@@ -22,7 +22,7 @@ const CurrentPractice = ({ storyId }) => {
     // TODO: Analyze results once endpoint actually exists
   }
 
-  const handleClick = (word) => {
+  const textToSpeech = (word) => {
     window.responsiveVoice.speak(word, 'Finnish Female')
   }
 
@@ -40,23 +40,29 @@ const CurrentPractice = ({ storyId }) => {
 
 
   const wordInput = (word) => {
-    if (false) return <ExerciseMultipleChoice />
-    if (false) return <ExerciseHearing />
-    if (false) return <ExerciseCloze />
-
+    if (word.id !== undefined) {
+      if (word.listen) {
+        return <ExerciseHearing handleChange={handleChange} handleClick={textToSpeech} key={word.ID} word={word} />
+      }
+      if (word.choises) {
+        return <ExerciseMultipleChoice handleClick={textToSpeech} word={word} />
+      }
+      return <ExerciseCloze handleChange={handleChange} key={word.ID} word={word} />
+    }
     return (
       <span
         role="button"
         tabIndex={0}
         className="word-interactive"
         key={word.ID}
-        onKeyDown={e => handleClick(word.surface)}
-        onClick={e => handleClick(word.surface)}
+        onKeyDown={() => textToSpeech(word.surface)}
+        onClick={() => textToSpeech(word.surface)}
       >
         {word.surface}
       </span>
     )
   }
+
   if (!snippets.focused) return null
   const { practice_snippet: practice } = snippets.focused
   return (

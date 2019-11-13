@@ -1,11 +1,13 @@
 import React from 'react'
+import { Input } from "semantic-ui-react"
 
-const ExerciseHearing = () => {
+const ExerciseHearing = ({ word, handleClick, handleChange }) => {
+
   return (
     <Input
       key={word.ID}
       onChange={e => handleChange(e, word.ID)}
-      onClick={e => handleClick(word.surface)}
+      onClick={() => handleClick(word.surface)}
     />
   )
 }

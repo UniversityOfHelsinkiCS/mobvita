@@ -1,12 +1,14 @@
 import React from 'react'
 
-const ExerciseCloze = () => {
+import { Input } from 'semantic-ui-react'
+
+const ExerciseCloze = ({ word, handleChange }) => {
   return (
     <Input
       key={word.ID}
-      defaultValue={word.bases.split('|')[0]}
+      defaultValue={word.base}
       onChange={e => handleChange(e, word.ID)}
-      onClick={e => handleClick(word.surface)}
+      onClick={() => { }}
     />
   )
 }
