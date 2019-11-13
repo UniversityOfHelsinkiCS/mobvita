@@ -1,7 +1,7 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, Fragment } from 'react'
 import { connect } from 'react-redux'
 import { Link } from 'react-router-dom'
-import { Button, Placeholder, Container, Header, Card, Tab } from 'semantic-ui-react'
+import { Button, Placeholder, Header, Card, Icon } from 'semantic-ui-react'
 import { getStoriesAction } from 'Utilities/redux/storiesReducer'
 
 const StoryList = ({ stories, getStories }) => {
@@ -21,6 +21,41 @@ const StoryList = ({ stories, getStories }) => {
     )
   }
 
+  const difficultyStars = story => {
+
+    switch (story.difficulty) {
+      case "high":
+        return (
+          <Fragment >
+            <Icon name="star" size="small"></Icon>
+            <Icon name="star" size="small"></Icon>
+            <Icon name="star" size="small"></Icon>
+          </Fragment>
+        )
+
+      case "average":
+        return (
+          <Fragment >
+            <Icon name="star" size="small"></Icon>
+            <Icon name="star" size="small"></Icon>
+          </Fragment>
+        )
+
+      case "low":
+        return (
+          <Fragment >
+            <Icon name="star" size="small"></Icon>
+          </Fragment>
+        )
+
+      default:
+        return "unknown story difficulty"
+        break;
+    }
+
+
+  }
+
   return (
 
     <Card.Group >
@@ -34,6 +69,7 @@ const StoryList = ({ stories, getStories }) => {
               <div>
                 <Link to={`/stories/${story._id}/`}><Button primary>Read</Button></Link>
                 <Link to={`/stories/${story._id}/snippet`}><Button primary>Practice</Button></Link>
+                {difficultyStars(story)}
               </div>
             </Card.Content>
           </Card>
