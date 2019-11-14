@@ -6,7 +6,7 @@ const DictionaryHelp = () => {
 
   const [showHelp, setShow] = useState(false)
 
-  const wordArray = ['test', 'what', 'is', 'this'].map(word => <List.Item>{word}</List.Item>)
+  const wordArray = ['test', 'what', 'is', 'this'].map((word,i) => <List.Item key={i}>{word}</List.Item>) // fix when we get acual data from backend
 
   return (
     <Accordion styled fluid>
