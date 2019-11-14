@@ -1,10 +1,14 @@
-import React, { useEffect, Fragment } from 'react'
+import React, { useEffect, Fragment, useState } from 'react'
 import { connect } from 'react-redux'
 import { Link } from 'react-router-dom'
-import { Button, Placeholder, Header, Card, Icon } from 'semantic-ui-react'
+import { Button, Placeholder, Header, Card, Icon, Dropdown } from 'semantic-ui-react'
+import { sortBy } from 'lodash'
+
 import { getStoriesAction } from 'Utilities/redux/storiesReducer'
 
 const StoryList = ({ stories, getStories }) => {
+
+  const [sorter, setSorter] = useState('date')
 
   useEffect(() => {
     if (stories.length === 0) {
@@ -19,6 +23,16 @@ const StoryList = ({ stories, getStories }) => {
       </Placeholder>
 
     )
+  }
+
+  const sortDropdownOptions = [
+    { key: 'date', text: 'Date', value: 'date' },
+    { key: 'title', text: 'Title', value: 'title' },
+    { key: 'difficulty', text: 'Difficulty', value: 'difficulty' }
+  ]
+
+  const handleChange = (e, option) => {
+    setSorter(option.value)
   }
 
   const difficultyStars = story => {
@@ -58,26 +72,39 @@ const StoryList = ({ stories, getStories }) => {
 
   }
 
+  const sortedStories = sortBy(stories, [story => {
+    if (sorter === 'difficulty') {
+      switch (story.difficulty) {
+        case 'high':
+          return 3
+        case 'average':
+          return 2
+        case 'low':
+          return 1
+        default:
+          return 4
+      }
+    }
+    return story[sorter]
+  }])
+  
   return (
-
     <Card.Group >
-      {stories.map(story => {
-        return (
-          <Card fluid key={story._id}>
-            <Card.Content extra>
-              <Header as="h3">{story.title}</Header>
-            </Card.Content>
-            <Card.Content extra>
-              <div>
-                <Link to={`/stories/${story._id}/`}><Button primary>Read</Button></Link>
-                <Link to={`/stories/${story._id}/snippet`}><Button primary>Practice</Button></Link>
-                {difficultyStars(story)}
-              </div>
-            </Card.Content>
-          </Card>
-        )
-
-      })}
+      <Dropdown selection options={sortDropdownOptions} style={{ margin: '10px' }} onChange={handleChange} />
+      {sortedStories.map(story => (
+        <Card fluid key={story._id}>
+          <Card.Content extra>
+            <Header as="h3">{story.title}</Header>
+          </Card.Content>
+          <Card.Content extra>
+            <div>
+              <Link to={`/stories/${story._id}/`}><Button primary>Read</Button></Link>
+              <Link to={`/stories/${story._id}/snippet`}><Button primary>Practice</Button></Link>
+              {difficultyStars(story)}
+            </div>
+          </Card.Content>
+        </Card>
+      ))}
     </Card.Group>
   )
 }
