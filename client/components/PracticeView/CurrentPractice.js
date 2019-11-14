@@ -45,8 +45,8 @@ const CurrentPractice = ({ storyId }) => {
       if (word.listen) {
         return <ExerciseHearing handleChange={handleChange} handleClick={textToSpeech} key={word.ID} word={word} />
       }
-      if (word.choises) {
-        return <ExerciseMultipleChoice handleClick={textToSpeech} word={word} />
+      if (word.choices) {
+        return <ExerciseMultipleChoice handleChange={handleChange} handleClick={textToSpeech} key={word.ID} word={word} />
       }
       return <ExerciseCloze handleChange={handleChange} key={word.ID} word={word} />
     }
