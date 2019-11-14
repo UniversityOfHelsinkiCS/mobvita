@@ -6,6 +6,7 @@ import { Divider, Header } from 'semantic-ui-react'
 
 import { getStoryAction } from 'Utilities/redux/storiesReducer'
 import ResetButton from 'Components/PracticeView/ResetButton'
+import DictionaryHelp from 'Components/DictionaryHelp'
 
 const PracticeView = ({ match }) => {
   const dispatch = useDispatch()
@@ -23,6 +24,7 @@ const PracticeView = ({ match }) => {
       <a href={story.url}>{story.url}</a>
       <Divider />
       <CurrentPractice storyId={match.params.id} />
+      <DictionaryHelp/>
       <ResetButton storyId={match.params.id} />
     </div>
   )

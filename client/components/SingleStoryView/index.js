@@ -4,6 +4,7 @@ import { Link } from 'react-router-dom'
 import { Divider, Segment, Header, Button } from 'semantic-ui-react'
 
 import { getStoryAction } from 'Utilities/redux/storiesReducer'
+import DictionaryHelp from '../DictionaryHelp'
 
 const SingleStoryView = ({ match }) => {
   const dispatch = useDispatch()
@@ -25,6 +26,7 @@ const SingleStoryView = ({ match }) => {
   }
 
   return (
+    <>
     <div style={{ paddingTop: '1em' }}>
       <Link to={'/stories'}>Back to story list</Link>
 
@@ -39,6 +41,8 @@ const SingleStoryView = ({ match }) => {
         ))}
       </Segment>
     </div>
+    <DictionaryHelp/>
+    </>
   )
 }
 
