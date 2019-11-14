@@ -24,7 +24,7 @@ const PracticeView = ({ match }) => {
       <a href={story.url}>{story.url}</a>
       <Divider />
       <CurrentPractice storyId={match.params.id} />
-      <DictionaryHelp/>
+      <DictionaryHelp />
       <ResetButton storyId={match.params.id} />
     </div>
   )
