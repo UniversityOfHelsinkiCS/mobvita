@@ -27,30 +27,32 @@ const StoryList = ({ stories, getStories }) => {
       case "high":
         return (
           <Fragment >
-            <Icon name="star" size="small"></Icon>
-            <Icon name="star" size="small"></Icon>
-            <Icon name="star" size="small"></Icon>
+            <Icon disabled name="star" size="large" style={{ color: 'blue', cursor: 'default' }} />
+            <Icon name="star" size="large" style={{ color: 'blue', cursor: 'default' }} />
+            <Icon name="star" size="large" style={{ color: 'blue', cursor: 'default' }} />
           </Fragment>
         )
 
       case "average":
         return (
           <Fragment >
-            <Icon name="star" size="small"></Icon>
-            <Icon name="star" size="small"></Icon>
+            <Icon name="star" size="large" style={{ color: 'blue', cursor: 'default' }} />
+            <Icon name="star" size="large" style={{ color: 'blue', cursor: 'default' }} />>
+            <Icon name='star outline' size='large' style={{ cursor: 'default' }} />
           </Fragment>
         )
 
       case "low":
         return (
           <Fragment >
-            <Icon name="star" size="small"></Icon>
+            <Icon name="star" size="large" style={{ color: 'blue', cursor: 'default' }} />
+            <Icon name='star outline' size='large' style={{ cursor: 'default' }} />
+            <Icon name='star outline' size='large' style={{ cursor: 'default' }} />
           </Fragment>
         )
 
       default:
         return "unknown story difficulty"
-        break;
     }
 
 

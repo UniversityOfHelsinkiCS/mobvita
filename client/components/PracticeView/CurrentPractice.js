@@ -12,13 +12,15 @@ const CurrentPractice = ({ storyId }) => {
   const dispatch = useDispatch()
 
   const { snippets } = useSelector(({ snippets }) => ({ snippets }))
+  console.log(snippets)
 
   useEffect(() => {
     dispatch(getCurrentSnippet(storyId))
   }, [])
 
   const checkAnswers = () => {
-    dispatch(getAnswers(storyId))
+    // dispatch(getAnswers(storyId))
+    dispatch(getCurrentSnippet(storyId))
     // TODO: Analyze results once endpoint actually exists
   }
 
@@ -47,7 +49,7 @@ const CurrentPractice = ({ storyId }) => {
       if (word.choises) {
         return <ExerciseMultipleChoice handleClick={textToSpeech} word={word} />
       }
-      return <ExerciseCloze handleChange={handleChange} key={word.ID} word={word} />
+      return <ExerciseCloze handleChange={handleChange} key={word.ID} word={word} handleClick={textToSpeech}/>
     }
     return (
       <span
