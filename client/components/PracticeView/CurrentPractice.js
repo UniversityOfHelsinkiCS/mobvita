@@ -12,7 +12,6 @@ const CurrentPractice = ({ storyId }) => {
   const dispatch = useDispatch()
 
   const { snippets } = useSelector(({ snippets }) => ({ snippets }))
-  console.log(snippets)
 
   useEffect(() => {
     dispatch(getCurrentSnippet(storyId))
@@ -49,7 +48,7 @@ const CurrentPractice = ({ storyId }) => {
       if (word.choises) {
         return <ExerciseMultipleChoice handleClick={textToSpeech} word={word} />
       }
-      return <ExerciseCloze handleChange={handleChange} key={word.ID} word={word} handleClick={textToSpeech}/>
+      return <ExerciseCloze handleChange={handleChange} key={word.ID} word={word} />
     }
     return (
       <span

@@ -27,7 +27,7 @@ const StoryList = ({ stories, getStories }) => {
       case "high":
         return (
           <Fragment >
-            <Icon disabled name="star" size="large" style={{ color: 'blue', cursor: 'default' }} />
+            <Icon name="star" size="large" style={{ color: 'blue', cursor: 'default' }} />
             <Icon name="star" size="large" style={{ color: 'blue', cursor: 'default' }} />
             <Icon name="star" size="large" style={{ color: 'blue', cursor: 'default' }} />
           </Fragment>
