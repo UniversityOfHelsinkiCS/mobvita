@@ -1,5 +1,5 @@
 import React from 'react'
-import { Dropdown } from "semantic-ui-react"
+import { Dropdown } from 'semantic-ui-react'
 
 const ExerciseMultipleChoice = ({ word, handleClick, handleChange }) => {
   // const options = [{ key: 100000, value: '2', text: word.surface }]
@@ -12,7 +12,7 @@ const ExerciseMultipleChoice = ({ word, handleClick, handleChange }) => {
 
   const handleSelect = (e, data) => {
     handleClick(data.value)
-    handleChange(e, word.ID)
+    handleChange(e, word)
   }
 
   return (

@@ -8,7 +8,8 @@ import ExerciseMultipleChoice from 'Components/PracticeView/ExerciseMultipleChoi
 import ExerciseHearing from 'Components/PracticeView/ExerciseHearing'
 
 const CurrentPractice = ({ storyId }) => {
-  const [answer, setAnswer] = useState({})
+  const [answers, setAnswer] = useState({})
+  const [touched, setTouched] = useState(0)
   const dispatch = useDispatch()
 
   const { snippets } = useSelector(({ snippets }) => ({ snippets }))
@@ -18,24 +19,46 @@ const CurrentPractice = ({ storyId }) => {
   }, [])
 
   const checkAnswers = () => {
-    // dispatch(getAnswers(storyId))
-    dispatch(getCurrentSnippet(storyId))
-    // TODO: Analyze results once endpoint actually exists
+    const { starttime, snippetid, total_num: totalNum } = snippets.focused
+
+    const answersObj = {
+      starttime,
+      story_id: storyId,
+      snippet_id: snippetid[0],
+      touched,
+      untouched: totalNum - touched,
+      answers,
+    }
+
+    console.log(answersObj)
+
+    // dispatch(getAnswers(storyId, answersObj))
   }
 
   const textToSpeech = (word) => {
     window.responsiveVoice.speak(word, 'Finnish Female')
   }
 
-  const handleChange = (e, ID) => {
-    if (!answer[ID]) {
-      const modAnswer = {
-        ...answer,
-        [ID]: e.target.value
+  const handleAnswerChange = (e, word) => {
+    const { surface, id, ID } = word
+
+    if (word.choices) {
+      answers[ID] = {
+        [ID]: word.choices,
       }
+    } else if (!answers[ID]) {
+      const modAnswer = {
+        ...answers,
+        [ID]: {
+          correct: surface,
+          users_answer: e.target.value,
+          id,
+        },
+      }
+      setTouched(touched + 1)
       setAnswer(modAnswer)
     } else {
-      answer[ID] = e.target.value
+      answers[ID].users_answer = e.target.value
     }
   }
 
@@ -43,12 +66,12 @@ const CurrentPractice = ({ storyId }) => {
   const wordInput = (word) => {
     if (word.id !== undefined) {
       if (word.listen) {
-        return <ExerciseHearing handleChange={handleChange} handleClick={textToSpeech} key={word.ID} word={word} />
+        return <ExerciseHearing handleChange={handleAnswerChange} handleClick={textToSpeech} key={word.ID} word={word} />
       }
       if (word.choices) {
-        return <ExerciseMultipleChoice handleChange={handleChange} handleClick={textToSpeech} key={word.ID} word={word} />
+        return <ExerciseMultipleChoice handleChange={handleAnswerChange} handleClick={textToSpeech} key={word.ID} word={word} />
       }
-      return <ExerciseCloze handleChange={handleChange} handleClick={textToSpeech} key={word.ID} word={word} />
+      return <ExerciseCloze handleChange={handleAnswerChange} handleClick={textToSpeech} key={word.ID} word={word} />
     }
     return (
       <span
@@ -69,7 +92,7 @@ const CurrentPractice = ({ storyId }) => {
   return (
     <Segment>
       <div>
-        {practice.map(word => wordInput(word))}
+        {practice.map(exercise => wordInput(exercise))}
         <Button onClick={checkAnswers}> check answers </Button>
       </div>
     </Segment>
