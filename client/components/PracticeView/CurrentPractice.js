@@ -36,7 +36,7 @@ const CurrentPractice = ({ storyId }) => {
 
     console.log(answersObj)
 
-    // dispatch(getAnswers(storyId, answersObj))
+    dispatch(getAnswers(storyId, answersObj))
   }
 
   const textToSpeech = (word) => {

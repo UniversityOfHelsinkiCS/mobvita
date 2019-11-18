@@ -15,7 +15,7 @@ const reset = async (req, res) => {
 
 const getAnswers = async (req, res) => {
   const { storyId } = req.params
-  const response = await axios.post(`/stories/${storyId}/snippets/answers`, {}, { headers: req.headers })
+  const response = await axios.post(`/stories/${storyId}/snippets/answers`, req.body, { headers: req.headers })
   res.send(response.data)
 }
 

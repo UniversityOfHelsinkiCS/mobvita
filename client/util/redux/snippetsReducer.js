@@ -15,10 +15,10 @@ export const resetCurrentSnippet = (storyId) => {
   return callBuilder(route, prefix, 'post')
 }
 
-export const getAnswers = (storyId) => {
+export const getAnswers = (storyId, answersObject) => {
   const route = `/snippets/story/${storyId}/answers`
   const prefix = 'GET_SNIPPET_ANSWERS'
-  return callBuilder(route, prefix, 'post')
+  return callBuilder(route, prefix, 'post', answersObject)
 }
 
 // Reducer
@@ -39,9 +39,9 @@ export default (state = { data: [] }, action) => {
         pending: false,
         error: false,
       }
-    case "GET_SNIPPET_ANSWERS":
+    case 'GET_SNIPPET_ANSWERS':
       return {
-        ...state
+        ...state,
       }
     default:
       return state
