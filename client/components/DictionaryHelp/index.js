@@ -1,27 +1,34 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { connect } from 'react-redux'
 import { List, Accordion } from 'semantic-ui-react'
 
 
 const DictionaryHelp = ({ translation }) => {
+  const [showHelp, setShow] = useState(false)
 
   const translations = translation ? translation.map(translated =>
     <List.Item key={translated.URL}>
       {translated.lemma}
       <List bulleted>
-        {translated.glosses.map(word => <List.Item>{word}</List.Item>)}
+        {translated.glosses.map((word, i) => <List.Item key={`${translated.URL}-${i}`}>{word}</List.Item>)}
       </List>
     </List.Item>
   ) : 'no translation found'
 
-  const [showHelp, setShow] = useState(false)
+  useEffect(() => {
+    if (translations.length > 0) {
+      setShow(true)
+    } else {
+      setShow(false)
+    }
+  }, [translations])
 
   return (
     <Accordion styled fluid>
       <Accordion.Title onClick={() => setShow(!showHelp)} index={0}>
         Dictionary Help
       </Accordion.Title>
-      <Accordion.Content active={showHelp} index={1} style={{ minHeight: '10em' }}>
+      <Accordion.Content active={showHelp} index={1} style={{ minHeight: '5em' }}>
         <List>
           {translations}
         </List>

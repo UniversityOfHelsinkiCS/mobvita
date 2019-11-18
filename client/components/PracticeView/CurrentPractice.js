@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import { Segment, Button } from 'semantic-ui-react'
 import { getCurrentSnippet, getAnswers } from 'Utilities/redux/snippetsReducer'
-import { getTranslationAction } from 'Utilities/redux/translationReducer'
+import { getTranslationAction, clearTranslationAction } from 'Utilities/redux/translationReducer'
 
 import ExerciseCloze from 'Components/PracticeView/ExerciseCloze'
 import ExerciseMultipleChoice from 'Components/PracticeView/ExerciseMultipleChoice'
@@ -19,6 +19,7 @@ const CurrentPractice = ({ storyId }) => {
 
   useEffect(() => {
     dispatch(getCurrentSnippet(storyId))
+    dispatch(clearTranslationAction())
   }, [])
 
   const checkAnswers = () => {
@@ -91,19 +92,22 @@ const CurrentPractice = ({ storyId }) => {
       }
       return <ExerciseCloze tabIndex={word.ID} handleChange={handleAnswerChange} handleClick={textToSpeech} key={word.ID} word={word} />
     }
-    return (
-      <span
-        role="button"
-        tabIndex={0}
-        className="word-interactive"
-        key={word.ID}
-        onKeyDown={() => textToSpeech(word.surface, word.lemmas)}
-        onClick={() => textToSpeech(word.surface, word.lemmas)}
-        tabIndex="-1"
-      >
-        {word.surface}
-      </span>
-    )
+    if (word.lemmas) {
+      return (
+        <span
+          role="button"
+          tabIndex={0}
+          className="word-interactive"
+          key={word.ID}
+          onKeyDown={() => textToSpeech(word.surface, word.lemmas)}
+          onClick={() => textToSpeech(word.surface, word.lemmas)}
+          tabIndex="-1"
+        >
+          {word.surface}
+        </span>
+      )
+    }
+    return word.surface
   }
 
   if (!snippets.focused) return null

@@ -9,6 +9,11 @@ export const getTranslationAction = (language,wordLemmas) => {
   return callBuilder(route, prefix)
 }
 
+export const clearTranslationAction = () => ({
+  type: 'CLEAR_TRANSLATION'
+})
+
+
 export default (state = { data: [] }, action) => {
   switch (action.type) {
     case 'GET_TRANSLATION_SUCCESS':
@@ -25,6 +30,12 @@ export default (state = { data: [] }, action) => {
         pending: false,
         error: false,
       }
+    case 'CLEAR_TRANSLATION': {
+      return {
+        ...state,
+        data:[]
+      }
+    }
     default:
       return state
   }
