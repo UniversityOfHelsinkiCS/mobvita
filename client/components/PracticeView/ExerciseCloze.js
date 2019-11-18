@@ -11,7 +11,8 @@ const ExerciseCloze = ({
       placeholder={`${word.base}...`}
       onChange={e => handleChange(e, word)}
       transparent
-      style={{width: `${Math.floor(word.base.length * 2)}0px`, height:'30px'}}
+      style={{width: `${Math.floor(word.surface.length * 15)}px`, height:'30px'}}
+      onClick={()=> console.log(word.surface)}
     />
 )
 
