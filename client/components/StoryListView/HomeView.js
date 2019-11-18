@@ -12,7 +12,7 @@ const HomeView = ({ stories }) => {
     }
   }, [stories])
 
-  return <Link to={`/stories/${stories[randomStoryIndex]._id}/snippet`}><Button fluid>practice now</Button></Link>
+  return stories[randomStoryIndex] ?  <Link to={`/stories/${stories[randomStoryIndex]._id}/snippet`}><Button fluid>practice now</Button></Link> : <div>no stories</div>
 }
 
 const mapStateToProps = ({ stories }) => ({
