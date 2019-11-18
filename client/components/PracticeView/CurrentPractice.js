@@ -69,7 +69,7 @@ const CurrentPractice = ({ storyId }) => {
         return <ExerciseHearing handleChange={handleAnswerChange} handleClick={textToSpeech} key={word.ID} word={word} />
       }
       if (word.choices) {
-        return <ExerciseMultipleChoice handleChange={handleChange} key={word.ID} word={word} />
+        return <ExerciseMultipleChoice handleChange={handleAnswerChange} key={word.ID} word={word} />
       }
       return <ExerciseCloze handleChange={handleAnswerChange} handleClick={textToSpeech} key={word.ID} word={word} />
     }
