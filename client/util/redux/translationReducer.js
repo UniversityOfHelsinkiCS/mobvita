@@ -14,11 +14,11 @@ export default (state = { data: [] }, action) => {
     case 'GET_TRANSLATION_SUCCESS':
       return {
         ...state,
-        data: action.response,
+        data: action.response['responses-json'],
         pending: false,
         error: false,
       }
-    case 'GET_TRANSLATION_SUCCESS':
+    case 'GET_TRANSLATION_FAILURE':
       return {
         ...state,
         focused: action.response,
