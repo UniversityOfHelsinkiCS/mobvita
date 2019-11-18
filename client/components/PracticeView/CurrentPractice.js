@@ -82,14 +82,14 @@ const CurrentPractice = ({ storyId }) => {
         if (!audio.includes(word.ID.toString())) {
           audio.push(word.ID.toString())
         }
-        return <ExerciseHearing handleChange={handleAnswerChange} handleClick={textToSpeech} key={word.ID} word={word} />
+        return <ExerciseHearing tabIndex={word.ID} handleChange={handleAnswerChange} handleClick={textToSpeech} key={word.ID} word={word} />
       }
       if (word.choices) {
         const { ID, choices } = word
         options[ID] = choices
-        return <ExerciseMultipleChoice handleChange={handleMultiselectChange} key={word.ID} word={word} />
+        return <ExerciseMultipleChoice tabIndex={word.ID} handleChange={handleMultiselectChange} key={word.ID} word={word} />
       }
-      return <ExerciseCloze handleChange={handleAnswerChange} handleClick={textToSpeech} key={word.ID} word={word} />
+      return <ExerciseCloze tabIndex={word.ID} handleChange={handleAnswerChange} handleClick={textToSpeech} key={word.ID} word={word} />
     }
     return (
       <span
