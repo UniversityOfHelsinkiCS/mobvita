@@ -7,10 +7,11 @@ const ExerciseCloze = ({
 }) => (
   <Input
       key={word.ID}
-      defaultValue={word.base}
+      icon={<Icon name="volume up" link onClick={() => handleClick(word.base)} />}
+      placeholder={`${word.base}...`}
       onChange={e => handleChange(e, word)}
-      label={{ basic: true, content: <Icon name="volume up" onClick={() => handleClick(word.base)} /> }}
-      labelPosition="right"
+      transparent
+      style={{width: `${Math.floor(word.base.length * 2)}0px`, height:'30px'}}
     />
 )
 

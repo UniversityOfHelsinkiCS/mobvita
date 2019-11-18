@@ -4,10 +4,10 @@ import { Dropdown } from 'semantic-ui-react'
 const ExerciseMultipleChoice = ({ word, handleChange }) => {
   // const options = [{ key: 100000, value: '2', text: word.surface }]
 
-  const options = word.choices.map(choise => ({
-    key: `${word.ID}_${choise}`,
-    value: choise,
-    text: choise,
+  const options = word.choices.map(choice => ({
+    key: `${word.ID}_${choice}`,
+    value: choice,
+    text: choice,
   }))
 
   const handleSelect = (e, data) => {
