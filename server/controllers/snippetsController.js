@@ -22,5 +22,5 @@ const getAnswers = async (req, res) => {
 module.exports = {
   getCurrent,
   reset,
-  getAnswers
+  getAnswers,
 }

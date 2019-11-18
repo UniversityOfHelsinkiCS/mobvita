@@ -1,5 +1,5 @@
 import React from 'react'
-import { Dropdown } from "semantic-ui-react"
+import { Dropdown } from 'semantic-ui-react'
 
 const ExerciseMultipleChoice = ({ word, handleChange }) => {
   // const options = [{ key: 100000, value: '2', text: word.surface }]
