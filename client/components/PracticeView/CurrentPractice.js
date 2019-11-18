@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import { Segment, Button } from 'semantic-ui-react'
-import { getCurrentSnippet, postAnswers } from 'Utilities/redux/snippetsReducer'
+import { getCurrentSnippet, getAnswers } from 'Utilities/redux/snippetsReducer'
+import { getTranslationAction, clearTranslationAction } from 'Utilities/redux/translationReducer'
 
 import ExerciseCloze from 'Components/PracticeView/ExerciseCloze'
 import ExerciseMultipleChoice from 'Components/PracticeView/ExerciseMultipleChoice'
@@ -19,6 +20,7 @@ const CurrentPractice = ({ storyId }) => {
 
   useEffect(() => {
     dispatch(getCurrentSnippet(storyId))
+    dispatch(clearTranslationAction())
   }, [])
 
   const checkAnswers = () => {
@@ -42,8 +44,9 @@ const CurrentPractice = ({ storyId }) => {
     dispatch(postAnswers(storyId, answersObj))
   }
 
-  const textToSpeech = (word) => {
-    window.responsiveVoice.speak(word, 'Finnish Female')
+  const textToSpeech = (surfaceWord, wordLemmas) => {
+    window.responsiveVoice.speak(surfaceWord, 'Finnish Female')
+    dispatch(getTranslationAction('Finnish', wordLemmas))
   }
 
   const handleAnswerChange = (e, word) => {
@@ -83,28 +86,31 @@ const CurrentPractice = ({ storyId }) => {
         if (!audio.includes(word.ID.toString())) {
           audio.push(word.ID.toString())
         }
-        return <ExerciseHearing handleChange={handleAnswerChange} handleClick={textToSpeech} key={word.ID} word={word} />
+        return <ExerciseHearing tabIndex={word.ID} handleChange={handleAnswerChange} handleClick={textToSpeech} key={word.ID} word={word} />
       }
       if (word.choices) {
         const { ID, choices } = word
         options[ID] = choices
-        return <ExerciseMultipleChoice handleChange={handleMultiselectChange} key={word.ID} word={word} />
+        return <ExerciseMultipleChoice tabIndex={word.ID} handleChange={handleMultiselectChange} key={word.ID} word={word} />
       }
-      return <ExerciseCloze handleChange={handleAnswerChange} handleClick={textToSpeech} key={word.ID} word={word} />
+      return <ExerciseCloze tabIndex={word.ID} handleChange={handleAnswerChange} handleClick={textToSpeech} key={word.ID} word={word} />
     }
-    return (
-      <span
-        role="button"
-        tabIndex={0}
-        className="word-interactive"
-        key={word.ID}
-        onKeyDown={() => textToSpeech(word.surface)}
-        onClick={() => textToSpeech(word.surface)}
-        tabIndex="-1"
-      >
-        {word.surface}
-      </span>
-    )
+    if (word.lemmas) {
+      return (
+        <span
+          role="button"
+          tabIndex={0}
+          className="word-interactive"
+          key={word.ID}
+          onKeyDown={() => textToSpeech(word.surface, word.lemmas)}
+          onClick={() => textToSpeech(word.surface, word.lemmas)}
+          tabIndex="-1"
+        >
+          {word.surface}
+        </span>
+      )
+    }
+    return word.surface
   }
 
   if (!snippets.focused) return null

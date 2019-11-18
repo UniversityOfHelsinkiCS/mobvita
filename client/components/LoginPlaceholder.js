@@ -17,7 +17,7 @@ const LoginPlaceholder = () => {
 
   return (
     <div>
-      devlogin, token: {token}
+      {token ? 'devlogin' : null}
       <br />
       Email:
       <input value={email} onChange={({ target }) => setEmail(target.value)} />
