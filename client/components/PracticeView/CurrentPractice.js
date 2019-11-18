@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import { Segment, Button } from 'semantic-ui-react'
-import { getCurrentSnippet, getAnswers } from 'Utilities/redux/snippetsReducer'
+import { getCurrentSnippet, postAnswers } from 'Utilities/redux/snippetsReducer'
 import { getTranslationAction, clearTranslationAction } from 'Utilities/redux/translationReducer'
 
 import ExerciseCloze from 'Components/PracticeView/ExerciseCloze'
