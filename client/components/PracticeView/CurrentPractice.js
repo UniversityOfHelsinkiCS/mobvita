@@ -81,6 +81,7 @@ const CurrentPractice = ({ storyId }) => {
         key={word.ID}
         onKeyDown={() => textToSpeech(word.surface)}
         onClick={() => textToSpeech(word.surface)}
+        tabIndex="-1"
       >
         {word.surface}
       </span>
