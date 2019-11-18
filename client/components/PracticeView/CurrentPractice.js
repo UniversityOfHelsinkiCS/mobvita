@@ -27,7 +27,7 @@ const CurrentPractice = ({ storyId }) => {
     const answersObj = {
       starttime,
       story_id: storyId,
-      snippet_id: snippetid[0],
+      snippet_id: [snippetid[0]],
       touched,
       untouched: totalNum - touched,
       attempt,
