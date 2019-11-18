@@ -15,8 +15,8 @@ export const resetCurrentSnippet = (storyId) => {
   return callBuilder(route, prefix, 'post')
 }
 
-export const getAnswers = (storyId, answersObject) => {
-  const route = `/snippets/story/${storyId}/answers`
+export const postAnswers = (storyId, answersObject) => {
+  const route = `/snippets/story/${storyId}/answer`
   const prefix = 'GET_SNIPPET_ANSWERS'
   return callBuilder(route, prefix, 'post', answersObject)
 }

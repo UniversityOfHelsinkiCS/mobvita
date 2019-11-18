@@ -13,14 +13,15 @@ const reset = async (req, res) => {
   res.send(response.data)
 }
 
-const getAnswers = async (req, res) => {
+const postAnswers = async (req, res) => {
   const { storyId } = req.params
-  const response = await axios.post(`/stories/${storyId}/snippets/answers`, req.body, { headers: req.headers })
+
+  const response = await axios.post(`/stories/${storyId}/snippets/answer`, req.body, { headers: req.headers })
   res.send(response.data)
 }
 
 module.exports = {
   getCurrent,
   reset,
-  getAnswers,
+  postAnswers,
 }
