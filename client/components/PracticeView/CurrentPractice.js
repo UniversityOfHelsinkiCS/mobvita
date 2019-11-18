@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import { Segment, Button } from 'semantic-ui-react'
-import { getCurrentSnippet, getAnswers } from 'Utilities/redux/snippetsReducer'
+import { getCurrentSnippet, postAnswers } from 'Utilities/redux/snippetsReducer'
 
 import ExerciseCloze from 'Components/PracticeView/ExerciseCloze'
 import ExerciseMultipleChoice from 'Components/PracticeView/ExerciseMultipleChoice'
@@ -12,6 +12,7 @@ const CurrentPractice = ({ storyId }) => {
   const [options, setOptions] = useState({})
   const [audio, setAudio] = useState([])
   const [touched, setTouched] = useState(0)
+  const [attempt, setAttempts] = useState(1)
   const dispatch = useDispatch()
 
   const { snippets } = useSelector(({ snippets }) => ({ snippets }))
@@ -29,6 +30,7 @@ const CurrentPractice = ({ storyId }) => {
       snippet_id: snippetid[0],
       touched,
       untouched: totalNum - touched,
+      attempt,
       options,
       audio,
       answers,
@@ -36,7 +38,8 @@ const CurrentPractice = ({ storyId }) => {
 
     console.log(answersObj)
 
-    dispatch(getAnswers(storyId, answersObj))
+    setAttempts(attempt + 1)
+    dispatch(postAnswers(storyId, answersObj))
   }
 
   const textToSpeech = (word) => {
