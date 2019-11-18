@@ -21,7 +21,7 @@ const DictionaryHelp = ({ translation }) => {
     } else {
       setShow(false)
     }
-  }, [translations])
+  }, [translation])
 
   return (
     <Accordion styled fluid>
