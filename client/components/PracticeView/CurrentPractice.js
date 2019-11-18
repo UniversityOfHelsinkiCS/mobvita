@@ -10,6 +10,8 @@ import ExerciseHearing from 'Components/PracticeView/ExerciseHearing'
 
 const CurrentPractice = ({ storyId }) => {
   const [answers, setAnswer] = useState({})
+  const [options, setOptions] = useState({})
+  const [audio, setAudio] = useState([])
   const [touched, setTouched] = useState(0)
   const dispatch = useDispatch()
 
@@ -28,12 +30,14 @@ const CurrentPractice = ({ storyId }) => {
       snippet_id: snippetid[0],
       touched,
       untouched: totalNum - touched,
+      options,
+      audio,
       answers,
     }
 
     console.log(answersObj)
 
-    // dispatch(getAnswers(storyId, answersObj))
+    dispatch(getAnswers(storyId, answersObj))
   }
 
   const textToSpeech = (surfaceWord, wordLemmas) => {
@@ -44,11 +48,7 @@ const CurrentPractice = ({ storyId }) => {
   const handleAnswerChange = (e, word) => {
     const { surface, id, ID } = word
 
-    if (word.choices) {
-      answers[ID] = {
-        [ID]: word.choices,
-      }
-    } else if (!answers[ID]) {
+    if (!answers[ID]) {
       const modAnswer = {
         ...answers,
         [ID]: {
@@ -64,14 +64,30 @@ const CurrentPractice = ({ storyId }) => {
     }
   }
 
+  const handleMultiselectChange = (event, word, data) => {
+    const { id, ID, surface } = word
+    const { value } = data
+
+    answers[ID] = {
+      correct: surface,
+      users_answer: value,
+      id,
+    }
+  }
+
 
   const wordInput = (word) => {
     if (word.id !== undefined) {
       if (word.listen) {
+        if (!audio.includes(word.ID.toString())) {
+          audio.push(word.ID.toString())
+        }
         return <ExerciseHearing handleChange={handleAnswerChange} handleClick={textToSpeech} key={word.ID} word={word} />
       }
       if (word.choices) {
-        return <ExerciseMultipleChoice handleChange={handleAnswerChange} key={word.ID} word={word} />
+        const { ID, choices } = word
+        options[ID] = choices
+        return <ExerciseMultipleChoice handleChange={handleMultiselectChange} key={word.ID} word={word} />
       }
       return <ExerciseCloze handleChange={handleAnswerChange} handleClick={textToSpeech} key={word.ID} word={word} />
     }
