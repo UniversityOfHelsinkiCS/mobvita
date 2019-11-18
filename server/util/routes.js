@@ -2,6 +2,7 @@ const Router = require('express')
 const stories = require('@controllers/storiesController')
 const snippets = require('@controllers/snippetsController')
 const session = require('@controllers/sessionController')
+const translation = require('@controllers/translationController')
 
 const router = Router()
 
@@ -13,6 +14,8 @@ router.get('/stories/:id', stories.getOne)
 router.get('/snippets/story/:storyId/current', snippets.getCurrent)
 router.post('/snippets/story/:storyId/reset', snippets.reset)
 router.post('/snippets/story/:storyId/answers', snippets.getAnswers)
+
+router.get('/translation/:language/:wordLemmas', translation.getTranslation)
 
 router.post('/session', session.create)
 

@@ -2,7 +2,6 @@
 const { axios } = require('@util/common')
 
 const getCurrent = async (req, res) => {
-  console.log('lol')
   const { storyId } = req.params
   const response = await axios.get(`/stories/${storyId}/snippets/next`, { headers: req.headers })
   res.send(response.data)

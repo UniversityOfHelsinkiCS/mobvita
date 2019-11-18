@@ -9,7 +9,6 @@ import { getStoriesAction } from 'Utilities/redux/storiesReducer'
 const StoryList = ({ stories, getStories }) => {
 
   const [sorter, setSorter] = useState('date')
-
   useEffect(() => {
     if (stories.length === 0) {
       getStories()
@@ -87,7 +86,7 @@ const StoryList = ({ stories, getStories }) => {
     }
     return story[sorter]
   }])
-  
+
   return (
     <Card.Group >
       <Dropdown selection options={sortDropdownOptions} style={{ margin: '10px' }} onChange={handleChange} />

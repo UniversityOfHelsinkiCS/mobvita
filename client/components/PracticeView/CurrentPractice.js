@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import { Segment, Button } from 'semantic-ui-react'
 import { getCurrentSnippet, getAnswers } from 'Utilities/redux/snippetsReducer'
+import { getTranslationAction } from 'Utilities/redux/translationReducer'
 
 import ExerciseCloze from 'Components/PracticeView/ExerciseCloze'
 import ExerciseMultipleChoice from 'Components/PracticeView/ExerciseMultipleChoice'
@@ -35,8 +36,9 @@ const CurrentPractice = ({ storyId }) => {
     // dispatch(getAnswers(storyId, answersObj))
   }
 
-  const textToSpeech = (word) => {
-    window.responsiveVoice.speak(word, 'Finnish Female')
+  const textToSpeech = (surfaceWord, wordLemmas) => {
+    window.responsiveVoice.speak(surfaceWord, 'Finnish Female')
+    dispatch(getTranslationAction('Finnish', wordLemmas))
   }
 
   const handleAnswerChange = (e, word) => {
@@ -79,8 +81,8 @@ const CurrentPractice = ({ storyId }) => {
         tabIndex={0}
         className="word-interactive"
         key={word.ID}
-        onKeyDown={() => textToSpeech(word.surface)}
-        onClick={() => textToSpeech(word.surface)}
+        onKeyDown={() => textToSpeech(word.surface, word.lemmas)}
+        onClick={() => textToSpeech(word.surface, word.lemmas)}
         tabIndex="-1"
       >
         {word.surface}
