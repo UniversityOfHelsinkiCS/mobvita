@@ -10,7 +10,7 @@ const ExerciseMultipleChoice = ({ word, handleChange }) => {
   }))
 
   const handleSelect = (e, data) => {
-    handleChange(e, word.ID)
+    handleChange(e, word, data)
   }
 
   return (
