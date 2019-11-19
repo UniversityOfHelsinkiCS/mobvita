@@ -39,9 +39,10 @@ export default (state = { data: [] }, action) => {
         pending: false,
         error: false,
       }
-    case 'GET_SNIPPET_ANSWERS':
+    case 'GET_SNIPPET_ANSWERS_SUCCESS':
       return {
         ...state,
+        focused: action.response,
       }
     default:
       return state
