@@ -5,16 +5,12 @@ import SingleStoryView from 'Components/SingleStoryView'
 import PracticeView from 'Components/PracticeView'
 import MenuTabs from 'Components/StoryListView/MenuTabs'
 import { LanguageSelectView } from 'Components/languageSelectView/LanguageSelectView'
-import LoginPlaceholder from 'Components/LoginPlaceholder'
 
 export default () => (
-  <>
-    <Switch>
-      <Route exact path="/" component={LanguageSelectView} />
-      <Route exact path="/stories" component={MenuTabs} />
-      <Route exact path="/stories/:id" component={SingleStoryView} />
-      <Route exact path="/stories/:id/snippet/" component={PracticeView} />
-    </Switch>
-    <LoginPlaceholder />
-  </>
+  <Switch>
+    <Route exact path="/" component={LanguageSelectView} />
+    <Route exact path="/stories" component={MenuTabs} />
+    <Route exact path="/stories/:id" component={SingleStoryView} />
+    <Route exact path="/stories/:id/snippet/" component={PracticeView} />
+  </Switch>
 )

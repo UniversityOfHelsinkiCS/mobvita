@@ -14,23 +14,36 @@ const LoginPlaceholder = () => {
     localStorage.setItem('token', data.access_token)
     setLoading(false)
   }
+  const logout = async () => {
+    localStorage.clear()
+  }
 
   return (
-    <div>
-      {token ? 'devlogin' : null}
-      <br />
-      Email:
-      <input value={email} onChange={({ target }) => setEmail(target.value)} />
-      <br />
-      Password:
-      <input value={password} onChange={({ target }) => setPassword(target.value)} />
-      <button
-        type="button"
-        disabled={loading}
-        onClick={login}
-      >
-        login
-      </button>
+    <div style={{ display: 'flex' }}>
+      <div>
+        Email:
+        <input value={email} onChange={({ target }) => setEmail(target.value)} />
+        <br />
+        PW:
+        <input value={password} onChange={({ target }) => setPassword(target.value)} />
+        <button
+          type="button"
+          disabled={loading}
+          onClick={login}
+        >
+          login
+        </button>
+        <button
+          type="button"
+          disabled={loading}
+          onClick={logout}
+        >
+          logout
+        </button>
+      </div>
+      <div style={{ overflow: 'scroll', width: '7em' }}>
+        Token: {token}
+      </div>
     </div>
   )
 }
