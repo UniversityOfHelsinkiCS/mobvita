@@ -9,11 +9,13 @@ import ExerciseMultipleChoice from 'Components/PracticeView/ExerciseMultipleChoi
 import ExerciseHearing from 'Components/PracticeView/ExerciseHearing'
 
 const CurrentPractice = ({ storyId }) => {
-  const [answers, setAnswer] = useState({})
+  const [answers, setAnswers] = useState({})
   const [options, setOptions] = useState({})
   const [audio, setAudio] = useState([])
   const [touched, setTouched] = useState(0)
-  const [attempt, setAttempts] = useState(1)
+  const [attempt, setAttempts] = useState(0)
+  const [totalNum, setTotalNum] = useState(0)
+  const [currentSnippetId, setCurrentSnippetId] = useState()
   const dispatch = useDispatch()
 
   const { snippets } = useSelector(({ snippets }) => ({ snippets }))
@@ -23,7 +25,7 @@ const CurrentPractice = ({ storyId }) => {
     dispatch(clearTranslationAction())
   }, [])
 
-  const checkAnswers = () => {
+  const checkAnswers = async () => {
     const { starttime, snippetid, total_num: totalNum } = snippets.focused
 
     const answersObj = {
@@ -31,7 +33,7 @@ const CurrentPractice = ({ storyId }) => {
       story_id: storyId,
       snippet_id: [snippetid[0]],
       touched,
-      untouched: totalNum - touched,
+      untouched: 0 - touched, // TODO: Fix later :)
       attempt,
       options,
       audio,
@@ -62,7 +64,7 @@ const CurrentPractice = ({ storyId }) => {
         },
       }
       setTouched(touched + 1)
-      setAnswer(modAnswer)
+      setAnswers(modAnswer)
     } else {
       answers[ID].users_answer = e.target.value
     }
@@ -113,16 +115,42 @@ const CurrentPractice = ({ storyId }) => {
     return word.surface
   }
 
+  const getExerciseCount = () => {
+    let count = 0
+    snippets.focused.practice_snippet.forEach((word) => {
+      if (word.id) {
+        count++
+      }
+    })
+
+    return count
+  }
+
+  const createSnippetElements = () => {
+    const snippetId = snippets.focused.snippetid[0]
+    const { practice_snippet: practice } = snippets.focused
+
+    return practice.map(exercise => wordInput(exercise))
+  }
+
   if (!snippets.focused) return null
-  const { practice_snippet: practice } = snippets.focused
+
   return (
-    <Segment>
-      <div>
-        {practice.map(exercise => wordInput(exercise))}
-        <Button onClick={checkAnswers}> check answers </Button>
-      </div>
-    </Segment>
+    <>
+      <h1>{snippets.focused.snippetid[0]}</h1>
+      <Segment>
+        <div>
+          {createSnippetElements()}
+          {getExerciseCount() === 0
+            ? <Button onClick={() => dispatch(getCurrentSnippet(storyId))}>Continue to next snippet</Button>
+            : <Button onClick={checkAnswers}>Check answers </Button>
+          }
+
+        </div>
+      </Segment>
+    </>
   )
 }
+
 
 export default CurrentPractice
