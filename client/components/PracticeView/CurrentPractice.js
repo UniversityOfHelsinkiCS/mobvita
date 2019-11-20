@@ -14,8 +14,6 @@ const CurrentPractice = ({ storyId }) => {
   const [audio, setAudio] = useState([])
   const [touched, setTouched] = useState(0)
   const [attempt, setAttempts] = useState(0)
-  const [totalNum, setTotalNum] = useState(0)
-  const [currentSnippetId, setCurrentSnippetId] = useState()
   const dispatch = useDispatch()
 
   const { snippets } = useSelector(({ snippets }) => ({ snippets }))
@@ -25,15 +23,27 @@ const CurrentPractice = ({ storyId }) => {
     dispatch(clearTranslationAction())
   }, [])
 
+  const getExerciseCount = () => {
+    let count = 0
+    snippets.focused.practice_snippet.forEach((word) => {
+      if (word.id) {
+        count++
+      }
+    })
+
+    return count
+  }
+
+
   const checkAnswers = async () => {
-    const { starttime, snippetid, total_num: totalNum } = snippets.focused
+    const { starttime, snippetid } = snippets.focused
 
     const answersObj = {
       starttime,
       story_id: storyId,
       snippet_id: [snippetid[0]],
       touched,
-      untouched: 0 - touched, // TODO: Fix later :)
+      untouched: getExerciseCount() - touched, // TODO: Fix later :)
       attempt,
       options,
       audio,
@@ -55,19 +65,18 @@ const CurrentPractice = ({ storyId }) => {
     const { surface, id, ID } = word
 
     if (!answers[ID]) {
-      const modAnswer = {
-        ...answers,
-        [ID]: {
-          correct: surface,
-          users_answer: e.target.value,
-          id,
-        },
-      }
       setTouched(touched + 1)
-      setAnswers(modAnswer)
-    } else {
-      answers[ID].users_answer = e.target.value
     }
+
+    const modAnswer = {
+      ...answers,
+      [ID]: {
+        correct: surface,
+        users_answer: e.target.value,
+        id,
+      },
+    }
+    setAnswers(modAnswer)
   }
 
   const handleMultiselectChange = (event, word, data) => {
@@ -101,12 +110,12 @@ const CurrentPractice = ({ storyId }) => {
       return (
         <span
           role="button"
-          tabIndex={0}
+          tabIndex={-1}
           className="word-interactive"
           key={word.ID}
           onKeyDown={() => textToSpeech(word.surface, word.lemmas)}
           onClick={() => textToSpeech(word.surface, word.lemmas)}
-          tabIndex="-1"
+          style={{ backgroundColor: (!word.base && answers[word.ID] ? 'blue' : 'white') }}
         >
           {word.surface}
         </span>
@@ -115,34 +124,25 @@ const CurrentPractice = ({ storyId }) => {
     return word.surface
   }
 
-  const getExerciseCount = () => {
-    let count = 0
-    snippets.focused.practice_snippet.forEach((word) => {
-      if (word.id) {
-        count++
-      }
-    })
-
-    return count
-  }
-
-  const createSnippetElements = () => {
-    const snippetId = snippets.focused.snippetid[0]
-    const { practice_snippet: practice } = snippets.focused
-
-    return practice.map(exercise => wordInput(exercise))
+  const continueToNextSnippet = () => {
+    setAnswers({})
+    setOptions({})
+    setTouched(0)
+    setAttempts(0)
+    dispatch(getCurrentSnippet(storyId))
   }
 
   if (!snippets.focused) return null
 
+  const { practice_snippet: practice } = snippets.focused
   return (
     <>
       <h1>{snippets.focused.snippetid[0]}</h1>
       <Segment>
         <div>
-          {createSnippetElements()}
+          {practice.map(exercise => wordInput(exercise))}
           {getExerciseCount() === 0
-            ? <Button onClick={() => dispatch(getCurrentSnippet(storyId))}>Continue to next snippet</Button>
+            ? <Button onClick={() => continueToNextSnippet()}>Continue to next snippet</Button>
             : <Button onClick={checkAnswers}>Check answers </Button>
           }
 

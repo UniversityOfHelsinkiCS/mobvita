@@ -6,17 +6,20 @@ const ExerciseCloze = ({ word, handleChange, handleClick }) => {
   const { isWrong, mark, tested } = word
 
   let color = ''
+  let disabled = false
 
   if (tested) {
     if (isWrong) {
-      color = 'green'
-    } else {
       color = 'red'
+    } else {
+      color = 'green'
+      disabled = true
     }
   }
 
   return (
     <Input
+      disabled={disabled}
       key={word.ID}
       icon={<Icon name="volume up" link onClick={() => handleClick(word.base, word.lemmas)} />}
       placeholder={`${word.base}...`}
@@ -26,6 +29,5 @@ const ExerciseCloze = ({ word, handleChange, handleClick }) => {
     />
   )
 }
-
 
 export default ExerciseCloze
