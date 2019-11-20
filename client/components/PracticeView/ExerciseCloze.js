@@ -21,11 +21,11 @@ const ExerciseCloze = ({ word, handleChange, handleClick }) => {
     <Input
       disabled={disabled}
       key={word.ID}
-      icon={<Icon name="volume up" link onClick={() => handleClick(word.base, word.lemmas)} />}
-      placeholder={`${word.base}...`}
+      icon={<Icon name="volume up" link onClick={() => handleClick(word.base || word.bases, word.lemmas)} />}
+      placeholder={`${word.base || word.bases}...`}
       onChange={e => handleChange(e, word)}
       transparent
-      style={{ minWidth: `${Math.floor(word.base.length)}em`, width: `${Math.floor(word.surface.length)}em`, height: '30px', backgroundColor: color }}
+      style={{ minWidth: `${Math.floor(word.base ? word.base.length : word.bases.length)}em`, width: `${Math.floor(word.surface.length)}em`, height: '30px', backgroundColor: color }}
     />
   )
 }
