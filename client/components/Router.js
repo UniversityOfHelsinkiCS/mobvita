@@ -4,7 +4,7 @@ import { Route, Switch } from 'react-router-dom'
 import SingleStoryView from 'Components/SingleStoryView'
 import PracticeView from 'Components/PracticeView'
 import MenuTabs from 'Components/StoryListView/MenuTabs'
-import { LanguageSelectView } from 'Components/LanguageSelectView'
+import LanguageSelectView from 'Components/LanguageSelectView'
 import AccessControl from 'Components/AccessControl'
 
 export default () => (

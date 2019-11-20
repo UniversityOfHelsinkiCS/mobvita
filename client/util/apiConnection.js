@@ -8,7 +8,8 @@ import { basePath, inProduction } from 'Utilities/common'
 const getAxios = axios.create({ baseURL: `${basePath}api` })
 
 export const callApi = async (url, method = 'get', data) => {
-  const token = localStorage.getItem('token')
+  const user = localStorage.getItem('user')
+  const token = user ? JSON.parse(user).access_token : ''
   const headers = token ? { Authorization: `Bearer ${token}` } : {}
   return getAxios({
     method,
