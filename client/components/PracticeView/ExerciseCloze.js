@@ -27,5 +27,11 @@ const ExerciseCloze = ({ word, handleChange, handleClick }) => {
   )
 }
 
+const areEqual = (prevProps, nextProps) => {
+  if (prevProps.word === nextProps.word) {
+    return true
+  }
+  return false
+}
 
-export default ExerciseCloze
+export default React.memo(ExerciseCloze, areEqual)
