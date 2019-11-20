@@ -9,9 +9,9 @@ const ExerciseCloze = ({ word, handleChange, handleClick }) => {
 
   if (tested) {
     if (isWrong) {
-      color = 'green'
-    } else {
       color = 'red'
+    } else {
+      color = 'green'
     }
   }
 
