@@ -6,17 +6,20 @@ const ExerciseCloze = ({ word, handleChange, handleClick }) => {
   const { isWrong, mark, tested } = word
 
   let color = ''
+  let disabled = false
 
   if (tested) {
     if (isWrong) {
       color = 'red'
     } else {
       color = 'green'
+      disabled = true
     }
   }
 
   return (
     <Input
+      disabled={disabled}
       key={word.ID}
       icon={<Icon name="volume up" link onClick={() => handleClick(word.base, word.lemmas)} />}
       placeholder={`${word.base}...`}
@@ -27,11 +30,4 @@ const ExerciseCloze = ({ word, handleChange, handleClick }) => {
   )
 }
 
-const areEqual = (prevProps, nextProps) => {
-  if (prevProps.word === nextProps.word) {
-    return true
-  }
-  return false
-}
-
-export default React.memo(ExerciseCloze, areEqual)
+export default ExerciseCloze
