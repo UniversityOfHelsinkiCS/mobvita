@@ -24,3 +24,12 @@
 .word-interactive{
   cursor:pointer;
 }
+
+.word-interactive-exercise {
+  background-color: lightblue;
+  border-radius: 1em;
+  padding-left: 1em;
+  padding-right: 1em;
+  padding-top: 0.2em;
+  padding-bottom: 0.2em;
+}

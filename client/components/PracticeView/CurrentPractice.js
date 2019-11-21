@@ -117,11 +117,10 @@ const CurrentPractice = ({ storyId }) => {
         <span
           role="button"
           tabIndex={-1}
-          className="word-interactive"
+          className={!word.base && answers[word.ID] ? "word-interactive-exercise" : "word-interactive "}
           key={word.ID}
           onKeyDown={() => textToSpeech(word.surface, word.lemmas)}
           onClick={() => textToSpeech(word.surface, word.lemmas)}
-          style={{ backgroundColor: (!word.base && answers[word.ID] ? 'blue' : 'white') }}
         >
           {word.surface}
         </span>
