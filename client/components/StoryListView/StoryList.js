@@ -9,20 +9,16 @@ import { getStoriesAction } from 'Utilities/redux/storiesReducer'
 const StoryList = ({ stories, getStories, pending }) => {
   const [language, setLanguage] = useState('')
   const [sorter, setSorter] = useState('date')
-  const [loader, setLoader] = useState(false)
+  
   useEffect(() => {
     const currentLanguage = window.location.pathname.split('/')[2]
     if (stories.length === 0 || currentLanguage !== language) {
       getStories(currentLanguage)
       setLanguage(currentLanguage)
-      setLoader(true)
-      setTimeout(() => {
-        setLoader(false)
-      }, 1000)
     }
   }, [])
 
-  if (stories.length === 0 || loader || pending) {
+  if (stories.length === 0 || pending) {
     return (
       <Placeholder>
         <Placeholder.Line />
@@ -68,7 +64,7 @@ const StoryList = ({ stories, getStories, pending }) => {
       default:
         return (
           <Fragment >
-            <Icon name="question" size="large" style={{ color: 'black', cursor: 'default' }} aria-label='what is this' />
+            <Icon name="question" size="large" style={{ color: 'black', cursor: 'default' }} />
           </Fragment>
         )
     }
