@@ -10,7 +10,6 @@ const ExerciseHearing = (({ word, handleClick, handleChange }) => {
 
   return (
     <Input
-      placeholder={placeholder}
       key={word.ID}
       onChange={e => handleChange(e, word)}
       icon={<Icon name="volume up" link onClick={() => handleClick(word.base, word.lemmas)} />}
