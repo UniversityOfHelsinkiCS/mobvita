@@ -3,7 +3,7 @@ import { useSelector, useDispatch } from 'react-redux'
 import { Segment, Button } from 'semantic-ui-react'
 import { getCurrentSnippet, postAnswers } from 'Utilities/redux/snippetsReducer'
 import { getTranslationAction, clearTranslationAction } from 'Utilities/redux/translationReducer'
-import { capitalize } from 'Utilities/common'
+import { capitalize, localeOptions } from 'Utilities/common'
 
 import ExerciseCloze from 'Components/PracticeView/ExerciseCloze'
 import ExerciseMultipleChoice from 'Components/PracticeView/ExerciseMultipleChoice'
@@ -23,7 +23,7 @@ const CurrentPractice = ({ storyId }) => {
 
   const dispatch = useDispatch()
 
-  const { snippets } = useSelector(({ snippets }) => ({ snippets }))
+  const { snippets, locale } = useSelector(({ snippets, locale }) => ({ snippets, locale }))
 
   useEffect(() => {
     const currentLanguage = window.location.pathname.split('/')[2]
@@ -66,9 +66,10 @@ const CurrentPractice = ({ storyId }) => {
   }
 
   const textToSpeech = (surfaceWord, wordLemmas) => {
+    const selectedLocale = localeOptions.find(localeOption => localeOption.code === locale)
     window.responsiveVoice.speak(surfaceWord, `${language === 'german' ? 'Deutsch' : capitalize(language)} Female`)
     if (wordLemmas) {
-      dispatch(getTranslationAction(capitalize(language), wordLemmas))
+      dispatch(getTranslationAction(capitalize(language), wordLemmas, capitalize(selectedLocale.name)))
     }
   }
 

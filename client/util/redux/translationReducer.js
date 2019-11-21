@@ -3,8 +3,8 @@ import callBuilder from '../apiConnection'
  * Actions and reducers are in the same file for readability
  */
 
-export const getTranslationAction = (language,wordLemmas) => {
-  const route = `/translation/${language}/${wordLemmas}`
+export const getTranslationAction = (language, wordLemmas, locale) => {
+  const route = `/translation/${locale}/${language}/${wordLemmas}`
   const prefix = 'GET_TRANSLATION'
   return callBuilder(route, prefix)
 }
@@ -33,7 +33,7 @@ export default (state = { data: [] }, action) => {
     case 'CLEAR_TRANSLATION': {
       return {
         ...state,
-        data:[]
+        data: []
       }
     }
     default:

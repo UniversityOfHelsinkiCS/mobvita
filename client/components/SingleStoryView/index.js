@@ -5,13 +5,14 @@ import { Divider, Segment, Header, Button } from 'semantic-ui-react'
 
 import { getStoryAction } from 'Utilities/redux/storiesReducer'
 import { getTranslationAction, clearTranslationAction } from 'Utilities/redux/translationReducer'
-import { capitalize } from 'Utilities/common'
+import { capitalize, localeOptions } from 'Utilities/common'
 import DictionaryHelp from '../DictionaryHelp'
 
 const SingleStoryView = ({ match }) => {
   const [language, setLanguage] = useState('')
   const dispatch = useDispatch()
-  const { story, pending } = useSelector(({ stories }) => ({ story: stories.focused, pending: stories.pending }))
+  const { story, pending, locale } = useSelector(({ stories, locale }) => ({ story: stories.focused, pending: stories.pending, locale }))
+
   useEffect(() => {
     const currentLanguage = window.location.pathname.split('/')[2]
     setLanguage(currentLanguage)
@@ -21,8 +22,9 @@ const SingleStoryView = ({ match }) => {
   if (!story) return 'No story (yet?)'
 
   const handleClick = (surfaceWord, wordLemmas) => {
+    const selectedLocale = localeOptions.find(localeOption => localeOption.code === locale)
     window.responsiveVoice.speak(surfaceWord, `${language === 'german' ? 'Deutsch' : capitalize(language)} Female`)
-    dispatch(getTranslationAction(capitalize(language), wordLemmas))
+    dispatch(getTranslationAction(capitalize(language), wordLemmas, capitalize(selectedLocale.name)))
   }
 
   const wordVoice = (word) => {

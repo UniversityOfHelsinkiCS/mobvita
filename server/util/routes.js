@@ -16,7 +16,7 @@ router.get('/snippets/story/:storyId/current', snippets.getCurrent)
 router.post('/snippets/story/:storyId/reset', snippets.reset)
 router.post('/snippets/story/:storyId/answer', snippets.postAnswers)
 
-router.get('/translation/:language/:wordLemmas', translation.getTranslation)
+router.get('/translation/:locale/:language/:wordLemmas', translation.getTranslation)
 
 router.post('/session', session.create)
 
