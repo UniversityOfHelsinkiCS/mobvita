@@ -153,8 +153,6 @@ const CurrentPractice = ({ storyId }) => {
   }
 
   const continueToNextSnippet = () => {
-
-    console.log("Setting answers and snippet to state")
     setPreviousAnswers(answers)
     setPreviousSnippet(snippets.focused)
 
