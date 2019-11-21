@@ -15,6 +15,8 @@ const DictionaryHelp = ({ translation }) => {
     </List.Item>
   ) : 'no translation found'
 
+  const placeholder = 'Unfamiliar word? Click on any word to explore its meaning'
+
   useEffect(() => {
     if (translations.length > 0) {
       setShow(true)
@@ -30,7 +32,7 @@ const DictionaryHelp = ({ translation }) => {
       </Accordion.Title>
       <Accordion.Content active={showHelp} index={1} style={{ minHeight: '5em' }}>
         <List>
-          {translations}
+          {translations.length > 0 ? translations : placeholder}
         </List>
       </Accordion.Content>
     </Accordion>
