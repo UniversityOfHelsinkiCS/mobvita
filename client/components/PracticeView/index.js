@@ -24,7 +24,7 @@ const PracticeView = ({ match }) => {
     <div style={{ paddingTop: '1em' }}>
       <Link to={`/stories/${language}`}>Go back to story list</Link>
       <Header>{story.title}</Header>
-      <a href={story.url}>{story.url}</a>
+      {story.url ? <a href={story.url}>Link to the source</a> : null}
       <Divider />
       <CurrentPractice storyId={match.params.id} />
       <DictionaryHelp />
