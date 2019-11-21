@@ -24,6 +24,7 @@ const ExerciseCloze = ({ word, handleChange, handleClick }) => {
       icon={<Icon name="volume up" link onClick={() => handleClick(word.base || word.bases, word.lemmas)} />}
       placeholder={`${word.base || word.bases}...`}
       onChange={e => handleChange(e, word)}
+      transparent
       style={{
         minWidth: `${Math.floor(word.base ? word.base.length : word.bases.length)}em`,
         width: `${Math.floor(word.surface.length + 2)}em`,
