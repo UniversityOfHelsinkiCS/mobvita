@@ -10,14 +10,17 @@ import store from 'Utilities/store'
 import { basePath } from 'Utilities/common'
 import App from 'Components/App'
 import ErrorBoundary from 'Components/ErrorBoundary'
+import ConnectedIntlProvider from 'Components/ConnectedIntlProvider'
 
 const refresh = () => render(
   <Provider store={store}>
-    <BrowserRouter basename={basePath}>
-      <ErrorBoundary>
-        <App />
-      </ErrorBoundary>
-    </BrowserRouter>
+    <ConnectedIntlProvider>
+      <BrowserRouter basename={basePath}>
+        <ErrorBoundary>
+          <App />
+        </ErrorBoundary>
+      </BrowserRouter>
+    </ConnectedIntlProvider>
   </Provider>,
   document.getElementById('root'),
 )

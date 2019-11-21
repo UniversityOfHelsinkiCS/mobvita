@@ -17,4 +17,9 @@ export const colors = {
 
 }
 
+export const localeOptions = [
+  { name: 'Finnish', code: 'fi' },
+  { name: 'English', code: 'en' },
+]
+
 export * from '@root/config/common'

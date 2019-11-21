@@ -3,6 +3,7 @@ import { combineReducers } from 'redux'
 import stories from './storiesReducer'
 import snippets from './snippetsReducer'
 import translation from './translationReducer'
+import locale from './localeReducer'
 import user from './userReducer'
 
 export default combineReducers({
@@ -10,4 +11,5 @@ export default combineReducers({
   snippets,
   translation,
   user,
+  locale,
 })

@@ -1,5 +1,5 @@
 import axios from 'axios'
-import { basePath, inProduction } from 'Utilities/common'
+import { basePath } from 'Utilities/common'
 
 /**
  * ApiConnection simplifies redux usage
