@@ -2,7 +2,8 @@
 const { axios } = require('@util/common')
 
 const getAll = async (req, res) => {
-  const response = await axios.get('/stories?language=finnish', { headers: req.headers })
+  const { language } = req.params
+  const response = await axios.get(`/stories?language=${language}`, { headers: req.headers })
   res.send(response.data.stories)
 }
 

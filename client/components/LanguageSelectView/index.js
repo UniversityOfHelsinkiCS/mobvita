@@ -7,8 +7,8 @@ const LanguageSelectView = () => {
     <div>
       <Container textAlign="center">
         <Header as="h2">Which language would you like to practice?</Header>
-        <Link to="/stories"><Button primary>Finnish</Button></Link>
-
+        <Link to="/stories/finnish"><Button primary>Finnish</Button></Link>
+        <Link to="/stories/german"><Button primary>German</Button></Link>
 
       </Container>
     </div>

@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import { Link } from 'react-router-dom'
 import CurrentPractice from 'Components/PracticeView/CurrentPractice'
@@ -9,17 +9,20 @@ import ResetButton from 'Components/PracticeView/ResetButton'
 import DictionaryHelp from 'Components/DictionaryHelp'
 
 const PracticeView = ({ match }) => {
+  const [language, setLanguage] = useState('')
   const dispatch = useDispatch()
   const { story } = useSelector(({ stories }) => ({ story: stories.focused }))
   useEffect(() => {
-    dispatch(getStoryAction(match.params.id))
+    const currentLanguage = window.location.pathname.split('/')[2]
+    setLanguage(currentLanguage)
+    dispatch(getStoryAction(currentLanguage, match.params.id))
   }, [])
 
   if (!story) return null
 
   return (
     <div style={{ paddingTop: '1em' }}>
-      <Link to="/stories">Go back to story list</Link>
+      <Link to={`/stories/${language}`}>Go back to story list</Link>
       <Header>{story.title}</Header>
       <a href={story.url}>{story.url}</a>
       <Divider />

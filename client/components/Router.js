@@ -11,9 +11,9 @@ export default () => (
   <AccessControl>
     <Switch>
       <Route exact path="/" component={LanguageSelectView} />
-      <Route exact path="/stories" component={MenuTabs} />
-      <Route exact path="/stories/:id" component={SingleStoryView} />
-      <Route exact path="/stories/:id/snippet/" component={PracticeView} />
+      <Route exact path="/stories/:language" component={MenuTabs} />
+      <Route exact path="/stories/:language/:id" component={SingleStoryView} />
+      <Route exact path="/stories/:language/:id/snippet/" component={PracticeView} />
     </Switch>
   </AccessControl>
 )

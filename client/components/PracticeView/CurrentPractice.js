@@ -3,6 +3,7 @@ import { useSelector, useDispatch } from 'react-redux'
 import { Segment, Button } from 'semantic-ui-react'
 import { getCurrentSnippet, postAnswers } from 'Utilities/redux/snippetsReducer'
 import { getTranslationAction, clearTranslationAction } from 'Utilities/redux/translationReducer'
+import { capitalize } from 'Utilities/common'
 
 import ExerciseCloze from 'Components/PracticeView/ExerciseCloze'
 import ExerciseMultipleChoice from 'Components/PracticeView/ExerciseMultipleChoice'
@@ -14,11 +15,14 @@ const CurrentPractice = ({ storyId }) => {
   const [audio, setAudio] = useState([])
   const [touched, setTouched] = useState(0)
   const [attempt, setAttempts] = useState(0)
+  const [language, setLanguage] = useState('')
   const dispatch = useDispatch()
 
   const { snippets } = useSelector(({ snippets }) => ({ snippets }))
 
   useEffect(() => {
+    const currentLanguage = window.location.pathname.split('/')[2]
+    setLanguage(currentLanguage)
     dispatch(getCurrentSnippet(storyId))
     dispatch(clearTranslationAction())
   }, [])
@@ -57,8 +61,8 @@ const CurrentPractice = ({ storyId }) => {
   }
 
   const textToSpeech = (surfaceWord, wordLemmas) => {
-    window.responsiveVoice.speak(surfaceWord, 'Finnish Female')
-    dispatch(getTranslationAction('Finnish', wordLemmas))
+    window.responsiveVoice.speak(surfaceWord, `${capitalize(language)} Female`)
+    dispatch(getTranslationAction(capitalize(language), wordLemmas))
   }
 
   const handleAnswerChange = (e, word) => {

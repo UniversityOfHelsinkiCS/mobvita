@@ -6,16 +6,23 @@ import { sortBy } from 'lodash'
 
 import { getStoriesAction } from 'Utilities/redux/storiesReducer'
 
-const StoryList = ({ stories, getStories }) => {
-
+const StoryList = ({ stories, getStories, pending }) => {
+  const [language, setLanguage] = useState('')
   const [sorter, setSorter] = useState('date')
+  const [loader, setLoader] = useState(false)
   useEffect(() => {
-    if (stories.length === 0) {
-      getStories()
+    const currentLanguage = window.location.pathname.split('/')[2]
+    if (stories.length === 0 || currentLanguage !== language) {
+      getStories(currentLanguage)
+      setLanguage(currentLanguage)
+      setLoader(true)
+      setTimeout(() => {
+        setLoader(false)
+      }, 1000)
     }
   }, [])
 
-  if (stories.length === 0) {
+  if (stories.length === 0 || loader || pending) {
     return (
       <Placeholder>
         <Placeholder.Line />
@@ -91,8 +98,8 @@ const StoryList = ({ stories, getStories }) => {
           </Card.Content>
           <Card.Content extra>
             <div>
-              <Link to={`/stories/${story._id}/`}><Button primary>Read</Button></Link>
-              <Link to={`/stories/${story._id}/snippet`}><Button primary>Practice</Button></Link>
+              <Link to={`/stories/${language}/${story._id}/`}><Button primary>Read</Button></Link>
+              <Link to={`/stories/${language}/${story._id}/snippet`}><Button primary>Practice</Button></Link>
               {difficultyStars(story)}
             </div>
           </Card.Content>
@@ -105,10 +112,11 @@ const StoryList = ({ stories, getStories }) => {
 
 const mapStateToProps = ({ stories }) => ({
   stories: stories.data,
+  pending: stories.pending
 })
 
 const mapDispatchToProps = dispatch => ({
-  getStories: () => dispatch(getStoriesAction()),
+  getStories: (language) => dispatch(getStoriesAction(language)),
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(StoryList)

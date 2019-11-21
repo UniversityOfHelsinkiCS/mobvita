@@ -1,24 +1,28 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import { Link } from 'react-router-dom'
 import { Divider, Segment, Header, Button } from 'semantic-ui-react'
 
 import { getStoryAction } from 'Utilities/redux/storiesReducer'
 import { getTranslationAction, clearTranslationAction } from 'Utilities/redux/translationReducer'
+import { capitalize } from 'Utilities/common'
 import DictionaryHelp from '../DictionaryHelp'
 
 const SingleStoryView = ({ match }) => {
+  const [language, setLanguage] = useState('')
   const dispatch = useDispatch()
   const { story } = useSelector(({ stories }) => ({ story: stories.focused }))
   useEffect(() => {
-    dispatch(getStoryAction(match.params.id))
+    const currentLanguage = window.location.pathname.split('/')[2]
+    setLanguage(currentLanguage)
+    dispatch(getStoryAction(currentLanguage, match.params.id))
     dispatch(clearTranslationAction())
   }, [])
   if (!story) return 'No story (yet?)'
 
   const handleClick = (surfaceWord, wordLemmas) => {
-    window.responsiveVoice.speak(surfaceWord, 'Finnish Female')
-    dispatch(getTranslationAction('Finnish', wordLemmas))
+    window.responsiveVoice.speak(surfaceWord, `${capitalize(language)} Female`)
+    dispatch(getTranslationAction(capitalize(language), wordLemmas))
   }
 
   const wordVoice = (word) => {
@@ -27,11 +31,11 @@ const SingleStoryView = ({ match }) => {
     }
     return word.surface
   }
-
+  console.log(story)
   return (
     <>
       <div style={{ paddingTop: '1em' }}>
-        <Link to={'/stories'}>Back to story list</Link>
+        <Link to={`/stories/${language}`}>Back to story list</Link>
 
         <Header>{story.title}</Header>
         <a href={story.url}>{story.url}</a>

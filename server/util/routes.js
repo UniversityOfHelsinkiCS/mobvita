@@ -8,8 +8,8 @@ const router = Router()
 
 router.get('/', (req, res) => res.send('welcome to root'))
 
-router.get('/stories', stories.getAll)
-router.get('/stories/:id', stories.getOne)
+router.get('/stories/:language', stories.getAll)
+router.get('/stories/:language/:id', stories.getOne)
 
 router.get('/snippets/story/:storyId/current', snippets.getCurrent)
 router.post('/snippets/story/:storyId/reset', snippets.reset)

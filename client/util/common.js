@@ -7,6 +7,12 @@ export const images = {
   revitaLogoTransparent,
 }
 
+export const capitalize = (word)=> {
+  const firstLetter = word.slice(0,1).toUpperCase()
+  const wordEnd = word.slice(1, word.length)
+  return `${firstLetter}${wordEnd}`
+}
+
 export const colors = {
 
 }
