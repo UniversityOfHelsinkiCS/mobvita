@@ -26,7 +26,7 @@ const DictionaryHelp = ({ translation }) => {
   }, [translation])
 
   return (
-    <Accordion styled fluid>
+    <Accordion styled fluid style={{marginTop:'5px'}}>
       <Accordion.Title onClick={() => setShow(!showHelp)} index={0}>
         Dictionary Help
       </Accordion.Title>

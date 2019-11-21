@@ -184,24 +184,19 @@ const CurrentPractice = ({ storyId }) => {
   return (
     <>
       <h1>{`${snippets.focused.snippetid[0] + 1}/${snippets.focused.total_num}`}</h1>
-
-      <Segment>
+      <Segment style={{marginBottom:'5px'}}>
         <div>
-
           {Object.entries(previousSnippet).length > 0 ?
             previousSnippet.practice_snippet.map(exercise => renderPrevSnippet(exercise))
             : null
           }
-
-
           {practice.map(exercise => wordInput(exercise))}
-          {getExerciseCount() === 0
-            ? <Button onClick={continueToNextSnippet}>Continue to next snippet</Button>
-            : <Button onClick={checkAnswers}>Check answers </Button>
-          }
-
         </div>
       </Segment>
+      {getExerciseCount() === 0
+        ? <Button fluid onClick={continueToNextSnippet}>Continue to next snippet</Button>
+        : <Button fluid onClick={checkAnswers}>Check answers </Button>
+      }
     </>
   )
 }
