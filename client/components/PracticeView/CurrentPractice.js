@@ -138,7 +138,7 @@ const CurrentPractice = ({ storyId }) => {
     dispatch(getCurrentSnippet(storyId))
   }
 
-  if (!snippets.focused) return null
+  if (!snippets.focused || snippets.pending) return null
 
   const { practice_snippet: practice } = snippets.focused
   return (

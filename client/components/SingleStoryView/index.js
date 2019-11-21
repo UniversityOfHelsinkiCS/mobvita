@@ -11,7 +11,7 @@ import DictionaryHelp from '../DictionaryHelp'
 const SingleStoryView = ({ match }) => {
   const [language, setLanguage] = useState('')
   const dispatch = useDispatch()
-  const { story } = useSelector(({ stories }) => ({ story: stories.focused }))
+  const { story, pending } = useSelector(({ stories }) => ({ story: stories.focused, pending: stories.pending }))
   useEffect(() => {
     const currentLanguage = window.location.pathname.split('/')[2]
     setLanguage(currentLanguage)
@@ -31,6 +31,8 @@ const SingleStoryView = ({ match }) => {
     }
     return word.surface
   }
+
+  if (pending) return null
 
   return (
     <>

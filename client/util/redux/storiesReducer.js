@@ -23,7 +23,7 @@ export const postStory = (newStory) => {
 
 // Reducer
 // You can include more app wide actions such as "selected: []" into the state
-export default (state = { data: [] }, action) => {
+export default (state = { data: [], pending: false, error: false }, action) => {
   switch (action.type) {
     case 'GET_STORIES_ATTEMPT':
       return {

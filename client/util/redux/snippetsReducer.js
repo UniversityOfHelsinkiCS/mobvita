@@ -32,6 +32,18 @@ export default (state = { data: [] }, action) => {
         pending: false,
         error: false,
       }
+    case 'GET_CURRENT_SNIPPET_ATTEMPT':
+      return {
+        ...state,
+        pending: true,
+        error: false,
+      }
+    case 'GET_CURRENT_SNIPPET_FAILURE':
+      return {
+        ...state,
+        pending: false,
+        error: true,
+      }
     case 'GET_CURRENT_SNIPPET_SUCCESS':
       return {
         ...state,
