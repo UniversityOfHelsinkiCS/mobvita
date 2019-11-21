@@ -46,9 +46,9 @@ const SingleStoryView = ({ match }) => {
         <Divider />
         <Segment>
           {story.paragraph.map(paragraph => (
-            <div key={paragraph[0].ID}>
+            <p key={paragraph[0].ID}>
               {paragraph.map(word => wordVoice(word))}
-            </div>
+            </p>
           ))}
         </Segment>
       </div>
