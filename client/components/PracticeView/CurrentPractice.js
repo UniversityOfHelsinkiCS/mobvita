@@ -183,7 +183,7 @@ const CurrentPractice = ({ storyId }) => {
   const { practice_snippet: practice } = snippets.focused
   return (
     <>
-      <h1>{snippets.focused.snippetid[0]}</h1>
+      <h1>{`${snippets.focused.snippetid[0] + 1}/${snippets.focused.total_num}`}</h1>
 
       <Segment>
         <div>
