@@ -9,10 +9,7 @@ const ExerciseHearing = (({ word, handleClick, handleChange }) => {
     inputRef.current.focus()
   }
 
-  let placeholder = ''
-  for (let index = 0; index < word.surface.length; index++) {
-    placeholder += '_'
-  }
+  const placeholder = '_'.repeat(word.surface.length + 1)
 
   return (
     <Input
