@@ -12,7 +12,7 @@ const ExerciseHearing = (({ word, handleClick, handleChange }) => {
     <Input
       key={word.ID}
       onChange={e => handleChange(e, word)}
-      icon={<Icon name="volume up" link onClick={() => handleClick(word.base, word.lemmas)} />}
+      icon={<Icon name="volume up" link onClick={() => handleClick(word.base || word.bases, '')} />}
       transparent
       style={{ minWidth: `${placeholder.length}em`, width: `${Math.floor(word.surface.length)}em`, height: '20px', backgroundColor:'lightblue', borderRadius:'10px' }}
     />

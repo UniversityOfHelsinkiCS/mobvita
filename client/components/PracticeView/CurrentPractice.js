@@ -62,7 +62,9 @@ const CurrentPractice = ({ storyId }) => {
 
   const textToSpeech = (surfaceWord, wordLemmas) => {
     window.responsiveVoice.speak(surfaceWord, `${language === 'german' ? 'Deutsch' : capitalize(language)} Female`)
-    dispatch(getTranslationAction(capitalize(language), wordLemmas))
+    if (wordLemmas) {
+      dispatch(getTranslationAction(capitalize(language), wordLemmas))
+    }
   }
 
   const handleAnswerChange = (e, word) => {
