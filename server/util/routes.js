@@ -10,6 +10,7 @@ router.get('/', (req, res) => res.send('welcome to root'))
 
 router.get('/stories/:language', stories.getAll)
 router.get('/stories/:language/:id', stories.getOne)
+router.post('/stories', stories.createOne)
 
 router.get('/snippets/story/:storyId/current', snippets.getCurrent)
 router.post('/snippets/story/:storyId/reset', snippets.reset)
