@@ -2,9 +2,12 @@ import React from 'react'
 import { Dropdown } from 'semantic-ui-react'
 
 const ExerciseMultipleChoice = ({ word, handleChange }) => {
-  let maxLength = 0
+  const maximumLength = word.choices.reduce((maxLength, currLength) => {
+    if (currLength.length > maxLength) return currLength.length
+    return maxLength
+  }, 0)
+
   const options = word.choices.map((choice) => {
-    if (choice.length > maxLength) maxLength = choice.length
     return {
       key: `${word.ID}_${choice}`,
       value: choice,
@@ -12,10 +15,7 @@ const ExerciseMultipleChoice = ({ word, handleChange }) => {
     }
   })
 
-  let placeholder = ''
-  for (let index = 0; index < maxLength; index++) {
-    placeholder += '_'
-  }
+  const placeholder = '_'.repeat(maximumLength)
 
   return (
     <Dropdown
@@ -23,7 +23,7 @@ const ExerciseMultipleChoice = ({ word, handleChange }) => {
       options={options}
       placeholder={placeholder}
       onChange={(e, data) => handleChange(e, word, data)}
-      style={{ minWidth: `${maxLength}em`, width: `${maxLength}em` }}
+      style={{ minWidth: `${maximumLength}em`, width: `${maximumLength}em` }}
     />
   )
 }

@@ -1,19 +1,18 @@
-import React from 'react'
+import React, { useState } from 'react'
 
 import { Input, Icon } from 'semantic-ui-react'
 
 const ExerciseCloze = ({ word, handleChange, handleClick }) => {
+  const [color, setColor] = useState('lightyellow')
+  const [disabled, setDisabled] = useState(false)
   const { isWrong, mark, tested } = word
-
-  let color = ''
-  let disabled = false
 
   if (tested) {
     if (isWrong) {
-      color = 'red'
+      setColor('red')
     } else {
-      color = 'green'
-      disabled = true
+      setColor('green')
+      setDisabled(true)
     }
   }
 
@@ -22,7 +21,7 @@ const ExerciseCloze = ({ word, handleChange, handleClick }) => {
       disabled={disabled}
       key={word.ID}
       icon={<Icon name="volume up" link onClick={() => handleClick(word.base || word.bases, word.lemmas)} />}
-      placeholder={`${word.base || word.bases}...`}
+      placeholder={`${word.base || word.bases}`}
       onChange={e => handleChange(e, word)}
       transparent
       style={{
@@ -30,6 +29,7 @@ const ExerciseCloze = ({ word, handleChange, handleClick }) => {
         width: `${Math.floor(word.surface.length + 2)}em`,
         height: '30px',
         backgroundColor: color,
+        borderRadius: '10px'
       }}
     />
   )

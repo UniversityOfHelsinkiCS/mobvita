@@ -18,7 +18,13 @@ const ExerciseHearing = (({ word, handleClick, handleChange }) => {
       onChange={e => handleChange(e, word)}
       icon={<Icon name="volume up" link onClick={() => clickHandler(word.surface)} />}
       transparent
-      style={{ minWidth: `${placeholder.length}em`, width: `${Math.floor(word.surface.length)}em`, height: '20px', backgroundColor: 'lightblue', borderRadius: '10px' }}
+      style={{
+        minWidth: `${placeholder.length}em`,
+        width: `${Math.floor(word.surface.length)}em`,
+        height: '20px',
+        backgroundColor: 'lightblue',
+        borderRadius: '10px'
+      }}
     />
   )
 })
