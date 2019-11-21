@@ -52,7 +52,7 @@ const CurrentPractice = ({ storyId }) => {
       story_id: storyId,
       snippet_id: [snippetid[0]],
       touched,
-      untouched: getExerciseCount() - touched, // TODO: Fix later :)
+      untouched: getExerciseCount() - touched,
       attempt,
       options,
       audio,
@@ -111,8 +111,21 @@ const CurrentPractice = ({ storyId }) => {
         return <ExerciseHearing tabIndex={word.ID} handleChange={handleAnswerChange} handleClick={textToSpeech} key={word.ID} word={word} />
       }
       if (word.choices) {
-        const { ID, choices } = word
+        const { ID, choices, surface, id } = word
         options[ID] = choices
+
+        if (!answers[ID]) { // Backend requires empty answer for multiple choice.
+          const modAnswer = {
+            ...answers,
+            [ID]: {
+              correct: surface,
+              users_answer: "___",
+              id,
+            },
+          }
+          setAnswers(modAnswer)
+        }
+
         return <ExerciseMultipleChoice tabIndex={word.ID} handleChange={handleMultiselectChange} key={word.ID} word={word} />
       }
       return <ExerciseCloze tabIndex={word.ID} handleChange={handleAnswerChange} handleClick={textToSpeech} key={word.ID} word={word} />
