@@ -16,6 +16,11 @@ const CurrentPractice = ({ storyId }) => {
   const [touched, setTouched] = useState(0)
   const [attempt, setAttempts] = useState(0)
   const [language, setLanguage] = useState('')
+
+  // Data about previously submitted snippet:
+  const [previousSnippet, setPreviousSnippet] = useState({})
+  const [previousAnswers, setPreviousAnswers] = useState({})
+
   const dispatch = useDispatch()
 
   const { snippets } = useSelector(({ snippets }) => ({ snippets }))
@@ -129,7 +134,31 @@ const CurrentPractice = ({ storyId }) => {
     return word.surface
   }
 
+  const renderPrevSnippet = (word) => {
+    if (word.lemmas) {
+      return (
+        <span
+          role="button"
+          tabIndex={-1}
+          className={!word.base && previousAnswers[word.ID] ? "word-interactive--exercise" : "word-interactive "}
+          key={word.ID}
+          onKeyDown={() => textToSpeech(word.surface, word.lemmas)}
+          onClick={() => textToSpeech(word.surface, word.lemmas)}
+        >
+          {word.surface}
+        </span>
+      )
+    }
+    return word.surface
+  }
+
   const continueToNextSnippet = () => {
+
+    console.log("Setting answers and snippet to state")
+    setPreviousAnswers(answers)
+    setPreviousSnippet(snippets.focused)
+
+
     setAnswers({})
     setOptions({})
     setTouched(0)
@@ -143,11 +172,19 @@ const CurrentPractice = ({ storyId }) => {
   return (
     <>
       <h1>{snippets.focused.snippetid[0]}</h1>
+
       <Segment>
         <div>
+
+          {Object.entries(previousSnippet).length > 0 ?
+            previousSnippet.practice_snippet.map(exercise => renderPrevSnippet(exercise))
+            : null
+          }
+
+
           {practice.map(exercise => wordInput(exercise))}
           {getExerciseCount() === 0
-            ? <Button onClick={() => continueToNextSnippet()}>Continue to next snippet</Button>
+            ? <Button onClick={continueToNextSnippet}>Continue to next snippet</Button>
             : <Button onClick={checkAnswers}>Check answers </Button>
           }
 
