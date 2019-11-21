@@ -23,7 +23,8 @@ const ExerciseMultipleChoice = ({ word, handleChange }) => {
       options={options}
       placeholder={placeholder}
       onChange={(e, data) => handleChange(e, word, data)}
-      style={{ minWidth: `${maximumLength}em`, width: `${maximumLength}em` }}
+      selection
+      style={{ minWidth: `${maximumLength}em`, width: `${maximumLength}em`, height:'1em', backgroundColor:'LightCyan'}}
     />
   )
 }
