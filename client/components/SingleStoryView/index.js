@@ -21,7 +21,7 @@ const SingleStoryView = ({ match }) => {
   if (!story) return 'No story (yet?)'
 
   const handleClick = (surfaceWord, wordLemmas) => {
-    window.responsiveVoice.speak(surfaceWord, `${capitalize(language)} Female`)
+    window.responsiveVoice.speak(surfaceWord, `${language === 'german' ? 'Deutsch' : capitalize(language)} Female`)
     dispatch(getTranslationAction(capitalize(language), wordLemmas))
   }
 
@@ -31,7 +31,7 @@ const SingleStoryView = ({ match }) => {
     }
     return word.surface
   }
-  console.log(story)
+
   return (
     <>
       <div style={{ paddingTop: '1em' }}>
