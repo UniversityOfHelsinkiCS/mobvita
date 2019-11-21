@@ -46,15 +46,15 @@ const StoryList = ({ stories, getStories, pending }) => {
     switch (story.difficulty) {
       case "high":
         return (
-          <Fragment >
-            <Icon rotated='counterclockwise' name="play" size='large' style={{ color: 'black', cursor: 'default' }} />
+          <Fragment>
+            <Icon name="circle" size='large' style={{ color: 'red', cursor: 'default' }} />
           </Fragment>
         )
 
       case "average":
         return (
           <Fragment >
-            <Icon name="square" size="large" style={{ color: 'blue', cursor: 'default' }} />
+            <Icon name="circle" size="large" style={{ color: 'yellow', cursor: 'default' }} />
           </Fragment>
         )
 
@@ -68,7 +68,7 @@ const StoryList = ({ stories, getStories, pending }) => {
       default:
         return (
           <Fragment >
-            <Icon name="question" size="large" style={{ color: 'black', cursor: 'default' }} aria-label='what is this'/>
+            <Icon name="question" size="large" style={{ color: 'black', cursor: 'default' }} aria-label='what is this' />
           </Fragment>
         )
     }
@@ -96,14 +96,14 @@ const StoryList = ({ stories, getStories, pending }) => {
     <Card.Group >
       <Dropdown selection options={sortDropdownOptions} style={{ margin: '10px' }} onChange={handleChange} />
       {sortedStories.map(story => (
-        <Card fluid key={story._id} style={{margin:'2px'}}>
-          <Card.Content extra style={{padding:'10px'}}>
+        <Card fluid key={story._id} style={{ margin: '2px' }}>
+          <Card.Content extra style={{ padding: '10px' }}>
             <Header as="h4">{story.title}</Header>
           </Card.Content>
           <Card.Content extra>
             <div>
               <Link to={`/stories/${language}/${story._id}/`}>
-              <Button size='tiny' primary>
+                <Button size='tiny' primary>
                   Read
                 </Button>
               </Link>
