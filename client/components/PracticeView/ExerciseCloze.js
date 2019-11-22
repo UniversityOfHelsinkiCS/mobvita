@@ -4,8 +4,19 @@ import { Input, Icon } from 'semantic-ui-react'
 
 const ExerciseCloze = ({ word, handleChange, handleClick }) => {
   const [color, setColor] = useState('lightyellow')
+  const [touched, setTouched] = useState(false)
   const [disabled, setDisabled] = useState(false)
-  const { isWrong, mark, tested } = word
+  const { isWrong, tested } = word
+
+  const clickVolume = () => handleClick(word.base || word.bases, word.lemmas)
+
+  const changeValue = (e) => {
+    if (!touched) {
+      setTouched(true)
+      setColor('white')
+    }
+    handleChange(e, word)
+  }
 
   useEffect(() => {
     if (tested) {
@@ -22,16 +33,17 @@ const ExerciseCloze = ({ word, handleChange, handleClick }) => {
     <Input
       disabled={disabled}
       key={word.ID}
-      icon={<Icon name="volume up" link onClick={() => handleClick(word.base || word.bases, word.lemmas)} />}
+      icon={<Icon name="volume up" link onClick={clickVolume} />}
       placeholder={`${word.base || word.bases}`}
-      onChange={e => handleChange(e, word)}
+      defaultValue={`${word.base || word.bases}`}
+      onChange={changeValue}
       transparent
       style={{
         minWidth: `${Math.floor(word.base ? word.base.length : word.bases.length)}em`,
         width: `${Math.floor(word.surface.length + 2)}em`,
         height: '30px',
         backgroundColor: color,
-        borderRadius: '10px'
+        borderRadius: '10px',
       }}
     />
   )

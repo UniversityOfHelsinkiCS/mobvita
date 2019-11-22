@@ -5,6 +5,7 @@ import { getCurrentSnippet, postAnswers, setTotalNumberAction } from 'Utilities/
 import { getTranslationAction, clearTranslationAction } from 'Utilities/redux/translationReducer'
 import { capitalize, localeOptions } from 'Utilities/common'
 
+import ResetButton from 'Components/PracticeView/ResetButton'
 import ExerciseCloze from 'Components/PracticeView/ExerciseCloze'
 import ExerciseMultipleChoice from 'Components/PracticeView/ExerciseMultipleChoice'
 import ExerciseHearing from 'Components/PracticeView/ExerciseHearing'
@@ -195,7 +196,10 @@ const CurrentPractice = ({ storyId }) => {
   const { practice_snippet: practice } = snippets.focused
   return (
     <>
-      <h1>{`${snippets.focused.snippetid[0] + 1}/${snippets.totalnum}`}</h1>
+      <h1>
+        {`${snippets.focused.snippetid[0] + 1}/${snippets.totalnum}`}
+        <ResetButton style={{ float: 'right' }} storyId={storyId} />
+      </h1>
       <Segment style={{ marginBottom: '5px' }}>
         <div>
           {Object.entries(previousSnippet).length > 0 ?
