@@ -12,7 +12,7 @@ const LanguageSelectView = () => {
       </Header>
 
       {supportedLearningLanguages.map(lang => (
-        <Link to={`/stories/${lang}`}>
+        <Link key={lang} to={`/stories/${lang}`}>
           <Button style={{ minWidth: '8em', margin: '0.5em' }} primary>{capitalize(lang)}</Button>
         </Link>
       ))}

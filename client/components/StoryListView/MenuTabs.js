@@ -19,13 +19,17 @@ const Tabs = () => {
   ]
 
   return (
-    <div>
-      <StoryAddition />
-      <Tab
-        panes={panes}
-        renderActiveOnly
-        defaultActiveIndex={1}
-      />
+    <div style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'space-between' }}>
+      <div>
+        <StoryAddition />
+      </div>
+      <div style={{ width: '45em' }}>
+        <Tab
+          panes={panes}
+          renderActiveOnly
+          defaultActiveIndex={1}
+        />
+      </div>
     </div>
   )
 }

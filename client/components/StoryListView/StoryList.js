@@ -1,4 +1,4 @@
-import React, { useEffect, Fragment, useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { Link } from 'react-router-dom'
 import { Button, Placeholder, Header, Card, Icon, Dropdown } from 'semantic-ui-react'
@@ -40,19 +40,15 @@ const StoryList = () => {
   const difficultyStars = (story) => {
 
     const icons = {
-      high: <Icon name="circle" size="large" style={{ color: 'red', cursor: 'default' }} />,
-      average: <Icon name="circle" size="large" style={{ color: 'yellow', cursor: 'default' }} />,
-      low: <Icon name="circle" size="large" style={{ color: 'green', cursor: 'default' }} />,
-      default: <Icon name="question" size="large" style={{ color: 'black', cursor: 'default' }} />,
+      high: <Icon name="circle" size="large" style={{ color: 'red', cursor: 'default', float: 'right' }} />,
+      average: <Icon name="circle" size="large" style={{ color: 'yellow', cursor: 'default', float: 'right' }} />,
+      low: <Icon name="circle" size="large" style={{ color: 'green', cursor: 'default', float: 'right' }} />,
+      default: <Icon name="question" size="large" style={{ color: 'black', cursor: 'default', float: 'right' }} />,
     }
 
     const icon = icons[story.difficulty || 'default']
 
-    return (
-      <Fragment>
-        {icon}
-      </Fragment>
-    )
+    return icon
   }
 
   const sortedStories = sortBy(stories, [(story) => {
@@ -73,7 +69,9 @@ const StoryList = () => {
 
   return (
     <Card.Group>
-      <Dropdown selection options={sortDropdownOptions} style={{ margin: '10px' }} onChange={handleChange} />
+      <div style={{ margin: '10px' }}>
+        <Dropdown selection options={sortDropdownOptions} onChange={handleChange} />
+      </div>
       {sortedStories.map(story => (
         <Card fluid key={story._id} style={{ margin: '2px' }}>
           <Card.Content extra style={{ padding: '10px' }}>
