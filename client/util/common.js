@@ -13,6 +13,11 @@ export const capitalize = (word)=> {
   return `${firstLetter}${wordEnd}`
 }
 
+export const supportedLearningLanguages = [
+  'finnish', 'german', 'russian', 'kazakh', 'catalan', 'spanish', 'swedish',
+]
+
+
 export const colors = {
 
 }
