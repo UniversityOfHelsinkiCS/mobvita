@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
-import { Link } from 'react-router-dom'
+import { Link, useLocation } from 'react-router-dom'
 import { Divider, Segment, Header, Button } from 'semantic-ui-react'
 
 import { getStoryAction } from 'Utilities/redux/storiesReducer'
@@ -9,19 +9,16 @@ import { capitalize, localeOptions } from 'Utilities/common'
 import DictionaryHelp from '../DictionaryHelp'
 
 const SingleStoryView = ({ match }) => {
-  const [language, setLanguage] = useState('')
   const dispatch = useDispatch()
   const { story, pending, locale } = useSelector(({ stories, locale }) => ({ story: stories.focused, pending: stories.pending, locale }))
-
+  const { language, id } = match.params
   useEffect(() => {
-    const currentLanguage = window.location.pathname.split('/')[2]
-    setLanguage(currentLanguage)
-    dispatch(getStoryAction(currentLanguage, match.params.id))
+    dispatch(getStoryAction(language, id))
     dispatch(clearTranslationAction())
   }, [])
   if (!story) return 'No story (yet?)'
 
-  const handleClick = (surfaceWord, wordLemmas) => {
+  const handleWordClick = (surfaceWord, wordLemmas) => {
     const selectedLocale = localeOptions.find(localeOption => localeOption.code === locale)
     window.responsiveVoice.speak(surfaceWord, `${language === 'german' ? 'Deutsch' : capitalize(language)} Female`)
     dispatch(getTranslationAction(capitalize(language), wordLemmas, capitalize(selectedLocale.name)))
@@ -29,7 +26,7 @@ const SingleStoryView = ({ match }) => {
 
   const wordVoice = (word) => {
     if (word.bases) {
-      return <span className="word-interactive" key={word.ID} onClick={e => handleClick(word.surface, word.lemmas)}>{word.surface}</span>
+      return <span className="word-interactive" key={word.ID} onClick={e => handleWordClick(word.surface, word.lemmas)}>{word.surface}</span>
     }
     return word.surface
   }
@@ -40,9 +37,15 @@ const SingleStoryView = ({ match }) => {
     <>
       <div style={{ paddingTop: '1em' }}>
         <Link to={`/stories/${language}`}>Back to story list</Link>
-
-        <Header>{story.title}</Header>
-        <a href={story.url}>{story.url}</a>
+        <Header>
+          {story.title}
+          <Link to={`/stories/${language}/${id}/snippet`}>
+            <Button style={{ minWidth: '8em', margin: '0.5em', float: 'right', display: 'flex' }} primary>
+              practice this story
+            </Button>
+          </Link>
+        </Header>
+        {story.url ? <a href={story.url}>Link to the source</a> : null}
         <Divider />
         <Segment>
           {story.paragraph.map(paragraph => (
