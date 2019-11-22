@@ -16,7 +16,7 @@ const HomeView = ({ stories }) => {
       setRandom(random)
     }
   }, [stories])
-  if (!stories[randomStoryIndex]) return <div>no stories</div>
+  if (!stories[randomStoryIndex]) return <FormattedMessage id="NO_STORIES" />
 
   return (
     <Link to={`/stories/${language}/${stories[randomStoryIndex]._id}/snippet`}>
