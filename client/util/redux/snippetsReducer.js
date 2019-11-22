@@ -3,6 +3,11 @@ import callBuilder from '../apiConnection'
  * Actions and reducers are in the same file for readability
  */
 
+export const setTotalNumberAction = (totalnum) => ({
+  type: 'SET_TOTAL_NUMBER',
+  data: totalnum
+})
+
 export const getCurrentSnippet = (storyId) => {
   const route = `/snippets/story/${storyId}/current`
   const prefix = 'GET_CURRENT_SNIPPET'
@@ -55,6 +60,11 @@ export default (state = { data: [] }, action) => {
       return {
         ...state,
         focused: action.response,
+      }
+    case 'SET_TOTAL_NUMBER':
+      return {
+        ...state,
+        totalnum: action.data
       }
     default:
       return state

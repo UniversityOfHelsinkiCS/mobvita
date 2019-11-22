@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import { Segment, Button } from 'semantic-ui-react'
-import { getCurrentSnippet, postAnswers } from 'Utilities/redux/snippetsReducer'
+import { getCurrentSnippet, postAnswers, setTotalNumberAction } from 'Utilities/redux/snippetsReducer'
 import { getTranslationAction, clearTranslationAction } from 'Utilities/redux/translationReducer'
 import { capitalize, localeOptions } from 'Utilities/common'
 
@@ -31,6 +31,18 @@ const CurrentPractice = ({ storyId }) => {
     dispatch(getCurrentSnippet(storyId))
     dispatch(clearTranslationAction())
   }, [])
+
+  useEffect(() => {
+    // has to be done since answers don't include data on
+    // how many snippets are in total
+    // kinda ugly though, pls fix
+    if (snippets.focused) {
+      const { total_num } = snippets.focused
+      if (total_num && total_num !== snippets.totalnum) {
+        dispatch(setTotalNumberAction(total_num))
+      }
+    }
+  }, [snippets])
 
   const getExerciseCount = () => {
     let count = 0
@@ -183,8 +195,8 @@ const CurrentPractice = ({ storyId }) => {
   const { practice_snippet: practice } = snippets.focused
   return (
     <>
-      <h1>{`${snippets.focused.snippetid[0] + 1}/${snippets.focused.total_num}`}</h1>
-      <Segment style={{marginBottom:'5px'}}>
+      <h1>{`${snippets.focused.snippetid[0] + 1}/${snippets.totalnum}`}</h1>
+      <Segment style={{ marginBottom: '5px' }}>
         <div>
           {Object.entries(previousSnippet).length > 0 ?
             previousSnippet.practice_snippet.map(exercise => renderPrevSnippet(exercise))

@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 
 import { Input, Icon } from 'semantic-ui-react'
 
@@ -7,14 +7,16 @@ const ExerciseCloze = ({ word, handleChange, handleClick }) => {
   const [disabled, setDisabled] = useState(false)
   const { isWrong, mark, tested } = word
 
-  if (tested) {
-    if (isWrong) {
-      setColor('red')
-    } else {
-      setColor('green')
-      setDisabled(true)
+  useEffect(() => {
+    if (tested) {
+      if (isWrong) {
+        setColor('red')
+      } else {
+        setColor('green')
+        setDisabled(true)
+      }
     }
-  }
+  }, [tested])
 
   return (
     <Input
