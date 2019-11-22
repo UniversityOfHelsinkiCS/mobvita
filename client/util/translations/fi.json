@@ -3,5 +3,11 @@
   "CHOOSE_LANG": "Mikä kieli?",
   "HOME": "Koti",
   "LIBRARY": "Kirjasto",
-  "SIGNOUT": "Kirjaudu ulos"
+  "SIGNOUT": "Kirjaudu ulos",
+  "ADD_NEW_STORY": "Lisää uusi tarina",
+  "NEW_STORY_URL": "Linkki tarinaan",
+  "CANCEL": "Peruuta",
+  "CONFIRM": "Valmis",
+  "LANGUAGE": "Language",
+  "PRACTICE_NOW": "Harjoittele nyt"
 }

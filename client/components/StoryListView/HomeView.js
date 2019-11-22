@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { connect } from 'react-redux'
 import { Link } from 'react-router-dom'
+import { FormattedMessage } from 'react-intl'
 import { Button } from 'semantic-ui-react'
 
 const HomeView = ({ stories }) => {
@@ -20,7 +21,7 @@ const HomeView = ({ stories }) => {
   return (
     <Link to={`/stories/${language}/${stories[randomStoryIndex]._id}/snippet`}>
       <Button fluid>
-        practice now
+        <FormattedMessage id="PRACTICE_NOW" />
       </Button>
     </Link>
   )

@@ -5,12 +5,13 @@ import { Menu, Dropdown, Button } from 'semantic-ui-react'
 import { logout } from 'Utilities/redux/userReducer'
 import { setLocale } from 'Utilities/redux/localeReducer'
 import { localeOptions } from 'Utilities/common'
-import { FormattedMessage } from 'react-intl'
+import { FormattedMessage, useIntl } from 'react-intl'
 
 export default () => {
   const [active, setActive] = useState('home')
   const { user } = useSelector(({ user }) => ({ user: user.data }))
   const dispatch = useDispatch()
+  const intl = useIntl()
   const signOut = () => dispatch(logout())
 
   const chooseLanguage = code => () => dispatch(setLocale(code))
@@ -20,12 +21,12 @@ export default () => {
         as={Link}
         to="/"
         active={active === 'home'}
-        content="Home"
-        name="home">
-      </Menu.Item>
+        content={intl.formatMessage({ id: 'HOME' })}
+        name="home"
+      />
 
       <Menu.Menu position="right">
-        <Dropdown item text="Language">
+        <Dropdown item text={intl.formatMessage({ id: 'LANGUAGE' })}>
           <Dropdown.Menu>
             {localeOptions.map(locale => <Dropdown.Item key={locale.code} onClick={chooseLanguage(locale.code)}>{locale.name}</Dropdown.Item>)}
           </Dropdown.Menu>

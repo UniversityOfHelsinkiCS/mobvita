@@ -3,5 +3,11 @@
   "CHOOSE_LANG": "Which language would you like to practice?",
   "HOME": "Home",
   "LIBRARY": "Library",
-  "SIGNOUT": "Sign out"
+  "SIGNOUT": "Sign out",
+  "ADD_NEW_STORY": "Add New Story",
+  "NEW_STORY_URL": "New story url",
+  "CANCEL": "Cancel",
+  "CONFIRM": "Confirm",
+  "LANGUAGE": "Language",
+  "PRACTICE_NOW": "Practice now"
 }
