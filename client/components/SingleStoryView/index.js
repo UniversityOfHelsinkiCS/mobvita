@@ -45,7 +45,7 @@ const SingleStoryView = ({ match }) => {
             </Button>
           </Link>
         </Header>
-        {story.url ? <a href={story.url}>Link to the source</a> : null}
+        {story.url ? <a href={story.url}>Link to the source</a> : <div>No link to source</div>}
         <Divider />
         <Segment>
           {story.paragraph.map(paragraph => (
