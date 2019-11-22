@@ -69,8 +69,8 @@ const StoryList = () => {
 
   return (
     <Card.Group>
-      <div style={{ margin: '10px' }}>
-        <Dropdown selection options={sortDropdownOptions} onChange={handleChange} />
+      <div style={{ margin: '10px', marginLeft: 'auto' }}>
+        <Dropdown selection value={sorter} options={sortDropdownOptions} onChange={handleChange} />
       </div>
       {sortedStories.map(story => (
         <Card fluid key={story._id} style={{ margin: '2px' }}>

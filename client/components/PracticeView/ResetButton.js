@@ -3,7 +3,7 @@ import { useDispatch } from 'react-redux'
 import { Button } from 'semantic-ui-react'
 import { resetCurrentSnippet } from 'Utilities/redux/snippetsReducer'
 
-const ResetButton = ({ storyId }) => {
+const ResetButton = ({ storyId, style }) => {
   const dispatch = useDispatch()
 
   const resetSnippets = () => {
@@ -11,7 +11,7 @@ const ResetButton = ({ storyId }) => {
   }
 
   return (
-    <Button onClick={resetSnippets}> Reset to Zero </Button>
+    <Button style={style} onClick={resetSnippets}> Restart story </Button>
   )
 }
 
