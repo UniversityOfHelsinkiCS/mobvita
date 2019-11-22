@@ -1,19 +1,20 @@
 import React, { useEffect, Fragment, useState } from 'react'
-import { connect } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { Link } from 'react-router-dom'
 import { Button, Placeholder, Header, Card, Icon, Dropdown } from 'semantic-ui-react'
 import { sortBy } from 'lodash'
 
-import { getStoriesAction } from 'Utilities/redux/storiesReducer'
+import { getStories } from 'Utilities/redux/storiesReducer'
 
-const StoryList = ({ stories, getStories, pending }) => {
+const StoryList = () => {
   const [language, setLanguage] = useState('')
   const [sorter, setSorter] = useState('date')
-  
+  const dispatch = useDispatch()
+  const { stories, pending } = useSelector(({ stories }) => ({ stories: stories.data, pending: stories.pending }))
   useEffect(() => {
     const currentLanguage = window.location.pathname.split('/')[2]
     if (stories.length === 0 || currentLanguage !== language) {
-      getStories(currentLanguage)
+      dispatch(getStories(currentLanguage))
       setLanguage(currentLanguage)
     }
   }, [])
@@ -23,7 +24,6 @@ const StoryList = ({ stories, getStories, pending }) => {
       <Placeholder>
         <Placeholder.Line />
       </Placeholder>
-
     )
   }
 
@@ -37,42 +37,25 @@ const StoryList = ({ stories, getStories, pending }) => {
     setSorter(option.value)
   }
 
-  const difficultyStars = story => {
+  const difficultyStars = (story) => {
 
-    switch (story.difficulty) {
-      case "high":
-        return (
-          <Fragment>
-            <Icon name="circle" size='large' style={{ color: 'red', cursor: 'default' }} />
-          </Fragment>
-        )
-
-      case "average":
-        return (
-          <Fragment >
-            <Icon name="circle" size="large" style={{ color: 'yellow', cursor: 'default' }} />
-          </Fragment>
-        )
-
-      case "low":
-        return (
-          <Fragment >
-            <Icon name="circle" size="large" style={{ color: 'green', cursor: 'default' }} />
-          </Fragment>
-        )
-
-      default:
-        return (
-          <Fragment >
-            <Icon name="question" size="large" style={{ color: 'black', cursor: 'default' }} />
-          </Fragment>
-        )
+    const icons = {
+      high: <Icon name="circle" size="large" style={{ color: 'red', cursor: 'default' }} />,
+      average: <Icon name="circle" size="large" style={{ color: 'yellow', cursor: 'default' }} />,
+      low: <Icon name="circle" size="large" style={{ color: 'green', cursor: 'default' }} />,
+      default: <Icon name="question" size="large" style={{ color: 'black', cursor: 'default' }} />,
     }
 
+    const icon = icons[story.difficulty || 'default']
 
+    return (
+      <Fragment>
+        {icon}
+      </Fragment>
+    )
   }
 
-  const sortedStories = sortBy(stories, [story => {
+  const sortedStories = sortBy(stories, [(story) => {
     if (sorter === 'difficulty') {
       switch (story.difficulty) {
         case 'high':
@@ -89,7 +72,7 @@ const StoryList = ({ stories, getStories, pending }) => {
   }])
 
   return (
-    <Card.Group >
+    <Card.Group>
       <Dropdown selection options={sortDropdownOptions} style={{ margin: '10px' }} onChange={handleChange} />
       {sortedStories.map(story => (
         <Card fluid key={story._id} style={{ margin: '2px' }}>
@@ -117,14 +100,4 @@ const StoryList = ({ stories, getStories, pending }) => {
   )
 }
 
-
-const mapStateToProps = ({ stories }) => ({
-  stories: stories.data,
-  pending: stories.pending
-})
-
-const mapDispatchToProps = dispatch => ({
-  getStories: (language) => dispatch(getStoriesAction(language)),
-})
-
-export default connect(mapStateToProps, mapDispatchToProps)(StoryList)
+export default StoryList

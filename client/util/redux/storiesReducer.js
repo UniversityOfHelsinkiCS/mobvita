@@ -9,7 +9,7 @@ export const getStoryAction = (language, storyId) => {
   return callBuilder(route, prefix)
 }
 
-export const getStoriesAction = (language) => {
+export const getStories = (language) => {
   const route = `/stories/${language}`
   const prefix = 'GET_STORIES'
   return callBuilder(route, prefix)
