@@ -15,14 +15,15 @@ const HomeView = ({ stories }) => {
       setRandom(random)
     }
   }, [stories])
+  if (!stories[randomStoryIndex]) return <div>no stories</div>
 
-  return stories[randomStoryIndex] ? (
+  return (
     <Link to={`/stories/${language}/${stories[randomStoryIndex]._id}/snippet`}>
       <Button fluid>
         practice now
       </Button>
-    </Link>) :
-    (<div>no stories</div>)
+    </Link>
+  )
 }
 
 const mapStateToProps = ({ stories }) => ({

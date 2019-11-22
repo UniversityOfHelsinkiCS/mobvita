@@ -16,7 +16,7 @@ export const getStories = (language) => {
 }
 
 export const postStory = (newStory) => {
-  const route = `/stories`
+  const route = '/stories'
   const prefix = 'POST_NEW_STORY'
   return callBuilder(route, prefix, 'post', newStory)
 }

@@ -9,6 +9,7 @@
       "error",
       "never"
     ],
+    "no-underscore-dangle": "off",
     "max-len": [1, 200],
     "no-shadow": 0,
     "no-plusplus": 0,
