@@ -39,7 +39,7 @@ const SingleStoryView = ({ match }) => {
         <Link to={`/stories/${language}`}>Back to story list</Link>
         <Header>
           {story.title}
-          <Link to={`/stories/${language}/${id}/snippet`}>
+          <Link to={`/stories/${language}/${id}/practice`}>
             <Button style={{ minWidth: '8em', margin: '0.5em', float: 'right', display: 'flex' }} primary>
               practice this story
             </Button>

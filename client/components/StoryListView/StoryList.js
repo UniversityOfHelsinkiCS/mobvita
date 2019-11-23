@@ -85,9 +85,15 @@ const StoryList = () => {
                   </Button>
                 </Link>
                 {' '}
-                <Link to={`/stories/${language}/${story._id}/snippet`}>
+                <Link to={`/stories/${language}/${story._id}/practice`}>
                   <Button size="tiny" primary>
                     Practice
+                  </Button>
+                </Link>
+                {' '}
+                <Link to={`/stories/${language}/${story._id}/compete`}>
+                  <Button size="tiny" primary>
+                    Compete
                   </Button>
                 </Link>
               </div>

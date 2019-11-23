@@ -1,7 +1,7 @@
 import React, { createRef } from 'react'
 import { Input, Icon } from 'semantic-ui-react'
 
-const ExerciseHearing = (({ word, handleClick, handleChange }) => {
+const ExerciseHearing = (({ word, handleClick, handleChange, value }) => {
   const inputRef = createRef()
 
   const clickHandler = (word) => {
@@ -16,6 +16,7 @@ const ExerciseHearing = (({ word, handleClick, handleChange }) => {
       ref={inputRef}
       key={word.ID}
       onChange={e => handleChange(e, word)}
+      value={value}
       icon={<Icon name="volume up" link onClick={() => clickHandler(word.surface)} />}
       transparent
       style={{

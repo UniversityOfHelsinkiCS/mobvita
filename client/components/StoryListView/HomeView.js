@@ -19,7 +19,7 @@ const HomeView = () => {
   if (!stories[randomStoryIndex]) return <FormattedMessage id="NO_STORIES" />
 
   return (
-    <Link to={`/stories/${language}/${stories[randomStoryIndex]._id}/snippet`}>
+    <Link to={`/stories/${language}/${stories[randomStoryIndex]._id}/practice`}>
       <Button fluid>
         <FormattedMessage id="PRACTICE_NOW" />
       </Button>

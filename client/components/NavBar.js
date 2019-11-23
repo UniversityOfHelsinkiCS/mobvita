@@ -28,7 +28,11 @@ export default () => {
       <Menu.Menu position="right">
         <Dropdown item text={intl.formatMessage({ id: 'LANGUAGE' })}>
           <Dropdown.Menu>
-            {localeOptions.map(locale => <Dropdown.Item key={locale.code} onClick={chooseLanguage(locale.code)}>{locale.name}</Dropdown.Item>)}
+            {localeOptions.map(locale => (
+              <Dropdown.Item key={locale.code} onClick={chooseLanguage(locale.code)}>
+                {locale.name}
+              </Dropdown.Item>)
+            )}
           </Dropdown.Menu>
         </Dropdown>
 

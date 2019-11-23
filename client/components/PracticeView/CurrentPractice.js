@@ -19,9 +19,6 @@ const CurrentPractice = ({ storyId }) => {
   const [attempt, setAttempts] = useState(0)
   const [language, setLanguage] = useState('')
 
-  // Data about previously submitted snippet:
-  const [previousAnswers, setPreviousAnswers] = useState({})
-
   const dispatch = useDispatch()
 
   const { snippets, locale } = useSelector(({ snippets, locale }) => ({ snippets, locale }))
@@ -32,6 +29,12 @@ const CurrentPractice = ({ storyId }) => {
     dispatch(getCurrentSnippet(storyId))
     dispatch(clearTranslationAction())
   }, [])
+
+  const setInitialAnswers = () => {
+    console.log('Setting initial')
+  }
+
+  useEffect(setInitialAnswers, [snippets.focused])
 
   useEffect(() => {
     // has to be done since answers don't include data on
@@ -132,6 +135,8 @@ const CurrentPractice = ({ storyId }) => {
         </span>
       )
     }
+    const usersAnswer = answers[word.ID]
+
     if (word.listen) {
       if (!audio.includes(word.ID.toString())) {
         audio.push(word.ID.toString())
@@ -141,6 +146,7 @@ const CurrentPractice = ({ storyId }) => {
           tabIndex={word.ID}
           handleChange={handleAnswerChange}
           handleClick={textToSpeech}
+          value={usersAnswer}
           key={word.ID}
           word={word}
         />
@@ -167,6 +173,7 @@ const CurrentPractice = ({ storyId }) => {
           tabIndex={word.ID}
           handleChange={handleMultiselectChange}
           key={word.ID}
+          value={usersAnswer}
           word={word}
         />
       )
@@ -177,14 +184,13 @@ const CurrentPractice = ({ storyId }) => {
         handleChange={handleAnswerChange}
         handleClick={textToSpeech}
         key={word.ID}
+        value={usersAnswer}
         word={word}
       />
     )
   }
 
   const continueToNextSnippet = () => {
-    setPreviousAnswers(answers)
-
     setAnswers({})
     setOptions({})
     setTouched(0)

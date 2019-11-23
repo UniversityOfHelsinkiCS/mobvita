@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react'
 
 import { Input, Icon } from 'semantic-ui-react'
 
-const ExerciseCloze = ({ word, handleChange, handleClick }) => {
+const ExerciseCloze = ({ word, handleChange, handleClick, value }) => {
   const [color, setColor] = useState('lightyellow')
   const [touched, setTouched] = useState(false)
   const [disabled, setDisabled] = useState(false)
@@ -35,6 +35,7 @@ const ExerciseCloze = ({ word, handleChange, handleClick }) => {
       key={word.ID}
       icon={<Icon name="volume up" link onClick={clickVolume} />}
       placeholder={`${word.base || word.bases}`}
+      value={value}
       defaultValue={`${word.base || word.bases}`}
       onChange={changeValue}
       transparent

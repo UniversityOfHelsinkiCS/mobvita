@@ -1,7 +1,7 @@
 import React from 'react'
 import { Dropdown } from 'semantic-ui-react'
 
-const ExerciseMultipleChoice = ({ word, handleChange }) => {
+const ExerciseMultipleChoice = ({ word, handleChange, value }) => {
   const maximumLength = word.choices.reduce((maxLength, currLength) => {
     if (currLength.length > maxLength) return currLength.length
     return maxLength
@@ -22,6 +22,7 @@ const ExerciseMultipleChoice = ({ word, handleChange }) => {
       key={word.ID}
       options={options}
       placeholder={placeholder}
+      value={value}
       onChange={(e, data) => handleChange(e, word, data)}
       selection
       style={{ minWidth: `${maximumLength}em`, width: `${maximumLength}em`, height:'1em', backgroundColor:'LightCyan'}}
