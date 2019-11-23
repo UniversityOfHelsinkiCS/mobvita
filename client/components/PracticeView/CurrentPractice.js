@@ -35,18 +35,18 @@ const CurrentPractice = ({ storyId }) => {
       const filteredSnippet = snippets.focused.practice_snippet.filter(word => word.id)
       const initialAnswers = filteredSnippet.reduce((answerObject, currentWord) => {
         const { surface, id, ID, base, bases, listen, choices } = currentWord
-        if (answers[ID]) return answers
+        if (answers[ID]) return { ...answerObject, [ID]: answers[ID] }
         const newAnswerObject = {
           ...answerObject,
           [ID]: {
             correct: surface,
-            users_answer: (listen || choices) ? '____' : (base || bases),
+            users_answer: (listen || choices) ? '' : (base || bases),
             id,
           }
         }
         return newAnswerObject
-      }, answers)
-      setAnswers(initialAnswers)
+      }, {})
+      if (Object.keys(initialAnswers).length > 0) setAnswers(initialAnswers)
     }
   }
 
@@ -142,8 +142,8 @@ const CurrentPractice = ({ storyId }) => {
     setAnswers(newAnswers)
   }
 
-
   const wordInput = (word) => {
+
     if (!word.id && !word.lemmas) return word.surface
     if (!word.id) {
       return (
@@ -159,6 +159,7 @@ const CurrentPractice = ({ storyId }) => {
         </span>
       )
     }
+
     const usersAnswer = answers[word.ID] ? answers[word.ID].users_answer : ''
 
     if (word.listen) {
