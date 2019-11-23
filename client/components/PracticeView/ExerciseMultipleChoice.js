@@ -16,13 +16,13 @@ const ExerciseMultipleChoice = ({ word, handleChange, value }) => {
   })
 
   const placeholder = '_'.repeat(maximumLength)
-
+  
   return (
     <Dropdown
       key={word.ID}
       options={options}
       placeholder={placeholder}
-      // value={value}
+      value={value}
       onChange={(e, data) => handleChange(e, word, data)}
       selection
       style={{ minWidth: `${maximumLength}em`, width: `${maximumLength}em`, height:'1em', backgroundColor:'LightCyan'}}

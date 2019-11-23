@@ -31,7 +31,23 @@ const CurrentPractice = ({ storyId }) => {
   }, [])
 
   const setInitialAnswers = () => {
-    console.log('Setting initial')
+    if (snippets.focused) {
+      const filteredSnippet = snippets.focused.practice_snippet.filter(word => word.id)
+      const initialAnswers = filteredSnippet.reduce((answerObject, currentWord) => {
+        const { surface, id, ID, base, bases, listen, choices } = currentWord
+        if (answers[ID]) return answers
+        const newAnswerObject = {
+          ...answerObject,
+          [ID]: {
+            correct: surface,
+            users_answer: (listen || choices) ? '____' : (base || bases),
+            id,
+          }
+        }
+        return newAnswerObject
+      }, answers)
+      setAnswers(initialAnswers)
+    }
   }
 
   useEffect(setInitialAnswers, [snippets.focused])
@@ -67,8 +83,8 @@ const CurrentPractice = ({ storyId }) => {
       starttime,
       story_id: storyId,
       snippet_id: [snippetid[0]],
-      touched,
-      untouched: getExerciseCount() - touched,
+      touched: getExerciseCount(),
+      untouched: 0,
       attempt,
       options,
       audio,
@@ -111,11 +127,19 @@ const CurrentPractice = ({ storyId }) => {
     const { id, ID, surface } = word
     const { value } = data
 
-    answers[ID] = {
-      correct: surface,
-      users_answer: value,
-      id,
+    if (!answers[ID]) {
+      setTouched(touched + 1)
     }
+
+    const newAnswers = {
+      ...answers,
+      [ID]: {
+        correct: surface,
+        users_answer: value,
+        id,
+      },
+    }
+    setAnswers(newAnswers)
   }
 
 
@@ -135,7 +159,7 @@ const CurrentPractice = ({ storyId }) => {
         </span>
       )
     }
-    const usersAnswer = answers[word.ID]
+    const usersAnswer = answers[word.ID] ? answers[word.ID].users_answer : ''
 
     if (word.listen) {
       if (!audio.includes(word.ID.toString())) {
