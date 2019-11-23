@@ -35,8 +35,7 @@ const ExerciseCloze = ({ word, handleChange, handleClick, value }) => {
       key={word.ID}
       icon={<Icon name="volume up" link onClick={clickVolume} />}
       placeholder={`${word.base || word.bases}`}
-      // value={value}
-      defaultValue={`${word.base || word.bases}`}
+      value={value}
       onChange={changeValue}
       transparent
       style={{

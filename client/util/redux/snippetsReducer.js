@@ -20,10 +20,12 @@ export const resetCurrentSnippet = (storyId) => {
   return callBuilder(route, prefix, 'post')
 }
 
-export const postAnswers = (storyId, answersObject) => {
+export const postAnswers = (storyId, answersObject, compete = false) => {
+  const payload = answersObject
+  payload.compete = compete
   const route = `/snippets/story/${storyId}/answer`
   const prefix = 'GET_SNIPPET_ANSWERS'
-  return callBuilder(route, prefix, 'post', answersObject)
+  return callBuilder(route, prefix, 'post', payload)
 }
 
 // Reducer

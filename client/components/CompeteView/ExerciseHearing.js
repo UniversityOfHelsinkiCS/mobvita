@@ -16,7 +16,7 @@ const ExerciseHearing = (({ word, handleClick, handleChange, value }) => {
       ref={inputRef}
       key={word.ID}
       onChange={e => handleChange(e, word)}
-      // value={value}
+      value={value}
       icon={<Icon name="volume up" link onClick={() => clickHandler(word.surface)} />}
       transparent
       style={{
