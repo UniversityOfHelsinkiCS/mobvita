@@ -21,9 +21,9 @@ const ExerciseCloze = ({ word, handleChange, handleClick, value }) => {
   useEffect(() => {
     if (tested) {
       if (isWrong) {
-        setColor('red')
+        setColor('firebrick')
       } else {
-        setColor('green')
+        setColor('yellowgreen')
         setDisabled(true)
       }
     }

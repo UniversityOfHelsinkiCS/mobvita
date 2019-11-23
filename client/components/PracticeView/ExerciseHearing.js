@@ -1,8 +1,21 @@
-import React, { createRef } from 'react'
+import React, { createRef, useState, useEffect } from 'react'
 import { Input, Icon } from 'semantic-ui-react'
 
 const ExerciseHearing = (({ word, handleClick, handleChange, value }) => {
+  const [color, setColor] = useState('lightblue')
   const inputRef = createRef()
+
+  const { isWrong, tested } = word
+
+  useEffect(() => {
+    if (tested) {
+      if (isWrong) {
+        setColor('firebrick')
+      } else {
+        setColor('yellowgreen')
+      }
+    }
+  }, [tested])
 
   const clickHandler = (word) => {
     handleClick(word, '')
@@ -23,8 +36,8 @@ const ExerciseHearing = (({ word, handleClick, handleChange, value }) => {
         minWidth: `${placeholder.length}em`,
         width: `${Math.floor(word.surface.length)}em`,
         height: '20px',
-        backgroundColor: 'lightblue',
-        borderRadius: '10px'
+        backgroundColor: color,
+        borderRadius: '10px',
       }}
     />
   )
