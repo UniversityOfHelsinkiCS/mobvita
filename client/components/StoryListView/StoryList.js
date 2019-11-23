@@ -53,16 +53,12 @@ const StoryList = () => {
 
   const sortedStories = sortBy(stories, [(story) => {
     if (sorter === 'difficulty') {
-      switch (story.difficulty) {
-        case 'high':
-          return 3
-        case 'average':
-          return 2
-        case 'low':
-          return 1
-        default:
-          return 4
+      const array = {
+        low: 1,
+        average: 2,
+        high: 3,
       }
+      return array[story.difficulty] || 4
     }
     return story[sorter]
   }])
