@@ -75,8 +75,9 @@ const OpponentProgress = () => {
   const status = percentToStatus()
   return (
     <>
-      <span>{status.text}</span>
-      <Progress color={status.color} percent={percent} style={{ marginTop: '0px' }} />
+      <Progress color={status.color} percent={percent} style={{ marginTop: '0px' }}>
+        <span>{status.text}</span>
+      </Progress>
     </>
   )
 }
