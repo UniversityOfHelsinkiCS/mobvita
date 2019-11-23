@@ -2,24 +2,31 @@ import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { Link } from 'react-router-dom'
 import {
-  Button, Placeholder, Header, Card, Icon, Dropdown,
+  Button, Placeholder, Header, Card, Icon, Dropdown, Segment
 } from 'semantic-ui-react'
 import { sortBy } from 'lodash'
 
 import { getStories } from 'Utilities/redux/storiesReducer'
+import { FormattedMessage } from 'react-intl'
 
-const StoryList = () => {
-  const [language, setLanguage] = useState('')
+const StoryList = ({ match }) => {
+  console.log(match)
+  const { language } = match.params
   const [sorter, setSorter] = useState('date')
+  const [page, setPage] = useState(0)
   const dispatch = useDispatch()
   const { stories, pending } = useSelector(({ stories }) => ({ stories: stories.data, pending: stories.pending }))
+
   useEffect(() => {
-    const currentLanguage = window.location.pathname.split('/')[2]
-    if (stories.length === 0 || currentLanguage !== language) {
-      dispatch(getStories(currentLanguage))
-      setLanguage(currentLanguage)
-    }
-  }, [])
+    dispatch(getStories(language, {
+      sort_by: sorter,
+      order: 1, // or -1
+      page,
+      page_size: 15,
+    }))
+  }, [page])
+
+  const adjustPage = direction => () => setPage(page + direction)
 
   if (stories.length === 0 || pending) {
     return (
@@ -57,6 +64,9 @@ const StoryList = () => {
     }
     return story[sorter]
   }])
+
+  const prevPageDisabled = false
+  const nextPageDisabled = false
 
   return (
     <Card.Group>
@@ -101,6 +111,11 @@ const StoryList = () => {
           </Card>
         )
       })}
+      <Button.Group size="large">
+        <Button disabled={prevPageDisabled} onClick={adjustPage(-1)}><FormattedMessage id="PREV" /></Button>
+        <Button.Or text={page} />
+        <Button disabled={nextPageDisabled} onClick={adjustPage(1)}><FormattedMessage id="NEXT" /></Button>
+      </Button.Group>
     </Card.Group>
   )
 }

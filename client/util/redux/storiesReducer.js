@@ -9,8 +9,9 @@ export const getStoryAction = (language, storyId) => {
   return callBuilder(route, prefix)
 }
 
-export const getStories = (language) => {
-  const route = `/stories/${language}`
+export const getStories = (language, query = { page: 0, page_size: 10 }) => {
+  const queryString = Object.keys(query).map(key => `${key}=${query[key]}`).join('&')
+  const route = `/stories/${language}?${queryString}`
   const prefix = 'GET_STORIES'
   return callBuilder(route, prefix)
 }
@@ -29,18 +30,19 @@ export default (state = { data: [], pending: false, error: false }, action) => {
       return {
         ...state,
         pending: true,
-        error: false
+        error: false,
       }
     case 'GET_STORIES_FAILURE':
       return {
         ...state,
         pending: false,
-        error: true
+        error: true,
       }
     case 'GET_STORIES_SUCCESS':
       return {
         ...state,
-        data: action.response,
+        data: action.response.stories,
+        totalNum: action.response.total_num,
         pending: false,
         error: false,
       }
@@ -48,13 +50,13 @@ export default (state = { data: [], pending: false, error: false }, action) => {
       return {
         ...state,
         pending: true,
-        error: false
+        error: false,
       }
     case 'GET_STORY_FAILURE':
       return {
         ...state,
         pending: false,
-        error: true
+        error: true,
       }
     case 'GET_STORY_SUCCESS':
       return {
@@ -67,19 +69,19 @@ export default (state = { data: [], pending: false, error: false }, action) => {
       return {
         ...state,
         pending: true,
-        error: false
+        error: false,
       }
     case 'POST_NEW_STORY_FAILURE':
       return {
         ...state,
         pending: false,
-        error: true
+        error: true,
       }
     case 'POST_NEW_STORY_SUCCESS':
       return {
         ...state,
         pending: false,
-        error: false
+        error: false,
       }
     default:
       return state

@@ -5,7 +5,7 @@ import HomeView from 'Components/StoryListView/HomeView'
 import StoryAddition from 'Components/StoryAddition'
 import { useIntl } from 'react-intl'
 
-const Tabs = () => {
+const Tabs = ({ match }) => {
   const intl = useIntl()
   const panes = [
     {
@@ -14,7 +14,7 @@ const Tabs = () => {
     },
     {
       menuItem: intl.formatMessage({ id: 'LIBRARY' }),
-      render: () => <Tab.Pane><StoryList /></Tab.Pane>,
+      render: () => <Tab.Pane><StoryList match={match} /></Tab.Pane>,
     },
   ]
 
