@@ -16,7 +16,7 @@ export default () => {
 
   const chooseLanguage = code => () => dispatch(setLocale(code))
   return (
-    <Menu>
+    <Menu inverted style={{ borderRadius: '0'}}>
       <Menu.Item
         as={Link}
         to="/"
@@ -38,7 +38,7 @@ export default () => {
 
         <Menu.Item>
           {user && (
-            <Button primary onClick={signOut}>
+            <Button inverted color="white" onClick={signOut}>
               <FormattedMessage id="SIGNOUT" />
             </Button>
           )}
