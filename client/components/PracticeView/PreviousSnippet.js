@@ -5,19 +5,16 @@ const PreviousSnippet = ({ snippet }) => {
 
   if (!snippet) return null
 
-  const solutionWord = (word) => {
-    const { surface, isWrong } = word
-    if (isWrong) {
-      return <span style={{ color: 'firebrick' }}>{surface}</span>
-    }
-    return <span>{surface}</span>
-  }
-
   const { practice_snippet: practices } = snippet
 
   return (
     <Segment>
-      {practices.map(word => solutionWord(word))}
+      {practices.map((word) => {
+        const { surface, isWrong, _id: id } = word
+        if (!isWrong) return <span key={id}>{surface}</span>
+
+        return <span key={id} style={{ color: 'firebrick' }}>{surface}</span>
+      })}
     </Segment>
   )
 }
