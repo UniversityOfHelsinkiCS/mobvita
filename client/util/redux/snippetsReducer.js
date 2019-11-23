@@ -68,6 +68,12 @@ export default (state = { data: [] }, action) => {
         ...state,
         totalnum: action.data,
       }
+    case 'GET_STORY_ATTEMPT':
+      return {
+        ...state,
+        focused: undefined,
+        previous: undefined,
+      }
     default:
       return state
   }
