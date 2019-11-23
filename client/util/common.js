@@ -16,7 +16,7 @@ export const capitalize = (word)=> {
 export const supportedLearningLanguages = [
   'finnish', 'german', 'russian', 'kazakh', 'catalan', 'spanish', 'swedish',
   'portuguese', 'erzya', 'komi-zyrian', 'meadow-mari', 'north-saami', 'sakha', 'tatar', 'udmurt',
-]
+].sort((a, b) => a.localeCompare(b))
 
 
 export const colors = {

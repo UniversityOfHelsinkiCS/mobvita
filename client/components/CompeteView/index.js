@@ -1,33 +1,38 @@
 import React, { useEffect, useState } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import { Link } from 'react-router-dom'
-import CurrentSnippet from 'Components/CompeteView/CurrentSnippet'
 import { Divider, Header } from 'semantic-ui-react'
+import { getOpponent, competitionStartNow } from 'Utilities/redux/competitionReducer'
+import { clearTranslationAction } from 'Utilities/redux/translationReducer'
+import { resetCurrentSnippet } from 'Utilities/redux/snippetsReducer'
 
 import { getStoryAction } from 'Utilities/redux/storiesReducer'
-import { getOpponent, competitionStartNow } from 'Utilities/redux/competitionReducer'
+import PreviousSnippet from 'Components/CompeteView/PreviousSnippet'
+import CurrentSnippet from 'Components/CompeteView/CurrentSnippet'
+import End from 'Components/CompeteView/End'
 
 import DictionaryHelp from 'Components/DictionaryHelp'
 
 const CompeteView = ({ match }) => {
-  const [language, setLanguage] = useState('')
+  const { language } = match.params
   const dispatch = useDispatch()
   const storyId = match.params.id
-  const { story, startTime } = useSelector(({ stories, compete }) => ({ story: stories.focused, startTime: compete.startTime }))
-  useEffect(() => {
-    const currentLanguage = window.location.pathname.split('/')[2]
-    setLanguage(currentLanguage)
-    dispatch(getStoryAction(currentLanguage, storyId))
-  }, [])
+  const { story, startTime, snippets } = useSelector(({ stories, compete, snippets }) => ({ snippets, story: stories.focused, startTime: compete.startTime }))
 
   const initializeCompetition = async () => {
-    await dispatch(getOpponent(storyId))
+    await Promise.all([
+      dispatch(getStoryAction(language, storyId)),
+      dispatch(resetCurrentSnippet(storyId)),
+      dispatch(clearTranslationAction()),
+      dispatch(getOpponent(storyId)),
+    ])
     await dispatch(competitionStartNow())
   }
 
   useEffect(() => { initializeCompetition() }, [])
+  if (!story || !startTime || !snippets.focused) return null
 
-  if (!story || !startTime) return null
+  const currentSnippetNumber = snippets.focused.snippetid[0] + 1
 
   return (
     <div style={{ paddingTop: '1em' }}>
@@ -35,7 +40,14 @@ const CompeteView = ({ match }) => {
       <Header>{story.title}</Header>
       {story.url ? <a href={story.url}>Link to the source</a> : null}
       <Divider />
-      <CurrentSnippet storyId={match.params.id} />
+      <h1>
+        {`${currentSnippetNumber}/${snippets.totalnum}`}
+      </h1>
+      <PreviousSnippet snippet={snippets.previous} />
+      {snippets.previous && currentSnippetNumber === 1 ?
+        <End /> :
+        <CurrentSnippet storyId={match.params.id} />
+      }
       <DictionaryHelp />
     </div>
   )

@@ -1,34 +1,25 @@
 import React, { useState, useEffect } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import { Segment, Button } from 'semantic-ui-react'
-import { getCurrentSnippet, postAnswers, setTotalNumberAction, resetCurrentSnippet } from 'Utilities/redux/snippetsReducer'
-import { getTranslationAction, clearTranslationAction } from 'Utilities/redux/translationReducer'
+import { getCurrentSnippet, postAnswers, setTotalNumberAction } from 'Utilities/redux/snippetsReducer'
+import { getTranslationAction } from 'Utilities/redux/translationReducer'
 import { capitalize, localeOptions } from 'Utilities/common'
 
-import PreviousSnippet from 'Components/CompeteView/PreviousSnippet'
 import ExerciseCloze from 'Components/CompeteView/ExerciseCloze'
 import ExerciseMultipleChoice from 'Components/CompeteView/ExerciseMultipleChoice'
 import ExerciseHearing from 'Components/CompeteView/ExerciseHearing'
 import OpponentProgress from 'Components/CompeteView/OpponentProgress'
 
-const CurrentPractice = ({ storyId }) => {
+const CurrentPractice = ({ storyId, language }) => {
   const [answers, setAnswers] = useState({})
   const [options, setOptions] = useState({})
   const [audio, setAudio] = useState([])
   const [touched, setTouched] = useState(0)
   const [attempt, setAttempts] = useState(0)
-  const [language, setLanguage] = useState('')
 
   const dispatch = useDispatch()
 
   const { snippets, locale } = useSelector(({ snippets, locale }) => ({ snippets, locale }))
-
-  useEffect(() => {
-    const currentLanguage = window.location.pathname.split('/')[2]
-    setLanguage(currentLanguage)
-    dispatch(resetCurrentSnippet(storyId))
-    dispatch(clearTranslationAction())
-  }, [])
 
   const setInitialAnswers = () => {
     if (snippets.focused) {
@@ -75,6 +66,13 @@ const CurrentPractice = ({ storyId }) => {
     return count
   }
 
+  const continueToNextSnippet = () => {
+    setAnswers({})
+    setOptions({})
+    setTouched(0)
+    setAttempts(0)
+    dispatch(getCurrentSnippet(storyId))
+  }
 
   const checkAnswers = async () => {
     const { starttime, snippetid } = snippets.focused
@@ -91,10 +89,9 @@ const CurrentPractice = ({ storyId }) => {
       answers,
     }
 
-    console.log(answersObj)
-
     setAttempts(attempt + 1)
-    dispatch(postAnswers(storyId, answersObj, true))
+    await dispatch(postAnswers(storyId, answersObj, true))
+    continueToNextSnippet()
   }
 
   const textToSpeech = (surfaceWord, wordLemmas) => {
@@ -214,33 +211,18 @@ const CurrentPractice = ({ storyId }) => {
     )
   }
 
-  const continueToNextSnippet = () => {
-    setAnswers({})
-    setOptions({})
-    setTouched(0)
-    setAttempts(0)
-    dispatch(getCurrentSnippet(storyId))
-  }
-
   if (!snippets.focused || snippets.pending) return null
 
   const { practice_snippet: practice } = snippets.focused
   return (
     <>
-      <h1>
-        {`${snippets.focused.snippetid[0] + 1}/${snippets.totalnum}`}
-      </h1>
-      <PreviousSnippet snippet={snippets.previous} />
 
       <Segment style={{ marginBottom: '5px' }}>
         {practice.map(exercise => wordInput(exercise))}
       </Segment>
       <OpponentProgress />
 
-      {getExerciseCount() === 0
-        ? <Button fluid onClick={continueToNextSnippet}>Continue to next snippet</Button>
-        : <Button fluid onClick={checkAnswers}>Check answers </Button>
-      }
+      <Button fluid onClick={checkAnswers}>Continue to next snippet </Button>
     </>
   )
 }
