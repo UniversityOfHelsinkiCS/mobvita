@@ -21,6 +21,7 @@ const ExerciseMultipleChoice = ({ word, handleChange, value }) => {
   }, 0)
 
   const options = word.choices.map((choice) => {
+    console.log(choice)
     return {
       key: `${word.ID}_${choice}`,
       value: choice,

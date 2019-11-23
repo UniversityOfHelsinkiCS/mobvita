@@ -5,6 +5,7 @@
 
 .content {
   padding: 10px;
+  padding-bottom: 5em;
   min-height: calc(100vh - 10em);
   display: flex;
   flex-direction: column;

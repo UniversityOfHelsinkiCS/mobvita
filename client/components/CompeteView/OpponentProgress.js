@@ -3,29 +3,17 @@ import { useSelector } from 'react-redux'
 import { Progress } from 'semantic-ui-react'
 
 const OpponentProgress = () => {
-  const [startingTime, setStartingTime] = useState(undefined)
   const [timeNow, setTimeNow] = useState(0)
+
   const { compete, snippetNumber } = useSelector(({ compete, snippets }) => {
     const snippetNumber = snippets.focused.snippetid[0]
     return { compete, snippetNumber }
   })
 
-  const initialize = () => {
-    const time = (new Date()).getTime()
-    setStartingTime(time)
-  }
-
-  const updateTime = () => {
-    if (!startingTime) return
-
-    const acualTime = (new Date()).getTime()
-    const difference = acualTime - startingTime
-    setTimeNow(difference / 1000)
-    setTimeout(updateTime, 1000)
-  }
-
-  useEffect(() => { initialize() }, [])
-  useEffect(() => { updateTime() }, [startingTime])
+  useEffect(() => {
+    const interval = setInterval(() => setTimeNow((new Date()).getTime()), 1000)
+    return () => { clearInterval(interval) }
+  }, [])
 
   const theTimeWhenTheOpponentCompletedThisSnippet = Object.values(compete.snippetCompleteTime).reduce((acc, cur, idx) => {
     if (idx > snippetNumber) return acc
@@ -44,8 +32,7 @@ const OpponentProgress = () => {
     const opponentTimeOnThisSnippet = compete.snippetCompleteTime[snippetNumber]
     const opponentStartedThisSnippet = theTimeWhenTheOpponentCompletedThisSnippet - opponentTimeOnThisSnippet
 
-    const acualTimeNow = (new Date()).getTime()
-    const timeSpentOnCompetition = (acualTimeNow - compete.startTime) / 1000
+    const timeSpentOnCompetition = (timeNow - compete.startTime) / 1000
     const status = timeSpentOnCompetition - opponentStartedThisSnippet
 
     return (status / opponentTimeOnThisSnippet) * 100

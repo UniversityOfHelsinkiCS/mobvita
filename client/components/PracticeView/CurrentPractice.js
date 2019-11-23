@@ -178,21 +178,6 @@ const CurrentPractice = ({ storyId }) => {
       )
     }
     if (word.choices) {
-      const { ID, choices, surface, id } = word
-      options[ID] = choices
-
-      if (!answers[ID]) { // Backend requires empty answer for multiple choice.
-        const modAnswer = {
-          ...answers,
-          [ID]: {
-            correct: surface,
-            users_answer: "___",
-            id,
-          },
-        }
-        setAnswers(modAnswer)
-      }
-
       return (
         <ExerciseMultipleChoice
           tabIndex={word.ID}

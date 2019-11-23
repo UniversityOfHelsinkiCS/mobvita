@@ -31,8 +31,8 @@ export default () => {
             {localeOptions.map(locale => (
               <Dropdown.Item key={locale.code} onClick={chooseLanguage(locale.code)}>
                 {locale.name}
-              </Dropdown.Item>)
-            )}
+              </Dropdown.Item>
+            ))}
           </Dropdown.Menu>
         </Dropdown>
 
