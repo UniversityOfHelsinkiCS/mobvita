@@ -40,13 +40,13 @@ const CurrentPractice = ({ storyId }) => {
           ...answerObject,
           [ID]: {
             correct: surface,
-            users_answer: (listen || choices) ? '____' : (base || bases),
+            users_answer: (listen || choices) ? '' : (base || bases),
             id,
           }
         }
         return newAnswerObject
       }, {})
-      setAnswers(initialAnswers)
+      if (Object.keys(initialAnswers).length > 0) setAnswers(initialAnswers)
     }
   }
 
@@ -142,8 +142,8 @@ const CurrentPractice = ({ storyId }) => {
     setAnswers(newAnswers)
   }
 
-
   const wordInput = (word) => {
+
     if (!word.id && !word.lemmas) return word.surface
     if (!word.id) {
       return (
@@ -159,6 +159,7 @@ const CurrentPractice = ({ storyId }) => {
         </span>
       )
     }
+
     const usersAnswer = answers[word.ID] ? answers[word.ID].users_answer : ''
 
     if (word.listen) {
