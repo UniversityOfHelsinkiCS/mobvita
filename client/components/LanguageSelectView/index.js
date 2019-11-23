@@ -1,6 +1,6 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
-import { Container, Header, Button } from 'semantic-ui-react'
+import { Container, Header, Button, Segment } from 'semantic-ui-react'
 import { FormattedMessage } from 'react-intl'
 import { capitalize, supportedLearningLanguages } from 'Utilities/common'
 
@@ -10,12 +10,15 @@ const LanguageSelectView = () => {
       <Header as="h2">
         <FormattedMessage id="CHOOSE_LANG" />
       </Header>
-
-      {supportedLearningLanguages.map(lang => (
-        <Link key={lang} to={`/stories/${lang}`}>
-          <Button style={{ minWidth: '8em', margin: '0.5em' }} primary>{capitalize(lang)}</Button>
-        </Link>
-      ))}
+      <Segment style={{ display: 'flex', flexWrap: 'wrap', maxWidth: '40em', margin: 'auto', justifyContent: 'center' }}>
+        {supportedLearningLanguages.map(lang => (
+          <Link key={lang} to={`/stories/${lang}`}>
+            <Button primary style={{ display: 'flex', flexDirection: 'column', margin: '1em', alignItems: 'center' }}>
+              {capitalize(lang)}
+            </Button>
+          </Link>
+        ))}
+      </Segment>
     </Container>
   )
 }
