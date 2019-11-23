@@ -10,7 +10,6 @@ import { getStories } from 'Utilities/redux/storiesReducer'
 import { FormattedMessage } from 'react-intl'
 
 const StoryList = ({ match }) => {
-  console.log(match)
   const { language } = match.params
   const [sorter, setSorter] = useState('date')
   const [page, setPage] = useState(0)

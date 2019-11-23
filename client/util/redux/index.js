@@ -5,6 +5,7 @@ import snippets from './snippetsReducer'
 import translation from './translationReducer'
 import locale from './localeReducer'
 import user from './userReducer'
+import compete from './competitionReducer'
 
 export default combineReducers({
   stories,
@@ -12,4 +13,5 @@ export default combineReducers({
   translation,
   user,
   locale,
+  compete,
 })

@@ -1,15 +1,15 @@
 import React, { useState, useEffect } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import { Segment, Button } from 'semantic-ui-react'
-import { getCurrentSnippet, postAnswers, setTotalNumberAction } from 'Utilities/redux/snippetsReducer'
+import { getCurrentSnippet, postAnswers, setTotalNumberAction, resetCurrentSnippet } from 'Utilities/redux/snippetsReducer'
 import { getTranslationAction, clearTranslationAction } from 'Utilities/redux/translationReducer'
 import { capitalize, localeOptions } from 'Utilities/common'
 
-import PreviousSnippet from 'Components/PracticeView/PreviousSnippet'
-import ResetButton from 'Components/PracticeView/ResetButton'
-import ExerciseCloze from 'Components/PracticeView/ExerciseCloze'
-import ExerciseMultipleChoice from 'Components/PracticeView/ExerciseMultipleChoice'
-import ExerciseHearing from 'Components/PracticeView/ExerciseHearing'
+import PreviousSnippet from 'Components/CompeteView/PreviousSnippet'
+import ExerciseCloze from 'Components/CompeteView/ExerciseCloze'
+import ExerciseMultipleChoice from 'Components/CompeteView/ExerciseMultipleChoice'
+import ExerciseHearing from 'Components/CompeteView/ExerciseHearing'
+import OpponentProgress from 'Components/CompeteView/OpponentProgress'
 
 const CurrentPractice = ({ storyId }) => {
   const [answers, setAnswers] = useState({})
@@ -26,12 +26,28 @@ const CurrentPractice = ({ storyId }) => {
   useEffect(() => {
     const currentLanguage = window.location.pathname.split('/')[2]
     setLanguage(currentLanguage)
-    dispatch(getCurrentSnippet(storyId))
+    dispatch(resetCurrentSnippet(storyId))
     dispatch(clearTranslationAction())
   }, [])
 
   const setInitialAnswers = () => {
-    console.log('Setting initial')
+    if (snippets.focused) {
+      const filteredSnippet = snippets.focused.practice_snippet.filter(word => word.id)
+      const initialAnswers = filteredSnippet.reduce((answerObject, currentWord) => {
+        const { surface, id, ID, base, bases, listen, choices } = currentWord
+        if (answers[ID]) return answers
+        const newAnswerObject = {
+          ...answerObject,
+          [ID]: {
+            correct: surface,
+            users_answer: (listen || choices) ? '____' : (base || bases),
+            id,
+          }
+        }
+        return newAnswerObject
+      }, answers)
+      setAnswers(initialAnswers)
+    }
   }
 
   useEffect(setInitialAnswers, [snippets.focused])
@@ -67,16 +83,18 @@ const CurrentPractice = ({ storyId }) => {
       starttime,
       story_id: storyId,
       snippet_id: [snippetid[0]],
-      touched,
-      untouched: getExerciseCount() - touched,
+      touched: getExerciseCount(),
+      untouched: 0,
       attempt,
       options,
       audio,
       answers,
     }
 
+    console.log(answersObj)
+
     setAttempts(attempt + 1)
-    dispatch(postAnswers(storyId, answersObj))
+    dispatch(postAnswers(storyId, answersObj, true))
   }
 
   const textToSpeech = (surfaceWord, wordLemmas) => {
@@ -109,11 +127,19 @@ const CurrentPractice = ({ storyId }) => {
     const { id, ID, surface } = word
     const { value } = data
 
-    answers[ID] = {
-      correct: surface,
-      users_answer: value,
-      id,
+    if (!answers[ID]) {
+      setTouched(touched + 1)
     }
+
+    const newAnswers = {
+      ...answers,
+      [ID]: {
+        correct: surface,
+        users_answer: value,
+        id,
+      },
+    }
+    setAnswers(newAnswers)
   }
 
 
@@ -133,7 +159,7 @@ const CurrentPractice = ({ storyId }) => {
         </span>
       )
     }
-    const usersAnswer = answers[word.ID]
+    const usersAnswer = answers[word.ID] ? answers[word.ID].users_answer : ''
 
     if (word.listen) {
       if (!audio.includes(word.ID.toString())) {
@@ -203,13 +229,14 @@ const CurrentPractice = ({ storyId }) => {
     <>
       <h1>
         {`${snippets.focused.snippetid[0] + 1}/${snippets.totalnum}`}
-        <ResetButton style={{ float: 'right' }} storyId={storyId} />
       </h1>
       <PreviousSnippet snippet={snippets.previous} />
 
       <Segment style={{ marginBottom: '5px' }}>
         {practice.map(exercise => wordInput(exercise))}
       </Segment>
+      <OpponentProgress />
+
       {getExerciseCount() === 0
         ? <Button fluid onClick={continueToNextSnippet}>Continue to next snippet</Button>
         : <Button fluid onClick={checkAnswers}>Check answers </Button>

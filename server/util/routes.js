@@ -3,6 +3,7 @@ const stories = require('@controllers/storiesController')
 const snippets = require('@controllers/snippetsController')
 const session = require('@controllers/sessionController')
 const translation = require('@controllers/translationController')
+const opponent = require('@controllers/opponentController')
 
 const router = Router()
 
@@ -17,6 +18,8 @@ router.post('/snippets/story/:storyId/reset', snippets.reset)
 router.post('/snippets/story/:storyId/answer', snippets.postAnswers)
 
 router.get('/translation/:locale/:language/:wordLemmas', translation.getTranslation)
+
+router.get('/opponent', opponent.getOpponent)
 
 router.post('/session', session.create)
 
