@@ -39,17 +39,11 @@ const StoryList = () => {
     setSorter(option.value)
   }
 
-  const difficultyStars = (story) => {
-    const icons = {
-      high: <Icon name="circle" size="large" style={{ color: 'red', cursor: 'default', float: 'right' }} />,
-      average: <Icon name="circle" size="large" style={{ color: 'yellow', cursor: 'default', float: 'right' }} />,
-      low: <Icon name="circle" size="large" style={{ color: 'green', cursor: 'default', float: 'right' }} />,
-      default: <Icon name="question" size="large" style={{ color: 'black', cursor: 'default', float: 'right' }} />,
-    }
-
-    const icon = icons[story.difficulty || 'default']
-
-    return icon
+  const icons = {
+    high: <Icon name="circle" size="large" style={{ color: 'red' }} />,
+    average: <Icon name="circle" size="large" style={{ color: 'yellow' }} />,
+    low: <Icon name="circle" size="large" style={{ color: 'green' }} />,
+    default: <Icon name="question" size="large" style={{ color: 'black' }} />,
   }
 
   const sortedStories = sortBy(stories, [(story) => {
@@ -69,28 +63,38 @@ const StoryList = () => {
       <div style={{ margin: '10px', marginLeft: 'auto' }}>
         <Dropdown selection value={sorter} options={sortDropdownOptions} onChange={handleChange} />
       </div>
-      {sortedStories.map(story => (
-        <Card fluid key={story._id} style={{ margin: '2px' }}>
-          <Card.Content extra style={{ padding: '10px' }}>
-            <Header as="h4">{story.title}</Header>
-          </Card.Content>
-          <Card.Content extra>
-            <div>
-              <Link to={`/stories/${language}/${story._id}/`}>
-                <Button size="tiny" primary>
-                  Read
-                </Button>
-              </Link>
-              <Link to={`/stories/${language}/${story._id}/snippet`}>
-                <Button size="tiny" primary>
-                  Practice
-                </Button>
-              </Link>
-              {difficultyStars(story)}
-            </div>
-          </Card.Content>
-        </Card>
-      ))}
+      {sortedStories.map((story) => {
+        const difficultyIcon = icons[story.difficulty || 'default']
+        const difficultyText = story.elo_score
+        return (
+          <Card fluid key={story._id} style={{ marginBottom: '5px', marginTop: '5px' }}>
+            <Card.Content extra style={{ padding: '10px' }}>
+              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'baseline' }}>
+                <Header as="h4">{story.title}</Header>
+                <span style={{ cursor: 'default', display: 'flex' }}>
+                  {difficultyIcon}
+                  {difficultyText}
+                </span>
+              </div>
+            </Card.Content>
+            <Card.Content extra>
+              <div>
+                <Link to={`/stories/${language}/${story._id}/`}>
+                  <Button size="tiny" primary>
+                    Read
+                  </Button>
+                </Link>
+                {' '}
+                <Link to={`/stories/${language}/${story._id}/snippet`}>
+                  <Button size="tiny" primary>
+                    Practice
+                  </Button>
+                </Link>
+              </div>
+            </Card.Content>
+          </Card>
+        )
+      })}
     </Card.Group>
   )
 }
