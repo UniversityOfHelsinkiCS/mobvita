@@ -52,9 +52,31 @@ const OpponentProgress = () => {
   }
 
   const percent = getPercentage()
+
+  const percentToStatus = () => {
+    if (percent > 90) {
+      return {
+        color: 'red',
+        text: 'Your opponent is ahead of you!',
+      }
+    }
+    if (percent < 10) {
+      return {
+        color: 'green',
+        text: 'Your opponent is right behind you!',
+      }
+    }
+    return {
+      color: 'yellow',
+      text: 'Your opponent is almost tied with you!',
+    }
+  }
+
+  const status = percentToStatus()
   return (
     <>
-      <Progress percent={percent} style={{ transfrom: 'rotate(90deg)' }} />
+      <span>{status.text}</span>
+      <Progress color={status.color} percent={percent} style={{ marginTop: '0px' }} />
     </>
   )
 }
