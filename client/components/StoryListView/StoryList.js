@@ -27,13 +27,15 @@ const StoryList = ({ match }) => {
 
   const adjustPage = direction => () => setPage(page + direction)
 
-  if (stories.length === 0 || pending) {
+  if (pending) {
     return (
       <Placeholder>
         <Placeholder.Line />
       </Placeholder>
     )
   }
+
+  if (!stories.length) return <FormattedMessage id="NO_STORIES" />
 
   const sortDropdownOptions = [
     { key: 'date', text: 'Date', value: 'date' },
@@ -54,7 +56,7 @@ const StoryList = ({ match }) => {
 
   const prevPageDisabled = false
   const nextPageDisabled = false
-  console.log(stories.map(story => story.date))
+
   return (
     <Card.Group>
       <div style={{ margin: '10px', marginLeft: 'auto' }}>

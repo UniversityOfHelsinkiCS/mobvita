@@ -1,6 +1,6 @@
 {
   "HELLO": "Hei",
-  "CHOOSE_LANG": "Mikä kieli?",
+  "CHOOSE_LANG": "Valitse kieli jota haluat oppia",
   "HOME": "Koti",
   "LIBRARY": "Kirjasto",
   "SIGNOUT": "Kirjaudu ulos",
@@ -10,7 +10,7 @@
   "CONFIRM": "Valmis",
   "LANGUAGE": "Language",
   "PRACTICE_NOW": "Harjoittele nyt",
-  "NO_STORIES": "Ei tarinoita kielelle",
+  "NO_STORIES": "Ei tarinoita kielelle, lisää itse omat tarinasi!",
   "PREV": "Edellinen",
   "NEXT": "Seuraava"
 }
