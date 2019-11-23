@@ -1,5 +1,7 @@
-import React from 'react'
+import React, { useEffect } from 'react'
+import { useDispatch } from 'react-redux'
 import { Tab } from 'semantic-ui-react'
+import { getStories } from 'Utilities/redux/storiesReducer'
 import StoryList from 'Components/StoryListView/StoryList'
 import HomeView from 'Components/StoryListView/HomeView'
 import StoryAddition from 'Components/StoryAddition'
@@ -7,6 +9,18 @@ import { useIntl } from 'react-intl'
 
 const Tabs = ({ match }) => {
   const intl = useIntl()
+  const dispatch = useDispatch()
+  const { language } = match.params
+
+  useEffect(() => {
+    dispatch(getStories(language, {
+      sort_by: 'date',
+      order: -1,
+      page: 0,
+      page_size: 30,
+    }))
+  }, [])
+
   const panes = [
     {
       menuItem: intl.formatMessage({ id: 'HOME' }),
@@ -14,7 +28,7 @@ const Tabs = ({ match }) => {
     },
     {
       menuItem: intl.formatMessage({ id: 'LIBRARY' }),
-      render: () => <Tab.Pane><StoryList match={match} /></Tab.Pane>,
+      render: () => <Tab.Pane><StoryList language={language} /></Tab.Pane>,
     },
   ]
 
@@ -27,7 +41,7 @@ const Tabs = ({ match }) => {
         <Tab
           panes={panes}
           renderActiveOnly
-          defaultActiveIndex={1}
+          defaultActiveIndex={0}
         />
       </div>
     </div>

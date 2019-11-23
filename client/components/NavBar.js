@@ -38,7 +38,7 @@ export default () => {
 
         <Menu.Item>
           {user && (
-            <Button inverted color="white" onClick={signOut}>
+            <Button inverted onClick={signOut}>
               <FormattedMessage id="SIGNOUT" />
             </Button>
           )}

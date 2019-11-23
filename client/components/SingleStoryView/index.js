@@ -1,12 +1,13 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
-import { Link, useLocation } from 'react-router-dom'
+import { Link } from 'react-router-dom'
 import { Divider, Segment, Header, Button } from 'semantic-ui-react'
+import { FormattedMessage } from 'react-intl'
 
 import { getStoryAction } from 'Utilities/redux/storiesReducer'
 import { getTranslationAction, clearTranslationAction } from 'Utilities/redux/translationReducer'
 import { capitalize, localeOptions } from 'Utilities/common'
-import DictionaryHelp from '../DictionaryHelp'
+import DictionaryHelp from 'Components/DictionaryHelp'
 
 const SingleStoryView = ({ match }) => {
   const dispatch = useDispatch()
@@ -40,8 +41,8 @@ const SingleStoryView = ({ match }) => {
         <Header>
           {story.title}
           <Link to={`/stories/${language}/${id}/practice`}>
-            <Button style={{ minWidth: '8em', margin: '0.5em', float: 'right', display: 'flex' }} primary>
-              practice this story
+            <Button color="teal" style={{ minWidth: '8em', margin: '0.5em', float: 'right', display: 'flex' }}>
+              <FormattedMessage id="PRACTICE_THIS" />
             </Button>
           </Link>
         </Header>

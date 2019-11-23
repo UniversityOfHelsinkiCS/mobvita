@@ -2,15 +2,13 @@ import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { Link } from 'react-router-dom'
 import {
-  Button, Placeholder, Header, Card, Icon, Dropdown, Segment
+  Button, Placeholder, Header, Card, Icon, Dropdown,
 } from 'semantic-ui-react'
-import { sortBy } from 'lodash'
 
 import { getStories } from 'Utilities/redux/storiesReducer'
 import { FormattedMessage } from 'react-intl'
 
-const StoryList = ({ match }) => {
-  const { language } = match.params
+const StoryList = ({ language }) => {
   const [sorter, setSorter] = useState('date')
   const [page, setPage] = useState(0)
   const dispatch = useDispatch()
@@ -25,7 +23,7 @@ const StoryList = ({ match }) => {
     }))
   }, [page, sorter])
 
-  const adjustPage = direction => () => setPage(page + direction)
+  const adjustPage = direction => () => setPage(Math.max(page + direction, 0))
 
   if (pending) {
     return (
@@ -101,9 +99,9 @@ const StoryList = ({ match }) => {
           </Card>
         )
       })}
-      <Button.Group size="large">
+      <Button.Group color="teal" size="small" style={{ margin: '4px', marginLeft: 'auto' }}>
         <Button disabled={prevPageDisabled} onClick={adjustPage(-1)}><FormattedMessage id="PREV" /></Button>
-        <Button.Or text={page} />
+        <Button.Or text={page + 1} />
         <Button disabled={nextPageDisabled} onClick={adjustPage(1)}><FormattedMessage id="NEXT" /></Button>
       </Button.Group>
     </Card.Group>

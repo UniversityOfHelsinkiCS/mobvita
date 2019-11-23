@@ -2,9 +2,12 @@
  * Insert common items here
  */
 import revitaLogoTransparent from 'Assets/revita_logo_transparent.png'
+import practiceNow from 'Assets/practice_now.jpg'
+
 
 export const images = {
   revitaLogoTransparent,
+  practiceNow,
 }
 
 export const capitalize = (word)=> {
