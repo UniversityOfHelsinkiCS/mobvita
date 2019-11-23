@@ -2,7 +2,7 @@ import React from 'react'
 import { Link } from 'react-router-dom'
 import { Container, Header, Button, Segment } from 'semantic-ui-react'
 import { FormattedMessage } from 'react-intl'
-import { capitalize, supportedLearningLanguages } from 'Utilities/common'
+import { images, capitalize, supportedLearningLanguages } from 'Utilities/common'
 
 const LanguageSelectView = () => {
   return (
@@ -10,12 +10,11 @@ const LanguageSelectView = () => {
       <Header as="h2">
         <FormattedMessage id="CHOOSE_LANG" />
       </Header>
-      <Segment style={{ display: 'flex', flexWrap: 'wrap', maxWidth: '40em', margin: 'auto', justifyContent: 'center', backgroundColor: 'azure' }}>
+      <Segment style={{ display: 'flex', flexWrap: 'wrap', maxWidth: '40em', margin: 'auto', justifyContent: 'center' }}>
         {supportedLearningLanguages.map(lang => (
-          <Link key={lang} to={`/stories/${lang}#home`}>
-            <Button color="teal" style={{ display: 'flex', flexDirection: 'column', margin: '1em', alignItems: 'center' }}>
-              {capitalize(lang)}
-            </Button>
+          <Link key={lang} to={`/stories/${lang}#home`} style={{ display: 'flex', flexDirection: 'column', margin: '1.5em', alignItems: 'center' }}>
+            <img src={images[`flag${capitalize(lang.split('-').join(''))}`]} style={{ height: '3em', border: '1px solid whitesmoke' }} alt={lang} />
+            <span style={{ color: 'black' }}>{capitalize(lang)}</span>
           </Link>
         ))}
       </Segment>
