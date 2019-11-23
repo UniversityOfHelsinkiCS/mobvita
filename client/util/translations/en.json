@@ -10,5 +10,7 @@
   "CONFIRM": "Confirm",
   "LANGUAGE": "Language",
   "PRACTICE_NOW": "Practice now",
-  "NO_STORIES": "No stories available for this language"
+  "NO_STORIES": "No stories available for this language",
+  "PREV": "Prev",
+  "NEXT": "Next"
 }
