@@ -64,7 +64,7 @@ const StoryList = ({ language }) => {
         const difficultyIcon = icons[story.difficulty || 'default']
         const difficultyText = story.elo_score
         return (
-          <Card fluid key={story._id} style={{ marginBottom: '5px', marginTop: '5px' }}>
+          <Card fluid key={story._id} style={{ marginBottom: '5px', marginTop: '5px', backgroundColor: '#fafafa' }}>
             <Card.Content extra style={{ padding: '10px' }}>
               <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'baseline' }}>
                 <Header as="h4">{story.title}</Header>

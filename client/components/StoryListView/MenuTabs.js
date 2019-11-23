@@ -7,11 +7,10 @@ import HomeView from 'Components/StoryListView/HomeView'
 import StoryAddition from 'Components/StoryAddition'
 import { useIntl } from 'react-intl'
 
-const Tabs = ({ match }) => {
+const Tabs = ({ match, location }) => {
   const intl = useIntl()
   const dispatch = useDispatch()
   const { language } = match.params
-
   useEffect(() => {
     dispatch(getStories(language, {
       sort_by: 'date',
@@ -32,6 +31,8 @@ const Tabs = ({ match }) => {
     },
   ]
 
+  const defaultActiveIndex = location.hash === '#home' ? 0 : 1
+
   return (
     <div style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'space-between' }}>
       <div>
@@ -41,7 +42,7 @@ const Tabs = ({ match }) => {
         <Tab
           panes={panes}
           renderActiveOnly
-          defaultActiveIndex={0}
+          defaultActiveIndex={defaultActiveIndex}
         />
       </div>
     </div>

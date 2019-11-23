@@ -42,7 +42,7 @@ const StoryAddition = () => {
           <Button onClick={() => setModal(false)}>
             <FormattedMessage id="CANCEL" />
           </Button>
-          <Button positive disabled={!isUrl(url)} onClick={handleSave}>
+          <Button color="teal" disabled={!isUrl(url)} onClick={handleSave}>
             <FormattedMessage id="CONFIRM" />
           </Button>
         </Modal.Actions>
