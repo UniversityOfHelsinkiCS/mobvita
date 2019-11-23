@@ -48,10 +48,10 @@ const StoryList = ({ match }) => {
   }
 
   const icons = {
-    high: <Icon name="circle" size="large" style={{ color: 'red' }} />,
-    average: <Icon name="circle" size="large" style={{ color: 'yellow' }} />,
-    low: <Icon name="circle" size="large" style={{ color: 'green' }} />,
-    default: <Icon name="question" size="large" style={{ color: 'black' }} />,
+    high: <Icon name="diamond" size="large" style={{ color: 'red' }} />,
+    average: <Icon name="angle double up" size="large" style={{ color: 'red' }} />,
+    low: <Icon name="angle up" size="large" style={{ color: 'forestgreen' }} />,
+    default: <Icon name="question" style={{ color: 'black' }} />,
   }
 
   const prevPageDisabled = false
@@ -71,6 +71,7 @@ const StoryList = ({ match }) => {
               <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'baseline' }}>
                 <Header as="h4">{story.title}</Header>
                 <span style={{ cursor: 'default', display: 'flex' }}>
+                  <FormattedMessage id="DIFFICULTY" />
                   {difficultyIcon}
                   {difficultyText}
                 </span>
@@ -79,19 +80,19 @@ const StoryList = ({ match }) => {
             <Card.Content extra>
               <div>
                 <Link to={`/stories/${language}/${story._id}/`}>
-                  <Button size="tiny" primary>
+                  <Button color="teal" size="tiny">
                     Read
                   </Button>
                 </Link>
                 {' '}
                 <Link to={`/stories/${language}/${story._id}/practice`}>
-                  <Button size="tiny" primary>
+                  <Button color="teal" size="tiny">
                     Practice
                   </Button>
                 </Link>
                 {' '}
                 <Link to={`/stories/${language}/${story._id}/compete`}>
-                  <Button size="tiny" primary>
+                  <Button color="teal" size="tiny">
                     Compete
                   </Button>
                 </Link>

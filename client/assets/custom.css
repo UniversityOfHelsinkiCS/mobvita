@@ -1,21 +1,11 @@
-.navbar {
-  height: 5em;
-  background-color: whitesmoke;
-}
-
 .content {
   padding: 10px;
   padding-bottom: 5em;
-  min-height: calc(100vh - 10em);
+  min-height: calc(100vh - 2em);
   display: flex;
   flex-direction: column;
   max-width: 60em;
   margin: 0 auto;
-}
-
-.footer {
-  height: 5em;
-  background-color: whitesmoke;
 }
 
 .word-interactive:hover {

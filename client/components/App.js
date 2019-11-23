@@ -3,7 +3,7 @@ import NavBar from 'Components/NavBar'
 import Router from 'Components/Router'
 
 export default () => (
-  <div>
+  <div style={{ backgroundColor: '#fafafa' }}>
     <NavBar />
     <div className="content">
       <Router />

@@ -29,8 +29,8 @@ const StoryAddition = () => {
   }
 
   return (
-    <Fragment>
-      <Button fluid onClick={() => setModal(true)}>
+    <>
+      <Button color="black" fluid onClick={() => setModal(true)}>
         <FormattedMessage id="ADD_NEW_STORY" />
       </Button>
       <Modal open={modalOpen} onClose={() => setModal(false)} style={{ maxHeight: '20em' }}>
@@ -47,7 +47,7 @@ const StoryAddition = () => {
           </Button>
         </Modal.Actions>
       </Modal>
-    </Fragment>
+    </>
   )
 }
 

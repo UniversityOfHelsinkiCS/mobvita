@@ -10,10 +10,10 @@ const LanguageSelectView = () => {
       <Header as="h2">
         <FormattedMessage id="CHOOSE_LANG" />
       </Header>
-      <Segment style={{ display: 'flex', flexWrap: 'wrap', maxWidth: '40em', margin: 'auto', justifyContent: 'center' }}>
+      <Segment style={{ display: 'flex', flexWrap: 'wrap', maxWidth: '40em', margin: 'auto', justifyContent: 'center', backgroundColor: 'azure' }}>
         {supportedLearningLanguages.map(lang => (
           <Link key={lang} to={`/stories/${lang}`}>
-            <Button primary style={{ display: 'flex', flexDirection: 'column', margin: '1em', alignItems: 'center' }}>
+            <Button color="teal" style={{ display: 'flex', flexDirection: 'column', margin: '1em', alignItems: 'center' }}>
               {capitalize(lang)}
             </Button>
           </Link>
