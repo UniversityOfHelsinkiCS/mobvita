@@ -21,6 +21,7 @@ export default (state = {}, action) => {
         ...state,
         snippetCompleteTime: action.response.snippet_complete_time,
         totalTime: action.response.total_time,
+        opponentPercent: action.response.bnc,
       }
     case 'WRONG_ADD':
       return {

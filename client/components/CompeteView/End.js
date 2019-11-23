@@ -17,9 +17,9 @@ const End = () => {
       resultText += 'You were slower but atleast you got more right!'
     }
   } else if (opponentRight > right) {
-    resultText += 'You were faster and you got more right!'
-  } else {
     resultText += 'You were faster but your opponent got more right!'
+  } else {
+    resultText += 'You were faster and you got more right!'
   }
   return (
     <div>
@@ -31,7 +31,7 @@ const End = () => {
         Opponent scored {opponentRight} out of {total} tried.
         In {totalTime}s.
       </div>
-      <div>{resultText}</div>
+      <h1>{resultText}</h1>
     </div>
   )
 }

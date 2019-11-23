@@ -44,9 +44,9 @@ const CompeteView = ({ match }) => {
         {`${currentSnippetNumber}/${snippets.totalnum}`}
       </h1>
       <PreviousSnippet snippet={snippets.previous} />
-      {snippets.previous && currentSnippetNumber === 1 ?
-        <End /> :
-        <CurrentSnippet storyId={match.params.id} />
+      {snippets.previous && currentSnippetNumber === 1
+        ? <End />
+        : <CurrentSnippet storyId={match.params.id} />
       }
       <DictionaryHelp />
     </div>
