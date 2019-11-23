@@ -5,6 +5,7 @@ import { getCurrentSnippet, postAnswers, setTotalNumberAction } from 'Utilities/
 import { getTranslationAction, clearTranslationAction } from 'Utilities/redux/translationReducer'
 import { capitalize, localeOptions } from 'Utilities/common'
 
+import PreviousSnippet from 'Components/PracticeView/PreviousSnippet'
 import ResetButton from 'Components/PracticeView/ResetButton'
 import ExerciseCloze from 'Components/PracticeView/ExerciseCloze'
 import ExerciseMultipleChoice from 'Components/PracticeView/ExerciseMultipleChoice'
@@ -19,7 +20,6 @@ const CurrentPractice = ({ storyId }) => {
   const [language, setLanguage] = useState('')
 
   // Data about previously submitted snippet:
-  const [previousSnippet, setPreviousSnippet] = useState({})
   const [previousAnswers, setPreviousAnswers] = useState({})
 
   const dispatch = useDispatch()
@@ -93,7 +93,7 @@ const CurrentPractice = ({ storyId }) => {
       setTouched(touched + 1)
     }
 
-    const modAnswer = {
+    const newAnswers = {
       ...answers,
       [ID]: {
         correct: surface,
@@ -101,7 +101,7 @@ const CurrentPractice = ({ storyId }) => {
         id,
       },
     }
-    setAnswers(modAnswer)
+    setAnswers(newAnswers)
   }
 
   const handleMultiselectChange = (event, word, data) => {
@@ -117,34 +117,8 @@ const CurrentPractice = ({ storyId }) => {
 
 
   const wordInput = (word) => {
-    if (word.id !== undefined) {
-      if (word.listen) {
-        if (!audio.includes(word.ID.toString())) {
-          audio.push(word.ID.toString())
-        }
-        return <ExerciseHearing tabIndex={word.ID} handleChange={handleAnswerChange} handleClick={textToSpeech} key={word.ID} word={word} />
-      }
-      if (word.choices) {
-        const { ID, choices, surface, id } = word
-        options[ID] = choices
-
-        if (!answers[ID]) { // Backend requires empty answer for multiple choice.
-          const modAnswer = {
-            ...answers,
-            [ID]: {
-              correct: surface,
-              users_answer: "___",
-              id,
-            },
-          }
-          setAnswers(modAnswer)
-        }
-
-        return <ExerciseMultipleChoice tabIndex={word.ID} handleChange={handleMultiselectChange} key={word.ID} word={word} />
-      }
-      return <ExerciseCloze tabIndex={word.ID} handleChange={handleAnswerChange} handleClick={textToSpeech} key={word.ID} word={word} />
-    }
-    if (word.lemmas) {
+    if (!word.id && !word.lemmas) return word.surface
+    if (!word.id) {
       return (
         <span
           role="button"
@@ -158,31 +132,58 @@ const CurrentPractice = ({ storyId }) => {
         </span>
       )
     }
-    return word.surface
-  }
-
-  const renderPrevSnippet = (word) => {
-    if (word.lemmas) {
+    if (word.listen) {
+      if (!audio.includes(word.ID.toString())) {
+        audio.push(word.ID.toString())
+      }
       return (
-        <span
-          role="button"
-          tabIndex={-1}
-          className={!word.base && previousAnswers[word.ID] ? "word-interactive--exercise" : "word-interactive "}
+        <ExerciseHearing
+          tabIndex={word.ID}
+          handleChange={handleAnswerChange}
+          handleClick={textToSpeech}
           key={word.ID}
-          onKeyDown={() => textToSpeech(word.surface, word.lemmas)}
-          onClick={() => textToSpeech(word.surface, word.lemmas)}
-        >
-          {word.surface}
-        </span>
+          word={word}
+        />
       )
     }
-    return word.surface
+    if (word.choices) {
+      const { ID, choices, surface, id } = word
+      options[ID] = choices
+
+      if (!answers[ID]) { // Backend requires empty answer for multiple choice.
+        const modAnswer = {
+          ...answers,
+          [ID]: {
+            correct: surface,
+            users_answer: "___",
+            id,
+          },
+        }
+        setAnswers(modAnswer)
+      }
+
+      return (
+        <ExerciseMultipleChoice
+          tabIndex={word.ID}
+          handleChange={handleMultiselectChange}
+          key={word.ID}
+          word={word}
+        />
+      )
+    }
+    return (
+      <ExerciseCloze
+        tabIndex={word.ID}
+        handleChange={handleAnswerChange}
+        handleClick={textToSpeech}
+        key={word.ID}
+        word={word}
+      />
+    )
   }
 
   const continueToNextSnippet = () => {
     setPreviousAnswers(answers)
-    setPreviousSnippet(snippets.focused)
-
 
     setAnswers({})
     setOptions({})
@@ -200,14 +201,10 @@ const CurrentPractice = ({ storyId }) => {
         {`${snippets.focused.snippetid[0] + 1}/${snippets.totalnum}`}
         <ResetButton style={{ float: 'right' }} storyId={storyId} />
       </h1>
+      <PreviousSnippet snippet={snippets.previous} />
+
       <Segment style={{ marginBottom: '5px' }}>
-        <div>
-          {Object.entries(previousSnippet).length > 0 ?
-            previousSnippet.practice_snippet.map(exercise => renderPrevSnippet(exercise))
-            : null
-          }
-          {practice.map(exercise => wordInput(exercise))}
-        </div>
+        {practice.map(exercise => wordInput(exercise))}
       </Segment>
       {getExerciseCount() === 0
         ? <Button fluid onClick={continueToNextSnippet}>Continue to next snippet</Button>

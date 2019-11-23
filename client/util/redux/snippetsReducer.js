@@ -3,9 +3,9 @@ import callBuilder from '../apiConnection'
  * Actions and reducers are in the same file for readability
  */
 
-export const setTotalNumberAction = (totalnum) => ({
+export const setTotalNumberAction = totalnum => ({
   type: 'SET_TOTAL_NUMBER',
-  data: totalnum
+  data: totalnum,
 })
 
 export const getCurrentSnippet = (storyId) => {
@@ -33,6 +33,7 @@ export default (state = { data: [] }, action) => {
     case 'RESET_SNIPPET_INDEX_SUCCESS':
       return {
         ...state,
+        previous: undefined,
         focused: action.response,
         pending: false,
         error: false,
@@ -53,6 +54,7 @@ export default (state = { data: [] }, action) => {
       return {
         ...state,
         focused: action.response,
+        previous: state.focused,
         pending: false,
         error: false,
       }
@@ -64,7 +66,7 @@ export default (state = { data: [] }, action) => {
     case 'SET_TOTAL_NUMBER':
       return {
         ...state,
-        totalnum: action.data
+        totalnum: action.data,
       }
     default:
       return state

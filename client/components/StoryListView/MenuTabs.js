@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React from 'react'
 import { Tab } from 'semantic-ui-react'
 import StoryList from 'Components/StoryListView/StoryList'
 import HomeView from 'Components/StoryListView/HomeView'
@@ -35,5 +35,3 @@ const Tabs = () => {
 }
 
 export default Tabs
-
-

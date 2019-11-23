@@ -1,7 +1,9 @@
 import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { Link } from 'react-router-dom'
-import { Button, Placeholder, Header, Card, Icon, Dropdown } from 'semantic-ui-react'
+import {
+  Button, Placeholder, Header, Card, Icon, Dropdown,
+} from 'semantic-ui-react'
 import { sortBy } from 'lodash'
 
 import { getStories } from 'Utilities/redux/storiesReducer'
@@ -30,7 +32,7 @@ const StoryList = () => {
   const sortDropdownOptions = [
     { key: 'date', text: 'Date', value: 'date' },
     { key: 'title', text: 'Title', value: 'title' },
-    { key: 'difficulty', text: 'Difficulty', value: 'difficulty' }
+    { key: 'difficulty', text: 'Difficulty', value: 'difficulty' },
   ]
 
   const handleChange = (e, option) => {
@@ -38,7 +40,6 @@ const StoryList = () => {
   }
 
   const difficultyStars = (story) => {
-
     const icons = {
       high: <Icon name="circle" size="large" style={{ color: 'red', cursor: 'default', float: 'right' }} />,
       average: <Icon name="circle" size="large" style={{ color: 'yellow', cursor: 'default', float: 'right' }} />,
@@ -76,12 +77,12 @@ const StoryList = () => {
           <Card.Content extra>
             <div>
               <Link to={`/stories/${language}/${story._id}/`}>
-                <Button size='tiny' primary>
+                <Button size="tiny" primary>
                   Read
                 </Button>
               </Link>
               <Link to={`/stories/${language}/${story._id}/snippet`}>
-                <Button size='tiny' primary>
+                <Button size="tiny" primary>
                   Practice
                 </Button>
               </Link>
