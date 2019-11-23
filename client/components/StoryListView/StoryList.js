@@ -19,11 +19,11 @@ const StoryList = ({ match }) => {
   useEffect(() => {
     dispatch(getStories(language, {
       sort_by: sorter,
-      order: 1, // or -1
+      order: sorter === 'title' ? 1 : -1, // Worked the best atm
       page,
       page_size: 15,
     }))
-  }, [page])
+  }, [page, sorter])
 
   const adjustPage = direction => () => setPage(page + direction)
 
@@ -52,27 +52,15 @@ const StoryList = ({ match }) => {
     default: <Icon name="question" size="large" style={{ color: 'black' }} />,
   }
 
-  const sortedStories = sortBy(stories, [(story) => {
-    if (sorter === 'difficulty') {
-      const array = {
-        low: 1,
-        average: 2,
-        high: 3,
-      }
-      return array[story.difficulty] || 4
-    }
-    return story[sorter]
-  }])
-
   const prevPageDisabled = false
   const nextPageDisabled = false
-
+  console.log(stories.map(story => story.date))
   return (
     <Card.Group>
       <div style={{ margin: '10px', marginLeft: 'auto' }}>
         <Dropdown selection value={sorter} options={sortDropdownOptions} onChange={handleChange} />
       </div>
-      {sortedStories.map((story) => {
+      {stories.map((story) => {
         const difficultyIcon = icons[story.difficulty || 'default']
         const difficultyText = story.elo_score
         return (
