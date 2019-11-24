@@ -9,6 +9,13 @@ export const getStoryAction = (language, storyId) => {
   return callBuilder(route, prefix)
 }
 
+export const getAllStories = (language, query) => {
+  const queryString = Object.keys(query).map(key => `${key}=${query[key]}`).join('&')
+  const route = `/stories/${language}?${queryString}`
+  const prefix = 'GET_ALL_STORIES'
+  return callBuilder(route, prefix)
+}
+
 export const getStories = (language, query = { page: 0, page_size: 10 }) => {
   const queryString = Object.keys(query).map(key => `${key}=${query[key]}`).join('&')
   const route = `/stories/${language}?${queryString}`
@@ -37,6 +44,17 @@ export default (state = { data: [], pending: false, error: false }, action) => {
         ...state,
         pending: false,
         error: true,
+      }
+    case 'GET_ALL_STORIES_ATTEMPT':
+      return {
+        ...state,
+        allPending: true,
+      }
+    case 'GET_ALL_STORIES_SUCCESS':
+      return {
+        ...state,
+        allStories: action.response.stories,
+        allPending: false,
       }
     case 'GET_STORIES_SUCCESS':
       return {

@@ -2,17 +2,19 @@ import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { Link } from 'react-router-dom'
 import {
-  Button, Placeholder, Header, Card, Icon, Dropdown, Image,
+  Button, Placeholder, Header, Card, Icon, Dropdown, Image, Search,
 } from 'semantic-ui-react'
 
-import { getStories } from 'Utilities/redux/storiesReducer'
+import { getStories, getAllStories } from 'Utilities/redux/storiesReducer'
 import { FormattedMessage } from 'react-intl'
 
 const StoryList = ({ language }) => {
   const [sorter, setSorter] = useState('date')
+  const [searchString, setSearchString] = useState('')
+  const [searchedStories, setSearchedStories] = useState([])
   const [page, setPage] = useState(0)
   const dispatch = useDispatch()
-  const { stories, pending } = useSelector(({ stories }) => ({ stories: stories.data, pending: stories.pending }))
+  const { stories, pending, all, allPending } = useSelector(({ stories }) => ({ stories: stories.data, all: stories.allStories, allPending: stories.allPending, pending: stories.pending }))
 
   useEffect(() => {
     dispatch(getStories(language, {
@@ -23,18 +25,6 @@ const StoryList = ({ language }) => {
     }))
   }, [page, sorter])
 
-  const adjustPage = direction => () => setPage(Math.max(page + direction, 0))
-
-  if (pending) {
-    return (
-      <Placeholder>
-        <Placeholder.Line />
-      </Placeholder>
-    )
-  }
-
-  if (!stories.length) return <FormattedMessage id="NO_STORIES" />
-
   const sortDropdownOptions = [
     { key: 'date', text: 'Date', value: 'date' },
     { key: 'title', text: 'Title', value: 'title' },
@@ -43,6 +33,20 @@ const StoryList = ({ language }) => {
 
   const handleChange = (e, option) => {
     setSorter(option.value)
+  }
+
+  useEffect(() => {
+    const searchFilteredStories = all ? all.filter(story => story.title.toLowerCase().includes(searchString.toLowerCase())) : []
+    setSearchedStories(searchFilteredStories)
+  }, [searchString.length])
+
+  const handleSearchChange = ({ target }) => {
+    const ss = target.value
+    setSearchString(ss)
+    dispatch(getAllStories(language, {
+      sort_by: sorter,
+      order: sorter === 'title' ? 1 : -1, // Worked the best atm
+    }))
   }
 
   const icons = {
@@ -55,13 +59,37 @@ const StoryList = ({ language }) => {
   const prevPageDisabled = false
   const nextPageDisabled = false
 
+  const adjustPage = direction => () => setPage(Math.max(page + direction, 0))
+
+  const noResults = !allPending && searchString.length > 0 && searchedStories.length === 0
+  const searchSort = (
+    <div style={{ display: 'flex', justifyContent: 'space-between', margin: '10px 0' }}>
+      <Search open={false} icon={noResults ? 'close' : 'search'} loading={allPending} value={searchString} onSearchChange={handleSearchChange} />
+      <Dropdown selection value={sorter} options={sortDropdownOptions} onChange={handleChange} />
+    </div>
+  )
+
+  if (pending) {
+    return (
+      <div>
+        {searchSort}
+        <Placeholder>
+          <Placeholder.Line />
+        </Placeholder>
+      </div>
+    )
+  }
+
+  if (!stories.length) return <FormattedMessage id="NO_STORIES" />
+
+  const filteredInsteadOfPaginated = searchedStories.length > 0 && searchedStories.length < 30
+  const displayStories = filteredInsteadOfPaginated ? searchedStories : stories
+
   return (
     <div>
-      <div style={{ margin: '10px', marginLeft: 'auto' }}>
-        <Dropdown selection value={sorter} options={sortDropdownOptions} onChange={handleChange} />
-      </div>
+      {searchSort}
       <Card.Group itemsPerRow={2} doubling>
-        {stories.map((story) => {
+        {displayStories.map((story) => {
           const difficultyIcon = icons[story.difficulty || 'default']
           const difficultyText = story.elo_score
           return (
@@ -81,19 +109,19 @@ const StoryList = ({ language }) => {
                   <Link to={`/stories/${language}/${story._id}/`}>
                     <Button color="teal" size="tiny">
                       Read
-                  </Button>
+                    </Button>
                   </Link>
                   {' '}
                   <Link to={`/stories/${language}/${story._id}/practice`}>
                     <Button color="teal" size="tiny">
                       Practice
-                  </Button>
+                    </Button>
                   </Link>
                   {' '}
                   <Link to={`/stories/${language}/${story._id}/compete`}>
                     <Button color="teal" size="tiny">
                       Compete
-                  </Button>
+                    </Button>
                   </Link>
                 </div>
               </Card.Content>
@@ -102,7 +130,7 @@ const StoryList = ({ language }) => {
         })}
       </Card.Group>
       <div style={{ display: 'flex', justifyContent: 'center' }}>
-        <Button.Group center color="teal" size="small" style={{ margin: '4px', marginTop: '15px' }}>
+        <Button.Group center="true" color="teal" size="small" style={{ margin: '4px', marginTop: '15px' }}>
           <Button disabled={prevPageDisabled} onClick={adjustPage(-1)}><FormattedMessage id="PREV" /></Button>
           <Button.Or text={page + 1} />
           <Button disabled={nextPageDisabled} onClick={adjustPage(1)}><FormattedMessage id="NEXT" /></Button>
