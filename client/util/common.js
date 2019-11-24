@@ -18,6 +18,8 @@ import flagPortuguese from 'Assets/flag_portuguese.png'
 import flagRussian from 'Assets/flag_russian.png'
 import flagSpanish from 'Assets/flag_spanish.png'
 import flagSwedish from 'Assets/flag_swedish.png'
+import flagFrench from 'Assets/flag_french.png'
+import flagTurkish from 'Assets/flag_turkish.png'
 import flagItalian from 'Assets/flag_italian.png'
 
 export const images = {
@@ -39,6 +41,8 @@ export const images = {
   flagCatalan,
   flagSpanish,
   flagPortuguese,
+  flagTurkish,
+  flagFrench
 }
 
 export const capitalize = (word) => {
@@ -48,7 +52,7 @@ export const capitalize = (word) => {
 }
 
 export const supportedLearningLanguages = [
-  'finnish', 'german', 'russian', 'kazakh', 'catalan', 'spanish', 'swedish', 'italian',
+  'finnish', 'german', 'russian', 'kazakh', 'catalan', 'spanish', 'swedish', 'italian', 'french', 'turkish',
   'portuguese', 'erzya', 'komi-zyrian', 'meadow-mari', 'north-saami', 'sakha', 'tatar', 'udmurt',
 ].sort((a, b) => a.localeCompare(b))
 
