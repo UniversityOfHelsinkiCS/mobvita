@@ -29,19 +29,18 @@ const DictionaryHelp = ({ translation }) => {
 
   if (!showHelp) {
     return (
-      <div>
+      <div style={{ position: 'fixed', right: '0.5%', bottom: '0.5%', backgroundColor: '#fafafa' }}>
         <Button
           className="navigationbuttonopen"
           icon
           basic
           onClick={() => setShow(true)}
-          style={{ position: 'fixed', right: '0.5%', bottom: '0.5%' }}
         >
           <Shake
             h={5}
             v={5}
             r={3}
-            dur={300}
+            dur={500}
             int={10}
             max={100}
             fixed
@@ -49,7 +48,7 @@ const DictionaryHelp = ({ translation }) => {
             freez={false}
             active={shaking}
           >
-            <Icon name="book" />
+            <Icon size="large" name="book" />
           </Shake>
         </Button>
       </div>
@@ -62,7 +61,7 @@ const DictionaryHelp = ({ translation }) => {
         <Header size="medium" textAlign="center">
           Dictionary Help
           <Button className="navigationbuttonclose" icon basic floated="right" onClick={() => setShow(false)} >
-            <Icon name="chevron right" />
+            <Icon name="angle down" />
           </Button>
         </Header>
         <List>
