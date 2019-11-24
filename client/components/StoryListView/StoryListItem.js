@@ -20,7 +20,7 @@ const StoryListItem = ({ story, language }) => {
   const difficultyIcon = icons[story.difficulty || 'default']
   const difficultyText = story.elo_score
   return (
-    <Card fluid key={story._id} style={{ marginBottom: '10px', marginTop: '10px', padding: '0.8em' }}>
+    <Card fluid key={story._id} style={{ marginBottom: '10px', marginTop: '10px', padding: '0.8em', height: 'max-content' }}>
       <Card.Content extra style={{ padding: '10px' }}>
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'baseline' }}>
           <Header as="h4">{story.title}</Header>
@@ -37,19 +37,19 @@ const StoryListItem = ({ story, language }) => {
       <Card.Content extra>
         <div>
           <Link to={`/stories/${language}/${story._id}/`}>
-            <Button color="teal" size="tiny">
+            <Button color="teal" size="tiny" style={{ marginTop: '5px' }}>
               Read
             </Button>
           </Link>
           {' '}
           <Link to={`/stories/${language}/${story._id}/practice`}>
-            <Button color="teal" size="tiny">
+            <Button color="teal" size="tiny" style={{ marginTop: '5px' }}>
               Practice
             </Button>
           </Link>
           {' '}
           <Link to={`/stories/${language}/${story._id}/compete`}>
-            <Button color="teal" size="tiny">
+            <Button color="teal" size="tiny" style={{ marginTop: '5px' }}>
               Compete
             </Button>
           </Link>
