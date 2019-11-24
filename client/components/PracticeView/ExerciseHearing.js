@@ -1,7 +1,7 @@
 import React, { createRef, useState, useEffect } from 'react'
 import { Input, Icon } from 'semantic-ui-react'
 
-const ExerciseHearing = (({ word, handleClick, handleChange, value }) => {
+const ExerciseHearing = ({ word, handleClick, handleChange, value }) => {
   const [color, setColor] = useState('lightblue')
   const inputRef = createRef()
 
@@ -22,25 +22,24 @@ const ExerciseHearing = (({ word, handleClick, handleChange, value }) => {
     inputRef.current.focus()
   }
 
-  const placeholder = '_'.repeat(word.surface.length + 1)
-
   return (
     <Input
       ref={inputRef}
       key={word.ID}
       onChange={e => handleChange(e, word)}
       value={value}
-      icon={<Icon name="volume up" link onClick={() => clickHandler(word.surface)} />}
+      icon={<Icon name="volume up" link onClick={() => clickHandler(word.surface)} style={{ marginRight: '4px' }} />}
       transparent
       style={{
-        minWidth: `${placeholder.length}em`,
-        width: `${Math.floor(word.surface.length)}em`,
-        height: '20px',
+        minWidth: `${word.surface.length + 1}em`,
+        width: `${Math.floor(word.surface.length + 1)}em`,
+        marginRight: '2px',
+        height: '1.5em',
+        borderRadius: '6px',
         backgroundColor: color,
-        borderRadius: '10px',
       }}
     />
   )
-})
+}
 
 export default ExerciseHearing

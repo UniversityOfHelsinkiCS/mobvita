@@ -21,10 +21,10 @@ const PreviousSnippet = ({ snippet }) => {
   return (
     <Segment>
       {practices.map((word) => {
-        const { surface, isWrong, _id: id, ID } = word
-        if (!isWrong) return <span key={ID}>{surface}</span>
-
-        return <span key={ID} style={{ color: 'firebrick' }}>{surface}</span>
+        const { surface, ID, mark } = word
+        if (mark === 'wrong') return <span key={ID} style={{ color: 'firebrick' }}>{surface}</span>
+        if (mark === 'correct') return <span key={ID} style={{ color: 'green' }}>{surface}</span>
+        return <span key={ID}>{surface}</span>
       })}
     </Segment>
   )

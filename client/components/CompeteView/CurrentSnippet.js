@@ -202,7 +202,7 @@ const CurrentPractice = ({ storyId, language }) => {
   return (
     <>
 
-      <Segment style={{ marginBottom: '5px' }}>
+      <Segment style={{ marginBottom: '5px', wordSpacing: '1px', lineHeight: '2em' }}>
         {practice.map(exercise => wordInput(exercise))}
       </Segment>
       <OpponentProgress />
