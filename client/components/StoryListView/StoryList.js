@@ -69,12 +69,14 @@ const StoryList = ({ language }) => {
               <Card.Content extra style={{ padding: '10px' }}>
                 <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'baseline' }}>
                   <Header as="h4">{story.title}</Header>
-                  <span style={{ cursor: 'default', display: 'flex' }}>
-                    <FormattedMessage id="DIFFICULTY" />
-                    {difficultyIcon}
-                    {difficultyText}
-                  </span>
                 </div>
+              </Card.Content>
+              <Card.Content extra style={{ padding: '10px' }}>
+                <span style={{ cursor: 'default', display: 'flex' }}>
+                  <FormattedMessage id="DIFFICULTY" />
+                  {difficultyIcon}
+                  {difficultyText}
+                </span>
               </Card.Content>
               <Card.Content extra>
                 <div>
@@ -102,7 +104,7 @@ const StoryList = ({ language }) => {
         })}
       </Card.Group>
       <div style={{ display: 'flex', justifyContent: 'center' }}>
-        <Button.Group center color="teal" size="small" style={{ margin: '4px', marginTop: '15px' }}>
+        <Button.Group color="teal" size="small" style={{ margin: '4px', marginTop: '15px' }}>
           <Button disabled={prevPageDisabled} onClick={adjustPage(-1)}><FormattedMessage id="PREV" /></Button>
           <Button.Or text={page + 1} />
           <Button disabled={nextPageDisabled} onClick={adjustPage(1)}><FormattedMessage id="NEXT" /></Button>

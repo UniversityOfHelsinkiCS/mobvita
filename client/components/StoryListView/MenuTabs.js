@@ -4,7 +4,6 @@ import { Tab } from 'semantic-ui-react'
 import { getStories } from 'Utilities/redux/storiesReducer'
 import StoryList from 'Components/StoryListView/StoryList'
 import HomeView from 'Components/StoryListView/HomeView'
-import StoryAddition from 'Components/StoryAddition'
 import { useIntl } from 'react-intl'
 
 const Tabs = ({ match, location }) => {
@@ -35,7 +34,7 @@ const Tabs = ({ match, location }) => {
 
   return (
     <div style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'space-between' }}>
-      <div style={{ width: '45em' }}>
+      <div style={{ width: '60em' }}>
         <Tab
           panes={panes}
           renderActiveOnly
