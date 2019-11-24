@@ -1,11 +1,10 @@
 import React, { useState } from 'react'
 import {
-  Button, Header, Card, Icon, Accordion,
+  Button, Header, Card, Icon, Accordion, List, Image,
 } from 'semantic-ui-react'
 import { Link } from 'react-router-dom'
 
 import { FormattedMessage } from 'react-intl'
-
 
 const StoryListItem = ({ story, language }) => {
   const [showInfo, setShow] = useState(false)
@@ -19,14 +18,32 @@ const StoryListItem = ({ story, language }) => {
 
   const difficultyIcon = icons[story.difficulty || 'default']
   const difficultyText = story.elo_score
+
+  const storyInfoElements = ['Author',
+    'Source',
+    'Level',
+    'Story Rating',
+    'Date added',
+    '% of exercises answered correctly ',
+    ' % of story covered']
+
+  const storyInfoList = storyInfoElements.map(element => <List.Item>{element}</List.Item>)
   return (
-    <Card fluid key={story._id} style={{ marginBottom: '10px', marginTop: '10px', padding: '0.8em', height: 'max-content' }}>
-      <Card.Content extra style={{ padding: '10px' }}>
+    <Card
+      fluid
+      key={story._id}
+      style={{
+        marginBottom: '10px',
+        marginTop: '10px',
+        height: 'max-content',
+      }}
+    >
+      <Card.Content extra style={{ padding: '15px' }}>
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'baseline' }}>
           <Header as="h4">{story.title}</Header>
         </div>
       </Card.Content>
-      <Card.Content extra style={{ padding: '10px' }}>
+      <Card.Content extra style={{ padding: '15px' }}>
         <span style={{ cursor: 'default', display: 'flex' }}>
           <FormattedMessage id="DIFFICULTY" />
           :
@@ -34,7 +51,7 @@ const StoryListItem = ({ story, language }) => {
           {difficultyText}
         </span>
       </Card.Content>
-      <Card.Content extra>
+      <Card.Content extra style={{ padding: '15px' }}>
         <div>
           <Link to={`/stories/${language}/${story._id}/`}>
             <Button color="teal" size="tiny" style={{ marginTop: '5px' }}>
@@ -55,15 +72,17 @@ const StoryListItem = ({ story, language }) => {
           </Link>
         </div>
       </Card.Content>
-      <Card.Content extra>
-        {/* <Accordion fluid>
+      <Card.Content extra style={{ padding: '15px' }}>
+        <Accordion fluid>
           <Accordion.Title onClick={() => setShow(!showInfo)} index={0}>
             Story info
           </Accordion.Title>
           <Accordion.Content active={showInfo} index={1} style={{ minHeight: '10em' }}>
-            Placeholder text...
+            <List>
+              {storyInfoList}
+            </List>
           </Accordion.Content>
-        </Accordion> */}
+        </Accordion>
       </Card.Content>
     </Card>
   )
