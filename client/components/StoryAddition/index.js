@@ -30,7 +30,7 @@ const StoryAddition = () => {
 
   return (
     <>
-      <Button color="black" fluid onClick={() => setModal(true)}>
+      <Button style={{ marginTop: '10px' }} color="black" fluid onClick={() => setModal(true)}>
         <FormattedMessage id="ADD_NEW_STORY" />
       </Button>
       <Modal open={modalOpen} onClose={() => setModal(false)} style={{ maxHeight: '20em' }}>

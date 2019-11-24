@@ -4,6 +4,7 @@ import { Link } from 'react-router-dom'
 import { FormattedMessage } from 'react-intl'
 import { Button } from 'semantic-ui-react'
 import { images } from 'Utilities/common'
+import StoryAddition from 'Components/StoryAddition'
 
 const HomeView = () => {
   const [randomStoryIndex, setRandom] = useState(0)
@@ -24,21 +25,27 @@ const HomeView = () => {
 
   const buttonLink = `/stories/${language}/${stories[randomStoryIndex]._id}/practice`
   return (
-    <Link to={buttonLink} disabled={!buttonLink}>
-      <Button
-        fluid
-        color="black"
-        inverted
-        style={{
-          backgroundImage: `url(${images.practiceNow})`,
-          height: '13em',
-          backgroundSize: 'cover',
-          backgroundPosition: 'center'
-        }}
-      >
-        <FormattedMessage id="PRACTICE_NOW" />
-      </Button>
-    </Link>
+    <div>
+      <Link to={buttonLink} disabled={!buttonLink}>
+        <Button
+          fluid
+          color="black"
+          inverted
+          style={{
+            backgroundImage: `url(${images.practiceNow})`,
+            height: '13em',
+            backgroundSize: 'cover',
+            backgroundPosition: 'center'
+          }}
+        >
+          <FormattedMessage id="PRACTICE_NOW" />
+        </Button>
+      </Link>
+      <StoryAddition />
+      <Link to="/">
+        <Button fluid style={{padding:'10px', marginTop:'10px'}}> Back to language selection</Button>
+      </Link>
+    </div>
   )
 }
 

@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { Link } from 'react-router-dom'
 import {
-  Button, Placeholder, Header, Card, Icon, Dropdown,
+  Button, Placeholder, Header, Card, Icon, Dropdown, Image,
 } from 'semantic-ui-react'
 
 import { getStories } from 'Utilities/redux/storiesReducer'
@@ -19,7 +19,7 @@ const StoryList = ({ language }) => {
       sort_by: sorter,
       order: sorter === 'title' ? 1 : -1, // Worked the best atm
       page,
-      page_size: 15,
+      page_size: 14,
     }))
   }, [page, sorter])
 
@@ -56,55 +56,59 @@ const StoryList = ({ language }) => {
   const nextPageDisabled = false
 
   return (
-    <Card.Group>
+    <div>
       <div style={{ margin: '10px', marginLeft: 'auto' }}>
         <Dropdown selection value={sorter} options={sortDropdownOptions} onChange={handleChange} />
       </div>
-      {stories.map((story) => {
-        const difficultyIcon = icons[story.difficulty || 'default']
-        const difficultyText = story.elo_score
-        return (
-          <Card fluid key={story._id} style={{ marginBottom: '5px', marginTop: '5px', backgroundColor: '#fafafa' }}>
-            <Card.Content extra style={{ padding: '10px' }}>
-              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'baseline' }}>
-                <Header as="h4">{story.title}</Header>
-                <span style={{ cursor: 'default', display: 'flex' }}>
-                  <FormattedMessage id="DIFFICULTY" />
-                  {difficultyIcon}
-                  {difficultyText}
-                </span>
-              </div>
-            </Card.Content>
-            <Card.Content extra>
-              <div>
-                <Link to={`/stories/${language}/${story._id}/`}>
-                  <Button color="teal" size="tiny">
-                    Read
+      <Card.Group itemsPerRow={2} doubling>
+        {stories.map((story) => {
+          const difficultyIcon = icons[story.difficulty || 'default']
+          const difficultyText = story.elo_score
+          return (
+            <Card fluid key={story._id} style={{ marginBottom: '10px', marginTop: '10px' }}>
+              <Card.Content extra style={{ padding: '10px' }}>
+                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'baseline' }}>
+                  <Header as="h4">{story.title}</Header>
+                  <span style={{ cursor: 'default', display: 'flex' }}>
+                    <FormattedMessage id="DIFFICULTY" />
+                    {difficultyIcon}
+                    {difficultyText}
+                  </span>
+                </div>
+              </Card.Content>
+              <Card.Content extra>
+                <div>
+                  <Link to={`/stories/${language}/${story._id}/`}>
+                    <Button color="teal" size="tiny">
+                      Read
                   </Button>
-                </Link>
-                {' '}
-                <Link to={`/stories/${language}/${story._id}/practice`}>
-                  <Button color="teal" size="tiny">
-                    Practice
+                  </Link>
+                  {' '}
+                  <Link to={`/stories/${language}/${story._id}/practice`}>
+                    <Button color="teal" size="tiny">
+                      Practice
                   </Button>
-                </Link>
-                {' '}
-                <Link to={`/stories/${language}/${story._id}/compete`}>
-                  <Button color="teal" size="tiny">
-                    Compete
+                  </Link>
+                  {' '}
+                  <Link to={`/stories/${language}/${story._id}/compete`}>
+                    <Button color="teal" size="tiny">
+                      Compete
                   </Button>
-                </Link>
-              </div>
-            </Card.Content>
-          </Card>
-        )
-      })}
-      <Button.Group color="teal" size="small" style={{ margin: '4px', marginLeft: 'auto' }}>
-        <Button disabled={prevPageDisabled} onClick={adjustPage(-1)}><FormattedMessage id="PREV" /></Button>
-        <Button.Or text={page + 1} />
-        <Button disabled={nextPageDisabled} onClick={adjustPage(1)}><FormattedMessage id="NEXT" /></Button>
-      </Button.Group>
-    </Card.Group>
+                  </Link>
+                </div>
+              </Card.Content>
+            </Card>
+          )
+        })}
+      </Card.Group>
+      <div style={{ display: 'flex', justifyContent: 'center' }}>
+        <Button.Group center color="teal" size="small" style={{ margin: '4px', marginTop: '15px' }}>
+          <Button disabled={prevPageDisabled} onClick={adjustPage(-1)}><FormattedMessage id="PREV" /></Button>
+          <Button.Or text={page + 1} />
+          <Button disabled={nextPageDisabled} onClick={adjustPage(1)}><FormattedMessage id="NEXT" /></Button>
+        </Button.Group>
+      </div>
+    </div>
   )
 }
 

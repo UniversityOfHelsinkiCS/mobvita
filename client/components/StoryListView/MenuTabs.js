@@ -35,9 +35,6 @@ const Tabs = ({ match, location }) => {
 
   return (
     <div style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'space-between' }}>
-      <div>
-        <StoryAddition />
-      </div>
       <div style={{ width: '45em' }}>
         <Tab
           panes={panes}
