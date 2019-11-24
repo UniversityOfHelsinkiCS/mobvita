@@ -9,7 +9,7 @@ const PreviousSnippet = ({ snippet }) => {
   useEffect(() => {
     if (!practices) return
 
-    const allExercises = practices.filter(pr => pr.mark)
+    const allExercises = practices.filter(pr => pr.mark || pr.tested)
     const wrongExercises = allExercises.filter(pr => pr.mark === 'wrong')
 
     dispatch(addWrongExercises(wrongExercises.length))
@@ -21,9 +21,10 @@ const PreviousSnippet = ({ snippet }) => {
   return (
     <Segment>
       {practices.map((word) => {
-        const { surface, ID, mark } = word
+        const { surface, ID, mark, tested } = word
+        console.log(word)
         if (mark === 'wrong') return <span key={ID} style={{ color: 'firebrick' }}>{surface}</span>
-        if (mark === 'correct') return <span key={ID} style={{ color: 'green' }}>{surface}</span>
+        if (tested) return <span key={ID} style={{ color: 'green' }}>{surface}</span>
         return <span key={ID}>{surface}</span>
       })}
     </Segment>
