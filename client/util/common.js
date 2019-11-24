@@ -18,6 +18,7 @@ import flagPortuguese from 'Assets/flag_portuguese.png'
 import flagRussian from 'Assets/flag_russian.png'
 import flagSpanish from 'Assets/flag_spanish.png'
 import flagSwedish from 'Assets/flag_swedish.png'
+import flagItalian from 'Assets/flag_italian.png'
 
 export const images = {
   revitaLogoTransparent,
@@ -31,6 +32,7 @@ export const images = {
   flagTatar,
   flagNorthsaami,
   flagSwedish,
+  flagItalian,
   flagGerman,
   flagRussian,
   flagKazakh,
@@ -46,7 +48,7 @@ export const capitalize = (word) => {
 }
 
 export const supportedLearningLanguages = [
-  'finnish', 'german', 'russian', 'kazakh', 'catalan', 'spanish', 'swedish',
+  'finnish', 'german', 'russian', 'kazakh', 'catalan', 'spanish', 'swedish', 'italian',
   'portuguese', 'erzya', 'komi-zyrian', 'meadow-mari', 'north-saami', 'sakha', 'tatar', 'udmurt',
 ].sort((a, b) => a.localeCompare(b))
 

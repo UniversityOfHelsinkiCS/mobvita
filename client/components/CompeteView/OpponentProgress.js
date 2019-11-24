@@ -4,11 +4,18 @@ import { Progress } from 'semantic-ui-react'
 
 const OpponentProgress = () => {
   const [timeNow, setTimeNow] = useState(0)
+  const [opponentScore, setOpponentScore] = useState(0)
 
   const { compete, snippetNumber } = useSelector(({ compete, snippets }) => {
     const snippetNumber = snippets.focused.snippetid[0]
     return { compete, snippetNumber }
   })
+
+  const { opponentPercent } = compete
+
+  useEffect(() => {
+    setOpponentScore((compete.total * opponentPercent).toFixed(0))
+  }, [compete.total])
 
   useEffect(() => {
     const interval = setInterval(() => setTimeNow((new Date()).getTime()), 1000)
@@ -44,13 +51,13 @@ const OpponentProgress = () => {
     if (percent > 90) {
       return {
         color: 'red',
-        text: 'Your opponent is ahead of you!',
+        text: 'Your opponent is answering faster than you!',
       }
     }
     if (percent < 10) {
       return {
         color: 'green',
-        text: 'Your opponent is right behind you!',
+        text: 'You are really fast!',
       }
     }
     return {
@@ -61,11 +68,16 @@ const OpponentProgress = () => {
 
   const status = percentToStatus()
   return (
-    <>
-      <Progress color={status.color} percent={percent} style={{ marginTop: '0px' }}>
-        <span>{status.text}</span>
-      </Progress>
-    </>
+    <Progress color={status.color} percent={percent} style={{ marginTop: '0px', marginBottom: '3em' }}>
+      <span>{status.text}</span>
+      {compete.total ? (
+        <div>
+          <span> Your score: {compete.total - compete.wrong} / {compete.total}</span>
+          {' '}
+          <span> Your opponent: {opponentScore} / {compete.total}</span>
+        </div>
+      ) : null}
+    </Progress>
   )
 }
 
