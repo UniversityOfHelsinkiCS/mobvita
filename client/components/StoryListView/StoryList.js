@@ -2,10 +2,11 @@ import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { Link } from 'react-router-dom'
 import {
-  Button, Placeholder, Header, Card, Icon, Dropdown, Image, Search,
+  Button, Placeholder, Header, Card, Icon, Dropdown, Accordion, Search,
 } from 'semantic-ui-react'
 
 import { getStories, getAllStories } from 'Utilities/redux/storiesReducer'
+import StoryListItem from 'Components/StoryListView/StoryListItem'
 import { FormattedMessage } from 'react-intl'
 
 const StoryList = ({ language }) => {
@@ -13,6 +14,7 @@ const StoryList = ({ language }) => {
   const [searchString, setSearchString] = useState('')
   const [searchedStories, setSearchedStories] = useState([])
   const [page, setPage] = useState(0)
+  const [showHelp, setShow] = useState(false)
   const dispatch = useDispatch()
   const { stories, pending, all, allPending } = useSelector(({ stories }) => ({ stories: stories.data, all: stories.allStories, allPending: stories.allPending, pending: stories.pending }))
 
@@ -89,47 +91,7 @@ const StoryList = ({ language }) => {
     <div>
       {searchSort}
       <Card.Group itemsPerRow={2} doubling>
-        {displayStories.map((story) => {
-          const difficultyIcon = icons[story.difficulty || 'default']
-          const difficultyText = story.elo_score
-          return (
-            <Card fluid key={story._id} style={{ marginBottom: '10px', marginTop: '10px', padding: '0.8em' }}>
-              <Card.Content extra style={{ padding: '10px' }}>
-                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'baseline' }}>
-                  <Header as="h4">{story.title}</Header>
-                </div>
-              </Card.Content>
-              <Card.Content extra style={{ padding: '10px' }}>
-                <span style={{ cursor: 'default', display: 'flex' }}>
-                  <FormattedMessage id="DIFFICULTY" />:
-                  {difficultyIcon}
-                  {difficultyText}
-                </span>
-              </Card.Content>
-              <Card.Content extra>
-                <div>
-                  <Link to={`/stories/${language}/${story._id}/`}>
-                    <Button color="teal" size="tiny">
-                      Read
-                    </Button>
-                  </Link>
-                  {' '}
-                  <Link to={`/stories/${language}/${story._id}/practice`}>
-                    <Button color="teal" size="tiny">
-                      Practice
-                    </Button>
-                  </Link>
-                  {' '}
-                  <Link to={`/stories/${language}/${story._id}/compete`}>
-                    <Button color="teal" size="tiny">
-                      Compete
-                    </Button>
-                  </Link>
-                </div>
-              </Card.Content>
-            </Card>
-          )
-        })}
+        {displayStories.map(story => <StoryListItem story={story} language={language} />)}
       </Card.Group>
       <div style={{ display: 'flex', justifyContent: 'center' }}>
         <Button.Group color="teal" size="small" style={{ margin: '4px', marginTop: '15px' }}>
