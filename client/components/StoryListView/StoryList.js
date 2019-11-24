@@ -63,9 +63,9 @@ const StoryList = ({ language }) => {
 
   const noResults = !allPending && searchString.length > 0 && searchedStories.length === 0
   const searchSort = (
-    <div style={{ display: 'flex', justifyContent: 'space-between', margin: '10px 0' }}>
+    <div style={{ display: 'flex', justifyContent: 'space-between', flexWrap: 'wrap', margin: '10px 0' }}>
       <Search open={false} icon={noResults ? 'close' : 'search'} loading={allPending} value={searchString} onSearchChange={handleSearchChange} />
-      <Dropdown selection value={sorter} options={sortDropdownOptions} onChange={handleChange} />
+      <Dropdown selection value={sorter} options={sortDropdownOptions} onChange={handleChange} style={{ minWidth: '10em' }} />
     </div>
   )
 
@@ -101,7 +101,7 @@ const StoryList = ({ language }) => {
               </Card.Content>
               <Card.Content extra style={{ padding: '10px' }}>
                 <span style={{ cursor: 'default', display: 'flex' }}>
-                  <FormattedMessage id="DIFFICULTY" />
+                  <FormattedMessage id="DIFFICULTY" />:
                   {difficultyIcon}
                   {difficultyText}
                 </span>

@@ -15,7 +15,7 @@ const Tabs = ({ match, location }) => {
       sort_by: 'date',
       order: -1,
       page: 0,
-      page_size: 30,
+      page_size: 14,
     }))
   }, [])
 
