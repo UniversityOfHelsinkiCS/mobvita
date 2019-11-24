@@ -34,7 +34,7 @@ const Tabs = ({ match, location }) => {
 
   return (
     <div style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'space-between' }}>
-      <div style={{ width: '60em' }}>
+      <div style={{ width: '110em' }}>
         <Tab
           panes={panes}
           renderActiveOnly
