@@ -68,16 +68,17 @@ const OpponentProgress = () => {
 
   const status = percentToStatus()
   return (
-    <Progress color={status.color} percent={percent} style={{ marginTop: '0px', marginBottom: '3em' }}>
-      <span>{status.text}</span>
-      {compete.total ? (
-        <div>
-          <span> Your score: {compete.total - compete.wrong} / {compete.total}</span>
-          {' '}
-          <span> Your opponent: {opponentScore} / {compete.total}</span>
+    <>
+      {(compete.total + 1) ? (
+        <div style={{ display: 'flex', justifyContent: 'space-around' }}>
+          <span> Score: {compete.total - compete.wrong} / {compete.total}</span>
+          <span> Opponent: {opponentScore} / {compete.total}</span>
         </div>
       ) : null}
-    </Progress>
+      <Progress color={status.color} percent={percent} style={{ marginTop: '0px', marginBottom: '3em' }}>
+        <span>{status.text}</span>
+      </Progress>
+    </>
   )
 }
 
