@@ -3,6 +3,7 @@ import {
   Button, Header, Card, Icon, Accordion, List, Progress,
 } from 'semantic-ui-react'
 import { Link } from 'react-router-dom'
+import moment from 'moment'
 
 import { FormattedMessage } from 'react-intl'
 
@@ -20,12 +21,12 @@ const StoryListItem = ({ story, language }) => {
   const difficultyText = story.elo_score
 
   const storyInfoElements = [
-    `Author: ${story.author}`,
-    <a href={story.URL}>Source</a>,
+    story.author ? `Author: ${story.author}` : null,
+    story.URL ? <a href={story.URL}>Link to source</a> : null,
     `Difficulty: ${story.difficulty}`,
     `Story Rating: ${story.elo_score}`,
-    `Date added ${story.date}`,
-    <>% of exercises answered correctly <Progress /></>,
+    `Date added ${moment(story.date).format('MMM Do YY')}`,
+    <>% of exercises answered correctly <Progress /></>,  // TODO add progress bar logic
     <>% of story covered <Progress /></>]
 
   const storyInfoList = storyInfoElements.map((element, i) => <List.Item key={`${story._id}-${i}`}>{element}</List.Item>)
