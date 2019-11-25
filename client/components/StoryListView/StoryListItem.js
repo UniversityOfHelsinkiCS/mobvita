@@ -25,7 +25,7 @@ const StoryListItem = ({ story, language }) => {
     story.URL ? <a href={story.URL}>Link to source</a> : null,
     `Difficulty: ${story.difficulty}`,
     `Story Rating: ${story.elo_score}`,
-    `Date added ${moment(story.date).format('MMM Do YY')}`,
+    `Date added ${moment(story.date).format('MMM Do YYYY')}`,
     <>% of exercises answered correctly <Progress /></>,  // TODO add progress bar logic
     <>% of story covered <Progress /></>]
 
