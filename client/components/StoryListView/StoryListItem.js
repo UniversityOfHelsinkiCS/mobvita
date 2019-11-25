@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import {
-  Button, Header, Card, Icon, Accordion, List, Image,
+  Button, Header, Card, Icon, Accordion, List, Progress,
 } from 'semantic-ui-react'
 import { Link } from 'react-router-dom'
 
@@ -19,15 +19,16 @@ const StoryListItem = ({ story, language }) => {
   const difficultyIcon = icons[story.difficulty || 'default']
   const difficultyText = story.elo_score
 
-  const storyInfoElements = ['Author',
-    'Source',
-    'Level',
-    'Story Rating',
-    'Date added',
-    '% of exercises answered correctly ',
-    ' % of story covered']
+  const storyInfoElements = [
+    `Author: ${story.author}`,
+    <a href={story.URL}>Source</a>,
+    `Difficulty: ${story.difficulty}`,
+    `Story Rating: ${story.elo_score}`,
+    `Date added ${story.date}`,
+    <>% of exercises answered correctly <Progress /></>,
+    <>% of story covered <Progress /></>]
 
-  const storyInfoList = storyInfoElements.map(element => <List.Item>{element}</List.Item>)
+  const storyInfoList = storyInfoElements.map((element, i) => <List.Item key={`${story._id}-${i}`}>{element}</List.Item>)
   return (
     <Card
       fluid

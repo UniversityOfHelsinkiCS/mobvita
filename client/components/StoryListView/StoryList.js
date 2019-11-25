@@ -91,7 +91,7 @@ const StoryList = ({ language }) => {
     <div>
       {searchSort}
       <Card.Group itemsPerRow={2} doubling>
-        {displayStories.map(story => <StoryListItem story={story} language={language} />)}
+        {displayStories.map(story => <StoryListItem key={story._id} story={story} language={language} />)}
       </Card.Group>
       <div style={{ display: 'flex', justifyContent: 'center' }}>
         <Button.Group color="teal" size="small" style={{ margin: '4px', marginTop: '15px' }}>
