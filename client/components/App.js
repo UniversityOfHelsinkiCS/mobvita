@@ -1,12 +1,10 @@
-import React from 'react'
-import NavBar from 'Components/NavBar'
-import Router from 'Components/Router'
+import React from "react"
+import Bar from "./Bar"
 
-export default () => (
-  <div style={{ backgroundColor: '#fafafa' }}>
-    <NavBar />
-    <div className="content">
-      <Router />
-    </div>
-  </div>
-)
+const App = () => {
+  return <Bar />
+
+}
+
+
+export default App
