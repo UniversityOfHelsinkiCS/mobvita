@@ -57,9 +57,8 @@ const DictionaryHelp = ({ translation }) => {
 
   return (
     <div>
-      <Segment className="navigationpanel" style={{ position: 'fixed', right: '2%', bottom: '2%' }}>
+      <Segment className="navigationpanel" style={{ position: 'fixed', right: '5%', bottom: '2%', width: "90%" }}>
         <Header size="medium" textAlign="center">
-          Dictionary Help
           <Button className="navigationbuttonclose" icon basic floated="right" onClick={() => setShow(false)} >
             <Icon name="angle down" />
           </Button>
