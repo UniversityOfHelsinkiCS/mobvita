@@ -49,63 +49,57 @@ export default function Bar() {
     }, [window.location.pathname])
 
     return (
-        <Swipeable onSwipedRight={() => dispatch(sidebarSetOpen(true))} onSwipedLeft={() => dispatch(sidebarSetOpen(false))} trackMouse={true} >
-            <Sidebar.Pushable as={Segment}>
-                <Sidebar
-                    as={Menu}
-                    animation='push'
-                    icon='labeled'
-                    vertical
-                    //onHide={() => dispatch(sidebarSetOpen(false))}
-                    visible={open}
-                    width='thin'
-                >
+        <Swipeable style={{ width: "20em", height: "100vh", position: "absolute" }} onSwipedRight={() => dispatch(sidebarSetOpen(true))} onSwipedLeft={() => dispatch(sidebarSetOpen(false))} trackMouse={true} >
+            <Sidebar
+                as={Menu}
+                animation='push'
+                icon='labeled'
+                vertical
+                //onHide={() => dispatch(sidebarSetOpen(false))}
+                visible={open}
+                style={{ width: "20em" }}
+            >
 
-                    {user && (
-                        <Menu.Item
-                            onClick={() => menuClickWrapper(signOut)}
-                            icon='log out'
-                            content={user.user.username}
-                        />
-                    )}
-
+                {user && (
                     <Menu.Item
-                        as={Link}
-                        onClick={() => menuClickWrapper()}
-                        to={`/`}
-                        content={intl.formatMessage({ id: 'HOME' })}
-                        icon="home"
+                        onClick={() => menuClickWrapper(signOut)}
+                        icon='log out'
+                        content={user.user.username}
                     />
+                )}
 
-                    <Menu.Item
-                        as={Link} to={`/stories/${language}#home`}
-                        onClick={() => menuClickWrapper()}
-                        icon="gamepad"
-                        content="Stories"
-                    />
+                <Menu.Item
+                    as={Link}
+                    onClick={() => menuClickWrapper()}
+                    to={`/`}
+                    content={intl.formatMessage({ id: 'HOME' })}
+                    icon="home"
+                />
 
-                    <Menu.Item>
-                        <Dropdown text={intl.formatMessage({ id: 'LANGUAGE' })}>
-                            <Dropdown.Menu>
-                                {localeOptions.map(locale => (
-                                    <Dropdown.Item key={locale.code} onClick={chooseLanguage(locale.code)}>
-                                        {locale.name}
-                                    </Dropdown.Item>
-                                ))}
-                            </Dropdown.Menu>
-                        </Dropdown>
-                    </Menu.Item>
+                <Menu.Item
+                    as={Link} to={`/stories/${language}#home`}
+                    onClick={() => menuClickWrapper()}
+                    icon="gamepad"
+                    content="Stories"
+                />
 
-                </Sidebar>
+                <Menu.Item>
+                    <Dropdown text={intl.formatMessage({ id: 'LANGUAGE' })}>
+                        <Dropdown.Menu>
+                            {localeOptions.map(locale => (
+                                <Dropdown.Item key={locale.code} onClick={chooseLanguage(locale.code)}>
+                                    {locale.name}
+                                </Dropdown.Item>
+                            ))}
+                        </Dropdown.Menu>
+                    </Dropdown>
+                </Menu.Item>
 
-                <div style={{ backgroundColor: '#fafafa' }}>
-                    <div className="content">
-                        <Router />
-                    </div>
-                </div>
+            </Sidebar>
 
 
-            </Sidebar.Pushable>
+
+
         </Swipeable>
     )
 }
