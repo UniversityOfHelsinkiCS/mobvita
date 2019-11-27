@@ -18,6 +18,7 @@ export default function Bar() {
     const dispatch = useDispatch()
 
     const [language, setLanguage] = useState('')
+    const [autoClose, setAutoClose] = useState(true)
 
     const { user } = useSelector(({ user }) => ({ user: user.data }))
     const open = useSelector(({ sidebar }) => sidebar.open)
@@ -28,9 +29,25 @@ export default function Bar() {
 
 
     const menuClickWrapper = (func) => {
-        func()
-        dispatch(sidebarSetOpen(false))
+        if (func) func()
+
+        if (autoClose) {
+            dispatch(sidebarSetOpen(false))
+        }
     }
+
+    useEffect(() => {
+        if (window.innerWidth >= 1024) {
+            setAutoClose(false)
+            if (!open) dispatch(sidebarSetOpen(true))
+        } else {
+            setAutoClose(true)
+            if (open) dispatch(sidebarSetOpen(false))
+        }
+    }, [])
+
+
+    console.log(window.innerWidth)
 
     useEffect(() => {
         const currentLanguge = window.location.pathname.split('/')[2]
@@ -42,7 +59,7 @@ export default function Bar() {
             <Sidebar.Pushable as={Segment}>
                 <Sidebar
                     as={Menu}
-                    animation='overlay'
+                    animation='push'
                     icon='labeled'
                     vertical
                     //onHide={() => dispatch(sidebarSetOpen(false))}
@@ -56,13 +73,11 @@ export default function Bar() {
                             icon='log out'
                             content={user.user.username}
                         />
-                    )
-
-                    }
+                    )}
 
                     <Menu.Item
                         as={Link}
-                        onClick={() => dispatch(sidebarSetOpen(false))}
+                        onClick={() => menuClickWrapper()}
                         to={`/`}
                         content={intl.formatMessage({ id: 'HOME' })}
                         icon="home"
@@ -70,7 +85,7 @@ export default function Bar() {
 
                     <Menu.Item
                         as={Link} to={`/stories/${language}#home`}
-                        onClick={() => dispatch(sidebarSetOpen(false))}
+                        onClick={() => menuClickWrapper()}
                         icon="gamepad"
                         content="Stories"
                     />
