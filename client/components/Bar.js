@@ -18,7 +18,6 @@ export default function Bar() {
     const dispatch = useDispatch()
 
     const [language, setLanguage] = useState('')
-    const [autoClose, setAutoClose] = useState(true)
 
     const { user } = useSelector(({ user }) => ({ user: user.data }))
     const open = useSelector(({ sidebar }) => sidebar.open)
@@ -31,23 +30,18 @@ export default function Bar() {
     const menuClickWrapper = (func) => {
         if (func) func()
 
-        if (autoClose) {
+        if (window.innerWidth <= 1024) {
             dispatch(sidebarSetOpen(false))
         }
     }
 
     useEffect(() => {
         if (window.innerWidth >= 1024) {
-            setAutoClose(false)
-            if (!open) dispatch(sidebarSetOpen(true))
+            dispatch(sidebarSetOpen(true))
         } else {
-            setAutoClose(true)
-            if (open) dispatch(sidebarSetOpen(false))
+            dispatch(sidebarSetOpen(false))
         }
     }, [])
-
-
-    console.log(window.innerWidth)
 
     useEffect(() => {
         const currentLanguge = window.location.pathname.split('/')[2]
