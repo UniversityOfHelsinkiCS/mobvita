@@ -48,58 +48,69 @@ export default function Bar() {
         setLanguage(currentLanguge)
     }, [window.location.pathname])
 
-    return (
-        <Swipeable style={{ width: "20em", height: "100vh", position: "absolute" }} onSwipedRight={() => dispatch(sidebarSetOpen(true))} onSwipedLeft={() => dispatch(sidebarSetOpen(false))} trackMouse={true} >
-            <Sidebar
-                as={Menu}
-                animation='push'
-                icon='labeled'
-                vertical
-                //onHide={() => dispatch(sidebarSetOpen(false))}
-                visible={open}
-                style={{ width: "20em" }}
-            >
+    if (open) {
+        return (
+            <Swipeable style={{ width: "20em", height: "100vh", position: "absolute" }} onSwipedRight={() => dispatch(sidebarSetOpen(true))} onSwipedLeft={() => dispatch(sidebarSetOpen(false))} trackMouse={true} >
+                <Sidebar
+                    as={Menu}
+                    animation='push'
+                    icon='labeled'
+                    vertical
+                    //onHide={() => dispatch(sidebarSetOpen(false))}
+                    visible={open}
+                    style={{ width: "20em" }}
+                >
 
-                {user && (
+                    {user && (
+                        <Menu.Item
+                            onClick={() => menuClickWrapper(signOut)}
+                            icon='log out'
+                            content={user.user.username}
+                        />
+                    )}
+
                     <Menu.Item
-                        onClick={() => menuClickWrapper(signOut)}
-                        icon='log out'
-                        content={user.user.username}
+                        as={Link}
+                        onClick={() => menuClickWrapper()}
+                        to={`/`}
+                        content={intl.formatMessage({ id: 'HOME' })}
+                        icon="home"
                     />
-                )}
 
-                <Menu.Item
-                    as={Link}
-                    onClick={() => menuClickWrapper()}
-                    to={`/`}
-                    content={intl.formatMessage({ id: 'HOME' })}
-                    icon="home"
-                />
+                    <Menu.Item
+                        as={Link} to={`/stories/${language}#home`}
+                        onClick={() => menuClickWrapper()}
+                        icon="gamepad"
+                        content="Stories"
+                    />
 
-                <Menu.Item
-                    as={Link} to={`/stories/${language}#home`}
-                    onClick={() => menuClickWrapper()}
-                    icon="gamepad"
-                    content="Stories"
-                />
+                    <Menu.Item>
+                        <Dropdown text={intl.formatMessage({ id: 'LANGUAGE' })}>
+                            <Dropdown.Menu>
+                                {localeOptions.map(locale => (
+                                    <Dropdown.Item key={locale.code} onClick={chooseLanguage(locale.code)}>
+                                        {locale.name}
+                                    </Dropdown.Item>
+                                ))}
+                            </Dropdown.Menu>
+                        </Dropdown>
+                    </Menu.Item>
 
-                <Menu.Item>
-                    <Dropdown text={intl.formatMessage({ id: 'LANGUAGE' })}>
-                        <Dropdown.Menu>
-                            {localeOptions.map(locale => (
-                                <Dropdown.Item key={locale.code} onClick={chooseLanguage(locale.code)}>
-                                    {locale.name}
-                                </Dropdown.Item>
-                            ))}
-                        </Dropdown.Menu>
-                    </Dropdown>
-                </Menu.Item>
-
-            </Sidebar>
+                </Sidebar>
 
 
 
 
-        </Swipeable>
-    )
+            </Swipeable>
+        )
+    } else {
+        return (
+            <Swipeable onSwipedRight={() => dispatch(sidebarSetOpen(true))}>
+                <Segment onClick={() => dispatch(sidebarSetOpen(true))} style={{ padding: "0.2em", height: "100%", position: "absolute", zIndex: 100, display: "flex", justifyContent: "center", flexDirection: "column", alignItems: "center" }}>
+                    <Icon name="angle right" />
+                </Segment>
+            </Swipeable>
+        )
+    }
+
 }
