@@ -95,7 +95,6 @@ export default (state = { data: [] }, action) => {
         error: true,
       }
     case 'GET_NEXT_SNIPPET_SUCCESS':
-      debugger
       return {
         ...state,
         focused: action.response,
