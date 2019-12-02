@@ -10,6 +10,7 @@ import { localeOptions } from 'Utilities/common'
 import { setLocale } from 'Utilities/redux/localeReducer'
 import { sidebarSetOpen } from "Utilities/redux/sidebarReducer"
 import { logout } from 'Utilities/redux/userReducer'
+import { resetCurrentSnippet } from "Utilities/redux/snippetsReducer"
 
 
 
@@ -21,6 +22,7 @@ export default function Bar() {
 
   const { user } = useSelector(({ user }) => ({ user: user.data }))
   const open = useSelector(({ sidebar }) => sidebar.open)
+  const focusedSnippet = useSelector(({ snippets }) => snippets.focused)
 
 
   const signOut = () => dispatch(logout())
@@ -47,6 +49,7 @@ export default function Bar() {
     const currentLanguge = window.location.pathname.split('/')[2]
     setLanguage(currentLanguge)
   }, [window.location.pathname])
+
 
   if (open) {
     return (
@@ -83,6 +86,15 @@ export default function Bar() {
             icon="gamepad"
             content="Stories"
           />
+
+          {focusedSnippet &&
+            <Menu.Item
+              onClick={() => menuClickWrapper(() => dispatch(resetCurrentSnippet(focusedSnippet.storyid)))}
+              icon="undo"
+              content="Restart current story"
+            />
+          }
+
 
           <Menu.Item>
             <Dropdown text={intl.formatMessage({ id: 'LANGUAGE' })}>

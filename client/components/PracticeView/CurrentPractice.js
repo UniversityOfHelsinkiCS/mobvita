@@ -1,12 +1,11 @@
 import React, { useState, useEffect } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
-import { Segment, Button } from 'semantic-ui-react'
+import { Segment, Button, Header } from 'semantic-ui-react'
 import { getCurrentSnippet, getNextSnippet, postAnswers, setTotalNumberAction } from 'Utilities/redux/snippetsReducer'
 import { getTranslationAction, clearTranslationAction } from 'Utilities/redux/translationReducer'
 import { capitalize, localeOptions } from 'Utilities/common'
 
 import PreviousSnippet from 'Components/PracticeView/PreviousSnippet'
-import ResetButton from 'Components/PracticeView/ResetButton'
 import ExerciseCloze from 'Components/PracticeView/ExerciseCloze'
 import ExerciseMultipleChoice from 'Components/PracticeView/ExerciseMultipleChoice'
 import ExerciseHearing from 'Components/PracticeView/ExerciseHearing'
@@ -27,6 +26,8 @@ const CurrentPractice = ({ storyId }) => {
   const dispatch = useDispatch()
 
   const { snippets, locale } = useSelector(({ snippets, locale }) => ({ snippets, locale }))
+  const { story } = useSelector(({ stories }) => ({ story: stories.focused }))
+
 
   useEffect(() => {
     const currentLanguage = window.location.pathname.split('/')[2]
@@ -246,10 +247,9 @@ const CurrentPractice = ({ storyId }) => {
 
   return (
     <>
-      <h1>
-        {`${snippets.focused.snippetid[0] + 1}/${snippets.totalnum}`}
-        <ResetButton style={{ float: 'right' }} storyId={storyId} />
-      </h1>
+      <Header>{story.title} Part {`${snippets.focused.snippetid[0] + 1}/${snippets.totalnum}`}</Header>
+      {story.url ? <a href={story.url}>Link to the source</a> : null}
+
       <PreviousSnippet snippet={snippets.previous} />
 
       <Segment style={{ marginBottom: '5px', wordSpacing: '1px', lineHeight: '2em' }}>

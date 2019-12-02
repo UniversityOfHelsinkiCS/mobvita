@@ -20,9 +20,6 @@ const PracticeView = ({ match }) => {
 
   return (
     <div style={{ paddingTop: '1em' }}>
-      <Header>{story.title}</Header>
-      {story.url ? <a href={story.url}>Link to the source</a> : null}
-      <Divider />
       <CurrentPractice storyId={match.params.id} />
       <DictionaryHelp />
     </div>
