@@ -97,8 +97,6 @@ const CurrentPractice = ({ storyId }) => {
       answers,
     }
 
-    console.log(answersObj)
-
     setAttempts(attempt + 1)
     dispatch(postAnswers(storyId, answersObj))
   }

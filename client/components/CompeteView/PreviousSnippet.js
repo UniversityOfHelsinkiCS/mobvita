@@ -22,7 +22,6 @@ const PreviousSnippet = ({ snippet }) => {
     <Segment>
       {practices.map((word) => {
         const { surface, ID, mark, tested } = word
-        console.log(word)
         if (mark === 'wrong') return <span key={ID} style={{ color: 'firebrick' }}>{surface}</span>
         if (tested) return <span key={ID} style={{ color: 'green' }}>{surface}</span>
         return <span key={ID}>{surface}</span>
