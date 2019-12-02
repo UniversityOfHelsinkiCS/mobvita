@@ -14,6 +14,12 @@ export const getCurrentSnippet = (storyId) => {
   return callBuilder(route, prefix)
 }
 
+export const getNextSnippet = (storyId, currentSnippetId) => {
+  const route = `/snippets/story/${storyId}/next?previous=${currentSnippetId}`
+  const prefix = 'GET_NEXT_SNIPPET'
+  return callBuilder(route, prefix)
+}
+
 export const resetCurrentSnippet = (storyId) => {
   const route = `/snippets/story/${storyId}/reset`
   const prefix = 'RESET_SNIPPET_INDEX'
@@ -75,6 +81,27 @@ export default (state = { data: [] }, action) => {
         ...state,
         focused: undefined,
         previous: undefined,
+      }
+    case 'GET_NEXT_SNIPPET_ATTEMPT':
+      return {
+        ...state,
+        pending: true,
+        error: false,
+      }
+    case 'GET_NECT_SNIPPET_FAILURE':
+      return {
+        ...state,
+        pending: false,
+        error: true,
+      }
+    case 'GET_NEXT_SNIPPET_SUCCESS':
+      debugger
+      return {
+        ...state,
+        focused: action.response,
+        previous: state.focused,
+        pending: false,
+        error: false,
       }
     default:
       return state

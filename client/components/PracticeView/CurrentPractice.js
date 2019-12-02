@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import { Segment, Button } from 'semantic-ui-react'
-import { getCurrentSnippet, postAnswers, setTotalNumberAction } from 'Utilities/redux/snippetsReducer'
+import { getCurrentSnippet, getNextSnippet, postAnswers, setTotalNumberAction } from 'Utilities/redux/snippetsReducer'
 import { getTranslationAction, clearTranslationAction } from 'Utilities/redux/translationReducer'
 import { capitalize, localeOptions } from 'Utilities/common'
 
@@ -15,9 +15,11 @@ const CurrentPractice = ({ storyId }) => {
   const [answers, setAnswers] = useState({})
   const [options, setOptions] = useState({})
   const [audio, setAudio] = useState([])
+  const [touchedIDs, setTouchedIds] = useState([])
   const [touched, setTouched] = useState(0)
   const [attempt, setAttempts] = useState(0)
   const [language, setLanguage] = useState('')
+  const [exerciseCount, setExerciseCount] = useState(0)
 
   const dispatch = useDispatch()
 
@@ -47,6 +49,7 @@ const CurrentPractice = ({ storyId }) => {
         return newAnswerObject
       }, {})
       if (Object.keys(initialAnswers).length > 0) setAnswers(initialAnswers)
+      setExerciseCount(getExerciseCount())
     }
   }
 
@@ -71,7 +74,6 @@ const CurrentPractice = ({ storyId }) => {
         count++
       }
     })
-
     return count
   }
 
@@ -83,8 +85,8 @@ const CurrentPractice = ({ storyId }) => {
       starttime,
       story_id: storyId,
       snippet_id: [snippetid[0]],
-      touched: getExerciseCount(),
-      untouched: 0,
+      touched: touched,
+      untouched: exerciseCount - touched,
       attempt,
       options,
       audio,
@@ -108,7 +110,8 @@ const CurrentPractice = ({ storyId }) => {
   const handleAnswerChange = (e, word) => {
     const { surface, id, ID } = word
 
-    if (!answers[ID]) {
+    if (!touchedIDs.includes(ID)) {
+      setTouchedIds(touchedIDs.concat(ID))
       setTouched(touched + 1)
     }
 
@@ -127,7 +130,8 @@ const CurrentPractice = ({ storyId }) => {
     const { id, ID, surface } = word
     const { value } = data
 
-    if (!answers[ID]) {
+    if (!touchedIDs.includes(ID)) {
+      setTouchedIds(touchedIDs.concat(ID))
       setTouched(touched + 1)
     }
 
@@ -164,7 +168,7 @@ const CurrentPractice = ({ storyId }) => {
 
     if (word.listen) {
       if (!audio.includes(word.ID.toString())) {
-        audio.push(word.ID.toString())
+        audio.push(word.ID.toString()) // SUPER DANGEROUS
       }
       return (
         <ExerciseHearing
@@ -208,9 +212,19 @@ const CurrentPractice = ({ storyId }) => {
     dispatch(getCurrentSnippet(storyId))
   }
 
+  const skipThisPart = () => {
+    setAnswers({})
+    setOptions({})
+    setTouched(0)
+    setAttempts(0)
+    const currentSnippetId = snippets.focused.snippetid[0]
+    dispatch(getNextSnippet(storyId, currentSnippetId))
+  }
+
   if (!snippets.focused || snippets.pending) return null
 
   const { practice_snippet: practice } = snippets.focused
+
   return (
     <>
       <h1>
@@ -222,9 +236,13 @@ const CurrentPractice = ({ storyId }) => {
       <Segment style={{ marginBottom: '5px', wordSpacing: '1px', lineHeight: '2em' }}>
         {practice.map(exercise => wordInput(exercise))}
       </Segment>
-      {getExerciseCount() === 0
-        ? <Button fluid onClick={continueToNextSnippet}>Continue to next snippet</Button>
-        : <Button fluid onClick={checkAnswers}>Check answers </Button>
+
+      {exerciseCount === 0 ?
+        <Button fluid onClick={continueToNextSnippet}>Continue to next snippet</Button>
+        : (touched >= Math.ceil(exerciseCount / 2)
+          ? <Button fluid onClick={() => checkAnswers()}>{`Check answers ${attempt}/2 attemps used`}</Button>
+          : <Button fluid onClick={() => skipThisPart()}>Skip this part</Button>
+        )
       }
     </>
   )

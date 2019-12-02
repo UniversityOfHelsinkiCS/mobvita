@@ -14,6 +14,7 @@ router.get('/stories/:language/:id', stories.getOne)
 router.post('/stories', stories.createOne)
 
 router.get('/snippets/story/:storyId/current', snippets.getCurrent)
+router.get('/snippets/story/:storyId/next', snippets.getNext)
 router.post('/snippets/story/:storyId/reset', snippets.reset)
 router.post('/snippets/story/:storyId/answer', snippets.postAnswers)
 

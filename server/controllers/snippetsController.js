@@ -7,6 +7,13 @@ const getCurrent = async (req, res) => {
   res.send(response.data)
 }
 
+const getNext = async (req, res) => {
+  const { storyId } = req.params
+  const { previous } = req.query
+  const response = await axios.get(`/stories/${storyId}/snippets/next?previous=${previous}`, { headers: req.headers })
+  res.send(response.data)
+}
+
 const reset = async (req, res) => {
   const { storyId } = req.params
   const response = await axios.post(`/stories/${storyId}/snippets/reset`, {}, { headers: req.headers })
@@ -24,4 +31,5 @@ module.exports = {
   getCurrent,
   reset,
   postAnswers,
+  getNext
 }
