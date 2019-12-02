@@ -22,6 +22,7 @@ const CurrentPractice = ({ storyId }) => {
   const [exerciseCount, setExerciseCount] = useState(0)
   const [disabled, setDisabled] = useState(false)
   const [waited, setWaited] = useState(false)
+  const [color, setColor] = useState("")
 
   const dispatch = useDispatch()
 
@@ -225,12 +226,15 @@ const CurrentPractice = ({ storyId }) => {
 
   const getConfirmation = () => {
     if (!waited) {
+      setColor("#983AF8")
       setDisabled(true)
       setTimeout(() => {
         setDisabled(false)
         setWaited(true)
+        setColor("#9BFD2B")
       }, 1000);
     } else {
+      setColor("")
       setWaited(false)
       skipThisPart()
     }
@@ -256,7 +260,7 @@ const CurrentPractice = ({ storyId }) => {
         <Button fluid onClick={continueToNextSnippet}>Continue to next snippet</Button>
         : (touched >= Math.ceil(exerciseCount / 2)
           ? <Button fluid onClick={() => checkAnswers()}>{`Check answers ${attempt}/2 attemps used`}</Button>
-          : <Button disabled={disabled} fluid onClick={() => getConfirmation()}>{disabled ? "Are you sure?" : "Skip this part"}</Button>
+          : <Button style={{ backgroundColor: color }} disabled={disabled} fluid onClick={() => getConfirmation()}>{disabled ? "Are you sure?" : "Skip this part"}</Button>
         )
       }
     </>
