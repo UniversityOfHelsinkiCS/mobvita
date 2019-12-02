@@ -168,7 +168,7 @@ const CurrentPractice = ({ storyId }) => {
 
     if (word.listen) {
       if (!audio.includes(word.ID.toString())) {
-        audio.push(word.ID.toString()) // SUPER DANGEROUS
+        setAudio(audio.concat(word.ID.toString()))
       }
       return (
         <ExerciseHearing
