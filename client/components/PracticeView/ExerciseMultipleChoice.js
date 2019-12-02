@@ -9,7 +9,7 @@ const ExerciseMultipleChoice = ({ word, handleChange, value }) => {
   useEffect(() => {
     if (tested) {
       if (isWrong) {
-        setColor('firebrick')
+        setColor('#ff5e5e')
       } else {
         setColor('yellowgreen')
       }
@@ -46,7 +46,10 @@ const ExerciseMultipleChoice = ({ word, handleChange, value }) => {
       value={value}
       onChange={(e, data) => handleChange(e, word, data)}
       selection
-      style={{ minWidth: `${maximumLength}em`, width: `${maximumLength}em`, height: '1em', backgroundColor: color }}
+      floating
+      style={{
+        minWidth: `${maximumLength}em`, width: `${maximumLength}em`, height: '1em', backgroundColor: color, minHeight: 0, lineHeight: 0, border: "none", borderRadius: '6px'
+      }}
     />
   )
 }

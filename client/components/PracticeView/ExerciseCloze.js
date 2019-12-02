@@ -3,7 +3,7 @@ import React, { useState, useEffect } from 'react'
 import { Input, Icon } from 'semantic-ui-react'
 
 const ExerciseCloze = ({ word, handleChange, handleClick, value }) => {
-  const [color, setColor] = useState('lightyellow')
+  const [color, setColor] = useState('#ffffab')
   const [touched, setTouched] = useState(false)
   const [disabled, setDisabled] = useState(false)
   const { isWrong, tested } = word
@@ -13,7 +13,7 @@ const ExerciseCloze = ({ word, handleChange, handleClick, value }) => {
   const changeValue = (e) => {
     if (!touched) {
       setTouched(true)
-      setColor('white')
+      setColor('lightyellow')
     }
     handleChange(e, word)
   }
@@ -21,7 +21,7 @@ const ExerciseCloze = ({ word, handleChange, handleClick, value }) => {
   useEffect(() => {
     if (tested) {
       if (isWrong) {
-        setColor('firebrick')
+        setColor('#ff5e5e')
       } else {
         setColor('yellowgreen')
         setDisabled(true)
