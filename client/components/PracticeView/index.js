@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
-import { Link } from 'react-router-dom'
 import CurrentPractice from 'Components/PracticeView/CurrentPractice'
 import { Divider, Header } from 'semantic-ui-react'
 
@@ -21,7 +20,6 @@ const PracticeView = ({ match }) => {
 
   return (
     <div style={{ paddingTop: '1em' }}>
-      <Link to={`/stories/${language}`}>Go back to story list</Link>
       <Header>{story.title}</Header>
       {story.url ? <a href={story.url}>Link to the source</a> : null}
       <Divider />

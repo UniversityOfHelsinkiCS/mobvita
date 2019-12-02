@@ -37,7 +37,6 @@ const SingleStoryView = ({ match }) => {
   return (
     <>
       <div style={{ paddingTop: '1em' }}>
-        <Link to={`/stories/${language}`}>Back to story list</Link>
         <Header>
           {story.title}
           <Link to={`/stories/${language}/${id}/practice`}>
