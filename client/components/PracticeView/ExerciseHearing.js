@@ -2,7 +2,7 @@ import React, { createRef, useState, useEffect } from 'react'
 import { Input, Icon } from 'semantic-ui-react'
 
 const ExerciseHearing = ({ word, handleClick, handleChange, value }) => {
-  const [color, setColor] = useState('lightblue')
+  const [className, setClassname] = useState('untouched-hearing')
   const [touched, setTouched] = useState(false)
   const inputRef = createRef()
 
@@ -11,9 +11,9 @@ const ExerciseHearing = ({ word, handleClick, handleChange, value }) => {
   useEffect(() => {
     if (tested) {
       if (isWrong) {
-        setColor('#ff5e5e')
+        setClassname('wrong')
       } else {
-        setColor('yellowgreen')
+        setClassname('correct')
       }
     }
   }, [tested])
@@ -25,7 +25,7 @@ const ExerciseHearing = ({ word, handleClick, handleChange, value }) => {
 
   const handle = (e, word) => {
     if (!touched) {
-      setColor("#d2f4ff")
+      setClassname("touched-hearing")
       setTouched(true)
     }
     handleChange(e, word)
@@ -39,13 +39,13 @@ const ExerciseHearing = ({ word, handleClick, handleChange, value }) => {
       value={value}
       icon={<Icon name="volume up" link onClick={() => clickHandler(word.surface)} style={{ marginRight: '4px' }} />}
       transparent
+      className={className}
       style={{
         minWidth: `${word.surface.length + 1}em`,
         width: `${Math.floor(word.surface.length + 1)}em`,
         marginRight: '2px',
         height: '1.5em',
         borderRadius: '6px',
-        backgroundColor: color,
       }}
     />
   )

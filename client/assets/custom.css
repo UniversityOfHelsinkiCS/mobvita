@@ -17,6 +17,9 @@
   cursor:pointer;
 }
 
+
+
+
 .word-interactive--exercise {
   background-color: lightblue;
   border-radius: 1em;
@@ -24,6 +27,40 @@
   padding-right: 1em;
   padding-top: 0.2em;
   padding-bottom: 0.2em;
+}
+
+
+
+.untouched-cloze {
+  background-color:#ffff83;
+}
+
+.touched-cloze {
+  background-color: lightyellow;
+}
+
+.untouched-hearing {
+  background-color: lightblue;
+}
+
+.touched-hearing {
+  background-color: #cdf3ff;
+}
+
+.untouched-multiple {
+  background-color: #ccade6 !important;
+}
+
+.touched-multiple { 
+  background-color: #dacbe6 !important;
+}
+
+.wrong {
+  background-color: #ff5e5e;
+}
+
+.correct {
+  background-color: yellowgreen;
 }
 
 /* CSS - Cascading Style Sheet */

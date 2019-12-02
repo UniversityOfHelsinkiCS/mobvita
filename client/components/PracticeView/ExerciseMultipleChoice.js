@@ -2,16 +2,17 @@ import React, { useEffect, useState } from 'react'
 import { Dropdown } from 'semantic-ui-react'
 
 const ExerciseMultipleChoice = ({ word, handleChange, value }) => {
-  const [color, setColor] = useState('LightCyan')
+  const [className, setClassName] = useState('untouched-multiple')
   const [options, setOptions] = useState([])
+  const [touched, setTouched] = useState(false)
   const { tested, isWrong } = word
 
   useEffect(() => {
     if (tested) {
       if (isWrong) {
-        setColor('#ff5e5e')
+        setClassName('wrong')
       } else {
-        setColor('yellowgreen')
+        setClassName('correct')
       }
     }
   }, [tested])
@@ -38,17 +39,29 @@ const ExerciseMultipleChoice = ({ word, handleChange, value }) => {
 
   const placeholder = '_'.repeat(maximumLength)
 
+  const handle = (e, word, data) => {
+
+    if (!touched) {
+      setTouched(true)
+      setClassName("touched-multiple")
+    }
+
+    handleChange(e, word, data)
+  }
+
+
   return (
     <Dropdown
       key={word.ID}
       options={options}
       placeholder={placeholder}
       value={value}
-      onChange={(e, data) => handleChange(e, word, data)}
+      onChange={(e, data) => handle(e, word, data)}
       selection
       floating
+      className={className}
       style={{
-        minWidth: `${maximumLength}em`, width: `${maximumLength}em`, height: '1em', backgroundColor: color, minHeight: 0, lineHeight: 0, border: "none", borderRadius: '6px'
+        minWidth: `${maximumLength}em`, width: `${maximumLength}em`, height: '1em', minHeight: 0, lineHeight: 0, border: "none", borderRadius: '6px'
       }}
     />
   )

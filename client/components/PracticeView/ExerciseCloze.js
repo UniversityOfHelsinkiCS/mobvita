@@ -3,7 +3,7 @@ import React, { useState, useEffect } from 'react'
 import { Input, Icon } from 'semantic-ui-react'
 
 const ExerciseCloze = ({ word, handleChange, handleClick, value }) => {
-  const [color, setColor] = useState('#ffffab')
+  const [className, setClassName] = useState('untouched-cloze')
   const [touched, setTouched] = useState(false)
   const [disabled, setDisabled] = useState(false)
   const { isWrong, tested } = word
@@ -13,7 +13,7 @@ const ExerciseCloze = ({ word, handleChange, handleClick, value }) => {
   const changeValue = (e) => {
     if (!touched) {
       setTouched(true)
-      setColor('lightyellow')
+      setClassName('touched-cloze')
     }
     handleChange(e, word)
   }
@@ -21,9 +21,9 @@ const ExerciseCloze = ({ word, handleChange, handleClick, value }) => {
   useEffect(() => {
     if (tested) {
       if (isWrong) {
-        setColor('#ff5e5e')
+        setClassName('wrong')
       } else {
-        setColor('yellowgreen')
+        setClassName('correct')
         setDisabled(true)
       }
     }
@@ -39,14 +39,16 @@ const ExerciseCloze = ({ word, handleChange, handleClick, value }) => {
       value={value}
       onChange={changeValue}
       transparent
+      className={className}
+
       style={{
         minWidth: `${Math.floor(word.base ? word.base.length : word.bases.length)}em`,
         width: `${Math.floor(word.surface.length + 1)}em`,
         marginRight: '2px',
         height: '1.5em',
         borderRadius: '6px',
-        backgroundColor: color,
       }}
+
     />
   )
 }
