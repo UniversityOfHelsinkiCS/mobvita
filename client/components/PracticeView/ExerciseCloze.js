@@ -31,6 +31,7 @@ const ExerciseCloze = ({ word, handleChange, handleClick, value }) => {
 
   return (
     <Input
+      autoCapitalize="off"
       disabled={disabled}
       key={word.ID}
       icon={<Icon name="volume up" link onClick={clickVolume} style={{ marginRight: '4px' }} />}
