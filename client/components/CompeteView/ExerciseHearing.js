@@ -30,6 +30,7 @@ const ExerciseHearing = ({ word, handleClick, handleChange, value }) => {
       value={value}
       icon={<Icon name="volume up" link onClick={() => clickHandler(word.surface)} style={{ marginRight: '4px' }} />}
       transparent
+      autoCapitalize="off"
       style={{
         minWidth: `${word.surface.length + 1}em`,
         width: `${Math.floor(word.surface.length + 1)}em`,
