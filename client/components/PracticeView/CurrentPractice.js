@@ -20,6 +20,8 @@ const CurrentPractice = ({ storyId }) => {
   const [attempt, setAttempts] = useState(0)
   const [language, setLanguage] = useState('')
   const [exerciseCount, setExerciseCount] = useState(0)
+  const [disabled, setDisabled] = useState(false)
+  const [waited, setWaited] = useState(false)
 
   const dispatch = useDispatch()
 
@@ -221,6 +223,19 @@ const CurrentPractice = ({ storyId }) => {
     dispatch(getNextSnippet(storyId, currentSnippetId))
   }
 
+  const getConfirmation = () => {
+    if (!waited) {
+      setDisabled(true)
+      setTimeout(() => {
+        setDisabled(false)
+        setWaited(true)
+      }, 1000);
+    } else {
+      setWaited(false)
+      skipThisPart()
+    }
+  }
+
   if (!snippets.focused || snippets.pending) return null
 
   const { practice_snippet: practice } = snippets.focused
@@ -241,7 +256,7 @@ const CurrentPractice = ({ storyId }) => {
         <Button fluid onClick={continueToNextSnippet}>Continue to next snippet</Button>
         : (touched >= Math.ceil(exerciseCount / 2)
           ? <Button fluid onClick={() => checkAnswers()}>{`Check answers ${attempt}/2 attemps used`}</Button>
-          : <Button fluid onClick={() => skipThisPart()}>Skip this part</Button>
+          : <Button disabled={disabled} fluid onClick={() => getConfirmation()}>{disabled ? "Are you sure?" : "Skip this part"}</Button>
         )
       }
     </>
