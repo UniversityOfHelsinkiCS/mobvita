@@ -3,6 +3,7 @@ import { Dropdown } from 'semantic-ui-react'
 
 const ExerciseMultipleChoice = ({ word, handleChange, value }) => {
   const [color, setColor] = useState('LightCyan')
+  const [options, setOptions] = useState([])
   const { tested, isWrong } = word
 
   useEffect(() => {
@@ -15,19 +16,25 @@ const ExerciseMultipleChoice = ({ word, handleChange, value }) => {
     }
   }, [tested])
 
+
+  useEffect(() => {
+    const temp = word.choices.map((choice) => {
+      return {
+        key: `${word.ID}_${choice}`,
+        value: choice,
+        text: choice,
+      }
+    })
+    setOptions(temp)
+  }, [word])
+
+
   const maximumLength = word.choices.reduce((maxLength, currLength) => {
     if (currLength.length > maxLength) return currLength.length
     return maxLength
   }, 0)
 
-  const options = word.choices.map((choice) => {
-    console.log(choice)
-    return {
-      key: `${word.ID}_${choice}`,
-      value: choice,
-      text: choice,
-    }
-  })
+
 
   const placeholder = '_'.repeat(maximumLength)
 
