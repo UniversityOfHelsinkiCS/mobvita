@@ -1,4 +1,4 @@
-import React, { useState, useEffect, Fragment } from 'react'
+import React, { useState, useEffect } from 'react'
 import { Modal, Button, Input } from 'semantic-ui-react'
 import { useDispatch } from 'react-redux'
 import isUrl from 'is-url'
