@@ -4,7 +4,7 @@ import { BrowserRouter } from 'react-router-dom'
 import { Provider } from 'react-redux'
 import 'semantic-ui-css/semantic.min.css'
 import 'react-virtualized/styles.css'
-import 'Assets/custom.css'
+import 'Assets/custom.scss'
 
 import store from 'Utilities/store'
 import { basePath } from 'Utilities/common'

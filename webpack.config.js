@@ -63,6 +63,17 @@ module.exports = (env, argv) => {
           use: [MiniCssExtractPlugin.loader, 'css-loader'],
         },
         {
+          test: /\.s[ac]ss$/i,
+          use: [
+            // Creates `style` nodes from JS strings
+            'style-loader',
+            // Translates CSS into CommonJS
+            'css-loader',
+            // Compiles Sass to CSS
+            'sass-loader',
+          ],
+        },
+        {
           // Load other files
           test: /\.(png|jpg|gif|svg|eot|ttf|woff|woff2)$/,
           use: ['file-loader'],

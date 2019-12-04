@@ -1,3 +1,5 @@
+$wrong-color: #ff5e5e;
+
 .content {
   padding: 10px;
   padding-bottom: 5em;
@@ -17,9 +19,6 @@
   cursor:pointer;
 }
 
-
-
-
 .word-interactive--exercise {
   background-color: lightblue;
   border-radius: 1em;
@@ -28,8 +27,6 @@
   padding-top: 0.2em;
   padding-bottom: 0.2em;
 }
-
-
 
 .untouched-cloze {
   background-color:#ffff83;
@@ -56,7 +53,7 @@
 }
 
 .wrong {
-  background-color: #ff5e5e;
+  background-color: $wrong-color;
 }
 
 .correct {
