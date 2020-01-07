@@ -11,45 +11,59 @@ $wrong-color: #ff5e5e;
   margin: 0 auto;
 }
 
-.word-interactive:hover {
-  background-color: #10d3ff;
-}
-
 .word-interactive{
   cursor:pointer;
+
+  &:hover{
+    background-color: #10d3ff;
+  }
+
+  &--exercise{ // Related to snippet history...
+    background-color: lightblue;
+    border-radius: 1em;
+    padding-left: 1em;
+    padding-right: 1em;
+    padding-top: 0.2em;
+    padding-bottom: 0.2em;
+  }
+
 }
 
-.word-interactive--exercise {
-  background-color: lightblue;
-  border-radius: 1em;
-  padding-left: 1em;
-  padding-right: 1em;
-  padding-top: 0.2em;
-  padding-bottom: 0.2em;
+.cloze {
+  &.untouched{
+    background-color:#ffff83;
+  }
+  &.touched {
+    background-color: lightyellow;
+  }
 }
 
-.untouched-cloze {
-  background-color:#ffff83;
+.hearing {
+  &.untouched {
+    background-color: lightblue;
+
+  }
+  &.touched{
+    background-color: #cdf3ff;
+
+  }
 }
 
-.touched-cloze {
-  background-color: lightyellow;
-}
+.exercise-multiple{
+  height:1em;
+  min-height: 0 !important;
+  line-height: 0 !important;
+  border-radius: 6px !important;
+  border:none !important;
 
-.untouched-hearing {
-  background-color: lightblue;
-}
+  &.untouched {
+    background-color: #ccade6 !important;
+  }
 
-.touched-hearing {
-  background-color: #cdf3ff;
-}
+  &.touched {
+    background-color: #dacbe6 !important;
+  }
 
-.untouched-multiple {
-  background-color: #ccade6 !important;
-}
-
-.touched-multiple { 
-  background-color: #dacbe6 !important;
 }
 
 .wrong {
@@ -59,6 +73,7 @@ $wrong-color: #ff5e5e;
 .correct {
   background-color: yellowgreen;
 }
+
 
 /* CSS - Cascading Style Sheet */
 /* Palette color codes */
