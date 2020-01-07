@@ -1,8 +1,9 @@
 import React, { useEffect, useState } from 'react'
 import { Dropdown } from 'semantic-ui-react'
+import { getTextWidth } from 'Utilities/common'
 
 const ExerciseMultipleChoice = ({ word, handleChange, value }) => {
-  const [className, setClassName] = useState('untouched-multiple')
+  const [className, setClassName] = useState('exercise-multiple untouched')
   const [options, setOptions] = useState([])
   const [touched, setTouched] = useState(false)
   const { tested, isWrong } = word
@@ -30,12 +31,19 @@ const ExerciseMultipleChoice = ({ word, handleChange, value }) => {
   }, [word])
 
 
+
   const maximumLength = word.choices.reduce((maxLength, currLength) => {
     if (currLength.length > maxLength) return currLength.length
     return maxLength
   }, 0)
 
 
+  let testString = ''
+  word.choices.forEach(choice => {
+    if (choice.length > testString.length) {
+      testString = choice
+    }
+  });
 
   const placeholder = '_'.repeat(maximumLength)
 
@@ -43,7 +51,7 @@ const ExerciseMultipleChoice = ({ word, handleChange, value }) => {
 
     if (!touched) {
       setTouched(true)
-      setClassName("touched-multiple")
+      setClassName("exercise-multiple touched")
     }
 
     handleChange(e, word, data)
@@ -59,10 +67,8 @@ const ExerciseMultipleChoice = ({ word, handleChange, value }) => {
       onChange={(e, data) => handle(e, word, data)}
       selection
       floating
-      className={className}
-      style={{
-        minWidth: `${maximumLength}em`, width: `${maximumLength}em`, height: '1em', minHeight: 0, lineHeight: 0, border: "none", borderRadius: '6px'
-      }}
+      style={{ width: getTextWidth(testString), minWidth: getTextWidth(testString) }}
+      className={`${className}`}
     />
   )
 }

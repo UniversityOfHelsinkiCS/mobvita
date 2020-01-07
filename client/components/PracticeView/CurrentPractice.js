@@ -148,6 +148,8 @@ const CurrentPractice = ({ storyId }) => {
     setAnswers(newAnswers)
   }
 
+
+
   const wordInput = (word) => {
 
     if (!word.id && !word.lemmas) return word.surface

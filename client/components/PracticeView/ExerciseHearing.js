@@ -1,8 +1,10 @@
 import React, { createRef, useState, useEffect } from 'react'
 import { Input, Icon } from 'semantic-ui-react'
+import { getTextWidth } from 'Utilities/common'
+
 
 const ExerciseHearing = ({ word, handleClick, handleChange, value }) => {
-  const [className, setClassname] = useState('untouched-hearing')
+  const [className, setClassname] = useState('hearing untouched')
   const [touched, setTouched] = useState(false)
   const inputRef = createRef()
 
@@ -25,7 +27,7 @@ const ExerciseHearing = ({ word, handleClick, handleChange, value }) => {
 
   const handle = (e, word) => {
     if (!touched) {
-      setClassname("touched-hearing")
+      setClassname("hearing touched")
       setTouched(true)
     }
     handleChange(e, word)
@@ -41,8 +43,8 @@ const ExerciseHearing = ({ word, handleClick, handleChange, value }) => {
       transparent
       className={className}
       style={{
-        minWidth: `${word.surface.length + 1}em`,
-        width: `${Math.floor(word.surface.length + 1)}em`,
+        width: getTextWidth(word.surface),
+        minWidth: getTextWidth(word.surface),
         marginRight: '2px',
         height: '1.5em',
         borderRadius: '6px',
