@@ -3,7 +3,7 @@ import { useDispatch } from 'react-redux'
 import { Tab } from 'semantic-ui-react'
 import { getStories } from 'Utilities/redux/storiesReducer'
 import StoryList from 'Components/StoryListView/StoryList'
-import HomeView from 'Components/StoryListView/HomeView'
+import HomeView from 'Components/LandingPage/HomeView'
 import { useIntl } from 'react-intl'
 
 const Tabs = ({ match, location }) => {

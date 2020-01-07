@@ -1,16 +1,16 @@
 import React, { useState, useEffect } from 'react'
 import Router from 'Components/Router'
 import { Link } from 'react-router-dom'
-import { Sidebar, Segment, Menu, Button, Dropdown, Icon } from "semantic-ui-react"
+import { Sidebar, Segment, Menu, Button, Dropdown, Icon } from 'semantic-ui-react'
 import { FormattedMessage, useIntl } from 'react-intl'
 import { useDispatch, useSelector } from 'react-redux'
 import { Swipeable, useSwipeable } from 'react-swipeable'
 
 import { localeOptions } from 'Utilities/common'
 import { setLocale } from 'Utilities/redux/localeReducer'
-import { sidebarSetOpen } from "Utilities/redux/sidebarReducer"
+import { sidebarSetOpen } from 'Utilities/redux/sidebarReducer'
 import { logout } from 'Utilities/redux/userReducer'
-import { resetCurrentSnippet } from "Utilities/redux/snippetsReducer"
+import { resetCurrentSnippet } from 'Utilities/redux/snippetsReducer'
 
 
 
