@@ -12,6 +12,7 @@ const App = () => {
           <Router />
         </div>
       </div>
+      {<span>{`Built at: ${__VERSION__}`}</span>}
     </>
   )
 

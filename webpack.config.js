@@ -104,6 +104,9 @@ module.exports = (env, argv) => {
         chunkFilename: '[name]-[id].css',
       }),
       ...additionalPlugins,
+      new webpack.DefinePlugin({
+        __VERSION__: JSON.stringify(new Date())
+      })
     ],
   }
 }
