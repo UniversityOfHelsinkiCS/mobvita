@@ -115,13 +115,11 @@ export default function Bar() {
     )
   }
   return (
-    <Swipeable onSwipedRight={() => dispatch(sidebarSetOpen(true))}>
-      <Segment
-        onClick={() => dispatch(sidebarSetOpen(true))}
-        style={{ padding: '0.2em', height: '10%', position: 'absolute', zIndex: 100, display: 'flex', justifyContent: 'center', flexDirection: 'column', alignItems: 'center' }}
-      >
-        <Icon name="angle right" />
-      </Segment>
-    </Swipeable>
+    <Icon
+      name="bars"
+      bordered
+      onClick={() => dispatch(sidebarSetOpen(true))}
+      className="sidebar-hamburger"
+    />
   )
 }

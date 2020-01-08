@@ -21,7 +21,7 @@
     "max-len": [
       "error",
       {
-        "code": 200
+        "code": 100
       }
     ],
     "quotes": [
