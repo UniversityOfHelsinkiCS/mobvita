@@ -54,6 +54,7 @@ export default function Bar() {
     <>
       <Icon
         name="bars"
+        size="big"
         onClick={() => dispatch(sidebarSetOpen(!open))}
         id="sidebar-hamburger"
       />

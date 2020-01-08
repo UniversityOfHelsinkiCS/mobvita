@@ -1,3 +1,7 @@
+.body{
+  font-family: sans-serif; 
+}
+
 $wrong-color: #ff5e5e;
 
 .content {
@@ -77,13 +81,10 @@ $wrong-color: #ff5e5e;
 #sidebar{
   &-hamburger{
     position: absolute;
-    height:2em;
-    width:2em;
     z-index: 100;
   }
-
-
 }
+
 
 
 /* CSS - Cascading Style Sheet */

@@ -1,19 +1,15 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect } from 'react'
 import { useDispatch } from 'react-redux'
 import { Tab } from 'semantic-ui-react'
 import { getStories } from 'Utilities/redux/storiesReducer'
 import StoryList from 'Components/StoryListView/StoryList'
 import HomeView from 'Components/LandingPage/HomeView'
 import { useIntl } from 'react-intl'
-import SwipeableViews from 'react-swipeable-views'
-
 
 const Tabs = ({ match, location }) => {
   const intl = useIntl()
   const dispatch = useDispatch()
   const { language } = match.params
-
-
   useEffect(() => {
     dispatch(getStories(language, {
       sort_by: 'date',
@@ -36,26 +32,17 @@ const Tabs = ({ match, location }) => {
 
   const defaultActiveIndex = location.hash === '#home' ? 0 : 1
 
-
   return (
-    <SwipeableViews enableMouseEvents>
-      <HomeView />
-      <StoryList language={language} />
-    </SwipeableViews>
+    <div style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'space-between' }}>
+      <div style={{ width: '110em' }}>
+        <Tab
+          panes={panes}
+          renderActiveOnly
+          defaultActiveIndex={defaultActiveIndex}
+        />
+      </div>
+    </div>
   )
-
-
-  // return (
-  //   <div style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'space-between' }}>
-  //     <div style={{ width: '110em' }}>
-  //       <Tab
-  //         panes={panes}
-  //         renderActiveOnly
-  //         activeIndex={activeIndex}
-  //       />
-  //     </div>
-  //   </div>
-  // )
 }
 
 export default Tabs
