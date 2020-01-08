@@ -21,7 +21,7 @@ const CurrentPractice = ({ storyId }) => {
   const [exerciseCount, setExerciseCount] = useState(0)
   const [disabled, setDisabled] = useState(false)
   const [waited, setWaited] = useState(false)
-  const [color, setColor] = useState("")
+  const [color, setColor] = useState('')
 
   const dispatch = useDispatch()
 
@@ -36,6 +36,17 @@ const CurrentPractice = ({ storyId }) => {
     dispatch(clearTranslationAction())
   }, [])
 
+
+  const getExerciseCount = () => {
+    let count = 0
+    snippets.focused.practice_snippet.forEach((word) => {
+      if (word.id) {
+        count++
+      }
+    })
+    return count
+  }
+
   const setInitialAnswers = () => {
     if (snippets.focused) {
       const filteredSnippet = snippets.focused.practice_snippet.filter(word => word.id)
@@ -48,7 +59,7 @@ const CurrentPractice = ({ storyId }) => {
             correct: surface,
             users_answer: (listen || choices) ? '' : (base || bases),
             id,
-          }
+          },
         }
         return newAnswerObject
       }, {})
@@ -71,17 +82,6 @@ const CurrentPractice = ({ storyId }) => {
     }
   }, [snippets])
 
-  const getExerciseCount = () => {
-    let count = 0
-    snippets.focused.practice_snippet.forEach((word) => {
-      if (word.id) {
-        count++
-      }
-    })
-    return count
-  }
-
-
   const checkAnswers = async () => {
     const { starttime, snippetid } = snippets.focused
 
@@ -89,7 +89,7 @@ const CurrentPractice = ({ storyId }) => {
       starttime,
       story_id: storyId,
       snippet_id: [snippetid[0]],
-      touched: touched,
+      touched,
       untouched: exerciseCount - touched,
       attempt,
       options,
@@ -149,16 +149,14 @@ const CurrentPractice = ({ storyId }) => {
   }
 
 
-
   const wordInput = (word) => {
-
     if (!word.id && !word.lemmas) return word.surface
     if (!word.id) {
       return (
         <span
           role="button"
           tabIndex={-1}
-          className={!word.base && answers[word.ID] ? "word-interactive--exercise" : "word-interactive "}
+          className={!word.base && answers[word.ID] ? 'word-interactive--exercise' : 'word-interactive '}
           key={word.ID}
           onKeyDown={() => textToSpeech(word.surface, word.lemmas)}
           onClick={() => textToSpeech(word.surface, word.lemmas)}
@@ -227,15 +225,15 @@ const CurrentPractice = ({ storyId }) => {
 
   const getConfirmation = () => {
     if (!waited) {
-      setColor("#983AF8")
+      setColor('#983AF8')
       setDisabled(true)
       setTimeout(() => {
         setDisabled(false)
         setWaited(true)
-        setColor("#9BFD2B")
-      }, 1000);
+        setColor('#9BFD2B')
+      }, 1000)
     } else {
-      setColor("")
+      setColor('')
       setWaited(false)
       skipThisPart()
     }
@@ -247,7 +245,13 @@ const CurrentPractice = ({ storyId }) => {
 
   return (
     <>
-      <Header>{story.title} Part {`${snippets.focused.snippetid[0] + 1}/${snippets.totalnum}`}</Header>
+      <Header>
+        {story.title}
+        {' '}
+Part
+        {' '}
+        {`${snippets.focused.snippetid[0] + 1}/${snippets.totalnum}`}
+      </Header>
       {story.url ? <a href={story.url}>Link to the source</a> : null}
 
       <PreviousSnippet snippet={snippets.previous} />
@@ -256,11 +260,11 @@ const CurrentPractice = ({ storyId }) => {
         {practice.map(exercise => wordInput(exercise))}
       </Segment>
 
-      {exerciseCount === 0 ?
-        <Button fluid onClick={continueToNextSnippet}>Continue to next snippet</Button>
+      {exerciseCount === 0
+        ? <Button fluid onClick={continueToNextSnippet}>Continue to next snippet</Button>
         : (touched >= Math.ceil(exerciseCount / 2)
           ? <Button fluid onClick={() => checkAnswers()}>{`Check answers ${attempt}/2 attemps used`}</Button>
-          : <Button style={{ backgroundColor: color }} disabled={disabled} fluid onClick={() => getConfirmation()}>{disabled ? "Are you sure?" : "Skip this part"}</Button>
+          : <Button style={{ backgroundColor: color }} disabled={disabled} fluid onClick={() => getConfirmation()}>{disabled ? 'Are you sure?' : 'Skip this part'}</Button>
         )
       }
     </>

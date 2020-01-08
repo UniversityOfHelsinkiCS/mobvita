@@ -1,7 +1,5 @@
 import React, { useState } from 'react'
-import {
-  Button, Header, Card, Icon, Accordion, List, Progress,
-} from 'semantic-ui-react'
+import { Button, Header, Card, Icon, Accordion, List, Progress } from 'semantic-ui-react'
 import { Link } from 'react-router-dom'
 import moment from 'moment'
 
@@ -26,8 +24,14 @@ const StoryListItem = ({ story, language }) => {
     `Difficulty: ${story.difficulty}`,
     `Story Rating: ${story.elo_score}`,
     `Date added ${moment(story.date).format('MMM Do YYYY')}`,
-    <>% of exercises answered correctly <Progress /></>,  // TODO add progress bar logic
-    <>% of story covered <Progress /></>]
+    <>
+      % of exercises answered correctly
+      <Progress />
+    </>, // TODO add progress bar logic
+    <>
+      % of story covered
+      <Progress />
+    </>]
 
   const storyInfoList = storyInfoElements.map((element, i) => <List.Item key={`${story._id}-${i}`}>{element}</List.Item>)
   return (

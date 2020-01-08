@@ -1,9 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { Link } from 'react-router-dom'
-import {
-  Button, Placeholder, Header, Card, Icon, Dropdown, Accordion, Search,
-} from 'semantic-ui-react'
+import { Button, Placeholder, Header, Card, Icon, Dropdown, Accordion, Search } from 'semantic-ui-react'
 
 import { getStories, getAllStories } from 'Utilities/redux/storiesReducer'
 import StoryListItem from 'Components/StoryListView/StoryListItem'

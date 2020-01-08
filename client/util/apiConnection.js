@@ -40,9 +40,7 @@ export const handleRequest = store => next => async (action) => {
   next(action)
   const { requestSettings } = action
   if (requestSettings) {
-    const {
-      route, method, data, prefix, query,
-    } = requestSettings
+    const { route, method, data, prefix, query } = requestSettings
     try {
       const res = await callApi(route, method, data)
       store.dispatch({ type: `${prefix}_SUCCESS`, response: res.data, query })

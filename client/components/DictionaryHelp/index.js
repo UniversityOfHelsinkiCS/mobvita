@@ -57,9 +57,9 @@ const DictionaryHelp = ({ translation }) => {
 
   return (
     <div>
-      <Segment className="navigationpanel" style={{ position: 'fixed', right: '5%', bottom: '2%', width: "90%" }}>
+      <Segment className="navigationpanel" style={{ position: 'fixed', right: '5%', bottom: '2%', width: '90%' }}>
         <Header size="medium" textAlign="center">
-          <Button className="navigationbuttonclose" icon basic floated="right" onClick={() => setShow(false)} >
+          <Button className="navigationbuttonclose" icon basic floated="right" onClick={() => setShow(false)}>
             <Icon name="angle down" />
           </Button>
         </Header>
@@ -71,8 +71,6 @@ const DictionaryHelp = ({ translation }) => {
   )
 }
 
-const mapStateToProps = ({ translation }) => ({
-  translation: translation.data,
-})
+const mapStateToProps = ({ translation }) => ({ translation: translation.data })
 
 export default connect(mapStateToProps, null)(DictionaryHelp)

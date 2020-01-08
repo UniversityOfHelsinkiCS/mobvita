@@ -2,7 +2,6 @@ import React from 'react'
 import { Segment } from 'semantic-ui-react'
 
 const PreviousSnippet = ({ snippet }) => {
-
   if (!snippet) return null
 
   const { practice_snippet: practices } = snippet

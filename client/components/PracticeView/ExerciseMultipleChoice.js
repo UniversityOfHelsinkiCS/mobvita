@@ -20,16 +20,13 @@ const ExerciseMultipleChoice = ({ word, handleChange, value }) => {
 
 
   useEffect(() => {
-    const temp = word.choices.map((choice) => {
-      return {
-        key: `${word.ID}_${choice}`,
-        value: choice,
-        text: choice,
-      }
-    })
+    const temp = word.choices.map(choice => ({
+      key: `${word.ID}_${choice}`,
+      value: choice,
+      text: choice,
+    }))
     setOptions(temp)
   }, [word])
-
 
 
   const maximumLength = word.choices.reduce((maxLength, currLength) => {
@@ -39,19 +36,18 @@ const ExerciseMultipleChoice = ({ word, handleChange, value }) => {
 
 
   let testString = ''
-  word.choices.forEach(choice => {
+  word.choices.forEach((choice) => {
     if (choice.length > testString.length) {
       testString = choice
     }
-  });
+  })
 
   const placeholder = '_'.repeat(maximumLength)
 
   const handle = (e, word, data) => {
-
     if (!touched) {
       setTouched(true)
-      setClassName("exercise-multiple touched")
+      setClassName('exercise-multiple touched')
     }
 
     handleChange(e, word, data)

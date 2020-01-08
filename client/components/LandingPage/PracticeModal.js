@@ -4,6 +4,7 @@ import { Link } from 'react-router-dom'
 import { useSelector } from 'react-redux'
 // import { getLearningLanguage } from 'Utilities/redux/languageReducer'
 
+<<<<<<< HEAD
 const PracticeModal = ({ trigger, randomStoryLink }) => {
   const [storyType, setStoryType] = useState('any')
   const [category, setCategory] = useState('any')
@@ -64,5 +65,22 @@ const PracticeModal = ({ trigger, randomStoryLink }) => {
     </Modal>
   )
 }
+=======
+const PracticeModal = ({ trigger, randomStoryLink }) => (
+  <Modal trigger={trigger}>
+    <Modal.Header>Choose practice</Modal.Header>
+    <Modal.Content>
+      <Link to={randomStoryLink}>
+        <Button>
+            random story
+        </Button>
+      </Link>
+    </Modal.Content>
+    <Modal.Actions>
+
+    </Modal.Actions>
+  </Modal>
+)
+>>>>>>> e7bb2f12595b557fc4c299420c12265e0c4ce970
 
 export default PracticeModal

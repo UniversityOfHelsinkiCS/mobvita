@@ -27,7 +27,7 @@ const ExerciseHearing = ({ word, handleClick, handleChange, value }) => {
 
   const handle = (e, word) => {
     if (!touched) {
-      setClassname("hearing touched")
+      setClassname('hearing touched')
       setTouched(true)
     }
     handleChange(e, word)

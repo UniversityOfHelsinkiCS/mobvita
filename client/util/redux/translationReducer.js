@@ -9,9 +9,7 @@ export const getTranslationAction = (language, wordLemmas, locale) => {
   return callBuilder(route, prefix)
 }
 
-export const clearTranslationAction = () => ({
-  type: 'CLEAR_TRANSLATION'
-})
+export const clearTranslationAction = () => ({ type: 'CLEAR_TRANSLATION' })
 
 
 export default (state = { data: [] }, action) => {
@@ -33,7 +31,7 @@ export default (state = { data: [] }, action) => {
     case 'CLEAR_TRANSLATION': {
       return {
         ...state,
-        data: []
+        data: [],
       }
     }
     default:

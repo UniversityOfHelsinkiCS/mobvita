@@ -1,17 +1,15 @@
 import React, { useState, useEffect } from 'react'
-import Router from 'Components/Router'
 import { Link } from 'react-router-dom'
-import { Sidebar, Segment, Menu, Button, Dropdown, Icon } from 'semantic-ui-react'
-import { FormattedMessage, useIntl } from 'react-intl'
+import { Sidebar, Segment, Menu, Dropdown, Icon } from 'semantic-ui-react'
+import { useIntl } from 'react-intl'
 import { useDispatch, useSelector } from 'react-redux'
-import { Swipeable, useSwipeable } from 'react-swipeable'
+import { Swipeable } from 'react-swipeable'
 
 import { localeOptions } from 'Utilities/common'
 import { setLocale } from 'Utilities/redux/localeReducer'
 import { sidebarSetOpen } from 'Utilities/redux/sidebarReducer'
 import { logout } from 'Utilities/redux/userReducer'
 import { resetCurrentSnippet } from 'Utilities/redux/snippetsReducer'
-
 
 
 export default function Bar() {
@@ -45,6 +43,7 @@ export default function Bar() {
     }
   }, [])
 
+
   useEffect(() => {
     const currentLanguge = window.location.pathname.split('/')[2]
     setLanguage(currentLanguge)
@@ -53,21 +52,21 @@ export default function Bar() {
 
   if (open) {
     return (
-      <Swipeable style={{ width: "20em", height: "100vh", position: "absolute" }} onSwipedRight={() => dispatch(sidebarSetOpen(true))} onSwipedLeft={() => dispatch(sidebarSetOpen(false))} trackMouse={true} >
+      <Swipeable style={{ width: '20em', height: '100vh', position: 'absolute' }} onSwipedRight={() => dispatch(sidebarSetOpen(true))} onSwipedLeft={() => dispatch(sidebarSetOpen(false))} trackMouse>
         <Sidebar
           as={Menu}
-          animation='push'
-          icon='labeled'
+          animation="push"
+          icon="labeled"
           vertical
-          //onHide={() => dispatch(sidebarSetOpen(false))}
+          // onHide={() => dispatch(sidebarSetOpen(false))}
           visible={open}
-          style={{ width: "20em" }}
+          style={{ width: '20em' }}
         >
 
           {user && (
             <Menu.Item
               onClick={() => menuClickWrapper(signOut)}
-              icon='log out'
+              icon="log out"
               content={user.user.username}
             />
           )}
@@ -75,24 +74,27 @@ export default function Bar() {
           <Menu.Item
             as={Link}
             onClick={() => menuClickWrapper()}
-            to={`/`}
+            to="/"
             content={intl.formatMessage({ id: 'HOME' })}
             icon="home"
           />
 
           <Menu.Item
-            as={Link} to={`/stories/${language}#home`}
+            as={Link}
+            to={`/stories/${language}#home`}
             onClick={() => menuClickWrapper()}
             icon="gamepad"
             content="Stories"
           />
 
-          {focusedSnippet &&
-            <Menu.Item
-              onClick={() => menuClickWrapper(() => dispatch(resetCurrentSnippet(focusedSnippet.storyid)))}
-              icon="undo"
-              content="Restart current story"
-            />
+          {focusedSnippet
+            && (
+              <Menu.Item
+                onClick={() => menuClickWrapper(() => dispatch(resetCurrentSnippet(focusedSnippet.storyid)))}
+                icon="undo"
+                content="Restart current story"
+              />
+            )
           }
 
 
@@ -111,14 +113,15 @@ export default function Bar() {
         </Sidebar>
       </Swipeable>
     )
-  } else {
-    return (
-      <Swipeable onSwipedRight={() => dispatch(sidebarSetOpen(true))}>
-        <Segment onClick={() => dispatch(sidebarSetOpen(true))} style={{ padding: "0.2em", height: "10%", position: "absolute", zIndex: 100, display: "flex", justifyContent: "center", flexDirection: "column", alignItems: "center" }}>
-          <Icon name="angle right" />
-        </Segment>
-      </Swipeable>
-    )
   }
-
+  return (
+    <Swipeable onSwipedRight={() => dispatch(sidebarSetOpen(true))}>
+      <Segment
+        onClick={() => dispatch(sidebarSetOpen(true))}
+        style={{ padding: '0.2em', height: '10%', position: 'absolute', zIndex: 100, display: 'flex', justifyContent: 'center', flexDirection: 'column', alignItems: 'center' }}
+      >
+        <Icon name="angle right" />
+      </Segment>
+    </Swipeable>
+  )
 }

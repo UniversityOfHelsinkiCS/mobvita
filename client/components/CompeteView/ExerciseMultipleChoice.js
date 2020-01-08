@@ -7,13 +7,11 @@ const ExerciseMultipleChoice = ({ word, handleChange, value }) => {
     return maxLength
   }, 0)
 
-  const options = word.choices.map((choice) => {
-    return {
-      key: `${word.ID}_${choice}`,
-      value: choice,
-      text: choice,
-    }
-  })
+  const options = word.choices.map(choice => ({
+    key: `${word.ID}_${choice}`,
+    value: choice,
+    text: choice,
+  }))
 
   const placeholder = '_'.repeat(maximumLength)
 
@@ -25,7 +23,7 @@ const ExerciseMultipleChoice = ({ word, handleChange, value }) => {
       value={value}
       onChange={(e, data) => handleChange(e, word, data)}
       selection
-      style={{ minWidth: `${maximumLength}em`, width: `${maximumLength}em`, height:'1em', backgroundColor:'LightCyan'}}
+      style={{ minWidth: `${maximumLength}em`, width: `${maximumLength}em`, height: '1em', backgroundColor: 'LightCyan' }}
     />
   )
 }

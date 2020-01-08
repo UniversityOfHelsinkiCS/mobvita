@@ -42,7 +42,7 @@ export const images = {
   flagSpanish,
   flagPortuguese,
   flagTurkish,
-  flagFrench
+  flagFrench,
 }
 
 export const capitalize = (word) => {
@@ -57,9 +57,7 @@ export const supportedLearningLanguages = [
 ].sort((a, b) => a.localeCompare(b))
 
 
-export const colors = {
-
-}
+export const colors = {}
 
 export const localeOptions = [
   { name: 'Finnish', code: 'fi' },
@@ -69,10 +67,10 @@ export const localeOptions = [
 export * from '@root/config/common'
 
 export const getTextWidth = (text) => {
-  var myCanvas = getTextWidth.canvas || (getTextWidth.canvas = document.createElement("canvas"));
-  var context = myCanvas.getContext("2d");
-  context.font = "1rem lato";
+  const myCanvas = getTextWidth.canvas || (getTextWidth.canvas = document.createElement('canvas'))
+  const context = myCanvas.getContext('2d')
+  context.font = '1rem lato'
 
-  var metrics = context.measureText(text);
-  return 40 + metrics.width; // add just random number, lets hope its fine.
-};
+  const metrics = context.measureText(text)
+  return 40 + metrics.width // add just random number, lets hope its fine.
+}
