@@ -74,6 +74,13 @@ $wrong-color: #ff5e5e;
   background-color: yellowgreen;
 }
 
+.sidebar{
+  &-hamburger{
+    position: absolute;
+    z-index: 100;
+  }
+}
+
 
 /* CSS - Cascading Style Sheet */
 /* Palette color codes */
