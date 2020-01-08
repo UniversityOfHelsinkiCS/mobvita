@@ -1,46 +1,68 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { Modal, Button, Select } from 'semantic-ui-react'
 import { Link } from 'react-router-dom'
 import { useSelector } from 'react-redux'
-// import { getLearningLanguage } from 'Utilities/redux/languageReducer'
 
-const PracticeModal = ({ trigger, randomStoryLink }) => {
+const PracticeModal = ({ trigger }) => {
   const [storyType, setStoryType] = useState('any')
   const [category, setCategory] = useState('any')
-  const stories = useSelector(({ stories }) => stories.data)
+  const [filteredStories, setFilteredStories] = useState([])
+
   const user = useSelector(({ user }) => user.data.user)
+
+  const [randomStoryIndex, setRandom] = useState(0)
+  const [language, setLanguage] = useState('')
+  const { stories, pending } = useSelector(({ stories }) => ({ stories: stories.data, pending: stories.pending }))
+
+  useEffect(() => {
+    const filtered = stories.filter((story) => {
+      if (storyType === 'any') {
+        return true
+      }
+
+      if (storyType === 'public' && story.public === true) {
+        return true
+      }
+
+      return storyType === 'private' && story.user === user.oid
+    }).filter((story) => {
+      if (category === 'any') {
+        return true
+      }
+
+      return story.category === category
+    })
+
+    setFilteredStories(filtered)
+
+    const currentLanguage = window.location.pathname.split('/')[2]
+    setLanguage(currentLanguage)
+    if (filtered.length > 0) {
+      const random = Math.ceil(Math.random() * filtered.length) - 1
+      setRandom(random)
+    }
+  }, [stories, storyType, category])
+
+  if (pending) return null
 
   const storyTypes = ['any', 'private', 'public']
   const categories = ['any', 'Science', 'Politics', 'Sports', 'Culture']
 
-  const filteredStories = stories.filter((story) => {
-    if (storyType === 'any') {
-      return true
-    }
+  let filteredLink = null
 
-    if (storyType === 'public' && story.public === true) {
-      return true
-    }
+  if (filteredStories.length > 0) {
+    filteredLink = `/stories/${language}/${filteredStories[randomStoryIndex]._id}/practice`
+  }
 
-
-    return storyType === 'private' && story.user === user.oid
-  }).filter((story) => {
-    if (category === 'any') {
-      return true
-    }
-
-    return story.category === category
-  })
+  const handleClose = () => {
+    setStoryType('any')
+    setCategory('any')
+  }
 
   return (
-    <Modal trigger={trigger}>
+    <Modal trigger={trigger} onClose={handleClose}>
       <Modal.Header>Choose practice</Modal.Header>
       <Modal.Content>
-        <Link to={randomStoryLink}>
-          <Button>
-            random story
-          </Button>
-        </Link>
         <div>
           <Select
             placeholder="select a story type"
@@ -60,6 +82,15 @@ const PracticeModal = ({ trigger, randomStoryLink }) => {
         <div>
           {`${filteredStories.length} stories`}
         </div>
+        {filteredLink
+          && (
+          <Link to={filteredLink}>
+            <Button>
+              Start filtered story
+            </Button>
+          </Link>
+          )
+        }
       </Modal.Content>
     </Modal>
   )
