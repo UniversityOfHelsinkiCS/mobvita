@@ -35,7 +35,6 @@ const OpponentProgress = () => {
     This shows the status in this particular snippet.
   */
   const getPercentage = () => {
-
     const opponentTimeOnThisSnippet = compete.snippetCompleteTime[snippetNumber]
     const opponentStartedThisSnippet = theTimeWhenTheOpponentCompletedThisSnippet - opponentTimeOnThisSnippet
 

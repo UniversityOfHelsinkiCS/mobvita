@@ -22,7 +22,7 @@ const StoryAddition = () => {
   const handleSave = () => {
     const newStory = {
       url,
-      language
+      language,
     }
     setModal(false)
     dispatch(postStory(newStory))

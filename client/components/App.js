@@ -1,22 +1,20 @@
-import React from "react"
-import Bar from "./Bar"
+import React from 'react'
 import Router from 'Components/Router'
+import Bar from './Bar'
 
-
-const App = () => {
-  return (
-    <>
-      <Bar />
-      <div style={{ backgroundColor: '#fafafa' }}>
-        <div className="content">
-          <Router />
-        </div>
+/* eslint-disable no-undef */
+// __VERSION__ is defined in webpack
+const App = () => (
+  <>
+    <Bar />
+    <div style={{ backgroundColor: '#fafafa' }}>
+      <div className="content">
+        <Router />
       </div>
-      {<span>{`Built at: ${__VERSION__}`}</span>}
-    </>
-  )
-
-}
+    </div>
+    {<span>{`Built at: ${__VERSION__}`}</span>}
+  </>
+)
 
 
 export default App

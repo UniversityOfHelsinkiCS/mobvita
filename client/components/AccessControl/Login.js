@@ -21,11 +21,11 @@ const Login = () => {
         <Form>
           <Form.Field>
             <label>Email</label>
-            <Form.Input type="email" value={email} onChange={({ target }) => setEmail(target.value)} placeholder='Email' />
+            <Form.Input type="email" value={email} onChange={({ target }) => setEmail(target.value)} placeholder="Email" />
           </Form.Field>
           <Form.Field>
             <label>Password</label>
-            <Form.Input type="password" value={password} onChange={({ target }) => setPassword(target.value)} placeholder='' />
+            <Form.Input type="password" value={password} onChange={({ target }) => setPassword(target.value)} placeholder="" />
           </Form.Field>
 
           <Form.Button
@@ -43,11 +43,11 @@ const Login = () => {
           <Button
             type="button"
             color="black"
-            
+
             onClick={loginAnon}
           >
             Test Mobvita without an account
-        </Button>
+          </Button>
         </div>
       </Segment>
     </>

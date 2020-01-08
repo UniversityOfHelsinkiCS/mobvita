@@ -46,7 +46,7 @@ const HomeView = () => {
     <div>
       <h4>MobVita</h4>
       <div>GRAPH</div>
-      
+
       <PracticeModal trigger={<PracticeButton />} randomStoryLink={buttonLink} />
     </div>
   )
