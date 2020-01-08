@@ -1,9 +1,10 @@
-import React, { useEffect, useState } from 'react'
-import { useSelector } from 'react-redux'
+import React, { useEffect } from 'react'
+import { useSelector, useDispatch } from 'react-redux'
 import { FormattedMessage } from 'react-intl'
 import { Button } from 'semantic-ui-react'
 import { images } from 'Utilities/common'
 import PracticeModal from 'Components/LandingPage/PracticeModal'
+import { getSelf } from 'Utilities/redux/userReducer'
 // import StoryAddition from 'Components/StoryAddition'
 
 const PracticeButton = props => (
@@ -24,10 +25,20 @@ const PracticeButton = props => (
 )
 
 const HomeView = () => {
+  const currentLanguage = window.location.pathname.split('/')[2]
+  const eloHistory = useSelector(({ user }) => user.data.user.exercise_history
+    .filter(exercise => exercise.language.toLowerCase() === currentLanguage)
+    .map(exercise => exercise.score))
+
+  const dispatch = useDispatch()
+  useEffect(() => {
+    dispatch(getSelf())
+  }, [])
+
   return (
     <div>
       <h4>MobVita</h4>
-      <div>GRAPH</div>
+      {eloHistory.map(elo => <div key={elo}>{elo}</div>)}
       <PracticeModal trigger={<PracticeButton />} />
     </div>
   )

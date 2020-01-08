@@ -16,6 +16,12 @@ export const createAnonToken = () => {
 
 export const logout = () => ({ type: 'LOGOUT_SUCCESS' })
 
+export const getSelf = () => {
+  const route = '/user/'
+  const prefix = 'GET_SELF'
+  return callBuilder(route, prefix)
+}
+
 export default (state = { data: undefined }, action) => {
   switch (action.type) {
     case 'LOGIN_SUCCESS':
@@ -29,6 +35,13 @@ export default (state = { data: undefined }, action) => {
       return {
         ...state,
         data: undefined,
+        pending: false,
+        error: false,
+      }
+    case 'GET_SELF_SUCCESS':
+      return {
+        ...state,
+        data: action.response,
         pending: false,
         error: false,
       }

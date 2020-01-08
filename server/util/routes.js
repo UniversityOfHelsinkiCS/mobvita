@@ -4,6 +4,7 @@ const snippets = require('@controllers/snippetsController')
 const session = require('@controllers/sessionController')
 const translation = require('@controllers/translationController')
 const opponent = require('@controllers/opponentController')
+const user = require('@controllers/userController')
 
 const router = Router()
 
@@ -23,5 +24,7 @@ router.get('/translation/:locale/:language/:wordLemmas', translation.getTranslat
 router.get('/opponent', opponent.getOpponent)
 
 router.post('/session', session.create)
+
+router.get('/user', user.getSelf)
 
 module.exports = router
