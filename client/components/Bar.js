@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import { Link } from 'react-router-dom'
-import { Sidebar, Segment, Menu, Dropdown, Icon } from 'semantic-ui-react'
+import { Sidebar, Segment, Menu, Dropdown, Icon, Button } from 'semantic-ui-react'
 import { useIntl } from 'react-intl'
 import { useDispatch, useSelector } from 'react-redux'
 import { Swipeable } from 'react-swipeable'
@@ -50,76 +50,64 @@ export default function Bar() {
   }, [window.location.pathname])
 
 
-  if (open) {
-    return (
-      <Swipeable style={{ width: '20em', height: '100vh', position: 'absolute' }} onSwipedRight={() => dispatch(sidebarSetOpen(true))} onSwipedLeft={() => dispatch(sidebarSetOpen(false))} trackMouse>
+  return (
+    <>
+      <Icon
+        name="bars"
+        onClick={() => dispatch(sidebarSetOpen(!open))}
+        id="sidebar-hamburger"
+      />
+      <Swipeable
+        style={{ width: '20em', height: '100vh', position: 'absolute' }}
+        onSwipedRight={() => dispatch(sidebarSetOpen(true))}
+        onSwipedLeft={() => dispatch(sidebarSetOpen(false))}
+        trackMouse
+      >
+
         <Sidebar
           as={Menu}
           animation="push"
           icon="labeled"
           vertical
-          // onHide={() => dispatch(sidebarSetOpen(false))}
           visible={open}
-          style={{ width: '20em' }}
+          id="sidebar-container"
         >
 
+          {/* Should be on top */}
           {user && (
-            <Menu.Item
-              onClick={() => menuClickWrapper(signOut)}
-              icon="log out"
-              content={user.user.username}
-            />
+          <>
+            <Menu.Item>
+              <div>
+                <div>{user.user.username}</div>
+                <div>{user.user.email}</div>
+                <div>Streak data unavailable</div>
+              </div>
+            </Menu.Item>
+
+            <Menu.Item>
+              <Button fluid onClick={() => menuClickWrapper()}>
+                <Link to="/">Select language</Link>
+              </Button>
+            </Menu.Item>
+
+            <Menu.Item>
+              <Button fluid>
+                <Link to="/">Change dictionary language</Link>
+              </Button>
+            </Menu.Item>
+          </>
           )}
-
-          <Menu.Item
-            as={Link}
-            onClick={() => menuClickWrapper()}
-            to="/"
-            content={intl.formatMessage({ id: 'HOME' })}
-            icon="home"
-          />
-
-          <Menu.Item
-            as={Link}
-            to={`/stories/${language}#home`}
-            onClick={() => menuClickWrapper()}
-            icon="gamepad"
-            content="Stories"
-          />
-
-          {focusedSnippet
-            && (
-              <Menu.Item
-                onClick={() => menuClickWrapper(() => dispatch(resetCurrentSnippet(focusedSnippet.storyid)))}
-                icon="undo"
-                content="Restart current story"
-              />
-            )
-          }
 
 
           <Menu.Item>
-            <Dropdown text={intl.formatMessage({ id: 'LANGUAGE' })}>
-              <Dropdown.Menu>
-                {localeOptions.map(locale => (
-                  <Dropdown.Item key={locale.code} onClick={chooseLanguage(locale.code)}>
-                    {locale.name}
-                  </Dropdown.Item>
-                ))}
-              </Dropdown.Menu>
-            </Dropdown>
+            <Button>About us</Button>
+            <Button>Contact us</Button>
+            { user && <Button onClick={() => menuClickWrapper(signOut)}>Log out</Button>}
           </Menu.Item>
+
 
         </Sidebar>
       </Swipeable>
-    )
-  }
-  return (
-    <Icon
-      name="bars"
-      bordered
-      onClick={() => dispatch(sidebarSetOpen(true))}
-      className="sidebar-hamburger"
-    />
+    </>
   )
 }

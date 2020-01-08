@@ -9,6 +9,7 @@ import SwipeHandler from './SwipeHandler'
 const App = () => (
   <>
     <Bar />
+
     <SwipeHandler />
     <div style={{ backgroundColor: '#fafafa' }}>
       <div className="content">

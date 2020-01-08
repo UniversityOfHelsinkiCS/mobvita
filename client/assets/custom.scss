@@ -74,11 +74,15 @@ $wrong-color: #ff5e5e;
   background-color: yellowgreen;
 }
 
-.sidebar{
+#sidebar{
   &-hamburger{
     position: absolute;
+    height:2em;
+    width:2em;
     z-index: 100;
   }
+
+
 }
 
 
