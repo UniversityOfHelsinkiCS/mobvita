@@ -3,8 +3,10 @@ import { useSelector, useDispatch } from 'react-redux'
 import { FormattedMessage } from 'react-intl'
 import { Button } from 'semantic-ui-react'
 import { images } from 'Utilities/common'
-import PracticeModal from 'Components/LandingPage/PracticeModal'
 import { getSelf } from 'Utilities/redux/userReducer'
+
+import PracticeModal from './PracticeModal'
+import EloChart from './EloChart'
 // import StoryAddition from 'Components/StoryAddition'
 
 const PracticeButton = props => (
@@ -38,7 +40,7 @@ const HomeView = () => {
   return (
     <div>
       <h4>MobVita</h4>
-      {eloHistory.map(elo => <div key={elo}>{elo}</div>)}
+      <EloChart eloHistory={eloHistory} />
       <PracticeModal trigger={<PracticeButton />} />
     </div>
   )
