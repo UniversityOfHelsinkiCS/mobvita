@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react'
 import { useSelector } from 'react-redux'
-import { Link } from 'react-router-dom'
 import { FormattedMessage } from 'react-intl'
 import { Button } from 'semantic-ui-react'
 import { images } from 'Utilities/common'
@@ -46,7 +45,6 @@ const HomeView = () => {
     <div>
       <h4>MobVita</h4>
       <div>GRAPH</div>
-      
       <PracticeModal trigger={<PracticeButton />} randomStoryLink={buttonLink} />
     </div>
   )
