@@ -18,7 +18,7 @@ const Login = () => {
         <p>
           Master a language by learning from stories of your own choosing
         </p>
-        <Form>
+        <Form onSubmit={login}>
           <Form.Field>
             <label>Email</label>
             <Form.Input type="email" value={email} onChange={({ target }) => setEmail(target.value)} placeholder="Email" />
@@ -29,8 +29,7 @@ const Login = () => {
           </Form.Field>
 
           <Form.Button
-            type="button"
-            onClick={login}
+            type="submit"
             color="teal"
           >
             Login
