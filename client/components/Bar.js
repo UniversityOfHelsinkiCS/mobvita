@@ -59,12 +59,11 @@ export default function Bar() {
         id="sidebar-hamburger"
       />
       <Swipeable
-        style={{ width: '20em', height: '100vh', position: 'absolute' }}
+        style={{ width: '3em', height: '100vh', position: 'absolute' }}
         onSwipedRight={() => dispatch(sidebarSetOpen(true))}
         onSwipedLeft={() => dispatch(sidebarSetOpen(false))}
         trackMouse
       >
-
         <Sidebar
           as={Menu}
           animation="push"
@@ -87,13 +86,7 @@ export default function Bar() {
 
             <Menu.Item>
               <Button fluid onClick={() => menuClickWrapper()}>
-                <Link to="/">Select language</Link>
-              </Button>
-            </Menu.Item>
-
-            <Menu.Item>
-              <Button fluid>
-                <Link to="/">Change dictionary language</Link>
+                <Link to="/">Change learning language</Link>
               </Button>
             </Menu.Item>
           </>
