@@ -8,6 +8,7 @@ const PracticeModal = ({ trigger }) => {
   const [category, setCategory] = useState('any')
   const [filteredStories, setFilteredStories] = useState([])
 
+
   const user = useSelector(({ user }) => user.data.user)
 
   const [randomStoryIndex, setRandom] = useState(0)
@@ -60,20 +61,24 @@ const PracticeModal = ({ trigger }) => {
   }
 
   return (
-    <Modal trigger={trigger} onClose={handleClose}>
+    <Modal
+      closeIcon
+      trigger={trigger}
+      onClose={handleClose}
+    >
       <Modal.Header>Choose practice</Modal.Header>
       <Modal.Content>
         <div>
+          <div>Story library</div>
           <Select
-            placeholder="select a story type"
             value={storyType}
             options={storyTypes.map(type => ({ key: type, value: type, text: type }))}
             onChange={(_, option) => setStoryType(option.value)}
           />
         </div>
         <div>
+          <div>Story category</div>
           <Select
-            placeholder="select a category"
             value={category}
             options={categories.map(type => ({ key: type, value: type, text: type }))}
             onChange={(_, option) => setCategory(option.value)}
@@ -86,7 +91,7 @@ const PracticeModal = ({ trigger }) => {
           && (
           <Link to={filteredLink}>
             <Button>
-              Start filtered story
+              Start random story
             </Button>
           </Link>
           )

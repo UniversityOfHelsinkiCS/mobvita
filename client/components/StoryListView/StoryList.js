@@ -1,15 +1,15 @@
 import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { Form, Input, Button, Placeholder, Card, Search, Select } from 'semantic-ui-react'
+import { Button, Placeholder, Card, Search, Select } from 'semantic-ui-react'
 
-import { postStory, getStories, getAllStories } from 'Utilities/redux/storiesReducer'
+import { getStories, getAllStories } from 'Utilities/redux/storiesReducer'
 import StoryListItem from 'Components/StoryListView/StoryListItem'
 import { FormattedMessage } from 'react-intl'
-import { capitalize } from 'Utilities/common'
+import StoryForm from './StoryForm'
 
 
 const StoryList = ({ language }) => {
-  const [storyUrl, setStoryUrl] = useState('')
+  const [infoMessage, setInfoMessage] = useState(false)
   const [library, setLibrary] = useState('private')
   const [sorter, setSorter] = useState('date')
   const [searchString, setSearchString] = useState('')
@@ -69,16 +69,6 @@ const StoryList = ({ language }) => {
     )
   }
 
-  const handleStorySubmit = () => {
-    const newStory = {
-      url: storyUrl,
-      language: capitalize(language),
-    }
-
-    dispatch(postStory(newStory))
-    setStoryUrl('')
-  }
-
   const prevPageDisabled = false
   const nextPageDisabled = false
 
@@ -89,14 +79,7 @@ const StoryList = ({ language }) => {
     <div style={
       { display: 'flex', justifyContent: 'space-between', flexWrap: 'wrap', margin: '10px 0' }}
     >
-      <Form onSubmit={handleStorySubmit}>
-        <Input
-          placeholder="story url here"
-          value={storyUrl}
-          onChange={event => setStoryUrl(event.target.value)}
-        />
-        <Button type="submit">submit story</Button>
-      </Form>
+      <StoryForm language={language} onStorySubmit={() => setInfoMessage(true)} />
       <Search
         open={false}
         icon={noResults ? 'close' : 'search'}
@@ -143,8 +126,17 @@ const StoryList = ({ language }) => {
 
   return (
     <div>
+      {infoMessage && <div>Story added. Processing will take approximately a minute.</div>}
       {searchSort}
       <Card.Group itemsPerRow={2} doubling>
+        {!user.story_upload_count
+          && (
+          <Card style={{ padding: '15px' }}>
+            <h5>Study any text!</h5>
+            <StoryForm language={language} onStorySubmit={() => setInfoMessage(true)} />
+          </Card>
+          )
+        }
         {libraryFilteredStories.map(story => (
           <StoryListItem key={story._id} story={story} language={language} />
         ))}
