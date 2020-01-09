@@ -4,7 +4,7 @@ import { useDispatch } from 'react-redux'
 import { postStory } from 'Utilities/redux/storiesReducer'
 import { capitalize } from 'Utilities/common'
 
-const StoryForm = ({ language }) => {
+const StoryForm = ({ language, onStorySubmit }) => {
   const [storyUrl, setStoryUrl] = useState('')
   const dispatch = useDispatch()
 
@@ -18,6 +18,7 @@ const StoryForm = ({ language }) => {
 
     dispatch(postStory(newStory))
     setStoryUrl('')
+    onStorySubmit()
   }
 
   return (
