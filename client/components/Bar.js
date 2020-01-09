@@ -70,35 +70,36 @@ export default function Bar() {
           icon="labeled"
           vertical
           visible={open}
-          id="sidebar-container"
         >
 
-          {/* Should be on top */}
-          {user && (
-          <>
-            <Menu.Item>
-              <div>
-                <div>{user.user.username}</div>
-                <div>{user.user.email}</div>
-                <div>Streak data unavailable</div>
-              </div>
-            </Menu.Item>
+          <div id="sidebar-content">
 
-            <Menu.Item>
-              <Button fluid onClick={() => menuClickWrapper()}>
-                <Link to="/">Change learning language</Link>
-              </Button>
-            </Menu.Item>
-          </>
-          )}
+            {user && (
+              <>
+                <Menu.Item>
+                  <div>
+                    <div>{user.user.username}</div>
+                    <div>{user.user.email}</div>
+                    <div>Streak data unavailable</div>
+                  </div>
+                </Menu.Item>
 
+                <Menu.Item>
+                  <Button fluid onClick={() => menuClickWrapper()}>
+                    <Link to="/">Change learning language</Link>
+                  </Button>
+                </Menu.Item>
+              </>
+            )}
 
-          <Menu.Item>
-            <Button>About us</Button>
-            <Button>Contact us</Button>
-            { user && <Button onClick={() => menuClickWrapper(signOut)}>Log out</Button>}
-          </Menu.Item>
-
+            <div style={{ marginTop: 'auto' }}>
+              <Menu.Item style={{ display: 'flex', flexDirection: 'row' }}>
+                <Button size="small">About us</Button>
+                <Button size="small">Contact us</Button>
+                { user && <Button size="small" onClick={() => menuClickWrapper(signOut)}>Log out</Button>}
+              </Menu.Item>
+            </div>
+          </div>
 
         </Sidebar>
       </Swipeable>
