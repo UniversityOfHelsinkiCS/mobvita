@@ -33,7 +33,7 @@ const StoryListItem = ({ story, language }) => {
       <Progress />
     </>]
 
-  const storyInfoList = storyInfoElements.map((element, i) => <List.Item key={`${story._id}-${i}`}>{element}</List.Item>)
+  const storyInfoList = storyInfoElements.map(element => <List.Item key={`${story._id}`}>{element}</List.Item>)
   return (
     <Card
       fluid
@@ -46,19 +46,11 @@ const StoryListItem = ({ story, language }) => {
     >
       <Card.Content extra style={{ padding: '15px' }}>
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'baseline' }}>
-          <Header as="h4">{story.title}</Header>
+          <Header as="h5">{story.title}</Header>
         </div>
       </Card.Content>
       <Card.Content extra style={{ padding: '15px' }}>
-        <span style={{ cursor: 'default', display: 'flex' }}>
-          <FormattedMessage id="DIFFICULTY" />
-          :
-          {difficultyIcon}
-          {difficultyText}
-        </span>
-      </Card.Content>
-      <Card.Content extra style={{ padding: '15px' }}>
-        <div>
+        <div style={{ display: 'flex', alignItems: 'baseline' }}>
           <Link to={`/stories/${language}/${story._id}/`}>
             <Button color="teal" size="tiny" style={{ marginTop: '5px' }}>
               Read
@@ -70,25 +62,10 @@ const StoryListItem = ({ story, language }) => {
               Practice
             </Button>
           </Link>
-          {' '}
-          <Link to={`/stories/${language}/${story._id}/compete`}>
-            <Button color="teal" size="tiny" style={{ marginTop: '5px' }}>
-              Compete
-            </Button>
-          </Link>
+          <span style={{ marginLeft: 'auto' }}>
+            {difficultyIcon}
+          </span>
         </div>
-      </Card.Content>
-      <Card.Content extra style={{ padding: '15px' }}>
-        <Accordion fluid>
-          <Accordion.Title onClick={() => setShow(!showInfo)} index={0}>
-            Story info
-          </Accordion.Title>
-          <Accordion.Content active={showInfo} index={1} style={{ minHeight: '10em' }}>
-            <List>
-              {storyInfoList}
-            </List>
-          </Accordion.Content>
-        </Accordion>
       </Card.Content>
     </Card>
   )

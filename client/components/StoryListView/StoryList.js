@@ -1,15 +1,14 @@
 import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { Form, Input, Button, Placeholder, Card, Search, Select } from 'semantic-ui-react'
+import { Button, Placeholder, Card, Search, Select } from 'semantic-ui-react'
 
-import { postStory, getStories, getAllStories } from 'Utilities/redux/storiesReducer'
+import { getStories, getAllStories } from 'Utilities/redux/storiesReducer'
 import StoryListItem from 'Components/StoryListView/StoryListItem'
 import { FormattedMessage } from 'react-intl'
-import { capitalize } from 'Utilities/common'
+import StoryForm from './StoryForm'
 
 
 const StoryList = ({ language }) => {
-  const [storyUrl, setStoryUrl] = useState('')
   const [library, setLibrary] = useState('private')
   const [sorter, setSorter] = useState('date')
   const [searchString, setSearchString] = useState('')
@@ -69,16 +68,6 @@ const StoryList = ({ language }) => {
     )
   }
 
-  const handleStorySubmit = () => {
-    const newStory = {
-      url: storyUrl,
-      language: capitalize(language),
-    }
-
-    dispatch(postStory(newStory))
-    setStoryUrl('')
-  }
-
   const prevPageDisabled = false
   const nextPageDisabled = false
 
@@ -89,14 +78,7 @@ const StoryList = ({ language }) => {
     <div style={
       { display: 'flex', justifyContent: 'space-between', flexWrap: 'wrap', margin: '10px 0' }}
     >
-      <Form onSubmit={handleStorySubmit}>
-        <Input
-          placeholder="story url here"
-          value={storyUrl}
-          onChange={event => setStoryUrl(event.target.value)}
-        />
-        <Button type="submit">submit story</Button>
-      </Form>
+      <StoryForm language={language} />
       <Search
         open={false}
         icon={noResults ? 'close' : 'search'}
