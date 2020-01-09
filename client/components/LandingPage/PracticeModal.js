@@ -8,6 +8,7 @@ const PracticeModal = ({ trigger }) => {
   const [category, setCategory] = useState('any')
   const [filteredStories, setFilteredStories] = useState([])
 
+
   const user = useSelector(({ user }) => user.data.user)
 
   const [randomStoryIndex, setRandom] = useState(0)
@@ -60,7 +61,7 @@ const PracticeModal = ({ trigger }) => {
   }
 
   return (
-    <Modal trigger={trigger} onClose={handleClose}>
+    <Modal closeIcon trigger={trigger} onClose={handleClose}>
       <Modal.Header>Choose practice</Modal.Header>
       <Modal.Content>
         <div>
