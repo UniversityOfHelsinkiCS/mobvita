@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { Form, Input, Button, Placeholder, Card, Dropdown, Search } from 'semantic-ui-react'
+import { Form, Input, Button, Placeholder, Card, Search, Select } from 'semantic-ui-react'
 
 import { postStory, getStories, getAllStories } from 'Utilities/redux/storiesReducer'
 import StoryListItem from 'Components/StoryListView/StoryListItem'
@@ -10,6 +10,7 @@ import { capitalize } from 'Utilities/common'
 
 const StoryList = ({ language }) => {
   const [storyUrl, setStoryUrl] = useState('')
+  const [library, setLibrary] = useState('private')
   const [sorter, setSorter] = useState('date')
   const [searchString, setSearchString] = useState('')
   const [searchedStories, setSearchedStories] = useState([])
@@ -21,6 +22,8 @@ const StoryList = ({ language }) => {
     allPending: stories.allPending,
     pending: stories.pending,
   }))
+
+  const user = useSelector(({ user }) => user.data.user)
 
   useEffect(() => {
     dispatch(
@@ -39,7 +42,12 @@ const StoryList = ({ language }) => {
     { key: 'difficulty', text: 'Difficulty', value: 'difficulty' },
   ]
 
-  const handleChange = (e, option) => {
+  const libraryDropdownOptions = [
+    { key: 'private', text: 'Private', value: 'private' },
+    { key: 'public', text: 'Public', value: 'public' },
+  ]
+
+  const handleSortChange = (e, option) => {
     setSorter(option.value)
   }
 
@@ -82,7 +90,11 @@ const StoryList = ({ language }) => {
       { display: 'flex', justifyContent: 'space-between', flexWrap: 'wrap', margin: '10px 0' }}
     >
       <Form onSubmit={handleStorySubmit}>
-        <Input placeholder="story url here" value={storyUrl} onChange={event => setStoryUrl(event.target.value)} />
+        <Input
+          placeholder="story url here"
+          value={storyUrl}
+          onChange={event => setStoryUrl(event.target.value)}
+        />
         <Button type="submit">submit story</Button>
       </Form>
       <Search
@@ -92,11 +104,15 @@ const StoryList = ({ language }) => {
         value={searchString}
         onSearchChange={handleSearchChange}
       />
-      <Dropdown
-        selection
+      <Select
+        value={library}
+        options={libraryDropdownOptions}
+        onChange={(_, option) => setLibrary(option.value)}
+      />
+      <Select
         value={sorter}
         options={sortDropdownOptions}
-        onChange={handleChange}
+        onChange={handleSortChange}
         style={{ minWidth: '10em' }}
       />
     </div>
@@ -117,12 +133,19 @@ const StoryList = ({ language }) => {
 
   const filteredInsteadOfPaginated = searchedStories.length > 0 && searchedStories.length < 30
   const displayStories = filteredInsteadOfPaginated ? searchedStories : stories
+  const libraryFilteredStories = displayStories.filter((story) => {
+    if (library === 'public') {
+      return story.public
+    }
+
+    return library === 'private' && story.user === user.oid
+  })
 
   return (
     <div>
       {searchSort}
       <Card.Group itemsPerRow={2} doubling>
-        {displayStories.map(story => (
+        {libraryFilteredStories.map(story => (
           <StoryListItem key={story._id} story={story} language={language} />
         ))}
       </Card.Group>
