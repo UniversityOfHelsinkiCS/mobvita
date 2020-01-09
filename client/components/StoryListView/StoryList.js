@@ -127,6 +127,14 @@ const StoryList = ({ language }) => {
     <div>
       {searchSort}
       <Card.Group itemsPerRow={2} doubling>
+        {!user.story_upload_count
+          && (
+          <Card style={{ padding: '15px' }}>
+            <h5>Study any text!</h5>
+            <StoryForm language={language} />
+          </Card>
+          )
+        }
         {libraryFilteredStories.map(story => (
           <StoryListItem key={story._id} story={story} language={language} />
         ))}
