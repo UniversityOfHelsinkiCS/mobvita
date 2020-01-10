@@ -1,11 +1,25 @@
 import React, { useState, useEffect } from 'react'
-import { connect } from 'react-redux'
-import { List, Button, Header, Segment, Icon } from 'semantic-ui-react'
+import { connect, useDispatch, useSelector } from 'react-redux'
+import { List, Button, Header, Segment, Icon, Modal, Dropdown } from 'semantic-ui-react'
 import { Shake } from 'reshake'
+import { setLocale } from 'Utilities/redux/localeReducer'
+import { localeOptions } from 'Utilities/common'
+
 
 const DictionaryHelp = ({ translation }) => {
   const [showHelp, setShow] = useState(false)
   const [shaking, setShaking] = useState(false)
+  const dispatch = useDispatch()
+  const translationLanguageCode = useSelector(({ locale }) => locale)
+
+  const dictionaryOptions = localeOptions.map(localeObj => (
+    {
+      key: localeObj.code,
+      value: localeObj.code,
+      text: localeObj.name,
+    }
+  ))
+
 
   const translations = translation ? translation.map(translated => (
     <List.Item key={translated.URL}>
@@ -58,6 +72,20 @@ const DictionaryHelp = ({ translation }) => {
   return (
     <div>
       <Segment className="navigationpanel" style={{ position: 'fixed', right: '5%', bottom: '2%', width: '90%' }}>
+        <Modal trigger={<Button>Change translation language</Button>}>
+          <Modal.Header>Change translation language</Modal.Header>
+          <Modal.Content>
+            <span>Translate to: </span>
+            <Dropdown
+              closeOnChange
+
+              defaultValue={translationLanguageCode}
+              onChange={(e, data) => dispatch(setLocale(data.value))}
+              options={dictionaryOptions}
+            />
+          </Modal.Content>
+        </Modal>
+
         <Header size="medium" textAlign="center">
           <Button className="navigationbuttonclose" icon basic floated="right" onClick={() => setShow(false)}>
             <Icon name="angle down" />
