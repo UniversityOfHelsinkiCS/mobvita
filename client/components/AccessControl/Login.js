@@ -1,11 +1,17 @@
 import React, { useState } from 'react'
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { createRealToken, createAnonToken } from 'Utilities/redux/userReducer'
 import { Segment, Header, Input, Button, Form } from 'semantic-ui-react'
+
+const ErrorText = () => (
+  <div style={{ color: 'red' }}>invalid username or password</div>
+)
 
 const Login = () => {
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
+  const loginError = useSelector(({ user }) => user.error)
+
   const dispatch = useDispatch()
 
   const login = () => dispatch(createRealToken(email, password))
@@ -21,19 +27,21 @@ const Login = () => {
         <Form onSubmit={login}>
           <Form.Field>
             <label>Email</label>
-            <Form.Input type="email" value={email} onChange={({ target }) => setEmail(target.value)} placeholder="Email" />
+            <Form.Input error={loginError} type="email" value={email} onChange={({ target }) => setEmail(target.value)} placeholder="Email" />
           </Form.Field>
           <Form.Field>
             <label>Password</label>
-            <Form.Input type="password" value={password} onChange={({ target }) => setPassword(target.value)} placeholder="" />
+            <Form.Input error={loginError} type="password" value={password} onChange={({ target }) => setPassword(target.value)} placeholder="" />
           </Form.Field>
-
-          <Form.Button
-            type="submit"
-            color="teal"
-          >
-            Login
-          </Form.Button>
+          <div style={{ display: 'flex', alignItems: 'baseline' }}>
+            <Form.Button
+              type="submit"
+              color="teal"
+            >
+              Login
+            </Form.Button>
+            {loginError && <ErrorText />}
+          </div>
         </Form>
         <h3>
           Don't have an account yet?

@@ -31,6 +31,18 @@ export default (state = { data: undefined }, action) => {
         pending: false,
         error: false,
       }
+    case 'LOGIN_ATTEMPT':
+      return {
+        ...state,
+        pending: true,
+        error: false,
+      }
+    case 'LOGIN_FAILURE':
+      return {
+        ...state,
+        pending: false,
+        error: true,
+      }
     case 'LOGOUT_SUCCESS':
       return {
         ...state,
