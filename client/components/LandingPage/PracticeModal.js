@@ -81,6 +81,7 @@ const PracticeModal = ({ trigger }) => {
 
   return (
     <Modal
+      dimmer="inverted"
       closeIcon
       trigger={trigger}
     >
@@ -88,7 +89,7 @@ const PracticeModal = ({ trigger }) => {
       <Modal.Content className="practiceModal">
 
         <Container>
-          <Button disabled={!filteredLink} color="teal" as={Link} to={filteredLink}>
+          <Button fluid disabled={!filteredLink} color="teal" as={Link} to={filteredLink}>
             {`Start random story from ${filteredStories.length} stories`}
           </Button>
         </Container>
