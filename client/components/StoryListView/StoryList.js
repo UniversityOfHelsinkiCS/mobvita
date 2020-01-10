@@ -7,7 +7,6 @@ import StoryListItem from 'Components/StoryListView/StoryListItem'
 import { FormattedMessage } from 'react-intl'
 import StoryForm from './StoryForm'
 
-
 const StoryList = ({ language }) => {
   const [infoMessage, setInfoMessage] = useState(false)
   const [library, setLibrary] = useState('private')

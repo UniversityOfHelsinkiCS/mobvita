@@ -1,16 +1,13 @@
 import React, { useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { createRealToken, createAnonToken } from 'Utilities/redux/userReducer'
-import { Segment, Header, Input, Button, Form } from 'semantic-ui-react'
-
-const ErrorText = () => (
-  <div style={{ color: 'red' }}>invalid username or password</div>
-)
+import { Segment, Header, Button, Form } from 'semantic-ui-react'
 
 const Login = () => {
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const loginError = useSelector(({ user }) => user.error)
+  const errorMessage = useSelector(({ user }) => user.errorMessage)
 
   const dispatch = useDispatch()
 
@@ -45,14 +42,14 @@ const Login = () => {
               placeholder=""
             />
           </Form.Field>
-          <div style={{ display: 'flex', alignItems: 'baseline' }}>
+          <div style={{ display: 'flex', flexDirection: 'column' }}>
             <Form.Button
               type="submit"
               color="teal"
             >
               Login
             </Form.Button>
-            {loginError && <ErrorText />}
+            {loginError && <div style={{ color: 'red' }}>{errorMessage}</div>}
           </div>
         </Form>
         <h3>

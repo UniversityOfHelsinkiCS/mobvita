@@ -4,7 +4,7 @@ const errorHandler = (error, req, res, next) => {
   }
 
   if (error.response.status === 401) {
-    return res.status(401).end()
+    return res.status(401).send(error.response.data.message)
   }
 
   if (error) { res.status(500).send({ error: error.story }) }
