@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import { Link } from 'react-router-dom'
-import { Sidebar, Segment, Menu, Dropdown, Icon, Button } from 'semantic-ui-react'
+import { Sidebar, Segment, Menu, Dropdown, Icon, Button, Header, Container } from 'semantic-ui-react'
 import { useIntl } from 'react-intl'
 import { useDispatch, useSelector } from 'react-redux'
 import { Swipeable } from 'react-swipeable'
@@ -10,6 +10,7 @@ import { setLocale } from 'Utilities/redux/localeReducer'
 import { sidebarSetOpen } from 'Utilities/redux/sidebarReducer'
 import { logout } from 'Utilities/redux/userReducer'
 import { resetCurrentSnippet } from 'Utilities/redux/snippetsReducer'
+import { images } from 'Utilities/common'
 
 
 export default function Bar() {
@@ -74,10 +75,15 @@ export default function Bar() {
 
           <div id="sidebar-content">
 
+            <div style={{ padding: '1em' }}>
+              <Header as="h2">MobVita - alpha</Header>
+              <img style={{ width: '6em', margin: '0 auto' }} src={images.revitaLogoTransparent} alt="revitaLogo" />
+            </div>
+
             {user && (
               <>
                 <Menu.Item>
-                  <div>
+                  <div style={{ padding: '1em' }}>
                     <div>{user.user.username}</div>
                     <div>{user.user.email}</div>
                     <div>Streak data unavailable</div>
