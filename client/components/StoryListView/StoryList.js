@@ -7,7 +7,6 @@ import StoryListItem from 'Components/StoryListView/StoryListItem'
 import { FormattedMessage } from 'react-intl'
 import StoryForm from './StoryForm'
 
-
 const StoryList = ({ language }) => {
   const [infoMessage, setInfoMessage] = useState(false)
   const [library, setLibrary] = useState('private')
@@ -114,7 +113,7 @@ const StoryList = ({ language }) => {
 
   if (!stories.length) return <FormattedMessage id="NO_STORIES" />
 
-  const filteredInsteadOfPaginated = searchedStories.length > 0 && searchedStories.length < 30
+  const filteredInsteadOfPaginated = searchedStories.length < 30
   const displayStories = filteredInsteadOfPaginated ? searchedStories : stories
   const libraryFilteredStories = displayStories.filter((story) => {
     if (library === 'public') {
