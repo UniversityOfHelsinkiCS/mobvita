@@ -1,15 +1,40 @@
 import React, { useState, useEffect } from 'react'
-import { Modal, Button, Select } from 'semantic-ui-react'
+import { Modal, Button, Checkbox } from 'semantic-ui-react'
 import { Link } from 'react-router-dom'
 import { useSelector } from 'react-redux'
 
+const extractFilters = object => Object
+  .entries(object)
+  .filter(entry => entry[1])
+  .map(([key]) => key)
+
+const CheckboxGroup = ({ values, onChange }) => (
+  Object.entries(values).map(([key, val]) => (
+    <Checkbox
+      key={key}
+      onChange={onChange(key)}
+      label={key}
+      checked={val}
+    />
+  ))
+)
+
 const PracticeModal = ({ trigger }) => {
-  const [storyType, setStoryType] = useState('any')
-  const [category, setCategory] = useState('any')
+  const [libraries, setLibraries] = useState(
+    {
+      Private: true,
+      Public: true,
+    },
+  )
+  const [categories, setCategories] = useState(
+    {
+      Science: true,
+      Politics: true,
+      Culture: true,
+      Sports: true,
+    },
+  )
   const [filteredStories, setFilteredStories] = useState([])
-
-
-  const user = useSelector(({ user }) => user.data.user)
 
   const [randomStoryIndex, setRandom] = useState(0)
   const [language, setLanguage] = useState('')
@@ -17,21 +42,14 @@ const PracticeModal = ({ trigger }) => {
 
   useEffect(() => {
     const filtered = stories.filter((story) => {
-      if (storyType === 'any') {
-        return true
-      }
+      const storyLibrary = story.public ? 'Public' : 'Private'
+      const librariesToShow = extractFilters(libraries)
 
-      if (storyType === 'public' && story.public === true) {
-        return true
-      }
-
-      return storyType === 'private' && story.user === user.oid
+      return librariesToShow.includes(storyLibrary)
     }).filter((story) => {
-      if (category === 'any') {
-        return true
-      }
+      const categoriesToShow = extractFilters(categories)
 
-      return story.category === category
+      return categoriesToShow.includes(story.category)
     })
 
     setFilteredStories(filtered)
@@ -42,12 +60,9 @@ const PracticeModal = ({ trigger }) => {
       const random = Math.ceil(Math.random() * filtered.length) - 1
       setRandom(random)
     }
-  }, [stories, storyType, category])
+  }, [stories, libraries, categories])
 
   if (pending) return null
-
-  const storyTypes = ['any', 'private', 'public']
-  const categories = ['any', 'Science', 'Politics', 'Sports', 'Culture']
 
   let filteredLink = null
 
@@ -55,34 +70,30 @@ const PracticeModal = ({ trigger }) => {
     filteredLink = `/stories/${language}/${filteredStories[randomStoryIndex]._id}/practice`
   }
 
-  const handleClose = () => {
-    setStoryType('any')
-    setCategory('any')
+  const handleCategoryChange = category => (_, data) => {
+    setCategories({ ...categories, [category]: data.checked })
+  }
+
+  const handleLibraryChange = library => (_, data) => {
+    setLibraries({ ...libraries, [library]: data.checked })
   }
 
   return (
     <Modal
       closeIcon
       trigger={trigger}
-      onClose={handleClose}
     >
       <Modal.Header>Choose practice</Modal.Header>
       <Modal.Content>
         <div>
           <div>Story library</div>
-          <Select
-            value={storyType}
-            options={storyTypes.map(type => ({ key: type, value: type, text: type }))}
-            onChange={(_, option) => setStoryType(option.value)}
-          />
+          <CheckboxGroup values={libraries} onChange={handleLibraryChange} />
         </div>
         <div>
           <div>Story category</div>
-          <Select
-            value={category}
-            options={categories.map(type => ({ key: type, value: type, text: type }))}
-            onChange={(_, option) => setCategory(option.value)}
-          />
+          <div>
+            <CheckboxGroup values={categories} onChange={handleCategoryChange} />
+          </div>
         </div>
         <div>
           {`${filteredStories.length} stories`}
