@@ -42,7 +42,7 @@ const ExerciseCloze = ({ word, handleChange, handleClick, value }) => {
       className={className}
 
       style={{
-        width: getTextWidth(word.surface),
+        width: ((word.surface > word.base) ? getTextWidth(word.surface) : getTextWidth(word.base)),
         marginRight: '2px',
         height: '1.5em',
         borderRadius: '6px',
