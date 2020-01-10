@@ -91,8 +91,8 @@ export default function Bar() {
                 </Menu.Item>
 
                 <Menu.Item>
-                  <Button fluid onClick={() => menuClickWrapper()}>
-                    <Link to="/">Change learning language</Link>
+                  <Button color="teal" fluid as={Link} to="/" onClick={() => menuClickWrapper()}>
+                    Change learning language
                   </Button>
                 </Menu.Item>
               </>
