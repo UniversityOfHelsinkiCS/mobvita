@@ -26,12 +26,24 @@ const Login = () => {
         </p>
         <Form onSubmit={login}>
           <Form.Field>
-            <label>Email</label>
-            <Form.Input error={loginError} type="email" value={email} onChange={({ target }) => setEmail(target.value)} placeholder="Email" />
+            <Form.Input
+              label="Email"
+              error={loginError}
+              type="email"
+              value={email}
+              onChange={({ target }) => setEmail(target.value)}
+              placeholder="Email"
+            />
           </Form.Field>
           <Form.Field>
-            <label>Password</label>
-            <Form.Input error={loginError} type="password" value={password} onChange={({ target }) => setPassword(target.value)} placeholder="" />
+            <Form.Input
+              label="Password"
+              error={loginError}
+              type="password"
+              value={password}
+              onChange={({ target }) => setPassword(target.value)}
+              placeholder=""
+            />
           </Form.Field>
           <div style={{ display: 'flex', alignItems: 'baseline' }}>
             <Form.Button

@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { Button, Placeholder, Card, Search, Select } from 'semantic-ui-react'
+import { Message, Button, Placeholder, Card, Search, Select } from 'semantic-ui-react'
 
 import { getStories, getAllStories } from 'Utilities/redux/storiesReducer'
 import StoryListItem from 'Components/StoryListView/StoryListItem'
@@ -126,7 +126,7 @@ const StoryList = ({ language }) => {
 
   return (
     <div>
-      {infoMessage && <div>Story added. Processing will take approximately a minute.</div>}
+      {infoMessage && <Message>Story added! It will soon be available in your library.</Message>}
       {searchSort}
       <Card.Group itemsPerRow={2} doubling>
         {!user.story_upload_count
