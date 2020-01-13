@@ -8,7 +8,7 @@ workflows:
       - dockerhub/publish:
           image: toska/$CIRCLE_PROJECT_REPONAME
           tag: 'staging'
-          extra_build_args: '--build-arg BASE_PATH=/staging'
+          extra_build_args: '--build-arg BASE_PATH=/staging --build-arg COMMIT_SHA=$CIRCLE_SHA1'
           filters:
             branches:
               only: master

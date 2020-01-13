@@ -28,7 +28,7 @@ module.exports = (env, argv) => {
 
   const BASE_PATH = process.env.BASE_PATH || '/'
 
-  const CIRCLE_SHA = process.env.CIRCLE_SHA1 || ''
+  const COMMIT_HASH = process.env.COMMIT_HASH || ''
 
   const devtool = mode === 'production' ? false : 'source-map'
 
@@ -102,7 +102,7 @@ module.exports = (env, argv) => {
         chunkFilename: '[name]-[id].css',
       }),
       ...additionalPlugins,
-      new webpack.DefinePlugin({ __VERSION__: JSON.stringify(buildtime) + CIRCLE_SHA.substring(0, 6) }),
+      new webpack.DefinePlugin({ __VERSION__: JSON.stringify(buildtime) + COMMIT_HASH.substring(0, 6) }),
     ],
   }
 }
