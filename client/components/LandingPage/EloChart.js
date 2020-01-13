@@ -14,6 +14,12 @@ const EloChart = ({ eloHistory }) => {
     chart: { height: '35%' },
     legend: { enabled: false },
     credits: { enabled: false },
+    tooltip: {
+      formatter() {
+        // eslint-disable-next-line react/no-this-in-sfc
+        return this.y
+      },
+    },
     yAxis: {
       title: { enabled: false },
       max: maxElo,
@@ -25,10 +31,13 @@ const EloChart = ({ eloHistory }) => {
     // xAxis: { labels: { enabled: false } },
   }
   return (
-    <HighchartsReact
-      highcharts={Highcharts}
-      options={options}
-    />
+    <div style={{ textAlign: 'center' }}>
+      <span style={{ display: 'inline-block', paddingBottom: '1em' }}>{`Your current ELO: ${eloHistory[eloHistory.length - 1]}`}</span>
+      <HighchartsReact
+        highcharts={Highcharts}
+        options={options}
+      />
+    </div>
   )
 }
 
