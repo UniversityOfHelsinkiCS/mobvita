@@ -31,6 +31,7 @@ module.exports = (env, argv) => {
   const COMMIT_HASH = process.env.COMMIT_HASH || ''
   const VERSION_STRING = JSON.stringify(`${buildtime}`)
 
+  const COMMIT_STRING = JSON.stringify(COMMIT_HASH.substring(0, 6))
 
   const devtool = mode === 'production' ? false : 'source-map'
 
@@ -104,7 +105,7 @@ module.exports = (env, argv) => {
         chunkFilename: '[name]-[id].css',
       }),
       ...additionalPlugins,
-      new webpack.DefinePlugin({ __VERSION__: VERSION_STRING, __COMMIT__: COMMIT_HASH.substring(0, 6) }),
+      new webpack.DefinePlugin({ __VERSION__: VERSION_STRING, __COMMIT__: COMMIT_STRING }),
     ],
   }
 }
