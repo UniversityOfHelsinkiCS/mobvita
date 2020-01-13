@@ -9,7 +9,7 @@ const App = () => (
   <>
     <Bar />
     <div style={{ backgroundColor: '#fafafa' }}>
-      <div className="content">
+      <div className="application-content">
         <Router />
       </div>
     </div>

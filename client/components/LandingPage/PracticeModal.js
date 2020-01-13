@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import { Modal, Button, Checkbox } from 'semantic-ui-react'
+import { Modal, Button, Checkbox, Container } from 'semantic-ui-react'
 import { Link } from 'react-router-dom'
 import { useSelector } from 'react-redux'
 
@@ -78,35 +78,34 @@ const PracticeModal = ({ trigger }) => {
     setLibraries({ ...libraries, [library]: data.checked })
   }
 
+
   return (
     <Modal
+      dimmer="inverted"
       closeIcon
       trigger={trigger}
     >
       <Modal.Header>Choose practice</Modal.Header>
-      <Modal.Content>
-        <div>
+      <Modal.Content className="practiceModal">
+
+        <Container>
+          <Button fluid disabled={!filteredLink} color="teal" as={Link} to={filteredLink}>
+            {`Start random story from ${filteredStories.length} stories`}
+          </Button>
+        </Container>
+
+
+        <div style={{ padding: '1em' }}>
           <div>Story library</div>
           <CheckboxGroup values={libraries} onChange={handleLibraryChange} />
         </div>
-        <div>
+        <div style={{ padding: '1em' }}>
           <div>Story category</div>
           <div>
             <CheckboxGroup values={categories} onChange={handleCategoryChange} />
           </div>
         </div>
-        <div>
-          {`${filteredStories.length} stories`}
-        </div>
-        {filteredLink
-          && (
-          <Link to={filteredLink}>
-            <Button>
-              Start random story
-            </Button>
-          </Link>
-          )
-        }
+        <div style={{ padding: '1em' }} />
       </Modal.Content>
     </Modal>
   )

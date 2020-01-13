@@ -3,8 +3,9 @@
 }
 
 $wrong-color: #ff5e5e;
+$button-color: teal;
 
-.content {
+.application-content {
   padding: 10px;
   padding-bottom: 5em;
   min-height: calc(100vh - 2em);
@@ -89,8 +90,6 @@ $wrong-color: #ff5e5e;
     height:100%;
     
   }
-
-
 }
 
 
