@@ -10,7 +10,9 @@ import { setLocale } from 'Utilities/redux/localeReducer'
 import { sidebarSetOpen } from 'Utilities/redux/sidebarReducer'
 import { logout } from 'Utilities/redux/userReducer'
 import { resetCurrentSnippet } from 'Utilities/redux/snippetsReducer'
-import { images } from 'Utilities/common'
+import { images, getLearningLanguage } from 'Utilities/common'
+import AboutUs from './StaticContent/AboutUs'
+import ContactUs from './StaticContent/ContactUs'
 
 
 export default function Bar() {
@@ -93,8 +95,8 @@ export default function Bar() {
 
             <div style={{ marginTop: 'auto' }}>
               <Menu.Item style={{ display: 'flex', flexDirection: 'row' }}>
-                <Button size="small">About us</Button>
-                <Button size="small">Contact us</Button>
+                <AboutUs trigger={<Button size="small">About us</Button>} />
+                <ContactUs trigger={<Button size="small">Contact us</Button>} />
                 { user && <Button size="small" onClick={() => menuClickWrapper(signOut)}>Log out</Button>}
 
               </Menu.Item>
@@ -104,8 +106,6 @@ export default function Bar() {
 
             </div>
           </div>
-
-
         </Sidebar>
       </Swipeable>
     </>
