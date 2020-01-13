@@ -103,9 +103,14 @@ export default function Bar() {
                 <Button size="small">About us</Button>
                 <Button size="small">Contact us</Button>
                 { user && <Button size="small" onClick={() => menuClickWrapper(signOut)}>Log out</Button>}
+
               </Menu.Item>
+              {/* eslint-disable no-undef */}
+              {<span>{`Built at: ${__VERSION__}`}</span>}
+
             </div>
           </div>
+
 
         </Sidebar>
       </Swipeable>
