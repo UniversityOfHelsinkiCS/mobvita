@@ -1,3 +1,6 @@
+const moment = require('moment-timezone')
+
+const buildtime = moment.tz(new Date(), 'Europe/Helsinki').format('LLLL')
 const path = require('path')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
 const htmlTemplate = require('html-webpack-template')
@@ -6,7 +9,6 @@ const OptimizeCssAssetsPlugin = require('optimize-css-assets-webpack-plugin')
 const webpack = require('webpack')
 
 module.exports = (env, argv) => {
-
   const { mode } = argv
 
   const additionalPlugins = mode === 'production'
@@ -26,14 +28,12 @@ module.exports = (env, argv) => {
 
   const BASE_PATH = process.env.BASE_PATH || '/'
 
-  const devtool = mode === "production" ? false : "source-map"
+  const devtool = mode === 'production' ? false : 'source-map'
 
   return {
     devtool,
     mode,
-    output: {
-      publicPath: BASE_PATH,
-    },
+    output: { publicPath: BASE_PATH },
     entry: [
       '@babel/polyfill', // so we don't need to import it anywhere
       './client',
@@ -53,9 +53,7 @@ module.exports = (env, argv) => {
           // Load JS files
           test: /\.js$/,
           exclude: /node_modules/,
-          use: {
-            loader: 'babel-loader',
-          },
+          use: { loader: 'babel-loader' },
         },
         {
           // Load CSS files
@@ -80,9 +78,7 @@ module.exports = (env, argv) => {
         },
       ],
     },
-    optimization: {
-      ...additionalOptimizations,
-    },
+    optimization: { ...additionalOptimizations },
     plugins: [
       new webpack.DefinePlugin({
         'process.env.BASE_PATH': JSON.stringify(BASE_PATH),
@@ -104,9 +100,7 @@ module.exports = (env, argv) => {
         chunkFilename: '[name]-[id].css',
       }),
       ...additionalPlugins,
-      new webpack.DefinePlugin({
-        __VERSION__: JSON.stringify(new Date())
-      })
+      new webpack.DefinePlugin({ __VERSION__: JSON.stringify(buildtime) }),
     ],
   }
 }
