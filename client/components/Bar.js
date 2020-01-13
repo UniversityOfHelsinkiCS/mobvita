@@ -99,7 +99,8 @@ export default function Bar() {
 
               </Menu.Item>
               {/* eslint-disable no-undef */}
-              {<span>{`Built at: ${__VERSION__}`}</span>}
+              <div>{`Built at: ${__VERSION__}`}</div>
+              <div>{`Commit: ${__COMMIT__}`}</div>
 
             </div>
           </div>
