@@ -8,13 +8,13 @@ workflows:
       - dockerhub/publish:
           image: toska/$CIRCLE_PROJECT_REPONAME
           tag: 'staging'
-          BASE_PATH: /staging
+          environment:
+            BASE_PATH: /staging
           filters:
             branches:
               only: master
       - dockerhub/publish:
           image: toska/$CIRCLE_PROJECT_REPONAME
-          environment:
           tag: 'prod'
           filters:
             tags:
