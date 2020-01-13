@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
-import { Segment, Button, Header } from 'semantic-ui-react'
+import { Segment, Button, Header, Loader, Dimmer } from 'semantic-ui-react'
 import { getCurrentSnippet, getNextSnippet, postAnswers, setTotalNumberAction } from 'Utilities/redux/snippetsReducer'
 import { getTranslationAction, clearTranslationAction } from 'Utilities/redux/translationReducer'
 import { capitalize, localeOptions } from 'Utilities/common'
@@ -239,7 +239,13 @@ const CurrentPractice = ({ storyId }) => {
     }
   }
 
-  if (!snippets.focused || snippets.pending) return null
+  if (!snippets.focused || snippets.pending) {
+    return (
+      <div>
+        <Loader active />
+      </div>
+    )
+  }
 
   const { practice_snippet: practice } = snippets.focused
 
