@@ -19,7 +19,7 @@ export default function Bar() {
   const intl = useIntl()
   const dispatch = useDispatch()
 
-  const [language, setLanguage] = useState('')
+  const language = useSelector(({ language }) => language)
 
   const { user } = useSelector(({ user }) => ({ user: user.data }))
   const open = useSelector(({ sidebar }) => sidebar.open)
@@ -45,13 +45,6 @@ export default function Bar() {
       dispatch(sidebarSetOpen(false))
     }
   }, [])
-
-
-  useEffect(() => {
-    const currentLanguge = getLearningLanguage()
-    setLanguage(currentLanguge)
-  }, [window.location.pathname])
-
 
   return (
     <>
@@ -108,12 +101,11 @@ export default function Bar() {
 
               </Menu.Item>
               {/* eslint-disable no-undef */}
-              {<span>{`Built at: ${__VERSION__}`}</span>}
+              <div>{`Built at: ${__VERSION__}`}</div>
+              <div>{`Commit: ${__COMMIT__}`}</div>
 
             </div>
           </div>
-
-
         </Sidebar>
       </Swipeable>
     </>

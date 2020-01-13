@@ -5,13 +5,6 @@ import { setLearningLanguage } from 'Utilities/redux/languageReducer'
 
 const AccessControl = ({ children }) => {
   const { user } = useSelector(({ user }) => ({ user: user.data }))
-  const dispatch = useDispatch()
-
-  useEffect(() => {
-    if (user) {
-      dispatch(setLearningLanguage(user.user.last_used_language))
-    }
-  }, [user])
 
   if (!user) return <Login />
 

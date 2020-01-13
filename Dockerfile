@@ -7,6 +7,9 @@ RUN dpkg-reconfigure -f noninteractive tzdata
 ARG BASE_PATH
 ENV BASE_PATH=$BASE_PATH
 
+ARG COMMIT_HASH
+ENV COMMIT_HASH=$COMMIT_HASH
+
 # Setup
 WORKDIR /usr/src/app
 COPY . .

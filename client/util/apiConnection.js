@@ -1,11 +1,10 @@
 import axios from 'axios'
-import { basePath } from 'Utilities/common'
 
 /**
  * ApiConnection simplifies redux usage
  */
 
-const getAxios = axios.create({ baseURL: `${basePath}api` })
+const getAxios = axios.create({ baseURL: '/api' })
 
 export const callApi = async (url, method = 'get', data) => {
   const user = localStorage.getItem('user')

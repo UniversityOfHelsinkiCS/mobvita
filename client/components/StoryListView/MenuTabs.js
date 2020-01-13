@@ -2,6 +2,7 @@ import React, { useEffect } from 'react'
 import { useDispatch } from 'react-redux'
 import { Tab } from 'semantic-ui-react'
 import { getStories } from 'Utilities/redux/storiesReducer'
+import { setLearningLanguage } from 'Utilities/redux/languageReducer'
 import StoryList from 'Components/StoryListView/StoryList'
 import HomeView from 'Components/LandingPage/HomeView'
 import { useIntl } from 'react-intl'
@@ -10,6 +11,7 @@ const Tabs = ({ match }) => {
   const intl = useIntl()
   const dispatch = useDispatch()
   const { language } = match.params
+
   useEffect(() => {
     dispatch(getStories(language, {
       sort_by: 'date',
@@ -19,10 +21,14 @@ const Tabs = ({ match }) => {
     }))
   }, [])
 
+  useEffect(() => {
+    dispatch(setLearningLanguage(language))
+  }, [language])
+
   const panes = [
     {
       menuItem: intl.formatMessage({ id: 'HOME' }),
-      render: () => <Tab.Pane><HomeView /></Tab.Pane>,
+      render: () => <Tab.Pane><HomeView language={language} /></Tab.Pane>,
     },
     {
       menuItem: intl.formatMessage({ id: 'LIBRARY' }),
