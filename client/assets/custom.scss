@@ -81,6 +81,7 @@ $button-color: teal;
 .sidebar{
   &-hamburger{
     z-index: 100;
+    position: relative;
     padding:0.3em;
   }
 
