@@ -3,7 +3,7 @@ import Router from 'Components/Router'
 import Bar from './Bar'
 
 const App = () => (
-  <div style={{ height: '100%' }}>
+  <div>
     <Bar />
     <div className="application-content">
       <Router />
