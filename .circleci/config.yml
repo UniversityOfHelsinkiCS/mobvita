@@ -3,25 +3,18 @@ version: 2.1
 orbs:
   dockerhub: circleci/docker@0.5.1
 workflows:
-
   deploy:
     jobs:
-      - build:
-          environment:
-            BASE_PATH: /staging
-          filters:
-            branches:
-              only: master
-            tags:
-              ignore: /.*/
       - dockerhub/publish:
           image: toska/$CIRCLE_PROJECT_REPONAME
           tag: 'staging'
+          BASE_PATH: /staging
           filters:
             branches:
               only: master
       - dockerhub/publish:
           image: toska/$CIRCLE_PROJECT_REPONAME
+          environment:
           tag: 'prod'
           filters:
             tags:
