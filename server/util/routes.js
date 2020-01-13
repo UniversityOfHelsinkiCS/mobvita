@@ -5,6 +5,7 @@ const session = require('@controllers/sessionController')
 const translation = require('@controllers/translationController')
 const opponent = require('@controllers/opponentController')
 const user = require('@controllers/userController')
+const email = require('@controllers/emailController')
 
 const router = Router()
 
@@ -26,5 +27,7 @@ router.get('/opponent', opponent.getOpponent)
 router.post('/session', session.create)
 
 router.get('/user', user.getSelf)
+
+router.post('/email', email.sendEmail)
 
 module.exports = router

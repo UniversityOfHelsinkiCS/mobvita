@@ -8,6 +8,8 @@ import user from './userReducer'
 import compete from './competitionReducer'
 import sidebar from './sidebarReducer'
 import language from './languageReducer'
+import email from './emailReducer'
+
 
 export default combineReducers({
   stories,
@@ -18,4 +20,5 @@ export default combineReducers({
   compete,
   sidebar,
   language,
+  email,
 })
