@@ -57,10 +57,10 @@ export default function Bar() {
         name="bars"
         size="big"
         onClick={() => dispatch(sidebarSetOpen(!open))}
-        id="sidebar-hamburger"
+        className="sidebar-hamburger"
       />
       <Swipeable
-        style={{ width: '3em', height: '100vh', position: 'absolute' }}
+        className="sidebar-swipeable"
         onSwipedRight={() => dispatch(sidebarSetOpen(true))}
         onSwipedLeft={() => dispatch(sidebarSetOpen(false))}
         trackMouse
@@ -73,7 +73,7 @@ export default function Bar() {
           visible={open}
         >
 
-          <div id="sidebar-content">
+          <div className="sidebar-content">
 
             <div style={{ padding: '1em' }}>
               <Header as="h2">MobVita - alpha</Header>

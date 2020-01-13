@@ -79,11 +79,22 @@ $button-color: teal;
   background-color: yellowgreen;
 }
 
-#sidebar{
+.sidebar{
   &-hamburger{
     position: absolute;
     z-index: 100;
+    padding:0.3em;
   }
+
+  &-swipeable {
+    width: 3em;
+    height: 100%;
+    position: fixed;
+    left: 0;
+    z-index: 10;
+    padding: 0.3em;
+  }
+
   &-content{
     display:flex;
     flex-direction: column;
