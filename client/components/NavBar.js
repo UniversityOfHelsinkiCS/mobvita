@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom'
 import { Menu, Dropdown, Button } from 'semantic-ui-react'
 import { logout } from 'Utilities/redux/userReducer'
 import { setLocale } from 'Utilities/redux/localeReducer'
-import { localeOptions } from 'Utilities/common'
+import { localeOptions, getLearningLanguage } from 'Utilities/common'
 import { FormattedMessage, useIntl } from 'react-intl'
 
 export default () => {
@@ -12,7 +12,7 @@ export default () => {
   const [language, setLanguage] = useState('')
 
   useEffect(() => {
-    const currentLanguge = window.location.pathname.split('/')[2]
+    const currentLanguge = getLearningLanguage()
     setLanguage(currentLanguge)
   }, [window.location.pathname])
 

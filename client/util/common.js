@@ -51,6 +51,13 @@ export const capitalize = (word) => {
   return `${firstLetter}${wordEnd}`
 }
 
+export const getLearningLanguage = () => {
+  const match = window.location.pathname.match(/stories\/([a-zA-z]*)/)
+  if (match) return match[1]
+
+  return null
+}
+
 export const supportedLearningLanguages = [
   'finnish', 'german', 'russian', 'kazakh', 'catalan', 'spanish', 'swedish', 'italian', 'french', 'turkish',
   'portuguese', 'erzya', 'komi-zyrian', 'meadow-mari', 'north-saami', 'sakha', 'tatar', 'udmurt',

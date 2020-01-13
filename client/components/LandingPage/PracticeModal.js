@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react'
 import { Modal, Button, Checkbox, Container } from 'semantic-ui-react'
 import { Link } from 'react-router-dom'
 import { useSelector } from 'react-redux'
+import { getLearningLanguage } from 'Utilities/common'
 
 const extractFilters = object => Object
   .entries(object)
@@ -54,7 +55,7 @@ const PracticeModal = ({ trigger }) => {
 
     setFilteredStories(filtered)
 
-    const currentLanguage = window.location.pathname.split('/')[2]
+    const currentLanguage = getLearningLanguage()
     setLanguage(currentLanguage)
     if (filtered.length > 0) {
       const random = Math.ceil(Math.random() * filtered.length) - 1

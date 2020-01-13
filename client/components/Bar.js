@@ -10,7 +10,7 @@ import { setLocale } from 'Utilities/redux/localeReducer'
 import { sidebarSetOpen } from 'Utilities/redux/sidebarReducer'
 import { logout } from 'Utilities/redux/userReducer'
 import { resetCurrentSnippet } from 'Utilities/redux/snippetsReducer'
-import { images } from 'Utilities/common'
+import { images, getLearningLanguage } from 'Utilities/common'
 
 
 export default function Bar() {
@@ -46,7 +46,7 @@ export default function Bar() {
 
 
   useEffect(() => {
-    const currentLanguge = window.location.pathname.split('/')[2]
+    const currentLanguge = getLearningLanguage()
     setLanguage(currentLanguge)
   }, [window.location.pathname])
 

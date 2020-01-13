@@ -5,13 +5,14 @@ import { Divider, Header } from 'semantic-ui-react'
 
 import { getStoryAction } from 'Utilities/redux/storiesReducer'
 import DictionaryHelp from 'Components/DictionaryHelp'
+import { getLearningLanguage } from 'Utilities/common'
 
 const PracticeView = ({ match }) => {
   const [language, setLanguage] = useState('')
   const dispatch = useDispatch()
   const { story } = useSelector(({ stories }) => ({ story: stories.focused }))
   useEffect(() => {
-    const currentLanguage = window.location.pathname.split('/')[2]
+    const currentLanguage = getLearningLanguage()
     setLanguage(currentLanguage)
     dispatch(getStoryAction(currentLanguage, match.params.id))
   }, [])

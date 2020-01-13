@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react'
 import { Modal, Button, Input } from 'semantic-ui-react'
 import { useDispatch } from 'react-redux'
 import isUrl from 'is-url'
-import { capitalize } from 'Utilities/common'
+import { capitalize, getLearningLanguage } from 'Utilities/common'
 
 import { postStory } from 'Utilities/redux/storiesReducer'
 import { FormattedMessage, useIntl } from 'react-intl'
@@ -15,7 +15,7 @@ const StoryAddition = () => {
   const dispatch = useDispatch()
 
   useEffect(() => {
-    const currentLanguage = window.location.pathname.split('/')[2]
+    const currentLanguage = getLearningLanguage()
     setLanguage(capitalize(currentLanguage))
   }, [])
 
