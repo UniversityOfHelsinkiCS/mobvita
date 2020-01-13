@@ -39,7 +39,6 @@ const HomeView = () => {
 
   return (
     <div>
-      <h4>MobVita</h4>
       <EloChart eloHistory={eloHistory} />
       <PracticeModal trigger={<PracticeButton />} />
     </div>
