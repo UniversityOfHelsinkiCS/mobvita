@@ -1,0 +1,12 @@
+version: '3.5'
+
+services:
+  app:
+    build:
+      context: .
+    image: mobvita_dev
+    volumes:
+      - ./:/usr/src/app
+    ports:
+      - 8000:8000
+    container_name: mobvita_prod_test
