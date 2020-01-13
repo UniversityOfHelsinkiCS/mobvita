@@ -31,7 +31,7 @@ module.exports = (env, argv) => {
   const COMMIT_HASH = process.env.COMMIT_HASH || ''
   const VERSION_STRING = JSON.stringify(`${buildtime}`)
 
-  const COMMIT_STRING = JSON.stringify(COMMIT_HASH.substring(0, 6))
+  const COMMIT_STRING = JSON.stringify(COMMIT_HASH.substring(0, 7))
 
   const devtool = mode === 'production' ? false : 'source-map'
 
