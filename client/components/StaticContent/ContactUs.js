@@ -1,8 +1,7 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { Modal, Container, Form, Button } from 'semantic-ui-react'
 import { useDispatch, useSelector } from 'react-redux'
 import { sendEmail } from 'Utilities/redux/emailReducer'
-import { useState } from 'react'
 
 
 export default function ContactUs({ trigger }) {
@@ -37,7 +36,7 @@ export default function ContactUs({ trigger }) {
       <Modal.Content className="practiceModal">
 
         <Container>
-          <Form onSubmit={() => dispatch(sendEmail('test', 'test', 'test', 'test'))}>
+          <Form onSubmit={() => dispatch(sendEmail(formState))}>
             <Form.Field>
               <label>Name</label>
               <input value={formState.name} onChange={handleFormChange} name="name" placeholder="Name" />
