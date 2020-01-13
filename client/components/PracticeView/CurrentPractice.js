@@ -3,7 +3,7 @@ import { useSelector, useDispatch } from 'react-redux'
 import { Segment, Button, Header, Loader, Dimmer } from 'semantic-ui-react'
 import { getCurrentSnippet, getNextSnippet, postAnswers, setTotalNumberAction } from 'Utilities/redux/snippetsReducer'
 import { getTranslationAction, clearTranslationAction } from 'Utilities/redux/translationReducer'
-import { capitalize, localeOptions, getLearningLanguage } from 'Utilities/common'
+import { capitalize, localeOptions } from 'Utilities/common'
 
 import PreviousSnippet from 'Components/PracticeView/PreviousSnippet'
 import ExerciseCloze from 'Components/PracticeView/ExerciseCloze'
@@ -17,7 +17,7 @@ const CurrentPractice = ({ storyId }) => {
   const [touchedIDs, setTouchedIds] = useState([])
   const [touched, setTouched] = useState(0)
   const [attempt, setAttempts] = useState(0)
-  const [language, setLanguage] = useState('')
+  const language = useSelector(({ language }) => language)
   const [exerciseCount, setExerciseCount] = useState(0)
   const [disabled, setDisabled] = useState(false)
   const [waited, setWaited] = useState(false)
@@ -30,8 +30,6 @@ const CurrentPractice = ({ storyId }) => {
 
 
   useEffect(() => {
-    const currentLanguage = getLearningLanguage()
-    setLanguage(currentLanguage)
     dispatch(getCurrentSnippet(storyId))
     dispatch(clearTranslationAction())
   }, [])

@@ -2,7 +2,7 @@ import React, { useEffect } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import { FormattedMessage } from 'react-intl'
 import { Button } from 'semantic-ui-react'
-import { images, getLearningLanguage } from 'Utilities/common'
+import { images } from 'Utilities/common'
 import { getSelf } from 'Utilities/redux/userReducer'
 
 import PracticeModal from './PracticeModal'
@@ -27,9 +27,9 @@ const PracticeButton = props => (
 )
 
 const HomeView = () => {
-  const currentLanguage = getLearningLanguage()
+  const language = useSelector(({ language }) => language)
   const eloHistory = useSelector(({ user }) => user.data.user.exercise_history
-    .filter(exercise => exercise.language.toLowerCase() === currentLanguage)
+    .filter(exercise => exercise.language.toLowerCase() === language)
     .map(exercise => exercise.score))
 
   const dispatch = useDispatch()

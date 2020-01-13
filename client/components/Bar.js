@@ -10,14 +10,14 @@ import { setLocale } from 'Utilities/redux/localeReducer'
 import { sidebarSetOpen } from 'Utilities/redux/sidebarReducer'
 import { logout } from 'Utilities/redux/userReducer'
 import { resetCurrentSnippet } from 'Utilities/redux/snippetsReducer'
-import { images, getLearningLanguage } from 'Utilities/common'
+import { images } from 'Utilities/common'
 
 
 export default function Bar() {
   const intl = useIntl()
   const dispatch = useDispatch()
 
-  const [language, setLanguage] = useState('')
+  const language = useSelector(({ language }) => language)
 
   const { user } = useSelector(({ user }) => ({ user: user.data }))
   const open = useSelector(({ sidebar }) => sidebar.open)
@@ -43,13 +43,6 @@ export default function Bar() {
       dispatch(sidebarSetOpen(false))
     }
   }, [])
-
-
-  useEffect(() => {
-    const currentLanguge = getLearningLanguage()
-    setLanguage(currentLanguge)
-  }, [window.location.pathname])
-
 
   return (
     <>

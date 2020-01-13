@@ -1,23 +1,18 @@
 import React, { useState, useEffect } from 'react'
 import { Modal, Button, Input } from 'semantic-ui-react'
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import isUrl from 'is-url'
-import { capitalize, getLearningLanguage } from 'Utilities/common'
+import { capitalize } from 'Utilities/common'
 
 import { postStory } from 'Utilities/redux/storiesReducer'
 import { FormattedMessage, useIntl } from 'react-intl'
 
 const StoryAddition = () => {
   const [url, setURL] = useState('')
-  const [language, setLanguage] = useState('')
+  const language = useSelector(({ language }) => language)
   const [modalOpen, setModal] = useState(false)
   const intl = useIntl()
   const dispatch = useDispatch()
-
-  useEffect(() => {
-    const currentLanguage = getLearningLanguage()
-    setLanguage(capitalize(currentLanguage))
-  }, [])
 
   const handleSave = () => {
     const newStory = {

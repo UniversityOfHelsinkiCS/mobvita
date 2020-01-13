@@ -8,6 +8,7 @@ import { getStoryAction } from 'Utilities/redux/storiesReducer'
 import { getTranslationAction, clearTranslationAction } from 'Utilities/redux/translationReducer'
 import { capitalize, localeOptions } from 'Utilities/common'
 import DictionaryHelp from 'Components/DictionaryHelp'
+import { setLearningLanguage } from 'Utilities/redux/languageReducer'
 
 const SingleStoryView = ({ match }) => {
   const dispatch = useDispatch()
@@ -16,6 +17,7 @@ const SingleStoryView = ({ match }) => {
   useEffect(() => {
     dispatch(getStoryAction(language, id))
     dispatch(clearTranslationAction())
+    dispatch(setLearningLanguage(language))
   }, [])
   if (!story) return 'No story (yet?)'
 
