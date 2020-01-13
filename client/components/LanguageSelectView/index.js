@@ -9,7 +9,7 @@ const LanguageSelectView = () => (
     <Header as="h2">
       <FormattedMessage id="CHOOSE_LANG" />
     </Header>
-    <Segment style={{ display: 'flex', flexWrap: 'wrap' }}>
+    <Segment style={{ display: 'flex', justifyContent: 'center', flexWrap: 'wrap' }}>
       {supportedLearningLanguages.map(lang => (
         <Link key={lang} to={`/stories/${lang}#home`} style={{ width: '7em', display: 'flex', flexDirection: 'column', margin: '1.5em', alignItems: 'center' }}>
           <img src={images[`flag${capitalize(lang.split('-').join(''))}`]} style={{ height: '3em', border: '1px solid whitesmoke' }} alt={lang} />
