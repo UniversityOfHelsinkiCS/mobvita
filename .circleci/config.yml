@@ -7,7 +7,13 @@ workflows:
     jobs:
       - dockerhub/publish:
           image: toska/$CIRCLE_PROJECT_REPONAME
-          tag: 'latest'
+          tag: 'staging'
           filters:
             branches:
               only: master
+      - dockerhub/publish:
+          image: toska/$CIRCLE_PROJECT_REPONAME
+          tag: 'prod'
+          filters:
+            tags:
+              only: /.*/
