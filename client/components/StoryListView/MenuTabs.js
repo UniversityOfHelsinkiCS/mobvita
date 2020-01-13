@@ -6,7 +6,7 @@ import StoryList from 'Components/StoryListView/StoryList'
 import HomeView from 'Components/LandingPage/HomeView'
 import { useIntl } from 'react-intl'
 
-const Tabs = ({ match, location }) => {
+const Tabs = ({ match }) => {
   const intl = useIntl()
   const dispatch = useDispatch()
   const { language } = match.params
@@ -30,7 +30,6 @@ const Tabs = ({ match, location }) => {
     },
   ]
 
-  const defaultActiveIndex = location.hash === '#home' ? 0 : 1
 
   return (
     <div style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'space-between' }}>
@@ -38,7 +37,7 @@ const Tabs = ({ match, location }) => {
         <Tab
           panes={panes}
           renderActiveOnly
-          defaultActiveIndex={defaultActiveIndex}
+          defaultActiveIndex="0"
         />
       </div>
     </div>
