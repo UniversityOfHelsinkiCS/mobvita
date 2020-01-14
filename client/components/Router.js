@@ -11,7 +11,7 @@ import CompeteView from 'Components/CompeteView'
 export default () => (
   <AccessControl>
     <Switch>
-      <Route exact path="/" component={LanguageSelectView} />
+      <Route exact path="/learningLanguage" component={LanguageSelectView} />
       <Route exact path="/home">
         <MenuTabs defaultIndex="0" />
       </Route>

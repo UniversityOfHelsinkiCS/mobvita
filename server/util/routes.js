@@ -34,10 +34,7 @@ router.post('/register', user.register)
 
 router.post('/contact', email.sendEmail)
 
-<<<<<<< HEAD
 router.post('/*', unknown)
 router.get('/*', unknown)
-=======
->>>>>>> 80240ddec05574f1db706ead2cb6adcdba0ae80b
 
 module.exports = router
