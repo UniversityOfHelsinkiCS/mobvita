@@ -39,7 +39,12 @@ const PracticeModal = ({ trigger }) => {
 
   const [randomStoryIndex, setRandom] = useState(0)
 
-  const { stories, pending } = useSelector(({ stories }) => ({ stories: stories.data, pending: stories.pending }))
+  const { stories, pending } = useSelector(({ stories }) => (
+    {
+      stories: stories.data,
+      pending: stories.pending,
+    }
+  ))
 
   useEffect(() => {
     const filtered = stories.filter((story) => {
