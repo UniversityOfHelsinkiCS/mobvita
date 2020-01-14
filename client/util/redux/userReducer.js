@@ -62,13 +62,6 @@ export default (state = { data: undefined }, action) => {
         error: true,
         errorMessage: action.response.response.data,
       }
-    case 'LOGOUT_SUCCESS':
-      return {
-        ...state,
-        data: undefined,
-        pending: false,
-        error: false,
-      }
     case 'GET_SELF_SUCCESS':
       return {
         ...state,
