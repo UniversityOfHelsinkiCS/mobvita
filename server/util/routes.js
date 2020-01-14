@@ -6,6 +6,7 @@ const translation = require('@controllers/translationController')
 const opponent = require('@controllers/opponentController')
 const user = require('@controllers/userController')
 const email = require('@controllers/emailController')
+const { unknown } = require('@controllers/fallbackController')
 
 const router = Router()
 
@@ -30,5 +31,8 @@ router.get('/user', user.getSelf)
 router.post('/user', user.setSelf)
 
 router.post('/contact', email.sendEmail)
+
+router.post('/*', unknown)
+router.get('/*', unknown)
 
 module.exports = router

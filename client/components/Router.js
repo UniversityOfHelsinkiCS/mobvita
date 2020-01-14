@@ -12,7 +12,12 @@ export default () => (
   <AccessControl>
     <Switch>
       <Route exact path="/" component={LanguageSelectView} />
-      <Route exact path="/stories" component={MenuTabs} />
+      <Route exact path="/home">
+        <MenuTabs defaultIndex="0" />
+      </Route>
+      <Route exact path="/library">
+        <MenuTabs defaultIndex="1" />
+      </Route>
       <Route exact path="/stories/:id" component={SingleStoryView} />
       <Route exact path="/stories/:id/practice/" component={PracticeView} />
       <Route exact path="/stories/:id/compete/" component={CompeteView} />

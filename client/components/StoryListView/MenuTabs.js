@@ -6,8 +6,9 @@ import StoryList from 'Components/StoryListView/StoryList'
 import HomeView from 'Components/LandingPage/HomeView'
 import { useIntl } from 'react-intl'
 import { learningLanguageSelector } from 'Utilities/common'
+import { Link } from 'react-router-dom'
 
-const Tabs = () => {
+const Tabs = ({ defaultIndex }) => {
   const intl = useIntl()
   const dispatch = useDispatch()
   const language = useSelector(learningLanguageSelector)
@@ -23,15 +24,24 @@ const Tabs = () => {
 
   const panes = [
     {
-      menuItem: intl.formatMessage({ id: 'HOME' }),
+      menuItem: {
+        as: Link,
+        content: intl.formatMessage({ id: 'HOME' }),
+        to: '/home',
+        key: 'home',
+      },
       render: () => <Tab.Pane><HomeView language={language} /></Tab.Pane>,
     },
     {
-      menuItem: intl.formatMessage({ id: 'LIBRARY' }),
+      menuItem: {
+        as: Link,
+        content: intl.formatMessage({ id: 'LIBRARY' }),
+        to: '/library',
+        key: 'library',
+      },
       render: () => <Tab.Pane><StoryList language={language} /></Tab.Pane>,
     },
   ]
-
 
   return (
     <div style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'space-between' }}>
@@ -39,10 +49,11 @@ const Tabs = () => {
         <Tab
           panes={panes}
           renderActiveOnly
-          defaultActiveIndex="0"
+          defaultActiveIndex={defaultIndex}
         />
       </div>
     </div>
+
   )
 }
 
