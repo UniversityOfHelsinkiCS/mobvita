@@ -1,8 +1,7 @@
 import callBuilder from '../apiConnection'
 
-export const sendEmail = (name, subject, email, message) => {
-  const payload = { name, subject, email, message }
-  const route = '/email'
+export const sendEmail = (payload) => {
+  const route = '/contact'
   const prefix = 'POST_EMAIL'
   return callBuilder(route, prefix, 'post', payload)
 }
