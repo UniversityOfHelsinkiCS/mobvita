@@ -50,7 +50,6 @@ const Tabs = ({ location }) => {
       <div style={{ width: '110em' }}>
         <Tab
           panes={panes}
-          renderActiveOnly
           activeIndex={index}
         />
       </div>
