@@ -42,7 +42,7 @@ const Register = () => {
 
   return (
     <>
-      <Header as="h1" style={{ margin: '0.7em auto', fontSize: '4em' }}>Mobvita</Header>
+      <Header as="h3" style={{ margin: '0.7em auto', fontSize: '4em' }}>Register</Header>
       <Segment style={{ backgroundColor: 'azure' }}>
         <p>
           Create an account

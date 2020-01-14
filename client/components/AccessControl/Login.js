@@ -16,7 +16,7 @@ const Login = () => {
 
   return (
     <>
-      <Header as="h1" style={{ margin: '0.7em auto', fontSize: '4em' }}>Mobvita</Header>
+      <Header as="h3" style={{ margin: '0.7em auto', fontSize: '4em' }}>Login</Header>
       <Segment style={{ backgroundColor: 'azure' }}>
         <p>
           Master a language by learning from stories of your own choosing
