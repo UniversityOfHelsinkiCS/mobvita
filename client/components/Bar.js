@@ -71,8 +71,10 @@ export default function Bar() {
           <div className="sidebar-content">
 
             <div style={{ padding: '1em' }}>
-              <Header as="h2">MobVita - alpha</Header>
-              <img style={{ width: '6em', margin: '0 auto' }} src={images.revitaLogoTransparent} alt="revitaLogo" />
+              <Link to="/home" onClick={() => menuClickWrapper()}>
+                <Header as="h2">MobVita - alpha</Header>
+                <img style={{ width: '6em', margin: '0 auto' }} src={images.revitaLogoTransparent} alt="revitaLogo" />
+              </Link>
             </div>
 
             {user && (
@@ -94,7 +96,7 @@ export default function Bar() {
             )}
 
             <div style={{ marginTop: 'auto' }}>
-              <Menu.Item style={{ display: 'flex', flexDirection: 'row' }}>
+              <Menu.Item style={{ display: 'flex', flexDirection: 'row', justifyContent: 'center' }}>
                 <AboutUs trigger={<Button size="small">About us</Button>} />
                 <ContactUs trigger={<Button size="small">Contact us</Button>} />
                 { user && <Button size="small" onClick={() => menuClickWrapper(signOut)}>Log out</Button>}

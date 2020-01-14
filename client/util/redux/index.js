@@ -8,6 +8,7 @@ import user from './userReducer'
 import compete from './competitionReducer'
 import sidebar from './sidebarReducer'
 import email from './emailReducer'
+import register from './registerReducer'
 
 
 export default combineReducers({
@@ -19,4 +20,5 @@ export default combineReducers({
   compete,
   sidebar,
   email,
+  register,
 })

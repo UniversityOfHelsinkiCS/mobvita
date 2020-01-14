@@ -13,4 +13,11 @@ const setSelf = async (req, res) => {
   res.send(response.data)
 }
 
-module.exports = { getSelf, setSelf }
+const register = async (req, res) => {
+  const data = req.body
+  const url = '/register'
+  const response = await axios.post(url, data)
+  res.send(response.data)
+}
+
+module.exports = { getSelf, setSelf, register }
