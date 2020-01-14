@@ -11,7 +11,7 @@ import email from './emailReducer'
 import register from './registerReducer'
 
 
-export default combineReducers({
+const rootReducer = combineReducers({
   stories,
   snippets,
   translation,
@@ -22,3 +22,9 @@ export default combineReducers({
   email,
   register,
 })
+
+export default (state, action) => (
+  action.type === 'LOGOUT_SUCCESS'
+    ? rootReducer(undefined, action)
+    : rootReducer(state, action)
+)
