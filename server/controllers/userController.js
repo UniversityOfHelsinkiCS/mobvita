@@ -20,4 +20,11 @@ const register = async (req, res) => {
   res.send(response.data)
 }
 
-module.exports = { getSelf, setSelf, register }
+const confirm = async (req, res) => {
+  const { token } = req.body
+  const url = `/confirm?token=${token}`
+  const response = await axios.get(url)
+  res.send(response.data)
+}
+
+module.exports = { getSelf, setSelf, register, confirm }

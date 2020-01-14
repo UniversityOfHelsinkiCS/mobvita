@@ -31,6 +31,13 @@ export const saveSelf = (changes) => {
 
 export const updateLearningLanguage = language => saveSelf({ last_used_lang: language })
 
+export const confirmUser = (token) => {
+  const route = '/confirm'
+  const prefix = 'CONFIRM_USER'
+  const payload = { token }
+  return callBuilder(route, prefix, 'post', payload)
+}
+
 export default (state = { data: undefined }, action) => {
   switch (action.type) {
     case 'LOGIN_SUCCESS':
@@ -88,6 +95,13 @@ export default (state = { data: undefined }, action) => {
         pending: false,
         error: true,
         errorMessage: action.response.response.data,
+      }
+    case 'CONFIRM_USER_SUCCESS':
+      return {
+        ...state,
+        data: { user: action.response },
+        pending: false,
+        error: false,
       }
     default:
       return state
