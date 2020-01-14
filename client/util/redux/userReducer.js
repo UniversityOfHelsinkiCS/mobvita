@@ -72,6 +72,7 @@ export default (state = { data: undefined }, action) => {
     case 'SAVE_SELF_SUCCESS':
       return {
         ...state,
+        data: { ...state.data, user: action.response.user },
         pending: false,
         error: false,
       }
