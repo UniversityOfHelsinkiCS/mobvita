@@ -71,8 +71,10 @@ export default function Bar() {
           <div className="sidebar-content">
 
             <div style={{ padding: '1em' }}>
-              <Header as="h2">MobVita - alpha</Header>
-              <img style={{ width: '6em', margin: '0 auto' }} src={images.revitaLogoTransparent} alt="revitaLogo" />
+              <Link to="/home" onClick={() => menuClickWrapper()}>
+                <Header as="h2">MobVita - alpha</Header>
+                <img style={{ width: '6em', margin: '0 auto' }} src={images.revitaLogoTransparent} alt="revitaLogo" />
+              </Link>
             </div>
 
             {user && (
