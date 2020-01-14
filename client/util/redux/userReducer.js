@@ -22,6 +22,15 @@ export const getSelf = () => {
   return callBuilder(route, prefix)
 }
 
+export const saveSelf = (changes) => {
+  const route = '/user/'
+  const prefix = 'SAVE_SELF'
+  const payload = changes
+  return callBuilder(route, prefix, 'post', payload)
+}
+
+export const updateLearingLanguage = language => saveSelf({ last_used_lang: language })
+
 export default (state = { data: undefined }, action) => {
   switch (action.type) {
     case 'LOGIN_SUCCESS':
@@ -59,6 +68,25 @@ export default (state = { data: undefined }, action) => {
         data: { ...state.data, user: action.response.user },
         pending: false,
         error: false,
+      }
+    case 'SAVE_SELF_SUCCESS':
+      return {
+        ...state,
+        pending: false,
+        error: false,
+      }
+    case 'SAVE_SELF_ATTEMPT':
+      return {
+        ...state,
+        pending: true,
+        error: false,
+      }
+    case 'SAVE_SELF_FAILURE':
+      return {
+        ...state,
+        pending: false,
+        error: true,
+        errorMessage: action.response.response.data,
       }
     default:
       return state

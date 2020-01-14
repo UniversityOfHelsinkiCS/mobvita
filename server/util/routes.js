@@ -27,6 +27,7 @@ router.get('/opponent', opponent.getOpponent)
 router.post('/session', session.create)
 
 router.get('/user', user.getSelf)
+router.post('/user', user.setSelf)
 
 router.post('/email', email.sendEmail)
 

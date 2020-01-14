@@ -6,6 +6,11 @@ const getSelf = async (req, res) => {
   res.send(response.data)
 }
 
-module.exports = {
-  getSelf,
+const setSelf = async (req, res) => {
+  const data = req.body
+  const url = '/user'
+  const response = await axios.post(url, data, { headers: req.headers })
+  res.send(response.data)
 }
+
+module.exports = { getSelf, setSelf }
