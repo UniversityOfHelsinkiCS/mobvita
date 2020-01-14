@@ -29,7 +29,7 @@ export const saveSelf = (changes) => {
   return callBuilder(route, prefix, 'post', payload)
 }
 
-export const updateLearingLanguage = language => saveSelf({ last_used_lang: language })
+export const updateLearningLanguage = language => saveSelf({ last_used_lang: language })
 
 export default (state = { data: undefined }, action) => {
   switch (action.type) {

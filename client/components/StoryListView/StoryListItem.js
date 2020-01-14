@@ -5,7 +5,7 @@ import moment from 'moment'
 
 import { FormattedMessage } from 'react-intl'
 
-const StoryListItem = ({ story, language }) => {
+const StoryListItem = ({ story }) => {
   const [showInfo, setShow] = useState(false)
 
   const icons = {
@@ -51,13 +51,13 @@ const StoryListItem = ({ story, language }) => {
       </Card.Content>
       <Card.Content extra style={{ padding: '15px' }}>
         <div style={{ display: 'flex', alignItems: 'baseline' }}>
-          <Link to={`/stories/${language}/${story._id}/`}>
+          <Link to={`/stories/${story._id}/`}>
             <Button color="teal" size="tiny" style={{ marginTop: '5px' }}>
               Read
             </Button>
           </Link>
           {' '}
-          <Link to={`/stories/${language}/${story._id}/practice`}>
+          <Link to={`/stories/${story._id}/practice`}>
             <Button color="teal" size="tiny" style={{ marginTop: '5px' }}>
               Practice
             </Button>

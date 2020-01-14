@@ -51,6 +51,8 @@ export const capitalize = (word) => {
   return `${firstLetter}${wordEnd}`
 }
 
+export const learningLanguageSelector = ({ user }) => user.data.user.last_used_language
+
 export const supportedLearningLanguages = [
   'finnish', 'german', 'russian', 'kazakh', 'catalan', 'spanish', 'swedish', 'italian', 'french', 'turkish',
   'portuguese', 'erzya', 'komi-zyrian', 'meadow-mari', 'north-saami', 'sakha', 'tatar', 'udmurt',

@@ -9,7 +9,6 @@ import { FormattedMessage, useIntl } from 'react-intl'
 
 export default () => {
   const [active, setActive] = useState('home')
-  const language = useSelector(({ language }) => language)
 
   const { user } = useSelector(({ user }) => ({ user: user.data }))
   const dispatch = useDispatch()
@@ -21,7 +20,7 @@ export default () => {
     <Menu inverted style={{ borderRadius: '0' }}>
       <Menu.Item
         as={Link}
-        to={`/stories/${language}#home`}
+        to="/stories#home"
         active={active === 'home'}
         content={intl.formatMessage({ id: 'HOME' })}
         name="home"

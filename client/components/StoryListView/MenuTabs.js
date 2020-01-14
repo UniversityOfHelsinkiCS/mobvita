@@ -1,16 +1,16 @@
 import React, { useEffect } from 'react'
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { Tab } from 'semantic-ui-react'
 import { getStories } from 'Utilities/redux/storiesReducer'
 import StoryList from 'Components/StoryListView/StoryList'
 import HomeView from 'Components/LandingPage/HomeView'
 import { useIntl } from 'react-intl'
-import { updateLearingLanguage } from 'Utilities/redux/userReducer'
+import { learningLanguageSelector } from 'Utilities/common'
 
-const Tabs = ({ match }) => {
+const Tabs = () => {
   const intl = useIntl()
   const dispatch = useDispatch()
-  const { language } = match.params
+  const language = useSelector(learningLanguageSelector)
 
   useEffect(() => {
     dispatch(getStories(language, {
@@ -19,10 +19,6 @@ const Tabs = ({ match }) => {
       page: 0,
       page_size: 14,
     }))
-  }, [])
-
-  useEffect(() => {
-    dispatch(updateLearingLanguage(language))
   }, [language])
 
   const panes = [

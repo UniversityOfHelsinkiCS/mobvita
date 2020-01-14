@@ -6,18 +6,17 @@ import { FormattedMessage } from 'react-intl'
 
 import { getStoryAction } from 'Utilities/redux/storiesReducer'
 import { getTranslationAction, clearTranslationAction } from 'Utilities/redux/translationReducer'
-import { capitalize, localeOptions } from 'Utilities/common'
+import { capitalize, localeOptions, learningLanguageSelector } from 'Utilities/common'
 import DictionaryHelp from 'Components/DictionaryHelp'
-import { setLearningLanguage } from 'Utilities/redux/languageReducer'
 
 const SingleStoryView = ({ match }) => {
   const dispatch = useDispatch()
   const { story, pending, locale } = useSelector(({ stories, locale }) => ({ story: stories.focused, pending: stories.pending, locale }))
-  const { language, id } = match.params
+  const language = useSelector(learningLanguageSelector)
+  const { id } = match.params
   useEffect(() => {
     dispatch(getStoryAction(language, id))
     dispatch(clearTranslationAction())
-    dispatch(setLearningLanguage(language))
   }, [])
   if (!story) return 'No story (yet?)'
 
@@ -41,7 +40,7 @@ const SingleStoryView = ({ match }) => {
       <div style={{ paddingTop: '1em' }}>
         <Header>
           {story.title}
-          <Link to={`/stories/${language}/${id}/practice`}>
+          <Link to={`/stories/${id}/practice`}>
             <Button color="teal" style={{ minWidth: '8em', margin: '0.5em', float: 'right', display: 'flex' }}>
               <FormattedMessage id="PRACTICE_THIS" />
             </Button>

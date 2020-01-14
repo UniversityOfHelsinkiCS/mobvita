@@ -38,7 +38,6 @@ const PracticeModal = ({ trigger }) => {
   const [filteredStories, setFilteredStories] = useState([])
 
   const [randomStoryIndex, setRandom] = useState(0)
-  const language = useSelector(({ language }) => language)
 
   const { stories, pending } = useSelector(({ stories }) => ({ stories: stories.data, pending: stories.pending }))
 
@@ -67,7 +66,7 @@ const PracticeModal = ({ trigger }) => {
   let filteredLink = ''
 
   if (filteredStories.length > 0) {
-    filteredLink = `/stories/${language}/${filteredStories[randomStoryIndex]._id}/practice`
+    filteredLink = `/stories/${filteredStories[randomStoryIndex]._id}/practice`
   }
 
   const handleCategoryChange = category => (_, data) => {
