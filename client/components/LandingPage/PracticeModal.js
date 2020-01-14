@@ -2,18 +2,19 @@ import React, { useState, useEffect } from 'react'
 import { Modal, Button, Checkbox, Container } from 'semantic-ui-react'
 import { Link } from 'react-router-dom'
 import { useSelector } from 'react-redux'
+import { capitalize } from 'Utilities/common'
 
 const extractFilters = object => Object
   .entries(object)
   .filter(entry => entry[1])
-  .map(([key]) => key)
+  .map(([key]) => capitalize(key))
 
 const CheckboxGroup = ({ values, onChange }) => (
-  Object.entries(values).map(([key, val]) => (
+  Object.entries(values).sort().map(([key, val]) => (
     <Checkbox
       key={key}
       onChange={onChange(key)}
-      label={key}
+      label={capitalize(key)}
       checked={val}
     />
   ))
@@ -22,16 +23,16 @@ const CheckboxGroup = ({ values, onChange }) => (
 const PracticeModal = ({ trigger }) => {
   const [libraries, setLibraries] = useState(
     {
-      Private: true,
-      Public: true,
+      private: true,
+      public: true,
     },
   )
   const [categories, setCategories] = useState(
     {
-      Science: true,
-      Politics: true,
-      Culture: true,
-      Sports: true,
+      science: true,
+      politics: true,
+      culture: true,
+      sports: true,
     },
   )
   const [filteredStories, setFilteredStories] = useState([])
