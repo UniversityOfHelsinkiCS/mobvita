@@ -29,6 +29,6 @@ router.post('/session', session.create)
 router.get('/user', user.getSelf)
 router.post('/user', user.setSelf)
 
-router.post('/email', email.sendEmail)
+router.post('/contact', email.sendEmail)
 
 module.exports = router
