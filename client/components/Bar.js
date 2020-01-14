@@ -94,7 +94,7 @@ export default function Bar() {
             )}
 
             <div style={{ marginTop: 'auto' }}>
-              <Menu.Item style={{ display: 'flex', flexDirection: 'row' }}>
+              <Menu.Item style={{ display: 'flex', flexDirection: 'row', justifyContent: 'center' }}>
                 <AboutUs trigger={<Button size="small">About us</Button>} />
                 <ContactUs trigger={<Button size="small">Contact us</Button>} />
                 { user && <Button size="small" onClick={() => menuClickWrapper(signOut)}>Log out</Button>}
