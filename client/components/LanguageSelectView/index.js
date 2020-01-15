@@ -6,7 +6,7 @@ import { images, capitalize, supportedLearningLanguages } from 'Utilities/common
 import { updateLearningLanguage } from 'Utilities/redux/userReducer'
 import { useDispatch } from 'react-redux'
 
-const LanguageSelectView = () => {
+const LearningLanguageSelectView = () => {
   const dispatch = useDispatch()
 
   return (
@@ -25,4 +25,4 @@ const LanguageSelectView = () => {
     </Container>
   )
 }
-export default LanguageSelectView
+export default LearningLanguageSelectView
