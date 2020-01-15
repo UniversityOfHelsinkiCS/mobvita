@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import { Link } from 'react-router-dom'
-import { Sidebar, Segment, Menu, Dropdown, Icon, Button, Header, Container } from 'semantic-ui-react'
+import { Sidebar, Segment, Menu, Button, Icon, Header, Container, Dropdown } from 'semantic-ui-react'
 import { useIntl } from 'react-intl'
 import { useDispatch, useSelector } from 'react-redux'
 import { Swipeable } from 'react-swipeable'
@@ -20,8 +20,26 @@ export default function Bar({ history }) {
   const dispatch = useDispatch()
 
   const { user } = useSelector(({ user }) => ({ user: user.data }))
+  const locale = useSelector(({ locale }) => locale)
   const open = useSelector(({ sidebar }) => sidebar.open)
   const focusedSnippet = useSelector(({ snippets }) => snippets.focused)
+
+  const [localeDropdownOptions, setLocaleDropdownOptions] = useState([])
+
+  useEffect(() => {
+    if (window.innerWidth >= 1024) {
+      dispatch(sidebarSetOpen(true))
+    } else {
+      dispatch(sidebarSetOpen(false))
+    }
+
+    const temp = localeOptions.map(option => ({
+      value: option.code,
+      text: option.name,
+      key: option.code,
+    }))
+    setLocaleDropdownOptions(temp)
+  }, [])
 
 
   const signOut = () => {
@@ -39,13 +57,6 @@ export default function Bar({ history }) {
     }
   }
 
-  useEffect(() => {
-    if (window.innerWidth >= 1024) {
-      dispatch(sidebarSetOpen(true))
-    } else {
-      dispatch(sidebarSetOpen(false))
-    }
-  }, [])
 
   return (
     <>
@@ -95,6 +106,16 @@ export default function Bar({ history }) {
                 </Menu.Item>
               </>
             )}
+
+            <Menu.Item>
+              <Dropdown
+                fluid
+                placeholder="Change UI-language"
+                options={localeDropdownOptions}
+                selection
+                onChange={(e, data) => dispatch(setLocale(data.value))}
+              />
+            </Menu.Item>
 
             <div style={{ marginTop: 'auto' }}>
               <Menu.Item style={{ display: 'flex', flexDirection: 'row', justifyContent: 'center' }}>
