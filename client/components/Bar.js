@@ -57,7 +57,11 @@ export default function Bar({ history }) {
 
   const getLearningLanguageFlag = () => {
     const lastUsedLanguage = (user.user.last_used_language)
-    return images[`flag${capitalize(lastUsedLanguage)}`]
+
+    if (lastUsedLanguage) {
+      return images[`flag${capitalize(lastUsedLanguage)}`]
+    }
+    return null
   }
 
 
@@ -90,7 +94,7 @@ export default function Bar({ history }) {
                 <Header as="h2">MobVita - alpha</Header>
                 <img style={{ width: '6em', margin: '0 auto' }} src={images.revitaLogoTransparent} alt="revitaLogo" />
               </Link>
-              {user && <img style={{ width: '6em', margin: '0 auto' }} src={getLearningLanguageFlag()} alt="learningLanguageFlag" />}
+              {user.user.last_used_language && <img style={{ width: '6em', margin: '0 auto' }} src={getLearningLanguageFlag()} alt="learningLanguageFlag" />}
 
             </div>
 
