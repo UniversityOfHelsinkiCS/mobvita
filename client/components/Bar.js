@@ -15,7 +15,7 @@ import AboutUs from './StaticContent/AboutUs'
 import ContactUs from './StaticContent/ContactUs'
 
 
-export default function Bar() {
+export default function Bar({ history }) {
   const intl = useIntl()
   const dispatch = useDispatch()
 
@@ -26,6 +26,7 @@ export default function Bar() {
 
   const signOut = () => {
     dispatch(logout())
+    history.push('/')
   }
   const chooseLanguage = code => () => dispatch(setLocale(code))
 
