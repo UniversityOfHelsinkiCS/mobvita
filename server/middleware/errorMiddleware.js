@@ -1,4 +1,5 @@
 const errorHandler = (error, req, res, next) => {
+  console.log(error)
   if (error.name === 'ApplicationError') {
     return res.status(error.status).send({ error: error.story })
   }
