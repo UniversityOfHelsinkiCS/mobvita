@@ -5,7 +5,7 @@ import { useIntl } from 'react-intl'
 import { useDispatch, useSelector } from 'react-redux'
 import { Swipeable } from 'react-swipeable'
 
-import { localeOptions } from 'Utilities/common'
+import { localeOptions, capitalize } from 'Utilities/common'
 import { setLocale } from 'Utilities/redux/localeReducer'
 import { sidebarSetOpen } from 'Utilities/redux/sidebarReducer'
 import { logout } from 'Utilities/redux/userReducer'
@@ -46,8 +46,6 @@ export default function Bar({ history }) {
     dispatch(logout())
     history.push('/')
   }
-  const chooseLanguage = code => () => dispatch(setLocale(code))
-
 
   const menuClickWrapper = (func) => {
     if (func) func()
@@ -55,6 +53,11 @@ export default function Bar({ history }) {
     if (window.innerWidth <= 1024) {
       dispatch(sidebarSetOpen(false))
     }
+  }
+
+  const getLearningLanguageFlag = () => {
+    const lastUsedLanguage = (user.user.last_used_language)
+    return images[`flag${capitalize(lastUsedLanguage)}`]
   }
 
 
@@ -82,11 +85,13 @@ export default function Bar({ history }) {
 
           <div className="sidebar-content">
 
-            <div style={{ padding: '1em' }}>
+            <div style={{ padding: '1em', display: 'flex', flexDirection: 'column' }}>
               <Link to="/home" onClick={() => menuClickWrapper()}>
                 <Header as="h2">MobVita - alpha</Header>
                 <img style={{ width: '6em', margin: '0 auto' }} src={images.revitaLogoTransparent} alt="revitaLogo" />
               </Link>
+              <img style={{ width: '6em', margin: '0 auto' }} src={getLearningLanguageFlag()} alt="learningLanguageFlag" />
+
             </div>
 
             {user && (
@@ -110,7 +115,8 @@ export default function Bar({ history }) {
             <Menu.Item>
               <Dropdown
                 fluid
-                placeholder="Change UI-language"
+                placeholder={localeOptions.find(option => option.code === locale).name}
+                value={locale}
                 options={localeDropdownOptions}
                 selection
                 onChange={(e, data) => dispatch(setLocale(data.value))}
