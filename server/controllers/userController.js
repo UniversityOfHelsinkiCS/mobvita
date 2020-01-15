@@ -2,7 +2,6 @@ const { axios } = require('@util/common')
 
 const getSelf = async (req, res) => {
   const url = '/user'
-  console.log(req, res)
   const response = await axios.get(url, { headers: req.headers })
   res.send(response.data)
 }
