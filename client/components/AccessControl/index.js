@@ -1,7 +1,7 @@
 import React from 'react'
 import Login from 'Components/AccessControl/Login'
 import { useSelector } from 'react-redux'
-import LanguageSelectView from 'Components/LanguageSelectView/index'
+import LearningLanguageSelectView from 'Components/LanguageSelectView/index'
 import Register from 'Components/AccessControl/Register'
 
 const AccessControl = ({ children }) => {
@@ -16,7 +16,7 @@ const AccessControl = ({ children }) => {
     )
   }
 
-  if (!user.user.last_used_language) return <LanguageSelectView />
+  if (!user.user.last_used_language) return <LearningLanguageSelectView />
 
   return children
 }
