@@ -11,7 +11,6 @@ export const callApi = async (url, method = 'get', data) => {
   const user = localStorage.getItem('user')
   const token = user ? JSON.parse(user).access_token : ''
   const headers = token ? { Authorization: `Bearer ${token}` } : {}
-  console.log(`${basePath}api`)
 
   return getAxios({
     method,
