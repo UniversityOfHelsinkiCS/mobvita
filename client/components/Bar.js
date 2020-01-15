@@ -90,7 +90,7 @@ export default function Bar({ history }) {
                 <Header as="h2">MobVita - alpha</Header>
                 <img style={{ width: '6em', margin: '0 auto' }} src={images.revitaLogoTransparent} alt="revitaLogo" />
               </Link>
-              <img style={{ width: '6em', margin: '0 auto' }} src={getLearningLanguageFlag()} alt="learningLanguageFlag" />
+              {user && <img style={{ width: '6em', margin: '0 auto' }} src={getLearningLanguageFlag()} alt="learningLanguageFlag" />}
 
             </div>
 
