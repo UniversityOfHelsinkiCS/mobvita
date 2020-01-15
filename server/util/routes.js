@@ -30,7 +30,7 @@ router.post('/session', session.create)
 router.get('/user', user.getSelf)
 router.post('/user', user.setSelf)
 router.post('/register', user.register)
-
+router.post('/confirm', user.confirm)
 
 router.post('/contact', email.sendEmail)
 
