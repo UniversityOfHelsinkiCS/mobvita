@@ -2,7 +2,7 @@ const { axios } = require('@util/common')
 
 const getSelf = async (req, res) => {
   const url = '/user'
-  const response = await axios.get(url, { headers: req.headers })
+  const response = await axios.get(url, { headers: { authorization: req.headers.authorization } })
   res.send(response.data)
 }
 
