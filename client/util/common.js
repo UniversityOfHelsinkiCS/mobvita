@@ -62,8 +62,11 @@ export const supportedLearningLanguages = [
 export const colors = {}
 
 export const localeOptions = [
-  { name: 'Finnish', code: 'fi' },
+  { name: 'Suomi', code: 'fi' },
+  { name: 'Svenska', code: 'sv' },
+  { name: 'Русский', code: 'ru' },
   { name: 'English', code: 'en' },
+  { name: 'Italiano', code: 'it' },
 ]
 
 export * from '@root/config/common'

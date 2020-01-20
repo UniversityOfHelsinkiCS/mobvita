@@ -1,0 +1,3201 @@
+# Italian translations for Revita.
+# Copyright (C) 2019 University of Helsinki
+# This file is distributed under the same license as the Revita project.
+# Patrizia Priolo, Matteo Ferrante, Roman Yangarber
+# <Roman.Yangarber@helsinki.fi>, 2019
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
+"POT-Creation-Date: 2019-09-28 00:08+0300\n"
+"PO-Revision-Date: 2019-09-28 01:56+0300\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language: it\n"
+"Language-Team: ru <LL@li.org>\n"
+"Plural-Forms: nplurals=2; plural=(n != 1)\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.4.0\n"
+
+#: app/dictionary_translate.py:88
+msgid "No translation available"
+msgstr "Traduzione non trovata"
+
+#: app/dictionary_translate.py:217
+msgid ""
+"Cannot translate into same language.<br/>Please choose another "
+"translation language."
+msgstr ""
+"Non è possibile tradurre verso la stessa lingua! <br/>Selezionare "
+"un'altra lingua di traduzione."
+
+#: app/flashcards.py:157
+msgid "You have to login/register to use flashcards."
+msgstr "Entra o registrati per usare le flashcard"
+
+#: app/flashcards.py:158
+msgid "Login"
+msgstr "Login"
+
+#: app/flashcards.py:159 app/templates/base.html:128
+#: app/templates/register.html:22 app/templates/register.html:98
+#: app/views_login_profile.py:375
+msgid "Register"
+msgstr "Registrazione"
+
+#: app/flashcards.py:471
+msgid "Submit done"
+msgstr "Flashcard salvata"
+
+#: app/flashcards.py:487
+msgid "This word already had a flashcard: merged."
+msgstr "Hai già una flashcard per questa parola, le modifiche sono state salvate"
+
+#: app/flashcards.py:501
+msgid "Submit failed"
+msgstr "Flashcard non salvata"
+
+#: app/flashcards.py:531
+msgid "Update done"
+msgstr "Aggiornamento completato"
+
+#: app/flashcards.py:553
+msgid "Update failed"
+msgstr "Aggiornamento non riuscito"
+
+#: app/forms.py:56 app/forms.py:61 app/forms.py:69 app/forms.py:79
+#: app/forms.py:83 app/forms.py:90 app/forms.py:114 app/forms.py:118
+#: app/forms.py:129 app/forms.py:169 app/forms.py:176 app/forms.py:186
+#: app/forms.py:194 app/forms.py:203 app/forms.py:211
+msgid "This field cannot be empty!"
+msgstr "Questo campo non può rimanere vuoto"
+
+#: app/forms.py:57 app/forms.py:75 app/forms.py:96 app/forms.py:106
+msgid "Please enter a valid email address!"
+msgstr "Inserire un indirizzo email valido!"
+
+#: app/forms.py:84 app/forms.py:119 app/forms.py:134
+msgid "Passwords do not match!"
+msgstr "Le password non corrispondono!"
+
+#: app/forms.py:124 app/templates/macros.html:532 app/templates/macros.html:569
+#: app/templates/macros.html:586 app/templates/macros.html:615
+#: app/templates/register.html:58
+msgid "Username"
+msgstr "Nome utente"
+
+#: app/forms.py:126
+msgid "Current password"
+msgstr "Immetti la passord corrente"
+
+#: app/forms.py:128
+msgid "New password"
+msgstr "Nuova password"
+
+#: app/forms.py:132
+msgid "Repeat password"
+msgstr "Reinserire la password"
+
+#: app/forms.py:137
+msgid "Accept stories (from)"
+msgstr "Accetto i testi inviati"
+
+#: app/forms.py:138
+msgid "(from) Everyone"
+msgstr "Da tutti"
+
+#: app/forms.py:139
+msgid "(from) Friends only"
+msgstr "Solo dagli amici"
+
+#: app/forms.py:146
+msgid "Please enter your name."
+msgstr "Inserisci il tuo nome"
+
+#: app/forms.py:150
+msgid "Please enter your email address."
+msgstr "Inserisci il tuo indirizzo email."
+
+#: app/forms.py:151
+msgid "Please enter your email address!"
+msgstr "Inserisci il tuo indirizzo email!"
+
+#: app/forms.py:155
+msgid "Please enter a subject."
+msgstr "Inserisci l'oggetto."
+
+#: app/forms.py:159
+msgid "Please enter a message."
+msgstr "Inserisci il testo del messaggio"
+
+#: app/forms.py:160
+msgid "Your message is too short."
+msgstr "Il tuo messaggio è troppo corto."
+
+#: app/forms.py:161
+msgid "Your message is too long."
+msgstr "Il tuo messaggio è troppo lungo."
+
+#: app/forms.py:168
+msgid "Please enter address of a web page"
+msgstr "Inserisci l'indirizzo di una pagina web."
+
+#: app/forms.py:178
+msgid "This text is too short. Minimum: 50 characters."
+msgstr "Il testo è troppo corto. Minimo: 50 caratteri."
+
+#: app/forms.py:180
+msgid "This text is too long. Maximum: 50000 characters."
+msgstr "Il testo è troppo lungo. Massimo: 50 000 caratteri."
+
+#: app/forms.py:187 app/forms.py:195 app/forms.py:212
+msgid "Please enter a valid email."
+msgstr "Inserisci un indirizzo email."
+
+#: app/models_feedback.py:126 app/models_feedback.py:128
+msgid "See"
+msgstr "Guarda"
+
+#: app/models_feedback.py:133
+msgid "and"
+msgstr "e"
+
+#: app/models_feedback.py:137
+msgid "Try again!"
+msgstr "Riprova!"
+
+#: app/views.py:416 app/views.py:904
+msgid "Friend successfully removed"
+msgstr "Utente rimosso dagli amici."
+
+#: app/views.py:420 app/views.py:455 app/views.py:908
+msgid "You have no friends."
+msgstr "La lista degli amici è vuota"
+
+#: app/views.py:446
+msgid "Teacher successfully removed from group"
+msgstr "L'insegnante è stato rimosso dal gruppo"
+
+#: app/views.py:450
+msgid "Student successfully removed from group"
+msgstr "L'alunno/a è stato/a rimosso/a dal gruppo"
+
+#: app/views.py:645
+msgid "Block successfully removed"
+msgstr "L'utente è stato sbloccato correttamente"
+
+#: app/views.py:647
+msgid "You have no blocked users."
+msgstr "Non ci sono utenti bloccati."
+
+#: app/views.py:664 app/views.py:721 app/views.py:749 app/views.py:795
+#: app/views.py:832 app/views.py:885 app/views.py:927
+#: app/views_login_profile.py:401 app/views_login_profile.py:980
+msgid "Token has expired!"
+msgstr "Richiesta scaduta"
+
+#: app/views.py:681 app/views_login_profile.py:761
+msgid ""
+"You have blocked this user. Please unblock him/her if you wish to add "
+"them as a friend."
+msgstr "L'utente risulta bloccato. Sbloccarlo per inserirlo tra gli amici"
+
+#: app/views.py:688 app/views_login_profile.py:764
+msgid "This user is already your friend"
+msgstr "L'utente è già nella lista degli amici"
+
+#: app/views.py:694 app/views_login_profile.py:768
+msgid "You cannot add yourself."
+msgstr "Non puoi aggiungere te stesso alla lista degli amici"
+
+#: app/views.py:698 app/views_login_profile.py:771
+msgid "Successfully added friend"
+msgstr "Amico aggiunto con successo"
+
+#: app/views.py:703
+msgid "The account you tried to add has been deleted!"
+msgstr "L'account è stato eliminato"
+
+#: app/views.py:761 app/views.py:845
+msgid "Could not find the story you are trying to accept"
+msgstr "Storia non trovata"
+
+#: app/views.py:770 app/views.py:854
+msgid "Could not add the flashcards you are trying to accept"
+msgstr "Flashcard non trovata"
+
+#: app/views.py:899
+msgid "This user is not your friend"
+msgstr "Utente non presente nella lista degli amici"
+
+#: app/views.py:943 app/views_login_profile.py:785
+msgid "This user is already blocked."
+msgstr "Utente già bloccato"
+
+#: app/views.py:953 app/views_login_profile.py:794
+msgid "Successfully blocked person"
+msgstr "Utente bloccato"
+
+#: app/views.py:976
+msgid "Could not find the story you are trying to delete"
+msgstr "La storia che stai tentando di eliminare non è stata trovata"
+
+#: app/views.py:985
+msgid "Could not delete the flashcards"
+msgstr "Le flashcard che stai tentando di eliminare non sono state trovate"
+
+#: app/views.py:993 app/views.py:1030 app/views.py:1039
+msgid "An error occurred while deleting the story!"
+msgstr "Si è verificato un errore durante l'eliminazione della storia"
+
+#: app/views.py:997 app/views.py:1025
+msgid "Story was successfully removed from personal collection!"
+msgstr "Storia eliminata dalla raccolta personale"
+
+#: app/views.py:1037
+msgid "Story was removed successfully!"
+msgstr "Storia eliminata correttamente!"
+
+#: app/views.py:1065
+msgid "Story was unshared successfully!"
+msgstr "Storia eliminata dalla raccolta-testi comune"
+
+#: app/views.py:1067
+msgid "An error occurred while unsharing the story!"
+msgstr "Si è verificato un errore durante l'eliminazione della storia"
+
+#: app/views.py:1118 app/views.py:1306
+msgid "has blocked you."
+msgstr "Ti ha bloccato/a"
+
+#: app/views.py:1127 app/views.py:1315
+msgid "Story already shared with"
+msgstr "Hai già condiviso la storia con"
+
+#: app/views.py:1137 app/views.py:1324
+msgid "is already the owner of the story."
+msgstr "Può già accedere a questa storia"
+
+#: app/views.py:1146 app/views.py:1333
+msgid "Story shared and awaiting approval"
+msgstr "La storia che hai condiviso è in attesa di approvazione"
+
+#: app/views.py:1154 app/views.py:1162 app/views.py:1199 app/views.py:1350
+#: app/views.py:1358 app/views.py:1371
+msgid "Revita - Story shared with you"
+msgstr "Revita- la storia è stata condivisa con te"
+
+#: app/views.py:1158 app/views.py:1354
+msgid "Revita - Story awaiting approval"
+msgstr "Revita- la storia è in attesa di approvazione"
+
+#: app/views.py:1170
+msgid "Could not find the story you are trying to share"
+msgstr "La storia che stai provando a condividere non è stata trovata"
+
+#: app/views.py:1185
+msgid "Could not add flashcards to the other user"
+msgstr "Non è stato possibile inviare le flashcard all'utente"
+
+#: app/views.py:1194 app/views.py:1366
+msgid "Story shared with"
+msgstr "Storia condivisa con"
+
+#: app/views.py:1251 app/views.py:1420
+msgid "You are trying to share a story with yourself..."
+msgstr "Non puoi condividere la storia con te stesso"
+
+#: app/views.py:1255 app/views.py:1424
+msgid "No registered user with e-mail"
+msgstr "Non è stato trovato un utente registrato con questa mail"
+
+#: app/views.py:1675
+msgid "Translations in"
+msgstr "Tradurre in"
+
+#: app/templates/macros.html:554 app/views.py:1881
+msgid "Your group"
+msgstr "Il tuo gruppo"
+
+#: app/templates/about.html:29 app/views.py:1943 app/views.py:1954
+msgid "About Revita"
+msgstr "A proposito di Revita"
+
+#: app/templates/base.html:161 app/templates/help.html:10 app/views.py:1983
+#: app/views.py:1994
+msgid "Help"
+msgstr "Aiuto"
+
+#: app/templates/base.html:173 app/views.py:2196 app/views.py:2216
+#: app/views.py:2224 app/views.py:2234
+msgid "Contact"
+msgstr "Contatti"
+
+#: app/views_login_profile.py:112 app/views_login_profile.py:145
+msgid "Invalid username and/or password."
+msgstr "Username e / o password non validi."
+
+#: app/views_login_profile.py:115
+msgid ""
+"Your registration is not confirmed yet. Please follow the instructions "
+"sent to you by email!"
+msgstr ""
+"La tua registrazione non è stata ancora confermata. Per confermare segui "
+"le istruzioni che ti sono state mandate via mail"
+
+#: app/templates/base.html:122 app/templates/login.html:59
+#: app/views_login_profile.py:148
+msgid "Sign In"
+msgstr "Accedi"
+
+#: app/views_login_profile.py:264
+msgid "Logged out!"
+msgstr "Hai effettuato il log out."
+
+#: app/views_login_profile.py:315
+msgid "There is already a user account associated with this email address."
+msgstr "Esiste già un utente registrato con questo indirizzo"
+
+#: app/views_login_profile.py:317
+msgid "Email address already exists!"
+msgstr "L'indirizzo email è già registrato!"
+
+#: app/views_login_profile.py:337
+msgid "Revita - Confirm your registration"
+msgstr "Revita - Conferma la tua registrazione"
+
+#: app/views_login_profile.py:356
+msgid "Account created. You can now sign in with your Facebook account to Revita."
+msgstr "Account creato. Ora puoi accedere a Revita tramite Facebook"
+
+#: app/views_login_profile.py:359
+msgid ""
+"A message containing a link to confirm your registration has been sent to"
+" your email address. Please follow the instructions there to complete "
+"your registration!"
+msgstr ""
+"è stato inviato una mail contenente le istruzioni necessarie per "
+"completare la registrazione"
+
+#: app/views_login_profile.py:368
+msgid "There was a problem with the registration. Please try agin!"
+msgstr "Si è verificato un problema durante la registrazione. Riprovare più tardi"
+
+#: app/views_login_profile.py:371 app/views_login_profile.py:533
+#: app/views_login_profile.py:828 app/views_login_profile.py:831
+msgid ""
+"Invalid password. Please choose a password that is at least 6 characters "
+"long."
+msgstr "Password non valida. La password deve contenere almeno 6 caratteri."
+
+#: app/views_login_profile.py:414
+msgid "Your registration is completed. You can now log in!"
+msgstr "Registrazione avvenuta con successo. Ora puoi effettuare il log in"
+
+#: app/views_login_profile.py:444
+msgid "Revita - Reset your password"
+msgstr "Revita - Reimposta la tua password"
+
+#: app/views_login_profile.py:467
+msgid "There was a problem with the request. Please try agin!"
+msgstr "La richiesta non può essere portata a termine. Riprovare"
+
+#: app/views_login_profile.py:474
+msgid ""
+"An email has been sent to your address. Please follow the instructions "
+"there to reset your password."
+msgstr ""
+"Una mail contenente le istruzioni per resettare la password è stata "
+"inviata sulla tua mail"
+
+#: app/templates/new_password_form.html:22
+#: app/templates/password_reset_form.html:22 app/views_login_profile.py:479
+msgid "Reset password"
+msgstr "Reimpostare la password"
+
+#: app/views_login_profile.py:502
+msgid "Token has expired. You can request to reset your password again!"
+msgstr ""
+"La richiesta è scaduta. Invia una nuova richiesta per poter cambiare la "
+"password"
+
+#: app/views_login_profile.py:524
+msgid "Your password is reset. You can now log in!"
+msgstr "Password resettata. Ora puoi accedere al sistema"
+
+#: app/views_login_profile.py:530
+msgid "There was a problem resetting your password!"
+msgstr "Si è verificato un problema: la password non è stata resettata"
+
+#: app/views_login_profile.py:538
+msgid "Create new password"
+msgstr "Inserire una nuova password"
+
+#: app/views_login_profile.py:645
+msgid "Group by this name already exists"
+msgstr "Il nome scelto per il gruppo è gia in uso, sceglierne un altro:"
+
+#: app/views_login_profile.py:681
+msgid "Added to the group"
+msgstr "Aggiunto/a al gruppo"
+
+#: app/views_login_profile.py:683
+msgid "Invitation sent"
+msgstr "Invito è inviato"
+
+#: app/views_login_profile.py:685
+msgid "Not found in the system"
+msgstr "Non trovato nel sistema"
+
+#: app/views_login_profile.py:691
+msgid "None of the student emails have a registered user"
+msgstr "Gli indirizzi email degli studenti non sono registrati nel sistema"
+
+#: app/views_login_profile.py:701
+msgid "Group created!"
+msgstr "Gruppo è stato creato"
+
+#: app/views_login_profile.py:702
+msgid "Detail information"
+msgstr "Informazioni"
+
+#: app/views_login_profile.py:719
+msgid "User already is a student in this group!"
+msgstr "Questo utente fa già parte del gruppo!"
+
+#: app/views_login_profile.py:728
+msgid "Successfully added student, waiting for confirmation"
+msgstr "Alunno aggiunto al gruppo! In attesa d'approvazione"
+
+#: app/views_login_profile.py:731
+msgid "Successfully added student!"
+msgstr "Alunno aggiunto al gruppo!"
+
+#: app/views_login_profile.py:738
+msgid "User already in teacher in this group!"
+msgstr "Questo insegnante fa già parte del gruppo!"
+
+#: app/views_login_profile.py:742
+msgid "Successfully added teacher"
+msgstr "Insegnante aggiunto al gruppo!"
+
+#: app/views_login_profile.py:789
+msgid "You cannot block yourself."
+msgstr "Non puoi bloccare te stesso"
+
+#: app/views_login_profile.py:839
+msgid "Incorrect password."
+msgstr "Password errata."
+
+#: app/views_login_profile.py:840
+msgid "Incorrect password"
+msgstr "Password errata"
+
+#: app/views_login_profile.py:849
+msgid "Data saved!"
+msgstr "Dati salvati!"
+
+#: app/templates/base.html:99 app/templates/base.html:103
+#: app/views_login_profile.py:855
+msgid "Profile"
+msgstr "Profilo"
+
+#: app/views_login_profile.py:910
+msgid "Revita - You have been added to a group"
+msgstr "Revita- Sei stato/a aggiunto/a al gruppo"
+
+#: app/views_manual_tests.py:651 app/views_manual_tests.py:653
+#: app/views_manual_tests.py:1052 app/views_manual_tests.py:1058
+msgid "name"
+msgstr "Nome"
+
+#: app/views_manual_tests.py:888
+msgid "answer"
+msgstr "Risposta"
+
+#: app/views_manual_tests.py:899
+msgid "phrase"
+msgstr "Frase"
+
+#: app/templates/dummy.html:238 app/views_manual_tests.py:913
+msgid "Choose the best fitting word or expression."
+msgstr "Scegli la parola o l'espressione adeguata"
+
+#: app/views_manual_tests.py:927
+msgid "Fill in the blank."
+msgstr "Riempi lo spazio con la forma adatta"
+
+#: app/views_manual_tests.py:1028
+msgid "Answer 10 or more questions to receive feedback"
+msgstr "Rispondi a un minimo di 10 domande per ricevere i risultati"
+
+#: app/views_manual_tests.py:1138
+msgid "Category"
+msgstr "Categoria"
+
+#: app/views_manual_tests.py:1139
+msgid "Total"
+msgstr "Totale"
+
+#: app/views_manual_tests.py:1140
+msgid "Correct"
+msgstr "Corretto"
+
+#: app/views_manual_tests.py:1141
+msgid "Answered"
+msgstr "Completato"
+
+#: app/views_manual_tests.py:1144
+msgid "Correct answers|||Total answers|||Required to answer|||Not practiced"
+msgstr ""
+"Risposte corrette|||Totale delle risposte|||Numero di domande a cui "
+"rispondere|||Non superato"
+
+#: app/views_story_exer.py:624
+#, python-format
+msgid "The uploaded file is too large. Maximum file size is %(num)d KiloBytes."
+msgstr ""
+"Il file caricato è troppo grande. La dimensione massima del file è "
+"%(num)d KiloByte."
+
+#: app/views_story_exer.py:659
+msgid "Story was uploaded, but cut off at 50000 characters."
+msgstr "La storia è stata caricata, ma solo fino a 50 000 caratteri."
+
+#: app/views_story_exer.py:661
+msgid "Story uploaded successfully!"
+msgstr "Storia caricata con successo!"
+
+#: app/views_story_exer.py:674
+msgid ""
+"A story with the same title already exists! Please try again with a "
+"different title!"
+msgstr ""
+"Esiste già una storia con lo stesso titolo! Per favore, provare a "
+"inserirne un altro titolo!"
+
+#: app/views_story_exer.py:676
+msgid "Language of the text does not correspond to the current language:"
+msgstr "La lingua del testo non corrisponde alla lingua che stai imparando:"
+
+#: app/views_story_exer.py:678
+msgid ""
+"Sorry, Revita is unable to extract the story from this Web page. Please "
+"copy the text from the web page. If you would like to practice with this "
+"story, please save it into a .txt file on your computer and upload the "
+"text file."
+msgstr ""
+"Spiacente, Revita non riesce a estrarre la storia da questa pagina Web. "
+"Si prega di copiare il testo dalla pagina Web. Se desideri esercitarti "
+"con questa storia, salvala in un file .txt sul tuo computer e poi carica "
+"il file di testo."
+
+#: app/views_story_exer.py:680
+msgid "Invalid file. Please make sure the file is formatted as text."
+msgstr "File non valido. Assicurati che il file contenga solo testo."
+
+#: app/views_story_exer.py:685
+msgid "Empty file!"
+msgstr "File vuoto!"
+
+#: app/views_story_exer.py:721
+msgid ""
+"This Web page cannot be extracted!<br/>  Please paste the text into the "
+"textbox for uploads;<br/>  or paste the text into a file and upload the "
+"file."
+msgstr ""
+"Sfortunatamente Revita non è stata in grado di estrarre il testo<br/> "
+"Copiare il testo nell'apposito spazio per il caricamento,<br/> oppure "
+"copiarlo su un file e caricarlo."
+
+#: app/views_story_exer.py:723
+msgid ""
+"Fetching the story from the Web page failed!<br/>  Please paste the text "
+"into the upload textbox;<br/>  or paste the text into a file and upload "
+"the file."
+msgstr ""
+"Non è stato possibile estrarre la storia dal Web!<br/> Copiare il testo "
+"nell'apposito spazio per il caricamento,<br/> oppure copiarlo su un file "
+"e caricarlo."
+
+#: app/views_story_exer.py:851
+msgid "Stories Flashcards"
+msgstr "Fleshcard sulla storia"
+
+#: app/templates/404.html:9
+msgid "No such page!"
+msgstr "Pagina inesistente!"
+
+#: app/templates/404.html:12
+msgid "Go back:"
+msgstr "Torna indietro:"
+
+#: app/templates/404.html:13
+msgid "Main page"
+msgstr "Pagina principale"
+
+#: app/templates/about.html:10
+msgid "News"
+msgstr "Notizie"
+
+#: app/templates/accept_shared_story.html:2 app/templates/confirm_reg.html:2
+#: app/templates/friend_shared_story.html:2
+#: app/templates/reset_password_email.html:2
+#: app/templates/stranger_shared_story.html:2
+#, python-format
+msgid "Dear %(name)s,"
+msgstr "Ciao, %(name)s,"
+
+#: app/templates/accept_shared_story.html:5
+#, python-format
+msgid ""
+"The user %(stranger)s wants to share with you the story: "
+"&quot;%(story)s&quot;"
+msgstr ""
+"L'utente %(stranger)s ha condiviso una storia con te: "
+"&quot;%(story)s&quot;"
+
+#: app/templates/accept_shared_story.html:8
+#, python-format
+msgid ""
+"Please click below to accept the story.  You can add %(stranger)s as a "
+"friend to accept stories s/he will share with you in the future.  You can"
+" also block %(stranger)s from sending you anything, using the links "
+"below:"
+msgstr ""
+"Cliccare qui sotto per accettare la storia. Puoi aggiungere %(stranger)s "
+"agli amici per ricevere automaticamente le storie. Puoi bloccare  "
+"%(stranger)s cliccando sul link sottostante:"
+
+#: app/templates/accept_shared_story.html:11 app/templates/addgroupemail.html:9
+msgid "ACCEPT"
+msgstr "ACCETTARE LA STORIA"
+
+#: app/templates/accept_shared_story.html:13
+msgid "ACCEPT and ADD AS FRIEND"
+msgstr "ACCETTARE la storia e AGGIUNGERE AGLI AMICI"
+
+#: app/templates/accept_shared_story.html:15
+#: app/templates/friend_shared_story.html:15
+#: app/templates/stranger_shared_story.html:14
+msgid "BLOCK"
+msgstr "BLOCCARE"
+
+#: app/templates/accept_shared_story.html:20
+#: app/templates/friend_shared_story.html:19
+#: app/templates/stranger_shared_story.html:20
+#, python-format
+msgid "Please note that the links expire in %(num)d day."
+msgid_plural "Please note that the link expires in %(num)d days."
+msgstr[0] "I link scadranno tra %(num)d giorno"
+msgstr[1] "I link scadranno tra %(num)d giorni"
+
+#: app/templates/accept_shared_story.html:23
+#: app/templates/friend_shared_story.html:22
+#: app/templates/stranger_shared_story.html:23
+msgid "Visit Revita"
+msgstr "Accedi a Revita"
+
+#: app/templates/accept_shared_story.html:26
+#: app/templates/addgroupemail.html:13 app/templates/confirm_reg.html:15
+#: app/templates/friend_shared_story.html:25
+#: app/templates/reset_password_email.html:15
+#: app/templates/stranger_shared_story.html:26
+msgid "Best regards,"
+msgstr "Coi migliori auguri,"
+
+#: app/templates/accept_shared_story.html:27
+#: app/templates/addgroupemail.html:14 app/templates/confirm_reg.html:16
+#: app/templates/friend_shared_story.html:26
+#: app/templates/reset_password_email.html:16
+#: app/templates/stranger_shared_story.html:27
+msgid "Revita team"
+msgstr "Il team Revita"
+
+#: app/templates/addgroupemail.html:2
+#, python-format
+msgid "Dear <b><i>%(name)s</i></b>,"
+msgstr "Ciao, <b><i>%(name)s</i></b>!"
+
+#: app/templates/addgroupemail.html:5
+#, python-format
+msgid ""
+"User <b><i>%(stranger)s</i></b> has invited you to group "
+"<b><i>%(group_name)s</i></b>.<br/>You can join the group by clicking the "
+"link below.<br/>If you wish to leave the group later, please visit your "
+"Profile page."
+msgstr ""
+"L'utente  <b><i>%(stranger)s</i></b> ti ha invitato nel gruppo  "
+"<b><i>%(group_name)s</i></b>.<br/>. <br/> puoi accedere al gruppo "
+"cliccando sul link qui sotto. <br/> Se vuoi abbandonare il gruppo, vai "
+"sul tuo profilo."
+
+#: app/templates/base.html:11
+msgid "Welcome to Revita"
+msgstr "Benvenuto/a in Revita"
+
+#: app/templates/base.html:80
+msgid "Revita"
+msgstr "Revita"
+
+#: app/templates/base.html:113
+msgid "Sign out"
+msgstr "Sign out"
+
+#: app/templates/base.html:133 app/templates/settings-include.html:6
+msgid "Interface language"
+msgstr "Lingua dell'interfaccia"
+
+#: app/templates/base.html:155
+msgid "Tour"
+msgstr "Presentazione"
+
+#: app/templates/base.html:167
+msgid "About"
+msgstr "Su di noi"
+
+#: app/templates/base.html:193
+msgid "Score:"
+msgstr "Punti:"
+
+#: app/templates/base.html:220
+msgid "See new features"
+msgstr "Nuove funzioni ⇒ &nbsp;&nbsp;"
+
+#: app/templates/base.html:232 app/templates/flashcard_base.html:8
+msgid "Learning-language"
+msgstr "Lingua studiata"
+
+#: app/templates/base.html:289 app/templates/base.html:292
+#: app/templates/profile.html:47 app/templates/settings-include.html:2
+msgid "Settings"
+msgstr "Impostazioni"
+
+#: app/templates/base.html:307
+msgid "Learning from stories"
+msgstr "Studiamo sulle storie"
+
+#: app/templates/base.html:361
+#, fuzzy
+msgid "babel text translations"
+msgstr "Salvare traduzione"
+
+#: app/templates/base.html:372
+msgid "Show _MENU_ stories"
+msgstr "Mostra:  _MENU_  storie"
+
+#: app/templates/base.html:373
+msgid "No matching stories found"
+msgstr "Ancora nessuna storia inserita&mdash;caricare una storia"
+
+#: app/templates/base.html:374
+msgid "Showing _START_ to _END_ of _TOTAL_ stories"
+msgstr "Mostra storie da _START_ a _END_ (delle _TOTAL_ totali)"
+
+#: app/templates/base.html:375
+msgid "No stories available"
+msgstr "Nessuna storia disponibile"
+
+#: app/templates/base.html:376
+msgid "filtered from _MAX_ total stories"
+msgstr "Da  _MAX_ storie"
+
+#: app/templates/base.html:377
+msgid "Search:"
+msgstr "Cerca:"
+
+#: app/templates/base.html:491 app/templates/base.html:511
+msgid "Sort by"
+msgstr "Ordina per:"
+
+#: app/templates/base.html:495 app/templates/base.html:497
+#: app/templates/base.html:499 app/templates/base.html:515
+#: app/templates/base.html:517 app/templates/base.html:519
+#: app/templates/base.html:521
+msgid "Ascending"
+msgstr "🔺"
+
+#: app/templates/base.html:495 app/templates/base.html:496
+#: app/templates/base.html:515 app/templates/base.html:516
+#: app/templates/macros.html:723 app/templates/macros.html:728
+#: app/templates/modal-upload-stories-flashcards.html:223
+msgid "Title"
+msgstr "Titolo"
+
+#: app/templates/base.html:496 app/templates/base.html:498
+#: app/templates/base.html:500 app/templates/base.html:516
+#: app/templates/base.html:518 app/templates/base.html:520
+#: app/templates/base.html:522
+msgid "Descending"
+msgstr "🔻"
+
+#: app/templates/base.html:497 app/templates/base.html:498
+#: app/templates/base.html:519 app/templates/base.html:520
+#: app/templates/index.html:158 app/templates/index.html:178
+#: app/templates/macros.html:725
+msgid "Progress"
+msgstr "Progressi"
+
+#: app/templates/base.html:499 app/templates/base.html:500
+#: app/templates/base.html:521 app/templates/base.html:522
+msgid "Difficulty"
+msgstr "Difficoltà"
+
+#: app/templates/base.html:517 app/templates/base.html:518
+#: app/templates/macros.html:358 app/templates/macros.html:724
+msgid "Date added"
+msgstr "Data"
+
+#: app/templates/base.html:583
+msgid "University of Helsinki"
+msgstr "Università di Helsinki"
+
+#: app/templates/base.html:586
+msgid "All copyrighted materials used by explicit permission from holder."
+msgstr ""
+"I materiali, protetti dal diritto d'autore, vengono usati col permesso "
+"del titolare del diritto"
+
+#: app/templates/check_answers.html:12
+msgid "You used"
+msgstr "Hai usato"
+
+#: app/templates/check_answers.html:47
+msgid "Start over"
+msgstr "Ricominciare"
+
+#: app/templates/check_answers.html:49
+msgid "Next story"
+msgstr "Prossima storia"
+
+#: app/templates/confirm_reg.html:5
+msgid ""
+"Your account has been created. Please follow the link below to confirm "
+"your registration."
+msgstr ""
+"Il tuo account è stato creato. Cliccare sul link sottostante per "
+"confermare la registrazione."
+
+#: app/templates/confirm_reg.html:12
+#, python-format
+msgid "Please note that the link expires in %(num)d day."
+msgid_plural "Please note that the link expires in %(num)d days."
+msgstr[0] "Il link scadrà tra  %(num)d giorno"
+msgstr[1] "Il link scadrà tra  %(num)d giorni"
+
+#: app/templates/contact.html:10
+msgid "Thank you for your message. We will get back to you shortly."
+msgstr "Ti ringraziamo per il messaggio. Ti risponderemo il prima possibile"
+
+#: app/templates/contact.html:35
+msgid "Give us feedback"
+msgstr "La tua opinione su Revita"
+
+#: app/templates/contact.html:42
+msgid "Contact us"
+msgstr "Contattaci!"
+
+#: app/templates/contact.html:47
+msgid "Name"
+msgstr "Nome"
+
+#: app/templates/contact.html:52 app/templates/macros.html:568
+#: app/templates/macros.html:585
+msgid "Email"
+msgstr "Email"
+
+#: app/templates/contact.html:57
+msgid "Subject"
+msgstr "Oggetto"
+
+#: app/templates/contact.html:62
+msgid "Your message"
+msgstr "Messaggio"
+
+#: app/templates/contact.html:71
+msgid "Send"
+msgstr "Inviare"
+
+#: app/templates/cw.html:4
+msgid "Building your crossword"
+msgstr "Costruendo il tuo cruciverba..."
+
+#: app/templates/cw.html:20 app/templates/flashcard_base.html:283
+msgid "Hint"
+msgstr "Suggerimento"
+
+#: app/templates/cw.html:26 app/templates/cw.html:42
+#: app/templates/flashcard_base.html:279 app/templates/flashcard_base.html:291
+#: app/templates/flashcard_base.html:302 app/templates/flashcard_base.html:314
+#: app/templates/macros.html:511 app/templates/modal-story-operations.html:268
+#: app/templates/modals-exer-customize.html:307
+#: app/templates/modals-exer-customize.html:495
+msgid "Close"
+msgstr "Chiudere"
+
+#: app/templates/cw_content.html:48 app/templates/index.html:97
+msgid "You do not have any apples yet."
+msgstr "Non hai mele ancora"
+
+#: app/templates/cw_content.html:110
+msgid "Get hint for one apple"
+msgstr "Scambiare una mela per un suggerimento"
+
+#: app/templates/cw_content.html:110
+msgid "Congratulations! You have solved this crossword!"
+msgstr "Complimenti! Hai risolto il cruciverba"
+
+#: app/templates/cw_content.html:110
+msgid "You have no apples"
+msgstr "Non hai mele ancora"
+
+#: app/templates/dummy.html:3
+msgid "Please log in to access this page."
+msgstr "Effettua il login per accedere alla pagina"
+
+#: app/templates/dummy.html:5
+msgid "Erzya"
+msgstr "Erzo"
+
+#: app/templates/dummy.html:6
+msgid "Komi-Zyrian"
+msgstr "Sirieno"
+
+#: app/templates/dummy.html:7
+msgid "Komi-Permiak"
+msgstr "Permiaco"
+
+#: app/templates/dummy.html:8
+msgid "Mari"
+msgstr "Mari"
+
+#: app/templates/dummy.html:9
+msgid "Meadow-Mari"
+msgstr "Mari"
+
+#: app/templates/dummy.html:10
+msgid "Mansi"
+msgstr "Vogulo"
+
+#: app/templates/dummy.html:11
+msgid "Udmurt"
+msgstr "Udmurto"
+
+#: app/templates/dummy.html:12
+msgid "North-Saami"
+msgstr "Sami settentrionale"
+
+#: app/templates/dummy.html:13
+msgid "Nanai"
+msgstr "Nanai"
+
+#: app/templates/dummy.html:15
+msgid "Finnish"
+msgstr "Finlandese"
+
+#: app/templates/dummy.html:16
+msgid "German"
+msgstr "Tedesco"
+
+#: app/templates/dummy.html:17
+msgid "Russian"
+msgstr "Russo"
+
+#: app/templates/dummy.html:18
+msgid "Swedish"
+msgstr "Svedese"
+
+#: app/templates/dummy.html:19
+msgid "Spanish"
+msgstr "Spagnolo"
+
+#: app/templates/dummy.html:20
+msgid "Catalan"
+msgstr "Catalano"
+
+#: app/templates/dummy.html:21
+msgid "French"
+msgstr "Francese"
+
+#: app/templates/dummy.html:23
+msgid "Sakha"
+msgstr "Sacha"
+
+#: app/templates/dummy.html:24
+msgid "Kazakh"
+msgstr "Kazako"
+
+#: app/templates/dummy.html:26
+msgid "Arabic"
+msgstr "Arabo"
+
+#: app/templates/dummy.html:27
+msgid "Chinese"
+msgstr "Cinese"
+
+#: app/templates/dummy.html:28
+msgid "Czech"
+msgstr "Ceco"
+
+#: app/templates/dummy.html:29
+msgid "English"
+msgstr "Inglese"
+
+#: app/templates/dummy.html:30
+msgid "Hindi"
+msgstr "Hindi"
+
+#: app/templates/dummy.html:31
+msgid "Italian"
+msgstr "Italiano"
+
+#: app/templates/dummy.html:32
+msgid "Japanese"
+msgstr "Giapponese"
+
+#: app/templates/dummy.html:33
+msgid "Norwegian"
+msgstr "Norvegese"
+
+#: app/templates/dummy.html:34
+msgid "Polish"
+msgstr "Polacco"
+
+#: app/templates/dummy.html:35
+msgid "Portuguese"
+msgstr "Portoghese"
+
+#: app/templates/dummy.html:36
+msgid "Swahili"
+msgstr "Swahili"
+
+#: app/templates/dummy.html:37
+msgid "Turkish"
+msgstr "Turco"
+
+#: app/templates/dummy.html:39
+msgid "Translations in English"
+msgstr "Traduzione in inglese"
+
+#: app/templates/dummy.html:40
+msgid "Translations in Russian"
+msgstr "Traduzione in russo"
+
+#: app/templates/dummy.html:41
+msgid "Translations in Finnish"
+msgstr "Traduzione in finlandese"
+
+#: app/templates/dummy.html:43
+msgid "Paradigm 1"
+msgstr "I declinazione"
+
+#: app/templates/dummy.html:44
+msgid "Paradigm 2"
+msgstr "II declinazione"
+
+#: app/templates/dummy.html:45
+msgid "Paradigm 3"
+msgstr "III declinazione"
+
+#: app/templates/dummy.html:46
+msgid "Paradigm 4"
+msgstr "Pluralia Tantum"
+
+#: app/templates/dummy.html:47
+msgid "Paradigm 5"
+msgstr "Altri"
+
+#: app/templates/dummy.html:102
+msgid "Lexicology. Lexical semantics"
+msgstr "Lessicologia. Significati delle parole"
+
+#: app/templates/dummy.html:103
+msgid "Collocations"
+msgstr "Collocazioni"
+
+#: app/templates/dummy.html:104
+msgid "Lexicology. Coordination of words"
+msgstr "Lessicologia. Combinazione delle parole"
+
+#: app/templates/dummy.html:105
+msgid "Verb. Case government"
+msgstr "Verbo. Reggenza verbale"
+
+#: app/templates/dummy.html:106
+msgid "Verb. Prepositional government"
+msgstr "Verbo. Reggenza preposizionale"
+
+#: app/templates/dummy.html:107
+msgid "Adjectives"
+msgstr "Aggettivi"
+
+#: app/templates/dummy.html:108
+msgid "Nouns"
+msgstr "Sostantivi"
+
+#: app/templates/dummy.html:109
+msgid "Impersonal verbs (except verba meteorologica) and their government"
+msgstr "Verbi impersonali (escludendo i verba meteorologica) e la loro reggenza"
+
+#: app/templates/dummy.html:110
+msgid "Predicative adverbs and their government. Existence, state, time"
+msgstr "Avverbi predicativi e la loro reggenza. Esistenza, stato, tempo"
+
+#: app/templates/dummy.html:111
+msgid ""
+"Predicative adverbs and their government. Necessity, possibility, "
+"impossibility"
+msgstr ""
+"Avverbi predicativi e la loro reggenza. Necessità, possibilità, "
+"impossibilità"
+
+#: app/templates/dummy.html:112
+msgid ""
+"Negative constructions with predicative 'be' (and synonyms), genitive of "
+"negation"
+msgstr ""
+"Costrutti negativi con essere predicativo (ed i suoi sinonimi) e il "
+"genitivo di negazione"
+
+#: app/templates/dummy.html:113
+msgid "Sentences with dative subject"
+msgstr "Frasi col soggetto al dativo"
+
+#: app/templates/dummy.html:114
+msgid "Expressions of time, place and manner. Preposition-free expressions"
+msgstr ""
+"Espressioni di tempo, luogo e modalità d'azione. Espressioni senza "
+"preposizione"
+
+#: app/templates/dummy.html:115
+msgid "Constructions with cardinal numerals"
+msgstr "Costrutti con i numerali cardinali"
+
+#: app/templates/dummy.html:116
+msgid "Constructions with collective numerals"
+msgstr "Costrutti con i numerali collettivi"
+
+#: app/templates/dummy.html:117
+msgid "Genitive plural of Pluralia tantum words"
+msgstr "Genitivo plurale dei Pluralia tantum"
+
+#: app/templates/dummy.html:118
+msgid "I declension. Type 'музей-музеи, воробей-воробьи'"
+msgstr "Prima declinazione. Tipologie 'музей-музеи, воробей-воробьи'"
+
+#: app/templates/dummy.html:119
+msgid "I declension. Type 'санаторий'"
+msgstr "Prima declinazione. Tipologia 'санаторий'"
+
+#: app/templates/dummy.html:120
+msgid ""
+"I declension. Fleeting vowels and alternations я, е, ё / й ('заяц-зайца, "
+"заём-займа')"
+msgstr ""
+"Prima declinazione. Vocali fuggevoli e alternazioni я, е, ё / й "
+"('заяц-зайца, заём-займа')"
+
+#: app/templates/dummy.html:121
+msgid "I declension. Type 'карандаш'"
+msgstr "Prima declinazione. Tipologia 'карандаш'"
+
+#: app/templates/dummy.html:122
+msgid "I declension. Type 'адрес-адреса'"
+msgstr "Prima declinazione. Tipologia 'адрес-адреса'"
+
+#: app/templates/dummy.html:123
+msgid "I declension. Type 'солдат-много солдат, сапог-пара сапог'"
+msgstr "Prima declinazione. Tipologia 'солдат-много солдат, сапог-пара сапог'"
+
+#: app/templates/dummy.html:124
+msgid "I declension. Type '-анин/-янин, -ин'"
+msgstr "Prima declinazione. Tipologia in  -анин/-янин, -ин"
+
+#: app/templates/dummy.html:125
+msgid "I declension. Type 'дерево-деревья'"
+msgstr "Prima declinazione. Tipologia'дерево-деревья'"
+
+#: app/templates/dummy.html:126
+msgid "II declension. Type 'армия'"
+msgstr "Seconda declinazione. Tipologia'армия'"
+
+#: app/templates/dummy.html:127
+msgid "II declension. Type на -ня"
+msgstr "Seconda declinazione. Tipologia in -ня"
+
+#: app/templates/dummy.html:128
+msgid "II declension. Type 'статья'"
+msgstr "Seconda declinazione. Tipologia 'статья'"
+
+#: app/templates/dummy.html:129
+msgid "Fleeting vowel in genitive plural"
+msgstr "Vocale fuggevole al caso genitivo plurale"
+
+#: app/templates/dummy.html:130
+msgid "Nouns with prepositions в/на ending in -у/-ю in prepositional singular"
+msgstr "Sostantivi in -у/-ю al caso prepositivo singolare con preposizioni в/на"
+
+#: app/templates/dummy.html:131
+msgid ""
+"Nouns ending in -у/-ю in prepositional singular and -а in nominative "
+"plural"
+msgstr "Sostantivi in -у/-ю al prepositivo singolare e al nominativo plurale"
+
+#: app/templates/dummy.html:132
+msgid "Possessive adjectives. Type 'лисий'"
+msgstr "Aggettivi possessivi. Tipologia 'лисий'"
+
+#: app/templates/dummy.html:133
+msgid "Ordinal numbers. Type 'третий'"
+msgstr "Numeri ordinali. Tipologia 'третий'"
+
+#: app/templates/dummy.html:134
+msgid "Possessive adjectives. Type 'мамин'"
+msgstr "Aggettivi possessivi. Tipologia 'мамин'"
+
+#: app/templates/dummy.html:135
+msgid "Cardinal numbers. 'Сто' vs. 'пятьсот, шестьсот, семьсот, девятьсот'"
+msgstr "Numeri cardinali. 'Сто' vs. 'пятьсот, шестьсот, семьсот, девятьсот'"
+
+#: app/templates/dummy.html:136
+msgid "Quantifiers. Collective quantifiers in oblique cases"
+msgstr "Numerali. Declinazione dei numerali collettivi nei casi obliqui"
+
+#: app/templates/dummy.html:137
+msgid "Quantifiers. Collective quantifiers 'оба, обе'"
+msgstr "Numerali. Numerali collettivi 'оба, обе'"
+
+#: app/templates/dummy.html:138
+msgid "I conjugation. Type 'плакать'"
+msgstr "Prima coniugazione. Tipologia 'плакать'"
+
+#: app/templates/dummy.html:139
+msgid "I conjugation. Type 'рисовать'"
+msgstr "Prima coniugazione. Tipologia 'рисовать'"
+
+#: app/templates/dummy.html:140
+msgid "II conjugation. Type 'молчать'"
+msgstr "Seconda coniugazione. Tipologia 'молчать'"
+
+#: app/templates/dummy.html:141
+msgid "Preterite. Type 'исчезнуть'"
+msgstr "Tempo passato. Tipologia 'исчезнуть'"
+
+#: app/templates/dummy.html:142
+msgid "Regular verbs with vowel alternation"
+msgstr "Verbi regolari con alternanza consonantica"
+
+#: app/templates/dummy.html:143
+msgid "Resultative"
+msgstr "Espressione di efficacia, presenza di risultato"
+
+#: app/templates/dummy.html:144
+msgid "Iterative / potential iterative / qualities"
+msgstr "Espressione di iterazione / iterazione potenziale/ qualità"
+
+#: app/templates/dummy.html:145
+msgid "Expression of duration - 'за какое время'"
+msgstr "Espressione di durata - 'за какое время'"
+
+#: app/templates/dummy.html:146
+msgid "Factual meaning of verbs"
+msgstr "Significato fattuale dei verbi"
+
+#: app/templates/dummy.html:147
+msgid "Aspect, expression of action completed in the past"
+msgstr "Uso dell'aspetto in frasi che esprimono azioni terminate nel passato"
+
+#: app/templates/dummy.html:148
+msgid ""
+"Aspect, expression of capability/incapability. ('Тебе этого не "
+"понимать/понять!')"
+msgstr ""
+"Uso dell'aspetto in frasi che esprimono capacità/incapacità. ('Тебе этого"
+" не понимать/понять'!)"
+
+#: app/templates/dummy.html:149
+msgid "Inception of action"
+msgstr "Espressione di inizio d'azione"
+
+#: app/templates/dummy.html:150
+msgid "'Забыть, успеть, удаться' + infinitive"
+msgstr "'Забыть, успеть, удаться' + infinito"
+
+#: app/templates/dummy.html:151
+msgid "'Уметь, нравиться, любить' etc. + infinitive"
+msgstr "'Уметь, нравиться, любить' и др. + infinito"
+
+#: app/templates/dummy.html:152
+msgid "'Пора, скорее' + infinitive"
+msgstr "'Пора, скорее' + infinito"
+
+#: app/templates/dummy.html:153
+msgid "'Нельзя, невозможно, не могу' + infinitive"
+msgstr "'Нельзя, невозможно, не могу' + infinito"
+
+#: app/templates/dummy.html:154
+msgid "'Не' + infinitive"
+msgstr "'Не' + infinito"
+
+#: app/templates/dummy.html:155
+msgid "Negative sentences"
+msgstr "Frasi negative"
+
+#: app/templates/dummy.html:156
+msgid "Imperative"
+msgstr "Imperativo"
+
+#: app/templates/dummy.html:157
+msgid "Proximal future"
+msgstr "Espressione di futuro imminente"
+
+#: app/templates/dummy.html:158
+msgid ""
+"Impersonal sentences. Infinitival sentences. Subordinate sentences ('если"
+" / прежде чем' + infinitive)"
+msgstr ""
+"Espressioni impersonali. Frasi infinitive.Frasi subordinate ('если / "
+"прежде чем' + инфинитив)"
+
+#: app/templates/dummy.html:159
+msgid "Impersonal sentences. Infinitival sentences. Modal expressions"
+msgstr "Espressioni impersonali. Frasi infinitive. Espressioni modali"
+
+#: app/templates/dummy.html:160
+msgid ""
+"Impersonal sentences. Infinitival sentences. Sentences, with negative "
+"pronouns and adverbs"
+msgstr "Frasi impersonali. Frasi infinitive. Frasi con pronomi  e avverbi negativi"
+
+#: app/templates/dummy.html:161
+msgid "Generis-personal sentences"
+msgstr "Frasi personali"
+
+#: app/templates/dummy.html:162
+msgid "Existential sentences (usage of the verb 'быть')"
+msgstr "Frasi esistenziali (uso del verbo 'быть')"
+
+#: app/templates/dummy.html:163
+msgid ""
+"Passive and its relation to indefinite-personal sentences (equivalent of "
+"Finnish impersonal passive)"
+msgstr ""
+"Il passivo e la sua relazione alle frasi personali indefinite "
+"(equivalenti al passivo indefinito finlandese)"
+
+#: app/templates/dummy.html:164
+msgid "Stress: forms of verbal preterite"
+msgstr "Accento: forme del passato dei verbi"
+
+#: app/templates/dummy.html:165
+msgid "Stress: short adjectives"
+msgstr "Accento: aggettivi in forma breve"
+
+#: app/templates/dummy.html:166
+msgid "Stress: participles"
+msgstr "Accento: forme del participio"
+
+#: app/templates/dummy.html:167
+msgid "Nouns. Type A: stress on the stem"
+msgstr "Sostantivi: Tipologia A: accento sulla base"
+
+#: app/templates/dummy.html:168
+msgid "Nouns. Type B, B1, B2: stress on the ending"
+msgstr "Sostantivi. Tipologia B,B1,B2: accento sula terminazione"
+
+#: app/templates/dummy.html:169
+msgid "Nouns. Type C, C1: stress on the stem in singular, on the ending in plural"
+msgstr ""
+"Sostantivi. Tipologia C,C1: accento sulla base al singolare, sulla "
+"terminazione al plurale"
+
+#: app/templates/dummy.html:170
+msgid "Nouns. Type D, D1: stress on the ending in singular, on the stem in plural"
+msgstr ""
+"Sostantivi. Tipologia D,D1: accento sulla terminazione al singolare, "
+"sulla base al plurale"
+
+#: app/templates/dummy.html:171
+msgid "Nouns. Type 'нож-ножом, сторож-сторожем'"
+msgstr "Sostantivi. Tipologia  'нож - ножом, сторож - сторожем'"
+
+#: app/templates/dummy.html:172
+msgid "Declension of adjectives. Type 'хорошего'"
+msgstr "Declinazione degli aggettivi. Tipologia 'хорошего'"
+
+#: app/templates/dummy.html:173
+msgid "Place of adverbs of time, place and manner"
+msgstr "Posizione degli avverbi di tempo, luogo e modo"
+
+#: app/templates/dummy.html:174
+msgid "Place of negation in the sentence"
+msgstr "Posizione della negazione nella frase"
+
+#: app/templates/dummy.html:175
+msgid "Place of participles in the sentence"
+msgstr "Posizione del participio nella frase"
+
+#: app/templates/dummy.html:176
+msgid "Place of gerunds in the sentence"
+msgstr "Posizione del gerundio nella frase"
+
+#: app/templates/dummy.html:177
+msgid "Place of pronouns in a phrase"
+msgstr "Posizione del pronome nella frase"
+
+#: app/templates/dummy.html:178
+msgid "Word order in sentences introducing direct quotations"
+msgstr "Ordine delle parole nella frase introducente discorso diretto"
+
+#: app/templates/dummy.html:179
+msgid "Second person singular imperative in conditionals ('если')"
+msgstr ""
+"Seconda persona singolare dell'imperativo con significato condizionale "
+"('если')"
+
+#: app/templates/dummy.html:180
+msgid "Usage of 'сам' and 'один'"
+msgstr "Uso delle parole 'сам' e 'один'"
+
+#: app/templates/dummy.html:181
+msgid "Sentences of type 'Знаю его как врача.'"
+msgstr "Frasi del tipo 'Знаю его как врача.'"
+
+#: app/templates/dummy.html:182
+msgid "Sentences of type 'Быть грозе'"
+msgstr "Frasi del tipo 'Быть грозе'"
+
+#: app/templates/dummy.html:183
+msgid "Sentences of type 'Лодку унесло ветром'"
+msgstr "Frasi del tipo 'Лодку унесло ветром'"
+
+#: app/templates/dummy.html:184
+msgid "Genitive plural"
+msgstr "Caso genitivo plurale"
+
+#: app/templates/dummy.html:185
+msgid "Frequent prefixed verbs of motion + prepositional constructions"
+msgstr "Verbi prefissati di moto frequenti + costrutti prepositivi"
+
+#: app/templates/dummy.html:186
+msgid "Animate noun object"
+msgstr "Sostantivi animati in qualità di complemento"
+
+#: app/templates/dummy.html:187
+msgid "Unprefixed verbs of motion"
+msgstr "Verbi di moto non prefissati"
+
+#: app/templates/dummy.html:188
+msgid "Unstressed fleeting vowels in roots and suffixes of nouns and adjectives"
+msgstr "Vocali fuggevoli non accentate nelle radici e suffisi di nomi e aggettivi"
+
+#: app/templates/dummy.html:189
+msgid "Unstressed vowels in verbal forms"
+msgstr "Vocali non accentate nelle forme verbali"
+
+#: app/templates/dummy.html:190
+msgid "Unstressed vowels in roots"
+msgstr "Vocali non accentate nelle radici"
+
+#: app/templates/dummy.html:191
+msgid "Unstressed vowels in case endings"
+msgstr "Vocali non accentate nelle terminazioni dei casi"
+
+#: app/templates/dummy.html:192
+msgid "Unstressed vowels in prefixes"
+msgstr "Vocali non accentate nei prefissi"
+
+#: app/templates/dummy.html:193
+msgid "Unstressed vowels in suffixes"
+msgstr "Vocali non accentate nei suffisi"
+
+#: app/templates/dummy.html:194
+msgid "Unstressed vowels linking compounds"
+msgstr "Vocali d'unione non accentate"
+
+#: app/templates/dummy.html:195
+msgid "Unstressed particles не and ни"
+msgstr "Particelle non accentate не и ни"
+
+#: app/templates/dummy.html:196
+msgid "Letter г in ending -ого (-его)"
+msgstr "Lettera г nella terminazione -ого (-его)"
+
+#: app/templates/dummy.html:197
+msgid "Letter й"
+msgstr "Lettera й"
+
+#: app/templates/dummy.html:198
+msgid "Letter ч and ш before н and т"
+msgstr "Lettere ч e ш davanti a н и т"
+
+#: app/templates/dummy.html:199
+msgid "Letters ъ and ь:"
+msgstr "Lettere ъ e ь:"
+
+#: app/templates/dummy.html:200
+msgid "Vowels in verbal endings"
+msgstr "Vocali nelle terminazioni verbali"
+
+#: app/templates/dummy.html:201
+msgid "Vowels in the infinitive (indefinite form) before -ть"
+msgstr "Vocali nell'infinito (forma indefinita) davanti a -ть"
+
+#: app/templates/dummy.html:202
+msgid "Vowels not after sibilants and ц"
+msgstr "Vocali non dopo le sibilanti e ц"
+
+#: app/templates/dummy.html:203
+msgid "Vowels after sibilants and ц"
+msgstr "Vocali dopo le sibilanti e ц"
+
+#: app/templates/dummy.html:204
+msgid "Voiceless and voiced consonants"
+msgstr "Consonanti sorde e sonore"
+
+#: app/templates/dummy.html:205
+msgid "Consonant clusters at the juncture of morphemes"
+msgstr "Gruppi di consonanti nei punti di giunzione dei morfemi"
+
+#: app/templates/dummy.html:206
+msgid "Double and single -н- in suffixes of adjectives and nouns"
+msgstr "Doppia -н- и singola -н- nei suffissi di aggettivi e sostantivi"
+
+#: app/templates/dummy.html:207
+msgid "Double and single -н- in suffixes of full and short forms of adjectives"
+msgstr ""
+"Doppia -н- и singola-н- nei suffissi di forme piene e brevi degli "
+"aggettivi"
+
+#: app/templates/dummy.html:208
+msgid ""
+"Double and single -н- in suffixes of past passive participles and "
+"corresponding adjectives"
+msgstr ""
+"Doppia -н- и singola -н- nei suffissi di participi passati passivi e "
+"negli aggettivi corrispondenti"
+
+#: app/templates/dummy.html:209
+msgid "Double and single -н- in words derived from adjectives and participles"
+msgstr "Doppia н e singola н in parole formate da aggettivi e participi"
+
+#: app/templates/dummy.html:210
+msgid "Double consonants in borrowed roots and suffixes"
+msgstr "Doppie consonanti in radici prese in prestito e suffisi"
+
+#: app/templates/dummy.html:211
+msgid "Double consonants in native roots"
+msgstr "Doppie consonanti in radici russe"
+
+#: app/templates/dummy.html:212
+msgid "Double consonants at morpheme juncture"
+msgstr "Doppie consonanti nei punti di giunzione dei morfemi"
+
+#: app/templates/dummy.html:213
+msgid "Silent consonants"
+msgstr "Consonanti  non pronunciate"
+
+#: app/templates/dummy.html:214
+msgid "Peculiarities of spelling of certain roots"
+msgstr "Particolarità della scrittura di radici separate"
+
+#: app/templates/dummy.html:215
+msgid "Peculiarities of spelling of certain suffixes"
+msgstr "Particolarità della scrittura di suffissi separati"
+
+#: app/templates/dummy.html:216
+msgid "Joint vs. separate spelling of negation 'не': verb (+participles)"
+msgstr "Scrittura unita e separata con la negazione не: verbo (+participi)"
+
+#: app/templates/dummy.html:217
+msgid "Joint vs. separate spelling of negation 'не': pronoun"
+msgstr "Scrittura unita e separata con la negazione не: pronome"
+
+#: app/templates/dummy.html:218
+msgid "Joint vs. separate spelling of negation 'не': adverb (+'несколько')"
+msgstr "Scrittura unita e separata con la negazione не: avverbio (+'несколько')"
+
+#: app/templates/dummy.html:219
+msgid "Joint vs. separate spelling of negation 'не': adjectives (+full-short)"
+msgstr "Scrittura unita e separata con la negazione не : aggettivi (+brevi-pieni)"
+
+#: app/templates/dummy.html:220
+msgid "Joint vs. separate spelling of negation 'не': noun"
+msgstr "Scrittura unita e separata con la negazione не: sostantivo"
+
+#: app/templates/dummy.html:221
+msgid "Joint vs. hyphenated spelling: adjectives"
+msgstr "Scrittura unita e con trattino: aggettivi"
+
+#: app/templates/dummy.html:222
+msgid "Joint vs. hyphenated spelling: numerals"
+msgstr "Scrittura unita e con trattino: numerali"
+
+#: app/templates/dummy.html:223
+msgid "Joint vs. hyphenated spelling: pronouns"
+msgstr "Scrittura unita e con trattino: pronomi"
+
+#: app/templates/dummy.html:224
+msgid "Joint vs. hyphenated spelling: adverbs"
+msgstr "Scrittura unita e con trattino: avverbi"
+
+#: app/templates/dummy.html:225
+msgid "Joint vs. hyphenated spelling: common nouns"
+msgstr "Scrittura unita e con trattino: nomi comuni"
+
+#: app/templates/dummy.html:226
+msgid "Joint vs. hyphenated spelling: function words"
+msgstr "Scrittura unita e con trattino:parole funzionali"
+
+#: app/templates/dummy.html:227
+msgid "Joint vs. hyphenated spelling: proper names"
+msgstr "Scrittura unita e con trattino: nomi propri"
+
+#: app/templates/dummy.html:228
+msgid "Capitalized vs. lowercase: astronomical/geographical names"
+msgstr "Uso di lettere maiuscole e minuscole: nomi astronomici/geografici"
+
+#: app/templates/dummy.html:229
+msgid "Capitalized vs. lowercase: posts, titles, awards"
+msgstr ""
+"Uso di lettere maiuscole e minuscole: nomi degli incarichi, ranghi e "
+"onorificenze"
+
+#: app/templates/dummy.html:230
+msgid "Capitalized vs. lowercase: names of official organizations"
+msgstr ""
+"Uso di lettere maiuscole e minuscole: nomi di organi ufficiali, "
+"istituzioni"
+
+#: app/templates/dummy.html:231
+msgid ""
+"Capitalized vs. lowercase: names linked to religion, historical epochs "
+"and events"
+msgstr ""
+"Uso di lettere maiuscole e minuscole: nomi correlati a religione, epoche "
+"storiche ed eventi"
+
+#: app/templates/dummy.html:232
+msgid "Capitalized vs. lowercase: names of trademarks, documents, works of art"
+msgstr ""
+"Uso di lettere maiuscole e minuscole: marchi commerciali , documenti, "
+"opere d'arte"
+
+#: app/templates/dummy.html:233
+msgid "Capitalized vs. lowercase: proper names of persons, animals"
+msgstr "Uso di lettere maiuscole e minuscole: nomi propri di uomini, animali"
+
+#: app/templates/dummy.html:236
+msgid "Choose the word best fitting the definition."
+msgstr "Scegli la parola più adatta alla definizione"
+
+#: app/templates/dummy.html:237
+msgid "Which word or expression does NOT fit the given word?"
+msgstr "Quale parola o espressione NON si abbina alla parola data?"
+
+#: app/templates/dummy.html:239 app/templates/dummy.html:247
+msgid "Choose the best fitting answer to the question."
+msgstr "Scegli la risposta che è più corretta"
+
+#: app/templates/dummy.html:240
+msgid "Would this be a fitting answer to the question?"
+msgstr "Si può rispondere così?"
+
+#: app/templates/dummy.html:241
+msgid "Choose the proper stress."
+msgstr "Scegli il giusto accento"
+
+#: app/templates/dummy.html:242
+msgid "Which sentence sounds more natural?"
+msgstr "Quale delle due proposizioni suona più naturale?"
+
+#: app/templates/dummy.html:243
+msgid "Choose the more natural version."
+msgstr "Scegli la variante più naturale"
+
+#: app/templates/dummy.html:244
+msgid "Which sentence best fits the Finnish sentence?"
+msgstr "Quale proposizione si adatta meglio alla frase in finlandese?"
+
+#: app/templates/dummy.html:245
+msgid "Is it correct to say this?"
+msgstr "È giusto dire così?"
+
+#: app/templates/dummy.html:246
+msgid "Which sentence has the correct word order?"
+msgstr "Quale proposizione presenta l'ordine corretto delle parole?"
+
+#: app/templates/dummy.html:248
+msgid "Which sentence better fits the described situation?"
+msgstr "Quale proposizione si adatta meglio alla situazione descritta?"
+
+#: app/templates/dummy.html:249
+msgid "Choose the correct way of writing the word or expression."
+msgstr "Scegli il modo corretto di scrivere la parola"
+
+#: app/templates/dummy.html:250
+msgid "Choose the correct way of writing."
+msgstr "Scegli la giusta scrittura"
+
+#: app/templates/dummy.html:251
+msgid "Is it correct to write this way?"
+msgstr "Si può scrivere in questo modo?"
+
+#: app/templates/dummy.html:252
+msgid "Choose the best fitting verb."
+msgstr "Scegli il verbo adeguato"
+
+#: app/templates/dummy.html:253
+msgid "Choose the word or phrase which best fits the explanation below"
+msgstr "Scegli la parola o la frase che più si adattano alla spiegazione"
+
+#: app/templates/dummy.html:255
+msgid "Yes"
+msgstr "Si"
+
+#: app/templates/dummy.html:256
+msgid "No"
+msgstr "No"
+
+#: app/templates/dummy.html:265
+msgid "Adjective inflection"
+msgstr "La declinazione degli aggettivi"
+
+#: app/templates/dummy.html:266
+msgid "Word order"
+msgstr "Ordine delle parole"
+
+#: app/templates/dummy.html:267
+msgid "Aspect and tense"
+msgstr "Aspetti e tempi"
+
+#: app/templates/dummy.html:268
+msgid "Collocation"
+msgstr "Collocazione"
+
+#: app/templates/dummy.html:269 app/templates/modals-exer-customize.html:179
+msgid "Verbs of motion"
+msgstr "I verbi di moto"
+
+#: app/templates/dummy.html:270 app/templates/modals-exer-customize.html:111
+msgid "Numerals"
+msgstr "I numerali"
+
+#: app/templates/dummy.html:271
+msgid "Verbal government"
+msgstr "La reggenza dei verbi"
+
+#: app/templates/dummy.html:272
+msgid "Stress"
+msgstr "L'accento"
+
+#: app/templates/dummy.html:273
+msgid "Verb conjugation"
+msgstr "La coniugazione dei verbi"
+
+#: app/templates/dummy.html:274
+msgid "Noun inflection"
+msgstr "La declinazione dei sostantivi"
+
+#: app/templates/dummy.html:275
+msgid "Syntax"
+msgstr "Sintassi"
+
+#: app/templates/dummy.html:276
+msgid "Orthography"
+msgstr "Ortografia"
+
+#: app/templates/dummy.html:277 app/templates/dummy.html:298
+msgid "Lexicon"
+msgstr "Vocabolario"
+
+#: app/templates/dummy.html:282
+msgid "Verbs with partitive case"
+msgstr "I verbi al caso partitivo"
+
+#: app/templates/dummy.html:283
+msgid "Verbs with illative case"
+msgstr "I verbi al caso illativo"
+
+#: app/templates/dummy.html:284
+msgid "Infinitive 3 illative"
+msgstr "Il terzo infinitivo e l'illativo"
+
+#: app/templates/dummy.html:285
+msgid "Partitive object (negative)"
+msgstr "L'oggetto al partitivo (la negazione)"
+
+#: app/templates/dummy.html:286
+msgid "Allative case"
+msgstr "Il caso allativo"
+
+#: app/templates/dummy.html:287
+msgid "Accusative case"
+msgstr "Il caso accusativo"
+
+#: app/templates/dummy.html:288
+msgid "Partitive case"
+msgstr "Il caso partitivo"
+
+#: app/templates/dummy.html:289
+msgid "Syntax: conjunctions"
+msgstr "Sintassi: le congiunzioni"
+
+#: app/templates/dummy.html:290
+msgid "Lexicon: definitions"
+msgstr "Vocabolario: definizioni"
+
+#: app/templates/dummy.html:295
+msgid "Case usage"
+msgstr "L'uso dei casi"
+
+#: app/templates/dummy.html:296
+msgid "Verb infinitives 1-4"
+msgstr "Gli infinitivi 1-4"
+
+#: app/templates/dummy.html:297
+msgid "Verb covernment: cases"
+msgstr "La reggenza dei verbi: i casi"
+
+#: app/templates/flashcard_base.html:2
+msgid "Flash Cards for"
+msgstr "Flashcard per"
+
+#: app/templates/flashcard_base.html:12
+msgid "Translation"
+msgstr "Traduzione in"
+
+#: app/templates/flashcard_base.html:25 app/templates/flashcard_base.html:29
+msgid "Fill in"
+msgstr "Traduzione"
+
+#: app/templates/flashcard_base.html:26 app/templates/flashcard_base.html:30
+msgid "Browse (flashcards)"
+msgstr "Sfoglia flashcard"
+
+#: app/templates/flashcard_base.html:32
+msgid "Multi choice"
+msgstr "Scelta multipla"
+
+#: app/templates/flashcard_base.html:36 app/templates/flashcard_base.html:174
+msgid "Next card"
+msgstr "Flashcard successiva"
+
+#: app/templates/flashcard_base.html:42
+msgid "Back to my flashcards"
+msgstr "Torna alle fleshcard"
+
+#: app/templates/flashcard_base.html:45
+msgid "Add new flashcard"
+msgstr "Aggiungere nuove flashcard"
+
+#: app/templates/flashcard_base.html:57 app/templates/flashcard_base.html:99
+msgid "Delete this flashcard"
+msgstr "Eliminare la flashcard"
+
+#: app/templates/flashcard_base.html:62
+msgid "Edit this flashcard"
+msgstr "Modifica la flashcard"
+
+#: app/templates/flashcard_base.html:77 app/templates/flashcard_base.html:80
+#: app/templates/flashcard_base.html:113 app/templates/flashcard_base.html:116
+msgid "Check answer!"
+msgstr "Controllare"
+
+#: app/templates/flashcard_base.html:88
+msgid "Check your answer"
+msgstr "Controllare"
+
+#: app/templates/flashcard_base.html:89 app/templates/flashcard_base.html:130
+msgid "Flip"
+msgstr "Girare"
+
+#: app/templates/flashcard_base.html:119
+msgid "I know it"
+msgstr "Conosco questa parola"
+
+#: app/templates/flashcard_base.html:121
+msgid "I am not sure"
+msgstr "Non conosco questa parola"
+
+#: app/templates/flashcard_base.html:129
+msgid "Back of the card"
+msgstr "Traduzione"
+
+#: app/templates/flashcard_base.html:142
+msgid "New word"
+msgstr "Una nuova parola"
+
+#: app/templates/flashcard_base.html:146
+msgid "Type word & hit Enter"
+msgstr "Inserire la parola e premere Enter"
+
+#: app/templates/flashcard_base.html:149
+msgid "Hints for this flashcard"
+msgstr "Suggerimenti"
+
+#: app/templates/flashcard_base.html:154 app/templates/flashcard_base.html:254
+msgid "Type new hint..."
+msgstr "Inserire un nuovo suggerimento"
+
+#: app/templates/flashcard_base.html:156 app/templates/flashcard_base.html:256
+msgid "Save the hint"
+msgstr "Salvare l'indizio"
+
+#: app/templates/flashcard_base.html:164
+msgid "Hmm... One more hint?"
+msgstr "Mmmmm… vuoi un indizio?"
+
+#: app/templates/flashcard_base.html:179
+msgid "New translations"
+msgstr "Nuove traduzioni"
+
+#: app/templates/flashcard_base.html:184 app/templates/flashcard_base.html:241
+msgid "Type new translation..."
+msgstr "Inserire una nuova traduzione…"
+
+#: app/templates/flashcard_base.html:186 app/templates/flashcard_base.html:243
+msgid "Save the translation"
+msgstr "Salvare traduzione"
+
+#: app/templates/flashcard_base.html:190
+msgid "Submit flashcard"
+msgstr "Salvare la flashcard"
+
+#: app/templates/flashcard_base.html:192
+msgid "Clear flashcard"
+msgstr "Svuotare tutti i campi della flashcard"
+
+#: app/templates/flashcard_base.html:208 app/templates/lang_tests.html:169
+#: app/templates/lang_tests.html:191
+#: app/templates/modal-story-operations.html:115
+#: app/templates/modal-story-operations.html:135
+#: app/templates/modal-story-operations.html:155 app/templates/profile.html:324
+#: app/templates/profile.html:356 app/templates/profile.html:382
+#: app/templates/profile.html:407
+msgid "Warning"
+msgstr "Attenzione"
+
+#: app/templates/flashcard_base.html:212
+msgid ""
+"This will permanently remove this flashcard, are you sure you want to "
+"proceed?"
+msgstr "Sicuro/a di voler eliminare la flascard?"
+
+#: app/templates/flashcard_base.html:216 app/templates/lang_tests.html:178
+#: app/templates/lang_tests.html:179 app/templates/lang_tests.html:198
+#: app/templates/lang_tests.html:201
+#: app/templates/modal-story-operations.html:121
+#: app/templates/modal-story-operations.html:141
+#: app/templates/modal-story-operations.html:161 app/templates/profile.html:332
+#: app/templates/profile.html:338 app/templates/profile.html:366
+#: app/templates/profile.html:391
+msgid "Remove"
+msgstr "Rimuovere"
+
+#: app/templates/flashcard_base.html:217 app/templates/flashcard_base.html:267
+#: app/templates/lang_tests.html:180 app/templates/lang_tests.html:204
+#: app/templates/modal-story-operations.html:122
+#: app/templates/modal-story-operations.html:142
+#: app/templates/modal-story-operations.html:162 app/templates/profile.html:341
+#: app/templates/profile.html:368 app/templates/profile.html:393
+#: app/templates/profile.html:417
+msgid "Cancel"
+msgstr "Annullare"
+
+#: app/templates/flashcard_base.html:233
+msgid "Translations"
+msgstr "Traduzioni"
+
+#: app/templates/flashcard_base.html:246
+msgid "Hints"
+msgstr "Suggerimenti"
+
+#: app/templates/flashcard_base.html:260
+msgid "Definition"
+msgstr "Significato"
+
+#: app/templates/flashcard_base.html:266
+msgid "Confirm"
+msgstr "Salva"
+
+#: app/templates/flashcard_base.html:306
+msgid "Message"
+msgstr "Messaggio"
+
+#: app/templates/friend_shared_story.html:5
+#, python-format
+msgid ""
+"Your friend %(friend)s has shared with you the story: "
+"&quot;%(story)s&quot;"
+msgstr ""
+"Il tuo amico %(friend)s ha condiviso una storia con te: "
+"&quot;%(story)s&quot;"
+
+#: app/templates/friend_shared_story.html:8
+#, python-format
+msgid ""
+"Stories from %(friend)s appear automatically in your list of shared "
+"stories.<br>  \n"
+"   If you wish to change this, please click below to either remove "
+"%(friend)s from your friend list, or block him/her."
+msgstr ""
+"Le storie inviate da %(friend)s, verranno aggiunte automaticamente alla "
+"tua lista. <br>Se vuoi modificare questa opzione, clicca sul link "
+"sottostante per bloccare %(friend)s o per rimuoverlo dagli amici"
+
+#: app/templates/friend_shared_story.html:13
+msgid "REMOVE"
+msgstr "RIMUOVERE"
+
+#: app/templates/index.html:16
+msgid "Upload stories"
+msgstr "Caricare storie"
+
+#: app/templates/index.html:17
+msgid "Upload flashcards"
+msgstr "Caricare flashcard"
+
+#: app/templates/index.html:39
+msgid "My languages"
+msgstr "La mia lingua"
+
+#: app/templates/index.html:73
+msgid "Select types of exercises<br/>to practice"
+msgstr "Scegli il tema <br/>grammaticale<br/>da praticare"
+
+#: app/templates/index.html:150
+msgid "Home"
+msgstr "Home page"
+
+#: app/templates/index.html:151
+msgid "Library"
+msgstr "Biblioteca"
+
+#: app/templates/index.html:153
+msgid "All flashcards"
+msgstr "Tutte le flashcard"
+
+#: app/templates/index.html:163
+msgid "Tests"
+msgstr "Test"
+
+#: app/templates/index.html:168 app/templates/macros.html:212
+#: app/templates/macros.html:217 app/templates/macros.html:458
+#: app/templates/macros.html:463
+msgid "Comprehension"
+msgstr "Comprensione"
+
+#: app/templates/index.html:189
+msgid "Practice a random story with the language of your choice"
+msgstr "Esercitati con una storia casuale"
+
+#: app/templates/index.html:190
+msgid "Practice Now"
+msgstr "Mettiti alla prova"
+
+#: app/templates/index.html:194 app/templates/index.html:196
+#: app/templates/index.html:198 app/templates/index.html:200
+msgid "This feature is coming soon!"
+msgstr "Questa funzionalità arriverà presto!"
+
+#: app/templates/index.html:195
+msgid "Culture"
+msgstr "Cultura"
+
+#: app/templates/index.html:197
+msgid "Politics"
+msgstr "Politica"
+
+#: app/templates/index.html:199
+msgid "Science"
+msgstr "Scienza"
+
+#: app/templates/index.html:201
+msgid "Sport"
+msgstr "Sport"
+
+#: app/templates/index.html:235 app/templates/index.html:237
+msgid "No stories to show..."
+msgstr "Nessuna storia da mostrare ..."
+
+#: app/templates/lang_comprehension.html:25
+msgid "Enter a brief answer."
+msgstr "Inserisci una risposta breve"
+
+#: app/templates/lang_comprehension.html:34
+msgid "Check answers"
+msgstr "Verifica le risposte"
+
+#: app/templates/lang_comprehension.html:37
+msgid "Next exercise"
+msgstr "Esercizio  successivo"
+
+#: app/templates/lang_score.html:8 app/templates/lang_tests.html:95
+msgid "Group"
+msgstr "Gruppo"
+
+#: app/templates/lang_score.html:19 app/templates/lang_tests.html:102
+msgid "User"
+msgstr "Utente"
+
+#: app/templates/lang_tests.html:9
+msgid "Back to tests"
+msgstr "⇐ &nbsp;&nbsp; Torna ai test"
+
+#: app/templates/lang_tests.html:12
+msgid "Create a test template"
+msgstr "Crea un modello di test"
+
+#: app/templates/lang_tests.html:16
+msgid "*Create_New_Test_Template*"
+msgstr ""
+"Se sei un insegnante del gruppo selezionato, puoi modificare il modello "
+"di testo di questo gruppo.\n"
+"•Se vuoi creare altri modelli, puoi andare in Gruppi nel tuo profilo e "
+"creare nuovi gruppi..\n"
+"• Ogni gruppo ha il proprio modello .\n"
+"• Non puoi modifcare il modello se sei studente"
+
+#: app/templates/lang_tests.html:28
+msgid "Pause Test"
+msgstr "Metti in pausa"
+
+#: app/templates/lang_tests.html:32
+msgid "Resume Test"
+msgstr "Riprendi il test"
+
+#: app/templates/lang_tests.html:36
+msgid "Quit Test"
+msgstr "Esci dal test"
+
+#: app/templates/lang_tests.html:44
+msgid "Quitting after this question..."
+msgstr "Abbandonare il test dopo questa domanda…"
+
+#: app/templates/lang_tests.html:46
+msgid "Pause after you answer this question..."
+msgstr "La pausa inizierà dopo questa domanda…"
+
+#: app/templates/lang_tests.html:48
+msgid "Paused.  Click &#9658; to resume..."
+msgstr "Pausa...<br/>Fai clic su ► per riprendere ..."
+
+#: app/templates/lang_tests.html:52
+#: app/templates/modal-story-operations.html:250
+#: app/templates/modal-story-operations.html:263
+msgid "Practice with your favourite stories to improve your skills!"
+msgstr "Esercitati con le tue storie preferite per migliorare le tue abilità!"
+
+#: app/templates/lang_tests.html:69
+msgid "Start a new test"
+msgstr "Inizia un nuovo test"
+
+#: app/templates/lang_tests.html:73
+msgid "*New_Test_Help*"
+msgstr ""
+"Premi questo pulsante per fare un test..\n"
+"• Il test usa il modello del gruppo ora selezionato..\n"
+"• Se non sei in alcun gruppo, riceverai il test predefinito..\n"
+"• Durante il test hai 15 secondi per ogni quesito..\n"
+"• Puoi mettere in pausa premendo il pulsante Pausa..\n"
+"• Puoi terminare il test premendo il pulsante Stop..\n"
+"•. Pausa o Stop funzionano solo dopo aver risposto al quesito."
+
+#: app/templates/lang_tests.html:88
+msgid "Show latest history"
+msgstr "Mostra gli ultimi risultati"
+
+#: app/templates/lang_tests.html:92
+msgid "Show last completed tests"
+msgstr "Mostra i test completati"
+
+#: app/templates/lang_tests.html:173 app/templates/lang_tests.html:194
+msgid ""
+"This will permanently remove these test results, are you sure you want to"
+" proceed?"
+msgstr "Sicuro/a di voler cancellare i risultati del test?"
+
+#: app/templates/login.html:22
+msgid "Good to see you again!"
+msgstr "Felici di rivederti!"
+
+#: app/templates/login.html:23
+msgid "Sign in to Revita"
+msgstr "Accedi a Revita"
+
+#: app/templates/login.html:30 app/templates/password_reset_form.html:32
+#: app/templates/register.html:44
+msgid "Email address"
+msgstr "Email"
+
+#: app/templates/login.html:43 app/templates/new_password_form.html:34
+#: app/templates/register.html:74
+msgid "Password"
+msgstr "Password"
+
+#: app/templates/login.html:55
+msgid "Remember me"
+msgstr "Ricordami"
+
+#: app/templates/login.html:78
+msgid "Forgot password?"
+msgstr "Password dimenticata?"
+
+#: app/templates/login.html:83
+msgid "Register here!"
+msgstr "Registrati"
+
+#: app/templates/macros.html:129
+msgid "Pack of flashcards"
+msgstr "Mazzo di flashcard"
+
+#: app/templates/macros.html:153 app/templates/macros.html:350
+msgid "(User shared: BEFORE)"
+msgstr "Dall'utente"
+
+#: app/templates/macros.html:153
+msgid "(User shared: AFTER)"
+msgstr ""
+
+#: app/templates/macros.html:165 app/templates/macros.html:168
+#: app/templates/macros.html:404 app/templates/macros.html:408
+msgid "Read"
+msgstr "Lettura"
+
+#: app/templates/macros.html:172 app/templates/macros.html:176
+#: app/templates/macros.html:412 app/templates/macros.html:417
+msgid "Practice!"
+msgstr "Esercitati!"
+
+#: app/templates/macros.html:181 app/templates/macros.html:185
+#: app/templates/macros.html:422 app/templates/macros.html:428
+msgid "Flashcards"
+msgstr "Flashcard"
+
+#: app/templates/macros.html:190 app/templates/macros.html:197
+#: app/templates/macros.html:434 app/templates/macros.html:439
+msgid "Compete!"
+msgstr "Sfida!"
+
+#: app/templates/macros.html:202 app/templates/macros.html:207
+#: app/templates/macros.html:445 app/templates/macros.html:450
+msgid "Crossword"
+msgstr "Cruciverba"
+
+#: app/templates/macros.html:292
+msgid "Author"
+msgstr "Autore"
+
+#: app/templates/macros.html:298
+#: app/templates/modal-upload-stories-flashcards.html:150
+msgid "Source"
+msgstr "Fonte"
+
+#: app/templates/macros.html:317 app/templates/macros.html:726
+#: app/templates/macros.html:730
+#: app/templates/modal-upload-stories-flashcards.html:151
+#: app/templates/modal-upload-stories-flashcards.html:158
+#: app/templates/modal-upload-stories-flashcards.html:160
+msgid "Level"
+msgstr "Livello"
+
+#: app/templates/macros.html:342 app/templates/practice_area.html:8
+msgid "Story Rating"
+msgstr "Difficoltà"
+
+#: app/templates/macros.html:363 app/templates/practice_area.html:54
+msgid "Exercises answered correctly"
+msgstr "Esercizi eseguiti correttamente"
+
+#: app/templates/macros.html:381 app/templates/practice_area.html:81
+msgid "Part of story covered"
+msgstr "La parte della storia che hai completato"
+
+#: app/templates/macros.html:479 app/templates/macros.html:506
+msgid "Delete story"
+msgstr "Cancellare la storia"
+
+#: app/templates/macros.html:486 app/templates/macros.html:494
+msgid "Share story with a friend"
+msgstr "Condividi la storia con gli amici"
+
+#: app/templates/macros.html:525
+msgid "Your friends"
+msgstr "I tuoi amici"
+
+#: app/templates/macros.html:533 app/templates/macros.html:616
+msgid "Actions"
+msgstr "Azioni"
+
+#: app/templates/macros.html:565
+msgid "Teachers"
+msgstr "Insegnanti"
+
+#: app/templates/macros.html:582
+msgid "Students"
+msgstr "Studenti"
+
+#: app/templates/macros.html:607
+msgid "Blocked users"
+msgstr "Utenti bloccati"
+
+#: app/templates/macros.html:638
+msgid "Your texts"
+msgstr "I miei testi"
+
+#: app/templates/macros.html:640
+msgid "Try uploading your own texts!"
+msgstr "Aggiungi i tuoi testi"
+
+#: app/templates/macros.html:651
+msgid "My flashcards"
+msgstr "Le mie flashcard"
+
+#: app/templates/macros.html:660
+msgid "Shared with me"
+msgstr "Testi condivisi con me"
+
+#: app/templates/macros.html:669
+msgid "Flashcards shared with me"
+msgstr "Flashcard condivise con me"
+
+#: app/templates/macros.html:678
+msgid "Public flashcards"
+msgstr "Flashcard comuni"
+
+#: app/templates/macros.html:687
+msgid "Public texts"
+msgstr "Testi comuni"
+
+#: app/templates/macros.html:732
+msgid "Info"
+msgstr "Info"
+
+#: app/templates/modal-story-operations.html:8
+#: app/templates/modal-story-operations.html:64
+msgid "Share story"
+msgstr "Condividi la storia"
+
+#: app/templates/modal-story-operations.html:8
+#: app/templates/modal-story-operations.html:64
+msgid ""
+"Please enter the email address of the user you wish to share the story "
+"with. To share with multiple users at once, simply leave a space between "
+"each entered address."
+msgstr ""
+"Inserire l'indirizzo di posta elettronica dell'utente, con il quale "
+"volete condividere la storia. Puoi inserire più indirizzi, purchè "
+"separati da uno spazio"
+
+#: app/templates/modal-story-operations.html:10
+#: app/templates/modal-story-operations.html:66
+#: app/templates/modal-upload-stories-flashcards.html:25
+#: app/templates/modal-upload-stories-flashcards.html:205
+msgid "Please"
+msgstr "Per favore,"
+
+#: app/templates/modal-story-operations.html:11
+#: app/templates/modal-story-operations.html:67
+#: app/templates/modal-upload-stories-flashcards.html:26
+#: app/templates/modal-upload-stories-flashcards.html:206
+msgid "sign in"
+msgstr "Effettua il login"
+
+#: app/templates/modal-story-operations.html:12
+#: app/templates/modal-story-operations.html:68
+msgid "to share your stories!"
+msgstr "per aggiungere la tua storia"
+
+#: app/templates/modal-story-operations.html:14
+#: app/templates/modal-story-operations.html:70
+msgid "You can share stories that you upload."
+msgstr "Puoi condividere la storia che hai caricato"
+
+#: app/templates/modal-story-operations.html:15
+#: app/templates/modal-story-operations.html:72
+#: app/templates/modal-upload-stories-flashcards.html:29
+#: app/templates/modal-upload-stories-flashcards.html:209
+msgid "Don't have an account yet?  Please"
+msgstr "Non hai ancora un account?"
+
+#: app/templates/modal-story-operations.html:16
+#: app/templates/modal-story-operations.html:73
+#: app/templates/modal-upload-stories-flashcards.html:30
+#: app/templates/modal-upload-stories-flashcards.html:210
+msgid "register here&rightarrow;"
+msgstr "Registrati qui&rightarrow;"
+
+#: app/templates/modal-story-operations.html:17
+#: app/templates/modal-story-operations.html:74
+#: app/templates/modal-upload-stories-flashcards.html:31
+#: app/templates/modal-upload-stories-flashcards.html:211
+msgid "More"
+msgstr "Ulteriori informazioni"
+
+#: app/templates/modal-story-operations.html:18
+#: app/templates/modal-story-operations.html:75
+#: app/templates/modal-upload-stories-flashcards.html:31
+#: app/templates/modal-upload-stories-flashcards.html:211
+msgid "about Revita&rightarrow;"
+msgstr "su Revita&rightarrow;"
+
+#: app/templates/modal-story-operations.html:20
+#: app/templates/modal-story-operations.html:77
+#: app/templates/modal-upload-stories-flashcards.html:33
+#: app/templates/modal-upload-stories-flashcards.html:212
+msgid ""
+"Registration is free.  Your account is used it to keep track of your "
+"stories and your progress."
+msgstr ""
+"La registrazione è gratuita. La creazione dell'account è necessaria per "
+"salvare le storie, svolgere esercizi e monitorare i tuoi progressi"
+
+#: app/templates/modal-story-operations.html:22
+#: app/templates/modal-story-operations.html:79
+#: app/templates/modal-upload-stories-flashcards.html:35
+msgid "Use sample stories from our library in \"guest\" mode,"
+msgstr ""
+"Puoi svolgere gli esercizi sui testi della nostra libreria in modalità "
+"ospite,"
+
+#: app/templates/modal-story-operations.html:23
+#: app/templates/modal-story-operations.html:80
+#: app/templates/modal-upload-stories-flashcards.html:36
+msgid "without signing in."
+msgstr "senza registrazione,"
+
+#: app/templates/modal-story-operations.html:24
+#: app/templates/modal-story-operations.html:81
+#: app/templates/modal-upload-stories-flashcards.html:37
+msgid "(Your progress will not be saved for the next session.)"
+msgstr "I risultati non potranno essere utilizzati nella prossima sessione."
+
+#: app/templates/modal-story-operations.html:32
+msgid "Write a message for the receiver (optional)"
+msgstr "Scrivi un messaggio al ricevente(opzionale)"
+
+#: app/templates/modal-story-operations.html:34
+#: app/templates/modal-story-operations.html:88 app/templates/profile.html:102
+#: app/templates/profile.html:124 app/templates/profile.html:188
+msgid "Enter email address..."
+msgstr "Inserire l'indirizzo di posta elettronica…"
+
+#: app/templates/modal-story-operations.html:42
+#: app/templates/modal-story-operations.html:96
+msgid "Share"
+msgstr "Condividere"
+
+#: app/templates/modal-story-operations.html:118
+#: app/templates/modal-story-operations.html:138
+#: app/templates/modal-story-operations.html:158
+msgid ""
+"This will permanently remove this story from your collection, are you "
+"sure you want to proceed?"
+msgstr "Sei sicuro/a di voler eliminare la seguente storia dalla tua lista?"
+
+#: app/templates/modal-story-operations.html:176
+msgid "Well Done!"
+msgstr "Ben fatto!"
+
+#: app/templates/modal-story-operations.html:180
+msgid "You have now practiced one hour in total, keep up the good work!"
+msgstr "Ti sei esercitato per un'ora, continua così!"
+
+#: app/templates/modal-story-operations.html:200
+msgid "Great Job!"
+msgstr "Bel lavoro!"
+
+#: app/templates/modal-story-operations.html:204
+msgid "You practiced"
+msgstr "Ti sei esercitato/a"
+
+#: app/templates/modal-story-operations.html:206
+msgid "hours last week! Keep it up"
+msgstr "ore durante la scorsa settimana. Continua così!"
+
+#: app/templates/modal-story-operations.html:228
+msgid "Overall score:"
+msgstr "Punteggio generale"
+
+#: app/templates/modal-story-operations.html:234
+msgid "Correct answers"
+msgstr "Risposte corrette"
+
+#: app/templates/modal-story-operations.html:238
+msgid "Total answers"
+msgstr "Tutte le risposte"
+
+#: app/templates/modal-story-operations.html:242
+msgid "Accuracy"
+msgstr "Percentuale di risposte corrette"
+
+#: app/templates/modal-story-operations.html:254
+msgid "Correct answers given"
+msgstr "Numero di risposte corrette"
+
+#: app/templates/modal-story-operations.html:257
+msgid "Total number of answers"
+msgstr "Numero totale di risposte"
+
+#: app/templates/modal-story-operations.html:260
+msgid "Percentage of correct answers"
+msgstr "Percentuale di risposte corrette"
+
+#: app/templates/modal-upload-stories-flashcards.html:23
+msgid "Add your stories"
+msgstr "Aggiungi le tue storie"
+
+#: app/templates/modal-upload-stories-flashcards.html:27
+msgid "to add your own stories!"
+msgstr "per aggiungere le tue storie!"
+
+#: app/templates/modal-upload-stories-flashcards.html:28
+msgid "You can add your own stories from your files, or from any web page."
+msgstr "Puoi aggiungere qualsiasi file di testo o pagina web"
+
+#: app/templates/modal-upload-stories-flashcards.html:46
+msgid ""
+"Please submit a simple text file containing the story you want to add. We"
+" will automatically infer the title. Please submit a story in the "
+"currently selected practice language."
+msgstr ""
+"Inserire il nome del file con il testo. Revita usa la prima riga del "
+"testo come titolo"
+
+#: app/templates/modal-upload-stories-flashcards.html:48
+#: app/templates/modal-upload-stories-flashcards.html:251
+msgid "Choose a file:"
+msgstr "Scegliere un file"
+
+#: app/templates/modal-upload-stories-flashcards.html:52
+#: app/templates/modal-upload-stories-flashcards.html:255
+msgid "Browse"
+msgstr "Scegliere"
+
+#: app/templates/modal-upload-stories-flashcards.html:60
+#: app/templates/modal-upload-stories-flashcards.html:96
+#: app/templates/modal-upload-stories-flashcards.html:126
+#: app/templates/modal-upload-stories-flashcards.html:261
+msgid "Submit"
+msgstr "Caricare testo"
+
+#: app/templates/modal-upload-stories-flashcards.html:71
+msgid ""
+"Paste the raw text you want to add as a story. We will use the first "
+"sentence before an empty line as the title. Please submit a story in the "
+"currently selected practice language. Minimum length: 50."
+msgstr "Inserisci il testo della storia. Revita usa la prima riga come titolo"
+
+#: app/templates/modal-upload-stories-flashcards.html:72
+msgid "Or paste a text:"
+msgstr "Copia un testo"
+
+#: app/templates/modal-upload-stories-flashcards.html:73
+msgid "Characters left"
+msgstr "Caratteri rimasti"
+
+#: app/templates/modal-upload-stories-flashcards.html:85
+msgid ""
+"Title on first line. \n"
+"\n"
+"Text after an empty line..."
+msgstr ""
+"Titolo sulla prima riga.\n"
+"\n"
+"Testo dopo una riga vuota"
+
+#: app/templates/modal-upload-stories-flashcards.html:103
+msgid ""
+"Revita will automatically try to find only the story text from your URL."
+"  If the results contain unwanted text, please paste the story manually "
+"into the box above.  Please submit a story in the correct practice "
+"language."
+msgstr ""
+"Revita tenterà di estrarre il testo dalla tua pagina web. Se il risultato"
+" non sarà ben riuscito, copialo manualmente e incollalo nel campo per il "
+"caricamento dei file (in alto)"
+
+#: app/templates/modal-upload-stories-flashcards.html:104
+msgid "Or use a web page:"
+msgstr "O inserisci l'indirizzo della pagina web con il testo d'interesse"
+
+#: app/templates/modal-upload-stories-flashcards.html:114
+msgid "Enter web address..."
+msgstr "Inserisci l'indirizzo della pagina web"
+
+#: app/templates/modal-upload-stories-flashcards.html:146
+msgid "You can visit the following websites to find more stories:"
+msgstr "Puoi trovare altre storie nei seguenti siti web"
+
+#: app/templates/modal-upload-stories-flashcards.html:172
+#: app/templates/modal-upload-stories-flashcards.html:214
+msgid "Add your own flashcards"
+msgstr "Aggiungi la tua flash card"
+
+#: app/templates/modal-upload-stories-flashcards.html:207
+msgid "to add your own flashcards!"
+msgstr "Per aggiungere le tue flashcard"
+
+#: app/templates/modal-upload-stories-flashcards.html:208
+msgid "You can add your own flashcards from your files."
+msgstr "Puoi aggiungere le tue flashcard dai tuoi file"
+
+#: app/templates/modal-upload-stories-flashcards.html:218
+msgid ""
+"Please submit your custom flashcard pack in a txt-format as a .txt file. "
+"Use tab as the delimeter. You can find an example file of the format "
+"here:"
+msgstr ""
+"Carica le tue flashcard in formato txt come un file .txt.\n"
+"Usa la tabella come delimitatore. Puoi trovare un file esempio del "
+"formato qui:"
+
+#: app/templates/modal-upload-stories-flashcards.html:226
+msgid "Language in"
+msgstr "Lingua di input"
+
+#: app/templates/modal-upload-stories-flashcards.html:238
+msgid "Translation target language"
+msgstr "Lingua di traduzione"
+
+#: app/templates/modals-exer-customize.html:7
+msgid "Customize your exercises"
+msgstr "Scegli i temi da praticare"
+
+#: app/templates/modals-exer-customize.html:19
+#: app/templates/modals-exer-customize.html:337
+msgid "Select/Unselect all"
+msgstr "Scegliere tutti"
+
+#: app/templates/modals-exer-customize.html:36
+msgid "Place stress inside a word"
+msgstr "Metti l'accento all'interno della parola"
+
+#: app/templates/modals-exer-customize.html:53
+msgid "Enter the word you hear"
+msgstr "Digita la parola che senti"
+
+#: app/templates/modals-exer-customize.html:69
+#: app/templates/modals-exer-customize.html:322
+msgid "Noun declension"
+msgstr "Sostantivo"
+
+#: app/templates/modals-exer-customize.html:71
+#: app/templates/modals-exer-customize.html:324
+msgid "Noun and adjective declension"
+msgstr "Declinazione di sostantivo e aggettivo"
+
+#: app/templates/modals-exer-customize.html:94
+msgid "Adjective declension"
+msgstr "Aggettivo"
+
+#: app/templates/modals-exer-customize.html:128
+msgid "Pronouns"
+msgstr "Pronome"
+
+#: app/templates/modals-exer-customize.html:145
+msgid "Verb inflection"
+msgstr "Verbo"
+
+#: app/templates/modals-exer-customize.html:162
+msgid "Verb aspect"
+msgstr "Aspetto dei verbi"
+
+#: app/templates/modals-exer-customize.html:197
+msgid "Participle exercises"
+msgstr "Participio"
+
+#: app/templates/modals-exer-customize.html:216
+msgid "Easier participle exercises (from participle base)"
+msgstr "Esercizi più semplici (base participiale)"
+
+#: app/templates/modals-exer-customize.html:234
+msgid "Harder participle exercises (from verb base)"
+msgstr "Esercizi più difficili (base verbale)"
+
+#: app/templates/modals-exer-customize.html:254
+msgid "Prepositions, Postpostion & Adverbs"
+msgstr "Preposizione, Postposizione, Avverbio"
+
+#: app/templates/modals-exer-customize.html:256
+msgid "Prepositions & Adverbs"
+msgstr "Preposizione, Avverbio"
+
+#: app/templates/modals-exer-customize.html:274
+msgid "Prepositions & Postpostion"
+msgstr "Preposizione, Postposizione"
+
+#: app/templates/modals-exer-customize.html:276
+msgid "Prepositions"
+msgstr "Preposizione"
+
+#: app/templates/modals-exer-customize.html:294
+msgid "Adverbs"
+msgstr "Avverbio"
+
+#: app/templates/modals-exer-customize.html:305
+msgid "Sign in"
+msgstr ""
+
+#: app/templates/modals-exer-customize.html:346
+msgid "Case"
+msgstr "Caso"
+
+#: app/templates/modals-exer-customize.html:358
+msgid "Nominative"
+msgstr "Nominativo"
+
+#: app/templates/modals-exer-customize.html:373
+msgid "Genitive"
+msgstr "Genitivo"
+
+#: app/templates/modals-exer-customize.html:388
+msgid "Dative"
+msgstr "Dativo"
+
+#: app/templates/modals-exer-customize.html:403
+msgid "Accusative"
+msgstr "Accusativo"
+
+#: app/templates/modals-exer-customize.html:418
+msgid "Instrumental"
+msgstr "Strumentale"
+
+#: app/templates/modals-exer-customize.html:433
+msgid "Locative"
+msgstr "Locativo"
+
+#: app/templates/modals-exer-customize.html:441
+msgid "Number"
+msgstr "Numero"
+
+#: app/templates/modals-exer-customize.html:452
+msgid "Singular"
+msgstr "Singolare"
+
+#: app/templates/modals-exer-customize.html:465
+msgid "Plural"
+msgstr "Plurale"
+
+#: app/templates/modals-exer-customize.html:472
+msgid "Paradigm"
+msgstr "Declinazione"
+
+#: app/templates/new_password_form.html:47 app/templates/register.html:87
+msgid "Confirm password"
+msgstr "Confermare la password"
+
+#: app/templates/new_password_form.html:57
+msgid "Change password"
+msgstr "Cambiare la password"
+
+#: app/templates/password_reset_form.html:40
+msgid "Send email"
+msgstr "Inviare messaggio"
+
+#: app/templates/practice.html:23
+msgid "These should be easy for you!"
+msgstr "Questi esercizi sono semplici per te!"
+
+#: app/templates/practice.html:103
+msgid "click to listen"
+msgstr "&#x1f5b0; Clicca per ascoltare"
+
+#: app/templates/practice_area.html:68
+msgid "Check Answers"
+msgstr "Verificare"
+
+#: app/templates/practice_area.html:96
+msgid "Restart story"
+msgstr "Iniziare da capo"
+
+#: app/templates/practice_area.html:113
+msgid "Game over"
+msgstr "Gioco concluso"
+
+#: app/templates/practice_area.html:116
+msgid "You won!"
+msgstr "Hai vinto!"
+
+#: app/templates/practice_area.html:116
+msgid "extra apples!"
+msgstr "Mele extra!"
+
+#: app/templates/practice_area.html:117
+msgid "Tie! That was close, try again!"
+msgstr "Pareggio! Prova ancora!"
+
+#: app/templates/practice_area.html:118
+msgid "You lost.."
+msgstr "Hai perso"
+
+#: app/templates/practice_area.html:133
+msgid "Continue"
+msgstr "Continuare"
+
+#: app/templates/profile.html:42
+#, python-format
+msgid "%(username)s's profile"
+msgstr "%(username)s &mdash; Profilo"
+
+#: app/templates/profile.html:46
+msgid "Account"
+msgstr "Account"
+
+#: app/templates/profile.html:48
+msgid "Achievements"
+msgstr "Premi"
+
+#: app/templates/profile.html:49
+msgid "Groups"
+msgstr "Gruppi"
+
+#: app/templates/profile.html:50
+msgid "Friends"
+msgstr "Amici"
+
+#: app/templates/profile.html:75
+msgid "Click here to enable Facebook login"
+msgstr "Permetti l'accesso tramite Facebook"
+
+#: app/templates/profile.html:80
+msgid "You can log in to Revita with your Facebook account"
+msgstr "Puoi entrare in Revita tramite Facebook"
+
+#: app/templates/profile.html:87 app/templates/settings-include.html:50
+msgid "Save"
+msgstr "Salvare"
+
+#: app/templates/profile.html:100
+msgid "Add a friend"
+msgstr "Aggiungere amico"
+
+#: app/templates/profile.html:110
+msgid "Add friend"
+msgstr "Aggiungere amici"
+
+#: app/templates/profile.html:122
+msgid "Block a user"
+msgstr "Bloccare utente"
+
+#: app/templates/profile.html:136
+msgid "Block"
+msgstr "Bloccare"
+
+#: app/templates/profile.html:156
+msgid "Delete group"
+msgstr "Cancellare gruppo"
+
+#: app/templates/profile.html:162
+msgid "Create new"
+msgstr "Creare nuovo gruppo"
+
+#: app/templates/profile.html:185
+msgid "Manage group"
+msgstr "Gestire il gruppo"
+
+#: app/templates/profile.html:203
+msgid "As teacher"
+msgstr "Come insegnante"
+
+#: app/templates/profile.html:207
+msgid "Add person to group"
+msgstr "Aggiungere utente al gruppo"
+
+#: app/templates/profile.html:222
+msgid "Practice time achievements"
+msgstr "Premi per le ore di pratica"
+
+#: app/templates/profile.html:251
+msgid "Story upload achievements"
+msgstr "Premi per il numero di storie caricate"
+
+#: app/templates/profile.html:280
+msgid "Story covering achievements"
+msgstr "Premi per il numero di storie completate"
+
+#: app/templates/profile.html:329
+msgid ""
+"This will remove this user from your friend list, are you sure you want "
+"to proceed?"
+msgstr "Vuoi davvero eliminare questo utente dalla lista di amici?"
+
+#: app/templates/profile.html:360
+msgid ""
+"This will remove this user from your blocked list, are you sure you want "
+"to proceed?"
+msgstr "Vuoi davvero eliminare questo utente dalla lista dei bloccati?"
+
+#: app/templates/profile.html:387
+msgid ""
+"This will remove this user from this group, are you sure you want to "
+"proceed?"
+msgstr "Vuoi davvero eliminare questo utente dal gruppo?"
+
+#: app/templates/profile.html:412
+msgid "This will remove the group, are you sure you want to proceed?"
+msgstr "Vuoi davvero eliminare questo gruppo?"
+
+#: app/templates/profile.html:415
+msgid "Delete"
+msgstr "Eliminare"
+
+#: app/templates/profile.html:432
+msgid "Create new group"
+msgstr "Creare un nuovo gruppo"
+
+#: app/templates/profile.html:440
+msgid "Multiple emails can be separated by space."
+msgstr "Si possono inserire vari indirizzi separati dallo spazio"
+
+#: app/templates/profile.html:442
+msgid "Name of group"
+msgstr "Nome del gruppo"
+
+#: app/templates/profile.html:452
+msgid "Teacher emails"
+msgstr "Indirizzo degli insegnanti"
+
+#: app/templates/profile.html:454
+msgid "Student emails"
+msgstr "Indirizzo degli studenti"
+
+#: app/templates/profile.html:458
+msgid "Create"
+msgstr "Creare gruppo"
+
+#: app/templates/register.html:23 app/templates/register.html:29
+msgid "Create account with <i>any</i> username and valid e-mail"
+msgstr ""
+"Per creare un account inserire l'indirizzo email e <i> qualsiasi<i> nome "
+"utente"
+
+#: app/templates/register.html:24 app/templates/register.html:30
+msgid "Revita will send confirmation by e-mail"
+msgstr "Revita invierà la conferma di registrazione"
+
+#: app/templates/register.html:31
+msgid "(After that, you may also log in via Facebook)"
+msgstr "In seguito potrai entrare in Revita anche tramite Facebook"
+
+#: app/templates/register.html:103
+msgid "After that, you may also log in via Facebook"
+msgstr "In seguito potrai entrare in Revita anche tramite Facebook"
+
+#: app/templates/reset_password_email.html:5
+msgid ""
+"You have requested to reset your Revita password. Please follow the link "
+"below to reset your password."
+msgstr ""
+"Abbiamo ricevuto la richiesta di aggiornamento password. Segui il link "
+"per aggiornarla"
+
+#: app/templates/reset_password_email.html:11
+#, python-format
+msgid "Please note that the link expires in %(num)d hour."
+msgid_plural "Please note that the link expires in %(num)d hours."
+msgstr[0] "Il link è attivo per ancora %(num)d ora"
+msgstr[1] "Il link è attivo per ancora %(num)d ore"
+
+#: app/templates/settings-include.html:29
+msgid "Practice mode: <br/>Enable exercise types"
+msgstr "Tipi di esercizi"
+
+#: app/templates/settings-include.html:36
+msgid "Fill the correct form"
+msgstr "Riempi lo spazio con la forma adatta"
+
+#: app/templates/settings-include.html:40
+msgid "Multiple choice"
+msgstr "Possibilità di risposta tra alcune varianti"
+
+#: app/templates/settings-include.html:43
+msgid "Type the word you hear"
+msgstr "Digita la parola che senti"
+
+#: app/templates/settings-include.html:47
+msgid "Second chance when practicing stories"
+msgstr "Secondo tentativo"
+
+#: app/templates/settings-include.html:56
+msgid "Flashcards: How many cards per practice session"
+msgstr "Numero di flashcard per ogni sessione"
+
+#: app/templates/splash.html:6
+msgid "Welcome!"
+msgstr "Benvenuto!"
+
+#: app/templates/splash.html:7
+msgid "Master a language by learning from stories of your own choosing"
+msgstr "Revita aiuta a studiare le lingue grazie a testi di vostra scelta"
+
+#: app/templates/splash.html:13
+msgid "Create an account"
+msgstr "Crea un account"
+
+#: app/templates/splash.html:14
+msgid "It is free now and forever."
+msgstr "Revita sarà sempre gratuita"
+
+#: app/templates/splash.html:20
+msgid "Try Revita with our sample stories"
+msgstr "Prova Revita con le storie selezionate da noi"
+
+#: app/templates/splash.html:25
+msgid "Register to upload your own stories"
+msgstr "Registrati e carica i tuoi testi"
+
+#: app/templates/splash.html:28
+msgid "Revita is free and will always remain so."
+msgstr "Revita è una risorsa gratuita. Per sempre"
+
+#: app/templates/splash.html:36
+msgid "Which language would you like to practice?"
+msgstr "Quale lingua studi?"
+
+#: app/templates/splash.html:37
+msgid "You can change this anytime."
+msgstr "La scelta della lingua si può cambiare sempre"
+
+#: app/templates/splash.html:43
+msgid "Create Account"
+msgstr "Crea un account"
+
+#: app/templates/splash.html:46
+msgid "Try Revita"
+msgstr "Entra nel sistema Revita"
+
+#: app/templates/splash.html:109
+msgid "Back"
+msgstr "Indietro"
+
+#: app/templates/stranger_shared_story.html:5
+#, python-format
+msgid "The user %(stranger)s has shared with you the story: &quot;%(story)s&quot;"
+msgstr "L'utente %(stranger)s ha condiviso con te la storia: &quot;%(story)s&quot;"
+
+#: app/templates/stranger_shared_story.html:8
+#, python-format
+msgid ""
+"Currently, anyone can share stories with you automatically.\n"
+"  You can modify this in your profile preferences. You can accept stories"
+" only from friends, add %(stranger)s as a friend, or block %(stranger)s "
+"from sending you anything, using the links below:"
+msgstr ""
+"Al momento ogni utente può condividere testi con te. Puoi cambiare questo"
+" nel tuo profilo in preferenze. Puoi accettare storie solo da amici, "
+"aggiungere %(stranger)s come amico o impedire a  %(stranger)s di mandarti"
+" qualsiasi cosa usando il link sotto:"
+
+#: app/templates/stranger_shared_story.html:12
+msgid "PROFILE"
+msgstr "Profilo"
+
+#: app/templates/stranger_shared_story.html:16
+msgid "ADD FRIEND"
+msgstr "Aggiungere amico"
+
+#: app/templates/translation-box.html:3
+msgid "Unfamiliar word?"
+msgstr "Parola sconosciuta?"
+
+#: app/templates/translation-box.html:5
+msgid "Click on words near the exercises to explore their meaning..."
+msgstr ""
+"Clicca sulle parole sconosciute per ottenerne la traduzione. Le parole si"
+" salvano tra le flashcard!"
+
+#: app/templates/translation-box.html:10
+msgid "Translate to"
+msgstr "Tradurre in"
+
+#: revita_library/dictionary_remote.py:211
+#: revita_library/dictionary_remote.py:686
+msgid "Translation temporarily unavailable, please try again later..."
+msgstr "La traduzione è temporaneamente non accessibile, prova più tardi"
+
+#: revita_library/dictionary_remote.py:684
+msgid "Not accessible"
+msgstr "Non accessibile"
+
+#: revita_library/flashcards_lib.py:558
+msgid ""
+"No flashcards yet for this story. When you practice a story and click on "
+"unfamiliar words, they will be added to your flashcards!"
+msgstr ""
+"Non ci sono flashcard per questa storia. In \"Pratica\" clicca sulle "
+"parole sconosciute, verrano salvate tra le flashcard!"
+
+#: revita_library/flashcards_lib.py:560
+msgid ""
+"No flashcards yet. When you practice a story and click on unfamiliar "
+"words, they will be added to your flashcards!"
+msgstr ""
+"Non ci sono flashcard ancora. In \"Pratica\" clicca sulle parole "
+"sconosciute, verranno salvate tra le flashcard!"
+
+#: revita_library/flashcards_lib.py:573
+msgid ""
+"No flashcards found for this exercise. When you practice a story and "
+"click on unfamiliar words, they will be added to your flashcards!"
+msgstr ""
+"Non ci sono flashcard per questo esercizio. In \"Pratica\" clicca sulle "
+"parole sconosciute, verranno salvate tra le flashcard!"
+
+#~ msgid "Tasks"
+#~ msgstr "Tipi di esercizi"
+
+#~ msgid "Please "
+#~ msgstr "Per favore,"
+
+#~ msgid "More "
+#~ msgstr "Ulteriori informazioni"
+
+#~ msgid "Don't have an account yet?  Please "
+#~ msgstr "Non hai ancora un account?"
+
+#~ msgid "register here&rightarrow; "
+#~ msgstr "Registrati qui&rightarrow;"
+
+#~ msgid "Exercise Setting"
+#~ msgstr ""
+
+#~ msgid "Stress inside word"
+#~ msgstr ""
+
+#~ msgid "Listening exercises"
+#~ msgstr ""
+
+#~ msgid "Participle ⇐ participle base (easier)"
+#~ msgstr ""
+
+#~ msgid "Participle ⇐ verb base (harder)"
+#~ msgstr ""
+
+#~ msgid "Group successfully created!"
+#~ msgstr "Nuovo gruppo creato con successo!"
+
+#~ msgid "Group created, waiting for user approvals!"
+#~ msgstr "Gruppo creato con successo, in attesa d'approvazione dagli utenti"
+
+#~ msgid "Plurals"
+#~ msgstr "Plurali dei nomi"
+
+#~ msgid "Paradigm-1"
+#~ msgstr ""
+
+#~ msgid "Paradigm-2"
+#~ msgstr ""
+
+#~ msgid "Paradigm-3"
+#~ msgstr ""
+
+#~ msgid "Paradigm-4"
+#~ msgstr ""
+
+#~ msgid "Paradigm-5"
+#~ msgstr ""
+

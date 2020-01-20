@@ -1,0 +1,3548 @@
+# Finnish translations for Revita.
+# Copyright (C) 2015 University of Helsinki
+# This file is distributed under the same license as the Revita project.
+# Javad Nouri, Roman Yangarber <Roman.Yangarber@helsinki.fi>, 2015
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Revita 1.0\n"
+"Report-Msgid-Bugs-To: revita@cs.helsinki.fi\n"
+"POT-Creation-Date: 2019-09-28 00:08+0300\n"
+"PO-Revision-Date: 2019-09-28 01:35+0300\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language: fi\n"
+"Language-Team: fi <LL@li.org>\n"
+"Plural-Forms: nplurals=2; plural=(n != 1)\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.4.0\n"
+
+#: app/dictionary_translate.py:88
+msgid "No translation available"
+msgstr "Käännöstä ei löydy"
+
+#: app/dictionary_translate.py:217
+msgid ""
+"Cannot translate into same language.<br/>Please choose another "
+"translation language."
+msgstr ""
+"Ei voi kääntää samalle kielelle </br>Ystävällisesti valitkaa toinen "
+"käännöskieli"
+
+#: app/flashcards.py:157
+msgid "You have to login/register to use flashcards."
+msgstr ""
+"Sinun tulee olla kirjautunut / rekisteröitynyt mikäli haluat käyttää "
+"kysymyskortteja."
+
+#: app/flashcards.py:158
+msgid "Login"
+msgstr "Kirjaudu"
+
+#: app/flashcards.py:159 app/templates/base.html:128
+#: app/templates/register.html:22 app/templates/register.html:98
+#: app/views_login_profile.py:375
+msgid "Register"
+msgstr "Rekisteröidy"
+
+#: app/flashcards.py:471
+msgid "Submit done"
+msgstr "Kortti tallennettu"
+
+#: app/flashcards.py:487
+msgid "This word already had a flashcard: merged."
+msgstr "Tällä sanalla on jo kortti, yhdistetty."
+
+#: app/flashcards.py:501
+msgid "Submit failed"
+msgstr "Tallennus epäonnistui."
+
+#: app/flashcards.py:531
+msgid "Update done"
+msgstr "Päivitys valmis"
+
+#: app/flashcards.py:553
+msgid "Update failed"
+msgstr "Päivitys epäonnistui"
+
+#: app/forms.py:56 app/forms.py:61 app/forms.py:69 app/forms.py:79
+#: app/forms.py:83 app/forms.py:90 app/forms.py:114 app/forms.py:118
+#: app/forms.py:129 app/forms.py:169 app/forms.py:176 app/forms.py:186
+#: app/forms.py:194 app/forms.py:203 app/forms.py:211
+msgid "This field cannot be empty!"
+msgstr "Tämä kenttä ei voi olla tyhjä!"
+
+#: app/forms.py:57 app/forms.py:75 app/forms.py:96 app/forms.py:106
+msgid "Please enter a valid email address!"
+msgstr "Ole hyvä ja syötä toimiva sähköpostiosoite!"
+
+#: app/forms.py:84 app/forms.py:119 app/forms.py:134
+msgid "Passwords do not match!"
+msgstr "Salasanat eivät täsmää!"
+
+#: app/forms.py:124 app/templates/macros.html:532 app/templates/macros.html:569
+#: app/templates/macros.html:586 app/templates/macros.html:615
+#: app/templates/register.html:58
+msgid "Username"
+msgstr "Käyttäjänimi"
+
+#: app/forms.py:126
+msgid "Current password"
+msgstr "Nykyinen salasana"
+
+#: app/forms.py:128
+msgid "New password"
+msgstr "Uusi salasana"
+
+#: app/forms.py:132
+msgid "Repeat password"
+msgstr "Toista uusi salasana"
+
+#: app/forms.py:137
+msgid "Accept stories (from)"
+msgstr "Hyväksyn tekstit"
+
+#: app/forms.py:138
+msgid "(from) Everyone"
+msgstr "kaikilta"
+
+#: app/forms.py:139
+msgid "(from) Friends only"
+msgstr "vain kavereiltani"
+
+#: app/forms.py:146
+msgid "Please enter your name."
+msgstr "Syötä nimi"
+
+#: app/forms.py:150
+msgid "Please enter your email address."
+msgstr "Ole hyvä ja syötä toimiva sähköpostiosoite!"
+
+#: app/forms.py:151
+msgid "Please enter your email address!"
+msgstr "Ole hyvä ja syötä toimiva sähköpostiosoite!"
+
+#: app/forms.py:155
+msgid "Please enter a subject."
+msgstr "Syötä otsikko"
+
+#: app/forms.py:159
+msgid "Please enter a message."
+msgstr "Ole hyvä ja syötä viesti."
+
+#: app/forms.py:160
+msgid "Your message is too short."
+msgstr "Viestisi on liian lyhyt."
+
+#: app/forms.py:161
+msgid "Your message is too long."
+msgstr "Viestisi on liian pitkä."
+
+#: app/forms.py:168
+msgid "Please enter address of a web page"
+msgstr "Ole hyvä ja syötä toimiva nettiosoite!"
+
+#: app/forms.py:178
+msgid "This text is too short. Minimum: 50 characters."
+msgstr "Tämä teksti on liian lyhyt. Minimi: 50 merkkiä."
+
+#: app/forms.py:180
+msgid "This text is too long. Maximum: 50000 characters."
+msgstr "Tämä teksti on liian pitkä. Maximi: 50000 merkkiä."
+
+#: app/forms.py:187 app/forms.py:195 app/forms.py:212
+msgid "Please enter a valid email."
+msgstr "Ole hyvä ja syötä toimiva sähköpostiosoite!"
+
+#: app/models_feedback.py:126 app/models_feedback.py:128
+msgid "See"
+msgstr "Katso"
+
+#: app/models_feedback.py:133
+msgid "and"
+msgstr "ja"
+
+#: app/models_feedback.py:137
+msgid "Try again!"
+msgstr "Yritä uudelleen!"
+
+#: app/views.py:416 app/views.py:904
+msgid "Friend successfully removed"
+msgstr "Ystävä poistettu"
+
+#: app/views.py:420 app/views.py:455 app/views.py:908
+msgid "You have no friends."
+msgstr "Ei kavereita"
+
+#: app/views.py:446
+msgid "Teacher successfully removed from group"
+msgstr "Opettaja poistettu"
+
+#: app/views.py:450
+msgid "Student successfully removed from group"
+msgstr "Oppilas poistettu"
+
+#: app/views.py:645
+msgid "Block successfully removed"
+msgstr "Esto poistettu"
+
+#: app/views.py:647
+msgid "You have no blocked users."
+msgstr "Et ole estänyt ketään."
+
+#: app/views.py:664 app/views.py:721 app/views.py:749 app/views.py:795
+#: app/views.py:832 app/views.py:885 app/views.py:927
+#: app/views_login_profile.py:401 app/views_login_profile.py:980
+msgid "Token has expired!"
+msgstr "Pyyntö on vanhentunut!"
+
+#: app/views.py:681 app/views_login_profile.py:761
+msgid ""
+"You have blocked this user. Please unblock him/her if you wish to add "
+"them as a friend."
+msgstr "Olet estänyt tämän käyttäjän. Poista esto mikäli haluat lisätä hänet."
+
+#: app/views.py:688 app/views_login_profile.py:764
+msgid "This user is already your friend"
+msgstr "Tämä käyttäjä on jo ystäväsi"
+
+#: app/views.py:694 app/views_login_profile.py:768
+msgid "You cannot add yourself."
+msgstr "Et voi lisätä itseäsi."
+
+#: app/views.py:698 app/views_login_profile.py:771
+msgid "Successfully added friend"
+msgstr "Ystävä lisätty"
+
+#: app/views.py:703
+msgid "The account you tried to add has been deleted!"
+msgstr "Tämän käyttäjän tili oli poistettu!"
+
+#: app/views.py:761 app/views.py:845
+msgid "Could not find the story you are trying to accept"
+msgstr "Tarinaa ei löytynyt"
+
+#: app/views.py:770 app/views.py:854
+msgid "Could not add the flashcards you are trying to accept"
+msgstr "Kysymyskortteja ei löytynyt"
+
+#: app/views.py:899
+msgid "This user is not your friend"
+msgstr "Tämä käyttäjä ei ole ystäväsi"
+
+#: app/views.py:943 app/views_login_profile.py:785
+msgid "This user is already blocked."
+msgstr "Tämä käyttäjä on jo estetty"
+
+#: app/views.py:953 app/views_login_profile.py:794
+msgid "Successfully blocked person"
+msgstr "Käyttäjä estetty"
+
+#: app/views.py:976
+msgid "Could not find the story you are trying to delete"
+msgstr "Tarinaa ei löytynyt"
+
+#: app/views.py:985
+msgid "Could not delete the flashcards"
+msgstr "Korttien poistaminen epäonnistui"
+
+#: app/views.py:993 app/views.py:1030 app/views.py:1039
+msgid "An error occurred while deleting the story!"
+msgstr "Tekstin poistaminen epäonnistui."
+
+#: app/views.py:997 app/views.py:1025
+msgid "Story was successfully removed from personal collection!"
+msgstr "Tarina poistettu!"
+
+#: app/views.py:1037
+msgid "Story was removed successfully!"
+msgstr "Tekstin poistaminen onnistui!"
+
+#: app/views.py:1065
+msgid "Story was unshared successfully!"
+msgstr "Tarina poistettu"
+
+#: app/views.py:1067
+msgid "An error occurred while unsharing the story!"
+msgstr "Tapahtui virhe tarinaa poistaessa"
+
+#: app/views.py:1118 app/views.py:1306
+msgid "has blocked you."
+msgstr ""
+
+#: app/views.py:1127 app/views.py:1315
+msgid "Story already shared with"
+msgstr "Tarina on jo jaettu käyttäjälle"
+
+#: app/views.py:1137 app/views.py:1324
+msgid "is already the owner of the story."
+msgstr ""
+
+#: app/views.py:1146 app/views.py:1333
+msgid "Story shared and awaiting approval"
+msgstr "Tarina jaettu ja odottaa hyväksymistä"
+
+#: app/views.py:1154 app/views.py:1162 app/views.py:1199 app/views.py:1350
+#: app/views.py:1358 app/views.py:1371
+msgid "Revita - Story shared with you"
+msgstr "Revita - Tarina jaettu kanssasi"
+
+#: app/views.py:1158 app/views.py:1354
+msgid "Revita - Story awaiting approval"
+msgstr "Revita - Tarina odottaa hyväksymistä"
+
+#: app/views.py:1170
+msgid "Could not find the story you are trying to share"
+msgstr "Tarinaa ei löytynyt"
+
+#: app/views.py:1185
+msgid "Could not add flashcards to the other user"
+msgstr "Korttien jakaminen epäonnistui"
+
+#: app/views.py:1194 app/views.py:1366
+msgid "Story shared with"
+msgstr "Tarina jaettu käyttäjälle"
+
+#: app/views.py:1251 app/views.py:1420
+msgid "You are trying to share a story with yourself..."
+msgstr "Yritit jakaa tarinan itsesi kanssa..."
+
+#: app/views.py:1255 app/views.py:1424
+msgid "No registered user with e-mail"
+msgstr "Ei käyttäjää sähköpostilla"
+
+#: app/views.py:1675
+msgid "Translations in"
+msgstr ""
+
+#: app/templates/macros.html:554 app/views.py:1881
+msgid "Your group"
+msgstr "Sinun ryhmäsi"
+
+#: app/templates/about.html:29 app/views.py:1943 app/views.py:1954
+msgid "About Revita"
+msgstr "Tietoa Revitasta"
+
+#: app/templates/base.html:161 app/templates/help.html:10 app/views.py:1983
+#: app/views.py:1994
+msgid "Help"
+msgstr "Ohje"
+
+#: app/templates/base.html:173 app/views.py:2196 app/views.py:2216
+#: app/views.py:2224 app/views.py:2234
+msgid "Contact"
+msgstr "Ota yhteyttä"
+
+#: app/views_login_profile.py:112 app/views_login_profile.py:145
+msgid "Invalid username and/or password."
+msgstr "Väärä käyttäjätunnus tai salasana"
+
+#: app/views_login_profile.py:115
+msgid ""
+"Your registration is not confirmed yet. Please follow the instructions "
+"sent to you by email!"
+msgstr ""
+"Rekisteröintisi ei vielä ole vahvistettu.  Seuraa sähköpostitse "
+"lähetettyjä ohjeita!"
+
+#: app/templates/base.html:122 app/templates/login.html:59
+#: app/views_login_profile.py:148
+msgid "Sign In"
+msgstr "Kirjaudu"
+
+#: app/views_login_profile.py:264
+msgid "Logged out!"
+msgstr "Olet kirjautunut ulos"
+
+#: app/views_login_profile.py:315
+msgid "There is already a user account associated with this email address."
+msgstr "Tähän sähköpostiin liittynyt käyttäjärunnus on jo olemassa."
+
+#: app/views_login_profile.py:317
+msgid "Email address already exists!"
+msgstr "Sähköposti on jo olemassa!"
+
+#: app/views_login_profile.py:337
+msgid "Revita - Confirm your registration"
+msgstr "Revita - Vahvista rekisteröintisi"
+
+#: app/views_login_profile.py:356
+msgid "Account created. You can now sign in with your Facebook account to Revita."
+msgstr "Tili luotu. Voit nyt kirjautua sisään Facebook-tililläsi."
+
+#: app/views_login_profile.py:359
+msgid ""
+"A message containing a link to confirm your registration has been sent to"
+" your email address. Please follow the instructions there to complete "
+"your registration!"
+msgstr ""
+"Lähetimme sinulle rekisteröinnin vahvisamisen ohjeiden sisältävän viestin"
+" sähköpostitse. Ole hyvä ja seuraa vahvistamisen ohjeet."
+
+#: app/views_login_profile.py:368
+msgid "There was a problem with the registration. Please try agin!"
+msgstr "Rekisteröinti epäonnistui.  Yritä uudelleen."
+
+#: app/views_login_profile.py:371 app/views_login_profile.py:533
+#: app/views_login_profile.py:828 app/views_login_profile.py:831
+msgid ""
+"Invalid password. Please choose a password that is at least 6 characters "
+"long."
+msgstr "Virheellinen salasana.  Valitse vähintään 6 kirjainta sisältävä salasana."
+
+#: app/views_login_profile.py:414
+msgid "Your registration is completed. You can now log in!"
+msgstr "Rekisteröintisi onnistui.  Voit nyt kirjautua sivulle!"
+
+#: app/views_login_profile.py:444
+msgid "Revita - Reset your password"
+msgstr "Revita - Vaihda salasana"
+
+#: app/views_login_profile.py:467
+msgid "There was a problem with the request. Please try agin!"
+msgstr "Pyyntösi epäonnistui.  Yritä uudelleen."
+
+#: app/views_login_profile.py:474
+msgid ""
+"An email has been sent to your address. Please follow the instructions "
+"there to reset your password."
+msgstr ""
+"Viesti on lähetetty sinun sähköpostiosoitteeseesi. Seuraa siinä olevia "
+"ohjeita vaihtaaksesi salasanasi."
+
+#: app/templates/new_password_form.html:22
+#: app/templates/password_reset_form.html:22 app/views_login_profile.py:479
+msgid "Reset password"
+msgstr "Vaihda salasana"
+
+#: app/views_login_profile.py:502
+msgid "Token has expired. You can request to reset your password again!"
+msgstr "Pyyntösi on vanhentunut.  Voit pyytää salasanasi vaihtamista uudelleen!"
+
+#: app/views_login_profile.py:524
+msgid "Your password is reset. You can now log in!"
+msgstr "Salasanasi on vaihdettu.  Voit kirjautua sivulle!"
+
+#: app/views_login_profile.py:530
+msgid "There was a problem resetting your password!"
+msgstr "Salasanan vaihtaminen epäonnistui!"
+
+#: app/views_login_profile.py:538
+msgid "Create new password"
+msgstr "Luo uusi salasana"
+
+#: app/views_login_profile.py:645
+msgid "Group by this name already exists"
+msgstr "Samanniminen ryhmä on jo olemassa"
+
+#: app/views_login_profile.py:681
+msgid "Added to the group"
+msgstr "Lisätty ryhmään"
+
+#: app/views_login_profile.py:683
+msgid "Invitation sent"
+msgstr "Kutsu lähetetty"
+
+#: app/views_login_profile.py:685
+msgid "Not found in the system"
+msgstr "Ei löytynyt"
+
+#: app/views_login_profile.py:691
+msgid "None of the student emails have a registered user"
+msgstr "Millään annetuilla oppilaiden sähköposteilla on käyttäjää"
+
+#: app/views_login_profile.py:701
+msgid "Group created!"
+msgstr "Ryhmä on luotu!"
+
+#: app/views_login_profile.py:702
+msgid "Detail information"
+msgstr "Tietoja"
+
+#: app/views_login_profile.py:719
+msgid "User already is a student in this group!"
+msgstr "Käyttäjä on jo oppilas tässä ryhmässä!"
+
+#: app/views_login_profile.py:728
+msgid "Successfully added student, waiting for confirmation"
+msgstr "Oppilas lisätty, odotetaan suostumusta."
+
+#: app/views_login_profile.py:731
+msgid "Successfully added student!"
+msgstr "Oppilas lisätty!"
+
+#: app/views_login_profile.py:738
+msgid "User already in teacher in this group!"
+msgstr "Käyttäjä on jo opettaja tässä ryhmässä!"
+
+#: app/views_login_profile.py:742
+msgid "Successfully added teacher"
+msgstr "Opettaja lisätty"
+
+#: app/views_login_profile.py:789
+msgid "You cannot block yourself."
+msgstr "Et voi estää itseäsi."
+
+#: app/views_login_profile.py:839
+msgid "Incorrect password."
+msgstr "Väärä salasana"
+
+#: app/views_login_profile.py:840
+msgid "Incorrect password"
+msgstr "Väärä salasana"
+
+#: app/views_login_profile.py:849
+msgid "Data saved!"
+msgstr "Tiedot tallennettu!"
+
+#: app/templates/base.html:99 app/templates/base.html:103
+#: app/views_login_profile.py:855
+msgid "Profile"
+msgstr "Profiili"
+
+#: app/views_login_profile.py:910
+msgid "Revita - You have been added to a group"
+msgstr "Revita - Sinut on lisätty ryhmään"
+
+#: app/views_manual_tests.py:651 app/views_manual_tests.py:653
+#: app/views_manual_tests.py:1052 app/views_manual_tests.py:1058
+msgid "name"
+msgstr "nimi"
+
+#: app/views_manual_tests.py:888
+msgid "answer"
+msgstr "vastaus"
+
+#: app/views_manual_tests.py:899
+msgid "phrase"
+msgstr "lauseke"
+
+#: app/templates/dummy.html:238 app/views_manual_tests.py:913
+msgid "Choose the best fitting word or expression."
+msgstr "Valitse yhteyteen sopiva sana tai ilmaisu."
+
+#: app/views_manual_tests.py:927
+msgid "Fill in the blank."
+msgstr "Täytä tyhjä kohta."
+
+#: app/views_manual_tests.py:1028
+msgid "Answer 10 or more questions to receive feedback"
+msgstr "Vastaa 10 tai useampaan kysymykseen saadaksesi palautetta"
+
+#: app/views_manual_tests.py:1138
+msgid "Category"
+msgstr "Kategoria"
+
+#: app/views_manual_tests.py:1139
+msgid "Total"
+msgstr "Yhteensä"
+
+#: app/views_manual_tests.py:1140
+msgid "Correct"
+msgstr "Oikein"
+
+#: app/views_manual_tests.py:1141
+msgid "Answered"
+msgstr "Vastattu"
+
+#: app/views_manual_tests.py:1144
+msgid "Correct answers|||Total answers|||Required to answer|||Not practiced"
+msgstr "Oikeat vastaukset|||Kaikki vastaukset|||Pakolliset|||Ei harjoiteltu"
+
+#: app/views_story_exer.py:624
+#, python-format
+msgid "The uploaded file is too large. Maximum file size is %(num)d KiloBytes."
+msgstr "Tiedosto liian suuri.  Tiedoston enimmäiskoko on %(num)d Kt."
+
+#: app/views_story_exer.py:659
+msgid "Story was uploaded, but cut off at 50000 characters."
+msgstr ""
+
+#: app/views_story_exer.py:661
+msgid "Story uploaded successfully!"
+msgstr "Tekstin lisäys onnistui!"
+
+#: app/views_story_exer.py:674
+msgid ""
+"A story with the same title already exists! Please try again with a "
+"different title!"
+msgstr "Samanniminen teksti on jo olemassa.  Valitse muu otsikko."
+
+#: app/views_story_exer.py:676
+msgid "Language of the text does not correspond to the current language:"
+msgstr "Tekstin kieli ei vastaa valittua kieltä:"
+
+#: app/views_story_exer.py:678
+msgid ""
+"Sorry, Revita is unable to extract the story from this Web page. Please "
+"copy the text from the web page. If you would like to practice with this "
+"story, please save it into a .txt file on your computer and upload the "
+"text file."
+msgstr ""
+"Pahoittelemme, Revita ei pystynyt poimia tarinaa tältä Web-sivulta. Olkaa"
+" hyvä ja kopioikaa halutun tekstin sivulta. Jos haluatte opetella "
+"kyseisellä tarinalla olkaa hyvä ja kopioikaa se tekstitiedostoon ja "
+"ladatkaa se sivullemme tai kopioikaa suoraan tekstikenttäämme."
+
+#: app/views_story_exer.py:680
+msgid "Invalid file. Please make sure the file is formatted as text."
+msgstr ""
+"Tiedosto väärässä muodossa.  Tiedoston laajentamisen pitää olla "
+"<b>.txt</b>"
+
+#: app/views_story_exer.py:685
+msgid "Empty file!"
+msgstr "Tyhjä tiedosto!"
+
+#: app/views_story_exer.py:721
+msgid ""
+"This Web page cannot be extracted!<br/>  Please paste the text into the "
+"textbox for uploads;<br/>  or paste the text into a file and upload the "
+"file."
+msgstr ""
+"Valittua sivua ei voi ladata.  Liita koko teksti suoraan tekstikenttään, "
+"tai tiedostoon, jonka voit lähettää."
+
+#: app/views_story_exer.py:723
+msgid ""
+"Fetching the story from the Web page failed!<br/>  Please paste the text "
+"into the upload textbox;<br/>  or paste the text into a file and upload "
+"the file."
+msgstr ""
+"Valittua sivua ei voi ladata.  Liita koko teksti suoraan tekstikenttään, "
+"tai tiedostoon, jonka voit lähettää."
+
+#: app/views_story_exer.py:851
+msgid "Stories Flashcards"
+msgstr "Tarinan kysymyskortit"
+
+#: app/templates/404.html:9
+msgid "No such page!"
+msgstr "Hakemaasi sivua ei löytynyt!"
+
+#: app/templates/404.html:12
+msgid "Go back:"
+msgstr "Takaisin:"
+
+#: app/templates/404.html:13
+msgid "Main page"
+msgstr "Pääsivu"
+
+#: app/templates/about.html:10
+msgid "News"
+msgstr "Uutiset"
+
+#: app/templates/accept_shared_story.html:2 app/templates/confirm_reg.html:2
+#: app/templates/friend_shared_story.html:2
+#: app/templates/reset_password_email.html:2
+#: app/templates/stranger_shared_story.html:2
+#, python-format
+msgid "Dear %(name)s,"
+msgstr "Hyvä %(name)s,"
+
+#: app/templates/accept_shared_story.html:5
+#, python-format
+msgid ""
+"The user %(stranger)s wants to share with you the story: "
+"&quot;%(story)s&quot;"
+msgstr "Käyttäjä %(stranger)s haluaa jakaa kanssasi tarinan:&quot;%(story)s&quot;"
+
+#: app/templates/accept_shared_story.html:8
+#, python-format
+msgid ""
+"Please click below to accept the story.  You can add %(stranger)s as a "
+"friend to accept stories s/he will share with you in the future.  You can"
+" also block %(stranger)s from sending you anything, using the links "
+"below:"
+msgstr ""
+"Ota vastaan tarina allolevaa nappia käyttäen. Voit lisätä %(stranger)s "
+"ystäväksi jotta hän voi jakaa kanssasi tarinoita hyväksymättä. Voit myös "
+"estää hänet lähettämästä mitään, käyttäen allaolevia linkkejä: "
+
+#: app/templates/accept_shared_story.html:11 app/templates/addgroupemail.html:9
+msgid "ACCEPT"
+msgstr "HYVÄKSY"
+
+#: app/templates/accept_shared_story.html:13
+msgid "ACCEPT and ADD AS FRIEND"
+msgstr "HYVÄKSY JA LISÄÄ YSTÄVÄ"
+
+#: app/templates/accept_shared_story.html:15
+#: app/templates/friend_shared_story.html:15
+#: app/templates/stranger_shared_story.html:14
+msgid "BLOCK"
+msgstr "ESTÄ"
+
+#: app/templates/accept_shared_story.html:20
+#: app/templates/friend_shared_story.html:19
+#: app/templates/stranger_shared_story.html:20
+#, python-format
+msgid "Please note that the links expire in %(num)d day."
+msgid_plural "Please note that the link expires in %(num)d days."
+msgstr[0] "Linkki on voimassa %(num)d päivä."
+msgstr[1] "Linkki on voimassa %(num)d päivää."
+
+#: app/templates/accept_shared_story.html:23
+#: app/templates/friend_shared_story.html:22
+#: app/templates/stranger_shared_story.html:23
+msgid "Visit Revita"
+msgstr "Revita"
+
+#: app/templates/accept_shared_story.html:26
+#: app/templates/addgroupemail.html:13 app/templates/confirm_reg.html:15
+#: app/templates/friend_shared_story.html:25
+#: app/templates/reset_password_email.html:15
+#: app/templates/stranger_shared_story.html:26
+msgid "Best regards,"
+msgstr "Ystävällisin terveisin,"
+
+#: app/templates/accept_shared_story.html:27
+#: app/templates/addgroupemail.html:14 app/templates/confirm_reg.html:16
+#: app/templates/friend_shared_story.html:26
+#: app/templates/reset_password_email.html:16
+#: app/templates/stranger_shared_story.html:27
+msgid "Revita team"
+msgstr "Revitan tiimi"
+
+#: app/templates/addgroupemail.html:2
+#, python-format
+msgid "Dear <b><i>%(name)s</i></b>,"
+msgstr "Hyvä <b><i>%(name)s</i></b>,"
+
+#: app/templates/addgroupemail.html:5
+#, fuzzy, python-format
+msgid ""
+"User <b><i>%(stranger)s</i></b> has invited you to group "
+"<b><i>%(group_name)s</i></b>.<br/>You can join the group by clicking the "
+"link below.<br/>If you wish to leave the group later, please visit your "
+"Profile page."
+msgstr ""
+"Käyttäjä <b><i>%(stranger)s</i></b> on kutsunut sinut ryhmään "
+"<b><i>%(group_name)s</i></b>.<br/>Voit liittyä ryhmään käyttämällä alla "
+"olevaa linkkiä.<br/>Jos haluat poistua ryhmästä myöhemmin, voit sen tehdä"
+" profiilisivultasi."
+
+#: app/templates/base.html:11
+msgid "Welcome to Revita"
+msgstr "Tervetuloa Revitaan"
+
+#: app/templates/base.html:80
+msgid "Revita"
+msgstr "Revita"
+
+#: app/templates/base.html:113
+msgid "Sign out"
+msgstr "Kirjaudu ulos"
+
+#: app/templates/base.html:133 app/templates/settings-include.html:6
+msgid "Interface language"
+msgstr "Käyttöliittymän kieli"
+
+#: app/templates/base.html:155
+msgid "Tour"
+msgstr "Esittely"
+
+#: app/templates/base.html:167
+msgid "About"
+msgstr "Tietoa projektista"
+
+#: app/templates/base.html:193
+msgid "Score:"
+msgstr "Pisteet:"
+
+#: app/templates/base.html:220
+msgid "See new features"
+msgstr "Uudet ominaisuudet"
+
+#: app/templates/base.html:232 app/templates/flashcard_base.html:8
+msgid "Learning-language"
+msgstr "Oppimis-kieli"
+
+#: app/templates/base.html:289 app/templates/base.html:292
+#: app/templates/profile.html:47 app/templates/settings-include.html:2
+msgid "Settings"
+msgstr "Asetukset"
+
+#: app/templates/base.html:307
+msgid "Learning from stories"
+msgstr "Kertomuksista oppiminen"
+
+#: app/templates/base.html:361
+msgid "babel text translations"
+msgstr ""
+
+#: app/templates/base.html:372
+msgid "Show _MENU_ stories"
+msgstr "Näytä: _MENU_ tekstiä"
+
+#: app/templates/base.html:373
+msgid "No matching stories found"
+msgstr "Tekstejä ei vielä ladattu &mdash; lisää oma teksti"
+
+#: app/templates/base.html:374
+msgid "Showing _START_ to _END_ of _TOTAL_ stories"
+msgstr "Tekstit _START_&ndash;_END_, yhteensä: _TOTAL_"
+
+#: app/templates/base.html:375
+msgid "No stories available"
+msgstr "Ei kertomuksia saatavissa "
+
+#: app/templates/base.html:376
+msgid "filtered from _MAX_ total stories"
+msgstr "suodatettu _MAX_ tekstistä"
+
+#: app/templates/base.html:377
+msgid "Search:"
+msgstr "Hae:"
+
+#: app/templates/base.html:491 app/templates/base.html:511
+msgid "Sort by"
+msgstr "Järjestä:"
+
+#: app/templates/base.html:495 app/templates/base.html:497
+#: app/templates/base.html:499 app/templates/base.html:515
+#: app/templates/base.html:517 app/templates/base.html:519
+#: app/templates/base.html:521
+msgid "Ascending"
+msgstr "🔺"
+
+#: app/templates/base.html:495 app/templates/base.html:496
+#: app/templates/base.html:515 app/templates/base.html:516
+#: app/templates/macros.html:723 app/templates/macros.html:728
+#: app/templates/modal-upload-stories-flashcards.html:223
+msgid "Title"
+msgstr "Otsikko"
+
+#: app/templates/base.html:496 app/templates/base.html:498
+#: app/templates/base.html:500 app/templates/base.html:516
+#: app/templates/base.html:518 app/templates/base.html:520
+#: app/templates/base.html:522
+msgid "Descending"
+msgstr "🔻"
+
+#: app/templates/base.html:497 app/templates/base.html:498
+#: app/templates/base.html:519 app/templates/base.html:520
+#: app/templates/index.html:158 app/templates/index.html:178
+#: app/templates/macros.html:725
+msgid "Progress"
+msgstr "Edistyminen"
+
+#: app/templates/base.html:499 app/templates/base.html:500
+#: app/templates/base.html:521 app/templates/base.html:522
+msgid "Difficulty"
+msgstr "Taso"
+
+#: app/templates/base.html:517 app/templates/base.html:518
+#: app/templates/macros.html:358 app/templates/macros.html:724
+msgid "Date added"
+msgstr "Ladattu"
+
+#: app/templates/base.html:583
+msgid "University of Helsinki"
+msgstr "Helsingin Yliopisto"
+
+#: app/templates/base.html:586
+msgid "All copyrighted materials used by explicit permission from holder."
+msgstr "Tekijänoikeuden alaista materiaalia käytetään oikeudenhaltijoiden luvalla."
+
+#: app/templates/check_answers.html:12
+msgid "You used"
+msgstr "Sinä käytit"
+
+#: app/templates/check_answers.html:47
+msgid "Start over"
+msgstr "Aloita alusta"
+
+#: app/templates/check_answers.html:49
+msgid "Next story"
+msgstr "Seuraava kertomus"
+
+#: app/templates/confirm_reg.html:5
+msgid ""
+"Your account has been created. Please follow the link below to confirm "
+"your registration."
+msgstr ""
+"Tilisi on luotu.  Seuraa alla olevaa linkkiä vahvistaaksesi "
+"rekisteröintisi."
+
+#: app/templates/confirm_reg.html:12
+#, python-format
+msgid "Please note that the link expires in %(num)d day."
+msgid_plural "Please note that the link expires in %(num)d days."
+msgstr[0] "Linkki on voimassa %(num)d päivä."
+msgstr[1] "Linkki on voimassa %(num)d päivää."
+
+#: app/templates/contact.html:10
+msgid "Thank you for your message. We will get back to you shortly."
+msgstr "Kiitos viestistäsi.  Palaamme asiaan pian."
+
+#: app/templates/contact.html:35
+msgid "Give us feedback"
+msgstr "Anna palautetta"
+
+#: app/templates/contact.html:42
+msgid "Contact us"
+msgstr "Ota meihin yhteyttä"
+
+#: app/templates/contact.html:47
+msgid "Name"
+msgstr "Nimi"
+
+#: app/templates/contact.html:52 app/templates/macros.html:568
+#: app/templates/macros.html:585
+msgid "Email"
+msgstr "Lähetä sähköposti"
+
+#: app/templates/contact.html:57
+msgid "Subject"
+msgstr "Otsikko"
+
+#: app/templates/contact.html:62
+msgid "Your message"
+msgstr "Viestisi"
+
+#: app/templates/contact.html:71
+msgid "Send"
+msgstr "Lähetä"
+
+#: app/templates/cw.html:4
+msgid "Building your crossword"
+msgstr "Rakennetaan ristikkoasi"
+
+#: app/templates/cw.html:20 app/templates/flashcard_base.html:283
+msgid "Hint"
+msgstr "Vihje"
+
+#: app/templates/cw.html:26 app/templates/cw.html:42
+#: app/templates/flashcard_base.html:279 app/templates/flashcard_base.html:291
+#: app/templates/flashcard_base.html:302 app/templates/flashcard_base.html:314
+#: app/templates/macros.html:511 app/templates/modal-story-operations.html:268
+#: app/templates/modals-exer-customize.html:307
+#: app/templates/modals-exer-customize.html:495
+msgid "Close"
+msgstr "Sulje"
+
+#: app/templates/cw_content.html:48 app/templates/index.html:97
+msgid "You do not have any apples yet."
+msgstr "Ei omenoita"
+
+#: app/templates/cw_content.html:110
+msgid "Get hint for one apple"
+msgstr "Voit vaihtaa omena vihjeeseen"
+
+#: app/templates/cw_content.html:110
+msgid "Congratulations! You have solved this crossword!"
+msgstr "Onnittelut! Olet ratkaissut sanaristikon."
+
+#: app/templates/cw_content.html:110
+msgid "You have no apples"
+msgstr "Ei omenoita"
+
+#: app/templates/dummy.html:3
+msgid "Please log in to access this page."
+msgstr "Kirjaudu sivulle"
+
+#: app/templates/dummy.html:5
+msgid "Erzya"
+msgstr "Ersä"
+
+#: app/templates/dummy.html:6
+msgid "Komi-Zyrian"
+msgstr "Komisyrjääni"
+
+#: app/templates/dummy.html:7
+msgid "Komi-Permiak"
+msgstr "Komipermjakki"
+
+#: app/templates/dummy.html:8
+msgid "Mari"
+msgstr "Mari"
+
+#: app/templates/dummy.html:9
+msgid "Meadow-Mari"
+msgstr "Niittymari"
+
+#: app/templates/dummy.html:10
+msgid "Mansi"
+msgstr "Mansi"
+
+#: app/templates/dummy.html:11
+msgid "Udmurt"
+msgstr "Udmurt"
+
+#: app/templates/dummy.html:12
+msgid "North-Saami"
+msgstr "Pohjoissaame"
+
+#: app/templates/dummy.html:13
+msgid "Nanai"
+msgstr "Nanai"
+
+#: app/templates/dummy.html:15
+msgid "Finnish"
+msgstr "Suomi"
+
+#: app/templates/dummy.html:16
+msgid "German"
+msgstr "Saksa"
+
+#: app/templates/dummy.html:17
+msgid "Russian"
+msgstr "Venäjä"
+
+#: app/templates/dummy.html:18
+msgid "Swedish"
+msgstr "Ruotsi"
+
+#: app/templates/dummy.html:19
+msgid "Spanish"
+msgstr "Espanja"
+
+#: app/templates/dummy.html:20
+msgid "Catalan"
+msgstr "Katalaani"
+
+#: app/templates/dummy.html:21
+msgid "French"
+msgstr "Ranska"
+
+#: app/templates/dummy.html:23
+msgid "Sakha"
+msgstr "Jakuutin kieli"
+
+#: app/templates/dummy.html:24
+msgid "Kazakh"
+msgstr "Kazakh"
+
+#: app/templates/dummy.html:26
+msgid "Arabic"
+msgstr "Arabia"
+
+#: app/templates/dummy.html:27
+msgid "Chinese"
+msgstr "Kiina"
+
+#: app/templates/dummy.html:28
+msgid "Czech"
+msgstr "Tsekki"
+
+#: app/templates/dummy.html:29
+msgid "English"
+msgstr "Englanti"
+
+#: app/templates/dummy.html:30
+msgid "Hindi"
+msgstr "Hindi"
+
+#: app/templates/dummy.html:31
+msgid "Italian"
+msgstr "Italia"
+
+#: app/templates/dummy.html:32
+msgid "Japanese"
+msgstr "Japani"
+
+#: app/templates/dummy.html:33
+msgid "Norwegian"
+msgstr "Norja"
+
+#: app/templates/dummy.html:34
+msgid "Polish"
+msgstr "Puola"
+
+#: app/templates/dummy.html:35
+msgid "Portuguese"
+msgstr "Portugali"
+
+#: app/templates/dummy.html:36
+msgid "Swahili"
+msgstr "Suahili"
+
+#: app/templates/dummy.html:37
+msgid "Turkish"
+msgstr "Turkki"
+
+#: app/templates/dummy.html:39
+msgid "Translations in English"
+msgstr "Käännökset englanniksi"
+
+#: app/templates/dummy.html:40
+msgid "Translations in Russian"
+msgstr "Käännökset venäjäksi"
+
+#: app/templates/dummy.html:41
+msgid "Translations in Finnish"
+msgstr "Käännökset suomeksi"
+
+#: app/templates/dummy.html:43
+msgid "Paradigm 1"
+msgstr "Deklinaatio I"
+
+#: app/templates/dummy.html:44
+msgid "Paradigm 2"
+msgstr "Deklinaatio II"
+
+#: app/templates/dummy.html:45
+msgid "Paradigm 3"
+msgstr "Deklinaatio III"
+
+#: app/templates/dummy.html:46
+msgid "Paradigm 4"
+msgstr "Pluralia Tantum"
+
+#: app/templates/dummy.html:47
+msgid "Paradigm 5"
+msgstr "Muut"
+
+#: app/templates/dummy.html:102
+msgid "Lexicology. Lexical semantics"
+msgstr "Leksikologia. Merkitys."
+
+#: app/templates/dummy.html:103
+msgid "Collocations"
+msgstr "Kollokaatio."
+
+#: app/templates/dummy.html:104
+msgid "Lexicology. Coordination of words"
+msgstr "Leksikologia. 'Yhteyteen sopivuus'."
+
+#: app/templates/dummy.html:105
+msgid "Verb. Case government"
+msgstr "Verbit. Sijamuoto."
+
+#: app/templates/dummy.html:106
+msgid "Verb. Prepositional government"
+msgstr "Verbit. Prepositio."
+
+#: app/templates/dummy.html:107
+msgid "Adjectives"
+msgstr "Adjektiivit."
+
+#: app/templates/dummy.html:108
+msgid "Nouns"
+msgstr "Substantiivit. Rektio. (Существительное. Управление.)"
+
+#: app/templates/dummy.html:109
+msgid "Impersonal verbs (except verba meteorologica) and their government"
+msgstr ""
+"Persoonattomat verbit (paitsi luonnonilmiötä osoittavat verbit) ja niiden"
+" vaatima rektio."
+
+#: app/templates/dummy.html:110
+msgid "Predicative adverbs and their government. Existence, state, time"
+msgstr ""
+"Predikatiiviset adverbit ja niiden vaatima rektio. Olosuhteet, olotila, "
+"aika."
+
+#: app/templates/dummy.html:111
+msgid ""
+"Predicative adverbs and their government. Necessity, possibility, "
+"impossibility"
+msgstr ""
+"Predikatiiviset adverbit ja niiden vaatima rektio. Välttämätön, "
+"mahdollinen, mahdoton."
+
+#: app/templates/dummy.html:112
+msgid ""
+"Negative constructions with predicative 'be' (and synonyms), genitive of "
+"negation"
+msgstr ""
+"Predikaattina byt'-verbin (tai sen 'synonyymien') kielteinen rakenne + "
+"genetiivi."
+
+#: app/templates/dummy.html:113
+msgid "Sentences with dative subject"
+msgstr "Toiminnan suorittajan ilmaiseminen datiivilla."
+
+#: app/templates/dummy.html:114
+msgid "Expressions of time, place and manner. Preposition-free expressions"
+msgstr "Ajan, paikan ja tavan ilmaiseminen, myös prepositiottomat ilmaukset."
+
+#: app/templates/dummy.html:115
+msgid "Constructions with cardinal numerals"
+msgstr "Lukusanojen kanssa käytettävät rakenteet. Perusluvut."
+
+#: app/templates/dummy.html:116
+msgid "Constructions with collective numerals"
+msgstr "Lukusanojen kanssa käytettävät rakenteet. Kollektiiviluvut."
+
+#: app/templates/dummy.html:117
+msgid "Genitive plural of Pluralia tantum words"
+msgstr "Pluralia tantumien monikon genetiivi."
+
+#: app/templates/dummy.html:118
+msgid "I declension. Type 'музей-музеи, воробей-воробьи'"
+msgstr "I deklinaatio. Tyyppi музей (музеи), mutta воробей (воробьи)."
+
+#: app/templates/dummy.html:119
+msgid "I declension. Type 'санаторий'"
+msgstr "I deklinaatio. Tyyppi санаторий."
+
+#: app/templates/dummy.html:120
+msgid ""
+"I declension. Fleeting vowels and alternations я, е, ё / й ('заяц-зайца, "
+"заём-займа')"
+msgstr ""
+"I deklinaatio. Väistyvät vokaalit + vaihtelu я, е, ё / й (заяц-зайца, "
+"заём-займа)."
+
+#: app/templates/dummy.html:121
+msgid "I declension. Type 'карандаш'"
+msgstr "I deklinaatio. Tyyppi карандаш."
+
+#: app/templates/dummy.html:122
+msgid "I declension. Type 'адрес-адреса'"
+msgstr "I deklinaatio. Tyyppi адрес-адреса."
+
+#: app/templates/dummy.html:123
+msgid "I declension. Type 'солдат-много солдат, сапог-пара сапог'"
+msgstr "I deklinaatio. Tyyppi солдат-много солдат, сапог-пара сапог."
+
+#: app/templates/dummy.html:124
+msgid "I declension. Type '-анин/-янин, -ин'"
+msgstr ""
+"I deklinaatio. -анин/-янин, -ин -loppuiset kansallisuutta yms. tark. "
+"sanat."
+
+#: app/templates/dummy.html:125
+msgid "I declension. Type 'дерево-деревья'"
+msgstr "I deklinaatio. Tyyppi дерево-деревья."
+
+#: app/templates/dummy.html:126
+msgid "II declension. Type 'армия'"
+msgstr "II deklinaatio. Tyyppi армия."
+
+#: app/templates/dummy.html:127
+msgid "II declension. Type на -ня"
+msgstr "II deklinaatio. -ня -loppuiset."
+
+#: app/templates/dummy.html:128
+msgid "II declension. Type 'статья'"
+msgstr "II deklinaatio. Tyyppi статья."
+
+#: app/templates/dummy.html:129
+msgid "Fleeting vowel in genitive plural"
+msgstr "Väistyvä vokaali monikon genetiivissä."
+
+#: app/templates/dummy.html:130
+msgid "Nouns with prepositions в/на ending in -у/-ю in prepositional singular"
+msgstr ""
+"Poikeukselliset (sija)päätteet. Sanat, joiden yksikön prepositionaali "
+"в/на + -у(-ю)."
+
+#: app/templates/dummy.html:131
+msgid ""
+"Nouns ending in -у/-ю in prepositional singular and -а in nominative "
+"plural"
+msgstr ""
+"Poikeukselliset (sija)päätteet. Sanat, joiden yksikön prepositionaali "
+"в/на + -у(-ю) ja monikon nominatiivi -а."
+
+#: app/templates/dummy.html:132
+msgid "Possessive adjectives. Type 'лисий'"
+msgstr "Possessiiviadjektiivi 'лисий'."
+
+#: app/templates/dummy.html:133
+msgid "Ordinal numbers. Type 'третий'"
+msgstr "Järjestysluku третий."
+
+#: app/templates/dummy.html:134
+msgid "Possessive adjectives. Type 'мамин'"
+msgstr "Possessiiviadjektiivi tyyppiä 'мамин'."
+
+#: app/templates/dummy.html:135
+msgid "Cardinal numbers. 'Сто' vs. 'пятьсот, шестьсот, семьсот, девятьсот'"
+msgstr "Lukusanat. Сто vs. пятьсот, шестьсот, семьсот, девятьсот."
+
+#: app/templates/dummy.html:136
+msgid "Quantifiers. Collective quantifiers in oblique cases"
+msgstr "Lukusanat. Kollektiivilukujen taivutus obliikvisijoissa."
+
+#: app/templates/dummy.html:137
+msgid "Quantifiers. Collective quantifiers 'оба, обе'"
+msgstr "Lukusanat. Kollektiivilukusana оба, обе."
+
+#: app/templates/dummy.html:138
+msgid "I conjugation. Type 'плакать'"
+msgstr "I konjugaatio. Tyyppi плакать (плакаю)."
+
+#: app/templates/dummy.html:139
+msgid "I conjugation. Type 'рисовать'"
+msgstr "I konjugaatio. Tyyppi рисовать (рисоваю)."
+
+#: app/templates/dummy.html:140
+msgid "II conjugation. Type 'молчать'"
+msgstr "II konjugaatio. Tyyppi молчать (молчаю)."
+
+#: app/templates/dummy.html:141
+msgid "Preterite. Type 'исчезнуть'"
+msgstr "Preteriti. Tyyppi исчезнуть (исчезнул)."
+
+#: app/templates/dummy.html:142
+msgid "Regular verbs with vowel alternation"
+msgstr ""
+"Muita verbejä: Standarditaivutukset ja verbit, joissa on "
+"konsonanttivaihtelu."
+
+#: app/templates/dummy.html:143
+msgid "Resultative"
+msgstr "Perusmerkitykset. Tuloksellisuus - tulos voimassa."
+
+#: app/templates/dummy.html:144
+msgid "Iterative / potential iterative / qualities"
+msgstr "Perusmerkitykset. Toistuvuus / potentiaallinen toistuvuus / ominaisuus."
+
+#: app/templates/dummy.html:145
+msgid "Expression of duration - 'за какое время'"
+msgstr "Perusmerkitykset. Kesto - 'missä ajassa'."
+
+#: app/templates/dummy.html:146
+msgid "Factual meaning of verbs"
+msgstr "Yleisesti toteava."
+
+#: app/templates/dummy.html:147
+msgid "Aspect, expression of action completed in the past"
+msgstr "Mitätöityminen."
+
+#: app/templates/dummy.html:148
+msgid ""
+"Aspect, expression of capability/incapability. ('Тебе этого не "
+"понимать/понять!')"
+msgstr "Kykenevyys."
+
+#: app/templates/dummy.html:149
+msgid "Inception of action"
+msgstr "'Ruvetaan'."
+
+#: app/templates/dummy.html:150
+msgid "'Забыть, успеть, удаться' + infinitive"
+msgstr "Infinitiivi. Забыть, успеть, удасться +."
+
+#: app/templates/dummy.html:151
+msgid "'Уметь, нравиться, любить' etc. + infinitive"
+msgstr "Infinitiivi. Уметь, нравиться, любить etc. + verbiluettelo."
+
+#: app/templates/dummy.html:152
+msgid "'Пора, скорее' + infinitive"
+msgstr "Infinitiivi. Пора, скорее."
+
+#: app/templates/dummy.html:153
+msgid "'Нельзя, невозможно, не могу' + infinitive"
+msgstr "Infinitiivi. Нельзя, невозможно, не могу."
+
+#: app/templates/dummy.html:154
+msgid "'Не' + infinitive"
+msgstr "Infinitiivi. Не + infinitiivi."
+
+#: app/templates/dummy.html:155
+msgid "Negative sentences"
+msgstr "Kieltolauseet."
+
+#: app/templates/dummy.html:156
+msgid "Imperative"
+msgstr "Imperatiivi."
+
+#: app/templates/dummy.html:157
+msgid "Proximal future"
+msgstr "Lähitulevaisuus."
+
+#: app/templates/dummy.html:158
+msgid ""
+"Impersonal sentences. Infinitival sentences. Subordinate sentences ('если"
+" / прежде чем' + infinitive)"
+msgstr ""
+"Persoonattomat lauseet. Infinitiivilauseet. Sivulauseet (если / прежде "
+"чем + inf.)."
+
+#: app/templates/dummy.html:159
+msgid "Impersonal sentences. Infinitival sentences. Modal expressions"
+msgstr "Persoonattomat lauseet. Infinitiivilauseet. Modaaliset ilmaukset."
+
+#: app/templates/dummy.html:160
+msgid ""
+"Impersonal sentences. Infinitival sentences. Sentences, with negative "
+"pronouns and adverbs"
+msgstr ""
+"Persoonattomat lauseet. Infinitiivilauseet. He-alkuisen pronominin tai "
+"adverbin sisältävät lauseet."
+
+#: app/templates/dummy.html:161
+msgid "Generis-personal sentences"
+msgstr "Geneeris-persoonaiset lauseet."
+
+#: app/templates/dummy.html:162
+msgid "Existential sentences (usage of the verb 'быть')"
+msgstr "Eksistentiaalilauseet (milloin oikein/luontevaa käyttää est'-muotoa)."
+
+#: app/templates/dummy.html:163
+msgid ""
+"Passive and its relation to indefinite-personal sentences (equivalent of "
+"Finnish impersonal passive)"
+msgstr ""
+"Passiivilauseet ja niiden suhde indefiniittis-persoonaiseen lausetapaan "
+"(suomen passiivin vastineet)."
+
+#: app/templates/dummy.html:164
+msgid "Stress: forms of verbal preterite"
+msgstr "Verbit: preteriti."
+
+#: app/templates/dummy.html:165
+msgid "Stress: short adjectives"
+msgstr "Lyhyet adjektiivit."
+
+#: app/templates/dummy.html:166
+msgid "Stress: participles"
+msgstr "Partisiipit."
+
+#: app/templates/dummy.html:167
+msgid "Nouns. Type A: stress on the stem"
+msgstr "Substantiivit. Tyyppi A: Paino vartalolla."
+
+#: app/templates/dummy.html:168
+msgid "Nouns. Type B, B1, B2: stress on the ending"
+msgstr "Substantiivit. Tyyppi B, B1, B2: Paino päätteellä."
+
+#: app/templates/dummy.html:169
+msgid "Nouns. Type C, C1: stress on the stem in singular, on the ending in plural"
+msgstr ""
+"Substantiivit. Tyyppi C, C1: Paino yksikössä vartalolla, monikossa "
+"päätteellä."
+
+#: app/templates/dummy.html:170
+msgid "Nouns. Type D, D1: stress on the ending in singular, on the stem in plural"
+msgstr ""
+"Substantiivit. Tyyppi D, D1: Paino yksikössä päätteellä, monikossa "
+"vartalolla."
+
+#: app/templates/dummy.html:171
+msgid "Nouns. Type 'нож-ножом, сторож-сторожем'"
+msgstr "Substantiivit. Tyyppi нож - ножом, сторож - сторожем."
+
+#: app/templates/dummy.html:172
+msgid "Declension of adjectives. Type 'хорошего'"
+msgstr "Adjektiivit. Tyyppi хорошего."
+
+#: app/templates/dummy.html:173
+msgid "Place of adverbs of time, place and manner"
+msgstr "Ajan, paikan ja tavan adverbiaalin paikka."
+
+#: app/templates/dummy.html:174
+msgid "Place of negation in the sentence"
+msgstr "Kieltosanan paikka."
+
+#: app/templates/dummy.html:175
+msgid "Place of participles in the sentence"
+msgstr "Partisiippirakenteen määreiden paikka."
+
+#: app/templates/dummy.html:176
+msgid "Place of gerunds in the sentence"
+msgstr "Gerundirakenteen paikka virkkeessä."
+
+#: app/templates/dummy.html:177
+msgid "Place of pronouns in a phrase"
+msgstr "Pronominin paikka."
+
+#: app/templates/dummy.html:178
+msgid "Word order in sentences introducing direct quotations"
+msgstr "Johtolauseen sanajärjestys."
+
+#: app/templates/dummy.html:179
+msgid "Second person singular imperative in conditionals ('если')"
+msgstr "Yksikön 2. persoonan imperatiivi merkityksessä 'jos'."
+
+#: app/templates/dummy.html:180
+msgid "Usage of 'сам' and 'один'"
+msgstr "Сам ja один sanojen käyttö."
+
+#: app/templates/dummy.html:181
+msgid "Sentences of type 'Знаю его как врача.'"
+msgstr "Знаю его как врача."
+
+#: app/templates/dummy.html:182
+msgid "Sentences of type 'Быть грозе'"
+msgstr "Tyyppi Быть грозе."
+
+#: app/templates/dummy.html:183
+msgid "Sentences of type 'Лодку унесло ветром'"
+msgstr "Tyyppi Лодку унесло ветром."
+
+#: app/templates/dummy.html:184
+msgid "Genitive plural"
+msgstr "Monikon genetiivi."
+
+#: app/templates/dummy.html:185
+msgid "Frequent prefixed verbs of motion + prepositional constructions"
+msgstr "Tavallisimmat etuliitteiset liikeverbit + prepositiorakenteet."
+
+#: app/templates/dummy.html:186
+msgid "Animate noun object"
+msgstr "Elollisen substantiivin objektin sija."
+
+#: app/templates/dummy.html:187
+msgid "Unprefixed verbs of motion"
+msgstr "Etuliitteettömät liikeverbit."
+
+#: app/templates/dummy.html:188
+msgid "Unstressed fleeting vowels in roots and suffixes of nouns and adjectives"
+msgstr ""
+"Painottomia väistyviä vokaaleja: substantiivien ja adjektiivien "
+"juurimorfit ja suffiksit"
+
+#: app/templates/dummy.html:189
+msgid "Unstressed vowels in verbal forms"
+msgstr "Painottomia vokaaleja: verbien muodot"
+
+#: app/templates/dummy.html:190
+msgid "Unstressed vowels in roots"
+msgstr "Painottomia vokaaleja: juurimorfit"
+
+#: app/templates/dummy.html:191
+msgid "Unstressed vowels in case endings"
+msgstr "Painottomia vokaaleja: sijamuodot"
+
+#: app/templates/dummy.html:192
+msgid "Unstressed vowels in prefixes"
+msgstr "Painottomia vokaaleja: prefiksit"
+
+#: app/templates/dummy.html:193
+msgid "Unstressed vowels in suffixes"
+msgstr "Painottomia vokaaleja: suffiksit"
+
+#: app/templates/dummy.html:194
+msgid "Unstressed vowels linking compounds"
+msgstr "Painottomia yhdistäviä vokaaleja"
+
+#: app/templates/dummy.html:195
+msgid "Unstressed particles не and ни"
+msgstr "Painottomia не ja ни partikkeleita"
+
+#: app/templates/dummy.html:196
+msgid "Letter г in ending -ого (-его)"
+msgstr "Г-kirjain -ого/-его -sijamuodoissa"
+
+#: app/templates/dummy.html:197
+msgid "Letter й"
+msgstr "Й-kirjain"
+
+#: app/templates/dummy.html:198
+msgid "Letter ч and ш before н and т"
+msgstr "Ч ja Ш-kirjaimet ennen н ja т"
+
+#: app/templates/dummy.html:199
+msgid "Letters ъ and ь:"
+msgstr "Ъ ja ь-kirjaimet"
+
+#: app/templates/dummy.html:200
+msgid "Vowels in verbal endings"
+msgstr "Vokaaleja verbien muodoissa"
+
+#: app/templates/dummy.html:201
+msgid "Vowels in the infinitive (indefinite form) before -ть"
+msgstr "Vokaaleja infinitiivissä (ennen -ть)"
+
+#: app/templates/dummy.html:202
+msgid "Vowels not after sibilants and ц"
+msgstr "Vokaaleja EI suhusibilanttien tai Ц jälkeen"
+
+#: app/templates/dummy.html:203
+msgid "Vowels after sibilants and ц"
+msgstr "Vokaaleja suhusibilanttien tai Ц jälkeen"
+
+#: app/templates/dummy.html:204
+msgid "Voiceless and voiced consonants"
+msgstr "Soinnittomat ja  soinnilliset konsonantit"
+
+#: app/templates/dummy.html:205
+msgid "Consonant clusters at the juncture of morphemes"
+msgstr "Konsonanttiryhmät affiksien rajassa"
+
+#: app/templates/dummy.html:206
+msgid "Double and single -н- in suffixes of adjectives and nouns"
+msgstr ""
+"Yksin- ja kahdenkertainen -н-/-нн-: substantiivien ja adjektiivien "
+"suffiksit"
+
+#: app/templates/dummy.html:207
+msgid "Double and single -н- in suffixes of full and short forms of adjectives"
+msgstr ""
+"Yksin- ja kahdenkertainen -н-/-нн-: pitkin ja lyhyin adjektiivien "
+"suffiksit"
+
+#: app/templates/dummy.html:208
+msgid ""
+"Double and single -н- in suffixes of past passive participles and "
+"corresponding adjectives"
+msgstr ""
+"Yksin- ja kahdenkertainen -н-/-нн-: passiivin partisiipin preteritin ja "
+"vastaavien adjek"
+
+#: app/templates/dummy.html:209
+msgid "Double and single -н- in words derived from adjectives and participles"
+msgstr ""
+"Yksin- ja kahdenkertainen -н-/-нн-: adjektivisitä ja partisipista "
+"muodostetuja sanoja"
+
+#: app/templates/dummy.html:210
+msgid "Double consonants in borrowed roots and suffixes"
+msgstr "Toistuvat konsonantit: lainattuissa juurimorfit ja suffiksit"
+
+#: app/templates/dummy.html:211
+msgid "Double consonants in native roots"
+msgstr "Toistuvat konsonantit: venäläisiä juurimorfeja"
+
+#: app/templates/dummy.html:212
+msgid "Double consonants at morpheme juncture"
+msgstr "Toistuvat konsonantit affiksien rajassa"
+
+#: app/templates/dummy.html:213
+msgid "Silent consonants"
+msgstr "Ääntymättömät konsonantit"
+
+#: app/templates/dummy.html:214
+msgid "Peculiarities of spelling of certain roots"
+msgstr "Erikoistapauksia juurimorfeissa"
+
+#: app/templates/dummy.html:215
+msgid "Peculiarities of spelling of certain suffixes"
+msgstr "Erikoistapauksia suffikseissa"
+
+#: app/templates/dummy.html:216
+msgid "Joint vs. separate spelling of negation 'не': verb (+participles)"
+msgstr "Yhdys- ja erillissanat: не + verbit ja partisiipit"
+
+#: app/templates/dummy.html:217
+msgid "Joint vs. separate spelling of negation 'не': pronoun"
+msgstr "Yhdys- ja erillissanat: не + pronominit"
+
+#: app/templates/dummy.html:218
+msgid "Joint vs. separate spelling of negation 'не': adverb (+'несколько')"
+msgstr "Yhdys- ja erillissanat: не + adverbit"
+
+#: app/templates/dummy.html:219
+msgid "Joint vs. separate spelling of negation 'не': adjectives (+full-short)"
+msgstr "Yhdys- ja erillissanat: не + pitkät VS lyhyt adjektiivit"
+
+#: app/templates/dummy.html:220
+msgid "Joint vs. separate spelling of negation 'не': noun"
+msgstr "Yhdys- ja erillissanat: не + substantiivit"
+
+#: app/templates/dummy.html:221
+msgid "Joint vs. hyphenated spelling: adjectives"
+msgstr "Yhdys- ja erillissanat: adjektiivit"
+
+#: app/templates/dummy.html:222
+msgid "Joint vs. hyphenated spelling: numerals"
+msgstr "Yhdys- ja erillissanat: numeraalit"
+
+#: app/templates/dummy.html:223
+msgid "Joint vs. hyphenated spelling: pronouns"
+msgstr "Yhdys- ja erillissanat: pronominit"
+
+#: app/templates/dummy.html:224
+msgid "Joint vs. hyphenated spelling: adverbs"
+msgstr "Yhdys- ja erillissanat: adverbit"
+
+#: app/templates/dummy.html:225
+msgid "Joint vs. hyphenated spelling: common nouns"
+msgstr "Yhdys- ja erillissanat: yleisnimet"
+
+#: app/templates/dummy.html:226
+msgid "Joint vs. hyphenated spelling: function words"
+msgstr "Yhdys- ja erillissanat: partikkelit"
+
+#: app/templates/dummy.html:227
+msgid "Joint vs. hyphenated spelling: proper names"
+msgstr "Yhdys- ja erillissanat: erisnimet"
+
+#: app/templates/dummy.html:228
+msgid "Capitalized vs. lowercase: astronomical/geographical names"
+msgstr "Isot ja pienet kirjaimet: astronomisia ja maantieteellisia nimiä"
+
+#: app/templates/dummy.html:229
+msgid "Capitalized vs. lowercase: posts, titles, awards"
+msgstr "Isot ja pienet kirjaimet: virran, arvon ja palkinnon nimiä"
+
+#: app/templates/dummy.html:230
+msgid "Capitalized vs. lowercase: names of official organizations"
+msgstr "Isot ja pienet kirjaimet: laitoksen ja toimiston nimiä"
+
+#: app/templates/dummy.html:231
+msgid ""
+"Capitalized vs. lowercase: names linked to religion, historical epochs "
+"and events"
+msgstr ""
+"Isot ja pienet kirjaimet: uskontoa, aikakausia ja historiallisia "
+"tapahtumia koskevia nim"
+
+#: app/templates/dummy.html:232
+msgid "Capitalized vs. lowercase: names of trademarks, documents, works of art"
+msgstr ""
+"Isot ja pienet kirjaimet: tavaramerkkien, asiapaperien ja taideteoksien "
+"nimiä"
+
+#: app/templates/dummy.html:233
+msgid "Capitalized vs. lowercase: proper names of persons, animals"
+msgstr "Isot ja pienet kirjaimet: ihmisten ja eläimien nimiä"
+
+#: app/templates/dummy.html:236
+msgid "Choose the word best fitting the definition."
+msgstr "Valitse määritelmää vastaava sana."
+
+#: app/templates/dummy.html:237
+msgid "Which word or expression does NOT fit the given word?"
+msgstr "Mikä sana tai ilmaisu ei olisi luonteva annetun sanan yhteydessä"
+
+#: app/templates/dummy.html:239 app/templates/dummy.html:247
+msgid "Choose the best fitting answer to the question."
+msgstr "Valitse mielestäsi luontevampi vastaus kuulemaasi kysymykseen."
+
+#: app/templates/dummy.html:240
+msgid "Would this be a fitting answer to the question?"
+msgstr "Olisiko luontevaa vastata näin?"
+
+#: app/templates/dummy.html:241
+msgid "Choose the proper stress."
+msgstr "Valitse oikea sanapaino."
+
+#: app/templates/dummy.html:242
+msgid "Which sentence sounds more natural?"
+msgstr "Kummassa lauseessa on mielestäsi neutraali sanajärjestys?"
+
+#: app/templates/dummy.html:243
+msgid "Choose the more natural version."
+msgstr "Valitse mielestäsi luontevampi vaihtoehto."
+
+#: app/templates/dummy.html:244
+msgid "Which sentence best fits the Finnish sentence?"
+msgstr "Kumpi lause vastaa paremmin suomalaista lausetta?"
+
+#: app/templates/dummy.html:245
+msgid "Is it correct to say this?"
+msgstr "Voidaanko näin sanoa?"
+
+#: app/templates/dummy.html:246
+msgid "Which sentence has the correct word order?"
+msgstr "Kummassa lauseessa on oikea sanajärjestys?"
+
+#: app/templates/dummy.html:248
+msgid "Which sentence better fits the described situation?"
+msgstr "Kumpi lause sopii paremmin kuvattuun tilanteeseen?"
+
+#: app/templates/dummy.html:249
+msgid "Choose the correct way of writing the word or expression."
+msgstr "Valitse sanan oikea kirjoitusasu."
+
+#: app/templates/dummy.html:250
+msgid "Choose the correct way of writing."
+msgstr "Valitse oikea kirjoitusasu."
+
+#: app/templates/dummy.html:251
+msgid "Is it correct to write this way?"
+msgstr "Voidaanko näin kirjoittaa?"
+
+#: app/templates/dummy.html:252
+msgid "Choose the best fitting verb."
+msgstr "Valitse yhteyteen sopiva verbi."
+
+#: app/templates/dummy.html:253
+msgid "Choose the word or phrase which best fits the explanation below"
+msgstr "Valitse sana, joka tarkoittaa samaa kuin vasemmalla oleva selitys."
+
+#: app/templates/dummy.html:255
+msgid "Yes"
+msgstr "Kyllä"
+
+#: app/templates/dummy.html:256
+msgid "No"
+msgstr "Ei"
+
+#: app/templates/dummy.html:265
+msgid "Adjective inflection"
+msgstr "Adjektiivien taivutus"
+
+#: app/templates/dummy.html:266
+msgid "Word order"
+msgstr "Sanajärjestys"
+
+#: app/templates/dummy.html:267
+msgid "Aspect and tense"
+msgstr "Aspektien ja aikamuotojen käyttö"
+
+#: app/templates/dummy.html:268
+msgid "Collocation"
+msgstr "Kollokaatio"
+
+#: app/templates/dummy.html:269 app/templates/modals-exer-customize.html:179
+msgid "Verbs of motion"
+msgstr "Liikeverbit"
+
+#: app/templates/dummy.html:270 app/templates/modals-exer-customize.html:111
+msgid "Numerals"
+msgstr "Lukusanat"
+
+#: app/templates/dummy.html:271
+msgid "Verbal government"
+msgstr "Verbien rektio"
+
+#: app/templates/dummy.html:272
+msgid "Stress"
+msgstr "Sanapaino"
+
+#: app/templates/dummy.html:273
+msgid "Verb conjugation"
+msgstr "Verbien taivutus"
+
+#: app/templates/dummy.html:274
+msgid "Noun inflection"
+msgstr "Substantiivien taivutus"
+
+#: app/templates/dummy.html:275
+msgid "Syntax"
+msgstr "Syntaksi"
+
+#: app/templates/dummy.html:276
+msgid "Orthography"
+msgstr "Oikeuskirjoitus"
+
+#: app/templates/dummy.html:277 app/templates/dummy.html:298
+msgid "Lexicon"
+msgstr "Sanasto"
+
+#: app/templates/dummy.html:282
+msgid "Verbs with partitive case"
+msgstr "Verbit partitiivissä"
+
+#: app/templates/dummy.html:283
+msgid "Verbs with illative case"
+msgstr "Verbit illatiivissa"
+
+#: app/templates/dummy.html:284
+msgid "Infinitive 3 illative"
+msgstr "Infinitiivi 3 illatiivi"
+
+#: app/templates/dummy.html:285
+msgid "Partitive object (negative)"
+msgstr "Partitiivi objekti (negatiivi)"
+
+#: app/templates/dummy.html:286
+msgid "Allative case"
+msgstr "Allatiivi"
+
+#: app/templates/dummy.html:287
+msgid "Accusative case"
+msgstr "Akkusatiivi"
+
+#: app/templates/dummy.html:288
+msgid "Partitive case"
+msgstr "Partitiivi"
+
+#: app/templates/dummy.html:289
+msgid "Syntax: conjunctions"
+msgstr "Syntaksi: konjunktiot"
+
+#: app/templates/dummy.html:290
+msgid "Lexicon: definitions"
+msgstr "Sanasto: määritelmät"
+
+#: app/templates/dummy.html:295
+msgid "Case usage"
+msgstr "Sijamuotojen käyttö"
+
+#: app/templates/dummy.html:296
+msgid "Verb infinitives 1-4"
+msgstr "Verbijen infinitiivit 1-4"
+
+#: app/templates/dummy.html:297
+msgid "Verb covernment: cases"
+msgstr "Verbien hallinto: sijamuodot"
+
+#: app/templates/flashcard_base.html:2
+msgid "Flash Cards for"
+msgstr "Kysymyskortit "
+
+#: app/templates/flashcard_base.html:12
+msgid "Translation"
+msgstr "Käännä"
+
+#: app/templates/flashcard_base.html:25 app/templates/flashcard_base.html:29
+msgid "Fill in"
+msgstr "Käännä"
+
+#: app/templates/flashcard_base.html:26 app/templates/flashcard_base.html:30
+msgid "Browse (flashcards)"
+msgstr "Selaa"
+
+#: app/templates/flashcard_base.html:32
+msgid "Multi choice"
+msgstr "Monivalinta"
+
+#: app/templates/flashcard_base.html:36 app/templates/flashcard_base.html:174
+msgid "Next card"
+msgstr "Seuraava kortti"
+
+#: app/templates/flashcard_base.html:42
+msgid "Back to my flashcards"
+msgstr "Takaisin kysymyskortteihini"
+
+#: app/templates/flashcard_base.html:45
+msgid "Add new flashcard"
+msgstr "Lisää kysymyskortti"
+
+#: app/templates/flashcard_base.html:57 app/templates/flashcard_base.html:99
+msgid "Delete this flashcard"
+msgstr "Poista tämä kysymyskortti"
+
+#: app/templates/flashcard_base.html:62
+msgid "Edit this flashcard"
+msgstr "Muokkaa tätä kysmyskorttia"
+
+#: app/templates/flashcard_base.html:77 app/templates/flashcard_base.html:80
+#: app/templates/flashcard_base.html:113 app/templates/flashcard_base.html:116
+msgid "Check answer!"
+msgstr "Tarkista"
+
+#: app/templates/flashcard_base.html:88
+msgid "Check your answer"
+msgstr "Tarkista"
+
+#: app/templates/flashcard_base.html:89 app/templates/flashcard_base.html:130
+msgid "Flip"
+msgstr "Käännä"
+
+#: app/templates/flashcard_base.html:119
+msgid "I know it"
+msgstr "Tiedän tämän"
+
+#: app/templates/flashcard_base.html:121
+msgid "I am not sure"
+msgstr "En ole varma"
+
+#: app/templates/flashcard_base.html:129
+msgid "Back of the card"
+msgstr "Kortin kääntöpuoli"
+
+#: app/templates/flashcard_base.html:142
+msgid "New word"
+msgstr "Uusi sana"
+
+#: app/templates/flashcard_base.html:146
+msgid "Type word & hit Enter"
+msgstr "Korjoita sana ja paina Enter"
+
+#: app/templates/flashcard_base.html:149
+msgid "Hints for this flashcard"
+msgstr "Vihjeitä tälle kysymyskortille"
+
+#: app/templates/flashcard_base.html:154 app/templates/flashcard_base.html:254
+msgid "Type new hint..."
+msgstr "Kirjoita uusi vihje..."
+
+#: app/templates/flashcard_base.html:156 app/templates/flashcard_base.html:256
+msgid "Save the hint"
+msgstr "Tallenna vihje"
+
+#: app/templates/flashcard_base.html:164
+msgid "Hmm... One more hint?"
+msgstr "Hmm... Vielä yksi vihje?"
+
+#: app/templates/flashcard_base.html:179
+msgid "New translations"
+msgstr "Uusia käännöksiä"
+
+#: app/templates/flashcard_base.html:184 app/templates/flashcard_base.html:241
+msgid "Type new translation..."
+msgstr "Kirjoita uusi käännös..."
+
+#: app/templates/flashcard_base.html:186 app/templates/flashcard_base.html:243
+msgid "Save the translation"
+msgstr "Tallenna käännös"
+
+#: app/templates/flashcard_base.html:190
+msgid "Submit flashcard"
+msgstr "Tallenna kysymyskortti"
+
+#: app/templates/flashcard_base.html:192
+msgid "Clear flashcard"
+msgstr "Tyhjennä kysymyskortti"
+
+#: app/templates/flashcard_base.html:208 app/templates/lang_tests.html:169
+#: app/templates/lang_tests.html:191
+#: app/templates/modal-story-operations.html:115
+#: app/templates/modal-story-operations.html:135
+#: app/templates/modal-story-operations.html:155 app/templates/profile.html:324
+#: app/templates/profile.html:356 app/templates/profile.html:382
+#: app/templates/profile.html:407
+msgid "Warning"
+msgstr "Varoitus"
+
+#: app/templates/flashcard_base.html:212
+msgid ""
+"This will permanently remove this flashcard, are you sure you want to "
+"proceed?"
+msgstr "Haluatko varmasti poistaa kortin?"
+
+#: app/templates/flashcard_base.html:216 app/templates/lang_tests.html:178
+#: app/templates/lang_tests.html:179 app/templates/lang_tests.html:198
+#: app/templates/lang_tests.html:201
+#: app/templates/modal-story-operations.html:121
+#: app/templates/modal-story-operations.html:141
+#: app/templates/modal-story-operations.html:161 app/templates/profile.html:332
+#: app/templates/profile.html:338 app/templates/profile.html:366
+#: app/templates/profile.html:391
+msgid "Remove"
+msgstr "Poista"
+
+#: app/templates/flashcard_base.html:217 app/templates/flashcard_base.html:267
+#: app/templates/lang_tests.html:180 app/templates/lang_tests.html:204
+#: app/templates/modal-story-operations.html:122
+#: app/templates/modal-story-operations.html:142
+#: app/templates/modal-story-operations.html:162 app/templates/profile.html:341
+#: app/templates/profile.html:368 app/templates/profile.html:393
+#: app/templates/profile.html:417
+msgid "Cancel"
+msgstr "Peruuta"
+
+#: app/templates/flashcard_base.html:233
+msgid "Translations"
+msgstr "Käännökset"
+
+#: app/templates/flashcard_base.html:246
+msgid "Hints"
+msgstr "Vihjeitä"
+
+#: app/templates/flashcard_base.html:260
+msgid "Definition"
+msgstr "Määritelmä"
+
+#: app/templates/flashcard_base.html:266
+msgid "Confirm"
+msgstr "Vahvista"
+
+#: app/templates/flashcard_base.html:306
+msgid "Message"
+msgstr "Viesti"
+
+#: app/templates/friend_shared_story.html:5
+#, python-format
+msgid ""
+"Your friend %(friend)s has shared with you the story: "
+"&quot;%(story)s&quot;"
+msgstr "Ystäväsi %(friend)s on jakanut kanssasi tarinan: &quot;%(story)s&quot;"
+
+#: app/templates/friend_shared_story.html:8
+#, python-format
+msgid ""
+"Stories from %(friend)s appear automatically in your list of shared "
+"stories.<br>  \n"
+"   If you wish to change this, please click below to either remove "
+"%(friend)s from your friend list, or block him/her."
+msgstr ""
+"%(friend)s jakamat tarinat ilmestyvät automaattisesti sinulle. Valitse "
+"allolevista napeista mikäli haluat lisätä hänet kaveriksi tai estää "
+"hänet."
+
+#: app/templates/friend_shared_story.html:13
+msgid "REMOVE"
+msgstr "POISTA"
+
+#: app/templates/index.html:16
+msgid "Upload stories"
+msgstr "Lataa kertomuksia"
+
+#: app/templates/index.html:17
+msgid "Upload flashcards"
+msgstr "Lataa kysymyskortteja"
+
+#: app/templates/index.html:39
+msgid "My languages"
+msgstr "Kielesi"
+
+#: app/templates/index.html:73
+msgid "Select types of exercises<br/>to practice"
+msgstr "Valitse harjoitustyypit"
+
+#: app/templates/index.html:150
+msgid "Home"
+msgstr "Etusivu"
+
+#: app/templates/index.html:151
+msgid "Library"
+msgstr "Valitse teksti"
+
+#: app/templates/index.html:153
+msgid "All flashcards"
+msgstr "Kaikki kysymyskortit"
+
+#: app/templates/index.html:163
+msgid "Tests"
+msgstr "Testit"
+
+#: app/templates/index.html:168 app/templates/macros.html:212
+#: app/templates/macros.html:217 app/templates/macros.html:458
+#: app/templates/macros.html:463
+msgid "Comprehension"
+msgstr "Ymmärrys"
+
+#: app/templates/index.html:189
+msgid "Practice a random story with the language of your choice"
+msgstr "Harjoittele satunnaista kertomusta valitullasi kielelläsi"
+
+#: app/templates/index.html:190
+msgid "Practice Now"
+msgstr "Harjoittele"
+
+#: app/templates/index.html:194 app/templates/index.html:196
+#: app/templates/index.html:198 app/templates/index.html:200
+msgid "This feature is coming soon!"
+msgstr "Tämä ominaisuus tulee pian!"
+
+#: app/templates/index.html:195
+msgid "Culture"
+msgstr "Kulttuuri"
+
+#: app/templates/index.html:197
+msgid "Politics"
+msgstr "Politiikka"
+
+#: app/templates/index.html:199
+msgid "Science"
+msgstr "Tiede"
+
+#: app/templates/index.html:201
+msgid "Sport"
+msgstr "Urheilu"
+
+#: app/templates/index.html:235 app/templates/index.html:237
+msgid "No stories to show..."
+msgstr "Ei kertomuksia..."
+
+#: app/templates/lang_comprehension.html:25
+msgid "Enter a brief answer."
+msgstr "Syötä lyhyt vastaus."
+
+#: app/templates/lang_comprehension.html:34
+msgid "Check answers"
+msgstr "Tarkista vastaukset"
+
+#: app/templates/lang_comprehension.html:37
+msgid "Next exercise"
+msgstr "Seuraava harjoitus"
+
+#: app/templates/lang_score.html:8 app/templates/lang_tests.html:95
+msgid "Group"
+msgstr "Ryhmä"
+
+#: app/templates/lang_score.html:19 app/templates/lang_tests.html:102
+msgid "User"
+msgstr "Käyttäjä"
+
+#: app/templates/lang_tests.html:9
+msgid "Back to tests"
+msgstr "⇐ &nbsp;&nbsp; Takaisin &nbsp;&nbsp; "
+
+#: app/templates/lang_tests.html:12
+msgid "Create a test template"
+msgstr "Luo koepohja &nbsp;&nbsp; ⇒ &nbsp;&nbsp; "
+
+#: app/templates/lang_tests.html:16
+msgid "*Create_New_Test_Template*"
+msgstr ""
+"• If you are a teacher of the currently selected group, you can edit the "
+"test template of this group.\n"
+"• If you want to create other templates, you can go to Groups in your "
+"Profile page and create new groups. \n"
+"• Each group has its own test template. \n"
+"• You cannot edit the template as a student."
+
+#: app/templates/lang_tests.html:28
+msgid "Pause Test"
+msgstr "Pidä tauko..."
+
+#: app/templates/lang_tests.html:32
+msgid "Resume Test"
+msgstr "Jatka testi"
+
+#: app/templates/lang_tests.html:36
+msgid "Quit Test"
+msgstr "Lopeta testi."
+
+#: app/templates/lang_tests.html:44
+msgid "Quitting after this question..."
+msgstr "Lopetetaan tämän kysymyksen jälkeen..."
+
+#: app/templates/lang_tests.html:46
+msgid "Pause after you answer this question..."
+msgstr "Tauko alkaa tämän kysymyksen jälkeen..."
+
+#: app/templates/lang_tests.html:48
+msgid "Paused.  Click &#9658; to resume..."
+msgstr "Tauko.<br/>  Klikkaa &#9658; jatkamiseksi..."
+
+#: app/templates/lang_tests.html:52
+#: app/templates/modal-story-operations.html:250
+#: app/templates/modal-story-operations.html:263
+msgid "Practice with your favourite stories to improve your skills!"
+msgstr "Harjoittele suosikkikertomuksillasi parantaaksesi taitojasi!"
+
+#: app/templates/lang_tests.html:69
+msgid "Start a new test"
+msgstr "Uusi koe"
+
+#: app/templates/lang_tests.html:73
+msgid "*New_Test_Help*"
+msgstr ""
+"• Press this button to take a test.\n"
+"• The test uses the template of the group you have currently selected.\n"
+"• If you are not in any group, you will receive the default test.\n"
+"• During the test, you have 15 seconds for each question.\n"
+"• You can take breaks by pressing the Pause button.\n"
+"• You can end the test by pressing the Stop button.\n"
+"• Pause or Stop will take effect only AFTER you answer the current "
+"question."
+
+#: app/templates/lang_tests.html:88
+msgid "Show latest history"
+msgstr "Viimeisimmät tulokset"
+
+#: app/templates/lang_tests.html:92
+msgid "Show last completed tests"
+msgstr "Suoritetut kokeet"
+
+#: app/templates/lang_tests.html:173 app/templates/lang_tests.html:194
+msgid ""
+"This will permanently remove these test results, are you sure you want to"
+" proceed?"
+msgstr "Tämä poistaa nämä koetulokset pysyvästi. Oletko varma?"
+
+#: app/templates/login.html:22
+msgid "Good to see you again!"
+msgstr "Hyvä nähdä sinua taas!"
+
+#: app/templates/login.html:23
+msgid "Sign in to Revita"
+msgstr "Kirjaudu sisään"
+
+#: app/templates/login.html:30 app/templates/password_reset_form.html:32
+#: app/templates/register.html:44
+msgid "Email address"
+msgstr "Sähköpostiosoite"
+
+#: app/templates/login.html:43 app/templates/new_password_form.html:34
+#: app/templates/register.html:74
+msgid "Password"
+msgstr "Salasana"
+
+#: app/templates/login.html:55
+msgid "Remember me"
+msgstr "Pidä minut kirjautuneena"
+
+#: app/templates/login.html:78
+msgid "Forgot password?"
+msgstr "Salasana unohtunut?"
+
+#: app/templates/login.html:83
+msgid "Register here!"
+msgstr "Rekisteröidy"
+
+#: app/templates/macros.html:129
+msgid "Pack of flashcards"
+msgstr "Kysymyskortti pakka"
+
+#: app/templates/macros.html:153 app/templates/macros.html:350
+msgid "(User shared: BEFORE)"
+msgstr " "
+
+#: app/templates/macros.html:153
+msgid "(User shared: AFTER)"
+msgstr "lähetti"
+
+#: app/templates/macros.html:165 app/templates/macros.html:168
+#: app/templates/macros.html:404 app/templates/macros.html:408
+msgid "Read"
+msgstr "Lue"
+
+#: app/templates/macros.html:172 app/templates/macros.html:176
+#: app/templates/macros.html:412 app/templates/macros.html:417
+msgid "Practice!"
+msgstr "Harjoittele"
+
+#: app/templates/macros.html:181 app/templates/macros.html:185
+#: app/templates/macros.html:422 app/templates/macros.html:428
+msgid "Flashcards"
+msgstr "Kysymyskortit"
+
+#: app/templates/macros.html:190 app/templates/macros.html:197
+#: app/templates/macros.html:434 app/templates/macros.html:439
+msgid "Compete!"
+msgstr "Kilpaile"
+
+#: app/templates/macros.html:202 app/templates/macros.html:207
+#: app/templates/macros.html:445 app/templates/macros.html:450
+msgid "Crossword"
+msgstr "Sanaristikko"
+
+#: app/templates/macros.html:292
+msgid "Author"
+msgstr "Kirjoittaja"
+
+#: app/templates/macros.html:298
+#: app/templates/modal-upload-stories-flashcards.html:150
+msgid "Source"
+msgstr "Lähde"
+
+#: app/templates/macros.html:317 app/templates/macros.html:726
+#: app/templates/macros.html:730
+#: app/templates/modal-upload-stories-flashcards.html:151
+#: app/templates/modal-upload-stories-flashcards.html:158
+#: app/templates/modal-upload-stories-flashcards.html:160
+msgid "Level"
+msgstr "Taso"
+
+#: app/templates/macros.html:342 app/templates/practice_area.html:8
+msgid "Story Rating"
+msgstr "Taso"
+
+#: app/templates/macros.html:363 app/templates/practice_area.html:54
+msgid "Exercises answered correctly"
+msgstr "%% Vastattu oikein"
+
+#: app/templates/macros.html:381 app/templates/practice_area.html:81
+msgid "Part of story covered"
+msgstr "%% Luettu osa"
+
+#: app/templates/macros.html:479 app/templates/macros.html:506
+msgid "Delete story"
+msgstr "Poista kertomus"
+
+#: app/templates/macros.html:486 app/templates/macros.html:494
+msgid "Share story with a friend"
+msgstr "Jaa kaverin kanssa"
+
+#: app/templates/macros.html:525
+msgid "Your friends"
+msgstr "Kaverisi"
+
+#: app/templates/macros.html:533 app/templates/macros.html:616
+msgid "Actions"
+msgstr "Toiminnot"
+
+#: app/templates/macros.html:565
+msgid "Teachers"
+msgstr "Opettajat"
+
+#: app/templates/macros.html:582
+msgid "Students"
+msgstr "Oppilaat"
+
+#: app/templates/macros.html:607
+msgid "Blocked users"
+msgstr "Estetyt käyttäjät"
+
+#: app/templates/macros.html:638
+msgid "Your texts"
+msgstr "Minun kertomukseni"
+
+#: app/templates/macros.html:640
+msgid "Try uploading your own texts!"
+msgstr "Kokeile ladata omia tekstejäsi!"
+
+#: app/templates/macros.html:651
+msgid "My flashcards"
+msgstr "Minun kysymyskortit"
+
+#: app/templates/macros.html:660
+msgid "Shared with me"
+msgstr "Minun kanssa jaetut"
+
+#: app/templates/macros.html:669
+msgid "Flashcards shared with me"
+msgstr "Minun kanssa jaetut kysymyskortit"
+
+#: app/templates/macros.html:678
+msgid "Public flashcards"
+msgstr "Yhteiset kysymyskortit"
+
+#: app/templates/macros.html:687
+msgid "Public texts"
+msgstr "Yhteiset kertomukset"
+
+#: app/templates/macros.html:732
+msgid "Info"
+msgstr ""
+
+#: app/templates/modal-story-operations.html:8
+#: app/templates/modal-story-operations.html:64
+msgid "Share story"
+msgstr "Jaa tarina"
+
+#: app/templates/modal-story-operations.html:8
+#: app/templates/modal-story-operations.html:64
+msgid ""
+"Please enter the email address of the user you wish to share the story "
+"with. To share with multiple users at once, simply leave a space between "
+"each entered address."
+msgstr ""
+"Olkaa hyvä ja antakaa käyttäjän, jonka kanssa haluatte jakaa tarinan "
+"sähköpostin. Jos haluat jakaa monelle käyttäjälle samaan aikaan, jätä "
+"vain väli jokaisen osoitteen väliin."
+
+#: app/templates/modal-story-operations.html:10
+#: app/templates/modal-story-operations.html:66
+#: app/templates/modal-upload-stories-flashcards.html:25
+#: app/templates/modal-upload-stories-flashcards.html:205
+msgid "Please"
+msgstr ""
+
+#: app/templates/modal-story-operations.html:11
+#: app/templates/modal-story-operations.html:67
+#: app/templates/modal-upload-stories-flashcards.html:26
+#: app/templates/modal-upload-stories-flashcards.html:206
+msgid "sign in"
+msgstr "kirjaudu sivulle"
+
+#: app/templates/modal-story-operations.html:12
+#: app/templates/modal-story-operations.html:68
+msgid "to share your stories!"
+msgstr "jaakaaksesi tarinoita"
+
+#: app/templates/modal-story-operations.html:14
+#: app/templates/modal-story-operations.html:70
+msgid "You can share stories that you upload."
+msgstr "Voit jakaa tarinoita jotka lataat."
+
+#: app/templates/modal-story-operations.html:15
+#: app/templates/modal-story-operations.html:72
+#: app/templates/modal-upload-stories-flashcards.html:29
+#: app/templates/modal-upload-stories-flashcards.html:209
+msgid "Don't have an account yet?  Please"
+msgstr "Ei omaa tiliä?  Ole hyvä ja"
+
+#: app/templates/modal-story-operations.html:16
+#: app/templates/modal-story-operations.html:73
+#: app/templates/modal-upload-stories-flashcards.html:30
+#: app/templates/modal-upload-stories-flashcards.html:210
+msgid "register here&rightarrow;"
+msgstr ""
+
+#: app/templates/modal-story-operations.html:17
+#: app/templates/modal-story-operations.html:74
+#: app/templates/modal-upload-stories-flashcards.html:31
+#: app/templates/modal-upload-stories-flashcards.html:211
+msgid "More"
+msgstr "Lisää"
+
+#: app/templates/modal-story-operations.html:18
+#: app/templates/modal-story-operations.html:75
+#: app/templates/modal-upload-stories-flashcards.html:31
+#: app/templates/modal-upload-stories-flashcards.html:211
+msgid "about Revita&rightarrow;"
+msgstr "tietoa Revitasta&rightarrow;"
+
+#: app/templates/modal-story-operations.html:20
+#: app/templates/modal-story-operations.html:77
+#: app/templates/modal-upload-stories-flashcards.html:33
+#: app/templates/modal-upload-stories-flashcards.html:212
+msgid ""
+"Registration is free.  Your account is used it to keep track of your "
+"stories and your progress."
+msgstr ""
+"Rekisteröityminen on ilmaista.  Tiliäsi käytetään tekstiesi\n"
+"ja edistymisesi seuraamiseksi."
+
+#: app/templates/modal-story-operations.html:22
+#: app/templates/modal-story-operations.html:79
+#: app/templates/modal-upload-stories-flashcards.html:35
+msgid "Use sample stories from our library in \"guest\" mode,"
+msgstr "Löydät myös esimerkkeja teksteistä meidän kirjastostamme"
+
+#: app/templates/modal-story-operations.html:23
+#: app/templates/modal-story-operations.html:80
+#: app/templates/modal-upload-stories-flashcards.html:36
+msgid "without signing in."
+msgstr "\"vieraana\", ilman kirjautumista."
+
+#: app/templates/modal-story-operations.html:24
+#: app/templates/modal-story-operations.html:81
+#: app/templates/modal-upload-stories-flashcards.html:37
+msgid "(Your progress will not be saved for the next session.)"
+msgstr "mutta edistymistäsi ei tallenneta seuraavaa istuntoa varten. "
+
+#: app/templates/modal-story-operations.html:32
+msgid "Write a message for the receiver (optional)"
+msgstr "Kirjoita viesti vastaanottajalle (valinnanvarainen)"
+
+#: app/templates/modal-story-operations.html:34
+#: app/templates/modal-story-operations.html:88 app/templates/profile.html:102
+#: app/templates/profile.html:124 app/templates/profile.html:188
+msgid "Enter email address..."
+msgstr "Ole hyvä ja syötä sähköpostiosoite..."
+
+#: app/templates/modal-story-operations.html:42
+#: app/templates/modal-story-operations.html:96
+msgid "Share"
+msgstr "Jaa"
+
+#: app/templates/modal-story-operations.html:118
+#: app/templates/modal-story-operations.html:138
+#: app/templates/modal-story-operations.html:158
+msgid ""
+"This will permanently remove this story from your collection, are you "
+"sure you want to proceed?"
+msgstr "Oletko varma, että haluat poistaa tekstin?"
+
+#: app/templates/modal-story-operations.html:176
+msgid "Well Done!"
+msgstr "Hyvin tehty!"
+
+#: app/templates/modal-story-operations.html:180
+msgid "You have now practiced one hour in total, keep up the good work!"
+msgstr "Olet nyt harjoitellut yhteensä tunnin, jatka samaan malliin!"
+
+#: app/templates/modal-story-operations.html:200
+msgid "Great Job!"
+msgstr "Hyvää työtä!"
+
+#: app/templates/modal-story-operations.html:204
+msgid "You practiced"
+msgstr "Harjoittelit"
+
+#: app/templates/modal-story-operations.html:206
+msgid "hours last week! Keep it up"
+msgstr "tuntia viime viikolla! Jakta samaan malliin!"
+
+#: app/templates/modal-story-operations.html:228
+msgid "Overall score:"
+msgstr "Yleispisteet:"
+
+#: app/templates/modal-story-operations.html:234
+msgid "Correct answers"
+msgstr "Oikeat vastaukset"
+
+#: app/templates/modal-story-operations.html:238
+msgid "Total answers"
+msgstr "Kaikki vastaukset"
+
+#: app/templates/modal-story-operations.html:242
+msgid "Accuracy"
+msgstr "Tarkkuus"
+
+#: app/templates/modal-story-operations.html:254
+msgid "Correct answers given"
+msgstr "Vastauksista oikein"
+
+#: app/templates/modal-story-operations.html:257
+msgid "Total number of answers"
+msgstr "Kokonaismäärä vastauksia"
+
+#: app/templates/modal-story-operations.html:260
+msgid "Percentage of correct answers"
+msgstr "Oikeiden vastauksien osuus"
+
+#: app/templates/modal-upload-stories-flashcards.html:23
+msgid "Add your stories"
+msgstr "Lisää oma kertomuksesi"
+
+#: app/templates/modal-upload-stories-flashcards.html:27
+msgid "to add your own stories!"
+msgstr "lisätäksesi tekstisi"
+
+#: app/templates/modal-upload-stories-flashcards.html:28
+msgid "You can add your own stories from your files, or from any web page."
+msgstr "Voit lisätä omat tekstisi tiedostoistasi tai miltä tahansa web-sivulta."
+
+#: app/templates/modal-upload-stories-flashcards.html:46
+msgid ""
+"Please submit a simple text file containing the story you want to add. We"
+" will automatically infer the title. Please submit a story in the "
+"currently selected practice language."
+msgstr ""
+"Olkaa hyvä ja antakaa teksti, jonka haluatte lisätä -- käyttäkää "
+"tiedostoa, jossa on joko pääte .txt tai .docx (.doc ei ole tuettu). "
+"Revita valitsee ensimmäisen rivin tarinan otsikoksi."
+
+#: app/templates/modal-upload-stories-flashcards.html:48
+#: app/templates/modal-upload-stories-flashcards.html:251
+msgid "Choose a file:"
+msgstr "Valitse tiedosto:"
+
+#: app/templates/modal-upload-stories-flashcards.html:52
+#: app/templates/modal-upload-stories-flashcards.html:255
+msgid "Browse"
+msgstr "Selaa"
+
+#: app/templates/modal-upload-stories-flashcards.html:60
+#: app/templates/modal-upload-stories-flashcards.html:96
+#: app/templates/modal-upload-stories-flashcards.html:126
+#: app/templates/modal-upload-stories-flashcards.html:261
+msgid "Submit"
+msgstr "Lähetä tiedosto"
+
+#: app/templates/modal-upload-stories-flashcards.html:71
+msgid ""
+"Paste the raw text you want to add as a story. We will use the first "
+"sentence before an empty line as the title. Please submit a story in the "
+"currently selected practice language. Minimum length: 50."
+msgstr ""
+"Kopioikaa tähän raaka teksti jonka haluatte lisätä tarinana. Käytämme "
+"ensimmäisen lauseen ennen tyhjää riviä otsikkona. Antakaa tarina "
+"valitussa opetus kielessänne. Minimi pituus: 50."
+
+#: app/templates/modal-upload-stories-flashcards.html:72
+msgid "Or paste a text:"
+msgstr "Tai liitä teksti:"
+
+#: app/templates/modal-upload-stories-flashcards.html:73
+msgid "Characters left"
+msgstr "Merkkejä jäljellä"
+
+#: app/templates/modal-upload-stories-flashcards.html:85
+msgid ""
+"Title on first line. \n"
+"\n"
+"Text after an empty line..."
+msgstr ""
+"Otsikko ensimmäisellä rivillä. \n"
+"\n"
+"Teksti tyhjän rivin jälkeen..."
+
+#: app/templates/modal-upload-stories-flashcards.html:103
+msgid ""
+"Revita will automatically try to find only the story text from your URL."
+"  If the results contain unwanted text, please paste the story manually "
+"into the box above.  Please submit a story in the correct practice "
+"language."
+msgstr ""
+"Revita yrittää automaattisesti löytää vain tarinan URL:istasi.  Jos tulos"
+" sisältää ei toivottua tekstiä, olkaa hyvä ja kopioikaa tarina suoraan "
+"yllä olevaan tekstikenttään. Antakaa tarina opetus kielessä."
+
+#: app/templates/modal-upload-stories-flashcards.html:104
+msgid "Or use a web page:"
+msgstr "Tai lataa teksti verkkosivusta:"
+
+#: app/templates/modal-upload-stories-flashcards.html:114
+msgid "Enter web address..."
+msgstr "Ole hyvä ja syötä verkkosivun osoite..."
+
+#: app/templates/modal-upload-stories-flashcards.html:146
+msgid "You can visit the following websites to find more stories:"
+msgstr "Voit käydä seuraavilla sivustoilla hakemassa lisää kertomuksia:"
+
+#: app/templates/modal-upload-stories-flashcards.html:172
+#: app/templates/modal-upload-stories-flashcards.html:214
+msgid "Add your own flashcards"
+msgstr "Lisää omat kysymyskorttisi"
+
+#: app/templates/modal-upload-stories-flashcards.html:207
+msgid "to add your own flashcards!"
+msgstr "lisätäksesi omat kysymyskorttisi!"
+
+#: app/templates/modal-upload-stories-flashcards.html:208
+msgid "You can add your own flashcards from your files."
+msgstr "Voit lisätä omat kysymyskorttisi tiedostoistasi."
+
+#: app/templates/modal-upload-stories-flashcards.html:218
+msgid ""
+"Please submit your custom flashcard pack in a txt-format as a .txt file. "
+"Use tab as the delimeter. You can find an example file of the format "
+"here:"
+msgstr ""
+"Ystävällisesti anna oman kysymyskorttipakkasi .txt tiedostona. Käytä "
+"sarkainta\n"
+"välimerkkinä. Löydät esimerkkitiedoston formaatista täältä:"
+
+#: app/templates/modal-upload-stories-flashcards.html:226
+msgid "Language in"
+msgstr "Kieli"
+
+#: app/templates/modal-upload-stories-flashcards.html:238
+msgid "Translation target language"
+msgstr "Käännöksen kieli"
+
+#: app/templates/modals-exer-customize.html:7
+msgid "Customize your exercises"
+msgstr "Valitse harjoitustyypit"
+
+#: app/templates/modals-exer-customize.html:19
+#: app/templates/modals-exer-customize.html:337
+msgid "Select/Unselect all"
+msgstr "Valitse kaikki"
+
+#: app/templates/modals-exer-customize.html:36
+msgid "Place stress inside a word"
+msgstr "Aseta stressi sanan sisälle"
+
+#: app/templates/modals-exer-customize.html:53
+msgid "Enter the word you hear"
+msgstr "Kirjoita sanan jonka kuulet"
+
+#: app/templates/modals-exer-customize.html:69
+#: app/templates/modals-exer-customize.html:322
+msgid "Noun declension"
+msgstr "Substantiivi"
+
+#: app/templates/modals-exer-customize.html:71
+#: app/templates/modals-exer-customize.html:324
+msgid "Noun and adjective declension"
+msgstr "Substantiivi ja adjektiivi"
+
+#: app/templates/modals-exer-customize.html:94
+msgid "Adjective declension"
+msgstr "Adjektiivi"
+
+#: app/templates/modals-exer-customize.html:128
+msgid "Pronouns"
+msgstr "Pronomini"
+
+#: app/templates/modals-exer-customize.html:145
+msgid "Verb inflection"
+msgstr "Verbi"
+
+#: app/templates/modals-exer-customize.html:162
+msgid "Verb aspect"
+msgstr "Verbin aspekti"
+
+#: app/templates/modals-exer-customize.html:197
+msgid "Participle exercises"
+msgstr "Partisiippi"
+
+#: app/templates/modals-exer-customize.html:216
+msgid "Easier participle exercises (from participle base)"
+msgstr "Helpommat partisiippiharjoitukset"
+
+#: app/templates/modals-exer-customize.html:234
+msgid "Harder participle exercises (from verb base)"
+msgstr "Vaikeammat partisiippiharjoitukset"
+
+#: app/templates/modals-exer-customize.html:254
+msgid "Prepositions, Postpostion & Adverbs"
+msgstr "Prepositio, Postpositio, Adverbi"
+
+#: app/templates/modals-exer-customize.html:256
+msgid "Prepositions & Adverbs"
+msgstr "Prepositio, Adverbi"
+
+#: app/templates/modals-exer-customize.html:274
+msgid "Prepositions & Postpostion"
+msgstr "Prepositio, Postpositio"
+
+#: app/templates/modals-exer-customize.html:276
+msgid "Prepositions"
+msgstr "Prepositio"
+
+#: app/templates/modals-exer-customize.html:294
+msgid "Adverbs"
+msgstr "Adverbi"
+
+#: app/templates/modals-exer-customize.html:305
+msgid "Sign in"
+msgstr ""
+
+#: app/templates/modals-exer-customize.html:346
+msgid "Case"
+msgstr "Sijamuoto"
+
+#: app/templates/modals-exer-customize.html:358
+msgid "Nominative"
+msgstr "Nominatiivi"
+
+#: app/templates/modals-exer-customize.html:373
+msgid "Genitive"
+msgstr "Genetiivi"
+
+#: app/templates/modals-exer-customize.html:388
+msgid "Dative"
+msgstr "Datiivi"
+
+#: app/templates/modals-exer-customize.html:403
+msgid "Accusative"
+msgstr "Akkusatiivi"
+
+#: app/templates/modals-exer-customize.html:418
+msgid "Instrumental"
+msgstr "Instruktiivi"
+
+#: app/templates/modals-exer-customize.html:433
+msgid "Locative"
+msgstr "Lokatiivi"
+
+#: app/templates/modals-exer-customize.html:441
+msgid "Number"
+msgstr "Luku"
+
+#: app/templates/modals-exer-customize.html:452
+msgid "Singular"
+msgstr "Yksikkö"
+
+#: app/templates/modals-exer-customize.html:465
+msgid "Plural"
+msgstr "Monikko"
+
+#: app/templates/modals-exer-customize.html:472
+msgid "Paradigm"
+msgstr "Deklinaatio"
+
+#: app/templates/new_password_form.html:47 app/templates/register.html:87
+msgid "Confirm password"
+msgstr "Vahvista salasana"
+
+#: app/templates/new_password_form.html:57
+msgid "Change password"
+msgstr "Vaihda salasana"
+
+#: app/templates/password_reset_form.html:40
+msgid "Send email"
+msgstr "Lähetä sähköposti"
+
+#: app/templates/practice.html:23
+msgid "These should be easy for you!"
+msgstr "Nämä pitäisivät olla sinulle helppoja!"
+
+#: app/templates/practice.html:103
+msgid "click to listen"
+msgstr "&#x1f5b0; kuunnellaksesi"
+
+#: app/templates/practice_area.html:68
+msgid "Check Answers"
+msgstr "Tarkista"
+
+#: app/templates/practice_area.html:96
+msgid "Restart story"
+msgstr "Aloita alusta"
+
+#: app/templates/practice_area.html:113
+msgid "Game over"
+msgstr "Peli ohi"
+
+#: app/templates/practice_area.html:116
+msgid "You won!"
+msgstr "Voitit!"
+
+#: app/templates/practice_area.html:116
+msgid "extra apples!"
+msgstr "ekstra omeinoita!"
+
+#: app/templates/practice_area.html:117
+msgid "Tie! That was close, try again!"
+msgstr "Tasapeli! Se oli lähellä, kokeile uusiksi!"
+
+#: app/templates/practice_area.html:118
+msgid "You lost.."
+msgstr "Hävisit.."
+
+#: app/templates/practice_area.html:133
+msgid "Continue"
+msgstr "Jatka"
+
+#: app/templates/profile.html:42
+#, python-format
+msgid "%(username)s's profile"
+msgstr "%(username)s &mdash; profiili"
+
+#: app/templates/profile.html:46
+msgid "Account"
+msgstr "Tili"
+
+#: app/templates/profile.html:48
+msgid "Achievements"
+msgstr "Saavutukset"
+
+#: app/templates/profile.html:49
+msgid "Groups"
+msgstr "Ryhmät"
+
+#: app/templates/profile.html:50
+msgid "Friends"
+msgstr "Kaverisi"
+
+#: app/templates/profile.html:75
+msgid "Click here to enable Facebook login"
+msgstr "Klikkaa tästä ottaaksesi käyttöön Facebook sisäänkirjautumisen"
+
+#: app/templates/profile.html:80
+msgid "You can log in to Revita with your Facebook account"
+msgstr "Voit kirjautua sisään Facebook-tililläsi"
+
+#: app/templates/profile.html:87 app/templates/settings-include.html:50
+msgid "Save"
+msgstr "Tallenna"
+
+#: app/templates/profile.html:100
+msgid "Add a friend"
+msgstr "Lisää kaverit"
+
+#: app/templates/profile.html:110
+msgid "Add friend"
+msgstr "Lisää kaveriksi"
+
+#: app/templates/profile.html:122
+msgid "Block a user"
+msgstr "Estä käyttäjä"
+
+#: app/templates/profile.html:136
+msgid "Block"
+msgstr "Estä"
+
+#: app/templates/profile.html:156
+msgid "Delete group"
+msgstr "Poista ryhmä"
+
+#: app/templates/profile.html:162
+msgid "Create new"
+msgstr "Luo uusi"
+
+#: app/templates/profile.html:185
+msgid "Manage group"
+msgstr "Hallitse"
+
+#: app/templates/profile.html:203
+msgid "As teacher"
+msgstr "Opettajana"
+
+#: app/templates/profile.html:207
+msgid "Add person to group"
+msgstr "Lisää henkilö ryhmään"
+
+#: app/templates/profile.html:222
+msgid "Practice time achievements"
+msgstr "Harjoitusaikaan liittyvät saavutukset"
+
+#: app/templates/profile.html:251
+msgid "Story upload achievements"
+msgstr "Kertomuksien lisäämisen saavutukset"
+
+#: app/templates/profile.html:280
+msgid "Story covering achievements"
+msgstr "Kertomuksien kattavuuksien saavutukset"
+
+#: app/templates/profile.html:329
+msgid ""
+"This will remove this user from your friend list, are you sure you want "
+"to proceed?"
+msgstr "Oletko varma, että haluat poistaa tämän henkilön ystävä listalta?"
+
+#: app/templates/profile.html:360
+msgid ""
+"This will remove this user from your blocked list, are you sure you want "
+"to proceed?"
+msgstr "Oletko varma, että haluat poistaa poistaa henkilön esto listalta?"
+
+#: app/templates/profile.html:387
+msgid ""
+"This will remove this user from this group, are you sure you want to "
+"proceed?"
+msgstr "Oletko varma, että haluat poistaa tämän henkilön ryhmästä?"
+
+#: app/templates/profile.html:412
+msgid "This will remove the group, are you sure you want to proceed?"
+msgstr "Oletko varma, että haluat poistaa tämän ryhmän?"
+
+#: app/templates/profile.html:415
+msgid "Delete"
+msgstr "Poista"
+
+#: app/templates/profile.html:432
+msgid "Create new group"
+msgstr "Luo uusi ryhmä"
+
+#: app/templates/profile.html:440
+msgid "Multiple emails can be separated by space."
+msgstr "Useat osoitteet erotellaan välilyönnillä"
+
+#: app/templates/profile.html:442
+msgid "Name of group"
+msgstr "Ryhmän nimi"
+
+#: app/templates/profile.html:452
+msgid "Teacher emails"
+msgstr "Opettajien sähköpostiosoitteet"
+
+#: app/templates/profile.html:454
+msgid "Student emails"
+msgstr "Oppilaiden sähköpostiosoitteet"
+
+#: app/templates/profile.html:458
+msgid "Create"
+msgstr "Luo"
+
+#: app/templates/register.html:23 app/templates/register.html:29
+msgid "Create account with <i>any</i> username and valid e-mail"
+msgstr "Luo tili millä tahansa sähköpostiosoitteellasi ja käyttäjänimellä"
+
+#: app/templates/register.html:24 app/templates/register.html:30
+msgid "Revita will send confirmation by e-mail"
+msgstr "Revita lähettää sinulle varmistuksen sähköpostitse"
+
+#: app/templates/register.html:31
+msgid "(After that, you may also log in via Facebook)"
+msgstr "(Sen jälkeen voit myös kirjautua sisään Facebookin kautta)"
+
+#: app/templates/register.html:103
+msgid "After that, you may also log in via Facebook"
+msgstr "Sen jälkeen voit myös kirjautua sisään Facebookin kautta"
+
+#: app/templates/reset_password_email.html:5
+msgid ""
+"You have requested to reset your Revita password. Please follow the link "
+"below to reset your password."
+msgstr ""
+"Pyysit salasanan vaihtoa.  Seuraa alla olevaa linkkiä vaihtaaksesi "
+"salasanasi."
+
+#: app/templates/reset_password_email.html:11
+#, python-format
+msgid "Please note that the link expires in %(num)d hour."
+msgid_plural "Please note that the link expires in %(num)d hours."
+msgstr[0] "Linkki on voimassa %(num)d tunti."
+msgstr[1] "Linkki on voimassa %(num)d tuntia."
+
+#: app/templates/settings-include.html:29
+msgid "Practice mode: <br/>Enable exercise types"
+msgstr "Tehtävät"
+
+#: app/templates/settings-include.html:36
+msgid "Fill the correct form"
+msgstr "Täydennä oikea muoto"
+
+#: app/templates/settings-include.html:40
+msgid "Multiple choice"
+msgstr "Monivalinta"
+
+#: app/templates/settings-include.html:43
+msgid "Type the word you hear"
+msgstr "Kirjoita sanan jonka kuulet"
+
+#: app/templates/settings-include.html:47
+msgid "Second chance when practicing stories"
+msgstr "Uusi yritys harjoitellessa"
+
+#: app/templates/settings-include.html:56
+msgid "Flashcards: How many cards per practice session"
+msgstr "Kysymyskortit: Kuinka monta korttia per sessio"
+
+#: app/templates/splash.html:6
+msgid "Welcome!"
+msgstr "Tervetuloa!"
+
+#: app/templates/splash.html:7
+msgid "Master a language by learning from stories of your own choosing"
+msgstr "Opi hallitsemaan kieli oppimalla valitsemastasi kertomuksistasi"
+
+#: app/templates/splash.html:13
+msgid "Create an account"
+msgstr "Luo uusi tiili"
+
+#: app/templates/splash.html:14
+msgid "It is free now and forever."
+msgstr "Se on ilmaista nyt ja aina."
+
+#: app/templates/splash.html:20
+msgid "Try Revita with our sample stories"
+msgstr "Kokeile Revitaa näytekertomuksillamme"
+
+#: app/templates/splash.html:25
+msgid "Register to upload your own stories"
+msgstr "Rekisteröidy lisätäksesi omia kertomuksiasi"
+
+#: app/templates/splash.html:28
+msgid "Revita is free and will always remain so."
+msgstr "Revita tulee aina olemaan ilmainen."
+
+#: app/templates/splash.html:36
+msgid "Which language would you like to practice?"
+msgstr "Mitä kieltä haluaisit opetella?"
+
+#: app/templates/splash.html:37
+msgid "You can change this anytime."
+msgstr "Voit vaihtaa tätä milloin tahansa."
+
+#: app/templates/splash.html:43
+msgid "Create Account"
+msgstr "Luo tiilisi"
+
+#: app/templates/splash.html:46
+msgid "Try Revita"
+msgstr "Kokeile Revitaa"
+
+#: app/templates/splash.html:109
+msgid "Back"
+msgstr "Takaisin"
+
+#: app/templates/stranger_shared_story.html:5
+#, python-format
+msgid "The user %(stranger)s has shared with you the story: &quot;%(story)s&quot;"
+msgstr "Käyttäjä %(stranger)s on jakanut kanssasi tarinan: &quot;%(story)s&quot;"
+
+#: app/templates/stranger_shared_story.html:8
+#, python-format
+msgid ""
+"Currently, anyone can share stories with you automatically.\n"
+"  You can modify this in your profile preferences. You can accept stories"
+" only from friends, add %(stranger)s as a friend, or block %(stranger)s "
+"from sending you anything, using the links below:"
+msgstr ""
+"Tällä hetkellä kuka tahansa voi jakaa kanssasi tarinan automaattisesti.\n"
+"  Voit muokata tätä asetuksissa. Voit vastaanottaa tarinoita vain "
+"ystäviltä, lisätä %(stranger)s ystäväksi, tai estää %(stranger)s  "
+"lähettämästä mitään jatkossa, käyttämällä allaolevia linkkejä:"
+
+#: app/templates/stranger_shared_story.html:12
+msgid "PROFILE"
+msgstr "PROFIILI"
+
+#: app/templates/stranger_shared_story.html:16
+msgid "ADD FRIEND"
+msgstr "LISÄÄ YSTÄVÄ"
+
+#: app/templates/translation-box.html:3
+msgid "Unfamiliar word?"
+msgstr "Tuntematon sana?"
+
+#: app/templates/translation-box.html:5
+msgid "Click on words near the exercises to explore their meaning..."
+msgstr ""
+"Klikkaa sinulle tuntemattomia sanoja tekstissä saadaksesi käännöksiä. "
+"Nämä sanat lisätään kysymyskortteihisi."
+
+#: app/templates/translation-box.html:10
+msgid "Translate to"
+msgstr "Käännä"
+
+#: revita_library/dictionary_remote.py:211
+#: revita_library/dictionary_remote.py:686
+msgid "Translation temporarily unavailable, please try again later..."
+msgstr "Käännös tilapäisesti poissa käytöstä, yrittäkää myöhemmin uudestaan..."
+
+#: revita_library/dictionary_remote.py:684
+msgid "Not accessible"
+msgstr "Pääsy evätty"
+
+#: revita_library/flashcards_lib.py:558
+msgid ""
+"No flashcards yet for this story. When you practice a story and click on "
+"unfamiliar words, they will be added to your flashcards!"
+msgstr ""
+"Ei flash-kortteja vielä.  Kun luet kertomuksen, klikkaa tuntemattomia "
+"sanoja lisätäksesi ne flash-kortteihin!"
+
+#: revita_library/flashcards_lib.py:560
+msgid ""
+"No flashcards yet. When you practice a story and click on unfamiliar "
+"words, they will be added to your flashcards!"
+msgstr ""
+"Ei flash-kortteja vielä.  Kun luet kertomuksen, klikkaa tuntemattomia "
+"sanoja lisätäksesi ne flash-kortteihin!"
+
+#: revita_library/flashcards_lib.py:573
+msgid ""
+"No flashcards found for this exercise. When you practice a story and "
+"click on unfamiliar words, they will be added to your flashcards!"
+msgstr ""
+"Ei flash-kortteja vielä.  Kun luet kertomuksen, klikkaa tuntemattomia "
+"sanoja lisätäksesi ne flash-kortteihin!"
+
+#~ msgid "Logged in as"
+#~ msgstr "Käyttäjä"
+
+#~ msgid "Choose a text"
+#~ msgstr "Valitse teksti"
+
+#~ msgid "Tools for Language Learning and Supporting Endangered Languages"
+#~ msgstr "Työkaluja kielten oppimiseen ja uhanalaisten kielten tukemiseen"
+
+#~ msgid "practice"
+#~ msgstr "harjoittele"
+
+#~ msgid "Start over"
+#~ msgstr "Aloita alusta"
+
+#~ msgid "Hint"
+#~ msgstr "Vihje"
+
+#~ msgid "Close"
+#~ msgstr "Sulje"
+
+#~ msgid "Get hint for one apple"
+#~ msgstr "Voit vaihtaa omena vihjeeseen"
+
+#~ msgid "Congratulations! You have solved this crossword!"
+#~ msgstr "Onnittelut! Olet ratkaissut sanaristikon."
+
+#~ msgid "You have no apples"
+#~ msgstr "Ei omenoita"
+
+#~ msgid "My languages"
+#~ msgstr "Kielesi"
+
+#~ msgid "Add your stories"
+#~ msgstr "Lisää oma kertomuksesi"
+
+#~ msgid "Please "
+#~ msgstr "Ole hyvä ja "
+
+#~ msgid "sign in"
+#~ msgstr "kirjaudu sivulle"
+
+#~ msgid "to add your own stories!"
+#~ msgstr "lisätäksesi tekstisi"
+
+#~ msgid "You can add your own stories from your files, or from any web page. "
+#~ msgstr "Voit lisätä omat tekstisi tiedostoistasi tai miltä tahansa web-sivulta."
+
+#~ msgid "Don't have an account yet?  Please "
+#~ msgstr ""
+
+#~ msgid "register here&rightarrow; "
+#~ msgstr ""
+
+#~ msgid "More "
+#~ msgstr ""
+
+#~ msgid "about Revita&rightarrow;"
+#~ msgstr "tietoa Revitasta&rightarrow;"
+
+#~ msgid ""
+#~ msgstr ""
+
+#~ msgid "Use sample stories from our library in \"guest\" mode,"
+#~ msgstr "Löydät myös esimerkkeja teksteistä meidän kirjastostamme"
+
+#~ msgid "without signing in."
+#~ msgstr "\"vieraana\", ilman kirjautumista."
+
+#~ msgid "(Your progress will not be saved for the next session.)"
+#~ msgstr "mutta edistymistäsi ei tallenneta seuraavaa istuntoa varten. "
+
+#~ msgid "Choose a file:"
+#~ msgstr "Valitse tiedosto:"
+
+#~ msgid "Browse"
+#~ msgstr "Selaa"
+
+#~ msgid "Submit"
+#~ msgstr "Lähetä tiedosto"
+
+#~ msgid "Or use a web page:"
+#~ msgstr "Tai lataa teksti verkkosivusta:"
+
+#~ msgid "Enter web address..."
+#~ msgstr "Ole hyvä ja syötä verkkosivun osoite..."
+
+#~ msgid "Add"
+#~ msgstr "Lisää"
+
+#~ msgid "For example you can visit the following websites to find more stories:"
+#~ msgstr "Voit ladata uusia tekstejä mm. seuraavilta verkkosivustoilta:"
+
+#~ msgid "Translate to"
+#~ msgstr "Käännä"
+
+#~ msgid "Library"
+#~ msgstr "Valitse teksti"
+
+#~ msgid "No stories to show..."
+#~ msgstr "Ei kertomuksia..."
+
+#~ msgid "Sign in to Revita"
+#~ msgstr "Kirjaudu sisään"
+
+#~ msgid "Email address"
+#~ msgstr "Sähköpostiosoite"
+
+#~ msgid "Password"
+#~ msgstr "Salasana"
+
+#~ msgid "Remember me"
+#~ msgstr "Pidä minut kirjautuneena"
+
+#~ msgid "Forgot password?"
+#~ msgstr "Salasana unohtunut?"
+
+#~ msgid "Register here!"
+#~ msgstr "Rekisteröidy"
+
+#~ msgid "Confirm password"
+#~ msgstr "Vahvista salasana"
+
+#~ msgid "Change password"
+#~ msgstr "Vaihda salasana"
+
+#~ msgid "Send email"
+#~ msgstr "Lähetä sähköposti"
+
+#~ msgid "Check Answers"
+#~ msgstr "Tarkista"
+
+#~ msgid "%(firstname)s %(lastname)s's profile"
+#~ msgstr "Käyttäjän %(firstname)s %(lastname)s profiili"
+
+#~ msgid "Interface language"
+#~ msgstr "Käyttöliittymän kieli"
+
+#~ msgid "Save"
+#~ msgstr "Tallenna"
+
+#~ msgid "First Name"
+#~ msgstr "Etunimi"
+
+#~ msgid "Last Name"
+#~ msgstr "Sukunimi"
+
+#~ msgid "Your Flashcards"
+#~ msgstr "Kysymyskorttisi"
+
+#~ msgid "Flash Cards"
+#~ msgstr "Kysymyskortit"
+
+#~ msgid "Check!"
+#~ msgstr "Tarkista!"
+
+#~ msgid "Back"
+#~ msgstr "Takaisin: "
+
+#~ msgid "Next card..."
+#~ msgstr "Seuraava kortti..."
+
+#~ msgid "Next&nbsp;card&nbsp;..."
+#~ msgstr "Seuraava&nbsp;kortti&"
+
+#~ msgid "Accept stories from"
+#~ msgstr "Ota vastaan kertomuksia"
+
+#~ msgid " only accepts stories from friends."
+#~ msgstr " ottaa vastaan kertomuksia vain ystäviltään."
+
+#~ msgid "No flashcards..."
+#~ msgstr "Ei flash-kortteja"
+
+#~ msgid "An error occurred while adding the story!"
+#~ msgstr "Tekstin poistaminen epäonnistui."
+
+#~ msgid "Add story"
+#~ msgstr "Lisää oma kertomuksesi"
+
+#~ msgid "Story was added successfully!"
+#~ msgstr "Tarina poistettu"
+
+#~ msgid "Story was deleted successfully!"
+#~ msgstr "Tekstin poistaminen onnistui!"
+
+#~ msgid "Correct answers / Total answers"
+#~ msgstr "Oikeita vastauksia / Kaikki vastaukset"
+
+#~ msgid "Group created, but some given emails had no registered user"
+#~ msgstr "Ryhmö luotu, mutta joillain annetuilla sähköpoisteilla ei ole käyttäjää"
+
+#~ msgid "Successfully added student"
+#~ msgstr "Oppilas lisätty"
+
+#~ msgid "More languages at Revita+"
+#~ msgstr "Lisää kieliä: Revita+"
+
+#~ msgid "Your texts: No texts uploaded yet."
+#~ msgstr "Minun kertomukseni (ei vielä omia tekstejä)"
+
+#~ msgid "Adding your story"
+#~ msgstr "Lisää oma kertomuksesi"
+
+#~ msgid "Go on and Upload some own texts!"
+#~ msgstr "Lisääppäs pari omia tekstejä!"
+
+#~ msgid "Article (flashcards)"
+#~ msgstr "En/Ett"
+
+#~ msgid "Welcome to Revita!"
+#~ msgstr "Tervetuloa Revitaan"
+
+#~ msgid "Please try it in demo mode with our sample stories"
+#~ msgstr "Ole hyvä ja kokeile näytekertomuksillamme"
+
+#~ msgid "Test"
+#~ msgstr "Koe"
+
+#~ msgid "Input your answer"
+#~ msgstr "Syötä vastauksesi"
+
+#~ msgid "Number of cards per practice session:"
+#~ msgstr "Korttien määrä per sessio:"
+
+#~ msgid "This word has already existed in flashcards. Merged with old one."
+#~ msgstr "Tämä sana on jo olemassa, yhdistetään"
+
+#~ msgid "Play with cards"
+#~ msgstr ""
+
+#~ msgid "Add a new card"
+#~ msgstr ""
+
+#~ msgid "New Word"
+#~ msgstr ""
+
+#~ msgid "Add a new hint"
+#~ msgstr ""
+
+#~ msgid "Add a new translation"
+#~ msgstr ""
+
+#~ msgid "Reset"
+#~ msgstr ""
+
+#~ msgid "Flashcards:How many cards per practice session?"
+#~ msgstr ""
+
+#~ msgid "Try to practice with your favourite stories to master your skills!"
+#~ msgstr ""
+
+#~ msgid "Try practicing with your favourite story to master your skills!"
+#~ msgstr ""
+
+#~ msgid "En/Ett"
+#~ msgstr ""
+
+#~ msgid "Der/Die/Das"
+#~ msgstr ""
+
+#~ msgid "La/Le"
+#~ msgstr ""
+
+#~ msgid "Maximum number of cards per practice session:"
+#~ msgstr ""
+
+#~ msgid "Start the group test"
+#~ msgstr "Aloita ryhmäkoe"
+
+#~ msgid "Edit"
+#~ msgstr ""
+
+#~ msgid "definition"
+#~ msgstr ""
+
+#~ msgid "Story of the Week"
+#~ msgstr "Viikon kertomus"
+
+#~ msgid "Story shared by:"
+#~ msgstr "Tarina jaettu käyttäjältä: "
+
+#~ msgid " says:"
+#~ msgstr " sanoo:"
+
+#~ msgid "click to listen"
+#~ msgstr "Paina kuunnellaksesi"
+
+#~ msgid "Practice"
+#~ msgstr "Harjoittele"
+
+#~ msgid "Flashcards"
+#~ msgstr "Kysymyskortti"
+
+#~ msgid "Compete"
+#~ msgstr "Kilpaile"
+
+#~ msgid "Difficult"
+#~ msgstr "Vaikea"
+
+#~ msgid "Average"
+#~ msgstr "Keskitaso"
+
+#~ msgid "Easy"
+#~ msgstr "Helppo"
+
+#~ msgid ""
+#~ "Please log in or register for more"
+#~ " precise progress tracking and personalized"
+#~ " experience."
+#~ msgstr "Kirjaudu sivulle käyttääksesi henkilökohtaisia ominaisuuksia"
+
+#~ msgid "More!"
+#~ msgstr "..."
+
+#~ msgid ""
+#~ "The user %(stranger)s has added you "
+#~ "to a group. You can join the "
+#~ "group by using the link below. If"
+#~ " you wish to exit the group "
+#~ "later on, please visit your profile "
+#~ "page to do so."
+#~ msgstr ""
+#~ "Käyttäjä %(stranger)s on lisännyt sinut "
+#~ "ryhmään. Voit liittyä ryhmään käyttämällä "
+#~ "alla olevaa linkkiä. Jos haluat poistua"
+#~ " ryhmästä myöhemmin, voit sen tehdä "
+#~ "profiilisivultasi."
+
+#~ msgid "See \""
+#~ msgstr "Katso \""
+
+#~ msgid "has blocked you."
+#~ msgstr "on estänyt sinut."
+
+#~ msgid "is already the owner of the story."
+#~ msgstr "on jo tarinan omistaja."
+
+#~ msgid "Translations in"
+#~ msgstr "Käännökset kielellä"
+
+#~ msgid "register here&rightarrow;"
+#~ msgstr "rekisteröidy&rightarrow;"
+
+#~ msgid " has blocked you."
+#~ msgstr ""
+
+#~ msgid " is already the owner of the story."
+#~ msgstr ""
+
+#~ msgid "Story shared with "
+#~ msgstr ""
+
+#~ msgid "Translations in "
+#~ msgstr ""
+
+#~ msgid "You practiced "
+#~ msgstr ""
+
+#~ msgid " hours last week! Keep it up"
+#~ msgstr ""
+
+#~ msgid "Use sample stories from our library in \"guest\" mode, "
+#~ msgstr ""
+
+#~ msgid "Exercise Setting"
+#~ msgstr ""
+
+#~ msgid "Stress inside word"
+#~ msgstr ""
+
+#~ msgid "Listening exercises"
+#~ msgstr ""
+
+#~ msgid "Participle ⇐ participle base (easier)"
+#~ msgstr ""
+
+#~ msgid "Participle ⇐ verb base (harder)"
+#~ msgstr ""
+
+#~ msgid "Group successfully created!"
+#~ msgstr "Ryhmä luotu!"
+
+#~ msgid "Group created, waiting for user approvals!"
+#~ msgstr "Ryhmä luotu, odotetaan käyttäjien suostumuksia!"
+
+#~ msgid "Plurals"
+#~ msgstr "Monikko"
+
+#~ msgid "Paradigm-1"
+#~ msgstr ""
+
+#~ msgid "Paradigm-2"
+#~ msgstr ""
+
+#~ msgid "Paradigm-3"
+#~ msgstr ""
+
+#~ msgid "Paradigm-4"
+#~ msgstr ""
+
+#~ msgid "Paradigm-5"
+#~ msgstr ""
+
