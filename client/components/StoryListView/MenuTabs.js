@@ -13,14 +13,14 @@ const Tabs = ({ location }) => {
   const dispatch = useDispatch()
   const language = useSelector(learningLanguageSelector)
 
-  useEffect(() => {
-    dispatch(getStories(language, {
-      sort_by: 'date',
-      order: -1,
-      page: 0,
-      page_size: 14,
-    }))
-  }, [language])
+  // useEffect(() => {
+  //   dispatch(getStories(language, {
+  //     sort_by: 'date',
+  //     order: -1,
+  //     page: 0,
+  //     page_size: 14,
+  //   }))
+  // }, [language])
 
   const panes = [
     {
