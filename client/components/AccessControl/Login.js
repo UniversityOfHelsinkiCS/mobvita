@@ -3,6 +3,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import { createRealToken, createAnonToken } from 'Utilities/redux/userReducer'
 import { Segment, Header, Button, Form } from 'semantic-ui-react'
 import { useHistory, useLocation } from 'react-router'
+import { Link } from 'react-router-dom'
 
 const Login = () => {
   const [email, setEmail] = useState('')
@@ -73,6 +74,7 @@ const Login = () => {
           Don't have an account yet?
         </h3>
         <div>
+          <Button as={Link} to="/register">Register</Button>
           <Button
             type="button"
             color="black"
