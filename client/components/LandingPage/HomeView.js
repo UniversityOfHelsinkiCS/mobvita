@@ -27,9 +27,7 @@ const PracticeButton = props => (
 )
 
 const HomeView = () => {
-  const language = useSelector(({ language }) => language)
   const eloHistory = useSelector(({ user }) => user.data.user.exercise_history
-    .filter(exercise => exercise.language.toLowerCase() === language)
     .map(exercise => exercise.score))
 
   const dispatch = useDispatch()
