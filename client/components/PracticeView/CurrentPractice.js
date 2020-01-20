@@ -5,7 +5,7 @@ import { getCurrentSnippet, getNextSnippet, postAnswers, setTotalNumberAction } 
 import { getTranslationAction, clearTranslationAction } from 'Utilities/redux/translationReducer'
 import { capitalize, localeOptions, learningLanguageSelector } from 'Utilities/common'
 
-import PreviousSnippet from 'Components/PracticeView/PreviousSnippet'
+import PreviousSnippets from 'Components/PracticeView/PreviousSnippets'
 import ExerciseCloze from 'Components/PracticeView/ExerciseCloze'
 import ExerciseMultipleChoice from 'Components/PracticeView/ExerciseMultipleChoice'
 import ExerciseHearing from 'Components/PracticeView/ExerciseHearing'
@@ -258,7 +258,7 @@ Part
       </Header>
       {story.url ? <a href={story.url}>Link to the source</a> : null}
 
-      <PreviousSnippet snippet={snippets.previous} />
+      <PreviousSnippets snippets={snippets.previous.filter(Boolean)} />
 
       <Segment style={{ marginBottom: '5px', wordSpacing: '1px', lineHeight: '2em' }}>
         {practice.map(exercise => wordInput(exercise))}

@@ -36,12 +36,12 @@ export const postAnswers = (storyId, answersObject, compete = false) => {
 
 // Reducer
 // You can include more app wide actions such as "selected: []" into the state
-export default (state = { data: [] }, action) => {
+export default (state = { previous: [] }, action) => {
   switch (action.type) {
     case 'RESET_SNIPPET_INDEX_SUCCESS':
       return {
         ...state,
-        previous: undefined,
+        previous: [],
         focused: action.response,
         pending: false,
         error: false,
@@ -62,7 +62,7 @@ export default (state = { data: [] }, action) => {
       return {
         ...state,
         focused: action.response,
-        previous: state.focused,
+        previous: state.previous.concat(state.focused),
         pending: false,
         error: false,
       }
@@ -80,7 +80,7 @@ export default (state = { data: [] }, action) => {
       return {
         ...state,
         focused: undefined,
-        previous: undefined,
+        previous: [],
       }
     case 'GET_NEXT_SNIPPET_ATTEMPT':
       return {
@@ -88,7 +88,7 @@ export default (state = { data: [] }, action) => {
         pending: true,
         error: false,
       }
-    case 'GET_NECT_SNIPPET_FAILURE':
+    case 'GET_NEXT_SNIPPET_FAILURE':
       return {
         ...state,
         pending: false,
@@ -98,7 +98,7 @@ export default (state = { data: [] }, action) => {
       return {
         ...state,
         focused: action.response,
-        previous: state.focused,
+        previous: state.previous.concat(state.focused),
         pending: false,
         error: false,
       }
