@@ -38,7 +38,7 @@ export const confirmUser = (token) => {
   return callBuilder(route, prefix, 'post', payload)
 }
 
-export default (state = { data: undefined }, action) => {
+export default (state = { data: null }, action) => {
   switch (action.type) {
     case 'LOGIN_SUCCESS':
       return {
@@ -92,7 +92,7 @@ export default (state = { data: undefined }, action) => {
     case 'CONFIRM_USER_SUCCESS':
       return {
         ...state,
-        data: { user: action.response },
+        data: action.response,
         pending: false,
         error: false,
       }

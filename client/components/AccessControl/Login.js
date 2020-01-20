@@ -1,18 +1,35 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { createRealToken, createAnonToken } from 'Utilities/redux/userReducer'
 import { Segment, Header, Button, Form } from 'semantic-ui-react'
+import { useHistory, useLocation } from 'react-router'
 
 const Login = () => {
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const loginError = useSelector(({ user }) => user.error)
   const errorMessage = useSelector(({ user }) => user.errorMessage)
+  const user = useSelector(({ user }) => user.data)
+  const location = useLocation()
+  const history = useHistory()
+
 
   const dispatch = useDispatch()
 
   const login = () => dispatch(createRealToken(email, password))
   const loginAnon = () => dispatch(createAnonToken())
+
+  useEffect(() => {
+    const { from } = location.state || { from: { pathname: '/' } }
+
+    if (user) {
+      if (!user.user.last_used_language) {
+        history.replace('/learningLanguage')
+      } else {
+        history.replace(from)
+      }
+    }
+  }, [user])
 
   return (
     <>

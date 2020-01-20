@@ -6,7 +6,7 @@ import StoryList from 'Components/StoryListView/StoryList'
 import HomeView from 'Components/LandingPage/HomeView'
 import { useIntl } from 'react-intl'
 import { learningLanguageSelector } from 'Utilities/common'
-import { Link, Route, Switch } from 'react-router-dom'
+import { Link } from 'react-router-dom'
 
 const Tabs = ({ location }) => {
   const intl = useIntl()
