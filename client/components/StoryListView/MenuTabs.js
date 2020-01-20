@@ -26,7 +26,7 @@ const Tabs = ({ location }) => {
     {
       menuItem: {
         as: Link,
-        content: intl.formatMessage({ id: 'HOME' }),
+        content: intl.formatMessage({ id: 'Home' }),
         to: '/home',
         key: 'home',
       },
@@ -35,7 +35,7 @@ const Tabs = ({ location }) => {
     {
       menuItem: {
         as: Link,
-        content: intl.formatMessage({ id: 'LIBRARY' }),
+        content: intl.formatMessage({ id: 'Library' }),
         to: '/library',
         key: 'library',
       },

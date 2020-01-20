@@ -1,0 +1,9 @@
+msgid "No stories to show..."
+msgstr "Inga berättelser att visa"
+
+msgid "No stories available"
+msgstr "Inga berättelser till förfogande"
+
+msgid "No matching stories found"
+msgstr "Inga liknande berättalser hittat"
+

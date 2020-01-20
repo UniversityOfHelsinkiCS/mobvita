@@ -143,11 +143,11 @@ const StoryList = ({ language }) => {
       <div style={{ display: 'flex', justifyContent: 'center' }}>
         <Button.Group color="teal" size="small" style={{ margin: '4px', marginTop: '15px' }}>
           <Button disabled={prevPageDisabled} onClick={adjustPage(-1)}>
-            <FormattedMessage id="PREV" />
+            <FormattedMessage id="previous" />
           </Button>
           <Button.Or text={page + 1} />
           <Button disabled={nextPageDisabled} onClick={adjustPage(1)}>
-            <FormattedMessage id="NEXT" />
+            <FormattedMessage id="next" />
           </Button>
         </Button.Group>
       </div>
