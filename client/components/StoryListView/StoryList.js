@@ -127,7 +127,7 @@ const StoryList = ({ language }) => {
     <div>
       {infoMessage && <Message>Story added! It will soon be available in your library.</Message>}
       {searchSort}
-      <Card.Group itemsPerRow={2} doubling>
+      <Card.Group itemsPerRow={1} doubling>
         {!user.story_upload_count
           && (
           <Card style={{ padding: '15px' }}>
