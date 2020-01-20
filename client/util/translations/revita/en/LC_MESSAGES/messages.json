@@ -459,13 +459,13 @@
     "upload-flashcards": "",
     "my-languages": "My language",
     "select-types-of-exercisesto-practice-34b953b387e6c6f6a7d4aa52ddaf177b": "",
-    "Home": "",
+    "Home": "Home",
     "Library": "",
     "all-flashcards": "",
     "Tests": "",
     "Comprehension": "",
     "practice-a-random-story-with-the-language-of-your-choice": "",
-    "practice-now": "",
+    "practice-now": "Practice now",
     "this-feature-is-coming-soon": "",
     "Culture": "",
     "Politics": "",
@@ -691,5 +691,7 @@
     "not-accessible": "",
     "no-flashcards-yet-for-this-story-when-you-practice-a-story-and-click-on-unfamiliar-words-they-will-b": "",
     "no-flashcards-yet-when-you-practice-a-story-and-click-on-unfamiliar-words-they-will-be-added-to-your": "",
-    "no-flashcards-found-for-this-exercise-when-you-practice-a-story-and-click-on-unfamiliar-words-they-w": ""
+    "no-flashcards-found-for-this-exercise-when-you-practice-a-story-and-click-on-unfamiliar-words-they-w": "",
+    "previous": "Previous",
+    "next": "Next"
 }
