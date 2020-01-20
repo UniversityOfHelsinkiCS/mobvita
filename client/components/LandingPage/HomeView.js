@@ -22,7 +22,7 @@ const PracticeButton = props => (
     }}
     {...props}
   >
-    <FormattedMessage id="PRACTICE_NOW" />
+    <FormattedMessage id="practice-now" />
   </Button>
 )
 
