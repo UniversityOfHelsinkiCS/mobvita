@@ -59,7 +59,7 @@ export default function Bar({ history }) {
     const lastUsedLanguage = (user.user.last_used_language)
 
     if (lastUsedLanguage) {
-      return images[`flag${capitalize(lastUsedLanguage)}`]
+      return images[`flag${capitalize(lastUsedLanguage.split('-').join(''))}`]
     }
     return null
   }
