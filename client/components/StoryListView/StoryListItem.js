@@ -8,15 +8,17 @@ import { FormattedMessage } from 'react-intl'
 const StoryListItem = ({ story }) => {
   const [showInfo, setShow] = useState(false)
 
+
   const icons = {
-    high: <Icon name="diamond" size="large" style={{ color: 'red' }} />,
-    average: <Icon name="angle double up" size="large" style={{ color: 'red' }} />,
-    low: <Icon name="angle up" size="large" style={{ color: 'forestgreen' }} />,
-    default: <Icon name="question" style={{ color: 'black' }} />,
+    high: <div><Icon name="star outline" size="large" style={{ color: 'red' }} /><Icon name="star outline" size="large" style={{ color: 'red' }} /><Icon name="star outline" size="large" style={{ color: 'red' }} /></div>,
+    average: <div><Icon name="star outline" size="large" style={{ color: 'steelblue' }} /><Icon name="star outline" size="large" style={{ color: 'steelblue' }} /></div>,
+    low: <div><Icon name="star outline" size="large" style={{ color: 'forestgreen' }} /></div>,
+    default: <div><Icon name="star outline" size="large" style={{ color: 'black' }} /></div>,
   }
 
   const difficultyIcon = icons[story.difficulty || 'default']
   const difficultyText = story.elo_score
+
 
   const storyInfoElements = [
     story.author ? `Author: ${story.author}` : null,
