@@ -111,9 +111,14 @@ export default function Bar({ history }) {
                 </Menu.Item>
 
                 <Menu.Item>
-                  <Button color="teal" fluid as={Link} to="/learningLanguage" onClick={() => menuClickWrapper()}>
+
+
+                  <Link to="/learningLanguage" onClick={() => menuClickWrapper()}>
+                    <button type="button" className="btn btn-primary btn-block">
                     Change learning language
-                  </Button>
+                    </button>
+                  </Link>
+
                 </Menu.Item>
               </>
             )}

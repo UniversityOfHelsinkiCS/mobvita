@@ -1,6 +1,15 @@
 $wrong-color: #ff5e5e;
 $button-color: teal;
 
+// BOOTSTRAP OVERRIDES:
+
+.btn-primary {
+  color: #fff;
+  background-color: hsla(208, 56%, 55%, 1);
+  border-color: #76c8d4;
+}
+
+
 .application-content {
   padding-bottom: 5em;
   padding-top: 1em;
