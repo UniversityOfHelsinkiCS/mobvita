@@ -11,6 +11,8 @@ const Register = () => {
     passwordAgain: '',
   })
 
+  const { error, errorMessage } = useSelector(({ register }) => register)
+
   const dispatch = useDispatch()
 
   const handleSubmit = () => {
@@ -36,10 +38,6 @@ const Register = () => {
     })
   }
 
-  const registerError = null
-  const errorMessage = null
-
-
   return (
     <>
       <Header as="h3" style={{ margin: '0.7em auto', fontSize: '4em' }}>Register</Header>
@@ -52,7 +50,7 @@ const Register = () => {
             <Form.Input
               label="Email"
               name="email"
-              error={registerError}
+              error={error}
               type="email"
               value={formState.email}
               onChange={e => handleFormChange(e)}
@@ -61,7 +59,7 @@ const Register = () => {
             <Form.Input
               label="Username"
               name="username"
-              error={registerError}
+              error={error}
               type="username"
               value={formState.username}
               onChange={e => handleFormChange(e)}
@@ -70,7 +68,7 @@ const Register = () => {
             <Form.Input
               label="Password"
               name="password"
-              error={registerError}
+              error={error}
               type="password"
               value={formState.password}
               onChange={e => handleFormChange(e)}
@@ -79,7 +77,7 @@ const Register = () => {
             <Form.Input
               label="Repeat password"
               name="passwordAgain"
-              error={registerError}
+              error={error}
               type="password"
               value={formState.passwordAgain}
               onChange={e => handleFormChange(e)}
@@ -93,7 +91,7 @@ const Register = () => {
             >
               Register
             </Form.Button>
-            {registerError && <div style={{ color: 'red' }}>{errorMessage}</div>}
+            {error && <div style={{ color: 'red' }}>{errorMessage}</div>}
           </div>
         </Form>
       </Segment>
