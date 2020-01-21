@@ -19,7 +19,7 @@ export default (state = { data: undefined }, action) => {
         ...state,
         pending: false,
         error: true,
-        errorMessage: action.response.message,
+        errorMessage: action.response.response.data,
       }
     case 'POST_REGISTER_SUCCESS':
       return {

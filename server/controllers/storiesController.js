@@ -15,7 +15,7 @@ const getOne = async (req, res) => {
   res.send(response.data)
 }
 
-const createOne = async (req,res) => {
+const createOne = async (req, res) => {
   const response = await axios.post('/stories', req.body, { headers: req.headers })
   res.send(response.data)
 }
@@ -23,5 +23,5 @@ const createOne = async (req,res) => {
 module.exports = {
   getOne,
   getAll,
-  createOne
+  createOne,
 }
