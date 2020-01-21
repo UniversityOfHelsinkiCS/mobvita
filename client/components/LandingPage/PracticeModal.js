@@ -10,15 +10,20 @@ const extractFilters = object => Object
   .filter(entry => entry[1])
   .map(([key]) => capitalize(key))
 
-const CheckboxGroup = ({ values, onChange }) => (
-  Object.entries(values).sort().map(([key, val]) => (
-    <Checkbox
-      key={key}
-      onChange={onChange(key)}
-      label={capitalize(key)}
-      checked={val}
-    />
-  ))
+const CheckboxGroup = ({ values, onClick }) => (
+  <div style={{ display: 'flex', flexWrap: 'wrap' }}>{
+    Object.entries(values).sort().map(([key, val]) => (
+      <Button
+        style={{ marginBottom: '5px' }}
+        toggle
+        active={val}
+        key={key}
+        onClick={onClick(key)}
+      >
+        {capitalize(key)}
+      </Button>
+    ))}
+  </div>
 )
 
 const PracticeModal = ({ trigger }) => {
@@ -90,12 +95,12 @@ const PracticeModal = ({ trigger }) => {
     filteredLink = `/stories/${filteredStories[randomStoryIndex]._id}/practice`
   }
 
-  const handleCategoryChange = category => (_, data) => {
-    setCategories({ ...categories, [category]: data.checked })
+  const handleCategoryChange = category => () => {
+    setCategories({ ...categories, [category]: !categories[category] })
   }
 
-  const handleLibraryChange = library => (_, data) => {
-    setLibraries({ ...libraries, [library]: data.checked })
+  const handleLibraryChange = library => () => {
+    setLibraries({ ...libraries, [library]: !libraries[library] })
   }
 
   const handleClose = () => {
@@ -131,12 +136,12 @@ const PracticeModal = ({ trigger }) => {
 
         <div style={{ padding: '1em' }}>
           <div>Story library</div>
-          <CheckboxGroup values={libraries} onChange={handleLibraryChange} />
+          <CheckboxGroup values={libraries} onClick={handleLibraryChange} />
         </div>
         <div style={{ padding: '1em' }}>
           <div>Story category</div>
           <div>
-            <CheckboxGroup values={categories} onChange={handleCategoryChange} />
+            <CheckboxGroup values={categories} onClick={handleCategoryChange} />
           </div>
         </div>
         <div style={{ padding: '1em' }} />
