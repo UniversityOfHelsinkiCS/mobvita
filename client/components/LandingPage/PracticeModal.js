@@ -31,6 +31,7 @@ const PracticeModal = ({ trigger }) => {
     {
       private: true,
       public: true,
+      shared: true,
     },
   )
   const [categories, setCategories] = useState(
@@ -54,19 +55,29 @@ const PracticeModal = ({ trigger }) => {
   ))
 
   const language = useSelector(learningLanguageSelector)
+  const user = useSelector(({ user }) => user.data)
 
   const dispatch = useDispatch()
 
   useEffect(() => {
+    const librariesToShow = extractFilters(libraries)
+    const categoriesToShow = extractFilters(categories)
+
     const filtered = stories.filter((story) => {
-      const storyLibrary = story.public ? 'Public' : 'Private'
-      const librariesToShow = extractFilters(libraries)
-      return librariesToShow.includes(storyLibrary)
+      if (story.public) {
+        return librariesToShow.includes('Public')
+      }
+
+      if (story.sharedwith && story.sharedwith.includes(user.user.oid)) {
+        return librariesToShow.includes('Shared')
+      }
+
+      return librariesToShow.includes('Private')
     }).filter((story) => {
-      const categoriesToShow = extractFilters(categories)
       if (categoriesToShow.includes('Uncategorized') && !story.category) {
         return true
       }
+
       return categoriesToShow.includes(story.category)
     })
 
