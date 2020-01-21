@@ -16,7 +16,7 @@ const setSelf = async (req, res) => {
 const register = async (req, res) => {
   const data = req.body
   const url = '/register'
-  const response = await axios.post(url, data)
+  const response = await axios.post(url, data, { headers: req.headers })
   res.send(response.data)
 }
 

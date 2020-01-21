@@ -105,6 +105,8 @@ export default function Bar({ history }) {
                     <div>{user.user.username}</div>
                     <div>{user.user.email}</div>
                     <div>Streak data unavailable</div>
+                    {user.user.email === 'anonymous_email'
+                      && <Link to="register">Register to save your progress</Link>}
                   </div>
                 </Menu.Item>
 
