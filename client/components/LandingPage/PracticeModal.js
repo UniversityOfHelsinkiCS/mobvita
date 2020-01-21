@@ -34,6 +34,7 @@ const PracticeModal = ({ trigger }) => {
       politics: true,
       culture: true,
       sport: true,
+      uncategorized: true,
     },
   )
   const [filteredStories, setFilteredStories] = useState([])
@@ -58,6 +59,9 @@ const PracticeModal = ({ trigger }) => {
       return librariesToShow.includes(storyLibrary)
     }).filter((story) => {
       const categoriesToShow = extractFilters(categories)
+      if (categoriesToShow.includes('Uncategorized') && !story.category) {
+        return true
+      }
       return categoriesToShow.includes(story.category)
     })
 
