@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
-import { Segment, Button, Header, Loader, Dimmer } from 'semantic-ui-react'
+import { Segment, Button, Header, Loader } from 'semantic-ui-react'
 import { getCurrentSnippet, getNextSnippet, postAnswers, setTotalNumberAction } from 'Utilities/redux/snippetsReducer'
 import { getTranslationAction, clearTranslationAction } from 'Utilities/redux/translationReducer'
 import { capitalize, localeOptions, learningLanguageSelector } from 'Utilities/common'
@@ -258,7 +258,7 @@ Part
       </Header>
       {story.url ? <a href={story.url}>Link to the source</a> : null}
 
-      <PreviousSnippets snippets={snippets.previous.filter(Boolean)} />
+      <PreviousSnippets snippets={snippets.previous.filter(Boolean)} textToSpeech={textToSpeech} />
 
       <Segment style={{ marginBottom: '5px', wordSpacing: '1px', lineHeight: '2em' }}>
         {practice.map(exercise => wordInput(exercise))}

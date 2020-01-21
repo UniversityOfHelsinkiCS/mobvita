@@ -1,17 +1,32 @@
 import React from 'react'
 import { Segment } from 'semantic-ui-react'
 
-const PreviousSnippets = ({ snippets }) => {
+const PreviousSnippets = ({ snippets, textToSpeech }) => {
   if (snippets.length === 0) return null
-  // const { practice_snippet: practices } = snippet
 
   return (
     <Segment>
       {snippets.map(snippet => snippet.practice_snippet.map((word) => {
-        const { surface, ID, isWrong, tested } = word
-        if (isWrong) return <span key={ID} style={{ color: 'firebrick' }}>{surface}</span>
-        if (tested) return <span key={ID} style={{ color: 'green' }}>{surface}</span>
-        return <span key={ID}>{surface}</span>
+        const { surface, ID, isWrong, tested, lemmas } = word
+        let color = ''
+
+        if (tested) {
+          color = isWrong ? 'firebrick' : 'green'
+        }
+
+        return (
+          <span
+            className="word-interactive "
+            role="button"
+            onClick={() => textToSpeech(surface, lemmas)}
+            key={ID}
+            style={{ color }}
+            onKeyDown={() => textToSpeech(word.surface, word.lemmas)}
+            tabIndex={-1}
+          >
+            {surface}
+          </span>
+        )
       }))}
     </Segment>
   )
