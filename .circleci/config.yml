@@ -2,7 +2,12 @@
 version: 2.1
 orbs:
   dockerhub: circleci/docker@0.5.1
+  cypress: cypress-io/cypress@1
 workflows:
+  build:
+    jobs:
+      - cypress/run:
+          start: npm run dev
   deploy:
     jobs:
       - dockerhub/publish:
