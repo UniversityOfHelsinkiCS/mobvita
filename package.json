@@ -11,7 +11,9 @@
     "lint": "eslint .",
     "lint:fix": "eslint . --fix",
     "test": "echo \"Error: no test specified\" && exit 1",
-    "stats": "webpack --mode production --json --optimize-minimize > stats.json"
+    "stats": "webpack --mode production --json --optimize-minimize > stats.json",
+    "cypress:open": "cypress open",
+    "cypress:run": "cypress run"
   },
   "engines": {
     "node": ">=10.15"
@@ -31,6 +33,7 @@
     "chokidar": "^3.0.2",
     "cross-env": "^5.2.0",
     "css-loader": "^2.1.0",
+    "cypress": "^3.8.2",
     "dotenv": "^6.0.0",
     "eslint": "^5.13.0",
     "eslint-config-airbnb": "^17.1.1",
