@@ -17,6 +17,11 @@ describe('Mobvita', function() {
         .click()
     })
 
+    this.afterEach(function() {
+      cy.get('.bars').click()
+      cy.contains('Log out').click()
+    })
+
     it('library opens', function() {
       cy.contains('Library')
         .click()
