@@ -6,9 +6,6 @@ import moment from 'moment'
 import { FormattedMessage } from 'react-intl'
 
 const StoryListItem = ({ story }) => {
-  const [showInfo, setShow] = useState(false)
-
-
   const icons = {
     high: <div><Icon name="star outline" size="large" style={{ color: 'red' }} /><Icon name="star outline" size="large" style={{ color: 'red' }} /><Icon name="star outline" size="large" style={{ color: 'red' }} /></div>,
     average: <div><Icon name="star outline" size="large" style={{ color: 'steelblue' }} /><Icon name="star outline" size="large" style={{ color: 'steelblue' }} /></div>,
@@ -17,7 +14,6 @@ const StoryListItem = ({ story }) => {
   }
 
   const difficultyIcon = icons[story.difficulty || 'default']
-  const difficultyText = story.elo_score
 
 
   const storyInfoElements = [
@@ -35,7 +31,6 @@ const StoryListItem = ({ story }) => {
       <Progress />
     </>]
 
-  const storyInfoList = storyInfoElements.map(element => <List.Item key={`${story._id}`}>{element}</List.Item>)
   return (
     <Card
       fluid

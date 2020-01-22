@@ -1,30 +1,15 @@
 import React, { useState, useEffect } from 'react'
-import { Modal, Button, Checkbox, Container } from 'semantic-ui-react'
+import { Modal, Button, Container } from 'semantic-ui-react'
 import { Link } from 'react-router-dom'
 import { useSelector, useDispatch } from 'react-redux'
 import { capitalize, learningLanguageSelector } from 'Utilities/common'
 import { getStories } from 'Utilities/redux/storiesReducer'
+import CheckboxGroup from 'Components/CheckboxGroup'
 
 const extractFilters = object => Object
   .entries(object)
   .filter(entry => entry[1])
   .map(([key]) => capitalize(key))
-
-const CheckboxGroup = ({ values, onClick }) => (
-  <div style={{ display: 'flex', flexWrap: 'wrap' }}>{
-    Object.entries(values).sort().map(([key, val]) => (
-      <Button
-        style={{ marginBottom: '5px' }}
-        toggle
-        active={val}
-        key={key}
-        onClick={onClick(key)}
-      >
-        {capitalize(key)}
-      </Button>
-    ))}
-  </div>
-)
 
 const PracticeModal = ({ trigger }) => {
   const [libraries, setLibraries] = useState(
@@ -126,7 +111,6 @@ const PracticeModal = ({ trigger }) => {
       sport: true,
     })
   }
-
 
   return (
     <Modal
