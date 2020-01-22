@@ -15,7 +15,10 @@ import ErrorBoundary from 'Components/ErrorBoundary'
 import ConnectedIntlProvider from 'Components/ConnectedIntlProvider'
 
 if (inProduction) {
-  Sentry.init({ dsn: 'https://509ab4585bb54fda8a94a461c1007146@toska.cs.helsinki.fi/13' })
+  Sentry.init({
+    dsn: 'https://509ab4585bb54fda8a94a461c1007146@toska.cs.helsinki.fi/13',
+    environment: basePath === '/' ? 'production' : 'staging',
+  })
 }
 const refresh = () => render(
   <Provider store={store}>
