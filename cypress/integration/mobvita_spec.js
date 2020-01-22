@@ -6,9 +6,7 @@ describe('Mobvita', function() {
   it('can log in as anonymous', function() {
     cy.contains(/Test Mobvita.*/)
       .click()
-    cy.get('.bars').click()
-    cy.contains('Anonymous User')
-    cy.contains('Log out').click()
+    cy.contains('CHOOSE_LANG')
   })
 
   it('can log in as user', function() {
