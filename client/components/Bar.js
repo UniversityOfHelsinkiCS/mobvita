@@ -135,11 +135,10 @@ export default function Bar({ history }) {
             </Menu.Item>
 
             <div style={{ marginTop: 'auto' }}>
-              <Menu.Item style={{ display: 'flex', flexDirection: 'row', justifyContent: 'center' }}>
-                <AboutUs trigger={<Button size="small">About us</Button>} />
-                <ContactUs trigger={<Button size="small">Contact us</Button>} />
-                { user && <Button size="small" onClick={() => menuClickWrapper(signOut)}>Log out</Button>}
-
+              <Menu.Item style={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-between' }}>
+                <AboutUs trigger={<button type="button" className="btn btn-secondary">About us</button>} />
+                <ContactUs trigger={<button type="button" className="btn btn-secondary">Contact us</button>} />
+                { user && <button type="button" className="btn btn-secondary" onClick={() => menuClickWrapper(signOut)}>Log out</button>}
               </Menu.Item>
               {/* eslint-disable no-undef */}
               <div>{`Built at: ${__VERSION__}`}</div>
