@@ -249,20 +249,16 @@ const CurrentPractice = ({ storyId }) => {
 
   return (
     <>
-      <Header>
-        {story.title}
-        {' '}
-Part
-        {' '}
-        {`${snippets.focused.snippetid[0] + 1}/${snippets.totalnum}`}
-      </Header>
+      <h3>
+        {`${story.title} Part ${snippets.focused.snippetid[0] + 1}/${snippets.totalnum}`}
+      </h3>
       {story.url ? <a href={story.url}>Link to the source</a> : null}
 
       <PreviousSnippets snippets={snippets.previous.filter(Boolean)} textToSpeech={textToSpeech} />
 
-      <Segment style={{ marginBottom: '5px', wordSpacing: '1px', lineHeight: '2em' }}>
+      <div className="practice-container">
         {practice.map(exercise => wordInput(exercise))}
-      </Segment>
+      </div>
 
       {exerciseCount === 0
         ? <Button fluid onClick={continueToNextSnippet}>Continue to next snippet</Button>

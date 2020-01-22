@@ -5,7 +5,7 @@ import { postStory } from 'Utilities/redux/storiesReducer'
 import { capitalize } from 'Utilities/common'
 import { useIntl } from 'react-intl'
 
-const StoryForm = ({ language, onStorySubmit }) => {
+const StoryForm = ({ language }) => {
   const intl = useIntl()
   const [storyUrl, setStoryUrl] = useState('')
   const dispatch = useDispatch()
@@ -20,7 +20,6 @@ const StoryForm = ({ language, onStorySubmit }) => {
 
     dispatch(postStory(newStory))
     setStoryUrl('')
-    onStorySubmit()
   }
 
   return (

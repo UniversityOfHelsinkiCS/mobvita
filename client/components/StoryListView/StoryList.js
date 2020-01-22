@@ -10,7 +10,6 @@ import { capitalize } from 'Utilities/common'
 import StoryForm from './StoryForm'
 
 const StoryList = ({ language }) => {
-  const [infoMessage, setInfoMessage] = useState(false)
   const [library, setLibrary] = useState('private')
   const [sorter, setSorter] = useState('date')
   const [searchString, setSearchString] = useState('')
@@ -87,7 +86,7 @@ const StoryList = ({ language }) => {
     <div style={
       { display: 'flex', justifyContent: 'space-between', flexWrap: 'wrap', margin: '10px 0' }}
     >
-      <StoryForm language={language} onStorySubmit={() => setInfoMessage(true)} />
+      <StoryForm language={language} />
       <Search
         open={false}
         icon={noResults ? 'close' : 'search'}
@@ -140,14 +139,13 @@ const StoryList = ({ language }) => {
 
   return (
     <div>
-      {infoMessage && <Message>Story added! It will soon be available in your library.</Message>}
       {searchSort}
       <Card.Group itemsPerRow={1} doubling>
         {!user.story_upload_count
           && (
           <Card style={{ padding: '15px' }}>
             <h5>Study any text!</h5>
-            <StoryForm language={language} onStorySubmit={() => setInfoMessage(true)} />
+            <StoryForm language={language} />
           </Card>
           )
         }
