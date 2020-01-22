@@ -9,6 +9,7 @@ import compete from './competitionReducer'
 import sidebar from './sidebarReducer'
 import email from './emailReducer'
 import register from './registerReducer'
+import notification from './notificationReducer'
 
 
 const rootReducer = combineReducers({
@@ -21,6 +22,7 @@ const rootReducer = combineReducers({
   sidebar,
   email,
   register,
+  notification,
 })
 
 export default (state, action) => (
