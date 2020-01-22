@@ -1,7 +1,7 @@
 $wrong-color: #ff5e5e;
 $button-color: teal;
 
-// BOOTSTRAP OVERRIDES:
+// BOOTSTRAP OVERRIDES FROM REVITA:
 
 .btn-primary {
   color: #fff;
@@ -9,6 +9,19 @@ $button-color: teal;
   border-color: #76c8d4;
 }
 
+.btn-secondary {
+  color: #777;
+  background-color: #fff;
+  border-color: #76c8d4;
+}
+
+.btn-tertiary {
+  color: #777;
+  background-color: #fff;
+  border-color: #f0f0f0;
+}
+
+// MISC CSS:
 
 .application-content {
   padding-bottom: 5em;
