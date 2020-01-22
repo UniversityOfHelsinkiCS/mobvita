@@ -1,8 +1,7 @@
-
-function logout() {
+Cypress.Commands.add('logout', () => {
   cy.get('.bars').click()
   cy.contains('Log out').click()
-}
+})
 
 describe('Mobvita', function() {
   this.beforeEach(function() {
@@ -33,7 +32,7 @@ describe('Mobvita', function() {
     })
 
     this.afterEach(function() {
-      logout()
+      cy.logout()
     })
 
     it('library opens', function() {
