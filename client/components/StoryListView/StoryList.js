@@ -5,6 +5,8 @@ import { Message, Button, Placeholder, Card, Search, Select } from 'semantic-ui-
 import { getStories, getAllStories } from 'Utilities/redux/storiesReducer'
 import StoryListItem from 'Components/StoryListView/StoryListItem'
 import { FormattedMessage } from 'react-intl'
+import CheckboxGroup from 'Components/CheckboxGroup'
+import { capitalize } from 'Utilities/common'
 import StoryForm from './StoryForm'
 
 const StoryList = ({ language }) => {
@@ -40,10 +42,13 @@ const StoryList = ({ language }) => {
     { key: 'difficulty', text: 'Difficulty', value: 'difficulty' },
   ]
 
-  const libraryDropdownOptions = [
-    { key: 'private', text: 'Private', value: 'private' },
-    { key: 'public', text: 'Public', value: 'public' },
-  ]
+  const [libraries, setLibraries] = useState(
+    {
+      private: true,
+      public: true,
+      shared: true,
+    },
+  )
 
   const handleSortChange = (e, option) => {
     setSorter(option.value)
@@ -67,6 +72,10 @@ const StoryList = ({ language }) => {
     )
   }
 
+  const handleLibraryChange = library => () => {
+    setLibraries({ ...libraries, [library]: !libraries[library] })
+  }
+
   const prevPageDisabled = false
   const nextPageDisabled = false
 
@@ -85,11 +94,7 @@ const StoryList = ({ language }) => {
         value={searchString}
         onSearchChange={handleSearchChange}
       />
-      <Select
-        value={library}
-        options={libraryDropdownOptions}
-        onChange={(_, option) => setLibrary(option.value)}
-      />
+      <CheckboxGroup values={libraries} onClick={handleLibraryChange} />
       <Select
         value={sorter}
         options={sortDropdownOptions}
@@ -114,12 +119,22 @@ const StoryList = ({ language }) => {
 
   const filteredInsteadOfPaginated = searchString && searchedStories.length < 30
   const displayStories = filteredInsteadOfPaginated ? searchedStories : stories
+
+  const librariesToShow = Object
+    .entries(libraries)
+    .filter(entry => entry[1])
+    .map(([key]) => capitalize(key))
+
   const libraryFilteredStories = displayStories.filter((story) => {
-    if (library === 'public') {
-      return story.public
+    if (story.public) {
+      return librariesToShow.includes('Public')
     }
 
-    return library === 'private' && story.user === user.oid
+    if (story.sharedwith && story.sharedwith.includes(user.oid)) {
+      return librariesToShow.includes('Shared')
+    }
+
+    return librariesToShow.includes('Private')
   })
 
   return (
