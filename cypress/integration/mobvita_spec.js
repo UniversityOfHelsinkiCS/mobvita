@@ -1,9 +1,23 @@
+Cypress.Commands.add('logout', () => {
+  cy.get('.bars').click()
+  cy.contains('Log out').click()
+})
+
 describe('Mobvita', function() {
   this.beforeEach(function() {
     cy.visit('http://localhost:8000')
   })
+
   it('login page opens', function() {
     cy.contains('Login')
+  })
+
+  it('can log in as anonymous', function() {
+    cy.contains(/Test Mobvita.*/)
+      .click()
+    cy.get('.bars').click()
+    cy.contains('Anonymous User')
+    cy.contains('Log out').click()
   })
 
   describe('when logged in', function() {
@@ -18,8 +32,7 @@ describe('Mobvita', function() {
     })
 
     this.afterEach(function() {
-      cy.get('.bars').click()
-      cy.contains('Log out').click()
+      cy.logout()
     })
 
     it('library opens', function() {
