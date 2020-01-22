@@ -20,15 +20,23 @@ describe('Mobvita', function() {
     cy.contains('Log out').click()
   })
 
+  it('can log in as user', function() {
+    cy.get('input:first')
+      .type('elbert.alyas@plutocow.com')
+    cy.get('input:last')
+      .type('emacsemacs')
+    cy.get('form')
+      .contains('Login')
+      .click()
+  })
+
   describe('when logged in', function() {
     this.beforeEach(function() {
-      cy.get('input:first')
-        .type('elbert.alyas@plutocow.com')
-      cy.get('input:last')
-        .type('emacsemacs')
-      cy.get('form')
-        .contains('Login')
-        .click()
+      cy.request('POST', '/api/session', { email: 'elbert.alyas@plutocow.com', password: 'emacsemacs'})
+        .then(response => {
+          window.localStorage.setItem('user', JSON.stringify(response.body))
+        })
+      cy.reload()
     })
 
     this.afterEach(function() {
