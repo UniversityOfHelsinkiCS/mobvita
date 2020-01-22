@@ -74,8 +74,8 @@ export * from '@root/config/common'
 export const getTextWidth = (text) => {
   const myCanvas = getTextWidth.canvas || (getTextWidth.canvas = document.createElement('canvas'))
   const context = myCanvas.getContext('2d')
-  context.font = '1rem lato'
+  context.font = '1rem monospace' // This should match with the defaultFont defined in custom.scss
 
   const metrics = context.measureText(text)
-  return 40 + metrics.width // add just random number, lets hope its fine.
+  return 65 + metrics.width // add just random number, lets hope its fine.
 }
