@@ -10,4 +10,5 @@ Run `npm ci`
 
 Run `npm run dev` or `docker-compose up` whichever you prefer
 
-# Production deployment will happen automatically from master branch
+# Staging deployment will happen automatically from master branch
+- Production deployment happens automatically from releases
