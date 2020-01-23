@@ -62,6 +62,7 @@ const Login = () => {
           </Form.Field>
           <div style={{ display: 'flex', flexDirection: 'column' }}>
             <Form.Button
+              data-cy="login"
               type="submit"
               color="teal"
             >

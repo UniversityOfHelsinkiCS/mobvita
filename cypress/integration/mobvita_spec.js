@@ -15,7 +15,7 @@ describe('Mobvita', function() {
     cy.get('input:last')
       .type('emacsemacs')
     cy.get('form')
-      .contains('Login')
+      .get('[data-cy=login]')
       .click()
   })
 
@@ -32,7 +32,8 @@ describe('Mobvita', function() {
     it('library opens', function() {
       cy.contains('Library')
         .click()
-      cy.contains('GO!')
+      cy.get('[data-cy=library-controls]')
+      cy.url().should('include', '/library')
     })
 
     it('can start random practice', function() {
