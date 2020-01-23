@@ -83,7 +83,9 @@ const StoryList = ({ language }) => {
 
   const noResults = !allPending && searchString.length > 0 && searchedStories.length === 0
   const searchSort = (
-    <div style={
+    <div
+      data-cy="library-controls"
+      style={
       { display: 'flex', justifyContent: 'space-between', flexWrap: 'wrap', margin: '10px 0' }}
     >
       <StoryForm language={language} />
