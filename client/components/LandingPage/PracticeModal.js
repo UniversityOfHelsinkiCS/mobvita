@@ -16,7 +16,7 @@ const PracticeModal = ({ trigger }) => {
     {
       private: true,
       public: true,
-      shared: true,
+      group: true,
     },
   )
   const [categories, setCategories] = useState(
@@ -54,7 +54,7 @@ const PracticeModal = ({ trigger }) => {
       }
 
       if (story.sharedwith && story.sharedwith.includes(user.user.oid)) {
-        return librariesToShow.includes('Shared')
+        return librariesToShow.includes('Private')
       }
 
       return librariesToShow.includes('Private')
