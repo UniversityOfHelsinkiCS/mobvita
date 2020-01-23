@@ -5,7 +5,6 @@ import React, { useState, useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { getProgress } from 'Utilities/redux/uploadProgressReducer'
 import { getStories } from 'Utilities/redux/storiesReducer'
-import { learningLanguageSelector } from 'Utilities/common'
 import { setNotification } from 'Utilities/redux/notificationReducer'
 
 
@@ -13,10 +12,10 @@ export default function Toaster() {
   const message = useSelector(({ notification }) => notification.message)
   const type = useSelector(({ notification }) => notification.type)
   const dispatch = useDispatch()
-  const storyId = useSelector(({ uploadProgress }) => uploadProgress.storyId)
-  const progress = useSelector(({ uploadProgress }) => uploadProgress.progress)
+  const { storyId, progress } = useSelector(({ uploadProgress }) => uploadProgress)
   const [interval, saveInterval] = useState(null)
-  const language = useSelector(learningLanguageSelector)
+
+  const user = useSelector(({ user }) => user)
 
 
   const [progressToastId, setProgressToastId] = useState(null)
@@ -45,7 +44,7 @@ export default function Toaster() {
       if (progress === 1) {
         clearInterval(interval)
         toast.done(progressToastId)
-        dispatch(getStories(language, {
+        dispatch(getStories(user.data.user.last_used_language, {
           sort_by: 'date',
           order: -1,
           page: 0,
