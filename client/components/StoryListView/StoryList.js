@@ -134,6 +134,10 @@ const StoryList = ({ language }) => {
       return librariesToShow.includes('Private')
     }
 
+    if (story.user !== user.oid) {
+      return librariesToShow.includes('Group')
+    }
+
     return librariesToShow.includes('Private')
   })
 

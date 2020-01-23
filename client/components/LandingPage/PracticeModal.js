@@ -57,6 +57,10 @@ const PracticeModal = ({ trigger }) => {
         return librariesToShow.includes('Private')
       }
 
+      if (story.user !== user.user.oid) {
+        return librariesToShow.includes('Group')
+      }
+
       return librariesToShow.includes('Private')
     }).filter((story) => {
       if (categoriesToShow.includes('Uncategorized') && !story.category) {
