@@ -1,38 +1,32 @@
-Cypress.Commands.add('logout', () => {
-  cy.get('.bars').click()
-  cy.contains('Log out').click()
-})
-
 describe('Mobvita', function() {
   this.beforeEach(function() {
     cy.visit('http://localhost:8000')
   })
 
-  it('login page opens', function() {
-    cy.contains('Login')
+  it('can log in as anonymous', function() {
+    cy.get('[data-cy=login-anon]')
+      .click()
+    cy.get('[data-cy=choose-lang]')
   })
 
-  it('can log in as anonymous', function() {
-    cy.contains(/Test Mobvita.*/)
+  it('can log in as user', function() {
+    cy.get('input:first')
+      .type('elbert.alyas@plutocow.com')
+    cy.get('input:last')
+      .type('emacsemacs')
+    cy.get('form')
+      .contains('Login')
       .click()
-    cy.get('.bars').click()
-    cy.contains('Anonymous User')
-    cy.contains('Log out').click()
   })
 
   describe('when logged in', function() {
     this.beforeEach(function() {
-      cy.get('input:first')
-        .type('elbert.alyas@plutocow.com')
-      cy.get('input:last')
-        .type('emacsemacs')
-      cy.get('form')
-        .contains('Login')
-        .click()
-    })
-
-    this.afterEach(function() {
-      cy.logout()
+      cy.request('POST', '/api/session', { email: 'elbert.alyas@plutocow.com', password: 'emacsemacs'})
+        .as('user')
+        .then(response => {
+          window.localStorage.setItem('user', JSON.stringify(response.body))
+          cy.reload()
+        })
     })
 
     it('library opens', function() {
@@ -43,7 +37,7 @@ describe('Mobvita', function() {
 
     it('can start random practice', function() {
       cy.contains('Practice now').click()
-      cy.contains(/Start.*/).click()
+      cy.get('[data-cy=start-random]').click()
       cy.contains('Skip this part')
     })
   })

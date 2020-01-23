@@ -3,7 +3,7 @@ import { capitalize } from 'Utilities/common'
 
 // const buttonClass = toggled ? 'btn btn-secondary' : 'btn btn-info'
 const ToggleButton = ({ toggled, children, ...rest }) => {
-  const className = !toggled ? 'btn btn-secondary' : 'btn btn-primary'
+  const className = toggled ? 'btn btn-toggle-on' : 'btn btn-toggle-off'
   return (
     <button
       {...rest}

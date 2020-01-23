@@ -16,7 +16,7 @@ const PracticeModal = ({ trigger }) => {
     {
       private: true,
       public: true,
-      shared: true,
+      group: true,
     },
   )
   const [categories, setCategories] = useState(
@@ -54,7 +54,11 @@ const PracticeModal = ({ trigger }) => {
       }
 
       if (story.sharedwith && story.sharedwith.includes(user.user.oid)) {
-        return librariesToShow.includes('Shared')
+        return librariesToShow.includes('Private')
+      }
+
+      if (story.user !== user.user.oid) {
+        return librariesToShow.includes('Group')
       }
 
       return librariesToShow.includes('Private')
@@ -123,7 +127,7 @@ const PracticeModal = ({ trigger }) => {
       <Modal.Content className="practiceModal">
 
         <Container>
-          <Button fluid disabled={!filteredLink} color="teal" as={Link} to={filteredLink}>
+          <Button data-cy="start-random" fluid disabled={!filteredLink} color="teal" as={Link} to={filteredLink}>
             {`Start random story from ${filteredStories.length} stories`}
           </Button>
         </Container>

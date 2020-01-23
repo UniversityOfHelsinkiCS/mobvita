@@ -252,10 +252,10 @@ const CurrentPractice = ({ storyId }) => {
       <h3>
         {`${story.title} Part ${snippets.focused.snippetid[0] + 1}/${snippets.totalnum}`}
       </h3>
-      {story.url ? <a href={story.url}>Link to the source</a> : null}
+      {story.url ? <p><a href={story.url}>Link to the source</a></p> : null}
 
       <PreviousSnippets snippets={snippets.previous.filter(Boolean)} textToSpeech={textToSpeech} />
-
+      <hr />
       <div className="practice-container">
         {practice.map(exercise => wordInput(exercise))}
       </div>

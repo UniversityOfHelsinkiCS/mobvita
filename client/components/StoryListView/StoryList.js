@@ -46,7 +46,7 @@ const StoryList = ({ language }) => {
     {
       private: true,
       public: true,
-      shared: true,
+      group: true,
     },
   )
 
@@ -131,7 +131,11 @@ const StoryList = ({ language }) => {
     }
 
     if (story.sharedwith && story.sharedwith.includes(user.oid)) {
-      return librariesToShow.includes('Shared')
+      return librariesToShow.includes('Private')
+    }
+
+    if (story.user !== user.oid) {
+      return librariesToShow.includes('Group')
     }
 
     return librariesToShow.includes('Private')
