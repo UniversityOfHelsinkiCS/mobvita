@@ -4,7 +4,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import isUrl from 'is-url'
 import { capitalize } from 'Utilities/common'
 
-import { postStory } from 'Utilities/redux/storiesReducer'
+import { postStory } from 'Utilities/redux/uploadProgressReducer'
 import { FormattedMessage, useIntl } from 'react-intl'
 
 const StoryAddition = () => {

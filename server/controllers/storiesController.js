@@ -20,8 +20,14 @@ const createOne = async (req, res) => {
   res.send(response.data)
 }
 
+const getUploadProgress = async (req, res) => {
+  const { storyId } = req.params
+  const response = await axios.get(`/stories/${storyId}/loading`, { headers: req.headers })
+  res.send(response.data)
+}
 module.exports = {
   getOne,
   getAll,
   createOne,
+  getUploadProgress,
 }

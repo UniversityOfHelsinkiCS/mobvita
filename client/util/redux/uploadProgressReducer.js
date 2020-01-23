@@ -1,12 +1,26 @@
 import callBuilder from '../apiConnection'
 
 export const getProgress = (storyId) => {
-  const route = `/api/stories/${storyId}/loading`
+  const route = `/stories/${storyId}/loading`
   const prefix = 'GET_PROGRESS'
   return callBuilder(route, prefix)
 }
 
-export default (state = 0, action) => {
+export const postStory = (newStory) => {
+  const route = '/stories'
+  const prefix = 'POST_NEW_STORY'
+  return callBuilder(route, prefix, 'post', newStory)
+}
+
+const initialState = {
+  progress: 0,
+  storyId: null,
+  pending: false,
+  error: false,
+
+}
+
+export default (state = initialState, action) => {
   switch (action.type) {
     case 'GET_PROGRESS_ATTEMPT':
       return {
@@ -22,10 +36,33 @@ export default (state = 0, action) => {
       }
     case 'GET_PROGRESS_SUCCESS':
       return {
-        state: action.response.progress,
+        ...state,
+        progress: action.response.progress,
         pending: false,
         error: false,
       }
+    case 'POST_NEW_STORY_ATTEMPT':
+      return {
+        ...state,
+        pending: true,
+        error: false,
+      }
+    case 'POST_NEW_STORY_FAILURE':
+      return {
+        ...state,
+        pending: false,
+        error: true,
+      }
+    case 'POST_NEW_STORY_SUCCESS':
+      return {
+        ...state,
+        pending: false,
+        storyId: action.response.story_id,
+        progress: 0,
+        error: false,
+      }
+    case 'CLEAR_UPLOADPROGRESS':
+      return initialState
     default:
       return state
   }

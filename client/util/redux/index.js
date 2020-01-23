@@ -10,6 +10,7 @@ import sidebar from './sidebarReducer'
 import email from './emailReducer'
 import register from './registerReducer'
 import notification from './notificationReducer'
+import uploadProgress from './uploadProgressReducer'
 
 
 const rootReducer = combineReducers({
@@ -23,6 +24,7 @@ const rootReducer = combineReducers({
   email,
   register,
   notification,
+  uploadProgress,
 })
 
 export default (state, action) => (
