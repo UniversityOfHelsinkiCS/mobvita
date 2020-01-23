@@ -127,7 +127,7 @@ const PracticeModal = ({ trigger }) => {
       <Modal.Content className="practiceModal">
 
         <Container>
-          <Button fluid disabled={!filteredLink} color="teal" as={Link} to={filteredLink}>
+          <Button data-cy="start-random" fluid disabled={!filteredLink} color="teal" as={Link} to={filteredLink}>
             {`Start random story from ${filteredStories.length} stories`}
           </Button>
         </Container>

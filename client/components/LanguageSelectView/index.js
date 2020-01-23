@@ -11,7 +11,7 @@ const LearningLanguageSelectView = () => {
 
   return (
     <Container textAlign="center">
-      <Header as="h2">
+      <Header data-cy="choose-lang" as="h2">
         <FormattedMessage id="CHOOSE_LANG" />
       </Header>
       <Segment style={{ display: 'flex', justifyContent: 'center', flexWrap: 'wrap' }}>

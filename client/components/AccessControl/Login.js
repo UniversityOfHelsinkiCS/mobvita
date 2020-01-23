@@ -76,6 +76,7 @@ const Login = () => {
         <div>
           <Button as={Link} to="/register">Register</Button>
           <Button
+            data-cy="login-anon"
             type="button"
             color="black"
 

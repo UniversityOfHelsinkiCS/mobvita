@@ -4,9 +4,9 @@ describe('Mobvita', function() {
   })
 
   it('can log in as anonymous', function() {
-    cy.contains(/Test Mobvita.*/)
+    cy.get('[data-cy=login-anon]')
       .click()
-    cy.contains('CHOOSE_LANG')
+    cy.get('[data-cy=choose-lang]')
   })
 
   it('can log in as user', function() {
@@ -22,10 +22,11 @@ describe('Mobvita', function() {
   describe('when logged in', function() {
     this.beforeEach(function() {
       cy.request('POST', '/api/session', { email: 'elbert.alyas@plutocow.com', password: 'emacsemacs'})
+        .as('user')
         .then(response => {
           window.localStorage.setItem('user', JSON.stringify(response.body))
+          cy.reload()
         })
-      cy.reload()
     })
 
     it('library opens', function() {
@@ -36,7 +37,7 @@ describe('Mobvita', function() {
 
     it('can start random practice', function() {
       cy.contains('Practice now').click()
-      cy.contains(/Start.*/).click()
+      cy.get('[data-cy=start-random]').click()
       cy.contains('Skip this part')
     })
   })
