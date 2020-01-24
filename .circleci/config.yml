@@ -4,14 +4,14 @@ orbs:
   dockerhub: circleci/docker@0.5.1
   cypress: cypress-io/cypress@1
 workflows:
-  build:
+  test-build-deploy:
     jobs:
       - cypress/run:
-          start: npm run start:dev
-          wait-on: http://localhost:8000
-  deploy:
-    jobs:
+        start: npm run start:dev
+        wait-on: http://localhost:8000
       - dockerhub/publish:
+          requires:
+            -  cypress/run
           image: toska/$CIRCLE_PROJECT_REPONAME
           tag: 'staging'
           extra_build_args: '--build-arg BASE_PATH=/staging/ --build-arg COMMIT_HASH=$CIRCLE_SHA1'
@@ -19,6 +19,8 @@ workflows:
             branches:
               only: master
       - dockerhub/publish:
+          requires:
+            - cypress/run
           image: toska/$CIRCLE_PROJECT_REPONAME
           tag: 'prod'
           filters:

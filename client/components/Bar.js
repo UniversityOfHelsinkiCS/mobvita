@@ -106,7 +106,7 @@ export default function Bar({ history }) {
                     <div>{user.user.username}</div>
                     <div>{user.user.email}</div>
                     {user.user.email === 'anonymous_email'
-                      && <Link to="register">Register to save your progress</Link>}
+                      && <Link to="register"><FormattedMessage id="register-to-upload-your-own-stories" /></Link>}
                   </div>
                 </Menu.Item>
 
