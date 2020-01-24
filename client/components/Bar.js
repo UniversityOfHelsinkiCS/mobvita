@@ -4,6 +4,7 @@ import { Sidebar, Segment, Menu, Button, Icon, Header, Container, Dropdown } fro
 import { useIntl } from 'react-intl'
 import { useDispatch, useSelector } from 'react-redux'
 import { Swipeable } from 'react-swipeable'
+import { FormattedMessage } from 'react-intl'
 
 import { localeOptions, capitalize } from 'Utilities/common'
 import { setLocale } from 'Utilities/redux/localeReducer'
@@ -104,7 +105,6 @@ export default function Bar({ history }) {
                   <div style={{ padding: '1em' }}>
                     <div>{user.user.username}</div>
                     <div>{user.user.email}</div>
-                    <div>Streak data unavailable</div>
                     {user.user.email === 'anonymous_email'
                       && <Link to="register">Register to save your progress</Link>}
                   </div>
@@ -115,7 +115,7 @@ export default function Bar({ history }) {
 
                   <Link to="/learningLanguage" onClick={() => menuClickWrapper()}>
                     <button type="button" className="btn btn-primary btn-block">
-                    Change learning language
+                    <FormattedMessage id="Learning-language" />
                     </button>
                   </Link>
 
@@ -136,9 +136,9 @@ export default function Bar({ history }) {
 
             <div style={{ marginTop: 'auto' }}>
               <Menu.Item style={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-between' }}>
-                <AboutUs trigger={<button type="button" className="btn btn-secondary">About us</button>} />
-                <ContactUs trigger={<button type="button" className="btn btn-secondary">Contact us</button>} />
-                { user && <button type="button" className="btn btn-secondary" onClick={() => menuClickWrapper(signOut)}>Log out</button>}
+                <AboutUs trigger={<button type="button" className="btn btn-secondary"><FormattedMessage id="About" /></button>} />
+                <ContactUs trigger={<button type="button" className="btn btn-secondary"><FormattedMessage id="Contact" /></button>} />
+                { user && <button type="button" className="btn btn-secondary" onClick={() => menuClickWrapper(signOut)}><FormattedMessage id="sign-out" /></button>}
               </Menu.Item>
               {/* eslint-disable no-undef */}
               <div>{`Built at: ${__VERSION__}`}</div>
