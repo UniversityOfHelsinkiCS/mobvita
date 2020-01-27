@@ -103,11 +103,11 @@ export default function Bar({ history }) {
             {user && (
               <>
                 <Menu.Item>
-                  <div style={{ padding: '1em' }}>
+                  <div style={{ padding: '1em 0em' }}>
                     <div>{user.user.username}</div>
                     <div>{user.user.email}</div>
                     {user.user.email === 'anonymous_email'
-                      && <Link to="register"><FormattedMessage id="register-to-upload-your-own-stories" /></Link>}
+                      && <Link to="/register"><button type="button" className="btn btn-primary btn-block"><FormattedMessage id="register-to-upload-your-own-stories" /></button></Link>}
                   </div>
                 </Menu.Item>
 
@@ -140,9 +140,9 @@ export default function Bar({ history }) {
 
             <div style={{ marginTop: 'auto' }}>
               <Menu.Item style={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-between' }}>
-                <AboutUs trigger={<button type="button" className="btn btn-secondary"><FormattedMessage id="About" /></button>} />
-                <ContactUs trigger={<button type="button" className="btn btn-secondary"><FormattedMessage id="Contact" /></button>} />
-                { user && <button type="button" className="btn btn-secondary" onClick={() => menuClickWrapper(signOut)}><FormattedMessage id="sign-out" /></button>}
+                <AboutUs trigger={<button type="button" className="btn btn-secondary" style={{ flexBasis: '50%' }}><FormattedMessage id="About" /></button>} />
+                <ContactUs trigger={<button type="button" className="btn btn-secondary" style={{ flexBasis: '50%' }}><FormattedMessage id="Contact" /></button>} />
+                { user && <button type="button" className="btn btn-secondary" style={{ flexBasis: '50%' }} onClick={() => menuClickWrapper(signOut)}><FormattedMessage id="sign-out" /></button>}
               </Menu.Item>
               {/* eslint-disable no-undef */}
               <div>{`Built at: ${__VERSION__}`}</div>
