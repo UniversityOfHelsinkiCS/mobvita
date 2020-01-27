@@ -103,11 +103,11 @@ export default function Bar({ history }) {
             {user && (
               <>
                 <Menu.Item>
-                  <div style={{ padding: '1em' }}>
+                  <div style={{ padding: '1em 0em' }}>
                     <div>{user.user.username}</div>
                     <div>{user.user.email}</div>
                     {user.user.email === 'anonymous_email'
-                      && <Link to="register"><FormattedMessage id="register-to-upload-your-own-stories" /></Link>}
+                      && <Link to="/register"><button type="button" className="btn btn-primary btn-block"><FormattedMessage id="register-to-upload-your-own-stories" /></button></Link>}
                   </div>
                 </Menu.Item>
 
