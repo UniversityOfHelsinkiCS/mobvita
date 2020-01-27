@@ -116,7 +116,7 @@ const Register = () => {
               color="teal"
               className="btn btn-primary"
             >
-              Register
+              {intl.formatMessage({ id: 'Register' })}
             </button>
           </div>
         </Form>
