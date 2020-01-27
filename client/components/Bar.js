@@ -6,10 +6,10 @@ import { useDispatch, useSelector } from 'react-redux'
 import { Swipeable } from 'react-swipeable'
 import { FormattedMessage } from 'react-intl'
 
-import { localeOptions, capitalize } from 'Utilities/common'
+import { localeOptions, capitalize, localeNameToCode } from 'Utilities/common'
 import { setLocale } from 'Utilities/redux/localeReducer'
 import { sidebarSetOpen } from 'Utilities/redux/sidebarReducer'
-import { logout } from 'Utilities/redux/userReducer'
+import { logout, updateLocale } from 'Utilities/redux/userReducer'
 import { resetCurrentSnippet } from 'Utilities/redux/snippetsReducer'
 import { images } from 'Utilities/common'
 import TermsAndConditions from 'Components/TermsAndConditions'
@@ -18,15 +18,22 @@ import ContactUs from './StaticContent/ContactUs'
 
 
 export default function Bar({ history }) {
-  const intl = useIntl()
   const dispatch = useDispatch()
 
   const { user } = useSelector(({ user }) => ({ user: user.data }))
-  const locale = useSelector(({ locale }) => locale)
   const open = useSelector(({ sidebar }) => sidebar.open)
   const focusedSnippet = useSelector(({ snippets }) => snippets.focused)
 
+
+  const locale = useSelector(({ locale }) => locale)
+
   const [localeDropdownOptions, setLocaleDropdownOptions] = useState([])
+
+  const handleLocaleChange = (newLocale) => {
+    dispatch(setLocale(newLocale)) // Sets locale in root reducer...
+    if (user)dispatch(updateLocale(newLocale)) // Updates user-object
+  }
+
 
   useEffect(() => {
     if (window.innerWidth >= 1024) {
@@ -66,7 +73,10 @@ export default function Bar({ history }) {
     return null
   }
 
-
+  let actualLocale = locale
+  if (user && user.user.interfaceLanguage) { // If user has logged in, use locale from user object, else use value from localeReducer
+    actualLocale = localeNameToCode(user.user.interfaceLanguage)
+  }
   return (
     <>
       <Icon
@@ -128,11 +138,11 @@ export default function Bar({ history }) {
               <FormattedMessage id="interface-language" />
               <Dropdown
                 fluid
-                placeholder={localeOptions.find(option => option.code === locale).name}
-                value={locale}
+                placeholder="Choose interface language..."
+                value={actualLocale}
                 options={localeDropdownOptions}
                 selection
-                onChange={(e, data) => dispatch(setLocale(data.value))}
+                onChange={(e, data) => handleLocaleChange(data.value)}
               />
             </Menu.Item>
             <TermsAndConditions trigger={<button type="button" className="btn btn-link"> Terms and Conditions </button>} />
