@@ -266,7 +266,11 @@ const CurrentPractice = ({ storyId }) => {
 
       <PreviousSnippets snippets={snippets.previous.filter(Boolean)} textToSpeech={textToSpeech} />
       <hr />
-      <div ref={scrollTarget} className="practice-container">
+      <div
+        ref={scrollTarget}
+        className="practice-container"
+        data-cy="practice-view"
+      >
         {practice.map(exercise => wordInput(exercise))}
       </div>
 
