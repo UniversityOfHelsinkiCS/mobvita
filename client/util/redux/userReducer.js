@@ -1,5 +1,5 @@
 import callBuilder from 'Utilities/apiConnection'
-import { capitalize } from 'Utilities/common'
+import { capitalize, localeOptions, localeCodeToName } from 'Utilities/common'
 
 export const createRealToken = (email, password) => {
   const route = '/session/'
@@ -31,6 +31,8 @@ export const saveSelf = (changes) => {
 }
 
 export const updateLearningLanguage = language => saveSelf({ last_used_lang: capitalize(language) })
+export const updateLocale = locale => saveSelf({ interface_lang: localeCodeToName(locale) })
+
 
 export const confirmUser = (token) => {
   const route = '/confirm'
