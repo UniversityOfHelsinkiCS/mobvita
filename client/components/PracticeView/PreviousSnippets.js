@@ -1,7 +1,7 @@
 import React from 'react'
 
 const Word = ({ word, textToSpeech }) => {
-  const { surface, ID, isWrong, tested, lemmas } = word
+  const { surface, isWrong, tested, lemmas } = word
   let color = ''
 
   if (tested) {
@@ -13,7 +13,6 @@ const Word = ({ word, textToSpeech }) => {
       className="word-interactive "
       role="button"
       onClick={() => textToSpeech(surface, lemmas)}
-      key={ID}
       style={{ color }}
       onKeyDown={() => textToSpeech(word.surface, word.lemmas)}
       tabIndex={-1}
@@ -28,9 +27,9 @@ const PreviousSnippets = ({ snippets, textToSpeech }) => {
   return (
     <div>
       {snippets.map(snippet => (
-        <p>{
+        <p key={snippet.snippetid[0]}>{
         snippet.practice_snippet.map(word => (
-          <Word word={word} textToSpeech={textToSpeech} />
+          <Word key={word.ID} word={word} textToSpeech={textToSpeech} />
         ))}
         </p>
       ))}
