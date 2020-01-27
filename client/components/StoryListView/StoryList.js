@@ -10,10 +10,16 @@ import { capitalize } from 'Utilities/common'
 import StoryForm from './StoryForm'
 
 const StoryList = ({ language }) => {
-  const [library, setLibrary] = useState('private')
   const [sorter, setSorter] = useState('date')
   const [searchString, setSearchString] = useState('')
   const [searchedStories, setSearchedStories] = useState([])
+  const [libraries, setLibraries] = useState(
+    {
+      private: true,
+      public: true,
+      group: true,
+    },
+  )
   const [page, setPage] = useState(0)
   const dispatch = useDispatch()
   const { stories, pending, all, allPending } = useSelector(({ stories }) => ({
@@ -41,14 +47,6 @@ const StoryList = ({ language }) => {
     { key: 'title', text: 'Title', value: 'title' },
     { key: 'difficulty', text: 'Difficulty', value: 'difficulty' },
   ]
-
-  const [libraries, setLibraries] = useState(
-    {
-      private: true,
-      public: true,
-      group: true,
-    },
-  )
 
   const handleSortChange = (e, option) => {
     setSorter(option.value)
@@ -88,7 +86,6 @@ const StoryList = ({ language }) => {
       style={
       { display: 'flex', justifyContent: 'space-between', flexWrap: 'wrap', margin: '10px 0' }}
     >
-      <StoryForm language={language} />
       <Search
         open={false}
         icon={noResults ? 'close' : 'search'}
@@ -146,15 +143,11 @@ const StoryList = ({ language }) => {
   return (
     <div>
       {searchSort}
+      <Card style={{ padding: '15px' }}>
+        <h5>Study any text!</h5>
+        <StoryForm language={language} />
+      </Card>
       <Card.Group itemsPerRow={1} doubling>
-        {!user.story_upload_count
-          && (
-          <Card style={{ padding: '15px' }}>
-            <h5>Study any text!</h5>
-            <StoryForm language={language} />
-          </Card>
-          )
-        }
         {libraryFilteredStories.map(story => (
           <StoryListItem key={story._id} story={story} language={language} />
         ))}
