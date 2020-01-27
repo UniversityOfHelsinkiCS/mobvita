@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { createRealToken, createAnonToken } from 'Utilities/redux/userReducer'
-import { Segment, Header, Button, Form } from 'semantic-ui-react'
+import { Segment, Header, Button as button, Form } from 'semantic-ui-react'
 import { useHistory, useLocation } from 'react-router'
 import { Link } from 'react-router-dom'
 import { FormattedMessage, useIntl } from 'react-intl'
@@ -36,7 +36,7 @@ const Login = () => {
 
   return (
     <>
-      <Header as="h3" style={{ margin: '0.7em auto', fontSize: '4em' }}>{intl.formatMessage({id: "Login"})} </Header>
+      <h1>{intl.formatMessage({ id: 'Login' })} </h1>
       <Segment style={{ backgroundColor: 'azure' }}>
         <p>
           <FormattedMessage id="master-a-language-by-learning-from-stories-of-your-own-choosing" />
@@ -44,17 +44,17 @@ const Login = () => {
         <Form onSubmit={login}>
           <Form.Field>
             <Form.Input
-              label={intl.formatMessage({id:"email-address"})}
+              label={intl.formatMessage({ id: 'email-address' })}
               error={loginError}
               type="email"
               value={email}
               onChange={({ target }) => setEmail(target.value)}
-              placeholder={intl.formatMessage({id: "email-address"})}
+              placeholder={intl.formatMessage({ id: 'email-address' })}
             />
           </Form.Field>
           <Form.Field>
             <Form.Input
-              label={intl.formatMessage({id: "Password"})}
+              label={intl.formatMessage({ id: 'Password' })}
               error={loginError}
               type="password"
               value={password}
@@ -63,30 +63,25 @@ const Login = () => {
             />
           </Form.Field>
           <div style={{ display: 'flex', flexDirection: 'column' }}>
-            <Form.Button
+            <button
               data-cy="login"
               type="submit"
               color="teal"
+              className="btn btn-primary"
             >
-              {intl.formatMessage({id: "Login"})}
-            </Form.Button>
+              {intl.formatMessage({ id: 'Login' })}
+            </button>
             {loginError && <div style={{ color: 'red' }}>{errorMessage}</div>}
           </div>
         </Form>
-        <h3>
-        {intl.formatMessage({id: "dont-have-an-account-yet-please-ce3fb38f81375d77a43cbaa071a4f72f"})}
-        </h3>
+        <h5>
+          {intl.formatMessage({ id: 'dont-have-an-account-yet-please-ce3fb38f81375d77a43cbaa071a4f72f' })}
+        </h5>
         <div>
-          <Button as={Link} to="/register">{intl.formatMessage({id: "Register"})} </Button>
-          <Button
-            data-cy="login-anon"
-            type="button"
-            color="black"
-
-            onClick={loginAnon}
-          >
-            Test Mobvita without an account
-          </Button>
+          <Link to="/register"><button type="button" className="btn btn-secondary">{intl.formatMessage({ id: 'Register' })} </button></Link>
+          <button data-cy="login-anon" type="button" className="btn btn-secondary" onClick={loginAnon}>
+            Test with quest account
+          </button>
         </div>
       </Segment>
     </>

@@ -1,8 +1,13 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { registerUser } from 'Utilities/redux/registerReducer'
-import { Segment, Header, Form } from 'semantic-ui-react'
+import { Header, Form, Checkbox, Segment } from 'semantic-ui-react'
 import TermsAndConditions from 'Components/TermsAndConditions'
+import { useIntl } from 'react-intl'
+import Login from 'Components/AccessControl/Login'
+import { Link } from 'react-router-dom'
+import { setNotification } from 'Utilities/redux/notificationReducer'
+
 
 const Register = () => {
   const [formState, setFormState] = useState({
@@ -11,23 +16,42 @@ const Register = () => {
     password: '',
     passwordAgain: '',
   })
+  const intl = useIntl()
+
+  const [accepted, setAccepted] = useState(false)
+
+  const toggleAccepted = () => {
+    setAccepted(!accepted)
+  }
 
   const { error, errorMessage } = useSelector(({ register }) => register)
 
   const dispatch = useDispatch()
 
+
+  useEffect(() => {
+    if (error) {
+      dispatch(setNotification(errorMessage, 'error'))
+    }
+  }, [error])
+
+
   const handleSubmit = () => {
     const { email, username, password } = formState
 
-    // TODO: Check email and password validity
+    if (accepted) {
+      const payload = {
+        username,
+        password,
+        email,
+      }
 
-    const payload = {
-      username,
-      password,
-      email,
+      dispatch(registerUser(payload))
+    } else {
+      dispatch(setNotification('You must accept Terms and Conditions', 'error'))
     }
 
-    dispatch(registerUser(payload))
+    // TODO: Check email and password validity
   }
 
   const handleFormChange = (e) => {
@@ -41,11 +65,8 @@ const Register = () => {
 
   return (
     <>
-      <Header as="h3" style={{ margin: '0.7em auto', fontSize: '4em' }}>Register</Header>
-      <Segment style={{ backgroundColor: 'azure' }}>
-        <p>
-          Create an account
-        </p>
+      <h1>{intl.formatMessage({ id: 'Register' })}</h1>
+      <Segment className="container" style={{ backgroundColor: 'azure' }}>
         <Form onSubmit={handleSubmit}>
           <Form.Field>
             <Form.Input
@@ -85,17 +106,19 @@ const Register = () => {
               placeholder=""
             />
           </Form.Field>
+          <Checkbox checked={accepted} onChange={() => toggleAccepted()} />
           <TermsAndConditions trigger={<button type="button" className="btn btn-link"> Terms and Conditions </button>} />
-          <div style={{ display: 'flex', flexDirection: 'column' }}>
-            <Form.Button
+          <div>
+            <button
               type="submit"
               color="teal"
+              className="btn btn-primary"
             >
               Register
-            </Form.Button>
-            {error && <div style={{ color: 'red' }}>{errorMessage}</div>}
+            </button>
           </div>
         </Form>
+        <Link to="/login"><button type="button" className="btn btn-secondary">Already have an account? Login</button></Link>
       </Segment>
     </>
   )
