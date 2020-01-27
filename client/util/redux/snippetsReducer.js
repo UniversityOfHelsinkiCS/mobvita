@@ -3,6 +3,16 @@ import callBuilder from '../apiConnection'
  * Actions and reducers are in the same file for readability
  */
 
+const filterPrevious = (previous, snippet) => {
+  if (!snippet) {
+    return []
+  }
+  const filteredPrevious = previous
+    .filter(prev => prev && prev.snippetid[0] < snippet.snippetid[0])
+
+  return filteredPrevious
+}
+
 export const setTotalNumberAction = totalnum => ({
   type: 'SET_TOTAL_NUMBER',
   data: totalnum,
@@ -62,7 +72,7 @@ export default (state = { previous: [] }, action) => {
       return {
         ...state,
         focused: action.response,
-        previous: state.previous.concat(state.focused),
+        previous: filterPrevious(state.previous.concat(state.focused), action.response),
         pending: false,
         error: false,
       }
@@ -98,7 +108,7 @@ export default (state = { previous: [] }, action) => {
       return {
         ...state,
         focused: action.response,
-        previous: state.previous.concat(state.focused),
+        previous: filterPrevious(state.previous.concat(state.focused), action.response),
         pending: false,
         error: false,
       }
