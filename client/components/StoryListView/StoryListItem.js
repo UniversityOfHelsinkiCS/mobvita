@@ -42,21 +42,21 @@ const StoryListItem = ({ story }) => {
     >
       <Card.Content extra style={{ padding: '15px' }}>
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'baseline' }}>
-          <Header as="h5">{story.title}</Header>
+          <h5>{story.title}</h5>
         </div>
       </Card.Content>
       <Card.Content extra style={{ padding: '15px' }}>
         <div style={{ display: 'flex', alignItems: 'baseline' }}>
           <Link to={`/stories/${story._id}/`}>
-            <Button color="teal" size="tiny" style={{ marginTop: '5px' }}>
+            <button type="button" className="btn btn-primary" style={{ marginRight: '0.5em' }}>
               <FormattedMessage id="Read" />
-            </Button>
+            </button>
           </Link>
           {' '}
           <Link to={`/stories/${story._id}/practice`}>
-            <Button color="teal" size="tiny" style={{ marginTop: '5px' }}>
-            <FormattedMessage id="practice" />
-            </Button>
+            <button type="button" className="btn btn-primary">
+              <FormattedMessage id="practice" />
+            </button>
           </Link>
           <span style={{ marginLeft: 'auto' }}>
             {difficultyIcon}

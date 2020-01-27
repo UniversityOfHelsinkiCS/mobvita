@@ -44,9 +44,9 @@ const StoryList = ({ language }) => {
   }, [page, sorter])
 
   const sortDropdownOptions = [
-    { key: 'date', text: intl.formatMessage({ id:"date-added" }), value: 'date' },
-    { key: 'title', text: intl.formatMessage({ id:"Title" }), value: 'title' },
-    { key: 'difficulty', text: intl.formatMessage({ id:"Difficulty" }), value: 'difficulty' },
+    { key: 'date', text: intl.formatMessage({ id: 'date-added' }), value: 'date' },
+    { key: 'title', text: intl.formatMessage({ id: 'Title' }), value: 'title' },
+    { key: 'difficulty', text: intl.formatMessage({ id: 'Difficulty' }), value: 'difficulty' },
   ]
 
   const handleSortChange = (e, option) => {
@@ -148,11 +148,9 @@ const StoryList = ({ language }) => {
   return (
     <div>
       {searchSort}
-      <Card style={{ padding: '15px' }}>
-        <h5><FormattedMessage id="add-your-stories" /> </h5>
-        <StoryForm language={language} />
-      </Card>
+
       <Card.Group itemsPerRow={1} doubling>
+        <StoryForm language={language} />
         {libraryFilteredStories.map(story => (
           <StoryListItem key={story._id} story={story} language={language} />
         ))}
