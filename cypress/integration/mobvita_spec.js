@@ -30,7 +30,7 @@ describe('Mobvita', function() {
     })
 
     it('library opens', function() {
-      cy.contains('Library')
+      cy.get('[href="/library"]')
         .click()
       cy.get('[data-cy=library-controls]')
       cy.url().should('include', '/library')
