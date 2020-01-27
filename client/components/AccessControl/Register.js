@@ -37,9 +37,11 @@ const Register = () => {
 
 
   const handleSubmit = () => {
-    const { email, username, password } = formState
+    const { email, username, password, passwordAgain } = formState
 
-    if (accepted) {
+    if (password !== passwordAgain) {
+      dispatch(setNotification('Passwords dont match!', 'error'))
+    } else if (accepted) {
       const payload = {
         username,
         password,
