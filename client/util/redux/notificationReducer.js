@@ -27,6 +27,11 @@ export default (state = initialState, action) => {
         message: action.payload.message,
         type: action.payload.type,
       }
+    case 'POST_REGISTER_SUCCESS':
+      return {
+        message: 'Account creation success. Check your email for confirmation link!',
+        type: type.success,
+      }
     default:
       return state
   }
