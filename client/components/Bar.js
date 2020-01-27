@@ -12,6 +12,7 @@ import { sidebarSetOpen } from 'Utilities/redux/sidebarReducer'
 import { logout } from 'Utilities/redux/userReducer'
 import { resetCurrentSnippet } from 'Utilities/redux/snippetsReducer'
 import { images } from 'Utilities/common'
+import TermsAndConditions from 'Components/TermsAndConditions'
 import AboutUs from './StaticContent/AboutUs'
 import ContactUs from './StaticContent/ContactUs'
 
@@ -134,6 +135,8 @@ export default function Bar({ history }) {
                 onChange={(e, data) => dispatch(setLocale(data.value))}
               />
             </Menu.Item>
+            <TermsAndConditions trigger={<button type="button" className="btn btn-link"> Terms and Conditions </button>} />
+
 
             <div style={{ marginTop: 'auto' }}>
               <Menu.Item style={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-between' }}>

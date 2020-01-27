@@ -1,7 +1,8 @@
 import React, { useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { registerUser } from 'Utilities/redux/registerReducer'
-import { Segment, Header, Button, Form } from 'semantic-ui-react'
+import { Segment, Header, Form } from 'semantic-ui-react'
+import TermsAndConditions from 'Components/TermsAndConditions'
 
 const Register = () => {
   const [formState, setFormState] = useState({
@@ -84,6 +85,7 @@ const Register = () => {
               placeholder=""
             />
           </Form.Field>
+          <TermsAndConditions trigger={<button type="button" className="btn btn-link"> Terms and Conditions </button>} />
           <div style={{ display: 'flex', flexDirection: 'column' }}>
             <Form.Button
               type="submit"
