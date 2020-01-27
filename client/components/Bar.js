@@ -117,7 +117,7 @@ export default function Bar({ history }) {
                     <div>{user.user.username}</div>
                     <div>{user.user.email}</div>
                     {user.user.email === 'anonymous_email'
-                      && <Link to="/register"><button type="button" className="btn btn-primary btn-block"><FormattedMessage id="register-to-upload-your-own-stories" /></button></Link>}
+                      && <Link onClick={() => menuClickWrapper()} to="/register"><button type="button" className="btn btn-primary btn-block"><FormattedMessage id="register-to-upload-your-own-stories" /></button></Link>}
                   </div>
                 </Menu.Item>
 
