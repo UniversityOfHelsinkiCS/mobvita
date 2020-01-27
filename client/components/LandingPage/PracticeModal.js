@@ -5,6 +5,7 @@ import { useSelector, useDispatch } from 'react-redux'
 import { capitalize, learningLanguageSelector } from 'Utilities/common'
 import { getStories } from 'Utilities/redux/storiesReducer'
 import CheckboxGroup from 'Components/CheckboxGroup'
+import { FormattedMessage } from 'react-intl'
 
 const extractFilters = object => Object
   .entries(object)
@@ -123,7 +124,7 @@ const PracticeModal = ({ trigger }) => {
       trigger={trigger}
       onClose={handleClose}
     >
-      <Modal.Header>Choose practice</Modal.Header>
+      <Modal.Header><FormattedMessage id="practice" /></Modal.Header>
       <Modal.Content className="practiceModal">
 
         <Container>
@@ -134,11 +135,11 @@ const PracticeModal = ({ trigger }) => {
 
 
         <div style={{ padding: '1em' }}>
-          <div>Story library</div>
+          <div><FormattedMessage id="Library" /></div>
           <CheckboxGroup values={libraries} onClick={handleLibraryChange} />
         </div>
         <div style={{ padding: '1em' }}>
-          <div>Story category</div>
+          <div><FormattedMessage id="Category" /></div>
           <div>
             <CheckboxGroup values={categories} onClick={handleCategoryChange} />
           </div>

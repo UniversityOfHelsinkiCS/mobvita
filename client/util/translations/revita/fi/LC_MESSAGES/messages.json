@@ -160,7 +160,7 @@
     "About": "Tietoa projektista",
     "score": "Pisteet:",
     "see-new-features": "Uudet ominaisuudet",
-    "Learning-language": "Oppimis-kieli",
+    "Learning-language": "Opiskelukieli",
     "Settings": "Asetukset",
     "learning-from-stories": "Kertomuksista oppiminen",
     "babel-text-translations": "",
@@ -532,7 +532,7 @@
     "please-enter-the-email-address-of-the-user-you-wish-to-share-the-story-with-to-share-with-multiple-u": "Olkaa hyvä ja antakaa käyttäjän, jonka kanssa haluatte jakaa tarinan sähköpostin. Jos haluat jakaa monelle käyttäjälle samaan aikaan, jätä vain väli jokaisen osoitteen väliin.",
     "Please": "",
     "sign-in-b19a25c6a06bd7844cd3572d898d77e4": "kirjaudu sivulle",
-    "to-share-your-stories": "jaakaaksesi tarinoita",
+    "to-share-your-stories": "jakaaksesi tarinoita",
     "you-can-share-stories-that-you-upload": "Voit jakaa tarinoita jotka lataat.",
     "dont-have-an-account-yet-please-ce3fb38f81375d77a43cbaa071a4f72f": "Ei omaa tiliä?  Ole hyvä ja",
     "register-here-and-rightarrow": "",
@@ -685,6 +685,7 @@
     "PROFILE": "PROFIILI",
     "add-friend-e9fdaa5096b88f08b0acfbd315c169bf": "LISÄÄ YSTÄVÄ",
     "unfamiliar-word": "Tuntematon sana?",
+    "click-to-translate": "Klikkaa sinulle tuntemattomia sanoja tekstissä saadaksesi käännöksiä.",
     "click-on-words-near-the-exercises-to-explore-their-meaning": "Klikkaa sinulle tuntemattomia sanoja tekstissä saadaksesi käännöksiä. Nämä sanat lisätään kysymyskortteihisi.",
     "translate-to": "Käännä",
     "translation-temporarily-unavailable-please-try-again-later": "Käännös tilapäisesti poissa käytöstä, yrittäkää myöhemmin uudestaan...",
@@ -692,6 +693,6 @@
     "no-flashcards-yet-for-this-story-when-you-practice-a-story-and-click-on-unfamiliar-words-they-will-b": "Ei flash-kortteja vielä.  Kun luet kertomuksen, klikkaa tuntemattomia sanoja lisätäksesi ne flash-kortteihin!",
     "no-flashcards-yet-when-you-practice-a-story-and-click-on-unfamiliar-words-they-will-be-added-to-your": "Ei flash-kortteja vielä.  Kun luet kertomuksen, klikkaa tuntemattomia sanoja lisätäksesi ne flash-kortteihin!",
     "no-flashcards-found-for-this-exercise-when-you-practice-a-story-and-click-on-unfamiliar-words-they-w": "Ei flash-kortteja vielä.  Kun luet kertomuksen, klikkaa tuntemattomia sanoja lisätäksesi ne flash-kortteihin!",
-    "previous": "Edellinen",
-    "next": "Seuraava"
+    "Previous": "<",
+    "Next": ">"
 }

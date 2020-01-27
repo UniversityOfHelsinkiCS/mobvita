@@ -4,12 +4,13 @@ import { Message, Button, Placeholder, Card, Search, Select } from 'semantic-ui-
 
 import { getStories, getAllStories } from 'Utilities/redux/storiesReducer'
 import StoryListItem from 'Components/StoryListView/StoryListItem'
-import { FormattedMessage } from 'react-intl'
+import { FormattedMessage, useIntl } from 'react-intl'
 import CheckboxGroup from 'Components/CheckboxGroup'
 import { capitalize } from 'Utilities/common'
 import StoryForm from './StoryForm'
 
 const StoryList = ({ language }) => {
+  const intl = useIntl()
   const [sorter, setSorter] = useState('date')
   const [searchString, setSearchString] = useState('')
   const [searchedStories, setSearchedStories] = useState([])
@@ -43,9 +44,9 @@ const StoryList = ({ language }) => {
   }, [page, sorter])
 
   const sortDropdownOptions = [
-    { key: 'date', text: 'Date', value: 'date' },
-    { key: 'title', text: 'Title', value: 'title' },
-    { key: 'difficulty', text: 'Difficulty', value: 'difficulty' },
+    { key: 'date', text: intl.formatMessage({ id:"date-added" }), value: 'date' },
+    { key: 'title', text: intl.formatMessage({ id:"Title" }), value: 'title' },
+    { key: 'difficulty', text: intl.formatMessage({ id:"Difficulty" }), value: 'difficulty' },
   ]
 
   const handleSortChange = (e, option) => {
@@ -118,7 +119,7 @@ const StoryList = ({ language }) => {
     )
   }
 
-  if (!stories.length) return <FormattedMessage id="NO_STORIES" />
+  if (!stories.length) return <FormattedMessage id="no-stories-available" />
 
   const filteredInsteadOfPaginated = searchString && searchedStories.length < 30
   const displayStories = filteredInsteadOfPaginated ? searchedStories : stories
@@ -148,7 +149,7 @@ const StoryList = ({ language }) => {
     <div>
       {searchSort}
       <Card style={{ padding: '15px' }}>
-        <h5>Study any text!</h5>
+        <h5><FormattedMessage id="add-your-stories" /> </h5>
         <StoryForm language={language} />
       </Card>
       <Card.Group itemsPerRow={1} doubling>
@@ -159,11 +160,11 @@ const StoryList = ({ language }) => {
       <div style={{ display: 'flex', justifyContent: 'center' }}>
         <Button.Group color="teal" size="small" style={{ margin: '4px', marginTop: '15px' }}>
           <Button disabled={prevPageDisabled} onClick={adjustPage(-1)}>
-            <FormattedMessage id="previous" />
+            <FormattedMessage id="Previous" />
           </Button>
           <Button.Or text={page + 1} />
           <Button disabled={nextPageDisabled} onClick={adjustPage(1)}>
-            <FormattedMessage id="next" />
+            <FormattedMessage id="Next" />
           </Button>
         </Button.Group>
       </div>

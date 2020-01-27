@@ -37,9 +37,9 @@ describe('Mobvita', function() {
     })
 
     it('can start random practice', function() {
-      cy.contains('Practice now').click()
+      cy.get('[data-cy=practice-now]').click()
       cy.get('[data-cy=start-random]').click()
-      cy.contains('Skip this part')
+      cy.get('[data-cy=practice-view]')
     })
   })
 })

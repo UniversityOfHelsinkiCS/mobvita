@@ -4,6 +4,7 @@ import { List, Button, Header, Segment, Icon, Modal, Dropdown } from 'semantic-u
 import { Shake } from 'reshake'
 import { setLocale } from 'Utilities/redux/localeReducer'
 import { localeOptions } from 'Utilities/common'
+import { FormattedMessage, useIntl } from 'react-intl'
 
 
 const DictionaryHelp = ({ translation }) => {
@@ -11,6 +12,7 @@ const DictionaryHelp = ({ translation }) => {
   const [shaking, setShaking] = useState(false)
   const dispatch = useDispatch()
   const translationLanguageCode = useSelector(({ locale }) => locale)
+  const intl = useIntl
 
   const dictionaryOptions = localeOptions.map(localeObj => (
     {
@@ -72,10 +74,10 @@ const DictionaryHelp = ({ translation }) => {
   return (
     <div>
       <Segment className="navigationpanel" style={{ position: 'fixed', right: '5%', bottom: '2%', width: '90%' }}>
-        <Modal trigger={<Button>Change translation language</Button>}>
-          <Modal.Header>Change translation language</Modal.Header>
+        <Modal trigger={<Button><FormattedMessage id="translation-target-language" /></Button>}>
+          <Modal.Header><FormattedMessage id="translation-target-language" /></Modal.Header>
           <Modal.Content>
-            <span>Translate to: </span>
+            <span><FormattedMessage id="translate-to" /> </span>
             <Dropdown
               closeOnChange
 
@@ -92,7 +94,7 @@ const DictionaryHelp = ({ translation }) => {
           </Button>
         </Header>
         <List>
-          {translations.length > 0 ? translations : placeholder}
+          {translations.length > 0 ? translations : <FormattedMessage id="click-to-translate" />}
         </List>
       </Segment>
     </div>

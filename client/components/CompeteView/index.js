@@ -11,6 +11,7 @@ import CurrentSnippet from 'Components/CompeteView/CurrentSnippet'
 import End from 'Components/CompeteView/End'
 
 import DictionaryHelp from 'Components/DictionaryHelp'
+import { FormattedMessage } from 'react-intl'
 
 const CompeteView = ({ match }) => {
   const { language } = match.params
@@ -36,7 +37,7 @@ const CompeteView = ({ match }) => {
   return (
     <div style={{ paddingTop: '1em' }}>
       <Header>{story.title}</Header>
-      {story.url ? <a href={story.url}>Link to the source</a> : null}
+      {story.url ? <a href={story.url}><FormattedMessage id="Source" /></a> : null}
       <Divider />
       <h1>
         {`${currentSnippetNumber}/${snippets.totalnum}`}

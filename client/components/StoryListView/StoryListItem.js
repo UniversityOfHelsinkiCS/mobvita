@@ -2,7 +2,6 @@ import React, { useState } from 'react'
 import { Button, Header, Card, Icon, Accordion, List, Progress } from 'semantic-ui-react'
 import { Link } from 'react-router-dom'
 import moment from 'moment'
-
 import { FormattedMessage } from 'react-intl'
 
 const StoryListItem = ({ story }) => {
@@ -18,16 +17,16 @@ const StoryListItem = ({ story }) => {
 
   const storyInfoElements = [
     story.author ? `Author: ${story.author}` : null,
-    story.URL ? <a href={story.URL}>Link to source</a> : null,
+    story.URL ? <a href={story.URL}><FormattedMessage id="source" /></a> : null,
     `Difficulty: ${story.difficulty}`,
     `Story Rating: ${story.elo_score}`,
     `Date added ${moment(story.date).format('MMM Do YYYY')}`,
     <>
-      % of exercises answered correctly
+      <FormattedMessage id="exercises-answered-correctly" />
       <Progress />
     </>, // TODO add progress bar logic
     <>
-      % of story covered
+      <FormattedMessage id="part-of-story-covered" />
       <Progress />
     </>]
 
@@ -50,13 +49,13 @@ const StoryListItem = ({ story }) => {
         <div style={{ display: 'flex', alignItems: 'baseline' }}>
           <Link to={`/stories/${story._id}/`}>
             <Button color="teal" size="tiny" style={{ marginTop: '5px' }}>
-              Read
+              <FormattedMessage id="Read" />
             </Button>
           </Link>
           {' '}
           <Link to={`/stories/${story._id}/practice`}>
             <Button color="teal" size="tiny" style={{ marginTop: '5px' }}>
-              Practice
+            <FormattedMessage id="practice" />
             </Button>
           </Link>
           <span style={{ marginLeft: 'auto' }}>

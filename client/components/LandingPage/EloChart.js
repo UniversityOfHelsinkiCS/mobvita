@@ -32,7 +32,7 @@ const EloChart = ({ eloHistory }) => {
   }
   return (
     <div style={{ textAlign: 'center' }}>
-      <span style={{ display: 'inline-block', paddingBottom: '1em' }}>{`Your current ELO: ${eloHistory[eloHistory.length - 1]}`}</span>
+      <span style={{ display: 'inline-block', paddingBottom: '1em' }}>{`ELO: ${eloHistory[eloHistory.length - 1]}`}</span>
       <HighchartsReact
         highcharts={Highcharts}
         options={options}
