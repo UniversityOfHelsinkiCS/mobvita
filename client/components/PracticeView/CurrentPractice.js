@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useRef } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import { Segment, Button, Header, Loader } from 'semantic-ui-react'
 import { getCurrentSnippet, getNextSnippet, postAnswers, setTotalNumberAction } from 'Utilities/redux/snippetsReducer'
@@ -22,6 +22,7 @@ const CurrentPractice = ({ storyId }) => {
   const [disabled, setDisabled] = useState(false)
   const [waited, setWaited] = useState(false)
   const [color, setColor] = useState('')
+  const scrollTarget = useRef(null)
 
   const dispatch = useDispatch()
 
@@ -33,6 +34,12 @@ const CurrentPractice = ({ storyId }) => {
     dispatch(getCurrentSnippet(storyId))
     dispatch(clearTranslationAction())
   }, [])
+
+  useEffect(() => {
+    if (scrollTarget.current) {
+      window.scrollTo(0, scrollTarget.current.offsetTop)
+    }
+  }, [snippets])
 
 
   const getExerciseCount = () => {
@@ -256,7 +263,7 @@ const CurrentPractice = ({ storyId }) => {
 
       <PreviousSnippets snippets={snippets.previous.filter(Boolean)} textToSpeech={textToSpeech} />
       <hr />
-      <div className="practice-container">
+      <div ref={scrollTarget} className="practice-container">
         {practice.map(exercise => wordInput(exercise))}
       </div>
 

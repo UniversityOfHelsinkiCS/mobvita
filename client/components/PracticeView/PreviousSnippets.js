@@ -25,7 +25,6 @@ const Word = ({ word, textToSpeech }) => {
 
 const PreviousSnippets = ({ snippets, textToSpeech }) => {
   if (snippets.length === 0) return null
-
   return (
     <div>
       {snippets.map(snippet => (

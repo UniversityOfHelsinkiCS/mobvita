@@ -7,8 +7,8 @@ workflows:
   test-build-deploy:
     jobs:
       - cypress/run:
-        start: npm run start:dev
-        wait-on: http://localhost:8000
+          start: npm run start:dev
+          wait-on: http://localhost:8000
       - dockerhub/publish:
           requires:
             -  cypress/run
