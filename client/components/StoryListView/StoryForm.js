@@ -3,7 +3,7 @@ import { Form, Input, Button } from 'semantic-ui-react'
 import { useDispatch } from 'react-redux'
 import { postStory } from 'Utilities/redux/uploadProgressReducer'
 import { capitalize } from 'Utilities/common'
-import { useIntl } from 'react-intl'
+import { FormattedMessage, useIntl } from 'react-intl'
 import { setNotification } from 'Utilities/redux/notificationReducer'
 
 
@@ -31,7 +31,7 @@ const StoryForm = ({ language }) => {
         value={storyUrl}
         onChange={event => setStoryUrl(event.target.value)}
       />
-      <Button type="submit">GO!</Button>
+      <Button type="submit"><FormattedMessage id="Confirm" /></Button>
     </Form>
   )
 }

@@ -685,11 +685,14 @@
     "PROFILE": "Profilo",
     "add-friend-e9fdaa5096b88f08b0acfbd315c169bf": "Aggiungere amico",
     "unfamiliar-word": "Parola sconosciuta?",
+    "click-to-translate": "Clicca sulle parole sconosciute per ottenerne la traduzione.",
     "click-on-words-near-the-exercises-to-explore-their-meaning": "Clicca sulle parole sconosciute per ottenerne la traduzione. Le parole si salvano tra le flashcard!",
     "translate-to": "Tradurre in",
     "translation-temporarily-unavailable-please-try-again-later": "La traduzione è temporaneamente non accessibile, prova più tardi",
     "not-accessible": "Non accessibile",
     "no-flashcards-yet-for-this-story-when-you-practice-a-story-and-click-on-unfamiliar-words-they-will-b": "Non ci sono flashcard per questa storia. In \"Pratica\" clicca sulle parole sconosciute, verrano salvate tra le flashcard!",
     "no-flashcards-yet-when-you-practice-a-story-and-click-on-unfamiliar-words-they-will-be-added-to-your": "Non ci sono flashcard ancora. In \"Pratica\" clicca sulle parole sconosciute, verranno salvate tra le flashcard!",
-    "no-flashcards-found-for-this-exercise-when-you-practice-a-story-and-click-on-unfamiliar-words-they-w": "Non ci sono flashcard per questo esercizio. In \"Pratica\" clicca sulle parole sconosciute, verranno salvate tra le flashcard!"
+    "no-flashcards-found-for-this-exercise-when-you-practice-a-story-and-click-on-unfamiliar-words-they-w": "Non ci sono flashcard per questo esercizio. In \"Pratica\" clicca sulle parole sconosciute, verranno salvate tra le flashcard!",
+    "Previous": "<",
+    "Next": ">"
 }

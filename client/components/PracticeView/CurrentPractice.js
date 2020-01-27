@@ -9,6 +9,7 @@ import PreviousSnippets from 'Components/PracticeView/PreviousSnippets'
 import ExerciseCloze from 'Components/PracticeView/ExerciseCloze'
 import ExerciseMultipleChoice from 'Components/PracticeView/ExerciseMultipleChoice'
 import ExerciseHearing from 'Components/PracticeView/ExerciseHearing'
+import { FormattedMessage } from 'react-intl'
 
 const CurrentPractice = ({ storyId }) => {
   const [answers, setAnswers] = useState({})
@@ -259,7 +260,7 @@ const CurrentPractice = ({ storyId }) => {
       <h3>
         {`${story.title} Part ${snippets.focused.snippetid[0] + 1}/${snippets.totalnum}`}
       </h3>
-      {story.url ? <p><a href={story.url}>Link to the source</a></p> : null}
+      {story.url ? <p><a href={story.url}><FormattedMessage id="Source" /></a></p> : null}
 
       <PreviousSnippets snippets={snippets.previous.filter(Boolean)} textToSpeech={textToSpeech} />
       <hr />

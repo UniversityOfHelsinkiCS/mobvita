@@ -42,11 +42,11 @@ const SingleStoryView = ({ match }) => {
           {story.title}
           <Link to={`/stories/${id}/practice`}>
             <Button color="teal" style={{ minWidth: '8em', margin: '0.5em', float: 'right', display: 'flex' }}>
-              <FormattedMessage id="PRACTICE_THIS" />
+              <FormattedMessage id="practice-now" />
             </Button>
           </Link>
         </Header>
-        {story.url ? <a href={story.url}>Link to the source</a> : <div>No link to source</div>}
+        {story.url ? <a href={story.url}><FormattedMessage id="Source" /></a> : <div></div>}
         <Divider />
         <Segment>
           {story.paragraph.map(paragraph => (

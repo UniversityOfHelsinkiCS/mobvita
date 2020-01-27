@@ -685,11 +685,14 @@
     "PROFILE": "Profil",
     "add-friend-e9fdaa5096b88f08b0acfbd315c169bf": "Lägg till vän",
     "unfamiliar-word": "Obekant ord?",
+    "click-to-translate": "Klicka på ord nära övningarna för att utforska deras betydelse.",
     "click-on-words-near-the-exercises-to-explore-their-meaning": "Klicka på ord nära övningarna för att utforska deras betydelse..",
     "translate-to": "Översätt till",
     "translation-temporarily-unavailable-please-try-again-later": "",
     "not-accessible": "",
     "no-flashcards-yet-for-this-story-when-you-practice-a-story-and-click-on-unfamiliar-words-they-will-b": "",
     "no-flashcards-yet-when-you-practice-a-story-and-click-on-unfamiliar-words-they-will-be-added-to-your": "",
-    "no-flashcards-found-for-this-exercise-when-you-practice-a-story-and-click-on-unfamiliar-words-they-w": ""
+    "no-flashcards-found-for-this-exercise-when-you-practice-a-story-and-click-on-unfamiliar-words-they-w": "",
+    "Previous": "<",
+    "Next": ">"
 }
