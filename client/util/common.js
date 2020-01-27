@@ -69,6 +69,10 @@ export const localeOptions = [
   { name: 'Italiano', code: 'it' },
 ]
 
+export const localeNameToCode = name => localeOptions.find(option => option.name === name).code
+export const localeCodeToName = code => localeOptions.find(option => option.code === code).name
+
+
 export * from '@root/config/common'
 
 export const getTextWidth = (text) => {
