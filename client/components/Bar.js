@@ -115,7 +115,7 @@ export default function Bar({ history }) {
 
                   <Link to="/learningLanguage" onClick={() => menuClickWrapper()}>
                     <button type="button" className="btn btn-primary btn-block">
-                    <FormattedMessage id="Learning-language" />
+                      <FormattedMessage id="Learning-language" />
                     </button>
                   </Link>
 
@@ -124,6 +124,7 @@ export default function Bar({ history }) {
             )}
 
             <Menu.Item>
+              <FormattedMessage id="interface-language" />
               <Dropdown
                 fluid
                 placeholder={localeOptions.find(option => option.code === locale).name}
