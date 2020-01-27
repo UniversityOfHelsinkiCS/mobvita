@@ -9,6 +9,7 @@ import PreviousSnippets from 'Components/PracticeView/PreviousSnippets'
 import ExerciseCloze from 'Components/PracticeView/ExerciseCloze'
 import ExerciseMultipleChoice from 'Components/PracticeView/ExerciseMultipleChoice'
 import ExerciseHearing from 'Components/PracticeView/ExerciseHearing'
+import { FormattedMessage } from 'react-intl'
 
 const CurrentPractice = ({ storyId }) => {
   const [answers, setAnswers] = useState({})
@@ -34,13 +35,6 @@ const CurrentPractice = ({ storyId }) => {
     dispatch(getCurrentSnippet(storyId))
     dispatch(clearTranslationAction())
   }, [])
-
-  useEffect(() => {
-    if (scrollTarget.current) {
-      window.scrollTo(0, scrollTarget.current.offsetTop)
-    }
-  }, [snippets])
-
 
   const getExerciseCount = () => {
     let count = 0
@@ -85,7 +79,21 @@ const CurrentPractice = ({ storyId }) => {
         dispatch(setTotalNumberAction(total_num))
       }
     }
+
+    if (scrollTarget.current) {
+      window.scrollTo(0, scrollTarget.current.offsetTop)
+    }
   }, [snippets])
+
+  useEffect(() => {
+    if (snippets.focused && snippets.focused.skip_second) {
+      setAnswers({})
+      setOptions({})
+      setTouched(0)
+      setAttempts(0)
+      dispatch(getNextSnippet(storyId))
+    }
+  }, [snippets.focused])
 
   const checkAnswers = async () => {
     const { starttime, snippetid } = snippets.focused
@@ -211,6 +219,7 @@ const CurrentPractice = ({ storyId }) => {
     )
   }
 
+
   const continueToNextSnippet = () => {
     setAnswers({})
     setOptions({})
@@ -228,19 +237,13 @@ const CurrentPractice = ({ storyId }) => {
     dispatch(getNextSnippet(storyId, currentSnippetId))
   }
 
-  const getConfirmation = () => {
-    if (!waited) {
-      setColor('#983AF8')
-      setDisabled(true)
-      setTimeout(() => {
-        setDisabled(false)
-        setWaited(true)
-        setColor('#9BFD2B')
-      }, 1000)
-    } else {
-      setColor('')
-      setWaited(false)
+  const handleCheckButton = () => {
+    if (exerciseCount === 0) {
+      continueToNextSnippet()
+    } else if (touched < Math.ceil(exerciseCount / 2)) {
       skipThisPart()
+    } else {
+      checkAnswers()
     }
   }
 
@@ -267,13 +270,21 @@ const CurrentPractice = ({ storyId }) => {
         {practice.map(exercise => wordInput(exercise))}
       </div>
 
-      {exerciseCount === 0
+      {/* {exerciseCount === 0
         ? <Button fluid onClick={continueToNextSnippet}>Continue to next snippet</Button>
         : (touched >= Math.ceil(exerciseCount / 2)
           ? <Button fluid onClick={() => checkAnswers()}>{`Check answers ${attempt}/2 attemps used`}</Button>
           : <Button style={{ backgroundColor: color }} disabled={disabled} fluid onClick={() => getConfirmation()}>{disabled ? 'Are you sure?' : 'Skip this part'}</Button>
         )
-      }
+      } */}
+
+      <button
+        type="button"
+        className="btn btn-primary btn-block"
+        onClick={() => handleCheckButton()}
+      >
+        <FormattedMessage id="check-answer" />
+      </button>
     </>
   )
 }
