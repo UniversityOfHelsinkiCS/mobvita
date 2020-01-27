@@ -32,6 +32,12 @@ body {
 .btn-toggle-off {
   @extend .btn-secondary;
 }
+
+.modal {
+  height: auto;
+  left:unset;
+}
+
 // SEMANTIC UI OVERRIDES:
 .ui.input>input  {
   font-family: $default-font
