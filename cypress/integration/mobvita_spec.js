@@ -28,7 +28,7 @@ describe('Mobvita', function() {
           cy.reload()
         })
     })
-
+/*
     it('library opens', function() {
       cy.contains('Library')
         .click()
@@ -40,6 +40,6 @@ describe('Mobvita', function() {
       cy.contains('Practice now').click()
       cy.get('[data-cy=start-random]').click()
       cy.contains('Skip this part')
-    })
+    })*/
   })
 })
