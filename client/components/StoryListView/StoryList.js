@@ -94,12 +94,16 @@ const StoryList = ({ language }) => {
         onSearchChange={handleSearchChange}
       />
       <CheckboxGroup values={libraries} onClick={handleLibraryChange} />
-      <Select
-        value={sorter}
-        options={sortDropdownOptions}
-        onChange={handleSortChange}
-        style={{ minWidth: '10em' }}
-      />
+      <div>
+        <FormattedMessage id="sort-by" />
+        <br />
+        <Select
+          value={sorter}
+          options={sortDropdownOptions}
+          onChange={handleSortChange}
+          style={{ minWidth: '10em' }}
+        />
+      </div>
     </div>
   )
 
