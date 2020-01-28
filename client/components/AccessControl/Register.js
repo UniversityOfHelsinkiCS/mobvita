@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import { registerUser } from 'Utilities/redux/registerReducer'
 import { Header, Form, Checkbox, Segment } from 'semantic-ui-react'
 import TermsAndConditions from 'Components/TermsAndConditions'
-import { useIntl, FormattedMessage} from 'react-intl'
+import { useIntl, FormattedMessage } from 'react-intl'
 import Login from 'Components/AccessControl/Login'
 import { Link } from 'react-router-dom'
 import { setNotification } from 'Utilities/redux/notificationReducer'
@@ -39,7 +39,7 @@ const Register = () => {
     const { email, username, password, passwordAgain } = formState
 
     if (password !== passwordAgain) {
-      dispatch(setNotification('Passwords dont match!', 'error'))
+      dispatch(setNotification(intl.formatMessage({ id: "passwords-do-not-match"}), 'error'))
     } else if (accepted) {
       const payload = {
         username,
@@ -71,25 +71,25 @@ const Register = () => {
         <Form onSubmit={handleSubmit}>
           <Form.Field>
             <Form.Input
-              label={intl.formatMessage({id: "Email"})}
+              label={intl.formatMessage({ id: 'Email' })}
               name="email"
               error={error}
               type="email"
               value={formState.email}
               onChange={e => handleFormChange(e)}
-              placeholder={intl.formatMessage({id: "Email"})}
+              placeholder={intl.formatMessage({ id: 'Email' })}
             />
             <Form.Input
-              label={intl.formatMessage({id: "Username"})}
+              label={intl.formatMessage({ id: 'Username' })}
               name="username"
               error={error}
               type="username"
               value={formState.username}
               onChange={e => handleFormChange(e)}
-              placeholder={intl.formatMessage({id: "Username"})}
+              placeholder={intl.formatMessage({ id: 'Username' })}
             />
             <Form.Input
-              label={intl.formatMessage({id: "Password"})}
+              label={intl.formatMessage({ id: 'Password' })}
               name="password"
               error={error}
               type="password"
@@ -98,7 +98,7 @@ const Register = () => {
               placeholder=""
             />
             <Form.Input
-              label={intl.formatMessage({id: "repeat-password"})}
+              label={intl.formatMessage({ id: 'repeat-password' })}
               name="passwordAgain"
               error={error}
               type="password"
@@ -107,8 +107,10 @@ const Register = () => {
               placeholder=""
             />
           </Form.Field>
-          <Checkbox checked={accepted} onChange={() => toggleAccepted()} />
-          <TermsAndConditions trigger={<button type="button" className="btn btn-link"> Terms and Conditions </button>} />
+          <div style={{ display: 'flex', alignItems: 'center' }}>
+            <Checkbox checked={accepted} onChange={() => toggleAccepted()} />
+            <TermsAndConditions trigger={<button type="button" className="btn btn-link"> Terms and Conditions </button>} />
+          </div>
           <div>
             <button
               type="submit"

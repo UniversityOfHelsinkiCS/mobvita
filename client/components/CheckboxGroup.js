@@ -1,5 +1,6 @@
 import React from 'react'
 import { capitalize } from 'Utilities/common'
+import { FormattedMessage } from 'react-intl'
 
 // const buttonClass = toggled ? 'btn btn-secondary' : 'btn btn-info'
 const ToggleButton = ({ toggled, children, ...rest }) => {
@@ -24,7 +25,7 @@ const CheckboxGroup = ({ values, onClick }) => (
           onClick={onClick(key)}
           toggled={val}
         >
-          {capitalize(key)}
+          <FormattedMessage id={capitalize(key)} />
         </ToggleButton>
       ))}
   </div>
