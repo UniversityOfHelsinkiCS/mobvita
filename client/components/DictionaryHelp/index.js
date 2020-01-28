@@ -1,26 +1,43 @@
 import React, { useState, useEffect } from 'react'
 import { connect, useDispatch, useSelector } from 'react-redux'
-import { List, Button, Header, Segment, Icon, Modal, Dropdown } from 'semantic-ui-react'
+import { List, Button, Header, Segment, Icon, Dropdown } from 'semantic-ui-react'
 import { Shake } from 'reshake'
-import { setLocale } from 'Utilities/redux/localeReducer'
-import { localeOptions } from 'Utilities/common'
-import { FormattedMessage, useIntl } from 'react-intl'
+import { FormattedMessage } from 'react-intl'
+import { updateDictionaryLanguage } from 'Utilities/redux/userReducer'
+import { getTranslationAction } from 'Utilities/redux/translationReducer'
+import { learningLanguageSelector } from 'Utilities/common'
 
 
 const DictionaryHelp = ({ translation }) => {
   const [showHelp, setShow] = useState(false)
   const [shaking, setShaking] = useState(false)
   const dispatch = useDispatch()
-  const translationLanguageCode = useSelector(({ locale }) => locale)
-  const intl = useIntl
+  const translationLanguageCode = useSelector(({ user }) => user.data.user.last_trans_language)
+  const learningLanguage = useSelector(learningLanguageSelector)
+  console.log(translation)
 
-  const dictionaryOptions = localeOptions.map(localeObj => (
+  const dictionaryOptions = [
     {
-      key: localeObj.code,
-      value: localeObj.code,
-      text: localeObj.name,
-    }
-  ))
+      key: 'fi',
+      value: 'Finnish',
+      text: 'Finnish',
+    },
+    {
+      key: 'en',
+      value: 'English',
+      text: 'English',
+    },
+    {
+      key: 'se',
+      value: 'Swedish',
+      text: 'Swedish',
+    },
+    {
+      key: 'ru',
+      value: 'Russian',
+      text: 'Russian',
+    },
+  ]
 
 
   const translations = translation ? translation.map(translated => (
@@ -32,8 +49,6 @@ const DictionaryHelp = ({ translation }) => {
     </List.Item>
   )) : 'no translation found'
 
-  const placeholder = 'Unfamiliar word? Click on any word to explore its meaning'
-
   useEffect(() => {
     if (translations.length > 0) {
       setShaking(true)
@@ -42,6 +57,13 @@ const DictionaryHelp = ({ translation }) => {
       }, 500)
     }
   }, [translation])
+
+  const handleDropdownChange = (e, data) => {
+    const lemmas = translation.map(t => t.lemma).join('+')
+
+    dispatch(updateDictionaryLanguage(data.value))
+    dispatch(getTranslationAction(learningLanguage, lemmas, data.value))
+  }
 
   if (!showHelp) {
     return (
@@ -74,20 +96,17 @@ const DictionaryHelp = ({ translation }) => {
   return (
     <div>
       <Segment className="navigationpanel" style={{ position: 'fixed', right: '5%', bottom: '2%', width: '90%' }}>
-        <Modal trigger={<Button><FormattedMessage id="translation-target-language" /></Button>}>
-          <Modal.Header><FormattedMessage id="translation-target-language" /></Modal.Header>
-          <Modal.Content>
-            <span><FormattedMessage id="translate-to" /> </span>
-            <Dropdown
-              closeOnChange
-
-              defaultValue={translationLanguageCode}
-              onChange={(e, data) => dispatch(setLocale(data.value))}
-              options={dictionaryOptions}
-            />
-          </Modal.Content>
-        </Modal>
-
+        <div>
+          <FormattedMessage id="translation-target-language">
+            {txt => <span style={{ marginRight: '5px' }}>{txt}</span>}
+          </FormattedMessage>
+          <Dropdown
+            closeOnChange
+            defaultValue={translationLanguageCode}
+            onChange={handleDropdownChange}
+            options={dictionaryOptions}
+          />
+        </div>
         <Header size="medium" textAlign="center">
           <Button className="navigationbuttonclose" icon basic floated="right" onClick={() => setShow(false)}>
             <Icon name="angle down" />

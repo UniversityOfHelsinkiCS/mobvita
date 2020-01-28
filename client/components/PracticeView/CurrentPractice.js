@@ -19,6 +19,7 @@ const CurrentPractice = ({ storyId }) => {
   const [touched, setTouched] = useState(0)
   const [attempt, setAttempts] = useState(0)
   const language = useSelector(learningLanguageSelector)
+  const dictionaryLanguage = useSelector(({ user }) => user.data.user.last_trans_language)
   const [exerciseCount, setExerciseCount] = useState(0)
   const [disabled, setDisabled] = useState(false)
   const [waited, setWaited] = useState(false)
@@ -115,10 +116,10 @@ const CurrentPractice = ({ storyId }) => {
   }
 
   const textToSpeech = (surfaceWord, wordLemmas) => {
-    const selectedLocale = localeOptions.find(localeOption => localeOption.code === locale)
+    // const selectedLocale = localeOptions.find(localeOption => localeOption.code === locale)
     window.responsiveVoice.speak(surfaceWord, `${language === 'german' ? 'Deutsch' : capitalize(language)} Female`)
     if (wordLemmas) {
-      dispatch(getTranslationAction(capitalize(language), wordLemmas, capitalize(selectedLocale.name)))
+      dispatch(getTranslationAction(capitalize(language), wordLemmas, capitalize(dictionaryLanguage)))
     }
   }
 
