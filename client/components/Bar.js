@@ -44,7 +44,7 @@ export default function Bar({ history }) {
 
     const temp = localeOptions.map(option => ({
       value: option.code,
-      text: option.name,
+      text: option.displayName,
       key: option.code,
     }))
     setLocaleDropdownOptions(temp)
