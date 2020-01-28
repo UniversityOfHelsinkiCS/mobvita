@@ -13,6 +13,7 @@ const SingleStoryView = ({ match }) => {
   const dispatch = useDispatch()
   const { story, pending, locale } = useSelector(({ stories, locale }) => ({ story: stories.focused, pending: stories.pending, locale }))
   const language = useSelector(learningLanguageSelector)
+  const dictionaryLanguage = useSelector(({ user }) => user.data.user.last_trans_language)
   const { id } = match.params
   useEffect(() => {
     dispatch(getStoryAction(language, id))
@@ -21,9 +22,9 @@ const SingleStoryView = ({ match }) => {
   if (!story) return 'No story (yet?)'
 
   const handleWordClick = (surfaceWord, wordLemmas) => {
-    const selectedLocale = localeOptions.find(localeOption => localeOption.code === locale)
+    // const selectedLocale = localeOptions.find(localeOption => localeOption.code === locale)
     window.responsiveVoice.speak(surfaceWord, `${language === 'german' ? 'Deutsch' : capitalize(language)} Female`)
-    dispatch(getTranslationAction(capitalize(language), wordLemmas, capitalize(selectedLocale.name)))
+    dispatch(getTranslationAction(capitalize(language), wordLemmas, capitalize(dictionaryLanguage)))
   }
 
   const wordVoice = (word) => {
@@ -46,7 +47,7 @@ const SingleStoryView = ({ match }) => {
             </Button>
           </Link>
         </Header>
-        {story.url ? <a href={story.url}><FormattedMessage id="Source" /></a> : <div></div>}
+        {story.url ? <a href={story.url}><FormattedMessage id="Source" /></a> : <div />}
         <Divider />
         <Segment>
           {story.paragraph.map(paragraph => (

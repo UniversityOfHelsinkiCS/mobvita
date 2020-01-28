@@ -20,6 +20,7 @@ const CurrentPractice = ({ storyId, language }) => {
   const dispatch = useDispatch()
 
   const { snippets, locale } = useSelector(({ snippets, locale }) => ({ snippets, locale }))
+  const dictionaryLanguage = useSelector(({ user }) => user.data.user.last_trans_language)
 
   const setInitialAnswers = () => {
     if (snippets.focused) {
@@ -95,10 +96,10 @@ const CurrentPractice = ({ storyId, language }) => {
   }
 
   const textToSpeech = (surfaceWord, wordLemmas) => {
-    const selectedLocale = localeOptions.find(localeOption => localeOption.code === locale)
+    // const selectedLocale = localeOptions.find(localeOption => localeOption.code === locale)
     window.responsiveVoice.speak(surfaceWord, `${language === 'german' ? 'Deutsch' : capitalize(language)} Female`)
     if (wordLemmas) {
-      dispatch(getTranslationAction(capitalize(language), wordLemmas, capitalize(selectedLocale.name)))
+      dispatch(getTranslationAction(capitalize(language), wordLemmas, capitalize(dictionaryLanguage)))
     }
   }
 

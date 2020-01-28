@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { Route, Switch, Redirect } from 'react-router-dom'
 
 import SingleStoryView from 'Components/SingleStoryView'
@@ -26,4 +26,5 @@ export default () => (
     <ProtectedRoute exact path="/stories/:id/practice/" component={PracticeView} />
     <ProtectedRoute exact path="/stories/:id/compete/" component={CompeteView} />
   </Switch>
+
 )
