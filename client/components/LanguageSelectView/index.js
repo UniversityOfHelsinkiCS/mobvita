@@ -11,9 +11,9 @@ const LearningLanguageSelectView = () => {
 
   return (
     <Container textAlign="center">
-      <Header data-cy="choose-lang" as="h2">
+      <h2 data-cy="choose-lang">
         <FormattedMessage id="CHOOSE_LANG" />
-      </Header>
+      </h2>
       <Segment style={{ display: 'flex', justifyContent: 'center', flexWrap: 'wrap' }}>
         {supportedLearningLanguages.map(lang => (
           <Link key={lang} onClick={() => dispatch(updateLearningLanguage(lang))} to="/home" style={{ width: '7em', display: 'flex', flexDirection: 'column', margin: '1.5em', alignItems: 'center' }}>
