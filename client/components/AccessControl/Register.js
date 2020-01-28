@@ -39,7 +39,7 @@ const Register = () => {
     const { email, username, password, passwordAgain } = formState
 
     if (password !== passwordAgain) {
-      dispatch(setNotification('Passwords dont match!', 'error'))
+      dispatch(setNotification(intl.formatMessage({ id: "passwords-do-not-match"}), 'error'))
     } else if (accepted) {
       const payload = {
         username,
