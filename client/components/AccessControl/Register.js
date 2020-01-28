@@ -3,11 +3,10 @@ import { useDispatch, useSelector } from 'react-redux'
 import { registerUser } from 'Utilities/redux/registerReducer'
 import { Header, Form, Checkbox, Segment } from 'semantic-ui-react'
 import TermsAndConditions from 'Components/TermsAndConditions'
-import { useIntl } from 'react-intl'
+import { useIntl, FormattedMessage} from 'react-intl'
 import Login from 'Components/AccessControl/Login'
 import { Link } from 'react-router-dom'
 import { setNotification } from 'Utilities/redux/notificationReducer'
-
 
 const Register = () => {
   const [formState, setFormState] = useState({
@@ -72,25 +71,25 @@ const Register = () => {
         <Form onSubmit={handleSubmit}>
           <Form.Field>
             <Form.Input
-              label="Email"
+              label={intl.formatMessage({id: "Email"})}
               name="email"
               error={error}
               type="email"
               value={formState.email}
               onChange={e => handleFormChange(e)}
-              placeholder="Email"
+              placeholder={intl.formatMessage({id: "Email"})}
             />
             <Form.Input
-              label="Username"
+              label={intl.formatMessage({id: "Username"})}
               name="username"
               error={error}
               type="username"
               value={formState.username}
               onChange={e => handleFormChange(e)}
-              placeholder="Username"
+              placeholder={intl.formatMessage({id: "Username"})}
             />
             <Form.Input
-              label="Password"
+              label={intl.formatMessage({id: "Password"})}
               name="password"
               error={error}
               type="password"
@@ -99,7 +98,7 @@ const Register = () => {
               placeholder=""
             />
             <Form.Input
-              label="Repeat password"
+              label={intl.formatMessage({id: "repeat-password"})}
               name="passwordAgain"
               error={error}
               type="password"
@@ -120,7 +119,7 @@ const Register = () => {
             </button>
           </div>
         </Form>
-        <Link to="/login"><button type="button" className="btn btn-secondary">Already have an account? Login</button></Link>
+        <Link to="/login"><button type="button" className="btn btn-secondary"><FormattedMessage id="Login" /></button></Link>
       </Segment>
     </>
   )
