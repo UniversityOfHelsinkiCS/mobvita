@@ -40,7 +40,7 @@ const PracticeModal = ({ trigger }) => {
     }
   ))
 
-  const language = useSelector(learningLanguageSelector)
+  const learningLanguage = useSelector(learningLanguageSelector)
   const user = useSelector(({ user }) => user.data)
 
   const dispatch = useDispatch()
@@ -80,7 +80,7 @@ const PracticeModal = ({ trigger }) => {
   }, [stories, libraries, categories])
 
   useEffect(() => {
-    dispatch(getStories(language, {
+    dispatch(getStories(learningLanguage, {
       sort_by: 'date',
       order: -1,
       page: 0,
