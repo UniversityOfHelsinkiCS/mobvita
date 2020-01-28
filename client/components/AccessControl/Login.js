@@ -80,7 +80,7 @@ const Login = () => {
         <div>
           <Link to="/register"><button type="button" className="btn btn-secondary">{intl.formatMessage({ id: 'Register' })} </button></Link>
           <button data-cy="login-anon" type="button" className="btn btn-secondary" onClick={loginAnon}>
-            Test with quest account
+            Test with guest account
           </button>
         </div>
       </Segment>
