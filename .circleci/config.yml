@@ -18,9 +18,9 @@ workflows:
           filters:
             branches:
               only: master
+  production-release:
+    jobs:
       - dockerhub/publish:
-          requires:
-            - cypress/run
           image: toska/$CIRCLE_PROJECT_REPONAME
           tag: 'prod'
           filters:
@@ -28,3 +28,4 @@ workflows:
               only: /.*/
             branches:
               ignore: /.*/
+
