@@ -14,7 +14,6 @@ const DictionaryHelp = ({ translation }) => {
   const dispatch = useDispatch()
   const translationLanguageCode = useSelector(({ user }) => user.data.user.last_trans_language)
   const learningLanguage = useSelector(learningLanguageSelector)
-  console.log(translation)
 
   const dictionaryOptions = [
     {
