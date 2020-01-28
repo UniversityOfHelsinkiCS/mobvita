@@ -34,8 +34,9 @@ body {
 }
 
 .modal {
-  height: auto;
   left:unset;
+  position: relative !important;
+  height: auto;
 }
 
 // SEMANTIC UI OVERRIDES:
