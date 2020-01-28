@@ -62,11 +62,11 @@ export const supportedLearningLanguages = [
 export const colors = {}
 
 export const localeOptions = [
-  { name: 'Suomi', code: 'fi' },
-  { name: 'Svenska', code: 'sv' },
-  { name: 'Русский', code: 'ru' },
+  { name: 'Finnish', code: 'fi' },
+  { name: 'Swedish', code: 'sv' },
+  { name: 'Russian', code: 'ru' },
   { name: 'English', code: 'en' },
-  { name: 'Italiano', code: 'it' },
+  { name: 'Italian', code: 'it' },
 ]
 
 export const localeNameToCode = name => localeOptions.find(option => option.name === name).code
