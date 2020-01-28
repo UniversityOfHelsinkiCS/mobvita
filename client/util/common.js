@@ -69,7 +69,13 @@ export const localeOptions = [
   { displayName: 'Italiano', name: 'Italian', code: 'it' },
 ]
 
-export const localeNameToCode = name => localeOptions.find(option => option.name === name).code
+export const localeNameToCode = (name) => {
+  const localeObject = localeOptions.find(option => option.name === name)
+  if (localeObject) {
+    return localeObject.code
+  }
+  return 'en'
+}
 export const localeCodeToName = code => localeOptions.find(option => option.code === code).name
 
 
