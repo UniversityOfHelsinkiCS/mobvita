@@ -105,8 +105,6 @@ export default function Bar({ history }) {
                 <Header as="h2">MobVita - alpha</Header>
                 <img style={{ width: '6em', margin: '0 auto' }} src={images.revitaLogoTransparent} alt="revitaLogo" />
               </Link>
-              {user && user.user.last_used_language && <img style={{ width: '6em', margin: '0 auto' }} src={getLearningLanguageFlag()} alt="learningLanguageFlag" />}
-
             </div>
 
             {user && (
@@ -125,7 +123,10 @@ export default function Bar({ history }) {
 
                   <Link to="/learningLanguage" onClick={() => menuClickWrapper()}>
                     <button type="button" className="btn btn-primary btn-block">
-                      <FormattedMessage id="Learning-language" />
+                      <div style={{ display: 'flex', justifyContent: 'space-around', alignItems: 'center' }}>
+                        <span><FormattedMessage id="Learning-language" /></span>
+                        {user && user.user.last_used_language && <img style={{ width: '3em', height: '2em' }} src={getLearningLanguageFlag()} alt="learningLanguageFlag" />}
+                      </div>
                     </button>
                   </Link>
 
@@ -134,7 +135,7 @@ export default function Bar({ history }) {
             )}
 
             <Menu.Item>
-              <FormattedMessage id="interface-language" />
+              <div style={{ textAlign: 'left' }}><FormattedMessage id="interface-language" /></div>
               <Dropdown
                 fluid
                 placeholder="Choose interface language..."
@@ -144,7 +145,6 @@ export default function Bar({ history }) {
                 onChange={(e, data) => handleLocaleChange(data.value)}
               />
             </Menu.Item>
-            <TermsAndConditions trigger={<button type="button" className="btn btn-link"> Terms and Conditions </button>} />
 
 
             <div style={{ marginTop: 'auto' }}>
@@ -153,6 +153,8 @@ export default function Bar({ history }) {
                 <ContactUs trigger={<button type="button" className="btn btn-secondary" style={{ flexBasis: '50%' }}><FormattedMessage id="Contact" /></button>} />
                 { user && <button type="button" className="btn btn-secondary" style={{ flexBasis: '50%' }} onClick={() => menuClickWrapper(signOut)}><FormattedMessage id="sign-out" /></button>}
               </Menu.Item>
+              <TermsAndConditions trigger={<button type="button" className="btn btn-link"> Terms and Conditions </button>} />
+
               {/* eslint-disable no-undef */}
               <div>{`Built at: ${__VERSION__}`}</div>
               <div>{`Commit: ${__COMMIT__}`}</div>
