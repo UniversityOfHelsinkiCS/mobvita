@@ -45,10 +45,10 @@ const LearningLanguageSelectView = () => {
       <h2 data-cy="choose-lang">
         <FormattedMessage id="CHOOSE_LANG" />
       </h2>
-      <Segment style={{ display: 'flex', justifyContent: 'center', flexWrap: 'wrap' }}>
+      <Segment style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'center' }}>
         {supportedLearningLanguages.map(lang => (
-          <div onClick={() => handleLearningLanguageChange(lang)} style={{ width: '7em', display: 'flex', flexDirection: 'column', margin: '1.5em', alignItems: 'center' }}>
-            <img src={images[`flag${capitalize(lang.split('-').join(''))}`]} style={{ height: '3em', border: '1px solid whitesmoke' }} alt={lang} />
+          <div onClick={() => handleLearningLanguageChange(lang)} style={{ width: '7em', display: 'flex', flexDirection: 'column', alignItems: 'center', padding: '1em' }}>
+            <img src={images[`flag${capitalize(lang.split('-').join(''))}`]} style={{ height: '40px', width: '60px', border: '1px solid whitesmoke' }} alt={lang} />
             <span style={{ color: 'black' }}><FormattedMessage id={lang.split('-').map(l => capitalize(l)).join('-')} /></span>
           </div>
         ))}
