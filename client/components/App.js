@@ -8,9 +8,11 @@ import Bar from './Bar'
 const App = () => (
   <>
     <Toaster />
-    <Route component={Bar} />
-    <div className="application-content">
-      <Router />
+    <div style={{ display: 'flex' }}>
+      <Route component={Bar} />
+      <div className="application-content">
+        <Router />
+      </div>
     </div>
   </>
 )

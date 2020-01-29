@@ -33,7 +33,7 @@ const Tabs = ({ location }) => {
 
   return (
     <div style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'space-between' }}>
-      <div style={{ width: '110em' }}>
+      <div style={{ width: '-webkit-fill-available' }}>
         <Tab
           panes={panes}
           activeIndex={index}

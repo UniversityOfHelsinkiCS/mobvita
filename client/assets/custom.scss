@@ -1,6 +1,7 @@
 $wrong-color: #ff5e5e;
 $button-color: teal;
 $default-font: Arial;
+$sidebar-swipeable-width: 1em;
 
 body {
   font-family: -apple-system,BlinkMacSystemFont,Segoe UI,Helvetica,Arial,sans-serif,Apple Color Emoji,Segoe UI Emoji;
@@ -49,12 +50,12 @@ body {
 // MISC CSS:
 .application-content {
   padding-bottom: 5em;
-  padding-top: 1em;
-  min-height: calc(100vh - 2em);
-  display: flex;
+  padding-top: 3em;
+  min-height: 100vh;
   flex-direction: column;
-  width: 90%;
+  width: -webkit-fill-available;
   max-width: 110em;
+  padding-right: $sidebar-swipeable-width;
   margin: 0 auto;
 }
 
@@ -124,17 +125,17 @@ body {
 .sidebar{
   &-hamburger{
     z-index: 100;
-    position: relative;
+    position: fixed;
     padding:0.3em;
+    height:40px;
+    width:40px;
+    background-color: white;
   }
 
   &-swipeable {
-    width: 3em;
-    height: 100%;
-    position: fixed;
+    width: $sidebar-swipeable-width;
     left: 0;
     z-index: 10;
-    padding: 0.3em;
   }
 
   &-content{
