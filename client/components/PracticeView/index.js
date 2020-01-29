@@ -7,13 +7,13 @@ import DictionaryHelp from 'Components/DictionaryHelp'
 import { learningLanguageSelector } from 'Utilities/common'
 
 const PracticeView = ({ match }) => {
-  const { language } = useSelector(learningLanguageSelector)
+  const learningLanguage = useSelector(learningLanguageSelector)
   const dispatch = useDispatch()
 
   const { story } = useSelector(({ stories }) => ({ story: stories.focused }))
   useEffect(() => {
-    dispatch(getStoryAction(language, match.params.id))
-  }, [language])
+    dispatch(getStoryAction(learningLanguage, match.params.id))
+  }, [learningLanguage])
 
   if (!story) return null
 

@@ -3,14 +3,14 @@ import { useSelector, useDispatch } from 'react-redux'
 import { Segment, Button } from 'semantic-ui-react'
 import { getCurrentSnippet, postAnswers, setTotalNumberAction } from 'Utilities/redux/snippetsReducer'
 import { getTranslationAction } from 'Utilities/redux/translationReducer'
-import { capitalize, localeOptions } from 'Utilities/common'
+import { capitalize, learningLanguageSelector } from 'Utilities/common'
 
 import ExerciseCloze from 'Components/CompeteView/ExerciseCloze'
 import ExerciseMultipleChoice from 'Components/CompeteView/ExerciseMultipleChoice'
 import ExerciseHearing from 'Components/CompeteView/ExerciseHearing'
 import OpponentProgress from 'Components/CompeteView/OpponentProgress'
 
-const CurrentPractice = ({ storyId, language }) => {
+const CurrentPractice = ({ storyId }) => {
   const [answers, setAnswers] = useState({})
   const [options, setOptions] = useState({})
   const [audio, setAudio] = useState([])
@@ -19,8 +19,10 @@ const CurrentPractice = ({ storyId, language }) => {
 
   const dispatch = useDispatch()
 
-  const { snippets, locale } = useSelector(({ snippets, locale }) => ({ snippets, locale }))
+  const { snippets } = useSelector(({ snippets, locale }) => ({ snippets, locale }))
   const dictionaryLanguage = useSelector(({ user }) => user.data.user.last_trans_language)
+  const learningLanguage = useSelector(learningLanguageSelector)
+
 
   const setInitialAnswers = () => {
     if (snippets.focused) {
@@ -97,9 +99,9 @@ const CurrentPractice = ({ storyId, language }) => {
 
   const textToSpeech = (surfaceWord, wordLemmas) => {
     // const selectedLocale = localeOptions.find(localeOption => localeOption.code === locale)
-    window.responsiveVoice.speak(surfaceWord, `${language === 'german' ? 'Deutsch' : capitalize(language)} Female`)
+    window.responsiveVoice.speak(surfaceWord, `${learningLanguage === 'german' ? 'Deutsch' : capitalize(learningLanguage)} Female`)
     if (wordLemmas) {
-      dispatch(getTranslationAction(capitalize(language), wordLemmas, capitalize(dictionaryLanguage)))
+      dispatch(getTranslationAction(capitalize(learningLanguage), wordLemmas, capitalize(dictionaryLanguage)))
     }
   }
 

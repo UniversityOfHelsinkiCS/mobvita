@@ -9,6 +9,7 @@ const https = require('https')
 const revitaUrl = process.env.REVITA_URL
 
 if (!revitaUrl) {
+  console.error('REVITA_URL missing') // eslint-disable-line no-console
   process.exit(1)
 }
 

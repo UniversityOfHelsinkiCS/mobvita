@@ -18,7 +18,7 @@ const LearningLanguageSelectView = () => {
         {supportedLearningLanguages.map(lang => (
           <Link key={lang} onClick={() => dispatch(updateLearningLanguage(lang))} to="/home" style={{ width: '7em', display: 'flex', flexDirection: 'column', margin: '1.5em', alignItems: 'center' }}>
             <img src={images[`flag${capitalize(lang.split('-').join(''))}`]} style={{ height: '3em', border: '1px solid whitesmoke' }} alt={lang} />
-            <span style={{ color: 'black' }}><FormattedMessage id={capitalize(lang)} /></span>
+            <span style={{ color: 'black' }}><FormattedMessage id={lang.split('-').map(l => capitalize(l)).join('-')} /></span>
           </Link>
         ))}
       </Segment>

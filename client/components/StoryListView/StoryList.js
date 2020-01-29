@@ -6,10 +6,10 @@ import { getStories, getAllStories } from 'Utilities/redux/storiesReducer'
 import StoryListItem from 'Components/StoryListView/StoryListItem'
 import { FormattedMessage, useIntl } from 'react-intl'
 import CheckboxGroup from 'Components/CheckboxGroup'
-import { capitalize } from 'Utilities/common'
+import { capitalize, learningLanguageSelector } from 'Utilities/common'
 import StoryForm from './StoryForm'
 
-const StoryList = ({ language }) => {
+const StoryList = () => {
   const intl = useIntl()
   const [sorter, setSorter] = useState('date')
   const [searchString, setSearchString] = useState('')
@@ -31,10 +31,11 @@ const StoryList = ({ language }) => {
   }))
 
   const user = useSelector(({ user }) => user.data.user)
+  const learningLanguage = useSelector(learningLanguageSelector)
 
   useEffect(() => {
     dispatch(
-      getStories(language, {
+      getStories(learningLanguage, {
         sort_by: sorter,
         order: sorter === 'title' ? 1 : -1, // Worked the best atm
         page,
@@ -64,7 +65,7 @@ const StoryList = ({ language }) => {
     const ss = target.value
     setSearchString(ss)
     dispatch(
-      getAllStories(language, {
+      getAllStories(learningLanguage, {
         sort_by: sorter,
         order: sorter === 'title' ? 1 : -1, // Worked the best atm
       }),
@@ -150,9 +151,9 @@ const StoryList = ({ language }) => {
       {searchSort}
 
       <Card.Group itemsPerRow={1} doubling>
-        <StoryForm language={language} />
+        <StoryForm />
         {libraryFilteredStories.map(story => (
-          <StoryListItem key={story._id} story={story} language={language} />
+          <StoryListItem key={story._id} story={story} />
         ))}
       </Card.Group>
       <div style={{ display: 'flex', justifyContent: 'center' }}>

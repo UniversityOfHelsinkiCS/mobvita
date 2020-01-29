@@ -2,14 +2,14 @@ import React, { useState, useEffect } from 'react'
 import { Modal, Button, Input } from 'semantic-ui-react'
 import { useDispatch, useSelector } from 'react-redux'
 import isUrl from 'is-url'
-import { capitalize } from 'Utilities/common'
+import { capitalize, learningLanguageSelector } from 'Utilities/common'
 
 import { postStory } from 'Utilities/redux/uploadProgressReducer'
 import { FormattedMessage, useIntl } from 'react-intl'
 
 const StoryAddition = () => {
   const [url, setURL] = useState('')
-  const language = useSelector(({ language }) => language)
+  const learningLanguage = useSelector(learningLanguageSelector)
   const [modalOpen, setModal] = useState(false)
   const intl = useIntl()
   const dispatch = useDispatch()
@@ -17,7 +17,7 @@ const StoryAddition = () => {
   const handleSave = () => {
     const newStory = {
       url,
-      language,
+      language: learningLanguage,
     }
     setModal(false)
     dispatch(postStory(newStory))
