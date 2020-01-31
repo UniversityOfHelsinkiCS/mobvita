@@ -12,7 +12,7 @@ const LearningLanguageSelectView = () => {
   return (
     <Container textAlign="center">
       <Header data-cy="choose-lang" as="h2">
-        <FormattedMessage id="CHOOSE_LANG" />
+        <FormattedMessage id="Learning-language" />
       </Header>
       <Segment style={{ display: 'flex', justifyContent: 'center', flexWrap: 'wrap' }}>
         {supportedLearningLanguages.map(lang => (
