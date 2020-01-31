@@ -18,16 +18,14 @@ const CurrentPractice = ({ storyId }) => {
   const [touchedIDs, setTouchedIds] = useState([])
   const [touched, setTouched] = useState(0)
   const [attempt, setAttempts] = useState(0)
-  const language = useSelector(learningLanguageSelector)
+  const learningLanguage = useSelector(learningLanguageSelector)
+  const dictionaryLanguage = useSelector(({ user }) => user.data.user.last_trans_language)
   const [exerciseCount, setExerciseCount] = useState(0)
-  const [disabled, setDisabled] = useState(false)
-  const [waited, setWaited] = useState(false)
-  const [color, setColor] = useState('')
   const scrollTarget = useRef(null)
 
   const dispatch = useDispatch()
 
-  const { snippets, locale } = useSelector(({ snippets, locale }) => ({ snippets, locale }))
+  const { snippets } = useSelector(({ snippets, locale }) => ({ snippets, locale }))
   const { story } = useSelector(({ stories }) => ({ story: stories.focused }))
 
 
@@ -115,10 +113,10 @@ const CurrentPractice = ({ storyId }) => {
   }
 
   const textToSpeech = (surfaceWord, wordLemmas) => {
-    const selectedLocale = localeOptions.find(localeOption => localeOption.code === locale)
-    window.responsiveVoice.speak(surfaceWord, `${language === 'german' ? 'Deutsch' : capitalize(language)} Female`)
+    // const selectedLocale = localeOptions.find(localeOption => localeOption.code === locale)
+    window.responsiveVoice.speak(surfaceWord, `${learningLanguage === 'german' ? 'Deutsch' : capitalize(learningLanguage)} Female`)
     if (wordLemmas) {
-      dispatch(getTranslationAction(capitalize(language), wordLemmas, capitalize(selectedLocale.name)))
+      dispatch(getTranslationAction(capitalize(learningLanguage), wordLemmas, capitalize(dictionaryLanguage)))
     }
   }
 
@@ -273,14 +271,6 @@ const CurrentPractice = ({ storyId }) => {
       >
         {practice.map(exercise => wordInput(exercise))}
       </div>
-
-      {/* {exerciseCount === 0
-        ? <Button fluid onClick={continueToNextSnippet}>Continue to next snippet</Button>
-        : (touched >= Math.ceil(exerciseCount / 2)
-          ? <Button fluid onClick={() => checkAnswers()}>{`Check answers ${attempt}/2 attemps used`}</Button>
-          : <Button style={{ backgroundColor: color }} disabled={disabled} fluid onClick={() => getConfirmation()}>{disabled ? 'Are you sure?' : 'Skip this part'}</Button>
-        )
-      } */}
 
       <button
         type="button"

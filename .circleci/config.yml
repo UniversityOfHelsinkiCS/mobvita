@@ -7,24 +7,27 @@ workflows:
   test-build-deploy:
     jobs:
       - cypress/run:
-          start: npm run start:dev
+          start: REVITA_URL=https://revita-test.cs.helsinki.fi/api npm run start:dev
           wait-on: http://localhost:8000
+          record: true
       - dockerhub/publish:
           requires:
             -  cypress/run
           image: toska/$CIRCLE_PROJECT_REPONAME
           tag: 'staging'
-          extra_build_args: '--build-arg BASE_PATH=/staging/ --build-arg COMMIT_HASH=$CIRCLE_SHA1'
+          extra_build_args: '--build-arg REVITA_URL=https://revita-test.cs.helsinki.fi/api --build-arg BASE_PATH=/staging/ --build-arg COMMIT_HASH=$CIRCLE_SHA1'
           filters:
             branches:
               only: master
+  production-release:
+    jobs:
       - dockerhub/publish:
-          requires:
-            - cypress/run
           image: toska/$CIRCLE_PROJECT_REPONAME
+          extra_build_args: '--build-arg REVITA_URL=https://revita.cs.helsinki.fi/api'
           tag: 'prod'
           filters:
             tags:
               only: /.*/
             branches:
               ignore: /.*/
+

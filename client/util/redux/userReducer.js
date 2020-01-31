@@ -32,6 +32,7 @@ export const saveSelf = (changes) => {
 
 export const updateLearningLanguage = language => saveSelf({ last_used_lang: capitalize(language) })
 export const updateLocale = locale => saveSelf({ interface_lang: localeCodeToName(locale) })
+export const updateDictionaryLanguage = language => saveSelf({ last_trans_lang: capitalize(language) })
 
 
 export const confirmUser = (token) => {

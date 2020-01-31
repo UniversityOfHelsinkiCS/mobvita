@@ -1,22 +1,24 @@
 import React, { useState } from 'react'
 import { Form, Input, Card, Icon } from 'semantic-ui-react'
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { postStory } from 'Utilities/redux/uploadProgressReducer'
-import { capitalize } from 'Utilities/common'
+import { capitalize, learningLanguageSelector } from 'Utilities/common'
 import { FormattedMessage, useIntl } from 'react-intl'
 import { setNotification } from 'Utilities/redux/notificationReducer'
 
 
-const StoryForm = ({ language }) => {
+const StoryForm = () => {
   const intl = useIntl()
   const [storyUrl, setStoryUrl] = useState('')
   const dispatch = useDispatch()
+
+  const learningLanguage = useSelector(learningLanguageSelector)
 
   const handleStorySubmit = (event) => {
     event.preventDefault()
 
     const newStory = {
-      language: capitalize(language),
+      language: capitalize(learningLanguage),
       url: storyUrl,
     }
     dispatch(postStory(newStory))

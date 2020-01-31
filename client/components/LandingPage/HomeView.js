@@ -27,9 +27,6 @@ const PracticeButton = props => (
 )
 
 const HomeView = () => {
-  const eloHistory = useSelector(({ user }) => user.data.user.exercise_history
-    .map(exercise => exercise.score))
-
   const dispatch = useDispatch()
   useEffect(() => {
     dispatch(getSelf())
@@ -37,7 +34,7 @@ const HomeView = () => {
 
   return (
     <div>
-      <EloChart eloHistory={eloHistory} />
+      <EloChart />
       <PracticeModal trigger={<PracticeButton data-cy="practice-now" />} />
     </div>
   )

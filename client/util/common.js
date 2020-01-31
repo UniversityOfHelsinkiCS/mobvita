@@ -62,14 +62,20 @@ export const supportedLearningLanguages = [
 export const colors = {}
 
 export const localeOptions = [
-  { name: 'Suomi', code: 'fi' },
-  { name: 'Svenska', code: 'sv' },
-  { name: 'Русский', code: 'ru' },
-  { name: 'English', code: 'en' },
-  { name: 'Italiano', code: 'it' },
+  { displayName: 'Suomi', name: 'Finnish', code: 'fi' },
+  { displayName: 'Svenska', name: 'Swedish', code: 'sv' },
+  { displayName: 'Русский', name: 'Russian', code: 'ru' },
+  { displayName: 'English', name: 'English', code: 'en' },
+  { displayName: 'Italiano', name: 'Italian', code: 'it' },
 ]
 
-export const localeNameToCode = name => localeOptions.find(option => option.name === name).code
+export const localeNameToCode = (name) => {
+  const localeObject = localeOptions.find(option => option.name === name)
+  if (localeObject) {
+    return localeObject.code
+  }
+  return 'en'
+}
 export const localeCodeToName = code => localeOptions.find(option => option.code === code).name
 
 
