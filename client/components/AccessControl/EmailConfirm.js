@@ -1,6 +1,5 @@
 import React, { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { Button } from 'semantic-ui-react'
 import { confirmUser } from 'Utilities/redux/userReducer'
 import { useHistory } from 'react-router'
 

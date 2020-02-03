@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { createRealToken, createAnonToken } from 'Utilities/redux/userReducer'
-import { Segment, Header, Button as button, Form } from 'semantic-ui-react'
+import { Segment, Header, Form } from 'semantic-ui-react'
 import { useHistory, useLocation } from 'react-router'
 import { Link } from 'react-router-dom'
 import { FormattedMessage, useIntl } from 'react-intl'
