@@ -33,10 +33,8 @@ module.exports = (env, argv) => {
 
   const COMMIT_STRING = JSON.stringify(COMMIT_HASH.substring(0, 7))
 
-  const devtool = mode === 'production' ? false : 'source-map'
-
   return {
-    devtool,
+    devtool: false,
     mode,
     output: { publicPath: BASE_PATH },
     entry: [
@@ -85,6 +83,7 @@ module.exports = (env, argv) => {
     },
     optimization: { ...additionalOptimizations },
     plugins: [
+      new webpack.SourceMapDevToolPlugin({ filename: 'sourceMap.js.map' }),
       new webpack.DefinePlugin({
         'process.env.BASE_PATH': JSON.stringify(BASE_PATH),
         'process.env.BUILT_AT': JSON.stringify(new Date().toISOString()),

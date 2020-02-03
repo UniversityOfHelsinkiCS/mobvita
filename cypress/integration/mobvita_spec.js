@@ -17,6 +17,7 @@ describe('Mobvita', function() {
     cy.get('form')
       .get('[data-cy=login]')
       .click()
+    cy.get('[data-cy=practice-now]')
   })
 
   describe('when logged in', function() {
