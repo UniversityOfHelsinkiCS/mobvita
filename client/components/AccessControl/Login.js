@@ -37,7 +37,7 @@ const Login = () => {
   return (
     <>
       <h1>{intl.formatMessage({ id: 'Login' })} </h1>
-      <Segment style={{ backgroundColor: 'azure' }}>
+      <Segment>
         <p>
           <FormattedMessage id="master-a-language-by-learning-from-stories-of-your-own-choosing" />
         </p>
