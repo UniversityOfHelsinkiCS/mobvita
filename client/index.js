@@ -18,8 +18,10 @@ if (inProduction) {
   Sentry.init({
     dsn: 'https://509ab4585bb54fda8a94a461c1007146@toska.cs.helsinki.fi/13',
     environment: basePath === '/' ? 'production' : 'staging',
+    release: `mobvita@${__COMMIT__}`, // eslint-disable-line no-undef
   })
 }
+
 const refresh = () => render(
   <Provider store={store}>
     <ConnectedIntlProvider>
