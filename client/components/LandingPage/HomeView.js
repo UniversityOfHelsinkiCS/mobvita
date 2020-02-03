@@ -36,6 +36,7 @@ const HomeView = () => {
     <div>
       <EloChart />
       <PracticeModal trigger={<PracticeButton data-cy="practice-now" />} />
+      <button type="button" style={{ display: 'none' }} onClick={() => undefun()}>hidden breaking thing</button>
     </div>
   )
 }
