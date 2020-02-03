@@ -83,7 +83,7 @@ module.exports = (env, argv) => {
     },
     optimization: { ...additionalOptimizations },
     plugins: [
-      new webpack.SourceMapDevToolPlugin({ filename: 'sourceMap.js.map' }),
+      new webpack.SourceMapDevToolPlugin({ filename: '[name].js.map' }),
       new webpack.DefinePlugin({
         'process.env.BASE_PATH': JSON.stringify(BASE_PATH),
         'process.env.BUILT_AT': JSON.stringify(new Date().toISOString()),

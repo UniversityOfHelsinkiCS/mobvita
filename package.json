@@ -13,7 +13,8 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "stats": "webpack --mode production --json --optimize-minimize > stats.json",
     "cypress:open": "cypress open",
-    "cypress:run": "cypress run"
+    "cypress:run": "cypress run",
+    "sentry-cli": "sentry-cli"
   },
   "engines": {
     "node": ">=10.15"
