@@ -15,7 +15,7 @@ const EmailConfirm = ({ match }) => {
     }
   }, [user])
 
-  return <Button onClick={() => dispatch(confirmUser(match.params.token))}>Confirm Email</Button>
+  return <button type="button" className="btn btn-primary" onClick={() => dispatch(confirmUser(match.params.token))}>Confirm Email</button>
 }
 
 export default EmailConfirm
