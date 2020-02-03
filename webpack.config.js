@@ -33,6 +33,19 @@ module.exports = (env, argv) => {
 
   const COMMIT_STRING = JSON.stringify(COMMIT_HASH.substring(0, 7))
 
+  const headHtmlSnippet = (mode === 'production' && BASE_PATH === '/')
+    ? `<meta name="viewport" content="width=device-width, initial-scale=1.0">
+       <script src="https://code.responsivevoice.org/responsivevoice.js"></script>
+       <script async src="https://www.googletagmanager.com/gtag/js?id=UA-157268430-1"></script>
+       <script>
+         window.dataLayer = window.dataLayer || [];
+         function gtag(){dataLayer.push(arguments);}
+         gtag('js', new Date());
+         gtag('config', 'UA-157268430-1');
+       </script>`
+    : `<meta name="viewport" content="width=device-width, initial-scale=1.0">
+       <script src="https://code.responsivevoice.org/responsivevoice.js"></script>`
+
   return {
     devtool: false,
     mode,
@@ -96,15 +109,7 @@ module.exports = (env, argv) => {
         inject: false,
         template: htmlTemplate,
         appMountId: 'root',
-        headHtmlSnippet: `<meta name="viewport" content="width=device-width, initial-scale=1.0"><script src="https://code.responsivevoice.org/responsivevoice.js"></script>
-                          <script async src="https://www.googletagmanager.com/gtag/js?id=UA-157268430-1"></script>
-                          <script>
-                            window.dataLayer = window.dataLayer || [];
-                            function gtag(){dataLayer.push(arguments);}
-                            gtag('js', new Date());
-                            gtag('config', 'UA-157268430-1');
-                          </script>
-        `,
+        headHtmlSnippet,
       }),
 
       // Extract css
