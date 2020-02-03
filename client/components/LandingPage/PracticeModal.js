@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import { Modal, Button, Container } from 'semantic-ui-react'
+import { Modal } from 'semantic-ui-react'
 import { Link } from 'react-router-dom'
 import { useSelector, useDispatch } from 'react-redux'
 import { capitalize, learningLanguageSelector } from 'Utilities/common'
@@ -127,11 +127,13 @@ const PracticeModal = ({ trigger }) => {
       <Modal.Header><FormattedMessage id="practice" /></Modal.Header>
       <Modal.Content className="practiceModal">
 
-        <Container>
-          <Button data-cy="start-random" fluid disabled={!filteredLink} color="teal" as={Link} to={filteredLink}>
-            {`Start random story from ${filteredStories.length} stories`}
-          </Button>
-        </Container>
+        <div>
+          <Link to={filteredLink}>
+            <button className="btn btn-primary" type="button" data-cy="start-random" disabled={!filteredLink}>
+              {`Start random story from ${filteredStories.length} stories`}
+            </button>
+          </Link>
+        </div>
 
 
         <div style={{ padding: '1em' }}>

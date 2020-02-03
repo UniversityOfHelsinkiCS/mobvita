@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
-import { Segment, Button } from 'semantic-ui-react'
+import { Segment } from 'semantic-ui-react'
 import { getCurrentSnippet, postAnswers, setTotalNumberAction } from 'Utilities/redux/snippetsReducer'
 import { getTranslationAction } from 'Utilities/redux/translationReducer'
 import { capitalize, learningLanguageSelector } from 'Utilities/common'
@@ -210,7 +210,7 @@ const CurrentPractice = ({ storyId }) => {
       </Segment>
       <OpponentProgress />
 
-      <Button fluid onClick={checkAnswers}>Continue to next snippet </Button>
+      <button type="button" className="btn btn-primary" fluid onClick={checkAnswers}>Continue to next snippet </button>
     </>
   )
 }
