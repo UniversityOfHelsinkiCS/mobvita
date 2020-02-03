@@ -4,19 +4,9 @@ orbs:
   dockerhub: circleci/docker@0.5.1
   cypress: cypress-io/cypress@1
 
-jobs:
-  sentry:
-    docker:
-      - image: circleci/node:stretch
-    steps:
-      - checkout
-      - run: npm run build
-      - run: npm run sentry-cli -- releases new mobvita@$CIRCLE_SHA1
-      - run: npm run sentry-cli -- releases files mobvita@$CIRCLE_SHA1 upload-sourcemaps /dist/main.js.map
 workflows:
   test-build-deploy:
     jobs:
-      - sentry
       - cypress/run:
           start: REVITA_URL=https://revita-test.cs.helsinki.fi/api npm run start:dev
           wait-on: http://localhost:8000
@@ -24,7 +14,6 @@ workflows:
       - dockerhub/publish:
           requires:
             -  cypress/run
-            -  sentry
           image: toska/$CIRCLE_PROJECT_REPONAME
           tag: 'staging'
           extra_build_args: '--build-arg REVITA_URL=https://revita-test.cs.helsinki.fi/api --build-arg BASE_PATH=/staging/ --build-arg COMMIT_HASH=$CIRCLE_SHA1'
