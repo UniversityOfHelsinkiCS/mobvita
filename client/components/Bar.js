@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import { Link } from 'react-router-dom'
-import { Sidebar, Segment, Menu, Button, Icon, Header, Container, Dropdown } from 'semantic-ui-react'
-import { useIntl } from 'react-intl'
+import { Sidebar, Menu, Icon, Header, Dropdown } from 'semantic-ui-react'
 import { useDispatch, useSelector } from 'react-redux'
 import { Swipeable } from 'react-swipeable'
 import { FormattedMessage } from 'react-intl'
