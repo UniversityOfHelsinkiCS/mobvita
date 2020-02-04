@@ -6,7 +6,7 @@ export const getFlashcards = (inputLanguage, outputLanguage) => {
   return callBuilder(route, prefix, 'get')
 }
 
-export default (state = null, action) => {
+export default (state = {}, action) => {
   switch (action.type) {
     case 'GET_FLASHCARDS_ATTEMPT':
       return {
