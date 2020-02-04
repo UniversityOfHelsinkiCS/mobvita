@@ -5,7 +5,7 @@ import { Header, Form, Checkbox, Segment } from 'semantic-ui-react'
 import TermsAndConditions from 'Components/TermsAndConditions'
 import { useIntl, FormattedMessage } from 'react-intl'
 import Login from 'Components/AccessControl/Login'
-import { Link } from 'react-router-dom'
+import { Link, useHistory } from 'react-router-dom'
 import { setNotification } from 'Utilities/redux/notificationReducer'
 
 const Register = () => {
@@ -27,6 +27,7 @@ const Register = () => {
 
   const dispatch = useDispatch()
 
+  const history = useHistory()
 
   useEffect(() => {
     if (error) {
@@ -47,6 +48,7 @@ const Register = () => {
       }
 
       dispatch(registerUser(payload))
+      history.push('/login')
     } else {
       dispatch(setNotification('You must accept Terms and Conditions', 'error'))
     }
