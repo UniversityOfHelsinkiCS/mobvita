@@ -44,6 +44,7 @@
     "eslint-plugin-react": "^7.12.4",
     "express": "^4.16.3",
     "express-async-errors": "^3.1.1",
+    "fibers": "^4.0.2",
     "file-loader": "^3.0.1",
     "highcharts": "^8.0.0",
     "highcharts-react-official": "^2.2.2",
@@ -70,6 +71,7 @@
     "redux": "^4.0.0",
     "redux-thunk": "^2.3.0",
     "reshake": "^1.2.1",
+    "sass": "^1.25.0",
     "semantic-ui-css": "^2.4.1",
     "semantic-ui-react": "^0.85.0",
     "style-loader": "^1.0.1",
@@ -82,7 +84,6 @@
   },
   "devDependencies": {
     "babel-preset-stage-2": "^6.24.1",
-    "node-sass": "^4.13.0",
     "nodemon": "^1.18.10",
     "sass-loader": "^8.0.0",
     "webpack": "^4.41.2",
