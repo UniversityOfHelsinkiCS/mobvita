@@ -11,26 +11,30 @@ export default function AboutUs({ trigger }) {
       <Modal.Header>About us</Modal.Header>
       <Modal.Content>
         <p>
-          <b><i>Revita</i></b> provides tools for language learning, and for supporting endangered languages. <b><i>Revita</i></b> stimulates the student to practice in <b>actively producing</b> language, rather than <b>passively absorbing</b> rules.
+          <b><i>Revita</i></b> provides tools for language learning, and for supporting endangered languages. <b><i>Revita</i></b> stimulates the student to practice in <b>actively producing</b> language, 
+          rather than <b>passively absorbing</b> rules.
+        </p>
+        <p>
+          <b><i>MobVita</i></b> is a new interface for using Revita in a more fluent and especially mobile friendly way.
         </p>
 
         <h4>Main features</h4>
         <ul>
           <li><b><i>Revita</i></b> offers many <b>exercise modes:</b></li>
           <ul>
-            <li>fill-in-the-blank quizzes,</li>
-            <li>multiple-choice quizzes,</li>
-            <li>vocabulary practice (flashcards),</li>
-            <li>listening comprehension quizzes,</li>
-            <li>crosswords,</li>
-            <li>competition&mdash;to complete exercises faster than an opponent,</li>
+            <li>fill-in-the-blank quizzes</li>
+            <li>multiple-choice quizzes</li>
+            <li>vocabulary practice (flashcards) <i>***not available in MobVita***</i></li>
+            <li>listening comprehension quizzes</li>
+            <li>crosswords <i>***not available in MobVita***</i></li>
+            <li>competition&mdash;to complete exercises faster than an opponent <i>***not available in MobVita***</i></li>
             <li>... and more.</li>
           </ul>
           <li>
             <b><i>Revita</i></b> is suitable for students at the <b>intermediate to advanced</b> levels&mdash;i.e., not for absolute beginners.
           </li>
-          <li>The system
-            <b>tracks the progress</b> of the student, and aims to adapt to the student's present level of competence. The student's past answers help the system to offers exercises that are best suited for the <b>student's level</b>.
+          <li>
+            The system <b>tracks the progress</b> of the student, and aims to adapt to the student's present level of competence. The student's past answers help the system to offers exercises that are best suited for the <b>student's level</b>.
           </li>
         </ul>
         <p>
