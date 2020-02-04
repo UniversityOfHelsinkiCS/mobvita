@@ -1,10 +1,11 @@
+import { translatableLanguages } from 'Utilities/common'
 import callBuilder from '../apiConnection'
 /**
  * Actions and reducers are in the same file for readability
  */
 
 export const getTranslationAction = (language, wordLemmas, locale) => {
-  const route = `/translation/${locale}/${language}/${wordLemmas}`
+  const route = `/translation/${locale}/${language || translatableLanguages[locale][0]}/${wordLemmas}`
   const prefix = 'GET_TRANSLATION'
   return callBuilder(route, prefix)
 }
@@ -14,6 +15,12 @@ export const clearTranslationAction = () => ({ type: 'CLEAR_TRANSLATION' })
 
 export default (state = { data: [] }, action) => {
   switch (action.type) {
+    case 'GET_TRANSLATION_ATTEMPT':
+      return {
+        ...state,
+        pending: true,
+        error: false,
+      }
     case 'GET_TRANSLATION_SUCCESS':
       return {
         ...state,
@@ -26,7 +33,7 @@ export default (state = { data: [] }, action) => {
         ...state,
         focused: action.response,
         pending: false,
-        error: false,
+        error: true,
       }
     case 'CLEAR_TRANSLATION': {
       return {
