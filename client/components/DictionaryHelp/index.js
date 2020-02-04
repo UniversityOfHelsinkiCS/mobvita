@@ -5,7 +5,7 @@ import { Shake } from 'reshake'
 import { FormattedMessage } from 'react-intl'
 import { updateDictionaryLanguage } from 'Utilities/redux/userReducer'
 import { getTranslationAction } from 'Utilities/redux/translationReducer'
-import { learningLanguageSelector } from 'Utilities/common'
+import { learningLanguageSelector, translatableLanguages } from 'Utilities/common'
 
 
 const DictionaryHelp = ({ translation }) => {
@@ -15,29 +15,12 @@ const DictionaryHelp = ({ translation }) => {
   const translationLanguageCode = useSelector(({ user }) => user.data.user.last_trans_language)
   const learningLanguage = useSelector(learningLanguageSelector)
 
-  const dictionaryOptions = [
-    {
-      key: 'fi',
-      value: 'Finnish',
-      text: 'Finnish',
-    },
-    {
-      key: 'en',
-      value: 'English',
-      text: 'English',
-    },
-    {
-      key: 'se',
-      value: 'Swedish',
-      text: 'Swedish',
-    },
-    {
-      key: 'ru',
-      value: 'Russian',
-      text: 'Russian',
-    },
-  ]
 
+  const dictionaryOptions = translatableLanguages[learningLanguage].map(element => ({
+    key: element,
+    value: element,
+    text: element,
+  }))
 
   const translations = translation ? translation.map(translated => (
     <List.Item key={translated.URL}>
@@ -61,7 +44,7 @@ const DictionaryHelp = ({ translation }) => {
     const lemmas = translation.map(t => t.lemma).join('+')
 
     dispatch(updateDictionaryLanguage(data.value))
-    dispatch(getTranslationAction(learningLanguage, lemmas, data.value))
+    if (lemmas !== '')dispatch(getTranslationAction(learningLanguage, lemmas, data.value))
   }
 
   if (!showHelp) {
@@ -92,6 +75,7 @@ const DictionaryHelp = ({ translation }) => {
     )
   }
 
+
   return (
     <div>
       <Segment className="navigationpanel" style={{ position: 'fixed', right: '5%', bottom: '2%', width: '90%' }}>
@@ -101,7 +85,7 @@ const DictionaryHelp = ({ translation }) => {
           </FormattedMessage>
           <Dropdown
             closeOnChange
-            defaultValue={translationLanguageCode}
+            defaultValue={translationLanguageCode || translatableLanguages[learningLanguage][0]}
             onChange={handleDropdownChange}
             options={dictionaryOptions}
           />
