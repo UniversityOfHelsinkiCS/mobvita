@@ -86,6 +86,7 @@ const DictionaryHelp = ({ translation }) => {
             {txt => <span style={{ marginRight: '5px' }}>{txt}</span>}
           </FormattedMessage>
           <Dropdown
+            data-cy="dictionary-dropdown"
             closeOnChange
             defaultValue={translationLanguageCode || translatableLanguages[learningLanguage][0]}
             onChange={handleDropdownChange}
