@@ -5,6 +5,7 @@ import { createBrowserHistory } from 'history'
 import { basePath } from 'Utilities/common'
 import Toaster from './Toaster'
 import Bar from './Bar'
+import 'bootstrap/dist/css/bootstrap.min.css'
 
 
 const App = () => {
