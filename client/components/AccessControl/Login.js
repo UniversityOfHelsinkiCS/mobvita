@@ -5,6 +5,8 @@ import { Segment, Header, Form } from 'semantic-ui-react'
 import { useHistory, useLocation } from 'react-router'
 import { Link } from 'react-router-dom'
 import { FormattedMessage, useIntl } from 'react-intl'
+import Button from 'react-bootstrap/Button'
+
 
 const Login = () => {
   const [email, setEmail] = useState('')
@@ -61,14 +63,13 @@ const Login = () => {
             />
           </Form.Field>
           <div style={{ display: 'flex', flexDirection: 'column' }}>
-            <button
+            <Button
+              variant="primary"
               data-cy="login"
               type="submit"
-              color="teal"
-              className="btn btn-primary"
             >
               {intl.formatMessage({ id: 'Login' })}
-            </button>
+            </Button>
             {loginError && <div style={{ color: 'red' }}>{errorMessage}</div>}
           </div>
         </Form>
