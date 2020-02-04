@@ -1,18 +1,19 @@
 import React from 'react'
 import { capitalize } from 'Utilities/common'
 import { FormattedMessage } from 'react-intl'
+import { Button } from 'react-bootstrap'
+
 
 // const buttonClass = toggled ? 'btn btn-secondary' : 'btn btn-info'
 const ToggleButton = ({ toggled, children, ...rest }) => {
   const className = toggled ? 'btn btn-toggle-on' : 'btn btn-toggle-off'
   return (
-    <button
+    <Button
       {...rest}
-      type="button"
-      className={className}
+      variant={className}
     >
       {children}
-    </button>
+    </Button>
   )
 }
 

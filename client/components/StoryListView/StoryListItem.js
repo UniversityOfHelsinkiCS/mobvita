@@ -48,15 +48,15 @@ const StoryListItem = ({ story }) => {
       <Card.Content extra style={{ padding: '15px' }}>
         <div style={{ display: 'flex', alignItems: 'baseline' }}>
           <Link to={`/stories/${story._id}/`}>
-            <button type="button" className="btn btn-primary" style={{ marginRight: '0.5em' }}>
+            <Button variant="primary" style={{ marginRight: '0.5em' }}>
               <FormattedMessage id="Read" />
-            </button>
+            </Button>
           </Link>
           {' '}
           <Link to={`/stories/${story._id}/practice`}>
-            <button type="button" className="btn btn-primary">
+            <Button variant="primary">
               <FormattedMessage id="practice" />
-            </button>
+            </Button>
           </Link>
           <span style={{ marginLeft: 'auto' }}>
             {difficultyIcon}

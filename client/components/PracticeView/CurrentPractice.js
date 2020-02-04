@@ -11,6 +11,8 @@ import ExerciseMultipleChoice from 'Components/PracticeView/ExerciseMultipleChoi
 import ExerciseHearing from 'Components/PracticeView/ExerciseHearing'
 import { FormattedMessage } from 'react-intl'
 import { getSelf } from 'Utilities/redux/userReducer'
+import { Button } from 'react-bootstrap'
+
 
 const CurrentPractice = ({ storyId }) => {
   const [answers, setAnswers] = useState({})
@@ -274,13 +276,13 @@ const CurrentPractice = ({ storyId }) => {
         {practice.map(exercise => wordInput(exercise))}
       </div>
 
-      <button
-        type="button"
-        className="btn btn-primary btn-block"
+      <Button
+        block
+        variant="primary"
         onClick={() => handleCheckButton()}
       >
         <FormattedMessage id="check-answer" />
-      </button>
+      </Button>
     </>
   )
 }

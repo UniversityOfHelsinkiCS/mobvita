@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import { FormattedMessage } from 'react-intl'
-import { Button } from 'semantic-ui-react'
+import { Button } from 'react-bootstrap'
 import { images } from 'Utilities/common'
 import { getSelf } from 'Utilities/redux/userReducer'
 
@@ -11,9 +11,7 @@ import EloChart from './EloChart'
 
 const PracticeButton = props => (
   <Button
-    fluid
-    color="black"
-    inverted
+    block
     style={{
       backgroundImage: `url(${images.practiceNow})`,
       height: '13em',
@@ -36,7 +34,7 @@ const HomeView = () => {
     <div>
       <EloChart />
       <PracticeModal trigger={<PracticeButton data-cy="practice-now" />} />
-      <button type="button" style={{ display: 'none' }} onClick={() => undefun()}>hidden breaking thing</button>
+      <Button style={{ display: 'none' }} onClick={() => undefun()}>hidden breaking thing</Button>
     </div>
   )
 }

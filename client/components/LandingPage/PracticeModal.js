@@ -6,6 +6,8 @@ import { capitalize, learningLanguageSelector } from 'Utilities/common'
 import { getStories } from 'Utilities/redux/storiesReducer'
 import CheckboxGroup from 'Components/CheckboxGroup'
 import { FormattedMessage } from 'react-intl'
+import { Button } from 'react-bootstrap'
+
 
 const extractFilters = object => Object
   .entries(object)
@@ -129,9 +131,9 @@ const PracticeModal = ({ trigger }) => {
 
         <div>
           <Link to={filteredLink}>
-            <button className="btn btn-primary" type="button" data-cy="start-random" disabled={!filteredLink}>
+            <Button variant="primary" data-cy="start-random" disabled={!filteredLink}>
               {`Start random story from ${filteredStories.length} stories`}
-            </button>
+            </Button>
           </Link>
         </div>
 

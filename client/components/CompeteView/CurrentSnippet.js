@@ -4,11 +4,11 @@ import { Segment } from 'semantic-ui-react'
 import { getCurrentSnippet, postAnswers, setTotalNumberAction } from 'Utilities/redux/snippetsReducer'
 import { getTranslationAction } from 'Utilities/redux/translationReducer'
 import { capitalize, learningLanguageSelector } from 'Utilities/common'
-
 import ExerciseCloze from 'Components/CompeteView/ExerciseCloze'
 import ExerciseMultipleChoice from 'Components/CompeteView/ExerciseMultipleChoice'
 import ExerciseHearing from 'Components/CompeteView/ExerciseHearing'
 import OpponentProgress from 'Components/CompeteView/OpponentProgress'
+import { Button } from 'react-bootstrap'
 
 const CurrentPractice = ({ storyId }) => {
   const [answers, setAnswers] = useState({})
@@ -210,7 +210,7 @@ const CurrentPractice = ({ storyId }) => {
       </Segment>
       <OpponentProgress />
 
-      <button type="button" className="btn btn-primary" fluid onClick={checkAnswers}>Continue to next snippet </button>
+      <Button variant="primary" block onClick={checkAnswers}>Continue to next snippet </Button>
     </>
   )
 }

@@ -4,9 +4,9 @@ import { registerUser } from 'Utilities/redux/registerReducer'
 import { Header, Form, Checkbox, Segment } from 'semantic-ui-react'
 import TermsAndConditions from 'Components/TermsAndConditions'
 import { useIntl, FormattedMessage } from 'react-intl'
-import Login from 'Components/AccessControl/Login'
 import { Link } from 'react-router-dom'
 import { setNotification } from 'Utilities/redux/notificationReducer'
+import { Button } from 'react-bootstrap'
 
 const Register = () => {
   const [formState, setFormState] = useState({
@@ -107,19 +107,18 @@ const Register = () => {
           </Form.Field>
           <div style={{ display: 'flex', alignItems: 'center' }}>
             <Checkbox checked={accepted} onChange={() => toggleAccepted()} />
-            <TermsAndConditions trigger={<button type="button" className="btn btn-link"> Terms and Conditions, Privacy Policy </button>} />
+            <TermsAndConditions trigger={<Button variant="link"> Terms and Conditions, Privacy Policy </Button>} />
           </div>
           <div>
-            <button
+            <Button
               type="submit"
-              color="teal"
-              className="btn btn-primary"
+              variant="primary"
             >
               {intl.formatMessage({ id: 'Register' })}
-            </button>
+            </Button>
           </div>
         </Form>
-        <Link to="/login"><button type="button" className="btn btn-secondary"><FormattedMessage id="Login" /></button></Link>
+        <Link to="/login"><Button variant="secondary"><FormattedMessage id="Login" /></Button></Link>
       </Segment>
     </>
   )

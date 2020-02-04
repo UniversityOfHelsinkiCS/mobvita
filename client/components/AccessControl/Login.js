@@ -77,10 +77,10 @@ const Login = () => {
           {intl.formatMessage({ id: 'dont-have-an-account-yet-please-ce3fb38f81375d77a43cbaa071a4f72f' })}
         </h5>
         <div>
-          <Link to="/register"><button type="button" className="btn btn-secondary">{intl.formatMessage({ id: 'Register' })} </button></Link>
-          <button data-cy="login-anon" type="button" className="btn btn-secondary" onClick={loginAnon}>
+          <Link to="/register"><Button variant="secondary">{intl.formatMessage({ id: 'Register' })} </Button></Link>
+          <Button data-cy="login-anon" variant="secondary" onClick={loginAnon}>
             <FormattedMessage id="try-mobvita" />
-          </button>
+          </Button>
         </div>
       </Segment>
     </>

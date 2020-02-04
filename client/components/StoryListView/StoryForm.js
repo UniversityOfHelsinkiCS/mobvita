@@ -5,6 +5,7 @@ import { postStory } from 'Utilities/redux/uploadProgressReducer'
 import { capitalize, learningLanguageSelector } from 'Utilities/common'
 import { FormattedMessage, useIntl } from 'react-intl'
 import { setNotification } from 'Utilities/redux/notificationReducer'
+import { Button } from 'react-bootstrap'
 
 
 const StoryForm = () => {
@@ -51,7 +52,7 @@ const StoryForm = () => {
                 value={storyUrl}
                 onChange={event => setStoryUrl(event.target.value)}
               />
-              <button style={{ marginTop: '0.5em' }} className="btn btn-primary" type="submit"><FormattedMessage id="Confirm" /></button>
+              <Button style={{ marginTop: '0.5em' }} variant="primary" type="submit"><FormattedMessage id="Confirm" /></Button>
             </Form>
           </div>
           <span style={{ marginLeft: 'auto' }}>

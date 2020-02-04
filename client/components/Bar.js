@@ -4,13 +4,13 @@ import { Sidebar, Menu, Icon, Header, Dropdown } from 'semantic-ui-react'
 import { useDispatch, useSelector } from 'react-redux'
 import { Swipeable } from 'react-swipeable'
 import { FormattedMessage } from 'react-intl'
-
 import { localeOptions, capitalize, localeNameToCode, images } from 'Utilities/common'
 import { setLocale } from 'Utilities/redux/localeReducer'
 import { sidebarSetOpen } from 'Utilities/redux/sidebarReducer'
 import { logout, updateLocale } from 'Utilities/redux/userReducer'
 import { resetCurrentSnippet } from 'Utilities/redux/snippetsReducer'
 import TermsAndConditions from 'Components/TermsAndConditions'
+import { Button } from 'react-bootstrap'
 import AboutUs from './StaticContent/AboutUs'
 import ContactUs from './StaticContent/ContactUs'
 
@@ -116,7 +116,7 @@ export default function Bar({ history }) {
                     {user.user.exercise_history.length > 0 && <div>{`Current ELO:${user.user.exercise_history[user.user.exercise_history.length - 1].score}`}</div>}
                     <div />
                     {user.user.email === 'anonymous_email'
-                      && <Link onClick={() => menuClickWrapper()} to="/register"><button type="button" className="btn btn-primary btn-block"><FormattedMessage id="register-to-upload-your-own-stories" /></button></Link>}
+                      && <Link onClick={() => menuClickWrapper()} to="/register"><Button variant="primary"><FormattedMessage id="register-to-upload-your-own-stories" /></Button></Link>}
                   </div>
                 </Menu.Item>
 
@@ -124,12 +124,12 @@ export default function Bar({ history }) {
 
 
                   <Link to="/learningLanguage" onClick={() => menuClickWrapper()}>
-                    <button type="button" className="btn btn-primary btn-block">
+                    <Button variant="primary" block>
                       <div style={{ display: 'flex', justifyContent: 'space-around', alignItems: 'center' }}>
                         <span><FormattedMessage id="Learning-language" /></span>
                         {user && user.user.last_used_language && <img style={{ width: '3em', height: '2em' }} src={getLearningLanguageFlag()} alt="learningLanguageFlag" />}
                       </div>
-                    </button>
+                    </Button>
                   </Link>
 
                 </Menu.Item>
@@ -151,11 +151,11 @@ export default function Bar({ history }) {
 
             <div style={{ marginTop: 'auto' }}>
               <Menu.Item style={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-between' }}>
-                <AboutUs trigger={<button type="button" className="btn btn-secondary" style={{ flexBasis: '50%' }}><FormattedMessage id="About" /></button>} />
-                <ContactUs trigger={<button type="button" className="btn btn-secondary" style={{ flexBasis: '50%' }}><FormattedMessage id="Contact" /></button>} />
-                { user && <button type="button" className="btn btn-secondary" style={{ flexBasis: '50%' }} onClick={() => menuClickWrapper(signOut)}><FormattedMessage id="sign-out" /></button>}
+                <AboutUs trigger={<Button variant="secondary" style={{ flexBasis: '50%' }}><FormattedMessage id="About" /></Button>} />
+                <ContactUs trigger={<Button variant="secondary" style={{ flexBasis: '50%' }}><FormattedMessage id="Contact" /></Button>} />
+                { user && <Button variant="secondary" style={{ flexBasis: '50%' }} onClick={() => menuClickWrapper(signOut)}><FormattedMessage id="sign-out" /></Button>}
               </Menu.Item>
-              <TermsAndConditions trigger={<button type="button" className="btn btn-link"> Terms and Conditions, Privacy Policy </button>} />
+              <TermsAndConditions trigger={<Button variant="link"> Terms and Conditions, Privacy Policy </Button>} />
 
               {/* eslint-disable no-undef */}
               <div>{`Built at: ${__VERSION__}`}</div>
