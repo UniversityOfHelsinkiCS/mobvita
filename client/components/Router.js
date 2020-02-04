@@ -10,6 +10,7 @@ import EmailConfirm from 'Components/AccessControl/EmailConfirm'
 import ProtectedRoute from 'Components/AccessControl/ProtectedRoute'
 import Register from 'Components/AccessControl/Register'
 import Login from './AccessControl/Login'
+import Flashcards from './Flashcards/index'
 
 export default () => (
   <Switch>
@@ -22,9 +23,9 @@ export default () => (
     <ProtectedRoute languageRequired={false} exact path="/learningLanguage" component={LanguageSelectView} />
     <ProtectedRoute exact path="/home" component={MenuTabs} />
     <ProtectedRoute exact path="/library" component={MenuTabs} />
+    <ProtectedRoute exact path="/flashcards" component={Flashcards} />
     <ProtectedRoute exact path="/stories/:id" component={SingleStoryView} />
     <ProtectedRoute exact path="/stories/:id/practice/" component={PracticeView} />
     <ProtectedRoute exact path="/stories/:id/compete/" component={CompeteView} />
   </Switch>
-
 )
