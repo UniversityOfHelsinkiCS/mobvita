@@ -6,6 +6,7 @@ import { FormattedMessage } from 'react-intl'
 import { updateDictionaryLanguage } from 'Utilities/redux/userReducer'
 import { getTranslationAction } from 'Utilities/redux/translationReducer'
 import { learningLanguageSelector, translatableLanguages } from 'Utilities/common'
+import { Spinner } from 'react-bootstrap'
 
 
 const DictionaryHelp = ({ translation }) => {
@@ -14,6 +15,7 @@ const DictionaryHelp = ({ translation }) => {
   const dispatch = useDispatch()
   const translationLanguageCode = useSelector(({ user }) => user.data.user.last_trans_language)
   const learningLanguage = useSelector(learningLanguageSelector)
+  const { pending } = useSelector(({ translation }) => translation)
 
 
   const dictionaryOptions = translatableLanguages[learningLanguage].map(element => ({
@@ -41,10 +43,11 @@ const DictionaryHelp = ({ translation }) => {
   }, [translation])
 
   const handleDropdownChange = (e, data) => {
-    const lemmas = translation.map(t => t.lemma).join('+')
-
+    if (translation) {
+      const lemmas = translation.map(t => t.lemma).join('+')
+      if (lemmas !== '')dispatch(getTranslationAction(learningLanguage, lemmas, data.value))
+    }
     dispatch(updateDictionaryLanguage(data.value))
-    if (lemmas !== '')dispatch(getTranslationAction(learningLanguage, lemmas, data.value))
   }
 
   if (!showHelp) {
@@ -75,7 +78,6 @@ const DictionaryHelp = ({ translation }) => {
     )
   }
 
-
   return (
     <div>
       <Segment className="navigationpanel" style={{ position: 'fixed', right: '5%', bottom: '2%', width: '90%' }}>
@@ -96,6 +98,7 @@ const DictionaryHelp = ({ translation }) => {
           </Button>
         </Header>
         <List>
+          {pending && <div><span>Loading, please wait </span><Spinner animation="border" /></div>}
           {translations.length > 0 ? translations : <FormattedMessage id="click-to-translate" />}
         </List>
       </Segment>
