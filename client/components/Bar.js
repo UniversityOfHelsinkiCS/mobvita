@@ -156,7 +156,7 @@ export default function Bar({ history }) {
                 <ContactUs trigger={<button type="button" className="btn btn-secondary" style={{ flexBasis: '50%' }}><FormattedMessage id="Contact" /></button>} />
                 { user && <button type="button" className="btn btn-secondary" style={{ flexBasis: '50%' }} onClick={() => menuClickWrapper(signOut)}><FormattedMessage id="sign-out" /></button>}
               </Menu.Item>
-              <TermsAndConditions trigger={<button type="button" className="btn btn-link"> Terms and Conditions </button>} />
+              <TermsAndConditions trigger={<button type="button" className="btn btn-link"> Terms and Conditions, Privacy Policy </button>} />
 
               {/* eslint-disable no-undef */}
               <div>{`Built at: ${__VERSION__}`}</div>
