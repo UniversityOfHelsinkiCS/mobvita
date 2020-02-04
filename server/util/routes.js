@@ -6,6 +6,7 @@ const translation = require('@controllers/translationController')
 const opponent = require('@controllers/opponentController')
 const user = require('@controllers/userController')
 const email = require('@controllers/emailController')
+const flashcards = require('@controllers/flashcardsController')
 const { unknown } = require('@controllers/fallbackController')
 
 const router = Router()
@@ -18,6 +19,7 @@ router.get('/stories/:language', stories.getAll)
 router.get('/stories/:language/:id', stories.getOne)
 router.post('/stories', stories.createOne)
 
+router.get('/flashcards/:inputLanguage/:outputLanguage', flashcards.getFlashcards)
 
 router.get('/snippets/story/:storyId/current', snippets.getCurrent)
 router.get('/snippets/story/:storyId/next', snippets.getNext)
