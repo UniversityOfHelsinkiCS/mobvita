@@ -34,12 +34,11 @@ const Register = () => {
     }
   }, [error])
 
-
   const handleSubmit = () => {
     const { email, username, password, passwordAgain } = formState
 
     if (password !== passwordAgain) {
-      dispatch(setNotification(intl.formatMessage({ id: "passwords-do-not-match"}), 'error'))
+      dispatch(setNotification(intl.formatMessage({ id: 'passwords-do-not-match' }), 'error'))
     } else if (accepted) {
       const payload = {
         username,
@@ -63,11 +62,10 @@ const Register = () => {
       [name]: value,
     })
   }
-
   return (
     <>
       <h1>{intl.formatMessage({ id: 'Register' })}</h1>
-      <Segment className="container" style={{ backgroundColor: 'azure' }}>
+      <Segment className="container">
         <Form onSubmit={handleSubmit}>
           <Form.Field>
             <Form.Input

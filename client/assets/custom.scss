@@ -52,10 +52,10 @@ body {
   padding-bottom: 5em;
   padding-top: 3em;
   min-height: 100vh;
-  flex-direction: column;
-  width: -webkit-fill-available;
-  max-width: 110em;
-  padding-right: $sidebar-swipeable-width;
+  width: 100%;
+  max-width: 1024px;
+  padding-right: 1em + $sidebar-swipeable-width;
+  padding-left: 2em;
   margin: 0 auto;
 }
 

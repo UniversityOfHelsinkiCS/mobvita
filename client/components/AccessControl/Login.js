@@ -16,7 +16,6 @@ const Login = () => {
   const history = useHistory()
   const intl = useIntl()
 
-
   const dispatch = useDispatch()
 
   const login = () => dispatch(createRealToken(email, password))
@@ -33,11 +32,10 @@ const Login = () => {
       }
     }
   }, [user])
-
   return (
     <>
       <h1>{intl.formatMessage({ id: 'Login' })} </h1>
-      <Segment style={{ backgroundColor: 'azure' }}>
+      <Segment>
         <p>
           <FormattedMessage id="master-a-language-by-learning-from-stories-of-your-own-choosing" />
         </p>

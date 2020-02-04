@@ -76,6 +76,7 @@ export default function Bar({ history }) {
   if (user && user.user.interfaceLanguage) { // If user has logged in, use locale from user object, else use value from localeReducer
     actualLocale = localeNameToCode(user.user.interfaceLanguage)
   }
+
   return (
     <>
       <Icon
@@ -113,6 +114,8 @@ export default function Bar({ history }) {
                   <div style={{ padding: '1em 0em' }}>
                     <div>{user.user.username}</div>
                     <div>{user.user.email}</div>
+                    {user.user.exercise_history.length > 0 && <div>{`Current ELO:${user.user.exercise_history[user.user.exercise_history.length - 1].score}`}</div>}
+                    <div />
                     {user.user.email === 'anonymous_email'
                       && <Link onClick={() => menuClickWrapper()} to="/register"><button type="button" className="btn btn-primary btn-block"><FormattedMessage id="register-to-upload-your-own-stories" /></button></Link>}
                   </div>

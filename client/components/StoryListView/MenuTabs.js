@@ -32,15 +32,10 @@ const Tabs = ({ location }) => {
   const index = location.pathname === '/home' ? 0 : 1
 
   return (
-    <div style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'space-between' }}>
-      <div style={{ width: '-webkit-fill-available' }}>
-        <Tab
-          panes={panes}
-          activeIndex={index}
-        />
-      </div>
-    </div>
-
+    <Tab
+      panes={panes}
+      activeIndex={index}
+    />
   )
 }
 

@@ -10,6 +10,7 @@ import ExerciseCloze from 'Components/PracticeView/ExerciseCloze'
 import ExerciseMultipleChoice from 'Components/PracticeView/ExerciseMultipleChoice'
 import ExerciseHearing from 'Components/PracticeView/ExerciseHearing'
 import { FormattedMessage } from 'react-intl'
+import { getSelf } from 'Utilities/redux/userReducer'
 
 const CurrentPractice = ({ storyId }) => {
   const [answers, setAnswers] = useState({})
@@ -91,6 +92,7 @@ const CurrentPractice = ({ storyId }) => {
       setAttempts(0)
       dispatch(getNextSnippet(storyId))
     }
+    dispatch(getSelf())
   }, [snippets.focused])
 
   const checkAnswers = async () => {
