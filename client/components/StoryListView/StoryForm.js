@@ -55,9 +55,6 @@ const StoryForm = () => {
               <Button style={{ marginTop: '0.5em' }} variant="primary" type="submit"><FormattedMessage id="Confirm" /></Button>
             </Form>
           </div>
-          <span style={{ marginLeft: 'auto' }}>
-            <div><Icon name="star outline" size="large" style={{ color: 'black' }} /></div>
-          </span>
         </div>
       </Card.Content>
     </Card>
