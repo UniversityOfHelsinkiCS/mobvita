@@ -14,13 +14,15 @@ import App from 'Components/App'
 import ErrorBoundary from 'Components/ErrorBoundary'
 import ConnectedIntlProvider from 'Components/ConnectedIntlProvider'
 
-if (inProduction) {
-  Sentry.init({
-    dsn: 'https://509ab4585bb54fda8a94a461c1007146@toska.cs.helsinki.fi/13',
-    environment: basePath === '/' ? 'production' : 'staging',
-    release: `mobvita@${__COMMIT__}`, // eslint-disable-line no-undef
-  })
-}
+const dsn = inProduction
+  ? 'https://509ab4585bb54fda8a94a461c1007146@toska.cs.helsinki.fi/13' : null
+
+Sentry.init({
+  dsn,
+  environment: basePath === '/' ? 'production' : 'staging',
+  release: `mobvita@${__COMMIT__}`, // eslint-disable-line no-undef
+})
+
 
 const refresh = () => render(
   <Provider store={store}>

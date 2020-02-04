@@ -3,6 +3,7 @@ import thunk from 'redux-thunk'
 
 import { handleRequest } from 'Utilities/apiConnection'
 import combinedReducers from 'Utilities/redux'
+import userMiddleware from 'Utilities/redux/userMiddleware'
 
 // eslint-disable-next-line
 const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose
@@ -17,7 +18,7 @@ const getInitialUserFromLocalStorage = () => {
 const store = createStore(
   combinedReducers,
   { user: getInitialUserFromLocalStorage() },
-  composeEnhancers(applyMiddleware(thunk, handleRequest)),
+  composeEnhancers(applyMiddleware(thunk, handleRequest, userMiddleware)),
 )
 
 store.subscribe(() => {

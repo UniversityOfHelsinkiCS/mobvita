@@ -34,7 +34,6 @@ const Register = () => {
     }
   }, [error])
 
-
   const handleSubmit = () => {
     const { email, username, password, passwordAgain } = formState
 
@@ -63,7 +62,6 @@ const Register = () => {
       [name]: value,
     })
   }
-
   return (
     <>
       <h1>{intl.formatMessage({ id: 'Register' })}</h1>
@@ -109,7 +107,7 @@ const Register = () => {
           </Form.Field>
           <div style={{ display: 'flex', alignItems: 'center' }}>
             <Checkbox checked={accepted} onChange={() => toggleAccepted()} />
-            <TermsAndConditions trigger={<button type="button" className="btn btn-link"> Terms and Conditions </button>} />
+            <TermsAndConditions trigger={<button type="button" className="btn btn-link"> Terms and Conditions, Privacy Policy </button>} />
           </div>
           <div>
             <button

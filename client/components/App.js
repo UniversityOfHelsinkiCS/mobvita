@@ -2,12 +2,13 @@ import React from 'react'
 import Router from 'Components/Router'
 import { Route, Router as ReactRouter } from 'react-router-dom'
 import { createBrowserHistory } from 'history'
+import { basePath } from 'Utilities/common'
 import Toaster from './Toaster'
 import Bar from './Bar'
 
 
 const App = () => {
-  const history = createBrowserHistory()
+  const history = createBrowserHistory({ basename: basePath })
 
   if (window.gtag) {
     history.listen((location, action) => { // Sends notifications to google analytics whenever location changes

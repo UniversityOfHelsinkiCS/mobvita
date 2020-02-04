@@ -47,9 +47,13 @@ module.exports = (env, argv) => {
        <script src="https://code.responsivevoice.org/responsivevoice.js"></script>`
 
   return {
-    devtool: false,
+    devtool: 'source-map',
     mode,
-    output: { publicPath: BASE_PATH },
+    output: {
+      publicPath: BASE_PATH,
+      filename: '[name].js',
+      sourceMapFilename: '[file].map[query]',
+    },
     entry: [
       '@babel/polyfill', // so we don't need to import it anywhere
       './client',
@@ -84,7 +88,13 @@ module.exports = (env, argv) => {
             // Translates CSS into CommonJS
             'css-loader',
             // Compiles Sass to CSS
-            'sass-loader',
+            {
+              loader: 'sass-loader',
+              options: {
+                // Prefer `dart-sass`
+                implementation: require('sass'),
+              },
+            },
           ],
         },
         {
@@ -96,7 +106,6 @@ module.exports = (env, argv) => {
     },
     optimization: { ...additionalOptimizations },
     plugins: [
-      new webpack.SourceMapDevToolPlugin({ filename: '[name].js.map' }),
       new webpack.DefinePlugin({
         'process.env.BASE_PATH': JSON.stringify(BASE_PATH),
         'process.env.BUILT_AT': JSON.stringify(new Date().toISOString()),
