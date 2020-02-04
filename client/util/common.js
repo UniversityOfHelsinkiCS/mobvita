@@ -52,6 +52,7 @@ export const capitalize = (word) => {
 }
 
 export const learningLanguageSelector = ({ user }) => user.data.user.last_used_language
+export const dictionaryLanguageSelector = ({ user }) => user.data.user.last_trans_language
 
 export const supportedLearningLanguages = [
   'finnish', 'german', 'russian', 'kazakh', 'catalan', 'spanish', 'swedish', 'italian', 'french', 'turkish',
