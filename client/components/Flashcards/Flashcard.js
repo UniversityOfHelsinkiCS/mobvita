@@ -20,14 +20,12 @@ const Flashcard = ({ word }) => {
     setAnswer('')
   }
 
-  let color = ''
-  if (flipped) {
-    color = correct ? 'green' : 'red'
-  }
+  const text = correct ? 'correct' : 'incorrect'
+  const color = correct ? 'green' : 'red'
 
   return (
     <div
-      style={{ display: 'flex', width: '50%', height: '50%', margin: 'auto', backgroundColor: color }}
+      style={{ display: 'flex', width: '50%', height: '50%', margin: 'auto' }}
       className="border"
       tabIndex="-1"
       role="button"
@@ -38,6 +36,7 @@ const Flashcard = ({ word }) => {
           <input type="text" value={answer} onChange={event => setAnswer(event.target.value)} />
           <button type="submit">check</button>
         </form>
+        {flipped && <div style={{ color }}>{text}</div>}
       </div>
     </div>
   )
