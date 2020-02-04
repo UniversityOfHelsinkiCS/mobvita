@@ -12,7 +12,8 @@ const Flashcard = ({ word }) => {
   const translations = word.translations.map(item => <li key={item}>{item}</li>)
   const content = flipped ? <ul>{translations}</ul> : <h2>{word.root}</h2>
 
-  const checkAnswer = () => {
+  const checkAnswer = (event) => {
+    event.preventDefault()
     setCorrect(word.translations.includes(answer.toLowerCase()))
 
     setFlipped(!flipped)
@@ -33,8 +34,10 @@ const Flashcard = ({ word }) => {
     >
       <div style={{ margin: 'auto' }}>
         {content}
-        <input type="input" value={answer} onChange={event => setAnswer(event.target.value)} />
-        <button type="button" onClick={checkAnswer}>check</button>
+        <form onSubmit={checkAnswer}>
+          <input type="text" value={answer} onChange={event => setAnswer(event.target.value)} />
+          <button type="submit">check</button>
+        </form>
       </div>
     </div>
   )
