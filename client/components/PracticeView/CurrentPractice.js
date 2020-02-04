@@ -178,7 +178,7 @@ const CurrentPractice = ({ storyId }) => {
         </span>
       )
     }
-
+    debugger
     const usersAnswer = answers[word.ID] ? answers[word.ID].users_answer : ''
 
     if (word.listen) {

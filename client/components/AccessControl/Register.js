@@ -34,7 +34,6 @@ const Register = () => {
     }
   }, [error])
 
-
   const handleSubmit = () => {
     const { email, username, password, passwordAgain } = formState
 
@@ -63,7 +62,7 @@ const Register = () => {
       [name]: value,
     })
   }
-
+  debugger
   return (
     <>
       <h1>{intl.formatMessage({ id: 'Register' })}</h1>
