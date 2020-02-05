@@ -9,7 +9,10 @@ const Flashcard = ({ word }) => {
     setFlipped(false)
   }, [word])
 
-  const translations = word.translations.map(item => <li key={item}>{item}</li>)
+  const translations = Array.isArray(word.translations)
+    ? word.translations.map(item => <li key={item}>{item}</li>)
+    : word.translations
+
   const content = flipped ? <ul>{translations}</ul> : <h2>{word.root}</h2>
 
   const checkAnswer = () => {
