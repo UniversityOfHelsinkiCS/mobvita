@@ -46,6 +46,22 @@ describe('Mobvita', function() {
       cy.get('[data-cy=practice-view]')
     })
 
+    it("can start filtered practice", function(){
+      cy.get('[data-cy=practice-now]').click()
+      cy.get("[data-cy=category-science]").click()
+      cy.get("[data-cy=category-uncategorized]").click()
+      cy.get("[data-cy=start-random]").click()
+    })
+
+    it("cant start filtered practice with 0 stories", function(){
+      const categories = ["politics","culture","science","sport","uncategorized"]
+      cy.get('[data-cy=practice-now]').click()
+      categories.forEach(category => {
+        cy.get(`[data-cy=category-${category}]`).click()
+      })
+      cy.get("[data-cy=start-random]").should("be.disabled")
+    })
+
     describe("dictionary", function(){
 
       this.beforeEach(function(){
