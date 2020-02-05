@@ -21,10 +21,18 @@ import flagSwedish from 'Assets/flag_swedish.png'
 import flagFrench from 'Assets/flag_french.png'
 import flagTurkish from 'Assets/flag_turkish.png'
 import flagItalian from 'Assets/flag_italian.png'
+import culture1 from 'Assets/culture1.png'
+import politics1 from 'Assets/politics1.png'
+import science1 from 'Assets/science1.png'
+import sport1 from 'Assets/sport1.png'
 
 export const images = {
   revitaLogoTransparent,
   practiceNow,
+  culture1,
+  politics1,
+  science1,
+  sport1,
   flagFinnish,
   flagUdmurt,
   flagErzya,
