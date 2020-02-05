@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react'
 import { Modal } from 'semantic-ui-react'
 import { Link } from 'react-router-dom'
 import { useSelector, useDispatch } from 'react-redux'
-import { capitalize, learningLanguageSelector } from 'Utilities/common'
+import { capitalize, learningLanguageSelector, images } from 'Utilities/common'
 import { getStories } from 'Utilities/redux/storiesReducer'
 import CheckboxGroup from 'Components/CheckboxGroup'
 import { FormattedMessage } from 'react-intl'
@@ -98,10 +98,6 @@ const PracticeModal = ({ trigger }) => {
     filteredLink = `/stories/${filteredStories[randomStoryIndex]._id}/practice`
   }
 
-  const handleCategoryChange = category => () => {
-    setCategories({ ...categories, [category]: !categories[category] })
-  }
-
   const handleLibraryChange = library => () => {
     setLibraries({ ...libraries, [library]: !libraries[library] })
   }
@@ -116,7 +112,13 @@ const PracticeModal = ({ trigger }) => {
       politics: true,
       culture: true,
       sport: true,
+      uncategorized: true,
     })
+  }
+
+  const toggleCategory = (e) => {
+    const category = e.target.name
+    setCategories({ ...categories, [category]: !categories[category] })
   }
 
   return (
@@ -137,18 +139,34 @@ const PracticeModal = ({ trigger }) => {
           </Link>
         </div>
 
-
-        <div style={{ padding: '1em' }}>
+        <div>
           <div><FormattedMessage id="Library" /></div>
           <CheckboxGroup values={libraries} onClick={handleLibraryChange} />
         </div>
-        <div style={{ padding: '1em' }}>
+        <div>
           <div><FormattedMessage id="Category" /></div>
-          <div>
-            <CheckboxGroup values={categories} onClick={handleCategoryChange} />
+          <div style={{ display: 'flex', flexWrap: 'wrap' }}>
+            {Object.entries(categories).map(([name, enabled]) => (
+              <Button
+                onClick={e => toggleCategory(e)}
+                name={name}
+                key={name}
+                className={!enabled && 'disabled'}
+                style={{
+                  backgroundImage: `url(${images[name + 1]})`,
+                  height: '13em',
+                  backgroundSize: 'cover',
+                  backgroundPosition: 'center',
+                  flexBasis: '30%',
+                }}
+              >
+                {capitalize(name)}
+              </Button>
+            ))}
+
           </div>
         </div>
-        <div style={{ padding: '1em' }} />
+        <div />
       </Modal.Content>
     </Modal>
   )
