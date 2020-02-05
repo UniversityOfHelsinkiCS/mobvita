@@ -2,6 +2,7 @@ import React from 'react'
 import { Tab } from 'semantic-ui-react'
 import StoryList from 'Components/StoryListView/StoryList'
 import HomeView from 'Components/LandingPage/HomeView'
+import FlashCards from 'Components/Flashcards'
 import { useIntl } from 'react-intl'
 import { Link } from 'react-router-dom'
 
@@ -27,9 +28,28 @@ const Tabs = ({ location }) => {
       },
       render: () => <Tab.Pane><StoryList /></Tab.Pane>,
     },
+    {
+      menuItem: {
+        as: Link,
+        content: intl.formatMessage({ id: 'Flashcards' }),
+        to: '/flashcards',
+        key: 'flashcards',
+      },
+      render: () => <Tab.Pane><FlashCards /></Tab.Pane>,
+    },
   ]
 
-  const index = location.pathname === '/home' ? 0 : 1
+  let index
+  switch (location.pathname) {
+    case '/library':
+      index = 1
+      break
+    case '/flashcards':
+      index = 2
+      break
+    default:
+      index = 0
+  }
 
   return (
     <Tab
