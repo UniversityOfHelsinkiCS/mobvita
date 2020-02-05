@@ -17,7 +17,7 @@ const Tabs = ({ location }) => {
         to: '/home',
         key: 'home',
       },
-      render: () => <Tab.Pane><HomeView /></Tab.Pane>,
+      render: () => <HomeView />,
     },
     {
       menuItem: {
@@ -26,7 +26,7 @@ const Tabs = ({ location }) => {
         to: '/library',
         key: 'library',
       },
-      render: () => <Tab.Pane><StoryList /></Tab.Pane>,
+      render: () => <StoryList />,
     },
     {
       menuItem: {
@@ -35,7 +35,7 @@ const Tabs = ({ location }) => {
         to: '/flashcards',
         key: 'flashcards',
       },
-      render: () => <Tab.Pane><FlashCards /></Tab.Pane>,
+      render: () => <FlashCards />,
     },
   ]
 
