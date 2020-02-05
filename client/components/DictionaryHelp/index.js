@@ -80,7 +80,7 @@ const DictionaryHelp = ({ translation }) => {
 
   return (
     <div>
-      <Segment className="navigationpanel" style={{ position: 'fixed', right: '5%', bottom: '2%', width: '90%' }}>
+      <Segment className="dictionaryhelp" style={{ position: 'fixed', right: '5%', bottom: '2%', width: '90%' }}>
         <div>
           <FormattedMessage id="translation-target-language">
             {txt => <span style={{ marginRight: '5px' }}>{txt}</span>}
