@@ -1,3 +1,6 @@
+/// <reference types="Cypress" />
+
+
 describe('Mobvita', function() {
   this.beforeEach(function() {
     cy.visit('http://localhost:8000')
@@ -43,24 +46,44 @@ describe('Mobvita', function() {
       cy.get('[data-cy=practice-view]')
     })
 
-    // it("dictionary works", function() {
-    //   cy.visit("http://localhost:8000/stories/5c407e9eff634503466b0dde/")
-    //   cy.get(".book")
-    //     .click()
-    //   cy.get("[data-cy=dictionary-dropdown] > div.text") //Open dropdown
-    //     .click()
-    //   cy.get(".visible > :nth-child(6)") // Select Finnish
-    //     .click()
-    //   cy.get('[style="padding-top: 1em;"] > .segment > :nth-child(1) > :nth-child(1)') // Click on word
-    //     .click()
-    //   cy.get(".segment > :nth-child(3) > :nth-child(1) > .ui > :nth-child(1)")
-    //     .contains("Yhdistyneestä kuningaskunnasta käytetty lyhyt nimitys")
-    //   cy.get("[data-cy=dictionary-dropdown] > div.text") //Open dropdown
-    //     .click()
-    //   cy.get(".visible > :nth-child(13)") // Change translation language to Portuguese
-    //     .click()
-    //   cy.get(":nth-child(3) > :nth-child(1) > .ui > .item")
-    //     .contains("Grã-Bretanha")  
-    // })
+    describe("dictionary", function(){
+
+      this.beforeEach(function(){
+        cy.visit("http://localhost:8000/stories/5c407e9eff634503466b0dde/")
+        cy.get(".book") // Open dictionaryhelp
+          .click()
+      })
+
+      it("dictionary opens", function(){
+        cy.contains("Klikkaa sinulle tuntemattomia sanoja tekstissä saadaksesi käännöksiä.")
+      })
+
+      it("translate-to language can be changed", function(){
+        cy.get("[data-cy=dictionary-dropdown] > div.text")
+          .click()
+        cy.get(".visible > :nth-child(6)")
+          .contains("Finnish")
+          .click()
+      })
+
+      it("word translates correctly", function(){
+        cy.contains("poliisi")
+          .click()
+        cy.contains("yhteiskunnassa järjestystä ja turvallisuutta valvova ja ylläpitävä virkamies")
+      })
+
+      it("changing translate-to language re-translates the word", function(){
+        cy.contains("poliisi")
+          .click()
+        cy.contains("yhteiskunnassa järjestystä ja turvallisuutta valvova ja ylläpitävä virkamies")
+        cy.get("[data-cy=dictionary-dropdown] > div.text")
+        .click()
+        cy.get(".visible > :nth-child(5)")
+          .contains("Spanish")
+          .click()
+        cy.contains("policía")
+      })
+
+    })
   })
 })
