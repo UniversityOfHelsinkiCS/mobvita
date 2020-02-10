@@ -8,7 +8,7 @@ const Flashcard = ({ word }) => {
   const [answer, setAnswer] = useState('')
   const [correct, setCorrect] = useState(false)
 
-  const intl = useIntl();
+  const intl = useIntl()
 
   useEffect(() => {
     setFlipped(false)
@@ -33,25 +33,11 @@ const Flashcard = ({ word }) => {
 
   return (
     <div
-<<<<<<< HEAD
-      style={{ display: 'flex', width: '50%', height: '50%', margin: 'auto' }}
-      className="border"
-=======
-      //style={{ display: 'flex', width: '50%', height: '50%', margin: 'auto', backgroundColor: color }}
-      //className="border"
+      // style={{ display: 'flex', width: '50%', height: '50%', margin: 'auto', backgroundColor: color }}
+      // className="border"
       id="flashcard"
->>>>>>> 603c54f2b1b7246e4f1b5d08cabfeba34e4043f6
       tabIndex="-1"
     >
-<<<<<<< HEAD
-      <div style={{ margin: 'auto' }}>
-        {content}
-        <form onSubmit={checkAnswer}>
-          <input type="text" value={answer} onChange={event => setAnswer(event.target.value)} />
-          <button type="submit">check</button>
-        </form>
-        {flipped && <div style={{ color }}>{text}</div>}
-=======
       <span id="flashcardText">{content}</span>
       <div id="flashcardInputAndCheck">
         <Form.Control
@@ -79,7 +65,6 @@ const Flashcard = ({ word }) => {
             <Icon name="arrow right" />
           </button>
         </div>
->>>>>>> 603c54f2b1b7246e4f1b5d08cabfeba34e4043f6
       </div>
     </div>
   )
