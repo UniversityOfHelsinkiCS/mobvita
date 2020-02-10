@@ -139,14 +139,29 @@ describe('Mobvita', function() {
     })
 
     describe("stories", function(){
-      it('can be created', function(){
+      this.beforeEach(function(){
         cy.get("[data-cy=library-tab]")
           .click()
+      })
+
+      it('can be created and upload progress bar seen', function(){
         cy.get('[data-cy=new-story-input]')
           .type('https://yle.fi/uutiset/3-11191886')
         cy.get('[data-cy="submit-story"]')
           .click()
         cy.contains('Validating url-address')
+        cy.contains('Processing your story')
+      })
+
+      it('added story can be seen', function(){
+        cy.contains('5G-kännyköitä')
+      })
+
+      it('added story can be read', function(){
+        cy.contains('Lue')
+          .click()
+        cy.contains('Harjoittele')
+        cy.contains('Tehokkaasta 5G-liittymästä')
       })
     })
 
