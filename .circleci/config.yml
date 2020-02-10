@@ -20,7 +20,6 @@ workflows:
       - cypress/run:
           start: REVITA_URL=https://revita-test.cs.helsinki.fi/api npm run start:dev
           wait-on: http://localhost:8000
-          record: true
       - dockerhub/publish:
           requires:
             -  cypress/run
