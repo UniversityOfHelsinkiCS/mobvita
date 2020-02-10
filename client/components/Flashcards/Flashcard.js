@@ -5,9 +5,14 @@ import { Icon } from 'semantic-ui-react'
 import { useDispatch } from 'react-redux'
 import { recordFlashcardAnswer } from 'Utilities/redux/flashcardReducer'
 
-const Flashcard = ({ card, flipped, setFlipped }) => {
+const Flashcard = ({ card }) => {
   const [answer, setAnswer] = useState('')
-  
+  const [flipped, setFlipped] = useState(false)
+
+  useEffect(() => {
+    setFlipped(false)
+  }, [card])
+
   const dispatch = useDispatch()
 
   const intl = useIntl()
