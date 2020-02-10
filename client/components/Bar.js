@@ -145,6 +145,7 @@ export default function Bar({ history }) {
                 options={localeDropdownOptions}
                 selection
                 onChange={(e, data) => handleLocaleChange(data.value)}
+                data-cy="ui-lang-select"
               />
             </Menu.Item>
 

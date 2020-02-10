@@ -1,6 +1,5 @@
 /// <reference types="Cypress" />
 
-
 describe('Mobvita', function() {
   this.beforeEach(function() {
     cy.visit('http://localhost:8000')
@@ -24,7 +23,7 @@ describe('Mobvita', function() {
   })
 
   describe('when logged in', function() {
-    this.beforeEach( function() {
+    this.beforeEach(function() {
       cy.request('POST', '/api/session', { email: 'elbert.alyas@plutocow.com', password: 'emacsemacs'})
         .as('user')
         .then(response => {
@@ -42,7 +41,7 @@ describe('Mobvita', function() {
           interface_lang: 'Finnish',
           last_trans_lang: 'Finnish'
         }
-      })
+      }).then(() => cy.reload())
     })
 
     it('library opens', function() {
@@ -74,21 +73,31 @@ describe('Mobvita', function() {
       cy.get("[data-cy=start-random]").should("be.disabled")
     })
 
-    it("can open and close terms and conditions", function(){
-      cy.get('.bars').click()
-      cy.get('[data-cy=tc-button]').click()
-      cy.get('[data-cy=tc-content]')
-      cy.get('.inverted').click(-50, -50, { force: true })
-    })
+    describe("sidebar is open", function() {
+      this.beforeEach(function(){
+        cy.get('.bars').click()
+      })
 
-    it("can read about (mob|re)vita", function() {
-      cy.get('.bars').click()
-      cy.get('[data-cy=about-button]').click()
-      cy.get('[data-cy=about-content]')
+
+      it("can open and close terms and conditions", function(){
+        cy.get('[data-cy=tc-button]').click()
+        cy.get('[data-cy=tc-content]')
+        cy.get('.inverted').click(-50, -50, { force: true })
+      })
+
+      it("can read about (mob|re)vita", function() {
+        cy.get('[data-cy=about-button]').click()
+        cy.get('[data-cy=about-content]')
+      })
+
+      it("ui language can be changed", function() {
+        cy.get('[data-cy=ui-lang-select]').click()
+        cy.get('[data-cy=ui-lang-select] > .visible > :nth-child(2)').click()
+        cy.contains('Startsida')
+      })
     })
 
     describe("dictionary", function(){
-
       this.beforeEach(function(){
         cy.visit("http://localhost:8000/stories/5c407e9eff634503466b0dde/")
         cy.get(".book") // Open dictionaryhelp
@@ -127,6 +136,18 @@ describe('Mobvita', function() {
 
     })
 
+    describe("stories", function(){
+      it('can be created', function(){
+        cy.get("[data-cy=library-tab]")
+          .click()
+        cy.get('[data-cy=new-story-input]')
+          .type('https://yle.fi/uutiset/3-11191886')
+        cy.get('[data-cy="submit-story"]')
+          .click()
+        cy.contains('Validating url-address')
+      })
+    })
+
     describe("read mode", function(){
 
       this.beforeEach(function(){
@@ -147,7 +168,7 @@ describe('Mobvita', function() {
         cy.contains("Yhdistyneestä kuningaskunnasta käytetty lyhyt nimitys")
       })
 
-      
+
     })
   })
 })

@@ -24,6 +24,7 @@ const Tabs = ({ location }) => {
         content: intl.formatMessage({ id: 'Library' }),
         to: '/library',
         key: 'library',
+        'data-cy': 'library-tab',
       },
       render: () => <div className="contentContainer"><StoryList /></div>,
     },
