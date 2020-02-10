@@ -2,27 +2,45 @@ import React, { useState, useEffect } from 'react'
 import { useIntl } from 'react-intl'
 import { Button, Form } from 'react-bootstrap'
 import { Icon } from 'semantic-ui-react'
+import { useDispatch } from 'react-redux'
+import { recordFlashcardAnswer } from 'Utilities/redux/flashcardReducer'
 
-const Flashcard = ({ word }) => {
+const Flashcard = ({ card }) => {
   const [flipped, setFlipped] = useState(false)
   const [answer, setAnswer] = useState('')
   const [correct, setCorrect] = useState(false)
 
+  const dispatch = useDispatch()
+
   const intl = useIntl()
+
+  const { glosses, lemma, _id, story, lan_in: inputLanguage, lan_out: outputLanguage } = card
 
   useEffect(() => {
     setFlipped(false)
-  }, [word])
+  }, [card])
 
-  const translations = Array.isArray(word.translations)
-    ? word.translations.map(item => <li key={item}>{item}</li>)
-    : word.translations
+  const translations = Array.isArray(glosses)
+    ? glosses.map(item => <li key={item}>{item}</li>)
+    : glosses
 
-  const content = flipped ? <ul>{translations}</ul> : <p>{word.root}</p>
+  const content = flipped ? <ul>{translations}</ul> : <p>{lemma}</p>
 
   const checkAnswer = (event) => {
     event.preventDefault()
-    setCorrect(word.translations.includes(answer.toLowerCase()))
+    setCorrect(translations.includes(answer.toLowerCase()))
+
+    const answerDetails = {
+      flashcard_id: _id,
+      correct,
+      answer,
+      exercise: 'fillin',
+      mode: 'trans',
+      story,
+      lemma,
+    }
+
+    dispatch((recordFlashcardAnswer(inputLanguage, outputLanguage, answerDetails)))
 
     setFlipped(!flipped)
     setAnswer('')
@@ -33,8 +51,6 @@ const Flashcard = ({ word }) => {
 
   return (
     <div
-      // style={{ display: 'flex', width: '50%', height: '50%', margin: 'auto', backgroundColor: color }}
-      // className="border"
       id="flashcard"
       tabIndex="-1"
     >

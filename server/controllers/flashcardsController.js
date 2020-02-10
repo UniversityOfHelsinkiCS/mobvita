@@ -7,4 +7,11 @@ const getFlashcards = async (req, res) => {
   res.send(response.data)
 }
 
-module.exports = { getFlashcards }
+const recordFlashcardAnswer = async (req, res) => {
+  const { inputLanguage, outputLanguage } = req.params
+  const url = `/flashcards/${inputLanguage}/${outputLanguage}/answer`
+  const response = await axios.post(url, req.body, { headers: req.headers })
+  res.send(response.data)
+}
+
+module.exports = { getFlashcards, recordFlashcardAnswer }
