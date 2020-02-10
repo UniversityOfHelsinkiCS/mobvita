@@ -125,7 +125,7 @@ const CurrentPractice = ({ storyId }) => {
   }
 
   const handleAnswerChange = (e, word) => {
-    const { surface, id, ID } = word
+    const { surface, id, ID, concept } = word
 
     if (!touchedIDs.includes(ID)) {
       setTouchedIds(touchedIDs.concat(ID))
@@ -138,6 +138,7 @@ const CurrentPractice = ({ storyId }) => {
         correct: surface,
         users_answer: e.target.value,
         id,
+        concept,
       },
     }
     setAnswers(newAnswers)
@@ -258,7 +259,6 @@ const CurrentPractice = ({ storyId }) => {
   }
 
   const { practice_snippet: practice } = snippets.focused
-
   return (
     <>
       <h3>
@@ -277,6 +277,7 @@ const CurrentPractice = ({ storyId }) => {
       </div>
 
       <Button
+        data-cy="check-answer"
         block
         variant="primary"
         onClick={() => handleCheckButton()}
