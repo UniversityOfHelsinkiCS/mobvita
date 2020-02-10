@@ -27,4 +27,18 @@ const confirm = async (req, res) => {
   res.send(response.data)
 }
 
-module.exports = { getSelf, setSelf, register, confirm }
+const testConfirm = async (req, res) => {
+  const data = req.body
+  const url = '/confirm/test'
+  const response = await axios.post(url, data)
+  res.send(response.data)
+}
+
+const remove = async (req, res) => {
+  const data = req.body
+  const url = '/user/remove'
+  const response = await axios.post(url, data, { headers: req.headers })
+  res.send(response.data)
+}
+
+module.exports = { getSelf, setSelf, register, confirm, testConfirm, remove }

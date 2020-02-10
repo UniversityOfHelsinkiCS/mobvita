@@ -35,9 +35,10 @@ router.post('/session', session.create)
 
 router.get('/user', user.getSelf)
 router.post('/user', user.setSelf)
+router.post('/user/remove', user.remove)
 router.post('/register', user.register)
 router.post('/confirm', user.confirm)
-
+router.post('/confirm/test', user.testConfirm)
 router.post('/contact', email.sendEmail)
 
 router.post('/*', unknown)

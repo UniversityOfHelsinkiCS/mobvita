@@ -1,6 +1,36 @@
 /// <reference types="Cypress" />
 
+const user = { email: null, password: 'securepassword'}
+let token = null
+
 describe('Mobvita', function() {
+  this.beforeAll(function() {
+    const randomID = Math.floor(Math.random() * 10000)
+    const email = `mobvita${randomID}@testcypress.foobar`
+    user.email = email
+    const username = `mobvita${randomID}`
+
+    cy.request('POST', 'localhost:8000/api/register', { username, email, password: 'securepassword' })
+      .then((response) => {
+        token = response.body.access_token
+        cy.request('POST', 'localhost:8000/api/confirm/test', { ...user })
+      })
+  })
+
+  this.afterAll(function() {
+    cy.request({
+      method: 'POST',
+      url: 'localhost:8000/api/user/remove',
+      headers: {
+      'Authorization': `Bearer ${token}`
+      },
+      body: {
+        password: user.password,
+        is_test: true
+      }
+    })
+  })
+
   this.beforeEach(function() {
     cy.visit('http://localhost:8000')
   })
@@ -13,35 +43,35 @@ describe('Mobvita', function() {
 
   it('can log in as user', function() {
     cy.get('input:first')
-      .type('elbert.alyas@plutocow.com')
+      .type(user.email)
     cy.get('input:last')
-      .type('emacsemacs')
+      .type(user.password)
     cy.get('form')
       .get('[data-cy=login]')
       .click()
-    cy.get('[data-cy=practice-now]')
+    cy.get('[data-cy=choose-lang]')
   })
 
   describe('when logged in', function() {
     this.beforeEach(function() {
-      cy.request('POST', '/api/session', { email: 'elbert.alyas@plutocow.com', password: 'emacsemacs'})
-        .as('user')
-        .then(response => {
-          window.localStorage.setItem('user', JSON.stringify(response.body))
-          cy.reload()
-        })
       cy.request({
         method: 'POST',
         url: '/api/user',
-          headers: {
-            'Authorization': `Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpYXQiOjE1ODEzMzQyNDAsIm5iZiI6MTU4MTMzNDI0MCwianRpIjoiODA1OTgzZDgtNWVlNy00ZTJiLThkNGMtMGY2NTYwNmViODM3IiwiaWRlbnRpdHkiOiI1YzQ1ZjE2YWZmNjM0NTA1NjZlOGY4ZjciLCJmcmVzaCI6ZmFsc2UsInR5cGUiOiJhY2Nlc3MifQ.WwwyhqmTk9kWG10QkDbrbsyAlcPUYvOm3Q8c7sxucYk`
-          },
+        headers: {
+          'Authorization': `Bearer ${token}`
+        },
         body: {
           last_used_lang: 'Finnish',
           interface_lang: 'Finnish',
           last_trans_lang: 'Finnish'
         }
-      }).then(() => cy.reload())
+      })
+      cy.request('POST', '/api/session', { ...user })
+        .as('user')
+        .then(response => {
+          window.localStorage.setItem('user', JSON.stringify(response.body))
+          cy.reload()
+        })
     })
 
     it('library opens', function() {
@@ -96,7 +126,7 @@ describe('Mobvita', function() {
         cy.contains('Startsida')
         cy.get('.bars').click()
         cy.get('[data-cy=logout]').click()
-        cy.request('POST', '/api/session', { email: 'elbert.alyas@plutocow.com', password: 'emacsemacs'})
+        cy.request('POST', '/api/session', { ...user })
         .as('user')
         .then(response => {
           window.localStorage.setItem('user', JSON.stringify(response.body))
@@ -151,20 +181,14 @@ describe('Mobvita', function() {
           .click()
       })
 
-      it('can be created and upload progress bar seen', function(){
+      it('can be created and new story can be read', function(){
         cy.get('[data-cy=new-story-input]')
           .type('https://yle.fi/uutiset/3-11191886')
         cy.get('[data-cy="submit-story"]')
           .click()
         cy.contains('Validating url-address')
         cy.contains('Processing your story')
-      })
-
-      it('added story can be seen', function(){
         cy.contains('5G-kännyköitä')
-      })
-
-      it('added story can be read', function(){
         cy.contains('Lue')
           .click()
         cy.contains('Harjoittele')
@@ -178,7 +202,7 @@ describe('Mobvita', function() {
         cy.visit('http://localhost:8000/stories/5c407e9eff634503466b0dde/')
       })
 
-      it("story opens", function(){
+      it("opens", function(){
         cy.contains("Lauantai 22.12.2018 (radio)")
         cy.contains("Britanniassa poliisi on ehkä löytänyt ihmiset, jotka ovat häirinneet lentokoneita.")
         cy.contains("Etelä-Suomessa pakkasta on noin 10 astetta. Pohjois-Suomessa pakkasta on noin 20 astetta. Lapissa on yöllä jopa 30 astetta pakkasta.")
@@ -190,9 +214,54 @@ describe('Mobvita', function() {
         cy.get('.book') // Open dictionaryhelp
           .click({force:true})
         cy.contains("Yhdistyneestä kuningaskunnasta käytetty lyhyt nimitys")
+      })     
+    })
+
+    describe("practice mode", function(){
+
+      const practiceURL = "http://localhost:8000/stories/5c407e9eff634503466b0dde/practice"
+
+      this.beforeEach(function(){
+        cy.visit(practiceURL)
       })
 
+      it("can type into cloze fields", function(){
+        cy.get("[data-cy=exercise-cloze]").each(element => {
+          cy.get(element).type("h3hasdi3g92137fhs")
+        })
+      })
+
+      it("can submit answers", function(){
+        cy.get("[data-cy=check-answer]").click()
+      })
+
+      it("can get to next snippet after two retries", function(){
+
+        let oldTitle, newTitle
+
+        oldTitle = cy.get("h3").then(e => oldTitle = e.text())
+        
+        cy.get("[data-cy=check-answer]").click()
+        cy.get("[data-cy=check-answer]").click()
+
+        cy.get("h3")
+          .then(e => newTitle = e.text())
+          .then(() => expect(oldTitle).to.not.equal(newTitle))
+      })
+
+      it("shows feedback", function(){
+        cy.get("[data-cy=exercise-cloze]").each(element => {
+          cy.get(element).type("h3hasdi3g92137fhs")
+        })
+        cy.get("[data-cy=check-answer]").click()
+
+        //Locate incorrecly answered cloze exercise:
+        cy.get("[data-cy=exercise-cloze]").eq(0).should("have.class", "wrong")
+
+      })
 
     })
+
+
   })
 })

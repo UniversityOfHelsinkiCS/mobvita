@@ -31,6 +31,7 @@ const ExerciseCloze = ({ word, handleChange, handleClick, value }) => {
 
   return (
     <Input
+      data-cy="exercise-cloze"
       autoCapitalize="off"
       disabled={disabled}
       key={word.ID}
