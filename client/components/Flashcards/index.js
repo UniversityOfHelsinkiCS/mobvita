@@ -34,7 +34,7 @@ const Flashcards = () => {
 
   return (
     <>
-      <Flashcard word={word} />
+      <Flashcard card={currentCard} />
       <Button variant="primary" onClick={() => setCurrentCard(sample(cards.all))}>
         Random card
       </Button>
