@@ -20,6 +20,7 @@ router.get('/stories/:language/:id', stories.getOne)
 router.post('/stories', stories.createOne)
 
 router.get('/flashcards/:inputLanguage/:outputLanguage', flashcards.getFlashcards)
+router.post('/flashcards/:inputLanguage/:outputLanguage/answer', flashcards.recordFlashcardAnswer)
 
 router.get('/snippets/story/:storyId/current', snippets.getCurrent)
 router.get('/snippets/story/:storyId/next', snippets.getNext)

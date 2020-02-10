@@ -2,39 +2,46 @@ import React, { useState, useEffect } from 'react'
 import { useIntl } from 'react-intl'
 import { Button, Form } from 'react-bootstrap'
 import { Icon } from 'semantic-ui-react'
+import { useDispatch } from 'react-redux'
+import { recordFlashcardAnswer } from 'Utilities/redux/flashcardReducer'
 
-const Flashcard = ({ word }) => {
-  const [flipped, setFlipped] = useState(false)
+const Flashcard = ({ card, flipped, setFlipped }) => {
   const [answer, setAnswer] = useState('')
-  const [correct, setCorrect] = useState(false)
+  
+  const dispatch = useDispatch()
 
   const intl = useIntl()
 
-  useEffect(() => {
-    setFlipped(false)
-  }, [word])
+  const { glosses, lemma, _id, story, lan_in: inputLanguage, lan_out: outputLanguage } = card
 
-  const translations = Array.isArray(word.translations)
-    ? word.translations.map(item => <li key={item}>{item}</li>)
-    : word.translations
+  const translations = Array.isArray(glosses)
+    ? glosses.map(item => <li key={item}>{item}</li>)
+    : glosses
 
-  const content = flipped ? <ul>{translations}</ul> : <p>{word.root}</p>
+  const content = flipped ? <ul>{translations}</ul> : <p>{lemma}</p>
 
   const checkAnswer = (event) => {
     event.preventDefault()
-    setCorrect(word.translations.includes(answer.toLowerCase()))
+    const correct = glosses.includes(answer.toLowerCase()).toString()
+
+    const answerDetails = {
+      flashcard_id: _id,
+      correct,
+      answer,
+      exercise: 'fillin',
+      mode: 'trans',
+      story,
+      lemma,
+    }
+
+    dispatch((recordFlashcardAnswer(inputLanguage, outputLanguage, answerDetails)))
 
     setFlipped(!flipped)
     setAnswer('')
   }
 
-  const text = correct ? 'correct' : 'incorrect'
-  const color = correct ? 'green' : 'red'
-
   return (
     <div
-      // style={{ display: 'flex', width: '50%', height: '50%', margin: 'auto', backgroundColor: color }}
-      // className="border"
       id="flashcard"
       tabIndex="-1"
     >
@@ -59,7 +66,7 @@ const Flashcard = ({ word }) => {
             id="flashcardFlip"
             variant="light"
             type="button"
-            onClick={checkAnswer}
+            onClick={() => setFlipped(!flipped)}
           >
             {`${intl.formatMessage({ id: 'Flip' })}   `}
             <Icon name="arrow right" />

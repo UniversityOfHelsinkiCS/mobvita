@@ -157,10 +157,10 @@ export default function Bar({ history }) {
                     <Button data-cy="about-button" variant="secondary" style={{ flexBasis: '50%' }}>
                       <FormattedMessage id="About" />
                     </Button>
-)}
+                  )}
                 />
                 <ContactUs trigger={<Button variant="secondary" style={{ flexBasis: '50%' }}><FormattedMessage id="Contact" /></Button>} />
-                { user && <Button variant="secondary" style={{ flexBasis: '50%' }} onClick={() => menuClickWrapper(signOut)}><FormattedMessage id="sign-out" /></Button>}
+                { user && <Button data-cy="logout" variant="secondary" style={{ flexBasis: '50%' }} onClick={() => menuClickWrapper(signOut)}><FormattedMessage id="sign-out" /></Button>}
               </Menu.Item>
               <TermsAndConditions
                 trigger={<Button data-cy="tc-button" variant="link"> Terms and Conditions, Privacy Policy </Button>}
