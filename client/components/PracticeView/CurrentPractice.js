@@ -51,7 +51,7 @@ const CurrentPractice = ({ storyId }) => {
     if (snippets.focused) {
       const filteredSnippet = snippets.focused.practice_snippet.filter(word => word.id)
       const initialAnswers = filteredSnippet.reduce((answerObject, currentWord) => {
-        const { surface, id, ID, base, bases, listen, choices } = currentWord
+        const { surface, id, ID, base, bases, listen, choices, concept } = currentWord
         if (answers[ID]) return { ...answerObject, [ID]: answers[ID] }
         const newAnswerObject = {
           ...answerObject,
@@ -59,6 +59,7 @@ const CurrentPractice = ({ storyId }) => {
             correct: surface,
             users_answer: (listen || choices) ? '' : (base || bases),
             id,
+            concept,
           },
         }
         return newAnswerObject
@@ -145,7 +146,7 @@ const CurrentPractice = ({ storyId }) => {
   }
 
   const handleMultiselectChange = (event, word, data) => {
-    const { id, ID, surface } = word
+    const { id, ID, surface, concept } = word
     const { value } = data
 
     if (!touchedIDs.includes(ID)) {
@@ -159,6 +160,7 @@ const CurrentPractice = ({ storyId }) => {
         correct: surface,
         users_answer: value,
         id,
+        concept,
       },
     }
     setAnswers(newAnswers)
