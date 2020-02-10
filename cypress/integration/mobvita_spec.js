@@ -62,21 +62,31 @@ describe('Mobvita', function() {
       cy.get("[data-cy=start-random]").should("be.disabled")
     })
 
-    it("can open and close terms and conditions", function(){
-      cy.get('.bars').click()
-      cy.get('[data-cy=tc-button]').click()
-      cy.get('[data-cy=tc-content]')
-      cy.get('.inverted').click(-50, -50, { force: true })
-    })
+    describe("sidebar is open", function() {
+      this.beforeEach(function(){
+        cy.get('.bars').click()
+      })
 
-    it("can read about (mob|re)vita", function() {
-      cy.get('.bars').click()
-      cy.get('[data-cy=about-button]').click()
-      cy.get('[data-cy=about-content]')
+
+      it("can open and close terms and conditions", function(){
+        cy.get('[data-cy=tc-button]').click()
+        cy.get('[data-cy=tc-content]')
+        cy.get('.inverted').click(-50, -50, { force: true })
+      })
+
+      it("can read about (mob|re)vita", function() {
+        cy.get('[data-cy=about-button]').click()
+        cy.get('[data-cy=about-content]')
+      })
+
+      it.only("ui language can be changed", function() {
+        cy.get('[data-cy=ui-lang-select]').click()
+        cy.get('[data-cy=ui-lang-select] > .visible > :nth-child(2)').click()
+      })
+
     })
 
     describe("dictionary", function(){
-
       this.beforeEach(function(){
         cy.visit("http://localhost:8000/stories/5c407e9eff634503466b0dde/")
         cy.get(".book") // Open dictionaryhelp
