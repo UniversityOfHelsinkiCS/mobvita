@@ -51,8 +51,11 @@ const StoryForm = () => {
                 placeholder={intl.formatMessage({ id: 'enter-web-address' })}
                 value={storyUrl}
                 onChange={event => setStoryUrl(event.target.value)}
+                data-cy="new-story-input"
               />
-              <Button style={{ marginTop: '0.5em' }} variant="primary" type="submit"><FormattedMessage id="Confirm" /></Button>
+              <Button style={{ marginTop: '0.5em' }} variant="primary" type="submit" data-cy="submit-story">
+                <FormattedMessage id="Confirm" />
+              </Button>
             </Form>
           </div>
         </div>
