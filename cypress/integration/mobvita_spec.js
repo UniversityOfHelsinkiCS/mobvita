@@ -1,6 +1,5 @@
 /// <reference types="Cypress" />
 
-
 describe('Mobvita', function() {
   this.beforeEach(function() {
     cy.visit('http://localhost:8000')
@@ -24,7 +23,7 @@ describe('Mobvita', function() {
   })
 
   describe('when logged in', function() {
-    this.beforeEach( function() {
+    this.beforeEach(function() {
       cy.request('POST', '/api/session', { email: 'elbert.alyas@plutocow.com', password: 'emacsemacs'})
         .as('user')
         .then(response => {
@@ -42,7 +41,7 @@ describe('Mobvita', function() {
           interface_lang: 'Finnish',
           last_trans_lang: 'Finnish'
         }
-      })
+      }).then(() => cy.reload())
     })
 
     it('library opens', function() {
@@ -91,12 +90,10 @@ describe('Mobvita', function() {
         cy.get('[data-cy=about-content]')
       })
 
-      it("ui language can be changed", function() {
+      it.only("ui language can be changed", function() {
         cy.get('[data-cy=ui-lang-select]').click()
         cy.get('[data-cy=ui-lang-select] > .visible > :nth-child(2)').click()
         cy.contains('Startsida')
-      })
-
     })
 
     describe("dictionary", function(){
@@ -158,7 +155,16 @@ describe('Mobvita', function() {
         cy.contains("Yhdistyneestä kuningaskunnasta käytetty lyhyt nimitys")
       })
 
-      
+
     })
   })
 })
+
+async function login() {
+  cy.request('POST', '/api/session', { email: 'elbert.alyas@plutocow.com', password: 'emacsemacs'})
+    .as('user')
+    .then(response => {
+      window.localStorage.setItem('user', JSON.stringify(response.body))
+      cy.reload()
+    })
+}
