@@ -11,6 +11,7 @@ const Flashcards = () => {
   const learningLanguage = useSelector(learningLanguageSelector)
   const dictionaryLanguage = useSelector(dictionaryLanguageSelector)
   const { cards, pending } = useSelector(({ flashcards }) => flashcards)
+  const [flipped, setFlipped] = useState(false)
 
   const [currentCard, setCurrentCard] = useState(null)
 
@@ -22,20 +23,23 @@ const Flashcards = () => {
     if (cards) setCurrentCard(sample(cards.all))
   }, [cards])
 
+  useEffect(() => {
+    setFlipped(false)
+  }, [currentCard])
+
   if (pending || !currentCard) {
     return <div>loading</div>
   }
 
-
-  const word = {
-    root: currentCard.lemma,
-    translations: currentCard.glosses,
+  const changeCard = () => {
+    setFlipped(false)
+    setCurrentCard(sample(cards.all))
   }
 
   return (
     <>
-      <Flashcard card={currentCard} />
-      <Button variant="primary" onClick={() => setCurrentCard(sample(cards.all))}>
+      <Flashcard card={currentCard} flipped={flipped} setFlipped={setFlipped} />
+      <Button variant="primary" onClick={() => changeCard()}>
         Random card
       </Button>
     </>

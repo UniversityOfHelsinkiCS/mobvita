@@ -5,20 +5,14 @@ import { Icon } from 'semantic-ui-react'
 import { useDispatch } from 'react-redux'
 import { recordFlashcardAnswer } from 'Utilities/redux/flashcardReducer'
 
-const Flashcard = ({ card }) => {
-  const [flipped, setFlipped] = useState(false)
+const Flashcard = ({ card, flipped, setFlipped }) => {
   const [answer, setAnswer] = useState('')
-  const [correct, setCorrect] = useState(false)
-
+  
   const dispatch = useDispatch()
 
   const intl = useIntl()
 
   const { glosses, lemma, _id, story, lan_in: inputLanguage, lan_out: outputLanguage } = card
-
-  useEffect(() => {
-    setFlipped(false)
-  }, [card])
 
   const translations = Array.isArray(glosses)
     ? glosses.map(item => <li key={item}>{item}</li>)
@@ -28,7 +22,7 @@ const Flashcard = ({ card }) => {
 
   const checkAnswer = (event) => {
     event.preventDefault()
-    setCorrect(translations.includes(answer.toLowerCase()))
+    const correct = glosses.includes(answer.toLowerCase()).toString()
 
     const answerDetails = {
       flashcard_id: _id,
@@ -45,9 +39,6 @@ const Flashcard = ({ card }) => {
     setFlipped(!flipped)
     setAnswer('')
   }
-
-  const text = correct ? 'correct' : 'incorrect'
-  const color = correct ? 'green' : 'red'
 
   return (
     <div
@@ -75,7 +66,7 @@ const Flashcard = ({ card }) => {
             id="flashcardFlip"
             variant="light"
             type="button"
-            onClick={checkAnswer}
+            onClick={() => setFlipped(!flipped)}
           >
             {`${intl.formatMessage({ id: 'Flip' })}   `}
             <Icon name="arrow right" />
