@@ -74,21 +74,32 @@ describe('Mobvita', function() {
       cy.get("[data-cy=start-random]").should("be.disabled")
     })
 
-    it("can open and close terms and conditions", function(){
-      cy.get('.bars').click()
-      cy.get('[data-cy=tc-button]').click()
-      cy.get('[data-cy=tc-content]')
-      cy.get('.inverted').click(-50, -50, { force: true })
-    })
+    describe("sidebar is open", function() {
+      this.beforeEach(function(){
+        cy.get('.bars').click()
+      })
 
-    it("can read about (mob|re)vita", function() {
-      cy.get('.bars').click()
-      cy.get('[data-cy=about-button]').click()
-      cy.get('[data-cy=about-content]')
+
+      it("can open and close terms and conditions", function(){
+        cy.get('[data-cy=tc-button]').click()
+        cy.get('[data-cy=tc-content]')
+        cy.get('.inverted').click(-50, -50, { force: true })
+      })
+
+      it("can read about (mob|re)vita", function() {
+        cy.get('[data-cy=about-button]').click()
+        cy.get('[data-cy=about-content]')
+      })
+
+      it("ui language can be changed", function() {
+        cy.get('[data-cy=ui-lang-select]').click()
+        cy.get('[data-cy=ui-lang-select] > .visible > :nth-child(2)').click()
+        cy.contains('Startsida')
+      })
+
     })
 
     describe("dictionary", function(){
-
       this.beforeEach(function(){
         cy.visit("http://localhost:8000/stories/5c407e9eff634503466b0dde/")
         cy.get(".book") // Open dictionaryhelp
@@ -137,6 +148,29 @@ describe('Mobvita', function() {
           .click()
         cy.contains('Validating url-address')
       })
+    })
+
+    describe("read mode", function(){
+
+      this.beforeEach(function(){
+        cy.visit('http://localhost:8000/stories/5c407e9eff634503466b0dde/')
+      })
+
+      it("story opens", function(){
+        cy.contains("Lauantai 22.12.2018 (radio)")
+        cy.contains("Britanniassa poliisi on ehkä löytänyt ihmiset, jotka ovat häirinneet lentokoneita.")
+        cy.contains("Etelä-Suomessa pakkasta on noin 10 astetta. Pohjois-Suomessa pakkasta on noin 20 astetta. Lapissa on yöllä jopa 30 astetta pakkasta.")
+      })
+
+      it("can click (translate) a word", function(){ // This test overlaps with dictionary
+         cy.contains("Britanniassa")
+          .click()
+        cy.get('.book') // Open dictionaryhelp
+          .click({force:true})
+        cy.contains("Yhdistyneestä kuningaskunnasta käytetty lyhyt nimitys")
+      })
+
+      
     })
   })
 })
