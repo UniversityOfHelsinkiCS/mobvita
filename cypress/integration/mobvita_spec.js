@@ -137,5 +137,28 @@ describe('Mobvita', function() {
       })
 
     })
+
+    describe("read mode", function(){
+
+      this.beforeEach(function(){
+        cy.visit('http://localhost:8000/stories/5c407e9eff634503466b0dde/')
+      })
+
+      it("story opens", function(){
+        cy.contains("Lauantai 22.12.2018 (radio)")
+        cy.contains("Britanniassa poliisi on ehkä löytänyt ihmiset, jotka ovat häirinneet lentokoneita.")
+        cy.contains("Etelä-Suomessa pakkasta on noin 10 astetta. Pohjois-Suomessa pakkasta on noin 20 astetta. Lapissa on yöllä jopa 30 astetta pakkasta.")
+      })
+
+      it("can click (translate) a word", function(){ // This test overlaps with dictionary
+         cy.contains("Britanniassa")
+          .click()
+        cy.get('.book') // Open dictionaryhelp
+          .click({force:true})
+        cy.contains("Yhdistyneestä kuningaskunnasta käytetty lyhyt nimitys")
+      })
+
+      
+    })
   })
 })
