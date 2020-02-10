@@ -169,7 +169,7 @@ describe('Mobvita', function() {
         cy.visit('http://localhost:8000/stories/5c407e9eff634503466b0dde/')
       })
 
-      it("story opens", function(){
+      it("opens", function(){
         cy.contains("Lauantai 22.12.2018 (radio)")
         cy.contains("Britanniassa poliisi on ehkä löytänyt ihmiset, jotka ovat häirinneet lentokoneita.")
         cy.contains("Etelä-Suomessa pakkasta on noin 10 astetta. Pohjois-Suomessa pakkasta on noin 20 astetta. Lapissa on yöllä jopa 30 astetta pakkasta.")
@@ -181,9 +181,54 @@ describe('Mobvita', function() {
         cy.get('.book') // Open dictionaryhelp
           .click({force:true})
         cy.contains("Yhdistyneestä kuningaskunnasta käytetty lyhyt nimitys")
+      })     
+    })
+
+    describe("practice mode", function(){
+
+      const practiceURL = "http://localhost:8000/stories/5c407e9eff634503466b0dde/practice"
+
+      this.beforeEach(function(){
+        cy.visit(practiceURL)
       })
 
+      it("can type into cloze fields", function(){
+        cy.get("[data-cy=exercise-cloze]").each(element => {
+          cy.get(element).type("h3hasdi3g92137fhs")
+        })
+      })
+
+      it("can submit answers", function(){
+        cy.get("[data-cy=check-answer]").click()
+      })
+
+      it("can get to next snippet after two retries", function(){
+
+        let oldTitle, newTitle
+
+        oldTitle = cy.get("h3").then(e => oldTitle = e.text())
+        
+        cy.get("[data-cy=check-answer]").click()
+        cy.get("[data-cy=check-answer]").click()
+
+        cy.get("h3")
+          .then(e => newTitle = e.text())
+          .then(() => expect(oldTitle).to.not.equal(newTitle))
+      })
+
+      it("shows feedback", function(){
+        cy.get("[data-cy=exercise-cloze]").each(element => {
+          cy.get(element).type("h3hasdi3g92137fhs")
+        })
+        cy.get("[data-cy=check-answer]").click()
+
+        //Locate incorrecly answered cloze exercise:
+        cy.get("[data-cy=exercise-cloze]").eq(0).should("have.class", "wrong")
+
+      })
 
     })
+
+
   })
 })
