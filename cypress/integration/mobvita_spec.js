@@ -74,6 +74,19 @@ describe('Mobvita', function() {
       cy.get("[data-cy=start-random]").should("be.disabled")
     })
 
+    it("can open and close terms and conditions", function(){
+      cy.get('.bars').click()
+      cy.get('[data-cy=tc-button]').click()
+      cy.get('[data-cy=tc-content]')
+      cy.get('.inverted').click(-50, -50, { force: true })
+    })
+
+    it("can read about (mob|re)vita", function() {
+      cy.get('.bars').click()
+      cy.get('[data-cy=about-button]').click()
+      cy.get('[data-cy=about-content]')
+    })
+
     describe("dictionary", function(){
 
       this.beforeEach(function(){
