@@ -145,7 +145,7 @@ const CurrentPractice = ({ storyId }) => {
   }
 
   const handleMultiselectChange = (event, word, data) => {
-    const { id, ID, surface } = word
+    const { id, ID, surface, concept } = word
     const { value } = data
 
     if (!touchedIDs.includes(ID)) {
@@ -159,6 +159,7 @@ const CurrentPractice = ({ storyId }) => {
         correct: surface,
         users_answer: value,
         id,
+        concept,
       },
     }
     setAnswers(newAnswers)
