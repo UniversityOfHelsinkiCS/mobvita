@@ -155,7 +155,9 @@ export default function Bar({ history }) {
                 <ContactUs trigger={<Button variant="secondary" style={{ flexBasis: '50%' }}><FormattedMessage id="Contact" /></Button>} />
                 { user && <Button variant="secondary" style={{ flexBasis: '50%' }} onClick={() => menuClickWrapper(signOut)}><FormattedMessage id="sign-out" /></Button>}
               </Menu.Item>
-              <TermsAndConditions trigger={<Button variant="link"> Terms and Conditions, Privacy Policy </Button>} />
+              <TermsAndConditions
+                trigger={<Button data-cy="tc-button" variant="link"> Terms and Conditions, Privacy Policy </Button>}
+              />
 
               {/* eslint-disable no-undef */}
               <div>{`Built at: ${__VERSION__}`}</div>
