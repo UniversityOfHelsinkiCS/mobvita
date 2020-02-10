@@ -24,13 +24,25 @@ describe('Mobvita', function() {
   })
 
   describe('when logged in', function() {
-    this.beforeEach(function() {
+    this.beforeEach( function() {
       cy.request('POST', '/api/session', { email: 'elbert.alyas@plutocow.com', password: 'emacsemacs'})
         .as('user')
         .then(response => {
           window.localStorage.setItem('user', JSON.stringify(response.body))
           cy.reload()
         })
+      cy.request({
+        method: 'POST',
+        url: '/api/user',
+          headers: {
+            'Authorization': `Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpYXQiOjE1ODEzMzQyNDAsIm5iZiI6MTU4MTMzNDI0MCwianRpIjoiODA1OTgzZDgtNWVlNy00ZTJiLThkNGMtMGY2NTYwNmViODM3IiwiaWRlbnRpdHkiOiI1YzQ1ZjE2YWZmNjM0NTA1NjZlOGY4ZjciLCJmcmVzaCI6ZmFsc2UsInR5cGUiOiJhY2Nlc3MifQ.WwwyhqmTk9kWG10QkDbrbsyAlcPUYvOm3Q8c7sxucYk`
+          },
+        body: {
+          last_used_lang: 'Finnish',
+          interface_lang: 'Finnish',
+          last_trans_lang: 'Finnish'
+        }
+      })
     })
 
     it('library opens', function() {
@@ -79,9 +91,10 @@ describe('Mobvita', function() {
         cy.get('[data-cy=about-content]')
       })
 
-      it.only("ui language can be changed", function() {
+      it("ui language can be changed", function() {
         cy.get('[data-cy=ui-lang-select]').click()
         cy.get('[data-cy=ui-lang-select] > .visible > :nth-child(2)').click()
+        cy.contains('Startsida')
       })
 
     })
