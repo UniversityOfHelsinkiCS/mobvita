@@ -35,6 +35,7 @@ const ExerciseHearing = ({ word, handleClick, handleChange, value }) => {
 
   return (
     <Input
+      data-cy="exercise-hearing"
       ref={inputRef}
       key={word.ID}
       onChange={e => handle(e, word)}
