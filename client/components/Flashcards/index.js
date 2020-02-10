@@ -26,6 +26,7 @@ const Flashcards = () => {
     return <div>loading</div>
   }
 
+
   const word = {
     root: currentCard.lemma,
     translations: currentCard.glosses,
@@ -34,7 +35,9 @@ const Flashcards = () => {
   return (
     <>
       <Flashcard word={word} />
-      <Button variant="primary" onClick={() => setCurrentCard(sample(cards.all))}>Random card</Button>
+      <Button variant="primary" onClick={() => setCurrentCard(sample(cards.all))}>
+        Random card
+      </Button>
     </>
   )
 }

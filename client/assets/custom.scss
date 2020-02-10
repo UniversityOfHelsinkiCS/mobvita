@@ -153,3 +153,54 @@ body {
   line-height: 2em;
   font-family: $default-font;
 }
+
+.contentContainer {
+  padding-top: 1em;
+}
+ 
+#flashcard {
+  display: flex;
+  flex-direction: column;
+  width: 21em;
+  height: 35em;
+  margin: auto;
+  padding: 96px 24px 12px 24px;
+  border: 1px;
+  border-radius: 8px;
+  box-shadow: 10px 10px 5px grey;
+  background-color: hsla(208, 56%, 55%, 1);
+  color: #fff;
+  &:focus {
+    outline: none;
+}
+
+#flashcardInputAndCheck {
+  margin-top: auto;
+}
+
+#flashcardCheck {
+  margin-top: 1em;
+  background-color: white;
+}
+
+#flashcardFlipContainer {
+  padding-top: 1em;
+  display: flex;
+  flex-direction: row-reverse;
+}
+
+#flashcardFlip {
+  margin-left: auto;
+  border: none;
+  background-color: hsla(208, 56%, 55%, 1);
+  color: white;
+  padding-right: 0;
+  &:focus {
+    outline: none;
+  }
+}
+
+#flashcardFlipIcon {
+  margin-left: 1em;
+}
+}

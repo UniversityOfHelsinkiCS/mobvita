@@ -5,7 +5,8 @@ import { Shake } from 'reshake'
 import { FormattedMessage } from 'react-intl'
 import { updateDictionaryLanguage } from 'Utilities/redux/userReducer'
 import { getTranslationAction } from 'Utilities/redux/translationReducer'
-import { learningLanguageSelector } from 'Utilities/common'
+import { learningLanguageSelector, translatableLanguages } from 'Utilities/common'
+import { Spinner } from 'react-bootstrap'
 
 
 const DictionaryHelp = ({ translation }) => {
@@ -14,30 +15,14 @@ const DictionaryHelp = ({ translation }) => {
   const dispatch = useDispatch()
   const translationLanguageCode = useSelector(({ user }) => user.data.user.last_trans_language)
   const learningLanguage = useSelector(learningLanguageSelector)
+  const { pending } = useSelector(({ translation }) => translation)
 
-  const dictionaryOptions = [
-    {
-      key: 'fi',
-      value: 'Finnish',
-      text: 'Finnish',
-    },
-    {
-      key: 'en',
-      value: 'English',
-      text: 'English',
-    },
-    {
-      key: 'se',
-      value: 'Swedish',
-      text: 'Swedish',
-    },
-    {
-      key: 'ru',
-      value: 'Russian',
-      text: 'Russian',
-    },
-  ]
 
+  const dictionaryOptions = translatableLanguages[learningLanguage].map(element => ({
+    key: element,
+    value: element,
+    text: element,
+  }))
 
   const translations = translation ? translation.map(translated => (
     <List.Item key={translated.URL}>
@@ -58,10 +43,11 @@ const DictionaryHelp = ({ translation }) => {
   }, [translation])
 
   const handleDropdownChange = (e, data) => {
-    const lemmas = translation.map(t => t.lemma).join('+')
-
+    if (translation) {
+      const lemmas = translation.map(t => t.lemma).join('+')
+      if (lemmas !== '')dispatch(getTranslationAction(learningLanguage, lemmas, data.value))
+    }
     dispatch(updateDictionaryLanguage(data.value))
-    dispatch(getTranslationAction(learningLanguage, lemmas, data.value))
   }
 
   if (!showHelp) {
@@ -94,14 +80,15 @@ const DictionaryHelp = ({ translation }) => {
 
   return (
     <div>
-      <Segment className="navigationpanel" style={{ position: 'fixed', right: '5%', bottom: '2%', width: '90%' }}>
+      <Segment className="dictionaryhelp" style={{ position: 'fixed', right: '5%', bottom: '2%', width: '90%' }}>
         <div>
           <FormattedMessage id="translation-target-language">
             {txt => <span style={{ marginRight: '5px' }}>{txt}</span>}
           </FormattedMessage>
           <Dropdown
+            data-cy="dictionary-dropdown"
             closeOnChange
-            defaultValue={translationLanguageCode}
+            defaultValue={translationLanguageCode || translatableLanguages[learningLanguage][0]}
             onChange={handleDropdownChange}
             options={dictionaryOptions}
           />
@@ -112,6 +99,7 @@ const DictionaryHelp = ({ translation }) => {
           </Button>
         </Header>
         <List>
+          {pending && <div><span>Loading, please wait </span><Spinner animation="border" /></div>}
           {translations.length > 0 ? translations : <FormattedMessage id="click-to-translate" />}
         </List>
       </Segment>

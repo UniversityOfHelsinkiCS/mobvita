@@ -1,3 +1,6 @@
+/// <reference types="Cypress" />
+
+
 describe('Mobvita', function() {
   this.beforeEach(function() {
     cy.visit('http://localhost:8000')
@@ -41,6 +44,62 @@ describe('Mobvita', function() {
       cy.get('[data-cy=practice-now]').click()
       cy.get('[data-cy=start-random]').click()
       cy.get('[data-cy=practice-view]')
+    })
+
+    it("can start filtered practice", function(){
+      cy.get('[data-cy=practice-now]').click()
+      cy.get("[data-cy=category-science]").click()
+      cy.get("[data-cy=category-uncategorized]").click()
+      cy.get("[data-cy=start-random]").click()
+    })
+
+    it("cant start filtered practice with 0 stories", function(){
+      const categories = ["politics","culture","science","sport","uncategorized"]
+      cy.get('[data-cy=practice-now]').click()
+      categories.forEach(category => {
+        cy.get(`[data-cy=category-${category}]`).click()
+      })
+      cy.get("[data-cy=start-random]").should("be.disabled")
+    })
+
+    describe("dictionary", function(){
+
+      this.beforeEach(function(){
+        cy.visit("http://localhost:8000/stories/5c407e9eff634503466b0dde/")
+        cy.get(".book") // Open dictionaryhelp
+          .click()
+      })
+
+      it("dictionary opens", function(){
+        cy.contains("Klikkaa sinulle tuntemattomia sanoja tekstissä saadaksesi käännöksiä.")
+      })
+
+      it("translate-to language can be changed", function(){
+        cy.get("[data-cy=dictionary-dropdown] > div.text")
+          .click()
+        cy.get(".visible > :nth-child(6)")
+          .contains("Finnish")
+          .click()
+      })
+
+      it("word translates correctly", function(){
+        cy.contains("poliisi")
+          .click()
+        cy.contains("yhteiskunnassa järjestystä ja turvallisuutta valvova ja ylläpitävä virkamies")
+      })
+
+      it("changing translate-to language re-translates the word", function(){
+        cy.contains("poliisi")
+          .click()
+        cy.contains("yhteiskunnassa järjestystä ja turvallisuutta valvova ja ylläpitävä virkamies")
+        cy.get("[data-cy=dictionary-dropdown] > div.text")
+        .click()
+        cy.get(".visible > :nth-child(5)")
+          .contains("Spanish")
+          .click()
+        cy.contains("policía")
+      })
+
     })
   })
 })
