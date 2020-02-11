@@ -36,7 +36,7 @@ describe('Mobvita', function() {
     cy.visit('http://localhost:8000')
   })
 
-  it('can create a new user', function() {
+  it('can create a new user, has English as default ui language', function() {
     const user = createRandomUser()
 
     const { email, username, password } = user
@@ -63,7 +63,7 @@ describe('Mobvita', function() {
     cy.get('form')
       .get('[data-cy=login]')
       .click()
-    cy.get('[data-cy=choose-lang]')
+    cy.contains('Learning language')
   })
 
   it('can log in as anonymous', function() {
