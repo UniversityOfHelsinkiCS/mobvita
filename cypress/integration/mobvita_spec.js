@@ -1,38 +1,69 @@
 /// <reference types="Cypress" />
 
-const user = { email: null, password: 'securepassword'}
-let token = null
+let globalUser = null
+const users = []
+let randomID = Math.floor(Math.random() * 1000000000)
 
 describe('Mobvita', function() {
   this.beforeAll(function() {
-    const randomID = Math.floor(Math.random() * 10000)
-    const email = `mobvita${randomID}@testcypress.foobar`
-    user.email = email
-    const username = `mobvita${randomID}`
+    globalUser = createRandomUser()
+    users.push(globalUser)
 
-    cy.request('POST', 'localhost:8000/api/register', { username, email, password: 'securepassword' })
+    cy.request('POST', 'localhost:8000/api/register', { ...globalUser })
       .then((response) => {
-        token = response.body.access_token
-        cy.request('POST', 'localhost:8000/api/confirm/test', { ...user })
+        globalUser.token = response.body.access_token
+        cy.request('POST', 'localhost:8000/api/confirm/test', { ...globalUser })
       })
   })
 
   this.afterAll(function() {
-    cy.request({
-      method: 'POST',
-      url: 'localhost:8000/api/user/remove',
-      headers: {
-      'Authorization': `Bearer ${token}`
-      },
-      body: {
-        password: user.password,
-        is_test: true
-      }
-    })
+    for (let user of users) {
+      cy.request({
+        method: 'POST',
+        url: 'localhost:8000/api/user/remove',
+        headers: {
+        'Authorization': `Bearer ${user.token}`
+        },
+        body: {
+          password: user.password,
+          is_test: true
+        }
+      })
+    }
   })
 
   this.beforeEach(function() {
     cy.visit('http://localhost:8000')
+  })
+
+  it('can create a new user', function() {
+    const user = createRandomUser()
+
+    const { email, username, password } = user
+    cy.get('[data-cy=register-button]').click()
+    cy.get('input').eq(0).type(email)
+    cy.get('input').eq(1).type(username)
+    cy.get('input').eq(2).type(password)
+    cy.get('input').eq(3).type(password)
+    cy.get('[data-cy=accept-terms]').click()
+    cy.get('[type=submit]').click()
+
+    cy.contains('Account creation success')
+    cy.request('POST', 'localhost:8000/api/confirm/test', { ...user })
+      .then(response => {
+        user.token = response.body.access_token
+      })
+
+    users.push(user)
+
+    cy.get('input:first')
+      .type(user.email)
+    cy.get('input:last')
+      .type(user.password)
+    cy.get('form')
+      .get('[data-cy=login]')
+      .click()
+    cy.get('[data-cy=choose-lang]')
   })
 
   it('can log in as anonymous', function() {
@@ -43,9 +74,9 @@ describe('Mobvita', function() {
 
   it('can log in as user', function() {
     cy.get('input:first')
-      .type(user.email)
+      .type(globalUser.email)
     cy.get('input:last')
-      .type(user.password)
+      .type(globalUser.password)
     cy.get('form')
       .get('[data-cy=login]')
       .click()
@@ -58,7 +89,7 @@ describe('Mobvita', function() {
         method: 'POST',
         url: '/api/user',
         headers: {
-          'Authorization': `Bearer ${token}`
+          'Authorization': `Bearer ${globalUser.token}`
         },
         body: {
           last_used_lang: 'Finnish',
@@ -66,7 +97,7 @@ describe('Mobvita', function() {
           last_trans_lang: 'Finnish'
         }
       })
-      cy.request('POST', '/api/session', { ...user })
+      cy.request('POST', '/api/session', { ...globalUser })
         .as('user')
         .then(response => {
           window.localStorage.setItem('user', JSON.stringify(response.body))
@@ -126,7 +157,7 @@ describe('Mobvita', function() {
         cy.contains('Startsida')
         cy.get('.bars').click()
         cy.get('[data-cy=logout]').click()
-        cy.request('POST', '/api/session', { ...user })
+        cy.request('POST', '/api/session', { ...globalUser })
         .as('user')
         .then(response => {
           window.localStorage.setItem('user', JSON.stringify(response.body))
@@ -182,6 +213,7 @@ describe('Mobvita', function() {
       })
 
       it('can be created and new story can be read', function(){
+        Cypress.config('defaultCommandTimeout', 20000);
         cy.get('[data-cy=new-story-input]')
           .type('https://yle.fi/uutiset/3-11191886')
         cy.get('[data-cy="submit-story"]')
@@ -193,6 +225,7 @@ describe('Mobvita', function() {
           .click()
         cy.contains('Harjoittele')
         cy.contains('Tehokkaasta 5G-liittymästä')
+        Cypress.config()
       })
     })
 
@@ -214,11 +247,10 @@ describe('Mobvita', function() {
         cy.get('.book') // Open dictionaryhelp
           .click({force:true})
         cy.contains("Yhdistyneestä kuningaskunnasta käytetty lyhyt nimitys")
-      })     
+      })
     })
 
     describe("practice mode", function(){
-
       const practiceURL = "http://localhost:8000/stories/5c407e9eff634503466b0dde/practice"
 
       this.beforeEach(function(){
@@ -240,7 +272,7 @@ describe('Mobvita', function() {
         let oldTitle, newTitle
 
         oldTitle = cy.get("h3").then(e => oldTitle = e.text())
-        
+
         cy.get("[data-cy=check-answer]").click()
         cy.get("[data-cy=check-answer]").click()
 
@@ -257,11 +289,16 @@ describe('Mobvita', function() {
 
         //Locate incorrecly answered cloze exercise:
         cy.get("[data-cy=exercise-cloze]").eq(0).should("have.class", "wrong")
-
       })
-
     })
-
-
   })
 })
+
+function createRandomUser() {
+  const id = randomID++
+  const email = `mobvita${id}@testcypress.foobar123`
+  const username = `mobvita${id}`
+  const password = 'securepassword'
+
+  return { email, username, password }
+}

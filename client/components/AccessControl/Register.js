@@ -108,7 +108,7 @@ const Register = () => {
             />
           </Form.Field>
           <div style={{ display: 'flex', alignItems: 'center' }}>
-            <Checkbox checked={accepted} onChange={() => toggleAccepted()} />
+            <Checkbox data-cy="accept-terms" checked={accepted} onChange={() => toggleAccepted()} />
             <TermsAndConditions trigger={<Button variant="link"> Terms and Conditions, Privacy Policy </Button>} />
           </div>
           <div>

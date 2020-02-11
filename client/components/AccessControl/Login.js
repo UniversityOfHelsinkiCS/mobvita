@@ -77,7 +77,7 @@ const Login = () => {
           {intl.formatMessage({ id: 'dont-have-an-account-yet-please-ce3fb38f81375d77a43cbaa071a4f72f' })}
         </h5>
         <div>
-          <Link to="/register"><Button variant="secondary">{intl.formatMessage({ id: 'Register' })} </Button></Link>
+          <Link to="/register"><Button data-cy="register-button" variant="secondary">{intl.formatMessage({ id: 'Register' })} </Button></Link>
           <Button data-cy="login-anon" variant="secondary" onClick={loginAnon}>
             <FormattedMessage id="try-mobvita" />
           </Button>
