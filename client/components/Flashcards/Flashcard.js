@@ -1,77 +1,49 @@
 import React, { useState, useEffect } from 'react'
-import { useIntl } from 'react-intl'
-import { Button, Form } from 'react-bootstrap'
 import { Icon } from 'semantic-ui-react'
-import { useDispatch } from 'react-redux'
-import { recordFlashcardAnswer } from 'Utilities/redux/flashcardReducer'
+import { useIntl } from 'react-intl'
+import FlashcardText from './FlashcardText'
+import FlashcardInput from './FlashcardInput'
+import FlashcardResult from './FlashcardResult'
 
-const Flashcard = ({ card, flipped, setFlipped }) => {
-  const [answer, setAnswer] = useState('')
-  
-  const dispatch = useDispatch()
-
+const Flashcard = ({ card }) => {
+  const [flipped, setFlipped] = useState(false)
+  const [answerChecked, setAnswerChecked] = useState(false)
+  const [answerCorrect, setAnswerCorrect] = useState(null)
   const intl = useIntl()
 
-  const { glosses, lemma, _id, story, lan_in: inputLanguage, lan_out: outputLanguage } = card
+  useEffect(() => {
+    setFlipped(false)
+    setAnswerChecked(false)
+    setAnswerCorrect(null)
+  }, [card])
 
-  const translations = Array.isArray(glosses)
-    ? glosses.map(item => <li key={item}>{item}</li>)
-    : glosses
-
-  const content = flipped ? <ul>{translations}</ul> : <p>{lemma}</p>
-
-  const checkAnswer = (event) => {
-    event.preventDefault()
-    const correct = glosses.includes(answer.toLowerCase()).toString()
-
-    const answerDetails = {
-      flashcard_id: _id,
-      correct,
-      answer,
-      exercise: 'fillin',
-      mode: 'trans',
-      story,
-      lemma,
-    }
-
-    dispatch((recordFlashcardAnswer(inputLanguage, outputLanguage, answerDetails)))
-
+  const flipCard = () => {
     setFlipped(!flipped)
-    setAnswer('')
+    setAnswerChecked(true)
   }
 
   return (
-    <div
-      id="flashcard"
-      tabIndex="-1"
-    >
-      <span id="flashcardText">{content}</span>
-      <div id="flashcardInputAndCheck">
-        <Form.Control
-          type="text"
-          value={answer}
-          onChange={event => setAnswer(event.target.value)}
+    <div id="flashcard">
+      <FlashcardText card={card} flipped={flipped} />
+      <div id="flashcardInputAndResultContainer">
+        <FlashcardInput
+          flipCard={flipCard}
+          card={card}
+          answerChecked={answerChecked}
+          setAnswerCorrect={setAnswerCorrect}
         />
-        <Button
-          id="flashcardCheck"
-          block
-          variant="outline-primary"
+        <FlashcardResult answerCorrect={answerCorrect} />
+      </div>
+      <div id="flashcardFlipContainer">
+        <button
+          id="flashcardFlip"
+          variant="light"
           type="button"
-          onClick={checkAnswer}
+          onClick={() => flipCard()}
         >
-          {intl.formatMessage({ id: 'check-answer' })}
-        </Button>
-        <div id="flashcardFlipContainer">
-          <button
-            id="flashcardFlip"
-            variant="light"
-            type="button"
-            onClick={() => setFlipped(!flipped)}
-          >
-            {`${intl.formatMessage({ id: 'Flip' })}   `}
-            <Icon name="arrow right" />
-          </button>
-        </div>
+          {`${intl.formatMessage({ id: 'Flip' })}   `}
+          <Icon name="arrow right" />
+        </button>
       </div>
     </div>
   )
