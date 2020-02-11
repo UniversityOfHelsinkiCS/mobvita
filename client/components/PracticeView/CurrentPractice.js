@@ -85,6 +85,7 @@ const CurrentPractice = ({ storyId }) => {
 
   useEffect(setInitialAnswers, [snippets.focused])
 
+
   useEffect(() => {
     // has to be done since answers don't include data on
     // how many snippets are in total
@@ -99,15 +100,14 @@ const CurrentPractice = ({ storyId }) => {
     if (scrollTarget.current) {
       window.scrollTo(0, scrollTarget.current.offsetTop)
     }
-  }, [snippets])
 
-  useEffect(() => {
     if (snippets.focused && snippets.focused.skip_second) {
       setAnswers({})
       setOptions({})
       setTouched(0)
       setAttempts(0)
-      dispatch(getNextSnippet(storyId))
+      const currentSnippetId = snippets.focused.snippetid[0]
+      dispatch(getNextSnippet(storyId, currentSnippetId))
     }
     dispatch(getSelf())
   }, [snippets.focused])
@@ -238,34 +238,6 @@ const CurrentPractice = ({ storyId }) => {
     )
   }
 
-
-  const continueToNextSnippet = () => {
-    setAnswers({})
-    setOptions({})
-    setTouched(0)
-    setAttempts(0)
-    dispatch(getCurrentSnippet(storyId))
-  }
-
-  const skipThisPart = () => {
-    setAnswers({})
-    setOptions({})
-    setTouched(0)
-    setAttempts(0)
-    const currentSnippetId = snippets.focused.snippetid[0]
-    dispatch(getNextSnippet(storyId, currentSnippetId))
-  }
-
-  const handleCheckButton = () => {
-    if (exerciseCount === 0) {
-      continueToNextSnippet()
-    } else if (touched < Math.ceil(exerciseCount / 2)) {
-      skipThisPart()
-    } else {
-      checkAnswers()
-    }
-  }
-
   if (!snippets.focused || snippets.pending) {
     return (
       <div>
@@ -274,29 +246,28 @@ const CurrentPractice = ({ storyId }) => {
     )
   }
 
-  const { practice_snippet: practice } = snippets.focused
+
   return (
     <>
-      <h3>
-        {`${story.title} Part ${snippets.focused.snippetid[0] + 1}/${snippets.totalnum}`}
-      </h3>
+      <h3>{`${story.title} Part ${snippets.focused.snippetid[0] + 1}/${snippets.totalnum}`}</h3>
       {story.url ? <p><a href={story.url}><FormattedMessage id="Source" /></a></p> : null}
 
       <PreviousSnippets snippets={snippets.previous.filter(Boolean)} textToSpeech={textToSpeech} />
       <hr />
+
       <div
         ref={scrollTarget}
         className="practice-container"
         data-cy="practice-view"
       >
-        {practice.map(exercise => wordInput(exercise))}
+        {snippets.focused.practice_snippet.map(exercise => wordInput(exercise))}
       </div>
 
       <Button
         data-cy="check-answer"
         block
         variant="primary"
-        onClick={() => handleCheckButton()}
+        onClick={() => checkAnswers()}
       >
         <FormattedMessage id="check-answer" />
       </Button>
