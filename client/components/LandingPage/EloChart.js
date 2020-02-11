@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import Highcharts from 'highcharts'
 import HighchartsReact from 'highcharts-react-official'
 import { useSelector } from 'react-redux'
@@ -108,6 +108,7 @@ const EloChart = () => {
       <HighchartsReact
         highcharts={Highcharts}
         options={options}
+        allowChartUpdate={false}
       />
     </div>
   )

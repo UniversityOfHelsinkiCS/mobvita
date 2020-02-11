@@ -86,11 +86,9 @@ const PracticeModal = ({ trigger }) => {
       sort_by: 'date',
       order: -1,
       page: 0,
-      page_size: 20,
+      page_size: 0,
     }))
   }, [])
-
-  if (pending) return null
 
   let filteredLink = ''
 
