@@ -146,7 +146,7 @@ const PracticeModal = ({ trigger }) => {
         <div>
           <div><FormattedMessage id="Category" /></div>
           <div data-cy="practicemodal-container" style={{ display: 'flex', flexWrap: 'wrap' }}>
-            {Object.entries(categories).map(([name, enabled]) => (
+            {Object.entries(categories).sort().map(([name, enabled]) => (
               <Button
                 data-cy={`category-${name}`}
                 onClick={e => toggleCategory(e)}
