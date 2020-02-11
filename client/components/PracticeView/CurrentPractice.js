@@ -53,16 +53,30 @@ const CurrentPractice = ({ storyId }) => {
       const initialAnswers = filteredSnippet.reduce((answerObject, currentWord) => {
         const { surface, id, ID, base, bases, listen, choices, concept } = currentWord
         if (answers[ID]) return { ...answerObject, [ID]: answers[ID] }
-        const newAnswerObject = {
+
+        let usersAnswer
+        if (listen || choices) {
+          usersAnswer = ''
+        } else {
+          usersAnswer = base || bases
+        }
+
+        // Checks if word to be shown is already correct and marks it touched.
+        // (Only applies to cloze, other exercise types dont have default values set.)
+        if (usersAnswer === surface) {
+          setTouchedIds(touchedIDs.concat(ID))
+          setTouched(touched + 1)
+        }
+
+        return {
           ...answerObject,
           [ID]: {
             correct: surface,
-            users_answer: (listen || choices) ? '' : (base || bases),
+            users_answer: usersAnswer,
             id,
             concept,
           },
         }
-        return newAnswerObject
       }, {})
       if (Object.keys(initialAnswers).length > 0) setAnswers(initialAnswers)
       setExerciseCount(getExerciseCount())

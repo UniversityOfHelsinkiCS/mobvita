@@ -1,4 +1,4 @@
-import callBuilder from '../apiConnection'
+import callBuilder, { callApi } from '../apiConnection'
 
 export const getFlashcards = (inputLanguage, outputLanguage) => {
   const route = `/flashcards/${inputLanguage}/${outputLanguage}`
@@ -8,9 +8,8 @@ export const getFlashcards = (inputLanguage, outputLanguage) => {
 
 export const recordFlashcardAnswer = (inputLanguage, outputLanguage, answerDetails) => {
   const route = `/flashcards/${inputLanguage}/${outputLanguage}/answer`
-  const prefix = 'RECORD_FLASHCARD_ANSWER'
-  const payload = answerDetails
-  return callBuilder(route, prefix, 'post', payload)
+  const data = answerDetails
+  return callApi(route, 'post', data)
 }
 
 export default (state = {}, action) => {
@@ -29,24 +28,6 @@ export default (state = {}, action) => {
         error: false,
       }
     case 'GET_FLASHCARDS_FAILURE':
-      return {
-        ...state,
-        pending: false,
-        error: true,
-      }
-    case 'RECORD_FLASHCARD_ANSWER_ATTEMPT':
-      return {
-        ...state,
-        pending: true,
-        error: false,
-      }
-    case 'RECORD_FLASHCARD_ANSWER_SUCCESS':
-      return {
-        ...state,
-        pending: false,
-        error: false,
-      }
-    case 'RECORD_FLASHCARD_ANSWER_FAILURE':
       return {
         ...state,
         pending: false,
