@@ -8,11 +8,13 @@ export default function ContactUs({ trigger }) {
   const dispatch = useDispatch()
 
   const error = useSelector(({ email }) => email.errorMessage)
+  const session = useSelector(({ user }) => user)
+  const user = session.data ? session.data.user : null
 
   const [formState, setFormState] = useState({
-    name: '',
-    email: '',
-    subject: '',
+    name: user ? user.username : '',
+    email: user ? user.email : '',
+    subject: 'MobVita',
     message: '',
   })
 
