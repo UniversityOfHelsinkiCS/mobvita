@@ -157,12 +157,45 @@ body {
 .contentContainer {
   padding-top: 1em;
 }
+
+#flashcardsContainer {
+  display: flex;
+}
  
+.flashcardNextPreviousButtons {
+  height: 6em;
+  margin: auto;
+  background-color: white;
+  border: none;
+  color: hsla(208, 56%, 55%, 1);
+  &:focus {
+    outline: none;
+  }
+  &:hover {
+    color: #0069d9
+  }
+  &:disabled {
+    color: grey
+  }
+  @media (max-width: 720px) {
+    display: none;
+  }
+}
+
+#flashcardPreviousButton {
+  margin-right: 0;
+}
+
+#flashcardNextButton {
+  margin-left: 0;
+}
+
 .flashcard {
   display: flex;
   flex-direction: column;
   width: 21em;
   height: 35em;
+  max-width: 90%;
   margin: auto auto 3em auto;
   padding: 1em 1.5em;
   border: 0.1em solid grey;
