@@ -9,11 +9,6 @@ const Word = ({ word, textToSpeech, answer }) => {
   const [show, setShow] = useState(false)
   const target = useRef(null)
 
-  useEffect(() => {
-    console.log('mount', word.ID, word.id)
-    return () => console.log('unmount', word.ID, word.id)
-  }, [])
-
   let color = ''
   if (tested) {
     color = isWrong ? 'firebrick' : 'green'
@@ -25,7 +20,6 @@ const Word = ({ word, textToSpeech, answer }) => {
   }
 
   const handleHide = (e) => {
-    console.log(show, 'HIDES')
     if (show) {
       setShow(false)
     }
@@ -73,7 +67,6 @@ const Word = ({ word, textToSpeech, answer }) => {
         )}
       </Overlay>
       )}
-
     </>
   )
 }
