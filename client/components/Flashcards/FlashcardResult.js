@@ -7,7 +7,7 @@ const FlashcardResult = ({ answerCorrect }) => {
   const iconName = answerCorrect === 'true' ? 'thumbs up outline' : 'thumbs down outline'
 
   return (
-    <div id="flashcardResult">
+    <div className="flashcardResult">
       <Icon name={iconName} size="huge" />
     </div>
   )

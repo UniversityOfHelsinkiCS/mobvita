@@ -158,7 +158,7 @@ body {
   padding-top: 1em;
 }
  
-#flashcard {
+.flashcard {
   display: flex;
   flex-direction: column;
   width: 21em;
@@ -174,45 +174,45 @@ body {
     outline: none;
 }
 
-#flashcardTextContainer {
+.flashcardTextContainer {
   display: flex;
   flex-grow: 1;
   overflow: auto;
   padding: 1em 0;
 }
 
-#flashcardText {
+.flashcardText {
   margin: auto;
 }
 
-#flashcardTranslations {
+.flashcardTranslations {
   padding-left: 0;
   font-size: 1em;
   font-weight: 550;
 }
 
-#flashcardInputAndResultContainer {
+.flashcardInputAndResultContainer {
   height: 11em;
   display: flex;
   padding-top: 1em;
 }
 
-#flashcardInputAndCheck {
+.flashcardInputAndCheck {
   flex-grow: 1;
   padding-left: 1em;
   padding-right: 1em;
 }
 
-#flashcardCheck {
+.flashcardCheck {
   margin-top: 1em;
   background-color: white;
 }
 
-#flashcardResult {
+.flashcardResult {
   margin: auto;
 }
 
-#flashcardFlipContainer {
+.flashcardFlipContainer {
   height: 2em;
   margin-bottom: 0.5em;
   padding-top: 1em;
@@ -220,7 +220,7 @@ body {
   flex-direction: row-reverse;
 }
 
-#flashcardFlip {
+.flashcardFlip {
   margin-left: auto;
   border: none;
   background-color: hsla(208, 56%, 55%, 1);
@@ -232,7 +232,7 @@ body {
   }
 }
 
-#flashcardFlipIcon {
+.flashcardFlipIcon {
   margin-left: 1em;
 }
 }
