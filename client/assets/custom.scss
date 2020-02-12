@@ -1,5 +1,15 @@
-$wrong-color: #ff5e5e;
-$button-color: teal;
+$wrong-color-background: #FFDADA;
+$wrong-color: #ff0000;
+$right-color: #008000;
+$primary-color: hsla(208, 56%, 55%, 1);
+$button-border-color: #76c8d4;
+$tertiary-border-color: #f0f0f0;
+$secondary-text-color: #777;
+$primary-hover: lightblue;
+$white: #fff;
+$lightblue: #DCF6FF;
+
+
 $default-font: Arial;
 $sidebar-swipeable-width: 1em;
 
@@ -9,21 +19,21 @@ body {
 
 // BOOTSTRAP OVERRIDES FROM REVITA:
 .btn-primary {
-  color: #fff;
-  background-color: hsla(208, 56%, 55%, 1);
-  border-color: #76c8d4;
+  color: $white;
+  background-color: $primary-color;
+  border-color: $button-border-color
 }
 
 .btn-secondary {
-  color: #777;
-  background-color: #fff;
-  border-color: #76c8d4;
+  color: $secondary-text-color;
+  background-color: $white;
+  border-color: $button-border-color
 }
 
 .btn-tertiary {
-  color: #777;
-  background-color: #fff;
-  border-color: #f0f0f0;
+  color: $secondary-text-color;
+  background-color: $white;
+  border-color: $tertiary-border-color;
 }
 
 .btn-toggle-on {
@@ -63,7 +73,7 @@ body {
   cursor:pointer;
 
   &:hover{
-    background-color: #10d3ff;
+    background-color: $primary-hover;
   }
 
   &--exercise{ // Related to snippet history...
@@ -88,7 +98,7 @@ body {
 
 .hearing {
   &.untouched {
-    background-color: lightblue;
+    background-color: $lightblue;
 
   }
   &.touched{
@@ -115,11 +125,19 @@ body {
 }
 
 .wrong {
-  background-color: $wrong-color;
+  background-color: $wrong-color-background;
 }
 
 .correct {
   background-color: yellowgreen;
+}
+
+.wrong-text {
+  color: $wrong-color;
+}
+
+.right-text {
+  color: $right-color;
 }
 
 .sidebar{
