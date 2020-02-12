@@ -1,4 +1,4 @@
-import React, { useState, useRef } from 'react'
+import React, { useState, useRef, useEffect } from 'react'
 import { Overlay } from 'react-bootstrap'
 import { useIntl } from 'react-intl'
 
@@ -8,6 +8,11 @@ const Word = ({ word, textToSpeech, answer }) => {
   const intl = useIntl()
   const [show, setShow] = useState(false)
   const target = useRef(null)
+
+  useEffect(() => {
+    console.log('mount', word.ID, word.id)
+    return () => console.log('unmount', word.ID, word.id)
+  }, [])
 
   let color = ''
   if (tested) {
@@ -19,26 +24,38 @@ const Word = ({ word, textToSpeech, answer }) => {
     textToSpeech(surface, lemmas)
   }
 
+  const handleHide = (e) => {
+    console.log(show, 'HIDES')
+    if (show) {
+      setShow(false)
+    }
+  }
+
+  const answerString = (answer && answer.users_answer)
+    ? `${intl.formatMessage({ id: 'you-used' })}: ${answer.users_answer}`
+    : 'You did not answer this one'
+
   return (
     <>
       <span
         ref={target}
         className="word-interactive"
         role="button"
-        onClick={() => handleClick()}
+        onClick={handleClick}
         style={{ color }}
-        onKeyDown={() => textToSpeech(word.surface, word.lemmas)}
         tabIndex={-1}
       >
         {surface}
       </span>
-      <Overlay target={target.current} show={show} placement="top" rootClose onHide={() => setShow(false)}>
+
+      {show && (
+      <Overlay target={target.current} show={show} placement="top" rootClose onHide={handleHide}>
         {({
           placement,
           scheduleUpdate,
           arrowProps,
           outOfBoundaries,
-          show,
+          show: _show,
           ...props
         }) => (
           <div
@@ -51,10 +68,12 @@ const Word = ({ word, textToSpeech, answer }) => {
               ...props.style,
             }}
           >
-            {(answer && answer.users_answer) && tested ? `${intl.formatMessage({ id: 'you-used' })}: ${answer.users_answer}` : 'You did not answer this one'}
+            {answerString}
           </div>
         )}
       </Overlay>
+      )}
+
     </>
   )
 }
