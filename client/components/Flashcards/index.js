@@ -1,9 +1,8 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect } from 'react'
+import SwipeableViews from 'react-swipeable-views';
 import { useDispatch, useSelector } from 'react-redux'
 import { getFlashcards } from 'Utilities/redux/flashcardReducer'
-import { Button } from 'react-bootstrap'
 import { learningLanguageSelector, dictionaryLanguageSelector } from 'Utilities/common'
-import { sample } from 'lodash'
 import Flashcard from './Flashcard'
 
 const Flashcards = () => {
@@ -12,27 +11,18 @@ const Flashcards = () => {
   const dictionaryLanguage = useSelector(dictionaryLanguageSelector)
   const { cards, pending } = useSelector(({ flashcards }) => flashcards)
 
-  const [currentCard, setCurrentCard] = useState(null)
-
   useEffect(() => {
     dispatch(getFlashcards(learningLanguage, dictionaryLanguage))
   }, [])
 
-  useEffect(() => {
-    if (cards) setCurrentCard(sample(cards.all))
-  }, [cards])
-
-  if (pending || !currentCard) {
+  if (pending) {
     return <div>loading</div>
   }
 
   return (
-    <>
-      <Flashcard card={currentCard} />
-      <Button variant="primary" onClick={() => setCurrentCard(sample(cards.all))}>
-        Random card
-      </Button>
-    </>
+    <SwipeableViews enableMouseEvents>
+      {cards.all.map(card => <Flashcard card={card} />)}
+    </SwipeableViews>
   )
 }
 
