@@ -1,7 +1,8 @@
 import React, { useEffect } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import { Link } from 'react-router-dom'
-import { Divider, Segment, Header, Button } from 'semantic-ui-react'
+import { Divider, Segment, Header } from 'semantic-ui-react'
+import { Button } from 'react-bootstrap'
 import { FormattedMessage } from 'react-intl'
 
 import { getStoryAction } from 'Utilities/redux/storiesReducer'
@@ -42,7 +43,7 @@ const SingleStoryView = ({ match }) => {
         <Header>
           {story.title}
           <Link to={`/stories/${id}/practice`}>
-            <Button color="teal" style={{ minWidth: '8em', margin: '0.5em', float: 'right', display: 'flex' }}>
+            <Button variant="primary">
               <FormattedMessage id="practice-now" />
             </Button>
           </Link>
