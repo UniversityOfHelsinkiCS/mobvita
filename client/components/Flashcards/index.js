@@ -15,13 +15,13 @@ const Flashcards = () => {
     dispatch(getFlashcards(learningLanguage, dictionaryLanguage))
   }, [])
 
-  if (pending) {
+  if (pending || !cards) {
     return <div>loading</div>
   }
 
   return (
     <SwipeableViews enableMouseEvents>
-      {cards.all.map(card => <Flashcard card={card} />)}
+      {cards.all.map(card => <Flashcard key={card._id} card={card} />)}
     </SwipeableViews>
   )
 }
