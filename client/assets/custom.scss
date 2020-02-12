@@ -140,6 +140,15 @@ body {
   color: $right-color;
 }
 
+.chunk {
+  border: 1px solid red;
+    border-radius: 4px;
+    padding-top: 3px;
+    padding-bottom: 4px;
+    padding-left: 5px;
+    padding-right: 5px;
+}
+
 .sidebar{
   &-hamburger{
     z-index: 100;
