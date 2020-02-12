@@ -4,8 +4,8 @@ let globalUser = null
 const users = []
 let randomID = Math.floor(Math.random() * 1000000000)
 
-describe('Mobvita', function() {
-  this.beforeAll(function() {
+describe('Mobvita', function () {
+  this.beforeAll(function () {
     globalUser = createRandomUser()
     users.push(globalUser)
 
@@ -16,13 +16,13 @@ describe('Mobvita', function() {
       })
   })
 
-  this.afterAll(function() {
+  this.afterAll(function () {
     for (let user of users) {
       cy.request({
         method: 'POST',
         url: 'localhost:8000/api/user/remove',
         headers: {
-        'Authorization': `Bearer ${user.token}`
+          'Authorization': `Bearer ${user.token}`
         },
         body: {
           password: user.password,
@@ -32,11 +32,11 @@ describe('Mobvita', function() {
     }
   })
 
-  this.beforeEach(function() {
+  this.beforeEach(function () {
     cy.visit('http://localhost:8000')
   })
 
-  it('can create a new user, has English as default ui language', function() {
+  it('can create a new user, has English as default ui language', function () {
     const user = createRandomUser()
 
     const { email, username, password } = user
@@ -66,13 +66,13 @@ describe('Mobvita', function() {
     cy.contains('Learning language')
   })
 
-  it('can log in as anonymous', function() {
+  it('can log in as anonymous', function () {
     cy.get('[data-cy=login-anon]')
       .click()
     cy.get('[data-cy=choose-lang]')
   })
 
-  it('can log in as user', function() {
+  it('can log in as user', function () {
     cy.get('input:first')
       .type(globalUser.email)
     cy.get('input:last')
@@ -83,8 +83,8 @@ describe('Mobvita', function() {
     cy.get('[data-cy=choose-lang]')
   })
 
-  describe('when logged in', function() {
-    this.beforeEach(function() {
+  describe('when logged in', function () {
+    this.beforeEach(function () {
       cy.request({
         method: 'POST',
         url: '/api/user',
@@ -105,28 +105,28 @@ describe('Mobvita', function() {
         })
     })
 
-    it('library opens', function() {
+    it('library opens', function () {
       cy.get('[href="/library"]')
         .click()
       cy.get('[data-cy=library-controls]')
       cy.url().should('include', '/library')
     })
 
-    it('can start random practice', function() {
+    it('can start random practice', function () {
       cy.get('[data-cy=practice-now]').click()
       cy.get('[data-cy=start-random]').click()
       cy.get('[data-cy=practice-view]')
     })
 
-    it("can start filtered practice", function(){
+    it("can start filtered practice", function () {
       cy.get('[data-cy=practice-now]').click()
       cy.get("[data-cy=category-science]").click()
       cy.get("[data-cy=category-uncategorized]").click()
       cy.get("[data-cy=start-random]").click()
     })
 
-    it("cant start filtered practice with 0 stories", function(){
-      const categories = ["politics","culture","science","sport","uncategorized"]
+    it("cant start filtered practice with 0 stories", function () {
+      const categories = ["politics", "culture", "science", "sport", "uncategorized"]
       cy.get('[data-cy=practice-now]').click()
       categories.forEach(category => {
         cy.get(`[data-cy=category-${category}]`).click()
@@ -134,51 +134,51 @@ describe('Mobvita', function() {
       cy.get("[data-cy=start-random]").should("be.disabled")
     })
 
-    describe("sidebar is open", function() {
-      this.beforeEach(function(){
+    describe("sidebar is open", function () {
+      this.beforeEach(function () {
         cy.get('.bars').click()
       })
 
 
-      it("can open and close terms and conditions", function(){
+      it("can open and close terms and conditions", function () {
         cy.get('[data-cy=tc-button]').click()
         cy.get('[data-cy=tc-content]')
         cy.get('.inverted').click(-50, -50, { force: true })
       })
 
-      it("can read about (mob|re)vita", function() {
+      it("can read about (mob|re)vita", function () {
         cy.get('[data-cy=about-button]').click()
         cy.get('[data-cy=about-content]')
       })
 
-      it("ui language can be changed and is saved", function() {
+      it("ui language can be changed and is saved", function () {
         cy.get('[data-cy=ui-lang-select]').click()
         cy.get('[data-cy=ui-lang-select] > .visible > :nth-child(2)').click()
         cy.contains('Startsida')
         cy.get('.bars').click()
         cy.get('[data-cy=logout]').click()
         cy.request('POST', '/api/session', { ...globalUser })
-        .as('user')
-        .then(response => {
-          window.localStorage.setItem('user', JSON.stringify(response.body))
-          cy.reload()
-        })
+          .as('user')
+          .then(response => {
+            window.localStorage.setItem('user', JSON.stringify(response.body))
+            cy.reload()
+          })
         cy.contains('Startsida')
       })
     })
 
-    describe("dictionary", function(){
-      this.beforeEach(function(){
+    describe("dictionary", function () {
+      this.beforeEach(function () {
         cy.visit("http://localhost:8000/stories/5c407e9eff634503466b0dde/")
         cy.get(".book") // Open dictionaryhelp
           .click()
       })
 
-      it("dictionary opens", function(){
+      it("dictionary opens", function () {
         cy.contains("Klikkaa sinulle tuntemattomia sanoja tekstissä saadaksesi käännöksiä.")
       })
 
-      it("translate-to language can be changed", function(){
+      it("translate-to language can be changed", function () {
         cy.get("[data-cy=dictionary-dropdown] > div.text")
           .click()
         cy.get(".visible > :nth-child(6)")
@@ -186,18 +186,18 @@ describe('Mobvita', function() {
           .click()
       })
 
-      it("word translates correctly", function(){
+      it("word translates correctly", function () {
         cy.contains("poliisi")
           .click()
         cy.contains("yhteiskunnassa järjestystä ja turvallisuutta valvova ja ylläpitävä virkamies")
       })
 
-      it("changing translate-to language re-translates the word", function(){
+      it("changing translate-to language re-translates the word", function () {
         cy.contains("poliisi")
           .click()
         cy.contains("yhteiskunnassa järjestystä ja turvallisuutta valvova ja ylläpitävä virkamies")
         cy.get("[data-cy=dictionary-dropdown] > div.text")
-        .click()
+          .click()
         cy.get(".visible > :nth-child(5)")
           .contains("Spanish")
           .click()
@@ -206,68 +206,65 @@ describe('Mobvita', function() {
 
     })
 
-    describe("stories", function(){
-      this.beforeEach(function(){
+    describe("stories", function () {
+      this.beforeEach(function () {
         cy.get("[data-cy=library-tab]")
           .click()
       })
 
-      it('can be created and new story can be read', function(){
-        Cypress.config('defaultCommandTimeout', 20000);
+      it('can be created and new story can be read', function () {
         cy.get('[data-cy=new-story-input]')
           .type('https://yle.fi/uutiset/3-11191886')
         cy.get('[data-cy="submit-story"]')
           .click()
-        cy.contains('Validating url-address')
-        cy.contains('Processing your story')
-        cy.contains('5G-kännyköitä')
+        cy.contains('Processsing your story', { timeout: 20000 })
+        cy.contains('5G-kännyköitä', { timeout: 20000 })
         cy.contains('Lue')
           .click()
         cy.contains('Harjoittele')
         cy.contains('Tehokkaasta 5G-liittymästä')
-        Cypress.config()
       })
     })
 
-    describe("read mode", function(){
+    describe("read mode", function () {
 
-      this.beforeEach(function(){
+      this.beforeEach(function () {
         cy.visit('http://localhost:8000/stories/5c407e9eff634503466b0dde/')
       })
 
-      it("opens", function(){
+      it("opens", function () {
         cy.contains("Lauantai 22.12.2018 (radio)")
         cy.contains("Britanniassa poliisi on ehkä löytänyt ihmiset, jotka ovat häirinneet lentokoneita.")
         cy.contains("Etelä-Suomessa pakkasta on noin 10 astetta. Pohjois-Suomessa pakkasta on noin 20 astetta. Lapissa on yöllä jopa 30 astetta pakkasta.")
       })
 
-      it("can click (translate) a word", function(){ // This test overlaps with dictionary
-         cy.contains("Britanniassa")
+      it("can click (translate) a word", function () { // This test overlaps with dictionary
+        cy.contains("Britanniassa")
           .click()
         cy.get('.book') // Open dictionaryhelp
-          .click({force:true})
+          .click({ force: true })
         cy.contains("Yhdistyneestä kuningaskunnasta käytetty lyhyt nimitys")
       })
     })
 
-    describe("practice mode", function(){
+    describe("practice mode", function () {
       const practiceURL = "http://localhost:8000/stories/5c407e9eff634503466b0dde/practice"
 
-      this.beforeEach(function(){
+      this.beforeEach(function () {
         cy.visit(practiceURL)
       })
 
-      it("can type into cloze fields", function(){
+      it("can type into cloze fields", function () {
         cy.get("[data-cy=exercise-cloze]").each(element => {
           cy.get(element).type("h3hasdi3g92137fhs")
         })
       })
 
-      it("can submit answers", function(){
+      it("can submit answers", function () {
         cy.get("[data-cy=check-answer]").click()
       })
 
-      it("can get to next snippet after two retries", function(){
+      it.only("can get to next snippet after two retries", function () {
 
         let oldTitle, newTitle
 
@@ -276,12 +273,12 @@ describe('Mobvita', function() {
         cy.get("[data-cy=check-answer]").click()
         cy.get("[data-cy=check-answer]").click()
 
-        cy.get("h3")
+        cy.get("h3", { timeout: 20000 })
           .then(e => newTitle = e.text())
           .then(() => expect(oldTitle).to.not.equal(newTitle))
       })
 
-      it("shows feedback", function(){
+      it("shows feedback", function () {
         cy.get("[data-cy=exercise-cloze]").each(element => {
           cy.get(element).type("h3hasdi3g92137fhs")
         })
