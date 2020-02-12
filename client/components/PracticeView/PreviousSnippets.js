@@ -9,9 +9,9 @@ const Word = ({ word, textToSpeech, answer }) => {
   const [show, setShow] = useState(false)
   const target = useRef(null)
 
-  let color = ''
+  let wordClass = ''
   if (tested) {
-    color = isWrong ? 'firebrick' : 'green'
+    wordClass = isWrong ? 'word-interactive wrong-text' : 'word-interactive right-text'
   }
 
   const handleClick = () => {
@@ -33,39 +33,38 @@ const Word = ({ word, textToSpeech, answer }) => {
     <>
       <span
         ref={target}
-        className="word-interactive"
+        className={wordClass}
         role="button"
         onClick={handleClick}
-        style={{ color }}
         tabIndex={-1}
       >
         {surface}
       </span>
 
       {show && (
-      <Overlay target={target.current} show={show} placement="top" rootClose onHide={handleHide}>
-        {({
-          placement,
-          scheduleUpdate,
-          arrowProps,
-          outOfBoundaries,
-          show: _show,
-          ...props
-        }) => (
-          <div
-            {...props}
-            style={{
-              backgroundColor: color,
-              padding: '2px 10px',
-              color: 'white',
-              borderRadius: 3,
-              ...props.style,
-            }}
-          >
-            {answerString}
-          </div>
-        )}
-      </Overlay>
+        <Overlay target={target.current} show={show} placement="top" rootClose onHide={handleHide}>
+          {({
+            placement,
+            scheduleUpdate,
+            arrowProps,
+            outOfBoundaries,
+            show: _show,
+            ...props
+          }) => (
+              <div
+                {...props}
+                style={{
+                  backgroundColor: color,
+                  padding: '2px 10px',
+                  color: 'white',
+                  borderRadius: 3,
+                  ...props.style,
+                }}
+              >
+                {answerString}
+              </div>
+            )}
+        </Overlay>
       )}
     </>
   )
@@ -77,9 +76,9 @@ const PreviousSnippets = ({ snippets, textToSpeech, answers }) => {
     <div>
       {snippets.map(snippet => (
         <p key={snippet.snippetid[0]}>{
-        snippet.practice_snippet.map(word => (
-          <Word answer={answers[word.ID]} key={word.ID} word={word} textToSpeech={textToSpeech} />
-        ))}
+          snippet.practice_snippet.map(word => (
+            <Word answer={answers[word.ID]} key={word.ID} word={word} textToSpeech={textToSpeech} />
+          ))}
         </p>
       ))}
     </div>

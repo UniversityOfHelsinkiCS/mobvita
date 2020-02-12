@@ -43,7 +43,7 @@ const SingleStoryView = ({ match }) => {
         <Header>
           {story.title}
           <Link to={`/stories/${id}/practice`}>
-            <Button variant="primary">
+            <Button variant="primary" style={{ float: 'right', marginTop: '0.5em' }}>
               <FormattedMessage id="practice-now" />
             </Button>
           </Link>
