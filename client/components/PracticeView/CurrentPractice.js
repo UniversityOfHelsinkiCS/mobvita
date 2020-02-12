@@ -78,7 +78,7 @@ const CurrentPractice = ({ storyId }) => {
           },
         }
       }, {})
-      if (Object.keys(initialAnswers).length > 0) setAnswers(initialAnswers)
+      if (Object.keys(initialAnswers).length > 0) setAnswers({ ...answers, ...initialAnswers })
       setExerciseCount(getExerciseCount())
     }
   }
@@ -102,7 +102,7 @@ const CurrentPractice = ({ storyId }) => {
     }
 
     if (snippets.focused && snippets.focused.skip_second) {
-      setAnswers({})
+      // setAnswers({})
       setOptions({})
       setTouched(0)
       setAttempts(0)
@@ -180,7 +180,6 @@ const CurrentPractice = ({ storyId }) => {
     setAnswers(newAnswers)
   }
 
-
   const wordInput = (word) => {
     if (!word.id && !word.lemmas) return word.surface
     if (!word.id) {
@@ -188,8 +187,8 @@ const CurrentPractice = ({ storyId }) => {
         <span
           role="button"
           tabIndex={-1}
-          className={!word.base && answers[word.ID] ? 'word-interactive--exercise' : 'word-interactive '}
           key={word.ID}
+          className="word-interactive"
           onKeyDown={() => textToSpeech(word.surface, word.lemmas)}
           onClick={() => textToSpeech(word.surface, word.lemmas)}
         >
@@ -238,6 +237,41 @@ const CurrentPractice = ({ storyId }) => {
     )
   }
 
+  const chunkInput = (chunk) => {
+    if (chunk.length === 1) {
+      return wordInput(chunk[0])
+    }
+    const elements = chunk.map(word => wordInput(word))
+    return <span className="chunk">{elements}</span>
+  }
+
+  const createChunks = () => {
+    const chunks = []
+    let chunk = []
+    let inChunk = false
+
+    snippets.focused.practice_snippet.forEach((word) => {
+      if (word.chunk) {
+        if (word.chunk === 'chunk_start') {
+          chunk.push(word)
+          inChunk = true
+        } else if (word.chunk === 'chunk_end') {
+          inChunk = false
+          chunk.push(word)
+          chunks.push(chunk)
+          chunk = []
+        }
+      } else if (!inChunk) {
+        chunks.push([word])
+      } else {
+        chunk.push(word)
+      }
+    })
+
+    return chunks.map(chunk => chunkInput(chunk))
+  }
+
+
   if (!snippets.focused || snippets.pending) {
     return (
       <div>
@@ -252,7 +286,7 @@ const CurrentPractice = ({ storyId }) => {
       <h3>{`${story.title} Part ${snippets.focused.snippetid[0] + 1}/${snippets.totalnum}`}</h3>
       {story.url ? <p><a href={story.url}><FormattedMessage id="Source" /></a></p> : null}
 
-      <PreviousSnippets snippets={snippets.previous.filter(Boolean)} textToSpeech={textToSpeech} />
+      <PreviousSnippets snippets={snippets.previous.filter(Boolean)} textToSpeech={textToSpeech} answers={answers} />
       <hr />
 
       <div
@@ -260,7 +294,7 @@ const CurrentPractice = ({ storyId }) => {
         className="practice-container"
         data-cy="practice-view"
       >
-        {snippets.focused.practice_snippet.map(exercise => wordInput(exercise))}
+        {createChunks()}
       </div>
 
       <Button
