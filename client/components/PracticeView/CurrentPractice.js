@@ -78,7 +78,7 @@ const CurrentPractice = ({ storyId }) => {
           },
         }
       }, {})
-      if (Object.keys(initialAnswers).length > 0) setAnswers({ ...answers, ...initialAnswers })
+      if (Object.keys(initialAnswers).length > 0) setAnswers({ ...answers, ...initialAnswers }) // Append, dont replace
       setExerciseCount(getExerciseCount())
     }
   }
@@ -102,7 +102,6 @@ const CurrentPractice = ({ storyId }) => {
     }
 
     if (snippets.focused && snippets.focused.skip_second) {
-      // setAnswers({})
       setOptions({})
       setTouched(0)
       setAttempts(0)
