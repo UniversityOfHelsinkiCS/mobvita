@@ -9,10 +9,12 @@ const Word = ({ word, textToSpeech, answer }) => {
   const [show, setShow] = useState(false)
   const target = useRef(null)
 
-  let wordClass = ''
+  let color = ''
   if (tested) {
-    wordClass = isWrong ? 'word-interactive wrong-text' : 'word-interactive right-text'
+    color = isWrong ? 'wrong-text' : 'right-text'
   }
+
+  const wordClass = `word-interactive ${color}`
 
   const handleClick = () => {
     setShow(true)
