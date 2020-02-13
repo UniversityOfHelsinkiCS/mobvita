@@ -4,7 +4,7 @@ import { Sidebar, Menu, Icon, Header, Dropdown } from 'semantic-ui-react'
 import { useDispatch, useSelector } from 'react-redux'
 import { Swipeable } from 'react-swipeable'
 import { FormattedMessage } from 'react-intl'
-import { localeOptions, capitalize, localeNameToCode, images } from 'Utilities/common'
+import { localeOptions, capitalize, localeNameToCode, images, inProduction } from 'Utilities/common'
 import { setLocale } from 'Utilities/redux/localeReducer'
 import { sidebarSetOpen } from 'Utilities/redux/sidebarReducer'
 import { logout, updateLocale } from 'Utilities/redux/userReducer'
@@ -13,6 +13,7 @@ import TermsAndConditions from 'Components/TermsAndConditions'
 import { Button } from 'react-bootstrap'
 import AboutUs from './StaticContent/AboutUs'
 import ContactUs from './StaticContent/ContactUs'
+import Settings from './Settings'
 
 
 export default function Bar({ history }) {
@@ -29,7 +30,7 @@ export default function Bar({ history }) {
 
   const handleLocaleChange = (newLocale) => {
     dispatch(setLocale(newLocale)) // Sets locale in root reducer...
-    if (user)dispatch(updateLocale(newLocale)) // Updates user-object
+    if (user) dispatch(updateLocale(newLocale)) // Updates user-object
   }
 
 
@@ -132,6 +133,9 @@ export default function Bar({ history }) {
                     </Button>
                   </Link>
 
+                  {inProduction
+                    ? null
+                    : <Settings trigger={<Button variant="secondary" block style={{ marginTop: '0.5em' }}>Learning settings</Button>} />}
                 </Menu.Item>
               </>
             )}
@@ -160,7 +164,7 @@ export default function Bar({ history }) {
                   )}
                 />
                 <ContactUs trigger={<Button variant="secondary" style={{ flexBasis: '50%' }}><FormattedMessage id="Contact" /></Button>} />
-                { user && <Button data-cy="logout" variant="secondary" style={{ flexBasis: '50%' }} onClick={() => menuClickWrapper(signOut)}><FormattedMessage id="sign-out" /></Button>}
+                {user && <Button data-cy="logout" variant="secondary" style={{ flexBasis: '50%' }} onClick={() => menuClickWrapper(signOut)}><FormattedMessage id="sign-out" /></Button>}
               </Menu.Item>
               <TermsAndConditions
                 trigger={<Button data-cy="tc-button" variant="link"> Terms and Conditions, Privacy Policy </Button>}
