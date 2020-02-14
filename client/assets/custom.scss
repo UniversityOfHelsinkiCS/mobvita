@@ -185,6 +185,11 @@ body {
   padding-top: 1em;
 }
 
+.flex {
+  display: flex;
+  flex-direction: column;
+}
+
 #flashcardsContainer {
   display: flex;
 }
