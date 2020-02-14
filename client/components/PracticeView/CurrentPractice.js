@@ -12,6 +12,7 @@ import ExerciseHearing from 'Components/PracticeView/ExerciseHearing'
 import { FormattedMessage } from 'react-intl'
 import { getSelf } from 'Utilities/redux/userReducer'
 import { Button } from 'react-bootstrap'
+import Chunks from './Chunks'
 
 
 const CurrentPractice = ({ storyId }) => {
@@ -271,21 +272,12 @@ const CurrentPractice = ({ storyId }) => {
   }
 
 
-  if (!snippets.focused || snippets.pending) {
-    return (
-      <div>
-        <Loader active />
-      </div>
-    )
-  }
-
-
   return (
     <>
-      <h3>{`${story.title} Part ${snippets.focused.snippetid[0] + 1}/${snippets.totalnum}`}</h3>
+      <h3>{`${story.title}`}</h3>
       {story.url ? <p><a href={story.url}><FormattedMessage id="Source" /></a></p> : null}
 
-      <PreviousSnippets snippets={snippets.previous.filter(Boolean)} textToSpeech={textToSpeech} answers={answers} />
+      <PreviousSnippets textToSpeech={textToSpeech} answers={answers} />
       <hr />
 
       <div
@@ -293,7 +285,7 @@ const CurrentPractice = ({ storyId }) => {
         className="practice-container"
         data-cy="practice-view"
       >
-        {createChunks()}
+        <Chunks chunkInput={chunkInput} />
       </div>
 
       <Button

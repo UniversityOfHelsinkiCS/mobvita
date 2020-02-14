@@ -1,6 +1,7 @@
 import React, { useState, useRef, useEffect } from 'react'
 import { Overlay } from 'react-bootstrap'
 import { useIntl } from 'react-intl'
+import { useSelector } from 'react-redux'
 
 
 const Word = ({ word, textToSpeech, answer }) => {
@@ -51,30 +52,32 @@ const Word = ({ word, textToSpeech, answer }) => {
             show: _show,
             ...props
           }) => (
-              <div
-                {...props}
-                style={{
-                  backgroundColor: color,
-                  padding: '2px 10px',
-                  color: 'white',
-                  borderRadius: 3,
-                  ...props.style,
-                }}
-              >
-                {answerString}
-              </div>
-            )}
+            <div
+              {...props}
+              style={{
+                backgroundColor: color,
+                padding: '2px 10px',
+                color: 'white',
+                borderRadius: 3,
+                ...props.style,
+              }}
+            >
+              {answerString}
+            </div>
+          )}
         </Overlay>
       )}
     </>
   )
 }
 
-const PreviousSnippets = ({ snippets, textToSpeech, answers }) => {
-  if (snippets.length === 0) return null
+const PreviousSnippets = ({ textToSpeech, answers }) => {
+  const snippets = useSelector(({ snippets }) => snippets)
+  const previous = snippets.previous.filter(Boolean)
+  if (previous.length === 0) return null
   return (
     <div>
-      {snippets.map(snippet => (
+      {previous.map(snippet => (
         <p key={snippet.snippetid[0]}>{
           snippet.practice_snippet.map(word => (
             <Word answer={answers[word.ID]} key={word.ID} word={word} textToSpeech={textToSpeech} />
