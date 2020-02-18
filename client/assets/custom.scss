@@ -136,8 +136,18 @@ body {
   color: $wrong-color;
 }
 
+.wrong-text-background {
+  background-color: $wrong-color !important;
+  color:white;
+}
+
 .right-text {
   color: $right-color;
+}
+
+.right-text-background{
+  background-color: $right-color;
+  color:white;
 }
 
 .chunk {
@@ -337,4 +347,18 @@ body {
 .flashcardFlipIcon {
   margin-left: 1em;
 }
+}
+
+.overlay {
+  padding: 2px 10px;
+  border-radius: 3px;
+  background-color: lightblue;
+
+
+  &.clickable{
+    &:hover{
+      cursor: pointer;
+    }
+  }
+
 }
