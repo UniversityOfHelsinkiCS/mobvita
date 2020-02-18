@@ -103,7 +103,8 @@ const CurrentPractice = ({ storyId }) => {
     }
 
     if (scrollTarget.current) {
-      window.scrollTo(0, scrollTarget.current.offsetTop)
+      // window.scrollTo(0, scrollTarget.current.offsetTop)
+      scrollTarget.current.scrollIntoView({ behavior: 'smooth' })
     }
 
     if (snippets.focused && snippets.focused.skip_second) {
