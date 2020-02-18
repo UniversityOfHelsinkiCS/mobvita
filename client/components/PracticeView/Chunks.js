@@ -1,6 +1,5 @@
-import React, { useState, useEffect } from 'react'
+import React from 'react'
 import { useSelector } from 'react-redux'
-import { Loader } from 'semantic-ui-react'
 
 const Chunks = ({ chunkInput }) => {
   const chunks = useSelector(({ snippets }) => {
