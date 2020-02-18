@@ -114,7 +114,7 @@ describe('Mobvita', function () {
 
     it('can start random practice', function () {
       cy.get('[data-cy=practice-now]').click()
-      cy.get('[data-cy=start-random]').click()
+      cy.get('[data-cy=start-random]', { timeout: 20000 }).click()
       cy.get('[data-cy=practice-view]')
     })
 
@@ -255,7 +255,7 @@ describe('Mobvita', function () {
       })
 
       it("can type into cloze fields", function () {
-        cy.get("[data-cy=exercise-cloze]").each(element => {
+        cy.get("[data-cy=exercise-cloze]", { timeout: 10000 }).each(element => {
           cy.get(element).type("h3hasdi3g92137fhs")
         })
       })
@@ -279,7 +279,7 @@ describe('Mobvita', function () {
       })
 
       it("shows feedback", function () {
-        cy.get("[data-cy=exercise-cloze]").each(element => {
+        cy.get("[data-cy=exercise-cloze]", { timeout: 10000 }).each(element => {
           cy.get(element).type("h3hasdi3g92137fhs")
         })
         cy.get("[data-cy=check-answer]").click()
