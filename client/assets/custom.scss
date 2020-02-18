@@ -183,6 +183,10 @@ body {
 
 .contentContainer {
   padding-top: 1em;
+  div {
+    max-width: 1024px;
+    margin: auto;
+  }
 }
 
 .dictionaryButton {
@@ -206,6 +210,10 @@ body {
     bottom: 2%;
     width: 90%;
   }
+}
+
+.maxContentSize {
+  max-width: 1024px;
 }
 
 .flex {
