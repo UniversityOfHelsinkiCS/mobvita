@@ -8,7 +8,7 @@ export default () => {
   const { user } = useSelector(({ user }) => ({ user }))
   return (
     <Navbar className="justify-content-between ">
-      <div style={{ marginTop: '0.5em', display: 'flex' }}>
+      <div style={{ display: 'flex' }}>
         <Route component={Bar} />
         <Navbar.Brand href="/home">
           Mobvita
@@ -16,7 +16,7 @@ export default () => {
       </div>
       {user.data
         && (
-        <Navbar.Text style={{ marginTop: '0.5em', marginRight: '1em' }}>
+        <Navbar.Text style={{ marginRight: '1em' }}>
           <div>{`Logged in as ${user.data.user.username}`}</div>
         </Navbar.Text>
         )

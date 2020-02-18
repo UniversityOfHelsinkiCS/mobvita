@@ -48,7 +48,7 @@ describe('Mobvita', function () {
     cy.get('[data-cy=accept-terms]').click()
     cy.get('[type=submit]').click()
 
-    cy.contains('Account creation success')
+    cy.get('[class=Toastify]').contains('Account creation success')
     cy.request('POST', 'localhost:8000/api/confirm/test', { ...user })
       .then(response => {
         user.token = response.body.access_token
@@ -216,7 +216,7 @@ describe('Mobvita', function () {
           .type('https://yle.fi/uutiset/3-11191886')
         cy.get('[data-cy="submit-story"]')
           .click()
-        cy.contains('Processing your story', { timeout: 20000 })
+        cy.get('[class=Toastify]').contains('Processing your story')
         cy.contains('5G-kännyköitä', { timeout: 20000 })
         cy.contains('Lue')
           .click()
