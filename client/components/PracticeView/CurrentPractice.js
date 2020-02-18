@@ -1,6 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
-import { Loader } from 'semantic-ui-react'
 import { getCurrentSnippet, getNextSnippet, postAnswers, setTotalNumberAction } from 'Utilities/redux/snippetsReducer'
 import { getTranslationAction, clearTranslationAction } from 'Utilities/redux/translationReducer'
 import { capitalize, learningLanguageSelector } from 'Utilities/common'
@@ -12,11 +11,13 @@ import ExerciseHearing from 'Components/PracticeView/ExerciseHearing'
 import { FormattedMessage } from 'react-intl'
 import { getSelf } from 'Utilities/redux/userReducer'
 import { Button } from 'react-bootstrap'
+import Chunks from './Chunks'
 
 
 const CurrentPractice = ({ storyId }) => {
   const [answers, setAnswers] = useState({})
   const [options, setOptions] = useState({})
+  const [progress, setProgress] = useState(0)
   const [audio, setAudio] = useState([])
   const [touchedIDs, setTouchedIds] = useState([])
   const [touched, setTouched] = useState(0)
@@ -85,7 +86,11 @@ const CurrentPractice = ({ storyId }) => {
 
   useEffect(setInitialAnswers, [snippets.focused])
 
-
+  useEffect(() => {
+    if (snippets.focused) {
+      setProgress((snippets.focused.snippetid[0]) / snippets.totalnum)
+    }
+  }, [snippets.focused])
   useEffect(() => {
     // has to be done since answers don't include data on
     // how many snippets are in total
@@ -96,9 +101,9 @@ const CurrentPractice = ({ storyId }) => {
         dispatch(setTotalNumberAction(total_num))
       }
     }
-
-    if (scrollTarget.current) {
-      window.scrollTo(0, scrollTarget.current.offsetTop)
+    if (scrollTarget.current && snippets.previous.length) {
+      // window.scrollTo(0, scrollTarget.current.offsetTop)
+      scrollTarget.current.scrollIntoView({ behavior: 'smooth' })
     }
 
     if (snippets.focused && snippets.focused.skip_second) {
@@ -244,48 +249,12 @@ const CurrentPractice = ({ storyId }) => {
     return <span className="chunk">{elements}</span>
   }
 
-  const createChunks = () => {
-    const chunks = []
-    let chunk = []
-    let inChunk = false
-
-    snippets.focused.practice_snippet.forEach((word) => {
-      if (word.chunk) {
-        if (word.chunk === 'chunk_start') {
-          chunk.push(word)
-          inChunk = true
-        } else if (word.chunk === 'chunk_end') {
-          inChunk = false
-          chunk.push(word)
-          chunks.push(chunk)
-          chunk = []
-        }
-      } else if (!inChunk) {
-        chunks.push([word])
-      } else {
-        chunk.push(word)
-      }
-    })
-
-    return chunks.map(chunk => chunkInput(chunk))
-  }
-
-
-  if (!snippets.focused || snippets.pending) {
-    return (
-      <div>
-        <Loader active />
-      </div>
-    )
-  }
-
-
   return (
     <>
-      <h3>{`${story.title} Part ${snippets.focused.snippetid[0] + 1}/${snippets.totalnum}`}</h3>
+      <h3>{`${story.title}`}</h3>
       {story.url ? <p><a href={story.url}><FormattedMessage id="Source" /></a></p> : null}
 
-      <PreviousSnippets snippets={snippets.previous.filter(Boolean)} textToSpeech={textToSpeech} answers={answers} />
+      <PreviousSnippets textToSpeech={textToSpeech} answers={answers} />
       <hr />
 
       <div
@@ -293,9 +262,8 @@ const CurrentPractice = ({ storyId }) => {
         className="practice-container"
         data-cy="practice-view"
       >
-        {createChunks()}
+        <Chunks chunkInput={chunkInput} />
       </div>
-
       <Button
         data-cy="check-answer"
         block
@@ -304,6 +272,25 @@ const CurrentPractice = ({ storyId }) => {
       >
         <FormattedMessage id="check-answer" />
       </Button>
+
+      {snippets.focused && (
+      <div style={{ height: '2.5em', marginTop: '0.5em', textAlign: 'center' }} className="progress">
+        <span
+          data-cy="snippet-progress"
+          style={{ marginTop: '0.23em', fontSize: 'larger', position: 'absolute', right: 0, left: 0 }}
+          className="progress-value"
+        >{`${snippets.focused.snippetid[0]} / ${snippets.totalnum}`}
+        </span>
+        <div
+          className="progress-bar progress-bar-striped bg-info"
+          style={{ width: `${progress * 100}%` }}
+          role="progressbar"
+          aria-valuenow={progress}
+          aria-valuemin="0"
+          aria-valuemax="100"
+        />
+      </div>
+      )}
     </>
   )
 }

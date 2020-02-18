@@ -1,10 +1,11 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState, useCallback } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { Message, Button, Placeholder, Card, Search, Select } from 'semantic-ui-react'
+import { Button, Placeholder, Card, Search, Select } from 'semantic-ui-react'
 
 import { getStories, getAllStories } from 'Utilities/redux/storiesReducer'
 import StoryListItem from 'Components/StoryListView/StoryListItem'
 import { FormattedMessage, useIntl } from 'react-intl'
+import { debounce } from 'lodash'
 import CheckboxGroup from 'Components/CheckboxGroup'
 import { capitalize, learningLanguageSelector } from 'Utilities/common'
 import StoryForm from './StoryForm'
@@ -32,6 +33,21 @@ const StoryList = () => {
 
   const user = useSelector(({ user }) => user.data.user)
   const learningLanguage = useSelector(learningLanguageSelector)
+
+  const debouncedSearch = useCallback(
+    debounce(
+      () => {
+        dispatch(
+          getAllStories(learningLanguage, {
+            sort_by: sorter,
+            order: sorter === 'title' ? 1 : -1, // Worked the best atm
+          }),
+        )
+      },
+      300,
+    ),
+    [learningLanguage],
+  )
 
   useEffect(() => {
     dispatch(
@@ -64,12 +80,7 @@ const StoryList = () => {
   const handleSearchChange = ({ target }) => {
     const ss = target.value
     setSearchString(ss)
-    dispatch(
-      getAllStories(learningLanguage, {
-        sort_by: sorter,
-        order: sorter === 'title' ? 1 : -1, // Worked the best atm
-      }),
-    )
+    debouncedSearch()
   }
 
   const handleLibraryChange = library => () => {

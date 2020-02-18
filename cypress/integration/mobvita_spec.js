@@ -265,17 +265,12 @@ describe('Mobvita', function () {
       })
 
       it("can get to next snippet after two retries", function () {
-
-        let oldTitle, newTitle
-
-        oldTitle = cy.get("h3").then(e => oldTitle = e.text())
+        cy.contains('0 / 8')
 
         cy.get("[data-cy=check-answer]").click()
         cy.get("[data-cy=check-answer]").click()
 
-        cy.get("h3", { timeout: 20000 })
-          .then(e => newTitle = e.text())
-          .then(() => expect(oldTitle).to.not.equal(newTitle))
+        cy.contains('1 / 8')
       })
 
       it("shows feedback", function () {
