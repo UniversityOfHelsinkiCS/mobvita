@@ -40,10 +40,13 @@ const Tabs = ({ location }) => {
   }
 
   return (
-    <Tab
-      panes={panes}
-      activeIndex={index}
-    />
+    <div className="maxContentSize" style={{ margin: 'auto' }}>
+      <Tab
+        panes={panes}
+        activeIndex={index}
+      />
+    </div>
+
   )
 }
 
