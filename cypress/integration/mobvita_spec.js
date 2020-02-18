@@ -151,7 +151,7 @@ describe('Mobvita', function () {
         cy.get('[data-cy=about-content]')
       })
 
-      it.only("ui language can be changed and is saved", function () {
+      it("ui language can be changed and is saved", function () {
         cy.get('[data-cy=ui-lang-select]').click()
         cy.get('[data-cy=ui-lang-select] > .visible > :nth-child(2)').click()
         cy.contains('Startsida')
