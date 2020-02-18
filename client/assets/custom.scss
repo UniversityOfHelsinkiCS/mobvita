@@ -60,12 +60,12 @@ body {
 // MISC CSS:
 .application-content {
   padding-bottom: 5em;
-  padding-top: 3em;
+  padding-top: 1em;
   min-height: 100vh;
   width: 100%;
   max-width: 1024px;
-  padding-right: 1em + $sidebar-swipeable-width;
-  padding-left: 2em;
+  padding-right: 1em ;//+ $sidebar-swipeable-width;
+  padding-left: 1em;
   margin: 0 auto;
 }
 
@@ -152,7 +152,7 @@ body {
 .sidebar{
   &-hamburger{
     z-index: 100;
-    position: fixed;
+    //position: fixed;
     padding:0.3em;
     height:40px;
     width:40px;
@@ -199,7 +199,7 @@ body {
 #flashcardsContainer {
   display: flex;
 }
- 
+
 .flashcardNextPreviousButtons {
   height: 6em;
   margin: auto;

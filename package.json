@@ -111,6 +111,7 @@
   },
   "husky": {
     "hooks": {
+      "pre-commit": "./grep_is.sh",
       "pre-push": "cypress run --env smokify=0.7"
     }
   }
