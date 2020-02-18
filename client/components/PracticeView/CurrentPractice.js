@@ -101,8 +101,7 @@ const CurrentPractice = ({ storyId }) => {
         dispatch(setTotalNumberAction(total_num))
       }
     }
-
-    if (scrollTarget.current) {
+    if (scrollTarget.current && snippets.previous.length) {
       // window.scrollTo(0, scrollTarget.current.offsetTop)
       scrollTarget.current.scrollIntoView({ behavior: 'smooth' })
     }
