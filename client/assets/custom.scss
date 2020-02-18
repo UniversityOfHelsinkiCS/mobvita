@@ -8,6 +8,7 @@ $secondary-text-color: #777;
 $primary-hover: lightblue;
 $white: #fff;
 $lightblue: #DCF6FF;
+$background: #fafafa;
 
 
 $default-font: Arial;
@@ -60,12 +61,11 @@ body {
 // MISC CSS:
 .application-content {
   padding-bottom: 5em;
-  padding-top: 3em;
+  padding-top: 1em;
   min-height: 100vh;
   width: 100%;
-  max-width: 1024px;
-  padding-right: 1em + $sidebar-swipeable-width;
-  padding-left: 2em;
+  padding-right: 1em ;//+ $sidebar-swipeable-width;
+  padding-left: 1em;
   margin: 0 auto;
 }
 
@@ -162,7 +162,7 @@ body {
 .sidebar{
   &-hamburger{
     z-index: 100;
-    position: fixed;
+    //position: fixed;
     padding:0.3em;
     height:40px;
     width:40px;
@@ -195,6 +195,29 @@ body {
   padding-top: 1em;
 }
 
+.dictionaryButton {
+  position: fixed;
+  right: 0.5%;
+  bottom: 0.5%;
+  background-color: $background;
+}
+
+.dictionaryHelp {
+  width: 350px;
+  margin-left: 1em;
+  align-self: flex-start;
+  height: auto;
+  position: sticky;
+  top: 1em;
+  @media (max-width: 1023px) {
+    position: fixed;
+    top: auto;
+    left: 5%;
+    bottom: 2%;
+    width: 90%;
+  }
+}
+
 .flex {
   display: flex;
   flex-direction: column;
@@ -209,7 +232,7 @@ body {
 #flashcardsContainer {
   display: flex;
 }
- 
+
 .flashcardNextPreviousButtons {
   height: 6em;
   margin: auto;

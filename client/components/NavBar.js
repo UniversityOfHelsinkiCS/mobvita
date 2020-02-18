@@ -1,53 +1,26 @@
-import React, { useState, useEffect } from 'react'
-import { useDispatch, useSelector } from 'react-redux'
-import { Link } from 'react-router-dom'
-import { Menu, Dropdown, Button } from 'semantic-ui-react'
-import { logout } from 'Utilities/redux/userReducer'
-import { setLocale } from 'Utilities/redux/localeReducer'
-import { localeOptions } from 'Utilities/common'
-import { FormattedMessage, useIntl } from 'react-intl'
+import React from 'react'
+import { useSelector } from 'react-redux'
+import { Navbar } from 'react-bootstrap'
+import { Route } from 'react-router-dom'
+import Bar from './Bar'
 
 export default () => {
-  const [active, setActive] = useState('home')
-
-  const { user } = useSelector(({ user }) => ({ user: user.data }))
-  const dispatch = useDispatch()
-  const intl = useIntl()
-  const signOut = () => dispatch(logout())
-
-  const chooseLanguage = code => () => dispatch(setLocale(code))
+  const { user } = useSelector(({ user }) => ({ user }))
   return (
-    <Menu inverted style={{ borderRadius: '0' }}>
-      <Menu.Item
-        as={Link}
-        to="/stories#home"
-        active={active === 'home'}
-        content={intl.formatMessage({ id: 'HOME' })}
-        name="home"
-      />
-
-      <Menu.Menu position="right">
-        <Dropdown item text={intl.formatMessage({ id: 'LANGUAGE' })}>
-          <Dropdown.Menu>
-            {localeOptions.map(locale => (
-              <Dropdown.Item key={locale.code} onClick={chooseLanguage(locale.code)}>
-                {locale.name}
-              </Dropdown.Item>
-            ))}
-          </Dropdown.Menu>
-        </Dropdown>
-
-        <Menu.Item>
-          {user && (
-            <Button inverted onClick={signOut}>
-              <FormattedMessage id="SIGNOUT" />
-            </Button>
-          )}
-        </Menu.Item>
-      </Menu.Menu>
-
-
-    </Menu>
-
+    <Navbar style={{ height: '2em', alignItems: 'center' }} className="justify-content-between ">
+      <div style={{ marginTop: '0.5em', display: 'flex' }}>
+        <Route component={Bar} />
+        <Navbar.Brand>
+        Revita
+        </Navbar.Brand>
+      </div>
+      {user.data
+        && (
+        <Navbar.Text style={{ marginRight: '1em' }}>
+          {`Logged in as ${user.data.user.username}`}
+        </Navbar.Text>
+        )
+      }
+    </Navbar>
   )
 }

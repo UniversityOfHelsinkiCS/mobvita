@@ -6,12 +6,14 @@ import { FormattedMessage } from 'react-intl'
 import { updateDictionaryLanguage } from 'Utilities/redux/userReducer'
 import { getTranslationAction } from 'Utilities/redux/translationReducer'
 import { learningLanguageSelector, translatableLanguages } from 'Utilities/common'
+import useWindowDimensions from 'Utilities/windowDimensions'
 import { Spinner } from 'react-bootstrap'
 
 
 const DictionaryHelp = ({ translation }) => {
   const [showHelp, setShow] = useState(false)
   const [shaking, setShaking] = useState(false)
+  const { width: windowWidth } = useWindowDimensions()
   const dispatch = useDispatch()
   const translationLanguageCode = useSelector(({ user }) => user.data.user.last_trans_language)
   const learningLanguage = useSelector(learningLanguageSelector)
@@ -45,14 +47,16 @@ const DictionaryHelp = ({ translation }) => {
   const handleDropdownChange = (e, data) => {
     if (translation) {
       const lemmas = translation.map(t => t.lemma).join('+')
-      if (lemmas !== '')dispatch(getTranslationAction(learningLanguage, lemmas, data.value))
+      if (lemmas !== '') dispatch(getTranslationAction(learningLanguage, lemmas, data.value))
     }
     dispatch(updateDictionaryLanguage(data.value))
   }
 
-  if (!showHelp) {
+  const smallWindow = windowWidth < 1024
+
+  if (!showHelp && smallWindow) {
     return (
-      <div style={{ position: 'fixed', right: '0.5%', bottom: '0.5%', backgroundColor: '#fafafa' }}>
+      <div className="dictionaryButton">
         <Button
           className="navigationbuttonopen"
           icon
@@ -79,8 +83,8 @@ const DictionaryHelp = ({ translation }) => {
   }
 
   return (
-    <div>
-      <Segment className="dictionaryhelp" style={{ position: 'fixed', right: '5%', bottom: '2%', width: '90%' }}>
+    <div className="dictionaryHelp">
+      <Segment>
         <div>
           <FormattedMessage id="translation-target-language">
             {txt => <span style={{ marginRight: '5px' }}>{txt}</span>}
@@ -93,11 +97,15 @@ const DictionaryHelp = ({ translation }) => {
             options={dictionaryOptions}
           />
         </div>
-        <Header size="medium" textAlign="center">
-          <Button className="navigationbuttonclose" icon basic floated="right" onClick={() => setShow(false)}>
-            <Icon name="angle down" />
-          </Button>
-        </Header>
+        {smallWindow
+          ? (
+            <Header size="medium" textAlign="center">
+              <Button className="navigationbuttonclose" icon basic floated="right" onClick={() => setShow(false)}>
+                <Icon name="angle down" />
+              </Button>
+            </Header>
+          )
+          : null}
         <List>
           {pending && <div><span>Loading, please wait </span><Spinner animation="border" /></div>}
           {translations.length > 0 ? translations : <FormattedMessage id="click-to-translate" />}

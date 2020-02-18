@@ -17,6 +17,7 @@ import Chunks from './Chunks'
 const CurrentPractice = ({ storyId }) => {
   const [answers, setAnswers] = useState({})
   const [options, setOptions] = useState({})
+  const [progress, setProgress] = useState(0)
   const [audio, setAudio] = useState([])
   const [touchedIDs, setTouchedIds] = useState([])
   const [touched, setTouched] = useState(0)
@@ -85,7 +86,11 @@ const CurrentPractice = ({ storyId }) => {
 
   useEffect(setInitialAnswers, [snippets.focused])
 
-
+  useEffect(() => {
+    if (snippets.focused) {
+      setProgress((snippets.focused.snippetid[0]) / snippets.totalnum)
+    }
+  }, [snippets.focused])
   useEffect(() => {
     // has to be done since answers don't include data on
     // how many snippets are in total
@@ -96,9 +101,9 @@ const CurrentPractice = ({ storyId }) => {
         dispatch(setTotalNumberAction(total_num))
       }
     }
-
-    if (scrollTarget.current) {
-      window.scrollTo(0, scrollTarget.current.offsetTop)
+    if (scrollTarget.current && snippets.previous.length) {
+      // window.scrollTo(0, scrollTarget.current.offsetTop)
+      scrollTarget.current.scrollIntoView({ behavior: 'smooth' })
     }
 
     if (snippets.focused && snippets.focused.skip_second) {
@@ -259,7 +264,6 @@ const CurrentPractice = ({ storyId }) => {
       >
         <Chunks chunkInput={chunkInput} />
       </div>
-
       <Button
         data-cy="check-answer"
         block
@@ -268,6 +272,25 @@ const CurrentPractice = ({ storyId }) => {
       >
         <FormattedMessage id="check-answer" />
       </Button>
+
+      {snippets.focused && (
+      <div style={{ height: '2.5em', marginTop: '0.5em', textAlign: 'center' }} className="progress">
+        <span
+          data-cy="snippet-progress"
+          style={{ marginTop: '0.23em', fontSize: 'larger', position: 'absolute', right: 0, left: 0 }}
+          className="progress-value"
+        >{`${snippets.focused.snippetid[0]} / ${snippets.totalnum}`}
+        </span>
+        <div
+          className="progress-bar progress-bar-striped bg-info"
+          style={{ width: `${progress * 100}%` }}
+          role="progressbar"
+          aria-valuenow={progress}
+          aria-valuemin="0"
+          aria-valuemax="100"
+        />
+      </div>
+      )}
     </>
   )
 }
