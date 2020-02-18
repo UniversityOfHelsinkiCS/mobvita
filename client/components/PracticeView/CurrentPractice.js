@@ -1,6 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
-import { Loader } from 'semantic-ui-react'
 import { getCurrentSnippet, getNextSnippet, postAnswers, setTotalNumberAction } from 'Utilities/redux/snippetsReducer'
 import { getTranslationAction, clearTranslationAction } from 'Utilities/redux/translationReducer'
 import { capitalize, learningLanguageSelector } from 'Utilities/common'
@@ -244,33 +243,6 @@ const CurrentPractice = ({ storyId }) => {
     const elements = chunk.map(word => wordInput(word))
     return <span className="chunk">{elements}</span>
   }
-
-  const createChunks = () => {
-    const chunks = []
-    let chunk = []
-    let inChunk = false
-
-    snippets.focused.practice_snippet.forEach((word) => {
-      if (word.chunk) {
-        if (word.chunk === 'chunk_start') {
-          chunk.push(word)
-          inChunk = true
-        } else if (word.chunk === 'chunk_end') {
-          inChunk = false
-          chunk.push(word)
-          chunks.push(chunk)
-          chunk = []
-        }
-      } else if (!inChunk) {
-        chunks.push([word])
-      } else {
-        chunk.push(word)
-      }
-    })
-
-    return chunks.map(chunk => chunkInput(chunk))
-  }
-
 
   return (
     <>
