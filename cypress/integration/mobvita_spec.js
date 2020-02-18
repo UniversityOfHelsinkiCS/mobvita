@@ -264,19 +264,14 @@ describe('Mobvita', function () {
         cy.get("[data-cy=check-answer]").click()
       })
 
-      // it("can get to next snippet after two retries", function () {
+      it.only("can get to next snippet after two retries", function () {
+        cy.contains('0 / 8')
 
-      //   let oldTitle, newTitle
+        cy.get("[data-cy=check-answer]").click()
+        cy.get("[data-cy=check-answer]").click()
 
-      //   oldTitle = cy.get("h3").then(e => oldTitle = e.text())
-
-      //   cy.get("[data-cy=check-answer]").click()
-      //   cy.get("[data-cy=check-answer]").click()
-
-      //   cy.get("h3", { timeout: 20000 })
-      //     .then(e => newTitle = e.text())
-      //     .then(() => expect(oldTitle).to.not.equal(newTitle))
-      // })
+        cy.contains('1 / 8')
+      })
 
       it("shows feedback", function () {
         cy.get("[data-cy=exercise-cloze]", { timeout: 10000 }).each(element => {

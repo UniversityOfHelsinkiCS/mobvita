@@ -276,12 +276,13 @@ const CurrentPractice = ({ storyId }) => {
       {snippets.focused && (
       <div style={{ height: '2.5em', marginTop: '0.5em', textAlign: 'center' }} className="progress">
         <span
+          data-cy="snippet-progress"
           style={{ marginTop: '0.23em', fontSize: 'larger', position: 'absolute', right: 0, left: 0 }}
           className="progress-value"
         >{`${snippets.focused.snippetid[0]} / ${snippets.totalnum}`}
         </span>
         <div
-          className="progress-bar progress-bar-striped bg-success"
+          className="progress-bar progress-bar-striped bg-info"
           style={{ width: `${progress * 100}%` }}
           role="progressbar"
           aria-valuenow={progress}
