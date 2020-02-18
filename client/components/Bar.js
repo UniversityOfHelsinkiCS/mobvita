@@ -77,6 +77,7 @@ export default function Bar({ history }) {
         size="big"
         onClick={() => dispatch(sidebarSetOpen(!open))}
         className="sidebar-hamburger"
+        style={{ color: open ? '' : 'white' }}
       />
       <Swipeable
         className="sidebar-swipeable"

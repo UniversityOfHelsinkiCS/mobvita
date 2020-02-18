@@ -161,8 +161,9 @@ body {
 
 .navbar {
   background-color: $primary-color;
-  align-items: baseline;
-  color: white;
+  align-items: center;
+  display: flex;
+  justify-content: space-between;
 }
 
 
@@ -170,6 +171,7 @@ body {
 .sidebar{
   &-hamburger{
     z-index: 100;
+    padding-top: 0.2em;
     //position: fixed;
     //padding:0.3em;
     //height:40px;
