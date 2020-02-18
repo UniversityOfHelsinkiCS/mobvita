@@ -35,7 +35,7 @@ const Login = () => {
     }
   }, [user])
   return (
-    <>
+    <div className="maxContentSize autoMargin">
       <h1>{intl.formatMessage({ id: 'Login' })} </h1>
       <Segment>
         <p>
@@ -83,7 +83,7 @@ const Login = () => {
           </Button>
         </div>
       </Segment>
-    </>
+    </div>
   )
 }
 

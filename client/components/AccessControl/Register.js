@@ -65,9 +65,9 @@ const Register = () => {
     })
   }
   return (
-    <>
+    <div className="maxContentSize autoMargin">
       <h1>{intl.formatMessage({ id: 'Register' })}</h1>
-      <Segment className="container">
+      <Segment>
         <Form onSubmit={handleSubmit}>
           <Form.Field>
             <Form.Input
@@ -118,11 +118,11 @@ const Register = () => {
             >
               {intl.formatMessage({ id: 'Register' })}
             </Button>
+            <Link to="/login"><Button variant="secondary"><FormattedMessage id="Login" /></Button></Link>
           </div>
         </Form>
-        <Link to="/login"><Button variant="secondary"><FormattedMessage id="Login" /></Button></Link>
       </Segment>
-    </>
+    </div>
   )
 }
 
