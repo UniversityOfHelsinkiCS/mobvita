@@ -281,7 +281,7 @@ const CurrentPractice = ({ storyId }) => {
         >{`${snippets.focused.snippetid[0]} / ${snippets.totalnum}`}
         </span>
         <div
-          className="progress-bar"
+          className="progress-bar progress-bar-striped bg-success"
           style={{ width: `${progress * 100}%` }}
           role="progressbar"
           aria-valuenow={progress}
