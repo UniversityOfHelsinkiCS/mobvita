@@ -23,7 +23,6 @@ export default function Bar({ history }) {
   const open = useSelector(({ sidebar }) => sidebar.open)
   const focusedSnippet = useSelector(({ snippets }) => snippets.focused)
 
-
   const locale = useSelector(({ locale }) => locale)
 
   const [localeDropdownOptions, setLocaleDropdownOptions] = useState([])
@@ -35,12 +34,6 @@ export default function Bar({ history }) {
 
 
   useEffect(() => {
-    if (window.innerWidth >= 1024) {
-      dispatch(sidebarSetOpen(true))
-    } else {
-      dispatch(sidebarSetOpen(false))
-    }
-
     const temp = localeOptions.map(option => ({
       value: option.code,
       text: option.displayName,

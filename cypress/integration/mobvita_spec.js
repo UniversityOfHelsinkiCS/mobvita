@@ -151,11 +151,10 @@ describe('Mobvita', function () {
         cy.get('[data-cy=about-content]')
       })
 
-      it("ui language can be changed and is saved", function () {
+      it.only("ui language can be changed and is saved", function () {
         cy.get('[data-cy=ui-lang-select]').click()
         cy.get('[data-cy=ui-lang-select] > .visible > :nth-child(2)').click()
         cy.contains('Startsida')
-        cy.get('.bars').click()
         cy.get('[data-cy=logout]').click()
         cy.request('POST', '/api/session', { ...globalUser })
           .as('user')
@@ -221,7 +220,7 @@ describe('Mobvita', function () {
         cy.contains('5G-kännyköitä', { timeout: 20000 })
         cy.contains('Lue')
           .click()
-        cy.contains('Harjoittele')
+        cy.contains('Harjoittele', { timeout: 20000 })
         cy.contains('Tehokkaasta 5G-liittymästä')
       })
     })
