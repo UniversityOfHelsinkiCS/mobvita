@@ -159,14 +159,22 @@ body {
     padding-right: 5px;
 }
 
+.navbar {
+  background-color: $primary-color;
+  align-items: baseline;
+  color: white;
+}
+
+
+
 .sidebar{
   &-hamburger{
     z-index: 100;
     //position: fixed;
-    padding:0.3em;
-    height:40px;
-    width:40px;
-    background-color: white;
+    //padding:0.3em;
+    //height:40px;
+    //width:40px;
+    //background-color: white;
   }
 
   &-swipeable {
