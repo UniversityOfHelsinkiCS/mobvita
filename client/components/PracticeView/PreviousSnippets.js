@@ -16,6 +16,7 @@ const Word = ({ word, textToSpeech, answer }) => {
   }
 
   const wordClass = `word-interactive ${color}`
+  const overlayClassName = isWrong ? 'wrong-text-background' : 'right-text-background'
 
   const handleClick = () => {
     setShow(true)
@@ -56,7 +57,7 @@ const Word = ({ word, textToSpeech, answer }) => {
           }) => (
             <div
               {...props}
-              className={[color, 'overlay']}
+              className={`overlay ${overlayClassName}`}
               style={{ ...props.style }}
             >
               {answerString}
