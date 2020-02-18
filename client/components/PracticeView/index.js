@@ -19,10 +19,13 @@ const PracticeView = ({ match }) => {
   if (!story) return null
 
   return (
-    <Segment style={{ paddingTop: '1em' }}>
-      <CurrentPractice storyId={match.params.id} />
+    <div style={{ display: 'flex', justifyContent: 'center' }}>
+      <Segment style={{ paddingTop: '1em' }}>
+        <CurrentPractice storyId={match.params.id} />
+
+      </Segment>
       <DictionaryHelp />
-    </Segment>
+    </div>
   )
 }
 

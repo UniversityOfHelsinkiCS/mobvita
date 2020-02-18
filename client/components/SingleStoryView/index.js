@@ -38,8 +38,8 @@ const SingleStoryView = ({ match }) => {
   if (pending) return null
 
   return (
-    <>
-      <div style={{ paddingTop: '1em' }}>
+    <div style={{ display: 'flex', justifyContent: 'center' }}>
+      <div style={{ paddingTop: '1em', maxWidth: '1024px' }}>
         <Header>
           {story.title}
           <Link to={`/stories/${id}/practice`}>
@@ -59,7 +59,7 @@ const SingleStoryView = ({ match }) => {
         </Segment>
       </div>
       <DictionaryHelp />
-    </>
+    </div>
   )
 }
 
