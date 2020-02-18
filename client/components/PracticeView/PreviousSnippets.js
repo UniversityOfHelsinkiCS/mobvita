@@ -12,7 +12,7 @@ const Word = ({ word, textToSpeech, answer }) => {
 
   let color = ''
   if (tested) {
-    color = isWrong ? 'wrong' : 'correct'
+    color = isWrong ? 'wrong-text' : 'right-text'
   }
 
   const wordClass = `word-interactive ${color}`
@@ -56,12 +56,8 @@ const Word = ({ word, textToSpeech, answer }) => {
           }) => (
             <div
               {...props}
-              className={color}
-              style={{
-                padding: '2px 10px',
-                borderRadius: 3,
-                ...props.style,
-              }}
+              className={[color, 'overlay']}
+              style={{ ...props.style }}
             >
               {answerString}
             </div>
