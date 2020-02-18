@@ -264,7 +264,7 @@ describe('Mobvita', function () {
         cy.get("[data-cy=check-answer]").click()
       })
 
-      it.only("can get to next snippet after two retries", function () {
+      it("can get to next snippet after two retries", function () {
         cy.contains('0 / 8')
 
         cy.get("[data-cy=check-answer]").click()
