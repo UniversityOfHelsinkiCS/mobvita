@@ -57,7 +57,7 @@ const StoryForm = () => {
               <Button style={{ marginTop: '0.5em' }} variant="primary" type="submit" data-cy="submit-story">
                 <FormattedMessage id="Confirm" />
               </Button>
-              {!inProduction && <AddStoryModal trigger={<Button style={{ marginTop: '0.5em' }} variant="link">More story add stuff</Button>} />}
+              {!inProduction && <AddStoryModal trigger={<Button style={{ marginTop: '0.5em' }} variant="link">Add files or paste text</Button>} />}
             </Form>
           </div>
         </div>
