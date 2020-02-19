@@ -381,9 +381,9 @@ body {
 }
 }
 
-.overlay {
-  padding: 2px 10px;
-  border-radius: 3px;
+
+.tooltip-container { //Overwrites react-popper-tooltip styles.
+  text-align: center;
 
   &.clickable{
     &:hover{
