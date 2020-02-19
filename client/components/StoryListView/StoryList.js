@@ -96,8 +96,8 @@ const StoryList = () => {
   const searchSort = (
     <div
       data-cy="library-controls"
-      style={
-      { display: 'flex', justifyContent: 'space-between', flexWrap: 'wrap', margin: '10px 0' }}
+      className="libraryControl"
+      style={{ margin: '10px 0' }}
     >
       <Search
         open={false}
@@ -105,18 +105,23 @@ const StoryList = () => {
         loading={allPending}
         value={searchString}
         onSearchChange={handleSearchChange}
+        size="big"
+        style={{ marginBottom: 0, marginTop: 'auto' }}
       />
-      <CheckboxGroup values={libraries} onClick={handleLibraryChange} />
-      <div>
-        <FormattedMessage id="sort-by" />
-        <br />
-        <Select
-          value={sorter}
-          options={sortDropdownOptions}
-          onChange={handleSortChange}
-          style={{ minWidth: '10em' }}
-        />
+      <div style={{ display: 'flex', justifyContent: 'space-between', padding: '0 0.5em' }}>
+        <CheckboxGroup values={libraries} onClick={handleLibraryChange} />
+        <div>
+          <FormattedMessage id="sort-by" />
+          <br />
+          <Select
+            value={sorter}
+            options={sortDropdownOptions}
+            onChange={handleSortChange}
+            style={{ minWidth: '5em' }}
+          />
+        </div>
       </div>
+
     </div>
   )
 
