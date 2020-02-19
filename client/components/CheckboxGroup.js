@@ -11,6 +11,7 @@ const ToggleButton = ({ toggled, children, ...rest }) => {
     <Button
       {...rest}
       variant={className}
+      size="sm"
     >
       {children}
     </Button>
@@ -19,16 +20,16 @@ const ToggleButton = ({ toggled, children, ...rest }) => {
 
 
 const CheckboxGroup = ({ values, onClick }) => (
-  <div style={{ display: 'flex', flexWrap: 'wrap' }}>{
-      Object.entries(values).sort().map(([key, val]) => (
-        <ToggleButton
-          key={key}
-          onClick={onClick(key)}
-          toggled={val}
-        >
-          <FormattedMessage id={capitalize(key)} />
-        </ToggleButton>
-      ))}
+  <div style={{ marginTop: 'auto' }} className="checkboxGroup">{
+    Object.entries(values).sort().map(([key, val]) => (
+      <ToggleButton
+        key={key}
+        onClick={onClick(key)}
+        toggled={val}
+      >
+        <FormattedMessage id={capitalize(key)} />
+      </ToggleButton>
+    ))}
   </div>
 )
 
