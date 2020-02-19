@@ -205,7 +205,6 @@ body {
   padding-top: 1em;
   div {
     max-width: 1024px;
-    margin: auto;
   }
 }
 
@@ -229,6 +228,26 @@ body {
     left: 5%;
     bottom: 2%;
     width: 90%;
+  }
+}
+
+.libraryControl {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  margin: 10px 0;
+  @media (min-width: 720px) {
+    flex-direction: row;
+  }
+}
+
+.checkboxGroup {
+  button {
+    height: 38px;
+    &:focus {
+      box-shadow: none;
+    }
   }
 }
 
