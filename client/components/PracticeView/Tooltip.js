@@ -20,7 +20,7 @@ const Tooltip = ({ children, tooltip, hideArrow, additionalClassnames = '', ...p
       <div
         {...getTooltipProps({
           ref: tooltipRef,
-          className: `overlay tooltip-container ${additionalClassnames}`,
+          className: `tooltip-container ${additionalClassnames}`,
         })}
       >
         {!hideArrow && (

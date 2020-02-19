@@ -31,11 +31,18 @@ const ExerciseCloze = ({ word, handleChange, handleClick, value }) => {
     }
   }, [tested])
 
-  const tooltip = (
-    <div onClick={handleTooltipClick}>
-      {word.message || `${word.base} → ${learningLanguage}`}
-    </div>
-  )
+
+  const tooltip = word.message
+    ? (
+      <div onClick={handleTooltipClick}>
+        <div className="tooltip-green">{word.message}</div>
+        <div className="tooltip-blue">{`${word.base || word.bases} → ${learningLanguage}`}</div>
+      </div>
+    ) : (
+      <div onClick={handleTooltipClick}>
+        <div className="tooltip-blue">{`${word.base || word.bases} → ${learningLanguage}`}</div>
+      </div>
+    )
 
   return (
     <Tooltip placement="top" trigger="click" tooltip={tooltip} additionalClassnames="clickable">

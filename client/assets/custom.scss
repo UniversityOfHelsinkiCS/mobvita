@@ -10,6 +10,9 @@ $white: #fff;
 $lightblue: #DCF6FF;
 $background: #fafafa;
 
+// Tooltip colors
+$tooltip-blue: rgba(30, 120, 225, 1);
+$tooltip-green: green;
 
 $default-font: Arial;
 $sidebar-swipeable-width: 1em;
@@ -320,79 +323,93 @@ body {
   color: #fff;
   &:focus {
     outline: none;
-}
-
-.flashcardTextContainer {
-  display: flex;
-  flex-grow: 1;
-  overflow: auto;
-  padding: 1em 0;
-}
-
-.flashcardText {
-  margin: auto;
-}
-
-.flashcardTranslations {
-  padding-left: 0;
-  font-size: 1em;
-  font-weight: 550;
-}
-
-.flashcardInputAndResultContainer {
-  height: 11em;
-  display: flex;
-  padding-top: 1em;
-}
-
-.flashcardInputAndCheck {
-  flex-grow: 1;
-  padding-left: 1em;
-  padding-right: 1em;
-}
-
-.flashcardCheck {
-  margin-top: 1em;
-  background-color: white;
-}
-
-.flashcardResult {
-  margin: auto;
-}
-
-.flashcardFlipContainer {
-  height: 2em;
-  margin-bottom: 0.5em;
-  padding-top: 1em;
-  display: flex;
-  flex-direction: row-reverse;
-}
-
-.flashcardFlip {
-  margin-left: auto;
-  border: none;
-  background-color: hsla(208, 56%, 55%, 1);
-  color: white;
-  font-weight: 550;
-  padding-right: 0;
-  &:focus {
-    outline: none;
   }
-}
 
-.flashcardFlipIcon {
-  margin-left: 1em;
-}
-}
+  .flashcardTextContainer {
+    display: flex;
+    flex-grow: 1;
+    overflow: auto;
+    padding: 1em 0;
+  }
 
-.overlay {
-  padding: 2px 10px;
-  border-radius: 3px;
+  .flashcardText {
+    margin: auto;
+  }
 
-  &.clickable{
-    &:hover{
-      cursor: pointer;
+  .flashcardTranslations {
+    padding-left: 0;
+    font-size: 1em;
+    font-weight: 550;
+  }
+
+  .flashcardInputAndResultContainer {
+    height: 11em;
+    display: flex;
+    padding-top: 1em;
+  }
+
+  .flashcardInputAndCheck {
+    flex-grow: 1;
+    padding-left: 1em;
+    padding-right: 1em;
+  }
+
+  .flashcardCheck {
+    margin-top: 1em;
+    background-color: white;
+  }
+
+  .flashcardResult {
+    margin: auto;
+  }
+
+  .flashcardFlipContainer {
+    height: 2em;
+    margin-bottom: 0.5em;
+    padding-top: 1em;
+    display: flex;
+    flex-direction: row-reverse;
+  }
+
+  .flashcardFlip {
+    margin-left: auto;
+    border: none;
+    background-color: hsla(208, 56%, 55%, 1);
+    color: white;
+    font-weight: 550;
+    padding-right: 0;
+    &:focus {
+      outline: none;
     }
   }
 
+  .flashcardFlipIcon {
+    margin-left: 1em;
+  }
+}
+
+
+.tooltip { //Overwrites react-popper-tooltip styles.
+
+  &-container {
+    text-align: center;    
+    padding: 0;
+
+    &.clickable{
+      &:hover{
+        cursor: pointer;
+      }
+    }
+
+  }
+
+  &-blue {
+    background-color: $tooltip-blue;
+    color:white;
+  }
+
+  &-green{
+    background-color: $tooltip-green;
+    color:white;
+  }
 }
