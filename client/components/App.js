@@ -3,8 +3,10 @@ import Router from 'Components/Router'
 import { Route, Router as ReactRouter } from 'react-router-dom'
 import { createBrowserHistory } from 'history'
 import { basePath } from 'Utilities/common'
-import { Navbar } from 'react-bootstrap'
+import { useDispatch } from 'react-redux'
+
 import Toaster from './Toaster'
+
 import Bar from './Bar'
 import 'bootstrap/dist/css/bootstrap.min.css'
 import NavBar from './NavBar'
@@ -12,6 +14,8 @@ import NavBar from './NavBar'
 
 const App = () => {
   const history = createBrowserHistory({ basename: basePath })
+  const dispatch = useDispatch()
+
 
   if (window.gtag) {
     history.listen((location, action) => { // Sends notifications to google analytics whenever location changes
@@ -32,6 +36,8 @@ const App = () => {
         <Toaster />
         <NavBar />
         <div style={{ display: 'flex' }}>
+          <Route component={Bar} />
+
           <div className="application-content">
             <Router />
           </div>
