@@ -13,4 +13,10 @@ const addToGroup = async (req, res) => {
   res.send(response.data)
 }
 
-module.exports = { getGroups, addToGroup }
+const createGroup = async (req, res) => {
+  const url = '/groups'
+  const response = await axios.post(url, req.body, { headers: req.headers })
+  res.send(response.data)
+}
+
+module.exports = { getGroups, addToGroup, createGroup }
