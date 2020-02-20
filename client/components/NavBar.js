@@ -28,7 +28,7 @@ export default () => {
       {user.data
         && (
         <Navbar.Text style={{ color: 'white', marginRight: '1em' }}>
-          <div>{`Logged in as ${user.data.user.username}`}</div>
+          <div>{user.data.user.username}</div>
         </Navbar.Text>
         )
       }

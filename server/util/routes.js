@@ -7,6 +7,7 @@ const opponent = require('@controllers/opponentController')
 const user = require('@controllers/userController')
 const email = require('@controllers/emailController')
 const flashcards = require('@controllers/flashcardsController')
+const groups = require('@controllers/groupsController')
 const { unknown } = require('@controllers/fallbackController')
 
 const router = Router()
@@ -33,6 +34,9 @@ router.post('/translation/:locale/:language', translation.getTranslation)
 router.get('/opponent', opponent.getOpponent)
 
 router.post('/session', session.create)
+
+router.get('/groups', groups.getGroups)
+router.post('/groups/:groupId', groups.addToGroup)
 
 router.get('/user', user.getSelf)
 router.post('/user', user.setSelf)

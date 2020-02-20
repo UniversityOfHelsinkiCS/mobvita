@@ -566,7 +566,7 @@
     "Browse": "",
     "Submit": "",
     "paste-the-raw-text-you-want-to-add-as-a-story-we-will-use-the-first-sentence-before-an-empty-line-as": "Paste the text of the story.  Revita will use the first line as the title.  Minimum length: 50.",
-    "or-paste-a-text": "",
+    "or-paste-a-text": "Or paste a text:",
     "characters-left": "",
     "title-on-first-line-text-after-an-empty-line-f2c9245edf5d0379b77008c6db1fd5a9": "",
     "revita-will-automatically-try-to-find-only-the-story-text-from-your-url-if-the-results-contain-unwan": "Revita will try to find only the story from your URL. If the result contains unwanted text, please paste the story manually into the box above.",

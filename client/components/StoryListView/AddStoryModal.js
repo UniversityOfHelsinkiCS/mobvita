@@ -1,37 +1,28 @@
-import React, { useState, useRef } from 'react'
+import React, { useState } from 'react'
 import { Modal } from 'semantic-ui-react'
-import { FormattedMessage, useIntl } from 'react-intl'
+import { FormattedMessage } from 'react-intl'
 import { useDispatch, useSelector } from 'react-redux'
 import { Button } from 'react-bootstrap'
 import { learningLanguageSelector, capitalize } from 'Utilities/common'
 import { postStory } from 'Utilities/redux/uploadProgressReducer'
 
 const AddStoryModal = ({ trigger }) => {
-  const intl = useIntl()
+  const [title, setTitle] = useState('')
   const [text, setText] = useState('')
-  const fileInput = useRef()
 
 
   const learningLanguage = useSelector(learningLanguageSelector)
   const dispatch = useDispatch()
 
   const addText = () => {
+    const combinedText = `${title}\n\n${text}`
     const newStory = {
       language: capitalize(learningLanguage),
-      text,
+      text: combinedText,
     }
     dispatch(postStory(newStory))
   }
 
-  const addFile = () => {
-    fileInput.current.files[0].text().then((text) => {
-      const newStory = {
-        language: capitalize(learningLanguage),
-        text,
-      }
-      dispatch(postStory(newStory))
-    })
-  }
 
   return (
     <Modal
@@ -41,20 +32,24 @@ const AddStoryModal = ({ trigger }) => {
     >
       <Modal.Header><FormattedMessage id="add-your-stories" /></Modal.Header>
       <Modal.Content style={{ display: 'flex', flexDirection: 'column' }}>
-        <FormattedMessage id="choose-a-file" />
-        <div>
-          <input type="file" ref={fileInput} />
-          <Button variant="primary" onClick={addFile}><FormattedMessage id="Confirm" /></Button>
-        </div>
-        <hr />
-        <FormattedMessage id="or-paste-a-text" />
+        <FormattedMessage id="Subject" />
+        <input
+          type="text"
+          value={title}
+          onChange={e => setTitle(e.target.value)}
+        />
         <textarea
-          placeholder={intl.formatMessage({ id: 'title-on-first-line-text-after-an-empty-line-f2c9245edf5d0379b77008c6db1fd5a9' })}
           className="story-text-input"
           value={text}
           onChange={e => setText(e.target.value)}
         />
-        <Button variant="primary" onClick={addText}><FormattedMessage id="Confirm" /></Button>
+        <Button
+          variant="primary"
+          onClick={addText}
+          disabled={!title || !text}
+        >
+          <FormattedMessage id="Confirm" />
+        </Button>
       </Modal.Content>
 
     </Modal>
