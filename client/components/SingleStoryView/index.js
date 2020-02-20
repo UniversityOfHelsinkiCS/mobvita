@@ -22,7 +22,7 @@ const SingleStoryView = ({ match }) => {
   }, [])
   if (!story) return 'No story (yet?)'
 
-  const handleWordClick = (surfaceWord, wordLemmas) => {
+  const handleWordClick = (surfaceWord, wordLemmas, wordId) => {
     // const selectedLocale = localeOptions.find(localeOption => localeOption.code === locale)
     window.responsiveVoice.speak(surfaceWord, `${learningLanguage === 'german' ? 'Deutsch' : capitalize(learningLanguage)} Female`)
     const storyId = story.exercise_setting.story
@@ -32,13 +32,14 @@ const SingleStoryView = ({ match }) => {
         wordLemmas,
         capitalize(dictionaryLanguage),
         storyId,
+        wordId,
       ),
     )
   }
 
   const wordVoice = (word) => {
     if (word.bases) {
-      return <span className="word-interactive" key={word.ID} onClick={e => handleWordClick(word.surface, word.lemmas)}>{word.surface}</span>
+      return <span className="word-interactive" key={word.ID} onClick={e => handleWordClick(word.surface, word.lemmas, word.ID)}>{word.surface}</span>
     }
     return word.surface
   }
