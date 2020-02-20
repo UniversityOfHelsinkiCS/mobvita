@@ -12,7 +12,7 @@ export default function Toaster() {
   const message = useSelector(({ notification }) => notification.message)
   const type = useSelector(({ notification }) => notification.type)
   const dispatch = useDispatch()
-  const { storyId, progress } = useSelector(({ uploadProgress }) => uploadProgress)
+  const { storyId, progress, error } = useSelector(({ uploadProgress }) => uploadProgress)
   const [interval, saveInterval] = useState(null)
 
   const user = useSelector(({ user }) => user)
@@ -57,6 +57,18 @@ export default function Toaster() {
       }
     }
   }, [progress])
+
+  useEffect(() => {
+    if (!error) return
+
+    clearInterval(interval)
+    toast.done(progressToastId)
+
+    dispatch({ type: 'CLEAR_UPLOADPROGRESS' })
+    dispatch(setNotification('Story upload failed', 'error'))
+    saveInterval(null)
+    setProgressToastId(null)
+  }, [error])
 
 
   // Handles messages that come from Redux:
