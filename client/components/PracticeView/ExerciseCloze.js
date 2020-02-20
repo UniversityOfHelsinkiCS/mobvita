@@ -9,6 +9,7 @@ const ExerciseCloze = ({ word, handleChange, handleClick, value }) => {
   const [disabled, setDisabled] = useState(false)
   const learningLanguage = useSelector(learningLanguageSelector)
   const { isWrong, tested } = word
+  const [show, setShow] = useState(false)
 
   const handleTooltipClick = () => handleClick(word.base || word.bases, word.lemmas)
 
@@ -44,8 +45,14 @@ const ExerciseCloze = ({ word, handleChange, handleClick, value }) => {
       </div>
     )
 
+  const handleDelayedBlur = () => { // It just works...
+    setTimeout(() => {
+      setShow(false)
+    }, 100)
+  }
+
   return (
-    <Tooltip placement="top" trigger="click" tooltip={tooltip} additionalClassnames="clickable">
+    <Tooltip placement="top" trigger="none" onVisibilityChange={setShow} tooltipShown={show} closeOnOutOfBoundaries tooltip={tooltip} additionalClassnames="clickable">
       <input
         data-cy="exercise-cloze"
         autoCapitalize="off"
@@ -54,6 +61,8 @@ const ExerciseCloze = ({ word, handleChange, handleClick, value }) => {
         placeholder={`${word.base || word.bases}`}
         value={value}
         onChange={changeValue}
+        onBlur={handleDelayedBlur}
+        onFocus={() => setShow(!show)}
         className={className}
         style={{
           width: ((word.surface > word.base) ? getTextWidth(word.surface) : getTextWidth(word.base)),
