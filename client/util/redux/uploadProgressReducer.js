@@ -38,6 +38,7 @@ export default (state = initialState, action) => {
       return {
         ...state,
         progress: action.response.progress,
+        processingError: action.response.error_message,
         pending: false,
         error: false,
       }
