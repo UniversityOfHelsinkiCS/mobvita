@@ -2,10 +2,11 @@ import React, { useState } from 'react'
 import { Form, Input, Card, Icon } from 'semantic-ui-react'
 import { useDispatch, useSelector } from 'react-redux'
 import { postStory } from 'Utilities/redux/uploadProgressReducer'
-import { capitalize, learningLanguageSelector } from 'Utilities/common'
+import { capitalize, learningLanguageSelector, inProduction } from 'Utilities/common'
 import { FormattedMessage, useIntl } from 'react-intl'
 import { setNotification } from 'Utilities/redux/notificationReducer'
 import { Button } from 'react-bootstrap'
+import AddStoryModal from './AddStoryModal'
 
 
 const StoryForm = () => {
@@ -56,6 +57,7 @@ const StoryForm = () => {
               <Button style={{ marginTop: '0.5em' }} variant="primary" type="submit" data-cy="submit-story">
                 <FormattedMessage id="Confirm" />
               </Button>
+              {!inProduction && <AddStoryModal trigger={<Button style={{ marginTop: '0.5em' }} variant="link">Add files or paste text</Button>} />}
             </Form>
           </div>
         </div>

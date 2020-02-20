@@ -11,6 +11,7 @@ import ProtectedRoute from 'Components/AccessControl/ProtectedRoute'
 import Register from 'Components/AccessControl/Register'
 import Flashcards from 'Components/Flashcards'
 import Login from './AccessControl/Login'
+import StoryForm from './StoryListView/StoryForm'
 
 export default () => (
   <Switch>

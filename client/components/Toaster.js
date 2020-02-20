@@ -36,7 +36,7 @@ export default function Toaster() {
   useEffect(() => {
     if (storyId !== null) {
       if (progressToastId === null) {
-        setProgressToastId(toast(`Processing your story, ${progress * 100}% done`, { progress, type: 'info' }))
+        setProgressToastId(toast(`Processing your story, ${Math.floor((progress * 100))}% done`, { progress, type: 'info' }))
       } else {
         toast.update(progressToastId, { progress, render: `Processing your story, ${progress * 100}% done`, type: 'info' })
       }

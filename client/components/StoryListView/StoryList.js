@@ -9,6 +9,7 @@ import { debounce } from 'lodash'
 import CheckboxGroup from 'Components/CheckboxGroup'
 import { capitalize, learningLanguageSelector } from 'Utilities/common'
 import StoryForm from './StoryForm'
+import AddStoryModal from './AddStoryModal'
 
 const StoryList = () => {
   const intl = useIntl()

@@ -2,6 +2,7 @@ import React, { useState, useRef, useEffect } from 'react'
 import { Overlay } from 'react-bootstrap'
 import { useIntl } from 'react-intl'
 import { useSelector } from 'react-redux'
+import Tooltip from './Tooltip'
 
 
 const Word = ({ word, textToSpeech, answer }) => {
@@ -33,8 +34,15 @@ const Word = ({ word, textToSpeech, answer }) => {
     ? `${intl.formatMessage({ id: 'you-used' })}: ${answer.users_answer}`
     : 'You did not answer this one'
 
+
+  const tooltip = (
+    <div>
+      {answerString}
+    </div>
+  )
+
   return (
-    <>
+    <Tooltip placement="top" trigger="click" tooltip={tooltip} additionalClassnames={`${overlayClassName}`}>
       <span
         ref={target}
         className={wordClass}
@@ -44,28 +52,7 @@ const Word = ({ word, textToSpeech, answer }) => {
       >
         {surface}
       </span>
-
-      {show && tested && (
-        <Overlay target={target.current} show={show} placement="top" rootClose onHide={handleHide}>
-          {({
-            placement,
-            scheduleUpdate,
-            arrowProps,
-            outOfBoundaries,
-            show: _show,
-            ...props
-          }) => (
-            <div
-              {...props}
-              className={`overlay ${overlayClassName}`}
-              style={{ ...props.style }}
-            >
-              {answerString}
-            </div>
-          )}
-        </Overlay>
-      )}
-    </>
+    </Tooltip>
   )
 }
 
