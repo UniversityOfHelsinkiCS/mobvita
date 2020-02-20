@@ -27,7 +27,7 @@ router.get('/snippets/story/:storyId/next', snippets.getNext)
 router.post('/snippets/story/:storyId/reset', snippets.reset)
 router.post('/snippets/story/:storyId/answer', snippets.postAnswers)
 
-router.get('/translation/:locale/:language/:wordLemmas', translation.getTranslation)
+router.post('/translation/:locale/:language', translation.getTranslation)
 
 router.get('/opponent', opponent.getOpponent)
 
