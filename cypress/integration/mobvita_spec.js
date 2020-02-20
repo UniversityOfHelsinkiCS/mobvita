@@ -136,7 +136,7 @@ describe('Mobvita', function () {
 
     describe("sidebar is open", function () {
       this.beforeEach(function () {
-        cy.get('.bars').click()
+        cy.get('[data-cy=hamburger]').click()
       })
 
 

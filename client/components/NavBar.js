@@ -20,6 +20,7 @@ export default () => {
             onClick={() => dispatch(sidebarSetOpen(!open))}
             className="sidebar-hamburger"
             style={{ color: 'white' }}
+            data-cy="hamburger"
           />
           <Navbar.Brand
             style={{ color: 'white', marginTop: '0.1em', marginLeft: '0.5em' }}
