@@ -12,6 +12,7 @@ import register from './registerReducer'
 import notification from './notificationReducer'
 import uploadProgress from './uploadProgressReducer'
 import flashcards from './flashcardReducer'
+import groups from './groupsReducer'
 
 const rootReducer = combineReducers({
   stories,
@@ -26,6 +27,7 @@ const rootReducer = combineReducers({
   notification,
   uploadProgress,
   flashcards,
+  groups,
 })
 
 export default (state, action) => (
