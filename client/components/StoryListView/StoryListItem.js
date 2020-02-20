@@ -1,9 +1,10 @@
 import React, { useState } from 'react'
-import { Button, Header, Card, Icon, Accordion, List, Progress } from 'semantic-ui-react'
+import { Header, Card, Icon, Accordion, List, Progress, Button, Dropdown } from 'semantic-ui-react'
 import { Link } from 'react-router-dom'
 import moment from 'moment'
 import { FormattedMessage } from 'react-intl'
 import { inProduction } from 'Utilities/common'
+import useWindowDimensions from 'Utilities/windowDimensions'
 
 const StoryListItem = ({ story }) => {
   const icons = {
@@ -13,8 +14,9 @@ const StoryListItem = ({ story }) => {
     default: <div><Icon name="star outline" size="large" style={{ color: 'black' }} /></div>,
   }
 
-  const difficultyIcon = icons[story.difficulty || 'default']
+  const smallWindow = useWindowDimensions().width < 500
 
+  const difficultyIcon = icons[story.difficulty || 'default']
 
   const storyInfoElements = [
     story.author ? `Author: ${story.author}` : null,
@@ -48,27 +50,56 @@ const StoryListItem = ({ story }) => {
       </Card.Content>
       <Card.Content extra style={{ padding: '15px' }}>
         <div style={{ display: 'flex', alignItems: 'baseline' }}>
-          <Link to={`/stories/${story._id}/`}>
-            <Button variant="primary" style={{ marginRight: '0.5em' }}>
-              <FormattedMessage id="Read" />
-            </Button>
-          </Link>
-          {' '}
-          <Link to={`/stories/${story._id}/practice`}>
-            <Button variant="primary">
-              <FormattedMessage id="practice" />
-            </Button>
-          </Link>
-          {inProduction
-            ? null
+          {smallWindow
+            ? (
+              <Button.Group>
+                <Link to={`/stories/${story._id}/practice`}>
+                  <Button variant="success">
+                    <FormattedMessage id="practice" />
+                  </Button>
+                </Link>
+                <Dropdown className="button icon" floating trigger={<React.Fragment />}>
+                  <Dropdown.Menu>
+                    <Dropdown.Item
+                      text={<FormattedMessage id="Read" />}
+                      as={Link}
+                      to={`/stories/${story._id}/`}
+                      icon="book"
+                    />
+                    <Dropdown.Item
+                      text={<FormattedMessage id="Flashcards" />}
+                      as={Link}
+                      to={`/flashcards/${story._id}/`}
+                      icon="id card"
+                    />
+                  </Dropdown.Menu>
+                </Dropdown>
+              </Button.Group>
+            )
             : (
-              <Link to={`/flashcards/${story._id}/`}>
-                <Button variant="primary" style={{ marginRight: '0.5em' }}>
-                  <FormattedMessage id="Flashcards" />
-                </Button>
-              </Link>
+              <div>
+                <Link to={`/stories/${story._id}/`}>
+                  <Button variant="primary" style={{ marginRight: '0.5em' }}>
+                    <FormattedMessage id="Read" />
+                  </Button>
+                </Link>
+                <Link to={`/stories/${story._id}/practice`}>
+                  <Button variant="primary" style={{ marginRight: '0.5em' }}>
+                    <FormattedMessage id="practice" />
+                  </Button>
+                </Link>
+                <Link to={`/flashcards/${story._id}/`}>
+                  <Button variant="primary" style={{ marginRight: '0.5em' }}>
+                    <FormattedMessage id="Flashcards" />
+                  </Button>
+                </Link>
+              </div>
             )
           }
+
+
+
+
           <span style={{ marginLeft: 'auto' }}>
             {difficultyIcon}
           </span>
