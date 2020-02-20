@@ -69,6 +69,7 @@ const ExerciseCloze = ({ word, handleChange, handleClick, value }) => {
           marginRight: '2px',
           height: '1.5em',
           borderRadius: '6px',
+          lineHeight: 'normal',
         }}
       />
     </Tooltip>
