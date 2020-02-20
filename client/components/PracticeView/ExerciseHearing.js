@@ -1,12 +1,12 @@
 import React, { createRef, useState, useEffect } from 'react'
-import { Input, Icon } from 'semantic-ui-react'
+import { Icon } from 'semantic-ui-react'
 import { getTextWidth } from 'Utilities/common'
 
 
 const ExerciseHearing = ({ word, handleClick, handleChange, value }) => {
   const [className, setClassname] = useState('hearing untouched')
   const [touched, setTouched] = useState(false)
-  const inputRef = createRef()
+  const inputRef = createRef(null)
 
   const { isWrong, tested } = word
 
@@ -34,23 +34,27 @@ const ExerciseHearing = ({ word, handleClick, handleChange, value }) => {
   }
 
   return (
-    <Input
-      data-cy="exercise-hearing"
-      ref={inputRef}
-      key={word.ID}
-      onChange={e => handle(e, word)}
-      value={value}
-      icon={<Icon name="volume up" link onClick={() => clickHandler(word.surface)} style={{ marginRight: '4px' }} />}
-      transparent
-      className={className}
-      style={{
-        width: getTextWidth(word.surface),
-        minWidth: getTextWidth(word.surface),
-        marginRight: '2px',
-        height: '1.5em',
-        borderRadius: '6px',
-      }}
-    />
+    <span>
+      <input
+        data-cy="exercise-hearing"
+        ref={inputRef}
+        key={word.ID}
+        onChange={e => handle(e, word)}
+        value={value}
+        onFocus={() => clickHandler(word.surface)}
+        transparent
+        className={className}
+        style={{
+          width: getTextWidth(word.surface),
+          minWidth: getTextWidth(word.surface),
+          marginRight: '2px',
+          height: '1.5em',
+          borderRadius: '6px',
+          lineHeight: 'normal',
+        }}
+      />
+      <Icon name="volume up" link onClick={() => clickHandler(word.surface)} style={{ marginLeft: '-25px' }} />
+    </span>
   )
 }
 
