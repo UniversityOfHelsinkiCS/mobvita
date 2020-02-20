@@ -12,6 +12,7 @@ import Register from 'Components/AccessControl/Register'
 import Flashcards from 'Components/Flashcards'
 import Login from './AccessControl/Login'
 import StoryForm from './StoryListView/StoryForm'
+import GroupView from './Groups/index'
 
 export default () => (
   <Switch>
@@ -28,5 +29,6 @@ export default () => (
     <ProtectedRoute exact path="/stories/:id" component={SingleStoryView} />
     <ProtectedRoute exact path="/stories/:id/practice/" component={PracticeView} />
     <ProtectedRoute exact path="/stories/:id/compete/" component={CompeteView} />
+    <ProtectedRoute exact path="/groups" component={GroupView} />
   </Switch>
 )
