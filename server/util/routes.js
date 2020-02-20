@@ -36,6 +36,7 @@ router.get('/opponent', opponent.getOpponent)
 router.post('/session', session.create)
 
 router.get('/groups', groups.getGroups)
+router.post('/groups', groups.createGroup)
 router.post('/groups/:groupId', groups.addToGroup)
 
 router.get('/user', user.getSelf)
