@@ -12,13 +12,23 @@ export default function Toaster() {
   const message = useSelector(({ notification }) => notification.message)
   const type = useSelector(({ notification }) => notification.type)
   const dispatch = useDispatch()
-  const { storyId, progress, error } = useSelector(({ uploadProgress }) => uploadProgress)
+  const { storyId, progress, error, processingError } = useSelector(({ uploadProgress }) => uploadProgress)
   const [interval, saveInterval] = useState(null)
 
   const user = useSelector(({ user }) => user)
 
 
   const [progressToastId, setProgressToastId] = useState(null)
+
+  const handleError = (errorMessage) => {
+    clearInterval(interval)
+    toast.done(progressToastId)
+
+    dispatch({ type: 'CLEAR_UPLOADPROGRESS' })
+    dispatch(setNotification(errorMessage, 'error'))
+    saveInterval(null)
+    setProgressToastId(null)
+  }
 
   // TODO: Refactor story upload processing to somewhere else...
   // Must be in some global component for updates to propagate to the currect toast-instance
@@ -59,15 +69,13 @@ export default function Toaster() {
   }, [progress])
 
   useEffect(() => {
+    if (!processingError) return
+    handleError(processingError)
+  }, [processingError])
+
+  useEffect(() => {
     if (!error) return
-
-    clearInterval(interval)
-    toast.done(progressToastId)
-
-    dispatch({ type: 'CLEAR_UPLOADPROGRESS' })
-    dispatch(setNotification('Story upload failed', 'error'))
-    saveInterval(null)
-    setProgressToastId(null)
+    handleError('Could not fetch process. Please refresh the page.')
   }, [error])
 
 
