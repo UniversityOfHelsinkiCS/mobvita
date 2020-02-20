@@ -8,7 +8,6 @@ import { localeOptions, capitalize, localeNameToCode, images, inProduction } fro
 import { setLocale } from 'Utilities/redux/localeReducer'
 import { sidebarSetOpen } from 'Utilities/redux/sidebarReducer'
 import { logout, updateLocale } from 'Utilities/redux/userReducer'
-import { resetCurrentSnippet } from 'Utilities/redux/snippetsReducer'
 import TermsAndConditions from 'Components/TermsAndConditions'
 import { Button } from 'react-bootstrap'
 import AboutUs from './StaticContent/AboutUs'
@@ -21,7 +20,6 @@ export default function Bar({ history }) {
 
   const { user } = useSelector(({ user }) => ({ user: user.data }))
   const open = useSelector(({ sidebar }) => sidebar.open)
-  const focusedSnippet = useSelector(({ snippets }) => snippets.focused)
 
   const locale = useSelector(({ locale }) => locale)
 
@@ -87,12 +85,25 @@ export default function Bar({ history }) {
         >
 
           <div className="sidebar-content">
-
-            <div style={{ padding: '1em', display: 'flex', flexDirection: 'column' }}>
-              <Link to="/home" onClick={() => menuClickWrapper()}>
-                <Header as="h2">MobVita - alpha</Header>
-                <img style={{ width: '6em', margin: '0 auto' }} src={images.revitaLogoTransparent} alt="revitaLogo" />
-              </Link>
+            <div style={{ padding: '0.5em 1em 1em 1em', display: 'flex' }}>
+              <Icon
+                name="bars"
+                size="big"
+                onClick={() => dispatch(sidebarSetOpen(!open))}
+                className="sidebar-hamburger"
+              />
+              <div
+                style={{ padding: '0.5em 1em 1em 0.5em', display: 'flex', flexDirection: 'column' }}
+              >
+                <Link to="/home" onClick={() => menuClickWrapper()}>
+                  <Header as="h2">MobVita - alpha</Header>
+                  <img
+                    style={{ width: '6em', margin: '0 auto' }}
+                    src={images.revitaLogoTransparent}
+                    alt="revitaLogo"
+                  />
+                </Link>
+              </div>
             </div>
 
             {user && (
