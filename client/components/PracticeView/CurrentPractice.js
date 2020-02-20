@@ -135,11 +135,21 @@ const CurrentPractice = ({ storyId }) => {
     dispatch(postAnswers(storyId, answersObj))
   }
 
+  console.log(story)
+
   const textToSpeech = (surfaceWord, wordLemmas) => {
     // const selectedLocale = localeOptions.find(localeOption => localeOption.code === locale)
     window.responsiveVoice.speak(surfaceWord, `${learningLanguage === 'german' ? 'Deutsch' : capitalize(learningLanguage)} Female`)
     if (wordLemmas) {
-      dispatch(getTranslationAction(capitalize(learningLanguage), wordLemmas, capitalize(dictionaryLanguage)))
+      const storyId = story.exercise_setting.story
+      dispatch(
+        getTranslationAction(
+          capitalize(learningLanguage),
+          wordLemmas,
+          capitalize(dictionaryLanguage),
+          storyId,
+        ),
+      )
     }
   }
 
