@@ -57,7 +57,16 @@ const StoryForm = () => {
               <Button style={{ marginTop: '0.5em' }} variant="primary" type="submit" data-cy="submit-story">
                 <FormattedMessage id="Confirm" />
               </Button>
-              {!inProduction && <AddStoryModal trigger={<Button style={{ marginTop: '0.5em' }} variant="link">Add files or paste text</Button>} />}
+              <AddStoryModal
+                trigger={(
+                  <Button
+                    style={{ marginTop: '0.5em' }}
+                    variant="link"
+                  >
+                    {intl.formatMessage({ id: 'or-paste-a-text' }).slice(0, -1)}
+                  </Button>
+                )}
+              />
             </Form>
           </div>
         </div>
