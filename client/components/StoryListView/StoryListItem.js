@@ -3,6 +3,7 @@ import { Button, Header, Card, Icon, Accordion, List, Progress } from 'semantic-
 import { Link } from 'react-router-dom'
 import moment from 'moment'
 import { FormattedMessage } from 'react-intl'
+import { inProduction } from 'Utilities/common'
 
 const StoryListItem = ({ story }) => {
   const icons = {
@@ -58,6 +59,16 @@ const StoryListItem = ({ story }) => {
               <FormattedMessage id="practice" />
             </Button>
           </Link>
+          {inProduction
+            ? null
+            : (
+              <Link to={`/flashcards/${story._id}/`}>
+                <Button variant="primary" style={{ marginRight: '0.5em' }}>
+                  <FormattedMessage id="Flashcards" />
+                </Button>
+              </Link>
+            )
+          }
           <span style={{ marginLeft: 'auto' }}>
             {difficultyIcon}
           </span>

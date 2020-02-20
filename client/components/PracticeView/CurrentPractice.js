@@ -135,9 +135,7 @@ const CurrentPractice = ({ storyId }) => {
     dispatch(postAnswers(storyId, answersObj))
   }
 
-  console.log(story)
-
-  const textToSpeech = (surfaceWord, wordLemmas) => {
+  const textToSpeech = (surfaceWord, wordLemmas, wordId) => {
     // const selectedLocale = localeOptions.find(localeOption => localeOption.code === locale)
     window.responsiveVoice.speak(surfaceWord, `${learningLanguage === 'german' ? 'Deutsch' : capitalize(learningLanguage)} Female`)
     if (wordLemmas) {
@@ -148,6 +146,7 @@ const CurrentPractice = ({ storyId }) => {
           wordLemmas,
           capitalize(dictionaryLanguage),
           storyId,
+          wordId,
         ),
       )
     }
@@ -203,8 +202,8 @@ const CurrentPractice = ({ storyId }) => {
           tabIndex={-1}
           key={word.ID}
           className="word-interactive"
-          onKeyDown={() => textToSpeech(word.surface, word.lemmas)}
-          onClick={() => textToSpeech(word.surface, word.lemmas)}
+          onKeyDown={() => textToSpeech(word.surface, word.lemmas, word.ID)}
+          onClick={() => textToSpeech(word.surface, word.lemmas, word.ID)}
         >
           {word.surface}
         </span>
