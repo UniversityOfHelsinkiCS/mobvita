@@ -1,7 +1,7 @@
 {
   "projectId": "q9wzp2",
   "defaultCommandTimeout": 20000,
-  "responseTimeout": 60000,
+  "responseTimeout": 90000,
   "blacklistHosts": [
     "www.googletagmanager.com",
     "www.google-analytics.com"
