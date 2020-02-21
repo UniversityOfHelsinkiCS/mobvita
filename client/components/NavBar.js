@@ -12,7 +12,7 @@ export default () => {
 
   return (
     <Headroom>
-      <Navbar>
+      <Navbar style={{ paddingLeft: '0.5em' }}>
         <div style={{ display: 'flex' }}>
           <Icon
             name="bars"
@@ -23,7 +23,7 @@ export default () => {
             data-cy="hamburger"
           />
           <Navbar.Brand
-            style={{ color: 'white', marginTop: '0.1em', marginLeft: '0.5em' }}
+            style={{ color: 'white', marginLeft: '0.5em' }}
             href="/home"
           >
             Mobvita

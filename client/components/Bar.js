@@ -85,15 +85,16 @@ export default function Bar({ history }) {
         >
 
           <div className="sidebar-content">
-            <div style={{ padding: '0.5em 1em 1em 1em', display: 'flex' }}>
+            <div style={{ padding: '1em 1em 1em 0.5em', display: 'flex' }}>
               <Icon
                 name="bars"
                 size="big"
                 onClick={() => dispatch(sidebarSetOpen(!open))}
                 className="sidebar-hamburger"
+                style={{ position: 'fixed', paddingTop: 0 }}
               />
               <div
-                style={{ padding: '0.5em 1em 1em 0.5em', display: 'flex', flexDirection: 'column' }}
+                style={{ padding: '1em 1em 1em 1.5em', display: 'flex', flexDirection: 'column', marginRight: 'auto', marginLeft: 'auto' }}
               >
                 <Link to="/home" onClick={() => menuClickWrapper()}>
                   <Header as="h2">MobVita - alpha</Header>
