@@ -264,12 +264,12 @@ describe('Mobvita', function () {
       })
 
       it("can get to next snippet after two retries", function () {
-        cy.contains('0 / 8')
+        cy.contains('0 / 8', { timeout: 20000 })
 
         cy.get("[data-cy=check-answer]").click()
         cy.get("[data-cy=check-answer]").click()
 
-        cy.contains('1 / 8')
+        cy.contains('1 / 8', { timeout: 20000 })
       })
 
       it("shows feedback", function () {
