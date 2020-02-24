@@ -13,6 +13,17 @@ export const addStudentsToGroup = (students, groupId) => {
   return callBuilder(route, prefix, 'post', payload)
 }
 
+export const createGroup = (groupName, students, teachers) => {
+  const route = '/groups/'
+  const payload = {
+    group_name: groupName,
+    students,
+    teachers,
+  }
+  const prefix = 'CREATE_GROUP'
+  return callBuilder(route, prefix, 'post', payload)
+}
+
 export default (state = {}, action) => {
   switch (action.type) {
     case 'GET_GROUPS_ATTEMPT':
@@ -30,7 +41,7 @@ export default (state = {}, action) => {
     case 'GET_GROUPS_SUCCESS':
       return {
         ...state,
-        groups: action.response.groups,
+        groups: action.response.groups.sort((a, b) => a.groupName.localeCompare(b.groupName)),
         pending: false,
         error: false,
       }
@@ -49,7 +60,31 @@ export default (state = {}, action) => {
     case 'ADD_STUDENTS_SUCCESS':
       return {
         ...state,
-        groups: state.groups.filter(g => g.group_id !== action.response.group.group_id).concat(action.response.group),
+        groups: state.groups
+          .filter(g => g.group_id !== action.response.group.group_id)
+          .concat(action.response.group)
+          .sort((a, b) => a.groupName.localeCompare(b.groupName)),
+        pending: false,
+        error: false,
+      }
+    case 'CREATE_GROUP_ATTEMPT':
+      return {
+        ...state,
+        pending: true,
+        error: false,
+      }
+    case 'CREATE_GROUP_FAILURE':
+      return {
+        ...state,
+        pending: false,
+        error: true,
+      }
+    case 'CREATE_GROUP_SUCCESS':
+      return {
+        ...state,
+        groups: state.groups
+          .concat(action.response.group)
+          .sort((a, b) => a.groupName.localeCompare(b.groupName)),
         pending: false,
         error: false,
       }

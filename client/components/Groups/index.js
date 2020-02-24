@@ -10,6 +10,7 @@ import {
   Button,
   FormControl,
 } from 'react-bootstrap'
+import AddGroup from './AddGroup'
 
 const GroupView = () => {
   const [currentGroupId, setCurrentGroupId] = useState(null)
@@ -50,6 +51,7 @@ const GroupView = () => {
           ))}
         </Dropdown.Menu>
       </Dropdown>
+      <AddGroup trigger={<Button variant="primary">Add group</Button>} />
 
       <Accordion style={{ marginBottom: '1em' }}>
         <Card>
