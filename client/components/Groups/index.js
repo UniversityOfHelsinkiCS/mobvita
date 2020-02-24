@@ -12,8 +12,11 @@ import {
 } from 'react-bootstrap'
 import { FormattedMessage } from 'react-intl'
 import AddGroup from './AddGroup'
+import AddToGroup from './AddToGroup'
 
 const GroupView = () => {
+  const [addToGroupOpen, setAddToGroupOpen] = useState(false)
+  const [addGroupOpen, setAddGroupOpen] = useState(false)
   const [currentGroupId, setCurrentGroupId] = useState(null)
   const [studentsToAdd, setStudentsToAdd] = useState('')
   const dispatch = useDispatch()
@@ -53,7 +56,9 @@ const GroupView = () => {
             ))}
           </Dropdown.Menu>
         </Dropdown>
-        <AddGroup trigger={<Button variant="primary"><FormattedMessage id="create-new-group" /></Button>} />
+        <Button onClick={() => setAddGroupOpen(true)}><FormattedMessage id="create-new-group" /></Button>
+
+        <AddGroup isOpen={addGroupOpen} setOpen={setAddGroupOpen} />
       </div>
 
       <Accordion style={{ marginBottom: '1em' }}>
@@ -74,7 +79,11 @@ const GroupView = () => {
             Students
           </Accordion.Toggle>
           <Accordion.Collapse eventKey="1">
-            <ListGroup>
+            <ListGroup style={{
+              maxHeight: '50vh',
+              overflow: 'scroll',
+            }}
+            >
               {currentGroup.students.map(student => (
                 <ListGroup.Item key={student.userName}>{student.userName}</ListGroup.Item>
               ))}
@@ -82,18 +91,8 @@ const GroupView = () => {
           </Accordion.Collapse>
         </Card>
       </Accordion>
-
-      <InputGroup className="mb-3">
-        <FormControl
-          as="textarea"
-          placeholder="Student emails"
-          value={studentsToAdd}
-          onChange={event => setStudentsToAdd(event.target.value)}
-        />
-        <InputGroup.Append>
-          <Button variant="primary" onClick={addStudents}>Add students</Button>
-        </InputGroup.Append>
-      </InputGroup>
+      <Button onClick={() => setAddToGroupOpen(true)}><FormattedMessage id="add-people-to-group" /></Button>
+      <AddToGroup groupId={currentGroupId} isOpen={addToGroupOpen} setOpen={setAddToGroupOpen} />
     </div>
   )
 }
