@@ -85,7 +85,7 @@ export default function Bar({ history }) {
         >
 
           <div className="sidebar-content">
-            <div style={{ padding: '1em 1em 1em 0.5em', display: 'flex' }}>
+            <div style={{ padding: '0.5em 1em 1em 0.5em', display: 'flex' }}>
               <Icon
                 name="bars"
                 size="big"

@@ -89,7 +89,7 @@ const DictionaryHelp = ({ translation }) => {
           <select
             defaultValue={translationLanguageCode || translatableLanguages[learningLanguage][0]}
             data-cy="dictionary-dropdown"
-            style={{ marginLeft: '0.5em' }}
+            style={{ marginLeft: '0.5em', border: 'none', backgroundColor: 'white' }}
             onChange={e => handleDropdownChange(e.target.value)}
           >
             {dictionaryOptions.map(option => <option key={option.key}>{option.text}</option>)}
