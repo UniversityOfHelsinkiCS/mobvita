@@ -2,14 +2,14 @@
  * Insert application wide common items here
  */
 
-const inProduction = process.env.NODE_ENV === 'production'
+const isDeployed = process.env.NODE_ENV === 'production'
 
 const basePath = process.env.BASE_PATH || '/'
 
-const hiddenFeatures = !inProduction || basePath === '/staging'
+const hiddenFeatures = !isDeployed || basePath === '/staging'
 
 module.exports = {
-  inProduction,
+  isDeployed,
   basePath,
   hiddenFeatures,
 }
