@@ -42,7 +42,6 @@ const ExerciseHearing = ({ word, handleClick, handleChange, value }) => {
         onChange={e => handle(e, word)}
         value={value}
         onFocus={() => clickHandler(word.surface)}
-        transparent
         className={className}
         style={{
           width: getTextWidth(word.surface),

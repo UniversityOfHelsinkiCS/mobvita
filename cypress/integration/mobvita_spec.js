@@ -178,11 +178,8 @@ describe('Mobvita', function () {
       })
 
       it("translate-to language can be changed", function () {
-        cy.get("[data-cy=dictionary-dropdown] > div.text")
-          .click()
-        cy.get(".visible > :nth-child(6)")
-          .contains("Finnish")
-          .click()
+        cy.get("[data-cy=dictionary-dropdown]").select("Finnish")
+
       })
 
       it("word translates correctly", function () {
@@ -195,11 +192,7 @@ describe('Mobvita', function () {
         cy.contains("poliisi")
           .click()
         cy.contains("yhteiskunnassa järjestystä ja turvallisuutta valvova ja ylläpitävä virkamies")
-        cy.get("[data-cy=dictionary-dropdown] > div.text")
-          .click()
-        cy.get(".visible > :nth-child(5)")
-          .contains("Spanish")
-          .click()
+        cy.get("[data-cy=dictionary-dropdown]").select("Spanish")
         cy.contains("policía")
       })
 
