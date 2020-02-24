@@ -4,10 +4,10 @@ import callBuilder from '../apiConnection'
  * Actions and reducers are in the same file for readability
  */
 
-export const getTranslationAction = (language, wordLemmas, locale, storyId) => {
+export const getTranslationAction = (language, wordLemmas, locale, storyId, wordId) => {
   const route = `/translation/${locale}/${language || translatableLanguages[locale][0]}`
   const prefix = 'GET_TRANSLATION'
-  const payload = { wordLemmas, storyId }
+  const payload = { wordLemmas, storyId, wordId }
   return callBuilder(route, prefix, 'post', payload)
 }
 

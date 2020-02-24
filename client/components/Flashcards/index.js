@@ -2,19 +2,24 @@ import React, { useState, useEffect } from 'react'
 import SwipeableViews from 'react-swipeable-views'
 import { useDispatch, useSelector } from 'react-redux'
 import { Icon } from 'semantic-ui-react'
-import { getFlashcards } from 'Utilities/redux/flashcardReducer'
+import { getFlashcards, getStoryFlashcards } from 'Utilities/redux/flashcardReducer'
 import { learningLanguageSelector, dictionaryLanguageSelector } from 'Utilities/common'
 import Flashcard from './Flashcard'
 
-const Flashcards = () => {
+const Flashcards = ({ match }) => {
   const dispatch = useDispatch()
   const learningLanguage = useSelector(learningLanguageSelector)
   const dictionaryLanguage = useSelector(dictionaryLanguageSelector)
   const { cards, pending } = useSelector(({ flashcards }) => flashcards)
   const [swipeIndex, setSwipeIndex] = useState(0)
+  const { storyId } = match.params
 
   useEffect(() => {
-    dispatch(getFlashcards(learningLanguage, dictionaryLanguage))
+    if (storyId) {
+      dispatch(getStoryFlashcards(learningLanguage, dictionaryLanguage, storyId))
+    } else {
+      dispatch(getFlashcards(learningLanguage, dictionaryLanguage))
+    }
   }, [])
 
   if (pending || !cards) {

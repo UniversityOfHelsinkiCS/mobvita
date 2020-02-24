@@ -21,6 +21,7 @@ router.get('/stories/:language/:id', stories.getOne)
 router.post('/stories', stories.createOne)
 
 router.get('/flashcards/:inputLanguage/:outputLanguage', flashcards.getFlashcards)
+router.get('/flashcards/:inputLanguage/:outputLanguage/:storyId', flashcards.getStoryFlashcards)
 router.post('/flashcards/:inputLanguage/:outputLanguage/answer', flashcards.recordFlashcardAnswer)
 
 router.get('/snippets/story/:storyId/current', snippets.getCurrent)
@@ -35,6 +36,7 @@ router.get('/opponent', opponent.getOpponent)
 router.post('/session', session.create)
 
 router.get('/groups', groups.getGroups)
+router.post('/groups', groups.createGroup)
 router.post('/groups/:groupId', groups.addToGroup)
 
 router.get('/user', user.getSelf)
