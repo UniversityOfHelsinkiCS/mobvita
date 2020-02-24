@@ -25,8 +25,8 @@ workflows:
             -  cypress/run
             -  sentry
           image: toska/$CIRCLE_PROJECT_REPONAME
-          tag: 'prod'
-          extra_build_args: '--build-arg REVITA_URL=https://revita.cs.helsinki.fi/api --build-arg COMMIT_HASH=$CIRCLE_SHA1'
+          tag: 'staging'
+          extra_build_args: '--build-arg REVITA_URL=https://revita.cs.helsinki.fi/api --build-arg BASE_PATH=/staging--build-arg COMMIT_HASH=$CIRCLE_SHA1'
           filters:
             branches:
               only: master
@@ -34,9 +34,12 @@ workflows:
     jobs:
       - dockerhub/publish:
           image: toska/$CIRCLE_PROJECT_REPONAME
-          extra_build_args: '--build-arg REVITA_URL=https://revita-test.cs.helsinki.fi/api --build-arg BASE_PATH=/staging --build-arg COMMIT_HASH=$CIRCLE_SHA1'
-          tag: 'staging'
+          extra_build_args: '--build-arg REVITA_URL=https://revita.cs.helsinki.fi/api --build-arg COMMIT_HASH=$CIRCLE_SHA1'
+          tag: 'prod'
           filters:
+            tags:
+              only: /.*/
             branches:
-              only: staging
+              ignore: /.*/
+
 
