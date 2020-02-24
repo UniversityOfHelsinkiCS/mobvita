@@ -61,6 +61,10 @@ body {
   font-family: $default-font
 }
 
+.ui.dropdown .menu {
+  max-height: 50em !important;
+}
+
 
 
 // MISC CSS:
@@ -233,13 +237,13 @@ body {
   align-self: flex-start;
   height: auto;
   position: sticky;
-  top: 1em;
+  top: 1em + $navbar-height;
   @media (max-width: 1023px) {
     position: fixed;
     top: auto;
-    left: 5%;
+    right: 1em;
     bottom: 2%;
-    width: 90%;
+    width: calc(100vw - 2em)
   }
 }
 
