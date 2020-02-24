@@ -21,14 +21,13 @@ const AddGroup = ({ trigger }) => {
     dispatch(createGroup(groupName, studentsToAdd, teachersToAdd))
   }
 
-
   return (
     <Modal
       dimmer="inverted"
       closeIcon
       trigger={trigger}
     >
-      <Modal.Header><FormattedMessage id="add-your-stories" /></Modal.Header>
+      <Modal.Header><FormattedMessage id="create-new-group" /></Modal.Header>
       <Modal.Content style={{ display: 'flex', flexDirection: 'column' }}>
         <FormattedMessage id="name-of-group" />
         <input

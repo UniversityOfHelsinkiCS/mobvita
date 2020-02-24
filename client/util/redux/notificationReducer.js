@@ -32,6 +32,16 @@ export default (state = initialState, action) => {
         message: 'Account creation success. Check your email for confirmation link!',
         type: type.success,
       }
+    case 'CREATE_GROUP_SUCCESS':
+      return {
+        message: 'Group created!',
+        type: type.success,
+      }
+    case 'CREATE_GROUP_FAILURE':
+      return {
+        message: action.response.response.data,
+        type: type.error,
+      }
     default:
       return state
   }
