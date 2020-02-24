@@ -61,6 +61,10 @@ body {
   font-family: $default-font
 }
 
+.ui.dropdown .menu {
+  max-height: 50em !important;
+}
+
 
 
 // MISC CSS:
