@@ -109,16 +109,13 @@ export default function Bar({ history }) {
 
             {user && (
               <>
+                {user.user.email === 'anonymous_email' && (
                 <Menu.Item>
                   <div style={{ padding: '1em 0em' }}>
-                    <div>{user.user.username}</div>
-                    <div>{user.user.email}</div>
-                    {user.user.exercise_history.length > 0 && <div>{`Current ELO:${user.user.exercise_history[user.user.exercise_history.length - 1].score}`}</div>}
-                    <div />
-                    {user.user.email === 'anonymous_email'
-                      && <Link onClick={() => menuClickWrapper()} to="/register"><Button variant="primary"><FormattedMessage id="register-to-upload-your-own-stories" /></Button></Link>}
+                    <Link onClick={() => menuClickWrapper()} to="/register"><Button variant="primary"><FormattedMessage id="register-to-upload-your-own-stories" /></Button></Link>
                   </div>
                 </Menu.Item>
+                )}
 
                 <Menu.Item>
 
