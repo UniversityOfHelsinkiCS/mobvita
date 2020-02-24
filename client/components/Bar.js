@@ -4,7 +4,7 @@ import { Sidebar, Menu, Icon, Header, Dropdown } from 'semantic-ui-react'
 import { useDispatch, useSelector } from 'react-redux'
 import { Swipeable } from 'react-swipeable'
 import { FormattedMessage } from 'react-intl'
-import { localeOptions, capitalize, localeNameToCode, images, inProduction } from 'Utilities/common'
+import { localeOptions, capitalize, localeNameToCode, images, inProduction, hiddenFeatures } from 'Utilities/common'
 import { setLocale } from 'Utilities/redux/localeReducer'
 import { sidebarSetOpen } from 'Utilities/redux/sidebarReducer'
 import { logout, updateLocale } from 'Utilities/redux/userReducer'
@@ -132,9 +132,8 @@ export default function Bar({ history }) {
                     </Button>
                   </Link>
 
-                  {inProduction
-                    ? null
-                    : <Settings trigger={<Button variant="secondary" block style={{ marginTop: '0.5em' }}>Learning settings</Button>} />}
+                  {hiddenFeatures
+                    && <Settings trigger={<Button variant="secondary" block style={{ marginTop: '0.5em' }}>Learning settings</Button>} />}
                 </Menu.Item>
               </>
             )}
