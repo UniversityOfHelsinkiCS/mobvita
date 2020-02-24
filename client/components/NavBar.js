@@ -14,16 +14,20 @@ export default () => {
   const [eloChanged, setEloChanged] = useState(false)
   const [timeoutObj, setTimeoutObj] = useState(null)
 
+
   useEffect(() => {
-    if (!timeoutObj && user) {
+    if (user && user.user.exercise_history) {
       setEloChanged(true)
-      const temp = setTimeout(() => {
+      setTimeout(() => {
         setEloChanged(false)
-        setTimeoutObj(null)
       }, 1000)
-      setTimeoutObj(temp)
     }
-  }, [user.user.exercise_history[user.user.exercise_history.length - 1].score])
+  }, [user])
+
+  const elo = (user && user.user.exercise_history && user.user.exercise_history[user.user.exercise_history.length - 1] && user.user.exercise_history[user.user.exercise_history.length - 1].score)
+    ? user.user.exercise_history[user.user.exercise_history.length - 1].score
+    : 0
+
 
   return (
     <Headroom>
@@ -48,11 +52,11 @@ export default () => {
         {user
           && (
             <Navbar.Text style={{ color: 'white', marginRight: '1em' }}>
-              <div>{user.user.username}</div>
+              <div>{`${user.user.email}`}</div>
             </Navbar.Text>
           )
         }
-        {user && user.user.exercise_history.length > 0 && (
+        {user && (
         <Shake
           h={5}
           v={5}
@@ -66,7 +70,7 @@ export default () => {
           active={eloChanged}
         >
           <Navbar.Text style={{ color: 'white', marginRight: '1em' }}>
-            <div>{`Points: ${user.user.exercise_history[user.user.exercise_history.length - 1].score}`}</div>
+            <div>{`Points: ${elo}`}</div>
           </Navbar.Text>
         </Shake>
         )}
