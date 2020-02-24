@@ -8,8 +8,6 @@ import { getTranslationAction } from 'Utilities/redux/translationReducer'
 import { learningLanguageSelector, translatableLanguages } from 'Utilities/common'
 import useWindowDimensions from 'Utilities/windowDimensions'
 import { Spinner } from 'react-bootstrap'
-import CustomDropdown from './customDropdown'
-
 
 const DictionaryHelp = ({ translation }) => {
   const [showHelp, setShow] = useState(false)

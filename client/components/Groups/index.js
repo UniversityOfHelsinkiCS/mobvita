@@ -10,6 +10,8 @@ import {
   Button,
   FormControl,
 } from 'react-bootstrap'
+import { FormattedMessage } from 'react-intl'
+import AddGroup from './AddGroup'
 
 const GroupView = () => {
   const [currentGroupId, setCurrentGroupId] = useState(null)
@@ -40,16 +42,19 @@ const GroupView = () => {
 
   return (
     <div className="maxContentSize autoMargin">
-      <Dropdown onSelect={key => setCurrentGroupId(key)} style={{ marginBottom: '1em' }}>
-        <Dropdown.Toggle variant="info" id="dropdown-basic">
-          {currentGroup.groupName}
-        </Dropdown.Toggle>
-        <Dropdown.Menu>
-          {groups.map(group => (
-            <Dropdown.Item eventKey={group.group_id}>{group.groupName}</Dropdown.Item>
-          ))}
-        </Dropdown.Menu>
-      </Dropdown>
+      <div style={{ display: 'flex' }}>
+        <Dropdown onSelect={key => setCurrentGroupId(key)} style={{ marginBottom: '1em' }}>
+          <Dropdown.Toggle variant="info" id="dropdown-basic">
+            {currentGroup.groupName}
+          </Dropdown.Toggle>
+          <Dropdown.Menu>
+            {groups.map(group => (
+              <Dropdown.Item eventKey={group.group_id}>{group.groupName}</Dropdown.Item>
+            ))}
+          </Dropdown.Menu>
+        </Dropdown>
+        <AddGroup trigger={<Button variant="primary"><FormattedMessage id="create-new-group" /></Button>} />
+      </div>
 
       <Accordion style={{ marginBottom: '1em' }}>
         <Card>
