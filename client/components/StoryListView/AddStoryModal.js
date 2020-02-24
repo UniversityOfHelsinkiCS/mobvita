@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 import { Modal } from 'semantic-ui-react'
 import { FormattedMessage } from 'react-intl'
 import { useDispatch, useSelector } from 'react-redux'
-import { Button } from 'react-bootstrap'
+import { Button, FormControl } from 'react-bootstrap'
 import { learningLanguageSelector, capitalize } from 'Utilities/common'
 import { postStory } from 'Utilities/redux/uploadProgressReducer'
 
@@ -32,13 +32,15 @@ const AddStoryModal = ({ trigger }) => {
     >
       <Modal.Header><FormattedMessage id="add-your-stories" /></Modal.Header>
       <Modal.Content style={{ display: 'flex', flexDirection: 'column' }}>
-        <FormattedMessage id="Subject" />
-        <input
+        <span style={{ fontWeight: '550' }}><FormattedMessage id="Subject" /></span>
+        <FormControl
           type="text"
           value={title}
           onChange={e => setTitle(e.target.value)}
         />
-        <textarea
+        <FormControl
+          as="textarea"
+          rows={8}
           className="story-text-input"
           value={text}
           onChange={e => setText(e.target.value)}
