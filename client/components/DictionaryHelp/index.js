@@ -8,6 +8,7 @@ import { getTranslationAction } from 'Utilities/redux/translationReducer'
 import { learningLanguageSelector, translatableLanguages } from 'Utilities/common'
 import useWindowDimensions from 'Utilities/windowDimensions'
 import { Spinner } from 'react-bootstrap'
+import CustomDropdown from './customDropdown'
 
 
 const DictionaryHelp = ({ translation }) => {
@@ -44,12 +45,12 @@ const DictionaryHelp = ({ translation }) => {
     }
   }, [translation])
 
-  const handleDropdownChange = (e, data) => {
+  const handleDropdownChange = (value) => {
     if (translation) {
       const lemmas = translation.map(t => t.lemma).join('+')
-      if (lemmas !== '') dispatch(getTranslationAction(learningLanguage, lemmas, data.value))
+      if (lemmas !== '') dispatch(getTranslationAction(learningLanguage, lemmas, value))
     }
-    dispatch(updateDictionaryLanguage(data.value))
+    dispatch(updateDictionaryLanguage(value))
   }
 
   const smallWindow = windowWidth < 1024
@@ -86,16 +87,15 @@ const DictionaryHelp = ({ translation }) => {
     <div className="dictionaryHelp">
       <Segment>
         <div>
-          <FormattedMessage id="translation-target-language">
-            {txt => <span style={{ marginRight: '5px' }}>{txt}</span>}
-          </FormattedMessage>
-          <Dropdown
-            data-cy="dictionary-dropdown"
-            closeOnChange
+          <FormattedMessage id="translation-target-language" />
+          <select
             defaultValue={translationLanguageCode || translatableLanguages[learningLanguage][0]}
-            onChange={handleDropdownChange}
-            options={dictionaryOptions}
-          />
+            data-cy="dictionary-dropdown"
+            style={{ marginLeft: '0.5em' }}
+            onChange={e => handleDropdownChange(e.target.value)}
+          >
+            {dictionaryOptions.map(option => <option key={option.key}>{option.text}</option>)}
+          </select>
         </div>
         {smallWindow
           ? (
