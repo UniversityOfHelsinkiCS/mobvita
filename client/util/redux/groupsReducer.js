@@ -6,9 +6,9 @@ export const getGroups = () => {
   return callBuilder(route, prefix, 'get')
 }
 
-export const addStudentsToGroup = (students, groupId) => {
+export const addToGroup = (students, teachers, groupId) => {
   const route = `/groups/${groupId}`
-  const payload = { students }
+  const payload = { students, teachers }
   const prefix = 'ADD_STUDENTS'
   return callBuilder(route, prefix, 'post', payload)
 }

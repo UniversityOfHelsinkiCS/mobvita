@@ -3,22 +3,21 @@ import { Modal } from 'semantic-ui-react'
 import { FormattedMessage } from 'react-intl'
 import { useDispatch } from 'react-redux'
 import { Button, FormControl, Input } from 'react-bootstrap'
-import { createGroup } from 'Utilities/redux/groupsReducer'
+import { addToGroup } from 'Utilities/redux/groupsReducer'
 
 
-const AddGroup = ({ isOpen, setOpen }) => {
-  const [groupName, setGroupName] = useState('')
+const AddToGroup = ({ groupId, isOpen, setOpen }) => {
   const [teachers, setTeachers] = useState('')
   const [students, setStudents] = useState('')
 
 
   const dispatch = useDispatch()
 
-  const addGroup = () => {
+  const add = () => {
     const studentsToAdd = students.split(',').map(p => p.trim())
     const teachersToAdd = teachers.split(',').map(p => p.trim())
 
-    dispatch(createGroup(groupName, studentsToAdd, teachersToAdd))
+    dispatch(addToGroup(studentsToAdd, teachersToAdd, groupId))
     setOpen(false)
   }
 
@@ -29,15 +28,9 @@ const AddGroup = ({ isOpen, setOpen }) => {
       open={isOpen}
       onClose={() => setOpen(false)}
     >
-      <Modal.Header><FormattedMessage id="create-new-group" /></Modal.Header>
+      <Modal.Header><FormattedMessage id="add-people-to-group" /></Modal.Header>
       <Modal.Content style={{ display: 'flex', flexDirection: 'column' }}>
-        <FormattedMessage id="name-of-group" />
-        <FormControl
-          as="input"
-          onChange={e => setGroupName(e.target.value)}
-        />
         <FormattedMessage id="teacher-emails" />
-
         <FormControl
           as="textarea"
           value={teachers}
@@ -51,7 +44,7 @@ const AddGroup = ({ isOpen, setOpen }) => {
         />
         <Button
           variant="primary"
-          onClick={addGroup}
+          onClick={add}
         >
           <FormattedMessage id="Confirm" />
         </Button>
@@ -61,4 +54,4 @@ const AddGroup = ({ isOpen, setOpen }) => {
   )
 }
 
-export default AddGroup
+export default AddToGroup
