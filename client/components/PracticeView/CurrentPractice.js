@@ -33,6 +33,7 @@ const CurrentPractice = ({ storyId }) => {
   const { story } = useSelector(({ stories }) => ({ story: stories.focused }))
 
   const [finished, setFinished] = useState(false)
+
   let snippetProgress = ''
   if (snippets.focused) {
     snippetProgress = finished ? snippets.focused.snippetid[0] + 1 : snippets.focused.snippetid[0]
@@ -93,7 +94,7 @@ const CurrentPractice = ({ storyId }) => {
 
   useEffect(() => {
     if (snippets.focused) {
-      setProgress((snippets.focused.snippetid[0]) / snippets.focused.total_num)
+      setProgress(snippetProgress / snippets.focused.total_num)
     }
   }, [snippets.focused])
 
@@ -107,6 +108,7 @@ const CurrentPractice = ({ storyId }) => {
         dispatch(getNextSnippet(storyId, currentSnippetId))
       } else {
         setFinished(true)
+        setProgress(currentSnippetId + 1 / snippets.focused.total_num)
       }
     }
     dispatch(getSelf())
