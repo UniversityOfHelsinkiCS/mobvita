@@ -98,7 +98,6 @@ const StoryList = () => {
     <div
       data-cy="library-controls"
       className="libraryControl"
-      style={{ margin: '10px 0' }}
     >
       <Search
         open={false}
@@ -106,7 +105,7 @@ const StoryList = () => {
         loading={allPending}
         value={searchString}
         onSearchChange={handleSearchChange}
-        size="big"
+        size="small"
         style={{ marginBottom: 0, marginTop: 'auto' }}
       />
       <div style={{ display: 'flex', justifyContent: 'space-between', padding: '0 0.5em' }}>

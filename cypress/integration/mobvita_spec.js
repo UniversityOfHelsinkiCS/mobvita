@@ -113,17 +113,19 @@ describe('Mobvita', function () {
 
     it("can start filtered practice", function () {
       cy.get('[data-cy=practice-now]').click()
-      cy.get("[data-cy=category-science]").click()
-      cy.get("[data-cy=category-uncategorized]").click()
+      cy.get('[class=checkboxGroup]').eq(1).children()
+        .then(children => {
+          children[2].click()
+          children[4].click()
+        })
+
       cy.get("[data-cy=start-random]").click()
     })
 
     it("cant start filtered practice with 0 stories", function () {
-      const categories = ["politics", "culture", "science", "sport", "uncategorized"]
       cy.get('[data-cy=practice-now]').click()
-      categories.forEach(category => {
-        cy.get(`[data-cy=category-${category}]`).click()
-      })
+      cy.get("[data-cy=start-random]").should("be.enabled")
+      cy.get('[class=checkboxGroup]').eq(1).children().each(e => e.click())
       cy.get("[data-cy=start-random]").should("be.disabled")
     })
 
@@ -164,7 +166,7 @@ describe('Mobvita', function () {
       })
     })
 
-    describe("groups", function () {
+    describe.only("groups", function () {
       this.beforeEach(function () {
         cy.visit('http://localhost:8000/groups/')
       })
@@ -180,9 +182,9 @@ describe('Mobvita', function () {
 
         cy.get('[type=submit]').click()
         cy.contains('my_test_group')
-        cy.get('[data-cy=teachers-toggle').click()
+        cy.get('[class=card-header]').eq(0).click()
         cy.contains(teacher.username)
-        cy.get('[data-cy=students-toggle').click()
+        cy.get('[class=card-header]').eq(1).click()
         cy.contains(student.username)
       })
 
@@ -206,9 +208,9 @@ describe('Mobvita', function () {
         cy.get('textarea').eq(0).type(teacher.email)
         cy.get('textarea').eq(1).type(student.email)
         cy.get('[type=submit]').click()
-        cy.get('[data-cy=teachers-toggle').click()
+        cy.get('[class=card-header]').eq(0).click()
         cy.contains(teacher.username)
-        cy.get('[data-cy=students-toggle').click()
+        cy.get('[class=card-header]').eq(1).click()
         cy.contains(student.username)
       })
     })

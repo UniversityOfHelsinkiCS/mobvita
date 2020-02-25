@@ -23,6 +23,10 @@ const App = () => {
   }
 
 
+  history.listen((location, action) => { // Scroll to top when page changes.
+    window.scrollTo(0, 0)
+  })
+
   // Use push, replace, and go to navigate around.
   history.push(history.location)
 
@@ -30,7 +34,7 @@ const App = () => {
     <>
       <ReactRouter history={history}>
         <Toaster />
-        <NavBar />
+        <Route component={NavBar} />
         <div style={{ display: 'flex' }}>
           <Route component={Bar} />
 

@@ -74,9 +74,7 @@ body {
   padding-top: 1em;
   min-height: 100vh;
   width: 100%;
-  padding-right: $sidebar-swipeable-width;
-  // padding-left: 1em;
-  margin: 0 auto;
+  padding: 1em 0.2em 5em 0.2em;
 }
 
 .word-interactive{
@@ -201,7 +199,10 @@ body {
   &-swipeable {
     width: $sidebar-swipeable-width;
     left: 0;
-    z-index: 99;
+    top:0;
+    z-index: 100;
+    position: fixed;
+    height: 100vh;
   }
 
   &-content{
