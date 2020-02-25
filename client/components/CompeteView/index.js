@@ -40,7 +40,7 @@ const CompeteView = ({ match }) => {
       {story.url ? <a href={story.url}><FormattedMessage id="Source" /></a> : null}
       <Divider />
       <h1>
-        {`${currentSnippetNumber}/${snippets.totalnum}`}
+        {`${currentSnippetNumber}/${snippets.focused.total_num}`}
       </h1>
       <PreviousSnippet snippet={snippets.previous} />
       {snippets.previous && currentSnippetNumber === 1

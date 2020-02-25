@@ -4,19 +4,11 @@ import callBuilder from '../apiConnection'
  */
 
 const filterPrevious = (previous, snippet) => {
-  if (!snippet) {
-    return []
-  }
-  const filteredPrevious = previous
-    .filter(prev => prev && prev.snippetid[0] < snippet.snippetid[0])
-
-  return filteredPrevious
+  const restarted = previous.length > 0 && snippet.snippetid[0] === 0
+  if (!snippet || restarted) return []
+  if (!snippet.skip_second) return previous
+  return previous.concat(snippet)
 }
-
-export const setTotalNumberAction = totalnum => ({
-  type: 'SET_TOTAL_NUMBER',
-  data: totalnum,
-})
 
 export const getCurrentSnippet = (storyId) => {
   const route = `/snippets/story/${storyId}/current`
@@ -72,7 +64,6 @@ export default (state = { previous: [] }, action) => {
       return {
         ...state,
         focused: action.response,
-        previous: filterPrevious(state.previous.concat(state.focused), action.response),
         pending: false,
         error: false,
       }
@@ -80,11 +71,7 @@ export default (state = { previous: [] }, action) => {
       return {
         ...state,
         focused: action.response,
-      }
-    case 'SET_TOTAL_NUMBER':
-      return {
-        ...state,
-        totalnum: action.data,
+        previous: filterPrevious(state.previous, action.response),
       }
     case 'GET_STORY_ATTEMPT':
       return {
@@ -108,7 +95,7 @@ export default (state = { previous: [] }, action) => {
       return {
         ...state,
         focused: action.response,
-        previous: filterPrevious(state.previous.concat(state.focused), action.response),
+        previous: filterPrevious(state.previous, action.response),
         pending: false,
         error: false,
       }

@@ -46,18 +46,6 @@ const CurrentPractice = ({ storyId }) => {
 
   useEffect(setInitialAnswers, [snippets.focused])
 
-  useEffect(() => {
-    // has to be done since answers don't include data on
-    // how many snippets are in total
-    // kinda ugly though, pls fix
-    if (snippets.focused) {
-      const { total_num } = snippets.focused
-      if (total_num && total_num !== snippets.totalnum) {
-        dispatch(setTotalNumberAction(total_num))
-      }
-    }
-  }, [snippets])
-
   const getExerciseCount = () => {
     let count = 0
     snippets.focused.practice_snippet.forEach((word) => {

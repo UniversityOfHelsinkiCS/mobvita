@@ -30,6 +30,8 @@ const Flashcards = ({ match }) => {
     setSwipeIndex(index)
   }
 
+  const cardIndex = `${swipeIndex + 1} / ${cards.all.length}`
+
   return (
     <div id="flashcardsContainer">
       <button
@@ -43,7 +45,7 @@ const Flashcards = ({ match }) => {
         <Icon name="angle double left" size="huge" />
       </button>
       <SwipeableViews index={swipeIndex} onChangeIndex={handleIndexChange} style={{ width: '30em' }}>
-        {cards.all.map(card => <Flashcard key={card._id} card={card} />)}
+        {cards.all.map(card => <Flashcard key={card._id} card={card} cardIndex={cardIndex} />)}
       </SwipeableViews>
       <button
         type="button"
