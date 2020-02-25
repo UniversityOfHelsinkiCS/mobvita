@@ -11,8 +11,8 @@ const FlashcardSide = ({ answerChecked, answerCorrect, checkAnswer, flipCard, ca
     'rgb(255, 99, 71)',
     'rgb(255, 165, 0)',
     'rgb(255, 215, 0)',
-    'rgb(192, 255, 0)',
-    'rgb(199, 146, 109)',
+    'yellowgreen',
+    'limegreen',
   ]
 
   return (
