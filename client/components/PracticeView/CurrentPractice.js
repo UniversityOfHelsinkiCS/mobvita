@@ -141,8 +141,9 @@ const CurrentPractice = ({ storyId }) => {
   }
 
   const startOver = async () => {
-    dispatch(getNextSnippet(storyId, snippets.focused.snippetid[0]))
+    await dispatch(getNextSnippet(storyId, snippets.focused.snippetid[0]))
     setFinished(false)
+    setProgress(0)
   }
 
   const textToSpeech = (surfaceWord, wordLemmas, wordId) => {
