@@ -18,7 +18,13 @@ const GroupView = () => {
   const [currentGroupId, setCurrentGroupId] = useState(null)
   const dispatch = useDispatch()
 
-  const { groups, pending } = useSelector(({ groups, pending }) => ({ groups: groups.groups, pending }))
+  const { groups, created } = useSelector(({ groups }) => (
+    {
+      groups: groups.groups,
+      pending: groups.pending,
+      created: groups.created,
+    }
+  ))
 
   useEffect(() => {
     dispatch(getGroups())
@@ -29,7 +35,12 @@ const GroupView = () => {
     setCurrentGroupId(groups[0].group_id)
   }, [groups])
 
-  if (pending || !groups) {
+  useEffect(() => {
+    if (!created) return
+    setCurrentGroupId(created.group_id)
+  }, [created])
+
+  if (!groups) {
     return null
   }
 
