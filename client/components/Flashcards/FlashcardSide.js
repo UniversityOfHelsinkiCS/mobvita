@@ -4,11 +4,12 @@ import { useIntl } from 'react-intl'
 import FlashcardInput from './FlashcardInput'
 import FlashcardResult from './FlashcardResult'
 
-const FlashcardSide = ({ answerChecked, answerCorrect, checkAnswer, flipCard, children }) => {
+const FlashcardSide = ({ answerChecked, answerCorrect, checkAnswer, flipCard, cardIndex, children }) => {
   const intl = useIntl()
 
   return (
     <div className="flashcard">
+      <div style={{ display: 'flex', flexDirection: 'row-reverse' }}>{cardIndex}</div>
       <div className="flashcardTextContainer">
         <div className="flashcardText">
           {children}
