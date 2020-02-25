@@ -3,7 +3,7 @@ import ReactCardFlip from 'react-card-flip'
 import { recordFlashcardAnswer } from 'Utilities/redux/flashcardReducer'
 import FlashcardSide from './FlashcardSide'
 
-const Flashcard = ({ card }) => {
+const Flashcard = ({ card, cardIndex }) => {
   const [flipped, setFlipped] = useState(false)
   const [answerChecked, setAnswerChecked] = useState(false)
   const [answerCorrect, setAnswerCorrect] = useState(null)
@@ -51,6 +51,7 @@ const Flashcard = ({ card }) => {
         answerCorrect={answerCorrect}
         checkAnswer={checkAnswer}
         flipCard={flipCard}
+        cardIndex={cardIndex}
       >
         <h2>{lemma}</h2>
       </FlashcardSide>
@@ -59,6 +60,7 @@ const Flashcard = ({ card }) => {
         answerCorrect={answerCorrect}
         checkAnswer={checkAnswer}
         flipCard={flipCard}
+        cardIndex={cardIndex}
       >
         <ul className="flashcardTranslations">{translations}</ul>
       </FlashcardSide>
