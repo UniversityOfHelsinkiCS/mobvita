@@ -5,6 +5,8 @@ import Headroom from 'react-headroom'
 import { Icon } from 'semantic-ui-react'
 import { Shake } from 'reshake'
 import { sidebarSetOpen } from 'Utilities/redux/sidebarReducer'
+import useWindowDimensions from 'Utilities/windowDimensions'
+
 
 export default () => {
   const { user } = useSelector(({ user }) => ({ user: user.data }))
@@ -28,6 +30,7 @@ export default () => {
     ? user.user.exercise_history[user.user.exercise_history.length - 1].score
     : 0
 
+  const smallWindow = useWindowDimensions().width < 500
 
   return (
     <Headroom>
@@ -49,12 +52,12 @@ export default () => {
             Mobvita
           </Navbar.Brand>
         </div>
-        {user
-          && (
-            <Navbar.Text style={{ color: 'white', marginRight: '1em' }}>
-              <div>{`${user.user.email}`}</div>
-            </Navbar.Text>
-          )
+        {user && !smallWindow
+        && (
+        <Navbar.Text style={{ color: 'white', marginRight: '1em' }}>
+          <div>{`${user.user.username}`}</div>
+        </Navbar.Text>
+        )
         }
         {user && (
         <Shake
