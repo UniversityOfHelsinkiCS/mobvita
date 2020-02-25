@@ -96,6 +96,7 @@ const CurrentPractice = ({ storyId }) => {
       setProgress((snippets.focused.snippetid[0]) / snippets.totalnum)
     }
   }, [snippets.focused])
+
   useEffect(() => {
     // has to be done since answers don't include data on
     // how many snippets are in total
@@ -105,10 +106,6 @@ const CurrentPractice = ({ storyId }) => {
       if (total_num && total_num !== snippets.totalnum) {
         dispatch(setTotalNumberAction(total_num))
       }
-    }
-    if (scrollTarget.current && snippets.previous.length) {
-      // window.scrollTo(0, scrollTarget.current.offsetTop)
-      scrollTarget.current.scrollIntoView({ behavior: 'smooth' })
     }
 
     if (snippets.focused && snippets.focused.skip_second) {
@@ -124,6 +121,13 @@ const CurrentPractice = ({ storyId }) => {
     }
     dispatch(getSelf())
   }, [snippets.focused])
+
+  useEffect(() => {
+    if (scrollTarget.current && snippets.previous.length) {
+      // window.scrollTo(0, scrollTarget.current.offsetTop)
+      scrollTarget.current.scrollIntoView({ behavior: 'smooth' })
+    }
+  }, [snippets.previous])
 
   const checkAnswers = async () => {
     const { starttime, snippetid } = snippets.focused
