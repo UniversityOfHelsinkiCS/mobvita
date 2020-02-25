@@ -3,8 +3,6 @@ import { useDispatch, useSelector } from 'react-redux'
 import { getGroups } from 'Utilities/redux/groupsReducer'
 import {
   Dropdown,
-  Accordion,
-  Card,
   ListGroup,
   Button,
 } from 'react-bootstrap'
@@ -79,7 +77,7 @@ const GroupView = () => {
         </Dropdown>
         <Button
           data-cy="create-group-modal"
-          variant="primary"
+          variant="info"
           onClick={() => setAddGroupOpen(true)}
         >
           <FormattedMessage id="create-new-group" />
