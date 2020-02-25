@@ -134,7 +134,7 @@ export default function Bar({ history }) {
                   {hiddenFeatures
                     && (
                     <Link to="/groups">
-                      <Button variant="secondary" onClick={() => dispatch(sidebarSetOpen(!open))} block>
+                      <Button data-cy="groups-link" variant="secondary" onClick={() => dispatch(sidebarSetOpen(!open))} block>
                         <FormattedMessage id="Groups" />
                       </Button>
                     </Link>

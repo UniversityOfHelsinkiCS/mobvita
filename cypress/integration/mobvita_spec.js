@@ -7,13 +7,6 @@ let randomID = Math.floor(Math.random() * 1000000000)
 describe('Mobvita', function () {
   this.beforeAll(function () {
     globalUser = createRandomUser()
-    users.push(globalUser)
-
-    cy.request('POST', 'localhost:8000/api/register', { ...globalUser })
-      .then((response) => {
-        globalUser.token = response.body.access_token
-        cy.request('POST', 'localhost:8000/api/confirm/test', { ...globalUser })
-      })
   })
 
   this.afterAll(function () {
@@ -37,7 +30,7 @@ describe('Mobvita', function () {
   })
 
   it('can create a new user, has English as default ui language', function () {
-    const user = createRandomUser()
+    const user = randomCredentials()
 
     const { email, username, password } = user
     cy.get('[data-cy=register-button]').click()
@@ -164,6 +157,60 @@ describe('Mobvita', function () {
           })
         cy.contains('Startsida')
       })
+
+      it("can visit groups view", function() {
+        cy.get('[data-cy=groups-link]').click()
+        cy.get('[data-cy=create-group-modal]')
+      })
+    })
+
+    describe("groups", function () {
+      this.beforeEach(function () {
+        cy.visit('http://localhost:8000/groups/')
+      })
+
+      it('new group can be created with students and teachers', function () {
+        const teacher = createRandomUser()
+        const student = createRandomUser()
+
+        cy.get('[data-cy=create-group-modal]').click()
+        cy.get('input').eq(0).type('my_test_group')
+        cy.get('textarea').eq(0).type(teacher.email)
+        cy.get('textarea').eq(1).type(student.email)
+
+        cy.get('[type=submit]').click()
+        cy.contains('my_test_group')
+        cy.get('[data-cy=teachers-toggle').click()
+        cy.contains(teacher.username)
+        cy.get('[data-cy=students-toggle').click()
+        cy.contains(student.username)
+      })
+
+      it('users can be added to group', function () {
+        const teacher = createRandomUser()
+        const student = createRandomUser()
+        cy.request({
+          method: 'POST',
+          url: 'localhost:8000/api/groups',
+          headers: {
+            'Authorization': `Bearer ${globalUser.token}`
+          },
+          body: {
+            group_name: 'other group'
+          }
+        })
+        cy.reload()
+        cy.get('[data-cy=select-group]').click()
+        cy.contains('other group').click()
+        cy.get('[data-cy=add-to-group-modal]').click()
+        cy.get('textarea').eq(0).type(teacher.email)
+        cy.get('textarea').eq(1).type(student.email)
+        cy.get('[type=submit]').click()
+        cy.get('[data-cy=teachers-toggle').click()
+        cy.contains(teacher.username)
+        cy.get('[data-cy=students-toggle').click()
+        cy.contains(student.username)
+      })
     })
 
     describe("dictionary", function () {
@@ -278,11 +325,24 @@ describe('Mobvita', function () {
   })
 })
 
-function createRandomUser() {
+function randomCredentials() {
   const id = randomID++
   const email = `mobvita${id}@testcypress.foobar123`
   const username = `mobvita${id}`
   const password = 'securepassword'
 
   return { email, username, password }
+}
+
+function createRandomUser() {
+  const user = randomCredentials()
+
+  cy.request('POST', 'localhost:8000/api/register', { ...user })
+      .then((response) => {
+        user.token = response.body.access_token
+        cy.request('POST', 'localhost:8000/api/confirm/test', { ...user })
+      })
+
+  users.push(user)
+  return user
 }
