@@ -114,8 +114,7 @@ const PracticeModal = ({ trigger }) => {
     })
   }
 
-  const toggleCategory = (e) => {
-    const category = e.target.name
+  const toggleCategory = category => () => {
     setCategories({ ...categories, [category]: !categories[category] })
   }
 
@@ -143,27 +142,7 @@ const PracticeModal = ({ trigger }) => {
         </div>
         <div>
           <div><FormattedMessage id="Category" /></div>
-          <div data-cy="practicemodal-container" style={{ display: 'flex', flexWrap: 'wrap' }}>
-            {Object.entries(categories).sort().map(([name, enabled]) => (
-              <Button
-                data-cy={`category-${name}`}
-                onClick={e => toggleCategory(e)}
-                name={name}
-                key={name}
-                className={!enabled && 'disabled'}
-                style={{
-                  backgroundImage: `url(${images[name + 1]})`,
-                  height: '13em',
-                  backgroundSize: 'cover',
-                  backgroundPosition: 'center',
-                  flexBasis: '30%',
-                }}
-              >
-                {capitalize(name)}
-              </Button>
-            ))}
-
-          </div>
+          <CheckboxGroup values={categories} onClick={toggleCategory} />
         </div>
         <div />
       </Modal.Content>

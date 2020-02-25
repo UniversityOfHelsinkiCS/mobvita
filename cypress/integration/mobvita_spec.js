@@ -113,17 +113,19 @@ describe('Mobvita', function () {
 
     it("can start filtered practice", function () {
       cy.get('[data-cy=practice-now]').click()
-      cy.get("[data-cy=category-science]").click()
-      cy.get("[data-cy=category-uncategorized]").click()
+      cy.get('[class=checkboxGroup]').eq(1).children()
+        .then(children => {
+          children[2].click()
+          children[4].click()
+        })
+
       cy.get("[data-cy=start-random]").click()
     })
 
     it("cant start filtered practice with 0 stories", function () {
-      const categories = ["politics", "culture", "science", "sport", "uncategorized"]
       cy.get('[data-cy=practice-now]').click()
-      categories.forEach(category => {
-        cy.get(`[data-cy=category-${category}]`).click()
-      })
+      cy.get("[data-cy=start-random]").should("be.enabled")
+      cy.get('[class=checkboxGroup]').eq(1).children().each(e => e.click())
       cy.get("[data-cy=start-random]").should("be.disabled")
     })
 
