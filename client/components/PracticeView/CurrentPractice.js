@@ -32,6 +32,11 @@ const CurrentPractice = ({ storyId }) => {
   const { snippets } = useSelector(({ snippets, locale }) => ({ snippets, locale }))
   const { story } = useSelector(({ stories }) => ({ story: stories.focused }))
 
+  const [finished, setFinished] = useState(false)
+  let snippetProgress = ''
+  if (snippets.focused) {
+    snippetProgress = finished ? snippets.focused.snippetid[0] + 1 : snippets.focused.snippetid[0]
+  }
 
   useEffect(() => {
     dispatch(getCurrentSnippet(storyId))
@@ -111,7 +116,11 @@ const CurrentPractice = ({ storyId }) => {
       setTouched(0)
       setAttempts(0)
       const currentSnippetId = snippets.focused.snippetid[0]
-      dispatch(getNextSnippet(storyId, currentSnippetId))
+      if (snippets.focused.total_num !== currentSnippetId + 1 || finished) {
+        dispatch(getNextSnippet(storyId, currentSnippetId))
+      } else {
+        setFinished(true)
+      }
     }
     dispatch(getSelf())
   }, [snippets.focused])
@@ -133,6 +142,11 @@ const CurrentPractice = ({ storyId }) => {
 
     setAttempts(attempt + 1)
     dispatch(postAnswers(storyId, answersObj))
+  }
+
+  const startOver = async () => {
+    dispatch(getNextSnippet(storyId, snippets.focused.snippetid[0]))
+    setFinished(false)
   }
 
   const textToSpeech = (surfaceWord, wordLemmas, wordId) => {
@@ -266,40 +280,52 @@ const CurrentPractice = ({ storyId }) => {
       <PreviousSnippets textToSpeech={textToSpeech} answers={answers} />
       <hr />
 
-      <div
-        ref={scrollTarget}
-        className="practice-container"
-        data-cy="practice-view"
-      >
-        <Chunks chunkInput={chunkInput} />
-      </div>
-      <Button
-        data-cy="check-answer"
-        block
-        variant="primary"
-        onClick={() => checkAnswers()}
-      >
-        <FormattedMessage id="check-answer" />
-      </Button>
+      {!finished
+        ? (
+          <div>
+            <div
+              ref={scrollTarget}
+              className="practice-container"
+              data-cy="practice-view"
+            >
+              <Chunks chunkInput={chunkInput} />
+            </div>
+            <Button
+              data-cy="check-answer"
+              block
+              variant="primary"
+              onClick={() => checkAnswers()}
+            >
+              <FormattedMessage id="check-answer" />
+            </Button>
+          </div>
+        )
+        : (
+          <Button variant="primary" block onClick={() => startOver()}>
+            <FormattedMessage id="restart-story" />
+          </Button>
+        )}
 
-      {snippets.focused && (
-        <div style={{ height: '2.5em', marginTop: '0.5em', textAlign: 'center' }} className="progress">
-          <span
-            data-cy="snippet-progress"
-            style={{ marginTop: '0.23em', fontSize: 'larger', position: 'absolute', right: 0, left: 0 }}
-            className="progress-value"
-          >{`${snippets.focused.snippetid[0]} / ${snippets.totalnum}`}
-          </span>
-          <div
-            className="progress-bar progress-bar-striped bg-info"
-            style={{ width: `${progress * 100}%` }}
-            role="progressbar"
-            aria-valuenow={progress}
-            aria-valuemin="0"
-            aria-valuemax="100"
-          />
-        </div>
-      )}
+      {
+        snippets.focused && (
+          <div style={{ height: '2.5em', marginTop: '0.5em', textAlign: 'center' }} className="progress">
+            <span
+              data-cy="snippet-progress"
+              style={{ marginTop: '0.23em', fontSize: 'larger', position: 'absolute', right: 0, left: 0 }}
+              className="progress-value"
+            >{`${snippetProgress} / ${snippets.totalnum}`}
+            </span>
+            <div
+              className="progress-bar progress-bar-striped bg-info"
+              style={{ width: `${progress * 100}%` }}
+              role="progressbar"
+              aria-valuenow={progress}
+              aria-valuemin="0"
+              aria-valuemax="100"
+            />
+          </div>
+        )
+      }
     </div>
   )
 }
