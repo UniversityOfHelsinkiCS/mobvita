@@ -160,7 +160,7 @@ describe('Mobvita', function () {
         cy.contains('Startsida')
       })
 
-      it("can visit groups view", function() {
+      it("can visit groups view", function () {
         cy.get('[data-cy=groups-link]').click()
         cy.get('[data-cy=create-group-modal]')
       })
@@ -342,10 +342,10 @@ function createRandomUser() {
   const user = randomCredentials()
 
   cy.request('POST', 'localhost:8000/api/register', { ...user })
-      .then((response) => {
-        user.token = response.body.access_token
-        cy.request('POST', 'localhost:8000/api/confirm/test', { ...user })
-      })
+    .then((response) => {
+      user.token = response.body.access_token
+      cy.request('POST', 'localhost:8000/api/confirm/test', { ...user })
+    })
 
   users.push(user)
   return user

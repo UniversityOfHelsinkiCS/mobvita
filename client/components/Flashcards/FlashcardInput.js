@@ -8,27 +8,28 @@ const FlashcardInput = ({ answerChecked, checkAnswer }) => {
 
   if (answerChecked) return null
 
-  const handleCheckAnswer = () => {
+  const handleSubmit = () => {
     checkAnswer(answer)
     setAnswer('')
   }
 
   return (
     <div className="flashcardInputAndCheck">
-      <Form.Control
-        type="text"
-        value={answer}
-        onChange={event => setAnswer(event.target.value)}
-      />
-      <Button
-        className="flashcardCheck"
-        block
-        variant="outline-primary"
-        type="button"
-        onClick={handleCheckAnswer}
-      >
-        {intl.formatMessage({ id: 'check-answer' })}
-      </Button>
+      <form onSubmit={handleSubmit}>
+        <Form.Control
+          type="text"
+          value={answer}
+          onChange={event => setAnswer(event.target.value)}
+        />
+        <Button
+          className="flashcardCheck"
+          block
+          variant="outline-primary"
+          type="submit"
+        >
+          {intl.formatMessage({ id: 'check-answer' })}
+        </Button>
+      </form>
     </div>
   )
 }
