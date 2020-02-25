@@ -10,6 +10,7 @@ $white: #fff;
 $lightblue: #DCF6FF;
 $background: #fafafa;
 
+
 // Tooltip colors
 $tooltip-blue: rgba(30, 120, 225, 1);
 $tooltip-green: green;
@@ -268,10 +269,21 @@ body {
   }
 }
 
-.groupControls {
+.group-container {
+  max-width: 1024px;
+  margin: auto;
+  padding-left: 0.5em;
+  padding-right: 0.5em;
+}
+
+.group-controls {
   display: flex;
   justify-content: space-between;
   align-items: center;
+  margin-bottom: 1em;
+}
+
+.group-form > .form-control {
   margin-bottom: 1em;
 }
 
@@ -392,7 +404,7 @@ body {
   .flashcardFlip {
     margin-left: auto;
     border: none;
-    background-color: hsla(208, 56%, 55%, 1);
+    background-color: inherit;
     color: white;
     font-weight: 550;
     padding-right: 0;
