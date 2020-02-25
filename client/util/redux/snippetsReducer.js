@@ -13,11 +13,6 @@ const filterPrevious = (previous, snippet) => {
   return filteredPrevious
 }
 
-export const setTotalNumberAction = totalnum => ({
-  type: 'SET_TOTAL_NUMBER',
-  data: totalnum,
-})
-
 export const getCurrentSnippet = (storyId) => {
   const route = `/snippets/story/${storyId}/current`
   const prefix = 'GET_CURRENT_SNIPPET'
@@ -80,11 +75,6 @@ export default (state = { previous: [] }, action) => {
       return {
         ...state,
         focused: action.response,
-      }
-    case 'SET_TOTAL_NUMBER':
-      return {
-        ...state,
-        totalnum: action.data,
       }
     case 'GET_STORY_ATTEMPT':
       return {

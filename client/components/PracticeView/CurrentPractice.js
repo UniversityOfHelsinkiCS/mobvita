@@ -88,21 +88,11 @@ const CurrentPractice = ({ storyId }) => {
 
   useEffect(() => {
     if (snippets.focused) {
-      setProgress((snippets.focused.snippetid[0]) / snippets.totalnum)
+      setProgress((snippets.focused.snippetid[0]) / snippets.focused.total_num)
     }
   }, [snippets.focused])
 
   useEffect(() => {
-    // has to be done since answers don't include data on
-    // how many snippets are in total
-    // kinda ugly though, pls fix
-    if (snippets.focused) {
-      const { total_num } = snippets.focused
-      if (total_num && total_num !== snippets.totalnum) {
-        dispatch(setTotalNumberAction(total_num))
-      }
-    }
-
     if (snippets.focused && snippets.focused.skip_second) {
       setOptions({})
       setTouched(0)
@@ -292,7 +282,7 @@ const CurrentPractice = ({ storyId }) => {
             data-cy="snippet-progress"
             style={{ marginTop: '0.23em', fontSize: 'larger', position: 'absolute', right: 0, left: 0 }}
             className="progress-value"
-          >{`${snippets.focused.snippetid[0]} / ${snippets.totalnum}`}
+          >{`${snippets.focused.snippetid[0]} / ${snippets.focused.total_num}`}
           </span>
           <div
             className="progress-bar progress-bar-striped bg-info"
