@@ -1,5 +1,4 @@
-import React, { useState, useRef, useEffect } from 'react'
-import { Overlay } from 'react-bootstrap'
+import React, { useRef, useState } from 'react'
 import { useIntl } from 'react-intl'
 import { useSelector } from 'react-redux'
 import Tooltip from './Tooltip'
@@ -8,8 +7,8 @@ import Tooltip from './Tooltip'
 const Word = ({ word, textToSpeech, answer }) => {
   const { surface, isWrong, tested, lemmas } = word
   const intl = useIntl()
-  const [show, setShow] = useState(false)
   const target = useRef(null)
+  const [show, setShow] = useState(false)
 
   let color = ''
   if (tested) {
@@ -20,14 +19,8 @@ const Word = ({ word, textToSpeech, answer }) => {
   const overlayClassName = isWrong ? 'wrong-text-background' : 'right-text-background'
 
   const handleClick = () => {
-    setShow(true)
     textToSpeech(surface, lemmas)
-  }
-
-  const handleHide = (e) => {
-    if (show) {
-      setShow(false)
-    }
+    setShow(true)
   }
 
   const answerString = (answer && answer.users_answer)
@@ -42,13 +35,14 @@ const Word = ({ word, textToSpeech, answer }) => {
   )
 
   return (
-    <Tooltip placement="top" trigger="click" tooltip={tooltip} additionalClassnames={`${overlayClassName}`}>
+    <Tooltip placement="top" tooltipShown={show} trigger="none" tooltip={tooltip} additionalClassnames={`${overlayClassName}`}>
       <span
         ref={target}
         className={wordClass}
         role="button"
         onClick={handleClick}
         tabIndex={-1}
+        onBlur={() => setShow(false)}
       >
         {surface}
       </span>
