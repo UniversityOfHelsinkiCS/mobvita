@@ -11,6 +11,7 @@ import {
   FormControl,
 } from 'react-bootstrap'
 import { FormattedMessage } from 'react-intl'
+import * as L from 'lodash'
 import AddGroup from './AddGroup'
 import AddToGroup from './AddToGroup'
 
@@ -18,7 +19,6 @@ const GroupView = () => {
   const [addToGroupOpen, setAddToGroupOpen] = useState(false)
   const [addGroupOpen, setAddGroupOpen] = useState(false)
   const [currentGroupId, setCurrentGroupId] = useState(null)
-  const [studentsToAdd, setStudentsToAdd] = useState('')
   const dispatch = useDispatch()
 
   const { groups, pending } = useSelector(({ groups, pending }) => ({ groups: groups.groups, pending }))
@@ -32,11 +32,6 @@ const GroupView = () => {
     setCurrentGroupId(groups[0].group_id)
   }, [groups])
 
-  const addStudents = () => {
-    const students = studentsToAdd.split(',').map(p => p.trim())
-    dispatch(addStudentsToGroup(students, currentGroupId))
-  }
-
   if (pending || !currentGroupId || !groups) {
     return null
   }
@@ -45,8 +40,8 @@ const GroupView = () => {
 
   return (
     <div className="maxContentSize autoMargin">
-      <div style={{ display: 'flex' }}>
-        <Dropdown onSelect={key => setCurrentGroupId(key)} style={{ marginBottom: '1em' }}>
+      <div className="groupControls">
+        <Dropdown onSelect={key => setCurrentGroupId(key)}>
           <Dropdown.Toggle variant="info" id="dropdown-basic">
             {currentGroup.groupName}
           </Dropdown.Toggle>
@@ -56,7 +51,7 @@ const GroupView = () => {
             ))}
           </Dropdown.Menu>
         </Dropdown>
-        <Button onClick={() => setAddGroupOpen(true)}><FormattedMessage id="create-new-group" /></Button>
+        <Button variant="primary" onClick={() => setAddGroupOpen(true)}><FormattedMessage id="create-new-group" /></Button>
 
         <AddGroup isOpen={addGroupOpen} setOpen={setAddGroupOpen} />
       </div>
@@ -81,7 +76,7 @@ const GroupView = () => {
           <Accordion.Collapse eventKey="1">
             <ListGroup style={{
               maxHeight: '50vh',
-              overflow: 'scroll',
+              overflowY: 'auto',
             }}
             >
               {currentGroup.students.map(student => (

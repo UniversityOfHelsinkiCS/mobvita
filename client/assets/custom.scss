@@ -267,6 +267,13 @@ body {
   }
 }
 
+.groupControls {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1em;
+}
+
 .maxContentSize {
   max-width: 1024px;
 }
@@ -402,7 +409,7 @@ body {
 .tooltip { //Overwrites react-popper-tooltip styles.
 
   &-container {
-    text-align: center;    
+    text-align: center;
     padding: 0;
 
     &.clickable{
