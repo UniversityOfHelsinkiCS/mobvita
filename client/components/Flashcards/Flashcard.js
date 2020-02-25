@@ -7,6 +7,7 @@ const Flashcard = ({ card, cardIndex }) => {
   const [flipped, setFlipped] = useState(false)
   const [answerChecked, setAnswerChecked] = useState(false)
   const [answerCorrect, setAnswerCorrect] = useState(null)
+  console.log(card)
 
   useEffect(() => {
     setFlipped(false)
@@ -19,7 +20,7 @@ const Flashcard = ({ card, cardIndex }) => {
     setAnswerChecked(true)
   }
 
-  const { glosses, lemma, _id, story, lan_in: inputLanguage, lan_out: outputLanguage } = card
+  const { glosses, lemma, _id, story, lan_in: inputLanguage, lan_out: outputLanguage, stage } = card
 
   const checkAnswer = (answer) => {
     const correct = glosses.includes(answer.toLowerCase()).toString()
@@ -52,6 +53,7 @@ const Flashcard = ({ card, cardIndex }) => {
         checkAnswer={checkAnswer}
         flipCard={flipCard}
         cardIndex={cardIndex}
+        stage={stage}
       >
         <h2>{lemma}</h2>
       </FlashcardSide>
@@ -61,6 +63,7 @@ const Flashcard = ({ card, cardIndex }) => {
         checkAnswer={checkAnswer}
         flipCard={flipCard}
         cardIndex={cardIndex}
+        stage={stage}
       >
         <ul className="flashcardTranslations">{translations}</ul>
       </FlashcardSide>
