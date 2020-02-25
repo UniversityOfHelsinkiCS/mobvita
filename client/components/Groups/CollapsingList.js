@@ -6,10 +6,12 @@ import {
 
 const CollapsingList = ({ header, children }) => {
   const [open, setOpen] = useState(false)
+
   return (
     <>
       <Card>
         <Card.Header
+          style={{ cursor: 'pointer' }}
           onClick={() => setOpen(!open)}
           aria-expanded={open}
         >

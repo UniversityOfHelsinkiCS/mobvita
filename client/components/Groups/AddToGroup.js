@@ -32,7 +32,7 @@ const AddToGroup = ({ groupId, isOpen, setOpen }) => {
     >
       <Modal.Header><FormattedMessage id="add-people-to-group" /></Modal.Header>
       <Modal.Content style={{ display: 'flex', flexDirection: 'column' }}>
-        <Form onSubmit={add}>
+        <Form className="group-form" onSubmit={add}>
           <FormattedMessage id="teacher-emails" />
           <FormControl
             as="textarea"

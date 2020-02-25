@@ -268,10 +268,21 @@ body {
   }
 }
 
-.groupControls {
+.group-container {
+  max-width: 1024px;
+  margin: auto;
+  padding-left: 0.5em;
+  padding-right: 0.5em;
+}
+
+.group-controls {
   display: flex;
   justify-content: space-between;
   align-items: center;
+  margin-bottom: 1em;
+}
+
+.group-form > .form-control {
   margin-bottom: 1em;
 }
 

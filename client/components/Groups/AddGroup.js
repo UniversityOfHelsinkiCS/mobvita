@@ -33,7 +33,7 @@ const AddGroup = ({ isOpen, setOpen }) => {
       <Modal.Header><FormattedMessage id="create-new-group" /></Modal.Header>
       <Modal.Content style={{ display: 'flex', flexDirection: 'column' }}>
         <FormattedMessage id="name-of-group" />
-        <Form data-cy="add-group-form" onSubmit={addGroup}>
+        <Form className="group-form" data-cy="add-group-form" onSubmit={addGroup}>
           <FormControl
             as="input"
             onChange={e => setGroupName(e.target.value)}

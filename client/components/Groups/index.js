@@ -63,10 +63,10 @@ const GroupView = () => {
   const currentGroup = groups.find(group => group.group_id === currentGroupId)
 
   return (
-    <div className="maxContentSize autoMargin">
-      <div className="groupControls">
+    <div className="group-container">
+      <div className="group-controls">
         <Dropdown data-cy="select-group" onSelect={key => setCurrentGroupId(key)}>
-          <Dropdown.Toggle variant="info" id="dropdown-basic">
+          <Dropdown.Toggle variant="primary" id="dropdown-basic">
             {currentGroup.groupName}
           </Dropdown.Toggle>
           <Dropdown.Menu>
@@ -98,7 +98,7 @@ const GroupView = () => {
           overflowY: 'auto',
         }}
         >
-          {currentGroup.students.map(student => (
+          {currentGroup.students.length === 0 ? <ListGroup.Item /> : currentGroup.students.map(student => (
             <ListGroup.Item key={student.userName}>{student.userName}</ListGroup.Item>
           ))}
         </ListGroup>
@@ -107,6 +107,7 @@ const GroupView = () => {
       && (
       <>
         <Button
+          style={{ marginTop: '1em' }}
           data-cy="add-to-group-modal"
           onClick={() => setAddToGroupOpen(true)}
         >
