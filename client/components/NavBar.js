@@ -14,8 +14,6 @@ export default function NavBar({ history }) {
   const dispatch = useDispatch()
 
   const [eloChanged, setEloChanged] = useState(false)
-  const [timeoutObj, setTimeoutObj] = useState(null)
-
 
   useEffect(() => {
     if (user && user.user.exercise_history) {
