@@ -8,7 +8,7 @@ import { sidebarSetOpen } from 'Utilities/redux/sidebarReducer'
 import useWindowDimensions from 'Utilities/windowDimensions'
 
 
-export default () => {
+export default function NavBar({ history }) {
   const { user } = useSelector(({ user }) => ({ user: user.data }))
   const open = useSelector(({ sidebar }) => sidebar.open)
   const dispatch = useDispatch()
@@ -46,7 +46,7 @@ export default () => {
           />
           <Navbar.Brand
             style={{ color: 'white', marginLeft: '0.5em' }}
-            href="/home"
+            onClick={() => history.push('/home')}
           >
 
             Mobvita

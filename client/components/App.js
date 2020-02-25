@@ -34,7 +34,7 @@ const App = () => {
     <>
       <ReactRouter history={history}>
         <Toaster />
-        <NavBar />
+        <Route component={NavBar} />
         <div style={{ display: 'flex' }}>
           <Route component={Bar} />
 
