@@ -86,8 +86,13 @@ const GroupView = () => {
           </Accordion.Collapse>
         </Card>
       </Accordion>
-      <Button onClick={() => setAddToGroupOpen(true)}><FormattedMessage id="add-people-to-group" /></Button>
-      <AddToGroup groupId={currentGroupId} isOpen={addToGroupOpen} setOpen={setAddToGroupOpen} />
+      {currentGroup.is_teaching
+      && (
+      <>
+        <Button onClick={() => setAddToGroupOpen(true)}><FormattedMessage id="add-people-to-group" /></Button>
+        <AddToGroup groupId={currentGroupId} isOpen={addToGroupOpen} setOpen={setAddToGroupOpen} />
+      </>
+      )}
     </div>
   )
 }
