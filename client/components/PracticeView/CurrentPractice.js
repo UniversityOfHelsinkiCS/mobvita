@@ -116,7 +116,6 @@ const CurrentPractice = ({ storyId }) => {
   useEffect(() => {
     if (scrollTarget.current && snippets.previous.length) {
       // window.scrollTo(0, scrollTarget.current.offsetTop)
-      console.log('scrolling')
       scrollTarget.current.scrollIntoView({ behavior: 'smooth' })
     }
   }, [snippets.previous])
