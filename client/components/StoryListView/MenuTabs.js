@@ -40,7 +40,7 @@ const Tabs = ({ location }) => {
   }
 
   return (
-    <div className="maxContentSize" style={{ margin: 'auto' }}>
+    <div style={{ margin: 'auto', maxWidth: '1024px' }}>
       <Tab
         panes={panes}
         activeIndex={index}
