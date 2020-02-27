@@ -2,7 +2,7 @@ import React from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { useParams } from 'react-router-dom'
 import { Icon } from 'semantic-ui-react'
-import { useIntl } from 'react-intl'
+import { FormattedMessage } from 'react-intl'
 import {
   learningLanguageSelector,
   dictionaryLanguageSelector,
@@ -20,9 +20,10 @@ const FlashcardSide = ({
   flipCard,
   cardIndex,
   stage,
+  setSwipeIndex,
+  noCards,
   children,
 }) => {
-  const intl = useIntl()
   const dispatch = useDispatch()
   const learningLanguage = useSelector(learningLanguageSelector)
   const dictionaryLanguage = useSelector(dictionaryLanguageSelector)
@@ -43,24 +44,37 @@ const FlashcardSide = ({
     'limegreen',
   ]
 
-  const handleDropdownChange = (value) => {
+  const handleDropdownChange = async (value) => {
+    setSwipeIndex(0)
     dispatch(updateDictionaryLanguage(value))
     dispatch(getFlashcards(learningLanguage, value, storyId))
   }
 
   return (
     <div className="flashcard" style={{ backgroundColor: backgroundColor[stage] }}>
-      <div className="flashcard-header">{cardIndex}</div>
-      <div className="flashcard-text-container">
-        {children}
-      </div>
-      <div className="flashcard-input-and-result-container">
-        <FlashcardInput
-          answerChecked={answerChecked}
-          checkAnswer={checkAnswer}
-        />
-        <FlashcardResult answerCorrect={answerCorrect} />
-      </div>
+      {!noCards
+        ? (
+          <div className="flashcard-content">
+            <div className="flashcard-header">{cardIndex}</div>
+            <div className="flashcard-text-container">
+              {children}
+            </div>
+            <div className="flashcard-input-and-result-container">
+              <FlashcardInput
+                answerChecked={answerChecked}
+                checkAnswer={checkAnswer}
+              />
+              <FlashcardResult answerCorrect={answerCorrect} />
+            </div>
+          </div>
+        ) : (
+          <div className="flashcard-text-container">
+            <p>
+              <FormattedMessage id="no-flashcards-yet-when-you-practice-a-story-and-click-on-unfamiliar-words-they-will-be-added-to-your" />
+            </p>
+          </div>
+        )
+      }
       <div className="flashcard-footer">
         <select
           defaultValue={dictionaryLanguage}
@@ -69,15 +83,21 @@ const FlashcardSide = ({
         >
           {dictionaryOptions.map(option => <option key={option.key}>{option.text}</option>)}
         </select>
-        <button
-          variant="light"
-          type="button"
-          onClick={() => flipCard()}
-        >
-          {`${intl.formatMessage({ id: 'Flip' })}   `}
-          <Icon name="arrow right" />
-        </button>
+        {!noCards
+          && (
+            <button
+              variant="light"
+              type="button"
+              onClick={() => flipCard()}
+            >
+              <FormattedMessage id="Flip" />
+              {'  '}
+              <Icon name="arrow right" />
+            </button>
+          )
+        }
       </div>
+
     </div>
   )
 }

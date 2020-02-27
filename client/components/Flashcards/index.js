@@ -52,7 +52,14 @@ const Flashcards = ({ match }) => {
           onChangeIndex={handleIndexChange}
           style={{ width: '30em' }}
         >
-          {cards.all.map(card => <Flashcard key={card._id} card={card} cardIndex={cardIndex} />)}
+          {cards.all.map(card => (
+            <Flashcard
+              key={card._id}
+              card={card}
+              cardIndex={cardIndex}
+              setSwipeIndex={setSwipeIndex}
+            />
+          ))}
         </SwipeableViews>
         <button
           type="button"

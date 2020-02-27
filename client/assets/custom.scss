@@ -321,6 +321,12 @@ body {
     display: flex;
   }
 
+  &-content {
+    display: flex;
+    flex-direction: column;
+    height: 31em;
+  }
+
   &-header {
     display: flex;
     flex-direction: row-reverse;
@@ -333,7 +339,11 @@ body {
     overflow: auto;
     padding: 1em 0;
     & > h2, ul {
-        margin: auto;
+      margin: auto;
+    }
+    & > p {
+      margin: auto;
+      font-weight: 550;
     }
   }
 

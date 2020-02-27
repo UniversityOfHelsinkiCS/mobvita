@@ -3,7 +3,7 @@ import ReactCardFlip from 'react-card-flip'
 import { recordFlashcardAnswer } from 'Utilities/redux/flashcardReducer'
 import FlashcardSide from './FlashcardSide'
 
-const Flashcard = ({ card, cardIndex }) => {
+const Flashcard = ({ card, cardIndex, setSwipeIndex }) => {
   const [flipped, setFlipped] = useState(false)
   const [answerChecked, setAnswerChecked] = useState(false)
   const [answerCorrect, setAnswerCorrect] = useState(null)
@@ -19,7 +19,16 @@ const Flashcard = ({ card, cardIndex }) => {
     setAnswerChecked(true)
   }
 
-  const { glosses, lemma, _id, story, lan_in: inputLanguage, lan_out: outputLanguage, stage } = card
+  const {
+    glosses,
+    format,
+    lemma,
+    _id,
+    story,
+    lan_in: inputLanguage,
+    lan_out: outputLanguage,
+    stage,
+  } = card
 
   const checkAnswer = (answer) => {
     const correct = glosses.includes(answer.toLowerCase()).toString()
@@ -40,6 +49,8 @@ const Flashcard = ({ card, cardIndex }) => {
     setAnswerCorrect(correct)
   }
 
+  const noCards = format === 'no-cards'
+
   const translations = Array.isArray(glosses)
     ? glosses.map(item => <li key={item}>{item}</li>)
     : glosses
@@ -53,6 +64,8 @@ const Flashcard = ({ card, cardIndex }) => {
         flipCard={flipCard}
         cardIndex={cardIndex}
         stage={stage}
+        setSwipeIndex={setSwipeIndex}
+        noCards={noCards}
       >
         <h2>{lemma}</h2>
       </FlashcardSide>
@@ -63,6 +76,7 @@ const Flashcard = ({ card, cardIndex }) => {
         flipCard={flipCard}
         cardIndex={cardIndex}
         stage={stage}
+        setSwipeIndex={setSwipeIndex}
       >
         <ul className="flashcard-translations">{translations}</ul>
       </FlashcardSide>
