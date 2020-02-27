@@ -97,7 +97,7 @@ const StoryList = () => {
   const searchSort = (
     <div
       data-cy="library-controls"
-      className="libraryControl"
+      className="library-control"
     >
       <Search
         open={false}
@@ -127,7 +127,7 @@ const StoryList = () => {
 
   if (pending) {
     return (
-      <div>
+      <div className="component-container">
         {searchSort}
         <Placeholder>
           <Placeholder.Line />
@@ -136,7 +136,13 @@ const StoryList = () => {
     )
   }
 
-  if (!stories.length) return <FormattedMessage id="no-stories-available" />
+  if (!stories.length) {
+    return (
+      <div className="component-container">
+        <FormattedMessage id="no-stories-available" />
+      </div>
+    )
+  }
 
   const filteredInsteadOfPaginated = searchString && searchedStories.length < 30
   const displayStories = filteredInsteadOfPaginated ? searchedStories : stories
@@ -163,7 +169,7 @@ const StoryList = () => {
   })
 
   return (
-    <div>
+    <div className="component-container">
       {searchSort}
 
       <Card.Group itemsPerRow={1} doubling>

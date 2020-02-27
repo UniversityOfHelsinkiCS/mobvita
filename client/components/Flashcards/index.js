@@ -33,13 +33,12 @@ const Flashcards = ({ match }) => {
   const cardIndex = `${swipeIndex + 1} / ${cards.all.length}`
 
   return (
-    <div id="flashcardsContainer">
+    <div className="flashcard-container">
       <button
         type="button"
         onClick={() => handleIndexChange(swipeIndex - 1)}
         disabled={swipeIndex === 0}
-        className="flashcardNextPreviousButtons"
-        id="flashcardPreviousButton"
+        className="flashcard-arrow-button"
         style={{ marginRight: 0 }}
       >
         <Icon name="angle double left" size="huge" />
@@ -51,8 +50,8 @@ const Flashcards = ({ match }) => {
         type="button"
         onClick={() => handleIndexChange(swipeIndex + 1)}
         disabled={swipeIndex === cards.all.length - 1}
-        className="flashcardNextPreviousButtons"
-        id="flashcardNextButton"
+        className="flashcard-arrow-button"
+        style={{ marginLeft: 0 }}
       >
         <Icon name="angle double right" size="huge" />
       </button>

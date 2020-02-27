@@ -56,7 +56,7 @@ const HomeView = () => {
   }, [])
 
   return (
-    <div>
+    <div className="component-container">
       <EloChart />
       <PracticeModal trigger={<PracticeButton data-cy="practice-now" />} />
       {hiddenFeatures && <FlashcardsButton />}

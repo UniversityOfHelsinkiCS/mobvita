@@ -18,21 +18,18 @@ const FlashcardSide = ({ answerChecked, answerCorrect, checkAnswer, flipCard, ca
   return (
     <div className="flashcard" style={{ backgroundColor: backgroundColor[stage] }}>
       <div style={{ display: 'flex', flexDirection: 'row-reverse', fontWeight: '550' }}>{cardIndex}</div>
-      <div className="flashcardTextContainer">
-        <div className="flashcardText">
-          {children}
-        </div>
+      <div className="flashcard-text-container">
+        {children}
       </div>
-      <div className="flashcardInputAndResultContainer">
+      <div className="flashcard-input-and-result-container">
         <FlashcardInput
           answerChecked={answerChecked}
           checkAnswer={checkAnswer}
         />
         <FlashcardResult answerCorrect={answerCorrect} />
       </div>
-      <div className="flashcardFlipContainer">
+      <div className="flashcard-flip">
         <button
-          className="flashcardFlip"
           variant="light"
           type="button"
           onClick={() => flipCard()}

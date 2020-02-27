@@ -55,7 +55,7 @@ const DictionaryHelp = ({ translation }) => {
 
   if (!showHelp && smallWindow) {
     return (
-      <div className="dictionaryButton">
+      <div className="dictionary-button">
         <Button
           className="navigationbuttonopen"
           icon
@@ -82,7 +82,7 @@ const DictionaryHelp = ({ translation }) => {
   }
 
   return (
-    <div className="dictionaryHelp">
+    <div className="dictionary-help">
       <Segment>
         <div>
           <FormattedMessage id="translation-target-language" />

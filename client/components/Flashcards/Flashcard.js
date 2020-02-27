@@ -65,7 +65,7 @@ const Flashcard = ({ card, cardIndex }) => {
         cardIndex={cardIndex}
         stage={stage}
       >
-        <ul className="flashcardTranslations">{translations}</ul>
+        <ul className="flashcard-translations">{translations}</ul>
       </FlashcardSide>
     </ReactCardFlip>
   )
