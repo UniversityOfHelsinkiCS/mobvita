@@ -7,7 +7,6 @@ const Flashcard = ({ card, cardIndex }) => {
   const [flipped, setFlipped] = useState(false)
   const [answerChecked, setAnswerChecked] = useState(false)
   const [answerCorrect, setAnswerCorrect] = useState(null)
-  console.log(card)
 
   useEffect(() => {
     setFlipped(false)
