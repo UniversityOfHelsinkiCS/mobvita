@@ -35,7 +35,6 @@ const FlashcardSide = ({
     text: element,
   }))
 
-
   const backgroundColor = [
     'rgb(255, 99, 71)',
     'rgb(255, 165, 0)',
@@ -43,6 +42,8 @@ const FlashcardSide = ({
     'yellowgreen',
     'limegreen',
   ]
+
+  const sameLanguage = learningLanguage === dictionaryLanguage
 
   const handleDropdownChange = async (value) => {
     setSwipeIndex(0)
@@ -59,13 +60,17 @@ const FlashcardSide = ({
             <div className="flashcard-text-container">
               {children}
             </div>
-            <div className="flashcard-input-and-result-container">
-              <FlashcardInput
-                answerChecked={answerChecked}
-                checkAnswer={checkAnswer}
-              />
-              <FlashcardResult answerCorrect={answerCorrect} />
-            </div>
+            {!sameLanguage
+              && (
+                <div className="flashcard-input-and-result-container">
+                  <FlashcardInput
+                    answerChecked={answerChecked}
+                    checkAnswer={checkAnswer}
+                  />
+                  <FlashcardResult answerCorrect={answerCorrect} />
+                </div>
+              )
+            }
           </div>
         ) : (
           <div className="flashcard-text-container">

@@ -8,7 +8,8 @@ const FlashcardInput = ({ answerChecked, checkAnswer }) => {
 
   if (answerChecked) return null
 
-  const handleSubmit = () => {
+  const handleSubmit = (e) => {
+    e.preventDefault()
     checkAnswer(answer)
     setAnswer('')
   }
