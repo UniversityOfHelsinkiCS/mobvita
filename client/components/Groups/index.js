@@ -45,7 +45,7 @@ const GroupView = () => {
 
   if (!currentGroupId) {
     return (
-      <div className="groupControls">
+      <div className="group-controls">
         <div>you have no groups yet!</div>
         <Button
           data-cy="create-group-modal"
@@ -104,18 +104,18 @@ const GroupView = () => {
         </ListGroup>
       </CollapsingList>
       {currentGroup.is_teaching
-      && (
-      <>
-        <Button
-          style={{ marginTop: '1em' }}
-          data-cy="add-to-group-modal"
-          onClick={() => setAddToGroupOpen(true)}
-        >
-          <FormattedMessage id="add-people-to-group" />
-        </Button>
-        <AddToGroup groupId={currentGroupId} isOpen={addToGroupOpen} setOpen={setAddToGroupOpen} />
-      </>
-      )}
+        && (
+          <>
+            <Button
+              style={{ marginTop: '1em' }}
+              data-cy="add-to-group-modal"
+              onClick={() => setAddToGroupOpen(true)}
+            >
+              <FormattedMessage id="add-people-to-group" />
+            </Button>
+            <AddToGroup groupId={currentGroupId} isOpen={addToGroupOpen} setOpen={setAddToGroupOpen} />
+          </>
+        )}
     </div>
   )
 }

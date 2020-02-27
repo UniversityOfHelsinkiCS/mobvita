@@ -321,6 +321,12 @@ body {
     display: flex;
   }
 
+  &-header {
+    display: flex;
+    flex-direction: row-reverse;
+    font-weight: 550;
+  }
+
   &-text-container {
     display: flex;
     flex-grow: 1;
@@ -358,12 +364,10 @@ body {
     margin: auto;
   }
 
-  &-flip {
+  &-footer {
     height: 2em;
-    margin-bottom: 0.5em;
-    padding-top: 1em;
     display: flex;
-    flex-direction: row-reverse;
+    flex-direction: row;
     & > button {
       margin-left: auto;
       border: none;
@@ -373,6 +377,19 @@ body {
       padding-right: 0;
       &:focus {
         outline: none;
+      }
+    }
+    & > select {
+      background-color: inherit;
+      border: none;
+      color: white;
+      font-weight: 550;
+      width: 7em;
+      &:focus {
+        outline: none;
+      }
+      & > option {
+        color: black;
       }
     }
   }

@@ -1,7 +1,7 @@
 import callBuilder, { callApi } from '../apiConnection'
 
-export const getFlashcards = (inputLanguage, outputLanguage) => {
-  const route = `/flashcards/${inputLanguage}/${outputLanguage}`
+export const getFlashcards = (inputLanguage, outputLanguage, storyId = '') => {
+  const route = `/flashcards/${inputLanguage}/${outputLanguage}/${storyId}`
   const prefix = 'GET_FLASHCARDS'
   return callBuilder(route, prefix, 'get')
 }
