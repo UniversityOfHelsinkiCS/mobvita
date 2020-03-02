@@ -38,6 +38,7 @@ router.post('/session', session.create)
 router.get('/groups', groups.getGroups)
 router.post('/groups', groups.createGroup)
 router.post('/groups/:groupId', groups.addToGroup)
+router.post('/groups/:groupId/remove/:userId', groups.deleteFromGroup)
 
 router.get('/user', user.getSelf)
 router.post('/user', user.setSelf)

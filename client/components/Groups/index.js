@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { getGroups } from 'Utilities/redux/groupsReducer'
+import { getGroups, removeFromGroup } from 'Utilities/redux/groupsReducer'
 import {
   Dropdown,
   ListGroup,
@@ -38,6 +38,10 @@ const GroupView = () => {
     if (!created) return
     setCurrentGroupId(created.group_id)
   }, [created])
+
+  const removeUser = (userId) => {
+    dispatch(removeFromGroup(currentGroupId, userId))
+  }
 
   if (!groups) {
     return null
@@ -99,7 +103,12 @@ const GroupView = () => {
         }}
         >
           {currentGroup.students.length === 0 ? <ListGroup.Item /> : currentGroup.students.map(student => (
-            <ListGroup.Item key={student.userName}>{student.userName}</ListGroup.Item>
+            <ListGroup.Item key={student.userName}>
+              {student.userName}
+              {/* <button type="button" onClick={() => removeUser(student.id)}>
+                remove
+              </button> */}
+            </ListGroup.Item>
           ))}
         </ListGroup>
       </CollapsingList>
