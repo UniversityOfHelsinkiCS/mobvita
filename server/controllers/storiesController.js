@@ -25,9 +25,18 @@ const getUploadProgress = async (req, res) => {
   const response = await axios.get(`/stories/${storyId}/loading`, { headers: req.headers })
   res.send(response.data)
 }
+
+const share = async (req, res) => {
+  const { storyId } = req.params
+  const url = `/stories/${storyId}/share`
+  const response = await axios.post(url, res.body, { headers: req.headers })
+  res.send(response.data)
+}
+
 module.exports = {
   getOne,
   getAll,
   createOne,
   getUploadProgress,
+  share,
 }

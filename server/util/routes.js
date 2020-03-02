@@ -19,6 +19,7 @@ router.get('/stories/:storyId/loading', stories.getUploadProgress)
 router.get('/stories/:language', stories.getAll)
 router.get('/stories/:language/:id', stories.getOne)
 router.post('/stories', stories.createOne)
+router.post('/stories/:storyId/share', stories.share)
 
 router.get('/flashcards/:inputLanguage/:outputLanguage', flashcards.getFlashcards)
 router.get('/flashcards/:inputLanguage/:outputLanguage/:storyId', flashcards.getStoryFlashcards)
