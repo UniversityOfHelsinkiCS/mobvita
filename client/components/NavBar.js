@@ -45,7 +45,7 @@ export default function NavBar({ history }) {
             data-cy="hamburger"
           />
           <Navbar.Brand
-            style={{ color: 'white', marginLeft: '0.5em' }}
+            style={{ color: 'white', marginLeft: '0.5em', cursor: 'pointer' }}
             onClick={() => history.push('/home')}
           >
 

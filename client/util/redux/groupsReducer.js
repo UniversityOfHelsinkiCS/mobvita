@@ -32,7 +32,7 @@ export const removeFromGroup = (groupId, userId) => {
 
 export const deleteGroup = (groupId) => {
   const route = `/groups/${groupId}/remove`
-  const prefix = 'REMOVE_FROM_GROUP'
+  const prefix = 'DELETE_GROUP'
   return callBuilder(route, prefix, 'post')
 }
 
@@ -97,7 +97,6 @@ export default (state = {}, action) => {
         groups: state.groups
           .concat(action.response.group)
           .sort((a, b) => a.groupName.localeCompare(b.groupName)),
-        created: action.response.group,
         pending: false,
         error: false,
       }
@@ -117,9 +116,9 @@ export default (state = {}, action) => {
       return {
         ...state,
         groups: state.groups
+          .filter(g => g.group_id !== action.response.group.group_id)
           .concat(action.response.group)
           .sort((a, b) => a.groupName.localeCompare(b.groupName)),
-        created: action.response.group,
         pending: false,
         error: false,
       }

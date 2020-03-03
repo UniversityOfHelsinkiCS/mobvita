@@ -104,9 +104,14 @@ const GroupView = () => {
         }}
         >
           {currentGroup.students.length === 0 ? <ListGroup.Item /> : currentGroup.students.map(student => (
-            <ListGroup.Item key={student.userName}>
+            <ListGroup.Item style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }} key={student.userName}>
               {student.userName}
-              <Icon onClick={() => removeUser(student._id)} name="close" />
+              <Icon
+                style={{ cursor: 'pointer' }}
+                name="close"
+                color="red"
+                onClick={() => removeUser(student._id)}
+              />
             </ListGroup.Item>
           ))}
         </ListGroup>
@@ -121,8 +126,8 @@ const GroupView = () => {
             >
               <FormattedMessage id="add-people-to-group" />
             </Button>
-            <AddToGroup groupId={currentGroupId} isOpen={addToGroupOpen} setOpen={setAddToGroupOpen} />
             <Button style={{ marginTop: '1em' }} variant="danger" onClick={() => dispatch(deleteGroup(currentGroupId))}>remove group</Button>
+            <AddToGroup groupId={currentGroupId} isOpen={addToGroupOpen} setOpen={setAddToGroupOpen} />
           </>
         )}
     </div>
