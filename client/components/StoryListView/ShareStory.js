@@ -25,15 +25,7 @@ const ShareStory = ({ story, isOpen, setOpen }) => {
     setOpen(false)
   }
 
-  useEffect(() => {
-    dispatch(getGroups())
-  }, [])
-
-  useEffect(() => {
-    if (!groups || groups.length === 0) return
-    setCurrentGroup(groups[0].group_id)
-  }, [groups])
-
+  console.log(groups)
 
   return (
     <Modal
@@ -51,13 +43,13 @@ const ShareStory = ({ story, isOpen, setOpen }) => {
             as="input"
             onChange={e => setUser(e.target.value)}
           />
-          {currentGroup
+          {groups
           && (
           <>
             <FormattedMessage id="share-with-a-group" />
             <Dropdown data-cy="select-group" onSelect={key => setCurrentGroup(key)}>
               <Dropdown.Toggle variant="primary" id="dropdown-basic">
-                {groups.find(group => group.group_id === currentGroup).groupName}
+                {currentGroup ? groups.find(group => group.group_id === currentGroup).groupName : 'select a group'}
               </Dropdown.Toggle>
               <Dropdown.Menu>
                 {groups.map(group => (
@@ -74,6 +66,7 @@ const ShareStory = ({ story, isOpen, setOpen }) => {
             onChange={e => setMessage(e.target.value)}
           />
           <Button
+            disabled={!user.trim() && !currentGroup}
             type="submit"
           >
             <FormattedMessage id="Confirm" />

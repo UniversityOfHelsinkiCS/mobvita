@@ -8,6 +8,7 @@ import { FormattedMessage, useIntl } from 'react-intl'
 import { debounce } from 'lodash'
 import CheckboxGroup from 'Components/CheckboxGroup'
 import { capitalize, learningLanguageSelector } from 'Utilities/common'
+import { getGroups } from 'Utilities/redux/groupsReducer'
 import StoryForm from './StoryForm'
 import AddStoryModal from './AddStoryModal'
 
@@ -49,6 +50,10 @@ const StoryList = () => {
     ),
     [learningLanguage],
   )
+
+  useEffect(() => {
+    dispatch(getGroups())
+  }, [])
 
   useEffect(() => {
     dispatch(
