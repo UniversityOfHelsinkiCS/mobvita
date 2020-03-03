@@ -3,10 +3,12 @@ import { Header, Card, Icon, Accordion, List, Progress, Button, Dropdown } from 
 import { Link } from 'react-router-dom'
 import moment from 'moment'
 import { FormattedMessage } from 'react-intl'
-import { inProduction } from 'Utilities/common'
+import { inProduction, hiddenFeatures } from 'Utilities/common'
 import useWindowDimensions from 'Utilities/windowDimensions'
+import ShareStory from './ShareStory'
 
 const StoryListItem = ({ story }) => {
+  const [modalOpen, setModalOpen] = useState(false)
   const icons = {
     high: <div><Icon name="star outline" size="large" style={{ color: 'red' }} /><Icon name="star outline" size="large" style={{ color: 'red' }} /><Icon name="star outline" size="large" style={{ color: 'red' }} /></div>,
     average: <div><Icon name="star outline" size="large" style={{ color: 'steelblue' }} /><Icon name="star outline" size="large" style={{ color: 'steelblue' }} /></div>,
@@ -93,6 +95,13 @@ const StoryListItem = ({ story }) => {
                     <FormattedMessage id="Flashcards" />
                   </Button>
                 </Link>
+                {hiddenFeatures
+                && (
+                <Button onClick={() => setModalOpen(true)} variant="primary" style={{ marginRight: '0.5em' }}>
+                  <FormattedMessage id="Share" />
+                </Button>
+                )
+              }
               </div>
             )
           }
@@ -101,6 +110,7 @@ const StoryListItem = ({ story }) => {
           <span style={{ marginLeft: 'auto' }}>
             {difficultyIcon}
           </span>
+          <ShareStory story={story} isOpen={modalOpen} setOpen={setModalOpen} />
         </div>
       </Card.Content>
     </Card>
