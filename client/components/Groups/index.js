@@ -48,7 +48,9 @@ const GroupView = () => {
     return null
   }
 
-  if (!currentGroupId) {
+
+  const currentGroup = groups.find(group => group.group_id === currentGroupId)
+  if (!currentGroup) {
     return (
       <div className="group-controls">
         <div>you have no groups yet!</div>
@@ -64,8 +66,6 @@ const GroupView = () => {
       </div>
     )
   }
-
-  const currentGroup = groups.find(group => group.group_id === currentGroupId)
 
   return (
     <div className="group-container">
@@ -107,6 +107,7 @@ const GroupView = () => {
             <ListGroup.Item style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }} key={student.userName}>
               {student.userName}
               <Icon
+                data-cy={`remove-from-group-${student.userName}`}
                 style={{ cursor: 'pointer' }}
                 name="close"
                 color="red"
@@ -126,7 +127,14 @@ const GroupView = () => {
             >
               <FormattedMessage id="add-people-to-group" />
             </Button>
-            <Button style={{ marginTop: '1em' }} variant="danger" onClick={() => dispatch(deleteGroup(currentGroupId))}>remove group</Button>
+            <Button
+              data-cy="delete-group"
+              style={{ marginTop: '1em' }}
+              variant="danger"
+              onClick={() => dispatch(deleteGroup(currentGroupId))}
+            >
+              remove group
+            </Button>
             <AddToGroup groupId={currentGroupId} isOpen={addToGroupOpen} setOpen={setAddToGroupOpen} />
           </>
         )}

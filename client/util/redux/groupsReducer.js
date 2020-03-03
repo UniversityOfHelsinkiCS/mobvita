@@ -139,7 +139,7 @@ export default (state = {}, action) => {
       return {
         ...state,
         groups: state.groups
-          .filter(group => group.group_id !== action.reponse.removed.group_id),
+          .filter(group => group.group_id !== action.response.removed),
         pending: false,
         error: false,
       }
