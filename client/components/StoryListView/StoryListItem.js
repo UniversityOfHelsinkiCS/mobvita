@@ -98,8 +98,6 @@ const StoryListItem = ({ story }) => {
           }
 
 
-
-
           <span style={{ marginLeft: 'auto' }}>
             {difficultyIcon}
           </span>

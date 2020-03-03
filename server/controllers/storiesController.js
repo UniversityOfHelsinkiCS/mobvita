@@ -29,7 +29,7 @@ const getUploadProgress = async (req, res) => {
 const share = async (req, res) => {
   const { storyId } = req.params
   const url = `/stories/${storyId}/share`
-  const response = await axios.post(url, res.body, { headers: req.headers })
+  const response = await axios.post(url, req.body, { headers: req.headers })
   res.send(response.data)
 }
 
