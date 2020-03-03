@@ -33,10 +33,19 @@ const share = async (req, res) => {
   res.send(response.data)
 }
 
+const acceptShare = async (req, res) => {
+  const { storyId } = req.params
+  const { token } = req.body
+  const url = `/stories/${storyId}/accept?token=${token}`
+  const response = await axios.get(url, { headers: req.headers })
+  res.send(response)
+}
+
 module.exports = {
   getOne,
   getAll,
   createOne,
   getUploadProgress,
   share,
+  acceptShare,
 }

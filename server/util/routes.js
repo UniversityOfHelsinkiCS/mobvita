@@ -15,6 +15,7 @@ const router = Router()
 router.get('/', (req, res) => res.send('welcome to root'))
 
 router.post('/stories/:storyId/share', stories.share)
+router.post('/stories/:storyId/accept', stories.acceptShare)
 router.get('/stories/:storyId/loading', stories.getUploadProgress)
 router.get('/stories/:language', stories.getAll)
 router.get('/stories/:language/:id', stories.getOne)
