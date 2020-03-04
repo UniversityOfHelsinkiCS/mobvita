@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { registerUser } from 'Utilities/redux/registerReducer'
-import { Header, Form, Checkbox, Segment } from 'semantic-ui-react'
+import { Form, Checkbox, Segment } from 'semantic-ui-react'
 import TermsAndConditions from 'Components/TermsAndConditions'
 import { useIntl, FormattedMessage } from 'react-intl'
-import { Link, useHistory } from 'react-router-dom'
+import { Link } from 'react-router-dom'
 import { setNotification } from 'Utilities/redux/notificationReducer'
 import { Button } from 'react-bootstrap'
 
@@ -26,7 +26,6 @@ const Register = () => {
   const { error, errorMessage } = useSelector(({ register }) => register)
 
   const dispatch = useDispatch()
-  const history = useHistory()
 
   useEffect(() => {
     if (error) {
