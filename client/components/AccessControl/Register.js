@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { registerUser } from 'Utilities/redux/registerReducer'
-import { Header, Form, Checkbox, Segment } from 'semantic-ui-react'
+import { Form, Checkbox, Segment } from 'semantic-ui-react'
 import TermsAndConditions from 'Components/TermsAndConditions'
 import { useIntl, FormattedMessage } from 'react-intl'
 import { Link, useHistory } from 'react-router-dom'
@@ -16,24 +16,29 @@ const Register = () => {
     passwordAgain: '',
   })
   const intl = useIntl()
-
+  const history = useHistory()
   const [accepted, setAccepted] = useState(false)
 
   const toggleAccepted = () => {
     setAccepted(!accepted)
   }
 
-  const { error, errorMessage } = useSelector(({ register }) => register)
+  const { error, errorMessage, pending, accountCreated } = useSelector(({ register }) => register)
 
   const dispatch = useDispatch()
-
-  const history = useHistory()
 
   useEffect(() => {
     if (error) {
       dispatch(setNotification(errorMessage, 'error'))
     }
   }, [error])
+
+  useEffect(() => {
+    if (!pending && accountCreated) {
+      history.push('/login')
+    }
+  }, [pending])
+
 
   const handleSubmit = () => {
     const { email, username, password, passwordAgain } = formState
@@ -48,7 +53,6 @@ const Register = () => {
       }
 
       dispatch(registerUser(payload))
-      history.push('/login')
     } else {
       dispatch(setNotification('You must accept Terms and Conditions', 'error'))
     }

@@ -26,6 +26,7 @@ import politics1 from 'Assets/politics1.png'
 import science1 from 'Assets/science1.png'
 import sport1 from 'Assets/sport1.png'
 import flashcards from 'Assets/flashcards.jpg'
+import { callApi } from './apiConnection'
 
 export const images = {
   revitaLogoTransparent,
@@ -88,6 +89,11 @@ export const localeNameToCode = (name) => {
   return 'en'
 }
 export const localeCodeToName = code => localeOptions.find(option => option.code === code).name
+
+export const checkRevitaStatus = async () => {
+  const result = await callApi('/revitaStatus')
+  return result
+}
 
 
 export * from '@root/config/common'
