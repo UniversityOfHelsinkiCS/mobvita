@@ -14,11 +14,11 @@ import NavBar from './NavBar'
 const App = () => {
   const history = createBrowserHistory({ basename: basePath })
   const dispatch = useDispatch()
-  const [revitaStatus, setRevitaStatus] = useState(200)
+  const [revitaStatus, setRevitaStatus] = useState('OK')
 
   useEffect(() => {
     checkRevitaStatus()
-      .then(res => setRevitaStatus(res.status))
+      .then(res => setRevitaStatus(res.data))
   }, [])
 
   if (window.gtag) {
@@ -38,7 +38,7 @@ const App = () => {
   // Use push, replace, and go to navigate around.
   history.push(history.location)
 
-  if (revitaStatus !== 200) {
+  if (revitaStatus !== 'OK') {
     dispatch(setNotification('The server is experincing issues. Please check back later!', 'error', { autoClose: false }))
   }
 
