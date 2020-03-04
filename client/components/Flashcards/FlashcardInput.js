@@ -23,7 +23,7 @@ const FlashcardInput = ({ answerChecked, checkAnswer }) => {
           onChange={event => setAnswer(event.target.value)}
         />
         <Button
-          className="flashcard-check"
+          className="flashcard-button"
           block
           variant="outline-primary"
           type="submit"

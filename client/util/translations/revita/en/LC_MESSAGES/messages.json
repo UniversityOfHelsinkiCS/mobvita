@@ -421,7 +421,7 @@
     "fill-in": "Translate",
     "browse-flashcards": "Browse",
     "multi-choice": "",
-    "next-card": "",
+    "next-card": "Next card",
     "back-to-my-flashcards": "",
     "add-new-flashcard": "Add new flashcards",
     "delete-this-flashcard": "",
@@ -696,5 +696,6 @@
     "no-flashcards-found-for-this-exercise-when-you-practice-a-story-and-click-on-unfamiliar-words-they-w": "",
     "Previous": "<",
     "Next": ">",
-    "test-message123": "This is a test message"
+    "test-message123": "This is a test message",
+    "well-done-click-next-card-to-play-another-set-of-cards": "Well done! Click \"Next Card\" to play another set of cards"
 }
