@@ -12,6 +12,7 @@ import { getFlashcards } from 'Utilities/redux/flashcardReducer'
 import { updateDictionaryLanguage } from 'Utilities/redux/userReducer'
 import FlashcardInput from './FlashcardInput'
 import FlashcardResult from './FlashcardResult'
+import FlashcardHint from './FlashcardHint'
 
 const FlashcardSide = ({
   answerChecked,
@@ -23,6 +24,7 @@ const FlashcardSide = ({
   setSwipeIndex,
   noCards,
   children,
+  hint,
 }) => {
   const dispatch = useDispatch()
   const learningLanguage = useSelector(learningLanguageSelector)
@@ -59,6 +61,7 @@ const FlashcardSide = ({
             <div className="flashcard-header">{cardIndex}</div>
             <div className="flashcard-text-container">
               {children}
+              <FlashcardHint hint={hint} />
             </div>
             {!sameLanguage
               && (

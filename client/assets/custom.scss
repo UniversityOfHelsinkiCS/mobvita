@@ -335,6 +335,7 @@ body {
 
   &-text-container {
     display: flex;
+    flex-direction: column;
     flex-grow: 1;
     overflow: auto;
     padding: 1em 0;
@@ -343,7 +344,6 @@ body {
     }
     & > p {
       margin: auto;
-      font-weight: 550;
     }
   }
 
@@ -372,6 +372,17 @@ body {
 
   &-result {
     margin: auto;
+  }
+
+  &-hint-button {
+    background-color: inherit;
+    border: none;
+    font-weight: 550;
+    font-size: 1.1em;
+    color: white;
+    &:focus {
+      outline: none;
+    }
   }
 
   &-footer {

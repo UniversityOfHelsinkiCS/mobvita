@@ -28,6 +28,7 @@ const Flashcard = ({ card, cardIndex, setSwipeIndex }) => {
     lan_in: inputLanguage,
     lan_out: outputLanguage,
     stage,
+    hint,
   } = card
 
   const checkAnswer = (answer) => {
@@ -49,6 +50,8 @@ const Flashcard = ({ card, cardIndex, setSwipeIndex }) => {
     setAnswerCorrect(correct)
   }
 
+  const hintText = hint && hint[0] && hint[0].hint
+
   const noCards = format === 'no-cards'
 
   const translations = Array.isArray(glosses)
@@ -66,6 +69,7 @@ const Flashcard = ({ card, cardIndex, setSwipeIndex }) => {
         stage={stage}
         setSwipeIndex={setSwipeIndex}
         noCards={noCards}
+        hint={hintText}
       >
         <h2>{lemma}</h2>
       </FlashcardSide>
