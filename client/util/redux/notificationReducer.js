@@ -45,6 +45,12 @@ export default (state = initialState, action) => {
         message: action.response.response.data,
         type: type.error,
       }
+    case 'CONFIRM_USER_SUCCESS':
+      return {
+        message: 'Email successfully confirmed. Logging you in, welcome to MobVita!',
+        type: type.success,
+        options: { autoClose: false },
+      }
     default:
       return state
   }
