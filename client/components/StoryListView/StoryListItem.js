@@ -55,12 +55,19 @@ const StoryListItem = ({ story }) => {
           {smallWindow
             ? (
               <Button.Group>
-                <Link to={`/stories/${story._id}/practice`}>
-                  <Button variant="success">
-                    <FormattedMessage id="practice" />
-                  </Button>
-                </Link>
-                <Dropdown className="button icon" floating trigger={<React.Fragment />}>
+                <Button
+                  as={Link}
+                  to={`/stories/${story._id}/practice`}
+                  style={{ backgroundColor: 'hsla(208, 56%, 55%, 1)', color: 'white' }}
+                >
+                  <FormattedMessage id="practice" />
+                </Button>
+                <Dropdown
+                  className="button icon"
+                  style={{ backgroundColor: 'rgb(97, 166, 226)', color: 'white' }}
+                  floating
+                  trigger={<React.Fragment />}
+                >
                   <Dropdown.Menu>
                     <Dropdown.Item
                       text={<FormattedMessage id="Read" />}
@@ -96,12 +103,12 @@ const StoryListItem = ({ story }) => {
                   </Button>
                 </Link>
                 {hiddenFeatures
-                && (
-                <Button onClick={() => setModalOpen(true)} variant="primary" style={{ marginRight: '0.5em' }}>
-                  <FormattedMessage id="Share" />
-                </Button>
-                )
-              }
+                  && (
+                    <Button onClick={() => setModalOpen(true)} variant="primary" style={{ marginRight: '0.5em' }}>
+                      <FormattedMessage id="Share" />
+                    </Button>
+                  )
+                }
               </div>
             )
           }
