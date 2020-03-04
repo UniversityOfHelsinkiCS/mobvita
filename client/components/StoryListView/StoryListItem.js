@@ -68,7 +68,7 @@ const StoryListItem = ({ story }) => {
                   floating
                   trigger={<React.Fragment />}
                 >
-                  <Dropdown.Menu>
+                  <Dropdown.Menu className="story-item-dropdown">
                     <Dropdown.Item
                       text={<FormattedMessage id="Read" />}
                       as={Link}
