@@ -6,6 +6,7 @@ import { Spinner } from 'react-bootstrap'
 import { getFlashcards } from 'Utilities/redux/flashcardReducer'
 import { learningLanguageSelector, dictionaryLanguageSelector } from 'Utilities/common'
 import Flashcard from './Flashcard'
+import FlashcardEndView from './FlashcardEndView'
 
 const Flashcards = ({ match }) => {
   const dispatch = useDispatch()
@@ -31,6 +32,11 @@ const Flashcards = ({ match }) => {
 
   const handleIndexChange = (index) => {
     setSwipeIndex(index)
+  }
+
+  const handleNewDeck = () => {
+    setSwipeIndex(0)
+    dispatch(getFlashcards(learningLanguage, dictionaryLanguage, storyId))
   }
 
   const cardIndex = `${swipeIndex + 1} / ${cards.length}`
@@ -60,11 +66,12 @@ const Flashcards = ({ match }) => {
               setSwipeIndex={setSwipeIndex}
             />
           ))}
+          <FlashcardEndView handleNewDeck={handleNewDeck} />
         </SwipeableViews>
         <button
           type="button"
           onClick={() => handleIndexChange(swipeIndex + 1)}
-          disabled={swipeIndex === cards.length - 1}
+          disabled={swipeIndex === cards.length}
           className="flashcard-arrow-button"
           style={{ marginLeft: 0 }}
         >
