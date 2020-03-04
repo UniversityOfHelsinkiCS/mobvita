@@ -282,6 +282,15 @@ body {
   }
 }
 
+.story-item-title {
+  white-space: nowrap;
+  width: 100%;                   
+  overflow: hidden;              
+  -o-text-overflow: ellipsis;  
+  text-overflow:    ellipsis;  
+}
+
+
 .group-container {
   max-width: 1024px;
   margin: auto;

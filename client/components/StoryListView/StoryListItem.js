@@ -46,9 +46,7 @@ const StoryListItem = ({ story }) => {
       }}
     >
       <Card.Content extra style={{ padding: '15px' }}>
-        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'baseline' }}>
-          <h5>{story.title}</h5>
-        </div>
+        <h5 className="story-item-title">{story.title}</h5>
       </Card.Content>
       <Card.Content extra style={{ padding: '15px' }}>
         <div style={{ display: 'flex', alignItems: 'baseline' }}>
