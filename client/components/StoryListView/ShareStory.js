@@ -25,8 +25,6 @@ const ShareStory = ({ story, isOpen, setOpen }) => {
     setOpen(false)
   }
 
-  console.log(groups)
-
   return (
     <Modal
       dimmer="inverted"
