@@ -35,7 +35,7 @@ module.exports = (env, argv) => {
 
   const headHtmlSnippet = (mode === 'production' && BASE_PATH === '/')
     ? `<meta name="viewport" content="width=device-width, initial-scale=1.0">
-       <script src="https://code.responsivevoice.org/responsivevoice.js"></script>
+    <script src="https://code.responsivevoice.org/responsivevoice.js?key=IXPRWFMo"></script>
        <script async src="https://www.googletagmanager.com/gtag/js?id=UA-157268430-1"></script>
        <script>
          window.dataLayer = window.dataLayer || [];
@@ -44,7 +44,7 @@ module.exports = (env, argv) => {
          gtag('config', 'UA-157268430-1');
        </script>`
     : `<meta name="viewport" content="width=device-width, initial-scale=1.0">
-       <script src="https://code.responsivevoice.org/responsivevoice.js"></script>`
+      <script src="https://code.responsivevoice.org/responsivevoice.js?key=IXPRWFMo"></script>`
 
   return {
     devtool: 'source-map',
