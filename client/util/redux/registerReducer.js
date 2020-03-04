@@ -6,19 +6,27 @@ export const registerUser = (payload) => {
   return callBuilder(route, prefix, 'post', payload)
 }
 
-export default (state = { data: undefined }, action) => {
+const initialState = {
+  pending: false,
+  error: false,
+  errorMessage: null,
+}
+
+export default (state = initialState, action) => {
   switch (action.type) {
     case 'POST_REGISTER_ATTEMPT':
       return {
         ...state,
         pending: true,
         error: false,
+        errorMessage: null,
       }
     case 'POST_REGISTER_FAILURE':
       return {
         ...state,
         pending: false,
         error: true,
+        accountCreated: false,
         errorMessage: action.response.response.data,
       }
     case 'POST_REGISTER_SUCCESS':
@@ -26,6 +34,8 @@ export default (state = { data: undefined }, action) => {
         ...state,
         pending: false,
         error: false,
+        accountCreated: true,
+        errorMessage: null,
       }
     default:
       return state

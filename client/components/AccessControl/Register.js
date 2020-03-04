@@ -4,7 +4,7 @@ import { registerUser } from 'Utilities/redux/registerReducer'
 import { Form, Checkbox, Segment } from 'semantic-ui-react'
 import TermsAndConditions from 'Components/TermsAndConditions'
 import { useIntl, FormattedMessage } from 'react-intl'
-import { Link } from 'react-router-dom'
+import { Link, useHistory } from 'react-router-dom'
 import { setNotification } from 'Utilities/redux/notificationReducer'
 import { Button } from 'react-bootstrap'
 
@@ -16,14 +16,14 @@ const Register = () => {
     passwordAgain: '',
   })
   const intl = useIntl()
-
+  const history = useHistory()
   const [accepted, setAccepted] = useState(false)
 
   const toggleAccepted = () => {
     setAccepted(!accepted)
   }
 
-  const { error, errorMessage } = useSelector(({ register }) => register)
+  const { error, errorMessage, pending, accountCreated } = useSelector(({ register }) => register)
 
   const dispatch = useDispatch()
 
@@ -32,6 +32,13 @@ const Register = () => {
       dispatch(setNotification(errorMessage, 'error'))
     }
   }, [error])
+
+  useEffect(() => {
+    if (!pending && accountCreated) {
+      history.push('/login')
+    }
+  }, [pending])
+
 
   const handleSubmit = () => {
     const { email, username, password, passwordAgain } = formState
