@@ -8,11 +8,16 @@ const user = require('@controllers/userController')
 const email = require('@controllers/emailController')
 const flashcards = require('@controllers/flashcardsController')
 const groups = require('@controllers/groupsController')
+const { checkRevitaStatus } = require('@controllers/healthCheckController')
 const { unknown } = require('@controllers/fallbackController')
+const { axios } = require('@util/common')
+
 
 const router = Router()
 
 router.get('/', (req, res) => res.send('welcome to root'))
+
+router.get('/revitaStatus', checkRevitaStatus)
 
 router.get('/stories/:storyId/loading', stories.getUploadProgress)
 
