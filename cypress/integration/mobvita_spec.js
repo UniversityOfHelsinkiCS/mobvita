@@ -113,7 +113,7 @@ describe('Mobvita', function () {
 
     it("can start filtered practice", function () {
       cy.get('[data-cy=practice-now]').click()
-      cy.get('[class=checkboxGroup]').eq(1).children()
+      cy.get('[class=checkbox-group]').eq(1).children()
         .then(children => {
           children[2].click()
           children[4].click()
@@ -125,7 +125,7 @@ describe('Mobvita', function () {
     it("cant start filtered practice with 0 stories", function () {
       cy.get('[data-cy=practice-now]').click()
       cy.get("[data-cy=start-random]").should("be.enabled")
-      cy.get('[class=checkboxGroup]').eq(1).children().each(e => e.click())
+      cy.get('[class=checkbox-group]').eq(1).children().each(e => e.click())
       cy.get("[data-cy=start-random]").should("be.disabled")
     })
 
@@ -188,7 +188,25 @@ describe('Mobvita', function () {
         cy.contains(student.username)
       })
 
-      it('users can be added to group', function () {
+      it('group can be removed', function() {
+        cy.request({
+          method: 'POST',
+          url: 'localhost:8000/api/groups',
+          headers: {
+            'Authorization': `Bearer ${globalUser.token}`
+          },
+          body: {
+            group_name: 'destroyed'
+          }
+        })
+        cy.reload()
+        cy.get('[data-cy=select-group]').click()
+        cy.contains('destroyed').click()
+        cy.get('[data-cy=delete-group]').click()
+        cy.contains('destroyed').should('not.exist')
+      })
+
+      it('users can be added to group and removed', function () {
         const teacher = createRandomUser()
         const student = createRandomUser()
         cy.request({
@@ -214,6 +232,9 @@ describe('Mobvita', function () {
 
         cy.get('[class=card-header]').eq(1).click()
         cy.contains(student.username)
+
+        cy.get(`[data-cy=remove-from-group-${student.username}]`).click()
+        cy.contains(student.username).should('not.exist')
       })
     })
 

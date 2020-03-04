@@ -41,4 +41,20 @@ const remove = async (req, res) => {
   res.send(response.data)
 }
 
-module.exports = { getSelf, setSelf, register, confirm, testConfirm, remove }
+const acceptFriend = async (req, res) => {
+  const { userId } = req.params
+  const { token } = req.body
+  const url = `/user/friends/${userId}/request?token=${token}`
+  const response = await axios.get(url, { headers: req.headers })
+  res.send(response)
+}
+
+module.exports = {
+  getSelf,
+  setSelf,
+  register,
+  confirm,
+  testConfirm,
+  remove,
+  acceptFriend,
+}

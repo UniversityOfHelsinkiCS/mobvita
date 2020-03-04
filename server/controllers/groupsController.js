@@ -19,4 +19,25 @@ const createGroup = async (req, res) => {
   res.send(response.data)
 }
 
-module.exports = { getGroups, addToGroup, createGroup }
+const deleteFromGroup = async (req, res) => {
+  const { groupId, userId } = req.params
+  const url = `/groups/${groupId}/remove/${userId}`
+
+  const response = await axios.post(url, {}, { headers: req.headers })
+  res.send(response.data)
+}
+
+const deleteGroup = async (req, res) => {
+  const { groupId } = req.params
+  const url = `/groups/${groupId}/remove`
+  const response = await axios.post(url, {}, { headers: req.headers })
+  res.send(response.data)
+}
+
+module.exports = {
+  getGroups,
+  addToGroup,
+  createGroup,
+  deleteFromGroup,
+  deleteGroup,
+}

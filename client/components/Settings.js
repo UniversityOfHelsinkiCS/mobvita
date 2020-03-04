@@ -12,7 +12,7 @@ const Settings = ({ trigger }) => {
       <Modal.Header>
         Learning settings
       </Modal.Header>
-      <Modal.Content className="flex" style={{ display: 'flex', flexDirection: 'column' }}>
+      <Modal.Content style={{ display: 'flex', flexDirection: 'column' }}>
         <span className="label">Exercise difficulty level</span>
         <ButtonGroup name="difficultyButtons" size="md">
           <Button>A1</Button>

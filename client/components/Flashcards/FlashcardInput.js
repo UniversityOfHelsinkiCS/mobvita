@@ -8,13 +8,14 @@ const FlashcardInput = ({ answerChecked, checkAnswer }) => {
 
   if (answerChecked) return null
 
-  const handleSubmit = () => {
+  const handleSubmit = (e) => {
+    e.preventDefault()
     checkAnswer(answer)
     setAnswer('')
   }
 
   return (
-    <div className="flashcardInputAndCheck">
+    <div className="flashcard-input">
       <form onSubmit={handleSubmit}>
         <Form.Control
           type="text"
@@ -22,7 +23,7 @@ const FlashcardInput = ({ answerChecked, checkAnswer }) => {
           onChange={event => setAnswer(event.target.value)}
         />
         <Button
-          className="flashcardCheck"
+          className="flashcard-check"
           block
           variant="outline-primary"
           type="submit"

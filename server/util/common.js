@@ -17,6 +17,12 @@ const axios = Axios.create({
   httpsAgent: new https.Agent({ rejectUnauthorized: false }),
   baseURL: revitaUrl,
 })
+if (process.env.DEBUG === 'true') {
+  axios.interceptors.request.use((request) => {
+    console.log('Starting Request', request)
+    return request
+  })
+}
 
 module.exports = {
   ...common,

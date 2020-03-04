@@ -20,7 +20,7 @@ const ToggleButton = ({ toggled, children, ...rest }) => {
 
 
 const CheckboxGroup = ({ values, onClick }) => (
-  <div style={{ marginTop: 'auto' }} className="checkboxGroup">{
+  <div style={{ marginTop: 'auto' }} className="checkbox-group">{
     Object.entries(values).sort().map(([key, val]) => (
       <ToggleButton
         key={key}

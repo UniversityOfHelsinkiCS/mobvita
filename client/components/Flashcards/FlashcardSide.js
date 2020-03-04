@@ -1,11 +1,41 @@
 import React from 'react'
+import { useDispatch, useSelector } from 'react-redux'
+import { useParams } from 'react-router-dom'
 import { Icon } from 'semantic-ui-react'
-import { useIntl } from 'react-intl'
+import { FormattedMessage } from 'react-intl'
+import {
+  learningLanguageSelector,
+  dictionaryLanguageSelector,
+  translatableLanguages,
+} from 'Utilities/common'
+import { getFlashcards } from 'Utilities/redux/flashcardReducer'
+import { updateDictionaryLanguage } from 'Utilities/redux/userReducer'
 import FlashcardInput from './FlashcardInput'
 import FlashcardResult from './FlashcardResult'
+import FlashcardHint from './FlashcardHint'
 
-const FlashcardSide = ({ answerChecked, answerCorrect, checkAnswer, flipCard, cardIndex, stage, children }) => {
-  const intl = useIntl()
+const FlashcardSide = ({
+  answerChecked,
+  answerCorrect,
+  checkAnswer,
+  flipCard,
+  cardIndex,
+  stage,
+  setSwipeIndex,
+  noCards,
+  children,
+  hint,
+}) => {
+  const dispatch = useDispatch()
+  const learningLanguage = useSelector(learningLanguageSelector)
+  const dictionaryLanguage = useSelector(dictionaryLanguageSelector)
+  const { storyId } = useParams()
+
+  const dictionaryOptions = translatableLanguages[learningLanguage].map(element => ({
+    key: element,
+    value: element,
+    text: element,
+  }))
 
   const backgroundColor = [
     'rgb(255, 99, 71)',
@@ -15,32 +45,67 @@ const FlashcardSide = ({ answerChecked, answerCorrect, checkAnswer, flipCard, ca
     'limegreen',
   ]
 
+  const sameLanguage = learningLanguage === dictionaryLanguage
+
+  const handleDropdownChange = async (value) => {
+    setSwipeIndex(0)
+    dispatch(updateDictionaryLanguage(value))
+    dispatch(getFlashcards(learningLanguage, value, storyId))
+  }
+
   return (
     <div className="flashcard" style={{ backgroundColor: backgroundColor[stage] }}>
-      <div style={{ display: 'flex', flexDirection: 'row-reverse', fontWeight: '550' }}>{cardIndex}</div>
-      <div className="flashcardTextContainer">
-        <div className="flashcardText">
-          {children}
-        </div>
-      </div>
-      <div className="flashcardInputAndResultContainer">
-        <FlashcardInput
-          answerChecked={answerChecked}
-          checkAnswer={checkAnswer}
-        />
-        <FlashcardResult answerCorrect={answerCorrect} />
-      </div>
-      <div className="flashcardFlipContainer">
-        <button
-          className="flashcardFlip"
-          variant="light"
-          type="button"
-          onClick={() => flipCard()}
+      {!noCards
+        ? (
+          <div className="flashcard-content">
+            <div className="flashcard-header">{cardIndex}</div>
+            <div className="flashcard-text-container">
+              {children}
+              <FlashcardHint hint={hint} />
+            </div>
+            {!sameLanguage
+              && (
+                <div className="flashcard-input-and-result-container">
+                  <FlashcardInput
+                    answerChecked={answerChecked}
+                    checkAnswer={checkAnswer}
+                  />
+                  <FlashcardResult answerCorrect={answerCorrect} />
+                </div>
+              )
+            }
+          </div>
+        ) : (
+          <div className="flashcard-text-container">
+            <p>
+              <FormattedMessage id="no-flashcards-yet-when-you-practice-a-story-and-click-on-unfamiliar-words-they-will-be-added-to-your" />
+            </p>
+          </div>
+        )
+      }
+      <div className="flashcard-footer">
+        <select
+          defaultValue={dictionaryLanguage}
+          style={{}}
+          onChange={e => handleDropdownChange(e.target.value)}
         >
-          {`${intl.formatMessage({ id: 'Flip' })}   `}
-          <Icon name="arrow right" />
-        </button>
+          {dictionaryOptions.map(option => <option key={option.key}>{option.text}</option>)}
+        </select>
+        {!noCards
+          && (
+            <button
+              variant="light"
+              type="button"
+              onClick={() => flipCard()}
+            >
+              <FormattedMessage id="Flip" />
+              {'  '}
+              <Icon name="arrow right" />
+            </button>
+          )
+        }
       </div>
+
     </div>
   )
 }

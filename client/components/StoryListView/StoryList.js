@@ -8,6 +8,7 @@ import { FormattedMessage, useIntl } from 'react-intl'
 import { debounce } from 'lodash'
 import CheckboxGroup from 'Components/CheckboxGroup'
 import { capitalize, learningLanguageSelector } from 'Utilities/common'
+import { getGroups } from 'Utilities/redux/groupsReducer'
 import StoryForm from './StoryForm'
 import AddStoryModal from './AddStoryModal'
 
@@ -49,6 +50,10 @@ const StoryList = () => {
     ),
     [learningLanguage],
   )
+
+  useEffect(() => {
+    dispatch(getGroups())
+  }, [])
 
   useEffect(() => {
     dispatch(
@@ -97,7 +102,7 @@ const StoryList = () => {
   const searchSort = (
     <div
       data-cy="library-controls"
-      className="libraryControl"
+      className="library-control"
     >
       <Search
         open={false}
@@ -127,7 +132,7 @@ const StoryList = () => {
 
   if (pending) {
     return (
-      <div>
+      <div className="component-container">
         {searchSort}
         <Placeholder>
           <Placeholder.Line />
@@ -136,7 +141,13 @@ const StoryList = () => {
     )
   }
 
-  if (!stories.length) return <FormattedMessage id="no-stories-available" />
+  if (!stories.length) {
+    return (
+      <div className="component-container">
+        <FormattedMessage id="no-stories-available" />
+      </div>
+    )
+  }
 
   const filteredInsteadOfPaginated = searchString && searchedStories.length < 30
   const displayStories = filteredInsteadOfPaginated ? searchedStories : stories
@@ -163,7 +174,7 @@ const StoryList = () => {
   })
 
   return (
-    <div>
+    <div className="component-container">
       {searchSort}
 
       <Card.Group itemsPerRow={1} doubling>

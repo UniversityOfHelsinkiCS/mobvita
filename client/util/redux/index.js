@@ -13,6 +13,7 @@ import notification from './notificationReducer'
 import uploadProgress from './uploadProgressReducer'
 import flashcards from './flashcardReducer'
 import groups from './groupsReducer'
+import share from './shareReducer'
 
 const rootReducer = combineReducers({
   stories,
@@ -28,6 +29,7 @@ const rootReducer = combineReducers({
   uploadProgress,
   flashcards,
   groups,
+  share,
 })
 
 export default (state, action) => (

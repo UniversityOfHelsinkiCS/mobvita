@@ -16,7 +16,7 @@ const Tabs = ({ location }) => {
         to: '/home',
         key: 'home',
       },
-      render: () => <div className="contentContainer"><HomeView /></div>,
+      render: () => <HomeView />,
     },
     {
       menuItem: {
@@ -26,7 +26,7 @@ const Tabs = ({ location }) => {
         key: 'library',
         'data-cy': 'library-tab',
       },
-      render: () => <div className="contentContainer"><StoryList /></div>,
+      render: () => <StoryList />,
     },
   ]
 
@@ -40,12 +40,10 @@ const Tabs = ({ location }) => {
   }
 
   return (
-    <div className="maxContentSize" style={{ margin: 'auto' }}>
-      <Tab
-        panes={panes}
-        activeIndex={index}
-      />
-    </div>
+    <Tab
+      panes={panes}
+      activeIndex={index}
+    />
 
   )
 }

@@ -66,6 +66,12 @@ body {
   max-height: 50em !important;
 }
 
+.ui.attached.tabular.menu {
+  max-width: 1024px;
+  margin: auto;
+  margin-bottom: 1em;
+}
+
 
 
 // MISC CSS:
@@ -75,6 +81,14 @@ body {
   min-height: 100vh;
   width: 100%;
   padding: 1em 0.2em 5em 0.2em;
+  & > div {
+    margin: auto;
+  }
+}
+
+.component-container {
+  margin: auto;
+  max-width: 1024px;
 }
 
 .word-interactive{
@@ -219,21 +233,14 @@ body {
   font-family: $default-font;
 }
 
-.contentContainer {
-  padding-top: 1em;
-  div {
-    max-width: 1024px;
-  }
-}
-
-.dictionaryButton {
+.dictionary-button {
   position: fixed;
   right: 0.5%;
   bottom: 0.5%;
   background-color: $background;
 }
 
-.dictionaryHelp {
+.dictionary-help {
   width: 350px;
   margin-left: 1em;
   align-self: flex-start;
@@ -249,7 +256,7 @@ body {
   }
 }
 
-.libraryControl {
+.library-control {
   display: flex;
   flex-direction: column;
   justify-content: space-between;
@@ -260,7 +267,7 @@ body {
   }
 }
 
-.checkboxGroup {
+.checkbox-group {
   button {
     height: 38px;
     &:focus {
@@ -287,55 +294,10 @@ body {
   margin-bottom: 1em;
 }
 
-.maxContentSize {
-  max-width: 1024px;
-}
-
-.autoMargin {
-  margin: auto;
-}
-
-.flex {
-  display: flex;
-  flex-direction: column;
-}
-
 .label {
   padding-bottom: 0.5em;
   font-size: 1.1em;
   font-weight: 600;
-}
-
-#flashcardsContainer {
-  display: flex;
-}
-
-.flashcardNextPreviousButtons {
-  height: 6em;
-  margin: auto;
-  background-color: white;
-  border: none;
-  color: hsla(208, 56%, 55%, 1);
-  &:focus {
-    outline: none;
-  }
-  &:hover {
-    color: #0069d9
-  }
-  &:disabled {
-    color: grey
-  }
-  @media (max-width: 720px) {
-    display: none;
-  }
-}
-
-#flashcardPreviousButton {
-  margin-right: 0;
-}
-
-#flashcardNextButton {
-  margin-left: 0;
 }
 
 .flashcard {
@@ -355,66 +317,122 @@ body {
     outline: none;
   }
 
-  .flashcardTextContainer {
+  &-container {
     display: flex;
+  }
+
+  &-content {
+    display: flex;
+    flex-direction: column;
+    height: 31em;
+  }
+
+  &-header {
+    display: flex;
+    flex-direction: row-reverse;
+    font-weight: 550;
+  }
+
+  &-text-container {
+    display: flex;
+    flex-direction: column;
     flex-grow: 1;
     overflow: auto;
     padding: 1em 0;
+    & > h2, ul {
+      margin: auto;
+    }
+    & > p {
+      margin: auto;
+    }
   }
 
-  .flashcardText {
-    margin: auto;
-  }
-
-  .flashcardTranslations {
+  &-translations {
     padding-left: 0;
     font-size: 1em;
     font-weight: 550;
   }
 
-  .flashcardInputAndResultContainer {
+  &-input-and-result-container {
     height: 11em;
     display: flex;
     padding-top: 1em;
   }
 
-  .flashcardInputAndCheck {
+  &-input {
     flex-grow: 1;
     padding-left: 1em;
     padding-right: 1em;
   }
 
-  .flashcardCheck {
+  &-check {
     margin-top: 1em;
     background-color: white;
   }
 
-  .flashcardResult {
+  &-result {
     margin: auto;
   }
 
-  .flashcardFlipContainer {
-    height: 2em;
-    margin-bottom: 0.5em;
-    padding-top: 1em;
-    display: flex;
-    flex-direction: row-reverse;
-  }
-
-  .flashcardFlip {
-    margin-left: auto;
-    border: none;
+  &-hint-button {
     background-color: inherit;
-    color: white;
+    border: none;
     font-weight: 550;
-    padding-right: 0;
+    font-size: 1.1em;
+    color: white;
     &:focus {
       outline: none;
     }
   }
 
-  .flashcardFlipIcon {
-    margin-left: 1em;
+  &-footer {
+    height: 2em;
+    display: flex;
+    flex-direction: row;
+    & > button {
+      margin-left: auto;
+      border: none;
+      background-color: inherit;
+      color: white;
+      font-weight: 550;
+      padding-right: 0;
+      &:focus {
+        outline: none;
+      }
+    }
+    & > select {
+      background-color: inherit;
+      border: none;
+      color: white;
+      font-weight: 550;
+      width: 7em;
+      &:focus {
+        outline: none;
+      }
+      & > option {
+        color: black;
+      }
+    }
+  }
+
+  &-arrow-button {
+    height: 6em;
+    margin: auto;
+    background-color: white;
+    border: none;
+    color: hsla(208, 56%, 55%, 1);
+    &:focus {
+      outline: none;
+    }
+    &:hover {
+      color: #0069d9
+    }
+    &:disabled {
+      color: grey
+    }
+    @media (max-width: 720px) {
+      display: none;
+    }
   }
 }
 

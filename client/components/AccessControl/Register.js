@@ -62,7 +62,7 @@ const Register = () => {
     })
   }
   return (
-    <div className="maxContentSize autoMargin">
+    <div className="component-container">
       <h1>{intl.formatMessage({ id: 'Register' })}</h1>
       <Segment>
         <Form onSubmit={handleSubmit}>

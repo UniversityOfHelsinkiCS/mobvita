@@ -270,7 +270,7 @@ const CurrentPractice = ({ storyId }) => {
   }
 
   return (
-    <div className="maxContentSize">
+    <div className="component-container">
       <h3>{`${story.title}`}</h3>
       {story.url ? <p><a href={story.url}><FormattedMessage id="Source" /></a></p> : null}
 

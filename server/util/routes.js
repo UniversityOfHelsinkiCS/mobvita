@@ -10,7 +10,6 @@ const flashcards = require('@controllers/flashcardsController')
 const groups = require('@controllers/groupsController')
 const { checkRevitaStatus } = require('@controllers/healthCheckController')
 const { unknown } = require('@controllers/fallbackController')
-const { axios } = require('@util/common')
 
 
 const router = Router()
@@ -19,8 +18,9 @@ router.get('/', (req, res) => res.send('welcome to root'))
 
 router.get('/revitaStatus', checkRevitaStatus)
 
+router.post('/stories/:storyId/share', stories.share)
+router.post('/stories/:storyId/accept', stories.acceptShare)
 router.get('/stories/:storyId/loading', stories.getUploadProgress)
-
 router.get('/stories/:language', stories.getAll)
 router.get('/stories/:language/:id', stories.getOne)
 router.post('/stories', stories.createOne)
@@ -43,6 +43,8 @@ router.post('/session', session.create)
 router.get('/groups', groups.getGroups)
 router.post('/groups', groups.createGroup)
 router.post('/groups/:groupId', groups.addToGroup)
+router.post('/groups/:groupId/remove/:userId', groups.deleteFromGroup)
+router.post('/groups/:groupId/remove/', groups.deleteGroup)
 
 router.get('/user', user.getSelf)
 router.post('/user', user.setSelf)
