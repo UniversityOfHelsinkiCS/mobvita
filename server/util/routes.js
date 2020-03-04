@@ -28,6 +28,7 @@ router.post('/stories', stories.createOne)
 router.get('/flashcards/:inputLanguage/:outputLanguage', flashcards.getFlashcards)
 router.get('/flashcards/:inputLanguage/:outputLanguage/:storyId', flashcards.getStoryFlashcards)
 router.post('/flashcards/:inputLanguage/:outputLanguage/answer', flashcards.recordFlashcardAnswer)
+router.delete('/flashcards/:id', flashcards.deleteFlashcard)
 
 router.get('/snippets/story/:storyId/current', snippets.getCurrent)
 router.get('/snippets/story/:storyId/next', snippets.getNext)

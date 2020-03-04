@@ -21,4 +21,11 @@ const recordFlashcardAnswer = async (req, res) => {
   res.send(response.data)
 }
 
-module.exports = { getFlashcards, getStoryFlashcards, recordFlashcardAnswer }
+const deleteFlashcard = async (req, res) => {
+  const { id } = req.params
+  const url = `/flashcards/${id}`
+  const response = await axios.post(url, { op: 'delete' }, { headers: req.headers })
+  res.send(response.data)
+}
+
+module.exports = { getFlashcards, getStoryFlashcards, recordFlashcardAnswer, deleteFlashcard }

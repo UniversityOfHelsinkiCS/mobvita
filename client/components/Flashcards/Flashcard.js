@@ -70,6 +70,7 @@ const Flashcard = ({ card, cardIndex, setSwipeIndex }) => {
         setSwipeIndex={setSwipeIndex}
         noCards={noCards}
         hint={hintText}
+        id={_id}
       >
         <h2>{lemma}</h2>
       </FlashcardSide>
@@ -81,6 +82,7 @@ const Flashcard = ({ card, cardIndex, setSwipeIndex }) => {
         cardIndex={cardIndex}
         stage={stage}
         setSwipeIndex={setSwipeIndex}
+        id={_id}
       >
         <ul className="flashcard-translations">{translations}</ul>
       </FlashcardSide>
