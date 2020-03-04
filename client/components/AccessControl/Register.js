@@ -26,7 +26,6 @@ const Register = () => {
   const { error, errorMessage } = useSelector(({ register }) => register)
 
   const dispatch = useDispatch()
-
   const history = useHistory()
 
   useEffect(() => {
@@ -48,7 +47,6 @@ const Register = () => {
       }
 
       dispatch(registerUser(payload))
-      history.push('/login')
     } else {
       dispatch(setNotification('You must accept Terms and Conditions', 'error'))
     }
