@@ -276,6 +276,12 @@ body {
   }
 }
 
+.story-item-dropdown {
+  & > a {
+    color: rgba(0,0,0,.87) !important;
+  }
+}
+
 .group-container {
   max-width: 1024px;
   margin: auto;
