@@ -330,6 +330,7 @@ body {
   &-header {
     display: flex;
     flex-direction: row-reverse;
+    justify-content: space-between;
     font-weight: 550;
   }
 
@@ -375,11 +376,14 @@ body {
   }
 
   &-hint-button {
-    background-color: inherit;
-    border: none;
     font-weight: 550;
     font-size: 1.1em;
     color: white;
+  }
+
+  &-blended-input {
+    background-color: inherit;
+    border: none;
     &:focus {
       outline: none;
     }
@@ -391,14 +395,9 @@ body {
     flex-direction: row;
     & > button {
       margin-left: auto;
-      border: none;
-      background-color: inherit;
       color: white;
       font-weight: 550;
       padding-right: 0;
-      &:focus {
-        outline: none;
-      }
     }
     & > select {
       background-color: inherit;

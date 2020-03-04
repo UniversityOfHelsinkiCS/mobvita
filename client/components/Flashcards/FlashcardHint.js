@@ -10,7 +10,11 @@ const FlashcardHint = ({ hint }) => {
 
   return (
     <>
-      <button type="button" className="flashcard-hint-button" onClick={() => setOpen(!open)}>
+      <button
+        type="button"
+        className="flashcard-blended-input flashcard-hint-button"
+        onClick={() => setOpen(!open)}
+      >
         <FormattedMessage id="Hint" />
         {'  '}
         {open ? <Icon name="caret down" /> : <Icon name="caret left" />}

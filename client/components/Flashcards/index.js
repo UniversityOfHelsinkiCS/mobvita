@@ -33,7 +33,7 @@ const Flashcards = ({ match }) => {
     setSwipeIndex(index)
   }
 
-  const cardIndex = `${swipeIndex + 1} / ${cards.all.length}`
+  const cardIndex = `${swipeIndex + 1} / ${cards.length}`
 
   return (
     <div className="component-container">
@@ -52,7 +52,7 @@ const Flashcards = ({ match }) => {
           onChangeIndex={handleIndexChange}
           style={{ width: '30em' }}
         >
-          {cards.all.map(card => (
+          {cards.map(card => (
             <Flashcard
               key={card._id}
               card={card}
@@ -64,7 +64,7 @@ const Flashcards = ({ match }) => {
         <button
           type="button"
           onClick={() => handleIndexChange(swipeIndex + 1)}
-          disabled={swipeIndex === cards.all.length - 1}
+          disabled={swipeIndex === cards.length - 1}
           className="flashcard-arrow-button"
           style={{ marginLeft: 0 }}
         >
