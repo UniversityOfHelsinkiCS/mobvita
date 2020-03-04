@@ -16,11 +16,11 @@ const EmailConfirm = ({ match }) => {
   }, [user])
 
 
-  return (
-    <Button variant="primary" onClick={() => dispatch(confirmUser(match.params.token))}>
-    Confirm Email
-    </Button>
-  )
+  useEffect(() => {
+    dispatch(confirmUser(match.params.token))
+  }, [])
+
+  return null
 }
 
 export default EmailConfirm
