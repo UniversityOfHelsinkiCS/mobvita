@@ -11,6 +11,8 @@ import { setNotification } from 'Utilities/redux/notificationReducer'
 export default function Toaster() {
   const message = useSelector(({ notification }) => notification.message)
   const type = useSelector(({ notification }) => notification.type)
+  const options = useSelector(({ notification }) => notification.options)
+
   const dispatch = useDispatch()
   const { storyId, progress, error, processingError } = useSelector(({ uploadProgress }) => uploadProgress)
   const [interval, saveInterval] = useState(null)
@@ -82,7 +84,7 @@ export default function Toaster() {
   // Handles messages that come from Redux:
   useEffect(() => {
     if (message !== null) {
-      toast(message, { type })
+      toast(message, { type, ...options })
       dispatch({ type: 'RESET_NOTIFICATION' })
     }
   }, [message])

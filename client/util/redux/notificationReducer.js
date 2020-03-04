@@ -6,11 +6,12 @@ const type = {
   info: 'info',
 }
 
-export const setNotification = (message, type) => ({ type: 'SET_NOTIFICATION', payload: { message, type } })
+export const setNotification = (message, type, options) => ({ type: 'SET_NOTIFICATION', payload: { message, type, options } })
 
 const initialState = {
   message: null,
   type: null,
+  options: null,
 }
 
 export default (state = initialState, action) => {
@@ -26,11 +27,13 @@ export default (state = initialState, action) => {
       return {
         message: action.payload.message,
         type: action.payload.type,
+        options: action.payload.options || {},
       }
     case 'POST_REGISTER_SUCCESS':
       return {
         message: 'Account creation success. Check your email for confirmation link!',
         type: type.success,
+        options: { autoClose: false },
       }
     case 'CREATE_GROUP_SUCCESS':
       return {
