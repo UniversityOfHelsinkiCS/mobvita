@@ -79,6 +79,24 @@ const StoryListItem = ({ story }) => {
                       to={`/flashcards/${story._id}/`}
                       icon="id card"
                     />
+                    {hiddenFeatures
+                  && (
+                    <>
+                      <Dropdown.Item
+                        text={<FormattedMessage id="Share" />}
+                        as={Link}
+                        onClick={() => setModalOpen(true)}
+                        icon="share"
+                      />
+                      <Dropdown.Item
+                        text={<FormattedMessage id="Delete" />}
+                        as={Link}
+                        onClick={() => console.log('not implemented yet.')}
+                        icon="trash alternate outline"
+                      />
+                    </>
+                  )
+                }
                   </Dropdown.Menu>
                 </Dropdown>
               </Button.Group>
