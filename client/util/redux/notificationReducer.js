@@ -63,6 +63,21 @@ export default (state = initialState, action) => {
         type: type.success,
       }
 
+    case 'REMOVE_FROM_GROUP_FAILURE':
+      return {
+        message: action.response.response.data,
+        type: type.error,
+      }
+    case 'DELETE_GROUP_FAILURE':
+      return {
+        message: action.response.response.data,
+        type: type.error,
+      }
+    case 'DELETE_GROUP_SUCCESS':
+      return {
+        message: 'Group deleted',
+        type: type.success,
+      }
     default:
       return state
   }

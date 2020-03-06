@@ -131,14 +131,13 @@ export default function Bar({ history }) {
 
                   {hiddenFeatures
                     && <Settings trigger={<Button variant="secondary" block style={{ marginTop: '0.5em' }}>Learning settings</Button>} />}
-                  {hiddenFeatures
-                    && (
-                    <Link to="/groups">
-                      <Button data-cy="groups-link" variant="secondary" style={{ marginTop: '0.5em' }} onClick={() => dispatch(sidebarSetOpen(!open))} block>
-                        <FormattedMessage id="Groups" />
-                      </Button>
-                    </Link>
-                    )}
+
+                  <Link to="/groups">
+                    <Button data-cy="groups-link" variant="secondary" style={{ marginTop: '0.5em' }} onClick={() => dispatch(sidebarSetOpen(!open))} block>
+                      <FormattedMessage id="Groups" />
+                    </Button>
+                  </Link>
+
                 </Menu.Item>
               </>
             )}
