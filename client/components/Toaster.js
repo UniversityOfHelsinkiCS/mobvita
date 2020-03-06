@@ -6,21 +6,19 @@ import { useDispatch, useSelector } from 'react-redux'
 import { getProgress } from 'Utilities/redux/uploadProgressReducer'
 import { getStories } from 'Utilities/redux/storiesReducer'
 import { setNotification } from 'Utilities/redux/notificationReducer'
+import { useIntl } from 'react-intl'
 
 
 export default function Toaster() {
-  const message = useSelector(({ notification }) => notification.message)
-  const type = useSelector(({ notification }) => notification.type)
-  const options = useSelector(({ notification }) => notification.options)
-
   const dispatch = useDispatch()
-  const { storyId, progress, error, processingError } = useSelector(({ uploadProgress }) => uploadProgress)
+  const intl = useIntl()
+
   const [interval, saveInterval] = useState(null)
-
-  const user = useSelector(({ user }) => user)
-
-
   const [progressToastId, setProgressToastId] = useState(null)
+
+  const { message, type, options, translationId } = useSelector(({ notification }) => notification)
+  const { storyId, progress, error, processingError } = useSelector(({ uploadProgress }) => uploadProgress)
+  const user = useSelector(({ user }) => user)
 
   const handleError = (errorMessage) => {
     clearInterval(interval)
@@ -31,9 +29,6 @@ export default function Toaster() {
     saveInterval(null)
     setProgressToastId(null)
   }
-
-  // TODO: Refactor story upload processing to somewhere else...
-  // Must be in some global component for updates to propagate to the currect toast-instance
 
   useEffect(() => {
     if (storyId !== null) {
@@ -80,9 +75,13 @@ export default function Toaster() {
     handleError('Could not fetch process. Please refresh the page.')
   }, [error])
 
-
   // Handles messages that come from Redux:
   useEffect(() => {
+    if (translationId) { // Used for messages that require translations.
+      toast(intl.formatMessage({ id: translationId }), { type, ...options })
+      dispatch({ type: 'RESET_NOTIFICATION' })
+      return
+    }
     if (message !== null) {
       toast(message, { type, ...options })
       dispatch({ type: 'RESET_NOTIFICATION' })
