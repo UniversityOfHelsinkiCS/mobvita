@@ -90,7 +90,9 @@ const StoryListItem = ({ story }) => {
                       />
                       <Dropdown.Item
                         text={<FormattedMessage id="Delete" />}
+                        className="delete-button"
                         as={Link}
+                        style={{ backgroundColor: '#dd0000' }}
                         onClick={() => console.log('not implemented yet.')}
                         icon="trash alternate outline"
                       />
