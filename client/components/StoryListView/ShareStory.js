@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import { Modal } from 'semantic-ui-react'
-import { FormattedMessage } from 'react-intl'
+import { FormattedMessage, useIntl } from 'react-intl'
 import { useDispatch, useSelector } from 'react-redux'
 import { Button, FormControl, Form, Dropdown } from 'react-bootstrap'
 import { shareStory } from 'Utilities/redux/shareReducer'
@@ -12,6 +12,8 @@ const ShareStory = ({ story, isOpen, setOpen }) => {
   const [currentGroup, setCurrentGroup] = useState(null)
   const [message, setMessage] = useState('')
   const groups = useSelector(({ groups }) => groups.groups)
+
+  const intl = useIntl()
 
 
   const dispatch = useDispatch()
@@ -25,6 +27,7 @@ const ShareStory = ({ story, isOpen, setOpen }) => {
     setOpen(false)
   }
 
+
   return (
     <Modal
       dimmer="inverted"
@@ -32,19 +35,33 @@ const ShareStory = ({ story, isOpen, setOpen }) => {
       open={isOpen}
       onClose={() => setOpen(false)}
     >
-      <Modal.Header><FormattedMessage id="create-new-group" /></Modal.Header>
+      <Modal.Header><FormattedMessage id="share-story" /></Modal.Header>
       <Modal.Content style={{ display: 'flex', flexDirection: 'column' }}>
         <h3>{story.shortTitle}</h3>
         <Form className="share-story-form" data-cy="share-story-form" onSubmit={share}>
-          <FormattedMessage id="share-with-a-friend" />
-          <FormControl
-            as="input"
-            onChange={e => setUser(e.target.value)}
-          />
-          {groups
+
+          <div>
+            <div>
+              <FormattedMessage id="share-story-with-a-friend" />
+              <FormControl
+                placeholder={intl.formatMessage({ id: 'enter-email-address' })}
+                as="input"
+                onChange={e => setUser(e.target.value)}
+              />
+            </div>
+
+            <FormControl
+              style={{ marginTop: '0.5em' }}
+              as="input"
+              value={message}
+              placeholder={intl.formatMessage({ id: 'write-a-message-for-the-receiver-optional' })}
+              onChange={e => setMessage(e.target.value)}
+            />
+
+            {groups
           && (
-          <>
-            <FormattedMessage id="share-with-a-group" />
+          <div style={{ display: 'flex', alignItems: 'center', marginTop: '0.5em' }}>
+            <span>Or share with a group (optional)</span>
             <Dropdown data-cy="select-group" onSelect={key => setCurrentGroup(key)}>
               <Dropdown.Toggle variant="primary" id="dropdown-basic">
                 {currentGroup ? groups.find(group => group.group_id === currentGroup).groupName : 'select a group'}
@@ -55,20 +72,17 @@ const ShareStory = ({ story, isOpen, setOpen }) => {
                 ))}
               </Dropdown.Menu>
             </Dropdown>
-          </>
+          </div>
           )
             }
-          <FormControl
-            as="input"
-            value={message}
-            onChange={e => setMessage(e.target.value)}
-          />
-          <Button
-            disabled={!user.trim() && !currentGroup}
-            type="submit"
-          >
-            <FormattedMessage id="Confirm" />
-          </Button>
+
+            <Button
+              disabled={!user.trim() && !currentGroup}
+              type="submit"
+            >
+              <FormattedMessage id="Confirm" />
+            </Button>
+          </div>
         </Form>
       </Modal.Content>
 
