@@ -8,7 +8,7 @@ import { getGroups } from 'Utilities/redux/groupsReducer'
 
 
 const ShareStory = ({ story, isOpen, setOpen }) => {
-  const [user, setUser] = useState('')
+  const [targetEmail, setTargetEmail] = useState('')
   const [currentGroup, setCurrentGroup] = useState(null)
   const [message, setMessage] = useState('')
   const groups = useSelector(({ groups }) => groups.groups)
@@ -21,9 +21,12 @@ const ShareStory = ({ story, isOpen, setOpen }) => {
   const share = (event) => {
     event.preventDefault()
     const targetGroup = currentGroup ? [currentGroup] : []
-    const targetUser = user.trim() ? [user.trim()] : []
+    const targetUser = targetEmail.trim() ? [targetEmail.trim()] : []
 
     dispatch(shareStory(story._id, targetGroup, targetUser, message))
+    setTargetEmail('')
+    setMessage('')
+
     setOpen(false)
   }
 
@@ -46,7 +49,7 @@ const ShareStory = ({ story, isOpen, setOpen }) => {
               <FormControl
                 placeholder={intl.formatMessage({ id: 'enter-email-address' })}
                 as="input"
-                onChange={e => setUser(e.target.value)}
+                onChange={e => setTargetEmail(e.target.value)}
               />
             </div>
 
@@ -77,7 +80,7 @@ const ShareStory = ({ story, isOpen, setOpen }) => {
             }
 
             <Button
-              disabled={!user.trim() && !currentGroup}
+              disabled={!targetEmail.trim() && !currentGroup}
               type="submit"
             >
               <FormattedMessage id="Confirm" />
