@@ -119,7 +119,7 @@ const GroupView = () => {
       </CollapsingList>
       {currentGroup.is_teaching
         && (
-          <>
+          <div style={{ display: 'flex', justifyContent: 'space-between' }}>
             <Button
               style={{ marginTop: '1em' }}
               data-cy="add-to-group-modal"
@@ -133,10 +133,10 @@ const GroupView = () => {
               variant="danger"
               onClick={() => dispatch(deleteGroup(currentGroupId))}
             >
-              remove group
+              <Icon name="trash alternate outline" /> Delete {currentGroup.groupName}
             </Button>
             <AddToGroup groupId={currentGroupId} isOpen={addToGroupOpen} setOpen={setAddToGroupOpen} />
-          </>
+          </div>
         )}
     </div>
   )
