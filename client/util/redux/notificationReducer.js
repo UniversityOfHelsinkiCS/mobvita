@@ -1,3 +1,4 @@
+import { useIntl } from 'react-intl'
 
 const type = {
   success: 'success',
@@ -51,6 +52,17 @@ export default (state = initialState, action) => {
         type: type.success,
         options: { autoClose: false },
       }
+    case 'SHARE_STORY_FAILURE':
+      return {
+        message: `Failed to share story: ${action.response.response.data}`,
+        type: type.error,
+      }
+    case 'SHARE_STORY_SUCCESS':
+      return {
+        translationId: 'story-shared-and-awaiting-approval',
+        type: type.success,
+      }
+
     default:
       return state
   }
