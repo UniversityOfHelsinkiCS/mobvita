@@ -284,10 +284,15 @@ body {
 
 .story-item-title {
   white-space: nowrap;
-  width: 100%;                   
-  overflow: hidden;              
-  -o-text-overflow: ellipsis;  
-  text-overflow:    ellipsis;  
+  width: 100%;
+  overflow: hidden;
+  -o-text-overflow: ellipsis;
+  text-overflow:    ellipsis;
+}
+
+.story-item-group {
+  white-space: nowrap;
+  margin-left: 1em;
 }
 
 

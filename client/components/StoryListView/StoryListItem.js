@@ -45,8 +45,9 @@ const StoryListItem = ({ story }) => {
         height: 'max-content',
       }}
     >
-      <Card.Content extra style={{ padding: '15px' }}>
+      <Card.Content extra style={{ padding: '15px', display: 'flex', justifyContent: 'space-between' }}>
         <h5 className="story-item-title">{story.title}</h5>
+        <div className="story-item-group">{story.group && story.group.group_name}</div>
       </Card.Content>
       <Card.Content extra style={{ padding: '15px' }}>
         <div style={{ display: 'flex', alignItems: 'baseline' }}>
