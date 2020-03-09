@@ -74,7 +74,7 @@
     "react-swipeable": "^5.4.0",
     "react-swipeable-views": "^0.13.9",
     "react-toastify": "^5.5.0",
-    "react-virtualized": "^9.21.1",
+    "react-virtualized": "^9.21.2",
     "redux": "^4.0.0",
     "redux-thunk": "^2.3.0",
     "reshake": "^1.2.1",
