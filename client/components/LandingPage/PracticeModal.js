@@ -96,7 +96,7 @@ const PracticeModal = ({ trigger }) => {
     filteredLink = `/stories/${filteredStories[randomStoryIndex]._id}/practice`
   }
 
-  const handleLibraryChange = library => () => {
+  const handleLibraryChange = (library) => {
     setLibraries({ ...libraries, [library]: !libraries[library] })
   }
 
@@ -114,7 +114,7 @@ const PracticeModal = ({ trigger }) => {
     })
   }
 
-  const toggleCategory = category => () => {
+  const toggleCategory = (category) => {
     setCategories({ ...categories, [category]: !categories[category] })
   }
 
