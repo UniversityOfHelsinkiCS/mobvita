@@ -25,7 +25,7 @@ export default function Toaster() {
     toast.done(progressToastId)
 
     dispatch({ type: 'CLEAR_UPLOADPROGRESS' })
-    dispatch(setNotification(errorMessage, 'error'))
+    dispatch(setNotification(errorMessage, 'error', { autoClose: false }))
     saveInterval(null)
     setProgressToastId(null)
   }
