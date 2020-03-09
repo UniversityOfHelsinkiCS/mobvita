@@ -2,7 +2,7 @@ import React, { useState, useEffect, useRef } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import { getCurrentSnippet, getNextSnippet, postAnswers, setTotalNumberAction } from 'Utilities/redux/snippetsReducer'
 import { getTranslationAction, clearTranslationAction } from 'Utilities/redux/translationReducer'
-import { capitalize, learningLanguageSelector } from 'Utilities/common'
+import { capitalize, learningLanguageSelector, translatableLanguages } from 'Utilities/common'
 
 import PreviousSnippets from 'Components/PracticeView/PreviousSnippets'
 import ExerciseCloze from 'Components/PracticeView/ExerciseCloze'
@@ -155,7 +155,7 @@ const CurrentPractice = ({ storyId }) => {
         getTranslationAction(
           capitalize(learningLanguage),
           wordLemmas,
-          capitalize(dictionaryLanguage),
+          capitalize(dictionaryLanguage || translatableLanguages[learningLanguage][0]),
           storyId,
           wordId,
         ),
