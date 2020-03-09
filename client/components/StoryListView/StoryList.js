@@ -10,7 +10,6 @@ import CheckboxGroup from 'Components/CheckboxGroup'
 import { capitalize, learningLanguageSelector } from 'Utilities/common'
 import { getGroups } from 'Utilities/redux/groupsReducer'
 import StoryForm from './StoryForm'
-import AddStoryModal from './AddStoryModal'
 
 const StoryList = () => {
   const intl = useIntl()
