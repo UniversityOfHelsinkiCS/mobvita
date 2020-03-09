@@ -158,15 +158,13 @@ const StoryList = () => {
   }
 
   libraryFilteredStories.sort((a, b) => {
-    const adiff = stringToDifficulty(a.difficulty)
-    const bdiff = stringToDifficulty(b.difficulty)
     switch (sorter) {
       case 'date':
         return new Date(a.date) - new Date(b.date)
       case 'title':
         return a.title > b.title ? 1 : -1
       case 'difficulty':
-        return adiff - bdiff
+        return stringToDifficulty(a.difficulty) - stringToDifficulty(b.difficulty)
       default:
         return 0
     }
