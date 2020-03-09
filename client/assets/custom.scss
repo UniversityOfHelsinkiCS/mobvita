@@ -486,3 +486,22 @@ body {
     color:white !important;
   }
 }
+
+.offline-notification{
+  position: absolute;
+  z-index: 1000;
+  margin: 0 auto;
+  width: 100%;
+  text-align: center;
+  height: 100%;
+  background-color: aliceblue;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  opacity: 0.8;
+
+  h3 {
+    margin:1em;
+  }
+
+}
