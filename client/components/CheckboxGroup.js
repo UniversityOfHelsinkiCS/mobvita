@@ -24,7 +24,7 @@ const CheckboxGroup = ({ values, onClick }) => (
     Object.entries(values).sort().map(([key, val]) => (
       <ToggleButton
         key={key}
-        onClick={onClick(key)}
+        onClick={() => onClick(key)}
         toggled={val}
       >
         <FormattedMessage id={capitalize(key)} />

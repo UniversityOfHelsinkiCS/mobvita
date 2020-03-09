@@ -282,6 +282,7 @@ describe('Mobvita', function () {
         cy.get('[data-cy="submit-story"]')
           .click()
         cy.get('[class=Toastify]').contains('Processing your story')
+        cy.get('.checkbox-group > :nth-child(2)').click()
         cy.contains('5G-kännyköitä', { timeout: 20000 })
         cy.contains('Lue')
           .click()

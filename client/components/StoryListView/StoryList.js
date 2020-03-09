@@ -18,9 +18,9 @@ const StoryList = () => {
   const [searchedStories, setSearchedStories] = useState([])
   const [libraries, setLibraries] = useState(
     {
-      private: true,
+      private: false,
       public: true,
-      group: true,
+      group: false,
     },
   )
   const [page, setPage] = useState(0)
@@ -88,8 +88,13 @@ const StoryList = () => {
     debouncedSearch()
   }
 
-  const handleLibraryChange = library => () => {
-    setLibraries({ ...libraries, [library]: !libraries[library] })
+  const handleLibraryChange = (library) => {
+    const librariesCopy = {}
+    Object.keys(libraries).forEach((key) => {
+      librariesCopy[key] = false
+    })
+
+    setLibraries({ ...librariesCopy, [library]: true })
   }
 
   const prevPageDisabled = false
