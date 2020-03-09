@@ -84,16 +84,14 @@ const StoryListItem = ({ story }) => {
                     <>
                       <Dropdown.Item
                         text={<FormattedMessage id="Share" />}
-                        as={Link}
                         onClick={() => setModalOpen(true)}
                         icon="share"
                       />
                       <Dropdown.Item
                         text={<FormattedMessage id="Delete" />}
                         className="delete-button"
-                        as={Link}
                         style={{ backgroundColor: '#dd0000' }}
-                        onClick={() => console.log('not implemented yet.')}
+                        disabled
                         icon="trash alternate outline"
                       />
                     </>
