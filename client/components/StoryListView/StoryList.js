@@ -9,6 +9,7 @@ import { debounce } from 'lodash'
 import CheckboxGroup from 'Components/CheckboxGroup'
 import { capitalize, learningLanguageSelector } from 'Utilities/common'
 import { getGroups } from 'Utilities/redux/groupsReducer'
+import { List, WindowScroller } from 'react-virtualized'
 import StoryForm from './StoryForm'
 
 const StoryList = () => {
@@ -23,47 +24,27 @@ const StoryList = () => {
       group: true,
     },
   )
-  const [page, setPage] = useState(0)
   const dispatch = useDispatch()
-  const { stories, pending, all, allPending } = useSelector(({ stories }) => ({
+
+  const user = useSelector(({ user }) => user.data.user)
+  const learningLanguage = useSelector(learningLanguageSelector)
+  const { allStories, allPending } = useSelector(({ stories }) => ({
     stories: stories.data,
-    all: stories.allStories,
+    allStories: stories.allStories,
     allPending: stories.allPending,
     pending: stories.pending,
   }))
 
-  const user = useSelector(({ user }) => user.data.user)
-  const learningLanguage = useSelector(learningLanguageSelector)
-
-  const debouncedSearch = useCallback(
-    debounce(
-      () => {
-        dispatch(
-          getAllStories(learningLanguage, {
-            sort_by: sorter,
-            order: sorter === 'title' ? 1 : -1, // Worked the best atm
-          }),
-        )
-      },
-      300,
-    ),
-    [learningLanguage],
-  )
 
   useEffect(() => {
     dispatch(getGroups())
-  }, [])
-
-  useEffect(() => {
     dispatch(
-      getStories(learningLanguage, {
+      getAllStories(learningLanguage, {
         sort_by: sorter,
         order: sorter === 'title' ? 1 : -1, // Worked the best atm
-        page,
-        page_size: 14,
       }),
     )
-  }, [page, sorter])
+  }, [])
 
   const sortDropdownOptions = [
     { key: 'date', text: intl.formatMessage({ id: 'date-added' }), value: 'date' },
@@ -76,28 +57,25 @@ const StoryList = () => {
   }
 
   useEffect(() => {
-    const searchFilteredStories = all
-      ? all.filter(story => story.title.toLowerCase().includes(searchString.toLowerCase()))
+    if (allStories && searchString.length === 0) {
+      setSearchedStories(allStories)
+    }
+  }, [allPending])
+
+  useEffect(() => {
+    const searchFilteredStories = allStories
+      ? allStories.filter(story => story.title.toLowerCase().includes(searchString.toLowerCase()))
       : []
+
     setSearchedStories(searchFilteredStories)
   }, [searchString.length])
-
-  const handleSearchChange = ({ target }) => {
-    const ss = target.value
-    setSearchString(ss)
-    debouncedSearch()
-  }
 
   const handleLibraryChange = library => () => {
     setLibraries({ ...libraries, [library]: !libraries[library] })
   }
 
-  const prevPageDisabled = false
-  const nextPageDisabled = false
-
-  const adjustPage = direction => () => setPage(Math.max(page + direction, 0))
-
   const noResults = !allPending && searchString.length > 0 && searchedStories.length === 0
+
   const searchSort = (
     <div
       data-cy="library-controls"
@@ -108,7 +86,7 @@ const StoryList = () => {
         icon={noResults ? 'close' : 'search'}
         loading={allPending}
         value={searchString}
-        onSearchChange={handleSearchChange}
+        onSearchChange={e => setSearchString(e.target.value)}
         size="small"
         style={{ marginBottom: 0, marginTop: 'auto' }}
       />
@@ -129,7 +107,7 @@ const StoryList = () => {
     </div>
   )
 
-  if (pending) {
+  if (allPending || !searchedStories) {
     return (
       <div className="component-container">
         {searchSort}
@@ -140,23 +118,13 @@ const StoryList = () => {
     )
   }
 
-  if (!stories.length) {
-    return (
-      <div className="component-container">
-        <FormattedMessage id="no-stories-available" />
-      </div>
-    )
-  }
-
-  const filteredInsteadOfPaginated = searchString && searchedStories.length < 30
-  const displayStories = filteredInsteadOfPaginated ? searchedStories : stories
 
   const librariesToShow = Object
     .entries(libraries)
     .filter(entry => entry[1])
     .map(([key]) => capitalize(key))
 
-  const libraryFilteredStories = displayStories.filter((story) => {
+  const libraryFilteredStories = searchedStories.filter((story) => {
     if (story.public) {
       return librariesToShow.includes('Public')
     }
@@ -172,27 +140,66 @@ const StoryList = () => {
     return librariesToShow.includes('Private')
   })
 
+  const stringToDifficulty = (difficulty) => {
+    switch (difficulty) {
+      case 'low':
+        return 1
+      case 'average':
+        return 2
+      case 'high':
+        return 3
+      default: // null case
+        return 4
+    }
+  }
+
+  libraryFilteredStories.sort((a, b) => {
+    const adiff = stringToDifficulty(a.difficulty)
+    const bdiff = stringToDifficulty(b.difficulty)
+    switch (sorter) {
+      case 'date':
+        return new Date(a.date) - new Date(b.date)
+      case 'title':
+        return a.title > b.title ? 1 : -1
+      case 'difficulty':
+        return adiff - bdiff
+      default:
+        return 0
+    }
+  })
+
+
+  function rowRenderer({ key, index, style }) {
+    return (
+      <div key={key} style={{ ...style, paddingRight: '0.5em', paddingLeft: '0.5em' }}>
+        <StoryListItem key={key} story={libraryFilteredStories[index]} />
+      </div>
+    )
+  }
+
+
   return (
     <div className="component-container">
       {searchSort}
 
       <Card.Group itemsPerRow={1} doubling>
         <StoryForm />
-        {libraryFilteredStories.map(story => (
-          <StoryListItem key={story._id} story={story} />
-        ))}
+        <WindowScroller>
+          {({ height, isScrolling, onChildScroll, scrollTop }) => (
+            <List
+              autoHeight
+              height={height}
+              isScrolling={isScrolling}
+              onScroll={onChildScroll}
+              rowCount={libraryFilteredStories.length}
+              rowHeight={150}
+              rowRenderer={rowRenderer}
+              scrollTop={scrollTop}
+              width={10000}
+            />
+          )}
+        </WindowScroller>
       </Card.Group>
-      <div style={{ display: 'flex', justifyContent: 'center' }}>
-        <Button.Group color="teal" size="small" style={{ margin: '4px', marginTop: '15px' }}>
-          <Button disabled={prevPageDisabled} onClick={adjustPage(-1)}>
-            <FormattedMessage id="Previous" />
-          </Button>
-          <Button.Or text={page + 1} />
-          <Button disabled={nextPageDisabled} onClick={adjustPage(1)}>
-            <FormattedMessage id="Next" />
-          </Button>
-        </Button.Group>
-      </div>
     </div>
   )
 }
