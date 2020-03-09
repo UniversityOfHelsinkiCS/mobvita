@@ -6,6 +6,7 @@ import { getTextWidth } from 'Utilities/common'
 const ExerciseHearing = ({ word, handleClick, handleChange, value }) => {
   const [className, setClassname] = useState('hearing untouched')
   const [touched, setTouched] = useState(false)
+  const [focusTimeout, setFocusTimeout] = useState(false)
   const inputRef = createRef(null)
 
   const { isWrong, tested } = word
@@ -20,9 +21,19 @@ const ExerciseHearing = ({ word, handleClick, handleChange, value }) => {
     }
   }, [tested])
 
-  const clickHandler = (word) => {
-    handleClick(word, '')
+  const speakerClickHandler = (word) => {
+    handleClick(word.surface, '')
     inputRef.current.focus()
+  }
+
+  const handleInputFocus = () => {
+    if (!focusTimeout) {
+      handleClick(word.surface, '')
+      setFocusTimeout(true)
+      setTimeout(() => {
+        setFocusTimeout(false)
+      }, 500)
+    }
   }
 
   const handle = (e, word) => {
@@ -41,7 +52,7 @@ const ExerciseHearing = ({ word, handleClick, handleChange, value }) => {
         key={word.ID}
         onChange={e => handle(e, word)}
         value={value}
-        onFocus={() => clickHandler(word.surface)}
+        onFocus={handleInputFocus}
         className={className}
         style={{
           width: getTextWidth(word.surface),
@@ -52,7 +63,7 @@ const ExerciseHearing = ({ word, handleClick, handleChange, value }) => {
           lineHeight: 'normal',
         }}
       />
-      <Icon name="volume up" link onClick={() => clickHandler(word.surface)} style={{ marginLeft: '-25px' }} />
+      <Icon name="volume up" link onClick={() => speakerClickHandler(word.surface)} style={{ marginLeft: '-25px' }} />
     </span>
   )
 }
