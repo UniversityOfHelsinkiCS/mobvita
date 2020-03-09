@@ -15,7 +15,7 @@ export const recordFlashcardAnswer = (inputLanguage, outputLanguage, answerDetai
 export const deleteFlashcard = (id) => {
   const route = `/flashcards/${id}`
   const prefix = 'DELETE_FLASHCARD'
-  return callBuilder(route, prefix, 'delete')
+  return callBuilder(route, prefix, 'post', { op: 'delete' })
 }
 
 export default (state = {}, action) => {

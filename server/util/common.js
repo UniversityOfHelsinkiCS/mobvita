@@ -24,6 +24,15 @@ if (process.env.DEBUG === 'true') {
   })
 }
 
+// Revita doesn't like trailing slashes, remove them
+axios.interceptors.request.use((request) => {
+  if (request.url[request.url.length - 1] === '/') {
+    request.url = request.url.slice(0, -1)
+  }
+
+  return request
+})
+
 module.exports = {
   ...common,
   axios,

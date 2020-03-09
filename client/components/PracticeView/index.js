@@ -13,7 +13,7 @@ const PracticeView = ({ match }) => {
 
   const { story } = useSelector(({ stories }) => ({ story: stories.focused }))
   useEffect(() => {
-    dispatch(getStoryAction(learningLanguage, match.params.id))
+    dispatch(getStoryAction(match.params.id))
   }, [learningLanguage])
 
   if (!story) return null
