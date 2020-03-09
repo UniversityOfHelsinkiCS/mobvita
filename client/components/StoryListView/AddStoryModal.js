@@ -7,7 +7,6 @@ import { learningLanguageSelector, capitalize } from 'Utilities/common'
 import { postStory } from 'Utilities/redux/uploadProgressReducer'
 
 const AddStoryModal = ({ trigger }) => {
-  const [title, setTitle] = useState('')
   const [text, setText] = useState('')
 
 
@@ -15,10 +14,9 @@ const AddStoryModal = ({ trigger }) => {
   const dispatch = useDispatch()
 
   const addText = () => {
-    const combinedText = `${title}\n\n${text}`
     const newStory = {
       language: capitalize(learningLanguage),
-      text: combinedText,
+      text,
     }
     dispatch(postStory(newStory))
   }
@@ -34,11 +32,6 @@ const AddStoryModal = ({ trigger }) => {
       <Modal.Content style={{ display: 'flex', flexDirection: 'column' }}>
         <span style={{ fontWeight: '550' }}><FormattedMessage id="Subject" /></span>
         <FormControl
-          type="text"
-          value={title}
-          onChange={e => setTitle(e.target.value)}
-        />
-        <FormControl
           as="textarea"
           rows={8}
           className="story-text-input"
@@ -48,7 +41,7 @@ const AddStoryModal = ({ trigger }) => {
         <Button
           variant="primary"
           onClick={addText}
-          disabled={!title || !text}
+          disabled={!text}
         >
           <FormattedMessage id="Confirm" />
         </Button>
