@@ -2,7 +2,7 @@ import React, { useEffect, useState, useCallback } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { Button, Placeholder, Card, Search, Select } from 'semantic-ui-react'
 
-import { getStories, getAllStories } from 'Utilities/redux/storiesReducer'
+import { getAllStories } from 'Utilities/redux/storiesReducer'
 import StoryListItem from 'Components/StoryListView/StoryListItem'
 import { FormattedMessage, useIntl } from 'react-intl'
 import { debounce } from 'lodash'
@@ -28,10 +28,8 @@ const StoryList = () => {
 
   const user = useSelector(({ user }) => user.data.user)
   const learningLanguage = useSelector(learningLanguageSelector)
-  const { allStories, allPending } = useSelector(({ stories }) => ({
+  const { pending, stories, allPending } = useSelector(({ stories }) => ({
     stories: stories.data,
-    allStories: stories.allStories,
-    allPending: stories.allPending,
     pending: stories.pending,
   }))
 
@@ -57,14 +55,14 @@ const StoryList = () => {
   }
 
   useEffect(() => {
-    if (allStories && searchString.length === 0) {
-      setSearchedStories(allStories)
+    if (stories && searchString.length === 0) {
+      setSearchedStories(stories)
     }
-  }, [allPending])
+  }, [pending])
 
   useEffect(() => {
-    const searchFilteredStories = allStories
-      ? allStories.filter(story => story.title.toLowerCase().includes(searchString.toLowerCase()))
+    const searchFilteredStories = stories
+      ? stories.filter(story => story.title.toLowerCase().includes(searchString.toLowerCase()))
       : []
 
     setSearchedStories(searchFilteredStories)
