@@ -59,7 +59,10 @@ const FlashcardSide = ({
     <div className="flashcard" style={{ backgroundColor: backgroundColor[stage] }}>
       {!noCards
         ? (
-          <div className="flashcard-content">
+          <div
+            data-cy="flashcard-content"
+            className="flashcard-content"
+          >
             <div className="flashcard-header">
               {cardIndex}
               <FlashcardDelete id={id} />
@@ -81,7 +84,10 @@ const FlashcardSide = ({
             }
           </div>
         ) : (
-          <div className="flashcard-text-container">
+          <div
+            data-cy="no-flashcards-text"
+            className="flashcard-text-container"
+          >
             <p>
               <FormattedMessage id="no-flashcards-yet-when-you-practice-a-story-and-click-on-unfamiliar-words-they-will-be-added-to-your" />
             </p>
