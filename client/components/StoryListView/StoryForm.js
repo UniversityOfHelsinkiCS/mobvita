@@ -6,6 +6,7 @@ import { capitalize, learningLanguageSelector } from 'Utilities/common'
 import { FormattedMessage, useIntl } from 'react-intl'
 import { setNotification } from 'Utilities/redux/notificationReducer'
 import { Button } from 'react-bootstrap'
+import useWindowDimensions from 'Utilities/windowDimensions'
 import AddStoryModal from './AddStoryModal'
 
 
@@ -27,6 +28,8 @@ const StoryForm = () => {
     dispatch(setNotification('Validating url-address', 'info'))
     setStoryUrl('')
   }
+
+  const smallWindow = useWindowDimensions().width < 500
 
   return (
     <Card
@@ -57,6 +60,7 @@ const StoryForm = () => {
               <Button style={{ marginTop: '0.5em' }} variant="primary" type="submit" data-cy="submit-story">
                 <FormattedMessage id="Confirm" />
               </Button>
+              {!smallWindow && (
               <AddStoryModal
                 trigger={(
                   <Button
@@ -67,6 +71,8 @@ const StoryForm = () => {
                   </Button>
                 )}
               />
+              )
+              }
             </Form>
           </div>
         </div>
