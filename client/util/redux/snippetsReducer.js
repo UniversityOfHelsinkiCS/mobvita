@@ -11,19 +11,19 @@ const filterPrevious = (previous, snippet) => {
 }
 
 export const getCurrentSnippet = (storyId) => {
-  const route = `/snippets/story/${storyId}/current`
+  const route = `/stories/${storyId}/snippets/next`
   const prefix = 'GET_CURRENT_SNIPPET'
   return callBuilder(route, prefix)
 }
 
 export const getNextSnippet = (storyId, currentSnippetId) => {
-  const route = `/snippets/story/${storyId}/next?previous=${currentSnippetId}`
+  const route = `/stories/${storyId}/snippets/next?previous=${currentSnippetId}`
   const prefix = 'GET_NEXT_SNIPPET'
   return callBuilder(route, prefix)
 }
 
 export const resetCurrentSnippet = (storyId) => {
-  const route = `/snippets/story/${storyId}/reset`
+  const route = `/stories/${storyId}/snippets/reset`
   const prefix = 'RESET_SNIPPET_INDEX'
   return callBuilder(route, prefix, 'post')
 }
@@ -31,7 +31,7 @@ export const resetCurrentSnippet = (storyId) => {
 export const postAnswers = (storyId, answersObject, compete = false) => {
   const payload = answersObject
   payload.compete = compete
-  const route = `/snippets/story/${storyId}/answer`
+  const route = `/stories/${storyId}/snippets/answer`
   const prefix = 'GET_SNIPPET_ANSWERS'
   return callBuilder(route, prefix, 'post', payload)
 }

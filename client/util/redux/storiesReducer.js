@@ -3,22 +3,22 @@ import callBuilder from '../apiConnection'
  * Actions and reducers are in the same file for readability
  */
 
-export const getStoryAction = (language, storyId) => {
-  const route = `/stories/${language}/${storyId}`
+export const getStoryAction = (storyId) => {
+  const route = `/stories/${storyId}`
   const prefix = 'GET_STORY'
   return callBuilder(route, prefix)
 }
 
 export const getAllStories = (language, query) => {
   const queryString = Object.keys(query).map(key => `${key}=${query[key]}`).join('&')
-  const route = `/stories/${language}?${queryString}`
+  const route = `/stories?language=${language}&${queryString}`
   const prefix = 'GET_ALL_STORIES'
   return callBuilder(route, prefix)
 }
 
 export const getStories = (language, query = { page: 0, page_size: 10 }) => {
   const queryString = Object.keys(query).map(key => `${key}=${query[key]}`).join('&')
-  const route = `/stories/${language}?${queryString}`
+  const route = `/stories?language=${language}&${queryString}`
   const prefix = 'GET_STORIES'
   return callBuilder(route, prefix)
 }

@@ -17,7 +17,7 @@ const SingleStoryView = ({ match }) => {
   const dictionaryLanguage = useSelector(({ user }) => user.data.user.last_trans_language)
   const { id } = match.params
   useEffect(() => {
-    dispatch(getStoryAction(learningLanguage, id))
+    dispatch(getStoryAction(id))
     dispatch(clearTranslationAction())
   }, [])
   if (!story) return 'No story (yet?)'

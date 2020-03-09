@@ -21,7 +21,7 @@ const CompeteView = ({ match }) => {
 
   const initializeCompetition = async () => {
     await Promise.all([
-      dispatch(getStoryAction(language, storyId)),
+      dispatch(getStoryAction(storyId)),
       dispatch(resetCurrentSnippet(storyId)),
       dispatch(clearTranslationAction()),
       dispatch(getOpponent(storyId)),

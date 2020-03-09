@@ -36,10 +36,9 @@ export const updateDictionaryLanguage = language => saveSelf({ last_trans_lang: 
 
 
 export const confirmUser = (token) => {
-  const route = '/confirm'
+  const route = `/confirm?token=${token}`
   const prefix = 'CONFIRM_USER'
-  const payload = { token }
-  return callBuilder(route, prefix, 'post', payload)
+  return callBuilder(route, prefix, 'get')
 }
 
 export default (state = { data: null }, action) => {
