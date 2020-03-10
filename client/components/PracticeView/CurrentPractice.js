@@ -2,7 +2,7 @@ import React, { useState, useEffect, useRef } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import { getCurrentSnippet, getNextSnippet, postAnswers, setTotalNumberAction } from 'Utilities/redux/snippetsReducer'
 import { getTranslationAction, clearTranslationAction } from 'Utilities/redux/translationReducer'
-import { capitalize, learningLanguageSelector, translatableLanguages } from 'Utilities/common'
+import { capitalize, learningLanguageSelector, translatableLanguages, newCapitalize } from 'Utilities/common'
 
 import PreviousSnippets from 'Components/PracticeView/PreviousSnippets'
 import ExerciseCloze from 'Components/PracticeView/ExerciseCloze'
@@ -148,14 +148,18 @@ const CurrentPractice = ({ storyId }) => {
 
   const textToSpeech = (surfaceWord, wordLemmas, wordId) => {
     // const selectedLocale = localeOptions.find(localeOption => localeOption.code === locale)
-    window.responsiveVoice.speak(surfaceWord, `${learningLanguage === 'german' ? 'Deutsch' : capitalize(learningLanguage)} Female`)
+    try {
+      window.responsiveVoice.speak(surfaceWord, `${learningLanguage === 'german' ? 'Deutsch' : capitalize(learningLanguage)} Female`)
+    } catch (e) {
+      console.log(`Failed to speak ${surfaceWord} in ${capitalize(learningLanguage)}`)
+    }
     if (wordLemmas) {
       const storyId = story.exercise_setting.story
       dispatch(
         getTranslationAction(
-          capitalize(learningLanguage),
+          newCapitalize(learningLanguage),
           wordLemmas,
-          capitalize(dictionaryLanguage || translatableLanguages[learningLanguage][0]),
+          capitalize(dictionaryLanguage) || translatableLanguages[learningLanguage][0],
           storyId,
           wordId,
         ),
