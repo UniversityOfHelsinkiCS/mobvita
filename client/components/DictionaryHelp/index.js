@@ -3,7 +3,7 @@ import { connect, useDispatch, useSelector } from 'react-redux'
 import { List, Button, Header, Segment, Icon, Dropdown } from 'semantic-ui-react'
 import { Shake } from 'reshake'
 import { FormattedMessage } from 'react-intl'
-import { updateDictionaryLanguage } from 'Utilities/redux/userReducer'
+import { updateDictionaryLanguage, saveSelf } from 'Utilities/redux/userReducer'
 import { getTranslationAction } from 'Utilities/redux/translationReducer'
 import { learningLanguageSelector, translatableLanguages } from 'Utilities/common'
 import useWindowDimensions from 'Utilities/windowDimensions'
@@ -17,6 +17,12 @@ const DictionaryHelp = ({ translation }) => {
   const translationLanguageCode = useSelector(({ user }) => user.data.user.last_trans_language)
   const learningLanguage = useSelector(learningLanguageSelector)
   const { pending } = useSelector(({ translation }) => translation)
+
+
+  // if language is translatable, and current translationLanguage is not valid, update user's default translationlanguage.
+  if (translatableLanguages[learningLanguage] && !translatableLanguages[learningLanguage].includes(translationLanguageCode)) {
+    dispatch(updateDictionaryLanguage(translatableLanguages[learningLanguage][0] ? translatableLanguages[learningLanguage][0] : undefined))
+  }
 
 
   const dictionaryOptions = translatableLanguages[learningLanguage] ? translatableLanguages[learningLanguage].map(element => ({
@@ -96,8 +102,8 @@ const DictionaryHelp = ({ translation }) => {
         <div>
           <FormattedMessage id="translation-target-language" />
           <select
-            disabled={cannotBeTranslated}
-            defaultValue={translationLanguageCode || translatableLanguages[learningLanguage][0]}
+            disabled={dictionaryOptions.length <= 1}
+            defaultValue={translationLanguageCode}
             data-cy="dictionary-dropdown"
             style={{ marginLeft: '0.5em', border: 'none', backgroundColor: 'white' }}
             onChange={e => handleDropdownChange(e.target.value)}
