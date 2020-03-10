@@ -19,11 +19,13 @@ const DictionaryHelp = ({ translation }) => {
   const { pending } = useSelector(({ translation }) => translation)
 
 
-  const dictionaryOptions = translatableLanguages[learningLanguage].map(element => ({
+  const dictionaryOptions = translatableLanguages[learningLanguage] ? translatableLanguages[learningLanguage].map(element => ({
     key: element,
     value: element,
     text: element,
-  }))
+  })) : []
+
+  const cannotBeTranslated = dictionaryOptions.length === 0
 
   const translations = translation ? translation.map(translated => (
     <List.Item key={translated.URL}>
@@ -81,12 +83,20 @@ const DictionaryHelp = ({ translation }) => {
     )
   }
 
+  const translationResults = () => {
+    if (cannotBeTranslated) return <span>Sorry, we do not support translations for {learningLanguage}</span>
+    if (pending) return <div><span>Loading, please wait </span><Spinner animation="border" /></div>
+    if (translations.length > 0) return translations
+    return <FormattedMessage id="click-to-translate" />
+  }
+
   return (
     <div className="dictionary-help">
       <Segment>
         <div>
           <FormattedMessage id="translation-target-language" />
           <select
+            disabled={cannotBeTranslated}
             defaultValue={translationLanguageCode || translatableLanguages[learningLanguage][0]}
             data-cy="dictionary-dropdown"
             style={{ marginLeft: '0.5em', border: 'none', backgroundColor: 'white' }}
@@ -105,8 +115,8 @@ const DictionaryHelp = ({ translation }) => {
           )
           : null}
         <List>
-          {pending && <div><span>Loading, please wait </span><Spinner animation="border" /></div>}
-          {translations.length > 0 ? translations : <FormattedMessage id="click-to-translate" />}
+          {translationResults()}
+
         </List>
       </Segment>
     </div>
