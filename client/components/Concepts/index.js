@@ -4,18 +4,6 @@ import { getConcepts } from 'Utilities/redux/conceptReducer'
 import { learningLanguageSelector } from 'Utilities/common'
 import Concept from './Concept'
 
-// const ConceptTree = ({ concept, concepts }) => {
-//   return (
-//     <Concept key={concept.concept_id} header={concept.name} id={concept.concept_id} enabled={concept.exer_enabled}>
-//       {concepts
-//         .filter(c => c.parents && c.parents.includes(concept.concept_id))
-//         .map(c => (
-//           <ConceptTree parentId={c.concept_id} concept={c} concepts={concepts} />
-//         ))}
-//     </Concept>
-//   )
-// }
-
 const ConceptTree = ({ concept }) => (
   <Concept
     key={concept.concept_id}
@@ -42,6 +30,7 @@ const Concepts = () => {
   if (pending || !concepts) return <p>loading...</p>
 
   const makeConceptTree = parents => parents
+    .sort((a, b) => a['UI-order'] - b['UI-order'])
     .map((parent) => {
       const children = concepts.filter(c => c.parents && c.parents.includes(parent.concept_id))
       const cleanConcept = {
