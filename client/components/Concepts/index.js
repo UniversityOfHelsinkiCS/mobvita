@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import { getConcepts } from 'Utilities/redux/conceptReducer'
 import { learningLanguageSelector } from 'Utilities/common'
@@ -7,9 +7,7 @@ import Concept from './Concept'
 const ConceptTree = ({ concept }) => (
   <Concept
     key={concept.concept_id}
-    id={concept.concept_id}
-    header={concept.name}
-    enabled={concept.exer_enabled}
+    concept={concept}
   >
     {concept.children
       .map(c => (
@@ -47,7 +45,7 @@ const Concepts = () => {
   console.log(conceptTree)
 
   return (
-    <div>
+    <div className="component-container">
       {conceptTree
         .map(c => (
           <ConceptTree key={c.concept_id} concept={c} />
