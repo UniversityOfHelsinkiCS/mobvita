@@ -25,7 +25,12 @@ const Concept = ({ header, id, children, enabled = true }) => {
       >
         <label htmlFor={`concept${id}`} style={{ color }}>
           {header}
-          <input type="checkbox" onChange={handleChange} checked={Boolean(conceptOn)} />
+          <input
+            type="checkbox"
+            onChange={handleChange}
+            checked={Boolean(conceptOn)}
+            disabled={!enabled}
+          />
         </label>
       </div>
       <Collapse isOpened={open}>
