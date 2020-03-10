@@ -17,7 +17,12 @@ const Concept = ({ header, id, children, enabled = true }) => {
 
   return (
     <div style={{ paddingLeft: '1em' }}>
-      <div onClick={() => setOpen(!open)}>
+      <div
+        onClick={() => setOpen(!open)}
+        onKeyPress={() => setOpen(!open)}
+        role="button"
+        tabIndex="0"
+      >
         <label htmlFor={`concept${id}`} style={{ color }}>
           {header}
           <input type="checkbox" onChange={handleChange} checked={Boolean(conceptOn)} />
