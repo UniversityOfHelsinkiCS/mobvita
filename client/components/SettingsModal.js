@@ -1,10 +1,16 @@
-import React from 'react'
-import { useSelector } from 'react-redux'
+import React, { useEffect } from 'react'
+import { useSelector, useDispatch } from 'react-redux'
 import { Modal } from 'semantic-ui-react'
 import { ButtonGroup, Button } from 'react-bootstrap'
+import { getConcepts } from 'Utilities/redux/conceptReducer'
 
-const Settings = ({ trigger }) => {
+const SettingsModal = ({ trigger }) => {
   const { user } = useSelector(({ user }) => ({ user: user.data.user }))
+  const dispatch = useDispatch()
+
+  // useEffect(() => {
+  //   dispatch(getConcepts(user.last_used_language))
+  // }, [])
 
 
   return (
@@ -27,4 +33,4 @@ const Settings = ({ trigger }) => {
   )
 }
 
-export default Settings
+export default SettingsModal
