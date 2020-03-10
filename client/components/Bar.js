@@ -12,7 +12,7 @@ import TermsAndConditions from 'Components/TermsAndConditions'
 import { Button } from 'react-bootstrap'
 import AboutUs from './StaticContent/AboutUs'
 import ContactUs from './StaticContent/ContactUs'
-import Settings from './Settings'
+import SettingsModal from './SettingsModal'
 
 
 export default function Bar({ history }) {
@@ -110,11 +110,11 @@ export default function Bar({ history }) {
             {user && (
               <>
                 {user.user.email === 'anonymous_email' && (
-                <Menu.Item>
-                  <div style={{ padding: '1em 0em' }}>
-                    <Link onClick={() => menuClickWrapper()} to="/register"><Button variant="primary"><FormattedMessage id="register-to-upload-your-own-stories" /></Button></Link>
-                  </div>
-                </Menu.Item>
+                  <Menu.Item>
+                    <div style={{ padding: '1em 0em' }}>
+                      <Link onClick={() => menuClickWrapper()} to="/register"><Button variant="primary"><FormattedMessage id="register-to-upload-your-own-stories" /></Button></Link>
+                    </div>
+                  </Menu.Item>
                 )}
 
                 <Menu.Item>
@@ -130,7 +130,7 @@ export default function Bar({ history }) {
                   </Link>
 
                   {hiddenFeatures
-                    && <Settings trigger={<Button variant="secondary" block style={{ marginTop: '0.5em' }}>Learning settings</Button>} />}
+                    && <SettingsModal trigger={<Button variant="secondary" block style={{ marginTop: '0.5em' }}>Learning settings</Button>} />}
 
                   <Link to="/groups">
                     <Button data-cy="groups-link" variant="secondary" style={{ marginTop: '0.5em' }} onClick={() => dispatch(sidebarSetOpen(!open))} block>
