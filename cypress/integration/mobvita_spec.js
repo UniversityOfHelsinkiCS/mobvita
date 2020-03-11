@@ -23,6 +23,8 @@ describe('Mobvita', function () {
         }
       })
     }
+
+    cy.cleanUsers();
   })
 
   this.beforeEach(function () {
@@ -362,13 +364,14 @@ function randomCredentials() {
 
 function createRandomUser() {
   const user = randomCredentials()
-
   cy.request('POST', 'localhost:8000/api/register', { ...user })
     .then((response) => {
       user.token = response.body.access_token
-      cy.request('POST', 'localhost:8000/api/confirm/test', { ...user })
+      console.log(user)
     })
+  cy.request('POST', 'localhost:8000/api/confirm/test', { ...user })
 
   users.push(user)
   return user
 }
+

@@ -1,7 +1,7 @@
 #!/bin/bash
 
-if egrep -rq "(it|describe)\.only" ./cypress; then
-    echo "Do not commit .only-tests"
+if git grep -qE --cached "(it|describe)\.only" $(git diff --cached --name-only) ./cypress; then
+    echo "Do not commit .only-tests. Did you remember to git add?"
     exit 1
 else
     echo "No .only-tests found"

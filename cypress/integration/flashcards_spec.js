@@ -1,0 +1,81 @@
+describe('flashcards', function () {
+  this.beforeEach(function () {
+    cy.login()
+    cy.visit('http://localhost:8000/flashcards')
+  })
+
+  it('displays no flashcards-message correctly', function () {
+    cy.get('[data-cy=no-flashcards-text]')
+  })
+
+  it('flashcards can be added from reading mode', function () {
+    cy.visit('http://localhost:8000/stories/5c407e9eff634503466b0dde/')
+    cy.contains('lentokoneita').click()
+    cy.visit('http://localhost:8000/flashcards/')
+    cy.contains('lentokone')
+  })
+
+  it('flashcards can be added from practice mode', function () {
+    cy.visit('http://localhost:8000/stories/5c407e9eff634503466b0dde/practice')
+    cy.get('[class=word-interactive]').eq(1).click()
+    cy.visit('http://localhost:8000/flashcards/')
+    cy.get('[data-cy=flashcard-content]')
+  })
+
+  describe('a card exists', function () {
+
+    this.beforeEach(function () {
+      cy.visit('http://localhost:8000/stories/5c407e9eff634503466b0dde/')
+      cy.contains('perustavat').click()
+      cy.contains('lentokoneita').click()
+      cy.visit('http://localhost:8000/flashcards/')
+    })
+
+    it('story specific flashcards can be accessed', function () {
+      cy.visit('http://localhost:8000/flashcards/5c407e9eff634503466b0dde/')
+      cy.get('[data-cy=flashcard-content]')
+    })
+
+    it('shows answers after flipping card', function () {
+      cy.get('[class=flashcard-footer]').children().eq(1).click()
+      cy.contains('plane')
+    })
+
+    it('cannot be answered after flipping card', function() {
+      cy.get('[class=flashcard-footer]').children().eq(1).click()
+      cy.get('.react-card-back > .flashcard > .flashcard-footer > .flashcard-blended-input').eq(0).click()
+      cy.get('.react-card-front > .flashcard > .flashcard-input').should('not.exist')
+    })
+
+    it('right answer flips the card and shows thumbs up with correct translations', function() {
+      cy.get('input').eq(0).type('plane')
+      cy.get('.flashcard-button').eq(0).click()
+      cy.get('.flashcard-result > .thumbs.up')
+      cy.contains('plane')
+    })
+
+    it('wrong answer flips the cards and shows thumbs down with correct translations', function () {
+      cy.get('input').eq(0).type('minttu')
+      cy.get('.flashcard-button').eq(0).click()
+      cy.get('.flashcard-result > .thumbs.down')
+      cy.contains('plane')
+    })
+
+    it('can get to the next card', function() {
+      cy.get('.flashcard-arrow-button').eq(1).click()
+      cy.contains('perustaa')
+    })
+
+    it('language can be changed', function() {
+      cy.contains('lentokone')
+      cy.get('[class=flashcard-footer]').get('select').eq(0).select('Spanish')
+      cy.get('[data-cy=no-flashcards-text]')
+    })
+  })
+
+  this.afterAll(function () {
+    cy.cleanUsers()
+  })
+
+})
+
