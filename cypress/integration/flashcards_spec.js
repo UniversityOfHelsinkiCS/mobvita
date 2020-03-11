@@ -26,7 +26,6 @@ describe('flashcards', function () {
 
     this.beforeEach(function () {
       cy.visit('http://localhost:8000/stories/5c407e9eff634503466b0dde/')
-      cy.contains('perustavat').click()
       cy.contains('lentokoneita').click()
       cy.visit('http://localhost:8000/flashcards/')
     })
@@ -61,15 +60,26 @@ describe('flashcards', function () {
       cy.contains('plane')
     })
 
-    it('can get to the next card', function() {
-      cy.get('.flashcard-arrow-button').eq(1).click()
-      cy.contains('perustaa')
-    })
-
     it('language can be changed', function() {
       cy.contains('lentokone')
       cy.get('[class=flashcard-footer]').get('select').eq(0).select('Spanish')
       cy.get('[data-cy=no-flashcards-text]')
+    })
+  })
+
+  describe('multiple cards', function () {
+    this.beforeEach(function () {
+      cy.visit('http://localhost:8000/stories/5c407e9eff634503466b0dde/')
+      cy.contains('lentokoneita').click()
+      cy.contains('perustavat').click()
+      cy.visit('http://localhost:8000/flashcards/')
+    })
+
+    it('can get to the next card', function() {
+      cy.get('[data-cy=flashcard-title]').eq(0).as('title').then(() => {
+        cy.get('.flashcard-arrow-button').eq(1).click()
+        cy.get('[data-cy=flashcard-title]').eq(1).should('not.eq', this.title.text())
+      })
     })
   })
 

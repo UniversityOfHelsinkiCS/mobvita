@@ -72,7 +72,7 @@ const Flashcard = ({ card, cardIndex, setSwipeIndex }) => {
         hint={hintText}
         id={_id}
       >
-        <h2>{lemma}</h2>
+        <h2 data-cy="flashcard-title">{lemma}</h2>
       </FlashcardSide>
       <FlashcardSide
         answerChecked={answerChecked}
