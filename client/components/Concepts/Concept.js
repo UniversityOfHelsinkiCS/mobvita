@@ -53,7 +53,7 @@ const Concept = ({ concept, showTestConcepts, children }) => {
                   type="checkbox"
                   disabled={(testEnabled !== undefined && !testEnabled)}
                 />
-                {isLeaf
+                {testEnabled && isLeaf
                   && (
                     <Form.Control
                       type="text"

@@ -45,8 +45,6 @@ const Concepts = () => {
   const superConcepts = concepts.filter(concept => concept.super)
   const conceptTree = makeConceptTree(superConcepts)
 
-  console.log(showTestConcepts)
-
   return (
     <div className="component-container">
       <Form.Group style={{ paddingLeft: '1em' }}>
