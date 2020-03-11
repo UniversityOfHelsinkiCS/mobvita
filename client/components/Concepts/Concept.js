@@ -9,33 +9,11 @@ const Concept = ({ concept, children }) => {
   const [open, setOpen] = useState(false)
   const dispatch = useDispatch()
 
-  // const checkIfChildrenEnabled = () => {
-  //   concept.children.forEach((c) => {
-  //     if (c.exer_enabled === 1) return 1
-  //   })
-  //   return 0
-  // }
-
   const { conceptOn } = useSelector(({ user }) => (
     { conceptOn: user.data.user.exercise_setting[id] }))
-  // conceptOn = concept.children.length === 0
-  //   ? conceptOn
-  //   : checkIfChildrenEnabled()
-
-  // const updateChildren = (parent, settings) => {
-  //   parent.children.reduce((settings, c) => {
-  //     settings
-  //   })
-  // }
 
   const handleChange = () => {
-    // if (concept.children.length === 0) {
     dispatch(updateExerciseSettings({ [id]: conceptOn === 1 ? 0 : 1 }))
-    // } else {
-    //   dispatch(updateExerciseSettings(
-    //     updateChildren(concept, {})
-    //   ))
-    // }
   }
 
   const color = enabled === undefined || enabled ? '' : 'gray'
@@ -56,7 +34,8 @@ const Concept = ({ concept, children }) => {
             onClick={undefined}
             onChange={handleChange}
             checked={conceptOn}
-            disabled={enabled !== undefined && !enabled}
+            ref={el => el && (el.indeterminate = conceptOn && conceptOn !== 1 && conceptOn !== 0)}
+            disabled={(enabled !== undefined && !enabled)}
           />
           {name}
         </label>
