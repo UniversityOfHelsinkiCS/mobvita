@@ -33,11 +33,11 @@ const FlashcardSide = ({
   const dictionaryLanguage = useSelector(dictionaryLanguageSelector)
   const { storyId } = useParams()
 
-  const dictionaryOptions = translatableLanguages[learningLanguage].map(element => ({
+  const dictionaryOptions = translatableLanguages[learningLanguage] ? translatableLanguages[learningLanguage].map(element => ({
     key: element,
     value: element,
     text: element,
-  }))
+  })) : []
 
   const backgroundColor = [
     'rgb(255, 99, 71)',
@@ -96,6 +96,7 @@ const FlashcardSide = ({
       }
       <div className="flashcard-footer">
         <select
+          disabled={dictionaryOptions.length <= 1}
           defaultValue={dictionaryLanguage}
           style={{}}
           onChange={e => handleDropdownChange(e.target.value)}
