@@ -40,25 +40,16 @@ const Concept = ({ concept, showTestConcepts, children }) => {
               disabled={(exerEnabled !== undefined && !exerEnabled)}
             />
           </Form.Group>
-          {showTestConcepts
+          {showTestConcepts && isLeaf
             && (
-              <div style={{ display: 'flex' }}>
-                <Form.Check
-                  type="checkbox"
-                  disabled={(testEnabled !== undefined && !testEnabled)}
-                />
-                {testEnabled && isLeaf
-                  && (
-                    <Form.Control
-                      type="text"
-                      size="sm"
-                      style={{ width: '4em' }}
-                      disabled={(testEnabled !== undefined && !testEnabled)}
-                    />
-                  )
-                }
-              </div>
+              <Form.Control
+                type="text"
+                size="sm"
+                style={{ width: '4em' }}
+                disabled={(testEnabled !== undefined && !testEnabled)}
+              />
             )
+
           }
           <span
             onClick={() => setOpen(!open)}
