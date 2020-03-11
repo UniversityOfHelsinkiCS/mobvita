@@ -168,77 +168,7 @@ describe('Mobvita', function () {
       })
     })
 
-    describe("groups", function () {
-      this.beforeEach(function () {
-        cy.visit('http://localhost:8000/groups/')
-      })
 
-      it('new group can be created with students and teachers', function () {
-        const teacher = createRandomUser()
-        const student = createRandomUser()
-
-        cy.get('[data-cy=create-group-modal]').click()
-        cy.get('input').eq(0).type('my_test_group')
-        cy.get('textarea').eq(0).type(teacher.email)
-        cy.get('textarea').eq(1).type(student.email)
-
-        cy.get('[type=submit]').click()
-        cy.contains('my_test_group')
-        cy.get('[class=card-header]').eq(0).click()
-        cy.contains(teacher.username)
-        cy.get('[class=card-header]').eq(1).click()
-        cy.contains(student.username)
-      })
-
-      it('group can be removed', function() {
-        cy.request({
-          method: 'POST',
-          url: 'localhost:8000/api/groups',
-          headers: {
-            'Authorization': `Bearer ${globalUser.token}`
-          },
-          body: {
-            group_name: 'destroyed'
-          }
-        })
-        cy.reload()
-        cy.get('[data-cy=select-group]').click()
-        cy.contains('destroyed').click()
-        cy.get('[data-cy=delete-group]').click()
-        cy.contains('destroyed').should('not.exist')
-      })
-
-      it('users can be added to group and removed', function () {
-        const teacher = createRandomUser()
-        const student = createRandomUser()
-        cy.request({
-          method: 'POST',
-          url: 'localhost:8000/api/groups',
-          headers: {
-            'Authorization': `Bearer ${globalUser.token}`
-          },
-          body: {
-            group_name: 'other group'
-          }
-        })
-        cy.reload()
-        cy.get('[data-cy=select-group]').click()
-        cy.contains('other group').click()
-        cy.get('[data-cy=add-to-group-modal]').click()
-        cy.get('textarea').eq(0).type(teacher.email)
-        cy.get('textarea').eq(1).type(student.email)
-        cy.get('[type=submit]').click()
-
-        cy.get('[class=card-header]').eq(0).click()
-        cy.contains(teacher.username)
-
-        cy.get('[class=card-header]').eq(1).click()
-        cy.contains(student.username)
-
-        cy.get(`[data-cy=remove-from-group-${student.username}]`).click()
-        cy.contains(student.username).should('not.exist')
-      })
-    })
 
     describe("dictionary", function () {
       this.beforeEach(function () {
@@ -314,42 +244,6 @@ describe('Mobvita', function () {
       })
     })
 
-    describe("practice mode", function () {
-      const practiceURL = "http://localhost:8000/stories/5c407e9eff634503466b0dde/practice"
-
-      this.beforeEach(function () {
-        cy.visit(practiceURL)
-      })
-
-      it("can type into cloze fields", function () {
-        cy.get("[data-cy=exercise-cloze]", { timeout: 10000 }).each(element => {
-          cy.get(element).type("h3hasdi3g92137fhs")
-        })
-      })
-
-      it("can submit answers", function () {
-        cy.get("[data-cy=check-answer]").click()
-      })
-
-      it("can get to next snippet after two retries", function () {
-        cy.contains('0 / 8', { timeout: 20000 })
-
-        cy.get("[data-cy=check-answer]").click()
-        cy.get("[data-cy=check-answer]").click()
-
-        cy.contains('1 / 8', { timeout: 20000 })
-      })
-
-      it("shows feedback", function () {
-        cy.get("[data-cy=exercise-cloze]", { timeout: 10000 }).each(element => {
-          cy.get(element).type("h3hasdi3g92137fhs")
-        })
-        cy.get("[data-cy=check-answer]").click()
-
-        //Locate incorrecly answered cloze exercise:
-        cy.get("[data-cy=exercise-cloze]").eq(0).should("have.class", "wrong")
-      })
-    })
   })
 })
 

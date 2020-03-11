@@ -75,6 +75,20 @@ Cypress.Commands.add('login', function () {
 
       cy.reload()
     })
+
+    return cy.wrap(user)
+})
+
+Cypress.Commands.add('createUser', function() {
+  const user = randomCredentials()
+  cy.request('POST', 'localhost:8000/api/register', { ...user })
+    .then(function (response) {
+      user.token = response.body.access_token
+
+      cy.request('POST', 'localhost:8000/api/confirm/test', { ...user })
+      users.push(user)
+  })
+  return cy.wrap(user)
 })
 
 Cypress.Commands.add('cleanUsers', function () {
