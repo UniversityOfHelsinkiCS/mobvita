@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import { Form } from 'react-bootstrap'
+import { Checkbox } from 'semantic-ui-react'
 import { getConcepts } from 'Utilities/redux/conceptReducer'
 import { learningLanguageSelector } from 'Utilities/common'
 import Concept from './Concept'
@@ -47,15 +48,13 @@ const Concepts = () => {
 
   return (
     <div className="component-container">
-      <Form.Group style={{ paddingLeft: '1em' }}>
-        <Form.Check
-          type="checkbox"
-          inline
-          checked={showTestConcepts}
-          onChange={() => setShowTestConcepts(!showTestConcepts)}
-          label="Show test settings"
-        />
-      </Form.Group>
+      <Checkbox
+        toggle
+        style={{ paddingLeft: '0.9em', marginBottomo: '1em' }}
+        label="Show test settings"
+        checked={showTestConcepts}
+        onChange={() => setShowTestConcepts(!showTestConcepts)}
+      />
       <div>
         {conceptTree
           .map(c => (
