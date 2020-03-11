@@ -5,6 +5,7 @@ import { createBrowserHistory } from 'history'
 import { basePath, checkRevitaStatus } from 'Utilities/common'
 import { useDispatch } from 'react-redux'
 import { setNotification } from 'Utilities/redux/notificationReducer'
+import { Offline } from 'react-detect-offline'
 import Toaster from './Toaster'
 import Bar from './Bar'
 import 'bootstrap/dist/css/bootstrap.min.css'
@@ -46,6 +47,7 @@ const App = () => {
     <>
       <ReactRouter history={history}>
         <Toaster />
+        <Offline><div className="offline-notification"><h3>Please re-connect to the internet to use revita!</h3></div></Offline>
         <Route component={NavBar} />
         <div style={{ display: 'flex' }}>
           <Route component={Bar} />

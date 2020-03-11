@@ -56,6 +56,16 @@ export const images = {
   flashcards,
 }
 
+export const newCapitalize = (word) => {
+  const capitalizedParts = word.split('-').map((part) => {
+    const p1 = part.slice(0, 1)
+    const p2 = part.slice(1, part.length)
+    return p1.toUpperCase() + p2
+  })
+
+  return capitalizedParts.join('-')
+}
+
 export const capitalize = (word) => {
   const firstLetter = word.slice(0, 1).toUpperCase()
   const wordEnd = word.slice(1, word.length)
@@ -250,7 +260,7 @@ export const translatableLanguages = {
     'Portuguese',
     'Hindi',
   ],
-  'Komi-zyrian': [
+  'Komi-Zyrian': [
     'Russian',
   ],
   'Meadow-Mari': [
@@ -263,7 +273,7 @@ export const translatableLanguages = {
     'Russian',
     'English',
   ],
-  'North-Saami': [
+  'North-saami': [
     'Finnish',
     'Norwegian',
   ],

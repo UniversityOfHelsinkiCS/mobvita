@@ -3,7 +3,7 @@ import { connect, useDispatch, useSelector } from 'react-redux'
 import { List, Button, Header, Segment, Icon, Dropdown } from 'semantic-ui-react'
 import { Shake } from 'reshake'
 import { FormattedMessage } from 'react-intl'
-import { updateDictionaryLanguage } from 'Utilities/redux/userReducer'
+import { updateDictionaryLanguage, saveSelf } from 'Utilities/redux/userReducer'
 import { getTranslationAction } from 'Utilities/redux/translationReducer'
 import { learningLanguageSelector, translatableLanguages } from 'Utilities/common'
 import useWindowDimensions from 'Utilities/windowDimensions'
@@ -19,11 +19,19 @@ const DictionaryHelp = ({ translation }) => {
   const { pending } = useSelector(({ translation }) => translation)
 
 
-  const dictionaryOptions = translatableLanguages[learningLanguage].map(element => ({
+  // if language is translatable, and current translationLanguage is not valid, update user's default translationlanguage.
+  if (translatableLanguages[learningLanguage] && !translatableLanguages[learningLanguage].includes(translationLanguageCode)) {
+    dispatch(updateDictionaryLanguage(translatableLanguages[learningLanguage][0] ? translatableLanguages[learningLanguage][0] : undefined))
+  }
+
+
+  const dictionaryOptions = translatableLanguages[learningLanguage] ? translatableLanguages[learningLanguage].map(element => ({
     key: element,
     value: element,
     text: element,
-  }))
+  })) : []
+
+  const cannotBeTranslated = dictionaryOptions.length === 0
 
   const translations = translation ? translation.map(translated => (
     <List.Item key={translated.URL}>
@@ -81,13 +89,21 @@ const DictionaryHelp = ({ translation }) => {
     )
   }
 
+  const translationResults = () => {
+    if (cannotBeTranslated) return <span>Sorry, we do not support translations for {learningLanguage}</span>
+    if (pending) return <div><span>Loading, please wait </span><Spinner animation="border" /></div>
+    if (translations.length > 0) return translations
+    return <FormattedMessage id="click-to-translate" />
+  }
+
   return (
     <div className="dictionary-help">
       <Segment>
         <div>
           <FormattedMessage id="translation-target-language" />
           <select
-            defaultValue={translationLanguageCode || translatableLanguages[learningLanguage][0]}
+            disabled={dictionaryOptions.length <= 1}
+            defaultValue={translationLanguageCode}
             data-cy="dictionary-dropdown"
             style={{ marginLeft: '0.5em', border: 'none', backgroundColor: 'white' }}
             onChange={e => handleDropdownChange(e.target.value)}
@@ -105,8 +121,8 @@ const DictionaryHelp = ({ translation }) => {
           )
           : null}
         <List>
-          {pending && <div><span>Loading, please wait </span><Spinner animation="border" /></div>}
-          {translations.length > 0 ? translations : <FormattedMessage id="click-to-translate" />}
+          {translationResults()}
+
         </List>
       </Segment>
     </div>

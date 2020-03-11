@@ -58,7 +58,7 @@ export default function Toaster() {
           page_size: 20,
         }))
         dispatch({ type: 'CLEAR_UPLOADPROGRESS' })
-        dispatch(setNotification('The story is now ready in your library!', 'success'))
+        dispatch(setNotification('The story is now ready in your private library!', 'success'))
         saveInterval(null)
         setProgressToastId(null)
       }

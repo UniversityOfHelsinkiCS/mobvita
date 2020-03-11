@@ -4,7 +4,6 @@ import { BrowserRouter } from 'react-router-dom'
 import { Provider } from 'react-redux'
 import * as Sentry from '@sentry/browser'
 import 'semantic-ui-css/semantic.min.css'
-import 'react-virtualized/styles.css'
 import 'Assets/bootstrap.css'
 import 'Assets/custom.scss'
 
