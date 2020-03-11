@@ -23,6 +23,8 @@ describe('Mobvita', function () {
         }
       })
     }
+
+    cy.cleanUsers();
   })
 
   this.beforeEach(function () {
@@ -348,23 +350,6 @@ describe('Mobvita', function () {
         cy.get("[data-cy=exercise-cloze]").eq(0).should("have.class", "wrong")
       })
     })
-
-    describe('flashcards', function () {
-      this.beforeEach(function () {
-        cy.visit('http://localhost:8000/flashcards')
-      })
-
-      it('displays no flashcards-message correctly', function () {
-        cy.get('[data-cy=no-flashcards-text]')
-      })
-
-      it('story specific flashcards can be accessed', function () {
-        cy.visit('http://localhost:8000/stories/5c407e9eff634503466b0dde/')
-        cy.contains('lentokoneita').click()
-        cy.visit('http://localhost:8000/flashcards/5c407e9eff634503466b0dde/')
-        cy.get('[data-cy=flashcard-content]')
-      })
-    })
   })
 })
 
@@ -382,9 +367,11 @@ function createRandomUser() {
   cy.request('POST', 'localhost:8000/api/register', { ...user })
     .then((response) => {
       user.token = response.body.access_token
+      console.log(user)
     })
   cy.request('POST', 'localhost:8000/api/confirm/test', { ...user })
 
   users.push(user)
   return user
 }
+
