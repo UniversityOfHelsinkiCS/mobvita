@@ -521,7 +521,14 @@ body {
     }
   }
 
-  &-name-disabled {
+  &-name {
+    flex: 1;
+    &:focus {
+      outline: none;
+    }
+  }
+
+  &-disabled {
     color: gray;
   }
 }

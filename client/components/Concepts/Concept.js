@@ -19,7 +19,7 @@ const Concept = ({ concept, showTestConcepts, children }) => {
 
   const conceptNameClass = exerEnabled === undefined
     || exerEnabled
-    || (showTestConcepts && testEnabled) ? '' : 'concept-name-disabled'
+    || (showTestConcepts && testEnabled) ? 'concept-name' : 'concept-name concept-disabled'
 
   const caretIconName = open ? 'caret down' : 'caret left'
 
@@ -27,14 +27,8 @@ const Concept = ({ concept, showTestConcepts, children }) => {
 
   return (
     <div className="concept">
-      <div
-        onClick={() => setOpen(!open)}
-        onKeyPress={() => setOpen(!open)}
-        role="button"
-        tabIndex="0"
-        className="concept-row"
-      >
-        <div style={{ display: 'flex' }}>
+      <div className="concept-row">
+        <div style={{ display: 'flex', flex: 1 }}>
           <Form.Group>
             <Form.Check
               type="checkbox"
@@ -66,7 +60,15 @@ const Concept = ({ concept, showTestConcepts, children }) => {
               </div>
             )
           }
-          <span className={conceptNameClass}>{name}</span>
+          <span
+            onClick={() => setOpen(!open)}
+            onKeyPress={() => setOpen(!open)}
+            role="button"
+            tabIndex="0"
+            className={conceptNameClass}
+          >
+            {name}
+          </span>
         </div>
         {!isLeaf && <Icon name={caretIconName} className="concept-caret" />}
       </div>
