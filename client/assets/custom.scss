@@ -510,8 +510,6 @@ body {
   padding-left: 1em;
   input {
     margin-right: 0.5em;
-    transform: scale(1.5);
-
   }
 
   &-row {
@@ -521,5 +519,16 @@ body {
     &:focus {
       outline: none;
     }
+  }
+
+  &-name {
+    flex: 1;
+    &:focus {
+      outline: none;
+    }
+  }
+
+  &-disabled {
+    color: gray;
   }
 }
