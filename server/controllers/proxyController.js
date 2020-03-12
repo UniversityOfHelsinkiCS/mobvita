@@ -12,5 +12,4 @@ const proxyPost = async (req, res) => {
   res.send(response.data)
 }
 
-
 module.exports = { proxyGet, proxyPost }

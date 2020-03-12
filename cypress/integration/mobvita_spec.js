@@ -68,6 +68,8 @@ describe('Mobvita', function () {
   })
 
   it('can log in as user', function () {
+    cy.visit('http://localhost:8000')
+
     cy.get('input:first')
       .type(globalUser.email)
     cy.get('input:last')
@@ -129,77 +131,6 @@ describe('Mobvita', function () {
       cy.get("[data-cy=start-random]").should("be.enabled")
       cy.get('[class=checkbox-group]').eq(1).children().each(e => e.click())
       cy.get("[data-cy=start-random]").should("be.disabled")
-    })
-
-    describe("sidebar is open", function () {
-      this.beforeEach(function () {
-        cy.get('[data-cy=hamburger]').click()
-      })
-
-
-      it("can open and close terms and conditions", function () {
-        cy.get('[data-cy=tc-button]').click()
-        cy.get('[data-cy=tc-content]')
-        cy.get('.inverted').click(-50, -50, { force: true })
-      })
-
-      it("can read about (mob|re)vita", function () {
-        cy.get('[data-cy=about-button]').click()
-        cy.get('[data-cy=about-content]')
-      })
-
-      it("ui language can be changed and is saved", function () {
-        cy.get('[data-cy=ui-lang-select]').click()
-        cy.get('[data-cy=ui-lang-select] > .visible > :nth-child(2)').click()
-        cy.contains('Startsida')
-        cy.get('[data-cy=logout]').click()
-        cy.request('POST', '/api/session', { ...globalUser })
-          .as('user')
-          .then(response => {
-            window.localStorage.setItem('user', JSON.stringify(response.body))
-            cy.reload()
-          })
-        cy.contains('Startsida')
-      })
-
-      it("can visit groups view", function () {
-        cy.get('[data-cy=groups-link]').click()
-        cy.get('[data-cy=create-group-modal]')
-      })
-    })
-
-
-
-    describe("dictionary", function () {
-      this.beforeEach(function () {
-        cy.visit("http://localhost:8000/stories/5c407e9eff634503466b0dde/")
-        cy.get(".book") // Open dictionaryhelp
-          .click()
-      })
-
-      it("dictionary opens", function () {
-        cy.contains("Klikkaa sinulle tuntemattomia sanoja tekstissä saadaksesi käännöksiä.")
-      })
-
-      it("translate-to language can be changed", function () {
-        cy.get("[data-cy=dictionary-dropdown]").select("Finnish")
-
-      })
-
-      it("word translates correctly", function () {
-        cy.contains("poliisi")
-          .click()
-        cy.contains("yhteiskunnassa järjestystä ja turvallisuutta valvova ja ylläpitävä virkamies")
-      })
-
-      it("changing translate-to language re-translates the word", function () {
-        cy.contains("poliisi")
-          .click()
-        cy.contains("yhteiskunnassa järjestystä ja turvallisuutta valvova ja ylläpitävä virkamies")
-        cy.get("[data-cy=dictionary-dropdown]").select("Spanish")
-        cy.contains("policía")
-      })
-
     })
 
     describe("stories", function () {

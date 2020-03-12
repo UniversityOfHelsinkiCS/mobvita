@@ -25,7 +25,7 @@
 // Cypress.Commands.overwrite("visit", (originalFn, url, options) => { ... })
 let randomID = Math.floor(Math.random() * 1000000000)
 
-const users = []
+let users = []
 
 
 function randomCredentials() {
@@ -50,7 +50,7 @@ function createRandomUser() {
   return
 }
 
-Cypress.Commands.add('login', function () {
+Cypress.Commands.add('login', function (transLang = 'English') {
   const user = randomCredentials()
   cy.request('POST', 'localhost:8000/api/register', { ...user })
     .then(function (response) {
@@ -66,7 +66,8 @@ Cypress.Commands.add('login', function () {
         },
         body: {
           last_used_lang: 'Finnish',
-          last_trans_lang: 'English'
+          last_trans_lang: transLang,
+          interface_lang: 'Finnish'
         }
       })
       cy.request('POST', 'localhost:8000/api/session', { ...user })
@@ -105,4 +106,6 @@ Cypress.Commands.add('cleanUsers', function () {
       }
     })
   }
+
+  users = [];
 })
