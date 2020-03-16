@@ -8,12 +8,21 @@ import { Link } from 'react-router-dom'
 import { updateExerciseSettings } from 'Utilities/redux/userReducer'
 import { setNotification } from 'Utilities/redux/notificationReducer'
 import { sidebarSetOpen } from 'Utilities/redux/sidebarReducer'
+import { learningLanguageSelector } from 'Utilities/common'
 
 const SettingsModal = ({ trigger }) => {
   const { user } = useSelector(({ user }) => ({ user: user.data.user }))
   const dispatch = useDispatch()
-  const concepts = useSelector(({ concepts }) => concepts.concepts)
+  const { concepts, pending } = useSelector(({ concepts }) => concepts)
+  const learningLanguage = useSelector(learningLanguageSelector)
   const [open, setOpen] = useState(false)
+
+  useEffect(() => {
+    if (!pending) {
+      console.log('Fetching concepts metadata again')
+      dispatch(getConcepts(learningLanguage))
+    }
+  }, [learningLanguage])
 
   const levels = []
   if (concepts) {
@@ -31,58 +40,43 @@ const SettingsModal = ({ trigger }) => {
   /*
   If user selects B1, enable A1,A2,B1.
   */
-  const getConceptsToEnable = (newLevel) => {
-    const conceptsThatMatch = []
+  const getNewConceptSettings = (newLevel) => {
+    let resultObject = {}
+    const index = skillLevels.findIndex(element => element === newLevel)
+    const levelsToBeActivated = skillLevels.slice(0, index + 1)
+    console.log('Gonna activate all these levels: ', levelsToBeActivated)
 
     concepts.forEach((concept) => {
-      const { concept_id, exer_enabled, level } = concept
-
-      const index = skillLevels.findIndex(element => element === newLevel)
-      const levelsToBeActivated = skillLevels.slice(0, index + 1)
-
-      if (level) {
+      const { level, exer_enabled } = concept
+      let pushed = false
+      if (level && exer_enabled) {
         levelsToBeActivated.forEach((levelToBeActivated) => {
           if (level.includes(levelToBeActivated)) {
-            conceptsThatMatch.push(concept)
+            if (!pushed) {
+              resultObject = {
+                ...resultObject,
+                [concept.concept_id]: 1,
+              }
+              pushed = true
+            }
           }
         })
+        if (!pushed) {
+          resultObject = {
+            ...resultObject,
+            [concept.concept_id]: 0,
+          }
+        }
       }
     })
-    return conceptsThatMatch
+    return resultObject
   }
-
-  const getConceptsToDisable = (newLevel) => {
-    const index = skillLevels.findIndex(element => element === newLevel)
-    if (index === skillLevels.length - 1) return []
-    const conceptsToDisable = []
-
-    concepts.forEach((concept) => {
-      const { level } = concept
-      if (level && !level.includes(newLevel)) {
-        conceptsToDisable.push(concept)
-      }
-    })
-
-    return conceptsToDisable
-  }
-
 
   const handleLevelSelect = (level) => {
-    const conceptsToEnable = getConceptsToEnable(level)
-    const conceptsToDisable = getConceptsToDisable(level)
-
-    let temp = conceptsToEnable.reduce((prev, curr) => ({
-      ...prev,
-      [curr.concept_id]: 1,
-    }), {})
-
-    temp = conceptsToDisable.reduce((prev, curr) => ({
-      ...prev,
-      [curr.concept_id]: 0,
-    }), temp)
-
-    dispatch(updateExerciseSettings(temp))
-    dispatch(setNotification(`Learning settings set to ${level}`, "success"))
+    console.log('Handling level select ', level)
+    const newConceptSettings = getNewConceptSettings(level)
+    dispatch(updateExerciseSettings(newConceptSettings))
+    dispatch(setNotification(`Learning settings set to ${level}`, 'success'))
     dispatch(sidebarSetOpen(false))
     setOpen(false)
   }
