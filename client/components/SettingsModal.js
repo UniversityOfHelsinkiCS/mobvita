@@ -11,7 +11,6 @@ import { sidebarSetOpen } from 'Utilities/redux/sidebarReducer'
 import { learningLanguageSelector } from 'Utilities/common'
 
 const SettingsModal = ({ trigger }) => {
-  const { user } = useSelector(({ user }) => ({ user: user.data.user }))
   const dispatch = useDispatch()
   const { concepts, pending } = useSelector(({ concepts }) => concepts)
   const learningLanguage = useSelector(learningLanguageSelector)
@@ -86,10 +85,6 @@ const SettingsModal = ({ trigger }) => {
     dispatch(sidebarSetOpen(false))
   }
 
-  useEffect(() => {
-    dispatch(getConcepts(user.last_used_language))
-  }, [])
-
   const smallscreen = useWindowDimensions().width < 500
 
   return (
@@ -100,7 +95,7 @@ const SettingsModal = ({ trigger }) => {
       <Modal.Content style={{ display: 'flex', flexDirection: 'column' }}>
         <span className="label">Exercise difficulty level</span>
         <ButtonGroup name="difficultyButtons" size="md">
-          {levels.map(level => <Button key={level} onClick={() => handleLevelSelect(level)}>{level}</Button>)}
+          {levels.sort().map(level => <Button key={level} onClick={() => handleLevelSelect(level)}>{level}</Button>)}
         </ButtonGroup>
         {!smallscreen && (
           <Button
