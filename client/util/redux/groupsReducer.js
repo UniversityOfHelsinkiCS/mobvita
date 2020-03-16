@@ -36,6 +36,19 @@ export const deleteGroup = (groupId) => {
   return callBuilder(route, prefix, 'post')
 }
 
+export const getTestConcepts = (groupId) => {
+  const route = `/test/template?group_id=${groupId}`
+  const prefix = 'GET_GROUP_TEST_CONCEPTS'
+  return callBuilder(route, prefix, 'get')
+}
+
+export const updateTestConcepts = (groupId, updatedValues) => {
+  const route = 'test/template'
+  const prefix = 'SET_GROUP_TEST_CONCEPTS'
+  const payload = { group_id: groupId, question_template: updatedValues }
+  return callBuilder(route, prefix, 'post', payload)
+}
+
 export default (state = {}, action) => {
   switch (action.type) {
     case 'GET_GROUPS_ATTEMPT':
@@ -140,6 +153,43 @@ export default (state = {}, action) => {
         ...state,
         groups: state.groups
           .filter(group => group.group_id !== action.response.removed),
+        pending: false,
+        error: false,
+      }
+    case 'GET_GROUP_TEST_CONCEPTS_ATTEMPT':
+      return {
+        ...state,
+        pending: true,
+        error: false,
+      }
+    case 'GET_GROUP_TEST_CONCEPTS_FAILURE':
+      return {
+        ...state,
+        pending: false,
+        error: true,
+      }
+    case 'GET_GROUP_TEST_CONCEPTS_SUCCESS':
+      return {
+        ...state,
+        testConcepts: action.response,
+        pending: false,
+        error: false,
+      }
+    case 'SET_GROUP_TEST_CONCEPTS_ATTEMPT':
+      return {
+        ...state,
+        pending: true,
+        error: false,
+      }
+    case 'SET_GROUP_TEST_CONCEPTS_FAILURE':
+      return {
+        ...state,
+        pending: false,
+        error: true,
+      }
+    case 'SET_GROUP_TEST_CONCEPTS_SUCCESS':
+      return {
+        ...state,
         pending: false,
         error: false,
       }
