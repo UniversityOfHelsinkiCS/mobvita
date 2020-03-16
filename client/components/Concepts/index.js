@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
-import { Form } from 'react-bootstrap'
+import { useParams } from 'react-router-dom'
 import { Checkbox } from 'semantic-ui-react'
 import { getConcepts } from 'Utilities/redux/conceptReducer'
 import { learningLanguageSelector } from 'Utilities/common'
@@ -21,6 +21,7 @@ const ConceptTree = ({ concept, showTestConcepts }) => (
 
 const Concepts = () => {
   const dispatch = useDispatch()
+  const { target } = useParams()
   const learningLanguage = useSelector(learningLanguageSelector)
   const { concepts, pending } = useSelector(({ concepts }) => concepts)
   const [showTestConcepts, setShowTestConcepts] = useState(false)
@@ -48,13 +49,17 @@ const Concepts = () => {
 
   return (
     <div className="component-container">
-      <Checkbox
-        toggle
-        style={{ paddingLeft: '0.9em', marginBottomo: '1em' }}
-        label="Show test settings"
-        checked={showTestConcepts}
-        onChange={() => setShowTestConcepts(!showTestConcepts)}
-      />
+      {target === 'groups'
+        && (
+          <Checkbox
+            toggle
+            style={{ paddingLeft: '0.9em', marginBottomo: '1em' }}
+            label="Show test settings"
+            checked={showTestConcepts}
+            onChange={() => setShowTestConcepts(!showTestConcepts)}
+          />
+        )
+      }
       <div>
         {conceptTree
           .map(c => (
