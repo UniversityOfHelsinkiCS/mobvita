@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
+import { useHistory } from 'react-router-dom'
 import { getGroups, removeFromGroup, deleteGroup } from 'Utilities/redux/groupsReducer'
 import {
   Dropdown,
@@ -17,6 +18,7 @@ const GroupView = () => {
   const [addGroupOpen, setAddGroupOpen] = useState(false)
   const [currentGroupId, setCurrentGroupId] = useState(null)
   const dispatch = useDispatch()
+  const history = useHistory()
 
   const { groups, created } = useSelector(({ groups }) => (
     {
@@ -42,6 +44,10 @@ const GroupView = () => {
 
   const removeUser = (userId) => {
     dispatch(removeFromGroup(currentGroupId, userId))
+  }
+
+  const handleSettingsClick = () => {
+    history.push(`/groups/${currentGroupId}/concepts`)
   }
 
   if (!groups) {
@@ -126,6 +132,9 @@ const GroupView = () => {
               onClick={() => setAddToGroupOpen(true)}
             >
               <FormattedMessage id="add-people-to-group" />
+            </Button>
+            <Button style={{ marginTop: '1em' }} onClick={handleSettingsClick}>
+              Learning settings
             </Button>
             <Button
               data-cy="delete-group"

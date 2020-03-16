@@ -38,8 +38,8 @@ const Concepts = () => {
   const { target, id } = useParams()
   const learningLanguage = useSelector(learningLanguageSelector)
   const { concepts, pending: conceptsPending } = useSelector(({ concepts }) => concepts)
-  const { isTeaching } = useSelector(({ groups }) => (
-    { isTeaching: groups.testConcepts && groups.testConcepts.group.is_teaching }))
+  const { isTeaching, pending: groupsPending } = useSelector(({ groups }) => (
+    { isTeaching: groups.testConcepts && groups.testConcepts.group.is_teaching, pending: groups.pending }))
   const [showTestConcepts, setShowTestConcepts] = useState(false)
 
   useEffect(() => {
@@ -86,13 +86,16 @@ const Concepts = () => {
     <div className="component-container">
       {target === 'groups'
         && (
-          <Checkbox
-            toggle
-            style={{ paddingLeft: '0.9em', marginBottomo: '1em' }}
-            label="Show test settings"
-            checked={showTestConcepts}
-            onChange={handleTestConceptToggle}
-          />
+          <div>
+            <Checkbox
+              toggle
+              style={{ paddingLeft: '0.9em', marginBottomom: '1em' }}
+              label="Show test settings"
+              checked={showTestConcepts}
+              onChange={handleTestConceptToggle}
+            />
+            {groupsPending && <Spinner animation="border" variant="primary" size="sm" style={{ marginLeft: '0.9em', marginBottomom: '1em' }} />}
+          </div>
         )
       }
       <div>

@@ -81,6 +81,11 @@ const SettingsModal = ({ trigger }) => {
     setOpen(false)
   }
 
+  const handleAdvancedSettingsClick = () => {
+    setOpen(false)
+    dispatch(sidebarSetOpen(false))
+  }
+
   useEffect(() => {
     dispatch(getConcepts(user.last_used_language))
   }, [])
@@ -97,7 +102,17 @@ const SettingsModal = ({ trigger }) => {
         <ButtonGroup name="difficultyButtons" size="md">
           {levels.map(level => <Button key={level} onClick={() => handleLevelSelect(level)}>{level}</Button>)}
         </ButtonGroup>
-        {!smallscreen && <Button variant="link" as={Link} onClick={() => setOpen(false)} to="/concepts">Advanced settings</Button>}
+        {!smallscreen && (
+          <Button
+            style={{ alignSelf: 'flex-start', marginLeft: '-0.9em', marginTop: '1em' }}
+            variant="link"
+            as={Link}
+            onClick={handleAdvancedSettingsClick}
+            to="/concepts"
+          >
+            Advanced settings
+          </Button>
+        )}
       </Modal.Content>
     </Modal>
   )
