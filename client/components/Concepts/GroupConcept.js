@@ -17,7 +17,7 @@ const GroupConcept = ({ concept, showTestConcepts, children }) => {
 
   const handleTestQuestionAmountChange = (e) => {
     if (e.target.value) {
-      dispatch(updateTestConcepts(groupId, { [conceptId]: e.target.value }))
+      dispatch(updateTestConcepts(groupId, { [conceptId]: Number(e.target.value) }))
     }
   }
 

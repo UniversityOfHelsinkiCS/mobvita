@@ -43,12 +43,6 @@ const Concepts = () => {
     dispatch(getConcepts(learningLanguage))
   }, [])
 
-  useEffect(() => {
-    if (target === 'groups') {
-      dispatch(getTestConcepts(id))
-    }
-  }, [])
-
   if (conceptsPending || !concepts) {
     return (
       <div className="spinner-container">
@@ -72,6 +66,11 @@ const Concepts = () => {
   const superConcepts = concepts.filter(concept => concept.super)
   const conceptTree = makeConceptTree(superConcepts)
 
+  const handleTestConceptToggle = async () => {
+    if (!showTestConcepts) await dispatch(getTestConcepts(id))
+    setShowTestConcepts(!showTestConcepts)
+  }
+
   return (
     <div className="component-container">
       {target === 'groups'
@@ -81,7 +80,7 @@ const Concepts = () => {
             style={{ paddingLeft: '0.9em', marginBottomo: '1em' }}
             label="Show test settings"
             checked={showTestConcepts}
-            onChange={() => setShowTestConcepts(!showTestConcepts)}
+            onChange={handleTestConceptToggle}
           />
         )
       }
