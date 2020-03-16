@@ -697,5 +697,6 @@
     "Previous": "<",
     "Next": ">",
     "test-message123": "This is a test message",
-    "well-done-click-next-card-to-play-another-set-of-cards": "Well done! Click \"Next Card\" to play another set of cards"
+    "well-done-click-next-card-to-play-another-set-of-cards": "Well done! Click \"Next Card\" to play another set of cards",
+    "private": "Private"
 }
