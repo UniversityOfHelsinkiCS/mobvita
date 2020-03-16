@@ -22,9 +22,7 @@ const Flashcards = ({ match }) => {
 
   if (pending || !cards) {
     return (
-      <div
-        style={{ height: '100%', display: 'flex', justifyContent: 'center', alignItems: 'center' }}
-      >
+      <div className="spinner-container">
         <Spinner animation="border" variant="primary" size="lg" />
       </div>
     )

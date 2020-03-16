@@ -1,21 +1,19 @@
 import React, { useState } from 'react'
-import { useDispatch, useSelector } from 'react-redux'
 import { Collapse } from 'react-collapse'
 import { Icon } from 'semantic-ui-react'
 import { Form } from 'react-bootstrap'
-import { updateExerciseSettings } from 'Utilities/redux/userReducer'
 
-const Concept = ({ concept, showTestConcepts, children }) => {
-  const { concept_id: id, exer_enabled: exerEnabled, test_enabled: testEnabled, name } = concept
+const Concept = ({
+  concept,
+  showTestConcepts,
+  conceptTurnedOn,
+  testConceptQuestionAmount,
+  handleCheckboxChange,
+  handleTestQuestionAmountChange,
+  children,
+}) => {
   const [open, setOpen] = useState(false)
-  const dispatch = useDispatch()
-
-  const { conceptOn } = useSelector(({ user }) => (
-    { conceptOn: user.data.user.exercise_setting[id] }))
-
-  const handleChange = () => {
-    dispatch(updateExerciseSettings({ [id]: conceptOn === 1 ? 0 : 1 }))
-  }
+  const { exer_enabled: exerEnabled, test_enabled: testEnabled, name } = concept
 
   const conceptNameClass = exerEnabled === undefined
     || exerEnabled
@@ -34,9 +32,9 @@ const Concept = ({ concept, showTestConcepts, children }) => {
               type="checkbox"
               inline
               onClick={undefined}
-              onChange={handleChange}
-              checked={conceptOn}
-              ref={el => el && (el.indeterminate = conceptOn && conceptOn !== 1 && conceptOn !== 0)}
+              onChange={handleCheckboxChange}
+              checked={conceptTurnedOn}
+              ref={el => el && (el.indeterminate = conceptTurnedOn && conceptTurnedOn !== 1 && conceptTurnedOn !== 0)}
               disabled={(exerEnabled !== undefined && !exerEnabled)}
             />
           </Form.Group>
@@ -47,6 +45,8 @@ const Concept = ({ concept, showTestConcepts, children }) => {
                 size="sm"
                 style={{ width: '4em' }}
                 disabled={(testEnabled !== undefined && !testEnabled)}
+                placeholder={testConceptQuestionAmount}
+                onBlur={e => handleTestQuestionAmountChange(e)}
               />
             )
 
