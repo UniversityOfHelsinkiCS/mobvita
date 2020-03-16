@@ -11,7 +11,6 @@ import { sidebarSetOpen } from 'Utilities/redux/sidebarReducer'
 import { learningLanguageSelector } from 'Utilities/common'
 
 const SettingsModal = ({ trigger }) => {
-  const { user } = useSelector(({ user }) => ({ user: user.data.user }))
   const dispatch = useDispatch()
   const { concepts, pending } = useSelector(({ concepts }) => concepts)
   const learningLanguage = useSelector(learningLanguageSelector)
@@ -85,10 +84,6 @@ const SettingsModal = ({ trigger }) => {
     setOpen(false)
     dispatch(sidebarSetOpen(false))
   }
-
-  useEffect(() => {
-    dispatch(getConcepts(user.last_used_language))
-  }, [])
 
   const smallscreen = useWindowDimensions().width < 500
 
