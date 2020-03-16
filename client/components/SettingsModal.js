@@ -100,7 +100,7 @@ const SettingsModal = ({ trigger }) => {
       <Modal.Content style={{ display: 'flex', flexDirection: 'column' }}>
         <span className="label">Exercise difficulty level</span>
         <ButtonGroup name="difficultyButtons" size="md">
-          {levels.map(level => <Button key={level} onClick={() => handleLevelSelect(level)}>{level}</Button>)}
+          {levels.sort().map(level => <Button key={level} onClick={() => handleLevelSelect(level)}>{level}</Button>)}
         </ButtonGroup>
         {!smallscreen && (
           <Button
