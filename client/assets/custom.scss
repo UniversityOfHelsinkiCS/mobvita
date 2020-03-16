@@ -357,14 +357,15 @@ body {
   &-text-container {
     display: flex;
     flex-direction: column;
+    justify-content: center;
     flex-grow: 1;
     overflow: auto;
     padding: 1em 0;
-    & > h2, ul {
-      margin: auto;
+    & > ul, > p {
+      margin: 0 auto;
     }
-    & > p {
-      margin: auto;
+    & > h2 {
+      margin: 0 auto;
     }
   }
 

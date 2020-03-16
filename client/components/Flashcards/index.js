@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from 'react'
 import SwipeableViews from 'react-swipeable-views'
 import { useDispatch, useSelector } from 'react-redux'
+import { FormattedMessage } from 'react-intl'
 import { Icon } from 'semantic-ui-react'
-import { Spinner } from 'react-bootstrap'
+import { Spinner, Button } from 'react-bootstrap'
 import { getFlashcards } from 'Utilities/redux/flashcardReducer'
 import { learningLanguageSelector, dictionaryLanguageSelector } from 'Utilities/common'
 import Flashcard from './Flashcard'
@@ -75,8 +76,10 @@ const Flashcards = ({ match }) => {
         >
           <Icon name="angle double right" size="huge" />
         </button>
-
       </div>
+      {/* <Button>
+        <FormattedMessage id="add-new-flashcard" />
+      </Button> */}
     </div>
   )
 }
