@@ -87,6 +87,11 @@ const SettingsModal = ({ trigger }) => {
     setOpen(false)
   }
 
+  const handleAdvancedSettingsClick = () => {
+    setOpen(false)
+    dispatch(sidebarSetOpen(false))
+  }
+
   useEffect(() => {
     dispatch(getConcepts(user.last_used_language))
   }, [])
@@ -108,7 +113,7 @@ const SettingsModal = ({ trigger }) => {
             style={{ alignSelf: 'flex-start', marginLeft: '-0.9em', marginTop: '1em' }}
             variant="link"
             as={Link}
-            onClick={() => setOpen(false)}
+            onClick={handleAdvancedSettingsClick}
             to="/concepts"
           >
             Advanced settings
