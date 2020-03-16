@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
-import { useParams } from 'react-router-dom'
+import { useParams, useHistory } from 'react-router-dom'
 import { Checkbox } from 'semantic-ui-react'
 import { Spinner } from 'react-bootstrap'
 import { getConcepts } from 'Utilities/redux/conceptReducer'
@@ -34,14 +34,25 @@ const ConceptTree = ({ concept, showTestConcepts }) => {
 
 const Concepts = () => {
   const dispatch = useDispatch()
+  const history = useHistory()
   const { target, id } = useParams()
   const learningLanguage = useSelector(learningLanguageSelector)
   const { concepts, pending: conceptsPending } = useSelector(({ concepts }) => concepts)
+  const { isTeaching } = useSelector(({ groups }) => (
+    { isTeaching: groups.testConcepts && groups.testConcepts.group.is_teaching }))
   const [showTestConcepts, setShowTestConcepts] = useState(false)
 
   useEffect(() => {
     dispatch(getConcepts(learningLanguage))
   }, [])
+
+  useEffect(() => {
+    if (target === 'groups') dispatch(getTestConcepts(id))
+  }, [])
+
+  useEffect(() => {
+    if (target === 'groups' && !isTeaching && isTeaching !== undefined) history.replace('/groups')
+  }, [isTeaching])
 
   if (conceptsPending || !concepts) {
     return (
