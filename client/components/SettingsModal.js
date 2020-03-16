@@ -5,6 +5,9 @@ import { ButtonGroup, Button } from 'react-bootstrap'
 import { getConcepts } from 'Utilities/redux/conceptReducer'
 import useWindowDimensions from 'Utilities/windowDimensions'
 import { Link } from 'react-router-dom'
+import { updateExerciseSettings } from 'Utilities/redux/userReducer'
+import { setNotification } from 'Utilities/redux/notificationReducer'
+import { sidebarSetOpen } from 'Utilities/redux/sidebarReducer'
 
 const SettingsModal = ({ trigger }) => {
   const { user } = useSelector(({ user }) => ({ user: user.data.user }))
@@ -23,6 +26,67 @@ const SettingsModal = ({ trigger }) => {
     })
   }
 
+  const skillLevels = ['A1', 'A2', 'B1', 'B2', 'C1', 'C2']
+
+  /*
+  If user selects B1, enable A1,A2,B1.
+  */
+  const getConceptsToEnable = (newLevel) => {
+    const conceptsThatMatch = []
+
+    concepts.forEach((concept) => {
+      const { concept_id, exer_enabled, level } = concept
+
+      const index = skillLevels.findIndex(element => element === newLevel)
+      const levelsToBeActivated = skillLevels.slice(0, index + 1)
+
+      if (level) {
+        levelsToBeActivated.forEach((levelToBeActivated) => {
+          if (level.includes(levelToBeActivated)) {
+            conceptsThatMatch.push(concept)
+          }
+        })
+      }
+    })
+    return conceptsThatMatch
+  }
+
+  const getConceptsToDisable = (newLevel) => {
+    const index = skillLevels.findIndex(element => element === newLevel)
+    if (index === skillLevels.length - 1) return []
+    const conceptsToDisable = []
+
+    concepts.forEach((concept) => {
+      const { level } = concept
+      if (level && !level.includes(newLevel)) {
+        conceptsToDisable.push(concept)
+      }
+    })
+
+    return conceptsToDisable
+  }
+
+
+  const handleLevelSelect = (level) => {
+    const conceptsToEnable = getConceptsToEnable(level)
+    const conceptsToDisable = getConceptsToDisable(level)
+
+    let temp = conceptsToEnable.reduce((prev, curr) => ({
+      ...prev,
+      [curr.concept_id]: 1,
+    }), {})
+
+    temp = conceptsToDisable.reduce((prev, curr) => ({
+      ...prev,
+      [curr.concept_id]: 0,
+    }), temp)
+
+    dispatch(updateExerciseSettings(temp))
+    dispatch(setNotification(`Learning settings set to ${level}`, "success"))
+    dispatch(sidebarSetOpen(false))
+    setOpen(false)
+  }
+
   useEffect(() => {
     dispatch(getConcepts(user.last_used_language))
   }, [])
@@ -37,7 +101,7 @@ const SettingsModal = ({ trigger }) => {
       <Modal.Content style={{ display: 'flex', flexDirection: 'column' }}>
         <span className="label">Exercise difficulty level</span>
         <ButtonGroup name="difficultyButtons" size="md">
-          {levels.map(level => <Button key={level} onClick={() => console.log(level)}>{level}</Button>)}
+          {levels.map(level => <Button key={level} onClick={() => handleLevelSelect(level)}>{level}</Button>)}
         </ButtonGroup>
         {!smallscreen && <Button variant="link" as={Link} onClick={() => setOpen(false)} to="/concepts">Advanced settings</Button>}
       </Modal.Content>
