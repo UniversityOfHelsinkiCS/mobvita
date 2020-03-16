@@ -28,7 +28,7 @@ const StoryList = () => {
 
   const user = useSelector(({ user }) => user.data.user)
   const learningLanguage = useSelector(learningLanguageSelector)
-  const { pending, stories, allPending } = useSelector(({ stories }) => ({
+  const { pending, stories } = useSelector(({ stories }) => ({
     stories: stories.data,
     pending: stories.pending,
   }))
@@ -78,7 +78,7 @@ const StoryList = () => {
     setLibraries({ ...librariesCopy, [library]: true })
   }
 
-  const noResults = !allPending && searchString.length > 0 && searchedStories.length === 0
+  const noResults = !pending && searchString.length > 0 && searchedStories.length === 0
 
   const searchSort = (
     <div
@@ -88,7 +88,7 @@ const StoryList = () => {
       <Search
         open={false}
         icon={noResults ? 'close' : 'search'}
-        loading={allPending}
+        loading={pending}
         value={searchString}
         onSearchChange={e => setSearchString(e.target.value)}
         size="small"
@@ -111,7 +111,7 @@ const StoryList = () => {
     </div>
   )
 
-  if (allPending || !searchedStories) {
+  if (pending || !searchedStories) {
     return (
       <div className="component-container">
         {searchSort}
