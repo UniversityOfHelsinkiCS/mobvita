@@ -67,11 +67,17 @@ export default (state = { previous: [] }, action) => {
         pending: false,
         error: false,
       }
+    case 'GET_SNIPPET_ANSWERS_ATTEMPT':
+      return {
+        ...state,
+        answersPending: true,
+      }
     case 'GET_SNIPPET_ANSWERS_SUCCESS':
       return {
         ...state,
         focused: action.response,
         previous: filterPrevious(state.previous, action.response),
+        answersPending: false,
       }
     case 'GET_STORY_ATTEMPT':
       return {
