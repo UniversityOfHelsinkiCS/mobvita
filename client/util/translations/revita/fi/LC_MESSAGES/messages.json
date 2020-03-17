@@ -699,5 +699,7 @@
     "well-done-click-next-card-to-play-another-set-of-cards": "Hyvää työtä! Paina \"Seuraava kortti\" aloittaaksesi uuden korttipakan.",
     "learning-settings": "Opiskeluasetukset",
     "advanced-settings": "Lisäasetukset",
-    "show-test-settings": "Näytä koeasetukset"
+    "show-test-settings": "Näytä koeasetukset",
+    "you-must-accept-terms-and-conditions": "Sinun täytyy hyväksyä käyttöehdot",
+    "or-share-with-a-group-optional": "Tai jaa ryhmälle (valinnainen)"
 }

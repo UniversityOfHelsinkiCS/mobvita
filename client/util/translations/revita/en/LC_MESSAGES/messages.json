@@ -701,5 +701,7 @@
     "private": "Private",
     "learning-settings": "Learning settings",
     "advanced-settings": "Advanced settings",
-    "show-test-settings": "Show test settings"
+    "show-test-settings": "Show test settings",
+    "you-must-accept-terms-and-conditions": "You must accept Terms and Conditions",
+    "or-share-with-a-group-optional": "Or share with a group (optional)"
 }
