@@ -23,6 +23,13 @@ export const getStories = (language, query = { page: 0, page_size: 10 }) => {
   return callBuilder(route, prefix)
 }
 
+export const updateExerciseSettings = (storyId, settings) => {
+  const route = `stories/${storyId}`
+  const prefix = 'SAVE_STORY'
+  const payload = { exercise_settings: settings }
+  return callBuilder(route, prefix, 'post', payload)
+}
+
 
 // Reducer
 // You can include more app wide actions such as "selected: []" into the state
@@ -72,6 +79,25 @@ export default (state = { data: [], pending: false, error: false }, action) => {
         error: true,
       }
     case 'GET_STORY_SUCCESS':
+      return {
+        ...state,
+        focused: action.response,
+        pending: false,
+        error: false,
+      }
+    case 'SAVE_STORY_ATTEMPT':
+      return {
+        ...state,
+        pending: true,
+        error: false,
+      }
+    case 'SAVE_STORY_ERROR':
+      return {
+        ...state,
+        pending: false,
+        error: true,
+      }
+    case 'SAVE_STORY_SUCCESS':
       return {
         ...state,
         focused: action.response,

@@ -5,16 +5,19 @@ import { useIntl } from 'react-intl'
 import { Checkbox } from 'semantic-ui-react'
 import { Spinner } from 'react-bootstrap'
 import { getConcepts } from 'Utilities/redux/conceptReducer'
+import { getStoryAction } from 'Utilities/redux/storiesReducer'
 import { getTestConcepts, getGroup } from 'Utilities/redux/groupsReducer'
 import { learningLanguageSelector } from 'Utilities/common'
 import UserConcept from './UserConcept'
 import GroupConcept from './GroupConcept'
+import StoryConcept from './StoryConcept'
 
 const ConceptTree = ({ concept, showTestConcepts }) => {
   const { target } = useParams()
   const components = {
     user: UserConcept,
     groups: GroupConcept,
+    stories: StoryConcept,
   }
 
   const TargetConcept = target ? components[target] : components.user
@@ -57,6 +60,10 @@ const Concepts = () => {
       dispatch(getTestConcepts(id))
       dispatch(getGroup(id))
     }
+  }, [])
+
+  useEffect(() => {
+    if (target === 'stories') dispatch(getStoryAction(id))
   }, [])
 
   useEffect(() => {
