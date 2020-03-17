@@ -31,6 +31,7 @@ const CurrentPractice = ({ storyId }) => {
 
   const { snippets } = useSelector(({ snippets, locale }) => ({ snippets, locale }))
   const { story } = useSelector(({ stories }) => ({ story: stories.focused }))
+  const answersPending = useSelector(({ snippets }) => snippets.answersPending)
 
   const [finished, setFinished] = useState(false)
 
@@ -295,6 +296,7 @@ const CurrentPractice = ({ storyId }) => {
               data-cy="check-answer"
               block
               variant="primary"
+              disabled={answersPending}
               onClick={() => checkAnswers()}
             >
               <FormattedMessage id="check-answer" />
