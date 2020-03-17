@@ -5,12 +5,14 @@ import Headroom from 'react-headroom'
 import { Icon } from 'semantic-ui-react'
 import { sidebarSetOpen } from 'Utilities/redux/sidebarReducer'
 import useWindowDimensions from 'Utilities/windowDimensions'
+import { useIntl } from 'react-intl'
 
 
 export default function NavBar({ history }) {
   const { user } = useSelector(({ user }) => ({ user: user.data }))
   const open = useSelector(({ sidebar }) => sidebar.open)
   const dispatch = useDispatch()
+  const intl = useIntl()
 
   const elo = (user && user.user.exercise_history && user.user.exercise_history[user.user.exercise_history.length - 1] && user.user.exercise_history[user.user.exercise_history.length - 1].score)
     ? user.user.exercise_history[user.user.exercise_history.length - 1].score
@@ -39,16 +41,16 @@ export default function NavBar({ history }) {
           </Navbar.Brand>
         </div>
         {user && !smallWindow
-        && (
-        <Navbar.Text style={{ color: 'white', marginRight: '1em' }}>
-          <div>{`${user.user.username}`}</div>
-        </Navbar.Text>
-        )
+          && (
+            <Navbar.Text style={{ color: 'white', marginRight: '1em' }}>
+              <div>{`${user.user.username}`}</div>
+            </Navbar.Text>
+          )
         }
         {user && (
 
           <Navbar.Text style={{ color: 'white', marginRight: '1em' }}>
-            <div>{`Points: ${elo}`}</div>
+            <div>{`${intl.formatMessage({ id: 'score' })}: ${elo}`}</div>
           </Navbar.Text>
         )}
       </Navbar>
