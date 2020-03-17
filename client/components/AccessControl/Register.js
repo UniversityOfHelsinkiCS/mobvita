@@ -54,7 +54,7 @@ const Register = () => {
 
       dispatch(registerUser(payload))
     } else {
-      dispatch(setNotification('You must accept Terms and Conditions', 'error'))
+      dispatch(setNotification(intl.formatMessage({ id: 'you-must-accept-terms-and-conditions' }), 'error'))
     }
 
     // TODO: Check email and password validity
