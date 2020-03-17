@@ -701,5 +701,8 @@
     "advanced-settings": "Lisäasetukset",
     "show-test-settings": "Näytä koeasetukset",
     "you-must-accept-terms-and-conditions": "Sinun täytyy hyväksyä käyttöehdot",
-    "or-share-with-a-group-optional": "Tai jaa ryhmälle (valinnainen)"
+    "or-share-with-a-group-optional": "Tai jaa ryhmälle (valinnainen)",
+    "group-learning-settings-for": "Opiskeluasetukset ryhmälle",
+    "story-exercise-settings-for": "Opiskeluasetukset tarinalle",
+    "user-exercise-settings": "Käyttäjän opiskeluasetukset"
 }

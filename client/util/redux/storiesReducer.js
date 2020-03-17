@@ -100,7 +100,7 @@ export default (state = { data: [], pending: false, error: false }, action) => {
     case 'SAVE_STORY_SUCCESS':
       return {
         ...state,
-        focused: action.response,
+        focused: { ...state.focused, ...action.response },
         pending: false,
         error: false,
       }

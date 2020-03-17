@@ -703,5 +703,8 @@
     "advanced-settings": "Advanced settings",
     "show-test-settings": "Show test settings",
     "you-must-accept-terms-and-conditions": "You must accept Terms and Conditions",
-    "or-share-with-a-group-optional": "Or share with a group (optional)"
+    "or-share-with-a-group-optional": "Or share with a group (optional)",
+    "group-learning-settings-for": "Group learning settings for",
+    "story-exercise-settings-for": "Story exercise settings for",
+    "user-exercise-settings": "User exercise settings"
 }
