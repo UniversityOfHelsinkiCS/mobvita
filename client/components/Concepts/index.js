@@ -67,7 +67,7 @@ const Concepts = () => {
   const intl = useIntl()
   const learningLanguage = useSelector(learningLanguageSelector)
   const { concepts, pending: conceptsPending } = useSelector(({ concepts }) => concepts)
-  const { isTeaching, groupsPending, group } = useSelector(({ groups }) => (
+  const { isTeaching, groupsPending } = useSelector(({ groups }) => (
     {
       isTeaching: groups.testConcepts && groups.testConcepts.group.is_teaching,
       groupsPending: groups.pending,
@@ -112,7 +112,6 @@ const Concepts = () => {
       }
       return cleanConcept
     })
-
 
   const superConcepts = concepts.filter(concept => concept.super)
   const conceptTree = makeConceptTree(superConcepts)

@@ -7,7 +7,7 @@ export const getGroups = () => {
 }
 
 export const getGroup = (id) => {
-  const route = `groups/${id}`
+  const route = `/groups/${id}`
   const prefix = 'GET_GROUP'
   return callBuilder(route, prefix, 'get')
 }
@@ -55,6 +55,13 @@ export const updateTestConcepts = (groupId, updatedValues) => {
   return callBuilder(route, prefix, 'post', payload)
 }
 
+export const updateExerciseConcepts = (groupId, updatedValues) => {
+  const route = `/groups/${groupId}`
+  const prefix = 'SET_GROUP_EXERCISE_CONCEPTS'
+  const payload = { exercise_setting: updatedValues }
+  return callBuilder(route, prefix, 'post', payload)
+}
+
 export default (state = { groups: [] }, action) => {
   switch (action.type) {
     case 'GET_GROUPS_ATTEMPT':
@@ -91,7 +98,7 @@ export default (state = { groups: [] }, action) => {
     case 'GET_GROUP_SUCCESS':
       return {
         ...state,
-        group: action.response.group,
+        group: action.response,
         pending: false,
         error: false,
       }
@@ -215,6 +222,25 @@ export default (state = { groups: [] }, action) => {
     case 'SET_GROUP_TEST_CONCEPTS_SUCCESS':
       return {
         ...state,
+        pending: false,
+        error: false,
+      }
+    case 'SET_GROUP_EXERCISE_CONCEPTS_ATTEMPT':
+      return {
+        ...state,
+        pending: true,
+        error: false,
+      }
+    case 'SET_GROUP_EXERCISE_CONCEPTS_FAILURE':
+      return {
+        ...state,
+        pending: false,
+        error: true,
+      }
+    case 'SET_GROUP_EXERCISE_CONCEPTS_SUCCESS':
+      return {
+        ...state,
+        group: { ...state.group, ...action.response },
         pending: false,
         error: false,
       }

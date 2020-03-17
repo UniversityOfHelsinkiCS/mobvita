@@ -1,7 +1,7 @@
 import React from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { useParams } from 'react-router-dom'
-import { updateTestConcepts } from 'Utilities/redux/groupsReducer'
+import { updateTestConcepts, updateExerciseConcepts } from 'Utilities/redux/groupsReducer'
 import Concept from './Concept'
 
 const GroupConcept = ({ concept, showTestConcepts, children }) => {
@@ -9,10 +9,11 @@ const GroupConcept = ({ concept, showTestConcepts, children }) => {
   const dispatch = useDispatch()
   const { id: groupId } = useParams()
 
-  const { testConceptQuestionAmount } = useSelector(({ groups }) => (
+  const { testConceptQuestionAmount, conceptTurnedOn } = useSelector(({ groups }) => (
     {
       testConceptQuestionAmount: groups.testConcepts
         && groups.testConcepts.test_template[conceptId],
+      conceptTurnedOn: groups.group && groups.group.exercise_setting[conceptId],
     }))
 
   const handleTestQuestionAmountChange = (e) => {
@@ -21,13 +22,19 @@ const GroupConcept = ({ concept, showTestConcepts, children }) => {
     }
   }
 
+  const handleCheckboxChange = () => {
+    dispatch(updateExerciseConcepts(groupId, { [conceptId]: conceptTurnedOn === 1 ? 0 : 1 }))
+  }
+
   return (
     <>
       <Concept
         concept={concept}
         showTestConcepts={showTestConcepts}
+        conceptTurnedOn={conceptTurnedOn}
         testConceptQuestionAmount={testConceptQuestionAmount}
         handleTestQuestionAmountChange={handleTestQuestionAmountChange}
+        handleCheckboxChange={handleCheckboxChange}
       >
         {children}
       </Concept>
