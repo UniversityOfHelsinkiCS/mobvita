@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import { useParams, useHistory } from 'react-router-dom'
+import { useIntl } from 'react-intl'
 import { Checkbox } from 'semantic-ui-react'
 import { Spinner } from 'react-bootstrap'
 import { getConcepts } from 'Utilities/redux/conceptReducer'
@@ -36,6 +37,7 @@ const Concepts = () => {
   const dispatch = useDispatch()
   const history = useHistory()
   const { target, id } = useParams()
+  const intl = useIntl()
   const learningLanguage = useSelector(learningLanguageSelector)
   const { concepts, pending: conceptsPending } = useSelector(({ concepts }) => concepts)
   const { isTeaching, pending: groupsPending } = useSelector(({ groups }) => (
@@ -90,7 +92,7 @@ const Concepts = () => {
             <Checkbox
               toggle
               style={{ paddingLeft: '0.9em', marginBottomom: '1em' }}
-              label="Show test settings"
+              label={intl.formatMessage({ id: 'show-test-settings' })}
               checked={showTestConcepts}
               onChange={handleTestConceptToggle}
             />

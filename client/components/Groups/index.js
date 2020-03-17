@@ -135,7 +135,7 @@ const GroupView = () => {
               <FormattedMessage id="add-people-to-group" />
             </Button>
             <Button style={{ marginTop: '1em' }} onClick={handleSettingsClick}>
-              Learning settings
+              <FormattedMessage id="learning-settings" />
             </Button>
             <Button
               data-cy="delete-group"
