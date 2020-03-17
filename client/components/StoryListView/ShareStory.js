@@ -62,21 +62,21 @@ const ShareStory = ({ story, isOpen, setOpen }) => {
             />
 
             {groups
-          && (
-          <div style={{ display: 'flex', alignItems: 'center', marginTop: '0.5em' }}>
-            <span>Or share with a group (optional)</span>
-            <Dropdown data-cy="select-group" onSelect={key => setCurrentGroup(key)}>
-              <Dropdown.Toggle variant="primary" id="dropdown-basic">
-                {currentGroup ? groups.find(group => group.group_id === currentGroup).groupName : 'select a group'}
-              </Dropdown.Toggle>
-              <Dropdown.Menu>
-                {groups.map(group => (
-                  <Dropdown.Item eventKey={group.group_id} key={group.group_id}>{group.groupName}</Dropdown.Item>
-                ))}
-              </Dropdown.Menu>
-            </Dropdown>
-          </div>
-          )
+              && (
+                <div style={{ display: 'flex', alignItems: 'center', marginTop: '0.5em' }}>
+                  <span>{intl.formatMessage({ id: "or-share-with-a-group-optional" })}</span>
+                  <Dropdown data-cy="select-group" onSelect={key => setCurrentGroup(key)}>
+                    <Dropdown.Toggle variant="primary" id="dropdown-basic">
+                      {currentGroup ? groups.find(group => group.group_id === currentGroup).groupName : 'select a group'}
+                    </Dropdown.Toggle>
+                    <Dropdown.Menu>
+                      {groups.map(group => (
+                        <Dropdown.Item eventKey={group.group_id} key={group.group_id}>{group.groupName}</Dropdown.Item>
+                      ))}
+                    </Dropdown.Menu>
+                  </Dropdown>
+                </div>
+              )
             }
 
             <Button
