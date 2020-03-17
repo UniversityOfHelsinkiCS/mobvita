@@ -81,23 +81,23 @@ const StoryListItem = ({ story }) => {
                       icon="id card"
                     />
                     {hiddenFeatures
-                  && (
-                    <>
-                      <Dropdown.Item
-                        text={<FormattedMessage id="Share" />}
-                        onClick={() => setModalOpen(true)}
-                        icon="share"
-                      />
-                      <Dropdown.Item
-                        text={<FormattedMessage id="Delete" />}
-                        className="delete-button"
-                        style={{ backgroundColor: '#dd0000' }}
-                        disabled
-                        icon="trash alternate outline"
-                      />
-                    </>
-                  )
-                }
+                      && (
+                        <>
+                          <Dropdown.Item
+                            text={<FormattedMessage id="Share" />}
+                            onClick={() => setModalOpen(true)}
+                            icon="share"
+                          />
+                          <Dropdown.Item
+                            text={<FormattedMessage id="Delete" />}
+                            className="delete-button"
+                            style={{ backgroundColor: '#dd0000' }}
+                            disabled
+                            icon="trash alternate outline"
+                          />
+                        </>
+                      )
+                    }
                   </Dropdown.Menu>
                 </Dropdown>
               </Button.Group>
@@ -119,6 +119,14 @@ const StoryListItem = ({ story }) => {
                     <FormattedMessage id="Flashcards" />
                   </Button>
                 </Link>
+                <Button
+                  variant="primary"
+                  style={{ marginRight: '0.5em' }}
+                  as={Link}
+                  to={`/stories/${story._id}/concepts`}
+                >
+                  <FormattedMessage id="learning-settings" />
+                </Button>
                 {hiddenFeatures
                   && (
                     <Button onClick={() => setModalOpen(true)} variant="primary" style={{ marginRight: '0.5em' }}>
