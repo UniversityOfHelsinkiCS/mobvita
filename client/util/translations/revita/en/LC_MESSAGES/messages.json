@@ -698,5 +698,8 @@
     "Next": ">",
     "test-message123": "This is a test message",
     "well-done-click-next-card-to-play-another-set-of-cards": "Well done! Click \"Next Card\" to play another set of cards",
-    "private": "Private"
+    "private": "Private",
+    "learning-settings": "Learning settings",
+    "advanced-settings": "Advanced settings",
+    "show-test-settings": "Show test settings"
 }

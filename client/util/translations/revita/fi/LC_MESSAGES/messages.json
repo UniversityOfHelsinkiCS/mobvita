@@ -696,5 +696,8 @@
     "no-flashcards-found-for-this-exercise-when-you-practice-a-story-and-click-on-unfamiliar-words-they-w": "Ei flash-kortteja vielä.  Kun luet kertomuksen, klikkaa tuntemattomia sanoja lisätäksesi ne flash-kortteihin!",
     "Previous": "<",
     "Next": ">",
-    "well-done-click-next-card-to-play-another-set-of-cards": ""
+    "well-done-click-next-card-to-play-another-set-of-cards": "",
+    "learning-settings": "Opiskeluasetukset",
+    "advanced-settings": "Lisäasetukset",
+    "show-test-settings": "Näytä koeasetukset"
 }

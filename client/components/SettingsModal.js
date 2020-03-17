@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import { Modal } from 'semantic-ui-react'
+import { FormattedMessage } from 'react-intl'
 import { ButtonGroup, Button } from 'react-bootstrap'
 import { getConcepts } from 'Utilities/redux/conceptReducer'
 import useWindowDimensions from 'Utilities/windowDimensions'
@@ -90,10 +91,12 @@ const SettingsModal = ({ trigger }) => {
   return (
     <Modal onClose={() => setOpen(false)} onOpen={() => setOpen(true)} open={open} trigger={trigger}>
       <Modal.Header>
-        Learning settings
+        <FormattedMessage id="learning-settings" />
       </Modal.Header>
       <Modal.Content style={{ display: 'flex', flexDirection: 'column' }}>
-        <span className="label">Level</span>
+        <span className="label">
+          <FormattedMessage id="Level" />
+        </span>
         <ButtonGroup name="difficultyButtons" size="md">
           {levels.sort().map(level => <Button key={level} onClick={() => handleLevelSelect(level)}>{level}</Button>)}
         </ButtonGroup>
@@ -105,7 +108,7 @@ const SettingsModal = ({ trigger }) => {
             onClick={handleAdvancedSettingsClick}
             to="/concepts"
           >
-            Advanced settings
+            <FormattedMessage id="advanced-settings" />
           </Button>
         )}
       </Modal.Content>

@@ -11,6 +11,8 @@ describe('flashcards', function () {
   it('flashcards can be added from reading mode', function () {
     cy.visit('http://localhost:8000/stories/5c407e9eff634503466b0dde/')
     cy.contains('lentokoneita').click()
+    cy.get('.book').click()
+    cy.contains('plane')
     cy.visit('http://localhost:8000/flashcards/')
     cy.contains('lentokone')
   })
@@ -27,6 +29,8 @@ describe('flashcards', function () {
     this.beforeEach(function () {
       cy.visit('http://localhost:8000/stories/5c407e9eff634503466b0dde/')
       cy.contains('lentokoneita').click()
+      cy.get('.book').click()
+      cy.contains('plane')
       cy.visit('http://localhost:8000/flashcards/')
     })
 
@@ -72,6 +76,9 @@ describe('flashcards', function () {
       cy.visit('http://localhost:8000/stories/5c407e9eff634503466b0dde/')
       cy.contains('lentokoneita').click()
       cy.contains('perustavat').click()
+      cy.get('.book').click()
+      cy.contains('plane')
+      cy.contains('found')
       cy.visit('http://localhost:8000/flashcards/')
     })
 

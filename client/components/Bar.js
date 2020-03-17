@@ -130,7 +130,15 @@ export default function Bar({ history }) {
                   </Link>
 
                   {hiddenFeatures
-                    && <SettingsModal trigger={<Button variant="secondary" block style={{ marginTop: '0.5em' }}>Learning settings</Button>} />}
+                    && (
+                      <SettingsModal
+                        trigger={(
+                          <Button variant="secondary" block style={{ marginTop: '0.5em' }}>
+                            <FormattedMessage id="learning-settings" />
+                          </Button>
+                        )}
+                      />
+                    )}
 
                   <Link to="/groups">
                     <Button data-cy="groups-link" variant="secondary" style={{ marginTop: '0.5em' }} onClick={() => dispatch(sidebarSetOpen(!open))} block>
