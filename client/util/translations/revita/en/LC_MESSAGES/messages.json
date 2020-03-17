@@ -701,5 +701,8 @@
     "private": "Private",
     "learning-settings": "Learning settings",
     "advanced-settings": "Advanced settings",
-    "show-test-settings": "Show test settings"
+    "show-test-settings": "Show test settings",
+    "group-learning-settings-for": "Group learning settings for",
+    "story-exercise-settings-for": "Story exercise settings for",
+    "user-exercise-settings": "User exercise settings"
 }

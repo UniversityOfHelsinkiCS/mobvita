@@ -699,5 +699,8 @@
     "well-done-click-next-card-to-play-another-set-of-cards": "Hyvää työtä! Paina \"Seuraava kortti\" aloittaaksesi uuden korttipakan.",
     "learning-settings": "Opiskeluasetukset",
     "advanced-settings": "Lisäasetukset",
-    "show-test-settings": "Näytä koeasetukset"
+    "show-test-settings": "Näytä koeasetukset",
+    "group-learning-settings-for": "Opiskeluasetukset ryhmälle",
+    "story-exercise-settings-for": "Opiskeluasetukset tarinalle",
+    "user-exercise-settings": "Käyttäjän opiskeluasetukset"
 }

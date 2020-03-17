@@ -699,5 +699,11 @@
     "no-flashcards-found-for-this-exercise-when-you-practice-a-story-and-click-on-unfamiliar-words-they-w": "Нет флеш-карт для данного упражнения. В режиме \"Практика\" кликните на незнакомое слово, оно будет добавлено в Ваши флеш-карты!",
     "Previous": "<",
     "Next": ">",
-    "well-done-click-next-card-to-play-another-set-of-cards": "Отлично! Нажмите \"Следующая Карта чтобы получить следующий набор флеш-карт.\""
+    "well-done-click-next-card-to-play-another-set-of-cards": "Отлично! Нажмите \"Следующая Карта чтобы получить следующий набор флеш-карт.\"",
+    "learning-settings": "",
+    "advanced-settings": "",
+    "show-test-settings": "",
+    "group-learning-settings-for": "",
+    "story-exercise-settings-for": "",
+    "user-exercise-settings": ""
 }

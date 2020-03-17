@@ -538,6 +538,13 @@ body {
   &-disabled {
     color: gray;
   }
+
+  &-title {
+    font-size: 24px;
+    padding-left: 0.5em;
+    padding-top: 0.2em;
+    padding-bottom: 0.5em;
+  }
 }
 
 .spinner-container {
