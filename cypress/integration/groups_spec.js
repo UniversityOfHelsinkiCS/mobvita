@@ -26,7 +26,7 @@ describe("groups", function () {
     cy.contains(this.student.username)
   })
 
-  it('group can be removed', function() {
+  it('group can be removed', function () {
     cy.request({
       method: 'POST',
       url: 'localhost:8000/api/groups',
@@ -41,6 +41,7 @@ describe("groups", function () {
     cy.get('[data-cy=select-group]').click()
     cy.contains('destroyed').click()
     cy.get('[data-cy=delete-group]').click()
+    cy.get('[data-cy=confirm-group-delete]').click()
     cy.contains('destroyed').should('not.exist')
   })
 

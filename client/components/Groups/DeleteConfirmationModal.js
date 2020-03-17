@@ -33,7 +33,7 @@ export default function DeleteConfirmationModal({ trigger, groupId }) {
         <FormattedMessage id="this-will-remove-the-group-are-you-sure-you-want-to-proceed" />
       </Modal.Content>
       <Modal.Actions>
-        <Button negative onClick={() => handleAccept()}>
+        <Button negative onClick={() => handleAccept()} data-cy="confirm-group-delete">
           <FormattedMessage id="Remove" />
         </Button>
         <Button onClick={() => handleReject()}>
