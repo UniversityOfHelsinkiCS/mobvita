@@ -77,9 +77,9 @@ const Flashcards = ({ match }) => {
           <Icon name="angle double right" size="huge" />
         </button>
       </div>
-      {/* <Button>
+      <Button className="flashcard-new-button">
         <FormattedMessage id="add-new-flashcard" />
-      </Button> */}
+      </Button>
     </div>
   )
 }
