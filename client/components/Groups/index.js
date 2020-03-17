@@ -7,13 +7,14 @@ import {
   ListGroup,
   Button,
 } from 'react-bootstrap'
-import { FormattedMessage } from 'react-intl'
+import { FormattedMessage, useIntl } from 'react-intl'
 import { Icon } from 'semantic-ui-react'
 import AddGroup from './AddGroup'
 import AddToGroup from './AddToGroup'
 import CollapsingList from './CollapsingList'
 
 const GroupView = () => {
+  const intl = useIntl()
   const [addToGroupOpen, setAddToGroupOpen] = useState(false)
   const [addGroupOpen, setAddGroupOpen] = useState(false)
   const [currentGroupId, setCurrentGroupId] = useState(null)
@@ -142,7 +143,7 @@ const GroupView = () => {
               variant="danger"
               onClick={() => dispatch(deleteGroup(currentGroupId))}
             >
-              <Icon name="trash alternate outline" /> Delete {currentGroup.groupName}
+              <Icon name="trash alternate outline" /> {intl.formatMessage({ id: 'delete-group' })}
             </Button>
             <AddToGroup groupId={currentGroupId} isOpen={addToGroupOpen} setOpen={setAddToGroupOpen} />
           </div>
