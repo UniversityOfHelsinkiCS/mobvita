@@ -30,7 +30,7 @@ const AddStoryModal = ({ trigger }) => {
     >
       <Modal.Header><FormattedMessage id="add-your-stories" /></Modal.Header>
       <Modal.Content style={{ display: 'flex', flexDirection: 'column' }}>
-        <span style={{ fontWeight: '550' }}><FormattedMessage id="Subject" /></span>
+        <span style={{ fontWeight: '550' }}><FormattedMessage id="paste-the-raw-text-you-want-to-add-as-a-story-we-will-use-the-first-sentence-before-an-empty-line-as" /></span>
         <FormControl
           as="textarea"
           rows={8}
