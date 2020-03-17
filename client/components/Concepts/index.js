@@ -5,8 +5,8 @@ import { useIntl } from 'react-intl'
 import { Checkbox } from 'semantic-ui-react'
 import { Spinner } from 'react-bootstrap'
 import { getConcepts } from 'Utilities/redux/conceptReducer'
-import { getTestConcepts } from 'Utilities/redux/groupsReducer'
 import { getStoryAction } from 'Utilities/redux/storiesReducer'
+import { getTestConcepts, getGroup } from 'Utilities/redux/groupsReducer'
 import { learningLanguageSelector } from 'Utilities/common'
 import UserConcept from './UserConcept'
 import GroupConcept from './GroupConcept'
@@ -43,8 +43,12 @@ const Concepts = () => {
   const intl = useIntl()
   const learningLanguage = useSelector(learningLanguageSelector)
   const { concepts, pending: conceptsPending } = useSelector(({ concepts }) => concepts)
-  const { isTeaching, pending: groupsPending } = useSelector(({ groups }) => (
-    { isTeaching: groups.testConcepts && groups.testConcepts.group.is_teaching, pending: groups.pending }))
+  const { isTeaching, groupsPending, group } = useSelector(({ groups }) => (
+    {
+      isTeaching: groups.testConcepts && groups.testConcepts.group.is_teaching,
+      groupsPending: groups.pending,
+      group: groups.group,
+    }))
   const [showTestConcepts, setShowTestConcepts] = useState(false)
 
   useEffect(() => {
@@ -52,7 +56,10 @@ const Concepts = () => {
   }, [])
 
   useEffect(() => {
-    if (target === 'groups') dispatch(getTestConcepts(id))
+    if (target === 'groups') {
+      dispatch(getTestConcepts(id))
+      dispatch(getGroup(id))
+    }
   }, [])
 
   useEffect(() => {
@@ -95,16 +102,20 @@ const Concepts = () => {
     <div className="component-container">
       {target === 'groups'
         && (
-          <div>
-            <Checkbox
-              toggle
-              style={{ paddingLeft: '0.9em', marginBottomom: '1em' }}
-              label={intl.formatMessage({ id: 'show-test-settings' })}
-              checked={showTestConcepts}
-              onChange={handleTestConceptToggle}
-            />
-            {groupsPending && <Spinner animation="border" variant="primary" size="sm" style={{ marginLeft: '0.9em', marginBottomom: '1em' }} />}
-          </div>
+          <>
+            <h3 style={{ paddingLeft: '0.9em' }}>{group && group.groupName}</h3>
+            <div>
+              <Checkbox
+                toggle
+                style={{ paddingLeft: '0.9em', marginBottomom: '1em' }}
+                label={intl.formatMessage({ id: 'show-test-settings' })}
+                checked={showTestConcepts}
+                onChange={handleTestConceptToggle}
+              />
+              {groupsPending && <Spinner animation="border" variant="primary" size="sm" style={{ marginLeft: '0.9em', marginBottomom: '1em' }} />}
+            </div>
+          </>
+
         )
       }
       <div>

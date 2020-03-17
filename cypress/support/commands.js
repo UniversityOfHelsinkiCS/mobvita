@@ -52,7 +52,13 @@ function createRandomUser() {
 
 Cypress.Commands.add('login', function (transLang = 'English') {
   const user = randomCredentials()
-  cy.request('POST', 'localhost:8000/api/register', { ...user })
+  cy.request(
+    {
+      method: 'POST', 
+      url: 'localhost:8000/api/register', 
+      body: { ...user },
+      retryOnNetworkFailure: true
+    })
     .then(function (response) {
       user.token = response.body.access_token
 
@@ -68,7 +74,8 @@ Cypress.Commands.add('login', function (transLang = 'English') {
           last_used_lang: 'Finnish',
           last_trans_lang: transLang,
           interface_lang: 'Finnish'
-        }
+        },
+        retryOnNetworkFailure: true
       })
       cy.request('POST', 'localhost:8000/api/session', { ...user })
           .as('user')
