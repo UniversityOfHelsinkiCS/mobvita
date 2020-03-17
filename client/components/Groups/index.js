@@ -18,6 +18,7 @@ const GroupView = () => {
   const [addToGroupOpen, setAddToGroupOpen] = useState(false)
   const [addGroupOpen, setAddGroupOpen] = useState(false)
   const [currentGroupId, setCurrentGroupId] = useState(null)
+  const userOid = useSelector(({ user }) => user.data.user.oid)
   const dispatch = useDispatch()
   const history = useHistory()
 
@@ -74,6 +75,8 @@ const GroupView = () => {
     )
   }
 
+  const currentUserIsTeacher = currentGroup.teachers.find(teacher => teacher._id === userOid)
+
   return (
     <div className="group-container">
       <div className="group-controls">
@@ -113,13 +116,14 @@ const GroupView = () => {
           {currentGroup.students.length === 0 ? <ListGroup.Item /> : currentGroup.students.map(student => (
             <ListGroup.Item style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }} key={student.userName}>
               {student.userName}
-              <Icon
+              {currentUserIsTeacher && <Icon
                 data-cy={`remove-from-group-${student.userName}`}
                 style={{ cursor: 'pointer' }}
                 name="close"
                 color="red"
                 onClick={() => removeUser(student._id)}
               />
+              }
             </ListGroup.Item>
           ))}
         </ListGroup>
