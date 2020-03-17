@@ -22,14 +22,16 @@ const GroupConcept = ({ concept, showTestConcepts, children }) => {
   }
 
   return (
-    <Concept
-      concept={concept}
-      showTestConcepts={showTestConcepts}
-      testConceptQuestionAmount={testConceptQuestionAmount}
-      handleTestQuestionAmountChange={handleTestQuestionAmountChange}
-    >
-      {children}
-    </Concept>
+    <>
+      <Concept
+        concept={concept}
+        showTestConcepts={showTestConcepts}
+        testConceptQuestionAmount={testConceptQuestionAmount}
+        handleTestQuestionAmountChange={handleTestQuestionAmountChange}
+      >
+        {children}
+      </Concept>
+    </>
   )
 }
 

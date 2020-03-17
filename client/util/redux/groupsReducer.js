@@ -6,6 +6,12 @@ export const getGroups = () => {
   return callBuilder(route, prefix, 'get')
 }
 
+export const getGroup = (id) => {
+  const route = `groups/${id}`
+  const prefix = 'GET_GROUP'
+  return callBuilder(route, prefix, 'get')
+}
+
 export const addToGroup = (students, teachers, groupId) => {
   const route = `/groups/${groupId}`
   const payload = { students, teachers }
@@ -49,7 +55,7 @@ export const updateTestConcepts = (groupId, updatedValues) => {
   return callBuilder(route, prefix, 'post', payload)
 }
 
-export default (state = {}, action) => {
+export default (state = { groups: [] }, action) => {
   switch (action.type) {
     case 'GET_GROUPS_ATTEMPT':
       return {
@@ -67,6 +73,25 @@ export default (state = {}, action) => {
       return {
         ...state,
         groups: action.response.groups.sort((a, b) => a.groupName.localeCompare(b.groupName)),
+        pending: false,
+        error: false,
+      }
+    case 'GET_GROUP_ATTEMPT':
+      return {
+        ...state,
+        pending: true,
+        error: false,
+      }
+    case 'GET_GROUP_FAILURE':
+      return {
+        ...state,
+        pending: false,
+        error: true,
+      }
+    case 'GET_GROUP_SUCCESS':
+      return {
+        ...state,
+        group: action.response.group,
         pending: false,
         error: false,
       }
