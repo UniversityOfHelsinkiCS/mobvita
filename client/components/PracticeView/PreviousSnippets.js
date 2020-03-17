@@ -23,9 +23,23 @@ const Word = ({ word, textToSpeech, answer }) => {
     setShow(true)
   }
 
-  const answerString = (answer && answer.users_answer)
-    ? `${intl.formatMessage({ id: 'you-used' })}: ${answer.users_answer}`
-    : 'You did not answer this one'
+
+  if (!answer || !answer.users_answer) { // Means that this is just a plain word (not an exercise.)
+    return (
+      <span
+        ref={target}
+        className={wordClass}
+        role="button"
+        onClick={handleClick}
+        tabIndex={-1}
+        onBlur={() => setShow(false)}
+      >
+        {surface}
+      </span>
+    )
+  }
+
+  const answerString = `${intl.formatMessage({ id: 'you-used' })}: ${answer.users_answer}`
 
 
   const tooltip = (
