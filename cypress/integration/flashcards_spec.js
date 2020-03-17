@@ -74,10 +74,11 @@ describe('flashcards', function () {
   describe('multiple cards', function () {
     this.beforeEach(function () {
       cy.visit('http://localhost:8000/stories/5c407e9eff634503466b0dde/')
-      cy.contains('lentokoneita').click()
-      cy.contains('perustavat').click()
       cy.get('.book').click()
+
+      cy.contains('lentokoneita').click()
       cy.contains('plane')
+      cy.contains('perustavat').click()
       cy.contains('found')
       cy.visit('http://localhost:8000/flashcards/')
     })
