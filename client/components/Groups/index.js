@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { useHistory } from 'react-router-dom'
-import { getGroups, removeFromGroup, deleteGroup } from 'Utilities/redux/groupsReducer'
+import { getGroups, removeFromGroup } from 'Utilities/redux/groupsReducer'
 import {
   Dropdown,
   ListGroup,
@@ -12,6 +12,7 @@ import { Icon } from 'semantic-ui-react'
 import AddGroup from './AddGroup'
 import AddToGroup from './AddToGroup'
 import CollapsingList from './CollapsingList'
+import DeleteConfirmationModal from './DeleteConfirmationModal'
 
 const GroupView = () => {
   const intl = useIntl()
@@ -116,13 +117,15 @@ const GroupView = () => {
           {currentGroup.students.length === 0 ? <ListGroup.Item /> : currentGroup.students.map(student => (
             <ListGroup.Item style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }} key={student.userName}>
               {student.userName}
-              {currentUserIsTeacher && <Icon
-                data-cy={`remove-from-group-${student.userName}`}
-                style={{ cursor: 'pointer' }}
-                name="close"
-                color="red"
-                onClick={() => removeUser(student._id)}
-              />
+              {currentUserIsTeacher && (
+                <Icon
+                  data-cy={`remove-from-group-${student.userName}`}
+                  style={{ cursor: 'pointer' }}
+                  name="close"
+                  color="red"
+                  onClick={() => removeUser(student._id)}
+                />
+              )
               }
             </ListGroup.Item>
           ))}
@@ -141,14 +144,19 @@ const GroupView = () => {
             <Button style={{ marginTop: '1em' }} onClick={handleSettingsClick}>
               <FormattedMessage id="learning-settings" />
             </Button>
-            <Button
-              data-cy="delete-group"
-              style={{ marginTop: '1em' }}
-              variant="danger"
-              onClick={() => dispatch(deleteGroup(currentGroupId))}
-            >
-              <Icon name="trash alternate outline" /> {intl.formatMessage({ id: 'delete-group' })}
-            </Button>
+            <DeleteConfirmationModal
+              groupId={currentGroupId}
+              trigger={(
+                <Button
+                  data-cy="delete-group"
+                  style={{ marginTop: '1em' }}
+                  variant="danger"
+                >
+                  <Icon name="trash alternate outline" /> {intl.formatMessage({ id: 'delete-group' })}
+                </Button>
+              )}
+            />
+
             <AddToGroup groupId={currentGroupId} isOpen={addToGroupOpen} setOpen={setAddToGroupOpen} />
           </div>
         )}
