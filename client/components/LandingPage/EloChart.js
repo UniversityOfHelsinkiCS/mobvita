@@ -3,11 +3,13 @@ import Highcharts from 'highcharts'
 import HighchartsReact from 'highcharts-react-official'
 import { useSelector } from 'react-redux'
 import moment from 'moment-timezone'
+import { useIntl } from 'react-intl'
 
 const EloChart = () => {
   const rawEloHistory = useSelector(({ user }) => user.data.user.exercise_history)
   const eloHistory = rawEloHistory.map(exercise => exercise.score)
   const weeklyPracticeTimeHistory = useSelector(({ user }) => user.data.user.weekly_times)
+  const intl = useIntl()
 
   if (eloHistory.length === 0) return null
 
@@ -104,7 +106,7 @@ const EloChart = () => {
   }
   return (
     <div style={{ textAlign: 'center' }}>
-      <span style={{ display: 'inline-block', paddingBottom: '1em' }}>{`ELO: ${eloHistory[eloHistory.length - 1]}`}</span>
+      <span style={{ display: 'inline-block', paddingBottom: '1em' }}>{`${intl.formatMessage({ id: "score" })}: ${eloHistory[eloHistory.length - 1]}`}</span>
       <HighchartsReact
         highcharts={Highcharts}
         options={options}
