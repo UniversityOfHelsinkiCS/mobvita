@@ -50,7 +50,7 @@ export default function NavBar({ history }) {
         {user && (
 
           <Navbar.Text style={{ color: 'white', marginRight: '1em' }}>
-            <div>{`${intl.formatMessage({ id: 'score' })}: ${elo}`}</div>
+            <div>{`${intl.formatMessage({ id: 'score' })} ${elo}`}</div>
           </Navbar.Text>
         )}
       </Navbar>
