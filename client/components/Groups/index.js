@@ -6,6 +6,7 @@ import {
   Dropdown,
   ListGroup,
   Button,
+  Spinner,
 } from 'react-bootstrap'
 import { FormattedMessage, useIntl } from 'react-intl'
 import { Icon } from 'semantic-ui-react'
@@ -23,10 +24,11 @@ const GroupView = () => {
   const dispatch = useDispatch()
   const history = useHistory()
 
-  const { groups, created } = useSelector(({ groups }) => (
+  const { groups, created, pending } = useSelector(({ groups }) => (
     {
       groups: groups.groups,
       created: groups.created,
+      pending: groups.pending,
     }
   ))
 
@@ -53,8 +55,12 @@ const GroupView = () => {
     history.push(`/groups/${currentGroupId}/concepts`)
   }
 
-  if (!groups) {
-    return null
+  if (pending) {
+    return (
+      <div className="spinner-container">
+        <Spinner animation="border" variant="primary" size="lg" />
+      </div>
+    )
   }
 
 
