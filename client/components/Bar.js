@@ -120,7 +120,7 @@ export default function Bar({ history }) {
                 <Menu.Item>
 
 
-                  <Link to="/learningLanguage" onClick={() => menuClickWrapper()}>
+                  <Link to="/learningLanguage" onClick={() => dispatch(sidebarSetOpen(false))}>
                     <Button variant="primary" block>
                       <div style={{ display: 'flex', justifyContent: 'space-around', alignItems: 'center' }}>
                         <span><FormattedMessage id="Learning-language" /></span>
