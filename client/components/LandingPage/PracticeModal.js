@@ -2,8 +2,8 @@ import React, { useState, useEffect } from 'react'
 import { Modal } from 'semantic-ui-react'
 import { Link } from 'react-router-dom'
 import { useSelector, useDispatch } from 'react-redux'
-import { capitalize, learningLanguageSelector, images } from 'Utilities/common'
-import { getStories } from 'Utilities/redux/storiesReducer'
+import { capitalize, learningLanguageSelector } from 'Utilities/common'
+import { getAllStories } from 'Utilities/redux/storiesReducer'
 import CheckboxGroup from 'Components/CheckboxGroup'
 import { FormattedMessage } from 'react-intl'
 import { Button } from 'react-bootstrap'
@@ -82,12 +82,12 @@ const PracticeModal = ({ trigger }) => {
   }, [stories, libraries, categories])
 
   useEffect(() => {
-    dispatch(getStories(learningLanguage, {
-      sort_by: 'date',
-      order: -1,
-      page: 0,
-      page_size: 0,
-    }))
+    if (!pending && stories.length === 0) {
+      dispatch(getAllStories(learningLanguage, {
+        sort_by: 'date',
+        order: -1,
+      }))
+    }
   }, [])
 
   let filteredLink = ''

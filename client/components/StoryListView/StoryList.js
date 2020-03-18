@@ -36,12 +36,14 @@ const StoryList = () => {
 
   useEffect(() => {
     dispatch(getGroups())
-    dispatch(
-      getAllStories(learningLanguage, {
-        sort_by: sorter,
-        order: sorter === 'title' ? 1 : -1, // Worked the best atm
-      }),
-    )
+    if (!pending && stories.length === 0) {
+      dispatch(
+        getAllStories(learningLanguage, {
+          sort_by: sorter,
+          order: sorter === 'title' ? 1 : -1, // Worked the best atm
+        }),
+      )
+    }
   }, [])
 
   const sortDropdownOptions = [
