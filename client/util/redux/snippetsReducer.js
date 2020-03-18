@@ -36,6 +36,8 @@ export const postAnswers = (storyId, answersObject, compete = false) => {
   return callBuilder(route, prefix, 'post', payload)
 }
 
+export const setPrevious = previous => ({ type: 'SET_PREVIOUS', payload: previous })
+
 // Reducer
 // You can include more app wide actions such as "selected: []" into the state
 export default (state = { previous: [] }, action) => {
@@ -104,6 +106,11 @@ export default (state = { previous: [] }, action) => {
         previous: filterPrevious(state.previous, action.response),
         pending: false,
         error: false,
+      }
+    case 'SET_PREVIOUS':
+      return {
+        ...state,
+        previous: action.payload,
       }
     default:
       return state

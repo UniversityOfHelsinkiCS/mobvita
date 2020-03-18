@@ -1,6 +1,7 @@
 import React, { useRef, useState } from 'react'
 import { useIntl } from 'react-intl'
-import { useSelector } from 'react-redux'
+import { useSelector, useDispatch } from 'react-redux'
+import { setPrevious } from 'Utilities/redux/snippetsReducer'
 import Tooltip from './Tooltip'
 
 
@@ -9,6 +10,7 @@ const Word = ({ word, textToSpeech, answer }) => {
   const intl = useIntl()
   const target = useRef(null)
   const [show, setShow] = useState(false)
+
 
   let color = ''
   if (tested) {
@@ -66,8 +68,18 @@ const Word = ({ word, textToSpeech, answer }) => {
 
 const PreviousSnippets = ({ textToSpeech, answers }) => {
   const snippets = useSelector(({ snippets }) => snippets)
+  const focusedStory = useSelector(({ stories }) => stories.focused)
+
+  const dispatch = useDispatch()
+
   const previous = snippets.previous.filter(Boolean)
-  if (previous.length === 0) return null
+
+  if (previous.length === 0) {
+    if (snippets.focused && snippets.focused.snippetid[0] !== 0) {
+      const prev = focusedStory.paragraph.map(para => ({ snippetid: [para[0].ID], practice_snippet: para }))
+      dispatch(setPrevious(prev.slice(0, snippets.focused.snippetid[0])))
+    }
+  }
   return (
     <div>
       {previous.map(snippet => (
