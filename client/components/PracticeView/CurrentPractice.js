@@ -10,7 +10,7 @@ import ExerciseMultipleChoice from 'Components/PracticeView/ExerciseMultipleChoi
 import ExerciseHearing from 'Components/PracticeView/ExerciseHearing'
 import { FormattedMessage } from 'react-intl'
 import { getSelf } from 'Utilities/redux/userReducer'
-import { Button } from 'react-bootstrap'
+import { Button, Spinner } from 'react-bootstrap'
 import Chunks from './Chunks'
 
 
@@ -298,7 +298,12 @@ const CurrentPractice = ({ storyId }) => {
               disabled={answersPending}
               onClick={() => checkAnswers()}
             >
-              <FormattedMessage id="check-answer" />
+              <div className="spinner-container">
+                {answersPending ? <Spinner animation="border" variant="dark" size="lg" />
+                  : <FormattedMessage id="check-answer" />}
+
+              </div>
+
             </Button>
           </div>
         )
