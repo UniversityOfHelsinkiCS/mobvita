@@ -1,13 +1,13 @@
 import React, { useState, useEffect, useRef } from 'react'
 import { useSelector } from 'react-redux'
-import { getTextWidth, learningLanguageSelector } from 'Utilities/common'
+import { getTextWidth, dictionaryLanguageSelector } from 'Utilities/common'
 import Tooltip from './Tooltip'
 
 const ExerciseCloze = ({ word, handleChange, handleClick, value }) => {
   const [className, setClassName] = useState('cloze untouched')
   const [touched, setTouched] = useState(false)
   const [disabled, setDisabled] = useState(false)
-  const learningLanguage = useSelector(learningLanguageSelector)
+  const dictionaryLanguage = useSelector(dictionaryLanguageSelector)
   const { isWrong, tested } = word
   const [show, setShow] = useState(false)
 
@@ -37,11 +37,11 @@ const ExerciseCloze = ({ word, handleChange, handleClick, value }) => {
     ? (
       <div onClick={handleTooltipClick}>
         <div className="tooltip-green">{word.message}</div>
-        <div className="tooltip-blue">{`${word.base || word.bases} → ${learningLanguage}`}</div>
+        <div className="tooltip-blue">{`${word.base || word.bases} → ${dictionaryLanguage}`}</div>
       </div>
     ) : (
       <div onClick={handleTooltipClick}>
-        <div className="tooltip-blue">{`${word.base || word.bases} → ${learningLanguage}`}</div>
+        <div className="tooltip-blue">{`${word.base || word.bases} → ${dictionaryLanguage}`}</div>
       </div>
     )
 
