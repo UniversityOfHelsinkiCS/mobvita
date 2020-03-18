@@ -8,7 +8,7 @@ const UserConcept = ({ concept, showTestConcepts, children }) => {
   const dispatch = useDispatch()
 
   const { conceptTurnedOn } = useSelector(({ user }) => (
-    { conceptTurnedOn: user.data.user.exercise_setting[conceptId] }))
+    { conceptTurnedOn: user.exerciseSettings && user.exerciseSettings[conceptId] }))
 
   const handleCheckboxChange = () => {
     dispatch(updateExerciseSettings({ [conceptId]: conceptTurnedOn === 1 ? 0 : 1 }))
