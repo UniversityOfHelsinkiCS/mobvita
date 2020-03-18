@@ -19,10 +19,11 @@ const DictionaryHelp = ({ translation }) => {
   const { pending } = useSelector(({ translation }) => translation)
 
 
-  // if language is translatable, and current translationLanguage is not valid, update user's default translationlanguage.
-  if (translatableLanguages[learningLanguage] && !translatableLanguages[learningLanguage].includes(translationLanguageCode)) {
-    dispatch(updateDictionaryLanguage(translatableLanguages[learningLanguage][0] ? translatableLanguages[learningLanguage][0] : undefined))
-  }
+  useEffect(() => {
+    if (!translatableLanguages[learningLanguage].includes(translationLanguageCode)) {
+      dispatch(updateDictionaryLanguage(translatableLanguages[learningLanguage][0]))
+    }
+  }, [learningLanguage])
 
 
   const dictionaryOptions = translatableLanguages[learningLanguage] ? translatableLanguages[learningLanguage].map(element => ({

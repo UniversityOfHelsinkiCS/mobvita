@@ -5,6 +5,7 @@ import { FormattedMessage } from 'react-intl'
 import { images, capitalize, supportedLearningLanguages, learningLanguageSelector } from 'Utilities/common'
 import { updateLearningLanguage } from 'Utilities/redux/userReducer'
 import { useDispatch, useSelector } from 'react-redux'
+import { getAllStories } from 'Utilities/redux/storiesReducer'
 
 const LearningLanguageSelectView = () => {
   const dispatch = useDispatch()
@@ -19,6 +20,13 @@ const LearningLanguageSelectView = () => {
   useEffect(() => {
     if (!pending && waiting && learningLanguage) {
       setLearningLanguageChanged(true)
+      dispatch({ type: 'CLEAR_STORY_LIST' })
+      dispatch(
+        getAllStories(learningLanguage, {
+          sort_by: 'date',
+          order: -1,
+        }),
+      )
       setWaiting(false)
     }
   }, [pending])

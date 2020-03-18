@@ -4,9 +4,10 @@ import 'react-toastify/dist/ReactToastify.css'
 import React, { useState, useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { getProgress } from 'Utilities/redux/uploadProgressReducer'
-import { getStories } from 'Utilities/redux/storiesReducer'
+import { getAllStories } from 'Utilities/redux/storiesReducer'
 import { setNotification } from 'Utilities/redux/notificationReducer'
 import { useIntl } from 'react-intl'
+import { learningLanguageSelector } from 'Utilities/common'
 
 
 export default function Toaster() {
@@ -18,7 +19,8 @@ export default function Toaster() {
 
   const { message, type, options, translationId } = useSelector(({ notification }) => notification)
   const { storyId, progress, error, processingError } = useSelector(({ uploadProgress }) => uploadProgress)
-  const user = useSelector(({ user }) => user)
+  const learningLanguage = useSelector(learningLanguageSelector)
+
 
   const handleError = (errorMessage) => {
     clearInterval(interval)
@@ -51,12 +53,12 @@ export default function Toaster() {
       if (progress === 1) {
         clearInterval(interval)
         toast.done(progressToastId)
-        dispatch(getStories(user.data.user.last_used_language, {
-          sort_by: 'date',
-          order: -1,
-          page: 0,
-          page_size: 20,
-        }))
+        dispatch(
+          getAllStories(learningLanguage, {
+            sort_by: 'date',
+            order: -1,
+          }),
+        )
         dispatch({ type: 'CLEAR_UPLOADPROGRESS' })
         dispatch(setNotification('The story is now ready in your private library!', 'success'))
         saveInterval(null)
