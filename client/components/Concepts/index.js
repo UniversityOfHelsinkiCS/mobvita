@@ -67,10 +67,10 @@ const Concepts = () => {
   const intl = useIntl()
   const learningLanguage = useSelector(learningLanguageSelector)
   const { concepts, pending: conceptsPending } = useSelector(({ concepts }) => concepts)
-  const { isTeaching, groupsPending } = useSelector(({ groups }) => (
+  const { isTeaching, testConceptsPending } = useSelector(({ groups }) => (
     {
       isTeaching: groups.testConcepts && groups.testConcepts.group.is_teaching,
-      groupsPending: groups.pending,
+      testConceptsPending: groups.testConceptsPending,
       group: groups.group,
     }))
   const [showTestConcepts, setShowTestConcepts] = useState(false)
@@ -134,7 +134,7 @@ const Concepts = () => {
               checked={showTestConcepts}
               onChange={handleTestConceptToggle}
             />
-            {groupsPending && <Spinner animation="border" variant="primary" size="sm" style={{ marginLeft: '0.9em', marginBottomom: '1em' }} />}
+            {testConceptsPending && <Spinner animation="border" variant="primary" size="sm" style={{ marginLeft: '0.9em', marginBottomom: '1em' }} />}
           </div>
         )
       }

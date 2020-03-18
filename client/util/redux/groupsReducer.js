@@ -191,38 +191,38 @@ export default (state = { groups: [] }, action) => {
     case 'GET_GROUP_TEST_CONCEPTS_ATTEMPT':
       return {
         ...state,
-        pending: true,
+        testConceptsPending: true,
         error: false,
       }
     case 'GET_GROUP_TEST_CONCEPTS_FAILURE':
       return {
         ...state,
-        pending: false,
+        testConceptsPending: false,
         error: true,
       }
     case 'GET_GROUP_TEST_CONCEPTS_SUCCESS':
       return {
         ...state,
         testConcepts: action.response,
-        pending: false,
+        testConceptsPending: false,
         error: false,
       }
     case 'SET_GROUP_TEST_CONCEPTS_ATTEMPT':
       return {
         ...state,
-        pending: true,
+        testConceptsPending: true,
         error: false,
       }
     case 'SET_GROUP_TEST_CONCEPTS_FAILURE':
       return {
         ...state,
-        pending: false,
+        testConceptsPending: false,
         error: true,
       }
     case 'SET_GROUP_TEST_CONCEPTS_SUCCESS':
       return {
         ...state,
-        pending: false,
+        testConceptsPending: false,
         error: false,
       }
     case 'SET_GROUP_EXERCISE_CONCEPTS_ATTEMPT':
