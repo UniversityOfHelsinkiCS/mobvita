@@ -33,7 +33,14 @@ export const updateExerciseSettings = (storyId, settings) => {
 
 // Reducer
 // You can include more app wide actions such as "selected: []" into the state
-export default (state = { data: [], pending: false, error: false }, action) => {
+
+const initialState = {
+  data: [],
+  pending: false,
+  error: false
+}
+
+export default (state = initialState, action) => {
   switch (action.type) {
     case 'GET_STORIES_ATTEMPT':
       return {
@@ -66,6 +73,8 @@ export default (state = { data: [], pending: false, error: false }, action) => {
         pending: false,
         error: false,
       }
+    case 'CLEAR_STORY_LIST':
+      return initialState
     case 'GET_STORY_ATTEMPT':
       return {
         ...state,
