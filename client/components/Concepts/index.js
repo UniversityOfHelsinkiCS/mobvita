@@ -7,6 +7,7 @@ import { Spinner } from 'react-bootstrap'
 import { getMetadata } from 'Utilities/redux/metadataReducer'
 import { getStoryAction } from 'Utilities/redux/storiesReducer'
 import { getTestConcepts, getGroup } from 'Utilities/redux/groupsReducer'
+import { getSelf } from 'Utilities/redux/userReducer'
 import { learningLanguageSelector } from 'Utilities/common'
 import UserConcept from './UserConcept'
 import GroupConcept from './GroupConcept'
@@ -66,6 +67,7 @@ const Concepts = () => {
   const { target, id } = useParams()
   const intl = useIntl()
   const learningLanguage = useSelector(learningLanguageSelector)
+
   const { concepts, pending: conceptsPending } = useSelector(({ metadata }) => metadata)
   const { isTeaching, testConceptsPending } = useSelector(({ groups }) => (
     {
@@ -73,6 +75,8 @@ const Concepts = () => {
       testConceptsPending: groups.testConceptsPending,
       group: groups.group,
     }))
+  const { userPending } = useSelector(({ user }) => ({ userPending: user.pending }))
+
   const [showTestConcepts, setShowTestConcepts] = useState(false)
 
   useEffect(() => {
@@ -91,10 +95,14 @@ const Concepts = () => {
   }, [])
 
   useEffect(() => {
+    if (!target) dispatch(getSelf())
+  }, [])
+
+  useEffect(() => {
     if (target === 'groups' && !isTeaching && isTeaching !== undefined) history.replace('/groups')
   }, [isTeaching])
 
-  if (conceptsPending || !concepts) {
+  if (conceptsPending || userPending || userPending === undefined || !concepts) {
     return (
       <div className="spinner-container">
         <Spinner animation="border" variant="primary" size="lg" />
