@@ -1,7 +1,7 @@
 import callBuilder from '../apiConnection'
 
 export const getConcepts = (language) => {
-  const route = `/concept_metadata/${language}`
+  const route = `/metadata/${language}`
   const prefix = 'GET_CONCEPTS'
   return callBuilder(route, prefix, 'get')
 }
