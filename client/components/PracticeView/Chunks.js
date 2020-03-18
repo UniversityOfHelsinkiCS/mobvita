@@ -1,7 +1,9 @@
 import React from 'react'
 import { useSelector } from 'react-redux'
+import { Spinner } from 'react-bootstrap'
 
 const Chunks = ({ chunkInput }) => {
+  const pending = useSelector(({ snippets }) => snippets.pending)
   const chunks = useSelector(({ snippets }) => {
     if (!snippets.focused) {
       return []
@@ -23,6 +25,14 @@ const Chunks = ({ chunkInput }) => {
       return chunks
     }, [])
   })
+
+  if (pending) {
+    return (
+      <div className="spinner-container">
+        <Spinner animation="border" variant="primary" size="lg" />
+      </div>
+    )
+  }
 
   return (
     <>
