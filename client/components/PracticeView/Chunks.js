@@ -29,15 +29,12 @@ const Chunks = ({ chunkInput }) => {
   })
 
   useEffect(() => {
-    // console.log('EFFEFEC')
     if (chunksComponent.current) {
-      // console.log('UPDATED', chunksComponent.current)
       setPreviousHeight(chunksComponent.current.clientHeight)
     }
   }, [chunks])
 
   if (pending) {
-    // console.log('Prevh', previousHeight)
     return (
       <div className="spinner-container" style={{ minHeight: previousHeight }}>
         <Spinner animation="border" variant="primary" size="lg" />
