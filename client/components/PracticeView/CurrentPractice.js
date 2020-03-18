@@ -10,7 +10,7 @@ import ExerciseMultipleChoice from 'Components/PracticeView/ExerciseMultipleChoi
 import ExerciseHearing from 'Components/PracticeView/ExerciseHearing'
 import { FormattedMessage } from 'react-intl'
 import { getSelf } from 'Utilities/redux/userReducer'
-import { Button } from 'react-bootstrap'
+import { Button, Spinner } from 'react-bootstrap'
 import Chunks from './Chunks'
 
 
@@ -29,7 +29,7 @@ const CurrentPractice = ({ storyId }) => {
 
   const dispatch = useDispatch()
 
-  const { snippets } = useSelector(({ snippets, locale }) => ({ snippets, locale }))
+  const { snippets } = useSelector(({ snippets }) => ({ snippets }))
   const { story } = useSelector(({ stories }) => ({ story: stories.focused }))
   const answersPending = useSelector(({ snippets }) => snippets.answersPending)
 
@@ -116,10 +116,11 @@ const CurrentPractice = ({ storyId }) => {
   }, [snippets.focused])
 
   useEffect(() => {
-    if (scrollTarget.current && snippets.previous.length) {
+    if (!snippets.pending && scrollTarget.current && snippets.previous.length) {
+      console.log('scrolling')
       scrollTarget.current.scrollIntoView({ behavior: 'smooth' })
     }
-  }, [snippets.focused])
+  }, [snippets.pending])
 
   const checkAnswers = async () => {
     const { starttime, snippetid } = snippets.focused
@@ -298,7 +299,12 @@ const CurrentPractice = ({ storyId }) => {
               disabled={answersPending}
               onClick={() => checkAnswers()}
             >
-              <FormattedMessage id="check-answer" />
+              <div className="spinner-container">
+                {answersPending ? <Spinner animation="border" variant="dark" size="lg" />
+                  : <FormattedMessage id="check-answer" />}
+
+              </div>
+
             </Button>
           </div>
         )

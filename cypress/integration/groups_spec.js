@@ -1,8 +1,14 @@
 describe("groups", function () {
+  this.beforeAll(function () {
+    cy.login()
+    cy.createUser('teacher')
+    cy.createUser('student')
+  })
+
   this.beforeEach(function () {
-    cy.login().as('user')
-    cy.createUser().as('teacher')
-    cy.createUser().as('student')
+    cy.loginExisting().as('user')
+    cy.getUser('teacher').as('teacher')
+    cy.getUser('student').as('student')
     cy.visit('http://localhost:8000/groups/')
   })
 

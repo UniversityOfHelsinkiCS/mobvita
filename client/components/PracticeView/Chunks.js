@@ -1,9 +1,11 @@
-import React from 'react'
+import React, { useRef, useState, useEffect } from 'react'
 import { useSelector } from 'react-redux'
 import { Spinner } from 'react-bootstrap'
 
 const Chunks = ({ chunkInput }) => {
   const pending = useSelector(({ snippets }) => snippets.pending)
+  const chunksComponent = useRef(null)
+  const [previousHeight, setPreviousHeight] = useState(0)
   const chunks = useSelector(({ snippets }) => {
     if (!snippets.focused) {
       return []
@@ -26,18 +28,24 @@ const Chunks = ({ chunkInput }) => {
     }, [])
   })
 
+  useEffect(() => {
+    if (chunksComponent.current) {
+      setPreviousHeight(chunksComponent.current.clientHeight)
+    }
+  }, [chunks])
+
   if (pending) {
     return (
-      <div className="spinner-container">
+      <div className="spinner-container" style={{ minHeight: previousHeight }}>
         <Spinner animation="border" variant="primary" size="lg" />
       </div>
     )
   }
 
   return (
-    <>
+    <div ref={chunksComponent}>
       {chunks.map(chunk => chunkInput(chunk))}
-    </>
+    </div>
   )
 }
 

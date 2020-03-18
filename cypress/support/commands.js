@@ -27,6 +27,9 @@ let randomID = Math.floor(Math.random() * 1000000000)
 
 let users = []
 
+let savedUsers = {}
+
+let currentUser = null
 
 function randomCredentials() {
   const id = randomID++
@@ -61,7 +64,7 @@ Cypress.Commands.add('login', function (transLang = 'English') {
     })
     .then(function (response) {
       user.token = response.body.access_token
-
+      currentUser = user
       cy.request('POST', 'localhost:8000/api/confirm/test', { ...user })
       users.push(user)
       cy.request({
@@ -87,7 +90,14 @@ Cypress.Commands.add('login', function (transLang = 'English') {
     return cy.wrap(user)
 })
 
-Cypress.Commands.add('createUser', function() {
+Cypress.Commands.add('loginExisting', function () {
+  cy.request('POST', 'localhost:8000/api/session', { ...currentUser })
+    .then(response => window.localStorage.setItem('user', JSON.stringify(response.body)))
+  
+  return cy.wrap(currentUser)
+})
+
+Cypress.Commands.add('createUser', function(name) {
   const user = randomCredentials()
   cy.request('POST', 'localhost:8000/api/register', { ...user })
     .then(function (response) {
@@ -96,7 +106,15 @@ Cypress.Commands.add('createUser', function() {
       cy.request('POST', 'localhost:8000/api/confirm/test', { ...user })
       users.push(user)
   })
+  if (name) {
+    savedUsers[name] = user
+  }
+
   return cy.wrap(user)
+})
+
+Cypress.Commands.add('getUser', function(name) {
+  return cy.wrap(savedUsers[name])
 })
 
 Cypress.Commands.add('cleanUsers', function () {
@@ -115,4 +133,6 @@ Cypress.Commands.add('cleanUsers', function () {
   }
 
   users = [];
+  savedUsers = {}
+  currentUser = null
 })

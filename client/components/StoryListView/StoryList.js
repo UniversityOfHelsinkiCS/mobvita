@@ -1,11 +1,10 @@
-import React, { useEffect, useState, useCallback } from 'react'
+import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { Button, Placeholder, Card, Search, Select } from 'semantic-ui-react'
+import { Placeholder, Card, Search, Select } from 'semantic-ui-react'
 
 import { getAllStories } from 'Utilities/redux/storiesReducer'
 import StoryListItem from 'Components/StoryListView/StoryListItem'
 import { FormattedMessage, useIntl } from 'react-intl'
-import { debounce } from 'lodash'
 import CheckboxGroup from 'Components/CheckboxGroup'
 import { capitalize, learningLanguageSelector } from 'Utilities/common'
 import { getGroups } from 'Utilities/redux/groupsReducer'
@@ -162,7 +161,7 @@ const StoryList = () => {
   libraryFilteredStories.sort((a, b) => {
     switch (sorter) {
       case 'date':
-        return new Date(a.date) - new Date(b.date)
+        return new Date(b.date) - new Date(a.date)
       case 'title':
         return a.title > b.title ? 1 : -1
       case 'difficulty':

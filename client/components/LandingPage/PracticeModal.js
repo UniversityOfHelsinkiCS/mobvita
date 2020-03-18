@@ -6,7 +6,7 @@ import { capitalize, learningLanguageSelector } from 'Utilities/common'
 import { getAllStories } from 'Utilities/redux/storiesReducer'
 import CheckboxGroup from 'Components/CheckboxGroup'
 import { FormattedMessage } from 'react-intl'
-import { Button } from 'react-bootstrap'
+import { Button, Spinner } from 'react-bootstrap'
 
 
 const extractFilters = object => Object
@@ -130,9 +130,15 @@ const PracticeModal = ({ trigger }) => {
 
         <div>
           <Link to={filteredLink}>
-            <Button variant="primary" data-cy="start-random" disabled={!filteredLink}>
-              {`Start random story from ${filteredStories.length} stories`}
-            </Button>
+            {pending ? (
+              <Spinner animation="border" variant="primary" />
+            )
+              : (
+                <Button variant="primary" data-cy="start-random" disabled={!filteredLink}>
+                  {`Start random story from ${filteredStories.length} stories`}
+                </Button>
+              )
+            }
           </Link>
         </div>
 
