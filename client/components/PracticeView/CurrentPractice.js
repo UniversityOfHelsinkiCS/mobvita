@@ -29,7 +29,7 @@ const CurrentPractice = ({ storyId }) => {
 
   const dispatch = useDispatch()
 
-  const { snippets } = useSelector(({ snippets, locale }) => ({ snippets, locale }))
+  const { snippets } = useSelector(({ snippets }) => ({ snippets }))
   const { story } = useSelector(({ stories }) => ({ story: stories.focused }))
   const answersPending = useSelector(({ snippets }) => snippets.answersPending)
 
@@ -116,10 +116,11 @@ const CurrentPractice = ({ storyId }) => {
   }, [snippets.focused])
 
   useEffect(() => {
-    if (scrollTarget.current && snippets.previous.length) {
+    if (!snippets.pending && scrollTarget.current && snippets.previous.length) {
+      console.log('scrolling')
       scrollTarget.current.scrollIntoView({ behavior: 'smooth' })
     }
-  }, [snippets.focused])
+  }, [snippets.pending])
 
   const checkAnswers = async () => {
     const { starttime, snippetid } = snippets.focused
