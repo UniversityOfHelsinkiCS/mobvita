@@ -1,8 +1,13 @@
 
 
 describe("dictionary", function () {
-  this.beforeEach(function () {
+  this.beforeAll(function () {
     cy.login('Finnish')
+  })
+
+  this.beforeEach(function () {
+    console.log()
+    cy.loginExisting(this.user)
     cy.visit("http://localhost:8000/stories/5c407e9eff634503466b0dde/")
     cy.get(".book") // Open dictionaryhelp
       .click()

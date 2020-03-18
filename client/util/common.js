@@ -72,7 +72,7 @@ export const capitalize = (word) => {
   return `${firstLetter}${wordEnd}`
 }
 
-export const learningLanguageSelector = ({ user }) => user.data.user.last_used_language
+export const learningLanguageSelector = ({ user }) => (user.data ? user.data.user.last_used_language : null)
 export const dictionaryLanguageSelector = ({ user }) => user.data.user.last_trans_language
 
 export const supportedLearningLanguages = [

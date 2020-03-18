@@ -1,8 +1,12 @@
 describe("practice mode", function () {
   const practiceURL = "http://localhost:8000/stories/5c407e9eff634503466b0dde/practice"
 
-  this.beforeEach(function () {
+  this.beforeAll(function () {
     cy.login()
+  })
+
+  this.beforeEach(function () {
+    cy.loginExisting()
     cy.visit(practiceURL)
   })
 
