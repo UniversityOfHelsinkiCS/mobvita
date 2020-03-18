@@ -14,6 +14,7 @@ const Concept = ({
 }) => {
   const [open, setOpen] = useState(false)
   const { exer_enabled: exerEnabled, test_enabled: testEnabled, name } = concept
+  const [numberError, setNumberError] = useState(false)
 
   const conceptNameClass = exerEnabled === undefined
     || exerEnabled
@@ -23,8 +24,23 @@ const Concept = ({
 
   const isLeaf = concept.children.length === 0
 
+  const validateNumberInput = (event) => {
+    const number = Number(event.target.value)
+    if (Number.isNaN(number)) return setNumberError(true)
+    if (number < 0) return setNumberError(true)
+    if (!Number.isInteger(number)) return setNumberError(true)
+
+    setNumberError(false)
+    return handleTestQuestionAmountChange(event)
+  }
+
   return (
     <div className="concept">
+      {numberError && (
+      <div style={{ color: 'red' }}>
+        Please input a non-negative integer
+      </div>
+      )}
       <div className="concept-row">
         <div style={{ display: 'flex', flex: 1 }}>
           <Form.Group>
@@ -40,14 +56,17 @@ const Concept = ({
           </Form.Group>
           {showTestConcepts && isLeaf
             && (
-              <Form.Control
-                type="text"
-                size="sm"
-                style={{ width: '4em' }}
-                disabled={(testEnabled !== undefined && !testEnabled)}
-                placeholder={testConceptQuestionAmount}
-                onBlur={e => handleTestQuestionAmountChange(e)}
-              />
+              <>
+                <Form.Control
+                  type="text"
+                  size="sm"
+                  style={{ width: '4em' }}
+                  disabled={(testEnabled !== undefined && !testEnabled)}
+                  placeholder={testConceptQuestionAmount}
+                  onBlur={e => validateNumberInput(e)}
+                  isInvalid={numberError}
+                />
+              </>
             )
 
           }
