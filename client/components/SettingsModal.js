@@ -3,7 +3,7 @@ import { useSelector, useDispatch } from 'react-redux'
 import { Modal } from 'semantic-ui-react'
 import { FormattedMessage } from 'react-intl'
 import { ButtonGroup, Button } from 'react-bootstrap'
-import { getConcepts } from 'Utilities/redux/conceptReducer'
+import { getMetadata } from 'Utilities/redux/metadataReducer'
 import useWindowDimensions from 'Utilities/windowDimensions'
 import { Link } from 'react-router-dom'
 import { updateExerciseSettings } from 'Utilities/redux/userReducer'
@@ -13,14 +13,14 @@ import { learningLanguageSelector } from 'Utilities/common'
 
 const SettingsModal = ({ trigger }) => {
   const dispatch = useDispatch()
-  const { concepts, pending } = useSelector(({ concepts }) => concepts)
+  const { concepts, pending } = useSelector(({ metadata }) => metadata)
   const learningLanguage = useSelector(learningLanguageSelector)
   const [open, setOpen] = useState(false)
 
   useEffect(() => {
     if (!pending) {
       console.log('Fetching concepts metadata again')
-      dispatch(getConcepts(learningLanguage))
+      dispatch(getMetadata(learningLanguage))
     }
   }, [learningLanguage])
 

@@ -14,7 +14,7 @@ import uploadProgress from './uploadProgressReducer'
 import flashcards from './flashcardReducer'
 import groups from './groupsReducer'
 import share from './shareReducer'
-import concepts from './conceptReducer'
+import metadata from './metadataReducer'
 
 const rootReducer = combineReducers({
   stories,
@@ -31,7 +31,7 @@ const rootReducer = combineReducers({
   flashcards,
   groups,
   share,
-  concepts,
+  metadata,
 })
 
 export default (state, action) => (

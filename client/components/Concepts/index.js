@@ -4,7 +4,7 @@ import { useParams, useHistory } from 'react-router-dom'
 import { useIntl } from 'react-intl'
 import { Checkbox } from 'semantic-ui-react'
 import { Spinner } from 'react-bootstrap'
-import { getConcepts } from 'Utilities/redux/conceptReducer'
+import { getMetadata } from 'Utilities/redux/metadataReducer'
 import { getStoryAction } from 'Utilities/redux/storiesReducer'
 import { getTestConcepts, getGroup } from 'Utilities/redux/groupsReducer'
 import { learningLanguageSelector } from 'Utilities/common'
@@ -66,7 +66,7 @@ const Concepts = () => {
   const { target, id } = useParams()
   const intl = useIntl()
   const learningLanguage = useSelector(learningLanguageSelector)
-  const { concepts, pending: conceptsPending } = useSelector(({ concepts }) => concepts)
+  const { concepts, pending: conceptsPending } = useSelector(({ metadata }) => metadata)
   const { isTeaching, testConceptsPending } = useSelector(({ groups }) => (
     {
       isTeaching: groups.testConcepts && groups.testConcepts.group.is_teaching,
@@ -76,7 +76,7 @@ const Concepts = () => {
   const [showTestConcepts, setShowTestConcepts] = useState(false)
 
   useEffect(() => {
-    dispatch(getConcepts(learningLanguage))
+    dispatch(getMetadata(learningLanguage))
   }, [])
 
   useEffect(() => {
