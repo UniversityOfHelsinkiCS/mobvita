@@ -260,10 +260,10 @@ export const translatableLanguages = {
     'Portuguese',
     'Hindi',
   ],
-  'Komi-Zyrian': [
+  'Komi-zyrian': [
     'Russian',
   ],
-  'Meadow-Mari': [
+  'Meadow-mari': [
     'Russian',
   ],
   Udmurt: [
