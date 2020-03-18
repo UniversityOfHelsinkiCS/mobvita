@@ -117,10 +117,9 @@ const CurrentPractice = ({ storyId }) => {
 
   useEffect(() => {
     if (scrollTarget.current && snippets.previous.length) {
-      // window.scrollTo(0, scrollTarget.current.offsetTop)
       scrollTarget.current.scrollIntoView({ behavior: 'smooth' })
     }
-  }, [snippets.previous])
+  }, [snippets.focused])
 
   const checkAnswers = async () => {
     const { starttime, snippetid } = snippets.focused
