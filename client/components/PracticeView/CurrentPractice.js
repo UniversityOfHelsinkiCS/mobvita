@@ -142,6 +142,7 @@ const CurrentPractice = ({ storyId }) => {
   }
 
   const startOver = async () => {
+    setAnswers({})
     await dispatch(getNextSnippet(storyId, snippets.focused.snippetid[0]))
     setFinished(false)
     setProgress(0)
