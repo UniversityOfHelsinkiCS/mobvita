@@ -1,8 +1,9 @@
 import React from 'react'
-import { useSelector, useDispatch } from 'react-redux'
+import { useSelector } from 'react-redux'
 import { Table, Spinner } from 'react-bootstrap'
+import { CSVLink } from 'react-csv'
 
-const Summary = () => {
+const Summary = ({ groupName }) => {
   const { summary, pending } = useSelector(({ summary }) => summary)
 
   if (pending) {
@@ -12,23 +13,30 @@ const Summary = () => {
       </div>
     )
   }
+
+  const cleanGroupName = groupName.toLowerCase().split(' ').join('_').replace(/[^\w\s-]/gi, '')
+  const filename = `${cleanGroupName}_summary.csv`
+
   return (
-    <Table striped bordered hover>
-      <thead>
-        <tr>
-          <th>Email</th>
-          <th>Completed Exercises</th>
-        </tr>
-      </thead>
-      <tbody>
-        {summary.map(user => (
+    <>
+      <CSVLink filename={filename} data={summary}>download csv</CSVLink>
+      <Table striped bordered hover>
+        <thead>
           <tr>
-            <td>{user.email}</td>
-            <td>{user.quantity}</td>
+            <th>Email</th>
+            <th>Completed Exercises</th>
           </tr>
-        ))}
-      </tbody>
-    </Table>
+        </thead>
+        <tbody>
+          {summary.map(user => (
+            <tr>
+              <td>{user.email}</td>
+              <td>{user.quantity}</td>
+            </tr>
+          ))}
+        </tbody>
+      </Table>
+    </>
   )
 }
 

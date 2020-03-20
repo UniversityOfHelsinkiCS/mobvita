@@ -182,7 +182,7 @@ const GroupView = () => {
             <AddToGroup groupId={currentGroupId} isOpen={addToGroupOpen} setOpen={setAddToGroupOpen} />
           </div>
         )}
-      {summary && <Summary />}
+      {summary && <Summary groupName={currentGroup.groupName} />}
     </div>
   )
 }
