@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
-import { getCurrentSnippet, getNextSnippet, postAnswers, setTotalNumberAction } from 'Utilities/redux/snippetsReducer'
+import { getCurrentSnippet, getNextSnippet, postAnswers, resetCurrentSnippet } from 'Utilities/redux/snippetsReducer'
 import { getTranslationAction, clearTranslationAction } from 'Utilities/redux/translationReducer'
 import { capitalize, learningLanguageSelector, translatableLanguages, newCapitalize } from 'Utilities/common'
 
@@ -11,6 +11,7 @@ import ExerciseHearing from 'Components/PracticeView/ExerciseHearing'
 import { FormattedMessage } from 'react-intl'
 import { getSelf } from 'Utilities/redux/userReducer'
 import { Button, Spinner } from 'react-bootstrap'
+import { Icon } from 'semantic-ui-react'
 import Chunks from './Chunks'
 
 
@@ -167,6 +168,10 @@ const CurrentPractice = ({ storyId }) => {
     }
   }
 
+  const handleRestart = () => {
+    dispatch(resetCurrentSnippet(storyId))
+  }
+
   const handleAnswerChange = (e, word) => {
     const { surface, id, ID, concept } = word
 
@@ -275,7 +280,15 @@ const CurrentPractice = ({ storyId }) => {
 
   return (
     <div className="component-container">
-      <h3>{`${story.title}`}</h3>
+      <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+        <h3>{`${story.title}`}</h3>
+        <Icon
+          data-cy="restart-story"
+          style={{ cursor: 'pointer' }}
+          name="redo"
+          onClick={handleRestart}
+        />
+      </div>
       {story.url ? <p><a href={story.url}><FormattedMessage id="Source" /></a></p> : null}
 
       <PreviousSnippets textToSpeech={textToSpeech} answers={answers} />
