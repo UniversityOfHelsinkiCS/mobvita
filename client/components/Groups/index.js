@@ -10,17 +10,22 @@ import {
 } from 'react-bootstrap'
 import { FormattedMessage, useIntl } from 'react-intl'
 import { Icon } from 'semantic-ui-react'
+import { getWeekSummary } from 'Utilities/redux/groupSummaryReducer'
+import { learningLanguageSelector } from 'Utilities/common'
 import AddGroup from './AddGroup'
 import AddToGroup from './AddToGroup'
 import CollapsingList from './CollapsingList'
 import DeleteConfirmationModal from './DeleteConfirmationModal'
+import Summary from './Summary'
 
 const GroupView = () => {
   const intl = useIntl()
   const [addToGroupOpen, setAddToGroupOpen] = useState(false)
   const [addGroupOpen, setAddGroupOpen] = useState(false)
   const [currentGroupId, setCurrentGroupId] = useState(null)
+  const [summary, setSummary] = useState(false)
   const userOid = useSelector(({ user }) => user.data.user.oid)
+  const learningLanguage = useSelector(learningLanguageSelector)
   const dispatch = useDispatch()
   const history = useHistory()
 
@@ -53,6 +58,11 @@ const GroupView = () => {
 
   const handleSettingsClick = () => {
     history.push(`/groups/${currentGroupId}/concepts`)
+  }
+
+  const handleSummary = () => {
+    dispatch(getWeekSummary(currentGroupId, learningLanguage))
+    setSummary(true)
   }
 
   if (pending) {
@@ -147,6 +157,12 @@ const GroupView = () => {
             >
               <FormattedMessage id="add-people-to-group" />
             </Button>
+            <Button
+              style={{ marginTop: '1em' }}
+              onClick={handleSummary}
+            >
+              <FormattedMessage id="summary" />
+            </Button>
             <Button style={{ marginTop: '1em' }} onClick={handleSettingsClick}>
               <FormattedMessage id="learning-settings" />
             </Button>
@@ -166,6 +182,7 @@ const GroupView = () => {
             <AddToGroup groupId={currentGroupId} isOpen={addToGroupOpen} setOpen={setAddToGroupOpen} />
           </div>
         )}
+      {summary && <Summary />}
     </div>
   )
 }

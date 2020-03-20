@@ -15,6 +15,7 @@ import flashcards from './flashcardReducer'
 import groups from './groupsReducer'
 import share from './shareReducer'
 import metadata from './metadataReducer'
+import summary from './groupSummaryReducer'
 
 const rootReducer = combineReducers({
   stories,
@@ -32,6 +33,7 @@ const rootReducer = combineReducers({
   groups,
   share,
   metadata,
+  summary,
 })
 
 export default (state, action) => (
