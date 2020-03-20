@@ -6,7 +6,7 @@ import { getAllStories } from 'Utilities/redux/storiesReducer'
 import StoryListItem from 'Components/StoryListView/StoryListItem'
 import { FormattedMessage, useIntl } from 'react-intl'
 import CheckboxGroup from 'Components/CheckboxGroup'
-import { capitalize, learningLanguageSelector } from 'Utilities/common'
+import { capitalize, learningLanguageSelector, getTextWidth } from 'Utilities/common'
 import { getGroups } from 'Utilities/redux/groupsReducer'
 import { List, WindowScroller } from 'react-virtualized'
 import StoryForm from './StoryForm'
@@ -15,6 +15,7 @@ const StoryList = () => {
   const intl = useIntl()
   const [sorter, setSorter] = useState('date')
   const [searchString, setSearchString] = useState('')
+  const [group, setGroup] = useState('all')
   const [searchedStories, setSearchedStories] = useState([])
   const [libraries, setLibraries] = useState(
     {
@@ -26,6 +27,7 @@ const StoryList = () => {
   const dispatch = useDispatch()
 
   const user = useSelector(({ user }) => user.data.user)
+  const groups = useSelector(({ groups }) => groups.groups)
   const learningLanguage = useSelector(learningLanguageSelector)
   const { pending, stories } = useSelector(({ stories }) => ({
     stories: stories.data,
@@ -51,7 +53,12 @@ const StoryList = () => {
     { key: 'difficulty', text: intl.formatMessage({ id: 'Difficulty' }), value: 'difficulty' },
   ]
 
-  const handleSortChange = (e, option) => {
+  const groupDropdownOptions = [{ key: 'all', text: 'all', value: 'all' }]
+    .concat(groups.map(group => (
+      { key: group.group_id, text: group.groupName, value: group.group_id }
+    )))
+
+  const handleSortChange = (_e, option) => {
     setSorter(option.value)
   }
 
@@ -79,6 +86,10 @@ const StoryList = () => {
     setLibraries({ ...librariesCopy, [library]: true })
   }
 
+  const handleGroupChange = (_e, option) => {
+    setGroup(option.value)
+  }
+
   const noResults = !pending && searchString.length > 0 && searchedStories.length === 0
 
   const searchSort = (
@@ -96,6 +107,14 @@ const StoryList = () => {
         style={{ marginBottom: 0, marginTop: 'auto' }}
       />
       <div style={{ display: 'flex', justifyContent: 'space-between', padding: '0 0.5em' }}>
+        {libraries.group && (
+        <Select
+          value={group}
+          options={groupDropdownOptions}
+          onChange={handleGroupChange}
+          style={{ marginTop: 'auto' }}
+        />
+        )}
         <CheckboxGroup values={libraries} onClick={handleLibraryChange} />
         <div>
           <FormattedMessage id="sort-by" />
@@ -139,7 +158,8 @@ const StoryList = () => {
     }
 
     if (story.user !== user.oid) {
-      return librariesToShow.includes('Group')
+      if (group === 'all') return librariesToShow.includes('Group')
+      return story.group.group_id === group
     }
 
     return librariesToShow.includes('Private')
