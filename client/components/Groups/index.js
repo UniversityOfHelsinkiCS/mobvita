@@ -10,7 +10,7 @@ import {
 } from 'react-bootstrap'
 import { FormattedMessage, useIntl } from 'react-intl'
 import { Icon } from 'semantic-ui-react'
-import { getWeekSummary } from 'Utilities/redux/groupSummaryReducer'
+import { getSummary } from 'Utilities/redux/groupSummaryReducer'
 import { learningLanguageSelector } from 'Utilities/common'
 import AddGroup from './AddGroup'
 import AddToGroup from './AddToGroup'
@@ -61,7 +61,7 @@ const GroupView = () => {
   }
 
   const handleSummary = () => {
-    dispatch(getWeekSummary(currentGroupId, learningLanguage))
+    dispatch(getSummary(currentGroupId, learningLanguage))
     setSummary(true)
   }
 
@@ -182,7 +182,12 @@ const GroupView = () => {
             <AddToGroup groupId={currentGroupId} isOpen={addToGroupOpen} setOpen={setAddToGroupOpen} />
           </div>
         )}
-      {summary && <Summary groupName={currentGroup.groupName} />}
+      {summary && (
+      <>
+        <hr />
+        <Summary groupName={currentGroup.groupName} getSummary={days => dispatch(getSummary(currentGroupId, learningLanguage, days))} />
+      </>
+      )}
     </div>
   )
 }

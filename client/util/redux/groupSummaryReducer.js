@@ -1,9 +1,10 @@
 import moment from 'moment'
 import callBuilder from '../apiConnection'
 
-export const getWeekSummary = (groupId, language) => {
+export const getSummary = (groupId, language, days = 7) => {
+  console.log(days)
   const end = moment().format('YYYY-MM-DD')
-  const start = moment().subtract(7, 'days').format('YYYY-MM-DD')
+  const start = moment().subtract(days, 'days').format('YYYY-MM-DD')
   const route = `/groups/${groupId}/summary?start_time=${start}&end_time=${end}&language=${language}`
   const prefix = 'GET_SUMMARY'
   return callBuilder(route, prefix, 'get')
