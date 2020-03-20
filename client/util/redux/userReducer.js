@@ -35,17 +35,6 @@ export const updateLocale = locale => saveSelf({ interface_lang: localeCodeToNam
 export const updateDictionaryLanguage = language => saveSelf({ last_trans_lang: capitalize(language) })
 export const updateExerciseSettings = settings => saveSelf({ exercise_settings: settings })
 
-const updateConcepts = (concepts, updatedValues) => {
-  if (!updatedValues) return concepts
-
-  const updatedConcepts = {}
-  Object.keys(concepts).forEach((key) => {
-    if (updatedValues[key] !== undefined) updatedConcepts[key] = updatedValues[key]
-    else updatedConcepts[key] = concepts[key]
-  })
-  return updatedConcepts
-}
-
 export const confirmUser = (token) => {
   const route = `/confirm?token=${token}`
   const prefix = 'CONFIRM_USER'
@@ -95,10 +84,6 @@ export default (state = { data: null }, action) => {
     case 'SAVE_SELF_ATTEMPT':
       return {
         ...state,
-        exerciseSettings: updateConcepts(
-          state.exerciseSettings,
-          action.requestSettings.data.exercise_settings,
-        ),
         pending: true,
         error: false,
       }

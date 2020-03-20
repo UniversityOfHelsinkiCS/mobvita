@@ -75,7 +75,6 @@ const Concepts = () => {
       testConceptsPending: groups.testConceptsPending,
       group: groups.group,
     }))
-  const { userPending } = useSelector(({ user }) => ({ userPending: user.pending }))
 
   const [showTestConcepts, setShowTestConcepts] = useState(false)
 
@@ -102,7 +101,7 @@ const Concepts = () => {
     if (target === 'groups' && !isTeaching && isTeaching !== undefined) history.replace('/groups')
   }, [isTeaching])
 
-  if (conceptsPending || userPending || userPending === undefined || !concepts) {
+  if (conceptsPending || !concepts) {
     return (
       <div className="spinner-container">
         <Spinner animation="border" variant="primary" size="lg" />
