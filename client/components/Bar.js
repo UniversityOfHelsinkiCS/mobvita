@@ -49,9 +49,7 @@ export default function Bar({ history }) {
   const menuClickWrapper = (func) => {
     if (func) func()
 
-    if (window.innerWidth <= 1024) {
-      dispatch(sidebarSetOpen(false))
-    }
+    dispatch(sidebarSetOpen(false))
   }
 
   const getLearningLanguageFlag = () => {
@@ -89,7 +87,7 @@ export default function Bar({ history }) {
               <Icon
                 name="bars"
                 size="big"
-                onClick={() => dispatch(sidebarSetOpen(!open))}
+                onClick={() => menuClickWrapper()}
                 className="sidebar-hamburger"
                 style={{ position: 'fixed', paddingTop: 0 }}
               />
@@ -120,7 +118,7 @@ export default function Bar({ history }) {
                 <Menu.Item>
 
 
-                  <Link to="/learningLanguage" onClick={() => dispatch(sidebarSetOpen(false))}>
+                  <Link to="/learningLanguage" onClick={() => menuClickWrapper()}>
                     <Button variant="primary" block>
                       <div style={{ display: 'flex', justifyContent: 'space-around', alignItems: 'center' }}>
                         <span><FormattedMessage id="Learning-language" /></span>
@@ -133,7 +131,7 @@ export default function Bar({ history }) {
                     && (
                       <SettingsModal
                         trigger={(
-                          <Button variant="secondary" block style={{ marginTop: '0.5em' }}>
+                          <Button onClick={() => menuClickWrapper()} variant="secondary" block style={{ marginTop: '0.5em' }}>
                             <FormattedMessage id="learning-settings" />
                           </Button>
                         )}
@@ -141,7 +139,7 @@ export default function Bar({ history }) {
                     )}
 
                   <Link to="/groups">
-                    <Button data-cy="groups-link" variant="secondary" style={{ marginTop: '0.5em' }} onClick={() => dispatch(sidebarSetOpen(!open))} block>
+                    <Button data-cy="groups-link" variant="secondary" style={{ marginTop: '0.5em' }} onClick={() => menuClickWrapper()} block>
                       <FormattedMessage id="Groups" />
                     </Button>
                   </Link>
@@ -168,16 +166,16 @@ export default function Bar({ history }) {
               <Menu.Item style={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-between' }}>
                 <AboutUs
                   trigger={(
-                    <Button data-cy="about-button" variant="secondary" style={{ flexBasis: '50%' }}>
+                    <Button onClick={() => menuClickWrapper()} data-cy="about-button" variant="secondary" style={{ flexBasis: '50%' }}>
                       <FormattedMessage id="About" />
                     </Button>
                   )}
                 />
-                <ContactUs trigger={<Button variant="secondary" style={{ flexBasis: '50%' }}><FormattedMessage id="Contact" /></Button>} />
+                <ContactUs trigger={<Button variant="secondary" onClick={() => menuClickWrapper()} style={{ flexBasis: '50%' }}><FormattedMessage id="Contact" /></Button>} />
                 {user && <Button data-cy="logout" variant="secondary" style={{ flexBasis: '50%' }} onClick={() => menuClickWrapper(signOut)}><FormattedMessage id="sign-out" /></Button>}
               </Menu.Item>
               <TermsAndConditions
-                trigger={<Button data-cy="tc-button" variant="link"> Terms and Conditions, Privacy Policy </Button>}
+                trigger={<Button data-cy="tc-button" onClick={() => menuClickWrapper()} variant="link"> Terms and Conditions, Privacy Policy </Button>}
               />
 
               {/* eslint-disable no-undef */}
