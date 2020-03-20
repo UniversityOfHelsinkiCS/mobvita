@@ -117,7 +117,6 @@ const CurrentPractice = ({ storyId }) => {
 
   useEffect(() => {
     if (!snippets.pending && scrollTarget.current && snippets.previous.length) {
-      console.log('scrolling')
       scrollTarget.current.scrollIntoView({ behavior: 'smooth' })
     }
   }, [snippets.pending])

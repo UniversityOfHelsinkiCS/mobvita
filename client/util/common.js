@@ -75,10 +75,16 @@ export const capitalize = (word) => {
 export const learningLanguageSelector = ({ user }) => (user.data ? user.data.user.last_used_language : null)
 export const dictionaryLanguageSelector = ({ user }) => user.data.user.last_trans_language
 
-export const supportedLearningLanguages = [
-  'finnish', 'german', 'russian', 'kazakh', 'catalan', 'spanish', 'swedish', 'italian', 'french', 'turkish',
-  'portuguese', 'erzya', 'komi-zyrian', 'meadow-mari', 'north-saami', 'sakha', 'tatar', 'udmurt',
-].sort((a, b) => a.localeCompare(b))
+export const supportedLearningLanguages = {
+  major: [
+    'finnish', 'german', 'russian', 'kazakh', 'catalan', 'spanish', 'swedish', 'italian', 'french',
+    'portuguese',
+  ].sort((a, b) => a.localeCompare(b)),
+  minor: [
+    'erzya', 'komi-zyrian', 'meadow-mari', 'north-saami', 'sakha', 'tatar', 'udmurt',
+    'turkish',
+  ].sort((a, b) => a.localeCompare(b)),
+}
 
 
 export const colors = {}
