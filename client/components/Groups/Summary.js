@@ -31,7 +31,7 @@ const Summary = ({ groupName }) => {
           {summary.map(user => (
             <tr>
               <td>{user.email}</td>
-              <td>{user.quantity}</td>
+              <td>{user.number_of_exercises}</td>
             </tr>
           ))}
         </tbody>
