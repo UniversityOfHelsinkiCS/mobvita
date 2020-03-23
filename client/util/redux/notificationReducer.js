@@ -78,6 +78,11 @@ export default (state = initialState, action) => {
         message: 'Group deleted',
         type: type.success,
       }
+    case 'POST_EMAIL_SUCCESS':
+      return {
+        message: 'Email sent!',
+        type: type.success,
+      }
     default:
       return state
   }

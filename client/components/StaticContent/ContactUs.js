@@ -11,12 +11,15 @@ export default function ContactUs({ trigger }) {
   const session = useSelector(({ user }) => user)
   const user = session.data ? session.data.user : null
 
-  const [formState, setFormState] = useState({
+  const initialFormState = {
     name: user ? user.username : '',
     email: user ? user.email : '',
     subject: 'MobVita',
     message: '',
-  })
+  }
+
+  const [formState, setFormState] = useState(initialFormState)
+  const [open, setOpen] = useState(false)
 
   const handleFormChange = (e) => {
     const { name, value } = e.target
@@ -27,18 +30,27 @@ export default function ContactUs({ trigger }) {
     })
   }
 
+  const handleFormSubmit = () => {
+    setOpen(false)
+    dispatch(sendEmail(formState))
+    setFormState(initialFormState)
+  }
+
 
   return (
     <Modal
       dimmer="inverted"
       closeIcon
+      open={open}
+      onClose={() => setOpen(false)}
+      onOpen={() => setOpen(true)}
       trigger={trigger}
     >
       <Modal.Header>Contact us</Modal.Header>
       <Modal.Content className="practiceModal">
 
         <Container>
-          <Form onSubmit={() => dispatch(sendEmail(formState))}>
+          <Form onSubmit={handleFormSubmit}>
             <Form.Field>
               <label>Name</label>
               <input value={formState.name} onChange={handleFormChange} name="name" placeholder="Name" />
