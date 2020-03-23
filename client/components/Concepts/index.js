@@ -12,6 +12,7 @@ import { learningLanguageSelector } from 'Utilities/common'
 import UserConcept from './UserConcept'
 import GroupConcept from './GroupConcept'
 import StoryConcept from './StoryConcept'
+import SelectAllCheckbox from './SelectAllCheckbox'
 
 const Header = ({ target }) => {
   const intl = useIntl()
@@ -145,6 +146,7 @@ const Concepts = () => {
           </div>
         )
       }
+      <SelectAllCheckbox />
       <div>
         {conceptTree
           .map(c => (

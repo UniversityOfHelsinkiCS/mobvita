@@ -1,7 +1,7 @@
 import React from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { useParams } from 'react-router-dom'
-import { updateTestConcepts, updateExerciseConcepts } from 'Utilities/redux/groupsReducer'
+import { updateTestConcepts, updateExerciseSettings } from 'Utilities/redux/groupsReducer'
 import Concept from './Concept'
 
 const GroupConcept = ({ concept, showTestConcepts, children }) => {
@@ -23,7 +23,7 @@ const GroupConcept = ({ concept, showTestConcepts, children }) => {
   }
 
   const handleCheckboxChange = () => {
-    dispatch(updateExerciseConcepts(groupId, { [conceptId]: conceptTurnedOn === 1 ? 0 : 1 }))
+    dispatch(updateExerciseSettings({ [conceptId]: conceptTurnedOn === 1 ? 0 : 1 }, groupId))
   }
 
   return (

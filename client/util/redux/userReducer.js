@@ -69,7 +69,6 @@ export default (state = { data: null }, action) => {
       return {
         ...state,
         data: { ...state.data, user: action.response.user },
-        exerciseSettings: action.response.user.exercise_setting,
         pending: false,
         error: false,
       }
@@ -77,7 +76,6 @@ export default (state = { data: null }, action) => {
       return {
         ...state,
         data: { ...state.data, user: action.response.user },
-        exerciseSettings: action.response.user.exercise_setting,
         pending: false,
         error: false,
       }

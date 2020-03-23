@@ -13,7 +13,7 @@ const StoryConcept = ({ concept, showTestConcepts, children }) => {
     { conceptTurnedOn: stories.focused && stories.focused.exercise_setting[conceptId] }))
 
   const handleCheckboxChange = () => {
-    dispatch(updateExerciseSettings(storyId, { [conceptId]: conceptTurnedOn === 1 ? 0 : 1 }))
+    dispatch(updateExerciseSettings({ [conceptId]: conceptTurnedOn === 1 ? 0 : 1 }, storyId))
   }
 
   return (
