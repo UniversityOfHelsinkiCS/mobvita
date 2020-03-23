@@ -1,4 +1,5 @@
 import React, { useState } from 'react'
+import { useParams } from 'react-router-dom'
 import { Collapse } from 'react-collapse'
 import { Icon } from 'semantic-ui-react'
 import { Form } from 'react-bootstrap'
@@ -6,6 +7,7 @@ import { Form } from 'react-bootstrap'
 const Concept = ({
   concept,
   showTestConcepts,
+  showLevels,
   conceptTurnedOn,
   testConceptQuestionAmount,
   handleCheckboxChange,
@@ -15,6 +17,7 @@ const Concept = ({
   const [open, setOpen] = useState(false)
   const { exer_enabled: exerEnabled, test_enabled: testEnabled, name } = concept
   const [numberError, setNumberError] = useState(false)
+  const { target } = useParams()
 
   const conceptNameClass = exerEnabled === undefined
     || exerEnabled
@@ -22,7 +25,13 @@ const Concept = ({
 
   const caretIconName = open ? 'caret down' : 'caret left'
 
-  const isLeaf = concept.children.length === 1
+  const isLeaf = concept.children.length === 0
+
+  const renderTestConcepts = isLeaf
+    && showTestConcepts
+    && target === 'groups'
+
+  const renderLevels = showLevels && concept.level !== null && concept.level !== undefined
 
   const validateNumberInput = (event) => {
     const number = Number(event.target.value)
@@ -33,6 +42,10 @@ const Concept = ({
     setNumberError(false)
     return handleTestQuestionAmountChange(event)
   }
+
+  const indeterminateCheck = conceptTurnedOn
+    && conceptTurnedOn !== 1
+    && conceptTurnedOn !== 0
 
   return (
     <div className="concept">
@@ -49,11 +62,12 @@ const Concept = ({
               inline
               onChange={handleCheckboxChange}
               checked={conceptTurnedOn}
-              ref={el => el && (el.indeterminate = conceptTurnedOn && conceptTurnedOn !== 1 && conceptTurnedOn !== 0)}
+              /* eslint-disable no-param-reassign */
+              ref={(el) => { if (el) el.indeterminate = indeterminateCheck }}
               disabled={(exerEnabled !== undefined && !exerEnabled)}
             />
           </Form.Group>
-          {showTestConcepts && isLeaf
+          {renderTestConcepts
             && (
               <>
                 <Form.Control
@@ -78,6 +92,16 @@ const Concept = ({
           >
             {name}
           </span>
+          {renderLevels && (
+            <div>
+              {concept.level.map(level => (
+                <sup key={`${concept.concept_id}${level}`} className="concept-level">
+                  [{level}]
+                </sup>
+              ))
+              }
+            </div>
+          )}
         </div>
         {!isLeaf && <Icon name={caretIconName} className="concept-caret" />}
       </div>
