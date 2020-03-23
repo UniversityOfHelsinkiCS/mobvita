@@ -138,7 +138,8 @@ describe('Mobvita', function () {
       })
 
       it('can be created and new story can be read', function () {
-        cy.get('[data-cy=new-story-input]')
+        cy.get('[data-cy=new-story-input] > input')
+          .should('be.enabled')
           .type('https://yle.fi/uutiset/3-11191886')
         cy.get('[data-cy="submit-story"]')
           .click()
