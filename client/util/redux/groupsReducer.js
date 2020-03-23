@@ -55,10 +55,10 @@ export const updateTestConcepts = (groupId, updatedValues) => {
   return callBuilder(route, prefix, 'post', payload)
 }
 
-export const updateExerciseConcepts = (groupId, updatedValues) => {
+export const updateExerciseSettings = (settings, groupId) => {
   const route = `/groups/${groupId}`
   const prefix = 'SET_GROUP_EXERCISE_CONCEPTS'
-  const payload = { exercise_setting: updatedValues }
+  const payload = { exercise_setting: settings }
   return callBuilder(route, prefix, 'post', payload)
 }
 

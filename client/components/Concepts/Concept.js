@@ -37,9 +37,9 @@ const Concept = ({
   return (
     <div className="concept">
       {numberError && (
-      <div style={{ color: 'red' }}>
-        Please input a non-negative integer
-      </div>
+        <div style={{ color: 'red' }}>
+          Please input a non-negative integer
+        </div>
       )}
       <div className="concept-row">
         <div style={{ display: 'flex', flex: 1 }}>
@@ -47,7 +47,6 @@ const Concept = ({
             <Form.Check
               type="checkbox"
               inline
-              onClick={undefined}
               onChange={handleCheckboxChange}
               checked={conceptTurnedOn}
               ref={el => el && (el.indeterminate = conceptTurnedOn && conceptTurnedOn !== 1 && conceptTurnedOn !== 0)}

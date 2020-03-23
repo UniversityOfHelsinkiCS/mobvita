@@ -23,7 +23,7 @@ export const getStories = (language, query = { page: 0, page_size: 10 }) => {
   return callBuilder(route, prefix)
 }
 
-export const updateExerciseSettings = (storyId, settings) => {
+export const updateExerciseSettings = (settings, storyId) => {
   const route = `stories/${storyId}`
   const prefix = 'SAVE_STORY'
   const payload = { exercise_settings: settings }
