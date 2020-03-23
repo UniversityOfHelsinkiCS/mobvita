@@ -130,10 +130,10 @@ const StoryListItem = ({ story }) => {
                 {hiddenFeatures
                   && (
                     <>
-                      <Button onClick={() => setModalOpen(true)} variant="primary" style={{ marginRight: '0.5em' }}>
+                      {/* <Button onClick={() => setModalOpen(true)} variant="primary" style={{ marginRight: '0.5em' }}>
                         <FormattedMessage id="Share" />
-                      </Button>
-                      <Button disabled onClick={() => console.log("Not implemented yet")} variant="primary" style={{ marginRight: '0.5em' }}>
+                      </Button> */}
+                      <Button disabled onClick={() => console.log('Not implemented yet')} variant="primary" style={{ marginRight: '0.5em' }}>
                         <FormattedMessage id="Delete" />
                       </Button>
                     </>
