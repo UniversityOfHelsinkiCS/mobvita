@@ -72,6 +72,7 @@ export default (state = { data: null }, action) => {
         exerciseSettings: action.response.user.exercise_setting,
         pending: false,
         error: false,
+        refreshed: true,
       }
     case 'SAVE_SELF_SUCCESS':
       return {
@@ -80,6 +81,7 @@ export default (state = { data: null }, action) => {
         exerciseSettings: action.response.user.exercise_setting,
         pending: false,
         error: false,
+        refreshed: true,
       }
     case 'SAVE_SELF_ATTEMPT':
       return {
