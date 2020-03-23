@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react'
 import { Modal } from 'semantic-ui-react'
 import { Link } from 'react-router-dom'
-import { useSelector, useDispatch } from 'react-redux'
-import { capitalize, learningLanguageSelector } from 'Utilities/common'
+import { useSelector } from 'react-redux'
+import { capitalize } from 'Utilities/common'
 import CheckboxGroup from 'Components/CheckboxGroup'
 import { FormattedMessage } from 'react-intl'
 import { Button, Spinner } from 'react-bootstrap'
@@ -41,10 +41,31 @@ const PracticeModal = ({ trigger }) => {
     }
   ))
 
-  const learningLanguage = useSelector(learningLanguageSelector)
-  const user = useSelector(({ user }) => user.data)
+  const { user, refreshed } = useSelector(({ user }) => (
+    {
+      user: user.data,
+      refreshed: user.refreshed,
+    }
+  ))
 
-  const dispatch = useDispatch()
+  const [waiting, setWaiting] = useState(true)
+  const [temp, setTemp] = useState(null)
+
+  /**
+   * This useEffect is needed because of case where refreshed=true,pending=false.
+   * If removed, cypress tests will fail because the button disappears in the middle of testing.
+   */
+  useEffect(() => {
+    if (refreshed && !pending) {
+      if (temp) {
+        clearTimeout(temp)
+      }
+      setTemp(setTimeout(() => {
+        setWaiting(false)
+      }, 500))
+    }
+  }, [pending, refreshed])
+
 
   useEffect(() => {
     const librariesToShow = extractFilters(libraries)
@@ -121,7 +142,7 @@ const PracticeModal = ({ trigger }) => {
 
         <div>
           <Link to={filteredLink}>
-            {pending ? (
+            {waiting ? (
               <Spinner animation="border" variant="primary" />
             )
               : (
