@@ -26,6 +26,7 @@ const StoryList = () => {
   const dispatch = useDispatch()
 
   const user = useSelector(({ user }) => user.data.user)
+  const refreshed = useSelector(({ user }) => user.refreshed)
   const groups = useSelector(({ groups }) => groups.groups)
   const { pending, stories } = useSelector(({ stories }) => ({
     stories: stories.data,
@@ -121,7 +122,7 @@ const StoryList = () => {
     </div>
   )
 
-  if (pending || !searchedStories) {
+  if (pending || !searchedStories || !refreshed) {
     return (
       <div className="component-container">
         {searchSort}
