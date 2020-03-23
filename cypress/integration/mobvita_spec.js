@@ -28,7 +28,6 @@ describe('Mobvita', function () {
   })
 
   this.beforeEach(function () {
-    cy.clearLocalStorage()
     cy.visit('http://localhost:8000')
   })
 
@@ -60,17 +59,17 @@ describe('Mobvita', function () {
       .get('[data-cy=login]')
       .click()
     cy.contains('Learning language')
+    cy.clearLocalStorage()
   })
 
   it('can log in as anonymous', function () {
     cy.get('[data-cy=login-anon]')
       .click()
     cy.get('[data-cy=choose-lang]')
+    cy.clearLocalStorage()
   })
 
   it('can log in as user', function () {
-    cy.visit('http://localhost:8000')
-
     cy.get('input:first')
       .type(globalUser.email)
     cy.get('input:last')
