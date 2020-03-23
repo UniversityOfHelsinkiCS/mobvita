@@ -8,6 +8,7 @@ import { setNotification } from 'Utilities/redux/notificationReducer'
 import { Offline } from 'react-detect-offline'
 import Toaster from './Toaster'
 import Bar from './Bar'
+import StoryFetcher from './StoryFetcher'
 import 'bootstrap/dist/css/bootstrap.min.css'
 import NavBar from './NavBar'
 
@@ -51,6 +52,7 @@ const App = () => {
         <Route component={NavBar} />
         <div style={{ display: 'flex' }}>
           <Route component={Bar} />
+          <Route component={StoryFetcher} />
 
           <div className="application-content">
             <Router />
