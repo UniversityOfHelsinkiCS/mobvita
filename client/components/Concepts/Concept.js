@@ -22,7 +22,7 @@ const Concept = ({
 
   const caretIconName = open ? 'caret down' : 'caret left'
 
-  const isLeaf = !concept.children
+  const isLeaf = concept.children.length === 1
 
   const validateNumberInput = (event) => {
     const number = Number(event.target.value)
