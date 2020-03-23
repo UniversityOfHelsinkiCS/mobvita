@@ -71,6 +71,7 @@ export default (state = { data: null }, action) => {
         data: { ...state.data, user: action.response.user },
         pending: false,
         error: false,
+        refreshed: true,
       }
     case 'SAVE_SELF_SUCCESS':
       return {
@@ -78,6 +79,7 @@ export default (state = { data: null }, action) => {
         data: { ...state.data, user: action.response.user },
         pending: false,
         error: false,
+        refreshed: true,
       }
     case 'SAVE_SELF_ATTEMPT':
       return {

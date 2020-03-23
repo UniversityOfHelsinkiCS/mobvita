@@ -1,10 +1,8 @@
-import React, { useEffect } from 'react'
-import { useSelector, useDispatch } from 'react-redux'
+import React from 'react'
 import { useHistory } from 'react-router'
 import { FormattedMessage } from 'react-intl'
 import { Button } from 'react-bootstrap'
 import { images, hiddenFeatures } from 'Utilities/common'
-import { getSelf } from 'Utilities/redux/userReducer'
 
 import PracticeModal from './PracticeModal'
 import EloChart from './EloChart'
@@ -49,20 +47,13 @@ const FlashcardsButton = (props) => {
   )
 }
 
-const HomeView = () => {
-  const dispatch = useDispatch()
-  useEffect(() => {
-    dispatch(getSelf())
-  }, [])
-
-  return (
-    <div className="component-container">
-      <EloChart />
-      <PracticeModal trigger={<PracticeButton data-cy="practice-now" />} />
-      {hiddenFeatures && <FlashcardsButton />}
-      <Button style={{ display: 'none' }} onClick={() => undefun()}>hidden breaking thing</Button>
-    </div>
-  )
-}
+const HomeView = () => (
+  <div className="component-container">
+    <EloChart />
+    <PracticeModal trigger={<PracticeButton data-cy="practice-now" />} />
+    {hiddenFeatures && <FlashcardsButton />}
+    <Button style={{ display: 'none' }} onClick={() => undefun()}>hidden breaking thing</Button>
+  </div>
+)
 
 export default HomeView

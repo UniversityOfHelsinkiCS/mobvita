@@ -2,11 +2,10 @@ import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { Placeholder, Card, Search, Select } from 'semantic-ui-react'
 
-import { getAllStories } from 'Utilities/redux/storiesReducer'
 import StoryListItem from 'Components/StoryListView/StoryListItem'
 import { FormattedMessage, useIntl } from 'react-intl'
 import CheckboxGroup from 'Components/CheckboxGroup'
-import { capitalize, learningLanguageSelector, getTextWidth } from 'Utilities/common'
+import { capitalize, learningLanguageSelector } from 'Utilities/common'
 import { getGroups } from 'Utilities/redux/groupsReducer'
 import { List, WindowScroller } from 'react-virtualized'
 import StoryForm from './StoryForm'
@@ -28,7 +27,6 @@ const StoryList = () => {
 
   const user = useSelector(({ user }) => user.data.user)
   const groups = useSelector(({ groups }) => groups.groups)
-  const learningLanguage = useSelector(learningLanguageSelector)
   const { pending, stories } = useSelector(({ stories }) => ({
     stories: stories.data,
     pending: stories.pending,
@@ -37,14 +35,6 @@ const StoryList = () => {
 
   useEffect(() => {
     dispatch(getGroups())
-    if (!pending && stories.length === 0) {
-      dispatch(
-        getAllStories(learningLanguage, {
-          sort_by: sorter,
-          order: sorter === 'title' ? 1 : -1, // Worked the best atm
-        }),
-      )
-    }
   }, [])
 
   const sortDropdownOptions = [
@@ -108,12 +98,12 @@ const StoryList = () => {
       />
       <div style={{ display: 'flex', justifyContent: 'space-between', padding: '0 0.5em' }}>
         {libraries.group && (
-        <Select
-          value={group}
-          options={groupDropdownOptions}
-          onChange={handleGroupChange}
-          style={{ marginTop: 'auto' }}
-        />
+          <Select
+            value={group}
+            options={groupDropdownOptions}
+            onChange={handleGroupChange}
+            style={{ marginTop: 'auto' }}
+          />
         )}
         <CheckboxGroup values={libraries} onClick={handleLibraryChange} />
         <div>

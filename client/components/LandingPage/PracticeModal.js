@@ -3,7 +3,6 @@ import { Modal } from 'semantic-ui-react'
 import { Link } from 'react-router-dom'
 import { useSelector, useDispatch } from 'react-redux'
 import { capitalize, learningLanguageSelector } from 'Utilities/common'
-import { getAllStories } from 'Utilities/redux/storiesReducer'
 import CheckboxGroup from 'Components/CheckboxGroup'
 import { FormattedMessage } from 'react-intl'
 import { Button, Spinner } from 'react-bootstrap'
@@ -81,14 +80,6 @@ const PracticeModal = ({ trigger }) => {
     setFilteredStories(filtered)
   }, [stories, libraries, categories])
 
-  useEffect(() => {
-    if (!pending && stories.length === 0) {
-      dispatch(getAllStories(learningLanguage, {
-        sort_by: 'date',
-        order: -1,
-      }))
-    }
-  }, [])
 
   let filteredLink = ''
 

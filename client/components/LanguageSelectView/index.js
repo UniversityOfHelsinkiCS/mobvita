@@ -20,13 +20,6 @@ const LearningLanguageSelectView = () => {
   useEffect(() => {
     if (!pending && waiting && learningLanguage) {
       setLearningLanguageChanged(true)
-      dispatch({ type: 'CLEAR_STORY_LIST' })
-      dispatch(
-        getAllStories(learningLanguage, {
-          sort_by: 'date',
-          order: -1,
-        }),
-      )
       setWaiting(false)
     }
   }, [pending])
