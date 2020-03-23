@@ -54,7 +54,7 @@ const ConceptTree = ({ concept, showTestConcepts }) => {
       concept={concept}
       showTestConcepts={showTestConcepts}
     >
-      {concept.children
+      {concept.children && concept.children
         .map(c => (
           <ConceptTree key={c.concept_id} concept={c} showTestConcepts={showTestConcepts} />
         ))}
@@ -113,7 +113,8 @@ const Concepts = () => {
   const makeConceptTree = parents => parents
     .sort((a, b) => a['UI-order'] - b['UI-order'])
     .map((parent) => {
-      const children = concepts.filter(c => c.parents && c.parents.includes(parent.concept_id))
+      const children = parent.children && concepts.filter(c => (
+        parent.children.includes(c.concept_id)))
       const cleanConcept = {
         ...parent,
         children: makeConceptTree(children),
