@@ -529,7 +529,7 @@ body {
   }
 
   &-name {
-    flex: 1;
+    padding-right: 0.3em;
     &:focus {
       outline: none;
     }
@@ -547,13 +547,23 @@ body {
   }
 
   &-enable-all {
-    padding: 0.1em 0 0.8em 0.8em;
+    padding: 0.1em 0 0 0.8em;
     font-size: 18px;
     display: flex;
   }
 
   &-toggles {
     padding-left: 0.9em;
+    margin-left: -1em;
+    display: flex;
+  }
+
+  &-toggle {
+    margin-left: 1em;
+  }
+
+  &-level {
+    color: gray;
   }
 }
 

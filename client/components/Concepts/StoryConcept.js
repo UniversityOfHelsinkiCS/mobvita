@@ -4,7 +4,7 @@ import { useParams } from 'react-router-dom'
 import { updateExerciseSettings } from 'Utilities/redux/storiesReducer'
 import Concept from './Concept'
 
-const StoryConcept = ({ concept, showTestConcepts, children }) => {
+const StoryConcept = ({ concept, children, ...props }) => {
   const { concept_id: conceptId } = concept
   const dispatch = useDispatch()
   const { id: storyId } = useParams()
@@ -19,9 +19,9 @@ const StoryConcept = ({ concept, showTestConcepts, children }) => {
   return (
     <Concept
       concept={concept}
-      showTestConcepts={showTestConcepts}
       conceptTurnedOn={conceptTurnedOn}
       handleCheckboxChange={handleCheckboxChange}
+      {...props}
     >
       {children}
     </Concept>

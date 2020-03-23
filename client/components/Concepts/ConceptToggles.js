@@ -5,13 +5,22 @@ import { useIntl } from 'react-intl'
 import { Checkbox } from 'semantic-ui-react'
 import { Spinner } from 'react-bootstrap'
 
-const ConceptToggles = ({ showTestConcepts, handleTestConceptToggle }) => {
+const ConceptToggles = (
+  { showTestConcepts, handleTestConceptToggle, showLevels, setShowLevels }
+) => {
   const { target } = useParams()
   const intl = useIntl()
   const { pending } = useSelector(({ groups }) => ({ pending: groups.testConceptsPending }))
 
   return (
     <div className="concept-toggles">
+      <Checkbox
+        toggle
+        label={intl.formatMessage({ id: 'show-levels' })}
+        checked={showLevels}
+        onChange={() => setShowLevels(!showLevels)}
+        className="concept-toggle"
+      />
       {target === 'groups'
         && (
           <div>
@@ -20,6 +29,7 @@ const ConceptToggles = ({ showTestConcepts, handleTestConceptToggle }) => {
               label={intl.formatMessage({ id: 'show-test-settings' })}
               checked={showTestConcepts}
               onChange={handleTestConceptToggle}
+              className="concept-toggle"
             />
             {pending
               && (

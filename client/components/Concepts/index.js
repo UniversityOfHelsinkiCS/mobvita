@@ -14,7 +14,7 @@ import SelectAllCheckbox from './SelectAllCheckbox'
 import ConceptHeader from './ConceptHeader'
 import ConceptToggles from './ConceptToggles'
 
-const ConceptTree = ({ concept, showTestConcepts }) => {
+const ConceptTree = ({ concept, showTestConcepts, showLevels }) => {
   const { target } = useParams()
   const components = {
     user: UserConcept,
@@ -29,10 +29,16 @@ const ConceptTree = ({ concept, showTestConcepts }) => {
       key={concept.concept_id}
       concept={concept}
       showTestConcepts={showTestConcepts}
+      showLevels={showLevels}
     >
       {concept.children && concept.children
         .map(c => (
-          <ConceptTree key={c.concept_id} concept={c} showTestConcepts={showTestConcepts} />
+          <ConceptTree
+            key={c.concept_id}
+            concept={c}
+            showTestConcepts={showTestConcepts}
+            showLevels={showLevels}
+          />
         ))}
     </TargetConcept>
   )
@@ -49,6 +55,7 @@ const Concepts = () => {
     { isTeaching: groups.testConcepts && groups.testConcepts.group.is_teaching }))
 
   const [showTestConcepts, setShowTestConcepts] = useState(false)
+  const [showLevels, setShowLevels] = useState(false)
 
   useEffect(() => {
     dispatch(getMetadata(learningLanguage))
@@ -107,12 +114,20 @@ const Concepts = () => {
       <ConceptToggles
         showTestConcepts={showTestConcepts}
         handleTestConceptToggle={handleTestConceptToggle}
+        showLevels={showLevels}
+        setShowLevels={setShowLevels}
       />
       <SelectAllCheckbox />
+      <hr />
       <div>
         {conceptTree
           .map(c => (
-            <ConceptTree key={c.concept_id} concept={c} showTestConcepts={showTestConcepts} />
+            <ConceptTree
+              key={c.concept_id}
+              concept={c}
+              showTestConcepts={showTestConcepts}
+              showLevels={showLevels}
+            />
           ))}
       </div>
     </div>

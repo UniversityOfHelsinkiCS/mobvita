@@ -4,7 +4,7 @@ import { useParams } from 'react-router-dom'
 import { updateTestConcepts, updateExerciseSettings } from 'Utilities/redux/groupsReducer'
 import Concept from './Concept'
 
-const GroupConcept = ({ concept, showTestConcepts, children }) => {
+const GroupConcept = ({ concept, children, ...props }) => {
   const { concept_id: conceptId } = concept
   const dispatch = useDispatch()
   const { id: groupId } = useParams()
@@ -30,11 +30,11 @@ const GroupConcept = ({ concept, showTestConcepts, children }) => {
     <>
       <Concept
         concept={concept}
-        showTestConcepts={showTestConcepts}
         conceptTurnedOn={conceptTurnedOn}
         testConceptQuestionAmount={testConceptQuestionAmount}
         handleTestQuestionAmountChange={handleTestQuestionAmountChange}
         handleCheckboxChange={handleCheckboxChange}
+        {...props}
       >
         {children}
       </Concept>

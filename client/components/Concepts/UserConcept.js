@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import { updateExerciseSettings } from 'Utilities/redux/userReducer'
 import Concept from './Concept'
 
-const UserConcept = ({ concept, showTestConcepts, children }) => {
+const UserConcept = ({ concept, children, ...props }) => {
   const { concept_id: conceptId } = concept
   const dispatch = useDispatch()
 
@@ -17,9 +17,9 @@ const UserConcept = ({ concept, showTestConcepts, children }) => {
   return (
     <Concept
       concept={concept}
-      showTestConcepts={showTestConcepts}
       conceptTurnedOn={conceptTurnedOn}
       handleCheckboxChange={handleCheckboxChange}
+      {...props}
     >
       {children}
     </Concept>
