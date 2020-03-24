@@ -10,7 +10,7 @@ import {
 } from 'react-bootstrap'
 import { FormattedMessage, useIntl } from 'react-intl'
 import { Icon } from 'semantic-ui-react'
-import { getSummary, getWeekSummary } from 'Utilities/redux/groupSummaryReducer'
+import { getSummary } from 'Utilities/redux/groupSummaryReducer'
 import { learningLanguageSelector } from 'Utilities/common'
 import AddGroup from './AddGroup'
 import AddToGroup from './AddToGroup'
@@ -161,57 +161,60 @@ const GroupView = () => {
       </CollapsingList>
       {currentGroup.is_teaching
         && (
-          <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+          <>
             <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-              <Button
-                style={{ marginTop: '1em' }}
-                data-cy="add-to-group-modal"
-                onClick={() => setAddToGroupOpen(true)}
-              >
-                <FormattedMessage id="add-people-to-group" />
-              </Button>
-              <Button
-                style={{ marginTop: '1em' }}
-                onClick={handleSummary}
-              >
-                <FormattedMessage id="summary" />
-              </Button>
-              <Button style={{ marginTop: '1em' }} onClick={handleSettingsClick}>
-                <FormattedMessage id="learning-settings" />
-              </Button>
-              <Button style={{ marginTop: '1em' }} onClick={handleShowToken}>
-                <FormattedMessage id="show-group-token" />
-              </Button>
-            </div>
-            <DeleteConfirmationModal
-              groupId={currentGroupId}
-              trigger={(
+              <div style={{ display: 'flex', justifyContent: 'space-between' }}>
                 <Button
-                  data-cy="delete-group"
                   style={{ marginTop: '1em' }}
-                  variant="danger"
+                  data-cy="add-to-group-modal"
+                  onClick={() => setAddToGroupOpen(true)}
                 >
-                  <Icon name="trash alternate outline" /> {intl.formatMessage({ id: 'delete-group' })}
+                  <FormattedMessage id="add-people-to-group" />
                 </Button>
-              )}
-            />
-          </div>
-        )}
-      {showToken && (
-        <div className="border rounded" style={{ display: 'flex', marginTop: '0.2em', minHeight: '3em' }}>
-          <span style={{ margin: 'auto' }}>{token}</span>
-        </div>
-      )}
+                <Button
+                  style={{ marginTop: '1em' }}
+                  onClick={handleSummary}
+                >
+                  <FormattedMessage id="summary" />
+                </Button>
+                <Button style={{ marginTop: '1em' }} onClick={handleSettingsClick}>
+                  <FormattedMessage id="learning-settings" />
+                </Button>
+                <Button style={{ marginTop: '1em' }} onClick={handleShowToken}>
+                  <FormattedMessage id="show-group-token" />
+                </Button>
+              </div>
+              <DeleteConfirmationModal
+                groupId={currentGroupId}
+                trigger={(
+                  <Button
+                    data-cy="delete-group"
+                    style={{ marginTop: '1em' }}
+                    variant="danger"
+                  >
+                    <Icon name="trash alternate outline" /> {intl.formatMessage({ id: 'delete-group' })}
+                  </Button>
+                )}
+              />
+            </div>
+            {showToken && (
+            <div className="border rounded" style={{ display: 'flex', marginTop: '0.2em', minHeight: '3em' }}>
+              <span style={{ margin: 'auto' }}>{token}</span>
+            </div>
+            )}
 
-      {summary && (
-      <>
-        <hr />
-        <Summary
-          groupName={currentGroup.groupName}
-          getSummary={(start, end) => dispatch(getSummary(currentGroupId, learningLanguage, start, end))}
-        />
-      </>
-      )}
+            {summary && (
+            <>
+              <hr />
+              <Summary
+                groupName={currentGroup.groupName}
+                getSummary={(start, end) => dispatch(getSummary(currentGroupId, learningLanguage, start, end))}
+              />
+            </>
+            )}
+          </>
+        )}
+
 
       <AddToGroup groupId={currentGroupId} isOpen={addToGroupOpen} setOpen={setAddToGroupOpen} />
       <AddGroup isOpen={addGroupOpen} setOpen={setAddGroupOpen} />
