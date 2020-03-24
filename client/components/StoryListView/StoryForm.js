@@ -75,11 +75,14 @@ const StoryForm = () => {
                     )}
                   />
                   <Button
-                    style={{ marginTop: '0.5em' }}
+                    style={{ marginTop: '0.5em', float: 'right' }}
                     variant="link"
                     onClick={() => setShowRecommendedSites(!showRecommendedSites)}
                   >
-                    {intl.formatMessage({ id: 'you-can-visit-the-following-websites-to-find-more-stories' })}
+                    {showRecommendedSites
+                      ? intl.formatMessage({ id: 'hide-recommended-sites' })
+                      : intl.formatMessage({ id: 'show-recommended-sites' })
+                    }
                   </Button>
                   {showRecommendedSites && <RecommendedSites />}
                 </>
