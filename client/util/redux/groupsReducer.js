@@ -62,6 +62,12 @@ export const updateExerciseSettings = (settings, groupId) => {
   return callBuilder(route, prefix, 'post', payload)
 }
 
+export const getGroupToken = (groupId) => {
+  const route = `/groups/${groupId}/token`
+  const prefix = 'GET_GROUP_TOKEN'
+  return callBuilder(route, prefix, 'get')
+}
+
 export default (state = { groups: [] }, action) => {
   switch (action.type) {
     case 'GET_GROUPS_ATTEMPT':
@@ -244,6 +250,23 @@ export default (state = { groups: [] }, action) => {
         pending: false,
         error: false,
       }
+    case 'GET_GROUP_TOKEN_ATTEMPT':
+      return {
+        ...state,
+        error: false,
+      }
+    case 'GET_GROUP_TOKEN_FAILURE':
+      return {
+        ...state,
+        error: true,
+      }
+    case 'GET_GROUP_TOKEN_SUCCESS':
+      return {
+        ...state,
+        token: action.response.token,
+        error: false,
+      }
+
     default:
       return state
   }
