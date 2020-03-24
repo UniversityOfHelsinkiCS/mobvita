@@ -83,8 +83,10 @@ const GroupView = () => {
   const currentGroup = groups.find(group => group.group_id === currentGroupId)
   if (!currentGroup) {
     return (
-      <div className="group-controls">
-        <div>you have no groups yet!</div>
+      <div className="group-container">
+        <Button variant="info" onClick={() => setJoinGroupOpen(true)}>
+          <FormattedMessage id="join-group" />
+        </Button>
         <Button
           data-cy="create-group-modal"
           variant="primary"
@@ -94,6 +96,7 @@ const GroupView = () => {
         </Button>
 
         <AddGroup isOpen={addGroupOpen} setOpen={setAddGroupOpen} />
+        <JoinGroup isOpen={joinGroupOpen} setOpen={setJoinGroupOpen} />
       </div>
     )
   }
