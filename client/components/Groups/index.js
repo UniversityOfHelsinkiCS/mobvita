@@ -10,7 +10,7 @@ import {
 } from 'react-bootstrap'
 import { FormattedMessage, useIntl } from 'react-intl'
 import { Icon } from 'semantic-ui-react'
-import { getSummary } from 'Utilities/redux/groupSummaryReducer'
+import { getSummary, getWeekSummary } from 'Utilities/redux/groupSummaryReducer'
 import { learningLanguageSelector } from 'Utilities/common'
 import AddGroup from './AddGroup'
 import AddToGroup from './AddToGroup'
@@ -64,7 +64,6 @@ const GroupView = () => {
   }
 
   const handleSummary = () => {
-    dispatch(getSummary(currentGroupId, learningLanguage))
     setSummary(true)
   }
 
@@ -193,11 +192,6 @@ const GroupView = () => {
                 </Button>
               )}
             />
-
-            <AddToGroup groupId={currentGroupId} isOpen={addToGroupOpen} setOpen={setAddToGroupOpen} />
-            <AddGroup isOpen={addGroupOpen} setOpen={setAddGroupOpen} />
-            <JoinGroup isOpen={joinGroupOpen} setOpen={setJoinGroupOpen} />
-
           </div>
         )}
       {showToken && (
@@ -209,9 +203,16 @@ const GroupView = () => {
       {summary && (
       <>
         <hr />
-        <Summary groupName={currentGroup.groupName} getSummary={days => dispatch(getSummary(currentGroupId, learningLanguage, days))} />
+        <Summary
+          groupName={currentGroup.groupName}
+          getSummary={(start, end) => dispatch(getSummary(currentGroupId, learningLanguage, start, end))}
+        />
       </>
       )}
+
+      <AddToGroup groupId={currentGroupId} isOpen={addToGroupOpen} setOpen={setAddToGroupOpen} />
+      <AddGroup isOpen={addGroupOpen} setOpen={setAddGroupOpen} />
+      <JoinGroup isOpen={joinGroupOpen} setOpen={setJoinGroupOpen} />
     </div>
   )
 }

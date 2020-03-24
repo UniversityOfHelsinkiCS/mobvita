@@ -66,6 +66,7 @@
     "react-card-flip": "^1.0.10",
     "react-collapse": "^5.0.1",
     "react-csv": "^2.0.1",
+    "react-datepicker": "^2.14.1",
     "react-detect-offline": "^2.4.0",
     "react-dom": "^v16.8.1",
     "react-headroom": "^3.0.0",

@@ -1,13 +1,31 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { useSelector } from 'react-redux'
 import { Table, Spinner, Button } from 'react-bootstrap'
 import { CSVLink } from 'react-csv'
+import DatePicker from 'react-datepicker'
+import moment from 'moment'
+
+import 'react-datepicker/dist/react-datepicker.css'
+
+const PickDate = ({ date, setDate }) => (
+  <DatePicker
+    selected={date}
+    onChange={date => setDate(date)}
+    dateFormat="yyyy/MM/dd"
+  />
+)
+
 
 const Summary = ({ groupName, getSummary }) => {
   const { summary, pending } = useSelector(({ summary }) => summary)
-  const [days, setDays] = useState(7)
+  const [startDate, setStartDate] = useState(moment().subtract(7, 'days').toDate())
+  const [endDate, setEndDate] = useState(moment().toDate())
 
-  if (pending) {
+  useEffect(() => {
+    getSummary(startDate, endDate)
+  }, [startDate, endDate])
+
+  if (!summary) {
     return (
       <div className="spinner-container">
         <Spinner animation="border" variant="primary" size="lg" />
@@ -15,34 +33,45 @@ const Summary = ({ groupName, getSummary }) => {
     )
   }
 
-  const cleanGroupName = groupName.toLowerCase().split(' ').join('_').replace(/[^\w\s-]/gi, '')
+  const cleanGroupName = groupName
+    .toLowerCase()
+    .split(' ')
+    .join('_')
+    .replace(/[^\w\s-]/gi, '') // only allow letters, undescore and dash
+
   const filename = `${cleanGroupName}_summary.csv`
 
   return (
     <>
       <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-        <div>
-          from last <input value={days} onChange={e => setDays(e.target.value)} /> days
-          <Button onClick={() => getSummary(days)}>refresh</Button>
+        <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+          <PickDate date={startDate} setDate={setStartDate} />
+          <PickDate date={endDate} setDate={setEndDate} />
         </div>
         <CSVLink filename={filename} data={summary}>download csv</CSVLink>
       </div>
-      <Table striped bordered hover>
-        <thead>
-          <tr>
-            <th>Email</th>
-            <th>Completed Exercises</th>
-          </tr>
-        </thead>
-        <tbody>
-          {summary.map(user => (
+      {pending ? (
+        <div className="spinner-container">
+          <Spinner animation="border" variant="primary" size="lg" />
+        </div>
+      ) : (
+        <Table striped bordered hover>
+          <thead>
             <tr>
-              <td>{user.email}</td>
-              <td>{user.number_of_exercises}</td>
+              <th>Email</th>
+              <th>Completed Exercises</th>
             </tr>
-          ))}
-        </tbody>
-      </Table>
+          </thead>
+          <tbody>
+            {summary.map(user => (
+              <tr key={user.email}>
+                <td>{user.email}</td>
+                <td>{user.number_of_exercises}</td>
+              </tr>
+            ))}
+          </tbody>
+        </Table>
+      )}
     </>
   )
 }
