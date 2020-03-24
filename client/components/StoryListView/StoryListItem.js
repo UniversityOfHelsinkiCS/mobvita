@@ -7,7 +7,7 @@ import { inProduction, hiddenFeatures } from 'Utilities/common'
 import useWindowDimensions from 'Utilities/windowDimensions'
 import ShareStory from './ShareStory'
 
-const StoryListItem = ({ story }) => {
+const StoryListItem = ({ story, userCanShare }) => {
   const [modalOpen, setModalOpen] = useState(false)
   const icons = {
     high: <div><Icon name="star outline" size="large" style={{ color: 'red' }} /><Icon name="star outline" size="large" style={{ color: 'red' }} /><Icon name="star outline" size="large" style={{ color: 'red' }} /></div>,
@@ -80,24 +80,25 @@ const StoryListItem = ({ story }) => {
                       to={`/flashcards/${story._id}/`}
                       icon="id card"
                     />
-                    {hiddenFeatures
-                      && (
-                        <>
-                          <Dropdown.Item
-                            text={<FormattedMessage id="Share" />}
-                            onClick={() => setModalOpen(true)}
-                            icon="share"
-                          />
-                          <Dropdown.Item
-                            text={<FormattedMessage id="Delete" />}
-                            className="delete-button"
-                            style={{ backgroundColor: '#dd0000' }}
-                            disabled
-                            icon="trash alternate outline"
-                          />
-                        </>
-                      )
-                    }
+                    {userCanShare && !story.public && (
+                      <Dropdown.Item
+                        text={<FormattedMessage id="Share" />}
+                        onClick={() => setModalOpen(true)}
+                        icon="share"
+                      />
+                    )}
+
+                    {false && (
+                      <Dropdown.Item
+                        text={<FormattedMessage id="Delete" />}
+                        className="delete-button"
+                        style={{ backgroundColor: '#dd0000' }}
+                        disabled
+                        icon="trash alternate outline"
+                      />
+                    )}
+
+
                   </Dropdown.Menu>
                 </Dropdown>
               </Button.Group>
@@ -127,18 +128,18 @@ const StoryListItem = ({ story }) => {
                 >
                   <FormattedMessage id="learning-settings" />
                 </Button>
-                {hiddenFeatures
+                {userCanShare && !story.public
                   && (
-                    <>
-                      {/* <Button onClick={() => setModalOpen(true)} variant="primary" style={{ marginRight: '0.5em' }}>
-                        <FormattedMessage id="Share" />
-                      </Button> */}
-                      <Button disabled onClick={() => console.log('Not implemented yet')} variant="primary" style={{ marginRight: '0.5em' }}>
-                        <FormattedMessage id="Delete" />
-                      </Button>
-                    </>
+                    <Button onClick={() => setModalOpen(true)} variant="primary" style={{ marginRight: '0.5em' }}>
+                      <FormattedMessage id="Share" />
+                    </Button>
                   )
                 }
+                {false && (
+                  <Button disabled onClick={() => console.log('Not implemented yet')} variant="primary" style={{ marginRight: '0.5em' }}>
+                    <FormattedMessage id="Delete" />
+                  </Button>
+                )}
               </div>
             )
           }

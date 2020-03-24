@@ -51,7 +51,10 @@ describe("groups", function () {
     cy.contains('destroyed').should('not.exist')
   })
 
-  it('users can be added to group and removed', function () {
+  /**
+   * This feature has been disabled for now.
+   */
+  it.skip('users can be added to group and removed', function () {
     cy.request({
       method: 'POST',
       url: 'localhost:8000/api/groups',

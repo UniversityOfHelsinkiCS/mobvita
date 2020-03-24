@@ -201,11 +201,12 @@ const StoryList = () => {
     }
   })
 
+  const userCanShare = groups.find(group => group.is_teaching)
 
   function rowRenderer({ key, index, style }) {
     return (
       <div key={key} style={{ ...style, paddingRight: '0.5em', paddingLeft: '0.5em' }}>
-        <StoryListItem key={key} story={libraryFilteredStories[index]} />
+        <StoryListItem key={key} userCanShare={userCanShare} story={libraryFilteredStories[index]} />
       </div>
     )
   }

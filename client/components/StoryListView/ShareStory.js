@@ -4,23 +4,28 @@ import { FormattedMessage, useIntl } from 'react-intl'
 import { useDispatch, useSelector } from 'react-redux'
 import { Button, FormControl, Form, Dropdown } from 'react-bootstrap'
 import { shareStory } from 'Utilities/redux/shareReducer'
-import { getGroups } from 'Utilities/redux/groupsReducer'
 
 
 const ShareStory = ({ story, isOpen, setOpen }) => {
   const [targetEmail, setTargetEmail] = useState('')
-  const [currentGroup, setCurrentGroup] = useState(null)
+  const [shareTargetGroupId, setShareTargetGroupId] = useState(null)
   const [message, setMessage] = useState('')
-  const groups = useSelector(({ groups }) => groups.groups)
+  const groupsUserCanShareWith = useSelector(({ groups }) => groups.groups.filter(group => group.is_teaching))
+  const activeGroup = useSelector(({ user }) => user.data.user.last_selected_group)
 
   const intl = useIntl()
-
-
   const dispatch = useDispatch()
+
+  useEffect(() => {
+    if (groupsUserCanShareWith.length > 0) {
+      const preferredGroup = groupsUserCanShareWith.find(group => group.group_id === activeGroup)
+      setShareTargetGroupId(preferredGroup ? preferredGroup.group_id : groupsUserCanShareWith[0].group_id)
+    }
+  }, [groupsUserCanShareWith])
 
   const share = (event) => {
     event.preventDefault()
-    const targetGroup = currentGroup ? [currentGroup] : []
+    const targetGroup = shareTargetGroupId ? [shareTargetGroupId] : []
     const targetUser = targetEmail.trim() ? [targetEmail.trim()] : []
 
     dispatch(shareStory(story._id, targetGroup, targetUser, message))
@@ -47,6 +52,7 @@ const ShareStory = ({ story, isOpen, setOpen }) => {
             <div>
               <FormattedMessage id="share-story-with-a-friend" />
               <FormControl
+                disabled
                 placeholder={intl.formatMessage({ id: 'enter-email-address' })}
                 as="input"
                 onChange={e => setTargetEmail(e.target.value)}
@@ -54,6 +60,7 @@ const ShareStory = ({ story, isOpen, setOpen }) => {
             </div>
 
             <FormControl
+              disabled
               style={{ marginTop: '0.5em' }}
               as="input"
               value={message}
@@ -61,26 +68,25 @@ const ShareStory = ({ story, isOpen, setOpen }) => {
               onChange={e => setMessage(e.target.value)}
             />
 
-            {groups
+            {groupsUserCanShareWith
               && (
                 <div style={{ display: 'flex', alignItems: 'center', marginTop: '0.5em' }}>
-                  <span>{intl.formatMessage({ id: "or-share-with-a-group-optional" })}</span>
-                  <Dropdown data-cy="select-group" onSelect={key => setCurrentGroup(key)}>
-                    <Dropdown.Toggle variant="primary" id="dropdown-basic">
-                      {currentGroup ? groups.find(group => group.group_id === currentGroup).groupName : 'select a group'}
-                    </Dropdown.Toggle>
-                    <Dropdown.Menu>
-                      {groups.map(group => (
-                        <Dropdown.Item eventKey={group.group_id} key={group.group_id}>{group.groupName}</Dropdown.Item>
-                      ))}
-                    </Dropdown.Menu>
-                  </Dropdown>
+                  <span>{intl.formatMessage({ id: 'or-share-with-a-group-optional' })}</span>
+                  <select
+                    data-cy="select-group"
+                    defaultValue={shareTargetGroupId}
+                    onChange={e => setShareTargetGroupId(e.target.value)}
+                  >
+                    {groupsUserCanShareWith.map(group => (
+                      <option value={group.group_id} key={group.group_id}>{group.groupName}</option>
+                    ))}
+                  </select>
                 </div>
               )
             }
 
             <Button
-              disabled={!targetEmail.trim() && !currentGroup}
+              disabled={!shareTargetGroupId}
               type="submit"
             >
               <FormattedMessage id="Confirm" />
