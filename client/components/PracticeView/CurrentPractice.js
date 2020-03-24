@@ -170,6 +170,7 @@ const CurrentPractice = ({ storyId }) => {
   }
 
   const handleRestart = () => {
+    setAnswers({})
     dispatch(resetCurrentSnippet(storyId))
   }
 

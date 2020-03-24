@@ -83,6 +83,16 @@ export default (state = initialState, action) => {
         message: 'Email sent!',
         type: type.success,
       }
+    case 'JOIN_GROUP_SUCCESS':
+      return {
+        message: `Joined group ${action.response.group.groupName}`,
+        type: type.success,
+      }
+    case 'JOIN_GROUP_FAILURE':
+      return {
+        message: action.response.response.data,
+        type: type.error,
+      }
     default:
       return state
   }

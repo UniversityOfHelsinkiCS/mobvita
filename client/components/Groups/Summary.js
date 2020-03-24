@@ -45,8 +45,14 @@ const Summary = ({ groupName, getSummary }) => {
     <>
       <div style={{ display: 'flex', justifyContent: 'space-between' }}>
         <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-          <PickDate date={startDate} setDate={setStartDate} />
-          <PickDate date={endDate} setDate={setEndDate} />
+          <div>
+            From:
+            <PickDate id="start" date={startDate} setDate={setStartDate} />
+          </div>
+          <div style={{ marginLeft: '1em' }}>
+            To:
+            <PickDate date={endDate} setDate={setEndDate} />
+          </div>
         </div>
         <CSVLink filename={filename} data={summary}>download csv</CSVLink>
       </div>
