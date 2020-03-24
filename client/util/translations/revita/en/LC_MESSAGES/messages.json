@@ -707,5 +707,7 @@
     "group-learning-settings-for": "Group learning settings for",
     "story-exercise-settings-for": "Story exercise settings for",
     "user-exercise-settings": "User exercise settings",
-    "show-levels": "Show levels"
+    "show-levels": "Show levels",
+    "show-recommended-sites": "Show recommended sites",
+    "hide-recommended-sites": "Hide recommended sites"
 }

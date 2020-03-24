@@ -705,5 +705,7 @@
     "group-learning-settings-for": "Opiskeluasetukset ryhmälle",
     "story-exercise-settings-for": "Opiskeluasetukset tarinalle",
     "user-exercise-settings": "Käyttäjän opiskeluasetukset",
-    "show-levels": "Näytä tasot"
+    "show-levels": "Näytä tasot",
+    "show-recommended-sites": "Näytä sivustosuositukset",
+    "hide-recommended-sites": "Piilota sivustosuositukset"
 }
