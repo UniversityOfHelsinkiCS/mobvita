@@ -7,7 +7,6 @@ import {
   ListGroup,
   Button,
   Spinner,
-  Modal,
 } from 'react-bootstrap'
 import { FormattedMessage, useIntl } from 'react-intl'
 import { Icon } from 'semantic-ui-react'
@@ -15,6 +14,7 @@ import { getSummary } from 'Utilities/redux/groupSummaryReducer'
 import { learningLanguageSelector } from 'Utilities/common'
 import AddGroup from './AddGroup'
 import AddToGroup from './AddToGroup'
+import JoinGroup from './JoinGroup'
 import CollapsingList from './CollapsingList'
 import DeleteConfirmationModal from './DeleteConfirmationModal'
 import Summary from './Summary'
@@ -23,6 +23,7 @@ const GroupView = () => {
   const intl = useIntl()
   const [addToGroupOpen, setAddToGroupOpen] = useState(false)
   const [addGroupOpen, setAddGroupOpen] = useState(false)
+  const [joinGroupOpen, setJoinGroupOpen] = useState(false)
   const [currentGroupId, setCurrentGroupId] = useState(null)
   const [showToken, setShowToken] = useState(false)
   const [summary, setSummary] = useState(false)
@@ -103,16 +104,21 @@ const GroupView = () => {
   return (
     <div className="group-container">
       <div className="group-controls">
-        <Dropdown data-cy="select-group" onSelect={key => setCurrentGroupId(key)}>
-          <Dropdown.Toggle variant="primary" id="dropdown-basic">
-            {currentGroup.groupName}
-          </Dropdown.Toggle>
-          <Dropdown.Menu>
-            {groups.map(group => (
-              <Dropdown.Item eventKey={group.group_id} key={group.group_id}>{group.groupName}</Dropdown.Item>
-            ))}
-          </Dropdown.Menu>
-        </Dropdown>
+        <div className="group-controls">
+          <Dropdown data-cy="select-group" onSelect={key => setCurrentGroupId(key)}>
+            <Dropdown.Toggle variant="primary" id="dropdown-basic">
+              {currentGroup.groupName}
+            </Dropdown.Toggle>
+            <Dropdown.Menu>
+              {groups.map(group => (
+                <Dropdown.Item eventKey={group.group_id} key={group.group_id}>{group.groupName}</Dropdown.Item>
+              ))}
+            </Dropdown.Menu>
+          </Dropdown>
+          <Button variant="info" onClick={() => setJoinGroupOpen(true)}>
+            <FormattedMessage id="join-group" />
+          </Button>
+        </div>
         <Button
           data-cy="create-group-modal"
           variant="info"
@@ -120,8 +126,6 @@ const GroupView = () => {
         >
           <FormattedMessage id="create-new-group" />
         </Button>
-
-        <AddGroup isOpen={addGroupOpen} setOpen={setAddGroupOpen} />
       </div>
       <CollapsingList header="Teachers">
         <ListGroup>
@@ -191,6 +195,8 @@ const GroupView = () => {
             />
 
             <AddToGroup groupId={currentGroupId} isOpen={addToGroupOpen} setOpen={setAddToGroupOpen} />
+            <AddGroup isOpen={addGroupOpen} setOpen={setAddGroupOpen} />
+            <JoinGroup isOpen={joinGroupOpen} setOpen={setJoinGroupOpen} />
 
           </div>
         )}

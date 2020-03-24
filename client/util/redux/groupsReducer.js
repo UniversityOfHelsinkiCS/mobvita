@@ -68,6 +68,13 @@ export const getGroupToken = (groupId) => {
   return callBuilder(route, prefix, 'get')
 }
 
+export const joinGroup = (token) => {
+  const route = '/groups/join'
+  const prefix = 'JOIN_GROUP'
+  const payload = { token }
+  return callBuilder(route, prefix, 'post', payload)
+}
+
 export default (state = { groups: [] }, action) => {
   switch (action.type) {
     case 'GET_GROUPS_ATTEMPT':
@@ -266,7 +273,24 @@ export default (state = { groups: [] }, action) => {
         token: action.response.token,
         error: false,
       }
-
+    case 'JOIN_GROUP_ATTEMPT':
+      return {
+        ...state,
+        error: false,
+      }
+    case 'JOIN_GROUP_FAILURE':
+      return {
+        ...state,
+        error: true,
+      }
+    case 'JOIN_GROUP_SUCCESS':
+      return {
+        ...state,
+        groups: state.groups
+          .concat(action.response.group)
+          .sort((a, b) => a.groupName.localeCompare(b.groupName)),
+        error: false,
+      }
     default:
       return state
   }

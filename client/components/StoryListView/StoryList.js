@@ -140,20 +140,39 @@ const StoryList = () => {
     .map(([key]) => capitalize(key))
 
   const libraryFilteredStories = searchedStories.filter((story) => {
+    // if (story.public) {
+    //   return librariesToShow.includes('Public')
+    // }
+
+    // if (story.sharedwith && story.sharedwith.includes(user.oid)) {
+    //   return librariesToShow.includes('Private')
+    // }
+
+    // if (story.user !== user.oid) {
+    //   if (group === 'all') return librariesToShow.includes('Group')
+    //   return story.group.group_id === group
+    // }
+
+    // return librariesToShow.includes('Private')
+
+
     if (story.public) {
       return librariesToShow.includes('Public')
     }
 
-    if (story.sharedwith && story.sharedwith.includes(user.oid)) {
-      return librariesToShow.includes('Private')
+    const showLibraries = []
+
+    if (story.user === user.oid) {
+      showLibraries.push('Private')
     }
 
-    if (story.user !== user.oid) {
-      if (group === 'all') return librariesToShow.includes('Group')
-      return story.group.group_id === group
+    if (story.group) {
+      if (group === 'all' || story.group.group_id === group) {
+        showLibraries.push('Group')
+      }
     }
 
-    return librariesToShow.includes('Private')
+    return librariesToShow.some(value => showLibraries.includes(value))
   })
 
   const stringToDifficulty = (difficulty) => {
