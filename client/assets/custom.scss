@@ -573,3 +573,18 @@ body {
   justify-content: center;
   align-items: center;
 }
+
+.suggestedStories{
+
+  &-container{
+    width:fit-content;
+    padding-top: 1em;
+  }
+  
+  &-row{
+  display: flex;
+  align-items: baseline;
+  flex-direction: row;
+  justify-content: space-between;
+  }
+}
