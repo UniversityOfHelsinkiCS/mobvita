@@ -1,12 +1,13 @@
 import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { useHistory } from 'react-router-dom'
-import { getGroups, removeFromGroup } from 'Utilities/redux/groupsReducer'
+import { getGroups, removeFromGroup, getGroupToken } from 'Utilities/redux/groupsReducer'
 import {
   Dropdown,
   ListGroup,
   Button,
   Spinner,
+  Modal,
 } from 'react-bootstrap'
 import { FormattedMessage, useIntl } from 'react-intl'
 import { Icon } from 'semantic-ui-react'
@@ -23,19 +24,14 @@ const GroupView = () => {
   const [addToGroupOpen, setAddToGroupOpen] = useState(false)
   const [addGroupOpen, setAddGroupOpen] = useState(false)
   const [currentGroupId, setCurrentGroupId] = useState(null)
+  const [showToken, setShowToken] = useState(false)
   const [summary, setSummary] = useState(false)
   const userOid = useSelector(({ user }) => user.data.user.oid)
   const learningLanguage = useSelector(learningLanguageSelector)
   const dispatch = useDispatch()
   const history = useHistory()
 
-  const { groups, created, pending } = useSelector(({ groups }) => (
-    {
-      groups: groups.groups,
-      created: groups.created,
-      pending: groups.pending,
-    }
-  ))
+  const { groups, created, pending, token } = useSelector(({ groups }) => groups)
 
   useEffect(() => {
     dispatch(getGroups())
@@ -46,6 +42,12 @@ const GroupView = () => {
     if (currentGroupId && groups.some(group => group.group_id === currentGroupId)) return
     setCurrentGroupId(groups[0].group_id)
   }, [groups])
+
+  useEffect(() => {
+    if (currentGroupId) {
+      dispatch(getGroupToken(currentGroupId))
+    }
+  }, [currentGroupId])
 
   useEffect(() => {
     if (!created) return
@@ -63,6 +65,10 @@ const GroupView = () => {
   const handleSummary = () => {
     dispatch(getSummary(currentGroupId, learningLanguage))
     setSummary(true)
+  }
+
+  const handleShowToken = () => {
+    setShowToken(!showToken)
   }
 
   if (pending) {
@@ -150,22 +156,27 @@ const GroupView = () => {
       {currentGroup.is_teaching
         && (
           <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-            <Button
-              style={{ marginTop: '1em' }}
-              data-cy="add-to-group-modal"
-              onClick={() => setAddToGroupOpen(true)}
-            >
-              <FormattedMessage id="add-people-to-group" />
-            </Button>
-            <Button
-              style={{ marginTop: '1em' }}
-              onClick={handleSummary}
-            >
-              <FormattedMessage id="summary" />
-            </Button>
-            <Button style={{ marginTop: '1em' }} onClick={handleSettingsClick}>
-              <FormattedMessage id="learning-settings" />
-            </Button>
+            <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+              <Button
+                style={{ marginTop: '1em' }}
+                data-cy="add-to-group-modal"
+                onClick={() => setAddToGroupOpen(true)}
+              >
+                <FormattedMessage id="add-people-to-group" />
+              </Button>
+              <Button
+                style={{ marginTop: '1em' }}
+                onClick={handleSummary}
+              >
+                <FormattedMessage id="summary" />
+              </Button>
+              <Button style={{ marginTop: '1em' }} onClick={handleSettingsClick}>
+                <FormattedMessage id="learning-settings" />
+              </Button>
+              <Button style={{ marginTop: '1em' }} onClick={handleShowToken}>
+                <FormattedMessage id="show-group-token" />
+              </Button>
+            </div>
             <DeleteConfirmationModal
               groupId={currentGroupId}
               trigger={(
@@ -180,8 +191,15 @@ const GroupView = () => {
             />
 
             <AddToGroup groupId={currentGroupId} isOpen={addToGroupOpen} setOpen={setAddToGroupOpen} />
+
           </div>
         )}
+      {showToken && (
+        <div className="border rounded" style={{ display: 'flex', marginTop: '0.2em', minHeight: '3em' }}>
+          <span style={{ margin: 'auto' }}>{token}</span>
+        </div>
+      )}
+
       {summary && (
       <>
         <hr />
