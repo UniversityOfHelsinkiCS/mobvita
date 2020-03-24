@@ -8,6 +8,7 @@ import CheckboxGroup from 'Components/CheckboxGroup'
 import { capitalize, learningLanguageSelector } from 'Utilities/common'
 import { getGroups } from 'Utilities/redux/groupsReducer'
 import { List, WindowScroller } from 'react-virtualized'
+import { updateLibrarySelect } from 'Utilities/redux/userReducer'
 import StoryForm from './StoryForm'
 
 const StoryList = () => {
@@ -16,10 +17,11 @@ const StoryList = () => {
   const [searchString, setSearchString] = useState('')
   const [group, setGroup] = useState('all')
   const [searchedStories, setSearchedStories] = useState([])
+  const [libraryFromUser, setLibraryFromUser] = useState(false)
   const [libraries, setLibraries] = useState(
     {
       private: false,
-      public: true,
+      public: false,
       group: false,
     },
   )
@@ -33,10 +35,31 @@ const StoryList = () => {
     pending: stories.pending,
   }))
 
+  const setLibrary = (library) => {
+    const librariesCopy = {}
+    Object.keys(libraries).forEach((key) => {
+      librariesCopy[key] = false
+    })
+
+    setLibraries({ ...librariesCopy, [library]: true })
+  }
+
+  const handleLibraryChange = (library) => {
+    dispatch(updateLibrarySelect(library))
+    setLibrary(library)
+  }
+
 
   useEffect(() => {
     dispatch(getGroups())
   }, [])
+
+  useEffect(() => {
+    if (!libraryFromUser) {
+      setLibrary(user.last_selected_library)
+      setLibraryFromUser(true)
+    }
+  }, [user])
 
   const sortDropdownOptions = [
     { key: 'date', text: intl.formatMessage({ id: 'date-added' }), value: 'date' },
@@ -67,15 +90,6 @@ const StoryList = () => {
     setSearchedStories(searchFilteredStories)
   }, [searchString.length])
 
-
-  const handleLibraryChange = (library) => {
-    const librariesCopy = {}
-    Object.keys(libraries).forEach((key) => {
-      librariesCopy[key] = false
-    })
-
-    setLibraries({ ...librariesCopy, [library]: true })
-  }
 
   const handleGroupChange = (_e, option) => {
     setGroup(option.value)

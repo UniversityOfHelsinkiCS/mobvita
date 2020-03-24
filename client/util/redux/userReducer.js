@@ -34,6 +34,7 @@ export const updateLearningLanguage = language => saveSelf({ last_used_lang: cap
 export const updateLocale = locale => saveSelf({ interface_lang: localeCodeToName(locale) })
 export const updateDictionaryLanguage = language => saveSelf({ last_trans_lang: capitalize(language) })
 export const updateExerciseSettings = settings => saveSelf({ exercise_settings: settings })
+export const updateLibrarySelect = library => saveSelf({ last_selected_library: library })
 
 export const confirmUser = (token) => {
   const route = `/confirm?token=${token}`
