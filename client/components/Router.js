@@ -13,6 +13,7 @@ import Flashcards from 'Components/Flashcards'
 import Login from './AccessControl/Login'
 import GroupView from './Groups/index'
 import Concepts from './Concepts'
+import Settings from './Settings/Settings'
 
 export default () => (
   <Switch>
@@ -33,5 +34,7 @@ export default () => (
     <ProtectedRoute exact path="/groups" component={GroupView} />
     <ProtectedRoute exact path="/:target/:id/concepts" component={Concepts} />
     <ProtectedRoute exact path="/concepts" component={Concepts} />
+    <ProtectedRoute exact path="/settings" component={Settings} />
+
   </Switch>
 )
