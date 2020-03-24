@@ -8,11 +8,13 @@ import { setNotification } from 'Utilities/redux/notificationReducer'
 import { Button } from 'react-bootstrap'
 import useWindowDimensions from 'Utilities/windowDimensions'
 import AddStoryModal from './AddStoryModal'
+import RecommendedSites from './RecommendedSites'
 
 
 const StoryForm = () => {
   const intl = useIntl()
   const [storyUrl, setStoryUrl] = useState('')
+  const [showRecommendedSites, setShowRecommendedSites] = useState(false)
   const dispatch = useDispatch()
 
   const learningLanguage = useSelector(learningLanguageSelector)
@@ -61,16 +63,26 @@ const StoryForm = () => {
                 <FormattedMessage id="Confirm" />
               </Button>
               {!smallWindow && (
-              <AddStoryModal
-                trigger={(
+                <>
+                  <AddStoryModal
+                    trigger={(
+                      <Button
+                        style={{ marginTop: '0.5em' }}
+                        variant="link"
+                      >
+                        {intl.formatMessage({ id: 'or-paste-a-text' }).slice(0, -1)}
+                      </Button>
+                    )}
+                  />
                   <Button
                     style={{ marginTop: '0.5em' }}
                     variant="link"
+                    onClick={() => setShowRecommendedSites(!showRecommendedSites)}
                   >
-                    {intl.formatMessage({ id: 'or-paste-a-text' }).slice(0, -1)}
+                    {intl.formatMessage({ id: 'you-can-visit-the-following-websites-to-find-more-stories' })}
                   </Button>
-                )}
-              />
+                  {showRecommendedSites && <RecommendedSites />}
+                </>
               )
               }
             </Form>
