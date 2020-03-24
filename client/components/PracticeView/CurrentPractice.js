@@ -310,7 +310,7 @@ const CurrentPractice = ({ storyId }) => {
               data-cy="check-answer"
               block
               variant="primary"
-              disabled={answersPending}
+              disabled={answersPending || snippets.pending}
               onClick={() => checkAnswers()}
             >
               <div className="spinner-container">
