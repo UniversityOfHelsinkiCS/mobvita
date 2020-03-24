@@ -18,7 +18,7 @@ export default function RecommendedSites() {
     const { difficulty, name, url } = site
 
     return (
-      <div className="suggestedStories-row" key={url}>
+      <div className="suggestedSources-row" key={url}>
         <Button variant="link" href={url} target="_blank">
           {name}
         </Button>
@@ -30,8 +30,7 @@ export default function RecommendedSites() {
   const sitesList = suggestedSites.map(site => createRow(site))
 
   return (
-    <div className="suggestedStories-container">
-      <h3>Suggested sites:</h3>
+    <div className="suggestedSources-container">
       {sitesList}
     </div>
   )
