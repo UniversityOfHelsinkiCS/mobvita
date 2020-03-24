@@ -80,24 +80,25 @@ const StoryListItem = ({ story, userCanShare }) => {
                       to={`/flashcards/${story._id}/`}
                       icon="id card"
                     />
-                    {hiddenFeatures
-                      && (
-                        <>
-                          <Dropdown.Item
-                            text={<FormattedMessage id="Share" />}
-                            onClick={() => setModalOpen(true)}
-                            icon="share"
-                          />
-                          <Dropdown.Item
-                            text={<FormattedMessage id="Delete" />}
-                            className="delete-button"
-                            style={{ backgroundColor: '#dd0000' }}
-                            disabled
-                            icon="trash alternate outline"
-                          />
-                        </>
-                      )
-                    }
+                    {userCanShare && !story.public && (
+                      <Dropdown.Item
+                        text={<FormattedMessage id="Share" />}
+                        onClick={() => setModalOpen(true)}
+                        icon="share"
+                      />
+                    )}
+
+                    {false && (
+                      <Dropdown.Item
+                        text={<FormattedMessage id="Delete" />}
+                        className="delete-button"
+                        style={{ backgroundColor: '#dd0000' }}
+                        disabled
+                        icon="trash alternate outline"
+                      />
+                    )}
+
+
                   </Dropdown.Menu>
                 </Dropdown>
               </Button.Group>
