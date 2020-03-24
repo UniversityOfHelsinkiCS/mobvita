@@ -111,7 +111,7 @@ const StoryList = () => {
         size="small"
         style={{ marginBottom: 0, marginTop: 'auto' }}
       />
-      <div style={{ display: 'flex', justifyContent: 'space-between', padding: '0 0.5em' }}>
+      <div style={{ display: 'flex', justifyContent: 'space-between', flexWrap: 'wrap', padding: '0 0.5em' }}>
         {libraries.group && (
           <Select
             value={group}
