@@ -93,6 +93,16 @@ export default (state = initialState, action) => {
         message: action.response.response.data,
         type: type.error,
       }
+    case 'CHANGE_PASSWORD_SUCCESS':
+      return {
+        message: action.response.message,
+        type: type.success,
+      }
+    case 'CHANGE_PASSWORD_FAILURE':
+      return {
+        message: action.response.response.data,
+        type: type.error,
+      }
     default:
       return state
   }
