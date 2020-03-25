@@ -21,7 +21,7 @@ const ShareStory = ({ story, isOpen, setOpen }) => {
       const preferredGroup = groupsUserCanShareWith.find(group => group.group_id === activeGroup)
       setShareTargetGroupId(preferredGroup ? preferredGroup.group_id : groupsUserCanShareWith[0].group_id)
     }
-  }, [groupsUserCanShareWith])
+  }, [])
 
   const share = (event) => {
     event.preventDefault()
@@ -33,6 +33,10 @@ const ShareStory = ({ story, isOpen, setOpen }) => {
     setMessage('')
 
     setOpen(false)
+  }
+
+  const handleGroupChange = (e) => {
+    setShareTargetGroupId(e.target.value)
   }
 
 
@@ -75,7 +79,7 @@ const ShareStory = ({ story, isOpen, setOpen }) => {
                   <select
                     data-cy="select-group"
                     defaultValue={shareTargetGroupId}
-                    onChange={e => setShareTargetGroupId(e.target.value)}
+                    onChange={e => handleGroupChange(e)}
                   >
                     {groupsUserCanShareWith.map(group => (
                       <option value={group.group_id} key={group.group_id}>{group.groupName}</option>
