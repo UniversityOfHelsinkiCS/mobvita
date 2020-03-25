@@ -105,22 +105,24 @@ const GroupView = () => {
 
   return (
     <div className="group-container">
-      <div className="group-controls">
-        <div className="group-controls">
-          <Dropdown data-cy="select-group" onSelect={key => setCurrentGroupId(key)}>
-            <Dropdown.Toggle variant="primary" id="dropdown-basic">
-              {currentGroup.groupName}
-            </Dropdown.Toggle>
-            <Dropdown.Menu>
-              {groups.map(group => (
-                <Dropdown.Item eventKey={group.group_id} key={group.group_id}>{group.groupName}</Dropdown.Item>
-              ))}
-            </Dropdown.Menu>
-          </Dropdown>
-          <Button variant="info" onClick={() => setJoinGroupOpen(true)}>
-            <FormattedMessage id="join-group" />
-          </Button>
-        </div>
+      <div className="group-controls padding-bottom-1">
+        <Dropdown
+          data-cy="select-group"
+          className="auto-right"
+          onSelect={key => setCurrentGroupId(key)}
+        >
+          <Dropdown.Toggle variant="primary" id="dropdown-basic">
+            {currentGroup.groupName}
+          </Dropdown.Toggle>
+          <Dropdown.Menu>
+            {groups.map(group => (
+              <Dropdown.Item eventKey={group.group_id} key={group.group_id}>{group.groupName}</Dropdown.Item>
+            ))}
+          </Dropdown.Menu>
+        </Dropdown>
+        <Button variant="info" onClick={() => setJoinGroupOpen(true)}>
+          <FormattedMessage id="join-group" />
+        </Button>
         <Button
           data-cy="create-group-modal"
           variant="info"
@@ -162,34 +164,27 @@ const GroupView = () => {
       {currentGroup.is_teaching
         && (
           <>
-            <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-              <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-                <Button
-                  style={{ marginTop: '1em' }}
-                  data-cy="add-to-group-modal"
-                  onClick={() => setAddToGroupOpen(true)}
-                >
-                  <FormattedMessage id="add-people-to-group" />
-                </Button>
-                <Button
-                  style={{ marginTop: '1em' }}
-                  onClick={handleSummary}
-                >
-                  <FormattedMessage id="summary" />
-                </Button>
-                <Button style={{ marginTop: '1em' }} onClick={handleSettingsClick}>
-                  <FormattedMessage id="learning-settings" />
-                </Button>
-                <Button style={{ marginTop: '1em' }} onClick={handleShowToken}>
-                  <FormattedMessage id="show-group-token" />
-                </Button>
-              </div>
+            <div className="group-controls padding-top-1">
+              <Button
+                data-cy="add-to-group-modal"
+                onClick={() => setAddToGroupOpen(true)}
+              >
+                <FormattedMessage id="add-people-to-group" />
+              </Button>
+              <Button onClick={handleSummary}>
+                <FormattedMessage id="summary" />
+              </Button>
+              <Button onClick={handleSettingsClick}>
+                <FormattedMessage id="learning-settings" />
+              </Button>
+              <Button className="auto-right" onClick={handleShowToken}>
+                <FormattedMessage id="show-group-token" />
+              </Button>
               <DeleteConfirmationModal
                 groupId={currentGroupId}
                 trigger={(
                   <Button
                     data-cy="delete-group"
-                    style={{ marginTop: '1em' }}
                     variant="danger"
                   >
                     <Icon name="trash alternate outline" /> {intl.formatMessage({ id: 'delete-group' })}
