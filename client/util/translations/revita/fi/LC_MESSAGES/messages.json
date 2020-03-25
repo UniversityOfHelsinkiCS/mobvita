@@ -707,5 +707,8 @@
     "user-exercise-settings": "Käyttäjän opiskeluasetukset",
     "show-levels": "Näytä tasot",
     "show-recommended-sites": "Näytä sivustosuositukset",
-    "hide-recommended-sites": "Piilota sivustosuositukset"
+    "hide-recommended-sites": "Piilota sivustosuositukset",
+    "choose-settings-template": "Asetusten lähde",
+    "choose-settings-template-info": "Valitut asetukset ovat voimassa yksityisissä ja julkisissa harjoituksissa.",
+    "personal-settings": "Omat asetukset"
 }

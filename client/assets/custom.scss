@@ -63,7 +63,7 @@ body {
 }
 
 .ui.dropdown .menu {
-  max-height: 50em !important;
+  max-height: 11em !important;
 }
 
 .ui.attached.tabular.menu {
@@ -315,9 +315,14 @@ body {
 }
 
 .label {
-  padding-bottom: 0.5em;
   font-size: 1.1em;
   font-weight: 600;
+}
+
+.additional-info {
+  font-style: italic;
+  color: gray;
+  padding: 0.2em;
 }
 
 .flashcard {

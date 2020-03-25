@@ -1,19 +1,24 @@
 import React, { useEffect, useState } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
-import { Modal } from 'semantic-ui-react'
-import { FormattedMessage } from 'react-intl'
+import { Modal, Dropdown, Divider } from 'semantic-ui-react'
+import { FormattedMessage, useIntl } from 'react-intl'
 import { ButtonGroup, Button } from 'react-bootstrap'
 import { getMetadata } from 'Utilities/redux/metadataReducer'
 import useWindowDimensions from 'Utilities/windowDimensions'
 import { Link } from 'react-router-dom'
-import { updateExerciseSettings } from 'Utilities/redux/userReducer'
+import { updateExerciseSettings, updateExerciseTemplate } from 'Utilities/redux/userReducer'
 import { setNotification } from 'Utilities/redux/notificationReducer'
 import { sidebarSetOpen } from 'Utilities/redux/sidebarReducer'
+import { getGroups } from 'Utilities/redux/groupsReducer'
 import { learningLanguageSelector } from 'Utilities/common'
 
 const SettingsModal = ({ trigger }) => {
   const dispatch = useDispatch()
+  const intl = useIntl()
   const { concepts, pending } = useSelector(({ metadata }) => metadata)
+  const { groups, pending: groupsPending } = useSelector(({ groups }) => groups)
+  const { exercise_setting_template: activeTemplate } = useSelector(({ user }) => (
+    user.data.user))
   const learningLanguage = useSelector(learningLanguageSelector)
   const [open, setOpen] = useState(false)
 
@@ -23,6 +28,10 @@ const SettingsModal = ({ trigger }) => {
       dispatch(getMetadata(learningLanguage))
     }
   }, [learningLanguage])
+
+  useEffect(() => {
+    if (!groupsPending) dispatch(getGroups())
+  }, [])
 
   const levels = []
   if (concepts) {
@@ -86,6 +95,26 @@ const SettingsModal = ({ trigger }) => {
     dispatch(sidebarSetOpen(false))
   }
 
+  const templateOptions = [
+    {
+      key: 'custom',
+      text: intl.formatMessage({ id: 'personal-settings' }),
+      value: 'custom',
+    },
+  ]
+
+  groups.forEach(group => templateOptions.push(
+    {
+      key: group.group_id,
+      text: group.groupName,
+      value: group.group_id,
+    },
+  ))
+
+  const handleTemplateChange = (newValue) => {
+    dispatch(updateExerciseTemplate(newValue))
+  }
+
   const smallscreen = useWindowDimensions().width < 500
 
   return (
@@ -94,10 +123,29 @@ const SettingsModal = ({ trigger }) => {
         <FormattedMessage id="learning-settings" />
       </Modal.Header>
       <Modal.Content style={{ display: 'flex', flexDirection: 'column' }}>
-        <span className="label">
-          <FormattedMessage id="Level" />
+        <label htmlFor="settings-template-selector" className="label">
+          <FormattedMessage id="choose-settings-template" />
+        </label>
+        <Dropdown
+          id="settings-template-selector"
+          selection
+          options={templateOptions}
+          value={activeTemplate}
+          onChange={(e, data) => handleTemplateChange(data.value)}
+        />
+        <span className="additional-info">
+          <FormattedMessage id="choose-settings-template-info" />
         </span>
-        <ButtonGroup name="difficultyButtons" size="md">
+
+        <Divider />
+
+        <h2 style={{ fontSize: '17px', fontWeight: '550' }}>
+          <FormattedMessage id="personal-settings" />
+        </h2>
+        <label className="label" htmlFor="difficultyButtons">
+          <FormattedMessage id="Level" />
+        </label>
+        <ButtonGroup name="difficultyButtons" id="difficultyButtons" size="md">
           {levels.sort().map(level => <Button key={level} onClick={() => handleLevelSelect(level)}>{level}</Button>)}
         </ButtonGroup>
         {!smallscreen && (

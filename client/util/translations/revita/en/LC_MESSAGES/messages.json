@@ -709,5 +709,8 @@
     "user-exercise-settings": "User exercise settings",
     "show-levels": "Show levels",
     "show-recommended-sites": "Show recommended sites",
-    "hide-recommended-sites": "Hide recommended sites"
+    "hide-recommended-sites": "Hide recommended sites",
+    "choose-settings-template": "Use settings from",
+    "choose-settings-template-info": "Selected settings are applied to private and public stories.",
+    "personal-settings": "Personal settings"
 }

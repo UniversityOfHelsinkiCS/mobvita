@@ -36,6 +36,7 @@ export const updateDictionaryLanguage = language => saveSelf({ last_trans_lang: 
 export const updateExerciseSettings = settings => saveSelf({ exercise_settings: settings })
 export const updateLibrarySelect = library => saveSelf({ last_selected_library: library })
 export const updatePassword = password => saveSelf({ password })
+export const updateExerciseTemplate = template => saveSelf({ exercise_setting_template: template })
 
 export const confirmUser = (token) => {
   const route = `/confirm?token=${token}`
