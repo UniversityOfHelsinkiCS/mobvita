@@ -1,4 +1,5 @@
 import React, { useState } from 'react'
+import { useSelector } from 'react-redux'
 import { Header, Card, Icon, Accordion, List, Progress, Button, Dropdown } from 'semantic-ui-react'
 import { Link } from 'react-router-dom'
 import moment from 'moment'
@@ -7,7 +8,8 @@ import { inProduction, hiddenFeatures } from 'Utilities/common'
 import useWindowDimensions from 'Utilities/windowDimensions'
 import ShareStory from './ShareStory'
 
-const StoryListItem = ({ story, userCanShare }) => {
+const StoryListItem = ({ story, userCanShare, libraryShown }) => {
+  const { groups } = useSelector(({ groups }) => groups)
   const [modalOpen, setModalOpen] = useState(false)
   const icons = {
     high: <div><Icon name="star outline" size="large" style={{ color: 'red' }} /><Icon name="star outline" size="large" style={{ color: 'red' }} /><Icon name="star outline" size="large" style={{ color: 'red' }} /></div>,
@@ -34,6 +36,10 @@ const StoryListItem = ({ story, userCanShare }) => {
       <FormattedMessage id="part-of-story-covered" />
       <Progress />
     </>]
+
+  const showLearningSettingsButton = libraryShown.group
+    && story.group
+    && groups.find(group => group.group_id === story.group.group_id).is_teaching
 
   return (
     <Card
@@ -120,18 +126,22 @@ const StoryListItem = ({ story, userCanShare }) => {
                     <FormattedMessage id="Flashcards" />
                   </Button>
                 </Link>
-                <Button
-                  variant="primary"
-                  style={{ marginRight: '0.5em' }}
-                  as={Link}
-                  to={`/stories/${story._id}/concepts`}
-                >
-                  <FormattedMessage id="learning-settings" />
-                </Button>
                 {userCanShare && !story.public
                   && (
                     <Button onClick={() => setModalOpen(true)} variant="primary" style={{ marginRight: '0.5em' }}>
                       <FormattedMessage id="Share" />
+                    </Button>
+                  )
+                }
+                {showLearningSettingsButton
+                  && (
+                    <Button
+                      variant="primary"
+                      style={{ marginRight: '0.5em' }}
+                      as={Link}
+                      to={`/stories/${story._id}/concepts`}
+                    >
+                      <FormattedMessage id="learning-settings" />
                     </Button>
                   )
                 }
