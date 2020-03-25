@@ -42,6 +42,23 @@
     "import/no-unresolved": "off",
     "react/jsx-filename-extension": "off",
     "react/jsx-one-expression-per-line": "off",
+    "jsx-a11y/label-has-associated-control": [
+      2,
+      {
+        "labelComponents": [
+          "CustomLabel"
+        ],
+        "labelAttributes": [
+          "inputLabel"
+        ],
+        "controlComponents": [
+          "CustomInput"
+        ],
+        "assert": "htmlFor",
+        "depth": 3
+      }
+    ],
+    "jsx-a11y/label-has-for": "off",
     "react/prop-types": [
       1,
       {
