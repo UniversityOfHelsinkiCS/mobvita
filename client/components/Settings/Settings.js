@@ -3,33 +3,35 @@ import { Form } from 'semantic-ui-react'
 import { Button } from 'react-bootstrap'
 import { useDispatch } from 'react-redux'
 import { useIntl } from 'react-intl'
-import { updatePassword } from 'Utilities/redux/userReducer'
+import { changePassword } from 'Utilities/redux/userReducer'
 
 
 export default function Settings() {
   const intl = useIntl()
   const dispatch = useDispatch()
 
+
   const [settings, setSettings] = useState({
-    password: null,
-    passwordAgain: null,
+    newPassword: null,
+    newPasswordAgain: null,
     passwordError: null,
+    currentPassword: null,
   })
 
   const saveSettings = () => {
-    const { password, passwordAgain } = settings
-    if (password === passwordAgain) {
-      dispatch(updatePassword(password))
+    const { newPassword, newPasswordAgain, currentPassword } = settings
+    if (newPassword && currentPassword && (newPassword === newPasswordAgain)) {
+      dispatch(changePassword(currentPassword, newPassword))
       setSettings({
-        ...settings,
-        passwordError: null,
-        password: null,
-        passwordAgain: null,
+        newPassword: '',
+        newPasswordAgain: '',
+        currentPassword: '',
+        passwordError: false,
       })
     } else {
       setSettings({
         ...settings,
-        passwordError: intl.formatMessage({ id: 'passwords-do-not-match' }),
+        passwordError: true,
       })
     }
   }
@@ -43,7 +45,7 @@ export default function Settings() {
     })
   }
 
-  const { password, passwordAgain, passwordError } = settings
+  const { newPassword, newPasswordAgain, currentPassword, passwordError } = settings
 
   return (
     <div className="component-container">
@@ -55,8 +57,9 @@ export default function Settings() {
           <Form.Input
             label={intl.formatMessage({ id: 'new-password' })}
             type="password"
-            name="password"
-            value={password}
+            name="newPassword"
+            value={newPassword}
+            error={passwordError}
             onChange={handleSettingChange}
           />
         </Form.Field>
@@ -64,13 +67,24 @@ export default function Settings() {
           <Form.Input
             label={intl.formatMessage({ id: 'repeat-password' })}
             type="password"
-            name="passwordAgain"
-            value={passwordAgain}
+            name="newPasswordAgain"
+            value={newPasswordAgain}
+            error={passwordError}
+            onChange={handleSettingChange}
+          />
+        </Form.Field>
+        <hr />
+        <Form.Field>
+          <Form.Input
+            label={intl.formatMessage({ id: 'current-password' })}
+            type="password"
+            name="currentPassword"
+            value={currentPassword}
+            error={passwordError}
             onChange={handleSettingChange}
           />
         </Form.Field>
         <div style={{ display: 'flex', flexDirection: 'column' }}>
-          {passwordError && <div style={{ color: 'red' }}>{passwordError}</div>}
 
           <Button
             variant="primary"
