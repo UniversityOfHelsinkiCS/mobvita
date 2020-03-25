@@ -710,5 +710,10 @@
     "hide-recommended-sites": "Piilota sivustosuositukset",
     "choose-settings-template": "Asetusten lähde",
     "choose-settings-template-info": "Valitut asetukset ovat voimassa yksityisissä ja julkisissa harjoituksissa.",
-    "personal-settings": "Omat asetukset"
+    "personal-settings": "Omat asetukset",
+    "join-group": "Liity ryhmään",
+    "add-people-to-group": "Lisää ihmisiä",
+    "summary": "Yhteenveto",
+    "show-group-token": "Näytä ryhmän koodi",
+    "token": "Koodi"
 }

@@ -129,14 +129,14 @@ const GroupView = () => {
           <FormattedMessage id="create-new-group" />
         </Button>
       </div>
-      <CollapsingList header="Teachers">
+      <CollapsingList header={intl.formatMessage({ id: 'Teachers' })}>
         <ListGroup>
           {currentGroup.teachers.map(teacher => (
             <ListGroup.Item key={teacher.userName}>{teacher.userName}</ListGroup.Item>
           ))}
         </ListGroup>
       </CollapsingList>
-      <CollapsingList header="Students">
+      <CollapsingList header={intl.formatMessage({ id: 'Students' })}>
         <ListGroup style={{
           maxHeight: '50vh',
           overflowY: 'auto',
@@ -198,19 +198,19 @@ const GroupView = () => {
               />
             </div>
             {showToken && (
-            <div className="border rounded" style={{ display: 'flex', marginTop: '0.2em', minHeight: '3em' }}>
-              <span style={{ margin: 'auto' }}>{token}</span>
-            </div>
+              <div className="border rounded" style={{ display: 'flex', marginTop: '0.2em', minHeight: '3em' }}>
+                <span style={{ margin: 'auto' }}>{token}</span>
+              </div>
             )}
 
             {summary && (
-            <>
-              <hr />
-              <Summary
-                groupName={currentGroup.groupName}
-                getSummary={(start, end) => dispatch(getSummary(currentGroupId, learningLanguage, start, end))}
-              />
-            </>
+              <>
+                <hr />
+                <Summary
+                  groupName={currentGroup.groupName}
+                  getSummary={(start, end) => dispatch(getSummary(currentGroupId, learningLanguage, start, end))}
+                />
+              </>
             )}
           </>
         )}
