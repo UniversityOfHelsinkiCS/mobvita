@@ -278,14 +278,6 @@ const CurrentPractice = ({ storyId }) => {
     )
   }
 
-  const chunkInput = (chunk) => {
-    if (chunk.length === 1) {
-      return wordInput(chunk[0])
-    }
-    const elements = chunk.map(word => wordInput(word))
-    return <span className="chunk">{elements}</span>
-  }
-
   return (
     <div className="component-container">
       <div style={{ display: 'flex', justifyContent: 'space-between' }}>
@@ -310,7 +302,14 @@ const CurrentPractice = ({ storyId }) => {
               className="practice-container"
               data-cy="practice-view"
             >
-              <Chunks chunkInput={chunkInput} />
+              <Chunks
+                textToSpeech={textToSpeech}
+                answers={answers}
+                audio={audio}
+                setAudio={setAudio}
+                handleAnswerChange={handleAnswerChange}
+                handleMultiselectChange={handleMultiselectChange}
+              />
             </div>
             <Button
               data-cy="check-answer"
