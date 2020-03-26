@@ -12,6 +12,7 @@ import { FormattedMessage, useIntl } from 'react-intl'
 import { Icon } from 'semantic-ui-react'
 import { getSummary } from 'Utilities/redux/groupSummaryReducer'
 import { learningLanguageSelector } from 'Utilities/common'
+import useWindowDimensions from 'Utilities/windowDimensions'
 import AddGroup from './AddGroup'
 import AddToGroup from './AddToGroup'
 import JoinGroup from './JoinGroup'
@@ -31,6 +32,7 @@ const GroupView = () => {
   const learningLanguage = useSelector(learningLanguageSelector)
   const dispatch = useDispatch()
   const history = useHistory()
+  const bigWindow = useWindowDimensions().width >= 630
 
   const { groups, created, pending, token } = useSelector(({ groups }) => groups)
 
@@ -79,7 +81,6 @@ const GroupView = () => {
     )
   }
 
-
   const currentGroup = groups.find(group => group.group_id === currentGroupId)
   if (!currentGroup) {
     return (
@@ -123,13 +124,17 @@ const GroupView = () => {
         <Button variant="info" onClick={() => setJoinGroupOpen(true)}>
           <FormattedMessage id="join-group" />
         </Button>
-        <Button
-          data-cy="create-group-modal"
-          variant="info"
-          onClick={() => setAddGroupOpen(true)}
-        >
-          <FormattedMessage id="create-new-group" />
-        </Button>
+        {bigWindow
+          && (
+            <Button
+              data-cy="create-group-modal"
+              variant="info"
+              onClick={() => setAddGroupOpen(true)}
+            >
+              <FormattedMessage id="create-new-group" />
+            </Button>
+          )
+        }
       </div>
       <CollapsingList header={intl.formatMessage({ id: 'Teachers' })}>
         <ListGroup>
@@ -161,7 +166,7 @@ const GroupView = () => {
           ))}
         </ListGroup>
       </CollapsingList>
-      {currentGroup.is_teaching
+      {currentGroup.is_teaching && bigWindow
         && (
           <>
             <div className="group-controls padding-top-1">
