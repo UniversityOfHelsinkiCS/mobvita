@@ -46,8 +46,8 @@ const Flashcard = ({ card, cardIndex, setSwipeIndex }) => {
 
     recordFlashcardAnswer(inputLanguage, outputLanguage, answerDetails)
 
-    flipCard()
     setAnswerCorrect(correct)
+    flipCard()
   }
 
   const hintText = hint && hint[0] && hint[0].hint
@@ -71,8 +71,9 @@ const Flashcard = ({ card, cardIndex, setSwipeIndex }) => {
         noCards={noCards}
         hint={hintText}
         id={_id}
+        frontside
       >
-        <h2 data-cy="flashcard-title">{lemma}</h2>
+        <h2 data-cy="flashcard-title" className="flashcard-title">{lemma}</h2>
       </FlashcardSide>
       <FlashcardSide
         answerChecked={answerChecked}
@@ -84,7 +85,9 @@ const Flashcard = ({ card, cardIndex, setSwipeIndex }) => {
         setSwipeIndex={setSwipeIndex}
         id={_id}
       >
-        <ul className="flashcard-translations">{translations}</ul>
+        <div className="flashcard-translations">
+          <ul>{translations}</ul>
+        </div>
       </FlashcardSide>
     </ReactCardFlip>
   )
