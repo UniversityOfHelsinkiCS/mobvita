@@ -75,6 +75,7 @@
     "react-redux": "^7.2.0",
     "react-router": "^5.1.2",
     "react-router-dom": "^5.1.2",
+    "react-simple-keyboard": "^2.2.46",
     "react-swipeable": "^5.4.0",
     "react-swipeable-views": "^0.13.9",
     "react-toastify": "^5.5.0",

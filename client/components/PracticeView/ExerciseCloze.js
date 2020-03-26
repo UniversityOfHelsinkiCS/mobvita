@@ -3,7 +3,7 @@ import { useSelector } from 'react-redux'
 import { getTextWidth, dictionaryLanguageSelector } from 'Utilities/common'
 import Tooltip from './Tooltip'
 
-const ExerciseCloze = ({ word, handleChange, handleClick, value }) => {
+const ExerciseCloze = ({ word, handleChange, handleClick, value, setActiveInput }) => {
   const [className, setClassName] = useState('cloze untouched')
   const [touched, setTouched] = useState(false)
   const [disabled, setDisabled] = useState(false)
@@ -51,6 +51,13 @@ const ExerciseCloze = ({ word, handleChange, handleClick, value }) => {
     }, 100)
   }
 
+  const handleFocus = () => {
+    setShow(!show)
+    setActiveInput(word.ID)
+  }
+
+  console.log(value)
+
   return (
     <Tooltip placement="top" trigger="none" onVisibilityChange={setShow} tooltipShown={show} closeOnOutOfBoundaries tooltip={tooltip} additionalClassnames="clickable">
       <input
@@ -59,10 +66,10 @@ const ExerciseCloze = ({ word, handleChange, handleClick, value }) => {
         disabled={disabled}
         key={word.ID}
         placeholder={`${word.base || word.bases}`}
-        value={value}
+        value={value || ''}
         onChange={changeValue}
         onBlur={handleDelayedBlur}
-        onFocus={() => setShow(!show)}
+        onFocus={handleFocus}
         className={className}
         style={{
           width: ((word.surface > word.base) ? getTextWidth(word.surface) : getTextWidth(word.base)),

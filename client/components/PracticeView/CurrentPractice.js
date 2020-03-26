@@ -3,6 +3,9 @@ import { useSelector, useDispatch } from 'react-redux'
 import { getCurrentSnippet, getNextSnippet, postAnswers, resetCurrentSnippet } from 'Utilities/redux/snippetsReducer'
 import { getTranslationAction, clearTranslationAction } from 'Utilities/redux/translationReducer'
 import { capitalize, learningLanguageSelector, translatableLanguages, newCapitalize } from 'Utilities/common'
+import Keyboard from 'react-simple-keyboard'
+import 'react-simple-keyboard/build/css/index.css'
+
 
 import PreviousSnippets from 'Components/PracticeView/PreviousSnippets'
 import ExerciseCloze from 'Components/PracticeView/ExerciseCloze'
@@ -23,6 +26,10 @@ const CurrentPractice = ({ storyId }) => {
   const [touchedIDs, setTouchedIds] = useState([])
   const [touched, setTouched] = useState(0)
   const [attempt, setAttempts] = useState(0)
+
+  const [activeInput, setActiveInput] = useState(null)
+  const [inputValues, setInputValues] = useState({})
+
   const learningLanguage = useSelector(learningLanguageSelector)
   const dictionaryLanguage = useSelector(({ user }) => user.data.user.last_trans_language)
   const [exerciseCount, setExerciseCount] = useState(0)
@@ -243,6 +250,7 @@ const CurrentPractice = ({ storyId }) => {
           tabIndex={word.ID}
           handleChange={handleAnswerChange}
           handleClick={textToSpeech}
+          setActiveInput={setActiveInput}
           value={usersAnswer}
           key={word.ID}
           word={word}
@@ -263,10 +271,12 @@ const CurrentPractice = ({ storyId }) => {
     return (
       <ExerciseCloze
         tabIndex={word.ID}
-        handleChange={handleAnswerChange}
+        handleChange={setInputValues}
         handleClick={textToSpeech}
+        setActiveInput={setActiveInput}
         key={word.ID}
-        value={usersAnswer}
+        value={inputValues[word.ID]}
+        values={inputValues}
         word={word}
       />
     )
@@ -348,6 +358,11 @@ const CurrentPractice = ({ storyId }) => {
           </div>
         )
       }
+
+      <Keyboard
+        inputName={activeInput}
+        onChangeAll={input => setInputValues(input)}
+      />
     </div>
   )
 }
