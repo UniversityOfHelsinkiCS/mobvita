@@ -5,9 +5,6 @@ import { getTranslationAction, clearTranslationAction } from 'Utilities/redux/tr
 import { capitalize, learningLanguageSelector, translatableLanguages, newCapitalize } from 'Utilities/common'
 
 import PreviousSnippets from 'Components/PracticeView/PreviousSnippets'
-import ExerciseCloze from 'Components/PracticeView/ExerciseCloze'
-import ExerciseMultipleChoice from 'Components/PracticeView/ExerciseMultipleChoice'
-import ExerciseHearing from 'Components/PracticeView/ExerciseHearing'
 import { FormattedMessage } from 'react-intl'
 import { getSelf } from 'Utilities/redux/userReducer'
 import { Button, Spinner } from 'react-bootstrap'
@@ -219,63 +216,6 @@ const CurrentPractice = ({ storyId }) => {
       },
     }
     setAnswers(newAnswers)
-  }
-
-  const wordInput = (word) => {
-    if (!word.id && !word.lemmas) return word.surface
-    if (!word.id) {
-      return (
-        <span
-          role="button"
-          tabIndex={-1}
-          key={word.ID}
-          className="word-interactive"
-          onKeyDown={() => textToSpeech(word.surface, word.lemmas, word.ID)}
-          onClick={() => textToSpeech(word.surface, word.lemmas, word.ID)}
-        >
-          {word.surface}
-        </span>
-      )
-    }
-
-    const usersAnswer = answers[word.ID] ? answers[word.ID].users_answer : ''
-
-    if (word.listen) {
-      if (!audio.includes(word.ID.toString())) {
-        setAudio(audio.concat(word.ID.toString()))
-      }
-      return (
-        <ExerciseHearing
-          tabIndex={word.ID}
-          handleChange={handleAnswerChange}
-          handleClick={textToSpeech}
-          value={usersAnswer}
-          key={word.ID}
-          word={word}
-        />
-      )
-    }
-    if (word.choices) {
-      return (
-        <ExerciseMultipleChoice
-          tabIndex={word.ID}
-          handleChange={handleMultiselectChange}
-          key={word.ID}
-          value={usersAnswer}
-          word={word}
-        />
-      )
-    }
-    return (
-      <ExerciseCloze
-        tabIndex={word.ID}
-        handleChange={handleAnswerChange}
-        handleClick={textToSpeech}
-        key={word.ID}
-        value={usersAnswer}
-        word={word}
-      />
-    )
   }
 
   return (
