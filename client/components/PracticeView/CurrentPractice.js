@@ -33,12 +33,18 @@ const CurrentPractice = ({ storyId }) => {
   const { snippets } = useSelector(({ snippets }) => ({ snippets }))
   const { story } = useSelector(({ stories }) => ({ story: stories.focused }))
   const answersPending = useSelector(({ snippets }) => snippets.answersPending)
+  const currentSnippetId = useSelector(({ snippets }) => {
+    if (!snippets.focused) return -1
+
+    const { snippetid } = snippets.focused
+    return snippetid[snippetid.length - 1]
+  })
 
   const [finished, setFinished] = useState(false)
 
   let snippetProgress = ''
   if (snippets.focused) {
-    snippetProgress = finished ? snippets.focused.snippetid[0] + 1 : snippets.focused.snippetid[0]
+    snippetProgress = finished ? currentSnippetId + 1 : currentSnippetId
   }
 
   useEffect(() => {
@@ -105,7 +111,7 @@ const CurrentPractice = ({ storyId }) => {
       setOptions({})
       setTouched(0)
       setAttempts(0)
-      const currentSnippetId = snippets.focused.snippetid[0]
+
       if (snippets.focused.total_num !== currentSnippetId + 1 || finished) {
         dispatch(getNextSnippet(storyId, currentSnippetId))
       } else {
@@ -128,7 +134,7 @@ const CurrentPractice = ({ storyId }) => {
     const answersObj = {
       starttime,
       story_id: storyId,
-      snippet_id: [snippetid[0]],
+      snippet_id: snippetid,
       touched,
       untouched: exerciseCount - touched,
       attempt,
@@ -143,7 +149,7 @@ const CurrentPractice = ({ storyId }) => {
 
   const startOver = async () => {
     setAnswers({})
-    await dispatch(getNextSnippet(storyId, snippets.focused.snippetid[0]))
+    await dispatch(getNextSnippet(storyId, currentSnippetId))
     setFinished(false)
     setProgress(0)
   }

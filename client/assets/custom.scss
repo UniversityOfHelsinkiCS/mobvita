@@ -322,6 +322,10 @@ body {
   }
 }
 
+.column-sort {
+  cursor: pointer;
+}
+
 .group-container {
   max-width: 1024px;
   margin: auto;
@@ -519,6 +523,7 @@ body {
     margin: auto;
   }
 }
+
 
 
 .tooltip { //Overwrites react-popper-tooltip styles.
