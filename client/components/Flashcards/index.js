@@ -39,6 +39,7 @@ const Flashcards = ({ match }) => {
   }
 
   const cardIndex = `${swipeIndex + 1} / ${cards.length}`
+  const noCards = cards.length < 2
 
   return (
     <div className="component-container">
@@ -65,12 +66,13 @@ const Flashcards = ({ match }) => {
               setSwipeIndex={setSwipeIndex}
             />
           ))}
-          <FlashcardEndView handleNewDeck={handleNewDeck} />
+          {!noCards
+          && <FlashcardEndView handleNewDeck={handleNewDeck} />}
         </SwipeableViews>
         <button
           type="button"
           onClick={() => handleIndexChange(swipeIndex + 1)}
-          disabled={swipeIndex === cards.length}
+          disabled={swipeIndex === cards.length || noCards}
           className="flashcard-arrow-button"
           style={{ marginLeft: 0 }}
         >
