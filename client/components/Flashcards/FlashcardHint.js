@@ -9,7 +9,10 @@ const FlashcardHint = ({ hint }) => {
   if (!hint) return null
 
   return (
-    <>
+    <div className="flashcard-hint">
+      <Collapse in={open} style={{ overflow: 'auto' }}>
+        <p dangerouslySetInnerHTML={{ __html: hint }} />
+      </Collapse>
       <button
         type="button"
         className="flashcard-blended-input flashcard-hint-button"
@@ -17,12 +20,9 @@ const FlashcardHint = ({ hint }) => {
       >
         <FormattedMessage id="Hint" />
         {'  '}
-        {open ? <Icon name="caret down" /> : <Icon name="caret left" />}
+        {open ? <Icon name="caret up" /> : <Icon name="caret left" />}
       </button>
-      <Collapse in={open}>
-        <p dangerouslySetInnerHTML={{ __html: hint }} />
-      </Collapse>
-    </>
+    </div>
   )
 }
 

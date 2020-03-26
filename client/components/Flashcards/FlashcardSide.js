@@ -27,6 +27,7 @@ const FlashcardSide = ({
   children,
   hint,
   id,
+  frontside,
 }) => {
   const dispatch = useDispatch()
   const learningLanguage = useSelector(learningLanguageSelector)
@@ -68,16 +69,20 @@ const FlashcardSide = ({
               <FlashcardDelete id={id} />
             </div>
             <div className="flashcard-text-container">
-              {children}
               <FlashcardHint hint={hint} />
+              {children}
             </div>
             {!sameLanguage
               && (
                 <div className="flashcard-input-and-result-container">
-                  <FlashcardInput
-                    answerChecked={answerChecked}
-                    checkAnswer={checkAnswer}
-                  />
+                  {frontside
+                    && (
+                      <FlashcardInput
+                        answerChecked={answerChecked}
+                        checkAnswer={checkAnswer}
+                      />
+                    )
+                  }
                   <FlashcardResult answerCorrect={answerCorrect} />
                 </div>
               )
@@ -86,7 +91,7 @@ const FlashcardSide = ({
         ) : (
           <div
             data-cy="no-flashcards-text"
-            className="flashcard-text-container"
+            className="flashcard-no-cards"
           >
             <p>
               <FormattedMessage id="no-flashcards-yet-when-you-practice-a-story-and-click-on-unfamiliar-words-they-will-be-added-to-your" />
