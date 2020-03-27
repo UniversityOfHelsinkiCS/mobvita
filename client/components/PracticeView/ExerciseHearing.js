@@ -1,6 +1,8 @@
 import React, { createRef, useState, useEffect } from 'react'
+import { useDispatch } from 'react-redux'
 import { Icon } from 'semantic-ui-react'
 import { getTextWidth } from 'Utilities/common'
+import { setFocusedWord } from 'Utilities/redux/practiceReducer'
 
 
 const ExerciseHearing = ({ word, handleClick, handleChange, value }) => {
@@ -8,6 +10,8 @@ const ExerciseHearing = ({ word, handleClick, handleChange, value }) => {
   const [touched, setTouched] = useState(false)
   const [focusTimeout, setFocusTimeout] = useState(false)
   const inputRef = createRef(null)
+
+  const dispatch = useDispatch()
 
   const { isWrong, tested } = word
 
@@ -27,6 +31,7 @@ const ExerciseHearing = ({ word, handleClick, handleChange, value }) => {
   }
 
   const handleInputFocus = () => {
+    dispatch(setFocusedWord(word))
     if (!focusTimeout) {
       handleClick(word.surface, '')
       setFocusTimeout(true)
@@ -41,7 +46,7 @@ const ExerciseHearing = ({ word, handleClick, handleChange, value }) => {
       setClassname('hearing touched')
       setTouched(true)
     }
-    handleChange(e, word)
+    handleChange(e.target.value, word)
   }
 
   return (

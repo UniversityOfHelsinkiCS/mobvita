@@ -62,6 +62,7 @@ describe('Mobvita', function () {
   })
 
   it('can log in as anonymous', function () {
+    cy.reload()
     cy.get('[data-cy=login-anon]')
       .click()
     cy.get('[data-cy=choose-lang]')
@@ -118,10 +119,10 @@ describe('Mobvita', function () {
       cy.get('[class=checkbox-group]').eq(1).children()
         .then(children => {
           children[2].click()
-          children[4].click()
+          children[3].click()
         })
 
-      cy.get("[data-cy=start-random]").click()
+      cy.get("[data-cy=start-random]", { timeout: 20000 }).click()
     })
 
     it("cant start filtered practice with 0 stories", function () {

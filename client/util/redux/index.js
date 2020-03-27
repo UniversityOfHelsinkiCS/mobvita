@@ -16,6 +16,7 @@ import groups from './groupsReducer'
 import share from './shareReducer'
 import metadata from './metadataReducer'
 import summary from './groupSummaryReducer'
+import practice from './practiceReducer'
 
 const rootReducer = combineReducers({
   stories,
@@ -34,6 +35,7 @@ const rootReducer = combineReducers({
   share,
   metadata,
   summary,
+  practice,
 })
 
 export default (state, action) => (

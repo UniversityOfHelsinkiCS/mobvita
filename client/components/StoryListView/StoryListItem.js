@@ -37,8 +37,9 @@ const StoryListItem = ({ story, userCanShare, libraryShown }) => {
       <Progress />
     </>]
 
-  const showLearningSettingsButton = libraryShown.group
-    && story.group
+  const inGroupLibrary = libraryShown.group && story.group
+
+  const showLearningSettingsButton = inGroupLibrary
     && groups.find(group => group.group_id === story.group.group_id).is_teaching
 
   return (
@@ -86,7 +87,7 @@ const StoryListItem = ({ story, userCanShare, libraryShown }) => {
                       to={`/flashcards/${story._id}/`}
                       icon="id card"
                     />
-                    {userCanShare && !story.public && (
+                    {userCanShare && !story.public && !inGroupLibrary && (
                       <Dropdown.Item
                         text={<FormattedMessage id="Share" />}
                         onClick={() => setModalOpen(true)}
@@ -126,7 +127,7 @@ const StoryListItem = ({ story, userCanShare, libraryShown }) => {
                     <FormattedMessage id="Flashcards" />
                   </Button>
                 </Link>
-                {userCanShare && !story.public
+                {userCanShare && !story.public && !inGroupLibrary
                   && (
                     <Button onClick={() => setModalOpen(true)} variant="primary" style={{ marginRight: '0.5em' }}>
                       <FormattedMessage id="Share" />

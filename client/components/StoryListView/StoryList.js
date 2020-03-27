@@ -5,7 +5,7 @@ import { Placeholder, Card, Search, Select } from 'semantic-ui-react'
 import StoryListItem from 'Components/StoryListView/StoryListItem'
 import { FormattedMessage, useIntl } from 'react-intl'
 import CheckboxGroup from 'Components/CheckboxGroup'
-import { capitalize, learningLanguageSelector } from 'Utilities/common'
+import { capitalize } from 'Utilities/common'
 import { getGroups } from 'Utilities/redux/groupsReducer'
 import { List, WindowScroller } from 'react-virtualized'
 import { updateLibrarySelect } from 'Utilities/redux/userReducer'
@@ -154,22 +154,6 @@ const StoryList = () => {
     .map(([key]) => capitalize(key))
 
   const libraryFilteredStories = searchedStories.filter((story) => {
-    // if (story.public) {
-    //   return librariesToShow.includes('Public')
-    // }
-
-    // if (story.sharedwith && story.sharedwith.includes(user.oid)) {
-    //   return librariesToShow.includes('Private')
-    // }
-
-    // if (story.user !== user.oid) {
-    //   if (group === 'all') return librariesToShow.includes('Group')
-    //   return story.group.group_id === group
-    // }
-
-    // return librariesToShow.includes('Private')
-
-
     if (story.public) {
       return librariesToShow.includes('Public')
     }

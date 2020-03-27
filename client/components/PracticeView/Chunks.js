@@ -2,7 +2,17 @@ import React, { useRef, useState, useEffect } from 'react'
 import { useSelector } from 'react-redux'
 import { Spinner } from 'react-bootstrap'
 
-const Chunks = ({ chunkInput }) => {
+import WordInput from './WordInput'
+
+const ChunkInput = ({ chunk, ...props }) => {
+  if (chunk.length === 1) {
+    return <WordInput word={chunk[0]} {...props} />
+  }
+  const elements = chunk.map(word => <WordInput key={word.ID} word={word} {...props} />)
+  return <span className="chunk">{elements}</span>
+}
+
+const Chunks = (props) => {
   const pending = useSelector(({ snippets }) => snippets.pending)
   const chunksComponent = useRef(null)
   const [previousHeight, setPreviousHeight] = useState(0)
@@ -44,7 +54,7 @@ const Chunks = ({ chunkInput }) => {
 
   return (
     <div ref={chunksComponent}>
-      {chunks.map(chunk => chunkInput(chunk))}
+      {chunks.map(chunk => <ChunkInput chunk={chunk} {...props} />)}
     </div>
   )
 }
