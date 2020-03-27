@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState, useRef } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { useHistory } from 'react-router-dom'
 import { getGroups, removeFromGroup, getGroupToken } from 'Utilities/redux/groupsReducer'
@@ -33,6 +33,8 @@ const GroupView = () => {
   const dispatch = useDispatch()
   const history = useHistory()
   const bigWindow = useWindowDimensions().width >= 630
+
+  const tokenElem = useRef(null)
 
   const { groups, created, pending, token } = useSelector(({ groups }) => groups)
 
@@ -166,6 +168,24 @@ const GroupView = () => {
           ))}
         </ListGroup>
       </CollapsingList>
+      {currentGroup.is_teaching && !bigWindow
+        && (
+          <>
+            <Button className="auto-right" onClick={handleShowToken}>
+              <FormattedMessage id="show-group-token" />
+            </Button>
+            {showToken && (
+            <div className="border rounded" style={{ display: 'flex', marginTop: '0.2em', minHeight: '3em', flexDirection: 'column' }}>
+              <div
+                ref={tokenElem}
+                style={{ padding: '0.5em', margin: 'auto', wordBreak: 'break-all' }}
+              >
+                {token}
+              </div>
+            </div>
+            )}
+          </>
+        )}
       {currentGroup.is_teaching && bigWindow
         && (
           <>
@@ -194,6 +214,7 @@ const GroupView = () => {
                   >
                     <Icon name="trash alternate outline" /> {intl.formatMessage({ id: 'delete-group' })}
                   </Button>
+
                 )}
               />
             </div>
