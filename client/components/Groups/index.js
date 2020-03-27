@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useRef } from 'react'
+import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { useHistory } from 'react-router-dom'
 import { getGroups, removeFromGroup, getGroupToken } from 'Utilities/redux/groupsReducer'
@@ -33,8 +33,6 @@ const GroupView = () => {
   const dispatch = useDispatch()
   const history = useHistory()
   const bigWindow = useWindowDimensions().width >= 630
-
-  const tokenElem = useRef(null)
 
   const { groups, created, pending, token } = useSelector(({ groups }) => groups)
 
