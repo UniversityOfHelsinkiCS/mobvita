@@ -85,7 +85,7 @@ describe('flashcards', function () {
 
     it('can get to the next card', function () {
       cy.get('[data-cy=flashcard-title]').eq(0).as('title').then(() => {
-        cy.get('.flashcard-arrow-button').eq(1).click()
+        cy.get('.flashcard-arrow-button').eq(0).click()
         cy.get('[data-cy=flashcard-title]').eq(1).should('not.eq', this.title.text())
       })
     })
