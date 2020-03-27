@@ -1,4 +1,5 @@
 import React, { useEffect } from 'react'
+import { useSelector } from 'react-redux'
 
 import ExerciseCloze from 'Components/PracticeView/ExerciseCloze'
 import ExerciseMultipleChoice from 'Components/PracticeView/ExerciseMultipleChoice'
@@ -7,12 +8,21 @@ import ExerciseHearing from 'Components/PracticeView/ExerciseHearing'
 const WordInput = ({
   word,
   textToSpeech,
-  answers,
   audio,
   setAudio,
   handleAnswerChange,
   handleMultiselectChange,
 }) => {
+  const { answers } = useSelector(({ practice }) => practice)
+
+  useEffect(() => {
+    if (word.listen) {
+      if (!audio.includes(word.ID.toString())) {
+        setAudio(audio.concat(word.ID.toString()))
+      }
+    }
+  }, [word])
+
   if (!word.id && !word.lemmas) return word.surface
   if (!word.id) {
     return (
@@ -28,14 +38,6 @@ const WordInput = ({
       </span>
     )
   }
-  useEffect(() => {
-    if (word.listen) {
-      if (!audio.includes(word.ID.toString())) {
-        setAudio(audio.concat(word.ID.toString()))
-      }
-    }
-  }, [word])
-
 
   const usersAnswer = answers[word.ID] ? answers[word.ID].users_answer : ''
 

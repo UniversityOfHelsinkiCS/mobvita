@@ -8,7 +8,7 @@ const ChunkInput = ({ chunk, ...props }) => {
   if (chunk.length === 1) {
     return <WordInput word={chunk[0]} {...props} />
   }
-  const elements = chunk.map(word => <WordInput word={word} {...props} />)
+  const elements = chunk.map(word => <WordInput key={word.ID} word={word} {...props} />)
   return <span className="chunk">{elements}</span>
 }
 

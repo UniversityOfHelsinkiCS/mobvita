@@ -1,15 +1,19 @@
 import React, { useState, useEffect, useRef } from 'react'
-import { useSelector } from 'react-redux'
+import { useSelector, useDispatch } from 'react-redux'
 import { getTextWidth, dictionaryLanguageSelector } from 'Utilities/common'
+import { setFocusedWord } from 'Utilities/redux/practiceReducer'
 import Tooltip from './Tooltip'
 
-const ExerciseCloze = ({ word, handleChange, handleClick, value }) => {
+const ExerciseCloze = ({ word, value, handleChange, handleClick }) => {
   const [className, setClassName] = useState('cloze untouched')
   const [touched, setTouched] = useState(false)
   const [disabled, setDisabled] = useState(false)
   const dictionaryLanguage = useSelector(dictionaryLanguageSelector)
   const { isWrong, tested } = word
   const [show, setShow] = useState(false)
+
+
+  const dispatch = useDispatch()
 
   const handleTooltipClick = () => handleClick(word.base || word.bases, word.lemmas)
 
@@ -18,7 +22,7 @@ const ExerciseCloze = ({ word, handleChange, handleClick, value }) => {
       setTouched(true)
       setClassName('cloze touched')
     }
-    handleChange(e, word)
+    handleChange(e.target.value, word)
   }
 
   useEffect(() => {
@@ -51,6 +55,11 @@ const ExerciseCloze = ({ word, handleChange, handleClick, value }) => {
     }, 100)
   }
 
+  const handleFocus = () => {
+    setShow(!show)
+    dispatch(setFocusedWord(word))
+  }
+
   return (
     <Tooltip placement="top" trigger="none" onVisibilityChange={setShow} tooltipShown={show} closeOnOutOfBoundaries tooltip={tooltip} additionalClassnames="clickable">
       <input
@@ -62,7 +71,7 @@ const ExerciseCloze = ({ word, handleChange, handleClick, value }) => {
         value={value}
         onChange={changeValue}
         onBlur={handleDelayedBlur}
-        onFocus={() => setShow(!show)}
+        onFocus={handleFocus}
         className={className}
         style={{
           width: ((word.surface > word.base) ? getTextWidth(word.surface) : getTextWidth(word.base)),

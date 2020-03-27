@@ -3,20 +3,26 @@ import { useSelector, useDispatch } from 'react-redux'
 import { getCurrentSnippet, getNextSnippet, postAnswers, resetCurrentSnippet } from 'Utilities/redux/snippetsReducer'
 import { getTranslationAction, clearTranslationAction } from 'Utilities/redux/translationReducer'
 import { capitalize, learningLanguageSelector, translatableLanguages, newCapitalize } from 'Utilities/common'
+import Keyboard from 'react-simple-keyboard'
+import 'react-simple-keyboard/build/css/index.css'
+import layout from 'simple-keyboard-layouts/build/layouts/russian'
 
 import PreviousSnippets from 'Components/PracticeView/PreviousSnippets'
 import { FormattedMessage } from 'react-intl'
 import { getSelf } from 'Utilities/redux/userReducer'
 import { Button, Spinner } from 'react-bootstrap'
 import { Icon } from 'semantic-ui-react'
+import { setAnswers } from 'Utilities/redux/practiceReducer'
 import Chunks from './Chunks'
 
 
 const CurrentPractice = ({ storyId }) => {
-  const [answers, setAnswers] = useState({})
+  // const [answers, setAnswers] = useState({})
+  const { answers, focusedWord } = useSelector(({ practice }) => practice)
   const [options, setOptions] = useState({})
   const [progress, setProgress] = useState(0)
   const [audio, setAudio] = useState([])
+
   const [touchedIDs, setTouchedIds] = useState([])
   const [touched, setTouched] = useState(0)
   const [attempt, setAttempts] = useState(0)
@@ -90,7 +96,7 @@ const CurrentPractice = ({ storyId }) => {
           },
         }
       }, {})
-      if (Object.keys(initialAnswers).length > 0) setAnswers({ ...answers, ...initialAnswers }) // Append, dont replace
+      if (Object.keys(initialAnswers).length > 0) dispatch(setAnswers({ ...answers, ...initialAnswers })) // Append, dont replace
       setExerciseCount(getExerciseCount())
     }
   }
@@ -145,7 +151,7 @@ const CurrentPractice = ({ storyId }) => {
   }
 
   const startOver = async () => {
-    setAnswers({})
+    dispatch(setAnswers({}))
     await dispatch(getNextSnippet(storyId, currentSnippetId))
     setFinished(false)
     setProgress(0)
@@ -173,11 +179,11 @@ const CurrentPractice = ({ storyId }) => {
   }
 
   const handleRestart = () => {
-    setAnswers({})
+    dispatch(setAnswers({}))
     dispatch(resetCurrentSnippet(storyId))
   }
 
-  const handleAnswerChange = (e, word) => {
+  const handleAnswerChange = (value, word = focusedWord) => {
     const { surface, id, ID, concept } = word
 
     if (!touchedIDs.includes(ID)) {
@@ -189,12 +195,12 @@ const CurrentPractice = ({ storyId }) => {
       ...answers,
       [ID]: {
         correct: surface,
-        users_answer: e.target.value,
+        users_answer: value,
         id,
         concept,
       },
     }
-    setAnswers(newAnswers)
+    dispatch(setAnswers(newAnswers))
   }
 
   const handleMultiselectChange = (event, word, data) => {
@@ -215,7 +221,7 @@ const CurrentPractice = ({ storyId }) => {
         concept,
       },
     }
-    setAnswers(newAnswers)
+    dispatch(setAnswers(newAnswers))
   }
 
   return (
@@ -244,7 +250,6 @@ const CurrentPractice = ({ storyId }) => {
             >
               <Chunks
                 textToSpeech={textToSpeech}
-                answers={answers}
                 audio={audio}
                 setAudio={setAudio}
                 handleAnswerChange={handleAnswerChange}
@@ -291,8 +296,16 @@ const CurrentPractice = ({ storyId }) => {
               aria-valuemax="100"
             />
           </div>
+
         )
       }
+      {learningLanguage === 'Russian' && (
+      <Keyboard
+        layout={layout}
+        inputName={focusedWord.ID}
+        onChangeAll={input => handleAnswerChange(input[focusedWord.ID])}
+      />
+      )}
     </div>
   )
 }
