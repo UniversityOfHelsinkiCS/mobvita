@@ -154,22 +154,6 @@ const StoryList = () => {
     .map(([key]) => capitalize(key))
 
   const libraryFilteredStories = searchedStories.filter((story) => {
-    // if (story.public) {
-    //   return librariesToShow.includes('Public')
-    // }
-
-    // if (story.sharedwith && story.sharedwith.includes(user.oid)) {
-    //   return librariesToShow.includes('Private')
-    // }
-
-    // if (story.user !== user.oid) {
-    //   if (group === 'all') return librariesToShow.includes('Group')
-    //   return story.group.group_id === group
-    // }
-
-    // return librariesToShow.includes('Private')
-
-
     if (story.public) {
       return librariesToShow.includes('Public')
     }
