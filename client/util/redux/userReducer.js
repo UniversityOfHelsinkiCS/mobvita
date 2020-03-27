@@ -63,6 +63,7 @@ export default (state = { data: null }, action) => {
         pending: false,
         error: false,
         errorMessage: null,
+        refreshed: true,
       }
     case 'LOGIN_ATTEMPT':
       return {
