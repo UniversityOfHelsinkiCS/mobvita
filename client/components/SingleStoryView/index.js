@@ -25,13 +25,12 @@ const SingleStoryView = ({ match }) => {
   const handleWordClick = (surfaceWord, wordLemmas, wordId) => {
     // const selectedLocale = localeOptions.find(localeOption => localeOption.code === locale)
     window.responsiveVoice.speak(surfaceWord, `${learningLanguage === 'german' ? 'Deutsch' : capitalize(learningLanguage)} Female`)
-    const storyId = story.exercise_setting.story
     dispatch(
       getTranslationAction(
         capitalize(learningLanguage),
         wordLemmas,
         capitalize(dictionaryLanguage),
-        storyId,
+        id,
         wordId,
       ),
     )
