@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import SwipeableViews from 'react-swipeable-views'
-import { virtualize } from 'react-swipeable-views-utils';
+import { virtualize } from 'react-swipeable-views-utils'
 import { useDispatch, useSelector } from 'react-redux'
 import { Icon } from 'semantic-ui-react'
 import { Spinner } from 'react-bootstrap'
@@ -32,16 +32,17 @@ const Flashcards = ({ match }) => {
     )
   }
 
+  let oldIndex
   const handleIndexChange = (index) => {
-    setSwipeIndex(index)
+    if (swipeIndex < index) setSwipeIndex(index)
+    if (index - oldIndex === 2) setSwipeIndex(swipeIndex)
+    oldIndex = index
   }
 
   const handleNewDeck = () => {
     setSwipeIndex(0)
     dispatch(getFlashcards(learningLanguage, dictionaryLanguage, storyId))
   }
-
-  const cardIndex = `${swipeIndex + 1} / ${cards.length}`
 
   const slideRenderer = ({ key, index }) => {
     if (cards[0].format === 'no-cards') {
@@ -50,6 +51,7 @@ const Flashcards = ({ match }) => {
       )
     }
     if (index < cards.length) {
+      const cardIndex = `${index + 1} / ${cards.length}`
       return (
         <Flashcard
           key={key}
@@ -74,8 +76,9 @@ const Flashcards = ({ match }) => {
           onChangeIndex={handleIndexChange}
           style={{ width: '30em', marginLeft: 'auto' }}
           slideRenderer={slideRenderer}
+          slideCount={cards.length + 1}
           overscanSlideAfter={1}
-          overscanSlideBefore={0}
+          overscanSlideBefore={1}
         />
         <button
           type="button"
