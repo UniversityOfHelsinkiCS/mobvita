@@ -715,5 +715,10 @@
     "add-people-to-group": "Lisää ihmisiä",
     "summary": "Yhteenveto",
     "show-group-token": "Näytä ryhmän koodi",
-    "token": "Koodi"
+    "token": "Koodi",
+    "summary-for-language": "Yhteenveto kielelle",
+    "date-start": "Aloituspäivä",
+    "date-end": "Lopetuspäivä",
+    "download-csv": "Lataa csv",
+    "completed-exercises": "Suoritetut tehtävät"
 }

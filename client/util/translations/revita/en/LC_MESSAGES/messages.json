@@ -717,5 +717,10 @@
     "add-people-to-group": "Add people",
     "summary": "Summary",
     "show-group-token": "Show group token",
-    "token": "Token"
+    "token": "Token",
+    "summary-for-language": "Summary for language",
+    "date-start": "Start date",
+    "date-end": "End date",
+    "download-csv": "Download csv",
+    "completed-exercises": "Completed exercises"
 }
