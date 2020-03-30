@@ -74,6 +74,13 @@ export default (state = { previous: [] }, action) => {
         ...state,
         answersPending: true,
       }
+    case 'GET_SNIPPET_ANSWERS_FAILURE':
+      return {
+        ...state,
+        answersPending: false,
+        error: true,
+        pending: false,
+      }
     case 'GET_SNIPPET_ANSWERS_SUCCESS':
       return {
         ...state,

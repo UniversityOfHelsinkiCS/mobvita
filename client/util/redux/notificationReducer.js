@@ -104,6 +104,12 @@ export default (state = initialState, action) => {
         message: action.response.response.data,
         type: type.error,
       }
+    case 'GET_SNIPPET_ANSWERS_FAILURE':
+      return {
+        message: 'Error while checking your answers, please try again!',
+        type: type.error,
+        options: { autoClose: 10000 },
+      }
     default:
       return state
   }
