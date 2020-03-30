@@ -10,7 +10,7 @@ import {
 } from 'react-bootstrap'
 import { FormattedMessage, useIntl } from 'react-intl'
 import { Icon } from 'semantic-ui-react'
-import { getSummary } from 'Utilities/redux/groupSummaryReducer'
+import { getSummary, getPersonalSummary } from 'Utilities/redux/groupSummaryReducer'
 import { learningLanguageSelector } from 'Utilities/common'
 import useWindowDimensions from 'Utilities/windowDimensions'
 import AddGroup from './AddGroup'
@@ -222,18 +222,33 @@ const GroupView = () => {
               </div>
             )}
 
-            {summary && (
-              <>
-                <hr />
-                <Summary
-                  groupName={currentGroup.groupName}
-                  learningLanguage={learningLanguage}
-                  getSummary={(start, end, summaryLanguage) => dispatch(getSummary(currentGroupId, summaryLanguage, start, end))}
-                />
-              </>
-            )}
+
           </>
-        )}
+        )
+      }
+
+
+      {bigWindow && !currentGroup.is_teaching
+        && (
+          <Button onClick={handleSummary}>
+            <FormattedMessage id="summary" />
+          </Button>
+        )
+      }
+
+
+      {summary && (
+        <>
+          <hr />
+          <Summary
+            groupName={currentGroup.groupName}
+            isTeaching={currentGroup.is_teaching}
+            learningLanguage={learningLanguage}
+            getSummary={(start, end, summaryLanguage) => dispatch(getSummary(currentGroupId, summaryLanguage, start, end))}
+            getPersonalSummary={(start, end, summaryLanguage) => dispatch(getPersonalSummary(summaryLanguage, start, end))}
+          />
+        </>
+      )}
 
 
       <AddToGroup groupId={currentGroupId} isOpen={addToGroupOpen} setOpen={setAddToGroupOpen} />
