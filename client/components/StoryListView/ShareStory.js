@@ -55,6 +55,7 @@ const ShareStory = ({ story, isOpen, setOpen }) => {
           <div>
             <div>
               <FormattedMessage id="share-story-with-a-friend" />
+              <span style={{ color: 'red' }}> (Not implemented yet!)</span>
               <FormControl
                 disabled
                 placeholder={intl.formatMessage({ id: 'enter-email-address' })}
@@ -64,7 +65,6 @@ const ShareStory = ({ story, isOpen, setOpen }) => {
             </div>
 
             <FormControl
-              disabled
               style={{ marginTop: '0.5em' }}
               as="input"
               value={message}
