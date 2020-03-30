@@ -85,10 +85,16 @@ const GroupView = () => {
 
   if (!currentGroup) {
     return (
-      <div className="group-container">
-        <Button variant="info" onClick={() => setJoinGroupOpen(true)}>
+      <div className="group-container nogroups">
+        <h2 id="title"> <FormattedMessage id="Groups" /></h2>
+        <Button id="join-group-button" variant="info" onClick={() => setJoinGroupOpen(true)}>
           <FormattedMessage id="join-group" />
         </Button>
+        <span className="additional-info">
+          <FormattedMessage id="join-group-message" />
+        </span>
+
+        <br />
         <Button
           data-cy="create-group-modal"
           variant="primary"
@@ -96,6 +102,9 @@ const GroupView = () => {
         >
           <FormattedMessage id="create-new-group" />
         </Button>
+        <span className="additional-info">
+          <FormattedMessage id="create-group-message" />
+        </span>
 
         <AddGroup isOpen={addGroupOpen} setOpen={setAddGroupOpen} />
         <JoinGroup isOpen={joinGroupOpen} setOpen={setJoinGroupOpen} />
