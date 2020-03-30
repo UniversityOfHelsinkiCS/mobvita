@@ -173,14 +173,14 @@ const GroupView = () => {
               <FormattedMessage id="show-group-token" />
             </Button>
             {showToken && (
-            <div className="border rounded" style={{ display: 'flex', marginTop: '0.2em', minHeight: '3em', flexDirection: 'column' }}>
-              <div
-                ref={tokenElem}
-                style={{ padding: '0.5em', margin: 'auto', wordBreak: 'break-all' }}
-              >
-                {token}
+              <div className="border rounded" style={{ display: 'flex', marginTop: '0.2em', minHeight: '3em', flexDirection: 'column' }}>
+                <div
+                  ref={tokenElem}
+                  style={{ padding: '0.5em', margin: 'auto', wordBreak: 'break-all' }}
+                >
+                  {token}
+                </div>
               </div>
-            </div>
             )}
           </>
         )}
@@ -227,7 +227,8 @@ const GroupView = () => {
                 <hr />
                 <Summary
                   groupName={currentGroup.groupName}
-                  getSummary={(start, end) => dispatch(getSummary(currentGroupId, learningLanguage, start, end))}
+                  learningLanguage={learningLanguage}
+                  getSummary={(start, end, summaryLanguage) => dispatch(getSummary(currentGroupId, summaryLanguage, start, end))}
                 />
               </>
             )}
