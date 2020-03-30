@@ -174,12 +174,12 @@ export default function Bar({ history }) {
               <Menu.Item style={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-between' }}>
                 <AboutUs
                   trigger={(
-                    <Button onClick={() => menuClickWrapper()} data-cy="about-button" variant="secondary" style={{ flexBasis: '50%' }}>
+                    <Button onClick={() => menuClickWrapper()} data-cy="about-button" variant="secondary" style={{ flexBasis: '50%', marginRight: '0.5em' }}>
                       <FormattedMessage id="About" />
                     </Button>
                   )}
                 />
-                <ContactUs trigger={<Button variant="secondary" onClick={() => menuClickWrapper()} style={{ flexBasis: '50%' }}><FormattedMessage id="Contact" /></Button>} />
+                <ContactUs trigger={<Button variant="secondary" onClick={() => menuClickWrapper()} style={{ flexBasis: '50%', marginRight: '0.5em' }}><FormattedMessage id="Contact" /></Button>} />
                 {user && <Button data-cy="logout" variant="secondary" style={{ flexBasis: '50%' }} onClick={() => menuClickWrapper(signOut)}><FormattedMessage id="sign-out" /></Button>}
               </Menu.Item>
               <TermsAndConditions
