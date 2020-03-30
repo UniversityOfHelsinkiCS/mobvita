@@ -5,10 +5,11 @@ import { Icon } from 'semantic-ui-react'
 import { CSVLink } from 'react-csv'
 import DatePicker from 'react-datepicker'
 import moment from 'moment'
+import { FormattedMessage } from 'react-intl'
+
 import { supportedLearningLanguages, newCapitalize } from '../../util/common'
 
 import 'react-datepicker/dist/react-datepicker.css'
-import { FormattedMessage } from 'react-intl'
 
 
 const PickDate = ({ date, setDate }) => (
@@ -70,22 +71,22 @@ const Summary = ({ groupName, getSummary, learningLanguage }) => {
     .join('_')
     .replace(/[^\w\s-]/gi, '') // only allow letters, undescore and dash
 
-  const filename = `${cleanGroupName}_summary.csv`
+  const filename = `${cleanGroupName}_summary_${summaryLanguage}.csv`
 
   return (
     <>
       <div style={{ display: 'flex', justifyContent: 'space-between', paddingBottom: '1em' }}>
         <div style={{ display: 'flex', justifyContent: 'space-between' }}>
           <div>
-            From:
+            <FormattedMessage id="date-start" />
             <PickDate id="start" date={startDate} setDate={setStartDate} />
           </div>
           <div style={{ marginLeft: '1em', marginRight: '1em' }}>
-            To:
+            <FormattedMessage id="date-end" />
             <PickDate date={endDate} setDate={setEndDate} />
           </div>
           <div>
-            <FormattedMessage id="select-summary-language" />
+            <FormattedMessage id="summary-for-language" />
             <select value={summaryLanguage} onChange={e => setSummaryLanguage(e.target.value)}>
               {supportedLearningLanguages.minor.concat(supportedLearningLanguages.major).map((lang) => {
                 const temp = newCapitalize(lang)
@@ -97,7 +98,9 @@ const Summary = ({ groupName, getSummary, learningLanguage }) => {
             </select>
           </div>
         </div>
-        <CSVLink filename={filename} data={summary}>download csv</CSVLink>
+        <CSVLink filename={filename} data={summary}>
+          <FormattedMessage id="download-csv" />
+        </CSVLink>
       </div>
       {pending ? (
         <div className="spinner-container">
@@ -111,16 +114,16 @@ const Summary = ({ groupName, getSummary, learningLanguage }) => {
                   className="column-sort"
                   onClick={() => handleSort('email')}
                 >
-                  Email
-                <Icon name={sorter.direction.email === 1 ? 'caret up' : 'caret down'} />
+                  <FormattedMessage id="email-address" />
+                  <Icon name={sorter.direction.email === 1 ? 'caret up' : 'caret down'} />
 
                 </th>
                 <th
                   className="column-sort"
                   onClick={() => handleSort('exercises')}
                 >
-                  Completed Exercises
-                <Icon name={sorter.direction.exercises === -1 ? 'caret up' : 'caret down'} />
+                  <FormattedMessage id="completed-exercises" />
+                  <Icon name={sorter.direction.exercises === -1 ? 'caret up' : 'caret down'} />
                 </th>
               </tr>
             </thead>
