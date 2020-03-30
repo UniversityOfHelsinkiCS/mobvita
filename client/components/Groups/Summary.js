@@ -21,7 +21,7 @@ const PickDate = ({ date, setDate }) => (
 )
 
 
-const Summary = ({ groupName, getSummary, learningLanguage }) => {
+const Summary = ({ groupName, isTeaching, getSummary, getPersonalSummary, learningLanguage }) => {
   const [sorter, setSorter] = useState({ field: 'email', direction: { email: 1, exercises: 1 } })
   const [startDate, setStartDate] = useState(moment().subtract(7, 'days').toDate())
   const [endDate, setEndDate] = useState(moment().toDate())
@@ -45,7 +45,11 @@ const Summary = ({ groupName, getSummary, learningLanguage }) => {
   const pending = useSelector(({ summary }) => summary.pending)
 
   useEffect(() => {
-    getSummary(startDate, endDate, summaryLanguage)
+    if (isTeaching) {
+      getSummary(startDate, endDate, summaryLanguage)
+    } else {
+      getPersonalSummary(startDate, endDate, summaryLanguage)
+    }
   }, [startDate, endDate, groupName, summaryLanguage])
 
   if (!summary) {
