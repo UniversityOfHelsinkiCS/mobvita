@@ -6,8 +6,8 @@ import { CSVLink } from 'react-csv'
 import DatePicker from 'react-datepicker'
 import moment from 'moment'
 import { FormattedMessage } from 'react-intl'
+import { capitalize, supportedLearningLanguages, newCapitalize } from '../../util/common'
 
-import { supportedLearningLanguages, newCapitalize } from '../../util/common'
 
 import 'react-datepicker/dist/react-datepicker.css'
 
@@ -23,6 +23,7 @@ const PickDate = ({ date, setDate }) => (
 
 const Summary = ({ groupName, isTeaching, getSummary, getPersonalSummary, learningLanguage }) => {
   const [sorter, setSorter] = useState({ field: 'email', direction: { email: 1, exercises: 1 } })
+  const [columns, setColumns] = useState([])
   const [startDate, setStartDate] = useState(moment().subtract(7, 'days').toDate())
   const [endDate, setEndDate] = useState(moment().toDate())
   const [summaryLanguage, setSummaryLanguage] = useState(learningLanguage)
@@ -32,15 +33,35 @@ const Summary = ({ groupName, isTeaching, getSummary, getPersonalSummary, learni
 
     const { field, direction } = sorter
 
-    if (field === 'email') {
-      return summary.sort((a, b) => direction[field] * a.email.localeCompare(b.email))
+    if (field === 'email' || field === 'username') {
+      return summary.sort((a, b) => direction[field] * a[field].localeCompare(b.email))
     }
-    if (field === 'exercises') {
-      return summary.sort((a, b) => direction[field] * (b.number_of_exercises - a.number_of_exercises))
+    if (field === 'number_of_exercises' || field === 'number_of_snippets') {
+      return summary.sort((a, b) => direction[field] * (b[field] - a[field]))
     }
-
     return summary
   })
+
+  useEffect(() => {
+    if (summary) {
+      const temp = Object.keys(summary[0])
+
+      let directionsObj = {}
+      columns.forEach((column) => {
+        directionsObj = {
+          ...directionsObj,
+          [column]: 1,
+        }
+      })
+
+      setSorter({
+        ...sorter,
+        direction: directionsObj,
+      })
+
+      setColumns(temp)
+    }
+  }, [summary])
 
   const pending = useSelector(({ summary }) => summary.pending)
 
@@ -114,28 +135,21 @@ const Summary = ({ groupName, isTeaching, getSummary, getPersonalSummary, learni
           <Table striped bordered hover>
             <thead>
               <tr>
-                <th
-                  className="column-sort"
-                  onClick={() => handleSort('email')}
-                >
-                  <FormattedMessage id="email-address" />
-                  <Icon name={sorter.direction.email === 1 ? 'caret up' : 'caret down'} />
-
-                </th>
-                <th
-                  className="column-sort"
-                  onClick={() => handleSort('exercises')}
-                >
-                  <FormattedMessage id="completed-exercises" />
-                  <Icon name={sorter.direction.exercises === -1 ? 'caret up' : 'caret down'} />
-                </th>
+                {columns.map(column => (
+                  <th
+                    className="column-sort"
+                    onClick={() => handleSort(column)}
+                  >
+                    {capitalize(column).replace(/_/g, ' ')}
+                    <Icon name={sorter.direction[column] === 1 ? 'caret up' : 'caret down'} />
+                  </th>
+                ))}
               </tr>
             </thead>
             <tbody>
               {summary.map(user => (
                 <tr key={user.email}>
-                  <td>{user.email}</td>
-                  <td>{user.number_of_exercises}</td>
+                  {columns.map(column => <td>{user[column]}</td>)}
                 </tr>
               ))}
             </tbody>
