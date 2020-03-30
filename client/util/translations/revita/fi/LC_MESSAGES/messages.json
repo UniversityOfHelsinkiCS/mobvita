@@ -720,5 +720,7 @@
     "date-start": "Aloituspäivä",
     "date-end": "Lopetuspäivä",
     "download-csv": "Lataa csv",
-    "completed-exercises": "Suoritetut tehtävät"
+    "completed-exercises": "Suoritetut tehtävät",
+    "join-group-message": "Liity opettajien hallinnoimaan ryhmään saadaksesi pääsyn ryhmän jaettuihin tarinoihin.",
+    "create-group-message": "Luo ryhmä jakaaksesi tarinoita ja seurataksesi ryhmäläistesi edistymistä."
 }

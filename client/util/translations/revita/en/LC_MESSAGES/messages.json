@@ -722,5 +722,7 @@
     "date-start": "Start date",
     "date-end": "End date",
     "download-csv": "Download csv",
-    "completed-exercises": "Completed exercises"
+    "completed-exercises": "Completed exercises",
+    "join-group-message": "Join a group maintained by teachers to get access to group stories.",
+    "create-group-message": "Create a new group to share stories and track your students progress."
 }
