@@ -35,6 +35,8 @@ const GroupView = () => {
   const bigWindow = useWindowDimensions().width >= 630
 
   const { groups, created, pending, token } = useSelector(({ groups }) => groups)
+  const currentGroup = groups.find(group => group.group_id === currentGroupId)
+
 
   useEffect(() => {
     dispatch(getGroups())
@@ -47,7 +49,7 @@ const GroupView = () => {
   }, [groups])
 
   useEffect(() => {
-    if (currentGroupId) {
+    if (currentGroupId && currentGroup.is_teaching) {
       dispatch(getGroupToken(currentGroupId))
     }
   }, [currentGroupId])
@@ -81,7 +83,6 @@ const GroupView = () => {
     )
   }
 
-  const currentGroup = groups.find(group => group.group_id === currentGroupId)
   if (!currentGroup) {
     return (
       <div className="group-container">
