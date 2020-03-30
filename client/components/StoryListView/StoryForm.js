@@ -27,7 +27,6 @@ const StoryForm = () => {
       url: storyUrl,
     }
     dispatch(postStory(newStory))
-    dispatch(setNotification('Validating url-address', 'info'))
     setStoryUrl('')
   }
 
