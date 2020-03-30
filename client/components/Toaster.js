@@ -18,7 +18,7 @@ export default function Toaster() {
   const [progressToastId, setProgressToastId] = useState(null)
 
   const { message, type, options, translationId } = useSelector(({ notification }) => notification)
-  const { storyId, progress, error, processingError } = useSelector(({ uploadProgress }) => uploadProgress)
+  const { storyId, progress, error, pending, processingError } = useSelector(({ uploadProgress }) => uploadProgress)
   const learningLanguage = useSelector(learningLanguageSelector)
 
 
@@ -27,7 +27,7 @@ export default function Toaster() {
     toast.done(progressToastId)
 
     dispatch({ type: 'CLEAR_UPLOADPROGRESS' })
-    dispatch(setNotification(errorMessage, 'error', { autoClose: false }))
+    dispatch(setNotification(errorMessage, 'error', { autoClose: 10000 }))
     saveInterval(null)
     setProgressToastId(null)
   }
@@ -36,11 +36,16 @@ export default function Toaster() {
     if (storyId !== null) {
       const progressCheckInterval = setInterval(() => {
         dispatch(getProgress(storyId))
-      }, 2000)
+      }, 5000)
       saveInterval(progressCheckInterval)
     }
   }, [storyId])
 
+  useEffect(() => {
+    if (pending && !storyId) {
+      setProgressToastId(toast('Validating url-address...', { autoClose: false, type: 'info' }))
+    }
+  }, [pending, storyId])
 
   useEffect(() => {
     if (storyId !== null) {
@@ -53,14 +58,17 @@ export default function Toaster() {
       if (progress === 1) {
         clearInterval(interval)
         toast.done(progressToastId)
-        dispatch(
-          getAllStories(learningLanguage, {
-            sort_by: 'date',
-            order: -1,
-          }),
-        )
+        if (!processingError) {
+          dispatch(
+            getAllStories(learningLanguage, {
+              sort_by: 'date',
+              order: -1,
+            }),
+          )
+          dispatch(setNotification('The story is now ready in your private library!', 'success', { autoClose: 10000 }))
+        }
+
         dispatch({ type: 'CLEAR_UPLOADPROGRESS' })
-        dispatch(setNotification('The story is now ready in your private library!', 'success'))
         saveInterval(null)
         setProgressToastId(null)
       }
@@ -68,14 +76,14 @@ export default function Toaster() {
   }, [progress])
 
   useEffect(() => {
-    if (!processingError) return
-    handleError(processingError)
-  }, [processingError])
-
-  useEffect(() => {
-    if (!error) return
-    handleError('Could not fetch process. Please refresh the page.')
-  }, [error])
+    if (!processingError && !error) return
+    if (processingError) {
+      handleError(processingError)
+    } else {
+      toast.dismiss(progressToastId)
+      setProgressToastId(null)
+    }
+  }, [processingError, error])
 
   // Handles messages that come from Redux:
   useEffect(() => {
