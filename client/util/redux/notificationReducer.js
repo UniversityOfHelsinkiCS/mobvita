@@ -21,6 +21,7 @@ export default (state = initialState, action) => {
       return {
         message: action.response.response.data,
         type: type.error,
+        options: { autoClose: 10000 },
       }
     case 'RESET_NOTIFICATION':
       return initialState
