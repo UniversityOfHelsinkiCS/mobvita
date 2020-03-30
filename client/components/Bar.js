@@ -122,7 +122,7 @@ export default function Bar({ history }) {
                     <Button variant="primary" block>
                       <div style={{ display: 'flex', justifyContent: 'space-around', alignItems: 'center' }}>
                         <span><FormattedMessage id="Learning-language" /></span>
-                        {user && user.user.last_used_language && <img style={{ width: '3em', height: '2em' }} src={getLearningLanguageFlag()} alt="learningLanguageFlag" />}
+                        {user && user.user.last_used_language && <img style={{ height: '1.8em', position: 'absolute', left: '2em', border: '1px solid black' }} src={getLearningLanguageFlag()} alt="learningLanguageFlag" />}
                       </div>
                     </Button>
                   </Link>
