@@ -724,5 +724,6 @@
     "download-csv": "Download csv",
     "completed-exercises": "Completed exercises",
     "join-group-message": "Join a group maintained by teachers to get access to group stories.",
-    "create-group-message": "Create a new group to share stories and track your students progress."
+    "create-group-message": "Create a new group to share stories and track your students progress.",
+    "post-answers-error": "Something went wrong while processing your answers. Please try again."
 }
