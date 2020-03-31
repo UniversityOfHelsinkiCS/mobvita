@@ -22,7 +22,7 @@ const PickDate = ({ date, setDate }) => (
 
 
 const Summary = ({ groupName, isTeaching, getSummary, getPersonalSummary, learningLanguage }) => {
-  const [sorter, setSorter] = useState({ field: 'email', direction: { email: 1, exercises: 1 } })
+  const [sorter, setSorter] = useState({})
   const [columns, setColumns] = useState([])
   const [startDate, setStartDate] = useState(moment().subtract(7, 'days').toDate())
   const [endDate, setEndDate] = useState(moment().toDate())
@@ -47,7 +47,7 @@ const Summary = ({ groupName, isTeaching, getSummary, getPersonalSummary, learni
       const temp = Object.keys(summary[0])
 
       let directionsObj = {}
-      columns.forEach((column) => {
+      temp.forEach((column) => {
         directionsObj = {
           ...directionsObj,
           [column]: 1,
@@ -55,7 +55,7 @@ const Summary = ({ groupName, isTeaching, getSummary, getPersonalSummary, learni
       })
 
       setSorter({
-        ...sorter,
+        field: 'email',
         direction: directionsObj,
       })
 
