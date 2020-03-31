@@ -14,6 +14,7 @@ import Login from './AccessControl/Login'
 import GroupView from './Groups/index'
 import Concepts from './Concepts'
 import Settings from './Settings/Settings'
+import ResetPassword from './AccessControl/ResetPassword'
 
 export default () => (
   <Switch>
@@ -21,6 +22,7 @@ export default () => (
       <Redirect to="/home" />
     </Route>
     <Route exact path="/email-confirm/:token" component={EmailConfirm} />
+    <Route exact path="/reset_passord" component={ResetPassword} />
     <Route exact path="/login" component={Login} />
     <Route exact path="/register" component={Register} />
     <ProtectedRoute languageRequired={false} exact path="/learningLanguage" component={LanguageSelectView} />
