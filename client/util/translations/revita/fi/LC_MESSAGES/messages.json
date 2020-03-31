@@ -724,5 +724,6 @@
     "join-group-message": "Liity opettajien hallinnoimaan ryhmään saadaksesi pääsyn ryhmän jaettuihin tarinoihin.",
     "create-group-message": "Luo ryhmä jakaaksesi tarinoita ja seurataksesi ryhmäläistesi edistymistä.",
     "post-answers-error": "Jotain meni vikaan vastausten tarkistamisen kanssa. Ole hyvä ja yritä uudelleen.",
-    "token-copied": "Koodi kopioitu leikepöydälle"
+    "token-copied": "Koodi kopioitu leikepöydälle",
+    "register-to-save-your-progress": "Luo tili ja tallenna edistymisesi"
 }

@@ -110,7 +110,7 @@ export default function Bar({ history }) {
                 {user.user.email === 'anonymous_email' && (
                   <Menu.Item>
                     <div style={{ padding: '1em 0em' }}>
-                      <Link onClick={() => menuClickWrapper()} to="/register"><Button block variant="primary"><FormattedMessage id="register-to-upload-your-own-stories" /></Button></Link>
+                      <Link onClick={() => menuClickWrapper()} to="/register"><Button block variant="primary"><FormattedMessage id="register-to-save-your-progress" /></Button></Link>
                     </div>
                   </Menu.Item>
                 )}
