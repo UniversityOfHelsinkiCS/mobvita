@@ -711,5 +711,6 @@
     "add-people-to-group": "",
     "summary": "",
     "show-group-token": "",
-    "token": ""
+    "token": "",
+    "token-copied": ""
 }

@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { useHistory } from 'react-router-dom'
+import { CopyToClipboard } from 'react-copy-to-clipboard'
 import { getGroups, removeFromGroup, getGroupToken } from 'Utilities/redux/groupsReducer'
 import {
   Dropdown,
@@ -11,6 +12,7 @@ import {
 import { FormattedMessage, useIntl } from 'react-intl'
 import { Icon } from 'semantic-ui-react'
 import { getSummary, getPersonalSummary } from 'Utilities/redux/groupSummaryReducer'
+import { setNotification } from 'Utilities/redux/notificationReducer'
 import { learningLanguageSelector } from 'Utilities/common'
 import useWindowDimensions from 'Utilities/windowDimensions'
 import AddGroup from './AddGroup'
@@ -73,6 +75,10 @@ const GroupView = () => {
 
   const handleShowToken = () => {
     setShowToken(!showToken)
+  }
+
+  const handleTokenCopy = () => {
+    dispatch(setNotification(intl.formatMessage({ id: 'token-copied' }), 'info'))
   }
 
   if (pending) {
@@ -179,16 +185,23 @@ const GroupView = () => {
       {currentGroup.is_teaching && !bigWindow
         && (
           <>
-            <Button className="auto-right" onClick={handleShowToken}>
-              <FormattedMessage id="show-group-token" />
-            </Button>
+            <div className="group-controls padding-top-1">
+              <Button className="auto-right" onClick={handleShowToken} block>
+                <FormattedMessage id="show-group-token" />
+              </Button>
+            </div>
             {showToken && (
-              <div className="border rounded" style={{ display: 'flex', marginTop: '0.2em', minHeight: '3em', flexDirection: 'column' }}>
+              <div className="border rounded" style={{ display: 'flex', marginTop: '0.2em', minHeight: '3em', flexDirection: 'row' }}>
                 <div
                   style={{ padding: '0.5em', margin: 'auto', wordBreak: 'break-all' }}
                 >
                   {token}
                 </div>
+                <CopyToClipboard text={token}>
+                  <Button type="button" onClick={handleTokenCopy}>
+                    <Icon name="copy" size="large" />
+                  </Button>
+                </CopyToClipboard>
               </div>
             )}
           </>
@@ -228,6 +241,11 @@ const GroupView = () => {
             {showToken && (
               <div className="border rounded" style={{ display: 'flex', marginTop: '0.2em', minHeight: '3em' }}>
                 <span style={{ margin: 'auto' }}>{token}</span>
+                <CopyToClipboard text={token}>
+                  <Button type="button" onClick={handleTokenCopy}>
+                    <Icon name="copy" size="large" />
+                  </Button>
+                </CopyToClipboard>
               </div>
             )}
 
