@@ -54,7 +54,7 @@ const Chunks = (props) => {
 
   return (
     <div ref={chunksComponent}>
-      {chunks.map(chunk => <ChunkInput chunk={chunk} {...props} />)}
+      {chunks.map(chunk => <ChunkInput key={chunk[0].ID} chunk={chunk} {...props} />)}
     </div>
   )
 }
