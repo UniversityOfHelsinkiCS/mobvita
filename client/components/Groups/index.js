@@ -78,7 +78,7 @@ const GroupView = () => {
   }
 
   const handleTokenCopy = () => {
-    dispatch(setNotification(intl.formatMessage({ id: 'token-copied' }), 'info'))
+    dispatch(setNotification('token-copied', 'info'))
   }
 
   if (pending) {

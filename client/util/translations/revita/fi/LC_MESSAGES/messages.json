@@ -724,5 +724,14 @@
     "join-group-message": "Liity opettajien hallinnoimaan ryhmään saadaksesi pääsyn ryhmän jaettuihin tarinoihin.",
     "create-group-message": "Luo ryhmä jakaaksesi tarinoita ja seurataksesi ryhmäläistesi edistymistä.",
     "post-answers-error": "Jotain meni vikaan vastausten tarkistamisen kanssa. Ole hyvä ja yritä uudelleen.",
-    "token-copied": "Koodi kopioitu leikepöydälle"
+    "token-copied": "Koodi kopioitu leikepöydälle",
+    "server-issues": "Palvelinvirhe. Yritä myöhemmin uudelleen.",
+    "learning-settings-saved": "Opiskeluasetukset tallennettu",
+    "validating-url": "Validoidaan url-osoitetta...",
+    "processing-story": "Prosessoidaan tarinaasi",
+    "done": "valmis",
+    "failed-to-share-the-story": "Tarinan jakaminen epäonnistui",
+    "group-deleted": "Ryhmä poistettu",
+    "email-sent": "Sähköposti lähetetty",
+    "joined-group": "Liityttiin ryhmään"
 }

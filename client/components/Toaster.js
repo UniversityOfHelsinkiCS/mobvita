@@ -43,16 +43,30 @@ export default function Toaster() {
 
   useEffect(() => {
     if (pending && !storyId) {
-      setProgressToastId(toast('Validating url-address...', { autoClose: false, type: 'info' }))
+      setProgressToastId(
+        toast(intl.formatMessage({ id: 'validating-url' }), { autoClose: false, type: 'info' })
+      )
     }
   }, [pending, storyId])
 
   useEffect(() => {
     if (storyId !== null) {
       if (progressToastId === null) {
-        setProgressToastId(toast(`Processing your story, ${Math.floor((progress * 100))}% done`, { progress, type: 'info' }))
+        setProgressToastId(
+          toast(
+            `${intl.formatMessage({ id: 'processing-story' })}, ${Math.floor((progress * 100))}% ${intl.formatMessage({ id: 'done' })}`,
+            { progress, type: 'info' },
+          ),
+        )
       } else {
-        toast.update(progressToastId, { progress, render: `Processing your story, ${progress * 100}% done`, type: 'info' })
+        toast.update(
+          progressToastId,
+          {
+            progress,
+            render: `${intl.formatMessage({ id: 'processing-story' })}, ${progress * 100}% ${intl.formatMessage({ id: 'done' })}`,
+            type: 'info',
+          },
+        )
       }
 
       if (progress === 1) {
@@ -65,7 +79,12 @@ export default function Toaster() {
               order: -1,
             }),
           )
-          dispatch(setNotification('The story is now ready in your private library!', 'success', { autoClose: 10000 }))
+          dispatch(
+            setNotification(
+              'story-uploaded-successfully',
+              'success', { autoClose: 10000 },
+            ),
+          )
         }
 
         dispatch({ type: 'CLEAR_UPLOADPROGRESS' })
