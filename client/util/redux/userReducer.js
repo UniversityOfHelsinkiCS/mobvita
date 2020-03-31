@@ -47,7 +47,6 @@ export const changePassword = (currentPassword, newPassword) => {
   return callBuilder(route, prefix, 'post', payload)
 }
 
-
 export const confirmUser = (token) => {
   const route = `/confirm?token=${token}`
   const prefix = 'CONFIRM_USER'

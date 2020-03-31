@@ -104,6 +104,17 @@ export default (state = initialState, action) => {
         message: action.response.response.data,
         type: type.error,
       }
+    case 'FORGOT_PASSWORD_SUCCESS':
+      return {
+        message: action.response.response.data,
+        type: type.success,
+      }
+    case 'FORGOT_PASSWORD_FAILURE':
+      return {
+        message: action.response.message,
+        type: type.error,
+      }
+
     case 'GET_SNIPPET_ANSWERS_FAILURE':
       return {
         translationId: 'post-answers-error',

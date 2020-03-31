@@ -2,7 +2,6 @@ import React, { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { confirmUser } from 'Utilities/redux/userReducer'
 import { useHistory } from 'react-router'
-import { Button } from 'react-bootstrap'
 
 const EmailConfirm = ({ match }) => {
   const dispatch = useDispatch()

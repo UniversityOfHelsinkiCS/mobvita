@@ -1,16 +1,18 @@
 import React, { useState, useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { createRealToken, createAnonToken } from 'Utilities/redux/userReducer'
-import { Segment, Header, Form } from 'semantic-ui-react'
+import { Segment, Form } from 'semantic-ui-react'
 import { useHistory, useLocation } from 'react-router'
 import { Link } from 'react-router-dom'
 import { FormattedMessage, useIntl } from 'react-intl'
 import Button from 'react-bootstrap/Button'
+import ForgotPassword from './ForgotPassword'
 
 
 const Login = () => {
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
+  const [forgotPasswordOpen, setForgotPasswordOpen] = useState(false)
   const loginError = useSelector(({ user }) => user.error)
   const errorMessage = useSelector(({ user }) => user.errorMessage)
   const user = useSelector(({ user }) => user.data)
@@ -72,6 +74,12 @@ const Login = () => {
             </Button>
             {loginError && <div style={{ color: 'red' }}>{errorMessage}</div>}
           </div>
+          <Button
+            onClick={() => setForgotPasswordOpen(true)}
+            variant="link"
+          >
+            <FormattedMessage id="forgot-password" />
+          </Button>
         </Form>
         <h5>
           {intl.formatMessage({ id: 'dont-have-an-account-yet-please-ce3fb38f81375d77a43cbaa071a4f72f' })}
@@ -83,6 +91,7 @@ const Login = () => {
           </Button>
         </div>
       </Segment>
+      <ForgotPassword isOpen={forgotPasswordOpen} setOpen={setForgotPasswordOpen} />
     </div>
   )
 }

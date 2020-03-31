@@ -17,6 +17,7 @@ import share from './shareReducer'
 import metadata from './metadataReducer'
 import summary from './groupSummaryReducer'
 import practice from './practiceReducer'
+import passwordReset from './passwordResetReducer'
 
 const rootReducer = combineReducers({
   stories,
@@ -36,6 +37,7 @@ const rootReducer = combineReducers({
   metadata,
   summary,
   practice,
+  passwordReset,
 })
 
 export default (state, action) => (

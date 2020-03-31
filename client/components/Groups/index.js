@@ -185,7 +185,6 @@ const GroupView = () => {
             {showToken && (
               <div className="border rounded" style={{ display: 'flex', marginTop: '0.2em', minHeight: '3em', flexDirection: 'column' }}>
                 <div
-                  ref={tokenElem}
                   style={{ padding: '0.5em', margin: 'auto', wordBreak: 'break-all' }}
                 >
                   {token}
