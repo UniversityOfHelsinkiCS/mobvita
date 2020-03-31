@@ -137,6 +137,7 @@ const Summary = ({ groupName, isTeaching, getSummary, getPersonalSummary, learni
               <tr>
                 {columns.map(column => (
                   <th
+                    key={column}
                     className="column-sort"
                     onClick={() => handleSort(column)}
                   >
@@ -149,7 +150,7 @@ const Summary = ({ groupName, isTeaching, getSummary, getPersonalSummary, learni
             <tbody>
               {summary.map(user => (
                 <tr key={user.email}>
-                  {columns.map(column => <td>{user[column]}</td>)}
+                  {columns.map(column => <td key={user.username + column}>{user[column]}</td>)}
                 </tr>
               ))}
             </tbody>
