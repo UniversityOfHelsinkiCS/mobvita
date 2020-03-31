@@ -44,7 +44,7 @@ const Register = () => {
     const { email, username, password, passwordAgain } = formState
 
     if (password !== passwordAgain) {
-      dispatch(setNotification(intl.formatMessage({ id: 'passwords-do-not-match' }), 'error'))
+      dispatch(setNotification('passwords-do-not-match', 'error'))
     } else if (accepted) {
       const payload = {
         username,
@@ -54,7 +54,7 @@ const Register = () => {
 
       dispatch(registerUser(payload))
     } else {
-      dispatch(setNotification(intl.formatMessage({ id: 'you-must-accept-terms-and-conditions' }), 'error'))
+      dispatch(setNotification('you-must-accept-terms-and-conditions', 'error'))
     }
 
     // TODO: Check email and password validity

@@ -41,7 +41,7 @@ const App = () => {
   history.push(history.location)
 
   if (revitaStatus !== 'OK') {
-    dispatch(setNotification('The server is experincing issues. Please check back later!', 'error', { autoClose: false }))
+    dispatch(setNotification('server-issues', 'error', { autoClose: false }))
   }
 
   return (

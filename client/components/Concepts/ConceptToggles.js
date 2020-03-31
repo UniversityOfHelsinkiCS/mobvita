@@ -30,6 +30,7 @@ const ConceptToggles = (
               checked={showTestConcepts}
               onChange={handleTestConceptToggle}
               className="concept-toggle"
+              disabled={pending}
             />
             {pending
               && (

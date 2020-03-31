@@ -55,7 +55,7 @@ const Concepts = () => {
     { isTeaching: groups.testConcepts && groups.testConcepts.group.is_teaching }))
 
   const [showTestConcepts, setShowTestConcepts] = useState(false)
-  const [showLevels, setShowLevels] = useState(false)
+  const [showLevels, setShowLevels] = useState(true)
 
   useEffect(() => {
     dispatch(getMetadata(learningLanguage))

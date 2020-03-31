@@ -1,5 +1,3 @@
-import { useIntl } from 'react-intl'
-
 const type = {
   success: 'success',
   error: 'error',
@@ -7,7 +5,7 @@ const type = {
   info: 'info',
 }
 
-export const setNotification = (message, type, options) => ({ type: 'SET_NOTIFICATION', payload: { message, type, options } })
+export const setNotification = (translationID, type, options) => ({ type: 'SET_NOTIFICATION', payload: { translationID, type, options } })
 
 const initialState = {
   message: null,
@@ -27,19 +25,19 @@ export default (state = initialState, action) => {
       return initialState
     case 'SET_NOTIFICATION':
       return {
-        message: action.payload.message,
+        translationId: action.payload.translationID,
         type: action.payload.type,
         options: action.payload.options || {},
       }
     case 'POST_REGISTER_SUCCESS':
       return {
-        message: 'Account creation success. Check your email for confirmation link!',
+        translationId: 'a-message-containing-a-link-to-confirm-your-registration-has-been-sent-to-your-email-address-please-',
         type: type.success,
         options: { autoClose: false },
       }
     case 'CREATE_GROUP_SUCCESS':
       return {
-        message: 'Group created!',
+        translationId: 'group-created',
         type: type.success,
       }
     case 'CREATE_GROUP_FAILURE':
@@ -49,13 +47,13 @@ export default (state = initialState, action) => {
       }
     case 'CONFIRM_USER_SUCCESS':
       return {
-        message: 'Email successfully confirmed. Logging you in, welcome to MobVita!',
+        translationId: 'your-registration-is-completed-you-can-now-log-in',
         type: type.success,
         options: { autoClose: false },
       }
     case 'SHARE_STORY_FAILURE':
       return {
-        message: `Failed to share story: ${action.response.response.data}`,
+        translationId: 'failed-to-share-the-story',
         type: type.error,
       }
     case 'SHARE_STORY_SUCCESS':
@@ -76,17 +74,17 @@ export default (state = initialState, action) => {
       }
     case 'DELETE_GROUP_SUCCESS':
       return {
-        message: 'Group deleted',
+        translationId: 'group-deleted',
         type: type.success,
       }
     case 'POST_EMAIL_SUCCESS':
       return {
-        message: 'Email sent!',
+        translationId: 'email-sent',
         type: type.success,
       }
     case 'JOIN_GROUP_SUCCESS':
       return {
-        message: `Joined group ${action.response.group.groupName}`,
+        translationId: 'joined-group',
         type: type.success,
       }
     case 'JOIN_GROUP_FAILURE':

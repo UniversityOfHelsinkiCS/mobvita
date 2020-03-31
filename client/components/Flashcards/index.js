@@ -32,6 +32,8 @@ const Flashcards = ({ match }) => {
     )
   }
 
+  // Limits so that you cant swipe back more than once.
+  // React-swipeable-views has some weird behaviour with its index. This tries to fix it.
   let oldIndex
   const handleIndexChange = (index) => {
     if (swipeIndex < index) setSwipeIndex(index)

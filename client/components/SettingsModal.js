@@ -85,7 +85,9 @@ const SettingsModal = ({ trigger }) => {
     console.log('Handling level select ', level)
     const newConceptSettings = getNewConceptSettings(level)
     dispatch(updateExerciseSettings(newConceptSettings))
-    dispatch(setNotification(`Learning settings set to ${level}`, 'success'))
+    dispatch(
+      setNotification('learning-settings-saved', 'success'),
+    )
     dispatch(sidebarSetOpen(false))
     setOpen(false)
   }
