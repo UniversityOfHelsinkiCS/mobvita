@@ -22,6 +22,7 @@ const CurrentPractice = ({ storyId }) => {
   const [options, setOptions] = useState({})
   const [progress, setProgress] = useState(0)
   const [audio, setAudio] = useState([])
+  const [keyboard, setKeyboard] = useState(null)
 
   const [touchedIDs, setTouchedIds] = useState([])
   const [touched, setTouched] = useState(0)
@@ -202,6 +203,11 @@ const CurrentPractice = ({ storyId }) => {
     dispatch(setAnswers(newAnswers))
   }
 
+  const handleInputChange = (value, word) => {
+    keyboard.setInput(value)
+    handleAnswerChange(value, word)
+  }
+
   const handleMultiselectChange = (event, word, data) => {
     const { id, ID, surface, concept } = word
     const { value } = data
@@ -251,7 +257,7 @@ const CurrentPractice = ({ storyId }) => {
                 textToSpeech={textToSpeech}
                 audio={audio}
                 setAudio={setAudio}
-                handleAnswerChange={handleAnswerChange}
+                handleAnswerChange={handleInputChange}
                 handleMultiselectChange={handleMultiselectChange}
               />
             </div>
@@ -300,6 +306,7 @@ const CurrentPractice = ({ storyId }) => {
       }
       {learningLanguage === 'Russian' && (
         <Keyboard
+          keyboardRef={k => setKeyboard(k)}
           layout={layout}
           inputName={focusedWord.ID}
           onChangeAll={input => handleAnswerChange(input[focusedWord.ID])}

@@ -1,4 +1,4 @@
-import React, { useRef, useState } from 'react'
+import React, { useRef, useState, useEffect } from 'react'
 import { useIntl } from 'react-intl'
 import { useSelector, useDispatch } from 'react-redux'
 import { setPrevious } from 'Utilities/redux/snippetsReducer'
@@ -74,12 +74,15 @@ const PreviousSnippets = ({ textToSpeech, answers }) => {
 
   const previous = snippets.previous.filter(Boolean)
 
-  if (previous.length === 0) {
-    if (snippets.focused && snippets.focused.snippetid[0] !== 0) {
-      const prev = focusedStory.paragraph.map(para => ({ snippetid: [para[0].ID], practice_snippet: para }))
-      dispatch(setPrevious(prev.slice(0, snippets.focused.snippetid[0])))
+  useEffect(() => {
+    if (previous.length === 0) {
+      if (snippets.focused && snippets.focused.snippetid[0] !== 0) {
+        const prev = focusedStory.paragraph.map(para => ({ snippetid: [para[0].ID], practice_snippet: para }))
+        dispatch(setPrevious(prev.slice(0, snippets.focused.snippetid[0])))
+      }
     }
-  }
+  }, [previous])
+
   return (
     <div>
       {previous.map(snippet => (
