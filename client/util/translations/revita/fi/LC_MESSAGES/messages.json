@@ -723,5 +723,6 @@
     "completed-exercises": "Suoritetut tehtävät",
     "join-group-message": "Liity opettajien hallinnoimaan ryhmään saadaksesi pääsyn ryhmän jaettuihin tarinoihin.",
     "create-group-message": "Luo ryhmä jakaaksesi tarinoita ja seurataksesi ryhmäläistesi edistymistä.",
-    "post-answers-error": "Jotain meni vikaan vastausten tarkistamisen kanssa. Ole hyvä ja yritä uudelleen."
+    "post-answers-error": "Jotain meni vikaan vastausten tarkistamisen kanssa. Ole hyvä ja yritä uudelleen.",
+    "token-copied": "Koodi kopioitu leikepöydälle"
 }
