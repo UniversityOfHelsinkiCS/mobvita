@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react'
 import ReactCardFlip from 'react-card-flip'
 import { recordFlashcardAnswer } from 'Utilities/redux/flashcardReducer'
-import FlashcardSide from './FlashcardSide'
+import FlashcardFront from './FlashcardFront'
+import FlashcardBack from './FlashcardBack'
 
 const Flashcard = ({ card, cardIndex, setSwipeIndex }) => {
   const [flipped, setFlipped] = useState(false)
@@ -50,45 +51,29 @@ const Flashcard = ({ card, cardIndex, setSwipeIndex }) => {
     flipCard()
   }
 
-  const hintText = hint && hint[0] && hint[0].hint
-
-  const noCards = format === 'no-cards'
-
-  const translations = Array.isArray(glosses)
-    ? glosses.map(item => <li key={item}>{item}</li>)
-    : glosses
+  const cardProps = {
+    cardIndex,
+    setSwipeIndex,
+    stage,
+    format,
+    id: _id,
+    answerCorrect,
+    flipCard,
+  }
 
   return (
     <ReactCardFlip isFlipped={flipped}>
-      <FlashcardSide
+      <FlashcardFront
         answerChecked={answerChecked}
-        answerCorrect={answerCorrect}
         checkAnswer={checkAnswer}
-        flipCard={flipCard}
-        cardIndex={cardIndex}
-        stage={stage}
-        setSwipeIndex={setSwipeIndex}
-        noCards={noCards}
-        hint={hintText}
-        id={_id}
-        frontside
-      >
-        <h2 data-cy="flashcard-title" className="flashcard-title">{lemma}</h2>
-      </FlashcardSide>
-      <FlashcardSide
-        answerChecked={answerChecked}
-        answerCorrect={answerCorrect}
-        checkAnswer={checkAnswer}
-        flipCard={flipCard}
-        cardIndex={cardIndex}
-        stage={stage}
-        setSwipeIndex={setSwipeIndex}
-        id={_id}
-      >
-        <div className="flashcard-translations">
-          <ul>{translations}</ul>
-        </div>
-      </FlashcardSide>
+        hint={hint}
+        lemma={lemma}
+        {...cardProps}
+      />
+      <FlashcardBack
+        glosses={glosses}
+        {...cardProps}
+      />
     </ReactCardFlip>
   )
 }

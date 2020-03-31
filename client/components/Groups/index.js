@@ -10,7 +10,7 @@ import {
 } from 'react-bootstrap'
 import { FormattedMessage, useIntl } from 'react-intl'
 import { Icon } from 'semantic-ui-react'
-import { getSummary } from 'Utilities/redux/groupSummaryReducer'
+import { getSummary, getPersonalSummary } from 'Utilities/redux/groupSummaryReducer'
 import { learningLanguageSelector } from 'Utilities/common'
 import useWindowDimensions from 'Utilities/windowDimensions'
 import AddGroup from './AddGroup'
@@ -35,6 +35,8 @@ const GroupView = () => {
   const bigWindow = useWindowDimensions().width >= 630
 
   const { groups, created, pending, token } = useSelector(({ groups }) => groups)
+  const currentGroup = groups.find(group => group.group_id === currentGroupId)
+
 
   useEffect(() => {
     dispatch(getGroups())
@@ -47,7 +49,7 @@ const GroupView = () => {
   }, [groups])
 
   useEffect(() => {
-    if (currentGroupId) {
+    if (currentGroupId && currentGroup.is_teaching) {
       dispatch(getGroupToken(currentGroupId))
     }
   }, [currentGroupId])
@@ -81,13 +83,18 @@ const GroupView = () => {
     )
   }
 
-  const currentGroup = groups.find(group => group.group_id === currentGroupId)
   if (!currentGroup) {
     return (
-      <div className="group-container">
-        <Button variant="info" onClick={() => setJoinGroupOpen(true)}>
+      <div className="group-container nogroups">
+        <h2 id="title"> <FormattedMessage id="Groups" /></h2>
+        <Button id="join-group-button" variant="info" onClick={() => setJoinGroupOpen(true)}>
           <FormattedMessage id="join-group" />
         </Button>
+        <span className="additional-info">
+          <FormattedMessage id="join-group-message" />
+        </span>
+
+        <br />
         <Button
           data-cy="create-group-modal"
           variant="primary"
@@ -95,6 +102,9 @@ const GroupView = () => {
         >
           <FormattedMessage id="create-new-group" />
         </Button>
+        <span className="additional-info">
+          <FormattedMessage id="create-group-message" />
+        </span>
 
         <AddGroup isOpen={addGroupOpen} setOpen={setAddGroupOpen} />
         <JoinGroup isOpen={joinGroupOpen} setOpen={setJoinGroupOpen} />
@@ -173,14 +183,14 @@ const GroupView = () => {
               <FormattedMessage id="show-group-token" />
             </Button>
             {showToken && (
-            <div className="border rounded" style={{ display: 'flex', marginTop: '0.2em', minHeight: '3em', flexDirection: 'column' }}>
-              <div
-                ref={tokenElem}
-                style={{ padding: '0.5em', margin: 'auto', wordBreak: 'break-all' }}
-              >
-                {token}
+              <div className="border rounded" style={{ display: 'flex', marginTop: '0.2em', minHeight: '3em', flexDirection: 'column' }}>
+                <div
+                  ref={tokenElem}
+                  style={{ padding: '0.5em', margin: 'auto', wordBreak: 'break-all' }}
+                >
+                  {token}
+                </div>
               </div>
-            </div>
             )}
           </>
         )}
@@ -222,17 +232,33 @@ const GroupView = () => {
               </div>
             )}
 
-            {summary && (
-              <>
-                <hr />
-                <Summary
-                  groupName={currentGroup.groupName}
-                  getSummary={(start, end) => dispatch(getSummary(currentGroupId, learningLanguage, start, end))}
-                />
-              </>
-            )}
+
           </>
-        )}
+        )
+      }
+
+
+      {bigWindow && !currentGroup.is_teaching
+        && (
+          <Button onClick={handleSummary}>
+            <FormattedMessage id="summary" />
+          </Button>
+        )
+      }
+
+
+      {summary && (
+        <>
+          <hr />
+          <Summary
+            groupName={currentGroup.groupName}
+            isTeaching={currentGroup.is_teaching}
+            learningLanguage={learningLanguage}
+            getSummary={(start, end, summaryLanguage) => dispatch(getSummary(currentGroupId, summaryLanguage, start, end))}
+            getPersonalSummary={(start, end, summaryLanguage) => dispatch(getPersonalSummary(summaryLanguage, start, end))}
+          />
+        </>
+      )}
 
 
       <AddToGroup groupId={currentGroupId} isOpen={addToGroupOpen} setOpen={setAddToGroupOpen} />

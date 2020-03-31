@@ -1,13 +1,16 @@
 import React, { useState, useEffect } from 'react'
 import SwipeableViews from 'react-swipeable-views'
+import { virtualize } from 'react-swipeable-views-utils'
 import { useDispatch, useSelector } from 'react-redux'
-import { FormattedMessage } from 'react-intl'
 import { Icon } from 'semantic-ui-react'
-import { Spinner, Button } from 'react-bootstrap'
+import { Spinner } from 'react-bootstrap'
 import { getFlashcards } from 'Utilities/redux/flashcardReducer'
 import { learningLanguageSelector, dictionaryLanguageSelector } from 'Utilities/common'
 import Flashcard from './Flashcard'
 import FlashcardEndView from './FlashcardEndView'
+import FlashcardNoCards from './FlashCardNoCards'
+
+const VirtualizeSwipeableViews = virtualize(SwipeableViews)
 
 const Flashcards = ({ match }) => {
   const dispatch = useDispatch()
@@ -29,8 +32,11 @@ const Flashcards = ({ match }) => {
     )
   }
 
+  let oldIndex
   const handleIndexChange = (index) => {
-    setSwipeIndex(index)
+    if (swipeIndex < index) setSwipeIndex(index)
+    if (index - oldIndex === 2) setSwipeIndex(swipeIndex)
+    oldIndex = index
   }
 
   const handleNewDeck = () => {
@@ -38,41 +44,46 @@ const Flashcards = ({ match }) => {
     dispatch(getFlashcards(learningLanguage, dictionaryLanguage, storyId))
   }
 
-  const cardIndex = `${swipeIndex + 1} / ${cards.length}`
-  const noCards = cards.length < 2
+  const slideRenderer = ({ key, index }) => {
+    if (cards[0].format === 'no-cards') {
+      return (
+        <FlashcardNoCards setSwipeIndex={setSwipeIndex} />
+      )
+    }
+    if (index < cards.length) {
+      const cardIndex = `${index + 1} / ${cards.length}`
+      return (
+        <Flashcard
+          key={key}
+          card={cards[index]}
+          cardIndex={cardIndex}
+          setSwipeIndex={setSwipeIndex}
+        />
+      )
+    }
+    if (cards.length > 1) {
+      return (
+        <FlashcardEndView handleNewDeck={handleNewDeck} />
+      )
+    }
+  }
 
   return (
     <div className="component-container">
       <div className="flashcard-container">
-        <button
-          type="button"
-          onClick={() => handleIndexChange(swipeIndex - 1)}
-          disabled={swipeIndex === 0}
-          className="flashcard-arrow-button"
-          style={{ marginRight: 0 }}
-        >
-          <Icon name="angle double left" size="huge" />
-        </button>
-        <SwipeableViews
+        <VirtualizeSwipeableViews
           index={swipeIndex}
           onChangeIndex={handleIndexChange}
-          style={{ width: '30em' }}
-        >
-          {cards.map(card => (
-            <Flashcard
-              key={card._id}
-              card={card}
-              cardIndex={cardIndex}
-              setSwipeIndex={setSwipeIndex}
-            />
-          ))}
-          {!noCards
-          && <FlashcardEndView handleNewDeck={handleNewDeck} />}
-        </SwipeableViews>
+          style={{ width: '30em', marginLeft: 'auto' }}
+          slideRenderer={slideRenderer}
+          slideCount={cards.length + 1}
+          overscanSlideAfter={1}
+          overscanSlideBefore={1}
+        />
         <button
           type="button"
           onClick={() => handleIndexChange(swipeIndex + 1)}
-          disabled={swipeIndex === cards.length || noCards}
+          disabled={swipeIndex === cards.length || cards[0].format === 'no-cards'}
           className="flashcard-arrow-button"
           style={{ marginLeft: 0 }}
         >

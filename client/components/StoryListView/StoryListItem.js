@@ -1,6 +1,7 @@
 import React, { useState } from 'react'
 import { useSelector } from 'react-redux'
-import { Header, Card, Icon, Accordion, List, Progress, Button, Dropdown } from 'semantic-ui-react'
+import { Header, Card, Icon, Accordion, List, Progress, Dropdown, Button as SemanticButton } from 'semantic-ui-react'
+import { Button } from 'react-bootstrap'
 import { Link } from 'react-router-dom'
 import moment from 'moment'
 import { FormattedMessage } from 'react-intl'
@@ -52,22 +53,22 @@ const StoryListItem = ({ story, userCanShare, libraryShown }) => {
         height: 'max-content',
       }}
     >
-      <Card.Content extra style={{ padding: '15px', display: 'flex', justifyContent: 'space-between' }}>
+      <Card.Content extra style={{ padding: '15px 15px 5px 15px', display: 'flex', justifyContent: 'space-between' }}>
         <h5 className="story-item-title">{story.title}</h5>
         <div className="story-item-group">{story.group && story.group.group_name}</div>
       </Card.Content>
-      <Card.Content extra style={{ padding: '15px' }}>
+      <Card.Content extra style={{ padding: '10px 15px 10px 15px' }}>
         <div style={{ display: 'flex', alignItems: 'baseline' }}>
           {smallWindow
             ? (
-              <Button.Group>
-                <Button
+              <SemanticButton.Group>
+                <SemanticButton
                   as={Link}
                   to={`/stories/${story._id}/practice`}
                   style={{ backgroundColor: 'hsla(208, 56%, 55%, 1)', color: 'white' }}
                 >
                   <FormattedMessage id="practice" />
-                </Button>
+                </SemanticButton>
                 <Dropdown
                   className="button icon"
                   style={{ backgroundColor: 'rgb(97, 166, 226)', color: 'white' }}
@@ -108,28 +109,28 @@ const StoryListItem = ({ story, userCanShare, libraryShown }) => {
 
                   </Dropdown.Menu>
                 </Dropdown>
-              </Button.Group>
+              </SemanticButton.Group>
             )
             : (
               <div>
-                <Link to={`/stories/${story._id}/`}>
-                  <Button variant="primary" style={{ marginRight: '0.5em' }}>
-                    <FormattedMessage id="Read" />
-                  </Button>
-                </Link>
                 <Link to={`/stories/${story._id}/practice`}>
                   <Button variant="primary" style={{ marginRight: '0.5em' }}>
                     <FormattedMessage id="practice" />
                   </Button>
                 </Link>
+                <Link to={`/stories/${story._id}/`}>
+                  <Button variant="secondary" style={{ marginRight: '0.5em' }}>
+                    <FormattedMessage id="Read" />
+                  </Button>
+                </Link>
                 <Link to={`/flashcards/${story._id}/`}>
-                  <Button variant="primary" style={{ marginRight: '0.5em' }}>
+                  <Button variant="secondary" style={{ marginRight: '0.5em' }}>
                     <FormattedMessage id="Flashcards" />
                   </Button>
                 </Link>
                 {userCanShare && !story.public && !inGroupLibrary
                   && (
-                    <Button onClick={() => setModalOpen(true)} variant="primary" style={{ marginRight: '0.5em' }}>
+                    <Button onClick={() => setModalOpen(true)} variant="terniary" style={{ marginRight: '0.5em' }}>
                       <FormattedMessage id="Share" />
                     </Button>
                   )

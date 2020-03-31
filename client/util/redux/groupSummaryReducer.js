@@ -11,6 +11,16 @@ export const getSummary = (groupId, language, startDate, endDate) => {
   return callBuilder(route, prefix, 'get')
 }
 
+export const getPersonalSummary = (language, startDate, endDate) => {
+  const start = moment(startDate).format('YYYY-MM-DD')
+  const end = moment(endDate).format('YYYY-MM-DD')
+
+
+  const route = `/user/summary?start_time=${start}&end_time=${end}&language=${language}`
+  const prefix = 'GET_PERSONAL_SUMMARY'
+  return callBuilder(route, prefix, 'get')
+}
+
 export const getWeekSummary = (groupId, language) => {
   const end = moment().toDate()
   const start = moment().subtract(7, 'days').toDate()
@@ -35,6 +45,15 @@ export default (state = {}, action) => {
       return {
         ...state,
         summary: action.response.summary,
+        pending: false,
+        error: false,
+      }
+    case 'GET_PERSONAL_SUMMARY_SUCCESS':
+      return {
+        ...state,
+        summary: [
+          action.response,
+        ],
         pending: false,
         error: false,
       }

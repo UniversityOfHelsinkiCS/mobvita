@@ -165,7 +165,6 @@ const CurrentPractice = ({ storyId }) => {
       console.log(`Failed to speak ${surfaceWord} in ${capitalize(learningLanguage)}`)
     }
     if (wordLemmas) {
-      const storyId = story.exercise_setting.story
       dispatch(
         getTranslationAction(
           newCapitalize(learningLanguage),
@@ -300,11 +299,11 @@ const CurrentPractice = ({ storyId }) => {
         )
       }
       {learningLanguage === 'Russian' && (
-      <Keyboard
-        layout={layout}
-        inputName={focusedWord.ID}
-        onChangeAll={input => handleAnswerChange(input[focusedWord.ID])}
-      />
+        <Keyboard
+          layout={layout}
+          inputName={focusedWord.ID}
+          onChangeAll={input => handleAnswerChange(input[focusedWord.ID])}
+        />
       )}
     </div>
   )

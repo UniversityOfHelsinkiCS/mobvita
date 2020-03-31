@@ -331,6 +331,17 @@ body {
   margin: auto;
   padding-left: 0.5em;
   padding-right: 0.5em;
+
+  &.nogroups{
+    display:flex;
+    flex-direction: column;
+
+    #title{
+      padding-bottom: 1em;
+    }
+
+  }
+
 }
 
 .group-controls {

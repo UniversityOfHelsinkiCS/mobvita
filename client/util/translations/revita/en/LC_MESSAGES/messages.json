@@ -717,5 +717,13 @@
     "add-people-to-group": "Add people",
     "summary": "Summary",
     "show-group-token": "Show group token",
-    "token": "Token"
+    "token": "Token",
+    "summary-for-language": "Summary for language",
+    "date-start": "Start date",
+    "date-end": "End date",
+    "download-csv": "Download csv",
+    "completed-exercises": "Completed exercises",
+    "join-group-message": "Join a group maintained by teachers to get access to group stories.",
+    "create-group-message": "Create a new group to share stories and track your students progress.",
+    "post-answers-error": "Something went wrong while processing your answers. Please try again."
 }

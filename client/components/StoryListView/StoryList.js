@@ -229,7 +229,7 @@ const StoryList = () => {
               isScrolling={isScrolling}
               onScroll={onChildScroll}
               rowCount={libraryFilteredStories.length}
-              rowHeight={150}
+              rowHeight={130}
               rowRenderer={rowRenderer}
               scrollTop={scrollTop}
               width={10000}

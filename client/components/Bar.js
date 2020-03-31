@@ -110,7 +110,7 @@ export default function Bar({ history }) {
                 {user.user.email === 'anonymous_email' && (
                   <Menu.Item>
                     <div style={{ padding: '1em 0em' }}>
-                      <Link onClick={() => menuClickWrapper()} to="/register"><Button variant="primary"><FormattedMessage id="register-to-upload-your-own-stories" /></Button></Link>
+                      <Link onClick={() => menuClickWrapper()} to="/register"><Button block variant="primary"><FormattedMessage id="register-to-upload-your-own-stories" /></Button></Link>
                     </div>
                   </Menu.Item>
                 )}
@@ -122,7 +122,7 @@ export default function Bar({ history }) {
                     <Button variant="primary" block>
                       <div style={{ display: 'flex', justifyContent: 'space-around', alignItems: 'center' }}>
                         <span><FormattedMessage id="Learning-language" /></span>
-                        {user && user.user.last_used_language && <img style={{ width: '3em', height: '2em' }} src={getLearningLanguageFlag()} alt="learningLanguageFlag" />}
+                        {user && user.user.last_used_language && <img style={{ height: '1.8em', position: 'absolute', left: '2em', border: '1px solid black' }} src={getLearningLanguageFlag()} alt="learningLanguageFlag" />}
                       </div>
                     </Button>
                   </Link>
@@ -174,12 +174,12 @@ export default function Bar({ history }) {
               <Menu.Item style={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-between' }}>
                 <AboutUs
                   trigger={(
-                    <Button onClick={() => menuClickWrapper()} data-cy="about-button" variant="secondary" style={{ flexBasis: '50%' }}>
+                    <Button onClick={() => menuClickWrapper()} data-cy="about-button" variant="secondary" style={{ flexBasis: '50%', marginRight: '0.5em' }}>
                       <FormattedMessage id="About" />
                     </Button>
                   )}
                 />
-                <ContactUs trigger={<Button variant="secondary" onClick={() => menuClickWrapper()} style={{ flexBasis: '50%' }}><FormattedMessage id="Contact" /></Button>} />
+                <ContactUs trigger={<Button variant="secondary" onClick={() => menuClickWrapper()} style={{ flexBasis: '50%', marginRight: '0.5em' }}><FormattedMessage id="Contact" /></Button>} />
                 {user && <Button data-cy="logout" variant="secondary" style={{ flexBasis: '50%' }} onClick={() => menuClickWrapper(signOut)}><FormattedMessage id="sign-out" /></Button>}
               </Menu.Item>
               <TermsAndConditions

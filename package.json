@@ -78,6 +78,7 @@
     "react-simple-keyboard": "^2.2.46",
     "react-swipeable": "^5.4.0",
     "react-swipeable-views": "^0.13.9",
+    "react-swipeable-views-utils": "^0.13.9",
     "react-toastify": "^5.5.0",
     "react-virtualized": "^9.21.2",
     "redux": "^4.0.0",

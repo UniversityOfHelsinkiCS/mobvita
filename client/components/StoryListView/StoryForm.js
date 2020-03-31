@@ -27,7 +27,6 @@ const StoryForm = () => {
       url: storyUrl,
     }
     dispatch(postStory(newStory))
-    dispatch(setNotification('Validating url-address', 'info'))
     setStoryUrl('')
   }
 
@@ -63,31 +62,31 @@ const StoryForm = () => {
                 <FormattedMessage id="Confirm" />
               </Button>
               {!smallWindow && (
-                <>
-                  <AddStoryModal
-                    trigger={(
-                      <Button
-                        style={{ marginTop: '0.5em' }}
-                        variant="link"
-                      >
-                        {intl.formatMessage({ id: 'or-paste-a-text' }).slice(0, -1)}
-                      </Button>
-                    )}
-                  />
-                  <Button
-                    style={{ marginTop: '0.5em', float: 'right' }}
-                    variant="link"
-                    onClick={() => setShowRecommendedSites(!showRecommendedSites)}
-                  >
-                    {showRecommendedSites
-                      ? intl.formatMessage({ id: 'hide-recommended-sites' })
-                      : intl.formatMessage({ id: 'show-recommended-sites' })
-                    }
-                  </Button>
-                  {showRecommendedSites && <RecommendedSites />}
-                </>
+                <AddStoryModal
+                  trigger={(
+                    <Button
+                      style={{ marginTop: '0.5em' }}
+                      variant="link"
+                    >
+                      {intl.formatMessage({ id: 'or-paste-a-text' }).slice(0, -1)}
+                    </Button>
+                  )}
+                />
               )
               }
+
+              <Button
+                style={{ marginTop: '0.5em', float: 'right' }}
+                variant="link"
+                onClick={() => setShowRecommendedSites(!showRecommendedSites)}
+              >
+                {showRecommendedSites
+                  ? intl.formatMessage({ id: 'hide-recommended-sites' })
+                  : intl.formatMessage({ id: 'show-recommended-sites' })
+                }
+              </Button>
+              {showRecommendedSites && <RecommendedSites />}
+
             </Form>
           </div>
         </div>
