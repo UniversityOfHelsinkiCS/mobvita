@@ -137,14 +137,15 @@ const StoryListItem = ({ story, userCanShare, libraryShown }) => {
                 }
                 {showLearningSettingsButton
                   && (
-                    <Button
-                      variant="primary"
-                      style={{ marginRight: '0.5em' }}
-                      as={Link}
-                      to={`/stories/${story._id}/concepts`}
-                    >
-                      <FormattedMessage id="learning-settings" />
-                    </Button>
+                    <Link to={`/stories/${story._id}/concepts`}>
+                      <Button
+                        variant="terniary"
+                        style={{ marginRight: '0.5em' }}
+                      >
+                        <FormattedMessage id="learning-settings" />
+                      </Button>
+                    </Link>
+
                   )
                 }
                 {false && (
