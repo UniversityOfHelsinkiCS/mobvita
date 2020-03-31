@@ -3,6 +3,7 @@ import { useSelector, useDispatch } from 'react-redux'
 import { getCurrentSnippet, getNextSnippet, postAnswers, resetCurrentSnippet } from 'Utilities/redux/snippetsReducer'
 import { getTranslationAction, clearTranslationAction } from 'Utilities/redux/translationReducer'
 import { capitalize, learningLanguageSelector, translatableLanguages, newCapitalize } from 'Utilities/common'
+import useWindowDimensions from 'Utilities/windowDimensions'
 import Keyboard from 'react-simple-keyboard'
 import 'react-simple-keyboard/build/css/index.css'
 import layout from 'simple-keyboard-layouts/build/layouts/russian'
@@ -22,6 +23,7 @@ const CurrentPractice = ({ storyId }) => {
   const [options, setOptions] = useState({})
   const [progress, setProgress] = useState(0)
   const [audio, setAudio] = useState([])
+  const [showKeyboard, setShowKeyboard] = useState(false)
   const [keyboard, setKeyboard] = useState(null)
 
   const [touchedIDs, setTouchedIds] = useState([])
@@ -31,6 +33,8 @@ const CurrentPractice = ({ storyId }) => {
   const dictionaryLanguage = useSelector(({ user }) => user.data.user.last_trans_language)
   const [exerciseCount, setExerciseCount] = useState(0)
   const scrollTarget = useRef(null)
+
+  const smallWindow = useWindowDimensions().width < 500
 
   const dispatch = useDispatch()
 
@@ -101,6 +105,11 @@ const CurrentPractice = ({ storyId }) => {
       setExerciseCount(getExerciseCount())
     }
   }
+
+  useEffect(() => {
+    if (!keyboard) return
+    keyboard.setInput(answers[focusedWord.ID].users_answer)
+  }, [focusedWord, keyboard])
 
   useEffect(setInitialAnswers, [snippets.focused])
 
@@ -204,7 +213,7 @@ const CurrentPractice = ({ storyId }) => {
   }
 
   const handleInputChange = (value, word) => {
-    keyboard.setInput(value)
+    if (keyboard) keyboard.setInput(value)
     handleAnswerChange(value, word)
   }
 
@@ -304,13 +313,25 @@ const CurrentPractice = ({ storyId }) => {
 
         )
       }
-      {learningLanguage === 'Russian' && (
-        <Keyboard
-          keyboardRef={k => setKeyboard(k)}
-          layout={layout}
-          inputName={focusedWord.ID}
-          onChangeAll={input => handleAnswerChange(input[focusedWord.ID])}
-        />
+      {learningLanguage === 'Russian' && !smallWindow
+      && (
+        <>
+          <Icon
+            data-cy="onscreen-keyboard"
+            style={{ cursor: 'pointer' }}
+            name="keyboard"
+            size="big"
+            onClick={() => setShowKeyboard(!showKeyboard)}
+          />
+          {showKeyboard && (
+            <Keyboard
+              keyboardRef={k => setKeyboard(k)}
+              layout={layout}
+              inputName={focusedWord.ID}
+              onChangeAll={input => handleAnswerChange(input[focusedWord.ID])}
+            />
+          )}
+        </>
       )}
     </div>
   )
