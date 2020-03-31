@@ -41,7 +41,7 @@ describe('flashcards', function () {
 
     it('shows answers after flipping card', function () {
       cy.get('[class=flashcard-footer]').children().eq(1).click()
-      cy.contains('plane')
+      cy.get('[class=flashcard-translations]').contains('plane')
     })
 
     it('cannot be answered after flipping card', function () {

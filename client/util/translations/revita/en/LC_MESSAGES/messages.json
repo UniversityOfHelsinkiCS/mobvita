@@ -81,7 +81,7 @@
     "email-address-already-exists": "",
     "revita-confirm-your-registration": "",
     "account-created-you-can-now-sign-in-with-your-facebook-account-to-revita": "",
-    "a-message-containing-a-link-to-confirm-your-registration-has-been-sent-to-your-email-address-please-": "",
+    "a-message-containing-a-link-to-confirm-your-registration-has-been-sent-to-your-email-address-please-": "A message containing a link to confirm your registration has been sent to your email address.",
     "there-was-a-problem-with-the-registration-please-try-agin": "",
     "invalid-password-please-choose-a-password-that-is-at-least-6-characters-long": "",
     "your-registration-is-completed-you-can-now-log-in": "Email successfully confirmed",
