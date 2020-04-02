@@ -95,7 +95,7 @@ export default function Bar({ history }) {
                 style={{ padding: '1em 1em 1em 1.5em', display: 'flex', flexDirection: 'column', marginRight: 'auto', marginLeft: 'auto' }}
               >
                 <Link to="/home" onClick={() => menuClickWrapper()}>
-                  <Header as="h2">MobVita - alpha</Header>
+                  <Header as="h2">Revita</Header>
                   <img
                     style={{ width: '6em', margin: '0 auto' }}
                     src={images.revitaLogoTransparent}

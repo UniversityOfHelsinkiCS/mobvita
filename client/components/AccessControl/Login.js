@@ -87,7 +87,7 @@ const Login = () => {
         <div>
           <Link to="/register"><Button data-cy="register-button" variant="secondary">{intl.formatMessage({ id: 'Register' })} </Button></Link>
           <Button data-cy="login-anon" variant="secondary" onClick={loginAnon}>
-            <FormattedMessage id="try-mobvita" />
+            <FormattedMessage id="try-revita" />
           </Button>
         </div>
       </Segment>

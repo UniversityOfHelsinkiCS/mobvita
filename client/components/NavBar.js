@@ -37,7 +37,7 @@ export default function NavBar({ history }) {
             onClick={() => history.push('/home')}
           >
 
-            Mobvita
+            Revita
           </Navbar.Brand>
         </div>
         {user && !smallWindow
