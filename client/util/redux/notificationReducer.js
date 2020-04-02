@@ -104,12 +104,22 @@ export default (state = initialState, action) => {
       }
     case 'FORGOT_PASSWORD_SUCCESS':
       return {
-        message: action.response.response.data,
+        message: action.response.message,
         type: type.success,
       }
     case 'FORGOT_PASSWORD_FAILURE':
       return {
+        message: action.response.response.data,
+        type: type.error,
+      }
+    case 'RESET_PASSWORD_SUCCESS':
+      return {
         message: action.response.message,
+        type: type.success,
+      }
+    case 'RESET_PASSWORD_FAILURE':
+      return {
+        message: action.response.response.data,
         type: type.error,
       }
 

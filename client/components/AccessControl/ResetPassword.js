@@ -1,36 +1,37 @@
-import React, { useEffect, useState } from 'react'
-import { useDispatch, useSelector } from 'react-redux'
-import { useHistory, useLocation } from 'react-router'
+import React, { useState } from 'react'
+import { useDispatch } from 'react-redux'
+import { useHistory } from 'react-router'
 import { FormattedMessage } from 'react-intl'
 import { Button, Form, FormControl } from 'react-bootstrap'
 import { resetPassword } from 'Utilities/redux/passwordResetReducer'
 
-const ResetPassword = (props) => {
+const ResetPassword = ({ match }) => {
   const [password, setPassword] = useState('')
   const [repeat, setRepeat] = useState('')
 
   const dispatch = useDispatch()
   const history = useHistory()
-  const query = new URLSearchParams(useLocation().search)
-
-  console.log(query.get('token'))
 
   const handleSubmit = (e) => {
     e.preventDefault()
 
-    dispatch(resetPassword(password, location))
+    dispatch(resetPassword(password, match.params.token))
+    history.replace('/login')
   }
 
   return (
     <Form className="group-form" onSubmit={handleSubmit}>
-      <FormattedMessage id="email" />
+      <FormattedMessage id="Password" />
       <FormControl
         as="input"
+        type="password"
         value={password}
         onChange={e => setPassword(e.target.value)}
       />
+      <FormattedMessage id="repeat-password" />
       <FormControl
         as="input"
+        type="password"
         value={repeat}
         onChange={e => setRepeat(e.target.value)}
       />
