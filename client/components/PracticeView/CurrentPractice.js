@@ -27,6 +27,7 @@ const CurrentPractice = ({ storyId }) => {
   const [keyboard, setKeyboard] = useState(null)
   const [keyboardLayout, setKeyboardLayout] = useState(RUSauthentic)
   const [layoutName, setLayoutName] = useState('default')
+  const [shift, setShift] = useState(false)
 
   const [touchedIDs, setTouchedIds] = useState([])
   const [touched, setTouched] = useState(0)
@@ -195,8 +196,15 @@ const CurrentPractice = ({ storyId }) => {
   }
 
   const handleKeyPress = (key) => {
-    if (key === '{shift}' || key === '{capslock}') {
-      const layout = layoutName === 'default' ? 'shift' : 'default'
+    const layout = layoutName === 'default' ? 'shift' : 'default'
+
+    if (key === '{capslock}') {
+      setLayoutName(layout)
+    } else if (key === '{shift}') {
+      setShift(true)
+      setLayoutName(layout)
+    } else if (shift) {
+      setShift(false)
       setLayoutName(layout)
     }
   }
