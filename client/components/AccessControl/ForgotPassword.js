@@ -1,8 +1,8 @@
 import React, { useState } from 'react'
-import { Modal } from 'semantic-ui-react'
-import { FormattedMessage } from 'react-intl'
+import { Modal, Form } from 'semantic-ui-react'
+import { FormattedMessage, useIntl } from 'react-intl'
 import { useDispatch } from 'react-redux'
-import { Button, FormControl, Form } from 'react-bootstrap'
+import { Button } from 'react-bootstrap'
 import { forgotPassword } from 'Utilities/redux/passwordResetReducer'
 
 
@@ -10,6 +10,7 @@ const ForgotPassword = ({ isOpen, setOpen }) => {
   const [email, setEmail] = useState('')
 
   const dispatch = useDispatch()
+  const intl = useIntl()
 
   const requestPassword = (e) => {
     e.preventDefault()
@@ -25,21 +26,24 @@ const ForgotPassword = ({ isOpen, setOpen }) => {
       open={isOpen}
       onClose={() => setOpen(false)}
     >
-      <Modal.Header><FormattedMessage id="reset-password" /></Modal.Header>
+      <Modal.Header><FormattedMessage id="forgot-password" /></Modal.Header>
       <Modal.Content style={{ display: 'flex', flexDirection: 'column' }}>
-        <Form className="group-form" onSubmit={requestPassword}>
-          <FormattedMessage id="email" />
-          <FormControl
-            as="input"
-            value={email}
-            onChange={e => setEmail(e.target.value)}
-          />
-          <Button
-            variant="primary"
-            type="submit"
-          >
-            <FormattedMessage id="Confirm" />
-          </Button>
+        <Form onSubmit={requestPassword}>
+          <Form.Field>
+            <Form.Input
+              label={intl.formatMessage({ id: 'Email' })}
+              value={email}
+              onChange={e => setEmail(e.target.value)}
+            />
+          </Form.Field>
+          <Form.Field>
+            <Button
+              variant="primary"
+              type="submit"
+            >
+              <FormattedMessage id="Confirm" />
+            </Button>
+          </Form.Field>
         </Form>
       </Modal.Content>
 

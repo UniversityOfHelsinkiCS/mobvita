@@ -74,13 +74,14 @@ const Login = () => {
             </Button>
             {loginError && <div style={{ color: 'red' }}>{errorMessage}</div>}
           </div>
-          <Button
-            onClick={() => setForgotPasswordOpen(true)}
-            variant="link"
-          >
-            <FormattedMessage id="forgot-password" />
-          </Button>
         </Form>
+        <Button
+          style={{ paddingLeft: '0px' }}
+          onClick={() => setForgotPasswordOpen(true)}
+          variant="link"
+        >
+          <FormattedMessage id="forgot-password" />
+        </Button>
         <h5>
           {intl.formatMessage({ id: 'dont-have-an-account-yet-please-ce3fb38f81375d77a43cbaa071a4f72f' })}
         </h5>
