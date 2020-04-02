@@ -6,7 +6,6 @@ import { capitalize, learningLanguageSelector, translatableLanguages, newCapital
 import useWindowDimensions from 'Utilities/windowDimensions'
 import Keyboard from 'react-simple-keyboard'
 import 'react-simple-keyboard/build/css/index.css'
-import layout from 'simple-keyboard-layouts/build/layouts/russian'
 
 import PreviousSnippets from 'Components/PracticeView/PreviousSnippets'
 import { FormattedMessage } from 'react-intl'
@@ -14,6 +13,7 @@ import { getSelf } from 'Utilities/redux/userReducer'
 import { Button, Spinner } from 'react-bootstrap'
 import { Icon } from 'semantic-ui-react'
 import { setAnswers } from 'Utilities/redux/practiceReducer'
+import { RUSphonetic, RUSauthentic } from './KeyboardLayouts'
 import Chunks from './Chunks'
 
 
@@ -25,6 +25,7 @@ const CurrentPractice = ({ storyId }) => {
   const [audio, setAudio] = useState([])
   const [showKeyboard, setShowKeyboard] = useState(false)
   const [keyboard, setKeyboard] = useState(null)
+  const [keyboardLayout, setKeyboardLayout] = useState(RUSauthentic)
 
   const [touchedIDs, setTouchedIds] = useState([])
   const [touched, setTouched] = useState(0)
@@ -107,7 +108,7 @@ const CurrentPractice = ({ storyId }) => {
   }
 
   useEffect(() => {
-    if (!keyboard) return
+    if (!keyboard || !answers[focusedWord.ID]) return
     keyboard.setInput(answers[focusedWord.ID].users_answer)
   }, [focusedWord, keyboard])
 
@@ -324,12 +325,16 @@ const CurrentPractice = ({ storyId }) => {
             onClick={() => setShowKeyboard(!showKeyboard)}
           />
           {showKeyboard && (
-            <Keyboard
-              keyboardRef={k => setKeyboard(k)}
-              layout={layout}
-              inputName={focusedWord.ID}
-              onChangeAll={input => handleAnswerChange(input[focusedWord.ID])}
-            />
+            <>
+              <Button onClick={() => setKeyboardLayout(RUSauthentic)}>ru-йцуке</Button>
+              <Button onClick={() => setKeyboardLayout(RUSphonetic)}>ru-яверт</Button>
+              <Keyboard
+                keyboardRef={k => setKeyboard(k)}
+                layout={keyboardLayout}
+                inputName={focusedWord.ID}
+                onChangeAll={input => handleAnswerChange(input[focusedWord.ID])}
+              />
+            </>
           )}
         </>
       )}
