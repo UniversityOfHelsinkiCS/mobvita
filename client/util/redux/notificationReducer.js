@@ -122,7 +122,6 @@ export default (state = initialState, action) => {
         message: action.response.response.data,
         type: type.error,
       }
-
     case 'GET_SNIPPET_ANSWERS_FAILURE':
       return {
         translationId: 'post-answers-error',
