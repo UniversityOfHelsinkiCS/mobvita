@@ -9,6 +9,7 @@ import { resetPassword } from 'Utilities/redux/passwordResetReducer'
 const ResetPassword = ({ match }) => {
   const [password, setPassword] = useState('')
   const [repeat, setRepeat] = useState('')
+  const [error, setError] = useState(false)
 
   const dispatch = useDispatch()
   const intl = useIntl()
@@ -16,38 +17,46 @@ const ResetPassword = ({ match }) => {
 
   const handleSubmit = (e) => {
     e.preventDefault()
+    if (password !== repeat) {
+      setError(true)
+      return
+    }
 
     dispatch(resetPassword(password, match.params.token))
     history.replace('/login')
   }
 
   return (
-    <Form onSubmit={handleSubmit}>
-      <Form.Field>
-        <Form.Input
-          label={intl.formatMessage({ id: 'new-password' })}
-          type="password"
-          value={password}
-          onChange={e => setPassword(e.target.value)}
-        />
-      </Form.Field>
-      <Form.Field>
-        <Form.Input
-          label={intl.formatMessage({ id: 'repeat-password' })}
-          type="password"
-          value={repeat}
-          onChange={e => setRepeat(e.target.value)}
-        />
-      </Form.Field>
-      <Form.Field>
-        <Button
-          variant="primary"
-          type="submit"
-        >
-          <FormattedMessage id="Confirm" />
-        </Button>
-      </Form.Field>
-    </Form>
+    <div className="component-container">
+      <Form onSubmit={handleSubmit}>
+        <Form.Field>
+          <Form.Input
+            label={intl.formatMessage({ id: 'new-password' })}
+            type="password"
+            value={password}
+            onChange={e => setPassword(e.target.value)}
+            error={error}
+          />
+        </Form.Field>
+        <Form.Field>
+          <Form.Input
+            label={intl.formatMessage({ id: 'repeat-password' })}
+            type="password"
+            value={repeat}
+            onChange={e => setRepeat(e.target.value)}
+            error={error}
+          />
+        </Form.Field>
+        <Form.Field>
+          <Button
+            variant="primary"
+            type="submit"
+          >
+            <FormattedMessage id="Confirm" />
+          </Button>
+        </Form.Field>
+      </Form>
+    </div>
   )
 }
 
