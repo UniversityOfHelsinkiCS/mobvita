@@ -14,7 +14,7 @@ export default function ContactUs({ trigger }) {
   const initialFormState = {
     name: user ? user.username : '',
     email: user ? user.email : '',
-    subject: 'MobVita',
+    subject: 'Revita',
     message: '',
   }
 

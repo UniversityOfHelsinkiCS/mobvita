@@ -14,9 +14,6 @@ export default function AboutUs({ trigger }) {
           <b><i>Revita</i></b> provides tools for language learning, and for supporting endangered languages. <b><i>Revita</i></b> stimulates the student to practice in <b>actively producing</b> language,
           rather than <b>passively absorbing</b> rules.
         </p>
-        <p>
-          <b><i>MobVita</i></b> is a new interface for using Revita in a more fluent and especially mobile friendly way.
-        </p>
 
         <h4>Main features</h4>
         <ul>
@@ -24,10 +21,8 @@ export default function AboutUs({ trigger }) {
           <ul>
             <li>fill-in-the-blank quizzes</li>
             <li>multiple-choice quizzes</li>
-            <li>vocabulary practice (flashcards) <i>***not available in MobVita***</i></li>
+            <li>vocabulary practice (flashcards)</li>
             <li>listening comprehension quizzes</li>
-            <li>crosswords <i>***not available in MobVita***</i></li>
-            <li>competition&mdash;to complete exercises faster than an opponent <i>***not available in MobVita***</i></li>
             <li>... and more.</li>
           </ul>
           <li>
@@ -62,16 +57,16 @@ export default function AboutUs({ trigger }) {
             <b><i>Revita </i></b> selects some words from the story to <b>create exercises </b>&mdash;e.g., fill-in-the-blank <i>quizzes</i>&mdash; ("cloze" exercises)
           </li>
           <li>
-              the student receives <i>hints</i> for each quiz&mdash;the hint is the "basic" form of the word
+            the student receives <i>hints</i> for each quiz&mdash;the hint is the "basic" form of the word
           </li>
           <li>
-              the student fills in the word in the correct form as it should appear in the context of the story
+            the student fills in the word in the correct form as it should appear in the context of the story
           </li>
           <li>
             <b><i>Revita</i></b> provides instant <b>feedback</b> to the student about whether the answers match what was in the text
           </li>
           <li>
-              If you return to practice the same story again, the exercises will be <b>new</b>, since they are chosen randomly every time you practice.
+            If you return to practice the same story again, the exercises will be <b>new</b>, since they are chosen randomly every time you practice.
           </li>
           <li>
             <b><i>Revita</i></b> tracks the student's answers, monitors the student's progress, and assesses the the student's level of competence
@@ -104,7 +99,7 @@ export default function AboutUs({ trigger }) {
           <li> <a href="http://giellatekno.uit.no/index.eng.html">GiellaTekno</a>&mdash;a platform for many Uralic languages.
           </li>
           <li> CrosslatorTagger for Russian, by <a href="https://www.hse.ru/en/staff/klyshinsky">Eduard
-        Klyshinskiy
+          Klyshinskiy
           </a>; CrosslatorTagger is used to detect code-switching to Russian in Uralic and Turkic texts.
           </li>
           <li> <a href="https://code.google.com/archive/p/morphisto/">Morphisto

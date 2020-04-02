@@ -6,7 +6,7 @@ import { useIntl } from 'react-intl'
 import { changePassword } from 'Utilities/redux/userReducer'
 
 
-export default function Settings() {
+export default function Profile() {
   const intl = useIntl()
   const dispatch = useDispatch()
 
