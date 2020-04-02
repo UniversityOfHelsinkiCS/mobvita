@@ -26,6 +26,7 @@ const CurrentPractice = ({ storyId }) => {
   const [showKeyboard, setShowKeyboard] = useState(false)
   const [keyboard, setKeyboard] = useState(null)
   const [keyboardLayout, setKeyboardLayout] = useState(RUSauthentic)
+  const [layoutName, setLayoutName] = useState('default')
 
   const [touchedIDs, setTouchedIds] = useState([])
   const [touched, setTouched] = useState(0)
@@ -193,6 +194,13 @@ const CurrentPractice = ({ storyId }) => {
     dispatch(resetCurrentSnippet(storyId))
   }
 
+  const handleKeyPress = (key) => {
+    if (key === '{shift}' || key === '{capslock}') {
+      const layout = layoutName === 'default' ? 'shift' : 'default'
+      setLayoutName(layout)
+    }
+  }
+
   const handleAnswerChange = (value, word = focusedWord) => {
     const { surface, id, ID, concept } = word
 
@@ -331,8 +339,10 @@ const CurrentPractice = ({ storyId }) => {
               <Keyboard
                 keyboardRef={k => setKeyboard(k)}
                 layout={keyboardLayout}
+                layoutName={layoutName}
                 inputName={focusedWord.ID}
-                onChangeAll={input => handleAnswerChange(input[focusedWord.ID])}
+                onChange={handleAnswerChange}
+                onKeyPress={handleKeyPress}
               />
             </>
           )}
