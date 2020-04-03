@@ -1,15 +1,18 @@
 import React, { useState } from 'react'
+import { useDispatch } from 'react-redux'
 import { Card, Icon, Progress, Dropdown, Button as SemanticButton } from 'semantic-ui-react'
 import { Button } from 'react-bootstrap'
 import { Link } from 'react-router-dom'
 import moment from 'moment'
 import { FormattedMessage } from 'react-intl'
+import { removeStory } from 'Utilities/redux/storiesReducer'
 import { inProduction, hiddenFeatures } from 'Utilities/common'
 import useWindowDimensions from 'Utilities/windowDimensions'
 import ShareStory from './ShareStory'
 import DetailedStoryModal from './DetailedStoryModal'
 
 const StoryListItem = ({ story, userCanShare, libraryShown }) => {
+  const dispatch = useDispatch()
   const [shareModalOpen, setShareModalOpen] = useState(false)
   const icons = size => (
     {
@@ -43,6 +46,12 @@ const StoryListItem = ({ story, userCanShare, libraryShown }) => {
 
   const showShareButton = userCanShare && !story.public && !inGroupLibrary
 
+  const showDeleteButton = libraryShown.private
+
+  const handleDelete = () => {
+    dispatch(removeStory(story._id))
+  }
+
   return (
     <Card
       fluid
@@ -64,12 +73,14 @@ const StoryListItem = ({ story, userCanShare, libraryShown }) => {
               icons={icons}
               setShareModalOpen={setShareModalOpen}
               showShareButton={showShareButton}
+              showDeleteButton={showDeleteButton}
+              handleDelete={handleDelete}
               inGroupLibrary={inGroupLibrary}
             />
           )
         }
         <div className="story-item-group">{story.group && story.group.group_name}</div>
-        {smallWindow && showShareButton
+        {smallWindow && (showShareButton || showDeleteButton)
           && (
             <Dropdown
               direction="left"
@@ -83,6 +94,14 @@ const StoryListItem = ({ story, userCanShare, libraryShown }) => {
                     text={<FormattedMessage id="Share" />}
                     onClick={() => setShareModalOpen(true)}
                     icon="share"
+                  />
+                )}
+                {showDeleteButton && (
+                  <Dropdown.Item
+                    text={<FormattedMessage id="Delete" />}
+                    style={{ color: 'red' }}
+                    icon="trash alternate outline"
+                    onClick={handleDelete}
                   />
                 )}
               </Dropdown.Menu>
@@ -121,15 +140,6 @@ const StoryListItem = ({ story, userCanShare, libraryShown }) => {
                       to={`/flashcards/${story._id}/`}
                       icon="id card"
                     />
-                    {false && (
-                      <Dropdown.Item
-                        text={<FormattedMessage id="Delete" />}
-                        className="delete-button"
-                        style={{ backgroundColor: '#dd0000' }}
-                        disabled
-                        icon="trash alternate outline"
-                      />
-                    )}
                   </Dropdown.Menu>
                 </Dropdown>
               </SemanticButton.Group>
@@ -151,11 +161,6 @@ const StoryListItem = ({ story, userCanShare, libraryShown }) => {
                     <FormattedMessage id="Flashcards" />
                   </Button>
                 </Link>
-                {false && (
-                  <Button disabled onClick={() => console.log('Not implemented yet')} variant="primary" style={{ marginRight: '0.5em' }}>
-                    <FormattedMessage id="Delete" />
-                  </Button>
-                )}
               </div>
             )
           }

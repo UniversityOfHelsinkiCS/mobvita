@@ -24,12 +24,17 @@ export const getStories = (language, query = { page: 0, page_size: 10 }) => {
 }
 
 export const updateExerciseSettings = (settings, storyId) => {
-  const route = `stories/${storyId}`
+  const route = `/stories/${storyId}`
   const prefix = 'SAVE_STORY'
   const payload = { exercise_settings: settings }
   return callBuilder(route, prefix, 'post', payload)
 }
 
+export const removeStory = (storyId) => {
+  const route = `/stories/${storyId}/remove`
+  const prefix = 'REMOVE_STORY'
+  return callBuilder(route, prefix)
+}
 
 // Reducer
 // You can include more app wide actions such as "selected: []" into the state
@@ -110,6 +115,25 @@ export default (state = initialState, action) => {
       return {
         ...state,
         focused: { ...state.focused, ...action.response },
+        pending: false,
+        error: false,
+      }
+    case 'REMOVE_STORY_ATTEMPT':
+      return {
+        ...state,
+        pending: true,
+        error: false,
+      }
+    case 'REMOVE_STORY_FAILURE':
+      return {
+        ...state,
+        pending: false,
+        error: true,
+      }
+    case 'REMOVE_STORY_SUCCESS':
+      return {
+        ...state,
+        data: state.data.filter(story => story._id !== action.response.story_id),
         pending: false,
         error: false,
       }

@@ -5,10 +5,18 @@ import { FormattedMessage } from 'react-intl'
 import { Modal } from 'semantic-ui-react'
 import { Table, ProgressBar, Button } from 'react-bootstrap'
 
-const LinkButton = ({ to, translationId, ...props }) => (
-  <Button as={Link} to={to} {...props}>
-    <FormattedMessage id={translationId} />
-  </Button>
+const CustomButton = ({ condition = true, translationId, ...props }) => {
+  if (!condition) return null
+
+  return (
+    <Button {...props}>
+      <FormattedMessage id={translationId} />
+    </Button>
+  )
+}
+
+const LinkButton = ({ ...props }) => (
+  <CustomButton as={Link} {...props} />
 )
 
 const Row = ({ translationId, children }) => (
@@ -23,7 +31,16 @@ const Row = ({ translationId, children }) => (
 )
 
 const DetailedStoryModal = (
-  { trigger, story, icons, setShareModalOpen, showShareButton, inGroupLibrary },
+  {
+    trigger,
+    story,
+    icons,
+    setShareModalOpen,
+    showShareButton,
+    showDeleteButton,
+    handleDelete,
+    inGroupLibrary,
+  },
 ) => {
   const { groups } = useSelector(({ groups }) => groups)
 
@@ -53,8 +70,10 @@ const DetailedStoryModal = (
       </Modal.Header>
       <Modal.Content>
         <Table striped>
-          <col width="50%" />
-          <col width="50%" />
+          <thead>
+            <col width="50%" />
+            <col width="50%" />
+          </thead>
           <tbody>
             {URL && (
               <Row translationId="Source">
@@ -110,22 +129,24 @@ const DetailedStoryModal = (
             />
           </div>
           <div className="gap-1">
-            {showLearningSettingsButton
-              && (
-                <LinkButton
-                  variant="outline-secondary"
-                  to={`/stories/${story._id}/concepts`}
-                  translationId="learning-settings"
-                />
-              )
-            }
-            {showShareButton
-              && (
-                <Button onClick={() => setShareModalOpen(true)} variant="outline-secondary">
-                  <FormattedMessage id="Share" />
-                </Button>
-              )
-            }
+            <LinkButton
+              condition={showLearningSettingsButton}
+              variant="outline-secondary"
+              to={`/stories/${story._id}/concepts`}
+              translationId="learning-settings"
+            />
+            <CustomButton
+              condition={showShareButton}
+              onClick={() => setShareModalOpen(true)}
+              variant="outline-secondary"
+              translationId="Share"
+            />
+            <CustomButton
+              condition={showDeleteButton}
+              onClick={handleDelete}
+              variant="outline-danger"
+              translationId="Delete"
+            />
           </div>
         </div>
       </Modal.Actions>
