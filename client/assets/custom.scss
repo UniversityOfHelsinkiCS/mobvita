@@ -78,6 +78,15 @@ body {
   }
 }
 
+// REACT VIRTUALIZED OVERRIDES:
+.ReactVirtualized__Grid__innerScrollContainer {
+  overflow: initial !important;
+}
+
+.ReactVirtualized__Grid {
+  overflow: initial !important;
+}
+
 // MISC CSS:
 .application-content {
   padding-bottom: 5em;
