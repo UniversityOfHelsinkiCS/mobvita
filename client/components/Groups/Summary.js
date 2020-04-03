@@ -132,30 +132,30 @@ const Summary = ({ groupName, isTeaching, getSummary, getPersonalSummary, learni
           <Spinner animation="border" variant="primary" size="lg" />
         </div>
       ) : (
-          <Table striped bordered hover>
-            <thead>
-              <tr>
-                {columns.map(column => (
-                  <th
-                    key={column}
-                    className="column-sort"
-                    onClick={() => handleSort(column)}
-                  >
-                    {capitalize(column).replace(/_/g, ' ')}
-                    <Icon name={sorter.direction[column] === 1 ? 'caret up' : 'caret down'} />
-                  </th>
-                ))}
-              </tr>
-            </thead>
-            <tbody>
-              {summary.map(user => (
-                <tr key={user.email}>
-                  {columns.map(column => <td key={user.username + column}>{user[column]}</td>)}
-                </tr>
+        <Table striped bordered hover>
+          <thead>
+            <tr>
+              {columns.map(column => (
+                <th
+                  key={column}
+                  className="column-sort"
+                  onClick={() => handleSort(column)}
+                >
+                  {capitalize(column).replace(/_/g, ' ')}
+                  <Icon name={sorter.direction[column] === 1 ? 'caret up' : 'caret down'} />
+                </th>
               ))}
-            </tbody>
-          </Table>
-        )}
+            </tr>
+          </thead>
+          <tbody>
+            {summary.map(user => (
+              <tr key={user.email}>
+                {columns.map(column => <td key={user.username + column}>{user[column]}</td>)}
+              </tr>
+            ))}
+          </tbody>
+        </Table>
+      )}
     </>
   )
 }
