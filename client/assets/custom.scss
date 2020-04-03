@@ -72,7 +72,11 @@ body {
   margin-bottom: 1em;
 }
 
-
+.ui.modal>.actions {
+  @media only screen and (max-width: 767px) {
+    padding: 1rem !important;
+  }
+}
 
 // MISC CSS:
 .application-content {
@@ -288,8 +292,10 @@ body {
   overflow: hidden;
   -o-text-overflow: ellipsis;
   text-overflow:    ellipsis;
-  &:hover {
-    cursor: pointer;
+  @media (min-width: 640px) {
+    &:hover {
+      cursor: pointer;
+    }
   }
 }
 
@@ -323,6 +329,38 @@ body {
   &-2 {
     padding-top: 1em;
   }
+}
+
+.padding-right {
+  &-1 {
+    padding-right: 0.5em;
+  }
+  &-2 {
+    padding-right: 1em;
+  }
+  &-3 {
+    padding-right: 2em;
+  }
+}
+
+.gap {
+  &-1 {
+    margin-left: -0.5em;
+    & * {
+      margin-left: 0.5em
+    }
+  }
+  &-2 {
+    margin-left: -1em;
+    & * {
+      margin-left: 1em
+    }
+  }
+}
+
+.space-between {
+  display: flex;
+  justify-content: space-between;
 }
 
 .column-sort {

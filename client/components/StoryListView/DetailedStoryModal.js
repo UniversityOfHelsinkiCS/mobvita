@@ -1,8 +1,14 @@
 import React from 'react'
+import { Link } from 'react-router-dom'
 import { FormattedMessage } from 'react-intl'
 import { Modal } from 'semantic-ui-react'
-import { Table, ProgressBar } from 'react-bootstrap'
-import { hiddenFeatures } from 'Utilities/common'
+import { Table, ProgressBar, Button } from 'react-bootstrap'
+
+const LinkButton = ({ to, translationId, ...props }) => (
+  <Button as={Link} to={to} {...props}>
+    <FormattedMessage id={translationId} />
+  </Button>
+)
 
 const Row = ({ translationId, children }) => (
   <tr>
@@ -15,7 +21,9 @@ const Row = ({ translationId, children }) => (
   </tr>
 )
 
-const DetailedStoryModal = ({ trigger, story, icons }) => {
+const DetailedStoryModal = (
+  { trigger, story, icons, setShareModalOpen, showShareButton, showLearningSettingsButton },
+) => {
   const {
     title,
     percent_cov: percentCovered,
@@ -24,15 +32,19 @@ const DetailedStoryModal = ({ trigger, story, icons }) => {
     message,
     author,
   } = story
-  console.log(story)
-
-  if (!hiddenFeatures) return null
 
   const difficultyIcon = icons()[story.difficulty || 'default']
 
   return (
-    <Modal trigger={trigger}>
-      <Modal.Header>{title}</Modal.Header>
+    <Modal
+      trigger={trigger}
+      closeIcon={{ style: { top: '0.75em', right: '1rem' }, color: 'black', name: 'close' }}
+    >
+      <Modal.Header>
+        <div className="padding-right-3">
+          {title}
+        </div>
+      </Modal.Header>
       <Modal.Content>
         <Table striped>
           <col width="50%" />
@@ -59,21 +71,20 @@ const DetailedStoryModal = ({ trigger, story, icons }) => {
                 {message}
               </Row>
             )}
-            {false && (
-              <Row translationId="part-of-story-covered">
-                <ProgressBar
-                  striped
-                  variant="info"
-                  now={percentCovered === 0 ? 10 : percentCovered}
-                  label={`${percentCovered}%`}
-                />
-              </Row>
-            )}
+            <Row translationId="part-of-story-covered">
+              <ProgressBar
+                striped
+                variant="info"
+                now={percentCovered < 10 ? 10 : percentCovered}
+                label={`${percentCovered}%`}
+                className="table-progress-bar"
+              />
+            </Row>
             <Row translationId="exercises-answered-correctly">
               <ProgressBar
                 striped
                 variant="success"
-                now={percentCorrect === 0 ? 10 : percentCorrect}
+                now={percentCorrect < 10 ? 10 : percentCorrect}
                 label={`${percentCorrect}%`}
                 className="table-progress-bar"
               />
@@ -81,6 +92,37 @@ const DetailedStoryModal = ({ trigger, story, icons }) => {
           </tbody>
         </Table>
       </Modal.Content>
+      <Modal.Actions>
+        <div className="space-between">
+          <div className="gap-1">
+            <LinkButton to={`/stories/${story._id}/practice`} translationId="practice" />
+            <LinkButton variant="secondary" to={`/stories/${story._id}/`} translationId="Read" />
+            <LinkButton
+              variant="secondary"
+              to={`/flashcards/${story._id}/`}
+              translationId="Flashcards"
+            />
+          </div>
+          <div className="gap-1">
+            {showLearningSettingsButton
+              && (
+                <LinkButton
+                  variant="outline-secondary"
+                  to={`/stories/${story._id}/concepts`}
+                  translationId="learning-settings"
+                />
+              )
+            }
+            {showShareButton
+              && (
+                <Button onClick={() => setShareModalOpen(true)} variant="outline-secondary">
+                  <FormattedMessage id="Share" />
+                </Button>
+              )
+            }
+          </div>
+        </div>
+      </Modal.Actions>
     </Modal>
   )
 }

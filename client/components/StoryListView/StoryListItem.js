@@ -12,7 +12,7 @@ import DetailedStoryModal from './DetailedStoryModal'
 
 const StoryListItem = ({ story, userCanShare, libraryShown }) => {
   const { groups } = useSelector(({ groups }) => groups)
-  const [modalOpen, setModalOpen] = useState(false)
+  const [shareModalOpen, setShareModalOpen] = useState(false)
   const icons = (size = '') => (
     {
       high: <div><Icon name="star outline" size={size} style={{ color: 'red' }} /><Icon name="star outline" size={size} style={{ color: 'red' }} /><Icon name="star outline" size={size} style={{ color: 'red' }} /></div>,
@@ -22,7 +22,7 @@ const StoryListItem = ({ story, userCanShare, libraryShown }) => {
     }
   )
 
-  const smallWindow = useWindowDimensions().width < 500
+  const smallWindow = useWindowDimensions().width < 640
 
   const difficultyIcon = icons('large')[story.difficulty || 'default']
 
@@ -46,6 +46,8 @@ const StoryListItem = ({ story, userCanShare, libraryShown }) => {
   const showLearningSettingsButton = inGroupLibrary
     && groups.find(group => group.group_id === story.group.group_id).is_teaching
 
+  const showShareButton = userCanShare && !story.public && !inGroupLibrary
+
   return (
     <Card
       fluid
@@ -57,11 +59,20 @@ const StoryListItem = ({ story, userCanShare, libraryShown }) => {
       }}
     >
       <Card.Content extra style={{ padding: '15px 15px 5px 15px', display: 'flex', justifyContent: 'space-between' }}>
-        <DetailedStoryModal
-          trigger={<h5 className="story-item-title">{story.title}</h5>}
-          story={story}
-          icons={icons}
-        />
+        {smallWindow
+          ? (
+            <h5 className="story-item-title">{story.title}</h5>
+          ) : (
+            <DetailedStoryModal
+              trigger={<h5 className="story-item-title">{story.title}</h5>}
+              story={story}
+              icons={icons}
+              setShareModalOpen={setShareModalOpen}
+              showShareButton={showShareButton}
+              showLearningSettingsButton={showLearningSettingsButton}
+            />
+          )
+        }
         <div className="story-item-group">{story.group && story.group.group_name}</div>
       </Card.Content>
       <Card.Content extra style={{ padding: '10px 15px 10px 15px' }}>
@@ -98,7 +109,7 @@ const StoryListItem = ({ story, userCanShare, libraryShown }) => {
                     {userCanShare && !story.public && !inGroupLibrary && (
                       <Dropdown.Item
                         text={<FormattedMessage id="Share" />}
-                        onClick={() => setModalOpen(true)}
+                        onClick={() => setShareModalOpen(true)}
                         icon="share"
                       />
                     )}
@@ -135,9 +146,9 @@ const StoryListItem = ({ story, userCanShare, libraryShown }) => {
                     <FormattedMessage id="Flashcards" />
                   </Button>
                 </Link>
-                {userCanShare && !story.public && !inGroupLibrary
+                {showShareButton
                   && (
-                    <Button onClick={() => setModalOpen(true)} variant="terniary" style={{ marginRight: '0.5em' }}>
+                    <Button onClick={() => setShareModalOpen(true)} variant="terniary" style={{ marginRight: '0.5em' }}>
                       <FormattedMessage id="Share" />
                     </Button>
                   )
@@ -168,7 +179,7 @@ const StoryListItem = ({ story, userCanShare, libraryShown }) => {
           <span style={{ marginLeft: 'auto' }}>
             {difficultyIcon}
           </span>
-          <ShareStory story={story} isOpen={modalOpen} setOpen={setModalOpen} />
+          <ShareStory story={story} isOpen={shareModalOpen} setOpen={setShareModalOpen} />
         </div>
       </Card.Content>
     </Card>
