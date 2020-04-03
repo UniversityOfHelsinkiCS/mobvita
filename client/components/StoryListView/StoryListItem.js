@@ -1,6 +1,5 @@
 import React, { useState } from 'react'
-import { useSelector } from 'react-redux'
-import { Header, Card, Icon, Accordion, List, Progress, Dropdown, Button as SemanticButton } from 'semantic-ui-react'
+import { Card, Icon, Progress, Dropdown, Button as SemanticButton } from 'semantic-ui-react'
 import { Button } from 'react-bootstrap'
 import { Link } from 'react-router-dom'
 import moment from 'moment'
@@ -11,9 +10,8 @@ import ShareStory from './ShareStory'
 import DetailedStoryModal from './DetailedStoryModal'
 
 const StoryListItem = ({ story, userCanShare, libraryShown }) => {
-  const { groups } = useSelector(({ groups }) => groups)
   const [shareModalOpen, setShareModalOpen] = useState(false)
-  const icons = (size = '') => (
+  const icons = size => (
     {
       high: <div><Icon name="star outline" size={size} style={{ color: 'red' }} /><Icon name="star outline" size={size} style={{ color: 'red' }} /><Icon name="star outline" size={size} style={{ color: 'red' }} /></div>,
       average: <div><Icon name="star outline" size={size} style={{ color: 'steelblue' }} /><Icon name="star outline" size={size} style={{ color: 'steelblue' }} /></div>,
@@ -43,9 +41,6 @@ const StoryListItem = ({ story, userCanShare, libraryShown }) => {
 
   const inGroupLibrary = libraryShown.group && story.group
 
-  const showLearningSettingsButton = inGroupLibrary
-    && groups.find(group => group.group_id === story.group.group_id).is_teaching
-
   const showShareButton = userCanShare && !story.public && !inGroupLibrary
 
   return (
@@ -69,7 +64,7 @@ const StoryListItem = ({ story, userCanShare, libraryShown }) => {
               icons={icons}
               setShareModalOpen={setShareModalOpen}
               showShareButton={showShareButton}
-              showLearningSettingsButton={showLearningSettingsButton}
+              inGroupLibrary={inGroupLibrary}
             />
           )
         }
@@ -135,8 +130,6 @@ const StoryListItem = ({ story, userCanShare, libraryShown }) => {
                         icon="trash alternate outline"
                       />
                     )}
-
-
                   </Dropdown.Menu>
                 </Dropdown>
               </SemanticButton.Group>

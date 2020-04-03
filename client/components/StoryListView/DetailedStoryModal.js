@@ -1,4 +1,5 @@
 import React from 'react'
+import { useSelector } from 'react-redux'
 import { Link } from 'react-router-dom'
 import { FormattedMessage } from 'react-intl'
 import { Modal } from 'semantic-ui-react'
@@ -22,8 +23,10 @@ const Row = ({ translationId, children }) => (
 )
 
 const DetailedStoryModal = (
-  { trigger, story, icons, setShareModalOpen, showShareButton, showLearningSettingsButton },
+  { trigger, story, icons, setShareModalOpen, showShareButton, inGroupLibrary },
 ) => {
+  const { groups } = useSelector(({ groups }) => groups)
+
   const {
     title,
     percent_cov: percentCovered,
@@ -34,6 +37,9 @@ const DetailedStoryModal = (
   } = story
 
   const difficultyIcon = icons()[story.difficulty || 'default']
+
+  const showLearningSettingsButton = inGroupLibrary
+    && groups.find(group => group.group_id === story.group.group_id).is_teaching
 
   return (
     <Modal
