@@ -8,20 +8,23 @@ import { FormattedMessage } from 'react-intl'
 import { inProduction, hiddenFeatures } from 'Utilities/common'
 import useWindowDimensions from 'Utilities/windowDimensions'
 import ShareStory from './ShareStory'
+import DetailedStoryModal from './DetailedStoryModal'
 
 const StoryListItem = ({ story, userCanShare, libraryShown }) => {
   const { groups } = useSelector(({ groups }) => groups)
   const [modalOpen, setModalOpen] = useState(false)
-  const icons = {
-    high: <div><Icon name="star outline" size="large" style={{ color: 'red' }} /><Icon name="star outline" size="large" style={{ color: 'red' }} /><Icon name="star outline" size="large" style={{ color: 'red' }} /></div>,
-    average: <div><Icon name="star outline" size="large" style={{ color: 'steelblue' }} /><Icon name="star outline" size="large" style={{ color: 'steelblue' }} /></div>,
-    low: <div><Icon name="star outline" size="large" style={{ color: 'forestgreen' }} /></div>,
-    default: <div><Icon name="star outline" size="large" style={{ color: 'black' }} /></div>,
-  }
+  const icons = (size = '') => (
+    {
+      high: <div><Icon name="star outline" size={size} style={{ color: 'red' }} /><Icon name="star outline" size={size} style={{ color: 'red' }} /><Icon name="star outline" size={size} style={{ color: 'red' }} /></div>,
+      average: <div><Icon name="star outline" size={size} style={{ color: 'steelblue' }} /><Icon name="star outline" size={size} style={{ color: 'steelblue' }} /></div>,
+      low: <div><Icon name="star outline" size={size} style={{ color: 'forestgreen' }} /></div>,
+      default: <div><Icon name="star outline" size={size} style={{ color: 'black' }} /></div>,
+    }
+  )
 
   const smallWindow = useWindowDimensions().width < 500
 
-  const difficultyIcon = icons[story.difficulty || 'default']
+  const difficultyIcon = icons('large')[story.difficulty || 'default']
 
   const storyInfoElements = [
     story.author ? `Author: ${story.author}` : null,
@@ -54,7 +57,11 @@ const StoryListItem = ({ story, userCanShare, libraryShown }) => {
       }}
     >
       <Card.Content extra style={{ padding: '15px 15px 5px 15px', display: 'flex', justifyContent: 'space-between' }}>
-        <h5 className="story-item-title">{story.title}</h5>
+        <DetailedStoryModal
+          trigger={<h5 className="story-item-title">{story.title}</h5>}
+          story={story}
+          icons={icons}
+        />
         <div className="story-item-group">{story.group && story.group.group_name}</div>
       </Card.Content>
       <Card.Content extra style={{ padding: '10px 15px 10px 15px' }}>
