@@ -288,6 +288,9 @@ body {
   overflow: hidden;
   -o-text-overflow: ellipsis;
   text-overflow:    ellipsis;
+  &:hover {
+    cursor: pointer;
+  }
 }
 
 .story-item-group {
