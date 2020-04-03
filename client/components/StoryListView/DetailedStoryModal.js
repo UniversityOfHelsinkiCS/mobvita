@@ -15,13 +15,19 @@ const DetailedStoryModal = ({ trigger, story, icons }) => {
     <Modal trigger={trigger}>
       <Modal.Header>{title}</Modal.Header>
       <Modal.Content>
-        <Table>
+        <Table striped>
           <tbody>
             <tr>
               <td>
                 <FormattedMessage id="Level" />
               </td>
               <td>{difficultyIcon}</td>
+            </tr>
+            <tr>
+              <td>
+                <FormattedMessage id="story-rating" />
+              </td>
+              <td>{story.elo_score}</td>
             </tr>
           </tbody>
         </Table>
