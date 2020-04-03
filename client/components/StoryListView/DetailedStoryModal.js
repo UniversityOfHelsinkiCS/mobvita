@@ -4,8 +4,26 @@ import { Modal } from 'semantic-ui-react'
 import { Table, ProgressBar } from 'react-bootstrap'
 import { hiddenFeatures } from 'Utilities/common'
 
+const Row = ({ translationId, children }) => (
+  <tr>
+    <td>
+      <FormattedMessage id={translationId} />
+    </td>
+    <td>
+      {children}
+    </td>
+  </tr>
+)
+
 const DetailedStoryModal = ({ trigger, story, icons }) => {
-  const { title, percent_cov: percentCovered, percent_perf: percentCorrect, URL } = story
+  const {
+    title,
+    percent_cov: percentCovered,
+    percent_perf: percentCorrect,
+    URL,
+    message,
+    author,
+  } = story
   console.log(story)
 
   if (!hiddenFeatures) return null
@@ -21,56 +39,45 @@ const DetailedStoryModal = ({ trigger, story, icons }) => {
           <col width="50%" />
           <tbody>
             {URL && (
-              <tr>
-                <td>
-                  <FormattedMessage id="Source" />
-                </td>
-                <td>
-                  <a href={URL} target="_blank" rel="noopener noreferrer">{URL}</a>
-                </td>
-              </tr>
+              <Row translationId="Source">
+                <a href={URL} target="_blank" rel="noopener noreferrer">{URL}</a>
+              </Row>
             )}
-            <tr>
-              <td>
-                <FormattedMessage id="Level" />
-              </td>
-              <td>{difficultyIcon}</td>
-            </tr>
-            <tr>
-              <td>
-                <FormattedMessage id="story-rating" />
-              </td>
-              <td>{story.elo_score}</td>
-            </tr>
+            {author && (
+              <Row translationId="Author">
+                {author}
+              </Row>
+            )}
+            <Row translationId="Level">
+              {difficultyIcon}
+            </Row>
+            <Row translationId="story-rating">
+              {story.elo_score}
+            </Row>
+            {message && (
+              <Row translationId="Message">
+                {message}
+              </Row>
+            )}
             {false && (
-              <tr>
-                <td>
-                  <FormattedMessage id="part-of-story-covered" />
-                </td>
-                <td>
-                  <ProgressBar
-                    striped
-                    variant="info"
-                    now={percentCovered === 0 ? 10 : percentCovered}
-                    label={`${percentCovered}%`}
-                  />
-                </td>
-              </tr>
-            )}
-            <tr>
-              <td>
-                <FormattedMessage id="exercises-answered-correctly" />
-              </td>
-              <td>
+              <Row translationId="part-of-story-covered">
                 <ProgressBar
                   striped
-                  variant="success"
-                  now={percentCorrect === 0 ? 10 : percentCorrect}
-                  label={`${percentCorrect}%`}
-                  className="table-progress-bar"
+                  variant="info"
+                  now={percentCovered === 0 ? 10 : percentCovered}
+                  label={`${percentCovered}%`}
                 />
-              </td>
-            </tr>
+              </Row>
+            )}
+            <Row translationId="exercises-answered-correctly">
+              <ProgressBar
+                striped
+                variant="success"
+                now={percentCorrect === 0 ? 10 : percentCorrect}
+                label={`${percentCorrect}%`}
+                className="table-progress-bar"
+              />
+            </Row>
           </tbody>
         </Table>
       </Modal.Content>
