@@ -18,6 +18,7 @@ import metadata from './metadataReducer'
 import summary from './groupSummaryReducer'
 import practice from './practiceReducer'
 import passwordReset from './passwordResetReducer'
+import studentProgress from './groupProgressReducer'
 
 const rootReducer = combineReducers({
   stories,
@@ -38,6 +39,7 @@ const rootReducer = combineReducers({
   summary,
   practice,
   passwordReset,
+  studentProgress,
 })
 
 export default (state, action) => (

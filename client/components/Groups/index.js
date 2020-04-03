@@ -21,6 +21,7 @@ import JoinGroup from './JoinGroup'
 import CollapsingList from './CollapsingList'
 import DeleteConfirmationModal from './DeleteConfirmationModal'
 import Summary from './Summary'
+import ProgressGraph from './ProgressGraph'
 
 const GroupView = () => {
   const intl = useIntl()
@@ -276,6 +277,8 @@ const GroupView = () => {
           />
         </>
       )}
+      { summary
+        && <ProgressGraph students={currentGroup.students} groupId={currentGroupId} />}
 
 
       <AddToGroup groupId={currentGroupId} isOpen={addToGroupOpen} setOpen={setAddToGroupOpen} />
