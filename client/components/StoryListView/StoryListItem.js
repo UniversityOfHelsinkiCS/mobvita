@@ -74,6 +74,26 @@ const StoryListItem = ({ story, userCanShare, libraryShown }) => {
           )
         }
         <div className="story-item-group">{story.group && story.group.group_name}</div>
+        {smallWindow && showShareButton
+          && (
+            <Dropdown
+              direction="left"
+              className="button icon basic"
+              icon="edit"
+              style={{ marginRight: '-1em', marginTop: '-1em', boxShadow: 'none' }}
+            >
+              <Dropdown.Menu>
+                {showShareButton && (
+                  <Dropdown.Item
+                    text={<FormattedMessage id="Share" />}
+                    onClick={() => setShareModalOpen(true)}
+                    icon="share"
+                  />
+                )}
+              </Dropdown.Menu>
+            </Dropdown>
+          )
+        }
       </Card.Content>
       <Card.Content extra style={{ padding: '10px 15px 10px 15px' }}>
         <div style={{ display: 'flex', alignItems: 'baseline' }}>
