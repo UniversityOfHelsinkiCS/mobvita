@@ -113,15 +113,24 @@ const StoryList = () => {
       data-cy="library-controls"
       className="library-control"
     >
-      <Search
-        open={false}
-        icon={noResults ? 'close' : 'search'}
-        loading={pending}
-        value={searchString}
-        onSearchChange={e => setSearchString(e.target.value)}
-        size="small"
-        style={{ marginBottom: 0, marginTop: 'auto' }}
-      />
+      <div style={{ display: 'flex', alignItems: 'center', marginTop: 'auto' }}>
+        <Search
+          open={false}
+          icon={noResults ? 'close' : 'search'}
+          loading={pending}
+          value={searchString}
+          onSearchChange={e => setSearchString(e.target.value)}
+          size="small"
+          style={{ marginBottom: 0, marginRight: '0.5em' }}
+        />
+        <Icon
+          data-cy="restart-story"
+          style={{ cursor: pending ? 'auto' : 'pointer' }}
+          name={pending ? 'grey redo' : 'blue redo'}
+          size="large"
+          onClick={handleRefresh}
+        />
+      </div>
       <div style={{ display: 'flex', justifyContent: 'space-between', flexWrap: 'wrap', padding: '0 0.5em' }}>
         {libraries.group && (
           <Select
@@ -140,15 +149,6 @@ const StoryList = () => {
             options={sortDropdownOptions}
             onChange={handleSortChange}
             style={{ minWidth: '5em' }}
-          />
-        </div>
-        <div>
-          <Icon
-            data-cy="restart-story"
-            style={{ cursor: pending ? 'auto' : 'pointer', marginTop: 'auto' }}
-            name={pending ? 'grey redo' : 'redo'}
-            size="large"
-            onClick={handleRefresh}
           />
         </div>
       </div>
