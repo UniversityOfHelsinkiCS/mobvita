@@ -5,7 +5,7 @@ import { Table, ProgressBar } from 'react-bootstrap'
 import { hiddenFeatures } from 'Utilities/common'
 
 const DetailedStoryModal = ({ trigger, story, icons }) => {
-  const { title, percent_cov: percentCovered, percent_perf: percentCorrect } = story
+  const { title, percent_cov: percentCovered, percent_perf: percentCorrect, URL } = story
   console.log(story)
 
   if (!hiddenFeatures) return null
@@ -20,6 +20,16 @@ const DetailedStoryModal = ({ trigger, story, icons }) => {
           <col width="50%" />
           <col width="50%" />
           <tbody>
+            {URL && (
+              <tr>
+                <td>
+                  <FormattedMessage id="Source" />
+                </td>
+                <td>
+                  <a href={URL} target="_blank" rel="noopener noreferrer">{URL}</a>
+                </td>
+              </tr>
+            )}
             <tr>
               <td>
                 <FormattedMessage id="Level" />
