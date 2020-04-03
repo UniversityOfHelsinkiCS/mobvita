@@ -70,10 +70,10 @@ const DetailedStoryModal = (
       </Modal.Header>
       <Modal.Content>
         <Table striped>
-          <thead>
+          <colgroup>
             <col width="50%" />
             <col width="50%" />
-          </thead>
+          </colgroup>
           <tbody>
             {URL && (
               <Row translationId="Source">
