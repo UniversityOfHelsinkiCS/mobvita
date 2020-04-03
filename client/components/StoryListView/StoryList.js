@@ -1,14 +1,15 @@
 import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { Placeholder, Card, Search, Select } from 'semantic-ui-react'
+import { Placeholder, Card, Search, Select, Icon } from 'semantic-ui-react'
 
 import StoryListItem from 'Components/StoryListView/StoryListItem'
 import { FormattedMessage, useIntl } from 'react-intl'
 import CheckboxGroup from 'Components/CheckboxGroup'
-import { capitalize } from 'Utilities/common'
+import { capitalize, learningLanguageSelector } from 'Utilities/common'
 import { getGroups } from 'Utilities/redux/groupsReducer'
 import { List, WindowScroller } from 'react-virtualized'
-import { updateLibrarySelect } from 'Utilities/redux/userReducer'
+import { updateLibrarySelect, refresh } from 'Utilities/redux/userReducer'
+import { getAllStories } from 'Utilities/redux/storiesReducer'
 import StoryForm from './StoryForm'
 
 const StoryList = () => {
@@ -28,6 +29,7 @@ const StoryList = () => {
   const dispatch = useDispatch()
 
   const user = useSelector(({ user }) => user.data.user)
+  const learningLanguage = useSelector(learningLanguageSelector)
   const refreshed = useSelector(({ user }) => user.refreshed)
   const groups = useSelector(({ groups }) => groups.groups)
   const { pending, stories } = useSelector(({ stories }) => ({
@@ -49,6 +51,14 @@ const StoryList = () => {
     setLibrary(library)
   }
 
+  const handleRefresh = () => {
+    dispatch(
+      getAllStories(learningLanguage, {
+        sort_by: 'date',
+        order: -1,
+      }),
+    )
+  }
 
   useEffect(() => {
     dispatch(getGroups())
@@ -129,6 +139,15 @@ const StoryList = () => {
             options={sortDropdownOptions}
             onChange={handleSortChange}
             style={{ minWidth: '5em' }}
+          />
+        </div>
+        <div>
+          <Icon
+            data-cy="restart-story"
+            style={{ cursor: 'pointer', marginTop: 'auto' }}
+            name="redo"
+            size="large"
+            onClick={handleRefresh}
           />
         </div>
       </div>
