@@ -5,7 +5,7 @@ import { Table, ProgressBar } from 'react-bootstrap'
 import { hiddenFeatures } from 'Utilities/common'
 
 const DetailedStoryModal = ({ trigger, story, icons }) => {
-  const { title, percent_cov: percentCovered, percent_perf: percentCorrect, URL } = story
+  const { title, percent_cov: percentCovered, percent_perf: percentCorrect, URL, message } = story
   console.log(story)
 
   if (!hiddenFeatures) return null
@@ -42,6 +42,14 @@ const DetailedStoryModal = ({ trigger, story, icons }) => {
               </td>
               <td>{story.elo_score}</td>
             </tr>
+            {message && (
+              <tr>
+                <td>
+                  <FormattedMessage id="Message" />
+                </td>
+                <td>{message}</td>
+              </tr>
+            )}
             {false && (
               <tr>
                 <td>
