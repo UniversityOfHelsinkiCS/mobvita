@@ -53,6 +53,8 @@ export const confirmUser = (token) => {
   return callBuilder(route, prefix, 'get')
 }
 
+export const refresh = () => ({ type: 'REFRESH' })
+
 export default (state = { data: null }, action) => {
   switch (action.type) {
     case 'LOGIN_SUCCESS':
@@ -113,6 +115,11 @@ export default (state = { data: null }, action) => {
         data: action.response,
         pending: false,
         error: false,
+      }
+    case 'REFRESH':
+      return {
+        ...state,
+        refreshed: true,
       }
     default:
       return state

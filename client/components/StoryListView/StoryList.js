@@ -1,14 +1,15 @@
 import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { Placeholder, Card, Search, Select } from 'semantic-ui-react'
+import { Placeholder, Card, Search, Select, Icon } from 'semantic-ui-react'
 
 import StoryListItem from 'Components/StoryListView/StoryListItem'
 import { FormattedMessage, useIntl } from 'react-intl'
 import CheckboxGroup from 'Components/CheckboxGroup'
-import { capitalize } from 'Utilities/common'
+import { capitalize, learningLanguageSelector } from 'Utilities/common'
 import { getGroups } from 'Utilities/redux/groupsReducer'
 import { List, WindowScroller } from 'react-virtualized'
-import { updateLibrarySelect } from 'Utilities/redux/userReducer'
+import { updateLibrarySelect, refresh } from 'Utilities/redux/userReducer'
+import { getAllStories } from 'Utilities/redux/storiesReducer'
 import StoryForm from './StoryForm'
 
 const StoryList = () => {
@@ -28,6 +29,7 @@ const StoryList = () => {
   const dispatch = useDispatch()
 
   const user = useSelector(({ user }) => user.data.user)
+  const learningLanguage = useSelector(learningLanguageSelector)
   const refreshed = useSelector(({ user }) => user.refreshed)
   const groups = useSelector(({ groups }) => groups.groups)
   const { pending, stories } = useSelector(({ stories }) => ({
@@ -49,6 +51,15 @@ const StoryList = () => {
     setLibrary(library)
   }
 
+  const handleRefresh = () => {
+    if (pending) return
+    dispatch(
+      getAllStories(learningLanguage, {
+        sort_by: 'date',
+        order: -1,
+      }),
+    )
+  }
 
   useEffect(() => {
     dispatch(getGroups())
@@ -102,15 +113,24 @@ const StoryList = () => {
       data-cy="library-controls"
       className="library-control"
     >
-      <Search
-        open={false}
-        icon={noResults ? 'close' : 'search'}
-        loading={pending}
-        value={searchString}
-        onSearchChange={e => setSearchString(e.target.value)}
-        size="small"
-        style={{ marginBottom: 0, marginTop: 'auto' }}
-      />
+      <div style={{ display: 'flex', alignItems: 'center', marginTop: 'auto' }}>
+        <Search
+          open={false}
+          icon={noResults ? 'close' : 'search'}
+          loading={pending}
+          value={searchString}
+          onSearchChange={e => setSearchString(e.target.value)}
+          size="small"
+          style={{ marginBottom: 0, marginRight: '0.5em' }}
+        />
+        <Icon
+          data-cy="restart-story"
+          style={{ cursor: pending ? 'auto' : 'pointer' }}
+          name={pending ? 'grey redo' : 'blue redo'}
+          size="large"
+          onClick={handleRefresh}
+        />
+      </div>
       <div style={{ display: 'flex', justifyContent: 'space-between', flexWrap: 'wrap', padding: '0 0.5em' }}>
         {libraries.group && (
           <Select
