@@ -52,6 +52,7 @@ const StoryList = () => {
   }
 
   const handleRefresh = () => {
+    if (pending) return
     dispatch(
       getAllStories(learningLanguage, {
         sort_by: 'date',
@@ -144,8 +145,8 @@ const StoryList = () => {
         <div>
           <Icon
             data-cy="restart-story"
-            style={{ cursor: 'pointer', marginTop: 'auto' }}
-            name="redo"
+            style={{ cursor: pending ? 'auto' : 'pointer', marginTop: 'auto' }}
+            name={pending ? 'grey redo' : 'redo'}
             size="large"
             onClick={handleRefresh}
           />
