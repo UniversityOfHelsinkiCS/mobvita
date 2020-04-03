@@ -126,14 +126,6 @@ const StoryListItem = ({ story, userCanShare, libraryShown }) => {
                       to={`/flashcards/${story._id}/`}
                       icon="id card"
                     />
-                    {userCanShare && !story.public && !inGroupLibrary && (
-                      <Dropdown.Item
-                        text={<FormattedMessage id="Share" />}
-                        onClick={() => setShareModalOpen(true)}
-                        icon="share"
-                      />
-                    )}
-
                     {false && (
                       <Dropdown.Item
                         text={<FormattedMessage id="Delete" />}
@@ -166,26 +158,6 @@ const StoryListItem = ({ story, userCanShare, libraryShown }) => {
                     <FormattedMessage id="Flashcards" />
                   </Button>
                 </Link>
-                {showShareButton
-                  && (
-                    <Button onClick={() => setShareModalOpen(true)} variant="terniary" style={{ marginRight: '0.5em' }}>
-                      <FormattedMessage id="Share" />
-                    </Button>
-                  )
-                }
-                {showLearningSettingsButton
-                  && (
-                    <Link to={`/stories/${story._id}/concepts`}>
-                      <Button
-                        variant="terniary"
-                        style={{ marginRight: '0.5em' }}
-                      >
-                        <FormattedMessage id="learning-settings" />
-                      </Button>
-                    </Link>
-
-                  )
-                }
                 {false && (
                   <Button disabled onClick={() => console.log('Not implemented yet')} variant="primary" style={{ marginRight: '0.5em' }}>
                     <FormattedMessage id="Delete" />
