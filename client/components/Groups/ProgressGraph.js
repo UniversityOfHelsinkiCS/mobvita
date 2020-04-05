@@ -21,11 +21,20 @@ const ProgressGraph = ({ students, groupId }) => {
   const dispatch = useDispatch()
 
   useEffect(() => {
+    if (!currentStudent) return
     dispatch(getStudentProgress(currentStudent._id, groupId, learningLanguage))
   }, [currentStudent])
 
+  useEffect(() => {
+    setCurrentStudent(students[0])
+  }, [students])
+
   if (pending || !scores) {
     return 'loading...'
+  }
+
+  if (!currentStudent) {
+    return 'no data'
   }
 
   const options = {
