@@ -5,11 +5,18 @@ import { getStudentProgress } from 'Utilities/redux/groupProgressReducer'
 import { Dropdown } from 'react-bootstrap'
 import Highcharts from 'highcharts'
 import HighchartsReact from 'highcharts-react-official'
+import moment from 'moment'
 
 
 const ProgressGraph = ({ students, groupId }) => {
   const [currentStudent, setCurrentStudent] = useState(students[0])
-  const { progress, pending } = useSelector(({ studentProgress }) => studentProgress)
+  const { dates, scores, pending } = useSelector(({ studentProgress }) => {
+    const { progress, pending } = studentProgress
+    const { exercise_history: exerciseHistory } = progress
+    const scores = exerciseHistory.map(e => e.score)
+    const dates = exerciseHistory.map(e => e.date)
+    return { dates, scores, pending }
+  })
   const learningLanguage = useSelector(learningLanguageSelector)
   const dispatch = useDispatch()
 
@@ -17,18 +24,22 @@ const ProgressGraph = ({ students, groupId }) => {
     dispatch(getStudentProgress(currentStudent._id, groupId, learningLanguage))
   }, [currentStudent])
 
-  if (pending || !progress) {
+  if (pending || !scores) {
     return 'loading...'
   }
 
   const options = {
-    title: { text: currentStudent.email },
-    series: [{ data: progress.exercise_history.map(e => e.score) }],
+    title: { text: '' },
+    series: [{ name: 'Score', data: scores }],
     chart: { height: '35%' },
     legend: { enabled: false },
     credits: { enabled: false },
+    allowDecimals: false,
+    yAxis: { title: { text: 'Score' } },
+    // eslint-disable-next-line react/no-this-in-sfc
+    xAxis: { labels: { formatter() { return moment(dates[this.value]).format('DD/MM') } } },
   }
-  console.log(options.series)
+
   return (
     <div className="group-container">
       <Dropdown

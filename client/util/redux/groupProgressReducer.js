@@ -7,7 +7,9 @@ export const getStudentProgress = (userId, groupId, language) => {
   return callBuilder(route, prefix, 'get')
 }
 
-export default (state = {}, action) => {
+const initialState = { progress: { exercise_history: [] } }
+
+export default (state = initialState, action) => {
   switch (action.type) {
     case 'GET_STUDENT_PROGRESS_ATTEMPT':
       return {
