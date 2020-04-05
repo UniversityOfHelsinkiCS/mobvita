@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { Card, Icon, Progress, Dropdown, Button as SemanticButton } from 'semantic-ui-react'
 import { Button } from 'react-bootstrap'
 import { Link } from 'react-router-dom'
@@ -14,6 +14,7 @@ import DetailedStoryModal from './DetailedStoryModal'
 const StoryListItem = ({ story, userCanShare, libraryShown }) => {
   const dispatch = useDispatch()
   const [shareModalOpen, setShareModalOpen] = useState(false)
+  const { groups } = useSelector(({ groups }) => groups)
   const icons = size => (
     {
       high: <div><Icon name="star outline" size={size} style={{ color: 'red' }} /><Icon name="star outline" size={size} style={{ color: 'red' }} /><Icon name="star outline" size={size} style={{ color: 'red' }} /></div>,
@@ -43,11 +44,11 @@ const StoryListItem = ({ story, userCanShare, libraryShown }) => {
     </>]
 
   const inGroupLibrary = libraryShown.group && story.group
+  const isTeacher = inGroupLibrary && groups.find(g => g.group_id === story.group.group_id).is_teaching
 
   const showShareButton = userCanShare && !story.public && !inGroupLibrary
 
-  const showDeleteButton = libraryShown.private
-
+  const showDeleteButton = libraryShown.private || isTeacher
   const handleDelete = () => {
     dispatch(removeStory(story._id))
   }
