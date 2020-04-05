@@ -3,6 +3,9 @@ import { useDispatch, useSelector } from 'react-redux'
 import { learningLanguageSelector } from 'Utilities/common'
 import { getStudentProgress } from 'Utilities/redux/groupProgressReducer'
 import { Dropdown } from 'react-bootstrap'
+import Highcharts from 'highcharts'
+import HighchartsReact from 'highcharts-react-official'
+
 
 const ProgressGraph = ({ students, groupId }) => {
   const [currentStudent, setCurrentStudent] = useState(students[0])
@@ -14,6 +17,18 @@ const ProgressGraph = ({ students, groupId }) => {
     dispatch(getStudentProgress(currentStudent._id, groupId, learningLanguage))
   }, [currentStudent])
 
+  if (pending || !progress) {
+    return 'loading...'
+  }
+
+  const options = {
+    title: { text: currentStudent.email },
+    series: [{ data: progress.exercise_history.map(e => e.score) }],
+    chart: { height: '35%' },
+    legend: { enabled: false },
+    credits: { enabled: false },
+  }
+  console.log(options.series)
   return (
     <div className="group-container">
       <Dropdown
@@ -31,7 +46,11 @@ const ProgressGraph = ({ students, groupId }) => {
         </Dropdown.Menu>
       </Dropdown>
       <div>
-        {progress && progress.exercise_history.map(e => <div key={e.date}>{e.score}</div>)}
+        <HighchartsReact
+          highcharts={Highcharts}
+          options={options}
+          allowChartUpdate={false}
+        />
       </div>
     </div>
   )
