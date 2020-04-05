@@ -42,6 +42,7 @@ const ProgressGraph = ({ students, groupId }) => {
 
   return (
     <div className="group-container">
+      <hr />
       <Dropdown
         data-cy="select-group"
         className="auto-right"

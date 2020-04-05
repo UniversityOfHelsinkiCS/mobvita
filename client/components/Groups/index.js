@@ -15,6 +15,7 @@ import { getSummary, getPersonalSummary } from 'Utilities/redux/groupSummaryRedu
 import { setNotification } from 'Utilities/redux/notificationReducer'
 import { learningLanguageSelector } from 'Utilities/common'
 import useWindowDimensions from 'Utilities/windowDimensions'
+import { getStudentProgress } from 'Utilities/redux/groupProgressReducer'
 import AddGroup from './AddGroup'
 import AddToGroup from './AddToGroup'
 import JoinGroup from './JoinGroup'
@@ -31,6 +32,7 @@ const GroupView = () => {
   const [currentGroupId, setCurrentGroupId] = useState(null)
   const [showToken, setShowToken] = useState(false)
   const [summary, setSummary] = useState(false)
+  const [progress, setProgress] = useState(false)
   const userOid = useSelector(({ user }) => user.data.user.oid)
   const learningLanguage = useSelector(learningLanguageSelector)
   const dispatch = useDispatch()
@@ -71,7 +73,13 @@ const GroupView = () => {
   }
 
   const handleSummary = () => {
+    setProgress(false)
     setSummary(true)
+  }
+
+  const handleProgress = () => {
+    setSummary(false)
+    setProgress(true)
   }
 
   const handleShowToken = () => {
@@ -220,6 +228,9 @@ const GroupView = () => {
               <Button onClick={handleSummary}>
                 <FormattedMessage id="summary" />
               </Button>
+              <Button onClick={handleProgress}>
+                <FormattedMessage id="Progress" />
+              </Button>
               <Button onClick={handleSettingsClick}>
                 <FormattedMessage id="learning-settings" />
               </Button>
@@ -277,7 +288,7 @@ const GroupView = () => {
           />
         </>
       )}
-      { summary
+      { progress
         && <ProgressGraph students={currentGroup.students} groupId={currentGroupId} />}
 
 
