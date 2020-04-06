@@ -735,8 +735,8 @@
     "email-sent": "Sähköposti lähetetty",
     "joined-group": "Liityttiin ryhmään",
     "register-to-save-your-progress": "Luo tili ja tallenna edistymisesi",
-    "Public": "Julkinen",
-    "Private": "Yksityinen",
-    "Uncategorized": "Ei kategoriaa",
+    "Public": "Julkiset",
+    "Private": "Omat",
+    "Uncategorized": "Luokittelemattomat",
     "completed-snippets": "Suoritetut leikkeet"
 }

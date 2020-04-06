@@ -1,15 +1,11 @@
-import React, { useState } from 'react'
+import React from 'react'
 import { Modal, Button } from 'semantic-ui-react'
 import { FormattedMessage } from 'react-intl'
-import { useDispatch } from 'react-redux'
-import { removeStory } from 'Utilities/redux/storiesReducer'
 
-const DeleteConfirmationModal = ({ open, setOpen, storyId }) => {
-  const dispatch = useDispatch()
-
+const DeleteConfirmationModal = ({ open, setOpen, action, children }) => {
   const handleAccept = () => {
     setOpen(false)
-    dispatch(removeStory(storyId))
+    action()
   }
 
   const handleReject = () => {
@@ -27,11 +23,11 @@ const DeleteConfirmationModal = ({ open, setOpen, storyId }) => {
         <FormattedMessage id="Warning" />
       </Modal.Header>
       <Modal.Content>
-        <FormattedMessage id="this-will-permanently-remove-this-story-from-your-collection-are-you-sure-you-want-to-proceed" />
+        {children}
       </Modal.Content>
       <Modal.Actions>
         <Button negative onClick={() => handleAccept()} data-cy="confirm-story-delete">
-          <FormattedMessage id="Remove" />
+          <FormattedMessage id="Confirm" />
         </Button>
         <Button onClick={() => handleReject()}>
           <FormattedMessage id="Cancel" />

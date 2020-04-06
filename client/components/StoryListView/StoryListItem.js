@@ -6,6 +6,7 @@ import { Link } from 'react-router-dom'
 import moment from 'moment'
 import { FormattedMessage } from 'react-intl'
 import { removeStory } from 'Utilities/redux/storiesReducer'
+import { unshareStory as unshare } from 'Utilities/redux/shareReducer'
 import { inProduction, hiddenFeatures } from 'Utilities/common'
 import useWindowDimensions from 'Utilities/windowDimensions'
 import DeleteConfirmationModal from 'Components/StoryListView/DeleteConfirmationModal'
@@ -53,6 +54,14 @@ const StoryListItem = ({ story, userCanShare, libraryShown }) => {
   const showDeleteButton = libraryShown.private || isTeacher
   const handleDelete = () => {
     setConfirmationOpen(true)
+  }
+
+  const deleteStory = () => {
+    dispatch(removeStory(story._id))
+  }
+
+  const unshareStory = () => {
+    dispatch(unshare(story.group.group_id, story._id))
   }
 
   return (
@@ -179,7 +188,10 @@ const StoryListItem = ({ story, userCanShare, libraryShown }) => {
         open={confirmationOpen}
         setOpen={setConfirmationOpen}
         storyId={story._id}
-      />
+        action={inGroupLibrary ? unshareStory : deleteStory}
+      >
+        <FormattedMessage id="this-will-permanently-remove-this-story-from-your-collection-are-you-sure-you-want-to-proceed" />
+      </DeleteConfirmationModal>
     </Card>
   )
 }
