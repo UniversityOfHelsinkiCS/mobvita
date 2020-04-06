@@ -117,6 +117,10 @@ const CurrentPractice = ({ storyId }) => {
   useEffect(setInitialAnswers, [snippets.focused])
 
   useEffect(() => {
+    if (!answersPending) dispatch(getSelf())
+  }, [answersPending])
+
+  useEffect(() => {
     if (snippets.focused) {
       setProgress(snippetProgress / snippets.focused.total_num)
     }
@@ -135,7 +139,6 @@ const CurrentPractice = ({ storyId }) => {
         setProgress(currentSnippetId + 1 / snippets.focused.total_num)
       }
     }
-    dispatch(getSelf())
   }, [snippets.focused])
 
   useEffect(() => {
