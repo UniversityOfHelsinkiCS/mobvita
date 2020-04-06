@@ -8,12 +8,14 @@ import { FormattedMessage } from 'react-intl'
 import { removeStory } from 'Utilities/redux/storiesReducer'
 import { inProduction, hiddenFeatures } from 'Utilities/common'
 import useWindowDimensions from 'Utilities/windowDimensions'
+import DeleteConfirmationModal from 'Components/StoryListView/DeleteConfirmationModal'
 import ShareStory from './ShareStory'
 import DetailedStoryModal from './DetailedStoryModal'
 
 const StoryListItem = ({ story, userCanShare, libraryShown }) => {
   const dispatch = useDispatch()
   const [shareModalOpen, setShareModalOpen] = useState(false)
+  const [confirmationOpen, setConfirmationOpen] = useState(false)
   const { groups } = useSelector(({ groups }) => groups)
   const icons = size => (
     {
@@ -50,7 +52,7 @@ const StoryListItem = ({ story, userCanShare, libraryShown }) => {
 
   const showDeleteButton = libraryShown.private || isTeacher
   const handleDelete = () => {
-    dispatch(removeStory(story._id))
+    setConfirmationOpen(true)
   }
 
   return (
@@ -173,6 +175,11 @@ const StoryListItem = ({ story, userCanShare, libraryShown }) => {
           <ShareStory story={story} isOpen={shareModalOpen} setOpen={setShareModalOpen} />
         </div>
       </Card.Content>
+      <DeleteConfirmationModal
+        open={confirmationOpen}
+        setOpen={setConfirmationOpen}
+        storyId={story._id}
+      />
     </Card>
   )
 }
