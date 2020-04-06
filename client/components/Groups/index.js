@@ -288,8 +288,12 @@ const GroupView = () => {
           />
         </>
       )}
-      { progress
-        && <ProgressGraph students={currentGroup.students} groupId={currentGroupId} />}
+      { progress && (
+        <ProgressGraph
+          students={currentGroup.students.sort((s1, s2) => s1.email.localeCompare(s2.email))}
+          groupId={currentGroupId}
+        />
+      )}
 
 
       <AddToGroup groupId={currentGroupId} isOpen={addToGroupOpen} setOpen={setAddToGroupOpen} />
