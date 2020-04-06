@@ -736,5 +736,8 @@
     "group-deleted": "Group deleted",
     "email-sent": "Email sent",
     "joined-group": "Joined group",
-    "register-to-save-your-progress": "Register to save your progress"
+    "register-to-save-your-progress": "Register to save your progress",
+    "Public": "Public",
+    "Private": "Private",
+    "Uncategorized": "Uncategorized"
 }

@@ -1,12 +1,8 @@
-import React, { useState } from 'react'
+import React from 'react'
 import { Link } from 'react-router-dom'
-import { Tab, Form } from 'semantic-ui-react'
+import { Tab } from 'semantic-ui-react'
 
-
-import { Button } from 'react-bootstrap'
-import { useDispatch } from 'react-redux'
 import { useIntl } from 'react-intl'
-import { changePassword } from 'Utilities/redux/userReducer'
 import PersonalSummary from './PersonalSummary'
 import ChangePassword from './ChangePassword'
 
@@ -27,7 +23,7 @@ export default function Profile({ location }) {
     {
       menuItem: {
         as: Link,
-        content: intl.formatMessage({ id: 'Summary' }),
+        content: intl.formatMessage({ id: 'summary' }),
         to: '/profile/summary',
         key: 'summary',
       },

@@ -126,7 +126,8 @@ const StoryList = () => {
         <Icon
           data-cy="restart-story"
           style={{ cursor: pending ? 'auto' : 'pointer' }}
-          name={pending ? 'grey redo' : 'blue redo'}
+          name="redo"
+          color={pending ? 'grey' : 'blue'}
           size="large"
           onClick={handleRefresh}
         />

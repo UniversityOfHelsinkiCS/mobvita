@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import DatePicker from 'react-datepicker'
 import moment from 'moment'
-import { FormattedMessage } from 'react-intl'
+import { FormattedMessage, useIntl } from 'react-intl'
 import { getPersonalSummary } from 'Utilities/redux/groupSummaryReducer'
 import { Spinner } from 'react-bootstrap'
 import { learningLanguageSelector } from '../../util/common'
@@ -23,6 +23,8 @@ const PickDate = ({ date, setDate }) => (
 const PersonalSummary = () => {
   const [startDate, setStartDate] = useState(moment().subtract(7, 'days').toDate())
   const [endDate, setEndDate] = useState(moment().toDate())
+
+  const intl = useIntl()
 
   const learningLanguage = useSelector(learningLanguageSelector)
 
@@ -65,11 +67,11 @@ const PersonalSummary = () => {
         <div>
 
           <div>
-            <b>Number of exercises completed: </b>
+            <b>{intl.formatMessage({ id: 'completed-exercises' })}: </b>
             {summary[0].number_of_exercises}
           </div>
           <div>
-            <b>Number of snippets completed: </b>
+            <b>{intl.formatMessage({ id: 'completed-snippets' })}: </b>
             {summary[0].number_of_snippets}
           </div>
         </div>

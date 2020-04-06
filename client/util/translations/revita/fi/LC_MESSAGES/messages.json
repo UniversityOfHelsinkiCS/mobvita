@@ -734,5 +734,8 @@
     "group-deleted": "Ryhmä poistettu",
     "email-sent": "Sähköposti lähetetty",
     "joined-group": "Liityttiin ryhmään",
-    "register-to-save-your-progress": "Luo tili ja tallenna edistymisesi"
+    "register-to-save-your-progress": "Luo tili ja tallenna edistymisesi",
+    "Public": "Julkinen",
+    "Private": "Yksityinen",
+    "Uncategorized": "Ei kategoriaa"
 }
