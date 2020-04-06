@@ -13,10 +13,10 @@ export default function ChangePassword() {
 
 
   const [settings, setSettings] = useState({
-    newPassword: null,
-    newPasswordAgain: null,
-    passwordError: null,
-    currentPassword: null,
+    newPassword: '',
+    newPasswordAgain: '',
+    passwordError: false,
+    currentPassword: '',
   })
 
   const saveSettings = () => {
