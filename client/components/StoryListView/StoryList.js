@@ -8,7 +8,7 @@ import CheckboxGroup from 'Components/CheckboxGroup'
 import { capitalize, learningLanguageSelector } from 'Utilities/common'
 import { getGroups } from 'Utilities/redux/groupsReducer'
 import { List, WindowScroller } from 'react-virtualized'
-import { updateLibrarySelect, refresh } from 'Utilities/redux/userReducer'
+import { updateLibrarySelect } from 'Utilities/redux/userReducer'
 import { getAllStories } from 'Utilities/redux/storiesReducer'
 import StoryForm from './StoryForm'
 
@@ -62,6 +62,7 @@ const StoryList = () => {
   }
 
   useEffect(() => {
+    console.log('getgroups library')
     dispatch(getGroups())
   }, [])
 

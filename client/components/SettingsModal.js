@@ -16,7 +16,7 @@ const SettingsModal = ({ trigger }) => {
   const dispatch = useDispatch()
   const intl = useIntl()
   const { concepts, pending } = useSelector(({ metadata }) => metadata)
-  const { groups, pending: groupsPending } = useSelector(({ groups }) => groups)
+  const { groups } = useSelector(({ groups }) => groups)
   const { exercise_setting_template: activeTemplate } = useSelector(({ user }) => (
     user.data.user))
   const learningLanguage = useSelector(learningLanguageSelector)
@@ -30,8 +30,8 @@ const SettingsModal = ({ trigger }) => {
   }, [learningLanguage])
 
   useEffect(() => {
-    if (!groupsPending) dispatch(getGroups())
-  }, [])
+    if (open) dispatch(getGroups())
+  }, [open])
 
   const levels = []
   if (concepts) {
