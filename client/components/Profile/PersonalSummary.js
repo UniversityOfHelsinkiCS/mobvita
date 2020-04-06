@@ -44,7 +44,7 @@ const PersonalSummary = () => {
   }
 
   return (
-    <>
+    <div className="component-container">
       <div style={{ display: 'flex', justifyContent: 'space-between', paddingBottom: '1em' }}>
         <div style={{ display: 'flex', justifyContent: 'space-between' }}>
           <div>
@@ -74,7 +74,7 @@ const PersonalSummary = () => {
           </div>
         </div>
       )}
-    </>
+    </div>
   )
 }
 

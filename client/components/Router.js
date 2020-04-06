@@ -36,7 +36,7 @@ export default () => (
     <ProtectedRoute exact path="/groups" component={GroupView} />
     <ProtectedRoute exact path="/:target/:id/concepts" component={Concepts} />
     <ProtectedRoute exact path="/concepts" component={Concepts} />
-    <ProtectedRoute exact path="/profile" component={Profile} />
-
+    <ProtectedRoute exact path="/profile/account" component={Profile} />
+    <ProtectedRoute exact path="/profile/summary" component={Profile} />
   </Switch>
 )

@@ -137,7 +137,7 @@ export default function Bar({ history }) {
                             </Button>
                           )}
                         />
-                        <Link to="/profile">
+                        <Link to="/profile/account">
                           <Button data-cy="settings-link" variant="secondary" style={{ marginTop: '0.5em' }} onClick={() => menuClickWrapper()} block>
                             <FormattedMessage id="Profile" />
                           </Button>
