@@ -740,5 +740,6 @@
     "Public": "Public",
     "Private": "Private",
     "Uncategorized": "Uncategorized",
-    "completed-snippets": "Completed Snippets"
+    "completed-snippets": "Completed Snippets",
+    "story-unshared": "Removed story from group library"
 }

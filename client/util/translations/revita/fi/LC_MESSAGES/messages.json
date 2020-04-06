@@ -738,5 +738,6 @@
     "Public": "Julkiset",
     "Private": "Omat",
     "Uncategorized": "Luokittelemattomat",
-    "completed-snippets": "Suoritetut leikkeet"
+    "completed-snippets": "Suoritetut leikkeet",
+    "story-unshared": "Tarina poistettu ryhmän kirjastosta"
 }

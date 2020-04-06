@@ -36,13 +36,16 @@ export const removeStory = (storyId) => {
   return callBuilder(route, prefix)
 }
 
-// Reducer
-// You can include more app wide actions such as "selected: []" into the state
+export const unshareStory = (groupId, storyId) => {
+  const route = `/groups/${groupId}/unshare/${storyId}`
+  const prefix = 'UNSHARE_STORY'
+  return callBuilder(route, prefix, 'post', {})
+}
 
 const initialState = {
   data: [],
   pending: false,
-  error: false
+  error: false,
 }
 
 export default (state = initialState, action) => {
@@ -134,6 +137,30 @@ export default (state = initialState, action) => {
       return {
         ...state,
         data: state.data.filter(story => story._id !== action.response.story_id),
+        pending: false,
+        error: false,
+      }
+    case 'UNSHARE_STORY_ATTEMPT':
+      return {
+        ...state,
+        pending: true,
+        error: false,
+      }
+    case 'UNSHARE_STORY_FAILURE':
+      return {
+        ...state,
+        pending: false,
+        error: true,
+      }
+    case 'UNSHARE_STORY_SUCCESS':
+      return {
+        ...state,
+        data: state.data.map((story) => {
+          if (story._id === action.response.removed) {
+            return { ...story, group: null }
+          }
+          return story
+        }),
         pending: false,
         error: false,
       }

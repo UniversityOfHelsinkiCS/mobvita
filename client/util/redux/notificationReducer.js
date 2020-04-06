@@ -128,6 +128,16 @@ export default (state = initialState, action) => {
         type: type.error,
         options: { autoClose: 10000 },
       }
+    case 'UNSHARE_STORY_FAILURE':
+      return {
+        message: action.response.response.data,
+        type: type.error,
+      }
+    case 'UNSHARE_STORY_SUCCESS':
+      return {
+        translationId: 'story-unshared',
+        type: type.success,
+      }
     default:
       return state
   }
