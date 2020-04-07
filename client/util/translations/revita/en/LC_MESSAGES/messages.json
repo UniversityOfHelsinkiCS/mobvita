@@ -741,5 +741,6 @@
     "Private": "Private",
     "Uncategorized": "Uncategorized",
     "completed-snippets": "Completed Snippets",
-    "story-unshared": "Removed story from group library"
+    "story-unshared": "Removed story from group library",
+    "remove-story-from-group-warning": "This will remove the story from the library of group {group}"
 }

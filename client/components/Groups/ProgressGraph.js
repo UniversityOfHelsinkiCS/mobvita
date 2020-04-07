@@ -46,7 +46,7 @@ const ProgressGraph = ({ students, groupId }) => {
     allowDecimals: false,
     yAxis: { title: { text: 'Score' } },
     // eslint-disable-next-line react/no-this-in-sfc
-    xAxis: { labels: { formatter() { return moment(dates[this.value]).format('DD/MM') } } },
+    xAxis: { labels: { formatter() { return moment(dates[this.value]).format('DD/MM/YY') } } },
   }
 
   return (

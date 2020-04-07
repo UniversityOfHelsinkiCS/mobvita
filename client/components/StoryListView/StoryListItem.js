@@ -4,7 +4,7 @@ import { Card, Icon, Progress, Dropdown, Button as SemanticButton } from 'semant
 import { Button } from 'react-bootstrap'
 import { Link } from 'react-router-dom'
 import moment from 'moment'
-import { FormattedMessage } from 'react-intl'
+import { FormattedMessage, useIntl } from 'react-intl'
 import { removeStory, unshareStory as unshare } from 'Utilities/redux/storiesReducer'
 import useWindowDimensions from 'Utilities/windowDimensions'
 import DeleteConfirmationModal from 'Components/StoryListView/DeleteConfirmationModal'
@@ -13,6 +13,7 @@ import DetailedStoryModal from './DetailedStoryModal'
 
 const StoryListItem = ({ story, userCanShare, libraryShown, selectedGroup }) => {
   const dispatch = useDispatch()
+  const intl = useIntl()
   const [shareModalOpen, setShareModalOpen] = useState(false)
   const [confirmationOpen, setConfirmationOpen] = useState(false)
   const { groups } = useSelector(({ groups }) => groups)
@@ -192,7 +193,7 @@ const StoryListItem = ({ story, userCanShare, libraryShown, selectedGroup }) => 
         action={inGroupLibrary ? unshareStory : deleteStory}
       >
         {inGroupLibrary && currentGroup
-          ? <div>remove story from group {currentGroup.groupName}</div>
+          ? <FormattedMessage id="remove-story-from-group-warning" values={{ group: currentGroup.groupName }} />
           : <FormattedMessage id="this-will-permanently-remove-this-story-from-your-collection-are-you-sure-you-want-to-proceed" />}
 
       </DeleteConfirmationModal>
