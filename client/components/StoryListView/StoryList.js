@@ -16,7 +16,7 @@ const StoryList = () => {
   const intl = useIntl()
   const [sorter, setSorter] = useState('date')
   const [searchString, setSearchString] = useState('')
-  const [group, setGroup] = useState('all')
+  const [group, setGroup] = useState(null)
   const [searchedStories, setSearchedStories] = useState([])
   const [libraryFromUser, setLibraryFromUser] = useState(false)
   const [libraries, setLibraries] = useState(
@@ -62,9 +62,12 @@ const StoryList = () => {
   }
 
   useEffect(() => {
-    console.log('getgroups library')
     dispatch(getGroups())
   }, [])
+
+  useEffect(() => {
+    if (groups.length > 0) setGroup(groups[0].group_id)
+  }, [groups])
 
   useEffect(() => {
     if (!libraryFromUser) {
@@ -79,10 +82,9 @@ const StoryList = () => {
     { key: 'difficulty', text: intl.formatMessage({ id: 'Difficulty' }), value: 'difficulty' },
   ]
 
-  const groupDropdownOptions = [{ key: 'all', text: 'all', value: 'all' }]
-    .concat(groups.map(group => (
-      { key: group.group_id, text: group.groupName, value: group.group_id }
-    )))
+  const groupDropdownOptions = groups.map(group => (
+    { key: group.group_id, text: group.groupName, value: group.group_id }
+  ))
 
   const handleSortChange = (_e, option) => {
     setSorter(option.value)
@@ -186,8 +188,8 @@ const StoryList = () => {
       showLibraries.push('Private')
     }
 
-    if (story.group) {
-      if (group === 'all' || story.group.group_id === group) {
+    if (story.groups) {
+      if (group === 'all' || story.groups.map(g => g.group_id).includes(group)) {
         showLibraries.push('Group')
       }
     }
@@ -231,6 +233,7 @@ const StoryList = () => {
           userCanShare={userCanShare}
           libraryShown={libraries}
           story={libraryFilteredStories[index]}
+          selectedGroup={group}
         />
       </div>
     )

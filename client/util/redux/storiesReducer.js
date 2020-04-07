@@ -157,7 +157,10 @@ export default (state = initialState, action) => {
         ...state,
         data: state.data.map((story) => {
           if (story._id === action.response.removed) {
-            return { ...story, group: null }
+            return {
+              ...story,
+              groups: story.groups.filter(g => g.group_id !== action.response.group.group_id),
+            }
           }
           return story
         }),
