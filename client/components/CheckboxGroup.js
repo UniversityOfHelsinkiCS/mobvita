@@ -11,7 +11,8 @@ const ToggleButton = ({ toggled, children, ...rest }) => {
     <Button
       {...rest}
       variant={className}
-      size="sm"
+      block
+      style={{ margin: 0 }}
     >
       {children}
     </Button>
@@ -20,7 +21,7 @@ const ToggleButton = ({ toggled, children, ...rest }) => {
 
 
 const CheckboxGroup = ({ values, onClick }) => (
-  <div style={{ marginTop: 'auto' }} className="checkbox-group">{
+  <div className="checkbox-group">{
     Object.entries(values).sort().map(([key, val]) => (
       <ToggleButton
         key={key}

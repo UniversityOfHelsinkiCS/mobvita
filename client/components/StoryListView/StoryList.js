@@ -10,6 +10,7 @@ import { getGroups } from 'Utilities/redux/groupsReducer'
 import { List, WindowScroller } from 'react-virtualized'
 import { updateLibrarySelect } from 'Utilities/redux/userReducer'
 import { getAllStories } from 'Utilities/redux/storiesReducer'
+import useWindowDimensions from 'Utilities/windowDimensions'
 import StoryForm from './StoryForm'
 
 const StoryList = () => {
@@ -36,6 +37,8 @@ const StoryList = () => {
     stories: stories.data,
     pending: stories.pending,
   }))
+
+  const smallWindow = useWindowDimensions().width < 640
 
   const setLibrary = (library) => {
     const librariesCopy = {}
@@ -116,45 +119,41 @@ const StoryList = () => {
       data-cy="library-controls"
       className="library-control"
     >
-      <div style={{ display: 'flex', alignItems: 'center', marginTop: 'auto' }}>
+      <div className="search-and-sort">
         <Search
           open={false}
           icon={noResults ? 'close' : 'search'}
           loading={pending}
           value={searchString}
           onSearchChange={e => setSearchString(e.target.value)}
-          size="small"
-          style={{ marginBottom: 0, marginRight: '0.5em' }}
+          size={smallWindow ? 'mini' : 'tiny'}
+          style={{ height: '100%' }}
+        />
+        {/* <FormattedMessage id="sort-by" />
+          <br /> */}
+        <Select
+          value={sorter}
+          options={sortDropdownOptions}
+          onChange={handleSortChange}
+          style={{ minWidth: '2em', marginLeft: '0.5em', flex: 1, minHeight: '1em', height: smallWindow ? '2.2em' : '', display: 'flex', alignItems: 'center' }}
+        />
+      </div>
+      <CheckboxGroup values={libraries} onClick={handleLibraryChange} />
+      <div className="space-between" style={{ alignItems: 'center' }}>
+        <Select
+          value={group}
+          options={groupDropdownOptions}
+          onChange={handleGroupChange}
+          disabled={!libraries.group}
         />
         <Icon
           data-cy="restart-story"
-          style={{ cursor: pending ? 'auto' : 'pointer' }}
+          style={{ cursor: pending ? 'auto' : 'pointer', marginLeft: '0.5em' }}
           name="redo"
           color={pending ? 'grey' : 'blue'}
           size="large"
           onClick={handleRefresh}
         />
-      </div>
-      <div style={{ display: 'flex', justifyContent: 'space-between', flexWrap: 'wrap', padding: '0 0.5em' }}>
-        {libraries.group && (
-          <Select
-            value={group}
-            options={groupDropdownOptions}
-            onChange={handleGroupChange}
-            style={{ marginTop: 'auto' }}
-          />
-        )}
-        <CheckboxGroup values={libraries} onClick={handleLibraryChange} />
-        <div>
-          <FormattedMessage id="sort-by" />
-          <br />
-          <Select
-            value={sorter}
-            options={sortDropdownOptions}
-            onChange={handleSortChange}
-            style={{ minWidth: '5em' }}
-          />
-        </div>
       </div>
 
     </div>
