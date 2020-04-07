@@ -371,16 +371,20 @@ body {
 .gap {
   &-1 {
     margin-left: -0.5em;
-    & * {
+    & > * {
       margin-left: 0.5em
     }
   }
   &-2 {
     margin-left: -1em;
-    & * {
+    & > * {
       margin-left: 1em
     }
   }
+}
+
+.flex {
+  display: flex;
 }
 
 .space-between {
@@ -731,4 +735,28 @@ body {
 .table-progress-bar {
   height: 2em;
   width: 100%;
+}
+
+.stat {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: auto;
+  margin-bottom: auto;
+  & span:first-child {
+    margin-bottom: 0;
+    font-size: 34px;
+    font-weight: 600;
+    color: darkgreen;
+  }
+
+  & span:nth-child(2) {
+    text-align: center;
+    color: gray;
+  }
+}
+
+.date-pickers {
+  display: flex;
+  flex-wrap: wrap;
 }
