@@ -739,5 +739,6 @@
     "Private": "Omat",
     "Uncategorized": "Luokittelemattomat",
     "completed-snippets": "Suoritetut leikkeet",
-    "story-unshared": "Tarina poistettu ryhmän kirjastosta"
+    "story-unshared": "Tarina poistettu ryhmän kirjastosta",
+    "remove-story-from-group-warning": "Oletko varma että haluat poistaa tekstin ryhmän {group} kirjastosta?"
 }
