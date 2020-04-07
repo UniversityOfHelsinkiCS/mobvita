@@ -5,7 +5,7 @@ import { useSelector } from 'react-redux'
 import moment from 'moment-timezone'
 import { useIntl } from 'react-intl'
 
-const EloChart = () => {
+const EloChart = (props) => {
   const rawEloHistory = useSelector(({ user }) => user.data.user.exercise_history)
   const eloHistory = rawEloHistory.map(exercise => exercise.score)
   const weeklyPracticeTimeHistory = useSelector(({ user }) => user.data.user.weekly_times)
@@ -82,8 +82,8 @@ const EloChart = () => {
     },
     yAxis: [{
       title: { enabled: false },
-      max: maxElo,
-      min: minElo,
+      max: maxElo + 10,
+      min: minElo - 10,
       endOnTick: false,
       startOnTick: false,
       tickAmount: 2,
@@ -102,11 +102,12 @@ const EloChart = () => {
         pointPadding: 0,
         borderWidth: 0,
       },
+      line: { marker: { enabled: false } },
     },
   }
   return (
-    <div style={{ textAlign: 'center' }}>
-      <span style={{ display: 'inline-block', paddingBottom: '1em' }}>{`${intl.formatMessage({ id: "score" })}: ${eloHistory[eloHistory.length - 1]}`}</span>
+    <div style={{ textAlign: 'center', width: '30%' }}>
+      <span style={{ display: 'inline-block', paddingBottom: '1em' }}>{`${intl.formatMessage({ id: 'score' })}: ${eloHistory[eloHistory.length - 1]}`}</span>
       <HighchartsReact
         highcharts={Highcharts}
         options={options}
