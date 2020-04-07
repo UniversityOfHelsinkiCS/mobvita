@@ -63,11 +63,9 @@ const Flashcards = ({ match }) => {
         />
       )
     }
-    if (cards.length > 1) {
-      return (
-        <FlashcardEndView handleNewDeck={handleNewDeck} />
-      )
-    }
+    return (
+      <FlashcardEndView handleNewDeck={handleNewDeck} />
+    )
   }
 
   return (
