@@ -44,6 +44,8 @@ const StoryListItem = ({ story, userCanShare, libraryShown }) => {
       <Progress />
     </>]
 
+  // const storyGroups = groups.filter(g => story.groupsg.group_id )
+
   const inGroupLibrary = libraryShown.group && story.group
   const isTeacher = inGroupLibrary && groups.find(g => g.group_id === story.group.group_id).is_teaching
 
