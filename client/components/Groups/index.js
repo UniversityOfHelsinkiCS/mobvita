@@ -11,11 +11,10 @@ import {
 } from 'react-bootstrap'
 import { FormattedMessage, useIntl } from 'react-intl'
 import { Icon } from 'semantic-ui-react'
-import { getSummary, getPersonalSummary } from 'Utilities/redux/groupSummaryReducer'
+import { getSummary } from 'Utilities/redux/groupSummaryReducer'
 import { setNotification } from 'Utilities/redux/notificationReducer'
 import { learningLanguageSelector } from 'Utilities/common'
 import useWindowDimensions from 'Utilities/windowDimensions'
-import { getStudentProgress } from 'Utilities/redux/groupProgressReducer'
 import AddGroup from './AddGroup'
 import AddToGroup from './AddToGroup'
 import JoinGroup from './JoinGroup'
@@ -266,16 +265,6 @@ const GroupView = () => {
         )
       }
 
-
-      {bigWindow && !currentGroup.is_teaching
-        && (
-          <Button onClick={handleSummary}>
-            <FormattedMessage id="summary" />
-          </Button>
-        )
-      }
-
-
       {summary && (
         <>
           <hr />
@@ -284,11 +273,10 @@ const GroupView = () => {
             isTeaching={currentGroup.is_teaching}
             learningLanguage={learningLanguage}
             getSummary={(start, end, summaryLanguage) => dispatch(getSummary(currentGroupId, summaryLanguage, start, end))}
-            getPersonalSummary={(start, end, summaryLanguage) => dispatch(getPersonalSummary(summaryLanguage, start, end))}
           />
         </>
       )}
-      { progress && (
+      {progress && (
         <ProgressGraph
           students={currentGroup.students.sort((s1, s2) => s1.email.localeCompare(s2.email))}
           groupId={currentGroupId}

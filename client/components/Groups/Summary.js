@@ -21,7 +21,7 @@ const PickDate = ({ date, setDate }) => (
 )
 
 
-const Summary = ({ groupName, isTeaching, getSummary, getPersonalSummary, learningLanguage }) => {
+const Summary = ({ groupName, isTeaching, getSummary, learningLanguage }) => {
   const [sorter, setSorter] = useState({})
   const [columns, setColumns] = useState([])
   const [startDate, setStartDate] = useState(moment().subtract(7, 'days').toDate())
@@ -68,8 +68,6 @@ const Summary = ({ groupName, isTeaching, getSummary, getPersonalSummary, learni
   useEffect(() => {
     if (isTeaching) {
       getSummary(startDate, endDate, summaryLanguage)
-    } else {
-      getPersonalSummary(startDate, endDate, summaryLanguage)
     }
   }, [startDate, endDate, groupName, summaryLanguage])
 
