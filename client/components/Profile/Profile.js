@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom'
 import { Tab } from 'semantic-ui-react'
 
 import { useIntl } from 'react-intl'
-import PersonalSummary from './PersonalSummary'
+import Progress from './Progress'
 import ChangePassword from './ChangePassword'
 
 
@@ -23,17 +23,17 @@ export default function Profile({ location }) {
     {
       menuItem: {
         as: Link,
-        content: intl.formatMessage({ id: 'summary' }),
-        to: '/profile/summary',
-        key: 'summary',
+        content: intl.formatMessage({ id: 'Progress' }),
+        to: '/profile/progress',
+        key: 'progress',
       },
-      render: () => <PersonalSummary />,
+      render: () => <Progress />,
     },
   ]
 
   let index
   switch (location.pathname) {
-    case '/profile/summary':
+    case '/profile/progress':
       index = 1
       break
     default:
