@@ -191,7 +191,10 @@ const StoryListItem = ({ story, userCanShare, libraryShown, selectedGroup }) => 
         storyId={story._id}
         action={inGroupLibrary ? unshareStory : deleteStory}
       >
-        <FormattedMessage id="this-will-permanently-remove-this-story-from-your-collection-are-you-sure-you-want-to-proceed" />
+        {inGroupLibrary && currentGroup
+          ? <div>remove story from group {currentGroup.groupName}</div>
+          : <FormattedMessage id="this-will-permanently-remove-this-story-from-your-collection-are-you-sure-you-want-to-proceed" />}
+
       </DeleteConfirmationModal>
     </Card>
   )

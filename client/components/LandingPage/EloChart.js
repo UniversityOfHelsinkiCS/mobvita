@@ -68,6 +68,8 @@ const EloChart = ({ width }) => {
   const maxElo = Math.max(...eloHistory)
   const minElo = Math.min(...eloHistory)
 
+  console.log(maxElo + (maxElo * 0.01))
+
   const options = {
     title: { text: '' },
     series: [practicetimes, { data: eloResults }],
@@ -82,11 +84,11 @@ const EloChart = ({ width }) => {
     },
     yAxis: [{
       title: { enabled: false },
-      max: maxElo + 10,
-      min: minElo - 10,
+      max: maxElo + (maxElo * 0.005),
+      min: minElo - (minElo * 0.005),
       endOnTick: false,
       startOnTick: false,
-      tickAmount: 2,
+      tickPositions: [Math.ceil(maxElo / 5) * 5, Math.floor(minElo / 5) * 5],
     },
     {
       title: { enabled: false },
