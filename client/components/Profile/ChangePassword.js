@@ -4,7 +4,6 @@ import { Button } from 'react-bootstrap'
 import { useDispatch } from 'react-redux'
 import { useIntl, FormattedMessage } from 'react-intl'
 import { changePassword } from 'Utilities/redux/userReducer'
-import PersonalSummary from './PersonalSummary'
 
 
 export default function ChangePassword() {

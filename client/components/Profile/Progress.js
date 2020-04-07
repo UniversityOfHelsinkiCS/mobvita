@@ -20,7 +20,7 @@ const PickDate = ({ date, setDate }) => (
 )
 
 
-const PersonalSummary = () => {
+const Progress = () => {
   const [startDate, setStartDate] = useState(moment().subtract(7, 'days').toDate())
   const [endDate, setEndDate] = useState(moment().toDate())
 
@@ -64,20 +64,20 @@ const PersonalSummary = () => {
           <Spinner animation="border" variant="primary" size="lg" />
         </div>
       ) : (
-        <div>
+          <div>
 
-          <div>
-            <b>{intl.formatMessage({ id: 'completed-exercises' })}: </b>
-            {summary[0].number_of_exercises}
+            <div>
+              <b>{intl.formatMessage({ id: 'completed-exercises' })}: </b>
+              {summary[0].number_of_exercises}
+            </div>
+            <div>
+              <b>{intl.formatMessage({ id: 'completed-snippets' })}: </b>
+              {summary[0].number_of_snippets}
+            </div>
           </div>
-          <div>
-            <b>{intl.formatMessage({ id: 'completed-snippets' })}: </b>
-            {summary[0].number_of_snippets}
-          </div>
-        </div>
-      )}
+        )}
     </div>
   )
 }
 
-export default PersonalSummary
+export default Progress
