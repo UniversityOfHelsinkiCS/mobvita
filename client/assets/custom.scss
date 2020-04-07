@@ -345,6 +345,9 @@ body {
   &-2 {
     padding-bottom: 1em;
   }
+  &-3 {
+    padding-bottom: 2em;
+  }
 }
 
 .padding-top {
@@ -353,6 +356,9 @@ body {
   }
   &-2 {
     padding-top: 1em;
+  }
+  &-3 {
+    padding-top: 2em;
   }
 }
 
@@ -390,6 +396,11 @@ body {
 .space-between {
   display: flex;
   justify-content: space-between;
+}
+
+.center {
+  display: flex;
+  justify-content: center;
 }
 
 .column-sort {
