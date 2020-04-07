@@ -49,10 +49,14 @@ const FlashcardsButton = (props) => {
 
 const HomeView = () => (
   <div className="component-container">
-    <EloChart />
-    <PracticeModal trigger={<PracticeButton data-cy="practice-now" />} />
-    {hiddenFeatures && <FlashcardsButton />}
-    <Button style={{ display: 'none' }} onClick={() => undefun()}>hidden breaking thing</Button>
+    <div style={{ display: 'flex' }}>
+      <div style={{ width: '70%' }}>
+        <PracticeModal trigger={<PracticeButton data-cy="practice-now" />} />
+        {hiddenFeatures && <FlashcardsButton />}
+        <Button style={{ display: 'none' }} onClick={() => undefun()}>hidden breaking thing</Button>
+      </div>
+      <EloChart />
+    </div>
   </div>
 )
 
