@@ -5,8 +5,8 @@ import moment from 'moment'
 import { FormattedMessage, useIntl } from 'react-intl'
 import { getPersonalSummary } from 'Utilities/redux/groupSummaryReducer'
 import { Spinner } from 'react-bootstrap'
-import { learningLanguageSelector } from '../../util/common'
-
+import { learningLanguageSelector, images, capitalize } from '../../util/common'
+import EloChart from '../LandingPage/EloChart'
 
 import 'react-datepicker/dist/react-datepicker.css'
 
@@ -45,18 +45,25 @@ const Progress = () => {
     )
   }
 
+  const getLearningLanguageFlag = () => {
+    if (learningLanguage) {
+      return images[`flag${capitalize(learningLanguage.split('-').join(''))}`]
+    }
+    return null
+  }
+
   return (
     <div className="component-container">
-      <div style={{ display: 'flex', justifyContent: 'space-between', paddingBottom: '1em' }}>
-        <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-          <div>
-            <FormattedMessage id="date-start" />
-            <PickDate id="start" date={startDate} setDate={setStartDate} />
-          </div>
-          <div style={{ marginLeft: '1em', marginRight: '1em' }}>
-            <FormattedMessage id="date-end" />
-            <PickDate date={endDate} setDate={setEndDate} />
-          </div>
+      <div className="date-pickers gap-1">
+        <div>
+          <FormattedMessage id="date-start" />
+          <br />
+          <PickDate id="start" date={startDate} setDate={setStartDate} />
+        </div>
+        <div>
+          <FormattedMessage id="date-end" />
+          <br />
+          <PickDate date={endDate} setDate={setEndDate} />
         </div>
       </div>
       {pending ? (
@@ -64,18 +71,24 @@ const Progress = () => {
           <Spinner animation="border" variant="primary" size="lg" />
         </div>
       ) : (
-          <div>
-
-            <div>
-              <b>{intl.formatMessage({ id: 'completed-exercises' })}: </b>
-              {summary[0].number_of_exercises}
+          <div className="center gap-2 padding-top-3 padding-bottom-3">
+            <img
+              src={getLearningLanguageFlag()}
+              alt="learning language flag"
+              height="90px"
+              style={{ border: '1px solid gray' }}
+            />
+            <div className="stat">
+              <span>{summary[0].number_of_exercises}</span>
+              <span>{intl.formatMessage({ id: 'completed-exercises' })}: </span>
             </div>
-            <div>
-              <b>{intl.formatMessage({ id: 'completed-snippets' })}: </b>
-              {summary[0].number_of_snippets}
+            <div className="stat">
+              <span>{summary[0].number_of_snippets}</span>
+              <span>{intl.formatMessage({ id: 'completed-snippets' })}: </span>
             </div>
           </div>
         )}
+      <EloChart width="100%" />
     </div>
   )
 }
