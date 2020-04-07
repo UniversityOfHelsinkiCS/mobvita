@@ -40,6 +40,7 @@ const DetailedStoryModal = (
     showDeleteButton,
     handleDelete,
     inGroupLibrary,
+    currentGroup,
   },
 ) => {
   const { groups } = useSelector(({ groups }) => groups)
@@ -56,7 +57,7 @@ const DetailedStoryModal = (
   const difficultyIcon = icons()[story.difficulty || 'default']
 
   const showLearningSettingsButton = inGroupLibrary
-    && groups.find(group => group.group_id === story.group.group_id).is_teaching
+    && currentGroup.is_teaching
 
   return (
     <Modal

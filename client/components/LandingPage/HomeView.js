@@ -4,8 +4,10 @@ import { FormattedMessage } from 'react-intl'
 import { Button } from 'react-bootstrap'
 import { images, hiddenFeatures } from 'Utilities/common'
 
+import useWindowDimensions from 'Utilities/windowDimensions'
 import PracticeModal from './PracticeModal'
 import EloChart from './EloChart'
+
 // import StoryAddition from 'Components/StoryAddition'
 
 const PracticeButton = props => (
@@ -47,17 +49,29 @@ const FlashcardsButton = (props) => {
   )
 }
 
-const HomeView = () => (
-  <div className="component-container">
-    <div style={{ display: 'flex' }}>
-      <div style={{ width: '70%' }}>
-        <PracticeModal trigger={<PracticeButton data-cy="practice-now" />} />
-        {hiddenFeatures && <FlashcardsButton />}
-        <Button style={{ display: 'none' }} onClick={() => undefun()}>hidden breaking thing</Button>
-      </div>
-      <EloChart />
+const HomeView = () => {
+  const { width } = useWindowDimensions()
+  return (
+    <div className="component-container">
+      {width > 600 ? (
+        <div style={{ display: 'flex' }}>
+          <div style={{ flexGrow: 2 }}>
+            <PracticeModal trigger={<PracticeButton data-cy="practice-now" />} />
+            {hiddenFeatures && <FlashcardsButton />}
+            <Button style={{ display: 'none' }} onClick={() => undefun()}>hidden breaking thing</Button>
+          </div>
+          <EloChart width="30%" />
+        </div>
+      ) : (
+        <>
+          <EloChart width="100%" />
+          <PracticeModal trigger={<PracticeButton data-cy="practice-now" />} />
+          {hiddenFeatures && <FlashcardsButton />}
+          <Button style={{ display: 'none' }} onClick={() => undefun()}>hidden breaking thing</Button>
+        </>
+      )}
     </div>
-  </div>
-)
+  )
+}
 
 export default HomeView

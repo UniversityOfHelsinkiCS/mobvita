@@ -11,7 +11,7 @@ import DeleteConfirmationModal from 'Components/StoryListView/DeleteConfirmation
 import ShareStory from './ShareStory'
 import DetailedStoryModal from './DetailedStoryModal'
 
-const StoryListItem = ({ story, userCanShare, libraryShown }) => {
+const StoryListItem = ({ story, userCanShare, libraryShown, selectedGroup }) => {
   const dispatch = useDispatch()
   const [shareModalOpen, setShareModalOpen] = useState(false)
   const [confirmationOpen, setConfirmationOpen] = useState(false)
@@ -44,8 +44,10 @@ const StoryListItem = ({ story, userCanShare, libraryShown }) => {
       <Progress />
     </>]
 
-  const inGroupLibrary = libraryShown.group && story.group
-  const isTeacher = inGroupLibrary && groups.find(g => g.group_id === story.group.group_id).is_teaching
+  const currentGroup = groups.find(g => g.group_id === selectedGroup)
+
+  const inGroupLibrary = libraryShown.group && story.groups
+  const isTeacher = inGroupLibrary && currentGroup && currentGroup.is_teaching
 
   const showShareButton = userCanShare && !story.public && !inGroupLibrary
 
@@ -59,7 +61,7 @@ const StoryListItem = ({ story, userCanShare, libraryShown }) => {
   }
 
   const unshareStory = () => {
-    dispatch(unshare(story.group.group_id, story._id))
+    dispatch(unshare(selectedGroup, story._id))
   }
 
   return (
@@ -86,10 +88,11 @@ const StoryListItem = ({ story, userCanShare, libraryShown }) => {
               showDeleteButton={showDeleteButton}
               handleDelete={handleDelete}
               inGroupLibrary={inGroupLibrary}
+              currentGroup={currentGroup}
             />
           )
         }
-        <div className="story-item-group">{story.group && story.group.group_name}</div>
+        <div className="story-item-group">{story.groups && story.groups[0].group_name}</div>
         {smallWindow && (showShareButton || showDeleteButton)
           && (
             <Dropdown
