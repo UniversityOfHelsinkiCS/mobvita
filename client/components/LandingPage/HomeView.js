@@ -50,7 +50,7 @@ const FlashcardsButton = (props) => {
 const HomeView = () => (
   <div className="component-container">
     <div style={{ display: 'flex' }}>
-      <div style={{ width: '70%' }}>
+      <div style={{ flexGrow: 2 }}>
         <PracticeModal trigger={<PracticeButton data-cy="practice-now" />} />
         {hiddenFeatures && <FlashcardsButton />}
         <Button style={{ display: 'none' }} onClick={() => undefun()}>hidden breaking thing</Button>
