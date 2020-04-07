@@ -740,5 +740,6 @@
     "Uncategorized": "Luokittelemattomat",
     "completed-snippets": "Suoritetut leikkeet",
     "story-unshared": "Tarina poistettu ryhmän kirjastosta",
-    "remove-story-from-group-warning": "Oletko varma että haluat poistaa tekstin ryhmän {group} kirjastosta?"
+    "remove-story-from-group-warning": "Oletko varma että haluat poistaa tekstin ryhmän {group} kirjastosta?",
+    "select-a-student-from-list": "Valitse opiskelija listasta"
 }
