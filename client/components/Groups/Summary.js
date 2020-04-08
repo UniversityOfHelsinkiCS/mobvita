@@ -26,7 +26,6 @@ const Summary = ({ groupName, isTeaching, getSummary, learningLanguage }) => {
   const [columns, setColumns] = useState([])
   const [startDate, setStartDate] = useState(moment().subtract(7, 'days').toDate())
   const [endDate, setEndDate] = useState(moment().toDate())
-  const [summaryLanguage, setSummaryLanguage] = useState(learningLanguage)
 
   const summary = useSelector(({ summary: { summary } }) => {
     if (!summary) return null
@@ -67,9 +66,9 @@ const Summary = ({ groupName, isTeaching, getSummary, learningLanguage }) => {
 
   useEffect(() => {
     if (isTeaching) {
-      getSummary(startDate, endDate, summaryLanguage)
+      getSummary(startDate, endDate)
     }
-  }, [startDate, endDate, groupName, summaryLanguage])
+  }, [startDate, endDate, groupName])
 
   if (!summary) {
     return (
@@ -94,7 +93,7 @@ const Summary = ({ groupName, isTeaching, getSummary, learningLanguage }) => {
     .join('_')
     .replace(/[^\w\s-]/gi, '') // only allow letters, undescore and dash
 
-  const filename = `${cleanGroupName}_summary_${summaryLanguage}.csv`
+  const filename = `${cleanGroupName}_summary.csv`
 
   return (
     <>
@@ -107,18 +106,6 @@ const Summary = ({ groupName, isTeaching, getSummary, learningLanguage }) => {
           <div style={{ marginLeft: '1em', marginRight: '1em' }}>
             <FormattedMessage id="date-end" />
             <PickDate date={endDate} setDate={setEndDate} />
-          </div>
-          <div>
-            <FormattedMessage id="summary-for-language" />
-            <select value={summaryLanguage} onChange={e => setSummaryLanguage(e.target.value)}>
-              {supportedLearningLanguages.minor.concat(supportedLearningLanguages.major).map((lang) => {
-                const temp = newCapitalize(lang)
-
-                return (
-                  <option value={temp} key={temp}>{temp}</option>
-                )
-              })}
-            </select>
           </div>
         </div>
         <CSVLink filename={filename} data={summary}>

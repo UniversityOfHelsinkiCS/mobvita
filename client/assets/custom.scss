@@ -432,6 +432,7 @@ body {
 .group-controls {
   display: flex;
   align-items: center;
+  justify-content: space-between;
   margin-left: -0.2em;
   > * {
     margin-left: 0.2em;
