@@ -265,7 +265,7 @@ const GroupView = () => {
         )
       }
 
-      {summary && (
+      {summary && currentGroup.is_teaching && (
         <>
           <hr />
           <Summary
