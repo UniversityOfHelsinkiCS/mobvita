@@ -288,7 +288,7 @@ const GroupView = () => {
           />
         </>
       )}
-      {progress && (
+      {progress && currentGroup.is_teaching && (
         <ProgressGraph
           student={currentStudent}
           groupId={currentGroupId}
