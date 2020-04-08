@@ -22,7 +22,7 @@ const StoryListItem = ({ story, userCanShare, libraryShown, selectedGroup }) => 
       high: <div><Icon name="star outline" size={size} style={{ color: 'red' }} /><Icon name="star outline" size={size} style={{ color: 'red' }} /><Icon name="star outline" size={size} style={{ color: 'red' }} /></div>,
       average: <div><Icon name="star outline" size={size} style={{ color: 'steelblue' }} /><Icon name="star outline" size={size} style={{ color: 'steelblue' }} /></div>,
       low: <div><Icon name="star outline" size={size} style={{ color: 'forestgreen' }} /></div>,
-      default: <div><Icon name="star outline" size={size} style={{ color: 'black' }} /></div>,
+      default: <div />,
     }
   )
 
