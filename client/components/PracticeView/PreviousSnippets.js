@@ -4,6 +4,34 @@ import { useSelector, useDispatch } from 'react-redux'
 import { setPrevious } from 'Utilities/redux/snippetsReducer'
 import Tooltip from './Tooltip'
 
+const chunkWords = (words) => {
+  let chunk = []
+  let inChunk = false
+
+  return words.reduce((chunks, word) => {
+    if (inChunk && !word.chunk) chunk.push(word)
+    if (!inChunk && !word.chunk) chunks.push([word])
+    if (word.chunk) chunk.push(word)
+    if (word.chunk === 'chunk_start') inChunk = true
+    if (word.chunk === 'chunk_end') {
+      inChunk = false
+      chunks.push(chunk)
+      chunk = []
+    }
+    return chunks
+  }, [])
+}
+
+const ChunkDisplay = ({ chunk, textToSpeech, answers }) => {
+  if (chunk.length === 1) {
+    return <Word word={chunk[0]} answer={answers[chunk[0].ID]} textToSpeech={textToSpeech} />
+  }
+
+  const elements = chunk.map(word => <Word key={word.ID} word={word} answer={answers[word.ID]} textToSpeech={textToSpeech} />)
+
+  return <span className="prev-chunk">{elements}</span>
+}
+
 
 const Word = ({ word, textToSpeech, answer }) => {
   const { surface, isWrong, tested, lemmas } = word
@@ -85,9 +113,9 @@ const PreviousSnippets = ({ textToSpeech, answers }) => {
   return (
     <div>
       {previous.map(snippet => (
-        <p key={snippet.snippetid[0]}>{
-          snippet.practice_snippet.map(word => (
-            <Word answer={answers[word.ID]} key={word.ID} word={word} textToSpeech={textToSpeech} />
+        <p style={{ lineHeight: '170%' }} key={snippet.snippetid[0]}>{
+          chunkWords(snippet.practice_snippet).map(chunk => (
+            <ChunkDisplay answers={answers} key={chunk[0].ID} chunk={chunk} textToSpeech={textToSpeech} />
           ))}
         </p>
       ))}

@@ -198,6 +198,15 @@ body {
     padding-right: 5px;
 }
 
+.prev-chunk {
+  border: 1px solid red;
+    border-radius: 4px;
+    // padding-top: 1px;
+    padding-bottom: 1px;
+    padding-left: 2px;
+    padding-right: 2px;
+}
+
 .navbar {
   background-color: $primary-color;
   align-items: center;

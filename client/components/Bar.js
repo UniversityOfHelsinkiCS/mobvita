@@ -171,7 +171,6 @@ export default function Bar({ history }) {
                 data-cy="ui-lang-select"
               />
             </Menu.Item>
-
             {user && !smallWindow
               && (
                 <div>{`${user.user.username}`}</div>
