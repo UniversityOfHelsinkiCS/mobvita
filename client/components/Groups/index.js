@@ -132,20 +132,7 @@ const GroupView = () => {
   return (
     <div className="group-container">
       <div className="group-controls padding-bottom-1">
-        <Dropdown
-          data-cy="select-group"
-          className="auto-right"
-          onSelect={key => setCurrentGroupId(key)}
-        >
-          <Dropdown.Toggle variant="primary" id="dropdown-basic">
-            {currentGroup.groupName}
-          </Dropdown.Toggle>
-          <Dropdown.Menu>
-            {groups.map(group => (
-              <Dropdown.Item eventKey={group.group_id} key={group.group_id}>{group.groupName}</Dropdown.Item>
-            ))}
-          </Dropdown.Menu>
-        </Dropdown>
+
         <Button variant="info" onClick={() => setJoinGroupOpen(true)}>
           <FormattedMessage id="join-group" />
         </Button>
@@ -161,6 +148,22 @@ const GroupView = () => {
           )
         }
       </div>
+      <hr />
+      <Dropdown
+        style={{ marginBottom: '0.5em' }}
+        data-cy="select-group"
+        className="auto-right"
+        onSelect={key => setCurrentGroupId(key)}
+      >
+        <Dropdown.Toggle variant="primary" id="dropdown-basic">
+          {currentGroup.groupName}
+        </Dropdown.Toggle>
+        <Dropdown.Menu>
+          {groups.map(group => (
+            <Dropdown.Item eventKey={group.group_id} key={group.group_id}>{group.groupName}</Dropdown.Item>
+          ))}
+        </Dropdown.Menu>
+      </Dropdown>
       <CollapsingList header={intl.formatMessage({ id: 'Teachers' })}>
         <ListGroup>
           {currentGroup.teachers.map(teacher => (
@@ -176,7 +179,13 @@ const GroupView = () => {
         >
           {currentGroup.students.length === 0 ? <ListGroup.Item /> : currentGroup.students.map(student => (
             <ListGroup.Item
-              style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', cursor: 'pointer' }}
+              style={{
+                backgroundColor: student === currentStudent ? 'gray' : 'white',
+                display: 'flex',
+                justifyContent: 'space-between',
+                alignItems: 'center',
+                cursor: 'pointer',
+              }}
               key={student.userName}
               onClick={() => setCurrentStudent(student)}
             >
@@ -223,22 +232,22 @@ const GroupView = () => {
         && (
           <>
             <div className="group-controls padding-top-1">
+              <Button onClick={handleSettingsClick}>
+                <FormattedMessage id="learning-settings" />
+              </Button>
+              <Button onClick={handleSummary}>
+                <FormattedMessage id="summary" />
+              </Button>
+              <Button className="auto-right" onClick={handleProgress}>
+                <FormattedMessage id="Progress" />
+              </Button>
               <Button
                 data-cy="add-to-group-modal"
                 onClick={() => setAddToGroupOpen(true)}
               >
                 <FormattedMessage id="add-people-to-group" />
               </Button>
-              <Button onClick={handleSummary}>
-                <FormattedMessage id="summary" />
-              </Button>
-              <Button onClick={handleProgress}>
-                <FormattedMessage id="Progress" />
-              </Button>
-              <Button onClick={handleSettingsClick}>
-                <FormattedMessage id="learning-settings" />
-              </Button>
-              <Button className="auto-right" onClick={handleShowToken}>
+              <Button onClick={handleShowToken}>
                 <FormattedMessage id="show-group-token" />
               </Button>
               <DeleteConfirmationModal
@@ -264,8 +273,6 @@ const GroupView = () => {
                 </CopyToClipboard>
               </div>
             )}
-
-
           </>
         )
       }
@@ -277,7 +284,7 @@ const GroupView = () => {
             groupName={currentGroup.groupName}
             isTeaching={currentGroup.is_teaching}
             learningLanguage={learningLanguage}
-            getSummary={(start, end, summaryLanguage) => dispatch(getSummary(currentGroupId, summaryLanguage, start, end))}
+            getSummary={(start, end) => dispatch(getSummary(currentGroupId, start, end))}
           />
         </>
       )}
