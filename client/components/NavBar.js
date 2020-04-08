@@ -13,6 +13,10 @@ export default function NavBar({ history }) {
   const dispatch = useDispatch()
   const intl = useIntl()
 
+  const handleEloClick = () => {
+    history.push('/profile/progress')
+  }
+
   const elo = (user && user.user.exercise_history && user.user.exercise_history[user.user.exercise_history.length - 1] && user.user.exercise_history[user.user.exercise_history.length - 1].score)
     ? user.user.exercise_history[user.user.exercise_history.length - 1].score
     : 0
@@ -39,7 +43,7 @@ export default function NavBar({ history }) {
         </div>
         {user && (
 
-          <Navbar.Text style={{ color: 'white', marginRight: '1em' }}>
+          <Navbar.Text style={{ color: 'white', marginRight: '1em', cursor: 'pointer' }} onClick={handleEloClick}>
             <div>{`${intl.formatMessage({ id: 'score' })} ${elo}`}</div>
           </Navbar.Text>
         )}
