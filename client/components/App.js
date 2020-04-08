@@ -6,6 +6,7 @@ import { basePath, checkRevitaStatus } from 'Utilities/common'
 import { useDispatch } from 'react-redux'
 import { setNotification } from 'Utilities/redux/notificationReducer'
 import { Offline } from 'react-detect-offline'
+import { sidebarSetOpen } from 'Utilities/redux/sidebarReducer'
 import Toaster from './Toaster'
 import Bar from './Bar'
 import StoryFetcher from './StoryFetcher'
@@ -54,7 +55,7 @@ const App = () => {
           <Route component={Bar} />
           <Route component={StoryFetcher} />
 
-          <div className="application-content">
+          <div onClick={() => dispatch(sidebarSetOpen(false))} className="application-content">
             <Router />
           </div>
         </div>

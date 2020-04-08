@@ -16,6 +16,7 @@ import StoryForm from './StoryForm'
 const StoryList = () => {
   const intl = useIntl()
   const [sorter, setSorter] = useState('date')
+  const [sortDirection, setSortDirection] = useState(1)
   const [searchString, setSearchString] = useState('')
   const [group, setGroup] = useState(null)
   const [searchedStories, setSearchedStories] = useState([])
@@ -143,6 +144,13 @@ const StoryList = () => {
             alignItems: 'center',
           }}
         />
+        <Icon
+          style={{ cursor: 'pointer' }}
+          name={sortDirection === 1 ? 'caret up' : 'caret down'}
+          size="large"
+          color="grey"
+          onClick={() => setSortDirection(sortDirection * -1)}
+        />
       </div>
       <CheckboxGroup values={libraries} onClick={handleLibraryChange} />
       <div className="space-between" style={{ alignItems: 'center' }}>
@@ -216,16 +224,22 @@ const StoryList = () => {
   }
 
   libraryFilteredStories.sort((a, b) => {
+    let dir = 0
     switch (sorter) {
       case 'date':
-        return new Date(b.date) - new Date(a.date)
+        dir = new Date(b.date) - new Date(a.date)
+        break
       case 'title':
-        return a.title > b.title ? 1 : -1
+        dir = a.title > b.title ? 1 : -1
+        break
       case 'difficulty':
-        return stringToDifficulty(a.difficulty) - stringToDifficulty(b.difficulty)
+        dir = stringToDifficulty(a.difficulty) - stringToDifficulty(b.difficulty)
+        break
       default:
-        return 0
+        break
     }
+
+    return dir * sortDirection
   })
 
   const userCanShare = groups.find(group => group.is_teaching)

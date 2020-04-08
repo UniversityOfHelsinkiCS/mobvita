@@ -18,10 +18,6 @@ const ExerciseCloze = ({ word, value, handleChange, handleClick }) => {
   const handleTooltipClick = () => handleClick(word.base || word.bases, word.lemmas)
 
   const changeValue = (e) => {
-    if (!touched) {
-      setTouched(true)
-      setClassName('cloze touched')
-    }
     handleChange(e.target.value, word)
   }
 
@@ -56,6 +52,11 @@ const ExerciseCloze = ({ word, value, handleChange, handleClick }) => {
   }
 
   const handleFocus = () => {
+    if (!touched) {
+      setTouched(true)
+      setClassName('cloze touched')
+      handleChange(value, word)
+    }
     setShow(!show)
     dispatch(setFocusedWord(word))
   }
