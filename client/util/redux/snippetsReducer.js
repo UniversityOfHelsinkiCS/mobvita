@@ -40,7 +40,7 @@ export const setPrevious = previous => ({ type: 'SET_PREVIOUS', payload: previou
 
 // Reducer
 // You can include more app wide actions such as "selected: []" into the state
-export default (state = { previous: [] }, action) => {
+export default (state = { previous: [], pending: false, error: false }, action) => {
   switch (action.type) {
     case 'RESET_SNIPPET_INDEX_SUCCESS':
       return {

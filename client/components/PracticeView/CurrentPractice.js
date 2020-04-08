@@ -12,7 +12,7 @@ import { FormattedMessage } from 'react-intl'
 import { getSelf } from 'Utilities/redux/userReducer'
 import { Button, Spinner } from 'react-bootstrap'
 import { Icon } from 'semantic-ui-react'
-import { setAnswers } from 'Utilities/redux/practiceReducer'
+import { setAnswers, clearAnswers } from 'Utilities/redux/practiceReducer'
 import { RUSphonetic, RUSauthentic } from './KeyboardLayouts'
 import Chunks from './Chunks'
 
@@ -59,6 +59,10 @@ const CurrentPractice = ({ storyId }) => {
   }
 
   useEffect(() => {
+    dispatch(clearAnswers())
+  }, [])
+
+  useEffect(() => {
     dispatch(getCurrentSnippet(storyId))
     dispatch(clearTranslationAction())
   }, [])
@@ -74,7 +78,7 @@ const CurrentPractice = ({ storyId }) => {
   }
 
   const setInitialAnswers = () => {
-    if (snippets.focused) {
+    if (snippets.focused && snippets.focused.storyid === storyId) {
       const filteredSnippet = snippets.focused.practice_snippet.filter(word => word.id)
       const initialAnswers = filteredSnippet.reduce((answerObject, currentWord) => {
         const { surface, id, ID, base, bases, listen, choices, concept } = currentWord
@@ -114,7 +118,9 @@ const CurrentPractice = ({ storyId }) => {
     keyboard.setInput(answers[focusedWord.ID].users_answer)
   }, [focusedWord, keyboard])
 
-  useEffect(setInitialAnswers, [snippets.focused])
+  useEffect(() => {
+    setInitialAnswers()
+  }, [snippets.focused])
 
   useEffect(() => {
     if (!answersPending) dispatch(getSelf())
@@ -145,7 +151,7 @@ const CurrentPractice = ({ storyId }) => {
     if (!snippets.pending && scrollTarget.current && snippets.previous.length) {
       scrollTarget.current.scrollIntoView({ behavior: 'smooth' })
     }
-  }, [snippets.pending])
+  }, [snippets.pending, answers])
 
   const checkAnswers = async () => {
     const { starttime, snippetid } = snippets.focused
@@ -334,31 +340,31 @@ const CurrentPractice = ({ storyId }) => {
         )
       }
       {learningLanguage === 'Russian' && !smallWindow
-      && (
-        <>
-          <Icon
-            data-cy="onscreen-keyboard"
-            style={{ cursor: 'pointer' }}
-            name="keyboard"
-            size="big"
-            onClick={() => setShowKeyboard(!showKeyboard)}
-          />
-          {showKeyboard && (
-            <>
-              <Button onClick={() => setKeyboardLayout(RUSauthentic)}>ru-йцуке</Button>
-              <Button onClick={() => setKeyboardLayout(RUSphonetic)}>ru-яверт</Button>
-              <Keyboard
-                keyboardRef={k => setKeyboard(k)}
-                layout={keyboardLayout}
-                layoutName={layoutName}
-                inputName={focusedWord.ID}
-                onChange={handleAnswerChange}
-                onKeyPress={handleKeyPress}
-              />
-            </>
-          )}
-        </>
-      )}
+        && (
+          <>
+            <Icon
+              data-cy="onscreen-keyboard"
+              style={{ cursor: 'pointer' }}
+              name="keyboard"
+              size="big"
+              onClick={() => setShowKeyboard(!showKeyboard)}
+            />
+            {showKeyboard && (
+              <>
+                <Button onClick={() => setKeyboardLayout(RUSauthentic)}>ru-йцуке</Button>
+                <Button onClick={() => setKeyboardLayout(RUSphonetic)}>ru-яверт</Button>
+                <Keyboard
+                  keyboardRef={k => setKeyboard(k)}
+                  layout={keyboardLayout}
+                  layoutName={layoutName}
+                  inputName={focusedWord.ID}
+                  onChange={handleAnswerChange}
+                  onKeyPress={handleKeyPress}
+                />
+              </>
+            )}
+          </>
+        )}
     </div>
   )
 }
