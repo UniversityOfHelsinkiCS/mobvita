@@ -5,6 +5,7 @@ import Headroom from 'react-headroom'
 import { Icon } from 'semantic-ui-react'
 import { sidebarSetOpen } from 'Utilities/redux/sidebarReducer'
 import { useIntl } from 'react-intl'
+import useWindowDimensions from 'Utilities/windowDimensions'
 
 
 export default function NavBar({ history }) {
@@ -12,6 +13,8 @@ export default function NavBar({ history }) {
   const open = useSelector(({ sidebar }) => sidebar.open)
   const dispatch = useDispatch()
   const intl = useIntl()
+
+  const smallWindow = useWindowDimensions().width < 640
 
   const handleEloClick = () => {
     history.push('/profile/progress')
@@ -22,7 +25,10 @@ export default function NavBar({ history }) {
     : 0
 
   return (
-    <Headroom>
+    <Headroom
+      disableInlineStyles={!smallWindow}
+      style={!smallWindow && { position: 'fixed', top: 0, width: '100%', zIndex: '100' }}
+    >
       <Navbar style={{ paddingLeft: '0.5em' }}>
         <div style={{ display: 'flex' }}>
           <Icon
