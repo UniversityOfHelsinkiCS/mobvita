@@ -129,13 +129,19 @@ const StoryList = () => {
           size={smallWindow ? 'mini' : 'tiny'}
           style={{ height: '100%' }}
         />
-        {/* <FormattedMessage id="sort-by" />
-          <br /> */}
         <Select
           value={sorter}
           options={sortDropdownOptions}
           onChange={handleSortChange}
-          style={{ minWidth: '2em', marginLeft: '0.5em', flex: 1, minHeight: '1em', height: smallWindow ? '2.2em' : '', display: 'flex', alignItems: 'center' }}
+          style={{
+            minWidth: '2em',
+            marginLeft: '0.5em',
+            flex: 1,
+            minHeight: '1em',
+            height: smallWindow ? '2.2em' : '',
+            display: 'flex',
+            alignItems: 'center',
+          }}
         />
       </div>
       <CheckboxGroup values={libraries} onClick={handleLibraryChange} />
