@@ -93,9 +93,8 @@ body {
 
 // MISC CSS:
 .application-content {
-  padding-bottom: 5em;
   padding-top: 1em;
-  min-height: 100vh;
+  min-height: calc(100vh - 3em);
   width: 100%;
   padding: 1em 0.2em 5em 0.2em;
   & > div {
