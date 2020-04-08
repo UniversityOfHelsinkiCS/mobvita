@@ -721,6 +721,10 @@ body {
   &-level {
     color: gray;
   }
+
+  &-caret {
+    width: 1.5em;
+  }
 }
 
 .spinner-container {

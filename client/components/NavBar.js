@@ -4,7 +4,6 @@ import { Navbar } from 'react-bootstrap'
 import Headroom from 'react-headroom'
 import { Icon } from 'semantic-ui-react'
 import { sidebarSetOpen } from 'Utilities/redux/sidebarReducer'
-import useWindowDimensions from 'Utilities/windowDimensions'
 import { useIntl } from 'react-intl'
 
 
@@ -14,11 +13,13 @@ export default function NavBar({ history }) {
   const dispatch = useDispatch()
   const intl = useIntl()
 
+  const handleEloClick = () => {
+    history.push('/profile/progress')
+  }
+
   const elo = (user && user.user.exercise_history && user.user.exercise_history[user.user.exercise_history.length - 1] && user.user.exercise_history[user.user.exercise_history.length - 1].score)
     ? user.user.exercise_history[user.user.exercise_history.length - 1].score
     : 0
-
-  const smallWindow = useWindowDimensions().width < 500
 
   return (
     <Headroom>
@@ -40,16 +41,9 @@ export default function NavBar({ history }) {
             Revita
           </Navbar.Brand>
         </div>
-        {user && !smallWindow
-          && (
-            <Navbar.Text style={{ color: 'white', marginRight: '1em' }}>
-              <div>{`${user.user.username}`}</div>
-            </Navbar.Text>
-          )
-        }
         {user && (
 
-          <Navbar.Text style={{ color: 'white', marginRight: '1em' }}>
+          <Navbar.Text style={{ color: 'white', marginRight: '1em', cursor: 'pointer' }} onClick={handleEloClick}>
             <div>{`${intl.formatMessage({ id: 'score' })} ${elo}`}</div>
           </Navbar.Text>
         )}

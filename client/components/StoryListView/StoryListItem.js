@@ -143,16 +143,16 @@ const StoryListItem = ({ story, userCanShare, libraryShown, selectedGroup }) => 
                 >
                   <Dropdown.Menu className="story-item-dropdown">
                     <Dropdown.Item
-                      text={<FormattedMessage id="Read" />}
-                      as={Link}
-                      to={`/stories/${story._id}/`}
-                      icon="book"
-                    />
-                    <Dropdown.Item
                       text={<FormattedMessage id="Flashcards" />}
                       as={Link}
                       to={`/flashcards/${story._id}/`}
                       icon="id card"
+                    />
+                    <Dropdown.Item
+                      text={<FormattedMessage id="Read" />}
+                      as={Link}
+                      to={`/stories/${story._id}/`}
+                      icon="book"
                     />
                   </Dropdown.Menu>
                 </Dropdown>
@@ -165,14 +165,14 @@ const StoryListItem = ({ story, userCanShare, libraryShown, selectedGroup }) => 
                     <FormattedMessage id="practice" />
                   </Button>
                 </Link>
+                <Link to={`/flashcards/${story._id}/`}>
+                  <Button variant="primary" style={{ marginRight: '0.5em' }}>
+                    <FormattedMessage id="Flashcards" />
+                  </Button>
+                </Link>
                 <Link to={`/stories/${story._id}/`}>
                   <Button variant="secondary" style={{ marginRight: '0.5em' }}>
                     <FormattedMessage id="Read" />
-                  </Button>
-                </Link>
-                <Link to={`/flashcards/${story._id}/`}>
-                  <Button variant="secondary" style={{ marginRight: '0.5em' }}>
-                    <FormattedMessage id="Flashcards" />
                   </Button>
                 </Link>
               </div>

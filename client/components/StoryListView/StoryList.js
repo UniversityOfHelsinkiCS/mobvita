@@ -244,7 +244,7 @@ const StoryList = () => {
       {searchSort}
 
       <Card.Group itemsPerRow={1} doubling>
-        <StoryForm />
+        <StoryForm setLibraries={setLibraries} />
         <WindowScroller>
           {({ height, isScrolling, onChildScroll, scrollTop }) => (
             <List

@@ -11,7 +11,7 @@ import AddStoryModal from './AddStoryModal'
 import RecommendedSites from './RecommendedSites'
 
 
-const StoryForm = () => {
+const StoryForm = ({ setLibraries }) => {
   const intl = useIntl()
   const [storyUrl, setStoryUrl] = useState('')
   const [showRecommendedSites, setShowRecommendedSites] = useState(false)
@@ -28,6 +28,11 @@ const StoryForm = () => {
     }
     dispatch(postStory(newStory))
     setStoryUrl('')
+    setLibraries({
+      public: false,
+      group: false,
+      private: true,
+    })
   }
 
   const smallWindow = useWindowDimensions().width < 500

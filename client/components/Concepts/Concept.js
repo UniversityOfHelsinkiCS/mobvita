@@ -23,7 +23,7 @@ const Concept = ({
     || exerEnabled
     || (showTestConcepts && testEnabled) ? 'concept-name' : 'concept-name concept-disabled'
 
-  const caretIconName = open ? 'caret down' : 'caret left'
+  const caretIconName = open ? 'caret down' : 'caret right'
 
   const isLeaf = concept.children.length === 0
 
@@ -56,6 +56,9 @@ const Concept = ({
       )}
       <div className="concept-row">
         <div style={{ display: 'flex', flex: 1 }}>
+          <div className="concept-caret">
+            {!isLeaf && <Icon name={caretIconName} onClick={() => setOpen(!open)} />}
+          </div>
           <Form.Group>
             <Form.Check
               type="checkbox"
@@ -103,7 +106,6 @@ const Concept = ({
             </div>
           )}
         </div>
-        {!isLeaf && <Icon name={caretIconName} className="concept-caret" />}
       </div>
       <Collapse isOpened={open}>
         {children}

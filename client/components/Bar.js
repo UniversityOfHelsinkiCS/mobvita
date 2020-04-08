@@ -10,6 +10,7 @@ import { sidebarSetOpen } from 'Utilities/redux/sidebarReducer'
 import { logout, updateLocale } from 'Utilities/redux/userReducer'
 import TermsAndConditions from 'Components/TermsAndConditions'
 import { Button } from 'react-bootstrap'
+import useWindowDimensions from 'Utilities/windowDimensions'
 import AboutUs from './StaticContent/AboutUs'
 import ContactUs from './StaticContent/ContactUs'
 import SettingsModal from './SettingsModal'
@@ -65,6 +66,8 @@ export default function Bar({ history }) {
   if (user && user.user.interfaceLanguage) { // If user has logged in, use locale from user object, else use value from localeReducer
     actualLocale = localeNameToCode(user.user.interfaceLanguage)
   }
+
+  const smallWindow = useWindowDimensions().width < 640
 
   return (
     <>
@@ -168,6 +171,12 @@ export default function Bar({ history }) {
                 data-cy="ui-lang-select"
               />
             </Menu.Item>
+
+            {user && !smallWindow
+              && (
+                <div>{`${user.user.username}`}</div>
+              )
+            }
 
 
             <div style={{ marginTop: 'auto' }}>
