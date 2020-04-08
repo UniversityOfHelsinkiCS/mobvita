@@ -18,7 +18,6 @@ const Word = ({ word, textToSpeech, answer }) => {
   }
 
   const wordClass = `word-interactive ${color}`
-  const overlayClassName = isWrong ? 'wrong-text-background' : 'right-text-background'
 
   const handleClick = () => {
     textToSpeech(surface, lemmas)
@@ -51,7 +50,7 @@ const Word = ({ word, textToSpeech, answer }) => {
   )
 
   return (
-    <Tooltip placement="top" tooltipShown={show} trigger="none" tooltip={tooltip} additionalClassnames={`${overlayClassName}`}>
+    <Tooltip placement="top" tooltipShown={show} trigger="none" tooltip={tooltip} additionalClassnames="tooltip-blue">
       <span
         ref={target}
         className={wordClass}
