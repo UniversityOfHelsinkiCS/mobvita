@@ -68,8 +68,6 @@ const EloChart = ({ width }) => {
   const maxElo = Math.max(...eloHistory)
   const minElo = Math.min(...eloHistory)
 
-  console.log(maxElo + (maxElo * 0.01))
-
   const options = {
     title: { text: '' },
     series: [practicetimes, { data: eloResults }],

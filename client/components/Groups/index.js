@@ -32,6 +32,7 @@ const GroupView = () => {
   const [showToken, setShowToken] = useState(false)
   const [summary, setSummary] = useState(false)
   const [progress, setProgress] = useState(false)
+  const [currentStudent, setCurrentStudent] = useState(null)
   const userOid = useSelector(({ user }) => user.data.user.oid)
   const learningLanguage = useSelector(learningLanguageSelector)
   const dispatch = useDispatch()
@@ -169,12 +170,16 @@ const GroupView = () => {
       </CollapsingList>
       <CollapsingList header={intl.formatMessage({ id: 'Students' })}>
         <ListGroup style={{
-          maxHeight: '50vh',
+          maxHeight: '40vh',
           overflowY: 'auto',
         }}
         >
           {currentGroup.students.length === 0 ? <ListGroup.Item /> : currentGroup.students.map(student => (
-            <ListGroup.Item style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }} key={student.userName}>
+            <ListGroup.Item
+              style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', cursor: 'pointer' }}
+              key={student.userName}
+              onClick={() => setCurrentStudent(student)}
+            >
               {student.userName}
               {currentUserIsTeacher && (
                 <Icon
@@ -278,7 +283,7 @@ const GroupView = () => {
       )}
       {progress && (
         <ProgressGraph
-          students={currentGroup.students.sort((s1, s2) => s1.email.localeCompare(s2.email))}
+          student={currentStudent}
           groupId={currentGroupId}
         />
       )}
