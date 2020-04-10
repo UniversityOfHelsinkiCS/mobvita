@@ -169,6 +169,7 @@ export default function Bar({ history }) {
                 selection
                 onChange={(e, data) => handleLocaleChange(data.value)}
                 data-cy="ui-lang-select"
+                style={{ color: '#777' }}
               />
             </Menu.Item>
             {user && !smallWindow

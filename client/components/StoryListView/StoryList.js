@@ -142,6 +142,7 @@ const StoryList = () => {
             height: smallWindow ? '2.2em' : '',
             display: 'flex',
             alignItems: 'center',
+            color: '#777',
           }}
         />
         <Icon
@@ -159,6 +160,7 @@ const StoryList = () => {
           options={groupDropdownOptions}
           onChange={handleGroupChange}
           disabled={!libraries.group}
+          style={{ color: '#777' }}
         />
         <Icon
           data-cy="restart-story"
