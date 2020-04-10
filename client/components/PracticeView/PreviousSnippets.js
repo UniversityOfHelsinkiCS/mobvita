@@ -118,7 +118,7 @@ const PreviousSnippets = ({ textToSpeech, answers }) => {
   }, [previous])
 
   return (
-    <p>
+    <div>
       {previous.map(snippet => (
         <span style={{ lineHeight: '170%' }} key={snippet.snippetid[0]}>{
           chunkWords(snippet.practice_snippet).map(chunk => (
@@ -126,7 +126,7 @@ const PreviousSnippets = ({ textToSpeech, answers }) => {
           ))}
         </span>
       ))}
-    </p>
+    </div>
   )
 }
 
