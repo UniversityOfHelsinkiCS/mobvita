@@ -12,14 +12,14 @@ import { FormattedMessage } from 'react-intl'
 import { getSelf } from 'Utilities/redux/userReducer'
 import { Button, Spinner } from 'react-bootstrap'
 import { Icon } from 'semantic-ui-react'
-import { setAnswers, clearAnswers } from 'Utilities/redux/practiceReducer'
+import { setAnswers, clearAnswers, clearCurrentSnippetAnswers } from 'Utilities/redux/practiceReducer'
 import { RUSphonetic, RUSauthentic } from './KeyboardLayouts'
 import Chunks from './Chunks'
 
 
 const CurrentPractice = ({ storyId }) => {
   // const [answers, setAnswers] = useState({})
-  const { answers, focusedWord } = useSelector(({ practice }) => practice)
+  const { answers, currentSnippetAnswers, focusedWord } = useSelector(({ practice }) => practice)
   const [options, setOptions] = useState({})
   const [progress, setProgress] = useState(0)
   const [audio, setAudio] = useState([])
@@ -108,7 +108,8 @@ const CurrentPractice = ({ storyId }) => {
           },
         }
       }, {})
-      if (Object.keys(initialAnswers).length > 0) dispatch(setAnswers({ ...answers, ...initialAnswers })) // Append, dont replace
+      dispatch(clearCurrentSnippetAnswers())
+      if (Object.keys(initialAnswers).length > 0) dispatch(setAnswers({ ...initialAnswers })) // Append, dont replace
       setExerciseCount(getExerciseCount())
     }
   }
@@ -165,7 +166,7 @@ const CurrentPractice = ({ storyId }) => {
       attempt,
       options,
       audio,
-      answers,
+      answers: currentSnippetAnswers,
     }
 
     setAttempts(attempt + 1)
@@ -173,7 +174,7 @@ const CurrentPractice = ({ storyId }) => {
   }
 
   const startOver = async () => {
-    dispatch(setAnswers({}))
+    dispatch(clearAnswers())
     await dispatch(getNextSnippet(storyId, currentSnippetId))
     setFinished(false)
     setProgress(0)
@@ -200,7 +201,10 @@ const CurrentPractice = ({ storyId }) => {
   }
 
   const handleRestart = () => {
-    dispatch(setAnswers({}))
+    setOptions({})
+    setTouched(0)
+    setAttempts(0)
+    dispatch(clearAnswers())
     dispatch(resetCurrentSnippet(storyId))
   }
 
@@ -226,8 +230,7 @@ const CurrentPractice = ({ storyId }) => {
       setTouched(touched + 1)
     }
 
-    const newAnswers = {
-      ...answers,
+    const newAnswer = {
       [ID]: {
         correct: surface,
         users_answer: value,
@@ -235,7 +238,7 @@ const CurrentPractice = ({ storyId }) => {
         concept,
       },
     }
-    dispatch(setAnswers(newAnswers))
+    dispatch(setAnswers(newAnswer))
   }
 
   const handleInputChange = (value, word) => {
@@ -252,8 +255,7 @@ const CurrentPractice = ({ storyId }) => {
       setTouched(touched + 1)
     }
 
-    const newAnswers = {
-      ...answers,
+    const newAnswer = {
       [ID]: {
         correct: surface,
         users_answer: value,
@@ -261,7 +263,7 @@ const CurrentPractice = ({ storyId }) => {
         concept,
       },
     }
-    dispatch(setAnswers(newAnswers))
+    dispatch(setAnswers(newAnswer))
   }
 
   return (
