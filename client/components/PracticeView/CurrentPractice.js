@@ -137,6 +137,7 @@ const CurrentPractice = ({ storyId }) => {
     if (snippets.focused && snippets.focused.skip_second) {
       setOptions({})
       setTouched(0)
+      setTouchedIds([])
       setAttempts(0)
 
       if (snippets.focused.total_num !== currentSnippetId + 1 || finished) {
