@@ -23,6 +23,7 @@ const WordInput = ({
     }
   }, [word])
 
+  if (word.surface === '\n\n') return <br />
   if (!word.id && !word.lemmas) return word.surface
   if (!word.id) {
     return (

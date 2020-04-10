@@ -20,7 +20,7 @@ const PracticeView = ({ match }) => {
 
   return (
     <div style={{ display: 'flex', justifyContent: 'center' }}>
-      <Segment style={{ paddingTop: '1em' }}>
+      <Segment style={{ paddingTop: '1em', width: '100%', maxWidth: '1024px' }}>
         <CurrentPractice storyId={match.params.id} />
       </Segment>
       <DictionaryHelp />

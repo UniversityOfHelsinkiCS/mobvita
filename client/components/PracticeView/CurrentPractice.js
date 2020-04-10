@@ -266,7 +266,7 @@ const CurrentPractice = ({ storyId }) => {
 
   return (
     <div className="component-container">
-      <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+      <div style={{ display: 'flex', justifyContent: 'space-between', width: '100%' }}>
         <h3>{`${story.title}`}</h3>
         <Icon
           data-cy="restart-story"
@@ -282,7 +282,7 @@ const CurrentPractice = ({ storyId }) => {
 
       {!finished
         ? (
-          <div>
+          <div style={{ width: '100%' }}>
             <div
               ref={scrollTarget}
               className="practice-container"

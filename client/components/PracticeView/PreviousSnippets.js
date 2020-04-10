@@ -52,6 +52,13 @@ const Word = ({ word, textToSpeech, answer }) => {
     setShow(true)
   }
 
+  if (surface === '\n\n') {
+    return (
+      <div style={{ lineHeight: '75%' }}>
+        <br />
+      </div>
+    )
+  }
 
   if (!answer || !answer.users_answer) { // Means that this is just a plain word (not an exercise.)
     return (
@@ -111,15 +118,15 @@ const PreviousSnippets = ({ textToSpeech, answers }) => {
   }, [previous])
 
   return (
-    <div>
+    <p>
       {previous.map(snippet => (
-        <p style={{ lineHeight: '170%' }} key={snippet.snippetid[0]}>{
+        <span style={{ lineHeight: '170%' }} key={snippet.snippetid[0]}>{
           chunkWords(snippet.practice_snippet).map(chunk => (
             <ChunkDisplay answers={answers} key={chunk[0].ID} chunk={chunk} textToSpeech={textToSpeech} />
           ))}
-        </p>
+        </span>
       ))}
-    </div>
+    </p>
   )
 }
 
