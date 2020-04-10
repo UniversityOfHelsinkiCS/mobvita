@@ -122,12 +122,12 @@ const DetailedStoryModal = (
         <div className="space-between">
           <div className="gap-1">
             <LinkButton to={`/stories/${story._id}/practice`} translationId="practice" />
-            <LinkButton variant="secondary" to={`/stories/${story._id}/`} translationId="Read" />
             <LinkButton
-              variant="secondary"
+              variant="primary"
               to={`/flashcards/${story._id}/`}
               translationId="Flashcards"
             />
+            <LinkButton variant="secondary" to={`/stories/${story._id}/`} translationId="Read" />
           </div>
           <div className="gap-1">
             <LinkButton
