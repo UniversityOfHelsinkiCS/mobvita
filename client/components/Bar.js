@@ -19,7 +19,7 @@ import SettingsModal from './SettingsModal'
 export default function Bar({ history }) {
   const dispatch = useDispatch()
 
-  const { user } = useSelector(({ user }) => ({ user: user.data }))
+  const user = useSelector(({ user }) => user.data)
   const open = useSelector(({ sidebar }) => sidebar.open)
 
   const locale = useSelector(({ locale }) => locale)

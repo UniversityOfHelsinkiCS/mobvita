@@ -13,10 +13,32 @@ const ChunkInput = ({ chunk, ...props }) => {
 }
 
 const Chunks = (props) => {
-  const pending = useSelector(({ snippets }) => snippets.pending)
+  const snippets = useSelector(({ snippets }) => snippets)
   const chunksComponent = useRef(null)
   const [previousHeight, setPreviousHeight] = useState(0)
-  const chunks = useSelector(({ snippets }) => {
+  // const chunks = useSelector(({ snippets }) => {
+  //   if (!snippets.focused) {
+  //     return []
+  //   }
+
+  //   let chunk = []
+  //   let inChunk = false
+
+  //   return snippets.focused.practice_snippet.reduce((chunks, word) => {
+  //     if (inChunk && !word.chunk) chunk.push(word)
+  //     if (!inChunk && !word.chunk) chunks.push([word])
+  //     if (word.chunk) chunk.push(word)
+  //     if (word.chunk === 'chunk_start') inChunk = true
+  //     if (word.chunk === 'chunk_end') {
+  //       inChunk = false
+  //       chunks.push(chunk)
+  //       chunk = []
+  //     }
+  //     return chunks
+  //   }, [])
+  // })
+
+  const chunks = () => {
     if (!snippets.focused) {
       return []
     }
@@ -36,7 +58,7 @@ const Chunks = (props) => {
       }
       return chunks
     }, [])
-  })
+  }
 
   useEffect(() => {
     if (chunksComponent.current) {
@@ -44,7 +66,7 @@ const Chunks = (props) => {
     }
   }, [chunks])
 
-  if (pending) {
+  if (snippets.pending) {
     return (
       <div className="spinner-container" style={{ minHeight: previousHeight }}>
         <Spinner animation="border" variant="primary" size="lg" />
@@ -54,7 +76,7 @@ const Chunks = (props) => {
 
   return (
     <div ref={chunksComponent}>
-      {chunks.map(chunk => <ChunkInput key={chunk[0].ID} chunk={chunk} {...props} />)}
+      {chunks().map(chunk => <ChunkInput key={chunk[0].ID} chunk={chunk} {...props} />)}
     </div>
   )
 }

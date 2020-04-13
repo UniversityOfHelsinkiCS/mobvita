@@ -4,7 +4,7 @@ import { getTextWidth, dictionaryLanguageSelector } from 'Utilities/common'
 import { setFocusedWord } from 'Utilities/redux/practiceReducer'
 import Tooltip from './Tooltip'
 
-const ExerciseCloze = ({ word, value, handleChange, handleClick }) => {
+const ExerciseCloze = ({ word, handleChange, handleClick }) => {
   const [className, setClassName] = useState('cloze untouched')
   const [touched, setTouched] = useState(false)
   const [disabled, setDisabled] = useState(false)
@@ -12,8 +12,11 @@ const ExerciseCloze = ({ word, value, handleChange, handleClick }) => {
   const { isWrong, tested } = word
   const [show, setShow] = useState(false)
 
+  const currentAnswer = useSelector(({ practice }) => practice.currentAnswers[word.ID])
 
   const dispatch = useDispatch()
+
+  const value = currentAnswer ? currentAnswer.users_answer : ''
 
   const handleTooltipClick = () => handleClick(word.base || word.bases, word.lemmas)
 
@@ -68,6 +71,7 @@ const ExerciseCloze = ({ word, value, handleChange, handleClick }) => {
         autoCapitalize="off"
         disabled={disabled}
         key={word.ID}
+        name={word.ID}
         placeholder={`${word.base || word.bases}`}
         value={value}
         onChange={changeValue}

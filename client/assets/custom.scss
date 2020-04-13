@@ -156,6 +156,13 @@ body {
     background-color: #dacbe6 !important;
   }
 
+  &.wrong {
+    background-color: $wrong-color-background !important;
+  }
+
+  &.correct {
+    background-color: yellowgreen !important;
+  }
 }
 
 .wrong {

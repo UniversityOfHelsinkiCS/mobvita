@@ -8,21 +8,9 @@ import ExerciseHearing from 'Components/PracticeView/ExerciseHearing'
 const WordInput = ({
   word,
   textToSpeech,
-  audio,
-  setAudio,
   handleAnswerChange,
   handleMultiselectChange,
 }) => {
-  const { answers } = useSelector(({ practice }) => practice)
-
-  useEffect(() => {
-    if (word.listen) {
-      if (!audio.includes(word.ID.toString())) {
-        setAudio(audio.concat(word.ID.toString()))
-      }
-    }
-  }, [word])
-
   if (word.surface === '\n\n') return <br />
   if (!word.id && !word.lemmas) return word.surface
   if (!word.id) {
@@ -40,15 +28,12 @@ const WordInput = ({
     )
   }
 
-  const usersAnswer = answers[word.ID] ? answers[word.ID].users_answer : ''
-
   if (word.listen) {
     return (
       <ExerciseHearing
         tabIndex={word.ID}
         handleChange={handleAnswerChange}
         handleClick={textToSpeech}
-        value={usersAnswer}
         key={word.ID}
         word={word}
       />
@@ -60,7 +45,6 @@ const WordInput = ({
         tabIndex={word.ID}
         handleChange={handleMultiselectChange}
         key={word.ID}
-        value={usersAnswer}
         word={word}
       />
     )
@@ -71,7 +55,6 @@ const WordInput = ({
       handleChange={handleAnswerChange}
       handleClick={textToSpeech}
       key={word.ID}
-      value={usersAnswer}
       word={word}
     />
   )

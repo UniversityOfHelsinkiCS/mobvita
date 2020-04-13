@@ -1,19 +1,24 @@
 import React, { useEffect, useState } from 'react'
+import { useSelector } from 'react-redux'
 import { Dropdown } from 'semantic-ui-react'
 import { getTextWidth } from 'Utilities/common'
 
-const ExerciseMultipleChoice = ({ word, handleChange, value }) => {
+const ExerciseMultipleChoice = ({ word, handleChange }) => {
   const [className, setClassName] = useState('exercise-multiple untouched')
   const [options, setOptions] = useState([])
   const [touched, setTouched] = useState(false)
+
+  const currentAnswer = useSelector(({ practice }) => practice.currentAnswers[word.ID])
+
   const { tested, isWrong } = word
+  const value = currentAnswer ? currentAnswer.users_answer : ''
 
   useEffect(() => {
     if (tested) {
       if (isWrong) {
-        setClassName('wrong')
+        setClassName(`${className} wrong`)
       } else {
-        setClassName('correct')
+        setClassName(`${className} correct`)
       }
     }
   }, [tested])
@@ -57,6 +62,7 @@ const ExerciseMultipleChoice = ({ word, handleChange, value }) => {
   return (
     <Dropdown
       key={word.ID}
+      disabled={tested && !isWrong}
       options={options}
       placeholder={placeholder}
       value={value}

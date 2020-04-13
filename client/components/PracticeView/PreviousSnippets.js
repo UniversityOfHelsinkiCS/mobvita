@@ -32,11 +32,25 @@ const ChunkDisplay = ({ chunk, textToSpeech, answers }) => {
   return <span className="prev-chunk">{elements}</span>
 }
 
+const PlainWord = ({ surface, lemmas, textToSpeech }) => {
+  if (surface === '\n\n') {
+    return (
+      <div style={{ lineHeight: '75%' }}>
+        <br />
+      </div>
+    )
+  }
 
-const Word = ({ word, textToSpeech, answer }) => {
+  return (
+    <span onClick={() => textToSpeech(surface, lemmas)} className="word-interactive">
+      {surface}
+    </span>
+  )
+}
+
+const ExerciseWord = ({ word, textToSpeech, answer }) => {
   const { surface, isWrong, tested, lemmas } = word
   const intl = useIntl()
-  const target = useRef(null)
   const [show, setShow] = useState(false)
 
 
@@ -52,29 +66,6 @@ const Word = ({ word, textToSpeech, answer }) => {
     setShow(true)
   }
 
-  if (surface === '\n\n') {
-    return (
-      <div style={{ lineHeight: '75%' }}>
-        <br />
-      </div>
-    )
-  }
-
-  if (!answer || !answer.users_answer) { // Means that this is just a plain word (not an exercise.)
-    return (
-      <span
-        ref={target}
-        className={wordClass}
-        role="button"
-        onClick={handleClick}
-        tabIndex={-1}
-        onBlur={() => setShow(false)}
-      >
-        {surface}
-      </span>
-    )
-  }
-
   const answerString = `${intl.formatMessage({ id: 'you-used' })}: ${answer.users_answer}`
 
 
@@ -87,7 +78,6 @@ const Word = ({ word, textToSpeech, answer }) => {
   return (
     <Tooltip placement="top" tooltipShown={show} trigger="none" tooltip={tooltip} additionalClassnames="tooltip-blue">
       <span
-        ref={target}
         className={wordClass}
         role="button"
         onClick={handleClick}
@@ -100,9 +90,31 @@ const Word = ({ word, textToSpeech, answer }) => {
   )
 }
 
-const PreviousSnippets = ({ textToSpeech, answers }) => {
+const Word = ({ word, textToSpeech, answer }) => {
+  const { surface, lemmas } = word
+
+  if (surface === '\n\n') {
+    return (
+      <div style={{ lineHeight: '75%' }}>
+        <br />
+      </div>
+    )
+  }
+
+  if (!answer || !answer.users_answer) {
+    return (
+      <PlainWord surface={surface} lemmas={lemmas} textToSpeech={textToSpeech} />
+    )
+  }
+
+  return <ExerciseWord word={word} textToSpeech={textToSpeech} answer={answer} />
+}
+
+const PreviousSnippets = ({ textToSpeech }) => {
   const snippets = useSelector(({ snippets }) => snippets)
   const focusedStory = useSelector(({ stories }) => stories.focused)
+  const previousAnswers = useSelector(({ practice }) => practice.previousAnswers)
+  const snippetsInPrevious = useSelector(({ practice }) => practice.snippetsInPrevious)
 
   const dispatch = useDispatch()
 
@@ -120,10 +132,18 @@ const PreviousSnippets = ({ textToSpeech, answers }) => {
   return (
     <div>
       {previous.map(snippet => (
-        <span style={{ lineHeight: '170%' }} key={snippet.snippetid[0]}>{
-          chunkWords(snippet.practice_snippet).map(chunk => (
-            <ChunkDisplay answers={answers} key={chunk[0].ID} chunk={chunk} textToSpeech={textToSpeech} />
-          ))}
+        <span style={{ lineHeight: '170%' }} key={snippet.snippetid[0]}>
+          {snippetsInPrevious.includes(snippet.snippetid[0])
+            ? (
+              chunkWords(snippet.practice_snippet).map(chunk => (
+                <ChunkDisplay answers={previousAnswers} key={chunk[0].ID} chunk={chunk} textToSpeech={textToSpeech} />
+              ))
+            ) : (
+              snippet.practice_snippet.map(word => (
+                <PlainWord key={word.ID} textToSpeech={textToSpeech} surface={word.surface} lemmas={word.lemmas} />
+              ))
+            )
+          }
         </span>
       ))}
     </div>

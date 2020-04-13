@@ -5,7 +5,7 @@ export default (state = { open: false }, action) => {
     case 'TOGGLE_SIDEBAR':
       return {
         ...state,
-        open: action.open,
+        open: action.open !== state.open && action.open,
       }
     default:
       return state

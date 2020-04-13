@@ -1,19 +1,22 @@
 import React, { createRef, useState, useEffect } from 'react'
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { Icon } from 'semantic-ui-react'
 import { getTextWidth } from 'Utilities/common'
 import { setFocusedWord } from 'Utilities/redux/practiceReducer'
 
 
-const ExerciseHearing = ({ word, handleClick, handleChange, value }) => {
+const ExerciseHearing = ({ word, handleClick, handleChange }) => {
   const [className, setClassname] = useState('hearing untouched')
   const [touched, setTouched] = useState(false)
   const [focusTimeout, setFocusTimeout] = useState(false)
   const inputRef = createRef(null)
 
+  const currentAnswer = useSelector(({ practice }) => practice.currentAnswers[word.ID])
+
   const dispatch = useDispatch()
 
   const { isWrong, tested } = word
+  const value = currentAnswer ? currentAnswer.users_answer : ''
 
   useEffect(() => {
     if (tested) {
