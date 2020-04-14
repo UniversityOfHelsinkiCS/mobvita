@@ -3,7 +3,7 @@ import 'react-toastify/dist/ReactToastify.css'
 
 import React, { useState, useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { getProgress } from 'Utilities/redux/uploadProgressReducer'
+import { getProgress, setCustomStory } from 'Utilities/redux/uploadProgressReducer'
 import { getAllStories } from 'Utilities/redux/storiesReducer'
 import { setNotification } from 'Utilities/redux/notificationReducer'
 import { useIntl } from 'react-intl'
@@ -18,7 +18,7 @@ export default function Toaster() {
   const [progressToastId, setProgressToastId] = useState(null)
 
   const { message, type, options, translationId } = useSelector(({ notification }) => notification)
-  const { storyId, progress, error, pending, processingError } = useSelector(({ uploadProgress }) => uploadProgress)
+  const { storyId, progress, error, pending, processingError, custom } = useSelector(({ uploadProgress }) => uploadProgress)
   const learningLanguage = useSelector(learningLanguageSelector)
 
 
@@ -42,7 +42,7 @@ export default function Toaster() {
   }, [storyId])
 
   useEffect(() => {
-    if (pending && !storyId) {
+    if (pending && !storyId && !custom) {
       setProgressToastId(
         toast(intl.formatMessage({ id: 'validating-url' }), { autoClose: false, type: 'info' })
       )

@@ -34,7 +34,7 @@ const DictionaryHelp = ({ translation }) => {
 
 
   const translations = translation ? translation.map(translated => (
-    <List.Item key={translated.URL}>
+    <List.Item key={translated.URL} data-cy="translations">
       {translated.lemma}
       <List bulleted>
         {translated.glosses.map((word, i) => <List.Item key={`${translated.URL}-${i}`}>{word}</List.Item>)}
