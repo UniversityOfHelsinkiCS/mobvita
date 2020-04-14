@@ -75,12 +75,6 @@ const CurrentPractice = ({ storyId, textToSpeech, handleInputChange }) => {
           dispatch(addToAudio(ID))
         }
 
-        // Checks if word to be shown is already correct and marks it touched.
-        // (Only applies to cloze, other exercise types dont have default values set.)
-        if (usersAnswer === surface) {
-          dispatch(setTouchedIds(ID))
-        }
-
         return {
           ...answerObject,
           [ID]: {
