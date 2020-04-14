@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback } from 'react'
+import React, { useState, useEffect, useCallback, useRef } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import { debounce } from 'lodash'
 import { getTextWidth, dictionaryLanguageSelector } from 'Utilities/common'
@@ -13,6 +13,7 @@ const ExerciseCloze = ({ word, handleChange, handleClick }) => {
   const dictionaryLanguage = useSelector(dictionaryLanguageSelector)
   const { isWrong, tested } = word
   const [show, setShow] = useState(false)
+  const target = useRef()
 
   const debouncedChange = useCallback(
     debounce((val) => {
@@ -41,14 +42,13 @@ const ExerciseCloze = ({ word, handleChange, handleClick }) => {
   useEffect(() => {
     if (tested) {
       if (isWrong) {
-        setClassName('wrong')
+        setClassName('cloze wrong')
       } else {
-        setClassName('correct')
+        setClassName('cloze correct')
         setDisabled(true)
       }
     }
   }, [tested])
-
 
   const tooltip = word.message
     ? (
@@ -91,6 +91,7 @@ const ExerciseCloze = ({ word, handleChange, handleClick }) => {
     <Tooltip placement="top" trigger="none" onVisibilityChange={setShow} tooltipShown={show} closeOnOutOfBoundaries tooltip={tooltip} additionalClassnames="clickable">
       <input
         onKeyDown={handleKeyDown}
+        ref={target}
         data-cy="exercise-cloze"
         autoCapitalize="off"
         disabled={disabled}
