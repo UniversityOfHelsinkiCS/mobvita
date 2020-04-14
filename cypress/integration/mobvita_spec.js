@@ -171,7 +171,7 @@ describe('Mobvita', function () {
           .click()
         cy.get('.book') // Open dictionaryhelp
           .click({ force: true })
-        cy.contains("Yhdistyneestä kuningaskunnasta käytetty lyhyt nimitys")
+        cy.contains("Yhdistyneestä kuningaskunnasta käytetty lyhyt nimitys", { timeout: 20000 })
       })
     })
 
