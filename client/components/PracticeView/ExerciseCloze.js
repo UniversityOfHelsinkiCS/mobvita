@@ -1,10 +1,12 @@
-import React, { useState, useEffect, useRef } from 'react'
+import React, { useState, useEffect, useCallback } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
+import { debounce } from 'lodash'
 import { getTextWidth, dictionaryLanguageSelector } from 'Utilities/common'
 import { setFocusedWord } from 'Utilities/redux/practiceReducer'
 import Tooltip from './Tooltip'
 
 const ExerciseCloze = ({ word, handleChange, handleClick }) => {
+  const [value, setValue] = useState('')
   const [className, setClassName] = useState('cloze untouched')
   const [touched, setTouched] = useState(false)
   const [disabled, setDisabled] = useState(false)
@@ -12,17 +14,29 @@ const ExerciseCloze = ({ word, handleChange, handleClick }) => {
   const { isWrong, tested } = word
   const [show, setShow] = useState(false)
 
+  const debouncedChange = useCallback(
+    debounce((val) => {
+      handleChange(val, word)
+    }, 300),
+    [word],
+  )
+
   const currentAnswer = useSelector(({ practice }) => practice.currentAnswers[word.ID])
 
   const dispatch = useDispatch()
 
-  const value = currentAnswer ? currentAnswer.users_answer : ''
 
   const handleTooltipClick = () => handleClick(word.base || word.bases, word.lemmas)
 
   const changeValue = (e) => {
-    handleChange(e.target.value, word)
+    setValue(e.target.value)
+    debouncedChange(e.target.value)
   }
+
+  useEffect(() => {
+    const val = currentAnswer ? currentAnswer.users_answer : ''
+    setValue(val)
+  }, [currentAnswer])
 
   useEffect(() => {
     if (tested) {

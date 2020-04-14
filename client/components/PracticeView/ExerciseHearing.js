@@ -1,11 +1,14 @@
-import React, { createRef, useState, useEffect } from 'react'
+import React, { createRef, useState, useEffect, useCallback } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
+import { debounce } from 'lodash'
 import { Icon } from 'semantic-ui-react'
 import { getTextWidth } from 'Utilities/common'
 import { setFocusedWord } from 'Utilities/redux/practiceReducer'
 
 
 const ExerciseHearing = ({ word, handleClick, handleChange }) => {
+  const [value, setValue] = useState('')
+
   const [className, setClassname] = useState('hearing untouched')
   const [touched, setTouched] = useState(false)
   const [focusTimeout, setFocusTimeout] = useState(false)
@@ -16,7 +19,13 @@ const ExerciseHearing = ({ word, handleClick, handleChange }) => {
   const dispatch = useDispatch()
 
   const { isWrong, tested } = word
-  const value = currentAnswer ? currentAnswer.users_answer : ''
+
+  const debouncedChange = useCallback(
+    debounce((val) => {
+      handleChange(val, word)
+    }, 300),
+    [word],
+  )
 
   useEffect(() => {
     if (tested) {
@@ -27,6 +36,11 @@ const ExerciseHearing = ({ word, handleClick, handleChange }) => {
       }
     }
   }, [tested])
+
+  useEffect(() => {
+    const val = currentAnswer ? currentAnswer.users_answer : ''
+    setValue(val)
+  }, [currentAnswer])
 
   const speakerClickHandler = (word) => {
     handleClick(word.surface, '')
@@ -49,8 +63,9 @@ const ExerciseHearing = ({ word, handleClick, handleChange }) => {
     }
   }
 
-  const handle = (e, word) => {
-    handleChange(e.target.value, word)
+  const handle = (e) => {
+    setValue(e.target.value)
+    debouncedChange(e.target.value)
   }
 
   const handleKeyDown = (e) => {
@@ -69,7 +84,7 @@ const ExerciseHearing = ({ word, handleClick, handleChange }) => {
         data-cy="exercise-hearing"
         ref={inputRef}
         key={word.ID}
-        onChange={e => handle(e, word)}
+        onChange={handle}
         value={value}
         onFocus={handleInputFocus}
         className={className}
