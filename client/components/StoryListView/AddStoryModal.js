@@ -2,22 +2,23 @@ import React, { useState } from 'react'
 import { Modal } from 'semantic-ui-react'
 import { FormattedMessage } from 'react-intl'
 import { useDispatch, useSelector } from 'react-redux'
-import { Button, FormControl } from 'react-bootstrap'
+import { Button, FormControl, Spinner } from 'react-bootstrap'
 import { learningLanguageSelector, capitalize } from 'Utilities/common'
-import { postStory } from 'Utilities/redux/uploadProgressReducer'
+import { postStory, setCustomUpload } from 'Utilities/redux/uploadProgressReducer'
 
 const AddStoryModal = ({ trigger }) => {
   const [text, setText] = useState('')
 
-
   const learningLanguage = useSelector(learningLanguageSelector)
+  const { pending, storyId } = useSelector(({ uploadProgress }) => uploadProgress)
   const dispatch = useDispatch()
 
-  const addText = () => {
+  const addText = async () => {
     const newStory = {
       language: capitalize(learningLanguage),
       text,
     }
+    await dispatch(setCustomUpload(true))
     dispatch(postStory(newStory))
   }
 
@@ -41,9 +42,11 @@ const AddStoryModal = ({ trigger }) => {
         <Button
           variant="primary"
           onClick={addText}
-          disabled={!text}
+          disabled={!text || pending || storyId}
         >
-          <FormattedMessage id="Confirm" />
+          {pending || storyId ? <Spinner animation="border" variant="dark" size="lg" />
+            : <FormattedMessage id="Confirm" />}
+
         </Button>
       </Modal.Content>
 

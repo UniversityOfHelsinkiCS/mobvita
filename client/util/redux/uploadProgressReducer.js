@@ -12,12 +12,14 @@ export const postStory = (newStory) => {
   return callBuilder(route, prefix, 'post', newStory)
 }
 
+export const setCustomUpload = custom => ({ type: 'SET_CUSTOM_UPLOAD', custom })
+
 const initialState = {
   progress: 0,
   storyId: null,
   pending: false,
   error: false,
-
+  custom: false,
 }
 
 export default (state = initialState, action) => {
@@ -61,6 +63,12 @@ export default (state = initialState, action) => {
         storyId: action.response.story_id,
         progress: 0,
         error: false,
+        custom: false,
+      }
+    case 'SET_CUSTOM_UPLOAD':
+      return {
+        ...state,
+        custom: action.custom,
       }
     case 'CLEAR_UPLOADPROGRESS':
       return initialState
