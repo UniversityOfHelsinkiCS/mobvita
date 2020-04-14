@@ -26,6 +26,7 @@ import politics1 from 'Assets/politics1.png'
 import science1 from 'Assets/science1.png'
 import sport1 from 'Assets/sport1.png'
 import flashcards from 'Assets/flashcards.jpg'
+import logo from 'Assets/Logo.png'
 import { callApi } from './apiConnection'
 
 export const images = {
@@ -54,6 +55,7 @@ export const images = {
   flagTurkish,
   flagFrench,
   flashcards,
+  logo,
 }
 
 export const newCapitalize = (word) => {
