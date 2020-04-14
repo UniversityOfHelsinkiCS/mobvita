@@ -12,6 +12,7 @@ const ProgressGraph = ({ student, groupId }) => {
   const { dates, scores, pending } = useSelector(({ studentProgress }) => {
     const { progress, pending } = studentProgress
     const { exercise_history: exerciseHistory } = progress
+
     const scores = exerciseHistory.map(e => e.score)
     const dates = exerciseHistory.map(e => e.date)
     return { dates, scores, pending }
@@ -27,8 +28,6 @@ const ProgressGraph = ({ student, groupId }) => {
   if (pending || !scores) {
     return 'loading...'
   }
-
-  console.log('DATES:', dates)
 
   const options = {
     title: { text: '' },

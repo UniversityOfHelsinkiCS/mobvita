@@ -58,7 +58,7 @@ const CurrentPractice = ({ storyId, textToSpeech, handleInputChange }) => {
       const filteredSnippet = snippets.focused.practice_snippet.filter(word => word.id)
       const initialAnswers = filteredSnippet.reduce((answerObject, currentWord) => {
         const { surface, id, ID, base, bases, listen, choices, concept } = currentWord
-        //if (currentAnswers[ID]) return { ...answerObject, [ID]: currentAnswers[ID] }
+        // if (currentAnswers[ID]) return { ...answerObject, [ID]: currentAnswers[ID] }
 
         let usersAnswer
         if (listen || choices) {
@@ -161,7 +161,7 @@ const CurrentPractice = ({ storyId, textToSpeech, handleInputChange }) => {
   }
 
   return (
-    <div ref={scrollTarget}>
+    <form ref={scrollTarget}>
       {!finished
         ? (
           <div style={{ width: '100%' }}>
@@ -208,7 +208,7 @@ const CurrentPractice = ({ storyId, textToSpeech, handleInputChange }) => {
 
         )
       }
-    </div>
+    </form>
   )
 }
 

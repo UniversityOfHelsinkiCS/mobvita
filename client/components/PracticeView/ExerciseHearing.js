@@ -53,9 +53,19 @@ const ExerciseHearing = ({ word, handleClick, handleChange }) => {
     handleChange(e.target.value, word)
   }
 
+  const handleKeyDown = (e) => {
+    if (e.keyCode === 13) {
+      const { form } = e.target
+      const index = Array.prototype.indexOf.call(form, e.target)
+      form.elements[index + 1].focus()
+      e.preventDefault()
+    }
+  }
+
   return (
     <span>
       <input
+        onKeyDown={handleKeyDown}
         data-cy="exercise-hearing"
         ref={inputRef}
         key={word.ID}
