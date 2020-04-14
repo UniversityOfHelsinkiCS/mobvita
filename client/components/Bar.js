@@ -95,13 +95,12 @@ export default function Bar({ history }) {
                 style={{ position: 'fixed', paddingTop: 0 }}
               />
               <div
-                style={{ padding: '1em 1em 1em 1.5em', display: 'flex', flexDirection: 'column', marginRight: 'auto', marginLeft: 'auto' }}
+                style={{ padding: '2.5em 1.5em 1em 1.5em', display: 'flex', flexDirection: 'column', marginRight: 'auto', marginLeft: 'auto' }}
               >
                 <Link to="/home" onClick={() => menuClickWrapper()}>
-                  <Header as="h2">Revita</Header>
                   <img
-                    style={{ width: '6em', margin: '0 auto' }}
-                    src={images.revitaLogoTransparent}
+                    style={{ width: '15em', margin: '0 auto' }}
+                    src={images.logo}
                     alt="revitaLogo"
                   />
                 </Link>
