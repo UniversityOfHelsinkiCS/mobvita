@@ -28,6 +28,8 @@ const ProgressGraph = ({ student, groupId }) => {
     return 'loading...'
   }
 
+  console.log('DATES:', dates)
+
   const options = {
     title: { text: '' },
     series: [{ name: 'Score', data: scores }],
@@ -39,6 +41,7 @@ const ProgressGraph = ({ student, groupId }) => {
     xAxis: {
       // eslint-disable-next-line react/no-this-in-sfc
       labels: { formatter() { return moment(dates[this.value]).format('DD/MM/YY') } },
+      allowDecimals: false,
     },
   }
 
