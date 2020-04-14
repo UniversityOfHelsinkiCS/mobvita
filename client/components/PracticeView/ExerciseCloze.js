@@ -64,9 +64,19 @@ const ExerciseCloze = ({ word, handleChange, handleClick }) => {
     dispatch(setFocusedWord(word))
   }
 
+  const handleKeyDown = (e) => {
+    if (e.keyCode === 13) {
+      const { form } = e.target
+      const index = Array.prototype.indexOf.call(form, e.target)
+      form.elements[index + 1].focus()
+      e.preventDefault()
+    }
+  }
+
   return (
     <Tooltip placement="top" trigger="none" onVisibilityChange={setShow} tooltipShown={show} closeOnOutOfBoundaries tooltip={tooltip} additionalClassnames="clickable">
       <input
+        onKeyDown={handleKeyDown}
         data-cy="exercise-cloze"
         autoCapitalize="off"
         disabled={disabled}

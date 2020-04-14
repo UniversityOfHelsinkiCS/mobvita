@@ -12,6 +12,7 @@ const ProgressGraph = ({ student, groupId }) => {
   const { dates, scores, pending } = useSelector(({ studentProgress }) => {
     const { progress, pending } = studentProgress
     const { exercise_history: exerciseHistory } = progress
+
     const scores = exerciseHistory.map(e => e.score)
     const dates = exerciseHistory.map(e => e.date)
     return { dates, scores, pending }
@@ -39,6 +40,7 @@ const ProgressGraph = ({ student, groupId }) => {
     xAxis: {
       // eslint-disable-next-line react/no-this-in-sfc
       labels: { formatter() { return moment(dates[this.value]).format('DD/MM/YY') } },
+      allowDecimals: false,
     },
   }
 
