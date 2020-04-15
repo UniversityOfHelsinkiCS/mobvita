@@ -45,6 +45,7 @@ const StoryForm = ({ setLibraries }) => {
         marginBottom: '10px',
         marginTop: '10px',
         height: 'max-content',
+        backgroundColor: 'whitesmoke',
       }}
     >
       <Card.Content extra style={{ padding: '15px' }}>
