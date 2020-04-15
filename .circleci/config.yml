@@ -10,7 +10,7 @@ jobs:
       - image: circleci/node:stretch
     steps:
       - checkout
-      - run: npm install && npm run build
+      - run: npm ci && npm run build
       - run: SENTRY_PROJECT=mobvita-frontend SENTRY_ORG=sentry npm run sentry-cli -- releases new --finalize mobvita@$CIRCLE_SHA1
       - run: SENTRY_PROJECT=mobvita-frontend SENTRY_ORG=sentry npm run sentry-cli -- releases files mobvita@$CIRCLE_SHA1 upload-sourcemaps --rewrite ./dist/main.js.map
 workflows:
