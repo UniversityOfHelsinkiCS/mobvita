@@ -27,6 +27,9 @@ export default (state = initialState, action) => {
       return {
         ...state,
         currentAnswers: { ...state.currentAnswers, ...action.newAnswers },
+        // currentAsnwers: state.currentAnswers.map(answer => (
+        //   action.newAnswers[answer.ID] ? { ...answer, ...action.newAnswers[action.ID] } : answer
+        // )),
       }
     case 'SET_PREVIOUS_ANSWERS':
       return {

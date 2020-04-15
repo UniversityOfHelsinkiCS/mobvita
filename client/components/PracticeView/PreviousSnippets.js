@@ -91,7 +91,7 @@ const ExerciseWord = ({ word, textToSpeech, answer }) => {
 }
 
 const Word = ({ word, textToSpeech, answer }) => {
-  const { surface, lemmas } = word
+  const { surface, lemmas, tested } = word
 
   if (surface === '\n\n') {
     return (
@@ -101,7 +101,7 @@ const Word = ({ word, textToSpeech, answer }) => {
     )
   }
 
-  if (!answer || !answer.users_answer) {
+  if (!answer || (!answer.users_answer && answer.users_answer !== '')) {
     return (
       <PlainWord surface={surface} lemmas={lemmas} textToSpeech={textToSpeech} />
     )

@@ -19,7 +19,7 @@ const CurrentPractice = ({ storyId, textToSpeech, handleInputChange }) => {
 
   const snippets = useSelector(({ snippets }) => snippets)
   const answersPending = useSelector(({ snippets }) => snippets.answersPending)
-  const attempt = useSelector(({ practice }) => practice.attempt)
+  const { attempt } = useSelector(({ practice }) => practice)
 
   const currentSnippetId = () => {
     if (!snippets.focused) return -1
@@ -58,7 +58,7 @@ const CurrentPractice = ({ storyId, textToSpeech, handleInputChange }) => {
       const filteredSnippet = snippets.focused.practice_snippet.filter(word => word.id)
       const initialAnswers = filteredSnippet.reduce((answerObject, currentWord) => {
         const { surface, id, ID, base, bases, listen, choices, concept } = currentWord
-        // if (currentAnswers[ID]) return { ...answerObject, [ID]: currentAnswers[ID] }
+        //if (currentAnswers[ID]) return { ...answerObject, [ID]: { ...currentAnswers[ID], tested, isWrong } }
 
         let usersAnswer
         if (listen || choices) {
@@ -91,10 +91,12 @@ const CurrentPractice = ({ storyId, textToSpeech, handleInputChange }) => {
   }
 
   useEffect(() => {
-    if (snippets.focused && attempt === 0) {
-      dispatch(setPreviousAnswers(currentSnippetId()))
-      dispatch(clearCurrentPractice())
-      setInitialAnswers()
+    if (snippets.focused) {
+      if (attempt === 0) {
+        dispatch(setPreviousAnswers(currentSnippetId()))
+        dispatch(clearCurrentPractice())
+        setInitialAnswers()
+      }
     }
   }, [snippets.focused])
 
