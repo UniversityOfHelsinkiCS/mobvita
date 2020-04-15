@@ -132,7 +132,7 @@ body {
     background-color: $wrong-color-background;
   }
   .correct {
-    background-color: yellowgreen;
+    background-color: #d3ffd8;
   }
 }
 
@@ -167,7 +167,7 @@ body {
   }
 
   &.correct {
-    background-color: yellowgreen !important;
+    background-color: #d3ffd8 !important;
   }
 }
 
@@ -176,7 +176,7 @@ body {
 }
 
 .correct {
-  background-color: yellowgreen;
+  background-color: #d3ffd8;
 }
 
 .wrong-text {

@@ -82,6 +82,7 @@ const ExerciseHearing = ({ word, handleClick, handleChange }) => {
       <input
         onKeyDown={handleKeyDown}
         data-cy="exercise-hearing"
+        disabled={tested && !isWrong}
         ref={inputRef}
         key={word.ID}
         onChange={handle}
