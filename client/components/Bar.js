@@ -129,23 +129,20 @@ export default function Bar({ history }) {
                     </Button>
                   </Link>
 
-                  {hiddenFeatures
-                    && (
-                      <>
-                        <SettingsModal
-                          trigger={(
-                            <Button onClick={() => menuClickWrapper()} variant="secondary" block style={{ marginTop: '0.5em' }}>
-                              <FormattedMessage id="learning-settings" />
-                            </Button>
-                          )}
-                        />
-                        <Link to="/profile/account">
-                          <Button data-cy="settings-link" variant="secondary" style={{ marginTop: '0.5em' }} onClick={() => menuClickWrapper()} block>
-                            <FormattedMessage id="Profile" />
-                          </Button>
-                        </Link>
-                      </>
-                    )}
+                  <>
+                    <SettingsModal
+                      trigger={(
+                        <Button onClick={() => menuClickWrapper()} variant="secondary" block style={{ marginTop: '0.5em' }}>
+                          <FormattedMessage id="learning-settings" />
+                        </Button>
+                      )}
+                    />
+                    <Link to="/profile/account">
+                      <Button data-cy="settings-link" variant="secondary" style={{ marginTop: '0.5em' }} onClick={() => menuClickWrapper()} block>
+                        <FormattedMessage id="Profile" />
+                      </Button>
+                    </Link>
+                  </>
 
 
                   <Link to="/groups">

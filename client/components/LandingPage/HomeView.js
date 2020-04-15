@@ -57,19 +57,19 @@ const HomeView = () => {
         <div style={{ display: 'flex' }}>
           <div style={{ flexGrow: 2 }}>
             <PracticeModal trigger={<PracticeButton data-cy="practice-now" />} />
-            {hiddenFeatures && <FlashcardsButton />}
+            <FlashcardsButton />
             <Button style={{ display: 'none' }} onClick={() => undefun()}>hidden breaking thing</Button>
           </div>
           <EloChart width="30%" />
         </div>
       ) : (
-        <>
-          <EloChart width="100%" />
-          <PracticeModal trigger={<PracticeButton data-cy="practice-now" />} />
-          {hiddenFeatures && <FlashcardsButton />}
-          <Button style={{ display: 'none' }} onClick={() => undefun()}>hidden breaking thing</Button>
-        </>
-      )}
+          <>
+            <EloChart width="100%" />
+            <PracticeModal trigger={<PracticeButton data-cy="practice-now" />} />
+            <FlashcardsButton />
+            <Button style={{ display: 'none' }} onClick={() => undefun()}>hidden breaking thing</Button>
+          </>
+        )}
     </div>
   )
 }
