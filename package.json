@@ -92,7 +92,6 @@
     "style-loader": "^1.0.1",
     "styled-components": "^4.4.1",
     "swagger-ui-express": "^4.1.2",
-    "uglifyjs-webpack-plugin": "^2.1.1",
     "webpack-cli": "^3.2.3",
     "winston": "^3.2.1",
     "yamljs": "^0.3.0"
