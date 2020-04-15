@@ -57,6 +57,8 @@ const StoryListItem = ({ story, userCanShare, libraryShown, selectedGroup }) => 
     setConfirmationOpen(true)
   }
 
+  const showGroupName = story.groups && libraryShown.private
+
   const deleteStory = () => {
     dispatch(removeStory(story._id))
   }
@@ -93,7 +95,7 @@ const StoryListItem = ({ story, userCanShare, libraryShown, selectedGroup }) => 
             />
           )
         }
-        <div className="story-item-group">{story.groups && story.groups[0].group_name}</div>
+        <div className="story-item-group">{showGroupName && story.groups[0].group_name}</div>
         {smallWindow && (showShareButton || showDeleteButton)
           && (
             <Dropdown
