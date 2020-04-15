@@ -107,7 +107,7 @@ const EloChart = ({ width }) => {
   }
   return (
     <div style={{ textAlign: 'center', width }}>
-      <span style={{ display: 'inline-block', paddingBottom: '1em' }}>{`${intl.formatMessage({ id: 'score' })}: ${eloHistory[eloHistory.length - 1]}`}</span>
+      <span style={{ display: 'inline-block', paddingBottom: '1em' }}>{`${intl.formatMessage({ id: 'score' })} ${eloHistory[eloHistory.length - 1]}`}</span>
       <HighchartsReact
         highcharts={Highcharts}
         options={options}
