@@ -187,8 +187,8 @@ export default function Bar({ history }) {
                 <ContactUs trigger={<Button variant="secondary" onClick={() => menuClickWrapper()} style={{ flexBasis: '50%', marginRight: '0.5em' }}><FormattedMessage id="Contact" /></Button>} />
                 {user && <Button data-cy="logout" variant="secondary" style={{ flexBasis: '50%' }} onClick={() => menuClickWrapper(signOut)}><FormattedMessage id="sign-out" /></Button>}
               </Menu.Item>
-              <div style={{ fontSize: '16px' }}>
-                <b>Powered by <a href="https://responsivevoice.org/" target="_blank" rel="noopener noreferrer">ResponsiveVoice</a> </b>
+              <div>
+                Powered by <i><a href="https://responsivevoice.org/" target="_blank" rel="noopener noreferrer">ResponsiveVoice.org</a></i>
               </div>
               <TermsAndConditions
                 trigger={<Button data-cy="tc-button" onClick={() => menuClickWrapper()} variant="link"> Terms and Conditions, Privacy Policy </Button>}
