@@ -29,15 +29,18 @@ describe("dictionary", function () {
   it("word translates correctly", function () {
     cy.contains("poliisi")
       .click()
-    cy.contains("yhteiskunnassa järjestystä ja turvallisuutta valvova ja ylläpitävä virkamies")
+    cy.get('[data-cy=translations]')
+      .contains("yhteiskunnassa järjestystä ja turvallisuutta valvova ja ylläpitävä virkamies")
   })
 
   it("changing translate-to language re-translates the word", function () {
     cy.contains("poliisi")
       .click()
-    cy.contains("yhteiskunnassa järjestystä ja turvallisuutta valvova ja ylläpitävä virkamies")
+    cy.get('[data-cy=translations]')
+      .contains("yhteiskunnassa järjestystä ja turvallisuutta valvova ja ylläpitävä virkamies")
     cy.get("[data-cy=dictionary-dropdown]").select("Spanish")
-    cy.contains("policía")
+    cy.get('[data-cy=translations]')
+      .contains("policía")
   })
 
 })
