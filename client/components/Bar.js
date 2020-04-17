@@ -107,7 +107,7 @@ export default function Bar({ history }) {
               </div>
             </div>
             {!smallWindow
-              && <a className="padding-bottom-1" href="https://revita-old.cs.helsinki.fi/"><i><FormattedMessage id="take-me-to-old-revita" /></i></a>
+              && <a className="padding-bottom-1" href="https://revita-old.cs.helsinki.fi/"><i><FormattedMessage id="take-me-to-old-revita" /> ⇒</i></a>
             }
 
             {user && (
