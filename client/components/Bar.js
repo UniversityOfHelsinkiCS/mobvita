@@ -195,8 +195,8 @@ export default function Bar({ history }) {
               />
 
               {/* eslint-disable no-undef */}
-              <div>{`Built at: ${__VERSION__}`}</div>
-              <div>{`Commit: ${__COMMIT__}`}</div>
+              <div>{`Built: ${__VERSION__}`}</div>
+              <div>{`${__COMMIT__}`}</div>
 
             </div>
           </div>

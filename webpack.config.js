@@ -1,6 +1,6 @@
 const moment = require('moment-timezone')
 
-const buildtime = moment.tz(new Date(), 'Europe/Helsinki').format('LLLL')
+const buildtime = moment.tz(new Date(), 'Europe/Helsinki').format('ddd, DD MMM YYYY, HH:mm') // 'LLLL'
 const path = require('path')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
 const htmlTemplate = require('html-webpack-template')
