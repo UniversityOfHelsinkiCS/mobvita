@@ -44,6 +44,7 @@ export default (state = {}, action) => {
     case 'GET_SUMMARY_SUCCESS':
       return {
         ...state,
+        colOrder: action.response.col_order,
         summary: action.response.summary,
         pending: false,
         error: false,
