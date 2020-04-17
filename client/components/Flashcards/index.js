@@ -49,7 +49,7 @@ const Flashcards = ({ match }) => {
   const slideRenderer = ({ key, index }) => {
     if (!cards[0] || cards[0].format === 'no-cards') {
       return (
-        <FlashcardNoCards setSwipeIndex={setSwipeIndex} />
+        <FlashcardNoCards setSwipeIndex={setSwipeIndex} key={`no-cards-${index}`} />
       )
     }
     if (index < cards.length) {
