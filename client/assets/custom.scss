@@ -426,6 +426,12 @@ body {
   justify-content: center;
 }
 
+.reverse-for-desktop {
+  @media (min-width: 640px) {
+    flex-direction: row-reverse;
+  }
+}
+
 .column-sort {
   cursor: pointer;
 }

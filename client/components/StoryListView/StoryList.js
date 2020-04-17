@@ -23,8 +23,8 @@ const StoryList = () => {
   const [libraryFromUser, setLibraryFromUser] = useState(false)
   const [libraries, setLibraries] = useState(
     {
-      private: false,
       public: false,
+      private: false,
       group: false,
     },
   )
@@ -154,14 +154,7 @@ const StoryList = () => {
         />
       </div>
       <CheckboxGroup values={libraries} onClick={handleLibraryChange} />
-      <div className="space-between" style={{ alignItems: 'center' }}>
-        <Select
-          value={group}
-          options={groupDropdownOptions}
-          onChange={handleGroupChange}
-          disabled={!libraries.group}
-          style={{ color: '#777' }}
-        />
+      <div className="space-between reverse-for-desktop" style={{ alignItems: 'center' }}>
         <Icon
           data-cy="restart-story"
           style={{ cursor: pending ? 'auto' : 'pointer', marginLeft: '0.5em' }}
@@ -169,6 +162,13 @@ const StoryList = () => {
           color={pending ? 'grey' : 'blue'}
           size="large"
           onClick={handleRefresh}
+        />
+        <Select
+          value={group}
+          options={groupDropdownOptions}
+          onChange={handleGroupChange}
+          disabled={!libraries.group}
+          style={{ color: '#777' }}
         />
       </div>
 
