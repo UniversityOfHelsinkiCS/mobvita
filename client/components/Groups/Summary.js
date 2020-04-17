@@ -32,12 +32,14 @@ const Summary = ({ groupName, isTeaching, getSummary, learningLanguage }) => {
 
     const { field, direction } = sorter
 
-    if (field === 'email' || field === 'username') {
-      return summary.sort((a, b) => direction[field] * a[field].localeCompare(b.email))
+    if (field) {
+      return summary.sort((a, b) => {
+        if (a[field] < b[field]) return direction[field] === 1 ? -1 : 1
+        if (a[field] > b[field]) return direction[field] === 1 ? 1 : -1
+        return 0
+      })
     }
-    if (field === 'number_of_exercises' || field === 'number_of_snippets') {
-      return summary.sort((a, b) => direction[field] * (b[field] - a[field]))
-    }
+
     return summary
   })
   const { colOrder } = useSelector(({ summary }) => summary)
