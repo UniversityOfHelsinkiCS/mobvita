@@ -107,7 +107,7 @@ export default (state = { data: null }, action) => {
         ...state,
         pending: false,
         error: true,
-        errorMessage: action.response.response.data,
+        errorMessage: action.response.response && action.response.response.data,
       }
     case 'CONFIRM_USER_SUCCESS':
       return {
