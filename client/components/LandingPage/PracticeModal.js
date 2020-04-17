@@ -16,16 +16,16 @@ const extractFilters = object => Object
 const PracticeModal = ({ trigger }) => {
   const [libraries, setLibraries] = useState(
     {
-      private: true,
       public: true,
+      private: true,
       group: true,
     },
   )
   const [categories, setCategories] = useState(
     {
-      science: true,
-      politics: true,
       culture: true,
+      politics: true,
+      science: true,
       sport: true,
       uncategorized: true,
     },
@@ -118,9 +118,9 @@ const PracticeModal = ({ trigger }) => {
       public: true,
     })
     setCategories({
-      science: true,
-      politics: true,
       culture: true,
+      politics: true,
+      science: true,
       sport: true,
       uncategorized: true,
     })
