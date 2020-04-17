@@ -154,7 +154,7 @@ const StoryList = () => {
         />
       </div>
       <CheckboxGroup values={libraries} onClick={handleLibraryChange} />
-      <div className="space-between reverse-for-desktop" style={{ alignItems: 'center' }}>
+      <div className="space-between reverse-for-900" style={{ alignItems: 'center' }}>
         <Icon
           data-cy="restart-story"
           style={{ cursor: pending ? 'auto' : 'pointer', marginLeft: '0.5em' }}

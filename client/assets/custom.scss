@@ -303,7 +303,7 @@ body {
   // flex-wrap: wrap;
   // margin: 10px 0;
   // //padding: 0 0.5em 0 0.5em;
-  @media (min-width: 640px) {
+  @media (min-width: 900px) {
      display: flex;
      padding-top: 1em;
   }
@@ -426,8 +426,8 @@ body {
   justify-content: center;
 }
 
-.reverse-for-desktop {
-  @media (min-width: 640px) {
+.reverse-for-900 {
+  @media (min-width: 900px) {
     flex-direction: row-reverse;
   }
 }
