@@ -701,9 +701,9 @@
     "Next": ">",
     "well-done-click-next-card-to-play-another-set-of-cards": "Отлично! Нажмите \"Следующая Карта чтобы получить следующий набор флеш-карт.\"",
     "you-must-accept-terms-and-conditions": "Принять условия",
-    "Private":"Мои тексты",
-    "Public":"Общие",
-    "Uncategorized":"Другие",
+    "Private": "Мои тексты",
+    "Public": "Общие",
+    "Uncategorized": "Другие",
     "add-people-to-group": "Добавить учеников",
     "learning-settings": "Настройки для упражнений",
     "advanced-settings": "Расширенные настройки",
@@ -741,5 +741,6 @@
     "completed-snippets": "Выполненные абзацы",
     "story-unshared": "Текст удален из библиотеки",
     "remove-story-from-group-warning": "Текст будет удален из библиотеки группы {group}",
-    "select-a-student-from-list": "Выберите ученика из списка"
+    "select-a-student-from-list": "Выберите ученика из списка",
+    "take-me-to-old-revita": ""
 }

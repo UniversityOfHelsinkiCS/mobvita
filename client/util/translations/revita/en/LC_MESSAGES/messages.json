@@ -743,5 +743,6 @@
     "completed-snippets": "Completed Snippets",
     "story-unshared": "Removed story from group library",
     "remove-story-from-group-warning": "This will remove the story from the library of group {group}",
-    "select-a-student-from-list": "Select a student from the list"
+    "select-a-student-from-list": "Select a student from the list",
+    "take-me-to-old-revita": "Take me to old Revita"
 }

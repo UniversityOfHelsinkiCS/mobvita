@@ -741,5 +741,6 @@
     "completed-snippets": "Suoritetut leikkeet",
     "story-unshared": "Tarina poistettu ryhmän kirjastosta",
     "remove-story-from-group-warning": "Oletko varma että haluat poistaa tekstin ryhmän {group} kirjastosta?",
-    "select-a-student-from-list": "Valitse opiskelija listasta"
+    "select-a-student-from-list": "Valitse opiskelija listasta",
+    "take-me-to-old-revita": "Palaa vanhaan käyttöliittymään"
 }
