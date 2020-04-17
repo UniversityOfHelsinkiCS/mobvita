@@ -130,7 +130,9 @@ const Summary = ({ groupName, isTeaching, getSummary, learningLanguage }) => {
                     onClick={() => handleSort(column)}
                   >
                     {capitalize(column).replace(/_/g, ' ')}
-                    <Icon name={sorter.direction[column] === 1 ? 'caret up' : 'caret down'} />
+                    {sorter.field === column
+                      && <Icon name={sorter.direction[column] === 1 ? 'caret up' : 'caret down'} />
+                    }
                   </th>
                 ))}
               </tr>
