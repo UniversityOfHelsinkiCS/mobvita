@@ -42,7 +42,6 @@ const GroupView = () => {
   const { groups, created, pending, token } = useSelector(({ groups }) => groups)
   const currentGroup = groups.find(group => group.group_id === currentGroupId)
 
-
   useEffect(() => {
     dispatch(getGroups())
   }, [])
@@ -63,6 +62,17 @@ const GroupView = () => {
     if (!created) return
     setCurrentGroupId(created.group_id)
   }, [created])
+
+  const compare = (a, b) => {
+    if (a.userName.toLowerCase() < b.userName.toLowerCase()) return -1
+    if (a.userName.toLowerCase() > b.userName.toLowerCase()) return 1
+    return 0
+  }
+
+  if (currentGroup) {
+    currentGroup.teachers.sort(compare)
+    currentGroup.students.sort(compare)
+  }
 
   const removeUser = (userId) => {
     dispatch(removeFromGroup(currentGroupId, userId))
