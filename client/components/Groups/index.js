@@ -171,39 +171,43 @@ const GroupView = () => {
           ))}
         </ListGroup>
       </CollapsingList>
-      <CollapsingList header={intl.formatMessage({ id: 'Students' })}>
-        <ListGroup style={{
-          maxHeight: '40vh',
-          overflowY: 'auto',
-        }}
-        >
-          {currentGroup.students.length === 0 ? <ListGroup.Item /> : currentGroup.students.map(student => (
-            <ListGroup.Item
-              style={{
-                backgroundColor: student === currentStudent ? 'gray' : 'white',
-                display: 'flex',
-                justifyContent: 'space-between',
-                alignItems: 'center',
-                cursor: 'pointer',
-              }}
-              key={student.userName}
-              onClick={() => setCurrentStudent(student)}
+      {currentGroup.is_teaching
+        && (
+          <CollapsingList header={intl.formatMessage({ id: 'Students' })}>
+            <ListGroup style={{
+              maxHeight: '40vh',
+              overflowY: 'auto',
+            }}
             >
-              {student.userName}
-              {currentUserIsTeacher && (
-                <Icon
-                  data-cy={`remove-from-group-${student.userName}`}
-                  style={{ cursor: 'pointer' }}
-                  name="close"
-                  color="red"
-                  onClick={() => removeUser(student._id)}
-                />
-              )
-              }
-            </ListGroup.Item>
-          ))}
-        </ListGroup>
-      </CollapsingList>
+              {currentGroup.students.length === 0 ? <ListGroup.Item /> : currentGroup.students.map(student => (
+                <ListGroup.Item
+                  style={{
+                    backgroundColor: student === currentStudent ? 'gray' : 'white',
+                    display: 'flex',
+                    justifyContent: 'space-between',
+                    alignItems: 'center',
+                    cursor: 'pointer',
+                  }}
+                  key={student.userName}
+                  onClick={() => setCurrentStudent(student)}
+                >
+                  {student.userName}
+                  {currentUserIsTeacher && (
+                    <Icon
+                      data-cy={`remove-from-group-${student.userName}`}
+                      style={{ cursor: 'pointer' }}
+                      name="close"
+                      color="red"
+                      onClick={() => removeUser(student._id)}
+                    />
+                  )
+                  }
+                </ListGroup.Item>
+              ))}
+            </ListGroup>
+          </CollapsingList>
+        )
+      }
       {currentGroup.is_teaching && !bigWindow
         && (
           <>
