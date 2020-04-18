@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react'
+import React, { useEffect } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import { FormattedMessage } from 'react-intl'
 import CurrentPractice from 'Components/PracticeView/CurrentPractice'
@@ -8,14 +8,18 @@ import { Segment, Icon } from 'semantic-ui-react'
 import { resetCurrentSnippet } from 'Utilities/redux/snippetsReducer'
 import { clearPractice, setTouchedIds, setAnswers } from 'Utilities/redux/practiceReducer'
 import { getTranslationAction } from 'Utilities/redux/translationReducer'
-import { capitalize, learningLanguageSelector, translatableLanguages, newCapitalize, dictionaryLanguageSelector } from 'Utilities/common'
+import {
+  capitalize,
+  learningLanguageSelector,
+  translatableLanguages,
+  newCapitalize,
+  dictionaryLanguageSelector,
+} from 'Utilities/common'
 import useWindowDimensions from 'Utilities/windowDimensions'
 import PreviousSnippets from './PreviousSnippets'
 import RussianKeyboard from './RussianKeyboard'
 
 const PracticeView = ({ match }) => {
-  const [keyboard, setKeyboard] = useState(null)
-
   const learningLanguage = useSelector(learningLanguageSelector)
   const dictionaryLanguage = useSelector(dictionaryLanguageSelector)
   const dispatch = useDispatch()
@@ -50,10 +54,7 @@ const PracticeView = ({ match }) => {
     dispatch(setAnswers(newAnswer))
   }
 
-  const handleInputChange = (value, word) => {
-    if (keyboard) keyboard.setInput(value)
-    handleAnswerChange(value, word)
-  }
+  console.log('hello')
 
   const textToSpeech = (surfaceWord, wordLemmas, wordId) => {
     // const selectedLocale = localeOptions.find(localeOption => localeOption.code === locale)
@@ -92,10 +93,10 @@ const PracticeView = ({ match }) => {
 
           <PreviousSnippets textToSpeech={textToSpeech} />
           <hr />
-          <CurrentPractice storyId={match.params.id} textToSpeech={textToSpeech} handleInputChange={handleInputChange} />
+          <CurrentPractice storyId={match.params.id} textToSpeech={textToSpeech} handleInputChange={handleAnswerChange} />
           {learningLanguage === 'Russian' && !smallWindow
             && (
-              <RussianKeyboard handleAnswerChange={handleAnswerChange} keyboard={keyboard} setKeyboard={setKeyboard} />
+              <RussianKeyboard />
             )}
         </div>
       </Segment>

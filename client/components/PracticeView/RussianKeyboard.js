@@ -3,11 +3,11 @@ import { useSelector, useDispatch } from 'react-redux'
 import Keyboard from 'react-simple-keyboard'
 import { Button } from 'react-bootstrap'
 import { Icon } from 'semantic-ui-react'
+import { setTouchedIds, setAnswers } from 'Utilities/redux/practiceReducer'
 import { RUSphonetic, RUSauthentic } from './KeyboardLayouts'
-import { clearPractice, setTouchedIds, setAnswers } from 'Utilities/redux/practiceReducer'
 
-
-const RussianKeyboard = ({ keyboard, setKeyboard }) => {
+const RussianKeyboard = () => {
+  const [keyboard, setKeyboard] = useState(null)
   const [showKeyboard, setShowKeyboard] = useState(false)
   const [keyboardLayout, setKeyboardLayout] = useState(RUSauthentic)
   const [layoutName, setLayoutName] = useState('default')
@@ -20,7 +20,7 @@ const RussianKeyboard = ({ keyboard, setKeyboard }) => {
   useEffect(() => {
     if (!keyboard || !currentAnswers[focusedWord.ID]) return
     keyboard.setInput(currentAnswers[focusedWord.ID].users_answer)
-  }, [focusedWord, keyboard])
+  }, [focusedWord, keyboard, currentAnswers])
 
   const handleKeyPress = (key) => {
     const layout = layoutName === 'default' ? 'shift' : 'default'
@@ -37,7 +37,6 @@ const RussianKeyboard = ({ keyboard, setKeyboard }) => {
   }
 
   const handleAnswerChange = (value, word = focusedWord) => {
-    console.log(word)
     const { surface, id, ID, concept } = word
 
     dispatch(setTouchedIds(ID))
