@@ -55,6 +55,7 @@ export const confirmUser = (token) => {
 
 export const refresh = () => ({ type: 'REFRESH' })
 
+
 export default (state = { data: null }, action) => {
   switch (action.type) {
     case 'LOGIN_SUCCESS':
@@ -78,7 +79,7 @@ export default (state = { data: null }, action) => {
         ...state,
         pending: false,
         error: true,
-        errorMessage: action.response.response.data,
+        errorMessage: action.response.response && action.response.response.data,
       }
     case 'GET_SELF_SUCCESS':
       return {
