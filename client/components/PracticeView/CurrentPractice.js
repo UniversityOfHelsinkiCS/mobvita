@@ -133,7 +133,7 @@ const CurrentPractice = ({ storyId, textToSpeech, handleInputChange }) => {
   }, [snippets.pending, snippets.previous])
 
   useEffect(() => {
-    if (scrollTarget.current.elements) {
+    if (scrollTarget.current && scrollTarget.current.elements) {
       setTimeout(() => {
         const { elements } = scrollTarget.current
         const firstCloze = Object.entries(elements)
