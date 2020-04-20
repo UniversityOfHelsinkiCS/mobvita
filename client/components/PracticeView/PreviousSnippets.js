@@ -66,17 +66,17 @@ const ExerciseWord = ({ word, textToSpeech, answer }) => {
     setShow(true)
   }
 
-  const answerString = `${intl.formatMessage({ id: 'you-used' })}: ${answer.users_answer}`
-
-
   const tooltip = (
     <div>
-      {answerString}
+      {word.message && <div className="tooltip-green">{word.message}</div>}
+      <div className="tooltip-blue">
+        {`${intl.formatMessage({ id: 'you-used' })}: ${answer.users_answer}`}
+      </div>
     </div>
   )
 
   return (
-    <Tooltip placement="top" tooltipShown={show} trigger="none" tooltip={tooltip} additionalClassnames="tooltip-blue">
+    <Tooltip placement="top" tooltipShown={show} trigger="none" tooltip={tooltip}>
       <span
         className={wordClass}
         role="button"
