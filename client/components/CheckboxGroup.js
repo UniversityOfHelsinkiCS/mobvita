@@ -19,8 +19,8 @@ const ToggleButton = ({ toggled, children, ...props }) => {
 }
 
 
-const CheckboxGroup = ({ values, onClick, additionalClass = '', ...props }) => (
-  <div className={`checkbox-group ${additionalClass}`}>{
+const CheckboxGroup = ({ values, onClick, additionalClass = '', dataCy, ...props }) => (
+  <div className={`checkbox-group ${additionalClass}`} data-cy={dataCy}>{
     Object.entries(values).map(([key, val]) => (
       <ToggleButton
         key={key}

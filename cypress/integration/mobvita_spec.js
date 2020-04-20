@@ -116,7 +116,7 @@ describe('Mobvita', function () {
 
     it("can start filtered practice", function () {
       cy.get('[data-cy=practice-now]').click()
-      cy.get('[class=checkbox-group]').eq(1).children()
+      cy.get('[data-cy=practice-categories]').children()
         .then(children => {
           children[2].click()
           children[3].click()
@@ -128,7 +128,7 @@ describe('Mobvita', function () {
     it("cant start filtered practice with 0 stories", function () {
       cy.get('[data-cy=practice-now]').click()
       cy.get("[data-cy=start-random]").should("be.enabled")
-      cy.get('[class=checkbox-group]').eq(1).children().each(e => e.click())
+      cy.get('[data-cy=practice-categories]').children().each(e => e.click())
       cy.get("[data-cy=start-random]").should("be.disabled")
     })
 

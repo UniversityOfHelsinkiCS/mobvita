@@ -164,6 +164,7 @@ const PracticeModal = ({ trigger }) => {
           <CheckboxGroup
             values={categories}
             onClick={toggleCategory}
+            dataCy="practice-categories"
             additionalClass="wrap-and-grow"
           />
         </div>
