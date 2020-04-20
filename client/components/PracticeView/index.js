@@ -54,8 +54,6 @@ const PracticeView = ({ match }) => {
     dispatch(setAnswers(newAnswer))
   }
 
-  console.log('hello')
-
   const textToSpeech = (surfaceWord, wordLemmas, wordId) => {
     // const selectedLocale = localeOptions.find(localeOption => localeOption.code === locale)
     try {
