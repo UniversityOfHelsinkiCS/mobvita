@@ -22,7 +22,7 @@ describe("dictionary", function () {
   })
 
   it("translate-to language can be changed", function () {
-    cy.get("[data-cy=dictionary-dropdown]").select("Finnish")
+    cy.get("[data-cy=dictionary-dropdown]").select("Suomi")
 
   })
 
@@ -38,7 +38,7 @@ describe("dictionary", function () {
       .click()
     cy.get('[data-cy=translations]')
       .contains("yhteiskunnassa järjestystä ja turvallisuutta valvova ja ylläpitävä virkamies")
-    cy.get("[data-cy=dictionary-dropdown]").select("Spanish")
+    cy.get("[data-cy=dictionary-dropdown]").select("Espanja")
     cy.get('[data-cy=translations]')
       .contains("policía")
   })

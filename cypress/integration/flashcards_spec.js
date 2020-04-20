@@ -68,7 +68,7 @@ describe('flashcards', function () {
 
     it('language can be changed', function () {
       cy.contains('lentokone')
-      cy.get('[class=flashcard-footer]').get('select').eq(0).select('Spanish')
+      cy.get('[class=flashcard-footer]').get('select').eq(0).select('Espanja')
       cy.get('[data-cy=no-flashcards-text]')
     })
   })
