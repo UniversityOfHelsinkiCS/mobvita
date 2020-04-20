@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react'
 import { connect, useDispatch, useSelector } from 'react-redux'
 import { List, Button, Header, Segment, Icon, Dropdown } from 'semantic-ui-react'
 import { Shake } from 'reshake'
-import { FormattedMessage } from 'react-intl'
+import { FormattedMessage, useIntl } from 'react-intl'
 import { updateDictionaryLanguage, saveSelf } from 'Utilities/redux/userReducer'
 import { getTranslationAction } from 'Utilities/redux/translationReducer'
 import { learningLanguageSelector, translatableLanguages } from 'Utilities/common'
@@ -14,6 +14,7 @@ const DictionaryHelp = ({ translation }) => {
   const [shaking, setShaking] = useState(false)
   const { width: windowWidth } = useWindowDimensions()
   const dispatch = useDispatch()
+  const intl = useIntl()
   const translationLanguageCode = useSelector(({ user }) => user.data.user.last_trans_language)
   const learningLanguage = useSelector(learningLanguageSelector)
   const { pending } = useSelector(({ translation }) => translation)
@@ -25,11 +26,10 @@ const DictionaryHelp = ({ translation }) => {
     }
   }, [learningLanguage])
 
-
   const dictionaryOptions = translatableLanguages[learningLanguage] ? translatableLanguages[learningLanguage].map(element => ({
     key: element,
     value: element,
-    text: element,
+    text: intl.formatMessage({ id: element }),
   })) : []
 
 
