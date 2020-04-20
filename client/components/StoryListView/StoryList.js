@@ -153,7 +153,7 @@ const StoryList = () => {
           onClick={() => setSortDirection(sortDirection * -1)}
         />
       </div>
-      <CheckboxGroup values={libraries} onClick={handleLibraryChange} />
+      <CheckboxGroup values={libraries} onClick={handleLibraryChange} block />
       <div className="space-between reverse-for-900" style={{ alignItems: 'center' }}>
         <Icon
           data-cy="restart-story"

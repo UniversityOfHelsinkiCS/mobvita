@@ -5,14 +5,13 @@ import { Button } from 'react-bootstrap'
 
 
 // const buttonClass = toggled ? 'btn btn-secondary' : 'btn btn-info'
-const ToggleButton = ({ toggled, children, ...rest }) => {
+const ToggleButton = ({ toggled, children, ...props }) => {
   const className = toggled ? 'btn btn-toggle-on' : 'btn btn-toggle-off'
   return (
     <Button
-      {...rest}
       variant={className}
-      block
       style={{ margin: 0 }}
+      {...props}
     >
       {children}
     </Button>
@@ -20,13 +19,14 @@ const ToggleButton = ({ toggled, children, ...rest }) => {
 }
 
 
-const CheckboxGroup = ({ values, onClick }) => (
-  <div className="checkbox-group">{
+const CheckboxGroup = ({ values, onClick, additionalClass = '', ...props }) => (
+  <div className={`checkbox-group ${additionalClass}`}>{
     Object.entries(values).map(([key, val]) => (
       <ToggleButton
         key={key}
         onClick={() => onClick(key)}
         toggled={val}
+        {...props}
       >
         <FormattedMessage id={capitalize(key)} />
       </ToggleButton>

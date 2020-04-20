@@ -473,6 +473,14 @@ body {
   justify-content: center;
 }
 
+.wrap-and-grow {
+  display: flex;
+  flex-wrap: wrap;
+  & button {
+    flex-grow: 1;
+  }
+}
+
 .reverse-for-900 {
   @media (min-width: 900px) {
     flex-direction: row-reverse;
