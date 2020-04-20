@@ -2,7 +2,7 @@ import React, { useEffect } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import { Link } from 'react-router-dom'
 import { Divider, Segment, Header } from 'semantic-ui-react'
-import { Button } from 'react-bootstrap'
+import { Button, Spinner } from 'react-bootstrap'
 import { FormattedMessage } from 'react-intl'
 
 import { getStoryAction } from 'Utilities/redux/storiesReducer'
@@ -20,7 +20,14 @@ const SingleStoryView = ({ match }) => {
     dispatch(getStoryAction(id))
     dispatch(clearTranslationAction())
   }, [])
-  if (!story) return 'No story (yet?)'
+
+  if (!story || pending) {
+    return (
+      <div className="spinner-container">
+        <Spinner animation="border" variant="primary" size="lg" />
+      </div>
+    )
+  }
 
   const handleWordClick = (surfaceWord, wordLemmas, wordId) => {
     // const selectedLocale = localeOptions.find(localeOption => localeOption.code === locale)
