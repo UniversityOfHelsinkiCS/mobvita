@@ -22,13 +22,8 @@ const SettingToggle = ({ translationId, ...props }) => {
 }
 
 const Settings = () => {
-  const { data, pending } = useSelector(({ user }) => user)
-  const {
-    multi_choice: multiChoice,
-    task_audio: taskAudio,
-    second_try: secondTry,
-    flashcard_num: flashcardsShown,
-  } = data
+  const { user } = useSelector(({ user }) => user.data)
+  const { pending } = useSelector(({ user }) => user)
 
   const dispatch = useDispatch()
 
@@ -42,20 +37,20 @@ const Settings = () => {
       <div className="flex-column gap-row-1">
         <SettingToggle
           translationId="multiple-choice"
-          checked={multiChoice}
-          onChange={() => dispatch(updateMultiChoice(!multiChoice))}
+          checked={user.multi_choice}
+          onChange={() => dispatch(updateMultiChoice(!user.multi_choice))}
           disabled={pending}
         />
         <SettingToggle
           translationId="type-the-word-you-hear"
-          checked={taskAudio}
-          onChange={() => dispatch(updateAudioTask(!taskAudio))}
+          checked={user.task_audio}
+          onChange={() => dispatch(updateAudioTask(!user.task_audio))}
           disabled={pending}
         />
         <SettingToggle
           translationId="second-chance-when-practicing-stories"
-          checked={secondTry}
-          onChange={() => dispatch(updateSecondTry(!secondTry))}
+          checked={user.second_try}
+          onChange={() => dispatch(updateSecondTry(!user.second_try))}
           disabled={pending}
         />
       </div>
@@ -64,7 +59,7 @@ const Settings = () => {
       </h2>
       <select
         id="flashcard-amount"
-        defaultValue={flashcardsShown}
+        defaultValue={user.flashcard_num}
         onChange={e => dispatch(updateNumberOfFlashcards(Number(e.target.value)))}
         disabled={pending}
       >
