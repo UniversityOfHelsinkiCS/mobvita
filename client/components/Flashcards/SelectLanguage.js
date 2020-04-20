@@ -1,6 +1,7 @@
 import React from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { useParams } from 'react-router-dom'
+import { useIntl } from 'react-intl'
 import {
   learningLanguageSelector,
   dictionaryLanguageSelector,
@@ -11,6 +12,7 @@ import { updateDictionaryLanguage } from 'Utilities/redux/userReducer'
 
 const SelectLanguage = ({ setSwipeIndex }) => {
   const dispatch = useDispatch()
+  const intl = useIntl()
   const { storyId } = useParams()
   const learningLanguage = useSelector(learningLanguageSelector)
   const dictionaryLanguage = useSelector(dictionaryLanguageSelector)
@@ -19,7 +21,7 @@ const SelectLanguage = ({ setSwipeIndex }) => {
     ? translatableLanguages[learningLanguage].map(element => ({
       key: element,
       value: element,
-      text: element,
+      text: intl.formatMessage({ id: element }),
     }))
     : []
 
