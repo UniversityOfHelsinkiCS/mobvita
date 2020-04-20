@@ -36,6 +36,10 @@ export const updateDictionaryLanguage = language => saveSelf({ last_trans_lang: 
 export const updateExerciseSettings = settings => saveSelf({ exercise_settings: settings })
 export const updateLibrarySelect = library => saveSelf({ last_selected_library: library })
 export const updateExerciseTemplate = template => saveSelf({ exercise_setting_template: template })
+export const updateMultiChoice = value => saveSelf({ multi_choice: value })
+export const updateAudioTask = value => saveSelf({ task_audio: value })
+export const updateSecondTry = value => saveSelf({ second_try: value })
+export const updateNumberOfFlashcards = amount => saveSelf({ flashcard_num: amount })
 
 export const changePassword = (currentPassword, newPassword) => {
   const route = '/user/password'

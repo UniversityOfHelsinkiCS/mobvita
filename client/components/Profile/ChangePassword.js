@@ -48,9 +48,9 @@ export default function ChangePassword() {
   const { newPassword, newPasswordAgain, currentPassword, passwordError } = settings
 
   return (
-    <div className="component-container">
+    <div className="component-container padding-sides-1">
       <div>
-        <h2>{intl.formatMessage({ id: 'reset-password' })}</h2>
+        <h2 className="header-2 padding-bottom-1">{intl.formatMessage({ id: 'reset-password' })}</h2>
 
         <Form onSubmit={saveSettings}>
           <Form.Field>

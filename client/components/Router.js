@@ -38,5 +38,6 @@ export default () => (
     <ProtectedRoute exact path="/concepts" component={Concepts} />
     <ProtectedRoute exact path="/profile/account" component={Profile} />
     <ProtectedRoute exact path="/profile/progress" component={Profile} />
+    <ProtectedRoute exact path="/profile/settings" component={Profile} />
   </Switch>
 )

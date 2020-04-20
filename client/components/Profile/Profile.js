@@ -1,10 +1,10 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
 import { Tab } from 'semantic-ui-react'
-
 import { useIntl } from 'react-intl'
 import Progress from './Progress'
 import ChangePassword from './ChangePassword'
+import Settings from './Settings'
 
 
 export default function Profile({ location }) {
@@ -23,6 +23,15 @@ export default function Profile({ location }) {
     {
       menuItem: {
         as: Link,
+        content: intl.formatMessage({ id: 'Settings' }),
+        to: '/profile/settings',
+        key: 'settings',
+      },
+      render: () => <Settings />,
+    },
+    {
+      menuItem: {
+        as: Link,
         content: intl.formatMessage({ id: 'Progress' }),
         to: '/profile/progress',
         key: 'progress',
@@ -33,8 +42,11 @@ export default function Profile({ location }) {
 
   let index
   switch (location.pathname) {
-    case '/profile/progress':
+    case '/profile/settings':
       index = 1
+      break
+    case '/profile/progress':
+      index = 2
       break
     default:
       index = 0
