@@ -38,7 +38,9 @@ const SelectLanguage = ({ setSwipeIndex }) => {
       style={{}}
       onChange={e => handleLanguageChange(e.target.value)}
     >
-      {dictionaryOptions.map(option => <option key={option.key}>{option.text}</option>)}
+      {dictionaryOptions.map(option => (
+        <option key={option.key} value={option.value}>{option.text}</option>
+      ))}
     </select>
   )
 }

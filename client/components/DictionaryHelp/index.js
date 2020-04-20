@@ -56,6 +56,7 @@ const DictionaryHelp = ({ translation }) => {
       const lemmas = translation.map(t => t.lemma).join('+')
       if (lemmas !== '') dispatch(getTranslationAction(learningLanguage, lemmas, value))
     }
+    console.log(value)
     dispatch(updateDictionaryLanguage(value))
   }
 
@@ -107,7 +108,7 @@ const DictionaryHelp = ({ translation }) => {
             style={{ marginLeft: '0.5em', border: 'none', backgroundColor: 'white' }}
             onChange={e => handleDropdownChange(e.target.value)}
           >
-            {dictionaryOptions.map(option => <option key={option.key}>{option.text}</option>)}
+            {dictionaryOptions.map(option => <option key={option.key} value={option.value}>{option.text}</option>)}
           </select>
         </div>
         {smallWindow
