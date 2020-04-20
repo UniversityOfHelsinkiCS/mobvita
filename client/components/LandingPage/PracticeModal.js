@@ -116,6 +116,7 @@ const PracticeModal = ({ trigger }) => {
     setLibraries({
       private: true,
       public: true,
+      group: true,
     })
     setCategories({
       culture: true,
