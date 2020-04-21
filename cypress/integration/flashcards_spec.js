@@ -79,9 +79,9 @@ describe('flashcards', function () {
       cy.get('.book').click()
 
       cy.contains('lentokoneita').click()
-      cy.contains('plane')
+      cy.get('[data-cy=translations]').contains('plane')
       cy.contains('perustavat').click()
-      cy.contains('found')
+      cy.get('[data-cy=translations]').contains('found')
       cy.visit('http://localhost:8000/flashcards/')
     })
 
