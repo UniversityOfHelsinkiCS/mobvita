@@ -1,16 +1,23 @@
 import React, { useState, useEffect } from 'react'
 import SwipeableViews from 'react-swipeable-views'
-import { virtualize } from 'react-swipeable-views-utils'
+import { virtualize, bindKeyboard } from 'react-swipeable-views-utils'
+import flowRight from 'lodash/flowRight';
 import { useDispatch, useSelector } from 'react-redux'
 import { Icon } from 'semantic-ui-react'
 import { Spinner } from 'react-bootstrap'
 import { getFlashcards } from 'Utilities/redux/flashcardReducer'
 import { learningLanguageSelector, dictionaryLanguageSelector } from 'Utilities/common'
+import useWindowDimension from 'Utilities/windowDimensions'
 import Flashcard from './Flashcard'
 import FlashcardEndView from './FlashcardEndView'
 import FlashcardNoCards from './FlashCardNoCards'
 
-const VirtualizeSwipeableViews = virtualize(SwipeableViews)
+const VirtualizeSwipeableViews = flowRight(
+  bindKeyboard,
+  virtualize,
+)(SwipeableViews)
+
+//const VirtualizeSwipeableViews = virtualize(SwipeableViews)
 
 const Flashcards = ({ match }) => {
   const dispatch = useDispatch()
@@ -19,6 +26,8 @@ const Flashcards = ({ match }) => {
   const { cards, pending } = useSelector(({ flashcards }) => flashcards)
   const [swipeIndex, setSwipeIndex] = useState(0)
   const { storyId } = match.params
+
+  const bigScreen = useWindowDimension().width >= 640
 
   useEffect(() => {
     dispatch(getFlashcards(learningLanguage, dictionaryLanguage, storyId))
@@ -60,6 +69,7 @@ const Flashcards = ({ match }) => {
           card={cards[index]}
           cardIndex={cardIndex}
           setSwipeIndex={setSwipeIndex}
+          focused={swipeIndex === index && bigScreen}
         />
       )
     }

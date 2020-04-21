@@ -1,10 +1,13 @@
-import React, { useState } from 'react'
+import React, { useState, useRef } from 'react'
 import { Button, Form } from 'react-bootstrap'
 import { useIntl } from 'react-intl'
 
-const FlashcardInput = ({ answerChecked, checkAnswer }) => {
+const FlashcardInput = ({ answerChecked, checkAnswer, focused }) => {
   const [answer, setAnswer] = useState('')
+
   const intl = useIntl()
+
+  const answerInput = useRef()
 
   if (answerChecked) return null
 
@@ -14,10 +17,17 @@ const FlashcardInput = ({ answerChecked, checkAnswer }) => {
     setAnswer('')
   }
 
+  if (focused && answerInput.current) {
+    setTimeout(() => {
+      answerInput.current.focus()
+    }, 100)
+  }
+
   return (
     <div className="flashcard-input">
       <form onSubmit={handleSubmit}>
         <Form.Control
+          ref={answerInput}
           type="text"
           value={answer}
           onChange={event => setAnswer(event.target.value)}
