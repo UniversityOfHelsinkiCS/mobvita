@@ -20,6 +20,10 @@ export default function NavBar({ history }) {
     history.push('/profile/progress')
   }
 
+  const handleSettingClick = () => {
+    history.push('/profile/settings')
+  }
+
   const elo = (user && user.user.exercise_history && user.user.exercise_history[user.user.exercise_history.length - 1] && user.user.exercise_history[user.user.exercise_history.length - 1].score)
     ? user.user.exercise_history[user.user.exercise_history.length - 1].score
     : 0
@@ -48,10 +52,13 @@ export default function NavBar({ history }) {
           </Navbar.Brand>
         </div>
         {user && (
+          <div>
+            <Navbar.Text style={{ color: 'white', marginRight: '1em', cursor: 'pointer' }} onClick={handleEloClick}>
+              <div>{`${intl.formatMessage({ id: 'score' })} ${elo}`}</div>
+            </Navbar.Text>
 
-          <Navbar.Text style={{ color: 'white', marginRight: '1em', cursor: 'pointer' }} onClick={handleEloClick}>
-            <div>{`${intl.formatMessage({ id: 'score' })} ${elo}`}</div>
-          </Navbar.Text>
+            <Icon name="setting" style={{ color: 'white', cursor: 'pointer' }} onClick={handleSettingClick} />
+          </div>
         )}
       </Navbar>
     </Headroom>
