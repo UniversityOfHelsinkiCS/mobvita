@@ -64,7 +64,7 @@ const Flashcards = ({ match }) => {
       )
     }
     return (
-      <FlashcardEndView handleNewDeck={handleNewDeck} />
+      <FlashcardEndView key="end-view" handleNewDeck={handleNewDeck} />
     )
   }
 
