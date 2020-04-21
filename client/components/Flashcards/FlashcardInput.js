@@ -17,9 +17,9 @@ const FlashcardInput = ({ answerChecked, checkAnswer, focused }) => {
     setAnswer('')
   }
 
-  if (focused && answerInput.current) {
+  if (focused) {
     setTimeout(() => {
-      answerInput.current.focus()
+      if (answerInput.current) answerInput.current.focus()
     }, 100)
   }
 
