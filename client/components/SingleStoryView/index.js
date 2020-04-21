@@ -12,7 +12,7 @@ import DictionaryHelp from 'Components/DictionaryHelp'
 
 const SingleStoryView = ({ match }) => {
   const dispatch = useDispatch()
-  const { story, pending } = useSelector(({ stories, locale }) => ({ story: stories.focused, pending: stories.pending, locale }))
+  const { story, pending } = useSelector(({ stories, locale }) => ({ story: stories.focused, pending: stories.focusedPending, locale }))
   const learningLanguage = useSelector(learningLanguageSelector)
   const dictionaryLanguage = useSelector(({ user }) => user.data.user.last_trans_language)
   const { id } = match.params
@@ -49,8 +49,6 @@ const SingleStoryView = ({ match }) => {
     }
     return word.surface
   }
-
-  if (pending) return null
 
   return (
     <div style={{ display: 'flex', justifyContent: 'center' }}>

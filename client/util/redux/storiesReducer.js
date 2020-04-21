@@ -45,6 +45,7 @@ export const unshareStory = (groupId, storyId) => {
 const initialState = {
   data: [],
   pending: false,
+  focusedPending: false,
   error: false,
 }
 
@@ -87,12 +88,14 @@ export default (state = initialState, action) => {
       return {
         ...state,
         pending: true,
+        focusedPending: true,
         error: false,
       }
     case 'GET_STORY_FAILURE':
       return {
         ...state,
         pending: false,
+        focusedPending: false,
         error: true,
       }
     case 'GET_STORY_SUCCESS':
@@ -100,6 +103,7 @@ export default (state = initialState, action) => {
         ...state,
         focused: action.response,
         pending: false,
+        focusedPending: false,
         error: false,
       }
     case 'SAVE_STORY_ATTEMPT':
