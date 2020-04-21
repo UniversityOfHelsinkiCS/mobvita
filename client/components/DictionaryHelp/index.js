@@ -40,7 +40,7 @@ const DictionaryHelp = ({ translation }) => {
         {translated.glosses.map((word, i) => <List.Item key={`${translated.URL}-${i}`}>{word}</List.Item>)}
       </List>
     </List.Item>
-  )) : 'no translation found'
+  )) : <List.Item><span>no translation found</span></List.Item>
 
   useEffect(() => {
     if (translations.length > 0) {
@@ -93,7 +93,7 @@ const DictionaryHelp = ({ translation }) => {
   const translationResults = () => {
     if (pending) return <div><span>Loading, please wait </span><Spinner animation="border" /></div>
     if (translations.length > 0) return translations
-    return <FormattedMessage id="click-to-translate" />
+    return <span><FormattedMessage id="click-to-translate" /></span>
   }
 
   return (
