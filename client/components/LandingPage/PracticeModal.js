@@ -157,7 +157,12 @@ const PracticeModal = ({ trigger }) => {
 
         <div>
           <div><FormattedMessage id="Library" /></div>
-          <CheckboxGroup values={libraries} onClick={handleLibraryChange} additionalClass="wrap-and-grow" />
+          <CheckboxGroup
+            values={libraries}
+            onClick={handleLibraryChange}
+            additionalClass="wrap-and-grow"
+            reverse
+          />
         </div>
         <div>
           <div><FormattedMessage id="Category" /></div>
