@@ -9,7 +9,7 @@ import { setFocusedWord } from 'Utilities/redux/practiceReducer'
 const ExerciseHearing = ({ word, handleClick, handleChange }) => {
   const [value, setValue] = useState('')
 
-  const [className, setClassname] = useState('hearing untouched')
+  const [className, setClassname] = useState('exercise hearing-untouched')
   const [touched, setTouched] = useState(false)
   const [focusTimeout, setFocusTimeout] = useState(false)
   const inputRef = createRef(null)
@@ -30,9 +30,9 @@ const ExerciseHearing = ({ word, handleClick, handleChange }) => {
   useEffect(() => {
     if (tested) {
       if (isWrong) {
-        setClassname('wrong')
+        setClassname('exercise wrong')
       } else {
-        setClassname('correct')
+        setClassname('exercise correct')
       }
     }
   }, [tested])
@@ -49,7 +49,7 @@ const ExerciseHearing = ({ word, handleClick, handleChange }) => {
 
   const handleInputFocus = () => {
     if (!touched) {
-      setClassname('hearing touched')
+      if (!tested) setClassname('exercise hearing-touched')
       setTouched(true)
       handleChange(value, word)
     }
@@ -94,7 +94,6 @@ const ExerciseHearing = ({ word, handleClick, handleChange }) => {
           minWidth: getTextWidth(word.surface),
           marginRight: '2px',
           height: '1.5em',
-          borderRadius: '6px',
           lineHeight: 'normal',
         }}
       />

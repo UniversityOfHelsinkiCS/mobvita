@@ -4,7 +4,7 @@ import { Dropdown } from 'semantic-ui-react'
 import { getTextWidth } from 'Utilities/common'
 
 const ExerciseMultipleChoice = ({ word, handleChange }) => {
-  const [className, setClassName] = useState('exercise-multiple untouched')
+  const [className, setClassName] = useState('exercise-multiple')
   const [options, setOptions] = useState([])
   const [touched, setTouched] = useState(false)
 
@@ -52,7 +52,6 @@ const ExerciseMultipleChoice = ({ word, handleChange }) => {
   const handle = (e, word, data) => {
     if (!touched) {
       setTouched(true)
-      setClassName('exercise-multiple touched')
     }
 
     handleChange(e, word, data)

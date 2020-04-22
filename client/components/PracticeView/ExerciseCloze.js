@@ -7,7 +7,7 @@ import Tooltip from './Tooltip'
 
 const ExerciseCloze = ({ word, handleChange, handleClick }) => {
   const [value, setValue] = useState('')
-  const [className, setClassName] = useState('cloze untouched')
+  const [className, setClassName] = useState('exercise cloze-untouched')
   const [touched, setTouched] = useState(false)
   const [disabled, setDisabled] = useState(false)
   const dictionaryLanguage = useSelector(dictionaryLanguageSelector)
@@ -42,9 +42,9 @@ const ExerciseCloze = ({ word, handleChange, handleClick }) => {
   useEffect(() => {
     if (tested) {
       if (isWrong) {
-        setClassName('cloze wrong')
+        setClassName('exercise wrong')
       } else {
-        setClassName('cloze correct')
+        setClassName('exercise correct')
         setDisabled(true)
       }
     }
@@ -71,7 +71,7 @@ const ExerciseCloze = ({ word, handleChange, handleClick }) => {
   const handleFocus = () => {
     if (!touched) {
       setTouched(true)
-      setClassName('cloze touched')
+      if (!tested) setClassName('exercise cloze-touched')
       handleChange(value, word)
     }
     setShow(!show)
@@ -107,7 +107,6 @@ const ExerciseCloze = ({ word, handleChange, handleClick }) => {
           width: ((word.surface > word.base) ? getTextWidth(word.surface) : getTextWidth(word.base)),
           marginRight: '2px',
           height: '1.5em',
-          borderRadius: '6px',
           lineHeight: 'normal',
         }}
       />

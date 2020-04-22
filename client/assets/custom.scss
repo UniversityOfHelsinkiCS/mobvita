@@ -121,45 +121,90 @@ body {
 
 }
 
-.cloze {
-  &.untouched{
-    background-color:#ffff83;
-  }
-  &.touched {
-    background-color: lightyellow;
-  }
-  .wrong {
-    background-color: $wrong-color-background;
-  }
-  .correct {
-    background-color: #d3ffd8;
-  }
+.exercise {
+  border-style: solid;
+  border-color: lightgrey;
+  border-radius: 4px;
+  border-width: thin;
+  padding-left: 4px;
 }
 
-.hearing {
-  &.untouched {
-    background-color: $lightblue;
-
-  }
-  &.touched{
-    background-color: #cdf3ff;
-
-  }
+.cloze-untouched{
+  background-color:#fbfbb5;
 }
+
+.cloze-touched {
+  background-color: lightyellow;
+}
+
+.hearing-untouched {
+  background-color: $lightblue;
+
+}
+
+.hearing-touched{
+  background-color: #cdf3ff;
+}
+
+.wrong {
+  background-color: $wrong-color-background;
+}
+
+.correct {
+  background-color: #d3ffd8;
+}
+
+// .cloze {
+//   border-style: solid;
+//   border-color: lightgrey;
+//   border-radius: 4px;
+//   border-width: thin;
+//   padding-left: 4px;
+
+//   &.untouched{
+//     background-color:#fbfbb5;
+//   }
+//   &.touched {
+//     background-color: lightyellow;
+//   }
+//   .wrong {
+//     background-color: $wrong-color-background;
+//   }
+//   .correct {
+//     background-color: #d3ffd8;
+//   }
+// }
+
+// .hearing {
+//   border-style: solid;
+//   border-color: lightgrey;
+//   border-radius: 4px;
+//   border-width: thin;
+//   padding-left: 4px;
+
+//   &.untouched {
+//     background-color: $lightblue;
+
+//   }
+//   &.touched{
+//     background-color: #cdf3ff;
+
+//   }
+// }
 
 .exercise-multiple{
-  height:1em;
   min-height: 0 !important;
-  line-height: 0 !important;
-  border-radius: 6px !important;
-  border:none !important;
-
-  &.untouched {
-    background-color: #ccade6 !important;
-  }
-
-  &.touched {
-    background-color: #dacbe6 !important;
+  height: 1.5em !important;
+  padding: 2px 0 1px 4px !important;
+  border-radius: 4px !important;
+  border-style: solid !important;
+  border-color: lightgrey !important;
+  border-width: thin !important;
+  background-color: #fbfbb5 !important;
+  
+  &.dropdown .icon {
+    padding-top: 0.3em !important;
+    padding-right: 0.5em !important;
   }
 
   &.wrong {
@@ -169,14 +214,6 @@ body {
   &.correct {
     background-color: #d3ffd8 !important;
   }
-}
-
-.wrong {
-  background-color: $wrong-color-background;
-}
-
-.correct {
-  background-color: #d3ffd8;
 }
 
 .wrong-text {
