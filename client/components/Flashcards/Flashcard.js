@@ -33,21 +33,20 @@ const Flashcard = ({ card, cardIndex, setSwipeIndex, focusedAndBigScreen, swipeI
   } = card
 
   const checkAnswer = (answer) => {
-    const correct = glosses.includes(answer.toLowerCase()).toString()
-
-    const answerDetails = {
-      flashcard_id: _id,
-      correct,
-      answer,
-      exercise: 'fillin',
-      mode: 'trans',
-      story,
-      lemma,
+    if (answer !== '') {
+      const correct = glosses.includes(answer.toLowerCase()).toString()
+      const answerDetails = {
+        flashcard_id: _id,
+        correct,
+        answer,
+        exercise: 'fillin',
+        mode: 'trans',
+        story,
+        lemma,
+      }
+      recordFlashcardAnswer(inputLanguage, outputLanguage, answerDetails)
+      setAnswerCorrect(correct)
     }
-
-    recordFlashcardAnswer(inputLanguage, outputLanguage, answerDetails)
-
-    setAnswerCorrect(correct)
     flipCard()
   }
 
