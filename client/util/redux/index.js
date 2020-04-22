@@ -19,6 +19,7 @@ import summary from './groupSummaryReducer'
 import practice from './practiceReducer'
 import passwordReset from './passwordResetReducer'
 import studentProgress from './groupProgressReducer'
+import flashcardPractice from './flashcardPracticeReducer'
 
 const rootReducer = combineReducers({
   stories,
@@ -40,6 +41,7 @@ const rootReducer = combineReducers({
   practice,
   passwordReset,
   studentProgress,
+  flashcardPractice,
 })
 
 export default (state, action) => (
