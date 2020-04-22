@@ -8,7 +8,6 @@ const FlashcardSide = ({
   flipCard,
   cardIndex,
   stage,
-  setSwipeIndex,
   format,
   children,
   id,
@@ -34,7 +33,7 @@ const FlashcardSide = ({
         {children}
       </div>
       <div className="flashcard-footer">
-        <SelectLanguage setSwipeIndex={setSwipeIndex} />
+        <SelectLanguage />
         {format !== 'no-cards'
           && (
             <button

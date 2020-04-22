@@ -31,6 +31,10 @@ const Flashcards = ({ match }) => {
     dispatch(getFlashcards(learningLanguage, dictionaryLanguage, storyId))
   }, [])
 
+  useEffect(() => {
+    setSwipeIndex(0)
+  }, [cards])
+
   if (pending || !cards) {
     return (
       <div className="spinner-container">

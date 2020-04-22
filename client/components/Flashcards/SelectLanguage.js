@@ -10,7 +10,7 @@ import {
 import { getFlashcards } from 'Utilities/redux/flashcardReducer'
 import { updateDictionaryLanguage } from 'Utilities/redux/userReducer'
 
-const SelectLanguage = ({ setSwipeIndex }) => {
+const SelectLanguage = () => {
   const dispatch = useDispatch()
   const intl = useIntl()
   const { storyId } = useParams()
@@ -26,7 +26,6 @@ const SelectLanguage = ({ setSwipeIndex }) => {
     : []
 
   const handleLanguageChange = async (value) => {
-    setSwipeIndex(0)
     dispatch(updateDictionaryLanguage(value))
     dispatch(getFlashcards(learningLanguage, value, storyId))
   }
