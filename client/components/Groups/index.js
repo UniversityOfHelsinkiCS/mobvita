@@ -246,14 +246,14 @@ const GroupView = () => {
         && (
           <>
             <div className="group-controls padding-top-1">
-              <Button onClick={handleSettingsClick}>
-                <FormattedMessage id="learning-settings" />
-              </Button>
               <Button onClick={handleSummary}>
                 <FormattedMessage id="summary" />
               </Button>
-              <Button className="auto-right" onClick={handleProgress}>
+              <Button onClick={handleProgress}>
                 <FormattedMessage id="Progress" />
+              </Button>
+              <Button onClick={handleSettingsClick} variant="secondary" className="auto-right">
+                <FormattedMessage id="learning-settings" />
               </Button>
               <Button
                 data-cy="add-to-group-modal"

@@ -152,8 +152,8 @@ const SettingsModal = ({ trigger }) => {
         </ButtonGroup>
         {!smallscreen && (
           <Button
-            style={{ alignSelf: 'flex-start', marginLeft: '-0.9em', marginTop: '1em' }}
-            variant="link"
+            style={{ alignSelf: 'flex-start', marginTop: '1em' }}
+            variant="secondary"
             as={Link}
             onClick={handleAdvancedSettingsClick}
             to="/concepts"
