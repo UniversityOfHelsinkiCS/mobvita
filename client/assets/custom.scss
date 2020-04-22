@@ -162,7 +162,6 @@ body {
   border-style: solid !important;
   border-color: lightgrey !important;
   border-width: thin !important;
-  background-color: #fbfbb5 !important;
   
   &.dropdown .icon {
     padding-top: 0.3em !important;
@@ -175,6 +174,14 @@ body {
 
   &.correct {
     background-color: #d3ffd8 !important;
+  }
+
+  &.untouched {
+    background-color:#fbfbb5 !important;
+  }
+
+  &.touched {
+    background-color: lightyellow !important
   }
 }
 
