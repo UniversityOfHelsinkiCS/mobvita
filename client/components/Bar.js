@@ -159,7 +159,7 @@ export default function Bar({ history }) {
             )}
 
             <Menu.Item>
-              <div style={{ textAlign: 'left' }}><FormattedMessage id="interface-language" /></div>
+              <div style={{ textAlign: 'left', paddingBottom: '3px' }}><FormattedMessage id="interface-language" /></div>
               <Dropdown
                 fluid
                 placeholder="Choose interface language..."
