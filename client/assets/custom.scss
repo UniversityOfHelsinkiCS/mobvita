@@ -154,44 +154,6 @@ body {
   background-color: #d3ffd8;
 }
 
-// .cloze {
-//   border-style: solid;
-//   border-color: lightgrey;
-//   border-radius: 4px;
-//   border-width: thin;
-//   padding-left: 4px;
-
-//   &.untouched{
-//     background-color:#fbfbb5;
-//   }
-//   &.touched {
-//     background-color: lightyellow;
-//   }
-//   .wrong {
-//     background-color: $wrong-color-background;
-//   }
-//   .correct {
-//     background-color: #d3ffd8;
-//   }
-// }
-
-// .hearing {
-//   border-style: solid;
-//   border-color: lightgrey;
-//   border-radius: 4px;
-//   border-width: thin;
-//   padding-left: 4px;
-
-//   &.untouched {
-//     background-color: $lightblue;
-
-//   }
-//   &.touched{
-//     background-color: #cdf3ff;
-
-//   }
-// }
-
 .exercise-multiple{
   min-height: 0 !important;
   height: 1.5em !important;
