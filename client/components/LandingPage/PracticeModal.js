@@ -148,10 +148,7 @@ const PracticeModal = ({ trigger }) => {
             )
               : (
                 <Button variant="primary" data-cy="start-random" disabled={!filteredLink}>
-                  { // translate json-keys:
-                    // "practice-a-random-story" + N + "practice-a-random-story-from-N-stories-AFTER"
-                  }
-                  {`Start random story from ${filteredStories.length} stories`}
+                  <FormattedMessage id="practice-random-story" />{` (${filteredStories.length} `}<FormattedMessage id="stories-selected" />{")"}
                 </Button>
               )
             }
