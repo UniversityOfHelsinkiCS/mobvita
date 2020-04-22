@@ -745,5 +745,7 @@
     "story-unshared": "Rimuovi la storia dalla libreria del gruppo",
     "remove-story-from-group-warning": "Questo rimuoverà la storia dalla libreria del gruppo {group}",
     "select-a-student-from-list": "Seleziona uno studente dalla lista",
-    "take-me-to-old-revita": "Portami alla vecchia Revita"
+    "take-me-to-old-revita": "Portami alla vecchia Revita",
+    "practice-random-story" :"",
+    "stories-selected": ""
 }
