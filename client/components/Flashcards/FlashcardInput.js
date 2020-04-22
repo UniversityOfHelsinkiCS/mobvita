@@ -2,7 +2,7 @@ import React, { useState, useRef } from 'react'
 import { Button, Form } from 'react-bootstrap'
 import { useIntl } from 'react-intl'
 
-const FlashcardInput = ({ answerChecked, checkAnswer, focused }) => {
+const FlashcardInput = ({ checkAnswer, focusedAndBigScreen, answerChecked }) => {
   const [answer, setAnswer] = useState('')
 
   const intl = useIntl()
@@ -17,7 +17,7 @@ const FlashcardInput = ({ answerChecked, checkAnswer, focused }) => {
     setAnswer('')
   }
 
-  if (focused) {
+  if (focusedAndBigScreen) {
     setTimeout(() => {
       if (answerInput.current) answerInput.current.focus()
     }, 500)

@@ -17,8 +17,6 @@ const VirtualizeSwipeableViews = flowRight(
   virtualize,
 )(SwipeableViews)
 
-//const VirtualizeSwipeableViews = virtualize(SwipeableViews)
-
 const Flashcards = ({ match }) => {
   const dispatch = useDispatch()
   const learningLanguage = useSelector(learningLanguageSelector)
@@ -68,8 +66,9 @@ const Flashcards = ({ match }) => {
           key={key}
           card={cards[index]}
           cardIndex={cardIndex}
+          swipeIndex={swipeIndex}
           setSwipeIndex={setSwipeIndex}
-          focused={swipeIndex === index && bigScreen}
+          focusedAndBigScreen={swipeIndex === index && bigScreen}
         />
       )
     }

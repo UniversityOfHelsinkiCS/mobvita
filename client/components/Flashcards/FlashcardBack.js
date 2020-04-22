@@ -1,8 +1,26 @@
-import React from 'react'
+import React, { useEffect, useCallback } from 'react'
 import FlashcardResult from './FlashcardResult'
 import FlashcardSide from './FlashcardSide'
 
-const FlashcardBack = ({ answerCorrect, glosses, ...props }) => {
+const FlashcardBack = (
+  { answerCorrect, glosses, focusedAndBigScreen, flipped, setSwipeIndex, swipeIndex, ...props },
+) => {
+  const handleEnter = useCallback((event) => {
+    if (event.keyCode === 13) {
+      setSwipeIndex(swipeIndex + 1)
+    }
+  })
+
+  useEffect(() => {
+    if (focusedAndBigScreen && flipped) {
+      document.addEventListener('keydown', handleEnter, false)
+
+      return () => {
+        document.removeEventListener('keydown', handleEnter, false)
+      }
+    }
+  }, [focusedAndBigScreen, flipped])
+
   const translations = Array.isArray(glosses)
     ? glosses.map(item => <li key={item}>{item}</li>)
     : glosses

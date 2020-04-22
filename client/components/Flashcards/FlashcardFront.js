@@ -12,7 +12,7 @@ const FlashcardFront = ({
   checkAnswer,
   hint,
   lemma,
-  focused,
+  focusedAndBigScreen,
   ...props
 }) => {
   const learningLanguage = useSelector(learningLanguageSelector)
@@ -34,7 +34,7 @@ const FlashcardFront = ({
             <FlashcardInput
               answerChecked={answerChecked}
               checkAnswer={checkAnswer}
-              focused={focused}
+              focusedAndBigScreen={focusedAndBigScreen}
             />
             <FlashcardResult answerCorrect={answerCorrect} />
           </div>

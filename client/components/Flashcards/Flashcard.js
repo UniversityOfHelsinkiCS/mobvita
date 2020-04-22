@@ -4,7 +4,7 @@ import { recordFlashcardAnswer } from 'Utilities/redux/flashcardReducer'
 import FlashcardFront from './FlashcardFront'
 import FlashcardBack from './FlashcardBack'
 
-const Flashcard = ({ card, cardIndex, setSwipeIndex, focused }) => {
+const Flashcard = ({ card, cardIndex, setSwipeIndex, focusedAndBigScreen, swipeIndex }) => {
   const [flipped, setFlipped] = useState(false)
   const [answerChecked, setAnswerChecked] = useState(false)
   const [answerCorrect, setAnswerCorrect] = useState(null)
@@ -59,7 +59,7 @@ const Flashcard = ({ card, cardIndex, setSwipeIndex, focused }) => {
     id: _id,
     answerCorrect,
     flipCard,
-    focused,
+    focusedAndBigScreen,
   }
 
   return (
@@ -73,6 +73,8 @@ const Flashcard = ({ card, cardIndex, setSwipeIndex, focused }) => {
       />
       <FlashcardBack
         glosses={glosses}
+        flipped={flipped}
+        swipeIndex={swipeIndex}
         {...cardProps}
       />
     </ReactCardFlip>
