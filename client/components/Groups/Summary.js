@@ -45,7 +45,7 @@ const Summary = ({ groupName, isTeaching, getSummary, learningLanguage }) => {
   const { colOrder } = useSelector(({ summary }) => summary)
 
   useEffect(() => {
-    if (summary && summary.length > 0) {
+    if (summary && colOrder && summary.length > 0) {
       const temp = Object.values(colOrder)
 
       let directionsObj = {}
