@@ -6,6 +6,7 @@ import TermsAndConditions from 'Components/TermsAndConditions'
 import { useIntl, FormattedMessage } from 'react-intl'
 import { Link, useHistory } from 'react-router-dom'
 import { setNotification } from 'Utilities/redux/notificationReducer'
+import { localeCodeToName } from 'Utilities/common'
 import { Button } from 'react-bootstrap'
 
 const Register = () => {
@@ -24,6 +25,7 @@ const Register = () => {
   }
 
   const { error, errorMessage, pending, accountCreated } = useSelector(({ register }) => register)
+  const locale = useSelector(({ locale }) => locale)
 
   const dispatch = useDispatch()
 
@@ -39,7 +41,6 @@ const Register = () => {
     }
   }, [pending])
 
-
   const handleSubmit = () => {
     const { email, username, password, passwordAgain } = formState
 
@@ -50,6 +51,7 @@ const Register = () => {
         username,
         password,
         email,
+        interface_language: localeCodeToName(locale),
       }
 
       dispatch(registerUser(payload))

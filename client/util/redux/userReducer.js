@@ -8,10 +8,10 @@ export const createRealToken = (email, password) => {
   return callBuilder(route, prefix, 'post', payload)
 }
 
-export const createAnonToken = () => {
+export const createAnonToken = (locale) => {
   const route = '/session/'
   const prefix = 'LOGIN'
-  const payload = { is_anonymous: true }
+  const payload = { is_anonymous: true, interface_language: locale }
   return callBuilder(route, prefix, 'post', payload)
 }
 

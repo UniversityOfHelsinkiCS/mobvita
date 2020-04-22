@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { createRealToken, createAnonToken } from 'Utilities/redux/userReducer'
+import { localeCodeToName } from 'Utilities/common'
 import { Segment, Form } from 'semantic-ui-react'
 import { useHistory, useLocation } from 'react-router'
 import { Link } from 'react-router-dom'
@@ -16,6 +17,7 @@ const Login = () => {
   const loginError = useSelector(({ user }) => user.error)
   const errorMessage = useSelector(({ user }) => user.errorMessage)
   const user = useSelector(({ user }) => user.data)
+  const locale = useSelector(({ locale }) => locale)
   const location = useLocation()
   const history = useHistory()
   const intl = useIntl()
@@ -23,7 +25,7 @@ const Login = () => {
   const dispatch = useDispatch()
 
   const login = () => dispatch(createRealToken(email, password))
-  const loginAnon = () => dispatch(createAnonToken())
+  const loginAnon = () => dispatch(createAnonToken(localeCodeToName(locale)))
 
   useEffect(() => {
     const { from } = location.state || { from: { pathname: '/' } }
