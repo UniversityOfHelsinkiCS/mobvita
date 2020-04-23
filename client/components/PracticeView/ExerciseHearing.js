@@ -27,11 +27,6 @@ const ExerciseHearing = ({ word, handleClick, handleChange }) => {
     [word],
   )
 
-  // This hack removes autocomplete from mobile keyboards
-  useEffect(() => {
-    inputRef.current.type = 'text'
-  }, [])
-
   useEffect(() => {
     if (tested) {
       if (isWrong) {
@@ -85,7 +80,6 @@ const ExerciseHearing = ({ word, handleClick, handleChange }) => {
   return (
     <span>
       <input
-        type="password"
         onKeyDown={handleKeyDown}
         data-cy="exercise-hearing"
         disabled={tested && !isWrong}
