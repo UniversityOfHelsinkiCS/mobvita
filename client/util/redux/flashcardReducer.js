@@ -1,4 +1,4 @@
-import callBuilder, { callApi } from '../apiConnection'
+import callBuilder from '../apiConnection'
 
 export const getFlashcards = (inputLanguage, outputLanguage, storyId = '') => {
   const route = `/flashcards/${inputLanguage}/${outputLanguage}?story_id=${storyId}`
@@ -8,8 +8,9 @@ export const getFlashcards = (inputLanguage, outputLanguage, storyId = '') => {
 
 export const recordFlashcardAnswer = (inputLanguage, outputLanguage, answerDetails) => {
   const route = `/flashcards/${inputLanguage}/${outputLanguage}/answer`
-  const data = answerDetails
-  return callApi(route, 'post', data)
+  const prefix = 'ANSWER_FLASHCARD'
+  const payload = answerDetails
+  return callBuilder(route, prefix, 'post', payload)
 }
 
 export const deleteFlashcard = (id) => {
@@ -42,20 +43,29 @@ export default (state = {}, action) => {
     case 'DELETE_FLASHCARD_ATTEMPT':
       return {
         ...state,
-        pending: true,
+        deletePending: true,
         error: false,
       }
     case 'DELETE_FLASHCARD_SUCCESS':
       return {
         ...state,
         cards: state.cards.filter(card => card._id !== action.response.flashcard_id),
-        pending: false,
+        deletePending: false,
         error: false,
       }
     case 'DELETE_FLASHCARD_FAILURE':
       return {
         ...state,
-        pending: false,
+        deletePending: false,
+        error: true,
+      }
+    case 'ANSWER_FLASHCARD_ATTEMPT':
+      return { ...state }
+    case 'ANSWER_FLASHCARD_SUCCESS':
+      return { ...state }
+    case 'ANSWER_FLASHCARD_FAILURE':
+      return {
+        ...state,
         error: true,
       }
     default:

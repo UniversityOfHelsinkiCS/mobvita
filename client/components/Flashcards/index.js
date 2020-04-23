@@ -21,7 +21,7 @@ const Flashcards = ({ match }) => {
   const dispatch = useDispatch()
   const learningLanguage = useSelector(learningLanguageSelector)
   const dictionaryLanguage = useSelector(dictionaryLanguageSelector)
-  const { cards, pending } = useSelector(({ flashcards }) => flashcards)
+  const { cards, pending, deletePending } = useSelector(({ flashcards }) => flashcards)
   const [swipeIndex, setSwipeIndex] = useState(0)
   const { storyId } = match.params
 
@@ -33,9 +33,9 @@ const Flashcards = ({ match }) => {
 
   useEffect(() => {
     setSwipeIndex(0)
-  }, [cards])
+  }, [pending])
 
-  if (pending || !cards) {
+  if (pending || deletePending || !cards) {
     return (
       <div className="spinner-container">
         <Spinner animation="border" variant="primary" size="lg" />

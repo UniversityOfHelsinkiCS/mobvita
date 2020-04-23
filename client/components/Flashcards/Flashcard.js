@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react'
+import { useDispatch } from 'react-redux'
 import ReactCardFlip from 'react-card-flip'
 import { recordFlashcardAnswer } from 'Utilities/redux/flashcardReducer'
 import FlashcardFront from './FlashcardFront'
@@ -8,6 +9,8 @@ const Flashcard = ({ card, cardIndex, setSwipeIndex, focusedAndBigScreen, swipeI
   const [flipped, setFlipped] = useState(false)
   const [answerChecked, setAnswerChecked] = useState(false)
   const [answerCorrect, setAnswerCorrect] = useState(null)
+
+  const dispatch = useDispatch()
 
   useEffect(() => {
     setFlipped(false)
@@ -44,7 +47,7 @@ const Flashcard = ({ card, cardIndex, setSwipeIndex, focusedAndBigScreen, swipeI
         story,
         lemma,
       }
-      recordFlashcardAnswer(inputLanguage, outputLanguage, answerDetails)
+      dispatch(recordFlashcardAnswer(inputLanguage, outputLanguage, answerDetails))
       setAnswerCorrect(correct)
     }
     flipCard()
