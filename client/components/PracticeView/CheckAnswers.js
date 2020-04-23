@@ -38,12 +38,9 @@ const CheckAnswers = ({ storyId, exerciseCount }) => {
       disabled={snippets.answersPending || snippets.pending}
       onClick={() => checkAnswers()}
     >
-      <div className="spinner-container">
-        {snippets.answersPending ? <Spinner animation="border" variant="dark" size="lg" />
-          : <FormattedMessage id="check-answer" />}
-
-      </div>
-
+      {snippets.answersPending
+        ? <Spinner animation="border" variant="dark" size="lg" />
+        : <FormattedMessage id="check-answer" />}
     </Button>
   )
 }
