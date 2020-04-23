@@ -34,6 +34,11 @@ const ExerciseCloze = ({ word, handleChange, handleClick }) => {
     debouncedChange(e.target.value)
   }
 
+  // This hack removes autocomplete from mobile keyboards
+  useEffect(() => {
+    target.current.type = 'text'
+  }, [])
+
   useEffect(() => {
     const val = currentAnswer ? currentAnswer.users_answer : ''
     setValue(val)
@@ -90,6 +95,7 @@ const ExerciseCloze = ({ word, handleChange, handleClick }) => {
   return (
     <Tooltip placement="top" trigger="none" onVisibilityChange={setShow} tooltipShown={show} closeOnOutOfBoundaries tooltip={tooltip} additionalClassnames="clickable">
       <input
+        type="password"
         onKeyDown={handleKeyDown}
         ref={target}
         data-cy="exercise-cloze"

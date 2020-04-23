@@ -53,7 +53,6 @@ const HomeView = () => {
   const { width } = useWindowDimensions()
   return (
     <div className="component-container">
-      <input autoComplete="off" autoCorrect="off" autoCapitalize="off" spellCheck="false" />
       {width > 600 ? (
         <div style={{ display: 'flex' }}>
           <div style={{ flexGrow: 2 }}>
