@@ -190,8 +190,13 @@ export default function Bar({ history }) {
                 <ContactUs trigger={<Button variant="secondary" onClick={() => menuClickWrapper()} style={{ flexBasis: '50%', marginRight: '0.5em' }}><FormattedMessage id="Contact" /></Button>} />
                 {user && <Button data-cy="logout" variant="secondary" style={{ flexBasis: '50%' }} onClick={() => menuClickWrapper(signOut)}><FormattedMessage id="sign-out" /></Button>}
               </Menu.Item>
-              <div>
-                Powered by <i><a href="https://responsivevoice.org/" target="_blank" rel="noopener noreferrer">ResponsiveVoice.org</a></i>
+              <div style={{ width: '300px', verticalAlign: 'top', fontFamily: 'Arial', fontSize: '9pt', lineHeight: 'normal', paddingLeft: '1.5em', paddingRight: '1em' }}>
+                <a rel="license" href="//responsivevoice.org/">
+                  <img title="ResponsiveVoice Text To Speech" src="https://responsivevoice.org/wp-content/uploads/2014/08/120x31.png" style={{ float: 'left', paddingRight: '2px' }} />
+                </a>
+                <span>
+                  <a href="//responsivevoice.org/" target="_blank" title="ResponsiveVoice Text To Speech">ResponsiveVoice</a>
+                </span> used under <a rel="license" href="https://creativecommons.org/licenses/by-nc-nd/4.0/" title="Creative Commons Attribution-NonCommercial-NoDerivatives 4.0 International License">Non-Commercial License</a>
               </div>
               <TermsAndConditions
                 trigger={<Button data-cy="tc-button" onClick={() => menuClickWrapper()} variant="link"> Terms and Conditions, Privacy Policy </Button>}
