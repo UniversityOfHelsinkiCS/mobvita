@@ -47,7 +47,7 @@ const Settings = () => {
           onChange={() => dispatch(updateAudioTask(!user.task_audio))}
           disabled={pending}
         />
-        <!-- <span style={{ color: 'gray' }}><i>Temporarily unavailable due to technical problem</i></span> -->
+        <span style={{ display: 'none', color: 'gray' }}><i>Temporarily unavailable due to technical problem</i></span>
         <SettingToggle
           translationId="second-chance-when-practicing-stories"
           checked={user.second_try}
