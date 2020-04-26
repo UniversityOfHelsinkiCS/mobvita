@@ -45,9 +45,9 @@ const Settings = () => {
           translationId="type-the-word-you-hear"
           checked={user.task_audio}
           onChange={() => dispatch(updateAudioTask(!user.task_audio))}
-          disabled
+          disabled={pending}
         />
-        <span style={{ color: 'gray' }}><i>Temporarily unavailable due to technical problem</i></span>
+        <!-- <span style={{ color: 'gray' }}><i>Temporarily unavailable due to technical problem</i></span> -->
         <SettingToggle
           translationId="second-chance-when-practicing-stories"
           checked={user.second_try}
