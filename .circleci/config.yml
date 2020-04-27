@@ -26,7 +26,7 @@ workflows:
             -  sentry
           image: toska/$CIRCLE_PROJECT_REPONAME
           tag: 'staging'
-          extra_build_args: '--build-arg REVITA_URL=https://revita-test.cs.helsinki.fi/api --build-arg BASE_PATH=/staging --build-arg COMMIT_HASH=$CIRCLE_SHA1'
+          extra_build_args: '--build-arg REVITA_URL=https://revita-test.cs.helsinki.fi/api --build-arg COMMIT_HASH=$CIRCLE_SHA1'
           filters:
             branches:
               only: master
