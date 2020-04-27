@@ -22,6 +22,9 @@ Sentry.init({
   release: `mobvita@${__COMMIT__}`, // eslint-disable-line no-undef
 })
 
+console.log(isStaging)
+console.log(process.env.REVITA_URL)
+
 // This removes most of responsivevoice's logging.
 window.responsiveVoice.OnVoiceReady = () => {
   window.responsiveVoice.debug = 0
