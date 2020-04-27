@@ -10,6 +10,8 @@ COPY . .
 
 ENV REVITA_URL=https://revita-test.cs.helsinki.fi/api
 
+ENV ENVIRONMENT=development
+
 EXPOSE 8000
 
 CMD ["npm", "run", "start:dev"]

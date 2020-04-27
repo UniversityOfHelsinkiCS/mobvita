@@ -6,7 +6,7 @@ const inProduction = process.env.NODE_ENV === 'production'
 
 const basePath = process.env.BASE_PATH || '/'
 
-const isStaging = process.env.REVITA_URL === 'https://revita-test.cs.helsinki.fi/api'
+const isStaging = process.env.ENVIRONMENT === 'staging'
 
 const hiddenFeatures = !inProduction || isStaging
 

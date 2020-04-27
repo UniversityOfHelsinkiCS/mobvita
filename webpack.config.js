@@ -28,6 +28,8 @@ module.exports = (env, argv) => {
 
   const BASE_PATH = process.env.BASE_PATH || '/'
 
+  const { ENVIRONMENT } = process.env
+
   const COMMIT_HASH = process.env.COMMIT_HASH || ''
   const VERSION_STRING = JSON.stringify(`${buildtime}`)
 
@@ -110,6 +112,7 @@ module.exports = (env, argv) => {
         'process.env.BASE_PATH': JSON.stringify(BASE_PATH),
         'process.env.BUILT_AT': JSON.stringify(new Date().toISOString()),
         'process.env.NODE_ENV': JSON.stringify(mode),
+        'process.env.ENVIRONMENT': JSON.stringify(ENVIRONMENT),
       }),
       // Skip the part where we would make a html template
       new HtmlWebpackPlugin({

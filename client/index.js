@@ -23,7 +23,7 @@ Sentry.init({
 })
 
 console.log(isStaging)
-console.log(process.env.REVITA_URL)
+console.log(process.env.ENVIRONMENT)
 
 // This removes most of responsivevoice's logging.
 window.responsiveVoice.OnVoiceReady = () => {
