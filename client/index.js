@@ -8,7 +8,7 @@ import 'Assets/bootstrap.css'
 import 'Assets/custom.scss'
 
 import store from 'Utilities/store'
-import { basePath, inProduction } from 'Utilities/common'
+import { basePath, inProduction, isStaging } from 'Utilities/common'
 import App from 'Components/App'
 import ErrorBoundary from 'Components/ErrorBoundary'
 import ConnectedIntlProvider from 'Components/ConnectedIntlProvider'
@@ -18,7 +18,7 @@ const dsn = inProduction
 
 Sentry.init({
   dsn,
-  environment: basePath === '/' ? 'production' : 'staging',
+  environment: isStaging ? 'staging' : 'production',
   release: `mobvita@${__COMMIT__}`, // eslint-disable-line no-undef
 })
 
