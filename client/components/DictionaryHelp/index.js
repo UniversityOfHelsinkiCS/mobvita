@@ -111,19 +111,18 @@ const DictionaryHelp = ({ translation }) => {
             {dictionaryOptions.map(option => <option key={option.key} value={option.value}>{option.text}</option>)}
           </select>
         </div>
-        {smallWindow
-          ? (
-            <Header size="medium" textAlign="center">
-              <Button className="navigationbuttonclose" icon basic floated="right" onClick={() => setShow(false)}>
-                <Icon name="angle down" />
+        <div className="space-between">
+          <List>
+            {translationResults()}
+          </List>
+          {smallWindow
+            ? (
+              <Button icon basic onClick={() => setShow(false)} style={{ alignSelf: 'flex-end' }}>
+                <Icon name="angle down" size="large" color="blue" />
               </Button>
-            </Header>
-          )
-          : null}
-        <List>
-          {translationResults()}
-
-        </List>
+            )
+            : null}
+        </div>
       </Segment>
     </div>
   )
