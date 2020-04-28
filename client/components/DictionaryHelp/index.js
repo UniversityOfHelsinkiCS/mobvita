@@ -124,7 +124,15 @@ const DictionaryHelp = ({ translation }) => {
             : null}
         </div>
       </Segment>
-    </div>
+      {!smallWindow
+        && (
+          <div style={{ textAlign: 'center' }}>
+            <a href="https://responsivevoice.org">ResponsiveVoice-NonCommercial</a> <br />
+            licensed under <a href="https://creativecommons.org/licenses/by-nc-nd/4.0/"><img title="ResponsiveVoice Text To Speech" src="https://responsivevoice.org/wp-content/uploads/2014/08/95x15.png" alt="95x15" width="95" height="15" /></a>
+          </div>
+        )
+      }
+    </div >
   )
 }
 
