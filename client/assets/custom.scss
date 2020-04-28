@@ -487,6 +487,10 @@ body {
   }
 }
 
+.align-start {
+  align-items: flex-start;
+}
+
 .reverse-for-900 {
   @media (min-width: 900px) {
     flex-direction: row-reverse;

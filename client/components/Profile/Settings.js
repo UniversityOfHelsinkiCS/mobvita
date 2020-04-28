@@ -1,13 +1,16 @@
 import React from 'react'
 import { useSelector, useDispatch } from 'react-redux'
+import { Link } from 'react-router-dom'
 import { FormattedMessage, useIntl } from 'react-intl'
 import { Checkbox } from 'semantic-ui-react'
+import { Button } from 'react-bootstrap'
 import {
   updateMultiChoice,
   updateAudioTask,
   updateSecondTry,
   updateNumberOfFlashcards,
 } from 'Utilities/redux/userReducer'
+import useWindowDimensions from 'Utilities/windowDimensions'
 
 const SettingToggle = ({ translationId, ...props }) => {
   const intl = useIntl()
@@ -25,6 +28,8 @@ const Settings = () => {
   const { user } = useSelector(({ user }) => user.data)
   const { pending } = useSelector(({ user }) => user)
 
+  const bigWindow = useWindowDimensions().width >= 640
+
   const dispatch = useDispatch()
 
   return (
@@ -34,7 +39,7 @@ const Settings = () => {
           id="select-types-of-exercisesto-practice-34b953b387e6c6f6a7d4aa52ddaf177b"
         />
       </h2>
-      <div className="flex-column gap-row-1">
+      <div className="flex-column align-start gap-row-1">
         <SettingToggle
           translationId="multiple-choice"
           checked={user.multi_choice}
@@ -54,6 +59,13 @@ const Settings = () => {
           onChange={() => dispatch(updateSecondTry(!user.second_try))}
           disabled={pending}
         />
+        {bigWindow
+          && (
+            <Button as={Link} to="/concepts" variant="link" style={{ paddingLeft: 0 }}>
+              <FormattedMessage id="learning-settings" />
+            </Button>
+          )
+        }
       </div>
       <h2 className="header-2 padding-bottom-1 padding-top-2">
         <FormattedMessage id="Flashcards" />
