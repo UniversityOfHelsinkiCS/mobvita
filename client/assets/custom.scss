@@ -474,6 +474,11 @@ body {
   justify-content: space-between;
 }
 
+.space-evenly {
+  display: flex;
+  justify-content: space-evenly;
+}
+
 .center {
   display: flex;
   justify-content: center;
@@ -499,6 +504,12 @@ body {
 
 .header-2 {
   font-size: 22px;
+}
+
+.bold-italics {
+  font-size: 14px;
+  font-weight: 550;
+  font-style: italic;
 }
 
 .column-sort {
@@ -875,4 +886,37 @@ body {
 .date-pickers {
   display: flex;
   flex-wrap: wrap;
+}
+
+//Custom filepicker
+[type="file"] {
+  border: 0;
+  clip: rect(0, 0, 0, 0);
+  height: 1px;
+  overflow: hidden;
+  padding: 0;
+  position: absolute !important;
+  white-space: nowrap;
+  width: 1px;
+}
+ 
+[type="file"] + label {
+  background-color: #17a2b8;
+  border-radius: 0.25rem;
+  color: #fff;
+  cursor: pointer;
+  display: flex;
+  padding: 1em;
+  margin: 0;
+  min-width: 10em;
+  justify-content: center;
+}
+  
+[type="file"]:focus + label,
+[type="file"] + label:hover {
+    background-color: #138496;
+}
+  
+[type="file"]:focus + label {
+  outline: 1px dotted #000;
 }

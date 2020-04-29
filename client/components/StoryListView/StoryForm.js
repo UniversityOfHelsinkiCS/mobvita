@@ -9,6 +9,7 @@ import { Button } from 'react-bootstrap'
 import useWindowDimensions from 'Utilities/windowDimensions'
 import AddStoryModal from './AddStoryModal'
 import RecommendedSites from './RecommendedSites'
+import StoryFileModal from './StoryFileModal'
 
 
 const StoryForm = ({ setLibraries }) => {
@@ -56,7 +57,7 @@ const StoryForm = ({ setLibraries }) => {
       <Card.Content extra style={{ padding: '15px' }}>
         <div style={{ display: 'flex', alignItems: 'baseline' }}>
           <div style={{ flexBasis: '100%' }}>
-            <Form onSubmit={handleStorySubmit}>
+            <Form id="url-upload" onSubmit={handleStorySubmit}>
               <Input
                 fluid
                 placeholder={intl.formatMessage({ id: 'enter-web-address' })}
@@ -64,25 +65,32 @@ const StoryForm = ({ setLibraries }) => {
                 onChange={event => setStoryUrl(event.target.value)}
                 data-cy="new-story-input"
               />
-              <Button style={{ marginTop: '0.5em' }} variant="primary" type="submit" data-cy="submit-story">
+            </Form>
+            <div className="flex padding-top-1">
+              <Button form="url-upload" variant="primary" type="submit" data-cy="submit-story">
                 <FormattedMessage id="Confirm" />
               </Button>
               {!smallWindow && (
-                <AddStoryModal
-                  trigger={(
-                    <Button
-                      style={{ marginTop: '0.5em' }}
-                      variant="link"
-                    >
-                      {intl.formatMessage({ id: 'or-paste-a-text' }).slice(0, -1)}
-                    </Button>
-                  )}
-                />
+                <div className="gap-1 padding-left-1">
+                  <StoryFileModal
+                    trigger={(
+                      <Button variant="secondary">
+                        {intl.formatMessage({ id: 'upload-stories' })}
+                      </Button>
+                    )}
+                  />
+                  <AddStoryModal
+                    trigger={(
+                      <Button variant="secondary">
+                        {intl.formatMessage({ id: 'or-paste-a-text' }).slice(0, -1)}
+                      </Button>
+                    )}
+                  />
+                </div>
               )
               }
-
               <Button
-                style={{ marginTop: '0.5em', float: 'right' }}
+                className="auto-left"
                 variant="link"
                 onClick={() => setShowRecommendedSites(!showRecommendedSites)}
               >
@@ -91,9 +99,10 @@ const StoryForm = ({ setLibraries }) => {
                   : intl.formatMessage({ id: 'show-recommended-sites' })
                 }
               </Button>
-              {showRecommendedSites && <RecommendedSites />}
+            </div>
+            {showRecommendedSites && <RecommendedSites />}
 
-            </Form>
+
           </div>
         </div>
       </Card.Content>

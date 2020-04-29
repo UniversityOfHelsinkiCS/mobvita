@@ -5,6 +5,10 @@ const headers = (req, res, next) => {
     newHeaders.authorization = req.headers.authorization
   }
 
+  // Required for multer to recognize files
+  if (req.headers['content-type']) newHeaders['content-type'] = req.headers['content-type']
+  if (req.headers['content-length']) newHeaders['content-length'] = req.headers['content-length']
+
   req.headers = newHeaders
   next()
 }
