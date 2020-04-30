@@ -108,13 +108,13 @@ const DictionaryHelp = ({ translation }) => {
         )
       }
       <Segment>
-        <div className="align-right">
+        <div className="align-right" style={{ color: 'slateGrey' }}>
           <FormattedMessage id="translation-target-language" />
           <select
             disabled={dictionaryOptions.length <= 1}
             defaultValue={translationLanguageCode}
             data-cy="dictionary-dropdown"
-            style={{ marginLeft: '0.5em', border: 'none', backgroundColor: 'white' }}
+            style={{ marginLeft: '0.5em', border: 'none', color: 'slateGrey', backgroundColor: 'white' }}
             onChange={e => handleDropdownChange(e.target.value)}
           >
             {dictionaryOptions.map(option => <option key={option.key} value={option.value}>{option.text}</option>)}
