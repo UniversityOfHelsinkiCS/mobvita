@@ -563,7 +563,7 @@
     "add-your-stories": "Add your own stories",
     "to-add-your-own-stories": "",
     "you-can-add-your-own-stories-from-your-files-or-from-any-web-page": "",
-    "please-submit-a-simple-text-file-containing-the-story-you-want-to-add-we-will-automatically-infer-th": "Please submit the story you want to add -- select a text file with extension .txt or .docx (.doc is not supported).  Revita will use the first line as the title of the story.",
+    "please-submit-a-simple-text-file-containing-the-story-you-want-to-add-we-will-automatically-infer-th": "Please submit the story you want to add -- select a text file with extension .TXT or .DOCX (other extensions are not supported).  Revita will use the first line as the title of the story.",
     "choose-a-file": "Choose a file",
     "Browse": "",
     "Submit": "Submit",

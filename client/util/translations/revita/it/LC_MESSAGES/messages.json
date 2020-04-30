@@ -563,7 +563,7 @@
     "add-your-stories": "Aggiungi le tue storie",
     "to-add-your-own-stories": "per aggiungere le tue storie!",
     "you-can-add-your-own-stories-from-your-files-or-from-any-web-page": "Puoi aggiungere qualsiasi file di testo o pagina web",
-    "please-submit-a-simple-text-file-containing-the-story-you-want-to-add-we-will-automatically-infer-th": "Inserire il nome del file con il testo. Revita usa la prima riga del testo come titolo",
+    "please-submit-a-simple-text-file-containing-the-story-you-want-to-add-we-will-automatically-infer-th": "Inserire il nome del file .TXT o .DOCX con il testo. Revita usa la prima riga del testo come titolo",
     "choose-a-file": "Scegliere un file",
     "Browse": "Scegliere",
     "Submit": "Caricare testo",
@@ -746,6 +746,6 @@
     "remove-story-from-group-warning": "Questo rimuoverà la storia dalla libreria del gruppo {group}",
     "select-a-student-from-list": "Seleziona uno studente dalla lista",
     "take-me-to-old-revita": "Portami alla vecchia Revita",
-    "practice-random-story" :"",
+    "practice-random-story": "",
     "stories-selected": ""
 }

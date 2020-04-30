@@ -566,7 +566,7 @@
     "add-your-stories": "Добавить свои тексты",
     "to-add-your-own-stories": "чтобы добавить свои тексты!",
     "you-can-add-your-own-stories-from-your-files-or-from-any-web-page": "Вы можете загрузить любой текстовый файл или веб-страницу.",
-    "please-submit-a-simple-text-file-containing-the-story-you-want-to-add-we-will-automatically-infer-th": "Пожалуйста, введите название файла с текстом.  Ревита использует первую строку текста как заголовок.",
+    "please-submit-a-simple-text-file-containing-the-story-you-want-to-add-we-will-automatically-infer-th": "Пожалуйста, введите название .TXT или .DOCX файла с текстом.  Ревита использует первую строку текста как заголовок.",
     "choose-a-file": "Выбрать текст из файла:",
     "Browse": "Выбрать",
     "Submit": "Загрузить текст",
@@ -747,6 +747,6 @@
     "remove-story-from-group-warning": "Текст будет удален из библиотеки группы {group}",
     "select-a-student-from-list": "Выберите ученика из списка",
     "take-me-to-old-revita": "К старой версии Ревиты",
-    "practice-random-story" :"",
+    "practice-random-story": "",
     "stories-selected": ""
 }
