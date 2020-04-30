@@ -193,11 +193,10 @@ export default function Bar({ history }) {
               <TermsAndConditions
                 trigger={<Button data-cy="tc-button" onClick={() => menuClickWrapper()} variant="link"> Terms and Conditions, Privacy Policy </Button>}
               />
-              <div style={{ textAlign: 'center' }}>
+              <div style={{ textAlign: 'center', color: 'slateGrey' }}>
                 <a href="https://responsivevoice.org">ResponsiveVoice-NonCommercial</a>
                 <br />
-                license 
-                <a href="https://creativecommons.org/licenses/by-nc-nd/4.0/"><img title="ResponsiveVoice Text To Speech" src="https://responsivevoice.org/wp-content/uploads/2014/08/95x15.png" alt="95x15" width="95" height="15" /></a>
+                license <a href="https://creativecommons.org/licenses/by-nc-nd/4.0/"><img title="ResponsiveVoice Text To Speech" src="https://responsivevoice.org/wp-content/uploads/2014/08/95x15.png" alt="95x15" width="95" height="15" /></a>
               </div>
 
               {/* eslint-disable no-undef */}
