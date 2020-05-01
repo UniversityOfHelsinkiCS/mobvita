@@ -875,15 +875,15 @@ body {
   margin-top: auto;
   margin-bottom: auto;
   & span:first-child {
-    margin-bottom: 0;
-    font-size: 34px;
-    font-weight: 600;
-    color: darkgreen;
+    text-align: center;
+    color: gray;
   }
 
   & span:nth-child(2) {
-    text-align: center;
-    color: gray;
+    margin-bottom: 0;
+    font-size: 34px;
+    font-weight: 500;
+    color: darkgreen;
   }
 }
 
