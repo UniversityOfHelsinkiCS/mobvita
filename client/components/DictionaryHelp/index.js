@@ -91,9 +91,9 @@ const DictionaryHelp = ({ translation }) => {
   }
 
   const translationResults = () => {
-    if (pending) return <div><span>Loading, please wait </span><Spinner animation="border" /></div>
+    if (pending) return <div><span><FormattedMessage id="(DictionaryHelp) Loading, please wait" />... </span><Spinner animation="border" /></div>
     if (translations.length > 0) return translations
-    return <span><FormattedMessage id="click-to-translate" /></span>
+    return <span><FormattedMessage id="(DictionaryHelp) No translation available" /></span>
   }
 
   return (

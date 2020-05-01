@@ -1,5 +1,6 @@
 {
-    "no-translation-available": "Перевод не найден",
+    "(DictionaryHelp) No translation available": "Перевод не найден",
+    "(DictionaryHelp) Loading, please wait": "Attendere il caricamento prego",
     "cannot-translate-into-same-language-please-choose-another-translation-language-81e412db826b56c4341db": "Выберите другой язык перевода.",
     "you-have-to-login-register-to-use-flashcards": "Войдите или зарегистрируйтесь, чтобы использовать флеш-карты.",
     "Login": "Вход",
