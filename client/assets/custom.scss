@@ -57,6 +57,10 @@ body {
   height: auto;
 }
 
+.react-datepicker__input-container > input {
+    width: 120px;
+}
+
 // SEMANTIC UI OVERRIDES:
 .ui.input>input  {
   font-family: $default-font

@@ -12,7 +12,7 @@ import 'react-datepicker/dist/react-datepicker.css'
 
 
 const PickDate = ({ date, setDate }) => (
-  <DatePicker style={{ width: '120px' }}
+  <DatePicker
     selected={date}
     onChange={date => setDate(date)}
     dateFormat="yyyy/MM/dd"
