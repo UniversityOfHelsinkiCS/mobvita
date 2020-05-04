@@ -8,10 +8,10 @@ export default function RecommendedSites() {
   const suggestedSites = useSelector(({ metadata }) => metadata.suggestedSites)
 
   const icons = {
-    3: <div><Icon name="star outline" size="" style={{ color: 'red' }} /><Icon name="star outline" size="" style={{ color: 'red' }} /><Icon name="star outline" size="" style={{ color: 'red' }} /></div>,
-    2: <div><Icon name="star outline" size="" style={{ color: 'steelblue' }} /><Icon name="star outline" size="" style={{ color: 'steelblue' }} /></div>,
-    1: <div><Icon name="star outline" size="" style={{ color: 'forestgreen' }} /></div>,
-    0: <div><Icon name="star outline" size="" style={{ color: 'black' }} /></div>,
+    3: <div><Icon name="star outline" style={{ color: 'red' }} /><Icon name="star outline" style={{ color: 'red' }} /><Icon name="star outline" style={{ color: 'red' }} /></div>,
+    2: <div><Icon name="star outline" style={{ color: 'steelblue' }} /><Icon name="star outline" style={{ color: 'steelblue' }} /></div>,
+    1: <div><Icon name="star outline" style={{ color: 'forestgreen' }} /></div>,
+    0: <div><Icon name="star outline" style={{ color: 'black' }} /></div>,
   }
 
   const createRow = (site) => {
