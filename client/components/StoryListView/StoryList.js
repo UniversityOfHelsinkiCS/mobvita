@@ -119,7 +119,7 @@ const StoryList = () => {
       <div className="search-and-sort">
         <Search
           open={false}
-          icon={noResults ? <Icon button name="close" onClick={() => setSearchString('')} style={{ pointerEvents: '' }} /> : 'search'}
+          icon={noResults ? 'ban' : 'search'}
           loading={pending}
           value={searchString}
           onSearchChange={e => setSearchString(e.target.value)}
