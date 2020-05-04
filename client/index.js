@@ -25,10 +25,11 @@ Sentry.init({
 console.log(process.env.ENVIRONMENT)
 
 // This removes most of responsivevoice's logging.
-window.responsiveVoice.OnVoiceReady = () => {
-  window.responsiveVoice.debug = 0
+if (window.responsiveVoice) {
+  window.responsiveVoice.OnVoiceReady = () => {
+    window.responsiveVoice.debug = 0
+  }
 }
-
 
 const refresh = () => render(
   <Provider store={store}>
