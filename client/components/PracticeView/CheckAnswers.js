@@ -40,7 +40,7 @@ const CheckAnswers = ({ storyId, exerciseCount }) => {
     >
       {snippets.answersPending
         ? <Spinner animation="border" variant="dark" size="lg" />
-        : <FormattedMessage id="check-answer" />}
+        : <span><FormattedMessage id="check-answer" /></span>}
     </Button>
   )
 }
