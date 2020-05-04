@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import { Placeholder, Card, Search, Select, Icon } from 'semantic-ui-react'
 
 import StoryListItem from 'Components/StoryListView/StoryListItem'
-import { FormattedMessage, useIntl } from 'react-intl'
+import { useIntl } from 'react-intl'
 import CheckboxGroup from 'Components/CheckboxGroup'
 import { capitalize, learningLanguageSelector } from 'Utilities/common'
 import { getGroups } from 'Utilities/redux/groupsReducer'
@@ -20,7 +20,6 @@ const StoryList = () => {
   const [searchString, setSearchString] = useState('')
   const [group, setGroup] = useState(null)
   const [searchedStories, setSearchedStories] = useState([])
-  const [libraryFromUser, setLibraryFromUser] = useState(false)
   const [libraries, setLibraries] = useState(
     {
       public: false,
@@ -74,11 +73,8 @@ const StoryList = () => {
   }, [groups])
 
   useEffect(() => {
-    if (!libraryFromUser) {
-      setLibrary(user.last_selected_library)
-      setLibraryFromUser(true)
-    }
-  }, [user])
+    setLibrary(user.last_selected_library)
+  }, [user.last_selected_library])
 
   const sortDropdownOptions = [
     { key: 'date', text: intl.formatMessage({ id: 'date-added' }), value: 'date' },

@@ -5,6 +5,7 @@ import { Button, Spinner } from 'react-bootstrap'
 import { FormattedMessage, useIntl } from 'react-intl'
 import { learningLanguageSelector } from 'Utilities/common'
 import { postStory, setCustomUpload } from 'Utilities/redux/uploadProgressReducer'
+import { updateLibrarySelect } from 'Utilities/redux/userReducer'
 
 const StoryFileModal = ({ trigger }) => {
   const intl = useIntl()
@@ -28,6 +29,7 @@ const StoryFileModal = ({ trigger }) => {
     data.append('language', learningLanguage)
     dispatch(setCustomUpload(true))
     dispatch(postStory(data))
+    dispatch(updateLibrarySelect('private'))
   }
 
   const storyUploading = pending || storyId
