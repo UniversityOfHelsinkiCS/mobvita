@@ -22,7 +22,6 @@ Sentry.init({
   release: `mobvita@${__COMMIT__}`, // eslint-disable-line no-undef
 })
 
-console.log(isStaging)
 console.log(process.env.ENVIRONMENT)
 
 // This removes most of responsivevoice's logging.
