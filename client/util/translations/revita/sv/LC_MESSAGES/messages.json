@@ -1,5 +1,6 @@
 {
-    "no-translation-available": "Ingen översättning till förfogande",
+    "(DictionaryHelp) No translation available": "Ingen översättning till förfogande",
+    "(DictionaryHelp) Loading, please wait": "Loading, please wait",
     "cannot-translate-into-same-language-please-choose-another-translation-language-81e412db826b56c4341db": "",
     "you-have-to-login-register-to-use-flashcards": "Du måste vara loggad in / skapa konto om du vill använda flash-kort",
     "Login": "Logg in",

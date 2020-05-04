@@ -178,7 +178,7 @@ export default function Bar({ history }) {
             }
 
 
-            <div style={{ marginTop: 'auto' }}>
+            <div style={{ marginTop: 'auto', color: 'slateGrey' }}>
               <Menu.Item style={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-between' }}>
                 <AboutUs
                   trigger={(
@@ -190,13 +190,14 @@ export default function Bar({ history }) {
                 <ContactUs trigger={<Button variant="secondary" onClick={() => menuClickWrapper()} style={{ flexBasis: '50%', marginRight: '0.5em' }}><FormattedMessage id="Contact" /></Button>} />
                 {user && <Button data-cy="logout" variant="secondary" style={{ flexBasis: '50%' }} onClick={() => menuClickWrapper(signOut)}><FormattedMessage id="sign-out" /></Button>}
               </Menu.Item>
-              <div style={{ textAlign: 'center' }}>
-                <a href="https://responsivevoice.org">ResponsiveVoice-NonCommercial</a> <br />
-                licensed under <a href="https://creativecommons.org/licenses/by-nc-nd/4.0/"><img title="ResponsiveVoice Text To Speech" src="https://responsivevoice.org/wp-content/uploads/2014/08/95x15.png" alt="95x15" width="95" height="15" /></a>
-              </div>
               <TermsAndConditions
                 trigger={<Button data-cy="tc-button" onClick={() => menuClickWrapper()} variant="link"> Terms and Conditions, Privacy Policy </Button>}
               />
+              <div style={{ textAlign: 'center' }}>
+                <a href="https://responsivevoice.org">ResponsiveVoice-NonCommercial</a>
+                <br />
+                license <a href="https://creativecommons.org/licenses/by-nc-nd/4.0/"><img title="ResponsiveVoice Text To Speech" src="https://responsivevoice.org/wp-content/uploads/2014/08/95x15.png" alt="95x15" width="95" height="15" /></a>
+              </div>
 
               {/* eslint-disable no-undef */}
               <div>{`Built: ${__VERSION__}`}</div>

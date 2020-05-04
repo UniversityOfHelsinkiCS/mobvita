@@ -1,5 +1,6 @@
 {
-    "no-translation-available": "Traduzione non trovata",
+    "(DictionaryHelp) No translation available": "Traduzione non trovata",
+    "(DictionaryHelp) Loading, please wait": "Attendere il caricamento prego",
     "cannot-translate-into-same-language-please-choose-another-translation-language-81e412db826b56c4341db": "Non è possibile tradurre verso la stessa lingua! <br/>Selezionare un'altra lingua di traduzione.",
     "you-have-to-login-register-to-use-flashcards": "Entra o registrati per usare le flashcard",
     "Login": "Login",

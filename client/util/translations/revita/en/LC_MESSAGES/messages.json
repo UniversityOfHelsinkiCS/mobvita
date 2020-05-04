@@ -1,5 +1,6 @@
 {
-    "no-translation-available": "No translation available",
+    "(DictionaryHelp) No translation available": "No translation available",
+    "(DictionaryHelp) Loading, please wait": "Loading, please wait",
     "cannot-translate-into-same-language-please-choose-another-translation-language-81e412db826b56c4341db": "Cannot translate into the same language, please choose another language.",
     "you-have-to-login-register-to-use-flashcards": "Please register/log into Revita to use flashcards!",
     "Login": "Login",

@@ -75,16 +75,16 @@ const Progress = () => {
             <img
               src={getLearningLanguageFlag()}
               alt="learning language flag"
-              height="90px"
+              height="72px"
               style={{ border: '1px solid gray' }}
             />
             <div className="stat">
-              <span>{summary[0] && summary[0].number_of_exercises}</span>
               <span>{intl.formatMessage({ id: 'completed-exercises' })}: </span>
+              <span>{summary[0] && summary[0].number_of_exercises}</span>
             </div>
             <div className="stat">
-              <span>{summary[0] && summary[0].number_of_snippets}</span>
               <span>{intl.formatMessage({ id: 'completed-snippets' })}: </span>
+              <span>{summary[0] && summary[0].number_of_snippets}</span>
             </div>
           </div>
         )}

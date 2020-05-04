@@ -34,9 +34,9 @@ const DictionaryHelp = ({ translation }) => {
 
 
   const translations = translation ? translation.map(translated => (
-    <List.Item key={translated.URL} data-cy="translations">
+    <List.Item key={translated.URL} data-cy="translations" style={{ color: '#555555'}}>
       {translated.lemma}
-      <List bulleted>
+      <List bulleted style={{ color: 'slateGrey', fontStyle: 'italic' }}>
         {translated.glosses.map((word, i) => <List.Item key={`${translated.URL}-${i}`}>{word}</List.Item>)}
       </List>
     </List.Item>
@@ -91,21 +91,30 @@ const DictionaryHelp = ({ translation }) => {
   }
 
   const translationResults = () => {
-    if (pending) return <div><span>Loading, please wait </span><Spinner animation="border" /></div>
+    if (pending) return <div><span><FormattedMessage id="(DictionaryHelp) Loading, please wait" />... </span><Spinner animation="border" /></div>
     if (translations.length > 0) return translations
-    return <span><FormattedMessage id="click-to-translate" /></span>
+    return <span><FormattedMessage id="(DictionaryHelp) No translation available" /></span>
   }
 
   return (
     <div className="dictionary-help">
+      {!smallWindow
+        && (
+          <div style={{ textAlign: 'center', color: 'slateGrey' }}>
+            <a href="https://responsivevoice.org">ResponsiveVoice-NonCommercial</a> 
+            <br />
+            license <a href="https://creativecommons.org/licenses/by-nc-nd/4.0/"><img title="ResponsiveVoice Text To Speech" src="https://responsivevoice.org/wp-content/uploads/2014/08/95x15.png" alt="95x15" width="95" height="15" /></a>
+          </div>
+        )
+      }
       <Segment>
-        <div>
+        <div className="align-right" style={{ color: 'slateGrey' }}>
           <FormattedMessage id="translation-target-language" />
           <select
             disabled={dictionaryOptions.length <= 1}
             defaultValue={translationLanguageCode}
             data-cy="dictionary-dropdown"
-            style={{ marginLeft: '0.5em', border: 'none', backgroundColor: 'white' }}
+            style={{ marginLeft: '0.5em', border: 'none', color: 'slateGrey', backgroundColor: 'white' }}
             onChange={e => handleDropdownChange(e.target.value)}
           >
             {dictionaryOptions.map(option => <option key={option.key} value={option.value}>{option.text}</option>)}
@@ -124,14 +133,6 @@ const DictionaryHelp = ({ translation }) => {
             : null}
         </div>
       </Segment>
-      {!smallWindow
-        && (
-          <div style={{ textAlign: 'center' }}>
-            <a href="https://responsivevoice.org">ResponsiveVoice-NonCommercial</a> <br />
-            licensed under <a href="https://creativecommons.org/licenses/by-nc-nd/4.0/"><img title="ResponsiveVoice Text To Speech" src="https://responsivevoice.org/wp-content/uploads/2014/08/95x15.png" alt="95x15" width="95" height="15" /></a>
-          </div>
-        )
-      }
     </div >
   )
 }
