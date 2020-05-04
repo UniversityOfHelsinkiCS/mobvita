@@ -283,6 +283,10 @@ body {
   right: 0.5%;
   bottom: 0.5%;
   background-color: $background;
+  z-index: 1;
+  @media (min-width: 695px) {
+    bottom: 3em;
+  }
 }
 
 .dictionary-help {
@@ -296,8 +300,11 @@ body {
     position: fixed;
     top: auto;
     right: 1em;
-    bottom: 2%;
+    bottom: 3em;
     width: calc(100vw - 2em)
+  }
+  @media (max-width: 639px) {
+    bottom: 2%;
   }
 }
 
@@ -927,4 +934,34 @@ body {
   
 [type="file"]:focus + label {
   outline: 1px dotted #000;
+}
+
+
+.footer {
+  padding: 0.5em;
+  width: 95%;
+  max-width: 1400px;
+  margin-left: auto;
+  margin-right: auto;
+  background-color: #f7f7f7;
+  border-radius: 5px;
+  display: flex;
+  justify-content: space-between;
+  color: #708090;
+  flex-wrap: wrap;
+
+  &-wrapper {
+    width: 100%;
+    position: fixed;
+    bottom: 0;
+  }
+
+  & a {
+    color: $primary-color;
+  }
+
+  & div:nth-child(2) {
+    text-align: 'right';
+    padding-left: 0.5em;
+  }
 }

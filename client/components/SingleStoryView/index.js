@@ -9,6 +9,7 @@ import { getStoryAction } from 'Utilities/redux/storiesReducer'
 import { getTranslationAction, clearTranslationAction } from 'Utilities/redux/translationReducer'
 import { capitalize, localeOptions, learningLanguageSelector } from 'Utilities/common'
 import DictionaryHelp from 'Components/DictionaryHelp'
+import Footer from '../Footer'
 
 const SingleStoryView = ({ match }) => {
   const dispatch = useDispatch()
@@ -51,27 +52,30 @@ const SingleStoryView = ({ match }) => {
   }
 
   return (
-    <div style={{ display: 'flex', justifyContent: 'center' }}>
-      <div style={{ paddingTop: '1em', maxWidth: '1024px' }}>
-        <Header>
-          {story.title}
-          <Link to={`/stories/${id}/practice`}>
-            <Button variant="primary" style={{ float: 'right', marginTop: '0.5em' }}>
-              <FormattedMessage id="practice-now" />
-            </Button>
-          </Link>
-        </Header>
-        {story.url ? <a href={story.url}><FormattedMessage id="Source" /></a> : <div />}
-        <Divider />
-        <Segment>
-          {story.paragraph.map(paragraph => (
-            <p key={paragraph[0].ID}>
-              {paragraph.map(word => wordVoice(word))}
-            </p>
-          ))}
-        </Segment>
+    <div>
+      <div style={{ display: 'flex', justifyContent: 'center' }}>
+        <div style={{ paddingTop: '1em', maxWidth: '1024px' }}>
+          <Header>
+            {story.title}
+            <Link to={`/stories/${id}/practice`}>
+              <Button variant="primary" style={{ float: 'right', marginTop: '0.5em' }}>
+                <FormattedMessage id="practice-now" />
+              </Button>
+            </Link>
+          </Header>
+          {story.url ? <a href={story.url}><FormattedMessage id="Source" /></a> : <div />}
+          <Divider />
+          <Segment>
+            {story.paragraph.map(paragraph => (
+              <p key={paragraph[0].ID}>
+                {paragraph.map(word => wordVoice(word))}
+              </p>
+            ))}
+          </Segment>
+        </div>
+        <DictionaryHelp />
       </div>
-      <DictionaryHelp />
+      <Footer />
     </div>
   )
 }

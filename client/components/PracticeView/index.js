@@ -18,6 +18,7 @@ import {
 import useWindowDimensions from 'Utilities/windowDimensions'
 import PreviousSnippets from './PreviousSnippets'
 import RussianKeyboard from './RussianKeyboard'
+import Footer from '../Footer'
 
 const PracticeView = ({ match }) => {
   const learningLanguage = useSelector(learningLanguageSelector)
@@ -75,30 +76,33 @@ const PracticeView = ({ match }) => {
   }
 
   return (
-    <div style={{ display: 'flex', justifyContent: 'center' }}>
-      <Segment style={{ paddingTop: '1em', width: '100%', maxWidth: '1024px' }}>
-        <div className="component-container">
-          <div style={{ display: 'flex', justifyContent: 'space-between', width: '100%' }}>
-            <h3>{`${story.title}`}</h3>
-            <Icon
-              data-cy="restart-story"
-              style={{ cursor: 'pointer' }}
-              name="redo"
-              onClick={handleRestart}
-            />
-          </div>
-          {story.url ? <p><a href={story.url}><FormattedMessage id="Source" /></a></p> : null}
+    <div>
+      <div style={{ display: 'flex', justifyContent: 'center' }}>
+        <Segment style={{ paddingTop: '1em', width: '100%', maxWidth: '1024px' }}>
+          <div className="component-container">
+            <div style={{ display: 'flex', justifyContent: 'space-between', width: '100%' }}>
+              <h3>{`${story.title}`}</h3>
+              <Icon
+                data-cy="restart-story"
+                style={{ cursor: 'pointer' }}
+                name="redo"
+                onClick={handleRestart}
+              />
+            </div>
+            {story.url ? <p><a href={story.url}><FormattedMessage id="Source" /></a></p> : null}
 
-          <PreviousSnippets textToSpeech={textToSpeech} />
-          <hr />
-          <CurrentPractice storyId={match.params.id} textToSpeech={textToSpeech} handleInputChange={handleAnswerChange} />
-          {learningLanguage === 'Russian' && !smallWindow
-            && (
-              <RussianKeyboard />
-            )}
-        </div>
-      </Segment>
-      <DictionaryHelp />
+            <PreviousSnippets textToSpeech={textToSpeech} />
+            <hr />
+            <CurrentPractice storyId={match.params.id} textToSpeech={textToSpeech} handleInputChange={handleAnswerChange} />
+            {learningLanguage === 'Russian' && !smallWindow
+              && (
+                <RussianKeyboard />
+              )}
+          </div>
+        </Segment>
+        <DictionaryHelp />
+      </div>
+      <Footer />
     </div>
   )
 }

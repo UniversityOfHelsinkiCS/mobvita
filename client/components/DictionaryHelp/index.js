@@ -99,15 +99,6 @@ const DictionaryHelp = ({ translation }) => {
 
   return (
     <div className="dictionary-help">
-      {!smallWindow
-        && (
-          <div style={{ textAlign: 'center', color: 'slateGrey' }}>
-            <a href="https://responsivevoice.org">ResponsiveVoice-NonCommercial</a>
-            <br />
-            license <a href="https://creativecommons.org/licenses/by-nc-nd/4.0/"><img title="ResponsiveVoice Text To Speech" src="https://responsivevoice.org/wp-content/uploads/2014/08/95x15.png" alt="95x15" width="95" height="15" /></a>
-          </div>
-        )
-      }
       <Segment>
         <div className="align-right" style={{ color: 'slateGrey' }}>
           <FormattedMessage id="translation-target-language" />
