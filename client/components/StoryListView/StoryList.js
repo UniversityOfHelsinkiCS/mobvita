@@ -102,7 +102,7 @@ const StoryList = () => {
       : []
 
     setSearchedStories(searchFilteredStories)
-  }, [searchString.length])
+  }, [searchString.length, pending])
 
 
   const handleGroupChange = (_e, option) => {
@@ -119,7 +119,7 @@ const StoryList = () => {
       <div className="search-and-sort">
         <Search
           open={false}
-          icon={noResults ? 'close' : 'search'}
+          icon={noResults ? <Icon button name="close" onClick={() => setSearchString('')} style={{ pointerEvents: '' }} /> : 'search'}
           loading={pending}
           value={searchString}
           onSearchChange={e => setSearchString(e.target.value)}
