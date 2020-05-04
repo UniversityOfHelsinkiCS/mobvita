@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from 'react'
 import { connect, useDispatch, useSelector } from 'react-redux'
-import { List, Button, Header, Segment, Icon, Dropdown } from 'semantic-ui-react'
+import { List, Button, Segment, Icon } from 'semantic-ui-react'
 import { Shake } from 'reshake'
 import { FormattedMessage, useIntl } from 'react-intl'
-import { updateDictionaryLanguage, saveSelf } from 'Utilities/redux/userReducer'
+import { updateDictionaryLanguage } from 'Utilities/redux/userReducer'
 import { getTranslationAction } from 'Utilities/redux/translationReducer'
 import { learningLanguageSelector, translatableLanguages } from 'Utilities/common'
 import useWindowDimensions from 'Utilities/windowDimensions'
@@ -33,17 +33,17 @@ const DictionaryHelp = ({ translation }) => {
   })) : []
 
 
-  const translations = translation ? translation.map(translated => (
-    <List.Item key={translated.URL} data-cy="translations" style={{ color: '#555555'}}>
+  const translations = translation && translation.map(translated => (
+    <List.Item key={translated.URL} data-cy="translations" style={{ color: '#555555' }}>
       {translated.lemma}
       <List bulleted style={{ color: 'slateGrey', fontStyle: 'italic' }}>
         {translated.glosses.map((word, i) => <List.Item key={`${translated.URL}-${i}`}>{word}</List.Item>)}
       </List>
     </List.Item>
-  )) : <List.Item><span>no translation found</span></List.Item>
+  ))
 
   useEffect(() => {
-    if (translations.length > 0) {
+    if (translations && translations.length > 0) {
       setShaking(true)
       setTimeout(() => {
         setShaking(false)
@@ -92,8 +92,9 @@ const DictionaryHelp = ({ translation }) => {
 
   const translationResults = () => {
     if (pending) return <div><span><FormattedMessage id="(DictionaryHelp) Loading, please wait" />... </span><Spinner animation="border" /></div>
-    if (translations.length > 0) return translations
-    return <span><FormattedMessage id="(DictionaryHelp) No translation available" /></span>
+    if (translations && translations.length > 0) return translations
+    if (!translation) return <span><FormattedMessage id="(DictionaryHelp) No translation available" /></span>
+    return <span><FormattedMessage id="click-on-words-near-the-exercises-to-explore-their-meaning" /></span>
   }
 
   return (
@@ -101,7 +102,7 @@ const DictionaryHelp = ({ translation }) => {
       {!smallWindow
         && (
           <div style={{ textAlign: 'center', color: 'slateGrey' }}>
-            <a href="https://responsivevoice.org">ResponsiveVoice-NonCommercial</a> 
+            <a href="https://responsivevoice.org">ResponsiveVoice-NonCommercial</a>
             <br />
             license <a href="https://creativecommons.org/licenses/by-nc-nd/4.0/"><img title="ResponsiveVoice Text To Speech" src="https://responsivevoice.org/wp-content/uploads/2014/08/95x15.png" alt="95x15" width="95" height="15" /></a>
           </div>
@@ -133,7 +134,7 @@ const DictionaryHelp = ({ translation }) => {
             : null}
         </div>
       </Segment>
-    </div >
+    </div>
   )
 }
 
