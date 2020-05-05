@@ -46,9 +46,10 @@ describe("groups", function () {
     cy.reload()
     cy.get('[data-cy=select-group]').click()
     cy.contains('destroyed').click()
+    cy.get('[data-cy=select-group]').contains('destroyed')
     cy.get('[data-cy=delete-group]').click()
     cy.get('[data-cy=confirm-group-delete]').click()
-    cy.contains('destroyed').should('not.exist')
+    cy.get('[data-cy=select-group]').contains('destroyed').should('not.exist')
   })
 
   /**

@@ -166,11 +166,10 @@ const GroupView = () => {
       <hr />
       <Dropdown
         style={{ marginBottom: '0.5em' }}
-        data-cy="select-group"
         className="auto-right"
         onSelect={key => handleGroupChange(key)}
       >
-        <Dropdown.Toggle variant="primary" id="dropdown-basic">
+        <Dropdown.Toggle variant="primary" id="dropdown-basic" data-cy="select-group">
           {currentGroup.groupName}
         </Dropdown.Toggle>
         <Dropdown.Menu>
