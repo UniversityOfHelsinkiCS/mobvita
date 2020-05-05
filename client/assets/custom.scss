@@ -59,6 +59,9 @@ body {
 
 .react-datepicker__input-container > input {
     width: 120px;
+    border: 1px solid rgba(34,36,38,.15);
+    border-radius: 0.25em;
+    padding-left: 0.5em;
 }
 
 // SEMANTIC UI OVERRIDES:

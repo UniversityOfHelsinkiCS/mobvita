@@ -102,11 +102,11 @@ const Summary = ({ groupName, isTeaching, getSummary, learningLanguage }) => {
     <>
       <div style={{ display: 'flex', justifyContent: 'space-between', paddingBottom: '1em' }}>
         <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-          <div>
+          <div className="gap-1 padding-left-1">
             <FormattedMessage id="date-start" />
             <PickDate id="start" date={startDate} setDate={setStartDate} />
           </div>
-          <div style={{ marginLeft: '1em', marginRight: '1em' }}>
+          <div className="gap-1 padding-left-3">
             <FormattedMessage id="date-end" />
             <PickDate date={endDate} setDate={setEndDate} />
           </div>
