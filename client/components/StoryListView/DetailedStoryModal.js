@@ -57,6 +57,7 @@ const DetailedStoryModal = (
   const difficultyIcon = icons()[story.difficulty || 'default']
 
   const showLearningSettingsButton = inGroupLibrary
+    && currentGroup
     && currentGroup.is_teaching
 
   return (
