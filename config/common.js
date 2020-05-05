@@ -8,7 +8,7 @@ const basePath = process.env.BASE_PATH || '/'
 
 const isStaging = process.env.ENVIRONMENT === 'staging'
 
-const hiddenFeatures = !inProduction || isStaging
+const hiddenFeatures = isStaging || process.env.ENVIRONMENT === 'development'
 
 module.exports = {
   inProduction,

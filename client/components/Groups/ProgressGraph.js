@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { learningLanguageSelector } from 'Utilities/common'
+import { learningLanguageSelector, hiddenFeatures } from 'Utilities/common'
 import { getStudentProgress } from 'Utilities/redux/groupProgressReducer'
 import Highcharts from 'highcharts'
 import HighchartsReact from 'highcharts-react-official'
@@ -55,12 +55,18 @@ const ProgressGraph = ({ student, groupId }) => {
     )
   }
 
+  const series = [{ name: intl.formatMessage({ id: 'Stories' }), data: storyData }]
+  if (hiddenFeatures) {
+    series.push({
+      name: intl.formatMessage({ id: 'Flashcards' }),
+      data: flashcardData,
+      color: '#dc3545',
+    })
+  }
+
   const options = {
     title: { text: '' },
-    series: [
-      { name: intl.formatMessage({ id: 'Stories' }), data: storyData },
-      { name: intl.formatMessage({ id: 'Flashcards' }), data: flashcardData, color: '#dc3545' },
-    ],
+    series,
     chart: { height: '35%' },
     credits: { enabled: false },
     allowDecimals: false,
