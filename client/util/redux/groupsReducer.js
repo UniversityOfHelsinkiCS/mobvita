@@ -75,7 +75,7 @@ export const joinGroup = (token) => {
   return callBuilder(route, prefix, 'post', payload)
 }
 
-export default (state = { groups: [] }, action) => {
+export default (state = { groups: [], joinPending: false }, action) => {
   switch (action.type) {
     case 'GET_GROUPS_ATTEMPT':
       return {
@@ -279,11 +279,13 @@ export default (state = { groups: [] }, action) => {
       return {
         ...state,
         error: false,
+        joinPending: true,
       }
     case 'JOIN_GROUP_FAILURE':
       return {
         ...state,
         error: true,
+        joinPending: false,
       }
     case 'JOIN_GROUP_SUCCESS':
       return {
@@ -292,6 +294,7 @@ export default (state = { groups: [] }, action) => {
           .concat(action.response.group)
           .sort((a, b) => a.groupName.localeCompare(b.groupName)),
         error: false,
+        joinPending: false,
       }
     default:
       return state

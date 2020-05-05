@@ -6,6 +6,7 @@ import { getSelf } from 'Utilities/redux/userReducer'
 
 export default function StoryFetcher() {
   const { data: user, refreshed } = useSelector(({ user }) => user)
+  const { joinPending } = useSelector(({ groups }) => groups)
   const learningLanguage = user ? user.user.last_used_language : null
   const dispatch = useDispatch()
 
@@ -14,7 +15,7 @@ export default function StoryFetcher() {
   }, [])
 
   useEffect(() => {
-    if (learningLanguage && refreshed) {
+    if (learningLanguage && refreshed && !joinPending) {
       dispatch(
         getAllStories(learningLanguage, {
           sort_by: 'date',
@@ -22,7 +23,7 @@ export default function StoryFetcher() {
         }),
       )
     }
-  }, [learningLanguage, refreshed])
+  }, [learningLanguage, refreshed, joinPending])
 
   return null
 }
