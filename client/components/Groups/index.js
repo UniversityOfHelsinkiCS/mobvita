@@ -15,6 +15,7 @@ import { getSummary } from 'Utilities/redux/groupSummaryReducer'
 import { setNotification } from 'Utilities/redux/notificationReducer'
 import { learningLanguageSelector } from 'Utilities/common'
 import useWindowDimensions from 'Utilities/windowDimensions'
+import { updateGroupSelect } from 'Utilities/redux/userReducer'
 import AddGroup from './AddGroup'
 import AddToGroup from './AddToGroup'
 import JoinGroup from './JoinGroup'
@@ -28,12 +29,12 @@ const GroupView = () => {
   const [addToGroupOpen, setAddToGroupOpen] = useState(false)
   const [addGroupOpen, setAddGroupOpen] = useState(false)
   const [joinGroupOpen, setJoinGroupOpen] = useState(false)
-  const [currentGroupId, setCurrentGroupId] = useState(null)
   const [showToken, setShowToken] = useState(false)
   const [summary, setSummary] = useState(false)
   const [progress, setProgress] = useState(false)
   const [currentStudent, setCurrentStudent] = useState(null)
   const userOid = useSelector(({ user }) => user.data.user.oid)
+  const currentGroupId = useSelector(({ user }) => user.data.user.last_selected_group)
   const learningLanguage = useSelector(learningLanguageSelector)
   const dispatch = useDispatch()
   const history = useHistory()
@@ -49,18 +50,18 @@ const GroupView = () => {
   useEffect(() => {
     if (!groups || groups.length === 0) return
     if (currentGroupId && groups.some(group => group.group_id === currentGroupId)) return
-    setCurrentGroupId(groups[0].group_id)
+    dispatch(updateGroupSelect(groups[0].group_id))
   }, [groups])
 
   useEffect(() => {
-    if (currentGroupId && currentGroup.is_teaching) {
+    if (currentGroup && currentGroup.is_teaching) {
       dispatch(getGroupToken(currentGroupId))
     }
-  }, [currentGroupId])
+  }, [currentGroup])
 
   useEffect(() => {
     if (!created) return
-    setCurrentGroupId(created.group_id)
+    dispatch(updateGroupSelect(created.group_id))
   }, [created])
 
   const compare = (a, b) => {
@@ -100,7 +101,11 @@ const GroupView = () => {
     dispatch(setNotification('token-copied', 'info'))
   }
 
-  if (pending) {
+  const handleGroupChange = (key) => {
+    dispatch(updateGroupSelect(key))
+  }
+
+  if (pending || (!currentGroup && groups && groups.length > 0)) {
     return (
       <div className="spinner-container">
         <Spinner animation="border" variant="primary" size="lg" />
@@ -163,7 +168,7 @@ const GroupView = () => {
         style={{ marginBottom: '0.5em' }}
         data-cy="select-group"
         className="auto-right"
-        onSelect={key => setCurrentGroupId(key)}
+        onSelect={key => handleGroupChange(key)}
       >
         <Dropdown.Toggle variant="primary" id="dropdown-basic">
           {currentGroup.groupName}

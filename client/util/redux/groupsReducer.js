@@ -93,6 +93,7 @@ export default (state = { groups: [] }, action) => {
       return {
         ...state,
         groups: action.response.groups.sort((a, b) => a.groupName.localeCompare(b.groupName)),
+        created: null,
         pending: false,
         error: false,
       }
@@ -155,6 +156,7 @@ export default (state = { groups: [] }, action) => {
         groups: state.groups
           .concat(action.response.group)
           .sort((a, b) => a.groupName.localeCompare(b.groupName)),
+        created: action.response.group,
         pending: false,
         error: false,
       }

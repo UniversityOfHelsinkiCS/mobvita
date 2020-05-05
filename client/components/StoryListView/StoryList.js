@@ -8,7 +8,7 @@ import CheckboxGroup from 'Components/CheckboxGroup'
 import { capitalize, learningLanguageSelector } from 'Utilities/common'
 import { getGroups } from 'Utilities/redux/groupsReducer'
 import { List, WindowScroller } from 'react-virtualized'
-import { updateLibrarySelect } from 'Utilities/redux/userReducer'
+import { updateLibrarySelect, updateGroupSelect } from 'Utilities/redux/userReducer'
 import { getAllStories } from 'Utilities/redux/storiesReducer'
 import useWindowDimensions from 'Utilities/windowDimensions'
 import StoryForm from './StoryForm'
@@ -18,7 +18,6 @@ const StoryList = () => {
   const [sorter, setSorter] = useState('date')
   const [sortDirection, setSortDirection] = useState(1)
   const [searchString, setSearchString] = useState('')
-  const [group, setGroup] = useState(null)
   const [searchedStories, setSearchedStories] = useState([])
   const [libraries, setLibraries] = useState(
     {
@@ -69,7 +68,9 @@ const StoryList = () => {
   }, [])
 
   useEffect(() => {
-    if (groups.length > 0) setGroup(groups[0].group_id)
+    if (!groups.find(g => g.group_id === user.last_selected_group) && groups[0]) {
+      dispatch(updateGroupSelect(groups[0].group_id))
+    }
   }, [groups])
 
   useEffect(() => {
@@ -106,7 +107,7 @@ const StoryList = () => {
 
 
   const handleGroupChange = (_e, option) => {
-    setGroup(option.value)
+    dispatch(updateGroupSelect(option.value))
   }
 
   const noResults = !pending && searchString.length > 0 && searchedStories.length === 0
@@ -160,7 +161,7 @@ const StoryList = () => {
           onClick={handleRefresh}
         />
         <Select
-          value={group}
+          value={user.last_selected_group}
           options={groupDropdownOptions}
           onChange={handleGroupChange}
           disabled={!libraries.group}
@@ -200,7 +201,7 @@ const StoryList = () => {
     }
 
     if (story.groups) {
-      if (group === 'all' || story.groups.map(g => g.group_id).includes(group)) {
+      if (story.groups.map(g => g.group_id).includes(user.last_selected_group)) {
         showLibraries.push('Group')
       }
     }
@@ -250,7 +251,7 @@ const StoryList = () => {
           userCanShare={userCanShare}
           libraryShown={libraries}
           story={libraryFilteredStories[index]}
-          selectedGroup={group}
+          selectedGroup={user.last_selected_group}
         />
       </div>
     )

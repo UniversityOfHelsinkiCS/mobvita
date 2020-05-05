@@ -35,6 +35,7 @@ export const updateLocale = locale => saveSelf({ interface_lang: localeCodeToNam
 export const updateDictionaryLanguage = language => saveSelf({ last_trans_lang: capitalize(language) })
 export const updateExerciseSettings = settings => saveSelf({ exercise_settings: settings })
 export const updateLibrarySelect = library => saveSelf({ last_selected_library: library })
+export const updateGroupSelect = group => saveSelf({ last_selected_group: group })
 export const updateExerciseTemplate = template => saveSelf({ exercise_setting_template: template })
 export const updateMultiChoice = value => saveSelf({ multi_choice: value })
 export const updateAudioTask = value => saveSelf({ task_audio: value })
