@@ -17,8 +17,9 @@ import {
 } from 'Utilities/common'
 import useWindowDimensions from 'Utilities/windowDimensions'
 import PreviousSnippets from './PreviousSnippets'
-import RussianKeyboard from './RussianKeyboard'
+import VirtualKeyboard from './VirtualKeyboard'
 import Footer from '../Footer'
+import { keyboardLayouts } from './KeyboardLayouts'
 
 const PracticeView = ({ match }) => {
   const learningLanguage = useSelector(learningLanguageSelector)
@@ -94,10 +95,9 @@ const PracticeView = ({ match }) => {
             <PreviousSnippets textToSpeech={textToSpeech} />
             <hr />
             <CurrentPractice storyId={match.params.id} textToSpeech={textToSpeech} handleInputChange={handleAnswerChange} />
-            {learningLanguage === 'Russian' && !smallWindow
-              && (
-                <RussianKeyboard />
-              )}
+            {keyboardLayouts[learningLanguage] && !smallWindow
+              && <VirtualKeyboard />
+            }
           </div>
         </Segment>
         <DictionaryHelp />

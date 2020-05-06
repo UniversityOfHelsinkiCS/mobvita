@@ -4,12 +4,16 @@ import Keyboard from 'react-simple-keyboard'
 import { Button } from 'react-bootstrap'
 import { Icon } from 'semantic-ui-react'
 import { setTouchedIds, setAnswers } from 'Utilities/redux/practiceReducer'
-import { RUSphonetic, RUSauthentic } from './KeyboardLayouts'
+import { learningLanguageSelector } from 'Utilities/common'
+import { keyboardLayouts } from './KeyboardLayouts'
 
-const RussianKeyboard = () => {
+const VirtualKeyboard = () => {
+  const learningLanguage = useSelector(learningLanguageSelector)
+  const layoutsForLanguage = keyboardLayouts[learningLanguage]
+
   const [keyboard, setKeyboard] = useState(null)
   const [showKeyboard, setShowKeyboard] = useState(false)
-  const [keyboardLayout, setKeyboardLayout] = useState(RUSauthentic)
+  const [keyboardLayout, setKeyboardLayout] = useState(layoutsForLanguage[0].layout)
   const [layoutName, setLayoutName] = useState('default')
   const [shift, setShift] = useState(false)
 
@@ -63,8 +67,13 @@ const RussianKeyboard = () => {
       />
       {showKeyboard && (
         <>
-          <Button onClick={() => setKeyboardLayout(RUSauthentic)}>ru-йцуке</Button>
-          <Button onClick={() => setKeyboardLayout(RUSphonetic)}>ru-яверт</Button>
+          {layoutsForLanguage.length > 1
+            && layoutsForLanguage.map(layout => (
+              <Button key={layout.name} onClick={() => setKeyboardLayout(layout.layout)}>
+                {layout.name}
+              </Button>
+            ))
+          }
           <Keyboard
             keyboardRef={k => setKeyboard(k)}
             layout={keyboardLayout}
@@ -79,4 +88,4 @@ const RussianKeyboard = () => {
   )
 }
 
-export default RussianKeyboard
+export default VirtualKeyboard
