@@ -5,7 +5,7 @@ import { clearTranslationAction } from 'Utilities/redux/translationReducer'
 import 'react-simple-keyboard/build/css/index.css'
 import { FormattedMessage } from 'react-intl'
 import { getSelf } from 'Utilities/redux/userReducer'
-import { rightAlignedLanguages, learningLanguageSelector } from 'Utilities/common'
+import { getTextStyle, learningLanguageSelector } from 'Utilities/common'
 import { Button } from 'react-bootstrap'
 import {
   setAnswers,
@@ -178,17 +178,14 @@ const CurrentPractice = ({ storyId, textToSpeech, handleInputChange }) => {
     dispatch(setAnswers(newAnswer))
   }
 
-  const practiceClass = rightAlignedLanguages.includes(learningLanguage)
-    ? 'practice-container right-aligned-text'
-    : 'practice-container'
-
   return (
     <form ref={scrollTarget}>
       {!finished
         ? (
           <div style={{ width: '100%' }}>
             <div
-              className={practiceClass}
+              className="practice-container"
+              style={getTextStyle(learningLanguage)}
               data-cy="practice-view"
             >
               <Chunks

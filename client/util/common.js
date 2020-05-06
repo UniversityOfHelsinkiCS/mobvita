@@ -93,6 +93,15 @@ export const supportedLearningLanguages = {
 
 export const rightAlignedLanguages = ['Syriac']
 
+export const specialFonts = { Syriac: { fontFamily: 'EastSyriacCtesiphon', fontSize: '2rem' } }
+
+export const getTextStyle = (language) => {
+  let style = {}
+  if (rightAlignedLanguages.includes(language)) style = { textAlign: 'right', direction: 'rtl' }
+  if (specialFonts[language]) style = { ...style, ...specialFonts[language] }
+  return style
+}
+
 export const colors = {}
 
 export const localeOptions = [

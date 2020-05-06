@@ -7,6 +7,7 @@ import moment from 'moment'
 import { FormattedMessage, useIntl } from 'react-intl'
 import { removeStory, unshareStory as unshare } from 'Utilities/redux/storiesReducer'
 import useWindowDimensions from 'Utilities/windowDimensions'
+import { getTextStyle, learningLanguageSelector } from 'Utilities/common'
 import DeleteConfirmationModal from 'Components/StoryListView/DeleteConfirmationModal'
 import ShareStory from './ShareStory'
 import DetailedStoryModal from './DetailedStoryModal'
@@ -17,6 +18,7 @@ const StoryListItem = ({ story, userCanShare, libraryShown, selectedGroup }) => 
   const [shareModalOpen, setShareModalOpen] = useState(false)
   const [confirmationOpen, setConfirmationOpen] = useState(false)
   const { groups } = useSelector(({ groups }) => groups)
+  const learningLanguage = useSelector(learningLanguageSelector)
   const icons = size => (
     {
       high: <div><Icon name="star outline" size={size} style={{ color: 'red' }} /><Icon name="star outline" size={size} style={{ color: 'red' }} /><Icon name="star outline" size={size} style={{ color: 'red' }} /></div>,
@@ -80,10 +82,10 @@ const StoryListItem = ({ story, userCanShare, libraryShown, selectedGroup }) => 
       <Card.Content extra style={{ padding: '15px 15px 5px 15px', display: 'flex', justifyContent: 'space-between' }}>
         {smallWindow
           ? (
-            <h5 className="story-item-title">{story.title}</h5>
+            <h5 className="story-item-title" style={getTextStyle(learningLanguage)}>{story.title}</h5>
           ) : (
             <DetailedStoryModal
-              trigger={<h5 className="story-item-title">{story.title}</h5>}
+              trigger={<h5 className="story-item-title" style={getTextStyle(learningLanguage)}>{story.title}</h5>}
               story={story}
               icons={icons}
               setShareModalOpen={setShareModalOpen}

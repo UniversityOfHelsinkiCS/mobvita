@@ -7,7 +7,7 @@ import { FormattedMessage } from 'react-intl'
 
 import { getStoryAction } from 'Utilities/redux/storiesReducer'
 import { getTranslationAction, clearTranslationAction } from 'Utilities/redux/translationReducer'
-import { capitalize, learningLanguageSelector, rightAlignedLanguages } from 'Utilities/common'
+import { capitalize, learningLanguageSelector, getTextStyle } from 'Utilities/common'
 import DictionaryHelp from 'Components/DictionaryHelp'
 import Footer from '../Footer'
 
@@ -51,14 +51,10 @@ const SingleStoryView = ({ match }) => {
     return word.surface
   }
 
-  const readClass = rightAlignedLanguages.includes(learningLanguage)
-    ? 'component-container padding-top-2 right-aligned-text'
-    : 'component-container padding-top-2'
-
   return (
     <div>
       <div style={{ display: 'flex', justifyContent: 'center' }}>
-        <div className={readClass}>
+        <div className="component-container padding-top-2" style={getTextStyle(learningLanguage)}>
           <Header>
             {story.title}
             <Link to={`/stories/${id}/practice`}>
@@ -69,7 +65,7 @@ const SingleStoryView = ({ match }) => {
           </Header>
           {story.url ? <a href={story.url}><FormattedMessage id="Source" /></a> : <div />}
           <Divider />
-          <Segment>
+          <Segment style={getTextStyle(learningLanguage)}>
             {story.paragraph.map(paragraph => (
               <p key={paragraph[0].ID}>
                 {paragraph.map(word => wordVoice(word))}

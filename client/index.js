@@ -6,6 +6,7 @@ import * as Sentry from '@sentry/browser'
 import 'semantic-ui-css/semantic.min.css'
 import 'Assets/bootstrap.css'
 import 'Assets/custom.scss'
+//import 'Assets/fonts/font-families.css'
 
 import store from 'Utilities/store'
 import { basePath, inProduction, isStaging } from 'Utilities/common'
