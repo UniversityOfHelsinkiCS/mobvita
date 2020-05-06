@@ -2,7 +2,7 @@ import React from 'react'
 import { Link } from 'react-router-dom'
 import { Tab } from 'semantic-ui-react'
 import { useIntl } from 'react-intl'
-import Progress from './Progress'
+import Progress from 'Components/Profile/Progress'
 import ChangePassword from './ChangePassword'
 import Settings from './Settings'
 

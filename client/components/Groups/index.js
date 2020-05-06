@@ -22,7 +22,7 @@ import JoinGroup from './JoinGroup'
 import CollapsingList from './CollapsingList'
 import DeleteConfirmationModal from './DeleteConfirmationModal'
 import Summary from './Summary'
-import ProgressGraph from './ProgressGraph'
+import StudentProgress from './StudentProgress'
 
 const GroupView = () => {
   const intl = useIntl()
@@ -307,7 +307,7 @@ const GroupView = () => {
         </>
       )}
       {progress && currentGroup.is_teaching && (
-        <ProgressGraph
+        <StudentProgress
           student={currentStudent}
           groupId={currentGroupId}
         />
