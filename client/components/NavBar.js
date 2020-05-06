@@ -28,10 +28,14 @@ export default function NavBar({ history }) {
     ? user.user.exercise_history[user.user.exercise_history.length - 1].score
     : 0
 
+  const navBarStyle = smallWindow
+    ? {}
+    : { position: 'fixed', top: 0, width: '100%', zIndex: '100' }
+
   return (
     <Headroom
       disableInlineStyles={!smallWindow}
-      style={!smallWindow && { position: 'fixed', top: 0, width: '100%', zIndex: '100' }}
+      style={navBarStyle}
     >
       <Navbar style={{ paddingLeft: '0.5em' }}>
         <div style={{ display: 'flex' }}>
