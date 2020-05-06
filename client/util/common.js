@@ -21,6 +21,7 @@ import flagSwedish from 'Assets/flag_swedish.png'
 import flagFrench from 'Assets/flag_french.png'
 import flagTurkish from 'Assets/flag_turkish.png'
 import flagItalian from 'Assets/flag_italian.png'
+import flagSyriac from 'Assets/flag_syriac.png'
 import culture1 from 'Assets/culture1.png'
 import politics1 from 'Assets/politics1.png'
 import science1 from 'Assets/science1.png'
@@ -54,6 +55,7 @@ export const images = {
   flagPortuguese,
   flagTurkish,
   flagFrench,
+  flagSyriac,
   flashcards,
   logo,
 }
