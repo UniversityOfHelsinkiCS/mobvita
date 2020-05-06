@@ -86,8 +86,10 @@ export const supportedLearningLanguages = {
     'erzya', 'komi-zyrian', 'meadow-mari', 'north-saami', 'sakha', 'tatar', 'udmurt',
     'turkish',
   ].sort((a, b) => a.localeCompare(b)),
+  experimental: ['syriac'],
 }
 
+export const rightAlignedLanguages = ['Syriac']
 
 export const colors = {}
 
@@ -329,4 +331,5 @@ export const translatableLanguages = {
   Livvi: [
     'Finnish',
   ],
+  Syriac: [],
 }

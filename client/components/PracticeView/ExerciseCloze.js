@@ -1,7 +1,12 @@
 import React, { useState, useEffect, useCallback, useRef } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import { debounce } from 'lodash'
-import { getTextWidth, dictionaryLanguageSelector } from 'Utilities/common'
+import {
+  getTextWidth,
+  dictionaryLanguageSelector,
+  rightAlignedLanguages,
+  learningLanguageSelector,
+} from 'Utilities/common'
 import { setFocusedWord } from 'Utilities/redux/practiceReducer'
 import Tooltip from './Tooltip'
 
@@ -11,6 +16,7 @@ const ExerciseCloze = ({ word, handleChange, handleClick }) => {
   const [touched, setTouched] = useState(false)
   const [disabled, setDisabled] = useState(false)
   const dictionaryLanguage = useSelector(dictionaryLanguageSelector)
+  const learningLanguage = useSelector(learningLanguageSelector)
   const { isWrong, tested } = word
   const [show, setShow] = useState(false)
   const target = useRef()
@@ -87,6 +93,8 @@ const ExerciseCloze = ({ word, handleChange, handleClick }) => {
     }
   }
 
+  const direction = rightAlignedLanguages.includes(learningLanguage) ? 'bidi-override' : ''
+
   return (
     <Tooltip placement="top" trigger="none" onVisibilityChange={setShow} tooltipShown={show} closeOnOutOfBoundaries tooltip={tooltip} additionalClassnames="clickable">
       <input
@@ -108,6 +116,7 @@ const ExerciseCloze = ({ word, handleChange, handleClick }) => {
           marginRight: '2px',
           height: '1.5em',
           lineHeight: 'normal',
+          unicodeBidi: direction,
         }}
       />
     </Tooltip>

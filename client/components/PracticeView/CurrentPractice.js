@@ -5,8 +5,17 @@ import { clearTranslationAction } from 'Utilities/redux/translationReducer'
 import 'react-simple-keyboard/build/css/index.css'
 import { FormattedMessage } from 'react-intl'
 import { getSelf } from 'Utilities/redux/userReducer'
+import { rightAlignedLanguages, learningLanguageSelector } from 'Utilities/common'
 import { Button } from 'react-bootstrap'
-import { setAnswers, clearPractice, clearCurrentPractice, setTouchedIds, addToAudio, setPreviousAnswers, addToOptions } from 'Utilities/redux/practiceReducer'
+import {
+  setAnswers,
+  clearPractice,
+  clearCurrentPractice,
+  setTouchedIds,
+  addToAudio,
+  setPreviousAnswers,
+  addToOptions,
+} from 'Utilities/redux/practiceReducer'
 import Chunks from './Chunks'
 import CheckAnswers from './CheckAnswers'
 
@@ -20,6 +29,7 @@ const CurrentPractice = ({ storyId, textToSpeech, handleInputChange }) => {
   const snippets = useSelector(({ snippets }) => snippets)
   const answersPending = useSelector(({ snippets }) => snippets.answersPending)
   const { attempt } = useSelector(({ practice }) => practice)
+  const learningLanguage = useSelector(learningLanguageSelector)
 
   const currentSnippetId = () => {
     if (!snippets.focused) return -1
@@ -168,13 +178,17 @@ const CurrentPractice = ({ storyId, textToSpeech, handleInputChange }) => {
     dispatch(setAnswers(newAnswer))
   }
 
+  const practiceClass = rightAlignedLanguages.includes(learningLanguage)
+    ? 'practice-container right-aligned-text'
+    : 'practice-container'
+
   return (
     <form ref={scrollTarget}>
       {!finished
         ? (
           <div style={{ width: '100%' }}>
             <div
-              className="practice-container"
+              className={practiceClass}
               data-cy="practice-view"
             >
               <Chunks

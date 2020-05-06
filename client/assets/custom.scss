@@ -281,6 +281,11 @@ body {
   font-family: $default-font;
 }
 
+.right-aligned-text {
+  text-align: right;
+  direction: rtl;
+}
+
 .dictionary-button {
   position: fixed;
   right: 0.5%;
@@ -966,5 +971,31 @@ body {
   & div:nth-child(2) {
     text-align: 'right';
     padding-left: 0.5em;
+  }
+}
+
+.language {
+  width: 7em;
+  display: 'flex';
+  flex-direction: 'column';
+  align-items: center;
+  padding: 1em;
+  cursor: pointer;
+
+  &-group {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    width: 100%;
+  }
+
+  &-image {
+    height: 40px;
+    width: 60px;
+    border: 1px solid whitesmoke;
+  }
+
+  &-name {
+    color: black;
   }
 }

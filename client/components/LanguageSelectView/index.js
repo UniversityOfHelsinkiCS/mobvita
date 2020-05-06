@@ -2,10 +2,34 @@ import React, { useEffect, useState } from 'react'
 import { Redirect } from 'react-router-dom'
 import { Container, Segment } from 'semantic-ui-react'
 import { FormattedMessage } from 'react-intl'
-import { images, capitalize, supportedLearningLanguages, learningLanguageSelector } from 'Utilities/common'
+import {
+  images,
+  capitalize,
+  supportedLearningLanguages,
+  learningLanguageSelector,
+  hiddenFeatures,
+} from 'Utilities/common'
 import { updateLearningLanguage } from 'Utilities/redux/userReducer'
 import { useDispatch, useSelector } from 'react-redux'
-import { getAllStories } from 'Utilities/redux/storiesReducer'
+
+const LanguageGroup = ({ languages, handleLearningLanguageChange }) => {
+  return (
+    <div className="language-group">
+      {languages.map(lang => (
+        <div key={lang} onClick={() => handleLearningLanguageChange(lang)} className="language">
+          <img
+            src={images[`flag${capitalize(lang.split('-').join(''))}`]}
+            className="language-image"
+            alt={lang}
+          />
+          <span className="language-name">
+            <FormattedMessage id={lang.split('-').map(l => capitalize(l)).join('-')} />
+          </span>
+        </div>
+      ))}
+    </div>
+  )
+}
 
 const LearningLanguageSelectView = () => {
   const dispatch = useDispatch()
@@ -47,24 +71,25 @@ const LearningLanguageSelectView = () => {
         <FormattedMessage id="Learning-language" />
       </h2>
       <Segment>
-        <div style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'center', width: '100%' }}>
-          {supportedLearningLanguages.major.map(lang => (
-            <div key={lang} onClick={() => handleLearningLanguageChange(lang)} style={{ width: '7em', display: 'flex', flexDirection: 'column', alignItems: 'center', padding: '1em' }}>
-              <img src={images[`flag${capitalize(lang.split('-').join(''))}`]} style={{ height: '40px', width: '60px', border: '1px solid whitesmoke' }} alt={lang} />
-              <span style={{ color: 'black' }}><FormattedMessage id={lang.split('-').map(l => capitalize(l)).join('-')} /></span>
-            </div>
-          ))}
-        </div>
+        <LanguageGroup
+          languages={supportedLearningLanguages.major}
+          handleLearningLanguageChange={handleLearningLanguageChange}
+        />
         <hr />
-        <div style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'center', width: '100%' }}>
-
-          {supportedLearningLanguages.minor.map(lang => (
-            <div key={lang} onClick={() => handleLearningLanguageChange(lang)} style={{ width: '7em', display: 'flex', flexDirection: 'column', alignItems: 'center', padding: '1em' }}>
-              <img src={images[`flag${capitalize(lang.split('-').join(''))}`]} style={{ height: '40px', width: '60px', border: '1px solid whitesmoke' }} alt={lang} />
-              <span style={{ color: 'black' }}><FormattedMessage id={lang.split('-').map(l => capitalize(l)).join('-')} /></span>
+        <LanguageGroup
+          languages={supportedLearningLanguages.minor}
+          handleLearningLanguageChange={handleLearningLanguageChange}
+        />
+        {hiddenFeatures
+          && (
+            <div>
+              <hr />
+              <LanguageGroup
+                languages={supportedLearningLanguages.experimental}
+                handleLearningLanguageChange={handleLearningLanguageChange}
+              />
             </div>
-          ))}
-        </div>
+          )}
       </Segment>
     </Container>
   )
