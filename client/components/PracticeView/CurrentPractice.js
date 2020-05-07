@@ -145,11 +145,13 @@ const CurrentPractice = ({ storyId, textToSpeech, handleInputChange }) => {
   useEffect(() => {
     if (scrollTarget.current && scrollTarget.current.elements) {
       setTimeout(() => {
-        const { elements } = scrollTarget.current
-        const firstCloze = Object.entries(elements)
-          .filter(e => e[1].className.includes('cloze') && !e[1].className.includes('correct'))[0]
+        if (scrollTarget.current) {
+          const { elements } = scrollTarget.current
+          const firstCloze = Object.entries(elements)
+            .filter(e => e[1].className.includes('cloze') && !e[1].className.includes('correct'))[0]
 
-        if (firstCloze) firstCloze[1].focus()
+          if (firstCloze) firstCloze[1].focus()
+        }
       }, 100)
     }
   }, [snippets.focused])
