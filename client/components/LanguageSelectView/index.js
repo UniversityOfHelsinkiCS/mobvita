@@ -7,9 +7,11 @@ import {
   capitalize,
   supportedLearningLanguages,
   learningLanguageSelector,
+  dictionaryLanguageSelector,
   hiddenFeatures,
+  translatableLanguages,
 } from 'Utilities/common'
-import { updateLearningLanguage } from 'Utilities/redux/userReducer'
+import { updateLearningLanguage, updateDictionaryLanguage } from 'Utilities/redux/userReducer'
 import { useDispatch, useSelector } from 'react-redux'
 
 const LanguageGroup = ({ languages, handleLearningLanguageChange }) => {
@@ -36,6 +38,7 @@ const LearningLanguageSelectView = () => {
 
   const user = useSelector(({ user }) => user)
   const learningLanguage = useSelector(learningLanguageSelector)
+  const dictionaryLanguage = useSelector(dictionaryLanguageSelector)
   const { pending } = user
 
   const [learningLanguageChanged, setLearningLanguageChanged] = useState(false)
@@ -48,7 +51,23 @@ const LearningLanguageSelectView = () => {
     }
   }, [pending])
 
+  const checkForTranslatableLanguages = (lang) => {
+    if (translatableLanguages[lang].includes(dictionaryLanguage)) return
+    if (translatableLanguages[lang].includes('English')) {
+      dispatch(updateDictionaryLanguage('English'))
+      return
+    }
+    if (translatableLanguages[lang].includes('Russian')) {
+      dispatch(updateDictionaryLanguage('Russian'))
+      return
+    }
+    if (translatableLanguages[lang].length > 0) {
+      dispatch(updateDictionaryLanguage(translatableLanguages[lang][0]))
+    }
+  }
+
   const handleLearningLanguageChange = (lang) => {
+    checkForTranslatableLanguages(capitalize(lang))
     dispatch(updateLearningLanguage(lang))
     setWaiting(true)
   }
