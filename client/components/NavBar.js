@@ -6,6 +6,7 @@ import { Icon } from 'semantic-ui-react'
 import { sidebarSetOpen } from 'Utilities/redux/sidebarReducer'
 import { useIntl } from 'react-intl'
 import useWindowDimensions from 'Utilities/windowDimensions'
+import { hiddenFeatures } from 'Utilities/common'
 
 
 export default function NavBar({ history }) {
@@ -52,7 +53,7 @@ export default function NavBar({ history }) {
             onClick={() => history.push('/home')}
           >
 
-            Revita
+            Revita{hiddenFeatures && <sup> &beta;</sup>}
           </Navbar.Brand>
         </div>
         {user && (
