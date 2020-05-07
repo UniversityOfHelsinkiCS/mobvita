@@ -26,36 +26,45 @@ const EloChart = ({ width }) => {
     }
   })
 
-  const eloResults = []
-  let previousScore
-  let score = null
-  weeks.forEach((weekNumber) => {
-    for (let day = 1; day <= 7; day++) {
-      const element = filteredHistory.find(element => element.week === weekNumber && element.weekday === day)
-      if (element) {
-        score = element.score
-        eloResults.push(score)
-      } else {
-        previousScore = score
-        eloResults.push(null)
-      }
-    }
-  })
+  // Code for having a curve with fake data point for each day without data
+  // const eloResults = []
+  // let previousScore
+  // let score = null
+  // weeks.forEach((weekNumber) => {
+  //   for (let day = 1; day <= 7; day++) {
+  //     const element = filteredHistory.find(element => element.week === weekNumber && element.weekday === day)
+  //     if (element) {
+  //       score = element.score
+  //       eloResults.push(score)
+  //     } else {
+  //       previousScore = score
+  //       eloResults.push(null)
+  //     }
+  //   }
+  // })
 
 
-  for (let i = 0; i < eloResults.length; i++) { // Replace beginning nulls
-    if (eloResults[i]) {
-      for (let j = i; j >= 0; j--) {
-        eloResults[j] = eloResults[i]
-      }
-      break
-    }
-  }
+  // for (let i = 0; i < eloResults.length; i++) { // Replace beginning nulls
+  //   if (eloResults[i]) {
+  //     for (let j = i; j >= 0; j--) {
+  //       eloResults[j] = eloResults[i]
+  //     }
+  //     break
+  //   }
+  // }
 
-  for (let i = 0; i < eloResults.length; i++) { // Fill blank days
-    if (!eloResults[i]) {
-      eloResults[i] = eloResults[i - 1]
-    }
+  // for (let i = 0; i < eloResults.length; i++) { // Fill blank days
+  //   if (!eloResults[i]) {
+  //     eloResults[i] = eloResults[i - 1]
+  //   }
+  // }
+
+  const eloResults = rawEloHistory
+    && rawEloHistory.map(e => [moment(e.date).valueOf(), e.score])
+
+  // Extend the curve to current day
+  if (eloResults && eloResults[0]) {
+    eloResults.push([moment().valueOf(), eloResults[eloResults.length - 1][1]])
   }
 
   const practicetimes = {
@@ -100,7 +109,7 @@ const EloChart = ({ width }) => {
       visible: false,
     }],
     xAxis: [
-      { visible: false },
+      { visible: false, min: moment().subtract(4, 'weeks').valueOf() },
       { visible: false },
     ],
     plotOptions: {
