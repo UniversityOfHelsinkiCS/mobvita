@@ -74,16 +74,31 @@ const EloChart = ({ width }) => {
     data: weeklyPracticeTimeHistory.map(element => element.practice_time).reverse(),
   }
 
-  const maxElo = Math.max(...eloHistory)
-  const minElo = Math.min(...eloHistory)
+  const fourWeekElo = rawEloHistory
+    .filter(data => moment(data.date).valueOf() > moment().subtract(4, 'weeks').valueOf())
+    .map(data => data.score)
+  const lastBeforeFourWeeks = fourWeekElo < rawEloHistory
+    && rawEloHistory[rawEloHistory.length - fourWeekElo.length - 1]
 
-  const maxYTick = maxElo === minElo
-    ? Math.ceil(maxElo / 10) * 10 + 100
-    : Math.ceil(maxElo / 10) * 10 + 10
+  const minY = lastBeforeFourWeeks && lastBeforeFourWeeks.score < Math.min(...fourWeekElo)
+    ? Math.floor(lastBeforeFourWeeks.score / 10) * 10
+    : Math.floor(Math.min(...fourWeekElo) / 10) * 10
 
-  const minYTick = maxElo === minElo
-    ? Math.floor(minElo / 10) * 10 - 100
-    : Math.floor(minElo / 10) * 10 - 10
+  const maxY = lastBeforeFourWeeks && lastBeforeFourWeeks.score > Math.max(...fourWeekElo)
+    ? Math.ceil(lastBeforeFourWeeks.score / 10) * 10
+    : Math.ceil(Math.max(...fourWeekElo) / 10) * 10
+
+
+  // const maxElo = Math.max(...eloHistory)
+  // const minElo = Math.min(...eloHistory)
+
+  // const maxYTick = maxElo === minElo
+  //   ? Math.ceil(maxElo / 10) * 10 + 100
+  //   : Math.ceil(maxElo / 10) * 10
+
+  // const minYTick = maxElo === minElo
+  //   ? Math.floor(minElo / 10) * 10 - 100
+  //   : Math.floor(minElo / 10) * 10
 
   const options = {
     title: { text: '' },
@@ -99,10 +114,17 @@ const EloChart = ({ width }) => {
     },
     yAxis: [{
       title: { enabled: false },
-      min: minElo - (minElo * 0.02),
+      //min: minElo - (minElo * 0.02),
+      min: minY,
+      max: maxY,
       endOnTick: false,
       startOnTick: false,
-      tickPositions: [maxYTick, minYTick],
+      tickPositions: [maxY, minY],
+      //tickPositions: [this.yAxis[0].max, this.yAxis[0].min],
+      // tickPositioner: function () {
+      //   console.log(this.getExtremes())
+      //   return [Math.floor(this.dataMin / 10) * 10, Math.ceil(this.dataMax / 10) * 10];
+      // },
     },
     {
       title: { enabled: false },
