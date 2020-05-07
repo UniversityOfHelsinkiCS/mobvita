@@ -7,7 +7,7 @@ import { FormattedMessage } from 'react-intl'
 
 import { getStoryAction } from 'Utilities/redux/storiesReducer'
 import { getTranslationAction, clearTranslationAction } from 'Utilities/redux/translationReducer'
-import { capitalize, learningLanguageSelector, getTextStyle } from 'Utilities/common'
+import { capitalize, learningLanguageSelector, getTextStyle, speak } from 'Utilities/common'
 import DictionaryHelp from 'Components/DictionaryHelp'
 import Footer from '../Footer'
 
@@ -31,17 +31,18 @@ const SingleStoryView = ({ match }) => {
   }
 
   const handleWordClick = (surfaceWord, wordLemmas, wordId) => {
-    // const selectedLocale = localeOptions.find(localeOption => localeOption.code === locale)
-    window.responsiveVoice.speak(surfaceWord, `${learningLanguage === 'german' ? 'Deutsch' : capitalize(learningLanguage)} Female`)
-    dispatch(
-      getTranslationAction(
-        capitalize(learningLanguage),
-        wordLemmas,
-        capitalize(dictionaryLanguage),
-        id,
-        wordId,
-      ),
-    )
+    speak(surfaceWord, learningLanguage)
+    if (wordLemmas) {
+      dispatch(
+        getTranslationAction(
+          capitalize(learningLanguage),
+          wordLemmas,
+          capitalize(dictionaryLanguage),
+          id,
+          wordId,
+        ),
+      )
+    }
   }
 
   const wordVoice = (word) => {

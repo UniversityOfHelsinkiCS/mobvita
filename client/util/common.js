@@ -138,6 +138,14 @@ export const getTextWidth = (text) => {
   return 65 + metrics.width // add just random number, lets hope its fine.
 }
 
+export const speak = (surfaceWord, learningLanguage) => {
+  try {
+    window.responsiveVoice.speak(surfaceWord, `${learningLanguage === 'german' ? 'Deutsch' : capitalize(learningLanguage)} Female`)
+  } catch (e) {
+    console.log(`Failed to speak ${surfaceWord} in ${capitalize(learningLanguage)}`)
+  }
+}
+
 export const translatableLanguages = {
   Finnish: [
     'English',

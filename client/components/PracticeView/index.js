@@ -12,9 +12,9 @@ import {
   getTextStyle,
   capitalize,
   learningLanguageSelector,
-  translatableLanguages,
   newCapitalize,
   dictionaryLanguageSelector,
+  speak,
 } from 'Utilities/common'
 import useWindowDimensions from 'Utilities/windowDimensions'
 import PreviousSnippets from './PreviousSnippets'
@@ -57,19 +57,14 @@ const PracticeView = ({ match }) => {
     dispatch(setAnswers(newAnswer))
   }
 
-  const textToSpeech = (surfaceWord, wordLemmas, wordId) => {
-    // const selectedLocale = localeOptions.find(localeOption => localeOption.code === locale)
-    try {
-      window.responsiveVoice.speak(surfaceWord, `${learningLanguage === 'german' ? 'Deutsch' : capitalize(learningLanguage)} Female`)
-    } catch (e) {
-      console.log(`Failed to speak ${surfaceWord} in ${capitalize(learningLanguage)}`)
-    }
+  const handleWordClick = (surfaceWord, wordLemmas, wordId) => {
+    speak(surfaceWord, learningLanguage)
     if (wordLemmas) {
       dispatch(
         getTranslationAction(
           newCapitalize(learningLanguage),
           wordLemmas,
-          capitalize(dictionaryLanguage) || translatableLanguages[learningLanguage][0],
+          capitalize(dictionaryLanguage),
           match.params.id,
           wordId,
         ),
@@ -93,9 +88,9 @@ const PracticeView = ({ match }) => {
             </div>
             {story.url ? <p><a href={story.url}><FormattedMessage id="Source" /></a></p> : null}
 
-            <PreviousSnippets textToSpeech={textToSpeech} />
+            <PreviousSnippets handleWordClick={handleWordClick} />
             <hr />
-            <CurrentPractice storyId={match.params.id} textToSpeech={textToSpeech} handleInputChange={handleAnswerChange} />
+            <CurrentPractice storyId={match.params.id} handleWordClick={handleWordClick} handleInputChange={handleAnswerChange} />
             {keyboardLayouts[learningLanguage] && !smallWindow
               && <VirtualKeyboard />
             }

@@ -22,17 +22,17 @@ const chunkWords = (words) => {
   }, [])
 }
 
-const ChunkDisplay = ({ chunk, textToSpeech, answers }) => {
+const ChunkDisplay = ({ chunk, handleWordClick, answers }) => {
   if (chunk.length === 1) {
-    return <Word word={chunk[0]} answer={answers[chunk[0].ID]} textToSpeech={textToSpeech} />
+    return <Word word={chunk[0]} answer={answers[chunk[0].ID]} handleWordClick={handleWordClick} />
   }
 
-  const elements = chunk.map(word => <Word key={word.ID} word={word} answer={answers[word.ID]} textToSpeech={textToSpeech} />)
+  const elements = chunk.map(word => <Word key={word.ID} word={word} answer={answers[word.ID]} handleWordClick={handleWordClick} />)
 
   return <span className="prev-chunk">{elements}</span>
 }
 
-const PlainWord = ({ surface, lemmas, textToSpeech }) => {
+const PlainWord = ({ surface, lemmas, handleWordClick }) => {
   if (surface === '\n\n') {
     return (
       <div style={{ lineHeight: '75%' }}>
@@ -42,13 +42,13 @@ const PlainWord = ({ surface, lemmas, textToSpeech }) => {
   }
 
   return (
-    <span onClick={() => textToSpeech(surface, lemmas)} className="word-interactive">
+    <span onClick={() => handleWordClick(surface, lemmas)} className="word-interactive">
       {surface}
     </span>
   )
 }
 
-const ExerciseWord = ({ word, textToSpeech, answer }) => {
+const ExerciseWord = ({ word, handleWordClick, answer }) => {
   const { surface, isWrong, tested, lemmas } = word
   const intl = useIntl()
   const [show, setShow] = useState(false)
@@ -62,7 +62,7 @@ const ExerciseWord = ({ word, textToSpeech, answer }) => {
   const wordClass = `word-interactive ${color}`
 
   const handleClick = () => {
-    textToSpeech(surface, lemmas)
+    handleWordClick(surface, lemmas)
     setShow(true)
   }
 
@@ -90,7 +90,7 @@ const ExerciseWord = ({ word, textToSpeech, answer }) => {
   )
 }
 
-const Word = ({ word, textToSpeech, answer }) => {
+const Word = ({ word, handleWordClick, answer }) => {
   const { surface, lemmas, tested } = word
 
   if (surface === '\n\n') {
@@ -103,14 +103,14 @@ const Word = ({ word, textToSpeech, answer }) => {
 
   if (!answer || (!answer.users_answer && answer.users_answer !== '')) {
     return (
-      <PlainWord surface={surface} lemmas={lemmas} textToSpeech={textToSpeech} />
+      <PlainWord surface={surface} lemmas={lemmas} handleWordClick={handleWordClick} />
     )
   }
 
-  return <ExerciseWord word={word} textToSpeech={textToSpeech} answer={answer} />
+  return <ExerciseWord word={word} handleWordClick={handleWordClick} answer={answer} />
 }
 
-const PreviousSnippets = ({ textToSpeech }) => {
+const PreviousSnippets = ({ handleWordClick }) => {
   const snippets = useSelector(({ snippets }) => snippets)
   const focusedStory = useSelector(({ stories }) => stories.focused)
   const previousAnswers = useSelector(({ practice }) => practice.previousAnswers)
@@ -136,11 +136,11 @@ const PreviousSnippets = ({ textToSpeech }) => {
           {snippetsInPrevious.includes(snippet.snippetid[0])
             ? (
               chunkWords(snippet.practice_snippet).map(chunk => (
-                <ChunkDisplay answers={previousAnswers} key={chunk[0].ID} chunk={chunk} textToSpeech={textToSpeech} />
+                <ChunkDisplay answers={previousAnswers} key={chunk[0].ID} chunk={chunk} handleWordClick={handleWordClick} />
               ))
             ) : (
               snippet.practice_snippet.map(word => (
-                <PlainWord key={word.ID} textToSpeech={textToSpeech} surface={word.surface} lemmas={word.lemmas} />
+                <PlainWord key={word.ID} handleWordClick={handleWordClick} surface={word.surface} lemmas={word.lemmas} />
               ))
             )
           }

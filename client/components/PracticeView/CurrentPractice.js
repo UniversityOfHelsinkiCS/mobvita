@@ -19,7 +19,7 @@ import {
 import Chunks from './Chunks'
 import CheckAnswers from './CheckAnswers'
 
-const CurrentPractice = ({ storyId, textToSpeech, handleInputChange }) => {
+const CurrentPractice = ({ storyId, handleWordClick, handleInputChange }) => {
   const [progress, setProgress] = useState(0)
   const [exerciseCount, setExerciseCount] = useState(0)
   const scrollTarget = useRef(null)
@@ -191,7 +191,7 @@ const CurrentPractice = ({ storyId, textToSpeech, handleInputChange }) => {
               data-cy="practice-view"
             >
               <Chunks
-                textToSpeech={textToSpeech}
+                handleWordClick={handleWordClick}
                 handleAnswerChange={handleInputChange}
                 handleMultiselectChange={handleMultiselectChange}
               />

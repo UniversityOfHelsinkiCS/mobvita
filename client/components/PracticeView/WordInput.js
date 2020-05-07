@@ -7,7 +7,7 @@ import ExerciseHearing from 'Components/PracticeView/ExerciseHearing'
 
 const WordInput = ({
   word,
-  textToSpeech,
+  handleWordClick,
   handleAnswerChange,
   handleMultiselectChange,
 }) => {
@@ -20,8 +20,8 @@ const WordInput = ({
         tabIndex={-1}
         key={word.ID}
         className="word-interactive"
-        onKeyDown={() => textToSpeech(word.surface, word.lemmas, word.ID)}
-        onClick={() => textToSpeech(word.surface, word.lemmas, word.ID)}
+        onKeyDown={() => handleWordClick(word.surface, word.lemmas, word.ID)}
+        onClick={() => handleWordClick(word.surface, word.lemmas, word.ID)}
       >
         {word.surface}
       </span>
@@ -33,7 +33,7 @@ const WordInput = ({
       <ExerciseHearing
         tabIndex={word.ID}
         handleChange={handleAnswerChange}
-        handleClick={textToSpeech}
+        handleClick={handleWordClick}
         key={word.ID}
         word={word}
       />
@@ -53,7 +53,7 @@ const WordInput = ({
     <ExerciseCloze
       tabIndex={word.ID}
       handleChange={handleAnswerChange}
-      handleClick={textToSpeech}
+      handleClick={handleWordClick}
       key={word.ID}
       word={word}
     />
