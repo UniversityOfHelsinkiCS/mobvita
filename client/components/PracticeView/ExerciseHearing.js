@@ -27,10 +27,15 @@ const ExerciseHearing = ({ word, handleClick, handleChange }) => {
     [word],
   )
 
+  const giveHint = () => {
+    if (word.base !== word.surface) handleChange(word.base, word)
+  }
+
   useEffect(() => {
     if (tested) {
       if (isWrong) {
         setClassname('exercise wrong')
+        giveHint()
       } else {
         setClassname('exercise correct')
       }
