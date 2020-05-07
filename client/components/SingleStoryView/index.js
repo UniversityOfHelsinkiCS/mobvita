@@ -16,6 +16,7 @@ const SingleStoryView = ({ match }) => {
   const { story, pending } = useSelector(({ stories, locale }) => ({ story: stories.focused, pending: stories.focusedPending, locale }))
   const learningLanguage = useSelector(learningLanguageSelector)
   const dictionaryLanguage = useSelector(({ user }) => user.data.user.last_trans_language)
+  const autoSpeak = useSelector(({ user }) => user.data.user.auto_speak)
   const { id } = match.params
   useEffect(() => {
     dispatch(getStoryAction(id))
@@ -31,7 +32,7 @@ const SingleStoryView = ({ match }) => {
   }
 
   const handleWordClick = (surfaceWord, wordLemmas, wordId) => {
-    speak(surfaceWord, learningLanguage)
+    if (autoSpeak) speak(surfaceWord, learningLanguage)
     if (wordLemmas) {
       dispatch(
         getTranslationAction(

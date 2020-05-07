@@ -2,11 +2,11 @@ import React, { createRef, useState, useEffect, useCallback } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { debounce } from 'lodash'
 import { Icon } from 'semantic-ui-react'
-import { getTextWidth } from 'Utilities/common'
+import { getTextWidth, speak, learningLanguageSelector } from 'Utilities/common'
 import { setFocusedWord } from 'Utilities/redux/practiceReducer'
 
 
-const ExerciseHearing = ({ word, handleClick, handleChange }) => {
+const ExerciseHearing = ({ word, handleChange }) => {
   const [value, setValue] = useState('')
 
   const [className, setClassname] = useState('exercise hearing-untouched')
@@ -15,6 +15,7 @@ const ExerciseHearing = ({ word, handleClick, handleChange }) => {
   const inputRef = createRef(null)
 
   const currentAnswer = useSelector(({ practice }) => practice.currentAnswers[word.ID])
+  const learningLanguage = useSelector(learningLanguageSelector)
 
   const dispatch = useDispatch()
 
@@ -48,7 +49,7 @@ const ExerciseHearing = ({ word, handleClick, handleChange }) => {
   }, [currentAnswer])
 
   const speakerClickHandler = (word) => {
-    handleClick(word.surface, '')
+    speak(word.surface, learningLanguage)
     inputRef.current.focus()
   }
 
@@ -60,7 +61,7 @@ const ExerciseHearing = ({ word, handleClick, handleChange }) => {
     }
     dispatch(setFocusedWord(word))
     if (!focusTimeout) {
-      handleClick(word.surface, '')
+      speak(word.surface, learningLanguage)
       setFocusTimeout(true)
       setTimeout(() => {
         setFocusTimeout(false)

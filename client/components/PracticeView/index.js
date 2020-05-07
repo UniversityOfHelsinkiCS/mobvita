@@ -29,6 +29,7 @@ const PracticeView = ({ match }) => {
   const smallWindow = useWindowDimensions().width < 500
 
   const story = useSelector(({ stories }) => stories.focused)
+  const autoSpeak = useSelector(({ user }) => user.data.user.auto_speak)
 
   useEffect(() => {
     dispatch(getStoryAction(match.params.id))
@@ -58,7 +59,7 @@ const PracticeView = ({ match }) => {
   }
 
   const handleWordClick = (surfaceWord, wordLemmas, wordId) => {
-    speak(surfaceWord, learningLanguage)
+    if (autoSpeak) speak(surfaceWord, learningLanguage)
     if (wordLemmas) {
       dispatch(
         getTranslationAction(

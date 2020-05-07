@@ -41,6 +41,7 @@ export const updateMultiChoice = value => saveSelf({ multi_choice: value })
 export const updateAudioTask = value => saveSelf({ task_audio: value })
 export const updateSecondTry = value => saveSelf({ second_try: value })
 export const updateNumberOfFlashcards = amount => saveSelf({ flashcard_num: amount })
+export const updateAutoSpeak = value => saveSelf({ auto_speak: value })
 
 export const changePassword = (currentPassword, newPassword) => {
   const route = '/user/password'

@@ -9,6 +9,7 @@ import {
   updateAudioTask,
   updateSecondTry,
   updateNumberOfFlashcards,
+  updateAutoSpeak,
 } from 'Utilities/redux/userReducer'
 import useWindowDimensions from 'Utilities/windowDimensions'
 
@@ -84,6 +85,15 @@ const Settings = () => {
       <label htmlFor="flashcard-amount" style={{ paddingLeft: '1rem' }}>
         <FormattedMessage id="how-many-cards-per-practice-session" />
       </label>
+      <h2 className="header-2 padding-bottom-1 padding-top-2">
+        <FormattedMessage id="Audio settings" />
+      </h2>
+      <SettingToggle
+        translationId="Pronounce clicked words"
+        checked={user.auto_speak}
+        onChange={() => dispatch(updateAutoSpeak(!user.auto_speak))}
+        disabled={pending}
+      />
     </div>
   )
 }

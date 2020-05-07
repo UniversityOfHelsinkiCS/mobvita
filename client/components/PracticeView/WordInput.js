@@ -33,7 +33,6 @@ const WordInput = ({
       <ExerciseHearing
         tabIndex={word.ID}
         handleChange={handleAnswerChange}
-        handleClick={handleWordClick}
         key={word.ID}
         word={word}
       />
