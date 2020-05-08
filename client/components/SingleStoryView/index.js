@@ -8,7 +8,7 @@ import { getStoryAction } from 'Utilities/redux/storiesReducer'
 import {
   getTranslationAction,
   clearTranslationAction,
-  setSurfaceWord,
+  setWords,
 } from 'Utilities/redux/translationReducer'
 import { capitalize, learningLanguageSelector, getTextStyle, speak } from 'Utilities/common'
 import DictionaryHelp from 'Components/DictionaryHelp'
@@ -37,7 +37,7 @@ const SingleStoryView = ({ match }) => {
   const handleWordClick = (surfaceWord, wordLemmas, wordId) => {
     if (autoSpeak === 'always') speak(surfaceWord, learningLanguage)
     if (wordLemmas) {
-      dispatch(setSurfaceWord(surfaceWord))
+      dispatch(setWords(surfaceWord, wordLemmas))
       dispatch(
         getTranslationAction(
           capitalize(learningLanguage),

@@ -7,7 +7,7 @@ import DictionaryHelp from 'Components/DictionaryHelp'
 import { Segment, Icon } from 'semantic-ui-react'
 import { resetCurrentSnippet } from 'Utilities/redux/snippetsReducer'
 import { clearPractice, setTouchedIds, setAnswers } from 'Utilities/redux/practiceReducer'
-import { getTranslationAction, setSurfaceWord } from 'Utilities/redux/translationReducer'
+import { getTranslationAction, setWords } from 'Utilities/redux/translationReducer'
 import {
   getTextStyle,
   capitalize,
@@ -61,7 +61,7 @@ const PracticeView = ({ match }) => {
   const handleWordClick = (surfaceWord, wordLemmas, wordId) => {
     if (autoSpeak === 'always') speak(surfaceWord, learningLanguage)
     if (wordLemmas) {
-      dispatch(setSurfaceWord(surfaceWord))
+      dispatch(setWords(surfaceWord, wordLemmas))
       dispatch(
         getTranslationAction(
           newCapitalize(learningLanguage),

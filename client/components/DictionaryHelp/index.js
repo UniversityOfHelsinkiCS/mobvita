@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import { connect, useDispatch, useSelector } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { List, Button, Segment, Icon } from 'semantic-ui-react'
 import { Shake } from 'reshake'
 import { FormattedMessage, useIntl } from 'react-intl'
@@ -9,16 +9,22 @@ import { learningLanguageSelector, translatableLanguages, speak } from 'Utilitie
 import useWindowDimensions from 'Utilities/windowDimensions'
 import { Spinner } from 'react-bootstrap'
 
-const DictionaryHelp = ({ translation, surfaceWord }) => {
+const DictionaryHelp = () => {
   const [showHelp, setShow] = useState(false)
   const [shaking, setShaking] = useState(false)
   const { width: windowWidth } = useWindowDimensions()
-  const dispatch = useDispatch()
-  const intl = useIntl()
+
   const translationLanguageCode = useSelector(({ user }) => user.data.user.last_trans_language)
   const learningLanguage = useSelector(learningLanguageSelector)
-  const { pending } = useSelector(({ translation }) => translation)
+  const {
+    pending,
+    data: translation,
+    surfaceWord,
+    lemmas,
+  } = useSelector(({ translation }) => translation)
 
+  const dispatch = useDispatch()
+  const intl = useIntl()
 
   useEffect(() => {
     if (!translatableLanguages[learningLanguage].includes(translationLanguageCode)) {
@@ -35,7 +41,6 @@ const DictionaryHelp = ({ translation, surfaceWord }) => {
   const handleSpeakerClick = (word) => {
     speak(word, learningLanguage)
   }
-
 
   const translations = translation && translation.map(translated => (
     <List.Item key={translated.URL} data-cy="translations" style={{ color: '#555555' }}>
@@ -97,10 +102,29 @@ const DictionaryHelp = ({ translation, surfaceWord }) => {
     )
   }
 
+  const firstLemma = () => lemmas
+    .split('+')
+    .join(',')
+    .split('|')
+    .join(',')
+    .split(',')[0]
+
   const translationResults = () => {
     if (pending) return <div><span><FormattedMessage id="(DictionaryHelp) Loading, please wait" />... </span><Spinner animation="border" /></div>
     if (translations && translations.length > 0) return translations
-    if (!translation) return <span><FormattedMessage id="(DictionaryHelp) No translation available" /></span>
+    if (!translation) {
+      return (
+        <List.Item style={{ color: '#555555' }}>
+          <span>
+            {firstLemma()}
+            <Icon name="volume up" className="padding-left-1 clickable" onClick={() => handleSpeakerClick(lemmas)} />
+          </span>
+          <List bulleted style={{ color: 'slateGrey', fontStyle: 'italic' }}>
+            <span><FormattedMessage id="(DictionaryHelp) No translation available" /></span>
+          </List>
+        </List.Item>
+      )
+    }
     return <span><FormattedMessage id="click-on-words-near-the-exercises-to-explore-their-meaning" /></span>
   }
 
@@ -123,8 +147,8 @@ const DictionaryHelp = ({ translation, surfaceWord }) => {
           <List>
             {surfaceWord
               && (
-                <List.Item style={{ paddingBottom: '0.5em' }}>
-                  {surfaceWord}
+                <List.Item style={{ paddingBottom: '0.5em', display: 'flex' }}>
+                  <span style={{ color: '#2185D0' }}>{surfaceWord}</span>
                   <Icon name="volume up" className="padding-left-1 clickable" onClick={() => handleSpeakerClick(surfaceWord)} />
                 </List.Item>
               )}
@@ -143,6 +167,4 @@ const DictionaryHelp = ({ translation, surfaceWord }) => {
   )
 }
 
-const mapStateToProps = ({ translation }) => ({ translation: translation.data, surfaceWord: translation.surfaceWord })
-
-export default connect(mapStateToProps, null)(DictionaryHelp)
+export default DictionaryHelp
