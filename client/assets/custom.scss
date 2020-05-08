@@ -381,172 +381,6 @@ body {
   margin-left: 1em;
 }
 
-.auto {
-  &-right {
-    margin-right: auto;
-  }
-  &-left {
-    margin-left: auto;
-  }
-}
-
-.padding-bottom {
-  &-1 {
-    padding-bottom: 0.5em;
-  }
-  &-2 {
-    padding-bottom: 1em;
-  }
-  &-3 {
-    padding-bottom: 2em;
-  }
-}
-
-.padding-top {
-  &-1 {
-    padding-top: 0.5em;
-  }
-  &-2 {
-    padding-top: 1em;
-  }
-  &-3 {
-    padding-top: 2em;
-  }
-}
-
-.padding-right {
-  &-1 {
-    padding-right: 0.5em;
-  }
-  &-2 {
-    padding-right: 1em;
-  }
-  &-3 {
-    padding-right: 2em;
-  }
-}
-
-.padding-left {
-  &-1 {
-    padding-left: 0.5em;
-  }
-  &-2 {
-    padding-left: 1em;
-  }
-  &-3 {
-    padding-left: 2em;
-  }
-}
-
-.padding-sides {
-  &-1 {
-    padding-right: 0.5em;
-    padding-left: 0.5em;
-  }
-  &-2 {
-    padding-right: 1em;
-    padding-left: 1em;
-  }
-  &-3 {
-    padding-right: 2em;
-    padding-left: 2em;
-  }
-}
-
-.gap {
-  &-1 {
-    margin-left: -0.5em;
-    & > * {
-      margin-left: 0.5em
-    }
-  }
-  &-2 {
-    margin-left: -1em;
-    & > * {
-      margin-left: 1em
-    }
-  }
-}
-
-.gap-row {
-  &-1 {
-    margin-top: -0.5em;
-    & > * {
-      margin-top: 0.5em
-    }
-  }
-  &-2 {
-    margin-top: -1em;
-    & > * {
-      margin-top: 1em
-    }
-  }
-}
-
-.flex {
-  display: flex;
-}
-
-.flex-column {
-  display: flex;
-  flex-direction: column;
-}
-
-.align-right {
-  text-align: right;
-}
-
-.space-between {
-  display: flex;
-  justify-content: space-between;
-}
-
-.space-evenly {
-  display: flex;
-  justify-content: space-evenly;
-}
-
-.center {
-  display: flex;
-  justify-content: center;
-}
-
-.wrap-and-grow {
-  display: flex;
-  flex-wrap: wrap;
-  & button {
-    flex-grow: 1;
-  }
-}
-
-.align-start {
-  align-items: flex-start;
-}
-
-.reverse-for-900 {
-  @media (min-width: 900px) {
-    flex-direction: row-reverse;
-  }
-}
-
-.header-2 {
-  font-size: 22px;
-}
-
-.bold-italics {
-  font-size: 14px;
-  font-weight: 550;
-  font-style: italic;
-}
-
-.clickable {
-  cursor: pointer;
-}
-
-.bold {
-  font-weight: 550;
-}
-
 .group-container {
   max-width: 1024px;
   margin: auto;
@@ -1006,4 +840,178 @@ body {
   &-name {
     color: black;
   }
+}
+
+
+// General classes
+.auto {
+  margin: auto;
+
+  &-right {
+    margin-right: auto;
+  }
+  &-left {
+    margin-left: auto;
+  }
+}
+
+.padding-bottom {
+  &-1 {
+    padding-bottom: 0.5em;
+  }
+  &-2 {
+    padding-bottom: 1em;
+  }
+  &-3 {
+    padding-bottom: 2em;
+  }
+}
+
+.padding-top {
+  &-1 {
+    padding-top: 0.5em;
+  }
+  &-2 {
+    padding-top: 1em;
+  }
+  &-3 {
+    padding-top: 2em;
+  }
+}
+
+.padding-right {
+  &-1 {
+    padding-right: 0.5em;
+  }
+  &-2 {
+    padding-right: 1em;
+  }
+  &-3 {
+    padding-right: 2em;
+  }
+}
+
+.padding-left {
+  &-1 {
+    padding-left: 0.5em;
+  }
+  &-2 {
+    padding-left: 1em;
+  }
+  &-3 {
+    padding-left: 2em;
+  }
+}
+
+.padding-sides {
+  &-1 {
+    padding-right: 0.5em;
+    padding-left: 0.5em;
+  }
+  &-2 {
+    padding-right: 1em;
+    padding-left: 1em;
+  }
+  &-3 {
+    padding-right: 2em;
+    padding-left: 2em;
+  }
+}
+
+.gap {
+  &-1 {
+    margin-left: -0.5em;
+    & > * {
+      margin-left: 0.5em
+    }
+  }
+  &-2 {
+    margin-left: -1em;
+    & > * {
+      margin-left: 1em
+    }
+  }
+}
+
+.gap-row {
+  &-1 {
+    margin-top: -0.5em;
+    & > * {
+      margin-top: 0.5em
+    }
+  }
+  &-2 {
+    margin-top: -1em;
+    & > * {
+      margin-top: 1em
+    }
+  }
+}
+
+.flex {
+  display: flex;
+}
+
+.flex-column {
+  display: flex;
+  flex-direction: column;
+}
+
+.align-right {
+  text-align: right;
+}
+
+.space-between {
+  display: flex;
+  justify-content: space-between;
+}
+
+.space-evenly {
+  display: flex;
+  justify-content: space-evenly;
+}
+
+.center {
+  display: flex;
+  justify-content: center;
+}
+
+.wrap-and-grow {
+  display: flex;
+  flex-wrap: wrap;
+  & button {
+    flex-grow: 1;
+  }
+}
+
+.align-start {
+  align-items: flex-start;
+}
+
+.reverse-for-900 {
+  @media (min-width: 900px) {
+    flex-direction: row-reverse;
+  }
+}
+
+.header-2 {
+  font-size: 22px;
+}
+
+.bold-italics {
+  font-size: 14px;
+  font-weight: 550;
+  font-style: italic;
+}
+
+.clickable {
+  cursor: pointer;
+}
+
+.bold {
+  font-weight: 550;
+}
+
+.max-width {
+  max-width: 1024px;
 }

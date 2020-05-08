@@ -59,8 +59,8 @@ const SingleStoryView = ({ match }) => {
 
   return (
     <div>
-      <div style={{ display: 'flex', justifyContent: 'center' }}>
-        <div className="component-container padding-top-2" style={getTextStyle(learningLanguage)}>
+      <div className="center auto">
+        <div className="max-width padding-top-2" style={getTextStyle(learningLanguage)}>
           <Header>
             {story.title}
             <Link to={`/stories/${id}/practice`}>
