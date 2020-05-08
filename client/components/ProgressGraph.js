@@ -16,14 +16,6 @@ const ProgressGraph = ({ exerciseHistory, flashcardHistory, startDate, endDate }
     && flashcardHistory.map(e => [moment(e.date).valueOf(), e.score])
 
 
-  // Extend the curves to selected end date
-  if (storyData && storyData[0] && storyData[storyData.length - 1][0] < endDate) {
-    storyData.push([moment(endDate).valueOf(), storyData[storyData.length - 1][1]])
-  }
-  if (flashcardData && flashcardData[0] && flashcardData[flashcardData.length - 1][0] < endDate) {
-    flashcardData.push([moment(endDate).valueOf(), flashcardData[flashcardData.length - 1][1]])
-  }
-
   const series = [{ name: intl.formatMessage({ id: 'Stories' }), data: storyData }]
   if (hiddenFeatures) {
     series.push({
