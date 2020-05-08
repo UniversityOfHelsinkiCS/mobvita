@@ -123,7 +123,7 @@ const DictionaryHelp = ({ translation, surfaceWord }) => {
           <List>
             {surfaceWord
               && (
-                <List.Item style={{ color: '#555555', paddingBottom: '0.5em', fontWeight: 550 }}>
+                <List.Item style={{ paddingBottom: '0.5em' }}>
                   {surfaceWord}
                   <Icon name="volume up" className="padding-left-1 clickable" onClick={() => handleSpeakerClick(surfaceWord)} />
                 </List.Item>

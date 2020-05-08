@@ -59,7 +59,7 @@ const PracticeView = ({ match }) => {
   }
 
   const handleWordClick = (surfaceWord, wordLemmas, wordId) => {
-    if (autoSpeak) speak(surfaceWord, learningLanguage)
+    if (autoSpeak === 'always') speak(surfaceWord, learningLanguage)
     if (wordLemmas) {
       dispatch(setSurfaceWord(surfaceWord))
       dispatch(

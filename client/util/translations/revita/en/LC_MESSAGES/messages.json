@@ -753,5 +753,7 @@
     "stories-selected": "stories selected",
     "Stories": "Stories",
     "Audio settings": "Audio settings",
-    "Pronounce clicked words": "Pronounce clicked words"
+    "Pronounce clicked words": "Pronounce clicked words",
+    "Always": "Always",
+    "Only on demand": "Only on demand"
 }

@@ -2,7 +2,7 @@ import React from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import { Link } from 'react-router-dom'
 import { FormattedMessage, useIntl } from 'react-intl'
-import { Checkbox } from 'semantic-ui-react'
+import { Checkbox, Radio } from 'semantic-ui-react'
 import { Button } from 'react-bootstrap'
 import {
   updateMultiChoice,
@@ -32,6 +32,7 @@ const Settings = () => {
   const bigWindow = useWindowDimensions().width >= 640
 
   const dispatch = useDispatch()
+  const intl = useIntl()
 
   return (
     <div className="component-container padding-sides-1">
@@ -88,12 +89,25 @@ const Settings = () => {
       <h2 className="header-2 padding-bottom-1 padding-top-2">
         <FormattedMessage id="Audio settings" />
       </h2>
-      <SettingToggle
-        translationId="Pronounce clicked words"
-        checked={user.auto_speak}
-        onChange={() => dispatch(updateAutoSpeak(!user.auto_speak))}
-        disabled={pending}
-      />
+      <span className="padding-bottom-1">
+        <FormattedMessage id="Pronounce clicked words" />
+      </span>
+      <div className="gap-2">
+        <Radio
+          label={intl.formatMessage({ id: 'Always' })}
+          name="autoSpeak"
+          value="always"
+          checked={user.auto_speak === 'always'}
+          onChange={() => dispatch(updateAutoSpeak('always'))}
+        />
+        <Radio
+          label={intl.formatMessage({ id: 'Only on demand' })}
+          name="autoSpeak"
+          value="demand"
+          checked={user.auto_speak === 'demand'}
+          onChange={() => dispatch(updateAutoSpeak('demand'))}
+        />
+      </div>
     </div>
   )
 }
