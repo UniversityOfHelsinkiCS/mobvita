@@ -19,8 +19,10 @@ const StoryFileModal = ({ trigger }) => {
   const dispatch = useDispatch()
 
   const onChange = (e) => {
-    setFile(e.target.files[0])
-    setLabel(e.target.files[0].name)
+    if (e.target.files[0]) {
+      setFile(e.target.files[0])
+      setLabel(e.target.files[0].name)
+    }
   }
 
   const handleSubmit = () => {
