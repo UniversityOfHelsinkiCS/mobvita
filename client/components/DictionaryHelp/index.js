@@ -5,11 +5,11 @@ import { Shake } from 'reshake'
 import { FormattedMessage, useIntl } from 'react-intl'
 import { updateDictionaryLanguage } from 'Utilities/redux/userReducer'
 import { getTranslationAction } from 'Utilities/redux/translationReducer'
-import { learningLanguageSelector, translatableLanguages } from 'Utilities/common'
+import { learningLanguageSelector, translatableLanguages, speak } from 'Utilities/common'
 import useWindowDimensions from 'Utilities/windowDimensions'
 import { Spinner } from 'react-bootstrap'
 
-const DictionaryHelp = ({ translation }) => {
+const DictionaryHelp = ({ translation, surfaceWord }) => {
   const [showHelp, setShow] = useState(false)
   const [shaking, setShaking] = useState(false)
   const { width: windowWidth } = useWindowDimensions()
@@ -32,10 +32,17 @@ const DictionaryHelp = ({ translation }) => {
     text: intl.formatMessage({ id: element }),
   })) : []
 
+  const handleSpeakerClick = (word) => {
+    speak(word, learningLanguage)
+  }
+
 
   const translations = translation && translation.map(translated => (
     <List.Item key={translated.URL} data-cy="translations" style={{ color: '#555555' }}>
-      {translated.lemma}
+      <span>
+        {translated.lemma}
+        <Icon name="volume up" className="padding-left-1 clickable" onClick={() => handleSpeakerClick(translated.lemma)} />
+      </span>
       <List bulleted style={{ color: 'slateGrey', fontStyle: 'italic' }}>
         {translated.glosses.map((word, i) => <List.Item key={`${translated.URL}-${i}`}>{word}</List.Item>)}
       </List>
@@ -112,8 +119,15 @@ const DictionaryHelp = ({ translation }) => {
             {dictionaryOptions.map(option => <option key={option.key} value={option.value}>{option.text}</option>)}
           </select>
         </div>
-        <div className="space-between">
+        <div className="space-between padding-top-1">
           <List>
+            {surfaceWord
+              && (
+                <List.Item style={{ color: '#555555', paddingBottom: '0.5em', fontWeight: 550 }}>
+                  {surfaceWord}
+                  <Icon name="volume up" className="padding-left-1 clickable" onClick={() => handleSpeakerClick(surfaceWord)} />
+                </List.Item>
+              )}
             {translationResults()}
           </List>
           {smallWindow
@@ -129,6 +143,6 @@ const DictionaryHelp = ({ translation }) => {
   )
 }
 
-const mapStateToProps = ({ translation }) => ({ translation: translation.data })
+const mapStateToProps = ({ translation }) => ({ translation: translation.data, surfaceWord: translation.surfaceWord })
 
 export default connect(mapStateToProps, null)(DictionaryHelp)

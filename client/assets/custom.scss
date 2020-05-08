@@ -539,8 +539,12 @@ body {
   font-style: italic;
 }
 
-.column-sort {
+.clickable {
   cursor: pointer;
+}
+
+.bold {
+  font-weight: 550;
 }
 
 .group-container {

@@ -126,7 +126,7 @@ const Summary = ({ groupName, isTeaching, getSummary, learningLanguage }) => {
                 {columns.map(column => (
                   <th
                     key={column}
-                    className="column-sort"
+                    className="clickable"
                     onClick={() => handleSort(column)}
                   >
                     {capitalize(column).replace(/_/g, ' ')}

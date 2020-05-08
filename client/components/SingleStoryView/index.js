@@ -4,9 +4,12 @@ import { Link } from 'react-router-dom'
 import { Divider, Segment, Header } from 'semantic-ui-react'
 import { Button, Spinner } from 'react-bootstrap'
 import { FormattedMessage } from 'react-intl'
-
 import { getStoryAction } from 'Utilities/redux/storiesReducer'
-import { getTranslationAction, clearTranslationAction } from 'Utilities/redux/translationReducer'
+import {
+  getTranslationAction,
+  clearTranslationAction,
+  setSurfaceWord,
+} from 'Utilities/redux/translationReducer'
 import { capitalize, learningLanguageSelector, getTextStyle, speak } from 'Utilities/common'
 import DictionaryHelp from 'Components/DictionaryHelp'
 import Footer from '../Footer'
@@ -34,6 +37,7 @@ const SingleStoryView = ({ match }) => {
   const handleWordClick = (surfaceWord, wordLemmas, wordId) => {
     if (autoSpeak) speak(surfaceWord, learningLanguage)
     if (wordLemmas) {
+      dispatch(setSurfaceWord(surfaceWord))
       dispatch(
         getTranslationAction(
           capitalize(learningLanguage),

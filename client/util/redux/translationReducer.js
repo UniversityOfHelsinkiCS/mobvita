@@ -13,6 +13,8 @@ export const getTranslationAction = (language, wordLemmas, locale, storyId, word
 
 export const clearTranslationAction = () => ({ type: 'CLEAR_TRANSLATION' })
 
+export const setSurfaceWord = word => ({ type: 'SET_SURFACE_WORD', word })
+
 
 export default (state = { data: [] }, action) => {
   switch (action.type) {
@@ -36,10 +38,16 @@ export default (state = { data: [] }, action) => {
         pending: false,
         error: true,
       }
+    case 'SET_SURFACE_WORD':
+      return {
+        ...state,
+        surfaceWord: action.word,
+      }
     case 'CLEAR_TRANSLATION': {
       return {
         ...state,
         data: [],
+        surfaceWord: '',
       }
     }
     default:
