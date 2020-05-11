@@ -6,6 +6,8 @@ export const getMetadata = (language) => {
   return callBuilder(route, prefix, 'get')
 }
 
+export const closeBanner = message => ({ type: 'CLOSE_BANNER', message })
+
 export default (state = { pending: false, error: false }, action) => {
   switch (action.type) {
     case 'GET_METADATA_ATTEMPT':
@@ -26,9 +28,14 @@ export default (state = { pending: false, error: false }, action) => {
         concepts: action.response.concept_list,
         flashcardArticles: action.response.flashcard_articles,
         suggestedSites: action.response.suggested_sites,
-        bannerMessages: action.response.banner_messages,
+        banners: action.response.banner_messages.map(b => ({ message: b, open: true })),
         pending: false,
         error: false,
+      }
+    case 'CLOSE_BANNER':
+      return {
+        ...state,
+        banners: state.banners.map(b => (b.message === action.message ? { ...b, open: false } : b)),
       }
     default:
       return state

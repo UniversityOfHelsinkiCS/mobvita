@@ -843,7 +843,7 @@ body {
 }
 
 .banner {
-  &-container {
+  &-float-container {
     position: fixed;
     width: 95%;
     max-width: 1000px;
@@ -946,6 +946,15 @@ body {
   &-3 {
     padding-right: 2em;
     padding-left: 2em;
+  }
+}
+
+.margin-negative-top {
+  &-1 {
+    margin-top: -0.5em
+  }
+  &-2 {
+    margin-top: -1em;
   }
 }
 

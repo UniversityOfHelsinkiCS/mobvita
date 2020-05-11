@@ -3,15 +3,17 @@ import { useSelector } from 'react-redux'
 import Banner from './Banner'
 
 const Banners = () => {
-  const { bannerMessages } = useSelector(({ metadata }) => metadata)
+  const banners = useSelector(({ metadata }) => metadata.banners)
 
-  if (!bannerMessages) return null
+  if (!banners) return null
 
-  const banners = bannerMessages.map(message => <Banner key={message} message={message} />)
+  const bannerComponents = banners.map(banner => (
+    <Banner key={banner.message} message={banner.message} open={banner.open} />
+  ))
 
   return (
-    <div className="banner-container">
-      {banners}
+    <div className="component-container padding-bottom-1 margin-negative-top-2">
+      {bannerComponents}
     </div>
   )
 }

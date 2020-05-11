@@ -2,6 +2,7 @@ import React from 'react'
 import { Tab } from 'semantic-ui-react'
 import StoryList from 'Components/StoryListView/StoryList'
 import HomeView from 'Components/LandingPage/HomeView'
+import Banners from 'Components/Banners'
 import { useIntl } from 'react-intl'
 import { Link } from 'react-router-dom'
 
@@ -40,11 +41,13 @@ const Tabs = ({ location }) => {
   }
 
   return (
-    <Tab
-      panes={panes}
-      activeIndex={index}
-    />
-
+    <div>
+      <Banners />
+      <Tab
+        panes={panes}
+        activeIndex={index}
+      />
+    </div>
   )
 }
 

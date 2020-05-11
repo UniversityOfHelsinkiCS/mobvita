@@ -48,7 +48,6 @@ const Concepts = () => {
   const dispatch = useDispatch()
   const history = useHistory()
   const { target, id } = useParams()
-  const learningLanguage = useSelector(learningLanguageSelector)
 
   const { concepts, pending: conceptsPending } = useSelector(({ metadata }) => metadata)
   const { isTeaching } = useSelector(({ groups }) => (
@@ -56,10 +55,6 @@ const Concepts = () => {
 
   const [showTestConcepts, setShowTestConcepts] = useState(false)
   const [showLevels, setShowLevels] = useState(true)
-
-  useEffect(() => {
-    dispatch(getMetadata(learningLanguage))
-  }, [])
 
   useEffect(() => {
     if (target === 'groups') {

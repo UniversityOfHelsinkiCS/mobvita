@@ -1,17 +1,19 @@
-import React, { useState } from 'react'
+import React from 'react'
+import { useDispatch } from 'react-redux'
 import { Icon } from 'semantic-ui-react'
+import { closeBanner } from 'Utilities/redux/metadataReducer'
 
-const Banner = ({ message }) => {
-  const [show, setShow] = useState(true)
+const Banner = ({ message, open }) => {
+  const dispatch = useDispatch()
 
-  if (!show) return null
+  if (!open) return null
 
   return (
     <div className="banner">
       <div dangerouslySetInnerHTML={{ __html: message }} />
       <Icon
         name="close"
-        onClick={() => setShow(false)}
+        onClick={() => dispatch(closeBanner(message))}
         style={{ color: '#004085', cursor: 'pointer' }}
       />
     </div>
