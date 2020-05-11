@@ -12,6 +12,7 @@ import Bar from './Bar'
 import StoryFetcher from './StoryFetcher'
 import 'bootstrap/dist/css/bootstrap.min.css'
 import NavBar from './NavBar'
+import Banners from './Banners'
 
 
 const App = () => {
@@ -48,6 +49,7 @@ const App = () => {
   return (
     <>
       <ReactRouter history={history}>
+        <Banners />
         <Toaster />
         <Offline><div className="offline-notification" polling={{ timeout: 20000 }}> <h3>Please re-connect to the internet to use revita!</h3></div></Offline>
         <Route component={NavBar} />

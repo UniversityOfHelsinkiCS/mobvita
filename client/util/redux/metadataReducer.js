@@ -26,6 +26,7 @@ export default (state = { pending: false, error: false }, action) => {
         concepts: action.response.concept_list,
         flashcardArticles: action.response.flashcard_articles,
         suggestedSites: action.response.suggested_sites,
+        bannerMessages: action.response.banner_messages,
         pending: false,
         error: false,
       }

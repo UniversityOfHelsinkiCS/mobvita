@@ -257,7 +257,7 @@ body {
 
 .sidebar{
   &-hamburger{
-    z-index: 100;
+    z-index: 102;
     padding-top: 0.2em;
     cursor: pointer;
     // position: fixed;
@@ -271,7 +271,7 @@ body {
     width: $sidebar-swipeable-width;
     left: 0;
     top:0;
-    z-index: 100;
+    z-index: 102;
     position: fixed;
     height: 100vh;
   }
@@ -840,6 +840,37 @@ body {
   &-name {
     color: black;
   }
+}
+
+.banner {
+  &-container {
+    position: fixed;
+    width: 95%;
+    max-width: 1000px;
+    top: 3.5em;
+    left: 0;
+    right: 0;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: -0.5em;
+    z-index: 101;
+  }
+
+  z-index: 101;
+  background-color: #cce5ff;
+  color: #004085;
+  border: 1px solid #b8daff;
+  border-radius: 0.25em;
+  padding: 0.75em 0.75em 0.75em 1.25em;
+  margin-top: 0.5em;
+  display: flex;
+  justify-content: space-between;
+
+  transform: translateX(-100%);
+  animation: slide-in 0.5s forwards;
+  @keyframes slide-in {
+    100% { transform: translateX(0%); }
+}
 }
 
 
