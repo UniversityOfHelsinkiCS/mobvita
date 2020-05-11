@@ -15,6 +15,7 @@ import GroupView from './Groups/index'
 import Concepts from './Concepts'
 import Profile from './Profile/Profile'
 import ResetPassword from './AccessControl/ResetPassword'
+import Help from './StaticContent/Help'
 
 export default () => (
   <Switch>
@@ -25,6 +26,7 @@ export default () => (
     <Route exact path="/reset-password/:token" component={ResetPassword} />
     <Route exact path="/login" component={Login} />
     <Route exact path="/register" component={Register} />
+    <Route exact path="/help" component={Help} />
     <ProtectedRoute languageRequired={false} exact path="/learningLanguage" component={LanguageSelectView} />
     <ProtectedRoute exact path="/home" component={MenuTabs} />
     <ProtectedRoute exact path="/library" component={MenuTabs} />
