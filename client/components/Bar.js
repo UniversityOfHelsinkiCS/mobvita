@@ -105,6 +105,20 @@ export default function Bar({ history }) {
                   />
                 </Link>
               </div>
+              {user
+                && (
+                  <button
+                    type="button"
+                    data-cy="logout"
+                    onClick={() => menuClickWrapper(signOut)}
+                    className="logout-button"
+                  >
+                    <span className="padding-right-1">
+                      <FormattedMessage id="sign-out" />
+                    </span>
+                    <Icon name="sign out" />
+                  </button>
+                )}
             </div>
             {!smallWindow
               && <a className="padding-bottom-1" href="https://revita-old.cs.helsinki.fi/"><i><FormattedMessage id="take-me-to-old-revita" /> ⇒</i></a>
@@ -188,7 +202,15 @@ export default function Bar({ history }) {
                   )}
                 />
                 <ContactUs trigger={<Button variant="secondary" onClick={() => menuClickWrapper()} style={{ flexBasis: '50%', marginRight: '0.5em' }}><FormattedMessage id="Contact" /></Button>} />
-                {user && <Button data-cy="logout" variant="secondary" style={{ flexBasis: '50%' }} onClick={() => menuClickWrapper(signOut)}><FormattedMessage id="sign-out" /></Button>}
+                <Button
+                  variant="secondary"
+                  style={{ flexBasis: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center' }}
+                  onClick={() => menuClickWrapper()}
+                  as={Link}
+                  to="/help"
+                >
+                  <FormattedMessage id="Help" />
+                </Button>
               </Menu.Item>
               <TermsAndConditions
                 trigger={<Button data-cy="tc-button" onClick={() => menuClickWrapper()} variant="link"> Terms and Conditions, Privacy Policy </Button>}

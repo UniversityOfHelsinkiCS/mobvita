@@ -301,6 +301,19 @@ body {
   }
 }
 
+.logout-button {
+  position: fixed;
+  right: 0;
+  color: $primary-color;
+  font-size: 13px;
+  font-style: italic;
+  background-color: $white;
+  border: none;
+  &:hover {
+    color: $secondary-text-color;
+  }
+}
+
 .dictionary-help {
   width: 350px;
   margin-left: 1em;
