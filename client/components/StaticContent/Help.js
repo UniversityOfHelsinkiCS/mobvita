@@ -3,9 +3,12 @@ import { useSelector } from 'react-redux'
 import { Segment } from 'semantic-ui-react'
 
 const Help = () => {
+  const interfaceLanguage = useSelector(({ user }) => user.data && user.data.user.interfaceLanguage)
   const locale = useSelector(({ locale }) => locale)
 
-  const videoUrl = locale === 'it'
+  const lang = interfaceLanguage || locale
+
+  const videoUrl = lang === 'Italian' || lang === 'it'
     ? 'https://player.vimeo.com/video/417173105'
     : 'https://player.vimeo.com/video/417168581'
 
