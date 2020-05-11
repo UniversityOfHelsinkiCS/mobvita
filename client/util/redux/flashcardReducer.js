@@ -31,6 +31,7 @@ export default (state = {}, action) => {
       return {
         ...state,
         cards: action.response.flashcards.all,
+        sessionId: action.response.session_id,
         pending: false,
         error: false,
       }
