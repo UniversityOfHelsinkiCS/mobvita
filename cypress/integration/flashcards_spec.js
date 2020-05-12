@@ -37,7 +37,7 @@ describe('flashcards', function () {
     })
 
     it('story specific flashcards can be accessed', function () {
-      cy.visit('http://localhost:8000/flashcards/5c407e9eff634503466b0dde/')
+      cy.visit('http://localhost:8000/flashcards/stories/5c407e9eff634503466b0dde/')
       cy.get('[data-cy=flashcard-content]')
     })
 
