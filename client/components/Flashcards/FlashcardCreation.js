@@ -3,6 +3,7 @@ import { useSelector, useDispatch } from 'react-redux'
 import ReactCardFlip from 'react-card-flip'
 import { Form } from 'react-bootstrap'
 import { Icon } from 'semantic-ui-react'
+import { FormattedMessage } from 'react-intl'
 import {
   learningLanguageSelector,
   dictionaryLanguageSelector,
@@ -80,40 +81,52 @@ const FlashcardCreation = () => {
   return (
     <ReactCardFlip isFlipped={flipped}>
       <div className="flashcard">
-        <span>New word</span>
+        <span>
+          <FormattedMessage id="new-word" />
+        </span>
         <Form.Control type="text" value={word} onChange={handleWordChange} />
-        <span>Hints for this flashcard</span>
+        <span>
+          <FormattedMessage id="hints-for-this-flashcard" />
+        </span>
         <ul>
           {asListItems(hints, handleHintDelete)}
         </ul>
         <Form.Control as="textarea" value={hint} onChange={handleHintChange} />
-        <button type="button" onClick={handleHintSave} disabled={!hint}>save the hint</button>
+        <button type="button" onClick={handleHintSave} disabled={!hint}>
+          <FormattedMessage id="save-the-hint" />
+        </button>
         <div className="flashcard-footer">
           <button
             className="flashcard-blended-input"
             type="button"
             onClick={() => setFlipped(true)}
           >
-            Add translations
+            <FormattedMessage id="Translations" />
             <Icon name="arrow right" />
           </button>
         </div>
       </div>
       <div className="flashcard">
-        <span>New translations</span>
+        <span>
+          <FormattedMessage id="new-translations" />
+        </span>
         <ul>
           {asListItems(translations, handleTranslationDelete)}
         </ul>
         <Form.Control type="text" value={translation} onChange={handleTranslationChange} />
-        <button onClick={handleTranslationSave} disabled={!translation}>Save the translation</button>
-        <button onClick={handleSave}>Save</button>
+        <button type="button" onClick={handleTranslationSave} disabled={!translation}>
+          <FormattedMessage id="save-the-translation" />
+        </button>
+        <button type="button" onClick={handleSave}>
+          <FormattedMessage id="save" />
+        </button>
         <div className="flashcard-footer">
           <button
             className="flashcard-blended-input"
             type="button"
             onClick={() => setFlipped(false)}
           >
-            Flip back
+            <FormattedMessage id="Flip" />
             <Icon name="arrow right" />
           </button>
         </div>

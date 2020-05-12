@@ -140,8 +140,13 @@ export default (state = initialState, action) => {
       }
     case 'CREATE_FLASHCARD_SUCCESS':
       return {
-        translationId: 'Flashcard created',
+        translationId: 'submit-done',
         type: type.success,
+      }
+    case 'CREATE_FLASHCARD_FAILURE':
+      return {
+        message: action.response.response.data,
+        type: type.error,
       }
     default:
       return state
