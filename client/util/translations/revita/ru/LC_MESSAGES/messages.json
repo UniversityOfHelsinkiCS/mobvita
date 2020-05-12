@@ -748,11 +748,11 @@
     "remove-story-from-group-warning": "Текст будет удален из библиотеки группы {group}",
     "select-a-student-from-list": "Выберите ученика из списка",
     "take-me-to-old-revita": "К старой версии Ревиты",
-    "practice-random-story": "",
-    "stories-selected": "",
-    "Stories": "",
-    "Audio settings": "",
-    "Pronounce clicked words": "",
-    "Always": "",
-    "Only on demand": ""
+    "practice-random-story": "Practice random story",
+    "stories-selected": "Stories selected",
+    "Stories": "Тексты",
+    "Audio settings": "Настройки аудио/звука",
+    "Pronounce clicked words": "Прослушать незнакомые слова",
+    "Always": "Все слова, на которые я кликаю",
+    "Only on demand": "Только когда я специально попрошу озвучить"
 }
