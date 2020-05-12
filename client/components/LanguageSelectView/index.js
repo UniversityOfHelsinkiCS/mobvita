@@ -52,6 +52,10 @@ const LearningLanguageSelectView = () => {
   }, [pending])
 
   const checkForTranslatableLanguages = (lang) => {
+    if (!translatableLanguages[lang]) {
+      dispatch(updateDictionaryLanguage('English'))
+      return
+    }
     if (translatableLanguages[lang].includes(dictionaryLanguage)) return
     if (translatableLanguages[lang].includes('English')) {
       dispatch(updateDictionaryLanguage('English'))
