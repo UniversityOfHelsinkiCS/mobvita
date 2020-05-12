@@ -1,0 +1,16 @@
+version: '3.5'
+
+services:
+  app:
+    build:
+      context: ./
+      dockerfile: config/local.Dockerfile
+    image: mobvita_local
+    volumes:
+      - ./:/usr/src/app
+    ports:
+      - 8000:8000
+    container_name: mobvita_local
+    environment: 
+      - REVITA_URL=http://${hostname}:5000/api
+    network_mode: "host"
