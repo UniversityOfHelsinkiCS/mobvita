@@ -752,7 +752,7 @@
     "stories-selected": "tarinaa valittu",
     "Stories": "Tarinat",
     "Audio settings": "Ääniasetukset",
-    "Pronounce clicked words": "Lausu klikattuja sanoja",
-    "Always": "Aina",
-    "Only on demand": "Vain vaadittaessa"
+    "Pronounce clicked words": "Tuntemattomia sanoja klikatessa",
+    "Always": "Lausu aina",
+    "Only on demand": "Lausu vain pyynnöstä"
 }
