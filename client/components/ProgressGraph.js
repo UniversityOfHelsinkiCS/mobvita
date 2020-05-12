@@ -27,13 +27,41 @@ const ProgressGraph = ({ exerciseHistory, flashcardHistory, startDate, endDate }
 
   const height = smallScreen ? '75%' : '35%'
 
+  const levels = {
+    1250: 'A1',
+    1450: 'A2',
+    1650: 'B1',
+    1850: 'B2',
+    2050: 'C1',
+    2250: 'C2',
+  }
+
   const options = {
     title: { text: '' },
     series,
     chart: { height },
     credits: { enabled: false },
     allowDecimals: false,
-    yAxis: { title: { text: intl.formatMessage({ id: 'score' }) } },
+    alignTicks: false,
+    yAxis: [
+      { title: { text: intl.formatMessage({ id: 'score' }) } },
+      {
+        opposite: true,
+        linkedTo: 0,
+        gridLineWidth: 0,
+        tickPositions: Object.keys(levels).map(Number),
+        labels: {
+          formatter: function () {
+            return levels[this.value]
+          },
+          style: {
+            fontSize: '16px',
+            color: 'slateGrey',
+          },
+        },
+        title: { enabled: false },
+      },
+    ],
     xAxis: {
       type: 'datetime',
       labels: { format: '{value:%m/%d}' },
