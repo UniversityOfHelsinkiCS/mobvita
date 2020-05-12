@@ -149,7 +149,7 @@ const StoryListItem = ({ story, userCanShare, libraryShown, selectedGroup }) => 
                     <Dropdown.Item
                       text={<FormattedMessage id="Flashcards" />}
                       as={Link}
-                      to={`/flashcards/${story._id}/`}
+                      to={`/flashcards/stories/${story._id}/`}
                       icon="id card"
                     />
                     <Dropdown.Item
@@ -169,7 +169,7 @@ const StoryListItem = ({ story, userCanShare, libraryShown, selectedGroup }) => 
                     <FormattedMessage id="practice" />
                   </Button>
                 </Link>
-                <Link to={`/flashcards/${story._id}/`}>
+                <Link to={`/flashcards/stories/${story._id}/`}>
                   <Button variant="primary" style={{ marginRight: '0.5em' }}>
                     <FormattedMessage id="Flashcards" />
                   </Button>

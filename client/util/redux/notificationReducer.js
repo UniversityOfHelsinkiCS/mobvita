@@ -138,6 +138,11 @@ export default (state = initialState, action) => {
         translationId: 'story-unshared',
         type: type.success,
       }
+    case 'CREATE_FLASHCARD_SUCCESS':
+      return {
+        translationId: 'Flashcard created',
+        type: type.success,
+      }
     default:
       return state
   }

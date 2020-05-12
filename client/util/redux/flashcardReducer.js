@@ -19,6 +19,12 @@ export const deleteFlashcard = (id) => {
   return callBuilder(route, prefix, 'post', { op: 'delete' })
 }
 
+export const createFlashcard = (inputLanguage, outputLanguage, flashcardObject) => {
+  const route = `/flashcards/${inputLanguage}/${outputLanguage}/single`
+  const prefix = 'CREATE_FLASHCARD'
+  return callBuilder(route, prefix, 'post', flashcardObject)
+}
+
 export default (state = {}, action) => {
   switch (action.type) {
     case 'GET_FLASHCARDS_ATTEMPT':
@@ -58,6 +64,24 @@ export default (state = {}, action) => {
       return {
         ...state,
         deletePending: false,
+        error: true,
+      }
+    case 'CREATE_FLASHCARD_ATTEMPT':
+      return {
+        ...state,
+        pending: true,
+        error: false,
+      }
+    case 'CREATE_FLASHCARD_SUCCESS':
+      return {
+        ...state,
+        pending: false,
+        error: false,
+      }
+    case 'CREATE_FLASHCARD_ERROR':
+      return {
+        ...state,
+        pending: false,
         error: true,
       }
     case 'ANSWER_FLASHCARD_ATTEMPT':

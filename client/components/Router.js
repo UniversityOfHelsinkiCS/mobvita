@@ -16,6 +16,7 @@ import Concepts from './Concepts'
 import Profile from './Profile/Profile'
 import ResetPassword from './AccessControl/ResetPassword'
 import Help from './StaticContent/Help'
+import FlashcardCreation from './Flashcards/FlashcardCreation'
 
 export default () => (
   <Switch>
@@ -31,7 +32,8 @@ export default () => (
     <ProtectedRoute exact path="/home" component={MenuTabs} />
     <ProtectedRoute exact path="/library" component={MenuTabs} />
     <ProtectedRoute exact path="/flashcards" component={Flashcards} />
-    <ProtectedRoute exact path="/flashcards/:storyId" component={Flashcards} />
+    <ProtectedRoute exact path="/flashcards/stories/:storyId" component={Flashcards} />
+    <ProtectedRoute exact path="/flashcards/new" component={FlashcardCreation} />
     <ProtectedRoute exact path="/stories/:id" component={SingleStoryView} />
     <ProtectedRoute exact path="/stories/:id/practice/" component={PracticeView} />
     <ProtectedRoute exact path="/stories/:id/compete/" component={CompeteView} />
