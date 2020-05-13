@@ -832,8 +832,8 @@ body {
 
 .language {
   width: 7em;
-  display: 'flex';
-  flex-direction: 'column';
+  display: flex;
+  flex-direction: column;
   align-items: center;
   padding: 1em;
   cursor: pointer;
