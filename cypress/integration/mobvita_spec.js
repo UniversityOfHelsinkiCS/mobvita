@@ -145,7 +145,7 @@ describe('Mobvita', function () {
         cy.get('[data-cy="submit-story"]')
           .click()
         cy.get('[class=Toastify]').contains('Prosessoidaan tarinaasi')
-        cy.contains('5G-kännyköitä', { timeout: 20000 })
+        cy.contains('5G-kännyköitä', { timeout: 40000 })
         cy.contains('Lue')
           .click()
         cy.contains('Harjoittele', { timeout: 20000 })
