@@ -28,6 +28,7 @@ import science1 from 'Assets/science1.png'
 import sport1 from 'Assets/sport1.png'
 import flashcards from 'Assets/flashcards.jpg'
 import logo from 'Assets/Logo.png'
+import flashcardIcon from 'Assets/flashcard_icon.png'
 import { callApi } from './apiConnection'
 
 export const images = {
@@ -58,6 +59,7 @@ export const images = {
   flagSyriac,
   flashcards,
   logo,
+  flashcardIcon,
 }
 
 export const newCapitalize = (word) => {
@@ -153,7 +155,7 @@ export const getTextWidth = (text) => {
 
 export const speak = (surfaceWord, learningLanguage) => {
   try {
-    window.responsiveVoice.speak(surfaceWord, `${learningLanguage === 'german' ? 'Deutsch' : capitalize(learningLanguage)} Female`)
+    window.responsiveVoice.speak(surfaceWord, `${learningLanguage === 'German' ? 'Deutsch' : capitalize(learningLanguage)} Female`)
   } catch (e) {
     console.log(`Failed to speak ${surfaceWord} in ${capitalize(learningLanguage)}`)
   }
