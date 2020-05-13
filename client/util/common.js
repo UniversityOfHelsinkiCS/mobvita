@@ -91,6 +91,19 @@ export const supportedLearningLanguages = {
   experimental: ['syriac'],
 }
 
+export const betaLanguages = [
+  'catalan',
+  'french',
+  'italian',
+  'portuguese',
+  'spanish',
+  'swedish',
+  'north-saami',
+  'sakha',
+  'syriac',
+  'turkish',
+]
+
 export const rightAlignedLanguages = ['Syriac']
 
 export const specialFonts = { Syriac: { fontFamily: 'EastSyriacCtesiphon', fontSize: '2rem' } }

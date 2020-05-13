@@ -10,6 +10,7 @@ import {
   dictionaryLanguageSelector,
   hiddenFeatures,
   translatableLanguages,
+  betaLanguages,
 } from 'Utilities/common'
 import { updateLearningLanguage, updateDictionaryLanguage } from 'Utilities/redux/userReducer'
 import { useDispatch, useSelector } from 'react-redux'
@@ -25,8 +26,9 @@ const LanguageGroup = ({ languages, handleLearningLanguageChange }) => {
             alt={lang}
           />
           <span className="language-name">
-            <FormattedMessage id={lang.split('-').map(l => capitalize(l)).join('-')} />
+            <FormattedMessage id={lang.split('-').map(l => capitalize(l)).join('-')} />{betaLanguages.includes(lang) && <sup><b>&beta;</b></sup>}
           </span>
+
         </div>
       ))}
     </div>
