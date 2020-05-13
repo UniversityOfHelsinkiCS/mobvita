@@ -111,7 +111,7 @@ export default function Toaster() {
       dispatch({ type: 'RESET_NOTIFICATION' })
       return
     }
-    if (message !== null) {
+    if (message !== null && message !== undefined) {
       toast(message, { type, ...options })
       dispatch({ type: 'RESET_NOTIFICATION' })
     }

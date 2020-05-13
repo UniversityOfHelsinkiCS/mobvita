@@ -136,9 +136,11 @@ const CurrentPractice = ({ storyId, handleWordClick, handleInputChange }) => {
 
   useEffect(() => {
     if (!snippets.pending && scrollTarget.current) {
-      setTimeout(() => {
-        scrollTarget.current.scrollIntoView({ behavior: 'smooth' })
-      }, 50)
+      if (scrollTarget.current) {
+        setTimeout(() => {
+          scrollTarget.current.scrollIntoView({ behavior: 'smooth' })
+        }, 50)
+      }
     }
   }, [snippets.pending, snippets.previous])
 

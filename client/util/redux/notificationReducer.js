@@ -13,11 +13,15 @@ const initialState = {
   options: null,
 }
 
+const failureMessage = response => (response.response
+  ? response.response.data
+  : 'Server error')
+
 export default (state = initialState, action) => {
   switch (action.type) {
     case 'POST_NEW_STORY_FAILURE':
       return {
-        message: action.response.response.data,
+        message: failureMessage(action.response),
         type: type.error,
         options: { autoClose: 10000 },
       }
@@ -42,7 +46,7 @@ export default (state = initialState, action) => {
       }
     case 'CREATE_GROUP_FAILURE':
       return {
-        message: action.response.response.data,
+        message: failureMessage(action.response),
         type: type.error,
       }
     case 'CONFIRM_USER_SUCCESS':
@@ -64,12 +68,12 @@ export default (state = initialState, action) => {
 
     case 'REMOVE_FROM_GROUP_FAILURE':
       return {
-        message: action.response.response.data,
+        message: failureMessage(action.response),
         type: type.error,
       }
     case 'DELETE_GROUP_FAILURE':
       return {
-        message: action.response.response.data,
+        message: failureMessage(action.response),
         type: type.error,
       }
     case 'DELETE_GROUP_SUCCESS':
@@ -89,7 +93,7 @@ export default (state = initialState, action) => {
       }
     case 'JOIN_GROUP_FAILURE':
       return {
-        message: action.response.response.data,
+        message: failureMessage(action.response),
         type: type.error,
       }
     case 'CHANGE_PASSWORD_SUCCESS':
@@ -99,7 +103,7 @@ export default (state = initialState, action) => {
       }
     case 'CHANGE_PASSWORD_FAILURE':
       return {
-        message: action.response.response.data,
+        message: failureMessage(action.response),
         type: type.error,
       }
     case 'FORGOT_PASSWORD_SUCCESS':
@@ -109,7 +113,7 @@ export default (state = initialState, action) => {
       }
     case 'FORGOT_PASSWORD_FAILURE':
       return {
-        message: action.response.response.data,
+        message: failureMessage(action.response),
         type: type.error,
       }
     case 'RESET_PASSWORD_SUCCESS':
@@ -119,7 +123,7 @@ export default (state = initialState, action) => {
       }
     case 'RESET_PASSWORD_FAILURE':
       return {
-        message: action.response.response.data,
+        message: failureMessage(action.response),
         type: type.error,
       }
     case 'GET_SNIPPET_ANSWERS_FAILURE':
@@ -130,7 +134,7 @@ export default (state = initialState, action) => {
       }
     case 'UNSHARE_STORY_FAILURE':
       return {
-        message: action.response.response.data,
+        message: failureMessage(action.response),
         type: type.error,
       }
     case 'UNSHARE_STORY_SUCCESS':
@@ -145,7 +149,7 @@ export default (state = initialState, action) => {
       }
     case 'CREATE_FLASHCARD_FAILURE':
       return {
-        message: action.response.response.data,
+        message: failureMessage(action.response),
         type: type.error,
       }
     default:

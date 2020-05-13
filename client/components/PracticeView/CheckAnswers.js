@@ -2,7 +2,7 @@ import React from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import { FormattedMessage } from 'react-intl'
 import { Button, Spinner } from 'react-bootstrap'
-import { postAnswers } from 'Utilities/redux/snippetsReducer'
+import { postAnswers, getCurrentSnippet } from 'Utilities/redux/snippetsReducer'
 import { setAttempts } from 'Utilities/redux/practiceReducer'
 
 const CheckAnswers = ({ storyId, exerciseCount }) => {
@@ -30,18 +30,40 @@ const CheckAnswers = ({ storyId, exerciseCount }) => {
     dispatch(postAnswers(storyId, answersObj))
   }
 
+  const handleRetry = () => {
+    dispatch(getCurrentSnippet(storyId))
+  }
+
+  const showCheckAsnwers = snippets.answersPending || snippets.pending || snippets.focused
+
   return (
-    <Button
-      data-cy="check-answer"
-      block
-      variant="primary"
-      disabled={snippets.answersPending || snippets.pending}
-      onClick={() => checkAnswers()}
-    >
-      {snippets.answersPending
-        ? <Spinner animation="border" variant="dark" size="lg" />
-        : <span><FormattedMessage id="check-answer" /></span>}
-    </Button>
+    <div>
+      {showCheckAsnwers
+        ? (
+          <Button
+            data-cy="check-answer"
+            block
+            variant="primary"
+            disabled={snippets.answersPending || snippets.pending || !snippets.focused}
+            onClick={() => checkAnswers()}
+          >
+            {snippets.answersPending
+              ? <Spinner animation="border" variant="dark" size="lg" />
+              : <span><FormattedMessage id="check-answer" /></span>}
+          </Button>
+        ) : (
+          <Button
+            block
+            variant="primary"
+            disabled={snippets.answersPending || snippets.pending}
+            onClick={() => handleRetry()}
+          >
+            Retry loading snippet
+          </Button>
+        )
+      }
+
+    </div>
   )
 }
 
