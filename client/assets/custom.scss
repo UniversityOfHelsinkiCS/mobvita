@@ -914,6 +914,27 @@ body {
   &-left {
     margin-left: auto;
   }
+  &-top {
+    margin-top: auto;
+  }
+}
+
+.margin-top {
+  &-1 {
+    margin-top: 0.5em;
+  }
+}
+
+.margin-bottom {
+  &-1 {
+    margin-bottom: 0.5em;
+  }
+  &-2 {
+    margin-bottom: 1em;
+  }
+  &-3 {
+    margin-bottom: 2em;
+  }
 }
 
 .padding-bottom {
@@ -925,6 +946,9 @@ body {
   }
   &-3 {
     padding-bottom: 2em;
+  }
+  &-4 {
+    padding-bottom: 3em;
   }
 }
 
@@ -1054,6 +1078,10 @@ body {
   }
 }
 
+.flex-static-size {
+  flex: 0 0 auto;
+}
+
 .align-start {
   align-items: flex-start;
 }
@@ -1066,6 +1094,10 @@ body {
 
 .header-2 {
   font-size: 22px;
+}
+
+.header-3 {
+  font-size: 20px;
 }
 
 .bold-italics {
@@ -1084,4 +1116,8 @@ body {
 
 .max-width {
   max-width: 1024px;
+}
+
+.auto-overflow {
+  overflow: auto;
 }

@@ -1,9 +1,9 @@
 import React, { useState } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import ReactCardFlip from 'react-card-flip'
-import { Form } from 'react-bootstrap'
+import { Form, Button } from 'react-bootstrap'
 import { Icon } from 'semantic-ui-react'
-import { FormattedMessage } from 'react-intl'
+import { FormattedMessage, useIntl } from 'react-intl'
 import {
   learningLanguageSelector,
   dictionaryLanguageSelector,
@@ -23,6 +23,7 @@ const FlashcardCreation = () => {
   const dictionaryLanguage = useSelector(dictionaryLanguageSelector)
 
   const dispatch = useDispatch()
+  const intl = useIntl()
 
   if (!hiddenFeatures) return null
 
@@ -35,12 +36,14 @@ const FlashcardCreation = () => {
   }
 
   const handleHintSave = () => {
-    setHints(hints.concat(hint))
-    setHint('')
+    if (hint) {
+      setHints(hints.concat(hint))
+      setHint('')
+    }
   }
 
-  const handleHintDelete = (hint) => {
-    setHints(hints.filter(h => h !== hint))
+  const handleHintDelete = (selectedHint) => {
+    setHints(hints.filter(h => h !== selectedHint))
   }
 
   const handleTranslationChange = (e) => {
@@ -48,12 +51,20 @@ const FlashcardCreation = () => {
   }
 
   const handleTranslationSave = () => {
-    setTranslations(translations.concat(translation))
-    setTranslation('')
+    if (translation) {
+      setTranslations(translations.concat(translation))
+      setTranslation('')
+    }
   }
 
-  const handleTranslationDelete = (translation) => {
-    setTranslations(translations.filter(t => t !== translation))
+  const handleTranslationKeyDown = (e) => {
+    if (e.key === 'Enter') {
+      handleTranslationSave()
+    }
+  }
+
+  const handleTranslationDelete = (selectedTranslation) => {
+    setTranslations(translations.filter(t => t !== selectedTranslation))
   }
 
   const handleSave = () => {
@@ -71,30 +82,53 @@ const FlashcardCreation = () => {
     setFlipped(false)
   }
 
-  const asListItems = (values, handleDelete) => values.map(value => (
-    <li key={value}>
+  const asListItems = (values, handleDelete) => values.map((value, index) => (
+    /* eslint-disable-next-line */
+    <li key={`${value}-${index}`} className="test">
       {value}
-      <Icon name="close" onClick={() => handleDelete(value)} />
+      <Icon
+        name="close"
+        color="grey"
+        style={{ textShadow: 'none', lineHeight: '1.5rem', cursor: 'pointer' }}
+        onClick={() => handleDelete(value)}
+      />
     </li>
   ))
 
   return (
     <ReactCardFlip isFlipped={flipped}>
       <div className="flashcard">
-        <span>
-          <FormattedMessage id="new-word" />
-        </span>
-        <Form.Control type="text" value={word} onChange={handleWordChange} />
-        <span>
-          <FormattedMessage id="hints-for-this-flashcard" />
-        </span>
-        <ul>
-          {asListItems(hints, handleHintDelete)}
-        </ul>
-        <Form.Control as="textarea" value={hint} onChange={handleHintChange} />
-        <button type="button" onClick={handleHintSave} disabled={!hint}>
-          <FormattedMessage id="save-the-hint" />
-        </button>
+        <div className="padding-top-2 padding-bottom-4">
+          <label htmlFor="newWord" className="header-3 center">
+            <FormattedMessage id="new-word" />
+          </label>
+          <Form.Control id="newWord" type="text" value={word} onChange={handleWordChange} />
+        </div>
+        <div className="flex-column padding-bottom-1 auto-overflow">
+          <label htmlFor="hints" className="header-3 center">
+            <FormattedMessage id="hints-for-this-flashcard" />
+          </label>
+          <div className="auto-overflow">
+            <ul>
+              {asListItems(hints, handleHintDelete)}
+            </ul>
+          </div>
+          <Form.Control
+            className="flex-static-size margin-top-1"
+            id="hints"
+            as="textarea"
+            placeholder={intl.formatMessage({ id: 'type-new-hint' })}
+            value={hint}
+            onChange={handleHintChange}
+          />
+          <Button
+            variant="outline-primary"
+            className="flashcard-button margin-top-1"
+            onClick={handleHintSave}
+          >
+            <FormattedMessage id="save-the-hint" />
+          </Button>
+        </div>
         <div className="flashcard-footer">
           <button
             className="flashcard-blended-input"
@@ -102,31 +136,50 @@ const FlashcardCreation = () => {
             onClick={() => setFlipped(true)}
           >
             <FormattedMessage id="Translations" />
+            {'  '}
             <Icon name="arrow right" />
           </button>
         </div>
       </div>
       <div className="flashcard">
-        <span>
+        <label htmlFor="newTranslation" className="header-3 center padding-top-2">
           <FormattedMessage id="new-translations" />
-        </span>
-        <ul>
-          {asListItems(translations, handleTranslationDelete)}
-        </ul>
-        <Form.Control type="text" value={translation} onChange={handleTranslationChange} />
-        <button type="button" onClick={handleTranslationSave} disabled={!translation}>
+        </label>
+        <div className="auto-overflow margin-bottom-1">
+          <ul>
+            {asListItems(translations, handleTranslationDelete)}
+          </ul>
+        </div>
+        <Form.Control
+          id="newTranslation"
+          type="text"
+          placeholder={intl.formatMessage({ id: 'type-new-translation' })}
+          value={translation}
+          onChange={handleTranslationChange}
+          onKeyDown={handleTranslationKeyDown}
+        />
+        <Button
+          variant="outline-primary"
+          className="flashcard-button margin-top-1 margin-bottom-3"
+          onClick={handleTranslationSave}
+        >
           <FormattedMessage id="save-the-translation" />
-        </button>
-        <button type="button" onClick={handleSave}>
-          <FormattedMessage id="save" />
-        </button>
-        <div className="flashcard-footer">
+        </Button>
+        <Button
+          variant="outline-success"
+          className="flashcard-button margin-bottom-3 auto-top"
+          onClick={handleSave}
+        >
+          <FormattedMessage id="submit-flashcard" />
+        </Button>
+        <div className="flashcard-footer margin-top-1">
           <button
             className="flashcard-blended-input"
             type="button"
             onClick={() => setFlipped(false)}
           >
             <FormattedMessage id="Flip" />
+            {'  '}
             <Icon name="arrow right" />
           </button>
         </div>
