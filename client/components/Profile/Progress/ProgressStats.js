@@ -2,8 +2,8 @@ import React, { useEffect } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import { useIntl } from 'react-intl'
 import { getPersonalSummary } from 'Utilities/redux/groupSummaryReducer'
-import { Spinner } from 'react-bootstrap'
 import { learningLanguageSelector, images, capitalize } from 'Utilities/common'
+import Spinner from 'Components/Spinner'
 import 'react-datepicker/dist/react-datepicker.css'
 
 const ProgressStats = ({ startDate, endDate }) => {
@@ -17,13 +17,7 @@ const ProgressStats = ({ startDate, endDate }) => {
     dispatch(getPersonalSummary(learningLanguage, startDate, endDate))
   }, [startDate, endDate, learningLanguage])
 
-  if (!summary || pending) {
-    return (
-      <div className="spinner-container">
-        <Spinner animation="border" variant="primary" size="lg" />
-      </div>
-    )
-  }
+  if (!summary || pending) return <Spinner />
 
   const getLearningLanguageFlag = () => {
     if (learningLanguage) {

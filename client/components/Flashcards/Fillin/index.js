@@ -5,10 +5,10 @@ import flowRight from 'lodash/flowRight'
 import { useDispatch, useSelector } from 'react-redux'
 import { useParams } from 'react-router-dom'
 import { Icon } from 'semantic-ui-react'
-import { Spinner } from 'react-bootstrap'
 import { getFlashcards } from 'Utilities/redux/flashcardReducer'
 import { learningLanguageSelector, dictionaryLanguageSelector } from 'Utilities/common'
 import useWindowDimension from 'Utilities/windowDimensions'
+import Spinner from 'Components/Spinner'
 import Flashcard from './Flashcard'
 import FlashcardEndView from './FlashcardEndView'
 import FlashcardNoCards from './FlashCardNoCards'
@@ -36,13 +36,7 @@ const Flashcards = () => {
     setSwipeIndex(0)
   }, [pending])
 
-  if (pending || deletePending || !cards) {
-    return (
-      <div className="spinner-container auto">
-        <Spinner animation="border" variant="primary" size="lg" />
-      </div>
-    )
-  }
+  if (pending || deletePending || !cards) return <Spinner />
 
   // Limits so that you cant swipe back more than once.
   // React-swipeable-views has some weird behaviour with its index. This tries to fix it.

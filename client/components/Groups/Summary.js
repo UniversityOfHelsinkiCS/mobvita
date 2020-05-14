@@ -1,12 +1,13 @@
 import React, { useState, useEffect } from 'react'
 import { useSelector } from 'react-redux'
-import { Table, Spinner } from 'react-bootstrap'
+import { Table } from 'react-bootstrap'
 import { Icon } from 'semantic-ui-react'
 import { CSVLink } from 'react-csv'
 import DatePicker from 'react-datepicker'
 import moment from 'moment'
 import { FormattedMessage } from 'react-intl'
-import { capitalize, supportedLearningLanguages, newCapitalize } from '../../util/common'
+import Spinner from 'Components/Spinner'
+import { capitalize } from 'Utilities/common'
 
 
 import 'react-datepicker/dist/react-datepicker.css'
@@ -73,13 +74,7 @@ const Summary = ({ groupName, isTeaching, getSummary, learningLanguage }) => {
     }
   }, [startDate, endDate, groupName])
 
-  if (!summary) {
-    return (
-      <div className="spinner-container">
-        <Spinner animation="border" variant="primary" size="lg" />
-      </div>
-    )
-  }
+  if (!summary) return <Spinner />
 
   const handleSort = (field) => {
     setSorter(
@@ -115,11 +110,9 @@ const Summary = ({ groupName, isTeaching, getSummary, learningLanguage }) => {
           <FormattedMessage id="download-csv" />
         </CSVLink>
       </div>
-      {pending ? (
-        <div className="spinner-container">
-          <Spinner animation="border" variant="primary" size="lg" />
-        </div>
-      ) : (
+      {pending
+        ? <Spinner />
+        : (
           <Table striped bordered hover>
             <thead>
               <tr>

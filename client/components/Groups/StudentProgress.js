@@ -3,8 +3,8 @@ import { useDispatch, useSelector } from 'react-redux'
 import { learningLanguageSelector } from 'Utilities/common'
 import { getStudentProgress } from 'Utilities/redux/groupProgressReducer'
 import { FormattedMessage } from 'react-intl'
-import { Spinner } from 'react-bootstrap'
 import ProgressGraph from 'Components/ProgressGraph'
+import Spinner from 'Components/Spinner'
 import moment from 'moment'
 import DatePicker from 'react-datepicker'
 
@@ -30,13 +30,7 @@ const StudentProgress = ({ student, groupId }) => {
     dispatch(getStudentProgress(student._id, groupId, learningLanguage))
   }, [student])
 
-  if (pending) {
-    return (
-      <div className="spinner-container">
-        <Spinner animation="border" variant="primary" size="lg" />
-      </div>
-    )
-  }
+  if (pending) return <Spinner />
 
   return (
     <div className="group-container">

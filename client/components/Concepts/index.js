@@ -1,12 +1,10 @@
 import React, { useEffect, useState } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import { useParams, useHistory } from 'react-router-dom'
-import { Spinner } from 'react-bootstrap'
-import { getMetadata } from 'Utilities/redux/metadataReducer'
 import { getStoryAction } from 'Utilities/redux/storiesReducer'
 import { getTestConcepts, getGroup } from 'Utilities/redux/groupsReducer'
 import { getSelf } from 'Utilities/redux/userReducer'
-import { learningLanguageSelector } from 'Utilities/common'
+import Spinner from 'Components/Spinner'
 import UserConcept from './UserConcept'
 import GroupConcept from './GroupConcept'
 import StoryConcept from './StoryConcept'
@@ -75,13 +73,7 @@ const Concepts = () => {
     if (target === 'groups' && !isTeaching && isTeaching !== undefined) history.replace('/groups')
   }, [isTeaching])
 
-  if (conceptsPending || !concepts) {
-    return (
-      <div className="spinner-container">
-        <Spinner animation="border" variant="primary" size="lg" />
-      </div>
-    )
-  }
+  if (conceptsPending || !concepts) return <Spinner />
 
   const makeConceptTree = parents => parents
     .sort((a, b) => a['UI-order'] - b['UI-order'])

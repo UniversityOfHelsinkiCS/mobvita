@@ -3,12 +3,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import { useHistory } from 'react-router-dom'
 import { CopyToClipboard } from 'react-copy-to-clipboard'
 import { getGroups, removeFromGroup, getGroupToken } from 'Utilities/redux/groupsReducer'
-import {
-  Dropdown,
-  ListGroup,
-  Button,
-  Spinner,
-} from 'react-bootstrap'
+import { Dropdown, ListGroup, Button } from 'react-bootstrap'
 import { FormattedMessage, useIntl } from 'react-intl'
 import { Icon } from 'semantic-ui-react'
 import { getSummary } from 'Utilities/redux/groupSummaryReducer'
@@ -16,6 +11,7 @@ import { setNotification } from 'Utilities/redux/notificationReducer'
 import { learningLanguageSelector } from 'Utilities/common'
 import useWindowDimensions from 'Utilities/windowDimensions'
 import { updateGroupSelect } from 'Utilities/redux/userReducer'
+import Spinner from 'Components/Spinner'
 import AddGroup from './AddGroup'
 import AddToGroup from './AddToGroup'
 import JoinGroup from './JoinGroup'
@@ -105,13 +101,7 @@ const GroupView = () => {
     dispatch(updateGroupSelect(key))
   }
 
-  if (pending || (!currentGroup && groups && groups.length > 0)) {
-    return (
-      <div className="spinner-container">
-        <Spinner animation="border" variant="primary" size="lg" />
-      </div>
-    )
-  }
+  if (pending || (!currentGroup && groups && groups.length > 0)) return <Spinner />
 
   if (!currentGroup) {
     return (

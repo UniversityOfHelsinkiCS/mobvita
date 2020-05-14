@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import { useSelector, useDispatch, shallowEqual } from 'react-redux'
 import ReactCardFlip from 'react-card-flip'
-import { Form, Button, Spinner } from 'react-bootstrap'
+import { Form, Button } from 'react-bootstrap'
 import { Icon } from 'semantic-ui-react'
 import { FormattedMessage, useIntl } from 'react-intl'
 import {
@@ -12,6 +12,7 @@ import {
 } from 'Utilities/common'
 import { createFlashcard } from 'Utilities/redux/flashcardReducer'
 import { getTranslationAction, clearTranslationAction } from 'Utilities/redux/translationReducer'
+import Spinner from 'Components/Spinner'
 
 const FlashcardCreation = () => {
   const [flipped, setFlipped] = useState(false)
@@ -184,11 +185,8 @@ const FlashcardCreation = () => {
           </label>
           <div className="auto-overflow margin-bottom-1">
             {pending
-              ? (
-                <div className="spinner-container">
-                  <Spinner animation="border" variant="primary" size="lg" />
-                </div>
-              ) : (
+              ? <Spinner />
+              : (
                 <ul>
                   {asListItems(translations, handleTranslationDelete)}
                 </ul>
