@@ -1,21 +1,31 @@
-import React, { useState } from 'react'
-import { useSelector, useDispatch } from 'react-redux'
+import React, { useState, useEffect } from 'react'
+import { useSelector, useDispatch, shallowEqual } from 'react-redux'
 import ReactCardFlip from 'react-card-flip'
-import { Form, Button } from 'react-bootstrap'
+import { Form, Button, Spinner } from 'react-bootstrap'
 import { Icon } from 'semantic-ui-react'
 import { FormattedMessage, useIntl } from 'react-intl'
 import {
   learningLanguageSelector,
   dictionaryLanguageSelector,
   hiddenFeatures,
+  capitalize,
 } from 'Utilities/common'
 import { createFlashcard } from 'Utilities/redux/flashcardReducer'
+import { getTranslationAction, clearTranslationAction } from 'Utilities/redux/translationReducer'
 
 const FlashcardCreation = () => {
   const [flipped, setFlipped] = useState(false)
   const [word, setWord] = useState('')
   const [hints, setHints] = useState([])
   const [hint, setHint] = useState('')
+
+  const { glosses, pending } = useSelector(({ translation }) => {
+    const glosses = translation.data
+      && translation.data[0]
+      && translation.data[0].glosses
+    const { pending } = translation
+    return { glosses, pending }
+  }, shallowEqual)
   const [translations, setTranslations] = useState([])
   const [translation, setTranslation] = useState('')
 
@@ -25,10 +35,30 @@ const FlashcardCreation = () => {
   const dispatch = useDispatch()
   const intl = useIntl()
 
+  useEffect(() => {
+    if (glosses) {
+      setTranslations(glosses)
+    }
+  }, [glosses])
+
+  useEffect(() => () => dispatch(clearTranslationAction()), [])
+
   if (!hiddenFeatures) return null
 
   const handleWordChange = (e) => {
     setWord(e.target.value)
+  }
+
+  const handleWordBlur = () => {
+    if (word) {
+      dispatch(
+        getTranslationAction(
+          capitalize(learningLanguage),
+          word,
+          capitalize(dictionaryLanguage),
+        ),
+      )
+    }
   }
 
   const handleHintChange = (e) => {
@@ -103,7 +133,13 @@ const FlashcardCreation = () => {
             <label htmlFor="newWord" className="header-3 center">
               <FormattedMessage id="new-word" />
             </label>
-            <Form.Control id="newWord" type="text" value={word} onChange={handleWordChange} />
+            <Form.Control
+              id="newWord"
+              type="text"
+              value={word}
+              onChange={handleWordChange}
+              onBlur={handleWordBlur}
+            />
           </div>
           <div className="flex-column padding-bottom-1 auto-overflow">
             <label htmlFor="hints" className="header-3 center">
@@ -147,9 +183,17 @@ const FlashcardCreation = () => {
             <FormattedMessage id="new-translations" />
           </label>
           <div className="auto-overflow margin-bottom-1">
-            <ul>
-              {asListItems(translations, handleTranslationDelete)}
-            </ul>
+            {pending
+              ? (
+                <div className="spinner-container">
+                  <Spinner animation="border" variant="primary" size="lg" />
+                </div>
+              ) : (
+                <ul>
+                  {asListItems(translations, handleTranslationDelete)}
+                </ul>
+              )
+            }
           </div>
           <Form.Control
             id="newTranslation"
