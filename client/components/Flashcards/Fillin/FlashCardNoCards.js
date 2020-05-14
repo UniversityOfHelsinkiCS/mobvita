@@ -1,0 +1,21 @@
+import React from 'react'
+import { FormattedMessage } from 'react-intl'
+import SelectLanguage from '../SelectLanguage'
+
+const FlashcardNoCards = ({ setSwipeIndex }) => (
+  <div className="flashcard">
+    <div
+      data-cy="no-flashcards-text"
+      className="flashcard-no-cards"
+    >
+      <p>
+        <FormattedMessage id="no-flashcards-yet-when-you-practice-a-story-and-click-on-unfamiliar-words-they-will-be-added-to-your" />
+      </p>
+    </div>
+    <div className="flashcard-footer">
+      <SelectLanguage setSwipeIndex={setSwipeIndex} />
+    </div>
+  </div>
+)
+
+export default FlashcardNoCards

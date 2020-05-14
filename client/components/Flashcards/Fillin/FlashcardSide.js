@@ -2,7 +2,7 @@ import React from 'react'
 import { Icon } from 'semantic-ui-react'
 import { FormattedMessage } from 'react-intl'
 import FlashcardDelete from './FlashcardDelete'
-import SelectLanguage from './SelectLanguage'
+import SelectLanguage from '../SelectLanguage'
 
 const FlashcardSide = ({
   flipCard,
@@ -33,7 +33,7 @@ const FlashcardSide = ({
         {children}
       </div>
       <div className="flashcard-footer">
-        <SelectLanguage />
+        {/* <SelectLanguage /> */}
         {format !== 'no-cards'
           && (
             <button
