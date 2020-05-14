@@ -12,6 +12,8 @@ const initialState = {
   errorMessage: null,
 }
 
+const failureMessage = response => (response.response ? response.response.data : 'Server error')
+
 export default (state = initialState, action) => {
   switch (action.type) {
     case 'POST_REGISTER_ATTEMPT':
@@ -27,7 +29,7 @@ export default (state = initialState, action) => {
         pending: false,
         error: true,
         accountCreated: false,
-        errorMessage: action.response.response.data,
+        errorMessage: failureMessage(action.response),
       }
     case 'POST_REGISTER_SUCCESS':
       return {
