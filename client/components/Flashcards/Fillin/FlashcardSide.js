@@ -1,6 +1,7 @@
 import React from 'react'
 import { Icon } from 'semantic-ui-react'
 import { FormattedMessage } from 'react-intl'
+import { hiddenFeatures } from 'Utilities/common'
 import FlashcardDelete from './FlashcardDelete'
 import SelectLanguage from '../SelectLanguage'
 
@@ -33,7 +34,7 @@ const FlashcardSide = ({
         {children}
       </div>
       <div className="flashcard-footer">
-        {/* <SelectLanguage /> */}
+        {!hiddenFeatures && <SelectLanguage />}
         {format !== 'no-cards'
           && (
             <button

@@ -1,6 +1,7 @@
 import React from 'react'
 import { useHistory } from 'react-router-dom'
 import useWindowDimensions from 'Utilities/windowDimensions'
+import { hiddenFeatures } from 'Utilities/common'
 import FlashcardMenu from './FlashcardMenu'
 import Fillin from './Fillin'
 import FlashcardCreation from './FlashcardCreation'
@@ -8,6 +9,8 @@ import FlashcardCreation from './FlashcardCreation'
 const Flashcards = ({ location }) => {
   const smallScreen = useWindowDimensions().width < 800
   const history = useHistory()
+
+  if (!hiddenFeatures) return <Fillin />
 
   const content = () => {
     switch (location.pathname) {
