@@ -9,9 +9,9 @@ const FlashcardSide = ({
   flipCard,
   cardIndex,
   stage,
-  format,
   children,
   id,
+  handleEdit,
 }) => {
   const backgroundColor = [
     'rgb(255, 99, 71)',
@@ -34,20 +34,26 @@ const FlashcardSide = ({
         {children}
       </div>
       <div className="flashcard-footer">
-        {!hiddenFeatures && <SelectLanguage />}
-        {format !== 'no-cards'
-          && (
+        {hiddenFeatures
+          ? (
             <button
               className="flashcard-blended-input"
               type="button"
-              onClick={() => flipCard()}
+              onClick={handleEdit}
             >
-              <FormattedMessage id="Flip" />
-              {'  '}
-              <Icon name="arrow right" />
+              <Icon name="edit" />
             </button>
-          )
+          ) : <SelectLanguage />
         }
+        <button
+          className="flashcard-blended-input auto-left"
+          type="button"
+          onClick={() => flipCard()}
+        >
+          <FormattedMessage id="Flip" />
+          {'  '}
+          <Icon name="arrow right" />
+        </button>
       </div>
 
     </div>

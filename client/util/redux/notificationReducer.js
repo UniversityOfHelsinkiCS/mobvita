@@ -152,6 +152,16 @@ export default (state = initialState, action) => {
         message: failureMessage(action.response),
         type: type.error,
       }
+    case 'UPDATE_FLASHCARD_SUCCESS':
+      return {
+        translationId: 'update-done',
+        type: type.success,
+      }
+    case 'UPDATE_FLASHCARD_FAILURE':
+      return {
+        message: failureMessage(action.response),
+        type: type.error,
+      }
     default:
       return state
   }

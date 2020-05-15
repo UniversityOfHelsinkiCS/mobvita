@@ -25,6 +25,18 @@ export const createFlashcard = (inputLanguage, outputLanguage, flashcardObject) 
   return callBuilder(route, prefix, 'post', flashcardObject)
 }
 
+export const updateFlashcard = (id, removedHints, newHints, glosses) => {
+  const data = {
+    op: 'update',
+    removed_hints: removedHints,
+    new_hints: newHints,
+    glosses,
+  }
+  const route = `/flashcards/${id}`
+  const prefix = 'UPDATE_FLASHCARD'
+  return callBuilder(route, prefix, 'post', data)
+}
+
 export default (state = {}, action) => {
   switch (action.type) {
     case 'GET_FLASHCARDS_ATTEMPT':
@@ -89,6 +101,15 @@ export default (state = {}, action) => {
     case 'ANSWER_FLASHCARD_SUCCESS':
       return { ...state }
     case 'ANSWER_FLASHCARD_FAILURE':
+      return {
+        ...state,
+        error: true,
+      }
+    case 'UPDATE_FLASHCARD_ATTEMPT':
+      return { ...state }
+    case 'UPDATE_FLASHCARD_SUCCESS':
+      return { ...state }
+    case 'UPDATE_FLASHCARD_FAILURE':
       return {
         ...state,
         error: true,

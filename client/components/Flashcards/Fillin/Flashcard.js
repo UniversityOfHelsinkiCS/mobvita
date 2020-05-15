@@ -1,14 +1,19 @@
 import React, { useState, useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import ReactCardFlip from 'react-card-flip'
-import { recordFlashcardAnswer } from 'Utilities/redux/flashcardReducer'
+import { recordFlashcardAnswer, updateFlashcard } from 'Utilities/redux/flashcardReducer'
+import FlashcardTemplate from '../FlashcardTemplate'
 import FlashcardFront from './FlashcardFront'
 import FlashcardBack from './FlashcardBack'
 
 const Flashcard = ({ card, cardIndex, setSwipeIndex, focusedAndBigScreen, swipeIndex }) => {
   const [flipped, setFlipped] = useState(false)
+  const [editing, setEditing] = useState(false)
   const [answerChecked, setAnswerChecked] = useState(false)
   const [answerCorrect, setAnswerCorrect] = useState(null)
+  const [word, setWord] = useState(card.lemma)
+  const [hints, setHints] = useState(card.hint.map(h => h.hint))
+  const [translations, setTranslations] = useState(card.glosses)
 
   const { sessionId } = useSelector(({ flashcards }) => flashcards)
 
@@ -20,28 +25,40 @@ const Flashcard = ({ card, cardIndex, setSwipeIndex, focusedAndBigScreen, swipeI
     setAnswerCorrect(null)
   }, [card])
 
+  const {
+    glosses,
+    format,
+    lemma,
+    _id: id,
+    story,
+    lan_in: inputLanguage,
+    lan_out: outputLanguage,
+    stage,
+  } = card
+
+  const getRemovedHints = () => card.hint.filter(h => !hints.includes(h.hint))
+  const getNewHints = () => hints.filter(h => !card.hint.some(ch => ch.hint === h))
+
+  const saveCard = () => {
+    dispatch(updateFlashcard(id, getRemovedHints(), getNewHints(), translations))
+    setAnswerChecked(true)
+    setEditing(false)
+  }
+
   const flipCard = () => {
     setFlipped(!flipped)
     setAnswerChecked(true)
   }
 
-  const {
-    glosses,
-    format,
-    lemma,
-    _id,
-    story,
-    lan_in: inputLanguage,
-    lan_out: outputLanguage,
-    stage,
-    hint,
-  } = card
+  const handleEdit = () => {
+    setEditing(true)
+  }
 
   const checkAnswer = (answer) => {
     if (answer !== '') {
       const correct = glosses.includes(answer.toLowerCase()).toString()
       const answerDetails = {
-        flashcard_id: _id,
+        flashcard_id: id,
         correct,
         answer,
         exercise: 'fillin',
@@ -61,10 +78,25 @@ const Flashcard = ({ card, cardIndex, setSwipeIndex, focusedAndBigScreen, swipeI
     setSwipeIndex,
     stage,
     format,
-    id: _id,
+    id,
     answerCorrect,
     flipCard,
     focusedAndBigScreen,
+    handleEdit,
+  }
+
+  if (editing) {
+    return (
+      <FlashcardTemplate
+        word={word}
+        translations={translations}
+        hints={hints}
+        setWord={setWord}
+        setTranslations={setTranslations}
+        setHints={setHints}
+        saveAction={saveCard}
+      />
+    )
   }
 
   return (
@@ -72,12 +104,12 @@ const Flashcard = ({ card, cardIndex, setSwipeIndex, focusedAndBigScreen, swipeI
       <FlashcardFront
         answerChecked={answerChecked}
         checkAnswer={checkAnswer}
-        hint={hint}
-        lemma={lemma}
+        hints={hints}
+        lemma={word}
         {...cardProps}
       />
       <FlashcardBack
-        glosses={glosses}
+        glosses={translations}
         flipped={flipped}
         swipeIndex={swipeIndex}
         {...cardProps}

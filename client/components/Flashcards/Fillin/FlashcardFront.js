@@ -10,7 +10,7 @@ const FlashcardFront = ({
   answerChecked,
   answerCorrect,
   checkAnswer,
-  hint,
+  hints,
   lemma,
   focusedAndBigScreen,
   ...props
@@ -20,12 +20,10 @@ const FlashcardFront = ({
 
   const sameLanguage = learningLanguage === dictionaryLanguage
 
-  const hintText = hint && hint[0] && hint[0].hint
-
   return (
     <FlashcardSide {...props}>
       <div className="flashcard-text-container">
-        <FlashcardHint hint={hintText} />
+        <FlashcardHint hint={hints} />
         <h2 data-cy="flashcard-title" className="flashcard-title">{lemma}</h2>
       </div>
       {!sameLanguage
