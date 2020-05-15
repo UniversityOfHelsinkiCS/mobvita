@@ -66,7 +66,7 @@ const SingleStoryView = ({ match }) => {
           </Header>
           {story.url ? <a href={story.url}><FormattedMessage id="Source" /></a> : <div />}
           <Divider />
-          <Segment style={getTextStyle(learningLanguage)}>
+          <Segment data-cy="readmode-text" style={getTextStyle(learningLanguage)}>
             {story.paragraph.map(paragraph => (
               <p key={paragraph[0].ID}>
                 {paragraph.map(word => wordVoice(word))}

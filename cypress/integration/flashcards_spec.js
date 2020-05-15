@@ -10,7 +10,7 @@ describe('flashcards', function () {
 
   it('flashcards can be added from reading mode', function () {
     cy.visit('http://localhost:8000/stories/5c407e9eff634503466b0dde/')
-    cy.contains('lentokoneita').click()
+    cy.get('[data-cy=readmode-text]').contains('lentokoneita').click()
     cy.get('.book').click({ force: true })
     cy.get('[data-cy=translations]').contains('plane')
     cy.visit('http://localhost:8000/flashcards/')
