@@ -5,6 +5,7 @@ import { recordFlashcardAnswer, updateFlashcard } from 'Utilities/redux/flashcar
 import FlashcardTemplate from '../FlashcardTemplate'
 import FlashcardFront from './FlashcardFront'
 import FlashcardBack from './FlashcardBack'
+import Template from '../Template'
 
 const Flashcard = ({ card, cardIndex, setSwipeIndex, focusedAndBigScreen, swipeIndex }) => {
   const [flipped, setFlipped] = useState(false)
@@ -87,7 +88,7 @@ const Flashcard = ({ card, cardIndex, setSwipeIndex, focusedAndBigScreen, swipeI
 
   if (editing) {
     return (
-      <FlashcardTemplate
+      <Template
         word={word}
         translations={translations}
         hints={hints}

@@ -77,27 +77,26 @@ const Flashcards = () => {
   }
 
   return (
-    <div className="component-container">
-      <div className="flashcard-container">
-        <VirtualizeSwipeableViews
-          index={swipeIndex}
-          onChangeIndex={handleIndexChange}
-          style={{ width: '30em', marginLeft: 'auto' }}
-          slideRenderer={slideRenderer}
-          slideCount={cards.length + 1}
-          overscanSlideAfter={1}
-          overscanSlideBefore={1}
-        />
-        <button
-          type="button"
-          onClick={() => handleIndexChange(swipeIndex + 1)}
-          disabled={swipeIndex === cards.length || cards[0].format === 'no-cards'}
-          className="flashcard-arrow-button"
-          style={{ marginLeft: 0 }}
-        >
-          <Icon name="angle double right" size="huge" />
-        </button>
-      </div>
+    <div className="component-container flex">
+      <VirtualizeSwipeableViews
+        index={swipeIndex}
+        onChangeIndex={handleIndexChange}
+        //style={{ width: '30em', marginLeft: 'auto' }}
+        containerStyle={{ maxWidth: '45em', flexShrink: 1 }}
+        slideRenderer={slideRenderer}
+        slideCount={cards.length + 1}
+        overscanSlideAfter={1}
+        overscanSlideBefore={1}
+      />
+      <button
+        type="button"
+        onClick={() => handleIndexChange(swipeIndex + 1)}
+        disabled={swipeIndex === cards.length || cards[0].format === 'no-cards'}
+        className="flashcard-arrow-button"
+        style={{ marginLeft: 0 }}
+      >
+        <Icon name="angle double right" size="huge" />
+      </button>
     </div>
   )
 }

@@ -8,6 +8,7 @@ import {
 import { createFlashcard } from 'Utilities/redux/flashcardReducer'
 import { getTranslationAction, clearTranslationAction } from 'Utilities/redux/translationReducer'
 import FlashcardTemplate from './FlashcardTemplate'
+import Template from './Template'
 
 const FlashcardCreation = () => {
   const [word, setWord] = useState('')
@@ -60,7 +61,7 @@ const FlashcardCreation = () => {
   }
 
   return (
-    <FlashcardTemplate
+    <Template
       word={word}
       translations={translations}
       hints={hints}
