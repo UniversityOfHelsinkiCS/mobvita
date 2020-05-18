@@ -2,7 +2,7 @@ import React from 'react'
 import { Button } from 'react-bootstrap'
 import { FormattedMessage } from 'react-intl'
 
-const TemplateActions = ({ handleSave, handleClear }) => (
+const TemplateActions = ({ handleSave, handleClear, editing = false }) => (
   <div className="margin-bottom-3 auto-top gap-1 flex">
     <Button
       variant="outline-warning"
@@ -10,7 +10,7 @@ const TemplateActions = ({ handleSave, handleClear }) => (
       onClick={handleClear}
       style={{ flexBasis: '50%' }}
     >
-      <FormattedMessage id="Cancel" />
+      <FormattedMessage id={editing ? 'Cancel' : 'Clear'} />
     </Button>
     <Button
       variant="outline-success"

@@ -104,6 +104,7 @@ const Flashcard = ({ card, cardIndex, setSwipeIndex, focusedAndBigScreen, swipeI
         setHints={setHints}
         saveAction={saveCard}
         clearAction={clearEdit}
+        editing
       />
     )
   }
