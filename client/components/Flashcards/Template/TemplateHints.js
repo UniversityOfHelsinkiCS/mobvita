@@ -22,7 +22,7 @@ const TemplateHints = ({ hints, setHints, hint, setHint }) => {
   }
 
   return (
-    <div className="flex-column padding-bottom-1 auto-overflow">
+    <div className="flex-column padding-bottom-3 auto-overflow">
       <label htmlFor="hints" className="header-3 center">
         <FormattedMessage id="hints-for-this-flashcard" />
       </label>

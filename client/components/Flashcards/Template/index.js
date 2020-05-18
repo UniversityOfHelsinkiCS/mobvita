@@ -2,6 +2,7 @@ import React, { useState } from 'react'
 import useWindowDimensions from 'Utilities/windowDimensions'
 import TemplateDesktopView from './TemplateDesktopView'
 import FlashcardTemplate from '../FlashcardTemplate'
+import TemplateMobileView from './TemplateMobileView'
 
 const CardTemplate = ({ saveAction, ...props }) => {
   const [hint, setHint] = useState('')
@@ -28,7 +29,16 @@ const CardTemplate = ({ saveAction, ...props }) => {
     )
   }
 
-  return <FlashcardTemplate {...props} />
+  return (
+    <TemplateMobileView
+      hint={hint}
+      setHint={setHint}
+      translation={translation}
+      setTranslation={setTranslation}
+      handleSave={handleSave}
+      {...props}
+    />
+  )
 }
 
 export default CardTemplate

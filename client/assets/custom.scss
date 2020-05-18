@@ -442,7 +442,7 @@ body {
   flex-direction: column;
   width: 21em;
   height: 35em;
-  //max-width: 90%;
+  //extend: 90%;
   margin: auto auto 3em auto;
   padding: 1em 1.5em;
   border: 0.1em solid grey;
@@ -640,6 +640,12 @@ body {
     border-radius: 0 0 1em 1em;
     border: 1px solid whitesmoke;
     border-top: none;
+  }
+
+  &-mobile-template {
+    height: auto;
+    width: 90%;
+    max-width: 25em;
   }
 }
 
@@ -1137,6 +1143,10 @@ body {
   align-items: flex-start;
 }
 
+.align-center {
+  align-items: center;
+}
+
 .reverse-for-900 {
   @media (min-width: 900px) {
     flex-direction: row-reverse;
@@ -1165,10 +1175,18 @@ body {
   font-weight: 550;
 }
 
+.italics {
+  font-style: italic;
+}
+
 .max-width {
   max-width: 1024px;
 }
 
 .auto-overflow {
   overflow: auto;
+}
+
+.full-width {
+  width: 100%;
 }

@@ -12,7 +12,7 @@ const TemplateDesktopView = ({ handleSave, ...props }) => (
       <TemplateHints {...props} />
     </div>
     <div className="flashcard margin-left-3">
-      <TemplateTranslations {...props} />
+      <TemplateTranslations bigScreen {...props} />
       <Button
         variant="outline-success"
         className="flashcard-button margin-bottom-3 auto-top"

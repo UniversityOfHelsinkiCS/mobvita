@@ -4,9 +4,14 @@ import { Form, Button } from 'react-bootstrap'
 import Spinner from 'Components/Spinner'
 import TemplateListItems from './TemplateListItems'
 
-const TemplateTranslations = (
-  { translations, setTranslations, translation, setTranslation, pending = false },
-) => {
+const TemplateTranslations = ({
+  translations,
+  setTranslations,
+  translation,
+  setTranslation,
+  pending = false,
+  ...props
+}) => {
   const intl = useIntl()
 
   const handleTranslationChange = (e) => {
@@ -41,7 +46,12 @@ const TemplateTranslations = (
             ? <Spinner />
             : (
               <ul>
-                <TemplateListItems values={translations} handleDelete={handleTranslationDelete} />
+                <TemplateListItems
+                  values={translations}
+                  handleDelete={handleTranslationDelete}
+                  italics
+                  {...props}
+                />
               </ul>
             )
           }
