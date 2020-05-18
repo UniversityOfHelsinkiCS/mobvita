@@ -5,6 +5,7 @@ import { Icon } from 'semantic-ui-react'
 import { FormattedMessage, useIntl } from 'react-intl'
 import { hiddenFeatures } from 'Utilities/common'
 import Spinner from 'Components/Spinner'
+import sanitizeHtml from 'sanitize-html'
 
 const FlashcardTemplate = (
   {
@@ -74,10 +75,22 @@ const FlashcardTemplate = (
     setFlipped(false)
   }
 
+  const defaultOptions = {
+    allowedTags:
+      ['b', 'i', 'em', 'strong', 'br', 'mark', 'small', 'sub', 'sup', 'ins', 'del'],
+  }
+
+  const sanitize = dirty => ({
+    __html: sanitizeHtml(
+      dirty,
+      defaultOptions,
+    ),
+  })
+
   const asListItems = (values, handleDelete) => values.map((value, index) => (
     /* eslint-disable-next-line */
     <li key={`${value}-${index}`} className="test">
-      {value}
+      <span dangerouslySetInnerHTML={sanitize(value)} />
       <Icon
         name="close"
         color="grey"
