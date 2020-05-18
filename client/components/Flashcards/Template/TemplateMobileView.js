@@ -4,19 +4,14 @@ import { Button } from 'react-bootstrap'
 import TemplateWord from './TemplateWord'
 import TemplateHints from './TemplateHints'
 import TemplateTranslations from './TemplateTranslations'
+import TemplateActions from './TemplateActions'
 
-const TemplateMobileView = ({ handleSave, ...props }) => (
+const TemplateMobileView = props => (
   <div className="flashcard flashcard-mobile-template">
     <TemplateWord {...props} />
     <TemplateHints {...props} />
     <TemplateTranslations {...props} />
-    <Button
-      variant="outline-success"
-      className="flashcard-button margin-bottom-3 auto-top"
-      onClick={handleSave}
-    >
-      <FormattedMessage id="submit-flashcard" />
-    </Button>
+    <TemplateActions {...props} />
   </div>
 )
 

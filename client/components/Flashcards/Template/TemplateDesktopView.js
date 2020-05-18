@@ -4,8 +4,9 @@ import { Button } from 'react-bootstrap'
 import TemplateWord from './TemplateWord'
 import TemplateHints from './TemplateHints'
 import TemplateTranslations from './TemplateTranslations'
+import TemplateActions from './TemplateActions'
 
-const TemplateDesktopView = ({ handleSave, ...props }) => (
+const TemplateDesktopView = props => (
   <div className="component-container flex">
     <div className="flashcard">
       <TemplateWord {...props} />
@@ -13,13 +14,7 @@ const TemplateDesktopView = ({ handleSave, ...props }) => (
     </div>
     <div className="flashcard margin-left-3">
       <TemplateTranslations bigScreen {...props} />
-      <Button
-        variant="outline-success"
-        className="flashcard-button margin-bottom-3 auto-top"
-        onClick={handleSave}
-      >
-        <FormattedMessage id="submit-flashcard" />
-      </Button>
+      <TemplateActions {...props} />
     </div>
   </div>
 )

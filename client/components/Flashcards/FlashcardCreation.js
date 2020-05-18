@@ -7,7 +7,6 @@ import {
 } from 'Utilities/common'
 import { createFlashcard } from 'Utilities/redux/flashcardReducer'
 import { getTranslationAction, clearTranslationAction } from 'Utilities/redux/translationReducer'
-import FlashcardTemplate from './FlashcardTemplate'
 import Template from './Template'
 
 const FlashcardCreation = () => {
@@ -60,6 +59,12 @@ const FlashcardCreation = () => {
     setTranslations([])
   }
 
+  const clearAction = () => {
+    setWord('')
+    setHints([])
+    setTranslations([])
+  }
+
   return (
     <Template
       word={word}
@@ -69,6 +74,7 @@ const FlashcardCreation = () => {
       setTranslations={setTranslations}
       setHints={setHints}
       saveAction={saveAction}
+      clearAction={clearAction}
       handleWordBlur={handleWordBlur}
       pending={pending}
     />

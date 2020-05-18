@@ -46,6 +46,13 @@ const Flashcard = ({ card, cardIndex, setSwipeIndex, focusedAndBigScreen, swipeI
     setEditing(false)
   }
 
+  const clearEdit = () => {
+    setWord(card.lemma)
+    setHints(card.hint.map(h => h.hint))
+    setTranslations(card.glosses)
+    setEditing(false)
+  }
+
   const flipCard = () => {
     setFlipped(!flipped)
     setAnswerChecked(true)
@@ -96,6 +103,7 @@ const Flashcard = ({ card, cardIndex, setSwipeIndex, focusedAndBigScreen, swipeI
         setTranslations={setTranslations}
         setHints={setHints}
         saveAction={saveCard}
+        clearAction={clearEdit}
       />
     )
   }
