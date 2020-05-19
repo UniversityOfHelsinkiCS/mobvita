@@ -8,7 +8,7 @@ import FlashcardCreation from './FlashcardCreation'
 import FloatMenu from './FloatMenu'
 
 const Flashcards = ({ location }) => {
-  const smallScreen = useWindowDimensions().width < 800
+  const smallScreen = useWindowDimensions().width < 940
   const history = useHistory()
 
   if (!hiddenFeatures) return <Fillin />
@@ -31,7 +31,7 @@ const Flashcards = ({ location }) => {
 
   if (smallScreen) {
     return (
-      <div>
+      <div className="component-container">
         {content()}
         <FloatMenu />
       </div>

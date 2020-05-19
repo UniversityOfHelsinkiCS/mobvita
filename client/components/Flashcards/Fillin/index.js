@@ -25,7 +25,7 @@ const Flashcards = () => {
   const { cards, pending, deletePending } = useSelector(({ flashcards }) => flashcards)
   const [swipeIndex, setSwipeIndex] = useState(0)
 
-  const bigScreen = useWindowDimension().width >= 640
+  const bigScreen = useWindowDimension().width >= 415
   const { storyId } = useParams()
 
   useEffect(() => {
@@ -82,11 +82,12 @@ const Flashcards = () => {
       <VirtualizeSwipeableViews
         index={swipeIndex}
         onChangeIndex={handleIndexChange}
-        containerStyle={{ maxWidth: '45em', flexShrink: 1 }}
+        containerStyle={{ maxWidth: '45em' }}
         slideRenderer={slideRenderer}
         slideCount={cards.length + 1}
         overscanSlideAfter={1}
         overscanSlideBefore={1}
+        enableMouseEvents={!bigScreen}
       />
       <button
         type="button"

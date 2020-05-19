@@ -7,7 +7,7 @@ const CardTemplate = ({ saveAction, clearAction, ...props }) => {
   const [hint, setHint] = useState('')
   const [translation, setTranslation] = useState('')
 
-  const bigScreen = useWindowDimensions().width >= 1000
+  const bigScreen = useWindowDimensions().width >= 720
 
   const handleSave = () => {
     saveAction()
