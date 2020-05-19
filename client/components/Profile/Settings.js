@@ -78,7 +78,7 @@ const Settings = () => {
         onChange={e => dispatch(updateNumberOfFlashcards(Number(e.target.value)))}
         disabled={pending}
       >
-        <option value={25}>25</option>
+        <option value={20}>20</option>
         <option value={50}>50</option>
         <option value={100}>100</option>
         <option value={0}>all</option>
