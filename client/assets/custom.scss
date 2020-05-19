@@ -654,6 +654,7 @@ body {
     left: 1em;
     display:  flex;
     flex-direction: column-reverse;
+    pointer-events: none;
   }
 
   &-fab {
@@ -664,18 +665,27 @@ body {
     width: 3.5em;
     height: 3.5em;
     box-shadow: 0 6px 10px 0 #666;
+    pointer-events: auto;
     &:focus {
       outline: 0;
     }
   }
 
   &-fab-option {
+    align-self: flex-start;
     display: flex;
     padding-left: 0;
     border: none;
     background-color: transparent;
     color: #777;
     align-items: center;
+    pointer-events: auto;
+    
+    transform: translateX(-100%);
+    animation: slide-in 0.5s forwards;
+      @keyframes slide-in {
+      100% { transform: translateX(0%); }
+    }
   }
 
   &-fab-icon {
