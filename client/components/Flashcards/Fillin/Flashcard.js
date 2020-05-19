@@ -50,6 +50,7 @@ const Flashcard = ({ card, cardIndex, setSwipeIndex, focusedAndBigScreen, swipeI
     setWord(card.lemma)
     setHints(card.hint.map(h => h.hint))
     setTranslations(card.glosses)
+    setAnswerChecked(true)
     setEditing(false)
   }
 
