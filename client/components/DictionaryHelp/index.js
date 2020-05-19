@@ -102,12 +102,21 @@ const DictionaryHelp = () => {
     )
   }
 
-  const firstLemma = () => lemmas
+  const parsedLemmas = () => lemmas
     .split('+')
     .join(',')
     .split('|')
     .join(',')
-    .split(',')[0]
+    .split(',')
+
+  const showSurfaceWord = () => {
+    if (!surfaceWord) return false
+    if (translation) {
+      return !translation
+        .some(translated => translated.lemma.toLowerCase() === surfaceWord.toLowerCase())
+    }
+    return surfaceWord.toLowerCase() !== parsedLemmas()[0].toLowerCase()
+  }
 
   const translationResults = () => {
     if (pending) return <div><span><FormattedMessage id="(DictionaryHelp) Loading, please wait" />... </span><Spinner animation="border" /></div>
@@ -116,7 +125,7 @@ const DictionaryHelp = () => {
       return (
         <List.Item style={{ color: '#555555' }}>
           <span>
-            {firstLemma()}
+            {parsedLemmas()[0]}
             <Icon name="volume up" className="padding-left-1 clickable" onClick={() => handleSpeakerClick(lemmas)} />
           </span>
           <List bulleted style={{ color: 'slateGrey', fontStyle: 'italic' }}>
@@ -145,7 +154,7 @@ const DictionaryHelp = () => {
         </div>
         <div className="space-between padding-top-1">
           <List>
-            {surfaceWord
+            {showSurfaceWord()
               && (
                 <List.Item style={{ paddingBottom: '0.5em', display: 'flex' }}>
                   <span style={{ color: '#2185D0' }}>{surfaceWord}</span>
