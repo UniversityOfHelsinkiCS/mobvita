@@ -28,23 +28,26 @@ const FlashcardSide = ({
         className="flashcard-content"
       >
         <div className="flashcard-header">
-          {cardIndex}
+          <div>
+            {hiddenFeatures
+              && (
+                <button
+                  className="flashcard-blended-input"
+                  type="button"
+                  onClick={handleEdit}
+                >
+                  <Icon name="edit" style={{ color: 'white' }} />
+                </button>
+              )
+            }
+            {cardIndex}
+          </div>
           <FlashcardDelete id={id} />
         </div>
         {children}
       </div>
       <div className="flashcard-footer">
-        {hiddenFeatures
-          ? (
-            <button
-              className="flashcard-blended-input"
-              type="button"
-              onClick={handleEdit}
-            >
-              <Icon name="edit" />
-            </button>
-          ) : <SelectLanguage />
-        }
+        {!hiddenFeatures && <SelectLanguage />}
         <button
           className="flashcard-blended-input auto-left"
           type="button"
