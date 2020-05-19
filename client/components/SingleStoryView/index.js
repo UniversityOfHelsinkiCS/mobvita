@@ -10,7 +10,13 @@ import {
   clearTranslationAction,
   setWords,
 } from 'Utilities/redux/translationReducer'
-import { capitalize, learningLanguageSelector, getTextStyle, speak } from 'Utilities/common'
+import {
+  capitalize,
+  learningLanguageSelector,
+  getTextStyle,
+  speak,
+  respVoiceLanguages,
+} from 'Utilities/common'
 import DictionaryHelp from 'Components/DictionaryHelp'
 import Spinner from 'Components/Spinner'
 import Footer from '../Footer'
@@ -29,8 +35,10 @@ const SingleStoryView = ({ match }) => {
 
   if (!story || pending) return <Spinner />
 
+  const voice = respVoiceLanguages[learningLanguage]
+
   const handleWordClick = (surfaceWord, wordLemmas, wordId) => {
-    if (autoSpeak === 'always') speak(surfaceWord, learningLanguage)
+    if (autoSpeak === 'always' && voice) speak(surfaceWord, voice)
     if (wordLemmas) {
       dispatch(setWords(surfaceWord, wordLemmas))
       dispatch(

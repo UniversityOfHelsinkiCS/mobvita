@@ -5,9 +5,28 @@ import { Shake } from 'reshake'
 import { FormattedMessage, useIntl } from 'react-intl'
 import { updateDictionaryLanguage } from 'Utilities/redux/userReducer'
 import { getTranslationAction } from 'Utilities/redux/translationReducer'
-import { learningLanguageSelector, translatableLanguages, speak } from 'Utilities/common'
+import {
+  learningLanguageSelector,
+  translatableLanguages,
+  speak,
+  respVoiceLanguages,
+} from 'Utilities/common'
 import useWindowDimensions from 'Utilities/windowDimensions'
 import { Spinner } from 'react-bootstrap'
+
+const Speaker = ({ word }) => {
+  const learningLanguage = useSelector(learningLanguageSelector)
+
+  const voice = respVoiceLanguages[learningLanguage]
+
+  const handleSpeakerClick = () => {
+    speak(word, voice)
+  }
+
+  if (!voice) return null
+
+  return <Icon name="volume up" className="padding-left-1 clickable" onClick={handleSpeakerClick} />
+}
 
 const DictionaryHelp = () => {
   const [showHelp, setShow] = useState(false)
@@ -38,15 +57,11 @@ const DictionaryHelp = () => {
     text: intl.formatMessage({ id: element }),
   })) : []
 
-  const handleSpeakerClick = (word) => {
-    speak(word, learningLanguage)
-  }
-
   const translations = translation && translation.map(translated => (
     <List.Item key={translated.URL} data-cy="translations" style={{ color: '#555555' }}>
       <span>
         {translated.lemma}
-        <Icon name="volume up" className="padding-left-1 clickable" onClick={() => handleSpeakerClick(translated.lemma)} />
+        <Speaker word={translated.lemma} />
       </span>
       <List bulleted style={{ color: 'slateGrey', fontStyle: 'italic' }}>
         {translated.glosses.map((word, i) => <List.Item key={`${translated.URL}-${i}`}>{word}</List.Item>)}
@@ -126,7 +141,7 @@ const DictionaryHelp = () => {
         <List.Item style={{ color: '#555555' }}>
           <span>
             {parsedLemmas()[0]}
-            <Icon name="volume up" className="padding-left-1 clickable" onClick={() => handleSpeakerClick(lemmas)} />
+            <Speaker word={parsedLemmas()[0]} />
           </span>
           <List bulleted style={{ color: 'slateGrey', fontStyle: 'italic' }}>
             <span><FormattedMessage id="(DictionaryHelp) No translation available" /></span>
@@ -158,7 +173,7 @@ const DictionaryHelp = () => {
               && (
                 <List.Item style={{ paddingBottom: '0.5em', display: 'flex' }}>
                   <span style={{ color: '#2185D0' }}>{surfaceWord}</span>
-                  <Icon name="volume up" className="padding-left-1 clickable" onClick={() => handleSpeakerClick(surfaceWord)} />
+                  <Speaker word={surfaceWord} />
                 </List.Item>
               )}
             {translationResults()}

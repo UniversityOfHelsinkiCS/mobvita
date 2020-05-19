@@ -15,6 +15,7 @@ import {
   newCapitalize,
   dictionaryLanguageSelector,
   speak,
+  respVoiceLanguages,
 } from 'Utilities/common'
 import useWindowDimensions from 'Utilities/windowDimensions'
 import PreviousSnippets from './PreviousSnippets'
@@ -30,6 +31,8 @@ const PracticeView = ({ match }) => {
 
   const story = useSelector(({ stories }) => stories.focused)
   const autoSpeak = useSelector(({ user }) => user.data.user.auto_speak)
+
+  const voice = respVoiceLanguages[learningLanguage]
 
   useEffect(() => {
     dispatch(getStoryAction(match.params.id))
@@ -59,7 +62,7 @@ const PracticeView = ({ match }) => {
   }
 
   const handleWordClick = (surfaceWord, wordLemmas, wordId) => {
-    if (autoSpeak === 'always') speak(surfaceWord, learningLanguage)
+    if (autoSpeak === 'always' && voice) speak(surfaceWord, voice)
     if (wordLemmas) {
       dispatch(setWords(surfaceWord, wordLemmas))
       dispatch(

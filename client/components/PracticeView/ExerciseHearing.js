@@ -2,7 +2,7 @@ import React, { createRef, useState, useEffect, useCallback } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { debounce } from 'lodash'
 import { Icon } from 'semantic-ui-react'
-import { getTextWidth, speak, learningLanguageSelector } from 'Utilities/common'
+import { getTextWidth, speak, learningLanguageSelector, respVoiceLanguages } from 'Utilities/common'
 import { setFocusedWord } from 'Utilities/redux/practiceReducer'
 
 
@@ -20,6 +20,8 @@ const ExerciseHearing = ({ word, handleChange }) => {
   const dispatch = useDispatch()
 
   const { isWrong, tested } = word
+
+  const voice = respVoiceLanguages[learningLanguage]
 
   const debouncedChange = useCallback(
     debounce((val) => {
@@ -49,7 +51,7 @@ const ExerciseHearing = ({ word, handleChange }) => {
   }, [currentAnswer])
 
   const speakerClickHandler = (word) => {
-    speak(word.surface, learningLanguage)
+    speak(word.surface, voice)
     inputRef.current.focus()
   }
 
@@ -61,7 +63,7 @@ const ExerciseHearing = ({ word, handleChange }) => {
     }
     dispatch(setFocusedWord(word))
     if (!focusTimeout) {
-      speak(word.surface, learningLanguage)
+      speak(word.surface, voice)
       setFocusTimeout(true)
       setTimeout(() => {
         setFocusTimeout(false)
