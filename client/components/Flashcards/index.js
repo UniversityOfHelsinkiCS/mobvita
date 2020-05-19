@@ -5,6 +5,7 @@ import { hiddenFeatures } from 'Utilities/common'
 import FlashcardMenu from './FlashcardMenu'
 import Fillin from './Fillin'
 import FlashcardCreation from './FlashcardCreation'
+import FloatMenu from './FloatMenu'
 
 const Flashcards = ({ location }) => {
   const smallScreen = useWindowDimensions().width < 800
@@ -28,7 +29,14 @@ const Flashcards = ({ location }) => {
     }
   }
 
-  if (smallScreen) return content()
+  if (smallScreen) {
+    return (
+      <div>
+        {content()}
+        <FloatMenu />
+      </div>
+    )
+  }
 
   return (
     <div className="component-container flex">

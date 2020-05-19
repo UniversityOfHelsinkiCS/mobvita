@@ -3,19 +3,17 @@ import { FormattedMessage } from 'react-intl'
 import SelectLanguage from '../SelectLanguage'
 
 const FlashcardNoCards = ({ setSwipeIndex }) => (
-  <div style={{ width: '30em' }}>
-    <div className="flashcard auto">
-      <div
-        data-cy="no-flashcards-text"
-        className="flashcard-no-cards"
-      >
-        <p>
-          <FormattedMessage id="no-flashcards-yet-when-you-practice-a-story-and-click-on-unfamiliar-words-they-will-be-added-to-your" />
-        </p>
-      </div>
-      <div className="flashcard-footer">
-        <SelectLanguage setSwipeIndex={setSwipeIndex} />
-      </div>
+  <div className="flashcard auto">
+    <div
+      data-cy="no-flashcards-text"
+      className="flashcard-no-cards"
+    >
+      <p>
+        <FormattedMessage id="no-flashcards-yet-when-you-practice-a-story-and-click-on-unfamiliar-words-they-will-be-added-to-your" />
+      </p>
+    </div>
+    <div className="flashcard-footer">
+      <SelectLanguage setSwipeIndex={setSwipeIndex} />
     </div>
   </div>
 )

@@ -53,11 +53,6 @@ const Flashcards = () => {
   }
 
   const slideRenderer = ({ key, index }) => {
-    if (!cards[0] || cards[0].format === 'no-cards') {
-      return (
-        <FlashcardNoCards setSwipeIndex={setSwipeIndex} key={`no-cards-${index}`} />
-      )
-    }
     if (index < cards.length) {
       const cardIndex = `${index + 1} / ${cards.length}`
       return (
@@ -76,12 +71,17 @@ const Flashcards = () => {
     )
   }
 
+  if (!cards[0] || cards[0].format === 'no-cards') {
+    return (
+      <FlashcardNoCards setSwipeIndex={setSwipeIndex} />
+    )
+  }
+
   return (
     <div className="component-container flex">
       <VirtualizeSwipeableViews
         index={swipeIndex}
         onChangeIndex={handleIndexChange}
-        //style={{ width: '30em', marginLeft: 'auto' }}
         containerStyle={{ maxWidth: '45em', flexShrink: 1 }}
         slideRenderer={slideRenderer}
         slideCount={cards.length + 1}
