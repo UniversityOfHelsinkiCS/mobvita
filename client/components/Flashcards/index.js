@@ -1,5 +1,4 @@
 import React from 'react'
-import { useHistory } from 'react-router-dom'
 import useWindowDimensions from 'Utilities/windowDimensions'
 import { hiddenFeatures } from 'Utilities/common'
 import FlashcardMenu from './FlashcardMenu'
@@ -9,17 +8,11 @@ import FloatMenu from './FloatMenu'
 
 const Flashcards = ({ location }) => {
   const smallScreen = useWindowDimensions().width < 940
-  const history = useHistory()
 
   if (!hiddenFeatures) return <Fillin />
 
   const content = () => {
     switch (location.pathname) {
-      case '/flashcards':
-        if (!smallScreen) {
-          history.push('/flashcards/all')
-        }
-        return <FlashcardMenu />
       case '/flashcards/all':
         return <Fillin />
       case '/flashcards/new':
