@@ -65,7 +65,8 @@ const Flashcard = (
 
   const checkAnswer = (answer) => {
     if (answer !== '') {
-      const correct = glosses.includes(answer.toLowerCase()).toString()
+      //const correct = glosses.includes(answer.toLowerCase()).toString()
+      const correct = glosses.some(gloss => gloss.toLowerCase() === answer.toLowerCase()).toString()
       const answerDetails = {
         flashcard_id: id,
         correct,
