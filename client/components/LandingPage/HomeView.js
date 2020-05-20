@@ -2,7 +2,7 @@ import React from 'react'
 import { useHistory } from 'react-router'
 import { FormattedMessage } from 'react-intl'
 import { Button } from 'react-bootstrap'
-import { images, hiddenFeatures } from 'Utilities/common'
+import { images } from 'Utilities/common'
 
 import useWindowDimensions from 'Utilities/windowDimensions'
 import PracticeModal from './PracticeModal'

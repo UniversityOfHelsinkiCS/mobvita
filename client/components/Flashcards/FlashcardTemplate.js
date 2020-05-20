@@ -3,7 +3,6 @@ import ReactCardFlip from 'react-card-flip'
 import { Form, Button } from 'react-bootstrap'
 import { Icon } from 'semantic-ui-react'
 import { FormattedMessage, useIntl } from 'react-intl'
-import { hiddenFeatures } from 'Utilities/common'
 import Spinner from 'Components/Spinner'
 import sanitizeHtml from 'sanitize-html'
 
@@ -25,8 +24,6 @@ const FlashcardTemplate = (
   const [translation, setTranslation] = useState('')
 
   const intl = useIntl()
-
-  if (!hiddenFeatures) return null
 
   const handleWordChange = (e) => {
     setWord(e.target.value)

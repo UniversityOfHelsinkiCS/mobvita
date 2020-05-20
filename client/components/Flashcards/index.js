@@ -1,6 +1,5 @@
 import React from 'react'
 import useWindowDimensions from 'Utilities/windowDimensions'
-import { hiddenFeatures } from 'Utilities/common'
 import FlashcardMenu from './FlashcardMenu'
 import Fillin from './Fillin'
 import FlashcardCreation from './FlashcardCreation'
@@ -8,8 +7,6 @@ import FloatMenu from './FloatMenu'
 
 const Flashcards = ({ location }) => {
   const smallScreen = useWindowDimensions().width < 940
-
-  if (!hiddenFeatures) return <Fillin />
 
   const content = () => {
     switch (location.pathname) {

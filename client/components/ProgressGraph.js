@@ -1,5 +1,4 @@
 import React from 'react'
-import { hiddenFeatures } from 'Utilities/common'
 import Highcharts from 'highcharts'
 import HighchartsReact from 'highcharts-react-official'
 import moment from 'moment'
@@ -16,14 +15,14 @@ const ProgressGraph = ({ exerciseHistory, flashcardHistory, startDate, endDate }
     && flashcardHistory.map(e => [moment(e.date).valueOf(), e.score])
 
 
-  const series = [{ name: intl.formatMessage({ id: 'Stories' }), data: storyData }]
-  if (hiddenFeatures) {
-    series.push({
+  const series = [
+    { name: intl.formatMessage({ id: 'Stories' }), data: storyData },
+    {
       name: intl.formatMessage({ id: 'Flashcards' }),
       data: flashcardData,
       color: '#dc3545',
-    })
-  }
+    },
+  ]
 
   const height = smallScreen ? '75%' : '35%'
 

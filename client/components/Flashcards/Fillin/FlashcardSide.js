@@ -1,9 +1,7 @@
 import React from 'react'
 import { Icon } from 'semantic-ui-react'
 import { FormattedMessage } from 'react-intl'
-import { hiddenFeatures } from 'Utilities/common'
 import FlashcardDelete from './FlashcardDelete'
-import SelectLanguage from '../SelectLanguage'
 
 const FlashcardSide = ({
   flipCard,
@@ -29,17 +27,13 @@ const FlashcardSide = ({
       >
         <div className="flashcard-header">
           <div>
-            {hiddenFeatures
-              && (
-                <button
-                  className="flashcard-blended-input"
-                  type="button"
-                  onClick={handleEdit}
-                >
-                  <Icon name="edit" style={{ color: 'white' }} />
-                </button>
-              )
-            }
+            <button
+              className="flashcard-blended-input"
+              type="button"
+              onClick={handleEdit}
+            >
+              <Icon name="edit" style={{ color: 'white' }} />
+            </button>
             {cardIndex}
           </div>
           <FlashcardDelete id={id} />
@@ -47,7 +41,6 @@ const FlashcardSide = ({
         {children}
       </div>
       <div className="flashcard-footer">
-        {!hiddenFeatures && <SelectLanguage />}
         <button
           className="flashcard-blended-input auto-left"
           type="button"
