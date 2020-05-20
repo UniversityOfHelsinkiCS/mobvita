@@ -1,13 +1,19 @@
 import React from 'react'
 import Highcharts from 'highcharts'
 import HighchartsReact from 'highcharts-react-official'
-import { useSelector } from 'react-redux'
+import { useSelector, shallowEqual } from 'react-redux'
 import moment from 'moment-timezone'
 import { useIntl } from 'react-intl'
+import { Icon } from 'semantic-ui-react'
+import { images } from 'Utilities/common'
 
 const EloChart = ({ width }) => {
-  const rawEloHistory = useSelector(({ user }) => user.data.user.exercise_history)
-  const eloHistory = rawEloHistory.map(exercise => exercise.score)
+  const { exerciseHistory, flashcardHistory } = useSelector(({ user }) => {
+    const exerciseHistory = user.data.user.exercise_history
+    const flashcardHistory = user.data.user.flashcard_history
+    return { exerciseHistory, flashcardHistory }
+  }, shallowEqual)
+  const eloHistory = exerciseHistory.map(exercise => exercise.score)
   const weeklyPracticeTimeHistory = useSelector(({ user }) => user.data.user.weekly_times)
   const intl = useIntl()
 
@@ -16,7 +22,7 @@ const EloChart = ({ width }) => {
   const filteredHistory = []
   const weeks = weeklyPracticeTimeHistory.map(element => element.week).reverse()
 
-  rawEloHistory.forEach((e) => {
+  exerciseHistory.forEach((e) => {
     const date = new Date(e.date)
     const week = moment(new Date(date)).week()
     const weekday = moment(new Date(date)).isoWeekday()
@@ -59,8 +65,8 @@ const EloChart = ({ width }) => {
   //   }
   // }
 
-  const eloResults = rawEloHistory
-    && rawEloHistory.map(e => [moment(e.date).valueOf(), e.score])
+  const eloResults = exerciseHistory
+    && exerciseHistory.map(e => [moment(e.date).valueOf(), e.score])
 
   // Extend the curve to current day
   if (eloResults && eloResults[0]) {
@@ -74,11 +80,11 @@ const EloChart = ({ width }) => {
     data: weeklyPracticeTimeHistory.map(element => [element.week, element.practice_time]).reverse(),
   }
 
-  const fourWeekElo = rawEloHistory
+  const fourWeekElo = exerciseHistory
     .filter(data => moment(data.date).valueOf() > moment().subtract(4, 'weeks').valueOf())
     .map(data => data.score)
-  const lastBeforeFourWeeks = fourWeekElo < rawEloHistory
-    && rawEloHistory[rawEloHistory.length - fourWeekElo.length - 1]
+  const lastBeforeFourWeeks = fourWeekElo < exerciseHistory
+    && exerciseHistory[exerciseHistory.length - fourWeekElo.length - 1]
 
   const minY = lastBeforeFourWeeks && lastBeforeFourWeeks.score < Math.min(...fourWeekElo)
     ? Math.floor(lastBeforeFourWeeks.score / 10) * 10
@@ -165,7 +171,20 @@ const EloChart = ({ width }) => {
   }
   return (
     <div style={{ textAlign: 'center', width }}>
-      <span style={{ display: 'inline-block', paddingBottom: '1em' }}>{`${intl.formatMessage({ id: 'score' })} ${eloHistory[eloHistory.length - 1]}`}</span>
+      <div className="space-evenly padding-bottom-1">
+        <span><Icon name="star outline" style={{ margin: 0 }} /> {exerciseHistory[exerciseHistory.length - 1].score}</span>
+        <span>
+          <img
+            src={images.flashcardIcon}
+            alt="three cards"
+            width="18px"
+            style={{ marginRight: '0.2em' }}
+          //style={{ filter: 'invert(92%) sepia(94%) saturate(29%) hue-rotate(251deg) brightness(108%) contrast(100%)', marginRight: '0.2em', marginBottom: '0.2em' }}
+          />
+          {flashcardHistory[flashcardHistory.length - 1].score}
+        </span>
+      </div>
+      {/* <span style={{ display: 'inline-block', paddingBottom: '1em' }}>{`${intl.formatMessage({ id: 'score' })} ${eloHistory[eloHistory.length - 1]}`}</span> */}
       <HighchartsReact
         highcharts={Highcharts}
         options={options}

@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import ReactCardFlip from 'react-card-flip'
 import { recordFlashcardAnswer, updateFlashcard } from 'Utilities/redux/flashcardReducer'
+import { getSelf } from 'Utilities/redux/userReducer'
 import FlashcardFront from './FlashcardFront'
 import FlashcardBack from './FlashcardBack'
 import Template from '../Template'
@@ -63,9 +64,14 @@ const Flashcard = (
     setEditing(true)
   }
 
+  // Elo gets updated every 10 answers on backend.
+  // Fetching after every 5 makes the update more frequent since user could skip cards.
+  const updateElo = () => {
+    if (swipeIndex % 5 === 0) dispatch(getSelf())
+  }
+
   const checkAnswer = (answer) => {
     if (answer !== '') {
-      //const correct = glosses.includes(answer.toLowerCase()).toString()
       const correct = glosses.some(gloss => gloss.toLowerCase() === answer.toLowerCase()).toString()
       const answerDetails = {
         flashcard_id: id,
@@ -78,6 +84,7 @@ const Flashcard = (
         session_id: sessionId,
       }
       dispatch(recordFlashcardAnswer(inputLanguage, outputLanguage, answerDetails))
+      updateElo()
       setAnswerCorrect(correct)
     }
     flipCard()
