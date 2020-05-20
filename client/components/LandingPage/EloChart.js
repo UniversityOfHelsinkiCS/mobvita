@@ -2,6 +2,7 @@ import React from 'react'
 import Highcharts from 'highcharts'
 import HighchartsReact from 'highcharts-react-official'
 import { useSelector, shallowEqual } from 'react-redux'
+import { useHistory } from 'react-router-dom'
 import moment from 'moment-timezone'
 import { useIntl } from 'react-intl'
 import { Icon } from 'semantic-ui-react'
@@ -16,6 +17,7 @@ const EloChart = ({ width }) => {
   const eloHistory = exerciseHistory.map(exercise => exercise.score)
   const weeklyPracticeTimeHistory = useSelector(({ user }) => user.data.user.weekly_times)
   const intl = useIntl()
+  const history = useHistory()
 
   if (eloHistory.length === 0) return null
 
@@ -68,9 +70,16 @@ const EloChart = ({ width }) => {
   const eloResults = exerciseHistory
     && exerciseHistory.map(e => [moment(e.date).valueOf(), e.score])
 
+  const flashcardEloResults = flashcardHistory
+    && flashcardHistory.map(e => [moment(e.date).valueOf(), e.score])
+
   // Extend the curve to current day
   if (eloResults && eloResults[0]) {
     eloResults.push([moment().valueOf(), eloResults[eloResults.length - 1][1]])
+  }
+
+  if (flashcardEloResults && flashcardEloResults[0]) {
+    flashcardEloResults.push([moment().valueOf(), flashcardEloResults[flashcardEloResults.length - 1][1]])
   }
 
   const practicetimes = {
@@ -80,19 +89,55 @@ const EloChart = ({ width }) => {
     data: weeklyPracticeTimeHistory.map(element => [element.week, element.practice_time]).reverse(),
   }
 
-  const fourWeekElo = exerciseHistory
+  const getFourWeekElo = history => history
     .filter(data => moment(data.date).valueOf() > moment().subtract(4, 'weeks').valueOf())
     .map(data => data.score)
-  const lastBeforeFourWeeks = fourWeekElo < exerciseHistory
-    && exerciseHistory[exerciseHistory.length - fourWeekElo.length - 1]
 
-  const minY = lastBeforeFourWeeks && lastBeforeFourWeeks.score < Math.min(...fourWeekElo)
-    ? Math.floor(lastBeforeFourWeeks.score / 10) * 10
-    : Math.floor(Math.min(...fourWeekElo) / 10) * 10
+  const getLastEntryBeforeFourWeeks = (history, fourWeekElo) => {
+    return fourWeekElo < history
+      && history[history.length - fourWeekElo.length - 1]
+  }
 
-  const maxY = lastBeforeFourWeeks && lastBeforeFourWeeks.score > Math.max(...fourWeekElo)
-    ? Math.ceil(lastBeforeFourWeeks.score / 10) * 10
-    : Math.ceil(Math.max(...fourWeekElo) / 10) * 10
+  const getMinY = (lastEntryBeforeFourWeeks, fourWeekElo) => (lastEntryBeforeFourWeeks
+    && lastEntryBeforeFourWeeks.score < Math.min(...fourWeekElo)
+    ? Math.floor(lastEntryBeforeFourWeeks.score / 10) * 10
+    : Math.floor(Math.min(...fourWeekElo) / 10) * 10)
+
+  const getMaxY = (lastEntryBeforeFourWeeks, fourWeekElo) => (lastEntryBeforeFourWeeks
+    && lastEntryBeforeFourWeeks.score > Math.max(...fourWeekElo)
+    ? Math.ceil(lastEntryBeforeFourWeeks.score / 10) * 10
+    : Math.ceil(Math.max(...fourWeekElo) / 10) * 10)
+
+  const storyFourWeekElo = getFourWeekElo(exerciseHistory)
+  const flashcardFourWeekElo = getFourWeekElo(flashcardHistory)
+
+  const storyLastEntryBeforeFourWeeks = getLastEntryBeforeFourWeeks(exerciseHistory, storyFourWeekElo)
+  const flashcardLastEntryBeforeFourWeeks = getLastEntryBeforeFourWeeks(flashcardHistory, flashcardFourWeekElo)
+
+  const minY = Math.min(
+    getMinY(flashcardLastEntryBeforeFourWeeks, flashcardFourWeekElo),
+    getMinY(storyLastEntryBeforeFourWeeks, storyFourWeekElo),
+  )
+
+  const maxY = Math.max(
+    getMaxY(flashcardLastEntryBeforeFourWeeks, flashcardFourWeekElo),
+    getMaxY(storyLastEntryBeforeFourWeeks, storyFourWeekElo),
+  )
+
+  // const fourWeekElo = exerciseHistory
+  //   .filter(data => moment(data.date).valueOf() > moment().subtract(4, 'weeks').valueOf())
+  //   .map(data => data.score)
+
+  // const lastBeforeFourWeeks = fourWeekElo < exerciseHistory
+  //   && exerciseHistory[exerciseHistory.length - fourWeekElo.length - 1]
+
+  // const minY = lastBeforeFourWeeks && lastBeforeFourWeeks.score < Math.min(...fourWeekElo)
+  //   ? Math.floor(lastBeforeFourWeeks.score / 10) * 10
+  //   : Math.floor(Math.min(...fourWeekElo) / 10) * 10
+
+  // const maxY = lastBeforeFourWeeks && lastBeforeFourWeeks.score > Math.max(...fourWeekElo)
+  //   ? Math.ceil(lastBeforeFourWeeks.score / 10) * 10
+  //   : Math.ceil(Math.max(...fourWeekElo) / 10) * 10
 
 
   // const maxElo = Math.max(...eloHistory)
@@ -108,7 +153,7 @@ const EloChart = ({ width }) => {
 
   const options = {
     title: { text: '' },
-    series: [practicetimes, { data: eloResults }],
+    series: [practicetimes, { data: eloResults }, { data: flashcardEloResults, color: '#dc3545' }],
     chart: { height: '45%', marginTop: 20 },
     legend: { enabled: false },
     credits: { enabled: false },
@@ -120,17 +165,11 @@ const EloChart = ({ width }) => {
     },
     yAxis: [{
       title: { enabled: false },
-      //min: minElo - (minElo * 0.02),
       min: minY,
       max: maxY,
       endOnTick: false,
       startOnTick: false,
       tickPositions: [maxY, minY],
-      //tickPositions: [this.yAxis[0].max, this.yAxis[0].min],
-      // tickPositioner: function () {
-      //   console.log(this.getExtremes())
-      //   return [Math.floor(this.dataMin / 10) * 10, Math.ceil(this.dataMax / 10) * 10];
-      // },
     },
     {
       title: {
@@ -170,7 +209,7 @@ const EloChart = ({ width }) => {
     },
   }
   return (
-    <div style={{ textAlign: 'center', width }}>
+    <div style={{ textAlign: 'center', width, cursor: 'pointer', alignSelf: 'flex-start' }} onClick={() => history.push('/profile/progress')}>
       <div className="space-evenly padding-bottom-1">
         <span><Icon name="star outline" style={{ margin: 0 }} /> {exerciseHistory[exerciseHistory.length - 1].score}</span>
         <span>
@@ -179,12 +218,10 @@ const EloChart = ({ width }) => {
             alt="three cards"
             width="18px"
             style={{ marginRight: '0.2em' }}
-          //style={{ filter: 'invert(92%) sepia(94%) saturate(29%) hue-rotate(251deg) brightness(108%) contrast(100%)', marginRight: '0.2em', marginBottom: '0.2em' }}
           />
           {flashcardHistory[flashcardHistory.length - 1].score}
         </span>
       </div>
-      {/* <span style={{ display: 'inline-block', paddingBottom: '1em' }}>{`${intl.formatMessage({ id: 'score' })} ${eloHistory[eloHistory.length - 1]}`}</span> */}
       <HighchartsReact
         highcharts={Highcharts}
         options={options}
