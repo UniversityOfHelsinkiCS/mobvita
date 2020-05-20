@@ -108,7 +108,7 @@ export const betaLanguages = [
 
 export const rightAlignedLanguages = ['Syriac']
 
-export const specialFonts = { Syriac: { fontFamily: 'EastSyriacCtesiphon', fontSize: '2rem' } }
+export const specialFonts = { Syriac: { fontFamily: 'NotoSansSyriacEastern', fontSize: '2rem' } }
 
 export const getTextStyle = (language) => {
   let style = {}
