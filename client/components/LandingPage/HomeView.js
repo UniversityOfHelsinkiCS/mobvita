@@ -53,7 +53,7 @@ const HomeView = () => {
   const { width } = useWindowDimensions()
   return (
     <div className="component-container">
-      {width > 800 ? (
+      {width > 740 ? (
         <div style={{ display: 'flex' }}>
           <div style={{ flexGrow: 2 }}>
             <PracticeModal trigger={<PracticeButton data-cy="practice-now" />} />
