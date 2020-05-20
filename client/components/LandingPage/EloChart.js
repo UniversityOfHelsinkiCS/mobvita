@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React from 'react'
 import Highcharts from 'highcharts'
 import HighchartsReact from 'highcharts-react-official'
 import { useSelector } from 'react-redux'
@@ -103,7 +103,7 @@ const EloChart = ({ width }) => {
   const options = {
     title: { text: '' },
     series: [practicetimes, { data: eloResults }],
-    chart: { height: '45%' },
+    chart: { height: '45%', marginTop: 20 },
     legend: { enabled: false },
     credits: { enabled: false },
     tooltip: {
@@ -127,12 +127,32 @@ const EloChart = ({ width }) => {
       // },
     },
     {
-      title: { enabled: false },
-      visible: false,
+      title: {
+        text: intl.formatMessage({ id: 'Practiced hours' }),
+        rotation: 0,
+        align: 'high',
+        offset: 32,
+        y: -10,
+        reserveSpace: false,
+        style: {
+          direction: 'rtl',
+          whiteSpace: 'nowrap',
+        },
+      },
+      opposite: true,
     }],
     xAxis: [
       { visible: false, min: moment().subtract(4, 'weeks').valueOf() },
-      { visible: true },
+      {
+        visible: true,
+        title: {
+          text: intl.formatMessage({ id: 'Week' }),
+          align: 'low',
+          offset: 8,
+          x: -42,
+        },
+        tickInterval: 1,
+      },
     ],
     plotOptions: {
       series: {
