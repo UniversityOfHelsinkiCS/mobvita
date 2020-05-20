@@ -2,14 +2,14 @@ import React, { useState, useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import ReactCardFlip from 'react-card-flip'
 import { recordFlashcardAnswer, updateFlashcard } from 'Utilities/redux/flashcardReducer'
-import FlashcardTemplate from '../FlashcardTemplate'
 import FlashcardFront from './FlashcardFront'
 import FlashcardBack from './FlashcardBack'
 import Template from '../Template'
 
-const Flashcard = ({ card, cardIndex, setSwipeIndex, focusedAndBigScreen, swipeIndex }) => {
+const Flashcard = (
+  { card, cardIndex, setSwipeIndex, focusedAndBigScreen, swipeIndex, editing, setEditing },
+) => {
   const [flipped, setFlipped] = useState(false)
-  const [editing, setEditing] = useState(false)
   const [answerChecked, setAnswerChecked] = useState(false)
   const [answerCorrect, setAnswerCorrect] = useState(null)
   const [word, setWord] = useState(card.lemma)

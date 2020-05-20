@@ -24,6 +24,7 @@ const Flashcards = () => {
   const dictionaryLanguage = useSelector(dictionaryLanguageSelector)
   const { cards, pending, deletePending } = useSelector(({ flashcards }) => flashcards)
   const [swipeIndex, setSwipeIndex] = useState(0)
+  const [editing, setEditing] = useState(false)
 
   const bigScreen = useWindowDimension().width >= 415
   const { storyId } = useParams()
@@ -62,6 +63,8 @@ const Flashcards = () => {
           cardIndex={cardIndex}
           swipeIndex={swipeIndex}
           setSwipeIndex={setSwipeIndex}
+          editing={editing && swipeIndex === index}
+          setEditing={setEditing}
           focusedAndBigScreen={swipeIndex === index && bigScreen}
         />
       )
@@ -88,16 +91,21 @@ const Flashcards = () => {
         overscanSlideAfter={1}
         overscanSlideBefore={1}
         enableMouseEvents={!bigScreen}
+        disabled={editing}
       />
-      <button
-        type="button"
-        onClick={() => handleIndexChange(swipeIndex + 1)}
-        disabled={swipeIndex === cards.length || cards[0].format === 'no-cards'}
-        className="flashcard-arrow-button"
-        style={{ marginLeft: 0 }}
-      >
-        <Icon name="angle double right" size="huge" />
-      </button>
+      {!editing
+        && (
+          <button
+            type="button"
+            onClick={() => handleIndexChange(swipeIndex + 1)}
+            disabled={swipeIndex === cards.length || cards[0].format === 'no-cards'}
+            className="flashcard-arrow-button"
+            style={{ marginLeft: 0 }}
+          >
+            <Icon name="angle double right" size="huge" />
+          </button>
+        )
+      }
     </div>
   )
 }
