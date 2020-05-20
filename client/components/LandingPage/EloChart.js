@@ -71,7 +71,7 @@ const EloChart = ({ width }) => {
     type: 'column',
     yAxis: 1,
     xAxis: 1,
-    data: weeklyPracticeTimeHistory.map(element => element.practice_time).reverse(),
+    data: weeklyPracticeTimeHistory.map(element => [element.week, element.practice_time]).reverse(),
   }
 
   const fourWeekElo = rawEloHistory
@@ -103,7 +103,7 @@ const EloChart = ({ width }) => {
   const options = {
     title: { text: '' },
     series: [practicetimes, { data: eloResults }],
-    chart: { height: '35%' },
+    chart: { height: '45%' },
     legend: { enabled: false },
     credits: { enabled: false },
     tooltip: {
@@ -132,7 +132,7 @@ const EloChart = ({ width }) => {
     }],
     xAxis: [
       { visible: false, min: moment().subtract(4, 'weeks').valueOf() },
-      { visible: false },
+      { visible: true },
     ],
     plotOptions: {
       series: {
