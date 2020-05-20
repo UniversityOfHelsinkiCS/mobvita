@@ -42,12 +42,12 @@ describe('flashcards', function () {
     })
 
     it('shows answers after flipping card', function () {
-      cy.get('[class=flashcard-footer]').children().eq(1).click()
+      cy.get('[class=flashcard-footer]').children().eq(0).click()
       cy.get('[class=flashcard-translations]').contains('plane')
     })
 
     it('cannot be answered after flipping card', function () {
-      cy.get('[class=flashcard-footer]').children().eq(1).click()
+      cy.get('[class=flashcard-footer]').children().eq(0).click()
       cy.get('.react-card-back > .flashcard > .flashcard-footer > .flashcard-blended-input').eq(0).click()
       cy.get('.react-card-front > .flashcard > .flashcard-input').should('not.exist')
     })
