@@ -12,7 +12,7 @@ describe("practice mode", function () {
 
   it("can type into cloze fields", function () {
     cy.get("[data-cy=exercise-cloze]", { timeout: 10000 }).each(element => {
-      cy.get(element).type("h3hasdi3g92137fhs")
+      cy.get(element).type("h3hasdi3g92137fhs", { force: true })
     })
   })
 
@@ -31,7 +31,7 @@ describe("practice mode", function () {
 
   it("shows feedback", function () {
     cy.get("[data-cy=exercise-cloze]", { timeout: 10000 }).each(element => {
-      cy.get(element).type("h3hasdi3g92137fhs")
+      cy.get(element).type("h3hasdi3g92137fhs", { force: true })
     })
     cy.get("[data-cy=check-answer]").click()
 
