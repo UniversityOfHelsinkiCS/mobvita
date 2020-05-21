@@ -3,6 +3,7 @@ import { useIntl } from 'react-intl'
 import { useSelector, useDispatch } from 'react-redux'
 import { setPrevious } from 'Utilities/redux/snippetsReducer'
 import Tooltip from './Tooltip'
+import { getTextStyle, learningLanguageSelector } from 'Utilities/common'
 
 const chunkWords = (words) => {
   let chunk = []
@@ -115,6 +116,7 @@ const PreviousSnippets = ({ handleWordClick }) => {
   const focusedStory = useSelector(({ stories }) => stories.focused)
   const previousAnswers = useSelector(({ practice }) => practice.previousAnswers)
   const snippetsInPrevious = useSelector(({ practice }) => practice.snippetsInPrevious)
+  const learningLanguage = useSelector(learningLanguageSelector)
 
   const dispatch = useDispatch()
 
@@ -130,7 +132,7 @@ const PreviousSnippets = ({ handleWordClick }) => {
   }, [previous])
 
   return (
-    <div>
+    <div style={getTextStyle(learningLanguage)}>
       {previous.map(snippet => (
         <span style={{ lineHeight: '170%' }} key={snippet.snippetid[0]}>
           {snippetsInPrevious.includes(snippet.snippetid[0])

@@ -6,6 +6,7 @@ import {
   dictionaryLanguageSelector,
   rightAlignedLanguages,
   learningLanguageSelector,
+  getTextStyle
 } from 'Utilities/common'
 import { setFocusedWord } from 'Utilities/redux/practiceReducer'
 import Tooltip from './Tooltip'
@@ -60,11 +61,11 @@ const ExerciseCloze = ({ word, handleChange, handleClick }) => {
     ? (
       <div onClick={handleTooltipClick}>
         <div className="tooltip-green">{word.message}</div>
-        <div className="tooltip-blue">{`${word.base || word.bases} → ${dictionaryLanguage}`}</div>
+        <div className="tooltip-blue" style={getTextStyle(learningLanguage)}>{`${word.base || word.bases} → ${dictionaryLanguage}`}</div>
       </div>
     ) : (
-      <div onClick={handleTooltipClick}>
-        <div className="tooltip-blue">{`${word.base || word.bases} → ${dictionaryLanguage}`}</div>
+      <div onClick={handleTooltipClick} >
+        <div className="tooltip-blue" style={getTextStyle(learningLanguage)}>{`${word.base || word.bases} → ${dictionaryLanguage}`}</div>
       </div>
     )
 
