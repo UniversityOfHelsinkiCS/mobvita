@@ -57,6 +57,9 @@ const SingleStoryView = ({ match }) => {
     if (word.bases) {
       return <span className="word-interactive" key={word.ID} onClick={e => handleWordClick(word.surface, word.lemmas, word.ID)}>{word.surface}</span>
     }
+    if (word.surface === '\n\n'){
+      return <br />
+    }
     return word.surface
   }
 
