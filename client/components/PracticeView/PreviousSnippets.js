@@ -73,7 +73,7 @@ const ExerciseWord = ({ word, handleWordClick, answer }) => {
       {word.message && <div className="tooltip-green">{word.message}</div>}
       <div className="tooltip-blue">
         {`${intl.formatMessage({ id: 'you-used' })}: `}
-        <span style={getTextStyle(learningLanguage)}>{answer.users_answer}</span>
+        <span style={getTextStyle(learningLanguage, 'tooltip')}>{answer.users_answer}</span>
       </div>
     </div>
   )

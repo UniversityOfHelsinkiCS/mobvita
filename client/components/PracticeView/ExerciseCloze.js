@@ -57,17 +57,15 @@ const ExerciseCloze = ({ word, handleChange, handleClick }) => {
     }
   }, [tested])
 
-  const tooltip = word.message
-    ? (
-      <div onClick={handleTooltipClick}>
-        <div className="tooltip-green">{word.message}</div>
-        <div className="tooltip-blue" style={getTextStyle(learningLanguage)}>{`${word.base || word.bases} → ${dictionaryLanguage}`}</div>
+  const tooltip = (
+    <div onClick={handleTooltipClick}>
+      {word.message && <div className="tooltip-green">{word.message}</div>}
+      <div className="tooltip-blue">
+        <span style={getTextStyle(learningLanguage, 'tooltip')}>{word.base || word.bases}</span>
+        {` → ${dictionaryLanguage}`}
       </div>
-    ) : (
-      <div onClick={handleTooltipClick} >
-        <div className="tooltip-blue" style={getTextStyle(learningLanguage)}>{`${word.base || word.bases} → ${dictionaryLanguage}`}</div>
-      </div>
-    )
+    </div>
+  )
 
   const handleDelayedBlur = () => { // It just works...
     setTimeout(() => {
