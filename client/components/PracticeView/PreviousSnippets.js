@@ -54,6 +54,7 @@ const ExerciseWord = ({ word, handleWordClick, answer }) => {
   const intl = useIntl()
   const [show, setShow] = useState(false)
 
+  const learningLanguage = useSelector(learningLanguageSelector)
 
   let color = ''
   if (tested) {
@@ -71,7 +72,8 @@ const ExerciseWord = ({ word, handleWordClick, answer }) => {
     <div>
       {word.message && <div className="tooltip-green">{word.message}</div>}
       <div className="tooltip-blue">
-        {`${intl.formatMessage({ id: 'you-used' })}: ${answer.users_answer}`}
+        {`${intl.formatMessage({ id: 'you-used' })}: `}
+        <span style={getTextStyle(learningLanguage)}>{answer.users_answer}</span>
       </div>
     </div>
   )
