@@ -10,6 +10,7 @@ import {
   translatableLanguages,
   speak,
   respVoiceLanguages,
+  getTextStyle,
 } from 'Utilities/common'
 import useWindowDimensions from 'Utilities/windowDimensions'
 import { Spinner } from 'react-bootstrap'
@@ -59,10 +60,10 @@ const DictionaryHelp = () => {
 
   const translations = translation && translation.map(translated => (
     <List.Item key={translated.URL} data-cy="translations" style={{ color: '#555555' }}>
-      <span>
+      <div style={getTextStyle(learningLanguage)}>
         {translated.lemma}
         <Speaker word={translated.lemma} />
-      </span>
+      </div>
       <List bulleted style={{ color: 'slateGrey', fontStyle: 'italic' }}>
         {translated.glosses.map((word, i) => <List.Item key={`${translated.URL}-${i}`}>{word}</List.Item>)}
       </List>
@@ -139,10 +140,10 @@ const DictionaryHelp = () => {
     if (!translation) {
       return (
         <List.Item style={{ color: '#555555' }}>
-          <span>
+          <div style={{ width: '100%', ...getTextStyle(learningLanguage) }}>
             {parsedLemmas()[0]}
             <Speaker word={parsedLemmas()[0]} />
-          </span>
+          </div>
           <List bulleted style={{ color: 'slateGrey', fontStyle: 'italic' }}>
             <span><FormattedMessage id="(DictionaryHelp) No translation available" /></span>
           </List>
@@ -171,7 +172,7 @@ const DictionaryHelp = () => {
           <List>
             {showSurfaceWord()
               && (
-                <List.Item style={{ paddingBottom: '0.5em', display: 'flex' }}>
+                <List.Item style={{ paddingBottom: '0.5em', display: 'flex', ...getTextStyle(learningLanguage) }}>
                   <span style={{ color: '#2185D0' }}>{surfaceWord}</span>
                   <Speaker word={surfaceWord} />
                 </List.Item>

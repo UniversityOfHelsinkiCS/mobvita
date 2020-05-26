@@ -57,7 +57,7 @@ const SingleStoryView = ({ match }) => {
     if (word.bases) {
       return <span className="word-interactive" key={word.ID} onClick={e => handleWordClick(word.surface, word.lemmas, word.ID)}>{word.surface}</span>
     }
-    if (word.surface === '\n\n'){
+    if (word.surface === '\n\n') {
       return <br />
     }
     return word.surface
@@ -66,9 +66,9 @@ const SingleStoryView = ({ match }) => {
   return (
     <div>
       <div className="center auto">
-        <div className="max-width padding-top-2" style={getTextStyle(learningLanguage)}>
-          <Header>
-            {story.title}
+        <div className="max-width padding-top-2">
+          <Header style={getTextStyle(learningLanguage, 'title')}>
+            <span className="padding-right-1">{story.title}</span>
             <Link to={`/stories/${id}/practice`}>
               <Button variant="primary" style={{ float: 'right', marginTop: '0.5em' }}>
                 <FormattedMessage id="practice-now" />

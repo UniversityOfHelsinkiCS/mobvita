@@ -106,17 +106,6 @@ export const betaLanguages = [
   'turkish',
 ]
 
-export const rightAlignedLanguages = ['Syriac']
-
-export const specialFonts = { Syriac: { fontFamily: 'NotoSansSyriacEastern', fontSize: '2rem' } }
-
-export const getTextStyle = (language) => {
-  let style = {}
-  if (rightAlignedLanguages.includes(language)) style = { textAlign: 'right', direction: 'rtl' }
-  if (specialFonts[language]) style = { ...style, ...specialFonts[language] }
-  return style
-}
-
 export const colors = {}
 
 export const localeOptions = [
@@ -143,6 +132,25 @@ export const checkRevitaStatus = async () => {
 
 
 export * from '@root/config/common'
+
+export const rightAlignedLanguages = ['Syriac']
+
+export const specialFonts = { Syriac: { fontFamily: 'NotoSansSyriacEastern', fontSize: '1.7rem' } }
+export const titleFontSizes = { Syriac: '2rem' }
+export const tooltipFontSizes = { Syriac: '1rem' }
+
+export const getTextStyle = (language, type) => {
+  let style = {}
+  if (rightAlignedLanguages.includes(language)) style = { textAlign: 'right', direction: 'rtl' }
+  if (specialFonts[language]) style = { ...style, ...specialFonts[language] }
+  if (type === 'title' && titleFontSizes[language]) {
+    style = { ...style, fontSize: titleFontSizes[language] }
+  }
+  if (type === 'tooltip' && tooltipFontSizes[language]) {
+    style = { ...style, fontSize: tooltipFontSizes[language] }
+  }
+  return style
+}
 
 export const getTextWidth = (text) => {
   const myCanvas = getTextWidth.canvas || (getTextWidth.canvas = document.createElement('canvas'))

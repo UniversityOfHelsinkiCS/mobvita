@@ -124,33 +124,6 @@ const EloChart = ({ width }) => {
     getMaxY(storyLastEntryBeforeFourWeeks, storyFourWeekElo),
   )
 
-  // const fourWeekElo = exerciseHistory
-  //   .filter(data => moment(data.date).valueOf() > moment().subtract(4, 'weeks').valueOf())
-  //   .map(data => data.score)
-
-  // const lastBeforeFourWeeks = fourWeekElo < exerciseHistory
-  //   && exerciseHistory[exerciseHistory.length - fourWeekElo.length - 1]
-
-  // const minY = lastBeforeFourWeeks && lastBeforeFourWeeks.score < Math.min(...fourWeekElo)
-  //   ? Math.floor(lastBeforeFourWeeks.score / 10) * 10
-  //   : Math.floor(Math.min(...fourWeekElo) / 10) * 10
-
-  // const maxY = lastBeforeFourWeeks && lastBeforeFourWeeks.score > Math.max(...fourWeekElo)
-  //   ? Math.ceil(lastBeforeFourWeeks.score / 10) * 10
-  //   : Math.ceil(Math.max(...fourWeekElo) / 10) * 10
-
-
-  // const maxElo = Math.max(...eloHistory)
-  // const minElo = Math.min(...eloHistory)
-
-  // const maxYTick = maxElo === minElo
-  //   ? Math.ceil(maxElo / 10) * 10 + 100
-  //   : Math.ceil(maxElo / 10) * 10
-
-  // const minYTick = maxElo === minElo
-  //   ? Math.floor(minElo / 10) * 10 - 100
-  //   : Math.floor(minElo / 10) * 10
-
   const options = {
     title: { text: '' },
     series: [practicetimes, { data: eloResults }, { data: flashcardEloResults, color: '#dc3545' }],
@@ -208,19 +181,35 @@ const EloChart = ({ width }) => {
       line: { marker: { enabled: false } },
     },
   }
+
+  const showStoryElo = exerciseHistory && exerciseHistory.length > 0
+  const showFlashcardElo = flashcardHistory && flashcardHistory.length > 0
+
   return (
     <div style={{ textAlign: 'center', width, cursor: 'pointer', alignSelf: 'flex-start' }} onClick={() => history.push('/profile/progress')}>
       <div className="space-evenly padding-bottom-1">
-        <span><Icon name="star outline" style={{ margin: 0 }} /> {exerciseHistory[exerciseHistory.length - 1].score}</span>
-        <span>
-          <img
-            src={images.flashcardIcon}
-            alt="three cards"
-            width="18px"
-            style={{ marginRight: '0.2em' }}
-          />
-          {flashcardHistory[flashcardHistory.length - 1].score}
-        </span>
+        {showStoryElo
+          && (
+            <span>
+              <Icon name="star outline" style={{ margin: 0 }} />
+              {' '}
+              {exerciseHistory[exerciseHistory.length - 1].score}
+            </span>
+          )
+        }
+        {showFlashcardElo
+          && (
+            <span>
+              <img
+                src={images.flashcardIcon}
+                alt="three cards"
+                width="18px"
+                style={{ marginRight: '0.2em' }}
+              />
+              {flashcardHistory[flashcardHistory.length - 1].score}
+            </span>
+          )
+        }
       </div>
       <HighchartsReact
         highcharts={Highcharts}

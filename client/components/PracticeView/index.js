@@ -83,7 +83,15 @@ const PracticeView = ({ match }) => {
         <Segment style={{ paddingTop: '1em', width: '100%', maxWidth: '1024px' }}>
           <div className="component-container">
             <div style={{ display: 'flex', justifyContent: 'space-between', width: '100%' }}>
-              <h3 style={{ ...getTextStyle(learningLanguage), width: '100%', paddingRight: '1em' }}>{`${story.title}`}</h3>
+              <h3
+                style={{
+                  ...getTextStyle(learningLanguage, 'title'),
+                  width: '100%',
+                  paddingRight: '1em',
+                }}
+              >
+                {`${story.title}`}
+              </h3>
               <Icon
                 data-cy="restart-story"
                 style={{ cursor: 'pointer' }}
