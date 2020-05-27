@@ -5,6 +5,9 @@ import HomeView from 'Components/LandingPage/HomeView'
 import Banners from 'Components/Banners'
 import { useIntl } from 'react-intl'
 import { Link } from 'react-router-dom'
+import TestIndex from 'Components/TestView/index'
+import { hiddenFeatures } from 'Utilities/common'
+
 
 const Tabs = ({ location }) => {
   const intl = useIntl()
@@ -31,8 +34,25 @@ const Tabs = ({ location }) => {
     },
   ]
 
+  if (hiddenFeatures) {
+    panes.push({
+      menuItem: {
+        as: Link,
+        content: intl.formatMessage({ id: 'Tests' }),
+        to: '/tests',
+        key: 'tests',
+        'data-cy': 'test-tab',
+      },
+      render: () => <TestIndex />,
+    })
+  }
+
+
   let index
   switch (location.pathname) {
+    case '/tests':
+      index = 2
+      break
     case '/library':
       index = 1
       break

@@ -711,6 +711,15 @@ body {
   }
 }
 
+.test {
+  &-question {
+    font-size: 22px;
+  }
+  &-choice-button {
+    width: 60%;
+  }
+}
+
 
 
 .tooltip { //Overwrites react-popper-tooltip styles.
