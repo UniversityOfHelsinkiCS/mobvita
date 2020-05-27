@@ -1,21 +1,25 @@
 import React from 'react'
+import { useParams } from 'react-router-dom'
 import useWindowDimensions from 'Utilities/windowDimensions'
+import { hiddenFeatures } from 'Utilities/common'
 import FlashcardMenu from './FlashcardMenu'
-import Fillin from './Fillin'
 import FlashcardCreation from './FlashcardCreation'
 import FloatMenu from './FloatMenu'
+import Practice from './Practice'
 
-const Flashcards = ({ location }) => {
+const Flashcards = () => {
   const smallScreen = useWindowDimensions().width < 940
 
+  const { mode } = useParams()
+
   const content = () => {
-    switch (location.pathname) {
-      case '/flashcards/all':
-        return <Fillin />
-      case '/flashcards/new':
+    switch (mode) {
+      case 'new':
         return <FlashcardCreation />
+      case 'article':
+        return hiddenFeatures ? <Practice mode="article" /> : <Practice mode="fillin" />
       default:
-        return <Fillin />
+        return <Practice mode="fillin" />
     }
   }
 

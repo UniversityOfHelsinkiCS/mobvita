@@ -1217,6 +1217,10 @@ body {
   }
 }
 
+.grow {
+  flex-grow: 1;
+}
+
 .flex-static-size {
   flex: 0 0 auto;
 }
