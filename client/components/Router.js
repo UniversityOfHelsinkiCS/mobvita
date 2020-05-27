@@ -16,6 +16,7 @@ import Profile from './Profile/Profile'
 import ResetPassword from './AccessControl/ResetPassword'
 import Help from './StaticContent/Help'
 import Flashcards from './Flashcards'
+import TestView from './TestView/index'
 
 export default () => (
   <Switch>
@@ -27,7 +28,12 @@ export default () => (
     <Route exact path="/login" component={Login} />
     <Route exact path="/register" component={Register} />
     <Route exact path="/help" component={Help} />
-    <ProtectedRoute languageRequired={false} exact path="/learningLanguage" component={LanguageSelectView} />
+    <ProtectedRoute
+      languageRequired={false}
+      exact
+      path="/learningLanguage"
+      component={LanguageSelectView}
+    />
     <ProtectedRoute exact path="/home" component={MenuTabs} />
     <ProtectedRoute exact path="/library" component={MenuTabs} />
     <ProtectedRoute exact path="/flashcards" component={Flashcards} />
@@ -44,5 +50,6 @@ export default () => (
     <ProtectedRoute exact path="/profile/account" component={Profile} />
     <ProtectedRoute exact path="/profile/progress" component={Profile} />
     <ProtectedRoute exact path="/profile/settings" component={Profile} />
+    <ProtectedRoute exact path="/test" component={TestView} />
   </Switch>
 )
