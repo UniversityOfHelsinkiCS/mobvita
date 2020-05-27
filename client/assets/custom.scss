@@ -688,12 +688,6 @@ body {
     color: #777;
     align-items: center;
     pointer-events: auto;
-    
-    transform: translateX(-100%);
-    animation: slide-in 0.5s forwards;
-      @keyframes slide-in {
-      100% { transform: translateX(0%); }
-    }
   }
 
   &-fab-icon {
@@ -1266,4 +1260,12 @@ body {
 
 .full-width {
   width: 100%;
+}
+
+.slide-from-left {
+  transform: translateX(-100%);
+    animation: slide-in 0.5s forwards;
+      @keyframes slide-in {
+      100% { transform: translateX(0%); }
+    }
 }

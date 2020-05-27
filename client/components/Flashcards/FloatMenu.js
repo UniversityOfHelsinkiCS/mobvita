@@ -1,26 +1,57 @@
 import React, { useState } from 'react'
-import { useHistory } from 'react-router-dom'
+import { useHistory, useParams } from 'react-router-dom'
 import { FormattedMessage } from 'react-intl'
 import { Icon } from 'semantic-ui-react'
 import { images } from 'Utilities/common'
 import SelectLanguage from './SelectLanguage'
 
+const FabOption = ({ handleClick, iconStyle, translationId, children }) => (
+  <button
+    type="button"
+    onClick={handleClick}
+    className="flashcard-fab-option gap-2"
+  >
+    <div
+      className="flashcard-fab-icon"
+      style={iconStyle}
+    >
+      {children}
+    </div>
+    <span className="flashcard-fab-text">
+      <FormattedMessage id={translationId} />
+    </span>
+  </button>
+)
+
 const FloatMenu = () => {
   const [open, setOpen] = useState(false)
 
   const history = useHistory()
+  const { storyId } = useParams()
+
+  const story = storyId ? `/${storyId}` : ''
 
   const handleFabClick = () => {
     setOpen(!open)
   }
 
+  const handleAllCardsClick = () => {
+    history.push('/flashcards/fillin')
+    setOpen(false)
+  }
+
   const handleFillinClick = () => {
-    history.push('/flashcards/all')
+    history.push(`/flashcards/fillin${story}`)
     setOpen(false)
   }
 
   const handleCreateNewClick = () => {
     history.push('/flashcards/new')
+    setOpen(false)
+  }
+
+  const handleArticleClick = () => {
+    history.push(`/flashcards/article${story}`)
     setOpen(false)
   }
 
@@ -32,40 +63,45 @@ const FloatMenu = () => {
       {open
         && (
           <div
-            className="flex-column-reverse padding-bottom-1 gap-row-1"
+            className="flex-column-reverse padding-bottom-1 gap-row-1 slide-from-left"
             style={{ paddingLeft: '0.3em' }}
           >
-            <button
-              type="button"
-              onClick={handleFillinClick}
-              className="flashcard-fab-option gap-2">
-              <div className="flashcard-fab-icon">
-                <img
-                  src={images.flashcardIcon}
-                  alt="three cards"
-                  width="16px"
-                  style={{ margin: 'auto' }}
-                />
-              </div>
-              <span className="flashcard-fab-text">
-                <FormattedMessage id="all-flashcards" />
-              </span>
-            </button>
-            <button
-              type="button"
-              onClick={handleCreateNewClick}
-              className="flashcard-fab-option gap-2"
+            {storyId
+              && (
+                <FabOption
+                  handleClick={handleAllCardsClick}
+                  translationId="all-flashcards"
+                >
+                  <img
+                    src={images.flashcardIcon}
+                    alt="three cards"
+                    width="16px"
+                    style={{ margin: 'auto' }}
+                  />
+                </FabOption>
+              )
+            }
+            <FabOption
+              handleClick={handleFillinClick}
+              iconStyle={{ paddingBottom: '0.4em' }}
+              translationId="fill-in"
             >
-              <div
-                className="flashcard-fab-icon"
-                style={{ paddingBottom: '0.5em', paddingLeft: '0.1em' }}
-              >
-                <Icon name="edit" style={{ margin: 'auto' }} />
-              </div>
-              <span className="flashcard-fab-text">
-                <FormattedMessage id="add-new-flashcard" />
-              </span>
-            </button>
+              <Icon name="keyboard outline" style={{ margin: 'auto' }} />
+            </FabOption>
+            <FabOption
+              handleClick={handleArticleClick}
+              iconStyle={{ paddingBottom: '0.4em' }}
+              translationId="Article"
+            >
+              <Icon name="amilia" style={{ margin: 'auto' }} />
+            </FabOption>
+            <FabOption
+              handleClick={handleCreateNewClick}
+              translationId="add-new-flashcard"
+              iconStyle={{ paddingBottom: '0.5em', paddingLeft: '0.1em' }}
+            >
+              <Icon name="edit" style={{ margin: 'auto' }} />
+            </FabOption>
             <button
               type="button"
               className="flashcard-fab-option gap-2"
