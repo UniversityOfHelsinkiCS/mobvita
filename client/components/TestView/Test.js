@@ -105,7 +105,7 @@ const Test = () => {
     <div className="component-container">
 
       <h3>Test</h3>
-      <div>{(Math.round(timer.getTime() / 100) / 10).toFixed(1)}</div>
+      <div>{(Math.round(timer.getTime() / 1000))}</div>
       <Icon
         color={willPause ? 'grey' : 'black'}
         name={paused ? 'play' : 'pause'}

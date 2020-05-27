@@ -1,20 +1,8 @@
 import React from 'react'
 import { Icon } from 'semantic-ui-react'
-import sanitizeHtml from 'sanitize-html'
+import { sanitizeHtml } from 'Utilities/common'
 
 const TemplateListItems = ({ values, handleDelete, bigScreen = false, italics = false }) => {
-  const defaultOptions = {
-    allowedTags:
-      ['b', 'i', 'em', 'strong', 'br', 'mark', 'small', 'sub', 'sup', 'ins', 'del'],
-  }
-
-  const sanitize = dirty => ({
-    __html: sanitizeHtml(
-      dirty,
-      defaultOptions,
-    ),
-  })
-
   const itemClass = bigScreen ? 'padding-bottom-1' : 'padding-bottom-2'
   const textClass = italics ? 'padding-right-1 full-width italics' : 'padding-right-1 full-width'
 
@@ -25,7 +13,7 @@ const TemplateListItems = ({ values, handleDelete, bigScreen = false, italics = 
           /* eslint-disable-next-line */
           <li key={`${value}-${index}`} className={itemClass}>
             <div className="space-between align-center">
-              <span className={textClass} dangerouslySetInnerHTML={sanitize(value)} />
+              <span className={textClass} dangerouslySetInnerHTML={sanitizeHtml(value)} />
               <Icon
                 name="close"
                 color="grey"

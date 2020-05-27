@@ -1,6 +1,7 @@
 /**
  * Insert common items here
  */
+import sanitize from 'sanitize-html'
 import revitaLogoTransparent from 'Assets/revita_logo_transparent.png'
 import practiceNow from 'Assets/practice_now.jpg'
 import flagFinnish from 'Assets/flags/flag_finnish.png'
@@ -128,6 +129,18 @@ export const localeCodeToName = code => localeOptions.find(option => option.code
 export const checkRevitaStatus = async () => {
   const result = await callApi('/revitaStatus')
   return result
+}
+
+const defaultAllowed = ['b', 'i', 'em', 'strong', 'br', 'mark', 'small', 'sub', 'sup', 'ins', 'del']
+
+export const sanitizeHtml = (dirty, allowedTags = defaultAllowed) => {
+  const defaultOptions = { allowedTags }
+  return {
+    __html: sanitize(
+      dirty,
+      defaultOptions,
+    ),
+  }
 }
 
 
