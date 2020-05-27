@@ -98,7 +98,7 @@ const FloatMenu = () => {
                   iconStyle={{ paddingBottom: '0.4em' }}
                   translationId="Article"
                 >
-                  <Icon name="amilia" style={{ margin: 'auto' }} />
+                  <Icon name="font" style={{ margin: 'auto' }} />
                 </FabOption>
               )
             }

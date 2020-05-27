@@ -48,11 +48,11 @@ const Practice = ({ mode }) => {
 
   useEffect(() => {
     dispatch(getFlashcards(learningLanguage, dictionaryLanguage, storyId))
-  }, [storyId])
+  }, [storyId, mode])
 
   useEffect(() => {
     setSwipeIndex(0)
-  }, [pending, mode])
+  }, [pending])
 
   // Updates elo after every 10 answers
   useEffect(() => {
