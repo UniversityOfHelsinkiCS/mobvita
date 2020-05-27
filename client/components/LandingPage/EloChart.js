@@ -89,40 +89,43 @@ const EloChart = ({ width }) => {
     data: weeklyPracticeTimeHistory.map(element => [element.week, element.practice_time]).reverse(),
   }
 
-  const getFourWeekElo = history => history
-    .filter(data => moment(data.date).valueOf() > moment().subtract(4, 'weeks').valueOf())
-    .map(data => data.score)
+  // code for calculating custom min/max
+  // const getFourWeekElo = history => history
+  //   .filter(data => moment(data.date).valueOf() > moment().subtract(4, 'weeks').valueOf())
+  //   .map(data => data.score)
 
-  const getLastEntryBeforeFourWeeks = (history, fourWeekElo) => {
-    return fourWeekElo < history
-      && history[history.length - fourWeekElo.length - 1]
-  }
+  // const getLastEntryBeforeFourWeeks = (history, fourWeekElo) => {
+  //   return fourWeekElo < history
+  //     && history[history.length - fourWeekElo.length - 1]
+  // }
 
-  const getMinY = (lastEntryBeforeFourWeeks, fourWeekElo) => (lastEntryBeforeFourWeeks
-    && lastEntryBeforeFourWeeks.score < Math.min(...fourWeekElo)
-    ? Math.floor(lastEntryBeforeFourWeeks.score / 10) * 10
-    : Math.floor(Math.min(...fourWeekElo) / 10) * 10)
+  // const getMinY = (lastEntryBeforeFourWeeks, fourWeekElo) => (lastEntryBeforeFourWeeks
+  //   && lastEntryBeforeFourWeeks.score < Math.min(...fourWeekElo)
+  //   ? Math.floor(lastEntryBeforeFourWeeks.score / 10) * 10
+  //   : Math.floor(Math.min(...fourWeekElo) / 10) * 10)
 
-  const getMaxY = (lastEntryBeforeFourWeeks, fourWeekElo) => (lastEntryBeforeFourWeeks
-    && lastEntryBeforeFourWeeks.score > Math.max(...fourWeekElo)
-    ? Math.ceil(lastEntryBeforeFourWeeks.score / 10) * 10
-    : Math.ceil(Math.max(...fourWeekElo) / 10) * 10)
+  // const getMaxY = (lastEntryBeforeFourWeeks, fourWeekElo) => (lastEntryBeforeFourWeeks
+  //   && lastEntryBeforeFourWeeks.score > Math.max(...fourWeekElo)
+  //   ? Math.ceil(lastEntryBeforeFourWeeks.score / 10) * 10
+  //   : Math.ceil(Math.max(...fourWeekElo) / 10) * 10)
 
-  const storyFourWeekElo = getFourWeekElo(exerciseHistory)
-  const flashcardFourWeekElo = getFourWeekElo(flashcardHistory)
+  // const storyFourWeekElo = exerciseHistory && getFourWeekElo(exerciseHistory)
+  // const flashcardFourWeekElo = flashcardHistory && getFourWeekElo(flashcardHistory)
 
-  const storyLastEntryBeforeFourWeeks = getLastEntryBeforeFourWeeks(exerciseHistory, storyFourWeekElo)
-  const flashcardLastEntryBeforeFourWeeks = getLastEntryBeforeFourWeeks(flashcardHistory, flashcardFourWeekElo)
+  // const storyLastEntryBeforeFourWeeks = exerciseHistory
+  //   && getLastEntryBeforeFourWeeks(exerciseHistory, storyFourWeekElo)
+  // const flashcardLastEntryBeforeFourWeeks = flashcardHistory
+  //   && getLastEntryBeforeFourWeeks(flashcardHistory, flashcardFourWeekElo)
 
-  const minY = Math.min(
-    getMinY(flashcardLastEntryBeforeFourWeeks, flashcardFourWeekElo),
-    getMinY(storyLastEntryBeforeFourWeeks, storyFourWeekElo),
-  )
+  // const minY = Math.min(
+  //   getMinY(flashcardLastEntryBeforeFourWeeks, flashcardFourWeekElo),
+  //   getMinY(storyLastEntryBeforeFourWeeks, storyFourWeekElo),
+  // )
 
-  const maxY = Math.max(
-    getMaxY(flashcardLastEntryBeforeFourWeeks, flashcardFourWeekElo),
-    getMaxY(storyLastEntryBeforeFourWeeks, storyFourWeekElo),
-  )
+  // const maxY = Math.max(
+  //   getMaxY(flashcardLastEntryBeforeFourWeeks, flashcardFourWeekElo),
+  //   getMaxY(storyLastEntryBeforeFourWeeks, storyFourWeekElo),
+  // )
 
   const options = {
     title: { text: '' },
@@ -138,11 +141,11 @@ const EloChart = ({ width }) => {
     },
     yAxis: [{
       title: { enabled: false },
-      min: minY,
-      max: maxY,
-      endOnTick: false,
-      startOnTick: false,
-      tickPositions: [maxY, minY],
+      // eslint-disable-next-line
+      tickPositioner: function () {
+        // eslint-disable-next-line
+        return [Math.floor(this.dataMin / 10) * 10, Math.ceil(this.dataMax / 10) * 10]
+      },
     },
     {
       title: {
