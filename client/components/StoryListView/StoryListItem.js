@@ -1,10 +1,9 @@
 import React, { useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { Card, Icon, Progress, Dropdown, Button as SemanticButton } from 'semantic-ui-react'
+import { Card, Icon, Dropdown, Button as SemanticButton } from 'semantic-ui-react'
 import { Button } from 'react-bootstrap'
 import { Link } from 'react-router-dom'
-import moment from 'moment'
-import { FormattedMessage, useIntl } from 'react-intl'
+import { FormattedMessage } from 'react-intl'
 import { removeStory, unshareStory as unshare } from 'Utilities/redux/storiesReducer'
 import useWindowDimensions from 'Utilities/windowDimensions'
 import { getTextStyle, learningLanguageSelector } from 'Utilities/common'
@@ -14,7 +13,6 @@ import DetailedStoryModal from './DetailedStoryModal'
 
 const StoryListItem = ({ story, userCanShare, libraryShown, selectedGroup }) => {
   const dispatch = useDispatch()
-  const intl = useIntl()
   const [shareModalOpen, setShareModalOpen] = useState(false)
   const [confirmationOpen, setConfirmationOpen] = useState(false)
   const { groups } = useSelector(({ groups }) => groups)
@@ -31,21 +29,6 @@ const StoryListItem = ({ story, userCanShare, libraryShown, selectedGroup }) => 
   const smallWindow = useWindowDimensions().width < 640
 
   const difficultyIcon = icons('large')[story.difficulty || 'default']
-
-  const storyInfoElements = [
-    story.author ? `Author: ${story.author}` : null,
-    story.URL ? <a href={story.URL}><FormattedMessage id="source" /></a> : null,
-    `Difficulty: ${story.difficulty}`,
-    `Story Rating: ${story.elo_score}`,
-    `Date added ${moment(story.date).format('MMM Do YYYY')}`,
-    <>
-      <FormattedMessage id="exercises-answered-correctly" />
-      <Progress />
-    </>, // TODO add progress bar logic
-    <>
-      <FormattedMessage id="part-of-story-covered" />
-      <Progress />
-    </>]
 
   const currentGroup = groups.find(g => g.group_id === selectedGroup)
 
@@ -149,7 +132,7 @@ const StoryListItem = ({ story, userCanShare, libraryShown, selectedGroup }) => 
                     <Dropdown.Item
                       text={<FormattedMessage id="Flashcards" />}
                       as={Link}
-                      to={`/flashcards/stories/${story._id}/`}
+                      to={`/flashcards/fillin/${story._id}/`}
                       icon="id card"
                     />
                     <Dropdown.Item
@@ -169,7 +152,7 @@ const StoryListItem = ({ story, userCanShare, libraryShown, selectedGroup }) => 
                     <FormattedMessage id="practice" />
                   </Button>
                 </Link>
-                <Link to={`/flashcards/stories/${story._id}/`}>
+                <Link to={`/flashcards/fillin/${story._id}/`}>
                   <Button variant="primary" style={{ marginRight: '0.5em' }}>
                     <FormattedMessage id="Flashcards" />
                   </Button>

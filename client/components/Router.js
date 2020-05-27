@@ -37,10 +37,8 @@ export default () => (
     <ProtectedRoute exact path="/home" component={MenuTabs} />
     <ProtectedRoute exact path="/library" component={MenuTabs} />
     <ProtectedRoute exact path="/flashcards" component={Flashcards} />
-    <ProtectedRoute exact path="/flashcards/all" component={Flashcards} />
-    <ProtectedRoute exact path="/flashcards/article" component={Flashcards} />
-    <ProtectedRoute exact path="/flashcards/stories/:storyId" component={Flashcards} />
-    <ProtectedRoute exact path="/flashcards/new" component={Flashcards} />
+    <ProtectedRoute exact path="/flashcards/:mode" component={Flashcards} />
+    <ProtectedRoute exact path="/flashcards/:mode/:storyId" component={Flashcards} />
     <ProtectedRoute exact path="/stories/:id" component={SingleStoryView} />
     <ProtectedRoute exact path="/stories/:id/practice/" component={PracticeView} />
     <ProtectedRoute exact path="/stories/:id/compete/" component={CompeteView} />
