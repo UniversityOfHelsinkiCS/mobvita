@@ -49,6 +49,7 @@ export default (state = {}, action) => {
       return {
         ...state,
         cards: action.response.flashcards.all,
+        nounCards: action.response.flashcards.nouns,
         sessionId: action.response.session_id,
         pending: false,
         error: false,
@@ -69,6 +70,7 @@ export default (state = {}, action) => {
       return {
         ...state,
         cards: state.cards.filter(card => card._id !== action.response.flashcard_id),
+        nounCards: state.nounCards.filter(card => card._id !== action.response.flashcard_id),
         deletePending: false,
         error: false,
       }

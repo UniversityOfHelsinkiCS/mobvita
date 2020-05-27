@@ -4,7 +4,7 @@ import { learningLanguageSelector, dictionaryLanguageSelector } from 'Utilities/
 import FlashcardInput from './FlashcardInput'
 import FlashcardResult from './FlashcardResult'
 import FlashcardHint from './FlashcardHint'
-import FlashcardSide from './FlashcardSide'
+import Flashcard from '../Flashcard'
 
 const FlashcardFront = ({
   answerChecked,
@@ -21,7 +21,7 @@ const FlashcardFront = ({
   const sameLanguage = learningLanguage === dictionaryLanguage
 
   return (
-    <FlashcardSide {...props}>
+    <Flashcard {...props}>
       <div className="flashcard-text-container">
         <FlashcardHint hint={hints} />
         <h2 data-cy="flashcard-title" className="flashcard-title">{lemma}</h2>
@@ -38,7 +38,7 @@ const FlashcardFront = ({
           </div>
         )
       }
-    </FlashcardSide>
+    </Flashcard>
   )
 }
 

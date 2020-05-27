@@ -1,6 +1,6 @@
 import React, { useEffect, useCallback } from 'react'
 import FlashcardResult from './FlashcardResult'
-import FlashcardSide from './FlashcardSide'
+import Flashcard from '../Flashcard'
 
 const FlashcardBack = (
   { answerCorrect, glosses, focusedAndBigScreen, flipped, setSwipeIndex, swipeIndex, ...props },
@@ -26,7 +26,7 @@ const FlashcardBack = (
     : glosses
 
   return (
-    <FlashcardSide {...props}>
+    <Flashcard {...props}>
       <div className="flashcard-text-container">
         <div className="flashcard-translations">
           <ul>{translations}</ul>
@@ -35,7 +35,7 @@ const FlashcardBack = (
       <div className="flashcard-input-and-result-container">
         <FlashcardResult answerCorrect={answerCorrect} />
       </div>
-    </FlashcardSide>
+    </Flashcard>
   )
 }
 export default FlashcardBack

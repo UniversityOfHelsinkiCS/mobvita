@@ -3,9 +3,9 @@ import { Icon } from 'semantic-ui-react'
 import { FormattedMessage } from 'react-intl'
 import FlashcardDelete from './FlashcardDelete'
 
-const FlashcardSide = ({
+const Flashcard = ({
   flipCard,
-  cardIndex,
+  cardNumbering,
   stage,
   children,
   id,
@@ -27,14 +27,18 @@ const FlashcardSide = ({
       >
         <div className="flashcard-header">
           <div>
-            <button
-              className="flashcard-blended-input"
-              type="button"
-              onClick={handleEdit}
-            >
-              <Icon name="edit" style={{ color: 'white' }} />
-            </button>
-            {cardIndex}
+            {handleEdit
+              && (
+                <button
+                  className="flashcard-blended-input"
+                  type="button"
+                  onClick={handleEdit}
+                >
+                  <Icon name="edit" style={{ color: 'white' }} />
+                </button>
+              )
+            }
+            {cardNumbering}
           </div>
           <FlashcardDelete id={id} />
         </div>
@@ -56,4 +60,4 @@ const FlashcardSide = ({
   )
 }
 
-export default FlashcardSide
+export default Flashcard
