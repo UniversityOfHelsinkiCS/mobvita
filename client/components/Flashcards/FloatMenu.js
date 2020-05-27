@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 import { useHistory, useParams } from 'react-router-dom'
 import { FormattedMessage } from 'react-intl'
 import { Icon } from 'semantic-ui-react'
-import { images } from 'Utilities/common'
+import { images, hiddenFeatures } from 'Utilities/common'
 import SelectLanguage from './SelectLanguage'
 
 const FabOption = ({ handleClick, iconStyle, translationId, children }) => (
@@ -88,13 +88,17 @@ const FloatMenu = () => {
             >
               <Icon name="keyboard outline" style={{ margin: 'auto' }} />
             </FabOption>
-            <FabOption
-              handleClick={handleArticleClick}
-              iconStyle={{ paddingBottom: '0.4em' }}
-              translationId="Article"
-            >
-              <Icon name="amilia" style={{ margin: 'auto' }} />
-            </FabOption>
+            {hiddenFeatures
+              && (
+                <FabOption
+                  handleClick={handleArticleClick}
+                  iconStyle={{ paddingBottom: '0.4em' }}
+                  translationId="Article"
+                >
+                  <Icon name="amilia" style={{ margin: 'auto' }} />
+                </FabOption>
+              )
+            }
             <FabOption
               handleClick={handleCreateNewClick}
               translationId="add-new-flashcard"
