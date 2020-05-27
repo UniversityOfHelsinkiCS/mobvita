@@ -4,7 +4,8 @@ import { Link } from 'react-router-dom'
 import { useTimer } from 'react-compound-timer'
 import { Button } from 'react-bootstrap'
 import { Icon } from 'semantic-ui-react'
-import { getTestQuestions, sendAnswer, getTestResults } from 'Utilities/redux/testReducer'
+import { getTestQuestions, sendAnswers, getTestResults, answerQuestion } from 'Utilities/redux/testReducer'
+import { learningLanguageSelector } from 'Utilities/common'
 import MultipleChoice from './MultipleChoice'
 
 const Test = () => {
@@ -18,23 +19,26 @@ const Test = () => {
   const [timeoutId, setTimeoutId] = useState(null)
   const [willPause, setWillPause] = useState(false)
   const [paused, setPaused] = useState(false)
-  const { currentQuestion, report } = useSelector(({ tests }) => tests)
+  const { currentQuestion, report, answers, sessionId } = useSelector(({ tests }) => tests)
+  const learningLanguage = useSelector(learningLanguageSelector)
 
   const dispatch = useDispatch()
 
   useEffect(() => {
-    dispatch(getTestQuestions())
+    dispatch(getTestQuestions(learningLanguage))
   }, [])
+
 
   useEffect(() => {
     if (!currentQuestion) {
       clearTimeout(timeoutId)
       timer.stop()
-      dispatch(getTestResults())
+      dispatch(sendAnswers(learningLanguage, sessionId, answers))
     } else if (willPause) {
       setPaused(true)
       setWillPause(false)
     } else {
+      timer.setTime(currentQuestion.time * 1000)
       setTimeoutId(setTimeout(() => timer.start(), 300))
     }
   }, [currentQuestion])
@@ -42,7 +46,12 @@ const Test = () => {
   const checkAnswer = (answer) => {
     timer.stop()
     timer.reset()
-    dispatch(sendAnswer(answer))
+
+    dispatch(answerQuestion({
+      type: currentQuestion.type,
+      question_id: currentQuestion.question_id,
+      answer,
+    }))
   }
 
   useEffect(() => {
@@ -61,7 +70,7 @@ const Test = () => {
     setWillPause(false)
     timer.stop()
     timer.reset()
-    dispatch(getTestQuestions())
+    dispatch(getTestQuestions(learningLanguage))
   }
 
   const pauseTimer = () => {

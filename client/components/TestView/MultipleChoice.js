@@ -2,9 +2,10 @@ import React from 'react'
 import { Button } from 'react-bootstrap'
 
 const MultipleChoice = ({ exercise, onAnswer }) => {
-  const { choices, question } = exercise
+  const { choices, question, prephrase } = exercise
   return (
     <>
+      <div className="test-question">{prephrase}</div>
       <div className="test-question">{question}</div>
       {choices.map(choice => (
         <div key={choice}>
