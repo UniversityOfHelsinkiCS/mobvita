@@ -1,4 +1,5 @@
 import React, { useState } from 'react'
+import { useSelector } from 'react-redux'
 import { useHistory, useParams } from 'react-router-dom'
 import { FormattedMessage } from 'react-intl'
 import { Icon } from 'semantic-ui-react'
@@ -25,6 +26,8 @@ const FabOption = ({ handleClick, iconStyle, translationId, children }) => (
 
 const FloatMenu = () => {
   const [open, setOpen] = useState(false)
+
+  const { flashcardArticles } = useSelector(({ metadata }) => metadata)
 
   const history = useHistory()
   const { storyId } = useParams()
@@ -88,7 +91,7 @@ const FloatMenu = () => {
             >
               <Icon name="keyboard outline" style={{ margin: 'auto' }} />
             </FabOption>
-            {hiddenFeatures
+            {hiddenFeatures && flashcardArticles
               && (
                 <FabOption
                   handleClick={handleArticleClick}

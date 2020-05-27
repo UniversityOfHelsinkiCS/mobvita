@@ -52,7 +52,7 @@ const Practice = ({ mode }) => {
 
   useEffect(() => {
     setSwipeIndex(0)
-  }, [pending])
+  }, [pending, mode])
 
   // Updates elo after every 10 answers
   useEffect(() => {
