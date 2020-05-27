@@ -6,7 +6,7 @@ const initialState = {
   questions: [],
   answers: [],
   ready: false,
-  report: '',
+  report: null,
 }
 
 export const getTestQuestions = (language) => {
@@ -33,28 +33,28 @@ export const sendAnswers = (language, sessionId, answers) => {
 
 export default (state = initialState, action) => {
   const { currentIndex, questions, answers } = state
+  const { response } = action
   switch (action.type) {
     case 'GET_TEST_QUESTIONS_SUCCESS':
       return {
         ...initialState,
-        questions: action.response.question_list,
-        currentQuestion: action.response.question_list[0],
-        sessionId: action.response.session_id,
+        questions: response.question_list,
+        currentQuestion: response.question_list[0],
+        sessionId: response.session_id,
       }
     case 'GET_TEST_QUESTIONS_FAILURE':
       return {
         ...state,
         error: true,
       }
-    case 'GET_TEST_RESULTS_SUCCESS':
-      return {
-        ...state,
-        report: 'you did well',
-      }
     case 'ANSWER_TEST_QUESTIONS_SUCCESS':
       return {
         ...state,
-        report: action.response.message,
+        report: {
+          message: response.message,
+          correct: response.correct,
+          total: response.total,
+        },
       }
     case 'ANSWER':
       return {

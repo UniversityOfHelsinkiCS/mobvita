@@ -4,9 +4,20 @@ import { Link } from 'react-router-dom'
 import { useTimer } from 'react-compound-timer'
 import { Button } from 'react-bootstrap'
 import { Icon } from 'semantic-ui-react'
-import { getTestQuestions, sendAnswers, getTestResults, answerQuestion } from 'Utilities/redux/testReducer'
+import { getTestQuestions, sendAnswers, answerQuestion } from 'Utilities/redux/testReducer'
 import { learningLanguageSelector } from 'Utilities/common'
 import MultipleChoice from './MultipleChoice'
+
+const ReportDisplay = ({ report }) => {
+  const { message, correct, total } = report
+  if (message !== 'OK') {
+    return <div>{message}</div>
+  }
+
+  return (
+    <div>Test completed. Your score: {correct}/{total}</div>
+  )
+}
 
 const Test = () => {
   const { controls: timer } = useTimer({
@@ -17,6 +28,7 @@ const Test = () => {
   })
 
   const [timeoutId, setTimeoutId] = useState(null)
+  const [willStop, setWillStop] = useState(false)
   const [willPause, setWillPause] = useState(false)
   const [paused, setPaused] = useState(false)
   const { currentQuestion, report, answers, sessionId } = useSelector(({ tests }) => tests)
@@ -28,10 +40,13 @@ const Test = () => {
     dispatch(getTestQuestions(learningLanguage))
   }, [])
 
-
   useEffect(() => {
     if (!currentQuestion) {
       clearTimeout(timeoutId)
+      timer.stop()
+      dispatch(sendAnswers(learningLanguage, sessionId, answers))
+    } else if (willStop) {
+      setWillStop(false)
       timer.stop()
       dispatch(sendAnswers(learningLanguage, sessionId, answers))
     } else if (willPause) {
@@ -82,18 +97,28 @@ const Test = () => {
     setTimeoutId(setTimeout(() => timer.start(), 300))
   }
 
+  const stop = () => {
+    setWillStop(true)
+  }
+
   return (
     <div className="component-container">
 
       <h3>Test</h3>
-      <div>{(Math.round(timer.getTime() / 100) / 10).toFixed(1)}</div>
+      <div>{(Math.round(timer.getTime() / 1000))}</div>
       <Icon
         color={willPause ? 'grey' : 'black'}
         name={paused ? 'play' : 'pause'}
         onClick={paused ? resumeTimer : pauseTimer}
       />
+      <Icon
+        color={willStop ? 'grey' : 'black'}
+        name="stop"
+        onClick={stop}
+      />
       {willPause && <span>timer will pause after this exercise</span>}
-      {currentQuestion && !paused && (
+      {willStop && <span>ending test after this exercise</span>}
+      {currentQuestion && !report && !paused && (
         <>
           <MultipleChoice
             exercise={currentQuestion}
@@ -106,10 +131,9 @@ const Test = () => {
         <div>Timer paused, questions are hidden until timer starts again</div>
       )}
 
-      {!currentQuestion && (
+      {report && (
         <>
-          <div>Test ended</div>
-          <div>Report: {report}</div>
+          <ReportDisplay report={report} />
           <Button onClick={resetTest}>New test</Button>
           <Link to="/tests"><Button>Back to menu</Button></Link>
         </>
