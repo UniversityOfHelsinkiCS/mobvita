@@ -4,6 +4,7 @@ import { useParams, useHistory } from 'react-router-dom'
 import { getStoryAction } from 'Utilities/redux/storiesReducer'
 import { getTestConcepts, getGroup } from 'Utilities/redux/groupsReducer'
 import { getSelf } from 'Utilities/redux/userReducer'
+import { learningLanguageSelector } from 'Utilities/common'
 import Spinner from 'Components/Spinner'
 import UserConcept from './UserConcept'
 import GroupConcept from './GroupConcept'
@@ -48,15 +49,18 @@ const Concepts = () => {
   const { target, id } = useParams()
 
   const { concepts, pending: conceptsPending } = useSelector(({ metadata }) => metadata)
-  const { isTeaching } = useSelector(({ groups }) => (
-    { isTeaching: groups.testConcepts && groups.testConcepts.group.is_teaching }))
+  const learningLanguage = useSelector(learningLanguageSelector)
+  const { isTeaching } = useSelector(({ groups }) => ({
+    isTeaching: groups.testConcepts
+      && groups.testConcepts.group && groups.testConcepts.group.is_teaching,
+  }))
 
   const [showTestConcepts, setShowTestConcepts] = useState(false)
   const [showLevels, setShowLevels] = useState(true)
 
   useEffect(() => {
     if (target === 'groups') {
-      dispatch(getTestConcepts(id))
+      dispatch(getTestConcepts(id, learningLanguage))
       dispatch(getGroup(id))
     }
   }, [])
@@ -91,7 +95,7 @@ const Concepts = () => {
   const conceptTree = makeConceptTree(superConcepts)
 
   const handleTestConceptToggle = async () => {
-    if (!showTestConcepts) await dispatch(getTestConcepts(id))
+    if (!showTestConcepts) await dispatch(getTestConcepts(id, learningLanguage))
     setShowTestConcepts(!showTestConcepts)
   }
 

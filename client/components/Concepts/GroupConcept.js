@@ -2,6 +2,7 @@ import React from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { useParams } from 'react-router-dom'
 import { updateTestConcepts, updateExerciseSettings } from 'Utilities/redux/groupsReducer'
+import { learningLanguageSelector } from 'Utilities/common'
 import Concept from './Concept'
 
 const GroupConcept = ({ concept, children, ...props }) => {
@@ -9,6 +10,7 @@ const GroupConcept = ({ concept, children, ...props }) => {
   const dispatch = useDispatch()
   const { id: groupId } = useParams()
 
+  const learningLanguage = useSelector(learningLanguageSelector)
   const { testConceptQuestionAmount, conceptTurnedOn } = useSelector(({ groups }) => (
     {
       testConceptQuestionAmount: groups.testConcepts
@@ -18,7 +20,11 @@ const GroupConcept = ({ concept, children, ...props }) => {
 
   const handleTestQuestionAmountChange = (e) => {
     if (e.target.value) {
-      dispatch(updateTestConcepts(groupId, { [conceptId]: Number(e.target.value) }))
+      dispatch(updateTestConcepts(
+        groupId,
+        { [conceptId]: Number(e.target.value) },
+        learningLanguage,
+      ))
     }
   }
 

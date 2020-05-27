@@ -42,14 +42,14 @@ export const deleteGroup = (groupId) => {
   return callBuilder(route, prefix, 'post')
 }
 
-export const getTestConcepts = (groupId) => {
-  const route = `/test/template?group_id=${groupId}`
+export const getTestConcepts = (groupId, learningLanguage) => {
+  const route = `test/${learningLanguage}/template?group_id=${groupId}`
   const prefix = 'GET_GROUP_TEST_CONCEPTS'
   return callBuilder(route, prefix, 'get')
 }
 
-export const updateTestConcepts = (groupId, updatedValues) => {
-  const route = 'test/template'
+export const updateTestConcepts = (groupId, updatedValues, learningLanguage) => {
+  const route = `test/${learningLanguage}/template`
   const prefix = 'SET_GROUP_TEST_CONCEPTS'
   const payload = { group_id: groupId, question_template: updatedValues }
   return callBuilder(route, prefix, 'post', payload)
