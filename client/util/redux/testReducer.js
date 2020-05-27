@@ -5,6 +5,7 @@ const initialState = {
   currentQuestion: null,
   questions: [],
   ready: false,
+  report: '',
 }
 
 export const getTestQuestions = (language) => {
@@ -14,32 +15,50 @@ export const getTestQuestions = (language) => {
     type: 'GET_TEST_QUESTIONS_SUCCESS',
     response: {
       questions: [
-        'kala',
-        'hirvi',
-        'kotka',
-        'lohikäärme',
-        'ihminen',
+        {
+          question: 'Tässä vähän pidempi kysymys',
+          choices: ['joo', 'ei', 'ehkä'],
+        },
+
+        {
+          question: 'Mikä on ihminen?',
+          choices: ['eläin', 'ihminen', 'onneton kasa salaisuuksia', 'kaikki edellä mainitut'],
+        },
+        {
+          question: 'Mikä on paras ohjelmointikieli?',
+          choices: ['jäsä', 'java', 'ruby', 'rust'],
+        },
       ],
     },
   }
 }
 
-export const nextQuestion = () => ({ type: 'NEXT_QUESTION' })
+export const getTestResults = () => ({ type: 'GET_TEST_RESULTS_SUCCESS' })
+
+export const sendAnswer = answer => ({
+  type: 'ANSWER',
+  answer,
+})
 
 export default (state = initialState, action) => {
   const { currentIndex, questions } = state
   switch (action.type) {
     case 'GET_TEST_QUESTIONS_SUCCESS':
       return {
-        ...state,
+        ...initialState,
         questions: action.response.questions,
-        ready: true,
+        currentQuestion: action.response.questions[0],
       }
-    case 'NEXT_QUESTION':
+    case 'GET_TEST_RESULTS_SUCCESS':
+      return {
+        ...state,
+        report: 'you did well',
+      }
+    case 'ANSWER':
       return {
         ...state,
         currentIndex: currentIndex + 1,
-        currentQuestion: questions[currentIndex],
+        currentQuestion: questions[currentIndex + 1],
       }
     default:
       return state

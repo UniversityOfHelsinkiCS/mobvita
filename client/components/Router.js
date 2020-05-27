@@ -16,7 +16,8 @@ import Profile from './Profile/Profile'
 import ResetPassword from './AccessControl/ResetPassword'
 import Help from './StaticContent/Help'
 import Flashcards from './Flashcards'
-import TestView from './TestView/index'
+import TestView from './TestView/Test'
+import TestIndex from './TestView/index'
 
 export default () => (
   <Switch>
@@ -49,6 +50,7 @@ export default () => (
     <ProtectedRoute exact path="/profile/account" component={Profile} />
     <ProtectedRoute exact path="/profile/progress" component={Profile} />
     <ProtectedRoute exact path="/profile/settings" component={Profile} />
-    <ProtectedRoute exact path="/test" component={TestView} />
+    <ProtectedRoute exact path="/tests" component={MenuTabs} />
+    <ProtectedRoute exact path="/tests/instance" component={TestView} />
   </Switch>
 )
