@@ -22,7 +22,7 @@ const MultipleChoice = ({ exercise, onAnswer }) => {
             className="test-choice-button"
             onClick={() => onAnswer(choice)}
           >
-            {intl.formatMessage({ id: choice, defaultMessage: choice })}
+            { choice/* intl.formatMessage({ id: choice, defaultMessage: choice }) */}
           </Button>
         </div>
       ))}

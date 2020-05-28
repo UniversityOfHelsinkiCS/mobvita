@@ -41,12 +41,18 @@ export default (state = initialState, action) => {
   const { currentIndex, questions } = state
   const { response } = action
   switch (action.type) {
+    case 'GET_TEST_QUESIONS_ATTEMPT':
+      return {
+        ...state,
+        pending: true,
+      }
     case 'GET_TEST_QUESTIONS_SUCCESS':
       return {
         ...initialState,
         questions: response.question_list,
         currentQuestion: response.question_list[0],
         sessionId: response.session_id,
+        pending: false,
       }
     case 'GET_TEST_QUESTIONS_FAILURE':
       return {
