@@ -34,7 +34,7 @@ const Practice = ({ mode }) => {
     let cards
     if (mode === 'article') {
       cards = flashcards.nounCards
-        && flashcards.nounCards.filter(card => card.gender !== 'mf')
+        && flashcards.nounCards.filter(card => card.gender !== 'mf' && card.gender !== 'NoGend')
     } else {
       ({ cards } = flashcards)
     }
@@ -48,7 +48,7 @@ const Practice = ({ mode }) => {
 
   useEffect(() => {
     dispatch(getFlashcards(learningLanguage, dictionaryLanguage, storyId))
-  }, [storyId])
+  }, [storyId, mode])
 
   useEffect(() => {
     setSwipeIndex(0)

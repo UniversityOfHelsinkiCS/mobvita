@@ -1,4 +1,5 @@
 import React, { useState } from 'react'
+import { useSelector } from 'react-redux'
 import { useHistory, useParams } from 'react-router-dom'
 import { FormattedMessage } from 'react-intl'
 import { Icon } from 'semantic-ui-react'
@@ -26,10 +27,13 @@ const FabOption = ({ handleClick, iconStyle, translationId, children }) => (
 const FloatMenu = () => {
   const [open, setOpen] = useState(false)
 
+  const { flashcardArticles } = useSelector(({ metadata }) => metadata)
+
   const history = useHistory()
   const { storyId } = useParams()
 
   const story = storyId ? `/${storyId}` : ''
+  const articleLabel = flashcardArticles && flashcardArticles.join('/')
 
   const handleFabClick = () => {
     setOpen(!open)
@@ -88,15 +92,21 @@ const FloatMenu = () => {
             >
               <Icon name="keyboard outline" style={{ margin: 'auto' }} />
             </FabOption>
-            {hiddenFeatures
+            {hiddenFeatures && flashcardArticles
               && (
-                <FabOption
-                  handleClick={handleArticleClick}
-                  iconStyle={{ paddingBottom: '0.4em' }}
-                  translationId="Article"
+                <button
+                  type="button"
+                  onClick={handleArticleClick}
+                  className="flashcard-fab-option gap-2"
                 >
-                  <Icon name="amilia" style={{ margin: 'auto' }} />
-                </FabOption>
+                  <div
+                    className="flashcard-fab-icon"
+                    style={{ paddingBottom: '0.4em' }}
+                  >
+                    <Icon name="font" style={{ margin: 'auto' }} />
+                  </div>
+                  <span className="flashcard-fab-text">{articleLabel}</span>
+                </button>
               )
             }
             <FabOption
