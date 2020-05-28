@@ -701,11 +701,16 @@ body {
 }
 
 .test {
+  // &-container {
+  //   border: 1px solid #777;
+  //   border-radius: 0.5em;
+  // }
   &-question {
     font-size: 22px;
   }
   &-choice-button {
-    width: 60%;
+    width: 100%;
+    max-width: 600px;
   }
 }
 

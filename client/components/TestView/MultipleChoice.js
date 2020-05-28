@@ -1,11 +1,10 @@
 import React from 'react'
 import { Button } from 'react-bootstrap'
 import { sanitizeHtml } from 'Utilities/common'
-import { FormattedMessage, useIntl } from 'react-intl'
+import { FormattedMessage } from 'react-intl'
 
 
 const MultipleChoice = ({ exercise, onAnswer }) => {
-  const intl = useIntl()
   const { choices, question, prephrase } = exercise
 
   return (

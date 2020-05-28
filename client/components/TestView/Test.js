@@ -1,23 +1,11 @@
 import React, { useState, useEffect } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
-import { Link } from 'react-router-dom'
 import { useTimer } from 'react-compound-timer'
-import { Button } from 'react-bootstrap'
 import { Icon } from 'semantic-ui-react'
-import { getTestQuestions, sendAnswer, finishTest } from 'Utilities/redux/testReducer'
+import { sendAnswer, finishTest } from 'Utilities/redux/testReducer'
 import { learningLanguageSelector } from 'Utilities/common'
+import Spinner from 'Components/Spinner'
 import MultipleChoice from './MultipleChoice'
-
-const ReportDisplay = ({ report }) => {
-  const { message, correct, total } = report
-  if (message !== 'OK') {
-    return <div>{message}</div>
-  }
-
-  return (
-    <div>Test completed. Your score: {correct}/{total}</div>
-  )
-}
 
 const Test = () => {
   const { controls: timer } = useTimer({
@@ -31,14 +19,10 @@ const Test = () => {
   const [willStop, setWillStop] = useState(false)
   const [willPause, setWillPause] = useState(false)
   const [paused, setPaused] = useState(false)
-  const { currentQuestion, report, sessionId } = useSelector(({ tests }) => tests)
+  const { currentQuestion, report, sessionId, pending } = useSelector(({ tests }) => tests)
   const learningLanguage = useSelector(learningLanguageSelector)
 
   const dispatch = useDispatch()
-
-  useEffect(() => {
-    dispatch(getTestQuestions(learningLanguage))
-  }, [])
 
   const checkAnswer = (answer) => {
     timer.stop()
@@ -66,6 +50,7 @@ const Test = () => {
       dispatch(finishTest(learningLanguage, sessionId))
     } else if (willStop) {
       setWillStop(false)
+      setWillPause(false)
       timer.stop()
       dispatch(finishTest(learningLanguage, sessionId))
     } else if (willPause) {
@@ -86,14 +71,6 @@ const Test = () => {
     ])
   }, [currentQuestion])
 
-  const resetTest = () => {
-    setPaused(false)
-    setWillPause(false)
-    timer.stop()
-    timer.reset()
-    dispatch(getTestQuestions(learningLanguage))
-  }
-
   const pauseTimer = () => {
     setWillPause(true)
   }
@@ -107,8 +84,12 @@ const Test = () => {
     setWillStop(true)
   }
 
+  if (pending) {
+    return <Spinner />
+  }
+
   return (
-    <div className="component-container">
+    <div className="component-container test-container">
       <div>{(Math.round(timer.getTime() / 1000))}</div>
       <Icon
         color={willPause ? 'grey' : 'black'}
@@ -120,7 +101,7 @@ const Test = () => {
         name="stop"
         onClick={stop}
       />
-      {willPause && <span>timer will pause after this exercise</span>}
+      {willPause && !willStop && <span>timer will pause after this exercise</span>}
       {willStop && <span>ending test after this exercise</span>}
       {currentQuestion && !report && !paused && (
         <>
@@ -134,16 +115,6 @@ const Test = () => {
       {paused && (
         <div>Timer paused, questions are hidden until timer starts again</div>
       )}
-
-      {report && (
-        <>
-          <ReportDisplay report={report} />
-          <Button onClick={resetTest}>New test</Button>
-          <Link to="/tests"><Button>Back to menu</Button></Link>
-        </>
-      )}
-
-
     </div>
   )
 }

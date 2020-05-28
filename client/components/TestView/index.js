@@ -1,16 +1,44 @@
 import React from 'react'
-import { Link } from 'react-router-dom'
 import { Button } from 'react-bootstrap'
 import { FormattedMessage } from 'react-intl'
+import { useDispatch, useSelector } from 'react-redux'
+import { getTestQuestions } from 'Utilities/redux/testReducer'
+import { learningLanguageSelector } from 'Utilities/common'
+import TestView from './Test'
 
-const TestIndex = () => (
-  <div className="component-container">
-    <Link to="/tests/instance">
-      <Button>
-        <FormattedMessage id="start-a-new-test" />
-      </Button>
-    </Link>
-  </div>
-)
+const ReportDisplay = ({ report }) => {
+  const { message, correct, total } = report
+  if (message !== 'OK') {
+    return <div>{message}</div>
+  }
+
+  return (
+    <div>Test completed. Your score: {correct}/{total}</div>
+  )
+}
+
+const TestIndex = () => {
+  const dispatch = useDispatch()
+  const learningLanguage = useSelector(learningLanguageSelector)
+  const { sessionId, report } = useSelector(({ tests }) => tests)
+
+  const startTest = () => {
+    dispatch(getTestQuestions(learningLanguage))
+  }
+
+  console.log('ses id', sessionId)
+
+  return (
+    <div className="component-container">
+      {!sessionId && (
+        <Button onClick={startTest}>
+          <FormattedMessage id="start-a-new-test" />
+        </Button>
+      )}
+      {report && <ReportDisplay report={report} />}
+      {sessionId && <TestView />}
+    </div>
+  )
+}
 
 export default TestIndex

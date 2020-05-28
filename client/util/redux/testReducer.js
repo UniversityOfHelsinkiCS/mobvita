@@ -5,6 +5,7 @@ const initialState = {
   currentQuestion: null,
   questions: [],
   report: null,
+  sessionId: null,
 }
 
 export const getTestQuestions = (language) => {
@@ -70,7 +71,7 @@ export default (state = initialState, action) => {
       }
     case 'FINISH_TEST_SUCCESS':
       return {
-        ...state,
+        ...initialState,
         report: {
           message: response.message,
           correct: response.correct,
