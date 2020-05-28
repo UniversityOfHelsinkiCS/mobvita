@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useRef } from 'react'
 import { useSelector } from 'react-redux'
 import ReactCardFlip from 'react-card-flip'
 import { Button } from 'react-bootstrap'
@@ -11,6 +11,8 @@ const Article = ({ card, cardNumbering, answerCard }) => {
   const [answerCorrect, setAnswerCorrect] = useState(null)
 
   const { flashcardArticles } = useSelector(({ metadata }) => metadata)
+
+  const iconRef = useRef()
 
   useEffect(() => {
     setFlipped(false)
@@ -30,6 +32,13 @@ const Article = ({ card, cardNumbering, answerCard }) => {
     setAnswerChecked(true)
   }
 
+  // flip card when icon has rendered
+  useEffect(() => {
+    if (!iconRef.current) return
+    if (!flipped) { flipCard() }
+  }, [iconRef.current])
+
+
   const correctArticles = {
     Fem: 'Die',
     Neut: 'Das',
@@ -44,9 +53,6 @@ const Article = ({ card, cardNumbering, answerCard }) => {
     const correct = correctArticles[gender] === answer
     answerCard(answer, correct)
     setAnswerCorrect(correct)
-
-    // Hack to get the thumbs up/down icon to render before card flips
-    setTimeout(() => flipCard(), 50)
   }
 
   const cardProps = {
@@ -83,6 +89,7 @@ const Article = ({ card, cardNumbering, answerCard }) => {
           {answerCorrect !== null
             && (
               <Icon
+                ref={iconRef}
                 style={{ marginLeft: 'auto', marginRight: 'auto' }}
                 name={resultIconName}
                 size="huge"
