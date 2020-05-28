@@ -17,7 +17,7 @@ const Test = () => {
   const [willStop, setWillStop] = useState(false)
   const [willPause, setWillPause] = useState(false)
   const [paused, setPaused] = useState(false)
-  const { currentQuestion, sessionId } = useSelector(({ tests }) => tests)
+  const { currentQuestion, sessionId, questions, currentIndex, answerPending } = useSelector(({ tests }) => tests)
   const learningLanguage = useSelector(learningLanguageSelector)
 
   const dispatch = useDispatch()
@@ -95,10 +95,14 @@ const Test = () => {
       {willPause && !willStop && <span>timer will pause after this exercise</span>}
       {willStop && <span>ending test after this exercise</span>}
       {currentQuestion && !paused && (
-        <MultipleChoice
-          exercise={currentQuestion}
-          onAnswer={checkAnswer}
-        />
+        <div>
+          <div>{currentIndex + 1} / {questions.length}</div>
+          <MultipleChoice
+            exercise={currentQuestion}
+            onAnswer={checkAnswer}
+            answerPending={answerPending}
+          />
+        </div>
       )}
 
       {paused && (

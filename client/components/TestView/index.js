@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { Button } from 'react-bootstrap'
 import { FormattedMessage } from 'react-intl'
 import { useDispatch, useSelector } from 'react-redux'
@@ -27,7 +27,7 @@ const TestIndex = () => {
   const startTest = () => {
     dispatch(getTestQuestions(learningLanguage))
   }
-
+  
   if (pending) {
     return <Spinner />
   }

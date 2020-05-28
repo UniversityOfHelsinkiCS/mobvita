@@ -3,7 +3,7 @@ import { Button } from 'react-bootstrap'
 import { sanitizeHtml } from 'Utilities/common'
 
 
-const MultipleChoice = ({ exercise, onAnswer }) => {
+const MultipleChoice = ({ exercise, onAnswer, answerPending }) => {
   const { choices, question, prephrase } = exercise
 
   return (
@@ -18,7 +18,7 @@ const MultipleChoice = ({ exercise, onAnswer }) => {
         <div key={choice}>
           <Button
             className="test-choice-button"
-            onClick={() => onAnswer(choice)}
+            onClick={!answerPending && (() => onAnswer(choice))}
           >
             <span>
               {choice}

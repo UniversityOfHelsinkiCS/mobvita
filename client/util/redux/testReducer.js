@@ -63,11 +63,17 @@ export default (state = initialState, action) => {
         error: true,
         pending: false,
       }
+    case 'ANSWER_TEST_QUESTION_ATTEMPT':
+      return {
+        ...state,
+        answerPending: true,
+      }
     case 'ANSWER_TEST_QUESTION_SUCCESS':
       return {
         ...state,
         currentIndex: currentIndex + 1,
         currentQuestion: questions[currentIndex + 1],
+        answerPending: false,
       }
     case 'FINISH_TEST_SUCCESS':
       return {
