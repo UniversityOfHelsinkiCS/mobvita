@@ -86,34 +86,46 @@ const Test = () => {
   }
 
   return (
-    <div className="component-container test-container">
-      <div>{(Math.round(timer.getTime() / 1000))}</div>
-      <Icon
-        color={willPause ? 'grey' : 'black'}
-        name={paused ? 'play' : 'pause'}
-        onClick={paused ? resumeTimer : pauseTimer}
-      />
-      <Icon
-        color={willStop ? 'grey' : 'black'}
-        name="stop"
-        onClick={stop}
-      />
-      {willPause && !willStop && <span>timer will pause after this exercise</span>}
-      {willStop && <span>ending test after this exercise</span>}
-      {currentQuestion && !paused && (
-        <div>
-          <div>{currentIndex + 1} / {questions.length}</div>
-          <MultipleChoice
-            exercise={currentQuestion}
-            onAnswer={checkAnswer}
-            answerPending={answerPending}
-          />
+    <div className="component-container">
+      <div className="test-container">
+        <div className="test-question-container">
+          {willPause && !willStop && <span>timer will pause after this exercise</span>}
+          {willStop && <span>ending test after this exercise</span>}
+          {currentQuestion && !paused && (
+          <div>
+            <MultipleChoice
+              exercise={currentQuestion}
+              onAnswer={checkAnswer}
+              answerPending={answerPending}
+            />
+          </div>
+          )}
         </div>
-      )}
 
-      {paused && (
+        {paused && (
         <div>Timer paused, questions are hidden until timer starts again</div>
-      )}
+        )}
+        <div className="test-controls">
+          <div>{currentIndex + 1} / {questions.length}</div>
+          <div className="test-controls-time">
+            <div style={{ marginRight: '1em' }}>
+              {(Math.round(timer.getTime() / 1000))}
+            </div>
+            <Icon
+              size="large"
+              color={willPause ? 'grey' : 'black'}
+              name={paused ? 'play' : 'pause'}
+              onClick={paused ? resumeTimer : pauseTimer}
+            />
+            <Icon
+              size="large"
+              color={willStop ? 'grey' : 'black'}
+              name="stop"
+              onClick={stop}
+            />
+          </div>
+        </div>
+      </div>
     </div>
   )
 }

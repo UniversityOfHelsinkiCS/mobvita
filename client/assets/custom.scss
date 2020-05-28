@@ -701,16 +701,49 @@ body {
 }
 
 .test {
-  // &-container {
-  //   border: 1px solid #777;
-  //   border-radius: 0.5em;
-  // }
+  &-container {
+    display: flex;
+    max-width: 600px;
+    justify-content: space-between;
+    align-items: flex-start;
+    @media (max-width: 800px) {
+      flex-direction: column-reverse;
+    }
+  }
+  &-question-container {
+    min-width: 100%;
+  }
   &-question {
     font-size: 22px;
   }
   &-choice-button {
     width: 100%;
-    max-width: 600px;
+    min-width: 100%;
+    // max-width: 600px;
+  }
+  &-controls {
+    // display: flex;
+    font-size: 1.5em;
+    @media (min-width: 800px) {
+      margin-left: 2em;
+      border: 1px solid #777;
+      border-radius: 0.5em;
+      white-space: nowrap;
+      padding: 10px;
+    }
+
+    @media (max-width: 800px) {
+      min-width: 100%;
+      align-items: center;
+      display: flex;
+      justify-content: space-between;
+    }
+
+    &-time {
+      @media (max-width: 800px) {
+        display: flex;
+      }
+    }
   }
 }
 
