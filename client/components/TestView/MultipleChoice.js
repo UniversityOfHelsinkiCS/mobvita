@@ -1,7 +1,6 @@
 import React from 'react'
 import { Button } from 'react-bootstrap'
 import { sanitizeHtml } from 'Utilities/common'
-import { FormattedMessage } from 'react-intl'
 
 
 const MultipleChoice = ({ exercise, onAnswer }) => {
@@ -10,7 +9,7 @@ const MultipleChoice = ({ exercise, onAnswer }) => {
   return (
     <>
       <div className="test-question">
-        <FormattedMessage id={prephrase} />
+        {prephrase}
       </div>
       { question && (
         <div className="test-question" dangerouslySetInnerHTML={sanitizeHtml(question)} />
@@ -21,7 +20,9 @@ const MultipleChoice = ({ exercise, onAnswer }) => {
             className="test-choice-button"
             onClick={() => onAnswer(choice)}
           >
-            { choice/* intl.formatMessage({ id: choice, defaultMessage: choice }) */}
+            <span>
+              {choice}
+            </span>
           </Button>
         </div>
       ))}

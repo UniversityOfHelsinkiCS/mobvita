@@ -4,7 +4,9 @@ import { FormattedMessage } from 'react-intl'
 import { useDispatch, useSelector } from 'react-redux'
 import { getTestQuestions } from 'Utilities/redux/testReducer'
 import { learningLanguageSelector } from 'Utilities/common'
+import Spinner from 'Components/Spinner'
 import TestView from './Test'
+
 
 const ReportDisplay = ({ report }) => {
   const { message, correct, total } = report
@@ -20,13 +22,15 @@ const ReportDisplay = ({ report }) => {
 const TestIndex = () => {
   const dispatch = useDispatch()
   const learningLanguage = useSelector(learningLanguageSelector)
-  const { sessionId, report } = useSelector(({ tests }) => tests)
+  const { sessionId, report, pending } = useSelector(({ tests }) => tests)
 
   const startTest = () => {
     dispatch(getTestQuestions(learningLanguage))
   }
 
-  console.log('ses id', sessionId)
+  if (pending) {
+    return <Spinner />
+  }
 
   return (
     <div className="component-container">

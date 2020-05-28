@@ -4,7 +4,6 @@ import { useTimer } from 'react-compound-timer'
 import { Icon } from 'semantic-ui-react'
 import { sendAnswer, finishTest } from 'Utilities/redux/testReducer'
 import { learningLanguageSelector } from 'Utilities/common'
-import Spinner from 'Components/Spinner'
 import MultipleChoice from './MultipleChoice'
 
 const Test = () => {
@@ -19,7 +18,7 @@ const Test = () => {
   const [willStop, setWillStop] = useState(false)
   const [willPause, setWillPause] = useState(false)
   const [paused, setPaused] = useState(false)
-  const { currentQuestion, report, sessionId, pending } = useSelector(({ tests }) => tests)
+  const { currentQuestion, report, sessionId } = useSelector(({ tests }) => tests)
   const learningLanguage = useSelector(learningLanguageSelector)
 
   const dispatch = useDispatch()
@@ -82,10 +81,6 @@ const Test = () => {
 
   const stop = () => {
     setWillStop(true)
-  }
-
-  if (pending) {
-    return <Spinner />
   }
 
   return (
