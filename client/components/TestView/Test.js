@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom'
 import { useTimer } from 'react-compound-timer'
 import { Button } from 'react-bootstrap'
 import { Icon } from 'semantic-ui-react'
-import { getTestQuestions, sendAnswers, answerQuestion } from 'Utilities/redux/testReducer'
+import { getTestQuestions, sendAnswer, finishTest } from 'Utilities/redux/testReducer'
 import { learningLanguageSelector } from 'Utilities/common'
 import MultipleChoice from './MultipleChoice'
 
@@ -31,7 +31,7 @@ const Test = () => {
   const [willStop, setWillStop] = useState(false)
   const [willPause, setWillPause] = useState(false)
   const [paused, setPaused] = useState(false)
-  const { currentQuestion, report, answers, sessionId } = useSelector(({ tests }) => tests)
+  const { currentQuestion, report, sessionId } = useSelector(({ tests }) => tests)
   const learningLanguage = useSelector(learningLanguageSelector)
 
   const dispatch = useDispatch()
@@ -44,11 +44,11 @@ const Test = () => {
     if (!currentQuestion) {
       clearTimeout(timeoutId)
       timer.stop()
-      dispatch(sendAnswers(learningLanguage, sessionId, answers))
+      dispatch(finishTest(learningLanguage, sessionId))
     } else if (willStop) {
       setWillStop(false)
       timer.stop()
-      dispatch(sendAnswers(learningLanguage, sessionId, answers))
+      dispatch(finishTest(learningLanguage, sessionId))
     } else if (willPause) {
       setPaused(true)
       setWillPause(false)
@@ -62,11 +62,15 @@ const Test = () => {
     timer.stop()
     timer.reset()
 
-    dispatch(answerQuestion({
-      type: currentQuestion.type,
-      question_id: currentQuestion.question_id,
-      answer,
-    }))
+    dispatch(sendAnswer(
+      learningLanguage,
+      sessionId,
+      {
+        type: currentQuestion.type,
+        question_id: currentQuestion.question_id,
+        answer,
+      },
+    ))
   }
 
   useEffect(() => {

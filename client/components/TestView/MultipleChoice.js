@@ -8,7 +8,9 @@ const MultipleChoice = ({ exercise, onAnswer }) => {
   return (
     <>
       <div className="test-question" dangerouslySetInnerHTML={sanitizeHtml(prephrase)} />
-      <div className="test-question" dangerouslySetInnerHTML={sanitizeHtml(question)} />
+      { question && (
+        <div className="test-question" dangerouslySetInnerHTML={sanitizeHtml(question)} />
+      )}
       {choices.map(choice => (
         <div key={choice}>
           <Button
