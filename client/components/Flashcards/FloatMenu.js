@@ -33,6 +33,7 @@ const FloatMenu = () => {
   const { storyId } = useParams()
 
   const story = storyId ? `/${storyId}` : ''
+  const articleLabel = flashcardArticles && flashcardArticles.join('/')
 
   const handleFabClick = () => {
     setOpen(!open)
@@ -93,13 +94,19 @@ const FloatMenu = () => {
             </FabOption>
             {hiddenFeatures && flashcardArticles
               && (
-                <FabOption
-                  handleClick={handleArticleClick}
-                  iconStyle={{ paddingBottom: '0.4em' }}
-                  translationId="Article"
+                <button
+                  type="button"
+                  onClick={handleArticleClick}
+                  className="flashcard-fab-option gap-2"
                 >
-                  <Icon name="font" style={{ margin: 'auto' }} />
-                </FabOption>
+                  <div
+                    className="flashcard-fab-icon"
+                    style={{ paddingBottom: '0.4em' }}
+                  >
+                    <Icon name="font" style={{ margin: 'auto' }} />
+                  </div>
+                  <span className="flashcard-fab-text">{articleLabel}</span>
+                </button>
               )
             }
             <FabOption

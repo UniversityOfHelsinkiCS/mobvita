@@ -28,6 +28,7 @@ const FlashcardMenu = () => {
   const { storyId } = useParams()
 
   const story = storyId ? `/${storyId}` : ''
+  const articleLabel = flashcardArticles && flashcardArticles.join('/')
 
   const handleAllCardsClick = () => {
     history.push('/flashcards/fillin')
@@ -82,16 +83,18 @@ const FlashcardMenu = () => {
         </MenuItem>
         {hiddenFeatures && flashcardArticles
           && (
-            <MenuItem
-              handleClick={handleArticleClick}
-              translationId="Article"
+            <button
+              type="button"
+              className="flashcard-menu-item"
               style={{
                 backgroundColor: '#FFDAC1',
                 border: 'none',
               }}
+              onClick={handleArticleClick}
             >
               <Icon name="font" size="huge" />
-            </MenuItem>
+              <span>{articleLabel}</span>
+            </button>
           )}
       </div>
       <MenuItem
