@@ -17,7 +17,13 @@ const Test = () => {
   const [willStop, setWillStop] = useState(false)
   const [willPause, setWillPause] = useState(false)
   const [paused, setPaused] = useState(false)
-  const { currentQuestion, sessionId, questions, currentIndex, answerPending } = useSelector(({ tests }) => tests)
+  const {
+    currentQuestion,
+    sessionId,
+    questions,
+    currentIndex,
+    answerPending,
+  } = useSelector(({ tests }) => tests)
   const learningLanguage = useSelector(learningLanguageSelector)
 
   const dispatch = useDispatch()

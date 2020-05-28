@@ -8,8 +8,8 @@ const initialState = {
   sessionId: null,
 }
 
-export const getTestQuestions = (language) => {
-  const route = `/test/${language}`
+export const getTestQuestions = (language, groupId) => {
+  const route = `/test/${language}?group_id=${groupId}`
   const prefix = 'GET_TEST_QUESTIONS'
   return callBuilder(route, prefix, 'get')
 }
@@ -82,6 +82,7 @@ export default (state = initialState, action) => {
           message: response.message,
           correct: response.correct,
           total: response.total,
+          correctRate: response.correct_rate,
         },
       }
     default:

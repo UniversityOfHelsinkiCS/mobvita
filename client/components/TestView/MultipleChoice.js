@@ -18,7 +18,7 @@ const MultipleChoice = ({ exercise, onAnswer, answerPending }) => {
         <div key={choice}>
           <Button
             className="test-choice-button"
-            onClick={!answerPending && (() => onAnswer(choice))}
+            onClick={!answerPending ? (() => onAnswer(choice)) : undefined}
           >
             <span>
               {choice}
