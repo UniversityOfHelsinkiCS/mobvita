@@ -34,7 +34,7 @@ const Practice = ({ mode }) => {
     let cards
     if (mode === 'article') {
       cards = flashcards.nounCards
-        && flashcards.nounCards.filter(card => card.gender !== 'mf')
+        && flashcards.nounCards.filter(card => card.gender !== 'mf' && card.gender !== 'NoGend')
     } else {
       ({ cards } = flashcards)
     }
