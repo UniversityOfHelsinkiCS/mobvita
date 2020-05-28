@@ -7,7 +7,7 @@ const MultipleChoice = ({ exercise, onAnswer }) => {
   const { choices, question, prephrase } = exercise
 
   return (
-    <>
+    <div>
       <div className="test-question">
         {prephrase}
       </div>
@@ -26,7 +26,7 @@ const MultipleChoice = ({ exercise, onAnswer }) => {
           </Button>
         </div>
       ))}
-    </>
+    </div>
   )
 }
 

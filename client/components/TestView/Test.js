@@ -14,11 +14,10 @@ const Test = () => {
     timeToUpdate: 100,
   })
 
-  const [timeoutId, setTimeoutId] = useState(null)
   const [willStop, setWillStop] = useState(false)
   const [willPause, setWillPause] = useState(false)
   const [paused, setPaused] = useState(false)
-  const { currentQuestion, report, sessionId } = useSelector(({ tests }) => tests)
+  const { currentQuestion, sessionId } = useSelector(({ tests }) => tests)
   const learningLanguage = useSelector(learningLanguageSelector)
 
   const dispatch = useDispatch()
@@ -44,12 +43,9 @@ const Test = () => {
   useEffect(() => {
     if (!sessionId) return
     if (!currentQuestion) {
-      clearTimeout(timeoutId)
       timer.stop()
       dispatch(finishTest(learningLanguage, sessionId))
     } else if (willStop) {
-      setWillStop(false)
-      setWillPause(false)
       timer.stop()
       dispatch(finishTest(learningLanguage, sessionId))
     } else if (willPause) {
@@ -57,7 +53,7 @@ const Test = () => {
       setWillPause(false)
     } else {
       timer.setTime(currentQuestion.time * 1000)
-      setTimeoutId(setTimeout(() => timer.start(), 300))
+      setTimeout(() => timer.start(), 300)
     }
 
     timer.setCheckpoints([
@@ -76,7 +72,7 @@ const Test = () => {
 
   const resumeTimer = () => {
     setPaused(false)
-    setTimeoutId(setTimeout(() => timer.start(), 300))
+    setTimeout(() => timer.start(), 300)
   }
 
   const stop = () => {
@@ -98,13 +94,11 @@ const Test = () => {
       />
       {willPause && !willStop && <span>timer will pause after this exercise</span>}
       {willStop && <span>ending test after this exercise</span>}
-      {currentQuestion && !report && !paused && (
-        <>
-          <MultipleChoice
-            exercise={currentQuestion}
-            onAnswer={checkAnswer}
-          />
-        </>
+      {currentQuestion && !paused && (
+        <MultipleChoice
+          exercise={currentQuestion}
+          onAnswer={checkAnswer}
+        />
       )}
 
       {paused && (
