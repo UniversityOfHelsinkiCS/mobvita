@@ -13,12 +13,14 @@ export const getTestQuestions = (language) => {
   return callBuilder(route, prefix, 'get')
 }
 
-export const sendAnswer = (language, sessionId, answer) => {
+export const sendAnswer = (language, sessionId, answer, breakTimestamp) => {
   const route = `/test/${language}/answer`
   const prefix = 'ANSWER_TEST_QUESTION'
+  const breaks = breakTimestamp ? [breakTimestamp] : []
   const payload = {
     session_id: sessionId,
     language,
+    breaks,
     is_completed: false,
     answers: [answer],
   }
@@ -41,14 +43,14 @@ export default (state = initialState, action) => {
   const { currentIndex, questions } = state
   const { response } = action
   switch (action.type) {
-    case 'GET_TEST_QUESIONS_ATTEMPT':
+    case 'GET_TEST_QUESTIONS_ATTEMPT':
       return {
-        ...state,
+        ...initialState,
         pending: true,
       }
     case 'GET_TEST_QUESTIONS_SUCCESS':
       return {
-        ...initialState,
+        ...state,
         questions: response.question_list,
         currentQuestion: response.question_list[0],
         sessionId: response.session_id,
@@ -58,6 +60,7 @@ export default (state = initialState, action) => {
       return {
         ...state,
         error: true,
+        pending: false,
       }
     case 'ANSWER_TEST_QUESTION_SUCCESS':
       return {

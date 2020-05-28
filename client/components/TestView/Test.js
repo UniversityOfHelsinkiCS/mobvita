@@ -31,7 +31,7 @@ const Test = () => {
   const [willStop, setWillStop] = useState(false)
   const [willPause, setWillPause] = useState(false)
   const [paused, setPaused] = useState(false)
-  const { currentQuestion, report, sessionId, pending } = useSelector(({ tests }) => tests)
+  const { currentQuestion, report, sessionId } = useSelector(({ tests }) => tests)
   const learningLanguage = useSelector(learningLanguageSelector)
 
   const dispatch = useDispatch()
@@ -39,6 +39,24 @@ const Test = () => {
   useEffect(() => {
     dispatch(getTestQuestions(learningLanguage))
   }, [])
+
+  const checkAnswer = (answer) => {
+    timer.stop()
+    timer.reset()
+
+    const pauseTimeStamp = willPause ? new Date() : null
+
+    dispatch(sendAnswer(
+      learningLanguage,
+      sessionId,
+      {
+        type: currentQuestion.type,
+        question_id: currentQuestion.question_id,
+        answer,
+      },
+      pauseTimeStamp,
+    ))
+  }
 
   useEffect(() => {
     if (!sessionId) return
@@ -57,24 +75,7 @@ const Test = () => {
       timer.setTime(currentQuestion.time * 1000)
       setTimeoutId(setTimeout(() => timer.start(), 300))
     }
-  }, [currentQuestion])
 
-  const checkAnswer = (answer) => {
-    timer.stop()
-    timer.reset()
-
-    dispatch(sendAnswer(
-      learningLanguage,
-      sessionId,
-      {
-        type: currentQuestion.type,
-        question_id: currentQuestion.question_id,
-        answer,
-      },
-    ))
-  }
-
-  useEffect(() => {
     timer.setCheckpoints([
       {
         time: 0,
