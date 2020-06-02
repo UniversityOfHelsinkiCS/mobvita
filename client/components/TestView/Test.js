@@ -60,6 +60,7 @@ const Test = () => {
     } else {
       timer.setTime(currentQuestion.time * 1000)
       setTimeout(() => timer.start(), 300)
+      window.localStorage.setItem('testIndex', currentIndex)
     }
 
     timer.setCheckpoints([

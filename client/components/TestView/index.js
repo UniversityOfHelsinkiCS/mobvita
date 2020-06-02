@@ -25,7 +25,7 @@ const TestIndex = () => {
   const learningLanguage = useSelector(learningLanguageSelector)
   const currentGroupId = useSelector(({ user }) => user.data.user.last_selected_group)
   const [selectedGroup, setSelectedGroup] = useState('no group')
-  const { sessionId, report, pending } = useSelector(({ tests }) => tests)
+  const { sessionId, report, pending, language } = useSelector(({ tests }) => tests)
   const { groups } = useSelector(({ groups }) => groups)
 
   const currentGroup = groups.find(group => group.group_id === selectedGroup)
@@ -48,7 +48,7 @@ const TestIndex = () => {
   }, [currentGroupId])
 
   useEffect(() => {
-    dispatch(resetTest())
+    if (language !== learningLanguage) { dispatch(resetTest()) }
   }, [learningLanguage])
 
   if (pending) {

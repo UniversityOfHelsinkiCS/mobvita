@@ -6,12 +6,30 @@ const initialState = {
   questions: [],
   report: null,
   sessionId: null,
+  language: window.localStorage.getItem('testLanguage'),
+}
+
+const clearLocalStorage = () => {
+  window.localStorage.removeItem('questions')
+  window.localStorage.removeItem('testIndex')
+  window.localStorage.removeItem('testLanguage')
 }
 
 export const getTestQuestions = (language, groupId) => {
   const route = `/test/${language}?group_id=${groupId}`
   const prefix = 'GET_TEST_QUESTIONS'
-  return callBuilder(route, prefix, 'get')
+
+  const cache = JSON.parse(localStorage.getItem('questions'))
+  const cachedIndex = Number(window.localStorage.getItem('testIndex'))
+  const startingIndex = !Number.isNaN(cachedIndex) ? cachedIndex : 0
+
+  if (cache) {
+    return { type: `${prefix}_SUCCESS`, response: cache, startingIndex }
+  }
+
+  const call = callBuilder(route, prefix, 'get', undefined, undefined, 'questions')
+  window.localStorage.setItem('testLanguage', language)
+  return { ...call, language, startingIndex }
 }
 
 export const sendAnswer = (language, sessionId, answer, breakTimestamp) => {
@@ -37,26 +55,34 @@ export const finishTest = (language, sessionId) => {
     is_completed: true,
     answers: [],
   }
+
+  clearLocalStorage()
   return callBuilder(route, prefix, 'post', payload)
 }
 
-export const resetTest = () => ({ type: 'RESET_TEST' })
+export const resetTest = () => {
+  clearLocalStorage()
+  return { type: 'RESET_TEST' }
+}
 
 export default (state = initialState, action) => {
   const { currentIndex, questions } = state
-  const { response } = action
+  const { response, startingIndex } = action
   switch (action.type) {
     case 'GET_TEST_QUESTIONS_ATTEMPT':
       return {
         ...initialState,
         pending: true,
+        language: action.language,
+        currentIndex: startingIndex,
       }
     case 'GET_TEST_QUESTIONS_SUCCESS':
       return {
         ...state,
         questions: response.question_list,
-        currentQuestion: response.question_list[0],
+        currentQuestion: response.question_list[startingIndex || 0],
         sessionId: response.session_id,
+        currentIndex: startingIndex || 0,
         pending: false,
       }
     case 'GET_TEST_QUESTIONS_FAILURE':

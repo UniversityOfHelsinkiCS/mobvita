@@ -20,7 +20,7 @@ export const callApi = async (url, method = 'get', data) => {
   })
 }
 
-export default (route, prefix, method = 'get', data, query) => (
+export default (route, prefix, method = 'get', data, query, cache) => (
   {
     type: `${prefix}_ATTEMPT`,
     requestSettings: {
@@ -29,6 +29,7 @@ export default (route, prefix, method = 'get', data, query) => (
       data,
       prefix,
       query,
+      cache,
     },
   }
 )
@@ -41,9 +42,12 @@ export const handleRequest = store => next => async (action) => {
   next(action)
   const { requestSettings } = action
   if (requestSettings) {
-    const { route, method, data, prefix, query } = requestSettings
+    const { route, method, data, prefix, query, cache } = requestSettings
     try {
       const res = await callApi(route, method, data)
+      if (cache) {
+        window.localStorage.setItem(cache, JSON.stringify(res.data))
+      }
       store.dispatch({ type: `${prefix}_SUCCESS`, response: res.data, query })
     } catch (err) {
       store.dispatch({ type: `${prefix}_FAILURE`, response: err, query })
