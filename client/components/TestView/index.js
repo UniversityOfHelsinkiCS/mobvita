@@ -32,6 +32,10 @@ const TestIndex = () => {
    || { group_id: '', groupName: 'default' }
 
   const startTest = () => {
+    dispatch(getTestQuestions(learningLanguage, selectedGroup, true))
+  }
+
+  const continueTest = () => {
     dispatch(getTestQuestions(learningLanguage, selectedGroup))
   }
 
@@ -85,6 +89,13 @@ const TestIndex = () => {
           <Button onClick={startTest}>
             <FormattedMessage id="start-a-new-test" />
           </Button>
+          {language
+            && (
+            <Button onClick={continueTest}>
+              <FormattedMessage id="continue-test" />
+            </Button>
+            )
+          }
         </div>
       )}
       {report && <ReportDisplay report={report} />}

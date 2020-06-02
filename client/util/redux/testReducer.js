@@ -15,21 +15,22 @@ const clearLocalStorage = () => {
   window.localStorage.removeItem('testLanguage')
 }
 
-export const getTestQuestions = (language, groupId) => {
+export const getTestQuestions = (language, groupId, restart = false) => {
   const route = `/test/${language}?group_id=${groupId}`
   const prefix = 'GET_TEST_QUESTIONS'
+
 
   const cache = JSON.parse(localStorage.getItem('questions'))
   const cachedIndex = Number(window.localStorage.getItem('testIndex'))
   const startingIndex = !Number.isNaN(cachedIndex) ? cachedIndex : 0
 
-  if (cache) {
+  if (cache && !restart) {
     return { type: `${prefix}_SUCCESS`, response: cache, startingIndex }
   }
 
   const call = callBuilder(route, prefix, 'get', undefined, undefined, 'questions')
   window.localStorage.setItem('testLanguage', language)
-  return { ...call, language, startingIndex }
+  return { ...call, language, startingIndex: 0 }
 }
 
 export const sendAnswer = (language, sessionId, answer, breakTimestamp) => {
