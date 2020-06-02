@@ -104,6 +104,12 @@ export default (state = initialState, action) => {
         currentQuestion: questions[currentIndex + 1],
         answerPending: false,
       }
+    case 'ANSWER_TEST_QUESTION_FAILURE':
+      return {
+        ...state,
+        answerFailure: true,
+        answerPending: false,
+      }
     case 'FINISH_TEST_SUCCESS':
       return {
         ...initialState,
