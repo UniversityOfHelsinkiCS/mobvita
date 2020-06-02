@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 import { Button, Dropdown } from 'react-bootstrap'
 import { FormattedMessage } from 'react-intl'
 import { useDispatch, useSelector } from 'react-redux'
-import { getTestQuestions } from 'Utilities/redux/testReducer'
+import { getTestQuestions, resetTest } from 'Utilities/redux/testReducer'
 import { learningLanguageSelector } from 'Utilities/common'
 import Spinner from 'Components/Spinner'
 import { getGroups } from 'Utilities/redux/groupsReducer'
@@ -46,6 +46,10 @@ const TestIndex = () => {
   useEffect(() => {
     if (currentGroupId) { setSelectedGroup(currentGroupId) }
   }, [currentGroupId])
+
+  useEffect(() => {
+    dispatch(resetTest())
+  }, [learningLanguage])
 
   if (pending) {
     return <Spinner />

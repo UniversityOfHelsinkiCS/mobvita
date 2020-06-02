@@ -40,6 +40,8 @@ export const finishTest = (language, sessionId) => {
   return callBuilder(route, prefix, 'post', payload)
 }
 
+export const resetTest = () => ({ type: 'RESET_TEST' })
+
 export default (state = initialState, action) => {
   const { currentIndex, questions } = state
   const { response } = action
@@ -85,6 +87,8 @@ export default (state = initialState, action) => {
           correctRate: response.correct_rate,
         },
       }
+    case 'RESET_TEST':
+      return initialState
     default:
       return state
   }
