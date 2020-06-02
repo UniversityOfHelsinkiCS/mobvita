@@ -9,6 +9,7 @@ export const getMetadata = (language) => {
 export const closeBanner = message => ({ type: 'CLOSE_BANNER', message })
 
 export default (state = { pending: false, error: false }, action) => {
+  const { response } = action
   switch (action.type) {
     case 'GET_METADATA_ATTEMPT':
       return {
@@ -25,10 +26,11 @@ export default (state = { pending: false, error: false }, action) => {
     case 'GET_METADATA_SUCCESS':
       return {
         ...state,
-        concepts: action.response.concept_list,
-        flashcardArticles: action.response.flashcard_articles,
-        suggestedSites: action.response.suggested_sites,
-        banners: action.response.banner_messages.map(b => ({ message: b, open: true })),
+        concepts: response.concept_list,
+        flashcardArticles: response.flashcard_articles,
+        suggestedSites: response.suggested_sites,
+        banners: response.banner_messages.map(b => ({ message: b, open: true })),
+        hasTests: response.has_tests,
         pending: false,
         error: false,
       }

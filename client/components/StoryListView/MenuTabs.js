@@ -7,10 +7,12 @@ import { useIntl } from 'react-intl'
 import { Link } from 'react-router-dom'
 import TestIndex from 'Components/TestView/index'
 import { hiddenFeatures } from 'Utilities/common'
+import { useSelector } from 'react-redux'
 
 
 const Tabs = ({ location }) => {
   const intl = useIntl()
+  const { hasTests } = useSelector(({ metadata }) => metadata)
 
   const panes = [
     {
@@ -34,7 +36,7 @@ const Tabs = ({ location }) => {
     },
   ]
 
-  if (hiddenFeatures) {
+  if (hiddenFeatures && hasTests) {
     panes.push({
       menuItem: {
         as: Link,
