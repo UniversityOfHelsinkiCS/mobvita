@@ -7,7 +7,11 @@ const ConceptHeader = ({ target }) => {
   const { storyTitle } = useSelector(({ stories }) => (
     { storyTitle: stories.focused && stories.focused.title }))
   const { groupName } = useSelector(({ groups }) => (
-    { groupName: groups.testConcepts && groups.testConcepts.group.groupName }))
+    {
+      groupName: groups.testConcepts
+        && groups.testConcepts.group
+        && groups.testConcepts.group.groupName,
+    }))
 
   let title
   switch (target) {
