@@ -1,5 +1,5 @@
 import React, { useRef, useState, useEffect } from 'react'
-import { useSelector } from 'react-redux'
+import { useSelector, shallowEqual } from 'react-redux'
 import { Spinner } from 'react-bootstrap'
 import WordInput from './WordInput'
 
@@ -15,29 +15,7 @@ const Chunks = (props) => {
   const snippets = useSelector(({ snippets }) => snippets)
   const chunksComponent = useRef(null)
   const [previousHeight, setPreviousHeight] = useState(0)
-  // const chunks = useSelector(({ snippets }) => {
-  //   if (!snippets.focused) {
-  //     return []
-  //   }
-
-  //   let chunk = []
-  //   let inChunk = false
-
-  //   return snippets.focused.practice_snippet.reduce((chunks, word) => {
-  //     if (inChunk && !word.chunk) chunk.push(word)
-  //     if (!inChunk && !word.chunk) chunks.push([word])
-  //     if (word.chunk) chunk.push(word)
-  //     if (word.chunk === 'chunk_start') inChunk = true
-  //     if (word.chunk === 'chunk_end') {
-  //       inChunk = false
-  //       chunks.push(chunk)
-  //       chunk = []
-  //     }
-  //     return chunks
-  //   }, [])
-  // })
-
-  const chunks = () => {
+  const chunks = useSelector(({ snippets }) => {
     if (!snippets.focused) {
       return []
     }
@@ -57,7 +35,7 @@ const Chunks = (props) => {
       }
       return chunks
     }, [])
-  }
+  }, shallowEqual)
 
   useEffect(() => {
     if (chunksComponent.current) {
@@ -75,7 +53,7 @@ const Chunks = (props) => {
 
   return (
     <div ref={chunksComponent}>
-      {chunks().map(chunk => <ChunkInput key={chunk[0].ID} chunk={chunk} {...props} />)}
+      {chunks.map(chunk => <ChunkInput key={chunk[0].ID} chunk={chunk} {...props} />)}
     </div>
   )
 }
