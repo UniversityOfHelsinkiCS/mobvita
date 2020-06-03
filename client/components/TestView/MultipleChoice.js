@@ -8,7 +8,7 @@ const MultipleChoice = ({ exercise, onAnswer, answerPending }) => {
 
   return (
     <div>
-      <div className="test-question">
+      <div className="test-prephrase">
         {prephrase}
       </div>
       { question && (
