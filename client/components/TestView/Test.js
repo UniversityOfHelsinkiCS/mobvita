@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import { useTimer } from 'react-compound-timer'
 import { Icon } from 'semantic-ui-react'
+import { Button } from 'react-bootstrap'
 import { sendAnswer, finishTest } from 'Utilities/redux/testReducer'
 import { learningLanguageSelector } from 'Utilities/common'
 import MultipleChoice from './MultipleChoice'
@@ -23,6 +24,7 @@ const Test = () => {
     questions,
     currentIndex,
     answerPending,
+    answerFailure,
   } = useSelector(({ tests }) => tests)
   const learningLanguage = useSelector(learningLanguageSelector)
 
@@ -92,19 +94,25 @@ const Test = () => {
         <div className="test-question-container">
           {willPause && !willStop && <span>timer will pause after this exercise</span>}
           {willStop && <span>ending test after this exercise</span>}
-          {currentQuestion && !paused && (
-          <div>
-            <MultipleChoice
-              exercise={currentQuestion}
-              onAnswer={checkAnswer}
-              answerPending={answerPending}
-            />
-          </div>
+          {currentQuestion && !paused && !answerFailure && (
+            <div>
+              <MultipleChoice
+                exercise={currentQuestion}
+                onAnswer={checkAnswer}
+                answerPending={answerPending}
+              />
+            </div>
           )}
         </div>
 
         {paused && (
         <div>Timer paused, questions are hidden until timer starts again</div>
+        )}
+        {answerFailure && (
+          <>
+            <div>Failure while sending answer!</div>
+            <Button onClick={checkAnswer}>Retry</Button>
+          </>
         )}
         <div className="test-controls">
           <div>{currentIndex + 1} / {questions.length}</div>
