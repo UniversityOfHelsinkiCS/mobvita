@@ -92,8 +92,11 @@ const Test = () => {
     <div className="component-container">
       <div className="test-container">
         <div className="test-question-container">
-          {willPause && !willStop && <span>timer will pause after this exercise</span>}
-          {willStop && <span>ending test after this exercise</span>}
+          {willPause && !willStop && <span className="test-info">timer will pause after this exercise</span>}
+          {willStop && <span className="test-info">ending test after this exercise</span>}
+          {paused && (
+            <div className="test-prephrase">Timer paused, questions are hidden until timer starts again</div>
+          )}
           {currentQuestion && !paused && !answerFailure && (
             <div>
               <MultipleChoice
@@ -104,10 +107,6 @@ const Test = () => {
             </div>
           )}
         </div>
-
-        {paused && (
-        <div>Timer paused, questions are hidden until timer starts again</div>
-        )}
         {answerFailure && (
           <>
             <div>Failure while sending answer!</div>
