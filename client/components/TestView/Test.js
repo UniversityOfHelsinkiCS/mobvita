@@ -90,6 +90,7 @@ const Test = () => {
 
   return (
     <div className="component-container">
+      <div className="test-timer">{(Math.round(timer.getTime() / 1000))}</div>
       <div className="test-container">
         <div className="test-question-container">
           {willPause && !willStop && <span className="test-info">timer will pause after this exercise</span>}
@@ -114,11 +115,8 @@ const Test = () => {
           </>
         )}
         <div className="test-controls">
-          <div>{currentIndex + 1} / {questions.length}</div>
-          <div className="test-controls-time">
-            <div style={{ marginRight: '1em' }}>
-              {(Math.round(timer.getTime() / 1000))}
-            </div>
+          <div>{currentIndex} / {questions.length}</div>
+          <div>
             <Icon
               size="large"
               color={willPause ? 'grey' : 'black'}

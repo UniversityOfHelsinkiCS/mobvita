@@ -707,7 +707,7 @@ body {
     justify-content: space-between;
     align-items: flex-start;
     @media (max-width: 800px) {
-      flex-direction: column-reverse;
+      flex-direction: column;
     }
   }
   &-question-container {
@@ -715,6 +715,9 @@ body {
   }
   &-info {
     font-style: italic;
+  }
+  &-timer {
+    font-size: 18px;
   }
   &-prephrase {
     font-style: italic;
@@ -724,7 +727,6 @@ body {
   }
   &-question {
     font-size: 22px;
-    text-align: center;
     margin-bottom: 0.5em;
   }
   &-choice-button {
@@ -745,16 +747,12 @@ body {
     }
 
     @media (max-width: 800px) {
-      min-width: 100%;
-      align-items: center;
+      width: 90%;
+      margin-left: 0.5em;
       display: flex;
       justify-content: space-between;
-    }
-
-    &-time {
-      @media (max-width: 800px) {
-        display: flex;
-      }
+      flex-direction: row-reverse;
+      align-items: center;
     }
   }
 }
