@@ -227,6 +227,25 @@ body {
   color:white;
 }
 
+.chunk-all {
+  border-bottom: 1px red solid;
+  border-top: 1px red solid;
+  padding-top: 3px;
+  padding-bottom: 4px;
+}
+
+.chunk-start {
+  border-left: 1px red solid;
+  padding-left: 5px;
+  border-radius: 4px 0 0 4px;
+}
+
+.chunk-end {
+  border-right: 1px red solid;
+  padding-right: 5px;
+  border-radius: 0 4px 4px 0;
+}
+
 .chunk {
   border: 1px solid red;
     border-radius: 4px;
@@ -294,7 +313,7 @@ body {
 .practice-container{
   margin-bottom: 1em;
   word-spacing: 1px;
-  line-height: 2em;
+  line-height: 2.3em;
   font-family: $default-font;
 }
 

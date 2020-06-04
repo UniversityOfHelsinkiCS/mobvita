@@ -5,7 +5,7 @@ import { clearTranslationAction } from 'Utilities/redux/translationReducer'
 import 'react-simple-keyboard/build/css/index.css'
 import { FormattedMessage } from 'react-intl'
 import { getSelf } from 'Utilities/redux/userReducer'
-import { getTextStyle, learningLanguageSelector } from 'Utilities/common'
+import { getTextStyle, learningLanguageSelector, hiddenFeatures } from 'Utilities/common'
 import { Button } from 'react-bootstrap'
 import {
   setAnswers,
@@ -18,6 +18,7 @@ import {
 } from 'Utilities/redux/practiceReducer'
 import Chunks from './Chunks'
 import CheckAnswers from './CheckAnswers'
+import PracticeText from './PracticeText'
 
 const CurrentPractice = ({ storyId, handleWordClick, handleInputChange }) => {
   const [progress, setProgress] = useState(0)
@@ -192,11 +193,21 @@ const CurrentPractice = ({ storyId, handleWordClick, handleInputChange }) => {
               style={getTextStyle(learningLanguage)}
               data-cy="practice-view"
             >
-              <Chunks
-                handleWordClick={handleWordClick}
-                handleAnswerChange={handleInputChange}
-                handleMultiselectChange={handleMultiselectChange}
-              />
+              {hiddenFeatures
+                ? (
+                  <PracticeText
+                    handleWordClick={handleWordClick}
+                    handleAnswerChange={handleInputChange}
+                    handleMultiselectChange={handleMultiselectChange}
+                  />
+                ) : (
+                  <Chunks
+                    handleWordClick={handleWordClick}
+                    handleAnswerChange={handleInputChange}
+                    handleMultiselectChange={handleMultiselectChange}
+                  />
+                )
+              }
             </div>
             <CheckAnswers
               storyId={storyId}

@@ -20,7 +20,6 @@ const Chunks = (props) => {
       return []
     }
 
-    const pattern = []
     let chunk = []
     let inChunk = false
 
