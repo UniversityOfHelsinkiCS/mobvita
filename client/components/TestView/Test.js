@@ -76,7 +76,11 @@ const Test = () => {
   }, [currentQuestion])
 
   const pauseTimer = () => {
-    setWillPause(true)
+    if (willPause) {
+      setWillPause(false)
+    } else {
+      setWillPause(true)
+    }
   }
 
   const resumeTimer = () => {
@@ -85,7 +89,11 @@ const Test = () => {
   }
 
   const stop = () => {
-    setWillStop(true)
+    if (willStop) {
+      setWillStop(false)
+    } else {
+      setWillStop(true)
+    }
   }
 
   return (
