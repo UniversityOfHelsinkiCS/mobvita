@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 import { Button, Dropdown } from 'react-bootstrap'
 import { FormattedMessage } from 'react-intl'
 import { useDispatch, useSelector } from 'react-redux'
-import { getTestQuestions, resetTest } from 'Utilities/redux/testReducer'
+import { getTestQuestions, resetTest, getHistory } from 'Utilities/redux/testReducer'
 import { learningLanguageSelector } from 'Utilities/common'
 import Spinner from 'Components/Spinner'
 import { getGroups } from 'Utilities/redux/groupsReducer'
@@ -45,6 +45,7 @@ const TestIndex = () => {
 
   useEffect(() => {
     dispatch(getGroups())
+    dispatch(getHistory(learningLanguage))
   }, [])
 
   useEffect(() => {

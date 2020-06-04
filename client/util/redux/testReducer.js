@@ -61,6 +61,12 @@ export const finishTest = (language, sessionId) => {
   return callBuilder(route, prefix, 'post', payload)
 }
 
+export const getHistory = (language) => {
+  const route = `/test/${language}/history`
+  const prefix = 'GET_TEST_HISTORY'
+  return callBuilder(route, prefix, 'get')
+}
+
 export const resetTest = () => {
   clearLocalStorage()
   return { type: 'RESET_TEST' }
@@ -119,6 +125,11 @@ export default (state = initialState, action) => {
           total: response.total,
           correctRate: response.correct_rate,
         },
+      }
+    case 'GET_TEST_HISTORY_SUCCESS':
+      return {
+        ...state,
+        history: response.history,
       }
     case 'RESET_TEST':
       return initialState
