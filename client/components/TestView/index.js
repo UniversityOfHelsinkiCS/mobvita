@@ -25,7 +25,7 @@ const TestIndex = () => {
   const learningLanguage = useSelector(learningLanguageSelector)
   const currentGroupId = useSelector(({ user }) => user.data.user.last_selected_group)
   const [selectedGroup, setSelectedGroup] = useState('no group')
-  const { sessionId, report, pending, language } = useSelector(({ tests }) => tests)
+  const { sessionId, report, pending, language, history } = useSelector(({ tests }) => tests)
   const { groups } = useSelector(({ groups }) => groups)
 
   const currentGroup = groups.find(group => group.group_id === selectedGroup)
@@ -97,6 +97,18 @@ const TestIndex = () => {
             </Button>
             )
           }
+          <hr />
+          {history && (
+            <div>
+              <h3>Latest test:</h3>
+              <div>{history[0].date}</div>
+              <div>
+                {Object.entries(history[0].section_counts).map(([name, result]) => (
+                  <div>{name}: {result.correct} / {result.total}</div>
+                ))}
+              </div>
+            </div>
+          )}
         </div>
       )}
       {report && <ReportDisplay report={report} />}
