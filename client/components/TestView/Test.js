@@ -95,6 +95,14 @@ const Test = () => {
         <div className="test-question-container">
           {willPause && !willStop && <span className="test-info">timer will pause after this exercise</span>}
           {willStop && <span className="test-info">ending test after this exercise</span>}
+          {answerFailure && (
+          <>
+            <div className="test-info">Failure while sending answer!</div>
+            <div>
+              <Button onClick={checkAnswer}>Retry</Button>
+            </div>
+          </>
+          )}
           {paused && (
             <div className="test-prephrase">Timer paused, questions are hidden until timer starts again</div>
           )}
@@ -108,12 +116,6 @@ const Test = () => {
             </div>
           )}
         </div>
-        {answerFailure && (
-          <>
-            <div>Failure while sending answer!</div>
-            <Button onClick={checkAnswer}>Retry</Button>
-          </>
-        )}
         <div className="test-controls">
           <div>{currentIndex} / {questions.length}</div>
           <div>
