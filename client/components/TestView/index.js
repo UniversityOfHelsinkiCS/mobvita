@@ -101,9 +101,9 @@ const TestIndex = () => {
           {history && (
             <div>
               <h3>Latest test:</h3>
-              <div>{history[0].date}</div>
+              <div>{history[history.length - 1].date}</div>
               <div>
-                {Object.entries(history[0].section_counts).map(([name, result]) => (
+                {Object.entries(history[history.length - 1].section_counts).map(([name, result]) => (
                   <div>{name}: {result.correct} / {result.total}</div>
                 ))}
               </div>

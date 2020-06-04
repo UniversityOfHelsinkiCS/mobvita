@@ -101,7 +101,8 @@ const Test = () => {
       <div className="test-timer">{(Math.round(timer.getTime() / 1000))}</div>
       <div className="test-container">
         <div className="test-question-container">
-          {willPause && !willStop && <span className="test-info">timer will pause after this exercise</span>}
+          {willPause && !willStop && (
+            <span className="test-info">timer will pause after this exercise</span>)}
           {willStop && <span className="test-info">ending test after this exercise</span>}
           {answerFailure && (
           <>
