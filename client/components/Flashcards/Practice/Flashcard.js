@@ -12,11 +12,11 @@ const Flashcard = ({
   handleEdit,
 }) => {
   const backgroundColor = [
-    'rgb(255, 99, 71)',
-    'rgb(255, 165, 0)',
-    'rgb(255, 215, 0)',
-    'yellowgreen',
-    'limegreen',
+    '#FF6347',
+    '#E28413',
+    '#D19710',
+    '#8EA604',
+    '#5FAD56',
   ]
 
   return (
