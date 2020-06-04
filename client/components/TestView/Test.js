@@ -76,7 +76,11 @@ const Test = () => {
   }, [currentQuestion])
 
   const pauseTimer = () => {
-    setWillPause(true)
+    if (willPause) {
+      setWillPause(false)
+    } else {
+      setWillPause(true)
+    }
   }
 
   const resumeTimer = () => {
@@ -85,15 +89,29 @@ const Test = () => {
   }
 
   const stop = () => {
-    setWillStop(true)
+    if (willStop) {
+      setWillStop(false)
+    } else {
+      setWillStop(true)
+    }
   }
 
   return (
     <div className="component-container">
+      <div className="test-timer">{(Math.round(timer.getTime() / 1000))}</div>
       <div className="test-container">
         <div className="test-question-container">
-          {willPause && !willStop && <span className="test-info">timer will pause after this exercise</span>}
+          {willPause && !willStop && (
+            <span className="test-info">timer will pause after this exercise</span>)}
           {willStop && <span className="test-info">ending test after this exercise</span>}
+          {answerFailure && (
+          <>
+            <div className="test-info">Failure while sending answer!</div>
+            <div>
+              <Button onClick={checkAnswer}>Retry</Button>
+            </div>
+          </>
+          )}
           {paused && (
             <div className="test-prephrase">Timer paused, questions are hidden until timer starts again</div>
           )}
@@ -107,18 +125,9 @@ const Test = () => {
             </div>
           )}
         </div>
-        {answerFailure && (
-          <>
-            <div>Failure while sending answer!</div>
-            <Button onClick={checkAnswer}>Retry</Button>
-          </>
-        )}
         <div className="test-controls">
-          <div>{currentIndex + 1} / {questions.length}</div>
-          <div className="test-controls-time">
-            <div style={{ marginRight: '1em' }}>
-              {(Math.round(timer.getTime() / 1000))}
-            </div>
+          <div>{currentIndex} / {questions.length}</div>
+          <div>
             <Icon
               size="large"
               color={willPause ? 'grey' : 'black'}
