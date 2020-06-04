@@ -98,7 +98,7 @@ const TestIndex = () => {
             )
           }
           <hr />
-          {history && (
+          {history && history.length > 0 && (
             <div>
               <h3>Latest test:</h3>
               <div>{history[history.length - 1].date}</div>
