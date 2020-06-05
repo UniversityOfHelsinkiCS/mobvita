@@ -12,12 +12,18 @@ const TestReport = () => {
   return (
     <Modal dimmer="inverted" closeIcon defaultOpen>
       <Modal.Header>
-        Test report
+        {translate('overall-score')}
       </Modal.Header>
       <Modal.Content>
-        <div>{translate('correct-answers')}: {report.correct}</div>
-        <div>{translate('total-answers')}: {report.total}</div>
-        <div>{translate('Accuracy')}: {report.correctRate}%</div>
+        {report.message === 'OK' ? (
+          <>
+            <div>{translate('correct-answers')}: {report.correct}</div>
+            <div>{translate('total-answers')}: {report.total}</div>
+            <div>{translate('Accuracy')}: {report.correctRate}%</div>
+          </>
+        ) : (
+          <div>{report.message}</div>
+        )}
       </Modal.Content>
     </Modal>
   )
