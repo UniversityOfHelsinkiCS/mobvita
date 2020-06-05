@@ -200,7 +200,7 @@ const StoryList = () => {
       showLibraries.push('Private')
     }
 
-    if (story.shared && story.sharedwith.includes(user.oid)) {
+    if (story.shared && story.sharedwith && story.sharedwith.includes(user.oid)) {
       showLibraries.push('Private')
     }
 
