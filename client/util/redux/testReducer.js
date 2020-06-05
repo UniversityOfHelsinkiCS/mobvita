@@ -16,7 +16,7 @@ const clearLocalStorage = () => {
 }
 
 export const getTestQuestions = (language, groupId, restart = false) => {
-  const route = `/test/${language}`
+  const route = `/test/${language}?group_id=${groupId}`
   const prefix = 'GET_TEST_QUESTIONS'
 
 

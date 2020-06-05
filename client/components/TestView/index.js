@@ -15,13 +15,11 @@ const TestIndex = () => {
   const dispatch = useDispatch()
   const learningLanguage = useSelector(learningLanguageSelector)
   const currentGroupId = useSelector(({ user }) => user.data.user.last_selected_group)
-  const [selectedGroup, setSelectedGroup] = useState('no group')
+  const [selectedGroup, setSelectedGroup] = useState('default')
+  const [currentGroup, setCurrentGroup] = useState()
   const [showHistory, setShowHistory] = useState(false)
   const { sessionId, report, pending, language } = useSelector(({ tests }) => tests)
   const { groups } = useSelector(({ groups }) => groups)
-
-  const currentGroup = groups.find(group => group.group_id === selectedGroup)
-   || { group_id: '', groupName: 'default' }
 
   const startTest = () => {
     dispatch(getTestQuestions(learningLanguage, selectedGroup, true))
@@ -44,6 +42,13 @@ const TestIndex = () => {
   }, [])
 
   useEffect(() => {
+    if (!groups) return
+    setCurrentGroup(
+      groups.find(group => group.group_id === selectedGroup) || { groupName: 'default', group_id: 'default' },
+    )
+  }, [groups, selectedGroup])
+
+  useEffect(() => {
     if (currentGroupId) { setSelectedGroup(currentGroupId) }
   }, [currentGroupId])
 
@@ -59,7 +64,7 @@ const TestIndex = () => {
     <div className="component-container">
       {!sessionId && (
         <div>
-          {groups
+          {groups && currentGroup
           && (
             <Dropdown
               style={{ marginBottom: '0.5em' }}
