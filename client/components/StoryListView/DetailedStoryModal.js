@@ -50,7 +50,7 @@ const DetailedStoryModal = (
     percent_cov: percentCovered,
     percent_perf: percentCorrect,
     URL,
-    message,
+    sharing_info: sharingInfo,
     author,
   } = story
 
@@ -93,10 +93,17 @@ const DetailedStoryModal = (
             <Row translationId="story-rating">
               {story.elo_score}
             </Row>
-            {message && (
-              <Row translationId="Message">
-                {message}
-              </Row>
+            {sharingInfo && (
+              <>
+                <Row translationId="Sender">
+                  {sharingInfo.sender}
+                </Row>
+                {sharingInfo.message && (
+                  <Row translationId="Message">
+                    {sharingInfo.message}
+                  </Row>
+                )}
+              </>
             )}
             <Row translationId="part-of-story-covered">
               <ProgressBar
