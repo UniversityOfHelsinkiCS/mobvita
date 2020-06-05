@@ -22,10 +22,9 @@ const History = () => {
 
   const bgFromPercentage = (percentage) => {
     if (!percentage) return '#ffffff'
-    if (percentage <= 25) return '#ff0000'
-    if (percentage <= 50) return '#ff8888'
-    if (percentage <= 75) return '#88ff88'
-    return '#00ff00'
+    if (percentage <= 33) return '#00ffff'
+    if (percentage <= 66) return '#00e5c3'
+    return '#00cc88'
   }
 
   useEffect(() => {
