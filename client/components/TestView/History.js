@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import { useSelector } from 'react-redux'
 import { Table } from 'semantic-ui-react'
+import moment from 'moment'
 
 const History = () => {
   const [conceptSet, setConceptSet] = useState(new Set())
@@ -39,13 +40,13 @@ const History = () => {
 
   if (!history) return null
   return (
-    <div>
-      <Table celled style={{ maxWidth: '100%' }}>
+    <div style={{ overflowX: 'scroll', maxWidth: '100%' }}>
+      <Table celled>
         <Table.Header>
           <Table.HeaderCell>Concepts</Table.HeaderCell>
           {history.map(test => (
             <Table.HeaderCell key={test.date}>
-              {test.date}
+              {moment(test.date).format('YYYY-MM-DD hh:mm')}
             </Table.HeaderCell>
           ))}
         </Table.Header>
