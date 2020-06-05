@@ -1,13 +1,17 @@
 import React, { useState, useEffect } from 'react'
-import { useSelector } from 'react-redux'
+import { useSelector, useDispatch } from 'react-redux'
 import { Table } from 'semantic-ui-react'
 import moment from 'moment'
+import { getHistory } from 'Utilities/redux/testReducer'
+import { learningLanguageSelector } from 'Utilities/common'
 
 const History = () => {
+  const dispatch = useDispatch()
   const [conceptSet, setConceptSet] = useState(new Set())
 
   const { concepts } = useSelector(({ metadata }) => metadata)
   const { history } = useSelector(({ tests }) => tests)
+  const learningLanguage = useSelector(learningLanguageSelector)
 
   const conceptIdToConceptName = (id) => {
     const concept = concepts.find(c => c.concept_id === id)
@@ -27,6 +31,10 @@ const History = () => {
     if (percentage <= 66) return '#00e5c3'
     return '#00cc88'
   }
+
+  useEffect(() => {
+    dispatch(getHistory(learningLanguage))
+  }, [])
 
   useEffect(() => {
     if (!history) return
