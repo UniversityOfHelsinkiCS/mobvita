@@ -17,18 +17,20 @@ const PracticeText = (props) => {
   }, [practiceSnippet])
 
   let lowestLinePosition = 0
-  const openLinePositions = [1, 2, 3]
+  const openLinePositions = [1, 2, 3, 4, 5]
   const reservedLinePositions = { }
   let inChunk = false
 
-  const lineColors = ['blue', 'green', 'black']
+  const lineColors = ['blue', 'green', 'black', 'purple', 'cyan']
 
   const createNestedSpan = (element, id, position, counter) => {
     const spanStyle = {
       borderBottom: openLinePositions.includes(position)
-        ? 'none'
+        ? '1px solid transparent'
         : `1px solid ${lineColors[position - 1]}`,
-      paddingBottom: `${4 + 3 * position}px`,
+      paddingBottom: `${position * 2}px`,
+      display: 'inline-block',
+      whiteSpace: 'pre',
     }
 
     if (counter > 0) {
@@ -57,14 +59,18 @@ const PracticeText = (props) => {
       let chunkClassName = 'chunk-all'
       if (chunkPosition === 'start') chunkClassName = 'chunk-all chunk-start'
       if (chunkPosition === 'end') chunkClassName = 'chunk-all chunk-end'
-      element = <span className={chunkClassName}>{element}</span>
+      element = (
+        <span style={{ display: 'inline-block', whiteSpace: 'pre' }}>
+          <span className={chunkClassName}>{element}</span>
+        </span>
+      )
     }
     if (lowestLinePosition === 0 && !inChunk) return element
     element = createNestedSpan(element, word.ID, 1, lowestLinePosition)
     return element
   }
 
-  const createText = useMemo(() => practiceSnippet && practiceSnippet.map((word) => {
+  const createdText = useMemo(() => practiceSnippet && practiceSnippet.map((word) => {
     let patternPosition
     let patternId
     if (word.pattern) [, patternPosition, patternId] = word.pattern.split('_')
@@ -102,7 +108,7 @@ const PracticeText = (props) => {
 
   return (
     <div ref={textComponent}>
-      {createText}
+      {createdText}
     </div>
   )
 }
