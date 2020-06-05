@@ -55,21 +55,6 @@ const History = () => {
           ))}
         </Table.Body>
       </Table>
-      {/* {history && concepts && history.map(test => (
-        <>
-          <h3>{test.date}</h3>
-          <div>
-            {Object.entries(test.section_counts).map(([id, result]) => {
-              const concept = concepts.find(c => c.concept_id === id)
-              return (
-                <div>
-                  {concept ? concept.name : id}: {result.correct} / {result.total}
-                </div>
-              )
-            })}
-          </div>
-        </>
-      ))} */}
     </div>
   )
 }

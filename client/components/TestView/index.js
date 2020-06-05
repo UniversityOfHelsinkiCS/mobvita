@@ -16,8 +16,8 @@ const TestIndex = () => {
   const learningLanguage = useSelector(learningLanguageSelector)
   const currentGroupId = useSelector(({ user }) => user.data.user.last_selected_group)
   const [selectedGroup, setSelectedGroup] = useState('no group')
-  const { sessionId, report, pending, language, history } = useSelector(({ tests }) => tests)
-  const { concepts } = useSelector(({ metadata }) => metadata)
+  const [showHistory, setShowHistory] = useState(false)
+  const { sessionId, report, pending, language } = useSelector(({ tests }) => tests)
   const { groups } = useSelector(({ groups }) => groups)
 
   const currentGroup = groups.find(group => group.group_id === selectedGroup)
@@ -33,6 +33,10 @@ const TestIndex = () => {
 
   const handleGroupChange = (key) => {
     setSelectedGroup(key)
+  }
+
+  const toggleHistory = () => {
+    setShowHistory(!showHistory)
   }
 
   useEffect(() => {
@@ -90,7 +94,10 @@ const TestIndex = () => {
             )
           }
           <hr />
-          <History />
+          <Button onClick={toggleHistory}>
+            {showHistory ? 'hide history' : 'show history'}
+          </Button>
+          {showHistory && <History />}
         </div>
       )}
       {report && <TestReport />}
