@@ -200,6 +200,10 @@ const StoryList = () => {
       showLibraries.push('Private')
     }
 
+    if (story.shared && story.sharedwith.includes(user.oid)) {
+      showLibraries.push('Private')
+    }
+
     if (story.groups) {
       if (story.groups.map(g => g.group_id).includes(user.last_selected_group)) {
         showLibraries.push('Group')
