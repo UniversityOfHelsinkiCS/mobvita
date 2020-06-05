@@ -52,8 +52,6 @@ const TestIndex = () => {
     return <Spinner />
   }
 
-  console.log(concepts)
-
   return (
     <div className="component-container">
       {!sessionId && (
