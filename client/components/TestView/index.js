@@ -7,18 +7,9 @@ import { learningLanguageSelector } from 'Utilities/common'
 import Spinner from 'Components/Spinner'
 import { getGroups } from 'Utilities/redux/groupsReducer'
 import TestView from './Test'
+import TestReport from './TestReport'
+import History from './History'
 
-
-const ReportDisplay = ({ report }) => {
-  const { message, correctRate } = report
-  if (message !== 'OK') {
-    return <div>{message}</div>
-  }
-
-  return (
-    <div>Test completed. Your score: {correctRate}%</div>
-  )
-}
 
 const TestIndex = () => {
   const dispatch = useDispatch()
@@ -26,6 +17,7 @@ const TestIndex = () => {
   const currentGroupId = useSelector(({ user }) => user.data.user.last_selected_group)
   const [selectedGroup, setSelectedGroup] = useState('no group')
   const { sessionId, report, pending, language, history } = useSelector(({ tests }) => tests)
+  const { concepts } = useSelector(({ metadata }) => metadata)
   const { groups } = useSelector(({ groups }) => groups)
 
   const currentGroup = groups.find(group => group.group_id === selectedGroup)
@@ -59,6 +51,8 @@ const TestIndex = () => {
   if (pending) {
     return <Spinner />
   }
+
+  console.log(concepts)
 
   return (
     <div className="component-container">
@@ -98,20 +92,10 @@ const TestIndex = () => {
             )
           }
           <hr />
-          {history && history.length > 0 && (
-            <div>
-              <h3>Latest test:</h3>
-              <div>{history[history.length - 1].date}</div>
-              <div>
-                {Object.entries(history[history.length - 1].section_counts).map(([name, result]) => (
-                  <div>{name}: {result.correct} / {result.total}</div>
-                ))}
-              </div>
-            </div>
-          )}
+          <History />
         </div>
       )}
-      {report && <ReportDisplay report={report} />}
+      {report && <TestReport />}
       {sessionId && <TestView />}
     </div>
   )
