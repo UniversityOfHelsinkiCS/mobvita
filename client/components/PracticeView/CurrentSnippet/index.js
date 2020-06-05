@@ -20,7 +20,7 @@ import Chunks from './Chunks'
 import CheckAnswers from './CheckAnswers'
 import PracticeText from './PracticeText'
 
-const CurrentPractice = ({ storyId, handleWordClick, handleInputChange }) => {
+const CurrentSnippet = ({ storyId, handleWordClick, handleInputChange }) => {
   const [progress, setProgress] = useState(0)
   const [exerciseCount, setExerciseCount] = useState(0)
   const scrollTarget = useRef(null)
@@ -247,4 +247,4 @@ const CurrentPractice = ({ storyId, handleWordClick, handleInputChange }) => {
 }
 
 
-export default CurrentPractice
+export default CurrentSnippet

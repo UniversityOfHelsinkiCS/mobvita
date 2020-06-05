@@ -1,13 +1,13 @@
 import React, { useRef, useState, useEffect } from 'react'
 import { useSelector, shallowEqual } from 'react-redux'
 import { Spinner } from 'react-bootstrap'
-import WordInput from './WordInput'
+import ExerciseWord from './ExerciseWord'
 
 const ChunkInput = ({ chunk, ...props }) => {
   if (chunk.length === 1) {
-    return <WordInput word={chunk[0]} {...props} />
+    return <ExerciseWord word={chunk[0]} {...props} />
   }
-  const elements = chunk.map(word => <WordInput key={word.ID} word={word} {...props} />)
+  const elements = chunk.map(word => <ExerciseWord key={word.ID} word={word} {...props} />)
   return <span className="chunk">{elements}</span>
 }
 

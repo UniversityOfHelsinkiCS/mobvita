@@ -1,7 +1,8 @@
 import React, { useEffect } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import { FormattedMessage } from 'react-intl'
-import CurrentPractice from 'Components/PracticeView/CurrentPractice'
+import { useParams } from 'react-router-dom'
+import CurrentSnippet from 'Components/PracticeView/CurrentSnippet'
 import { getStoryAction } from 'Utilities/redux/storiesReducer'
 import DictionaryHelp from 'Components/DictionaryHelp'
 import { Segment, Icon } from 'semantic-ui-react'
@@ -23,10 +24,11 @@ import VirtualKeyboard from './VirtualKeyboard'
 import Footer from '../Footer'
 import { keyboardLayouts } from './KeyboardLayouts'
 
-const PracticeView = ({ match }) => {
+const PracticeView = () => {
   const learningLanguage = useSelector(learningLanguageSelector)
   const dictionaryLanguage = useSelector(dictionaryLanguageSelector)
   const dispatch = useDispatch()
+  const { id } = useParams()
   const smallWindow = useWindowDimensions().width < 500
 
   const story = useSelector(({ stories }) => stories.focused)
@@ -35,14 +37,14 @@ const PracticeView = ({ match }) => {
   const voice = respVoiceLanguages[learningLanguage]
 
   useEffect(() => {
-    dispatch(getStoryAction(match.params.id))
+    dispatch(getStoryAction(id))
   }, [learningLanguage])
 
   if (!story) return null
 
   const handleRestart = () => {
     dispatch(clearPractice())
-    dispatch(resetCurrentSnippet(match.params.id))
+    dispatch(resetCurrentSnippet(id))
   }
 
   const handleAnswerChange = (value, word) => {
@@ -70,7 +72,7 @@ const PracticeView = ({ match }) => {
           newCapitalize(learningLanguage),
           wordLemmas,
           capitalize(dictionaryLanguage),
-          match.params.id,
+          id,
           wordId,
         ),
       )
@@ -100,10 +102,13 @@ const PracticeView = ({ match }) => {
               />
             </div>
             {story.url ? <p><a href={story.url}><FormattedMessage id="Source" /></a></p> : null}
-
             <PreviousSnippets handleWordClick={handleWordClick} />
             <hr />
-            <CurrentPractice storyId={match.params.id} handleWordClick={handleWordClick} handleInputChange={handleAnswerChange} />
+            <CurrentSnippet
+              storyId={id}
+              handleWordClick={handleWordClick}
+              handleInputChange={handleAnswerChange}
+            />
             {keyboardLayouts[learningLanguage] && !smallWindow
               && <VirtualKeyboard />
             }

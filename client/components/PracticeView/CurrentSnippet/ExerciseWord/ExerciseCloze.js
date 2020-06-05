@@ -6,10 +6,10 @@ import {
   dictionaryLanguageSelector,
   rightAlignedLanguages,
   learningLanguageSelector,
-  getTextStyle
+  getTextStyle,
 } from 'Utilities/common'
 import { setFocusedWord } from 'Utilities/redux/practiceReducer'
-import Tooltip from './Tooltip'
+import Tooltip from 'Components/PracticeView/Tooltip'
 
 const ExerciseCloze = ({ word, handleChange, handleClick }) => {
   const [value, setValue] = useState('')

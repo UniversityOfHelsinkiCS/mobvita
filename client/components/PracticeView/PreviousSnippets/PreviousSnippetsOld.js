@@ -2,7 +2,7 @@ import React, { useRef, useState, useEffect } from 'react'
 import { useIntl } from 'react-intl'
 import { useSelector, useDispatch } from 'react-redux'
 import { setPrevious } from 'Utilities/redux/snippetsReducer'
-import Tooltip from './Tooltip'
+import Tooltip from '../Tooltip'
 import { getTextStyle, learningLanguageSelector } from 'Utilities/common'
 
 const chunkWords = (words) => {

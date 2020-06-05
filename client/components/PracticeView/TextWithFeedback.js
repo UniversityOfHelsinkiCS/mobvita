@@ -1,21 +1,8 @@
-import React, { useRef, useState, useEffect, useMemo } from 'react'
-import { useSelector, shallowEqual } from 'react-redux'
-import { Spinner } from 'react-bootstrap'
-import WordInput from './WordInput'
+import React, { useMemo } from 'react'
+import ExerciseWord from './CurrentSnippet/ExerciseWord'
+import Word from './PreviousSnippets/Word'
 
-const PracticeText = (props) => {
-  const snippets = useSelector(({ snippets }) => snippets)
-  const textComponent = useRef(null)
-  const [previousHeight, setPreviousHeight] = useState(0)
-  const practiceSnippet = useSelector(({ snippets }) => (
-    snippets.focused && snippets.focused.practice_snippet), shallowEqual)
-
-  useEffect(() => {
-    if (textComponent.current) {
-      setPreviousHeight(textComponent.current.clientHeight)
-    }
-  }, [practiceSnippet])
-
+const TextWithFeedback = ({ snippet, exercise = false, answers, ...props }) => {
   let lowestLinePosition = 0
   const openLinePositions = [1, 2, 3, 4, 5]
   const reservedLinePositions = { }
@@ -53,15 +40,36 @@ const PracticeText = (props) => {
     lowestLinePosition = Math.max(...Object.values(reservedLinePositions))
   }
 
+  const createChunkStyle = (chunkPosition) => {
+    const chunkStart = chunkPosition === 'start'
+    const chunkEnd = chunkPosition === 'end'
+    const chunkBorder = '1px red solid'
+    const sidePadding = exercise ? '5px' : '2px'
+    const chunkStyle = {
+      borderBottom: chunkBorder,
+      borderTop: chunkBorder,
+      borderLeft: chunkStart ? chunkBorder : 'none',
+      borderRight: chunkEnd ? chunkBorder : 'none',
+      paddingTop: exercise ? '3px' : 0,
+      paddingBottom: exercise ? '4px' : '1px',
+      paddingLeft: chunkStart ? sidePadding : 'none',
+      paddingRight: chunkEnd ? sidePadding : 'none',
+    }
+    if (chunkStart) chunkStyle.borderRadius = '4px 0 0 4px'
+    if (chunkEnd) chunkStyle.borderRadius = '0 4px 4px 0'
+    return chunkStyle
+  }
+
   const createElement = (word, chunkPosition) => {
-    let element = <WordInput key={word.ID} word={word} {...props} />
+    let element = exercise
+      ? <ExerciseWord key={word.ID} word={word} {...props} />
+      : <Word word={word} answer={answers[word.ID]} {...props} />
     if (inChunk) {
-      let chunkClassName = 'chunk-all'
-      if (chunkPosition === 'start') chunkClassName = 'chunk-all chunk-start'
-      if (chunkPosition === 'end') chunkClassName = 'chunk-all chunk-end'
+      const chunkStyle = createChunkStyle(chunkPosition)
+
       element = (
         <span style={{ display: 'inline-block', whiteSpace: 'pre' }}>
-          <span className={chunkClassName}>{element}</span>
+          <span style={chunkStyle}>{element}</span>
         </span>
       )
     }
@@ -70,7 +78,7 @@ const PracticeText = (props) => {
     return element
   }
 
-  const createdText = useMemo(() => practiceSnippet && practiceSnippet.map((word) => {
+  const createdText = useMemo(() => snippet && snippet.map((word) => {
     let patternPosition
     let patternId
     if (word.pattern) [, patternPosition, patternId] = word.pattern.split('_')
@@ -96,21 +104,13 @@ const PracticeText = (props) => {
     }
 
     return element
-  }), [practiceSnippet])
-
-  if (snippets.pending || !practiceSnippet) {
-    return (
-      <div className="spinner-container" style={{ minHeight: previousHeight }}>
-        <Spinner animation="border" variant="primary" size="lg" />
-      </div>
-    )
-  }
+  }), [snippet, answers])
 
   return (
-    <div ref={textComponent}>
+    <span>
       {createdText}
-    </div>
+    </span>
   )
 }
 
-export default PracticeText
+export default TextWithFeedback
