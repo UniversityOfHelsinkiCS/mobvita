@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react'
-import { Button, Dropdown } from 'react-bootstrap'
+import { Dropdown } from 'semantic-ui-react'
+import { Button } from 'react-bootstrap'
 import { FormattedMessage } from 'react-intl'
 import { useDispatch, useSelector } from 'react-redux'
 import { getTestQuestions, resetTest } from 'Utilities/redux/testReducer'
@@ -60,33 +61,19 @@ const TestIndex = () => {
     return <Spinner />
   }
 
+  const groupOptions = [{ value: '', text: 'default', key: 'default' }]
+    .concat(groups.map(({ group_id: groupId, groupName }) => (
+      {
+        value: groupId,
+        text: groupName,
+        key: groupId,
+      }
+    )))
+
   return (
     <div className="component-container">
       {!sessionId && (
         <div>
-          {groups && currentGroup
-          && (
-            <Dropdown
-              style={{ marginBottom: '0.5em' }}
-              className="auto-right"
-              onSelect={key => handleGroupChange(key)}
-            >
-              <Dropdown.Toggle variant="primary" id="dropdown-basic" data-cy="select-group">
-                {currentGroup.groupName}
-              </Dropdown.Toggle>
-              <Dropdown.Menu>
-                <Dropdown.Item eventKey="" key="default">default</Dropdown.Item>
-                {groups.map(group => (
-                  <Dropdown.Item
-                    eventKey={group.group_id}
-                    key={group.group_id}
-                  >
-                    {group.groupName}
-                  </Dropdown.Item>
-                ))}
-              </Dropdown.Menu>
-            </Dropdown>
-          )}
           <Button onClick={startTest}>
             <FormattedMessage id="start-a-new-test" />
           </Button>
@@ -97,6 +84,19 @@ const TestIndex = () => {
             </Button>
             )
           }
+          {groups && currentGroup
+          && (
+            <div style={{ marginTop: '0.5em' }}>
+              <div><FormattedMessage id="Group" /></div>
+              <Dropdown
+                selection
+                options={groupOptions}
+                value={currentGroup.group_id}
+                onChange={(_, data) => handleGroupChange(data.value)}
+                placeholder="Group"
+              />
+            </div>
+          )}
           <hr />
           <Button onClick={toggleHistory}>
             {showHistory ? 'hide history' : 'show history'}
