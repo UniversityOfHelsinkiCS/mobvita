@@ -3,7 +3,7 @@ import { useSelector } from 'react-redux'
 import { useHistory, useParams } from 'react-router-dom'
 import { FormattedMessage } from 'react-intl'
 import { Icon } from 'semantic-ui-react'
-import { images, hiddenFeatures } from 'Utilities/common'
+import { images } from 'Utilities/common'
 import SelectLanguage from './SelectLanguage'
 
 const FabOption = ({ handleClick, iconStyle, translationId, children }) => (
@@ -92,7 +92,7 @@ const FloatMenu = () => {
             >
               <Icon name="keyboard outline" style={{ margin: 'auto' }} />
             </FabOption>
-            {hiddenFeatures && flashcardArticles
+            {flashcardArticles
               && (
                 <button
                   type="button"

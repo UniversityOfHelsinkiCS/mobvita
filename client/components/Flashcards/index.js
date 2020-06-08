@@ -1,7 +1,6 @@
 import React from 'react'
 import { useParams } from 'react-router-dom'
 import useWindowDimensions from 'Utilities/windowDimensions'
-import { hiddenFeatures } from 'Utilities/common'
 import FlashcardMenu from './FlashcardMenu'
 import FlashcardCreation from './FlashcardCreation'
 import FloatMenu from './FloatMenu'
@@ -17,7 +16,7 @@ const Flashcards = () => {
       case 'new':
         return <FlashcardCreation />
       case 'article':
-        return hiddenFeatures ? <Practice mode="article" /> : <Practice mode="fillin" />
+        return <Practice mode="article" />
       default:
         return <Practice mode="fillin" />
     }

@@ -3,7 +3,7 @@ import { useSelector } from 'react-redux'
 import { FormattedMessage } from 'react-intl'
 import { useHistory, useParams } from 'react-router-dom'
 import { Icon } from 'semantic-ui-react'
-import { images, hiddenFeatures } from 'Utilities/common'
+import { images } from 'Utilities/common'
 import SelectLanguage from './SelectLanguage'
 
 const MenuItem = ({ handleClick, style, translationId, children }) => (
@@ -81,7 +81,7 @@ const FlashcardMenu = () => {
         >
           <Icon name="keyboard outline" size="huge" />
         </MenuItem>
-        {hiddenFeatures && flashcardArticles
+        {flashcardArticles
           && (
             <button
               type="button"
