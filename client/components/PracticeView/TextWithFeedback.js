@@ -68,7 +68,7 @@ const TextWithFeedback = ({ snippet, exercise = false, answers, ...props }) => {
       const chunkStyle = createChunkStyle(chunkPosition)
 
       element = (
-        <span style={{ display: 'inline-block', whiteSpace: 'pre' }}>
+        <span key={`${word.ID}-chunk`} style={{ display: 'inline-block', whiteSpace: 'pre' }}>
           <span style={chunkStyle}>{element}</span>
         </span>
       )
@@ -79,14 +79,14 @@ const TextWithFeedback = ({ snippet, exercise = false, answers, ...props }) => {
   }
 
   const createdText = useMemo(() => snippet && snippet.map((word) => {
-    let patternPosition
-    let patternId
-    if (word.pattern) [, patternPosition, patternId] = word.pattern.split('_')
+    const { pattern } = word
 
     const chunkPosition = word.chunk && word.chunk.split('_')[1]
 
-    if (patternPosition === 'start') {
-      reserveLinePosition(patternId)
+    if (pattern) {
+      Object.entries(pattern)
+        .filter(([, position]) => position === 'pattern_start')
+        .forEach(([id]) => reserveLinePosition(id))
     }
 
     if (chunkPosition === 'start') {
@@ -95,8 +95,10 @@ const TextWithFeedback = ({ snippet, exercise = false, answers, ...props }) => {
 
     const element = createElement(word, chunkPosition)
 
-    if (patternPosition === 'end') {
-      freeLinePosition(patternId)
+    if (pattern) {
+      Object.entries(pattern)
+        .filter(([, position]) => position === 'pattern_end')
+        .forEach(([id]) => freeLinePosition(id))
     }
 
     if (chunkPosition === 'end') {
