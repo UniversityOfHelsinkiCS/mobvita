@@ -9,6 +9,7 @@ const History = () => {
   const dispatch = useDispatch()
   const [conceptSet, setConceptSet] = useState([])
 
+  const [page, setPage] = useState(0)
   const { concepts } = useSelector(({ metadata }) => metadata)
   const { history } = useSelector(({ tests }) => tests)
   const learningLanguage = useSelector(learningLanguageSelector)
@@ -49,10 +50,13 @@ const History = () => {
   if (!history) return null
   return (
     <div style={{ overflowX: 'scroll', maxWidth: '100%' }}>
+      <button type="button" onClick={() => setPage(page - 1)}>-</button>
+      <span>{page} / {Math.trunc(history.length / 7)}</span>
+      <button type="button" onClick={() => setPage(page + 1)}>+</button>
       <Table celled>
         <Table.Header>
           <Table.HeaderCell>Concepts</Table.HeaderCell>
-          {history.map(test => (
+          {history.slice(page * 7, page * 7 + 7).map(test => (
             <Table.HeaderCell key={test.date}>
               {moment(test.date).format('YYYY-MM-DD hh:mm')}
             </Table.HeaderCell>
@@ -62,7 +66,7 @@ const History = () => {
           {conceptSet.map(conceptId => (
             <Table.Row key={conceptId}>
               <Table.Cell>{conceptIdToConceptName(conceptId)}</Table.Cell>
-              {history.map((test) => {
+              {history.slice(page * 7, page * 7 + 7).map((test) => {
                 const percentage = calculatePercentage(test.section_counts[conceptId])
                 return (
                   <Table.Cell style={{ backgroundColor: bgFromPercentage(percentage) }} />
