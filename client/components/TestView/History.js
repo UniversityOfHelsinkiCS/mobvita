@@ -43,7 +43,7 @@ const History = () => {
       Object.keys(test.section_counts).forEach(conceptId => _set.add(conceptId))
     })
 
-    setConceptSet(_set)
+    setConceptSet(Array.from(_set))
   }, [history])
 
   if (!history) return null
@@ -59,7 +59,7 @@ const History = () => {
           ))}
         </Table.Header>
         <Table.Body>
-          {Array.from(conceptSet).map(conceptId => (
+          {conceptSet.map(conceptId => (
             <Table.Row key={conceptId}>
               <Table.Cell>{conceptIdToConceptName(conceptId)}</Table.Cell>
               {history.map((test) => {

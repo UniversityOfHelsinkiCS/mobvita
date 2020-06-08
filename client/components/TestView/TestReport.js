@@ -10,19 +10,21 @@ const TestReport = () => {
   const translate = id => intl.formatMessage({ id })
 
   return (
-    <Modal dimmer="inverted" closeIcon defaultOpen>
+    <Modal size="mini" dimmer="inverted" closeIcon defaultOpen centered={false}>
       <Modal.Header>
         {translate('overall-score')}
       </Modal.Header>
       <Modal.Content>
-        {report.message === 'OK' ? (
+        <>
+          <div>{translate('correct-answers')}: {report.correct || '-'}</div>
+          <div>{translate('total-answers')}: {report.total || '-'}</div>
+          <div>{translate('Accuracy')}: {report.correctRate || '-'}%</div>
+        </>
+        {report.message !== 'OK' && (
           <>
-            <div>{translate('correct-answers')}: {report.correct}</div>
-            <div>{translate('total-answers')}: {report.total}</div>
-            <div>{translate('Accuracy')}: {report.correctRate}%</div>
+            <hr />
+            <div>{report.message}</div>
           </>
-        ) : (
-          <div>{report.message}</div>
         )}
       </Modal.Content>
     </Modal>
