@@ -66,9 +66,10 @@ const AddStoryModal = ({ trigger }) => {
           onClick={addText}
           disabled={submitDisabled}
         >
-          {pending || storyId ? <Spinner animation="border" variant="dark" size="lg" />
-            : <FormattedMessage id="Confirm" />}
-
+          {pending || storyId
+            ? <Spinner animation="border" variant="dark" size="lg" />
+            : <span><FormattedMessage id="Confirm" /></span>
+          }
         </Button>
         {textTooLong
           && (
