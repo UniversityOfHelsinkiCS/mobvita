@@ -25,7 +25,7 @@ const App = () => {
 
   if (window.gtag) {
     history.listen((location, action) => { // Sends notifications to google analytics whenever location changes
-      gtag('config', 'UA-157268430-1', {
+      gtag('config', 'UA-157268430-1', { // eslint-disable-line no-undef
         page_title: location.pathname,
         page_path: location.pathname,
       })

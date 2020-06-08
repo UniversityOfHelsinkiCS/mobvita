@@ -7,6 +7,8 @@ import { sendAnswer, finishTest } from 'Utilities/redux/testReducer'
 import { learningLanguageSelector } from 'Utilities/common'
 import MultipleChoice from './MultipleChoice'
 
+const TIMER_START_DELAY = 300
+
 const Test = () => {
   const { controls: timer } = useTimer({
     initialTime: 15000,
@@ -61,7 +63,7 @@ const Test = () => {
       setWillPause(false)
     } else {
       timer.setTime(currentQuestion.time * 1000)
-      setTimeout(() => timer.start(), 300)
+      setTimeout(() => timer.start(), TIMER_START_DELAY)
       window.localStorage.setItem('testIndex', currentIndex)
     }
 
@@ -85,7 +87,7 @@ const Test = () => {
 
   const resumeTimer = () => {
     setPaused(false)
-    setTimeout(() => timer.start(), 300)
+    setTimeout(() => timer.start(), TIMER_START_DELAY)
   }
 
   const stop = () => {

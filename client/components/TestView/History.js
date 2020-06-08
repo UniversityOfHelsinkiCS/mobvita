@@ -7,7 +7,7 @@ import { learningLanguageSelector } from 'Utilities/common'
 
 const History = () => {
   const dispatch = useDispatch()
-  const [conceptSet, setConceptSet] = useState(new Set())
+  const [conceptSet, setConceptSet] = useState([])
 
   const { concepts } = useSelector(({ metadata }) => metadata)
   const { history } = useSelector(({ tests }) => tests)
