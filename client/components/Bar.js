@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useCallback, useRef } from 'react'
 import { Link } from 'react-router-dom'
 import { Sidebar, Menu, Icon, Header, Dropdown } from 'semantic-ui-react'
 import { useDispatch, useSelector } from 'react-redux'
@@ -15,9 +15,9 @@ import AboutUs from './StaticContent/AboutUs'
 import ContactUs from './StaticContent/ContactUs'
 import SettingsModal from './SettingsModal'
 
-
 export default function Bar({ history }) {
   const dispatch = useDispatch()
+  const sidebar = useRef()
 
   const user = useSelector(({ user }) => user.data)
   const open = useSelector(({ sidebar }) => sidebar.open)
@@ -31,7 +31,6 @@ export default function Bar({ history }) {
     if (user) dispatch(updateLocale(newLocale)) // Updates user-object
   }
 
-
   useEffect(() => {
     const temp = localeOptions.map(option => ({
       value: option.code,
@@ -41,6 +40,14 @@ export default function Bar({ history }) {
     setLocaleDropdownOptions(temp)
   }, [])
 
+  const handleOutSideClick = useCallback((event) => {
+    if (sidebar.current && !sidebar.current.contains(event.target)) dispatch(sidebarSetOpen(false))
+  }, [])
+
+  useEffect(() => {
+    if (open) document.addEventListener('mousedown', handleOutSideClick, false)
+    else document.removeEventListener('mousedown', handleOutSideClick, false)
+  }, [open])
 
   const signOut = () => {
     dispatch(logout())
@@ -85,7 +92,7 @@ export default function Bar({ history }) {
           visible={open}
         >
 
-          <div className="sidebar-content">
+          <div className="sidebar-content" ref={sidebar}>
             <div style={{ padding: '0.5em 1em 0em 0.5em', display: 'flex' }}>
               <Icon
                 name="bars"
