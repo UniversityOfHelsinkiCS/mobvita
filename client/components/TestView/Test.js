@@ -128,7 +128,7 @@ const Test = () => {
           )}
         </div>
         <div className="test-controls">
-          <div>{currentIndex} / {questions.length}</div>
+          <div>{currentIndex + 1} / {questions.length}</div>
           <div>
             <Icon
               size="large"
