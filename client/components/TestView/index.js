@@ -16,7 +16,7 @@ const TestIndex = () => {
   const dispatch = useDispatch()
   const learningLanguage = useLearningLanguage()
   const currentGroupId = useSelector(({ user }) => user.data.user.last_selected_group)
-  const [selectedGroup, setSelectedGroup] = useState('default')
+  const [selectedGroup, setSelectedGroup] = useState('')
   const [currentGroup, setCurrentGroup] = useState()
   const [showHistory, setShowHistory] = useState(false)
   const { sessionId, report, pending, language, history } = useSelector(({ tests }) => tests)
@@ -75,7 +75,7 @@ const TestIndex = () => {
     <div className="component-container">
       {!sessionId && (
         <div>
-          <Button onClick={startTest}>
+          <Button onClick={startTest} data-cy="start-test">
             <FormattedMessage id="start-a-new-test" />
           </Button>
           {language
