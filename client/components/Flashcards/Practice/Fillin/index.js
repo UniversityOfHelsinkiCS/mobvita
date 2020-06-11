@@ -67,7 +67,7 @@ const Fillin = ({
   const checkAnswer = (answer) => {
     if (answer !== '') {
       const correct = glosses.some(gloss => gloss.toLowerCase() === answer.toLowerCase())
-      answerCard(answer, correct)
+      answerCard(answer, correct, 'fillin')
       setAnswerCorrect(correct)
     }
 

@@ -17,6 +17,8 @@ const Flashcards = () => {
         return <FlashcardCreation />
       case 'article':
         return <Practice mode="article" />
+      case 'quick':
+        return <Practice mode="quick" />
       default:
         return <Practice mode="fillin" />
     }
