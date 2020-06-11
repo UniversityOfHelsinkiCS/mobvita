@@ -17,12 +17,13 @@ const History = ({ history }) => {
   const calculateScore = (conceptStatistic) => {
     if (!conceptStatistic) return null
     const { correct, total } = conceptStatistic
+    if (total === 0) return 0
 
     return (correct / total)
   }
 
   const bgFromScore = (score) => {
-    const amount = 255 - score * 255
+    const amount = 230 - score * 230
 
     return `rgb(${amount},255,${amount})`
   }
