@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { Redirect } from 'react-router-dom'
-import { Container, Segment } from 'semantic-ui-react'
+import { Container, Segment, Loader, Dimmer } from 'semantic-ui-react'
 import { FormattedMessage } from 'react-intl'
 import {
   images,
@@ -92,6 +92,9 @@ const LearningLanguageSelectView = () => {
 
   return (
     <Container textAlign="center">
+      <Dimmer active={pending}>
+        <Loader />
+      </Dimmer>
       <h2 data-cy="choose-lang">
         <FormattedMessage id="Learning-language" />
       </h2>
