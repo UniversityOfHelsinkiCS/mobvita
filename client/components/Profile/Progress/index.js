@@ -7,6 +7,9 @@ import { getSelf } from 'Utilities/redux/userReducer'
 import ProgressGraph from 'Components/ProgressGraph'
 import Spinner from 'Components/Spinner'
 import 'react-datepicker/dist/react-datepicker.css'
+import History from 'Components/History'
+import { getHistory } from 'Utilities/redux/exerciseHistoryReducer'
+import { useLearningLanguage, hiddenFeatures } from 'Utilities/common'
 import ProgressStats from './ProgressStats'
 
 const PickDate = ({ date, setDate }) => (
@@ -28,10 +31,15 @@ const Progress = () => {
     return { exerciseHistory, flashcardHistory, pending }
   }, shallowEqual)
 
+  const { history } = useSelector(({ exerciseHistory }) => exerciseHistory)
+
+  const learningLanguage = useLearningLanguage()
+
   const dispatch = useDispatch()
 
   useEffect(() => {
     dispatch(getSelf())
+    dispatch(getHistory(learningLanguage))
   }, [])
 
   if (pending || pending === undefined) return <Spinner />
@@ -57,6 +65,8 @@ const Progress = () => {
         startDate={startDate}
         endDate={endDate}
       />
+      {hiddenFeatures
+      && <History history={history} />}
     </div>
   )
 }
