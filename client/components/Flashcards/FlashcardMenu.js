@@ -3,7 +3,7 @@ import { useSelector } from 'react-redux'
 import { FormattedMessage } from 'react-intl'
 import { useHistory, useParams } from 'react-router-dom'
 import { Icon } from 'semantic-ui-react'
-import { images } from 'Utilities/common'
+import { images, hiddenFeatures } from 'Utilities/common'
 import SelectLanguage from './SelectLanguage'
 
 const MenuItem = ({ handleClick, style, translationId, children }) => (
@@ -14,7 +14,7 @@ const MenuItem = ({ handleClick, style, translationId, children }) => (
     onClick={handleClick}
   >
     {children}
-    <span>
+    <span style={{ whiteSpace: 'nowrap' }}>
       <FormattedMessage id={translationId} />
     </span>
   </button>
@@ -46,6 +46,10 @@ const FlashcardMenu = () => {
     history.push(`/flashcards/article${story}`)
   }
 
+  const handleQuickCardsClick = () => {
+    history.push(`/flashcards/quick${story}`)
+  }
+
   return (
     <div className="flashcard-menu">
       <div className="flashcard-lang-select">
@@ -64,23 +68,34 @@ const FlashcardMenu = () => {
               border: 'none',
             }}
           >
-            <img src={images.flashcardIcon} alt="three cards" width="60px" />
+            <img src={images.flashcardIcon} alt="three cards" width="40px" />
           </MenuItem>
         )}
-      <div
-        className="flex"
-        style={{ borderLeft: '1px solid whitesmoke', borderRight: '1px solid whitesmoke' }}
+      <MenuItem
+        handleClick={handleFillinClick}
+        translationId="fill-in"
+        style={{
+          backgroundColor: '#C7CEEA',
+          border: 'none',
+        }}
       >
-        <MenuItem
-          handleClick={handleFillinClick}
-          translationId="fill-in"
-          style={{
-            backgroundColor: '#C7CEEA',
-            border: 'none',
-          }}
-        >
-          <Icon name="keyboard outline" size="huge" />
-        </MenuItem>
+        <Icon name="keyboard outline" size="big" />
+      </MenuItem>
+      <div className="flex">
+        {hiddenFeatures
+          && (
+            <MenuItem
+              handleClick={handleQuickCardsClick}
+              translationId="Quick cards"
+              style={{
+                backgroundColor: '#fdfd96',
+                border: 'none',
+              }}
+            >
+              <Icon name="lightning" size="big" />
+            </MenuItem>
+          )
+        }
         {flashcardArticles
           && (
             <button
@@ -92,7 +107,7 @@ const FlashcardMenu = () => {
               }}
               onClick={handleArticleClick}
             >
-              <Icon name="font" size="huge" />
+              <Icon name="font" size="big" />
               <span>{articleLabel}</span>
             </button>
           )}
@@ -102,12 +117,11 @@ const FlashcardMenu = () => {
         translationId="add-new-flashcard"
         style={{
           backgroundColor: '#FFFFD8',
-          border: '1px solid whitesmoke',
-          borderTop: 'none',
           borderRadius: '0 0 1em 1em',
+          border: 'none',
         }}
       >
-        <Icon name="edit outline" size="huge" style={{ paddingLeft: '0.1em' }} />
+        <Icon name="edit outline" size="big" style={{ paddingLeft: '0.1em' }} />
       </MenuItem>
     </div>
   )

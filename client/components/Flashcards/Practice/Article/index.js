@@ -51,7 +51,7 @@ const Article = ({ card, cardNumbering, answerCard }) => {
 
   const checkAnswer = (answer) => {
     const correct = correctArticles[gender] === answer
-    answerCard(answer, correct)
+    answerCard(answer, correct, 'article')
     setAnswerCorrect(correct)
   }
 

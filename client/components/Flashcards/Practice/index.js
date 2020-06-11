@@ -14,6 +14,7 @@ import FlashcardEndView from './FlashcardEndView'
 import FlashcardNoCards from './FlashCardNoCards'
 import Fillin from './Fillin'
 import Article from './Article'
+import Quick from './Quick'
 
 const VirtualizeSwipeableViews = flowRight(
   bindKeyboard,
@@ -73,13 +74,13 @@ const Practice = ({ mode }) => {
     dispatch(getFlashcards(learningLanguage, dictionaryLanguage, storyId))
   }
 
-  const answerCard = (answer, correct) => {
+  const answerCard = (answer, correct, exercise) => {
     const { _id: flashcard_id, story, lemma, lan_in, lan_out } = cards[swipeIndex]
     const answerDetails = {
       flashcard_id,
       correct,
       answer,
-      exercise: mode,
+      exercise,
       mode: 'trans',
       story,
       lemma,
@@ -110,6 +111,15 @@ const Practice = ({ mode }) => {
       case 'article':
         return (
           <Article
+            key={key}
+            card={cards[index]}
+            cardNumbering={`${index + 1} / ${cards.length}`}
+            answerCard={answerCard}
+          />
+        )
+      case 'quick':
+        return (
+          <Quick
             key={key}
             card={cards[index]}
             cardNumbering={`${index + 1} / ${cards.length}`}

@@ -3,7 +3,7 @@ import { useSelector } from 'react-redux'
 import { useHistory, useParams } from 'react-router-dom'
 import { FormattedMessage } from 'react-intl'
 import { Icon } from 'semantic-ui-react'
-import { images } from 'Utilities/common'
+import { images, hiddenFeatures } from 'Utilities/common'
 import SelectLanguage from './SelectLanguage'
 
 const FabOption = ({ handleClick, iconStyle, translationId, children }) => (
@@ -59,6 +59,11 @@ const FloatMenu = () => {
     setOpen(false)
   }
 
+  const handleQuickCardsClick = () => {
+    history.push(`/flashcards/quick${story}`)
+    setOpen(false)
+  }
+
   return (
     <div className="flashcard-fab-menu">
       <button type="button" onClick={handleFabClick} className="flashcard-fab">
@@ -92,6 +97,17 @@ const FloatMenu = () => {
             >
               <Icon name="keyboard outline" style={{ margin: 'auto' }} />
             </FabOption>
+            {hiddenFeatures
+              && (
+                <FabOption
+                  handleClick={handleQuickCardsClick}
+                  iconStyle={{ paddingBottom: '0.4em', paddingTop: '0.2em' }}
+                  translationId="Quick cards"
+                >
+                  <Icon name="lightning" style={{ margin: 'auto' }} />
+                </FabOption>
+              )
+            }
             {flashcardArticles
               && (
                 <button
