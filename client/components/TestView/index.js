@@ -3,23 +3,23 @@ import { Dropdown } from 'semantic-ui-react'
 import { Button } from 'react-bootstrap'
 import { FormattedMessage } from 'react-intl'
 import { useDispatch, useSelector } from 'react-redux'
-import { getTestQuestions, resetTest } from 'Utilities/redux/testReducer'
-import { learningLanguageSelector } from 'Utilities/common'
+import { getTestQuestions, resetTest, getHistory } from 'Utilities/redux/testReducer'
+import { useLearningLanguage } from 'Utilities/common'
 import Spinner from 'Components/Spinner'
 import { getGroups } from 'Utilities/redux/groupsReducer'
 import TestView from './Test'
 import TestReport from './TestReport'
-import History from './History'
+import History from '../History'
 
 
 const TestIndex = () => {
   const dispatch = useDispatch()
-  const learningLanguage = useSelector(learningLanguageSelector)
+  const learningLanguage = useLearningLanguage()
   const currentGroupId = useSelector(({ user }) => user.data.user.last_selected_group)
   const [selectedGroup, setSelectedGroup] = useState('default')
   const [currentGroup, setCurrentGroup] = useState()
   const [showHistory, setShowHistory] = useState(false)
-  const { sessionId, report, pending, language } = useSelector(({ tests }) => tests)
+  const { sessionId, report, pending, language, history } = useSelector(({ tests }) => tests)
   const { groups } = useSelector(({ groups }) => groups)
 
   const startTest = () => {
@@ -40,6 +40,7 @@ const TestIndex = () => {
 
   useEffect(() => {
     dispatch(getGroups())
+    dispatch(getHistory(learningLanguage))
   }, [])
 
   useEffect(() => {
@@ -101,7 +102,7 @@ const TestIndex = () => {
           <Button onClick={toggleHistory}>
             {showHistory ? 'hide history' : 'show history'}
           </Button>
-          {showHistory && <History />}
+          {showHistory && <History history={history} />}
         </div>
       )}
       {report && <TestReport />}

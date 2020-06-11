@@ -30,6 +30,7 @@ import sport1 from 'Assets/sport1.png'
 import flashcards from 'Assets/flashcards.jpg'
 import logo from 'Assets/Logo.png'
 import flashcardIcon from 'Assets/flashcard_icon.png'
+import { useSelector } from 'react-redux'
 import { callApi } from './apiConnection'
 
 export const images = {
@@ -81,6 +82,8 @@ export const capitalize = (word = '') => {
 
 export const learningLanguageSelector = ({ user }) => (user.data ? user.data.user.last_used_language : null)
 export const dictionaryLanguageSelector = ({ user }) => user.data.user.last_trans_language
+
+export const useLearningLanguage = () => useSelector(learningLanguageSelector)
 
 export const supportedLearningLanguages = {
   major: [
