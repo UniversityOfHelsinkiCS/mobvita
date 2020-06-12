@@ -81,6 +81,7 @@ const StoryList = () => {
     { key: 'date', text: intl.formatMessage({ id: 'date-added' }), value: 'date' },
     { key: 'title', text: intl.formatMessage({ id: 'Title' }), value: 'title' },
     { key: 'difficulty', text: intl.formatMessage({ id: 'Difficulty' }), value: 'difficulty' },
+    { key: 'progress', text: intl.formatMessage({ id: 'Progress' }), value: 'progress' },
   ]
 
   const groupDropdownOptions = groups.map(group => (
@@ -237,6 +238,9 @@ const StoryList = () => {
         break
       case 'difficulty':
         dir = stringToDifficulty(a.difficulty) - stringToDifficulty(b.difficulty)
+        break
+      case 'progress':
+        dir = a.percent_cov - b.percent_cov
         break
       default:
         break
