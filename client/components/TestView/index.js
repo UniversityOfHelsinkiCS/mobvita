@@ -4,7 +4,7 @@ import { Button } from 'react-bootstrap'
 import { FormattedMessage } from 'react-intl'
 import { useDispatch, useSelector } from 'react-redux'
 import { getTestQuestions, resetTest, getHistory } from 'Utilities/redux/testReducer'
-import { useLearningLanguage } from 'Utilities/common'
+import { useLearningLanguage, hiddenFeatures } from 'Utilities/common'
 import Spinner from 'Components/Spinner'
 import { getGroups } from 'Utilities/redux/groupsReducer'
 import TestView from './Test'
@@ -98,11 +98,16 @@ const TestIndex = () => {
               />
             </div>
           )}
-          <hr />
-          <Button onClick={toggleHistory}>
-            <FormattedMessage id={showHistory ? 'Hide history' : 'Show history'} />
-          </Button>
-          {showHistory && <History history={history} />}
+          {hiddenFeatures && (
+            <>
+              <hr />
+              <Button onClick={toggleHistory}>
+                <FormattedMessage id={showHistory ? 'Hide history' : 'Show history'} />
+              </Button>
+
+              {showHistory && <History history={history} />}
+            </>
+          )}
         </div>
       )}
       {report && <TestReport />}
