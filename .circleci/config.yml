@@ -18,7 +18,7 @@ workflows:
     jobs:
       - sentry
       - cypress/run:
-          start: REVITA_URL=https://revita-test.cs.helsinki.fi/api npm run start:dev
+          start: REVITA_URL=https://revita-test.cs.helsinki.fi/api npm run start:ci
           wait-on: http://localhost:8000
       - dockerhub/publish:
           requires:
