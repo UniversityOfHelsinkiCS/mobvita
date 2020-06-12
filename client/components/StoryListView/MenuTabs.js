@@ -36,7 +36,7 @@ const Tabs = ({ location }) => {
     },
   ]
 
-  if (hiddenFeatures && hasTests) {
+  if (hasTests) {
     panes.push({
       menuItem: {
         as: Link,
