@@ -81,7 +81,7 @@ const TestIndex = () => {
           {language
             && (
             <Button onClick={continueTest}>
-              <FormattedMessage id="continue-test" />
+              <FormattedMessage id="Continue test" />
             </Button>
             )
           }
@@ -100,7 +100,7 @@ const TestIndex = () => {
           )}
           <hr />
           <Button onClick={toggleHistory}>
-            {showHistory ? 'hide history' : 'show history'}
+            <FormattedMessage id={showHistory ? 'Hide history' : 'Show history'} />
           </Button>
           {showHistory && <History history={history} />}
         </div>

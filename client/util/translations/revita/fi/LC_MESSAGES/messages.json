@@ -489,7 +489,7 @@
     "quit-test": "Lopeta testi.",
     "quitting-after-this-question": "Lopetetaan tämän kysymyksen jälkeen...",
     "pause-after-you-answer-this-question": "Tauko alkaa tämän kysymyksen jälkeen...",
-    "paused-click-to-resume-27ac769f5d88934067af4294483b9807": "Tauko.<br/>  Klikkaa &#9658; jatkamiseksi...",
+    "paused-click-to-resume-27ac769f5d88934067af4294483b9807": "Tauko. Klikkaa ►jatkamiseksi...",
     "practice-with-your-favourite-stories-to-improve-your-skills": "Harjoittele suosikkikertomuksillasi parantaaksesi taitojasi!",
     "start-a-new-test": "Uusi koe",
     "new-test-help": "• Press this button to take a test.\n• The test uses the template of the group you have currently selected.\n• If you are not in any group, you will receive the default test.\n• During the test, you have 15 seconds for each question.\n• You can take breaks by pressing the Pause button.\n• You can end the test by pressing the Stop button.\n• Pause or Stop will take effect only AFTER you answer the current question.",
@@ -759,5 +759,8 @@
     "Week": "Viikolla",
     "Practiced hours": "Tunteja",
     "Quick cards": "Pikakortit",
-    "Choose the correct meaning of the highlighted word": "Valitse korostetun sanan oikea muoto"
+    "Choose the correct meaning of the highlighted word": "Valitse korostetun sanan oikea muoto",
+    "Continue test": "Jatka koetta",
+    "Show history": "Näytä historia",
+    "Hide history": "Piilota historia"
 }

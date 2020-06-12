@@ -5,6 +5,7 @@ import { Icon } from 'semantic-ui-react'
 import { Button } from 'react-bootstrap'
 import { sendAnswer, finishTest } from 'Utilities/redux/testReducer'
 import { learningLanguageSelector } from 'Utilities/common'
+import { FormattedMessage } from 'react-intl'
 import MultipleChoice from './MultipleChoice'
 
 const TIMER_START_DELAY = 300
@@ -113,18 +114,10 @@ const Test = () => {
       <div className="test-container">
         <div className="test-question-container">
           {willPause && !willStop && (
-            <span className="test-info">timer will pause after this exercise</span>)}
-          {willStop && <span className="test-info">ending test after this exercise</span>}
-          {answerFailure && (
-          <>
-            <div className="test-info">Failure while sending answer!</div>
-            <div>
-              <Button onClick={() => checkAnswer('')}>Next question</Button>
-            </div>
-          </>
-          )}
+            <span className="test-info"><FormattedMessage id="pause-after-you-answer-this-question" /></span>)}
+          {willStop && <span className="test-info"><FormattedMessage id="quitting-after-this-question" /></span>}
           {paused && (
-            <div className="test-prephrase">Timer paused, questions are hidden until timer starts again</div>
+            <div className="test-prephrase"><FormattedMessage id="paused-click-to-resume-27ac769f5d88934067af4294483b9807" /></div>
           )}
           {currentQuestion && !paused && !answerFailure && (
             <div>
