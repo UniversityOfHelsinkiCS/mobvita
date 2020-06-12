@@ -33,6 +33,8 @@ const Test = () => {
   const dispatch = useDispatch()
 
   const checkAnswer = (answer) => {
+    if (!currentQuestion) return
+
     timer.stop()
     timer.reset()
 
@@ -77,6 +79,9 @@ const Test = () => {
     ])
   }, [currentQuestion])
 
+  // Send an empty answer if user leaves test
+  useEffect(() => () => checkAnswer(''), [])
+
   const pauseTimer = () => {
     if (willPause) {
       setWillPause(false)
@@ -98,6 +103,10 @@ const Test = () => {
     }
   }
 
+  if (!currentQuestion) {
+    return null
+  }
+
   return (
     <div className="component-container">
       <div className="test-timer">{(Math.round(timer.getTime() / 1000))}</div>
@@ -110,7 +119,7 @@ const Test = () => {
           <>
             <div className="test-info">Failure while sending answer!</div>
             <div>
-              <Button onClick={checkAnswer}>Retry</Button>
+              <Button onClick={() => checkAnswer('')}>Next question</Button>
             </div>
           </>
           )}

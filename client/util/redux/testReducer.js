@@ -22,10 +22,10 @@ export const getTestQuestions = (language, groupId, restart = false) => {
 
   const cache = JSON.parse(localStorage.getItem('questions'))
   const cachedIndex = Number(window.localStorage.getItem('testIndex'))
-  const startingIndex = !Number.isNaN(cachedIndex) ? cachedIndex : 0
+  const lastIndex = !Number.isNaN(cachedIndex) ? cachedIndex : 0
 
   if (cache && !restart) {
-    return { type: `${prefix}_SUCCESS`, response: cache, startingIndex }
+    return { type: `${prefix}_SUCCESS`, response: cache, startingIndex: lastIndex + 1 }
   }
 
   const call = callBuilder(route, prefix, 'get', undefined, undefined, 'questions')
@@ -75,6 +75,7 @@ export const resetTest = () => {
 export default (state = initialState, action) => {
   const { currentIndex, questions } = state
   const { response, startingIndex } = action
+
   switch (action.type) {
     case 'GET_TEST_QUESTIONS_ATTEMPT':
       return {
@@ -119,6 +120,7 @@ export default (state = initialState, action) => {
     case 'FINISH_TEST_SUCCESS':
       return {
         ...initialState,
+        language: null,
         report: {
           message: response.message,
           correct: response.correct,
