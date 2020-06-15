@@ -81,7 +81,7 @@ const TestIndex = () => {
           {language
             && (
             <Button onClick={continueTest}>
-              <FormattedMessage id="Continue test" />
+              <FormattedMessage id="resume-test" />
             </Button>
             )
           }

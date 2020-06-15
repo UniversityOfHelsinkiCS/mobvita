@@ -485,7 +485,7 @@
     "create-a-test-template": "Luo koepohja &nbsp;&nbsp; ⇒ &nbsp;&nbsp; ",
     "create-new-test-template": "• If you are a teacher of the currently selected group, you can edit the test template of this group.\n• If you want to create other templates, you can go to Groups in your Profile page and create new groups. \n• Each group has its own test template. \n• You cannot edit the template as a student.",
     "pause-test": "Pidä tauko...",
-    "resume-test": "Jatka testi",
+    "resume-test": "Jatka koetta",
     "quit-test": "Lopeta testi.",
     "quitting-after-this-question": "Lopetetaan tämän kysymyksen jälkeen...",
     "pause-after-you-answer-this-question": "Tauko alkaa tämän kysymyksen jälkeen...",

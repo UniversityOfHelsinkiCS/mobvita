@@ -484,7 +484,7 @@
     "create-a-test-template": " Edit test template &nbsp;&nbsp; ⇒ &nbsp;&nbsp; ",
     "create-new-test-template": "• If you are a teacher of the currently selected group, you can edit the test template of this group.\n• If you want to create other templates, you can go to Groups in your Profile page and create new groups. \n• Each group has its own test template. \n• You cannot edit the template as a student.",
     "pause-test": "",
-    "resume-test": "",
+    "resume-test": "Resume test",
     "quit-test": "",
     "quitting-after-this-question": "Quitting after this question",
     "pause-after-you-answer-this-question": "Pause after this question",
