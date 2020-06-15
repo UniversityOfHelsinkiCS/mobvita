@@ -3,7 +3,7 @@ import { useSelector } from 'react-redux'
 import { FormattedMessage } from 'react-intl'
 import { useHistory, useParams } from 'react-router-dom'
 import { Icon } from 'semantic-ui-react'
-import { images, hiddenFeatures } from 'Utilities/common'
+import { images } from 'Utilities/common'
 import SelectLanguage from './SelectLanguage'
 
 const MenuItem = ({ handleClick, style, translationId, children }) => (
@@ -82,20 +82,16 @@ const FlashcardMenu = () => {
         <Icon name="keyboard outline" size="big" />
       </MenuItem>
       <div className="flex">
-        {hiddenFeatures
-          && (
-            <MenuItem
-              handleClick={handleQuickCardsClick}
-              translationId="Quick cards"
-              style={{
-                backgroundColor: '#fdfd96',
-                border: 'none',
-              }}
-            >
-              <Icon name="lightning" size="big" />
-            </MenuItem>
-          )
-        }
+        <MenuItem
+          handleClick={handleQuickCardsClick}
+          translationId="Quick cards"
+          style={{
+            backgroundColor: '#fdfd96',
+            border: 'none',
+          }}
+        >
+          <Icon name="lightning" size="big" />
+        </MenuItem>
         {flashcardArticles
           && (
             <button
