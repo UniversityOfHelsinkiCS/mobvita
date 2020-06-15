@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import ReactCardFlip from 'react-card-flip'
-import { Button } from 'semantic-ui-react'
+import { Button, Icon } from 'semantic-ui-react'
 import Flashcard from '../Flashcard'
 
 const Quick = ({ card, cardNumbering, answerCard }) => {
@@ -49,16 +49,18 @@ const Quick = ({ card, cardNumbering, answerCard }) => {
             <div className="flex space-evenly padding-bottom-4">
               <Button
                 circular
-                icon="checkmark huge green"
-                style={{ backgroundColor: 'white' }}
+                style={{ backgroundColor: 'white', padding: '1em' }}
                 onClick={() => checkAnswer(true)}
-              />
+              >
+                <Icon name="checkmark" size="huge" color="green" style={{ margin: 0 }} />
+              </Button>
               <Button
                 circular
-                icon="question huge yellow"
-                style={{ backgroundColor: 'white' }}
+                style={{ backgroundColor: 'white', padding: '1em' }}
                 onClick={() => checkAnswer(false)}
-              />
+              >
+                <Icon name="question" size="huge" color="yellow" style={{ margin: 0 }} />
+              </Button>
             </div>
             )
           }
