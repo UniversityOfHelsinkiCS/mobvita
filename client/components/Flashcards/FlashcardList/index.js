@@ -3,11 +3,14 @@ import { useSelector } from 'react-redux'
 import { ListGroup } from 'react-bootstrap'
 import Spinner from 'Components/Spinner'
 import FlashcardListEdit from './FlashcardListEdit'
-import CardListItem from './CardListItem'
+import FlashcardListItem from './FlashcardListItem'
+import FlashcardListSorter from './FlashcardListSorter'
 
 const FlashcardList = () => {
   const [editableCard, setEditableCard] = useState(null)
   const [scrollYPosition, setScrollYPosition] = useState(0)
+  const [sortBy, setSortBy] = useState('alphabetical order')
+  const [directionMultiplier, setDirectionMultiplier] = useState(1)
 
   const { cards, pending } = useSelector(({ flashcards }) => flashcards)
 
@@ -15,14 +18,29 @@ const FlashcardList = () => {
     if (!editableCard) window.scrollTo(0, scrollYPosition)
   }, [editableCard])
 
+  const comparator = (a, b) => {
+    switch (sortBy) {
+      case 'difficulty':
+        return directionMultiplier * (b.stage - a.stage)
+      default:
+        return directionMultiplier * (a.lemma.localeCompare(b.lemma))
+    }
+  }
+
   const handleEdit = (card) => {
     setScrollYPosition(window.scrollY)
     setEditableCard(card)
   }
 
   const cardListItems = useMemo(() => cards
-    .sort((a, b) => a.lemma.localeCompare(b.lemma))
-    .map(card => (<CardListItem key={card._id} card={card} handleEdit={handleEdit} />)), [cards])
+    .sort((a, b) => comparator(a, b))
+    .map(card => (
+      <FlashcardListItem
+        key={card._id}
+        card={card}
+        handleEdit={handleEdit}
+      />
+    )), [cards, sortBy, directionMultiplier])
 
   if (pending) return <Spinner />
 
@@ -39,9 +57,17 @@ const FlashcardList = () => {
   }
 
   return (
-    <ListGroup style={{ flex: 1 }}>
-      {cardListItems}
-    </ListGroup>
+    <div style={{ marginTop: '-1em', flex: 1 }}>
+      <FlashcardListSorter
+        sortBy={sortBy}
+        directionMultiplier={directionMultiplier}
+        setSortBy={setSortBy}
+        setDirectionMultiplier={setDirectionMultiplier}
+      />
+      <ListGroup className="padding-top-1">
+        {cardListItems}
+      </ListGroup>
+    </div>
   )
 }
 

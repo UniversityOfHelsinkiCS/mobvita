@@ -4,7 +4,7 @@ import { ListGroup } from 'react-bootstrap'
 import { Icon } from 'semantic-ui-react'
 import { deleteFlashcard } from 'Utilities/redux/flashcardReducer'
 
-const CardListItem = ({ card, handleEdit }) => {
+const FlashcardListItem = ({ card, handleEdit }) => {
   const { lemma, _id } = card
 
   const dispatch = useDispatch()
@@ -26,4 +26,4 @@ const CardListItem = ({ card, handleEdit }) => {
   )
 }
 
-export default CardListItem
+export default FlashcardListItem
