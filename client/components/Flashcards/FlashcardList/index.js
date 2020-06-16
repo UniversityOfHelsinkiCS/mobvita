@@ -26,7 +26,7 @@ const FlashcardList = () => {
   console.log(cards)
 
   return (
-    <ListGroup>
+    <ListGroup style={{ flex: 1 }}>
       {cards.map(card => <ListItem key={card._id} id={card._id} lemma={card.lemma} />)}
     </ListGroup>
   )
