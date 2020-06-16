@@ -9,6 +9,7 @@ import CompeteView from 'Components/CompeteView'
 import EmailConfirm from 'Components/AccessControl/EmailConfirm'
 import ProtectedRoute from 'Components/AccessControl/ProtectedRoute'
 import Register from 'Components/AccessControl/Register'
+import CrosswordView from 'Components/CrosswordView'
 import Login from './AccessControl/Login'
 import GroupView from './Groups/index'
 import Concepts from './Concepts'
@@ -16,7 +17,6 @@ import Profile from './Profile/Profile'
 import ResetPassword from './AccessControl/ResetPassword'
 import Help from './StaticContent/Help'
 import Flashcards from './Flashcards'
-import TestView from './TestView/Test'
 
 export default () => (
   <Switch>
@@ -42,6 +42,7 @@ export default () => (
     <ProtectedRoute exact path="/stories/:id" component={SingleStoryView} />
     <ProtectedRoute exact path="/stories/:id/practice/" component={PracticeView} />
     <ProtectedRoute exact path="/stories/:id/compete/" component={CompeteView} />
+    <ProtectedRoute exact path="/crossword/:storyId" component={CrosswordView} />
     <ProtectedRoute exact path="/groups" component={GroupView} />
     <ProtectedRoute exact path="/:target/:id/concepts" component={Concepts} />
     <ProtectedRoute exact path="/concepts" component={Concepts} />
