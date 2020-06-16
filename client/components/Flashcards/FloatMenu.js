@@ -3,7 +3,7 @@ import { useSelector } from 'react-redux'
 import { useHistory, useParams } from 'react-router-dom'
 import { FormattedMessage } from 'react-intl'
 import { Icon } from 'semantic-ui-react'
-import { images } from 'Utilities/common'
+import { images, hiddenFeatures } from 'Utilities/common'
 import SelectLanguage from './SelectLanguage'
 
 const FabOption = ({ handleClick, iconStyle, translationId, children }) => (
@@ -64,6 +64,11 @@ const FloatMenu = () => {
     setOpen(false)
   }
 
+  const handleFlashcardListClick = () => {
+    history.push(`/flashcards/list${story}`)
+    setOpen(false)
+  }
+
   return (
     <div className="flashcard-fab-menu">
       <button type="button" onClick={handleFabClick} className="flashcard-fab">
@@ -92,7 +97,7 @@ const FloatMenu = () => {
             }
             <FabOption
               handleClick={handleFillinClick}
-              iconStyle={{ paddingBottom: '0.4em' }}
+              iconStyle={{ paddingBottom: '0.4em', paddingRight: '0.05em' }}
               translationId="fill-in"
             >
               <Icon name="keyboard outline" style={{ margin: 'auto' }} />
@@ -119,6 +124,17 @@ const FloatMenu = () => {
                   </div>
                   <span className="flashcard-fab-text">{articleLabel}</span>
                 </button>
+              )
+            }
+            {hiddenFeatures
+              && (
+                <FabOption
+                  handleClick={handleFlashcardListClick}
+                  translationId="Flashcard list"
+                  iconStyle={{ paddingBottom: '0.5em', paddingRight: '0.1em' }}
+                >
+                  <Icon name="list alternate outline" style={{ margin: 'auto' }} />
+                </FabOption>
               )
             }
             <FabOption
