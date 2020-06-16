@@ -1,33 +1,45 @@
-import React from 'react'
-import { useSelector, useDispatch } from 'react-redux'
+import React, { useMemo, useState, useLayoutEffect } from 'react'
+import { useSelector } from 'react-redux'
 import { ListGroup } from 'react-bootstrap'
-import { Icon } from 'semantic-ui-react'
-import { deleteFlashcard } from 'Utilities/redux/flashcardReducer'
+import Spinner from 'Components/Spinner'
+import FlashcardListEdit from './FlashcardListEdit'
+import CardListItem from './CardListItem'
 
-const ListItem = ({ lemma, id }) => {
-  const dispatch = useDispatch()
+const FlashcardList = () => {
+  const [editableCard, setEditableCard] = useState(null)
+  const [scrollYPosition, setScrollYPosition] = useState(0)
 
-  const handleDelete = () => {
-    dispatch(deleteFlashcard(id))
+  const { cards, pending } = useSelector(({ flashcards }) => flashcards)
+
+  useLayoutEffect(() => {
+    if (!editableCard) window.scrollTo(0, scrollYPosition)
+  }, [editableCard])
+
+  const handleEdit = (card) => {
+    setScrollYPosition(window.scrollY)
+    setEditableCard(card)
+  }
+
+  const cardListItems = useMemo(() => cards.map(card => (
+    <CardListItem key={card._id} card={card} handleEdit={handleEdit} />)), [cards])
+
+  if (pending) return <Spinner />
+
+  if (editableCard) {
+    return (
+      <FlashcardListEdit
+        id={editableCard._id}
+        originalWord={editableCard.lemma}
+        originalHints={editableCard.hint}
+        originalTranslations={editableCard.glosses}
+        setEditableCard={setEditableCard}
+      />
+    )
   }
 
   return (
-    <ListGroup.Item
-      style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}
-    >
-      {lemma}
-      <Icon name="close" onClick={handleDelete} />
-    </ListGroup.Item>
-  )
-}
-
-const FlashcardList = () => {
-  const cards = useSelector(state => state.flashcards.cards)
-  console.log(cards)
-
-  return (
     <ListGroup style={{ flex: 1 }}>
-      {cards.map(card => <ListItem key={card._id} id={card._id} lemma={card.lemma} />)}
+      {cardListItems}
     </ListGroup>
   )
 }

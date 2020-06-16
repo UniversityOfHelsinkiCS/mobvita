@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState } from 'react'
 import { useDispatch } from 'react-redux'
 import ReactCardFlip from 'react-card-flip'
 import { updateFlashcard } from 'Utilities/redux/flashcardReducer'
@@ -24,12 +24,6 @@ const Fillin = ({
   const [translations, setTranslations] = useState(card.glosses)
 
   const dispatch = useDispatch()
-
-  useEffect(() => {
-    setFlipped(false)
-    setAnswerChecked(false)
-    setAnswerCorrect(null)
-  }, [card])
 
   const {
     glosses,

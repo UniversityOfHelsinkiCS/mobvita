@@ -54,8 +54,6 @@ const FlashcardMenu = () => {
     history.push(`/flashcards/list${story}`)
   }
 
-  console.log(hiddenFeatures)
-
   return (
     <div className="flashcard-menu">
       <div className="flashcard-lang-select">
