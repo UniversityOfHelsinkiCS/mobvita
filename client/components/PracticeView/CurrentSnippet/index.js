@@ -5,7 +5,7 @@ import { clearTranslationAction } from 'Utilities/redux/translationReducer'
 import 'react-simple-keyboard/build/css/index.css'
 import { FormattedMessage } from 'react-intl'
 import { getSelf } from 'Utilities/redux/userReducer'
-import { getTextStyle, learningLanguageSelector, hiddenFeatures } from 'Utilities/common'
+import { getTextStyle, learningLanguageSelector } from 'Utilities/common'
 import { Button } from 'react-bootstrap'
 import {
   setAnswers,
@@ -193,21 +193,11 @@ const CurrentSnippet = ({ storyId, handleWordClick, handleInputChange }) => {
               style={getTextStyle(learningLanguage)}
               data-cy="practice-view"
             >
-              {hiddenFeatures
-                ? (
-                  <PracticeText
-                    handleWordClick={handleWordClick}
-                    handleAnswerChange={handleInputChange}
-                    handleMultiselectChange={handleMultiselectChange}
-                  />
-                ) : (
-                  <Chunks
-                    handleWordClick={handleWordClick}
-                    handleAnswerChange={handleInputChange}
-                    handleMultiselectChange={handleMultiselectChange}
-                  />
-                )
-              }
+              <PracticeText
+                handleWordClick={handleWordClick}
+                handleAnswerChange={handleInputChange}
+                handleMultiselectChange={handleMultiselectChange}
+              />
             </div>
             <CheckAnswers
               storyId={storyId}
