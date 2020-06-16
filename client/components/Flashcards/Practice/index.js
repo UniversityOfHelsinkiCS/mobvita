@@ -48,10 +48,6 @@ const Practice = ({ mode }) => {
   const dispatch = useDispatch()
 
   useEffect(() => {
-    dispatch(getFlashcards(learningLanguage, dictionaryLanguage, storyId))
-  }, [storyId, mode])
-
-  useEffect(() => {
     setSwipeIndex(0)
   }, [pending])
 

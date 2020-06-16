@@ -37,7 +37,13 @@ export const updateFlashcard = (id, removedHints, newHints, glosses) => {
   return callBuilder(route, prefix, 'post', data)
 }
 
-export default (state = {}, action) => {
+const initialState = {
+  pending: false,
+  error: false,
+  cards: [],
+}
+
+export default (state = initialState, action) => {
   switch (action.type) {
     case 'GET_FLASHCARDS_ATTEMPT':
       return {
