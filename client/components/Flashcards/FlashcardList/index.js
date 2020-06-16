@@ -12,7 +12,9 @@ const ListItem = ({ lemma, id }) => {
   }
 
   return (
-    <ListGroup.Item>
+    <ListGroup.Item
+      style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}
+    >
       {lemma}
       <Icon name="close" onClick={handleDelete} />
     </ListGroup.Item>
