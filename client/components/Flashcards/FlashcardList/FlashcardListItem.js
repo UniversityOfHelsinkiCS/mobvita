@@ -2,6 +2,7 @@ import React from 'react'
 import { useDispatch } from 'react-redux'
 import { ListGroup, Card, Accordion } from 'react-bootstrap'
 import { Icon } from 'semantic-ui-react'
+import { FormattedMessage } from 'react-intl'
 import { sanitizeHtml } from 'Utilities/common'
 import { deleteFlashcard } from 'Utilities/redux/flashcardReducer'
 
@@ -34,14 +35,18 @@ const FlashcardListItem = ({ card, handleEdit }) => {
       </ListGroup.Item>
       <Accordion.Collapse eventKey={_id}>
         <Card.Body>
-          <span className="bold">Translations</span>
+          <span className="bold">
+            <FormattedMessage id="Translations" />
+          </span>
           <ul>
             {card.glosses.map(gloss => <li key={gloss}>{gloss}</li>)}
           </ul>
           {card.hint.length > 0
             && (
             <div>
-              <span className="bold">Hints</span>
+              <span className="bold">
+                <FormattedMessage id="Hints" />
+              </span>
               <ul>
                 {card.hint.map(hint => (
                   <li key={hint.hint} dangerouslySetInnerHTML={sanitizeHtml(hint.hint)} />))}

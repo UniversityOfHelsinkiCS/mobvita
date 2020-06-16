@@ -1,6 +1,7 @@
 import React from 'react'
 import { DropdownButton, Dropdown } from 'react-bootstrap'
 import { Icon } from 'semantic-ui-react'
+import { FormattedMessage } from 'react-intl'
 import { capitalize } from 'Utilities/common'
 
 const FlashcardListSorter = (
@@ -12,18 +13,20 @@ const FlashcardListSorter = (
 
   return (
     <div>
-      <label htmlFor="flashcard-sorter" style={{ margin: '0', fontSize: '12px' }}>Sort by</label>
+      <label htmlFor="flashcard-sorter" style={{ margin: '0', fontSize: '12px' }}>
+        <FormattedMessage id="sort-by" />
+      </label>
       <div className="flex align-center">
         <DropdownButton
           id="flashcard-sorter"
-          title={capitalize(sortBy)}
+          title={<FormattedMessage id={sortBy} />}
           variant="outline-secondary"
         >
-          <Dropdown.Item onClick={() => setSortBy('alphabetical order')}>
-            Alphabetical order
+          <Dropdown.Item onClick={() => setSortBy('Title')}>
+            <FormattedMessage id="Title" />
           </Dropdown.Item>
-          <Dropdown.Item onClick={() => setSortBy('difficulty')}>
-            Difficulty
+          <Dropdown.Item onClick={() => setSortBy('Difficulty')}>
+            <FormattedMessage id="Difficulty" />
           </Dropdown.Item>
         </DropdownButton>
         <Icon

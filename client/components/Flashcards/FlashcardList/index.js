@@ -1,6 +1,6 @@
 import React, { useMemo, useState, useLayoutEffect } from 'react'
 import { useSelector } from 'react-redux'
-import { ListGroup, Accordion } from 'react-bootstrap'
+import { Accordion } from 'react-bootstrap'
 import Spinner from 'Components/Spinner'
 import FlashcardListEdit from './FlashcardListEdit'
 import FlashcardListItem from './FlashcardListItem'
@@ -9,7 +9,7 @@ import FlashcardListSorter from './FlashcardListSorter'
 const FlashcardList = () => {
   const [editableCard, setEditableCard] = useState(null)
   const [scrollYPosition, setScrollYPosition] = useState(0)
-  const [sortBy, setSortBy] = useState('alphabetical order')
+  const [sortBy, setSortBy] = useState('Title')
   const [directionMultiplier, setDirectionMultiplier] = useState(1)
 
   const { cards, pending } = useSelector(({ flashcards }) => flashcards)
@@ -20,7 +20,7 @@ const FlashcardList = () => {
 
   const comparator = (a, b) => {
     switch (sortBy) {
-      case 'difficulty':
+      case 'Difficulty':
         return directionMultiplier * (b.stage - a.stage)
       default:
         return directionMultiplier * (a.lemma.localeCompare(b.lemma))
