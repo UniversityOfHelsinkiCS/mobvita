@@ -6,7 +6,6 @@ import Template from 'Components/Flashcards/Template'
 const FlashcardListEdit = (
   { id, originalWord, originalHints, originalTranslations, setEditableCard },
 ) => {
-  const [word, setWord] = useState(originalWord)
   const [hints, setHints] = useState(originalHints.map(h => h.hint))
   const [translations, setTranslations] = useState(originalTranslations)
 
@@ -19,14 +18,12 @@ const FlashcardListEdit = (
 
   const saveAction = () => {
     dispatch(updateFlashcard(id, getRemovedHints(), getNewHints(), translations))
-    setWord('')
     setHints([])
     setTranslations([])
     setEditableCard(null)
   }
 
   const clearAction = () => {
-    setWord('')
     setHints([])
     setTranslations([])
     setEditableCard(null)
@@ -34,10 +31,9 @@ const FlashcardListEdit = (
 
   return (
     <Template
-      word={word}
+      word={originalWord}
       translations={translations}
       hints={hints}
-      setWord={setWord}
       setTranslations={setTranslations}
       setHints={setHints}
       saveAction={saveAction}

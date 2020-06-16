@@ -19,7 +19,6 @@ const Fillin = ({
   const [flipped, setFlipped] = useState(false)
   const [answerChecked, setAnswerChecked] = useState(false)
   const [answerCorrect, setAnswerCorrect] = useState(null)
-  const [word, setWord] = useState(card.lemma)
   const [hints, setHints] = useState(card.hint.map(h => h.hint))
   const [translations, setTranslations] = useState(card.glosses)
 
@@ -42,7 +41,6 @@ const Fillin = ({
   }
 
   const clearEdit = () => {
-    setWord(card.lemma)
     setHints(card.hint.map(h => h.hint))
     setTranslations(card.glosses)
     setAnswerChecked(true)
@@ -85,10 +83,9 @@ const Fillin = ({
   if (editing) {
     return (
       <Template
-        word={word}
+        word={card.lemma}
         translations={translations}
         hints={hints}
-        setWord={setWord}
         setTranslations={setTranslations}
         setHints={setHints}
         saveAction={saveCard}
@@ -104,7 +101,7 @@ const Fillin = ({
         answerChecked={answerChecked}
         checkAnswer={checkAnswer}
         hints={hints}
-        lemma={word}
+        lemma={card.lemma}
         {...cardProps}
       />
       <FlashcardBack
