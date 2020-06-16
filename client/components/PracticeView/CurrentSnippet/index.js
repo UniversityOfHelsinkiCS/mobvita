@@ -137,11 +137,9 @@ const CurrentSnippet = ({ storyId, handleWordClick, handleInputChange }) => {
 
   useEffect(() => {
     if (!snippets.pending && scrollTarget.current) {
-      if (scrollTarget.current) {
-        setTimeout(() => {
-          scrollTarget.current.scrollIntoView({ behavior: 'smooth' })
-        }, 50)
-      }
+      setTimeout(() => {
+        if (scrollTarget.current) scrollTarget.current.scrollIntoView({ behavior: 'smooth' })
+      }, 50)
     }
   }, [snippets.pending, snippets.previous])
 
