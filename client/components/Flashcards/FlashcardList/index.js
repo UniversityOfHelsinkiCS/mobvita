@@ -20,8 +20,9 @@ const FlashcardList = () => {
     setEditableCard(card)
   }
 
-  const cardListItems = useMemo(() => cards.map(card => (
-    <CardListItem key={card._id} card={card} handleEdit={handleEdit} />)), [cards])
+  const cardListItems = useMemo(() => cards
+    .sort((a, b) => a.lemma.localeCompare(b.lemma))
+    .map(card => (<CardListItem key={card._id} card={card} handleEdit={handleEdit} />)), [cards])
 
   if (pending) return <Spinner />
 
