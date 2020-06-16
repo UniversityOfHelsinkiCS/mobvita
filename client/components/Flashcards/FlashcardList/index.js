@@ -1,6 +1,6 @@
 import React, { useMemo, useState, useLayoutEffect } from 'react'
 import { useSelector } from 'react-redux'
-import { ListGroup } from 'react-bootstrap'
+import { ListGroup, Accordion } from 'react-bootstrap'
 import Spinner from 'Components/Spinner'
 import FlashcardListEdit from './FlashcardListEdit'
 import FlashcardListItem from './FlashcardListItem'
@@ -64,9 +64,9 @@ const FlashcardList = () => {
         setSortBy={setSortBy}
         setDirectionMultiplier={setDirectionMultiplier}
       />
-      <ListGroup className="padding-top-1">
+      <Accordion className="padding-top-1">
         {cardListItems}
-      </ListGroup>
+      </Accordion>
     </div>
   )
 }
