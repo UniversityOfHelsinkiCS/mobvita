@@ -26,10 +26,13 @@ const PreviousExerciseWord = ({ word, handleWordClick, answer }) => {
   const tooltip = (
     <div>
       {word.message && <div className="tooltip-green">{word.message}</div>}
-      <div className="tooltip-blue">
-        {`${intl.formatMessage({ id: 'you-used' })}: `}
-        <span style={getTextStyle(learningLanguage, 'tooltip')}>{answer.users_answer}</span>
-      </div>
+      {answer && (
+        <div className="tooltip-blue">
+          {`${intl.formatMessage({ id: 'you-used' })}: `}
+          <span style={getTextStyle(learningLanguage, 'tooltip')}>{answer.users_answer}</span>
+        </div>
+      )
+      }
     </div>
   )
 

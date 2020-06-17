@@ -3,13 +3,13 @@ import PlainWord from 'Components/PracticeView/PlainWord'
 import PreviousExerciseWord from './PreviousExerciseWord'
 
 const Word = ({ word, answer, handleWordClick }) => {
-  if (!answer || (!answer.users_answer && answer.users_answer !== '')) {
+  if (word.tested) {
     return (
-      <PlainWord surface={word.surface} lemmas={word.lemmas} handleWordClick={handleWordClick} />
+      <PreviousExerciseWord word={word} handleWordClick={handleWordClick} answer={answer} />
     )
   }
 
-  return <PreviousExerciseWord word={word} handleWordClick={handleWordClick} answer={answer} />
+  return <PlainWord surface={word.surface} lemmas={word.lemmas} handleWordClick={handleWordClick} />
 }
 
 export default Word
