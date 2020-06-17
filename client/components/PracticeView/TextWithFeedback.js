@@ -63,7 +63,15 @@ const TextWithFeedback = ({ snippet, exercise = false, answers, ...props }) => {
   const createElement = (word, chunkPosition) => {
     let element = exercise
       ? <ExerciseWord key={word.ID} word={word} {...props} />
-      : <Word key={word.ID} word={word} answer={answers[word.ID]} {...props} />
+      : (
+        <Word
+          key={word.ID}
+          word={word}
+          answer={answers[word.ID]}
+          tiedAnswer={answers[word.tiedTo]}
+          {...props}
+        />
+      )
     if (inChunk) {
       const chunkStyle = createChunkStyle(chunkPosition)
 

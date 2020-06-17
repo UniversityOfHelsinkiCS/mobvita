@@ -4,7 +4,7 @@ import { useIntl } from 'react-intl'
 import { getTextStyle, learningLanguageSelector } from 'Utilities/common'
 import Tooltip from 'Components/PracticeView/Tooltip'
 
-const PreviousExerciseWord = ({ word, handleWordClick, answer }) => {
+const PreviousExerciseWord = ({ word, handleWordClick, answer, tiedAnswer }) => {
   const { surface, isWrong, tested, lemmas } = word
   const intl = useIntl()
   const [show, setShow] = useState(false)
@@ -23,13 +23,17 @@ const PreviousExerciseWord = ({ word, handleWordClick, answer }) => {
     setShow(true)
   }
 
+  const youAnsweredTooltip = answer || tiedAnswer
+
   const tooltip = (
     <div>
       {word.message && <div className="tooltip-green">{word.message}</div>}
-      {answer && (
+      {youAnsweredTooltip && (
         <div className="tooltip-blue">
           {`${intl.formatMessage({ id: 'you-used' })}: `}
-          <span style={getTextStyle(learningLanguage, 'tooltip')}>{answer.users_answer}</span>
+          <span style={getTextStyle(learningLanguage, 'tooltip')}>
+            {youAnsweredTooltip.users_answer}
+          </span>
         </div>
       )
       }
