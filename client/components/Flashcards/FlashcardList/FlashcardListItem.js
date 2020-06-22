@@ -3,11 +3,12 @@ import { useDispatch } from 'react-redux'
 import { ListGroup, Card, Accordion } from 'react-bootstrap'
 import { Icon } from 'semantic-ui-react'
 import { FormattedMessage } from 'react-intl'
-import { sanitizeHtml } from 'Utilities/common'
+import { sanitizeHtml, flashcardColors } from 'Utilities/common'
 import { deleteFlashcard } from 'Utilities/redux/flashcardReducer'
 
 const FlashcardListItem = ({ card, handleEdit }) => {
-  const { lemma, _id } = card
+  const { lemma, _id, stage } = card
+  const { background } = flashcardColors
 
   const dispatch = useDispatch()
 
@@ -23,12 +24,19 @@ const FlashcardListItem = ({ card, handleEdit }) => {
       <li key={hint} dangerouslySetInnerHTML={sanitizeHtml(hint)} />))), [card])
 
   return (
-    <Card>
-      <ListGroup.Item style={{ display: 'flex', border: 0, alignItems: 'center' }}>
+    <Card style={{ backgroundColor: background[stage] }}>
+      <ListGroup.Item
+        style={{
+          display: 'flex',
+          border: 0,
+          alignItems: 'center',
+          backgroundColor: background[stage],
+        }}
+      >
         <Accordion.Toggle
           eventKey={_id}
           style={{
-            backgroundColor: 'white',
+            backgroundColor: background[stage] || 'white',
             border: 0,
             flex: 1,
             textAlign: 'left',
@@ -38,7 +46,7 @@ const FlashcardListItem = ({ card, handleEdit }) => {
           <Icon name="edit outline" onClick={() => handleEdit(card)} />
           {lemma}
         </Accordion.Toggle>
-        <Icon name="close" onClick={handleDelete} style={{ cursor: 'pointer' }} />
+        <Icon name="delete" onClick={handleDelete} style={{ cursor: 'pointer' }} />
       </ListGroup.Item>
       <Accordion.Collapse eventKey={_id}>
         <Card.Body>
