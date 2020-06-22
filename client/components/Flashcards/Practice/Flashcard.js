@@ -1,6 +1,7 @@
 import React from 'react'
 import { Icon } from 'semantic-ui-react'
 import { FormattedMessage } from 'react-intl'
+import { flashcardColors } from 'Utilities/common'
 import FlashcardDelete from './FlashcardDelete'
 
 const Flashcard = ({
@@ -11,16 +12,13 @@ const Flashcard = ({
   id,
   handleEdit,
 }) => {
-  const backgroundColor = [
-    '#FF6347',
-    '#E28413',
-    '#D19710',
-    '#8EA604',
-    '#5FAD56',
-  ]
+  const { background, foreground } = flashcardColors
 
   return (
-    <div className="flashcard" style={{ backgroundColor: backgroundColor[stage] }}>
+    <div
+      className="flashcard"
+      style={{ backgroundColor: background[stage], color: foreground[stage] }}
+    >
       <div
         data-cy="flashcard-content"
         className="flashcard-content"
@@ -34,7 +32,7 @@ const Flashcard = ({
                   type="button"
                   onClick={handleEdit}
                 >
-                  <Icon name="edit" style={{ color: 'white' }} />
+                  <Icon name="edit" style={{ color: foreground[stage] || 'white' }} />
                 </button>
               )
             }
@@ -49,10 +47,11 @@ const Flashcard = ({
           className="flashcard-blended-input auto-left"
           type="button"
           onClick={() => flipCard()}
+          style={{ color: foreground[stage] }}
         >
           <FormattedMessage id="Flip" />
           {'  '}
-          <Icon name="arrow right" />
+          <Icon name="arrow right" style={{ color: foreground[stage] }} />
         </button>
       </div>
 

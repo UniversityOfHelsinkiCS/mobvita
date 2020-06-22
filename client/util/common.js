@@ -113,6 +113,23 @@ export const betaLanguages = [
 
 export const colors = {}
 
+export const flashcardColors = {
+  background: [
+    '#F3826A',
+    '#FEA75C',
+    '#F9E79F',
+    '#84C3A3',
+    '#50A278',
+  ],
+  foreground: [
+    '#FFF',
+    '#055A5B',
+    '#055A5B',
+    '#000',
+    '#FFF',
+  ],
+}
+
 export const localeOptions = [
   { displayName: 'Suomi', name: 'Finnish', code: 'fi' },
   { displayName: 'Svenska', name: 'Swedish', code: 'sv' },

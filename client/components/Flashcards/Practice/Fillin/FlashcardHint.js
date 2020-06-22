@@ -1,10 +1,13 @@
 import React, { useState } from 'react'
 import { FormattedMessage } from 'react-intl'
 import { Collapse } from 'react-bootstrap'
+import { flashcardColors } from 'Utilities/common'
 import { Icon } from 'semantic-ui-react'
 
-const FlashcardHint = ({ hint: hints }) => {
+const FlashcardHint = ({ hints, stage }) => {
   const [open, setOpen] = useState(false)
+
+  const { foreground } = flashcardColors
 
   if (!hints || !hints[0]) return null
 
@@ -23,6 +26,7 @@ const FlashcardHint = ({ hint: hints }) => {
         type="button"
         className="flashcard-blended-input flashcard-hint-button"
         onClick={() => setOpen(!open)}
+        style={{ color: foreground[stage] }}
       >
         <FormattedMessage id="Hint" />
         {'  '}

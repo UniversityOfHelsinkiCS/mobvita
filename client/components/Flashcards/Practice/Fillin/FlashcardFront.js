@@ -13,6 +13,7 @@ const FlashcardFront = ({
   hints,
   lemma,
   focusedAndBigScreen,
+  stage,
   ...props
 }) => {
   const learningLanguage = useSelector(learningLanguageSelector)
@@ -21,9 +22,9 @@ const FlashcardFront = ({
   const sameLanguage = learningLanguage === dictionaryLanguage
 
   return (
-    <Flashcard {...props}>
+    <Flashcard stage={stage} {...props}>
       <div className="flashcard-text-container">
-        <FlashcardHint hint={hints} />
+        <FlashcardHint hints={hints} stage={stage} />
         <h2 data-cy="flashcard-title" className="flashcard-title">{lemma}</h2>
       </div>
       {!sameLanguage
