@@ -58,12 +58,17 @@ const FlashcardList = () => {
 
   return (
     <div style={{ marginTop: '-1em', flex: 1 }}>
-      <FlashcardListSorter
-        sortBy={sortBy}
-        directionMultiplier={directionMultiplier}
-        setSortBy={setSortBy}
-        setDirectionMultiplier={setDirectionMultiplier}
-      />
+      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-end' }}>
+        <FlashcardListSorter
+          sortBy={sortBy}
+          directionMultiplier={directionMultiplier}
+          setSortBy={setSortBy}
+          setDirectionMultiplier={setDirectionMultiplier}
+        />
+        <span style={{ fontSize: '18px', paddingRight: '0.5em', fontWeight: 550, color: '#777' }}>
+          {cards.length}
+        </span>
+      </div>
       <Accordion className="padding-top-1">
         {cardListItems}
       </Accordion>
