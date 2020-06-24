@@ -122,11 +122,11 @@ export const flashcardColors = {
     '#50A278',
   ],
   foreground: [
-    '#FFF',
     '#055A5B',
     '#055A5B',
-    '#000',
-    '#FFF',
+    '#055A5B',
+    '#055A5B',
+    '#055A5B',
   ],
 }
 

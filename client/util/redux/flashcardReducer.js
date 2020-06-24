@@ -6,6 +6,12 @@ export const getFlashcards = (inputLanguage, outputLanguage, storyId = '') => {
   return callBuilder(route, prefix, 'get')
 }
 
+export const getAllFlashcards = (inputLanguage, outputLanguage, storyId = '') => {
+  const route = `/flashcards/${inputLanguage}/${outputLanguage}/list?story_id=${storyId}`
+  const prefix = 'GET_ALL_FLASHCARDS'
+  return callBuilder(route, prefix, 'get')
+}
+
 export const recordFlashcardAnswer = (inputLanguage, outputLanguage, answerDetails) => {
   const route = `/flashcards/${inputLanguage}/${outputLanguage}/answer`
   const prefix = 'ANSWER_FLASHCARD'
@@ -61,6 +67,25 @@ export default (state = initialState, action) => {
         error: false,
       }
     case 'GET_FLASHCARDS_FAILURE':
+      return {
+        ...state,
+        pending: false,
+        error: true,
+      }
+    case 'GET_ALL_FLASHCARDS_ATTEMPT':
+      return {
+        ...state,
+        pending: true,
+        error: false,
+      }
+    case 'GET_ALL_FLASHCARDS_SUCCESS':
+      return {
+        ...state,
+        cards: action.response.flashcards,
+        pending: false,
+        error: false,
+      }
+    case 'GET_ALL_FLASHCARDS_FAILURE':
       return {
         ...state,
         pending: false,

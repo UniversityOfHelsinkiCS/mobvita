@@ -3,7 +3,7 @@ import { useDispatch } from 'react-redux'
 import { useParams } from 'react-router-dom'
 import useWindowDimensions from 'Utilities/windowDimensions'
 import { useLearningLanguage, useDictionaryLanguage, hiddenFeatures } from 'Utilities/common'
-import { getFlashcards } from 'Utilities/redux/flashcardReducer'
+import { getFlashcards, getAllFlashcards } from 'Utilities/redux/flashcardReducer'
 import FlashcardMenu from './FlashcardMenu'
 import FlashcardCreation from './FlashcardCreation'
 import FloatMenu from './FloatMenu'
@@ -19,7 +19,8 @@ const Flashcards = () => {
   const dictionaryLanguage = useDictionaryLanguage()
 
   useEffect(() => {
-    dispatch(getFlashcards(learningLanguage, dictionaryLanguage, storyId))
+    if (mode === 'list') dispatch(getAllFlashcards(learningLanguage, dictionaryLanguage, storyId))
+    else dispatch(getFlashcards(learningLanguage, dictionaryLanguage, storyId))
   }, [storyId, mode])
 
   const content = () => {
