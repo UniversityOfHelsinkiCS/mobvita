@@ -144,7 +144,7 @@ describe('Mobvita', function () {
           .type('https://yle.fi/uutiset/3-11191886')
         cy.get('[data-cy="submit-story"]')
           .click()
-        cy.contains('5G-kännyköitä', { timeout: 60000 })
+        cy.contains('5G-kännyköitä', { timeout: 90000 })
         cy.contains('Lue')
           .click()
         cy.contains('Harjoittele', { timeout: 20000 })
