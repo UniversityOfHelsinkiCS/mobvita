@@ -9,10 +9,10 @@ const PreviousSnippets = ({ handleWordClick }) => {
   const learningLanguage = useSelector(learningLanguageSelector)
   const { snippetsInPrevious, previousAnswers } = useSelector(({ practice }) => practice)
   const focusedStory = useSelector(({ stories }) => stories.focused)
-  const { previous, focusedSnippet } = useSelector(({ snippets }) => {
-    const focusedSnippet = snippets.focused
+  const { previous, focusedSnippet, pending } = useSelector(({ snippets }) => {
+    const { focused: focusedSnippet, pending } = snippets
     const previous = snippets.previous.filter(Boolean)
-    return { previous, focusedSnippet }
+    return { previous, focusedSnippet, pending }
   }, shallowEqual)
 
   const dispatch = useDispatch()
@@ -24,7 +24,7 @@ const PreviousSnippets = ({ handleWordClick }) => {
   }
 
   useEffect(() => {
-    if (previous.length === 0 && focusedSnippet && focusedSnippet.snippetid[0] !== 0) {
+    if (previous.length === 0 && focusedSnippet && focusedSnippet.snippetid[0] !== 0 && !pending) {
       createOldSnippets()
     }
   }, [previous])

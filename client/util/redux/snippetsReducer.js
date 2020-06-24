@@ -4,9 +4,8 @@ import callBuilder from '../apiConnection'
  */
 
 const filterPrevious = (previous, snippet) => {
-  const restarted = previous.length > 0 && snippet.snippetid[0] === 0
+  const restarted = previous.length > 0 && snippet.snippetid[0] === snippet.total_num - 1
   if (!snippet || restarted) return []
-  if (!snippet.skip_second) return previous
   return previous.concat(snippet)
 }
 
@@ -37,6 +36,8 @@ export const postAnswers = (storyId, answersObject, compete = false) => {
 }
 
 export const setPrevious = previous => ({ type: 'SET_PREVIOUS', payload: previous })
+
+export const addToPrevious = snippet => ({ type: 'ADD_TO_PREVIOUS', snippet })
 
 // Reducer
 // You can include more app wide actions such as "selected: []" into the state
@@ -85,7 +86,6 @@ export default (state = { previous: [], pending: false, error: false }, action) 
       return {
         ...state,
         focused: action.response,
-        previous: filterPrevious(state.previous, action.response),
         answersPending: false,
       }
     case 'GET_STORY_ATTEMPT':
@@ -109,8 +109,8 @@ export default (state = { previous: [], pending: false, error: false }, action) 
     case 'GET_NEXT_SNIPPET_SUCCESS':
       return {
         ...state,
+        //previous: filterPrevious(state.previous, state.focused),
         focused: action.response,
-        previous: filterPrevious(state.previous, action.response),
         pending: false,
         error: false,
       }
@@ -118,6 +118,11 @@ export default (state = { previous: [], pending: false, error: false }, action) 
       return {
         ...state,
         previous: action.payload,
+      }
+    case 'ADD_TO_PREVIOUS':
+      return {
+        ...state,
+        previous: state.previous.concat(action.snippet)
       }
     default:
       return state

@@ -1,6 +1,11 @@
 import React, { useState, useEffect, useRef } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
-import { getCurrentSnippet, getNextSnippet } from 'Utilities/redux/snippetsReducer'
+import {
+  getCurrentSnippet,
+  getNextSnippet,
+  addToPrevious,
+  setPrevious,
+} from 'Utilities/redux/snippetsReducer'
 import { clearTranslationAction } from 'Utilities/redux/translationReducer'
 import 'react-simple-keyboard/build/css/index.css'
 import { FormattedMessage } from 'react-intl'
@@ -16,8 +21,7 @@ import {
   setPreviousAnswers,
   addToOptions,
 } from 'Utilities/redux/practiceReducer'
-import Chunks from './Chunks'
-import CheckAnswers from './CheckAnswers'
+import SnippetActions from './SnippetActions'
 import PracticeText from './PracticeText'
 
 const CurrentSnippet = ({ storyId, handleWordClick, handleInputChange }) => {
@@ -29,7 +33,7 @@ const CurrentSnippet = ({ storyId, handleWordClick, handleInputChange }) => {
 
   const snippets = useSelector(({ snippets }) => snippets)
   const answersPending = useSelector(({ snippets }) => snippets.answersPending)
-  const { attempt } = useSelector(({ practice }) => practice)
+  const { attempt, snippetFinished } = useSelector(({ practice }) => practice)
   const learningLanguage = useSelector(learningLanguageSelector)
 
   const currentSnippetId = () => {
@@ -69,7 +73,6 @@ const CurrentSnippet = ({ storyId, handleWordClick, handleInputChange }) => {
       const filteredSnippet = snippets.focused.practice_snippet.filter(word => word.id)
       const initialAnswers = filteredSnippet.reduce((answerObject, currentWord) => {
         const { surface, id, ID, base, bases, listen, choices, concept } = currentWord
-        //if (currentAnswers[ID]) return { ...answerObject, [ID]: { ...currentAnswers[ID], tested, isWrong } }
 
         let usersAnswer
         if (listen || choices) {
@@ -102,12 +105,8 @@ const CurrentSnippet = ({ storyId, handleWordClick, handleInputChange }) => {
   }
 
   useEffect(() => {
-    if (snippets.focused) {
-      if (attempt === 0) {
-        dispatch(setPreviousAnswers(currentSnippetId()))
-        dispatch(clearCurrentPractice())
-        setInitialAnswers()
-      }
+    if (snippets.focused && attempt === 0) {
+      setInitialAnswers()
     }
   }, [snippets.focused])
 
@@ -121,17 +120,22 @@ const CurrentSnippet = ({ storyId, handleWordClick, handleInputChange }) => {
     }
   }, [snippets.focused])
 
-  useEffect(() => {
-    if (snippets.focused && snippets.focused.skip_second) {
-      dispatch(setPreviousAnswers(currentSnippetId()))
-      dispatch(clearCurrentPractice())
+  const finishSnippet = () => {
+    dispatch(setPreviousAnswers(currentSnippetId()))
+    dispatch(addToPrevious(snippets.focused))
+    dispatch(clearCurrentPractice())
 
-      if (snippets.focused.total_num !== currentSnippetId() + 1 || finished) {
-        dispatch(getNextSnippet(storyId, currentSnippetId()))
-      } else {
-        setFinished(true)
-        setProgress(currentSnippetId() + 1 / snippets.focused.total_num)
-      }
+    if (snippets.focused.total_num !== currentSnippetId() + 1 || finished) {
+      dispatch(getNextSnippet(storyId, currentSnippetId()))
+    } else {
+      setFinished(true)
+      setProgress(currentSnippetId() + 1 / snippets.focused.total_num)
+    }
+  }
+
+  useEffect(() => {
+    if (snippets.focused && (snippets.focused.skip_second || snippetFinished)) {
+      finishSnippet()
     }
   }, [snippets.focused])
 
@@ -159,7 +163,8 @@ const CurrentSnippet = ({ storyId, handleWordClick, handleInputChange }) => {
 
   const startOver = async () => {
     dispatch(clearPractice())
-    await dispatch(getNextSnippet(storyId, currentSnippetId()))
+    dispatch(setPrevious([]))
+    dispatch(getNextSnippet(storyId, currentSnippetId()))
     setFinished(false)
     setProgress(0)
   }
@@ -197,7 +202,7 @@ const CurrentSnippet = ({ storyId, handleWordClick, handleInputChange }) => {
                 handleMultiselectChange={handleMultiselectChange}
               />
             </div>
-            <CheckAnswers
+            <SnippetActions
               storyId={storyId}
               exerciseCount={exerciseCount}
             />
