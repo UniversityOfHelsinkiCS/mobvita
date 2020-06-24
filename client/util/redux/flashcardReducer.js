@@ -148,7 +148,9 @@ export default (state = initialState, action) => {
         ...state,
         error: false,
         cards: state.cards.map(card => (
-          card._id === action.response.flashcard_id ? action.response.flashcard : card)),
+          card._id === action.response.flashcard_id
+            ? { ...action.response.flashcard, stage: card.stage }
+            : card)),
       }
     case 'UPDATE_FLASHCARD_FAILURE':
       return {
