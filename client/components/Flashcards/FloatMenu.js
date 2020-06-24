@@ -3,7 +3,7 @@ import { useSelector } from 'react-redux'
 import { useHistory, useParams } from 'react-router-dom'
 import { FormattedMessage } from 'react-intl'
 import { Icon } from 'semantic-ui-react'
-import { images, hiddenFeatures } from 'Utilities/common'
+import { images } from 'Utilities/common'
 import SelectLanguage from './SelectLanguage'
 
 const FabOption = ({ handleClick, iconStyle, translationId, children }) => (
@@ -126,17 +126,13 @@ const FloatMenu = () => {
                 </button>
               )
             }
-            {hiddenFeatures
-              && (
-                <FabOption
-                  handleClick={handleFlashcardListClick}
-                  translationId="Flashcard list"
-                  iconStyle={{ paddingBottom: '0.5em', paddingRight: '0.1em' }}
-                >
-                  <Icon name="list alternate outline" style={{ margin: 'auto' }} />
-                </FabOption>
-              )
-            }
+            <FabOption
+              handleClick={handleFlashcardListClick}
+              translationId="Flashcard list"
+              iconStyle={{ paddingBottom: '0.5em', paddingRight: '0.1em' }}
+            >
+              <Icon name="list alternate outline" style={{ margin: 'auto' }} />
+            </FabOption>
             <FabOption
               handleClick={handleCreateNewClick}
               translationId="add-new-flashcard"

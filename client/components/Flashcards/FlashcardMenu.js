@@ -3,7 +3,7 @@ import { useSelector } from 'react-redux'
 import { FormattedMessage } from 'react-intl'
 import { useHistory, useParams } from 'react-router-dom'
 import { Icon } from 'semantic-ui-react'
-import { images, hiddenFeatures } from 'Utilities/common'
+import { images } from 'Utilities/common'
 import SelectLanguage from './SelectLanguage'
 
 const MenuItem = ({ handleClick, style, translationId, children }) => (
@@ -112,20 +112,16 @@ const FlashcardMenu = () => {
             </button>
           )}
       </div>
-      {hiddenFeatures
-        && (
-          <MenuItem
-            handleClick={handleFlashcardListClick}
-            translationId="Flashcard list"
-            style={{
-              backgroundColor: '#e1f7d5',
-              border: 'none',
-            }}
-          >
-            <Icon name="list alternate outline" size="big" style={{ paddingLeft: '0.1em' }} />
-          </MenuItem>
-        )
-      }
+      <MenuItem
+        handleClick={handleFlashcardListClick}
+        translationId="Flashcard list"
+        style={{
+          backgroundColor: '#e1f7d5',
+          border: 'none',
+        }}
+      >
+        <Icon name="list alternate outline" size="big" style={{ paddingLeft: '0.1em' }} />
+      </MenuItem>
       <MenuItem
         handleClick={handleCreateNewClick}
         translationId="add-new-flashcard"

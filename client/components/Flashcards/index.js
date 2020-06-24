@@ -2,7 +2,7 @@ import React, { useEffect } from 'react'
 import { useDispatch } from 'react-redux'
 import { useParams } from 'react-router-dom'
 import useWindowDimensions from 'Utilities/windowDimensions'
-import { useLearningLanguage, useDictionaryLanguage, hiddenFeatures } from 'Utilities/common'
+import { useLearningLanguage, useDictionaryLanguage } from 'Utilities/common'
 import { getFlashcards, getAllFlashcards } from 'Utilities/redux/flashcardReducer'
 import FlashcardMenu from './FlashcardMenu'
 import FlashcardCreation from './FlashcardCreation'
@@ -28,7 +28,7 @@ const Flashcards = () => {
       case 'new':
         return <FlashcardCreation />
       case 'list':
-        return hiddenFeatures ? <FlashcardList /> : <Practice mode="fillin" />
+        return <FlashcardList />
       case 'article':
         return <Practice mode="article" />
       case 'quick':
