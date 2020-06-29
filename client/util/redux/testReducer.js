@@ -1,3 +1,4 @@
+import moment from 'moment'
 import callBuilder from '../apiConnection'
 
 const initialState = {
@@ -62,7 +63,8 @@ export const finishTest = (language, sessionId) => {
 }
 
 export const getHistory = (language) => {
-  const route = `/test/${language}/history`
+  const now = moment().format('YYYY-MM-DD')
+  const route = `/test/${language}/history?start_time=2000-01-01&end_time=${now}`
   const prefix = 'GET_TEST_HISTORY'
   return callBuilder(route, prefix, 'get')
 }

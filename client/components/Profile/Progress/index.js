@@ -66,7 +66,7 @@ const Progress = () => {
         endDate={endDate}
       />
       {hiddenFeatures
-      && <History history={history} />}
+      && <History history={history} dateFormat="DD.MM." />}
     </div>
   )
 }

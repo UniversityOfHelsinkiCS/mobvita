@@ -3,7 +3,7 @@ import { useSelector } from 'react-redux'
 import { Table } from 'semantic-ui-react'
 import moment from 'moment'
 
-const History = ({ history }) => {
+const History = ({ history, pageSize, dateFormat }) => {
   const [conceptSet, setConceptSet] = useState([])
 
   const [page, setPage] = useState(0)
@@ -28,6 +28,26 @@ const History = ({ history }) => {
     return `rgb(${amount},255,${amount})`
   }
 
+  const calculatePage = () => {
+    const size = pageSize || 7
+    return history.slice(page * size, page * size + size)
+  }
+
+
+  const switchPage = (change) => {
+    const maxPage = Math.trunc(history.length / 7)
+
+    const newPage = page + change
+
+    if (newPage > maxPage) {
+      setPage(0)
+    } else if (newPage < 0) {
+      setPage(maxPage)
+    } else {
+      setPage(newPage)
+    }
+  }
+
   useEffect(() => {
     if (!history) return
     const _set = new Set()
@@ -40,16 +60,16 @@ const History = ({ history }) => {
 
   if (!history) return null
   return (
-    <div style={{ overflowX: 'scroll', maxWidth: '100%' }}>
-      <button type="button" onClick={() => setPage(page - 1)}>-</button>
-      <span>{page} / {Math.trunc(history.length / 7)}</span>
-      <button type="button" onClick={() => setPage(page + 1)}>+</button>
+    <div style={{ overflowX: 'scroll', maxWidth: '100%', marginTop: '1em' }}>
+      <button type="button" onClick={() => switchPage(-1)}>-</button>
+      <span style={{ marginLeft: '1em', marginRight: '1em' }}>{page + 1} / {1 + Math.trunc(history.length / 7)}</span>
+      <button type="button" onClick={() => switchPage(1)}>+</button>
       <Table celled>
         <Table.Header>
           <Table.HeaderCell>Concepts</Table.HeaderCell>
-          {history.slice(page * 7, page * 7 + 7).map(test => (
+          {calculatePage().map(test => (
             <Table.HeaderCell key={test.date}>
-              {moment(test.date).format('YYYY-MM-DD hh:mm')}
+              {moment(test.date).format(dateFormat || 'YYYY-MM-DD hh:mm')}
             </Table.HeaderCell>
           ))}
         </Table.Header>
