@@ -41,20 +41,19 @@ const ExerciseCloze = ({ word, handleChange, handleClick }) => {
     debouncedChange(e.target.value)
   }
 
+  const getExerciseClass = (tested, isWrong) => {
+    if (!tested) return 'exercise cloze-untouched'
+    if (isWrong) return 'exercise wrong'
+    return 'exercise correct'
+  }
+
   useEffect(() => {
     const val = currentAnswer ? currentAnswer.users_answer : ''
     setValue(val)
   }, [currentAnswer])
 
   useEffect(() => {
-    if (tested) {
-      if (isWrong) {
-        setClassName('exercise wrong')
-      } else {
-        setClassName('exercise correct')
-        setDisabled(true)
-      }
-    }
+    setClassName(getExerciseClass(tested, isWrong))
   }, [tested])
 
   const tooltip = (

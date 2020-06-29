@@ -13,14 +13,14 @@ const ExerciseMultipleChoice = ({ word, handleChange }) => {
   const { tested, isWrong } = word
   const value = currentAnswer ? currentAnswer.users_answer : ''
 
+  const getExerciseClass = (tested, isWrong) => {
+    if (!tested) return 'exercise-multiple untouched'
+    if (isWrong) return 'exercise-multiple wrong'
+    return 'exercise-multiple correct'
+  }
+
   useEffect(() => {
-    if (tested) {
-      if (isWrong) {
-        setClassName('exercise-multiple wrong')
-      } else {
-        setClassName('exercise-multiple correct')
-      }
-    }
+    setClassName(getExerciseClass(tested, isWrong))
   }, [tested])
 
 

@@ -34,15 +34,15 @@ const ExerciseHearing = ({ word, handleChange }) => {
     if (word.base !== word.surface) handleChange(word.base, word)
   }
 
+  const getExerciseClass = (tested, isWrong) => {
+    if (!tested) return 'exercise hearing-untouched'
+    if (isWrong) return 'exercise wrong'
+    return 'exercise correct'
+  }
+
   useEffect(() => {
-    if (tested) {
-      if (isWrong) {
-        setClassname('exercise wrong')
-        giveHint()
-      } else {
-        setClassname('exercise correct')
-      }
-    }
+    setClassname(getExerciseClass(tested, isWrong))
+    if (tested && isWrong) giveHint()
   }, [tested])
 
   useEffect(() => {
