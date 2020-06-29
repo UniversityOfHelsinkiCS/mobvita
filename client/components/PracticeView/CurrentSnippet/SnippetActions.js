@@ -17,7 +17,7 @@ const SnippetActions = ({ storyId, exerciseCount }) => {
 
   const dispatch = useDispatch()
 
-  const checkAnswers = async () => {
+  const checkAnswers = async (lastAttempt) => {
     const { starttime, snippetid } = snippets.focused
 
     const answersObj = {
@@ -30,6 +30,7 @@ const SnippetActions = ({ storyId, exerciseCount }) => {
       options,
       audio,
       answers: currentAnswers,
+      last_attempt: lastAttempt,
     }
 
     dispatch(setAttempts(attempt + 1))
@@ -38,7 +39,7 @@ const SnippetActions = ({ storyId, exerciseCount }) => {
 
   const submitAnswers = () => {
     dispatch(finishSnippet())
-    checkAnswers()
+    checkAnswers(true)
   }
 
   const handleRetry = () => {
