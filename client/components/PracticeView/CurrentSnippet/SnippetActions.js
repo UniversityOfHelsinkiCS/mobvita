@@ -21,8 +21,6 @@ const SnippetActions = ({ storyId, exerciseCount }) => {
     && snippets.focused.practice_snippet.reduce((sum, word) => (
       (word.tested && !word.isWrong ? sum + 1 : sum)), 0), [snippets])
 
-  console.log(rightAnswerAmount)
-
   const checkAnswers = async (lastAttempt) => {
     const { starttime, snippetid } = snippets.focused
 
