@@ -1,9 +1,9 @@
-import React from 'react'
+import React, { useMemo } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import { FormattedMessage } from 'react-intl'
 import { Button } from 'react-bootstrap'
 import { postAnswers, getCurrentSnippet } from 'Utilities/redux/snippetsReducer'
-import { setAttempts, finishSnippet } from 'Utilities/redux/practiceReducer'
+import { setAttempts, finishSnippet, clearTouchedIds } from 'Utilities/redux/practiceReducer'
 
 const SnippetActions = ({ storyId, exerciseCount }) => {
   const {
@@ -17,6 +17,12 @@ const SnippetActions = ({ storyId, exerciseCount }) => {
 
   const dispatch = useDispatch()
 
+  const rightAnswerAmount = useMemo(() => snippets.focused
+    && snippets.focused.practice_snippet.reduce((sum, word) => (
+      (word.tested && !word.isWrong ? sum + 1 : sum)), 0), [snippets])
+
+  console.log(rightAnswerAmount)
+
   const checkAnswers = async (lastAttempt) => {
     const { starttime, snippetid } = snippets.focused
 
@@ -25,7 +31,7 @@ const SnippetActions = ({ storyId, exerciseCount }) => {
       story_id: storyId,
       snippet_id: snippetid,
       touched: touchedIds.length,
-      untouched: exerciseCount - touchedIds.length,
+      untouched: exerciseCount - touchedIds.length - rightAnswerAmount,
       attempt,
       options,
       audio,
@@ -34,6 +40,7 @@ const SnippetActions = ({ storyId, exerciseCount }) => {
     }
 
     dispatch(setAttempts(attempt + 1))
+    dispatch(clearTouchedIds())
     dispatch(postAnswers(storyId, answersObj))
   }
 
