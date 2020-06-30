@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react'
 import { useSelector } from 'react-redux'
 import { Table } from 'semantic-ui-react'
 import moment from 'moment'
+import Concept from './Concept'
 
 const History = ({ history, pageSize, dateFormat }) => {
   const [conceptSet, setConceptSet] = useState([])
@@ -14,15 +15,11 @@ const History = ({ history, pageSize, dateFormat }) => {
     return concept ? concept.name : id
   }
 
-  const calculateScore = (conceptStatistic) => {
+  const calculateColor = (conceptStatistic) => {
     if (!conceptStatistic) return null
     const { correct, total } = conceptStatistic
-    if (total === 0) return 0
+    const score = total === 0 ? 0 : correct / total
 
-    return (correct / total)
-  }
-
-  const bgFromScore = (score) => {
     const amount = 230 - score * 230
 
     return `rgb(${amount},255,${amount})`
@@ -46,6 +43,27 @@ const History = ({ history, pageSize, dateFormat }) => {
     } else {
       setPage(newPage)
     }
+  }
+
+  const buildSingleConcept = (conceptId) => {
+    const concept = concepts.find(concept => concept.concept_id === conceptId)
+    if (!concept.children) return { id: conceptId, children: [] }
+    return {
+      id: conceptId,
+      children: concept.children
+        .sort((a, b) => a['UI-order'] - b['UI-order'])
+        .map(c => buildSingleConcept(c)),
+    }
+  }
+
+  const buildConceptTree = () => {
+    const rootConcepts = concepts.filter(c => !c.parents).sort((a, b) => a['UI-order'] - b['UI-order'])
+    const conceptTree = []
+    rootConcepts.forEach((concept) => {
+      conceptTree.push(buildSingleConcept(concept.concept_id))
+    })
+
+    return conceptTree
   }
 
   const findConceptOrder = (conceptId) => {
@@ -80,16 +98,22 @@ const History = ({ history, pageSize, dateFormat }) => {
           ))}
         </Table.Header>
         <Table.Body>
-          {conceptSet.map(conceptId => (
-            <Table.Row key={conceptId}>
-              <Table.Cell>{conceptIdToConceptName(conceptId)}</Table.Cell>
-              {history.slice(page * 7, page * 7 + 7).map((test) => {
-                const score = calculateScore(test.concept_statistics[conceptId])
-                return (
-                  <Table.Cell key={`${test.date}-${conceptId}`} style={{ backgroundColor: bgFromScore(score) }} />
-                )
-              })}
-            </Table.Row>
+          {buildConceptTree().map(concept => (
+            <Concept
+              calculateColor={calculateColor}
+              history={history.slice(page * 7, page * 7 + 7)}
+              concept={concept}
+              getConceptName={conceptIdToConceptName}
+            />
+            // <Table.Row key={id}>
+            //   <Table.Cell>{conceptIdToConceptName(id)}</Table.Cell>
+            //   {history.slice(page * 7, page * 7 + 7).map((test) => {
+            //     const score = calculateScore(test.concept_statistics[id])
+            //     return (
+            //       <Table.Cell key={`${test.date}-${id}`} style={{ backgroundColor: bgFromScore(score) }} />
+            //     )
+            //   })}
+            // </Table.Row>
           ))}
         </Table.Body>
       </Table>
