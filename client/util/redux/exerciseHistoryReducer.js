@@ -4,7 +4,7 @@ import callBuilder from '../apiConnection'
 
 export const getHistory = (language) => {
   const now = moment().format('YYYY-MM-DD')
-  const route = `/user/history/${language}?start_time=2000-01-01&end_time=${now}`
+  const route = `/user/history/${language}?start_time=2019-01-01&end_time=${now}`
   const prefix = 'GET_EXERCISE_HISTORY'
   return callBuilder(route, prefix, 'get')
 }

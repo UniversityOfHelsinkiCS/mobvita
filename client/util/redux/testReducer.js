@@ -64,7 +64,7 @@ export const finishTest = (language, sessionId) => {
 
 export const getHistory = (language) => {
   const now = moment().format('YYYY-MM-DD')
-  const route = `/test/${language}/history?start_time=2000-01-01&end_time=${now}`
+  const route = `/test/${language}/history?start_time=2019-01-01&end_time=${now}`
   const prefix = 'GET_TEST_HISTORY'
   return callBuilder(route, prefix, 'get')
 }
