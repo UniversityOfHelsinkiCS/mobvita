@@ -4,7 +4,7 @@ import { Table } from 'semantic-ui-react'
 import moment from 'moment'
 import Concept from './Concept'
 
-const History = ({ history, pageSize, dateFormat }) => {
+const History = ({ history, dateFormat }) => {
   const [conceptSet, setConceptSet] = useState([])
 
   const [page, setPage] = useState(0)
@@ -26,13 +26,14 @@ const History = ({ history, pageSize, dateFormat }) => {
   }
 
   const calculatePage = () => {
-    const size = pageSize || 7
+    const size = 7
     return history.slice(page * size, page * size + size)
   }
 
 
   const switchPage = (change) => {
-    const maxPage = Math.trunc(history.length / 7)
+    const size = 7
+    const maxPage = Math.trunc(history.length / (size + 1))
 
     const newPage = page + change
 
@@ -86,9 +87,9 @@ const History = ({ history, pageSize, dateFormat }) => {
   return (
     <div style={{ overflowX: 'scroll', maxWidth: '100%', marginTop: '1em' }}>
       <button type="button" onClick={() => switchPage(-1)}>-</button>
-      <span style={{ marginLeft: '1em', marginRight: '1em' }}>{page + 1} / {1 + Math.trunc(history.length / 7)}</span>
+      <span style={{ marginLeft: '1em', marginRight: '1em' }}>{page + 1} / {1 + Math.trunc(history.length / 8)}</span>
       <button type="button" onClick={() => switchPage(1)}>+</button>
-      <Table celled>
+      <Table celled fixed>
         <Table.Header>
           <Table.HeaderCell>Concepts</Table.HeaderCell>
           {calculatePage().map(test => (
@@ -105,15 +106,6 @@ const History = ({ history, pageSize, dateFormat }) => {
               concept={concept}
               getConceptName={conceptIdToConceptName}
             />
-            // <Table.Row key={id}>
-            //   <Table.Cell>{conceptIdToConceptName(id)}</Table.Cell>
-            //   {history.slice(page * 7, page * 7 + 7).map((test) => {
-            //     const score = calculateScore(test.concept_statistics[id])
-            //     return (
-            //       <Table.Cell key={`${test.date}-${id}`} style={{ backgroundColor: bgFromScore(score) }} />
-            //     )
-            //   })}
-            // </Table.Row>
           ))}
         </Table.Body>
       </Table>

@@ -12,7 +12,7 @@ const Concept = ({ concept, history, calculateColor, getConceptName }) => {
   return (
     <>
       <Table.Row onClick={() => setCollapsed(!collapsed)}>
-        <Table.Cell>
+        <Table.Cell width="2">
           {concept.children.length > 0
             && <Icon name={collapsed ? 'angle down' : 'angle right'} />}
           <ConceptTitle title={getConceptName(concept.id)} isParent={concept.children.length > 0} />
