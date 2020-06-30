@@ -48,6 +48,12 @@ const History = ({ history, pageSize, dateFormat }) => {
     }
   }
 
+  const findConceptOrder = (conceptId) => {
+    const concept = concepts.find(concept => concept.concept_id === conceptId)
+    if (!concept) return 999999
+    return concept['UI-order']
+  }
+
   useEffect(() => {
     if (!history) return
     const _set = new Set()
@@ -55,7 +61,7 @@ const History = ({ history, pageSize, dateFormat }) => {
       Object.keys(test.concept_statistics).forEach(conceptId => _set.add(conceptId))
     })
 
-    setConceptSet(Array.from(_set))
+    setConceptSet(Array.from(_set).sort((a, b) => findConceptOrder(a) - findConceptOrder(b)))
   }, [history])
 
   if (!history) return null
