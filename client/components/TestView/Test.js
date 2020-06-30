@@ -35,7 +35,6 @@ const Test = () => {
 
   const checkAnswer = (answer) => {
     if (!currentQuestion) return
-
     timer.stop()
     timer.reset()
 

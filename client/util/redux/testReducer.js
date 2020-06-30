@@ -129,6 +129,7 @@ export default (state = initialState, action) => {
           total: response.total,
           correctRate: response.correct_rate,
         },
+        debugReport: response,
       }
     case 'GET_TEST_HISTORY_SUCCESS':
       return {
