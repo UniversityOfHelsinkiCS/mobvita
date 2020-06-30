@@ -39,9 +39,11 @@ const TestIndex = () => {
   }
 
   useEffect(() => {
-    dispatch(getGroups())
-    dispatch(getHistory(learningLanguage))
-  }, [])
+    if (!sessionId) {
+      dispatch(getGroups())
+      dispatch(getHistory(learningLanguage))
+    }
+  }, [sessionId])
 
   useEffect(() => {
     if (!groups) return
