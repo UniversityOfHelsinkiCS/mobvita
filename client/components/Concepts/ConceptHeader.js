@@ -16,6 +16,12 @@ const ConceptHeader = ({ target }) => {
         text: group.groupName,
         value: group.group_id,
       })))
+  const { currentId } = useSelector(({ groups }) => (
+    {
+      currentId: groups.testConcepts
+            && groups.testConcepts.group
+            && groups.testConcepts.group.group_id,
+    }))
 
   let title
   switch (target) {
@@ -29,6 +35,7 @@ const ConceptHeader = ({ target }) => {
       title = intl.formatMessage({ id: 'user-exercise-settings' })
   }
   if (target === 'groups') {
+    console.log(currentId)
     return (
       <div style={{ display: 'flex' }}>
         <h2 className="concept-title">
@@ -37,7 +44,7 @@ const ConceptHeader = ({ target }) => {
           <Dropdown
             inline
             options={groupOptions}
-            defaultValue={groupOptions[0].value}
+            value={currentId}
             onChange={(_, { value }) => history.push(`/groups/${value}/concepts`)}
           />
         </h2>
