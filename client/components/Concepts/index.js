@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import { useParams, useHistory } from 'react-router-dom'
 import { getStoryAction } from 'Utilities/redux/storiesReducer'
-import { getTestConcepts, getGroup } from 'Utilities/redux/groupsReducer'
+import { getTestConcepts, getGroup, getGroups } from 'Utilities/redux/groupsReducer'
 import { getSelf } from 'Utilities/redux/userReducer'
 import { learningLanguageSelector } from 'Utilities/common'
 import Spinner from 'Components/Spinner'
@@ -62,8 +62,9 @@ const Concepts = () => {
     if (target === 'groups') {
       dispatch(getTestConcepts(id, learningLanguage))
       dispatch(getGroup(id))
+      dispatch(getGroups())
     }
-  }, [])
+  }, [id])
 
   useEffect(() => {
     if (target === 'stories') dispatch(getStoryAction(id))
