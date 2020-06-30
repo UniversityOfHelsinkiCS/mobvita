@@ -3,12 +3,14 @@ import { Link } from 'react-router-dom'
 import { Tab } from 'semantic-ui-react'
 import { useIntl } from 'react-intl'
 import Progress from 'Components/Profile/Progress'
+import { useSelector } from 'react-redux'
 import ChangePassword from './ChangePassword'
 import Settings from './Settings'
 
 
 export default function Profile({ location }) {
   const intl = useIntl()
+  const { username } = useSelector(({ user }) => user.data.user)
 
   const panes = [
     {
@@ -53,10 +55,13 @@ export default function Profile({ location }) {
   }
 
   return (
-    <Tab
-      panes={panes}
-      activeIndex={index}
-    />
+    <div className="component-container">
+      <h2>{username}</h2>
+      <Tab
+        panes={panes}
+        activeIndex={index}
+      />
+    </div>
 
   )
 }

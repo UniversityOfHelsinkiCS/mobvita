@@ -35,7 +35,6 @@ const ConceptHeader = ({ target }) => {
       title = intl.formatMessage({ id: 'user-exercise-settings' })
   }
   if (target === 'groups') {
-    console.log(currentId)
     return (
       <div style={{ display: 'flex' }}>
         <h2 className="concept-title">

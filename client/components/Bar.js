@@ -194,7 +194,7 @@ export default function Bar({ history }) {
             </Menu.Item>
             {user && !smallWindow
               && (
-                <div>{`${user.user.username}`}</div>
+                <div style={{ fontSize: '20px' }}>{`${user.user.username}`}</div>
               )
             }
 
