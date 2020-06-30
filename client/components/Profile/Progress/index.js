@@ -68,7 +68,7 @@ const Progress = () => {
       {hiddenFeatures
       && (
       <div>
-        <h2>Practice History</h2>
+        <h2><FormattedMessage id="Practice history" /></h2>
         <History history={history} dateFormat="DD.MM." />
       </div>
       )}
