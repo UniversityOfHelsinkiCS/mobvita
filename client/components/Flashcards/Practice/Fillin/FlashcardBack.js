@@ -2,9 +2,16 @@ import React, { useEffect, useCallback } from 'react'
 import FlashcardResult from './FlashcardResult'
 import Flashcard from '../Flashcard'
 
-const FlashcardBack = (
-  { answerCorrect, glosses, focusedAndBigScreen, flipped, setSwipeIndex, swipeIndex, ...props },
-) => {
+const FlashcardBack = ({
+  answerCorrect,
+  glosses,
+  focusedAndBigScreen,
+  flipped,
+  setSwipeIndex,
+  swipeIndex,
+  lemma,
+  ...props
+}) => {
   const handleEnter = useCallback((event) => {
     if (event.keyCode === 13) {
       setSwipeIndex(swipeIndex + 1)
@@ -27,6 +34,17 @@ const FlashcardBack = (
 
   return (
     <Flashcard {...props}>
+      <span
+        style={{
+          textAlign: 'center',
+          fontWeight: 550,
+          fontSize: '20px',
+          paddingBottom: '1em',
+          paddingTop: '1em',
+        }}
+      >
+        {lemma}
+      </span>
       <div className="flashcard-text-container">
         <div className="flashcard-translations">
           <ul>{translations}</ul>

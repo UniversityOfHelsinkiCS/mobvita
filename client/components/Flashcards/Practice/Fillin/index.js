@@ -29,6 +29,7 @@ const Fillin = ({
     format,
     _id: id,
     stage,
+    lemma,
   } = card
 
   const getRemovedHints = () => card.hint.filter(h => !hints.includes(h.hint))
@@ -78,6 +79,7 @@ const Fillin = ({
     flipCard,
     focusedAndBigScreen,
     handleEdit,
+    lemma,
   }
 
   if (editing) {
@@ -101,7 +103,6 @@ const Fillin = ({
         answerChecked={answerChecked}
         checkAnswer={checkAnswer}
         hints={hints}
-        lemma={card.lemma}
         {...cardProps}
       />
       <FlashcardBack

@@ -3,14 +3,12 @@ import { FormattedMessage } from 'react-intl'
 import { Button } from 'react-bootstrap'
 
 const FlashcardEndView = ({ handleNewDeck }) => (
-  <div className="flashcard">
-    <div className="flashcard-content">
-      <div className="flashcard-text-container">
-        <p style={{ fontWeight: '550', fontSize: '1.5em' }}>
-          <FormattedMessage id="well-done-click-next-card-to-play-another-set-of-cards" />
-        </p>
-      </div>
-      <div className="flashcard-input">
+  <div className="flashcard center">
+    <div>
+      <p style={{ fontWeight: '500', fontSize: '1.2em', padding: '1em' }}>
+        <FormattedMessage id="well-done-click-next-card-to-play-another-set-of-cards" />
+      </p>
+      <div className="flashcard-input" style={{ flex: 0 }}>
         <Button
           className="flashcard-button"
           block

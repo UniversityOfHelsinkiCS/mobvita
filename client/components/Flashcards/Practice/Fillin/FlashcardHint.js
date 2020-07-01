@@ -9,7 +9,7 @@ const FlashcardHint = ({ hints, stage }) => {
 
   const { foreground } = flashcardColors
 
-  if (!hints || !hints[0]) return null
+  if (!hints || !hints[0]) return <div className="flashcard-hint" />
 
   const hintList = () => hints.map(h => (
     <li key={h} dangerouslySetInnerHTML={{ __html: h }} />
