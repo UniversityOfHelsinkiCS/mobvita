@@ -65,6 +65,7 @@ const LandingPage = () => {
             onClick={loginAnon}
             className="landing-page-button"
             style={{ marginRight: '1em', marginBottom: '1em' }}
+            data-cy="login-anon"
           >
             <FormattedMessage id="try-revita" />
           </button>
@@ -84,6 +85,7 @@ const LandingPage = () => {
                 onClick={() => setRegistering(true)}
                 className="landing-page-button"
                 style={{ marginBottom: '1em' }}
+                data-cy="register-button"
               >
                 <FormattedMessage id="Register" />
               </button>
