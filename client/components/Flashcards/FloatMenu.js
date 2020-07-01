@@ -24,48 +24,128 @@ const FabOption = ({ handleClick, iconStyle, translationId, children }) => (
   </button>
 )
 
+const CardManagmentOptions = ({ handleOptionClick, handleOptionClickWithStory }) => {
+  const { storyId } = useParams()
+
+  return (
+    <div className="gap-row-1">
+      <button
+        type="button"
+        className="flashcard-fab-option gap-2"
+      >
+        <div
+          className="flashcard-fab-icon"
+          style={{ paddingBottom: '0.5em', paddingRight: '0.1em' }}
+        >
+          <Icon name="language" style={{ margin: 'auto', padding: 0 }} />
+        </div>
+        <span className="flashcard-fab-text gap-1">
+          <FormattedMessage id="translation-target-language" />
+          <SelectLanguage />
+        </span>
+      </button>
+      {storyId
+        && (
+          <FabOption
+            handleClick={() => handleOptionClick('fillin')}
+            translationId="all-flashcards"
+          >
+            <img
+              src={images.flashcardIcon}
+              alt="three cards"
+              width="16px"
+              style={{ margin: 'auto' }}
+            />
+          </FabOption>
+        )
+      }
+      <FabOption
+        handleClick={() => handleOptionClickWithStory('list')}
+        translationId="Flashcard list"
+        iconStyle={{ paddingBottom: '0.5em', paddingRight: '0.1em' }}
+      >
+        <Icon name="list alternate outline" style={{ margin: 'auto' }} />
+      </FabOption>
+      <FabOption
+        handleClick={() => handleOptionClick('new')}
+        translationId="add-new-flashcard"
+        iconStyle={{ paddingBottom: '0.5em', paddingLeft: '0.1em' }}
+      >
+        <Icon name="edit" style={{ margin: 'auto' }} />
+      </FabOption>
+    </div>
+  )
+}
+
+const PracticeModeOptions = ({ handleOptionClickWithStory }) => {
+  const { flashcardArticles } = useSelector(({ metadata }) => metadata)
+
+  const articleLabel = flashcardArticles && flashcardArticles.join('/')
+
+  return (
+    <div className="gap-row-1">
+      <FabOption
+        handleClick={() => handleOptionClickWithStory('fillin')}
+        iconStyle={{
+          paddingBottom: '0.4em',
+          paddingRight: '0.05em',
+          backgroundColor: 'rgb(199, 206, 234)',
+        }}
+        translationId="fill-in"
+      >
+        <Icon name="keyboard outline" style={{ margin: 'auto' }} />
+      </FabOption>
+      {flashcardArticles
+        && (
+          <button
+            type="button"
+            onClick={() => handleOptionClickWithStory('article')}
+            className="flashcard-fab-option gap-2"
+          >
+            <div
+              className="flashcard-fab-icon"
+              style={{ paddingBottom: '0.4em', backgroundColor: 'rgb(255, 218, 193)' }}
+            >
+              <Icon name="font" style={{ margin: 'auto' }} />
+            </div>
+            <span className="flashcard-fab-text">{articleLabel}</span>
+          </button>
+        )
+      }
+      <FabOption
+        handleClick={() => handleOptionClickWithStory('quick')}
+        iconStyle={{
+          paddingBottom: '0.4em',
+          paddingTop: '0.2em',
+          backgroundColor: 'rgb(253, 253, 150)',
+        }}
+        translationId="Quick cards"
+      >
+        <Icon name="lightning" style={{ margin: 'auto' }} />
+      </FabOption>
+    </div>
+  )
+}
+
 const FloatMenu = () => {
   const [open, setOpen] = useState(false)
-
-  const { flashcardArticles } = useSelector(({ metadata }) => metadata)
 
   const history = useHistory()
   const { storyId } = useParams()
 
-  const story = storyId ? `/${storyId}` : ''
-  const articleLabel = flashcardArticles && flashcardArticles.join('/')
+  const storyUrl = storyId ? `/${storyId}` : ''
 
   const handleFabClick = () => {
     setOpen(!open)
   }
 
-  const handleAllCardsClick = () => {
-    history.push('/flashcards/fillin')
+  const handleOptionClick = (mode) => {
+    history.push(`/flashcards/${mode}`)
     setOpen(false)
   }
 
-  const handleFillinClick = () => {
-    history.push(`/flashcards/fillin${story}`)
-    setOpen(false)
-  }
-
-  const handleCreateNewClick = () => {
-    history.push('/flashcards/new')
-    setOpen(false)
-  }
-
-  const handleArticleClick = () => {
-    history.push(`/flashcards/article${story}`)
-    setOpen(false)
-  }
-
-  const handleQuickCardsClick = () => {
-    history.push(`/flashcards/quick${story}`)
-    setOpen(false)
-  }
-
-  const handleFlashcardListClick = () => {
-    history.push(`/flashcards/list${story}`)
+  const handleOptionClickWithStory = (mode) => {
+    history.push(`/flashcards/${mode}${storyUrl}`)
     setOpen(false)
   }
 
@@ -77,84 +157,14 @@ const FloatMenu = () => {
       {open
         && (
           <div
-            className="flex-column-reverse padding-bottom-1 gap-row-1 slide-from-left"
+            className="flex-column-reverse padding-bottom-1 gap-row-2 slide-from-left"
             style={{ paddingLeft: '0.3em' }}
           >
-            {storyId
-              && (
-                <FabOption
-                  handleClick={handleAllCardsClick}
-                  translationId="all-flashcards"
-                >
-                  <img
-                    src={images.flashcardIcon}
-                    alt="three cards"
-                    width="16px"
-                    style={{ margin: 'auto' }}
-                  />
-                </FabOption>
-              )
-            }
-            <FabOption
-              handleClick={handleFillinClick}
-              iconStyle={{ paddingBottom: '0.4em', paddingRight: '0.05em' }}
-              translationId="fill-in"
-            >
-              <Icon name="keyboard outline" style={{ margin: 'auto' }} />
-            </FabOption>
-            <FabOption
-              handleClick={handleQuickCardsClick}
-              iconStyle={{ paddingBottom: '0.4em', paddingTop: '0.2em' }}
-              translationId="Quick cards"
-            >
-              <Icon name="lightning" style={{ margin: 'auto' }} />
-            </FabOption>
-            {flashcardArticles
-              && (
-                <button
-                  type="button"
-                  onClick={handleArticleClick}
-                  className="flashcard-fab-option gap-2"
-                >
-                  <div
-                    className="flashcard-fab-icon"
-                    style={{ paddingBottom: '0.4em' }}
-                  >
-                    <Icon name="font" style={{ margin: 'auto' }} />
-                  </div>
-                  <span className="flashcard-fab-text">{articleLabel}</span>
-                </button>
-              )
-            }
-            <FabOption
-              handleClick={handleFlashcardListClick}
-              translationId="Flashcard list"
-              iconStyle={{ paddingBottom: '0.5em', paddingRight: '0.1em' }}
-            >
-              <Icon name="list alternate outline" style={{ margin: 'auto' }} />
-            </FabOption>
-            <FabOption
-              handleClick={handleCreateNewClick}
-              translationId="add-new-flashcard"
-              iconStyle={{ paddingBottom: '0.5em', paddingLeft: '0.1em' }}
-            >
-              <Icon name="edit" style={{ margin: 'auto' }} />
-            </FabOption>
-            <button
-              type="button"
-              className="flashcard-fab-option gap-2"
-            >
-              <div
-                className="flashcard-fab-icon"
-                style={{ paddingBottom: '0.5em', paddingRight: '0.1em' }}
-              >
-                <Icon name="language" style={{ margin: 'auto', padding: 0 }} />
-              </div>
-              <span className="flashcard-fab-text gap-1">
-                <FormattedMessage id="translation-target-language" />
-                <SelectLanguage />
-              </span>
-            </button>
+            <PracticeModeOptions handleOptionClickWithStory={handleOptionClickWithStory} />
+            <CardManagmentOptions
+              handleOptionClick={handleOptionClick}
+              handleOptionClickWithStory={handleOptionClickWithStory}
+            />
           </div>
         )}
     </div>
