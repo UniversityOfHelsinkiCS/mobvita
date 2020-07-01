@@ -3,16 +3,17 @@ import { useSelector, useDispatch } from 'react-redux'
 import { Navbar } from 'react-bootstrap'
 import Headroom from 'react-headroom'
 import { Icon } from 'semantic-ui-react'
+import { useHistory } from 'react-router-dom'
 import { sidebarSetOpen } from 'Utilities/redux/sidebarReducer'
 import { useIntl } from 'react-intl'
 import useWindowDimensions from 'Utilities/windowDimensions'
 import { hiddenFeatures, images } from 'Utilities/common'
 
-export default function NavBar({ history }) {
+export default function NavBar() {
   const { user } = useSelector(({ user }) => ({ user: user.data }))
   const open = useSelector(({ sidebar }) => sidebar.open)
   const dispatch = useDispatch()
-  const intl = useIntl()
+  const history = useHistory()
 
   const smallWindow = useWindowDimensions().width < 640
 
@@ -41,6 +42,8 @@ export default function NavBar({ history }) {
 
   const blackToWhiteFilter = 'invert(92%) sepia(94%) saturate(29%) hue-rotate(251deg) '
     + 'brightness(108%) contrast(100%)'
+
+  if (!user) return null
 
   return (
     <Headroom

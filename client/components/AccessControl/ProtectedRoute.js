@@ -6,11 +6,11 @@ const ProtectedRoute = ({ component: Component, languageRequired = true, ...rest
   const { data: user } = useSelector(({ user }) => user)
   const learningLanguage = user ? user.user.last_used_language : null
 
-  let redirectPath = '/login'
+  let redirectPath = '/'
   let isRedirected = !user
 
   if (languageRequired) {
-    redirectPath = user ? '/learningLanguage' : '/login'
+    redirectPath = user ? '/learningLanguage' : '/'
     isRedirected = !user || !learningLanguage
   }
 

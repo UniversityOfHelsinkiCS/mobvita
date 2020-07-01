@@ -1062,6 +1062,46 @@ body {
   height: 100%;
 }
 
+.landing-page {
+  &:before {
+    content: '';
+    position: fixed;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    background-image:
+      linear-gradient(rgba(0, 0, 0, 0.45), rgba(0, 0, 0, 0.45)),
+      url('./bookstack.jpg');
+    background-size: cover;
+    filter: blur(3px);
+    -webkit-filter: blur(3px);
+    z-index: -1;
+  }
+
+  height: 100vh;
+  width: 100vw;
+  z-index: 0;
+  padding: 3em 1em;
+
+  &-button {
+    border-radius: 1em;
+    padding: 0.8em 2em;
+    background-color: #4c91cd;
+    color: white;
+    font-weight: 700;
+    border: none;
+    text-transform: uppercase;
+  }
+}
+
+.login-form {
+  background-color: white;
+  border-radius: 0.5em;
+  padding: 1em 2em;
+  margin-bottom: 1em;
+  //color: #777;
+}
 
 // General classes
 .auto {
@@ -1319,5 +1359,13 @@ body {
     animation: slide-in 0.5s forwards;
       @keyframes slide-in {
       100% { transform: translateX(0%); }
+    }
+}
+
+.slide-from-bottom {
+  transform: translateY(100%);
+    animation: slide-in 0.4s forwards;
+      @keyframes slide-in {
+      100% { transform: translateY(0%); }
     }
 }

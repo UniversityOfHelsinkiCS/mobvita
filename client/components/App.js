@@ -48,8 +48,12 @@ const App = () => {
     <>
       <ReactRouter history={history}>
         <Toaster />
-        <Offline><div className="offline-notification" polling={{ timeout: 20000 }}> <h3>Please re-connect to the internet to use revita!</h3></div></Offline>
-        <Route component={NavBar} />
+        <Offline polling={{ timeout: 20000 }}>
+          <div className="offline-notification">
+            <h3>Please re-connect to the internet to use revita!</h3>
+          </div>
+        </Offline>
+        <NavBar />
         <div style={{ display: 'flex' }}>
           <Route component={Bar} />
           <Route component={StoryFetcher} />
