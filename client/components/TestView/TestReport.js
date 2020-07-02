@@ -18,7 +18,6 @@ const TestReport = () => {
       </Modal.Header>
       <Modal.Content>
         <>
-          <div>{translate('correct-answers')}: {report.correct || '-'}</div>
           <div>{translate('total-answers')}: {report.total || '-'}</div>
           <div>{translate('Accuracy')}: {report.correctRate || '-'}%</div>
         </>
