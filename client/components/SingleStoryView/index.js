@@ -4,6 +4,7 @@ import { Link } from 'react-router-dom'
 import { Divider, Segment, Header } from 'semantic-ui-react'
 import { Button } from 'react-bootstrap'
 import { FormattedMessage } from 'react-intl'
+import useWindowDimensions from 'Utilities/windowDimensions'
 import { getStoryAction } from 'Utilities/redux/storiesReducer'
 import {
   getTranslationAction,
@@ -23,6 +24,8 @@ import Footer from '../Footer'
 
 const SingleStoryView = ({ match }) => {
   const dispatch = useDispatch()
+  const { width } = useWindowDimensions()
+
   const { story, pending } = useSelector(({ stories, locale }) => ({ story: stories.focused, pending: stories.focusedPending, locale }))
   const learningLanguage = useSelector(learningLanguageSelector)
   const dictionaryLanguage = useSelector(({ user }) => user.data.user.last_trans_language)
@@ -63,6 +66,8 @@ const SingleStoryView = ({ match }) => {
     return word.surface
   }
 
+  const showFooter = width > 640
+
   return (
     <div>
       <div className="center auto">
@@ -87,7 +92,7 @@ const SingleStoryView = ({ match }) => {
         </div>
         <DictionaryHelp />
       </div>
-      <Footer />
+      {showFooter && <Footer />}
     </div>
   )
 }

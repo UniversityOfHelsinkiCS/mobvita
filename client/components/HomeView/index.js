@@ -5,6 +5,7 @@ import { Button } from 'react-bootstrap'
 import { images } from 'Utilities/common'
 
 import useWindowDimensions from 'Utilities/windowDimensions'
+import Footer from 'Components/Footer'
 import PracticeModal from './PracticeModal'
 import EloChart from './EloChart'
 
@@ -61,15 +62,16 @@ const HomeView = () => {
             <Button style={{ display: 'none' }} onClick={() => undefun()}>hidden breaking thing</Button>
           </div>
           <EloChart width="30%" />
+          <Footer />
         </div>
       ) : (
-          <>
-            <EloChart width="100%" />
-            <PracticeModal trigger={<PracticeButton data-cy="practice-now" />} />
-            <FlashcardsButton />
-            <Button style={{ display: 'none' }} onClick={() => undefun()}>hidden breaking thing</Button>
-          </>
-        )}
+        <>
+          <EloChart width="100%" />
+          <PracticeModal trigger={<PracticeButton data-cy="practice-now" />} />
+          <FlashcardsButton />
+          <Button style={{ display: 'none' }} onClick={() => undefun()}>hidden breaking thing</Button>
+        </>
+      )}
     </div>
   )
 }

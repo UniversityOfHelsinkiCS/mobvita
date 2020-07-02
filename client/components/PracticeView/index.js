@@ -29,7 +29,7 @@ const PracticeView = () => {
   const dictionaryLanguage = useSelector(dictionaryLanguageSelector)
   const dispatch = useDispatch()
   const { id } = useParams()
-  const smallWindow = useWindowDimensions().width < 500
+  const { width } = useWindowDimensions()
 
   const story = useSelector(({ stories }) => stories.focused)
   const autoSpeak = useSelector(({ user }) => user.data.user.auto_speak)
@@ -79,6 +79,9 @@ const PracticeView = () => {
     }
   }
 
+  const showVirtualKeyboard = width > 500 && keyboardLayouts[learningLanguage]
+  const showFooter = width > 640
+
   return (
     <div>
       <div style={{ display: 'flex', justifyContent: 'center' }}>
@@ -109,14 +112,12 @@ const PracticeView = () => {
               handleWordClick={handleWordClick}
               handleInputChange={handleAnswerChange}
             />
-            {keyboardLayouts[learningLanguage] && !smallWindow
-              && <VirtualKeyboard />
-            }
+            {showVirtualKeyboard && <VirtualKeyboard />}
           </div>
         </Segment>
         <DictionaryHelp />
       </div>
-      <Footer />
+      {showFooter && <Footer />}
     </div>
   )
 }

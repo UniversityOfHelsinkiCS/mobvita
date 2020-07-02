@@ -1,10 +1,10 @@
 import React from 'react'
-import useWindowDimensions from 'Utilities/windowDimensions'
+import { useHistory } from 'react-router-dom'
 
 const Footer = () => {
-  const smallWindow = useWindowDimensions().width < 640
+  const history = useHistory()
 
-  if (smallWindow) return null
+  const showResonsiveVoiceMention = history.location.pathname.includes('stories')
 
   return (
     <footer className="footer-wrapper">
@@ -12,9 +12,13 @@ const Footer = () => {
         <div>
           © University of Helsinki 2015–2020
         </div>
-        <div>
-          <a href="https://responsivevoice.org">ResponsiveVoice-NonCommercial</a> licensed under <a href="https://creativecommons.org/licenses/by-nc-nd/4.0/"><img title="ResponsiveVoice Text To Speech" src="https://responsivevoice.org/wp-content/uploads/2014/08/95x15.png" alt="95x15" width="95" height="15" /></a>
-        </div>
+        {showResonsiveVoiceMention
+          && (
+            <div>
+              <a href="https://responsivevoice.org">ResponsiveVoice-NonCommercial</a> licensed under <a href="https://creativecommons.org/licenses/by-nc-nd/4.0/"><img title="ResponsiveVoice Text To Speech" src="https://responsivevoice.org/wp-content/uploads/2014/08/95x15.png" alt="95x15" width="95" height="15" /></a>
+            </div>
+          )
+        }
       </div>
     </footer>
   )
