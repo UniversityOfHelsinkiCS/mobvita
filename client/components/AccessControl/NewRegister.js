@@ -1,21 +1,25 @@
 import React, { useState, useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
+import { useHistory } from 'react-router-dom'
 import { registerUser } from 'Utilities/redux/registerReducer'
+import { getSelf } from 'Utilities//redux/userReducer'
 import { Form, Checkbox } from 'semantic-ui-react'
 import TermsAndConditions from 'Components/TermsAndConditions'
 import { useIntl } from 'react-intl'
 import { setNotification } from 'Utilities/redux/notificationReducer'
 import { localeCodeToName } from 'Utilities/common'
-import { Button } from 'react-bootstrap'
+import { Button, Spinner } from 'react-bootstrap'
 
-const NewRegister = ({ setRegistering }) => {
+const NewRegister = () => {
+  const intl = useIntl()
+  const history = useHistory()
+
   const [formState, setFormState] = useState({
     email: '',
     username: '',
     password: '',
     passwordAgain: '',
   })
-  const intl = useIntl()
   const [accepted, setAccepted] = useState(false)
 
   const toggleAccepted = () => {
@@ -34,8 +38,9 @@ const NewRegister = ({ setRegistering }) => {
   }, [error])
 
   useEffect(() => {
-    if (!pending && accountCreated) {
-      setRegistering(false)
+    if (!pending && accountCreated && history.location.pathname.includes('register')) {
+      dispatch(getSelf())
+      history.push('/home')
     }
   }, [pending])
 
@@ -116,8 +121,12 @@ const NewRegister = ({ setRegistering }) => {
           <button
             type="submit"
             className="landing-page-button"
+            disabled={pending}
           >
-            {intl.formatMessage({ id: 'Register' })}
+            {pending
+              ? <Spinner animation="border" variant="info" size="sm" />
+              : <span>{intl.formatMessage({ id: 'Register' })}</span>
+            }
           </button>
         </div>
       </Form>

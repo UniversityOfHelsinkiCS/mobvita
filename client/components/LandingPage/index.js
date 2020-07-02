@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { FormattedMessage } from 'react-intl'
 import { Icon } from 'semantic-ui-react'
@@ -15,6 +15,13 @@ const LandingPage = () => {
 
   const open = useSelector(({ sidebar }) => sidebar.open)
   const locale = useSelector(({ locale }) => locale)
+  const { pending, accountCreated } = useSelector(({ register }) => register)
+
+  useEffect(() => {
+    if (!pending && accountCreated) {
+      setRegistering(false)
+    }
+  }, [pending])
 
   const loginAnon = () => dispatch(createAnonToken(localeCodeToName(locale)))
 
@@ -93,7 +100,7 @@ const LandingPage = () => {
           }
         </div>
         <div style={{ width: '40%', maxWidth: '520px', minWidth: '300px' }}>
-          {registering ? <NewRegister setRegistering={setRegistering} /> : <NewLogin />}
+          {registering ? <NewRegister /> : <NewLogin />}
         </div>
       </div>
     </div>
