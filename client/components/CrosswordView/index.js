@@ -32,18 +32,27 @@ const CrosswordView = () => {
     }
   ), {})
 
-  const moveTo = (clue) => {
-    setCurrentClue(clue)
-  }
-
   useEffect(() => {
     if (!currentClue) return
     crosswordRef.current.moveTo(currentClue.clue_direction, currentClue.clue_number)
   }, [currentClue])
 
+  const handleWordChange = (number) => {
+    if (!data.clue) return
+    setCurrentClue(data.clue.find(clue => clue.clue_number === Number(number)))
+  }
 
   const clues = data.clue && data.clue.map((clue) => {
-    if (clue.clue_number) return <span onClick={() => moveTo(clue)} key={clue.ID}><b>{clue.clue_number}. {clue.clue_direction}</b></span>
+    if (clue.clue_number) {
+      return (
+        <span
+          style={{ backgroundColor: currentClue && currentClue.ID === clue.ID ? 'yellow' : '' }}
+          onClick={() => setCurrentClue(clue)}
+          key={clue.ID}
+        ><b>{clue.clue_number}. {clue.clue_direction}</b>
+        </span>
+      )
+    }
     return <PlainWord key={clue.ID} surface={clue.surface} lemmas={clue.lemmas} wordId={clue.ID}>{clue.surface}</PlainWord>
   })
 
@@ -52,7 +61,7 @@ const CrosswordView = () => {
     const index = data.clue.findIndex(clue => clue.ID === currentClue.ID)
     const nextClue = data.clue.slice(index + 1).find(clue => clue.clue_number)
 
-    moveTo(nextClue)
+    setCurrentClue(nextClue)
   }
 
   useEffect(() => {
@@ -67,7 +76,7 @@ const CrosswordView = () => {
 
   return (
     <div style={{ display: 'flex' }}>
-      <Crossword data={formattedData} useStorage={false} ref={crosswordRef} />
+      <Crossword onWordChange={handleWordChange} data={formattedData} useStorage={false} ref={crosswordRef} />
       <div style={{ width: '600px', height: '600px', overflow: 'scroll' }}>{clues}</div>
     </div>
   )
