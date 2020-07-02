@@ -24,7 +24,6 @@ const SettingsModal = ({ trigger }) => {
 
   useEffect(() => {
     if (!pending) {
-      console.log('Fetching concepts metadata again')
       dispatch(getMetadata(learningLanguage))
     }
   }, [learningLanguage])
@@ -32,17 +31,6 @@ const SettingsModal = ({ trigger }) => {
   useEffect(() => {
     if (open) dispatch(getGroups())
   }, [open])
-
-  const levels = []
-  if (concepts) {
-    concepts.forEach((concept) => {
-      if (concept.level) {
-        concept.level.forEach((level) => {
-          if (!levels.includes(level)) levels.push(level)
-        })
-      }
-    })
-  }
 
   const skillLevels = ['A1', 'A2', 'B1', 'B2', 'C1', 'C2']
 
@@ -53,7 +41,6 @@ const SettingsModal = ({ trigger }) => {
     let resultObject = {}
     const index = skillLevels.findIndex(element => element === newLevel)
     const levelsToBeActivated = skillLevels.slice(0, index + 1)
-    console.log('Gonna activate all these levels: ', levelsToBeActivated)
 
     concepts.forEach((concept) => {
       const { level, exer_enabled } = concept
@@ -82,7 +69,6 @@ const SettingsModal = ({ trigger }) => {
   }
 
   const handleLevelSelect = (level) => {
-    console.log('Handling level select ', level)
     const newConceptSettings = getNewConceptSettings(level)
     dispatch(updateExerciseSettings(newConceptSettings))
     dispatch(
@@ -148,7 +134,7 @@ const SettingsModal = ({ trigger }) => {
           <FormattedMessage id="Level" />
         </label>
         <ButtonGroup name="difficultyButtons" id="difficultyButtons" size="md">
-          {levels.sort().map(level => <Button key={level} onClick={() => handleLevelSelect(level)}>{level}</Button>)}
+          {skillLevels.sort().map(level => <Button key={level} onClick={() => handleLevelSelect(level)}>{level}</Button>)}
         </ButtonGroup>
         {!smallscreen && (
           <Button
