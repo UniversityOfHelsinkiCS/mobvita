@@ -39,8 +39,8 @@ const Progress = () => {
 
   useEffect(() => {
     dispatch(getSelf())
-    dispatch(getHistory(learningLanguage))
-  }, [])
+    dispatch(getHistory(learningLanguage, startDate, endDate))
+  }, [startDate, endDate])
 
   if (pending || pending === undefined) return <Spinner />
 

@@ -2,9 +2,8 @@ import moment from 'moment'
 import callBuilder from '../apiConnection'
 
 
-export const getHistory = (language) => {
-  const now = moment().format('YYYY-MM-DD')
-  const route = `/user/history/${language}?start_time=2019-01-01&end_time=${now}`
+export const getHistory = (language, startDate, endDate) => {
+  const route = `/user/history/${language}?start_time=${moment(startDate).format('YYYY-MM-DD')}&end_time=${moment(endDate).format('YYYY-MM-DD')}`
   const prefix = 'GET_EXERCISE_HISTORY'
   return callBuilder(route, prefix, 'get')
 }

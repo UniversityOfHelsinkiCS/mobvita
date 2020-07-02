@@ -1,11 +1,17 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState } from 'react'
 import { useSelector } from 'react-redux'
 import { Table } from 'semantic-ui-react'
 import moment from 'moment'
+import { hiddenFeatures } from 'Utilities/common'
 import Concept from './Concept'
 
+
 const History = ({ history, dateFormat }) => {
-  const [conceptSet, setConceptSet] = useState([])
+  const [colors, setColors] = useState({
+    best: [0, 255, 0],
+    worst: [230, 255, 230],
+    noData: [255, 255, 255],
+  })
 
   const [page, setPage] = useState(0)
   const { concepts } = useSelector(({ metadata }) => metadata)
@@ -16,13 +22,17 @@ const History = ({ history, dateFormat }) => {
   }
 
   const calculateColor = (conceptStatistic) => {
-    if (!conceptStatistic) return null
+    const { best, worst, noData } = colors
+    if (!conceptStatistic) return `rgb(${colors.noData.join(',')})`
     const { correct, total } = conceptStatistic
-    const score = total === 0 ? 0 : correct / total
+    if (total === 0) return `rgb(${noData.join(',')})`
 
-    const amount = 230 - score * 230
+    const score = correct / total
+    const red = best[0] + score * (worst[0] - best[0])
+    const green = best[1] + score * (worst[1] - best[1])
+    const blue = best[2] + score * (worst[2] - best[2])
 
-    return `rgb(${amount},255,${amount})`
+    return `rgb(${red},${green},${blue})`
   }
 
   const calculatePage = () => {
@@ -66,22 +76,9 @@ const History = ({ history, dateFormat }) => {
 
     return conceptTree
   }
-
-  const findConceptOrder = (conceptId) => {
-    const concept = concepts.find(concept => concept.concept_id === conceptId)
-    if (!concept) return 999999
-    return concept['UI-order']
+  const handleColorChange = color => (e) => {
+    setColors({ ...colors, [color]: e.target.value.split(',') })
   }
-
-  useEffect(() => {
-    if (!history) return
-    const _set = new Set()
-    history.forEach((test) => {
-      Object.keys(test.concept_statistics).forEach(conceptId => _set.add(conceptId))
-    })
-
-    setConceptSet(Array.from(_set).sort((a, b) => findConceptOrder(a) - findConceptOrder(b)))
-  }, [history])
 
   if (!history) return null
   return (
@@ -89,6 +86,17 @@ const History = ({ history, dateFormat }) => {
       <button type="button" onClick={() => switchPage(-1)}>-</button>
       <span style={{ marginLeft: '1em', marginRight: '1em' }}>{page + 1} / {1 + Math.trunc(history.length / 8)}</span>
       <button type="button" onClick={() => switchPage(1)}>+</button>
+      {hiddenFeatures
+      && (
+      <>
+        best:
+        <input type="text" value={colors.best.join(',')} onChange={handleColorChange('best')} />
+        worst:
+        <input type="text" value={colors.worst.join(',')} onChange={handleColorChange('worst')} />
+        no data:
+        <input type="text" value={colors.noData.join(',')} onChange={handleColorChange('noData')} />
+      </>
+      )}
       <Table celled fixed>
         <Table.Header>
           <Table.HeaderCell>Concepts</Table.HeaderCell>
