@@ -8,10 +8,12 @@ import Concept from './Concept'
 
 const History = ({ history, dateFormat }) => {
   const [colors, setColors] = useState({
-    best: [0, 255, 0],
-    worst: [230, 255, 230],
-    noData: [255, 255, 255],
+    best: '0,255,0',
+    worst: '230,255,230',
+    noData: '255, 255, 255',
   })
+
+  const [colorTest, setColorTest] = useState(0.5)
 
   const [page, setPage] = useState(0)
   const { concepts } = useSelector(({ metadata }) => metadata)
@@ -21,18 +23,25 @@ const History = ({ history, dateFormat }) => {
     return concept ? concept.name : id
   }
 
-  const calculateColor = (conceptStatistic) => {
-    const { best, worst, noData } = colors
-    if (!conceptStatistic) return `rgb(${colors.noData.join(',')})`
-    const { correct, total } = conceptStatistic
-    if (total === 0) return `rgb(${noData.join(',')})`
+  const colorFromScore = (score) => {
+    const best = colors.best.split(',').map(Number)
+    const worst = colors.worst.split(',').map(Number)
 
-    const score = correct / total
-    const red = best[0] + score * (worst[0] - best[0])
-    const green = best[1] + score * (worst[1] - best[1])
-    const blue = best[2] + score * (worst[2] - best[2])
+    const red = worst[0] + Number(score) * (best[0] - worst[0])
+    const green = worst[1] + Number(score) * (best[1] - worst[1])
+    const blue = worst[2] + Number(score) * (best[2] - worst[2])
 
     return `rgb(${red},${green},${blue})`
+  }
+
+  const calculateColor = (conceptStatistic) => {
+    const { noData } = colors
+    if (!conceptStatistic) return `rgb(${noData})`
+    const { correct, total } = conceptStatistic
+    if (total === 0) return `rgb(${noData})`
+
+    const score = correct / total
+    return colorFromScore(score)
   }
 
   const calculatePage = () => {
@@ -76,8 +85,9 @@ const History = ({ history, dateFormat }) => {
 
     return conceptTree
   }
+
   const handleColorChange = color => (e) => {
-    setColors({ ...colors, [color]: e.target.value.split(',') })
+    setColors({ ...colors, [color]: e.target.value })
   }
 
   if (!history) return null
@@ -89,12 +99,20 @@ const History = ({ history, dateFormat }) => {
       {hiddenFeatures
       && (
       <>
+        <br />
         best:
-        <input type="text" value={colors.best.join(',')} onChange={handleColorChange('best')} />
+        <input type="text" value={colors.best} onChange={handleColorChange('best')} />
         worst:
-        <input type="text" value={colors.worst.join(',')} onChange={handleColorChange('worst')} />
+        <input type="text" value={colors.worst} onChange={handleColorChange('worst')} />
         no data:
-        <input type="text" value={colors.noData.join(',')} onChange={handleColorChange('noData')} />
+        <input type="text" value={colors.noData} onChange={handleColorChange('noData')} />
+        test (between 0 and 1):
+        <input
+          type="text"
+          style={{ backgroundColor: colorFromScore(colorTest) }}
+          value={colorTest}
+          onChange={e => setColorTest(e.target.value)}
+        />
       </>
       )}
       <Table celled fixed>
