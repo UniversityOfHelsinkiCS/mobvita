@@ -14,6 +14,7 @@ const History = ({ history, dateFormat }) => {
   })
 
   const [colorTest, setColorTest] = useState(0.5)
+  const [fillFromHistory, setFillFromHistory] = useState(true)
 
   const [page, setPage] = useState(0)
   const { concepts } = useSelector(({ metadata }) => metadata)
@@ -21,6 +22,18 @@ const History = ({ history, dateFormat }) => {
   const conceptIdToConceptName = (id) => {
     const concept = concepts.find(c => c.concept_id === id)
     return concept ? concept.name : id
+  }
+
+  const fromPreviousScored = (conceptId, date) => {
+    if (!fillFromHistory) return null
+    const found = history.find((data) => {
+      const previousDate = new Date(data.date)
+      if (new Date(date) < previousDate) return false
+      const concept = data.concept_statistics[conceptId]
+      return concept ? concept.total > 0 : false
+    })
+
+    return found ? found.concept_statistics[conceptId] : null
   }
 
   const colorFromScore = (score) => {
@@ -106,6 +119,7 @@ const History = ({ history, dateFormat }) => {
         <input type="text" value={colors.worst} onChange={handleColorChange('worst')} />
         no data:
         <input type="text" value={colors.noData} onChange={handleColorChange('noData')} />
+        <br />
         test (between 0 and 1):
         <input
           type="text"
@@ -113,6 +127,8 @@ const History = ({ history, dateFormat }) => {
           value={colorTest}
           onChange={e => setColorTest(e.target.value)}
         />
+        fillFromHistory:
+        <input type="checkbox" checked={fillFromHistory} onChange={() => setFillFromHistory(!fillFromHistory)} />
       </>
       )}
       <Table celled fixed>
@@ -131,6 +147,7 @@ const History = ({ history, dateFormat }) => {
               history={history.slice(page * 7, page * 7 + 7)}
               concept={concept}
               getConceptName={conceptIdToConceptName}
+              fromPreviousScored={fromPreviousScored}
             />
           ))}
         </Table.Body>

@@ -6,8 +6,15 @@ const ConceptTitle = ({ title, isParent }) => {
   return title
 }
 
-const Concept = ({ concept, history, calculateColor, getConceptName }) => {
+const Concept = ({ concept, history, calculateColor, getConceptName, fromPreviousScored }) => {
   const [collapsed, setCollapsed] = useState(false)
+
+  const calculateScoreWithPrevious = (test, concept) => {
+    if (test.concept_statistics[concept.id].total === 0) {
+      return calculateColor(fromPreviousScored(concept.id, test.date))
+    }
+    return calculateColor(test.concept_statistics[concept.id])
+  }
 
   return (
     <>
@@ -20,7 +27,7 @@ const Concept = ({ concept, history, calculateColor, getConceptName }) => {
         {history.map(test => (
           <Table.Cell
             key={`${test.date}-${concept.id}`}
-            style={{ backgroundColor: calculateColor(test.concept_statistics[concept.id]) }}
+            style={{ backgroundColor: calculateScoreWithPrevious(test, concept) }}
           />
         ))}
       </Table.Row>
@@ -31,6 +38,7 @@ const Concept = ({ concept, history, calculateColor, getConceptName }) => {
             history={history}
             calculateColor={calculateColor}
             getConceptName={getConceptName}
+            fromPreviousScored={fromPreviousScored}
           />
         ))}
     </>
