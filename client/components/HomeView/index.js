@@ -52,26 +52,31 @@ const FlashcardsButton = (props) => {
 
 const HomeView = () => {
   const { width } = useWindowDimensions()
+
+  const bigScreen = width > 740
+
   return (
-    <div className="component-container">
-      {width > 740 ? (
-        <div style={{ display: 'flex' }}>
-          <div style={{ flexGrow: 2 }}>
+    <div>
+      <div className="component-container">
+        {bigScreen ? (
+          <div style={{ display: 'flex' }}>
+            <div style={{ flexGrow: 2 }}>
+              <PracticeModal trigger={<PracticeButton data-cy="practice-now" />} />
+              <FlashcardsButton />
+              <Button style={{ display: 'none' }} onClick={() => undefun()}>hidden breaking thing</Button>
+            </div>
+            <EloChart width="30%" />
+          </div>
+        ) : (
+          <>
+            <EloChart width="100%" />
             <PracticeModal trigger={<PracticeButton data-cy="practice-now" />} />
             <FlashcardsButton />
             <Button style={{ display: 'none' }} onClick={() => undefun()}>hidden breaking thing</Button>
-          </div>
-          <EloChart width="30%" />
-          <Footer />
-        </div>
-      ) : (
-        <>
-          <EloChart width="100%" />
-          <PracticeModal trigger={<PracticeButton data-cy="practice-now" />} />
-          <FlashcardsButton />
-          <Button style={{ display: 'none' }} onClick={() => undefun()}>hidden breaking thing</Button>
-        </>
-      )}
+          </>
+        )}
+      </div>
+      {bigScreen && <Footer />}
     </div>
   )
 }
