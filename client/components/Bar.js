@@ -121,7 +121,7 @@ export default function Bar({ history }) {
                     className="logout-button"
                   >
                     <span className="padding-right-1">
-                      <FormattedMessage id="sign-out" />
+                      <FormattedMessage id={user.user.email === 'anonymous_email' ? 'Login' : 'sign-out'} />
                     </span>
                     <Icon name="sign out" />
                   </button>
