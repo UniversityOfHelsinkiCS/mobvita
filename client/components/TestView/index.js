@@ -126,7 +126,7 @@ const TestIndex = () => {
                 <FormattedMessage id={showHistory ? 'Hide history' : 'Show history'} />
               </Button>
 
-              {showHistory && (
+              {showHistory && history && (
               <>
                 <div className="date-pickers gap-1">
                   <div>
