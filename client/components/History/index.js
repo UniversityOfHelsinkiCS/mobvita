@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { useSelector } from 'react-redux'
 import { Table } from 'semantic-ui-react'
 import moment from 'moment'
@@ -18,6 +18,8 @@ const History = ({ history, dateFormat }) => {
 
   const [page, setPage] = useState(0)
   const { concepts } = useSelector(({ metadata }) => metadata)
+
+  useEffect(() => setPage(0), [history])
 
   const conceptIdToConceptName = (id) => {
     const concept = concepts.find(c => c.concept_id === id)
