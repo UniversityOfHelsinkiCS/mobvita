@@ -32,11 +32,6 @@ const CrosswordView = () => {
     }
   ), {})
 
-  useEffect(() => {
-    if (!currentClue) return
-    crosswordRef.current.moveTo(currentClue.clue_direction, currentClue.clue_number)
-  }, [currentClue])
-
   const handleWordChange = (number) => {
     if (!data.clue) return
     setCurrentClue(data.clue.find(clue => clue.clue_number === Number(number)))
@@ -56,8 +51,14 @@ const CrosswordView = () => {
     return <PlainWord key={clue.ID} surface={clue.surface} lemmas={clue.lemmas} wordId={clue.ID}>{clue.surface}</PlainWord>
   })
 
-  const handleTabPress = ({ key }) => {
-    if (key !== 'Tab') return
+  useEffect(() => {
+    if (!currentClue || !crosswordRef.current) return
+    crosswordRef.current.moveTo(currentClue.clue_direction, currentClue.clue_number)
+  }, [currentClue])
+
+  const handleTabPress = (event) => {
+    if (event.key !== 'Tab') return
+    event.preventDefault()
     const index = data.clue.findIndex(clue => clue.ID === currentClue.ID)
     const nextClue = data.clue.slice(index + 1).find(clue => clue.clue_number)
 
@@ -68,7 +69,6 @@ const CrosswordView = () => {
     document.addEventListener('keydown', handleTabPress)
     return () => document.removeEventListener('keydown', handleTabPress)
   }, [currentClue, data])
-
 
   if (!hiddenFeatures) return null
 
