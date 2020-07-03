@@ -46,12 +46,12 @@ const Concept = ({
   calculateColor,
   getConceptName,
   fromPreviousScored,
-  key,
+  ...props
 }) => {
   const [collapsed, setCollapsed] = useState(false)
 
   return (
-    <Fragment key={key}>
+    <Fragment {...props}>
       <Table.Row onClick={() => setCollapsed(!collapsed)}>
         <Table.Cell>
           {concept.children.length > 0
