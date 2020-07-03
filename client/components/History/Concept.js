@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, Fragment } from 'react'
 import { Table, Icon, Popup } from 'semantic-ui-react'
 import { FormattedMessage } from 'react-intl'
 
@@ -40,11 +40,18 @@ const StatisticCell = ({ test, concept, fromPreviousScored, calculateColor, ...p
   )
 }
 
-const Concept = ({ concept, history, calculateColor, getConceptName, fromPreviousScored }) => {
+const Concept = ({
+  concept,
+  history,
+  calculateColor,
+  getConceptName,
+  fromPreviousScored,
+  key,
+}) => {
   const [collapsed, setCollapsed] = useState(false)
 
   return (
-    <>
+    <Fragment key={key}>
       <Table.Row onClick={() => setCollapsed(!collapsed)}>
         <Table.Cell>
           {concept.children.length > 0
@@ -64,6 +71,7 @@ const Concept = ({ concept, history, calculateColor, getConceptName, fromPreviou
       {collapsed
         && concept.children.map(child => (
           <Concept
+            key={child.concept_id}
             concept={child}
             history={history}
             calculateColor={calculateColor}
@@ -71,7 +79,7 @@ const Concept = ({ concept, history, calculateColor, getConceptName, fromPreviou
             fromPreviousScored={fromPreviousScored}
           />
         ))}
-    </>
+    </Fragment>
   )
 }
 

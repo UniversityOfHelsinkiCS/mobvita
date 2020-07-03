@@ -135,16 +135,19 @@ const History = ({ history, dateFormat }) => {
       )}
       <Table celled fixed>
         <Table.Header>
-          <Table.HeaderCell>Concepts</Table.HeaderCell>
-          {calculatePage().map(test => (
-            <Table.HeaderCell key={test.date}>
-              {moment(test.date).format(dateFormat || 'YYYY-MM-DD hh:mm')}
-            </Table.HeaderCell>
-          ))}
+          <Table.Row>
+            <Table.HeaderCell>Concepts</Table.HeaderCell>
+            {calculatePage().map(test => (
+              <Table.HeaderCell key={test.date}>
+                {moment(test.date).format(dateFormat || 'YYYY-MM-DD hh:mm')}
+              </Table.HeaderCell>
+            ))}
+          </Table.Row>
         </Table.Header>
         <Table.Body>
           {buildConceptTree().map(concept => (
             <Concept
+              key={concept.id}
               calculateColor={calculateColor}
               history={history.slice(page * 7, page * 7 + 7)}
               concept={concept}
