@@ -1,20 +1,47 @@
 import React, { useState } from 'react'
-import { Table, Icon } from 'semantic-ui-react'
+import { Table, Icon, Popup } from 'semantic-ui-react'
+import { FormattedMessage } from 'react-intl'
 
 const ConceptTitle = ({ title, isParent }) => {
   if (isParent) return <b>{title}</b>
   return title
 }
 
+const PopupContent = ({ correct, total }) => (
+  <>
+    <div>
+      <FormattedMessage id="correct-answers" />: {correct}
+    </div>
+    <div>
+      <FormattedMessage id="total-answers" />: {total}
+    </div>
+  </>
+)
+
+const StatisticCell = ({ test, concept, fromPreviousScored, calculateColor, ...props }) => {
+  const ownStatistics = test.concept_statistics[concept.id]
+  const statistics = ownStatistics.total === 0 ? fromPreviousScored(concept.id, test.date) : ownStatistics
+
+  return (
+    <Popup
+      {...props}
+      content={(
+        <PopupContent
+          correct={statistics.correct}
+          total={statistics.total}
+        />
+          )}
+      trigger={(
+        <Table.Cell
+          style={{ backgroundColor: calculateColor(statistics) }}
+        />
+    )}
+    />
+  )
+}
+
 const Concept = ({ concept, history, calculateColor, getConceptName, fromPreviousScored }) => {
   const [collapsed, setCollapsed] = useState(false)
-
-  const calculateScoreWithPrevious = (test, concept) => {
-    if (test.concept_statistics[concept.id].total === 0) {
-      return calculateColor(fromPreviousScored(concept.id, test.date))
-    }
-    return calculateColor(test.concept_statistics[concept.id])
-  }
 
   return (
     <>
@@ -25,9 +52,12 @@ const Concept = ({ concept, history, calculateColor, getConceptName, fromPreviou
           <ConceptTitle title={getConceptName(concept.id)} isParent={concept.children.length > 0} />
         </Table.Cell>
         {history.map(test => (
-          <Table.Cell
+          <StatisticCell
             key={`${test.date}-${concept.id}`}
-            style={{ backgroundColor: calculateScoreWithPrevious(test, concept) }}
+            test={test}
+            concept={concept}
+            fromPreviousScored={fromPreviousScored}
+            calculateColor={calculateColor}
           />
         ))}
       </Table.Row>

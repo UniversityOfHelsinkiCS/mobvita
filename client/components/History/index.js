@@ -27,7 +27,8 @@ const History = ({ history, dateFormat }) => {
   }
 
   const fromPreviousScored = (conceptId, date) => {
-    if (!fillFromHistory) return null
+    const empty = { correct: 0, total: 0 }
+    if (!fillFromHistory) return empty
     const found = history.find((data) => {
       const previousDate = new Date(data.date)
       if (new Date(date) < previousDate) return false
@@ -35,7 +36,7 @@ const History = ({ history, dateFormat }) => {
       return concept ? concept.total > 0 : false
     })
 
-    return found ? found.concept_statistics[conceptId] : null
+    return found ? found.concept_statistics[conceptId] : empty
   }
 
   const colorFromScore = (score) => {
@@ -51,7 +52,6 @@ const History = ({ history, dateFormat }) => {
 
   const calculateColor = (conceptStatistic) => {
     const { noData } = colors
-    if (!conceptStatistic) return `rgb(${noData})`
     const { correct, total } = conceptStatistic
     if (total === 0) return `rgb(${noData})`
 
