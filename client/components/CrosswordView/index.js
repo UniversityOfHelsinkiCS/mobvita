@@ -2,7 +2,7 @@ import React, { useEffect, useRef, useState } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import { useParams } from 'react-router-dom'
 import { hiddenFeatures } from 'Utilities/common'
-import { getCrossword } from 'Utilities/redux/crosswordReducer'
+import { getCrossword, revealClue } from 'Utilities/redux/crosswordReducer'
 import Crossword from '@ajhaa/react-crossword'
 import Spinner from 'Components/Spinner'
 import PlainWord from 'Components/PracticeView/PlainWord'
@@ -15,7 +15,7 @@ const CrosswordView = () => {
   const [data, setData] = useState()
   const dispatch = useDispatch()
 
-  const { data: crosswordData } = useSelector(({ crossword }) => crossword)
+  const { data: crosswordData, clues } = useSelector(({ crossword }) => crossword)
 
   useEffect(() => {
     localStorage.removeItem('guesses')
@@ -37,7 +37,7 @@ const CrosswordView = () => {
 
   useEffect(() => {
     if (!currentClue && data) {
-      setCurrentClue(data.clue.find(clue => clue.clue_number))
+      setCurrentClue(clues.find(clue => clue.clue_number))
     }
   }, [data])
 
@@ -52,12 +52,13 @@ const CrosswordView = () => {
   ), {})
 
   const handleWordChange = (number) => {
-    if (!data.clue) return
-    setCurrentClue(data.clue.find(clue => clue.clue_number === Number(number)))
+    if (clues) return
+    setCurrentClue(clues.find(clue => clue.clue_number === Number(number)))
   }
 
-  const clues = data?.clue?.map((clue) => {
-    if (clue.clue_number) {
+
+  const clueElements = clues?.map((clue) => {
+    if (clue.clue_number && !clue.show) {
       return (
         <span
           style={{ backgroundColor: currentClue && currentClue.ID === clue.ID ? 'yellow' : '' }}
@@ -78,8 +79,16 @@ const CrosswordView = () => {
   const handleTabPress = (event) => {
     if (event.key !== 'Tab') return
     event.preventDefault()
-    const index = data.clue.findIndex(clue => clue.ID === currentClue.ID)
-    const nextClue = data.clue.slice(index + 1).find(clue => clue.clue_number)
+    const index = clues.findIndex(clue => clue.ID === currentClue.ID)
+    const nextClue = clues.slice(index + 1).find(clue => clue.clue_number)
+
+    setCurrentClue(nextClue)
+  }
+
+  const handleCorrect = (_direction, number) => {
+    dispatch(revealClue(Number(number)))
+    const index = clues.findIndex(clue => clue.ID === currentClue.ID)
+    const nextClue = clues.slice(index + 1).find(clue => clue.clue_number)
 
     setCurrentClue(nextClue)
   }
@@ -98,12 +107,12 @@ const CrosswordView = () => {
       <div style={{ height: '300px', maxHeight: '300px' }}>
         <Crossword
           onWordChange={handleWordChange}
-          onCorrect={(...e) => console.log(e)}
+          onCorrect={handleCorrect}
           data={formattedData}
           ref={crosswordRef}
         />
       </div>
-      <div style={{ width: '600px', overflow: 'scroll' }}>{clues}</div>
+      <div style={{ width: '600px', overflow: 'scroll' }}>{clueElements}</div>
     </div>
   )
 }
