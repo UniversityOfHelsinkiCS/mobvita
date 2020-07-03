@@ -19,21 +19,27 @@ const CrosswordView = () => {
 
   useEffect(() => {
     localStorage.removeItem('guesses')
-    const fromStorage = localStorage.getItem('crossword')
-    if (fromStorage) {
-      console.log(fromStorage)
-      setData(JSON.parse(fromStorage))
-    } else {
-      dispatch(getCrossword(storyId))
-    }
+    // const fromStorage = localStorage.getItem('crossword')
+    // if (fromStorage) {
+    //   setData(JSON.parse(fromStorage))
+    // } else {
+    //   dispatch(getCrossword(storyId))
+    // }
+    dispatch(getCrossword(storyId))
   }, [])
 
   useEffect(() => {
     if (crosswordData && !isEmpty(crosswordData)) {
-      localStorage.setItem('crossword', JSON.stringify(crosswordData))
+      // localStorage.setItem('crossword', JSON.stringify(crosswordData))
       setData(crosswordData)
     }
   }, [crosswordData])
+
+  useEffect(() => {
+    if (!currentClue && data) {
+      setCurrentClue(data.clue.find(clue => clue.clue_number))
+    }
+  }, [data])
 
   const formattedData = data?.entries?.reduce((newData, entry) => (
     {
@@ -89,12 +95,14 @@ const CrosswordView = () => {
 
   return (
     <div style={{ display: 'flex', height: '70%' }}>
-      <Crossword
-        onWordChange={handleWordChange}
-        onCorrect={(...e) => console.log(e)}
-        data={formattedData}
-        ref={crosswordRef}
-      />
+      <div style={{ height: '300px', maxHeight: '300px' }}>
+        <Crossword
+          onWordChange={handleWordChange}
+          onCorrect={(...e) => console.log(e)}
+          data={formattedData}
+          ref={crosswordRef}
+        />
+      </div>
       <div style={{ width: '600px', overflow: 'scroll' }}>{clues}</div>
     </div>
   )
