@@ -59,16 +59,7 @@ const SnippetActions = ({ storyId, exerciseCount }) => {
     <div>
       {isSnippetFetchedSuccessfully
         ? (
-          <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-end' }}>
-            <Button
-              variant="secondary"
-              size="sm"
-              disabled={snippets.answersPending || snippets.pending || !snippets.focused}
-              onClick={submitAnswers}
-              style={{ marginBottom: '0.5em' }}
-            >
-              <span><FormattedMessage id="Go to next snippet" /></span>
-            </Button>
+          <div style={{ display: 'flex', flexDirection: 'column-reverse', alignItems: 'flex-end' }}>
             <Button
               data-cy="check-answer"
               variant="primary"
@@ -77,6 +68,15 @@ const SnippetActions = ({ storyId, exerciseCount }) => {
               block
             >
               <span><FormattedMessage id="check-answer" /></span>
+            </Button>
+            <Button
+              variant="secondary"
+              size="sm"
+              disabled={snippets.answersPending || snippets.pending || !snippets.focused}
+              onClick={submitAnswers}
+              style={{ marginBottom: '0.5em' }}
+            >
+              <span><FormattedMessage id="Go to next snippet" /></span>
             </Button>
           </div>
         ) : (
