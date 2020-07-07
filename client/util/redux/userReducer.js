@@ -1,5 +1,5 @@
 import callBuilder from 'Utilities/apiConnection'
-import { capitalize, localeOptions, localeCodeToName } from 'Utilities/common'
+import { capitalize, localeCodeToName } from 'Utilities/common'
 
 export const createRealToken = (email, password) => {
   const route = '/session/'
@@ -30,7 +30,15 @@ export const saveSelf = (changes) => {
   return callBuilder(route, prefix, 'post', payload)
 }
 
-export const updateLearningLanguage = language => saveSelf({ last_used_lang: capitalize(language) })
+export const updateLearningLanguage = (language) => {
+  const route = '/user/'
+  const prefix = 'UPDATE_LEARNING_LANGUAGE'
+  const payload = { last_used_lang: capitalize(language) }
+  return callBuilder(route, prefix, 'post', payload)
+}
+
+export const resetLearningLanguageChanged = () => ({ type: 'RESET_LEARNING_LANGUAGE_CHANGED' })
+
 export const updateLocale = locale => saveSelf({ interface_lang: localeCodeToName(locale) })
 export const updateDictionaryLanguage = language => saveSelf({ last_trans_lang: capitalize(language) })
 export const updateExerciseSettings = settings => saveSelf({ exercise_settings: settings })
@@ -62,7 +70,7 @@ export const confirmUser = (token) => {
 export const refresh = () => ({ type: 'REFRESH' })
 
 
-export default (state = { data: null }, action) => {
+export default (state = { data: null, learningLanguageChanged: false }, action) => {
   switch (action.type) {
     case 'LOGIN_SUCCESS':
       return {
@@ -115,6 +123,33 @@ export default (state = { data: null }, action) => {
         pending: false,
         error: true,
         errorMessage: action.response.response && action.response.response.data,
+      }
+    case 'UPDATE_LEARNING_LANGUAGE_SUCCESS':
+      return {
+        ...state,
+        data: { ...state.data, user: action.response.user },
+        pending: false,
+        error: false,
+        refreshed: true,
+        learningLanguageChanged: true,
+      }
+    case 'UPDATE_LEARNING_LANGUAGE_ATTEMPT':
+      return {
+        ...state,
+        pending: true,
+        error: false,
+      }
+    case 'UPDATE_LEARNING_LANGUAGE_FAILURE':
+      return {
+        ...state,
+        pending: false,
+        error: true,
+        errorMessage: action.response.response && action.response.response.data,
+      }
+    case 'RESET_LEARNING_LANGUAGE_CHANGED':
+      return {
+        ...state,
+        learningLanguageChanged: false,
       }
     case 'CONFIRM_USER_SUCCESS':
       return {

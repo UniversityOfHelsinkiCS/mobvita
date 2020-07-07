@@ -1,18 +1,17 @@
-import React, { useEffect, useState } from 'react'
-import { Redirect } from 'react-router-dom'
+import React, { useEffect } from 'react'
+import { useHistory } from 'react-router-dom'
 import { Container, Segment, Loader, Dimmer } from 'semantic-ui-react'
 import { FormattedMessage } from 'react-intl'
 import {
   images,
   capitalize,
   supportedLearningLanguages,
-  learningLanguageSelector,
   dictionaryLanguageSelector,
   hiddenFeatures,
   translatableLanguages,
   betaLanguages,
 } from 'Utilities/common'
-import { updateLearningLanguage, updateDictionaryLanguage } from 'Utilities/redux/userReducer'
+import { updateLearningLanguage, updateDictionaryLanguage, resetLearningLanguageChanged } from 'Utilities/redux/userReducer'
 import { useDispatch, useSelector } from 'react-redux'
 
 const LanguageGroup = ({ languages, handleLearningLanguageChange }) => {
@@ -37,21 +36,18 @@ const LanguageGroup = ({ languages, handleLearningLanguageChange }) => {
 
 const LearningLanguageSelectView = () => {
   const dispatch = useDispatch()
+  const history = useHistory()
 
   const user = useSelector(({ user }) => user)
-  const learningLanguage = useSelector(learningLanguageSelector)
   const dictionaryLanguage = useSelector(dictionaryLanguageSelector)
-  const { pending } = user
-
-  const [learningLanguageChanged, setLearningLanguageChanged] = useState(false)
-  const [waiting, setWaiting] = useState(false)
+  const { pending, learningLanguageChanged } = user
 
   useEffect(() => {
-    if (!pending && waiting && learningLanguage) {
-      setLearningLanguageChanged(true)
-      setWaiting(false)
+    if (learningLanguageChanged) {
+      history.push('/home')
+      dispatch(resetLearningLanguageChanged())
     }
-  }, [pending])
+  }, [learningLanguageChanged])
 
   const checkForTranslatableLanguages = (lang) => {
     if (!translatableLanguages[lang]) {
@@ -75,18 +71,6 @@ const LearningLanguageSelectView = () => {
   const handleLearningLanguageChange = (lang) => {
     checkForTranslatableLanguages(capitalize(lang))
     dispatch(updateLearningLanguage(lang))
-    setWaiting(true)
-  }
-
-  if (learningLanguageChanged) {
-    return (
-      <Redirect
-        to={{
-          pathname: '/home',
-          state: { from: '/languageSelectView' },
-        }}
-      />
-    )
   }
 
 
