@@ -57,10 +57,7 @@ const App = () => {
         <div style={{ display: 'flex' }}>
           <Route component={Bar} />
           <Route component={StoryFetcher} />
-
-          <div className="application-content">
-            <Router />
-          </div>
+          <Router />
         </div>
       </ReactRouter>
     </>

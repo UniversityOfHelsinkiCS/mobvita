@@ -38,13 +38,14 @@ const LandingPage = () => {
             top: '0.2em',
             left: '0.3em',
             cursor: 'pointer',
+            zIndex: 102,
           }}
           data-cy="hamburger"
         />
       </div>
       <div
         className="space-evenly align-center slide-from-bottom"
-        style={{ height: '100%', flexWrap: 'wrap' }}
+        style={{ height: '100%', flexWrap: 'wrap', maxWidth: '1920px', margin: 'auto' }}
       >
         <div style={{ width: '40%', maxWidth: '520px', minWidth: '300px' }}>
           <img
