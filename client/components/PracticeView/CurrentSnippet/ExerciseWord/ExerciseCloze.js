@@ -100,7 +100,7 @@ const ExerciseCloze = ({ word, handleChange, handleClick }) => {
         ref={target}
         data-cy="exercise-cloze"
         autoCapitalize="off"
-        disabled={tested && !isWrong}
+        readOnly={tested && !isWrong}
         key={word.ID}
         name={word.ID}
         placeholder={`${word.base || word.bases}`}
