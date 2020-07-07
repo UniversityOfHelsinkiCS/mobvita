@@ -6,6 +6,8 @@ export const getCrossword = (storyId) => {
   return callBuilder(route, prefix)
 }
 
+export const revealClue = number => ({ type: 'REVEAL_CLUE', number })
+
 const initialState = { data: {}, pending: false, error: false }
 
 export default (state = initialState, action) => {
@@ -20,6 +22,8 @@ export default (state = initialState, action) => {
       return {
         ...state,
         data: action.response,
+        clues: action.response.clue,
+        entries: action.response.entries,
         pending: false,
         error: false,
       }
@@ -28,6 +32,11 @@ export default (state = initialState, action) => {
         ...state,
         pending: false,
         error: true,
+      }
+    case 'REVEAL_CLUE':
+      return {
+        ...state,
+        clues: state.clues.map(clue => (clue.clue_number === action.number ? ({ ...clue, show: true }) : clue)),
       }
     default:
       return state
