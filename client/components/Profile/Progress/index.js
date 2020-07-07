@@ -65,13 +65,11 @@ const Progress = () => {
         startDate={startDate}
         endDate={endDate}
       />
-      {hiddenFeatures
-      && (
+
       <div>
         <h2><FormattedMessage id="Practice history" /></h2>
         <History history={history} dateFormat="DD.MM." />
       </div>
-      )}
     </div>
   )
 }

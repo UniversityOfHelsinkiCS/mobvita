@@ -119,14 +119,14 @@ const TestIndex = () => {
               />
             </div>
           )}
-          {hiddenFeatures && (
-            <>
-              <hr />
-              <Button onClick={toggleHistory}>
-                <FormattedMessage id={showHistory ? 'Hide history' : 'Show history'} />
-              </Button>
 
-              {showHistory && history && (
+          <>
+            <hr />
+            <Button onClick={toggleHistory}>
+              <FormattedMessage id={showHistory ? 'Hide history' : 'Show history'} />
+            </Button>
+
+            {showHistory && history && (
               <>
                 <div className="date-pickers gap-1">
                   <div>
@@ -142,9 +142,9 @@ const TestIndex = () => {
                 </div>
                 <History history={filterHistoryByDate()} />
               </>
-              )}
-            </>
-          )}
+            )}
+          </>
+
         </div>
       )}
       {report && <TestReport />}
