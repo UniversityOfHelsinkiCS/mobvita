@@ -38,7 +38,7 @@ const LandingPage = () => {
             top: '0.2em',
             left: '0.3em',
             cursor: 'pointer',
-            zIndex: 102,
+            zIndex: 90,
           }}
           data-cy="hamburger"
         />
