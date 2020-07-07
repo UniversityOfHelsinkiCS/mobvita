@@ -54,6 +54,7 @@ const ExerciseCloze = ({ word, handleChange, handleClick }) => {
 
   useEffect(() => {
     setClassName(getExerciseClass(tested, isWrong))
+    if (tested && !isWrong) setDisabled(true)
   }, [tested])
 
   const tooltip = (
