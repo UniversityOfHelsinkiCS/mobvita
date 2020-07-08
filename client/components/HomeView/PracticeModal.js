@@ -188,6 +188,7 @@ const PracticeModal = ({ trigger }) => {
                 }}
                 onClick={() => toggleCategory(name)}
                 className={!enabled && 'disabled'}
+                key={name}
               >
                 <span style={{ fontWeight: '1000' }}><FormattedMessage id={capitalize(name)} /></span>
               </Button>
