@@ -101,7 +101,7 @@ module.exports = (env, argv) => {
         },
         {
           // Load other files
-          test: /\.(png|jpg|gif|svg|eot|ttf|woff|woff2)$/,
+          test: /\.(png|jpg|gif|svg|eot|ttf|woff|woff2|webp)$/,
           use: ['file-loader'],
         },
       ],

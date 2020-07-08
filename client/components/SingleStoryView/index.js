@@ -17,6 +17,7 @@ import {
   getTextStyle,
   speak,
   respVoiceLanguages,
+  hiddenFeatures,
 } from 'Utilities/common'
 import DictionaryHelp from 'Components/DictionaryHelp'
 import Spinner from 'Components/Spinner'
@@ -74,6 +75,13 @@ const SingleStoryView = ({ match }) => {
         <div className="max-width padding-top-2">
           <Header style={getTextStyle(learningLanguage, 'title')}>
             <span className="padding-right-1">{story.title}</span>
+            {hiddenFeatures && (
+              <Link to={`/crossword/${id}`}>
+                <Button variant="primary" style={{ float: 'right', marginTop: '0.5em' }}>
+                  <FormattedMessage id="crossword" />
+                </Button>
+              </Link>
+            )}
             <Link to={`/stories/${id}/practice`}>
               <Button variant="primary" style={{ float: 'right', marginTop: '0.5em' }}>
                 <FormattedMessage id="practice-now" />

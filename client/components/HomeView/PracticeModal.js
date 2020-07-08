@@ -1,8 +1,8 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useLayoutEffect } from 'react'
 import { Modal } from 'semantic-ui-react'
 import { Link } from 'react-router-dom'
 import { useSelector } from 'react-redux'
-import { capitalize } from 'Utilities/common'
+import { capitalize, images } from 'Utilities/common'
 import CheckboxGroup from 'Components/CheckboxGroup'
 import { FormattedMessage } from 'react-intl'
 import { Button, Spinner } from 'react-bootstrap'
@@ -65,6 +65,14 @@ const PracticeModal = ({ trigger }) => {
       }, 500))
     }
   }, [pending, refreshed])
+
+  // preload practice modal images
+  useLayoutEffect(() => {
+    new Image().src = images.sport1
+    new Image().src = images.culture1
+    new Image().src = images.politics1
+    new Image().src = images.science1
+  }, [])
 
 
   useEffect(() => {
@@ -148,7 +156,7 @@ const PracticeModal = ({ trigger }) => {
             )
               : (
                 <Button variant="primary" data-cy="start-random" disabled={!filteredLink}>
-                  <FormattedMessage id="practice-random-story" />{` (${filteredStories.length} `}<FormattedMessage id="stories-selected" />{")"}
+                  <FormattedMessage id="practice-random-story" />{` (${filteredStories.length} `}<FormattedMessage id="stories-selected" />)
                 </Button>
               )
             }
@@ -163,15 +171,42 @@ const PracticeModal = ({ trigger }) => {
             additionalClass="wrap-and-grow"
             reverse
           />
+
         </div>
         <div>
           <div><FormattedMessage id="Category" /></div>
-          <CheckboxGroup
+          {/* <CheckboxGroup
             values={categories}
             onClick={toggleCategory}
             dataCy="practice-categories"
             additionalClass="wrap-and-grow"
-          />
+          /> */}
+          <div className="checkbox-group" style={{ flexWrap: 'wrap' }}>
+            {Object.entries(categories).sort().slice(0, 4).map(([name, enabled]) => (
+
+              <Button
+                style={{
+                  backgroundImage: `url(${images[name + 1]})`,
+                  height: '13em',
+                  backgroundSize: 'cover',
+                  backgroundPosition: 'center',
+                  flexBasis: '50%',
+                  border: '1px solid white',
+                }}
+                onClick={() => toggleCategory(name)}
+                className={!enabled && 'disabled'}
+              >
+                <span style={{ fontWeight: '1000' }}><FormattedMessage id={capitalize(name)} /></span>
+              </Button>
+            ))}
+          </div>
+          <Button
+            block
+            onClick={() => toggleCategory('uncategorized')}
+            variant={categories.uncategorized ? 'btn btn-toggle-on' : 'btn btn-toggle-off'}
+          >
+            <FormattedMessage id="Uncategorized" />
+          </Button>
         </div>
         <div />
       </Modal.Content>
