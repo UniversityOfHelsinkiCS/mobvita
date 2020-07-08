@@ -129,6 +129,7 @@ describe('Mobvita', function () {
       cy.get('[data-cy=practice-now]').click()
       cy.get("[data-cy=start-random]").should("be.enabled")
       cy.get('[data-cy=practice-categories]').children().each(e => e.click())
+      cy.get('[data-cy=other-category]').click()
       cy.get("[data-cy=start-random]").should("be.disabled")
     })
 

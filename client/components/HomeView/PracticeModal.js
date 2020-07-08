@@ -175,15 +175,8 @@ const PracticeModal = ({ trigger }) => {
         </div>
         <div>
           <div><FormattedMessage id="Category" /></div>
-          {/* <CheckboxGroup
-            values={categories}
-            onClick={toggleCategory}
-            dataCy="practice-categories"
-            additionalClass="wrap-and-grow"
-          /> */}
-          <div className="checkbox-group" style={{ flexWrap: 'wrap' }}>
+          <div className="checkbox-group" style={{ flexWrap: 'wrap' }} data-cy="practice-categories">
             {Object.entries(categories).sort().slice(0, 4).map(([name, enabled]) => (
-
               <Button
                 style={{
                   backgroundImage: `url(${images[name + 1]})`,
@@ -204,6 +197,7 @@ const PracticeModal = ({ trigger }) => {
             block
             onClick={() => toggleCategory('uncategorized')}
             variant={categories.uncategorized ? 'btn btn-toggle-on' : 'btn btn-toggle-off'}
+            data-cy="other-category"
           >
             <FormattedMessage id="Uncategorized" />
           </Button>
