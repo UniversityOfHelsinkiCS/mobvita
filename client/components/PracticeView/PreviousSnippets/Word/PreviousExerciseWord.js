@@ -26,10 +26,10 @@ const PreviousExerciseWord = ({ word, handleWordClick, answer, tiedAnswer }) => 
   const youAnsweredTooltip = answer || tiedAnswer
 
   const tooltip = (
-    <div>
-      {word.message && <div className="tooltip-green">{word.message}</div>}
+    <div className="tooltip-green">
+      {word.message && <div>{word.message}</div>}
       {youAnsweredTooltip && (
-        <div className="tooltip-blue">
+        <div>
           {`${intl.formatMessage({ id: 'you-used' })}: `}
           <span style={getTextStyle(learningLanguage, 'tooltip')}>
             {youAnsweredTooltip.users_answer}
