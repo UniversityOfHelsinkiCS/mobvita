@@ -95,7 +95,7 @@
     "sanitize-html": "^1.23.0",
     "sass": "^1.25.0",
     "semantic-ui-css": "^2.4.1",
-    "semantic-ui-react": "^0.85.0",
+    "semantic-ui-react": "^0.88.2",
     "simple-keyboard-layouts": "^1.12.48",
     "style-loader": "^1.0.1",
     "styled-components": "^5.1.1",
