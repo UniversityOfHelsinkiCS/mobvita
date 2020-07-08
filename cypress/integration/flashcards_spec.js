@@ -9,7 +9,7 @@ describe('flashcards', function () {
   })
 
   it('flashcards can be added from reading mode', function () {
-    cy.visit('http://localhost:8000/stories/5c407e9eff634503466b0dde/')
+    cy.visit('http://localhost:8000/stories/5c407e9eff634503466b0dde/read')
     cy.get('[data-cy=readmode-text]').contains('lentokoneita').click()
     cy.get('.book').click({ force: true })
     cy.get('[data-cy=translations]').contains('plane')
@@ -29,7 +29,7 @@ describe('flashcards', function () {
   describe('a card exists', function () {
 
     this.beforeEach(function () {
-      cy.visit('http://localhost:8000/stories/5c407e9eff634503466b0dde/')
+      cy.visit('http://localhost:8000/stories/5c407e9eff634503466b0dde/read')
       cy.contains('lentokoneita').click()
       cy.get('.book').click({ force: true })
       cy.get('[data-cy=translations]').contains('plane')
@@ -37,7 +37,7 @@ describe('flashcards', function () {
     })
 
     it('story specific flashcards can be accessed', function () {
-      cy.visit('http://localhost:8000/flashcards/fillin/5c407e9eff634503466b0dde/')
+      cy.visit('http://localhost:8000/flashcards/fillin/5c407e9eff634503466b0dde')
       cy.get('[data-cy=flashcard-content]')
     })
 
@@ -75,7 +75,7 @@ describe('flashcards', function () {
 
   describe('multiple cards', function () {
     this.beforeEach(function () {
-      cy.visit('http://localhost:8000/stories/5c407e9eff634503466b0dde/')
+      cy.visit('http://localhost:8000/stories/5c407e9eff634503466b0dde/read')
       cy.get('.book').click()
 
       cy.contains('lentokoneita').click()

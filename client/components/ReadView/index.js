@@ -23,7 +23,7 @@ import DictionaryHelp from 'Components/DictionaryHelp'
 import Spinner from 'Components/Spinner'
 import Footer from '../Footer'
 
-const SingleStoryView = ({ match }) => {
+const ReadView = ({ match }) => {
   const dispatch = useDispatch()
   const { width } = useWindowDimensions()
 
@@ -105,4 +105,4 @@ const SingleStoryView = ({ match }) => {
   )
 }
 
-export default SingleStoryView
+export default ReadView

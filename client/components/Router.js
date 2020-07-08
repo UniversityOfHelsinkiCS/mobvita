@@ -1,15 +1,12 @@
 import React from 'react'
 import { Route, Switch, Redirect } from 'react-router-dom'
 import { useSelector } from 'react-redux'
-
-import SingleStoryView from 'Components/SingleStoryView'
+import ReadView from 'Components/ReadView'
 import PracticeView from 'Components/PracticeView'
-import MenuTabs from 'Components/StoryListView/MenuTabs'
+import MenuTabs from 'Components/MenuTabs'
 import LanguageSelectView from 'Components/LanguageSelectView'
-import CompeteView from 'Components/CompeteView'
 import EmailConfirm from 'Components/AccessControl/EmailConfirm'
 import ProtectedRoute from 'Components/AccessControl/ProtectedRoute'
-import Register from 'Components/AccessControl/Register'
 import CrosswordView from 'Components/CrosswordView'
 import GroupView from './Groups/index'
 import Concepts from './Concepts'
@@ -19,6 +16,7 @@ import NewRegister from './AccessControl/NewRegister'
 import Help from './StaticContent/Help'
 import Flashcards from './Flashcards'
 import LandingPage from './LandingPage'
+import StoryDetails from './StoryView/StoryDetails'
 
 export default () => {
   const user = useSelector(state => state.user.data)
@@ -47,9 +45,9 @@ export default () => {
               <ProtectedRoute exact path="/flashcards" component={Flashcards} />
               <ProtectedRoute exact path="/flashcards/:mode" component={Flashcards} />
               <ProtectedRoute exact path="/flashcards/:mode/:storyId" component={Flashcards} />
-              <ProtectedRoute exact path="/stories/:id" component={SingleStoryView} />
+              <ProtectedRoute exact path="/stories/:id" component={StoryDetails} />
               <ProtectedRoute exact path="/stories/:id/practice/" component={PracticeView} />
-              <ProtectedRoute exact path="/stories/:id/compete/" component={CompeteView} />
+              <ProtectedRoute exact path="/stories/:id/read/" component={ReadView} />
               <ProtectedRoute exact path="/crossword/:storyId" component={CrosswordView} />
               <ProtectedRoute exact path="/groups" component={GroupView} />
               <ProtectedRoute exact path="/:target/:id/concepts" component={Concepts} />
