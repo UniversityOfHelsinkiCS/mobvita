@@ -29,8 +29,6 @@ const DetailedStoryModal = (
     date,
   } = story
 
-  console.log(story)
-
   const showLearningSettingsButton = inGroupLibrary
     && currentGroup
     && currentGroup.is_teaching
