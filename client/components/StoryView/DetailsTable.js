@@ -1,9 +1,22 @@
 import React from 'react'
 import { Table, ProgressBar } from 'react-bootstrap'
+import { FormattedMessage } from 'react-intl'
+import moment from 'moment'
 import DifficultyStars from 'Components/DifficultyStars'
 import Row from './Row'
 
-export default ({ author, difficulty, elo, sharingInfo, percentCovered, percentCorrect, URL }) => (
+export default ({
+  author,
+  difficulty,
+  elo,
+  sharingInfo,
+  percentCovered,
+  percentCorrect,
+  URL,
+  category,
+  publicStory,
+  date,
+}) => (
   <Table striped width="100%" style={{ tableLayout: 'fixed' }}>
     <colgroup>
       <col width="40%" />
@@ -15,9 +28,19 @@ export default ({ author, difficulty, elo, sharingInfo, percentCovered, percentC
           <a href={URL} target="_blank" rel="noopener noreferrer">{URL}</a>
         </Row>
       )}
+      {!publicStory && date && (
+        <Row translationId="date-added">
+          {moment(date).format('YYYY-MM-DD')}
+        </Row>
+      )}
       {author && (
         <Row translationId="Author">
           {author}
+        </Row>
+      )}
+      {category && (
+        <Row translationId="Category">
+          <FormattedMessage id={category} />
         </Row>
       )}
       <Row translationId="Level">

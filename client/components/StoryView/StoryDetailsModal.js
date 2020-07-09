@@ -23,8 +23,13 @@ const DetailedStoryModal = (
     sharing_info: sharingInfo,
     author,
     difficulty,
-    elo,
+    elo_score: elo,
+    category,
+    public: publicStory,
+    date,
   } = story
+
+  console.log(story)
 
   const showLearningSettingsButton = inGroupLibrary
     && currentGroup
@@ -49,6 +54,9 @@ const DetailedStoryModal = (
           percentCovered={percentCovered}
           percentCorrect={percentCorrect}
           URL={URL}
+          category={category}
+          publicStory={publicStory}
+          date={date}
         />
       </Modal.Content>
       <Modal.Actions>

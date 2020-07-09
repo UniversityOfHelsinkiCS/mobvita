@@ -25,6 +25,8 @@ const StoryDetails = () => {
   const [shareModalOpen, setShareModalOpen] = useState(false)
   const [deleteModalOpen, setDeleteModalOpen] = useState(false)
 
+  if (!story) return null
+
   const handleDelete = () => {
     if (selectedLibrary === 'group') dispatch(unshareStory(selectedGroupId, id))
     else dispatch(removeStory(id))
@@ -43,6 +45,8 @@ const StoryDetails = () => {
     user,
     public: publicStory,
     groups: groupsSharedWith,
+    category,
+    date,
   } = story
 
   const selectedGroup = groups.find(group => group.group_id === selectedGroupId)
@@ -59,7 +63,7 @@ const StoryDetails = () => {
       <ShareStory story={story} isOpen={shareModalOpen} setOpen={setShareModalOpen} />
       <ConfirmationWarning open={deleteModalOpen} setOpen={setDeleteModalOpen} action={handleDelete}>
         {selectedLibrary === 'group'
-          ? <FormattedMessage id="remove-story-from-group-warning" values={{ group: selectedGroup.groupName }} />
+          ? <FormattedMessage id="remove-story-from-group-warning" values={{ group: selectedGroup?.groupName }} />
           : <FormattedMessage id="this-will-permanently-remove-this-story-from-your-collection-are-you-sure-you-want-to-proceed" />
         }
       </ConfirmationWarning>
@@ -98,6 +102,9 @@ const StoryDetails = () => {
         percentCovered={percentCovered}
         percentCorrect={percentCorrect}
         URL={URL}
+        category={category}
+        publicStory={publicStory}
+        date={date}
       />
       <div className="flex-column gap-row-1">
         <div className="gap-1">
