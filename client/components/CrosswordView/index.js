@@ -7,6 +7,11 @@ import Crossword from '@ajhaa/react-crossword'
 import Spinner from 'Components/Spinner'
 import PlainWord from 'Components/PracticeView/PlainWord'
 import { isEmpty } from 'lodash'
+import styled from 'styled-components'
+
+const CrosswordWrapper = styled.div`
+  max-width: 100%;
+`
 
 const CrosswordView = () => {
   const { storyId } = useParams()
@@ -46,7 +51,7 @@ const CrosswordView = () => {
       ...newData,
       [entry.direction]: {
         ...newData[entry.direction],
-        [entry.number]: { answer: entry.answer.toUpperCase(), row: entry.position.x, col: entry.position.y, clue: 'none' },
+        [entry.number]: { answer: entry.answer.toUpperCase(), row: entry.position.x, col: entry.position.y, clue: 'This is an important clue' },
       },
     }
   ), {})
@@ -103,17 +108,15 @@ const CrosswordView = () => {
   if (!formattedData) return <Spinner />
 
   return (
-    <div style={{ display: 'flex', height: '70%' }}>
-      <div style={{ height: '300px', maxHeight: '300px' }}>
-        <Crossword
-          onWordChange={handleWordChange}
-          onCorrect={handleCorrect}
-          data={formattedData}
-          ref={crosswordRef}
-        />
-      </div>
-      <div style={{ width: '600px', overflow: 'scroll' }}>{clueElements}</div>
-    </div>
+    <CrosswordWrapper>
+      <Crossword
+        onWordChange={handleWordChange}
+        onCorrect={handleCorrect}
+        data={formattedData}
+        ref={crosswordRef}
+        customClues={<div style={{ width: '600px', overflow: 'scroll' }}>{clueElements}</div>}
+      />
+    </CrosswordWrapper>
   )
 }
 
