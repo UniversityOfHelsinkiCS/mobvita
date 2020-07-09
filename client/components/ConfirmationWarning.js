@@ -2,7 +2,7 @@ import React from 'react'
 import { Modal, Button } from 'semantic-ui-react'
 import { FormattedMessage } from 'react-intl'
 
-const DeleteConfirmationModal = ({ open, setOpen, action, children }) => {
+const ConfirmationWarning = ({ open, setOpen, action, children }) => {
   const handleAccept = () => {
     setOpen(false)
     action()
@@ -38,4 +38,4 @@ const DeleteConfirmationModal = ({ open, setOpen, action, children }) => {
   )
 }
 
-export default DeleteConfirmationModal
+export default ConfirmationWarning

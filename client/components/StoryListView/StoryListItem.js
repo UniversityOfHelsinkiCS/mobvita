@@ -1,34 +1,26 @@
 import React, { useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { Card, Icon, Dropdown, Button as SemanticButton } from 'semantic-ui-react'
+import { Card, Dropdown, Button as SemanticButton } from 'semantic-ui-react'
 import { Button } from 'react-bootstrap'
-import { Link } from 'react-router-dom'
+import { Link, useHistory } from 'react-router-dom'
 import { FormattedMessage } from 'react-intl'
 import { removeStory, unshareStory as unshare } from 'Utilities/redux/storiesReducer'
 import useWindowDimensions from 'Utilities/windowDimensions'
 import { getTextStyle, learningLanguageSelector } from 'Utilities/common'
-import DeleteConfirmationModal from 'Components/StoryListView/DeleteConfirmationModal'
-import ShareStory from './ShareStory'
-import DetailedStoryModal from './DetailedStoryModal'
+import ConfirmationWarning from 'Components/ConfirmationWarning'
+import ShareStory from 'Components/StoryView/ShareStory'
+import StoryDetailsModal from 'Components/StoryView/StoryDetailsModal'
+import DifficultyStars from 'Components/DifficultyStars'
 
 const StoryListItem = ({ story, userCanShare, libraryShown, selectedGroup }) => {
   const dispatch = useDispatch()
+  const history = useHistory()
   const [shareModalOpen, setShareModalOpen] = useState(false)
   const [confirmationOpen, setConfirmationOpen] = useState(false)
   const { groups } = useSelector(({ groups }) => groups)
   const learningLanguage = useSelector(learningLanguageSelector)
-  const icons = size => (
-    {
-      high: <div><Icon name="star outline" size={size} style={{ color: 'red' }} /><Icon name="star outline" size={size} style={{ color: 'red' }} /><Icon name="star outline" size={size} style={{ color: 'red' }} /></div>,
-      average: <div><Icon name="star outline" size={size} style={{ color: 'steelblue' }} /><Icon name="star outline" size={size} style={{ color: 'steelblue' }} /></div>,
-      low: <div><Icon name="star outline" size={size} style={{ color: 'forestgreen' }} /></div>,
-      default: <div />,
-    }
-  )
 
   const smallWindow = useWindowDimensions().width < 640
-
-  const difficultyIcon = icons('large')[story.difficulty || 'default']
 
   const currentGroup = groups.find(g => g.group_id === selectedGroup)
 
@@ -65,12 +57,17 @@ const StoryListItem = ({ story, userCanShare, libraryShown, selectedGroup }) => 
       <Card.Content extra style={{ padding: '15px 15px 5px 15px', display: 'flex', justifyContent: 'space-between' }}>
         {smallWindow
           ? (
-            <h5 className="story-item-title" style={getTextStyle(learningLanguage)}>{story.title}</h5>
+            <h5
+              className="story-item-title"
+              onClick={() => history.push(`/stories/${story._id}`)}
+              style={getTextStyle(learningLanguage)}
+            >
+              {story.title}
+            </h5>
           ) : (
-            <DetailedStoryModal
+            <StoryDetailsModal
               trigger={<h5 className="story-item-title" style={getTextStyle(learningLanguage)}>{story.title}</h5>}
               story={story}
-              icons={icons}
               setShareModalOpen={setShareModalOpen}
               showShareButton={showShareButton}
               showDeleteButton={showDeleteButton}
@@ -80,7 +77,7 @@ const StoryListItem = ({ story, userCanShare, libraryShown, selectedGroup }) => 
             />
           )
         }
-        <div className="story-item-group">{showGroupName && story.groups[0].group_name}</div>
+        <div className="story-item-group">{showGroupName && story.groups[0]?.group_name}</div>
         {smallWindow && (showShareButton || showDeleteButton)
           && (
             <Dropdown
@@ -138,7 +135,7 @@ const StoryListItem = ({ story, userCanShare, libraryShown, selectedGroup }) => 
                     <Dropdown.Item
                       text={<FormattedMessage id="Read" />}
                       as={Link}
-                      to={`/stories/${story._id}/`}
+                      to={`/stories/${story._id}/read`}
                       icon="book"
                     />
                   </Dropdown.Menu>
@@ -157,7 +154,7 @@ const StoryListItem = ({ story, userCanShare, libraryShown, selectedGroup }) => 
                     <FormattedMessage id="Flashcards" />
                   </Button>
                 </Link>
-                <Link to={`/stories/${story._id}/`}>
+                <Link to={`/stories/${story._id}/read`}>
                   <Button variant="secondary" style={{ marginRight: '0.5em' }}>
                     <FormattedMessage id="Read" />
                   </Button>
@@ -168,12 +165,12 @@ const StoryListItem = ({ story, userCanShare, libraryShown, selectedGroup }) => 
 
 
           <span style={{ marginLeft: 'auto' }}>
-            {difficultyIcon}
+            <DifficultyStars difficulty={story.difficulty} size="large" />
           </span>
           <ShareStory story={story} isOpen={shareModalOpen} setOpen={setShareModalOpen} />
         </div>
       </Card.Content>
-      <DeleteConfirmationModal
+      <ConfirmationWarning
         open={confirmationOpen}
         setOpen={setConfirmationOpen}
         storyId={story._id}
@@ -183,7 +180,7 @@ const StoryListItem = ({ story, userCanShare, libraryShown, selectedGroup }) => 
           ? <FormattedMessage id="remove-story-from-group-warning" values={{ group: currentGroup.groupName }} />
           : <FormattedMessage id="this-will-permanently-remove-this-story-from-your-collection-are-you-sure-you-want-to-proceed" />}
 
-      </DeleteConfirmationModal>
+      </ConfirmationWarning>
     </Card>
   )
 }

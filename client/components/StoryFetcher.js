@@ -11,7 +11,7 @@ export default function StoryFetcher() {
   const dispatch = useDispatch()
 
   useEffect(() => {
-    dispatch(getSelf())
+    if (user) dispatch(getSelf())
   }, [])
 
   useEffect(() => {
