@@ -57,7 +57,7 @@ const CrosswordView = () => {
   ), {})
 
   const handleWordChange = (number) => {
-    if (clues) return
+    if (!clues) return
     setCurrentClue(clues.find(clue => clue.clue_number === Number(number)))
   }
 
