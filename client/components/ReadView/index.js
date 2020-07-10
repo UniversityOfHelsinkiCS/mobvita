@@ -27,7 +27,11 @@ const ReadView = ({ match }) => {
   const dispatch = useDispatch()
   const { width } = useWindowDimensions()
 
-  const { story, pending } = useSelector(({ stories, locale }) => ({ story: stories.focused, pending: stories.focusedPending, locale }))
+  const { story, pending } = useSelector(({ stories, locale }) => ({
+    story: stories.focused,
+    pending: stories.focusedPending,
+    locale,
+  }))
   const learningLanguage = useSelector(learningLanguageSelector)
   const dictionaryLanguage = useSelector(({ user }) => user.data.user.last_trans_language)
   const autoSpeak = useSelector(({ user }) => user.data.user.auto_speak)
@@ -51,18 +55,29 @@ const ReadView = ({ match }) => {
           wordLemmas,
           capitalize(dictionaryLanguage),
           id,
-          wordId,
-        ),
+          wordId
+        )
       )
     }
   }
 
-  const wordVoice = (word) => {
+  const wordVoice = word => {
     if (word.bases) {
-      return <span className="word-interactive" key={word.ID} onClick={e => handleWordClick(word.surface, word.lemmas, word.ID)}>{word.surface}</span>
+      return (
+        <span
+          className="word-interactive"
+          key={word.ID}
+          onClick={() => handleWordClick(word.surface, word.lemmas, word.ID)}
+          onKeyDown={() => handleWordClick(word.surface, word.lemmas, word.ID)}
+          role="button"
+          tabIndex="-1"
+        >
+          {word.surface}
+        </span>
+      )
     }
     if (word.surface === '\n\n') {
-      return <br />
+      return <br key={word.ID} />
     }
     return word.surface
   }
@@ -88,13 +103,17 @@ const ReadView = ({ match }) => {
               </Button>
             </Link>
           </Header>
-          {story.url ? <a href={story.url}><FormattedMessage id="Source" /></a> : <div />}
+          {story.url ? (
+            <a href={story.url}>
+              <FormattedMessage id="Source" />
+            </a>
+          ) : (
+            <div />
+          )}
           <Divider />
           <Segment data-cy="readmode-text" style={getTextStyle(learningLanguage)}>
             {story.paragraph.map(paragraph => (
-              <p key={paragraph[0].ID}>
-                {paragraph.map(word => wordVoice(word))}
-              </p>
+              <p key={paragraph[0].ID}>{paragraph.map(word => wordVoice(word))}</p>
             ))}
           </Segment>
         </div>
