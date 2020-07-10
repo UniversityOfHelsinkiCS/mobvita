@@ -1,10 +1,12 @@
 {
-  "extends": "airbnb",
+  "extends": ["airbnb", "prettier"],
+  "plugins": ["prettier"],
   "parser": "babel-eslint",
   "env": {
     "browser": true
   },
   "rules": {
+    "prettier/prettier": ["error"],
     "semi": [
       "error",
       "never"
