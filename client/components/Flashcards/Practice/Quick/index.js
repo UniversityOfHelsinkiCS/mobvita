@@ -11,18 +11,13 @@ const Quick = ({ card, cardNumbering, answerCard }) => {
     setFlipped(false)
   }, [card])
 
-  const {
-    lemma,
-    _id: id,
-    stage,
-    glosses,
-  } = card
+  const { lemma, _id: id, stage, glosses } = card
 
   const flipCard = () => {
     setFlipped(!flipped)
   }
 
-  const checkAnswer = (answerIsCorrect) => {
+  const checkAnswer = answerIsCorrect => {
     answerCard(null, answerIsCorrect, 'fillin')
     setAnswered(true)
     flipCard()
@@ -36,7 +31,7 @@ const Quick = ({ card, cardNumbering, answerCard }) => {
   }
 
   const translations = Array.isArray(glosses)
-    ? glosses.map(item => <li key={item}>{item}</li>)
+    ? [...new Set(glosses)].map(item => <li key={item}>{item}</li>)
     : glosses
 
   return (
@@ -44,8 +39,7 @@ const Quick = ({ card, cardNumbering, answerCard }) => {
       <Flashcard {...cardProps}>
         <div className="flex-column grow">
           <span className="header-2 auto">{lemma}</span>
-          {!answered
-            && (
+          {!answered && (
             <div className="flex space-evenly padding-bottom-4">
               <Button
                 circular
@@ -62,8 +56,7 @@ const Quick = ({ card, cardNumbering, answerCard }) => {
                 <Icon name="question" size="huge" color="yellow" style={{ margin: 0 }} />
               </Button>
             </div>
-            )
-          }
+          )}
         </div>
       </Flashcard>
       <Flashcard {...cardProps}>

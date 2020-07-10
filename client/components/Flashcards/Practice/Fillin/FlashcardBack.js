@@ -12,7 +12,7 @@ const FlashcardBack = ({
   lemma,
   ...props
 }) => {
-  const handleEnter = useCallback((event) => {
+  const handleEnter = useCallback(event => {
     if (event.keyCode === 13) {
       setSwipeIndex(swipeIndex + 1)
     }
@@ -29,7 +29,7 @@ const FlashcardBack = ({
   }, [focusedAndBigScreen, flipped])
 
   const translations = Array.isArray(glosses)
-    ? glosses.map(item => <li key={item}>{item}</li>)
+    ? [...new Set(glosses)].map(item => <li key={item}>{item}</li>)
     : glosses
 
   return (
