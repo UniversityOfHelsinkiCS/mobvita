@@ -11,128 +11,125 @@ export default function AboutUs({ trigger }) {
       <Modal.Header>About us</Modal.Header>
       <Modal.Content data-cy="about-content">
         <p>
-          <b><i>Revita</i></b> provides tools for language learning, and for supporting endangered languages. <b><i>Revita</i></b> stimulates the student to practice in <b>actively producing</b> language,
-          rather than <b>passively absorbing</b> rules.
+          <b><i>Revita</i></b> provides tools for language learning and for supporting endangered languages.<br/>
+          <b><i>Revita</i></b> stimulates the student to practice <b>actively producing</b> language, rather than <b>passively absorbing</b> rules.
         </p>
 
         <h4>Main features</h4>
         <ul>
-          <li><b><i>Revita</i></b> offers many <b>exercise modes:</b></li>
+          <li>Students practice with arbitrary authentic content, through a variety of <b>exercise modes:</b></li>
           <ul>
-            <li>fill-in-the-blank quizzes</li>
-            <li>multiple-choice quizzes</li>
-            <li>vocabulary practice (flashcards)</li>
-            <li>listening comprehension quizzes</li>
-            <li>... and more.</li>
+          <li>fill-in-the-blank quizzes</li>
+          <li>multiple-choice quizzes</li>
+          <li>flashcards: vocabulary practice</li>
+          <li>listening comprehension quizzes</li>
+          <li>and more...</li>
           </ul>
           <li>
-            <b><i>Revita</i></b> is suitable for students at the <b>intermediate to advanced</b> levels&mdash;i.e., not for absolute beginners.
+            <b><i>Revita</i></b> is for students at the <b>intermediate to advanced</b> levels
+          &mdash;i.e., it is not for absolute beginners, just starting to learn a language.
           </li>
           <li>
-            The system <b>tracks the progress</b> of the student, and aims to adapt to the student's present level of competence. The student's past answers help the system to offers exercises that are best suited for the <b>student's level</b>.
+            The system <b>tracks the progress</b> of the student, and tries to adapt to the student's present skills.<br/>
+            The student's previous answers help the system to offer exercises that are best suited for the <b>student's level</b>.
           </li>
         </ul>
-        <p>
-          <b><i>Revita</i></b> can be used in "guest" mode, without registration. A guest can use
-          any language, view public stories and do exercises.
-        </p>
-          Registering&mdash;which is free&mdash;enables these main features:
+          <b><i>Revita</i></b> helps students by <i>learning from stories</i>.
+          The story can be <b>any</b> text, which the students choose themselves.<br/>
+          <b><i>Revita</i></b> offers a small "public library" of stories in your chosen language, 
+          which cover various topics at various levels of difficulty.<br/>
+          <b><i>Revita</i></b> can be used in "guest" mode, without registration. 
+          A guest can use any language, view public stories, and do exercises.<br/>
+        Registering&mdash;which is free&mdash;enables additional important features:
         <ul>
           <li>
-            <b>Own content</b>: you can upload any story you like, and work on it in your own
-            private library. Private stories are not visible to other users&mdash;but you can
-            share stories with <i>friends</i>! Stories can be uploaded from any web page, or from a text file.
+            <b>Own content</b>: you can upload any story you like to in your own
+            private library.<br/>
+            Your private stories are not visible to other users&mdash;but you can
+            share your stories with <i>friends</i>!<br/>
+            Stories can be uploaded from any web page, or from a text file.
           </li>
           <li>
-            <b>Personalization</b>: the results from your exercises are analyzed to adapt to
-            your level of competence and offer exercises appropriate for your level.
+            <b>Personalization</b>: the system analyzes the results from your past exercises
+            to better adapt future exercises to your skills.
           </li>
         </ul>
-        <h4>Stories</h4>
-        <p>
-          <b><i>Revita</i></b> helps students <i>learn languages from stories</i>. The story can be <b>any</b> text, which the students choose themselves. For each story:
-        </p>
+        <h4>Collaborators and Credits</h4>
+        <b><i>Revita</i></b> builds upon many tools and resources developed by other projects and international colleagues:
+
         <ul>
           <li>
-            <b><i>Revita </i></b> selects some words from the story to <b>create exercises </b>&mdash;e.g., fill-in-the-blank <i>quizzes</i>&mdash; ("cloze" exercises)
+            Collaboration with the TOSKA Software Engineering and Web Development Team, led by Dr <a href="https://www.helsinki.fi/fi/ihmiset/henkilohaku/matti-luukkainen-9021313">Matti Luukkainen</a>, University of Helsinki: Gert Adamson, Atte Haarni, Marko Koskinen, Jami Kousa, Tero Tapio. 
           </li>
+         
           <li>
-            the student receives <i>hints</i> for each quiz&mdash;the hint is the "basic" form of the word
+            Collaboration with the research group at the University of Milan led by Dr <a href="https://www.unimi.it/it/ugov/person/nataliya-stoyanova">Nataliya Stoyanova</a>, and the research group at the University of Helsinki led by Dr <a href="https://www.helsinki.fi/fi/ihmiset/henkilohaku/mikhail-kopotev-9066584">Mihail Kopotev</a>, to develop components dedicated to supporting language learning generally, and for Russian specifically.<br/>
+            The goal is to <i>assess the skills</i> of learners quickly and accurately, based on patterns of mistakes, 
+            and to relate them to a <i>natural order</i> of acquisition of skills, written and oral, based on significant numbers of L2 learners&mdash;thousands of university students.
+          <br/>
+            For oral skills, the research unit is developing new modules to automatically analyze the students' ability to process spontaneous L1 speech.
+            This will allow us to test hypotheses about the mechanisms for processing of audio input by learners, and to create a system of exercises to train this ability by following a personalized path for each student.
           </li>
+
           <li>
-            the student fills in the word in the correct form as it should appear in the context of the story
+          Dr <a href="https://www.helsinki.fi/en/people/people-finder/lari-kotilainen-9011714">Lari Kotilainen</a>, University of Helsinki: development of learning support for Finnish.
           </li>
+
+          <li>The <a href="http://giellatekno.uit.no/index.eng.html">GiellaTekno</a> platform: language technology for the Uralic languages, and endangered languages from other language families.
+          </li>
+
           <li>
-            <b><i>Revita</i></b> provides instant <b>feedback</b> to the student about whether the answers match what was in the text
+            The <a href="https://www.apertium.org/index.eng.html">Apertium</a> platform for languages from the Uralic, Turkic and other language families.
           </li>
+
           <li>
-            If you return to practice the same story again, the exercises will be <b>new</b>, since they are chosen randomly every time you practice.
+          <a href="https://code.google.com/archive/p/morphisto/">Morphisto
+          </a>&mdash;the German morphological analyzer.
           </li>
+
           <li>
-            <b><i>Revita</i></b> tracks the student's answers, monitors the student's progress, and assesses the the student's level of competence
+            CrosslatorTagger for Russian, by Professor <a href="https://www.hse.ru/en/staff/klyshinsky">Eduard Klyshinskiy
+      </a>, Higher School of Economics, Moscow.
+          <br/>
+            For Uralic and Turkic languages, CrosslatorTagger is used to detect code-switching to Russian in authentic texts.
           </li>
-        </ul>
-        <p>
-          <b><i>Revita</i></b> offers a sample "public library" of stories in your chosen language. The public stories cover various topics, and at various levels of difficulty.
-        </p>
-        <h4>Languages</h4>
-        <p>
-          The language is chosen from the menu on the top-right. Endangered languages currently available:
-        </p>
-        <ul>
-          <li> Uralic:</li>
-          <ul>
-            <li> Erzya</li>
-            <li> Komi-Zyrian</li>
-            <li> Meadow Mari</li>
-            <li> North Saami</li>
-            <li> Udmurt</li>
-          </ul>
-          <li> Turkic:</li>
-          <ul>
-            <li> Sakha (Yakut)</li>
-          </ul>
-        </ul>
-        <h4>Credits and Acknowledgements</h4>
-        <b><i>Revita</i></b> builds upon many tools, which are developed and kindly made available by other projects and international colleagues:
-        <ul>
-          <li> <a href="http://giellatekno.uit.no/index.eng.html">GiellaTekno</a>&mdash;a platform for many Uralic languages.
+
+          <li> <a href="https://sakhatyla.ru">SakhaTyla.Ru</a>&mdash;portal for the Sakha (Yakut) language, providing analyzers and dictionaries.
           </li>
-          <li> CrosslatorTagger for Russian, by <a href="https://www.hse.ru/en/staff/klyshinsky">Eduard
-          Klyshinskiy
-          </a>; CrosslatorTagger is used to detect code-switching to Russian in Uralic and Turkic texts.
-          </li>
-          <li> <a href="https://code.google.com/archive/p/morphisto/">Morphisto
-          </a>&mdash;a German analyzer.
-          </li>
-          <li> <a href="https://glosbe.com">Glosbe</a>&mdash;an on-line multi-lingual dictionary
-          </li>
-          <li> <a href="https://sakhatyla.ru">SakhaTyla.Ru</a>&mdash;portal for the Sakha language (Yakut), providing analyzers and dictionaries
-          </li>
-          <li> <a href="https://www.apertium.org/index.eng.html">Apertium</a>&mdash;platform for some Uralic and some Turkic languages.
-          </li>
-          <li>Many content providers, who have granted permission to use their text materials&mdash;named next to the corresponding stories.
-          </li>
-          <li>Some icons by <a href="http://www.flaticon.com/packs/essential-collection">Madebyoliver</a> from Flaticons and
-            <a href="https://thenounproject.com/term/flash-cards/4767/">Rohan Gupta</a> from the Noun Project.
-          </li>
+
           <li>
-            <a href="//responsivevoice.org/" target="_blank" title="ResponsiveVoice Text To Speech">ResponsiveVoice</a>
-              used under
-            <a
+            Content providers, who have granted us permission to use their materials&mdash;information attached to the respective stories.
+          </li>
+
+          <li>
+            <a href="//responsivevoice.org/" target="_blank" title="ResponsiveVoice Text To Speech">ResponsiveVoice</a> used under <a
               rel="license"
               href="http://creativecommons.org/licenses/by-nc-nd/4.0/"
               title="Creative Commons Attribution-NonCommercial-NoDerivatives 4.0 International License"
               target="_blank"
-            >Non-Commercial License
-            </a>
+            >Non-Commercial License</a>.
           </li>
-          <li> The Revita Project is supported by the Academy of Finland.</li>
+
+          <li>
+            <a href="https://github.com/reynoldsnlp/udar">Stress libraries (Rus) </a>
+            by Rob Reynolds, Assistant Research Professor, Brigham Young University, Utah.
+          </li>
+
+          <li>
+            Icons by <a href="http://www.flaticon.com/packs/essential-collection">Madebyoliver</a> from Flaticons and <a href="https://thenounproject.com/term/flash-cards/4767/">Rohan Gupta</a> from the Noun Project.
+          </li>
+
+          <li>
+            Revita Team: Javad Nouri, Kim Salmi, Jue Hou, José María Hoya Quecedo, Anisia Katinskaia, Max Koppatz, Sardana Ivanova, Giacomo Furlan, Vu Duc-Ahn,
+            led by Associate Professor <a href="https://www.helsinki.fi/en/ineq-helsinki-inequality-initiative/people#section-77365">Roman Yangarber</a>.
+            <br/>
+            The Revita Project is supported by the Academy of Finland. 
+          </li>
+
         </ul>
-        <h4>Technical</h4>
-        <p>
-          We recommend the newest versions of: Firefox, Chrome/Chromium, Safari, and Internet Explorer. JavaScript and cookies should be enabled in your browser.
-        </p>
+
+      And many other collaborators.
+
       </Modal.Content>
     </Modal>
   )

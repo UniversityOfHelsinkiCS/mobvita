@@ -128,6 +128,12 @@ const Help = () => {
           <li>A teacher can share a story with an entire group of students.</li>
         </ul>
 
+        <h4>Technical</h4>
+        <p>
+          We recommend the newest versions of browsers:
+          Firefox, Chrome/Chromium, Safari, and Internet Explorer.<br/>
+          JavaScript and cookies should be enabled in your browser.
+        </p>
 
       </Segment>
     </div>
