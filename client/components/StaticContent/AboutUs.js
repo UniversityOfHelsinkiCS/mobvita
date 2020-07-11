@@ -11,8 +11,8 @@ export default function AboutUs({ trigger }) {
       <Modal.Header>About us</Modal.Header>
       <Modal.Content data-cy="about-content">
         <p>
-          <b><i>Revita</i></b> is an approach to language learning:
-          for learning a second language, and for supporting endangered languages.
+          <b><i>Revita</i></b> is a new approach to language learning:
+          for learning a foreign language, and for supporting endangered languages.
         </p>
 
 
@@ -33,10 +33,10 @@ export default function AboutUs({ trigger }) {
           </li>
 
           <li>
-          <b>Active competency:</b>  Revita stimulates the student to <i>actively produce</i> language, rather than passively absorb rules.
+          <b>Active competency:</b> Revita stimulates the student to <i>actively produce</i> language, rather than passively absorb rules.
 
           <br/>
-            Revita creates exercises for students to practice:
+            Revita creates exercises for practice:
             <ul>
             <li>fill-in-the-blank quizzes</li>
             <li>multiple-choice quizzes</li>
@@ -49,11 +49,10 @@ export default function AboutUs({ trigger }) {
           <li>
             <b>Personalization</b>: The system <i>tracks the progress</i> of the student, 
             analyzes the results from past exercises,
-            and ties to <i>adapt</i> future exercises to the student's skills.
+            and tries to <i>adapt</i> future exercises to the student's skills.
           </li>
 
         </ul>
-
 
 
 
@@ -67,19 +66,19 @@ export default function AboutUs({ trigger }) {
           </li>
          
           <li>
-            Collaboration with the research group at the University of Milan led by Dr <a href="https://www.unimi.it/it/ugov/person/nataliya-stoyanova">Nataliya Stoyanova</a>, and the research group at the University of Helsinki led by Dr <a href="https://www.helsinki.fi/fi/ihmiset/henkilohaku/mikhail-kopotev-9066584">Mihail Kopotev</a>, to develop components dedicated to supporting language learning in general, and for Russian in particular.<br/>
-            The goals are: to <i>assess the skills</i> of learners quickly and accurately, based on patterns of mistakes, 
-            and to relate them to a <i>natural order</i> of acquisition of skills, written and oral, based on significant numbers of L2 learners&mdash;thousands of university students.
+            Collaboration with the research group at University of Milan led by Dr <a href="https://www.unimi.it/it/ugov/person/nataliya-stoyanova">Nataliya Stoyanova</a>, and the research group at University of Helsinki led by Dr <a href="https://www.helsinki.fi/fi/ihmiset/henkilohaku/mikhail-kopotev-9066584">Mihail Kopotev</a>.  Developing components for supporting language learning in general, and for Russian in particular.<br/>
+            The goals are: to <i>assess</i> the written and oral skills of learners quickly and accurately, based on patterns of mistakes,
+            and to relate them to a <i>natural order</i> of acquisition of skills, based on significant numbers of L2 learners&mdash;thousands of university students.
           <br/>
-            For oral skills, the research unit is developing new modules to automatically analyze the students' ability to process spontaneous speech.
-            This will allow us to test hypotheses about the mechanisms for processing of audio input by learners, and to create a system of exercises to train this ability by following a personalized path for each student.
+            For oral skills, the research unit is developing new modules to analyze the students' ability to process spontaneous speech.
+            This will allow us to test hypotheses about the mechanisms for processing of audio input by learners, and to create a system to train this ability by following a personalized path for each student.
           </li>
 
           <li>
           Dr <a href="https://www.helsinki.fi/en/people/people-finder/lari-kotilainen-9011714">Lari Kotilainen</a>, University of Helsinki: development of learning support for Finnish.
           </li>
 
-          <li>The <a href="http://giellatekno.uit.no/index.eng.html">GiellaTekno</a> platform: language technology for the Uralic languages, and endangered languages from other language families.
+          <li>The <a href="http://giellatekno.uit.no/index.eng.html">GiellaTekno</a> platform: language technology for Uralic languages, and endangered languages from other language families.
           </li>
 
           <li>
@@ -95,7 +94,7 @@ export default function AboutUs({ trigger }) {
             CrosslatorTagger for Russian, by Professor <a href="https://www.hse.ru/en/staff/klyshinsky">Eduard Klyshinskiy
       </a>, Higher School of Economics, Moscow.
           <br/>
-            For Uralic and Turkic languages, CrosslatorTagger is used to detect code-switching to Russian in authentic texts.
+            For learning Uralic and Turkic languages, CrosslatorTagger is used to detect code-switching into Russian in authentic texts.
           </li>
 
           <li> <a href="https://sakhatyla.ru">SakhaTyla.Ru</a>&mdash;portal for the Sakha (Yakut) language, providing analyzers and dictionaries.
