@@ -11,51 +11,55 @@ export default function AboutUs({ trigger }) {
       <Modal.Header>About us</Modal.Header>
       <Modal.Content data-cy="about-content">
         <p>
-          <b><i>Revita</i></b> provides tools for language learning and for supporting endangered languages.<br/>
-          <b><i>Revita</i></b> stimulates the student to practice <b>actively producing</b> language, rather than <b>passively absorbing</b> rules.
+          <b><i>Revita</i></b> is an approach to language learning:
+          for learning a second language, and for supporting endangered languages.
         </p>
 
-        <h4>Main features</h4>
-        <ul>
-          <li>Students practice with arbitrary authentic content, through a variety of <b>exercise modes:</b></li>
-          <ul>
-          <li>fill-in-the-blank quizzes</li>
-          <li>multiple-choice quizzes</li>
-          <li>flashcards: vocabulary practice</li>
-          <li>listening comprehension quizzes</li>
-          <li>and more...</li>
-          </ul>
-          <li>
-            <b><i>Revita</i></b> is for students at the <b>intermediate to advanced</b> levels
-          &mdash;i.e., it is not for absolute beginners, just starting to learn a language.
-          </li>
-          <li>
-            The system <b>tracks the progress</b> of the student, and tries to adapt to the student's present skills.<br/>
-            The student's previous answers help the system to offer exercises that are best suited for the <b>student's level</b>.
-          </li>
-        </ul>
-          <b><i>Revita</i></b> helps students by <i>learning from stories</i>.
-          The story can be <b>any</b> text, which the students choose themselves.<br/>
-          <b><i>Revita</i></b> offers a small "public library" of stories in your chosen language, 
-          which cover various topics at various levels of difficulty.<br/>
-          <b><i>Revita</i></b> can be used in "guest" mode, without registration. 
-          A guest can use any language, view public stories, and do exercises.<br/>
-        Registering&mdash;which is free&mdash;enables additional important features:
+
+        <h3>Main features:</h3>
+
         <ul>
           <li>
-            <b>Own content</b>: you can upload any story you like to in your own
-            private library.<br/>
-            Your private stories are not visible to other users&mdash;but you can
-            share your stories with <i>friends</i>!<br/>
-            Stories can be uploaded from any web page, or from a text file.
+            Revita is for students at the <b>intermediate to advanced</b> levels
+            &mdash; i.e., not for absolute beginners just starting to learn a language.
           </li>
+
           <li>
-            <b>Personalization</b>: the system analyzes the results from your past exercises
-            to better adapt future exercises to your skills.
+            <b>Learning from stories:</b> Revita lets students learn from arbitrary content &mdash; <i>any</i> authentic text, which students choose themselves.
+
+          <br/>
+            Revita offers a small "public library" of sample stories in each language, 
+            which cover various topics and levels of difficulty.
           </li>
+
+          <li>
+          <b>Active competency:</b>  Revita stimulates the student to <i>actively produce</i> language, rather than passively absorb rules.
+
+          <br/>
+            Revita creates exercises for students to practice:
+            <ul>
+            <li>fill-in-the-blank quizzes</li>
+            <li>multiple-choice quizzes</li>
+            <li>listening comprehension quizzes</li>
+            <li>flashcards: vocabulary practice</li>
+            <li>and more...</li>
+            </ul>
+          </li>
+
+          <li>
+            <b>Personalization</b>: The system <i>tracks the progress</i> of the student, 
+            analyzes the results from past exercises,
+            and ties to <i>adapt</i> future exercises to the student's skills.
+          </li>
+
         </ul>
-        <h4>Collaborators and Credits</h4>
-        <b><i>Revita</i></b> builds upon many tools and resources developed by other projects and international colleagues:
+
+
+
+
+        <h3>Collaborators and Credits:</h3>
+
+        <b><i>Revita</i></b> builds upon many tools and resources developed by international colleagues and other projects:
 
         <ul>
           <li>
@@ -63,11 +67,11 @@ export default function AboutUs({ trigger }) {
           </li>
          
           <li>
-            Collaboration with the research group at the University of Milan led by Dr <a href="https://www.unimi.it/it/ugov/person/nataliya-stoyanova">Nataliya Stoyanova</a>, and the research group at the University of Helsinki led by Dr <a href="https://www.helsinki.fi/fi/ihmiset/henkilohaku/mikhail-kopotev-9066584">Mihail Kopotev</a>, to develop components dedicated to supporting language learning generally, and for Russian specifically.<br/>
-            The goal is to <i>assess the skills</i> of learners quickly and accurately, based on patterns of mistakes, 
+            Collaboration with the research group at the University of Milan led by Dr <a href="https://www.unimi.it/it/ugov/person/nataliya-stoyanova">Nataliya Stoyanova</a>, and the research group at the University of Helsinki led by Dr <a href="https://www.helsinki.fi/fi/ihmiset/henkilohaku/mikhail-kopotev-9066584">Mihail Kopotev</a>, to develop components dedicated to supporting language learning in general, and for Russian in particular.<br/>
+            The goals are: to <i>assess the skills</i> of learners quickly and accurately, based on patterns of mistakes, 
             and to relate them to a <i>natural order</i> of acquisition of skills, written and oral, based on significant numbers of L2 learners&mdash;thousands of university students.
           <br/>
-            For oral skills, the research unit is developing new modules to automatically analyze the students' ability to process spontaneous L1 speech.
+            For oral skills, the research unit is developing new modules to automatically analyze the students' ability to process spontaneous speech.
             This will allow us to test hypotheses about the mechanisms for processing of audio input by learners, and to create a system of exercises to train this ability by following a personalized path for each student.
           </li>
 
@@ -79,7 +83,7 @@ export default function AboutUs({ trigger }) {
           </li>
 
           <li>
-            The <a href="https://www.apertium.org/index.eng.html">Apertium</a> platform for languages from the Uralic, Turkic and other language families.
+            The <a href="https://wiki.apertium.org/wiki/Main_Page">Apertium</a> platform for languages from the Uralic, Turkic and other language families.
           </li>
 
           <li>
@@ -111,7 +115,7 @@ export default function AboutUs({ trigger }) {
           </li>
 
           <li>
-            <a href="https://github.com/reynoldsnlp/udar">Stress libraries (Rus) </a>
+            <a href="https://github.com/reynoldsnlp/udar">Stress library</a> (Russian)
             by Rob Reynolds, Assistant Research Professor, Brigham Young University, Utah.
           </li>
 
@@ -120,15 +124,48 @@ export default function AboutUs({ trigger }) {
           </li>
 
           <li>
-            Revita Team: Javad Nouri, Kim Salmi, Jue Hou, José María Hoya Quecedo, Anisia Katinskaia, Max Koppatz, Sardana Ivanova, Giacomo Furlan, Vu Duc-Ahn,
+            Revita Team: Javad Nouri, Anisia Katinskaia, Kim Salmi, José María Hoya Quecedo, Jue Hou, Max Koppatz, Sardana Ivanova, Giacomo Furlan, Vu Duc-Ahn,
             led by Associate Professor <a href="https://www.helsinki.fi/en/ineq-helsinki-inequality-initiative/people#section-77365">Roman Yangarber</a>.
-            <br/>
-            The Revita Project is supported by the Academy of Finland. 
           </li>
 
         </ul>
 
-      And many other collaborators.
+        And many other collaborators.
+        <br/>
+        <br/>
+
+
+        The <b><i>Revita Project</i></b> is supported by:
+        <ul>
+          <li>
+            The Academy of Finland, Research Council for Culture and Society (Grant 267097)
+          </li>
+
+          <li>
+            Opetushallitus: The Finnish National Agency for Education  
+            (Grant OPH-1443-2020, TM-18-10846)
+          </li>
+
+          <li>
+            CIMO: Center for International Mobility
+            (Grant TM-16-10082)
+          </li>
+
+          <li>
+            HIIT: Helsinki Institute for Information Technology
+          </li>
+
+          <li>
+            University of Pisa, Italy: ErasmusPlus Programme of the European Commission
+          </li>
+
+          <li>
+            Tulevaisuus Rahasto 2020: Future Development Fund, Faculty of Arts, University of Helsinki
+          </li>
+        </ul>
+
+
+        <br/>
 
       </Modal.Content>
     </Modal>
