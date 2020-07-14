@@ -62,7 +62,7 @@ export default function AboutUs({ trigger }) {
 
         <ul>
           <li>
-            Collaboration with the TOSKA Software Engineering and Web Development Team, led by Dr <a href="https://www.helsinki.fi/fi/ihmiset/henkilohaku/matti-luukkainen-9021313">Matti Luukkainen</a>, University of Helsinki: Gert Adamson, Atte Haarni, Marko Koskinen, Jami Kousa, Tero Tapio. 
+            Collaboration with the TOSKA Software Engineering and Web Development Team, led by Dr <a href="https://www.helsinki.fi/fi/ihmiset/henkilohaku/matti-luukkainen-9021313">Matti Luukkainen</a>, University of Helsinki: Gert Adamson, Atte Haarni, Esa Kemppainen, Marko Koskinen, Jami Kousa, Tero Tapio. 
           </li>
          
           <li>
