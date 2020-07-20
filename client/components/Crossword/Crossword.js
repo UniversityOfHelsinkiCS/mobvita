@@ -36,7 +36,7 @@ const defaultTheme = {
   cellBackground: 'rgb(255,255,255)',
   cellBorder: 'rgb(0,0,0)',
   textColor: 'rgb(0,0,0)',
-  numberColor: 'rgba(0,0,0, 0.25)',
+  numberColor: 'rgba(0,0,180, 1)',
   focusBackground: 'rgb(255,255,0)',
   highlightBackground: 'rgb(255,255,204)',
   correctBackground: 'rgb(119,221,119)',
@@ -44,8 +44,7 @@ const defaultTheme = {
 
 // eslint-disable-next-line
 const OuterWrapper = styled.div.attrs(props => ({
-  className: `crossword${props.correct ? ' correct' : ''}`,
-}))`
+  className: `crossword${props.correct ? ' correct' : ''}`,}))`
   margin: 0;
   padding: 0;
   border: 0;
@@ -430,9 +429,7 @@ const Crossword = React.forwardRef(
           case 'End': {
             // move to beginning/end of this entry?
             const info = data[currentDirection][currentNumber]
-            const {
-              answer: { length },
-            } = info
+            const {answer: { length },} = info
             let { row, col } = info
             if (key === 'End') {
               const across = isAcross(currentDirection)
