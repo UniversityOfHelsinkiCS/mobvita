@@ -5,6 +5,7 @@ import React, {
   useImperativeHandle,
   useRef,
   useState,
+  useMemo,
 } from 'react'
 
 import produce from 'immer'
@@ -106,6 +107,7 @@ const Crossword = React.forwardRef(
       useStorage,
       theme,
       customClues,
+      dimensions,
     },
     ref
   ) => {
@@ -523,6 +525,13 @@ const Crossword = React.forwardRef(
       saveGuesses(gridData, defaultStorageKey)
     }, [gridData, useStorage])
 
+    const { width, height } = useMemo(() => {
+      if (dimensions.col > dimensions.row) {
+        return { width: 100, height: 100 * (dimensions.row / dimensions.col) }
+      }
+      return { width: 100 * (dimensions.col / dimensions.row), height: 100 }
+    }, [dimensions])
+
     const handleCellClick = useCallback(
       cellData => {
         const { row, col } = cellData
@@ -691,6 +700,8 @@ const Crossword = React.forwardRef(
     // cells, rather than have them as independent properties.  (Or should they
     // stay separate? Or be passed as "spread" values?)
     const cellSize = 100 / size
+    const cellHeight = 100 / dimensions.row
+    const cellWidth = 100 / dimensions.col
     const cellPadding = 0.125
     const cellInner = cellSize - cellPadding * 2
     const cellHalf = cellSize / 2
@@ -735,7 +746,7 @@ const Crossword = React.forwardRef(
     return (
       <CrosswordContext.Provider value={context}>
         <CrosswordSizeContext.Provider
-          value={{ cellSize, cellPadding, cellInner, cellHalf, fontSize }}
+          value={{ cellSize, cellPadding, cellInner, cellHalf, fontSize, cellWidth, cellHeight }}
         >
           <ThemeProvider theme={finalTheme}>
             <OuterWrapper correct={crosswordCorrect}>
@@ -746,8 +757,14 @@ const Crossword = React.forwardRef(
                 cells in the <svg>.
               */}
                 <div style={{ margin: 0, padding: 0, position: 'relative' }}>
-                  <svg viewBox="0 0 100 100">
-                    <rect x={0} y={0} width={100} height={100} fill={finalTheme.gridBackground} />
+                  <svg viewBox={`0 0 ${width} ${height}`}>
+                    <rect
+                      x={0}
+                      y={0}
+                      width={width}
+                      height={height}
+                      fill={finalTheme.gridBackground}
+                    />
                     {cells}
                   </svg>
                   <input
@@ -770,10 +787,10 @@ const Crossword = React.forwardRef(
                       // keeps the math much more reliable.  (But we're still
                       // seeing a slight vertical deviation towards the bottom of
                       // the grid!  The "* 0.995" seems to help.)
-                      top: `calc(${focusedRow * cellSize * 0.995}% + 2px)`,
-                      left: `calc(${focusedCol * cellSize}% + 2px)`,
-                      width: `calc(${cellSize}% - 4px)`,
-                      height: `calc(${cellSize}% - 4px)`,
+                      top: `calc(${focusedRow * cellHeight * 0.995}% + 2px)`,
+                      left: `calc(${focusedCol * cellWidth}% + 2px)`,
+                      width: `calc(${cellWidth}% - 4px)`,
+                      height: `calc(${cellHeight}% - 4px)`,
                       fontSize: `${fontSize * 6}px`, // waaay too small...?
                       textAlign: 'center',
                       textAnchor: 'middle',

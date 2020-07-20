@@ -20,7 +20,7 @@ const CrosswordView = () => {
   const [data, setData] = useState()
   const dispatch = useDispatch()
 
-  const { data: crosswordData, clues } = useSelector(({ crossword }) => crossword)
+  const { data: crosswordData, clues, dimensions } = useSelector(({ crossword }) => crossword)
 
   useEffect(() => {
     localStorage.removeItem('guesses')
@@ -133,6 +133,7 @@ const CrosswordView = () => {
         data={formattedData}
         ref={crosswordRef}
         customClues={<div style={{ width: '600px', overflow: 'scroll' }}>{clueElements}</div>}
+        dimensions={dimensions}
       />
     </CrosswordWrapper>
   )
