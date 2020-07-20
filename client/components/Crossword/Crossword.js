@@ -761,61 +761,63 @@ const Crossword = React.forwardRef(
         >
           <ThemeProvider theme={finalTheme}>
             <OuterWrapper correct={crosswordCorrect}>
-              <div
-                style={{
-                  margin: 0,
-                  padding: 0,
-                  position: 'relative',
-                  height: '100%',
-                  display: 'inline-block',
-                }}
-              >
-                <svg viewBox={`0 0 ${width} ${height}`} style={{ height: '100%' }}>
-                  <rect
-                    x={0}
-                    y={0}
-                    width={width}
-                    height={height}
-                    fill={finalTheme.gridBackground}
-                  />
-                  {cells}
-                </svg>
-                <input
-                  ref={inputRef}
-                  aria-label="crossword-input"
-                  type="text"
-                  onClick={handleInputClick}
-                  onKeyDown={handleInputKeyDown}
-                  onChange={handleInputChange}
-                  value=""
-                  // onInput={this.handleInput}
-                  autoComplete="off"
-                  spellCheck="false"
-                  autoCorrect="off"
+              <GridWrapper>
+                <div
                   style={{
-                    position: 'absolute',
-                    // In order to ensure the top/left positioning makes sense,
-                    // there is an absolutely-positioned <div> with no
-                    // margin/padding that we *don't* expose to consumers.  This
-                    // keeps the math much more reliable.  (But we're still
-                    // seeing a slight vertical deviation towards the bottom of
-                    // the grid!  The "* 0.995" seems to help.)
-                    top: `calc(${focusedRow * cellHeight * 0.995}% + 2px)`,
-                    left: `calc(${focusedCol * cellWidth}% + 2px)`,
-                    width: `calc(${cellWidth}% - 4px)`,
-                    height: `calc(${cellHeight}% - 4px)`,
-                    fontSize: `${fontSize * 6}px`, // waaay too small...?
-                    textAlign: 'center',
-                    textAnchor: 'middle',
-                    backgroundColor: 'transparent',
-                    caretColor: 'transparent',
                     margin: 0,
                     padding: 0,
-                    border: 0,
-                    cursor: 'default',
+                    position: 'relative',
+                    height: '100%',
+                    display: 'inline-block',
                   }}
-                />
-              </div>
+                >
+                  <svg viewBox={`0 0 ${width} ${height}`} style={{ maxHeight: '90vh' }}>
+                    <rect
+                      x={0}
+                      y={0}
+                      width={width}
+                      height={height}
+                      fill={finalTheme.gridBackground}
+                    />
+                    {cells}
+                  </svg>
+                  <input
+                    ref={inputRef}
+                    aria-label="crossword-input"
+                    type="text"
+                    onClick={handleInputClick}
+                    onKeyDown={handleInputKeyDown}
+                    onChange={handleInputChange}
+                    value=""
+                    // onInput={this.handleInput}
+                    autoComplete="off"
+                    spellCheck="false"
+                    autoCorrect="off"
+                    style={{
+                      position: 'absolute',
+                      // In order to ensure the top/left positioning makes sense,
+                      // there is an absolutely-positioned <div> with no
+                      // margin/padding that we *don't* expose to consumers.  This
+                      // keeps the math much more reliable.  (But we're still
+                      // seeing a slight vertical deviation towards the bottom of
+                      // the grid!  The "* 0.995" seems to help.)
+                      top: `calc(${focusedRow * cellHeight * 0.995}% + 2px)`,
+                      left: `calc(${focusedCol * cellWidth}% + 2px)`,
+                      width: `calc(${cellWidth}% - 4px)`,
+                      height: `calc(${cellHeight}% - 4px)`,
+                      fontSize: `${fontSize * 6}px`, // waaay too small...?
+                      textAlign: 'center',
+                      textAnchor: 'middle',
+                      backgroundColor: 'transparent',
+                      caretColor: 'transparent',
+                      margin: 0,
+                      padding: 0,
+                      border: 0,
+                      cursor: 'default',
+                    }}
+                  />
+                </div>
+              </GridWrapper>
               <CluesWrapper>
                 {customClues ||
                   (clues &&
