@@ -3,7 +3,8 @@ import { useSelector, useDispatch } from 'react-redux'
 import { useParams } from 'react-router-dom'
 import { hiddenFeatures } from 'Utilities/common'
 import { getCrossword, revealClue } from 'Utilities/redux/crosswordReducer'
-import Crossword from '@ajhaa/react-crossword'
+import Crossword from 'Components/Crossword'
+// import Crossword from '@ajhaa/react-crossword'
 import Spinner from 'Components/Spinner'
 import PlainWord from 'Components/PracticeView/PlainWord'
 import { isEmpty } from 'lodash'
@@ -18,6 +19,7 @@ const CrosswordView = () => {
   const crosswordRef = useRef()
   const [currentClue, setCurrentClue] = useState(null)
   const [data, setData] = useState()
+  const [formattedData, setFormattedData] = useState()
   const dispatch = useDispatch()
 
   const { data: crosswordData, clues } = useSelector(({ crossword }) => crossword)
@@ -46,15 +48,18 @@ const CrosswordView = () => {
     }
   }, [data])
 
-  const formattedData = data?.entries?.reduce((newData, entry) => (
-    {
-      ...newData,
-      [entry.direction]: {
-        ...newData[entry.direction],
-        [entry.number]: { answer: entry.answer.toUpperCase(), row: entry.position.x, col: entry.position.y, clue: 'This is an important clue' },
-      },
-    }
-  ), {})
+
+  useEffect(() => {
+    setFormattedData(data?.entries?.reduce((newData, entry) => (
+      {
+        ...newData,
+        [entry.direction]: {
+          ...newData[entry.direction],
+          [entry.number]: { answer: entry.answer.toUpperCase(), row: entry.position.x, col: entry.position.y, clue: 'This is an important clue' },
+        },
+      }
+    ), {}))
+  }, [data])
 
   const handleWordChange = (number) => {
     if (!clues) return
@@ -85,17 +90,19 @@ const CrosswordView = () => {
     if (event.key !== 'Tab') return
     event.preventDefault()
     const index = clues.findIndex(clue => clue.ID === currentClue.ID)
-    const nextClue = clues.slice(index + 1).find(clue => clue.clue_number)
+    const nextClue = clues.slice(index + 1).find(clue => clue.clue_number && !clue.show)
 
     setCurrentClue(nextClue)
   }
 
   const handleCorrect = (_direction, number) => {
-    dispatch(revealClue(Number(number)))
-    const index = clues.findIndex(clue => clue.ID === currentClue.ID)
-    const nextClue = clues.slice(index + 1).find(clue => clue.clue_number)
+    setTimeout(() => {
+      dispatch(revealClue(Number(number)))
+      const index = clues.findIndex(clue => clue.ID === currentClue.ID)
+      const nextClue = clues.slice(index + 1).find(clue => clue.clue_number && !clue.show)
 
-    setCurrentClue(nextClue)
+      setCurrentClue(nextClue)
+    }, 100)
   }
 
   useEffect(() => {
@@ -106,6 +113,8 @@ const CrosswordView = () => {
   if (!hiddenFeatures) return null
 
   if (!formattedData) return <Spinner />
+
+  console.log(JSON.stringify(formattedData))
 
   return (
     <CrosswordWrapper>
