@@ -36,12 +36,9 @@ const DictionaryHelp = () => {
 
   const translationLanguageCode = useSelector(({ user }) => user.data.user.last_trans_language)
   const learningLanguage = useSelector(learningLanguageSelector)
-  const {
-    pending,
-    data: translation,
-    surfaceWord,
-    lemmas,
-  } = useSelector(({ translation }) => translation)
+  const { pending, data: translation, surfaceWord, lemmas, hideLemma } = useSelector(
+    ({ translation }) => translation
+  )
 
   const dispatch = useDispatch()
   const intl = useIntl()
@@ -52,23 +49,31 @@ const DictionaryHelp = () => {
     }
   }, [learningLanguage])
 
-  const dictionaryOptions = translatableLanguages[learningLanguage] ? translatableLanguages[learningLanguage].map(element => ({
-    key: element,
-    value: element,
-    text: intl.formatMessage({ id: element }),
-  })) : []
+  const dictionaryOptions = translatableLanguages[learningLanguage]
+    ? translatableLanguages[learningLanguage].map(element => ({
+        key: element,
+        value: element,
+        text: intl.formatMessage({ id: element }),
+      }))
+    : []
 
-  const translations = translation && translation.map(translated => (
-    <List.Item key={translated.URL} data-cy="translations" style={{ color: '#555555' }}>
-      <div style={getTextStyle(learningLanguage)}>
-        {translated.lemma}
-        <Speaker word={translated.lemma} />
-      </div>
-      <List bulleted style={{ color: 'slateGrey', fontStyle: 'italic' }}>
-        {translated.glosses.map((word, i) => <List.Item key={`${translated.URL}-${i}`}>{word}</List.Item>)}
-      </List>
-    </List.Item>
-  ))
+  const translations =
+    translation &&
+    translation.map(translated => (
+      <List.Item key={translated.URL} data-cy="translations" style={{ color: '#555555' }}>
+        {!hideLemma && (
+          <div style={getTextStyle(learningLanguage)}>
+            {translated.lemma}
+            <Speaker word={translated.lemma} />
+          </div>
+        )}
+        <List bulleted style={{ color: 'slateGrey', fontStyle: 'italic' }}>
+          {translated.glosses.map((word, i) => (
+            <List.Item key={`${translated.URL}-${i}`}>{word}</List.Item>
+          ))}
+        </List>
+      </List.Item>
+    ))
 
   useEffect(() => {
     if (translations && translations.length > 0) {
@@ -79,7 +84,7 @@ const DictionaryHelp = () => {
     }
   }, [translation])
 
-  const handleDropdownChange = (value) => {
+  const handleDropdownChange = value => {
     if (translation) {
       const lemmas = translation.map(t => t.lemma).join('+')
       if (lemmas !== '') dispatch(getTranslationAction(learningLanguage, lemmas, value))
@@ -93,12 +98,7 @@ const DictionaryHelp = () => {
   if (!showHelp && smallWindow) {
     return (
       <div className="dictionary-button">
-        <Button
-          className="navigationbuttonopen"
-          icon
-          basic
-          onClick={() => setShow(true)}
-        >
+        <Button className="navigationbuttonopen" icon basic onClick={() => setShow(true)}>
           <Shake
             h={5}
             v={5}
@@ -118,24 +118,29 @@ const DictionaryHelp = () => {
     )
   }
 
-  const parsedLemmas = () => lemmas
-    .split('+')
-    .join(',')
-    .split('|')
-    .join(',')
-    .split(',')
+  const parsedLemmas = () => lemmas.split('+').join(',').split('|').join(',').split(',')
 
   const showSurfaceWord = () => {
-    if (!surfaceWord) return false
+    if (!surfaceWord || hideLemma) return false
     if (translation) {
-      return !translation
-        .some(translated => translated.lemma.toLowerCase() === surfaceWord.toLowerCase())
+      return !translation.some(
+        translated => translated.lemma.toLowerCase() === surfaceWord.toLowerCase()
+      )
     }
     return surfaceWord.toLowerCase() !== parsedLemmas()[0].toLowerCase()
   }
 
   const translationResults = () => {
-    if (pending) return <div><span><FormattedMessage id="(DictionaryHelp) Loading, please wait" />... </span><Spinner animation="border" /></div>
+    if (pending)
+      return (
+        <div>
+          <span>
+            <FormattedMessage id="(DictionaryHelp) Loading, please wait" />
+            ...{' '}
+          </span>
+          <Spinner animation="border" />
+        </div>
+      )
     if (translations && translations.length > 0) return translations
     if (!translation) {
       return (
@@ -145,12 +150,18 @@ const DictionaryHelp = () => {
             <Speaker word={parsedLemmas()[0]} />
           </div>
           <List bulleted style={{ color: 'slateGrey', fontStyle: 'italic' }}>
-            <span><FormattedMessage id="(DictionaryHelp) No translation available" /></span>
+            <span>
+              <FormattedMessage id="(DictionaryHelp) No translation available" />
+            </span>
           </List>
         </List.Item>
       )
     }
-    return <span><FormattedMessage id="click-on-words-near-the-exercises-to-explore-their-meaning" /></span>
+    return (
+      <span>
+        <FormattedMessage id="click-on-words-near-the-exercises-to-explore-their-meaning" />
+      </span>
+    )
   }
 
   return (
@@ -162,30 +173,42 @@ const DictionaryHelp = () => {
             disabled={dictionaryOptions.length <= 1}
             defaultValue={translationLanguageCode}
             data-cy="dictionary-dropdown"
-            style={{ marginLeft: '0.5em', border: 'none', color: 'slateGrey', backgroundColor: 'white' }}
+            style={{
+              marginLeft: '0.5em',
+              border: 'none',
+              color: 'slateGrey',
+              backgroundColor: 'white',
+            }}
             onChange={e => handleDropdownChange(e.target.value)}
           >
-            {dictionaryOptions.map(option => <option key={option.key} value={option.value}>{option.text}</option>)}
+            {dictionaryOptions.map(option => (
+              <option key={option.key} value={option.value}>
+                {option.text}
+              </option>
+            ))}
           </select>
         </div>
         <div className="space-between padding-top-1">
           <List>
-            {showSurfaceWord()
-              && (
-                <List.Item style={{ paddingBottom: '0.5em', display: 'flex', ...getTextStyle(learningLanguage) }}>
-                  <span style={{ color: '#2185D0' }}>{surfaceWord}</span>
-                  <Speaker word={surfaceWord} />
-                </List.Item>
-              )}
+            {showSurfaceWord() && (
+              <List.Item
+                style={{
+                  paddingBottom: '0.5em',
+                  display: 'flex',
+                  ...getTextStyle(learningLanguage),
+                }}
+              >
+                <span style={{ color: '#2185D0' }}>{surfaceWord}</span>
+                <Speaker word={surfaceWord} />
+              </List.Item>
+            )}
             {translationResults()}
           </List>
-          {smallWindow
-            ? (
-              <Button icon basic onClick={() => setShow(false)} style={{ alignSelf: 'flex-end' }}>
-                <Icon name="angle down" size="large" color="blue" />
-              </Button>
-            )
-            : null}
+          {smallWindow ? (
+            <Button icon basic onClick={() => setShow(false)} style={{ alignSelf: 'flex-end' }}>
+              <Icon name="angle down" size="large" color="blue" />
+            </Button>
+          ) : null}
         </div>
       </Segment>
     </div>

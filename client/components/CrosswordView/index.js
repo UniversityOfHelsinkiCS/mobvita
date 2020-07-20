@@ -1,13 +1,21 @@
 import React, { useEffect, useRef, useState, useMemo } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import { useParams } from 'react-router-dom'
-import { hiddenFeatures } from 'Utilities/common'
+import {
+  hiddenFeatures,
+  newCapitalize,
+  capitalize,
+  useLearningLanguage,
+  useDictionaryLanguage,
+} from 'Utilities/common'
 import { getCrossword, revealClue } from 'Utilities/redux/crosswordReducer'
 import Crossword from 'Components/Crossword'
 import Spinner from 'Components/Spinner'
 import PlainWord from 'Components/PracticeView/PlainWord'
 import { isEmpty } from 'lodash'
 import styled from 'styled-components'
+import DictionaryHelp from 'Components/DictionaryHelp'
+import { setWords, getTranslationAction } from 'Utilities/redux/translationReducer'
 
 const CrosswordWrapper = styled.div`
   max-width: 100%;
@@ -21,6 +29,8 @@ const CrosswordView = () => {
   const dispatch = useDispatch()
 
   const { data: crosswordData, clues } = useSelector(({ crossword }) => crossword)
+  const learningLanguage = useLearningLanguage()
+  const dictionaryLanguage = useDictionaryLanguage()
 
   useEffect(() => {
     localStorage.removeItem('guesses')
@@ -69,6 +79,42 @@ const CrosswordView = () => {
     setCurrentClue(clues.find(clue => clue.clue_number === Number(number)))
   }
 
+  const handleWordClick = (surface, lemmas, wordId) => {
+    if (lemmas) {
+      dispatch(setWords(surface, lemmas))
+      dispatch(
+        getTranslationAction(
+          newCapitalize(learningLanguage),
+          lemmas,
+          capitalize(dictionaryLanguage),
+          null,
+          wordId
+        )
+      )
+    }
+  }
+
+  const translateClue = clue => {
+    const { lemmas, surface, ID: wordId } = clue
+    if (lemmas) {
+      dispatch(setWords(surface, lemmas, true))
+      dispatch(
+        getTranslationAction(
+          newCapitalize(learningLanguage),
+          lemmas,
+          capitalize(dictionaryLanguage),
+          null,
+          wordId
+        )
+      )
+    }
+  }
+
+  const handleClueClick = clue => {
+    setCurrentClue(clue)
+    translateClue(clue)
+  }
+
   const directionArrow = dir => {
     if (dir === 'across') return '→'
     if (dir === 'down') return '↓'
@@ -82,7 +128,7 @@ const CrosswordView = () => {
           return (
             <span
               style={{ backgroundColor: currentClue && currentClue.ID === clue.ID ? 'yellow' : '' }}
-              onClick={() => setCurrentClue(clue)}
+              onClick={() => handleClueClick(clue)}
               key={clue.ID}
             >
               <b>
@@ -101,6 +147,7 @@ const CrosswordView = () => {
             surface={clue.surface}
             lemmas={clue.lemmas}
             wordId={clue.ID}
+            handleWordClick={handleWordClick}
           >
             {clue.surface}
           </PlainWord>
@@ -112,6 +159,7 @@ const CrosswordView = () => {
   useEffect(() => {
     if (!currentClue || !crosswordRef.current) return
     crosswordRef.current.moveTo(currentClue.clue_direction, currentClue.clue_number)
+    translateClue(currentClue)
   }, [currentClue])
 
   const handleTabPress = event => {
@@ -143,15 +191,18 @@ const CrosswordView = () => {
   if (!formattedData) return <Spinner />
 
   return (
-    <CrosswordWrapper>
-      <Crossword
-        onWordChange={handleWordChange}
-        onCorrect={handleCorrect}
-        data={formattedData}
-        ref={crosswordRef}
-        customClues={<div style={{ width: '600px', overflow: 'auto' }}>{clueElements}</div>}
-      />
-    </CrosswordWrapper>
+    <div style={{ display: 'flex' }}>
+      <CrosswordWrapper>
+        <Crossword
+          onWordChange={handleWordChange}
+          onCorrect={handleCorrect}
+          data={formattedData}
+          ref={crosswordRef}
+          customClues={<div style={{ width: '600px', overflow: 'auto' }}>{clueElements}</div>}
+        />
+      </CrosswordWrapper>
+      <DictionaryHelp />
+    </div>
   )
 }
 

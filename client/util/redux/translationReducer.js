@@ -6,18 +6,21 @@ import callBuilder from '../apiConnection'
 
 export const getTranslationAction = (language, wordLemmas, locale, storyId, wordId) => {
   const story = storyId ? `&story_id=${storyId}&word_id=${wordId}` : ''
-  const route = `/translate?w=${encodeURIComponent(wordLemmas)}&lang_learn=${language}&lang_target=${locale}${story}`
+  const route = `/translate?w=${encodeURIComponent(
+    wordLemmas
+  )}&lang_learn=${language}&lang_target=${locale}${story}`
   const prefix = 'GET_TRANSLATION'
   return callBuilder(route, prefix, 'get')
 }
 
 export const clearTranslationAction = () => ({ type: 'CLEAR_TRANSLATION' })
 
-export const setWords = (surface, lemmas) => {
+export const setWords = (surface, lemmas, hideLemma = false) => {
   const words = { surface, lemmas }
   return {
     type: 'SET_WORDS',
     words,
+    hideLemma,
   }
 }
 
@@ -48,6 +51,7 @@ export default (state = { data: [] }, action) => {
         ...state,
         surfaceWord: action.words.surface,
         lemmas: action.words.lemmas,
+        hideLemma: action.hideLemma,
       }
     case 'CLEAR_TRANSLATION': {
       return {
