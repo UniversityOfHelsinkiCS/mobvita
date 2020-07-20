@@ -1,6 +1,6 @@
 import React from 'react'
 
-const PlainWord = ({ surface, lemmas, wordId, handleWordClick }) => {
+const PlainWord = ({ surface, lemmas, wordId, handleWordClick, ...props }) => {
   if (surface === '\n\n') {
     return (
       <div style={{ lineHeight: '50%' }}>
@@ -9,7 +9,7 @@ const PlainWord = ({ surface, lemmas, wordId, handleWordClick }) => {
     )
   }
 
-  if (!lemmas) return surface
+  if (!lemmas) return <span {...props}>{surface}</span>
 
   return (
     <span
@@ -18,6 +18,7 @@ const PlainWord = ({ surface, lemmas, wordId, handleWordClick }) => {
       onKeyDown={() => handleWordClick(surface, lemmas, wordId)}
       onClick={() => handleWordClick(surface, lemmas, wordId)}
       className="word-interactive"
+      {...props}
     >
       {surface}
     </span>

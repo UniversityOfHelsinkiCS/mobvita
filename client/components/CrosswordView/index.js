@@ -69,26 +69,45 @@ const CrosswordView = () => {
     setCurrentClue(clues.find(clue => clue.clue_number === Number(number)))
   }
 
-  const clueElements = clues?.map(clue => {
-    if (clue.clue_number && !clue.show) {
-      return (
-        <span
-          style={{ backgroundColor: currentClue && currentClue.ID === clue.ID ? 'yellow' : '' }}
-          onClick={() => setCurrentClue(clue)}
-          key={clue.ID}
-        >
-          <b>
-            {clue.clue_number}. {clue.clue_direction}
-          </b>
-        </span>
-      )
-    }
-    return (
-      <PlainWord key={clue.ID} surface={clue.surface} lemmas={clue.lemmas} wordId={clue.ID}>
-        {clue.surface}
-      </PlainWord>
-    )
-  })
+  const directionArrow = dir => {
+    if (dir === 'across') return '→'
+    if (dir === 'down') return '↓'
+    return ''
+  }
+
+  const clueElements = useMemo(
+    () =>
+      clues?.map(clue => {
+        if (clue.clue_number && !clue.show) {
+          return (
+            <span
+              style={{ backgroundColor: currentClue && currentClue.ID === clue.ID ? 'yellow' : '' }}
+              onClick={() => setCurrentClue(clue)}
+              key={clue.ID}
+            >
+              <b>
+                {clue.clue_number} {directionArrow(clue.clue_direction)}
+              </b>
+            </span>
+          )
+        }
+        return (
+          <PlainWord
+            style={{
+              color: clue.show ? 'green' : '',
+              fontWeight: clue.show ? '1000' : '500',
+            }}
+            key={clue.ID}
+            surface={clue.surface}
+            lemmas={clue.lemmas}
+            wordId={clue.ID}
+          >
+            {clue.surface}
+          </PlainWord>
+        )
+      }),
+    [clues, currentClue]
+  )
 
   useEffect(() => {
     if (!currentClue || !crosswordRef.current) return
@@ -123,8 +142,6 @@ const CrosswordView = () => {
 
   if (!formattedData) return <Spinner />
 
-  console.log(JSON.stringify(formattedData))
-
   return (
     <CrosswordWrapper>
       <Crossword
@@ -132,8 +149,8 @@ const CrosswordView = () => {
         onCorrect={handleCorrect}
         data={formattedData}
         ref={crosswordRef}
-        customClues={<div style={{ width: '600px', overflow: 'scroll' }}>{clueElements}</div>}
         dimensions={dimensions}
+        customClues={<div style={{ width: '600px', overflow: 'auto' }}>{clueElements}</div>}
       />
     </CrosswordWrapper>
   )
