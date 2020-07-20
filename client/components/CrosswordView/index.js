@@ -27,6 +27,7 @@ const CrosswordView = () => {
   const crosswordRef = useRef()
   const [currentClue, setCurrentClue] = useState(null)
   const [data, setData] = useState()
+  const [shiftPressed, setShiftPressed] = useState(false)
   const dispatch = useDispatch()
 
   const learningLanguage = useLearningLanguage()
@@ -52,7 +53,7 @@ const CrosswordView = () => {
   }, [crosswordData])
 
   useEffect(() => {
-    if (!currentClue && data) {
+    if (!currentClue && data && clues) {
       setCurrentClue(clues.find(clue => clue.clue_number))
     }
   }, [data])
@@ -75,9 +76,14 @@ const CrosswordView = () => {
     )
   }, [data])
 
-  const handleWordChange = number => {
+  const handleWordChange = ({ currentNumber, currentDirection }) => {
     if (!clues) return
-    setCurrentClue(clues.find(clue => clue.clue_number === Number(number)))
+    setCurrentClue(
+      clues.find(
+        clue =>
+          clue.clue_number === Number(currentNumber) && clue.clue_direction === currentDirection
+      )
+    )
   }
 
   const handleWordClick = (surface, lemmas, wordId) => {
@@ -163,33 +169,75 @@ const CrosswordView = () => {
     translateClue(currentClue)
   }, [currentClue])
 
-  const handleTabPress = event => {
-    if (event.key !== 'Tab') return
-    event.preventDefault()
-    const index = clues.findIndex(clue => clue.ID === currentClue.ID)
-    const nextClue = clues.slice(index + 1).find(clue => clue.clue_number && !clue.show)
+  const findNextClue = index => {
+    if (shiftPressed) {
+      const clue = clues
+        .slice(0, index)
+        .reverse()
+        .find(clue => clue.clue_number && !clue.show)
 
-    setCurrentClue(nextClue)
+      if (!clue) {
+        return clues
+          .slice()
+          .reverse()
+          .find(clue => clue.clue_number && !clue.show)
+      }
+
+      return clue
+    }
+    const clue = clues.slice(index + 1).find(clue => clue.clue_number && !clue.show)
+
+    if (!clue) {
+      return clues.find(clue => clue.clue_number && !clue.show)
+    }
+
+    return clue
+  }
+
+  const handleKeyDown = event => {
+    if (event.key === 'Tab') {
+      event.preventDefault()
+      const index = clues.findIndex(clue => clue.ID === currentClue.ID)
+      const nextClue = findNextClue(index)
+
+      setCurrentClue(nextClue)
+    }
+
+    if (event.key === 'Shift') {
+      event.preventDefault()
+      setShiftPressed(true)
+    }
+  }
+
+  const handleKeyUp = event => {
+    if (event.key === 'Shift') {
+      event.preventDefault()
+      setShiftPressed(false)
+    }
   }
 
   const handleCorrect = (_direction, number) => {
     setTimeout(() => {
       dispatch(revealClue(Number(number)))
       const index = clues.findIndex(clue => clue.ID === currentClue.ID)
-      const nextClue = clues.slice(index + 1).find(clue => clue.clue_number && !clue.show)
+      const nextClue = findNextClue(index)
 
       setCurrentClue(nextClue)
     }, 100)
   }
 
   useEffect(() => {
-    document.addEventListener('keydown', handleTabPress)
-    return () => document.removeEventListener('keydown', handleTabPress)
-  }, [currentClue, data])
+    document.addEventListener('keydown', handleKeyDown)
+    document.addEventListener('keyup', handleKeyUp)
+    return () => {
+      document.removeEventListener('keydown', handleKeyDown)
+      document.removeEventListener('keyup', handleKeyUp)
+    }
+  }, [currentClue, data, shiftPressed])
 
   if (!hiddenFeatures) return null
 
-  if (!formattedData) return <Spinner />
+  if (!formattedData || !clueElements) return <Spinner />
 
   return (
     <div style={{ display: 'flex', height: '100%', maxHeight: '90vh' }}>

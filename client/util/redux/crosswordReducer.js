@@ -14,7 +14,7 @@ export default (state = initialState, action) => {
   switch (action.type) {
     case 'GET_CROSSWORD_ATTEMPT':
       return {
-        ...state,
+        ...initialState,
         pending: true,
         error: false,
       }

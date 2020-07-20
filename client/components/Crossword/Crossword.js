@@ -36,7 +36,7 @@ const defaultTheme = {
   cellBackground: 'rgb(255,255,255)',
   cellBorder: 'rgb(0,0,0)',
   textColor: 'rgb(0,0,0)',
-  numberColor: 'rgba(0,0,0, 0.25)',
+  numberColor: 'rgba(0,0,180, 1)',
   focusBackground: 'rgb(255,255,0)',
   highlightBackground: 'rgb(255,255,204)',
   correctBackground: 'rgb(119,221,119)',
@@ -117,6 +117,7 @@ const Crossword = React.forwardRef(
     const [focusedRow, setFocusedRow] = useState(0)
     const [focusedCol, setFocusedCol] = useState(0)
     const [currentDirection, setCurrentDirection] = useState('across')
+    const [movedBackwards, setMovedBackwards] = useState(false)
     const [currentNumber, setCurrentNumber] = useState('1')
     const [bulkChange, setBulkChange] = useState(null)
     const [checkQueue, setCheckQueue] = useState([])
@@ -289,8 +290,8 @@ const Crossword = React.forwardRef(
     }, [clues])
 
     useEffect(() => {
-      if (onWordChange) onWordChange(currentNumber)
-    }, [currentNumber])
+      if (onWordChange) onWordChange({ currentNumber, currentDirection })
+    }, [currentNumber, currentDirection])
 
     // Let the consumer know everything's correct (or not) if they've asked to
     // be informed.
@@ -352,13 +353,25 @@ const Crossword = React.forwardRef(
 
     const moveForward = useCallback(() => {
       const across = isAcross(currentDirection)
+      setMovedBackwards(false)
       moveRelative(across ? 0 : 1, across ? 1 : 0)
     }, [currentDirection, moveRelative])
 
     const moveBackward = useCallback(() => {
       const across = isAcross(currentDirection)
+      setMovedBackwards(true)
       moveRelative(across ? 0 : -1, across ? -1 : 0)
     }, [currentDirection, moveRelative])
+
+    useEffect(() => {
+      if (getCellData(focusedRow, focusedCol).questionCorrect) {
+        if (movedBackwards) {
+          moveBackward()
+        } else {
+          moveForward()
+        }
+      }
+    }, [focusedRow, focusedCol])
 
     // keyboard handling
     const handleSingleCharacter = useCallback(
@@ -495,7 +508,6 @@ const Crossword = React.forwardRef(
       }
 
       setSize(size)
-      console.log('setting data')
       setGridData(gridData)
       setClues(clues)
 
