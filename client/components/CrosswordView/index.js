@@ -92,12 +92,21 @@ const CrosswordView = () => {
           )
         }
         return (
-          <PlainWord key={clue.ID} surface={clue.surface} lemmas={clue.lemmas} wordId={clue.ID}>
+          <PlainWord
+            style={{
+              color: clue.show ? 'green' : '',
+              fontWeight: clue.show ? '1000' : '500',
+            }}
+            key={clue.ID}
+            surface={clue.surface}
+            lemmas={clue.lemmas}
+            wordId={clue.ID}
+          >
             {clue.surface}
           </PlainWord>
         )
       }),
-    [clues]
+    [clues, currentClue]
   )
 
   useEffect(() => {
