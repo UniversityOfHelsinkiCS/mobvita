@@ -18,7 +18,8 @@ import DictionaryHelp from 'Components/DictionaryHelp'
 import { setWords, getTranslationAction } from 'Utilities/redux/translationReducer'
 
 const CrosswordWrapper = styled.div`
-  max-width: 100%;
+  width: 100%;
+  max-height: 100%;
 `
 
 const CrosswordView = () => {
@@ -191,14 +192,18 @@ const CrosswordView = () => {
   if (!formattedData) return <Spinner />
 
   return (
-    <div style={{ display: 'flex' }}>
+    <div style={{ display: 'flex', height: '100%', maxHeight: '90vh' }}>
       <CrosswordWrapper>
         <Crossword
           onWordChange={handleWordChange}
           onCorrect={handleCorrect}
           data={formattedData}
           ref={crosswordRef}
-          customClues={<div style={{ width: '600px', overflow: 'auto' }}>{clueElements}</div>}
+          customClues={
+            <div style={{ width: '600px', overflow: 'auto', maxHeight: '100%' }}>
+              {clueElements}
+            </div>
+          }
           dimensions={dimensions}
         />
       </CrosswordWrapper>
