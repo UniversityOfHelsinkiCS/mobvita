@@ -44,7 +44,8 @@ const defaultTheme = {
 
 // eslint-disable-next-line
 const OuterWrapper = styled.div.attrs(props => ({
-  className: `crossword${props.correct ? ' correct' : ''}`,}))`
+  className: `crossword${props.correct ? ' correct' : ''}`,
+}))`
   margin: 0;
   padding: 0;
   border: 0;
@@ -290,8 +291,8 @@ const Crossword = React.forwardRef(
     }, [clues])
 
     useEffect(() => {
-      if (onWordChange) onWordChange(currentNumber)
-    }, [currentNumber])
+      if (onWordChange) onWordChange({ currentNumber, currentDirection })
+    }, [currentNumber, currentDirection])
 
     // Let the consumer know everything's correct (or not) if they've asked to
     // be informed.
@@ -429,7 +430,9 @@ const Crossword = React.forwardRef(
           case 'End': {
             // move to beginning/end of this entry?
             const info = data[currentDirection][currentNumber]
-            const {answer: { length },} = info
+            const {
+              answer: { length },
+            } = info
             let { row, col } = info
             if (key === 'End') {
               const across = isAcross(currentDirection)

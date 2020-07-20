@@ -75,9 +75,14 @@ const CrosswordView = () => {
     )
   }, [data])
 
-  const handleWordChange = number => {
+  const handleWordChange = ({ currentNumber, currentDirection }) => {
     if (!clues) return
-    setCurrentClue(clues.find(clue => clue.clue_number === Number(number)))
+    setCurrentClue(
+      clues.find(
+        clue =>
+          clue.clue_number === Number(currentNumber) && clue.clue_direction === currentDirection
+      )
+    )
   }
 
   const handleWordClick = (surface, lemmas, wordId) => {
@@ -193,7 +198,6 @@ const CrosswordView = () => {
       event.preventDefault()
       const index = clues.findIndex(clue => clue.ID === currentClue.ID)
       const nextClue = findNextClue(index)
-      console.log(nextClue)
 
       setCurrentClue(nextClue)
     }
