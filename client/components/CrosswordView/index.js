@@ -216,9 +216,9 @@ const CrosswordView = () => {
     }
   }
 
-  const handleCorrect = (_direction, number) => {
+  const handleCorrect = (direction, number) => {
     setTimeout(() => {
-      dispatch(revealClue(Number(number)))
+      dispatch(revealClue(direction, Number(number)))
       const index = clues.findIndex(clue => clue.ID === currentClue.ID)
       const nextClue = findNextClue(index)
 
@@ -247,11 +247,11 @@ const CrosswordView = () => {
           onCorrect={handleCorrect}
           data={formattedData}
           ref={crosswordRef}
-          customClues={
+          customClues={(
             <div style={{ width: '600px', overflow: 'auto', maxHeight: '100%' }}>
               {clueElements}
             </div>
-          }
+          )}
           dimensions={dimensions}
         />
       </CrosswordWrapper>

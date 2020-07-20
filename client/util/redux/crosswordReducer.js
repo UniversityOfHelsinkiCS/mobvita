@@ -6,7 +6,7 @@ export const getCrossword = storyId => {
   return callBuilder(route, prefix)
 }
 
-export const revealClue = number => ({ type: 'REVEAL_CLUE', number })
+export const revealClue = (direction, number) => ({ type: 'REVEAL_CLUE', direction, number })
 
 const initialState = { data: {}, dimensions: {}, pending: false, error: false }
 
@@ -38,7 +38,9 @@ export default (state = initialState, action) => {
       return {
         ...state,
         clues: state.clues.map(clue =>
-          clue.clue_number === action.number ? { ...clue, show: true } : clue
+          clue.clue_number === action.number && clue.clue_direction === action.direction
+            ? { ...clue, show: true }
+            : clue
         ),
       }
     default:
