@@ -52,7 +52,7 @@ const CrosswordView = () => {
   }, [crosswordData])
 
   useEffect(() => {
-    if (!currentClue && data) {
+    if (!currentClue && data && clues) {
       setCurrentClue(clues.find(clue => clue.clue_number))
     }
   }, [data])
@@ -236,7 +236,7 @@ const CrosswordView = () => {
 
   if (!hiddenFeatures) return null
 
-  if (!formattedData) return <Spinner />
+  if (!formattedData || !clueElements) return <Spinner />
 
   return (
     <div style={{ display: 'flex' }}>
