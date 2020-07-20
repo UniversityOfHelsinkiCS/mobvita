@@ -145,10 +145,12 @@ const DictionaryHelp = () => {
     if (!translation) {
       return (
         <List.Item style={{ color: '#555555' }}>
-          <div style={{ width: '100%', ...getTextStyle(learningLanguage) }}>
-            {parsedLemmas()[0]}
-            <Speaker word={parsedLemmas()[0]} />
-          </div>
+          {!hideLemma && (
+            <div style={{ width: '100%', ...getTextStyle(learningLanguage) }}>
+              {parsedLemmas()[0]}
+              <Speaker word={parsedLemmas()[0]} />
+            </div>
+          )}
           <List bulleted style={{ color: 'slateGrey', fontStyle: 'italic' }}>
             <span>
               <FormattedMessage id="(DictionaryHelp) No translation available" />
