@@ -219,7 +219,7 @@ const CrosswordView = () => {
     setTimeout(() => {
       dispatch(revealClue(Number(number)))
       const index = clues.findIndex(clue => clue.ID === currentClue.ID)
-      const nextClue = clues.slice(index + 1).find(clue => clue.clue_number && !clue.show)
+      const nextClue = findNextClue(index)
 
       setCurrentClue(nextClue)
     }, 100)
