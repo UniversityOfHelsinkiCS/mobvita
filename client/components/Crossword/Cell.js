@@ -75,7 +75,7 @@ export default function Cell({ cellData, onClick, focus, highlight }) {
       )}
       <text
         x={x + cellHalf}
-        y={y + cellHalf} // +1 for visual alignment?
+        y={y + cellHalf * 1.3} // +1 for visual alignment?
         textAnchor="middle"
         dominantBaseline="middle"
         style={{ fill: textColor }}
