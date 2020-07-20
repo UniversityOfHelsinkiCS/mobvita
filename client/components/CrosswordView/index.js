@@ -26,6 +26,7 @@ const CrosswordView = () => {
   const crosswordRef = useRef()
   const [currentClue, setCurrentClue] = useState(null)
   const [data, setData] = useState()
+  const [shiftPressed, setShiftPressed] = useState(false)
   const dispatch = useDispatch()
 
   const learningLanguage = useLearningLanguage()
@@ -162,13 +163,52 @@ const CrosswordView = () => {
     translateClue(currentClue)
   }, [currentClue])
 
-  const handleTabPress = event => {
-    if (event.key !== 'Tab') return
-    event.preventDefault()
-    const index = clues.findIndex(clue => clue.ID === currentClue.ID)
-    const nextClue = clues.slice(index + 1).find(clue => clue.clue_number && !clue.show)
+  const findNextClue = index => {
+    if (shiftPressed) {
+      const clue = clues
+        .slice(0, index)
+        .reverse()
+        .find(clue => clue.clue_number && !clue.show)
 
-    setCurrentClue(nextClue)
+      if (!clue) {
+        return clues
+          .slice()
+          .reverse()
+          .find(clue => clue.clue_number && !clue.show)
+      }
+
+      return clue
+    }
+    const clue = clues.slice(index + 1).find(clue => clue.clue_number && !clue.show)
+
+    if (!clue) {
+      return clues.find(clue => clue.clue_number && !clue.show)
+    }
+
+    return clue
+  }
+
+  const handleKeyDown = event => {
+    if (event.key === 'Tab') {
+      event.preventDefault()
+      const index = clues.findIndex(clue => clue.ID === currentClue.ID)
+      const nextClue = findNextClue(index)
+      console.log(nextClue)
+
+      setCurrentClue(nextClue)
+    }
+
+    if (event.key === 'Shift') {
+      event.preventDefault()
+      setShiftPressed(true)
+    }
+  }
+
+  const handleKeyUp = event => {
+    if (event.key === 'Shift') {
+      event.preventDefault()
+      setShiftPressed(false)
+    }
   }
 
   const handleCorrect = (_direction, number) => {
@@ -182,9 +222,13 @@ const CrosswordView = () => {
   }
 
   useEffect(() => {
-    document.addEventListener('keydown', handleTabPress)
-    return () => document.removeEventListener('keydown', handleTabPress)
-  }, [currentClue, data])
+    document.addEventListener('keydown', handleKeyDown)
+    document.addEventListener('keyup', handleKeyUp)
+    return () => {
+      document.removeEventListener('keydown', handleKeyDown)
+      document.removeEventListener('keyup', handleKeyUp)
+    }
+  }, [currentClue, data, shiftPressed])
 
   if (!hiddenFeatures) return null
 
