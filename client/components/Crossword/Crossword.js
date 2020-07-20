@@ -42,8 +42,9 @@ const defaultTheme = {
 }
 
 // eslint-disable-next-line
-const OuterWrapper = styled.div.attrs((props) => ({
-  className: `crossword${props.correct ? ' correct' : ''}` }))`
+const OuterWrapper = styled.div.attrs(props => ({
+  className: `crossword${props.correct ? ' correct' : ''}`,
+}))`
   margin: 0;
   padding: 0;
   border: 0;
@@ -106,7 +107,7 @@ const Crossword = React.forwardRef(
       theme,
       customClues,
     },
-    ref,
+    ref
   ) => {
     const [size, setSize] = useState(null)
     const [gridData, setGridData] = useState(null)
@@ -133,7 +134,7 @@ const Crossword = React.forwardRef(
         // fake cellData to represent "out of bounds"
         return { row, col, used: false, outOfBounds: true }
       },
-      [size, gridData, clues],
+      [size, gridData, clues]
     )
 
     const setCellCharacter = useCallback(
@@ -151,40 +152,40 @@ const Crossword = React.forwardRef(
 
         // update the gridData with the guess
         setGridData(
-          produce((draft) => {
+          produce(draft => {
             draft[row][col].guess = char
-          }),
+          })
         )
 
         // push the row/col for checking!
         setCheckQueue(
-          produce((draft) => {
+          produce(draft => {
             draft.push({ row, col })
-          }),
+          })
         )
 
         if (onCellChange) {
           onCellChange(row, col, char)
         }
       },
-      [getCellData, onCellChange],
+      [getCellData, onCellChange]
     )
 
     const setCellAnswerCorrect = useCallback(
       (row, col) => {
         setGridData(
-          produce((draft) => {
+          produce(draft => {
             draft[row][col].questionCorrect = true
-          }),
+          })
         )
 
         setCheckQueue(
-          produce((draft) => {
+          produce(draft => {
             draft.push({ row, col })
-          }),
+          })
         )
       },
-      [getCellData, clues],
+      [getCellData, clues]
     )
 
     const notifyCorrect = useCallback(
@@ -203,7 +204,7 @@ const Crossword = React.forwardRef(
           // });
         }
       },
-      [onCorrect],
+      [onCorrect]
     )
 
     const checkCorrectness = useCallback(
@@ -212,7 +213,7 @@ const Crossword = React.forwardRef(
 
         // check all the cells for both across and down answers that use this
         // cell
-        bothDirections.forEach((direction) => {
+        bothDirections.forEach(direction => {
           const across = isAcross(direction)
           const number = cell[direction]
           if (!number) {
@@ -232,7 +233,7 @@ const Crossword = React.forwardRef(
             for (let i = 0; i < info.answer.length; i++) {
               const checkCell = getCellData(
                 info.row + (across ? 0 : i),
-                info.col + (across ? i : 0),
+                info.col + (across ? i : 0)
               )
 
               if (checkCell.guess !== info.answer[i]) {
@@ -244,21 +245,16 @@ const Crossword = React.forwardRef(
 
           if (correct) {
             for (let i = 0; i < info.answer.length; i++) {
-              setCellAnswerCorrect(
-                info.row + (across ? 0 : i),
-                info.col + (across ? i : 0),
-              )
+              setCellAnswerCorrect(info.row + (across ? 0 : i), info.col + (across ? i : 0))
             }
           }
 
           // update the clue state
           setClues(
-            produce((draft) => {
-              const clueInfo = draft[direction].find(
-                i => i.number === number,
-              )
+            produce(draft => {
+              const clueInfo = draft[direction].find(i => i.number === number)
               clueInfo.correct = correct
-            }),
+            })
           )
 
           if (correct) {
@@ -266,7 +262,7 @@ const Crossword = React.forwardRef(
           }
         })
       },
-      [getCellData, clues],
+      [getCellData, clues]
     )
 
     // useEffect(() => {
@@ -286,8 +282,8 @@ const Crossword = React.forwardRef(
     // Any time the clues change, determine if they are all correct or not.
     useEffect(() => {
       setCrosswordCorrect(
-        clues
-          && bothDirections.every(direction => clues[direction].every(clueInfo => clueInfo.correct)),
+        clues &&
+          bothDirections.every(direction => clues[direction].every(clueInfo => clueInfo.correct))
       )
     }, [clues])
 
@@ -331,7 +327,7 @@ const Crossword = React.forwardRef(
 
         return candidate
       },
-      [getCellData],
+      [getCellData]
     )
 
     const moveRelative = useCallback(
@@ -350,7 +346,7 @@ const Crossword = React.forwardRef(
 
         return cell
       },
-      [focusedRow, focusedCol, moveTo],
+      [focusedRow, focusedCol, moveTo]
     )
 
     const moveForward = useCallback(() => {
@@ -365,17 +361,17 @@ const Crossword = React.forwardRef(
 
     // keyboard handling
     const handleSingleCharacter = useCallback(
-      (char) => {
+      char => {
         setCellCharacter(focusedRow, focusedCol, char.toUpperCase())
         moveForward()
       },
-      [focusedRow, focusedCol, setCellCharacter, moveForward],
+      [focusedRow, focusedCol, setCellCharacter, moveForward]
     )
 
     // We use the keydown event for control/arrow keys, but not for textual
     // input, because it's hard to suss out when a key is "regular" or not.
     const handleInputKeyDown = useCallback(
-      (event) => {
+      event => {
         // if ctrl, alt, or meta are down, ignore the event (let it bubble)
         if (event.ctrlKey || event.altKey || event.metaKey) {
           return
@@ -419,7 +415,9 @@ const Crossword = React.forwardRef(
           case 'End': {
             // move to beginning/end of this entry?
             const info = data[currentDirection][currentNumber]
-            const { answer: { length } } = info
+            const {
+              answer: { length },
+            } = info
             let { row, col } = info
             if (key === 'End') {
               const across = isAcross(currentDirection)
@@ -460,10 +458,10 @@ const Crossword = React.forwardRef(
         getCellData,
         setCellCharacter,
         moveRelative,
-      ],
+      ]
     )
 
-    const handleInputChange = useCallback((event) => {
+    const handleInputChange = useCallback(event => {
       event.preventDefault()
       setBulkChange(event.target.value)
     }, [])
@@ -526,7 +524,7 @@ const Crossword = React.forwardRef(
     }, [gridData, useStorage])
 
     const handleCellClick = useCallback(
-      (cellData) => {
+      cellData => {
         const { row, col } = cellData
         const other = otherDirection(currentDirection)
 
@@ -541,11 +539,8 @@ const Crossword = React.forwardRef(
         // clicked cell is the focused cell, *and* the other direction is
         // available.
         if (
-          !cellData[currentDirection]
-          || (focused
-            && row === focusedRow
-            && col === focusedCol
-            && cellData[other])
+          !cellData[currentDirection] ||
+          (focused && row === focusedRow && col === focusedCol && cellData[other])
         ) {
           setCurrentDirection(other)
           direction = other
@@ -555,11 +550,11 @@ const Crossword = React.forwardRef(
 
         focus()
       },
-      [focused, focusedRow, focusedCol, currentDirection, focus],
+      [focused, focusedRow, focusedCol, currentDirection, focus]
     )
 
     const handleInputClick = useCallback(
-      (event) => {
+      event => {
         // *don't* event.preventDefault(), because we want the input to actually
         // take focus
 
@@ -579,7 +574,7 @@ const Crossword = React.forwardRef(
         setCurrentNumber(cellData[direction])
         focus()
       },
-      [currentDirection, focusedRow, focusedCol, getCellData, focus],
+      [currentDirection, focusedRow, focusedCol, getCellData, focus]
     )
 
     const handleClueSelected = useCallback(
@@ -589,7 +584,7 @@ const Crossword = React.forwardRef(
         moveTo(info.row, info.col, direction)
         focus()
       },
-      [data, moveTo, focus],
+      [data, moveTo, focus]
     )
 
     // expose some imperative methods
@@ -614,25 +609,25 @@ const Crossword = React.forwardRef(
          */
         reset: () => {
           setGridData(
-            produce((draft) => {
-              draft.forEach((rowData) => {
-                rowData.forEach((cellData) => {
+            produce(draft => {
+              draft.forEach(rowData => {
+                rowData.forEach(cellData => {
                   if (cellData.used) {
                     cellData.guess = ''
                   }
                 })
               })
-            }),
+            })
           )
 
           setClues(
-            produce((draft) => {
-              bothDirections.forEach((direction) => {
-                draft[direction].forEach((clueInfo) => {
+            produce(draft => {
+              bothDirections.forEach(direction => {
+                draft[direction].forEach(clueInfo => {
                   delete clueInfo.correct
                 })
               })
-            }),
+            })
           )
 
           if (useStorage) {
@@ -646,31 +641,31 @@ const Crossword = React.forwardRef(
          */
         fillAllAnswers: () => {
           setGridData(
-            produce((draft) => {
-              draft.forEach((rowData) => {
-                rowData.forEach((cellData) => {
+            produce(draft => {
+              draft.forEach(rowData => {
+                rowData.forEach(cellData => {
                   if (cellData.used) {
                     cellData.guess = cellData.answer
                   }
                 })
               })
-            }),
+            })
           )
 
           setClues(
-            produce((draft) => {
-              bothDirections.forEach((direction) => {
-                draft[direction].forEach((clueInfo) => {
+            produce(draft => {
+              bothDirections.forEach(direction => {
+                draft[direction].forEach(clueInfo => {
                   clueInfo.correct = true
                 })
               })
-            }),
+            })
           )
 
           // trigger onLoadedCorrect with every clue!
           if (onLoadedCorrect) {
             const loadedCorrect = []
-            bothDirections.forEach((direction) => {
+            bothDirections.forEach(direction => {
               Object.entries(data[direction]).forEach(([number, info]) => {
                 loadedCorrect.push([direction, number, info.answer])
               })
@@ -687,7 +682,7 @@ const Crossword = React.forwardRef(
          */
         isCrosswordCorrect: () => crosswordCorrect,
       }),
-      [data, onLoadedCorrect, useStorage, focus, crosswordCorrect],
+      [data, onLoadedCorrect, useStorage, focus, crosswordCorrect]
     )
 
     // constants for rendering...
@@ -729,13 +724,9 @@ const Crossword = React.forwardRef(
               key={`R${row}C${col}`}
               cellData={cellData}
               focus={focused && row === focusedRow && col === focusedCol}
-              highlight={
-                focused
-                && currentNumber
-                && cellData[currentDirection] === currentNumber
-              }
+              highlight={focused && currentNumber && cellData[currentDirection] === currentNumber}
               onClick={handleCellClick}
-            />,
+            />
           )
         })
       })
@@ -756,13 +747,7 @@ const Crossword = React.forwardRef(
               */}
                 <div style={{ margin: 0, padding: 0, position: 'relative' }}>
                   <svg viewBox="0 0 100 100">
-                    <rect
-                      x={0}
-                      y={0}
-                      width={100}
-                      height={100}
-                      fill={finalTheme.gridBackground}
-                    />
+                    <rect x={0} y={0} width={100} height={100} fill={finalTheme.gridBackground} />
                     {cells}
                   </svg>
                   <input
@@ -803,9 +788,9 @@ const Crossword = React.forwardRef(
                 </div>
               </GridWrapper>
               <CluesWrapper>
-                {customClues
-                  || (clues
-                    && bothDirections.map(direction => (
+                {customClues ||
+                  (clues &&
+                    bothDirections.map(direction => (
                       <DirectionClues
                         key={direction}
                         direction={direction}
@@ -818,7 +803,7 @@ const Crossword = React.forwardRef(
         </CrosswordSizeContext.Provider>
       </CrosswordContext.Provider>
     )
-  },
+  }
 )
 
 Crossword.displayName = 'Crossword'

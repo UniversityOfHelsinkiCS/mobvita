@@ -155,13 +155,17 @@ export function saveGuesses(gridData, storageKey) {
 }
 
 export function serializeGuesses(gridData) {
-  const guesses = gridData.reduce((memo, row, r) => row.reduce((memoInner, cellData, c) => {
-    const { guess } = cellData
-    if (guess !== '') {
-      memoInner[`${r}_${c}`] = cellData.guess
-    }
-    return memoInner
-  }, memo), {})
+  const guesses = gridData.reduce(
+    (memo, row, r) =>
+      row.reduce((memoInner, cellData, c) => {
+        const { guess } = cellData
+        if (guess !== '') {
+          memoInner[`${r}_${c}`] = cellData.guess
+        }
+        return memoInner
+      }, memo),
+    {}
+  )
 
   return guesses
 }
@@ -196,7 +200,7 @@ export function deserializeGuesses(gridData, guesses) {
 export function findCorrectAnswers(data, gridData) {
   const correctAnswers = []
 
-  bothDirections.forEach((direction) => {
+  bothDirections.forEach(direction => {
     const across = isAcross(direction)
     Object.entries(data[direction]).forEach(([num, info]) => {
       const { row, col } = info

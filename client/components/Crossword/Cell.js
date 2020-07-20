@@ -13,9 +13,7 @@ import { CrosswordSizeContext } from './context'
  * `cellData` and `renderContext`.
  */
 export default function Cell({ cellData, onClick, focus, highlight }) {
-  const { cellSize, cellPadding, cellInner, cellHalf, fontSize } = useContext(
-    CrosswordSizeContext,
-  )
+  const { cellSize, cellPadding, cellInner, cellHalf, fontSize } = useContext(CrosswordSizeContext)
   const {
     // gridBackground,
     cellBackground,
@@ -28,13 +26,13 @@ export default function Cell({ cellData, onClick, focus, highlight }) {
   } = useContext(ThemeContext)
 
   const handleClick = useCallback(
-    (event) => {
+    event => {
       event.preventDefault()
       if (onClick) {
         onClick(cellData)
       }
     },
-    [cellData, onClick],
+    [cellData, onClick]
   )
 
   const { row, col, guess, number, questionCorrect } = cellData
@@ -42,10 +40,10 @@ export default function Cell({ cellData, onClick, focus, highlight }) {
   const color = questionCorrect
     ? correctBackground
     : focus
-      ? focusBackground
-      : highlight
-        ? highlightBackground
-        : cellBackground
+    ? focusBackground
+    : highlight
+    ? highlightBackground
+    : cellBackground
 
   const x = col * cellSize
   const y = row * cellSize

@@ -1,10 +1,9 @@
-import React, { useEffect, useRef, useState } from 'react'
+import React, { useEffect, useRef, useState, useMemo } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import { useParams } from 'react-router-dom'
 import { hiddenFeatures } from 'Utilities/common'
 import { getCrossword, revealClue } from 'Utilities/redux/crosswordReducer'
 import Crossword from 'Components/Crossword'
-// import Crossword from '@ajhaa/react-crossword'
 import Spinner from 'Components/Spinner'
 import PlainWord from 'Components/PracticeView/PlainWord'
 import { isEmpty } from 'lodash'
@@ -19,7 +18,6 @@ const CrosswordView = () => {
   const crosswordRef = useRef()
   const [currentClue, setCurrentClue] = useState(null)
   const [data, setData] = useState()
-  const [formattedData, setFormattedData] = useState()
   const dispatch = useDispatch()
 
   const { data: crosswordData, clues } = useSelector(({ crossword }) => crossword)
@@ -48,37 +46,48 @@ const CrosswordView = () => {
     }
   }, [data])
 
-
-  useEffect(() => {
-    setFormattedData(data?.entries?.reduce((newData, entry) => (
-      {
+  const formattedData = useMemo(() => {
+    return data?.entries?.reduce(
+      (newData, entry) => ({
         ...newData,
         [entry.direction]: {
           ...newData[entry.direction],
-          [entry.number]: { answer: entry.answer.toUpperCase(), row: entry.position.x, col: entry.position.y, clue: 'This is an important clue' },
+          [entry.number]: {
+            answer: entry.answer.toUpperCase(),
+            row: entry.position.x,
+            col: entry.position.y,
+            clue: 'This is an important clue',
+          },
         },
-      }
-    ), {}))
+      }),
+      {}
+    )
   }, [data])
 
-  const handleWordChange = (number) => {
+  const handleWordChange = number => {
     if (!clues) return
     setCurrentClue(clues.find(clue => clue.clue_number === Number(number)))
   }
 
-
-  const clueElements = clues?.map((clue) => {
+  const clueElements = clues?.map(clue => {
     if (clue.clue_number && !clue.show) {
       return (
         <span
           style={{ backgroundColor: currentClue && currentClue.ID === clue.ID ? 'yellow' : '' }}
           onClick={() => setCurrentClue(clue)}
           key={clue.ID}
-        ><b>{clue.clue_number}. {clue.clue_direction}</b>
+        >
+          <b>
+            {clue.clue_number}. {clue.clue_direction}
+          </b>
         </span>
       )
     }
-    return <PlainWord key={clue.ID} surface={clue.surface} lemmas={clue.lemmas} wordId={clue.ID}>{clue.surface}</PlainWord>
+    return (
+      <PlainWord key={clue.ID} surface={clue.surface} lemmas={clue.lemmas} wordId={clue.ID}>
+        {clue.surface}
+      </PlainWord>
+    )
   })
 
   useEffect(() => {
@@ -86,7 +95,7 @@ const CrosswordView = () => {
     crosswordRef.current.moveTo(currentClue.clue_direction, currentClue.clue_number)
   }, [currentClue])
 
-  const handleTabPress = (event) => {
+  const handleTabPress = event => {
     if (event.key !== 'Tab') return
     event.preventDefault()
     const index = clues.findIndex(clue => clue.ID === currentClue.ID)
