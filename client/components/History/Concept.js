@@ -20,7 +20,9 @@ const PopupContent = ({ correct, total }) => (
 
 const StatisticCell = ({ test, concept, fromPreviousScored, calculateColor, ...props }) => {
   const ownStatistics = test.concept_statistics[concept.id]
-  const statistics = ownStatistics.total === 0 ? fromPreviousScored(concept.id, test.date) : ownStatistics
+  const statistics = !ownStatistics || ownStatistics.total === 0
+    ? fromPreviousScored(concept.id, test.date)
+    : ownStatistics
 
   return (
     <Popup

@@ -105,7 +105,10 @@
   },
   "devDependencies": {
     "babel-preset-stage-2": "^6.24.1",
+    "eslint-config-prettier": "^6.11.0",
+    "eslint-plugin-prettier": "^3.1.4",
     "nodemon": "^1.18.10",
+    "prettier": "^2.0.5",
     "sass-loader": "^8.0.0",
     "wait-on": "^5.0.1",
     "webpack": "^4.41.2",

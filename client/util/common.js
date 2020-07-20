@@ -64,8 +64,8 @@ export const images = {
   flashcardIcon,
 }
 
-export const newCapitalize = (word) => {
-  const capitalizedParts = word.split('-').map((part) => {
+export const newCapitalize = word => {
+  const capitalizedParts = word.split('-').map(part => {
     const p1 = part.slice(0, 1)
     const p2 = part.slice(1, part.length)
     return p1.toUpperCase() + p2
@@ -80,7 +80,8 @@ export const capitalize = (word = '') => {
   return `${firstLetter}${wordEnd}`
 }
 
-export const learningLanguageSelector = ({ user }) => (user.data ? user.data.user.last_used_language : null)
+export const learningLanguageSelector = ({ user }) =>
+  user.data ? user.data.user.last_used_language : null
 export const dictionaryLanguageSelector = ({ user }) => user.data.user.last_trans_language
 
 export const useLearningLanguage = () => useSelector(learningLanguageSelector)
@@ -88,11 +89,25 @@ export const useDictionaryLanguage = () => useSelector(dictionaryLanguageSelecto
 
 export const supportedLearningLanguages = {
   major: [
-    'finnish', 'german', 'russian', 'kazakh', 'catalan', 'spanish', 'swedish', 'italian', 'french',
+    'finnish',
+    'german',
+    'russian',
+    'kazakh',
+    'catalan',
+    'spanish',
+    'swedish',
+    'italian',
+    'french',
     'portuguese',
   ].sort((a, b) => a.localeCompare(b)),
   minor: [
-    'erzya', 'komi-zyrian', 'meadow-mari', 'north-saami', 'sakha', 'tatar', 'udmurt',
+    'erzya',
+    'komi-zyrian',
+    'meadow-mari',
+    'north-saami',
+    'sakha',
+    'tatar',
+    'udmurt',
     'turkish',
   ].sort((a, b) => a.localeCompare(b)),
   experimental: ['syriac'],
@@ -114,20 +129,8 @@ export const betaLanguages = [
 export const colors = {}
 
 export const flashcardColors = {
-  background: [
-    '#F3826A',
-    '#FEA75C',
-    '#F9E79F',
-    '#84C3A3',
-    '#50A278',
-  ],
-  foreground: [
-    '#055A5B',
-    '#055A5B',
-    '#055A5B',
-    '#055A5B',
-    '#055A5B',
-  ],
+  background: ['#F3826A', '#FEA75C', '#F9E79F', '#84C3A3', '#50A278'],
+  foreground: ['#055A5B', '#055A5B', '#055A5B', '#055A5B', '#055A5B'],
 }
 
 export const localeOptions = [
@@ -138,7 +141,7 @@ export const localeOptions = [
   { displayName: 'Italiano', name: 'Italian', code: 'it' },
 ]
 
-export const localeNameToCode = (name) => {
+export const localeNameToCode = name => {
   const localeObject = localeOptions.find(option => option.name === name)
   if (localeObject) {
     return localeObject.code
@@ -156,14 +159,8 @@ const defaultAllowed = ['b', 'i', 'em', 'strong', 'br', 'mark', 'small', 'sub', 
 
 export const sanitizeHtml = (dirty, allowedTags = defaultAllowed) => {
   const defaultOptions = { allowedTags }
-  return {
-    __html: sanitize(
-      dirty,
-      defaultOptions,
-    ),
-  }
+  return { __html: sanitize(dirty, defaultOptions) }
 }
-
 
 export * from '@root/config/common'
 
@@ -186,7 +183,7 @@ export const getTextStyle = (language, type) => {
   return style
 }
 
-export const getTextWidth = (text) => {
+export const getTextWidth = text => {
   const myCanvas = getTextWidth.canvas || (getTextWidth.canvas = document.createElement('canvas'))
   const context = myCanvas.getContext('2d')
   context.font = '1em Arial' // This should match with the defaultFont defined in custom.scss
@@ -197,7 +194,7 @@ export const getTextWidth = (text) => {
 
 export const speak = (surfaceWord, voice) => {
   try {
-    window.responsiveVoice.speak(surfaceWord, voice)
+    if (window.responsiveVoice.voiceSupport()) window.responsiveVoice.speak(surfaceWord, voice)
   } catch (e) {
     console.log(`Failed to speak ${surfaceWord} in ${capitalize(voice)}`)
   }
@@ -377,30 +374,13 @@ export const translatableLanguages = {
     'Portuguese',
     'Hindi',
   ],
-  'Komi-zyrian': [
-    'Russian',
-  ],
-  'Meadow-mari': [
-    'Russian',
-  ],
-  Udmurt: [
-    'Russian',
-  ],
-  Sakha: [
-    'Russian',
-    'English',
-  ],
-  'North-saami': [
-    'Finnish',
-    'Norwegian',
-  ],
-  Erzya: [
-    'Russian',
-  ],
-  Kazakh: [
-    'Russian',
-    'English',
-  ],
+  'Komi-zyrian': ['Russian'],
+  'Meadow-mari': ['Russian'],
+  Udmurt: ['Russian'],
+  Sakha: ['Russian', 'English'],
+  'North-saami': ['Finnish', 'Norwegian'],
+  Erzya: ['Russian'],
+  Kazakh: ['Russian', 'English'],
   Tatar: [
     'Chinese',
     'English',
@@ -435,8 +415,6 @@ export const translatableLanguages = {
     'Hindi',
     'Finnish',
   ],
-  Livvi: [
-    'Finnish',
-  ],
+  Livvi: ['Finnish'],
   Syriac: [],
 }

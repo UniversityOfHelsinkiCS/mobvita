@@ -58,11 +58,12 @@ const Practice = ({ mode }) => {
 
   // Limits so that you cant swipe back more than once.
   // React-swipeable-views has some weird behaviour with its index. This tries to fix it.
-  let oldIndex
   const handleIndexChange = (index) => {
-    if (swipeIndex < index) setSwipeIndex(index)
-    if (index - oldIndex === 2) setSwipeIndex(swipeIndex)
-    oldIndex = index
+    const oldIndex = swipeIndex
+    setSwipeIndex(index)
+    setTimeout(() => {
+      if (index < oldIndex) setSwipeIndex(oldIndex)
+    }, 1)
   }
 
   const handleNewDeck = () => {
