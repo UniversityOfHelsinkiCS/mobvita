@@ -10,6 +10,7 @@ import {
   useLearningLanguage,
   useDictionaryLanguage,
 } from 'Utilities/common'
+import useWindowDimensions from 'Utilities/windowDimensions'
 import { getCrossword, revealClue } from 'Utilities/redux/crosswordReducer'
 import Crossword from 'Components/Crossword'
 import PlainWord from 'Components/PracticeView/PlainWord'
@@ -29,7 +30,9 @@ const CrosswordView = () => {
   const [shiftPressed, setShiftPressed] = useState(false)
   const [dictionaryMinimized, setDictionaryMinimized] = useState(true)
   const dispatch = useDispatch()
-  const [resizeListener, sizes] = useResizeAware()
+
+  const [resizeListener, contentSize] = useResizeAware()
+  const { width: windowWidth } = useWindowDimensions()
 
   const learningLanguage = useLearningLanguage()
   const dictionaryLanguage = useDictionaryLanguage()
@@ -245,9 +248,10 @@ const CrosswordView = () => {
   }, [currentClue, data, shiftPressed])
 
   useEffect(() => {
-    if (sizes.width >= 580) setDictionaryMinimized(false)
-    if (sizes.width < 300) setDictionaryMinimized(true)
-  }, [sizes.width])
+    const freeSpace = windowWidth - contentSize.width
+    if (contentSize.width && freeSpace >= 350) setDictionaryMinimized(false)
+    else setDictionaryMinimized(true)
+  }, [windowWidth, contentSize.width])
 
   if (!hiddenFeatures) return null
 
@@ -269,7 +273,8 @@ const CrosswordView = () => {
 
   return (
     <div style={{ display: 'flex', height: '100%', maxHeight: '90vh', justifyContent: 'center' }}>
-      <div style={{ maxHeight: '100%' }}>
+      <div style={{ maxHeight: '100%', position: 'relative' }}>
+        {resizeListener}
         <Crossword
           onWordChange={handleWordChange}
           onCorrect={handleCorrect}
@@ -281,7 +286,6 @@ const CrosswordView = () => {
                 overflow: 'auto',
                 maxHeight: '100%',
                 maxWidth: '600px',
-                position: 'relative',
                 lineHeight: '2em',
                 border: '1px solid #ccc',
                 padding: '1em',
@@ -289,7 +293,6 @@ const CrosswordView = () => {
                 borderRadius: '4px',
               }}
             >
-              {resizeListener}
               <h1 style={{ fontWeight: 550, fontSize: '22px' }}>{title}</h1>
               <hr />
               {clueElements}
