@@ -2,6 +2,7 @@ import React, { useEffect, useRef, useState, useMemo } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import { useParams } from 'react-router-dom'
 import useResizeAware from 'react-resize-aware'
+import { Spinner } from 'react-bootstrap'
 import {
   hiddenFeatures,
   newCapitalize,
@@ -11,7 +12,6 @@ import {
 } from 'Utilities/common'
 import { getCrossword, revealClue } from 'Utilities/redux/crosswordReducer'
 import Crossword from 'Components/Crossword'
-import Spinner from 'Components/Spinner'
 import PlainWord from 'Components/PracticeView/PlainWord'
 import { isEmpty } from 'lodash'
 import DictionaryHelp from 'Components/DictionaryHelp'
@@ -246,7 +246,21 @@ const CrosswordView = () => {
 
   if (!hiddenFeatures) return null
 
-  if (!formattedData || !clueElements) return <Spinner />
+  if (!formattedData || !clueElements)
+    return (
+      <div
+        style={{
+          height: '90vh',
+          display: 'flex',
+          flexDirection: 'column',
+          justifyContent: 'center',
+          alignItems: 'center',
+        }}
+      >
+        <h1 style={{ fontWeight: 550, fontSize: '30px' }}>Building your crossword</h1>
+        <Spinner animation="grow" />
+      </div>
+    )
 
   return (
     <div style={{ display: 'flex', height: '100%', maxHeight: '90vh', justifyContent: 'center' }}>
