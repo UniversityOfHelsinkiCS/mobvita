@@ -80,12 +80,16 @@ const DictionaryHelp = ({ minimized }) => {
     ))
 
   useEffect(() => {
+    let timer
     if (translations && translations.length > 0) {
       setShaking(true)
-      setTimeout(() => {
-        setShaking(false)
-      }, 500)
+      timer = () =>
+        setTimeout(() => {
+          setShaking(false)
+        }, 500)
     }
+
+    return clearTimeout(timer)
   }, [translation])
 
   const handleDropdownChange = value => {
