@@ -13,14 +13,8 @@ import Crossword from 'Components/Crossword'
 import Spinner from 'Components/Spinner'
 import PlainWord from 'Components/PracticeView/PlainWord'
 import { isEmpty } from 'lodash'
-import styled from 'styled-components'
 import DictionaryHelp from 'Components/DictionaryHelp'
 import { setWords, getTranslationAction } from 'Utilities/redux/translationReducer'
-
-const CrosswordWrapper = styled.div`
-  width: 100%;
-  max-height: 100%;
-`
 
 const CrosswordView = () => {
   const { storyId } = useParams()
@@ -240,8 +234,8 @@ const CrosswordView = () => {
   if (!formattedData || !clueElements) return <Spinner />
 
   return (
-    <div style={{ display: 'flex', height: '100%', maxHeight: '90vh' }}>
-      <CrosswordWrapper>
+    <div style={{ display: 'flex', height: '100%', maxHeight: '90vh', justifyContent: 'center' }}>
+      <div style={{ maxHeight: '100%' }}>
         <Crossword
           onWordChange={handleWordChange}
           onCorrect={handleCorrect}
@@ -254,7 +248,7 @@ const CrosswordView = () => {
           }
           dimensions={dimensions}
         />
-      </CrosswordWrapper>
+      </div>
       <DictionaryHelp />
     </div>
   )
