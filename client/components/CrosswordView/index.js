@@ -15,7 +15,11 @@ import Spinner from 'Components/Spinner'
 import PlainWord from 'Components/PracticeView/PlainWord'
 import { isEmpty } from 'lodash'
 import DictionaryHelp from 'Components/DictionaryHelp'
-import { setWords, getTranslationAction, getTranslationWithoutSaving } from 'Utilities/redux/translationReducer'
+import {
+  setWords,
+  getTranslationAction,
+  getTranslationWithoutSaving,
+} from 'Utilities/redux/translationReducer'
 
 const CrosswordView = () => {
   const { storyId } = useParams()
@@ -131,7 +135,10 @@ const CrosswordView = () => {
         if (clue.clue_number && !clue.show) {
           return (
             <span
-              style={{ backgroundColor: currentClue && currentClue.ID === clue.ID ? 'yellow' : '' }}
+              className="crosswords-clue"
+              style={{
+                backgroundColor: currentClue && currentClue.ID === clue.ID ? 'yellow' : undefined,
+              }}
               onClick={() => handleClueClick(clue)}
               key={clue.ID}
             >

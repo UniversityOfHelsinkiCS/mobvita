@@ -925,6 +925,17 @@ body {
   flex-wrap: wrap;
 }
 
+.crosswords-clue {
+  white-space: nowrap;
+  border: 1px solid gray;
+  padding: 0.1em;
+  border-radius: 0.3em;
+  cursor: pointer;
+  &:hover {
+    background-color: rgb(255, 255, 204);
+  }
+}
+
 //Custom filepicker
 [type="file"] {
   border: 0;
