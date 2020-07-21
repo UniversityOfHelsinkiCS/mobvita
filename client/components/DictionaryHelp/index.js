@@ -32,6 +32,7 @@ const Speaker = ({ word }) => {
 const DictionaryHelp = ({ minimized }) => {
   const [showHelp, setShow] = useState(false)
   const [shaking, setShaking] = useState(false)
+  const [shakeTimer, setShakeTimer] = useState(null)
   const { width: windowWidth } = useWindowDimensions()
 
   const translationLanguageCode = useSelector(({ user }) => user.data.user.last_trans_language)
@@ -80,16 +81,16 @@ const DictionaryHelp = ({ minimized }) => {
     ))
 
   useEffect(() => {
-    let timer
     if (translations && translations.length > 0) {
       setShaking(true)
-      timer = () =>
+      setShakeTimer(
         setTimeout(() => {
           setShaking(false)
         }, 500)
+      )
     }
 
-    return clearTimeout(timer)
+    return clearTimeout(shakeTimer)
   }, [translation])
 
   const handleDropdownChange = value => {
