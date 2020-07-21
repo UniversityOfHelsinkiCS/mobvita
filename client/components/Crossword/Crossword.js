@@ -533,10 +533,10 @@ const Crossword = React.forwardRef(
     }, [gridData, useStorage])
 
     const { width, height } = useMemo(() => {
-      if (dimensions.col > dimensions.row) {
-        return { width: 100, height: 100 * (dimensions.row / dimensions.col) }
+      if (dimensions.width > dimensions.height) {
+        return { width: 100, height: 100 * (dimensions.height / dimensions.width) }
       }
-      return { width: 100 * (dimensions.col / dimensions.row), height: 100 }
+      return { width: 100 * (dimensions.width / dimensions.height), height: 100 }
     }, [dimensions])
 
     const handleCellClick = useCallback(
@@ -707,8 +707,8 @@ const Crossword = React.forwardRef(
     // cells, rather than have them as independent properties.  (Or should they
     // stay separate? Or be passed as "spread" values?)
     const cellSize = 100 / size
-    const cellHeight = 100 / dimensions.row
-    const cellWidth = 100 / dimensions.col
+    const cellHeight = 100 / dimensions.height
+    const cellWidth = 100 / dimensions.width
     const cellPadding = 0.125
     const cellInner = cellSize - cellPadding * 2
     const cellHalf = cellSize / 2
