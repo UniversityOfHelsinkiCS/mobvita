@@ -33,17 +33,12 @@
         "avoidEscape": true
       }
     ],
-    "object-curly-newline": [
-      "error",
-      {
-        "multiline": true
-      }
-    ],
     "no-shadow": 0,
     "no-plusplus": 0,
     "import/no-unresolved": "off",
     "react/jsx-filename-extension": "off",
     "react/jsx-one-expression-per-line": "off",
+    "react/jsx-wrap-multilines": ["error", {"declaration": false, "assignment": false}],
     "jsx-a11y/label-has-associated-control": [
       2,
       {

@@ -142,7 +142,10 @@ const CrosswordView = () => {
                 backgroundColor: currentClue && currentClue.ID === clue.ID ? 'yellow' : undefined,
               }}
               onClick={() => handleClueClick(clue)}
+              onKeyDown={() => handleClueClick(clue)}
               key={clue.ID}
+              role="button"
+              tabIndex="-1"
             >
               <b>
                 {clue.clue_number} {directionArrow(clue.clue_direction)}
