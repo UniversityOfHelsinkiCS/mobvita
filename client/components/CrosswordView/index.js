@@ -259,7 +259,7 @@ const CrosswordView = () => {
           alignItems: 'center',
         }}
       >
-        <h1 style={{ fontWeight: 550, fontSize: '30px' }}>Building your crossword</h1>
+        <h1 style={{ fontWeight: 550, fontSize: '26px' }}>Building your crossword</h1>
         <Spinner animation="grow" />
       </div>
     )
