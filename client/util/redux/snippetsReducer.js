@@ -39,6 +39,8 @@ export const setPrevious = previous => ({ type: 'SET_PREVIOUS', payload: previou
 
 export const addToPrevious = snippet => ({ type: 'ADD_TO_PREVIOUS', snippet })
 
+export const clearFocusedSnippet = () => ({ type: 'CLEAR_FOCUSED_SNIPPET' })
+
 // Reducer
 // You can include more app wide actions such as "selected: []" into the state
 export default (state = { previous: [], pending: false, error: false }, action) => {
@@ -123,6 +125,11 @@ export default (state = { previous: [], pending: false, error: false }, action) 
       return {
         ...state,
         previous: state.previous.concat(action.snippet)
+      }
+    case 'CLEAR_FOCUSED_SNIPPET':
+      return {
+        ...state,
+        focused: undefined,
       }
     default:
       return state

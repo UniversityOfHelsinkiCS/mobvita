@@ -6,7 +6,7 @@ import CurrentSnippet from 'Components/PracticeView/CurrentSnippet'
 import { getStoryAction } from 'Utilities/redux/storiesReducer'
 import DictionaryHelp from 'Components/DictionaryHelp'
 import { Segment, Icon } from 'semantic-ui-react'
-import { resetCurrentSnippet } from 'Utilities/redux/snippetsReducer'
+import { resetCurrentSnippet, clearFocusedSnippet } from 'Utilities/redux/snippetsReducer'
 import { clearPractice, setTouchedIds, setAnswers } from 'Utilities/redux/practiceReducer'
 import { getTranslationAction, setWords } from 'Utilities/redux/translationReducer'
 import {
@@ -39,6 +39,12 @@ const PracticeView = () => {
   useEffect(() => {
     dispatch(getStoryAction(id))
   }, [learningLanguage])
+
+  useEffect(() => {
+    return () => {
+      dispatch(clearFocusedSnippet())
+    }
+  }, [])
 
   if (!story) return null
 
@@ -73,8 +79,8 @@ const PracticeView = () => {
           wordLemmas,
           capitalize(dictionaryLanguage),
           id,
-          wordId,
-        ),
+          wordId
+        )
       )
     }
   }
@@ -104,7 +110,13 @@ const PracticeView = () => {
                 onClick={handleRestart}
               />
             </div>
-            {story.url ? <p><a href={story.url}><FormattedMessage id="Source" /></a></p> : null}
+            {story.url ? (
+              <p>
+                <a href={story.url}>
+                  <FormattedMessage id="Source" />
+                </a>
+              </p>
+            ) : null}
             <PreviousSnippets handleWordClick={handleWordClick} />
             <hr />
             <CurrentSnippet
@@ -121,6 +133,5 @@ const PracticeView = () => {
     </div>
   )
 }
-
 
 export default PracticeView
