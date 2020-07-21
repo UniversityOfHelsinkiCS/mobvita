@@ -280,10 +280,15 @@ const CrosswordView = () => {
                 maxWidth: '600px',
                 position: 'relative',
                 lineHeight: '2em',
+                border: '1px solid #ccc',
+                padding: '1em',
+                boxShadow: 'inset 0 1px 1px rgba(0, 0, 0, 0.075)',
+                borderRadius: '4px',
               }}
             >
               {resizeListener}
               <h1 style={{ fontWeight: 550, fontSize: '22px' }}>{title}</h1>
+              <hr />
               {clueElements}
             </div>
           }
