@@ -263,6 +263,7 @@ const CrosswordView = () => {
                 maxHeight: '100%',
                 maxWidth: '600px',
                 position: 'relative',
+                lineHeight: '2em',
               }}
             >
               {resizeListener}

@@ -927,7 +927,8 @@ body {
 
 .crosswords-clue {
   white-space: nowrap;
-  border: 1px solid gray;
+  border: 1px solid #ccc;
+  box-shadow: inset 0 1px 1px rgba(0,0,0,.075);
   padding: 0.1em;
   border-radius: 0.3em;
   cursor: pointer;
