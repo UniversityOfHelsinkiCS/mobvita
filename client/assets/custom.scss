@@ -151,6 +151,10 @@ body {
   border-radius: 4px;
   border-width: thin;
   padding-left: 4px;
+  &:read-only {
+    opacity: 0.45;
+    cursor: pointer;
+  }
 }
 
 .cloze-untouched{
