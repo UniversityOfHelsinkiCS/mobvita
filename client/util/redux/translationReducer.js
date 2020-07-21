@@ -1,16 +1,27 @@
-import { translatableLanguages } from 'Utilities/common'
 import callBuilder from '../apiConnection'
 /**
  * Actions and reducers are in the same file for readability
  */
+
+const getTranslation = route => {
+  const prefix = 'GET_TRANSLATION'
+  return callBuilder(route, prefix, 'get')
+}
 
 export const getTranslationAction = (language, wordLemmas, locale, storyId, wordId) => {
   const story = storyId ? `&story_id=${storyId}&word_id=${wordId}` : ''
   const route = `/translate?w=${encodeURIComponent(
     wordLemmas
   )}&lang_learn=${language}&lang_target=${locale}${story}`
-  const prefix = 'GET_TRANSLATION'
-  return callBuilder(route, prefix, 'get')
+  return getTranslation(route)
+}
+
+export const getTranslationWithoutSaving = (language, wordLemmas, locale, storyId, wordId) => {
+  const story = storyId ? `&story_id=${storyId}&word_id=${wordId}` : ''
+  const route = `/translate?w=${encodeURIComponent(
+    wordLemmas
+  )}&lang_learn=${language}&lang_target=${locale}${story}&record=0`
+  return getTranslation(route)
 }
 
 export const clearTranslationAction = () => ({ type: 'CLEAR_TRANSLATION' })
