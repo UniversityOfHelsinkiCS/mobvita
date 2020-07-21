@@ -33,7 +33,9 @@ const CrosswordView = () => {
 
   const learningLanguage = useLearningLanguage()
   const dictionaryLanguage = useDictionaryLanguage()
-  const { data: crosswordData, clues, dimensions } = useSelector(({ crossword }) => crossword)
+  const { data: crosswordData, clues, dimensions, title } = useSelector(
+    ({ crossword }) => crossword
+  )
 
   useEffect(() => {
     localStorage.removeItem('guesses')
@@ -281,6 +283,7 @@ const CrosswordView = () => {
               }}
             >
               {resizeListener}
+              <h1 style={{ fontWeight: 550, fontSize: '22px' }}>{title}</h1>
               {clueElements}
             </div>
           }

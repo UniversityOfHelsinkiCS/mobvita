@@ -8,7 +8,7 @@ export const getCrossword = storyId => {
 
 export const revealClue = (direction, number) => ({ type: 'REVEAL_CLUE', direction, number })
 
-const initialState = { data: {}, dimensions: {}, pending: false, error: false }
+const initialState = { data: {}, dimensions: {}, title: '', pending: false, error: false }
 
 export default (state = initialState, action) => {
   switch (action.type) {
@@ -25,6 +25,7 @@ export default (state = initialState, action) => {
         clues: action.response.clue,
         entries: action.response.entries,
         dimensions: action.response.dimension,
+        title: action.response.title,
         pending: false,
         error: false,
       }
