@@ -236,7 +236,6 @@ const CrosswordView = () => {
     if (sizes.width >= 580) setDictionaryMinimized(false)
     if (sizes.width < 300) setDictionaryMinimized(true)
   }, [sizes.width])
-  console.log(sizes.width, dictionaryMinimized)
 
   if (!hiddenFeatures) return null
 
