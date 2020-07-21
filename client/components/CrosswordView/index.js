@@ -145,7 +145,7 @@ const CrosswordView = () => {
           <PlainWord
             style={{
               color: clue.show ? 'green' : '',
-              fontWeight: clue.show ? '1000' : '500',
+              fontWeight: clue.show ? '650' : '500',
             }}
             key={clue.ID}
             surface={clue.surface}
