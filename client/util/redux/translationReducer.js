@@ -26,12 +26,12 @@ export const getTranslationWithoutSaving = (language, wordLemmas, locale, storyI
 
 export const clearTranslationAction = () => ({ type: 'CLEAR_TRANSLATION' })
 
-export const setWords = (surface, lemmas, hideLemma = false) => {
+export const setWords = (surface, lemmas, clue) => {
   const words = { surface, lemmas }
   return {
     type: 'SET_WORDS',
     words,
-    hideLemma,
+    clue,
   }
 }
 
@@ -62,7 +62,7 @@ export default (state = { data: [] }, action) => {
         ...state,
         surfaceWord: action.words.surface,
         lemmas: action.words.lemmas,
-        hideLemma: action.hideLemma,
+        clue: action.clue,
       }
     case 'CLEAR_TRANSLATION': {
       return {
@@ -70,6 +70,7 @@ export default (state = { data: [] }, action) => {
         data: [],
         surfaceWord: '',
         lemmas: '',
+        clue: undefined,
       }
     }
     default:

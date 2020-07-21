@@ -104,10 +104,16 @@ const CrosswordView = () => {
     }
   }
 
+  const directionArrow = dir => {
+    if (dir === 'across') return '→'
+    if (dir === 'down') return '↓'
+    return ''
+  }
+
   const translateClue = clue => {
-    const { lemmas, surface, ID: wordId } = clue
+    const { lemmas, surface, ID: wordId, clue_direction: direction, clue_number: number } = clue
     if (lemmas) {
-      dispatch(setWords(surface, lemmas, true))
+      dispatch(setWords(surface, lemmas, { number, direction: directionArrow(direction) }))
       dispatch(
         getTranslationWithoutSaving(
           newCapitalize(learningLanguage),
@@ -123,12 +129,6 @@ const CrosswordView = () => {
   const handleClueClick = clue => {
     setCurrentClue(clue)
     translateClue(clue)
-  }
-
-  const directionArrow = dir => {
-    if (dir === 'across') return '→'
-    if (dir === 'down') return '↓'
-    return ''
   }
 
   const clueElements = useMemo(

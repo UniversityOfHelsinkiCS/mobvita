@@ -36,7 +36,7 @@ const DictionaryHelp = ({ minimized }) => {
 
   const translationLanguageCode = useSelector(({ user }) => user.data.user.last_trans_language)
   const learningLanguage = useSelector(learningLanguageSelector)
-  const { pending, data: translation, surfaceWord, lemmas, hideLemma } = useSelector(
+  const { pending, data: translation, surfaceWord, lemmas, clue } = useSelector(
     ({ translation }) => translation
   )
 
@@ -61,7 +61,11 @@ const DictionaryHelp = ({ minimized }) => {
     translation &&
     translation.map(translated => (
       <List.Item key={translated.URL} data-cy="translations" style={{ color: '#555555' }}>
-        {!hideLemma && (
+        {clue ? (
+          <div style={{ fontWeight: 'bold', color: '#2185D0' }}>
+            {`Your clue: ${clue.number} ${clue.direction}`}
+          </div>
+        ) : (
           <div style={getTextStyle(learningLanguage)}>
             {translated.lemma}
             <Speaker word={translated.lemma} />
@@ -121,7 +125,7 @@ const DictionaryHelp = ({ minimized }) => {
   const parsedLemmas = () => lemmas.split('+').join(',').split('|').join(',').split(',')
 
   const showSurfaceWord = () => {
-    if (!surfaceWord || hideLemma) return false
+    if (!surfaceWord || clue) return false
     if (translation) {
       return !translation.some(
         translated => translated.lemma.toLowerCase() === surfaceWord.toLowerCase()
@@ -145,7 +149,7 @@ const DictionaryHelp = ({ minimized }) => {
     if (!translation) {
       return (
         <List.Item style={{ color: '#555555' }}>
-          {!hideLemma && (
+          {!clue && (
             <div style={{ width: '100%', ...getTextStyle(learningLanguage) }}>
               {parsedLemmas()[0]}
               <Speaker word={parsedLemmas()[0]} />
