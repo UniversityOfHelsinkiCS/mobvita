@@ -56,19 +56,14 @@ const OuterWrapper = styled.div.attrs(props => ({
   height: 100%;
   max-height: 100%;
 
-  @media (max-width: ${props => props.theme.columnBreakpoint}) {
-    flex-direction: column;
-  }
-`
-
-const GridWrapper = styled.div.attrs(props => ({ className: 'grid' }))`
-  /* position: relative; */
-  flex: 0 0 auto;
+  // @media (max-width: ${props => props.theme.columnBreakpoint}) {
+  //   flex-direction: column;
+  // }
 `
 
 const CluesWrapper = styled.div.attrs(props => ({ className: 'clues' }))`
   padding: 0 1em;
-  flex: 1 2 25%;
+  flex: 1;
 
   @media (max-width: ${props => props.theme.columnBreakpoint}) {
     margin-top: 2em;
@@ -124,6 +119,7 @@ const Crossword = React.forwardRef(
     const [crosswordCorrect, setCrosswordCorrect] = useState(false)
 
     const inputRef = useRef()
+    const outerWrapperRef = useRef()
 
     const contextTheme = useContext(ThemeContext)
 
@@ -753,71 +749,56 @@ const Crossword = React.forwardRef(
         })
       })
     }
-
     return (
       <CrosswordContext.Provider value={context}>
         <CrosswordSizeContext.Provider
           value={{ cellSize, cellPadding, cellInner, cellHalf, fontSize, cellWidth, cellHeight }}
         >
           <ThemeProvider theme={finalTheme}>
-            <OuterWrapper correct={crosswordCorrect}>
-              <GridWrapper>
-                <div
-                  style={{
-                    margin: 0,
-                    padding: 0,
-                    position: 'relative',
-                    height: '100%',
-                    display: 'inline-block',
-                  }}
-                >
-                  <svg viewBox={`0 0 ${width} ${height}`} style={{ maxHeight: '90vh' }}>
-                    <rect
-                      x={0}
-                      y={0}
-                      width={width}
-                      height={height}
-                      fill={finalTheme.gridBackground}
-                    />
-                    {cells}
-                  </svg>
-                  <input
-                    ref={inputRef}
-                    aria-label="crossword-input"
-                    type="text"
-                    onClick={handleInputClick}
-                    onKeyDown={handleInputKeyDown}
-                    onChange={handleInputChange}
-                    value=""
-                    // onInput={this.handleInput}
-                    autoComplete="off"
-                    spellCheck="false"
-                    autoCorrect="off"
-                    style={{
-                      position: 'absolute',
-                      // In order to ensure the top/left positioning makes sense,
-                      // there is an absolutely-positioned <div> with no
-                      // margin/padding that we *don't* expose to consumers.  This
-                      // keeps the math much more reliable.  (But we're still
-                      // seeing a slight vertical deviation towards the bottom of
-                      // the grid!  The "* 0.995" seems to help.)
-                      top: `calc(${focusedRow * cellHeight * 0.995}% + 2px)`,
-                      left: `calc(${focusedCol * cellWidth}% + 2px)`,
-                      width: `calc(${cellWidth}% - 4px)`,
-                      height: `calc(${cellHeight}% - 4px)`,
-                      fontSize: `${fontSize * 6}px`, // waaay too small...?
-                      textAlign: 'center',
-                      textAnchor: 'middle',
-                      backgroundColor: 'transparent',
-                      caretColor: 'transparent',
-                      margin: 0,
-                      padding: 0,
-                      border: 0,
-                      cursor: 'default',
-                    }}
-                  />
-                </div>
-              </GridWrapper>
+            <OuterWrapper correct={crosswordCorrect} ref={outerWrapperRef}>
+              <svg
+                viewBox={`0 0 ${width} ${height}`}
+                style={{
+                  height: '90vh',
+                  maxHeight: '90vh',
+                  flex: '0 0 auto',
+                  minWidth:
+                    height > width && `${(width / 100) * outerWrapperRef.current?.clientHeight}`,
+                }}
+              >
+                <rect x={0} y={0} width={width} height={height} fill={finalTheme.gridBackground} />
+                {cells}
+              </svg>
+              <input
+                ref={inputRef}
+                aria-label="crossword-input"
+                type="text"
+                onClick={handleInputClick}
+                onKeyDown={handleInputKeyDown}
+                onChange={handleInputChange}
+                value=""
+                // onInput={this.handleInput}
+                autoComplete="off"
+                spellCheck="false"
+                autoCorrect="off"
+                style={{
+                  position: 'absolute',
+                  top: 0,
+                  left: 0,
+                  width: 0,
+                  height: 0,
+                  fontSize: `${fontSize * 6}px`, // waaay too small...?
+                  textAlign: 'center',
+                  textAnchor: 'middle',
+                  backgroundColor: 'transparent',
+                  caretColor: 'transparent',
+                  margin: 0,
+                  padding: 0,
+                  border: 0,
+                  cursor: 'default',
+                  outline: 'none',
+                }}
+              />
               <CluesWrapper>
                 {customClues ||
                   (clues &&

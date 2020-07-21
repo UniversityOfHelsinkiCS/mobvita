@@ -247,11 +247,11 @@ const CrosswordView = () => {
           onCorrect={handleCorrect}
           data={formattedData}
           ref={crosswordRef}
-          customClues={(
-            <div style={{ width: '600px', overflow: 'auto', maxHeight: '100%' }}>
+          customClues={
+            <div style={{ overflow: 'auto', maxHeight: '100%', maxWidth: '550px' }}>
               {clueElements}
             </div>
-          )}
+          }
           dimensions={dimensions}
         />
       </CrosswordWrapper>
