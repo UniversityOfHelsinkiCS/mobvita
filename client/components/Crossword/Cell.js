@@ -68,7 +68,7 @@ export default function Cell({ cellData, onClick, focus, highlight }) {
           y={y + cellPadding * 4}
           textAnchor="start"
           dominantBaseline="hanging"
-          style={{ fontSize: '50%', fill: numberColor }}
+          style={{ fontSize: '50%', fill: numberColor, fontWeight: 750 }}
         >
           {number}
         </text>
