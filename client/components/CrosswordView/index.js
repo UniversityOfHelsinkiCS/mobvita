@@ -1,6 +1,7 @@
 import React, { useEffect, useRef, useState, useMemo } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import { useParams } from 'react-router-dom'
+import useResizeAware from 'react-resize-aware'
 import {
   hiddenFeatures,
   newCapitalize,
@@ -22,7 +23,9 @@ const CrosswordView = () => {
   const [currentClue, setCurrentClue] = useState(null)
   const [data, setData] = useState()
   const [shiftPressed, setShiftPressed] = useState(false)
+  const [dictionaryMinimized, setDictionaryMinimized] = useState(true)
   const dispatch = useDispatch()
+  const [resizeListener, sizes] = useResizeAware()
 
   const learningLanguage = useLearningLanguage()
   const dictionaryLanguage = useDictionaryLanguage()
@@ -229,6 +232,12 @@ const CrosswordView = () => {
     }
   }, [currentClue, data, shiftPressed])
 
+  useEffect(() => {
+    if (sizes.width >= 580) setDictionaryMinimized(false)
+    if (sizes.width < 300) setDictionaryMinimized(true)
+  }, [sizes.width])
+  console.log(sizes.width, dictionaryMinimized)
+
   if (!hiddenFeatures) return null
 
   if (!formattedData || !clueElements) return <Spinner />
@@ -242,14 +251,22 @@ const CrosswordView = () => {
           data={formattedData}
           ref={crosswordRef}
           customClues={
-            <div style={{ overflow: 'auto', maxHeight: '100%', maxWidth: '550px' }}>
+            <div
+              style={{
+                overflow: 'auto',
+                maxHeight: '100%',
+                maxWidth: '600px',
+                position: 'relative',
+              }}
+            >
+              {resizeListener}
               {clueElements}
             </div>
           }
           dimensions={dimensions}
         />
       </div>
-      <DictionaryHelp />
+      <DictionaryHelp minimized={dictionaryMinimized} />
     </div>
   )
 }

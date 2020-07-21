@@ -29,7 +29,7 @@ const Speaker = ({ word }) => {
   return <Icon name="volume up" className="padding-left-1 clickable" onClick={handleSpeakerClick} />
 }
 
-const DictionaryHelp = () => {
+const DictionaryHelp = ({ minimized }) => {
   const [showHelp, setShow] = useState(false)
   const [shaking, setShaking] = useState(false)
   const { width: windowWidth } = useWindowDimensions()
@@ -93,7 +93,7 @@ const DictionaryHelp = () => {
     dispatch(updateDictionaryLanguage(value))
   }
 
-  const smallWindow = windowWidth < 1024
+  const smallWindow = minimized || windowWidth < 1024
 
   if (!showHelp && smallWindow) {
     return (
@@ -167,7 +167,7 @@ const DictionaryHelp = () => {
   }
 
   return (
-    <div className="dictionary-help">
+    <div className={`dictionary-help${smallWindow ? ' dictionary-help-overlay' : ''}`}>
       <Segment>
         <div className="align-right" style={{ color: 'slateGrey' }}>
           <FormattedMessage id="translation-target-language" />

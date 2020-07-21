@@ -329,7 +329,7 @@ body {
   height: auto;
   position: sticky;
   top: 1em + $navbar-height;
-  @media (max-width: 1023px) {
+  &-overlay {
     position: fixed;
     top: auto;
     right: 1em;
