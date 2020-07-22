@@ -64,7 +64,8 @@ const DictionaryHelp = ({ minimized }) => {
       <List.Item key={translated.URL} data-cy="translations" style={{ color: '#555555' }}>
         {clue ? (
           <div style={{ fontWeight: 'bold', color: '#2185D0' }}>
-            {`Your clue: ${clue.number} ${clue.direction}`}
+            <FormattedMessage id="Your clue" />
+            {`: ${clue.number} ${clue.direction}`}
           </div>
         ) : (
           <div style={getTextStyle(learningLanguage)}>

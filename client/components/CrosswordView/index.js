@@ -2,6 +2,7 @@ import React, { useEffect, useRef, useState, useMemo } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import { useParams } from 'react-router-dom'
 import useResizeAware from 'react-resize-aware'
+import { FormattedMessage } from 'react-intl'
 import { Spinner } from 'react-bootstrap'
 import {
   hiddenFeatures,
@@ -266,7 +267,9 @@ const CrosswordView = () => {
           alignItems: 'center',
         }}
       >
-        <h1 style={{ fontWeight: 550, fontSize: '26px' }}>Building your crossword</h1>
+        <h1 style={{ fontWeight: 550, fontSize: '26px' }}>
+          <FormattedMessage id="building-your-crossword" />
+        </h1>
         <Spinner animation="grow" />
       </div>
     )
