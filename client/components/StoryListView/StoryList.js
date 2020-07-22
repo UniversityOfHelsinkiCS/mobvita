@@ -73,14 +73,24 @@ const StoryList = () => {
 
   useEffect(() => {
     setLibrary(user.last_selected_library)
+    if (user.last_selected_library !== 'private' && sorter === 'date') {
+      setSorter('title')
+    }
   }, [user.last_selected_library])
 
   const sortDropdownOptions = [
-    { key: 'date', text: intl.formatMessage({ id: 'date-added' }), value: 'date' },
     { key: 'title', text: intl.formatMessage({ id: 'Title' }), value: 'title' },
     { key: 'difficulty', text: intl.formatMessage({ id: 'Difficulty' }), value: 'difficulty' },
     { key: 'progress', text: intl.formatMessage({ id: 'Progress' }), value: 'progress' },
   ]
+
+  if (user.last_selected_library === 'private') {
+    sortDropdownOptions.push({
+      key: 'date',
+      text: intl.formatMessage({ id: 'date-added' }),
+      value: 'date',
+    })
+  }
 
   const groupDropdownOptions = groups.map(group => ({
     key: group.group_id,
