@@ -33,8 +33,8 @@ const CrosswordView = () => {
   const [crosswordOptions, setCrosswordOptions] = useState({
     density: 0.6,
     size: 1000,
-    width: 0,
-    height: 0,
+    width: '',
+    height: '',
   })
   const dispatch = useDispatch()
 
@@ -67,15 +67,6 @@ const CrosswordView = () => {
     localStorage.removeItem('guesses')
     dispatch(getCrossword(storyId))
   }, [])
-
-  useEffect(() => {
-    if (dimensions) {
-      setCrosswordOptions({
-        ...crosswordOptions,
-        ...dimensions,
-      })
-    }
-  }, [dimensions])
 
   useEffect(() => {
     if (crosswordData && !isEmpty(crosswordData)) {
