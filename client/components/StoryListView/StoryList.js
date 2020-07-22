@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { Placeholder, Card, Search, Select, Icon } from 'semantic-ui-react'
+import { Placeholder, Card, Search, Select, Icon, Dropdown } from 'semantic-ui-react'
 
 import StoryListItem from 'Components/StoryListView/StoryListItem'
 import { useIntl } from 'react-intl'
@@ -134,14 +134,14 @@ const StoryList = () => {
           size={smallWindow ? 'mini' : 'tiny'}
           style={{ height: '100%' }}
         />
-        <Select
+        <Dropdown
           value={sorter}
           options={sortDropdownOptions}
           onChange={handleSortChange}
+          selection
+          fluid
           style={{
-            minWidth: '2em',
             marginLeft: '0.5em',
-            flex: 1,
             minHeight: '1em',
             height: smallWindow ? '2.2em' : '',
             display: 'flex',
@@ -150,7 +150,7 @@ const StoryList = () => {
           }}
         />
         <Icon
-          style={{ cursor: 'pointer' }}
+          style={{ cursor: 'pointer', marginLeft: '0.5em' }}
           name={sortDirection === 1 ? 'caret up' : 'caret down'}
           size="large"
           color="grey"
