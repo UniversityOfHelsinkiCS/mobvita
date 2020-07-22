@@ -36,10 +36,10 @@ export default (state = { pending: false, error: false }, action) => {
         error: false,
       }
     case 'CLOSE_BANNER':
-      return {
-        ...state,
-        banners: state.banners.map(b => (b.message === action.message ? { ...b, open: false } : b)),
-      }
+      return produce(state, draft => {
+        const banner = draft.banners.find(b => b.message === action.message)
+        banner.open = false
+      })
     default:
       return state
   }
