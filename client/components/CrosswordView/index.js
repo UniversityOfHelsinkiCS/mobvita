@@ -28,7 +28,6 @@ const CrosswordView = () => {
   const crosswordRef = useRef()
   const [currentClue, setCurrentClue] = useState(null)
   const [data, setData] = useState()
-  const [shiftPressed, setShiftPressed] = useState(false)
   const [dictionaryMinimized, setDictionaryMinimized] = useState(true)
   const [crosswordOptions, setCrosswordOptions] = useState({
     density: '',
@@ -197,7 +196,7 @@ const CrosswordView = () => {
     translateClue(currentClue)
   }, [currentClue])
 
-  const findNextClue = index => {
+  const findNextClue = (index, shiftPressed) => {
     if (shiftPressed) {
       const clue = clues
         .slice(0, index)
@@ -226,21 +225,9 @@ const CrosswordView = () => {
     if (event.key === 'Tab') {
       event.preventDefault()
       const index = clues.findIndex(clue => clue.ID === currentClue.ID)
-      const nextClue = findNextClue(index)
+      const nextClue = findNextClue(index, event.shiftKey)
 
       setCurrentClue(nextClue)
-    }
-
-    if (event.key === 'Shift') {
-      event.preventDefault()
-      setShiftPressed(true)
-    }
-  }
-
-  const handleKeyUp = event => {
-    if (event.key === 'Shift') {
-      event.preventDefault()
-      setShiftPressed(false)
     }
   }
 
@@ -256,12 +243,10 @@ const CrosswordView = () => {
 
   useEffect(() => {
     document.addEventListener('keydown', handleKeyDown)
-    document.addEventListener('keyup', handleKeyUp)
     return () => {
       document.removeEventListener('keydown', handleKeyDown)
-      document.removeEventListener('keyup', handleKeyUp)
     }
-  }, [currentClue, data, shiftPressed])
+  }, [currentClue, data])
 
   useEffect(() => {
     const freeSpace = windowWidth - contentSize.width

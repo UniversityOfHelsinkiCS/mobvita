@@ -112,6 +112,7 @@ const Crossword = React.forwardRef(
     const [focusedRow, setFocusedRow] = useState(0)
     const [focusedCol, setFocusedCol] = useState(0)
     const [currentDirection, setCurrentDirection] = useState('across')
+    const [moveBackwards, setMoveBackwards] = useState(false)
     const [currentNumber, setCurrentNumber] = useState('1')
     const [bulkChange, setBulkChange] = useState(null)
     const [checkQueue, setCheckQueue] = useState([])
@@ -297,7 +298,7 @@ const Crossword = React.forwardRef(
     }, [])
 
     const moveTo = useCallback(
-      (row, col, directionOverride) => {
+      (row, col, directionOverride, backwards = false) => {
         let direction = directionOverride ?? currentDirection
         const candidate = getCellData(row, col)
 
@@ -307,7 +308,8 @@ const Crossword = React.forwardRef(
 
         if (candidate.questionCorrect) {
           const across = isAcross(direction)
-          return moveTo(row + (across ? 0 : 1), col + (across ? 1 : 0), direction)
+          const dir = backwards ? -1 : 1
+          return moveTo(row + (across ? 0 : dir), col + (across ? dir : 0), direction)
         }
 
         if (!candidate[direction]) {
@@ -325,7 +327,7 @@ const Crossword = React.forwardRef(
     )
 
     const moveRelative = useCallback(
-      (dRow, dCol) => {
+      (dRow, dCol, backwards = false) => {
         // We expect *only* one of dRow or dCol to have a non-zero value, and
         // that's the direction we will "prefer".  If *both* are set (or zero),
         // we don't change the direction.
@@ -336,7 +338,7 @@ const Crossword = React.forwardRef(
           direction = 'across'
         }
 
-        const cell = moveTo(focusedRow + dRow, focusedCol + dCol, direction)
+        const cell = moveTo(focusedRow + dRow, focusedCol + dCol, direction, backwards)
 
         return cell
       },
@@ -350,7 +352,7 @@ const Crossword = React.forwardRef(
 
     const moveBackward = useCallback(() => {
       const across = isAcross(currentDirection)
-      moveRelative(across ? 0 : -1, across ? -1 : 0)
+      moveRelative(across ? 0 : -1, across ? -1 : 0, true)
     }, [currentDirection, moveRelative])
 
     useEffect(() => {
