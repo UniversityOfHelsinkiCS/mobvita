@@ -31,8 +31,8 @@ const CrosswordView = () => {
   const [shiftPressed, setShiftPressed] = useState(false)
   const [dictionaryMinimized, setDictionaryMinimized] = useState(true)
   const [crosswordOptions, setCrosswordOptions] = useState({
-    density: 0.5,
-    snippetSize: 1000,
+    density: 0.6,
+    size: 1000,
     width: 0,
     height: 0,
   })
@@ -49,6 +49,18 @@ const CrosswordView = () => {
 
   const handleOptionChange = field => event => {
     setCrosswordOptions({ ...crosswordOptions, [field]: event.target.value })
+  }
+
+  const refetchCrossword = () => {
+    const options = {}
+
+    Object.entries(crosswordOptions).forEach(([key, value]) => {
+      if (value !== '') {
+        options[key] = value
+      }
+    })
+
+    dispatch(getCrossword(storyId, options))
   }
 
   useEffect(() => {
@@ -290,6 +302,19 @@ const CrosswordView = () => {
     <div style={{ display: 'flex', height: '100%', maxHeight: '90vh', justifyContent: 'center' }}>
       <div style={{ maxHeight: '100%', position: 'relative' }}>
         {resizeListener}
+        {hiddenFeatures && (
+          <>
+            {Object.entries(crosswordOptions).map(([name, value]) => (
+              <span key={name}>
+                <span>{name}</span>
+                <input type="text" value={value} onChange={handleOptionChange(name)} />
+              </span>
+            ))}
+            <button type="button" onClick={refetchCrossword}>
+              refetch
+            </button>
+          </>
+        )}
         <Crossword
           onWordChange={handleWordChange}
           onCorrect={handleCorrect}
@@ -313,22 +338,6 @@ const CrosswordView = () => {
                 <hr />
                 {clueElements}
               </div>
-              {hiddenFeatures && (
-                <>
-                  {Object.entries(crosswordOptions).map(([name, value]) => (
-                    <div key={name}>
-                      <span>{name}</span>
-                      <input type="text" value={value} onChange={handleOptionChange(name)} />
-                    </div>
-                  ))}
-                  <button
-                    type="button"
-                    onClick={() => dispatch(getCrossword(storyId, crosswordOptions))}
-                  >
-                    refetch
-                  </button>
-                </>
-              )}
             </>
           }
           dimensions={dimensions}

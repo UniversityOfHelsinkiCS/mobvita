@@ -1,10 +1,10 @@
 import callBuilder from 'Utilities/apiConnection'
 
 export const getCrossword = (storyId, options = {}) => {
-  const { density, snippetSize, width, height } = options
+  const { density, size, width, height } = options
   const query = {
     candidate_density: density,
-    snippet_size: snippetSize,
+    size,
     width,
     height,
   }
