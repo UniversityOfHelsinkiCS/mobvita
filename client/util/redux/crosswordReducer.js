@@ -1,4 +1,5 @@
 import callBuilder from 'Utilities/apiConnection'
+import produce from 'immer'
 
 export const getCrossword = (storyId, options = {}) => {
   const { density, size, width, height } = options
@@ -44,14 +45,12 @@ export default (state = initialState, action) => {
         error: true,
       }
     case 'REVEAL_CLUE':
-      return {
-        ...state,
-        clues: state.clues.map(clue =>
-          clue.clue_number === action.number && clue.clue_direction === action.direction
-            ? { ...clue, show: true }
-            : clue
-        ),
-      }
+      return produce(state, draft => {
+        const index = draft.clues.findIndex(
+          clue => clue.clue_number === action.number && clue.clue_direction === action.direction
+        )
+        draft.clues[index].show = true
+      })
     default:
       return state
   }

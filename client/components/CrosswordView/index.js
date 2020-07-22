@@ -31,8 +31,8 @@ const CrosswordView = () => {
   const [shiftPressed, setShiftPressed] = useState(false)
   const [dictionaryMinimized, setDictionaryMinimized] = useState(true)
   const [crosswordOptions, setCrosswordOptions] = useState({
-    density: 0.6,
-    size: 1000,
+    density: '',
+    size: '',
     width: '',
     height: '',
   })
