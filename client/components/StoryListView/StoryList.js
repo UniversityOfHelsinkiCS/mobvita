@@ -19,13 +19,11 @@ const StoryList = () => {
   const [sortDirection, setSortDirection] = useState(1)
   const [searchString, setSearchString] = useState('')
   const [searchedStories, setSearchedStories] = useState([])
-  const [libraries, setLibraries] = useState(
-    {
-      public: false,
-      private: false,
-      group: false,
-    },
-  )
+  const [libraries, setLibraries] = useState({
+    public: false,
+    private: false,
+    group: false,
+  })
   const dispatch = useDispatch()
 
   const user = useSelector(({ user }) => user.data.user)
@@ -39,16 +37,16 @@ const StoryList = () => {
 
   const smallWindow = useWindowDimensions().width < 640
 
-  const setLibrary = (library) => {
+  const setLibrary = library => {
     const librariesCopy = {}
-    Object.keys(libraries).forEach((key) => {
+    Object.keys(libraries).forEach(key => {
       librariesCopy[key] = false
     })
 
     setLibraries({ ...librariesCopy, [library]: true })
   }
 
-  const handleLibraryChange = (library) => {
+  const handleLibraryChange = library => {
     dispatch(updateLibrarySelect(library))
     setLibrary(library)
   }
@@ -59,7 +57,7 @@ const StoryList = () => {
       getAllStories(learningLanguage, {
         sort_by: 'date',
         order: -1,
-      }),
+      })
     )
   }
 
@@ -84,9 +82,11 @@ const StoryList = () => {
     { key: 'progress', text: intl.formatMessage({ id: 'Progress' }), value: 'progress' },
   ]
 
-  const groupDropdownOptions = groups.map(group => (
-    { key: group.group_id, text: group.groupName, value: group.group_id }
-  ))
+  const groupDropdownOptions = groups.map(group => ({
+    key: group.group_id,
+    text: group.groupName,
+    value: group.group_id,
+  }))
 
   const handleSortChange = (_e, option) => {
     setSorter(option.value)
@@ -106,7 +106,6 @@ const StoryList = () => {
     setSearchedStories(searchFilteredStories)
   }, [searchString.length, pending])
 
-
   const handleGroupChange = (_e, option) => {
     dispatch(updateGroupSelect(option.value))
   }
@@ -114,10 +113,7 @@ const StoryList = () => {
   const noResults = !pending && searchString.length > 0 && searchedStories.length === 0
 
   const searchSort = (
-    <div
-      data-cy="library-controls"
-      className="library-control"
-    >
+    <div data-cy="library-controls" className="library-control">
       <div className="search-and-sort">
         <Search
           open={false}
@@ -151,7 +147,12 @@ const StoryList = () => {
           onClick={() => setSortDirection(sortDirection * -1)}
         />
       </div>
-      <CheckboxGroup values={libraries} additionalClass="wrap-and-grow" onClick={handleLibraryChange} reverse />
+      <CheckboxGroup
+        values={libraries}
+        additionalClass="wrap-and-grow align-center"
+        onClick={handleLibraryChange}
+        reverse
+      />
       <div className="space-between reverse-for-900" style={{ alignItems: 'center' }}>
         <Icon
           data-cy="restart-story"
@@ -169,7 +170,6 @@ const StoryList = () => {
           style={{ color: '#777' }}
         />
       </div>
-
     </div>
   )
 
@@ -184,13 +184,11 @@ const StoryList = () => {
     )
   }
 
-
-  const librariesToShow = Object
-    .entries(libraries)
+  const librariesToShow = Object.entries(libraries)
     .filter(entry => entry[1])
     .map(([key]) => capitalize(key))
 
-  const libraryFilteredStories = searchedStories.filter((story) => {
+  const libraryFilteredStories = searchedStories.filter(story => {
     if (story.public) {
       return librariesToShow.includes('Public')
     }
@@ -214,7 +212,7 @@ const StoryList = () => {
     return librariesToShow.some(value => showLibraries.includes(value))
   })
 
-  const stringToDifficulty = (difficulty) => {
+  const stringToDifficulty = difficulty => {
     switch (difficulty) {
       case 'low':
         return 1
@@ -222,7 +220,8 @@ const StoryList = () => {
         return 2
       case 'high':
         return 3
-      default: // null case
+      default:
+        // null case
         return 4
     }
   }
@@ -264,7 +263,6 @@ const StoryList = () => {
       </div>
     )
   }
-
 
   return (
     <div className="component-container">
