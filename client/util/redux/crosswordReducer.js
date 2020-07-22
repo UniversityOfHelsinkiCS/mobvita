@@ -46,10 +46,10 @@ export default (state = initialState, action) => {
       }
     case 'REVEAL_CLUE':
       return produce(state, draft => {
-        const index = draft.clues.findIndex(
+        const clue = draft.clues.find(
           clue => clue.clue_number === action.number && clue.clue_direction === action.direction
         )
-        draft.clues[index].show = true
+        clue.show = true
       })
     default:
       return state

@@ -1,6 +1,7 @@
+import produce from 'immer'
 import callBuilder from '../apiConnection'
 
-export const getMetadata = (language) => {
+export const getMetadata = language => {
   const route = `/metadata/${language}`
   const prefix = 'GET_METADATA'
   return callBuilder(route, prefix, 'get')

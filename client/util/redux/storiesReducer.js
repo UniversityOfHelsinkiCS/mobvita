@@ -1,23 +1,28 @@
+import produce from 'immer'
 import callBuilder from '../apiConnection'
 /**
  * Actions and reducers are in the same file for readability
  */
 
-export const getStoryAction = (storyId) => {
+export const getStoryAction = storyId => {
   const route = `/stories/${storyId}`
   const prefix = 'GET_STORY'
   return callBuilder(route, prefix)
 }
 
 export const getAllStories = (language, query) => {
-  const queryString = Object.keys(query).map(key => `${key}=${query[key]}`).join('&')
+  const queryString = Object.keys(query)
+    .map(key => `${key}=${query[key]}`)
+    .join('&')
   const route = `/stories?language=${language}&${queryString}`
   const prefix = 'GET_STORIES'
   return callBuilder(route, prefix)
 }
 
 export const getStories = (language, query = { page: 0, page_size: 10 }) => {
-  const queryString = Object.keys(query).map(key => `${key}=${query[key]}`).join('&')
+  const queryString = Object.keys(query)
+    .map(key => `${key}=${query[key]}`)
+    .join('&')
   const route = `/stories?language=${language}&${queryString}`
   const prefix = 'GET_STORIES'
   return callBuilder(route, prefix)
@@ -30,7 +35,7 @@ export const updateExerciseSettings = (settings, storyId) => {
   return callBuilder(route, prefix, 'post', payload)
 }
 
-export const removeStory = (storyId) => {
+export const removeStory = storyId => {
   const route = `/stories/${storyId}/remove`
   const prefix = 'REMOVE_STORY'
   return callBuilder(route, prefix)
@@ -157,20 +162,14 @@ export default (state = initialState, action) => {
         error: true,
       }
     case 'UNSHARE_STORY_SUCCESS':
-      return {
-        ...state,
-        data: state.data.map((story) => {
-          if (story._id === action.response.removed) {
-            return {
-              ...story,
-              groups: story.groups.filter(g => g.group_id !== action.response.group.group_id),
-            }
-          }
-          return story
-        }),
-        pending: false,
-        error: false,
-      }
+      return produce(state, draft => {
+        const story = draft.data.find(story => story._id === action.response.removed)
+        story.groups = story.groups.filter(
+          group => group.group_id !== action.response.group.group_id
+        )
+        draft.pending = false
+        draft.error = false
+      })
     default:
       return state
   }
