@@ -1,20 +1,19 @@
 import React from 'react'
 import { Modal } from 'semantic-ui-react'
+import { hiddenFeatures } from 'Utilities/common'
 import { CustomButton, LinkButton } from './Buttons'
 import DetailsTable from './DetailsTable'
 
-const DetailedStoryModal = (
-  {
-    trigger,
-    story,
-    setShareModalOpen,
-    showShareButton,
-    showDeleteButton,
-    handleDelete,
-    inGroupLibrary,
-    currentGroup,
-  },
-) => {
+const DetailedStoryModal = ({
+  trigger,
+  story,
+  setShareModalOpen,
+  showShareButton,
+  showDeleteButton,
+  handleDelete,
+  inGroupLibrary,
+  currentGroup,
+}) => {
   const {
     title,
     percent_cov: percentCovered,
@@ -29,9 +28,7 @@ const DetailedStoryModal = (
     date,
   } = story
 
-  const showLearningSettingsButton = inGroupLibrary
-    && currentGroup
-    && currentGroup.is_teaching
+  const showLearningSettingsButton = inGroupLibrary && currentGroup && currentGroup.is_teaching
 
   return (
     <Modal
@@ -39,9 +36,7 @@ const DetailedStoryModal = (
       closeIcon={{ style: { top: '0.75em', right: '1rem' }, color: 'black', name: 'close' }}
     >
       <Modal.Header>
-        <div className="padding-right-3">
-          {title}
-        </div>
+        <div className="padding-right-3">{title}</div>
       </Modal.Header>
       <Modal.Content>
         <DetailsTable
@@ -66,7 +61,18 @@ const DetailedStoryModal = (
               to={`/flashcards/fillin/${story._id}/`}
               translationId="Flashcards"
             />
-            <LinkButton variant="secondary" to={`/stories/${story._id}/read`} translationId="Read" />
+            {hiddenFeatures && (
+              <LinkButton
+                variant="secondary"
+                to={`/crossword/${story._id}`}
+                translationId="Crossword"
+              />
+            )}
+            <LinkButton
+              variant="secondary"
+              to={`/stories/${story._id}/read`}
+              translationId="Read"
+            />
           </div>
           <div className="gap-1">
             <LinkButton
