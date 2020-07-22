@@ -196,7 +196,7 @@
     "Subject": "",
     "your-message": "",
     "Send": "",
-    "building-your-crossword": "",
+    "building-your-crossword": "Building your crossword",
     "Hint": "Hint",
     "Close": "",
     "you-do-not-have-any-apples-yet": "",
@@ -767,5 +767,6 @@
     "Hide history": "Hide history",
     "Flashcard list": "Flashcard list",
     "Go to next snippet": "Go to next snippet",
-    "Practice history": "Practice history"
+    "Practice history": "Practice history",
+    "Your clue": "Your clue"
 }
