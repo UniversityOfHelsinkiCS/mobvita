@@ -16,6 +16,15 @@ export default function Profile({ location }) {
     {
       menuItem: {
         as: Link,
+        content: intl.formatMessage({ id: 'Progress' }),
+        to: '/profile/progress',
+        key: 'progress',
+      },
+      render: () => <Progress />,
+    },
+    {
+      menuItem: {
+        as: Link,
         content: intl.formatMessage({ id: 'Account' }),
         to: '/profile/account',
         key: 'account',
@@ -30,15 +39,6 @@ export default function Profile({ location }) {
         key: 'settings',
       },
       render: () => <Settings />,
-    },
-    {
-      menuItem: {
-        as: Link,
-        content: intl.formatMessage({ id: 'Progress' }),
-        to: '/profile/progress',
-        key: 'progress',
-      },
-      render: () => <Progress />,
     },
   ]
 
