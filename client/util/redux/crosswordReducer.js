@@ -1,9 +1,17 @@
 import callBuilder from 'Utilities/apiConnection'
 
-export const getCrossword = storyId => {
+export const getCrossword = (storyId, options = {}) => {
+  const { density, snippetSize, width, height } = options
+  const query = {
+    candidate_density: density,
+    snippet_size: snippetSize,
+    width,
+    height,
+  }
+
   const route = `/stories/${storyId}/crossword`
   const prefix = 'GET_CROSSWORD'
-  return callBuilder(route, prefix)
+  return callBuilder(route, prefix, 'get', null, query)
 }
 
 export const revealClue = (direction, number) => ({ type: 'REVEAL_CLUE', direction, number })

@@ -30,6 +30,12 @@ const CrosswordView = () => {
   const [data, setData] = useState()
   const [shiftPressed, setShiftPressed] = useState(false)
   const [dictionaryMinimized, setDictionaryMinimized] = useState(true)
+  const [crosswordOptions, setCrosswordOptions] = useState({
+    density: 0.5,
+    snippetSize: 1000,
+    width: 0,
+    height: 0,
+  })
   const dispatch = useDispatch()
 
   const [resizeListener, contentSize] = useResizeAware()
@@ -41,20 +47,26 @@ const CrosswordView = () => {
     ({ crossword }) => crossword
   )
 
+  const handleOptionChange = field => event => {
+    setCrosswordOptions({ ...crosswordOptions, [field]: event.target.value })
+  }
+
   useEffect(() => {
     localStorage.removeItem('guesses')
-    // const fromStorage = localStorage.getItem('crossword')
-    // if (fromStorage) {
-    //   setData(JSON.parse(fromStorage))
-    // } else {
-    //   dispatch(getCrossword(storyId))
-    // }
     dispatch(getCrossword(storyId))
   }, [])
 
   useEffect(() => {
+    if (dimensions) {
+      setCrosswordOptions({
+        ...crosswordOptions,
+        ...dimensions,
+      })
+    }
+  }, [dimensions])
+
+  useEffect(() => {
     if (crosswordData && !isEmpty(crosswordData)) {
-      // localStorage.setItem('crossword', JSON.stringify(crosswordData))
       setData(crosswordData)
     }
   }, [crosswordData])
@@ -284,22 +296,40 @@ const CrosswordView = () => {
           data={formattedData}
           ref={crosswordRef}
           customClues={
-            <div
-              style={{
-                overflow: 'auto',
-                maxHeight: '100%',
-                maxWidth: '600px',
-                lineHeight: '2em',
-                border: '1px solid #ccc',
-                padding: '1em',
-                boxShadow: 'inset 0 1px 1px rgba(0, 0, 0, 0.075)',
-                borderRadius: '4px',
-              }}
-            >
-              <h1 style={{ fontWeight: 550, fontSize: '22px' }}>{title}</h1>
-              <hr />
-              {clueElements}
-            </div>
+            <>
+              <div
+                style={{
+                  overflow: 'auto',
+                  maxHeight: '100%',
+                  maxWidth: '600px',
+                  lineHeight: '2em',
+                  border: '1px solid #ccc',
+                  padding: '1em',
+                  boxShadow: 'inset 0 1px 1px rgba(0, 0, 0, 0.075)',
+                  borderRadius: '4px',
+                }}
+              >
+                <h1 style={{ fontWeight: 550, fontSize: '22px' }}>{title}</h1>
+                <hr />
+                {clueElements}
+              </div>
+              {hiddenFeatures && (
+                <>
+                  {Object.entries(crosswordOptions).map(([name, value]) => (
+                    <div key={name}>
+                      <span>{name}</span>
+                      <input type="text" value={value} onChange={handleOptionChange(name)} />
+                    </div>
+                  ))}
+                  <button
+                    type="button"
+                    onClick={() => dispatch(getCrossword(storyId, crosswordOptions))}
+                  >
+                    refetch
+                  </button>
+                </>
+              )}
+            </>
           }
           dimensions={dimensions}
         />

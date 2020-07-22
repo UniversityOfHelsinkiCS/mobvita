@@ -6,8 +6,7 @@ import { basePath } from 'Utilities/common'
 
 const getAxios = axios.create({ baseURL: `${basePath}api` })
 
-
-export const callApi = async (url, method = 'get', data) => {
+export const callApi = async (url, method = 'get', data, query) => {
   const user = localStorage.getItem('user')
   const token = user ? JSON.parse(user).access_token : ''
   const headers = token ? { Authorization: `Bearer ${token}` } : {}
@@ -17,34 +16,33 @@ export const callApi = async (url, method = 'get', data) => {
     url,
     data,
     headers,
+    params: query,
   })
 }
 
-export default (route, prefix, method = 'get', data, query, cache) => (
-  {
-    type: `${prefix}_ATTEMPT`,
-    requestSettings: {
-      route,
-      method,
-      data,
-      prefix,
-      query,
-      cache,
-    },
-  }
-)
+export default (route, prefix, method = 'get', data, query, cache) => ({
+  type: `${prefix}_ATTEMPT`,
+  requestSettings: {
+    route,
+    method,
+    data,
+    prefix,
+    query,
+    cache,
+  },
+})
 
 /**
  * This is a redux middleware used for tracking api calls
  */
 
-export const handleRequest = store => next => async (action) => {
+export const handleRequest = store => next => async action => {
   next(action)
   const { requestSettings } = action
   if (requestSettings) {
     const { route, method, data, prefix, query, cache } = requestSettings
     try {
-      const res = await callApi(route, method, data)
+      const res = await callApi(route, method, data, query)
       if (cache) {
         window.localStorage.setItem(cache, JSON.stringify(res.data))
       }
