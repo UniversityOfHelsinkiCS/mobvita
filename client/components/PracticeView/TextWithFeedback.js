@@ -5,7 +5,7 @@ import Word from './PreviousSnippets/Word'
 const TextWithFeedback = ({ snippet, exercise = false, answers, ...props }) => {
   let lowestLinePosition = 0
   const openLinePositions = [1, 2, 3, 4, 5]
-  const reservedLinePositions = { }
+  const reservedLinePositions = {}
   let inChunk = false
 
   const lineColors = ['blue', 'green', 'black', 'purple', 'cyan']
@@ -21,26 +21,30 @@ const TextWithFeedback = ({ snippet, exercise = false, answers, ...props }) => {
     }
 
     if (counter > 0) {
-      const newElement = <span key={`${id}-${position}`} style={spanStyle}>{element}</span>
+      const newElement = (
+        <span key={`${id}-${position}`} style={spanStyle}>
+          {element}
+        </span>
+      )
       return createNestedSpan(newElement, id, position + 1, counter - 1)
     }
 
     return element
   }
 
-  const reserveLinePosition = (patternId) => {
+  const reserveLinePosition = patternId => {
     reservedLinePositions[patternId] = openLinePositions.shift()
     lowestLinePosition = Math.max(...Object.values(reservedLinePositions))
   }
 
-  const freeLinePosition = (patternId) => {
+  const freeLinePosition = patternId => {
     openLinePositions.push(reservedLinePositions[patternId])
     openLinePositions.sort()
     delete reservedLinePositions[patternId]
     lowestLinePosition = Math.max(...Object.values(reservedLinePositions))
   }
 
-  const createChunkStyle = (chunkPosition) => {
+  const createChunkStyle = chunkPosition => {
     const chunkStart = chunkPosition === 'start'
     const chunkEnd = chunkPosition === 'end'
     const chunkBorder = '1px red solid'
@@ -61,17 +65,17 @@ const TextWithFeedback = ({ snippet, exercise = false, answers, ...props }) => {
   }
 
   const createElement = (word, chunkPosition) => {
-    let element = exercise
-      ? <ExerciseWord key={word.ID} word={word} {...props} />
-      : (
-        <Word
-          key={word.ID}
-          word={word}
-          answer={answers[word.ID]}
-          tiedAnswer={answers[word.tiedTo]}
-          {...props}
-        />
-      )
+    let element = exercise ? (
+      <ExerciseWord key={word.ID} word={word} {...props} />
+    ) : (
+      <Word
+        key={word.ID}
+        word={word}
+        answer={answers[word.ID]}
+        tiedAnswer={answers[word.tiedTo]}
+        {...props}
+      />
+    )
     if (inChunk) {
       const chunkStyle = createChunkStyle(chunkPosition)
 
@@ -86,41 +90,42 @@ const TextWithFeedback = ({ snippet, exercise = false, answers, ...props }) => {
     return element
   }
 
-  const createdText = useMemo(() => snippet && snippet.map((word) => {
-    const { pattern } = word
+  const createdText = useMemo(
+    () =>
+      snippet &&
+      snippet.map(word => {
+        const { pattern } = word
 
-    const chunkPosition = word.chunk && word.chunk.split('_')[1]
+        const chunkPosition = word.chunk && word.chunk.split('_')[1]
 
-    if (pattern) {
-      Object.entries(pattern)
-        .filter(([, position]) => position === 'pattern_start')
-        .forEach(([id]) => reserveLinePosition(id))
-    }
+        if (pattern) {
+          Object.entries(pattern)
+            .filter(([, position]) => position === 'pattern_start')
+            .forEach(([id]) => reserveLinePosition(id))
+        }
 
-    if (chunkPosition === 'start') {
-      inChunk = true
-    }
+        if (chunkPosition === 'start') {
+          inChunk = true
+        }
 
-    const element = createElement(word, chunkPosition)
+        const element = createElement(word, chunkPosition)
 
-    if (pattern) {
-      Object.entries(pattern)
-        .filter(([, position]) => position === 'pattern_end')
-        .forEach(([id]) => freeLinePosition(id))
-    }
+        if (pattern) {
+          Object.entries(pattern)
+            .filter(([, position]) => position === 'pattern_end')
+            .forEach(([id]) => freeLinePosition(id))
+        }
 
-    if (chunkPosition === 'end') {
-      inChunk = false
-    }
+        if (chunkPosition === 'end') {
+          inChunk = false
+        }
 
-    return element
-  }), [snippet, answers])
-
-  return (
-    <span>
-      {createdText}
-    </span>
+        return element
+      }),
+    [snippet, answers]
   )
+
+  return <span>{createdText}</span>
 }
 
 export default TextWithFeedback

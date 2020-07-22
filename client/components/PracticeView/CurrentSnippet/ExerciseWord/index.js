@@ -3,13 +3,9 @@ import PlainWord from 'Components/PracticeView/PlainWord'
 import ExerciseCloze from './ExerciseCloze'
 import ExerciseMultipleChoice from './ExerciseMultipleChoice'
 import ExerciseHearing from './ExerciseHearing'
+import RightAnswer from './RightAsnwer'
 
-const ExerciseWord = ({
-  word,
-  handleWordClick,
-  handleAnswerChange,
-  handleMultiselectChange,
-}) => {
+const ExerciseWord = ({ word, handleWordClick, handleAnswerChange, handleMultiselectChange }) => {
   if (word.surface === '\n\n' || !word.id) {
     return (
       <PlainWord
@@ -19,6 +15,9 @@ const ExerciseWord = ({
         handleWordClick={handleWordClick}
       />
     )
+  }
+  if (word.tested && !word.isWrong) {
+    return <RightAnswer word={word} handleWordClick={handleWordClick} />
   }
   if (word.listen) {
     return (
