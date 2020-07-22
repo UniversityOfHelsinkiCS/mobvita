@@ -1,10 +1,8 @@
-import React, { createRef, useState, useEffect, useCallback } from 'react'
+import React, { createRef, useState, useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { debounce } from 'lodash'
 import { Icon } from 'semantic-ui-react'
 import { getTextWidth, speak, learningLanguageSelector, respVoiceLanguages } from 'Utilities/common'
 import { setFocusedWord } from 'Utilities/redux/practiceReducer'
-
 
 const ExerciseHearing = ({ word, handleChange }) => {
   const [value, setValue] = useState('')
@@ -22,13 +20,6 @@ const ExerciseHearing = ({ word, handleChange }) => {
   const { isWrong, tested } = word
 
   const voice = respVoiceLanguages[learningLanguage]
-
-  const debouncedChange = useCallback(
-    debounce((val) => {
-      handleChange(val, word)
-    }, 300),
-    [word],
-  )
 
   const giveHint = () => {
     if (word.base !== word.surface) handleChange(word.base, word)
@@ -50,7 +41,7 @@ const ExerciseHearing = ({ word, handleChange }) => {
     setValue(val)
   }, [currentAnswer])
 
-  const speakerClickHandler = (word) => {
+  const speakerClickHandler = word => {
     speak(word.surface, voice)
     inputRef.current.focus()
   }
@@ -71,12 +62,15 @@ const ExerciseHearing = ({ word, handleChange }) => {
     }
   }
 
-  const handle = (e) => {
+  const handle = e => {
     setValue(e.target.value)
-    debouncedChange(e.target.value)
   }
 
-  const handleKeyDown = (e) => {
+  const handleBlur = () => {
+    handleChange(value, word)
+  }
+
+  const handleKeyDown = e => {
     if (e.keyCode === 13) {
       const { form } = e.target
       const index = Array.prototype.indexOf.call(form, e.target)
@@ -96,6 +90,7 @@ const ExerciseHearing = ({ word, handleChange }) => {
         onChange={handle}
         value={value}
         onFocus={handleInputFocus}
+        onBlur={handleBlur}
         className={className}
         style={{
           width: getTextWidth(word.surface),
@@ -105,7 +100,12 @@ const ExerciseHearing = ({ word, handleChange }) => {
           lineHeight: 'normal',
         }}
       />
-      <Icon name="volume up" link onClick={() => speakerClickHandler(word.surface)} style={{ marginLeft: '-25px' }} />
+      <Icon
+        name="volume up"
+        link
+        onClick={() => speakerClickHandler(word.surface)}
+        style={{ marginLeft: '-25px' }}
+      />
     </span>
   )
 }

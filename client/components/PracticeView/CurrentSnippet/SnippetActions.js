@@ -6,22 +6,24 @@ import { postAnswers, getCurrentSnippet } from 'Utilities/redux/snippetsReducer'
 import { setAttempts, finishSnippet, clearTouchedIds } from 'Utilities/redux/practiceReducer'
 
 const SnippetActions = ({ storyId, exerciseCount }) => {
-  const {
-    currentAnswers,
-    touchedIds,
-    attempt,
-    options,
-    audio,
-  } = useSelector(({ practice }) => practice)
+  const { currentAnswers, touchedIds, attempt, options, audio } = useSelector(
+    ({ practice }) => practice
+  )
   const { snippets } = useSelector(({ snippets }) => ({ snippets }))
 
   const dispatch = useDispatch()
 
-  const rightAnswerAmount = useMemo(() => snippets.focused
-    && snippets.focused.practice_snippet.reduce((sum, word) => (
-      (word.tested && !word.isWrong ? sum + 1 : sum)), 0), [snippets])
+  const rightAnswerAmount = useMemo(
+    () =>
+      snippets.focused &&
+      snippets.focused.practice_snippet.reduce(
+        (sum, word) => (word.tested && !word.isWrong ? sum + 1 : sum),
+        0
+      ),
+    [snippets]
+  )
 
-  const checkAnswers = async (lastAttempt) => {
+  const checkAnswers = async lastAttempt => {
     const { starttime, snippetid } = snippets.focused
 
     const answersObj = {
@@ -51,46 +53,46 @@ const SnippetActions = ({ storyId, exerciseCount }) => {
     dispatch(getCurrentSnippet(storyId))
   }
 
-  const isSnippetFetchedSuccessfully = snippets.answersPending
-    || snippets.pending
-    || snippets.focused
+  const isSnippetFetchedSuccessfully =
+    snippets.answersPending || snippets.pending || snippets.focused
 
   return (
     <div>
-      {isSnippetFetchedSuccessfully
-        ? (
-          <div style={{ display: 'flex', flexDirection: 'column-reverse', alignItems: 'flex-end' }}>
-            <Button
-              data-cy="check-answer"
-              variant="primary"
-              disabled={snippets.answersPending || snippets.pending || !snippets.focused}
-              onClick={() => checkAnswers()}
-              block
-            >
-              <span><FormattedMessage id="check-answer" /></span>
-            </Button>
-            <Button
-              variant="secondary"
-              size="sm"
-              disabled={snippets.answersPending || snippets.pending || !snippets.focused}
-              onClick={submitAnswers}
-              style={{ marginBottom: '0.5em' }}
-            >
-              <span><FormattedMessage id="Go to next snippet" /></span>
-            </Button>
-          </div>
-        ) : (
+      {isSnippetFetchedSuccessfully ? (
+        <div style={{ display: 'flex', flexDirection: 'column-reverse', alignItems: 'flex-end' }}>
           <Button
-            block
+            data-cy="check-answer"
             variant="primary"
-            disabled={snippets.answersPending || snippets.pending}
-            onClick={() => handleRetry()}
+            disabled={snippets.answersPending || snippets.pending || !snippets.focused}
+            onClick={() => checkAnswers()}
+            block
           >
-            Retry loading snippet
+            <span>
+              <FormattedMessage id="check-answer" />
+            </span>
           </Button>
-        )
-      }
-
+          <Button
+            variant="secondary"
+            size="sm"
+            disabled={snippets.answersPending || snippets.pending || !snippets.focused}
+            onClick={submitAnswers}
+            style={{ marginBottom: '0.5em' }}
+          >
+            <span>
+              <FormattedMessage id="Go to next snippet" />
+            </span>
+          </Button>
+        </div>
+      ) : (
+        <Button
+          block
+          variant="primary"
+          disabled={snippets.answersPending || snippets.pending}
+          onClick={() => handleRetry()}
+        >
+          Retry loading snippet
+        </Button>
+      )}
     </div>
   )
 }

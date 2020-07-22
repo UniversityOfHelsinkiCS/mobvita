@@ -1,6 +1,5 @@
-import React, { useState, useEffect, useCallback, useRef } from 'react'
+import React, { useState, useEffect, useRef } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
-import { debounce } from 'lodash'
 import {
   getTextWidth,
   dictionaryLanguageSelector,
@@ -15,30 +14,20 @@ const ExerciseCloze = ({ word, handleChange, handleClick }) => {
   const [value, setValue] = useState('')
   const [className, setClassName] = useState('exercise cloze-untouched')
   const [touched, setTouched] = useState(false)
-  const [disabled, setDisabled] = useState(false)
   const dictionaryLanguage = useSelector(dictionaryLanguageSelector)
   const learningLanguage = useSelector(learningLanguageSelector)
   const { isWrong, tested } = word
   const [show, setShow] = useState(false)
   const target = useRef()
 
-  const debouncedChange = useCallback(
-    debounce((val) => {
-      handleChange(val, word)
-    }, 300),
-    [word],
-  )
-
   const currentAnswer = useSelector(({ practice }) => practice.currentAnswers[word.ID])
 
   const dispatch = useDispatch()
 
-
   const handleTooltipClick = () => handleClick(word.base || word.bases, word.lemmas)
 
-  const changeValue = (e) => {
+  const changeValue = e => {
     setValue(e.target.value)
-    debouncedChange(e.target.value)
   }
 
   const getExerciseClass = (tested, isWrong) => {
@@ -66,7 +55,9 @@ const ExerciseCloze = ({ word, handleChange, handleClick }) => {
     </div>
   )
 
-  const handleDelayedBlur = () => { // It just works...
+  const handleBlur = () => {
+    handleChange(value, word)
+    // It just works...
     setTimeout(() => {
       setShow(false)
     }, 100)
@@ -82,7 +73,7 @@ const ExerciseCloze = ({ word, handleChange, handleClick }) => {
     dispatch(setFocusedWord(word))
   }
 
-  const handleKeyDown = (e) => {
+  const handleKeyDown = e => {
     if (e.keyCode === 13) {
       const { form } = e.target
       const index = Array.prototype.indexOf.call(form, e.target)
@@ -94,7 +85,15 @@ const ExerciseCloze = ({ word, handleChange, handleClick }) => {
   const direction = rightAlignedLanguages.includes(learningLanguage) ? 'bidi-override' : ''
 
   return (
-    <Tooltip placement="top" trigger="none" onVisibilityChange={setShow} tooltipShown={show} closeOnOutOfBoundaries tooltip={tooltip} additionalClassnames="clickable">
+    <Tooltip
+      placement="top"
+      trigger="none"
+      onVisibilityChange={setShow}
+      tooltipShown={show}
+      closeOnOutOfBoundaries
+      tooltip={tooltip}
+      additionalClassnames="clickable"
+    >
       <input
         onKeyDown={handleKeyDown}
         ref={target}
@@ -106,11 +105,11 @@ const ExerciseCloze = ({ word, handleChange, handleClick }) => {
         placeholder={`${word.base || word.bases}`}
         value={value}
         onChange={changeValue}
-        onBlur={handleDelayedBlur}
+        onBlur={handleBlur}
         onFocus={handleFocus}
         className={className}
         style={{
-          width: ((word.surface > word.base) ? getTextWidth(word.surface) : getTextWidth(word.base)),
+          width: word.surface > word.base ? getTextWidth(word.surface) : getTextWidth(word.base),
           marginRight: '2px',
           height: '1.5em',
           lineHeight: 'normal',
