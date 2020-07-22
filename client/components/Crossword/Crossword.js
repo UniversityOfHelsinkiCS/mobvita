@@ -112,7 +112,6 @@ const Crossword = React.forwardRef(
     const [focusedRow, setFocusedRow] = useState(0)
     const [focusedCol, setFocusedCol] = useState(0)
     const [currentDirection, setCurrentDirection] = useState('across')
-    const [movedBackwards, setMovedBackwards] = useState(false)
     const [currentNumber, setCurrentNumber] = useState('1')
     const [bulkChange, setBulkChange] = useState(null)
     const [checkQueue, setCheckQueue] = useState([])
@@ -263,10 +262,6 @@ const Crossword = React.forwardRef(
       [getCellData, clues]
     )
 
-    // useEffect(() => {
-    //   console.log(gridData)
-    // }, [gridData])
-
     // Any time the checkQueue changes, call checkCorrectness!
     useEffect(() => {
       if (checkQueue.length === 0) {
@@ -284,10 +279,6 @@ const Crossword = React.forwardRef(
           bothDirections.every(direction => clues[direction].every(clueInfo => clueInfo.correct))
       )
     }, [clues])
-
-    useEffect(() => {
-      if (onWordChange) onWordChange({ currentNumber, currentDirection })
-    }, [currentNumber, currentDirection])
 
     // Let the consumer know everything's correct (or not) if they've asked to
     // be informed.
@@ -312,6 +303,11 @@ const Crossword = React.forwardRef(
 
         if (!candidate.used) {
           return false
+        }
+
+        if (candidate.questionCorrect) {
+          const across = isAcross(direction)
+          return moveTo(row + (across ? 0 : 1), col + (across ? 1 : 0), direction)
         }
 
         if (!candidate[direction]) {
@@ -349,25 +345,20 @@ const Crossword = React.forwardRef(
 
     const moveForward = useCallback(() => {
       const across = isAcross(currentDirection)
-      setMovedBackwards(false)
       moveRelative(across ? 0 : 1, across ? 1 : 0)
     }, [currentDirection, moveRelative])
 
     const moveBackward = useCallback(() => {
       const across = isAcross(currentDirection)
-      setMovedBackwards(true)
       moveRelative(across ? 0 : -1, across ? -1 : 0)
     }, [currentDirection, moveRelative])
 
     useEffect(() => {
-      if (getCellData(focusedRow, focusedCol).questionCorrect) {
-        if (movedBackwards) {
-          moveBackward()
-        } else {
-          moveForward()
-        }
-      }
-    }, [focusedRow, focusedCol])
+      if (onWordChange) onWordChange({ currentNumber, currentDirection })
+
+      const current = getCellData(focusedRow, focusedCol)
+      if (current.questionCorrect) moveForward()
+    }, [currentNumber, currentDirection])
 
     // keyboard handling
     const handleSingleCharacter = useCallback(
