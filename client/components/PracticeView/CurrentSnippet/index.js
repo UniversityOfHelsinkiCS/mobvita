@@ -23,6 +23,7 @@ import {
 } from 'Utilities/redux/practiceReducer'
 import SnippetActions from './SnippetActions'
 import PracticeText from './PracticeText'
+import ProgressBar from './ProgressBar'
 
 const CurrentSnippet = ({ storyId, handleWordClick, handleInputChange }) => {
   const [progress, setProgress] = useState(0)
@@ -60,7 +61,7 @@ const CurrentSnippet = ({ storyId, handleWordClick, handleInputChange }) => {
 
   const getExerciseCount = () => {
     let count = 0
-    snippets.focused.practice_snippet.forEach((word) => {
+    snippets.focused.practice_snippet.forEach(word => {
       if (word.id) {
         count++
       }
@@ -152,8 +153,9 @@ const CurrentSnippet = ({ storyId, handleWordClick, handleInputChange }) => {
       setTimeout(() => {
         if (scrollTarget.current) {
           const { elements } = scrollTarget.current
-          const firstCloze = Object.entries(elements)
-            .filter(e => e[1].className.includes('cloze') && !e[1].className.includes('correct'))[0]
+          const firstCloze = Object.entries(elements).filter(
+            e => e[1].className.includes('cloze') && !e[1].className.includes('correct')
+          )[0]
 
           if (firstCloze) firstCloze[1].focus()
         }
@@ -188,56 +190,35 @@ const CurrentSnippet = ({ storyId, handleWordClick, handleInputChange }) => {
 
   return (
     <form ref={scrollTarget}>
-      {!finished
-        ? (
-          <div style={{ width: '100%' }}>
-            <div
-              className="practice-container"
-              style={getTextStyle(learningLanguage)}
-              data-cy="practice-view"
-            >
-              <PracticeText
-                handleWordClick={handleWordClick}
-                handleAnswerChange={handleInputChange}
-                handleMultiselectChange={handleMultiselectChange}
-              />
-            </div>
-            <SnippetActions
-              storyId={storyId}
-              exerciseCount={exerciseCount}
+      {!finished ? (
+        <div style={{ width: '100%' }}>
+          <div
+            className="practice-container"
+            style={getTextStyle(learningLanguage)}
+            data-cy="practice-view"
+          >
+            <PracticeText
+              handleWordClick={handleWordClick}
+              handleAnswerChange={handleInputChange}
+              handleMultiselectChange={handleMultiselectChange}
             />
           </div>
-        )
-        : (
-          <Button variant="primary" block onClick={() => startOver()}>
-            <FormattedMessage id="restart-story" />
-          </Button>
-        )}
-
-      {
-        snippets.focused && (
-          <div style={{ height: '2.5em', marginTop: '0.5em', textAlign: 'center' }} className="progress">
-            <span
-              data-cy="snippet-progress"
-              style={{ marginTop: '0.23em', fontSize: 'larger', position: 'absolute', right: 0, left: 0 }}
-              className="progress-value"
-            >{`${snippetProgress} / ${snippets.focused.total_num}`}
-            </span>
-            <div
-              className="progress-bar progress-bar-striped bg-info"
-              style={{ width: `${progress * 100}%` }}
-              role="progressbar"
-              aria-valuenow={progress}
-              aria-valuemin="0"
-              aria-valuemax="100"
-            />
-          </div>
-
-        )
-      }
+          <SnippetActions storyId={storyId} exerciseCount={exerciseCount} />
+        </div>
+      ) : (
+        <Button variant="primary" block onClick={() => startOver()}>
+          <FormattedMessage id="restart-story" />
+        </Button>
+      )}
+      {snippets.focused && (
+        <ProgressBar
+          snippetProgress={snippetProgress}
+          snippetsTotal={snippets.focused.total_num}
+          progress={progress}
+        />
+      )}
     </form>
   )
 }
-
 
 export default CurrentSnippet
