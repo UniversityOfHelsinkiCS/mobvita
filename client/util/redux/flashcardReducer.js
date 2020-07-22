@@ -1,3 +1,4 @@
+import produce from 'immer'
 import callBuilder from '../apiConnection'
 
 export const getFlashcards = (inputLanguage, outputLanguage, storyId = '') => {
@@ -19,7 +20,7 @@ export const recordFlashcardAnswer = (inputLanguage, outputLanguage, answerDetai
   return callBuilder(route, prefix, 'post', payload)
 }
 
-export const deleteFlashcard = (id) => {
+export const deleteFlashcard = id => {
   const route = `/flashcards/${id}`
   const prefix = 'DELETE_FLASHCARD'
   return callBuilder(route, prefix, 'post', { op: 'delete' })
@@ -144,14 +145,13 @@ export default (state = initialState, action) => {
         error: false,
       }
     case 'UPDATE_FLASHCARD_SUCCESS':
-      return {
-        ...state,
-        error: false,
-        cards: state.cards.map(card => (
-          card._id === action.response.flashcard_id
-            ? { ...action.response.flashcard, stage: card.stage }
-            : card)),
-      }
+      return produce(state, draft => {
+        draft.error = false
+
+        const index = draft.cards.findIndex(card => card._id === action.response.flashcard_id)
+        const { stage } = draft.cards[index]
+        draft.cards[index] = { ...action.response.flashcard, stage }
+      })
     case 'UPDATE_FLASHCARD_FAILURE':
       return {
         ...state,

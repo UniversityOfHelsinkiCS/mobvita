@@ -9,20 +9,14 @@ import { FormattedMessage } from 'react-intl'
 import Spinner from 'Components/Spinner'
 import { capitalize } from 'Utilities/common'
 
-
 import 'react-datepicker/dist/react-datepicker.css'
-
+import produce from 'immer'
 
 const PickDate = ({ date, setDate }) => (
-  <DatePicker
-    selected={date}
-    onChange={date => setDate(date)}
-    dateFormat="yyyy/MM/dd"
-  />
+  <DatePicker selected={date} onChange={date => setDate(date)} dateFormat="yyyy/MM/dd" />
 )
 
-
-const Summary = ({ groupName, isTeaching, getSummary, learningLanguage }) => {
+const Summary = ({ groupName, isTeaching, getSummary }) => {
   const [sorter, setSorter] = useState({})
   const [columns, setColumns] = useState([])
   const [startDate, setStartDate] = useState(moment().subtract(7, 'days').toDate())
@@ -50,7 +44,7 @@ const Summary = ({ groupName, isTeaching, getSummary, learningLanguage }) => {
       const temp = Object.values(colOrder)
 
       let directionsObj = {}
-      temp.forEach((column) => {
+      temp.forEach(column => {
         directionsObj = {
           ...directionsObj,
           [column]: 1,
@@ -76,12 +70,12 @@ const Summary = ({ groupName, isTeaching, getSummary, learningLanguage }) => {
 
   if (!summary) return <Spinner />
 
-  const handleSort = (field) => {
+  const handleSort = field => {
     setSorter(
-      {
-        field,
-        direction: { ...sorter.direction, [field]: -1 * sorter.direction[field] },
-      },
+      produce(draft => {
+        draft.field = field
+        draft.direction[field] = -1 * sorter.direction[field]
+      })
     )
   }
 
@@ -110,35 +104,33 @@ const Summary = ({ groupName, isTeaching, getSummary, learningLanguage }) => {
           <FormattedMessage id="download-csv" />
         </CSVLink>
       </div>
-      {pending
-        ? <Spinner />
-        : (
-          <Table striped bordered hover>
-            <thead>
-              <tr>
+      {pending ? (
+        <Spinner />
+      ) : (
+        <Table striped bordered hover>
+          <thead>
+            <tr>
+              {columns.map(column => (
+                <th key={column} className="clickable" onClick={() => handleSort(column)}>
+                  {capitalize(column).replace(/_/g, ' ')}
+                  {sorter.field === column && (
+                    <Icon name={sorter.direction[column] === 1 ? 'caret up' : 'caret down'} />
+                  )}
+                </th>
+              ))}
+            </tr>
+          </thead>
+          <tbody>
+            {summary.map(user => (
+              <tr key={user.email}>
                 {columns.map(column => (
-                  <th
-                    key={column}
-                    className="clickable"
-                    onClick={() => handleSort(column)}
-                  >
-                    {capitalize(column).replace(/_/g, ' ')}
-                    {sorter.field === column
-                      && <Icon name={sorter.direction[column] === 1 ? 'caret up' : 'caret down'} />
-                    }
-                  </th>
+                  <td key={user.username + column}>{user[column]}</td>
                 ))}
               </tr>
-            </thead>
-            <tbody>
-              {summary.map(user => (
-                <tr key={user.email}>
-                  {columns.map(column => <td key={user.username + column}>{user[column]}</td>)}
-                </tr>
-              ))}
-            </tbody>
-          </Table>
-        )}
+            ))}
+          </tbody>
+        </Table>
+      )}
     </>
   )
 }
