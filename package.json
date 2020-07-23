@@ -15,7 +15,8 @@
     "stats": "webpack --mode production --json --optimize-minimize > stats.json",
     "cypress:open": "cypress open",
     "cypress:run": "cypress run",
-    "sentry-cli": "sentry-cli"
+    "sentry-cli": "sentry-cli",
+    "add-translation": "node addTranslation.js"
   },
   "engines": {
     "node": ">=10.15"
