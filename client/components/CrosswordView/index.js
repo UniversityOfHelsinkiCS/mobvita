@@ -22,11 +22,13 @@ import {
   getTranslationAction,
   getTranslationWithoutSaving,
 } from 'Utilities/redux/translationReducer'
+import EndModal from './EndModal'
 
 const CrosswordView = () => {
   const { storyId } = useParams()
   const crosswordRef = useRef()
   const [currentClue, setCurrentClue] = useState(null)
+  const [modalOpen, setModalOpen] = useState(false)
   const [data, setData] = useState()
   const [dictionaryMinimized, setDictionaryMinimized] = useState(true)
   const [crosswordOptions, setCrosswordOptions] = useState({
@@ -241,6 +243,12 @@ const CrosswordView = () => {
     }, 100)
   }
 
+  const handleCrosswordCorrect = correct => {
+    if (correct) {
+      setTimeout(() => setModalOpen(true), 500)
+    }
+  }
+
   useEffect(() => {
     document.addEventListener('keydown', handleKeyDown)
     return () => {
@@ -289,9 +297,13 @@ const CrosswordView = () => {
             <button type="button" onClick={refetchCrossword}>
               refetch
             </button>
+            <button onClick={() => crosswordRef.current.fillAllAnswers()} type="button">
+              solve crossword
+            </button>
           </>
         )}
         <Crossword
+          onCrosswordCorrect={handleCrosswordCorrect}
           onWordChange={handleWordChange}
           onCorrect={handleCorrect}
           data={formattedData}
@@ -320,6 +332,11 @@ const CrosswordView = () => {
         />
       </div>
       <DictionaryHelp minimized={dictionaryMinimized} />
+      <EndModal
+        open={modalOpen}
+        setOpen={setModalOpen}
+        restart={() => dispatch(getCrossword(storyId))}
+      />
     </div>
   )
 }

@@ -112,7 +112,6 @@ const Crossword = React.forwardRef(
     const [focusedRow, setFocusedRow] = useState(0)
     const [focusedCol, setFocusedCol] = useState(0)
     const [currentDirection, setCurrentDirection] = useState('across')
-    const [moveBackwards, setMoveBackwards] = useState(false)
     const [currentNumber, setCurrentNumber] = useState('1')
     const [bulkChange, setBulkChange] = useState(null)
     const [checkQueue, setCheckQueue] = useState([])
