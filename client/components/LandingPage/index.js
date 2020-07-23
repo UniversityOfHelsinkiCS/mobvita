@@ -5,8 +5,8 @@ import { Icon } from 'semantic-ui-react'
 import { images, localeCodeToName } from 'Utilities/common'
 import { sidebarSetOpen } from 'Utilities/redux/sidebarReducer'
 import { createAnonToken } from 'Utilities/redux/userReducer'
-import NewLogin from 'Components/AccessControl/NewLogin'
-import NewRegister from 'Components/AccessControl/NewRegister'
+import Login from 'Components/AccessControl/Login'
+import Register from 'Components/AccessControl/Register'
 
 const LandingPage = () => {
   const dispatch = useDispatch()
@@ -65,8 +65,8 @@ const LandingPage = () => {
             }}
           >
             Revita provides tools for language learning, and for supporting endangered languages.
-            Revita stimulates the student to practice in actively producing language,
-            rather than passively absorbing rules.
+            Revita stimulates the student to practice in actively producing language, rather than
+            passively absorbing rules.
           </p>
           <button
             type="button"
@@ -77,31 +77,29 @@ const LandingPage = () => {
           >
             <FormattedMessage id="try-revita" />
           </button>
-          {registering
-            ? (
-              <button
-                type="button"
-                onClick={() => setRegistering(false)}
-                className="landing-page-button"
-                style={{ marginBottom: '1em' }}
-              >
-                <FormattedMessage id="Login" />
-              </button>
-            ) : (
-              <button
-                type="button"
-                onClick={() => setRegistering(true)}
-                className="landing-page-button"
-                style={{ marginBottom: '1em' }}
-                data-cy="register-button"
-              >
-                <FormattedMessage id="Register" />
-              </button>
-            )
-          }
+          {registering ? (
+            <button
+              type="button"
+              onClick={() => setRegistering(false)}
+              className="landing-page-button"
+              style={{ marginBottom: '1em' }}
+            >
+              <FormattedMessage id="Login" />
+            </button>
+          ) : (
+            <button
+              type="button"
+              onClick={() => setRegistering(true)}
+              className="landing-page-button"
+              style={{ marginBottom: '1em' }}
+              data-cy="register-button"
+            >
+              <FormattedMessage id="Register" />
+            </button>
+          )}
         </div>
         <div style={{ width: '40%', maxWidth: '520px', minWidth: '300px' }}>
-          {registering ? <NewRegister /> : <NewLogin />}
+          {registering ? <Register /> : <Login />}
         </div>
       </div>
     </div>

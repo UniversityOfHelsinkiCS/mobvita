@@ -12,7 +12,7 @@ import GroupView from './Groups/index'
 import Concepts from './Concepts'
 import Profile from './Profile/Profile'
 import ResetPassword from './AccessControl/ResetPassword'
-import NewRegister from './AccessControl/NewRegister'
+import Register from './AccessControl/Register'
 import Help from './StaticContent/Help'
 import Flashcards from './Flashcards'
 import LandingPage from './LandingPage'
@@ -32,7 +32,7 @@ export default () => {
             <Switch>
               <Route exact path="/email-confirm/:token" component={EmailConfirm} />
               <Route exact path="/reset-password/:token" component={ResetPassword} />
-              <Route exact path="/register" component={NewRegister} />
+              <Route exact path="/register" component={Register} />
               <Route exact path="/help" component={Help} />
               <ProtectedRoute
                 languageRequired={false}

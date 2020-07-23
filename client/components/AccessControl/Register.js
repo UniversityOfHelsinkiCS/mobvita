@@ -1,23 +1,25 @@
 import React, { useState, useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
+import { useHistory } from 'react-router-dom'
 import { registerUser } from 'Utilities/redux/registerReducer'
-import { Form, Checkbox, Segment } from 'semantic-ui-react'
+import { getSelf } from 'Utilities//redux/userReducer'
+import { Form, Checkbox } from 'semantic-ui-react'
 import TermsAndConditions from 'Components/TermsAndConditions'
-import { useIntl, FormattedMessage } from 'react-intl'
-import { Link, useHistory } from 'react-router-dom'
+import { useIntl } from 'react-intl'
 import { setNotification } from 'Utilities/redux/notificationReducer'
 import { localeCodeToName } from 'Utilities/common'
-import { Button } from 'react-bootstrap'
+import { Button, Spinner } from 'react-bootstrap'
 
 const Register = () => {
+  const intl = useIntl()
+  const history = useHistory()
+
   const [formState, setFormState] = useState({
     email: '',
     username: '',
     password: '',
     passwordAgain: '',
   })
-  const intl = useIntl()
-  const history = useHistory()
   const [accepted, setAccepted] = useState(false)
 
   const toggleAccepted = () => {
@@ -36,8 +38,9 @@ const Register = () => {
   }, [error])
 
   useEffect(() => {
-    if (!pending && accountCreated) {
-      history.push('/login')
+    if (!pending && accountCreated && history.location.pathname.includes('register')) {
+      dispatch(getSelf())
+      history.push('/home')
     }
   }, [pending])
 
@@ -62,7 +65,7 @@ const Register = () => {
     // TODO: Check email and password validity
   }
 
-  const handleFormChange = (e) => {
+  const handleFormChange = e => {
     const { name, value } = e.target
 
     setFormState({
@@ -71,63 +74,59 @@ const Register = () => {
     })
   }
   return (
-    <div className="component-container">
-      <h1>{intl.formatMessage({ id: 'Register' })}</h1>
-      <Segment>
-        <Form onSubmit={handleSubmit}>
-          <Form.Field>
-            <Form.Input
-              label={intl.formatMessage({ id: 'Email' })}
-              name="email"
-              error={error}
-              type="email"
-              value={formState.email}
-              onChange={e => handleFormChange(e)}
-              placeholder={intl.formatMessage({ id: 'Email' })}
-            />
-            <Form.Input
-              label={intl.formatMessage({ id: 'Username' })}
-              name="username"
-              error={error}
-              type="username"
-              value={formState.username}
-              onChange={e => handleFormChange(e)}
-              placeholder={intl.formatMessage({ id: 'Username' })}
-            />
-            <Form.Input
-              label={intl.formatMessage({ id: 'Password' })}
-              name="password"
-              error={error}
-              type="password"
-              value={formState.password}
-              onChange={e => handleFormChange(e)}
-              placeholder=""
-            />
-            <Form.Input
-              label={intl.formatMessage({ id: 'repeat-password' })}
-              name="passwordAgain"
-              error={error}
-              type="password"
-              value={formState.passwordAgain}
-              onChange={e => handleFormChange(e)}
-              placeholder=""
-            />
-          </Form.Field>
-          <div style={{ display: 'flex', alignItems: 'center' }}>
-            <Checkbox data-cy="accept-terms" checked={accepted} onChange={() => toggleAccepted()} />
-            <TermsAndConditions trigger={<Button variant="link"> Terms and Conditions, Privacy Policy </Button>} />
-          </div>
-          <div>
-            <Button
-              type="submit"
-              variant="primary"
-            >
-              {intl.formatMessage({ id: 'Register' })}
-            </Button>
-            <Link to="/login"><Button variant="secondary"><FormattedMessage id="Login" /></Button></Link>
-          </div>
-        </Form>
-      </Segment>
+    <div className="login-form">
+      <h3 className="padding-bottom-1">{intl.formatMessage({ id: 'Register' })}</h3>
+      <Form onSubmit={handleSubmit}>
+        <Form.Field>
+          <Form.Input
+            name="email"
+            error={error}
+            type="email"
+            value={formState.email}
+            onChange={e => handleFormChange(e)}
+            placeholder={intl.formatMessage({ id: 'Email' })}
+          />
+          <Form.Input
+            name="username"
+            error={error}
+            type="username"
+            value={formState.username}
+            onChange={e => handleFormChange(e)}
+            placeholder={intl.formatMessage({ id: 'Username' })}
+          />
+          <Form.Input
+            name="password"
+            error={error}
+            type="password"
+            value={formState.password}
+            onChange={e => handleFormChange(e)}
+            placeholder={intl.formatMessage({ id: 'Password' })}
+          />
+          <Form.Input
+            name="passwordAgain"
+            error={error}
+            type="password"
+            value={formState.passwordAgain}
+            onChange={e => handleFormChange(e)}
+            placeholder={intl.formatMessage({ id: 'repeat-password' })}
+          />
+        </Form.Field>
+        <div style={{ display: 'flex', alignItems: 'center' }}>
+          <Checkbox data-cy="accept-terms" checked={accepted} onChange={() => toggleAccepted()} />
+          <TermsAndConditions
+            trigger={<Button variant="link"> Terms and Conditions, Privacy Policy </Button>}
+          />
+        </div>
+        <div>
+          <button type="submit" className="landing-page-button" disabled={pending}>
+            {pending ? (
+              <Spinner animation="border" variant="info" size="sm" />
+            ) : (
+              <span>{intl.formatMessage({ id: 'Register' })}</span>
+            )}
+          </button>
+        </div>
+      </Form>
     </div>
   )
 }
