@@ -16,7 +16,6 @@ for (trPair of process.argv.slice(3)) {
 }
 
 
-
 const langs = ['fi', 'en', 'it', 'ru', 'sv']
 for (lang of langs) {
   const fileName = `./client/util/translations/revita/${lang}/LC_MESSAGES/messages.json`
