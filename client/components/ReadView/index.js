@@ -86,24 +86,31 @@ const ReadView = ({ match }) => {
   return (
     <div>
       <div className="center auto">
-        <div className="max-width padding-top-2">
-          <Header style={getTextStyle(learningLanguage, 'title')}>
-            <span className="padding-right-1">{story.title}</span>
-            <Link to={`/stories/${id}/practice`}>
-              <Button variant="primary" style={{ float: 'right', marginTop: '0.5em' }}>
-                <FormattedMessage id="practice-now" />
-              </Button>
-            </Link>
-          </Header>
-          {story.url ? (
-            <a href={story.url}>
-              <FormattedMessage id="Source" />
-            </a>
-          ) : (
-            <div />
-          )}
-          <Divider />
+        <div className="max-width">
           <Segment data-cy="readmode-text" style={getTextStyle(learningLanguage)}>
+            <Header style={getTextStyle(learningLanguage, 'title')}>
+              <span className="padding-right-1">{story.title}</span>
+            </Header>
+            <div
+              style={{
+                display: 'flex',
+                flexDirection: 'row-reverse',
+                justifyContent: 'space-between',
+                alignItems: 'flex-end',
+              }}
+            >
+              <Link to={`/stories/${id}/practice`}>
+                <Button variant="primary">
+                  <FormattedMessage id="practice-now" />
+                </Button>
+              </Link>
+              {story.url && (
+                <a href={story.url}>
+                  <FormattedMessage id="Source" />
+                </a>
+              )}
+            </div>
+            <Divider />
             {story.paragraph.map(paragraph => (
               <p key={paragraph[0].ID}>{paragraph.map(word => wordVoice(word))}</p>
             ))}
