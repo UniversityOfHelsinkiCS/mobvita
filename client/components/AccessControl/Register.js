@@ -26,7 +26,10 @@ const Register = () => {
     setAccepted(!accepted)
   }
 
-  const { error, errorMessage, pending, accountCreated } = useSelector(({ register }) => register)
+  const { error, errorMessage, pending: registerPending, accountCreated } = useSelector(
+    ({ register }) => register
+  )
+  const userEmail = useSelector(({ user }) => user.data?.user?.email)
   const locale = useSelector(({ locale }) => locale)
 
   const dispatch = useDispatch()
@@ -38,11 +41,15 @@ const Register = () => {
   }, [error])
 
   useEffect(() => {
-    if (!pending && accountCreated && history.location.pathname.includes('register')) {
+    if (!registerPending && accountCreated && history.location.pathname.includes('register')) {
       dispatch(getSelf())
-      history.push('/home')
     }
-  }, [pending])
+  }, [registerPending])
+
+  useEffect(() => {
+    if (history.location.pathname.includes('register') && userEmail !== 'anonymous_email')
+      history.push('/home')
+  }, [userEmail])
 
   const handleSubmit = () => {
     const { email, username, password, passwordAgain } = formState
@@ -118,8 +125,8 @@ const Register = () => {
           />
         </div>
         <div>
-          <button type="submit" className="landing-page-button" disabled={pending}>
-            {pending ? (
+          <button type="submit" className="landing-page-button" disabled={registerPending}>
+            {registerPending ? (
               <Spinner animation="border" variant="info" size="sm" />
             ) : (
               <span>{intl.formatMessage({ id: 'Register' })}</span>
