@@ -1,5 +1,6 @@
 import React from 'react'
-import { Modal, Button } from 'semantic-ui-react'
+import { Modal } from 'semantic-ui-react'
+import { Button } from 'react-bootstrap'
 import { FormattedMessage } from 'react-intl'
 import { Link } from 'react-router-dom'
 
@@ -10,17 +11,19 @@ const EndModal = ({ open, setOpen, restart }) => {
   }
 
   return (
-    <Modal open={open}>
+    <Modal open={open} size="tiny">
       <Modal.Header>
-        <FormattedMessage id="congratulations-you-have-solved-this-crossword" />
+        <span>
+          <FormattedMessage id="congratulations-you-have-solved-this-crossword" />
+        </span>
       </Modal.Header>
       <Modal.Content>
-        <Button onClick={handleRestart}>
-          <FormattedMessage id="new-crossword" />
+        <Button variant="primary" onClick={handleRestart} style={{ marginRight: '0.5em' }}>
+          <FormattedMessage id="New Crossword" />
         </Button>
         <Link to="/library">
-          <Button>
-            <FormattedMessage id="back-to-library" />
+          <Button variant="secondary">
+            <FormattedMessage id="Back to library" />
           </Button>
         </Link>
       </Modal.Content>
