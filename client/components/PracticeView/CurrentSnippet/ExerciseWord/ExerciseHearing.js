@@ -106,7 +106,7 @@ const ExerciseHearing = ({ word, handleChange }) => {
         onClick={() => speakerClickHandler(word.surface)}
         style={{ marginLeft: '-25px' }}
       />
-      {word.negation && <sup style={{ marginLeft: '3px' }}>(neg)</sup>}
+      {word.negation && <sup style={{ marginLeft: '3px', color: '#0000FF' }}>(neg)</sup>}
     </span>
   )
 }
