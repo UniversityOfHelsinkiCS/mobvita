@@ -4,9 +4,8 @@ import { createRealToken } from 'Utilities/redux/userReducer'
 import { Form } from 'semantic-ui-react'
 import { useHistory, useLocation } from 'react-router'
 import { FormattedMessage, useIntl } from 'react-intl'
-import Button from 'react-bootstrap/Button'
+import { Button, Spinner } from 'react-bootstrap'
 import ForgotPassword from './ForgotPassword'
-
 
 const NewLogin = () => {
   const [email, setEmail] = useState('')
@@ -14,7 +13,7 @@ const NewLogin = () => {
   const [forgotPasswordOpen, setForgotPasswordOpen] = useState(false)
   const loginError = useSelector(({ user }) => user.error)
   const errorMessage = useSelector(({ user }) => user.errorMessage)
-  const user = useSelector(({ user }) => user.data)
+  const { user, pending } = useSelector(({ user }) => user)
   const location = useLocation()
   const history = useHistory()
   const intl = useIntl()
@@ -57,12 +56,12 @@ const NewLogin = () => {
           />
         </Form.Field>
         <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-start' }}>
-          <button
-            data-cy="login"
-            type="submit"
-            className="landing-page-button"
-          >
-            {intl.formatMessage({ id: 'Login' })}
+          <button data-cy="login" type="submit" className="landing-page-button" disabled={pending}>
+            {pending ? (
+              <Spinner animation="border" variant="info" size="sm" />
+            ) : (
+              <span>{intl.formatMessage({ id: 'Login' })}</span>
+            )}
           </button>
           {loginError && <div style={{ color: 'red' }}>{errorMessage}</div>}
         </div>
