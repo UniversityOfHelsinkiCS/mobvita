@@ -1,13 +1,12 @@
 import React from 'react'
 import { Tab } from 'semantic-ui-react'
-import StoryList from 'Components/StoryListView/StoryList'
+import StoryList from 'Components/LibraryView/StoryList'
 import HomeView from 'Components/HomeView'
 import Banners from 'Components/Banners'
 import { useIntl } from 'react-intl'
 import { Link } from 'react-router-dom'
 import TestIndex from 'Components/TestView/index'
 import { useSelector } from 'react-redux'
-
 
 const Tabs = ({ location }) => {
   const intl = useIntl()
@@ -48,7 +47,6 @@ const Tabs = ({ location }) => {
     })
   }
 
-
   let index
   switch (location.pathname) {
     case '/tests':
@@ -64,10 +62,7 @@ const Tabs = ({ location }) => {
   return (
     <div>
       <Banners />
-      <Tab
-        panes={panes}
-        activeIndex={index}
-      />
+      <Tab panes={panes} activeIndex={index} />
     </div>
   )
 }

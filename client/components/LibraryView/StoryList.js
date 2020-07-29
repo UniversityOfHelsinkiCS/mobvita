@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { Placeholder, Card, Search, Select, Icon, Dropdown } from 'semantic-ui-react'
 
-import StoryListItem from 'Components/StoryListView/StoryListItem'
+import StoryListItem from 'Components/LibraryView/StoryListItem'
 import { useIntl } from 'react-intl'
 import CheckboxGroup from 'Components/CheckboxGroup'
 import { capitalize, learningLanguageSelector } from 'Utilities/common'
