@@ -7,7 +7,6 @@ import { useSelector } from 'react-redux'
 import ChangePassword from './ChangePassword'
 import Settings from './Settings'
 
-
 export default function Profile({ location }) {
   const intl = useIntl()
   const { username, email } = useSelector(({ user }) => user.data.user)
@@ -45,10 +44,10 @@ export default function Profile({ location }) {
   let index
   switch (location.pathname) {
     case '/profile/settings':
-      index = 1
-      break
-    case '/profile/progress':
       index = 2
+      break
+    case '/profile/account':
+      index = 1
       break
     default:
       index = 0
@@ -56,12 +55,13 @@ export default function Profile({ location }) {
 
   return (
     <div className="component-container">
-      <Header size="medium">{username} <span style={{ marginLeft: '0.5em', color: '#777', fontStyle: 'italic', fontWeight: 500 }}>{email}</span></Header>
-      <Tab
-        panes={panes}
-        activeIndex={index}
-      />
+      <Header size="medium">
+        {username}{' '}
+        <span style={{ marginLeft: '0.5em', color: '#777', fontStyle: 'italic', fontWeight: 500 }}>
+          {email}
+        </span>
+      </Header>
+      <Tab panes={panes} activeIndex={index} />
     </div>
-
   )
 }
