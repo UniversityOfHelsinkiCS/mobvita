@@ -163,15 +163,7 @@ const StoryList = () => {
         onClick={handleLibraryChange}
         reverse
       />
-      <div className="space-between reverse-for-900" style={{ alignItems: 'center' }}>
-        <Icon
-          data-cy="restart-story"
-          style={{ cursor: pending ? 'auto' : 'pointer', marginLeft: '0.5em' }}
-          name="redo"
-          color={pending ? 'grey' : 'blue'}
-          size="large"
-          onClick={handleRefresh}
-        />
+      <div style={{ alignItems: 'center', display: 'flex', justifyContent: 'flex-end' }}>
         <Select
           value={user.last_selected_group}
           options={groupDropdownOptions}

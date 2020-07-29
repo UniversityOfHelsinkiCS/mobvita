@@ -1321,12 +1321,6 @@ body {
   align-items: center;
 }
 
-.reverse-for-900 {
-  @media (min-width: 900px) {
-    flex-direction: row-reverse;
-  }
-}
-
 .header-2 {
   font-size: 22px;
 }
