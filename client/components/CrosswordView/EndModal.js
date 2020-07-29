@@ -19,7 +19,7 @@ const EndModal = ({ open, setOpen, restart }) => {
       </Modal.Header>
       <Modal.Content>
         <Button variant="primary" onClick={handleRestart} style={{ marginRight: '0.5em' }}>
-          <FormattedMessage id="New Crossword" />
+          <FormattedMessage id="New crossword" />
         </Button>
         <Link to="/library">
           <Button variant="secondary">
