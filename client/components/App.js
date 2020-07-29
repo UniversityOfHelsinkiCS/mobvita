@@ -7,11 +7,10 @@ import { useDispatch } from 'react-redux'
 import { setNotification } from 'Utilities/redux/notificationReducer'
 import { Offline } from 'react-detect-offline'
 import Toaster from './Toaster'
-import Bar from './Bar'
+import Sidebar from './Sidebar'
 import StoryFetcher from './StoryFetcher'
 import 'bootstrap/dist/css/bootstrap.min.css'
 import NavBar from './NavBar'
-
 
 const App = () => {
   const history = createBrowserHistory({ basename: basePath })
@@ -19,21 +18,22 @@ const App = () => {
   const [revitaStatus, setRevitaStatus] = useState('OK')
 
   useEffect(() => {
-    checkRevitaStatus()
-      .then(res => setRevitaStatus(res.data))
+    checkRevitaStatus().then(res => setRevitaStatus(res.data))
   }, [])
 
   if (window.gtag) {
-    history.listen((location, action) => { // Sends notifications to google analytics whenever location changes
-      gtag('config', 'UA-157268430-1', { // eslint-disable-line no-undef
+    history.listen((location, action) => {
+      // Sends notifications to google analytics whenever location changes
+      gtag('config', 'UA-157268430-1', {
+        // eslint-disable-line no-undef
         page_title: location.pathname,
         page_path: location.pathname,
       })
     })
   }
 
-
-  history.listen((location, action) => { // Scroll to top when page changes.
+  history.listen((location, action) => {
+    // Scroll to top when page changes.
     window.scrollTo(0, 0)
   })
 
@@ -55,7 +55,7 @@ const App = () => {
         </Offline>
         <NavBar />
         <div style={{ display: 'flex' }}>
-          <Route component={Bar} />
+          <Route component={Sidebar} />
           <Route component={StoryFetcher} />
           <Router />
         </div>
@@ -63,6 +63,5 @@ const App = () => {
     </>
   )
 }
-
 
 export default App

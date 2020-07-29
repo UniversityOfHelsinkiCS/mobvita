@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useCallback, useRef } from 'react'
 import { Link } from 'react-router-dom'
-import { Sidebar, Menu, Icon, Header, Dropdown } from 'semantic-ui-react'
+import { Sidebar as SemanticSidebar, Menu, Icon, Header, Dropdown } from 'semantic-ui-react'
 import { useDispatch, useSelector } from 'react-redux'
 import { Swipeable } from 'react-swipeable'
 import { FormattedMessage } from 'react-intl'
@@ -15,7 +15,7 @@ import AboutUs from './StaticContent/AboutUs'
 import ContactUs from './StaticContent/ContactUs'
 import SettingsModal from './SettingsModal'
 
-export default function Bar({ history }) {
+export default function Sidebar({ history }) {
   const dispatch = useDispatch()
   const sidebar = useRef()
 
@@ -85,7 +85,7 @@ export default function Bar({ history }) {
         onSwipedLeft={() => dispatch(sidebarSetOpen(false))}
         trackMouse
       >
-        <Sidebar as={Menu} animation="push" icon="labeled" vertical visible={open}>
+        <SemanticSidebar as={Menu} animation="push" icon="labeled" vertical visible={open}>
           <div className="sidebar-content" ref={sidebar}>
             <div style={{ padding: '0.5em 1em 0em 0.5em', display: 'flex' }}>
               <Icon
@@ -294,7 +294,7 @@ export default function Bar({ history }) {
               <div>{`${__COMMIT__}`}</div>
             </div>
           </div>
-        </Sidebar>
+        </SemanticSidebar>
       </Swipeable>
     </>
   )
