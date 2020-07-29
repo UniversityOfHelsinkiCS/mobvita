@@ -26,7 +26,7 @@ export default function Bar({ history }) {
 
   const [localeDropdownOptions, setLocaleDropdownOptions] = useState([])
 
-  const handleLocaleChange = (newLocale) => {
+  const handleLocaleChange = newLocale => {
     dispatch(setLocale(newLocale)) // Sets locale in root reducer...
     if (user) dispatch(updateLocale(newLocale)) // Updates user-object
   }
@@ -40,7 +40,7 @@ export default function Bar({ history }) {
     setLocaleDropdownOptions(temp)
   }, [])
 
-  const handleOutSideClick = useCallback((event) => {
+  const handleOutSideClick = useCallback(event => {
     if (sidebar.current && !sidebar.current.contains(event.target)) dispatch(sidebarSetOpen(false))
   }, [])
 
@@ -54,14 +54,14 @@ export default function Bar({ history }) {
     history.push('/')
   }
 
-  const menuClickWrapper = (func) => {
+  const menuClickWrapper = func => {
     if (func) func()
 
     dispatch(sidebarSetOpen(false))
   }
 
   const getLearningLanguageFlag = () => {
-    const lastUsedLanguage = (user.user.last_used_language)
+    const lastUsedLanguage = user.user.last_used_language
 
     if (lastUsedLanguage) {
       return images[`flag${capitalize(lastUsedLanguage.split('-').join(''))}`]
@@ -70,7 +70,8 @@ export default function Bar({ history }) {
   }
 
   let actualLocale = locale
-  if (user && user.user.interfaceLanguage) { // If user has logged in, use locale from user object, else use value from localeReducer
+  if (user && user.user.interfaceLanguage) {
+    // If user has logged in, use locale from user object, else use value from localeReducer
     actualLocale = localeNameToCode(user.user.interfaceLanguage)
   }
 
@@ -84,14 +85,7 @@ export default function Bar({ history }) {
         onSwipedLeft={() => dispatch(sidebarSetOpen(false))}
         trackMouse
       >
-        <Sidebar
-          as={Menu}
-          animation="push"
-          icon="labeled"
-          vertical
-          visible={open}
-        >
-
+        <Sidebar as={Menu} animation="push" icon="labeled" vertical visible={open}>
           <div className="sidebar-content" ref={sidebar}>
             <div style={{ padding: '0.5em 1em 0em 0.5em', display: 'flex' }}>
               <Icon
@@ -102,7 +96,13 @@ export default function Bar({ history }) {
                 style={{ position: 'fixed', paddingTop: 0 }}
               />
               <div
-                style={{ padding: '2.5em 1.5em 1em 1.5em', display: 'flex', flexDirection: 'column', marginRight: 'auto', marginLeft: 'auto' }}
+                style={{
+                  padding: '2.5em 1.5em 1em 1.5em',
+                  display: 'flex',
+                  flexDirection: 'column',
+                  marginRight: 'auto',
+                  marginLeft: 'auto',
+                }}
               >
                 <Link to="/home" onClick={() => menuClickWrapper()}>
                   <img
@@ -112,75 +112,118 @@ export default function Bar({ history }) {
                   />
                 </Link>
               </div>
-              {user
-                && (
-                  <button
-                    type="button"
-                    data-cy="logout"
-                    onClick={() => menuClickWrapper(signOut)}
-                    className="logout-button"
-                  >
-                    <span className="padding-right-1">
-                      <FormattedMessage id={user.user.email === 'anonymous_email' ? 'Login' : 'sign-out'} />
-                    </span>
-                    <Icon name="sign out" />
-                  </button>
-                )}
+              {user && (
+                <button
+                  type="button"
+                  data-cy="logout"
+                  onClick={() => menuClickWrapper(signOut)}
+                  className="logout-button"
+                >
+                  <span className="padding-right-1">
+                    <FormattedMessage
+                      id={user.user.email === 'anonymous_email' ? 'Login' : 'sign-out'}
+                    />
+                  </span>
+                  <Icon name="sign out" />
+                </button>
+              )}
             </div>
-            {!smallWindow
-              && <a className="padding-bottom-1" href="https://revita-old.cs.helsinki.fi/"><i><FormattedMessage id="take-me-to-old-revita" /> ⇒</i></a>
-            }
+            {!smallWindow && (
+              <a className="padding-bottom-1" href="https://revita-old.cs.helsinki.fi/">
+                <i>
+                  <FormattedMessage id="take-me-to-old-revita" /> ⇒
+                </i>
+              </a>
+            )}
 
             {user && (
               <>
                 {user.user.email === 'anonymous_email' && (
                   <Menu.Item>
                     <div style={{ padding: '1em 0em' }}>
-                      <Link onClick={() => menuClickWrapper()} to="/register"><Button block variant="primary"><FormattedMessage id="register-to-save-your-progress" /></Button></Link>
+                      <Link onClick={() => menuClickWrapper()} to="/register">
+                        <Button block variant="primary">
+                          <FormattedMessage id="register-to-save-your-progress" />
+                        </Button>
+                      </Link>
                     </div>
                   </Menu.Item>
                 )}
 
                 <Menu.Item>
-
-
                   <Link to="/learningLanguage" onClick={() => menuClickWrapper()}>
                     <Button variant="primary" block>
-                      <div style={{ display: 'flex', justifyContent: 'space-around', alignItems: 'center' }}>
-                        <span><FormattedMessage id="Learning-language" /></span>
-                        {user && user.user.last_used_language && <img style={{ height: '1.8em', position: 'absolute', left: '2em', border: '1px solid black' }} src={getLearningLanguageFlag()} alt="learningLanguageFlag" />}
+                      <div
+                        style={{
+                          display: 'flex',
+                          justifyContent: 'space-around',
+                          alignItems: 'center',
+                        }}
+                      >
+                        <span>
+                          <FormattedMessage id="Learning-language" />
+                        </span>
+                        {user && user.user.last_used_language && (
+                          <img
+                            style={{
+                              height: '1.8em',
+                              position: 'absolute',
+                              left: '2em',
+                              border: '1px solid black',
+                            }}
+                            src={getLearningLanguageFlag()}
+                            alt="learningLanguageFlag"
+                          />
+                        )}
                       </div>
                     </Button>
                   </Link>
 
                   <>
                     <SettingsModal
-                      trigger={(
-                        <Button onClick={() => menuClickWrapper()} variant="secondary" block style={{ marginTop: '0.5em' }}>
+                      trigger={
+                        <Button
+                          onClick={() => menuClickWrapper()}
+                          variant="secondary"
+                          block
+                          style={{ marginTop: '0.5em' }}
+                        >
                           <FormattedMessage id="learning-settings" />
                         </Button>
-                      )}
+                      }
                     />
                     <Link to="/profile/progress">
-                      <Button data-cy="settings-link" variant="secondary" style={{ marginTop: '0.5em' }} onClick={() => menuClickWrapper()} block>
+                      <Button
+                        data-cy="settings-link"
+                        variant="secondary"
+                        style={{ marginTop: '0.5em' }}
+                        onClick={() => menuClickWrapper()}
+                        block
+                      >
                         <FormattedMessage id="Profile" />
                       </Button>
                     </Link>
                   </>
 
-
                   <Link to="/groups">
-                    <Button data-cy="groups-link" variant="secondary" style={{ marginTop: '0.5em' }} onClick={() => menuClickWrapper()} block>
+                    <Button
+                      data-cy="groups-link"
+                      variant="secondary"
+                      style={{ marginTop: '0.5em' }}
+                      onClick={() => menuClickWrapper()}
+                      block
+                    >
                       <FormattedMessage id="Groups" />
                     </Button>
                   </Link>
-
                 </Menu.Item>
               </>
             )}
 
             <Menu.Item>
-              <div style={{ textAlign: 'left', paddingBottom: '3px' }}><FormattedMessage id="interface-language" /></div>
+              <div style={{ textAlign: 'left', paddingBottom: '3px' }}>
+                <FormattedMessage id="interface-language" />
+              </div>
               <Dropdown
                 fluid
                 placeholder="Choose interface language..."
@@ -192,26 +235,45 @@ export default function Bar({ history }) {
                 style={{ color: '#777' }}
               />
             </Menu.Item>
-            {user && !smallWindow
-              && (
-                <div style={{ fontSize: '20px', color: '#777' }}>{`${user.user.username}`}</div>
-              )
-            }
-
+            {user && !smallWindow && (
+              <div style={{ fontSize: '20px', color: '#777' }}>{`${user.user.username}`}</div>
+            )}
 
             <div style={{ marginTop: 'auto', color: 'slateGrey' }}>
-              <Menu.Item style={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-between' }}>
+              <Menu.Item
+                style={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-between' }}
+              >
                 <AboutUs
-                  trigger={(
-                    <Button onClick={() => menuClickWrapper()} data-cy="about-button" variant="secondary" style={{ flexBasis: '50%', marginRight: '0.5em' }}>
+                  trigger={
+                    <Button
+                      onClick={() => menuClickWrapper()}
+                      data-cy="about-button"
+                      variant="secondary"
+                      style={{ flexBasis: '50%', marginRight: '0.5em' }}
+                    >
                       <FormattedMessage id="About" />
                     </Button>
-                  )}
+                  }
                 />
-                <ContactUs trigger={<Button variant="secondary" onClick={() => menuClickWrapper()} style={{ flexBasis: '50%', marginRight: '0.5em' }}><FormattedMessage id="Contact" /></Button>} />
+                <ContactUs
+                  trigger={
+                    <Button
+                      variant="secondary"
+                      onClick={() => menuClickWrapper()}
+                      style={{ flexBasis: '50%', marginRight: '0.5em' }}
+                    >
+                      <FormattedMessage id="Contact" />
+                    </Button>
+                  }
+                />
                 <Button
                   variant="secondary"
-                  style={{ flexBasis: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center' }}
+                  style={{
+                    flexBasis: '50%',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                  }}
                   onClick={() => menuClickWrapper()}
                   as={Link}
                   to="/help"
@@ -220,12 +282,16 @@ export default function Bar({ history }) {
                 </Button>
               </Menu.Item>
               <TermsAndConditions
-                trigger={<Button data-cy="tc-button" onClick={() => menuClickWrapper()} variant="link"> Terms and Conditions, Privacy Policy </Button>}
+                trigger={
+                  <Button data-cy="tc-button" onClick={() => menuClickWrapper()} variant="link">
+                    {' '}
+                    Terms and Conditions, Privacy Policy{' '}
+                  </Button>
+                }
               />
               {/* eslint-disable no-undef */}
               <div>{`Built: ${__VERSION__}`}</div>
               <div>{`${__COMMIT__}`}</div>
-
             </div>
           </div>
         </Sidebar>
