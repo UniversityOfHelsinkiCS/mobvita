@@ -55,7 +55,10 @@ const StoryForm = ({ setLibraries }) => {
     >
       <Accordion>
         <Accordion.Title active={formOpen} onClick={handleAccordionClick}>
-          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'baseline' }}>
+          <div
+            data-cy="expand-story-form"
+            style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'baseline' }}
+          >
             <h5 style={{ color: 'rgba(0,0,0,.4)', fontSize: '16px' }}>
               <Icon name={formOpen ? 'caret down' : 'caret right'} />
               <FormattedMessage id="add-your-stories" />
