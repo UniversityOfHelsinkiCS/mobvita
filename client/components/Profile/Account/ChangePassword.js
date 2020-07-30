@@ -2,14 +2,12 @@ import React, { useState } from 'react'
 import { Form } from 'semantic-ui-react'
 import { Button } from 'react-bootstrap'
 import { useDispatch } from 'react-redux'
-import { useIntl, FormattedMessage } from 'react-intl'
+import { useIntl } from 'react-intl'
 import { changePassword } from 'Utilities/redux/userReducer'
-
 
 export default function ChangePassword() {
   const intl = useIntl()
   const dispatch = useDispatch()
-
 
   const [settings, setSettings] = useState({
     newPassword: '',
@@ -20,7 +18,7 @@ export default function ChangePassword() {
 
   const saveSettings = () => {
     const { newPassword, newPasswordAgain, currentPassword } = settings
-    if (newPassword && currentPassword && (newPassword === newPasswordAgain)) {
+    if (newPassword && currentPassword && newPassword === newPasswordAgain) {
       dispatch(changePassword(currentPassword, newPassword))
       setSettings({
         newPassword: '',
@@ -36,7 +34,7 @@ export default function ChangePassword() {
     }
   }
 
-  const handleSettingChange = (e) => {
+  const handleSettingChange = e => {
     const { name, value } = e.target
 
     setSettings({
@@ -48,9 +46,11 @@ export default function ChangePassword() {
   const { newPassword, newPasswordAgain, currentPassword, passwordError } = settings
 
   return (
-    <div className="component-container padding-sides-1">
+    <div>
       <div>
-        <h2 className="header-2 padding-bottom-1">{intl.formatMessage({ id: 'reset-password' })}</h2>
+        <h2 className="header-2 padding-bottom-1">
+          {intl.formatMessage({ id: 'reset-password' })}
+        </h2>
 
         <Form onSubmit={saveSettings}>
           <Form.Field>
@@ -85,12 +85,7 @@ export default function ChangePassword() {
             />
           </Form.Field>
           <div style={{ display: 'flex', flexDirection: 'column' }}>
-
-            <Button
-              variant="primary"
-              data-cy="reset-password"
-              type="submit"
-            >
+            <Button variant="primary" data-cy="reset-password" type="submit">
               {intl.formatMessage({ id: 'Save' })}
             </Button>
           </div>

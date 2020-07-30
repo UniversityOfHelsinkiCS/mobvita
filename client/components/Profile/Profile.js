@@ -1,15 +1,13 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
-import { Tab, Header } from 'semantic-ui-react'
+import { Tab } from 'semantic-ui-react'
 import { useIntl } from 'react-intl'
 import Progress from 'Components/Profile/Progress'
-import { useSelector } from 'react-redux'
-import ChangePassword from './ChangePassword'
+import Account from './Account'
 import Settings from './Settings'
 
 export default function Profile({ location }) {
   const intl = useIntl()
-  const { username, email } = useSelector(({ user }) => user.data.user)
 
   const panes = [
     {
@@ -28,7 +26,7 @@ export default function Profile({ location }) {
         to: '/profile/account',
         key: 'account',
       },
-      render: () => <ChangePassword />,
+      render: () => <Account />,
     },
     {
       menuItem: {
@@ -55,12 +53,6 @@ export default function Profile({ location }) {
 
   return (
     <div className="component-container">
-      <Header size="medium">
-        {username}{' '}
-        <span style={{ marginLeft: '0.5em', color: '#777', fontStyle: 'italic', fontWeight: 500 }}>
-          {email}
-        </span>
-      </Header>
       <Tab panes={panes} activeIndex={index} />
     </div>
   )

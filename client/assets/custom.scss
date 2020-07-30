@@ -443,6 +443,11 @@ body {
   font-weight: 600;
 }
 
+.bootstrap-label {
+  font-weight: 700;
+  font-size: .92857143em;
+}
+
 .additional-info {
   font-style: italic;
   color: gray;
@@ -936,6 +941,13 @@ body {
   &:hover {
     background-color: rgb(255, 255, 204);
   }
+}
+
+.account-info-item {
+  color: #777;
+  font-style: italic;
+  font-weight: 500;
+  font-size: 1.3rem;
 }
 
 //Custom filepicker
