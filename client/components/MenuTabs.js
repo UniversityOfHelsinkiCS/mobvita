@@ -3,20 +3,25 @@ import { Tab } from 'semantic-ui-react'
 import StoryList from 'Components/LibraryView/StoryList'
 import HomeView from 'Components/HomeView'
 import Banners from 'Components/Banners'
-import { useIntl } from 'react-intl'
+import { FormattedMessage } from 'react-intl'
 import { Link } from 'react-router-dom'
 import TestIndex from 'Components/TestView/index'
 import { useSelector } from 'react-redux'
 
+const TabContent = ({ translationId }) => (
+  <span style={{ fontSize: '16px' }}>
+    <FormattedMessage id={translationId} />
+  </span>
+)
+
 const Tabs = ({ location }) => {
-  const intl = useIntl()
   const { hasTests } = useSelector(({ metadata }) => metadata)
 
   const panes = [
     {
       menuItem: {
         as: Link,
-        content: intl.formatMessage({ id: 'Home' }),
+        content: <TabContent translationId="Home" />,
         to: '/home',
         key: 'home',
       },
@@ -25,7 +30,7 @@ const Tabs = ({ location }) => {
     {
       menuItem: {
         as: Link,
-        content: intl.formatMessage({ id: 'Library' }),
+        content: <TabContent translationId="Library" />,
         to: '/library',
         key: 'library',
         'data-cy': 'library-tab',
@@ -38,7 +43,7 @@ const Tabs = ({ location }) => {
     panes.push({
       menuItem: {
         as: Link,
-        content: intl.formatMessage({ id: 'Tests' }),
+        content: <TabContent translationId="Tests" />,
         to: '/tests',
         key: 'tests',
         'data-cy': 'test-tab',
