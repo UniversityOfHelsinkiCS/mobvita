@@ -12,7 +12,7 @@ export default function RecommendedSites() {
     return (
       <div className="suggestedSources-row" key={url}>
         <Button variant="link" href={url} target="_blank">
-          {name}
+          {name || url}
         </Button>
         <DifficultyStars difficulty={difficulty} />
       </div>

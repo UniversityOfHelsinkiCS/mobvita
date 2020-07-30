@@ -47,6 +47,7 @@ export default (state = initialState, action) => {
     case 'POST_NEW_STORY_ATTEMPT':
       return {
         ...state,
+        url: action.requestSettings.data.url,
         pending: true,
         error: false,
       }
@@ -71,7 +72,10 @@ export default (state = initialState, action) => {
         custom: action.custom,
       }
     case 'CLEAR_UPLOADPROGRESS':
-      return initialState
+      return {
+        ...state,
+        ...initialState,
+      }
     default:
       return state
   }
