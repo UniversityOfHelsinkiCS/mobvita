@@ -1,10 +1,10 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useMemo } from 'react'
 import { useSelector } from 'react-redux'
 import { Table } from 'semantic-ui-react'
 import moment from 'moment'
 import { hiddenFeatures } from 'Utilities/common'
+import useWindowDimensions from 'Utilities/windowDimensions'
 import Concept from './Concept'
-
 
 const History = ({ history, dateFormat }) => {
   const [colors, setColors] = useState({
@@ -13,15 +13,29 @@ const History = ({ history, dateFormat }) => {
     noData: '255, 255, 255',
   })
 
+  const [pageSize, setPageSize] = useState(2)
+
   const [colorTest, setColorTest] = useState(0.5)
   const [fillFromHistory, setFillFromHistory] = useState(true)
 
   const [page, setPage] = useState(0)
   const { concepts } = useSelector(({ metadata }) => metadata)
 
+  const windowWidth = useWindowDimensions().width
+
   useEffect(() => setPage(0), [history])
 
-  const conceptIdToConceptName = (id) => {
+  useEffect(() => {
+    if (windowWidth > 1040) setPageSize(7)
+    else if (windowWidth > 950) setPageSize(6)
+    else if (windowWidth > 800) setPageSize(5)
+    else if (windowWidth > 675) setPageSize(4)
+    else if (windowWidth > 550) setPageSize(3)
+    else if (windowWidth > 425) setPageSize(2)
+    else setPageSize(1)
+  }, [windowWidth])
+
+  const conceptIdToConceptName = id => {
     const concept = concepts.find(c => c.concept_id === id)
     return concept ? concept.name : id
   }
@@ -29,7 +43,7 @@ const History = ({ history, dateFormat }) => {
   const fromPreviousScored = (conceptId, date) => {
     const empty = { correct: 0, total: 0 }
     if (!fillFromHistory) return empty
-    const found = history.find((data) => {
+    const found = history.find(data => {
       const previousDate = new Date(data.date)
       if (new Date(date) < previousDate) return false
       const concept = data.concept_statistics[conceptId]
@@ -39,7 +53,7 @@ const History = ({ history, dateFormat }) => {
     return found ? found.concept_statistics[conceptId] : empty
   }
 
-  const colorFromScore = (score) => {
+  const colorFromScore = score => {
     const best = colors.best.split(',').map(Number)
     const worst = colors.worst.split(',').map(Number)
 
@@ -50,7 +64,7 @@ const History = ({ history, dateFormat }) => {
     return `rgb(${red},${green},${blue})`
   }
 
-  const calculateColor = (conceptStatistic) => {
+  const calculateColor = conceptStatistic => {
     const { noData } = colors
     const { correct, total } = conceptStatistic
     if (total === 0) return `rgb(${noData})`
@@ -60,18 +74,18 @@ const History = ({ history, dateFormat }) => {
   }
 
   const calculatePage = () => {
-    const size = 7
-    return history.slice(page * size, page * size + size)
+    return history.slice(page * pageSize, page * pageSize + pageSize)
   }
 
+  const maxPage = useMemo(() => {
+    const extraPage = history.length % pageSize === 0 ? 0 : 1
+    return Math.trunc(history.length / pageSize) + extraPage
+  }, [history, pageSize])
 
-  const switchPage = (change) => {
-    const size = 7
-    const maxPage = Math.trunc(history.length / (size + 1))
-
+  const switchPage = change => {
     const newPage = page + change
 
-    if (newPage > maxPage) {
+    if (newPage + 1 > maxPage) {
       setPage(0)
     } else if (newPage < 0) {
       setPage(maxPage)
@@ -80,7 +94,7 @@ const History = ({ history, dateFormat }) => {
     }
   }
 
-  const buildSingleConcept = (conceptId) => {
+  const buildSingleConcept = conceptId => {
     const concept = concepts.find(concept => concept.concept_id === conceptId)
     if (!concept.children) return { id: conceptId, children: [] }
     return {
@@ -92,48 +106,61 @@ const History = ({ history, dateFormat }) => {
   }
 
   const buildConceptTree = () => {
-    const rootConcepts = concepts.filter(c => !c.parents).sort((a, b) => a['UI-order'] - b['UI-order'])
+    const rootConcepts = concepts
+      .filter(c => !c.parents)
+      .sort((a, b) => a['UI-order'] - b['UI-order'])
     const conceptTree = []
-    rootConcepts.forEach((concept) => {
+    rootConcepts.forEach(concept => {
       conceptTree.push(buildSingleConcept(concept.concept_id))
     })
 
     return conceptTree
   }
 
-  const handleColorChange = color => (e) => {
+  const handleColorChange = color => e => {
     setColors({ ...colors, [color]: e.target.value })
   }
+
+  console.log(maxPage)
 
   if (!history) return null
   return (
     <div style={{ overflowX: 'scroll', maxWidth: '100%', marginTop: '1em' }}>
-      <button type="button" onClick={() => switchPage(-1)}>-</button>
-      <span style={{ marginLeft: '1em', marginRight: '1em' }}>{page + 1} / {1 + Math.trunc(history.length / 8)}</span>
-      <button type="button" onClick={() => switchPage(1)}>+</button>
-      {hiddenFeatures
-      && (
-      <>
-        <br />
-        best:
-        <input type="text" value={colors.best} onChange={handleColorChange('best')} />
-        worst:
-        <input type="text" value={colors.worst} onChange={handleColorChange('worst')} />
-        no data:
-        <input type="text" value={colors.noData} onChange={handleColorChange('noData')} />
-        <br />
-        test (between 0 and 1):
-        <input
-          type="text"
-          style={{ backgroundColor: colorFromScore(colorTest) }}
-          value={colorTest}
-          onChange={e => setColorTest(e.target.value)}
-        />
-        fillFromHistory:
-        <input type="checkbox" checked={fillFromHistory} onChange={() => setFillFromHistory(!fillFromHistory)} />
-      </>
+      <button type="button" onClick={() => switchPage(-1)}>
+        -
+      </button>
+      <span style={{ marginLeft: '1em', marginRight: '1em' }}>
+        {page + 1} / {maxPage}
+      </span>
+      <button type="button" onClick={() => switchPage(1)}>
+        +
+      </button>
+      {hiddenFeatures && (
+        <>
+          <br />
+          best:
+          <input type="text" value={colors.best} onChange={handleColorChange('best')} />
+          worst:
+          <input type="text" value={colors.worst} onChange={handleColorChange('worst')} />
+          no data:
+          <input type="text" value={colors.noData} onChange={handleColorChange('noData')} />
+          <br />
+          test (between 0 and 1):
+          <input
+            type="text"
+            style={{ backgroundColor: colorFromScore(colorTest) }}
+            value={colorTest}
+            onChange={e => setColorTest(e.target.value)}
+          />
+          fillFromHistory:
+          <input
+            type="checkbox"
+            checked={fillFromHistory}
+            onChange={() => setFillFromHistory(!fillFromHistory)}
+          />
+        </>
       )}
-      <Table celled fixed>
+      <Table celled fixed unstackable>
         <Table.Header>
           <Table.Row>
             <Table.HeaderCell>Concepts</Table.HeaderCell>
@@ -149,7 +176,7 @@ const History = ({ history, dateFormat }) => {
             <Concept
               key={concept.id}
               calculateColor={calculateColor}
-              history={history.slice(page * 7, page * 7 + 7)}
+              history={history.slice(page * pageSize, page * pageSize + pageSize)}
               concept={concept}
               getConceptName={conceptIdToConceptName}
               fromPreviousScored={fromPreviousScored}

@@ -9,15 +9,11 @@ import Spinner from 'Components/Spinner'
 import 'react-datepicker/dist/react-datepicker.css'
 import History from 'Components/History'
 import { getHistory } from 'Utilities/redux/exerciseHistoryReducer'
-import { useLearningLanguage, hiddenFeatures } from 'Utilities/common'
+import { useLearningLanguage } from 'Utilities/common'
 import ProgressStats from './ProgressStats'
 
 const PickDate = ({ date, setDate }) => (
-  <DatePicker
-    selected={date}
-    onChange={date => setDate(date)}
-    dateFormat="yyyy/MM/dd"
-  />
+  <DatePicker selected={date} onChange={date => setDate(date)} dateFormat="yyyy/MM/dd" />
 )
 
 const Progress = () => {
@@ -65,9 +61,10 @@ const Progress = () => {
         startDate={startDate}
         endDate={endDate}
       />
-
       <div>
-        <h2><FormattedMessage id="Practice history" /></h2>
+        <h2>
+          <FormattedMessage id="Practice history" />
+        </h2>
         <History history={history} dateFormat="DD.MM." />
       </div>
     </div>
