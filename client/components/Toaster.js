@@ -34,7 +34,7 @@ export default function Toaster() {
     setProgressToastId(null)
   }
 
-  const isNewSite = useMemo(() => !favouriteSites.some(site => url.includes(site.url)), [
+  const isNewSite = useMemo(() => !favouriteSites.some(site => url?.includes(site.url)), [
     url,
     favouriteSites,
   ])
