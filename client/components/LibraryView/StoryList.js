@@ -51,16 +51,6 @@ const StoryList = () => {
     setLibrary(library)
   }
 
-  const handleRefresh = () => {
-    if (pending) return
-    dispatch(
-      getAllStories(learningLanguage, {
-        sort_by: 'date',
-        order: -1,
-      })
-    )
-  }
-
   useEffect(() => {
     dispatch(getGroups())
   }, [])
