@@ -22,7 +22,7 @@ export default function Toaster() {
     ({ uploadProgress }) => uploadProgress
   )
   const learningLanguage = useSelector(learningLanguageSelector)
-  const favouriteSites = useSelector(({ user }) => user.data.user.favourite_sites)
+  const favouriteSites = useSelector(({ user }) => user.data?.user?.favourite_sites)
 
   const handleError = errorMessage => {
     clearInterval(interval)
@@ -34,7 +34,7 @@ export default function Toaster() {
     setProgressToastId(null)
   }
 
-  const isNewSite = useMemo(() => !favouriteSites.some(site => url?.includes(site.url)), [
+  const isNewSite = useMemo(() => !favouriteSites?.some(site => url?.includes(site.url)), [
     url,
     favouriteSites,
   ])
