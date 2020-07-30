@@ -153,15 +153,17 @@ const StoryList = () => {
         onClick={handleLibraryChange}
         reverse
       />
-      <div style={{ alignItems: 'center', display: 'flex', justifyContent: 'flex-end' }}>
-        <Select
-          value={user.last_selected_group}
-          options={groupDropdownOptions}
-          onChange={handleGroupChange}
-          disabled={!libraries.group}
-          style={{ color: '#777' }}
-        />
-      </div>
+      {libraries.group && (
+        <div style={{ alignItems: 'center', display: 'flex', justifyContent: 'flex-end' }}>
+          <Select
+            value={user.last_selected_group}
+            options={groupDropdownOptions}
+            onChange={handleGroupChange}
+            disabled={!libraries.group}
+            style={{ color: '#777' }}
+          />
+        </div>
+      )}
     </div>
   )
 
