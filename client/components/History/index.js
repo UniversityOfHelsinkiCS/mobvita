@@ -121,8 +121,6 @@ const History = ({ history, dateFormat }) => {
     setColors({ ...colors, [color]: e.target.value })
   }
 
-  console.log(maxPage)
-
   if (!history) return null
   return (
     <div style={{ overflowX: 'scroll', maxWidth: '100%', marginTop: '1em' }}>
