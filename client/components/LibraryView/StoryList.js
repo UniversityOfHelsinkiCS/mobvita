@@ -1,15 +1,13 @@
 import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { Placeholder, Card, Search, Select, Icon, Dropdown } from 'semantic-ui-react'
-
 import StoryListItem from 'Components/LibraryView/StoryListItem'
 import { useIntl } from 'react-intl'
 import CheckboxGroup from 'Components/CheckboxGroup'
-import { capitalize, learningLanguageSelector } from 'Utilities/common'
+import { capitalize } from 'Utilities/common'
 import { getGroups } from 'Utilities/redux/groupsReducer'
 import { List, WindowScroller } from 'react-virtualized'
 import { updateLibrarySelect, updateGroupSelect } from 'Utilities/redux/userReducer'
-import { getAllStories } from 'Utilities/redux/storiesReducer'
 import useWindowDimensions from 'Utilities/windowDimensions'
 import StoryForm from './StoryForm'
 
@@ -27,7 +25,6 @@ const StoryList = () => {
   const dispatch = useDispatch()
 
   const user = useSelector(({ user }) => user.data.user)
-  const learningLanguage = useSelector(learningLanguageSelector)
   const refreshed = useSelector(({ user }) => user.refreshed)
   const groups = useSelector(({ groups }) => groups.groups)
   const { pending, stories } = useSelector(({ stories }) => ({
@@ -112,7 +109,7 @@ const StoryList = () => {
 
   const noResults = !pending && searchString.length > 0 && searchedStories.length === 0
 
-  const searchSort = (
+  const libraryControls = (
     <div data-cy="library-controls" className="library-control">
       <div className="search-and-sort">
         <Search
@@ -137,6 +134,7 @@ const StoryList = () => {
             display: 'flex',
             alignItems: 'center',
             color: '#777',
+            maxWidth: '10em',
           }}
         />
         <Icon
@@ -170,7 +168,7 @@ const StoryList = () => {
   if (pending || !searchedStories || !refreshed) {
     return (
       <div className="component-container">
-        {searchSort}
+        {libraryControls}
         <Placeholder>
           <Placeholder.Line />
         </Placeholder>
@@ -260,7 +258,7 @@ const StoryList = () => {
 
   return (
     <div className="component-container">
-      {searchSort}
+      {libraryControls}
 
       <Card.Group itemsPerRow={1} doubling>
         <StoryForm setLibraries={setLibraries} />
