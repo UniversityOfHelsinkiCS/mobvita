@@ -8,7 +8,7 @@ import LanguageSelectView from 'Components/LanguageSelectView'
 import EmailConfirm from 'Components/AccessControl/EmailConfirm'
 import ProtectedRoute from 'Components/AccessControl/ProtectedRoute'
 import CrosswordView from 'Components/CrosswordView'
-import GroupView from './Groups/index'
+import GroupView from './GroupView'
 import Concepts from './Concepts'
 import Profile from './Profile/Profile'
 import ResetPassword from './AccessControl/ResetPassword'
@@ -50,6 +50,7 @@ export default () => {
               <ProtectedRoute exact path="/stories/:id/read/" component={ReadView} />
               <ProtectedRoute exact path="/crossword/:storyId" component={CrosswordView} />
               <ProtectedRoute exact path="/groups" component={GroupView} />
+              <ProtectedRoute exact path="/groups/:tab" component={GroupView} />
               <ProtectedRoute exact path="/:target/:id/concepts" component={Concepts} />
               <ProtectedRoute exact path="/concepts" component={Concepts} />
               <ProtectedRoute exact path="/profile/account" component={Profile} />

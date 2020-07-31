@@ -12,11 +12,7 @@ const StudentProgress = ({ student, groupId }) => {
   const [startDate, setStartDate] = useState(moment().subtract(2, 'month').toDate())
   const [endDate, setEndDate] = useState(moment().toDate())
 
-  const {
-    pending,
-    exerciseHistory,
-    flashcardHistory,
-  } = useSelector(({ studentProgress }) => {
+  const { pending, exerciseHistory, flashcardHistory } = useSelector(({ studentProgress }) => {
     const { progress, pending } = studentProgress
     const { exercise_history: exerciseHistory, flashcard_history: flashcardHistory } = progress
     return { pending, exerciseHistory, flashcardHistory }
@@ -33,11 +29,13 @@ const StudentProgress = ({ student, groupId }) => {
   if (pending) return <Spinner />
 
   return (
-    <div className="group-container">
+    <div>
       <hr />
       <div className="flex padding-left-1">
         <div className="gap-1">
-          <FormattedMessage id="date-start" />
+          <span className="sm-label">
+            <FormattedMessage id="date-start" />
+          </span>
           <DatePicker
             dateFormat="yyyy/MM/dd"
             maxDate={Math.min(moment().valueOf(), endDate)}
@@ -46,7 +44,9 @@ const StudentProgress = ({ student, groupId }) => {
           />
         </div>
         <div className="gap-1 padding-left-3">
-          <FormattedMessage id="date-end" />
+          <span className="sm-label">
+            <FormattedMessage id="date-end" />
+          </span>
           <DatePicker
             dateFormat="yyyy/MM/dd"
             minDate={startDate}
@@ -56,16 +56,27 @@ const StudentProgress = ({ student, groupId }) => {
           />
         </div>
       </div>
-      {student
-        ? (
-          <ProgressGraph
-            exerciseHistory={exerciseHistory}
-            flashcardHistory={flashcardHistory}
-            startDate={startDate}
-            endDate={endDate}
-          />
-        ) : <FormattedMessage id="select-a-student-from-list" />
-      }
+      {student ? (
+        <ProgressGraph
+          exerciseHistory={exerciseHistory}
+          flashcardHistory={flashcardHistory}
+          startDate={startDate}
+          endDate={endDate}
+        />
+      ) : (
+        <div
+          style={{
+            paddingTop: '5rem',
+            fontSize: '1.3rem',
+            fontStyle: 'italic',
+            display: 'flex',
+            justifyContent: 'center',
+            color: '#777',
+          }}
+        >
+          <FormattedMessage id="select-a-student-from-list" />
+        </div>
+      )}
     </div>
   )
 }

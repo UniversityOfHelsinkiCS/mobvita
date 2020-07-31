@@ -92,11 +92,15 @@ const Summary = ({ groupName, isTeaching, getSummary }) => {
       <div style={{ display: 'flex', justifyContent: 'space-between', paddingBottom: '1em' }}>
         <div style={{ display: 'flex', justifyContent: 'space-between' }}>
           <div className="gap-1 padding-left-1">
-            <FormattedMessage id="date-start" />
+            <span className="sm-label">
+              <FormattedMessage id="date-start" />
+            </span>
             <PickDate id="start" date={startDate} setDate={setStartDate} />
           </div>
           <div className="gap-1 padding-left-3">
-            <FormattedMessage id="date-end" />
+            <span className="sm-label">
+              <FormattedMessage id="date-end" />
+            </span>
             <PickDate date={endDate} setDate={setEndDate} />
           </div>
         </div>
@@ -107,7 +111,7 @@ const Summary = ({ groupName, isTeaching, getSummary }) => {
       {pending ? (
         <Spinner />
       ) : (
-        <Table striped bordered hover>
+        <Table striped bordered hover responsive>
           <thead>
             <tr>
               {columns.map(column => (

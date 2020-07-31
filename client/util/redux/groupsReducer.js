@@ -19,10 +19,11 @@ export const addToGroup = (students, teachers, groupId) => {
   return callBuilder(route, prefix, 'post', payload)
 }
 
-export const createGroup = (groupName, students, teachers) => {
+export const createGroup = (groupName, description, students, teachers) => {
   const route = '/groups/'
   const payload = {
     group_name: groupName,
+    description,
     students,
     teachers,
   }

@@ -19,12 +19,12 @@ const AccountInfo = () => {
 
   return (
     <div>
-      <span className="bootstrap-label">
+      <span className="sm-label">
         <FormattedMessage id="Email" />
       </span>
       <p className="account-info-item">{email}</p>
       <div style={{ display: 'flex', alignItems: 'flex-start' }}>
-        <span className="bootstrap-label">
+        <span className="sm-label">
           <FormattedMessage id="Username" />
         </span>
         {!editingUser && (

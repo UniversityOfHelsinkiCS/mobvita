@@ -409,8 +409,8 @@ body {
 .group-container {
   max-width: 1024px;
   margin: auto;
-  padding-left: 0.5em;
-  padding-right: 0.5em;
+  padding-left: 1em;
+  padding-right: 1em;
 
   &.nogroups{
     display:flex;
@@ -443,7 +443,7 @@ body {
   font-weight: 600;
 }
 
-.bootstrap-label {
+.sm-label {
   font-weight: 700;
   font-size: .92857143em;
 }
