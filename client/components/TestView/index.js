@@ -93,7 +93,7 @@ const TestIndex = () => {
   })
 
   return (
-    <div className="component-container">
+    <div className="component-container padding-sides-2">
       {!sessionId && (
         <div>
           <Button onClick={startTest} data-cy="start-test">
