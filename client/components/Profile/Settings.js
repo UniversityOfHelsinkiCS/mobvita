@@ -63,7 +63,7 @@ const Settings = () => {
           disabled={pending}
         />
         {bigWindow && (
-          <Button as={Link} to="/concepts" variant="link" style={{ paddingLeft: 0 }}>
+          <Button as={Link} to="/concepts" variant="primary" size="sm">
             <FormattedMessage id="learning-settings" />
           </Button>
         )}
