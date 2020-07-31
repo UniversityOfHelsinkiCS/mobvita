@@ -78,8 +78,8 @@ const History = ({ history, dateFormat }) => {
   }
 
   const maxPage = useMemo(() => {
-    const extraPage = history.length % pageSize === 0 ? 0 : 1
-    return Math.trunc(history.length / pageSize) + extraPage
+    const extraPage = history?.length % pageSize === 0 ? 0 : 1
+    return Math.trunc(history?.length / pageSize) + extraPage
   }, [history, pageSize])
 
   const switchPage = change => {
