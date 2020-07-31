@@ -16,13 +16,7 @@ import useWindowDimensions from 'Utilities/windowDimensions'
 const SettingToggle = ({ translationId, ...props }) => {
   const intl = useIntl()
 
-  return (
-    <Checkbox
-      toggle
-      label={intl.formatMessage({ id: translationId })}
-      {...props}
-    />
-  )
+  return <Checkbox toggle label={intl.formatMessage({ id: translationId })} {...props} />
 }
 
 const Settings = () => {
@@ -37,9 +31,7 @@ const Settings = () => {
   return (
     <div className="component-container padding-sides-1">
       <h2 className="header-2 padding-bottom-1">
-        <FormattedMessage
-          id="select-types-of-exercisesto-practice-34b953b387e6c6f6a7d4aa52ddaf177b"
-        />
+        <FormattedMessage id="select-types-of-exercisesto-practice-34b953b387e6c6f6a7d4aa52ddaf177b" />
       </h2>
       <div className="flex-column align-start gap-row-1">
         <SettingToggle
@@ -54,24 +46,27 @@ const Settings = () => {
           onChange={() => dispatch(updateAudioTask(!user.task_audio))}
           disabled={pending}
         />
-        <span style={{ display: 'none', color: 'gray' }}><i>Temporarily unavailable due to technical problem</i></span>
+        <span style={{ display: 'none', color: 'gray' }}>
+          <i>Temporarily unavailable due to technical problem</i>
+        </span>
         <SettingToggle
           translationId="second-chance-when-practicing-stories"
           checked={user.second_try}
           onChange={() => dispatch(updateSecondTry(!user.second_try))}
           disabled={pending}
         />
-        {bigWindow
-          && (
-            <Button as={Link} to="/concepts" variant="link" style={{ paddingLeft: 0 }}>
-              <FormattedMessage id="learning-settings" />
-            </Button>
-          )
-        }
+        {bigWindow && (
+          <Button as={Link} to="/concepts" variant="link" style={{ paddingLeft: 0 }}>
+            <FormattedMessage id="learning-settings" />
+          </Button>
+        )}
       </div>
       <h2 className="header-2 padding-bottom-1 padding-top-2">
         <FormattedMessage id="Flashcards" />
       </h2>
+      <label htmlFor="flashcard-amount" style={{ paddingRight: '0.5rem' }}>
+        <FormattedMessage id="how-many-cards-per-practice-session" />
+      </label>
       <select
         id="flashcard-amount"
         defaultValue={user.flashcard_num}
@@ -83,9 +78,6 @@ const Settings = () => {
         <option value={100}>100</option>
         <option value={0}>all</option>
       </select>
-      <label htmlFor="flashcard-amount" style={{ paddingLeft: '1rem' }}>
-        <FormattedMessage id="how-many-cards-per-practice-session" />
-      </label>
       <h2 className="header-2 padding-bottom-1 padding-top-2">
         <FormattedMessage id="Audio settings" />
       </h2>
