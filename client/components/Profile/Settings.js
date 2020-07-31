@@ -36,7 +36,7 @@ const Settings = () => {
   ]
 
   return (
-    <div className="component-container padding-sides-1">
+    <div className="component-container padding-sides-2">
       <h2 className="header-2 padding-bottom-1">
         <FormattedMessage id="select-types-of-exercisesto-practice-34b953b387e6c6f6a7d4aa52ddaf177b" />
       </h2>
