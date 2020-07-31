@@ -40,6 +40,6 @@ describe("sidebar is open", function () {
 
   it("can visit groups view", function () {
     cy.get('[data-cy=groups-link]').click()
-    cy.get('[data-cy=create-group-modal]')
+    cy.get('[data-cy=create-group]')
   })
 })
