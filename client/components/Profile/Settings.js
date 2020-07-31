@@ -2,7 +2,7 @@ import React from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import { Link } from 'react-router-dom'
 import { FormattedMessage, useIntl } from 'react-intl'
-import { Checkbox, Radio } from 'semantic-ui-react'
+import { Checkbox, Radio, Dropdown } from 'semantic-ui-react'
 import { Button } from 'react-bootstrap'
 import {
   updateMultiChoice,
@@ -27,6 +27,13 @@ const Settings = () => {
 
   const dispatch = useDispatch()
   const intl = useIntl()
+
+  const deckSizeOptions = [
+    { value: 20, text: <b>20</b>, key: 20 },
+    { value: 50, text: <b>50</b>, key: 50 },
+    { value: 100, text: <b>100</b>, key: 100 },
+    { value: 'all', text: <b>all</b>, key: 'all' },
+  ]
 
   return (
     <div className="component-container padding-sides-1">
@@ -67,17 +74,13 @@ const Settings = () => {
       <label htmlFor="flashcard-amount" style={{ paddingRight: '0.5rem' }}>
         <FormattedMessage id="how-many-cards-per-practice-session" />
       </label>
-      <select
+      <Dropdown
         id="flashcard-amount"
-        defaultValue={user.flashcard_num}
-        onChange={e => dispatch(updateNumberOfFlashcards(Number(e.target.value)))}
+        value={user.flashcard_num}
+        options={deckSizeOptions}
+        onChange={(e, data) => dispatch(updateNumberOfFlashcards(Number(data.value)))}
         disabled={pending}
-      >
-        <option value={20}>20</option>
-        <option value={50}>50</option>
-        <option value={100}>100</option>
-        <option value={0}>all</option>
-      </select>
+      />
       <h2 className="header-2 padding-bottom-1 padding-top-2">
         <FormattedMessage id="Audio settings" />
       </h2>
