@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { getGroups, removeFromGroup, getGroupToken } from 'Utilities/redux/groupsReducer'
-import { ListGroup, ButtonGroup, ToggleButton, Card } from 'react-bootstrap'
+import { ListGroup, ButtonGroup, ToggleButton } from 'react-bootstrap'
 import { FormattedMessage, useIntl } from 'react-intl'
 import { Icon, Dropdown } from 'semantic-ui-react'
 import { getSummary } from 'Utilities/redux/groupSummaryReducer'
@@ -11,6 +11,7 @@ import Spinner from 'Components/Spinner'
 import CollapsingList from './CollapsingList'
 import Summary from './Summary'
 import StudentProgress from './StudentProgress'
+import NoGroupsView from './NoGroupsView'
 
 const GroupAnalytics = () => {
   const intl = useIntl()
@@ -70,18 +71,20 @@ const GroupAnalytics = () => {
     dispatch(updateGroupSelect(key))
   }
 
-  if (pending || !currentGroup)
+  if (pending)
     return (
       <div style={{ height: '80vh' }}>
         <Spinner />
       </div>
     )
 
+  if (groups.length === 0) return <NoGroupsView />
+
   const currentUserIsTeacher = currentGroup?.teachers.find(teacher => teacher._id === userOid)
 
   return (
     <div className="group-container">
-      <div className="space-between">
+      <div className="space-between wrap">
         <Dropdown
           options={groupOptions}
           value={currentGroupId}

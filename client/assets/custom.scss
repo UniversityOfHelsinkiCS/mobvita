@@ -1127,6 +1127,28 @@ body {
   //color: #777;
 }
 
+.group-management-buttons {
+  @media (max-width: 760px) {
+    flex-direction: column;
+  }
+}
+
+.group-buttons {
+  & > button {
+    align-self: flex-start;
+  }
+
+  @media (max-width: 400px) {
+    flex-direction: column;
+    
+    & > button {
+      align-self: stretch;
+      margin-top: 0.5em;
+      margin-left: 0;
+    }
+  }
+}
+
 // General classes
 .auto {
   margin: auto;
@@ -1316,6 +1338,10 @@ body {
   & button {
     flex-grow: 1;
   }
+}
+
+.wrap {
+  flex-wrap: wrap;
 }
 
 .grow {

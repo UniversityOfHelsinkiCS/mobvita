@@ -11,6 +11,7 @@ import { setNotification } from 'Utilities/redux/notificationReducer'
 import Spinner from 'Components/Spinner'
 import ConfirmationWarning from 'Components/ConfirmationWarning'
 import AddToGroup from './AddToGroup'
+import NoGroupsView from './NoGroupsView'
 
 const GroupCard = ({
   group,
@@ -61,8 +62,8 @@ const GroupCard = ({
       </Card.Content>
       {isTeaching && (
         <Card.Content extra>
-          <div className="space-between">
-            <div className="gap-1">
+          <div className="space-between group-buttons" style={{ whiteSpace: 'nowrap' }}>
+            <div className="gap-1 gap-row-1 wrap-and-grow group-management-buttons">
               <Button onClick={handleSettingsClick}>
                 <Icon name="settings" /> <FormattedMessage id="learning-settings" />
               </Button>
@@ -73,16 +74,26 @@ const GroupCard = ({
                 <Icon name="key" /> <FormattedMessage id="show-group-token" />
               </Button>
             </div>
-            <Button data-cy="delete-group" variant="danger" onClick={() => setDeleteGroupId(id)}>
-              <Icon name="trash alternate outline" /> <FormattedMessage id="delete-group" />
+            <Button
+              data-cy="delete-group"
+              variant="danger"
+              onClick={() => setDeleteGroupId(id)}
+              style={{ whiteSpace: 'nowrap' }}
+            >
+              <Icon name="trash alternate outline" /> <FormattedMessage id="Delete" />
             </Button>
           </div>
           {showToken && (
             <div
               className="border rounded"
-              style={{ display: 'flex', marginTop: '0.5em', minHeight: '3em' }}
+              style={{
+                display: 'flex',
+                marginTop: '0.5em',
+                minHeight: '3em',
+                wordBreak: 'break-all',
+              }}
             >
-              <span style={{ margin: 'auto' }}>{token}</span>
+              <span style={{ margin: 'auto', padding: '0.5em' }}>{token}</span>
               <CopyToClipboard text={token}>
                 <Button type="button" onClick={handleTokenCopy}>
                   <Icon name="copy" size="large" />
@@ -104,7 +115,6 @@ const GroupManagement = () => {
   const [showTokenGroupId, setShowTokenGroupId] = useState(null)
 
   const dispatch = useDispatch()
-  const history = useHistory()
 
   const handleGroupDelete = () => {
     dispatch(deleteGroup(deleteGroupId))
@@ -112,34 +122,7 @@ const GroupManagement = () => {
 
   if (pending) return <Spinner />
 
-  if (groups.length === 0) {
-    return (
-      <div className="group-container nogroups">
-        <h2 id="title">
-          {' '}
-          <FormattedMessage id="Groups" />
-        </h2>
-        <Button id="join-group-button" variant="info" onClick={() => history.push('/groups/join')}>
-          <FormattedMessage id="join-group" />
-        </Button>
-        <span className="additional-info">
-          <FormattedMessage id="join-group-message" />
-        </span>
-
-        <br />
-        <Button
-          data-cy="create-group"
-          variant="primary"
-          onClick={() => history.push('/groups/create')}
-        >
-          <FormattedMessage id="create-new-group" />
-        </Button>
-        <span className="additional-info">
-          <FormattedMessage id="create-group-message" />
-        </span>
-      </div>
-    )
-  }
+  if (groups.length === 0) return <NoGroupsView />
 
   return (
     <div className="padding-sides-2">

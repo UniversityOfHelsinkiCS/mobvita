@@ -8,12 +8,22 @@ import moment from 'moment'
 import { FormattedMessage } from 'react-intl'
 import Spinner from 'Components/Spinner'
 import { capitalize } from 'Utilities/common'
+import useWindowDimensions from 'Utilities/windowDimensions'
 
 import 'react-datepicker/dist/react-datepicker.css'
 import produce from 'immer'
 
 const PickDate = ({ date, setDate }) => (
-  <DatePicker selected={date} onChange={date => setDate(date)} dateFormat="yyyy/MM/dd" />
+  <DatePicker
+    popperModifiers={{
+      preventOverflow: {
+        enabled: true,
+      },
+    }}
+    selected={date}
+    onChange={date => setDate(date)}
+    dateFormat="yyyy/MM/dd"
+  />
 )
 
 const Summary = ({ groupName, isTeaching, getSummary }) => {
@@ -38,6 +48,8 @@ const Summary = ({ groupName, isTeaching, getSummary }) => {
     return summary
   })
   const { colOrder } = useSelector(({ summary }) => summary)
+
+  const { width: windowWidth } = useWindowDimensions()
 
   useEffect(() => {
     if (summary && colOrder && summary.length > 0) {
@@ -87,6 +99,8 @@ const Summary = ({ groupName, isTeaching, getSummary }) => {
 
   const filename = `${cleanGroupName}_summary.csv`
 
+  const showCsvDownload = windowWidth > 500
+
   return (
     <>
       <div style={{ display: 'flex', justifyContent: 'space-between', paddingBottom: '1em' }}>
@@ -104,9 +118,11 @@ const Summary = ({ groupName, isTeaching, getSummary }) => {
             <PickDate date={endDate} setDate={setEndDate} />
           </div>
         </div>
-        <CSVLink filename={filename} data={summary}>
-          <FormattedMessage id="download-csv" />
-        </CSVLink>
+        {showCsvDownload && (
+          <CSVLink filename={filename} data={summary}>
+            <FormattedMessage id="download-csv" />
+          </CSVLink>
+        )}
       </div>
       {pending ? (
         <Spinner />

@@ -17,6 +17,8 @@ export default function GroupView({ location }) {
     dispatch(getGroups())
   }, [])
 
+  const tabStyle = { paddingLeft: '0.8rem', paddingRight: '0.8rem' }
+
   const panes = [
     {
       menuItem: {
@@ -24,6 +26,7 @@ export default function GroupView({ location }) {
         content: 'Management',
         to: '/groups',
         key: 'managment',
+        style: tabStyle,
       },
       render: () => <GroupManagement />,
     },
@@ -33,6 +36,7 @@ export default function GroupView({ location }) {
         content: 'Analytics',
         to: '/groups/analytics',
         key: 'analytics',
+        style: tabStyle,
       },
       render: () => <GroupAnalytics />,
     },
@@ -43,6 +47,7 @@ export default function GroupView({ location }) {
         //content: intl.formatMessage({ id: 'join-group' }),
         to: '/groups/join',
         key: 'join',
+        style: tabStyle,
       },
       render: () => <JoinGroup />,
     },
@@ -75,7 +80,7 @@ export default function GroupView({ location }) {
 
   return (
     <div className="component-container">
-      <Tab panes={panes} activeIndex={index} />
+      <Tab panes={panes} activeIndex={index} grid={{ tabWidth: 1 }} />
     </div>
   )
 }
