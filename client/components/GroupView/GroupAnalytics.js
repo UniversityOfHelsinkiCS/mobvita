@@ -84,7 +84,7 @@ const GroupAnalytics = () => {
 
   return (
     <div className="group-container">
-      <div className="space-between wrap">
+      <div className="group-analytics-top">
         <Dropdown
           options={groupOptions}
           value={currentGroupId}
@@ -100,7 +100,7 @@ const GroupAnalytics = () => {
           }}
         />
         {currentGroup?.is_teaching && (
-          <ButtonGroup toggle style={{ alignSelf: 'flex-start' }}>
+          <ButtonGroup toggle>
             <ToggleButton
               type="radio"
               value="summary"
@@ -122,7 +122,7 @@ const GroupAnalytics = () => {
           </ButtonGroup>
         )}
       </div>
-      <p style={{ paddingLeft: '0.2rem', fontStyle: 'italic'}}>{currentGroup.description}</p>
+      <p style={{ paddingLeft: '0.2rem', fontStyle: 'italic' }}>{currentGroup.description}</p>
       <CollapsingList header={intl.formatMessage({ id: 'Teachers' })}>
         <ListGroup>
           {currentGroup.teachers.map(teacher => (
@@ -153,7 +153,11 @@ const GroupAnalytics = () => {
                   key={student.userName}
                   onClick={() => setCurrentStudent(student)}
                 >
-                  {student.userName}
+                  <span
+                    style={{ textOverflow: 'ellipsis', overflow: 'hidden', whiteSpace: 'nowrap' }}
+                  >
+                    {student.userName}
+                  </span>
                   {currentUserIsTeacher && (
                     <Icon
                       data-cy={`remove-from-group-${student.userName}`}

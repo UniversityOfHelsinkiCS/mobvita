@@ -33,23 +33,25 @@ const Test = () => {
 
   const dispatch = useDispatch()
 
-  const checkAnswer = (answer) => {
+  const checkAnswer = answer => {
     if (!currentQuestion) return
     timer.stop()
     timer.reset()
 
     const pauseTimeStamp = willPause ? new Date() : null
 
-    dispatch(sendAnswer(
-      learningLanguage,
-      sessionId,
-      {
-        type: currentQuestion.type,
-        question_id: currentQuestion.question_id,
-        answer,
-      },
-      pauseTimeStamp,
-    ))
+    dispatch(
+      sendAnswer(
+        learningLanguage,
+        sessionId,
+        {
+          type: currentQuestion.type,
+          question_id: currentQuestion.question_id,
+          answer,
+        },
+        pauseTimeStamp
+      )
+    )
   }
 
   useEffect(() => {
@@ -109,40 +111,58 @@ const Test = () => {
 
   return (
     <div className="component-container">
-      <div className="test-timer">{(Math.round(timer.getTime() / 1000))}</div>
-      <div className="test-container">
-        <div className="test-question-container">
-          {willPause && !willStop && (
-            <span className="test-info"><FormattedMessage id="pause-after-you-answer-this-question" /></span>)}
-          {willStop && <span className="test-info"><FormattedMessage id="quitting-after-this-question" /></span>}
-          {paused && (
-            <div className="test-prephrase"><FormattedMessage id="paused-click-to-resume-27ac769f5d88934067af4294483b9807" /></div>
-          )}
-          {currentQuestion && !paused && !answerFailure && (
+      <div className="space-between">
+        <div className="test-container">
+          <div className="test-top-info space-between">
             <div>
-              <MultipleChoice
-                exercise={currentQuestion}
-                onAnswer={checkAnswer}
-                answerPending={answerPending}
-              />
+              {currentIndex + 1} / {questions.length}
             </div>
-          )}
+          </div>
+          <div className="test-question-container">
+            {willPause && !willStop && (
+              <span className="test-info">
+                <FormattedMessage id="pause-after-you-answer-this-question" />
+              </span>
+            )}
+            {willStop && (
+              <span className="test-info">
+                <FormattedMessage id="quitting-after-this-question" />
+              </span>
+            )}
+            {paused && (
+              <div className="test-prephrase">
+                <FormattedMessage id="paused-click-to-resume-27ac769f5d88934067af4294483b9807" />
+              </div>
+            )}
+            {currentQuestion && !paused && !answerFailure && (
+              <div>
+                <MultipleChoice
+                  exercise={currentQuestion}
+                  onAnswer={checkAnswer}
+                  answerPending={answerPending}
+                />
+              </div>
+            )}
+          </div>
         </div>
-        <div className="test-controls">
-          <div>{currentIndex + 1} / {questions.length}</div>
-          <div>
-            <Icon
-              size="large"
-              color={willPause ? 'grey' : 'black'}
-              name={paused ? 'play' : 'pause'}
-              onClick={paused ? resumeTimer : pauseTimer}
-            />
-            <Icon
-              size="large"
-              color={willStop ? 'grey' : 'black'}
-              name="stop"
-              onClick={stop}
-            />
+        <div className="test-aside">
+          <div
+            className="test-counter"
+            style={{ color: Math.round(timer.getTime() / 1000) <= 5 ? 'firebrick' : '#212529' }}
+          >
+            {Math.round(timer.getTime() / 1000)}
+          </div>
+          <div className="test-controls">
+            <div>
+              <Icon
+                size="large"
+                color={willPause ? 'grey' : 'blue'}
+                name={paused ? 'play' : 'pause'}
+                onClick={paused ? resumeTimer : pauseTimer}
+                style={{ marginRight: '0.25em' }}
+              />
+              <Icon size="large" color={willStop ? 'grey' : 'blue'} name="stop" onClick={stop} />
+            </div>
           </div>
         </div>
       </div>

@@ -41,6 +41,7 @@ const StudentProgress = ({ student, groupId }) => {
             maxDate={Math.min(moment().valueOf(), endDate)}
             selected={startDate}
             onChange={date => setStartDate(date)}
+            withPortal
           />
         </div>
         <div className="gap-1 padding-left-3">
@@ -53,6 +54,7 @@ const StudentProgress = ({ student, groupId }) => {
             maxDate={moment().valueOf()}
             selected={endDate}
             onChange={date => setEndDate(date)}
+            withPortal
           />
         </div>
       </div>

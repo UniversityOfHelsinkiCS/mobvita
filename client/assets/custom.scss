@@ -716,54 +716,56 @@ body {
   &-container {
     display: flex;
     max-width: 600px;
-    justify-content: space-between;
-    align-items: flex-start;
-    @media (max-width: 800px) {
-      flex-direction: column;
-    }
+    flex-direction: column;
   }
   &-question-container {
     min-width: 100%;
+    padding-top: 1em;
   }
   &-info {
     font-style: italic;
   }
-  &-timer {
-    font-size: 18px;
+  &-top-info {
+    font-size: 22px;
+  }
+  &-counter {
+    font-size: 22px;
+    border: 2px solid #777;
+    border-radius: 0.5em;
+    height: 40px;
+    width: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
   }
   &-prephrase {
     font-style: italic;
     color: $primary-color;
     font-size: 18px;
-    margin-bottom: 0.5em;
+    padding-bottom: 1em;
   }
   &-question {
+    padding-top: 0.5em;
     font-size: 22px;
     margin-bottom: 0.5em;
   }
   &-choice-button {
     width: 100%;
     min-width: 100%;
-    margin-bottom: 0.5em;
+    margin-bottom: 1em;
   }
   &-controls {
     font-size: 1.5em;
-    @media (min-width: 800px) {
-      margin-left: 2em;
-      border: 1px solid #777;
-      border-radius: 0.5em;
-      white-space: nowrap;
-      padding: 10px;
-    }
-
-    @media (max-width: 800px) {
-      width: 90%;
-      margin-left: 0.5em;
-      display: flex;
-      justify-content: space-between;
-      flex-direction: row-reverse;
-      align-items: center;
-    }
+    border: 1px solid #777;
+    border-radius: 0.5em;
+    align-self: flex-start;
+    padding: 10px;
+    margin-top: 1em;
+  }
+  &-aside {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
   }
 }
 
@@ -1149,6 +1151,21 @@ body {
   }
 }
 
+.group-analytics-top {
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+
+  @media (max-width: 640px) {
+    flex-direction: column;
+    margin-top: -0.5em;
+    & > * {
+      flex-grow: 1;
+      margin-top: 0.5em;
+    }
+  }
+}
+
 // General classes
 .auto {
   margin: auto;
@@ -1282,6 +1299,12 @@ body {
       margin-left: 1em
     }
   }
+  &-3 {
+    margin-left: -1.5em;
+    & > * {
+      margin-left: 1.5em
+    }
+  }
 }
 
 .gap-row {
@@ -1295,6 +1318,12 @@ body {
     margin-top: -1em;
     & > * {
       margin-top: 1em
+    }
+  }
+  &-2 {
+    margin-top: -1.5em;
+    & > * {
+      margin-top: 1.5em
     }
   }
 }
