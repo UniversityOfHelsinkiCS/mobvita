@@ -65,7 +65,7 @@ const Tabs = ({ location }) => {
   }
 
   return (
-    <div>
+    <div style={{ height: '100%' }}>
       <Banners />
       <Tab panes={panes} activeIndex={index} />
     </div>

@@ -14,11 +14,7 @@ import TestReport from './TestReport'
 import History from '../History'
 
 const PickDate = ({ date, setDate }) => (
-  <DatePicker
-    selected={date}
-    onChange={date => setDate(date)}
-    dateFormat="yyyy/MM/dd"
-  />
+  <DatePicker selected={date} onChange={date => setDate(date)} dateFormat="yyyy/MM/dd" />
 )
 
 const TestIndex = () => {
@@ -41,7 +37,7 @@ const TestIndex = () => {
     dispatch(getTestQuestions(learningLanguage, selectedGroup))
   }
 
-  const handleGroupChange = (key) => {
+  const handleGroupChange = key => {
     setSelectedGroup(key)
   }
 
@@ -63,53 +59,59 @@ const TestIndex = () => {
   useEffect(() => {
     if (!groups) return
     setCurrentGroup(
-      groups.find(group => group.group_id === selectedGroup) || { groupName: 'default', group_id: 'default' },
+      groups.find(group => group.group_id === selectedGroup) || {
+        groupName: 'default',
+        group_id: 'default',
+      }
     )
   }, [groups, selectedGroup])
 
   useEffect(() => {
-    if (currentGroupId) { setSelectedGroup(currentGroupId) }
+    if (currentGroupId) {
+      setSelectedGroup(currentGroupId)
+    }
   }, [currentGroupId])
 
   useEffect(() => {
-    if (language !== learningLanguage) { dispatch(resetTest()) }
+    if (language !== learningLanguage) {
+      dispatch(resetTest())
+    }
   }, [learningLanguage])
 
   if (pending) {
     return <Spinner />
   }
 
-  const groupOptions = [{ value: '', text: 'default', key: 'default' }]
-    .concat(groups.map(({ group_id: groupId, groupName }) => (
-      {
-        value: groupId,
-        text: groupName,
-        key: groupId,
-      }
-    )))
-  const filterHistoryByDate = () => history.filter((test) => {
-    const testTime = moment(test.date)
-    return testTime.isAfter(startDate) && testTime.isBefore(endDate)
-  })
+  const groupOptions = [{ value: '', text: 'default', key: 'default' }].concat(
+    groups.map(({ group_id: groupId, groupName }) => ({
+      value: groupId,
+      text: groupName,
+      key: groupId,
+    }))
+  )
+  const filterHistoryByDate = () =>
+    history.filter(test => {
+      const testTime = moment(test.date)
+      return testTime.isAfter(startDate) && testTime.isBefore(endDate)
+    })
 
   return (
-    <div className="component-container padding-sides-2">
+    <div className="component-container padding-sides-2" style={{ height: '100%' }}>
       {!sessionId && (
         <div>
           <Button onClick={startTest} data-cy="start-test">
             <FormattedMessage id="start-a-new-test" />
           </Button>
-          {language
-            && (
+          {language && (
             <Button onClick={continueTest}>
               <FormattedMessage id="resume-test" />
             </Button>
-            )
-          }
-          {groups && currentGroup
-          && (
+          )}
+          {groups && currentGroup && (
             <div style={{ marginTop: '0.5em' }}>
-              <div><FormattedMessage id="Group" /></div>
+              <div>
+                <FormattedMessage id="Group" />
+              </div>
               <Dropdown
                 selection
                 options={groupOptions}
@@ -144,7 +146,6 @@ const TestIndex = () => {
               </>
             )}
           </>
-
         </div>
       )}
       {report && <TestReport />}
