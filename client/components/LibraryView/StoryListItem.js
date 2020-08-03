@@ -155,13 +155,11 @@ const StoryListItem = ({ story, userCanShare, libraryShown, selectedGroup }) => 
                   <FormattedMessage id="Flashcards" />
                 </Button>
               </Link>
-              {hiddenFeatures && (
-                <Link to={`/crossword/${story._id}/`}>
-                  <Button variant="secondary" style={{ marginRight: '0.5em' }}>
-                    <FormattedMessage id="Crossword" />
-                  </Button>
-                </Link>
-              )}
+              <Link to={`/crossword/${story._id}/`}>
+                <Button variant="secondary" style={{ marginRight: '0.5em' }}>
+                  <FormattedMessage id="Crossword" />
+                </Button>
+              </Link>
               <Link to={`/stories/${story._id}/read`}>
                 <Button variant="secondary" style={{ marginRight: '0.5em' }}>
                   <FormattedMessage id="Read" />

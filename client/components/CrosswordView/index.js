@@ -262,8 +262,6 @@ const CrosswordView = () => {
     else setDictionaryMinimized(true)
   }, [windowWidth, contentSize.width])
 
-  if (!hiddenFeatures) return null
-
   if (!formattedData || !clueElements)
     return (
       <div

@@ -1,6 +1,5 @@
 import React from 'react'
 import { Modal } from 'semantic-ui-react'
-import { hiddenFeatures } from 'Utilities/common'
 import { CustomButton, LinkButton } from './Buttons'
 import DetailsTable from './DetailsTable'
 
@@ -61,13 +60,11 @@ const DetailedStoryModal = ({
               to={`/flashcards/fillin/${story._id}/`}
               translationId="Flashcards"
             />
-            {hiddenFeatures && (
-              <LinkButton
-                variant="secondary"
-                to={`/crossword/${story._id}`}
-                translationId="Crossword"
-              />
-            )}
+            <LinkButton
+              variant="secondary"
+              to={`/crossword/${story._id}`}
+              translationId="Crossword"
+            />
             <LinkButton
               variant="secondary"
               to={`/stories/${story._id}/read`}
