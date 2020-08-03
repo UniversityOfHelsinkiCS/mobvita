@@ -23,7 +23,7 @@ export default function GroupView({ location }) {
     {
       menuItem: {
         as: Link,
-        content: 'Management',
+        content: intl.formatMessage({ id: 'Management' }),
         to: '/groups',
         key: 'managment',
         style: tabStyle,
@@ -33,7 +33,7 @@ export default function GroupView({ location }) {
     {
       menuItem: {
         as: Link,
-        content: 'Analytics',
+        content: intl.formatMessage({ id: 'Analytics' }),
         to: '/groups/analytics',
         key: 'analytics',
         style: tabStyle,
@@ -43,8 +43,7 @@ export default function GroupView({ location }) {
     {
       menuItem: {
         as: Link,
-        content: 'Join',
-        //content: intl.formatMessage({ id: 'join-group' }),
+        content: intl.formatMessage({ id: 'Join' }),
         to: '/groups/join',
         key: 'join',
         style: tabStyle,
@@ -54,8 +53,7 @@ export default function GroupView({ location }) {
     {
       menuItem: {
         as: Link,
-        content: 'New',
-        //content: intl.formatMessage({ id: 'create-new-group' }),
+        content: intl.formatMessage({ id: 'New' }),
         to: '/groups/create',
         key: 'create',
       },
