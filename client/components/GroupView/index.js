@@ -61,7 +61,7 @@ export default function GroupView({ location }) {
     {
       menuItem: {
         as: Link,
-        content: <TabContent translationId="Create" />,
+        content: <TabContent translationId="New" />,
         to: '/groups/create',
         key: 'create',
         style: tabStyle,
