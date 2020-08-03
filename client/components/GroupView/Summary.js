@@ -14,16 +14,7 @@ import 'react-datepicker/dist/react-datepicker.css'
 import produce from 'immer'
 
 const PickDate = ({ date, setDate }) => (
-  <DatePicker
-    popperModifiers={{
-      preventOverflow: {
-        enabled: true,
-      },
-    }}
-    selected={date}
-    onChange={date => setDate(date)}
-    dateFormat="yyyy/MM/dd"
-  />
+  <DatePicker withPortal selected={date} onChange={date => setDate(date)} dateFormat="yyyy/MM/dd" />
 )
 
 const Summary = ({ groupName, isTeaching, getSummary }) => {

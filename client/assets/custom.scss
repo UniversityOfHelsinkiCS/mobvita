@@ -1149,6 +1149,21 @@ body {
   }
 }
 
+.group-analytics-top {
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+
+  @media (max-width: 640px) {
+    flex-direction: column;
+    margin-top: -0.5em;
+    & > * {
+      flex-grow: 1;
+      margin-top: 0.5em;
+    }
+  }
+}
+
 // General classes
 .auto {
   margin: auto;
