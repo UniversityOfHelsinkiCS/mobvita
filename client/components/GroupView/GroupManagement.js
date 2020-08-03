@@ -6,7 +6,7 @@ import { CopyToClipboard } from 'react-copy-to-clipboard'
 import { Card, Icon } from 'semantic-ui-react'
 import { Button } from 'react-bootstrap'
 import { updateGroupSelect } from 'Utilities/redux/userReducer'
-import { deleteGroup, getGroupToken, removeFromGroup } from 'Utilities/redux/groupsReducer'
+import { deleteGroup, getGroupToken, leaveFromGroup } from 'Utilities/redux/groupsReducer'
 import { setNotification } from 'Utilities/redux/notificationReducer'
 import Spinner from 'Components/Spinner'
 import ConfirmationWarning from 'Components/ConfirmationWarning'
@@ -77,11 +77,9 @@ const GroupCard = ({
             </div>
           )}
           <div className="group-management-buttons flex gap-1 gap-row-1">
-            {false && (
-              <Button variant="danger" onClick={() => setLeaveGroupId(id)}>
-                <Icon name="log out" /> <FormattedMessage id="Leave" />
-              </Button>
-            )}
+            <Button variant="danger" onClick={() => setLeaveGroupId(id)}>
+              <Icon name="log out" /> <FormattedMessage id="Leave" />
+            </Button>
             {isTeaching && (
               <Button
                 data-cy="delete-group"
@@ -133,7 +131,7 @@ const GroupManagement = () => {
   }
 
   const handleGroupLeave = () => {
-    dispatch(removeFromGroup(leaveGroupId, userId))
+    dispatch(leaveFromGroup(leaveGroupId, userId))
   }
 
   if (pending) return <Spinner />

@@ -6,7 +6,7 @@ export const getGroups = () => {
   return callBuilder(route, prefix, 'get')
 }
 
-export const getGroup = (id) => {
+export const getGroup = id => {
   const route = `/groups/${id}`
   const prefix = 'GET_GROUP'
   return callBuilder(route, prefix, 'get')
@@ -37,7 +37,13 @@ export const removeFromGroup = (groupId, userId) => {
   return callBuilder(route, prefix, 'post')
 }
 
-export const deleteGroup = (groupId) => {
+export const leaveFromGroup = (groupId, userId) => {
+  const route = `/groups/${groupId}/remove/${userId}`
+  const prefix = 'LEAVE_FROM_GROUP'
+  return callBuilder(route, prefix, 'post')
+}
+
+export const deleteGroup = groupId => {
   const route = `/groups/${groupId}/remove`
   const prefix = 'DELETE_GROUP'
   return callBuilder(route, prefix, 'post')
@@ -63,13 +69,13 @@ export const updateExerciseSettings = (settings, groupId) => {
   return callBuilder(route, prefix, 'post', payload)
 }
 
-export const getGroupToken = (groupId) => {
+export const getGroupToken = groupId => {
   const route = `/groups/${groupId}/token`
   const prefix = 'GET_GROUP_TOKEN'
   return callBuilder(route, prefix, 'get')
 }
 
-export const joinGroup = (token) => {
+export const joinGroup = token => {
   const route = '/groups/join'
   const prefix = 'JOIN_GROUP'
   const payload = { token }
@@ -183,7 +189,6 @@ export default (state = { groups: [], joinPending: false }, action) => {
         pending: false,
         error: false,
       }
-
     case 'DELETE_GROUP_ATTEMPT':
       return {
         ...state,
@@ -199,8 +204,7 @@ export default (state = { groups: [], joinPending: false }, action) => {
     case 'DELETE_GROUP_SUCCESS':
       return {
         ...state,
-        groups: state.groups
-          .filter(group => group.group_id !== action.response.removed),
+        groups: state.groups.filter(group => group.group_id !== action.response.removed),
         pending: false,
         error: false,
       }
@@ -296,6 +300,25 @@ export default (state = { groups: [], joinPending: false }, action) => {
           .sort((a, b) => a.groupName.localeCompare(b.groupName)),
         error: false,
         joinPending: false,
+      }
+    case 'LEAVE_FROM_GROUP_ATTEMPT':
+      return {
+        ...state,
+        pending: true,
+        error: false,
+      }
+    case 'LEAVE_FROM_GROUP_FAILURE':
+      return {
+        ...state,
+        pending: false,
+        error: true,
+      }
+    case 'LEAVE_FROM_GROUP_SUCCESS':
+      return {
+        ...state,
+        groups: action.response.groups.sort((a, b) => a.groupName.localeCompare(b.groupName)),
+        pending: false,
+        error: false,
       }
     default:
       return state
