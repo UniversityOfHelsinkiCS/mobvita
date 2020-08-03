@@ -5,19 +5,18 @@ const { google } = require('googleapis');
 const apiClient = google.auth.fromAPIKey(process.env.GOOGLE_APIKEY)
 addTranslations(apiClient)
 
-function addTranslations(auth) {
+async function addTranslations(auth) {
   const sheets = google.sheets({version: 'v4', auth});
+
   sheets.spreadsheets.values.get({
     spreadsheetId: '1OVtLSEpLA6gmwS1LSRGQ1P6MwmhU1xAxOe6fsetCRZk',
-    range: 'A900:H2000',
-  }, (err, res) => {
-    if (err) return console.log('The API returned an error: ' + err);
-    const rows = res.data.values;
-    console.log(rows)
+    range: 'A900:G',
+  }).then(res => {
+    const rows = res.data.values.slice(1);
     const translations = {}
 
-
     for (row of rows) {
+      if (!row[0]) continue
       translations[row[0]] = {
         en: row[2] || '',
         it: row[3] || '',
@@ -26,13 +25,14 @@ function addTranslations(auth) {
         sv: row[6] || ''
       }
     }
-
+    
     makeTranslations(translations)
+  }).catch(err => {
+    console.log('The API returned an error: ' + err);
   });
 }
 
 function makeTranslations(translations) {
-
   const languages = ['fi', 'en', 'sv', 'ru', 'it']
   for (lang of languages) {
     const fileName = `./client/util/translations/revita/${lang}/LC_MESSAGES/messages.json`
