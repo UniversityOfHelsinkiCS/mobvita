@@ -1167,6 +1167,23 @@ body {
   }
 }
 
+.tab-text {
+  font-size: 14px;
+
+  @media (max-width: 450px) {
+    font-size: 13px;
+  }
+  @media (max-width: 380px) {
+    font-size: 12px;
+  }
+  @media (max-width: 355px) {
+    font-size: 11px;
+  }
+  @media (max-width: 330px) {
+    font-size: 10px;
+  }
+}
+
 // General classes
 .auto {
   margin: auto;

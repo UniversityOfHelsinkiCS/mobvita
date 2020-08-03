@@ -2,28 +2,36 @@ import React, { useEffect } from 'react'
 import { useDispatch } from 'react-redux'
 import { Link } from 'react-router-dom'
 import { Tab } from 'semantic-ui-react'
-import { useIntl } from 'react-intl'
+import { FormattedMessage } from 'react-intl'
 import { getGroups } from 'Utilities/redux/groupsReducer'
 import GroupAnalytics from './GroupAnalytics'
 import JoinGroup from './JoinGroup'
 import CreateGroup from './CreateGroup'
 import GroupManagement from './GroupManagement'
 
+const TabContent = ({ translationId }) => (
+  <span className="tab-text">
+    <FormattedMessage id={translationId} />
+  </span>
+)
+
 export default function GroupView({ location }) {
-  const intl = useIntl()
   const dispatch = useDispatch()
 
   useEffect(() => {
     dispatch(getGroups())
   }, [])
 
-  const tabStyle = { paddingLeft: '0.8rem', paddingRight: '0.8rem' }
+  const tabStyle = {
+    paddingLeft: '0.7rem',
+    paddingRight: '0.7rem',
+  }
 
   const panes = [
     {
       menuItem: {
         as: Link,
-        content: intl.formatMessage({ id: 'Management' }),
+        content: <TabContent translationId="Management" />,
         to: '/groups',
         key: 'managment',
         style: tabStyle,
@@ -33,7 +41,7 @@ export default function GroupView({ location }) {
     {
       menuItem: {
         as: Link,
-        content: intl.formatMessage({ id: 'Analytics' }),
+        content: <TabContent translationId="Analytics" />,
         to: '/groups/analytics',
         key: 'analytics',
         style: tabStyle,
@@ -43,7 +51,7 @@ export default function GroupView({ location }) {
     {
       menuItem: {
         as: Link,
-        content: intl.formatMessage({ id: 'Join' }),
+        content: <TabContent translationId="Join" />,
         to: '/groups/join',
         key: 'join',
         style: tabStyle,
@@ -53,9 +61,10 @@ export default function GroupView({ location }) {
     {
       menuItem: {
         as: Link,
-        content: intl.formatMessage({ id: 'New' }),
+        content: <TabContent translationId="Create" />,
         to: '/groups/create',
         key: 'create',
+        style: tabStyle,
       },
       render: () => <CreateGroup />,
     },
