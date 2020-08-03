@@ -6,7 +6,7 @@ import { CopyToClipboard } from 'react-copy-to-clipboard'
 import { Card, Icon } from 'semantic-ui-react'
 import { Button } from 'react-bootstrap'
 import { updateGroupSelect } from 'Utilities/redux/userReducer'
-import { deleteGroup, getGroupToken } from 'Utilities/redux/groupsReducer'
+import { deleteGroup, getGroupToken, removeFromGroup } from 'Utilities/redux/groupsReducer'
 import { setNotification } from 'Utilities/redux/notificationReducer'
 import Spinner from 'Components/Spinner'
 import ConfirmationWarning from 'Components/ConfirmationWarning'
@@ -17,6 +17,7 @@ const GroupCard = ({
   group,
   setAddToGroupId,
   setDeleteGroupId,
+  setLeaveGroupId,
   showTokenGroupId,
   setShowTokenGroupId,
 }) => {
@@ -60,9 +61,9 @@ const GroupCard = ({
       >
         <h5 style={{ fontWeight: 'bold' }}>{groupName}</h5>
       </Card.Content>
-      {isTeaching && (
-        <Card.Content extra>
-          <div className="space-between group-buttons" style={{ whiteSpace: 'nowrap' }}>
+      <Card.Content extra>
+        <div className="space-between group-buttons gap-row-1" style={{ whiteSpace: 'nowrap' }}>
+          {isTeaching && (
             <div className="gap-1 gap-row-1 wrap-and-grow group-management-buttons">
               <Button onClick={handleSettingsClick}>
                 <Icon name="settings" /> <FormattedMessage id="learning-settings" />
@@ -74,50 +75,65 @@ const GroupCard = ({
                 <Icon name="key" /> <FormattedMessage id="show-group-token" />
               </Button>
             </div>
-            <Button
-              data-cy="delete-group"
-              variant="danger"
-              onClick={() => setDeleteGroupId(id)}
-              style={{ whiteSpace: 'nowrap' }}
-            >
-              <Icon name="trash alternate outline" /> <FormattedMessage id="Delete" />
-            </Button>
-          </div>
-          {showToken && (
-            <div
-              className="border rounded"
-              style={{
-                display: 'flex',
-                marginTop: '0.5em',
-                minHeight: '3em',
-                wordBreak: 'break-all',
-              }}
-            >
-              <span style={{ margin: 'auto', padding: '0.5em' }}>{token}</span>
-              <CopyToClipboard text={token}>
-                <Button type="button" onClick={handleTokenCopy}>
-                  <Icon name="copy" size="large" />
-                </Button>
-              </CopyToClipboard>
-            </div>
           )}
-        </Card.Content>
-      )}
+          <div className="group-management-buttons flex gap-1 gap-row-1">
+            {false && (
+              <Button variant="danger" onClick={() => setLeaveGroupId(id)}>
+                <Icon name="log out" /> <FormattedMessage id="Leave" />
+              </Button>
+            )}
+            {isTeaching && (
+              <Button
+                data-cy="delete-group"
+                variant="danger"
+                onClick={() => setDeleteGroupId(id)}
+                style={{ whiteSpace: 'nowrap' }}
+              >
+                <Icon name="trash alternate outline" /> <FormattedMessage id="Delete" />
+              </Button>
+            )}
+          </div>
+        </div>
+        {showToken && (
+          <div
+            className="border rounded"
+            style={{
+              display: 'flex',
+              marginTop: '0.5em',
+              minHeight: '3em',
+              wordBreak: 'break-all',
+            }}
+          >
+            <span style={{ margin: 'auto', padding: '0.5em' }}>{token}</span>
+            <CopyToClipboard text={token}>
+              <Button type="button" onClick={handleTokenCopy}>
+                <Icon name="copy" size="large" />
+              </Button>
+            </CopyToClipboard>
+          </div>
+        )}
+      </Card.Content>
     </Card>
   )
 }
 
 const GroupManagement = () => {
   const { groups, pending } = useSelector(state => state.groups)
+  const userId = useSelector(state => state.user.data.user.oid)
 
   const [addToGroupId, setAddToGroupId] = useState(null)
   const [deleteGroupId, setDeleteGroupId] = useState(false)
+  const [leaveGroupId, setLeaveGroupId] = useState(false)
   const [showTokenGroupId, setShowTokenGroupId] = useState(null)
 
   const dispatch = useDispatch()
 
   const handleGroupDelete = () => {
     dispatch(deleteGroup(deleteGroupId))
+  }
+
+  const handleGroupLeave = () => {
+    dispatch(removeFromGroup(leaveGroupId, userId))
   }
 
   if (pending) return <Spinner />
@@ -134,12 +150,20 @@ const GroupManagement = () => {
       >
         <FormattedMessage id="this-will-remove-the-group-are-you-sure-you-want-to-proceed" />
       </ConfirmationWarning>
+      <ConfirmationWarning
+        open={!!leaveGroupId}
+        setOpen={setLeaveGroupId}
+        action={handleGroupLeave}
+      >
+        Are you sure you want to leave the group?
+      </ConfirmationWarning>
       {groups.map(group => (
         <GroupCard
           key={group.group_id}
           group={group}
           setAddToGroupId={setAddToGroupId}
           setDeleteGroupId={setDeleteGroupId}
+          setLeaveGroupId={setLeaveGroupId}
           showTokenGroupId={showTokenGroupId}
           setShowTokenGroupId={setShowTokenGroupId}
         />
