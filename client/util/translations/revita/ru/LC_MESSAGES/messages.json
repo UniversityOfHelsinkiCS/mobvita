@@ -771,8 +771,8 @@
     "Back to library": "Библиотека",
     "Click here to add site to your favourites.": "Сохранить в списке моих сайтов",
     "Description": "Описание",
-    "Management": "",
-    "Analytics": "",
-    "Join": "",
-    "New": ""
+    "Management": "Настройки",
+    "Analytics": "Прогресс",
+    "Join": "Вступить",
+    "New": "Новая группа"
 }
