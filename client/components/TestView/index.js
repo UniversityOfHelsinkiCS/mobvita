@@ -98,17 +98,17 @@ const TestIndex = () => {
   return (
     <div className="component-container padding-sides-2" style={{ height: '100%' }}>
       {!sessionId && (
-        <div>
+        <div className="padding-left-2 padding-top-2">
           <Button onClick={startTest} data-cy="start-test">
             <FormattedMessage id="start-a-new-test" />
           </Button>
           {language && (
-            <Button onClick={continueTest}>
+            <Button onClick={continueTest} style={{ marginLeft: '1rem' }}>
               <FormattedMessage id="resume-test" />
             </Button>
           )}
           {groups && currentGroup && (
-            <div style={{ marginTop: '0.5em' }}>
+            <div style={{ marginTop: '1.5em' }}>
               <div>
                 <FormattedMessage id="Group" />
               </div>
@@ -123,7 +123,7 @@ const TestIndex = () => {
           )}
 
           <>
-            <hr />
+            <hr style={{ marginTop: '1.5rem', marginBottom: '1.5rem' }} />
             <Button onClick={toggleHistory}>
               <FormattedMessage id={showHistory ? 'Hide history' : 'Show history'} />
             </Button>
