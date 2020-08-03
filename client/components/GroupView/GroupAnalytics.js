@@ -71,7 +71,7 @@ const GroupAnalytics = () => {
     dispatch(updateGroupSelect(key))
   }
 
-  if (pending)
+  if (pending || (groups.length > 0 && !currentGroup))
     return (
       <div style={{ height: '80vh' }}>
         <Spinner />
@@ -122,7 +122,7 @@ const GroupAnalytics = () => {
           </ButtonGroup>
         )}
       </div>
-      <p style={{ paddingLeft: '0.2rem', fontStyle: 'italic' }}>{currentGroup.description}</p>
+      <p style={{ paddingLeft: '0.2rem', fontStyle: 'italic' }}>{currentGroup?.description}</p>
       <CollapsingList header={intl.formatMessage({ id: 'Teachers' })}>
         <ListGroup>
           {currentGroup.teachers.map(teacher => (
