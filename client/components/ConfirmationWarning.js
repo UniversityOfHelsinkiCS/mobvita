@@ -26,7 +26,7 @@ const ConfirmationWarning = ({ open, setOpen, action, children }) => {
         {children}
       </Modal.Content>
       <Modal.Actions>
-        <Button negative onClick={() => handleAccept()} data-cy="confirm-story-delete">
+        <Button negative onClick={() => handleAccept()} data-cy="confirm-warning-dialog">
           <FormattedMessage id="Confirm" />
         </Button>
         <Button onClick={() => handleReject()}>

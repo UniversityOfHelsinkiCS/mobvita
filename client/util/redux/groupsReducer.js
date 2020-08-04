@@ -170,13 +170,11 @@ export default (state = { groups: [], joinPending: false }, action) => {
     case 'REMOVE_FROM_GROUP_ATTEMPT':
       return {
         ...state,
-        pending: true,
         error: false,
       }
     case 'REMOVE_FROM_GROUP_FAILURE':
       return {
         ...state,
-        pending: false,
         error: true,
       }
     case 'REMOVE_FROM_GROUP_SUCCESS':
@@ -186,7 +184,6 @@ export default (state = { groups: [], joinPending: false }, action) => {
           .filter(g => g.group_id !== action.response.group.group_id)
           .concat(action.response.group)
           .sort((a, b) => a.groupName.localeCompare(b.groupName)),
-        pending: false,
         error: false,
       }
     case 'DELETE_GROUP_ATTEMPT':

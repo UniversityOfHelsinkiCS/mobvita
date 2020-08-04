@@ -45,6 +45,7 @@ export default function GroupView({ location }) {
         to: '/groups/analytics',
         key: 'analytics',
         style: tabStyle,
+        'data-cy': 'group-analytics',
       },
       render: () => <GroupAnalytics />,
     },
@@ -61,7 +62,7 @@ export default function GroupView({ location }) {
     {
       menuItem: {
         as: Link,
-        content: <TabContent translationId="New" />,
+        content: <TabContent data-cy="create-group" translationId="New" />,
         to: '/groups/create',
         key: 'create',
         style: tabStyle,

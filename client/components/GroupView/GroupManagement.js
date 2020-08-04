@@ -139,7 +139,7 @@ const GroupManagement = () => {
   if (groups.length === 0) return <NoGroupsView />
 
   return (
-    <div className="padding-sides-2">
+    <div className="padding-sides-2" data-cy="group-list">
       <AddToGroup groupId={addToGroupId} setGroupId={setAddToGroupId} />
       <ConfirmationWarning
         open={!!deleteGroupId}

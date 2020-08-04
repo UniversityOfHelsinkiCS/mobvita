@@ -39,6 +39,7 @@ const Summary = ({ groupName, isTeaching, getSummary }) => {
     return summary
   })
   const { colOrder } = useSelector(({ summary }) => summary)
+  const groups = useSelector(state => state.groups.groups)
 
   const { width: windowWidth } = useWindowDimensions()
 
@@ -69,7 +70,7 @@ const Summary = ({ groupName, isTeaching, getSummary }) => {
     if (isTeaching) {
       getSummary(startDate, endDate)
     }
-  }, [startDate, endDate, groupName])
+  }, [startDate, endDate, groupName, groups])
 
   if (!summary) return <Spinner />
 

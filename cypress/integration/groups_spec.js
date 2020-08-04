@@ -1,4 +1,4 @@
-describe.skip("groups", function () {
+describe("groups", function () {
   this.beforeAll(function () {
     cy.login()
     cy.createUser('teacher')
@@ -21,11 +21,12 @@ describe.skip("groups", function () {
 
     cy.get('[data-cy=create-group]').click()
     cy.get('input').eq(0).type('my_test_group')
-    cy.get('textarea').eq(0).type(this.teacher.email)
-    cy.get('textarea').eq(1).type(this.student.email)
+    cy.get('textarea').eq(1).type(this.teacher.email)
+    cy.get('textarea').eq(2).type(this.student.email)
 
     cy.get('[type=submit]').click()
     cy.contains('my_test_group')
+    cy.reload()
     cy.get('[class=card-header]').eq(0).click()
     cy.contains(this.teacher.username)
     cy.get('[class=card-header]').eq(1).click()
@@ -44,18 +45,12 @@ describe.skip("groups", function () {
       }
     })
     cy.reload()
-    cy.get('[data-cy=select-group]').click()
-    cy.contains('destroyed').click()
-    cy.get('[data-cy=select-group]').contains('destroyed')
-    cy.get('[data-cy=delete-group]').click()
-    cy.get('[data-cy=confirm-group-delete]').click()
-    cy.get('[data-cy=select-group]').contains('destroyed').should('not.exist')
+    cy.contains('destroyed').parent().parent().find('[data-cy=delete-group]').click()
+    cy.get('[data-cy=confirm-warning-dialog]').click()
+    cy.get('[data-cy=group-list]').should('not.contain', 'destroyed')
   })
 
-  /**
-   * This feature has been disabled for now.
-   */
-  it.skip('users can be added to group and removed', function () {
+  it('users can be added to group and removed', function () {
     cy.request({
       method: 'POST',
       url: 'localhost:8000/api/groups',
@@ -67,12 +62,12 @@ describe.skip("groups", function () {
       }
     })
     cy.reload()
-    cy.get('[data-cy=select-group]').click()
-    cy.contains('other group').click()
-    cy.get('[data-cy=add-to-group-modal]').click()
+    cy.contains('other group').parent().parent().find('[data-cy=add-to-group-modal]').click()
     cy.get('textarea').eq(0).type(this.teacher.email)
     cy.get('textarea').eq(1).type(this.student.email)
     cy.get('[type=submit]').click()
+
+    cy.get('[data-cy=group-analytics]').click()
 
     cy.get('[class=card-header]').eq(0).click()
     cy.contains(this.teacher.username)

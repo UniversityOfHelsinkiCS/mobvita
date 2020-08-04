@@ -46,7 +46,12 @@ const CreateGroup = () => {
           <span className="sm-label">
             <FormattedMessage id="student-emails" />
           </span>
-          <FormControl as="textarea" value={students} onChange={e => setStudents(e.target.value)} />
+          <FormControl
+            as="textarea"
+            value={students}
+            onChange={e => setStudents(e.target.value)}
+            data-cy="student-emails"
+          />
           <Button type="submit">
             <FormattedMessage id="Confirm" />
           </Button>
