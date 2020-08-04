@@ -77,7 +77,7 @@ const GroupCard = ({
             </div>
           )}
           <div className="group-management-buttons flex gap-1 gap-row-1">
-            <Button variant="danger" onClick={() => setLeaveGroupId(id)}>
+            <Button variant="danger" onClick={() => setLeaveGroupId(id)} data-cy="leave-group">
               <Icon name="log out" /> <FormattedMessage id="Leave" />
             </Button>
             {isTeaching && (

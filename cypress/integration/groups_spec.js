@@ -50,6 +50,23 @@ describe("groups", function () {
     cy.get('[data-cy=group-list]').should('not.contain', 'destroyed')
   })
 
+  it('user can leave group', function () {
+    cy.request({
+      method: 'POST',
+      url: 'localhost:8000/api/groups',
+      headers: {
+        'Authorization': `Bearer ${this.user.token}`
+      },
+      body: {
+        group_name: 'left'
+      }
+    })
+    cy.reload()
+    cy.contains('left').parent().parent().find('[data-cy=leave-group]').click()
+    cy.get('[data-cy=confirm-warning-dialog]').click()
+    cy.get('[data-cy=group-list]').should('not.contain', 'left')
+  })
+
   it('users can be added to group and removed', function () {
     cy.request({
       method: 'POST',
