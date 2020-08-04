@@ -153,7 +153,7 @@ const GroupManagement = () => {
         setOpen={setLeaveGroupId}
         action={handleGroupLeave}
       >
-        Are you sure you want to leave the group?
+        <FormattedMessage id="Are you sure you want to leave the group?" />
       </ConfirmationWarning>
       {groups.map(group => (
         <GroupCard
