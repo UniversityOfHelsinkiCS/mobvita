@@ -358,26 +358,26 @@ body {
 .library-selection {
   display: flex;
   flex-wrap: wrap;
-  justify-content: flex-end;
-  & > .checkbox-group {
-    flex-grow: 6;
-  }
-  & > .selection {
-    flex-grow: 1;
-  }
+  @media (max-width: 520px) {
+       flex-direction: column;
+    }
+  // & > .checkbox-group {
+  //   flex-grow: 6;
+  // }
+  // & > .selection {
+  //   flex-grow: 1;
+  // }
 }
 
 .checkbox-group {
   display: flex;
+  min-width: 50%;
   button {
     height: 38px;
     &:focus {
       box-shadow: none;
     }
   }
-  @media (min-width: 640px) {
-    margin-left: auto;
- }
 }
 
 .search-and-sort {
