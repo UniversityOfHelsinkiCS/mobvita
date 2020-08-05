@@ -73,5 +73,5 @@ jobs:
           repository: toska/mobvita
           username: ${{ secrets.DOCKER_USERNAME }}
           password: ${{ secrets.DOCKER_PASSWORD }}
-          build_args: ENVIRONMENT=production,REVITA_URL=https://svm-53.cs.helsinki.fi/api,COMMIT_HASH=${{ github.sha }}
+          build_args: ENVIRONMENT=staging,REVITA_URL=https://revita-test.cs.helsinki.fi/api,COMMIT_HASH=${{ github.sha }}
           tags: staging
