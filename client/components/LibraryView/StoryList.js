@@ -1,6 +1,6 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState, useRef } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { Placeholder, Card, Search, Select, Icon, Dropdown } from 'semantic-ui-react'
+import { Placeholder, Card, Search, Select, Icon, Dropdown, Input } from 'semantic-ui-react'
 import StoryListItem from 'Components/LibraryView/StoryListItem'
 import { useIntl } from 'react-intl'
 import CheckboxGroup from 'Components/CheckboxGroup'
@@ -16,6 +16,7 @@ const StoryList = () => {
   const [sorter, setSorter] = useState('date')
   const [sortDirection, setSortDirection] = useState(1)
   const [searchString, setSearchString] = useState('')
+  const [smallScreenSearchOpen, setSmallScreenSearchOpen] = useState(false)
   const [searchedStories, setSearchedStories] = useState([])
   const [libraries, setLibraries] = useState({
     public: false,
@@ -32,7 +33,9 @@ const StoryList = () => {
     pending: stories.pending,
   }))
 
-  const smallWindow = useWindowDimensions().width < 640
+  const smallWindow = useWindowDimensions().width < 520
+
+  const smallScreenSearchbar = useRef()
 
   const setLibrary = library => {
     const librariesCopy = {}
@@ -103,64 +106,90 @@ const StoryList = () => {
     setSearchedStories(searchFilteredStories)
   }, [searchString.length, pending])
 
+  useEffect(() => {
+    if (smallScreenSearchbar.current && smallScreenSearchOpen) smallScreenSearchbar.current.focus()
+  }, [smallScreenSearchOpen])
+
   const handleGroupChange = (_e, option) => {
     dispatch(updateGroupSelect(option.value))
+  }
+
+  const handleSearchIconClick = () => {
+    if (smallScreenSearchOpen) {
+      setSearchString('')
+      setSmallScreenSearchOpen(false)
+    } else {
+      setSmallScreenSearchOpen(true)
+    }
   }
 
   const noResults = !pending && searchString.length > 0 && searchedStories.length === 0
 
   const libraryControls = (
     <div data-cy="library-controls" className="library-control">
-      <div className="search-and-sort">
-        <Search
-          open={false}
-          icon={noResults ? 'ban' : 'search'}
-          loading={pending}
-          value={searchString}
-          onSearchChange={e => setSearchString(e.target.value)}
-          size={smallWindow ? 'mini' : 'tiny'}
-          style={{ height: '100%' }}
+      <div className="library-selection">
+        <CheckboxGroup
+          values={libraries}
+          additionalClass="wrap-and-grow align-center padding-top-1"
+          onClick={handleLibraryChange}
+          reverse
         />
-        <Dropdown
-          value={sorter}
-          options={sortDropdownOptions}
-          onChange={handleSortChange}
-          selection
-          fluid
-          style={{
-            marginLeft: '0.5em',
-            minHeight: '1em',
-            height: smallWindow ? '2.2em' : '',
-            display: 'flex',
-            alignItems: 'center',
-            color: '#777',
-            maxWidth: '10em',
-          }}
-        />
-        <Icon
-          style={{ cursor: 'pointer', marginLeft: '0.5em' }}
-          name={sortDirection === 1 ? 'caret up' : 'caret down'}
-          size="large"
-          color="grey"
-          onClick={() => setSortDirection(sortDirection * -1)}
-        />
-      </div>
-      <CheckboxGroup
-        values={libraries}
-        additionalClass="wrap-and-grow align-center"
-        onClick={handleLibraryChange}
-        reverse
-      />
-      {libraries.group && (
-        <div style={{ alignItems: 'center', display: 'flex', justifyContent: 'flex-end' }}>
+        {libraries.group && (
           <Select
             value={user.last_selected_group}
             options={groupDropdownOptions}
             onChange={handleGroupChange}
             disabled={!libraries.group}
-            style={{ color: '#777' }}
+            style={{ color: '#777', marginTop: '0.5em' }}
+          />
+        )}
+      </div>
+      <StoryForm setLibraries={setLibraries} />
+      <div className="search-and-sort">
+        <div className="flex align-center">
+          <Dropdown
+            value={sorter}
+            options={sortDropdownOptions}
+            onChange={handleSortChange}
+            selection
+          />
+          <Icon
+            style={{ cursor: 'pointer', marginLeft: '0.5em' }}
+            name={sortDirection === 1 ? 'caret up' : 'caret down'}
+            size="large"
+            color="grey"
+            onClick={() => setSortDirection(sortDirection * -1)}
           />
         </div>
+        {smallWindow ? (
+          <Icon
+            name={smallScreenSearchOpen ? 'close' : 'search'}
+            circular
+            color="grey"
+            onClick={handleSearchIconClick}
+          />
+        ) : (
+          <Search
+            open={false}
+            icon={noResults ? 'ban' : 'search'}
+            loading={pending}
+            value={searchString}
+            onSearchChange={e => setSearchString(e.target.value)}
+            size="tiny"
+            style={{ height: '100%' }}
+          />
+        )}
+      </div>
+      {smallScreenSearchOpen && (
+        <Input
+          icon="search"
+          loading={pending}
+          value={searchString}
+          onChange={e => setSearchString(e.target.value)}
+          size="mini"
+          fluid
+          ref={smallScreenSearchbar}
+        />
       )}
     </div>
   )
@@ -259,9 +288,7 @@ const StoryList = () => {
   return (
     <div className="component-container">
       {libraryControls}
-
       <Card.Group itemsPerRow={1} doubling>
-        <StoryForm setLibraries={setLibraries} />
         <WindowScroller>
           {({ height, isScrolling, onChildScroll, scrollTop }) => (
             <List

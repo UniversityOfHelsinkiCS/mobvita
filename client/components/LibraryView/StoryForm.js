@@ -77,30 +77,32 @@ const StoryForm = ({ setLibraries }) => {
                   data-cy="new-story-input"
                 />
               </Form>
-              <div className="flex padding-top-1">
-                <Button form="url-upload" variant="primary" type="submit" data-cy="submit-story">
-                  <FormattedMessage id="Confirm" />
-                </Button>
-                {!smallWindow && (
-                  <div className="gap-1 padding-left-1">
-                    <StoryFileModal
-                      trigger={
-                        <Button variant="secondary">
-                          {intl.formatMessage({ id: 'upload-stories' })}
-                        </Button>
-                      }
-                    />
-                    <AddStoryModal
-                      trigger={
-                        <Button variant="secondary">
-                          {intl.formatMessage({ id: 'or-paste-a-text' }).slice(0, -1)}
-                        </Button>
-                      }
-                    />
-                  </div>
-                )}
+              <div className="padding-top-1 space-between wrap">
+                <div className="flex padding-bottom-1">
+                  <Button form="url-upload" variant="primary" type="submit" data-cy="submit-story">
+                    <FormattedMessage id="Confirm" />
+                  </Button>
+                  {!smallWindow && (
+                    <div className="gap-1 padding-left-1">
+                      <StoryFileModal
+                        trigger={
+                          <Button variant="secondary">
+                            {intl.formatMessage({ id: 'upload-stories' })}
+                          </Button>
+                        }
+                      />
+                      <AddStoryModal
+                        trigger={
+                          <Button variant="secondary">
+                            {intl.formatMessage({ id: 'or-paste-a-text' }).slice(0, -1)}
+                          </Button>
+                        }
+                      />
+                    </div>
+                  )}
+                </div>
                 <Button
-                  className="auto-left"
+                  style={{ marginBottom: '0.5em' }}
                   variant="link"
                   onClick={() => setShowRecommendedSites(!showRecommendedSites)}
                 >
