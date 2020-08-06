@@ -23,6 +23,7 @@ import flagFrench from 'Assets/flags/flag_french.png'
 import flagTurkish from 'Assets/flags/flag_turkish.png'
 import flagItalian from 'Assets/flags/flag_italian.png'
 import flagSyriac from 'Assets/flags/flag_syriac.png'
+import flagChinese from 'Assets/flags/flag_prc.png'
 import culture1 from 'Assets/culture1.jpg'
 import politics1 from 'Assets/politics1.jpg'
 import science1 from 'Assets/science1.jpg'
@@ -59,6 +60,7 @@ export const images = {
   flagTurkish,
   flagFrench,
   flagSyriac,
+  flagChinese,
   flashcards,
   logo,
   flashcardIcon,
@@ -110,7 +112,7 @@ export const supportedLearningLanguages = {
     'udmurt',
     'turkish',
   ].sort((a, b) => a.localeCompare(b)),
-  experimental: ['syriac'],
+  experimental: ['syriac', 'chinese'],
 }
 
 export const betaLanguages = [
@@ -211,6 +213,7 @@ export const respVoiceLanguages = {
   Spanish: 'Spanish Female',
   Swedish: 'Swedish Female',
   Turkish: 'Turkish Female',
+  Chinese: 'Chinese Female'
 }
 
 export const translatableLanguages = {
@@ -417,4 +420,21 @@ export const translatableLanguages = {
   ],
   Livvi: ['Finnish'],
   Syriac: [],
+  Chinese: [
+    'English',
+    'French',
+    'German',
+    'Russian',
+    'Spanish',
+    'Finnish',
+    'Swedish',
+    'Turkish',
+    'Italian',
+    'Polish',
+    'Czech',
+    'Norwegian',
+    'Portuguese',
+    'Japanese',
+    'Hindi',
+  ],
 }
