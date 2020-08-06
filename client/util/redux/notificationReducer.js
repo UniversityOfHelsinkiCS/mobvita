@@ -5,7 +5,10 @@ const type = {
   info: 'info',
 }
 
-export const setNotification = (translationID, type, options) => ({ type: 'SET_NOTIFICATION', payload: { translationID, type, options } })
+export const setNotification = (translationID, message, type, options) => ({
+  type: 'SET_NOTIFICATION',
+  payload: { translationID, message, type, options },
+})
 
 const initialState = {
   message: null,
@@ -13,9 +16,7 @@ const initialState = {
   options: null,
 }
 
-const failureMessage = response => (response.response
-  ? response.response.data
-  : 'Server error')
+const failureMessage = response => response || 'Server error'
 
 export default (state = initialState, action) => {
   switch (action.type) {
@@ -30,12 +31,14 @@ export default (state = initialState, action) => {
     case 'SET_NOTIFICATION':
       return {
         translationId: action.payload.translationID,
+        message: action.payload.translationID,
         type: action.payload.type,
         options: action.payload.options || {},
       }
     case 'POST_REGISTER_SUCCESS':
       return {
-        translationId: 'a-message-containing-a-link-to-confirm-your-registration-has-been-sent-to-your-email-address-please-',
+        translationId:
+          'a-message-containing-a-link-to-confirm-your-registration-has-been-sent-to-your-email-address-please-',
         type: type.success,
         options: { autoClose: false },
       }

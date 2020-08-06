@@ -1,11 +1,11 @@
 import { ToastContainer, toast } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
-
 import React, { useState, useEffect, useMemo } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { getProgress } from 'Utilities/redux/uploadProgressReducer'
 import { getAllStories } from 'Utilities/redux/storiesReducer'
 import { setNotification } from 'Utilities/redux/notificationReducer'
+import { clearServerError } from 'Utilities/redux/serverErrorReducer'
 import { updateFavouriteSites } from 'Utilities/redux/userReducer'
 import { useIntl } from 'react-intl'
 import { learningLanguageSelector } from 'Utilities/common'
@@ -16,8 +16,10 @@ export default function Toaster() {
 
   const [interval, saveInterval] = useState(null)
   const [progressToastId, setProgressToastId] = useState(null)
+  const [serverErrorToastId, setServerErrorToastId] = useState(null)
 
   const { message, type, options, translationId } = useSelector(({ notification }) => notification)
+  const { serverError } = useSelector(({ serverError }) => serverError)
   const { storyId, progress, error, pending, processingError, custom, url } = useSelector(
     ({ uploadProgress }) => uploadProgress
   )
@@ -124,6 +126,21 @@ export default function Toaster() {
       setProgressToastId(null)
     }
   }, [processingError, error])
+
+  useEffect(() => {
+    if (serverError && !serverErrorToastId) {
+      setServerErrorToastId(
+        toast(intl.formatMessage({ id: 'server-issues' }), {
+          type: 'error',
+          autoClose: false,
+          onClose: () => {
+            dispatch(clearServerError())
+            setServerErrorToastId(null)
+          },
+        })
+      )
+    }
+  }, [serverError])
 
   // Handles messages that come from Redux:
   useEffect(() => {

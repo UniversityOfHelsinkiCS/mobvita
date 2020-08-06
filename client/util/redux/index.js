@@ -23,6 +23,7 @@ import flashcardPractice from './flashcardPracticeReducer'
 import tests from './testReducer'
 import exerciseHistory from './exerciseHistoryReducer'
 import crossword from './crosswordReducer'
+import serverError from './serverErrorReducer'
 
 const rootReducer = combineReducers({
   stories,
@@ -48,6 +49,7 @@ const rootReducer = combineReducers({
   tests,
   exerciseHistory,
   crossword,
+  serverError,
 })
 
 export default (state, action) => (

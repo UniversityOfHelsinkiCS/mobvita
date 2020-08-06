@@ -4,7 +4,7 @@ import { Route, Router as ReactRouter } from 'react-router-dom'
 import { createBrowserHistory } from 'history'
 import { basePath, checkRevitaStatus } from 'Utilities/common'
 import { useDispatch } from 'react-redux'
-import { setNotification } from 'Utilities/redux/notificationReducer'
+import { setServerError } from 'Utilities/redux/serverErrorReducer'
 import { Offline } from 'react-detect-offline'
 import Toaster from './Toaster'
 import Sidebar from './Sidebar'
@@ -41,7 +41,7 @@ const App = () => {
   history.push(history.location)
 
   if (revitaStatus !== 'OK') {
-    dispatch(setNotification('server-issues', 'error', { autoClose: false }))
+    dispatch(setServerError())
   }
 
   return (

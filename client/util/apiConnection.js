@@ -32,6 +32,17 @@ export default (route, prefix, method = 'get', data, query, cache) => ({
   },
 })
 
+const SERVER_ERROR_STATUSES = [502, 503, 504]
+
+const handleError = (store, error, prefix, query) => {
+  if (SERVER_ERROR_STATUSES.includes(error.response.status)) {
+    store.dispatch({ type: 'SET_SERVER_ERROR' })
+    store.dispatch({ type: `${prefix}_FAILURE`, query })
+  } else {
+    store.dispatch({ type: `${prefix}_FAILURE`, response: error.response.data, query })
+  }
+}
+
 /**
  * This is a redux middleware used for tracking api calls
  */
@@ -48,7 +59,7 @@ export const handleRequest = store => next => async action => {
       }
       store.dispatch({ type: `${prefix}_SUCCESS`, response: res.data, query })
     } catch (err) {
-      store.dispatch({ type: `${prefix}_FAILURE`, response: err, query })
+      handleError(store, err, prefix, query)
     }
   }
 }
