@@ -25,9 +25,6 @@ const ConceptHeader = ({ target }) => {
 
   let title
   switch (target) {
-    // case 'groups':
-    //   title = `${intl.formatMessage({ id: 'group-learning-settings-for' })} ${groupName}`
-    //   break
     case 'stories':
       title = `${intl.formatMessage({ id: 'story-exercise-settings-for' })} ${storyTitle}`
       break

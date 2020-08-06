@@ -19,7 +19,6 @@ import summary from './groupSummaryReducer'
 import practice from './practiceReducer'
 import passwordReset from './passwordResetReducer'
 import studentProgress from './groupProgressReducer'
-import flashcardPractice from './flashcardPracticeReducer'
 import tests from './testReducer'
 import exerciseHistory from './exerciseHistoryReducer'
 import crossword from './crosswordReducer'
@@ -45,7 +44,6 @@ const rootReducer = combineReducers({
   practice,
   passwordReset,
   studentProgress,
-  flashcardPractice,
   tests,
   exerciseHistory,
   crossword,

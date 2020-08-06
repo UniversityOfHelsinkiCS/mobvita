@@ -9,8 +9,6 @@ import Footer from 'Components/Footer'
 import PracticeModal from './PracticeModal'
 import EloChart from './EloChart'
 
-// import StoryAddition from 'Components/StoryAddition'
-
 const PracticeButton = props => (
   <Button
     block
