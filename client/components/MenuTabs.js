@@ -1,6 +1,6 @@
 import React from 'react'
 import { Tab } from 'semantic-ui-react'
-import StoryList from 'Components/LibraryView/StoryList'
+import LibraryView from 'Components/LibraryView'
 import HomeView from 'Components/HomeView'
 import Banners from 'Components/Banners'
 import { FormattedMessage } from 'react-intl'
@@ -35,7 +35,7 @@ const Tabs = ({ location }) => {
         key: 'library',
         'data-cy': 'library-tab',
       },
-      render: () => <StoryList />,
+      render: () => <LibraryView />,
     },
   ]
 

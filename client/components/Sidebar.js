@@ -8,7 +8,7 @@ import { localeOptions, capitalize, localeNameToCode, images } from 'Utilities/c
 import { setLocale } from 'Utilities/redux/localeReducer'
 import { sidebarSetOpen } from 'Utilities/redux/sidebarReducer'
 import { logout, updateLocale } from 'Utilities/redux/userReducer'
-import TermsAndConditions from 'Components/TermsAndConditions'
+import TermsAndConditions from 'Components/StaticContent/TermsAndConditions'
 import { Button } from 'react-bootstrap'
 import useWindowDimensions from 'Utilities/windowDimensions'
 import AboutUs from './StaticContent/AboutUs'

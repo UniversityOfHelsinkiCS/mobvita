@@ -13,7 +13,7 @@ import {
 } from 'Utilities/common'
 import useWindowDimensions from 'Utilities/windowDimensions'
 import { getCrossword, revealClue } from 'Utilities/redux/crosswordReducer'
-import Crossword from 'Components/Crossword'
+import Crossword from 'Components/CrosswordView/Crossword'
 import PlainWord from 'Components/PracticeView/PlainWord'
 import { isEmpty } from 'lodash'
 import DictionaryHelp from 'Components/DictionaryHelp'
