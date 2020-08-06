@@ -1,77 +1,77 @@
 
-# name: Test and build staging-image
+name: Staging
 
-# on:
-#   push:
-#     branches: [master]
+on:
+  push:
+    branches: [master]
 
-# jobs:
-#   sentry:
-#     name: "Make sentry release and upload sourcemaps"
-#     needs: build
-#     runs-on: ubuntu-18.04
-#     env:
-#       SENTRY_PROJECT: mobvita-frontend
-#       SENTRY_ORG: sentry
-#       SENTRY_AUTH_TOKEN: ${{ secrets.SENTRY_AUTH_TOKEN }}
-#       SENTRY_URL: ${{ secrets.SENTRY_URL }}
+jobs:
+  sentry:
+    name: "Sentry"
+    needs: build
+    runs-on: ubuntu-18.04
+    env:
+      SENTRY_PROJECT: mobvita-frontend
+      SENTRY_ORG: sentry
+      SENTRY_AUTH_TOKEN: ${{ secrets.SENTRY_AUTH_TOKEN }}
+      SENTRY_URL: ${{ secrets.SENTRY_URL }}
 
-#     steps:
-#       - name: Checkout
-#         uses: actions/checkout@v2
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
 
-#       - name: npm ci
-#         run: npm ci
+      - name: npm ci
+        run: npm ci
 
-#       - name: npm run build
-#         run: npm run build
+      - name: npm run build
+        run: npm run build
       
-#       - name: Make Sentry release
-#         run: npm run sentry-cli -- releases new --finalize mobvita-frontend@$GITHUB_SHA
+      - name: Make Sentry release
+        run: npm run sentry-cli -- releases new --finalize mobvita-frontend@$GITHUB_SHA
 
-#       - name: Upload sourcemaps
-#         run: npm run sentry-cli -- releases files mobvita-frontend@$GITHUB_SHA upload-sourcemaps  --rewrite ./dist/main.js.map
+      - name: Upload sourcemaps
+        run: npm run sentry-cli -- releases files mobvita-frontend@$GITHUB_SHA upload-sourcemaps  --rewrite ./dist/main.js.map
 
-#   test:
-#     name: "Run linter and Cypress tests"
-#     runs-on: ubuntu-18.04
-#     steps:
-#       - name: Checkout
-#         uses: actions/checkout@v2
+  test:
+    name: "Run Cypress tests"
+    runs-on: ubuntu-18.04
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
 
-#       - name: npm ci
-#         run: npm ci
+      - name: npm ci
+        run: npm ci
 
-#       - name: docker-compose up -d
-#         run: docker-compose up -d
+      - name: docker-compose up -d
+        run: docker-compose up -d
 
-#       - name: Run cypress tests
-#         run: npm run cypress:run
+      - name: Run cypress tests
+        run: npm run cypress:run
 
-#       - uses: actions/upload-artifact@v1
-#         if: failure()
-#         with:
-#           name: cypress-screenshots
-#           path: /home/runner/work/mobvita/mobvita/cypress/screenshots/
-#       # Test run video was always captured, so this action uses "always()" condition
-#       - uses: actions/upload-artifact@v1
-#         if: always()
-#         with:
-#           name: cypress-videos
-#           path: /home/runner/work/mobvita/mobvita/cypress/videos/
+      - uses: actions/upload-artifact@v1
+        if: failure()
+        with:
+          name: cypress-screenshots
+          path: /home/runner/work/mobvita/mobvita/cypress/screenshots/
+      # Test run video was always captured, so this action uses "always()" condition
+      - uses: actions/upload-artifact@v1
+        if: always()
+        with:
+          name: cypress-videos
+          path: /home/runner/work/mobvita/mobvita/cypress/videos/
 
-#   build:
-#     name: 'Build and publish staging image'
-#     needs: test
-#     runs-on: ubuntu-16.04
-#     steps:
-#       - name: Checkout
-#         uses: actions/checkout@v2
-#       - name: Publish to DockerHub
-#         uses: docker/build-push-action@v1.1.0
-#         with:
-#           repository: toska/mobvita
-#           username: ${{ secrets.DOCKER_USERNAME }}
-#           password: ${{ secrets.DOCKER_PASSWORD }}
-#           build_args: ENVIRONMENT=staging,REVITA_URL=https://revita-test.cs.helsinki.fi/api,COMMIT_HASH=${{ github.sha }}
-#           tags: staging
+  build:
+    name: 'Publish to dockerhub'
+    needs: test
+    runs-on: ubuntu-16.04
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: Publish to DockerHub
+        uses: docker/build-push-action@v1.1.0
+        with:
+          repository: toska/mobvita
+          username: ${{ secrets.DOCKER_USERNAME }}
+          password: ${{ secrets.DOCKER_PASSWORD }}
+          build_args: ENVIRONMENT=staging,REVITA_URL=https://revita-test.cs.helsinki.fi/api,COMMIT_HASH=${{ github.sha }}
+          tags: staging
