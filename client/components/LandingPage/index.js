@@ -54,7 +54,7 @@ const LandingPage = () => {
             alt="revitaLogo"
           />
           <h2 style={{ color: 'white', fontWeight: 600, paddingTop: '0.5em' }}>
-            Master a language by learning from stories of your own choosing
+            <FormattedMessage id="Master-a-language-by-learning-from-stories" />
           </h2>
           <p
             style={{
@@ -64,9 +64,7 @@ const LandingPage = () => {
               paddingTop: '1em',
             }}
           >
-            Revita provides tools for language learning, and for supporting endangered languages.
-            Revita stimulates the student to practice in actively producing language, rather than
-            passively absorbing rules.
+            <FormattedMessage id="Revita: for language learning and supporting endangered languages" />
           </p>
           <button
             type="button"
