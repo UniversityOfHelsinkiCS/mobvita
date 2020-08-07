@@ -1,0 +1,19 @@
+name: Build production-image
+
+on:
+  release:
+    types: [published]
+
+jobs:
+  build:
+    runs-on: ubuntu-18.04
+    steps:
+      - uses: actions/checkout@v2
+      - name: Publish to DockerHub
+        uses: docker/build-push-action@v1.1.0
+        with:
+          repository: toska/mobvita
+          username: ${{ secrets.DOCKER_USERNAME }}
+          password: ${{ secrets.DOCKER_PASSWORD }}
+          build_args: ENVIRONMENT=production,REVITA_URL=https://svm-53.cs.helsinki.fi/api,COMMIT_HASH=${{ github.sha }}
+          tags: prod
