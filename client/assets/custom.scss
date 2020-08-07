@@ -502,7 +502,13 @@ body {
   }
 
   &-title {
-    height: 3.5em;
+    display: flex;
+    justify-content: center;
+    align-content: flex-end;
+    position: sticky;
+  }
+  &-phonetics {
+    height: 2.5em;
     display: flex;
     justify-content: center;
     align-content: flex-end;

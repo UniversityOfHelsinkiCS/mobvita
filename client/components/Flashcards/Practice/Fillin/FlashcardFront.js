@@ -12,6 +12,7 @@ const FlashcardFront = ({
   checkAnswer,
   hints,
   lemma,
+  phonetics,
   focusedAndBigScreen,
   stage,
   ...props
@@ -26,6 +27,7 @@ const FlashcardFront = ({
       <div className="flashcard-text-container">
         <FlashcardHint hints={hints} stage={stage} />
         <h2 data-cy="flashcard-title" className="flashcard-title">{lemma}</h2>
+        <h3 className="flashcard-phonetics">{phonetics && phonetics}</h3>
       </div>
       {!sameLanguage
         && (

@@ -30,6 +30,7 @@ const Fillin = ({
     _id: id,
     stage,
     lemma,
+    phonetics,
   } = card
 
   const getRemovedHints = () => card.hint.filter(h => !hints.includes(h.hint))
@@ -80,6 +81,7 @@ const Fillin = ({
     focusedAndBigScreen,
     handleEdit,
     lemma,
+    phonetics,
   }
 
   if (editing) {
