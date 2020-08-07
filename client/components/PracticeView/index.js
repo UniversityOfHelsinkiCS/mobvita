@@ -69,10 +69,10 @@ const PracticeView = () => {
     dispatch(setAnswers(newAnswer))
   }
 
-  const handleWordClick = (surfaceWord, wordLemmas, wordId) => {
+  const handleWordClick = (surfaceWord, wordLemmas, wordId, isMasked) => {
     if (autoSpeak === 'always' && voice) speak(surfaceWord, voice)
     if (wordLemmas) {
-      dispatch(setWords(surfaceWord, wordLemmas))
+      dispatch(setWords(surfaceWord, wordLemmas, undefined, isMasked))
       dispatch(
         getTranslationAction(
           newCapitalize(learningLanguage),
