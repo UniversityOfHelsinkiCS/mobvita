@@ -7,7 +7,7 @@
     "dev": "docker-compose up",
     "build": "webpack --mode=production",
     "start:prod": "cross-env NODE_ENV=production node index.js",
-    "start:dev": "cross-env NODE_ENV=development nodemon --ignore '*_spec.js' index.js",
+    "start:dev": "cross-env NODE_ENV=development nodemon index.js",
     "start:ci": "cross-env ENVIRONMENT=staging node index.js",
     "lint": "eslint .",
     "lint:fix": "eslint . --fix",
@@ -122,7 +122,8 @@
     "ignore": [
       "dist/*",
       "client/*",
-      "server/*"
+      "server/*",
+      "*_spec.js"
     ]
   },
   "_moduleAliases": {
