@@ -76,7 +76,7 @@ describe('flashcards', function () {
   describe('multiple cards', function () {
     this.beforeEach(function () {
       cy.visit('http://localhost:8000/stories/5c407e9eff634503466b0dde/read')
-      cy.get('.book').click()
+      cy.get('.book').click({ force: true })
 
       cy.contains('lentokoneita').click()
       cy.get('[data-cy=translations]').contains('plane')
