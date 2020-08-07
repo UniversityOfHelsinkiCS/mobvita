@@ -13,7 +13,7 @@ import { useLearningLanguage } from 'Utilities/common'
 import ProgressStats from './ProgressStats'
 
 const PickDate = ({ date, setDate }) => (
-  <DatePicker selected={date} onChange={date => setDate(date)} dateFormat="yyyy/MM/dd" />
+  <DatePicker selected={date} onChange={date => setDate(date)} dateFormat="yyyy/MM/dd" withPortal />
 )
 
 const Progress = () => {
