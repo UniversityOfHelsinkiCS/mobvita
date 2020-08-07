@@ -128,6 +128,11 @@ export const betaLanguages = [
   'turkish',
 ]
 
+export const exerciseMaskedLanguages = [
+  'Chinese'
+]
+export const maskSymbol = '?'
+
 export const colors = {}
 
 export const flashcardColors = {
