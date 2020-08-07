@@ -24,7 +24,7 @@ const EloChart = ({ width }) => {
   const filteredHistory = []
   const weeks = weeklyPracticeTimeHistory.map(element => element.week).reverse()
 
-  exerciseHistory.forEach((e) => {
+  exerciseHistory.forEach(e => {
     const date = new Date(e.date)
     const week = moment(new Date(date)).week()
     const weekday = moment(new Date(date)).isoWeekday()
@@ -34,44 +34,11 @@ const EloChart = ({ width }) => {
     }
   })
 
-  // Code for having a curve with fake data point for each day without data
-  // const eloResults = []
-  // let previousScore
-  // let score = null
-  // weeks.forEach((weekNumber) => {
-  //   for (let day = 1; day <= 7; day++) {
-  //     const element = filteredHistory.find(element => element.week === weekNumber && element.weekday === day)
-  //     if (element) {
-  //       score = element.score
-  //       eloResults.push(score)
-  //     } else {
-  //       previousScore = score
-  //       eloResults.push(null)
-  //     }
-  //   }
-  // })
+  const eloResults =
+    exerciseHistory && exerciseHistory.map(e => [moment(e.date).valueOf(), e.score])
 
-
-  // for (let i = 0; i < eloResults.length; i++) { // Replace beginning nulls
-  //   if (eloResults[i]) {
-  //     for (let j = i; j >= 0; j--) {
-  //       eloResults[j] = eloResults[i]
-  //     }
-  //     break
-  //   }
-  // }
-
-  // for (let i = 0; i < eloResults.length; i++) { // Fill blank days
-  //   if (!eloResults[i]) {
-  //     eloResults[i] = eloResults[i - 1]
-  //   }
-  // }
-
-  const eloResults = exerciseHistory
-    && exerciseHistory.map(e => [moment(e.date).valueOf(), e.score])
-
-  const flashcardEloResults = flashcardHistory
-    && flashcardHistory.map(e => [moment(e.date).valueOf(), e.score])
+  const flashcardEloResults =
+    flashcardHistory && flashcardHistory.map(e => [moment(e.date).valueOf(), e.score])
 
   // Extend the curve to current day
   if (eloResults && eloResults[0]) {
@@ -79,7 +46,10 @@ const EloChart = ({ width }) => {
   }
 
   if (flashcardEloResults && flashcardEloResults[0]) {
-    flashcardEloResults.push([moment().valueOf(), flashcardEloResults[flashcardEloResults.length - 1][1]])
+    flashcardEloResults.push([
+      moment().valueOf(),
+      flashcardEloResults[flashcardEloResults.length - 1][1],
+    ])
   }
 
   const practicetimes = {
@@ -88,44 +58,6 @@ const EloChart = ({ width }) => {
     xAxis: 1,
     data: weeklyPracticeTimeHistory.map(element => [element.week, element.practice_time]).reverse(),
   }
-
-  // code for calculating custom min/max
-  // const getFourWeekElo = history => history
-  //   .filter(data => moment(data.date).valueOf() > moment().subtract(4, 'weeks').valueOf())
-  //   .map(data => data.score)
-
-  // const getLastEntryBeforeFourWeeks = (history, fourWeekElo) => {
-  //   return fourWeekElo < history
-  //     && history[history.length - fourWeekElo.length - 1]
-  // }
-
-  // const getMinY = (lastEntryBeforeFourWeeks, fourWeekElo) => (lastEntryBeforeFourWeeks
-  //   && lastEntryBeforeFourWeeks.score < Math.min(...fourWeekElo)
-  //   ? Math.floor(lastEntryBeforeFourWeeks.score / 10) * 10
-  //   : Math.floor(Math.min(...fourWeekElo) / 10) * 10)
-
-  // const getMaxY = (lastEntryBeforeFourWeeks, fourWeekElo) => (lastEntryBeforeFourWeeks
-  //   && lastEntryBeforeFourWeeks.score > Math.max(...fourWeekElo)
-  //   ? Math.ceil(lastEntryBeforeFourWeeks.score / 10) * 10
-  //   : Math.ceil(Math.max(...fourWeekElo) / 10) * 10)
-
-  // const storyFourWeekElo = exerciseHistory && getFourWeekElo(exerciseHistory)
-  // const flashcardFourWeekElo = flashcardHistory && getFourWeekElo(flashcardHistory)
-
-  // const storyLastEntryBeforeFourWeeks = exerciseHistory
-  //   && getLastEntryBeforeFourWeeks(exerciseHistory, storyFourWeekElo)
-  // const flashcardLastEntryBeforeFourWeeks = flashcardHistory
-  //   && getLastEntryBeforeFourWeeks(flashcardHistory, flashcardFourWeekElo)
-
-  // const minY = Math.min(
-  //   getMinY(flashcardLastEntryBeforeFourWeeks, flashcardFourWeekElo),
-  //   getMinY(storyLastEntryBeforeFourWeeks, storyFourWeekElo),
-  // )
-
-  // const maxY = Math.max(
-  //   getMaxY(flashcardLastEntryBeforeFourWeeks, flashcardFourWeekElo),
-  //   getMaxY(storyLastEntryBeforeFourWeeks, storyFourWeekElo),
-  // )
 
   const options = {
     title: { text: '' },
@@ -139,29 +71,31 @@ const EloChart = ({ width }) => {
         return this.y
       },
     },
-    yAxis: [{
-      title: { enabled: false },
-      // eslint-disable-next-line
-      tickPositioner: function () {
+    yAxis: [
+      {
+        title: { enabled: false },
         // eslint-disable-next-line
-        return [Math.floor(this.dataMin / 10) * 10, Math.ceil(this.dataMax / 10) * 10]
-      },
-    },
-    {
-      title: {
-        text: intl.formatMessage({ id: 'Practiced hours' }),
-        rotation: 0,
-        align: 'high',
-        offset: 32,
-        y: -10,
-        reserveSpace: false,
-        style: {
-          direction: 'rtl',
-          whiteSpace: 'nowrap',
+        tickPositioner: function () {
+          // eslint-disable-next-line
+          return [Math.floor(this.dataMin / 10) * 10, Math.ceil(this.dataMax / 10) * 10]
         },
       },
-      opposite: true,
-    }],
+      {
+        title: {
+          text: intl.formatMessage({ id: 'Practiced hours' }),
+          rotation: 0,
+          align: 'high',
+          offset: 32,
+          y: -10,
+          reserveSpace: false,
+          style: {
+            direction: 'rtl',
+            whiteSpace: 'nowrap',
+          },
+        },
+        opposite: true,
+      },
+    ],
     xAxis: [
       { visible: false, min: moment().subtract(4, 'weeks').valueOf() },
       {
@@ -189,36 +123,30 @@ const EloChart = ({ width }) => {
   const showFlashcardElo = flashcardHistory && flashcardHistory.length > 0
 
   return (
-    <div style={{ textAlign: 'center', width, cursor: 'pointer', alignSelf: 'flex-start' }} onClick={() => history.push('/profile/progress')}>
+    <div
+      style={{ textAlign: 'center', width, cursor: 'pointer', alignSelf: 'flex-start' }}
+      onClick={() => history.push('/profile/progress')}
+    >
       <div className="space-evenly padding-bottom-1">
-        {showStoryElo
-          && (
-            <span>
-              <Icon name="star outline" style={{ margin: 0 }} />
-              {' '}
-              {exerciseHistory[exerciseHistory.length - 1].score}
-            </span>
-          )
-        }
-        {showFlashcardElo
-          && (
-            <span>
-              <img
-                src={images.flashcardIcon}
-                alt="three cards"
-                width="18px"
-                style={{ marginRight: '0.2em' }}
-              />
-              {flashcardHistory[flashcardHistory.length - 1].score}
-            </span>
-          )
-        }
+        {showStoryElo && (
+          <span>
+            <Icon name="star outline" style={{ margin: 0 }} />{' '}
+            {exerciseHistory[exerciseHistory.length - 1].score}
+          </span>
+        )}
+        {showFlashcardElo && (
+          <span>
+            <img
+              src={images.flashcardIcon}
+              alt="three cards"
+              width="18px"
+              style={{ marginRight: '0.2em' }}
+            />
+            {flashcardHistory[flashcardHistory.length - 1].score}
+          </span>
+        )}
       </div>
-      <HighchartsReact
-        highcharts={Highcharts}
-        options={options}
-        allowChartUpdate={false}
-      />
+      <HighchartsReact highcharts={Highcharts} options={options} allowChartUpdate={false} />
     </div>
   )
 }
