@@ -24,7 +24,7 @@ const PracticeButton = props => (
   </Button>
 )
 
-const FlashcardsButton = (props) => {
+const FlashcardsButton = props => {
   const history = useHistory()
   const handleClick = () => {
     history.push('/flashcards')
@@ -61,7 +61,9 @@ const HomeView = () => {
             <div style={{ flexGrow: 2 }}>
               <PracticeModal trigger={<PracticeButton data-cy="practice-now" />} />
               <FlashcardsButton />
-              <Button style={{ display: 'none' }} onClick={() => undefun()}>hidden breaking thing</Button>
+              <Button style={{ display: 'none' }} onClick={() => undefun()}>
+                hidden breaking thing
+              </Button>
             </div>
             <EloChart width="30%" />
           </div>
@@ -70,7 +72,9 @@ const HomeView = () => {
             <EloChart width="100%" />
             <PracticeModal trigger={<PracticeButton data-cy="practice-now" />} />
             <FlashcardsButton />
-            <Button style={{ display: 'none' }} onClick={() => undefun()}>hidden breaking thing</Button>
+            <Button style={{ display: 'none' }} onClick={() => undefun()}>
+              hidden breaking thing
+            </Button>
           </>
         )}
       </div>

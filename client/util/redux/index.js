@@ -23,6 +23,7 @@ import tests from './testReducer'
 import exerciseHistory from './exerciseHistoryReducer'
 import crossword from './crosswordReducer'
 import serverError from './serverErrorReducer'
+import leaderboard from './leaderboardReducer'
 
 const rootReducer = combineReducers({
   stories,
@@ -48,10 +49,8 @@ const rootReducer = combineReducers({
   exerciseHistory,
   crossword,
   serverError,
+  leaderboard,
 })
 
-export default (state, action) => (
-  action.type === 'LOGOUT_SUCCESS'
-    ? rootReducer(undefined, action)
-    : rootReducer(state, action)
-)
+export default (state, action) =>
+  action.type === 'LOGOUT_SUCCESS' ? rootReducer(undefined, action) : rootReducer(state, action)

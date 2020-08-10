@@ -6,23 +6,15 @@ const HtmlWebpackPlugin = require('html-webpack-plugin')
 const htmlTemplate = require('html-webpack-template')
 const MiniCssExtractPlugin = require('mini-css-extract-plugin')
 const OptimizeCssAssetsPlugin = require('optimize-css-assets-webpack-plugin')
+
 const webpack = require('webpack')
 
 module.exports = (env, argv) => {
   const { mode } = argv
 
   const additionalPlugins = mode === 'production'
-    ? []
+    ? [new OptimizeCssAssetsPlugin()]
     : [new webpack.HotModuleReplacementPlugin()] // Enable hot module replacement
-
-  const additionalOptimizations = mode === 'production'
-    ? {
-      minimizer: [
-        // Make CSS smaller
-        new OptimizeCssAssetsPlugin(),
-      ],
-    }
-    : {}
 
   const additionalEntries = mode === 'production' ? [] : ['webpack-hot-middleware/client?http://localhost:8000']
 
@@ -106,7 +98,9 @@ module.exports = (env, argv) => {
         },
       ],
     },
-    optimization: { ...additionalOptimizations },
+    // optimization: {
+    //   ...additionalOptimizations
+    // },
     plugins: [
       new webpack.DefinePlugin({
         'process.env.BASE_PATH': JSON.stringify(BASE_PATH),

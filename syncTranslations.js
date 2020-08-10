@@ -1,6 +1,8 @@
 /* eslint-disable */
 const fs = require('fs');
+const path = require('path')
 const { google } = require('googleapis');
+require('dotenv').config()
 
 const apiClient = google.auth.fromAPIKey(process.env.GOOGLE_APIKEY)
 addTranslations(apiClient)
@@ -10,19 +12,20 @@ async function addTranslations(auth) {
 
   sheets.spreadsheets.values.get({
     spreadsheetId: '1OVtLSEpLA6gmwS1LSRGQ1P6MwmhU1xAxOe6fsetCRZk',
-    range: 'A900:G',
+    range: 'A:G',
   }).then(res => {
     const rows = res.data.values.slice(1);
     const translations = {}
 
     for (row of rows) {
       if (!row[0]) continue
+      const eng = row[2] || ''
       translations[row[0]] = {
-        en: row[2] || '',
-        it: row[3] || '',
-        fi: row[4] || '',
-        ru: row[5] || '',
-        sv: row[6] || ''
+        en: eng,
+        it: row[3] || eng,
+        fi: row[4] || eng,
+        ru: row[5] || eng,
+        sv: row[6] || eng,
       }
     }
     
@@ -35,16 +38,24 @@ async function addTranslations(auth) {
 function makeTranslations(translations) {
   const languages = ['fi', 'en', 'sv', 'ru', 'it']
   for (lang of languages) {
-    const fileName = `./client/util/translations/revita/${lang}/LC_MESSAGES/messages.json`
+    let changes = 0
+    let news = 0
+    const fileName = path.resolve(__dirname, `./client/util/translations/revita/${lang}/LC_MESSAGES/messages.json`)
     const file = require(fileName)
 
     for ([key, langs] of Object.entries(translations)) {
+      const orig = file[key]
       file[key] = langs[lang]
+      if (orig === undefined) {
+        news++
+      } else if (orig != file[key]) {
+        changes++
+      }
     }
 
-    fs.writeFile(fileName, JSON.stringify(file, null, '    '), function writeJSON(err) {
+    fs.writeFile(fileName, JSON.stringify(file, null, '    '), (err) => {
       if (err) return console.log(err)
-      console.log(`writing to ${fileName}`)
+      console.log(`writing ${news} new translations, ${changes} changes to ${fileName}`)
     })
   }
 }
