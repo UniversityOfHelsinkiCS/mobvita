@@ -1,6 +1,7 @@
 import React from 'react'
 import { Route, Switch, Redirect } from 'react-router-dom'
 import { useSelector } from 'react-redux'
+import { hiddenFeatures } from 'Utilities/common'
 import ReadView from 'Components/ReadView'
 import PracticeView from 'Components/PracticeView'
 import MenuTabs from 'Components/MenuTabs'
@@ -17,6 +18,7 @@ import Help from './StaticContent/Help'
 import Flashcards from './Flashcards'
 import LandingPage from './LandingPage'
 import StoryDetails from './StoryView/StoryDetails'
+import Achievements from './Profile/Achievements'
 
 export default () => {
   const user = useSelector(state => state.user.data)
@@ -57,6 +59,7 @@ export default () => {
               <ProtectedRoute exact path="/profile/progress" component={Profile} />
               <ProtectedRoute exact path="/profile/settings" component={Profile} />
               <ProtectedRoute exact path="/tests" component={MenuTabs} />
+              {hiddenFeatures && <ProtectedRoute exact path="/achievements" component={Achievements} />}
             </Switch>
           </div>
         </Route>

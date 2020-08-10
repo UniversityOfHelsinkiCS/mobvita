@@ -62,7 +62,7 @@ const Progress = () => {
         endDate={endDate}
       />
       <div>
-        <h2>
+        <h2 className="header-2">
           <FormattedMessage id="Practice history" />
         </h2>
         <History history={history} dateFormat="DD.MM." />

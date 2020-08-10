@@ -944,6 +944,38 @@ body {
   flex-wrap: wrap;
 }
 
+.achievement-wrapper {
+  border: 2px solid #ccc;
+  border-radius: 1rem;
+  //padding: 1rem;
+}
+
+.achievement-container {
+  padding: 0 3px;
+  //height: 50px;
+  margin-top: -0.8em;
+}
+
+.achievement-title {
+  background: white none repeat scroll 0 0;
+  display: inline-block;
+  padding: 0 2px;
+  margin-left: 1rem;
+  font-weight: 550;
+}
+
+.achievement-content {
+  padding: 1rem;
+}
+
+.achievement-circle {
+  height: 30px;
+  width: 30px;
+  background-color: #bbb;
+  border-radius: 50%;
+  display: inline-block;
+}
+
 .crosswords-clue {
   white-space: nowrap;
   border: 1px solid #ccc;
