@@ -56,11 +56,6 @@ const HomeView = () => {
   const { width } = useWindowDimensions()
 
   const bigScreen = width > 740
-  const dispatch = useDispatch()
-  const language = useLearningLanguage()
-  useEffect(() => {
-    dispatch(getLeaderboards(moment().subtract(7, 'days'), moment(), language, 100))
-  }, [])
 
   return (
     <div>
