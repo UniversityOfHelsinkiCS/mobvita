@@ -88,6 +88,7 @@ export const dictionaryLanguageSelector = ({ user }) => user.data.user.last_tran
 
 export const useLearningLanguage = () => useSelector(learningLanguageSelector)
 export const useDictionaryLanguage = () => useSelector(dictionaryLanguageSelector)
+export const useCurrentUser = () => useSelector(({ user }) => user.data.user)
 
 export const supportedLearningLanguages = {
   major: [

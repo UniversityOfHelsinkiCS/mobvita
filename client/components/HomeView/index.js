@@ -1,13 +1,17 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { useHistory } from 'react-router'
 import { FormattedMessage } from 'react-intl'
 import { Button } from 'react-bootstrap'
-import { images } from 'Utilities/common'
+import { images, useLearningLanguage } from 'Utilities/common'
+import moment from 'moment'
 
 import useWindowDimensions from 'Utilities/windowDimensions'
 import Footer from 'Components/Footer'
+import { useDispatch } from 'react-redux'
+import { getLeaderboards } from 'Utilities/redux/leaderboardReducer'
 import PracticeModal from './PracticeModal'
 import EloChart from './EloChart'
+import LeaderboardTable from 'Components/Leaderboard/LeaderboardTable'
 
 const PracticeButton = props => (
   <Button
@@ -24,7 +28,7 @@ const PracticeButton = props => (
   </Button>
 )
 
-const FlashcardsButton = (props) => {
+const FlashcardsButton = props => {
   const history = useHistory()
   const handleClick = () => {
     history.push('/flashcards')
@@ -52,6 +56,11 @@ const HomeView = () => {
   const { width } = useWindowDimensions()
 
   const bigScreen = width > 740
+  const dispatch = useDispatch()
+  const language = useLearningLanguage()
+  useEffect(() => {
+    dispatch(getLeaderboards(moment().subtract(7, 'days'), moment(), language, 100))
+  }, [])
 
   return (
     <div>
@@ -61,7 +70,9 @@ const HomeView = () => {
             <div style={{ flexGrow: 2 }}>
               <PracticeModal trigger={<PracticeButton data-cy="practice-now" />} />
               <FlashcardsButton />
-              <Button style={{ display: 'none' }} onClick={() => undefun()}>hidden breaking thing</Button>
+              <Button style={{ display: 'none' }} onClick={() => undefun()}>
+                hidden breaking thing
+              </Button>
             </div>
             <EloChart width="30%" />
           </div>
@@ -70,7 +81,9 @@ const HomeView = () => {
             <EloChart width="100%" />
             <PracticeModal trigger={<PracticeButton data-cy="practice-now" />} />
             <FlashcardsButton />
-            <Button style={{ display: 'none' }} onClick={() => undefun()}>hidden breaking thing</Button>
+            <Button style={{ display: 'none' }} onClick={() => undefun()}>
+              hidden breaking thing
+            </Button>
           </>
         )}
       </div>

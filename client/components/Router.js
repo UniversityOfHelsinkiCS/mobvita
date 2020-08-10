@@ -17,6 +17,7 @@ import Help from './StaticContent/Help'
 import Flashcards from './Flashcards'
 import LandingPage from './LandingPage'
 import StoryDetails from './StoryView/StoryDetails'
+import Leaderboard from './Leaderboard'
 
 export default () => {
   const user = useSelector(state => state.user.data)
@@ -57,6 +58,7 @@ export default () => {
               <ProtectedRoute exact path="/profile/progress" component={Profile} />
               <ProtectedRoute exact path="/profile/settings" component={Profile} />
               <ProtectedRoute exact path="/tests" component={MenuTabs} />
+              <ProtectedRoute exact path="/leaderboard" component={Leaderboard} />
             </Switch>
           </div>
         </Route>
