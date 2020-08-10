@@ -11,7 +11,7 @@ const Leaderboard = () => {
   const dispatch = useDispatch()
 
   useEffect(() => {
-    dispatch(getLeaderboards())
+    dispatch(getLeaderboards(10))
   }, [])
 
   if (!data) return <Spinner />
@@ -22,12 +22,12 @@ const Leaderboard = () => {
         <Table.Header>
           <Table.Row>
             <Table.HeaderCell>Name</Table.HeaderCell>
-            <Table.HeaderCell>Snippets</Table.HeaderCell>
+            <Table.HeaderCell>Exercises</Table.HeaderCell>
           </Table.Row>
         </Table.Header>
         <Table.Body>
-          {data.leaderboard.map(({ username, number_of_exercises }) => (
-            <Table.Row positive={username === user.username} key={username}>
+          {data.leaderboard.map(({ user_id, username, number_of_exercises }) => (
+            <Table.Row positive={user_id === user.oid} key={user_id}>
               <Table.Cell>{username}</Table.Cell>
               <Table.Cell>{number_of_exercises}</Table.Cell>
             </Table.Row>

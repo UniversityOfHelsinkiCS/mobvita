@@ -5,10 +5,11 @@ const toTimeString = date => {
   return moment(date).format('YYYY-MM-DD')
 }
 
-export const getLeaderboards = (startDate, endDate, amount) => {
+export const getLeaderboards = (amount) => {
   const route = '/user/leaderboard'
   const query = {
-    //top_n: 10
+    top_n: amount,
+    sort_by: 'number_of_exercises'
   }
   const prefix = 'GET_LEADERBOARDS'
   return callBuilder(route, prefix, 'get', null, query)
