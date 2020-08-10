@@ -1,17 +1,13 @@
-import React, { useEffect } from 'react'
+import React from 'react'
 import { useHistory } from 'react-router'
 import { FormattedMessage } from 'react-intl'
 import { Button } from 'react-bootstrap'
-import { images, useLearningLanguage } from 'Utilities/common'
-import moment from 'moment'
+import { images } from 'Utilities/common'
 
 import useWindowDimensions from 'Utilities/windowDimensions'
 import Footer from 'Components/Footer'
-import { useDispatch } from 'react-redux'
-import { getLeaderboards } from 'Utilities/redux/leaderboardReducer'
 import PracticeModal from './PracticeModal'
 import EloChart from './EloChart'
-import LeaderboardTable from 'Components/Leaderboard/LeaderboardTable'
 
 const PracticeButton = props => (
   <Button

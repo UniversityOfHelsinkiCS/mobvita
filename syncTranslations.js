@@ -19,12 +19,13 @@ async function addTranslations(auth) {
 
     for (row of rows) {
       if (!row[0]) continue
+      const eng = row[2] || ''
       translations[row[0]] = {
-        en: row[2] || '',
-        it: row[3] || '',
-        fi: row[4] || '',
-        ru: row[5] || '',
-        sv: row[6] || ''
+        en: eng,
+        it: row[3] || eng,
+        fi: row[4] || eng,
+        ru: row[5] || eng,
+        sv: row[6] || eng,
       }
     }
     
