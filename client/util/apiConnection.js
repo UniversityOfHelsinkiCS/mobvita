@@ -35,11 +35,11 @@ export default (route, prefix, method = 'get', data, query, cache) => ({
 const SERVER_ERROR_STATUSES = [502, 503, 504]
 
 const handleError = (store, error, prefix, query) => {
-  if (SERVER_ERROR_STATUSES.includes(error.response.status)) {
+  if (SERVER_ERROR_STATUSES.includes(error?.response?.status)) {
     store.dispatch({ type: 'SET_SERVER_ERROR' })
     store.dispatch({ type: `${prefix}_FAILURE`, query })
   } else {
-    store.dispatch({ type: `${prefix}_FAILURE`, response: error.response.data, query })
+    store.dispatch({ type: `${prefix}_FAILURE`, response: error.response?.data, query })
   }
 }
 
