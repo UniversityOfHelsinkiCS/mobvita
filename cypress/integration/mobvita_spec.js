@@ -28,6 +28,7 @@ describe('Mobvita', function () {
   })
 
   this.beforeEach(function () {
+    window.localStorage.clear()
     cy.visit('http://localhost:8000')
   })
 
