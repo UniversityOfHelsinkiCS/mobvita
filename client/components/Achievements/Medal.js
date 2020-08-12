@@ -2,7 +2,7 @@ import React from 'react'
 import { images } from 'Utilities/common'
 
 const Medal = ({ medal }) => {
-  const MEDAL_WIDTH = '30px'
+  const MEDAL_PIXEL_WIDTH = 30
 
   const medalImage = () => {
     switch (medal) {
@@ -22,7 +22,13 @@ const Medal = ({ medal }) => {
   }
 
   return (
-    <img src={medalImage()} width={MEDAL_WIDTH} />
+    <img
+      src={medalImage()}
+      alt="medal"
+      width={`${MEDAL_PIXEL_WIDTH}px`}
+      // Set height to mitigate some weird stretching behaviour on Safari
+      height={`${1.26 * MEDAL_PIXEL_WIDTH}px`}
+    />
   )
 }
 
