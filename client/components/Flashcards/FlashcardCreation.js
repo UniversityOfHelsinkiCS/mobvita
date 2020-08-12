@@ -1,10 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import { useSelector, useDispatch, shallowEqual } from 'react-redux'
-import {
-  learningLanguageSelector,
-  dictionaryLanguageSelector,
-  capitalize,
-} from 'Utilities/common'
+import { learningLanguageSelector, dictionaryLanguageSelector, capitalize } from 'Utilities/common'
 import { createFlashcard } from 'Utilities/redux/flashcardReducer'
 import { getTranslationAction, clearTranslationAction } from 'Utilities/redux/translationReducer'
 import Template from './Template'
@@ -14,9 +10,7 @@ const FlashcardCreation = () => {
   const [hints, setHints] = useState([])
 
   const { glosses, pending } = useSelector(({ translation }) => {
-    const glosses = translation.data
-      && translation.data[0]
-      && translation.data[0].glosses
+    const glosses = translation.data && translation.data[0] && translation.data[0].glosses
     const { pending } = translation
     return { glosses, pending }
   }, shallowEqual)
@@ -35,14 +29,10 @@ const FlashcardCreation = () => {
 
   useEffect(() => () => dispatch(clearTranslationAction()), [])
 
-  const handleWordBlur = () => {
+  const getTranslations = () => {
     if (word) {
       dispatch(
-        getTranslationAction(
-          capitalize(learningLanguage),
-          word,
-          capitalize(dictionaryLanguage),
-        ),
+        getTranslationAction(capitalize(learningLanguage), word, capitalize(dictionaryLanguage))
       )
     }
   }
@@ -75,7 +65,7 @@ const FlashcardCreation = () => {
       setHints={setHints}
       saveAction={saveAction}
       clearAction={clearAction}
-      handleWordBlur={handleWordBlur}
+      getTranslations={getTranslations}
       pending={pending}
     />
   )

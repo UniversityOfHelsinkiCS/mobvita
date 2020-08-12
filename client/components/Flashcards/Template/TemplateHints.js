@@ -3,10 +3,10 @@ import { FormattedMessage, useIntl } from 'react-intl'
 import { Form, Button } from 'react-bootstrap'
 import TemplateListItems from './TemplateListItems'
 
-const TemplateHints = ({ hints, setHints, hint, setHint }) => {
+const TemplateHints = ({ hints, setHints, hint, setHint, hintRef }) => {
   const intl = useIntl()
 
-  const handleHintChange = (e) => {
+  const handleHintChange = e => {
     setHint(e.target.value)
   }
 
@@ -17,7 +17,7 @@ const TemplateHints = ({ hints, setHints, hint, setHint }) => {
     }
   }
 
-  const handleHintDelete = (selectedHint) => {
+  const handleHintDelete = selectedHint => {
     setHints(hints.filter(h => h !== selectedHint))
   }
 
@@ -38,6 +38,7 @@ const TemplateHints = ({ hints, setHints, hint, setHint }) => {
         placeholder={intl.formatMessage({ id: 'type-new-hint' })}
         value={hint}
         onChange={handleHintChange}
+        ref={hintRef}
       />
       <Button
         variant="outline-primary"
