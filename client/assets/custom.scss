@@ -983,6 +983,22 @@ body {
   padding: 1rem 1.5rem;
 }
 
+.achievement-progress {
+  height: 2rem;
+  border-radius: .5rem;
+  position: relative;
+  & > div {
+    border-radius: .5rem;
+  }
+  & span {
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    font-weight: 650;
+    color: #232b2b;
+  }
+}
+
 .achievement-circle {
   height: 30px;
   width: 30px;

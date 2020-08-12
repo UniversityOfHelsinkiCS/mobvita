@@ -6,7 +6,7 @@ const Achievement = ({ name, level, current, total }) => {
   const progressPercentage = (current / total) * 100
   const progressLabel = `${Math.floor(current)}/${total}`
 
-  const medalAchieved = (medalLevel) => medalLevel <= level
+  const medalAchieved = medalLevel => medalLevel <= level
 
   return (
     <div>
@@ -21,7 +21,11 @@ const Achievement = ({ name, level, current, total }) => {
               <Medal medal={medalAchieved(4) && 'emerald'} />
               <Medal medal={medalAchieved(5) && 'diamond'} />
             </div>
-            <ProgressBar now={progressPercentage} label={progressLabel} style={{ height: '1.5rem' }} />
+            <ProgressBar
+              now={progressPercentage}
+              label={<span>{progressLabel}</span>}
+              className="achievement-progress"
+            />
           </div>
         </div>
       </div>
