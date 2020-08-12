@@ -10,8 +10,7 @@ import {
   translatableLanguages,
   speak,
   respVoiceLanguages,
-  getTextStyle,
-  maskSymbol
+  getTextStyle
 } from 'Utilities/common'
 import useWindowDimensions from 'Utilities/windowDimensions'
 import { Spinner } from 'react-bootstrap'
@@ -38,7 +37,7 @@ const DictionaryHelp = ({ minimized }) => {
 
   const translationLanguageCode = useSelector(({ user }) => user.data.user.last_trans_language)
   const learningLanguage = useSelector(learningLanguageSelector)
-  const { pending, data: translation, surfaceWord, lemmas, clue, isMasked } = useSelector(
+  const { pending, data: translation, surfaceWord, lemmas, clue, maskSymbol } = useSelector(
     ({ translation }) => translation
   )
 
@@ -68,7 +67,7 @@ const DictionaryHelp = ({ minimized }) => {
             <FormattedMessage id="Your clue" />
             {`: ${clue.number} ${clue.direction}`}
           </div>
-        ) : isMasked ? (
+        ) : maskSymbol ? (
           <div style={getTextStyle(learningLanguage)}>
           {maskSymbol}
           <Speaker word={translated.lemma} />
@@ -163,7 +162,7 @@ const DictionaryHelp = ({ minimized }) => {
         <List.Item style={{ color: '#555555' }}>
           {!clue && (
             <div style={{ width: '100%', ...getTextStyle(learningLanguage) }}>
-              {isMasked ? maskSymbol : parsedLemmas()[0]}
+              {maskSymbol ? maskSymbol : parsedLemmas()[0]}
               <Speaker word={parsedLemmas()[0]} />
             </div>
           )}
@@ -216,7 +215,7 @@ const DictionaryHelp = ({ minimized }) => {
                   ...getTextStyle(learningLanguage),
                 }}
               >
-                <span style={{ color: '#2185D0' }}>{isMasked ? maskSymbol : surfaceWord}</span>
+                <span style={{ color: '#2185D0' }}>{maskSymbol ? maskSymbol : surfaceWord}</span>
                 <Speaker word={surfaceWord} />
               </List.Item>
             )}

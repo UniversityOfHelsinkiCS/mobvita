@@ -145,7 +145,6 @@ export const betaLanguages = [
 export const exerciseMaskedLanguages = [
   'Chinese'
 ]
-export const maskSymbol = '?'
 
 export const colors = {}
 

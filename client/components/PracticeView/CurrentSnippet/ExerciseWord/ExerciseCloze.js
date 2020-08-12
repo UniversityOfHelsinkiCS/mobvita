@@ -6,8 +6,7 @@ import {
   rightAlignedLanguages,
   learningLanguageSelector,
   getTextStyle,
-  exerciseMaskedLanguages,
-  maskSymbol
+  exerciseMaskedLanguages
 } from 'Utilities/common'
 import { setFocusedWord } from 'Utilities/redux/practiceReducer'
 import Tooltip from 'Components/PracticeView/Tooltip'
@@ -29,7 +28,7 @@ const ExerciseCloze = ({ word, handleChange, handleClick }) => {
   const handleTooltipClick = () => handleClick(
     exerciseMaskedLanguages.includes(learningLanguage) ? word.surface : word.base || word.bases,
     word.lemmas,  word.ID, 
-    exerciseMaskedLanguages.includes(learningLanguage))
+    exerciseMaskedLanguages.includes(learningLanguage) ? word.base || word.bases : null)
 
   const changeValue = e => {
     setValue(e.target.value)
@@ -54,7 +53,7 @@ const ExerciseCloze = ({ word, handleChange, handleClick }) => {
     <div onClick={handleTooltipClick}>
       {word.message && <div className="tooltip-green">{word.message}</div>}
       <div className="tooltip-blue">
-        <span style={getTextStyle(learningLanguage, 'tooltip')}>{exerciseMaskedLanguages.includes(learningLanguage) ? maskSymbol : word.base || word.bases}</span>
+        <span style={getTextStyle(learningLanguage, 'tooltip')}>{ word.base || word.bases}</span>
         {` → ${dictionaryLanguage}`}
       </div>
     </div>
