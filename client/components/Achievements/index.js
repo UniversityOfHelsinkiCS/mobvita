@@ -1,14 +1,7 @@
 import React, { useMemo } from 'react'
 import { useSelector } from 'react-redux'
 import Achievement from './Achievement'
-import Medal from './Medal'
-
-const MedalAmount = ({ amount, medal }) => (
-  <div className="achievement-medal-amount">
-    <span>{amount}x</span>
-    <Medal medal={medal} />
-  </div>
-)
+import MedalInfo from './MedalInfo'
 
 const Achievements = () => {
   const achievements = useSelector(state => state.user.data.user.achievements)
@@ -38,15 +31,16 @@ const Achievements = () => {
   )
 
   return (
-    <div className="component-container padding-sides-1 gap-row-2">
-      <h2 className="header-3">Achievement medals</h2>
-      <div className="achievement-medals">
-        <MedalAmount amount={medals.bronze} medal="bronze" />
-        <MedalAmount amount={medals.silver} medal="silver" />
-        <MedalAmount amount={medals.gold} medal="gold" />
-        <MedalAmount amount={medals.emerald} medal="emerald" />
-        <MedalAmount amount={medals.diamond} medal="diamond" />
+    <div className="component-container padding-sides-2">
+      <div className="achievement-medals gap-1 gap-row-1">
+        <MedalInfo amount={medals.bronze} medal="bronze" />
+        <MedalInfo amount={medals.silver} medal="silver" />
+        <MedalInfo amount={medals.gold} medal="gold" />
+        <MedalInfo amount={medals.emerald} medal="emerald" />
+        <MedalInfo amount={medals.diamond} medal="diamond" />
       </div>
+      <h2 className="header-3 padding-top-1">Achievements</h2>
+      <hr />
       <div className="achievements">
         {achievements.map(achievement => (
           <Achievement

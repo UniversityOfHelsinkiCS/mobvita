@@ -944,6 +944,25 @@ body {
   flex-wrap: wrap;
 }
 
+.medal-info {
+  border: 2px solid #ccc;
+  border-radius: 1rem;
+  padding: .5rem;
+  display: flex;
+  align-items: center;
+  width: 120px;
+}
+
+.medal-amount {
+  font-size: 20px;
+  font-weight: 650;
+}
+
+.medal-name {
+  font-size: 13px;
+  color: #777;
+}
+
 .achievements {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
@@ -951,21 +970,9 @@ body {
 }
 
 .achievement-medals {
-  border: 2px solid #ccc;
-  border-radius: 1rem;
   display: flex;
-  justify-content: space-between;
-  padding: 1rem 1.5rem;
-}
-
-.achievement-medal-amount {
-  position: relative;
-  & > span {
-    position: absolute;
-    right: 32px;
-    font-weight: 550;
-    font-size: 13px;
-  }
+  justify-content: center;
+  flex-wrap: wrap;
 }
 
 .achievement-wrapper {
@@ -1003,14 +1010,6 @@ body {
     font-weight: 650;
     color: #232b2b;
   }
-}
-
-.achievement-circle {
-  height: 30px;
-  width: 30px;
-  background-color: #bbb;
-  border-radius: 50%;
-  display: inline-block;
 }
 
 .crosswords-clue {
