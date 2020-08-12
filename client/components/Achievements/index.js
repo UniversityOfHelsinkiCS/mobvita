@@ -4,7 +4,14 @@ import Achievement from './Achievement'
 import MedalInfo from './MedalInfo'
 
 const Achievements = () => {
-  const achievements = useSelector(state => state.user.data.user.achievements)
+  const achievements = useSelector(state =>
+    state.user.data.user.achievements.concat({
+      name: 'Test achievement',
+      level: 5,
+      current: 102,
+      total: 100,
+    })
+  )
 
   const medals = useMemo(
     () =>

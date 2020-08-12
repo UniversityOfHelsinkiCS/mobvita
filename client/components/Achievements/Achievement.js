@@ -8,9 +8,18 @@ const Achievement = ({ name, level, current, total }) => {
 
   const medalAchieved = medalLevel => medalLevel <= level
 
+  const wrapperExtraStyle =
+    level === 5
+      ? {
+          borderColor: level === 5 && '#28a745',
+          color: level === 5 && '#28a745',
+          boxShadow: 'inset 0 0 5px #43d163',
+        }
+      : {}
+
   return (
     <div>
-      <div className="achievement-wrapper">
+      <div className="achievement-wrapper" style={wrapperExtraStyle}>
         <div className="achievement-container">
           <div className="achievement-title">{name}</div>
           <div className="achievement-content">
@@ -25,6 +34,7 @@ const Achievement = ({ name, level, current, total }) => {
               now={progressPercentage}
               label={<span>{progressLabel}</span>}
               className="achievement-progress"
+              variant={level === 5 && 'success'}
             />
           </div>
         </div>
