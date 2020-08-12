@@ -24,12 +24,15 @@ const FlashcardCreation = () => {
   useEffect(() => {
     if (glosses) {
       setTranslations(glosses)
+    } else {
+      setTranslations([])
     }
   }, [glosses])
 
   useEffect(() => () => dispatch(clearTranslationAction()), [])
 
   const getTranslations = () => {
+    dispatch(clearTranslationAction())
     if (word) {
       dispatch(
         getTranslationAction(capitalize(learningLanguage), word, capitalize(dictionaryLanguage))
