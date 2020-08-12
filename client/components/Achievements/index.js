@@ -3,6 +3,13 @@ import { useSelector } from 'react-redux'
 import Achievement from './Achievement'
 import Medal from './Medal'
 
+const MedalAmount = ({ amount, medal }) => (
+  <div className="achievement-medal-amount">
+    <span>{amount}x</span>
+    <Medal medal={medal} />
+  </div>
+)
+
 const Achievements = () => {
   const achievements = useSelector(state => state.user.data.user.achievements)
 
@@ -32,12 +39,13 @@ const Achievements = () => {
 
   return (
     <div className="padding-sides-1 gap-row-2">
-      <div className="space-evenly padding-top-2">
-        {medals.bronze}x<Medal medal="bronze" />
-        {medals.silver}x<Medal medal="silver" />
-        {medals.gold}x<Medal medal="gold" />
-        {medals.emerald}x<Medal medal="emerald" />
-        {medals.diamond}x<Medal medal="diamond" />
+      <h2 className="header-3">Achievement medals</h2>
+      <div className="achievement-medals">
+        <MedalAmount amount={medals.bronze} medal="bronze" />
+        <MedalAmount amount={medals.silver} medal="silver" />
+        <MedalAmount amount={medals.gold} medal="gold" />
+        <MedalAmount amount={medals.emerald} medal="emerald" />
+        <MedalAmount amount={medals.diamond} medal="diamond" />
       </div>
       {achievements.map(achievement => (
         <Achievement

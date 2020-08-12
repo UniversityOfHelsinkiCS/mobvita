@@ -944,15 +944,30 @@ body {
   flex-wrap: wrap;
 }
 
+.achievement-medals {
+  border: 2px solid #ccc;
+  border-radius: 1rem;
+  display: flex;
+  justify-content: space-between;
+  padding: 1rem 1.5rem;
+}
+
+.achievement-medal-amount {
+  position: relative;
+  & > span {
+    position: absolute;
+    right: 32px;
+    font-weight: 550;
+    font-size: 13px;
+  }
+}
+
 .achievement-wrapper {
   border: 2px solid #ccc;
   border-radius: 1rem;
-  //padding: 1rem;
 }
 
 .achievement-container {
-  padding: 0 3px;
-  //height: 50px;
   margin-top: -0.8em;
 }
 
@@ -960,12 +975,12 @@ body {
   background: white none repeat scroll 0 0;
   display: inline-block;
   padding: 0 2px;
-  margin-left: 1rem;
+  margin-left: 1.5rem;
   font-weight: 550;
 }
 
 .achievement-content {
-  padding: 1rem;
+  padding: 1rem 1.5rem;
 }
 
 .achievement-circle {
@@ -1380,7 +1395,7 @@ body {
       margin-top: 1em
     }
   }
-  &-2 {
+  &-3 {
     margin-top: -1.5em;
     & > * {
       margin-top: 1.5em
