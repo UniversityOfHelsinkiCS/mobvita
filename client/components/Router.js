@@ -18,7 +18,7 @@ import Help from './StaticContent/Help'
 import Flashcards from './Flashcards'
 import LandingPage from './LandingPage'
 import StoryDetails from './StoryView/StoryDetails'
-import Achievements from './Profile/Achievements'
+import Achievements from './Achievements'
 import Leaderboard from './Leaderboard'
 
 export default () => {
