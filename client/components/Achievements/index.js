@@ -15,7 +15,7 @@ const Achievements = () => {
 
   const medals = useMemo(
     () =>
-      achievements.reduce(
+      achievements?.reduce(
         (medalObject, achievement) => {
           const tempObject = medalObject
           const { level } = achievement
@@ -38,7 +38,7 @@ const Achievements = () => {
   )
 
   return (
-    <div className="padding-sides-1 gap-row-2">
+    <div className="component-container padding-sides-1 gap-row-2">
       <h2 className="header-3">Achievement medals</h2>
       <div className="achievement-medals">
         <MedalAmount amount={medals.bronze} medal="bronze" />
@@ -47,15 +47,17 @@ const Achievements = () => {
         <MedalAmount amount={medals.emerald} medal="emerald" />
         <MedalAmount amount={medals.diamond} medal="diamond" />
       </div>
-      {achievements.map(achievement => (
-        <Achievement
-          key={achievement.name}
-          name={achievement.name}
-          level={achievement.level}
-          current={achievement.current}
-          total={achievement.total}
-        />
-      ))}
+      <div className="achievements">
+        {achievements.map(achievement => (
+          <Achievement
+            key={achievement.name}
+            name={achievement.name}
+            level={achievement.level}
+            current={achievement.current}
+            total={achievement.total}
+          />
+        ))}
+      </div>
     </div>
   )
 }

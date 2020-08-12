@@ -944,6 +944,12 @@ body {
   flex-wrap: wrap;
 }
 
+.achievements {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  grid-gap: 1.5rem;
+}
+
 .achievement-medals {
   border: 2px solid #ccc;
   border-radius: 1rem;
