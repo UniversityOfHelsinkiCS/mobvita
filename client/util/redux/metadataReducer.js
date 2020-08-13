@@ -9,7 +9,19 @@ export const getMetadata = language => {
 
 export const closeBanner = message => ({ type: 'CLOSE_BANNER', message })
 
-export default (state = { pending: false, error: false }, action) => {
+const initialState = {
+  pending: false,
+  error: false,
+  banners: [
+    {
+      message:
+        '<p><b>Revita is undergoing an upgrade during 2020.08.13.  Service may be unavailable during the day.</b></p>',
+      open: true,
+    },
+  ],
+}
+
+export default (state = initialState, action) => {
   const { response } = action
   switch (action.type) {
     case 'GET_METADATA_ATTEMPT':
