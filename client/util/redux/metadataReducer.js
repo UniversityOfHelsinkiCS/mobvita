@@ -12,13 +12,7 @@ export const closeBanner = message => ({ type: 'CLOSE_BANNER', message })
 const initialState = {
   pending: false,
   error: false,
-  banners: [
-    {
-      message:
-        '<p><b>Revita is undergoing an upgrade during 2020.08.13.  Service may be unavailable during the day.</b></p>',
-      open: true,
-    },
-  ],
+  banners: [],
 }
 
 export default (state = initialState, action) => {
