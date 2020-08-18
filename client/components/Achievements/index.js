@@ -5,7 +5,7 @@ import MedalInfo from './MedalInfo'
 
 const Achievements = () => {
   const achievements = useSelector(state =>
-    state.user.data.user.achievements.concat({
+    state.user.data.user.achievements?.concat({
       name: 'Test achievement',
       level: 5,
       current: 102,
@@ -49,7 +49,7 @@ const Achievements = () => {
       <h2 className="header-3 padding-top-1">Achievements</h2>
       <hr />
       <div className="achievements">
-        {achievements.map(achievement => (
+        {achievements?.map(achievement => (
           <Achievement
             key={achievement.name}
             name={achievement.name}
