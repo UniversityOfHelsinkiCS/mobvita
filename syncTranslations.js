@@ -12,7 +12,7 @@ async function addTranslations(auth) {
 
   sheets.spreadsheets.values.get({
     spreadsheetId: '1OVtLSEpLA6gmwS1LSRGQ1P6MwmhU1xAxOe6fsetCRZk',
-    range: 'A:G',
+    range: 'B:H',
   }).then(res => {
     const rows = res.data.values.slice(1);
     const translations = {}
