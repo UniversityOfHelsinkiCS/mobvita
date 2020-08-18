@@ -3,7 +3,7 @@ import { capitalize } from 'Utilities/common'
 import Medal from './Medal'
 
 const AchievementToast = ({ achievement }) => {
-  const { name, level, total } = achievement
+  const { name, level, current } = achievement
 
   const medal = useMemo(() => {
     switch (level) {
@@ -29,7 +29,7 @@ const AchievementToast = ({ achievement }) => {
         <span style={{ fontSize: '10px' }}>{capitalize(medal)} medal earned</span>
         <div>
           <b>
-            <span style={{ fontSize: '16px', color: '#777' }}>{total}</span>
+            <span style={{ fontSize: '16px', color: '#777' }}>{Math.floor(current)}</span>
             {'  '}
             <span style={{ color: '#777' }}>{name}</span>
           </b>

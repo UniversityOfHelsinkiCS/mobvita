@@ -43,12 +43,31 @@ const handleError = (store, error, prefix, query) => {
   }
 }
 
-const handleNewAchievement = (store, data) => {
-  if (data?.new_achievements?.length > 0)
+const handleNewAchievement = (store, newAchievements) => {
+  const cachedAchievements = JSON.parse(window.localStorage.getItem('newAchievements'))
+  const filteredAchievements = cachedAchievements
+    ? newAchievements.filter(
+        achievement =>
+          !cachedAchievements.some(
+            cachedAchievement =>
+              cachedAchievement.name === achievement.name &&
+              cachedAchievement.level === achievement.level
+          )
+      )
+    : newAchievements
+
+  if (filteredAchievements.length > 0) {
     store.dispatch({
       type: 'SET_NEW_ACHIEVEMENTS',
-      newAchievements: data.new_achievements,
+      newAchievements: filteredAchievements,
     })
+    window.localStorage.setItem(
+      'newAchievements',
+      JSON.stringify(
+        cachedAchievements ? cachedAchievements.concat(filteredAchievements) : filteredAchievements
+      )
+    )
+  }
 }
 
 /**
@@ -65,7 +84,9 @@ export const handleRequest = store => next => async action => {
       if (cache) {
         window.localStorage.setItem(cache, JSON.stringify(res.data))
       }
-      handleNewAchievement(store, res.data)
+      if (res.data?.new_achievements?.length > 0) {
+        handleNewAchievement(store, res.data.new_achievements)
+      }
       store.dispatch({ type: `${prefix}_SUCCESS`, response: res.data, query })
     } catch (err) {
       handleError(store, err, prefix, query)
