@@ -95,7 +95,7 @@ export default (state = { data: null, learningLanguageChanged: false }, action) 
         ...state,
         pending: false,
         error: true,
-        errorMessage: action?.response?.response.data,
+        errorMessage: action?.response,
       }
     case 'GET_SELF_SUCCESS':
       return {
@@ -124,7 +124,7 @@ export default (state = { data: null, learningLanguageChanged: false }, action) 
         ...state,
         pending: false,
         error: true,
-        errorMessage: action.response?.response?.data,
+        errorMessage: action?.response,
       }
     case 'UPDATE_LEARNING_LANGUAGE_SUCCESS':
       return {
@@ -146,7 +146,7 @@ export default (state = { data: null, learningLanguageChanged: false }, action) 
         ...state,
         pending: false,
         error: true,
-        errorMessage: action?.response?.response.data,
+        errorMessage: action?.response,
       }
     case 'RESET_LEARNING_LANGUAGE_CHANGED':
       return {
