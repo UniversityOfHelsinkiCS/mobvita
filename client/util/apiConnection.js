@@ -43,6 +43,14 @@ const handleError = (store, error, prefix, query) => {
   }
 }
 
+const handleNewAchievement = (store, data) => {
+  if (data?.new_achievements?.length > 0)
+    store.dispatch({
+      type: 'SET_NEW_ACHIEVEMENTS',
+      newAchievements: data.new_achievements,
+    })
+}
+
 /**
  * This is a redux middleware used for tracking api calls
  */
@@ -57,6 +65,7 @@ export const handleRequest = store => next => async action => {
       if (cache) {
         window.localStorage.setItem(cache, JSON.stringify(res.data))
       }
+      handleNewAchievement(store, res.data)
       store.dispatch({ type: `${prefix}_SUCCESS`, response: res.data, query })
     } catch (err) {
       handleError(store, err, prefix, query)

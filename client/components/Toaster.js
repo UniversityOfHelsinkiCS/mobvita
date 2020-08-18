@@ -1,4 +1,4 @@
-import { ToastContainer, toast } from 'react-toastify'
+import { ToastContainer, toast, Flip } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
 import React, { useState, useEffect, useMemo } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
@@ -8,7 +8,8 @@ import { setNotification } from 'Utilities/redux/notificationReducer'
 import { clearServerError } from 'Utilities/redux/serverErrorReducer'
 import { updateFavouriteSites } from 'Utilities/redux/userReducer'
 import { useIntl } from 'react-intl'
-import { learningLanguageSelector } from 'Utilities/common'
+import { learningLanguageSelector, hiddenFeatures } from 'Utilities/common'
+import AchievementToast from 'Components/Achievements/AchievementToast'
 
 export default function Toaster() {
   const dispatch = useDispatch()
@@ -20,6 +21,7 @@ export default function Toaster() {
 
   const { message, type, options, translationId } = useSelector(({ notification }) => notification)
   const { serverError } = useSelector(({ serverError }) => serverError)
+  const { newAchievements } = useSelector(({ newAchievements }) => newAchievements)
   const { storyId, progress, error, pending, processingError, custom, url } = useSelector(
     ({ uploadProgress }) => uploadProgress
   )
@@ -127,6 +129,7 @@ export default function Toaster() {
     }
   }, [processingError, error])
 
+  // Handles server error toast
   useEffect(() => {
     if (serverError && !serverErrorToastId) {
       setServerErrorToastId(
@@ -141,6 +144,17 @@ export default function Toaster() {
       )
     }
   }, [serverError])
+
+  // Handles achievement toast
+  useEffect(() => {
+    if (newAchievements && hiddenFeatures) {
+      newAchievements.forEach(achievement =>
+        toast(<AchievementToast achievement={achievement} />, {
+          transition: Flip,
+        })
+      )
+    }
+  }, [newAchievements])
 
   // Handles messages that come from Redux:
   useEffect(() => {
