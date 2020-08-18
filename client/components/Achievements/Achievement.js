@@ -4,7 +4,7 @@ import Medal from './Medal'
 
 const Achievement = ({ name, level, current, total }) => {
   const progressPercentage = (current / total) * 100
-  const progressLabel = `${Math.floor(current)}/${total}`
+  const progressLabel = level === 5 ? Math.floor(current) : `${Math.floor(current)}/${total}`
 
   const medalAchieved = medalLevel => medalLevel <= level
 
