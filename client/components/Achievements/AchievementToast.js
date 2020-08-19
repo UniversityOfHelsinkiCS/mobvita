@@ -25,13 +25,13 @@ const AchievementToast = ({ achievement }) => {
   return (
     <div className="flex">
       <Medal medal={medal} />
-      <div className="flex-column padding-left-1">
-        <span style={{ fontSize: '10px' }}>{capitalize(medal)} medal earned</span>
+      <div className="flex-column padding-left-2">
+        <span style={{ fontSize: '11px', fontWeight: 550 }}>{capitalize(medal)} medal earned</span>
         <div>
           <b>
-            <span style={{ fontSize: '16px', color: '#777' }}>{Math.floor(current)}</span>
+            <span style={{ fontSize: '16px' }}>{Math.floor(current)}</span>
             {'  '}
-            <span style={{ color: '#777' }}>{name}</span>
+            <span>{name}</span>
           </b>
         </div>
       </div>

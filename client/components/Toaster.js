@@ -151,6 +151,9 @@ export default function Toaster() {
       newAchievements.forEach(achievement =>
         toast(<AchievementToast achievement={achievement} />, {
           transition: Flip,
+          type: 'success',
+          className: 'achievement-toast',
+          closeButton: false,
         })
       )
     }
