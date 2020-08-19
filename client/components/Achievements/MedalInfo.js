@@ -1,4 +1,5 @@
 import React from 'react'
+import { FormattedMessage } from 'react-intl'
 import { capitalize } from 'Utilities/common'
 import Medal from './Medal'
 
@@ -7,7 +8,9 @@ const MedalInfo = ({ amount, medal }) => (
     <Medal medal={medal} />
     <div className="flex-column padding-left-1">
       <span className="medal-amount">{amount}</span>
-      <span className="medal-name">{capitalize(medal)}</span>
+      <span className="medal-name">
+        <FormattedMessage id={capitalize(medal)} />
+      </span>
     </div>
   </div>
 )

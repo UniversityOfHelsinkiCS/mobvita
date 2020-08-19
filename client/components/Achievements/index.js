@@ -1,5 +1,6 @@
 import React, { useMemo } from 'react'
 import { useSelector } from 'react-redux'
+import { FormattedMessage } from 'react-intl'
 import Achievement from './Achievement'
 import MedalInfo from './MedalInfo'
 
@@ -46,7 +47,9 @@ const Achievements = () => {
         <MedalInfo amount={medals.emerald} medal="emerald" />
         <MedalInfo amount={medals.diamond} medal="diamond" />
       </div>
-      <h2 className="header-3 padding-top-1">Achievements</h2>
+      <h2 className="header-3 padding-top-1">
+        <FormattedMessage id="Achievements" />
+      </h2>
       <hr />
       <div className="achievements">
         {achievements?.map(achievement => (

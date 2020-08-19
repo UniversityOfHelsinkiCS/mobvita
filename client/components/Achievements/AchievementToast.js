@@ -1,9 +1,12 @@
 import React, { useMemo } from 'react'
+import { useIntl } from 'react-intl'
 import { capitalize } from 'Utilities/common'
 import Medal from './Medal'
 
 const AchievementToast = ({ achievement }) => {
   const { name, level, current } = achievement
+
+  const intl = useIntl()
 
   const medal = useMemo(() => {
     switch (level) {
@@ -22,11 +25,15 @@ const AchievementToast = ({ achievement }) => {
     }
   }, [level])
 
+  const medalEarnedText = `${intl.formatMessage({ id: capitalize(medal) })} ${intl.formatMessage({
+    id: 'medal earned',
+  })}`
+
   return (
     <div className="flex">
       <Medal medal={medal} />
       <div className="flex-column padding-left-2">
-        <span style={{ fontSize: '11px', fontWeight: 550 }}>{capitalize(medal)} medal earned</span>
+        <span style={{ fontSize: '11px', fontWeight: 550 }}>{medalEarnedText}</span>
         <div>
           <b>
             <span style={{ fontSize: '16px' }}>{Math.floor(current)}</span>
