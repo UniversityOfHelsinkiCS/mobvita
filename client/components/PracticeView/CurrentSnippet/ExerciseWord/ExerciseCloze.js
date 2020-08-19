@@ -120,7 +120,7 @@ const ExerciseCloze = ({ word, handleChange, handleClick }) => {
           unicodeBidi: direction,
         }}
       />
-      {word.negation && <sup style={{ color: '#0000FF' }}>(neg)</sup>}
+      {false && word.negation && <sup style={{ color: '#0000FF' }}>(neg)</sup>}
     </Tooltip>
   )
 }
