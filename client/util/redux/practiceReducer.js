@@ -10,6 +10,8 @@ export const clearCurrentPractice = () => ({ type: 'CLEAR_CURRENT_PRACTICE' })
 export const clearCurrentAnswers = () => ({ type: 'CLEAR_CURRENT_ANSWERS' })
 export const clearTouchedIds = () => ({ type: 'CLEAR_TOUCHED_IDS' })
 export const finishSnippet = () => ({ type: 'FINISH_SNIPPET' })
+export const setReferences = references => ({ type: 'SET_REFERENCES', references })
+export const clearReferences = () => ({ type: 'CLEAR_REFERENCES' })
 
 const initialState = {
   previousAnswers: {},
@@ -21,6 +23,8 @@ const initialState = {
   options: {},
   audio: [],
   snippetFinished: false,
+  references: null,
+  refModalOpen: false,
 }
 
 export default (state = initialState, action) => {
@@ -90,6 +94,16 @@ export default (state = initialState, action) => {
       return {
         ...state,
         snippetFinished: true,
+      }
+    case 'SET_REFERENCES':
+      return {
+        ...state,
+        references: action.references,
+      }
+    case 'CLEAR_REFERENCES':
+      return {
+        ...state,
+        references: initialState.references,
       }
     default:
       return state

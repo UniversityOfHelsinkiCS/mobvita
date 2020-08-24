@@ -21,6 +21,7 @@ import {
 import useWindowDimensions from 'Utilities/windowDimensions'
 import PreviousSnippets from './PreviousSnippets'
 import VirtualKeyboard from './VirtualKeyboard'
+import ReferenceModal from './ReferenceModal'
 import Footer from '../Footer'
 import { keyboardLayouts } from './KeyboardLayouts'
 
@@ -128,6 +129,7 @@ const PracticeView = () => {
           </div>
         </Segment>
         <DictionaryHelp />
+        <ReferenceModal />
       </div>
       {showFooter && <Footer />}
     </div>
