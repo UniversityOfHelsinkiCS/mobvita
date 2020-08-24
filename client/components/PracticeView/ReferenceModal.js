@@ -27,9 +27,12 @@ const ReferenceModal = () => {
     Object.values(references).map(grammaticalFeature =>
       grammaticalFeature.map(reference =>
         reference.url ? (
-          <UrlReference reference={reference} />
+          <UrlReference key={`${reference.url}-${reference.title}`} reference={reference} />
         ) : (
-          <BookReference reference={reference} />
+          <BookReference
+            key={`${reference.author}-${reference.title}-${reference.page}-${reference.paragraph}`}
+            reference={reference}
+          />
         )
       )
     )
@@ -39,7 +42,7 @@ const ReferenceModal = () => {
       open={!!references}
       onClose={() => dispatch(clearReferences())}
       size="tiny"
-      dimmer="blurred"
+      //dimmer="blurred"
       closeIcon
     >
       <Modal.Header>References</Modal.Header>
