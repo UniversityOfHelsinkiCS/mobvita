@@ -5,14 +5,17 @@ import { clearReferences } from 'Utilities/redux/practiceReducer'
 
 const BookReference = ({ reference }) => (
   <li>
-    {`${reference.author}, ${reference.title}, p. ${reference.page}, para. ${reference.paragraph}`}
+    {reference.author && `${reference.author}`}
+    {reference.title && `, ${reference.title}`}
+    {reference.page && `, p. ${reference.page}`}
+    {reference.paragraph && `, para. ${reference.paragraph}`}
   </li>
 )
 
 const UrlReference = ({ reference }) => (
   <li>
     <a href={reference.url} target="_blank" rel="noopener noreferrer">
-      {reference.title}
+      {reference.title || reference.title}
     </a>
   </li>
 )
@@ -42,7 +45,7 @@ const ReferenceModal = () => {
       open={!!references}
       onClose={() => dispatch(clearReferences())}
       size="tiny"
-      //dimmer="blurred"
+      dimmer="blurred"
       closeIcon
     >
       <Modal.Header>References</Modal.Header>
