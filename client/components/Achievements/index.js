@@ -1,8 +1,8 @@
-import React, { useMemo } from 'react'
+import React from 'react'
 import { useSelector } from 'react-redux'
 import { FormattedMessage } from 'react-intl'
 import Achievement from './Achievement'
-import MedalInfo from './MedalInfo'
+import Medals from './Medals'
 
 const Achievements = () => {
   const achievements = useSelector(state =>
@@ -14,39 +14,9 @@ const Achievements = () => {
     })
   )
 
-  const medals = useMemo(
-    () =>
-      achievements?.reduce(
-        (medalObject, achievement) => {
-          const tempObject = medalObject
-          const { level } = achievement
-          if (level >= 1) tempObject.bronze++
-          if (level >= 2) tempObject.silver++
-          if (level >= 3) tempObject.gold++
-          if (level >= 4) tempObject.emerald++
-          if (level >= 5) tempObject.diamond++
-          return tempObject
-        },
-        {
-          bronze: 0,
-          silver: 0,
-          gold: 0,
-          emerald: 0,
-          diamond: 0,
-        }
-      ),
-    [achievements]
-  )
-
   return (
     <div className="component-container padding-sides-2">
-      <div className="achievement-medals gap-1 gap-row-1">
-        <MedalInfo amount={medals.bronze} medal="bronze" />
-        <MedalInfo amount={medals.silver} medal="silver" />
-        <MedalInfo amount={medals.gold} medal="gold" />
-        <MedalInfo amount={medals.emerald} medal="emerald" />
-        <MedalInfo amount={medals.diamond} medal="diamond" />
-      </div>
+      <Medals />
       <h2 className="header-3 padding-top-1">
         <FormattedMessage id="Achievements" />
       </h2>

@@ -6,12 +6,13 @@ import { images } from 'Utilities/common'
 
 import useWindowDimensions from 'Utilities/windowDimensions'
 import Footer from 'Components/Footer'
+import MedalSummary from './MedalSummary'
 import PracticeModal from './PracticeModal'
 import EloChart from './EloChart'
 
 const PracticeButton = props => (
   <Button
-    block
+    //block
     style={{
       backgroundImage: `url(${images.practiceNow})`,
       height: '10em',
@@ -33,13 +34,14 @@ const FlashcardsButton = props => {
   return (
     <Button
       onClick={handleClick}
-      block
+      //block
       style={{
         backgroundImage: `url(${images.flashcards})`,
         height: '10em',
         backgroundSize: 'cover',
         backgroundPosition: 'center',
         color: 'black',
+        //marginTop: 0,
       }}
       {...props}
     >
@@ -58,20 +60,27 @@ const HomeView = () => {
       <div className="component-container">
         {bigScreen ? (
           <div style={{ display: 'flex' }}>
-            <div style={{ flexGrow: 2 }}>
+            <div className="flex-column gap-row-1" style={{ flexGrow: 2 }}>
               <PracticeModal trigger={<PracticeButton data-cy="practice-now" />} />
               <FlashcardsButton />
               <Button style={{ display: 'none' }} onClick={() => undefun()}>
                 hidden breaking thing
               </Button>
             </div>
-            <EloChart width="30%" />
+            <div>
+              <EloChart width="100%" />
+              <MedalSummary />
+            </div>
           </div>
         ) : (
           <>
+            <div className="flex gap-1 grow-children">
+              <PracticeModal trigger={<PracticeButton data-cy="practice-now" />} />
+              <FlashcardsButton />
+            </div>
+            <hr />
             <EloChart width="100%" />
-            <PracticeModal trigger={<PracticeButton data-cy="practice-now" />} />
-            <FlashcardsButton />
+            <MedalSummary />
             <Button style={{ display: 'none' }} onClick={() => undefun()}>
               hidden breaking thing
             </Button>
