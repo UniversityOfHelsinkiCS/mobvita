@@ -10,7 +10,7 @@ import {
   translatableLanguages,
   speak,
   respVoiceLanguages,
-  getTextStyle
+  getTextStyle,
 } from 'Utilities/common'
 import useWindowDimensions from 'Utilities/windowDimensions'
 import { Spinner } from 'react-bootstrap'
@@ -29,10 +29,47 @@ const Speaker = ({ word }) => {
   return <Icon name="volume up" className="padding-left-1 clickable" onClick={handleSpeakerClick} />
 }
 
-const DictionaryHelp = ({ minimized }) => {
-  const [showHelp, setShow] = useState(false)
+const DictionaryButton = ({ setShow, translation, translations }) => {
   const [shaking, setShaking] = useState(false)
   const [shakeTimer, setShakeTimer] = useState(null)
+
+  useEffect(() => {
+    if (translations && translations.length > 0) {
+      setShaking(true)
+      setShakeTimer(
+        setTimeout(() => {
+          setShaking(false)
+        }, 500)
+      )
+    }
+
+    return clearTimeout(shakeTimer)
+  }, [translation])
+
+  return (
+    <div className="dictionary-button">
+      <Button className="navigationbuttonopen" icon basic onClick={() => setShow(true)}>
+        <Shake
+          h={5}
+          v={5}
+          r={3}
+          dur={500}
+          int={10}
+          max={100}
+          fixed
+          fixedStop={false}
+          freez={false}
+          active={shaking}
+        >
+          <Icon size="large" name="book" />
+        </Shake>
+      </Button>
+    </div>
+  )
+}
+
+const DictionaryHelp = ({ minimized }) => {
+  const [showHelp, setShow] = useState(false)
   const { width: windowWidth } = useWindowDimensions()
 
   const translationLanguageCode = useSelector(({ user }) => user.data.user.last_trans_language)
@@ -69,8 +106,8 @@ const DictionaryHelp = ({ minimized }) => {
           </div>
         ) : maskSymbol ? (
           <div style={getTextStyle(learningLanguage)}>
-          {maskSymbol}
-          <Speaker word={translated.lemma} />
+            {maskSymbol}
+            <Speaker word={translated.lemma} />
           </div>
         ) : (
           <div style={getTextStyle(learningLanguage)}>
@@ -86,19 +123,6 @@ const DictionaryHelp = ({ minimized }) => {
       </List.Item>
     ))
 
-  useEffect(() => {
-    if (translations && translations.length > 0) {
-      setShaking(true)
-      setShakeTimer(
-        setTimeout(() => {
-          setShaking(false)
-        }, 500)
-      )
-    }
-
-    return clearTimeout(shakeTimer)
-  }, [translation])
-
   const handleDropdownChange = value => {
     if (translation) {
       const lemmas = translation.map(t => t.lemma).join('+')
@@ -112,24 +136,7 @@ const DictionaryHelp = ({ minimized }) => {
 
   if (!showHelp && smallWindow) {
     return (
-      <div className="dictionary-button">
-        <Button className="navigationbuttonopen" icon basic onClick={() => setShow(true)}>
-          <Shake
-            h={5}
-            v={5}
-            r={3}
-            dur={500}
-            int={10}
-            max={100}
-            fixed
-            fixedStop={false}
-            freez={false}
-            active={shaking}
-          >
-            <Icon size="large" name="book" />
-          </Shake>
-        </Button>
-      </div>
+      <DictionaryButton setShow={setShow} translation={translation} translations={translations} />
     )
   }
 
