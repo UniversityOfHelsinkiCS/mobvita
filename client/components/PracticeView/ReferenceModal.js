@@ -45,7 +45,7 @@ const ReferenceModal = () => {
       open={!!references}
       onClose={() => dispatch(clearReferences())}
       size="tiny"
-      dimmer="blurred"
+      dimmer="inverted"
       closeIcon
     >
       <Modal.Header>References</Modal.Header>
