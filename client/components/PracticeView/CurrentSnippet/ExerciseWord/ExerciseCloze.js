@@ -7,11 +7,9 @@ import {
   learningLanguageSelector,
   getTextStyle,
   exerciseMaskedLanguages,
-  hiddenFeatures,
 } from 'Utilities/common'
-import { setFocusedWord, setReferences } from 'Utilities/redux/practiceReducer'
+import { setFocusedWord } from 'Utilities/redux/practiceReducer'
 import Tooltip from 'Components/PracticeView/Tooltip'
-import { Icon } from 'semantic-ui-react'
 
 const ExerciseCloze = ({ word, handleChange, handleClick }) => {
   const [value, setValue] = useState('')
@@ -19,7 +17,7 @@ const ExerciseCloze = ({ word, handleChange, handleClick }) => {
   const [touched, setTouched] = useState(false)
   const dictionaryLanguage = useSelector(dictionaryLanguageSelector)
   const learningLanguage = useSelector(learningLanguageSelector)
-  const { isWrong, tested, ref } = word
+  const { isWrong, tested } = word
   const [show, setShow] = useState(false)
   const target = useRef()
 
@@ -34,10 +32,6 @@ const ExerciseCloze = ({ word, handleChange, handleClick }) => {
       word.ID,
       exerciseMaskedLanguages.includes(learningLanguage) ? word.base || word.bases : null
     )
-  }
-
-  const handleFeedbackClick = () => {
-    if (ref && hiddenFeatures) dispatch(setReferences(ref))
   }
 
   const changeValue = e => {
@@ -61,19 +55,12 @@ const ExerciseCloze = ({ word, handleChange, handleClick }) => {
 
   const tooltip = (
     <div>
-      {word.message && (
-        <div className="tooltip-green flex" onMouseDown={handleFeedbackClick} onClick={handleFeedbackClick}>
-          {word.message}
-          {word.ref && hiddenFeatures && (
-            <Icon
-              name="external"
-              size="small"
-              style={{ alignSelf: 'flex-start', marginLeft: '0.5rem' }}
-            />
-          )}
-        </div>
-      )}
-      <div className="tooltip-blue" onMouseDown={handleTooltipWordClick} onClick={handleTooltipWordClick}>
+      {word.message && <div className="tooltip-green">{word.message}</div>}
+      <div
+        className="tooltip-blue"
+        onMouseDown={handleTooltipWordClick}
+        onClick={handleTooltipWordClick}
+      >
         <span style={getTextStyle(learningLanguage, 'tooltip')}>{word.base || word.bases}</span>
         {` → ${dictionaryLanguage}`}
       </div>

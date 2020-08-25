@@ -1,15 +1,20 @@
 import React, { useState } from 'react'
-import { useSelector } from 'react-redux'
+import { useSelector, useDispatch } from 'react-redux'
 import { useIntl } from 'react-intl'
-import { getTextStyle, learningLanguageSelector } from 'Utilities/common'
+import { Icon } from 'semantic-ui-react'
+import { getTextStyle, learningLanguageSelector, hiddenFeatures } from 'Utilities/common'
+import { setReferences } from 'Utilities/redux/practiceReducer'
 import Tooltip from 'Components/PracticeView/Tooltip'
 
 const PreviousExerciseWord = ({ word, handleWordClick, answer, tiedAnswer }) => {
-  const { surface, isWrong, tested, lemmas } = word
-  const intl = useIntl()
+  const { surface, isWrong, tested, lemmas, ref } = word
+
   const [show, setShow] = useState(false)
 
   const learningLanguage = useSelector(learningLanguageSelector)
+
+  const intl = useIntl()
+  const dispatch = useDispatch()
 
   let color = ''
   if (tested) {
@@ -23,11 +28,26 @@ const PreviousExerciseWord = ({ word, handleWordClick, answer, tiedAnswer }) => 
     setShow(true)
   }
 
+  const handleTooltipClick = () => {
+    if (ref && hiddenFeatures) dispatch(setReferences(ref))
+  }
+
   const youAnsweredTooltip = answer || tiedAnswer
 
   const tooltip = (
-    <div className="tooltip-green">
-      {word.message && <div>{word.message}</div>}
+    <div className="tooltip-green" style={{ cursor: 'pointer' }} onMouseDown={handleTooltipClick}>
+      {word.message && (
+        <div className="flex">
+          {word.message}{' '}
+          {ref && hiddenFeatures && (
+            <Icon
+              name="external"
+              size="small"
+              style={{ alignSelf: 'flex-start', marginLeft: '0.5rem' }}
+            />
+          )}
+        </div>
+      )}
       {youAnsweredTooltip && (
         <div>
           {`${intl.formatMessage({ id: 'you-used' })}: `}
@@ -35,8 +55,7 @@ const PreviousExerciseWord = ({ word, handleWordClick, answer, tiedAnswer }) => 
             {youAnsweredTooltip.users_answer}
           </span>
         </div>
-      )
-      }
+      )}
     </div>
   )
 
