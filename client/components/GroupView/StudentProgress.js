@@ -5,8 +5,8 @@ import { getStudentProgress } from 'Utilities/redux/groupProgressReducer'
 import { FormattedMessage } from 'react-intl'
 import ProgressGraph from 'Components/ProgressGraph'
 import Spinner from 'Components/Spinner'
+import ResponsiveDatePicker from 'Components/ResponsiveDatePicker'
 import moment from 'moment'
-import DatePicker from 'react-datepicker'
 
 const StudentProgress = ({ student, groupId }) => {
   const [startDate, setStartDate] = useState(moment().subtract(2, 'month').toDate())
@@ -36,25 +36,21 @@ const StudentProgress = ({ student, groupId }) => {
           <span className="sm-label">
             <FormattedMessage id="date-start" />
           </span>
-          <DatePicker
-            dateFormat="yyyy/MM/dd"
+          <ResponsiveDatePicker
             maxDate={Math.min(moment().valueOf(), endDate)}
             selected={startDate}
             onChange={date => setStartDate(date)}
-            withPortal
           />
         </div>
         <div className="gap-1 padding-left-3">
           <span className="sm-label">
             <FormattedMessage id="date-end" />
           </span>
-          <DatePicker
-            dateFormat="yyyy/MM/dd"
+          <ResponsiveDatePicker
             minDate={startDate}
             maxDate={moment().valueOf()}
             selected={endDate}
             onChange={date => setEndDate(date)}
-            withPortal
           />
         </div>
       </div>

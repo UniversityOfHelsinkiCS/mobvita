@@ -1,19 +1,18 @@
 import React, { useState, useEffect, shallowEqual } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
-import DatePicker from 'react-datepicker'
 import moment from 'moment'
 import { FormattedMessage } from 'react-intl'
 import { getSelf } from 'Utilities/redux/userReducer'
 import ProgressGraph from 'Components/ProgressGraph'
 import Spinner from 'Components/Spinner'
-import 'react-datepicker/dist/react-datepicker.css'
+import ResponsiveDatePicker from 'Components/ResponsiveDatePicker'
 import History from 'Components/History'
 import { getHistory } from 'Utilities/redux/exerciseHistoryReducer'
 import { useLearningLanguage } from 'Utilities/common'
 import ProgressStats from './ProgressStats'
 
 const PickDate = ({ date, setDate }) => (
-  <DatePicker selected={date} onChange={date => setDate(date)} dateFormat="yyyy/MM/dd" withPortal />
+  <ResponsiveDatePicker selected={date} onChange={date => setDate(date)} />
 )
 
 const Progress = () => {

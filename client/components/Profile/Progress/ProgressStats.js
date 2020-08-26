@@ -4,7 +4,6 @@ import { useIntl } from 'react-intl'
 import { getPersonalSummary } from 'Utilities/redux/groupSummaryReducer'
 import { learningLanguageSelector, images, capitalize } from 'Utilities/common'
 import Spinner from 'Components/Spinner'
-import 'react-datepicker/dist/react-datepicker.css'
 
 const ProgressStats = ({ startDate, endDate }) => {
   const learningLanguage = useSelector(learningLanguageSelector)

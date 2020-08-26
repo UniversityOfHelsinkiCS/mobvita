@@ -3,18 +3,16 @@ import { useSelector } from 'react-redux'
 import { Table } from 'react-bootstrap'
 import { Icon } from 'semantic-ui-react'
 import { CSVLink } from 'react-csv'
-import DatePicker from 'react-datepicker'
 import moment from 'moment'
 import { FormattedMessage } from 'react-intl'
 import Spinner from 'Components/Spinner'
+import ResponsiveDatePicker from 'Components/ResponsiveDatePicker'
 import { capitalize } from 'Utilities/common'
 import useWindowDimensions from 'Utilities/windowDimensions'
-
-import 'react-datepicker/dist/react-datepicker.css'
 import produce from 'immer'
 
 const PickDate = ({ date, setDate }) => (
-  <DatePicker withPortal selected={date} onChange={date => setDate(date)} dateFormat="yyyy/MM/dd" />
+  <ResponsiveDatePicker selected={date} onChange={date => setDate(date)} dateFormat="yyyy/MM/dd" />
 )
 
 const Summary = ({ groupName, isTeaching, getSummary }) => {

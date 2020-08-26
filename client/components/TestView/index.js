@@ -5,16 +5,16 @@ import { FormattedMessage } from 'react-intl'
 import { useDispatch, useSelector } from 'react-redux'
 import { getTestQuestions, resetTest, getHistory } from 'Utilities/redux/testReducer'
 import { useLearningLanguage } from 'Utilities/common'
-import DatePicker from 'react-datepicker'
 import moment from 'moment'
 import Spinner from 'Components/Spinner'
+import ResponsiveDatePicker from 'Components/ResponsiveDatePicker'
 import { getGroups } from 'Utilities/redux/groupsReducer'
 import TestView from './Test'
 import TestReport from './TestReport'
 import History from '../History'
 
 const PickDate = ({ date, setDate }) => (
-  <DatePicker selected={date} onChange={date => setDate(date)} dateFormat="yyyy/MM/dd" />
+  <ResponsiveDatePicker selected={date} onChange={date => setDate(date)} />
 )
 
 const TestIndex = () => {
