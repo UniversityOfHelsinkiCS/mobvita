@@ -348,12 +348,16 @@ body {
 
 .dictionary-translations {
   & > * {
-    padding: .5rem 1rem 0 0;
+    padding-top: .5rem
   }
 
   &-overlay {
     display: flex;
     flex-wrap: wrap;
+    margin-left: -2rem;
+    & > * {
+      margin-left: 2rem
+    }
   }
 }
 

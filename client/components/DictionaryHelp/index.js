@@ -87,6 +87,10 @@ const DictionaryHelp = ({ minimized }) => {
     }
   }, [learningLanguage])
 
+  useEffect(() => {
+    if (pending && !clue) setShow(true)
+  }, [pending])
+
   const dictionaryOptions = translatableLanguages[learningLanguage]
     ? translatableLanguages[learningLanguage].map(element => ({
         key: element,
