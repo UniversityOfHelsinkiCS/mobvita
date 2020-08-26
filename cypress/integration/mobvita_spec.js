@@ -147,7 +147,7 @@ describe('Mobvita', function () {
           .type('https://yle.fi/uutiset/osasto/selkouutiset/vappu_2542015/7954877')
         cy.get('[data-cy="submit-story"]')
           .click()
-        cy.contains('Vappu', { timeout: 90000 })
+        cy.contains('Vappu', { timeout: 120000 })
         cy.contains('Lue')
           .click()
         cy.contains('Harjoittele', { timeout: 20000 })
@@ -170,8 +170,6 @@ describe('Mobvita', function () {
       it("can click (translate) a word", function () { // This test overlaps with dictionary
         cy.contains("Britanniassa")
           .click()
-        cy.get('.book') // Open dictionaryhelp
-          .click({ force: true })
         cy.contains("Yhdistyneestä kuningaskunnasta käytetty lyhyt nimitys", { timeout: 20000 })
       })
     })
