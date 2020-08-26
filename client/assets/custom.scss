@@ -88,6 +88,7 @@ body {
 
 .ui.dropdown .menu {
   max-height: 11em !important;
+  overflow: auto;
 }
 
 .ui.attached.tabular.menu {
