@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { List, Button, Segment, Icon } from 'semantic-ui-react'
-import { Shake } from 'reshake'
 import { FormattedMessage, useIntl } from 'react-intl'
 import { updateDictionaryLanguage } from 'Utilities/redux/userReducer'
 import { getTranslationAction } from 'Utilities/redux/translationReducer'
@@ -29,40 +28,11 @@ const Speaker = ({ word }) => {
   return <Icon name="volume up" className="padding-left-1 clickable" onClick={handleSpeakerClick} />
 }
 
-const DictionaryButton = ({ setShow, translation, translations }) => {
-  const [shaking, setShaking] = useState(false)
-  const [shakeTimer, setShakeTimer] = useState(null)
-
-  useEffect(() => {
-    if (translations && translations.length > 0) {
-      setShaking(true)
-      setShakeTimer(
-        setTimeout(() => {
-          setShaking(false)
-        }, 500)
-      )
-    }
-
-    return clearTimeout(shakeTimer)
-  }, [translation])
-
+const DictionaryButton = ({ setShow }) => {
   return (
     <div className="dictionary-button">
       <Button className="navigationbuttonopen" icon basic onClick={() => setShow(true)}>
-        <Shake
-          h={5}
-          v={5}
-          r={3}
-          dur={500}
-          int={10}
-          max={100}
-          fixed
-          fixedStop={false}
-          freez={false}
-          active={shaking}
-        >
-          <Icon size="large" name="book" />
-        </Shake>
+        <Icon size="large" name="book" />
       </Button>
     </div>
   )
@@ -88,7 +58,7 @@ const DictionaryHelp = ({ minimized }) => {
   }, [learningLanguage])
 
   useEffect(() => {
-    if (pending && !clue) setShow(true)
+    if (pending) setShow(true)
   }, [pending])
 
   const dictionaryOptions = translatableLanguages[learningLanguage]

@@ -91,7 +91,6 @@
     "react-virtualized": "^9.21.2",
     "redux": "^4.0.0",
     "redux-thunk": "^2.3.0",
-    "reshake": "^1.2.1",
     "sanitize-html": "^1.23.0",
     "sass": "^1.25.0",
     "semantic-ui-css": "^2.4.1",
