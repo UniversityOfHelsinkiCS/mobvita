@@ -284,7 +284,7 @@ const CrosswordView = () => {
     <div style={{ display: 'flex', height: '100%', maxHeight: '90vh', justifyContent: 'center' }}>
       <div style={{ maxHeight: '100%', position: 'relative' }}>
         {resizeListener}
-        {hiddenFeatures && (
+        {false && (
           <>
             {Object.entries(crosswordOptions).map(([name, value]) => (
               <span key={name}>
@@ -329,7 +329,7 @@ const CrosswordView = () => {
           dimensions={dimensions}
         />
       </div>
-      <DictionaryHelp minimized={dictionaryMinimized} />
+      <DictionaryHelp minimized={false} />
       <EndModal
         open={modalOpen}
         setOpen={setModalOpen}

@@ -62,7 +62,7 @@ const OuterWrapper = styled.div.attrs(props => ({
 `
 
 const CluesWrapper = styled.div.attrs(props => ({ className: 'clues' }))`
-  padding: 0 1em;
+  padding-left: 1em;
   flex: 1;
 
   @media (max-width: ${props => props.theme.columnBreakpoint}) {

@@ -6,8 +6,8 @@ export const getCrossword = (storyId, options = {}) => {
   const query = {
     candidate_density: density,
     size,
-    width,
-    height,
+    width: width || 15,
+    height: height || 38,
   }
 
   const route = `/stories/${storyId}/crossword`

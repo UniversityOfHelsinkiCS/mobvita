@@ -20,7 +20,9 @@ const StoryListItem = ({ story, userCanShare, libraryShown, selectedGroup }) => 
   const { groups } = useSelector(({ groups }) => groups)
   const learningLanguage = useSelector(learningLanguageSelector)
 
-  const smallWindow = useWindowDimensions().width < 640
+  const { width } = useWindowDimensions()
+  const smallWindow = width < 640
+  const showCrosswordsButton = width > 1023
 
   const currentGroup = groups.find(g => g.group_id === selectedGroup)
 
@@ -155,11 +157,13 @@ const StoryListItem = ({ story, userCanShare, libraryShown, selectedGroup }) => 
                   <FormattedMessage id="Flashcards" />
                 </Button>
               </Link>
-              <Link to={`/crossword/${story._id}/`}>
-                <Button variant="secondary" style={{ marginRight: '0.5em' }}>
-                  <FormattedMessage id="Crossword" />
-                </Button>
-              </Link>
+              {showCrosswordsButton && (
+                <Link to={`/crossword/${story._id}/`}>
+                  <Button variant="secondary" style={{ marginRight: '0.5em' }}>
+                    <FormattedMessage id="Crossword" />
+                  </Button>
+                </Link>
+              )}
               <Link to={`/stories/${story._id}/read`}>
                 <Button variant="secondary" style={{ marginRight: '0.5em' }}>
                   <FormattedMessage id="Read" />
