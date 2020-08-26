@@ -98,7 +98,7 @@ const DictionaryHelp = ({ minimized }) => {
   const translations =
     translation &&
     translation.map(translated => (
-      <List.Item key={translated.URL} data-cy="translations" style={{ color: '#555555' }}>
+      <div key={translated.URL} data-cy="translations" style={{ color: '#555555' }}>
         {clue ? (
           <div style={{ fontWeight: 'bold', color: '#2185D0' }}>
             <FormattedMessage id="Your clue" />
@@ -120,7 +120,7 @@ const DictionaryHelp = ({ minimized }) => {
             <List.Item key={`${translated.URL}-${i}`}>{word}</List.Item>
           ))}
         </List>
-      </List.Item>
+      </div>
     ))
 
   const handleDropdownChange = value => {
@@ -163,7 +163,16 @@ const DictionaryHelp = ({ minimized }) => {
           <Spinner animation="border" />
         </div>
       )
-    if (translations && translations.length > 0) return translations
+    if (translations && translations.length > 0)
+      return (
+        <div
+          className={`dictionary-translations${
+            smallWindow ? ' dictionary-translations-overlay' : ''
+          }`}
+        >
+          {translations}
+        </div>
+      )
     if (!translation) {
       return (
         <List.Item style={{ color: '#555555' }}>
@@ -213,21 +222,21 @@ const DictionaryHelp = ({ minimized }) => {
           </select>
         </div>
         <div className="space-between padding-top-1">
-          <List>
+          <div>
             {showSurfaceWord() && (
-              <List.Item
+              <div
                 style={{
                   paddingBottom: '0.5em',
                   display: 'flex',
                   ...getTextStyle(learningLanguage),
                 }}
               >
-                <span style={{ color: '#2185D0' }}>{maskSymbol ? maskSymbol : surfaceWord}</span>
+                <span style={{ color: '#2185D0' }}>{maskSymbol || surfaceWord}</span>
                 <Speaker word={surfaceWord} />
-              </List.Item>
+              </div>
             )}
             {translationResults()}
-          </List>
+          </div>
           {smallWindow ? (
             <Button icon basic onClick={() => setShow(false)} style={{ alignSelf: 'flex-end' }}>
               <Icon name="angle down" size="large" color="blue" />

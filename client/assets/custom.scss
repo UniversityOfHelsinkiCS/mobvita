@@ -345,6 +345,17 @@ body {
   }
 }
 
+.dictionary-translations {
+  & > * {
+    padding: .5rem 1rem 0 0;
+  }
+
+  &-overlay {
+    display: flex;
+    flex-wrap: wrap;
+  }
+}
+
 .library-control {
   display: flex;
   flex-direction: column;
