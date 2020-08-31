@@ -56,8 +56,6 @@ const Lemma = ({ lemma, inflectionRef }) => {
   const learningLanguage = useSelector(learningLanguageSelector)
   const { maskSymbol } = useSelector(({ translation }) => translation)
 
-  console.log(inflectionRef)
-
   const content = useMemo(() => {
     if (maskSymbol) return maskSymbol
     if (inflectionRef !== undefined) {
@@ -113,7 +111,11 @@ const DictionaryHelp = ({ minimized }) => {
     translation &&
     translation.map(translated => (
       <div key={translated.URL} data-cy="translations" style={{ color: '#555555' }}>
-        {clue ? <Clue clue={clue} /> : <Lemma lemma={translated.lemma} inflectionRef={translated.ref} />}
+        {clue ? (
+          <Clue clue={clue} />
+        ) : (
+          <Lemma lemma={translated.lemma} inflectionRef={translated.ref} />
+        )}
         <List bulleted style={{ color: 'slateGrey', fontStyle: 'italic' }}>
           {translated.glosses.map(word => (
             <List.Item key={word}>{word}</List.Item>
