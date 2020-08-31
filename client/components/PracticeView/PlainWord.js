@@ -34,7 +34,7 @@ const PlainWord = ({ word, ...props }) => {
   const handleWordClick = () => {
     if (autoSpeak === 'always' && voice) speak(surface, voice)
     if (lemmas) {
-      dispatch(setWords(surface, lemmas))
+      dispatch(setWords({ surface, lemmas }))
       dispatch(
         getTranslationAction({
           learningLanguage,

@@ -28,7 +28,7 @@ export const getTranslationAction = ({
 
 export const clearTranslationAction = () => ({ type: 'CLEAR_TRANSLATION' })
 
-export const setWords = (surface, lemmas, clue, maskSymbol) => {
+export const setWords = ({ surface, lemmas, clue, maskSymbol }) => {
   const words = { surface, lemmas }
   return {
     type: 'SET_WORDS',

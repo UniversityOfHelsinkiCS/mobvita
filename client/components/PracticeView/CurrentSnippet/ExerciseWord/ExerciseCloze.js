@@ -41,7 +41,7 @@ const ExerciseCloze = ({ word, handleChange }) => {
       : null
     if (autoSpeak === 'always' && voice) speak(surface, voice)
     if (lemmas) {
-      dispatch(setWords(showAsSurface, lemmas, undefined, maskSymbol))
+      dispatch(setWords({ surface: showAsSurface, lemmas, maskSymbol }))
       dispatch(
         getTranslationAction({
           learningLanguage,

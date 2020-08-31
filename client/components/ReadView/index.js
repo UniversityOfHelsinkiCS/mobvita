@@ -11,13 +11,7 @@ import {
   clearTranslationAction,
   setWords,
 } from 'Utilities/redux/translationReducer'
-import {
-  capitalize,
-  learningLanguageSelector,
-  getTextStyle,
-  speak,
-  respVoiceLanguages,
-} from 'Utilities/common'
+import { learningLanguageSelector, getTextStyle, speak, respVoiceLanguages } from 'Utilities/common'
 import DictionaryHelp from 'Components/DictionaryHelp'
 import Spinner from 'Components/Spinner'
 import Footer from '../Footer'
@@ -44,10 +38,10 @@ const ReadView = ({ match }) => {
 
   const voice = respVoiceLanguages[learningLanguage]
 
-  const handleWordClick = (surfaceWord, wordLemmas, wordId) => {
+  const handleWordClick = (surfaceWord, wordLemmas, wordId, inflectionRef) => {
     if (autoSpeak === 'always' && voice) speak(surfaceWord, voice)
     if (wordLemmas) {
-      dispatch(setWords(surfaceWord, wordLemmas))
+      dispatch(setWords({ surfaceWord, wordLemmas }))
       dispatch(
         getTranslationAction({
           learningLanguage,
@@ -55,6 +49,7 @@ const ReadView = ({ match }) => {
           dictionaryLanguage,
           storyId: id,
           wordId,
+          inflectionRef,
         })
       )
     }
@@ -66,8 +61,8 @@ const ReadView = ({ match }) => {
         <span
           className="word-interactive"
           key={word.ID}
-          onClick={() => handleWordClick(word.surface, word.lemmas, word.ID)}
-          onKeyDown={() => handleWordClick(word.surface, word.lemmas, word.ID)}
+          onClick={() => handleWordClick(word.surface, word.lemmas, word.ID, word.inflection_ref)}
+          onKeyDown={() => handleWordClick(word.surface, word.lemmas, word.ID, word.inflection_ref)}
           role="button"
           tabIndex="-1"
         >
