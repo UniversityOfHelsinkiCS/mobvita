@@ -11,9 +11,7 @@ import { clearPractice, setTouchedIds, setAnswers } from 'Utilities/redux/practi
 import { getTranslationAction, setWords } from 'Utilities/redux/translationReducer'
 import {
   getTextStyle,
-  capitalize,
   learningLanguageSelector,
-  newCapitalize,
   dictionaryLanguageSelector,
   speak,
   respVoiceLanguages,
@@ -70,7 +68,7 @@ const PracticeView = () => {
     dispatch(setAnswers(newAnswer))
   }
 
-  const handleWordClick = (surfaceWord, wordLemmas, wordId, maskSymbol) => {
+  const handleWordClick = ({ surfaceWord, wordLemmas, wordId, maskSymbol, inflectionRef }) => {
     if (autoSpeak === 'always' && voice) speak(surfaceWord, voice)
     if (wordLemmas) {
       dispatch(setWords(surfaceWord, wordLemmas, undefined, maskSymbol))
@@ -81,6 +79,7 @@ const PracticeView = () => {
           dictionaryLanguage,
           storyId: id,
           wordId,
+          inflectionRef,
         })
       )
     }

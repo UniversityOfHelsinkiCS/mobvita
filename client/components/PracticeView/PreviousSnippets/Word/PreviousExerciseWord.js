@@ -24,7 +24,7 @@ const PreviousExerciseWord = ({ word, handleWordClick, answer, tiedAnswer }) => 
   const wordClass = `word-interactive ${color}`
 
   const handleClick = () => {
-    handleWordClick(surface, lemmas)
+    handleWordClick({ surfaceWord: surface, wordLemmas: lemmas })
     setShow(true)
   }
 

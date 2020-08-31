@@ -10,6 +10,7 @@ export const getTranslationAction = ({
   storyId,
   wordId,
   record,
+  inflectionRef,
 }) => {
   const query = {
     w: encodeURIComponent(wordLemmas),
@@ -18,6 +19,7 @@ export const getTranslationAction = ({
     story_id: storyId,
     word_id: wordId,
     record,
+    ref: inflectionRef,
   }
   const route = '/translate'
   const prefix = 'GET_TRANSLATION'

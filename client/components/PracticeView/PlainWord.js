@@ -1,6 +1,6 @@
 import React from 'react'
 
-const PlainWord = ({ surface, lemmas, wordId, handleWordClick, ...props }) => {
+const PlainWord = ({ surface, lemmas, wordId, inflectionRef, handleWordClick, ...props }) => {
   if (surface === '\n\n') {
     return (
       <div style={{ lineHeight: '50%' }}>
@@ -15,8 +15,12 @@ const PlainWord = ({ surface, lemmas, wordId, handleWordClick, ...props }) => {
     <span
       role="button"
       tabIndex={-1}
-      onKeyDown={() => handleWordClick(surface, lemmas, wordId)}
-      onClick={() => handleWordClick(surface, lemmas, wordId)}
+      onKeyDown={() =>
+        handleWordClick({ surfaceWord: surface, wordLemmas: lemmas, wordId, inflectionRef })
+      }
+      onClick={() =>
+        handleWordClick({ surfaceWord: surface, wordLemmas: lemmas, wordId, inflectionRef })
+      }
       className="word-interactive"
       {...props}
     >

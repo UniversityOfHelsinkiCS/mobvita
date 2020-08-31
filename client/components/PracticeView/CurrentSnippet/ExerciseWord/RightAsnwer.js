@@ -6,7 +6,7 @@ const PreviousExerciseWord = ({ word, handleWordClick }) => {
   const [show, setShow] = useState(false)
 
   const handleClick = () => {
-    handleWordClick(surface, lemmas)
+    handleWordClick({ surfaceWord: surface, wordLemmas: lemmas })
     setShow(true)
   }
 

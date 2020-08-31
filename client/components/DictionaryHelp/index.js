@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useMemo } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { List, Button, Segment, Icon } from 'semantic-ui-react'
 import { FormattedMessage, useIntl } from 'react-intl'
@@ -25,7 +25,14 @@ const Speaker = ({ word }) => {
 
   if (!voice) return null
 
-  return <Icon name="volume up" className="padding-left-1 clickable" onClick={handleSpeakerClick} />
+  return (
+    <Icon
+      name="volume up"
+      style={{ marginLeft: '1rem' }}
+      className="clickable"
+      onClick={handleSpeakerClick}
+    />
+  )
 }
 
 const DictionaryButton = ({ setShow }) => {
@@ -34,6 +41,39 @@ const DictionaryButton = ({ setShow }) => {
       <Button className="navigationbuttonopen" icon basic onClick={() => setShow(true)}>
         <Icon size="large" name="book" />
       </Button>
+    </div>
+  )
+}
+
+const Clue = ({ clue }) => (
+  <div style={{ fontWeight: 'bold', color: '#2185D0' }}>
+    <FormattedMessage id="Your clue" />
+    {`: ${clue.number} ${clue.direction}`}
+  </div>
+)
+
+const Lemma = ({ lemma, inflectionRef }) => {
+  const learningLanguage = useSelector(learningLanguageSelector)
+  const { maskSymbol } = useSelector(({ translation }) => translation)
+
+  console.log(inflectionRef)
+
+  const content = useMemo(() => {
+    if (maskSymbol) return maskSymbol
+    if (inflectionRef !== undefined) {
+      return (
+        <a href={inflectionRef.url} target="_blank" rel="noopener noreferrer">
+          {lemma}
+        </a>
+      )
+    }
+    return lemma
+  }, [inflectionRef, maskSymbol])
+
+  return (
+    <div style={getTextStyle(learningLanguage)}>
+      {content}
+      <Speaker word={lemma} />
     </div>
   )
 }
@@ -73,25 +113,10 @@ const DictionaryHelp = ({ minimized }) => {
     translation &&
     translation.map(translated => (
       <div key={translated.URL} data-cy="translations" style={{ color: '#555555' }}>
-        {clue ? (
-          <div style={{ fontWeight: 'bold', color: '#2185D0' }}>
-            <FormattedMessage id="Your clue" />
-            {`: ${clue.number} ${clue.direction}`}
-          </div>
-        ) : maskSymbol ? (
-          <div style={getTextStyle(learningLanguage)}>
-            {maskSymbol}
-            <Speaker word={translated.lemma} />
-          </div>
-        ) : (
-          <div style={getTextStyle(learningLanguage)}>
-            {translated.lemma}
-            <Speaker word={translated.lemma} />
-          </div>
-        )}
+        {clue ? <Clue clue={clue} /> : <Lemma lemma={translated.lemma} inflectionRef={translated.ref} />}
         <List bulleted style={{ color: 'slateGrey', fontStyle: 'italic' }}>
-          {translated.glosses.map((word, i) => (
-            <List.Item key={`${translated.URL}-${i}`}>{word}</List.Item>
+          {translated.glosses.map(word => (
+            <List.Item key={word}>{word}</List.Item>
           ))}
         </List>
       </div>

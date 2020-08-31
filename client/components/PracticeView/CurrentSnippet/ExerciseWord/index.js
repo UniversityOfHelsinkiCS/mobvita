@@ -12,6 +12,7 @@ const ExerciseWord = ({ word, handleWordClick, handleAnswerChange, handleMultise
         surface={word.surface}
         lemmas={word.lemmas}
         wordId={word.ID}
+        inflectionRef={word.inflection_ref}
         handleWordClick={handleWordClick}
       />
     )

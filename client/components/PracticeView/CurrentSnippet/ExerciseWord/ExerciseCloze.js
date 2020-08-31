@@ -26,12 +26,16 @@ const ExerciseCloze = ({ word, handleChange, handleClick }) => {
   const dispatch = useDispatch()
 
   const handleTooltipWordClick = () => {
-    handleClick(
-      exerciseMaskedLanguages.includes(learningLanguage) ? word.surface : word.base || word.bases,
-      word.lemmas,
-      word.ID,
-      exerciseMaskedLanguages.includes(learningLanguage) ? word.base || word.bases : null
-    )
+    handleClick({
+      surfaceWord: exerciseMaskedLanguages.includes(learningLanguage)
+        ? word.surface
+        : word.base || word.bases,
+      wordLemmas: word.lemmas,
+      wordId: word.ID,
+      maskSymbol: exerciseMaskedLanguages.includes(learningLanguage)
+        ? word.base || word.bases
+        : null,
+    })
   }
 
   const changeValue = e => {
