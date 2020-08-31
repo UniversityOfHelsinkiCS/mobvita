@@ -13,7 +13,7 @@ export const getTranslationAction = ({
   inflectionRef,
 }) => {
   const query = {
-    w: encodeURIComponent(wordLemmas),
+    w: wordLemmas,
     lang_learn: learningLanguage,
     lang_target: dictionaryLanguage,
     story_id: storyId,

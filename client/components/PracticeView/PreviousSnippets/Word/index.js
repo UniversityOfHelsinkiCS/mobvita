@@ -2,19 +2,12 @@ import React from 'react'
 import PlainWord from 'Components/PracticeView/PlainWord'
 import PreviousExerciseWord from './PreviousExerciseWord'
 
-const Word = ({ word, answer, handleWordClick, tiedAnswer }) => {
+const Word = ({ word, answer, tiedAnswer }) => {
   if (word.tested) {
-    return (
-      <PreviousExerciseWord
-        word={word}
-        handleWordClick={handleWordClick}
-        answer={answer}
-        tiedAnswer={tiedAnswer}
-      />
-    )
+    return <PreviousExerciseWord word={word} answer={answer} tiedAnswer={tiedAnswer} />
   }
 
-  return <PlainWord surface={word.surface} lemmas={word.lemmas} handleWordClick={handleWordClick} />
+  return <PlainWord word={word} />
 }
 
 export default Word

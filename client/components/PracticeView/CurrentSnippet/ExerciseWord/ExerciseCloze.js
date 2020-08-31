@@ -7,35 +7,51 @@ import {
   learningLanguageSelector,
   getTextStyle,
   exerciseMaskedLanguages,
+  respVoiceLanguages,
+  speak,
 } from 'Utilities/common'
 import { setFocusedWord } from 'Utilities/redux/practiceReducer'
+import { getTranslationAction, setWords } from 'Utilities/redux/translationReducer'
 import Tooltip from 'Components/PracticeView/Tooltip'
 
-const ExerciseCloze = ({ word, handleChange, handleClick }) => {
+const ExerciseCloze = ({ word, handleChange }) => {
   const [value, setValue] = useState('')
   const [className, setClassName] = useState('exercise cloze-untouched')
   const [touched, setTouched] = useState(false)
+  const [show, setShow] = useState(false)
+
   const dictionaryLanguage = useSelector(dictionaryLanguageSelector)
   const learningLanguage = useSelector(learningLanguageSelector)
-  const { isWrong, tested } = word
-  const [show, setShow] = useState(false)
-  const target = useRef()
-
+  const autoSpeak = useSelector(({ user }) => user.data.user.auto_speak)
   const currentAnswer = useSelector(({ practice }) => practice.currentAnswers[word.ID])
 
+  const { isWrong, tested, surface, lemmas, ID: wordId, id: storyId } = word
+
+  const target = useRef()
   const dispatch = useDispatch()
 
+  const voice = respVoiceLanguages[learningLanguage]
+
   const handleTooltipWordClick = () => {
-    handleClick({
-      surfaceWord: exerciseMaskedLanguages.includes(learningLanguage)
-        ? word.surface
-        : word.base || word.bases,
-      wordLemmas: word.lemmas,
-      wordId: word.ID,
-      maskSymbol: exerciseMaskedLanguages.includes(learningLanguage)
-        ? word.base || word.bases
-        : null,
-    })
+    const showAsSurface = exerciseMaskedLanguages.includes(learningLanguage)
+      ? word.surface
+      : word.base || word.bases
+    const maskSymbol = exerciseMaskedLanguages.includes(learningLanguage)
+      ? word.base || word.bases
+      : null
+    if (autoSpeak === 'always' && voice) speak(surface, voice)
+    if (lemmas) {
+      dispatch(setWords(showAsSurface, lemmas, undefined, maskSymbol))
+      dispatch(
+        getTranslationAction({
+          learningLanguage,
+          wordLemmas: lemmas,
+          dictionaryLanguage,
+          storyId,
+          wordId,
+        })
+      )
+    }
   }
 
   const changeValue = e => {

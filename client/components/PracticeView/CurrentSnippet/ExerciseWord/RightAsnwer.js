@@ -1,13 +1,43 @@
 import React, { useState } from 'react'
+import { useSelector, useDispatch } from 'react-redux'
+import {
+  dictionaryLanguageSelector,
+  learningLanguageSelector,
+  respVoiceLanguages,
+  speak,
+} from 'Utilities/common'
+import { getTranslationAction, setWords } from 'Utilities/redux/translationReducer'
 import Tooltip from 'Components/PracticeView/Tooltip'
 
-const PreviousExerciseWord = ({ word, handleWordClick }) => {
-  const { surface, lemmas } = word
+const RightAnswer = ({ word }) => {
+  const { surface, lemmas, ID: wordId, id: storyId, inflection_ref: inflectionRef } = word
+
+  const autoSpeak = useSelector(({ user }) => user.data.user.auto_speak)
+  const dictionaryLanguage = useSelector(dictionaryLanguageSelector)
+  const learningLanguage = useSelector(learningLanguageSelector)
+
   const [show, setShow] = useState(false)
 
+  const dispatch = useDispatch()
+
+  const voice = respVoiceLanguages[learningLanguage]
+
   const handleClick = () => {
-    handleWordClick({ surfaceWord: surface, wordLemmas: lemmas })
     setShow(true)
+    if (autoSpeak === 'always' && voice) speak(surface, voice)
+    if (lemmas) {
+      dispatch(setWords(surface, lemmas))
+      dispatch(
+        getTranslationAction({
+          learningLanguage,
+          wordLemmas: lemmas,
+          dictionaryLanguage,
+          storyId,
+          wordId,
+          inflectionRef,
+        })
+      )
+    }
   }
 
   const tooltip = (
@@ -32,4 +62,4 @@ const PreviousExerciseWord = ({ word, handleWordClick }) => {
   )
 }
 
-export default PreviousExerciseWord
+export default RightAnswer

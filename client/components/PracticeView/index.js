@@ -8,14 +8,7 @@ import DictionaryHelp from 'Components/DictionaryHelp'
 import { Segment, Icon } from 'semantic-ui-react'
 import { resetCurrentSnippet, clearFocusedSnippet } from 'Utilities/redux/snippetsReducer'
 import { clearPractice, setTouchedIds, setAnswers } from 'Utilities/redux/practiceReducer'
-import { getTranslationAction, setWords } from 'Utilities/redux/translationReducer'
-import {
-  getTextStyle,
-  learningLanguageSelector,
-  dictionaryLanguageSelector,
-  speak,
-  respVoiceLanguages,
-} from 'Utilities/common'
+import { getTextStyle, learningLanguageSelector } from 'Utilities/common'
 import useWindowDimensions from 'Utilities/windowDimensions'
 import PreviousSnippets from './PreviousSnippets'
 import VirtualKeyboard from './VirtualKeyboard'
@@ -25,15 +18,11 @@ import { keyboardLayouts } from './KeyboardLayouts'
 
 const PracticeView = () => {
   const learningLanguage = useSelector(learningLanguageSelector)
-  const dictionaryLanguage = useSelector(dictionaryLanguageSelector)
   const dispatch = useDispatch()
   const { id } = useParams()
   const { width } = useWindowDimensions()
 
   const story = useSelector(({ stories }) => stories.focused)
-  const autoSpeak = useSelector(({ user }) => user.data.user.auto_speak)
-
-  const voice = respVoiceLanguages[learningLanguage]
 
   useEffect(() => {
     dispatch(getStoryAction(id))
@@ -68,23 +57,6 @@ const PracticeView = () => {
     dispatch(setAnswers(newAnswer))
   }
 
-  const handleWordClick = ({ surfaceWord, wordLemmas, wordId, maskSymbol, inflectionRef }) => {
-    if (autoSpeak === 'always' && voice) speak(surfaceWord, voice)
-    if (wordLemmas) {
-      dispatch(setWords(surfaceWord, wordLemmas, undefined, maskSymbol))
-      dispatch(
-        getTranslationAction({
-          learningLanguage,
-          wordLemmas,
-          dictionaryLanguage,
-          storyId: id,
-          wordId,
-          inflectionRef,
-        })
-      )
-    }
-  }
-
   const showVirtualKeyboard = width > 500 && keyboardLayouts[learningLanguage]
   const showFooter = width > 640
 
@@ -117,13 +89,9 @@ const PracticeView = () => {
                 </a>
               </p>
             ) : null}
-            <PreviousSnippets handleWordClick={handleWordClick} />
+            <PreviousSnippets />
             <hr />
-            <CurrentSnippet
-              storyId={id}
-              handleWordClick={handleWordClick}
-              handleInputChange={handleAnswerChange}
-            />
+            <CurrentSnippet storyId={id} handleInputChange={handleAnswerChange} />
             {showVirtualKeyboard && <VirtualKeyboard />}
           </div>
         </Segment>

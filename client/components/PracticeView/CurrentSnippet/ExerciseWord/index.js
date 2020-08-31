@@ -5,20 +5,12 @@ import ExerciseMultipleChoice from './ExerciseMultipleChoice'
 import ExerciseHearing from './ExerciseHearing'
 import RightAnswer from './RightAsnwer'
 
-const ExerciseWord = ({ word, handleWordClick, handleAnswerChange, handleMultiselectChange }) => {
+const ExerciseWord = ({ word, handleAnswerChange, handleMultiselectChange }) => {
   if (word.surface === '\n\n' || !word.id) {
-    return (
-      <PlainWord
-        surface={word.surface}
-        lemmas={word.lemmas}
-        wordId={word.ID}
-        inflectionRef={word.inflection_ref}
-        handleWordClick={handleWordClick}
-      />
-    )
+    return <PlainWord word={word} />
   }
   if (word.tested && !word.isWrong) {
-    return <RightAnswer word={word} handleWordClick={handleWordClick} />
+    return <RightAnswer word={word} />
   }
   if (word.listen) {
     return (
@@ -41,13 +33,7 @@ const ExerciseWord = ({ word, handleWordClick, handleAnswerChange, handleMultise
     )
   }
   return (
-    <ExerciseCloze
-      tabIndex={word.ID}
-      handleChange={handleAnswerChange}
-      handleClick={handleWordClick}
-      key={word.ID}
-      word={word}
-    />
+    <ExerciseCloze tabIndex={word.ID} handleChange={handleAnswerChange} key={word.ID} word={word} />
   )
 }
 

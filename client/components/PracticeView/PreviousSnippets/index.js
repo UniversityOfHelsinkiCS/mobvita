@@ -5,7 +5,7 @@ import { setPrevious } from 'Utilities/redux/snippetsReducer'
 import PlainWord from 'Components/PracticeView/PlainWord'
 import TextWithFeedback from 'Components/PracticeView/TextWithFeedback'
 
-const PreviousSnippets = ({ handleWordClick }) => {
+const PreviousSnippets = () => {
   const learningLanguage = useSelector(learningLanguageSelector)
   const { snippetsInPrevious, previousAnswers } = useSelector(({ practice }) => practice)
   const focusedStory = useSelector(({ stories }) => stories.focused)
@@ -18,8 +18,10 @@ const PreviousSnippets = ({ handleWordClick }) => {
   const dispatch = useDispatch()
 
   const createOldSnippets = () => {
-    const prev = focusedStory.paragraph.map(para => (
-      { snippetid: [para[0].ID], practice_snippet: para }))
+    const prev = focusedStory.paragraph.map(para => ({
+      snippetid: [para[0].ID],
+      practice_snippet: para,
+    }))
     dispatch(setPrevious(prev.slice(0, focusedSnippet.snippetid[0])))
   }
 
@@ -29,27 +31,25 @@ const PreviousSnippets = ({ handleWordClick }) => {
     }
   }, [previous])
 
-  const oldPreviousSnippets = useMemo(() => previous
-    .filter(snippet => !snippetsInPrevious.includes(snippet.snippetid[0]))
-    .map(snippet => snippet.practice_snippet.map(word => (
-      <PlainWord
-        key={word.ID}
-        handleWordClick={handleWordClick}
-        surface={word.surface}
-        lemmas={word.lemmas}
-        wordId={word.ID}
-      />
-    ))), [focusedStory, previous.length === 0])
+  const oldPreviousSnippets = useMemo(
+    () =>
+      previous
+        .filter(snippet => !snippetsInPrevious.includes(snippet.snippetid[0]))
+        .map(snippet =>
+          snippet.practice_snippet.map(word => <PlainWord key={word.ID} word={word} />)
+        ),
+    [focusedStory, previous.length === 0]
+  )
 
-  const sessionPreviousSnippets = useMemo(() => previous
-    .filter(snippet => snippetsInPrevious.includes(snippet.snippetid[0]))
-    .map(snippet => (
-      <TextWithFeedback
-        snippet={snippet.practice_snippet}
-        answers={previousAnswers}
-        handleWordClick={handleWordClick}
-      />
-    )), [previous])
+  const sessionPreviousSnippets = useMemo(
+    () =>
+      previous
+        .filter(snippet => snippetsInPrevious.includes(snippet.snippetid[0]))
+        .map(snippet => (
+          <TextWithFeedback snippet={snippet.practice_snippet} answers={previousAnswers} />
+        )),
+    [previous]
+  )
 
   return (
     <div style={getTextStyle(learningLanguage)}>

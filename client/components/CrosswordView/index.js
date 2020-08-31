@@ -93,21 +93,6 @@ const CrosswordView = () => {
     )
   }
 
-  const handleWordClick = (surface, lemmas, wordId) => {
-    if (lemmas) {
-      dispatch(setWords(surface, lemmas))
-      dispatch(
-        getTranslationAction({
-          wordLemmas: lemmas,
-          learningLanguage,
-          dictionaryLanguage,
-          wordId,
-          storyId,
-        })
-      )
-    }
-  }
-
   const directionArrow = dir => {
     if (dir === 'across') return '→'
     if (dir === 'down') return '↓'
@@ -164,13 +149,8 @@ const CrosswordView = () => {
               fontWeight: clue.show ? '650' : '500',
             }}
             key={clue.ID}
-            surface={clue.surface}
-            lemmas={clue.lemmas}
-            wordId={clue.ID}
-            handleWordClick={handleWordClick}
-          >
-            {clue.surface}
-          </PlainWord>
+            word={clue}
+          />
         )
       }),
     [clues, currentClue]

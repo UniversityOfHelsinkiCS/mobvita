@@ -25,7 +25,7 @@ import SnippetActions from './SnippetActions'
 import PracticeText from './PracticeText'
 import ProgressBar from './ProgressBar'
 
-const CurrentSnippet = ({ storyId, handleWordClick, handleInputChange }) => {
+const CurrentSnippet = ({ storyId, handleInputChange }) => {
   const [progress, setProgress] = useState(0)
   const [exerciseCount, setExerciseCount] = useState(0)
   const scrollTarget = useRef(null)
@@ -198,7 +198,6 @@ const CurrentSnippet = ({ storyId, handleWordClick, handleInputChange }) => {
             data-cy="practice-view"
           >
             <PracticeText
-              handleWordClick={handleWordClick}
               handleAnswerChange={handleInputChange}
               handleMultiselectChange={handleMultiselectChange}
             />
