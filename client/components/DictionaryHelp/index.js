@@ -100,7 +100,10 @@ const DictionaryHelp = ({ minimized }) => {
   const handleDropdownChange = value => {
     if (translation) {
       const lemmas = translation.map(t => t.lemma).join('+')
-      if (lemmas !== '') dispatch(getTranslationAction(learningLanguage, lemmas, value))
+      if (lemmas !== '')
+        dispatch(
+          getTranslationAction({ learningLanguage, dictionaryLanguage: value, wordLemmas: lemmas })
+        )
     }
     console.log(value)
     dispatch(updateDictionaryLanguage(value))

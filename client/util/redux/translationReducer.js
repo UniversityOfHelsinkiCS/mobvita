@@ -3,25 +3,25 @@ import callBuilder from '../apiConnection'
  * Actions and reducers are in the same file for readability
  */
 
-const getTranslation = route => {
+export const getTranslationAction = ({
+  wordLemmas,
+  learningLanguage,
+  dictionaryLanguage,
+  storyId,
+  wordId,
+  record,
+}) => {
+  const query = {
+    w: encodeURIComponent(wordLemmas),
+    lang_learn: learningLanguage,
+    lang_target: dictionaryLanguage,
+    story_id: storyId,
+    word_id: wordId,
+    record,
+  }
+  const route = '/translate'
   const prefix = 'GET_TRANSLATION'
-  return callBuilder(route, prefix, 'get')
-}
-
-export const getTranslationAction = (language, wordLemmas, locale, storyId, wordId) => {
-  const story = storyId ? `&story_id=${storyId}&word_id=${wordId}` : ''
-  const route = `/translate?w=${encodeURIComponent(
-    wordLemmas
-  )}&lang_learn=${language}&lang_target=${locale}${story}`
-  return getTranslation(route)
-}
-
-export const getTranslationWithoutSaving = (language, wordLemmas, locale, storyId, wordId) => {
-  const story = storyId ? `&story_id=${storyId}&word_id=${wordId}` : ''
-  const route = `/translate?w=${encodeURIComponent(
-    wordLemmas
-  )}&lang_learn=${language}&lang_target=${locale}${story}&record=0`
-  return getTranslation(route)
+  return callBuilder(route, prefix, 'get', null, query)
 }
 
 export const clearTranslationAction = () => ({ type: 'CLEAR_TRANSLATION' })
@@ -32,7 +32,7 @@ export const setWords = (surface, lemmas, clue, maskSymbol) => {
     type: 'SET_WORDS',
     words,
     clue,
-    maskSymbol
+    maskSymbol,
   }
 }
 
@@ -64,7 +64,7 @@ export default (state = { data: [] }, action) => {
         surfaceWord: action.words.surface,
         lemmas: action.words.lemmas,
         clue: action.clue,
-        maskSymbol: action.maskSymbol
+        maskSymbol: action.maskSymbol,
       }
     case 'CLEAR_TRANSLATION': {
       return {
@@ -73,7 +73,7 @@ export default (state = { data: [] }, action) => {
         surfaceWord: '',
         lemmas: '',
         clue: undefined,
-        maskSymbol: false
+        maskSymbol: false,
       }
     }
     default:

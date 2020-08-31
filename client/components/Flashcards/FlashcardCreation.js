@@ -34,9 +34,7 @@ const FlashcardCreation = () => {
   const getTranslations = () => {
     dispatch(clearTranslationAction())
     if (word) {
-      dispatch(
-        getTranslationAction(capitalize(learningLanguage), word, capitalize(dictionaryLanguage))
-      )
+      dispatch(getTranslationAction({ learningLanguage, wordLemmas: word, dictionaryLanguage }))
     }
   }
 

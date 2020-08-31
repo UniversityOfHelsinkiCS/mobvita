@@ -49,13 +49,13 @@ const ReadView = ({ match }) => {
     if (wordLemmas) {
       dispatch(setWords(surfaceWord, wordLemmas))
       dispatch(
-        getTranslationAction(
-          capitalize(learningLanguage),
+        getTranslationAction({
+          learningLanguage,
           wordLemmas,
-          capitalize(dictionaryLanguage),
-          id,
-          wordId
-        )
+          dictionaryLanguage,
+          storyId: id,
+          wordId,
+        })
       )
     }
   }

@@ -75,13 +75,13 @@ const PracticeView = () => {
     if (wordLemmas) {
       dispatch(setWords(surfaceWord, wordLemmas, undefined, maskSymbol))
       dispatch(
-        getTranslationAction(
-          newCapitalize(learningLanguage),
+        getTranslationAction({
+          learningLanguage,
           wordLemmas,
-          capitalize(dictionaryLanguage),
-          id,
-          wordId
-        )
+          dictionaryLanguage,
+          storyId: id,
+          wordId,
+        })
       )
     }
   }

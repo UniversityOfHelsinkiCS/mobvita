@@ -1,27 +1,15 @@
 import React, { useEffect, useRef, useState, useMemo } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import { useParams } from 'react-router-dom'
-import useResizeAware from 'react-resize-aware'
 import { FormattedMessage } from 'react-intl'
 import { Spinner } from 'react-bootstrap'
-import {
-  hiddenFeatures,
-  newCapitalize,
-  capitalize,
-  useLearningLanguage,
-  useDictionaryLanguage,
-} from 'Utilities/common'
-import useWindowDimensions from 'Utilities/windowDimensions'
+import { useLearningLanguage, useDictionaryLanguage, hiddenFeatures } from 'Utilities/common'
 import { getCrossword, revealClue } from 'Utilities/redux/crosswordReducer'
 import Crossword from 'Components/CrosswordView/Crossword'
 import PlainWord from 'Components/PracticeView/PlainWord'
 import { isEmpty } from 'lodash'
 import DictionaryHelp from 'Components/DictionaryHelp'
-import {
-  setWords,
-  getTranslationAction,
-  getTranslationWithoutSaving,
-} from 'Utilities/redux/translationReducer'
+import { setWords, getTranslationAction } from 'Utilities/redux/translationReducer'
 import EndModal from './EndModal'
 
 const CrosswordView = () => {
@@ -30,7 +18,6 @@ const CrosswordView = () => {
   const [currentClue, setCurrentClue] = useState(null)
   const [modalOpen, setModalOpen] = useState(false)
   const [data, setData] = useState()
-  const [dictionaryMinimized, setDictionaryMinimized] = useState(true)
   const [crosswordOptions, setCrosswordOptions] = useState({
     density: '',
     size: '',
@@ -38,9 +25,6 @@ const CrosswordView = () => {
     height: '',
   })
   const dispatch = useDispatch()
-
-  const [resizeListener, contentSize] = useResizeAware()
-  const { width: windowWidth } = useWindowDimensions()
 
   const learningLanguage = useLearningLanguage()
   const dictionaryLanguage = useDictionaryLanguage()
@@ -113,13 +97,13 @@ const CrosswordView = () => {
     if (lemmas) {
       dispatch(setWords(surface, lemmas))
       dispatch(
-        getTranslationAction(
-          newCapitalize(learningLanguage),
-          lemmas,
-          capitalize(dictionaryLanguage),
-          null,
-          wordId
-        )
+        getTranslationAction({
+          wordLemmas: lemmas,
+          learningLanguage,
+          dictionaryLanguage,
+          wordId,
+          storyId,
+        })
       )
     }
   }
@@ -135,13 +119,13 @@ const CrosswordView = () => {
     if (lemmas) {
       dispatch(setWords(surface, lemmas, { number, direction: directionArrow(direction) }))
       dispatch(
-        getTranslationWithoutSaving(
-          newCapitalize(learningLanguage),
-          lemmas,
-          capitalize(dictionaryLanguage),
-          null,
-          wordId
-        )
+        getTranslationAction({
+          learningLanguage,
+          wordLemmas: lemmas,
+          dictionaryLanguage,
+          wordId,
+          record: 0,
+        })
       )
     }
   }
@@ -256,12 +240,6 @@ const CrosswordView = () => {
     }
   }, [currentClue, data])
 
-  useEffect(() => {
-    const freeSpace = windowWidth - contentSize.width
-    if (contentSize.width && freeSpace >= 350) setDictionaryMinimized(false)
-    else setDictionaryMinimized(true)
-  }, [windowWidth, contentSize.width])
-
   if (!formattedData || !clueElements)
     return (
       <div
@@ -283,8 +261,7 @@ const CrosswordView = () => {
   return (
     <div style={{ display: 'flex', height: '100%', maxHeight: '90vh', justifyContent: 'center' }}>
       <div style={{ maxHeight: '100%', position: 'relative' }}>
-        {resizeListener}
-        {false && (
+        {hiddenFeatures && (
           <>
             {Object.entries(crosswordOptions).map(([name, value]) => (
               <span key={name}>
