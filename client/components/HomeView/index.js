@@ -12,7 +12,6 @@ import EloChart from './EloChart'
 
 const PracticeButton = props => (
   <Button
-    //block
     style={{
       backgroundImage: `url(${images.practiceNow})`,
       height: '10em',
@@ -34,14 +33,12 @@ const FlashcardsButton = props => {
   return (
     <Button
       onClick={handleClick}
-      //block
       style={{
         backgroundImage: `url(${images.flashcards})`,
         height: '10em',
         backgroundSize: 'cover',
         backgroundPosition: 'center',
         color: 'black',
-        //marginTop: 0,
       }}
       {...props}
     >
