@@ -60,8 +60,13 @@ const Lemma = ({ lemma, inflectionRef }) => {
     if (maskSymbol) return maskSymbol
     if (inflectionRef !== undefined) {
       return (
-        <a href={inflectionRef.url} target="_blank" rel="noopener noreferrer">
+        <a href={inflectionRef.url} target="_blank" rel="noopener noreferrer" className="flex">
           {lemma}
+          <Icon
+            name="external"
+            size="small"
+            style={{ marginLeft: '.25rem', marginTop: '.1rem', alignSelf: 'flex-start' }}
+          />
         </a>
       )
     }
@@ -69,7 +74,7 @@ const Lemma = ({ lemma, inflectionRef }) => {
   }, [inflectionRef, maskSymbol])
 
   return (
-    <div style={getTextStyle(learningLanguage)}>
+    <div className="flex" style={getTextStyle(learningLanguage)}>
       {content}
       <Speaker word={lemma} />
     </div>
