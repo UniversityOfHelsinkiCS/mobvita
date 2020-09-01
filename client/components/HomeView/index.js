@@ -2,7 +2,7 @@ import React from 'react'
 import { useHistory } from 'react-router'
 import { FormattedMessage } from 'react-intl'
 import { Button } from 'react-bootstrap'
-import { images } from 'Utilities/common'
+import { images, hiddenFeatures } from 'Utilities/common'
 
 import useWindowDimensions from 'Utilities/windowDimensions'
 import Footer from 'Components/Footer'
@@ -67,10 +67,14 @@ const HomeView = () => {
                 hidden breaking thing
               </Button>
             </div>
-            <div>
-              <EloChart width="100%" />
-              <MedalSummary />
-            </div>
+            {hiddenFeatures ? (
+              <div>
+                <EloChart width="100%" />
+                <MedalSummary />
+              </div>
+            ) : (
+              <EloChart width="30%" />
+            )}
           </div>
         ) : (
           <>
