@@ -60,8 +60,12 @@ export default () => {
               <ProtectedRoute exact path="/profile/progress" component={Profile} />
               <ProtectedRoute exact path="/profile/settings" component={Profile} />
               <ProtectedRoute exact path="/tests" component={MenuTabs} />
-              {hiddenFeatures && <ProtectedRoute exact path="/achievements" component={Achievements} />}
-              <ProtectedRoute exact path="/leaderboard" component={Leaderboard} />
+              {hiddenFeatures && (
+                <ProtectedRoute exact path="/achievements" component={Achievements} />
+              )}
+              {hiddenFeatures && (
+                <ProtectedRoute exact path="/leaderboard" component={Leaderboard} />
+              )}
             </Switch>
           </div>
         </Route>

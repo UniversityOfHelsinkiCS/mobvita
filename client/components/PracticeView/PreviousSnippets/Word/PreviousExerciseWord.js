@@ -5,7 +5,6 @@ import { Icon } from 'semantic-ui-react'
 import {
   getTextStyle,
   learningLanguageSelector,
-  hiddenFeatures,
   dictionaryLanguageSelector,
   speak,
   respVoiceLanguages,
@@ -62,7 +61,7 @@ const PreviousExerciseWord = ({ word, answer, tiedAnswer }) => {
   }
 
   const handleTooltipClick = () => {
-    if (ref && hiddenFeatures) dispatch(setReferences(ref))
+    if (ref) dispatch(setReferences(ref))
   }
 
   const youAnsweredTooltip = answer || tiedAnswer
@@ -72,7 +71,7 @@ const PreviousExerciseWord = ({ word, answer, tiedAnswer }) => {
       {word.message && (
         <div className="flex">
           {word.message}{' '}
-          {ref && hiddenFeatures && (
+          {ref && (
             <Icon
               name="external"
               size="small"
