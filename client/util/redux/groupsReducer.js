@@ -82,6 +82,13 @@ export const joinGroup = token => {
   return callBuilder(route, prefix, 'post', payload)
 }
 
+export const confirmGroupInvitation = token => {
+  const route = '/groups/accept-invitation'
+  const prefix = 'JOIN_GROUP'
+  const payload = { token }
+  return callBuilder(route, prefix, 'post', payload)
+}
+
 export default (state = { groups: [], joinPending: false }, action) => {
   switch (action.type) {
     case 'GET_GROUPS_ATTEMPT':

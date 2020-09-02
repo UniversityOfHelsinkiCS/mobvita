@@ -7,6 +7,7 @@ import PracticeView from 'Components/PracticeView'
 import MenuTabs from 'Components/MenuTabs'
 import LanguageSelectView from 'Components/LanguageSelectView'
 import EmailConfirm from 'Components/AccessControl/EmailConfirm'
+import InvitationConfirm from 'Components/GroupView/InvitationConfirm'
 import ProtectedRoute from 'Components/AccessControl/ProtectedRoute'
 import CrosswordView from 'Components/CrosswordView'
 import GroupView from './GroupView'
@@ -35,6 +36,7 @@ export default () => {
             <Switch>
               <Route exact path="/email-confirm/:token" component={EmailConfirm} />
               <Route exact path="/reset-password/:token" component={ResetPassword} />
+              <Route exact path="/group-confirmation/:token" component={InvitationConfirm} />
               <Route exact path="/register" component={Register} />
               <Route exact path="/help" component={Help} />
               <ProtectedRoute
