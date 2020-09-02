@@ -7,16 +7,10 @@ const InvitationConfirm = ({ match }) => {
   const dispatch = useDispatch()
   const groups = useSelector(({ groups }) => groups)
   const history = useHistory()
-
-  useEffect(() => {
-    if (groups) {
-      history.replace('/home')
-    }
-  }, [groups])
-
-
+  
   useEffect(() => {
     dispatch(confirmGroupInvitation(match.params.token))
+    history.replace('/')
   }, [])
 
   return null
