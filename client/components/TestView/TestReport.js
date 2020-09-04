@@ -4,22 +4,25 @@ import { Modal } from 'semantic-ui-react'
 import { useIntl } from 'react-intl'
 import { hiddenFeatures } from 'Utilities/common'
 
-
 const TestReport = () => {
   const intl = useIntl()
   const { report, debugReport } = useSelector(({ tests }) => tests)
 
   const translate = id => intl.formatMessage({ id })
 
+  if (!report) return null
+
   return (
     <Modal size="mini" dimmer="inverted" closeIcon defaultOpen centered={false}>
-      <Modal.Header>
-        {translate('overall-score')}
-      </Modal.Header>
+      <Modal.Header>{translate('overall-score')}</Modal.Header>
       <Modal.Content>
         <>
-          <div>{translate('total-answers')}: {report.total || '-'}</div>
-          <div>{translate('Accuracy')}: {report.correctRate || '-'}%</div>
+          <div>
+            {translate('total-answers')}: {report.total || '-'}
+          </div>
+          <div>
+            {translate('Accuracy')}: {report.correctRate || '-'}%
+          </div>
         </>
         {report.message !== 'OK' && (
           <>
@@ -28,7 +31,12 @@ const TestReport = () => {
           </>
         )}
         <hr />
-        {hiddenFeatures && Object.entries(debugReport).map(([key, value]) => <div>{key}: {value}</div>)}
+        {hiddenFeatures &&
+          Object.entries(debugReport).map(([key, value]) => (
+            <div key={key}>
+              {key}: {value}
+            </div>
+          ))}
       </Modal.Content>
     </Modal>
   )
