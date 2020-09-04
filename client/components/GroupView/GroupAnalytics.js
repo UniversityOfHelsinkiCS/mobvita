@@ -187,6 +187,9 @@ const GroupAnalytics = () => {
       {content === 'summary' && currentGroup.is_teaching && (
         <>
           <hr />
+          <span className="sm-label padding-left-1">
+            <FormattedMessage id="Showing results for" />
+          </span>
           <Summary
             groupName={currentGroup.groupName}
             isTeaching={currentGroup.is_teaching}
@@ -200,10 +203,13 @@ const GroupAnalytics = () => {
       )}
       {content === 'history' && currentGroup.is_teaching && (
         <div>
-          <ButtonGroup toggle style={{
-            float: 'right',
-            paddingTop: '1rem',
-          }}>
+          <ButtonGroup
+            toggle
+            style={{
+              float: 'right',
+              paddingTop: '1rem',
+            }}
+          >
             <ToggleButton
               type="radio"
               value="test"
@@ -224,9 +230,8 @@ const GroupAnalytics = () => {
             </ToggleButton>
           </ButtonGroup>
           <GroupHistory student={currentStudent} groupId={currentGroupId} view={historyView} />
-        </div>        
+        </div>
       )}
-      
     </div>
   )
 }

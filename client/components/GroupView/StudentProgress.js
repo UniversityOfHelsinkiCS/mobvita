@@ -31,6 +31,10 @@ const StudentProgress = ({ student, groupId }) => {
   return (
     <div>
       <hr />
+      <span className="sm-label padding-left-1">
+        {' '}
+        <FormattedMessage id="Showing results for" />
+      </span>
       <div className="flex padding-left-1">
         <div className="gap-1">
           <span className="sm-label">
