@@ -25,15 +25,15 @@ const ConceptTree = ({ concept, showTestConcepts, showLevels }) => {
 
   return (
     <TargetConcept
-      key={concept.concept_id}
+      key={`${concept.concept_id}-${concept['UI-order']}`}
       concept={concept}
       showTestConcepts={showTestConcepts}
       showLevels={showLevels}
     >
-      {concept.children && concept.children
-        .map(c => (
+      {concept.children &&
+        concept.children.map(c => (
           <ConceptTree
-            key={c.concept_id}
+            key={`${c.concept_id}-${c['UI-order']}`}
             concept={c}
             showTestConcepts={showTestConcepts}
             showLevels={showLevels}
@@ -51,8 +51,8 @@ const Concepts = () => {
   const { concepts, pending: conceptsPending } = useSelector(({ metadata }) => metadata)
   const learningLanguage = useSelector(learningLanguageSelector)
   const { isTeaching } = useSelector(({ groups }) => ({
-    isTeaching: groups.testConcepts
-      && groups.testConcepts.group && groups.testConcepts.group.is_teaching,
+    isTeaching:
+      groups.testConcepts && groups.testConcepts.group && groups.testConcepts.group.is_teaching,
   }))
 
   const [showTestConcepts, setShowTestConcepts] = useState(false)
@@ -80,17 +80,18 @@ const Concepts = () => {
 
   if (conceptsPending || !concepts) return <Spinner />
 
-  const makeConceptTree = parents => parents
-    .sort((a, b) => a['UI-order'] - b['UI-order'])
-    .map((parent) => {
-      const children = parent.children && concepts.filter(c => (
-        parent.children.includes(c.concept_id)))
-      const cleanConcept = {
-        ...parent,
-        children: makeConceptTree(children),
-      }
-      return cleanConcept
-    })
+  const makeConceptTree = parents =>
+    parents
+      .sort((a, b) => a['UI-order'] - b['UI-order'])
+      .map(parent => {
+        const children =
+          parent.children && concepts.filter(c => parent.children.includes(c.concept_id))
+        const cleanConcept = {
+          ...parent,
+          children: makeConceptTree(children),
+        }
+        return cleanConcept
+      })
 
   const superConcepts = concepts.filter(concept => concept.super)
   const conceptTree = makeConceptTree(superConcepts)
@@ -112,15 +113,14 @@ const Concepts = () => {
       <SelectAllCheckbox />
       <hr />
       <div>
-        {conceptTree
-          .map(c => (
-            <ConceptTree
-              key={c.concept_id}
-              concept={c}
-              showTestConcepts={showTestConcepts}
-              showLevels={showLevels}
-            />
-          ))}
+        {conceptTree.map(c => (
+          <ConceptTree
+            key={c.concept_id}
+            concept={c}
+            showTestConcepts={showTestConcepts}
+            showLevels={showLevels}
+          />
+        ))}
       </div>
     </div>
   )
