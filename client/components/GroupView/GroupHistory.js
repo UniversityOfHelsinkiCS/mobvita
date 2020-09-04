@@ -18,7 +18,7 @@ const StudentHistory = ({ student, groupId, view }) => {
   useEffect(() => {
     if (!student) return
     dispatch(getStudentHistory(student._id, groupId, startDate, endDate, view))
-  }, [student])
+  }, [student, view, startDate, endDate])
 
   if (pending) return <Spinner />
 
@@ -28,6 +28,10 @@ const StudentHistory = ({ student, groupId, view }) => {
       { view=='exercise' ? (
             <div>
                 <FormattedMessage id="Practice history" />
+                <br/>
+                <span className="sm-label padding-left-1">
+                  <FormattedMessage id="Showing results for" />
+                </span>
                 <div className="flex padding-left-1">
                     <div className="gap-1">
                         <span className="sm-label">
