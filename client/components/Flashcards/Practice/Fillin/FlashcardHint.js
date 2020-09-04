@@ -11,16 +11,13 @@ const FlashcardHint = ({ hints, stage }) => {
 
   if (!hints || !hints[0]) return <div className="flashcard-hint" />
 
-  const hintList = () => hints.map(h => (
-    <li key={h} dangerouslySetInnerHTML={{ __html: h }} />
-  ))
+  const hintList = () =>
+    [...new Set(hints)].map(h => <li key={h} dangerouslySetInnerHTML={{ __html: h }} />)
 
   return (
     <div className="flashcard-hint">
       <Collapse in={open} style={{ overflow: 'auto' }}>
-        <ul>
-          {hintList()}
-        </ul>
+        <ul>{hintList()}</ul>
       </Collapse>
       <button
         type="button"
