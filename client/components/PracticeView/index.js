@@ -22,7 +22,7 @@ const PracticeView = () => {
   const { id } = useParams()
   const { width } = useWindowDimensions()
 
-  const story = useSelector(({ stories }) => stories.focused)
+  const { focused: story, pending } = useSelector(({ stories }) => stories)
 
   useEffect(() => {
     dispatch(getStoryAction(id))
@@ -73,7 +73,7 @@ const PracticeView = () => {
                   paddingRight: '1em',
                 }}
               >
-                {`${story.title}`}
+                {!pending && `${story.title}`}
               </h3>
               <Icon
                 data-cy="restart-story"
@@ -82,7 +82,7 @@ const PracticeView = () => {
                 onClick={handleRestart}
               />
             </div>
-            {story.url ? (
+            {story.url && !pending ? (
               <p>
                 <a href={story.url}>
                   <FormattedMessage id="Source" />
