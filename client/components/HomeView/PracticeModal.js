@@ -154,8 +154,8 @@ const PracticeModal = ({ trigger }) => {
           </Link>
         </div>
 
-        <div>
-          <div>
+        <div className="padding-top-1 padding-bottom-1">
+          <div className="sm-label">
             <FormattedMessage id="Library" />
           </div>
           <CheckboxGroup
@@ -166,7 +166,7 @@ const PracticeModal = ({ trigger }) => {
           />
         </div>
         <div>
-          <div>
+          <div className="sm-label">
             <FormattedMessage id="Category" />
           </div>
           <div
@@ -181,7 +181,7 @@ const PracticeModal = ({ trigger }) => {
                 <Button
                   style={{
                     backgroundImage: `url(${images[name + 1]})`,
-                    height: '13em',
+                    height: '10rem',
                     backgroundSize: 'cover',
                     backgroundPosition: 'center',
                     flexBasis: '50%',
