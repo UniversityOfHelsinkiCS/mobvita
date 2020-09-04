@@ -5,9 +5,9 @@ const type = {
   info: 'info',
 }
 
-export const setNotification = (translationID, message, type, options) => ({
+export const setNotification = (translationID, type, options) => ({
   type: 'SET_NOTIFICATION',
-  payload: { translationID, message, type, options },
+  payload: { translationID, type, options },
 })
 
 const initialState = {
