@@ -12,10 +12,12 @@ import CollapsingList from './CollapsingList'
 import Summary from './Summary'
 import StudentProgress from './StudentProgress'
 import NoGroupsView from './NoGroupsView'
+import GroupHistory from './GroupHistory'
 
 const GroupAnalytics = () => {
   const intl = useIntl()
   const [content, setContent] = useState('summary')
+  const [historyView, setHistoryView] = useState('test')
   const [currentStudent, setCurrentStudent] = useState(null)
   const userOid = useSelector(({ user }) => user.data.user.oid)
   const currentGroupId = useSelector(({ user }) => user.data.user.last_selected_group)
@@ -119,6 +121,15 @@ const GroupAnalytics = () => {
             >
               <FormattedMessage id="Progress" />
             </ToggleButton>
+            <ToggleButton
+              type="radio"
+              value="history"
+              variant="info"
+              checked={content === 'history'}
+              onChange={() => setContent('history')}
+            >
+              <FormattedMessage id="History" />
+            </ToggleButton>
           </ButtonGroup>
         )}
       </div>
@@ -187,6 +198,35 @@ const GroupAnalytics = () => {
       {content === 'progress' && currentGroup.is_teaching && (
         <StudentProgress student={currentStudent} groupId={currentGroupId} />
       )}
+      {content === 'history' && currentGroup.is_teaching && (
+        <div>
+          <ButtonGroup toggle style={{
+            float: 'right',
+            paddingTop: '1rem',
+          }}>
+            <ToggleButton
+              type="radio"
+              value="test"
+              variant="success"
+              checked={historyView === 'test'}
+              onChange={() => setHistoryView('test')}
+            >
+              <FormattedMessage id="Test" />
+            </ToggleButton>
+            <ToggleButton
+              type="radio"
+              value="exercise"
+              variant="success"
+              checked={historyView === 'exercise'}
+              onChange={() => setHistoryView('exercise')}
+            >
+              <FormattedMessage id="Exercise" />
+            </ToggleButton>
+          </ButtonGroup>
+          <GroupHistory student={currentStudent} groupId={currentGroupId} view={historyView} />
+        </div>        
+      )}
+      
     </div>
   )
 }

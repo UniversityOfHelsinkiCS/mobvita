@@ -19,6 +19,7 @@ import summary from './groupSummaryReducer'
 import practice from './practiceReducer'
 import passwordReset from './passwordResetReducer'
 import studentProgress from './groupProgressReducer'
+import studentHistory from './GroupHistoryReducer'
 import tests from './testReducer'
 import exerciseHistory from './exerciseHistoryReducer'
 import crossword from './crosswordReducer'
@@ -52,6 +53,7 @@ const rootReducer = combineReducers({
   serverError,
   leaderboard,
   newAchievements,
+  studentHistory,
 })
 
 export default (state, action) =>
