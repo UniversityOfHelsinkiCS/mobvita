@@ -11,20 +11,16 @@ const GroupConcept = ({ concept, children, ...props }) => {
   const { id: groupId } = useParams()
 
   const learningLanguage = useSelector(learningLanguageSelector)
-  const { testConceptQuestionAmount, conceptTurnedOn } = useSelector(({ groups }) => (
-    {
-      testConceptQuestionAmount: groups.testConcepts
-        && groups.testConcepts.test_template[conceptId],
-      conceptTurnedOn: groups.group && groups.group.exercise_setting[conceptId],
-    }))
+  const { testConceptQuestionAmount, conceptTurnedOn } = useSelector(({ groups }) => ({
+    testConceptQuestionAmount: groups.testConcepts && groups.testConcepts.test_template[conceptId],
+    conceptTurnedOn: groups.group && groups.group.exercise_setting[conceptId],
+  }))
 
-  const handleTestQuestionAmountChange = (e) => {
+  const handleTestQuestionAmountChange = e => {
     if (e.target.value) {
-      dispatch(updateTestConcepts(
-        groupId,
-        { [conceptId]: Number(e.target.value) },
-        learningLanguage,
-      ))
+      dispatch(
+        updateTestConcepts(groupId, { [conceptId]: Number(e.target.value) }, learningLanguage)
+      )
     }
   }
 

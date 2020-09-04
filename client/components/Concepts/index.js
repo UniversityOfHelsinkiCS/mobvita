@@ -50,9 +50,10 @@ const Concepts = () => {
 
   const { concepts, pending: conceptsPending } = useSelector(({ metadata }) => metadata)
   const learningLanguage = useSelector(learningLanguageSelector)
-  const { isTeaching } = useSelector(({ groups }) => ({
+  const { isTeaching, group } = useSelector(({ groups }) => ({
     isTeaching:
       groups.testConcepts && groups.testConcepts.group && groups.testConcepts.group.is_teaching,
+    group: groups.group,
   }))
 
   const [showTestConcepts, setShowTestConcepts] = useState(false)
@@ -78,7 +79,7 @@ const Concepts = () => {
     if (target === 'groups' && !isTeaching && isTeaching !== undefined) history.replace('/groups')
   }, [isTeaching])
 
-  if (conceptsPending || !concepts) return <Spinner />
+  if (conceptsPending || !concepts || (target === 'groups' && !group)) return <Spinner />
 
   const makeConceptTree = parents =>
     parents
