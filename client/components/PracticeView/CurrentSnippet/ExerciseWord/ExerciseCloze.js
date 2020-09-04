@@ -89,10 +89,7 @@ const ExerciseCloze = ({ word, handleChange }) => {
 
   const handleBlur = () => {
     handleChange(value, word)
-    // It just works...
-    setTimeout(() => {
-      setShow(false)
-    }, 100)
+    setShow(false)
   }
 
   const handleFocus = () => {
