@@ -167,7 +167,7 @@ const GroupAnalytics = () => {
                   <span
                     style={{ textOverflow: 'ellipsis', overflow: 'hidden', whiteSpace: 'nowrap' }}
                   >
-                    {student.userName}
+                    {student.userName} ({student.email})
                   </span>
                   {currentUserIsTeacher && (
                     <Icon
