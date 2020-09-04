@@ -12,6 +12,7 @@ import StoryConcept from './StoryConcept'
 import SelectAllCheckbox from './SelectAllCheckbox'
 import ConceptHeader from './ConceptHeader'
 import ConceptToggles from './ConceptToggles'
+import TotalTestQuestions from './TotalTestQuestions'
 
 const ConceptTree = ({ concept, showTestConcepts, showLevels }) => {
   const { target } = useParams()
@@ -105,12 +106,15 @@ const Concepts = () => {
   return (
     <div className="component-container">
       <ConceptHeader target={target} />
-      <ConceptToggles
-        showTestConcepts={showTestConcepts}
-        handleTestConceptToggle={handleTestConceptToggle}
-        showLevels={showLevels}
-        setShowLevels={setShowLevels}
-      />
+      <div className="flex">
+        <ConceptToggles
+          showTestConcepts={showTestConcepts}
+          handleTestConceptToggle={handleTestConceptToggle}
+          showLevels={showLevels}
+          setShowLevels={setShowLevels}
+        />
+        {showTestConcepts && <TotalTestQuestions />}
+      </div>
       <SelectAllCheckbox />
       <hr />
       <div>

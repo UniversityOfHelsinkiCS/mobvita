@@ -246,6 +246,7 @@ export default (state = { groups: [], joinPending: false }, action) => {
     case 'SET_GROUP_TEST_CONCEPTS_SUCCESS':
       return {
         ...state,
+        testConcepts: action.response,
         testConceptsPending: false,
         error: false,
       }
