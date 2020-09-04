@@ -137,7 +137,6 @@ const DictionaryHelp = ({ minimized }) => {
           getTranslationAction({ learningLanguage, dictionaryLanguage: value, wordLemmas: lemmas })
         )
     }
-    console.log(value)
     dispatch(updateDictionaryLanguage(value))
   }
 
