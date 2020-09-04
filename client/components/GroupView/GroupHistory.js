@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { getStudentHistory } from 'Utilities/redux/GroupHistoryReducer'
+import { getStudentHistory } from 'Utilities/redux/groupHistoryReducer'
 import { FormattedMessage } from 'react-intl'
 import History from 'Components/History'
 import Spinner from 'Components/Spinner'
