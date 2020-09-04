@@ -24,7 +24,7 @@ const TestIndex = () => {
   const [endDate, setEndDate] = useState(moment().toDate())
   const learningLanguage = useLearningLanguage()
   const currentGroupId = useSelector(({ user }) => user.data.user.last_selected_group)
-  const [selectedGroup, setSelectedGroup] = useState(currentGroupId)
+  const [selectedGroup, setSelectedGroup] = useState(currentGroupId || '')
   const [currentGroup, setCurrentGroup] = useState()
   const [showHistory, setShowHistory] = useState(false)
   const { sessionId, report, pending, language, history } = useSelector(({ tests }) => tests)
@@ -40,7 +40,7 @@ const TestIndex = () => {
 
   const handleGroupChange = key => {
     setSelectedGroup(key)
-    if (!(key === 'default')) dispatch(updateGroupSelect(key))
+    if (!(key === '')) dispatch(updateGroupSelect(key))
   }
 
   const toggleHistory = () => {
