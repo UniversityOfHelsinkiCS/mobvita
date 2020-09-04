@@ -4,6 +4,7 @@ import { Button } from 'react-bootstrap'
 import { FormattedMessage } from 'react-intl'
 import { useDispatch, useSelector } from 'react-redux'
 import { getTestQuestions, resetTest, getHistory } from 'Utilities/redux/testReducer'
+import { updateGroupSelect } from 'Utilities/redux/userReducer'
 import { useLearningLanguage } from 'Utilities/common'
 import moment from 'moment'
 import Spinner from 'Components/Spinner'
@@ -23,7 +24,7 @@ const TestIndex = () => {
   const [endDate, setEndDate] = useState(moment().toDate())
   const learningLanguage = useLearningLanguage()
   const currentGroupId = useSelector(({ user }) => user.data.user.last_selected_group)
-  const [selectedGroup, setSelectedGroup] = useState('')
+  const [selectedGroup, setSelectedGroup] = useState(currentGroupId)
   const [currentGroup, setCurrentGroup] = useState()
   const [showHistory, setShowHistory] = useState(false)
   const { sessionId, report, pending, language, history } = useSelector(({ tests }) => tests)
@@ -39,6 +40,7 @@ const TestIndex = () => {
 
   const handleGroupChange = key => {
     setSelectedGroup(key)
+    if (!(key === 'default')) dispatch(updateGroupSelect(key))
   }
 
   const toggleHistory = () => {
