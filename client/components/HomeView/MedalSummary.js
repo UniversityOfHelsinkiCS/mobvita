@@ -18,7 +18,7 @@ const MedalAmount = ({ medal, amount }) => (
 const MedalSummary = () => {
   const achievements = useSelector(state => state.user.data.user.achievements)
 
-  if (!hiddenFeatures) return null
+  if (!hiddenFeatures || !achievements) return null
 
   const medals = useMemo(
     () =>
