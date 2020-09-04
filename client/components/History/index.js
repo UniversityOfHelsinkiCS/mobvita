@@ -88,7 +88,7 @@ const History = ({ history, dateFormat }) => {
     if (newPage + 1 > maxPage) {
       setPage(0)
     } else if (newPage < 0) {
-      setPage(maxPage)
+      setPage(maxPage - 1)
     } else {
       setPage(newPage)
     }
