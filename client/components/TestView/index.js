@@ -81,7 +81,7 @@ const TestIndex = () => {
   }, [learningLanguage])
 
   if (pending) {
-    return <Spinner />
+    return <Spinner fullHeight />
   }
 
   const groupOptions = [{ value: '', text: 'default', key: 'default' }].concat(

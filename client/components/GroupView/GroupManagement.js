@@ -134,7 +134,7 @@ const GroupManagement = () => {
     dispatch(leaveFromGroup(leaveGroupId, userId))
   }
 
-  if (pending) return <Spinner />
+  if (pending) return <Spinner fullHeight />
 
   if (groups.length === 0) return <NoGroupsView />
 

@@ -34,7 +34,7 @@ const ReadView = ({ match }) => {
     dispatch(clearTranslationAction())
   }, [])
 
-  if (!story || pending) return <Spinner />
+  if (!story || pending) return <Spinner fullHeight />
 
   const voice = respVoiceLanguages[learningLanguage]
 

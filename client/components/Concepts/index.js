@@ -79,7 +79,7 @@ const Concepts = () => {
     if (target === 'groups' && !isTeaching && isTeaching !== undefined) history.replace('/groups')
   }, [isTeaching])
 
-  if (conceptsPending || !concepts || (target === 'groups' && !group)) return <Spinner />
+  if (conceptsPending || !concepts || (target === 'groups' && !group)) return <Spinner fullHeight />
 
   const makeConceptTree = parents =>
     parents
