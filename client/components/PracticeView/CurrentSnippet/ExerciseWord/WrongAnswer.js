@@ -13,8 +13,9 @@ import { setReferences } from 'Utilities/redux/practiceReducer'
 import { getTranslationAction, setWords } from 'Utilities/redux/translationReducer'
 import Tooltip from 'Components/PracticeView/Tooltip'
 
-const WrongAnswer = ({ word, answer, tiedAnswer }) => {
-  const { surface, lemmas, ID: wordId, id: storyId, inflection_ref: inflectionRef } = word
+const WrongAnswer = ({ word }) => {
+  const { surface, lemmas, ID: wordId, id: storyId, tiedAnswer: tiedTo, inflection_ref: inflectionRef } = word
+  const answer = useSelector(({ practice }) => practice.currentAnswers[word.ID])
 
   const [show, setShow] = useState(false)
 

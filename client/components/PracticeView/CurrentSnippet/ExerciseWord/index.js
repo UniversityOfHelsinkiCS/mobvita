@@ -9,7 +9,7 @@ import { useSelector } from 'react-redux'
 
 const ExerciseWord = ({ word, handleAnswerChange, handleMultiselectChange }) => {
   const { attempt, snippetFinished } = useSelector(({ practice }) => practice)
-  const currentAnswer = useSelector(({ practice }) => practice.currentAnswers[word.ID])
+  
   if (word.surface === '\n\n' || !word.id) {
     return <PlainWord word={word} />
   }
@@ -37,7 +37,7 @@ const ExerciseWord = ({ word, handleAnswerChange, handleMultiselectChange }) => 
         />
       )
     else return (
-      <WrongAnswer word={word} answer={currentAnswer} tiedAnswer={word.tiedTo} />
+      <WrongAnswer word={word} />
     )
   }
   return (
