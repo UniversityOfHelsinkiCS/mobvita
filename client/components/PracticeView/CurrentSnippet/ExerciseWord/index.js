@@ -4,7 +4,7 @@ import ExerciseCloze from './ExerciseCloze'
 import ExerciseMultipleChoice from './ExerciseMultipleChoice'
 import ExerciseHearing from './ExerciseHearing'
 import RightAnswer from './RightAsnwer'
-import PreviousExerciseWord from '../../PreviousSnippets/Word/PreviousExerciseWord'
+import WrongAnswer from './WrongAnswer'
 import { useSelector } from 'react-redux'
 
 const ExerciseWord = ({ word, handleAnswerChange, handleMultiselectChange }) => {
@@ -37,7 +37,7 @@ const ExerciseWord = ({ word, handleAnswerChange, handleMultiselectChange }) => 
         />
       )
     else return (
-      <PreviousExerciseWord word={word} answer={currentAnswer} tiedAnswer={word.tiedTo} />
+      <WrongAnswer word={word} answer={currentAnswer} tiedAnswer={word.tiedTo} />
     )
   }
   return (
