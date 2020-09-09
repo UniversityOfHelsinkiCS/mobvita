@@ -21,7 +21,7 @@ const PickDate = ({ date, setDate }) => (
 const TestIndex = () => {
   const dispatch = useDispatch()
   const [startDate, setStartDate] = useState(moment().subtract(2, 'months').toDate())
-  const [endDate, setEndDate] = useState(moment().toDate())
+  const [endDate, setEndDate] = useState(moment().endOf('day').toDate())
   const learningLanguage = useLearningLanguage()
   const currentGroupId = useSelector(({ user }) => user.data.user.last_selected_group)
   const [selectedGroup, setSelectedGroup] = useState(currentGroupId || '')

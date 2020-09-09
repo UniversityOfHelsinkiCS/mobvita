@@ -148,7 +148,7 @@ const Test = () => {
         <div className="test-aside">
           <div
             className="test-counter"
-            style={{ color: Math.round(timer.getTime() / 1000) <= 5 ? 'firebrick' : '#212529' }}
+            style={{ fontWeight: 'bold', color: Math.round(timer.getTime() / 1000) <= 5 ? '#f3172d' : '#212529' }}
           >
             {Math.round(timer.getTime() / 1000)}
           </div>
@@ -159,9 +159,9 @@ const Test = () => {
                 color={willPause ? 'grey' : 'blue'}
                 name={paused ? 'play' : 'pause'}
                 onClick={paused ? resumeTimer : pauseTimer}
-                style={{ marginRight: '0.25em' }}
+                style={{ margin: '0.25em' }}
               />
-              <Icon size="large" color={willStop ? 'grey' : 'blue'} name="stop" onClick={stop} />
+              <Icon size="large" color={willStop ? 'grey' : 'blue'} name="stop" onClick={stop} style={{ margin: '0.25em' }}/>
             </div>
           </div>
         </div>

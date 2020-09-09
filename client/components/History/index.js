@@ -164,7 +164,7 @@ const History = ({ history, dateFormat }) => {
             <Table.HeaderCell>Concepts</Table.HeaderCell>
             {calculatePage().map(test => (
               <Table.HeaderCell key={test.date}>
-                {moment(test.date).format(dateFormat || 'YYYY-MM-DD hh:mm')}
+                {moment(test.date).format(dateFormat || 'YYYY-MM-DD HH:mm')}
               </Table.HeaderCell>
             ))}
           </Table.Row>
