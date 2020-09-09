@@ -4,8 +4,12 @@ import ExerciseCloze from './ExerciseCloze'
 import ExerciseMultipleChoice from './ExerciseMultipleChoice'
 import ExerciseHearing from './ExerciseHearing'
 import RightAnswer from './RightAsnwer'
+import PreviousExerciseWord from '../../PreviousSnippets/Word/PreviousExerciseWord'
+import { useSelector } from 'react-redux'
 
 const ExerciseWord = ({ word, handleAnswerChange, handleMultiselectChange }) => {
+  const { attempt, snippetFinished } = useSelector(({ practice }) => practice)
+  const currentAnswer = useSelector(({ practice }) => practice.currentAnswers[word.ID])
   if (word.surface === '\n\n' || !word.id) {
     return <PlainWord word={word} />
   }
@@ -23,13 +27,17 @@ const ExerciseWord = ({ word, handleAnswerChange, handleMultiselectChange }) => 
     )
   }
   if (word.choices) {
-    return (
-      <ExerciseMultipleChoice
-        tabIndex={word.ID}
-        handleChange={handleMultiselectChange}
-        key={word.ID}
-        word={word}
-      />
+    if (attempt < word.choices.length)
+      return (
+        <ExerciseMultipleChoice
+          tabIndex={word.ID}
+          handleChange={handleMultiselectChange}
+          key={word.ID}
+          word={word}
+        />
+      )
+    else return (
+      <PreviousExerciseWord word={word} answer={currentAnswer} tiedAnswer={word.tiedTo} />
     )
   }
   return (
