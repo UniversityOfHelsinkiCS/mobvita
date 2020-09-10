@@ -721,7 +721,7 @@
     "user-exercise-settings": "Настройки для упражнений",
     "show-levels": "Показать уровни",
     "choose-settings-template": "Использовать личные настройки или настройки для Группы:",
-    "choose-settings-template-info": "Эти настройки применяются к текстам из личной и общей библиотеки.",
+    "choose-settings-template-info": "Настройки относятся к текстам в личной и общей библиотеке.",
     "personal-settings": "Личные настройки",
     "join-group": "Вступить в группу",
     "summary": "Отчет",
@@ -757,7 +757,7 @@
     "Audio settings": "Настройки аудио/звука",
     "Pronounce clicked words": "Озвучить незнакомые слова",
     "Always": "Все слова, на которые я кликаю",
-    "Only on demand": "Только когда я специально попрошу озвучить",
+    "Only on demand": "Только по специальному запросу",
     "Clear": "Очистить",
     "Week": "Недели",
     "Practiced hours": "Чаcы",
@@ -789,9 +789,9 @@
     "Emerald": "Изумруды",
     "Diamond": "Бриллианты",
     "medal earned": "полученные награды",
-    "Test History": "Test History",
-    "Test": "Test",
-    "Exercise": "Exercise",
-    "total questions": "total questions",
-    "Showing results for": "Showing results for ..."
+    "Test History": "Пройденные тесты",
+    "Test": "Тесты",
+    "Exercise": "Упражнения",
+    "total questions": "всего вопросов",
+    "Showing results for": "Результаты за период:"
 }
