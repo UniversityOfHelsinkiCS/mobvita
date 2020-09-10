@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { Modal } from 'semantic-ui-react'
 import { Button, Spinner } from 'react-bootstrap'
@@ -12,9 +12,9 @@ const StoryFileModal = ({ trigger }) => {
 
   const [file, setFile] = useState('')
   const [label, setLabel] = useState(intl.formatMessage({ id: 'choose-a-file' }))
-
+  const [showModel, setShowModel] = useState(false)
   const learningLanguage = useSelector(learningLanguageSelector)
-  const { pending, storyId } = useSelector(({ uploadProgress }) => uploadProgress)
+  const { pending, storyId, progress } = useSelector(({ uploadProgress }) => uploadProgress)
 
   const dispatch = useDispatch()
 
@@ -34,6 +34,13 @@ const StoryFileModal = ({ trigger }) => {
     dispatch(updateLibrarySelect('private'))
   }
 
+  useEffect(() => {
+    if (progress) {
+      if (progress==1) setFile('')
+      setShowModel(false)
+    }
+  }, [progress])
+
   const storyUploading = pending || storyId
 
   const submitDisabled = !file || storyUploading
@@ -43,6 +50,9 @@ const StoryFileModal = ({ trigger }) => {
       dimmer="inverted"
       closeIcon
       trigger={trigger}
+      onClose={() => setShowModel(false)}
+      onOpen={() => setShowModel(true)}
+      open={showModel}
     >
       <Modal.Header><FormattedMessage id="upload-stories" /></Modal.Header>
       <Modal.Content>

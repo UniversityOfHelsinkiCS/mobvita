@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { Modal } from 'semantic-ui-react'
 import { FormattedMessage } from 'react-intl'
 import { useDispatch, useSelector } from 'react-redux'
@@ -11,9 +11,9 @@ const AddStoryModal = ({ trigger }) => {
 
   const [text, setText] = useState('')
   const [charactersLeft, setCharactersLeft] = useState(maxCharacters)
-
+  const [showModel, setShowModel] = useState(false)
   const learningLanguage = useSelector(learningLanguageSelector)
-  const { pending, storyId } = useSelector(({ uploadProgress }) => uploadProgress)
+  const { pending, storyId, progress } = useSelector(({ uploadProgress }) => uploadProgress)
 
   const dispatch = useDispatch()
 
@@ -31,6 +31,13 @@ const AddStoryModal = ({ trigger }) => {
     dispatch(postStory(newStory))
   }
 
+  useEffect(() => {
+    if (progress) {
+      if (progress==1) setText('')
+      setShowModel(false)
+    }
+  }, [progress])
+
   const textTooLong = charactersLeft < 0
 
   const submitDisabled = !text
@@ -44,6 +51,9 @@ const AddStoryModal = ({ trigger }) => {
       dimmer="inverted"
       closeIcon
       trigger={trigger}
+      onClose={() => setShowModel(false)}
+      onOpen={() => setShowModel(true)}
+      open={showModel}
     >
       <Modal.Header><FormattedMessage id="add-your-stories" /></Modal.Header>
       <Modal.Content style={{ display: 'flex', flexDirection: 'column' }}>
