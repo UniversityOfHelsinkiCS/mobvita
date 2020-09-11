@@ -27,7 +27,7 @@ const ExerciseWord = ({ word, handleAnswerChange, handleMultiselectChange }) => 
     )
   }
   if (word.choices) {
-    if (attempt < word.choices.length)
+    if (attempt < word.choices.length - 1)
       return (
         <ExerciseMultipleChoice
           tabIndex={word.ID}
