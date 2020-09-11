@@ -2,11 +2,13 @@ import React, { useEffect, useState } from 'react'
 import { useSelector } from 'react-redux'
 import { Dropdown } from 'semantic-ui-react'
 import { getTextWidth } from 'Utilities/common'
+import Tooltip from 'Components/PracticeView/Tooltip'
 
 const ExerciseMultipleChoice = ({ word, handleChange }) => {
   const [className, setClassName] = useState('exercise-multiple untouched')
   const [options, setOptions] = useState([])
   const [touched, setTouched] = useState(false)
+  const [show, setShow] = useState(false)
 
   const currentAnswer = useSelector(({ practice }) => practice.currentAnswers[word.ID])
 
@@ -57,21 +59,38 @@ const ExerciseMultipleChoice = ({ word, handleChange }) => {
 
     handleChange(e, word, data)
   }
-
+  
+  const tooltip = (
+    <div>
+      {word.message && <div className="tooltip-green">{word.message}</div>}
+    </div>
+  )
 
   return (
-    <Dropdown
-      key={word.ID}
-      disabled={tested && !isWrong}
-      options={options}
-      placeholder={placeholder}
-      value={value}
-      onChange={(e, data) => handle(e, word, data)}
-      selection
-      floating
-      style={{ width: getTextWidth(testString), minWidth: getTextWidth(testString) }}
-      className={`${className}`}
-    />
+    <Tooltip
+      placement="top"
+      trigger="none"
+      onVisibilityChange={setShow}
+      tooltipShown={show}
+      closeOnOutOfBoundaries
+      tooltip={tooltip}
+      additionalClassnames="clickable"
+    >
+      <Dropdown
+        key={word.ID}
+        disabled={tested && !isWrong}
+        options={options}
+        placeholder={placeholder}
+        value={value}
+        onChange={(e, data) => handle(e, word, data)}
+        onBlur={() => setShow(false)}
+        onFocus={() => setShow(!show)}
+        selection
+        floating
+        style={{ width: getTextWidth(testString), minWidth: getTextWidth(testString) }}
+        className={`${className}`}
+      />
+    </Tooltip>
   )
 }
 

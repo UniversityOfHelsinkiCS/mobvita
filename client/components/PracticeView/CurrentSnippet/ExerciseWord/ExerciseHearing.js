@@ -3,12 +3,14 @@ import { useDispatch, useSelector } from 'react-redux'
 import { Icon } from 'semantic-ui-react'
 import { getTextWidth, speak, learningLanguageSelector, respVoiceLanguages } from 'Utilities/common'
 import { setFocusedWord } from 'Utilities/redux/practiceReducer'
+import Tooltip from 'Components/PracticeView/Tooltip'
 
 const ExerciseHearing = ({ word, handleChange }) => {
   const [value, setValue] = useState('')
 
   const [className, setClassname] = useState('exercise hearing-untouched')
   const [touched, setTouched] = useState(false)
+  const [show, setShow] = useState(false)
   const [focusTimeout, setFocusTimeout] = useState(false)
   const inputRef = createRef(null)
 
@@ -60,6 +62,7 @@ const ExerciseHearing = ({ word, handleChange }) => {
         setFocusTimeout(false)
       }, 500)
     }
+    setShow(!show)
   }
 
   const handle = e => {
@@ -68,6 +71,7 @@ const ExerciseHearing = ({ word, handleChange }) => {
 
   const handleBlur = () => {
     handleChange(value, word)
+    setShow(false)
   }
 
   const handleKeyDown = e => {
@@ -79,35 +83,51 @@ const ExerciseHearing = ({ word, handleChange }) => {
     }
   }
 
+  const tooltip = (
+    <div>
+      {word.message && <div className="tooltip-green">{word.message}</div>}
+    </div>
+  )
+
   return (
-    <span>
-      <input
-        onKeyDown={handleKeyDown}
-        data-cy="exercise-hearing"
-        readOnly={tested && !isWrong}
-        ref={inputRef}
-        key={word.ID}
-        onChange={handle}
-        value={value}
-        onFocus={handleInputFocus}
-        onBlur={handleBlur}
-        className={className}
-        style={{
-          width: getTextWidth(word.surface),
-          minWidth: getTextWidth(word.surface),
-          marginRight: '2px',
-          height: '1.5em',
-          lineHeight: 'normal',
-        }}
-      />
-      <Icon
-        name="volume up"
-        link
-        onClick={() => speakerClickHandler(word.surface)}
-        style={{ marginLeft: '-25px' }}
-      />
-      {word.negation && <sup style={{ marginLeft: '3px', color: '#0000FF' }}>(neg)</sup>}
-    </span>
+    <Tooltip
+      placement="top"
+      trigger="none"
+      onVisibilityChange={setShow}
+      tooltipShown={show}
+      closeOnOutOfBoundaries
+      tooltip={tooltip}
+      additionalClassnames="clickable"
+    >
+      <span>
+        <input
+          onKeyDown={handleKeyDown}
+          data-cy="exercise-hearing"
+          readOnly={tested && !isWrong}
+          ref={inputRef}
+          key={word.ID}
+          onChange={handle}
+          value={value}
+          onFocus={handleInputFocus}
+          onBlur={handleBlur}
+          className={className}
+          style={{
+            width: getTextWidth(word.surface),
+            minWidth: getTextWidth(word.surface),
+            marginRight: '2px',
+            height: '1.5em',
+            lineHeight: 'normal',
+          }}
+        />
+        <Icon
+          name="volume up"
+          link
+          onClick={() => speakerClickHandler(word.surface)}
+          style={{ marginLeft: '-25px' }}
+        />
+        {word.negation && <sup style={{ marginLeft: '3px', color: '#0000FF' }}>(neg)</sup>}
+      </span>
+    </Tooltip>
   )
 }
 
