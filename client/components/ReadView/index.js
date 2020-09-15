@@ -41,7 +41,7 @@ const ReadView = ({ match }) => {
   const handleWordClick = (surfaceWord, wordLemmas, wordId, inflectionRef) => {
     if (autoSpeak === 'always' && voice) speak(surfaceWord, voice)
     if (wordLemmas) {
-      dispatch(setWords({ surfaceWord, wordLemmas }))
+      dispatch(setWords({ surface: surfaceWord, lemmas: wordLemmas }))
       dispatch(
         getTranslationAction({
           learningLanguage,
