@@ -3,7 +3,12 @@ import { Dropdown } from 'semantic-ui-react'
 import { Button } from 'react-bootstrap'
 import { FormattedMessage } from 'react-intl'
 import { useDispatch, useSelector } from 'react-redux'
-import { getTestQuestions, resetTest, getHistory } from 'Utilities/redux/testReducer'
+import {
+  getTestQuestions,
+  resetTest,
+  getHistory,
+  removeFromHistory,
+} from 'Utilities/redux/testReducer'
 import { updateGroupSelect } from 'Utilities/redux/userReducer'
 import { useLearningLanguage } from 'Utilities/common'
 import moment from 'moment'
@@ -41,6 +46,10 @@ const TestIndex = () => {
   const handleGroupChange = key => {
     setSelectedGroup(key)
     if (!(key === '')) dispatch(updateGroupSelect(key))
+  }
+
+  const handleHistorySessionDelete = sessionId => {
+    dispatch(removeFromHistory(learningLanguage, sessionId))
   }
 
   const toggleHistory = () => {
@@ -144,7 +153,10 @@ const TestIndex = () => {
                     <PickDate date={endDate} setDate={setEndDate} />
                   </div>
                 </div>
-                <History history={filterHistoryByDate()} />
+                <History
+                  history={filterHistoryByDate()}
+                  handleDelete={handleHistorySessionDelete}
+                />
               </>
             )}
           </>

@@ -1,12 +1,12 @@
-import React, { useState, useEffect, useMemo } from 'react'
+import React, { useState, useEffect, useLayoutEffect, useMemo } from 'react'
 import { useSelector } from 'react-redux'
-import { Table } from 'semantic-ui-react'
+import { Table, Icon } from 'semantic-ui-react'
 import moment from 'moment'
 import { hiddenFeatures } from 'Utilities/common'
 import useWindowDimensions from 'Utilities/windowDimensions'
 import Concept from './Concept'
 
-const History = ({ history, dateFormat }) => {
+const History = ({ history, dateFormat, handleDelete = null }) => {
   const [colors, setColors] = useState({
     best: '0,255,0',
     worst: '230,255,230',
@@ -23,7 +23,16 @@ const History = ({ history, dateFormat }) => {
 
   const windowWidth = useWindowDimensions().width
 
-  useEffect(() => setPage(0), [history])
+  const maxPage = useMemo(() => {
+    const extraPage = history?.length % pageSize === 0 ? 0 : 1
+    return Math.trunc(history?.length / pageSize) + extraPage
+  }, [history, pageSize])
+
+  useLayoutEffect(() => {
+    if (page > maxPage - 1) {
+      setPage(maxPage - 1)
+    }
+  }, [maxPage])
 
   useEffect(() => {
     if (windowWidth > 1040) setPageSize(7)
@@ -76,11 +85,6 @@ const History = ({ history, dateFormat }) => {
   const calculatePage = () => {
     return history.slice(page * pageSize, page * pageSize + pageSize)
   }
-
-  const maxPage = useMemo(() => {
-    const extraPage = history?.length % pageSize === 0 ? 0 : 1
-    return Math.trunc(history?.length / pageSize) + extraPage
-  }, [history, pageSize])
 
   const switchPage = change => {
     const newPage = page + change
@@ -164,7 +168,16 @@ const History = ({ history, dateFormat }) => {
             <Table.HeaderCell>Concepts</Table.HeaderCell>
             {calculatePage().map(test => (
               <Table.HeaderCell key={test.date}>
-                {moment(test.date).format(dateFormat || 'YYYY-MM-DD HH:mm')}
+                <span className="flex">
+                  {moment(test.date).format(dateFormat || 'YYYY-MM-DD HH:mm')}
+                  {handleDelete && (
+                    <Icon
+                      name="close"
+                      onClick={() => handleDelete(test.test_session)}
+                      style={{ marginTop: '.25rem' }}
+                    />
+                  )}
+                </span>
               </Table.HeaderCell>
             ))}
           </Table.Row>

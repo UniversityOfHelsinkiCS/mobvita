@@ -69,6 +69,12 @@ export const getHistory = (language) => {
   return callBuilder(route, prefix, 'get')
 }
 
+export const removeFromHistory = (language, sessionId) => {
+  const route = `/test/${language}/session/${sessionId}/remove`
+  const prefix = 'REMOVE_FROM_TEST_HISTORY'
+  return callBuilder(route, prefix, 'post')
+}
+
 export const resetTest = () => {
   clearLocalStorage()
   return { type: 'RESET_TEST' }
@@ -135,6 +141,11 @@ export default (state = initialState, action) => {
       return {
         ...state,
         history: response.history,
+      }
+    case 'REMOVE_FROM_TEST_HISTORY_SUCCESS':
+      return {
+        ...state,
+        history: state.history.filter(h => h.test_session !== response.session_id),
       }
     case 'RESET_TEST':
       return initialState
