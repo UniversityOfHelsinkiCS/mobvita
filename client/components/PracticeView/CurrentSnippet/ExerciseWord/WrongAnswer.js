@@ -14,7 +14,7 @@ import { getTranslationAction, setWords } from 'Utilities/redux/translationReduc
 import Tooltip from 'Components/PracticeView/Tooltip'
 
 const WrongAnswer = ({ word }) => {
-  const { surface, lemmas, ref, ID: wordId, id: storyId, tiedAnswer: tiedTo, inflection_ref: inflectionRef } = word
+  const { surface, lemmas, ref, ID: wordId, id: storyId, inflection_ref: inflectionRef } = word
   const answer = useSelector(({ practice }) => practice.currentAnswers[word.ID])
 
   const [show, setShow] = useState(false)
@@ -28,7 +28,7 @@ const WrongAnswer = ({ word }) => {
 
   const voice = respVoiceLanguages[learningLanguage]
 
-  const wordClass = `word-interactive wrong-text`
+  const wordClass = 'word-interactive wrong-text'
 
   const handleClick = () => {
     setShow(true)
@@ -52,8 +52,6 @@ const WrongAnswer = ({ word }) => {
     if (ref) dispatch(setReferences(ref))
   }
 
-  const youAnsweredTooltip = answer || tiedAnswer
-
   const tooltip = (
     <div className="tooltip-green" style={{ cursor: 'pointer' }} onMouseDown={handleTooltipClick}>
       {word.message && (
@@ -68,12 +66,10 @@ const WrongAnswer = ({ word }) => {
           )}
         </div>
       )}
-      {youAnsweredTooltip && (
+      {answer && (
         <div>
           {`${intl.formatMessage({ id: 'you-used' })}: `}
-          <span style={getTextStyle(learningLanguage, 'tooltip')}>
-            {youAnsweredTooltip.users_answer}
-          </span>
+          <span style={getTextStyle(learningLanguage, 'tooltip')}>{answer.users_answer}</span>
         </div>
       )}
     </div>
