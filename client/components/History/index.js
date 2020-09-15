@@ -168,7 +168,7 @@ const History = ({ history, dateFormat, handleDelete = null }) => {
             <Table.HeaderCell>Concepts</Table.HeaderCell>
             {calculatePage().map(test => (
               <Table.HeaderCell key={test.date}>
-                <span className="flex">
+                <span className="space-between">
                   {moment(test.date).format(dateFormat || 'YYYY-MM-DD HH:mm')}
                   {handleDelete && (
                     <Icon

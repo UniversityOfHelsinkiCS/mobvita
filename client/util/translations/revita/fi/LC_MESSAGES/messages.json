@@ -789,5 +789,6 @@
     "Test": "Test",
     "Exercise": "Exercise",
     "total questions": "kysymystä yhteensä",
-    "Showing results for": "Näytetään tuloksia aikavälille:"
+    "Showing results for": "Näytetään tuloksia aikavälille:",
+    "This will permanently remove these test results, are you sure you want to proceed?": "Tämä poistaa nämä koetulokset pysyvästi. Oletko varma?"
 }

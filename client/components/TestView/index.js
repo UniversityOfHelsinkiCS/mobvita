@@ -14,6 +14,7 @@ import { useLearningLanguage } from 'Utilities/common'
 import moment from 'moment'
 import Spinner from 'Components/Spinner'
 import ResponsiveDatePicker from 'Components/ResponsiveDatePicker'
+import ConfirmationWarning from 'Components/ConfirmationWarning'
 import { getGroups } from 'Utilities/redux/groupsReducer'
 import TestView from './Test'
 import TestReport from './TestReport'
@@ -32,6 +33,7 @@ const TestIndex = () => {
   const [selectedGroup, setSelectedGroup] = useState(currentGroupId || '')
   const [currentGroup, setCurrentGroup] = useState()
   const [showHistory, setShowHistory] = useState(false)
+  const [sessionToDelete, setSessionToDelete] = useState(false)
   const { sessionId, report, pending, language, history } = useSelector(({ tests }) => tests)
   const { groups } = useSelector(({ groups }) => groups)
 
@@ -48,8 +50,12 @@ const TestIndex = () => {
     if (!(key === '')) dispatch(updateGroupSelect(key))
   }
 
-  const handleHistorySessionDelete = sessionId => {
-    dispatch(removeFromHistory(learningLanguage, sessionId))
+  const handleSessionDeleteClick = sessionId => {
+    setSessionToDelete(sessionId)
+  }
+
+  const deleteSession = () => {
+    dispatch(removeFromHistory(learningLanguage, sessionToDelete))
   }
 
   const toggleHistory = () => {
@@ -153,10 +159,14 @@ const TestIndex = () => {
                     <PickDate date={endDate} setDate={setEndDate} />
                   </div>
                 </div>
-                <History
-                  history={filterHistoryByDate()}
-                  handleDelete={handleHistorySessionDelete}
-                />
+                <ConfirmationWarning
+                  open={!!sessionToDelete}
+                  setOpen={setSessionToDelete}
+                  action={deleteSession}
+                >
+                  <FormattedMessage id="This will permanently remove these test results, are you sure you want to proceed?" />
+                </ConfirmationWarning>
+                <History history={filterHistoryByDate()} handleDelete={handleSessionDeleteClick} />
               </>
             )}
           </>

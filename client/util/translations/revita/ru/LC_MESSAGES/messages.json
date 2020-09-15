@@ -793,5 +793,6 @@
     "Test": "Тесты",
     "Exercise": "Упражнения",
     "total questions": "всего вопросов",
-    "Showing results for": "Результаты за период:"
+    "Showing results for": "Результаты за период:",
+    "This will permanently remove these test results, are you sure you want to proceed?": "Удалить результаты этого теста?"
 }
