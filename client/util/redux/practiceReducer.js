@@ -2,7 +2,7 @@ export const setAnswers = newAnswers => ({ type: 'SET_ANSWERS', newAnswers })
 export const setPreviousAnswers = snippetId => ({ type: 'SET_PREVIOUS_ANSWERS', snippetId })
 export const setFocusedWord = focusedWord => ({ type: 'SET_FOCUSED_WORD', focusedWord })
 export const setTouchedIds = id => ({ type: 'SET_TOUCHED_IDS', id })
-export const setAttempts = attempts => ({ type: 'SET_ATTEMPTS', attempts })
+export const incrementAttempts = () => ({ type: 'INCREMENT_ATTEMPTS' })
 export const addToOptions = options => ({ type: 'SET_OPTIONS', options })
 export const addToAudio = id => ({ type: 'SET_AUDIO', id })
 export const clearPractice = () => ({ type: 'CLEAR_PRACTICE' })
@@ -12,6 +12,7 @@ export const clearTouchedIds = () => ({ type: 'CLEAR_TOUCHED_IDS' })
 export const finishSnippet = () => ({ type: 'FINISH_SNIPPET' })
 export const setReferences = references => ({ type: 'SET_REFERENCES', references })
 export const clearReferences = () => ({ type: 'CLEAR_REFERENCES' })
+export const startSnippet = () => ({ type: 'SET_SNIPPET_STARTED' })
 
 const initialState = {
   previousAnswers: {},
@@ -25,6 +26,7 @@ const initialState = {
   snippetFinished: false,
   references: null,
   refModalOpen: false,
+  isNewSnippet: true,
 }
 
 export default (state = initialState, action) => {
@@ -52,10 +54,10 @@ export default (state = initialState, action) => {
           ? state.touchedIds
           : state.touchedIds.concat(action.id),
       }
-    case 'SET_ATTEMPTS':
+    case 'INCREMENT_ATTEMPTS':
       return {
         ...state,
-        attempt: action.attempts,
+        attempt: state.attempt + 1,
       }
     case 'SET_OPTIONS':
       return {
@@ -66,6 +68,11 @@ export default (state = initialState, action) => {
       return {
         ...state,
         audio: state.audio.concat(action.id.toString()),
+      }
+    case 'SET_SNIPPET_STARTED':
+      return {
+        ...state,
+        isNewSnippet: false,
       }
     case 'CLEAR_PRACTICE':
       return initialState
@@ -79,6 +86,7 @@ export default (state = initialState, action) => {
         options: initialState.options,
         audio: initialState.audio,
         snippetFinished: initialState.snippetFinished,
+        isNewSnippet: initialState.isNewSnippet,
       }
     case 'CLEAR_CURRENT_ANSWERS':
       return {

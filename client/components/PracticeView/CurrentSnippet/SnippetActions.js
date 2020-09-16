@@ -1,9 +1,44 @@
-import React, { useMemo } from 'react'
+import React, { useState, useMemo, useEffect } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import { FormattedMessage } from 'react-intl'
 import { Button } from 'react-bootstrap'
 import { postAnswers, getCurrentSnippet } from 'Utilities/redux/snippetsReducer'
-import { setAttempts, finishSnippet, clearTouchedIds } from 'Utilities/redux/practiceReducer'
+import { finishSnippet, clearTouchedIds } from 'Utilities/redux/practiceReducer'
+
+const CheckAnswersButton = ({ handleClick }) => {
+  const attempt = useSelector(({ practice }) => practice.attempt)
+  const { focused: focusedSnippet, pending: snippetPending, answersPending } = useSelector(
+    ({ snippets }) => snippets
+  )
+
+  const [attemptRatioPercentage, setAttemptRatioPercentage] = useState(20)
+
+  useEffect(() => {
+    if (!snippetPending) {
+      const isFreshAttempt = !focusedSnippet?.max_attempt || attempt === 0
+      if (isFreshAttempt) {
+        setAttemptRatioPercentage(20)
+      } else {
+        setAttemptRatioPercentage(100 * ((attempt + 1) / focusedSnippet?.max_attempt))
+      }
+    }
+  }, [focusedSnippet, attempt])
+
+  return (
+    <button
+      data-cy="check-answer"
+      type="button"
+      onClick={() => handleClick()}
+      className="check-answers-button"
+      disabled={answersPending || snippetPending || !focusedSnippet}
+    >
+      <div style={{ width: `${attemptRatioPercentage}%` }} />
+      <span>
+        <FormattedMessage id="check-answer" />
+      </span>
+    </button>
+  )
+}
 
 const SnippetActions = ({ storyId, exerciseCount }) => {
   const { currentAnswers, touchedIds, attempt, options, audio } = useSelector(
@@ -39,7 +74,6 @@ const SnippetActions = ({ storyId, exerciseCount }) => {
       last_attempt: lastAttempt,
     }
 
-    dispatch(setAttempts(attempt + 1))
     dispatch(clearTouchedIds())
     dispatch(postAnswers(storyId, answersObj))
   }
@@ -60,17 +94,7 @@ const SnippetActions = ({ storyId, exerciseCount }) => {
     <div>
       {isSnippetFetchedSuccessfully ? (
         <div style={{ display: 'flex', flexDirection: 'column-reverse', alignItems: 'flex-end' }}>
-          <Button
-            data-cy="check-answer"
-            variant="primary"
-            disabled={snippets.answersPending || snippets.pending || !snippets.focused}
-            onClick={() => checkAnswers()}
-            block
-          >
-            <span>
-              <FormattedMessage id="check-answer" />
-            </span>
-          </Button>
+          <CheckAnswersButton handleClick={checkAnswers} />
           <Button
             variant="secondary"
             size="sm"

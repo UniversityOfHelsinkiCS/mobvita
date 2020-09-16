@@ -303,6 +303,47 @@ body {
   font-family: $default-font;
 }
 
+.check-answers-button {
+  width: 100%;
+  padding: 0;
+  border: none;
+  border-radius: .3rem;
+  margin-bottom: .5rem;
+  position: relative;
+  outline: 0;
+  background-color: #e9ecef;
+  text-align: center;
+  & > div {
+    height: 2.5rem;
+    background-color: #4c91cd;
+    border-radius: .25rem;
+    transition: width 500ms ease-in-out;
+  }
+  & > span {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translateX(-50%) translateY(-50%);
+  }
+  &:disabled {
+    & > div {
+      background-color: #007bff;
+      opacity: 0.65;
+    }
+  }
+  &:focus {
+    outline: 0;
+  }
+  @media (hover: hover) {
+    &:hover {
+      background-color: #d7d7d7;
+      & > div {
+        background-color: #0069d9;
+      }
+    }
+  }
+}
+
 .dictionary-button {
   position: fixed;
   right: 0.5%;

@@ -20,6 +20,8 @@ import {
   addToAudio,
   setPreviousAnswers,
   addToOptions,
+  startSnippet,
+  incrementAttempts,
 } from 'Utilities/redux/practiceReducer'
 import SnippetActions from './SnippetActions'
 import PracticeText from './PracticeText'
@@ -28,13 +30,13 @@ import ProgressBar from './ProgressBar'
 const CurrentSnippet = ({ storyId, handleInputChange }) => {
   const [progress, setProgress] = useState(0)
   const [exerciseCount, setExerciseCount] = useState(0)
-  const scrollTarget = useRef(null)
+  const practiceForm = useRef(null)
 
   const dispatch = useDispatch()
 
   const snippets = useSelector(({ snippets }) => snippets)
   const answersPending = useSelector(({ snippets }) => snippets.answersPending)
-  const { attempt, snippetFinished } = useSelector(({ practice }) => practice)
+  const { snippetFinished, isNewSnippet, attempt } = useSelector(({ practice }) => practice)
   const learningLanguage = useSelector(learningLanguageSelector)
 
   const currentSnippetId = () => {
@@ -45,19 +47,10 @@ const CurrentSnippet = ({ storyId, handleInputChange }) => {
 
   const [finished, setFinished] = useState(false)
 
-  let snippetProgress = ''
+  let snippetsCompleted = ''
   if (snippets.focused) {
-    snippetProgress = finished ? currentSnippetId() + 1 : currentSnippetId()
+    snippetsCompleted = finished ? currentSnippetId() + 1 : currentSnippetId()
   }
-
-  useEffect(() => {
-    dispatch(clearPractice())
-  }, [])
-
-  useEffect(() => {
-    dispatch(getCurrentSnippet(storyId))
-    dispatch(clearTranslationAction())
-  }, [])
 
   const getExerciseCount = () => {
     let count = 0
@@ -102,24 +95,9 @@ const CurrentSnippet = ({ storyId, handleInputChange }) => {
       }, {})
       if (Object.keys(initialAnswers).length > 0) dispatch(setAnswers({ ...initialAnswers }))
       setExerciseCount(getExerciseCount())
+      dispatch(startSnippet())
     }
   }
-
-  useEffect(() => {
-    if (snippets.focused && attempt === 0) {
-      setInitialAnswers()
-    }
-  }, [snippets.focused])
-
-  useEffect(() => {
-    if (!answersPending) dispatch(getSelf())
-  }, [answersPending])
-
-  useEffect(() => {
-    if (snippets.focused) {
-      setProgress(snippetProgress / snippets.focused.total_num)
-    }
-  }, [snippets.focused])
 
   const finishSnippet = () => {
     dispatch(setPreviousAnswers(currentSnippetId()))
@@ -134,34 +112,59 @@ const CurrentSnippet = ({ storyId, handleInputChange }) => {
     }
   }
 
-  useEffect(() => {
-    if (snippets.focused && (snippets.focused.skip_second || snippetFinished)) {
-      finishSnippet()
+  const focusFirstCloze = () => {
+    if (practiceForm.current) {
+      const { elements } = practiceForm.current
+      const firstCloze = Object.entries(elements).filter(
+        e => e[1].className.includes('cloze') && !e[1].className.includes('correct')
+      )[0]
+
+      if (firstCloze) firstCloze[1].focus()
     }
-  }, [snippets.focused])
+  }
 
   useEffect(() => {
-    if (!snippets.pending && scrollTarget.current) {
-      setTimeout(() => {
-        if (scrollTarget.current) scrollTarget.current.scrollIntoView({ behavior: 'smooth' })
-      }, 50)
+    dispatch(clearPractice())
+  }, [])
+
+  useEffect(() => {
+    dispatch(getCurrentSnippet(storyId))
+    dispatch(clearTranslationAction())
+  }, [])
+
+  useEffect(() => {
+    const currentSnippetIsLoaded = !!snippets.focused
+    if (currentSnippetIsLoaded) {
+      setProgress(snippetsCompleted / snippets.focused.total_num)
+
+      const wasLastAttempt =
+        snippets.focused.skip_second ||
+        snippetFinished ||
+        attempt + 1 === snippets.focused.max_attempt
+      if (isNewSnippet) setInitialAnswers()
+      else if (wasLastAttempt) finishSnippet()
+      else dispatch(incrementAttempts())
     }
-  }, [snippets.pending, snippets.previous])
 
-  useEffect(() => {
-    if (scrollTarget.current && scrollTarget.current.elements) {
+    const practiceFormIsLoaded = !!practiceForm.current?.elements
+    if (practiceFormIsLoaded) {
       setTimeout(() => {
-        if (scrollTarget.current) {
-          const { elements } = scrollTarget.current
-          const firstCloze = Object.entries(elements).filter(
-            e => e[1].className.includes('cloze') && !e[1].className.includes('correct')
-          )[0]
-
-          if (firstCloze) firstCloze[1].focus()
-        }
+        focusFirstCloze()
       }, 100)
     }
   }, [snippets.focused])
+
+  useEffect(() => {
+    if (!answersPending) dispatch(getSelf())
+  }, [answersPending])
+
+  useEffect(() => {
+    if (!snippets.pending && practiceForm.current) {
+      setTimeout(() => {
+        if (practiceForm.current) practiceForm.current.scrollIntoView({ behavior: 'smooth' })
+      }, 50)
+    }
+  }, [snippets.pending, snippets.previous])
 
   const startOver = async () => {
     dispatch(clearPractice())
@@ -189,7 +192,7 @@ const CurrentSnippet = ({ storyId, handleInputChange }) => {
   }
 
   return (
-    <form ref={scrollTarget}>
+    <form ref={practiceForm}>
       {!finished ? (
         <div style={{ width: '100%' }}>
           <div
@@ -211,7 +214,7 @@ const CurrentSnippet = ({ storyId, handleInputChange }) => {
       )}
       {snippets.focused && (
         <ProgressBar
-          snippetProgress={snippetProgress}
+          snippetProgress={snippetsCompleted}
           snippetsTotal={snippets.focused.total_num}
           progress={progress}
         />
