@@ -60,7 +60,7 @@ const ExerciseCloze = ({ word, handleChange }) => {
 
   const getExerciseClass = (tested, isWrong) => {
     if (!tested) return 'exercise cloze-untouched'
-    if (isWrong) return 'exercise wrong'
+    if (isWrong) return 'exercise wrong cloze'
     return 'exercise correct'
   }
 
