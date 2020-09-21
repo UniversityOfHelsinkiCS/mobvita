@@ -48,7 +48,12 @@ const ExerciseHearing = ({ word, handleChange }) => {
     inputRef.current.focus()
   }
 
-  const handleInputFocus = () => {
+  // Font is changed to 16px and back to disable iOS safari zoom in effect
+  const changeElementFont = (element, size = '') => {
+    element.style.fontSize = size
+  }
+
+  const handleInputFocus = e => {
     if (!touched) {
       if (!tested) setClassname('exercise hearing-touched')
       setTouched(true)
@@ -63,6 +68,11 @@ const ExerciseHearing = ({ word, handleChange }) => {
       }, 500)
     }
     setShow(!show)
+    changeElementFont(e.target)
+  }
+
+  const handleMouseDown = e => {
+    changeElementFont(e.target, '16px')
   }
 
   const handle = e => {
@@ -74,11 +84,17 @@ const ExerciseHearing = ({ word, handleChange }) => {
     setShow(false)
   }
 
+  const focusNextClozeOrHearing = element => {
+    const { form } = element
+    const nextInput = form.elements[Array.prototype.indexOf.call(form, element) + 1]
+    changeElementFont(nextInput, '16px')
+    nextInput.focus()
+  }
+
   const handleKeyDown = e => {
-    if (e.keyCode === 13) {
-      const { form } = e.target
-      const index = Array.prototype.indexOf.call(form, e.target)
-      form.elements[index + 1].focus()
+    const isEnterPressed = e.keyCode === 13
+    if (isEnterPressed) {
+      focusNextClozeOrHearing(e.target)
       e.preventDefault()
     }
   }
@@ -110,6 +126,7 @@ const ExerciseHearing = ({ word, handleChange }) => {
           value={value}
           onFocus={handleInputFocus}
           onBlur={handleBlur}
+          onMouseDown={handleMouseDown}
           className={className}
           style={{
             width: getTextWidth(word.surface),

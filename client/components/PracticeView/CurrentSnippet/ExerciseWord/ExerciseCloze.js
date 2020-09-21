@@ -87,12 +87,17 @@ const ExerciseCloze = ({ word, handleChange }) => {
     </div>
   )
 
+  // Font is changed to 16px and back to disable iOS safari zoom in effect
+  const changeElementFont = (element, size = '') => {
+    element.style.fontSize = size
+  }
+
   const handleBlur = () => {
     handleChange(value, word)
     setShow(false)
   }
 
-  const handleFocus = () => {
+  const handleFocus = e => {
     if (!touched) {
       setTouched(true)
       if (!tested) setClassName('exercise cloze-touched')
@@ -100,13 +105,24 @@ const ExerciseCloze = ({ word, handleChange }) => {
     }
     setShow(!show)
     dispatch(setFocusedWord(word))
+    changeElementFont(e.target)
+  }
+
+  const handleMouseDown = e => {
+    changeElementFont(e.target, '16px')
+  }
+
+  const focusNextClozeOrHearing = element => {
+    const { form } = element
+    const nextInput = form.elements[Array.prototype.indexOf.call(form, element) + 1]
+    changeElementFont(nextInput, '16px')
+    nextInput.focus()
   }
 
   const handleKeyDown = e => {
-    if (e.keyCode === 13) {
-      const { form } = e.target
-      const index = Array.prototype.indexOf.call(form, e.target)
-      form.elements[index + 1].focus()
+    const isEnterPressed = e.keyCode === 13
+    if (isEnterPressed) {
+      focusNextClozeOrHearing(e.target)
       e.preventDefault()
     }
   }
@@ -135,6 +151,7 @@ const ExerciseCloze = ({ word, handleChange }) => {
         value={value}
         onChange={changeValue}
         onBlur={handleBlur}
+        onMouseDown={handleMouseDown}
         onFocus={handleFocus}
         className={className}
         style={{
