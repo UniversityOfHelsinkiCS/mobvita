@@ -37,6 +37,9 @@ import goldMedal from 'Assets/images/medals/gold_medal.png'
 import emeraldMedal from 'Assets/images/medals/emerald_medal.png'
 import diamondMedal from 'Assets/images/medals/diamond_medal.png'
 import unlockedMedal from 'Assets/images/medals/unlocked_medal.png'
+import firstMedal from 'Assets/images/medals/first_medal.svg'
+import secondMedal from 'Assets/images/medals/second_medal.svg'
+import thirdMedal from 'Assets/images/medals/third_medal.svg'
 
 import { useSelector } from 'react-redux'
 import { callApi } from './apiConnection'
@@ -77,6 +80,9 @@ export const images = {
   emeraldMedal,
   diamondMedal,
   unlockedMedal,
+  firstMedal,
+  secondMedal,
+  thirdMedal,
 }
 
 export const newCapitalize = word => {
