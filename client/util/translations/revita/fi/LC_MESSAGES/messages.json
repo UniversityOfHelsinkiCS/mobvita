@@ -790,5 +790,8 @@
     "Exercise": "Exercise",
     "total questions": "kysymystä yhteensä",
     "Showing results for": "Näytetään tuloksia aikavälille:",
-    "This will permanently remove these test results, are you sure you want to proceed?": "Tämä poistaa nämä koetulokset pysyvästi. Oletko varma?"
+    "This will permanently remove these test results, are you sure you want to proceed?": "Tämä poistaa nämä koetulokset pysyvästi. Oletko varma?",
+    "Hours practiced": "Tuntia harjoiteltu",
+    "Top people from the last 7 days.": "Parhaat viimeiseltä 7:ltä päivältä.",
+    "Top people from the last 7 days": "Parhaat viimeiseltä 7:ltä päivältä."
 }

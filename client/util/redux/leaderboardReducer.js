@@ -15,7 +15,7 @@ export const getLeaderboards = amount => {
   return callBuilder(route, prefix, 'get', null, query)
 }
 
-const initialState = { data: { } }
+const initialState = { data: {} }
 
 export default (state = initialState, action) => {
   switch (action.type) {

@@ -1,5 +1,6 @@
 import React, { useEffect, useMemo } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
+import { FormattedMessage } from 'react-intl'
 import { getLeaderboards } from 'Utilities/redux/leaderboardReducer'
 import Spinner from 'Components/Spinner'
 import { useCurrentUser } from 'Utilities/common'
@@ -28,7 +29,12 @@ const Leaderboard = () => {
 
   return (
     <div className="component-container padding-sides-1" style={{ maxWidth: '720px' }}>
-      <h2 className="header-3">Hours practiced</h2>
+      <h2 className="header-3">
+        <FormattedMessage id="Hours practiced" />
+      </h2>
+      <span className="additional-info">
+        <FormattedMessage id="Top people from the last 7 days" />
+      </span>
       <hr />
       {filteredLeaderboard.map(
         ({ user_id: userId, username, total_time_spent: hoursPracticed }, index) => (
