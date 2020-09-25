@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useMemo } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import { getLeaderboards } from 'Utilities/redux/leaderboardReducer'
 import Spinner from 'Components/Spinner'
@@ -17,23 +17,30 @@ const Leaderboard = () => {
     dispatch(getLeaderboards(25))
   }, [])
 
-  const isUserInTopPositions = userPositionIndex < leaderboard.length
+  const filteredLeaderboard = useMemo(
+    () => leaderboard?.filter(item => Math.floor(item.total_time_spent) !== 0),
+    [leaderboard]
+  )
 
   if (!leaderboard) return <Spinner fullHeight />
 
+  const isUserInTopPositions = userPositionIndex < filteredLeaderboard.length
+
   return (
-    <div className="component-container padding-sides-1">
+    <div className="component-container padding-sides-1" style={{ maxWidth: '720px' }}>
       <h2 className="header-3">Hours practiced</h2>
       <hr />
-      {leaderboard.map(({ user_id: userId, username, total_time_spent: hoursPracticed }, index) => (
-        <LeaderboardItem
-          key={userId}
-          position={index + 1}
-          username={username}
-          value={`${Math.floor(hoursPracticed)}h`}
-          highlighted={userId === user.oid}
-        />
-      ))}
+      {filteredLeaderboard.map(
+        ({ user_id: userId, username, total_time_spent: hoursPracticed }, index) => (
+          <LeaderboardItem
+            key={userId}
+            position={index + 1}
+            username={username}
+            value={`${Math.floor(hoursPracticed)}h`}
+            highlighted={userId === user.oid}
+          />
+        )
+      )}
       {!isUserInTopPositions && (
         <div>
           <div className="leaderboard-item-container center">

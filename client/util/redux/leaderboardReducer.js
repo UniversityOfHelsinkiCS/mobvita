@@ -15,7 +15,9 @@ export const getLeaderboards = amount => {
   return callBuilder(route, prefix, 'get', null, query)
 }
 
-export default (state = {}, action) => {
+const initialState = { data: { } }
+
+export default (state = initialState, action) => {
   switch (action.type) {
     case 'GET_LEADERBOARDS_SUCCESS':
       return {
