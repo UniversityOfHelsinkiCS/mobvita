@@ -1,39 +1,52 @@
 import React, { useEffect } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import { getLeaderboards } from 'Utilities/redux/leaderboardReducer'
-import { Table } from 'semantic-ui-react'
 import Spinner from 'Components/Spinner'
 import { useCurrentUser } from 'Utilities/common'
+import LeaderboardItem from './LeaderboardItem'
 
 const Leaderboard = () => {
-  const { data } = useSelector(({ leaderboard }) => leaderboard)
+  const { leaderboard, user_rank: userPositionIndex } = useSelector(
+    ({ leaderboard }) => leaderboard.data
+  )
   const user = useCurrentUser()
+
   const dispatch = useDispatch()
 
   useEffect(() => {
-    dispatch(getLeaderboards(10))
+    dispatch(getLeaderboards(25))
   }, [])
 
-  if (!data) return <Spinner />
+  const isUserInTopPositions = userPositionIndex < leaderboard.length
+
+  if (!leaderboard) return <Spinner fullHeight />
 
   return (
-    <div className="component-container padding-sides-2">
-      <Table>
-        <Table.Header>
-          <Table.Row>
-            <Table.HeaderCell>Name</Table.HeaderCell>
-            <Table.HeaderCell>Exercises</Table.HeaderCell>
-          </Table.Row>
-        </Table.Header>
-        <Table.Body>
-          {data.leaderboard.map(({ user_id, username, number_of_exercises }) => (
-            <Table.Row positive={user_id === user.oid} key={user_id}>
-              <Table.Cell>{username}</Table.Cell>
-              <Table.Cell>{number_of_exercises}</Table.Cell>
-            </Table.Row>
-          ))}
-        </Table.Body>
-      </Table>
+    <div className="component-container padding-sides-1">
+      <h2 className="header-3">Hours practiced</h2>
+      <hr />
+      {leaderboard.map(({ user_id: userId, username, total_time_spent: hoursPracticed }, index) => (
+        <LeaderboardItem
+          key={userId}
+          position={index + 1}
+          username={username}
+          value={`${Math.floor(hoursPracticed)}h`}
+          highlighted={userId === user.oid}
+        />
+      ))}
+      {!isUserInTopPositions && (
+        <div>
+          <div className="leaderboard-item-container center">
+            <span>&bull;&bull;&bull;</span>
+          </div>
+          <LeaderboardItem
+            position={userPositionIndex + 1}
+            username={user.username}
+            value="?h"
+            highlighted
+          />
+        </div>
+      )}
     </div>
   )
 }
