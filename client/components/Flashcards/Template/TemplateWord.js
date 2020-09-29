@@ -2,7 +2,7 @@ import React from 'react'
 import { FormattedMessage } from 'react-intl'
 import { Form } from 'react-bootstrap'
 
-const TemplateWord = ({ word, setWord, getTranslations, hintRef, editing = false }) => {
+const TemplateWord = ({ word, setWord, getTranslations, hintRef, wordRef, editing = false }) => {
   const handleWordChange = e => {
     setWord(e.target.value)
   }
@@ -26,6 +26,7 @@ const TemplateWord = ({ word, setWord, getTranslations, hintRef, editing = false
           <Form.Control
             id="newWord"
             type="text"
+            ref={wordRef}
             value={word}
             onChange={handleWordChange}
             onBlur={getTranslations}

@@ -1,6 +1,6 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useRef } from 'react'
 import { useSelector, useDispatch, shallowEqual } from 'react-redux'
-import { learningLanguageSelector, dictionaryLanguageSelector, capitalize } from 'Utilities/common'
+import { learningLanguageSelector, dictionaryLanguageSelector } from 'Utilities/common'
 import { createFlashcard } from 'Utilities/redux/flashcardReducer'
 import { getTranslationAction, clearTranslationAction } from 'Utilities/redux/translationReducer'
 import Template from './Template'
@@ -20,6 +20,8 @@ const FlashcardCreation = () => {
   const dictionaryLanguage = useSelector(dictionaryLanguageSelector)
 
   const dispatch = useDispatch()
+
+  const wordRef = useRef()
 
   useEffect(() => {
     if (glosses) {
@@ -48,6 +50,7 @@ const FlashcardCreation = () => {
     setWord('')
     setHints([])
     setTranslations([])
+    wordRef.current.focus()
   }
 
   const clearAction = () => {
@@ -68,6 +71,7 @@ const FlashcardCreation = () => {
       clearAction={clearAction}
       getTranslations={getTranslations}
       pending={pending}
+      wordRef={wordRef}
     />
   )
 }
