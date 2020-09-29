@@ -3,7 +3,7 @@ import useWindowDimensions from 'Utilities/windowDimensions'
 import TemplateDesktopView from './TemplateDesktopView'
 import TemplateMobileView from './TemplateMobileView'
 
-const CardTemplate = ({ saveAction, clearAction, ...props }) => {
+const CardTemplate = ({ saveAction, clearAction, hints, setHints, ...props }) => {
   const [hint, setHint] = useState('')
   const [translation, setTranslation] = useState('')
 
@@ -12,7 +12,7 @@ const CardTemplate = ({ saveAction, clearAction, ...props }) => {
   const hintRef = useRef()
 
   const handleSave = () => {
-    saveAction()
+    saveAction(hint)
     setHint('')
     setTranslation('')
   }
@@ -28,6 +28,8 @@ const CardTemplate = ({ saveAction, clearAction, ...props }) => {
       <TemplateDesktopView
         hint={hint}
         hintRef={hintRef}
+        hints={hints}
+        setHints={setHints}
         setHint={setHint}
         translation={translation}
         setTranslation={setTranslation}
@@ -42,6 +44,8 @@ const CardTemplate = ({ saveAction, clearAction, ...props }) => {
     <TemplateMobileView
       hint={hint}
       hintRef={hintRef}
+      hints={hints}
+      setHints={setHints}
       setHint={setHint}
       translation={translation}
       setTranslation={setTranslation}

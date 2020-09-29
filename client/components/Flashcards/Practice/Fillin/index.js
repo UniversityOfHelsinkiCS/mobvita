@@ -24,22 +24,19 @@ const Fillin = ({
 
   const dispatch = useDispatch()
 
-  const {
-    glosses,
-    format,
-    _id: id,
-    stage,
-    lemma,
-    phonetics,
-  } = card
+  const { glosses, format, _id: id, stage, lemma, phonetics } = card
 
   const getRemovedHints = () => card.hint.filter(h => !hints.includes(h.hint))
-  const getNewHints = () => hints.filter(h => !card.hint.some(ch => ch.hint === h))
+  const getNewHints = unsavedHint => {
+    const newSavedHints = hints.filter(h => !card.hint.some(oh => oh.hint === h))
+    return unsavedHint ? newSavedHints.concat(unsavedHint) : newSavedHints
+  }
 
-  const saveCard = () => {
-    dispatch(updateFlashcard(id, getRemovedHints(), getNewHints(), translations))
+  const saveCard = unsavedHint => {
+    dispatch(updateFlashcard(id, getRemovedHints(), getNewHints(unsavedHint), translations))
     setAnswerChecked(true)
     setEditing(false)
+    if (unsavedHint) setHints(hints.concat(unsavedHint))
   }
 
   const clearEdit = () => {
@@ -58,7 +55,7 @@ const Fillin = ({
     setEditing(true)
   }
 
-  const checkAnswer = (answer) => {
+  const checkAnswer = answer => {
     if (answer !== '') {
       const correct = glosses.some(gloss => gloss.toLowerCase() === answer.toLowerCase())
       answerCard(answer, correct, 'fillin')

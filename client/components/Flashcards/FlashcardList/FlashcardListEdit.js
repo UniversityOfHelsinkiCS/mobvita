@@ -3,9 +3,13 @@ import { useDispatch } from 'react-redux'
 import { updateFlashcard } from 'Utilities/redux/flashcardReducer'
 import Template from 'Components/Flashcards/Template'
 
-const FlashcardListEdit = (
-  { id, originalWord, originalHints, originalTranslations, setEditableCard },
-) => {
+const FlashcardListEdit = ({
+  id,
+  originalWord,
+  originalHints,
+  originalTranslations,
+  setEditableCard,
+}) => {
   const [hints, setHints] = useState(originalHints.map(h => h.hint))
   const [translations, setTranslations] = useState(originalTranslations)
 
@@ -14,10 +18,13 @@ const FlashcardListEdit = (
   useEffect(() => window.scrollTo(0, 0), [])
 
   const getRemovedHints = () => originalHints.filter(h => !hints.includes(h.hint))
-  const getNewHints = () => hints.filter(h => !originalHints.some(oh => oh.hint === h))
+  const getNewHints = unSavedHint => {
+    const newSavedHints = hints.filter(h => !originalHints.some(oh => oh.hint === h))
+    return unSavedHint ? newSavedHints.concat(unSavedHint) : newSavedHints
+  }
 
-  const saveAction = () => {
-    dispatch(updateFlashcard(id, getRemovedHints(), getNewHints(), translations))
+  const saveAction = unSavedHint => {
+    dispatch(updateFlashcard(id, getRemovedHints(), getNewHints(unSavedHint), translations))
     setHints([])
     setTranslations([])
     setEditableCard(null)

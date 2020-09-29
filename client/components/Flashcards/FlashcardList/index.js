@@ -39,6 +39,7 @@ const FlashcardList = () => {
   const cardListItems = useMemo(
     () =>
       cards
+        .slice()
         .sort((a, b) => comparator(a, b))
         .map(card => <FlashcardListItem key={card._id} card={card} handleEdit={handleEdit} />),
     [cards, sortBy, directionMultiplier]

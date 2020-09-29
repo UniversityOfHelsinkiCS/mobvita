@@ -40,11 +40,11 @@ const FlashcardCreation = () => {
     }
   }
 
-  const saveAction = () => {
+  const saveAction = hint => {
     const cardObject = {
       word,
       glosses: translations,
-      hints,
+      hints: hint ? hints.concat(hint) : hints,
     }
     dispatch(createFlashcard(learningLanguage, dictionaryLanguage, cardObject))
     setWord('')
