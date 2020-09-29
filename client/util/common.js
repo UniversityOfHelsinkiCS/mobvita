@@ -135,6 +135,29 @@ export const supportedLearningLanguages = {
   experimental: ['syriac', 'chinese'],
 }
 
+export const learningLanguageLocaleCodes = {
+  Finnish: 'fi',
+  German: 'de',
+  Russian: 'ru',
+  Kazakh: 'kz',
+  Catalan: 'ca',
+  Spanish: 'es',
+  Swedish: 'sv',
+  Italian: 'it',
+  French: 'fr',
+  Portuguese: 'pt',
+  Erzya: 'myv',
+  'Komi-zyrian': 'kpv',
+  'Meadow-mari': 'mhr',
+  'North-saami': 'se',
+  Sakha: 'ru-sa',
+  Tatar: 'tt',
+  Udmurt: 'udm',
+  Turkish: 'tr',
+  Syriac: 'syc',
+  Chinese: 'zh',
+}
+
 export const betaLanguages = [
   'catalan',
   'french',

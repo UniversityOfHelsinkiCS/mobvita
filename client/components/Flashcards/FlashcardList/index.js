@@ -1,6 +1,7 @@
 import React, { useMemo, useState, useLayoutEffect } from 'react'
 import { useSelector } from 'react-redux'
 import { Accordion } from 'react-bootstrap'
+import { useLearningLanguage, learningLanguageLocaleCodes } from 'Utilities/common'
 import Spinner from 'Components/Spinner'
 import FlashcardListEdit from './FlashcardListEdit'
 import FlashcardListItem from './FlashcardListItem'
@@ -13,6 +14,9 @@ const FlashcardList = () => {
   const [directionMultiplier, setDirectionMultiplier] = useState(1)
 
   const { cards, pending } = useSelector(({ flashcards }) => flashcards)
+  const learningLanguage = useLearningLanguage()
+
+  const learningLanguageCode = learningLanguageLocaleCodes[learningLanguage]
 
   useLayoutEffect(() => {
     if (!editableCard) window.scrollTo(0, scrollYPosition)
@@ -23,24 +27,22 @@ const FlashcardList = () => {
       case 'Difficulty':
         return directionMultiplier * (b.stage - a.stage)
       default:
-        return directionMultiplier * (a.lemma.localeCompare(b.lemma))
+        return directionMultiplier * a.lemma.localeCompare(b.lemma, learningLanguageCode)
     }
   }
 
-  const handleEdit = (card) => {
+  const handleEdit = card => {
     setScrollYPosition(window.scrollY)
     setEditableCard(card)
   }
 
-  const cardListItems = useMemo(() => cards
-    .sort((a, b) => comparator(a, b))
-    .map(card => (
-      <FlashcardListItem
-        key={card._id}
-        card={card}
-        handleEdit={handleEdit}
-      />
-    )), [cards, sortBy, directionMultiplier])
+  const cardListItems = useMemo(
+    () =>
+      cards
+        .sort((a, b) => comparator(a, b))
+        .map(card => <FlashcardListItem key={card._id} card={card} handleEdit={handleEdit} />),
+    [cards, sortBy, directionMultiplier]
+  )
 
   if (pending) return <Spinner />
 
@@ -69,9 +71,7 @@ const FlashcardList = () => {
           {cards.length}
         </span>
       </div>
-      <Accordion className="padding-top-1">
-        {cardListItems}
-      </Accordion>
+      <Accordion className="padding-top-1">{cardListItems}</Accordion>
     </div>
   )
 }
