@@ -19,7 +19,7 @@ const Leaderboard = () => {
   }, [])
 
   const filteredLeaderboard = useMemo(
-    () => leaderboard?.filter(item => Math.floor(item.total_time_spent) !== 0),
+    () => leaderboard?.filter(item => item.weekly_time_spent !== 0),
     [leaderboard]
   )
 
@@ -33,16 +33,16 @@ const Leaderboard = () => {
         <FormattedMessage id="Hours practiced" />
       </h2>
       <span className="additional-info">
-        <FormattedMessage id="Top people from the last 7 days" />
+        <FormattedMessage id="Top people this week" />
       </span>
       <hr />
       {filteredLeaderboard.map(
-        ({ user_id: userId, username, total_time_spent: hoursPracticed }, index) => (
+        ({ user_id: userId, username, weekly_time_spent: hoursPracticed }, index) => (
           <LeaderboardItem
             key={userId}
             position={index + 1}
             username={username}
-            value={`${Math.floor(hoursPracticed)}h`}
+            value={`${hoursPracticed}h`}
             highlighted={userId === user.oid}
           />
         )
