@@ -66,9 +66,9 @@ const TemplateTranslations = ({
         onKeyDown={handleTranslationKeyDown}
       />
       <Button
-        variant="outline-primary"
+        variant="primary"
         block
-        className="flashcard-button margin-top-1 margin-bottom-3"
+        className="flashcard-template-button margin-top-1 margin-bottom-3"
         onClick={handleTranslationSave}
       >
         <FormattedMessage id="save-the-translation" />

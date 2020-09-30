@@ -5,18 +5,18 @@ import { FormattedMessage } from 'react-intl'
 const TemplateActions = ({ handleSave, handleClear, editing = false }) => (
   <div className="margin-bottom-3 auto-top gap-1 flex">
     <Button
-      variant="outline-warning"
-      className="flashcard-button"
+      variant="warning"
       onClick={handleClear}
       style={{ flexBasis: '50%' }}
+      className="flashcard-template-button-clear"
     >
       <FormattedMessage id={editing ? 'Cancel' : 'Clear'} />
     </Button>
     <Button
-      variant="outline-success"
-      className="flashcard-button"
+      variant="success"
       onClick={handleSave}
       style={{ flexBasis: '50%' }}
+      className="flashcard-template-button-save"
     >
       <FormattedMessage id="Save" />
     </Button>

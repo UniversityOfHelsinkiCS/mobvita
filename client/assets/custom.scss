@@ -777,6 +777,24 @@ body {
     box-shadow: 0 6px 10px 0 #666;
     border: 1px solid #777;
   }
+
+  &-template-button {
+    background-color: #76c8d4;
+    border-color: #76c8d4;
+    color: white;
+  }
+
+  &-template-button-clear {
+    background-color: #ffb449;
+    border-color: #ffb449;
+    color: white;
+  }
+
+  &-template-button-save {
+    background-color: #77dd77;
+    border-color: #77dd77;
+    color: white;
+  }
 }
 
 .test {

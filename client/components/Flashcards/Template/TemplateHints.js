@@ -41,8 +41,8 @@ const TemplateHints = ({ hints, setHints, hint, setHint, hintRef }) => {
         ref={hintRef}
       />
       <Button
-        variant="outline-primary"
-        className="flashcard-button margin-top-1"
+        variant="primary"
+        className="flashcard-template-button margin-top-1"
         onClick={handleHintSave}
       >
         <FormattedMessage id="save-the-hint" />
