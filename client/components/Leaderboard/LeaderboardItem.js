@@ -26,6 +26,7 @@ const LeaderboardItem = ({ position, username, value, highlighted = false }) => 
           overflow: 'hidden',
           whiteSpace: 'nowrap',
           paddingTop: '0.1rem',
+          paddingLeft: '1rem',
         }}
       >
         {username}

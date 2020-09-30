@@ -55,7 +55,7 @@ const Leaderboard = () => {
           <LeaderboardItem
             position={userPositionIndex + 1}
             username={user.username}
-            value="?h"
+            value={`${user.weekly_times[0].practice_time}h`}
             highlighted
           />
         </div>
