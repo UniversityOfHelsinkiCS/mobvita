@@ -9,6 +9,7 @@ import Footer from 'Components/Footer'
 import MedalSummary from './MedalSummary'
 import PracticeModal from './PracticeModal'
 import EloChart from './EloChart'
+import LeaderboardSummary from './LeaderboardSummary'
 
 const PracticeButton = props => (
   <Button
@@ -64,10 +65,14 @@ const HomeView = () => {
                 hidden breaking thing
               </Button>
             </div>
+            <div className="vertical-line" />
             {hiddenFeatures ? (
-              <div>
+              <div style={{ width: '300px' }}>
                 <EloChart width="100%" />
+                <hr />
                 <MedalSummary />
+                <hr />
+                <LeaderboardSummary />
               </div>
             ) : (
               <EloChart width="30%" />
@@ -81,7 +86,10 @@ const HomeView = () => {
             </div>
             <hr />
             <EloChart width="100%" />
+            <hr />
             <MedalSummary />
+            <hr />
+            <LeaderboardSummary />
             <Button style={{ display: 'none' }} onClick={() => undefun()}>
               hidden breaking thing
             </Button>

@@ -1,41 +1,26 @@
-import React, { useEffect, useMemo } from 'react'
-import { useSelector, useDispatch } from 'react-redux'
-import { FormattedMessage } from 'react-intl'
-import { getLeaderboards } from 'Utilities/redux/leaderboardReducer'
+import React, { useMemo } from 'react'
+import { useSelector } from 'react-redux'
 import Spinner from 'Components/Spinner'
 import { useCurrentUser } from 'Utilities/common'
 import LeaderboardItem from './LeaderboardItem'
 
-const Leaderboard = () => {
+const LeaderboardList = ({ amountToShow }) => {
   const { leaderboard, user_rank: userPositionIndex } = useSelector(
     ({ leaderboard }) => leaderboard.data
   )
   const user = useCurrentUser()
 
-  const dispatch = useDispatch()
-
-  useEffect(() => {
-    dispatch(getLeaderboards(25))
-  }, [])
-
   const filteredLeaderboard = useMemo(
-    () => leaderboard?.filter(item => item.weekly_time_spent !== 0),
+    () => leaderboard?.filter(item => item.weekly_time_spent !== 100).splice(0, amountToShow),
     [leaderboard]
   )
 
-  if (!leaderboard) return <Spinner fullHeight />
+  if (!leaderboard) return <Spinner />
 
   const isUserInTopPositions = userPositionIndex < filteredLeaderboard.length
 
   return (
-    <div className="component-container padding-sides-1" style={{ maxWidth: '720px' }}>
-      <h2 className="header-3">
-        <FormattedMessage id="Hours practiced" />
-      </h2>
-      <span className="additional-info">
-        <FormattedMessage id="Top people this week" />
-      </span>
-      <hr />
+    <div>
       {filteredLeaderboard.map(
         ({ user_id: userId, username, weekly_time_spent: hoursPracticed }, index) => (
           <LeaderboardItem
@@ -64,4 +49,4 @@ const Leaderboard = () => {
   )
 }
 
-export default Leaderboard
+export default LeaderboardList

@@ -16,7 +16,7 @@ const LeaderboardItem = ({ position, username, value, highlighted = false }) => 
     className="leaderboard-item-container"
     style={highlighted ? { backgroundColor: '#CEFFC9', color: '#2CB22C' } : {}}
   >
-    <div className="flex">
+    <div className="flex" style={{ maxWidth: '75%' }}>
       <div className="center" style={{ width: '2.5rem', fontSize: '1.1rem' }}>
         <LeaderboardPosition position={position} />
       </div>

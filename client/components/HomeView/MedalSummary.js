@@ -46,7 +46,7 @@ const MedalSummary = () => {
 
   return (
     <Link to="/achievements">
-      <div className="space-evenly padding-top-2 gap-1 padding-sides-1">
+      <div className="space-evenly gap-1 padding-sides-1 padding-top-2 padding-bottom-2">
         <MedalAmount medal="bronze" amount={medals.bronze} />
         <MedalAmount medal="silver" amount={medals.silver} />
         <MedalAmount medal="gold" amount={medals.gold} />

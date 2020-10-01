@@ -515,6 +515,16 @@ body {
   padding: 0.2em;
 }
 
+.vertical-line {
+  width: 1px;
+  background-color: lightgray;
+  min-height: 100%;
+  margin-left: 1em;
+  margin-right: 1em;
+  display: inline-block;
+  opacity: 0.5
+}
+
 .flashcard {
   display: flex;
   flex-direction: column;
