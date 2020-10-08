@@ -48,6 +48,7 @@ const initialState = {
   pending: false,
   error: false,
   cards: [],
+  nounCards: [],
 }
 
 export default (state = initialState, action) => {
