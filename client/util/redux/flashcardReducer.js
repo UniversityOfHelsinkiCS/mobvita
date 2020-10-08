@@ -7,12 +7,6 @@ export const getFlashcards = (inputLanguage, outputLanguage, storyId = '') => {
   return callBuilder(route, prefix, 'get')
 }
 
-export const getAllFlashcards = (inputLanguage, outputLanguage, storyId = '') => {
-  const route = `/flashcards/${inputLanguage}/${outputLanguage}/list?story_id=${storyId}`
-  const prefix = 'GET_ALL_FLASHCARDS'
-  return callBuilder(route, prefix, 'get')
-}
-
 export const recordFlashcardAnswer = (inputLanguage, outputLanguage, answerDetails) => {
   const route = `/flashcards/${inputLanguage}/${outputLanguage}/answer`
   const prefix = 'ANSWER_FLASHCARD'
@@ -51,6 +45,8 @@ const initialState = {
   nounCards: [],
 }
 
+const deleteCard = (cards, response) => cards.filter(card => card._id !== response.flashcard_id)
+
 export default (state = initialState, action) => {
   switch (action.type) {
     case 'GET_FLASHCARDS_ATTEMPT':
@@ -74,25 +70,6 @@ export default (state = initialState, action) => {
         pending: false,
         error: true,
       }
-    case 'GET_ALL_FLASHCARDS_ATTEMPT':
-      return {
-        ...state,
-        pending: true,
-        error: false,
-      }
-    case 'GET_ALL_FLASHCARDS_SUCCESS':
-      return {
-        ...state,
-        cards: action.response.flashcards,
-        pending: false,
-        error: false,
-      }
-    case 'GET_ALL_FLASHCARDS_FAILURE':
-      return {
-        ...state,
-        pending: false,
-        error: true,
-      }
     case 'DELETE_FLASHCARD_ATTEMPT':
       return {
         ...state,
@@ -102,8 +79,8 @@ export default (state = initialState, action) => {
     case 'DELETE_FLASHCARD_SUCCESS':
       return {
         ...state,
-        cards: state.cards.filter(card => card._id !== action.response.flashcard_id),
-        nounCards: state.nounCards.filter(card => card._id !== action.response.flashcard_id),
+        cards: deleteCard(state.cards, action.response),
+        nounCards: deleteCard(state.nounCards, action.response),
         deletePending: false,
         error: false,
       }
@@ -150,8 +127,11 @@ export default (state = initialState, action) => {
         draft.error = false
 
         const index = draft.cards.findIndex(card => card._id === action.response.flashcard_id)
-        const { stage } = draft.cards[index]
-        draft.cards[index] = { ...action.response.flashcard, stage }
+
+        if (index !== -1) {
+          const { stage } = draft.cards[index]
+          draft.cards[index] = { ...action.response.flashcard, stage }
+        }
       })
     case 'UPDATE_FLASHCARD_FAILURE':
       return {

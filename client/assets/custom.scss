@@ -1543,6 +1543,11 @@ body {
   display: flex;
 }
 
+.flex-reverse {
+  display: flex;
+  flex-direction: row-reverse;
+}
+
 .flex-column {
   display: flex;
   flex-direction: column;
@@ -1580,6 +1585,7 @@ body {
   }
 }
 
+
 .wrap {
   flex-wrap: wrap;
 }
@@ -1592,6 +1598,17 @@ body {
   & > * {
     flex-basis: 0;
     flex-grow: 1;
+  }
+}
+
+.semantic-pagination {
+  display: flex;
+  flex-grow: 1;
+  max-width: 500px;
+  & > * {
+    flex-basis: 0 !important;
+    flex-grow: 1 !important;
+    justify-content: center !important;
   }
 }
 

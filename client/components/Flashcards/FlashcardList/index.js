@@ -1,51 +1,47 @@
-import React, { useMemo, useState, useLayoutEffect } from 'react'
-import { useSelector } from 'react-redux'
+import React, { useState, useLayoutEffect } from 'react'
+import { useSelector, useDispatch } from 'react-redux'
+import { useParams } from 'react-router-dom'
+import { FormattedMessage } from 'react-intl'
 import { Accordion } from 'react-bootstrap'
-import { useLearningLanguage, learningLanguageLocaleCodes } from 'Utilities/common'
+import { Pagination } from 'semantic-ui-react'
+import { useLearningLanguage, useDictionaryLanguage } from 'Utilities/common'
+import { getFlashcardListPage } from 'Utilities/redux/flashcardListReducer'
 import Spinner from 'Components/Spinner'
 import FlashcardListEdit from './FlashcardListEdit'
 import FlashcardListItem from './FlashcardListItem'
-import FlashcardListSorter from './FlashcardListSorter'
 
 const FlashcardList = () => {
   const [editableCard, setEditableCard] = useState(null)
   const [scrollYPosition, setScrollYPosition] = useState(0)
-  const [sortBy, setSortBy] = useState('Title')
-  const [directionMultiplier, setDirectionMultiplier] = useState(1)
+  const [activePage, setActivePage] = useState(1)
 
-  const { cards, pending } = useSelector(({ flashcards }) => flashcards)
+  const { cardsInCurrentPage, numberOfCards, numberOfPages, pending } = useSelector(
+    ({ flashcardList }) => flashcardList
+  )
   const learningLanguage = useLearningLanguage()
+  const dictionaryLanguage = useDictionaryLanguage()
 
-  const learningLanguageCode = learningLanguageLocaleCodes[learningLanguage]
+  const dispatch = useDispatch()
+  const { storyId } = useParams()
 
   useLayoutEffect(() => {
     if (!editableCard) window.scrollTo(0, scrollYPosition)
   }, [editableCard])
-
-  const comparator = (a, b) => {
-    switch (sortBy) {
-      case 'Difficulty':
-        return directionMultiplier * (b.stage - a.stage)
-      default:
-        return directionMultiplier * a.lemma.localeCompare(b.lemma, learningLanguageCode)
-    }
-  }
 
   const handleEdit = card => {
     setScrollYPosition(window.scrollY)
     setEditableCard(card)
   }
 
-  const cardListItems = useMemo(
-    () =>
-      cards
-        .slice()
-        .sort((a, b) => comparator(a, b))
-        .map(card => <FlashcardListItem key={card._id} card={card} handleEdit={handleEdit} />),
-    [cards, sortBy, directionMultiplier]
-  )
+  const handlePageChange = (e, { activePage }) => {
+    setActivePage(activePage)
+    dispatch(getFlashcardListPage(learningLanguage, dictionaryLanguage, activePage - 1, storyId))
+  }
 
-  if (pending) return <Spinner />
+  const isSomePageLoaded = cardsInCurrentPage.length !== 0
+  const nextPagePending = isSomePageLoaded && pending
+
+  if (!isSomePageLoaded) return <Spinner fullHeight />
 
   if (editableCard) {
     return (
@@ -61,18 +57,29 @@ const FlashcardList = () => {
 
   return (
     <div style={{ marginTop: '-1em', flex: 1 }}>
-      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-end' }}>
-        <FlashcardListSorter
-          sortBy={sortBy}
-          directionMultiplier={directionMultiplier}
-          setSortBy={setSortBy}
-          setDirectionMultiplier={setDirectionMultiplier}
-        />
-        <span style={{ fontSize: '18px', paddingRight: '0.5em', fontWeight: 550, color: '#777' }}>
-          {cards.length}
+      <div className="flex-reverse space-between wrap padding-top-1">
+        <span className="additional-info padding-left-2">
+          <FormattedMessage id="cards total" values={{ numberOfCards }} />
         </span>
+        <Pagination
+          activePage={activePage}
+          totalPages={numberOfPages}
+          firstItem={null}
+          lastItem={null}
+          onPageChange={handlePageChange}
+          size="mini"
+          className="semantic-pagination"
+        />
       </div>
-      <Accordion className="padding-top-1">{cardListItems}</Accordion>
+      {nextPagePending ? (
+        <Spinner fullHeight />
+      ) : (
+        <Accordion className="padding-top-1">
+          {cardsInCurrentPage.map(card => (
+            <FlashcardListItem key={card._id} card={card} handleEdit={handleEdit} />
+          ))}
+        </Accordion>
+      )}
     </div>
   )
 }

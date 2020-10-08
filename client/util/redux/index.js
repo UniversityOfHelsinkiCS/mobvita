@@ -26,6 +26,7 @@ import crossword from './crosswordReducer'
 import serverError from './serverErrorReducer'
 import leaderboard from './leaderboardReducer'
 import newAchievements from './newAchievementsReducer'
+import flashcardList from './flashcardListReducer'
 
 const rootReducer = combineReducers({
   stories,
@@ -54,6 +55,7 @@ const rootReducer = combineReducers({
   leaderboard,
   newAchievements,
   studentHistory,
+  flashcardList,
 })
 
 export default (state, action) =>

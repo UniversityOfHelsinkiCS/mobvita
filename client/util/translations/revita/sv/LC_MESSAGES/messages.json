@@ -794,5 +794,6 @@
     "Top people from the last 7 days": "Top people from the last 7 days.",
     "Top people this week": "Top people this week",
     "Updating leaderboard": "Updating leaderboard",
-    "Updating": "Updating"
+    "Updating": "Updating",
+    "cards total": "{numberOfCards} cards total"
 }
