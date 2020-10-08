@@ -40,7 +40,6 @@ export const updateFlashcard = (id, removedHints, newHints, glosses) => {
 
 const initialState = {
   pending: false,
-  error: false,
   cards: [],
   nounCards: [],
 }
@@ -53,7 +52,6 @@ export default (state = initialState, action) => {
       return {
         ...state,
         pending: true,
-        error: false,
       }
     case 'GET_FLASHCARDS_SUCCESS':
       return {
@@ -62,19 +60,16 @@ export default (state = initialState, action) => {
         nounCards: action.response.flashcards.nouns,
         sessionId: action.response.session_id,
         pending: false,
-        error: false,
       }
     case 'GET_FLASHCARDS_FAILURE':
       return {
         ...state,
         pending: false,
-        error: true,
       }
     case 'DELETE_FLASHCARD_ATTEMPT':
       return {
         ...state,
         deletePending: true,
-        error: false,
       }
     case 'DELETE_FLASHCARD_SUCCESS':
       return {
@@ -82,45 +77,26 @@ export default (state = initialState, action) => {
         cards: deleteCard(state.cards, action.response),
         nounCards: deleteCard(state.nounCards, action.response),
         deletePending: false,
-        error: false,
       }
     case 'DELETE_FLASHCARD_FAILURE':
       return {
         ...state,
         deletePending: false,
-        error: true,
       }
     case 'CREATE_FLASHCARD_ATTEMPT':
       return {
         ...state,
         pending: true,
-        error: false,
       }
     case 'CREATE_FLASHCARD_SUCCESS':
       return {
         ...state,
         pending: false,
-        error: false,
       }
     case 'CREATE_FLASHCARD_ERROR':
       return {
         ...state,
         pending: false,
-        error: true,
-      }
-    case 'ANSWER_FLASHCARD_ATTEMPT':
-      return { ...state }
-    case 'ANSWER_FLASHCARD_SUCCESS':
-      return { ...state }
-    case 'ANSWER_FLASHCARD_FAILURE':
-      return {
-        ...state,
-        error: true,
-      }
-    case 'UPDATE_FLASHCARD_ATTEMPT':
-      return {
-        ...state,
-        error: false,
       }
     case 'UPDATE_FLASHCARD_SUCCESS':
       return produce(state, draft => {
@@ -133,11 +109,6 @@ export default (state = initialState, action) => {
           draft.cards[index] = { ...action.response.flashcard, stage }
         }
       })
-    case 'UPDATE_FLASHCARD_FAILURE':
-      return {
-        ...state,
-        error: true,
-      }
     default:
       return state
   }
