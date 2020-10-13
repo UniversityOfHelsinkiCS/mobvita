@@ -43,6 +43,7 @@ export default (state = initialState, action) => {
         cardsInCurrentPage: state.cardsInCurrentPage.filter(
           card => card._id !== action.response.flashcard_id
         ),
+        numberOfCards: state.numberOfCards - 1,
       }
     case 'UPDATE_FLASHCARD_SUCCESS':
       return produce(state, draft => {
