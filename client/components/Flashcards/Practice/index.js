@@ -16,10 +16,7 @@ import Fillin from './Fillin'
 import Article from './Article'
 import Quick from './Quick'
 
-const VirtualizeSwipeableViews = flowRight(
-  bindKeyboard,
-  virtualize,
-)(SwipeableViews)
+const VirtualizeSwipeableViews = flowRight(bindKeyboard, virtualize)(SwipeableViews)
 
 const Practice = ({ mode }) => {
   const [swipeIndex, setSwipeIndex] = useState(0)
@@ -34,10 +31,11 @@ const Practice = ({ mode }) => {
 
     let cards
     if (mode === 'article') {
-      cards = flashcards.nounCards
-        && flashcards.nounCards.filter(card => card.gender !== 'mf' && card.gender !== 'NoGend')
+      cards =
+        flashcards.nounCards &&
+        flashcards.nounCards.filter(card => card.gender !== 'mf' && card.gender !== 'NoGend')
     } else {
-      ({ cards } = flashcards)
+      ;({ cards } = flashcards)
     }
 
     return { cards, pending, deletePending, sessionId }
@@ -56,9 +54,13 @@ const Practice = ({ mode }) => {
     if (amountAnswered % 10 === 0) dispatch(getSelf())
   }, [amountAnswered])
 
+  useEffect(() => {
+    dispatch(getFlashcards(learningLanguage, dictionaryLanguage, storyId))
+  }, [storyId, dictionaryLanguage, mode])
+
   // Limits so that you cant swipe back more than once.
   // React-swipeable-views has some weird behaviour with its index. This tries to fix it.
-  const handleIndexChange = (index) => {
+  const handleIndexChange = index => {
     const oldIndex = swipeIndex
     setSwipeIndex(index)
     setTimeout(() => {
@@ -92,16 +94,12 @@ const Practice = ({ mode }) => {
   if (pending || deletePending || !cards) return <Spinner />
 
   if (!cards[0] || cards[0].format === 'no-cards') {
-    return (
-      <FlashcardNoCards setSwipeIndex={setSwipeIndex} />
-    )
+    return <FlashcardNoCards setSwipeIndex={setSwipeIndex} />
   }
 
   const slideRenderer = ({ key, index }) => {
     if (index >= cards.length) {
-      return (
-        <FlashcardEndView key="end-view" handleNewDeck={handleNewDeck} />
-      )
+      return <FlashcardEndView key="end-view" handleNewDeck={handleNewDeck} />
     }
 
     switch (mode) {
@@ -153,19 +151,17 @@ const Practice = ({ mode }) => {
         enableMouseEvents={!bigScreen}
         disabled={editing}
       />
-      {!editing
-        && (
-          <button
-            type="button"
-            onClick={() => handleIndexChange(swipeIndex + 1)}
-            disabled={swipeIndex === cards.length || cards[0].format === 'no-cards'}
-            className="flashcard-arrow-button"
-            style={{ marginLeft: 0 }}
-          >
-            <Icon name="angle double right" size="huge" />
-          </button>
-        )
-      }
+      {!editing && (
+        <button
+          type="button"
+          onClick={() => handleIndexChange(swipeIndex + 1)}
+          disabled={swipeIndex === cards.length || cards[0].format === 'no-cards'}
+          className="flashcard-arrow-button"
+          style={{ marginLeft: 0 }}
+        >
+          <Icon name="angle double right" size="huge" />
+        </button>
+      )}
     </div>
   )
 }

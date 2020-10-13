@@ -1,4 +1,4 @@
-import React, { useState, useLayoutEffect } from 'react'
+import React, { useState, useLayoutEffect, useEffect } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import { useParams } from 'react-router-dom'
 import { FormattedMessage } from 'react-intl'
@@ -27,6 +27,11 @@ const FlashcardList = () => {
   useLayoutEffect(() => {
     if (!editableCard) window.scrollTo(0, scrollYPosition)
   }, [editableCard])
+
+  useEffect(() => {
+    dispatch(getFlashcardListPage(learningLanguage, dictionaryLanguage, 0, storyId))
+    setActivePage(1)
+  }, [dictionaryLanguage, storyId])
 
   const handleEdit = card => {
     setScrollYPosition(window.scrollY)

@@ -1,10 +1,6 @@
-import React, { useEffect } from 'react'
-import { useDispatch } from 'react-redux'
+import React from 'react'
 import { useParams } from 'react-router-dom'
 import useWindowDimensions from 'Utilities/windowDimensions'
-import { useLearningLanguage, useDictionaryLanguage } from 'Utilities/common'
-import { getFlashcards } from 'Utilities/redux/flashcardReducer'
-import { getFlashcardListPage } from 'Utilities/redux/flashcardListReducer'
 import FlashcardMenu from './FlashcardMenu'
 import FlashcardCreation from './FlashcardCreation'
 import FloatMenu from './FloatMenu'
@@ -13,17 +9,7 @@ import FlashcardList from './FlashcardList'
 
 const Flashcards = () => {
   const smallScreen = useWindowDimensions().width < 940
-  const { mode, storyId } = useParams()
-  const dispatch = useDispatch()
-
-  const learningLanguage = useLearningLanguage()
-  const dictionaryLanguage = useDictionaryLanguage()
-
-  useEffect(() => {
-    if (mode === 'list')
-      dispatch(getFlashcardListPage(learningLanguage, dictionaryLanguage, 0, storyId))
-    else dispatch(getFlashcards(learningLanguage, dictionaryLanguage, storyId))
-  }, [storyId, mode])
+  const { mode } = useParams()
 
   const content = () => {
     switch (mode) {
