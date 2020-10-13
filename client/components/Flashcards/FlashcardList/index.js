@@ -1,11 +1,12 @@
-import React, { useState, useLayoutEffect, useEffect } from 'react'
+import React, { useState, useLayoutEffect, useEffect, useCallback } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import { useParams } from 'react-router-dom'
+import { debounce } from 'lodash'
 import { FormattedMessage } from 'react-intl'
 import { Accordion } from 'react-bootstrap'
 import { Pagination } from 'semantic-ui-react'
 import { useLearningLanguage, useDictionaryLanguage } from 'Utilities/common'
-import { getFlashcardListPage } from 'Utilities/redux/flashcardListReducer'
+import { getFlashcardListPage, clearFlashcardList } from 'Utilities/redux/flashcardListReducer'
 import Spinner from 'Components/Spinner'
 import FlashcardListEdit from './FlashcardListEdit'
 import FlashcardListItem from './FlashcardListItem'
@@ -24,11 +25,20 @@ const FlashcardList = () => {
   const dispatch = useDispatch()
   const { storyId } = useParams()
 
+  const debouncedPageFetch = useCallback(
+    debounce(
+      page => dispatch(getFlashcardListPage(learningLanguage, dictionaryLanguage, page, storyId)),
+      200
+    ),
+    [dictionaryLanguage, storyId]
+  )
+
   useLayoutEffect(() => {
     if (!editableCard) window.scrollTo(0, scrollYPosition)
   }, [editableCard])
 
   useEffect(() => {
+    dispatch(clearFlashcardList())
     dispatch(getFlashcardListPage(learningLanguage, dictionaryLanguage, 0, storyId))
     setActivePage(1)
   }, [dictionaryLanguage, storyId])
@@ -40,7 +50,7 @@ const FlashcardList = () => {
 
   const handlePageChange = (e, { activePage }) => {
     setActivePage(activePage)
-    dispatch(getFlashcardListPage(learningLanguage, dictionaryLanguage, activePage - 1, storyId))
+    debouncedPageFetch(activePage - 1)
   }
 
   const isSomePageLoaded = cardsInCurrentPage.length !== 0
@@ -68,7 +78,7 @@ const FlashcardList = () => {
         </span>
         <Pagination
           activePage={activePage}
-          totalPages={numberOfPages}
+          totalPages={numberOfPages || 1}
           firstItem={null}
           lastItem={null}
           onPageChange={handlePageChange}

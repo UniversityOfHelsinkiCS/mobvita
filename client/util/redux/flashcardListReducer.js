@@ -12,6 +12,8 @@ export const getFlashcardListPage = (inputLanguage, outputLanguage, page, storyI
   return callBuilder(route, prefix, 'get', null, query)
 }
 
+export const clearFlashcardList = () => ({ type: 'CLEAR_FLASHCARD_LIST' })
+
 const initialState = {
   pending: false,
   cardsInCurrentPage: [],
@@ -56,6 +58,8 @@ export default (state = initialState, action) => {
           draft.cardsInCurrentPage[indexInPage] = { ...action.response.flashcard, stage }
         }
       })
+    case 'CLEAR_FLASHCARD_LIST':
+      return initialState
     default:
       return state
   }
