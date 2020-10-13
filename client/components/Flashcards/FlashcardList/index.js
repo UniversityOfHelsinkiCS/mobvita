@@ -39,9 +39,9 @@ const FlashcardList = () => {
   }
 
   const isSomePageLoaded = cardsInCurrentPage.length !== 0
-  const nextPagePending = isSomePageLoaded && pending
+  const nextPagePending = cardsInCurrentPage.length !== 0 && pending
 
-  if (!isSomePageLoaded) return <Spinner fullHeight />
+  if (!isSomePageLoaded && pending) return <Spinner fullHeight />
 
   if (editableCard) {
     return (
