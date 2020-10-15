@@ -11,7 +11,7 @@ const LeaderboardList = ({ amountToShow }) => {
   const user = useCurrentUser()
 
   const filteredLeaderboard = useMemo(
-    () => leaderboard?.filter(item => item.weekly_time_spent !== 100).splice(0, amountToShow),
+    () => leaderboard?.filter(item => item.weekly_time_spent !== 0).splice(0, amountToShow),
     [leaderboard]
   )
 
