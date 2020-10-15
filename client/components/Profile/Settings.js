@@ -10,6 +10,7 @@ import {
   updateSecondTry,
   updateNumberOfFlashcards,
   updateAutoSpeak,
+  updatePublishProgress,
 } from 'Utilities/redux/userReducer'
 import useWindowDimensions from 'Utilities/windowDimensions'
 
@@ -103,6 +104,15 @@ const Settings = () => {
           onChange={() => dispatch(updateAutoSpeak('demand'))}
         />
       </div>
+      <h2 className="header-2 padding-bottom-1 padding-top-2">
+        <FormattedMessage id="Privacy" />
+      </h2>
+      <SettingToggle
+        translationId="Participate in weekly leaderboards"
+        checked={user.publish_progress}
+        onChange={() => dispatch(updatePublishProgress(!user.publish_progress))}
+        disabled={pending}
+      />
     </div>
   )
 }
