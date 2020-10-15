@@ -114,9 +114,10 @@ const ExerciseCloze = ({ word, handleChange }) => {
 
   const focusNextClozeOrHearing = element => {
     const { form } = element
-    const nextInput = form.elements[Array.prototype.indexOf.call(form, element) + 1]
-    changeElementFont(nextInput, '16px')
-    nextInput.focus()
+    const nextElement = form.elements[Array.prototype.indexOf.call(form, element) + 1]
+    const isNextElementInput = nextElement.className.includes('exercize')
+    if (isNextElementInput) changeElementFont(nextElement, '16px')
+    nextElement.focus()
   }
 
   const handleKeyDown = e => {

@@ -333,6 +333,10 @@ body {
   }
   &:focus {
     outline: 0;
+    background-color: #d7d7d7;
+      & > div {
+        background-color: #0069d9;
+      }
   }
   @media (hover: hover) {
     &:hover {
