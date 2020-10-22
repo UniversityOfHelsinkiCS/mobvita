@@ -26,16 +26,16 @@ const FlashcardList = () => {
   const { storyId } = useParams()
 
   const debouncedPageFetch = useCallback(
-    debounce(
-      page => dispatch(getFlashcardListPage(learningLanguage, dictionaryLanguage, page, storyId)),
-      250
-    ),
+    debounce(page => {
+      setScrollYPosition(0)
+      dispatch(getFlashcardListPage(learningLanguage, dictionaryLanguage, page, storyId))
+    }, 250),
     [dictionaryLanguage, storyId]
   )
 
   useLayoutEffect(() => {
     if (!editableCard) window.scrollTo(0, scrollYPosition)
-  }, [editableCard])
+  }, [editableCard, pending])
 
   useEffect(() => {
     dispatch(clearFlashcardList())
@@ -79,34 +79,41 @@ const FlashcardList = () => {
     )
   }
 
+  const pagination = (
+    <Pagination
+      activePage={activePage}
+      totalPages={numberOfPages || 1}
+      firstItem={null}
+      lastItem={null}
+      onPageChange={handlePageChange}
+      ellipsisItem={{
+        content: '...',
+        onClick: handleEllipsisClick,
+      }}
+      size="mini"
+      className="semantic-pagination"
+    />
+  )
+
   return (
     <div style={{ marginTop: '-1em', flex: 1 }}>
       <div className="flex-reverse space-between wrap padding-top-1">
         <span className="additional-info padding-left-2">
           <FormattedMessage id="cards total" values={{ numberOfCards }} />
         </span>
-        <Pagination
-          activePage={activePage}
-          totalPages={numberOfPages || 1}
-          firstItem={null}
-          lastItem={null}
-          onPageChange={handlePageChange}
-          ellipsisItem={{
-            content: '...',
-            onClick: handleEllipsisClick,
-          }}
-          size="mini"
-          className="semantic-pagination"
-        />
+        {pagination}
       </div>
       {nextPagePending ? (
         <Spinner fullHeight />
       ) : (
-        <Accordion className="padding-top-1">
-          {cardsInCurrentPage.map(card => (
-            <FlashcardListItem key={card._id} card={card} handleEdit={handleEdit} />
-          ))}
-        </Accordion>
+        <div>
+          <Accordion className="padding-top-1">
+            {cardsInCurrentPage.map(card => (
+              <FlashcardListItem key={card._id} card={card} handleEdit={handleEdit} />
+            ))}
+          </Accordion>
+          <div className="flex padding-top-1">{pagination}</div>
+        </div>
       )}
     </div>
   )
