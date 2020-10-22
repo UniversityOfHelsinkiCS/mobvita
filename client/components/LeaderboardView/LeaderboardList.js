@@ -17,9 +17,7 @@ const LeaderboardList = ({ amountToShow }) => {
 
   if (!leaderboard) return <Spinner />
 
-  const isUserInTopPositions = userPositionIndex < filteredLeaderboard.length
-  const isUserParticipatingInLeaderboards = user.publish_progress
-  const showUserPosition = !isUserInTopPositions && isUserParticipatingInLeaderboards
+  const userInTopPositions = userPositionIndex < filteredLeaderboard.length
 
   return (
     <div>
@@ -34,7 +32,7 @@ const LeaderboardList = ({ amountToShow }) => {
           />
         )
       )}
-      {showUserPosition && (
+      {!userInTopPositions && (
         <div>
           <div className="leaderboard-item-container center">
             <span>&bull;&bull;&bull;</span>
