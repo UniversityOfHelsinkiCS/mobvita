@@ -53,6 +53,15 @@ const FlashcardList = () => {
     debouncedPageFetch(activePage - 1)
   }
 
+  const handleEllipsisClick = (e, { value: ellipsisPosition }) => {
+    const newPage =
+      ellipsisPosition > activePage
+        ? activePage + Math.ceil((numberOfPages - activePage) / 2)
+        : activePage - Math.ceil(activePage / 2)
+    setActivePage(newPage)
+    debouncedPageFetch(newPage - 1)
+  }
+
   const isSomePageLoaded = cardsInCurrentPage.length !== 0
   const nextPagePending = cardsInCurrentPage.length !== 0 && pending
 
@@ -82,6 +91,10 @@ const FlashcardList = () => {
           firstItem={null}
           lastItem={null}
           onPageChange={handlePageChange}
+          ellipsisItem={{
+            content: '...',
+            onClick: handleEllipsisClick,
+          }}
           size="mini"
           className="semantic-pagination"
         />
