@@ -28,7 +28,7 @@ const FlashcardList = () => {
   const debouncedPageFetch = useCallback(
     debounce(
       page => dispatch(getFlashcardListPage(learningLanguage, dictionaryLanguage, page, storyId)),
-      200
+      250
     ),
     [dictionaryLanguage, storyId]
   )
