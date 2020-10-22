@@ -7,6 +7,7 @@ const TextWithFeedback = ({ snippet, exercise = false, answers, ...props }) => {
   const openLinePositions = [1, 2, 3, 4, 5]
   const reservedLinePositions = {}
   let inChunk = false
+  let chunkIsOneVerb = false
 
   const lineColors = ['blue', 'green', 'black', 'purple', 'cyan']
 
@@ -47,7 +48,7 @@ const TextWithFeedback = ({ snippet, exercise = false, answers, ...props }) => {
   const createChunkStyle = chunkPosition => {
     const chunkStart = chunkPosition === 'start'
     const chunkEnd = chunkPosition === 'end'
-    const chunkBorder = '1px red solid'
+    const chunkBorder = chunkIsOneVerb ? '1px red dashed' : '1px red solid'
     const sidePadding = exercise ? '5px' : '2px'
     const chunkStyle = {
       borderBottom: chunkBorder,
@@ -106,6 +107,9 @@ const TextWithFeedback = ({ snippet, exercise = false, answers, ...props }) => {
 
         if (chunkPosition === 'start') {
           inChunk = true
+          if (word.analytic_chunk) {
+            chunkIsOneVerb = true
+          }
         }
 
         const element = createElement(word, chunkPosition)
@@ -118,6 +122,7 @@ const TextWithFeedback = ({ snippet, exercise = false, answers, ...props }) => {
 
         if (chunkPosition === 'end') {
           inChunk = false
+          chunkIsOneVerb = false
         }
 
         return element
