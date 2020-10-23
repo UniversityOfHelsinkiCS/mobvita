@@ -34,7 +34,7 @@ import flashcardIcon from 'Assets/images/flashcard_icon.png'
 import bronzeMedal from 'Assets/images/medals/bronze_medal.png'
 import silverMedal from 'Assets/images/medals/silver_medal.png'
 import goldMedal from 'Assets/images/medals/gold_medal.png'
-import emeraldMedal from 'Assets/images/medals/emerald_medal.png'
+import platinumMedal from 'Assets/images/medals/platinum_medal.png'
 import diamondMedal from 'Assets/images/medals/diamond_medal.png'
 import unlockedMedal from 'Assets/images/medals/unlocked_medal.png'
 import firstMedal from 'Assets/images/medals/first_medal.svg'
@@ -77,7 +77,7 @@ export const images = {
   bronzeMedal,
   silverMedal,
   goldMedal,
-  emeraldMedal,
+  platinumMedal,
   diamondMedal,
   unlockedMedal,
   firstMedal,

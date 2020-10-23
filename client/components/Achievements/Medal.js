@@ -12,8 +12,8 @@ const Medal = ({ medal }) => {
         return images.silverMedal
       case 'gold':
         return images.goldMedal
-      case 'emerald':
-        return images.emeraldMedal
+      case 'platinum':
+        return images.platinumMedal
       case 'diamond':
         return images.diamondMedal
       default:

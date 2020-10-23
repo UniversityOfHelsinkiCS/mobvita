@@ -27,7 +27,7 @@ const Achievement = ({ name, level, current, total }) => {
               <Medal medal={medalAchieved(1) && 'bronze'} />
               <Medal medal={medalAchieved(2) && 'silver'} />
               <Medal medal={medalAchieved(3) && 'gold'} />
-              <Medal medal={medalAchieved(4) && 'emerald'} />
+              <Medal medal={medalAchieved(4) && 'platinum'} />
               <Medal medal={medalAchieved(5) && 'diamond'} />
             </div>
             <ProgressBar

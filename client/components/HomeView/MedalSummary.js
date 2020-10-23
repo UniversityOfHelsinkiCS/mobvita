@@ -29,7 +29,7 @@ const MedalSummary = () => {
           if (level >= 1) tempObject.bronze++
           if (level >= 2) tempObject.silver++
           if (level >= 3) tempObject.gold++
-          if (level >= 4) tempObject.emerald++
+          if (level >= 4) tempObject.platinum++
           if (level >= 5) tempObject.diamond++
           return tempObject
         },
@@ -37,7 +37,7 @@ const MedalSummary = () => {
           bronze: 0,
           silver: 0,
           gold: 0,
-          emerald: 0,
+          platinum: 0,
           diamond: 0,
         }
       ),
@@ -50,7 +50,7 @@ const MedalSummary = () => {
         <MedalAmount medal="bronze" amount={medals.bronze} />
         <MedalAmount medal="silver" amount={medals.silver} />
         <MedalAmount medal="gold" amount={medals.gold} />
-        <MedalAmount medal="emerald" amount={medals.emerald} />
+        <MedalAmount medal="platinum" amount={medals.platinum} />
         <MedalAmount medal="diamond" amount={medals.diamond} />
       </div>
     </Link>

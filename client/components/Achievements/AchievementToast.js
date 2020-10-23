@@ -17,7 +17,7 @@ const AchievementToast = ({ achievement }) => {
       case 3:
         return 'gold'
       case 4:
-        return 'emerald'
+        return 'platinum'
       case 5:
         return 'diamond'
       default:
