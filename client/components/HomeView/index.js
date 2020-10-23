@@ -61,9 +61,7 @@ const HomeView = () => {
             <div className="flex-column gap-row-1" style={{ flexGrow: 2 }}>
               <PracticeModal trigger={<PracticeButton data-cy="practice-now" />} />
               <FlashcardsButton />
-              <Button style={{ display: 'none' }} onClick={() => undefun()}>
-                hidden breaking thing
-              </Button>
+              {hiddenFeatures && <Button onClick={() => undef()}>hidden breaking thing</Button>}
             </div>
             <div className="vertical-line" />
             {hiddenFeatures ? (

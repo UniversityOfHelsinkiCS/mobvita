@@ -32,6 +32,7 @@
     "@jaredreisinger/react-crossword": "^2.2.1",
     "@sentry/browser": "^5.11.0",
     "@sentry/cli": "^1.49.0",
+    "@sentry/react": "^5.27.0",
     "axios": "^0.18.1",
     "babel-eslint": "^10.0.1",
     "babel-loader": "^8.0.5",

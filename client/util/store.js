@@ -1,5 +1,6 @@
 import { createStore, applyMiddleware, compose } from 'redux'
 import thunk from 'redux-thunk'
+import * as Sentry from '@sentry/react'
 
 import { handleRequest } from 'Utilities/apiConnection'
 import combinedReducers from 'Utilities/redux'
@@ -15,10 +16,12 @@ const getInitialUserFromLocalStorage = () => {
   return { data: JSON.parse(user) }
 }
 
+const sentryReduxEnhancer = Sentry.createReduxEnhancer()
+
 const store = createStore(
   combinedReducers,
   { user: getInitialUserFromLocalStorage() },
-  composeEnhancers(applyMiddleware(thunk, handleRequest, userMiddleware)),
+  composeEnhancers(applyMiddleware(thunk, handleRequest, userMiddleware), sentryReduxEnhancer)
 )
 
 store.subscribe(() => {
