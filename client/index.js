@@ -18,6 +18,7 @@ Sentry.init({
   dsn,
   environment: isStaging ? 'staging' : 'production',
   release: `mobvita@${__COMMIT__}`, // eslint-disable-line no-undef
+  normalizeDepth: 10,
 })
 
 console.log(process.env.ENVIRONMENT)
