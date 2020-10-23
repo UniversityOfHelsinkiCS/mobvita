@@ -16,7 +16,15 @@ const LeaderboardList = ({ amountToShow }) => {
   const userParticipatingInCompetition = user.publish_progress
 
   const filteredLeaderboard = useMemo(
-    () => leaderboard?.filter(item => item.weekly_time_spent !== 99).splice(0, amountToShow),
+    () =>
+      leaderboard
+        ?.filter(item => item.weekly_time_spent !== 0)
+        .splice(0, amountToShow)
+        .map(item => ({
+          userId: item.user_id,
+          hoursPracticed: Math.floor(item.weekly_time_spent * 10) / 10,
+          ...item,
+        })),
     [leaderboard]
   )
 
@@ -50,17 +58,15 @@ const LeaderboardList = ({ amountToShow }) => {
 
   return (
     <div>
-      {filteredLeaderboard.map(
-        ({ user_id: userId, username, weekly_time_spent: hoursPracticed }, index) => (
-          <LeaderboardItem
-            key={userId}
-            username={username}
-            value={`${hoursPracticed}h`}
-            highlighted={userId === user.oid}
-            position={getPositionToRender(index + 1, userId)}
-          />
-        )
-      )}
+      {filteredLeaderboard.map(({ userId, username, hoursPracticed }, index) => (
+        <LeaderboardItem
+          key={userId}
+          username={username}
+          value={`${hoursPracticed}h`}
+          highlighted={userId === user.oid}
+          position={getPositionToRender(index + 1, userId)}
+        />
+      ))}
       {!userInTopPositions && (
         <div>
           <div className="leaderboard-item-container center">
