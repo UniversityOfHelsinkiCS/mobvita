@@ -108,7 +108,7 @@ const Settings = () => {
         <FormattedMessage id="Privacy" />
       </h2>
       <SettingToggle
-        translationId="Participate in weekly leaderboards"
+        translationId="Show my username in leaderboards"
         checked={user.publish_progress}
         onChange={() => dispatch(updatePublishProgress(!user.publish_progress))}
         disabled={pending}
