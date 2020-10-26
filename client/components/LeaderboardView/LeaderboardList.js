@@ -9,7 +9,7 @@ const Medal = ({ position }) => (
 )
 
 const LeaderboardList = ({ amountToShow }) => {
-  const { leaderboard, user_rank: userPositionIndex } = useSelector(
+  const { leaderboard, user_rank: userPositionIndex, user_record: userRecord } = useSelector(
     ({ leaderboard }) => leaderboard.data
   )
   const user = useCurrentUser()
@@ -60,7 +60,7 @@ const LeaderboardList = ({ amountToShow }) => {
     <div>
       {filteredLeaderboard.map(({ userId, username, hoursPracticed }, index) => (
         <LeaderboardItem
-          key={userId}
+          key={userId || username}
           username={username}
           value={`${hoursPracticed}h`}
           highlighted={userId === user.oid}
@@ -75,7 +75,7 @@ const LeaderboardList = ({ amountToShow }) => {
           <LeaderboardItem
             position={userPositionIndex + 1}
             username={user.username}
-            value={`${user.weekly_times[0].practice_time}h`}
+            value={`${Math.floor(userRecord * 10) / 10}h`}
             highlighted
           />
         </div>
