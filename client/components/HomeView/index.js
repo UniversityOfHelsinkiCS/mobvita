@@ -83,13 +83,14 @@ const HomeView = () => {
             </div>
             <hr />
             <EloChart width="100%" />
-            <hr />
-            <MedalSummary />
-            <hr />
-            <LeaderboardSummary />
-            <Button style={{ display: 'none' }} onClick={() => undefun()}>
-              hidden breaking thing
-            </Button>
+            {hiddenFeatures && (
+              <>
+                <hr />
+                <MedalSummary />
+                <hr />
+                <LeaderboardSummary />
+              </>
+            )}
           </>
         )}
       </div>
