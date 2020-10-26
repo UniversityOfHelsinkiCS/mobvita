@@ -5,10 +5,11 @@ import { useParams } from 'react-router-dom'
 import CurrentSnippet from 'Components/PracticeView/CurrentSnippet'
 import { getStoryAction } from 'Utilities/redux/storiesReducer'
 import DictionaryHelp from 'Components/DictionaryHelp'
+import ReportButton from 'Components/ReportButton'
 import { Segment, Icon } from 'semantic-ui-react'
 import { resetCurrentSnippet, clearFocusedSnippet } from 'Utilities/redux/snippetsReducer'
 import { clearPractice, setTouchedIds, setAnswers } from 'Utilities/redux/practiceReducer'
-import { getTextStyle, learningLanguageSelector } from 'Utilities/common'
+import { getTextStyle, learningLanguageSelector, hiddenFeatures } from 'Utilities/common'
 import useWindowDimensions from 'Utilities/windowDimensions'
 import PreviousSnippets from './PreviousSnippets'
 import VirtualKeyboard from './VirtualKeyboard'
@@ -98,6 +99,7 @@ const PracticeView = () => {
         <DictionaryHelp />
         <ReferenceModal />
       </div>
+      {hiddenFeatures && <ReportButton />}
       {showFooter && <Footer />}
     </div>
   )

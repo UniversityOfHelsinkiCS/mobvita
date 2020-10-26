@@ -16,7 +16,16 @@ const getInitialUserFromLocalStorage = () => {
   return { data: JSON.parse(user) }
 }
 
-const sentryReduxEnhancer = Sentry.createReduxEnhancer()
+const sentryReduxEnhancer = Sentry.createReduxEnhancer({
+  stateTransformer: state => {
+    return {
+      user: state.user,
+      practice: state.practice,
+      focusedSnippet: state.snippets.focused,
+      translation: state.translation,
+    }
+  },
+})
 
 const store = createStore(
   combinedReducers,

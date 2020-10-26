@@ -12,13 +12,32 @@ import App from 'Components/App'
 import ErrorBoundary from 'Components/ErrorBoundary'
 import ConnectedIntlProvider from 'Components/ConnectedIntlProvider'
 
-const dsn = inProduction ? 'https://509ab4585bb54fda8a94a461c1007146@toska.cs.helsinki.fi/13' : null
+const dsn = inProduction
+  ? 'https://509ab4585bb54fda8a94a461c1007146@sentry.toska.cs.helsinki.fi/13'
+  : null
+
+const filterReduxStateForSentry = event => {
+  const url = event.request?.url ?? ''
+
+  if (!url.includes('practice')) {
+    delete event.contexts['redux.state'].practice
+    delete event.contexts['redux.state'].focusedSnippet
+    delete event.contexts['redux.state'].translation
+  }
+
+  return event
+}
 
 Sentry.init({
   dsn,
   environment: isStaging ? 'staging' : 'production',
   release: `mobvita@${__COMMIT__}`, // eslint-disable-line no-undef
   normalizeDepth: 10,
+  beforeSend(event, hint) {
+    const filteredEvent = filterReduxStateForSentry(event)
+    console.log(event)
+    return filteredEvent
+  },
 })
 
 console.log(process.env.ENVIRONMENT)

@@ -1327,6 +1327,20 @@ body {
   //color: #777;
 }
 
+.report-button {
+  border-radius: 1em;
+  padding: 0.5rem 1rem;
+  background-color: #4c91cd;
+  color: white;
+  font-weight: 600;
+  border: none;
+  text-transform: uppercase;
+
+  &:hover {
+    background-color: #0069d9;
+  }
+}
+
 .group-management-buttons {
   @media (max-width: 760px) {
     flex-direction: column;
