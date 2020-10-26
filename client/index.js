@@ -35,7 +35,6 @@ Sentry.init({
   normalizeDepth: 10,
   beforeSend(event, hint) {
     const filteredEvent = filterReduxStateForSentry(event)
-    console.log(event)
     return filteredEvent
   },
 })
