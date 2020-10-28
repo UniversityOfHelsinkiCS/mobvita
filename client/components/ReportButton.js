@@ -31,16 +31,16 @@ const ReportButton = () => {
         onOpen={() => setModalOpen(true)}
         onClose={() => setModalOpen(false)}
       >
-        <Modal.Header>Report an error</Modal.Header>
+        <Modal.Header>Report a problem</Modal.Header>
         <Modal.Content>
           <p className="additional-info">
-            This will send the current state of the application to be reviewed for errors.
+          Thank you for reporting a problem &mdash; we will review it as soon as possible!
           </p>
           <Form>
             <TextArea
               value={optionalMessage}
               onChange={(e, data) => setOptionalMessage(data.value)}
-              placeholder="You can add additional info here."
+              placeholder="The REVITA Team will see this page, where you encountered the problem.  If you would like to tell us more about what went wrong, please do so here."
               style={{ marginTop: '1rem' }}
             />
           </Form>
@@ -50,7 +50,7 @@ const ReportButton = () => {
             <FormattedMessage id="Cancel" />
           </Button>
           <Button onClick={handleConfirmation} primary>
-            <FormattedMessage id="Confirm" />
+            <FormattedMessage id="Send" />
           </Button>
         </Modal.Actions>
       </Modal>
