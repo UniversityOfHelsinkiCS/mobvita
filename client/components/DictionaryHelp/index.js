@@ -56,26 +56,14 @@ const Lemma = ({ lemma, inflectionRef }) => {
   const learningLanguage = useSelector(learningLanguageSelector)
   const { maskSymbol } = useSelector(({ translation }) => translation)
 
-  const content = useMemo(() => {
-    if (maskSymbol) return maskSymbol
-    if (inflectionRef !== undefined) {
-      return (
-        <a href={inflectionRef.url} target="_blank" rel="noopener noreferrer" className="flex">
-          {lemma}
-          <Icon
-            name="external"
-            size="small"
-            style={{ marginLeft: '.25rem', marginTop: '.1rem', alignSelf: 'flex-start' }}
-          />
-        </a>
-      )
-    }
-    return lemma
-  }, [inflectionRef, maskSymbol])
-
   return (
     <div className="flex" style={getTextStyle(learningLanguage)}>
-      {content}
+      {maskSymbol || lemma}
+      {inflectionRef && (
+        <a href={inflectionRef.url} target="_blank" rel="noopener noreferrer" className="flex">
+          <Icon name="external" style={{ marginLeft: '1rem' }} />
+        </a>
+      )}
       <Speaker word={lemma} />
     </div>
   )
