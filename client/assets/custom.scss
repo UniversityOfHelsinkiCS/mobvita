@@ -1330,14 +1330,14 @@ body {
 .report-button {
   border-radius: 1em;
   padding: 0.5rem 1rem;
-  background-color: #4c91cd;
-  color: white;
+  background-color: #4c91cd36; // #4c91cd;
+  color: #3287f3; // white;
   font-weight: 600;
   border: none;
-  text-transform: uppercase;
+  // text-transform: uppercase;
 
   &:hover {
-    background-color: #0069d9;
+    background-color: #4c91cd69; // #0069d9;
   }
 }
 
