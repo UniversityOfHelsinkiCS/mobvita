@@ -53,8 +53,10 @@ const ShareStory = ({ story, isOpen, setOpen }) => {
         <Form className="share-story-form" data-cy="share-story-form" onSubmit={share}>
 
           <div>
-            <div>
-              <FormattedMessage id="share-story-with-a-friend" />
+            <div style={{ marginTop: '1em', marginBottom: '1em' }}>
+              <span style={{ marginRight: '.5em' }}>
+                <FormattedMessage id="share-story-with-a-friend" />
+              </span>
               <span style={{ color: 'red' }}> (Not implemented yet!)</span>
               <FormControl
                 disabled
@@ -74,8 +76,8 @@ const ShareStory = ({ story, isOpen, setOpen }) => {
 
             {groupsUserCanShareWith
               && (
-                <div style={{ display: 'flex', alignItems: 'center', marginTop: '0.5em' }}>
-                  <span>{intl.formatMessage({ id: 'or-share-with-a-group-optional' })}</span>
+                <div style={{ display: 'flex', alignItems: 'center', marginTop: '1em', marginBottom: '1em' }}>
+                  <span style={{ marginRight: '1em' }}>{intl.formatMessage({ id: 'share-story-with-a-group' })}</span>
                   <select
                     data-cy="select-group"
                     defaultValue={shareTargetGroupId}
@@ -93,7 +95,7 @@ const ShareStory = ({ story, isOpen, setOpen }) => {
               disabled={!shareTargetGroupId}
               type="submit"
             >
-              <FormattedMessage id="Confirm" />
+              <FormattedMessage id="share-story" />
             </Button>
           </div>
         </Form>

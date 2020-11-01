@@ -53,7 +53,7 @@ const CreateGroup = () => {
             data-cy="student-emails"
           />
           <Button type="submit">
-            <FormattedMessage id="Confirm" />
+            <FormattedMessage id="create-group" />
           </Button>
         </Form>
       </Card>

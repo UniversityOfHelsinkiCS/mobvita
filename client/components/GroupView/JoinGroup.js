@@ -22,11 +22,11 @@ const JoinGroup = () => {
       <Card body>
         <Form className="group-form" onSubmit={join}>
           <span className="sm-label">
-            <FormattedMessage id="token" />
+            <FormattedMessage id="enter-token" />
           </span>
           <FormControl as="input" onChange={e => setToken(e.target.value)} />
           <Button type="submit">
-            <FormattedMessage id="Confirm" />
+            <FormattedMessage id="join-group" />
           </Button>
         </Form>
       </Card>

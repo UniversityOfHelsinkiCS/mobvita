@@ -103,7 +103,7 @@ const SnippetActions = ({ storyId, exerciseCount }) => {
             style={{ marginBottom: '0.5em' }}
           >
             <span>
-              <FormattedMessage id="Go to next snippet" />
+              <FormattedMessage id="go-to-next-snippet" /> ⤵
             </span>
           </Button>
         </div>

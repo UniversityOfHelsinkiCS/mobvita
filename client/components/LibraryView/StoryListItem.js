@@ -157,6 +157,11 @@ const StoryListItem = ({ story, userCanShare, libraryShown, selectedGroup }) => 
                   <FormattedMessage id="Flashcards" />
                 </Button>
               </Link>
+              <Link to={`/stories/${story._id}/read`}>
+                <Button variant="secondary" style={{ marginRight: '0.5em' }}>
+                  <FormattedMessage id="Read" />
+                </Button>
+              </Link>
               {showCrosswordsButton && (
                 <Link to={`/crossword/${story._id}/`}>
                   <Button variant="secondary" style={{ marginRight: '0.5em' }}>
@@ -164,11 +169,6 @@ const StoryListItem = ({ story, userCanShare, libraryShown, selectedGroup }) => 
                   </Button>
                 </Link>
               )}
-              <Link to={`/stories/${story._id}/read`}>
-                <Button variant="secondary" style={{ marginRight: '0.5em' }}>
-                  <FormattedMessage id="Read" />
-                </Button>
-              </Link>
             </div>
           )}
 

@@ -22,7 +22,7 @@ const ReportButton = () => {
     <div>
       <button type="button" onClick={() => setModalOpen(true)} className="report-button">
         <Icon name="flag outline" />
-        Report
+        <FormattedMessage id="report-button" />
       </button>
       <Modal
         dimmer="inverted"
@@ -31,16 +31,16 @@ const ReportButton = () => {
         onOpen={() => setModalOpen(true)}
         onClose={() => setModalOpen(false)}
       >
-        <Modal.Header>Report a problem</Modal.Header>
+        <Modal.Header><FormattedMessage id="report-problem" /></Modal.Header>
         <Modal.Content>
           <p className="additional-info">
-          Thank you for reporting a problem &mdash; we will review it as soon as possible!
+          <FormattedMessage id="thank-you-for-reporting-problem" />
           </p>
           <Form>
             <TextArea
               value={optionalMessage}
               onChange={(e, data) => setOptionalMessage(data.value)}
-              placeholder="The REVITA Team will see this page, where you encountered the problem.  If you would like to tell us more about what went wrong, please do so here."
+              placeholder="REVITA Team will see this page where you encountered the problem.  If you want to tell us more, please write here what went wrong..."
               style={{ marginTop: '1rem' }}
             />
           </Form>

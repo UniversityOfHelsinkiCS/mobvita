@@ -62,13 +62,13 @@ const DetailedStoryModal = ({
             />
             <LinkButton
               variant="secondary"
-              to={`/crossword/${story._id}`}
-              translationId="Crossword"
+              to={`/stories/${story._id}/read`}
+              translationId="Read"
             />
             <LinkButton
               variant="secondary"
-              to={`/stories/${story._id}/read`}
-              translationId="Read"
+              to={`/crossword/${story._id}`}
+              translationId="Crossword"
             />
           </div>
           <div className="gap-1">
