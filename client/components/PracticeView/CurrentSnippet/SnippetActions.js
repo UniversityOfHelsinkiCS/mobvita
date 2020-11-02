@@ -2,6 +2,7 @@ import React, { useState, useMemo, useEffect } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import { useParams } from 'react-router-dom'
 import { FormattedMessage } from 'react-intl'
+import { Icon } from 'semantic-ui-react'
 import { Button } from 'react-bootstrap'
 import {
   postAnswers,
@@ -115,7 +116,7 @@ const SnippetActions = ({ storyId, exerciseCount }) => {
               style={{ marginBottom: '0.5em' }}
             >
               <span>
-                <FormattedMessage id="go-to-next-snippet" /> ⤵
+                <FormattedMessage id="go-to-next-snippet" /> <Icon name="level down alternate" />
               </span>
             </Button>
             <Button
@@ -125,7 +126,7 @@ const SnippetActions = ({ storyId, exerciseCount }) => {
               style={{ marginBottom: '0.5em' }}
             >
               <span>
-                <FormattedMessage id="start-over" /> ⤴
+                <FormattedMessage id="start-over" /> <Icon name="level up alternate" />
               </span>
             </Button>
           </div>
