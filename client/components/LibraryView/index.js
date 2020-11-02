@@ -4,10 +4,11 @@ import { Placeholder, Card, Search, Select, Icon, Dropdown, Input } from 'semant
 import StoryListItem from 'Components/LibraryView/StoryListItem'
 import { useIntl } from 'react-intl'
 import CheckboxGroup from 'Components/CheckboxGroup'
-import { capitalize } from 'Utilities/common'
+import { capitalize, useLearningLanguage } from 'Utilities/common'
 import { getGroups } from 'Utilities/redux/groupsReducer'
 import { List, WindowScroller } from 'react-virtualized'
 import { updateLibrarySelect, updateGroupSelect } from 'Utilities/redux/userReducer'
+import { getAllStories } from 'Utilities/redux/storiesReducer'
 import useWindowDimensions from 'Utilities/windowDimensions'
 import StoryForm from './StoryForm'
 
@@ -32,6 +33,8 @@ const StoryList = () => {
     stories: stories.data,
     pending: stories.pending,
   }))
+  const { sharedToGroupSinceLastFetch } = useSelector(({ share }) => share)
+  const learningLanguage = useLearningLanguage()
 
   const smallWindow = useWindowDimensions().width < 520
 
@@ -49,6 +52,14 @@ const StoryList = () => {
   const handleLibraryChange = library => {
     dispatch(updateLibrarySelect(library))
     setLibrary(library)
+    if (library === 'group' && sharedToGroupSinceLastFetch) {
+      dispatch(
+        getAllStories(learningLanguage, {
+          sort_by: 'date',
+          order: -1,
+        })
+      )
+    }
   }
 
   useEffect(() => {

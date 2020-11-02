@@ -65,10 +65,9 @@ export default (state = initialState, action) => {
       }
     case 'SHARE_STORY_SUCCESS':
       return {
-        translationId: 'story-shared-and-awaiting-approval',
+        translationId: 'story-shared',
         type: type.success,
       }
-
     case 'REMOVE_FROM_GROUP_FAILURE':
       return {
         message: failureMessage(action.response),
