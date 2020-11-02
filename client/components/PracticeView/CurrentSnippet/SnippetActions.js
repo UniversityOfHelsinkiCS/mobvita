@@ -1,9 +1,14 @@
 import React, { useState, useMemo, useEffect } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
+import { useParams } from 'react-router-dom'
 import { FormattedMessage } from 'react-intl'
 import { Button } from 'react-bootstrap'
-import { postAnswers, getCurrentSnippet } from 'Utilities/redux/snippetsReducer'
-import { finishSnippet, clearTouchedIds } from 'Utilities/redux/practiceReducer'
+import {
+  postAnswers,
+  getCurrentSnippet,
+  resetCurrentSnippet,
+} from 'Utilities/redux/snippetsReducer'
+import { finishSnippet, clearTouchedIds, clearPractice } from 'Utilities/redux/practiceReducer'
 
 const CheckAnswersButton = ({ handleClick }) => {
   const attempt = useSelector(({ practice }) => practice.attempt)
@@ -47,6 +52,7 @@ const SnippetActions = ({ storyId, exerciseCount }) => {
   const { snippets } = useSelector(({ snippets }) => ({ snippets }))
 
   const dispatch = useDispatch()
+  const { id } = useParams()
 
   const rightAnswerAmount = useMemo(
     () =>
@@ -87,25 +93,42 @@ const SnippetActions = ({ storyId, exerciseCount }) => {
     dispatch(getCurrentSnippet(storyId))
   }
 
+  const handleRestart = () => {
+    dispatch(clearPractice())
+    dispatch(resetCurrentSnippet(id))
+  }
+
   const isSnippetFetchedSuccessfully =
     snippets.answersPending || snippets.pending || snippets.focused
 
   return (
     <div>
       {isSnippetFetchedSuccessfully ? (
-        <div style={{ display: 'flex', flexDirection: 'column-reverse', alignItems: 'flex-end' }}>
+        <div style={{ display: 'flex', flexDirection: 'column' }}>
           <CheckAnswersButton handleClick={checkAnswers} />
-          <Button
-            variant="secondary"
-            size="sm"
-            disabled={snippets.answersPending || snippets.pending || !snippets.focused}
-            onClick={submitAnswers}
-            style={{ marginBottom: '0.5em' }}
-          >
-            <span>
-              <FormattedMessage id="go-to-next-snippet" /> ⤵
-            </span>
-          </Button>
+          <div className="space-between">
+            <Button
+              variant="secondary"
+              size="sm"
+              disabled={snippets.answersPending || snippets.pending || !snippets.focused}
+              onClick={submitAnswers}
+              style={{ marginBottom: '0.5em' }}
+            >
+              <span>
+                <FormattedMessage id="go-to-next-snippet" /> ⤵
+              </span>
+            </Button>
+            <Button
+              variant="secondary"
+              size="sm"
+              onClick={handleRestart}
+              style={{ marginBottom: '0.5em' }}
+            >
+              <span>
+                <FormattedMessage id="start-over" /> ⤴
+              </span>
+            </Button>
+          </div>
         </div>
       ) : (
         <Button

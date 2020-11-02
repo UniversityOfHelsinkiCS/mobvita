@@ -6,9 +6,9 @@ import CurrentSnippet from 'Components/PracticeView/CurrentSnippet'
 import { getStoryAction } from 'Utilities/redux/storiesReducer'
 import DictionaryHelp from 'Components/DictionaryHelp'
 import ReportButton from 'Components/ReportButton'
-import { Segment, Icon } from 'semantic-ui-react'
-import { resetCurrentSnippet, clearFocusedSnippet } from 'Utilities/redux/snippetsReducer'
-import { clearPractice, setTouchedIds, setAnswers } from 'Utilities/redux/practiceReducer'
+import { Segment } from 'semantic-ui-react'
+import { clearFocusedSnippet } from 'Utilities/redux/snippetsReducer'
+import { setTouchedIds, setAnswers } from 'Utilities/redux/practiceReducer'
 import { getTextStyle, learningLanguageSelector, hiddenFeatures } from 'Utilities/common'
 import useWindowDimensions from 'Utilities/windowDimensions'
 import PreviousSnippets from './PreviousSnippets'
@@ -36,11 +36,6 @@ const PracticeView = () => {
   }, [])
 
   if (!story) return null
-
-  const handleRestart = () => {
-    dispatch(clearPractice())
-    dispatch(resetCurrentSnippet(id))
-  }
 
   const handleAnswerChange = (value, word) => {
     const { surface, id, ID, concept } = word
@@ -76,12 +71,6 @@ const PracticeView = () => {
               >
                 {!pending && `${story.title}`}
               </h3>
-              <Icon
-                data-cy="restart-story"
-                style={{ cursor: 'pointer' }}
-                name="redo"
-                onClick={handleRestart}
-              />
             </div>
             {story.url && !pending ? (
               <p>
