@@ -52,13 +52,17 @@ const Clue = ({ clue }) => (
   </div>
 )
 
-const Lemma = ({ lemma, inflectionRef }) => {
+const Lemma = ({ lemma, userUrl, inflectionRef }) => {
   const learningLanguage = useSelector(learningLanguageSelector)
   const { maskSymbol } = useSelector(({ translation }) => translation)
 
   return (
     <div className="flex" style={getTextStyle(learningLanguage)}>
-      {maskSymbol || lemma}
+      {maskSymbol || (
+        <a href={userUrl} target="_blank" rel="noopener noreferrer">
+          {lemma}
+        </a>
+      )}
       {inflectionRef && (
         <a href={inflectionRef.url} target="_blank" rel="noopener noreferrer" className="flex">
           <Icon name="external" style={{ marginLeft: '1rem' }} />
@@ -107,7 +111,11 @@ const DictionaryHelp = ({ minimized }) => {
         {clue ? (
           <Clue clue={clue} />
         ) : (
-          <Lemma lemma={translated.lemma} inflectionRef={translated.ref} />
+          <Lemma
+            lemma={translated.lemma}
+            inflectionRef={translated.ref}
+            userUrl={translated.user_URL}
+          />
         )}
         <List bulleted style={{ color: 'slateGrey', fontStyle: 'italic', marginTop: '.5rem' }}>
           {translated.glosses.map(word => (
