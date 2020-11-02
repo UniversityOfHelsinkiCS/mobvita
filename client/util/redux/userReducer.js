@@ -53,6 +53,7 @@ export const updateAutoSpeak = value => saveSelf({ auto_speak: value })
 export const updateFavouriteSites = value => saveSelf({ favourite_sites: value })
 export const updateUsername = value => saveSelf({ username: value })
 export const updatePublishProgress = value => saveSelf({ publish_progress: value })
+export const updateSortCriterion = value => saveSelf({ library_sort_criterion: value })
 
 export const changePassword = (currentPassword, newPassword) => {
   const route = '/user/password'

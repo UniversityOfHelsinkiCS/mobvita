@@ -7,26 +7,24 @@ import CheckboxGroup from 'Components/CheckboxGroup'
 import { capitalize, useLearningLanguage } from 'Utilities/common'
 import { getGroups } from 'Utilities/redux/groupsReducer'
 import { List, WindowScroller } from 'react-virtualized'
-import { updateLibrarySelect, updateGroupSelect } from 'Utilities/redux/userReducer'
+import {
+  updateLibrarySelect,
+  updateGroupSelect,
+  updateSortCriterion,
+} from 'Utilities/redux/userReducer'
 import { getAllStories } from 'Utilities/redux/storiesReducer'
 import useWindowDimensions from 'Utilities/windowDimensions'
 import StoryForm from './StoryForm'
 
 const StoryList = () => {
   const intl = useIntl()
-  const [sorter, setSorter] = useState('date')
-  const [sortDirection, setSortDirection] = useState(1)
-  const [searchString, setSearchString] = useState('')
-  const [smallScreenSearchOpen, setSmallScreenSearchOpen] = useState(false)
-  const [searchedStories, setSearchedStories] = useState([])
-  const [libraries, setLibraries] = useState({
-    public: false,
-    private: false,
-    group: false,
-  })
-  const dispatch = useDispatch()
 
-  const user = useSelector(({ user }) => user.data.user)
+  const {
+    library_sort_criterion: savedSortCriterion,
+    last_selected_library: savedLibrarySelection,
+    last_selected_group: savedGroupSelection,
+    oid: userId,
+  } = useSelector(({ user }) => user.data.user)
   const refreshed = useSelector(({ user }) => user.refreshed)
   const groups = useSelector(({ groups }) => groups.groups)
   const { pending, stories } = useSelector(({ stories }) => ({
@@ -40,6 +38,20 @@ const StoryList = () => {
 
   const smallScreenSearchbar = useRef()
 
+  const [sorter, setSorter] = useState(savedSortCriterion[savedLibrarySelection].sort_by)
+  const [sortDirection, setSortDirection] = useState(
+    savedSortCriterion[savedLibrarySelection].direction
+  )
+  const [searchString, setSearchString] = useState('')
+  const [smallScreenSearchOpen, setSmallScreenSearchOpen] = useState(false)
+  const [searchedStories, setSearchedStories] = useState([])
+  const [libraries, setLibraries] = useState({
+    public: false,
+    private: false,
+    group: false,
+  })
+  const dispatch = useDispatch()
+
   const setLibrary = library => {
     const librariesCopy = {}
     Object.keys(libraries).forEach(key => {
@@ -52,6 +64,8 @@ const StoryList = () => {
   const handleLibraryChange = library => {
     dispatch(updateLibrarySelect(library))
     setLibrary(library)
+    setSorter(savedSortCriterion[library].sort_by)
+    setSortDirection(savedSortCriterion[library].direction)
     if (library === 'group' && sharedToGroupSinceLastFetch) {
       dispatch(
         getAllStories(learningLanguage, {
@@ -67,17 +81,17 @@ const StoryList = () => {
   }, [])
 
   useEffect(() => {
-    if (!groups.find(g => g.group_id === user.last_selected_group) && groups[0]) {
+    if (!groups.find(g => g.group_id === savedGroupSelection) && groups[0]) {
       dispatch(updateGroupSelect(groups[0].group_id))
     }
   }, [groups])
 
   useEffect(() => {
-    setLibrary(user.last_selected_library)
-    if (user.last_selected_library !== 'private' && sorter === 'date') {
+    setLibrary(savedLibrarySelection)
+    if (savedLibrarySelection !== 'private' && sorter === 'date') {
       setSorter('title')
     }
-  }, [user.last_selected_library])
+  }, [savedLibrarySelection])
 
   const sortDropdownOptions = [
     { key: 'title', text: intl.formatMessage({ id: 'Title' }), value: 'title' },
@@ -85,7 +99,7 @@ const StoryList = () => {
     { key: 'progress', text: intl.formatMessage({ id: 'Progress' }), value: 'progress' },
   ]
 
-  if (user.last_selected_library === 'private') {
+  if (savedLibrarySelection === 'private') {
     sortDropdownOptions.push({
       key: 'date',
       text: intl.formatMessage({ id: 'date-added' }),
@@ -101,6 +115,29 @@ const StoryList = () => {
 
   const handleSortChange = (_e, option) => {
     setSorter(option.value)
+    dispatch(
+      updateSortCriterion({
+        ...savedSortCriterion,
+        [savedLibrarySelection]: {
+          sort_by: option.value,
+          direction: sortDirection,
+        },
+      })
+    )
+  }
+
+  const handleDirectionChange = () => {
+    const newDirection = sortDirection === 'asc' ? 'desc' : 'asc'
+    setSortDirection(newDirection)
+    dispatch(
+      updateSortCriterion({
+        ...savedSortCriterion,
+        [savedLibrarySelection]: {
+          sort_by: sorter,
+          direction: newDirection,
+        },
+      })
+    )
   }
 
   useEffect(() => {
@@ -147,7 +184,7 @@ const StoryList = () => {
         />
         {libraries.group && (
           <Select
-            value={user.last_selected_group}
+            value={savedGroupSelection}
             options={groupDropdownOptions}
             onChange={handleGroupChange}
             disabled={!libraries.group}
@@ -166,10 +203,10 @@ const StoryList = () => {
           />
           <Icon
             style={{ cursor: 'pointer', marginLeft: '0.5em' }}
-            name={sortDirection === 1 ? 'caret up' : 'caret down'}
+            name={sortDirection === 'asc' ? 'caret up' : 'caret down'}
             size="large"
             color="grey"
-            onClick={() => setSortDirection(sortDirection * -1)}
+            onClick={handleDirectionChange}
           />
         </div>
         {smallWindow ? (
@@ -227,16 +264,16 @@ const StoryList = () => {
 
     const showLibraries = []
 
-    if (story.user === user.oid) {
+    if (story.user === userId) {
       showLibraries.push('Private')
     }
 
-    if (story.shared && story.sharedwith && story.sharedwith.includes(user.oid)) {
+    if (story.shared && story.sharedwith && story.sharedwith.includes(userId)) {
       showLibraries.push('Private')
     }
 
     if (story.groups) {
-      if (story.groups.map(g => g.group_id).includes(user.last_selected_group)) {
+      if (story.groups.map(g => g.group_id).includes(savedGroupSelection)) {
         showLibraries.push('Group')
       }
     }
@@ -277,7 +314,8 @@ const StoryList = () => {
         break
     }
 
-    return dir * sortDirection
+    const multiplier = sortDirection === 'asc' ? 1 : -1
+    return dir * multiplier
   })
 
   const userCanShare = groups.find(group => group.is_teaching)
@@ -290,7 +328,7 @@ const StoryList = () => {
           userCanShare={userCanShare}
           libraryShown={libraries}
           story={libraryFilteredStories[index]}
-          selectedGroup={user.last_selected_group}
+          selectedGroup={savedGroupSelection}
         />
       </div>
     )
