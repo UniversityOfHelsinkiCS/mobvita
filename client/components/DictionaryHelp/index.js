@@ -109,7 +109,7 @@ const DictionaryHelp = ({ minimized }) => {
         ) : (
           <Lemma lemma={translated.lemma} inflectionRef={translated.ref} />
         )}
-        <List bulleted style={{ color: 'slateGrey', fontStyle: 'italic' }}>
+        <List bulleted style={{ color: 'slateGrey', fontStyle: 'italic', marginTop: '.5rem' }}>
           {translated.glosses.map(word => (
             <List.Item key={word}>{word}</List.Item>
           ))}
