@@ -406,6 +406,15 @@ body {
   }
 }
 
+.source-word {
+  cursor: pointer;
+  padding-top: .5rem;
+  color: slategray;
+  &:hover {
+    color: rgb(33, 133, 208)
+  }
+}
+
 .library-control {
   display: flex;
   flex-direction: column;

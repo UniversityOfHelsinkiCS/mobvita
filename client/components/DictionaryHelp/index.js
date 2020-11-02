@@ -3,9 +3,10 @@ import { useDispatch, useSelector } from 'react-redux'
 import { List, Button, Segment, Icon } from 'semantic-ui-react'
 import { FormattedMessage, useIntl } from 'react-intl'
 import { updateDictionaryLanguage } from 'Utilities/redux/userReducer'
-import { getTranslationAction } from 'Utilities/redux/translationReducer'
+import { getTranslationAction, setWords } from 'Utilities/redux/translationReducer'
 import {
-  learningLanguageSelector,
+  useDictionaryLanguage,
+  useLearningLanguage,
   translatableLanguages,
   speak,
   respVoiceLanguages,
@@ -15,7 +16,7 @@ import useWindowDimensions from 'Utilities/windowDimensions'
 import { Spinner } from 'react-bootstrap'
 
 const Speaker = ({ word }) => {
-  const learningLanguage = useSelector(learningLanguageSelector)
+  const learningLanguage = useLearningLanguage()
 
   const voice = respVoiceLanguages[learningLanguage]
 
@@ -53,7 +54,7 @@ const Clue = ({ clue }) => (
 )
 
 const Lemma = ({ lemma, userUrl, inflectionRef }) => {
-  const learningLanguage = useSelector(learningLanguageSelector)
+  const learningLanguage = useLearningLanguage()
   const { maskSymbol } = useSelector(({ translation }) => translation)
 
   return (
@@ -78,7 +79,8 @@ const DictionaryHelp = ({ minimized }) => {
   const { width: windowWidth } = useWindowDimensions()
 
   const translationLanguageCode = useSelector(({ user }) => user.data.user.last_trans_language)
-  const learningLanguage = useSelector(learningLanguageSelector)
+  const learningLanguage = useLearningLanguage()
+  const dictionaryLanguage = useDictionaryLanguage()
   const { pending, data: translation, surfaceWord, lemmas, clue, maskSymbol } = useSelector(
     ({ translation }) => translation
   )
@@ -95,6 +97,17 @@ const DictionaryHelp = ({ minimized }) => {
   useEffect(() => {
     if (pending) setShow(true)
   }, [pending])
+
+  const handleSourceWordClick = lemma => {
+    dispatch(setWords({ lemmas: lemma }))
+    dispatch(
+      getTranslationAction({
+        learningLanguage,
+        wordLemmas: lemma,
+        dictionaryLanguage,
+      })
+    )
+  }
 
   const dictionaryOptions = translatableLanguages[learningLanguage]
     ? translatableLanguages[learningLanguage].map(element => ({
@@ -116,6 +129,18 @@ const DictionaryHelp = ({ minimized }) => {
             inflectionRef={translated.ref}
             userUrl={translated.user_URL}
           />
+        )}
+        {translated.source_word && (
+          <span
+            onClick={() => handleSourceWordClick(translated.source_word)}
+            onKeyDown={() => handleSourceWordClick(translated.source_word)}
+            className="source-word"
+            role="button"
+            tabIndex={-1}
+          >
+            <Icon name="angle double right" />
+            {translated.source_word}
+          </span>
         )}
         <List bulleted style={{ color: 'slateGrey', fontStyle: 'italic', marginTop: '.5rem' }}>
           {translated.glosses.map(word => (
