@@ -70,8 +70,8 @@ const ShareStory = ({ story, isOpen, setOpen }) => {
                   marginBottom: '1em',
                 }}
               >
-                <span style={{ paddingRight: '2rem' }}>
-                  {intl.formatMessage({ id: 'share-story-with-a-group' })}
+                <span style={{ paddingRight: '2rem', fontWeight: 'bold' }}>
+                  {intl.formatMessage({ id: 'Group' })}
                 </span>
                 <select
                   data-cy="select-group"
