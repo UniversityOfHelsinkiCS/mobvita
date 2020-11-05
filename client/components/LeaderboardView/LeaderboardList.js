@@ -21,35 +21,30 @@ const LeaderboardList = ({ amountToShow }) => {
         ?.filter(item => item.weekly_time_spent !== 0)
         .splice(0, amountToShow)
         .map(item => ({
-          userId: item.user_id,
           hoursPracticed: Math.floor(item.weekly_time_spent * 10) / 10,
           ...item,
         })),
     [leaderboard]
   )
 
-  const isEligibleForMedal = (positionInList, positionToCheck) => {
-    const userInPositionToCheckOrHigher = userPositionIndex < positionToCheck
-    return (
-      (!userParticipatingInCompetition &&
-        userInPositionToCheckOrHigher &&
-        positionInList === positionToCheck + 1) ||
-      ((!userInPositionToCheckOrHigher || userParticipatingInCompetition) &&
-        positionInList === positionToCheck)
-    )
+  const getAdjustedPosition = index => {
+    if (userParticipatingInCompetition || index < userPositionIndex) return index + 1
+    if (index > userPositionIndex) return index
+    return null
   }
 
-  const getPositionToRender = (position, userIdForPosition) => {
-    const isCurrentUser = userIdForPosition === user.oid
-    if (
-      position > 4 ||
-      (userParticipatingInCompetition && position > 3) ||
-      (isCurrentUser && !userParticipatingInCompetition)
-    )
-      return position
-    if (isEligibleForMedal(position, 3)) return <Medal position="third" />
-    if (isEligibleForMedal(position, 2)) return <Medal position="second" />
-    return <Medal position="first" />
+  const getPositionToRender = index => {
+    const position = getAdjustedPosition(index)
+    switch (position) {
+      case 1:
+        return <Medal position="first" />
+      case 2:
+        return <Medal position="second" />
+      case 3:
+        return <Medal position="third" />
+      default:
+        return position
+    }
   }
 
   if (!leaderboard) return <Spinner />
@@ -63,8 +58,8 @@ const LeaderboardList = ({ amountToShow }) => {
           key={userId || username}
           username={username}
           value={`${hoursPracticed}h`}
-          highlighted={userId === user.oid}
-          position={getPositionToRender(index + 1, userId)}
+          highlighted={index === userPositionIndex}
+          position={getPositionToRender(index)}
         />
       ))}
       {!userInTopPositions && (
