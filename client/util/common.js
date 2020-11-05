@@ -184,7 +184,7 @@ export const flashcardColors = {
 
 export const localeOptions = [
   { displayName: 'Suomi', name: 'Finnish', code: 'fi' },
-  { displayName: 'Svenska', name: 'Swedish', code: 'sv' },
+  //{ displayName: 'Svenska', name: 'Swedish', code: 'sv' },
   { displayName: 'Русский', name: 'Russian', code: 'ru' },
   { displayName: 'English', name: 'English', code: 'en' },
   { displayName: 'Italiano', name: 'Italian', code: 'it' },
