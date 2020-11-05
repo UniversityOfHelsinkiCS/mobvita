@@ -26,8 +26,8 @@ describe("sidebar is open", function () {
 
   it("ui language can be changed and is saved", function () {
     cy.get('[data-cy=ui-lang-select]').click()
-    cy.get('[data-cy=ui-lang-select] > .visible > :nth-child(2)').click()
-    cy.contains('Startsida')
+    cy.get('[data-cy=ui-lang-select] > .visible > :nth-child(4)').click()
+    cy.contains('Profilo')
     cy.get('[data-cy=logout]').click()
     cy.request('POST', '/api/session', { ...this.user })
       .as('user')
@@ -35,7 +35,7 @@ describe("sidebar is open", function () {
         window.localStorage.setItem('user', JSON.stringify(response.body))
         cy.reload()
       })
-    cy.contains('Startsida')
+    cy.contains('Profilo')
   })
 
   it("can visit groups view", function () {
