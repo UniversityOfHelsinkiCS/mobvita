@@ -1,7 +1,6 @@
 import React from 'react'
 import { Route, Switch, Redirect } from 'react-router-dom'
 import { useSelector } from 'react-redux'
-import { hiddenFeatures } from 'Utilities/common'
 import ReadView from 'Components/ReadView'
 import PracticeView from 'Components/PracticeView'
 import MenuTabs from 'Components/MenuTabs'
@@ -62,12 +61,8 @@ export default () => {
               <ProtectedRoute exact path="/profile/progress" component={Profile} />
               <ProtectedRoute exact path="/profile/settings" component={Profile} />
               <ProtectedRoute exact path="/tests" component={MenuTabs} />
-              {hiddenFeatures && (
-                <ProtectedRoute exact path="/achievements" component={Achievements} />
-              )}
-              {hiddenFeatures && (
-                <ProtectedRoute exact path="/leaderboard" component={Leaderboard} />
-              )}
+              <ProtectedRoute exact path="/achievements" component={Achievements} />
+              <ProtectedRoute exact path="/leaderboard" component={Leaderboard} />
             </Switch>
           </div>
         </Route>

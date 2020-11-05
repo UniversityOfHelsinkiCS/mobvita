@@ -1,7 +1,6 @@
 import React, { useMemo } from 'react'
 import { useSelector } from 'react-redux'
 import { Link } from 'react-router-dom'
-import { hiddenFeatures } from 'Utilities/common'
 import Medal from 'Components/Achievements/Medal'
 
 const MedalAmount = ({ medal, amount }) => (
@@ -18,7 +17,7 @@ const MedalAmount = ({ medal, amount }) => (
 const MedalSummary = () => {
   const achievements = useSelector(state => state.user.data.user.achievements)
 
-  if (!hiddenFeatures || !achievements) return null
+  if (!achievements) return null
 
   const medals = useMemo(
     () =>

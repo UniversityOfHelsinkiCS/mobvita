@@ -5,14 +5,7 @@ import Achievement from './Achievement'
 import Medals from './Medals'
 
 const Achievements = () => {
-  const achievements = useSelector(state =>
-    state.user.data.user.achievements?.concat({
-      name: 'Test achievement',
-      level: 5,
-      current: 102,
-      total: 100,
-    })
-  )
+  const achievements = useSelector(state => state.user.data.user.achievements)
 
   return (
     <div className="component-container padding-sides-2">

@@ -8,7 +8,7 @@ import { setNotification } from 'Utilities/redux/notificationReducer'
 import { clearServerError } from 'Utilities/redux/serverErrorReducer'
 import { updateFavouriteSites } from 'Utilities/redux/userReducer'
 import { useIntl } from 'react-intl'
-import { learningLanguageSelector, hiddenFeatures } from 'Utilities/common'
+import { learningLanguageSelector } from 'Utilities/common'
 import AchievementToast from 'Components/Achievements/AchievementToast'
 
 export default function Toaster() {
@@ -147,7 +147,7 @@ export default function Toaster() {
 
   // Handles achievement toast
   useEffect(() => {
-    if (newAchievements && hiddenFeatures) {
+    if (newAchievements) {
       newAchievements.forEach(achievement =>
         toast(<AchievementToast achievement={achievement} />, {
           transition: Flip,

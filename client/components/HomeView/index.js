@@ -2,7 +2,7 @@ import React from 'react'
 import { useHistory } from 'react-router'
 import { FormattedMessage } from 'react-intl'
 import { Button } from 'react-bootstrap'
-import { images, hiddenFeatures } from 'Utilities/common'
+import { images } from 'Utilities/common'
 
 import useWindowDimensions from 'Utilities/windowDimensions'
 import Footer from 'Components/Footer'
@@ -63,17 +63,13 @@ const HomeView = () => {
               <FlashcardsButton />
             </div>
             <div className="vertical-line" />
-            {hiddenFeatures ? (
-              <div style={{ width: '300px' }}>
-                <EloChart width="100%" />
-                <hr />
-                <MedalSummary />
-                <hr />
-                <LeaderboardSummary />
-              </div>
-            ) : (
-              <EloChart width="30%" />
-            )}
+            <div style={{ width: '300px' }}>
+              <EloChart width="100%" />
+              <hr />
+              <MedalSummary />
+              <hr />
+              <LeaderboardSummary />
+            </div>
           </div>
         ) : (
           <>
@@ -83,14 +79,10 @@ const HomeView = () => {
             </div>
             <hr />
             <EloChart width="100%" />
-            {hiddenFeatures && (
-              <>
-                <hr />
-                <MedalSummary />
-                <hr />
-                <LeaderboardSummary />
-              </>
-            )}
+            <hr />
+            <MedalSummary />
+            <hr />
+            <LeaderboardSummary />
           </>
         )}
       </div>
