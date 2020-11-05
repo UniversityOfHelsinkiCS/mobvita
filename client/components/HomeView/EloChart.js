@@ -6,7 +6,7 @@ import { useHistory } from 'react-router-dom'
 import moment from 'moment-timezone'
 import { useIntl } from 'react-intl'
 import { Icon } from 'semantic-ui-react'
-import { images } from 'Utilities/common'
+import { images, hiddenFeatures } from 'Utilities/common'
 
 const EloChart = ({ width }) => {
   const { exerciseHistory, flashcardHistory } = useSelector(({ user }) => {
@@ -59,9 +59,12 @@ const EloChart = ({ width }) => {
     data: weeklyPracticeTimeHistory.map(element => [element.week, element.practice_time]).reverse(),
   }
 
+  const series = [practicetimes, { data: eloResults }]
+  if (hiddenFeatures) series.push({ data: flashcardEloResults, color: '#dc3545' })
+
   const options = {
     title: { text: '' },
-    series: [practicetimes, { data: eloResults }, { data: flashcardEloResults, color: '#dc3545' }],
+    series,
     chart: { height: '45%', marginTop: 20 },
     legend: { enabled: false },
     credits: { enabled: false },
@@ -120,7 +123,7 @@ const EloChart = ({ width }) => {
   }
 
   const showStoryElo = exerciseHistory && exerciseHistory.length > 0
-  const showFlashcardElo = flashcardHistory && flashcardHistory.length > 0
+  const showFlashcardElo = hiddenFeatures && flashcardHistory?.length > 0
 
   return (
     <div

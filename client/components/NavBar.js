@@ -5,7 +5,6 @@ import Headroom from 'react-headroom'
 import { Icon } from 'semantic-ui-react'
 import { Link, useHistory } from 'react-router-dom'
 import { sidebarSetOpen } from 'Utilities/redux/sidebarReducer'
-import { useIntl } from 'react-intl'
 import useWindowDimensions from 'Utilities/windowDimensions'
 import { hiddenFeatures, images } from 'Utilities/common'
 
@@ -26,7 +25,7 @@ export default function NavBar() {
   }
 
   const showStoryElo = history.location.pathname.includes('practice')
-  const showFlashcardElo = history.location.pathname.includes('flashcards')
+  const showFlashcardElo = hiddenFeatures && history.location.pathname.includes('flashcards')
 
   const storyElo =
     user && user.user.exercise_history && user.user.exercise_history.length > 0
