@@ -22,6 +22,7 @@ const LeaderboardList = ({ amountToShow }) => {
         .splice(0, amountToShow)
         .map(item => ({
           hoursPracticed: Math.floor(item.weekly_time_spent * 10) / 10,
+          rankingHistory: item.leaderboard_history,
           ...item,
         })),
     [leaderboard]
@@ -53,13 +54,14 @@ const LeaderboardList = ({ amountToShow }) => {
 
   return (
     <div>
-      {filteredLeaderboard.map(({ userId, username, hoursPracticed }, index) => (
+      {filteredLeaderboard.map(({ userId, username, hoursPracticed, rankingHistory }, index) => (
         <LeaderboardItem
           key={userId || username}
           username={username}
           value={`${hoursPracticed}h`}
           highlighted={index === userPositionIndex}
           position={getPositionToRender(index)}
+          rankingHistory={rankingHistory}
         />
       ))}
       {!userInTopPositions && (
@@ -72,6 +74,7 @@ const LeaderboardList = ({ amountToShow }) => {
             username={user.username}
             value={`${Math.floor(userRecord * 10) / 10}h`}
             highlighted
+            rankingHistory={{}}
           />
         </div>
       )}

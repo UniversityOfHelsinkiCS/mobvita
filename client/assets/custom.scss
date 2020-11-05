@@ -1140,6 +1140,36 @@ body {
   margin-left: -0.7em;
 }
 
+.leaderboard-reward {
+  height: 1.3rem;
+  width: 1.3rem;
+  margin-left: .5rem;
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: .7rem;
+  color: white;
+  align-self: center;
+}
+
+.position {
+  &-gold {
+    background-color: gold;
+    border: 1px dotted goldenrod;
+  }
+
+  &-silver {
+    background-color: silver;
+    border: 1px dotted gray;
+  }
+
+  &-bronze {
+    background-color: #CD7F32;
+    border: 1px dotted #A75B10;
+  }
+}
+
 .crosswords-clue {
   white-space: nowrap;
   border: 1px solid #ccc;
