@@ -9,9 +9,12 @@ const Medal = ({ position }) => (
 )
 
 const LeaderboardList = ({ amountToShow }) => {
-  const { leaderboard, user_rank: userPositionIndex, user_record: userRecord } = useSelector(
-    ({ leaderboard }) => leaderboard.data
-  )
+  const {
+    leaderboard,
+    user_rank: userPositionIndex,
+    user_record: userRecord,
+    user_history: userRankingHistory,
+  } = useSelector(({ leaderboard }) => leaderboard.data)
   const user = useCurrentUser()
   const userParticipatingInCompetition = user.publish_progress
 
@@ -74,7 +77,7 @@ const LeaderboardList = ({ amountToShow }) => {
             username={user.username}
             value={`${Math.floor(userRecord * 10) / 10}h`}
             highlighted
-            rankingHistory={{}}
+            rankingHistory={userRankingHistory}
           />
         </div>
       )}
