@@ -59,36 +59,38 @@ const PracticeView = () => {
   return (
     <div>
       <div style={{ display: 'flex', justifyContent: 'center' }}>
-        <Segment style={{ paddingTop: '1em', width: '100%', maxWidth: '1024px' }}>
-          <div className="component-container">
-            <div style={{ display: 'flex', justifyContent: 'space-between', width: '100%' }}>
-              <h3
-                style={{
-                  ...getTextStyle(learningLanguage, 'title'),
-                  width: '100%',
-                  paddingRight: '1em',
-                }}
-              >
-                {!pending && `${story.title}`}
-              </h3>
+        <div style={{ width: '100%', maxWidth: '1024px' }}>
+          <Segment style={{ paddingTop: '1em', width: '100%', maxWidth: '1024px' }}>
+            <div className="component-container">
+              <div style={{ display: 'flex', justifyContent: 'space-between', width: '100%' }}>
+                <h3
+                  style={{
+                    ...getTextStyle(learningLanguage, 'title'),
+                    width: '100%',
+                    paddingRight: '1em',
+                  }}
+                >
+                  {!pending && `${story.title}`}
+                </h3>
+              </div>
+              {story.url && !pending ? (
+                <p>
+                  <a href={story.url}>
+                    <FormattedMessage id="Source" />
+                  </a>
+                </p>
+              ) : null}
+              <PreviousSnippets />
+              <hr />
+              <CurrentSnippet storyId={id} handleInputChange={handleAnswerChange} />
+              {showVirtualKeyboard && <VirtualKeyboard />}
             </div>
-            {story.url && !pending ? (
-              <p>
-                <a href={story.url}>
-                  <FormattedMessage id="Source" />
-                </a>
-              </p>
-            ) : null}
-            <PreviousSnippets />
-            <hr />
-            <CurrentSnippet storyId={id} handleInputChange={handleAnswerChange} />
-            {showVirtualKeyboard && <VirtualKeyboard />}
-          </div>
-        </Segment>
+          </Segment>
+          <ReportButton />
+        </div>
         <DictionaryHelp />
         <ReferenceModal />
       </div>
-      {hiddenFeatures && <ReportButton />}
       {showFooter && <Footer />}
     </div>
   )

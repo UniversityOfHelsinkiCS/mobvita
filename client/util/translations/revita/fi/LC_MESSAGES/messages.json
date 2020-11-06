@@ -799,8 +799,8 @@
     "cards total": "{numberOfCards} korttia yhteensä",
     "report-button": "Ilmoita ongelmasta",
     "report-problem": "Ilmoita ongelmasta",
-    "thank-you-for-reporting-problem": "Thank you for reporting a problem — we will review it as soon as possible!",
-    "enter-more-about-problem": "REVITA Team will see this page where you encountered the problem.  If you want to tell us more, please write here what went wrong...",
+    "thank-you-for-reporting-problem": "Kiitos, että ilmoititte ongelmasta — käymme sen läpi mahdollisimman pian!",
+    "enter-more-about-problem": "REVITA tiimi tulee näkemään tämän sivun, jossa ongelma tuli vastaa. Halutessanne voitte kirjoittaa tähän lisätietoja ongelmasta.",
     "Participate in weekly leaderboards": "Osallistu viikottaisiin pistetaulukkoihin",
     "Privacy": "Yksityisyys",
     "Show my username in leaderboards": "Näytä käyttäjänimeni pistetaulukoissa",
@@ -839,5 +839,6 @@
     "Double and single -н- in suffixes": "Double and single -н- in suffixes",
     "Joint vs. hyphenated spelling": "Joint vs. hyphenated spelling",
     "Joint vs. separate spelling of negation 'не'": "Joint vs. separate spelling of negation 'не'",
-    "story-shared": "Tarina jaettu"
+    "story-shared": "Tarina jaettu",
+    "report-sent": "Ongelmasta ilmoitettu"
 }
