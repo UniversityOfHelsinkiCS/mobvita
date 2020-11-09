@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useCallback, useRef } from 'react'
 import { Link } from 'react-router-dom'
-import { Sidebar as SemanticSidebar, Menu, Icon, Header, Dropdown } from 'semantic-ui-react'
+import { Sidebar as SemanticSidebar, Menu, Icon, Dropdown } from 'semantic-ui-react'
 import { useDispatch, useSelector } from 'react-redux'
 import { Swipeable } from 'react-swipeable'
 import { FormattedMessage } from 'react-intl'
@@ -13,7 +13,7 @@ import { Button } from 'react-bootstrap'
 import useWindowDimensions from 'Utilities/windowDimensions'
 import AboutUs from './StaticContent/AboutUs'
 import ContactUs from './StaticContent/ContactUs'
-import SettingsModal from './SettingsModal'
+import LearningSettingsModal from './LearningSettingsModal'
 
 export default function Sidebar({ history }) {
   const dispatch = useDispatch()
@@ -180,7 +180,7 @@ export default function Sidebar({ history }) {
                   </Link>
 
                   <>
-                    <SettingsModal
+                    <LearningSettingsModal
                       trigger={
                         <Button
                           onClick={() => menuClickWrapper()}

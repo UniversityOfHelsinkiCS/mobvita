@@ -12,13 +12,12 @@ import { sidebarSetOpen } from 'Utilities/redux/sidebarReducer'
 import { getGroups } from 'Utilities/redux/groupsReducer'
 import { learningLanguageSelector } from 'Utilities/common'
 
-const SettingsModal = ({ trigger }) => {
+const LearningSettingsModal = ({ trigger }) => {
   const dispatch = useDispatch()
   const intl = useIntl()
   const { concepts, pending } = useSelector(({ metadata }) => metadata)
   const { groups } = useSelector(({ groups }) => groups)
-  const { exercise_setting_template: activeTemplate } = useSelector(({ user }) => (
-    user.data.user))
+  const { exercise_setting_template: activeTemplate } = useSelector(({ user }) => user.data.user)
   const learningLanguage = useSelector(learningLanguageSelector)
   const [open, setOpen] = useState(false)
 
@@ -37,16 +36,16 @@ const SettingsModal = ({ trigger }) => {
   /*
   If user selects B1, enable A1,A2,B1.
   */
-  const getNewConceptSettings = (newLevel) => {
+  const getNewConceptSettings = newLevel => {
     let resultObject = {}
     const index = skillLevels.findIndex(element => element === newLevel)
     const levelsToBeActivated = skillLevels.slice(0, index + 1)
 
-    concepts.forEach((concept) => {
+    concepts.forEach(concept => {
       const { level, exer_enabled } = concept
       let pushed = false
       if (level && exer_enabled) {
-        levelsToBeActivated.forEach((levelToBeActivated) => {
+        levelsToBeActivated.forEach(levelToBeActivated => {
           if (level.includes(levelToBeActivated)) {
             if (!pushed) {
               resultObject = {
@@ -68,12 +67,10 @@ const SettingsModal = ({ trigger }) => {
     return resultObject
   }
 
-  const handleLevelSelect = (level) => {
+  const handleLevelSelect = level => {
     const newConceptSettings = getNewConceptSettings(level)
     dispatch(updateExerciseSettings(newConceptSettings))
-    dispatch(
-      setNotification('learning-settings-saved', 'success'),
-    )
+    dispatch(setNotification('learning-settings-saved', 'success'))
     dispatch(sidebarSetOpen(false))
     setOpen(false)
   }
@@ -91,22 +88,27 @@ const SettingsModal = ({ trigger }) => {
     },
   ]
 
-  groups.forEach(group => templateOptions.push(
-    {
+  groups.forEach(group =>
+    templateOptions.push({
       key: group.group_id,
       text: group.groupName,
       value: group.group_id,
-    },
-  ))
+    })
+  )
 
-  const handleTemplateChange = (newValue) => {
+  const handleTemplateChange = newValue => {
     dispatch(updateExerciseTemplate(newValue))
   }
 
   const smallscreen = useWindowDimensions().width < 500
 
   return (
-    <Modal onClose={() => setOpen(false)} onOpen={() => setOpen(true)} open={open} trigger={trigger}>
+    <Modal
+      onClose={() => setOpen(false)}
+      onOpen={() => setOpen(true)}
+      open={open}
+      trigger={trigger}
+    >
       <Modal.Header>
         <FormattedMessage id="learning-settings" />
       </Modal.Header>
@@ -134,12 +136,16 @@ const SettingsModal = ({ trigger }) => {
           <FormattedMessage id="Level" />
         </label>
         <ButtonGroup name="difficultyButtons" id="difficultyButtons" size="md">
-          {skillLevels.sort().map(level => <Button key={level} onClick={() => handleLevelSelect(level)}>{level}</Button>)}
+          {skillLevels.sort().map(level => (
+            <Button key={level} onClick={() => handleLevelSelect(level)}>
+              {level}
+            </Button>
+          ))}
         </ButtonGroup>
         {!smallscreen && (
           <Button
             style={{ alignSelf: 'flex-start', marginTop: '1em' }}
-            variant="secondary"
+            variant="primary"
             as={Link}
             onClick={handleAdvancedSettingsClick}
             to="/concepts"
@@ -152,4 +158,4 @@ const SettingsModal = ({ trigger }) => {
   )
 }
 
-export default SettingsModal
+export default LearningSettingsModal
