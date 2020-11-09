@@ -1,14 +1,8 @@
-$wrong-color-background: #FFDADA;
-$wrong-color: #ff0000;
-$right-color: #008000;
-$primary-color: hsla(208, 56%, 55%, 1);
+$wrong-answer-background-color: #FFDADA;
+$primary-color: #4c91cd;
 $button-border-color: #76c8d4;
-$tertiary-border-color: #f0f0f0;
 $secondary-text-color: #777;
-$primary-hover: lightblue;
 $white: #fff;
-$lightblue: #DCF6FF;
-$background: #fafafa;
 $action-text-hover-color: #2185D0;
 
 
@@ -58,7 +52,7 @@ body {
 .btn-tertiary {
   color: $secondary-text-color;
   background-color: $white;
-  border-color: $tertiary-border-color;
+  border-color: #f0f0f0;
 }
 
 .btn-toggle-on {
@@ -133,7 +127,7 @@ body {
   cursor:pointer;
 
   &:hover{
-    background-color: $primary-hover;
+    background-color: lightblue;
   }
 
   &--exercise{ // Related to snippet history...
@@ -168,7 +162,7 @@ body {
 }
 
 .hearing-untouched {
-  background-color: $lightblue;
+  background-color: #DCF6FF;
 
 }
 
@@ -177,7 +171,7 @@ body {
 }
 
 .wrong {
-  background-color: $wrong-color-background;
+  background-color: $wrong-answer-background-color;
 }
 
 .correct {
@@ -199,7 +193,7 @@ body {
   }
 
   &.wrong {
-    background-color: $wrong-color-background !important;
+    background-color: $wrong-answer-background-color !important;
   }
 
   &.correct {
@@ -220,7 +214,7 @@ body {
 }
 
 .wrong-text-background {
-  background-color: $wrong-color;
+  background-color: #ff0000;
 }
 
 .right-text {
@@ -229,7 +223,7 @@ body {
 }
 
 .right-text-background{
-  background-color: $right-color;
+  background-color: #008000;
   color:white;
 }
 
@@ -274,11 +268,6 @@ body {
     z-index: 102;
     padding-top: 0.2em;
     cursor: pointer;
-    // position: fixed;
-    //padding:0.3em;
-    // height:40px;
-    // width:40px;
-    //background-color: white;
   }
 
   &-swipeable {
@@ -353,7 +342,7 @@ body {
   position: fixed;
   right: 0.5%;
   bottom: 0.5%;
-  background-color: $background;
+  background-color: #fafafa;
   z-index: 1;
   @media (min-width: 695px) {
     bottom: 3em;
@@ -432,12 +421,6 @@ body {
   @media (max-width: 520px) {
        flex-direction: column;
     }
-  // & > .checkbox-group {
-  //   flex-grow: 6;
-  // }
-  // & > .selection {
-  //   flex-grow: 1;
-  // }
 }
 
 .checkbox-group {
