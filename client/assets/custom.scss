@@ -98,6 +98,10 @@ body {
   }
 }
 
+.ui.card>.content:after, .ui.cards>.card>.content:after {
+  content: none;
+}
+
 // REACT VIRTUALIZED OVERRIDES:
 .ReactVirtualized__Grid__innerScrollContainer {
   overflow: initial !important;

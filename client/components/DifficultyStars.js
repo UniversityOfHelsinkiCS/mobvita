@@ -1,12 +1,12 @@
 import React from 'react'
 import { Icon } from 'semantic-ui-react'
 
-export default ({ difficulty, size }) => {
+export default ({ difficulty, size, ...props }) => {
   switch (difficulty) {
     case 3:
     case 'high':
       return (
-        <div>
+        <div {...props}>
           <Icon name="star outline" size={size} style={{ color: 'red' }} />
           <Icon name="star outline" size={size} style={{ color: 'red' }} />
           <Icon name="star outline" size={size} style={{ color: 'red' }} />
@@ -15,7 +15,7 @@ export default ({ difficulty, size }) => {
     case 2:
     case 'average':
       return (
-        <div>
+        <div {...props}>
           <Icon name="star outline" size={size} style={{ color: 'steelblue' }} />
           <Icon name="star outline" size={size} style={{ color: 'steelblue' }} />
         </div>
@@ -23,7 +23,7 @@ export default ({ difficulty, size }) => {
     case 1:
     case 'low':
       return (
-        <div>
+        <div {...props}>
           <Icon name="star outline" size={size} style={{ color: 'forestgreen' }} />
         </div>
       )
