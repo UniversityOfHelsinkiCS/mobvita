@@ -9,6 +9,7 @@ $primary-hover: lightblue;
 $white: #fff;
 $lightblue: #DCF6FF;
 $background: #fafafa;
+$action-text-hover-color: #2185D0;
 
 
 // Tooltip colors
@@ -411,7 +412,7 @@ body {
   padding-top: .5rem;
   color: slategray;
   &:hover {
-    color: rgb(33, 133, 208)
+    color: $action-text-hover-color;
   }
 }
 
@@ -471,6 +472,7 @@ body {
   @media (min-width: 640px) {
     &:hover {
       cursor: pointer;
+      color: $action-text-hover-color;
     }
   }
 }
