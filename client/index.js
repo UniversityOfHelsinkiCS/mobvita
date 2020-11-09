@@ -34,8 +34,7 @@ Sentry.init({
   release: `mobvita@${__COMMIT__}`, // eslint-disable-line no-undef
   normalizeDepth: 10,
   beforeSend(event, hint) {
-    const filteredEvent = filterReduxStateForSentry(event)
-    return filteredEvent
+    return event.contexts ? filterReduxStateForSentry(event) : event
   },
 })
 
