@@ -1,8 +1,8 @@
 import React, { useMemo } from 'react'
 import { useSelector } from 'react-redux'
-import Spinner from 'Components/Spinner'
 import { useCurrentUser, images } from 'Utilities/common'
 import LeaderboardItem from './LeaderboardItem'
+import PlaceholderItem from './PlaceholderItem'
 
 const Medal = ({ position }) => (
   <img src={images[`${position}Medal`]} alt={`${position} position medal`} height="24px" />
@@ -37,8 +37,7 @@ const LeaderboardList = ({ amountToShow }) => {
     return null
   }
 
-  const getPositionToRender = index => {
-    const position = getAdjustedPosition(index)
+  const toRender = position => {
     switch (position) {
       case 1:
         return <Medal position="first" />
@@ -51,7 +50,22 @@ const LeaderboardList = ({ amountToShow }) => {
     }
   }
 
-  if (!leaderboard) return <Spinner />
+  const getPositionToRender = index => {
+    const position = getAdjustedPosition(index)
+    return toRender(position)
+  }
+
+  if (!leaderboard)
+    return (
+      <div>
+        {Array(amountToShow)
+          .fill()
+          .map((_, i) => i + 1)
+          .map(position => (
+            <PlaceholderItem key={position} position={toRender(position)} />
+          ))}
+      </div>
+    )
 
   const userInTopPositions = userPositionIndex < filteredLeaderboard.length
 

@@ -40,6 +40,10 @@ import unlockedMedal from 'Assets/images/medals/unlocked_medal.png'
 import firstMedal from 'Assets/images/medals/first_medal.svg'
 import secondMedal from 'Assets/images/medals/second_medal.svg'
 import thirdMedal from 'Assets/images/medals/third_medal.svg'
+import wreadth from 'Assets/images/wreadth.png'
+import fancyWreadth from 'Assets/images/fancy_wreadth.png'
+import trophy from 'Assets/images/trophy.svg'
+import leaderboard from 'Assets/images/leaderboard.svg'
 
 import { useSelector } from 'react-redux'
 import { callApi } from './apiConnection'
@@ -83,6 +87,10 @@ export const images = {
   firstMedal,
   secondMedal,
   thirdMedal,
+  wreadth,
+  fancyWreadth,
+  trophy,
+  leaderboard,
 }
 
 export const newCapitalize = word => {

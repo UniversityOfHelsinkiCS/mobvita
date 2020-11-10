@@ -797,7 +797,7 @@
     "Updating leaderboard": "Päivitetään tulostaulukkoa",
     "Updating": "Päivitetään",
     "cards total": "{numberOfCards} korttia yhteensä",
-    "report-button": "Ilmoita ongelmasta",
+    "report-button": "Ilmoita",
     "report-problem": "Ilmoita ongelmasta",
     "thank-you-for-reporting-problem": "Kiitos, että ilmoititte ongelmasta — käymme sen läpi mahdollisimman pian!",
     "enter-more-about-problem": "REVITA tiimi tulee näkemään tämän sivun, jossa ongelma tuli vastaa. Halutessanne voitte kirjoittaa tähän lisätietoja ongelmasta.",
@@ -840,5 +840,6 @@
     "Joint vs. hyphenated spelling": "Joint vs. hyphenated spelling",
     "Joint vs. separate spelling of negation 'не'": "Joint vs. separate spelling of negation 'не'",
     "story-shared": "Tarina jaettu",
-    "report-sent": "Ongelmasta ilmoitettu"
+    "report-sent": "Ongelmasta ilmoitettu",
+    "last-weeks-winners": "Viime viikon voittajat"
 }

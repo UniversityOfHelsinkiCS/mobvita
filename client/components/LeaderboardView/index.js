@@ -2,42 +2,47 @@ import React, { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { FormattedMessage } from 'react-intl'
 import { Spinner } from 'react-bootstrap'
+import { images } from 'Utilities/common'
 import { getLeaderboards } from 'Utilities/redux/leaderboardReducer'
+import Header from 'Components/Header'
+import Subheader from 'Components/Subheader'
 import LeaderboardList from './LeaderboardList'
+import LastWeeksWinners from './LastWeeksWinners'
 
 const Leaderboard = () => {
   const dispatch = useDispatch()
 
-  const { data, pending } = useSelector(({ leaderboard }) => leaderboard)
+  const { pending } = useSelector(({ leaderboard }) => leaderboard)
 
   useEffect(() => {
     dispatch(getLeaderboards())
   }, [])
 
-  const isLeaderBoardUpdating = data.leaderboard && pending
-
   return (
     <div className="component-container padding-sides-1" style={{ maxWidth: '720px' }}>
       <div className="space-between">
-        <div>
-          <h2 className="header-3">
-            <FormattedMessage id="Hours practiced" />
-          </h2>
-          <span className="additional-info">
-            <FormattedMessage id="Top people this week" />
-          </span>
-        </div>
-        {isLeaderBoardUpdating && (
-          <div>
-            <span className="additional-info">
-              <FormattedMessage id="Updating" />
-            </span>
-            <Spinner animation="grow" variant="primary" size="sm" />
+        <div style={{ width: '100%' }}>
+          <div className="space-between">
+            <Header translationId="Hours practiced" />
+            {pending && (
+              <div>
+                <Spinner animation="grow" variant="primary" size="sm" />
+                <span
+                  style={{ color: '#777', fontSize: '12px', fontWeight: 550, paddingLeft: '.5rem' }}
+                >
+                  <FormattedMessage id="Updating" />
+                </span>
+              </div>
+            )}
           </div>
-        )}
+          <LastWeeksWinners />
+          <Subheader
+            imgSource={images.leaderboard}
+            imgAlt="leadeboard"
+            translationId="Top people this week"
+          />
+        </div>
       </div>
-
-      <hr />
       <LeaderboardList amountToShow={25} />
     </div>
   )

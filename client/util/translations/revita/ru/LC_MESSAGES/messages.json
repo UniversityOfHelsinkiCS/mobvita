@@ -804,8 +804,8 @@
     "cards total": "{numberOfCards} cards total",
     "Participate in weekly leaderboards": "Participate in weekly leaderboards",
     "Privacy": "Privacy",
-    "report-button": "Сообщить об ошибке",
-    "report-problem": "Сообщение об ошибке",
+    "report-button": "Сообщить о проблеме",
+    "report-problem": "Сообщить о проблеме",
     "thank-you-for-reporting-problem": "Спасибо!  Мы постараемся исправить ошибку как можно скорее.",
     "enter-more-about-problem": "Команда РЕВИТЫ увидит эту страницу, где вам встретилась ошибка.  Если вы хотите, пожалуйста, добавьте более подробное описание ошибки...",
     "Show my username in leaderboards": "Show my username in leaderboards",
@@ -844,5 +844,6 @@
     "Joint vs. hyphenated spelling": "Слитное, дефисное и раздельное написание",
     "Joint vs. separate spelling of negation 'не'": "Слитное и раздельное написания с отрицанием не",
     "story-shared": "Story shared",
-    "report-sent": "Report sent"
+    "report-sent": "Report sent",
+    "last-weeks-winners": "Last week's winners"
 }
