@@ -86,34 +86,34 @@ const LastWeeksWinners = () => {
 
   const lastWeeksWinners = useMemo(
     () =>
-      previousLeaderboard?.splice(3).map(winner => ({
+      previousLeaderboard?.slice(0, 3).map(winner => ({
         username: winner.username,
         record: `${Math.floor(winner.weekly_time_spent * 10) / 10}h`,
+        rankingHistory: winner.leaderboard_history,
       })),
     [previousLeaderboard]
   )
 
   return (
     <div className="padding-top-2 padding-bottom-2">
-      <Subheader imgSource={images.trophy} imgAlt="trophy" translationId="last-weeks-winners" />
       <div className="leaderboard-winner-container">
         <Winner
           position="second"
-          name={lastWeeksWinners && lastWeeksWinners[0]?.username}
-          record={lastWeeksWinners && lastWeeksWinners[0]?.record}
-          rankingHistory={{ 0: 2, 1: 5, 2: 0 }}
+          name={lastWeeksWinners && lastWeeksWinners[1]?.username}
+          record={lastWeeksWinners && lastWeeksWinners[1]?.record}
+          rankingHistory={lastWeeksWinners && lastWeeksWinners[1]?.rankingHistory}
         />
         <Winner
           position="first"
-          name={lastWeeksWinners && lastWeeksWinners[1]?.username}
-          record={lastWeeksWinners && lastWeeksWinners[1]?.record}
-          rankingHistory={{ 0: 1, 1: 0, 2: 0 }}
+          name={lastWeeksWinners && lastWeeksWinners[0]?.username}
+          record={lastWeeksWinners && lastWeeksWinners[0]?.record}
+          rankingHistory={lastWeeksWinners && lastWeeksWinners[0]?.rankingHistory}
         />
         <Winner
           position="third"
           name={lastWeeksWinners && lastWeeksWinners[2]?.username}
           record={lastWeeksWinners && lastWeeksWinners[2]?.record}
-          rankingHistory={{ 0: 11, 1: 1, 2: 2 }}
+          rankingHistory={lastWeeksWinners && lastWeeksWinners[2]?.rankingHistory}
         />
       </div>
     </div>

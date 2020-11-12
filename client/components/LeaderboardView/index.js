@@ -22,7 +22,7 @@ const Leaderboard = () => {
     <div className="component-container padding-sides-1" style={{ maxWidth: '720px' }}>
       <div className="space-between">
         <div style={{ width: '100%' }}>
-          <div className="space-between">
+          <div className="space-between padding-bottom-2">
             <Header translationId="Hours practiced" />
             {pending && (
               <div>
@@ -35,6 +35,7 @@ const Leaderboard = () => {
               </div>
             )}
           </div>
+          <Subheader imgSource={images.trophy} imgAlt="trophy" translationId="last-weeks-winners" />
           <LastWeeksWinners />
           <Subheader
             imgSource={images.leaderboard}

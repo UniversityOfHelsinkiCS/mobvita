@@ -66,9 +66,9 @@ const HomeView = () => {
             <div style={{ width: '300px' }}>
               <EloChart width="100%" />
               <hr />
-              <MedalSummary />
-              <hr />
               <LeaderboardSummary />
+              <hr />
+              <MedalSummary />
             </div>
           </div>
         ) : (
@@ -80,9 +80,9 @@ const HomeView = () => {
             <hr />
             <EloChart width="100%" />
             <hr />
-            <MedalSummary />
-            <hr />
             <LeaderboardSummary />
+            <hr />
+            <MedalSummary />
           </>
         )}
       </div>
