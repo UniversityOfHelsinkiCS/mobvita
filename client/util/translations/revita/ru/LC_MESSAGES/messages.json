@@ -845,5 +845,8 @@
     "Joint vs. separate spelling of negation 'не'": "Слитное и раздельное написания с отрицанием не",
     "story-shared": "Story shared",
     "report-sent": "Report sent",
-    "last-weeks-winners": "Last week's winners"
+    "last-weeks-winners": "Last week's winners",
+    "invitation-email-sent-to": "Invitation email sent to",
+    "invitation-failed-for": "Invitation failed for",
+    "invitation-failure-explanation": "Invitation failure usually happens when the email is invalid or not registered to Revita."
 }

@@ -3,15 +3,45 @@ import { useSelector, useDispatch } from 'react-redux'
 import { useHistory } from 'react-router-dom'
 import { FormattedMessage } from 'react-intl'
 import { CopyToClipboard } from 'react-copy-to-clipboard'
-import { Card, Icon } from 'semantic-ui-react'
+import { Card, Icon, Label } from 'semantic-ui-react'
 import { Button } from 'react-bootstrap'
 import { updateGroupSelect } from 'Utilities/redux/userReducer'
 import { deleteGroup, getGroupToken, leaveFromGroup } from 'Utilities/redux/groupsReducer'
 import { setNotification } from 'Utilities/redux/notificationReducer'
 import Spinner from 'Components/Spinner'
+import Subheader from 'Components/Subheader'
 import ConfirmationWarning from 'Components/ConfirmationWarning'
 import AddToGroup from './AddToGroup'
 import NoGroupsView from './NoGroupsView'
+
+const GroupInviteInfo = ({ group }) => {
+  const anyPendingInvitations = group.pendingInvitations.length > 0
+  const anyFailedInvitations = group.failedInvitations.length > 0
+
+  return (
+    <Card.Content extra>
+      {anyFailedInvitations && (
+        <div className="padding-bottom-2">
+          <Subheader translationId="invitation-email-sent-to" color="#2CB22C" iconName="mail" />
+          {group.pendingInvitations.map(email => (
+            <Label key={email} content={email} style={{ marginBottom: '.5rem' }} />
+          ))}
+        </div>
+      )}
+      {anyPendingInvitations && (
+        <div>
+          <Subheader translationId="invitation-failed-for" color="#dc3545" iconName="ban" />
+          {group.failedInvitations.map(email => (
+            <Label key={email} content={email} style={{ marginBottom: '.5rem' }} />
+          ))}
+          <span style={{ display: 'block', fontSize: '12px', paddingLeft: '.5rem' }}>
+            <FormattedMessage id="invitation-failure-explanation" />
+          </span>
+        </div>
+      )}
+    </Card.Content>
+  )
+}
 
 const GroupCard = ({
   group,
@@ -111,6 +141,7 @@ const GroupCard = ({
           </div>
         )}
       </Card.Content>
+      {group.peopleInvited && <GroupInviteInfo group={group} />}
     </Card>
   )
 }

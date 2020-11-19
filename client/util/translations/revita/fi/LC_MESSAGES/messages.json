@@ -841,5 +841,8 @@
     "Joint vs. separate spelling of negation 'не'": "Joint vs. separate spelling of negation 'не'",
     "story-shared": "Tarina jaettu",
     "report-sent": "Ongelmasta ilmoitettu",
-    "last-weeks-winners": "Viime viikon voittajat"
+    "last-weeks-winners": "Viime viikon voittajat",
+    "invitation-email-sent-to": "Kutsu lähetetty seuraaville",
+    "invitation-failed-for": "Kutsun lähetys epäonnistui seuraaville",
+    "invitation-failure-explanation": "Kutsun lähetys voi epäonnistua, kun sähköposti on virheellinen tai se ei ole rekisteröity Revitassa."
 }

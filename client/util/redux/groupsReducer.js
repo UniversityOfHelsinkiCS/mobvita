@@ -147,7 +147,16 @@ export default (state = { groups: [], joinPending: false }, action) => {
         ...state,
         groups: state.groups
           .filter(g => g.group_id !== action.response.group.group_id)
-          .concat(action.response.group)
+          .concat({
+            ...action.response.group,
+            peopleInvited: true,
+            failedInvitations: action.response.failed_students.concat(
+              action.response.failed_teachers
+            ),
+            pendingInvitations: action.response.to_be_confirmed_students.concat(
+              action.response.to_be_confirmed_teachers
+            ),
+          })
           .sort((a, b) => a.groupName.localeCompare(b.groupName)),
         pending: false,
         error: false,
