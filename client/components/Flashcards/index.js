@@ -1,6 +1,7 @@
 import React from 'react'
 import { useParams } from 'react-router-dom'
 import useWindowDimensions from 'Utilities/windowDimensions'
+import ReportButton from 'Components/ReportButton'
 import FlashcardMenu from './FlashcardMenu'
 import FlashcardCreation from './FlashcardCreation'
 import FloatMenu from './FloatMenu'
@@ -8,7 +9,7 @@ import Practice from './Practice'
 import FlashcardList from './FlashcardList'
 
 const Flashcards = () => {
-  const smallScreen = useWindowDimensions().width < 940
+  const { width } = useWindowDimensions()
   const { mode } = useParams()
 
   const content = () => {
@@ -26,19 +27,23 @@ const Flashcards = () => {
     }
   }
 
-  if (smallScreen) {
+  if (width < 940) {
     return (
-      <div className="component-container">
+      <div className="flashcard-view" style={{ marginBottom: '-5em' }}>
         {content()}
         <FloatMenu />
+        <ReportButton style={{ paddingRight: '.5em', alignSelf: 'flex-end' }} />
       </div>
     )
   }
 
   return (
-    <div className="component-container flex">
-      <FlashcardMenu />
-      {content()}
+    <div className="flashcard-view" style={{ marginBottom: '-5em' }}>
+      <div style={{ display: 'flex', alignSelf: 'center', width: '100%', maxWidth: '1024px' }}>
+        <FlashcardMenu />
+        {content()}
+      </div>
+      <ReportButton style={{ alignSelf: 'flex-end' }} />
     </div>
   )
 }

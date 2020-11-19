@@ -813,6 +813,15 @@ body {
   }
 }
 
+.flashcard-view {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  min-height: calc(100vh - 4em);
+  padding-bottom: 1em;
+  max-width: 1024px;
+}
+
 .test {
   &-container {
     display: flex;
@@ -1441,7 +1450,6 @@ body {
   color: #3287f3; // white;
   font-weight: 600;
   border: none;
-  // text-transform: uppercase;
 
   &:hover {
     background-color: #4c91cd69; // #0069d9;

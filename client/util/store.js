@@ -23,6 +23,8 @@ const sentryReduxEnhancer = Sentry.createReduxEnhancer({
       practice: state.practice,
       focusedSnippet: state.snippets.focused,
       translation: state.translation,
+      flashcards: state.flashcards,
+      flashcardList: state.flashcardList,
     }
   },
 })

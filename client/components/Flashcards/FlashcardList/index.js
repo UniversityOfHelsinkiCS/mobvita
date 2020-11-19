@@ -96,7 +96,7 @@ const FlashcardList = () => {
   )
 
   return (
-    <div style={{ marginTop: '-1em', flex: 1 }}>
+    <div style={{ marginTop: '-1em', paddingBottom: '2em', flex: 1 }}>
       <div className="flex-reverse space-between wrap padding-top-1">
         <span className="additional-info padding-left-2">
           <FormattedMessage id="cards total" values={{ numberOfCards }} />

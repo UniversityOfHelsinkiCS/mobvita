@@ -25,6 +25,11 @@ const filterReduxStateForSentry = event => {
     delete event.contexts['redux.state'].translation
   }
 
+  if (!url.includes('flashcards')) {
+    delete event.contexts['redux.state'].flashcards
+    delete event.contexts['redux.state'].flashcardList
+  }
+
   return event
 }
 

@@ -139,7 +139,7 @@ const Practice = ({ mode }) => {
   }
 
   return (
-    <div className="component-container flex">
+    <div className="component-container flex" style={{ margin: 'initial' }}>
       <VirtualizeSwipeableViews
         index={swipeIndex}
         onChangeIndex={handleIndexChange}
