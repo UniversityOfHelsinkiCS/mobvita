@@ -15,7 +15,7 @@ export const getGroup = id => {
 export const addToGroup = (students, teachers, groupId) => {
   const route = `/groups/${groupId}`
   const payload = { students, teachers }
-  const prefix = 'ADD_STUDENTS'
+  const prefix = 'ADD_PEOPLE'
   return callBuilder(route, prefix, 'post', payload)
 }
 
@@ -95,13 +95,11 @@ export default (state = { groups: [], joinPending: false }, action) => {
       return {
         ...state,
         pending: true,
-        error: false,
       }
     case 'GET_GROUPS_FAILURE':
       return {
         ...state,
         pending: false,
-        error: true,
       }
     case 'GET_GROUPS_SUCCESS':
       return {
@@ -109,40 +107,34 @@ export default (state = { groups: [], joinPending: false }, action) => {
         groups: action.response.groups.sort((a, b) => a.groupName.localeCompare(b.groupName)),
         created: null,
         pending: false,
-        error: false,
       }
     case 'GET_GROUP_ATTEMPT':
       return {
         ...state,
         pending: true,
-        error: false,
       }
     case 'GET_GROUP_FAILURE':
       return {
         ...state,
         pending: false,
-        error: true,
       }
     case 'GET_GROUP_SUCCESS':
       return {
         ...state,
         group: action.response,
         pending: false,
-        error: false,
       }
-    case 'ADD_STUDENTS_ATTEMPT':
+    case 'ADD_PEOPLE_ATTEMPT':
       return {
         ...state,
         pending: true,
-        error: false,
       }
-    case 'ADD_STUDENTS_FAILURE':
+    case 'ADD_PEOPLE_FAILURE':
       return {
         ...state,
         pending: false,
-        error: true,
       }
-    case 'ADD_STUDENTS_SUCCESS':
+    case 'ADD_PEOPLE_SUCCESS':
       return {
         ...state,
         groups: state.groups
@@ -150,6 +142,7 @@ export default (state = { groups: [], joinPending: false }, action) => {
           .concat({
             ...action.response.group,
             peopleInvited: true,
+            addedPeople: action.response.added_students.concat(action.response.added_teachers),
             failedInvitations: action.response.failed_students.concat(
               action.response.failed_teachers
             ),
@@ -159,19 +152,16 @@ export default (state = { groups: [], joinPending: false }, action) => {
           })
           .sort((a, b) => a.groupName.localeCompare(b.groupName)),
         pending: false,
-        error: false,
       }
     case 'CREATE_GROUP_ATTEMPT':
       return {
         ...state,
         pending: true,
-        error: false,
       }
     case 'CREATE_GROUP_FAILURE':
       return {
         ...state,
         pending: false,
-        error: true,
       }
     case 'CREATE_GROUP_SUCCESS':
       return {
@@ -181,17 +171,6 @@ export default (state = { groups: [], joinPending: false }, action) => {
           .sort((a, b) => a.groupName.localeCompare(b.groupName)),
         created: action.response.group,
         pending: false,
-        error: false,
-      }
-    case 'REMOVE_FROM_GROUP_ATTEMPT':
-      return {
-        ...state,
-        error: false,
-      }
-    case 'REMOVE_FROM_GROUP_FAILURE':
-      return {
-        ...state,
-        error: true,
       }
     case 'REMOVE_FROM_GROUP_SUCCESS':
       return {
@@ -200,110 +179,84 @@ export default (state = { groups: [], joinPending: false }, action) => {
           .filter(g => g.group_id !== action.response.group.group_id)
           .concat(action.response.group)
           .sort((a, b) => a.groupName.localeCompare(b.groupName)),
-        error: false,
       }
     case 'DELETE_GROUP_ATTEMPT':
       return {
         ...state,
         pending: true,
-        error: false,
       }
     case 'DELETE_GROUP_FAILURE':
       return {
         ...state,
         pending: false,
-        error: true,
       }
     case 'DELETE_GROUP_SUCCESS':
       return {
         ...state,
         groups: state.groups.filter(group => group.group_id !== action.response.removed),
         pending: false,
-        error: false,
       }
     case 'GET_GROUP_TEST_CONCEPTS_ATTEMPT':
       return {
         ...state,
         testConceptsPending: true,
-        error: false,
       }
     case 'GET_GROUP_TEST_CONCEPTS_FAILURE':
       return {
         ...state,
         testConceptsPending: false,
-        error: true,
       }
     case 'GET_GROUP_TEST_CONCEPTS_SUCCESS':
       return {
         ...state,
         testConcepts: action.response,
         testConceptsPending: false,
-        error: false,
       }
     case 'SET_GROUP_TEST_CONCEPTS_ATTEMPT':
       return {
         ...state,
         testConceptsPending: true,
-        error: false,
       }
     case 'SET_GROUP_TEST_CONCEPTS_FAILURE':
       return {
         ...state,
         testConceptsPending: false,
-        error: true,
       }
     case 'SET_GROUP_TEST_CONCEPTS_SUCCESS':
       return {
         ...state,
         testConcepts: action.response,
         testConceptsPending: false,
-        error: false,
       }
     case 'SET_GROUP_EXERCISE_CONCEPTS_ATTEMPT':
       return {
         ...state,
         pending: true,
-        error: false,
       }
     case 'SET_GROUP_EXERCISE_CONCEPTS_FAILURE':
       return {
         ...state,
         pending: false,
-        error: true,
       }
     case 'SET_GROUP_EXERCISE_CONCEPTS_SUCCESS':
       return {
         ...state,
         group: { ...state.group, ...action.response },
         pending: false,
-        error: false,
-      }
-    case 'GET_GROUP_TOKEN_ATTEMPT':
-      return {
-        ...state,
-        error: false,
-      }
-    case 'GET_GROUP_TOKEN_FAILURE':
-      return {
-        ...state,
-        error: true,
       }
     case 'GET_GROUP_TOKEN_SUCCESS':
       return {
         ...state,
         token: action.response.token,
-        error: false,
       }
     case 'JOIN_GROUP_ATTEMPT':
       return {
         ...state,
-        error: false,
         joinPending: true,
       }
     case 'JOIN_GROUP_FAILURE':
       return {
         ...state,
-        error: true,
         joinPending: false,
       }
     case 'JOIN_GROUP_SUCCESS':
@@ -312,27 +265,23 @@ export default (state = { groups: [], joinPending: false }, action) => {
         groups: state.groups
           .concat(action.response.group)
           .sort((a, b) => a.groupName.localeCompare(b.groupName)),
-        error: false,
         joinPending: false,
       }
     case 'LEAVE_FROM_GROUP_ATTEMPT':
       return {
         ...state,
         pending: true,
-        error: false,
       }
     case 'LEAVE_FROM_GROUP_FAILURE':
       return {
         ...state,
         pending: false,
-        error: true,
       }
     case 'LEAVE_FROM_GROUP_SUCCESS':
       return {
         ...state,
         groups: action.response.groups.sort((a, b) => a.groupName.localeCompare(b.groupName)),
         pending: false,
-        error: false,
       }
     default:
       return state

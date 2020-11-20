@@ -15,20 +15,29 @@ import AddToGroup from './AddToGroup'
 import NoGroupsView from './NoGroupsView'
 
 const GroupInviteInfo = ({ group }) => {
-  const anyPendingInvitations = group.pendingInvitations.length > 0
-  const anyFailedInvitations = group.failedInvitations.length > 0
+  const anyPeopleAdded = !!group.addedPeople.length
+  const anyPendingInvitations = !!group.pendingInvitations.length
+  const anyFailedInvitations = !!group.failedInvitations.length
 
   return (
     <Card.Content extra>
-      {anyFailedInvitations && (
+      {anyPeopleAdded && (
         <div className="padding-bottom-2">
-          <Subheader translationId="invitation-email-sent-to" color="#2CB22C" iconName="mail" />
-          {group.pendingInvitations.map(email => (
+          <Subheader translationId="added-to-the-group" color="#2CB22C" iconName="checkmark" />
+          {group.addedPeople.map(email => (
             <Label key={email} content={email} style={{ marginBottom: '.5rem' }} />
           ))}
         </div>
       )}
       {anyPendingInvitations && (
+        <div className="padding-bottom-2">
+          <Subheader translationId="invitation-email-sent-to" color="#84C3A3" iconName="mail" />
+          {group.pendingInvitations.map(email => (
+            <Label key={email} content={email} style={{ marginBottom: '.5rem' }} />
+          ))}
+        </div>
+      )}
+      {anyFailedInvitations && (
         <div>
           <Subheader translationId="invitation-failed-for" color="#dc3545" iconName="ban" />
           {group.failedInvitations.map(email => (
