@@ -30,6 +30,10 @@ const filterReduxStateForSentry = event => {
     delete event.contexts['redux.state'].flashcardList
   }
 
+  if (!url.includes('crossword')) {
+    delete event.contexts['redux.state'].crossword
+  }
+
   return event
 }
 
