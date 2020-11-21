@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import Router from 'Components/Router'
-import { Route, Router as ReactRouter } from 'react-router-dom'
+import { Router as ReactRouter } from 'react-router-dom'
 import { createBrowserHistory } from 'history'
 import { basePath, checkRevitaStatus } from 'Utilities/common'
 import { useDispatch } from 'react-redux'
@@ -10,7 +10,6 @@ import Toaster from './Toaster'
 import Sidebar from './Sidebar'
 import StoryFetcher from './StoryFetcher'
 import 'bootstrap/dist/css/bootstrap.min.css'
-import NavBar from './NavBar'
 
 const App = () => {
   const history = createBrowserHistory({ basename: basePath })
@@ -47,18 +46,15 @@ const App = () => {
   return (
     <>
       <ReactRouter history={history}>
-        <Toaster />
+        <StoryFetcher />
         <Offline polling={{ timeout: 20000 }}>
           <div className="offline-notification">
             <h3>Please re-connect to the internet to use revita!</h3>
           </div>
         </Offline>
-        <NavBar />
-        <div style={{ display: 'flex' }}>
-          <Route component={Sidebar} />
-          <Route component={StoryFetcher} />
-          <Router />
-        </div>
+        <Sidebar history={history} />
+        <Router />
+        <Toaster />
       </ReactRouter>
     </>
   )

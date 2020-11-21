@@ -8,9 +8,9 @@ const Achievements = () => {
   const achievements = useSelector(state => state.user.data.user.achievements)
 
   return (
-    <div className="component-container padding-sides-2">
+    <div className="cont auto pb-lg ps-nm">
       <Medals />
-      <h2 className="header-3 padding-top-1">
+      <h2 className="header-3 pt-sm">
         <FormattedMessage id="Achievements" />
       </h2>
       <hr />

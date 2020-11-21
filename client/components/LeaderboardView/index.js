@@ -19,31 +19,32 @@ const Leaderboard = () => {
   }, [])
 
   return (
-    <div className="component-container padding-sides-1" style={{ maxWidth: '720px' }}>
-      <div className="space-between">
-        <div style={{ width: '100%' }}>
-          <div className="space-between padding-bottom-2">
-            <Header translationId="Hours practiced" />
-            {pending && (
-              <div>
-                <Spinner animation="grow" variant="primary" size="sm" />
-                <span
-                  style={{ color: '#777', fontSize: '12px', fontWeight: 550, paddingLeft: '.5rem' }}
-                >
-                  <FormattedMessage id="Updating" />
-                </span>
-              </div>
-            )}
+    <div className="cont-narrow pb-lg ps-sm auto">
+      <div className="space-between pb-nm">
+        <Header translationId="Hours practiced" />
+        {pending && (
+          <div>
+            <Spinner animation="grow" variant="primary" size="sm" />
+            <span
+              style={{
+                color: '#777',
+                fontSize: '12px',
+                fontWeight: 550,
+                paddingLeft: '.5rem',
+              }}
+            >
+              <FormattedMessage id="Updating" />
+            </span>
           </div>
-          <Subheader imgSource={images.trophy} imgAlt="trophy" translationId="last-weeks-winners" />
-          <LastWeeksWinners />
-          <Subheader
-            imgSource={images.leaderboard}
-            imgAlt="leadeboard"
-            translationId="Top people this week"
-          />
-        </div>
+        )}
       </div>
+      <Subheader imgSource={images.trophy} imgAlt="trophy" translationId="last-weeks-winners" />
+      <LastWeeksWinners />
+      <Subheader
+        imgSource={images.leaderboard}
+        imgAlt="leadeboard"
+        translationId="Top people this week"
+      />
       <LeaderboardList amountToShow={25} />
     </div>
   )

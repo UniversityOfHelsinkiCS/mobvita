@@ -104,7 +104,7 @@ const Concepts = () => {
   }
 
   return (
-    <div className="component-container">
+    <div className="cont auto">
       <ConceptHeader target={target} />
       <div className="flex">
         <ConceptToggles

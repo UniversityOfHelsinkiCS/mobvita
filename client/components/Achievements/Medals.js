@@ -37,7 +37,7 @@ const Medals = () => {
   )
 
   return (
-    <div className="achievement-medals gap-1 gap-row-1">
+    <div className="achievement-medals gap-col-sm gap-row-sm">
       <MedalInfo amount={medals.bronze} medal="bronze" />
       <MedalInfo amount={medals.silver} medal="silver" />
       <MedalInfo amount={medals.gold} medal="gold" />

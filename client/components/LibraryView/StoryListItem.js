@@ -144,7 +144,7 @@ const GroupsSharedTo = ({ groups }) => {
 
   return (
     <div
-      className="flex-column"
+      className="flex-col"
       style={{ padding: '0 .5rem', fontSize: '.7rem', overflow: 'hidden', whiteSpace: 'nowrap' }}
     >
       {groupsToShow.map(({ group_name: groupName, group_id: id }) => (

@@ -27,23 +27,13 @@ const Flashcards = () => {
     }
   }
 
-  if (width < 940) {
-    return (
-      <div className="flashcard-view" style={{ marginBottom: '-5em' }}>
-        {content()}
-        <FloatMenu />
-        <ReportButton style={{ paddingRight: '.5em', alignSelf: 'flex-end' }} />
-      </div>
-    )
-  }
-
   return (
-    <div className="flashcard-view" style={{ marginBottom: '-5em' }}>
-      <div style={{ display: 'flex', alignSelf: 'center', width: '100%', maxWidth: '1024px' }}>
-        <FlashcardMenu />
+    <div className="cont-tall cont pb-nm flex-col auto space-between">
+      <div className="flex">
+        {width < 940 ? <FloatMenu /> : <FlashcardMenu />}
         {content()}
       </div>
-      <ReportButton style={{ alignSelf: 'flex-end' }} />
+      <ReportButton extraClass="align-self-end mr-sm" />
     </div>
   )
 }

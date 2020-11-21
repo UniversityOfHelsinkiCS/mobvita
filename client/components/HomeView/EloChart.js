@@ -130,7 +130,7 @@ const EloChart = ({ width }) => {
       style={{ textAlign: 'center', width, cursor: 'pointer', alignSelf: 'flex-start' }}
       onClick={() => history.push('/profile/progress')}
     >
-      <div className="space-evenly padding-bottom-1">
+      <div className="space-evenly pb-sm">
         {showStoryElo && (
           <span>
             <Icon name="star outline" style={{ margin: 0 }} />{' '}

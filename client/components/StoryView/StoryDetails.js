@@ -52,22 +52,31 @@ const StoryDetails = () => {
   const selectedGroup = groups.find(group => group.group_id === selectedGroupId)
 
   const userOwnsStory = user === userId
-  const userIsATeacherOfSharedStory = selectedGroup?.is_teaching
-    && groupsSharedWith?.some(group => group.group_id === selectedGroupId)
+  const userIsATeacherOfSharedStory =
+    selectedGroup?.is_teaching &&
+    groupsSharedWith?.some(group => group.group_id === selectedGroupId)
 
   const showShareButton = !publicStory && userOwnsStory
   const showDeleteButton = !publicStory && (userOwnsStory || userIsATeacherOfSharedStory)
 
   return (
-    <div>
+    <main className="application-content pt-nm">
       <ShareStory story={story} isOpen={shareModalOpen} setOpen={setShareModalOpen} />
-      <ConfirmationWarning open={deleteModalOpen} setOpen={setDeleteModalOpen} action={handleDelete}>
-        {selectedLibrary === 'group'
-          ? <FormattedMessage id="remove-story-from-group-warning" values={{ group: selectedGroup?.groupName }} />
-          : <FormattedMessage id="this-will-permanently-remove-this-story-from-your-collection-are-you-sure-you-want-to-proceed" />
-        }
+      <ConfirmationWarning
+        open={deleteModalOpen}
+        setOpen={setDeleteModalOpen}
+        action={handleDelete}
+      >
+        {selectedLibrary === 'group' ? (
+          <FormattedMessage
+            id="remove-story-from-group-warning"
+            values={{ group: selectedGroup?.groupName }}
+          />
+        ) : (
+          <FormattedMessage id="this-will-permanently-remove-this-story-from-your-collection-are-you-sure-you-want-to-proceed" />
+        )}
       </ConfirmationWarning>
-      <div className="space-between padding-bottom-1">
+      <div className="space-between pb-sm">
         <button
           type="button"
           onClick={() => history.goBack()}
@@ -76,7 +85,7 @@ const StoryDetails = () => {
           <Icon name="arrow left" />
           <FormattedMessage id="Back" />
         </button>
-        <div className="gap-1">
+        <div className="gap-col-sm">
           <CustomButton
             condition={showShareButton}
             onClick={() => setShareModalOpen(true)}
@@ -106,8 +115,8 @@ const StoryDetails = () => {
         publicStory={publicStory}
         date={date}
       />
-      <div className="flex-column gap-row-1">
-        <div className="gap-1">
+      <div className="flex-col gap-row-sm">
+        <div className="gap-col-sm">
           <LinkButton to={`/stories/${id}/practice`} translationId="practice" />
           <LinkButton
             variant="primary"
@@ -117,7 +126,7 @@ const StoryDetails = () => {
           <LinkButton variant="secondary" to={`/stories/${id}/read`} translationId="Read" />
         </div>
       </div>
-    </div>
+    </main>
   )
 }
 

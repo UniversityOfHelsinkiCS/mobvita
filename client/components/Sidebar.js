@@ -119,7 +119,7 @@ export default function Sidebar({ history }) {
                   onClick={() => menuClickWrapper(signOut)}
                   className="logout-button"
                 >
-                  <span className="padding-right-1">
+                  <span className="pr-sm">
                     <FormattedMessage
                       id={user.user.email === 'anonymous_email' ? 'Login' : 'sign-out'}
                     />
@@ -129,7 +129,7 @@ export default function Sidebar({ history }) {
               )}
             </div>
             {!smallWindow && (
-              <a className="padding-bottom-1" href="https://revita-old.cs.helsinki.fi/">
+              <a className="pb-sm" href="https://revita-old.cs.helsinki.fi/">
                 <i>
                   <FormattedMessage id="take-me-to-old-revita" /> ⇒
                 </i>

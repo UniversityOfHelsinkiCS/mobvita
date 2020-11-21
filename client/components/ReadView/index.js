@@ -79,38 +79,29 @@ const ReadView = ({ match }) => {
   const showFooter = width > 640
 
   return (
-    <div>
-      <div className="center auto">
-        <div className="max-width">
-          <Segment data-cy="readmode-text" style={getTextStyle(learningLanguage)}>
-            <Header style={getTextStyle(learningLanguage, 'title')}>
-              <span className="padding-right-1">{story.title}</span>
-            </Header>
-            <div
-              style={{
-                display: 'flex',
-                flexDirection: 'row-reverse',
-                justifyContent: 'space-between',
-                alignItems: 'flex-end',
-              }}
-            >
-              <Link to={`/stories/${id}/practice`}>
-                <Button variant="primary">
-                  <FormattedMessage id="practice-now" />
-                </Button>
-              </Link>
-              {story.url && (
-                <a href={story.url}>
-                  <FormattedMessage id="Source" />
-                </a>
-              )}
-            </div>
-            <Divider />
-            {story.paragraph.map(paragraph => (
-              <p key={paragraph[0].ID}>{paragraph.map(word => wordVoice(word))}</p>
-            ))}
-          </Segment>
-        </div>
+    <div className="cont-tall flex-col space-between align-center pt-sm">
+      <div className="flex mb-nm">
+        <Segment data-cy="readmode-text" className="cont" style={getTextStyle(learningLanguage)}>
+          <Header style={getTextStyle(learningLanguage, 'title')}>
+            <span className="pr-sm">{story.title}</span>
+          </Header>
+          <div className="flex-reverse space-between align-end">
+            <Link to={`/stories/${id}/practice`}>
+              <Button variant="primary">
+                <FormattedMessage id="practice-now" />
+              </Button>
+            </Link>
+            {story.url && (
+              <a href={story.url}>
+                <FormattedMessage id="Source" />
+              </a>
+            )}
+          </div>
+          <Divider />
+          {story.paragraph.map(paragraph => (
+            <p key={paragraph[0].ID}>{paragraph.map(word => wordVoice(word))}</p>
+          ))}
+        </Segment>
         <DictionaryHelp />
       </div>
       {showFooter && <Footer />}

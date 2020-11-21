@@ -26,7 +26,7 @@ const ProgressStats = ({ startDate, endDate }) => {
   }
 
   return (
-    <div className="center gap-2 padding-top-3 padding-bottom-3">
+    <div className="justify-center gap-col-nm pt-lg pb-lg">
       <img
         src={getLearningLanguageFlag()}
         alt="learning language flag"

@@ -34,6 +34,10 @@ const filterReduxStateForSentry = event => {
     delete event.contexts['redux.state'].crossword
   }
 
+  if (!url.includes('tests')) {
+    delete event.contexts['redux.state'].tests
+  }
+
   return event
 }
 

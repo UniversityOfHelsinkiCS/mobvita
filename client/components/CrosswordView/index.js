@@ -241,7 +241,7 @@ const CrosswordView = () => {
     )
 
   return (
-    <div style={{ display: 'flex', height: '100%', maxHeight: '90vh', justifyContent: 'center' }}>
+    <div className="justify-center pt-sm" style={{ height: '100%', maxHeight: '90vh' }}>
       <div style={{ maxHeight: '100%', position: 'relative' }}>
         {hiddenFeatures && (
           <>

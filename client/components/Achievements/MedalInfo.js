@@ -6,7 +6,7 @@ import Medal from './Medal'
 const MedalInfo = ({ amount, medal }) => (
   <div className="medal-info">
     <Medal medal={medal} />
-    <div className="flex-column padding-left-1">
+    <div className="flex-col pl-sm">
       <span className="medal-amount">{amount}</span>
       <span className="medal-name">
         <FormattedMessage id={capitalize(medal)} />

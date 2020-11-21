@@ -18,7 +18,7 @@ const JoinGroup = () => {
   }
 
   return (
-    <div className="padding-sides-2">
+    <div className="ps-nm">
       <Card body>
         <Form className="group-form" onSubmit={join}>
           <span className="sm-label">

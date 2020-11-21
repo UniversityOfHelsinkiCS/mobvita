@@ -110,7 +110,7 @@ const Test = () => {
   }
 
   return (
-    <div className="component-container">
+    <div className="cont">
       <div className="space-between">
         <div className="test-container">
           <div className="test-top-info space-between">

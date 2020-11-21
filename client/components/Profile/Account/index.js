@@ -4,7 +4,7 @@ import ChangePassword from './ChangePassword'
 
 const Account = () => {
   return (
-    <div className="component-container padding-sides-2">
+    <div className="cont ps-nm">
       <AccountInfo />
       <hr />
       <ChangePassword />

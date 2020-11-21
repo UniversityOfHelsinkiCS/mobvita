@@ -23,7 +23,7 @@ const Achievement = ({ name, level, current, total }) => {
         <div className="achievement-container">
           <div className="achievement-title">{name}</div>
           <div className="achievement-content">
-            <div className="space-between padding-bottom-2 padding-top-1">
+            <div className="space-between pb-nm pt-sm">
               <Medal medal={medalAchieved(1) && 'bronze'} />
               <Medal medal={medalAchieved(2) && 'silver'} />
               <Medal medal={medalAchieved(3) && 'gold'} />

@@ -11,7 +11,11 @@ import {
   translatableLanguages,
   betaLanguages,
 } from 'Utilities/common'
-import { updateLearningLanguage, updateDictionaryLanguage, resetLearningLanguageChanged } from 'Utilities/redux/userReducer'
+import {
+  updateLearningLanguage,
+  updateDictionaryLanguage,
+  resetLearningLanguageChanged,
+} from 'Utilities/redux/userReducer'
 import { useDispatch, useSelector } from 'react-redux'
 
 const LanguageGroup = ({ languages, handleLearningLanguageChange }) => {
@@ -25,9 +29,18 @@ const LanguageGroup = ({ languages, handleLearningLanguageChange }) => {
             alt={lang}
           />
           <span className="language-name">
-            <FormattedMessage id={lang.split('-').map(l => capitalize(l)).join('-')} />{betaLanguages.includes(lang) && <sup><b>&beta;</b></sup>}
+            <FormattedMessage
+              id={lang
+                .split('-')
+                .map(l => capitalize(l))
+                .join('-')}
+            />
+            {betaLanguages.includes(lang) && (
+              <sup>
+                <b>&beta;</b>
+              </sup>
+            )}
           </span>
-
         </div>
       ))}
     </div>
@@ -49,7 +62,7 @@ const LearningLanguageSelectView = () => {
     }
   }, [learningLanguageChanged])
 
-  const checkForTranslatableLanguages = (lang) => {
+  const checkForTranslatableLanguages = lang => {
     if (!translatableLanguages[lang]) {
       dispatch(updateDictionaryLanguage('English'))
       return
@@ -68,11 +81,10 @@ const LearningLanguageSelectView = () => {
     }
   }
 
-  const handleLearningLanguageChange = (lang) => {
+  const handleLearningLanguageChange = lang => {
     checkForTranslatableLanguages(capitalize(lang))
     dispatch(updateLearningLanguage(lang))
   }
-
 
   return (
     <Container textAlign="center">
@@ -92,16 +104,15 @@ const LearningLanguageSelectView = () => {
           languages={supportedLearningLanguages.minor}
           handleLearningLanguageChange={handleLearningLanguageChange}
         />
-        {hiddenFeatures
-          && (
-            <div>
-              <hr />
-              <LanguageGroup
-                languages={supportedLearningLanguages.experimental}
-                handleLearningLanguageChange={handleLearningLanguageChange}
-              />
-            </div>
-          )}
+        {hiddenFeatures && (
+          <div>
+            <hr />
+            <LanguageGroup
+              languages={supportedLearningLanguages.experimental}
+              handleLearningLanguageChange={handleLearningLanguageChange}
+            />
+          </div>
+        )}
       </Segment>
     </Container>
   )

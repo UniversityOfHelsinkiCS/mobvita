@@ -17,7 +17,7 @@ const AddStoryModal = ({ trigger }) => {
 
   const dispatch = useDispatch()
 
-  const handleTextChange = (e) => {
+  const handleTextChange = e => {
     setCharactersLeft(maxCharacters - e.target.value.length)
     setText(e.target.value)
   }
@@ -33,18 +33,14 @@ const AddStoryModal = ({ trigger }) => {
 
   useEffect(() => {
     if (progress) {
-      if (progress==1) setText('')
+      if (progress == 1) setText('')
       setShowModel(false)
     }
   }, [progress])
 
   const textTooLong = charactersLeft < 0
 
-  const submitDisabled = !text
-    || pending
-    || storyId
-    || textTooLong
-    || charactersLeft > 49950
+  const submitDisabled = !text || pending || storyId || textTooLong || charactersLeft > 49950
 
   return (
     <Modal
@@ -55,9 +51,11 @@ const AddStoryModal = ({ trigger }) => {
       onOpen={() => setShowModel(true)}
       open={showModel}
     >
-      <Modal.Header><FormattedMessage id="add-your-stories" /></Modal.Header>
+      <Modal.Header>
+        <FormattedMessage id="add-your-stories" />
+      </Modal.Header>
       <Modal.Content style={{ display: 'flex', flexDirection: 'column' }}>
-        <span className="bold padding-bottom-1">
+        <span className="bold pb-sm">
           <FormattedMessage id="paste-the-raw-text-you-want-to-add-as-a-story-we-will-use-the-first-sentence-before-an-empty-line-as" />
         </span>
         <span className="bold">
@@ -71,25 +69,21 @@ const AddStoryModal = ({ trigger }) => {
           value={text}
           onChange={handleTextChange}
         />
-        <Button
-          variant="primary"
-          onClick={addText}
-          disabled={submitDisabled}
-        >
-          {pending || storyId
-            ? <Spinner animation="border" variant="dark" size="lg" />
-            : <span><FormattedMessage id="Confirm" /></span>
-          }
-        </Button>
-        {textTooLong
-          && (
-            <span className="additional-info">
-              <FormattedMessage id="this-text-is-too-long-maximum-50000-characters" />
+        <Button variant="primary" onClick={addText} disabled={submitDisabled}>
+          {pending || storyId ? (
+            <Spinner animation="border" variant="dark" size="lg" />
+          ) : (
+            <span>
+              <FormattedMessage id="Confirm" />
             </span>
-          )
-        }
+          )}
+        </Button>
+        {textTooLong && (
+          <span className="additional-info">
+            <FormattedMessage id="this-text-is-too-long-maximum-50000-characters" />
+          </span>
+        )}
       </Modal.Content>
-
     </Modal>
   )
 }

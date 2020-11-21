@@ -187,7 +187,7 @@ const GroupAnalytics = () => {
       {content === 'summary' && currentGroup.is_teaching && (
         <>
           <hr />
-          <span className="sm-label padding-left-1">
+          <span className="sm-label pl-sm">
             <FormattedMessage id="Showing results for" />
           </span>
           <Summary

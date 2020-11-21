@@ -14,7 +14,7 @@ const TemplateTranslations = ({
 }) => {
   const intl = useIntl()
 
-  const handleTranslationChange = (e) => {
+  const handleTranslationChange = e => {
     setTranslation(e.target.value)
   }
 
@@ -25,36 +25,35 @@ const TemplateTranslations = ({
     }
   }
 
-  const handleTranslationDelete = (selectedTranslation) => {
+  const handleTranslationDelete = selectedTranslation => {
     setTranslations(translations.filter(t => t !== selectedTranslation))
   }
 
-  const handleTranslationKeyDown = (e) => {
+  const handleTranslationKeyDown = e => {
     if (e.key === 'Enter') {
       handleTranslationSave()
     }
   }
 
   return (
-    <div className="flex-column auto-overflow">
-      <label htmlFor="newTranslation" className="header-3 center padding-top-2">
+    <div className="flex-col auto-overflow">
+      <label htmlFor="newTranslation" className="header-3 justify-center pt-nm">
         <FormattedMessage id="new-translations" />
       </label>
-      <div className="auto-overflow margin-bottom-1">
+      <div className="auto-overflow mb-sm">
         <div className="auto-overflow">
-          {pending
-            ? <Spinner />
-            : (
-              <ul>
-                <TemplateListItems
-                  values={translations}
-                  handleDelete={handleTranslationDelete}
-                  italics
-                  {...props}
-                />
-              </ul>
-            )
-          }
+          {pending ? (
+            <Spinner />
+          ) : (
+            <ul>
+              <TemplateListItems
+                values={translations}
+                handleDelete={handleTranslationDelete}
+                italics
+                {...props}
+              />
+            </ul>
+          )}
         </div>
       </div>
       <Form.Control
@@ -68,7 +67,7 @@ const TemplateTranslations = ({
       <Button
         variant="primary"
         block
-        className="flashcard-template-button margin-top-1 margin-bottom-3"
+        className="flashcard-template-button mt-sm mb-lg"
         onClick={handleTranslationSave}
       >
         <FormattedMessage id="save-the-translation" />

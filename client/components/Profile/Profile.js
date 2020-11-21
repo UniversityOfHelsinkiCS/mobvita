@@ -52,8 +52,8 @@ export default function Profile({ location }) {
   }
 
   return (
-    <div className="component-container">
+    <main className="cont pb-nm auto">
       <Tab panes={panes} activeIndex={index} />
-    </div>
+    </main>
   )
 }

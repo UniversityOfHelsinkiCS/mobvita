@@ -15,7 +15,7 @@ const ResetPassword = ({ match }) => {
   const intl = useIntl()
   const history = useHistory()
 
-  const handleSubmit = (e) => {
+  const handleSubmit = e => {
     e.preventDefault()
     if (password !== repeat) {
       setError(true)
@@ -27,7 +27,7 @@ const ResetPassword = ({ match }) => {
   }
 
   return (
-    <div className="component-container">
+    <div className="cont-narrow auto pt-xl">
       <Form onSubmit={handleSubmit}>
         <Form.Field>
           <Form.Input
@@ -48,10 +48,7 @@ const ResetPassword = ({ match }) => {
           />
         </Form.Field>
         <Form.Field>
-          <Button
-            variant="primary"
-            type="submit"
-          >
+          <Button variant="primary" type="submit">
             <FormattedMessage id="Confirm" />
           </Button>
         </Form.Field>

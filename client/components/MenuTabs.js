@@ -65,9 +65,9 @@ const Tabs = ({ location }) => {
   }
 
   return (
-    <div style={{ height: '100%' }}>
+    <div className="cont-tall cont flex-col auto gap-row-sm">
       <Banners />
-      <Tab panes={panes} activeIndex={index} />
+      <Tab panes={panes} activeIndex={index} className="grow flex-col" />
     </div>
   )
 }

@@ -91,7 +91,17 @@ const Practice = ({ mode }) => {
 
   if (mode === 'article' && !flashcardArticles) return null
 
-  if (pending || deletePending || !cards) return <Spinner />
+  if (pending || deletePending || !cards)
+    return (
+      <div className="grow flex space-evenly">
+        <div className="flashcard">
+          <Spinner variant="secondary" />
+        </div>
+        <button type="button" disabled className="flashcard-arrow-button" style={{ marginLeft: 0 }}>
+          <Icon name="angle double right" size="huge" />
+        </button>
+      </div>
+    )
 
   if (!cards[0] || cards[0].format === 'no-cards') {
     return <FlashcardNoCards setSwipeIndex={setSwipeIndex} />
@@ -139,7 +149,7 @@ const Practice = ({ mode }) => {
   }
 
   return (
-    <div className="component-container flex" style={{ margin: 'initial' }}>
+    <div className="cont grow flex space-evenly">
       <VirtualizeSwipeableViews
         index={swipeIndex}
         onChangeIndex={handleIndexChange}

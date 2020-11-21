@@ -37,11 +37,11 @@ const Settings = () => {
   ]
 
   return (
-    <div className="component-container padding-sides-2">
-      <h2 className="header-2 padding-bottom-1">
+    <div className="const ps-nm">
+      <h2 className="header-2 pb-sm">
         <FormattedMessage id="select-types-of-exercisesto-practice-34b953b387e6c6f6a7d4aa52ddaf177b" />
       </h2>
-      <div className="flex-column align-start gap-row-1">
+      <div className="flex-col align-start gap-row-sm">
         <SettingToggle
           translationId="multiple-choice"
           checked={user.multi_choice}
@@ -69,7 +69,7 @@ const Settings = () => {
           </Button>
         )}
       </div>
-      <h2 className="header-2 padding-bottom-1 padding-top-2">
+      <h2 className="header-2 pb-sm pt-nm">
         <FormattedMessage id="Flashcards" />
       </h2>
       <label htmlFor="flashcard-amount" style={{ paddingRight: '0.5rem' }}>
@@ -82,13 +82,13 @@ const Settings = () => {
         onChange={(e, data) => dispatch(updateNumberOfFlashcards(Number(data.value)))}
         disabled={pending}
       />
-      <h2 className="header-2 padding-bottom-1 padding-top-2">
+      <h2 className="header-2 pb-sm pt-nm">
         <FormattedMessage id="Audio settings" />
       </h2>
-      <span className="padding-bottom-1">
+      <span className="pb-sm">
         <FormattedMessage id="Pronounce clicked words" />
       </span>
-      <div className="gap-2">
+      <div className="gap-col-nm">
         <Radio
           label={intl.formatMessage({ id: 'Always' })}
           name="autoSpeak"
@@ -104,7 +104,7 @@ const Settings = () => {
           onChange={() => dispatch(updateAutoSpeak('demand'))}
         />
       </div>
-      <h2 className="header-2 padding-bottom-1 padding-top-2">
+      <h2 className="header-2 pb-sm pt-nm">
         <FormattedMessage id="Privacy" />
       </h2>
       <SettingToggle

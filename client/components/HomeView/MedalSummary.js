@@ -7,7 +7,7 @@ const MedalAmount = ({ medal, amount }) => (
   <div className="medal-wrapper">
     <div className="achievement-container">
       <div className="medal-title">{amount}</div>
-      <div className="padding-sides-1 padding-bottom-1">
+      <div className="ps-sm pb-sm">
         <Medal medal={medal} />
       </div>
     </div>
@@ -44,14 +44,12 @@ const MedalSummary = () => {
   )
 
   return (
-    <Link to="/achievements">
-      <div className="space-evenly gap-1 padding-sides-1 padding-top-2 padding-bottom-2">
-        <MedalAmount medal="bronze" amount={medals.bronze} />
-        <MedalAmount medal="silver" amount={medals.silver} />
-        <MedalAmount medal="gold" amount={medals.gold} />
-        <MedalAmount medal="platinum" amount={medals.platinum} />
-        <MedalAmount medal="diamond" amount={medals.diamond} />
-      </div>
+    <Link to="/achievements" className="space-evenly ps-sm pt-nm pb-nm gap-col-sm">
+      <MedalAmount medal="bronze" amount={medals.bronze} />
+      <MedalAmount medal="silver" amount={medals.silver} />
+      <MedalAmount medal="gold" amount={medals.gold} />
+      <MedalAmount medal="platinum" amount={medals.platinum} />
+      <MedalAmount medal="diamond" amount={medals.diamond} />
     </Link>
   )
 }

@@ -19,6 +19,7 @@ import { getGroups } from 'Utilities/redux/groupsReducer'
 import TestView from './Test'
 import TestReport from './TestReport'
 import History from '../History'
+import ReportButton from 'Components/ReportButton'
 
 const PickDate = ({ date, setDate }) => (
   <ResponsiveDatePicker selected={date} onChange={date => setDate(date)} />
@@ -113,9 +114,9 @@ const TestIndex = () => {
     })
 
   return (
-    <div className="component-container padding-sides-2" style={{ height: '100%' }}>
+    <div className="grow ps-nm flex-col space-between gap-row-sm">
       {!sessionId && (
-        <div className="padding-left-2 padding-top-2">
+        <div className="pl-nm pt-nm">
           <Button onClick={startTest} data-cy="start-test">
             <FormattedMessage id="start-a-new-test" />
           </Button>
@@ -147,7 +148,7 @@ const TestIndex = () => {
 
             {showHistory && history && (
               <>
-                <div className="date-pickers gap-1">
+                <div className="date-pickers gap-col-sm">
                   <div>
                     <FormattedMessage id="date-start" />
                     <br />
@@ -174,6 +175,7 @@ const TestIndex = () => {
       )}
       {report && <TestReport />}
       {sessionId && <TestView />}
+      <ReportButton extraClass="align-self-end mb-sm" />
     </div>
   )
 }

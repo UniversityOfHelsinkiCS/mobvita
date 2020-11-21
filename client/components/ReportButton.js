@@ -5,7 +5,7 @@ import * as Sentry from '@sentry/react'
 import { Icon, Modal, Button, Form, TextArea } from 'semantic-ui-react'
 import { setNotification } from 'Utilities/redux/notificationReducer'
 
-const ReportButton = props => {
+const ReportButton = ({ extraClass }) => {
   const dispatch = useDispatch()
   const intl = useIntl()
 
@@ -29,11 +29,15 @@ const ReportButton = props => {
   }
 
   return (
-    <div {...props}>
-      <button type="button" onClick={() => setModalOpen(true)} className="report-button">
+    <>
+      <button
+        type="button"
+        onClick={() => setModalOpen(true)}
+        className={`report-button ${extraClass}`}
+      >
         <span>
-        <Icon name="flag outline" />
-        <FormattedMessage id="report-button" />
+          <Icon name="flag outline" />
+          <FormattedMessage id="report-button" />
         </span>
       </button>
       <Modal
@@ -68,7 +72,7 @@ const ReportButton = props => {
           </Button>
         </Modal.Actions>
       </Modal>
-    </div>
+    </>
   )
 }
 

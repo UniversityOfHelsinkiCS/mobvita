@@ -20,12 +20,7 @@ const Article = ({ card, cardNumbering, answerCard }) => {
     setAnswerCorrect(null)
   }, [card])
 
-  const {
-    lemma,
-    _id: id,
-    stage,
-    gender,
-  } = card
+  const { lemma, _id: id, stage, gender } = card
 
   const flipCard = () => {
     setFlipped(!flipped)
@@ -35,9 +30,10 @@ const Article = ({ card, cardNumbering, answerCard }) => {
   // flip card when icon has rendered
   useEffect(() => {
     if (!iconRef.current) return
-    if (!flipped) { flipCard() }
+    if (!flipped) {
+      flipCard()
+    }
   }, [iconRef.current])
-
 
   const correctArticles = {
     Fem: 'Die',
@@ -49,7 +45,7 @@ const Article = ({ card, cardNumbering, answerCard }) => {
     ut: 'En',
   }
 
-  const checkAnswer = (answer) => {
+  const checkAnswer = answer => {
     const correct = correctArticles[gender] === answer
     answerCard(answer, correct, 'article')
     setAnswerCorrect(correct)
@@ -63,7 +59,10 @@ const Article = ({ card, cardNumbering, answerCard }) => {
   }
 
   const articleButtons = flashcardArticles.map(article => (
-    <Button key={`${article}-${id}`} onClick={() => checkAnswer(article)}>{article}</Button>))
+    <Button key={`${article}-${id}`} onClick={() => checkAnswer(article)}>
+      {article}
+    </Button>
+  ))
 
   const rightAnswer = `${correctArticles[gender]} ${lemma}`
 
@@ -73,28 +72,21 @@ const Article = ({ card, cardNumbering, answerCard }) => {
     <ReactCardFlip isFlipped={flipped}>
       <Flashcard {...cardProps}>
         <div className="flex align-center grow">
-          {!answerChecked
-            && (
-              <div className="flex-column gap-row-2">
-                {articleButtons}
-              </div>
-            )
-          }
+          {!answerChecked && <div className="flex-col gap-row-nm">{articleButtons}</div>}
           <span className="header-2 auto">{lemma}</span>
         </div>
       </Flashcard>
       <Flashcard {...cardProps}>
-        <div className="flex-column space-evenly align-center grow">
+        <div className="flex-col space-evenly align-center grow">
           <span className="header-2">{rightAnswer}</span>
-          {answerCorrect !== null
-            && (
-              <Icon
-                ref={iconRef}
-                style={{ marginLeft: 'auto', marginRight: 'auto' }}
-                name={resultIconName}
-                size="huge"
-              />
-            )}
+          {answerCorrect !== null && (
+            <Icon
+              ref={iconRef}
+              style={{ marginLeft: 'auto', marginRight: 'auto' }}
+              name={resultIconName}
+              size="huge"
+            />
+          )}
         </div>
       </Flashcard>
     </ReactCardFlip>

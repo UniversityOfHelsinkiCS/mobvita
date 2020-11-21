@@ -40,8 +40,8 @@ const Progress = () => {
   if (pending || pending === undefined) return <Spinner />
 
   return (
-    <div className="component-container padding-sides-2">
-      <div className="date-pickers gap-1">
+    <div className="cont ps-nm">
+      <div className="date-pickers gap-col-sm">
         <div>
           <FormattedMessage id="date-start" />
           <br />

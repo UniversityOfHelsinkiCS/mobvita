@@ -154,7 +154,7 @@ const PracticeModal = ({ trigger }) => {
           </Link>
         </div>
 
-        <div className="padding-top-1 padding-bottom-1">
+        <div className="pt-sm pb-sm">
           <div className="sm-label">
             <FormattedMessage id="Library" />
           </div>

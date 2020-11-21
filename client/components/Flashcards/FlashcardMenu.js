@@ -7,12 +7,7 @@ import { images } from 'Utilities/common'
 import SelectLanguage from './SelectLanguage'
 
 const MenuItem = ({ handleClick, style, translationId, children }) => (
-  <button
-    type="button"
-    className="flashcard-menu-item"
-    style={style}
-    onClick={handleClick}
-  >
+  <button type="button" className="flashcard-menu-item" style={style} onClick={handleClick}>
     {children}
     <span style={{ whiteSpace: 'nowrap' }}>
       <FormattedMessage id={translationId} />
@@ -24,26 +19,25 @@ const CardManagmentOptions = ({ handleOptionClick, handleOptionClickWithStory })
   const { storyId } = useParams()
 
   return (
-    <div className="flex-column padding-bottom-2">
+    <div className="flex-col pb-nm">
       <div className="flashcard-lang-select">
-        <span className="padding-right-1">
+        <span className="pr-sm">
           <FormattedMessage id="translation-target-language" />
         </span>
         <SelectLanguage />
       </div>
-      {storyId
-        && (
-          <MenuItem
-            handleClick={() => handleOptionClick('all')}
-            translationId="all-flashcards"
-            style={{
-              backgroundColor: '#B5EAD7',
-              border: 'none',
-            }}
-          >
-            <img src={images.flashcardIcon} alt="three cards" width="40px" />
-          </MenuItem>
-        )}
+      {storyId && (
+        <MenuItem
+          handleClick={() => handleOptionClick('all')}
+          translationId="all-flashcards"
+          style={{
+            backgroundColor: '#B5EAD7',
+            border: 'none',
+          }}
+        >
+          <img src={images.flashcardIcon} alt="three cards" width="40px" />
+        </MenuItem>
+      )}
       <MenuItem
         handleClick={() => handleOptionClickWithStory('list')}
         translationId="Flashcard list"
@@ -75,7 +69,7 @@ const PracticeModeOptions = ({ handleOptionClickWithStory }) => {
   const articleLabel = flashcardArticles && flashcardArticles.join('/')
 
   return (
-    <div className="flex-column">
+    <div className="flex-col">
       <MenuItem
         handleClick={() => handleOptionClickWithStory('fillin')}
         translationId="fill-in"
@@ -87,21 +81,20 @@ const PracticeModeOptions = ({ handleOptionClickWithStory }) => {
       >
         <Icon name="keyboard outline" size="big" />
       </MenuItem>
-      {flashcardArticles
-          && (
-            <button
-              type="button"
-              className="flashcard-menu-item"
-              style={{
-                backgroundColor: '#FFDAC1',
-                border: 'none',
-              }}
-              onClick={() => handleOptionClickWithStory('article')}
-            >
-              <Icon name="font" size="big" />
-              <span>{articleLabel}</span>
-            </button>
-          )}
+      {flashcardArticles && (
+        <button
+          type="button"
+          className="flashcard-menu-item"
+          style={{
+            backgroundColor: '#FFDAC1',
+            border: 'none',
+          }}
+          onClick={() => handleOptionClickWithStory('article')}
+        >
+          <Icon name="font" size="big" />
+          <span>{articleLabel}</span>
+        </button>
+      )}
       <MenuItem
         handleClick={() => handleOptionClickWithStory('quick')}
         translationId="Quick cards"
@@ -123,11 +116,11 @@ const FlashcardMenu = () => {
 
   const storyUrl = storyId ? `/${storyId}` : ''
 
-  const handleOptionClick = (mode) => {
+  const handleOptionClick = mode => {
     history.push(`/flashcards/${mode}`)
   }
 
-  const handleOptionClickWithStory = (mode) => {
+  const handleOptionClickWithStory = mode => {
     history.push(`/flashcards/${mode}${storyUrl}`)
   }
 

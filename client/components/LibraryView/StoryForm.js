@@ -77,13 +77,13 @@ const StoryForm = ({ setLibraries }) => {
                   data-cy="new-story-input"
                 />
               </Form>
-              <div className="padding-top-1 space-between wrap">
-                <div className="flex padding-bottom-1">
+              <div className="pt-sm space-between wrap">
+                <div className="flex pb-sm">
                   <Button form="url-upload" variant="primary" type="submit" data-cy="submit-story">
                     <FormattedMessage id="Confirm" />
                   </Button>
                   {!smallWindow && (
-                    <div className="gap-1 padding-left-1">
+                    <div className="gap-col-sm pl-sm">
                       <StoryFileModal
                         trigger={
                           <Button variant="secondary">
@@ -118,77 +118,6 @@ const StoryForm = ({ setLibraries }) => {
       </Accordion>
     </Card>
   )
-
-  // Leaving old code for a few days
-
-  // return (
-  //   <Card
-  //     fluid
-  //     key="storyform"
-  //     style={{
-  //       marginBottom: '10px',
-  //       marginTop: '10px',
-  //       height: 'max-content',
-  //       backgroundColor: 'whitesmoke',
-  //     }}
-  //   >
-  //     <Card.Content extra style={{ padding: '15px' }}>
-  //       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'baseline' }}>
-  //         <h5>
-  //           <FormattedMessage id="add-your-stories" />
-  //         </h5>
-  //       </div>
-  //     </Card.Content>
-  //     <Card.Content extra style={{ padding: '15px' }}>
-  //       <div style={{ display: 'flex', alignItems: 'baseline' }}>
-  //         <div style={{ flexBasis: '100%' }}>
-  //           <Form id="url-upload" onSubmit={handleStorySubmit}>
-  //             <Input
-  //               fluid
-  //               placeholder={intl.formatMessage({ id: 'enter-web-address' })}
-  //               value={storyUrl}
-  //               onChange={event => setStoryUrl(event.target.value)}
-  //               data-cy="new-story-input"
-  //             />
-  //           </Form>
-  //           <div className="flex padding-top-1">
-  //             <Button form="url-upload" variant="primary" type="submit" data-cy="submit-story">
-  //               <FormattedMessage id="Confirm" />
-  //             </Button>
-  //             {!smallWindow && (
-  //               <div className="gap-1 padding-left-1">
-  //                 <StoryFileModal
-  //                   trigger={
-  //                     <Button variant="secondary">
-  //                       {intl.formatMessage({ id: 'upload-stories' })}
-  //                     </Button>
-  //                   }
-  //                 />
-  //                 <AddStoryModal
-  //                   trigger={
-  //                     <Button variant="secondary">
-  //                       {intl.formatMessage({ id: 'or-paste-a-text' }).slice(0, -1)}
-  //                     </Button>
-  //                   }
-  //                 />
-  //               </div>
-  //             )}
-  //             <Button
-  //               className="auto-left"
-  //               variant="link"
-  //               onClick={() => setShowRecommendedSites(!showRecommendedSites)}
-  //             >
-  //               {showRecommendedSites
-  //                 ? intl.formatMessage({ id: 'hide-recommended-sites' })
-  //                 : intl.formatMessage({ id: 'show-recommended-sites' })}
-  //             </Button>
-  //           </div>
-  //           {showRecommendedSites && <RecommendedSites />}
-  //         </div>
-  //       </div>
-  //     </Card.Content>
-  //   </Card>
-  // )
 }
 
 export default StoryForm

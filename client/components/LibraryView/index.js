@@ -178,7 +178,7 @@ const StoryList = () => {
       <div className="library-selection">
         <CheckboxGroup
           values={libraries}
-          additionalClass="wrap-and-grow align-center padding-top-1"
+          additionalClass="wrap-and-grow align-center pt-sm"
           onClick={handleLibraryChange}
           reverse
         />
@@ -244,7 +244,7 @@ const StoryList = () => {
 
   if (pending || !searchedStories || !refreshed) {
     return (
-      <div className="component-container">
+      <div className="cont">
         {libraryControls}
         <Placeholder>
           <Placeholder.Line />
@@ -335,7 +335,7 @@ const StoryList = () => {
   }
 
   return (
-    <div className="component-container">
+    <>
       {libraryControls}
       <Card.Group itemsPerRow={1} doubling>
         <WindowScroller>
@@ -354,7 +354,7 @@ const StoryList = () => {
           )}
         </WindowScroller>
       </Card.Group>
-    </div>
+    </>
   )
 }
 

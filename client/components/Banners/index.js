@@ -11,11 +11,7 @@ const Banners = () => {
     <Banner key={banner.message} message={banner.message} open={banner.open} />
   ))
 
-  return (
-    <div className="component-container padding-bottom-1 margin-negative-top-2">
-      {bannerComponents}
-    </div>
-  )
+  return <>{bannerComponents}</>
 }
 
 export default Banners

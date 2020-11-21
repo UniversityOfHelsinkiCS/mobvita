@@ -2,7 +2,6 @@ import React, { useMemo } from 'react'
 import { useSelector } from 'react-redux'
 import { Placeholder } from 'semantic-ui-react'
 import { images } from 'Utilities/common'
-import Subheader from 'Components/Subheader'
 
 const Winner = ({ position, name, record, rankingHistory }) => {
   const first = position === 'first'
@@ -58,12 +57,12 @@ const Winner = ({ position, name, record, rankingHistory }) => {
         </div>
       </div>
       {name ? (
-        <div className="flex-column align-center">
+        <div className="flex-col align-center">
           <span className="leaderboard-winner-name">{name}</span>
           <span className="leaderboard-winner-record">{record}</span>
         </div>
       ) : (
-        <div className="flex-column">
+        <div className="flex-col">
           <Placeholder style={{ minWidth: '5rem', alignSelf: 'center' }}>
             <Placeholder.Line
               length="very long"
@@ -95,7 +94,7 @@ const LastWeeksWinners = () => {
   )
 
   return (
-    <div className="padding-top-2 padding-bottom-2">
+    <div className="pt-nm pb-nm">
       <div className="leaderboard-winner-container">
         <Winner
           position="second"

@@ -3,7 +3,7 @@ import { Button } from 'react-bootstrap'
 import { FormattedMessage } from 'react-intl'
 
 const TemplateActions = ({ handleSave, handleClear, editing = false }) => (
-  <div className="margin-bottom-3 auto-top gap-1 flex">
+  <div className="mb-lg auto-top gap-col-sm flex">
     <Button
       variant="warning"
       onClick={handleClear}

@@ -37,7 +37,7 @@ const Quick = ({ card, cardNumbering, answerCard }) => {
   return (
     <ReactCardFlip isFlipped={flipped}>
       <Flashcard {...cardProps}>
-        <div className="flex-column grow">
+        <div className="flex-col grow">
           <span className="header-2 auto">{lemma}</span>
           {!answered && (
             <div className="flex space-evenly padding-bottom-4">
@@ -60,7 +60,7 @@ const Quick = ({ card, cardNumbering, answerCard }) => {
         </div>
       </Flashcard>
       <Flashcard {...cardProps}>
-        <div className="overflow-auto bold center align-center grow">
+        <div className="overflow-auto bold justify-center align-center grow">
           <ul style={{ maxHeight: '90%', maxWidth: '100%', paddingRight: '2em' }}>
             {translations}
           </ul>

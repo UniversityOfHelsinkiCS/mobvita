@@ -9,7 +9,7 @@ import ReportButton from 'Components/ReportButton'
 import { Segment } from 'semantic-ui-react'
 import { clearFocusedSnippet } from 'Utilities/redux/snippetsReducer'
 import { setTouchedIds, setAnswers } from 'Utilities/redux/practiceReducer'
-import { getTextStyle, learningLanguageSelector, hiddenFeatures } from 'Utilities/common'
+import { getTextStyle, learningLanguageSelector } from 'Utilities/common'
 import useWindowDimensions from 'Utilities/windowDimensions'
 import PreviousSnippets from './PreviousSnippets'
 import VirtualKeyboard from './VirtualKeyboard'
@@ -57,36 +57,31 @@ const PracticeView = () => {
   const showFooter = width > 640
 
   return (
-    <div>
-      <div style={{ display: 'flex', justifyContent: 'center' }}>
-        <div style={{ width: '100%', maxWidth: '1024px' }}>
-          <Segment style={{ paddingTop: '1em', width: '100%', maxWidth: '1024px' }}>
-            <div className="component-container">
-              <div style={{ display: 'flex', justifyContent: 'space-between', width: '100%' }}>
-                <h3
-                  style={{
-                    ...getTextStyle(learningLanguage, 'title'),
-                    width: '100%',
-                    paddingRight: '1em',
-                  }}
-                >
-                  {!pending && `${story.title}`}
-                </h3>
-              </div>
-              {story.url && !pending ? (
-                <p>
-                  <a href={story.url}>
-                    <FormattedMessage id="Source" />
-                  </a>
-                </p>
-              ) : null}
-              <PreviousSnippets />
-              <hr />
-              <CurrentSnippet storyId={id} handleInputChange={handleAnswerChange} />
-              {showVirtualKeyboard && <VirtualKeyboard />}
-            </div>
+    <div className="cont-tall pt-sm flex-col space-between">
+      <div className="justify-center">
+        <div className="cont">
+          <Segment>
+            <h3
+              style={{
+                ...getTextStyle(learningLanguage, 'title'),
+                width: '100%',
+                paddingRight: '1em',
+                marginBottom: 0,
+              }}
+            >
+              {!pending && `${story.title}`}
+            </h3>
+            {story.url && !pending ? (
+              <a href={story.url}>
+                <FormattedMessage id="Source" />
+              </a>
+            ) : null}
+            <PreviousSnippets />
+            <hr />
+            <CurrentSnippet storyId={id} handleInputChange={handleAnswerChange} />
+            {showVirtualKeyboard && <VirtualKeyboard />}
           </Segment>
-          <ReportButton />
+          <ReportButton extraClass="mb-sm" />
         </div>
         <DictionaryHelp />
         <ReferenceModal />

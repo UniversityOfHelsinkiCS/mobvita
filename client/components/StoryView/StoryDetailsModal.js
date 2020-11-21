@@ -35,7 +35,7 @@ const DetailedStoryModal = ({
       closeIcon={{ style: { top: '0.75em', right: '1rem' }, color: 'black', name: 'close' }}
     >
       <Modal.Header>
-        <div className="padding-right-3">{title}</div>
+        <div className="pr-lg">{title}</div>
       </Modal.Header>
       <Modal.Content>
         <DetailsTable
@@ -53,7 +53,7 @@ const DetailedStoryModal = ({
       </Modal.Content>
       <Modal.Actions>
         <div className="space-between">
-          <div className="gap-1">
+          <div className="gap-col-sm">
             <LinkButton to={`/stories/${story._id}/practice`} translationId="practice" />
             <LinkButton
               variant="primary"
@@ -71,7 +71,7 @@ const DetailedStoryModal = ({
               translationId="Crossword"
             />
           </div>
-          <div className="gap-1">
+          <div className="gap-col-sm">
             <LinkButton
               condition={showLearningSettingsButton}
               variant="outline-secondary"

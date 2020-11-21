@@ -101,9 +101,9 @@ const GroupCard = ({
         <h5 style={{ fontWeight: 'bold' }}>{groupName}</h5>
       </Card.Content>
       <Card.Content extra>
-        <div className="space-between group-buttons gap-row-1" style={{ whiteSpace: 'nowrap' }}>
+        <div className="space-between group-buttons sm" style={{ whiteSpace: 'nowrap' }}>
           {isTeaching && (
-            <div className="gap-1 gap-row-1 wrap-and-grow group-management-buttons">
+            <div className="gap-col-sm wrap-and-grow group-management-buttons">
               <Button onClick={handleSettingsClick}>
                 <Icon name="settings" /> <FormattedMessage id="learning-settings" />
               </Button>
@@ -115,7 +115,7 @@ const GroupCard = ({
               </Button>
             </div>
           )}
-          <div className="group-management-buttons flex gap-1 gap-row-1">
+          <div className="group-management-buttons flex gap-col-sm">
             <Button variant="danger" onClick={() => setLeaveGroupId(id)} data-cy="leave-group">
               <Icon name="log out" /> <FormattedMessage id="Leave" />
             </Button>
@@ -179,7 +179,7 @@ const GroupManagement = () => {
   if (groups.length === 0) return <NoGroupsView />
 
   return (
-    <div className="padding-sides-2" data-cy="group-list">
+    <div className="ps-nm" data-cy="group-list">
       <AddToGroup groupId={addToGroupId} setGroupId={setAddToGroupId} />
       <ConfirmationWarning
         open={!!deleteGroupId}

@@ -52,7 +52,7 @@ const PreviousSnippets = () => {
   )
 
   return (
-    <div style={getTextStyle(learningLanguage)}>
+    <div className="pt-nm" style={getTextStyle(learningLanguage)}>
       {oldPreviousSnippets}
       {sessionPreviousSnippets}
     </div>

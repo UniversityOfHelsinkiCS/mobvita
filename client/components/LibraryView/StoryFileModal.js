@@ -18,7 +18,7 @@ const StoryFileModal = ({ trigger }) => {
 
   const dispatch = useDispatch()
 
-  const onChange = (e) => {
+  const onChange = e => {
     if (e.target.files[0]) {
       setFile(e.target.files[0])
       setLabel(e.target.files[0].name)
@@ -36,7 +36,7 @@ const StoryFileModal = ({ trigger }) => {
 
   useEffect(() => {
     if (progress) {
-      if (progress==1) setFile('')
+      if (progress == 1) setFile('')
       setShowModel(false)
     }
   }, [progress])
@@ -54,26 +54,27 @@ const StoryFileModal = ({ trigger }) => {
       onOpen={() => setShowModel(true)}
       open={showModel}
     >
-      <Modal.Header><FormattedMessage id="upload-stories" /></Modal.Header>
+      <Modal.Header>
+        <FormattedMessage id="upload-stories" />
+      </Modal.Header>
       <Modal.Content>
         <span className="bold-italics">
           <FormattedMessage id="please-submit-a-simple-text-file-containing-the-story-you-want-to-add-we-will-automatically-infer-th" />
         </span>
-        <div className="space-evenly padding-top-3">
+        <div className="space-evenly pt-lg">
           <input id="file" name="file" type="file" accept=".docx, .txt" onChange={onChange} />
-          <label htmlFor="file">
-            {label}
-          </label>
+          <label htmlFor="file">{label}</label>
           <Button
             disabled={submitDisabled}
             variant="primary"
             onClick={handleSubmit}
             style={{ minWidth: '10em' }}
           >
-            {storyUploading
-              ? <Spinner animation="border" variant="white" size="lg" />
-              : <FormattedMessage id="Submit" />
-            }
+            {storyUploading ? (
+              <Spinner animation="border" variant="white" size="lg" />
+            ) : (
+              <FormattedMessage id="Submit" />
+            )}
           </Button>
         </div>
       </Modal.Content>

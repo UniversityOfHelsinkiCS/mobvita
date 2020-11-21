@@ -96,9 +96,9 @@ const FlashcardList = () => {
   )
 
   return (
-    <div style={{ marginTop: '-1em', paddingBottom: '2em', flex: 1 }}>
-      <div className="flex-reverse space-between wrap padding-top-1">
-        <span className="additional-info padding-left-2">
+    <div style={{ marginTop: '-.5rem', paddingBottom: '2em', flex: 1 }}>
+      <div className="flex-reverse space-between wrap pt-sm">
+        <span className="additional-info pl-nm">
           <FormattedMessage id="cards total" values={{ numberOfCards }} />
         </span>
         {pagination}
@@ -107,12 +107,12 @@ const FlashcardList = () => {
         <Spinner fullHeight />
       ) : (
         <div>
-          <Accordion className="padding-top-1">
+          <Accordion className="pt-sm">
             {cardsInCurrentPage.map(card => (
               <FlashcardListItem key={card._id} card={card} handleEdit={handleEdit} />
             ))}
           </Accordion>
-          <div className="flex padding-top-1">{pagination}</div>
+          <div className="flex pt-sm">{pagination}</div>
         </div>
       )}
     </div>

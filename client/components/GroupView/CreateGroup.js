@@ -24,7 +24,7 @@ const CreateGroup = () => {
   }
 
   return (
-    <div className="flex-column padding-sides-2">
+    <div className="flex-col ps-nm">
       <Card body>
         <Form className="group-form" data-cy="add-group-form" onSubmit={addGroup}>
           <span className="sm-label">

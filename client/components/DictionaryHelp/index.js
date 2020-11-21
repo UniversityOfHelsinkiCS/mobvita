@@ -250,7 +250,7 @@ const DictionaryHelp = ({ minimized }) => {
             ))}
           </select>
         </div>
-        <div className="space-between padding-top-1">
+        <div className="space-between pt-sm">
           <div>
             {showSurfaceWord() && (
               <div

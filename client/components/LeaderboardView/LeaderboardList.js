@@ -83,7 +83,7 @@ const LeaderboardList = ({ amountToShow }) => {
       ))}
       {!userInTopPositions && (
         <div>
-          <div className="leaderboard-item-container center">
+          <div className="leaderboard-item-container justify-center">
             <span>&bull;&bull;&bull;</span>
           </div>
           <LeaderboardItem

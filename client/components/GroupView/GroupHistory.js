@@ -25,41 +25,40 @@ const StudentHistory = ({ student, groupId, view }) => {
   return (
     <div>
       <hr />
-      { view=='exercise' ? (
-            <div>
-                <FormattedMessage id="Practice history" />
-                <br/>
-                <span className="sm-label padding-left-1">
-                  <FormattedMessage id="Showing results for" />
-                </span>
-                <div className="flex padding-left-1">
-                    <div className="gap-1">
-                        <span className="sm-label">
-                        <FormattedMessage id="date-start" />
-                        </span>
-                        <ResponsiveDatePicker
-                        maxDate={Math.min(moment().valueOf(), endDate)}
-                        selected={startDate}
-                        onChange={date => setStartDate(date)}
-                        />
-                    </div>
-                    <div className="gap-1 padding-left-3">
-                        <span className="sm-label">
-                        <FormattedMessage id="date-end" />
-                        </span>
-                        <ResponsiveDatePicker
-                        minDate={startDate}
-                        maxDate={moment().valueOf()}
-                        selected={endDate}
-                        onChange={date => setEndDate(date)}
-                        />
-                    </div>
-                </div>
+      {view == 'exercise' ? (
+        <div>
+          <FormattedMessage id="Practice history" />
+          <br />
+          <span className="sm-label pl-sm">
+            <FormattedMessage id="Showing results for" />
+          </span>
+          <div className="flex pl-sm">
+            <div className="gap-col-sm">
+              <span className="sm-label">
+                <FormattedMessage id="date-start" />
+              </span>
+              <ResponsiveDatePicker
+                maxDate={Math.min(moment().valueOf(), endDate)}
+                selected={startDate}
+                onChange={date => setStartDate(date)}
+              />
             </div>
-        ):(
-            <FormattedMessage id="Test History" />
-        )
-      }
+            <div className="gap-col-sm pl-lg">
+              <span className="sm-label">
+                <FormattedMessage id="date-end" />
+              </span>
+              <ResponsiveDatePicker
+                minDate={startDate}
+                maxDate={moment().valueOf()}
+                selected={endDate}
+                onChange={date => setEndDate(date)}
+              />
+            </div>
+          </div>
+        </div>
+      ) : (
+        <FormattedMessage id="Test History" />
+      )}
       {student ? (
         <History history={history} dateFormat="DD.MM." />
       ) : (

@@ -22,8 +22,8 @@ const TemplateHints = ({ hints, setHints, hint, setHint, hintRef }) => {
   }
 
   return (
-    <div className="flex-column padding-bottom-3 auto-overflow">
-      <label htmlFor="hints" className="header-3 center">
+    <div className="flex-col pb-lg auto-overflow">
+      <label htmlFor="hints" className="header-3 justify-center">
         <FormattedMessage id="hints-for-this-flashcard" />
       </label>
       <div className="auto-overflow">
@@ -32,7 +32,7 @@ const TemplateHints = ({ hints, setHints, hint, setHint, hintRef }) => {
         </ul>
       </div>
       <Form.Control
-        className="flex-static-size margin-top-1"
+        className="flex-static-size mt-sm"
         id="hints"
         as="textarea"
         placeholder={intl.formatMessage({ id: 'type-new-hint' })}
@@ -42,7 +42,7 @@ const TemplateHints = ({ hints, setHints, hint, setHint, hintRef }) => {
       />
       <Button
         variant="primary"
-        className="flashcard-template-button margin-top-1"
+        className="flashcard-template-button mt-sm"
         onClick={handleHintSave}
       >
         <FormattedMessage id="save-the-hint" />

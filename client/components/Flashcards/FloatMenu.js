@@ -7,15 +7,8 @@ import { images } from 'Utilities/common'
 import SelectLanguage from './SelectLanguage'
 
 const FabOption = ({ handleClick, iconStyle, translationId, children }) => (
-  <button
-    type="button"
-    onClick={handleClick}
-    className="flashcard-fab-option gap-2"
-  >
-    <div
-      className="flashcard-fab-icon"
-      style={iconStyle}
-    >
+  <button type="button" onClick={handleClick} className="flashcard-fab-option gap-col-nm">
+    <div className="flashcard-fab-icon" style={iconStyle}>
       {children}
     </div>
     <span className="flashcard-fab-text">
@@ -28,37 +21,31 @@ const CardManagmentOptions = ({ handleOptionClick, handleOptionClickWithStory })
   const { storyId } = useParams()
 
   return (
-    <div className="gap-row-1">
-      <button
-        type="button"
-        className="flashcard-fab-option gap-2"
-      >
+    <div className="gap-row-sm">
+      <button type="button" className="flashcard-fab-option gap-col-nm">
         <div
           className="flashcard-fab-icon"
           style={{ paddingBottom: '0.5em', paddingRight: '0.1em' }}
         >
           <Icon name="language" style={{ margin: 'auto', padding: 0 }} />
         </div>
-        <span className="flashcard-fab-text gap-1">
-          <FormattedMessage id="translation-target-language" />
+        <span className="flashcard-fab-text gap-col-sm">
+          <span>
+            <FormattedMessage id="translation-target-language" />
+          </span>
           <SelectLanguage />
         </span>
       </button>
-      {storyId
-        && (
-          <FabOption
-            handleClick={() => handleOptionClick('fillin')}
-            translationId="all-flashcards"
-          >
-            <img
-              src={images.flashcardIcon}
-              alt="three cards"
-              width="16px"
-              style={{ margin: 'auto' }}
-            />
-          </FabOption>
-        )
-      }
+      {storyId && (
+        <FabOption handleClick={() => handleOptionClick('fillin')} translationId="all-flashcards">
+          <img
+            src={images.flashcardIcon}
+            alt="three cards"
+            width="16px"
+            style={{ margin: 'auto' }}
+          />
+        </FabOption>
+      )}
       <FabOption
         handleClick={() => handleOptionClickWithStory('list')}
         translationId="Flashcard list"
@@ -83,7 +70,7 @@ const PracticeModeOptions = ({ handleOptionClickWithStory }) => {
   const articleLabel = flashcardArticles && flashcardArticles.join('/')
 
   return (
-    <div className="gap-row-1">
+    <div className="gap-row-sm mt-nm">
       <FabOption
         handleClick={() => handleOptionClickWithStory('fillin')}
         iconStyle={{
@@ -95,23 +82,21 @@ const PracticeModeOptions = ({ handleOptionClickWithStory }) => {
       >
         <Icon name="keyboard outline" style={{ margin: 'auto' }} />
       </FabOption>
-      {flashcardArticles
-        && (
-          <button
-            type="button"
-            onClick={() => handleOptionClickWithStory('article')}
-            className="flashcard-fab-option gap-2"
+      {flashcardArticles && (
+        <button
+          type="button"
+          onClick={() => handleOptionClickWithStory('article')}
+          className="flashcard-fab-option gap-col-nm"
+        >
+          <div
+            className="flashcard-fab-icon"
+            style={{ paddingBottom: '0.4em', backgroundColor: 'rgb(255, 218, 193)' }}
           >
-            <div
-              className="flashcard-fab-icon"
-              style={{ paddingBottom: '0.4em', backgroundColor: 'rgb(255, 218, 193)' }}
-            >
-              <Icon name="font" style={{ margin: 'auto' }} />
-            </div>
-            <span className="flashcard-fab-text">{articleLabel}</span>
-          </button>
-        )
-      }
+            <Icon name="font" style={{ margin: 'auto' }} />
+          </div>
+          <span className="flashcard-fab-text">{articleLabel}</span>
+        </button>
+      )}
       <FabOption
         handleClick={() => handleOptionClickWithStory('quick')}
         iconStyle={{
@@ -139,12 +124,12 @@ const FloatMenu = () => {
     setOpen(!open)
   }
 
-  const handleOptionClick = (mode) => {
+  const handleOptionClick = mode => {
     history.push(`/flashcards/${mode}`)
     setOpen(false)
   }
 
-  const handleOptionClickWithStory = (mode) => {
+  const handleOptionClickWithStory = mode => {
     history.push(`/flashcards/${mode}${storyUrl}`)
     setOpen(false)
   }
@@ -154,19 +139,15 @@ const FloatMenu = () => {
       <button type="button" onClick={handleFabClick} className="flashcard-fab">
         <Icon name="th list" style={{ color: 'white' }} />
       </button>
-      {open
-        && (
-          <div
-            className="flex-column-reverse padding-bottom-1 gap-row-2 slide-from-left"
-            style={{ paddingLeft: '0.3em' }}
-          >
-            <PracticeModeOptions handleOptionClickWithStory={handleOptionClickWithStory} />
-            <CardManagmentOptions
-              handleOptionClick={handleOptionClick}
-              handleOptionClickWithStory={handleOptionClickWithStory}
-            />
-          </div>
-        )}
+      {open && (
+        <div className="flex-column-reverse pb-sm slide-from-left" style={{ paddingLeft: '0.3em' }}>
+          <PracticeModeOptions handleOptionClickWithStory={handleOptionClickWithStory} />
+          <CardManagmentOptions
+            handleOptionClick={handleOptionClick}
+            handleOptionClickWithStory={handleOptionClickWithStory}
+          />
+        </div>
+      )}
     </div>
   )
 }

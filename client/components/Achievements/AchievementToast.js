@@ -32,7 +32,7 @@ const AchievementToast = ({ achievement }) => {
   return (
     <div className="flex">
       <Medal medal={medal} />
-      <div className="flex-column padding-left-2">
+      <div className="flex-col pl-nm">
         <span style={{ fontSize: '11px', fontWeight: 550 }}>{medalEarnedText}</span>
         <div>
           <b>

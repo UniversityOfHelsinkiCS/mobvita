@@ -31,12 +31,12 @@ const StudentProgress = ({ student, groupId }) => {
   return (
     <div>
       <hr />
-      <span className="sm-label padding-left-1">
+      <span className="sm-label pl-sm">
         {' '}
         <FormattedMessage id="Showing results for" />
       </span>
-      <div className="flex padding-left-1">
-        <div className="gap-1">
+      <div className="flex pl-sm">
+        <div className="gap-col-sm">
           <span className="sm-label">
             <FormattedMessage id="date-start" />
           </span>
@@ -46,7 +46,7 @@ const StudentProgress = ({ student, groupId }) => {
             onChange={date => setStartDate(date)}
           />
         </div>
-        <div className="gap-1 padding-left-3">
+        <div className="gap-col-sm pl-lg">
           <span className="sm-label">
             <FormattedMessage id="date-end" />
           </span>

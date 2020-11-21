@@ -87,7 +87,7 @@ export default function GroupView({ location }) {
   }
 
   return (
-    <div className="component-container">
+    <div className="cont auto">
       <Tab panes={panes} activeIndex={index} grid={{ tabWidth: 1 }} />
     </div>
   )

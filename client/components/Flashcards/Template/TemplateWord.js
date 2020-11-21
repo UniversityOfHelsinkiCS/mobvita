@@ -15,12 +15,12 @@ const TemplateWord = ({ word, setWord, getTranslations, hintRef, wordRef, editin
   }
 
   return (
-    <div className="padding-top-2 padding-bottom-4">
+    <div className="pt-nm pb-xl">
       {editing ? (
-        <span className="header-3 center bold">{word}</span>
+        <span className="header-3 justify-center bold">{word}</span>
       ) : (
         <div>
-          <label htmlFor="newWord" className="header-3 center">
+          <label htmlFor="newWord" className="header-3 justify-center">
             <FormattedMessage id="new-word" />
           </label>
           <Form.Control

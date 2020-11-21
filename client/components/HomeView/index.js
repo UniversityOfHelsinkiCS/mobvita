@@ -54,38 +54,36 @@ const HomeView = () => {
   const bigScreen = width > 740
 
   return (
-    <div>
-      <div className="component-container">
-        {bigScreen ? (
-          <div style={{ display: 'flex' }}>
-            <div className="flex-column gap-row-1" style={{ flexGrow: 2 }}>
-              <PracticeModal trigger={<PracticeButton data-cy="practice-now" />} />
-              <FlashcardsButton />
-            </div>
-            <div className="vertical-line" />
-            <div style={{ width: '300px' }}>
-              <EloChart width="100%" />
-              <hr />
-              <LeaderboardSummary />
-              <hr />
-              <MedalSummary />
-            </div>
+    <div className="grow flex-col space-between gap-row-nm">
+      {bigScreen ? (
+        <div className="flex pb-nm">
+          <div className="flex-col gap-row-sm" style={{ flexGrow: 2 }}>
+            <PracticeModal trigger={<PracticeButton data-cy="practice-now" />} />
+            <FlashcardsButton />
           </div>
-        ) : (
-          <>
-            <div className="flex gap-1 grow-children">
-              <PracticeModal trigger={<PracticeButton data-cy="practice-now" />} />
-              <FlashcardsButton />
-            </div>
-            <hr />
+          <div className="vertical-line" />
+          <div style={{ width: '300px' }}>
             <EloChart width="100%" />
             <hr />
             <LeaderboardSummary />
             <hr />
             <MedalSummary />
-          </>
-        )}
-      </div>
+          </div>
+        </div>
+      ) : (
+        <div className="pb-nm">
+          <div className="flex gap-col-sm grow-children">
+            <PracticeModal trigger={<PracticeButton data-cy="practice-now" />} />
+            <FlashcardsButton />
+          </div>
+          <hr />
+          <EloChart width="100%" />
+          <hr />
+          <LeaderboardSummary />
+          <hr />
+          <MedalSummary />
+        </div>
+      )}
       {bigScreen && <Footer />}
     </div>
   )

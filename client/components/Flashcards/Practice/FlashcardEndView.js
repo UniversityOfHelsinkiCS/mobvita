@@ -3,7 +3,7 @@ import { FormattedMessage } from 'react-intl'
 import { Button } from 'react-bootstrap'
 
 const FlashcardEndView = ({ handleNewDeck }) => (
-  <div className="flashcard center">
+  <div className="flashcard justify-center">
     <div>
       <p style={{ fontWeight: '500', fontSize: '1.2em', padding: '1em' }}>
         <FormattedMessage id="well-done-click-next-card-to-play-another-set-of-cards" />

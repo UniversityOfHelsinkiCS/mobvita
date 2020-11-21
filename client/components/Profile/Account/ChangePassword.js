@@ -48,9 +48,7 @@ export default function ChangePassword() {
   return (
     <div>
       <div>
-        <h2 className="header-2 padding-bottom-1">
-          {intl.formatMessage({ id: 'reset-password' })}
-        </h2>
+        <h2 className="header-2 pb-sm">{intl.formatMessage({ id: 'reset-password' })}</h2>
 
         <Form onSubmit={saveSettings}>
           <Form.Field>
