@@ -65,7 +65,7 @@ const StoryForm = ({ setLibraries }) => {
             </h5>
           </div>
         </Accordion.Title>
-        <Accordion.Content active={formOpen}>
+        <Accordion.Content active={formOpen} data-cy="story-form-content">
           <div style={{ display: 'flex', alignItems: 'baseline', paddingBottom: '0.5em' }}>
             <div style={{ flexBasis: '100%' }}>
               <Form id="url-upload" onSubmit={handleStorySubmit}>

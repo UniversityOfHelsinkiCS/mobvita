@@ -337,7 +337,7 @@ const StoryList = () => {
   return (
     <>
       {libraryControls}
-      <Card.Group itemsPerRow={1} doubling>
+      <Card.Group itemsPerRow={1} doubling data-cy="story-items">
         <WindowScroller>
           {({ height, isScrolling, onChildScroll, scrollTop }) => (
             <List
