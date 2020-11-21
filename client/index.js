@@ -38,6 +38,11 @@ const filterReduxStateForSentry = event => {
     delete event.contexts['redux.state'].tests
   }
 
+  if (!url.includes('concepts')) {
+    delete event.contexts['redux.state'].metadata
+    delete event.contexts['redux.state'].groups
+  }
+
   return event
 }
 

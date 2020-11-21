@@ -6,6 +6,7 @@ import { getTestConcepts, getGroup, getGroups } from 'Utilities/redux/groupsRedu
 import { getSelf } from 'Utilities/redux/userReducer'
 import { learningLanguageSelector } from 'Utilities/common'
 import Spinner from 'Components/Spinner'
+import ReportButton from 'Components/ReportButton'
 import UserConcept from './UserConcept'
 import GroupConcept from './GroupConcept'
 import StoryConcept from './StoryConcept'
@@ -104,7 +105,7 @@ const Concepts = () => {
   }
 
   return (
-    <div className="cont auto">
+    <div className="cont-tall cont auto flex-col pb-nm ps-sm">
       <ConceptHeader target={target} />
       <div className="flex">
         <ConceptToggles
@@ -127,6 +128,7 @@ const Concepts = () => {
           />
         ))}
       </div>
+      <ReportButton extraClass="align-self-end auto-top" />
     </div>
   )
 }

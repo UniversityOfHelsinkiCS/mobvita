@@ -27,6 +27,8 @@ const sentryReduxEnhancer = Sentry.createReduxEnhancer({
       flashcardList: state.flashcardList,
       crossword: state.crossword,
       tests: state.tests,
+      metadata: state.metadata,
+      groups: state.groups,
     }
   },
 })
