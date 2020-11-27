@@ -560,6 +560,18 @@ html, body, #root {
   }
 }
 
+.virtual-keyboard {
+  &-ctrl-alt {
+    flex-grow: 0 !important;
+    padding-left: 2rem !important;
+    padding-right: 2rem !important;
+  }
+  &-active-key {
+    background-color: $primary-color !important;
+    color: white !important;
+  }
+}
+
 .dictionary-button {
   position: fixed;
   right: 0.5%;
