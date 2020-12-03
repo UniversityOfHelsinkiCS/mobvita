@@ -169,9 +169,9 @@ describe('Mobvita', function () {
       })
 
       it("can click (translate) a word", function () { // This test overlaps with dictionary
-        cy.contains("Britanniassa")
+        cy.contains("ehkä")
           .click()
-        cy.contains("Yhdistyneestä kuningaskunnasta käytetty lyhyt nimitys", { timeout: 20000 })
+        cy.contains("ilmaisee jonkin mahdollista tapahtumista tai toteutumista", { timeout: 20000 })
       })
     })
 
