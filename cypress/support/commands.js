@@ -90,6 +90,43 @@ Cypress.Commands.add('login', function (transLang = 'English') {
     return cy.wrap(user)
 })
 
+Cypress.Commands.add('loginRussian', function (transLang = 'English') {
+  const user = randomCredentials()
+  cy.request(
+    {
+      method: 'POST', 
+      url: 'localhost:8000/api/register', 
+      body: { ...user },
+      retryOnNetworkFailure: true
+    })
+    .then(function (response) {
+      user.token = response.body.access_token
+      currentUser = user
+      cy.request('POST', 'localhost:8000/api/confirm/test', { ...user })
+      users.push(user)
+      cy.request({
+        method: 'POST',
+        url: 'localhost:8000/api/user',
+        headers: {
+          'Authorization': `Bearer ${user.token}`
+        },
+        body: {
+          last_used_lang: 'Russian',
+          last_trans_lang: transLang,
+          interface_lang: 'Russian'
+        },
+        retryOnNetworkFailure: true
+      })
+      cy.request('POST', 'localhost:8000/api/session', { ...user })
+          .as('user')
+          .then(response => window.localStorage.setItem('user', JSON.stringify(response.body)))
+
+      cy.reload()
+    })
+
+    return cy.wrap(user)
+})
+
 Cypress.Commands.add('loginExisting', function () {
   cy.request('POST', 'localhost:8000/api/session', { ...currentUser })
     .then(response => window.localStorage.setItem('user', JSON.stringify(response.body)))

@@ -1,6 +1,6 @@
 describe('test view', function() {
   this.beforeAll(function () {
-    cy.login()
+    cy.loginRussian()
   })
 
   this.beforeEach(function () {
