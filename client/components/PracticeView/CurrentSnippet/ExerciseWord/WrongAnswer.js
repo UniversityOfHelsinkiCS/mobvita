@@ -15,7 +15,7 @@ import Tooltip from 'Components/PracticeView/Tooltip'
 
 const WrongAnswer = ({ word }) => {
   const { surface, lemmas, ref, ID: wordId, id: storyId, inflection_ref: inflectionRef } = word
-  let answer = useSelector(({ practice }) => practice.currentAnswers[word.tiedTo || word.ID])
+  const answer = useSelector(({ practice }) => practice.currentAnswers[word.tiedTo || word.ID])
 
   const [show, setShow] = useState(false)
 
