@@ -20,7 +20,7 @@ const ProgressStats = ({ startDate, endDate }) => {
 
   const getLearningLanguageFlag = () => {
     if (learningLanguage) {
-      return images[`flag${capitalize(learningLanguage.split('-').join(''))}`]
+      return images[`flag${capitalize(learningLanguage.toLowerCase().split('-').join(''))}`]
     }
     return null
   }

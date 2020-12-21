@@ -93,7 +93,7 @@ export const images = {
   leaderboard,
 }
 
-export const newCapitalize = word => {
+export const capitalize = word => {
   const capitalizedParts = word.split('-').map(part => {
     const p1 = part.slice(0, 1)
     const p2 = part.slice(1, part.length)
@@ -103,11 +103,13 @@ export const newCapitalize = word => {
   return capitalizedParts.join('-')
 }
 
+/*
 export const capitalize = (word = '') => {
   const firstLetter = word.slice(0, 1).toUpperCase()
   const wordEnd = word.slice(1, word.length)
   return `${firstLetter}${wordEnd}`
 }
+*/
 
 export const learningLanguageSelector = ({ user }) =>
   user.data ? user.data.user.last_used_language : null

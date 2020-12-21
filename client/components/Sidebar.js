@@ -62,9 +62,8 @@ export default function Sidebar({ history }) {
 
   const getLearningLanguageFlag = () => {
     const lastUsedLanguage = user.user.last_used_language
-
     if (lastUsedLanguage) {
-      return images[`flag${capitalize(lastUsedLanguage.split('-').join(''))}`]
+      return images[`flag${capitalize(lastUsedLanguage.toLowerCase().split('-').join(''))}`]
     }
     return null
   }
