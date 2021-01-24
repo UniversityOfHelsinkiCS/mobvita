@@ -16,6 +16,7 @@ import VirtualKeyboard from './VirtualKeyboard'
 import ReferenceModal from './ReferenceModal'
 import Footer from '../Footer'
 import { keyboardLayouts } from './KeyboardLayouts'
+import ScrollArrow from '../ScrollArrow'
 
 const PracticeView = () => {
   const learningLanguage = useSelector(learningLanguageSelector)
@@ -80,6 +81,7 @@ const PracticeView = () => {
             <hr />
             <CurrentSnippet storyId={id} handleInputChange={handleAnswerChange} />
             {showVirtualKeyboard && <VirtualKeyboard />}
+            <ScrollArrow />
           </Segment>
           <ReportButton extraClass="mb-sm" />
         </div>
