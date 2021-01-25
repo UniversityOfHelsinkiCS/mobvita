@@ -60,7 +60,13 @@ const StudentHistory = ({ student, groupId, view }) => {
         <FormattedMessage id="Test History" />
       )}
       {student ? (
-        <History history={history} dateFormat="DD.MM." />
+        <div>
+          {view == 'exercise' ? (
+            <History history={history} dateFormat="MMM.YYYY" />
+          ):(
+            <History history={history} dateFormat="MMM.DD.YYYY" />
+          )}
+        </div>
       ) : (
         <div
           style={{

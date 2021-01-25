@@ -63,7 +63,7 @@ const ProgressGraph = ({ exerciseHistory, flashcardHistory, startDate, endDate }
     ],
     xAxis: {
       type: 'datetime',
-      labels: { format: '{value:%m/%d}' },
+      labels: { format: '{value:%b/%d/%Y}' },
       allowDecimals: false,
       min: moment(startDate).valueOf(),
       max: moment(endDate).valueOf(),
