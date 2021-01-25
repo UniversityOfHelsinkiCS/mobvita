@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useLayoutEffect, useMemo } from 'react'
 import { useSelector } from 'react-redux'
-import { Table, Icon } from 'semantic-ui-react'
+import { Table, Icon, Button } from 'semantic-ui-react'
 import moment from 'moment'
 import { hiddenFeatures } from 'Utilities/common'
 import useWindowDimensions from 'Utilities/windowDimensions'
@@ -128,15 +128,19 @@ const History = ({ history, dateFormat, handleDelete = null }) => {
   if (!history) return null
   return (
     <div style={{ overflowX: 'scroll', maxWidth: '100%', marginTop: '1em' }}>
-      <button type="button" onClick={() => switchPage(-1)}>
-        -
-      </button>
-      <span style={{ marginLeft: '1em', marginRight: '1em' }}>
-        {page + 1} / {maxPage}
-      </span>
-      <button type="button" onClick={() => switchPage(1)}>
-        +
-      </button>
+        {maxPage > 1 && (
+          <div>
+            <Button onClick={() => switchPage(-1)}>
+              <Icon name='angle left' />  
+            </Button>
+            <span style={{ marginLeft: '1em', marginRight: '1em' }}>
+              {page + 1} / {maxPage}
+            </span>
+            <Button onClick={() => switchPage(1)}>
+              <Icon name='angle right' /> 
+            </Button>
+          </div>
+        )}
       {hiddenFeatures && (
         <>
           <br />
