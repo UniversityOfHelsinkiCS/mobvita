@@ -29,7 +29,6 @@ const StudentHistory = ({ student, groupId, view }) => {
   }, [windowWidth])
 
   const switchPage = change => {
-    console.log(endDate>=maxDate)
     setStartDate(Math.max(minDate, moment(startDate).add(pageSize * change, 'month')))
     setEndDate(Math.min(maxDate, moment(endDate).add(pageSize * change, 'month')))
   }
