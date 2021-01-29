@@ -5,14 +5,13 @@ import { useDispatch } from 'react-redux'
 import { Button } from 'react-bootstrap'
 import { forgotPassword } from 'Utilities/redux/passwordResetReducer'
 
-
 const ForgotPassword = ({ isOpen, setOpen }) => {
   const [email, setEmail] = useState('')
 
   const dispatch = useDispatch()
   const intl = useIntl()
 
-  const requestPassword = (e) => {
+  const requestPassword = e => {
     e.preventDefault()
 
     dispatch(forgotPassword(email))
@@ -20,33 +19,27 @@ const ForgotPassword = ({ isOpen, setOpen }) => {
   }
 
   return (
-    <Modal
-      dimmer="inverted"
-      closeIcon
-      open={isOpen}
-      onClose={() => setOpen(false)}
-    >
-      <Modal.Header><FormattedMessage id="forgot-password" /></Modal.Header>
+    <Modal dimmer="inverted" closeIcon open={isOpen} onClose={() => setOpen(false)}>
+      <Modal.Header>
+        <FormattedMessage id="forgot-password" />
+      </Modal.Header>
       <Modal.Content style={{ display: 'flex', flexDirection: 'column' }}>
         <Form onSubmit={requestPassword}>
           <Form.Field>
             <Form.Input
-              label={intl.formatMessage({ id: 'Email' })}
+              label={intl.formatMessage({ id: 'password-reset-instructions' })}
               value={email}
               onChange={e => setEmail(e.target.value)}
+              placeholder={intl.formatMessage({ id: 'Email' })}
             />
           </Form.Field>
           <Form.Field>
-            <Button
-              variant="primary"
-              type="submit"
-            >
+            <Button variant="primary" type="submit">
               <FormattedMessage id="Confirm" />
             </Button>
           </Form.Field>
         </Form>
       </Modal.Content>
-
     </Modal>
   )
 }

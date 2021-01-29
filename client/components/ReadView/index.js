@@ -15,6 +15,7 @@ import { learningLanguageSelector, getTextStyle, speak, respVoiceLanguages } fro
 import DictionaryHelp from 'Components/DictionaryHelp'
 import Spinner from 'Components/Spinner'
 import Footer from '../Footer'
+import ScrollArrow from '../ScrollArrow'
 
 const ReadView = ({ match }) => {
   const dispatch = useDispatch()
@@ -101,6 +102,7 @@ const ReadView = ({ match }) => {
           {story.paragraph.map(paragraph => (
             <p key={paragraph[0].ID}>{paragraph.map(word => wordVoice(word))}</p>
           ))}
+          <ScrollArrow />
         </Segment>
         <DictionaryHelp />
       </div>
