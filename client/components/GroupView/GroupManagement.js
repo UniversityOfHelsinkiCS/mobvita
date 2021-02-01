@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { useSelector, useDispatch } from 'react-redux'
+import { useSelector, useDispatch, shallowEqual } from 'react-redux'
 import { useHistory } from 'react-router-dom'
 import { FormattedMessage } from 'react-intl'
 import { CopyToClipboard } from 'react-copy-to-clipboard'
@@ -158,13 +158,8 @@ const GroupCard = ({
 }
 
 const GroupManagement = ({role}) => {
-  const { groups, pending } = useSelector(({ groups }) => {
-    return {
-      ...groups,
-      groups: groups.groups.filter(group => group.is_teaching === (role === 'teacher'))
-    }
-  })
-  console.log(groups)
+  const { groups: totalGroups, pending } = useSelector(({ groups }) => groups)
+  const groups = totalGroups.filter(group => group.is_teaching === (role === 'teacher'))
   const userId = useSelector(state => state.user.data.user.oid)
 
   const [addToGroupId, setAddToGroupId] = useState(null)

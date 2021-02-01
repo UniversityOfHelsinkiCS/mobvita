@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { useDispatch, useSelector } from 'react-redux'
+import { useDispatch, useSelector, shallowEqual } from 'react-redux'
 import { getGroups, removeFromGroup, getGroupToken } from 'Utilities/redux/groupsReducer'
 import { ListGroup, ButtonGroup, ToggleButton } from 'react-bootstrap'
 import { FormattedMessage, useIntl } from 'react-intl'
@@ -23,12 +23,8 @@ const GroupAnalytics = ({role}) => {
   const learningLanguage = useSelector(learningLanguageSelector)
   const dispatch = useDispatch()
 
-  const { groups, created, pending } = useSelector(({ groups }) => {
-    return {
-      ...groups,
-      groups: groups.groups.filter(group => group.is_teaching === (role === 'teacher'))
-    }
-  })
+  const { groups: totalGroups, created, pending } = useSelector(({ groups }) => groups)
+  const groups = totalGroups.filter(group => group.is_teaching === (role === 'teacher'))
   const currentGroup = groups.find(group => group.group_id === currentGroupId)
 
   const groupOptions = groups.map(group => ({
