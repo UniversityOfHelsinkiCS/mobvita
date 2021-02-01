@@ -62,8 +62,9 @@ export default function Sidebar({ history }) {
 
   const getLearningLanguageFlag = () => {
     const lastUsedLanguage = user.user.last_used_language
+
     if (lastUsedLanguage) {
-      return images[`flag${capitalize(lastUsedLanguage.toLowerCase().split('-').join(''))}`]
+      return images[`flag${capitalize(lastUsedLanguage.split('-').join(''))}`]
     }
     return null
   }
@@ -118,7 +119,7 @@ export default function Sidebar({ history }) {
                   onClick={() => menuClickWrapper(signOut)}
                   className="logout-button"
                 >
-                  <span className="pr-sm">
+                  <span className="padding-right-1">
                     <FormattedMessage
                       id={user.user.email === 'anonymous_email' ? 'Login' : 'sign-out'}
                     />
@@ -128,10 +129,7 @@ export default function Sidebar({ history }) {
               )}
             </div>
             {!smallWindow && (
-              <a className="pb-sm" href="https://revita-old.cs.helsinki.fi/">
-                <i>
-                  <FormattedMessage id="take-me-to-old-revita" /> ⇒
-                </i>
+              <a className="padding-bottom-1">
               </a>
             )}
 
