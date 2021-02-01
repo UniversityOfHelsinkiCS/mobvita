@@ -9,7 +9,7 @@ describe("groups", function () {
     cy.loginExisting().as('user')
     cy.getUser('teacher').as('teacher')
     cy.getUser('student').as('student')
-    cy.visit('http://localhost:8000/groups/')
+    cy.visit('http://localhost:8000/groups/teacher')
   })
 
   this.afterAll(function () {
@@ -36,7 +36,7 @@ describe("groups", function () {
   it('group can be removed', function () {
     cy.request({
       method: 'POST',
-      url: 'localhost:8000/api/groups',
+      url: 'localhost:8000/api/groups/teacher',
       headers: {
         'Authorization': `Bearer ${this.user.token}`
       },
@@ -53,7 +53,7 @@ describe("groups", function () {
   it('user can leave group', function () {
     cy.request({
       method: 'POST',
-      url: 'localhost:8000/api/groups',
+      url: 'localhost:8000/api/groups/teacher',
       headers: {
         'Authorization': `Bearer ${this.user.token}`
       },
@@ -70,7 +70,7 @@ describe("groups", function () {
   it('users can be added to group and removed', function () {
     cy.request({
       method: 'POST',
-      url: 'localhost:8000/api/groups',
+      url: 'localhost:8000/api/groups/teacher',
       headers: {
         'Authorization': `Bearer ${this.user.token}`
       },
