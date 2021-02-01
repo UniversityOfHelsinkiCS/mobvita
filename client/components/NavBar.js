@@ -53,14 +53,17 @@ export default function NavBar() {
             size="big"
             onClick={() => dispatch(sidebarSetOpen(!open))}
             className="sidebar-hamburger"
-            style={{ color: 'white' }}
+            style={{ color: 'white',marginBottom: '0.3em' }}
             data-cy="hamburger"
           />
           <Link to="/home">
-            <Navbar.Brand style={{ color: 'white', marginLeft: '0.5em', cursor: 'pointer' }}>
-              Revita{hiddenFeatures && <sup> &beta;</sup>}
-            </Navbar.Brand>
-          </Link>
+           <Icon
+                        name="home"
+                        size="big"
+                        style={{ color: 'white',  cursor: 'pointer', marginLeft: '0.2em',
+                                                                       marginTop: '0.1em',marginBottom: '0.01em'}}
+                      />
+           </Link>
         </div>
         {user && (
           <div>
@@ -92,6 +95,7 @@ export default function NavBar() {
 
             <Icon
               name="setting"
+              size="big"
               style={{ color: 'white', cursor: 'pointer' }}
               onClick={handleSettingClick}
             />

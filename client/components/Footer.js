@@ -10,7 +10,7 @@ const Footer = () => {
     <footer className="footer-wrapper">
       <div className="footer">
         <div>
-          © University of Helsinki 2015–2020
+          © University of Helsinki 2020–2021
         </div>
         {showResonsiveVoiceMention
           && (

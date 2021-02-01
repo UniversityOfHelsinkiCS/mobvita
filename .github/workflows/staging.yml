@@ -11,7 +11,7 @@ jobs:
     needs: build
     runs-on: ubuntu-18.04
     env:
-      SENTRY_PROJECT: mobvita-frontend
+      SENTRY_PROJECT: revita
       SENTRY_ORG: sentry
       SENTRY_AUTH_TOKEN: ${{ secrets.SENTRY_AUTH_TOKEN }}
       SENTRY_URL: ${{ secrets.SENTRY_URL }}
@@ -26,11 +26,11 @@ jobs:
       - name: npm run build
         run: npm run build
       
-      - name: Make Sentry release
-        run: npm run sentry-cli -- releases new --finalize mobvita-frontend@$GITHUB_SHA
+#      - name: Make Sentry release
+#        run: npm run sentry-cli -- releases new --finalize revita@$GITHUB_SHA
 
-      - name: Upload sourcemaps
-        run: npm run sentry-cli -- releases files mobvita-frontend@$GITHUB_SHA upload-sourcemaps  --rewrite ./dist/main.js.map
+#      - name: Upload sourcemaps
+#        run: npm run sentry-cli -- releases files revita@$GITHUB_SHA upload-sourcemaps  --rewrite ./dist/main.js.map
 
   test:
     name: "Run Cypress tests"
