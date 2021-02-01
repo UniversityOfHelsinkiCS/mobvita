@@ -41,7 +41,7 @@ const GroupAnalytics = ({role}) => {
     if (!groups || groups.length === 0) return
     if (currentGroupId && groups.some(group => group.group_id === currentGroupId)) return
     dispatch(updateGroupSelect(groups[0].group_id))
-  }, [groups])
+  }, [totalGroups])
 
   useEffect(() => {
     if (currentGroup && currentGroup.is_teaching) {
