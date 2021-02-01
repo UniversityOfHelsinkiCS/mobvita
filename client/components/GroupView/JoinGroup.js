@@ -5,7 +5,7 @@ import { FormattedMessage } from 'react-intl'
 import { Button, FormControl, Form, Card } from 'react-bootstrap'
 import { joinGroup } from 'Utilities/redux/groupsReducer'
 
-const JoinGroup = () => {
+const JoinGroup = ({role}) => {
   const [token, setToken] = useState('')
 
   const dispatch = useDispatch()
@@ -14,7 +14,7 @@ const JoinGroup = () => {
   const join = event => {
     event.preventDefault()
     dispatch(joinGroup(token))
-    history.push('/groups/management')
+    history.push(`/groups/${role}/management`)
   }
 
   return (

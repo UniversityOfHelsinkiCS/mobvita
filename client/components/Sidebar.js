@@ -204,7 +204,7 @@ export default function Sidebar({ history }) {
                     </Link>
                   </>
 
-                  <Link to="/groups">
+                  <Link to="/groups/student">
                     <Button
                       data-cy="groups-link"
                       variant="secondary"
@@ -212,7 +212,18 @@ export default function Sidebar({ history }) {
                       onClick={() => menuClickWrapper()}
                       block
                     >
-                      <FormattedMessage id="Groups" />
+                      <FormattedMessage id="Groups-for-students" />
+                    </Button>
+                  </Link>
+                  <Link to="/groups/teacher">
+                    <Button
+                      data-cy="groups-link"
+                      variant="secondary"
+                      style={{ marginTop: '0.5em' }}
+                      onClick={() => menuClickWrapper()}
+                      block
+                    >
+                      <FormattedMessage id="Groups-for-teachers" />
                     </Button>
                   </Link>
                 </Menu.Item>

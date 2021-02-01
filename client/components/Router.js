@@ -55,8 +55,9 @@ export default () => {
             <ProtectedRoute exact path="/stories/:id/read/" component={ReadView} />
             <ProtectedRoute exact path="/crossword/:storyId" component={CrosswordView} />
             <ProtectedRoute exact path="/groups" component={GroupView} />
-            <ProtectedRoute exact path="/groups/:tab" component={GroupView} />
-            <ProtectedRoute exact path="/:target/:id/concepts" component={Concepts} />
+            <ProtectedRoute exact path="/groups/:role" component={GroupView} />
+            <ProtectedRoute exact path="/groups/:role/:tab" component={GroupView} />
+            <ProtectedRoute exact path="/:target/:role/:id/concepts" component={Concepts} />
             <ProtectedRoute exact path="/concepts" component={Concepts} />
             <ProtectedRoute exact path="/profile/account" component={Profile} />
             <ProtectedRoute exact path="/profile/progress" component={Profile} />

@@ -41,7 +41,7 @@ const ConceptHeader = ({ target }) => {
             inline
             options={groupOptions}
             value={currentId}
-            onChange={(_, { value }) => history.push(`/groups/${value}/concepts`)}
+            onChange={(_, { value }) => history.push(`/groups/teacher/${value}/concepts`)}
           />
         </h2>
 

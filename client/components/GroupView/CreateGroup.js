@@ -5,7 +5,7 @@ import { useHistory } from 'react-router-dom'
 import { Button, FormControl, Form, Card } from 'react-bootstrap'
 import { createGroup } from 'Utilities/redux/groupsReducer'
 
-const CreateGroup = () => {
+const CreateGroup = ({role}) => {
   const [groupName, setGroupName] = useState('')
   const [description, setDescription] = useState('')
   const [teachers, setTeachers] = useState('')
@@ -20,7 +20,7 @@ const CreateGroup = () => {
     const teachersToAdd = teachers.split(',').map(p => p.trim())
 
     dispatch(createGroup(groupName, description, studentsToAdd, teachersToAdd))
-    history.push('/groups/analytics')
+    history.push(`/groups/${role}/analytics`)
   }
 
   return (

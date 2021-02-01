@@ -71,11 +71,13 @@ const GroupCard = ({
 
   const handleGroupNameClick = () => {
     dispatch(updateGroupSelect(id))
-    history.push('/groups/analytics')
+    const role = isTeaching? 'teacher' : 'student'
+    history.push(`/groups/${role}/analytics`)
   }
 
   const handleSettingsClick = () => {
-    history.push(`/groups/${id}/concepts`)
+    const role = isTeaching? 'teacher' : 'student'
+    history.push(`/groups/${role}/${id}/concepts`)
   }
 
   const handleShowTokenClick = () => {
@@ -155,8 +157,14 @@ const GroupCard = ({
   )
 }
 
-const GroupManagement = () => {
-  const { groups, pending } = useSelector(state => state.groups)
+const GroupManagement = ({role}) => {
+  const { groups, pending } = useSelector(({ groups }) => {
+    return {
+      ...groups,
+      groups: groups.groups.filter(group => group.is_teaching === (role === 'teacher'))
+    }
+  })
+  console.log(groups)
   const userId = useSelector(state => state.user.data.user.oid)
 
   const [addToGroupId, setAddToGroupId] = useState(null)
@@ -176,7 +184,7 @@ const GroupManagement = () => {
 
   if (pending) return <Spinner fullHeight />
 
-  if (groups.length === 0) return <NoGroupsView />
+  if (groups.length === 0) return <NoGroupsView role={role}/>
 
   return (
     <div className="ps-nm" data-cy="group-list">
