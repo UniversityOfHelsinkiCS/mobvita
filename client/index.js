@@ -13,7 +13,7 @@ import ErrorBoundary from 'Components/ErrorBoundary'
 import ConnectedIntlProvider from 'Components/ConnectedIntlProvider'
 
 const dsn = inProduction
-  ? 'https://509ab4585bb54fda8a94a461c1007146@sentry.toska.cs.helsinki.fi/13'
+  ? 'https://33d57e45848f4a0ea2c5f092631c30bd@sentry.toska.cs.helsinki.fi/3'
   : null
 
 const filterReduxStateForSentry = event => {
@@ -49,7 +49,7 @@ const filterReduxStateForSentry = event => {
 Sentry.init({
   dsn,
   environment: isStaging ? 'staging' : 'production',
-  release: `mobvita@${__COMMIT__}`, // eslint-disable-line no-undef
+  release: `revita@${__COMMIT__}`, // eslint-disable-line no-undef
   normalizeDepth: 10,
   beforeSend(event, hint) {
     return event.contexts ? filterReduxStateForSentry(event) : event
