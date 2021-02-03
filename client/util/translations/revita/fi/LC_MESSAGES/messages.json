@@ -845,5 +845,11 @@
     "last-weeks-winners": "Viime viikon voittajat",
     "invitation-email-sent-to": "Kutsu lähetetty seuraaville",
     "invitation-failed-for": "Kutsun lähetys epäonnistui seuraaville",
-    "invitation-failure-explanation": "Kutsun lähetys voi epäonnistua, kun sähköposti on virheellinen tai se ei ole rekisteröity Revitassa."
+    "invitation-failure-explanation": "Kutsun lähetys voi epäonnistua, kun sähköposti on virheellinen tai se ei ole rekisteröity Revitassa.",
+    "Groups-for-students": "Groups for students",
+    "Groups-for-teacher": "Groups for teachers",
+    "listen-to-chunks-and-words": "Listening to chunks and words",
+    "listen-to-words": "Only listening to words",
+    "no-listen-exer": "No listening exercise",
+    "Groups-for-teachers": "Groups for teachers"
 }

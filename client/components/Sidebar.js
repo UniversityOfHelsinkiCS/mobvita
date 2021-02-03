@@ -246,7 +246,21 @@ export default function Sidebar({ history }) {
             {user && !smallWindow && (
               <div style={{ fontSize: '20px', color: '#777' }}>{`${user.user.username}`}</div>
             )}
-
+            <div style={{ color: 'slateGrey' }}>
+                  <Menu.Item
+                    style={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-between' }}
+                  >
+                    <Button
+                      variant="secondary"
+                      block style={{ marginTop: '0.5em' }}
+                      onClick={() => menuClickWrapper()}
+                      as={Link}
+                      to="/help"
+                    >
+                      <FormattedMessage id="Help" />
+                    </Button>
+                  </Menu.Item>
+            </div>
             <div style={{ marginTop: 'auto', color: 'slateGrey' }}>
               <Menu.Item
                 style={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-between' }}
@@ -274,20 +288,6 @@ export default function Sidebar({ history }) {
                     </Button>
                   }
                 />
-                <Button
-                  variant="secondary"
-                  style={{
-                    flexBasis: '50%',
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                  }}
-                  onClick={() => menuClickWrapper()}
-                  as={Link}
-                  to="/help"
-                >
-                  <FormattedMessage id="Help" />
-                </Button>
               </Menu.Item>
               <TermsAndConditions
                 trigger={
