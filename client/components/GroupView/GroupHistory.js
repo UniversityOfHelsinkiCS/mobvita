@@ -14,9 +14,10 @@ const StudentHistory = ({ student, groupId, view }) => {
   const [endDate, setEndDate] = useState(moment().toDate())
   const maxDate = moment().valueOf()
   const minDate = 0
-  const [pageSize, setPageSize] = useState(2)
+  const [pageSize, setPageSize] = useState(1)
   const { pending, history } = useSelector(({ studentHistory }) => studentHistory)
 
+  /*
   const windowWidth = useWindowDimensions().width
   useEffect(() => {
     if (windowWidth > 1040) setPageSize(6)
@@ -27,7 +28,7 @@ const StudentHistory = ({ student, groupId, view }) => {
     else if (windowWidth > 425) setPageSize(2)
     else setPageSize(1)
   }, [windowWidth])
-
+  */
   const switchPage = change => {
     setStartDate(Math.max(minDate, moment(startDate).add(pageSize * change, 'month')))
     setEndDate(Math.min(maxDate, moment(endDate).add(pageSize * change, 'month')))

@@ -4,7 +4,7 @@ export const setFocusedWord = focusedWord => ({ type: 'SET_FOCUSED_WORD', focuse
 export const setTouchedIds = id => ({ type: 'SET_TOUCHED_IDS', id })
 export const incrementAttempts = () => ({ type: 'INCREMENT_ATTEMPTS' })
 export const addToOptions = options => ({ type: 'SET_OPTIONS', options })
-export const addToAudio = id => ({ type: 'SET_AUDIO', id })
+export const addToAudio = audio => ({ type: 'SET_AUDIO', audio })
 export const clearPractice = () => ({ type: 'CLEAR_PRACTICE' })
 export const clearCurrentPractice = () => ({ type: 'CLEAR_CURRENT_PRACTICE' })
 export const clearCurrentAnswers = () => ({ type: 'CLEAR_CURRENT_ANSWERS' })
@@ -22,7 +22,7 @@ const initialState = {
   touchedIds: [],
   attempt: 0,
   options: {},
-  audio: [],
+  audio: {},
   snippetFinished: false,
   references: null,
   refModalOpen: false,
@@ -67,7 +67,7 @@ export default (state = initialState, action) => {
     case 'SET_AUDIO':
       return {
         ...state,
-        audio: state.audio.concat(action.id.toString()),
+        audio: { ...state.audio, ...action.audio },
       }
     case 'SET_SNIPPET_STARTED':
       return {

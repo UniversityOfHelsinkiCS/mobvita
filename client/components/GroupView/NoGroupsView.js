@@ -3,7 +3,7 @@ import { useHistory } from 'react-router-dom'
 import { FormattedMessage } from 'react-intl'
 import { Button } from 'react-bootstrap'
 
-const NoGroupsView = () => {
+const NoGroupsView = ({role}) => {
   const history = useHistory()
 
   return (
@@ -12,24 +12,33 @@ const NoGroupsView = () => {
         {' '}
         <FormattedMessage id="Groups" />
       </h2>
-      <Button id="join-group-button" variant="info" onClick={() => history.push('/groups/join')}>
-        <FormattedMessage id="join-group" />
-      </Button>
-      <span className="additional-info">
-        <FormattedMessage id="join-group-message" />
-      </span>
-
-      <br />
-      <Button
-        data-cy="create-group"
-        variant="primary"
-        onClick={() => history.push('/groups/create')}
-      >
-        <FormattedMessage id="create-new-group" />
-      </Button>
-      <span className="additional-info">
-        <FormattedMessage id="create-group-message" />
-      </span>
+      { role == 'student'? (
+        <div>
+          <Button id="join-group-button" variant="info" onClick={() => history.push(`/groups/${role}/join`)}>
+            <FormattedMessage id="join-group" />
+          </Button>
+          <br />
+          <span className="additional-info">
+            <FormattedMessage id="join-group-message" />
+          </span>
+        </div>
+      ):(
+        <div>
+          <Button
+            data-cy="create-group"
+            variant="primary"
+            onClick={() => history.push(`/groups/${role}/create`)}
+          >
+            <FormattedMessage id="create-new-group" />
+          </Button>
+          <br />
+          <span className="additional-info">
+            <FormattedMessage id="create-group-message" />
+          </span>
+        </div>
+      )
+      }
+            
     </div>
   )
 }

@@ -9,7 +9,7 @@ describe("groups", function () {
     cy.loginExisting().as('user')
     cy.getUser('teacher').as('teacher')
     cy.getUser('student').as('student')
-    cy.visit('http://localhost:8000/groups/')
+    cy.visit('http://localhost:8000/groups/teacher')
   })
 
   this.afterAll(function () {

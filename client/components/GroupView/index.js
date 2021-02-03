@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react'
 import { useDispatch } from 'react-redux'
-import { Link } from 'react-router-dom'
+import { useParams,Link } from 'react-router-dom'
 import { Tab } from 'semantic-ui-react'
 import { FormattedMessage } from 'react-intl'
 import { getGroups } from 'Utilities/redux/groupsReducer'
@@ -17,6 +17,7 @@ const TabContent = ({ translationId }) => (
 
 export default function GroupView({ location }) {
   const dispatch = useDispatch()
+  const { role, tab } = useParams()
 
   useEffect(() => {
     dispatch(getGroups())
@@ -27,60 +28,134 @@ export default function GroupView({ location }) {
     paddingRight: '0.7rem',
   }
 
-  const panes = [
-    {
-      menuItem: {
-        as: Link,
-        content: <TabContent translationId="Management" />,
-        to: '/groups',
-        key: 'managment',
-        style: tabStyle,
+  let panes
+  if (role == 'teacher'){
+    panes = [
+      {
+        menuItem: {
+          as: Link,
+          content: <TabContent translationId="Management" />,
+          to: '/groups/teacher',
+          key: 'management',
+          style: tabStyle,
+        },
+        render: () => <GroupManagement role={role} />,
       },
-      render: () => <GroupManagement />,
-    },
-    {
-      menuItem: {
-        as: Link,
-        content: <TabContent translationId="Analytics" />,
-        to: '/groups/analytics',
-        key: 'analytics',
-        style: tabStyle,
-        'data-cy': 'group-analytics',
+      {
+        menuItem: {
+          as: Link,
+          content: <TabContent translationId="Analytics" />,
+          to: '/groups/teacher/analytics',
+          key: 'analytics',
+          style: tabStyle,
+          'data-cy': 'group-analytics',
+        },
+        render: () => <GroupAnalytics role={role} />,
       },
-      render: () => <GroupAnalytics />,
-    },
-    {
-      menuItem: {
-        as: Link,
-        content: <TabContent translationId="Join" />,
-        to: '/groups/join',
-        key: 'join',
-        style: tabStyle,
+      {
+        menuItem: {
+          as: Link,
+          content: <TabContent data-cy="create-group" translationId="New" />,
+          to: '/groups/teacher/create',
+          key: 'create',
+          style: tabStyle,
+        },
+        render: () => <CreateGroup role={role} />,
       },
-      render: () => <JoinGroup />,
-    },
-    {
-      menuItem: {
-        as: Link,
-        content: <TabContent data-cy="create-group" translationId="New" />,
-        to: '/groups/create',
-        key: 'create',
-        style: tabStyle,
+    ]
+  } else if (role == 'student'){
+    panes = [
+      {
+        menuItem: {
+          as: Link,
+          content: <TabContent translationId="Management" />,
+          to: '/groups/student',
+          key: 'management',
+          style: tabStyle,
+        },
+        render: () => <GroupManagement role={role} />,
       },
-      render: () => <CreateGroup />,
-    },
-  ]
+      {
+        menuItem: {
+          as: Link,
+          content: <TabContent translationId="Info" />,
+          to: '/groups/student/info',
+          key: 'info',
+          style: tabStyle,
+          'data-cy': 'group-analytics',
+        },
+        render: () => <GroupAnalytics role={role} />,
+      },
+      {
+        menuItem: {
+          as: Link,
+          content: <TabContent translationId="Join" />,
+          to: '/groups/student/join',
+          key: 'join',
+          style: tabStyle,
+        },
+        render: () => <JoinGroup role={role} />,
+      },
+    ]
+  } else {
+    panes = [
+      {
+        menuItem: {
+          as: Link,
+          content: <TabContent translationId="Management" />,
+          to: '/groups',
+          key: 'management',
+          style: tabStyle,
+        },
+        render: () => <GroupManagement />,
+      },
+      {
+        menuItem: {
+          as: Link,
+          content: <TabContent translationId="Analytics" />,
+          to: '/groups/analytics',
+          key: 'analytics',
+          style: tabStyle,
+          'data-cy': 'group-analytics',
+        },
+        render: () => <GroupAnalytics />,
+      },
+      {
+        menuItem: {
+          as: Link,
+          content: <TabContent translationId="Join" />,
+          to: '/groups/join',
+          key: 'join',
+          style: tabStyle,
+        },
+        render: () => <JoinGroup />,
+      },
+      {
+        menuItem: {
+          as: Link,
+          content: <TabContent data-cy="create-group" translationId="New" />,
+          to: '/groups/create',
+          key: 'create',
+          style: tabStyle,
+        },
+        render: () => <CreateGroup />,
+      },
+    ]
+  }
 
   let index
-  switch (location.pathname) {
-    case '/groups/analytics':
+  switch (tab) {
+    case 'analytics':
       index = 1
       break
-    case '/groups/join':
+    case 'info':
+      index = 1
+      break
+    case 'join':
       index = 2
       break
-    case '/groups/create':
-      index = 3
+    case 'create':
+      index = 2
       break
     default:
       index = 0

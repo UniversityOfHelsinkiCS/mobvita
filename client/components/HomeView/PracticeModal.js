@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useLayoutEffect } from 'react'
 import { Modal } from 'semantic-ui-react'
-import { Link } from 'react-router-dom'
+import { Link, useHistory } from 'react-router-dom'
 import { useSelector } from 'react-redux'
 import { capitalize, images } from 'Utilities/common'
 import CheckboxGroup from 'Components/CheckboxGroup'
@@ -13,6 +13,7 @@ const extractFilters = object =>
     .map(([key]) => capitalize(key))
 
 const PracticeModal = ({ trigger }) => {
+  const history = useHistory()
   const [libraries, setLibraries] = useState({
     public: true,
     private: true,
@@ -105,6 +106,22 @@ const PracticeModal = ({ trigger }) => {
     setFilteredStories(filtered)
   }, [stories, libraries, categories])
 
+
+  useEffect(()=>{
+    let jump = false
+    for (const value of Object.values(libraries)) {
+      if (!value) jump = true
+    }
+    for (const value of Object.values(categories)) {
+      if (!value) jump = true
+    }
+    if (jump && filteredStories.length > 0){
+      console.log(jump)
+      console.log(`/stories/${filteredStories[randomStoryIndex]._id}/practice`)
+      history.push(`/stories/${filteredStories[randomStoryIndex]._id}/practice`)
+    }
+  }, [filteredStories, randomStoryIndex])
+
   let filteredLink = ''
 
   if (filteredStories.length > 0) {
@@ -112,7 +129,20 @@ const PracticeModal = ({ trigger }) => {
   }
 
   const handleLibraryChange = library => {
-    setLibraries({ ...libraries, [library]: !libraries[library] })
+    const initLibraries = {
+      private: false,
+      public: false,
+      group: false,
+    }
+    const initCategories ={
+      culture: true,
+      politics: true,
+      science: true,
+      sport: true,
+      uncategorized: true,
+    }
+    setLibraries({ ...initLibraries, [library]: true })
+    setCategories(initCategories)
   }
 
   const handleClose = () => {
@@ -130,8 +160,24 @@ const PracticeModal = ({ trigger }) => {
     })
   }
 
-  const toggleCategory = category => {
-    setCategories({ ...categories, [category]: !categories[category] })
+  const handleCategoryChange = category => {
+    const initCategories = {
+      culture: false,
+      politics: false,
+      science: false,
+      sport: false,
+      uncategorized: false,
+    }
+    const initLibraries = {
+      private: true,
+      public: true,
+      group: true,
+    }
+    setLibraries(initLibraries)
+    setCategories( {
+      ...initCategories, 
+      [category]: true
+    })
   }
 
   return (
@@ -187,7 +233,7 @@ const PracticeModal = ({ trigger }) => {
                     flexBasis: '50%',
                     border: '1px solid white',
                   }}
-                  onClick={() => toggleCategory(name)}
+                  onClick={() => handleCategoryChange(name)}
                   className={!enabled && 'disabled'}
                   key={name}
                 >
@@ -199,7 +245,7 @@ const PracticeModal = ({ trigger }) => {
           </div>
           <Button
             block
-            onClick={() => toggleCategory('uncategorized')}
+            onClick={() => handleCategoryChange('uncategorized')}
             variant={categories.uncategorized ? 'btn btn-toggle-on' : 'btn btn-toggle-off'}
             data-cy="other-category"
           >

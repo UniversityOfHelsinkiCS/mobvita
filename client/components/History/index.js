@@ -8,8 +8,9 @@ import Concept from './Concept'
 
 const History = ({ history, dateFormat, handleDelete = null }) => {
   const [colors, setColors] = useState({
-    best: '0,255,0',
-    worst: '230,255,230',
+    best: '144, 239, 144',
+    medium: '246, 247, 221',
+    worst: '252, 108, 133',
     noData: '255, 255, 255',
   })
 
@@ -64,11 +65,26 @@ const History = ({ history, dateFormat, handleDelete = null }) => {
 
   const colorFromScore = score => {
     const best = colors.best.split(',').map(Number)
+    const medium = colors.medium.split(',').map(Number)
     const worst = colors.worst.split(',').map(Number)
 
-    const red = worst[0] + Number(score) * (best[0] - worst[0])
-    const green = worst[1] + Number(score) * (best[1] - worst[1])
-    const blue = worst[2] + Number(score) * (best[2] - worst[2])
+    let red, green, blue
+
+    if (Number(score) < 0.5){
+      red = worst[0] + Number(score) * (medium[0] - worst[0])
+      green = worst[1] + Number(score) * (medium[1] - worst[1])
+      blue = worst[2] + Number(score) * (medium[2] - worst[2])
+    }else if (Number(score) > 0.5){
+      red = medium[0] + Number(score) * (best[0] - medium[0])
+      green = medium[1] + Number(score) * (best[1] - medium[1])
+      blue = medium[2] + Number(score) * (best[2] - medium[2])
+    } else {
+      red = medium[0]
+      green = medium[1]
+      blue = medium[2]
+    }
+    
+    
 
     return `rgb(${red},${green},${blue})`
   }
@@ -146,6 +162,8 @@ const History = ({ history, dateFormat, handleDelete = null }) => {
           <br />
           best:
           <input type="text" value={colors.best} onChange={handleColorChange('best')} />
+          medium:
+          <input type="text" value={colors.medium} onChange={handleColorChange('medium')} />
           worst:
           <input type="text" value={colors.worst} onChange={handleColorChange('worst')} />
           no data:

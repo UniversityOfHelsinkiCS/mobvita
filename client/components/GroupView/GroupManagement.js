@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { useSelector, useDispatch } from 'react-redux'
+import { useSelector, useDispatch, shallowEqual } from 'react-redux'
 import { useHistory } from 'react-router-dom'
 import { FormattedMessage } from 'react-intl'
 import { CopyToClipboard } from 'react-copy-to-clipboard'
@@ -71,11 +71,13 @@ const GroupCard = ({
 
   const handleGroupNameClick = () => {
     dispatch(updateGroupSelect(id))
-    history.push('/groups/analytics')
+    const role = isTeaching? 'teacher' : 'student'
+    history.push(`/groups/${role}/analytics`)
   }
 
   const handleSettingsClick = () => {
-    history.push(`/groups/${id}/concepts`)
+    const role = isTeaching? 'teacher' : 'student'
+    history.push(`/groups/${role}/${id}/concepts`)
   }
 
   const handleShowTokenClick = () => {
@@ -155,8 +157,9 @@ const GroupCard = ({
   )
 }
 
-const GroupManagement = () => {
-  const { groups, pending } = useSelector(state => state.groups)
+const GroupManagement = ({role}) => {
+  const { groups: totalGroups, pending } = useSelector(({ groups }) => groups)
+  const groups = totalGroups.filter(group => group.is_teaching === (role === 'teacher'))
   const userId = useSelector(state => state.user.data.user.oid)
 
   const [addToGroupId, setAddToGroupId] = useState(null)
@@ -176,7 +179,7 @@ const GroupManagement = () => {
 
   if (pending) return <Spinner fullHeight />
 
-  if (groups.length === 0) return <NoGroupsView />
+  if (groups.length === 0) return <NoGroupsView role={role}/>
 
   return (
     <div className="ps-nm" data-cy="group-list">

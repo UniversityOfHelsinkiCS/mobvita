@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { useDispatch, useSelector } from 'react-redux'
+import { useDispatch, useSelector, shallowEqual } from 'react-redux'
 import { getGroups, removeFromGroup, getGroupToken } from 'Utilities/redux/groupsReducer'
 import { ListGroup, ButtonGroup, ToggleButton } from 'react-bootstrap'
 import { FormattedMessage, useIntl } from 'react-intl'
@@ -14,17 +14,17 @@ import StudentProgress from './StudentProgress'
 import NoGroupsView from './NoGroupsView'
 import GroupHistory from './GroupHistory'
 
-const GroupAnalytics = () => {
+const GroupAnalytics = ({role}) => {
   const intl = useIntl()
   const [content, setContent] = useState('summary')
   const [historyView, setHistoryView] = useState('test')
   const [currentStudent, setCurrentStudent] = useState(null)
-  const userOid = useSelector(({ user }) => user.data.user.oid)
   const currentGroupId = useSelector(({ user }) => user.data.user.last_selected_group)
   const learningLanguage = useSelector(learningLanguageSelector)
   const dispatch = useDispatch()
 
-  const { groups, created, pending } = useSelector(({ groups }) => groups)
+  const { groups: totalGroups, created, pending } = useSelector(({ groups }) => groups)
+  const groups = totalGroups.filter(group => group.is_teaching === (role === 'teacher'))
   const currentGroup = groups.find(group => group.group_id === currentGroupId)
 
   const groupOptions = groups.map(group => ({
@@ -41,7 +41,7 @@ const GroupAnalytics = () => {
     if (!groups || groups.length === 0) return
     if (currentGroupId && groups.some(group => group.group_id === currentGroupId)) return
     dispatch(updateGroupSelect(groups[0].group_id))
-  }, [groups])
+  }, [totalGroups])
 
   useEffect(() => {
     if (currentGroup && currentGroup.is_teaching) {
@@ -80,9 +80,9 @@ const GroupAnalytics = () => {
       </div>
     )
 
-  if (groups.length === 0) return <NoGroupsView />
+  if (groups.length === 0) return <NoGroupsView role={role}/>
 
-  const currentUserIsTeacher = currentGroup?.teachers.find(teacher => teacher._id === userOid)
+  const currentUserIsTeacher = currentGroup.is_teaching
 
   return (
     <div className="group-container">

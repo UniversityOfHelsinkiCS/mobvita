@@ -48,12 +48,33 @@ const Settings = () => {
           onChange={() => dispatch(updateMultiChoice(!user.multi_choice))}
           disabled={pending}
         />
-        <SettingToggle
-          translationId="type-the-word-you-hear"
-          checked={user.task_audio}
-          onChange={() => dispatch(updateAudioTask(!user.task_audio))}
-          disabled={pending}
-        />
+        <span className="pb-sm">
+          <FormattedMessage id="type-the-word-you-hear" />
+        </span>
+        <div className="gap-col-nm">
+          <Radio
+            label={intl.formatMessage({ id: 'listen-to-chunks-and-words' })}
+            name="audioTask"
+            value="chunk"
+            checked={user.task_audio === 'chunk'}
+            onChange={() => dispatch(updateAudioTask('chunk'))}
+          />
+          <Radio
+            label={intl.formatMessage({ id: 'listen-to-words' })}
+            name="audioTask"
+            value="word"
+            checked={user.task_audio === 'word' || user.task_audio===true}
+            onChange={() => dispatch(updateAudioTask('word'))}
+          />
+          <Radio
+            label={intl.formatMessage({ id: 'no-listen-exer' })}
+            name="audioTask"
+            value="none"
+            checked={user.task_audio === 'none' || user.task_audio===false}
+            onChange={() => dispatch(updateAudioTask('none'))}
+          />
+        </div>
+
         <span style={{ display: 'none', color: 'gray' }}>
           <i>Temporarily unavailable due to technical problem</i>
         </span>

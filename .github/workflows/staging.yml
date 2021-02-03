@@ -26,11 +26,11 @@ jobs:
       - name: npm run build
         run: npm run build
       
-#      - name: Make Sentry release
-#        run: npm run sentry-cli -- releases new --finalize revita@$GITHUB_SHA
+      - name: Make Sentry release
+        run: npm run sentry-cli -- releases new --finalize revita@$GITHUB_SHA
 
-#      - name: Upload sourcemaps
-#        run: npm run sentry-cli -- releases files revita@$GITHUB_SHA upload-sourcemaps  --rewrite ./dist/main.js.map
+      - name: Upload sourcemaps
+        run: npm run sentry-cli -- releases files revita@$GITHUB_SHA upload-sourcemaps  --rewrite ./dist/main.js.map
 
   test:
     name: "Run Cypress tests"
