@@ -845,10 +845,10 @@
     "invitation-failed-for": "Non è stato possibile mandare l'invito a ",
     "invitation-failure-explanation": "Spesso, quando l'invito fallisce, l'errore è dovuto ad una mail inseritta in maniera incorretta o ad un utente non ancora registrato in Revita.",
     "password-reset-instructions": "Inserisci il tuo indirizzo e-mail e ti verranno inviate le istruzioni per fare il reset della tua password.",
-    "Groups-for-students": "Gruppo per studenti",
+    "Groups-for-students": "Gestione Gruppi (per Studenti)",
     "Groups-for-teacher": "Gruppo per insegnanti",
     "listen-to-chunks-and-words": "Ascolta parole e frammenti",
     "listen-to-words": "Ascolta solo le parole",
     "no-listen-exer": "Nessun esercizio di ascolto",
-    "Groups-for-teachers": "Gruppo per insegnanti"
+    "Groups-for-teachers": "Gestione Gruppi (per Insegnanti)"
 }

@@ -800,7 +800,7 @@
     "cards total": "{numberOfCards} korttia yhteensä",
     "report-button": "Ilmoita",
     "report-problem": "Ilmoita ongelmasta",
-    "thank-you-for-reporting-problem": "Kiitos, että ilmoititte ongelmasta — käymme sen läpi mahdollisimman pian!",
+    "thank-you-for-reporting-problem": "Kiitos, että ilmoititte ongelmasta &mdash; käymme sen läpi mahdollisimman pian!",
     "enter-more-about-problem": "REVITA tiimi tulee näkemään tämän sivun, jossa ongelma tuli vastaa. Halutessanne voitte kirjoittaa tähän lisätietoja ongelmasta.",
     "Participate in weekly leaderboards": "Osallistu viikottaisiin pistetaulukkoihin",
     "Privacy": "Yksityisyys",
@@ -846,10 +846,10 @@
     "invitation-email-sent-to": "Kutsu lähetetty seuraaville",
     "invitation-failed-for": "Kutsun lähetys epäonnistui seuraaville",
     "invitation-failure-explanation": "Kutsun lähetys voi epäonnistua, kun sähköposti on virheellinen tai se ei ole rekisteröity Revitassa.",
-    "Groups-for-students": "Groups for students",
+    "Groups-for-students": "Ryhmäni (opiskelija)",
     "Groups-for-teacher": "Groups for teachers",
     "listen-to-chunks-and-words": "Listening to chunks and words",
     "listen-to-words": "Only listening to words",
     "no-listen-exer": "No listening exercise",
-    "Groups-for-teachers": "Groups for teachers"
+    "Groups-for-teachers": "Ryhmäni (opettaja)"
 }

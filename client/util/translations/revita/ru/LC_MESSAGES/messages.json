@@ -730,9 +730,9 @@
     "date-end": "Конец периода",
     "download-csv": "Скачать CSV",
     "completed-exercises": "Выполненные упражнения",
-    "join-group-message": "Вступить в группу — доступ к библиотеке группы.",
+    "join-group-message": "Вступить в группу &mdash; доступ к библиотеке группы.",
     "create-group": "Создать группу",
-    "create-group-message": "Создать новую группу — для загрузки текстов и проверки учеников",
+    "create-group-message": "Создать новую группу &mdash; для загрузки текстов и проверки учеников",
     "post-answers-error": "Не удалось загрузить текст.  Пожалуйста, проверь источник текста и попробуй снова.",
     "token-copied": "Ключ скопирован в буфер обмена",
     "register-to-save-your-progress": "Пожалуйста, зарегистрируйся",
@@ -850,10 +850,10 @@
     "invitation-failed-for": "Invitation failed for",
     "invitation-failure-explanation": "Invitation failure usually happens when the email is invalid or not registered to Revita.",
     "password-reset-instructions": "Введи адрес электронной почты.  Ревита пришлет ссылку, чтобы обновить пароль.",
-    "Groups-for-students": "Groups for students",
+    "Groups-for-students": "Мои группы (студент)",
     "Groups-for-teacher": "Groups for teachers",
     "listen-to-chunks-and-words": "Listening to chunks and words",
     "listen-to-words": "Only listening to words",
     "no-listen-exer": "No listening exercise",
-    "Groups-for-teachers": "Groups for teachers"
+    "Groups-for-teachers": "Мои группы (учитель)"
 }

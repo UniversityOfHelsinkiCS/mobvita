@@ -796,7 +796,7 @@
     "cards total": "{numberOfCards} cards total",
     "report-button": "Report",
     "report-problem": "Report a problem",
-    "thank-you-for-reporting-problem": "Thank you for reporting a problem — we will review it as soon as possible!",
+    "thank-you-for-reporting-problem": "Thank you for reporting a problem &mdash; we will review it as soon as possible!",
     "enter-more-about-problem": "REVITA Team will see this page where you encountered the problem.  If you want to tell us more, please write here what went wrong...",
     "Participate in weekly leaderboards": "Participate in weekly leaderboards",
     "Privacy": "Privacy",
@@ -844,10 +844,10 @@
     "invitation-failed-for": "Invitation failed for",
     "invitation-failure-explanation": "Invitation failure usually happens when the email is invalid or not registered to Revita.",
     "password-reset-instructions": "Enter your e-mail address and we will send you instructions to reset your password.",
-    "Groups-for-students": "Groups for students",
+    "Groups-for-students": "My groups (for student)",
     "Groups-for-teacher": "Groups for teachers",
     "listen-to-chunks-and-words": "Listening to chunks and words",
     "listen-to-words": "Only listening to words",
     "no-listen-exer": "No listening exercise",
-    "Groups-for-teachers": "Groups for teachers"
+    "Groups-for-teachers": "My groups (for teacher)"
 }
