@@ -20,12 +20,13 @@ const AccountInfo = () => {
   return (
     <div>
       <span className="sm-label">
-        <FormattedMessage id="Email" />
+        <FormattedMessage id="Email" />:
       </span>
       <p className="account-info-item">{email}</p>
+      <br/>
       <div style={{ display: 'flex', alignItems: 'flex-start' }}>
         <span className="sm-label">
-          <FormattedMessage id="Username" />
+          <FormattedMessage id="Username" />:&nbsp;
         </span>
         {!editingUser && (
           <Icon

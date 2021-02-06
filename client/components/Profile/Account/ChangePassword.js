@@ -53,7 +53,17 @@ export default function ChangePassword() {
         <Form onSubmit={saveSettings}>
           <Form.Field>
             <Form.Input
-              label={intl.formatMessage({ id: 'new-password' })}
+              label={intl.formatMessage({ id: 'current-password' })+":"}
+              type="password"
+              name="currentPassword"
+              value={currentPassword}
+              error={passwordError}
+              onChange={handleSettingChange}
+            />
+          <hr />
+          <Form.Field>
+            <Form.Input
+              label={intl.formatMessage({ id: 'new-password' })+":"}
               type="password"
               name="newPassword"
               value={newPassword}
@@ -63,7 +73,7 @@ export default function ChangePassword() {
           </Form.Field>
           <Form.Field>
             <Form.Input
-              label={intl.formatMessage({ id: 'repeat-password' })}
+              label={intl.formatMessage({ id: 'repeat-password' })+":"}
               type="password"
               name="newPasswordAgain"
               value={newPasswordAgain}
@@ -71,16 +81,6 @@ export default function ChangePassword() {
               onChange={handleSettingChange}
             />
           </Form.Field>
-          <hr />
-          <Form.Field>
-            <Form.Input
-              label={intl.formatMessage({ id: 'current-password' })}
-              type="password"
-              name="currentPassword"
-              value={currentPassword}
-              error={passwordError}
-              onChange={handleSettingChange}
-            />
           </Form.Field>
           <div style={{ display: 'flex', flexDirection: 'column' }}>
             <Button variant="primary" data-cy="reset-password" type="submit">
