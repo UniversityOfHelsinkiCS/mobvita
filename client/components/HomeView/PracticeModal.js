@@ -183,7 +183,7 @@ const PracticeModal = ({ trigger }) => {
   return (
     <Modal dimmer="inverted" closeIcon trigger={trigger} onClose={handleClose}>
       <Modal.Header>
-        <FormattedMessage id="practice" />
+        <FormattedMessage id="practice-now" />
       </Modal.Header>
       <Modal.Content className="practiceModal">
         <div>
@@ -201,9 +201,12 @@ const PracticeModal = ({ trigger }) => {
         </div>
 
         <div className="pt-sm pb-sm">
+          <br/>
+          <br/>
           <div className="sm-label">
-            <FormattedMessage id="Library" />
+            <FormattedMessage id="Library" />:
           </div>
+          <br/>
           <CheckboxGroup
             values={libraries}
             onClick={handleLibraryChange}
@@ -212,9 +215,12 @@ const PracticeModal = ({ trigger }) => {
           />
         </div>
         <div>
+          <br/>
+          <br/>
           <div className="sm-label">
-            <FormattedMessage id="Category" />
+            <FormattedMessage id="Category" />:
           </div>
+          <br/>
           <div
             className="checkbox-group"
             style={{ flexWrap: 'wrap' }}
@@ -242,15 +248,18 @@ const PracticeModal = ({ trigger }) => {
                   </span>
                 </Button>
               ))}
+          <br/>
           </div>
-          <Button
+          {false && (
+           <Button
             block
             onClick={() => handleCategoryChange('uncategorized')}
             variant={categories.uncategorized ? 'btn btn-toggle-on' : 'btn btn-toggle-off'}
             data-cy="other-category"
-          >
+           >
             <FormattedMessage id="Uncategorized" />
           </Button>
+          )}
         </div>
         <div />
       </Modal.Content>
