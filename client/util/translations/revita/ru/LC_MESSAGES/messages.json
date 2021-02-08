@@ -855,5 +855,6 @@
     "listen-to-chunks-and-words": "Слова в контексте (сложнее)",
     "listen-to-words": "Отдельные слова (проще)",
     "no-listen-exer": "Отключить аудио упражнения",
-    "Groups-for-teachers": "Группы (для учителя)"
+    "Groups-for-teachers": "Группы (для учителя)",
+    "Progress graph": "Progress graph"
 }
