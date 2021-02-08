@@ -191,7 +191,7 @@ const History = ({ history, dateFormat, handleDelete = null }) => {
             {calculatePage().map(test => (
               <Table.HeaderCell key={test.date}>
                 <span className="space-between">
-                  {moment(test.date).format(dateFormat || 'YYYY-MM-DD HH:mm')}
+                  {moment(test.date).format(dateFormat || 'YYYY.MM.DD HH:mm')}
                   {handleDelete && (
                     <Icon
                       name="close"

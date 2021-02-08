@@ -10,9 +10,9 @@ import useWindowDimensions from 'Utilities/windowDimensions'
 import moment from 'moment'
 
 const StudentHistory = ({ student, groupId, view }) => {
-  const [startDate, setStartDate] = useState(moment().subtract(6, 'month').toDate())
-  const [endDate, setEndDate] = useState(moment().toDate())
-  const maxDate = moment().valueOf()
+  const [startDate, setStartDate] = useState(moment().clone().startOf('month').subtract(6, 'month').toDate())
+  const [endDate, setEndDate] = useState(moment().clone().startOf('month').toDate())
+  const maxDate = moment().clone().startOf('month').valueOf()
   const minDate = 0
   const [pageSize, setPageSize] = useState(1)
   const { pending, history } = useSelector(({ studentHistory }) => studentHistory)
@@ -59,13 +59,13 @@ const StudentHistory = ({ student, groupId, view }) => {
               <span className="sm-label">
                 <FormattedMessage id="date-start" />
               </span>
-              <span>{moment(startDate).format('YYYY-MM-DD')}</span>
+              <span>{moment(startDate).format('YYYY.MM.DD')}</span>
             </div>
             <div className="gap-col-sm pl-lg">
               <span className="sm-label">
                 <FormattedMessage id="date-end" />
               </span>
-              <span>{moment(endDate).format('YYYY-MM-DD')}</span>
+              <span>{moment(endDate).format('YYYY.MM.DD')}</span>
             </div>
           </div>
           <div>
@@ -83,9 +83,9 @@ const StudentHistory = ({ student, groupId, view }) => {
       {student ? (
         <div>
           {view == 'exercise' ? (
-            <History history={history} dateFormat="MMM.YYYY" />
+            <History history={history} dateFormat="YYYY.MM" />
           ):(
-            <History history={history} dateFormat="MMM.DD.YYYY" />
+            <History history={history} dateFormat="YYYY.MM.DD" />
           )}
         </div>
       ) : (
