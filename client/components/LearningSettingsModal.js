@@ -133,8 +133,9 @@ const LearningSettingsModal = ({ trigger }) => {
         <h2 style={{ fontSize: '17px', fontWeight: '550' }}>
           <FormattedMessage id="personal-settings" />
         </h2>
+        <br />
         <label className="label" htmlFor="difficultyButtons">
-          <FormattedMessage id="Level" />
+          <FormattedMessage id="Level" />:
         </label>
         <ButtonGroup name="difficultyButtons" id="difficultyButtons" size="md">
           {skillLevels.sort().map(level => (
