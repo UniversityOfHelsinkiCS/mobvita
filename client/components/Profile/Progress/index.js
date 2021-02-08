@@ -41,6 +41,10 @@ const Progress = () => {
 
   return (
     <div className="cont ps-nm">
+      <h2 className="header-2 bold">
+        <FormattedMessage id="Showing results for" />
+      </h2>
+      
       <div className="date-pickers gap-col-sm">
         <div>
           <FormattedMessage id="date-start" />
@@ -53,17 +57,23 @@ const Progress = () => {
           <PickDate date={endDate} setDate={setEndDate} />
         </div>
       </div>
-      <ProgressStats startDate={startDate} endDate={endDate} />
-      <ProgressGraph
-        exerciseHistory={exerciseHistory}
-        flashcardHistory={flashcardHistory}
-        startDate={startDate}
-        endDate={endDate}
-      />
+      <hr />
       <div>
-        <h2 className="header-2">
+        <h3 className="header-3">
+          <FormattedMessage id="Progress graph" />
+        </h3>
+        <ProgressStats startDate={startDate} endDate={endDate} />
+        <ProgressGraph
+          exerciseHistory={exerciseHistory}
+          flashcardHistory={flashcardHistory}
+          startDate={startDate}
+          endDate={endDate}
+        />
+      </div>
+      <div>
+        <h3 className="header-3">
           <FormattedMessage id="Practice history" />
-        </h2>
+        </h3>
         <History history={history} dateFormat="YYYY.MM" />
       </div>
     </div>
