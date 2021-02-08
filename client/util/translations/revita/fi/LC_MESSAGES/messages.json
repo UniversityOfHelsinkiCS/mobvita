@@ -750,7 +750,7 @@
     "select-a-student-from-list": "Valitse opiskelija listasta",
     "take-me-to-old-revita": "Palaa vanhaan käyttöliittymään",
     "practice-random-story": "Harjoittele satunnaisella tarinalla",
-    "stories-selected": "tarinaa valittu",
+    "stories-selected": "tarinaa",
     "Stories": "Tarinat",
     "Audio settings": "Ääniasetukset",
     "Pronounce clicked words": "Tuntemattomia sanoja klikatessa",
@@ -770,7 +770,7 @@
     "Your clue": "Vihjeesi",
     "New crossword": "Uusi sanaristikko",
     "Back to library": "Takaisin kirjastoon",
-    "Click here to add site to your favourites.": "Klikkaa lisätäksesi sivun suosikkeisi.",
+    "Click here to add site to your favourites.": "LISÄÄ sivu suosikkeihin !",
     "Description": "Kuvaus",
     "Management": "Hallinta",
     "Analytics": "Analytiikka",
@@ -846,10 +846,10 @@
     "invitation-email-sent-to": "Kutsu lähetetty seuraaville",
     "invitation-failed-for": "Kutsun lähetys epäonnistui seuraaville",
     "invitation-failure-explanation": "Kutsun lähetys voi epäonnistua, kun sähköposti on virheellinen tai se ei ole rekisteröity Revitassa.",
-    "Groups-for-students": "Ryhmäni (opiskelija)",
+    "Groups-for-students": "Ryhmät (opiskelijalle)",
     "Groups-for-teacher": "Groups for teachers",
-    "listen-to-chunks-and-words": "Listening to chunks and words",
-    "listen-to-words": "Only listening to words",
-    "no-listen-exer": "No listening exercise",
-    "Groups-for-teachers": "Ryhmäni (opettaja)"
+    "listen-to-chunks-and-words": "Listen to word in context (more difficult)",
+    "listen-to-words": "Listen to single word (easier)",
+    "no-listen-exer": "No audio exercises",
+    "Groups-for-teachers": "Ryhmät (opettajalle)"
 }
