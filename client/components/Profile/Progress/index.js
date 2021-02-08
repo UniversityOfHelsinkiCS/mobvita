@@ -64,7 +64,7 @@ const Progress = () => {
         <h2 className="header-2">
           <FormattedMessage id="Practice history" />
         </h2>
-        <History history={history} dateFormat="YYYY.MM.DD" />
+        <History history={history} dateFormat="YYYY.MM" />
       </div>
     </div>
   )
