@@ -67,7 +67,7 @@ export default function NavBar() {
            </Link>
            <Link to="/home">
            <Navbar.Brand style={{ color: 'white', marginLeft: '0.5em',marginTop: '0.18em', cursor: 'pointer' }}>
-                                                     Revita{hiddenFeatures}
+                                                     Revita<sup>β</sup>{hiddenFeatures}
                                                  </Navbar.Brand>
            </Link>
         </div>
