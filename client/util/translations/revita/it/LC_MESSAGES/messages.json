@@ -1,6 +1,6 @@
 {
     "(DictionaryHelp) No translation available": "Traduzione non trovata",
-    "(DictionaryHelp) Loading, please wait": "Attendere il caricamento prego",
+    "(DictionaryHelp) Loading, please wait": "Attendi il caricamento ",
     "cannot-translate-into-same-language-please-choose-another-translation-language-81e412db826b56c4341db": "Non è possibile tradurre verso la stessa lingua! <br/>Selezionare un'altra lingua di traduzione.",
     "you-have-to-login-register-to-use-flashcards": "Entra o registrati per usare le flashcard",
     "Login": "Login",
@@ -751,7 +751,7 @@
     "practice-random-story": "Allenati con storie casuali",
     "stories-selected": "storie",
     "Stories": "Storie",
-    "Audio settings": "Audio settings",
+    "Audio settings": "Preferenze Audio",
     "Pronounce clicked words": "Quando clicco su parole sconosciuti",
     "Always": "Pronuncia sempre",
     "Only on demand": "Pronuncia solo su richiesta",
