@@ -123,6 +123,7 @@ const LearningSettingsModal = ({ trigger }) => {
           value={activeTemplate}
           onChange={(e, data) => handleTemplateChange(data.value)}
         />
+        <br />
         <span className="additional-info">
           <FormattedMessage id="choose-settings-template-info" />
         </span>
@@ -142,6 +143,7 @@ const LearningSettingsModal = ({ trigger }) => {
             </Button>
           ))}
         </ButtonGroup>
+        <br />
         {!smallscreen && (
           <Button
             style={{ alignSelf: 'flex-start', marginTop: '1em' }}
