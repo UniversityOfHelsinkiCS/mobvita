@@ -45,18 +45,20 @@ const Progress = () => {
         <FormattedMessage id="Showing results for" />
       </h2>
       
+      <br />
       <div className="date-pickers gap-col-sm">
         <div>
-          <FormattedMessage id="date-start" />
+          <b><FormattedMessage id="date-start" />:</b>
           <br />
           <PickDate id="start" date={startDate} setDate={setStartDate} />
         </div>
         <div>
-          <FormattedMessage id="date-end" />
+          <b><FormattedMessage id="date-end" />:</b>
           <br />
           <PickDate date={endDate} setDate={setEndDate} />
         </div>
       </div>
+      <br />
       <hr />
       <div>
         <h3 className="header-3">
