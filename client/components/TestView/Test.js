@@ -131,7 +131,7 @@ const Test = () => {
             )}
             {paused && (
               <div className="test-prephrase">
-                <FormattedMessage id="paused-click-to-resume-27ac769f5d88934067af4294483b9807" />
+                <FormattedMessage id="paused-click-to-resume" />
               </div>
             )}
             {currentQuestion && !paused && !answerFailure && (

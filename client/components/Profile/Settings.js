@@ -46,7 +46,7 @@ const Settings = () => {
       )}
       <hr/>
       <h2 className="header-2 pb-sm">
-        <FormattedMessage id="select-types-of-exercisesto-practice-34b953b387e6c6f6a7d4aa52ddaf177b" />
+        <FormattedMessage id="select-types-of-exercises-to-practice" />
       </h2>
       <div className="flex-col align-start gap-row-sm">
         <SettingToggle
