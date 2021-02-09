@@ -366,8 +366,6 @@ const Help = () => {
                              Puoiu trovare il pulsante "Contatti" nel menu a comparsa.
                          </li>
                        </ul>
-
-
                        <h4>Informazioni Tecniche</h4>
                        <p>
                          Raccomandiamo l'utilizzo le ultime versioni dei seguenti browsers:
@@ -378,7 +376,7 @@ const Help = () => {
                             <li>(Internet Explorer non è al momento supportato.)</li>
                          </ul>
                          <br />
-                          Devono inoltre essere <i>abilitati</i> JavaScript e cookies nel tuo browser.
+                          Devono inoltre essere<i> abilitati</i> JavaScript e cookies nel tuo browser.
                        </p>
                      </Segment>
                    </div>
