@@ -207,160 +207,181 @@ const Help = () => {
 
 
     const HelpItalian = (
-            <div className="cont auto">
-              <Segment>
-                <b>Funzione di Revita:</b>
-                <ul>
-                  <li>
-                    Revita ti aiuta ad imparare una nuova lingua facendoti esercitare sulle storie di cui sei interessato
-                  </li>
-                </ul>
+             <div className="cont auto">
+                     <Segment>
+                       <b>Revita:</b>
+                       <ul>
+                         <li>
+                           Revita ti aiuta ad imparare una nuova lingua facendoti esercitare sulle storie di cui sei interessato.
+                         </li>
+                       </ul>
 
-                <b>Come:</b>
-                <ul>
-                  <li>
-                    Puoi esercitarti con qualsiasi testo di tua scelta, che dovrai caricare, o esercitandoti da alcuni testi campione che abbiamo caricato noi per tutti.
-                  </li>
-                </ul>
+                       <b>How:</b>
+                       <ul>
+                         <li>
+                            Puoi esercitarti con <u>qualsiasi testo</u> di tua scelta &mdash; che dovrai caricare, o esercitandoti da alcuni testi campione che abbiamo caricato noi per tutti.
+                         </li>
+                       </ul>
 
-                <hr />
-                <b>Tutorial di Introduzione:</b>
+                       <hr />
+                       <b>Breve Introduzione:</b>
 
-                <br />
-                <br />
+                       <br />
+                       <br />
 
-                <div className="iframe-container">
-                  <iframe
-                    title="Introductory tutorial"
-                    className="iframe"
-                    src={videoUrl}
-                    webkitallowfullscreen
-                    mozallowfullscreen
-                    allowFullScreen
-                  />
-                </div>
-                <hr />
+                       <div className="iframe-container">
+                         <iframe
+                           title="Introduction Tutorial"
+                           className="iframe"
+                           src={videoUrl}
+                           webkitallowfullscreen
+                           mozallowfullscreen
+                           allowFullScreen
+                         />
+                       </div>
+                       <hr />
 
-                <hr />
-                <b>Aggiungi i tuoi testi:</b>
-                <ul>
-                  <li>
-                    Puoi aggiungere un testo -- qualsiasi testo -- nel sistema nei seguenti modi:
-                    <ul>
-                      <li>dato un link ad una pagina web di cui sei interessato</li>
-                      <li>
-                        dato un file di testo &mdash; <tt>.txt</tt> or <tt>.docx</tt>
-                      </li>
-                      <li>copiando e incollando del testo nella sezione apposita</li>
-                    </ul>
-                  </li>
+                       <hr />
+                       <b>Aggiungi i tuoi testi preferiti:</b>
+                       <ul>
+                         <li>
+                           Puoi aggiungere un testo &mdash; <u>qualsiasi testo</u> &mdash; nella tua raccolta nei seguenti modi:
+                           <ul>
+                             <li>dato un link ad una pagina web di cui sei interessato</li>
+                             <li>
+                               dato un file di testo &mdash; <tt>.txt</tt> or <tt>.docx</tt>
+                             </li>
+                             <li>copiando e incollando del testo nella sezione apposita.</li>
+                           </ul>
+                         </li>
 
-                  <li>
-                    Carica i testi che più di interessano -- testi con i quali pensi di imparare piacevolmente.
-                  </li>
+                         <li>
+                           Carica i testi che più di interessano &mdash; testi con i quali pensi di imparare piacevolmente.
+                         </li>
 
-                  <li>
-                    Revita genera automaticamente esercizi basati sulla storia scelta da te.
-                  </li>
-                </ul>
+                         <li>
+                          <b>Revita</b> genera automaticamente esercizi basati sulla storia scelta da te.
+                         </li>
+                       </ul>
 
-                <b>Revita crea esercizi basati sulla tua storia:</b>
-                <ul>
-                  <li>
-                    Puoi scegliere di iniziare leggendo la storia o di esercitarti cliccando direttamente su <i>Esercitati</i>.
-                  </li>
+                       <b>Revita crea esercizi basati sulla tua storia:</b>
+                       <ul>
+                         <li>
+                           Puoi scegliere di iniziare leggendo la storia o di esercitarti cliccando direttamente su <i>Esercitati</i>.
+                         </li>
 
-                  <li>
-                    Revita nasconde alcune parole nella storia e ti fornisce alcuni indizi su queste parole
-                    &mdash; i fornisce la forma &quot;base&quot; (che si trova solitamente nei dizionari).
+                         <li>
+                           Mentre ti stai esercitando su una storia, puoi cliccare su qualsiasi <b>parola sconosciuta</b> &mdash; per vedere la sua definizione nel dizionario.
+                         </li>
 
-                  </li>
+                         <li>
+                           Tutte le parole a te sconosciute verranno aggiunte al tuo mazzo di <b>flashcards</b>.
+                           <br />
+                           Puoi allenarti con le flashcards &mdash; per migliorare il tuo vocabolario.
+                         </li>
 
-                  <li>
-                    L’obiettivo dello studente è quello di inserire la forma corretta della parola, basandola sul
-                    <i> contesto</i> della storia.
-                  </li>
+                         <li>
+                           <b>Modalità Esercitazione</b>: Revita nasconde alcune parole nella storia e ti fornisce alcuni indizi su queste parole
+                                                                     &mdash; i fornisce la forma &quot;base&quot; (che si trova solitamente nei dizionari).
+                         </li>
 
-                  <li>
-                    Dopo aver risposto agli esericizi, il sistema fornisce <i> feedback immediati</i> &mdash; quali risposte
-                    sono corrette e quali sono errate.
-                    <br />
-                    Per ogni risposta corretta viene assegnato un <i>punteggio</i> basta sul "Elo rating system", per ogni risposta errata,
-                    il punteggio diminuirà.
-                    <br />
-                    <i>Elo rating system</i> (Idea di Base): Il punteggio finale dipende dal tuo livello e dalla difficoltà dell'esercizio.
-                    Se il livello dell'esercizio è più difficile del tuo livello guadagnerai più punti per ogni risposta corretta e perderai meno punti per ogni risposta errata.
-                  </li>
+                         <li>
+                           L’obiettivo dello studente è quello di inserire la <b> forma corretta </b> della parola, basandola sul
+                                                                                                                                        <i> contesto</i> della storia.
+                         </li>
 
-                  <li>
-                    Clicca su qualsiasi <i>parola che non conosci</i> &mdash; per vedere la sua definizione nel dizionario.
-                  </li>
+                         <li>
+                           Dopo aver risposto agli esericizi, il sistema fornisce <i> feedback immediati</i> &mdash; quali risposte
+                                               sono corrette e fornisce dei <b>suggerimenti aggiuntivi</b> per quelle errate, permettendoti di ritentare.
+                           <br />
+                           Per ogni risposta corretta viene assegnato un <i>punteggio</i> basta sul "Elo rating system", per ogni risposta errata,
+                                               il punteggio diminuirà.
+                         </li>
 
-                  <li>
-                    Per alcune lingue, Revita potrà <i>pronunciare</i> la parola. (Clicca sul simbolo dello speaker
-                    nella sezione del dizionario.)
-                  </li>
+                         <li>
+                           er alcune lingue, Revita potrà <i>pronunciare</i> la parola. (Clicca sul simbolo dello speaker
+                                               nella sezione del dizionario.)
+                         </li>
 
-                  <li>
-                    Tutte le parole sconosciute verranno aggiunte al tuo mazzo di  <i>flashcards</i>.
-                    <br />
-                    Allenati sulle tue flashcards &mdash; per migliorare il tuo vocabolario.
-                  </li>
+                         <li>
+                           Puoi allenarti sulla stessa storia diverse volte: ogni volta gli esercizi saranno nuovi e diversi &mdash; questi vengono creati ogni volta automaticamente.
+                         </li>
 
-                  <li>
-                    Puoi allenarti sulla stessa storia diverse volte: ogni volta gli esercizi saranno nuovi e diversi &mdash; questi vengono creati ogni volta automaticamente.
-                  </li>
+                         <li>
+                           Il sistema tiene traccia delle tue risposte agli esercizi, flashcards, ecc.. &mdash; Dalle tue risposte,
+                                               il sistema impara ad offrirti gli esercizi che meglio si adattano al tuo livello &mdash; Revita cerca di evitare esercizi su concetti
+                                                che hai imparato correttamente, o che sono troppo difficili per il tuo livello attuale.
+                         </li>
 
-                  <li>
-                  Il sistema tiene traccia delle tue risposte agli esercizi, flashcards, ecc.. &mdash; Dalle tue risposte,
-                    il sistema impara ad offrirti gli esercizi che meglio si adattano al tuo livello &mdash; Revita cerca di evitare esercizi su concetti
-                     che hai imparato correttamente, o che sono troppo difficili per il tuo livello attuale.
-                  </li>
+                         <li>
+                           Più ti alleni, più impari &mdash; e meglio Revita può adattarsi al tuo livello, creando esercizi che meglio si addicono al tuo livello.
+                         </li>
+                       </ul>
 
-                  <li>
-                    Più ti alleni, più impari &mdash; e meglio Revita può adattarsi al tuo livello, creando esercizi che meglio si addicono al tuo livello.
-                  </li>
-                </ul>
 
-                <b>Registrazione:</b>
-                <ul>
-                  <li>
-                    Revita può essere utilizzato in modalità "Ospite", senza alcuna registrazione. Un ospite può utilizzare
-                     qualsiasi lingua, accedere a tutte le storie pubbliche, e fare esercizi.
-                  </li>
+                       <b>Registrazione:</b>
+                       <ul>
+                         <li>
+                           Revita può essere utilizzato in modalità "Ospite", senza alcuna registrazione. Un ospite può utilizzare
+                                                qualsiasi lingua, accedere a tutte le storie pubbliche, e fare esercizi.
+                         </li>
 
-                  <li>
-                    La registrazione &mdash; che è assolutamente gratuita &mdash; ti permette di utilizzare funzionalità aggiuntive:
-                    <ul>
-                      <li>
-                        <b>I tuoi contenuti</b>: tu puoi caricare le tue storie preferite nella tua raccolta personale.
-                        <br />
-                        Le storie private non sono visibili dagli altri utenti &mdash; ma puoi condividere le tue storie con i tuoi
-                        <i> amici</i>
-                      </li>
+                         <li>
+                           La registrazione &mdash; che è assolutamente gratuita &mdash; ti permette di utilizzare funzionalità aggiuntive:
+                           <ul>
+                             <li>
+                               <b>I tuoi contenuti</b>: tu puoi caricare le tue storie preferite nella tua raccolta personale.
+                               <br />
+                               Le storie private non sono visibili dagli altri utenti. ( ma puoi condividere le tue storie con i tuoi
+                                                       <i> amici</i>)
+                             </li>
 
-                      <li>
-                        <b>Personalizzazione</b>: Le risposte dello studente aiutano il sistema ad offrire i gli esercizi
-                        che meglio si adattano al livello dello studente.
-                      </li>
-                    </ul>
-                  </li>
-                </ul>
+                             <li>
+                               <b>Tracciamento dei Progressi</b>:
+                               Puoi osservare le tue performance e i tuoi punteggi,
+                               per tenere traccia dei tuoi miglioramenti nel tempo.
+                             </li>
 
-                <b>Interazioni:</b>
-                <ul>
-                  <li>Un insegnante può condividere storie con un gruppo di studenti.</li>
-                </ul>
+                             <li>
+                               <b>Personalizzazione</b>:
+                               Le risposte dello studente aiutano il sistema ad offrire i gli esercizi
+                                                       che meglio si adattano al livello dello studente.
+                             </li>
+                           </ul>
+                         </li>
+                       </ul>
 
-                <h4>Informazioni Tecniche</h4>
-                <p>
-                  Raccomandiamo l'utilizzo le ultime versioni dei seguenti browsers: Firefox, Chrome/Chromium, Safari.
-                  (Internet Explorer non è al momento supportato.)
-                  <br />
-                  Devono inoltre essere abilitati JavaScript e cookies nel tuo browser.
-                </p>
-              </Segment>
-            </div>
+                       <b>Supporto per gli Insegnanti:</b>
+                       <ul>
+                       <li>Un insegnante può creare un gruppo di studenti.</li>
+                       <li>Un insegnante può condividere storie con un gruppo &mdash; nella Libreria del gruppo.</li>
+                       <li>Un insegnante può specificare le impostazioni di apprendimento di un gruppo.</li>
+                       <li>Un insegnante può controllare il progresso dell'intero gruppo,
+                             e i progressi individuali di ogni studente nel gruppo.</li>
+                       </ul>
+
+                       <b>Contattaci:</b>
+                       <ul>
+                         <li>Per qualsiasi domanda o commento ti preghiamo di contattarci!
+                             Puoiu trovare il pulsante "Contatti" nel menu a comparsa.
+                         </li>
+                       </ul>
+
+
+                       <h4>Informazioni Tecniche</h4>
+                       <p>
+                         Raccomandiamo l'utilizzo le ultime versioni dei seguenti browsers:
+                         <ul>
+                            <li>Firefox,</li>
+                            <li>Chrome/Chromium,</li>
+                            <li>Safari.</li>
+                            <li>(Internet Explorer non è al momento supportato.)</li>
+                         </ul>
+                         <br />
+                          Devono inoltre essere <i>abilitati</i> JavaScript e cookies nel tuo browser.
+                       </p>
+                     </Segment>
+                   </div>
           )
 
   if (lang === 'Italian' || lang === 'it') 
