@@ -843,12 +843,12 @@
     "Double and single -н- in suffixes": "Двойная согласная -н- в суффиксах",
     "Joint vs. hyphenated spelling": "Слитное, дефисное и раздельное написание",
     "Joint vs. separate spelling of negation 'не'": "Слитное и раздельное написания с отрицанием не",
-    "story-shared": "Текст послан",
-    "report-sent": "Сообщение отослано",
+    "story-shared": "Текст отправлен",
+    "report-sent": "Сообщение отправлено",
     "last-weeks-winners": "Победители прошедшей недели",
-    "invitation-email-sent-to": "Приглашение выслано",
-    "invitation-failed-for": "Приглашение не сработало ...",
-    "invitation-failure-explanation": "Приглашение может не сработать, если адрес неверный, или если он не зарегистрирован в Ревите",
+    "invitation-email-sent-to": "Приглашение отправлен",
+    "invitation-failed-for": "Приглашение не отправлено ...",
+    "invitation-failure-explanation": "Приглашение может не работать, если адрес неверный, или если он не зарегистрирован в Ревите",
     "password-reset-instructions": "Введи адрес электронной почты.  Ревита пришлет ссылку, чтобы обновить пароль.",
     "Groups-for-students": "Группы (для студента)",
     "Groups-for-teacher": "Groups for teachers",
@@ -856,5 +856,5 @@
     "listen-to-words": "Отдельные слова (проще)",
     "no-listen-exer": "Отключить аудио упражнения",
     "Groups-for-teachers": "Группы (для учителя)",
-    "Progress graph": "Progress graph"
+    "Progress graph": "Прогресс"
 }

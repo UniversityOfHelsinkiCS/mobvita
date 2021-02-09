@@ -97,7 +97,7 @@ const VirtualKeyboard = () => {
     <>
       <Icon
         data-cy="onscreen-keyboard"
-        style={{ color: '#004085',cursor: 'pointer'}}
+        style={{ color: '#004085',cursor: 'pointer',marginTop: '0.2em'}}
         name="keyboard"
         size = 'huge'
         onClick={() => setShowKeyboard(!showKeyboard)}
