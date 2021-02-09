@@ -99,7 +99,7 @@ const VirtualKeyboard = () => {
         data-cy="onscreen-keyboard"
         style={{ color: '#004085',cursor: 'pointer'}}
         name="keyboard"
-        size = 'big'
+        size = 'huge'
         onClick={() => setShowKeyboard(!showKeyboard)}
       />
       {showKeyboard && (
