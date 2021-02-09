@@ -75,12 +75,12 @@ const DetailedStoryModal = ({
             />
           </div>
           <div className="gap-col-sm">
-            <LinkButton
+            {/*<LinkButton
               condition={showLearningSettingsButton}
               variant="outline-secondary"
               to={`/stories/${story._id}/concepts`}
               translationId="learning-settings"
-            />
+            />*/}
             <CustomButton
               condition={showShareButton}
               onClick={() => setShareModalOpen(true)}
