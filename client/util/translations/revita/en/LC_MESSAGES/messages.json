@@ -723,8 +723,8 @@
     "show-levels": "Show levels",
     "show-recommended-sites": "Show recommended sites",
     "hide-recommended-sites": "Hide recommended sites",
-    "choose-settings-template": "Select personal settings or settings from Group:",
-    "choose-settings-template-info": "Selected settings apply to private and public stories.",
+    "choose-settings-template": "For private and public stories:",
+    "choose-settings-template-info": "Note: All stories in a group library are controlled only by the group's own settings chosen by teacher",
     "personal-settings": "Personal settings",
     "join-group": "Join Group",
     "summary": "Summary",
@@ -854,5 +854,8 @@
     "listen-to-words": "Listen to single word (easier)",
     "no-listen-exer": "No audio exercises",
     "Groups-for-teacher": "Groups for teachers",
-    "Progress graph": "Progress graph"
+    "Progress graph": "Progress graph",
+    "use-my-personal-settings": "Use my personal settings",
+    "use-my-group-settings": "Use my group settings",
+    "select-cefr-level": "Select the MAXIMUM CEFR level allowed in exercises:"
 }
