@@ -120,7 +120,7 @@ const LearningSettingsModal = ({ trigger }) => {
       </Modal.Header>
       <Modal.Content style={{ display: 'flex', flexDirection: 'column' }}>
         <label htmlFor="settings-template-selector" className="label">
-          <FormattedMessage id="choose-settings-template" />
+          <FormattedMessage id="choose-settings-template" />:
         </label>
         <div className="row justify-content-center align-items-center">
           <div className="col-4">
@@ -162,7 +162,7 @@ const LearningSettingsModal = ({ trigger }) => {
         </label>
         <ButtonGroup name="difficultyButtons" id="difficultyButtons" size="md">
           {skillLevels.sort().map(level => (
-            <Button key={level} onClick={() => handleLevelSelect(level)}>
+            <Button style={{marginRight: '10px'}} key={level} onClick={() => handleLevelSelect(level)}>
               {level}
             </Button>
           ))}
