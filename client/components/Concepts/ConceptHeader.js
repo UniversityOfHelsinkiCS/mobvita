@@ -35,8 +35,8 @@ const ConceptHeader = ({ target }) => {
     return (
       <div style={{ display: 'flex' }}>
         <h2 className="concept-title">
-          <FormattedMessage id="group-learning-settings-for" />
-          {' '}
+          <FormattedMessage id="group-learning-settings-for" />:
+            &nbsp;&nbsp;&nbsp;&nbsp;
           <Dropdown
             inline
             options={groupOptions}
@@ -44,7 +44,9 @@ const ConceptHeader = ({ target }) => {
             onChange={(_, { value }) => history.push(`/groups/teacher/${value}/concepts`)}
           />
         </h2>
-
+        <br />
+        <br />
+        <br />
       </div>
     )
   }

@@ -116,9 +116,9 @@ const Concepts = () => {
         />
         {showTestConcepts && <TotalTestQuestions />}
       </div>
+      <br />
       <SelectAllCheckbox />
-      <hr />
-      <div>
+      <div style={{ paddingLeft: '10px' }} className="Full-Concept-Tree">
         {conceptTree.map(c => (
           <ConceptTree
             key={c.concept_id}
