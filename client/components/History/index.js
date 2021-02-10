@@ -17,7 +17,7 @@ const History = ({ history, dateFormat, handleDelete = null }) => {
   const [pageSize, setPageSize] = useState(2)
 
   const [colorTest, setColorTest] = useState(0.5)
-  const [fillFromHistory, setFillFromHistory] = useState(true)
+  const [fillFromHistory, setFillFromHistory] = useState(false)
 
   const [page, setPage] = useState(0)
   const { concepts } = useSelector(({ metadata }) => metadata)
