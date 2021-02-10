@@ -354,7 +354,7 @@ const Help = () => {
                        <b>Supporto per gli Insegnanti:</b>
                        <ul>
                        <li>Un insegnante può creare un gruppo di studenti.</li>
-                       <li>Un insegnante può condividere storie con un gruppo &mdash; nella Libreria del gruppo.</li>
+                       <li>Un insegnante può condividere storie con un gruppo &mdash; nella Raccolta del gruppo.</li>
                        <li>Un insegnante può specificare le impostazioni di apprendimento di un gruppo.</li>
                        <li>Un insegnante può controllare il progresso dell'intero gruppo,
                              e i progressi individuali di ogni studente nel gruppo.</li>
