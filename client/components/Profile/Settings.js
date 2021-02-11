@@ -48,13 +48,6 @@ const Settings = () => {
       <h2 className="header-2 pb-sm">
         <FormattedMessage id="select-types-of-exercises-to-practice" />
       </h2>
-      <div className="flex-col align-start gap-row-sm">
-        <SettingToggle
-          translationId="multiple-choice"
-          checked={user.multi_choice}
-          onChange={() => dispatch(updateMultiChoice(!user.multi_choice))}
-          disabled={pending}
-        />
         <br/>
         <span className="pb-sm">
           <FormattedMessage id="type-the-word-you-hear" />:
@@ -82,7 +75,14 @@ const Settings = () => {
             onChange={() => dispatch(updateAudioTask('none'))}
           />
         </div>
-
+        <br/>
+        <div className="flex-col align-start gap-row-sm">
+        <SettingToggle
+          translationId="multiple-choice"
+          checked={user.multi_choice}
+          onChange={() => dispatch(updateMultiChoice(!user.multi_choice))}
+          disabled={pending}
+        />
         <span style={{ display: 'none', color: 'gray' }}>
           <i>Temporarily unavailable due to technical problem</i>
         </span>
@@ -98,6 +98,7 @@ const Settings = () => {
       <h2 className="header-2 pb-sm pt-nm">
         <FormattedMessage id="Audio settings" />
       </h2>
+      <br/>
       <span className="pb-sm">
         <FormattedMessage id="Pronounce clicked words" />:
       </span>
@@ -121,6 +122,7 @@ const Settings = () => {
       <h2 className="header-2 pb-sm pt-nm">
         <FormattedMessage id="Flashcards" />
       </h2>
+      <br/>
       <label htmlFor="flashcard-amount" style={{ paddingRight: '0.5rem' }}>
         <FormattedMessage id="how-many-cards-per-practice-session" />:&nbsp;&nbsp;
       </label>
@@ -135,6 +137,7 @@ const Settings = () => {
       <h2 className="header-2 pb-sm pt-nm">
         <FormattedMessage id="Privacy" />
       </h2>
+      <br/>
       <SettingToggle
         translationId="Show my username in leaderboards"
         checked={user.publish_progress}
