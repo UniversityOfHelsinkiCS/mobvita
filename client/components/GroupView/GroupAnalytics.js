@@ -69,6 +69,8 @@ const GroupAnalytics = ({role}) => {
     dispatch(removeFromGroup(currentGroupId, userId))
   }
 
+  const marginLeftButton = '2px'
+
   const handleGroupChange = key => {
     dispatch(updateGroupSelect(key))
   }
@@ -116,6 +118,7 @@ const GroupAnalytics = ({role}) => {
               type="radio"
               value="progress"
               variant="info"
+              style={{ marginLeft: marginLeftButton }}
               checked={content === 'progress'}
               onChange={() => setContent('progress')}
             >
@@ -125,6 +128,7 @@ const GroupAnalytics = ({role}) => {
               type="radio"
               value="history"
               variant="info"
+              style={{ marginLeft: marginLeftButton }}
               checked={content === 'history'}
               onChange={() => setContent('history')}
             >
@@ -223,6 +227,7 @@ const GroupAnalytics = ({role}) => {
               type="radio"
               value="exercise"
               variant="success"
+              style={{ marginLeft: marginLeftButton }}
               checked={historyView === 'exercise'}
               onChange={() => setHistoryView('exercise')}
             >

@@ -31,6 +31,8 @@ export default function Sidebar({ history }) {
     if (user) dispatch(updateLocale(newLocale)) // Updates user-object
   }
 
+  const marginTopButton = '8px'
+    
   useEffect(() => {
     const temp = localeOptions.map(option => ({
       value: option.code,
@@ -106,7 +108,7 @@ export default function Sidebar({ history }) {
               >
                 <Link to="/home" onClick={() => menuClickWrapper()}>
                   <img
-                    style={{ width: '15em', margin: '0 auto' }}
+                    style={{ width: '15em', margin: '6px auto' }}
                     src={images.logo}
                     alt="revitaLogo"
                   />
@@ -123,6 +125,7 @@ export default function Sidebar({ history }) {
                     <FormattedMessage
                       id={user.user.email === 'anonymous_email' ? 'Login' : 'sign-out'}
                     />
+                      &nbsp;&nbsp;&nbsp;&nbsp;
                   </span>
                   <Icon name="sign out" />
                 </button>
@@ -183,7 +186,7 @@ export default function Sidebar({ history }) {
                           onClick={() => menuClickWrapper()}
                           variant="secondary"
                           block
-                          style={{ marginTop: '0.5em' }}
+                          style={{ marginTop: marginTopButton }}
                         >
                           <FormattedMessage id="learning-settings" />
                         </Button>
@@ -193,7 +196,7 @@ export default function Sidebar({ history }) {
                       <Button
                         data-cy="settings-link"
                         variant="secondary"
-                        style={{ marginTop: '0.5em' }}
+                        style={{ marginTop: marginTopButton }}
                         onClick={() => menuClickWrapper()}
                         block
                       >
@@ -206,7 +209,7 @@ export default function Sidebar({ history }) {
                     <Button
                       data-cy="groups-link"
                       variant="secondary"
-                      style={{ marginTop: '0.5em' }}
+                      style={{ marginTop: marginTopButton }}
                       onClick={() => menuClickWrapper()}
                       block
                     >
@@ -217,7 +220,7 @@ export default function Sidebar({ history }) {
                     <Button
                       data-cy="groups-link"
                       variant="secondary"
-                      style={{ marginTop: '0.5em' }}
+                      style={{ marginTop: marginTopButton }}
                       onClick={() => menuClickWrapper()}
                       block
                     >
@@ -229,8 +232,8 @@ export default function Sidebar({ history }) {
             )}
 
             <Menu.Item>
-              <div style={{ textAlign: 'left', paddingBottom: '3px' }}>
-                <FormattedMessage id="interface-language" />
+              <div style={{ textAlign: 'left', marginTop: marginTopButton, paddingBottom: '3px',  }}>
+                <FormattedMessage id="interface-language" />:
               </div>
               <Dropdown
                 fluid
@@ -240,7 +243,7 @@ export default function Sidebar({ history }) {
                 selection
                 onChange={(e, data) => handleLocaleChange(data.value)}
                 data-cy="ui-lang-select"
-                style={{ color: '#777' }}
+                style={{ color: '#777', marginTop: marginTopButton }}
               />
             </Menu.Item>
             {user && !smallWindow && (
@@ -252,7 +255,7 @@ export default function Sidebar({ history }) {
                   >
                     <Button
                       variant="secondary"
-                      block style={{ marginTop: '0.5em' }}
+                      block style={{ marginTop: marginTopButton }}
                       onClick={() => menuClickWrapper()}
                       as={Link}
                       to="/help"

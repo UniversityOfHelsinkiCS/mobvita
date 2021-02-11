@@ -49,7 +49,9 @@ const StudentHistory = ({ student, groupId, view }) => {
       <hr />
       {view == 'exercise' ? (
         <div>
+          <h3>
           <FormattedMessage id="Practice history" />
+          </h3>
           <br />
           <span className="sm-label pl-sm">
             <FormattedMessage id="Showing results for" />
@@ -57,13 +59,13 @@ const StudentHistory = ({ student, groupId, view }) => {
           <div className="flex pl-sm">
             <div className="gap-col-sm">
               <span className="sm-label">
-                <FormattedMessage id="date-start" />
+                <FormattedMessage id="date-start" />:
               </span>
               <span>{moment(startDate).format('YYYY.MM.DD')}</span>
             </div>
             <div className="gap-col-sm pl-lg">
               <span className="sm-label">
-                <FormattedMessage id="date-end" />
+                <FormattedMessage id="date-end" />:
               </span>
               <span>{moment(endDate).format('YYYY.MM.DD')}</span>
             </div>
@@ -78,7 +80,11 @@ const StudentHistory = ({ student, groupId, view }) => {
             </div>
         </div>
       ) : (
-        <FormattedMessage id="Test History" />
+          <div>
+            <h3>
+              <FormattedMessage id="Test History" />
+            </h3>
+          </div>
       )}
       {student ? (
         <div>

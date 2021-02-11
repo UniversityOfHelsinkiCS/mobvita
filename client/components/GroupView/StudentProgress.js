@@ -38,7 +38,7 @@ const StudentProgress = ({ student, groupId }) => {
       <div className="flex pl-sm">
         <div className="gap-col-sm">
           <span className="sm-label">
-            <FormattedMessage id="date-start" />
+            <FormattedMessage id="date-start" />:
           </span>
           <ResponsiveDatePicker
             maxDate={Math.min(moment().valueOf(), endDate)}
@@ -48,7 +48,7 @@ const StudentProgress = ({ student, groupId }) => {
         </div>
         <div className="gap-col-sm pl-lg">
           <span className="sm-label">
-            <FormattedMessage id="date-end" />
+            <FormattedMessage id="date-end" />:
           </span>
           <ResponsiveDatePicker
             minDate={startDate}
