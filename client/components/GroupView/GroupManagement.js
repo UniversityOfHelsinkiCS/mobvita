@@ -134,21 +134,39 @@ const GroupCard = ({
           </div>
         </div>
         {showToken && (
-          <div
-            className="border rounded"
-            style={{
-              display: 'flex',
-              marginTop: '0.5em',
-              minHeight: '3em',
-              wordBreak: 'break-all',
-            }}
-          >
-            <span style={{ margin: 'auto', padding: '0.5em' }}>{token}</span>
-            <CopyToClipboard text={token}>
-              <Button type="button" onClick={handleTokenCopy}>
-                <Icon name="copy" size="large" />
-              </Button>
-            </CopyToClipboard>
+          <div>
+            <div
+              className="border rounded"
+              style={{
+                display: 'flex',
+                marginTop: '0.5em',
+                minHeight: '3em',
+                wordBreak: 'break-all',
+              }}
+            >
+              <span style={{ margin: 'auto', padding: '0.5em' }}>{token}</span>
+              <CopyToClipboard text={token}>
+                <Button type="button" onClick={handleTokenCopy}>
+                  <Icon name="copy" size="large" />
+                </Button>
+              </CopyToClipboard>
+            </div>
+            <div
+              style={{
+                  display: 'flex',
+                  justifyContent: 'center',
+                  alignItems: 'center',
+              }}
+            >
+              <span style={{ 
+                  margin: 'auto',
+                  padding: '0.5em',
+                  fontStyle: 'oblique',
+                  fontWeight: 'bold',
+              }}>
+                <FormattedMessage id="This key is valid for the next 30 days" />.
+              </span>
+            </div>
           </div>
         )}
       </Card.Content>
