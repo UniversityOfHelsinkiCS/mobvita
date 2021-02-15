@@ -458,7 +458,7 @@
     "your-friend-friends-has-shared-with-you-the-story-storys-1345e34dc6788b810befdb83af0ecfc4": "Din vän %(friend)s har delat med dig berättelsen: &quot;%(story)s&quot;",
     "stories-from-friends-appear-automatically-in-your-list-of-shared-stories-if-you-wish-to-change-this-": "Berättelser från %(friend)s syns automatiskt i din lista av med dig delade berättelser.<br> \nOm du vill ändra det här, vänligen klicka nedan för att antingen ta bort %(friend)s som din vän eller blockera honnom/henne.",
     "REMOVE": "TA BORT",
-    "upload-stories": "Upload stories",
+    "upload-stories": "Upload from file",
     "upload-flashcards": "",
     "my-languages": "Mina språk",
     "select-types-of-exercisesto-practice-34b953b387e6c6f6a7d4aa52ddaf177b": "",
@@ -858,5 +858,7 @@
     "Revita: for language learning and supporting endangered languages": "Tools for Language Learning and Supporting Endangered Languages",
     "use-my-personal-settings": "Use my personal settings",
     "use-my-group-settings": "Use settings from group",
-    "select-cefr-level": "Select the MAXIMUM level allowed in exercises"
+    "select-cefr-level": "Select the MAXIMUM level allowed in exercises",
+    "This key is valid for the next 30 days": "This key is valid for the next 30 days",
+    "upload-from-web": "Upload from Web"
 }

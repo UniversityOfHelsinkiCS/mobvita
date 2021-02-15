@@ -459,7 +459,7 @@
     "your-friend-friends-has-shared-with-you-the-story-storys-1345e34dc6788b810befdb83af0ecfc4": "Ystäväsi %(friend)s on jakanut kanssasi tarinan: &quot;%(story)s&quot;",
     "stories-from-friends-appear-automatically-in-your-list-of-shared-stories-if-you-wish-to-change-this-": "%(friend)s jakamat tarinat ilmestyvät automaattisesti sinulle. Valitse allolevista napeista mikäli haluat lisätä hänet kaveriksi tai estää hänet.",
     "REMOVE": "POISTA",
-    "upload-stories": "Lataa kertomuksia",
+    "upload-stories": "Lataa kertomuksia tiedostosta",
     "upload-flashcards": "Lataa kysymyskortteja",
     "my-languages": "Kielesi",
     "select-types-of-exercisesto-practice-34b953b387e6c6f6a7d4aa52ddaf177b": "Valitse harjoitustyypit",
@@ -572,12 +572,12 @@
     "Browse": "Selaa",
     "Submit": "Lähetä tiedosto",
     "paste-the-raw-text-you-want-to-add-as-a-story-we-will-use-the-first-sentence-before-an-empty-line-as": "Kopioikaa tähän raaka teksti jonka haluatte lisätä tarinana. Käytämme ensimmäisen lauseen ennen tyhjää riviä otsikkona. Antakaa tarina valitussa opetus kielessänne. Minimi pituus: 50.",
-    "or-paste-a-text": "Tai liitä teksti:",
+    "or-paste-a-text": "Tai liitä teksti",
     "characters-left": "Merkkejä jäljellä",
     "title-on-first-line-text-after-an-empty-line-f2c9245edf5d0379b77008c6db1fd5a9": "Otsikko ensimmäisellä rivillä. \n\nTeksti tyhjän rivin jälkeen...",
     "revita-will-automatically-try-to-find-only-the-story-text-from-your-url-if-the-results-contain-unwan": "Revita yrittää automaattisesti löytää vain tarinan URL:istasi.  Jos tulos sisältää ei toivottua tekstiä, olkaa hyvä ja kopioikaa tarina suoraan yllä olevaan tekstikenttään. Antakaa tarina opetus kielessä.",
     "or-use-a-web-page": "Tai lataa teksti verkkosivusta:",
-    "enter-web-address": "Ole hyvä ja syötä verkkosivun osoite...",
+    "enter-web-address": "Syötä verkkosivun osoite...",
     "you-can-visit-the-following-websites-to-find-more-stories": "Voit käydä seuraavilla sivustoilla hakemassa lisää kertomuksia:",
     "add-your-own-flashcards": "Lisää omat kysymyskorttisi",
     "to-add-your-own-flashcards": "lisätäksesi omat kysymyskorttisi!",
@@ -860,5 +860,7 @@
     "Revita: for language learning and supporting endangered languages": "Työkaluja kielten oppimiseen ja uhanalaisten kielten tukemiseen",
     "use-my-personal-settings": "Käytä omia henkilökohtaisia asetuksiani",
     "use-my-group-settings": "Käytä ryhmän asetuksia",
-    "select-cefr-level": "Valitse harjoituksissa sallittu MAKSIMI taso"
+    "select-cefr-level": "Valitse harjoituksissa sallittu MAKSIMI taso",
+    "This key is valid for the next 30 days": "Tämä avain on voimassa 30 päivää",
+    "upload-from-web": "Lataa verkosta"
 }

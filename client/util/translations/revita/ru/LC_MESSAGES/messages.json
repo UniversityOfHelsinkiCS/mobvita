@@ -460,7 +460,7 @@
     "your-friend-friends-has-shared-with-you-the-story-storys-1345e34dc6788b810befdb83af0ecfc4": "Ваш друг %(friend)s поделился с вами текстом: &quot;%(story)s&quot;",
     "stories-from-friends-appear-automatically-in-your-list-of-shared-stories-if-you-wish-to-change-this-": "Тексты, отправленные другом %(friend)s, автоматически добавляются в библиотеку.<br> Чтобы изменить настройки, пожалуйста, пройди по ссылкам ниже, чтобы заблокировать %(friend)s или удалить из списка друзей.",
     "REMOVE": "УДАЛИТЬ",
-    "upload-stories": "Загрузить истории",
+    "upload-stories": "Загрузить текст из файла",
     "upload-flashcards": "Загрузить флешкарты",
     "my-languages": "Мой язык",
     "select-types-of-exercisesto-practice-34b953b387e6c6f6a7d4aa52ddaf177b": "Выбери типы упражнений для практики",
@@ -573,7 +573,7 @@
     "Browse": "Выбрать",
     "Submit": "Загрузить текст",
     "paste-the-raw-text-you-want-to-add-as-a-story-we-will-use-the-first-sentence-before-an-empty-line-as": "Пожалуйста введи текст истории. Первая строка текста послужит заголовком.  Длина текста: 200 - 50 000 букв.",
-    "or-paste-a-text": "Введи текст:",
+    "or-paste-a-text": "Ввести текст",
     "characters-left": "Свободных символов",
     "title-on-first-line-text-after-an-empty-line-f2c9245edf5d0379b77008c6db1fd5a9": "Заголовок на первой строке.\n\nТекст после пустой строки...",
     "revita-will-automatically-try-to-find-only-the-story-text-from-your-url-if-the-results-contain-unwan": "Ревита попытается извлечь текст из данной веб-страницы. Если результат будет неудачным, пожалуйста, скопируй текст вручную и введи в поле для загрузки файлов (выше)",
@@ -862,5 +862,7 @@
     "Confirm-Password": "Подтвердить пароль",
     "use-my-personal-settings": "Использовать мои личные настройки",
     "use-my-group-settings": "Использовать настройки группы",
-    "select-cefr-level": "Максимальный уровень сложности упражнений"
+    "select-cefr-level": "Максимальный уровень сложности упражнений",
+    "This key is valid for the next 30 days": "Этот ключ действителен в течение 30-и дней",
+    "upload-from-web": "Загрузить "
 }

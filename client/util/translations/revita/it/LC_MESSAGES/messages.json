@@ -458,7 +458,7 @@
     "your-friend-friends-has-shared-with-you-the-story-storys-1345e34dc6788b810befdb83af0ecfc4": "Il tuo amico %(friend)s ha condiviso una storia con te: &quot;%(story)s&quot;",
     "stories-from-friends-appear-automatically-in-your-list-of-shared-stories-if-you-wish-to-change-this-": "Le storie inviate da %(friend)s, verranno aggiunte automaticamente alla tua lista. <br>Se vuoi modificare questa opzione, clicca sul link sottostante per bloccare %(friend)s o per rimuoverlo dagli amici",
     "REMOVE": "RIMUOVERE",
-    "upload-stories": "Carica la storia",
+    "upload-stories": "Carica la storia da un file",
     "upload-flashcards": "Caricare flashcard",
     "my-languages": "La mia lingua",
     "select-types-of-exercisesto-practice-34b953b387e6c6f6a7d4aa52ddaf177b": "Scegli il tema grammaticale da praticare",
@@ -571,12 +571,12 @@
     "Browse": "Scegliere",
     "Submit": "Caricare testo",
     "paste-the-raw-text-you-want-to-add-as-a-story-we-will-use-the-first-sentence-before-an-empty-line-as": "Inserisci il testo della storia. Revita usa la prima riga come titolo",
-    "or-paste-a-text": "Copia un testo:",
+    "or-paste-a-text": "Copia un testo",
     "characters-left": "Caratteri rimasti",
     "title-on-first-line-text-after-an-empty-line-f2c9245edf5d0379b77008c6db1fd5a9": "Titolo sulla prima riga.\n\nTesto dopo una riga vuota",
     "revita-will-automatically-try-to-find-only-the-story-text-from-your-url-if-the-results-contain-unwan": "Revita tenterà di estrarre il testo dalla tua pagina web. Se il risultato non sarà ben riuscito, copialo manualmente e incollalo nel campo per il caricamento dei file (in alto)",
     "or-use-a-web-page": "O inserisci l'indirizzo della pagina web con il testo d'interesse",
-    "enter-web-address": "Inserisci l'indirizzo della pagina web",
+    "enter-web-address": "Inserisci l'indirizzo della pagina web...",
     "you-can-visit-the-following-websites-to-find-more-stories": "Puoi trovare altre storie nei seguenti siti web",
     "add-your-own-flashcards": "Aggiungi la tua flash card",
     "to-add-your-own-flashcards": "Per aggiungere le tue flashcard",
@@ -860,5 +860,7 @@
     "Revita: for language learning and supporting endangered languages": "Strumenti per l'apprendimento delle lingue e per supporto alle lingue in pericolo di estinzione",
     "use-my-personal-settings": "Usa le mie impostazioni personali",
     "use-my-group-settings": "Usa le impostazioni del mio gruppo",
-    "select-cefr-level": "Seleziona il livello MASSIMO degli esercizi"
+    "select-cefr-level": "Seleziona il livello MASSIMO degli esercizi",
+    "This key is valid for the next 30 days": "Questa chiave è valida per i prossimi 30 giorni",
+    "upload-from-web": "Carica dal Web"
 }
