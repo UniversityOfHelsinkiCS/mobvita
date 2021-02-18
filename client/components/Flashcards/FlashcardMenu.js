@@ -66,7 +66,7 @@ const CardManagmentOptions = ({ handleOptionClick, handleOptionClickWithStory })
 const PracticeModeOptions = ({ handleOptionClickWithStory }) => {
   const { flashcardArticles } = useSelector(({ metadata }) => metadata)
 
-  const articleLabel = flashcardArticles && flashcardArticles.join('/')
+  const articleLabel = flashcardArticles && flashcardArticles.join(' / ')
 
   return (
     <div className="flex-col">
