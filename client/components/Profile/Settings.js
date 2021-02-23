@@ -11,6 +11,7 @@ import {
   updateNumberOfFlashcards,
   updateAutoSpeak,
   updatePublishProgress,
+  updateParticipleExer
 } from 'Utilities/redux/userReducer'
 import useWindowDimensions from 'Utilities/windowDimensions'
 
@@ -48,35 +49,62 @@ const Settings = () => {
       <h2 className="header-2 pb-sm">
         <FormattedMessage id="select-types-of-exercises-to-practice" />
       </h2>
-        <br/>
-        <span className="pb-sm">
-          <FormattedMessage id="type-the-word-you-hear" />:
-        </span>
-        <div className="gap-col-nm">
-          <Radio
-            label={intl.formatMessage({ id: 'listen-to-chunks-and-words' })}
-            name="audioTask"
-            value="chunk"
-            checked={user.task_audio === 'chunk'}
-            onChange={() => dispatch(updateAudioTask('chunk'))}
-          />
-          <Radio
-            label={intl.formatMessage({ id: 'listen-to-words' })}
-            name="audioTask"
-            value="word"
-            checked={user.task_audio === 'word' || user.task_audio===true}
-            onChange={() => dispatch(updateAudioTask('word'))}
-          />
-          <Radio
-            label={intl.formatMessage({ id: 'no-listen-exer' })}
-            name="audioTask"
-            value="none"
-            checked={user.task_audio === 'none' || user.task_audio===false}
-            onChange={() => dispatch(updateAudioTask('none'))}
-          />
-        </div>
-        <br/>
-        <div className="flex-col align-start gap-row-sm">
+      <br/>
+      <span className="pb-sm">
+        <FormattedMessage id="type-the-word-you-hear" />:
+      </span>
+      <div className="gap-col-nm">
+        <Radio
+          label={intl.formatMessage({ id: 'listen-to-chunks-and-words' })}
+          name="audioTask"
+          value="chunk"
+          checked={user.task_audio === 'chunk'}
+          onChange={() => dispatch(updateAudioTask('chunk'))}
+        />
+        <Radio
+          label={intl.formatMessage({ id: 'listen-to-words' })}
+          name="audioTask"
+          value="word"
+          checked={user.task_audio === 'word' || user.task_audio===true}
+          onChange={() => dispatch(updateAudioTask('word'))}
+        />
+        <Radio
+          label={intl.formatMessage({ id: 'no-listen-exer' })}
+          name="audioTask"
+          value="none"
+          checked={user.task_audio === 'none' || user.task_audio===false}
+          onChange={() => dispatch(updateAudioTask('none'))}
+        />
+      </div>
+      <br/>
+      <span className="pb-sm">
+        <FormattedMessage id="participle-exercise" />:
+      </span>
+      <div className="gap-col-nm">
+        <Radio
+          label={intl.formatMessage({ id: 'participle-base-exer' })}
+          name="part_exer"
+          value="participle"
+          checked={user.part_exer === 'participle'}
+          onChange={() => dispatch(updateParticipleExer('participle'))}
+        />
+        <Radio
+          label={intl.formatMessage({ id: 'verb-base-exer' })}
+          name="part_exer"
+          value="verb"
+          checked={user.part_exer === 'verb'}
+          onChange={() => dispatch(updateParticipleExer('verb'))}
+        />
+        {/*<Radio
+          label={intl.formatMessage({ id: 'no-listen-exer' })}
+          name="part_exer"
+          value="auto"
+          checked={user.part_exer === 'auto'}
+          onChange={() => dispatch(updateParticipleExer('auto'))}
+        />*/}
+      </div>
+      <br/>
+      <div className="flex-col align-start gap-row-sm">
         <SettingToggle
           translationId="multiple-choice"
           checked={user.multi_choice}
