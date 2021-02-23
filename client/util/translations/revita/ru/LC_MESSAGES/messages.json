@@ -865,7 +865,7 @@
     "select-cefr-level": "Максимальный уровень сложности упражнений",
     "This key is valid for the next 30 days": "Этот ключ действителен в течение 30-и дней",
     "upload-from-web": "Загрузить ",
-    "participle-exercise": "Choose the base form of participle exercise",
-    "participle-base-exer": "Exercise in participle form",
-    "verb-base-exer": "Exercise in verb form"
+    "participle-exercise": "Выбери уровень упражнений с причастиями",
+    "participle-base-exer": "Упражнения с причастной базой (проще)",
+    "verb-base-exer": "Упражнения с глагольной базой (сложнее)"
 }

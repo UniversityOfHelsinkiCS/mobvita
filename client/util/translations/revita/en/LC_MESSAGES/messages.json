@@ -862,7 +862,7 @@
     "Confirm-Password": "Confirm password",
     "This key is valid for the next 30 days": "This key is valid for the next 30 days",
     "upload-from-web": "Upload from Web",
-    "participle-exercise": "Choose the base form of participle exercise",
-    "participle-base-exer": "Exercise in participle form",
-    "verb-base-exer": "Exercise in verb form"
+    "participle-exercise": "Choose the base form for participle exercise",
+    "participle-base-exer": "participle base (easier)",
+    "verb-base-exer": "verb base (advanced)"
 }
