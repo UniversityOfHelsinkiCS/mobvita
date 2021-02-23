@@ -862,5 +862,8 @@
     "use-my-group-settings": "Käytä ryhmän asetuksia",
     "select-cefr-level": "Valitse harjoituksissa sallittu MAKSIMI taso",
     "This key is valid for the next 30 days": "Tämä avain on voimassa 30 päivää",
-    "upload-from-web": "Lataa verkosta"
+    "upload-from-web": "Lataa verkosta",
+    "participle-exercise": "Choose the base form of participle exercise",
+    "participle-base-exer": "Exercise in participle form",
+    "verb-base-exer": "Exercise in verb form"
 }

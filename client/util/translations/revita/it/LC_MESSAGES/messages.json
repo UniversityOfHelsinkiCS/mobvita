@@ -862,5 +862,8 @@
     "use-my-group-settings": "Usa le impostazioni del mio gruppo",
     "select-cefr-level": "Seleziona il livello MASSIMO degli esercizi",
     "This key is valid for the next 30 days": "Questa chiave è valida per i prossimi 30 giorni",
-    "upload-from-web": "Carica dal Web"
+    "upload-from-web": "Carica dal Web",
+    "participle-exercise": "Scegli la forma base per gli esercizi sui Participi",
+    "participle-base-exer": "Esercizi derivati dai participio",
+    "verb-base-exer": "Esercizi derivati dal verbo"
 }

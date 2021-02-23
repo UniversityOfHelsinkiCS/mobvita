@@ -864,5 +864,8 @@
     "use-my-group-settings": "Использовать настройки группы",
     "select-cefr-level": "Максимальный уровень сложности упражнений",
     "This key is valid for the next 30 days": "Этот ключ действителен в течение 30-и дней",
-    "upload-from-web": "Загрузить "
+    "upload-from-web": "Загрузить ",
+    "participle-exercise": "Choose the base form of participle exercise",
+    "participle-base-exer": "Exercise in participle form",
+    "verb-base-exer": "Exercise in verb form"
 }
