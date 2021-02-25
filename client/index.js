@@ -12,9 +12,7 @@ import App from 'Components/App'
 import ErrorBoundary from 'Components/ErrorBoundary'
 import ConnectedIntlProvider from 'Components/ConnectedIntlProvider'
 
-const dsn = inProduction
-  ? 'https://33d57e45848f4a0ea2c5f092631c30bd@sentry.toska.cs.helsinki.fi/3'
-  : null
+const dsn = inProduction ? 'https://6311b76f9a81401289a72acbb155a83f@sentry.cs.helsinki.fi/4' : null
 
 const filterReduxStateForSentry = event => {
   const url = event.request?.url ?? ''
