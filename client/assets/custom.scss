@@ -1127,7 +1127,7 @@ html, body, #root {
 }
 
 .concept {
-  padding-left: 1em;
+  padding-left: 2em;
   input {
     margin-right: 0.5em;
   }
@@ -1692,17 +1692,18 @@ html, body, #root {
 
 // SCROLL TO TOP ARROW
 .scroll-to-top {
+    color: $primary-color;
 	position: fixed; 
-	width: 100%;
+	width: 1em;
 	bottom: 20px;
 	align-items: center;
-	height: 20px;
+	height: 1em;
 	justify-content: center;
 	z-index: 1000;
 	cursor: pointer;
 	animation: fadeIn 0.3s;
-	transition: opacity 0.4s;
-	opacity: 0.2;
+	transition: opacity 0.1s;
+	opacity: 0.1;
   }
   
   .scroll-to-top:hover{

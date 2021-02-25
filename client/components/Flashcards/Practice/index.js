@@ -33,7 +33,7 @@ const Practice = ({ mode }) => {
     if (mode === 'article') {
       cards =
         flashcards.nounCards &&
-        flashcards.nounCards.filter(card => card.gender !== 'mf' && card.gender !== 'NoGend')
+        flashcards.nounCards.filter(card => ['Feminine', 'Masculine', 'Neuter', 'ut', 'm', 'f', 'nt', 'Fem', 'Neut', 'Masc'].includes(card.gender) )
     } else {
       ;({ cards } = flashcards)
     }

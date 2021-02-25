@@ -20,7 +20,7 @@ const Article = ({ card, cardNumbering, answerCard }) => {
     setAnswerCorrect(null)
   }, [card])
 
-  const { lemma, _id: id, stage, gender } = card
+  const { lemma, _id: id, stage, gender, lan_in } = card
 
   const flipCard = () => {
     setFlipped(!flipped)
@@ -35,7 +35,7 @@ const Article = ({ card, cardNumbering, answerCard }) => {
     }
   }, [iconRef.current])
 
-  const correctArticles = {
+  const correctArticlesOld = {
     Fem: 'Die',
     Neut: 'Das',
     Masc: 'Der',
@@ -44,9 +44,28 @@ const Article = ({ card, cardNumbering, answerCard }) => {
     nt: 'Ett',
     ut: 'En',
   }
+  const correctArticlesByLang = {
+    German: {
+      Feminine: 'Die',
+      Neuter: 'Das',
+      Masculine: 'Der',
+    },
+    Swedish: {
+      Neuter: 'Ett',
+      ut: 'En',
+    },
+    French: {
+      Feminine: 'La',
+      Masculine: 'Le',
+    }
+  }
+
 
   const checkAnswer = answer => {
-    const correct = correctArticles[gender] === answer
+    let correct
+    if(correctArticlesOld.hasOwnProperty(gender))
+      correct = correctArticlesOld[gender] === answer
+    else correct = correctArticlesByLang[lan_in][gender] === answer
     answerCard(answer, correct, 'article')
     setAnswerCorrect(correct)
   }
@@ -64,7 +83,12 @@ const Article = ({ card, cardNumbering, answerCard }) => {
     </Button>
   ))
 
-  const rightAnswer = `${correctArticles[gender]} ${lemma}`
+  let rightAnswer 
+  if(correctArticlesOld.hasOwnProperty(gender))
+    rightAnswer= `${correctArticlesOld[gender]} ${lemma}`
+  else rightAnswer= `${correctArticlesByLang[lan_in][gender]} ${lemma}`
+  
+  
 
   const resultIconName = answerCorrect ? 'thumbs up outline' : 'thumbs down outline'
 

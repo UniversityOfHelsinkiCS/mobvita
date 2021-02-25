@@ -97,13 +97,13 @@ const Summary = ({ groupName, isTeaching, getSummary }) => {
         <div style={{ display: 'flex', justifyContent: 'space-between' }}>
           <div className="gap-col-sm pl-sm">
             <span className="sm-label">
-              <FormattedMessage id="date-start" />
+              <FormattedMessage id="date-start" />:
             </span>
             <PickDate id="start" date={startDate} setDate={setStartDate} />
           </div>
           <div className="gap-col-sm pl-lg">
             <span className="sm-label">
-              <FormattedMessage id="date-end" />
+              <FormattedMessage id="date-end" />:
             </span>
             <PickDate date={endDate} setDate={setEndDate} />
           </div>

@@ -100,13 +100,13 @@ export default function Toaster() {
               <span>{intl.formatMessage({ id: 'story-uploaded-successfully' })}</span>
               {isNewSite && (
                 <div>
-                  <b>Click here to add site to your favourites.</b>
+                  <b>{intl.formatMessage({ id: 'Click here to add site to your favourites.' })}</b>
                 </div>
               )}
             </div>,
             {
               type: 'success',
-              autoClose: 10000,
+              autoClose: 15000,
               onClick: isNewSite ? () => handleNewFavouriteSite() : () => {},
             }
           )

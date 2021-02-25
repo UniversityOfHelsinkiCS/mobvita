@@ -51,6 +51,10 @@ function makeTranslations(translations) {
       } else if (orig != file[key]) {
         changes++
       }
+     else if (lang == 'it'){
+        console.log('---')
+        console.log(orig)
+        console.log(file[key])}
     }
 
     fs.writeFile(fileName, JSON.stringify(file, null, '    '), (err) => {

@@ -56,7 +56,7 @@ const Concept = ({
       )}
       <div className="concept-row">
         <div style={{ display: 'flex', flex: 1 }}>
-          <div className="concept-caret">
+          <div className="concept-caret" style={{ 'padding-right': '32px' }}>
             {!isLeaf && <Icon name={caretIconName} onClick={() => setOpen(!open)} />}
           </div>
           <Form.Group>

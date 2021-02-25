@@ -80,7 +80,7 @@ const StoryForm = ({ setLibraries }) => {
               <div className="pt-sm space-between wrap">
                 <div className="flex pb-sm">
                   <Button form="url-upload" variant="primary" type="submit" data-cy="submit-story">
-                    <FormattedMessage id="Confirm" />
+                    {intl.formatMessage({ id: 'upload-from-web' })}
                   </Button>
                   {!smallWindow && (
                     <div className="gap-col-sm pl-sm">
@@ -94,7 +94,7 @@ const StoryForm = ({ setLibraries }) => {
                       <AddStoryModal
                         trigger={
                           <Button variant="secondary">
-                            {intl.formatMessage({ id: 'or-paste-a-text' }).slice(0, -1)}
+                            {intl.formatMessage({ id: 'or-paste-a-text' })}
                           </Button>
                         }
                       />

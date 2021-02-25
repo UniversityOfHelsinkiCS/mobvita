@@ -11,6 +11,7 @@ import {
   updateNumberOfFlashcards,
   updateAutoSpeak,
   updatePublishProgress,
+  updateParticipleExer
 } from 'Utilities/redux/userReducer'
 import useWindowDimensions from 'Utilities/windowDimensions'
 
@@ -38,9 +39,71 @@ const Settings = () => {
 
   return (
     <div className="const ps-nm">
+      <br/>
+      {bigWindow && (
+        <Button as={Link} to="/concepts" variant="primary" size="sm">
+          <FormattedMessage id="learning-settings" />
+        </Button>
+      )}
+      <hr/>
       <h2 className="header-2 pb-sm">
-        <FormattedMessage id="select-types-of-exercisesto-practice-34b953b387e6c6f6a7d4aa52ddaf177b" />
+        <FormattedMessage id="select-types-of-exercises-to-practice" />
       </h2>
+      <br/>
+      <span className="pb-sm">
+        <FormattedMessage id="type-the-word-you-hear" />:
+      </span>
+      <div className="gap-col-nm">
+        <Radio
+          label={intl.formatMessage({ id: 'listen-to-chunks-and-words' })}
+          name="audioTask"
+          value="chunk"
+          checked={user.task_audio === 'chunk'}
+          onChange={() => dispatch(updateAudioTask('chunk'))}
+        />
+        <Radio
+          label={intl.formatMessage({ id: 'listen-to-words' })}
+          name="audioTask"
+          value="word"
+          checked={user.task_audio === 'word' || user.task_audio===true}
+          onChange={() => dispatch(updateAudioTask('word'))}
+        />
+        <Radio
+          label={intl.formatMessage({ id: 'no-listen-exer' })}
+          name="audioTask"
+          value="none"
+          checked={user.task_audio === 'none' || user.task_audio===false}
+          onChange={() => dispatch(updateAudioTask('none'))}
+        />
+      </div>
+      <br/>
+      <span className="pb-sm">
+        <FormattedMessage id="participle-exercise" />:
+      </span>
+      <div className="gap-col-nm">
+        <Radio
+          label={intl.formatMessage({ id: 'participle-base-exer' })}
+          name="part_exer"
+          value="participle"
+          checked={user.part_exer === 'participle'}
+          onChange={() => dispatch(updateParticipleExer('participle'))}
+        />
+        <Radio
+          label={intl.formatMessage({ id: 'verb-base-exer' })}
+          name="part_exer"
+          value="verb"
+          checked={user.part_exer === 'verb'}
+          onChange={() => dispatch(updateParticipleExer('verb'))}
+        />
+        {/*<Radio
+          label={intl.formatMessage({ id: 'no-listen-exer' })}
+          name="part_exer"
+          value="auto"
+          checked={user.part_exer === 'auto'}
+          onChange={() => dispatch(updateParticipleExer('auto'))}
+        />*/}
+      </div>
+      <br/>
       <div className="flex-col align-start gap-row-sm">
         <SettingToggle
           translationId="multiple-choice"
@@ -48,45 +111,24 @@ const Settings = () => {
           onChange={() => dispatch(updateMultiChoice(!user.multi_choice))}
           disabled={pending}
         />
-        <SettingToggle
-          translationId="type-the-word-you-hear"
-          checked={user.task_audio}
-          onChange={() => dispatch(updateAudioTask(!user.task_audio))}
-          disabled={pending}
-        />
         <span style={{ display: 'none', color: 'gray' }}>
           <i>Temporarily unavailable due to technical problem</i>
         </span>
+        <br/>
         <SettingToggle
           translationId="second-chance-when-practicing-stories"
           checked={user.second_try}
           onChange={() => dispatch(updateSecondTry(!user.second_try))}
           disabled={pending}
         />
-        {bigWindow && (
-          <Button as={Link} to="/concepts" variant="primary" size="sm">
-            <FormattedMessage id="learning-settings" />
-          </Button>
-        )}
       </div>
-      <h2 className="header-2 pb-sm pt-nm">
-        <FormattedMessage id="Flashcards" />
-      </h2>
-      <label htmlFor="flashcard-amount" style={{ paddingRight: '0.5rem' }}>
-        <FormattedMessage id="how-many-cards-per-practice-session" />
-      </label>
-      <Dropdown
-        id="flashcard-amount"
-        value={user.flashcard_num}
-        options={deckSizeOptions}
-        onChange={(e, data) => dispatch(updateNumberOfFlashcards(Number(data.value)))}
-        disabled={pending}
-      />
+      <hr/>
       <h2 className="header-2 pb-sm pt-nm">
         <FormattedMessage id="Audio settings" />
       </h2>
+      <br/>
       <span className="pb-sm">
-        <FormattedMessage id="Pronounce clicked words" />
+        <FormattedMessage id="Pronounce clicked words" />:
       </span>
       <div className="gap-col-nm">
         <Radio
@@ -104,9 +146,26 @@ const Settings = () => {
           onChange={() => dispatch(updateAutoSpeak('demand'))}
         />
       </div>
+      <hr/>
+      <h2 className="header-2 pb-sm pt-nm">
+        <FormattedMessage id="Flashcards" />
+      </h2>
+      <br/>
+      <label htmlFor="flashcard-amount" style={{ paddingRight: '0.5rem' }}>
+        <FormattedMessage id="how-many-cards-per-practice-session" />:&nbsp;&nbsp;
+      </label>
+      <Dropdown
+        id="flashcard-amount"
+        value={user.flashcard_num}
+        options={deckSizeOptions}
+        onChange={(e, data) => dispatch(updateNumberOfFlashcards(Number(data.value)))}
+        disabled={pending}
+      />
+      <hr/>
       <h2 className="header-2 pb-sm pt-nm">
         <FormattedMessage id="Privacy" />
       </h2>
+      <br/>
       <SettingToggle
         translationId="Show my username in leaderboards"
         checked={user.publish_progress}

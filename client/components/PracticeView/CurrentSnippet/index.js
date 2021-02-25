@@ -66,7 +66,7 @@ const CurrentSnippet = ({ storyId, handleInputChange }) => {
     if (snippets.focused && snippets.focused.storyid === storyId) {
       const filteredSnippet = snippets.focused.practice_snippet.filter(word => word.id)
       const initialAnswers = filteredSnippet.reduce((answerObject, currentWord) => {
-        const { surface, id, ID, base, bases, listen, choices, concept } = currentWord
+        const { surface, id, ID, base, bases, listen, choices, concept, audio } = currentWord
 
         let usersAnswer
         if (listen || choices) {
@@ -80,7 +80,7 @@ const CurrentSnippet = ({ storyId, handleInputChange }) => {
         }
 
         if (listen) {
-          dispatch(addToAudio(ID))
+          dispatch(addToAudio({[ID]: audio}))
         }
 
         return {

@@ -44,7 +44,7 @@ const ExerciseHearing = ({ word, handleChange }) => {
   }, [currentAnswer])
 
   const speakerClickHandler = word => {
-    speak(word.surface, voice)
+    //speak(word.audio, voice)
     inputRef.current.focus()
   }
 
@@ -61,7 +61,7 @@ const ExerciseHearing = ({ word, handleChange }) => {
     }
     dispatch(setFocusedWord(word))
     if (!focusTimeout) {
-      speak(word.surface, voice)
+      speak(word.audio, voice)
       setFocusTimeout(true)
       setTimeout(() => {
         setFocusTimeout(false)
@@ -140,7 +140,7 @@ const ExerciseHearing = ({ word, handleChange }) => {
         <Icon
           name="volume up"
           link
-          onClick={() => speakerClickHandler(word.surface)}
+          onClick={() => speakerClickHandler(word)}
           style={{ marginLeft: '-25px' }}
         />
         {word.negation && <sup style={{ marginLeft: '3px', color: '#0000FF' }}>(neg)</sup>}

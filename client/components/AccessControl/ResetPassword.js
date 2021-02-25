@@ -49,7 +49,7 @@ const ResetPassword = ({ match }) => {
         </Form.Field>
         <Form.Field>
           <Button variant="primary" type="submit">
-            <FormattedMessage id="Confirm" />
+            <FormattedMessage id="Confirm-Password" />
           </Button>
         </Form.Field>
       </Form>

@@ -38,12 +38,18 @@ const StoryTitle = ({
     return (
       <StoryDetailsModal
         trigger={
+        <span
+          className="space-between"
+          style={{ overflow: 'hidden', width: '100%' }}
+        >
           <h5
             className="story-item-title"
             style={{ marginBottom: '.5rem', ...getTextStyle(learningLanguage) }}
           >
             {story.title}
           </h5>
+          <Icon name="ellipsis vertical" style={{ marginLeft: '1rem' }} />
+        </span>
         }
         story={story}
         setShareModalOpen={setShareModalOpen}
@@ -78,6 +84,11 @@ const StoryActions = ({ story }) => {
   if (width >= 640) {
     return (
       <div>
+        <Link to={`/stories/${story._id}/read`}>
+          <Button variant="secondary" style={{ marginRight: '0.5em' }}>
+            <FormattedMessage id="Read" />
+          </Button>
+        </Link>
         <Link to={`/stories/${story._id}/practice`}>
           <Button variant="primary" style={{ marginRight: '0.5em' }}>
             <FormattedMessage id="practice" />
@@ -86,11 +97,6 @@ const StoryActions = ({ story }) => {
         <Link to={`/flashcards/fillin/${story._id}/`}>
           <Button variant="primary" style={{ marginRight: '0.5em' }}>
             <FormattedMessage id="Flashcards" />
-          </Button>
-        </Link>
-        <Link to={`/stories/${story._id}/read`}>
-          <Button variant="secondary" style={{ marginRight: '0.5em' }}>
-            <FormattedMessage id="Read" />
           </Button>
         </Link>
         {showCrosswordsButton && (

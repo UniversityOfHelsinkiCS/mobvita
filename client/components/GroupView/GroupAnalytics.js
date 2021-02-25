@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { useDispatch, useSelector } from 'react-redux'
+import { useDispatch, useSelector, shallowEqual } from 'react-redux'
 import { getGroups, removeFromGroup, getGroupToken } from 'Utilities/redux/groupsReducer'
 import { ListGroup, ButtonGroup, ToggleButton } from 'react-bootstrap'
 import { FormattedMessage, useIntl } from 'react-intl'
@@ -23,12 +23,8 @@ const GroupAnalytics = ({role}) => {
   const learningLanguage = useSelector(learningLanguageSelector)
   const dispatch = useDispatch()
 
-  const { groups, created, pending } = useSelector(({ groups }) => {
-    return {
-      ...groups,
-      groups: groups.groups.filter(group => group.is_teaching === (role === 'teacher'))
-    }
-  })
+  const { groups: totalGroups, created, pending } = useSelector(({ groups }) => groups)
+  const groups = totalGroups.filter(group => group.is_teaching === (role === 'teacher'))
   const currentGroup = groups.find(group => group.group_id === currentGroupId)
 
   const groupOptions = groups.map(group => ({
@@ -45,7 +41,7 @@ const GroupAnalytics = ({role}) => {
     if (!groups || groups.length === 0) return
     if (currentGroupId && groups.some(group => group.group_id === currentGroupId)) return
     dispatch(updateGroupSelect(groups[0].group_id))
-  }, [groups])
+  }, [totalGroups])
 
   useEffect(() => {
     if (currentGroup && currentGroup.is_teaching) {
@@ -72,6 +68,8 @@ const GroupAnalytics = ({role}) => {
   const removeUser = userId => {
     dispatch(removeFromGroup(currentGroupId, userId))
   }
+
+  const marginLeftButton = '2px'
 
   const handleGroupChange = key => {
     dispatch(updateGroupSelect(key))
@@ -120,6 +118,7 @@ const GroupAnalytics = ({role}) => {
               type="radio"
               value="progress"
               variant="info"
+              style={{ marginLeft: marginLeftButton }}
               checked={content === 'progress'}
               onChange={() => setContent('progress')}
             >
@@ -129,6 +128,7 @@ const GroupAnalytics = ({role}) => {
               type="radio"
               value="history"
               variant="info"
+              style={{ marginLeft: marginLeftButton }}
               checked={content === 'history'}
               onChange={() => setContent('history')}
             >
@@ -227,6 +227,7 @@ const GroupAnalytics = ({role}) => {
               type="radio"
               value="exercise"
               variant="success"
+              style={{ marginLeft: marginLeftButton }}
               checked={historyView === 'exercise'}
               onChange={() => setHistoryView('exercise')}
             >
