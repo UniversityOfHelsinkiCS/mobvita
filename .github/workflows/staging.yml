@@ -12,7 +12,7 @@ jobs:
     runs-on: ubuntu-18.04
     env:
       SENTRY_PROJECT: mobvita
-      SENTRY_ORG: sentry
+      SENTRY_ORG: toska
       SENTRY_AUTH_TOKEN: ${{ secrets.SENTRY_AUTH_TOKEN }}
       SENTRY_URL: ${{ secrets.SENTRY_URL }}
 
