@@ -226,7 +226,7 @@ const CrosswordView = () => {
     return (
       <div
         style={{
-          height: '70vh',
+          height: '90vh',
           display: 'flex',
           flexDirection: 'column',
           justifyContent: 'center',
