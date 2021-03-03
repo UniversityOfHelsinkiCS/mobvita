@@ -19,10 +19,10 @@ const CrosswordView = () => {
   const [modalOpen, setModalOpen] = useState(false)
   const [data, setData] = useState()
   const [crosswordOptions, setCrosswordOptions] = useState({
-    density: '',
-    size: '',
-    width: '',
-    height: '',
+    density: '0.4',
+    size: '10',
+    width: '30',
+    height: '20',
   })
   const dispatch = useDispatch()
 
