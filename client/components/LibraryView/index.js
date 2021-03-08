@@ -99,7 +99,7 @@ const StoryList = () => {
     { key: 'progress', text: intl.formatMessage({ id: 'Progress' }), value: 'progress' },
   ]
 
-  if (savedLibrarySelection === 'private') {
+  if (savedLibrarySelection === 'private' || savedLibrarySelection === 'group') {
     sortDropdownOptions.push({
       key: 'date',
       text: intl.formatMessage({ id: 'date-added' }),
