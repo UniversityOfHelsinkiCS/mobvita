@@ -27,14 +27,17 @@ const StoryForm = ({ setLibraries }) => {
       language: capitalize(learningLanguage),
       url: storyUrl,
     }
-    dispatch(postStory(newStory))
-    setStoryUrl('')
-    setFormOpen(false)
-    setLibraries({
-      public: false,
-      group: false,
-      private: true,
-    })
+
+    if (storyUrl) {
+      dispatch(postStory(newStory))
+      setStoryUrl('')
+      setFormOpen(false)
+      setLibraries({
+        public: false,
+        group: false,
+        private: true,
+      })
+    }
   }
 
   const handleAccordionClick = () => setFormOpen(!formOpen)
