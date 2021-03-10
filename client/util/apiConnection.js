@@ -1,5 +1,6 @@
 import axios from 'axios'
 import { basePath } from 'Utilities/common'
+import * as Sentry from '@sentry/react'
 /**
  * ApiConnection simplifies redux usage
  */
@@ -35,6 +36,8 @@ export default (route, prefix, method = 'get', data, query, cache) => ({
 const SERVER_ERROR_STATUSES = [502, 503, 504]
 
 const handleError = (store, error, prefix, query) => {
+  Sentry.captureException(error)
+
   if (SERVER_ERROR_STATUSES.includes(error?.response?.status)) {
     store.dispatch({ type: 'SET_SERVER_ERROR' })
     store.dispatch({ type: `${prefix}_FAILURE`, query })
