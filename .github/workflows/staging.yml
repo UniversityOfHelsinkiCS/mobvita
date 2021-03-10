@@ -75,3 +75,13 @@ jobs:
           password: ${{ secrets.DOCKER_PASSWORD }}
           build_args: ENVIRONMENT=staging,REVITA_URL=https://revita-test.cs.helsinki.fi/api,COMMIT_HASH=${{ github.sha }}
           tags: staging
+
+  tempjob:
+    name: Testing inner workings
+    runs-on: ubuntu-18.04
+    steps:
+      - run: false
+      - run: echo runs on success or failure
+        if: succeeded() || failed()
+      - run: echo runs always, even if the prior step was cancelled
+        if: always()
