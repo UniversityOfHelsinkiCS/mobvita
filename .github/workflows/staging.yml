@@ -82,6 +82,6 @@ jobs:
     steps:
       - run: false
       - run: echo runs on success or failure
-        if: success() || failed()
+        if: success() || failure()
       - run: echo runs always, even if the prior step was cancelled
         if: always()
