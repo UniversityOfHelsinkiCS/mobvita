@@ -3,6 +3,7 @@ require('regenerator-runtime/runtime')
 const httpm = require('@actions/http-client')
 
 describe('basics', () => {
+  jest.setTimeout(30000)
   beforeEach(() => {
     _http = new httpm.HttpClient('http-client-tests')
 
