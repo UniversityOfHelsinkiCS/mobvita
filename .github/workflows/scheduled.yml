@@ -1,0 +1,17 @@
+name: Run backend API endpoint healthchecks
+
+on:
+  schedule:
+    - cron: '*/10 * * * *'
+
+jobs:
+  healthcheck:
+    runs-on: ubuntu-20.04
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: Run API checks
+        run: cd healthchecks && npm install && npm run test
+      - name: Report failure
+        #if: failure()
+        run: curl -d '{"text":"Testing healthcheck action"}' -H "Content-Type:application/json" -X POST ${{ secrets.REVITA_SLACK_WEBHOOK }}
