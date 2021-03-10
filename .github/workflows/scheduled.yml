@@ -11,7 +11,7 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v2
       - name: Run API checks
-        run: cd healthchecks && npm install && REVITA_USER_TOKEN=${{ secrets.REVITA_USER_TOKEN }} npm run test
+        run: cd healthchecks && npm install && REVITA_USER_TOKEN="${{ secrets.REVITA_USER_TOKEN }}" npm run test
       - name: Report failure
         if: failure()
         run: curl -d '{"text":"Backend healthcheck failed"}' -H "Content-Type:application/json" -X POST ${{ secrets.REVITA_SLACK_WEBHOOK }}
