@@ -5,7 +5,7 @@ import { createBrowserHistory } from 'history'
 import { basePath, checkRevitaStatus } from 'Utilities/common'
 import { useDispatch } from 'react-redux'
 import { setServerError } from 'Utilities/redux/serverErrorReducer'
-import { Offline } from 'react-detect-offline'
+// import { Offline } from 'react-detect-offline'
 import Toaster from './Toaster'
 import Sidebar from './Sidebar'
 import StoryFetcher from './StoryFetcher'
@@ -47,11 +47,11 @@ const App = () => {
     <>
       <ReactRouter history={history}>
         <StoryFetcher />
-        <Offline polling={{ timeout: 20000 }}>
+        {/* <Offline polling={{ timeout: 20000 }}>
           <div className="offline-notification">
             <h3>Please re-connect to the internet to use revita!</h3>
           </div>
-        </Offline>
+        </Offline> */}
         <Sidebar history={history} />
         <Router />
         <Toaster />

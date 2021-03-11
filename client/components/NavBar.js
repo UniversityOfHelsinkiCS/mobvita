@@ -7,6 +7,7 @@ import { Link, useHistory } from 'react-router-dom'
 import { sidebarSetOpen } from 'Utilities/redux/sidebarReducer'
 import useWindowDimensions from 'Utilities/windowDimensions'
 import { hiddenFeatures, images } from 'Utilities/common'
+import { Offline } from 'react-detect-offline'
 
 export default function NavBar() {
   const { user } = useSelector(({ user }) => ({ user: user.data }))
@@ -53,23 +54,34 @@ export default function NavBar() {
             size="big"
             onClick={() => dispatch(sidebarSetOpen(!open))}
             className="sidebar-hamburger"
-            style={{ color: 'white',marginBottom: '0.3em' }}
+            style={{ color: 'white', marginBottom: '0.3em' }}
             data-cy="hamburger"
           />
           <Link to="/home">
-           <Icon
-                        name="home"
-                        size="big"
-                        style={{ color: 'white',  cursor: 'pointer', marginLeft: '0.2em',
-                                                                       marginTop: '0.1em',marginBottom: '0.01em'}}
-                      />
-
-           </Link>
-           <Link to="/home">
-           <Navbar.Brand style={{ color: 'white', marginLeft: '0.5em',marginTop: '0.18em', cursor: 'pointer' }}>
-                                                     Revita{hiddenFeatures && <sup> &beta;</sup>}
-                                                 </Navbar.Brand>
-           </Link>
+            <Icon
+              name="home"
+              size="big"
+              style={{
+                color: 'white',
+                cursor: 'pointer',
+                marginLeft: '0.2em',
+                marginTop: '0.1em',
+                marginBottom: '0.01em',
+              }}
+            />
+          </Link>
+          <Link to="/home">
+            <Navbar.Brand
+              style={{
+                color: 'white',
+                marginLeft: '0.5em',
+                marginTop: '0.18em',
+                cursor: 'pointer',
+              }}
+            >
+              Revita{hiddenFeatures && <sup> &beta;</sup>}
+            </Navbar.Brand>
+          </Link>
         </div>
         {user && (
           <div>
@@ -98,7 +110,9 @@ export default function NavBar() {
                 </div>
               )}
             </Navbar.Text>
-
+            <Offline polling={{ timeout: 20000 }}>
+              <Icon name="broken chain" size="large" style={{ color: '#ff944d' }} />
+            </Offline>
             <Icon
               name="setting"
               size="big"
