@@ -89,7 +89,7 @@ const DictionaryHelp = ({ minimized }) => {
   const intl = useIntl()
 
   useEffect(() => {
-    if (!translatableLanguages[learningLanguage].includes(translationLanguageCode)) {
+    if (translatableLanguages[learningLanguage].length && !translatableLanguages[learningLanguage].includes(translationLanguageCode)) {
       dispatch(updateDictionaryLanguage(translatableLanguages[learningLanguage][0]))
     }
   }, [learningLanguage])
