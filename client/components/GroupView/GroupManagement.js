@@ -98,9 +98,12 @@ const GroupCard = ({
       <Card.Content
         extra
         onClick={isTeaching ? handleGroupNameClick : () => {}}
-        style={{ cursor: 'pointer' }}
+        style={{ padding: '15px 15px 5px' }}
       >
-        <h5 style={{ fontWeight: 'bold' }}>{groupName}</h5>
+        <div className="story-item-title space-between">
+          <h5 style={{ fontWeight: 'bold' }}>{groupName}</h5>
+          <Icon name="ellipsis vertical" style={{ marginLeft: '1rem' }} />
+        </div>
       </Card.Content>
       <Card.Content extra>
         <div className="space-between group-buttons sm" style={{ whiteSpace: 'nowrap' }}>
