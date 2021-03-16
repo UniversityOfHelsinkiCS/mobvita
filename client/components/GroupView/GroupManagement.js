@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { useSelector, useDispatch, shallowEqual } from 'react-redux'
+import { useSelector, useDispatch } from 'react-redux'
 import { useHistory } from 'react-router-dom'
 import { FormattedMessage } from 'react-intl'
 import { CopyToClipboard } from 'react-copy-to-clipboard'
@@ -71,12 +71,12 @@ const GroupCard = ({
 
   const handleGroupNameClick = () => {
     dispatch(updateGroupSelect(id))
-    const role = isTeaching? 'teacher' : 'student'
+    const role = isTeaching ? 'teacher' : 'student'
     history.push(`/groups/${role}/analytics`)
   }
 
   const handleSettingsClick = () => {
-    const role = isTeaching? 'teacher' : 'student'
+    const role = isTeaching ? 'teacher' : 'student'
     history.push(`/groups/${role}/${id}/concepts`)
   }
 
@@ -156,17 +156,19 @@ const GroupCard = ({
             </div>
             <div
               style={{
-                  display: 'flex',
-                  justifyContent: 'center',
-                  alignItems: 'center',
+                display: 'flex',
+                justifyContent: 'center',
+                alignItems: 'center',
               }}
             >
-              <span style={{ 
+              <span
+                style={{
                   margin: 'auto',
                   padding: '0.5em',
                   fontStyle: 'oblique',
                   fontWeight: 'bold',
-              }}>
+                }}
+              >
                 <FormattedMessage id="This key is valid for the next 30 days" />.
               </span>
             </div>
@@ -178,7 +180,7 @@ const GroupCard = ({
   )
 }
 
-const GroupManagement = ({role}) => {
+const GroupManagement = ({ role }) => {
   const { groups: totalGroups, pending } = useSelector(({ groups }) => groups)
   const groups = totalGroups.filter(group => group.is_teaching === (role === 'teacher'))
   const userId = useSelector(state => state.user.data.user.oid)
@@ -200,7 +202,7 @@ const GroupManagement = ({role}) => {
 
   if (pending) return <Spinner fullHeight />
 
-  if (groups.length === 0) return <NoGroupsView role={role}/>
+  if (groups.length === 0) return <NoGroupsView role={role} />
 
   return (
     <div className="ps-nm" data-cy="group-list">
