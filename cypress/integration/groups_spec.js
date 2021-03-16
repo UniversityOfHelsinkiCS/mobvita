@@ -45,7 +45,7 @@ describe("groups", function () {
       }
     })
     cy.reload()
-    cy.contains('destroyed').parent().parent().find('[data-cy=delete-group]').click()
+    cy.contains('destroyed').parent().parent().parent().find('[data-cy=delete-group]').click()
     cy.get('[data-cy=confirm-warning-dialog]').click()
     cy.get('[data-cy=group-list]').should('not.contain', 'destroyed')
   })
@@ -62,7 +62,7 @@ describe("groups", function () {
       }
     })
     cy.reload()
-    cy.contains('left').parent().parent().find('[data-cy=leave-group]').click()
+    cy.contains('left').parent().parent().parent().find('[data-cy=leave-group]').click()
     cy.get('[data-cy=confirm-warning-dialog]').click()
     cy.get('[data-cy=group-list]').should('not.contain', 'left')
   })
@@ -79,7 +79,7 @@ describe("groups", function () {
       }
     })
     cy.reload()
-    cy.contains('other group').parent().parent().find('[data-cy=add-to-group-modal]').click()
+    cy.contains('other group').parent().parent().parent().find('[data-cy=add-to-group-modal]').click()
     cy.get('textarea').eq(0).type(this.teacher.email)
     cy.get('textarea').eq(1).type(this.student.email)
     cy.get('[type=submit]').click()
