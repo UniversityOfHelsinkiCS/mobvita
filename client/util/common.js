@@ -131,6 +131,7 @@ export const supportedLearningLanguages = {
     'italian',
     'french',
     'portuguese',
+    'chinese'
   ].sort((a, b) => a.localeCompare(b)),
   minor: [
     'erzya',
@@ -142,7 +143,7 @@ export const supportedLearningLanguages = {
     'udmurt',
     'turkish',
   ].sort((a, b) => a.localeCompare(b)),
-  experimental: ['syriac', 'chinese'],
+  experimental: ['syriac', ],
 }
 
 export const learningLanguageLocaleCodes = {
