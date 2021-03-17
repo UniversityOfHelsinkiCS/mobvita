@@ -36,9 +36,11 @@ export default (route, prefix, method = 'get', data, query, cache) => ({
 const SERVER_ERROR_STATUSES = [502, 503, 504]
 
 const handleError = (store, error, prefix, query) => {
-  Sentry.captureException(new Error(`${error?.response?.status} @ ${prefix}`), {
-    fingerprint: [`Type: ${error?.message}`, `Message: ${prefix}`],
-  })
+  if (SERVER_ERROR_STATUSES.concat(500).includes(error?.response?.status)) {
+    Sentry.captureException(new Error(`${error?.response?.status} @ ${prefix}`), {
+      fingerprint: [`Type: ${error?.message}`, `Message: ${prefix}`],
+    })
+  }
 
   if (SERVER_ERROR_STATUSES.includes(error?.response?.status)) {
     store.dispatch({ type: 'SET_SERVER_ERROR' })
