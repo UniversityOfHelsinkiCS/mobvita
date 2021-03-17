@@ -19,9 +19,19 @@ const ReportButton = ({ extraClass }) => {
     return () => clearTimeout(timeout)
   }, [])
 
+  const sendSentryReport = () => {
+    const eventTimeStamp = new Date().toLocaleString('en-GB')
+    const eventTitle = optionalMessage || `User report ${eventTimeStamp}`
+    const eventOptions = {
+      severity: 'info',
+      fingerprint: [`Level: info`, `Timestamp: ${eventTimeStamp}`]
+    }
+    Sentry.captureMessage(eventTitle, eventOptions, )
+  }
+
   const handleConfirmation = () => {
     setModalOpen(false)
-    Sentry.captureMessage(optionalMessage || 'User report', 'info')
+    sendSentryReport()
     setOptionalMessage('')
     dispatch(setNotification('report-sent', 'success'))
     setSendingDisabled(true)
