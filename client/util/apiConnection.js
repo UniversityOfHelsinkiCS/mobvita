@@ -33,16 +33,31 @@ export default (route, prefix, method = 'get', data, query, cache) => ({
   },
 })
 
-const SERVER_ERROR_STATUSES = [502, 503, 504]
+const SERVER_UNRESPONSIVE_STATUSES = [502, 503, 504]
+const SERVER_INTERNAL_ERROR_STATUS = 500
+
+class EndpointError extends Error {
+  constructor(message) {
+    super(message);
+    this.name = "EndpointError";
+  }
+}
+
+const sendSentryEvent = (message, fingerprint) => {
+  Sentry.captureException(new EndpointError(message), { fingerprint })
+}
 
 const handleError = (store, error, prefix, query) => {
-  if (SERVER_ERROR_STATUSES.concat(500).includes(error?.response?.status)) {
-    Sentry.captureException(new Error(`${error?.response?.status} @ ${prefix}`), {
-      fingerprint: [`Type: ${error?.message}`, `Message: ${prefix}`],
-    })
+  if (error?.response?.status === SERVER_INTERNAL_ERROR_STATUS) {
+    const sentryMessage = `500 @ ${prefix}`
+    const sentryFingerprint = [`Type: 500`, `Action: ${prefix}`]
+    sendSentryEvent(sentryMessage, sentryFingerprint)
   }
 
-  if (SERVER_ERROR_STATUSES.includes(error?.response?.status)) {
+  if (SERVER_UNRESPONSIVE_STATUSES.includes(error?.response?.status)) {
+    const sentryMessage = `Endpoint unresponsive`
+    const sentryFingerprint = [`Type: 502/503/504`]
+    sendSentryEvent(sentryMessage, sentryFingerprint)
     store.dispatch({ type: 'SET_SERVER_ERROR' })
     store.dispatch({ type: `${prefix}_FAILURE`, query })
   } else {
