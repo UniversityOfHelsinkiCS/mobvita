@@ -35,7 +35,7 @@ const ForgotPassword = ({ isOpen, setOpen }) => {
           </Form.Field>
           <Form.Field>
             <Button variant="primary" type="submit">
-              <FormattedMessage id="Confirm-Password" />
+              <FormattedMessage id="reset-my-password" />
             </Button>
           </Form.Field>
         </Form>

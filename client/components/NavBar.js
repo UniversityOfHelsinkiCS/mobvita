@@ -85,7 +85,7 @@ export default function NavBar() {
             </Navbar.Brand>
           </Link>
         </div>
-        <Tour />
+        {hiddenFeatures && <Tour />}
         {user && (
           <div>
             <Navbar.Text

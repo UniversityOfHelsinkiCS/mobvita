@@ -879,5 +879,6 @@
     "tour-begin-practicing-message": "<div>Now you can begin practicing!<br /><br />Please register and log in, if you wish Revita to remember<ul><li>stories that you like and upload,</li><li>your skills,</li><li>and your progress.</li></ul><br /><i>Bon voyage!</i></div>",
     "end-tour": "End tour",
     "next": "Seuraava",
-    "start-tour": "Start tour"
+    "start-tour": "Start tour",
+    "reset-my-password": "Reset my password"
 }
