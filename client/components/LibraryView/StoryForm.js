@@ -1,5 +1,5 @@
-import React, { useState } from 'react'
-import { Form, Input, Card, Accordion, Icon, Divider } from 'semantic-ui-react'
+import React, { useEffect, useState } from 'react'
+import { Form, Input, Card, Accordion, Icon } from 'semantic-ui-react'
 import { useDispatch, useSelector } from 'react-redux'
 import { postStory } from 'Utilities/redux/uploadProgressReducer'
 import { capitalize, learningLanguageSelector } from 'Utilities/common'
@@ -19,6 +19,14 @@ const StoryForm = ({ setLibraries }) => {
   const intl = useIntl()
 
   const learningLanguage = useSelector(learningLanguageSelector)
+
+  const tourState = useSelector(({ tour }) => tour)
+
+  useEffect(() => {
+    if (tourState.stepIndex === 6) {
+      setFormOpen(true)
+    }
+  }, [tourState])
 
   const handleStorySubmit = event => {
     event.preventDefault()
@@ -56,7 +64,7 @@ const StoryForm = ({ setLibraries }) => {
         padding: '0.5em 1em',
       }}
     >
-      <Accordion>
+      <Accordion className="tour-add-new-stories">
         <Accordion.Title active={formOpen} onClick={handleAccordionClick}>
           <div
             data-cy="expand-story-form"

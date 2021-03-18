@@ -152,7 +152,7 @@ export default function Sidebar({ history }) {
 
                 <Menu.Item>
                   <Link to="/learningLanguage" onClick={() => menuClickWrapper()}>
-                    <Button variant="primary" block>
+                    <Button variant="primary" block className="tour-learning-language">
                       <div
                         style={{
                           display: 'flex',

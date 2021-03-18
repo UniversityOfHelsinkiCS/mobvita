@@ -79,6 +79,7 @@
     "react-dom": "^v16.13.1",
     "react-headroom": "^3.0.0",
     "react-intl": "^3.6.1",
+    "react-joyride": "^2.3.0",
     "react-popper-tooltip": "^2.10.1",
     "react-redux": "^7.2.0",
     "react-router": "^5.1.2",

@@ -8,7 +8,7 @@ export const createRealToken = (email, password) => {
   return callBuilder(route, prefix, 'post', payload)
 }
 
-export const createAnonToken = (locale) => {
+export const createAnonToken = locale => {
   const route = '/session/'
   const prefix = 'LOGIN'
   const payload = { is_anonymous: true, interface_language: locale }
@@ -23,14 +23,14 @@ export const getSelf = () => {
   return callBuilder(route, prefix)
 }
 
-export const saveSelf = (changes) => {
+export const saveSelf = changes => {
   const route = '/user/'
   const prefix = 'SAVE_SELF'
   const payload = changes
   return callBuilder(route, prefix, 'post', payload)
 }
 
-export const updateLearningLanguage = (language) => {
+export const updateLearningLanguage = language => {
   const route = '/user/'
   const prefix = 'UPDATE_LEARNING_LANGUAGE'
   const payload = { last_used_lang: capitalize(language) }
@@ -40,7 +40,8 @@ export const updateLearningLanguage = (language) => {
 export const resetLearningLanguageChanged = () => ({ type: 'RESET_LEARNING_LANGUAGE_CHANGED' })
 
 export const updateLocale = locale => saveSelf({ interface_lang: localeCodeToName(locale) })
-export const updateDictionaryLanguage = language => saveSelf({ last_trans_lang: capitalize(language) })
+export const updateDictionaryLanguage = language =>
+  saveSelf({ last_trans_lang: capitalize(language) })
 export const updateExerciseSettings = settings => saveSelf({ exercise_settings: settings })
 export const updateLibrarySelect = library => saveSelf({ last_selected_library: library })
 export const updateGroupSelect = group => saveSelf({ last_selected_group: group })
@@ -55,6 +56,7 @@ export const updateFavouriteSites = value => saveSelf({ favourite_sites: value }
 export const updateUsername = value => saveSelf({ username: value })
 export const updatePublishProgress = value => saveSelf({ publish_progress: value })
 export const updateSortCriterion = value => saveSelf({ library_sort_criterion: value })
+export const updateToNonNewUser = () => saveSelf({ is_new_user: false })
 
 export const changePassword = (currentPassword, newPassword) => {
   const route = '/user/password'
@@ -66,14 +68,13 @@ export const changePassword = (currentPassword, newPassword) => {
   return callBuilder(route, prefix, 'post', payload)
 }
 
-export const confirmUser = (token) => {
+export const confirmUser = token => {
   const route = `/confirm?token=${token}`
   const prefix = 'CONFIRM_USER'
   return callBuilder(route, prefix, 'get')
 }
 
 export const refresh = () => ({ type: 'REFRESH' })
-
 
 export default (state = { data: null, learningLanguageChanged: false }, action) => {
   switch (action.type) {

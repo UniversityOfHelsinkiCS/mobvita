@@ -867,5 +867,19 @@
     "upload-from-web": "Загрузить ",
     "participle-exercise": "Выбери уровень упражнений с причастиями",
     "participle-base-exer": "Упражнения с причастной базой (проще)",
-    "verb-base-exer": "Упражнения с глагольной базой (сложнее)"
+    "verb-base-exer": "Упражнения с глагольной базой (сложнее)",
+    "tour-welcome-message": "<div>Revita helps you learn languages, by practicing with stories of your choice.<br/><br/>We now show you some key features.<br/><br/>Let us begin! (This tour will take 1 minute) →</div>",
+    "sidebar": "Sidebar",
+    "tour-sidebar-message": "<div>Here you can open the sidebar. It contains some useful settings and options.</div>",
+    "tour-learning-language-message": "<div>Here you select the language you wish to learn. You can change it at any time.</div>",
+    "add-content": "Добавить свои материалы",
+    "begin-practicing": "Приступить к упражнениям",
+    "tour-practice-now-message": "<div>Here you can start practising with stories.</div>",
+    "tour-flashcards-message": "<div>Revita automatically creates flashcards from unfamiliar words that you find inside stories.<br/><br/>You can practice them later!</div>",
+    "tour-library-message": "<div>Here you find some sample texts we have pre-loaded for you.<br/><br/>You can add more!</div>",
+    "tour-add-content-message": "Здесь можно добавить любые тексты &mdash; Ревита создаст упражнения на основе загруженного  текста.",
+    "tour-begin-practicing-message": "<div>Now you can begin practicing!<br /><br />Please register and log in, if you wish Revita to remember<ul><li>stories that you like and upload,</li><li>your skills,</li><li>and your progress.</li></ul><br /><i>Bon voyage!</i></div>",
+    "end-tour": "End tour",
+    "next": "Next",
+    "start-tour": "Start tour"
 }

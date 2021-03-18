@@ -8,6 +8,7 @@ import { sidebarSetOpen } from 'Utilities/redux/sidebarReducer'
 import useWindowDimensions from 'Utilities/windowDimensions'
 import { hiddenFeatures, images } from 'Utilities/common'
 import { Offline } from 'react-detect-offline'
+import Tour from './Tour'
 
 export default function NavBar() {
   const { user } = useSelector(({ user }) => ({ user: user.data }))
@@ -53,7 +54,7 @@ export default function NavBar() {
             name="bars"
             size="big"
             onClick={() => dispatch(sidebarSetOpen(!open))}
-            className="sidebar-hamburger"
+            className="sidebar-hamburger tour-sidebar"
             style={{ color: 'white', marginBottom: '0.3em' }}
             data-cy="hamburger"
           />
@@ -72,6 +73,7 @@ export default function NavBar() {
           </Link>
           <Link to="/home">
             <Navbar.Brand
+              className="tour-start-finish"
               style={{
                 color: 'white',
                 marginLeft: '0.5em',
@@ -83,6 +85,7 @@ export default function NavBar() {
             </Navbar.Brand>
           </Link>
         </div>
+        <Tour />
         {user && (
           <div>
             <Navbar.Text

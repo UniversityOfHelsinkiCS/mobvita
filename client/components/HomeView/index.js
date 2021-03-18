@@ -13,6 +13,7 @@ import LeaderboardSummary from './LeaderboardSummary'
 
 const PracticeButton = props => (
   <Button
+    className="tour-practice-now"
     style={{
       backgroundImage: `url(${images.practiceNow})`,
       height: '10em',
@@ -33,6 +34,7 @@ const FlashcardsButton = props => {
 
   return (
     <Button
+      className="tour-flashcards"
       onClick={handleClick}
       style={{
         backgroundImage: `url(${images.flashcards})`,

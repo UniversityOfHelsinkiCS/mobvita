@@ -34,6 +34,7 @@ const Tabs = ({ location }) => {
         to: '/library',
         key: 'library',
         'data-cy': 'library-tab',
+        className: 'tour-library',
       },
       render: () => <LibraryView />,
     },
