@@ -17,13 +17,9 @@ const Tour = () => {
 
   useEffect(() => {
     // Auto start the tour if the user hasn't seen it before
-    if (user.user.is_new_user) {
-      setTimeout(() => {
-        if (history.location.pathname.includes('home')) {
-          dispatch(sidebarSetOpen(false))
-          dispatch({ type: 'START' })
-        }
-      }, 500)
+    if (user.user.is_new_user && history.location.pathname.includes('home'))  {
+      dispatch(sidebarSetOpen(false))
+      dispatch({ type: 'START' })
     }
   }, [location])
 

@@ -6,6 +6,7 @@ describe('test view', function() {
   this.beforeEach(function () {
     cy.loginExisting().as('user')
     cy.visit('http://localhost:8000')
+    cy.get('body').type('{esc}') 
   })
 
   it('can start a new test', function() {
