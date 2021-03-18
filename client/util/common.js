@@ -171,15 +171,23 @@ export const learningLanguageLocaleCodes = {
 
 export const betaLanguages = [
   'catalan',
+  'chinese',
+  'erzya',
   'french',
+  'german',
+  'kazakh',
   'italian',
+  'komi-zyrian',
+  'meadow-mari',
   'portuguese',
   'spanish',
   'swedish',
   'north-saami',
   'sakha',
   'syriac',
+  'tatar',
   'turkish',
+  'udmurt',
 ]
 
 export const exerciseMaskedLanguages = [
