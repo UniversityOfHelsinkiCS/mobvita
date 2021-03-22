@@ -219,7 +219,7 @@ const StoryList = () => {
         ) : (
           <Search
             open={false}
-            icon={noResults ? 'ban' : 'search'}
+            icon="search"
             loading={pending}
             value={searchString}
             onSearchChange={e => setSearchString(e.target.value)}
