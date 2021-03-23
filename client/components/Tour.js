@@ -3,7 +3,6 @@ import { useLocation, useHistory } from 'react-router-dom'
 import JoyRide, { ACTIONS, EVENTS, STATUS } from 'react-joyride'
 import { sidebarSetOpen } from 'Utilities/redux/sidebarReducer'
 import { useSelector, useDispatch } from 'react-redux'
-import { Button } from 'react-bootstrap'
 import { updateToNonNewUser } from 'Utilities/redux/userReducer'
 import { FormattedMessage } from 'react-intl'
 
@@ -17,7 +16,7 @@ const Tour = () => {
 
   useEffect(() => {
     // Auto start the tour if the user hasn't seen it before
-    if (user.user.is_new_user && history.location.pathname.includes('home'))  {
+    if (user.user.is_new_user && history.location.pathname.includes('home')) {
       dispatch(sidebarSetOpen(false))
       dispatch({ type: 'START' })
     }
@@ -55,6 +54,12 @@ const Tour = () => {
             payload: { stepIndex: index + (action === ACTIONS.PREV ? -1 : 1) },
           })
         }, 600)
+      } else if (index === 2) {
+        dispatch(sidebarSetOpen(false))
+        dispatch({
+          type: 'NEXT_OR_PREV',
+          payload: { stepIndex: index + (action === ACTIONS.PREV ? -1 : 1) },
+        })
       } else if (index === 4 && !open) {
         history.push('/library')
 
@@ -71,20 +76,8 @@ const Tour = () => {
     }
   }
 
-  const startTour = () => {
-    dispatch(sidebarSetOpen(false))
-    dispatch({ type: 'RESTART' })
-  }
-
   return (
     <>
-      {user.user.last_used_language !== null ? (
-        <div className="tour-link">
-          <Button type="button" onClick={startTour} className="tour-start">
-            <FormattedMessage id="start-tour" />
-          </Button>
-        </div>
-      ) : null}
       <JoyRide
         {...tourState}
         callback={callback}

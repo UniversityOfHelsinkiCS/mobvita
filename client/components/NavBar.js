@@ -2,12 +2,13 @@ import React from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import { Navbar } from 'react-bootstrap'
 import Headroom from 'react-headroom'
-import { Icon } from 'semantic-ui-react'
+import { Icon, Button } from 'semantic-ui-react'
 import { Link, useHistory } from 'react-router-dom'
 import { sidebarSetOpen } from 'Utilities/redux/sidebarReducer'
 import useWindowDimensions from 'Utilities/windowDimensions'
 import { hiddenFeatures, images } from 'Utilities/common'
 import { Offline } from 'react-detect-offline'
+import { FormattedMessage } from 'react-intl'
 import Tour from './Tour'
 
 export default function NavBar() {
@@ -22,12 +23,19 @@ export default function NavBar() {
     history.push('/profile/progress')
   }
 
+  const handleTourStart = () => {
+    dispatch(sidebarSetOpen(false))
+    dispatch({ type: 'RESTART' })
+  }
+
   const handleSettingClick = () => {
     history.push('/profile/settings')
   }
 
   const showStoryElo = history.location.pathname.includes('practice')
   const showFlashcardElo = hiddenFeatures && history.location.pathname.includes('flashcards')
+  const hasChosenLearningLanguage = user?.user?.last_used_language !== null
+  const isNewUser = true ? user?.user?.total_time_spent < 0.5 : false
 
   const storyElo =
     user && user.user.exercise_history && user.user.exercise_history.length > 0
@@ -85,7 +93,12 @@ export default function NavBar() {
             </Navbar.Brand>
           </Link>
         </div>
-        {hiddenFeatures && <Tour />}
+        {isNewUser && hasChosenLearningLanguage && (
+          <Button type="button" onClick={handleTourStart} className="tour-start">
+            <Icon name="info circle" /> <FormattedMessage id="start-tour" />
+          </Button>
+        )}
+        <Tour />
         {user && (
           <div>
             <Navbar.Text

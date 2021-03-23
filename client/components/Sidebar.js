@@ -32,7 +32,7 @@ export default function Sidebar({ history }) {
   }
 
   const marginTopButton = '8px'
-    
+
   useEffect(() => {
     const temp = localeOptions.map(option => ({
       value: option.code,
@@ -69,6 +69,11 @@ export default function Sidebar({ history }) {
       return images[`flag${capitalize(lastUsedLanguage.split('-').join(''))}`]
     }
     return null
+  }
+
+  const handleTourStart = () => {
+    dispatch(sidebarSetOpen(false))
+    dispatch({ type: 'RESTART' })
   }
 
   let actualLocale = locale
@@ -125,16 +130,13 @@ export default function Sidebar({ history }) {
                     <FormattedMessage
                       id={user.user.email === 'anonymous_email' ? 'Login' : 'sign-out'}
                     />
-                      &nbsp;&nbsp;&nbsp;&nbsp;
+                    &nbsp;&nbsp;&nbsp;&nbsp;
                   </span>
                   <Icon name="sign out" />
                 </button>
               )}
             </div>
-            {!smallWindow && (
-              <a className="padding-bottom-1">
-              </a>
-            )}
+            {!smallWindow && <a className="padding-bottom-1" />}
 
             {user && (
               <>
@@ -188,7 +190,7 @@ export default function Sidebar({ history }) {
                           block
                           style={{ marginTop: marginTopButton }}
                         >
-                          <FormattedMessage id="learning-settings" />
+                          <Icon name="settings" /> <FormattedMessage id="learning-settings" />
                         </Button>
                       }
                     />
@@ -200,7 +202,7 @@ export default function Sidebar({ history }) {
                         onClick={() => menuClickWrapper()}
                         block
                       >
-                        <FormattedMessage id="Profile" />
+                        <Icon name="user" /> <FormattedMessage id="Profile" />
                       </Button>
                     </Link>
                   </>
@@ -213,7 +215,7 @@ export default function Sidebar({ history }) {
                       onClick={() => menuClickWrapper()}
                       block
                     >
-                      <FormattedMessage id="Groups-for-students" />
+                      <Icon name="group" /> <FormattedMessage id="Groups-for-students" />
                     </Button>
                   </Link>
                   <Link to="/groups/teacher">
@@ -224,7 +226,7 @@ export default function Sidebar({ history }) {
                       onClick={() => menuClickWrapper()}
                       block
                     >
-                      <FormattedMessage id="Groups-for-teachers" />
+                      <Icon name="group" /> <FormattedMessage id="Groups-for-teachers" />
                     </Button>
                   </Link>
                 </Menu.Item>
@@ -232,7 +234,7 @@ export default function Sidebar({ history }) {
             )}
 
             <Menu.Item>
-              <div style={{ textAlign: 'left', marginTop: marginTopButton, paddingBottom: '3px',  }}>
+              <div style={{ textAlign: 'left', marginTop: marginTopButton, paddingBottom: '3px' }}>
                 <FormattedMessage id="interface-language" />:
               </div>
               <Dropdown
@@ -250,19 +252,28 @@ export default function Sidebar({ history }) {
               <div style={{ fontSize: '20px', color: '#777' }}>{`${user.user.username}`}</div>
             )}
             <div style={{ color: 'slateGrey' }}>
-                  <Menu.Item
-                    style={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-between' }}
-                  >
-                    <Button
-                      variant="secondary"
-                      block style={{ marginTop: marginTopButton }}
-                      onClick={() => menuClickWrapper()}
-                      as={Link}
-                      to="/help"
-                    >
-                      <FormattedMessage id="Help" />
-                    </Button>
-                  </Menu.Item>
+              <Menu.Item>
+                <Button
+                  variant="secondary"
+                  block
+                  style={{ marginTop: marginTopButton }}
+                  onClick={() => handleTourStart()}
+                  as={Link}
+                  to="/home"
+                >
+                  <Icon name="info circle" /> <FormattedMessage id="start-tour" />
+                </Button>
+                <Button
+                  variant="secondary"
+                  block
+                  style={{ marginTop: marginTopButton }}
+                  onClick={() => menuClickWrapper()}
+                  as={Link}
+                  to="/help"
+                >
+                  <Icon name="help circle" /> <FormattedMessage id="Help" />
+                </Button>
+              </Menu.Item>
             </div>
             <div style={{ marginTop: 'auto', color: 'slateGrey' }}>
               <Menu.Item
