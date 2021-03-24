@@ -881,5 +881,6 @@
     "next": "Seuraava",
     "start-tour": "Esittelykierros",
     "reset-my-password": "Nollaa salasana",
-    "OLD TOUR": "Revita auttaa sinua oppimaan kieliä kertomusten avulla. &rarr;"
+    "OLD TOUR": "Revita auttaa sinua oppimaan kieliä kertomusten avulla. &rarr;",
+    "tour-practice-now-message\t": "<div>Tästä pääset harjoittelemaan kertomuksilla.</div>"
 }

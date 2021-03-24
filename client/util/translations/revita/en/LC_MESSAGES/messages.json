@@ -592,7 +592,7 @@
     "noun-declension": "",
     "noun-and-adjective-declension": "",
     "adjective-declension": "",
-    "Pronouns": "",
+    "Pronouns": "Pronouns",
     "verb-inflection": "",
     "verb-aspect": "",
     "participle-exercises": "",
@@ -601,8 +601,8 @@
     "prepositions-postpostion-and-adverbs": "",
     "prepositions-and-adverbs": "",
     "prepositions-and-postpostion": "",
-    "Prepositions": "",
-    "Adverbs": "",
+    "Prepositions": "Prepositions",
+    "Adverbs": "Adverbs",
     "sign-in-b6d4223e60986fa4c9af77ee5f7149c5": "",
     "Case": "",
     "Nominative": "",
@@ -871,7 +871,7 @@
     "tour-learning-language-message": "<div>Here you select the language you wish to learn. You can change it any time.</div>",
     "add-content": "Add your own content",
     "begin-practicing": "Begin practicing",
-    "tour-practice-now-message": "<div>Here you can start practising with stories.</div>",
+    "tour-practice-now-message": "<div>Here you can start practicing with stories.</div>",
     "tour-flashcards-message": "<div>Revita automatically creates flashcards from unfamiliar words that you find inside stories.<br/><br/>You can practice them here!</div>",
     "tour-library-message": "<div>Here you find some sample texts we have pre-loaded for you.<br/><br/>You can add more!</div>",
     "tour-add-content-message": "<div>You can add <b>any</b> stories of your choice, and use them for practising.<br/><br/>These stories will be in your private library.</div>",
@@ -880,5 +880,6 @@
     "next": "Next",
     "start-tour": "Start tour",
     "reset-my-password": "Reset my password",
-    "OLD TOUR": "Revita helps you learn languages, by practicing with stories of your choice.<br/><br/>We now show you some key features.<br/><br/><i>Let us begin!<br/>(This tour will take 1 minute) &rarr;</i>"
+    "OLD TOUR": "Revita helps you learn languages, by practicing with stories of your choice.<br/><br/>We now show you some key features.<br/><br/><i>Let us begin!<br/>(This tour will take 1 minute) &rarr;</i>",
+    "tour-practice-now-message\t": "<div>Here you can start practicing with stories.</div>"
 }

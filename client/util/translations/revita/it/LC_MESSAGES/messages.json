@@ -591,7 +591,7 @@
     "noun-declension": "Sostantivo",
     "noun-and-adjective-declension": "Declinazione di sostantivo e aggettivo",
     "adjective-declension": "Aggettivo",
-    "Pronouns": "Pronome",
+    "Pronouns": "Pronomi",
     "verb-inflection": "Verbo",
     "verb-aspect": "Aspetto dei verbi",
     "participle-exercises": "Participio",
@@ -881,5 +881,6 @@
     "next": "Avanti",
     "start-tour": "Inizia il tour",
     "reset-my-password": "Reimposta la password",
-    "OLD TOUR": "Revita ti aiuta a studiare le lingue! Il sistema crea esercizi in base ai testi che carichi.<br/><br/>Ora ti mostreremo le funzioni basilari<br/><br/><i>Iniziamo!<br/>(La presentazione durerà 1 minuto.)</i> &rarr;"
+    "OLD TOUR": "Revita ti aiuta a studiare le lingue! Il sistema crea esercizi in base ai testi che carichi.<br/><br/>Ora ti mostreremo le funzioni basilari<br/><br/><i>Iniziamo!<br/>(La presentazione durerà 1 minuto.)</i> &rarr;",
+    "tour-practice-now-message\t": "<div>Qui puoi iniziare ad allenarti con le storie.</div>"
 }
