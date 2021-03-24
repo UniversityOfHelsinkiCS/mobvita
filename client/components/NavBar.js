@@ -23,6 +23,8 @@ export default function NavBar() {
     history.push('/profile/progress')
   }
 
+  console.log(user)
+
   const handleTourStart = () => {
     dispatch(sidebarSetOpen(false))
     dispatch({ type: 'RESTART' })
