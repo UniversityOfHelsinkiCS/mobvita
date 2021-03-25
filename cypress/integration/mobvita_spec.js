@@ -100,7 +100,6 @@ describe('Mobvita', function () {
           window.localStorage.setItem('user', JSON.stringify(response.body))
           cy.reload()
         })
-      cy.get('body').type('{esc}') 
     })
 
     it('library opens', function () {

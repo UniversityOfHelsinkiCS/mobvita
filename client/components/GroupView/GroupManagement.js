@@ -175,7 +175,11 @@ const GroupCard = ({
               <Button onClick={handleShowTokenClick}>
                 <Icon name="key" /> <FormattedMessage id="show-group-token" />
               </Button>
-              <Button onClick={handleTestEnableDisableButtonClick} variant={testButtonVariant}>
+              <Button
+                data-cy="enable-test-button"
+                onClick={handleTestEnableDisableButtonClick}
+                variant={testButtonVariant}
+              >
                 <Icon name="pencil alternate" /> {testButtonText}
               </Button>
             </div>
@@ -247,7 +251,12 @@ const GroupCard = ({
               }}
             >
               <span style={{ margin: 'auto', padding: '0.5em' }}>
-                <Button type="button" onClick={handleTestEnable} variant="success">
+                <Button
+                  data-cy="enable-test-one-day"
+                  type="button"
+                  onClick={handleTestEnable}
+                  variant="success"
+                >
                   <FormattedMessage id="enable-test-one-day" />
                 </Button>
                 <div

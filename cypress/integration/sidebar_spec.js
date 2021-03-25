@@ -6,7 +6,6 @@ describe("sidebar is open", function () {
   this.beforeEach(function () {
     cy.loginExisting().as('user')
     cy.visit('http://localhost:8000')
-    cy.get('body').type('{esc}') 
     cy.get('[data-cy=hamburger]').click()
   })
 
