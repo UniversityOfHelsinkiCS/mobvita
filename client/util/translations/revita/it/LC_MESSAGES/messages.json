@@ -882,5 +882,9 @@
     "start-tour": "Inizia il tour",
     "reset-my-password": "Reimposta la password",
     "OLD TOUR": "Revita ti aiuta a studiare le lingue! Il sistema crea esercizi in base ai testi che carichi.<br/><br/>Ora ti mostreremo le funzioni basilari<br/><br/><i>Iniziamo!<br/>(La presentazione durerà 1 minuto.)</i> &rarr;",
-    "tour-practice-now-message\t": "<div>Qui puoi iniziare ad allenarti con le storie.</div>"
+    "tour-practice-now-message\t": "<div>Qui puoi iniziare ad allenarti con le storie.</div>",
+    "enable-test": "Enable test",
+    "disable-test": "Disable test",
+    "enable-test-one-day": "Enable test for 1 day",
+    "test-deadline": "Test deadline:"
 }

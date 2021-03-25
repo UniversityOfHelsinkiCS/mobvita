@@ -9,6 +9,7 @@ import {
   getHistory,
   removeFromHistory,
 } from 'Utilities/redux/testReducer'
+
 import { updateGroupSelect } from 'Utilities/redux/userReducer'
 import { useLearningLanguage } from 'Utilities/common'
 import moment from 'moment'
@@ -16,10 +17,10 @@ import Spinner from 'Components/Spinner'
 import ResponsiveDatePicker from 'Components/ResponsiveDatePicker'
 import ConfirmationWarning from 'Components/ConfirmationWarning'
 import { getGroups } from 'Utilities/redux/groupsReducer'
+import ReportButton from 'Components/ReportButton'
 import TestView from './Test'
 import TestReport from './TestReport'
 import History from '../History'
-import ReportButton from 'Components/ReportButton'
 
 const PickDate = ({ date, setDate }) => (
   <ResponsiveDatePicker selected={date} onChange={date => setDate(date)} />
@@ -100,13 +101,14 @@ const TestIndex = () => {
     return <Spinner fullHeight />
   }
 
-  const groupOptions = [{ value: '', text: 'default', key: 'default' }].concat(
-    groups.map(({ group_id: groupId, groupName }) => ({
-      value: groupId,
-      text: groupName,
-      key: groupId,
-    }))
-  )
+  const testEnabledGroups = groups.filter(group => group.test_deadline - Date.now() > 0)
+
+  const groupOptions = testEnabledGroups.map(({ group_id: groupId, groupName }) => ({
+    value: groupId,
+    text: groupName,
+    key: groupId,
+  }))
+
   const filterHistoryByDate = () =>
     history.filter(test => {
       const testTime = moment(test.date)

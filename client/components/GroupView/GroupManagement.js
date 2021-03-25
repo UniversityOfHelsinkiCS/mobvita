@@ -6,7 +6,13 @@ import { CopyToClipboard } from 'react-copy-to-clipboard'
 import { Card, Icon, Label } from 'semantic-ui-react'
 import { Button } from 'react-bootstrap'
 import { updateGroupSelect } from 'Utilities/redux/userReducer'
-import { deleteGroup, getGroupToken, leaveFromGroup } from 'Utilities/redux/groupsReducer'
+import {
+  deleteGroup,
+  getGroupToken,
+  leaveFromGroup,
+  setGroupTestDeadline,
+} from 'Utilities/redux/groupsReducer'
+
 import { setNotification } from 'Utilities/redux/notificationReducer'
 import Spinner from 'Components/Spinner'
 import Subheader from 'Components/Subheader'
@@ -59,15 +65,28 @@ const GroupCard = ({
   setLeaveGroupId,
   showTokenGroupId,
   setShowTokenGroupId,
+  showTestEnableMenuGroupId,
+  setShowTestEnableMenuGroupId,
 }) => {
-  const { groupName, group_id: id, is_teaching: isTeaching } = group
+  const { groupName, group_id: id, is_teaching: isTeaching, test_deadline: testDeadline } = group
+
+  const [currTestDeadline, setCurrTestDeadline] = useState(testDeadline)
+  const showTestEnableMenu = showTestEnableMenuGroupId === id
 
   const showToken = showTokenGroupId === id
-
   const token = useSelector(state => state.groups.token)
-
   const dispatch = useDispatch()
   const history = useHistory()
+
+  const testEnabled = currTestDeadline - Date.now() > 0
+  const testButtonVariant = testEnabled ? 'info' : 'primary'
+  const deadlineString = new Date(currTestDeadline).toString()
+
+  const testButtonText = testEnabled ? (
+    <FormattedMessage id="disable-test" />
+  ) : (
+    <FormattedMessage id="enable-test" />
+  )
 
   const handleGroupNameClick = () => {
     dispatch(updateGroupSelect(id))
@@ -80,7 +99,28 @@ const GroupCard = ({
     history.push(`/groups/${role}/${id}/concepts`)
   }
 
+  const handleTestDisable = () => {
+    const currentDateMs = Date.now()
+    dispatch(setGroupTestDeadline(currentDateMs, id))
+    setCurrTestDeadline(currentDateMs)
+    setShowTestEnableMenuGroupId(null)
+  }
+
+  const handleTestEnableDisableButtonClick = () => {
+    if (testEnabled) {
+      handleTestDisable()
+    } else {
+      setShowTokenGroupId(null)
+      if (showTestEnableMenuGroupId) {
+        setShowTestEnableMenuGroupId(null)
+      } else {
+        setShowTestEnableMenuGroupId(id)
+      }
+    }
+  }
+
   const handleShowTokenClick = () => {
+    setShowTestEnableMenuGroupId(null)
     if (showToken) {
       setShowTokenGroupId(null)
     } else {
@@ -93,6 +133,18 @@ const GroupCard = ({
     dispatch(setNotification('token-copied', 'info'))
   }
 
+  const handleTestEnable = () => {
+    const testDeadlineMs = Date.now() + 86400000 // 86400000ms == 1 day
+
+    dispatch(setGroupTestDeadline(testDeadlineMs, id))
+    setCurrTestDeadline(testDeadlineMs)
+    setShowTestEnableMenuGroupId(null)
+  }
+
+  const handleTestButtonCancel = () => {
+    setShowTestEnableMenuGroupId(null)
+  }
+
   return (
     <Card fluid>
       <Card.Content
@@ -102,6 +154,11 @@ const GroupCard = ({
       >
         <div className="story-item-title space-between">
           <h5 style={{ fontWeight: 'bold' }}>{groupName}</h5>
+          {testEnabled && (
+            <div style={{ marginLeft: '0.5em' }}>
+              <FormattedMessage id="test-deadline" /> {deadlineString}
+            </div>
+          )}
           <Icon name="ellipsis vertical" style={{ marginLeft: '1rem' }} />
         </div>
       </Card.Content>
@@ -117,6 +174,9 @@ const GroupCard = ({
               </Button>
               <Button onClick={handleShowTokenClick}>
                 <Icon name="key" /> <FormattedMessage id="show-group-token" />
+              </Button>
+              <Button onClick={handleTestEnableDisableButtonClick} variant={testButtonVariant}>
+                <Icon name="pencil alternate" /> {testButtonText}
               </Button>
             </div>
           )}
@@ -174,6 +234,41 @@ const GroupCard = ({
             </div>
           </div>
         )}
+
+        {showTestEnableMenu && (
+          <div>
+            <div
+              className="border rounded"
+              style={{
+                display: 'flex',
+                marginTop: '0.5em',
+                minHeight: '3em',
+                wordBreak: 'break-all',
+              }}
+            >
+              <span style={{ margin: 'auto', padding: '0.5em' }}>
+                <Button type="button" onClick={handleTestEnable} variant="success">
+                  <FormattedMessage id="enable-test-one-day" />
+                </Button>
+                <div
+                  style={{
+                    display: 'flex',
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                  }}
+                >
+                  <Button
+                    onClick={handleTestButtonCancel}
+                    variant="danger"
+                    style={{ marginTop: '0.3em' }}
+                  >
+                    <FormattedMessage id="Cancel" />
+                  </Button>
+                </div>
+              </span>
+            </div>
+          </div>
+        )}
       </Card.Content>
       {group.peopleInvited && <GroupInviteInfo group={group} />}
     </Card>
@@ -189,6 +284,9 @@ const GroupManagement = ({ role }) => {
   const [deleteGroupId, setDeleteGroupId] = useState(false)
   const [leaveGroupId, setLeaveGroupId] = useState(false)
   const [showTokenGroupId, setShowTokenGroupId] = useState(null)
+
+  const [showTestEnableMenuGroupId, setShowTestEnableMenuGroupId] = useState(null)
+  //
 
   const dispatch = useDispatch()
 
@@ -230,6 +328,8 @@ const GroupManagement = ({ role }) => {
           setLeaveGroupId={setLeaveGroupId}
           showTokenGroupId={showTokenGroupId}
           setShowTokenGroupId={setShowTokenGroupId}
+          showTestEnableMenuGroupId={showTestEnableMenuGroupId}
+          setShowTestEnableMenuGroupId={setShowTestEnableMenuGroupId}
         />
       ))}
     </div>

@@ -49,6 +49,13 @@ export const deleteGroup = groupId => {
   return callBuilder(route, prefix, 'post')
 }
 
+export const setGroupTestDeadline = (deadlineDate, groupId) => {
+  const route = `/groups/${groupId}`
+  const prefix = 'SET_GROUP_TEST_DEADLINE'
+  const payload = { test_deadline: deadlineDate }
+  return callBuilder(route, prefix, 'post', payload)
+}
+
 export const getTestConcepts = (groupId, learningLanguage) => {
   const route = `test/${learningLanguage}/template?group_id=${groupId}`
   const prefix = 'GET_GROUP_TEST_CONCEPTS'

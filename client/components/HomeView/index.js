@@ -1,8 +1,10 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { useHistory } from 'react-router'
 import { FormattedMessage } from 'react-intl'
 import { Button } from 'react-bootstrap'
 import { images } from 'Utilities/common'
+import { useDispatch } from 'react-redux'
+import { getGroups } from 'Utilities/redux/groupsReducer'
 
 import useWindowDimensions from 'Utilities/windowDimensions'
 import Footer from 'Components/Footer'
@@ -52,8 +54,12 @@ const FlashcardsButton = props => {
 
 const HomeView = () => {
   const { width } = useWindowDimensions()
-
   const bigScreen = width > 740
+  const dispatch = useDispatch()
+
+  useEffect(() => {
+    dispatch(getGroups())
+  }, [])
 
   return (
     <div className="grow flex-col space-between gap-row-nm">

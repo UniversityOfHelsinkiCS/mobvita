@@ -55,7 +55,7 @@ export default function GroupView({ location }) {
       {
         menuItem: {
           as: Link,
-          content: <TabContent data-cy="create-group" translationId="New" />,
+          content: <TabContent data-cy="create-group" translationId="create-new-group" />,
           to: '/groups/teacher/create',
           key: 'create',
           style: tabStyle,
@@ -133,7 +133,7 @@ export default function GroupView({ location }) {
       {
         menuItem: {
           as: Link,
-          content: <TabContent data-cy="create-group" translationId="New" />,
+          content: <TabContent data-cy="create-group" translationId="create-new-group" />,
           to: '/groups/create',
           key: 'create',
           style: tabStyle,

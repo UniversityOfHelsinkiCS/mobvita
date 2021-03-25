@@ -884,5 +884,9 @@
     "start-tour": "Начать введение",
     "reset-my-password": "Обновить пароль",
     "OLD TOUR": "Ревита помогает тебе изучать языки! Она создает упражнения на основе загруженных тобой текстов.<br/><br/>Сейчас мы покажем тебе основные функции.<br/><br/><i>Начинаем!<br/>(Введение займет 1 минуту.)</i> &rarr;",
-    "tour-practice-now-message\t": "<div>Здесь можно начать упражнения с текстами.</div>"
+    "tour-practice-now-message\t": "<div>Здесь можно начать упражнения с текстами.</div>",
+    "enable-test": "Enable test",
+    "disable-test": "Disable test",
+    "enable-test-one-day": "Enable test for 1 day",
+    "test-deadline": "Test deadline:"
 }

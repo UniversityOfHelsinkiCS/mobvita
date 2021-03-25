@@ -16,6 +16,8 @@ const TabContent = ({ translationId }) => (
 
 const Tabs = ({ location }) => {
   const { hasTests } = useSelector(({ metadata }) => metadata)
+  const { groups } = useSelector(({ groups }) => groups)
+  const AtLeastOneTestEnabled = groups.some(e => e.test_deadline - Date.now() > 0)
 
   const panes = [
     {
@@ -40,7 +42,7 @@ const Tabs = ({ location }) => {
     },
   ]
 
-  if (hasTests) {
+  if (hasTests && AtLeastOneTestEnabled) {
     panes.push({
       menuItem: {
         as: Link,
