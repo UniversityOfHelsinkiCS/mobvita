@@ -19,6 +19,7 @@ import Subheader from 'Components/Subheader'
 import ConfirmationWarning from 'Components/ConfirmationWarning'
 import AddToGroup from './AddToGroup'
 import NoGroupsView from './NoGroupsView'
+import { time } from 'highcharts'
 
 const GroupInviteInfo = ({ group }) => {
   const anyPeopleAdded = !!group.addedPeople.length
@@ -79,8 +80,11 @@ const GroupCard = ({
   const history = useHistory()
 
   const testEnabled = currTestDeadline - Date.now() > 0
-  const testButtonVariant = testEnabled ? 'info' : 'primary'
-  const deadlineString = new Date(currTestDeadline).toString()
+  const testButtonVariant = testEnabled ? 'danger' : 'primary'
+
+  const deadlineObject = new Date(currTestDeadline)
+  const timezone = deadlineObject.toString().split(' ')[5]
+  const deadlineHumanFormat = `${deadlineObject.toLocaleString()} (${timezone})`
 
   const testButtonText = testEnabled ? (
     <FormattedMessage id="disable-test" />
@@ -156,7 +160,7 @@ const GroupCard = ({
           <h5 style={{ fontWeight: 'bold' }}>{groupName}</h5>
           {testEnabled && (
             <div style={{ marginLeft: '0.5em' }}>
-              <FormattedMessage id="test-deadline" /> {deadlineString}
+              <FormattedMessage id="test-deadline" /> {deadlineHumanFormat}
             </div>
           )}
           <Icon name="ellipsis vertical" style={{ marginLeft: '1rem' }} />

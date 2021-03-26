@@ -883,8 +883,8 @@
     "reset-my-password": "Nollaa salasana",
     "OLD TOUR": "Revita auttaa sinua oppimaan kieliä kertomusten avulla. &rarr;",
     "tour-practice-now-message\t": "<div>Tästä pääset harjoittelemaan kertomuksilla.</div>",
-    "enable-test": "Enable test",
-    "disable-test": "Disable test",
-    "enable-test-one-day": "Enable test for 1 day",
-    "test-deadline": "Test deadline:"
+    "enable-test": "Ota testi käyttöön",
+    "disable-test": "Poista testi käytöstä",
+    "enable-test-one-day": "Ota testi käyttöön 1 päivän ajaksi",
+    "test-deadline": "Testin määräaika:"
 }
