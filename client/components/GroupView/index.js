@@ -89,7 +89,7 @@ export default function GroupView({ location }) {
       {
         menuItem: {
           as: Link,
-          content: <TabContent translationId="Join" />,
+          content: <TabContent translationId="join-a-group" />,
           to: '/groups/student/join',
           key: 'join',
           style: tabStyle,

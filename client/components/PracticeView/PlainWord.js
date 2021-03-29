@@ -10,7 +10,7 @@ import {
 import { getTranslationAction, setWords } from 'Utilities/redux/translationReducer'
 
 const PlainWord = ({ word, ...props }) => {
-  const { lemmas, ID: wordId, surface, inflection_ref: inflectionRef } = word
+  const { lemmas, ID: wordId, surface, inflection_ref: inflectionRef, name_token: isName } = word
 
   const autoSpeak = useSelector(({ user }) => user.data.user.auto_speak)
   const learningLanguage = useSelector(learningLanguageSelector)
@@ -29,7 +29,7 @@ const PlainWord = ({ word, ...props }) => {
     )
   }
 
-  if (!lemmas) return <span {...props}>{surface}</span>
+  if (!lemmas || isName) return <span {...props}>{surface}</span>
 
   const handleWordClick = () => {
     if (autoSpeak === 'always' && voice) speak(surface, voice)

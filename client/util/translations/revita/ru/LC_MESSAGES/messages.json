@@ -888,5 +888,6 @@
     "enable-test": "Включить тест",
     "disable-test": "Отключить тест",
     "enable-test-one-day": "Включить тест на 1 день",
-    "test-deadline": "Крайний срок теста:"
+    "test-deadline": "Крайний срок теста:",
+    "join-a-group": "Вступить в группу"
 }

@@ -57,7 +57,7 @@ const ReadView = ({ match }) => {
   }
 
   const wordVoice = word => {
-    if (word.bases) {
+    if (word.bases && !word.name_token) {
       return (
         <span
           className="word-interactive"

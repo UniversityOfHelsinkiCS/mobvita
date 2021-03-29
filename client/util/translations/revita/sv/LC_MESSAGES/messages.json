@@ -884,5 +884,6 @@
     "enable-test": "Enable test",
     "disable-test": "Disable test",
     "enable-test-one-day": "Enable test for 1 day",
-    "test-deadline": "Test deadline:"
+    "test-deadline": "Test deadline:",
+    "join-a-group": "Join a group"
 }

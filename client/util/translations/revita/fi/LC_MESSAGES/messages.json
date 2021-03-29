@@ -739,7 +739,7 @@
     "failed-to-share-the-story": "Tarinan jakaminen epäonnistui",
     "group-deleted": "Ryhmä poistettu",
     "email-sent": "Sähköposti lähetetty",
-    "joined-group": "Liityttiin ryhmään",
+    "joined-group": "Liityit ryhmään",
     "register-to-save-your-progress": "Luo tili ja tallenna edistymisesi",
     "Public": "Julkiset",
     "Private": "Omat",
@@ -886,5 +886,6 @@
     "enable-test": "Ota testi käyttöön",
     "disable-test": "Poista testi käytöstä",
     "enable-test-one-day": "Ota testi käyttöön 1 päivän ajaksi",
-    "test-deadline": "Testin määräaika:"
+    "test-deadline": "Testin määräaika:",
+    "join-a-group": "Liity ryhmään"
 }

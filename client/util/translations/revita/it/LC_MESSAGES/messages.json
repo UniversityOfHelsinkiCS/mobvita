@@ -886,5 +886,6 @@
     "enable-test": "Abilitare il test",
     "disable-test": "Disabilitare il test",
     "enable-test-one-day": "Abilitare il test per 1 giorno",
-    "test-deadline": "La scadenza del test:"
+    "test-deadline": "La scadenza del test:",
+    "join-a-group": "Unisciti a un gruppo"
 }
