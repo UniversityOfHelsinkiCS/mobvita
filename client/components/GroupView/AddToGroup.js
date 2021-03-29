@@ -14,8 +14,16 @@ const AddToGroup = ({ groupId, setGroupId }) => {
   const add = event => {
     event.preventDefault()
     const separators = [' ', ',', ';']
-    const studentsToAdd = students.split(new RegExp('[' + separators.join('') + ']', 'g')).map(p => p.trim())
-    const teachersToAdd = teachers.split(new RegExp('[' + separators.join('') + ']', 'g')).map(p => p.trim())
+
+    const studentsToAdd = students
+      .toLowerCase()
+      .split(new RegExp(`[${separators.join('')}]`, 'g'))
+      .map(p => p.trim())
+
+    const teachersToAdd = teachers
+      .toLowerCase()
+      .split(new RegExp(`[${separators.join('')}]`, 'g'))
+      .map(p => p.trim())
 
     dispatch(addToGroup(studentsToAdd, teachersToAdd, groupId))
     setGroupId(null)
