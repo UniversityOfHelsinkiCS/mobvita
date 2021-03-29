@@ -8,10 +8,12 @@ import { setNotification } from 'Utilities/redux/notificationReducer'
 const ReportButton = ({ extraClass }) => {
   const dispatch = useDispatch()
   const intl = useIntl()
+  const maxCharacters = 500
 
   const [modalOpen, setModalOpen] = useState(false)
   const [optionalMessage, setOptionalMessage] = useState('')
   const [sendingDisabled, setSendingDisabled] = useState(false)
+  const [charactersLeft, setCharactersLeft] = useState(maxCharacters)
 
   let timeout = null
 
@@ -24,18 +26,24 @@ const ReportButton = ({ extraClass }) => {
     const eventTitle = optionalMessage || `User report ${eventTimeStamp}`
     const eventOptions = {
       severity: 'info',
-      fingerprint: [`Level: info`, `Timestamp: ${eventTimeStamp}`]
+      fingerprint: ['Level: info', `Timestamp: ${eventTimeStamp}`]
     }
-    Sentry.captureMessage(eventTitle, eventOptions, )
+    Sentry.captureMessage(eventTitle, eventOptions)
   }
 
   const handleConfirmation = () => {
     setModalOpen(false)
+    setCharactersLeft(maxCharacters)
     sendSentryReport()
     setOptionalMessage('')
     dispatch(setNotification('report-sent', 'success'))
     setSendingDisabled(true)
     timeout = setTimeout(() => setSendingDisabled(false), 10000)
+  }
+
+  const handleTextChange = e => {
+    setCharactersLeft(maxCharacters - e.target.value.length)
+    setOptionalMessage(e.target.value)
   }
 
   return (
@@ -67,12 +75,17 @@ const ReportButton = ({ extraClass }) => {
           <Form>
             <TextArea
               value={optionalMessage}
-              onChange={(e, data) => setOptionalMessage(data.value)}
+              onChange={handleTextChange}
               placeholder={intl.formatMessage({ id: 'enter-more-about-problem' })}
+              maxLength="500"
               style={{ marginTop: '1rem' }}
             />
           </Form>
         </Modal.Content>
+        <div style={{ margin: '1rem' }}>
+          <FormattedMessage id="characters-left" />
+          {` ${charactersLeft}`}
+        </div>
         <Modal.Actions>
           <Button negative onClick={() => setModalOpen(false)}>
             <FormattedMessage id="Cancel" />
