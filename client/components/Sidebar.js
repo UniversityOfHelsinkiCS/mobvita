@@ -18,12 +18,10 @@ import LearningSettingsModal from './LearningSettingsModal'
 export default function Sidebar({ history }) {
   const dispatch = useDispatch()
   const sidebar = useRef()
-
   const user = useSelector(({ user }) => user.data)
   const open = useSelector(({ sidebar }) => sidebar.open)
-
+  const learningLanguage = user?.user?.last_used_language
   const locale = useSelector(({ locale }) => locale)
-
   const [localeDropdownOptions, setLocaleDropdownOptions] = useState([])
 
   const handleLocaleChange = newLocale => {
@@ -253,16 +251,18 @@ export default function Sidebar({ history }) {
             )}
             <div style={{ color: 'slateGrey' }}>
               <Menu.Item>
-                <Button
-                  variant="secondary"
-                  block
-                  style={{ marginTop: marginTopButton }}
-                  onClick={() => handleTourStart()}
-                  as={Link}
-                  to="/home"
-                >
-                  <Icon name="info circle" /> <FormattedMessage id="start-tour" />
-                </Button>
+                {learningLanguage && (
+                  <Button
+                    variant="secondary"
+                    block
+                    style={{ marginTop: marginTopButton }}
+                    onClick={() => handleTourStart()}
+                    as={Link}
+                    to="/home"
+                  >
+                    <Icon name="info circle" /> <FormattedMessage id="start-tour" />
+                  </Button>
+                )}
                 <Button
                   variant="secondary"
                   block
