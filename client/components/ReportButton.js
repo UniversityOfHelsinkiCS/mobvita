@@ -8,7 +8,7 @@ import { setNotification } from 'Utilities/redux/notificationReducer'
 const ReportButton = ({ extraClass }) => {
   const dispatch = useDispatch()
   const intl = useIntl()
-  const maxCharacters = 500
+  const maxCharacters = 1000
 
   const [modalOpen, setModalOpen] = useState(false)
   const [optionalMessage, setOptionalMessage] = useState('')

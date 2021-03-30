@@ -49,7 +49,7 @@ Sentry.init({
   environment: isStaging ? 'staging' : 'production',
   release: `revita@${__COMMIT__}`, // eslint-disable-line no-undef
   normalizeDepth: 10,
-  maxValueLength: 500,
+  maxValueLength: 1000,
   beforeSend(event, hint) {
     return event.contexts ? filterReduxStateForSentry(event) : event
   },
