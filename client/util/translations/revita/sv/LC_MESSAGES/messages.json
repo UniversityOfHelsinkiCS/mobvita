@@ -888,5 +888,6 @@
     "join-a-group": "Join a group",
     "accuracy": "Accuracy",
     "pw-reset-for-registered-users-only": "Resetting password is possible for registered users only!",
-    "file-upload-instructions": "Vänligen mata berättelsen i en simpel text fil. Vi väljer automatiskt rubriken. Var god och ange en berättelse i det aktiva övnings språket."
+    "file-upload-instructions": "Vänligen mata berättelsen i en simpel text fil. Vi väljer automatiskt rubriken. Var god och ange en berättelse i det aktiva övnings språket.",
+    "check-for-non-latin-characters": "Check that the filename doesn't contain any non-Latin characters!"
 }

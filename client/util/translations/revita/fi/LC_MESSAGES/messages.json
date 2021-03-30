@@ -890,5 +890,6 @@
     "join-a-group": "Liity ryhmään",
     "accuracy": "Oikeiden vastausten osuus",
     "pw-reset-for-registered-users-only": "Vain rekisteröityneet käyttäjät voivat vaihtaa salasanaa!",
-    "file-upload-instructions": "Valitse tiedosto, jonka sisällöllä haluat harjoitella<ul><li>Tiedostopääte voi olla  .txt tai .docx (.doc ei ole tuettu)</li><li> Revita valitsee ensimmäisen rivin tarinan otsikoksi</li><li>Tiedoston nimessä tulee olla vain latinalaisia aakkosia (tällä hetkellä)</li></ul>"
+    "file-upload-instructions": "Valitse tiedosto, jonka sisällöllä haluat harjoitella<ul><li>Sallitut tiedostomuodot ovat .txt ja .docx (.doc ei ole tuettu)</li><li> Revita valitsee ensimmäisen rivin tarinan otsikoksi</li><li>Tiedoston nimessä tulee olla vain latinalaisia aakkosia (tällä hetkellä)</li></ul>",
+    "check-for-non-latin-characters": "Tarkista, ettei tiedoston nimi sisällä ei-latinalaisia aakkosia!"
 }

@@ -721,7 +721,7 @@
     "personal-settings": "Impostazioni Personali",
     "join-group": "Unisciti al Gruppo",
     "summary": "Riassunto",
-    "show-group-token": "Mostra la chiave del gruppo",
+    "show-group-token": "La chiave del gruppo",
     "enter-token": "Chiave del gruppo",
     "summary-for-language": "Riassunto ",
     "date-start": "Data di inizio",
@@ -890,5 +890,6 @@
     "join-a-group": "Unisciti a un gruppo",
     "accuracy": "Percentuale di risposte corrette",
     "pw-reset-for-registered-users-only": "Resetting password is possible for registered users only!",
-    "file-upload-instructions": "Inserire il nome del file .TXT o .DOCX con il testo. Revita usa la prima riga del testo come titolo"
+    "file-upload-instructions": "Inserire il nome del file .TXT o .DOCX con il testo. Revita usa la prima riga del testo come titolo",
+    "check-for-non-latin-characters": "Check that the filename doesn't contain any non-Latin characters!"
 }
