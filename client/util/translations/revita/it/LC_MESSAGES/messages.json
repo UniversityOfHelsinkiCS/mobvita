@@ -887,5 +887,8 @@
     "disable-test": "Disabilitare il test",
     "enable-test-one-day": "Abilitare il test per 1 giorno",
     "test-deadline": "La scadenza del test:",
-    "join-a-group": "Unisciti a un gruppo"
+    "join-a-group": "Unisciti a un gruppo",
+    "accuracy": "Percentuale di risposte corrette",
+    "pw-reset-for-registered-users-only": "Resetting password is possible for registered users only!",
+    "file-upload-instructions": "Inserire il nome del file .TXT o .DOCX con il testo. Revita usa la prima riga del testo come titolo"
 }

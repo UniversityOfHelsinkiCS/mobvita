@@ -557,7 +557,7 @@
     "great-job": "",
     "you-practiced": "",
     "hours-last-week-keep-it-up": "",
-    "overall-score": "",
+    "overall-score": "Overall score:",
     "correct-answers": "Correct answers",
     "total-answers": "Total answers",
     "Accuracy": "",
@@ -567,7 +567,7 @@
     "add-your-stories": "Add new stories",
     "to-add-your-own-stories": "",
     "you-can-add-your-own-stories-from-your-files-or-from-any-web-page": "",
-    "please-submit-a-simple-text-file-containing-the-story-you-want-to-add-we-will-automatically-infer-th": "Please submit the story you want to add — select a text file with extension .TXT or .DOCX (other extensions are not supported).  Revita will use the first line as the title of the story.",
+    "please-submit-a-simple-text-file-containing-the-story-you-want-to-add-we-will-automatically-infer-th": "Please submit the story you want to add  <ul><li>Select a text file with extension .TXT or .DOCX (other extensions are not supported)</li> <li>  Revita will use the first line as the title of the story</li><li>Please use Latin characters in the filename (for now)</li></ul>",
     "choose-a-file": "Choose a file",
     "Browse": "",
     "Submit": "Submit",
@@ -886,5 +886,8 @@
     "disable-test": "Disable test",
     "enable-test-one-day": "Enable test for 1 day",
     "test-deadline": "Test deadline:",
-    "join-a-group": "Join a group"
+    "join-a-group": "Join a group",
+    "accuracy": "Accuracy",
+    "pw-reset-for-registered-users-only": "Resetting password is possible for registered users only!",
+    "file-upload-instructions": "Please submit the story you want to add<ul><li>Select a text file with extension .TXT or .DOCX (other extensions are not supported)</li><li> Revita will use the first line as the title of the story</li><li>Please use Latin characters in the filename (for now)</li></ul>"
 }

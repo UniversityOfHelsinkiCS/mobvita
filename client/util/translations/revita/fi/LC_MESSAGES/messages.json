@@ -568,7 +568,7 @@
     "to-add-your-own-stories": "lisätäksesi tekstisi",
     "you-can-add-your-own-stories-from-your-files-or-from-any-web-page": "Voit lisätä omat tekstisi tiedostoistasi tai miltä tahansa web-sivulta.",
     "please-submit-a-simple-text-file-containing-the-story-you-want-to-add-we-will-automatically-infer-th": "Olkaa hyvä ja antakaa teksti, jonka haluatte lisätä — käyttäkää tiedostoa, jossa on joko pääte .txt tai .docx (.doc ei ole tuettu). Revita valitsee ensimmäisen rivin tarinan otsikoksi.",
-    "choose-a-file": "Valitse tiedosto:",
+    "choose-a-file": "Valitse tiedosto",
     "Browse": "Selaa",
     "Submit": "Lähetä tiedosto",
     "paste-the-raw-text-you-want-to-add-as-a-story-we-will-use-the-first-sentence-before-an-empty-line-as": "Kopioikaa tähän raaka teksti jonka haluatte lisätä tarinana. Käytämme ensimmäisen lauseen ennen tyhjää riviä otsikkona. Antakaa tarina valitussa opetus kielessänne. Minimi pituus: 50.",
@@ -887,5 +887,8 @@
     "disable-test": "Poista testi käytöstä",
     "enable-test-one-day": "Ota testi käyttöön 1 päivän ajaksi",
     "test-deadline": "Testin määräaika:",
-    "join-a-group": "Liity ryhmään"
+    "join-a-group": "Liity ryhmään",
+    "accuracy": "Oikeiden vastausten osuus",
+    "pw-reset-for-registered-users-only": "Vain rekisteröityneet käyttäjät voivat vaihtaa salasanaa!",
+    "file-upload-instructions": "Valitse tiedosto, jonka sisällöllä haluat harjoitella<ul><li>Tiedostopääte voi olla  .txt tai .docx (.doc ei ole tuettu)</li><li> Revita valitsee ensimmäisen rivin tarinan otsikoksi</li><li>Tiedoston nimessä tulee olla vain latinalaisia aakkosia (tällä hetkellä)</li></ul>"
 }

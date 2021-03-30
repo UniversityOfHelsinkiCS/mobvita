@@ -889,5 +889,8 @@
     "disable-test": "Отключить тест",
     "enable-test-one-day": "Включить тест на 1 день",
     "test-deadline": "Крайний срок теста:",
-    "join-a-group": "Вступить в группу"
+    "join-a-group": "Вступить в группу",
+    "accuracy": "Процент правильных ответов",
+    "pw-reset-for-registered-users-only": "Resetting password is possible for registered users only!",
+    "file-upload-instructions": "Пожалуйста, введи название файла с расширением .TXT или .DOCX, содержащего текст. Ревита использует первую строку текста как заголовок."
 }

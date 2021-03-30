@@ -554,7 +554,7 @@
     "great-job": "",
     "you-practiced": "",
     "hours-last-week-keep-it-up": "",
-    "overall-score": "",
+    "overall-score": "Overall score:",
     "correct-answers": "Correct answers",
     "total-answers": "Total answers",
     "Accuracy": "",
@@ -885,5 +885,8 @@
     "disable-test": "Disable test",
     "enable-test-one-day": "Enable test for 1 day",
     "test-deadline": "Test deadline:",
-    "join-a-group": "Join a group"
+    "join-a-group": "Join a group",
+    "accuracy": "Accuracy",
+    "pw-reset-for-registered-users-only": "Resetting password is possible for registered users only!",
+    "file-upload-instructions": "Vänligen mata berättelsen i en simpel text fil. Vi väljer automatiskt rubriken. Var god och ange en berättelse i det aktiva övnings språket."
 }
