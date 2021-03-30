@@ -23,7 +23,7 @@ const ResetPassword = ({ match }) => {
     }
 
     dispatch(resetPassword(password, match.params.token))
-    history.replace('/login')
+    history.replace('/home')
   }
 
   return (
