@@ -34,7 +34,9 @@ const PreviousSnippets = () => {
   const oldPreviousSnippets = useMemo(
     () =>
       previous
-        .filter(snippet => !snippetsInPrevious.includes(snippet.snippetid[0]))
+        .filter(
+          snippet => !snippetsInPrevious.includes(snippet.snippetid[snippet.snippetid.length - 1])
+        )
         .map(snippet =>
           snippet.practice_snippet.map(word => <PlainWord key={word.ID} word={word} />)
         ),
@@ -44,7 +46,9 @@ const PreviousSnippets = () => {
   const sessionPreviousSnippets = useMemo(
     () =>
       previous
-        .filter(snippet => snippetsInPrevious.includes(snippet.snippetid[0]))
+        .filter(snippet =>
+          snippetsInPrevious.includes(snippet.snippetid[snippet.snippetid.length - 1])
+        )
         .map(snippet => (
           <TextWithFeedback snippet={snippet.practice_snippet} answers={previousAnswers} />
         )),

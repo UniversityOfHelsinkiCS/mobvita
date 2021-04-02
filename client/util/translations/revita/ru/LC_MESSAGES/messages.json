@@ -891,7 +891,7 @@
     "test-deadline": "Крайний срок теста:",
     "join-a-group": "Вступить в группу",
     "accuracy": "Процент правильных ответов",
-    "pw-reset-for-registered-users-only": "Resetting password is possible for registered users only!",
-    "file-upload-instructions": "Пожалуйста, введи название файла с расширением .TXT или .DOCX, содержащего текст. Ревита использует первую строку текста как заголовок.",
-    "check-for-non-latin-characters": "Check that the filename doesn't contain any non-Latin characters!"
+    "pw-reset-for-registered-users-only": "Менять пароль можно только после регистрации.",
+    "file-upload-instructions": "Пожалуйста, выбери файл, в котором содержится текст:<ul><li>у файла должно быть расширение .TXT или .DOCX</li><li>название файла должно содержать <b>только латинские</b> буквы</li><li>Ревита использует первую строку, как заголовок текста</li></ul>",
+    "check-for-non-latin-characters": "Название файла должно состоять только из латинских букв!"
 }

@@ -80,7 +80,7 @@ const CurrentSnippet = ({ storyId, handleInputChange }) => {
         }
 
         if (listen) {
-          dispatch(addToAudio({[ID]: audio}))
+          dispatch(addToAudio({ [ID]: audio }))
         }
 
         return {

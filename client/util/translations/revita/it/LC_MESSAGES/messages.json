@@ -890,6 +890,6 @@
     "join-a-group": "Unisciti a un gruppo",
     "accuracy": "Percentuale di risposte corrette",
     "pw-reset-for-registered-users-only": "Resetting password is possible for registered users only!",
-    "file-upload-instructions": "Inserire il nome del file .TXT o .DOCX con il testo. Revita usa la prima riga del testo come titolo",
+    "file-upload-instructions": "Seleziona un file di testo contenente la storia:<ul><li>Seleziona un file con estensione .TXT o .DOCX (altre estensioni non supportate).</li><li>Si prega di utilizzare solo caratteri latini nel nome del file (per ora).</li><li>Revita utilizzerà la prima riga come titolo della storia.</li></ul>",
     "check-for-non-latin-characters": "Check that the filename doesn't contain any non-Latin characters!"
 }
