@@ -73,7 +73,7 @@ const PracticeView = () => {
               {!pending && `${story.title}`}
             </h3>
             {story.url && !pending ? (
-              <a href={story.url}>
+              <a target="blank" href={story.url}>
                 <FormattedMessage id="Source" />
               </a>
             ) : null}

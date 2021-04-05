@@ -29,7 +29,7 @@ const Speaker = ({ word }) => {
   return (
     <Icon
       name="volume up"
-      style={{ marginLeft: '1rem' }}
+      style={{ marginRight: '1rem' }}
       className="clickable"
       onClick={handleSpeakerClick}
     />
@@ -59,6 +59,7 @@ const Lemma = ({ lemma, userUrl, inflectionRef }) => {
 
   return (
     <div className="flex" style={getTextStyle(learningLanguage)}>
+      <Speaker word={lemma} />
       {maskSymbol || (
         <a href={userUrl} target="_blank" rel="noopener noreferrer">
           {lemma}
@@ -69,7 +70,6 @@ const Lemma = ({ lemma, userUrl, inflectionRef }) => {
           <Icon name="external" style={{ marginLeft: '1rem' }} />
         </a>
       )}
-      <Speaker word={lemma} />
     </div>
   )
 }
@@ -207,8 +207,8 @@ const DictionaryHelp = ({ minimized }) => {
         <List.Item style={{ color: '#555555' }}>
           {!clue && (
             <div style={{ width: '100%', ...getTextStyle(learningLanguage) }}>
-              {maskSymbol ? maskSymbol : parsedLemmas()[0]}
               <Speaker word={parsedLemmas()[0]} />
+              {maskSymbol ? maskSymbol : parsedLemmas()[0]}
             </div>
           )}
           <List bulleted style={{ color: 'slateGrey', fontStyle: 'italic' }}>
@@ -260,8 +260,8 @@ const DictionaryHelp = ({ minimized }) => {
                   ...getTextStyle(learningLanguage),
                 }}
               >
-                <span style={{ color: '#2185D0' }}>{maskSymbol || surfaceWord}</span>
                 <Speaker word={surfaceWord} />
+                <span style={{ color: '#2185D0' }}>{maskSymbol || surfaceWord}</span>
               </div>
             )}
             {translationResults()}
