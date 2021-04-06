@@ -11,7 +11,7 @@ import {
 } from 'Utilities/redux/snippetsReducer'
 import { finishSnippet, clearTouchedIds, clearPractice } from 'Utilities/redux/practiceReducer'
 
-const CheckAnswersButton = ({ handleClick }) => {
+const CheckAnswersButton = ({ handleClick, checkAnswersButtonTempDisable }) => {
   const attempt = useSelector(({ practice }) => practice.attempt)
   const { focused: focusedSnippet, pending: snippetPending, answersPending } = useSelector(
     ({ snippets }) => snippets
@@ -36,7 +36,9 @@ const CheckAnswersButton = ({ handleClick }) => {
       type="button"
       onClick={() => handleClick()}
       className="check-answers-button"
-      disabled={answersPending || snippetPending || !focusedSnippet}
+      disabled={
+        answersPending || snippetPending || !focusedSnippet || checkAnswersButtonTempDisable
+      }
     >
       <div style={{ width: `${attemptRatioPercentage}%` }} />
       <span>
@@ -47,11 +49,11 @@ const CheckAnswersButton = ({ handleClick }) => {
 }
 
 const SnippetActions = ({ storyId, exerciseCount }) => {
+  const [checkAnswersButtonTempDisable, setcheckAnswersButtonTempDisable] = useState(false)
   const { currentAnswers, touchedIds, attempt, options, audio } = useSelector(
     ({ practice }) => practice
   )
   const { snippets } = useSelector(({ snippets }) => ({ snippets }))
-
   const dispatch = useDispatch()
   const { id } = useParams()
 
@@ -97,6 +99,10 @@ const SnippetActions = ({ storyId, exerciseCount }) => {
   const handleRestart = () => {
     dispatch(clearPractice())
     dispatch(resetCurrentSnippet(id))
+    setcheckAnswersButtonTempDisable(true)
+    setTimeout(() => {
+      setcheckAnswersButtonTempDisable(false)
+    }, 5000)
   }
 
   const isSnippetFetchedSuccessfully =
@@ -106,7 +112,10 @@ const SnippetActions = ({ storyId, exerciseCount }) => {
     <div>
       {isSnippetFetchedSuccessfully ? (
         <div style={{ display: 'flex', flexDirection: 'column' }}>
-          <CheckAnswersButton handleClick={checkAnswers} />
+          <CheckAnswersButton
+            handleClick={checkAnswers}
+            checkAnswersButtonTempDisable={checkAnswersButtonTempDisable}
+          />
           <div className="space-between">
             <Button
               variant="secondary"
@@ -124,6 +133,7 @@ const SnippetActions = ({ storyId, exerciseCount }) => {
               size="sm"
               onClick={handleRestart}
               style={{ marginBottom: '0.5em' }}
+              disabled={snippets.answersPending || snippets.pending}
             >
               <span>
                 <FormattedMessage id="start-over" /> <Icon name="level up alternate" />
