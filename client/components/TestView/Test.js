@@ -5,7 +5,7 @@ import { Icon } from 'semantic-ui-react'
 import { Button } from 'react-bootstrap'
 import { sendAnswer, finishTest } from 'Utilities/redux/testReducer'
 import { learningLanguageSelector } from 'Utilities/common'
-import { FormattedMessage } from 'react-intl'
+import { FormattedMessage, FormattedHTMLMessage } from 'react-intl'
 import MultipleChoice from './MultipleChoice'
 
 const TIMER_START_DELAY = 300
@@ -131,7 +131,7 @@ const Test = () => {
             )}
             {paused && (
               <div className="test-prephrase">
-                <FormattedMessage id="paused-click-to-resume" />
+                <FormattedHTMLMessage id="paused-click-to-resume" />
               </div>
             )}
             {currentQuestion && !paused && !answerFailure && (
