@@ -883,13 +883,13 @@
     "reset-my-password": "Reimposta la password",
     "OLD TOUR": "Revita ti aiuta a studiare le lingue! Il sistema crea esercizi in base ai testi che carichi.<br/><br/>Ora ti mostreremo le funzioni basilari<br/><br/><i>Iniziamo!<br/>(La presentazione durerà 1 minuto.)</i> &rarr;",
     "tour-practice-now-message\t": "<div>Qui puoi iniziare ad allenarti con le storie.</div>",
-    "enable-test": "Abilitare il test",
-    "disable-test": "Disabilitare il test",
-    "enable-test-one-day": "Abilitare il test per 1 giorno",
+    "enable-test": "Abilita il test",
+    "disable-test": "Disabilita il test",
+    "enable-test-one-day": "Abilita il test per 1 giorno",
     "test-deadline": "La scadenza del test:",
     "join-a-group": "Unisciti a un gruppo",
     "accuracy": "Percentuale di risposte corrette",
-    "pw-reset-for-registered-users-only": "Resetting password is possible for registered users only!",
+    "pw-reset-for-registered-users-only": "Solo gli utenti registrati possono resettare la password",
     "file-upload-instructions": "Seleziona un file di testo contenente la storia:<ul><li>Seleziona un file con estensione .TXT o .DOCX (altre estensioni non supportate).</li><li>Si prega di utilizzare solo caratteri latini nel nome del file (per ora).</li><li>Revita utilizzerà la prima riga come titolo della storia.</li></ul>",
-    "check-for-non-latin-characters": "Check that the filename doesn't contain any non-Latin characters!"
+    "check-for-non-latin-characters": "Controlla che il nome del file non contenga nessun carattere non latini!"
 }
