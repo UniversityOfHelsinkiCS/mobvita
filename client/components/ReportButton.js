@@ -77,7 +77,7 @@ const ReportButton = ({ extraClass }) => {
               value={optionalMessage}
               onChange={handleTextChange}
               placeholder={intl.formatMessage({ id: 'enter-more-about-problem' })}
-              maxLength="500"
+              maxLength={maxCharacters}
               style={{ marginTop: '1rem' }}
             />
           </Form>
