@@ -212,6 +212,7 @@ export default function Sidebar({ history }) {
                       style={{ marginTop: marginTopButton }}
                       onClick={() => menuClickWrapper()}
                       block
+                      disabled={user.user.email === 'anonymous_email'}
                     >
                       <Icon name="group" /> <FormattedMessage id="Groups-for-students" />
                     </Button>
@@ -223,6 +224,7 @@ export default function Sidebar({ history }) {
                       style={{ marginTop: marginTopButton }}
                       onClick={() => menuClickWrapper()}
                       block
+                      disabled={user.user.email === 'anonymous_email'}
                     >
                       <Icon name="group" /> <FormattedMessage id="Groups-for-teachers" />
                     </Button>
