@@ -28,6 +28,7 @@ import leaderboard from './leaderboardReducer'
 import newAchievements from './newAchievementsReducer'
 import flashcardList from './flashcardListReducer'
 import tour from './tourReducer'
+import news from './newsReducer'
 
 const rootReducer = combineReducers({
   stories,
@@ -58,6 +59,7 @@ const rootReducer = combineReducers({
   studentHistory,
   flashcardList,
   tour,
+  news,
 })
 
 export default (state, action) =>

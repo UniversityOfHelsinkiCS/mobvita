@@ -2,7 +2,7 @@ import React from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import { Navbar } from 'react-bootstrap'
 import Headroom from 'react-headroom'
-import { Icon, Button } from 'semantic-ui-react'
+import { Icon, Button, Label } from 'semantic-ui-react'
 import { Link, useHistory } from 'react-router-dom'
 import { sidebarSetOpen } from 'Utilities/redux/sidebarReducer'
 import useWindowDimensions from 'Utilities/windowDimensions'
@@ -10,13 +10,14 @@ import { hiddenFeatures, images } from 'Utilities/common'
 import { Offline } from 'react-detect-offline'
 import { FormattedMessage } from 'react-intl'
 import Tour from './Tour'
+import NewsModal from './NewsModal'
 
 export default function NavBar() {
   const { user } = useSelector(({ user }) => ({ user: user.data }))
+  const { numUnreadNews } = useSelector(({ metadata }) => metadata)
   const open = useSelector(({ sidebar }) => sidebar.open)
   const dispatch = useDispatch()
   const history = useHistory()
-
   const smallWindow = useWindowDimensions().width < 640
 
   const handleEloClick = () => {
@@ -35,7 +36,7 @@ export default function NavBar() {
   const showStoryElo = history.location.pathname.includes('practice')
   const showFlashcardElo = hiddenFeatures && history.location.pathname.includes('flashcards')
   const hasChosenLearningLanguage = user?.user?.last_used_language !== null
-  const isNewUser = true ? user?.user?.total_time_spent < 0.5 : false
+  const isNewUser = user?.user?.total_time_spent < 0.5
 
   const storyElo =
     user && user.user.exercise_history && user.user.exercise_history.length > 0
@@ -93,7 +94,7 @@ export default function NavBar() {
             </Navbar.Brand>
           </Link>
         </div>
-        {isNewUser && hasChosenLearningLanguage && (
+        {isNewUser && hasChosenLearningLanguage && !smallWindow && (
           <Button type="button" onClick={handleTourStart} className="tour-start">
             <Icon name="info circle" /> <FormattedMessage id="start-tour" />
           </Button>
@@ -129,6 +130,20 @@ export default function NavBar() {
             <Offline polling={{ timeout: 20000 }}>
               <Icon name="broken chain" size="large" style={{ color: '#ff944d' }} />
             </Offline>
+            {hiddenFeatures && (
+              <NewsModal
+                trigger={
+                  <span style={{ position: 'relative', marginRight: '0.5rem' }}>
+                    <Icon name="bell" size="big" style={{ color: 'white', cursor: 'pointer' }} />
+                    {numUnreadNews > 0 ? (
+                      <Label color="red" size="mini" floating style={{ cursor: 'pointer' }}>
+                        {numUnreadNews}
+                      </Label>
+                    ) : null}
+                  </span>
+                }
+              />
+            )}
             <Icon
               name="setting"
               size="big"

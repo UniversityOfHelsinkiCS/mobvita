@@ -890,5 +890,6 @@
     "accuracy": "Accuracy",
     "pw-reset-for-registered-users-only": "Resetting password is possible for registered users only!",
     "file-upload-instructions": "Please select a text file containing the story:<ul><li>Select a file with extension .TXT or .DOCX (other extensions not supported)</li><li>Please use <b>only Latin</b> characters in the filename (for now)</li><li> Revita will use the first line as the title of the story</li></ul>",
-    "check-for-non-latin-characters": "Check that the filename doesn't contain any non-Latin characters!"
+    "check-for-non-latin-characters": "Check that the filename doesn't contain any non-Latin characters!",
+    "news": "News"
 }

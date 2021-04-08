@@ -891,5 +891,6 @@
     "accuracy": "Percentuale di risposte corrette",
     "pw-reset-for-registered-users-only": "Solo gli utenti registrati possono resettare la password",
     "file-upload-instructions": "Seleziona un file di testo contenente la storia:<ul><li>Seleziona un file con estensione .TXT o .DOCX (altre estensioni non supportate).</li><li>Si prega di utilizzare solo caratteri latini nel nome del file (per ora).</li><li>Revita utilizzerà la prima riga come titolo della storia.</li></ul>",
-    "check-for-non-latin-characters": "Controlla che il nome del file non contenga nessun carattere non latini!"
+    "check-for-non-latin-characters": "Controlla che il nome del file non contenga nessun carattere non latini!",
+    "news": "Notizie"
 }
