@@ -25,17 +25,18 @@ export default function NewsModal({ trigger }) {
       onOpen={fetchNews}
       onClose={fetchMetadata}
     >
-      <Modal.Header>
+      <Modal.Header className="bold" as="h2">
         <FormattedMessage id="news" />
       </Modal.Header>
       <Modal.Content>
-        {news.map(e => (
-          <div key={e.date}>
-            <span className="header-3">{new Date(e?.date).toLocaleString().slice(0, 10)}</span>
-            <p>{e?.content}</p>
-            <Divider />
-          </div>
-        ))}
+        {news.map(e => {
+          return (
+            <div key={e.date}>
+              <span dangerouslySetInnerHTML={{ __html: e?.content }} />
+              <Divider />
+            </div>
+          )
+        })}
       </Modal.Content>
     </Modal>
   )

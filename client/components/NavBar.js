@@ -130,20 +130,18 @@ export default function NavBar() {
             <Offline polling={{ timeout: 20000 }}>
               <Icon name="broken chain" size="large" style={{ color: '#ff944d' }} />
             </Offline>
-            {hiddenFeatures && (
-              <NewsModal
-                trigger={
-                  <span style={{ position: 'relative', marginRight: '0.5rem' }}>
-                    <Icon name="bell" size="big" style={{ color: 'white', cursor: 'pointer' }} />
-                    {numUnreadNews > 0 ? (
-                      <Label color="red" size="mini" floating style={{ cursor: 'pointer' }}>
-                        {numUnreadNews}
-                      </Label>
-                    ) : null}
-                  </span>
-                }
-              />
-            )}
+            <NewsModal
+              trigger={
+                <span style={{ position: 'relative', marginRight: '0.5rem' }}>
+                  <Icon name="bell" size="big" style={{ color: 'white', cursor: 'pointer' }} />
+                  {numUnreadNews > 0 ? (
+                    <Label color="red" size="mini" floating style={{ cursor: 'pointer' }}>
+                      {numUnreadNews}
+                    </Label>
+                  ) : null}
+                </span>
+              }
+            />
             <Icon
               name="setting"
               size="big"
