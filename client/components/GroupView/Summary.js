@@ -117,11 +117,16 @@ const Summary = ({ groupName, isTeaching, getSummary }) => {
       {pending ? (
         <Spinner />
       ) : (
-        <Table striped bordered hover responsive>
+        <Table striped bordered hover responsive size="sm">
           <thead>
             <tr>
               {columns.map(column => (
-                <th key={column} className="clickable" onClick={() => handleSort(column)}>
+                <th
+                  key={column}
+                  className="clickable"
+                  onClick={() => handleSort(column)}
+                  style={{ textAlign: 'center', verticalAlign: 'middle' }}
+                >
                   {capitalize(column).replace(/_/g, ' ')}
                   {sorter.field === column && (
                     <Icon name={sorter.direction[column] === 1 ? 'caret up' : 'caret down'} />
