@@ -894,5 +894,8 @@
     "pw-reset-for-registered-users-only": "Менять пароль можно только после регистрации.",
     "file-upload-instructions": "Пожалуйста, выбери файл, в котором содержится текст:<ul><li>у файла должно быть расширение .TXT или .DOCX</li><li>название файла должно содержать <b>только латинские</b> буквы</li><li>Ревита использует первую строку, как заголовок текста</li></ul>",
     "check-for-non-latin-characters": "Название файла должно состоять только из латинских букв!",
-    "news": "Новости"
+    "news": "Новости",
+    "enable-test-one-hour": "Enable test for 1 hour",
+    "enable-test-two-hours": "Enable test for 2 hours",
+    "enable-test-three-hours": "Enable test for 3 hours"
 }

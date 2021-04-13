@@ -201,7 +201,7 @@
     "Close": "Chiudere",
     "you-do-not-have-any-apples-yet": "Non hai mele ancora",
     "get-hint-for-one-apple": "Scambiare una mela per un suggerimento",
-    "congratulations-you-have-solved-this-crossword": "Complimenti! Hai risolto il cruciverba",
+    "congratulations-you-have-solved-this-crossword": "Complimenti! Hai risolto il cruciverba!",
     "you-have-no-apples": "Non hai mele ancora",
     "please-log-in-to-access-this-page": "Effettua il login per accedere alla pagina",
     "Erzya": "Erzo",
@@ -892,5 +892,8 @@
     "pw-reset-for-registered-users-only": "Solo gli utenti registrati possono resettare la password",
     "file-upload-instructions": "Seleziona un file di testo contenente la storia:<ul><li>Seleziona un file con estensione .TXT o .DOCX (altre estensioni non supportate).</li><li>Si prega di utilizzare solo caratteri latini nel nome del file (per ora).</li><li>Revita utilizzerà la prima riga come titolo della storia.</li></ul>",
     "check-for-non-latin-characters": "Controlla che il nome del file non contenga nessun carattere non latini!",
-    "news": "Notizie"
+    "news": "Notizie",
+    "enable-test-one-hour": "Abilita il test per 1 ora",
+    "enable-test-two-hours": "Abilita il test per 2 ore",
+    "enable-test-three-hours": "Abilita il test per 3 ore"
 }

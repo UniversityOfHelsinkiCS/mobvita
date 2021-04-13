@@ -17,9 +17,9 @@ import { setNotification } from 'Utilities/redux/notificationReducer'
 import Spinner from 'Components/Spinner'
 import Subheader from 'Components/Subheader'
 import ConfirmationWarning from 'Components/ConfirmationWarning'
+import { time } from 'highcharts'
 import AddToGroup from './AddToGroup'
 import NoGroupsView from './NoGroupsView'
-import { time } from 'highcharts'
 
 const GroupInviteInfo = ({ group }) => {
   const anyPeopleAdded = !!group.addedPeople.length
@@ -137,8 +137,32 @@ const GroupCard = ({
     dispatch(setNotification('token-copied', 'info'))
   }
 
-  const handleTestEnable = () => {
-    const testDeadlineMs = Date.now() + 86400000 // 86400000ms == 1 day
+  const handleTestEnableOneHour = () => {
+    const testDeadlineMs = Date.now() + 3600000 // 1 hour
+
+    dispatch(setGroupTestDeadline(testDeadlineMs, id))
+    setCurrTestDeadline(testDeadlineMs)
+    setShowTestEnableMenuGroupId(null)
+  }
+
+  const handleTestEnableTwoHours = () => {
+    const testDeadlineMs = Date.now() + 7200000 // 2 hours
+
+    dispatch(setGroupTestDeadline(testDeadlineMs, id))
+    setCurrTestDeadline(testDeadlineMs)
+    setShowTestEnableMenuGroupId(null)
+  }
+
+  const handleTestEnableThreeHours = () => {
+    const testDeadlineMs = Date.now() + 10800000 // 3 hours
+
+    dispatch(setGroupTestDeadline(testDeadlineMs, id))
+    setCurrTestDeadline(testDeadlineMs)
+    setShowTestEnableMenuGroupId(null)
+  }
+
+  const handleTestEnableOneDay = () => {
+    const testDeadlineMs = Date.now() + 86400000 // 1 day
 
     dispatch(setGroupTestDeadline(testDeadlineMs, id))
     setCurrTestDeadline(testDeadlineMs)
@@ -258,8 +282,36 @@ const GroupCard = ({
                 <Button
                   data-cy="enable-test-one-day"
                   type="button"
-                  onClick={handleTestEnable}
+                  onClick={handleTestEnableOneHour}
                   variant="success"
+                  style={{ margin: '0.2em' }}
+                >
+                  <FormattedMessage id="enable-test-one-hour" />
+                </Button>
+                <Button
+                  data-cy="enable-test-one-day"
+                  type="button"
+                  onClick={handleTestEnableTwoHours}
+                  variant="success"
+                  style={{ margin: '0.2em' }}
+                >
+                  <FormattedMessage id="enable-test-two-hours" />
+                </Button>
+                <Button
+                  data-cy="enable-test-one-day"
+                  type="button"
+                  onClick={handleTestEnableThreeHours}
+                  variant="success"
+                  style={{ margin: '0.2em' }}
+                >
+                  <FormattedMessage id="enable-test-three-hours" />
+                </Button>
+                <Button
+                  data-cy="enable-test-one-day"
+                  type="button"
+                  onClick={handleTestEnableOneDay}
+                  variant="success"
+                  style={{ margin: '0.2em' }}
                 >
                   <FormattedMessage id="enable-test-one-day" />
                 </Button>
@@ -273,7 +325,7 @@ const GroupCard = ({
                   <Button
                     onClick={handleTestButtonCancel}
                     variant="danger"
-                    style={{ marginTop: '0.3em' }}
+                    style={{ margin: '0.2em' }}
                   >
                     <FormattedMessage id="Cancel" />
                   </Button>

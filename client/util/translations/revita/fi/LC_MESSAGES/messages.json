@@ -202,7 +202,7 @@
     "Close": "Sulje",
     "you-do-not-have-any-apples-yet": "Ei omenoita",
     "get-hint-for-one-apple": "Voit vaihtaa omena vihjeeseen",
-    "congratulations-you-have-solved-this-crossword": "Onnittelut! Olet ratkaissut sanaristikon.",
+    "congratulations-you-have-solved-this-crossword": "Onnittelut! Sait sanaristikon ratkaistua!",
     "you-have-no-apples": "Ei omenoita",
     "please-log-in-to-access-this-page": "Kirjaudu sivulle",
     "Erzya": "Ersä",
@@ -836,7 +836,7 @@
     "Dative subject + impersonal verb: 'мне идет/надоело/везет/хватит'": "Dative subject + impersonal verb: 'мне идет/надоело/везет/хватит'",
     "Dative subject + impersonal-reflexive neg verb: 'ему не поздоровится'": "Dative subject + impersonal-reflexive neg verb: 'ему не поздоровится'",
     "Stress: other": "Stress: other",
-    "Unstressed vowels": "Unstressed vowels",
+    "Unstressed vowels": "Painottomat vokaalit",
     "Double and single -н- in suffixes": "Double and single -н- in suffixes",
     "Joint vs. hyphenated spelling": "Joint vs. hyphenated spelling",
     "Joint vs. separate spelling of negation 'не'": "Joint vs. separate spelling of negation 'не'",
@@ -860,7 +860,7 @@
     "Revita: for language learning and supporting endangered languages": "Työkaluja kielten oppimiseen ja uhanalaisten kielten tukemiseen",
     "use-my-personal-settings": "Käytä omia henkilökohtaisia asetuksiani",
     "use-my-group-settings": "Käytä ryhmän asetuksia",
-    "select-cefr-level": "Valitse harjoituksissa sallittu MAKSIMI taso",
+    "select-cefr-level": "Valitse harjoituksissa sallittu maksimitaso",
     "This key is valid for the next 30 days": "Tämä avain on voimassa 30 päivää",
     "upload-from-web": "Lataa verkosta",
     "participle-exercise": "Choose the base form for participle exercise",
@@ -892,5 +892,8 @@
     "pw-reset-for-registered-users-only": "Vain rekisteröityneet käyttäjät voivat vaihtaa salasanaa!",
     "file-upload-instructions": "Valitse tiedosto, jonka sisällöllä haluat harjoitella<ul><li>Sallitut tiedostomuodot ovat .txt ja .docx (.doc ei ole tuettu)</li><li> Revita valitsee ensimmäisen rivin tarinan otsikoksi</li><li>Tiedoston nimessä tulee olla vain latinalaisia aakkosia (tällä hetkellä)</li></ul>",
     "check-for-non-latin-characters": "Tarkista, ettei tiedoston nimi sisällä ei-latinalaisia aakkosia!",
-    "news": "Uutiset"
+    "news": "Uutiset",
+    "enable-test-one-hour": "Ota testi käyttöön 1 tunnin ajaksi",
+    "enable-test-two-hours": "Ota testi käyttöön 2 tunnin ajaksi",
+    "enable-test-three-hours": "Ota testi käyttöön 3 tunnin ajaksi"
 }

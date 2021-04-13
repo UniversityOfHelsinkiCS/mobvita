@@ -890,5 +890,8 @@
     "pw-reset-for-registered-users-only": "Resetting password is possible for registered users only!",
     "file-upload-instructions": "Vänligen mata berättelsen i en simpel text fil. Vi väljer automatiskt rubriken. Var god och ange en berättelse i det aktiva övnings språket.",
     "check-for-non-latin-characters": "Check that the filename doesn't contain any non-Latin characters!",
-    "news": "News"
+    "news": "News",
+    "enable-test-one-hour": "Enable test for 1 hour",
+    "enable-test-two-hours": "Enable test for 2 hours",
+    "enable-test-three-hours": "Enable test for 3 hours"
 }
