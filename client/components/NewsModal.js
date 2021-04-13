@@ -32,7 +32,7 @@ export default function NewsModal({ trigger }) {
         {news.map(e => {
           return (
             <div key={e.date}>
-              {new Date(e?.date).toLocaleString().slice(0, 10)}
+              {new Date(e?.date).toLocaleString().split(/([, ])/)[0]}
               <span dangerouslySetInnerHTML={{ __html: e?.content }} />
               <Divider />
             </div>
