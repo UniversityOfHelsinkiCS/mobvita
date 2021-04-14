@@ -897,5 +897,10 @@
     "news": "Новости",
     "enable-test-one-hour": "Enable test for 1 hour",
     "enable-test-two-hours": "Enable test for 2 hours",
-    "enable-test-three-hours": "Enable test for 3 hours"
+    "enable-test-three-hours": "Enable test for 3 hours",
+    "1-hour": "1 час",
+    "2-hours": "2 часа",
+    "3-hours": "3 часа",
+    "4-hours": "4 часа",
+    "24-hours": "24 часа"
 }

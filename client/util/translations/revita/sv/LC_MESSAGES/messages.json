@@ -893,5 +893,10 @@
     "news": "News",
     "enable-test-one-hour": "Enable test for 1 hour",
     "enable-test-two-hours": "Enable test for 2 hours",
-    "enable-test-three-hours": "Enable test for 3 hours"
+    "enable-test-three-hours": "Enable test for 3 hours",
+    "1-hour": "1 hour",
+    "2-hours": "2 hours",
+    "3-hours": "3 hours",
+    "4-hours": "4 hours",
+    "24-hours": "24 hours"
 }

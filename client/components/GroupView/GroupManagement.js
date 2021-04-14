@@ -137,14 +137,6 @@ const GroupCard = ({
     dispatch(setNotification('token-copied', 'info'))
   }
 
-  const handleTestEnableOneHour = () => {
-    const testDeadlineMs = Date.now() + 3600000 // 1 hour
-
-    dispatch(setGroupTestDeadline(testDeadlineMs, id))
-    setCurrTestDeadline(testDeadlineMs)
-    setShowTestEnableMenuGroupId(null)
-  }
-
   const handleTestEnableTwoHours = () => {
     const testDeadlineMs = Date.now() + 7200000 // 2 hours
 
@@ -155,6 +147,14 @@ const GroupCard = ({
 
   const handleTestEnableThreeHours = () => {
     const testDeadlineMs = Date.now() + 10800000 // 3 hours
+
+    dispatch(setGroupTestDeadline(testDeadlineMs, id))
+    setCurrTestDeadline(testDeadlineMs)
+    setShowTestEnableMenuGroupId(null)
+  }
+
+  const handleTestEnableFourHours = () => {
+    const testDeadlineMs = Date.now() + 14400000 // 4 hours
 
     dispatch(setGroupTestDeadline(testDeadlineMs, id))
     setCurrTestDeadline(testDeadlineMs)
@@ -280,31 +280,28 @@ const GroupCard = ({
             >
               <span style={{ margin: 'auto', padding: '0.5em' }}>
                 <Button
-                  data-cy="enable-test-one-day"
-                  type="button"
-                  onClick={handleTestEnableOneHour}
-                  variant="success"
-                  style={{ margin: '0.2em' }}
-                >
-                  <FormattedMessage id="enable-test-one-hour" />
-                </Button>
-                <Button
-                  data-cy="enable-test-one-day"
                   type="button"
                   onClick={handleTestEnableTwoHours}
                   variant="success"
                   style={{ margin: '0.2em' }}
                 >
-                  <FormattedMessage id="enable-test-two-hours" />
+                  <FormattedMessage id="2-hours" />
                 </Button>
                 <Button
-                  data-cy="enable-test-one-day"
                   type="button"
                   onClick={handleTestEnableThreeHours}
                   variant="success"
                   style={{ margin: '0.2em' }}
                 >
-                  <FormattedMessage id="enable-test-three-hours" />
+                  <FormattedMessage id="3-hours" />
+                </Button>
+                <Button
+                  type="button"
+                  onClick={handleTestEnableFourHours}
+                  variant="success"
+                  style={{ margin: '0.2em' }}
+                >
+                  <FormattedMessage id="4-hours" />
                 </Button>
                 <Button
                   data-cy="enable-test-one-day"
@@ -313,7 +310,7 @@ const GroupCard = ({
                   variant="success"
                   style={{ margin: '0.2em' }}
                 >
-                  <FormattedMessage id="enable-test-one-day" />
+                  <FormattedMessage id="24-hours" />
                 </Button>
                 <div
                   style={{

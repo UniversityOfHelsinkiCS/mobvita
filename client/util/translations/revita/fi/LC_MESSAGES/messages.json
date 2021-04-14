@@ -895,5 +895,10 @@
     "news": "Uutiset",
     "enable-test-one-hour": "Ota testi käyttöön 1 tunnin ajaksi",
     "enable-test-two-hours": "Ota testi käyttöön 2 tunnin ajaksi",
-    "enable-test-three-hours": "Ota testi käyttöön 3 tunnin ajaksi"
+    "enable-test-three-hours": "Ota testi käyttöön 3 tunnin ajaksi",
+    "1-hour": "1 tunti",
+    "2-hours": "2 tuntia",
+    "3-hours": "3 tuntia",
+    "4-hours": "4 tuntia",
+    "24-hours": "24 tuntia"
 }
