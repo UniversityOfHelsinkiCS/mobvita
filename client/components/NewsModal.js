@@ -4,17 +4,19 @@ import { useDispatch, useSelector } from 'react-redux'
 import { FormattedMessage } from 'react-intl'
 import { getNews } from 'Utilities/redux/newsReducer'
 import { getMetadata } from 'Utilities/redux/metadataReducer'
+import { learningLanguageSelector } from 'Utilities/common'
 
 export default function NewsModal({ trigger }) {
   const dispatch = useDispatch()
   const { news } = useSelector(({ news }) => news)
+  const learningLanguage = useSelector(learningLanguageSelector)
 
   const fetchNews = () => {
     dispatch(getNews())
   }
 
   const fetchMetadata = () => {
-    dispatch(getMetadata())
+    dispatch(getMetadata(learningLanguage))
   }
 
   return (
