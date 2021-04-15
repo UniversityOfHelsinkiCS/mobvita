@@ -1,7 +1,8 @@
 import React, { useState, useEffect, useLayoutEffect, useMemo } from 'react'
 import { useSelector } from 'react-redux'
-import { Table, Icon, Button } from 'semantic-ui-react'
+import { Table, Icon, Button, TableRow } from 'semantic-ui-react'
 import moment from 'moment'
+import { FormattedMessage } from 'react-intl'
 import { hiddenFeatures } from 'Utilities/common'
 import useWindowDimensions from 'Utilities/windowDimensions'
 import Concept from './Concept'
@@ -68,13 +69,15 @@ const History = ({ history, dateFormat, handleDelete = null }) => {
     const medium = colors.medium.split(',').map(Number)
     const worst = colors.worst.split(',').map(Number)
 
-    let red, green, blue
+    let red
+    let green
+    let blue
 
-    if (Number(score) < 0.5){
+    if (Number(score) < 0.5) {
       red = worst[0] + Number(score) * (medium[0] - worst[0])
       green = worst[1] + Number(score) * (medium[1] - worst[1])
       blue = worst[2] + Number(score) * (medium[2] - worst[2])
-    }else if (Number(score) > 0.5){
+    } else if (Number(score) > 0.5) {
       red = medium[0] + Number(score) * (best[0] - medium[0])
       green = medium[1] + Number(score) * (best[1] - medium[1])
       blue = medium[2] + Number(score) * (best[2] - medium[2])
@@ -83,8 +86,6 @@ const History = ({ history, dateFormat, handleDelete = null }) => {
       green = medium[1]
       blue = medium[2]
     }
-    
-    
 
     return `rgb(${red},${green},${blue})`
   }
@@ -141,22 +142,70 @@ const History = ({ history, dateFormat, handleDelete = null }) => {
     setColors({ ...colors, [color]: e.target.value })
   }
 
+  const TotalRow = history => {
+    const rootConceptResults = []
+    Object.values(history).forEach(elem => {
+      elem.forEach(elem2 => {
+        const rootConcepts = Object.keys(elem2.concept_statistics)
+          .filter(key => key.includes('000'))
+          .reduce((obj, key) => {
+            obj[key] = elem2.concept_statistics[key]
+            return obj
+          }, {})
+
+        rootConceptResults.push(rootConcepts)
+      })
+    })
+
+    const sumPropertyValues = (items, property) => {
+      return items.reduce((a, b) => {
+        return a + b[property]
+      }, 0)
+    }
+
+    return (
+      <TableRow textAlign="center">
+        <Table.Cell positive>
+          <b>
+            <FormattedMessage id="total" />
+          </b>
+        </Table.Cell>
+        {rootConceptResults.map(oneDayResults => (
+          <Table.Cell positive>
+            {sumPropertyValues(Object.values(oneDayResults), 'total') > 0 ? (
+              <>
+                {Math.round(
+                  (sumPropertyValues(Object.values(oneDayResults), 'correct') /
+                    sumPropertyValues(Object.values(oneDayResults), 'total')) *
+                    100
+                )}{' '}
+                % <FormattedMessage id="correct" />
+                <br />({sumPropertyValues(Object.values(oneDayResults), 'correct')} /{' '}
+                {sumPropertyValues(Object.values(oneDayResults), 'total')})
+              </>
+            ) : null}
+          </Table.Cell>
+        ))}
+      </TableRow>
+    )
+  }
+
   if (!history) return null
   return (
     <div style={{ overflowX: 'scroll', maxWidth: '100%', marginTop: '1em' }}>
-        {maxPage > 1 && (
-          <div>
-            <Button onClick={() => switchPage(-1)}>
-              <Icon name='angle left' />  
-            </Button>
-            <span style={{ marginLeft: '1em', marginRight: '1em' }}>
-              {page + 1} / {maxPage}
-            </span>
-            <Button onClick={() => switchPage(1)}>
-              <Icon name='angle right' /> 
-            </Button>
-          </div>
-        )}
+      {maxPage > 1 && (
+        <div>
+          <Button onClick={() => switchPage(-1)}>
+            <Icon name="angle left" />
+          </Button>
+          <span style={{ marginLeft: '1em', marginRight: '1em' }}>
+            {page + 1} / {maxPage}
+          </span>
+          <Button onClick={() => switchPage(1)}>
+            <Icon name="angle right" />
+          </Button>
+        </div>
+      )}
       {hiddenFeatures && (
         <>
           <br />
@@ -215,6 +264,7 @@ const History = ({ history, dateFormat, handleDelete = null }) => {
               fromPreviousScored={fromPreviousScored}
             />
           ))}
+          <TotalRow history={history.slice(page * pageSize, page * pageSize + pageSize)} />
         </Table.Body>
       </Table>
     </div>

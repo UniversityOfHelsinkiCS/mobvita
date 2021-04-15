@@ -899,5 +899,7 @@
     "2-hours": "2 hours",
     "3-hours": "3 hours",
     "4-hours": "4 hours",
-    "24-hours": "24 hours"
+    "24-hours": "24 hours",
+    "correct": "correct",
+    "total": "Total"
 }

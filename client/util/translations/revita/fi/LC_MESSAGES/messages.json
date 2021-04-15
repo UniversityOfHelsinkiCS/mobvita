@@ -900,5 +900,7 @@
     "2-hours": "2 tuntia",
     "3-hours": "3 tuntia",
     "4-hours": "4 tuntia",
-    "24-hours": "24 tuntia"
+    "24-hours": "24 tuntia",
+    "correct": "oikein",
+    "total": "Yhteensä"
 }
