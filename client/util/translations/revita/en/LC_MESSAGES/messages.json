@@ -901,5 +901,15 @@
     "4-hours": "4 hours",
     "24-hours": "24 hours",
     "correct": "correct",
-    "total": "Total"
+    "total": "Total",
+    "server_busy": "Sorry, revita server is overloaded right now. Please try again later.",
+    "other_error": "Sorry, an error occurred when trying to load this story. Please try again with another one.",
+    "title_in_use": "A story with the same title already exists! Please try again with a different title!",
+    "wrong_language": "Language of the text does not correspond to the current language",
+    "empty_tokens": "Sorry, Revita is unable to extract the story from this Web page. Please copy the text from the web page. If you would like to practice with this story, please save it into a .txt file on your computer and upload the text file.",
+    "empty_content": "Empty file!",
+    "XXX": "The uploaded file is too large. Maximum file size is {:.2f} KiloBytes.",
+    "default": "default",
+    "no-questions": "No questions",
+    "questions": "Questions"
 }

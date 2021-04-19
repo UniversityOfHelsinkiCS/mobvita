@@ -904,5 +904,15 @@
     "4-hours": "4 часа",
     "24-hours": "24 часа",
     "correct": "правильно",
-    "total": "Всего"
+    "total": "Всего",
+    "server_busy": "Sorry, revita server is overloaded right now. Please try again later.",
+    "other_error": "Sorry, an error occurred when trying to load this story. Please try again with another one.",
+    "title_in_use": "Текст с таким названием уже есть в системе.  Выбери текст с другим названием.",
+    "wrong_language": "Язык загружаемого текста не соответствует изучаемому языку",
+    "empty_tokens": "К сожалению, Ревите не удалось извлечь текст из этой веб-страницы. Пожалуйста, скопируй текст в файл и загрузи файл в Ревиту.",
+    "empty_content": "Пустой файл!",
+    "XXX": "Размер файла превышает максимальный ({:.2f} килобайтов).",
+    "default": "default",
+    "no-questions": "No questions",
+    "questions": "Questions"
 }

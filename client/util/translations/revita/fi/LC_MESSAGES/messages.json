@@ -902,5 +902,15 @@
     "4-hours": "4 tuntia",
     "24-hours": "24 tuntia",
     "correct": "oikein",
-    "total": "Yhteensä"
+    "total": "Yhteensä",
+    "server_busy": "Sorry, revita server is overloaded right now. Please try again later.",
+    "other_error": "Sorry, an error occurred when trying to load this story. Please try again with another one.",
+    "title_in_use": "Samanniminen teksti on jo olemassa.  Valitse muu otsikko.",
+    "wrong_language": "Tekstin kieli ei vastaa valittua kieltä",
+    "empty_tokens": "Pahoittelemme, Revita ei pystynyt poimia tarinaa tältä Web-sivulta. Olkaa hyvä ja kopioikaa halutun tekstin sivulta. Jos haluatte opetella kyseisellä tarinalla olkaa hyvä ja kopioikaa se .TXT tekstitiedostoon ja ladatkaa se sivullemme tai kopioikaa suoraan tekstikenttäämme.",
+    "empty_content": "Tyhjä tiedosto!",
+    "XXX": "Tiedosto liian suuri.  Tiedoston enimmäiskoko on {:.2f} Kt.",
+    "default": "oletus",
+    "no-questions": "Ei kysymyksiä",
+    "questions": "Kysymyksiä"
 }

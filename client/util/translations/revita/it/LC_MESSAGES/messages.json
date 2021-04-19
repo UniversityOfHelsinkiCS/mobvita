@@ -902,5 +902,15 @@
     "4-hours": "4 ore",
     "24-hours": "24 ore",
     "correct": "corretto",
-    "total": "Totale"
+    "total": "Totale",
+    "server_busy": "Sorry, revita server is overloaded right now. Please try again later.",
+    "other_error": "Sorry, an error occurred when trying to load this story. Please try again with another one.",
+    "title_in_use": "Esiste già una storia con lo stesso titolo! Per favore, prova ad inserirne un altro titolo!",
+    "wrong_language": "La lingua del testo non corrisponde alla lingua che stai imparando",
+    "empty_tokens": "Spiacente, Revita non riesce a estrarre la storia da questa pagina Web. Si prega di copiare il testo dalla pagina Web. Se desideri esercitarti con questa storia, salvala in un file .TXT sul tuo computer e poi carica il file di testo.",
+    "empty_content": "File vuoto!",
+    "XXX": "Il file caricato è troppo grande. La dimensione massima del file è {:.2f} KiloByte.",
+    "default": "predefinito",
+    "no-questions": "Niente domande",
+    "questions": "Domande"
 }

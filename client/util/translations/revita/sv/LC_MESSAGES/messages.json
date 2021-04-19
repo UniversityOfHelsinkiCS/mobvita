@@ -900,5 +900,15 @@
     "4-hours": "4 hours",
     "24-hours": "24 hours",
     "correct": "correct",
-    "total": "Total"
+    "total": "Total",
+    "server_busy": "Sorry, revita server is overloaded right now. Please try again later.",
+    "other_error": "Sorry, an error occurred when trying to load this story. Please try again with another one.",
+    "title_in_use": "En annan berättelse med sama titel finns! Försök igen med en annan titel!",
+    "wrong_language": "Textens språk motsvarar inte nuvarande språket",
+    "empty_tokens": "Tyvärr lyckades Revita inte extrahera berättelsen från denna Web sida. Vänligen kopiera texten från sidan. Om ni vill öva med denna berättelse var god och spara den i en .TXT fil och ladda upp den, eller kopiera den direkt till vårt text-fält.",
+    "empty_content": "Tom fil!",
+    "XXX": "Uppladdade filen är för stor. Största tillåtna storlek är {:.2f} KB.",
+    "default": "default",
+    "no-questions": "No questions",
+    "questions": "Questions"
 }
