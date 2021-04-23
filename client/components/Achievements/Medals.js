@@ -3,14 +3,7 @@ import { useSelector } from 'react-redux'
 import MedalInfo from './MedalInfo'
 
 const Medals = () => {
-  const achievements = useSelector(state =>
-    state.user.data.user.achievements?.concat({
-      name: 'Test achievement',
-      level: 5,
-      current: 102,
-      total: 100,
-    })
-  )
+  const achievements = useSelector(state => state.user.data.user.achievements)
 
   const medals = useMemo(
     () =>
