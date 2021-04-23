@@ -190,7 +190,7 @@
     },
     "thank-you-for-your-message-we-will-get-back-to-you-shortly": "Ti ringraziamo per il messaggio. Ti risponderemo il prima possibile",
     "give-us-feedback": "La tua opinione su Revita",
-    "contact-us": "Contattaci!",
+    "contact-us": "Contattaci",
     "Name": "Nome",
     "Email": "Email",
     "Subject": "Oggetto",
@@ -572,7 +572,7 @@
     "Submit": "Caricare testo",
     "paste-the-raw-text-you-want-to-add-as-a-story-we-will-use-the-first-sentence-before-an-empty-line-as": "Inserisci il testo della storia. Revita usa la prima riga come titolo",
     "or-paste-a-text": "Copia un testo",
-    "characters-left": "Caratteri rimasti",
+    "characters-left": "Caratteri rimasti:",
     "title-on-first-line-text-after-an-empty-line-f2c9245edf5d0379b77008c6db1fd5a9": "Titolo sulla prima riga.\n\nTesto dopo una riga vuota",
     "revita-will-automatically-try-to-find-only-the-story-text-from-your-url-if-the-results-contain-unwan": "Revita tenterà di estrarre il testo dalla tua pagina web. Se il risultato non sarà ben riuscito, copialo manualmente e incollalo nel campo per il caricamento dei file (in alto)",
     "or-use-a-web-page": "O inserisci l'indirizzo della pagina web con il testo d'interesse",
@@ -912,5 +912,14 @@
     "XXX": "Il file caricato è troppo grande. La dimensione massima del file è {:.2f} KiloByte.",
     "default": "predefinito",
     "no-questions": "Niente domande",
-    "questions": "Domande"
+    "questions": "Domande",
+    "info": "Info",
+    "management": "Gestire le impostazioni",
+    "about": "Su di noi",
+    "help": "Aiuto",
+    "choose-interface-language": "Choose interface language",
+    "terms-and-conditions": "Termini e condizioni",
+    "privacy-policy": "Privacy Policy",
+    "groups": "Gruppi",
+    "paste-a-text": "Copia un testo"
 }
