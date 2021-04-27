@@ -190,7 +190,7 @@
     },
     "thank-you-for-your-message-we-will-get-back-to-you-shortly": "Tack för ditt meddelande. Vi återkommer strax.",
     "give-us-feedback": "",
-    "contact-us": "Ta kontakt",
+    "contact-us": "Kontakt",
     "Name": "Namn",
     "Email": "E-post",
     "Subject": "Ämne",
@@ -570,7 +570,7 @@
     "Submit": "Sänd",
     "paste-the-raw-text-you-want-to-add-as-a-story-we-will-use-the-first-sentence-before-an-empty-line-as": "Infoga texten du vill lägga till som berättelse. Vi använder första meningen före tom rad som rubrik. Vänligen ge en berättelse i det valda övningsspråket. Minimi längd: 50.",
     "or-paste-a-text": "Eller infoga en text:",
-    "characters-left": "Tecken kvar",
+    "characters-left": "Tecken kvar:",
     "title-on-first-line-text-after-an-empty-line-f2c9245edf5d0379b77008c6db1fd5a9": "Rubrik på första raden. \n\nTexten efter tom rad...",
     "revita-will-automatically-try-to-find-only-the-story-text-from-your-url-if-the-results-contain-unwan": "Revita fösöker automatiskt välja bara berättelsens text från URLen du anger.  Om resultaten innehåller oväntad text, vänligen infoga berättelsen manuellt i text-fältet ovan. Vänligen ange en berättelse i det aktiva övnings språket.",
     "or-use-a-web-page": "Eller använd en nätsida:",
@@ -910,5 +910,14 @@
     "XXX": "Uppladdade filen är för stor. Största tillåtna storlek är {:.2f} KB.",
     "default": "default",
     "no-questions": "No questions",
-    "questions": "Questions"
+    "questions": "Questions",
+    "info": "Info",
+    "management": "Management",
+    "about": "Om oss",
+    "help": "Hjälp",
+    "choose-interface-language": "Choose interface language",
+    "terms-and-conditions": "Terms and conditions",
+    "privacy-policy": "Privacy Policy",
+    "groups": "Groups",
+    "paste-a-text": "Paste a text"
 }
