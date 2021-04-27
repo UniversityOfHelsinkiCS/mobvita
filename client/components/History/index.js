@@ -74,17 +74,13 @@ const History = ({ history, dateFormat, handleDelete = null }) => {
     let blue
 
     if (Number(score) < 0.5) {
-      red = worst[0] + Number(score) * (medium[0] - worst[0])
-      green = worst[1] + Number(score) * (medium[1] - worst[1])
-      blue = worst[2] + Number(score) * (medium[2] - worst[2])
-    } else if (Number(score) > 0.5) {
-      red = medium[0] + Number(score) * (best[0] - medium[0])
-      green = medium[1] + Number(score) * (best[1] - medium[1])
-      blue = medium[2] + Number(score) * (best[2] - medium[2])
+      red = worst[0] + Number(score) * 2 * (medium[0] - worst[0])
+      green = worst[1] + Number(score) * 2 * (medium[1] - worst[1])
+      blue = worst[2] + Number(score) * 2 * (medium[2] - worst[2])
     } else {
-      red = medium[0]
-      green = medium[1]
-      blue = medium[2]
+      red = medium[0] + 2 * (Number(score) -0.5) * (best[0] - medium[0])
+      green = medium[1] + 2 * (Number(score) -0.5) * (best[1] - medium[1])
+      blue = medium[2] + 2 * (Number(score) -0.5) * (best[2] - medium[2])
     }
 
     return `rgb(${red},${green},${blue})`
