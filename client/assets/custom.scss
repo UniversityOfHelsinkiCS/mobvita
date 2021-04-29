@@ -1693,28 +1693,49 @@ html, body, #root {
 // SCROLL TO TOP ARROW
 .scroll-to-top {
     color: $primary-color;
-	position: fixed; 
-	width: 1em;
-	bottom: 20px;
-	align-items: center;
-	height: 1em;
-	justify-content: center;
-	z-index: 1000;
-	cursor: pointer;
-	animation: fadeIn 0.3s;
-	transition: opacity 0.1s;
-	opacity: 0.1;
-  }
+    position: fixed; 
+    width: 1em;
+    bottom: 20px;
+    align-items: center;
+    height: 1em;
+    justify-content: center;
+    z-index: 1000;
+    cursor: pointer;
+    animation: fadeIn 0.3s;
+    transition: opacity 0.1s;
+    opacity: 0.1;
+}
   
-  .scroll-to-top:hover{
+.scroll-to-top:hover{
 	opacity: 1;
-  }
+}
   
-  @keyframes fadeIn {
+@keyframes fadeIn {
 	0% {
 	  opacity: 0;
 	}
 	100% {
 	  opacity: 0.5;
 	}
-  }
+}
+.nav-basic-item {
+  color: white;
+  padding-top: 0.25em!important;
+  padding-bottom: 1.2em!important;
+  margin-left: 0.4em!important;
+  cursor: pointer;
+}
+
+.navbar-dropdown-icon{
+  color: white;
+  margin-right: -0.15em!important;
+}
+
+.add-story-accordion-focused-item {
+  font-weight: 550;
+  font-size: 1.5rem!important;
+}
+
+.add-story-accordion-item {
+  font-size: 1.2rem!important;
+}

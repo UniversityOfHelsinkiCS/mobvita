@@ -103,8 +103,7 @@ describe('Mobvita', function () {
     })
 
     it('library opens', function () {
-      cy.get('[href="/library"]')
-        .click()
+      cy.get('[data-cy=navbar-library-button]').click()
       cy.get('[data-cy=library-controls]')
       cy.url().should('include', '/library')
     })
@@ -143,7 +142,7 @@ describe('Mobvita', function () {
 
       it('can be created and new story can be read', function () {
         cy.get('[data-cy=story-items]')
-        cy.get('[data-cy=expand-story-form]').click()
+        cy.get('[data-cy=add-story-button]').click()
         cy.get('[data-cy=new-story-input] > input')
           .should('be.enabled')
           .type('https://yle.fi/uutiset/osasto/selkouutiset/vappu_2542015/7954877')

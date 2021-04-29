@@ -252,7 +252,8 @@ export default function Sidebar({ history }) {
               <div style={{ fontSize: '20px', color: '#777' }}>{`${user.user.username}`}</div>
             )}
             <div style={{ color: 'slateGrey' }}>
-              <Menu.Item>
+              {/* <Menu.Item> Tour disabled for now!
+              <Menu.Item> Tour disabled for now!
                 {learningLanguage && (
                   <Button
                     variant="secondary"
@@ -273,9 +274,9 @@ export default function Sidebar({ history }) {
                   as={Link}
                   to="/help"
                 >
-                  <Icon name="help circle" /> <FormattedMessage id="Help" />
+                  <Icon name="help circle" /> <FormattedMessage id="help" />
                 </Button>
-              </Menu.Item>
+              </Menu.Item> */}
             </div>
             <div style={{ marginTop: 'auto', color: 'slateGrey' }}>
               <Menu.Item
@@ -289,7 +290,7 @@ export default function Sidebar({ history }) {
                       variant="secondary"
                       style={{ flexBasis: '50%', marginRight: '0.5em' }}
                     >
-                      <FormattedMessage id="About" />
+                      <FormattedMessage id="about" />
                     </Button>
                   }
                 />
@@ -300,7 +301,7 @@ export default function Sidebar({ history }) {
                       onClick={() => menuClickWrapper()}
                       style={{ flexBasis: '50%', marginRight: '0.5em' }}
                     >
-                      <FormattedMessage id="Contact" />
+                      <FormattedMessage id="contact-us" />
                     </Button>
                   }
                 />

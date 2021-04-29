@@ -1,14 +1,18 @@
 import React from 'react'
 import { useSelector, useDispatch } from 'react-redux'
-import { Navbar } from 'react-bootstrap'
+import { Navbar, Nav, NavDropdown } from 'react-bootstrap'
 import Headroom from 'react-headroom'
-import { Icon, Button, Label } from 'semantic-ui-react'
+import { Icon, Label } from 'semantic-ui-react'
 import { Link, useHistory } from 'react-router-dom'
+import { logout } from 'Utilities/redux/userReducer'
 import { sidebarSetOpen } from 'Utilities/redux/sidebarReducer'
 import useWindowDimensions from 'Utilities/windowDimensions'
-import { hiddenFeatures, images } from 'Utilities/common'
+import { hiddenFeatures, capitalize, images } from 'Utilities/common'
 import { Offline } from 'react-detect-offline'
-import { FormattedMessage } from 'react-intl'
+import { FormattedMessage, useIntl } from 'react-intl'
+import TermsAndConditions from 'Components/StaticContent/TermsAndConditions'
+import ContactUs from './StaticContent/ContactUs'
+import AboutUs from './StaticContent/AboutUs'
 import Tour from './Tour'
 import NewsModal from './NewsModal'
 
@@ -19,9 +23,15 @@ export default function NavBar() {
   const dispatch = useDispatch()
   const history = useHistory()
   const smallWindow = useWindowDimensions().width < 640
+  const intl = useIntl()
 
   const handleEloClick = () => {
     history.push('/profile/progress')
+  }
+
+  const signOut = () => {
+    dispatch(logout())
+    history.push('/')
   }
 
   const handleTourStart = () => {
@@ -29,8 +39,13 @@ export default function NavBar() {
     dispatch({ type: 'RESTART' })
   }
 
-  const handleSettingClick = () => {
-    history.push('/profile/settings')
+  const getLearningLanguageFlag = () => {
+    const lastUsedLanguage = user.user.last_used_language
+
+    if (lastUsedLanguage) {
+      return images[`flag${capitalize(lastUsedLanguage.split('-').join(''))}`]
+    }
+    return null
   }
 
   const showStoryElo = history.location.pathname.includes('practice')
@@ -59,56 +74,113 @@ export default function NavBar() {
     <Headroom disableInlineStyles={!smallWindow} style={navBarStyle}>
       <Navbar style={{ paddingLeft: '0.5em' }}>
         <div style={{ display: 'flex' }}>
-          <Icon
-            name="bars"
-            size="big"
-            onClick={() => dispatch(sidebarSetOpen(!open))}
-            className="sidebar-hamburger tour-sidebar"
-            style={{ color: 'white', marginBottom: '0.3em' }}
-            data-cy="hamburger"
-          />
-          <Link to="/home">
+          {smallWindow && (
             <Icon
-              name="home"
+              name="bars"
               size="big"
-              style={{
-                color: 'white',
-                cursor: 'pointer',
-                marginLeft: '0.2em',
-                marginTop: '0.1em',
-                marginBottom: '0.01em',
-              }}
+              onClick={() => dispatch(sidebarSetOpen(!open))}
+              className="sidebar-hamburger tour-sidebar"
+              style={{ color: 'white', marginBottom: '0.3em' }}
+              data-cy="hamburger"
             />
-          </Link>
-          <Link to="/home">
-            <Navbar.Brand
-              className="tour-start-finish"
-              style={{
-                color: 'white',
-                marginLeft: '0.5em',
-                marginTop: '0.18em',
-                cursor: 'pointer',
-              }}
-            >
-              Revita{hiddenFeatures && <sup> &beta;</sup>}
-            </Navbar.Brand>
-          </Link>
+          )}
         </div>
-        {isNewUser && hasChosenLearningLanguage && !smallWindow && (
-          <Button type="button" onClick={handleTourStart} className="tour-start">
-            <Icon name="info circle" /> <FormattedMessage id="start-tour" />
-          </Button>
-        )}
-        <Tour />
-        {user && (
-          <div>
+        <Navbar.Collapse>
+          <Nav className="mr-auto">
+            <Link to="/home">
+              <Icon
+                name="home"
+                size="big"
+                style={{
+                  color: 'white',
+                  cursor: 'pointer',
+                  marginLeft: '0.2em',
+                  marginTop: '0.1em',
+                  marginBottom: '0.01em',
+                }}
+              />
+            </Link>
+            <Link to="/home">
+              <Navbar.Brand
+                className="tour-start-finish"
+                style={{
+                  color: 'white',
+                  marginRight: '2em',
+                }}
+              >
+                Revita{hiddenFeatures && <sup> &beta;</sup>}
+              </Navbar.Brand>
+            </Link>
+
+            {!smallWindow && (
+              <>
+                <Link data-cy="navbar-library-button" to="/library">
+                  <Navbar.Brand
+                    style={{
+                      color: 'white',
+                      marginRight: '2em',
+                    }}
+                  >
+                    <FormattedMessage id="Library" />
+                  </Navbar.Brand>
+                </Link>
+                <Link to="/flashcards">
+                  <Navbar.Brand
+                    style={{
+                      color: 'white',
+                      marginRight: '2em',
+                    }}
+                  >
+                    <FormattedMessage id="Flashcards" />
+                  </Navbar.Brand>
+                </Link>
+                <NavDropdown
+                  data-cy="navbar-groups-dropdown"
+                  title={
+                    <Navbar.Brand
+                      style={{
+                        color: 'white',
+                        marginTop: '-0.5rem',
+                        marginBottom: '-0.5rem',
+                        marginRight: '0em',
+                      }}
+                    >
+                      <FormattedMessage id="groups" />
+                    </Navbar.Brand>
+                  }
+                >
+                  <NavDropdown.Item
+                    data-cy="navbar-student-groups-button"
+                    as={Link}
+                    to="/groups/student"
+                  >
+                    <FormattedMessage id="Groups-for-students" />
+                  </NavDropdown.Item>
+                  <NavDropdown.Divider />
+                  <NavDropdown.Item as={Link} to="/groups/teacher">
+                    <FormattedMessage id="Groups-for-teachers" />
+                  </NavDropdown.Item>
+                </NavDropdown>
+              </>
+            )}
+          </Nav>
+
+          <Nav>
+            <Offline polling={{ timeout: 20000 }}>
+              <Icon
+                name="broken chain"
+                size="large"
+                style={{ color: '#ff944d', paddinTop: '12em' }}
+              />
+            </Offline>
             <Navbar.Text
               style={{ color: 'white', marginRight: '1em', cursor: 'pointer' }}
               onClick={handleEloClick}
             >
               {showStoryElo && (
                 <div>
-                  <Icon name="star outline" style={{ margin: 0 }} /> {storyElo}
+                  <Icon className="nav-basic-item" name="star outline" style={{ margin: 0 }} />{' '}
+                  {storyElo}
                 </div>
               )}
               {showFlashcardElo && (
@@ -121,35 +193,146 @@ export default function NavBar() {
                       filter: blackToWhiteFilter,
                       marginRight: '0.2em',
                       marginBottom: '0.2em',
+                      marginTop: '0.5em',
                     }}
                   />
                   {flashcardElo}
                 </div>
               )}
             </Navbar.Text>
-            <Offline polling={{ timeout: 20000 }}>
-              <Icon name="broken chain" size="large" style={{ color: '#ff944d' }} />
-            </Offline>
+
+            {!smallWindow && (
+              <>
+                <NavDropdown
+                  title={
+                    <Icon
+                      className="navbar-dropdown-icon"
+                      data-cy="navbar-user-dropdown"
+                      name="user"
+                      size="big"
+                    />
+                  }
+                >
+                  {user.user.email === 'anonymous_email' && (
+                    <>
+                      <NavDropdown.Item as={Link} to="/register">
+                        <FormattedMessage id="Register" />
+                      </NavDropdown.Item>
+                      <NavDropdown.Divider />
+                      <NavDropdown.Item onClick={signOut}>
+                        <FormattedMessage id="Login" />
+                      </NavDropdown.Item>
+                    </>
+                  )}
+
+                  {user.user.email !== 'anonymous_email' && (
+                    <>
+                      <span className="bold" style={{ padding: '1.5em' }}>
+                        {user.user.username}
+                      </span>
+                      <NavDropdown.Divider />
+                      <NavDropdown.Item as={Link} to="/profile/progress">
+                        <FormattedMessage id="Profile" />
+                      </NavDropdown.Item>
+                      <NavDropdown.Item data-cy="navbar-logout-button" onClick={signOut}>
+                        <FormattedMessage id="sign-out" />
+                      </NavDropdown.Item>
+                    </>
+                  )}
+                </NavDropdown>
+
+                {user && user.user.last_used_language && (
+                  <Link to="/learningLanguage">
+                    <img
+                      style={{
+                        height: '1.9em',
+                        marginTop: '0.5rem',
+                        marginLeft: '0.6rem',
+                        marginRight: '0.6rem',
+                        left: '2em',
+                        border: '1px solid black',
+                      }}
+                      src={getLearningLanguageFlag()}
+                      alt="learningLanguageFlag"
+                    />
+                  </Link>
+                )}
+
+                <NavDropdown
+                  title={
+                    <Icon
+                      data-cy="navbar-info-dropdown"
+                      className="navbar-dropdown-icon"
+                      name="info circle"
+                      size="big"
+                    />
+                  }
+                >
+                  <AboutUs
+                    trigger={
+                      <NavDropdown.Item data-cy="navbar-about-button">
+                        <FormattedMessage id="about" />
+                      </NavDropdown.Item>
+                    }
+                  />
+                  <NavDropdown.Divider />
+                  <NavDropdown.Item as={Link} to="/help">
+                    <FormattedMessage id="help" />
+                  </NavDropdown.Item>
+                  <NavDropdown.Divider />
+                  <ContactUs
+                    trigger={
+                      <NavDropdown.Item>
+                        <FormattedMessage id="contact-us" />
+                      </NavDropdown.Item>
+                    }
+                  />
+                  <NavDropdown.Divider />
+                  <TermsAndConditions
+                    trigger={
+                      <NavDropdown.Item data-cy="navbar-tc-button" style={{ fontSize: '0.9em' }}>
+                        {intl.formatMessage({ id: 'terms-and-conditions' })} &
+                        <br />
+                        {intl.formatMessage({ id: 'privacy-policy' })}
+                      </NavDropdown.Item>
+                    }
+                  />
+                </NavDropdown>
+              </>
+            )}
+
             <NewsModal
               trigger={
-                <span style={{ position: 'relative', marginRight: '0.5rem' }}>
-                  <Icon name="bell" size="big" style={{ color: 'white', cursor: 'pointer' }} />
-                  {numUnreadNews > 0 ? (
-                    <Label color="red" size="mini" floating style={{ cursor: 'pointer' }}>
-                      {numUnreadNews}
-                    </Label>
-                  ) : null}
-                </span>
+                <div style={{ paddingTop: '0.5em' }}>
+                  <span
+                    style={{
+                      color: 'white',
+                      position: 'relative',
+                      marginLeft: '0.3em',
+                      cursor: 'pointer',
+                    }}
+                  >
+                    <Icon className="radio-block" name="bell" size="big" color="white" />
+                    {numUnreadNews > 0 ? (
+                      <Label className="radio-label" color="red" size="mini" floating center>
+                        {numUnreadNews}
+                      </Label>
+                    ) : null}
+                  </span>
+                </div>
               }
             />
-            <Icon
-              name="setting"
-              size="big"
-              style={{ color: 'white', cursor: 'pointer' }}
-              onClick={handleSettingClick}
-            />
-          </div>
-        )}
+
+            <Link to="/profile/settings">
+              <Icon
+                data-cy="navbar-settings-button"
+                className="nav-basic-item"
+                name="setting"
+                size="big"
+              />
+            </Link>
+          </Nav>
+        </Navbar.Collapse>
       </Navbar>
     </Headroom>
   )

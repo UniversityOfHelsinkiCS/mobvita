@@ -63,12 +63,12 @@ export default function GroupView({ location }) {
         render: () => <CreateGroup role={role} />,
       },
     ]
-  } else if (role == 'student'){
+  } else if (role === 'student') {
     panes = [
       {
         menuItem: {
           as: Link,
-          content: <TabContent translationId="Management" />,
+          content: <TabContent translationId="management" />,
           to: '/groups/student',
           key: 'management',
           style: tabStyle,
@@ -78,7 +78,7 @@ export default function GroupView({ location }) {
       {
         menuItem: {
           as: Link,
-          content: <TabContent translationId="Info" />,
+          content: <TabContent translationId="info" />,
           to: '/groups/student/info',
           key: 'info',
           style: tabStyle,
@@ -102,7 +102,7 @@ export default function GroupView({ location }) {
       {
         menuItem: {
           as: Link,
-          content: <TabContent translationId="Management" />,
+          content: <TabContent translationId="management" />,
           to: '/groups',
           key: 'management',
           style: tabStyle,

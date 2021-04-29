@@ -1,6 +1,6 @@
 import React, { useEffect, useState, useRef } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { Placeholder, Card, Search, Select, Icon, Dropdown, Input } from 'semantic-ui-react'
+import { Placeholder, Card, Search, Select, Icon, Dropdown, Input, Button } from 'semantic-ui-react'
 import StoryListItem from 'Components/LibraryView/StoryListItem'
 import { useIntl } from 'react-intl'
 import CheckboxGroup from 'Components/CheckboxGroup'
@@ -14,6 +14,7 @@ import {
 } from 'Utilities/redux/userReducer'
 import { getAllStories } from 'Utilities/redux/storiesReducer'
 import useWindowDimensions from 'Utilities/windowDimensions'
+import AddStoryModal from 'Components/AddStoryModal'
 import StoryForm from './StoryForm'
 
 const StoryList = () => {
@@ -192,7 +193,16 @@ const StoryList = () => {
           />
         )}
       </div>
-      <StoryForm setLibraries={setLibraries} />
+      <AddStoryModal
+        setLibraries={setLibraries}
+        trigger={
+          <span>
+            <Button data-cy="add-story-button" fluid variant="primary" size="big">
+              {intl.formatMessage({ id: 'add-your-stories' })}
+            </Button>
+          </span>
+        }
+      />
       <div className="search-and-sort">
         <div className="flex align-center">
           <Dropdown
