@@ -65,7 +65,7 @@ const StoryFileModal = ({ trigger }) => {
         <FormattedMessage id="upload-stories" />
       </Modal.Header>
       <Modal.Content>
-        <span className="bold">
+        <span className="normal">
           <FormattedHTMLMessage id="file-upload-instructions" />
         </span>
         {!containsOnlyLatinCharacters(filename) && (
