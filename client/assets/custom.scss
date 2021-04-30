@@ -262,6 +262,14 @@ html, body, #root {
   @extend .btn-secondary;
 }
 
+.home-btn-wide {
+  height: 10em!important;
+  background-size: cover!important;
+  background-position: center!important;
+  color: white!important;
+  text-shadow: 0 0 3px #000000, 0 0 5px #0000FF!important;
+}
+
 .modal {
   left:unset;
   position: relative !important;
@@ -1739,3 +1747,4 @@ html, body, #root {
 .add-story-accordion-item {
   font-size: 1.2rem!important;
 }
+
