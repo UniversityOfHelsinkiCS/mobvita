@@ -125,7 +125,7 @@ const AddStoryAccordion = ({ setLibraries }) => {
     return (
       <div>
         <br />
-        <span className="bold">
+        <span className="normal">
           <FormattedHTMLMessage id="file-upload-instructions" />
         </span>
         {!containsOnlyLatinCharacters(filename) && (
@@ -189,7 +189,7 @@ const AddStoryAccordion = ({ setLibraries }) => {
       <div>
         <br />
         <span className="bold pb-sm">
-          <FormattedMessage id="paste-the-raw-text-you-want-to-add-as-a-story-we-will-use-the-first-sentence-before-an-empty-line-as" />
+          <FormattedHTMLMessage id="paste-the-raw-text-you-want-to-add-as-a-story-we-will-use-the-first-sentence-before-an-empty-line-as" />
         </span>
         <FormControl
           as="textarea"
