@@ -68,10 +68,6 @@ const Settings = () => {
         <FormattedMessage id="interface-language" />
       </h2>
       <br />
-      <label htmlFor="flashcard-amount" style={{ paddingRight: '0.5rem' }}>
-        <FormattedMessage id="choose-interface-language" />
-        :&nbsp;&nbsp;
-      </label>
       <Dropdown
         fluid
         placeholder={intl.formatMessage({ id: 'choose-interface-language' })}
@@ -83,9 +79,10 @@ const Settings = () => {
         style={{ color: '#777', marginTop: marginTopButton }}
       />
       <hr />
-      <h2 className="header-2 pb-sm">
+      <h2 className="header-2 pb-sm pt-nm">
         <FormattedMessage id="select-types-of-exercises-to-practice" />
       </h2>
+      <br />
       {bigWindow && (
         <Button as={Link} to="/concepts" variant="primary" size="lg">
           <FormattedMessage id="learning-settings" />
