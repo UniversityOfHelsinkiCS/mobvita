@@ -67,7 +67,6 @@ const Settings = () => {
       <h2 className="header-2 pb-sm pt-nm">
         <FormattedMessage id="interface-language" />
       </h2>
-      <br />
       <Dropdown
         fluid
         placeholder={intl.formatMessage({ id: 'choose-interface-language' })}
@@ -76,20 +75,22 @@ const Settings = () => {
         selection
         onChange={(e, data) => handleLocaleChange(data.value)}
         data-cy="ui-lang-dropdown"
-        style={{ color: '#777', marginTop: marginTopButton }}
+        style={{ color: '#777', marginTop: marginTopButton, width: '30%' }}
       />
       <hr />
       <h2 className="header-2 pb-sm pt-nm">
         <FormattedMessage id="select-types-of-exercises-to-practice" />
       </h2>
-      <br />
       {bigWindow && (
-        <Button as={Link} to="/concepts" variant="primary" size="lg">
-          <FormattedMessage id="learning-settings" />
-        </Button>
+        <>
+          <br />
+          <Button as={Link} to="/concepts" variant="primary" size="lg">
+            <FormattedMessage id="learning-settings" />
+          </Button>
+          <br />
+          <br />
+        </>
       )}
-      <br />
-      <br />
       <span className="pb-sm">
         <FormattedMessage id="type-the-word-you-hear" />:
       </span>
