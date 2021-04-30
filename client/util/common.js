@@ -29,7 +29,11 @@ import politics1 from 'Assets/images/politics1.jpg'
 import science1 from 'Assets/images/science1.jpg'
 import sport1 from 'Assets/images/sport1.jpg'
 import flashcards from 'Assets/images/flashcards.jpg'
+import library from 'Assets/images/library.jpg'
+import addStory from 'Assets/images/add_story.jpg'
+import tests from 'Assets/images/tests.jpg'
 import logo from 'Assets/images/logo_transparent.png'
+import navbarLogo from 'Assets/images/logo_navbar_transparent.png'
 import flashcardIcon from 'Assets/images/flashcard_icon.png'
 import bronzeMedal from 'Assets/images/medals/bronze_medal.png'
 import silverMedal from 'Assets/images/medals/silver_medal.png'
@@ -76,7 +80,11 @@ export const images = {
   flagSyriac,
   flagChinese,
   flashcards,
+  library,
+  tests,
+  addStory,
   logo,
+  navbarLogo,
   flashcardIcon,
   bronzeMedal,
   silverMedal,
