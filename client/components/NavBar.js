@@ -108,7 +108,8 @@ export default function NavBar() {
                   marginRight: '2em',
                 }}
               >
-                Revita{hiddenFeatures && <sup> &beta;</sup>}
+                <img src={images.navbarLogo} alt="revita logo" width="70" />
+                {hiddenFeatures && <sup> &beta;</sup>}
               </Navbar.Brand>
             </Link>
 
@@ -312,10 +313,10 @@ export default function NavBar() {
                       cursor: 'pointer',
                     }}
                   >
-                    <Icon className="radio-block" name="bell" size="big" color="white" />
+                    <Icon name="bell" size="big" />
                     {numUnreadNews > 0 ? (
-                      <Label className="radio-label" color="red" size="mini" floating center>
-                        {numUnreadNews}
+                      <Label color="red" size="mini" floating>
+                        <span style={{ fontSize: '0.9rem' }}>{numUnreadNews}</span>
                       </Label>
                     ) : null}
                   </span>
