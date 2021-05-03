@@ -18,7 +18,7 @@ describe('flashcards', function () {
 
   it('flashcards can be added from practice mode', function () {
     cy.visit('http://localhost:8000/stories/5c407e9eff634503466b0dde/practice')
-    cy.get('[class=word-interactive]').eq(2).click()
+    cy.get('[class=word-interactive]').eq(1).click()
     cy.get('[data-cy=translations]')
     cy.visit('http://localhost:8000/flashcards/')
     cy.get('[data-cy=flashcard-content]')

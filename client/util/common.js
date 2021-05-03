@@ -139,7 +139,7 @@ export const supportedLearningLanguages = {
     'italian',
     'french',
     'portuguese',
-    'chinese'
+    'chinese',
   ].sort((a, b) => a.localeCompare(b)),
   minor: [
     'erzya',
@@ -151,7 +151,7 @@ export const supportedLearningLanguages = {
     'udmurt',
     'turkish',
   ].sort((a, b) => a.localeCompare(b)),
-  experimental: ['syriac', ],
+  experimental: ['syriac'],
 }
 
 export const learningLanguageLocaleCodes = {
@@ -198,9 +198,7 @@ export const betaLanguages = [
   'udmurt',
 ]
 
-export const exerciseMaskedLanguages = [
-  'Chinese'
-]
+export const exerciseMaskedLanguages = ['Chinese']
 
 export const colors = {}
 
@@ -211,7 +209,7 @@ export const flashcardColors = {
 
 export const localeOptions = [
   { displayName: 'Suomi', name: 'Finnish', code: 'fi' },
-  //{ displayName: 'Svenska', name: 'Swedish', code: 'sv' },
+  // { displayName: 'Svenska', name: 'Swedish', code: 'sv' },
   { displayName: 'Русский', name: 'Russian', code: 'ru' },
   { displayName: 'English', name: 'English', code: 'en' },
   { displayName: 'Italiano', name: 'Italian', code: 'it' },
@@ -287,7 +285,7 @@ export const respVoiceLanguages = {
   Spanish: 'Spanish Female',
   Swedish: 'Swedish Female',
   Turkish: 'Turkish Female',
-  Chinese: 'Chinese Female'
+  Chinese: 'Chinese Female',
 }
 
 export const translatableLanguages = {

@@ -15,7 +15,6 @@ import {
 import { getAllStories } from 'Utilities/redux/storiesReducer'
 import useWindowDimensions from 'Utilities/windowDimensions'
 import AddStoryModal from 'Components/AddStoryModal'
-import StoryForm from './StoryForm'
 
 const StoryList = () => {
   const intl = useIntl()
@@ -197,7 +196,7 @@ const StoryList = () => {
         setLibraries={setLibraries}
         trigger={
           <span>
-            <Button data-cy="add-story-button" fluid variant="primary" size="big">
+            <Button data-cy="add-story-button" fluid color="teal" size="big">
               {intl.formatMessage({ id: 'add-your-stories' })}
             </Button>
           </span>
@@ -345,7 +344,7 @@ const StoryList = () => {
   }
 
   return (
-    <>
+    <div className="cont-tall cont flex-col auto gap-row-sm">
       {libraryControls}
       <Card.Group itemsPerRow={1} doubling data-cy="story-items">
         <WindowScroller>
@@ -364,7 +363,7 @@ const StoryList = () => {
           )}
         </WindowScroller>
       </Card.Group>
-    </>
+    </div>
   )
 }
 

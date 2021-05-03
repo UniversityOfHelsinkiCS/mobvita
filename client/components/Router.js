@@ -1,9 +1,11 @@
 import React from 'react'
 import { Route, Switch, Redirect } from 'react-router-dom'
 import { useSelector } from 'react-redux'
+import HomeView from 'Components/HomeView'
+import LibraryView from 'Components/LibraryView'
+import TestIndex from 'Components/TestView/index'
 import ReadView from 'Components/ReadView'
 import PracticeView from 'Components/PracticeView'
-import MenuTabs from 'Components/MenuTabs'
 import LanguageSelectView from 'Components/LanguageSelectView'
 import EmailConfirm from 'Components/AccessControl/EmailConfirm'
 import InvitationConfirm from 'Components/GroupView/InvitationConfirm'
@@ -45,8 +47,8 @@ export default () => {
               path="/learningLanguage"
               component={LanguageSelectView}
             />
-            <ProtectedRoute exact path="/home" component={MenuTabs} />
-            <ProtectedRoute exact path="/library" component={MenuTabs} />
+            <ProtectedRoute exact path="/home" component={HomeView} />
+            <ProtectedRoute exact path="/library" component={LibraryView} />
             <ProtectedRoute exact path="/flashcards" component={Flashcards} />
             <ProtectedRoute exact path="/flashcards/:mode" component={Flashcards} />
             <ProtectedRoute exact path="/flashcards/:mode/:storyId" component={Flashcards} />
@@ -62,7 +64,7 @@ export default () => {
             <ProtectedRoute exact path="/profile/account" component={Profile} />
             <ProtectedRoute exact path="/profile/progress" component={Profile} />
             <ProtectedRoute exact path="/profile/settings" component={Profile} />
-            <ProtectedRoute exact path="/tests" component={MenuTabs} />
+            <ProtectedRoute exact path="/tests" component={TestIndex} />
             <ProtectedRoute exact path="/achievements" component={Achievements} />
             <ProtectedRoute exact path="/leaderboard" component={Leaderboard} />
           </Switch>

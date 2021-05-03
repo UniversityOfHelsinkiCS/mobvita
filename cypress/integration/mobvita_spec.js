@@ -136,7 +136,7 @@ describe('Mobvita', function () {
     */
     describe("stories", function () {
       this.beforeEach(function () {
-        cy.get("[data-cy=library-tab]")
+        cy.get("[data-cy=library-button]")
           .click()
       })
 

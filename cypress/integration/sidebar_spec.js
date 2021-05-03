@@ -1,4 +1,4 @@
-describe("sidebar is open", function () {
+describe("sidebar is open (only mobile)", function () {
   this.beforeAll(function () {
     cy.login()
   })

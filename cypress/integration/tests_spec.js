@@ -33,14 +33,20 @@ describe('test view', function() {
     cy.get('[data-cy=enable-test-one-day]').click()
 
     cy.visit('http://localhost:8000/home')
-    cy.get('[data-cy=test-tab]').click()
+    cy.get('[data-cy=tests-button]').click()
     cy.url().should('include', '/tests')
     cy.get('[data-cy=start-test]').click()
     cy.get('.test-container')
+
+    cy.visit('http://localhost:8000/groups/teacher')
+    cy.contains('my_test_group').parent().parent().parent().find('[data-cy=delete-group]').click()
+    cy.get('[data-cy=confirm-warning-dialog]').click()
+    cy.get('[data-cy=group-list]').should('not.contain', 'my_test_group')
   })
 
-  it('no "Tests" tab when no tests are enabled for user\'s groups', function() {
+  it('no "Tests" button when no tests are enabled for user\'s groups', function() {
     cy.visit('http://localhost:8000')
-    cy.get('[data-cy=test-tab]').should('not.exist')
+    cy.get('[data-cy=tests-button]').should('not.exist')
   })
+
 })

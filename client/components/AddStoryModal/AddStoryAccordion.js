@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import { Accordion, Form, Menu, Input, Button } from 'semantic-ui-react'
 import { useDispatch, useSelector } from 'react-redux'
+import { useHistory } from 'react-router-dom'
 import { FormattedMessage, FormattedHTMLMessage, useIntl } from 'react-intl'
 import { postStory, setCustomUpload } from 'Utilities/redux/uploadProgressReducer'
 import { FormControl, Spinner } from 'react-bootstrap'
@@ -9,10 +10,11 @@ import { updateLibrarySelect } from 'Utilities/redux/userReducer'
 import useWindowDimensions from 'Utilities/windowDimensions'
 import RecommendedSites from '../LibraryView/RecommendedSites'
 
-const AddStoryAccordion = ({ setLibraries }) => {
+const AddStoryAccordion = ({ closeModal }) => {
   const [accordionState, setAccordionState] = useState(0)
 
   const intl = useIntl()
+  const history = useHistory()
   const dispatch = useDispatch()
   const smallWindow = useWindowDimensions().width < 500
 
@@ -42,12 +44,11 @@ const AddStoryAccordion = ({ setLibraries }) => {
 
       if (storyUrl) {
         dispatch(postStory(newStory))
+        dispatch(updateLibrarySelect('private'))
         setStoryUrl('')
-        setLibraries({
-          public: false,
-          group: false,
-          private: true,
-        })
+        closeModal()
+
+        if (history.location.pathname !== 'library') history.push('/library')
       }
     }
 
@@ -85,7 +86,6 @@ const AddStoryAccordion = ({ setLibraries }) => {
     const [file, setFile] = useState('')
     const [label, setLabel] = useState(intl.formatMessage({ id: 'choose-a-file' }))
     const [filename, setfFilename] = useState('')
-    // const [showModel, setShowModel] = useState(false)
     const learningLanguage = useSelector(learningLanguageSelector)
     const { pending, storyId, progress } = useSelector(({ uploadProgress }) => uploadProgress)
 
@@ -111,6 +111,9 @@ const AddStoryAccordion = ({ setLibraries }) => {
       dispatch(setCustomUpload(true))
       dispatch(postStory(data))
       dispatch(updateLibrarySelect('private'))
+      closeModal()
+
+      if (history.location.pathname !== 'stories') history.push('/library')
     }
 
     useEffect(() => {
@@ -125,7 +128,7 @@ const AddStoryAccordion = ({ setLibraries }) => {
     return (
       <div>
         <br />
-        <span className="bold">
+        <span>
           <FormattedHTMLMessage id="file-upload-instructions" />
         </span>
         {!containsOnlyLatinCharacters(filename) && (
@@ -188,7 +191,7 @@ const AddStoryAccordion = ({ setLibraries }) => {
     return (
       <div>
         <br />
-        <span className="bold pb-sm">
+        <span className="pb-sm">
           <FormattedMessage id="paste-the-raw-text-you-want-to-add-as-a-story-we-will-use-the-first-sentence-before-an-empty-line-as" />
         </span>
         <FormControl
