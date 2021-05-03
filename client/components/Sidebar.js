@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useCallback, useRef } from 'react'
 import { Link } from 'react-router-dom'
-import { Sidebar as SemanticSidebar, Menu, Icon, Dropdown } from 'semantic-ui-react'
+import { Sidebar as SemanticSidebar, Menu, Icon, Dropdown, Segment } from 'semantic-ui-react'
 import { useDispatch, useSelector } from 'react-redux'
 import { Swipeable } from 'react-swipeable'
 import { FormattedMessage } from 'react-intl'
@@ -203,6 +203,16 @@ export default function Sidebar({ history }) {
                         <Icon name="user" /> <FormattedMessage id="Profile" />
                       </Button>
                     </Link>
+                    <Link to="/library">
+                      <Button
+                        variant="secondary"
+                        style={{ marginTop: marginTopButton }}
+                        onClick={() => menuClickWrapper()}
+                        block
+                      >
+                        <Icon name="book" /> <FormattedMessage id="Library" />
+                      </Button>
+                    </Link>
                   </>
 
                   <Link to="/groups/student">
@@ -251,10 +261,14 @@ export default function Sidebar({ history }) {
             {user && !smallWindow && (
               <div style={{ fontSize: '20px', color: '#777' }}>{`${user.user.username}`}</div>
             )}
-            <div style={{ color: 'slateGrey' }}>
-              {/* <Menu.Item> Tour disabled for now!
-              <Menu.Item> Tour disabled for now!
-                {learningLanguage && (
+            <div
+              style={{
+                marginTop: 'auto',
+                color: 'slateGrey',
+              }}
+            >
+              <Menu.Item>
+                {/* {learningLanguage && ( Tour disabled for now!
                   <Button
                     variant="secondary"
                     block
@@ -265,7 +279,7 @@ export default function Sidebar({ history }) {
                   >
                     <Icon name="info circle" /> <FormattedMessage id="start-tour" />
                   </Button>
-                )}
+                )} */}
                 <Button
                   variant="secondary"
                   block
@@ -276,9 +290,9 @@ export default function Sidebar({ history }) {
                 >
                   <Icon name="help circle" /> <FormattedMessage id="help" />
                 </Button>
-              </Menu.Item> */}
+              </Menu.Item>
             </div>
-            <div style={{ marginTop: 'auto', color: 'slateGrey' }}>
+            <div style={{ color: 'slateGrey' }}>
               <Menu.Item
                 style={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-between' }}
               >
