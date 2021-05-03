@@ -53,7 +53,7 @@ const Clue = ({ clue }) => (
   </div>
 )
 
-const Lemma = ({ lemma, userUrl, inflectionRef }) => {
+const Lemma = ({ lemma, sourceWord, handleSourceWordClick, userUrl, inflectionRef }) => {
   const learningLanguage = useLearningLanguage()
   const { maskSymbol } = useSelector(({ translation }) => translation)
 
@@ -69,6 +69,19 @@ const Lemma = ({ lemma, userUrl, inflectionRef }) => {
         <a href={inflectionRef.url} target="_blank" rel="noopener noreferrer" className="flex">
           <Icon name="external" style={{ marginLeft: '1rem' }} />
         </a>
+      )}
+      {sourceWord && (
+        <span
+          onClick={() => handleSourceWordClick(sourceWord)}
+          onKeyDown={() => handleSourceWordClick(sourceWord)}
+          className="source-word"
+          role="button"
+          tabIndex={-1}
+          style={{ paddingTop: '0rem', paddingLeft: '1rem' }}
+        >
+          <Icon name="angle double left" />
+          {sourceWord}
+        </span>
       )}
     </div>
   )
@@ -89,7 +102,10 @@ const DictionaryHelp = ({ minimized }) => {
   const intl = useIntl()
 
   useEffect(() => {
-    if (translatableLanguages[learningLanguage].length && !translatableLanguages[learningLanguage].includes(translationLanguageCode)) {
+    if (
+      translatableLanguages[learningLanguage].length &&
+      !translatableLanguages[learningLanguage].includes(translationLanguageCode)
+    ) {
       dispatch(updateDictionaryLanguage(translatableLanguages[learningLanguage][0]))
     }
   }, [learningLanguage])
@@ -126,21 +142,11 @@ const DictionaryHelp = ({ minimized }) => {
         ) : (
           <Lemma
             lemma={translated.lemma}
+            sourceWord={translated.source_word}
+            handleSourceWordClick={handleSourceWordClick}
             inflectionRef={translated.ref}
             userUrl={translated.user_URL}
           />
-        )}
-        {translated.source_word && (
-          <span
-            onClick={() => handleSourceWordClick(translated.source_word)}
-            onKeyDown={() => handleSourceWordClick(translated.source_word)}
-            className="source-word"
-            role="button"
-            tabIndex={-1}
-          >
-            <Icon name="angle double right" />
-            {translated.source_word}
-          </span>
         )}
         <List bulleted style={{ color: 'slateGrey', fontStyle: 'italic', marginTop: '.5rem' }}>
           {translated.glosses.map(word => (
@@ -208,7 +214,7 @@ const DictionaryHelp = ({ minimized }) => {
           {!clue && (
             <div style={{ width: '100%', ...getTextStyle(learningLanguage) }}>
               <Speaker word={parsedLemmas()[0]} />
-              {maskSymbol ? maskSymbol : parsedLemmas()[0]}
+              {maskSymbol || parsedLemmas()[0]}
             </div>
           )}
           <List bulleted style={{ color: 'slateGrey', fontStyle: 'italic' }}>
