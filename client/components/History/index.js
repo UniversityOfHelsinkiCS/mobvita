@@ -140,12 +140,12 @@ const History = ({ history, dateFormat, handleDelete = null }) => {
 
   const TotalRow = history => {
     const rootConceptResults = []
-    Object.values(history).forEach(elem => {
-      elem.forEach(elem2 => {
-        const rootConcepts = Object.keys(elem2.concept_statistics)
+    Object.values(history).forEach(allResults => {
+      allResults.forEach(oneDayResults => {
+        const rootConcepts = Object.keys(oneDayResults.concept_statistics)
           .filter(key => key.includes('000'))
           .reduce((obj, key) => {
-            obj[key] = elem2.concept_statistics[key]
+            obj[key] = oneDayResults.concept_statistics[key]
             return obj
           }, {})
 
@@ -167,7 +167,7 @@ const History = ({ history, dateFormat, handleDelete = null }) => {
           </b>
         </Table.Cell>
         {rootConceptResults.map(oneDayResults => (
-          <Table.Cell positive>
+          <Table.Cell key={oneDayResults.date} positive>
             {sumPropertyValues(Object.values(oneDayResults), 'total') > 0 ? (
               <>
                 {Math.round(

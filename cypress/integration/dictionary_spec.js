@@ -9,7 +9,7 @@ describe("dictionary", function () {
     console.log()
     cy.loginExisting(this.user)
     cy.visit("http://localhost:8000/stories/5c407e9eff634503466b0dde/read")
-    cy.get(".book") // Open dictionaryhelp
+    cy.get('[data-cy=dictionary-icon]') // Open dictionaryhelp
       .click({ force: true })
   })
 

@@ -40,7 +40,7 @@ const DictionaryButton = ({ setShow }) => {
   return (
     <div className="dictionary-button">
       <Button className="navigationbuttonopen" icon basic onClick={() => setShow(true)}>
-        <Icon size="large" name="book" />
+        <Icon size="large" name="book" data-cy="dictionary-icon" />
       </Button>
     </div>
   )
