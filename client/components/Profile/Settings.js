@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import { Link } from 'react-router-dom'
 import { FormattedMessage, useIntl } from 'react-intl'
-import { Checkbox, Radio, Dropdown } from 'semantic-ui-react'
+import { Checkbox, Radio, Dropdown, Icon } from 'semantic-ui-react'
 import { localeNameToCode, localeOptions } from 'Utilities/common'
 import { Button } from 'react-bootstrap'
 import {
@@ -17,6 +17,7 @@ import {
 } from 'Utilities/redux/userReducer'
 import useWindowDimensions from 'Utilities/windowDimensions'
 import { setLocale } from 'Utilities/redux/localeReducer'
+import LearningSettingsModal from '../LearningSettingsModal'
 
 const SettingToggle = ({ translationId, ...props }) => {
   const intl = useIntl()
@@ -81,16 +82,16 @@ const Settings = () => {
       <h2 className="header-2 pb-sm pt-nm">
         <FormattedMessage id="select-types-of-exercises-to-practice" />
       </h2>
-      {bigWindow && (
-        <>
-          <br />
-          <Button as={Link} to="/concepts" variant="primary" size="lg">
+      <br />
+      <LearningSettingsModal
+        trigger={
+          <Button variant="primary" size="lg">
             <FormattedMessage id="learning-settings" />
           </Button>
-          <br />
-          <br />
-        </>
-      )}
+        }
+      />
+      <br />
+      <br />
       <span className="pb-sm">
         <FormattedMessage id="type-the-word-you-hear" />:
       </span>
@@ -163,6 +164,15 @@ const Settings = () => {
           disabled={pending}
         />
       </div>
+      <br />
+      {bigWindow && (
+        <>
+          <Button as={Link} to="/concepts" variant="primary" size="lg">
+            <FormattedMessage id="advanced-settings" />
+          </Button>
+          <br />
+        </>
+      )}
       <hr />
       <h2 className="header-2 pb-sm pt-nm">
         <FormattedMessage id="Audio settings" />

@@ -127,7 +127,7 @@ const LearningSettingsModal = ({ trigger }) => {
             <Radio
               label={intl.formatMessage({ id: 'use-my-personal-settings' })}
               name="templateSelect"
-              value='custom'
+              value="custom"
               checked={activeTemplate === 'custom'}
               onChange={() => handleTemplateChange('custom')}
             />
@@ -139,7 +139,8 @@ const LearningSettingsModal = ({ trigger }) => {
               checked={activeTemplate !== 'custom'}
               disabled={templateOptions.length === 0}
               onChange={() => handleTemplateChange(templateOptions[0].value)}
-            />: &nbsp;
+            />
+            : &nbsp;
             <Dropdown
               id="settings-template-selector"
               selection
@@ -162,29 +163,20 @@ const LearningSettingsModal = ({ trigger }) => {
         </label>
         <ButtonGroup name="difficultyButtons" id="difficultyButtons" size="md">
           {skillLevels.sort().map(level => (
-            <Button style={{marginRight: '10px'}} key={level} onClick={() => handleLevelSelect(level)}>
+            <Button
+              style={{ marginRight: '10px' }}
+              key={level}
+              onClick={() => handleLevelSelect(level)}
+            >
               {level}
             </Button>
           ))}
         </ButtonGroup>
-        <br />
-        {!smallscreen && (
-          <Button
-            style={{ alignSelf: 'flex-start', marginTop: '1em' }}
-            variant="primary"
-            as={Link}
-            onClick={handleAdvancedSettingsClick}
-            to="/concepts"
-          >
-            <FormattedMessage id="advanced-settings" />
-          </Button>
-        )}
         <Divider />
         <span className="additional-info">
-            <FormattedMessage id="choose-settings-template-info" />
+          <FormattedMessage id="choose-settings-template-info" />
         </span>
       </Modal.Content>
-      
     </Modal>
   )
 }
