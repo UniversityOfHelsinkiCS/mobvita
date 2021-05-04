@@ -39,6 +39,12 @@ const Progress = () => {
     shallowEqual
   )
 
+  const filterTestHistoryByDate = () =>
+    testHistory.filter(test => {
+      const testTime = moment(test.date)
+      return testTime.isAfter(startDate) && testTime.isBefore(endDate)
+    })
+
   const { history: exerciseHistory } = useSelector(({ exerciseHistory }) => exerciseHistory)
 
   useEffect(() => {
@@ -125,7 +131,7 @@ const Progress = () => {
             <h3 className="header-3">
               <FormattedMessage id="Test History" />
             </h3>
-            <History history={testHistory} dateFormat="YYYY.MM" />
+            <History history={filterTestHistoryByDate()} dateFormat="YYYY.MM" />
           </>
         )}
       </div>
