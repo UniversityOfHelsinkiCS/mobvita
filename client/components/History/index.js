@@ -78,9 +78,9 @@ const History = ({ history, dateFormat, handleDelete = null }) => {
       green = worst[1] + Number(score) * 2 * (medium[1] - worst[1])
       blue = worst[2] + Number(score) * 2 * (medium[2] - worst[2])
     } else {
-      red = medium[0] + 2 * (Number(score) -0.5) * (best[0] - medium[0])
-      green = medium[1] + 2 * (Number(score) -0.5) * (best[1] - medium[1])
-      blue = medium[2] + 2 * (Number(score) -0.5) * (best[2] - medium[2])
+      red = medium[0] + 2 * (Number(score) - 0.5) * (best[0] - medium[0])
+      green = medium[1] + 2 * (Number(score) - 0.5) * (best[1] - medium[1])
+      blue = medium[2] + 2 * (Number(score) - 0.5) * (best[2] - medium[2])
     }
 
     return `rgb(${red},${green},${blue})`
@@ -161,13 +161,13 @@ const History = ({ history, dateFormat, handleDelete = null }) => {
 
     return (
       <TableRow textAlign="center">
-        <Table.Cell positive>
+        <Table.Cell key="total" positive>
           <b>
             <FormattedMessage id="total" />
           </b>
         </Table.Cell>
-        {rootConceptResults.map(oneDayResults => (
-          <Table.Cell key={oneDayResults.date} positive>
+        {rootConceptResults.map((oneDayResults, index) => (
+          <Table.Cell key={index} positive>
             {sumPropertyValues(Object.values(oneDayResults), 'total') > 0 ? (
               <>
                 {Math.round(
