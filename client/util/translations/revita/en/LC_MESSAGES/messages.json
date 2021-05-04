@@ -571,7 +571,7 @@
     "choose-a-file": "Choose a file",
     "Browse": "",
     "Submit": "Submit",
-    "paste-the-raw-text-you-want-to-add-as-a-story-we-will-use-the-first-sentence-before-an-empty-line-as": "Paste the text of the story.  Revita will use the first line as the title.  Minimum length: 50.",
+    "paste-the-raw-text-you-want-to-add-as-a-story-we-will-use-the-first-sentence-before-an-empty-line-as": "Paste the text of the story.  Revita will use the <b>first line</b> as the title.  Minimum length: 50.",
     "or-paste-a-text": "Or paste a text",
     "characters-left": "Characters left:",
     "title-on-first-line-text-after-an-empty-line-f2c9245edf5d0379b77008c6db1fd5a9": "",
@@ -920,5 +920,6 @@
     "terms-and-conditions": "Terms and conditions",
     "privacy-policy": "Privacy Policy",
     "groups": "Groups",
-    "paste-a-text": "Paste a text"
+    "paste-a-text": "Paste a text",
+    "test-results-remove-confirmation": "This will permanently remove these test results, are you sure you want to proceed?"
 }

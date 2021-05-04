@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react'
 import { useDispatch } from 'react-redux'
-import { useParams,Link } from 'react-router-dom'
+import { useParams, Link } from 'react-router-dom'
 import { Tab } from 'semantic-ui-react'
 import { FormattedMessage } from 'react-intl'
 import { getGroups } from 'Utilities/redux/groupsReducer'
@@ -29,7 +29,7 @@ export default function GroupView({ location }) {
   }
 
   let panes
-  if (role == 'teacher'){
+  if (role === 'teacher') {
     panes = [
       {
         menuItem: {

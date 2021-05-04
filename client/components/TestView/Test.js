@@ -2,7 +2,6 @@ import React, { useState, useEffect } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import { useTimer } from 'react-compound-timer'
 import { Icon } from 'semantic-ui-react'
-import { Button } from 'react-bootstrap'
 import { sendAnswer, finishTest } from 'Utilities/redux/testReducer'
 import { learningLanguageSelector } from 'Utilities/common'
 import { FormattedMessage, FormattedHTMLMessage } from 'react-intl'
@@ -148,7 +147,10 @@ const Test = () => {
         <div className="test-aside">
           <div
             className="test-counter"
-            style={{ fontWeight: 'bold', color: Math.round(timer.getTime() / 1000) <= 5 ? '#f3172d' : '#212529' }}
+            style={{
+              fontWeight: 'bold',
+              color: Math.round(timer.getTime() / 1000) <= 5 ? '#f3172d' : '#212529',
+            }}
           >
             {Math.round(timer.getTime() / 1000)}
           </div>
@@ -161,7 +163,13 @@ const Test = () => {
                 onClick={paused ? resumeTimer : pauseTimer}
                 style={{ margin: '0.25em' }}
               />
-              <Icon size="large" color={willStop ? 'grey' : 'blue'} name="stop" onClick={stop} style={{ margin: '0.25em' }}/>
+              <Icon
+                size="large"
+                color={willStop ? 'grey' : 'blue'}
+                name="stop"
+                onClick={stop}
+                style={{ margin: '0.25em' }}
+              />
             </div>
           </div>
         </div>

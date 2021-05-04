@@ -4,13 +4,13 @@ import { getStudentHistory } from 'Utilities/redux/groupHistoryReducer'
 import { FormattedMessage } from 'react-intl'
 import History from 'Components/History'
 import Spinner from 'Components/Spinner'
-import ResponsiveDatePicker from 'Components/ResponsiveDatePicker'
 import { Icon, Button } from 'semantic-ui-react'
-import useWindowDimensions from 'Utilities/windowDimensions'
 import moment from 'moment'
 
 const StudentHistory = ({ student, groupId, view }) => {
-  const [startDate, setStartDate] = useState(moment().clone().startOf('month').subtract(6, 'month').toDate())
+  const [startDate, setStartDate] = useState(
+    moment().clone().startOf('month').subtract(6, 'month').toDate()
+  )
   const [endDate, setEndDate] = useState(moment().clone().startOf('month').toDate())
   const maxDate = moment().clone().startOf('month').valueOf()
   const minDate = 0
@@ -42,15 +42,15 @@ const StudentHistory = ({ student, groupId, view }) => {
   }, [student, view, startDate, endDate])
 
   if (pending) return <Spinner />
- // <ResponsiveDatePicker maxDate={Math.min(moment().valueOf(), endDate)} selected={startDate} onChange={date => setStartDate(date)} />
- // <ResponsiveDatePicker minDate={startDate} maxDate={moment().valueOf()} selected={endDate} onChange={date => setEndDate(date)}/>
+  // <ResponsiveDatePicker maxDate={Math.min(moment().valueOf(), endDate)} selected={startDate} onChange={date => setStartDate(date)} />
+  // <ResponsiveDatePicker minDate={startDate} maxDate={moment().valueOf()} selected={endDate} onChange={date => setEndDate(date)}/>
   return (
     <div>
       <hr />
-      {view == 'exercise' ? (
+      {view === 'exercise' ? (
         <div>
           <h3>
-          <FormattedMessage id="Practice history" />
+            <FormattedMessage id="Practice history" />
           </h3>
           <br />
           <span className="sm-label pl-sm">
@@ -71,26 +71,29 @@ const StudentHistory = ({ student, groupId, view }) => {
             </div>
           </div>
           <div>
-              <Button  onClick={() => switchPage(1)} disabled={endDate>=moment(maxDate).subtract(1, 'day')}>
-                <Icon name='angle left' />  
-              </Button>
-              <Button  onClick={() => switchPage(-1)} disabled={startDate<=minDate}>
-                <Icon name='angle right' /> 
-              </Button>
-            </div>
+            <Button
+              onClick={() => switchPage(1)}
+              disabled={endDate >= moment(maxDate).subtract(1, 'day')}
+            >
+              <Icon name="angle left" />
+            </Button>
+            <Button onClick={() => switchPage(-1)} disabled={startDate <= minDate}>
+              <Icon name="angle right" />
+            </Button>
+          </div>
         </div>
       ) : (
-          <div>
-            <h3>
-              <FormattedMessage id="Test History" />
-            </h3>
-          </div>
+        <div>
+          <h3>
+            <FormattedMessage id="Test History" />
+          </h3>
+        </div>
       )}
       {student ? (
         <div>
-          {view == 'exercise' ? (
+          {view === 'exercise' ? (
             <History history={history} dateFormat="YYYY.MM" />
-          ):(
+          ) : (
             <History history={history} dateFormat="YYYY.MM.DD" />
           )}
         </div>

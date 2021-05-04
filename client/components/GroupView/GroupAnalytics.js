@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { useDispatch, useSelector, shallowEqual } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { getGroups, removeFromGroup, getGroupToken } from 'Utilities/redux/groupsReducer'
 import { ListGroup, ButtonGroup, ToggleButton } from 'react-bootstrap'
 import { FormattedMessage, useIntl } from 'react-intl'
@@ -14,7 +14,7 @@ import StudentProgress from './StudentProgress'
 import NoGroupsView from './NoGroupsView'
 import GroupHistory from './GroupHistory'
 
-const GroupAnalytics = ({role}) => {
+const GroupAnalytics = ({ role }) => {
   const intl = useIntl()
   const [content, setContent] = useState('summary')
   const [historyView, setHistoryView] = useState('test')
@@ -82,7 +82,7 @@ const GroupAnalytics = ({role}) => {
       </div>
     )
 
-  if (groups.length === 0) return <NoGroupsView role={role}/>
+  if (groups.length === 0) return <NoGroupsView role={role} />
 
   const currentUserIsTeacher = currentGroup.is_teaching
 

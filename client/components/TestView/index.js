@@ -167,7 +167,7 @@ const TestIndex = () => {
                   setOpen={setSessionToDelete}
                   action={deleteSession}
                 >
-                  <FormattedMessage id="This will permanently remove these test results, are you sure you want to proceed?" />
+                  <FormattedMessage id="test-results-remove-confirmation" />
                 </ConfirmationWarning>
                 <History history={filterHistoryByDate()} handleDelete={handleSessionDeleteClick} />
               </>
