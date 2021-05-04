@@ -90,6 +90,20 @@ const Settings = () => {
           </Button>
         }
       />
+      {bigWindow && (
+        <>
+          <Button
+            as={Link}
+            to="/concepts"
+            variant="primary"
+            size="lg"
+            style={{ marginLeft: '2px' }}
+          >
+            <FormattedMessage id="advanced-settings" />
+          </Button>
+          <br />
+        </>
+      )}
       <br />
       <br />
       <span className="pb-sm">
@@ -164,15 +178,6 @@ const Settings = () => {
           disabled={pending}
         />
       </div>
-      <br />
-      {bigWindow && (
-        <>
-          <Button as={Link} to="/concepts" variant="primary" size="lg">
-            <FormattedMessage id="advanced-settings" />
-          </Button>
-          <br />
-        </>
-      )}
       <hr />
       <h2 className="header-2 pb-sm pt-nm">
         <FormattedMessage id="Audio settings" />
