@@ -175,8 +175,13 @@ const AddStoryAccordion = ({ closeModal }) => {
         language: capitalize(learningLanguage),
         text,
       }
+      await dispatch(updateLibrarySelect('private'))
       await dispatch(setCustomUpload(true))
-      dispatch(postStory(newStory))
+      await dispatch(postStory(newStory))
+
+      closeModal()
+
+      if (history.location.pathname !== 'library') history.push('/library')
     }
 
     useEffect(() => {
