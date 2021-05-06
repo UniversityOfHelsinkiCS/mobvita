@@ -114,6 +114,7 @@ const Progress = () => {
           style={{ marginLeft: marginLeftButton }}
           checked={historyView === 'test'}
           onChange={() => setHistoryView('test')}
+          disabled={testHistory?.length === 0}
         >
           <FormattedMessage id="Test" />
         </ToggleButton>

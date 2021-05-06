@@ -7,6 +7,54 @@ import { hiddenFeatures } from 'Utilities/common'
 import useWindowDimensions from 'Utilities/windowDimensions'
 import Concept from './Concept'
 
+const TotalRow = history => {
+  const rootConceptResults = []
+  Object.values(history).forEach(allResults => {
+    allResults.forEach(oneDayResults => {
+      const rootConcepts = Object.keys(oneDayResults.concept_statistics)
+        .filter(key => key.includes('000'))
+        .reduce((obj, key) => {
+          obj[key] = oneDayResults.concept_statistics[key]
+          return obj
+        }, {})
+
+      rootConceptResults.push(rootConcepts)
+    })
+  })
+
+  const sumPropertyValues = (items, property) => {
+    return items.reduce((a, b) => {
+      return a + b[property]
+    }, 0)
+  }
+
+  return (
+    <TableRow textAlign="center">
+      <Table.Cell key="total" positive>
+        <b>
+          <FormattedMessage id="total" />
+        </b>
+      </Table.Cell>
+      {rootConceptResults.map((oneDayResults, index) => (
+        <Table.Cell key={new Date().getTime() + index} positive>
+          {sumPropertyValues(Object.values(oneDayResults), 'total') > 0 ? (
+            <>
+              {Math.round(
+                (sumPropertyValues(Object.values(oneDayResults), 'correct') /
+                  sumPropertyValues(Object.values(oneDayResults), 'total')) *
+                  100
+              )}{' '}
+              % <FormattedMessage id="correct" />
+              <br />({sumPropertyValues(Object.values(oneDayResults), 'correct')} /{' '}
+              {sumPropertyValues(Object.values(oneDayResults), 'total')})
+            </>
+          ) : null}
+        </Table.Cell>
+      ))}
+    </TableRow>
+  )
+}
+
 const History = ({ history, dateFormat, handleDelete = null }) => {
   const [colors, setColors] = useState({
     best: '144, 239, 144',
@@ -31,7 +79,7 @@ const History = ({ history, dateFormat, handleDelete = null }) => {
   }, [history, pageSize])
 
   useLayoutEffect(() => {
-    if (page > maxPage - 1) {
+    if (page > maxPage - 1 && page !== 0) {
       setPage(maxPage - 1)
     }
   }, [maxPage])
@@ -123,6 +171,8 @@ const History = ({ history, dateFormat, handleDelete = null }) => {
   }
 
   const buildConceptTree = () => {
+    if (!concepts) return null
+
     const rootConcepts = concepts
       .filter(c => !c.parents)
       .sort((a, b) => a['UI-order'] - b['UI-order'])
@@ -136,54 +186,6 @@ const History = ({ history, dateFormat, handleDelete = null }) => {
 
   const handleColorChange = color => e => {
     setColors({ ...colors, [color]: e.target.value })
-  }
-
-  const TotalRow = history => {
-    const rootConceptResults = []
-    Object.values(history).forEach(allResults => {
-      allResults.forEach(oneDayResults => {
-        const rootConcepts = Object.keys(oneDayResults.concept_statistics)
-          .filter(key => key.includes('000'))
-          .reduce((obj, key) => {
-            obj[key] = oneDayResults.concept_statistics[key]
-            return obj
-          }, {})
-
-        rootConceptResults.push(rootConcepts)
-      })
-    })
-
-    const sumPropertyValues = (items, property) => {
-      return items.reduce((a, b) => {
-        return a + b[property]
-      }, 0)
-    }
-
-    return (
-      <TableRow textAlign="center">
-        <Table.Cell key="total" positive>
-          <b>
-            <FormattedMessage id="total" />
-          </b>
-        </Table.Cell>
-        {rootConceptResults.map((oneDayResults, index) => (
-          <Table.Cell key={index} positive>
-            {sumPropertyValues(Object.values(oneDayResults), 'total') > 0 ? (
-              <>
-                {Math.round(
-                  (sumPropertyValues(Object.values(oneDayResults), 'correct') /
-                    sumPropertyValues(Object.values(oneDayResults), 'total')) *
-                    100
-                )}{' '}
-                % <FormattedMessage id="correct" />
-                <br />({sumPropertyValues(Object.values(oneDayResults), 'correct')} /{' '}
-                {sumPropertyValues(Object.values(oneDayResults), 'total')})
-              </>
-            ) : null}
-          </Table.Cell>
-        ))}
-      </TableRow>
-    )
   }
 
   if (!history) return null
@@ -250,7 +252,7 @@ const History = ({ history, dateFormat, handleDelete = null }) => {
           </Table.Row>
         </Table.Header>
         <Table.Body>
-          {buildConceptTree().map(concept => (
+          {buildConceptTree()?.map(concept => (
             <Concept
               key={concept.id}
               calculateColor={calculateColor}
