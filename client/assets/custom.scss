@@ -704,6 +704,44 @@ html, body, #root {
   }
 }
 
+.add-story-accordion-focused-item {
+  font-weight: 550;
+  font-size: 1.5rem!important;
+}
+
+.add-story-accordion-item {
+  font-size: 1.2rem!important;
+}
+
+.library-toggle-button-chosen {
+  color: black;
+  background-color: white;
+  border-radius: 6px 6px 0px 0px;
+  border-width: 1px 1px 0px 1px;
+  border-style: solid;
+  border-color: rgb(119, 119, 119);
+}
+
+.library-toggle-button-chosen:focus {
+  outline: none;
+}
+
+.library-toggle-button {
+  color: rgb(119, 119, 119);
+  background-color: white;
+  border-width: 0px 0px 1px 0px;
+  border-style: solid;
+  border-color: rgb(119, 119, 119);
+}
+
+.library-toggle-button:hover {
+  color: black;
+}
+
+.library-toggle-button:active {
+  outline: none;
+}
+
 .search-and-sort {
   display: flex;
   align-items: center;
@@ -1756,13 +1794,6 @@ html, body, #root {
 }
 
 
-.add-story-accordion-focused-item {
-  font-weight: 550;
-  font-size: 1.5rem!important;
-}
 
-.add-story-accordion-item {
-  font-size: 1.2rem!important;
-}
 
 

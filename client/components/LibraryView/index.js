@@ -192,6 +192,7 @@ const StoryList = () => {
           />
         )}
       </div>
+      <br />
       <AddStoryModal
         setLibraries={setLibraries}
         trigger={
@@ -202,6 +203,7 @@ const StoryList = () => {
           </span>
         }
       />
+      <br />
       <div className="search-and-sort">
         <div className="flex align-center">
           <Dropdown

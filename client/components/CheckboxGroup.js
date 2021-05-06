@@ -1,15 +1,14 @@
 import React from 'react'
 import { capitalize } from 'Utilities/common'
 import { FormattedMessage } from 'react-intl'
-import { Button } from 'react-bootstrap'
 
-// const buttonClass = toggled ? 'btn btn-secondary' : 'btn btn-info'
 const ToggleButton = ({ toggled, children, ...props }) => {
-  const className = toggled ? 'btn btn-toggle-on' : 'btn btn-toggle-off'
+  const className = toggled ? 'library-toggle-button-chosen' : 'library-toggle-button'
+
   return (
-    <Button variant={className} style={{ margin: 0 }} {...props}>
+    <button type="button" className={className} style={{ margin: 0 }} {...props}>
       {children}
-    </Button>
+    </button>
   )
 }
 
@@ -29,12 +28,11 @@ const CheckboxGroup = ({
         <FormattedMessage id={capitalize(key)} />
       </ToggleButton>
     ))
-
   // for having library buttons in right order
   if (reverse) buttons = buttons.reverse()
 
   return (
-    <div className={`checkbox-group ${additionalClass}`} data-cy={dataCy}>
+    <div className={`checkbox-group ${additionalClass} center`} data-cy={dataCy}>
       {buttons}
     </div>
   )
