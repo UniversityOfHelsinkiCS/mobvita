@@ -389,6 +389,34 @@ html, body, #root {
   top: 0;
 }
 
+.nav-basic-item {
+  color: white;
+  padding-top: 0.25em!important;
+  padding-bottom: 1.2em!important;
+  margin-left: 0.4em!important;
+  cursor: pointer;
+}
+
+.navbar-dropdown-icon{
+  color: white;
+  margin-right: -0.15em!important;
+}
+
+.navbar-external-link {
+  color: #212529;
+  background-color: #FFFFFF;
+}
+
+.navbar-external-link:visited {
+  background-color: #FFFFFF;
+  color: #212529;;
+}
+
+.navbar-external-link:hover {
+  color: #212529;;
+  background-color: #f8f9fa
+}
+
 .word-interactive{
   cursor:pointer;
 
@@ -1726,18 +1754,7 @@ html, body, #root {
 	  opacity: 0.5;
 	}
 }
-.nav-basic-item {
-  color: white;
-  padding-top: 0.25em!important;
-  padding-bottom: 1.2em!important;
-  margin-left: 0.4em!important;
-  cursor: pointer;
-}
 
-.navbar-dropdown-icon{
-  color: white;
-  margin-right: -0.15em!important;
-}
 
 .add-story-accordion-focused-item {
   font-weight: 550;
@@ -1747,4 +1764,5 @@ html, body, #root {
 .add-story-accordion-item {
   font-size: 1.2rem!important;
 }
+
 
