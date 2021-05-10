@@ -1525,6 +1525,7 @@ html, body, #root {
 }
 
 .footer {
+  font-size: 0.9rem;
   padding: 0.5em;
   width: 95%;
   max-width: 1400px;
@@ -1541,6 +1542,22 @@ html, body, #root {
     width: 100%;
     position: sticky;
     bottom: 0;
+  }
+
+  &-item {
+    margin: .375rem 1rem;
+  }
+
+  &-button {
+    margin: .375rem 1rem;
+    color: inherit;
+    background-color: inherit;
+    border: none;
+    padding: 0;
+  }
+
+  &-button:hover {
+    color: $primary-color;
   }
 
   & a {

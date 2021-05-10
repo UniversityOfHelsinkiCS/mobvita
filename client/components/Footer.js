@@ -16,24 +16,21 @@ const Footer = () => {
           <>
             <TermsAndConditions
               trigger={
-                <Button data-cy="tc-button" variant="link">
+                <button className="footer-button" type="button" data-cy="tc-button" variant="link">
                   Terms and Conditions, Privacy Policy
-                </Button>
+                </button>
               }
             />
-            <div style={{ paddingTop: '.375rem', paddingRight: '.75rem' }}>
+            <div className="footer-item">
               {/* eslint-disable no-undef */}
               {`Built: ${__VERSION__} (${__COMMIT__})`}
             </div>
           </>
         )}
-
-        <div style={{ paddingTop: '.375rem', paddingRight: '.75rem' }}>
-          © University of Helsinki 2020–2021
-        </div>
+        <div className="footer-item">© University of Helsinki 2020–2021</div>
 
         {showResonsiveVoiceMention && (
-          <div>
+          <div className="footer-item">
             <a href="https://responsivevoice.org">ResponsiveVoice-NonCommercial</a> licensed under{' '}
             <a href="https://creativecommons.org/licenses/by-nc-nd/4.0/">
               <img
