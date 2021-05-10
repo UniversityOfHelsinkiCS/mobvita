@@ -924,5 +924,6 @@
     "privacy-policy": "Privacy Policy",
     "groups": "Группы",
     "paste-a-text": "Ввести текст",
-    "test-results-remove-confirmation": "Удалить результаты этого теста?"
+    "test-results-remove-confirmation": "Удалить результаты этого теста?",
+    "enable-test-for": "Включить тест на"
 }

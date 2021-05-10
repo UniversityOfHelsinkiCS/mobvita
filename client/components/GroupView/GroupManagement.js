@@ -1,9 +1,9 @@
 import React, { useState } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import { useHistory } from 'react-router-dom'
-import { FormattedMessage } from 'react-intl'
+import { FormattedMessage, useIntl } from 'react-intl'
 import { CopyToClipboard } from 'react-copy-to-clipboard'
-import { Card, Icon, Label } from 'semantic-ui-react'
+import { Card, Icon, Label, Dropdown } from 'semantic-ui-react'
 import { Button } from 'react-bootstrap'
 import { updateGroupSelect } from 'Utilities/redux/userReducer'
 import {
@@ -17,7 +17,6 @@ import { setNotification } from 'Utilities/redux/notificationReducer'
 import Spinner from 'Components/Spinner'
 import Subheader from 'Components/Subheader'
 import ConfirmationWarning from 'Components/ConfirmationWarning'
-import { time } from 'highcharts'
 import AddToGroup from './AddToGroup'
 import NoGroupsView from './NoGroupsView'
 
@@ -72,10 +71,12 @@ const GroupCard = ({
   const { groupName, group_id: id, is_teaching: isTeaching, test_deadline: testDeadline } = group
 
   const [currTestDeadline, setCurrTestDeadline] = useState(testDeadline)
+  const [chosenTestDuration, setChosenTestDuration] = useState(Date.now() + 7200000)
   const showTestEnableMenu = showTestEnableMenuGroupId === id
 
   const showToken = showTokenGroupId === id
   const token = useSelector(state => state.groups.token)
+  const intl = useIntl()
   const dispatch = useDispatch()
   const history = useHistory()
 
@@ -103,9 +104,9 @@ const GroupCard = ({
     history.push(`/groups/${role}/${id}/concepts`)
   }
 
-  const handleTestDisable = () => {
+  const handleTestDisable = async () => {
     const currentDateMs = Date.now()
-    dispatch(setGroupTestDeadline(currentDateMs, id))
+    await dispatch(setGroupTestDeadline(currentDateMs, id))
     setCurrTestDeadline(currentDateMs)
     setShowTestEnableMenuGroupId(null)
   }
@@ -137,41 +138,42 @@ const GroupCard = ({
     dispatch(setNotification('token-copied', 'info'))
   }
 
-  const handleTestEnableTwoHours = () => {
-    const testDeadlineMs = Date.now() + 7200000 // 2 hours
-
-    dispatch(setGroupTestDeadline(testDeadlineMs, id))
-    setCurrTestDeadline(testDeadlineMs)
+  const handleTestEnableClick = async () => {
+    await dispatch(setGroupTestDeadline(chosenTestDuration, id))
+    setCurrTestDeadline(chosenTestDuration)
     setShowTestEnableMenuGroupId(null)
   }
 
-  const handleTestEnableThreeHours = () => {
-    const testDeadlineMs = Date.now() + 10800000 // 3 hours
-
-    dispatch(setGroupTestDeadline(testDeadlineMs, id))
-    setCurrTestDeadline(testDeadlineMs)
+  const handleTestButtonCancel = async () => {
     setShowTestEnableMenuGroupId(null)
   }
 
-  const handleTestEnableFourHours = () => {
-    const testDeadlineMs = Date.now() + 14400000 // 4 hours
-
-    dispatch(setGroupTestDeadline(testDeadlineMs, id))
-    setCurrTestDeadline(testDeadlineMs)
-    setShowTestEnableMenuGroupId(null)
+  const handleTestDurationChange = (e, { value }) => {
+    setChosenTestDuration(Date.now() + value)
   }
 
-  const handleTestEnableOneDay = () => {
-    const testDeadlineMs = Date.now() + 86400000 // 1 day
-
-    dispatch(setGroupTestDeadline(testDeadlineMs, id))
-    setCurrTestDeadline(testDeadlineMs)
-    setShowTestEnableMenuGroupId(null)
-  }
-
-  const handleTestButtonCancel = () => {
-    setShowTestEnableMenuGroupId(null)
-  }
+  const testTimeOptions = [
+    {
+      key: '2-hours',
+      text: intl.formatMessage({ id: '2-hours' }),
+      value: 7200000,
+    },
+    {
+      key: '3-hours',
+      text: intl.formatMessage({ id: '3-hours' }),
+      value: 10800000,
+    },
+    {
+      key: '4-hours',
+      text: intl.formatMessage({ id: '4-hours' }),
+      value: 14400000,
+    },
+    {
+      key: '24-hours',
+      text: intl.formatMessage({ id: '24-hours' }),
+      value: 86400000,
+    },
+  ]
 
   return (
     <Card fluid>
@@ -279,38 +281,23 @@ const GroupCard = ({
               }}
             >
               <span style={{ margin: 'auto', padding: '0.5em' }}>
+                <b>
+                  <FormattedMessage id="enable-test-for" />
+                </b>{' '}
+                <Dropdown
+                  onChange={handleTestDurationChange}
+                  placeholder={intl.formatMessage({ id: '2-hours' })}
+                  selection
+                  style={{ minWidth: '120px' }}
+                  options={testTimeOptions}
+                />
                 <Button
                   type="button"
-                  onClick={handleTestEnableTwoHours}
+                  onClick={handleTestEnableClick}
                   variant="success"
-                  style={{ margin: '0.2em' }}
+                  style={{ margin: '0.5em' }}
                 >
-                  <FormattedMessage id="2-hours" />
-                </Button>
-                <Button
-                  type="button"
-                  onClick={handleTestEnableThreeHours}
-                  variant="success"
-                  style={{ margin: '0.2em' }}
-                >
-                  <FormattedMessage id="3-hours" />
-                </Button>
-                <Button
-                  type="button"
-                  onClick={handleTestEnableFourHours}
-                  variant="success"
-                  style={{ margin: '0.2em' }}
-                >
-                  <FormattedMessage id="4-hours" />
-                </Button>
-                <Button
-                  data-cy="enable-test-one-day"
-                  type="button"
-                  onClick={handleTestEnableOneDay}
-                  variant="success"
-                  style={{ margin: '0.2em' }}
-                >
-                  <FormattedMessage id="24-hours" />
+                  OK
                 </Button>
                 <div
                   style={{

@@ -920,5 +920,6 @@
     "privacy-policy": "Privacy Policy",
     "groups": "Groups",
     "paste-a-text": "Paste a text",
-    "test-results-remove-confirmation": "Detta raderar detta kort för gott. Är du säker att du vill fortsätta?"
+    "test-results-remove-confirmation": "Detta raderar detta kort för gott. Är du säker att du vill fortsätta?",
+    "enable-test-for": "Enable test for"
 }

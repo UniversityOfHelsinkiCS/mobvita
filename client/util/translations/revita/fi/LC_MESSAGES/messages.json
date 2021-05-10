@@ -896,11 +896,11 @@
     "enable-test-one-hour": "Ota testi käyttöön 1 tunnin ajaksi",
     "enable-test-two-hours": "Ota testi käyttöön 2 tunnin ajaksi",
     "enable-test-three-hours": "Ota testi käyttöön 3 tunnin ajaksi",
-    "1-hour": "1 tunti",
-    "2-hours": "2 tuntia",
-    "3-hours": "3 tuntia",
-    "4-hours": "4 tuntia",
-    "24-hours": "24 tuntia",
+    "1-hour": "1 tunniksi",
+    "2-hours": "2 tunniksi",
+    "3-hours": "3 tunniksi",
+    "4-hours": "4 tunniksi",
+    "24-hours": "24 tunniksi",
     "correct": "oikein",
     "total": "Yhteensä",
     "server_busy": "Sorry, revita server is overloaded right now. Please try again later.",
@@ -922,5 +922,6 @@
     "privacy-policy": "Tietosuojakäytäntö",
     "groups": "Ryhmät",
     "paste-a-text": "Liitä teksti",
-    "test-results-remove-confirmation": "Tämä poistaa nämä koetulokset pysyvästi. Oletko varma?"
+    "test-results-remove-confirmation": "Tämä poistaa nämä koetulokset pysyvästi. Oletko varma?",
+    "enable-test-for": "Ota testi käyttöön"
 }

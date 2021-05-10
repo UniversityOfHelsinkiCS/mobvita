@@ -922,5 +922,6 @@
     "privacy-policy": "Privacy Policy",
     "groups": "Gruppi",
     "paste-a-text": "Copia un testo",
-    "test-results-remove-confirmation": "Sicuro/a di voler cancellare i risultati del test?"
+    "test-results-remove-confirmation": "Sicuro/a di voler cancellare i risultati del test?",
+    "enable-test-for": "Abilita il test per"
 }
