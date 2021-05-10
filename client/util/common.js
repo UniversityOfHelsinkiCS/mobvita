@@ -140,6 +140,7 @@ export const supportedLearningLanguages = {
     'french',
     'portuguese',
     'chinese',
+    'turkish',
   ].sort((a, b) => a.localeCompare(b)),
   minor: [
     'erzya',
@@ -149,7 +150,6 @@ export const supportedLearningLanguages = {
     'sakha',
     'tatar',
     'udmurt',
-    'turkish',
   ].sort((a, b) => a.localeCompare(b)),
   experimental: ['syriac'],
 }
