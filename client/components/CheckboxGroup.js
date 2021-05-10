@@ -32,7 +32,7 @@ const CheckboxGroup = ({
   if (reverse) buttons = buttons.reverse()
 
   return (
-    <div className={`checkbox-group ${additionalClass} center`} data-cy={dataCy}>
+    <div className={`checkbox-group ${additionalClass}`} data-cy={dataCy}>
       {buttons}
     </div>
   )

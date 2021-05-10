@@ -192,18 +192,22 @@ const StoryList = () => {
           />
         )}
       </div>
-      <br />
       <AddStoryModal
         setLibraries={setLibraries}
         trigger={
           <span>
-            <Button data-cy="add-story-button" fluid color="teal" size="big">
+            <Button
+              data-cy="add-story-button"
+              fluid
+              color="teal"
+              size="big"
+              style={{ marginTop: '1em', marginBottom: '1em' }}
+            >
               {intl.formatMessage({ id: 'add-your-stories' })}
             </Button>
           </span>
         }
       />
-      <br />
       <div className="search-and-sort">
         <div className="flex align-center">
           <Dropdown
@@ -255,7 +259,7 @@ const StoryList = () => {
 
   if (pending || !searchedStories || !refreshed) {
     return (
-      <div className="cont">
+      <div className="cont-tall cont flex-col auto gap-row-sm">
         {libraryControls}
         <Placeholder>
           <Placeholder.Line />
