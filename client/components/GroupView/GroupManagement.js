@@ -292,6 +292,7 @@ const GroupCard = ({
                   options={testTimeOptions}
                 />
                 <Button
+                  data-cy="enable-test-ok-button"
                   type="button"
                   onClick={handleTestEnableClick}
                   variant="success"

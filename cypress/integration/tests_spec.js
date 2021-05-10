@@ -30,7 +30,7 @@ describe('test view', function() {
     
     cy.visit('http://localhost:8000/groups/teacher')
     cy.get('[data-cy=enable-test-button]').click()
-    cy.get('[data-cy=enable-test-one-day]').click()
+    cy.get('[data-cy=enable-test-ok-button').click()
 
     cy.visit('http://localhost:8000/home')
     cy.get('[data-cy=tests-button]').click()
