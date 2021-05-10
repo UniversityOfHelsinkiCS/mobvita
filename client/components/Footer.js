@@ -1,7 +1,6 @@
 import React from 'react'
 import { useHistory } from 'react-router-dom'
 import TermsAndConditions from 'Components/StaticContent/TermsAndConditions'
-import { Button } from 'react-bootstrap'
 
 const Footer = () => {
   const history = useHistory()

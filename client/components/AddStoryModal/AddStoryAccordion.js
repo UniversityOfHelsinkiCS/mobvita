@@ -8,7 +8,9 @@ import { FormControl, Spinner } from 'react-bootstrap'
 import { capitalize, learningLanguageSelector } from 'Utilities/common'
 import { updateLibrarySelect } from 'Utilities/redux/userReducer'
 import useWindowDimensions from 'Utilities/windowDimensions'
+import { setNotification } from 'Utilities/redux/notificationReducer'
 import RecommendedSites from '../LibraryView/RecommendedSites'
+
 
 const AddStoryAccordion = ({ closeModal }) => {
   const [accordionState, setAccordionState] = useState(0)
@@ -111,6 +113,7 @@ const AddStoryAccordion = ({ closeModal }) => {
       dispatch(setCustomUpload(true))
       dispatch(postStory(data))
       dispatch(updateLibrarySelect('private'))
+      dispatch(setNotification('processing-story', 'info'))
       closeModal()
 
       if (history.location.pathname !== 'stories') history.push('/library')
@@ -175,10 +178,10 @@ const AddStoryAccordion = ({ closeModal }) => {
         language: capitalize(learningLanguage),
         text,
       }
-      await dispatch(updateLibrarySelect('private'))
-      await dispatch(setCustomUpload(true))
+      dispatch(updateLibrarySelect('private'))
+      dispatch(setCustomUpload(true))
       await dispatch(postStory(newStory))
-
+      dispatch(setNotification('processing-story', 'info'))
       closeModal()
 
       if (history.location.pathname !== 'library') history.push('/library')
