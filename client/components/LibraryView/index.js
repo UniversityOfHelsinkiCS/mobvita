@@ -179,6 +179,7 @@ const StoryList = () => {
         <CheckboxGroup
           values={libraries}
           additionalClass="wrap-and-grow align-center pt-sm"
+          buttonStyle="tab"
           onClick={handleLibraryChange}
           reverse
         />

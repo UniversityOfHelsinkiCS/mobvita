@@ -2,8 +2,14 @@ import React from 'react'
 import { capitalize } from 'Utilities/common'
 import { FormattedMessage } from 'react-intl'
 
-const ToggleButton = ({ toggled, children, ...props }) => {
-  const className = toggled ? 'library-toggle-button-chosen' : 'library-toggle-button'
+const ToggleButton = ({ toggled, children, buttonStyle, ...props }) => {
+  let className = ''
+
+  if (buttonStyle === 'tab') {
+    className = toggled ? 'library-toggle-button-chosen' : 'library-toggle-button'
+  } else {
+    className = 'btn btn-toggle-on'
+  }
 
   return (
     <button type="button" className={className} style={{ margin: 0 }} {...props}>
@@ -16,6 +22,7 @@ const CheckboxGroup = ({
   values,
   onClick,
   additionalClass = '',
+  buttonStyle,
   dataCy,
   reverse = false,
   ...props
@@ -24,7 +31,13 @@ const CheckboxGroup = ({
   let buttons = Object.entries(values)
     .sort()
     .map(([key, val]) => (
-      <ToggleButton key={key} onClick={() => onClick(key)} toggled={val} {...props}>
+      <ToggleButton
+        key={key}
+        onClick={() => onClick(key)}
+        toggled={val}
+        buttonStyle={buttonStyle}
+        {...props}
+      >
         <FormattedMessage id={capitalize(key)} />
       </ToggleButton>
     ))
