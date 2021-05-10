@@ -17,15 +17,21 @@ const CheckAnswersButton = ({ handleClick, checkAnswersButtonTempDisable }) => {
     ({ snippets }) => snippets
   )
 
-  const [attemptRatioPercentage, setAttemptRatioPercentage] = useState(20)
+  const [attemptRatioPercentage, setAttemptRatioPercentage] = useState(0)
 
   useEffect(() => {
     if (!snippetPending) {
       const isFreshAttempt = !focusedSnippet?.max_attempt || attempt === 0
       if (isFreshAttempt) {
-        setAttemptRatioPercentage(20)
+        setAttemptRatioPercentage(0)
       } else {
-        setAttemptRatioPercentage(100 * ((attempt + 1) / focusedSnippet?.max_attempt))
+        const newAttemptRatioPercentage = 100 * ((attempt + 1) / focusedSnippet?.max_attempt)
+
+        if (newAttemptRatioPercentage <= 100) {
+          setAttemptRatioPercentage(newAttemptRatioPercentage)
+        } else {
+          setAttemptRatioPercentage(100)
+        }
       }
     }
   }, [focusedSnippet, attempt])
