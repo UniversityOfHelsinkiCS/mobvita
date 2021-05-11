@@ -923,5 +923,6 @@
     "groups": "Ryhmät",
     "paste-a-text": "Liitä teksti",
     "test-results-remove-confirmation": "Tämä poistaa nämä koetulokset pysyvästi. Oletko varma?",
-    "enable-test-for": "Ota testi käyttöön"
+    "enable-test-for": "Ota testi käyttöön",
+    "multiple-chances-when-practicing": "Monta yritystä harjoitellessa"
 }

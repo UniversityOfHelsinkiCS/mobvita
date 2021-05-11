@@ -12,7 +12,6 @@ import { Offline } from 'react-detect-offline'
 import { FormattedMessage, useIntl } from 'react-intl'
 import TermsAndConditions from 'Components/StaticContent/TermsAndConditions'
 import ContactUs from './StaticContent/ContactUs'
-import AboutUs from './StaticContent/AboutUs'
 import Tour from './Tour'
 import NewsModal from './NewsModal'
 
@@ -270,6 +269,7 @@ export default function NavBar() {
                   }
                 >
                   <NavDropdown.Item
+                    data-cy="navbar-about-button"
                     className="navbar-external-link"
                     href="https://www2.helsinki.fi/en/projects/revita-language-learning-and-ai/about-the-project"
                     target="_blank"

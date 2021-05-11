@@ -19,10 +19,9 @@ describe("via navbar", function () {
     cy.get('.inverted').click(-50, -50, { force: true })
   })
 
-  it("can read about (mob|re)vita", function () {
+  it("can find 'About' dropdown menu item", function () {
     cy.get('[data-cy=navbar-info-dropdown]').click()
-    cy.get('[data-cy=navbar-about-button]').click()
-    cy.get('[data-cy=about-content]')
+    cy.get('[data-cy=navbar-about-button]')
   })
 
   it("ui language can be changed and is saved", function () {

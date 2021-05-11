@@ -923,5 +923,6 @@
     "groups": "Gruppi",
     "paste-a-text": "Copia un testo",
     "test-results-remove-confirmation": "Sicuro/a di voler cancellare i risultati del test?",
-    "enable-test-for": "Abilita il test per"
+    "enable-test-for": "Abilita il test per",
+    "multiple-chances-when-practicing": "Multiple chances when practicing stories"
 }

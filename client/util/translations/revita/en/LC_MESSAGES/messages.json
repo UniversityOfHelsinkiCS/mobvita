@@ -922,5 +922,6 @@
     "groups": "Groups",
     "paste-a-text": "Paste a text",
     "test-results-remove-confirmation": "This will permanently remove these test results, are you sure you want to proceed?",
-    "enable-test-for": "Enable test for"
+    "enable-test-for": "Enable test for",
+    "multiple-chances-when-practicing": "Multiple chances when practicing stories"
 }
