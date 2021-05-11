@@ -269,13 +269,14 @@ export default function NavBar() {
                     />
                   }
                 >
-                  <AboutUs
-                    trigger={
-                      <NavDropdown.Item data-cy="navbar-about-button">
-                        <FormattedMessage id="about" />
-                      </NavDropdown.Item>
-                    }
-                  />
+                  <NavDropdown.Item
+                    className="navbar-external-link"
+                    href="https://www2.helsinki.fi/en/projects/revita-language-learning-and-ai/about-the-project"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    <FormattedMessage id="about" />
+                  </NavDropdown.Item>
                   <NavDropdown.Divider />
                   <NavDropdown.Item as={Link} to="/help">
                     <FormattedMessage id="help" />
