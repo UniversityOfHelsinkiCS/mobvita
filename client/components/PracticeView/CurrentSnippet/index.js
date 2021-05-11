@@ -140,7 +140,7 @@ const CurrentSnippet = ({ storyId, handleInputChange }) => {
       const wasLastAttempt =
         snippets.focused.skip_second ||
         snippetFinished ||
-        attempt + 1 === snippets.focused.max_attempt
+        attempt + 1 >= snippets.focused.max_attempt
       if (isNewSnippet) setInitialAnswers()
       else if (wasLastAttempt) finishSnippet()
       else dispatch(incrementAttempts())
