@@ -20,21 +20,12 @@ const CheckAnswersButton = ({ handleClick, checkAnswersButtonTempDisable }) => {
   const [attemptRatioPercentage, setAttemptRatioPercentage] = useState(20)
 
   useEffect(() => {
-    console.log('attemptRatioPercentage:', attemptRatioPercentage)
-    console.log('focusedSnippet?.max_attempt:', focusedSnippet?.max_attempt)
-    console.log('attempt:', attempt)
     if (!snippetPending) {
       const isFreshAttempt = !focusedSnippet?.max_attempt || attempt === 0
       if (isFreshAttempt) {
         setAttemptRatioPercentage(20)
       } else {
-
-        // setAttemptRatioPercentage(100 * ((attempt + 1) / focusedSnippet?.max_attempt))
-
         const newAttemptRatioPercentage = 100 * ((attempt + 1) / focusedSnippet?.max_attempt)
-
-        console.log('newAttemptRatioPercentage:', 100 * ((attempt + 1) / focusedSnippet?.max_attempt))
-        console.log('------------------------------')
 
         if (newAttemptRatioPercentage <= 100) {
           setAttemptRatioPercentage(newAttemptRatioPercentage)
