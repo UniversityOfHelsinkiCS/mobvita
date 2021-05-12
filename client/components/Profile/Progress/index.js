@@ -11,6 +11,7 @@ import History from 'Components/History'
 import { getHistory as getExerciseHistory } from 'Utilities/redux/exerciseHistoryReducer'
 import { getHistory as getTestHistory } from 'Utilities/redux/testReducer'
 import { useLearningLanguage } from 'Utilities/common'
+import useWindowDimension from 'Utilities/windowDimensions'
 import ProgressStats from './ProgressStats'
 
 const PickDate = ({ date, setDate }) => (
@@ -28,6 +29,8 @@ const Progress = () => {
 
   const learningLanguage = useLearningLanguage()
   const { history: testHistory } = useSelector(({ tests }) => tests)
+
+  const bigScreen = useWindowDimension().width >= 650
 
   const { exerciseHistory: exerciseHistoryGraph, flashcardHistory, pending } = useSelector(
     ({ user }) => {
@@ -57,28 +60,44 @@ const Progress = () => {
 
   return (
     <div className="cont ps-nm">
-      <h2 className="header-2 bold">
-        <FormattedMessage id="Showing results for" />
-      </h2>
-      <br />
-      <div className="date-pickers gap-col-sm">
-        <div>
-          <b>
-            <FormattedMessage id="date-start" />:
-          </b>
-          <br />
-          <PickDate id="start" date={startDate} setDate={setStartDate} />
+      {bigScreen ? (
+        <div className="date-pickers-container">
+          <div className="date-pickers gap-col-sm">
+            <span className="bold">
+              <FormattedMessage id="Showing results for" />
+            </span>
+            <div style={{ marginLeft: '2em' }}>
+              <FormattedMessage id="date-start" />{' '}
+              <PickDate id="start" date={startDate} setDate={setStartDate} />
+            </div>
+            <div style={{ marginLeft: '2em' }}>
+              <FormattedMessage id="date-end" /> <PickDate date={endDate} setDate={setEndDate} />
+            </div>
+          </div>
         </div>
-        <div>
-          <b>
-            <FormattedMessage id="date-end" />:
-          </b>
+      ) : (
+        <div className="date-pickers-container">
+          <span className="bold" style={{ fontSize: '1.3em' }}>
+            <FormattedMessage id="Showing results for" />
+            <br />
+          </span>
           <br />
-          <PickDate date={endDate} setDate={setEndDate} />
+          <div className="date-pickers gap-col-sm">
+            <br />
+            <div>
+              <FormattedMessage id="date-start" />
+              <br />
+              <PickDate id="start" date={startDate} setDate={setStartDate} />
+            </div>
+            <div>
+              <FormattedMessage id="date-end" />
+              <br />
+              <PickDate date={endDate} setDate={setEndDate} />
+            </div>
+          </div>
         </div>
-      </div>
+      )}
       <br />
-      <hr />
       <div>
         <h3 className="header-3">
           <FormattedMessage id="Progress graph" />

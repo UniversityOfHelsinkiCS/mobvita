@@ -1297,10 +1297,18 @@ html, body, #root {
     color: darkgreen;
   }
 }
+.date-pickers-container {
+  padding: 1em;
+  border: 1px solid black;
+  border-color: #DEE2E6;
+  background-color: #F9FAFB;
+  border-radius: 7.5px;
+}
 
 .date-pickers {
   display: flex;
   flex-wrap: wrap;
+  align-items: center;
 }
 
 .medal-info {
@@ -1809,6 +1817,7 @@ html, body, #root {
 	  opacity: 0.5;
 	}
 }
+
 
 
 
