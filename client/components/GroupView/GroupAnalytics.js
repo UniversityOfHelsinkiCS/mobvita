@@ -191,9 +191,6 @@ const GroupAnalytics = ({ role }) => {
       {content === 'summary' && currentGroup.is_teaching && (
         <>
           <hr />
-          <span className="sm-label pl-sm">
-            <FormattedMessage id="Showing results for" />
-          </span>
           <Summary
             groupName={currentGroup.groupName}
             isTeaching={currentGroup.is_teaching}

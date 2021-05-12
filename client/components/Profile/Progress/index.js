@@ -60,8 +60,8 @@ const Progress = () => {
 
   return (
     <div className="cont ps-nm">
-      {bigScreen ? (
-        <div className="date-pickers-container">
+      <div className="date-pickers-container">
+        {bigScreen ? (
           <div className="date-pickers gap-col-sm">
             <span className="bold">
               <FormattedMessage id="Showing results for" />
@@ -74,29 +74,27 @@ const Progress = () => {
               <FormattedMessage id="date-end" /> <PickDate date={endDate} setDate={setEndDate} />
             </div>
           </div>
-        </div>
-      ) : (
-        <div className="date-pickers-container">
-          <span className="bold" style={{ fontSize: '1.3em' }}>
-            <FormattedMessage id="Showing results for" />
+        ) : (
+          <>
+            <span className="bold" style={{ fontSize: '1.3em' }}>
+              <FormattedMessage id="Showing results for" />
+            </span>
             <br />
-          </span>
-          <br />
-          <div className="date-pickers gap-col-sm">
-            <br />
-            <div>
-              <FormattedMessage id="date-start" />
-              <br />
-              <PickDate id="start" date={startDate} setDate={setStartDate} />
+            <div className="date-pickers gap-col-sm" style={{ marginTop: '0.5em' }}>
+              <div>
+                <FormattedMessage id="date-start" />
+                <br />
+                <PickDate id="start" date={startDate} setDate={setStartDate} />
+              </div>
+              <div>
+                <FormattedMessage id="date-end" />
+                <br />
+                <PickDate date={endDate} setDate={setEndDate} />
+              </div>
             </div>
-            <div>
-              <FormattedMessage id="date-end" />
-              <br />
-              <PickDate date={endDate} setDate={setEndDate} />
-            </div>
-          </div>
-        </div>
-      )}
+          </>
+        )}
+      </div>
       <br />
       <div>
         <h3 className="header-3">

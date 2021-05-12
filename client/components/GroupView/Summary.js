@@ -89,31 +89,49 @@ const Summary = ({ groupName, isTeaching, getSummary }) => {
 
   const filename = `${cleanGroupName}_summary.csv`
 
-  const showCsvDownload = windowWidth > 500
-
   return (
     <>
-      <div style={{ display: 'flex', justifyContent: 'space-between', paddingBottom: '1em' }}>
-        <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-          <div className="gap-col-sm pl-sm">
-            <span className="sm-label">
-              <FormattedMessage id="date-start" />:
-            </span>
-            <PickDate id="start" date={startDate} setDate={setStartDate} />
+      <div className="date-pickers-container">
+        {windowWidth > 700 ? (
+          <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+            <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+              <div className="date-pickers gap-col-sm pl-sm">
+                <span className="bold">
+                  <FormattedMessage id="Showing results for" />
+                </span>
+                <FormattedMessage id="date-start" />{' '}
+                <PickDate id="start" date={startDate} setDate={setStartDate} />
+              </div>
+              <div className="gap-col-sm pl-lg">
+                <FormattedMessage id="date-end" /> <PickDate date={endDate} setDate={setEndDate} />
+              </div>
+            </div>
+
+            <CSVLink filename={filename} data={summary}>
+              <FormattedMessage id="download-csv" />
+            </CSVLink>
           </div>
-          <div className="gap-col-sm pl-lg">
-            <span className="sm-label">
-              <FormattedMessage id="date-end" />:
+        ) : (
+          <>
+            <span className="bold" style={{ fontSize: '1.3em' }}>
+              <FormattedMessage id="Showing results for" />
             </span>
-            <PickDate date={endDate} setDate={setEndDate} />
-          </div>
-        </div>
-        {showCsvDownload && (
-          <CSVLink filename={filename} data={summary}>
-            <FormattedMessage id="download-csv" />
-          </CSVLink>
+            <div className="date-pickers gap-col-sm" style={{ marginTop: '0.5em' }}>
+              <div>
+                <FormattedMessage id="date-start" />
+                <br />
+                <PickDate id="start" date={startDate} setDate={setStartDate} />
+              </div>
+              <div>
+                <FormattedMessage id="date-end" />
+                <br />
+                <PickDate date={endDate} setDate={setEndDate} />
+              </div>
+            </div>
+          </>
         )}
       </div>
+      <br />
       {pending ? (
         <Spinner />
       ) : (
