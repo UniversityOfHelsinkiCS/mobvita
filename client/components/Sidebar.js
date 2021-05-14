@@ -140,7 +140,7 @@ export default function Sidebar({ history }) {
               <>
                 {user.user.email === 'anonymous_email' && (
                   <Menu.Item>
-                    <div style={{ padding: '1em 0em' }}>
+                    <div style={{ padding: '0.5em 0em' }}>
                       <Link onClick={() => menuClickWrapper()} to="/register">
                         <Button block variant="primary">
                           <FormattedMessage id="register-to-save-your-progress" />
@@ -258,8 +258,8 @@ export default function Sidebar({ history }) {
                 style={{ color: '#777', marginTop: marginTopButton }}
               />
             </Menu.Item>
-            {user && !smallWindow && (
-              <div style={{ fontSize: '20px', color: '#777' }}>{`${user.user.username}`}</div>
+            {user && (
+              <div style={{ fontSize: '18px', color: '#777' }}>{`${user.user.username}`}</div>
             )}
             <div
               style={{
