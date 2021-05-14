@@ -17,7 +17,7 @@ import { setNotification } from 'Utilities/redux/notificationReducer'
 import Spinner from 'Components/Spinner'
 import Subheader from 'Components/Subheader'
 import ConfirmationWarning from 'Components/ConfirmationWarning'
-import CreateGroupModal from './CreateGroupModal'
+// import CreateGroupModal from './CreateGroupModal'
 import AddToGroup from './AddToGroup'
 import NoGroupsView from './NoGroupsView'
 
