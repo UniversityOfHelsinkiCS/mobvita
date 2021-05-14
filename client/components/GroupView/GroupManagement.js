@@ -17,7 +17,7 @@ import { setNotification } from 'Utilities/redux/notificationReducer'
 import Spinner from 'Components/Spinner'
 import Subheader from 'Components/Subheader'
 import ConfirmationWarning from 'Components/ConfirmationWarning'
-// import CreateGroupModal from './CreateGroupModal'
+import CreateGroupModal from './CreateGroupModal'
 import AddToGroup from './AddToGroup'
 import NoGroupsView from './NoGroupsView'
 
@@ -374,14 +374,14 @@ const GroupManagement = ({ role }) => {
 
   return (
     <div className="ps-nm" data-cy="group-list">
-      {/* <CreateGroupModal
+      <CreateGroupModal
         role={role}
         trigger={
-          <Button>
+          <Button variant="info" block size="lg" style={{ marginTop: '1em', marginBottom: '1em' }}>
             <FormattedMessage id="create-new-group" />
           </Button>
         }
-      /> */}
+      />
       <AddToGroup groupId={addToGroupId} setGroupId={setAddToGroupId} />
       <ConfirmationWarning
         open={!!deleteGroupId}

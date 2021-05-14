@@ -6,7 +6,6 @@ import { FormattedMessage } from 'react-intl'
 import { getGroups } from 'Utilities/redux/groupsReducer'
 import GroupAnalytics from './GroupAnalytics'
 import JoinGroup from './JoinGroup'
-import CreateGroup from './CreateGroup'
 import GroupManagement from './GroupManagement'
 
 const TabContent = ({ translationId }) => (
@@ -15,7 +14,7 @@ const TabContent = ({ translationId }) => (
   </span>
 )
 
-export default function GroupView({ location }) {
+export default function GroupView() {
   const dispatch = useDispatch()
   const { role, tab } = useParams()
 
@@ -51,16 +50,6 @@ export default function GroupView({ location }) {
           'data-cy': 'group-analytics',
         },
         render: () => <GroupAnalytics role={role} />,
-      },
-      {
-        menuItem: {
-          as: Link,
-          content: <TabContent data-cy="create-group" translationId="create-new-group" />,
-          to: '/groups/teacher/create',
-          key: 'create',
-          style: tabStyle,
-        },
-        render: () => <CreateGroup role={role} />,
       },
     ]
   } else if (role === 'student') {
@@ -129,16 +118,6 @@ export default function GroupView({ location }) {
           style: tabStyle,
         },
         render: () => <JoinGroup />,
-      },
-      {
-        menuItem: {
-          as: Link,
-          content: <TabContent data-cy="create-group" translationId="create-new-group" />,
-          to: '/groups/create',
-          key: 'create',
-          style: tabStyle,
-        },
-        render: () => <CreateGroup />,
       },
     ]
   }
