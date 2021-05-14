@@ -3,7 +3,7 @@ import { useSelector, useDispatch } from 'react-redux'
 import { useHistory } from 'react-router-dom'
 import { FormattedMessage, useIntl } from 'react-intl'
 import { CopyToClipboard } from 'react-copy-to-clipboard'
-import { Card, Icon, Label, Dropdown } from 'semantic-ui-react'
+import { Card, Icon, Label, Dropdown, Popup } from 'semantic-ui-react'
 import { Button } from 'react-bootstrap'
 import { updateGroupSelect } from 'Utilities/redux/userReducer'
 import {
@@ -214,19 +214,38 @@ const GroupCard = ({
               </Button>
             </div>
           )}
-          <div className="group-management-buttons flex gap-col-sm">
-            <Button variant="danger" onClick={() => setLeaveGroupId(id)} data-cy="leave-group">
-              <Icon name="log out" /> <FormattedMessage id="Leave" />
-            </Button>
+          <div
+            className="group-management-buttons flex gap-col-sm"
+            style={{ display: 'flex', alignItems: 'center' }}
+          >
+            <Popup
+              content={intl.formatMessage({ id: 'Leave' })}
+              position="top right"
+              trigger={
+                <Icon
+                  name="log out"
+                  size="large"
+                  onClick={() => setLeaveGroupId(id)}
+                  data-cy="leave-group"
+                  style={{ cursor: 'pointer', margin: '0.25em 0.25em' }}
+                />
+              }
+            />
             {isTeaching && (
-              <Button
-                data-cy="delete-group"
-                variant="danger"
-                onClick={() => setDeleteGroupId(id)}
-                style={{ whiteSpace: 'nowrap' }}
-              >
-                <Icon name="trash alternate outline" /> <FormattedMessage id="Delete" />
-              </Button>
+              <Popup
+                content={intl.formatMessage({ id: 'Delete' })}
+                position="top right"
+                trigger={
+                  <Icon
+                    name="trash alternate"
+                    color="red"
+                    size="large"
+                    onClick={() => setDeleteGroupId(id)}
+                    data-cy="leave-group"
+                    style={{ cursor: 'pointer', margin: '0.25em 0.25em' }}
+                  />
+                }
+              />
             )}
           </div>
         </div>
