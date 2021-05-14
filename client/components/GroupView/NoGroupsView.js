@@ -2,6 +2,7 @@ import React from 'react'
 import { useHistory } from 'react-router-dom'
 import { FormattedMessage } from 'react-intl'
 import { Button } from 'react-bootstrap'
+import CreateGroupModal from './CreateGroupModal'
 
 const NoGroupsView = ({ role }) => {
   const history = useHistory()
@@ -12,7 +13,7 @@ const NoGroupsView = ({ role }) => {
         {' '}
         <FormattedMessage id="Groups" />
       </h2>
-      {role == 'student' ? (
+      {role === 'student' ? (
         <div>
           <Button
             data-cy="join-group-button"
@@ -29,13 +30,14 @@ const NoGroupsView = ({ role }) => {
         </div>
       ) : (
         <div>
-          <Button
-            data-cy="create-group"
-            variant="primary"
-            onClick={() => history.push(`/groups/${role}/create`)}
-          >
-            <FormattedMessage id="create-new-group" />
-          </Button>
+          <CreateGroupModal
+            role={role}
+            trigger={
+              <Button data-cy="create-group" variant="primary">
+                <FormattedMessage id="create-new-group" />
+              </Button>
+            }
+          />
           <br />
           <span className="additional-info">
             <FormattedMessage id="create-group-message" />

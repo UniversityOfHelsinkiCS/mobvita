@@ -377,7 +377,13 @@ const GroupManagement = ({ role }) => {
       <CreateGroupModal
         role={role}
         trigger={
-          <Button variant="info" block size="lg" style={{ marginTop: '1em', marginBottom: '1em' }}>
+          <Button
+            data-cy="create-group"
+            variant="info"
+            block
+            size="lg"
+            style={{ marginTop: '1em', marginBottom: '1em' }}
+          >
             <FormattedMessage id="create-new-group" />
           </Button>
         }
