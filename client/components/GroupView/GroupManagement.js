@@ -17,6 +17,7 @@ import { setNotification } from 'Utilities/redux/notificationReducer'
 import Spinner from 'Components/Spinner'
 import Subheader from 'Components/Subheader'
 import ConfirmationWarning from 'Components/ConfirmationWarning'
+import CreateGroupModal from './CreateGroupModal'
 import AddToGroup from './AddToGroup'
 import NoGroupsView from './NoGroupsView'
 
@@ -241,7 +242,7 @@ const GroupCard = ({
                     color="red"
                     size="large"
                     onClick={() => setDeleteGroupId(id)}
-                    data-cy="leave-group"
+                    data-cy="delete-group"
                     style={{ cursor: 'pointer', margin: '0.25em 0.25em' }}
                   />
                 }
@@ -373,6 +374,14 @@ const GroupManagement = ({ role }) => {
 
   return (
     <div className="ps-nm" data-cy="group-list">
+      {/* <CreateGroupModal
+        role={role}
+        trigger={
+          <Button>
+            <FormattedMessage id="create-new-group" />
+          </Button>
+        }
+      /> */}
       <AddToGroup groupId={addToGroupId} setGroupId={setAddToGroupId} />
       <ConfirmationWarning
         open={!!deleteGroupId}
