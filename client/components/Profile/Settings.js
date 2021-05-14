@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import { Link } from 'react-router-dom'
 import { FormattedMessage, useIntl } from 'react-intl'
-import { Checkbox, Radio, Dropdown, Icon } from 'semantic-ui-react'
+import { Checkbox, Radio, Dropdown } from 'semantic-ui-react'
 import { localeNameToCode, localeOptions } from 'Utilities/common'
 import { Button } from 'react-bootstrap'
 import {
@@ -172,7 +172,7 @@ const Settings = () => {
         </span>
         <br />
         <SettingToggle
-          translationId="second-chance-when-practicing-stories"
+          translationId="multiple-chances-when-practicing"
           checked={user.second_try}
           onChange={() => dispatch(updateSecondTry(!user.second_try))}
           disabled={pending}
