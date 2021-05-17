@@ -13,12 +13,15 @@ const NoGroupsView = ({ role }) => {
       <GroupActionModal
         role={role}
         trigger={
-          <Button
-            variant="primary"
-            data-cy={role === 'student' ? 'join-group-button' : 'create-group-button'}
-          >
-            <FormattedMessage id={role === 'student' ? 'join-a-group' : 'create-new-group'} />
-          </Button>
+          <div>
+            <Button
+              variant="primary"
+              size="lg"
+              data-cy={role === 'student' ? 'join-group-button' : 'create-group-button'}
+            >
+              <FormattedMessage id={role === 'student' ? 'join-a-group' : 'create-new-group'} />
+            </Button>
+          </div>
         }
       />
       <br />

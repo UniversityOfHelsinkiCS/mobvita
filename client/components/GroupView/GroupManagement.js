@@ -379,10 +379,8 @@ const GroupManagement = ({ role }) => {
         trigger={
           <Button
             data-cy={role === 'teacher' ? 'create-group-button' : 'join-group-button'}
-            variant="info"
-            block
             size="lg"
-            style={{ marginTop: '1em', marginBottom: '1em' }}
+            style={{ marginTop: '1em', marginBottom: '1em', backgroundColor: '#00B5AD' }}
           >
             <FormattedMessage id={role === 'teacher' ? 'create-new-group' : 'join-a-group'} />
           </Button>
