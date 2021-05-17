@@ -19,7 +19,7 @@ describe("groups", function () {
   it('new group can be created with students and teachers', function () {
 
 
-    cy.get('[data-cy=create-group]').click()
+    cy.get('[data-cy=create-group-button]').click()
     cy.get('input').eq(0).type('my_test_group')
     cy.get('textarea').eq(1).type(this.teacher.email)
     cy.get('textarea').eq(2).type(this.student.email)

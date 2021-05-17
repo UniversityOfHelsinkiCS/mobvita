@@ -16,7 +16,7 @@ describe('test view', function() {
   it('can create a group, enable tests for it and start a test', function() {
 
     cy.visit('http://localhost:8000/groups/teacher')
-    cy.get('[data-cy=create-group]').click()
+    cy.get('[data-cy=create-group-button]').click()
     cy.get('input').eq(0).type('my_test_group')
     cy.get('textarea').eq(1).type(this.teacher.email)
     cy.get('textarea').eq(2).type(this.teacher.email)
