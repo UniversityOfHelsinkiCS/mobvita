@@ -1,49 +1,30 @@
 import React from 'react'
-import { useHistory } from 'react-router-dom'
 import { FormattedMessage } from 'react-intl'
 import { Button } from 'react-bootstrap'
-import CreateGroupModal from './CreateGroupModal'
+import GroupActionModal from './GroupActionModal'
 
 const NoGroupsView = ({ role }) => {
-  const history = useHistory()
-
   return (
     <div className="group-container nogroups">
       <h2 id="title">
-        {' '}
-        <FormattedMessage id="Groups" />
+        <FormattedMessage id={role === 'student' ? 'Groups-for-students' : 'Groups-for-teachers'} />
       </h2>
-      {role === 'student' ? (
-        <div>
+
+      <GroupActionModal
+        role={role}
+        trigger={
           <Button
-            data-cy="join-group-button"
-            id="join-group-button"
-            variant="info"
-            onClick={() => history.push(`/groups/${role}/join`)}
+            variant="primary"
+            data-cy={role === 'student' ? 'join-group-button' : 'create-group-button'}
           >
-            <FormattedMessage id="join-group" />
+            <FormattedMessage id={role === 'student' ? 'join-a-group' : 'create-new-group'} />
           </Button>
-          <br />
-          <span className="additional-info">
-            <FormattedMessage id="join-group-message" />
-          </span>
-        </div>
-      ) : (
-        <div>
-          <CreateGroupModal
-            role={role}
-            trigger={
-              <Button data-cy="create-group" variant="primary">
-                <FormattedMessage id="create-new-group" />
-              </Button>
-            }
-          />
-          <br />
-          <span className="additional-info">
-            <FormattedMessage id="create-group-message" />
-          </span>
-        </div>
-      )}
+        }
+      />
+      <br />
+      <span className="additional-info">
+        <FormattedMessage id={role === 'student' ? 'join-group-message' : 'create-group-message'} />
+      </span>
     </div>
   )
 }

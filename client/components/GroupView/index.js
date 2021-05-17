@@ -5,7 +5,6 @@ import { Tab } from 'semantic-ui-react'
 import { FormattedMessage } from 'react-intl'
 import { getGroups } from 'Utilities/redux/groupsReducer'
 import GroupAnalytics from './GroupAnalytics'
-import JoinGroup from './JoinGroup'
 import GroupManagement from './GroupManagement'
 
 const TabContent = ({ translationId }) => (
@@ -75,16 +74,6 @@ export default function GroupView() {
         },
         render: () => <GroupAnalytics role={role} />,
       },
-      {
-        menuItem: {
-          as: Link,
-          content: <TabContent translationId="join-a-group" />,
-          to: '/groups/student/join',
-          key: 'join',
-          style: tabStyle,
-        },
-        render: () => <JoinGroup role={role} />,
-      },
     ]
   } else {
     panes = [
@@ -108,16 +97,6 @@ export default function GroupView() {
           'data-cy': 'group-analytics',
         },
         render: () => <GroupAnalytics />,
-      },
-      {
-        menuItem: {
-          as: Link,
-          content: <TabContent translationId="Join" />,
-          to: '/groups/join',
-          key: 'join',
-          style: tabStyle,
-        },
-        render: () => <JoinGroup />,
       },
     ]
   }
