@@ -2,7 +2,8 @@ import React, { useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { Form, Input, Button } from 'semantic-ui-react'
 import { useHistory } from 'react-router-dom'
-import { useIntl } from 'react-intl'
+import { useIntl, FormattedMessage } from 'react-intl'
+import { Spinner } from 'react-bootstrap'
 import { postStory } from 'Utilities/redux/uploadProgressReducer'
 import { capitalize, learningLanguageSelector } from 'Utilities/common'
 import { updateLibrarySelect } from 'Utilities/redux/userReducer'
@@ -13,6 +14,10 @@ const UploadFromWeb = ({ closeModal }) => {
   const dispatch = useDispatch()
   const [storyUrl, setStoryUrl] = useState('')
   const learningLanguage = useSelector(learningLanguageSelector)
+  const { pending, storyId } = useSelector(({ uploadProgress }) => uploadProgress)
+
+  const storyUploading = pending || storyId
+  const submitDisabled = storyUploading
 
   const handleStorySubmit = event => {
     event.preventDefault()
@@ -48,12 +53,17 @@ const UploadFromWeb = ({ closeModal }) => {
         <Button
           primary
           form="url-upload"
+          disabled={submitDisabled}
           type="submit"
           onClick={handleStorySubmit}
           data-cy="submit-story"
           style={{ marginTop: '1em' }}
         >
-          {intl.formatMessage({ id: 'upload-from-web' })}
+          {storyUploading ? (
+            <Spinner animation="border" variant="white" size="lg" />
+          ) : (
+            <FormattedMessage id="upload-from-web" />
+          )}
         </Button>
       </div>
     </div>
