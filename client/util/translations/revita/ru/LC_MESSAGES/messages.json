@@ -926,5 +926,7 @@
     "paste-a-text": "Ввести текст",
     "test-results-remove-confirmation": "Удалить результаты этого теста?",
     "enable-test-for": "Включить тест на",
-    "multiple-chances-when-practicing": "Multiple chances when practicing stories"
+    "multiple-chances-when-practicing": "Multiple chances when practicing stories",
+    "paste-text-upload-instructions": "Пожалуйста введи текст истории. <b>Первая строка</b> текста послужит заголовком.  Длина текста: 50 - 50 000 букв.",
+    "recommended-sites": "Рекомендуемые сайты"
 }

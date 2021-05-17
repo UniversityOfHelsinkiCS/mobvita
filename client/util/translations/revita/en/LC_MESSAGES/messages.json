@@ -923,5 +923,7 @@
     "paste-a-text": "Paste a text",
     "test-results-remove-confirmation": "This will permanently remove these test results, are you sure you want to proceed?",
     "enable-test-for": "Enable test for",
-    "multiple-chances-when-practicing": "Multiple chances when practicing stories"
+    "multiple-chances-when-practicing": "Multiple chances when practicing stories",
+    "paste-text-upload-instructions": "Paste the text of the story.  Revita will use the <b>first line</b> as the title.  Minimum length: 50.",
+    "recommended-sites": "Recommended sites"
 }

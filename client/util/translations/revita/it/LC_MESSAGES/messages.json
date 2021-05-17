@@ -924,5 +924,7 @@
     "paste-a-text": "Copia un testo",
     "test-results-remove-confirmation": "Sicuro/a di voler cancellare i risultati del test?",
     "enable-test-for": "Abilita il test per",
-    "multiple-chances-when-practicing": "Multiple chances when practicing stories"
+    "multiple-chances-when-practicing": "Multiple chances when practicing stories",
+    "paste-text-upload-instructions": "Inserisci il testo della storia. Revita usa la <b>prima riga</b> come titolo",
+    "recommended-sites": "Siti web raccomandati"
 }
