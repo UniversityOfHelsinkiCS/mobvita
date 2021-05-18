@@ -926,5 +926,6 @@
     "enable-test-for": "Ota testi käyttöön",
     "multiple-chances-when-practicing": "Monta yritystä harjoitellessa",
     "paste-text-upload-instructions": "Kopioi tähän raakatekstinä kertomus, jonka haluat lisätä. <b>Ensimmäisestä rivistä tulee</b> kertomuksen otsikko. Tarinan tulee olla sillä kielellä, joka on tällä hetkellä valittuna opiskelukieleksi. Minimipituus on 50 merkkiä.",
-    "recommended-sites": "Sivustosuositukset"
+    "recommended-sites": "Sivustosuositukset",
+    "story-remove-confirm": "Oletko varma, että haluat poistaa tekstin?"
 }

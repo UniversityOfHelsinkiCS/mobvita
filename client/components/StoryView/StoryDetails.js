@@ -73,7 +73,7 @@ const StoryDetails = () => {
             values={{ group: selectedGroup?.groupName }}
           />
         ) : (
-          <FormattedMessage id="this-will-permanently-remove-this-story-from-your-collection-are-you-sure-you-want-to-proceed" />
+          <FormattedMessage id="story-remove-confirm" />
         )}
       </ConfirmationWarning>
       <div className="space-between pb-sm">

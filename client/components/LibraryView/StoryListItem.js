@@ -38,18 +38,15 @@ const StoryTitle = ({
     return (
       <StoryDetailsModal
         trigger={
-        <span
-          className="space-between"
-          style={{ overflow: 'hidden', width: '100%' }}
-        >
-          <h5
-            className="story-item-title"
-            style={{ marginBottom: '.5rem', ...getTextStyle(learningLanguage) }}
-          >
-            {story.title}
-          </h5>
-          <Icon name="ellipsis vertical" style={{ marginLeft: '1rem' }} />
-        </span>
+          <span className="space-between" style={{ overflow: 'hidden', width: '100%' }}>
+            <h5
+              className="story-item-title"
+              style={{ marginBottom: '.5rem', ...getTextStyle(learningLanguage) }}
+            >
+              {story.title}
+            </h5>
+            <Icon name="ellipsis vertical" style={{ marginLeft: '1rem' }} />
+          </span>
         }
         story={story}
         setShareModalOpen={setShareModalOpen}
@@ -234,7 +231,7 @@ const StoryListItem = ({ story, userCanShare, libraryShown, selectedGroup }) => 
             values={{ group: currentGroup.groupName }}
           />
         ) : (
-          <FormattedMessage id="this-will-permanently-remove-this-story-from-your-collection-are-you-sure-you-want-to-proceed" />
+          <FormattedMessage id="story-remove-confirm" />
         )}
       </ConfirmationWarning>
     </Card>

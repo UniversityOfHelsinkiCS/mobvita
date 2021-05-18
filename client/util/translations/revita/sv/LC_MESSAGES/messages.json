@@ -922,7 +922,8 @@
     "paste-a-text": "Paste a text",
     "test-results-remove-confirmation": "Detta raderar detta kort för gott. Är du säker att du vill fortsätta?",
     "enable-test-for": "Enable test for",
-    "multiple-chances-when-practicing": "Multiple chances when practicing stories",
+    "multiple-chances-when-practicing": "Allow multiple attempts when I practice with exercises in stories",
     "paste-text-upload-instructions": "Infoga texten du vill lägga till som berättelse. Vi använder <b>första meningen</b> före tom rad som rubrik. Vänligen ge en berättelse i det valda övningsspråket. Minimi längd: 50.",
-    "recommended-sites": "Recommended sites"
+    "recommended-sites": "Recommended sites",
+    "story-remove-confirm": "Detta raderar denna berättelse för gott. Är du säker att du vill fortsätta?"
 }
