@@ -13,6 +13,7 @@ const AddStoryModal = ({ trigger }) => {
     <Modal
       basic
       open={showModal}
+      centered={false}
       dimmer="inverted"
       closeIcon={{ style: { top: '2.5rem', right: '2.5rem' }, color: 'black', name: 'close' }}
       trigger={trigger}
