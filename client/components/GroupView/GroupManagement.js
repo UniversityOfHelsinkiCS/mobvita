@@ -3,8 +3,8 @@ import { useSelector, useDispatch } from 'react-redux'
 import { useHistory } from 'react-router-dom'
 import { FormattedMessage, useIntl } from 'react-intl'
 import { CopyToClipboard } from 'react-copy-to-clipboard'
-import { Card, Icon, Label, Dropdown, Popup } from 'semantic-ui-react'
-import { Button } from 'react-bootstrap'
+import { Card, Icon, Label, Dropdown, Popup, Modal } from 'semantic-ui-react'
+import { Button, Table } from 'react-bootstrap'
 import { updateGroupSelect } from 'Utilities/redux/userReducer'
 import {
   deleteGroup,
@@ -20,6 +20,7 @@ import ConfirmationWarning from 'Components/ConfirmationWarning'
 import GroupActionModal from './GroupActionModal'
 import AddToGroup from './AddToGroup'
 import NoGroupsView from './NoGroupsView'
+import Row from '../StoryView/Row'
 
 const GroupInviteInfo = ({ group }) => {
   const anyPeopleAdded = !!group.addedPeople.length
@@ -59,6 +60,47 @@ const GroupInviteInfo = ({ group }) => {
   )
 }
 
+const GroupInfoModal = ({
+  trigger,
+  title,
+  description,
+  creationDate,
+  language,
+  numOfStories,
+  numOfStudents,
+}) => {
+  const intl = useIntl()
+  return (
+    <Modal
+      dimmer="inverted"
+      closeIcon={{ style: { top: '1.0535rem', right: '1rem' }, color: 'black', name: 'close' }}
+      trigger={trigger}
+    >
+      <Modal.Header className="bold" as="h2">
+        {title}
+      </Modal.Header>
+      <Modal.Content>
+        <div className="italics" style={{ marginBottom: '1.5em' }}>
+          {description}
+          <br />
+        </div>
+        <Table striped width="100%" style={{ tableLayout: 'fixed' }}>
+          <colgroup>
+            <col width="40%" />
+            <col width="60%" />
+          </colgroup>
+          <tbody>
+            <Row translationId="creation-date"> {creationDate}</Row>
+            <Row translationId="language"> {intl.formatMessage({ id: language })}</Row>
+            <Row translationId="students"> {numOfStudents}</Row>
+            <Row translationId="shared-stories"> {numOfStories}</Row>
+          </tbody>
+        </Table>
+      </Modal.Content>
+    </Modal>
+  )
+}
+
 const GroupCard = ({
   group,
   setAddToGroupId,
@@ -69,7 +111,17 @@ const GroupCard = ({
   showTestEnableMenuGroupId,
   setShowTestEnableMenuGroupId,
 }) => {
-  const { groupName, group_id: id, is_teaching: isTeaching, test_deadline: testDeadline } = group
+  const {
+    groupName,
+    group_id: id,
+    is_teaching: isTeaching,
+    test_deadline: testDeadline,
+    creation_date: creationDate,
+    stories,
+    description,
+    language,
+    students,
+  } = group
 
   const [currTestDeadline, setCurrTestDeadline] = useState(testDeadline)
   const [chosenTestDuration, setChosenTestDuration] = useState(Date.now() + 7200000)
@@ -94,7 +146,7 @@ const GroupCard = ({
     <FormattedMessage id="enable-test" />
   )
 
-  const handleGroupNameClick = () => {
+  const handleAnalyticsClick = () => {
     dispatch(updateGroupSelect(id))
     const role = isTeaching ? 'teacher' : 'student'
     history.push(`/groups/${role}/analytics`)
@@ -178,25 +230,34 @@ const GroupCard = ({
 
   return (
     <Card fluid>
-      <Card.Content
-        extra
-        onClick={isTeaching ? handleGroupNameClick : () => {}}
-        style={{ padding: '15px 15px 5px' }}
-      >
-        <div className="story-item-title space-between">
-          <h5 style={{ fontWeight: 'bold' }}>{groupName}</h5>
-          {testEnabled && (
-            <div style={{ marginLeft: '0.5em' }}>
-              <FormattedMessage id="test-deadline" /> {deadlineHumanFormat}
+      <GroupInfoModal
+        title={groupName}
+        description={description}
+        creationDate={creationDate}
+        language={language}
+        numOfStudents={students.length}
+        numOfStories={stories.length}
+        trigger={
+          <Card.Content extra style={{ padding: '15px 15px 5px' }}>
+            <div className="story-item-title space-between">
+              <h5 style={{ fontWeight: 'bold' }}>{groupName}</h5>
+              {testEnabled && (
+                <div style={{ marginLeft: '0.5em' }}>
+                  <FormattedMessage id="test-deadline" /> {deadlineHumanFormat}
+                </div>
+              )}
+              <Icon name="ellipsis vertical" style={{ marginLeft: '1rem' }} />
             </div>
-          )}
-          <Icon name="ellipsis vertical" style={{ marginLeft: '1rem' }} />
-        </div>
-      </Card.Content>
+          </Card.Content>
+        }
+      />
       <Card.Content extra>
         <div className="space-between group-buttons sm" style={{ whiteSpace: 'nowrap' }}>
           {isTeaching && (
             <div className="gap-col-sm wrap-and-grow group-management-buttons">
+              <Button onClick={handleAnalyticsClick}>
+                <Icon name="chart line" /> <FormattedMessage id="Analytics" />
+              </Button>
               <Button onClick={handleSettingsClick}>
                 <Icon name="settings" /> <FormattedMessage id="learning-settings" />
               </Button>
