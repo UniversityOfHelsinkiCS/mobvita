@@ -20,7 +20,6 @@ import { Spinner } from 'react-bootstrap'
 
 const Speaker = ({ word }) => {
   const learningLanguage = useLearningLanguage()
-
   const voice = respVoiceLanguages[learningLanguage]
 
   const handleSpeakerClick = () => {
@@ -152,8 +151,6 @@ const DictionaryHelp = ({ minimized, inWordNestModal }) => {
             handleSourceWordClick={handleSourceWordClick}
             inflectionRef={translated.ref}
             userUrl={translated.user_URL}
-            inWordNestModal={inWordNestModal}
-            setWordNestModalOpen={setWordNestModalOpen}
           />
         )}
 
@@ -221,11 +218,14 @@ const DictionaryHelp = ({ minimized, inWordNestModal }) => {
           <div style={{ display: 'flex' }}>
             <div>{translations}</div>
             <div style={{ alignSelf: 'flex-start', marginLeft: '1em' }}>
-              {hiddenFeatures && !inWordNestModal && words?.length > 0 && (
-                <Button basic size="mini" onClick={handleNestButtonClick}>
-                  <img src={images.nestIcon} alt="nest icon" width="22" />
-                </Button>
-              )}
+              {hiddenFeatures &&
+                !inWordNestModal &&
+                words?.length > 0 &&
+                learningLanguage === 'Russian' && (
+                  <Button basic size="mini" onClick={handleNestButtonClick}>
+                    <img src={images.nestIcon} alt="nest icon" width="22" />
+                  </Button>
+                )}
             </div>
           </div>
         </div>
@@ -300,7 +300,7 @@ const DictionaryHelp = ({ minimized, inWordNestModal }) => {
             )}
             {translationResults()}
           </div>
-          {hiddenFeatures && !inWordNestModal && (
+          {hiddenFeatures && !inWordNestModal && learningLanguage === 'Russian' && (
             <WordNestModal
               wordToCheck={translation ? translation[0]?.lemma : ''}
               open={wordNestModalOpen}
