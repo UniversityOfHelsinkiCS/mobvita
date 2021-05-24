@@ -48,6 +48,7 @@ import wreadth from 'Assets/images/wreadth.png'
 import fancyWreadth from 'Assets/images/fancy_wreadth.png'
 import trophy from 'Assets/images/trophy.svg'
 import leaderboard from 'Assets/images/leaderboard.svg'
+import nestIcon from 'Assets/images/nest.png'
 
 import { useSelector } from 'react-redux'
 import { callApi } from './apiConnection'
@@ -99,6 +100,7 @@ export const images = {
   fancyWreadth,
   trophy,
   leaderboard,
+  nestIcon,
 }
 
 export const capitalize = word => {

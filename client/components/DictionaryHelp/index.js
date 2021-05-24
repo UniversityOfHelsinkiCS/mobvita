@@ -1,9 +1,10 @@
-import React, { useState, useEffect, useMemo } from 'react'
+import React, { useState, useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { List, Button, Segment, Icon } from 'semantic-ui-react'
 import { FormattedMessage, useIntl } from 'react-intl'
 import { updateDictionaryLanguage } from 'Utilities/redux/userReducer'
 import { getTranslationAction, setWords } from 'Utilities/redux/translationReducer'
+import WordNestModal from 'Components/WordNestModal'
 import {
   useDictionaryLanguage,
   useLearningLanguage,
@@ -11,6 +12,8 @@ import {
   speak,
   respVoiceLanguages,
   getTextStyle,
+  images,
+  hiddenFeatures,
 } from 'Utilities/common'
 import useWindowDimensions from 'Utilities/windowDimensions'
 import { Spinner } from 'react-bootstrap'
@@ -87,9 +90,10 @@ const Lemma = ({ lemma, sourceWord, handleSourceWordClick, userUrl, inflectionRe
   )
 }
 
-const DictionaryHelp = ({ minimized }) => {
+const DictionaryHelp = ({ minimized, inWordNestModal }) => {
   const [showHelp, setShow] = useState(false)
   const { width: windowWidth } = useWindowDimensions()
+  const [wordNestModalOpen, setWordNestModalOpen] = useState(false)
 
   const translationLanguageCode = useSelector(({ user }) => user.data.user.last_trans_language)
   const learningLanguage = useLearningLanguage()
@@ -97,6 +101,8 @@ const DictionaryHelp = ({ minimized }) => {
   const { pending, data: translation, surfaceWord, lemmas, clue, maskSymbol } = useSelector(
     ({ translation }) => translation
   )
+
+  const { data: words } = useSelector(({ wordNest }) => wordNest)
 
   const dispatch = useDispatch()
   const intl = useIntl()
@@ -146,8 +152,11 @@ const DictionaryHelp = ({ minimized }) => {
             handleSourceWordClick={handleSourceWordClick}
             inflectionRef={translated.ref}
             userUrl={translated.user_URL}
+            inWordNestModal={inWordNestModal}
+            setWordNestModalOpen={setWordNestModalOpen}
           />
         )}
+
         <List bulleted style={{ color: 'slateGrey', fontStyle: 'italic', marginTop: '.5rem' }}>
           {translated.glosses.map(word => (
             <List.Item key={word}>{word}</List.Item>
@@ -169,7 +178,7 @@ const DictionaryHelp = ({ minimized }) => {
 
   const smallWindow = minimized || windowWidth < 1024
 
-  if (!showHelp && smallWindow) {
+  if (!showHelp && smallWindow && !inWordNestModal) {
     return (
       <DictionaryButton setShow={setShow} translation={translation} translations={translations} />
     )
@@ -185,6 +194,10 @@ const DictionaryHelp = ({ minimized }) => {
       )
     }
     return surfaceWord.toLowerCase() !== parsedLemmas()[0].toLowerCase()
+  }
+
+  const handleNestButtonClick = () => {
+    setWordNestModalOpen(true)
   }
 
   const translationResults = () => {
@@ -205,13 +218,22 @@ const DictionaryHelp = ({ minimized }) => {
             smallWindow ? ' dictionary-translations-overlay' : ''
           }`}
         >
-          {translations}
+          <div style={{ display: 'flex' }}>
+            <div>{translations}</div>
+            <div style={{ alignSelf: 'flex-start', marginLeft: '1em' }}>
+              {hiddenFeatures && !inWordNestModal && words?.length > 0 && (
+                <Button basic size="mini" onClick={handleNestButtonClick}>
+                  <img src={images.nestIcon} alt="nest icon" width="22" />
+                </Button>
+              )}
+            </div>
+          </div>
         </div>
       )
     if (!translation) {
       return (
         <List.Item style={{ color: '#555555' }}>
-          {!clue && (
+          {!clue && !inWordNestModal && (
             <div style={{ width: '100%', ...getTextStyle(learningLanguage) }}>
               <Speaker word={parsedLemmas()[0]} />
               {maskSymbol || parsedLemmas()[0]}
@@ -233,7 +255,11 @@ const DictionaryHelp = ({ minimized }) => {
   }
 
   return (
-    <div className={`dictionary-help${smallWindow ? ' dictionary-help-overlay' : ''}`}>
+    <div
+      className={`dictionary-help${
+        smallWindow && !inWordNestModal ? ' dictionary-help-overlay' : ''
+      }`}
+    >
       <Segment>
         <div className="align-right" style={{ color: 'slateGrey' }}>
           <FormattedMessage id="translation-target-language" />
@@ -246,6 +272,7 @@ const DictionaryHelp = ({ minimized }) => {
               border: 'none',
               color: 'slateGrey',
               backgroundColor: 'white',
+              marginBottom: '1em',
             }}
             onChange={e => handleDropdownChange(e.target.value)}
           >
@@ -256,9 +283,10 @@ const DictionaryHelp = ({ minimized }) => {
             ))}
           </select>
         </div>
+
         <div className="space-between pt-sm">
           <div>
-            {showSurfaceWord() && (
+            {showSurfaceWord() && !inWordNestModal && (
               <div
                 style={{
                   paddingBottom: '0.5em',
@@ -272,7 +300,15 @@ const DictionaryHelp = ({ minimized }) => {
             )}
             {translationResults()}
           </div>
-          {smallWindow ? (
+          {hiddenFeatures && !inWordNestModal && (
+            <WordNestModal
+              wordToCheck={translation ? translation[0]?.lemma : ''}
+              open={wordNestModalOpen}
+              setOpen={setWordNestModalOpen}
+            />
+          )}
+
+          {smallWindow && !inWordNestModal ? (
             <Button icon basic onClick={() => setShow(false)} style={{ alignSelf: 'flex-end' }}>
               <Icon name="angle down" size="large" color="blue" />
             </Button>

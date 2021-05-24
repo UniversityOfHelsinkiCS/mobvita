@@ -648,6 +648,8 @@ html, body, #root {
   }
   @media (max-width: 639px) {
     bottom: 2%;
+    width: 95%;
+    margin-bottom: 1em;
   }
 }
 
@@ -1251,6 +1253,42 @@ html, body, #root {
   }
 }
 
+.wordnest {
+  padding-left: 3.5em;
+  &-row {
+    display: flex;
+    justify-content: space-between;
+    font-size: 16px;
+  }
+
+  &-word:hover {
+    color: black!important;
+  }
+
+  &-word:focus {
+    color: black;
+  }
+
+  &-chosen-word {
+    color: #388A3D;
+    padding: 0.15em;
+    border: 1.8px solid #388A3D;
+    border-radius: 10px;
+    background-color: #E6FCE7;
+  }
+
+  @media (max-width: 760px) {
+    padding-left: 1.5em;
+
+    &-row {
+      display: flex;
+      justify-content: space-between;
+      font-size: 14px;
+
+    }
+  }
+}
+
 .spinner-container {
   margin: auto;
   height: 100%;
@@ -1817,9 +1855,4 @@ html, body, #root {
 	  opacity: 0.5;
 	}
 }
-
-
-
-
-
 
