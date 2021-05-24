@@ -29,8 +29,8 @@ const NestWord = ({ wordNest, wordToCheck, children }) => {
     if (ancestors?.length === 1) return { color: '#026CD1' }
     if (ancestors?.length === 2) return { color: '#3C9DFA' }
     if (ancestors?.length === 3) return { color: '#90C7FC' }
-    if (ancestors?.length === 4) return { color: '#3C9DFA' }
-    if (ancestors?.length === 5) return { color: '#026CD1' }
+    if (ancestors?.length === 4) return { color: '#026CD1' }
+    if (ancestors?.length === 5) return { color: '#3C9DFA' }
   }
 
   const handleWordClick = (surface, lemma) => {
