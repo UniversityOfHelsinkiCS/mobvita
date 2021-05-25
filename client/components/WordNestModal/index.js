@@ -7,10 +7,11 @@ import { getTranslationAction } from 'Utilities/redux/translationReducer'
 import { getWordNestAction } from 'Utilities/redux/wordNestReducer'
 import { learningLanguageSelector, speak, respVoiceLanguages } from 'Utilities/common'
 import useWindowDimensions from 'Utilities/windowDimensions'
+import { FormattedMessage } from 'react-intl'
 
 const NestWord = ({ wordNest, wordToCheck, children }) => {
   const dispatch = useDispatch()
-  const { word, ancestors } = wordNest
+  const { word, raw, ancestors, others } = wordNest
   const learningLanguage = useSelector(learningLanguageSelector)
   const autoSpeak = useSelector(({ user }) => user.data.user.auto_speak)
   const dictionaryLanguage = useSelector(({ user }) => user.data.user.last_trans_language)
@@ -25,12 +26,10 @@ const NestWord = ({ wordNest, wordToCheck, children }) => {
         borderRadius: '10px',
         backgroundColor: '#E6FCE7',
       }
+    if (others.includes('---')) return { color: '#ffd7d1' }
     if (ancestors?.length === 0) return { color: '#013A70', marginTop: '1em' }
-    if (ancestors?.length === 1) return { color: '#026CD1' }
-    if (ancestors?.length === 2) return { color: '#3C9DFA' }
-    if (ancestors?.length === 3) return { color: '#90C7FC' }
-    if (ancestors?.length === 4) return { color: '#026CD1' }
-    if (ancestors?.length === 5) return { color: '#3C9DFA' }
+    if (ancestors?.length % 2 === 0) return { color: '#3C9DFA' }
+    return { color: '#026CD1' }
   }
 
   const handleWordClick = (surface, lemma) => {
@@ -46,6 +45,12 @@ const NestWord = ({ wordNest, wordToCheck, children }) => {
   }
 
   const wordStyle = getWordStyle(word)
+  const MorphemeBoundaryRegex = /[{}«»()[\]\-/]+/g
+  const RemoveExtraDotsRegex = /(^⋅)|(⋅$)/g
+  const cleanedWord = raw
+    .replace(MorphemeBoundaryRegex, '⋅')
+    .replace(RemoveExtraDotsRegex, '')
+    .replace('=', '-')
 
   return (
     <div className="wordnest">
@@ -59,7 +64,7 @@ const NestWord = ({ wordNest, wordToCheck, children }) => {
             role="button"
             tabIndex="0"
           >
-            {word}
+            {cleanedWord}
           </span>
         </div>
       </div>
@@ -93,7 +98,8 @@ const WordNest = ({ wordNest, wordToCheck }) => {
 
 const makeWordNest = (parents, wordsWithIDs) =>
   parents?.map(parent => {
-    const children = parent.children && wordsWithIDs?.filter(c => parent.children.includes(c.nest_id))
+    const children =
+      parent.children && wordsWithIDs?.filter(c => parent.children.includes(c.nest_id))
     const cleanConcept = {
       ...parent,
       children: makeWordNest(children, wordsWithIDs),
@@ -107,6 +113,13 @@ const WordNestModal = ({ open, setOpen, wordToCheck }) => {
   const { data: words } = useSelector(({ wordNest }) => wordNest)
   const { width: windowWidth } = useWindowDimensions()
   const smallWindow = windowWidth < 1024
+  const [modalTitle, setModalTitle] = useState()
+
+  useEffect(() => {
+    if (wordToCheck) {
+      setModalTitle(wordToCheck)
+    }
+  }, [open])
 
   useEffect(() => {
     if (wordToCheck) {
@@ -136,7 +149,7 @@ const WordNestModal = ({ open, setOpen, wordToCheck }) => {
       onClose={() => setOpen(false)}
     >
       <Modal.Header className="bold" as="h2">
-        Word Nest
+        <FormattedMessage id="nest" />: {modalTitle}
       </Modal.Header>
       <Modal.Content>
         {!smallWindow ? (
