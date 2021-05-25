@@ -141,7 +141,11 @@ const DictionaryHelp = ({ minimized, inWordNestModal }) => {
   const translations =
     translation &&
     translation.map(translated => (
-      <div key={translated.URL} data-cy="translations" style={{ color: '#555555' }}>
+      <div
+        key={translated.URL}
+        data-cy="translations"
+        style={{ color: '#555555', marginBottom: '1em' }}
+      >
         {clue ? (
           <Clue clue={clue} />
         ) : (
@@ -153,7 +157,6 @@ const DictionaryHelp = ({ minimized, inWordNestModal }) => {
             userUrl={translated.user_URL}
           />
         )}
-
         <List bulleted style={{ color: 'slateGrey', fontStyle: 'italic', marginTop: '.5rem' }}>
           {translated.glosses.map(word => (
             <List.Item key={word}>{word}</List.Item>
