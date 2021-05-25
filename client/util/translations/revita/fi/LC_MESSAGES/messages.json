@@ -697,7 +697,7 @@
     "translation-temporarily-unavailable-please-try-again-later": "Käännös tilapäisesti poissa käytöstä, yrittäkää myöhemmin uudestaan...",
     "not-accessible": "Pääsy evätty",
     "no-flashcards-yet-for-this-story-when-you-practice-a-story-and-click-on-unfamiliar-words-they-will-b": "Ei flash-kortteja vielä.  Kun luet kertomuksen, klikkaa tuntemattomia sanoja lisätäksesi ne flash-kortteihin!",
-    "no-flashcards-yet-when-you-practice-a-story-and-click-on-unfamiliar-words-they-will-be-added-to-your": "No flashcards yet for this story. When you practice a story and click on unfamiliar words, they will be added to your flashcards!",
+    "no-flashcards-yet-when-you-practice-a-story-and-click-on-unfamiliar-words-they-will-be-added-to-your": "Sinulla ei ole vielä kysymyskortteja. Kun harjoittelet kertomuksella, klikkaa sinulle tuntemattomia sanoja lisätäksesi ne kysymyskortteihin!",
     "no-flashcards-found-for-this-exercise-when-you-practice-a-story-and-click-on-unfamiliar-words-they-w": "Ei flash-kortteja vielä.  Kun luet kertomuksen, klikkaa tuntemattomia sanoja lisätäksesi ne flash-kortteihin!",
     "Previous": "<",
     "Next": ">",
@@ -963,5 +963,7 @@
     "polish": "Puola",
     "portuguese": "Portugali",
     "swahili": "Suahili",
-    "turkish": "Turkki"
+    "turkish": "Turkki",
+    "translate-into": "Käännä",
+    "nest": "Nest"
 }

@@ -694,7 +694,7 @@
     "translation-temporarily-unavailable-please-try-again-later": "",
     "not-accessible": "",
     "no-flashcards-yet-for-this-story-when-you-practice-a-story-and-click-on-unfamiliar-words-they-will-b": "",
-    "no-flashcards-yet-when-you-practice-a-story-and-click-on-unfamiliar-words-they-will-be-added-to-your": "Ei flash-kortteja vielä.  Kun luet kertomuksen, klikkaa tuntemattomia sanoja lisätäksesi ne flash-kortteihin!",
+    "no-flashcards-yet-when-you-practice-a-story-and-click-on-unfamiliar-words-they-will-be-added-to-your": "No flashcards yet. When you practice a story and click on unfamiliar words, they will be added to your flashcards!",
     "no-flashcards-found-for-this-exercise-when-you-practice-a-story-and-click-on-unfamiliar-words-they-w": "",
     "Previous": "<",
     "Next": ">",
@@ -961,5 +961,7 @@
     "polish": "Polska",
     "portuguese": "Portugisiska",
     "swahili": "Swahili",
-    "turkish": "Turkiska"
+    "turkish": "Turkiska",
+    "translate-into": "Översätt till",
+    "nest": "Nest"
 }
