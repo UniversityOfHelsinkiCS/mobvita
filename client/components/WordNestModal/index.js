@@ -45,11 +45,13 @@ const NestWord = ({ wordNest, wordToCheck, children }) => {
   }
 
   const wordStyle = getWordStyle(word)
-  const MorphemeBoundaryRegex = /[{}«»()[\]\-/]+/g
-  const RemoveExtraDotsRegex = /(^⋅)|(⋅$)/g
+  const MorphemeBoundaryRegex = /[{}()[\]\-/]+/g
+  const RemoveExtraDotsRegex = /(^⋅)|(⋅$)|[<>]+/g
   const cleanedWord = raw
     .replace(MorphemeBoundaryRegex, '⋅')
     .replace(RemoveExtraDotsRegex, '')
+    .replace(/«/g, '<b>')
+    .replace(/»/g, '</b>')
     .replace('=', '-')
 
   return (
@@ -64,7 +66,7 @@ const NestWord = ({ wordNest, wordToCheck, children }) => {
             role="button"
             tabIndex="0"
           >
-            {cleanedWord}
+            <span dangerouslySetInnerHTML={{ __html: cleanedWord }} />
           </span>
         </div>
       </div>
