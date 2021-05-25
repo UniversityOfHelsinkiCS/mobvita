@@ -213,6 +213,17 @@ export default function Sidebar({ history }) {
                         <Icon name="book" /> <FormattedMessage id="Library" />
                       </Button>
                     </Link>
+                    <Link to="/flashcards">
+                      <Button
+                        variant="secondary"
+                        style={{ marginTop: marginTopButton }}
+                        onClick={() => menuClickWrapper()}
+                        block
+                      >
+                        <Icon size="small" name="question" bordered />{' '}
+                        <FormattedMessage id="Flashcards" />
+                      </Button>
+                    </Link>
                   </>
 
                   <Link to="/groups/student">
@@ -267,7 +278,7 @@ export default function Sidebar({ history }) {
                 color: 'slateGrey',
               }}
             >
-              <Menu.Item>
+              <Menu.Item style={{ paddingBottom: '0px' }}>
                 {/* {learningLanguage && ( Tour disabled for now!
                   <Button
                     variant="secondary"
