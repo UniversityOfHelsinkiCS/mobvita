@@ -13,7 +13,6 @@ import {
   respVoiceLanguages,
   getTextStyle,
   images,
-  hiddenFeatures,
 } from 'Utilities/common'
 import useWindowDimensions from 'Utilities/windowDimensions'
 import { Spinner } from 'react-bootstrap'
@@ -221,14 +220,11 @@ const DictionaryHelp = ({ minimized, inWordNestModal }) => {
           <div style={{ display: 'flex' }}>
             <div>{translations}</div>
             <div style={{ alignSelf: 'flex-start', marginLeft: '1em' }}>
-              {hiddenFeatures &&
-                !inWordNestModal &&
-                words?.length > 0 &&
-                learningLanguage === 'Russian' && (
-                  <Button basic size="mini" onClick={handleNestButtonClick}>
-                    <img src={images.nestIcon} alt="nest icon" width="22" />
-                  </Button>
-                )}
+              {!inWordNestModal && words?.length > 0 && learningLanguage === 'Russian' && (
+                <Button basic size="mini" onClick={handleNestButtonClick}>
+                  <img src={images.nestIcon} alt="nest icon" width="22" />
+                </Button>
+              )}
             </div>
           </div>
         </div>
@@ -303,7 +299,7 @@ const DictionaryHelp = ({ minimized, inWordNestModal }) => {
             )}
             {translationResults()}
           </div>
-          {hiddenFeatures && !inWordNestModal && learningLanguage === 'Russian' && (
+          {!inWordNestModal && learningLanguage === 'Russian' && (
             <WordNestModal
               wordToCheck={translation ? translation[0]?.lemma : ''}
               open={wordNestModalOpen}
