@@ -26,7 +26,7 @@ const ReportButton = ({ extraClass }) => {
     const eventTitle = optionalMessage || `User report ${eventTimeStamp}`
     const eventOptions = {
       severity: 'info',
-      fingerprint: ['Level: info', `Timestamp: ${eventTimeStamp}`]
+      fingerprint: ['Level: info', `Timestamp: ${eventTimeStamp}`],
     }
     Sentry.captureMessage(eventTitle, eventOptions)
   }
