@@ -170,9 +170,18 @@ const WordNestModal = ({ open, setOpen, wordToCheck }) => {
                 <WordNest key={`${n.word}-${index}`} wordNest={n} wordToCheck={wordToCheck} />
               ))}
             </div>
-            <ReportButton extraClass="align-self-end auto-top" />
-            <div>
+            <div
+              style={{
+                display: 'flex',
+                flexFlow: 'column',
+                justifyContent: 'space-between',
+                gap: '2em',
+              }}
+            >
               <DictionaryHelp inWordNestModal />
+              <div className="align-self-end">
+                <ReportButton />
+              </div>
             </div>
           </div>
         ) : (
