@@ -118,10 +118,13 @@ const WordNestModal = ({ open, setOpen, wordToCheck }) => {
   const { width: windowWidth, height: windowHeight } = useWindowDimensions()
   const smallWindow = windowWidth < 1024
   const [modalTitle, setModalTitle] = useState()
+  const rootLemmas = words?.filter(e => e.parents?.length === 0)
+  const wordNest = makeWordNest(rootLemmas, words)
 
   useEffect(() => {
     if (wordToCheck) {
-      setModalTitle(wordToCheck)
+      const rootForms = rootLemmas.map(w => w.word)
+      setModalTitle(rootForms.join(', '))
     }
   }, [open])
 
@@ -140,8 +143,7 @@ const WordNestModal = ({ open, setOpen, wordToCheck }) => {
     }
   }, [wordToCheck])
 
-  const rootLemmas = words?.filter(e => e.parents?.length === 0)
-  const wordNest = makeWordNest(rootLemmas, words)
+  
 
   return (
     <Modal
