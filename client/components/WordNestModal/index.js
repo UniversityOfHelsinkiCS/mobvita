@@ -170,10 +170,10 @@ const WordNestModal = ({ open, setOpen, wordToCheck }) => {
                 <WordNest key={`${n.word}-${index}`} wordNest={n} wordToCheck={wordToCheck} />
               ))}
             </div>
+            <ReportButton extraClass="align-self-end auto-top" />
             <div>
               <DictionaryHelp inWordNestModal />
             </div>
-            <ReportButton extraClass="align-self-end auto-top" />
           </div>
         ) : (
           <div>
@@ -182,7 +182,7 @@ const WordNestModal = ({ open, setOpen, wordToCheck }) => {
             </div>
             <div
               style={{
-                maxHeight: windowHeight * 0.5,
+                maxHeight: windowHeight * 0.4,
                 overflowY: 'auto',
               }}
             >
@@ -190,7 +190,8 @@ const WordNestModal = ({ open, setOpen, wordToCheck }) => {
                 <WordNest key={`${n.word}-${index}`} wordNest={n} wordToCheck={wordToCheck} />
               ))}
             </div>
-            <div style={{ marginTop: '0.25em' }}>
+            <hr />
+            <div>
               <ReportButton extraClass="auto-top" />
             </div>
           </div>
