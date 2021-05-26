@@ -115,7 +115,7 @@ const WordNestModal = ({ open, setOpen, wordToCheck }) => {
   const dispatch = useDispatch()
   const learningLanguage = useSelector(learningLanguageSelector)
   const { data: words } = useSelector(({ wordNest }) => wordNest)
-  const { width: windowWidth } = useWindowDimensions()
+  const { width: windowWidth, height: windowHeight } = useWindowDimensions()
   const smallWindow = windowWidth < 1024
   const [modalTitle, setModalTitle] = useState()
 
@@ -157,8 +157,19 @@ const WordNestModal = ({ open, setOpen, wordToCheck }) => {
       </Modal.Header>
       <Modal.Content>
         {!smallWindow ? (
-          <div style={{ paddingLeft: '1em', display: 'flex', justifyContent: 'space-between' }}>
-            <div>
+          <div
+            style={{
+              display: 'flex',
+              justifyContent: 'space-between',
+            }}
+          >
+            <div
+              style={{
+                maxHeight: windowHeight * 0.85,
+                overflowY: 'auto',
+                padding: '1em 6em 1em 1em',
+              }}
+            >
               {wordNest?.map((n, index) => (
                 <WordNest key={`${n.word}-${index}`} wordNest={n} wordToCheck={wordToCheck} />
               ))}
@@ -172,7 +183,12 @@ const WordNestModal = ({ open, setOpen, wordToCheck }) => {
             <div>
               <DictionaryHelp inWordNestModal />
             </div>
-            <div>
+            <div
+              style={{
+                maxHeight: windowHeight * 0.5,
+                overflowY: 'auto',
+              }}
+            >
               {wordNest?.map((n, index) => (
                 <WordNest key={`${n.word}-${index}`} wordNest={n} wordToCheck={wordToCheck} />
               ))}
