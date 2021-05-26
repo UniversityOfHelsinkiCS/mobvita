@@ -214,7 +214,7 @@ const DictionaryHelp = ({ minimized, inWordNestModal }) => {
       return (
         <div
           className={`dictionary-translations${
-            smallWindow ? ' dictionary-translations-overlay' : ''
+            smallWindow ? !inWordNestModal && ' dictionary-translations-overlay' : ''
           }`}
         >
           <div style={{ display: 'flex' }}>
