@@ -26,7 +26,6 @@ const NestWord = ({ wordNest, wordToCheck, children }) => {
         borderRadius: '10px',
         backgroundColor: '#E6FCE7',
       }
-    if (others.includes('---')) return { color: '#ffd7d1' }
     if (ancestors?.length === 0) return { color: '#013A70', marginTop: '1em' }
     if (ancestors?.length % 2 === 0) return { color: '#3C9DFA' }
     return { color: '#026CD1' }
@@ -53,6 +52,9 @@ const NestWord = ({ wordNest, wordToCheck, children }) => {
     .replace(/«/g, '<b>')
     .replace(/»/g, '</b>')
     .replace('=', '-')
+
+  // Don't print these words. They are very rare or might even not exist
+  if (others.includes('---')) return null
 
   return (
     <div className="wordnest">
@@ -138,8 +140,8 @@ const WordNestModal = ({ open, setOpen, wordToCheck }) => {
     }
   }, [wordToCheck])
 
-  const NestRootLemmas = words?.filter(e => e.parents?.length === 0)
-  const wordNest = makeWordNest(NestRootLemmas, words)
+  const rootLemmas = words?.filter(e => e.parents?.length === 0)
+  const wordNest = makeWordNest(rootLemmas, words)
 
   return (
     <Modal
