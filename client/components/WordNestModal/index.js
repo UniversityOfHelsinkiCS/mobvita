@@ -8,6 +8,7 @@ import { getWordNestAction } from 'Utilities/redux/wordNestReducer'
 import { learningLanguageSelector, speak, respVoiceLanguages } from 'Utilities/common'
 import useWindowDimensions from 'Utilities/windowDimensions'
 import { FormattedMessage } from 'react-intl'
+import ReportButton from 'Components/ReportButton'
 
 const NestWord = ({ wordNest, wordToCheck, children }) => {
   const dispatch = useDispatch()
@@ -143,8 +144,6 @@ const WordNestModal = ({ open, setOpen, wordToCheck }) => {
     }
   }, [wordToCheck])
 
-  
-
   return (
     <Modal
       open={open}
@@ -159,12 +158,7 @@ const WordNestModal = ({ open, setOpen, wordToCheck }) => {
       </Modal.Header>
       <Modal.Content>
         {!smallWindow ? (
-          <div
-            style={{
-              display: 'flex',
-              justifyContent: 'space-between',
-            }}
-          >
+          <div className="space-between">
             <div
               style={{
                 maxHeight: windowHeight * 0.85,
@@ -179,6 +173,7 @@ const WordNestModal = ({ open, setOpen, wordToCheck }) => {
             <div>
               <DictionaryHelp inWordNestModal />
             </div>
+            <ReportButton extraClass="align-self-end auto-top" />
           </div>
         ) : (
           <div>
@@ -194,6 +189,9 @@ const WordNestModal = ({ open, setOpen, wordToCheck }) => {
               {wordNest?.map((n, index) => (
                 <WordNest key={`${n.word}-${index}`} wordNest={n} wordToCheck={wordToCheck} />
               ))}
+            </div>
+            <div style={{ marginTop: '0.25em' }}>
+              <ReportButton extraClass="auto-top" />
             </div>
           </div>
         )}
