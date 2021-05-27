@@ -118,6 +118,7 @@ const TestsButton = props => {
 const HomeView = () => {
   const { width } = useWindowDimensions()
   const bigScreen = width > 740
+  const showFooter = width > 800
   const dispatch = useDispatch()
   const { hasTests } = useSelector(({ metadata }) => metadata)
   const { groups } = useSelector(({ groups }) => groups)
@@ -175,7 +176,7 @@ const HomeView = () => {
             <MedalSummary />
           </div>
         )}
-        {bigScreen && <Footer />}
+        {showFooter && <Footer />}
       </div>
     </div>
   )
