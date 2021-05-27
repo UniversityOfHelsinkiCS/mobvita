@@ -125,7 +125,7 @@ const WordNestModal = ({ open, setOpen, wordToCheck }) => {
   useEffect(() => {
     if (wordToCheck) {
       const rootForms = rootLemmas?.map(w => w.word)
-      setModalTitle(rootForms.join(', '))
+      setModalTitle(rootForms?.join(', '))
     }
   }, [open])
 

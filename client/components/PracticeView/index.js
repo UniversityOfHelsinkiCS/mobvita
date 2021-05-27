@@ -80,9 +80,13 @@ const PracticeView = () => {
             <PreviousSnippets />
             <hr />
             <CurrentSnippet storyId={id} handleInputChange={handleAnswerChange} />
-            {showVirtualKeyboard && <VirtualKeyboard />}
             <ScrollArrow />
           </Segment>
+          {showVirtualKeyboard && (
+            <div>
+              <VirtualKeyboard />
+            </div>
+          )}
           <ReportButton extraClass="mb-sm" />
         </div>
         <DictionaryHelp />
