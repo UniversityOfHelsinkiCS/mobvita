@@ -387,34 +387,86 @@ html, body, #root {
   position: sticky;
   width: 100%;
   top: 0;
-}
 
-.nav-basic-item {
-  color: white;
-  padding-top: 0.25em!important;
-  padding-bottom: 1.2em!important;
-  margin-left: 0.4em!important;
-  cursor: pointer;
-}
+  &-container {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
 
-.navbar-dropdown-icon{
-  color: white;
-  margin-right: -0.15em!important;
-}
+  &-revita-logo {
+    color: white!important;
+    margin-right: 2em;
 
-.navbar-external-link {
-  color: #212529;
-  background-color: #FFFFFF;
-}
+    @media (max-width: 755px) {
+      margin-right: 1em;
+    }
+  }
 
-.navbar-external-link:visited {
-  background-color: #FFFFFF;
-  color: #212529;;
-}
+  &-basic-item {
+    color: white;
+    margin-left: 0.3em!important;
+    margin-right: 0.3em!important;
+    cursor: pointer;
+  
+    @media (max-width: 755px) {
+      margin-left: 0.2em;
+      margin-right: 0.2em;
+    }
+  }
 
-.navbar-external-link:hover {
-  color: #212529;;
-  background-color: #f8f9fa
+  &-text-item {
+    color: white!important;
+    margin-right: 2em;
+
+    @media (max-width: 755px) {
+      margin-right: 1em;
+    }
+  }
+
+  &-dropdown-text {
+    color: white!important;
+    margin-right: 0em;
+  }
+
+  &-dropdown-icon-cont {
+    margin-left: 0.3em;
+    margin-right: 0.3em;
+
+    @media (max-width: 755px) {
+      margin-left: 0.2em;
+      margin-right: 0.2em;
+    }
+  }
+
+  &-dropdown-icon{
+    color: white;
+    margin-right: -0.15em!important;
+  }
+
+  &-basic-item:hover, &-dropdown-icon:hover, &-text-item:hover, &-dropdown-text:hover {
+    text-decoration: underline;
+  }
+
+  &-external-link {
+    &:visited {
+      color: #212529;
+      background-color: #FFFFFF;
+    }
+
+    &:hover {
+      color: #212529;
+      background-color: #f8f9fa;
+    }
+  }
+
+  &-flag:hover {
+    border: 1px solid #76C8D4!important;
+  }
+
+  &-news-label {
+    font-size: 0.7em!important;
+  }
 }
 
 .word-interactive{
@@ -524,7 +576,6 @@ html, body, #root {
 .sidebar{
   &-hamburger{
     z-index: 102;
-    padding-top: 0.2em;
     cursor: pointer;
   }
 

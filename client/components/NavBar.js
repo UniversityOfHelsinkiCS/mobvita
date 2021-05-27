@@ -21,7 +21,7 @@ export default function NavBar() {
   const open = useSelector(({ sidebar }) => sidebar.open)
   const dispatch = useDispatch()
   const history = useHistory()
-  const smallWindow = useWindowDimensions().width < 640
+  const smallWindow = useWindowDimensions().width < 700
   const intl = useIntl()
 
   const handleEloClick = () => {
@@ -72,276 +72,241 @@ export default function NavBar() {
   return (
     <Headroom disableInlineStyles={!smallWindow} style={navBarStyle}>
       <Navbar style={{ paddingLeft: '0.5em' }}>
-        <div style={{ display: 'flex' }}>
+        <div>
           {smallWindow && (
             <Icon
               name="bars"
               size="big"
               onClick={() => dispatch(sidebarSetOpen(!open))}
               className="sidebar-hamburger tour-sidebar"
-              style={{ color: 'white', marginBottom: '0.3em' }}
+              style={{ color: 'white' }}
               data-cy="hamburger"
             />
           )}
         </div>
         <Navbar.Collapse>
           <Nav className="mr-auto">
-            <Link to="/home">
-              <Icon
-                name="home"
-                size="big"
-                style={{
-                  color: 'white',
-                  cursor: 'pointer',
-                  marginLeft: '0.2em',
-                  marginTop: '0.1em',
-                  marginBottom: '0.01em',
-                }}
-              />
-            </Link>
-            <Link to="/home">
-              <Navbar.Brand
-                className="tour-start-finish"
-                style={{
-                  color: 'white',
-                  marginRight: '2em',
-                }}
-              >
-                <img src={images.navbarLogo} alt="revita logo" width="70" />
-                {hiddenFeatures && <sup> &beta;</sup>}
-              </Navbar.Brand>
-            </Link>
+            <div className="navbar-container">
+              <Link to="/home">
+                <Icon
+                  name="home"
+                  size="large"
+                  style={{
+                    color: 'white',
+                    cursor: 'pointer',
+                  }}
+                />
+              </Link>
+              <Link to="/home">
+                <Navbar.Brand className="navbar-revita-logo tour-start-finish">
+                  <img src={images.navbarLogo} alt="revita logo" width="70" />
+                  {hiddenFeatures && <sup> &beta;</sup>}
+                </Navbar.Brand>
+              </Link>
 
-            {!smallWindow && (
-              <>
-                <Link data-cy="navbar-library-button" to="/library">
-                  <Navbar.Brand
-                    style={{
-                      color: 'white',
-                      marginRight: '2em',
-                    }}
-                  >
-                    <FormattedMessage id="Library" />
-                  </Navbar.Brand>
-                </Link>
-                <Link to="/flashcards">
-                  <Navbar.Brand
-                    style={{
-                      color: 'white',
-                      marginRight: '2em',
-                    }}
-                  >
-                    <FormattedMessage id="Flashcards" />
-                  </Navbar.Brand>
-                </Link>
-                <NavDropdown
-                  data-cy="navbar-groups-dropdown"
-                  title={
-                    <Navbar.Brand
-                      style={{
-                        color: 'white',
-                        marginTop: '-0.5rem',
-                        marginBottom: '-0.5rem',
-                        marginRight: '0em',
-                      }}
-                    >
-                      <FormattedMessage id="groups" />
+              {!smallWindow && (
+                <>
+                  <Link data-cy="navbar-library-button" to="/library">
+                    <Navbar.Brand className="navbar-text-item">
+                      <FormattedMessage id="Library" />
                     </Navbar.Brand>
-                  }
-                >
-                  <NavDropdown.Item
-                    data-cy="navbar-student-groups-button"
-                    as={Link}
-                    to="/groups/student"
+                  </Link>
+                  <Link to="/flashcards">
+                    <Navbar.Brand className="navbar-text-item">
+                      <FormattedMessage id="Flashcards" />
+                    </Navbar.Brand>
+                  </Link>
+                  <NavDropdown
+                    data-cy="navbar-groups-dropdown"
+                    title={
+                      <Navbar.Brand className="navbar-dropdown-text">
+                        <FormattedMessage id="groups" />
+                      </Navbar.Brand>
+                    }
                   >
-                    <FormattedMessage id="Groups-for-students" />
-                  </NavDropdown.Item>
-                  <NavDropdown.Divider />
-                  <NavDropdown.Item as={Link} to="/groups/teacher">
-                    <FormattedMessage id="Groups-for-teachers" />
-                  </NavDropdown.Item>
-                </NavDropdown>
-              </>
-            )}
+                    <NavDropdown.Item
+                      data-cy="navbar-student-groups-button"
+                      as={Link}
+                      to="/groups/student"
+                    >
+                      <FormattedMessage id="Groups-for-students" />
+                    </NavDropdown.Item>
+                    <NavDropdown.Divider />
+                    <NavDropdown.Item as={Link} to="/groups/teacher">
+                      <FormattedMessage id="Groups-for-teachers" />
+                    </NavDropdown.Item>
+                  </NavDropdown>
+                </>
+              )}
+            </div>
           </Nav>
 
           <Nav>
-            <Offline polling={{ timeout: 20000 }}>
-              <Icon
-                name="broken chain"
-                size="large"
-                style={{ color: '#ff944d', paddinTop: '12em' }}
-              />
-            </Offline>
-            <Navbar.Text
-              style={{ color: 'white', marginRight: '1em', cursor: 'pointer' }}
-              onClick={handleEloClick}
-            >
-              {showStoryElo && (
-                <div>
-                  <Icon className="nav-basic-item" name="star outline" style={{ margin: 0 }} />{' '}
-                  {storyElo}
-                </div>
-              )}
-              {showFlashcardElo && (
-                <div>
-                  <img
-                    src={images.flashcardIcon}
-                    alt="three cards"
-                    width="18px"
-                    style={{
-                      filter: blackToWhiteFilter,
-                      marginRight: '0.2em',
-                      marginBottom: '0.2em',
-                      marginTop: '0.5em',
-                    }}
-                  />
-                  {flashcardElo}
-                </div>
-              )}
-            </Navbar.Text>
-
-            {!smallWindow && (
-              <>
-                <NavDropdown
-                  title={
-                    <Icon
-                      className="navbar-dropdown-icon"
-                      data-cy="navbar-user-dropdown"
-                      name="user"
-                      size="big"
-                    />
-                  }
-                >
-                  {user.user.email === 'anonymous_email' && (
-                    <>
-                      <NavDropdown.Item as={Link} to="/register">
-                        <FormattedMessage id="Register" />
-                      </NavDropdown.Item>
-                      <NavDropdown.Divider />
-                      <NavDropdown.Item onClick={signOut}>
-                        <FormattedMessage id="Login" />
-                      </NavDropdown.Item>
-                    </>
-                  )}
-
-                  {user.user.email !== 'anonymous_email' && (
-                    <>
-                      <span className="bold" style={{ padding: '1.5em' }}>
-                        {user.user.username}
-                      </span>
-                      <NavDropdown.Divider />
-                      <NavDropdown.Item as={Link} to="/profile/progress">
-                        <FormattedMessage id="Profile" />
-                      </NavDropdown.Item>
-                      <NavDropdown.Item data-cy="navbar-logout-button" onClick={signOut}>
-                        <FormattedMessage id="sign-out" />
-                      </NavDropdown.Item>
-                    </>
-                  )}
-                </NavDropdown>
-
-                {user && user.user.last_used_language && (
-                  <Link to="/learningLanguage">
-                    <img
-                      style={{
-                        height: '1.9em',
-                        marginTop: '0.5rem',
-                        marginLeft: '0.6rem',
-                        marginRight: '0.6rem',
-                        left: '2em',
-                        border: '1px solid black',
-                      }}
-                      src={getLearningLanguageFlag()}
-                      alt="learningLanguageFlag"
-                    />
-                  </Link>
+            <div className="navbar-container">
+              <Offline className="navbar-basic-item" polling={{ timeout: 20000 }}>
+                <Icon name="broken chain" size="large" style={{ color: '#ff944d' }} />
+              </Offline>
+              <Navbar.Text onClick={handleEloClick}>
+                {showStoryElo && (
+                  <div className="navbar-basic-item">
+                    <Icon name="star outline" style={{ margin: 0, width: '16px' }} /> {storyElo}
+                  </div>
                 )}
+                {showFlashcardElo && (
+                  <div className="navbar-basic-item">
+                    <img
+                      src={images.flashcardIcon}
+                      alt="three cards"
+                      width="16px"
+                      style={{
+                        filter: blackToWhiteFilter,
+                      }}
+                    />{' '}
+                    {flashcardElo}
+                  </div>
+                )}
+              </Navbar.Text>
 
-                <NavDropdown
-                  title={
-                    <Icon
-                      data-cy="navbar-info-dropdown"
-                      className="navbar-dropdown-icon"
-                      name="info circle"
-                      size="big"
+              {!smallWindow && (
+                <>
+                  <NavDropdown
+                    className="navbar-dropdown-icon-cont"
+                    title={
+                      <Icon
+                        className="navbar-dropdown-icon"
+                        data-cy="navbar-user-dropdown"
+                        name="user"
+                        size="large"
+                      />
+                    }
+                  >
+                    {user.user.email === 'anonymous_email' && (
+                      <>
+                        <NavDropdown.Item as={Link} to="/register">
+                          <FormattedMessage id="Register" />
+                        </NavDropdown.Item>
+                        <NavDropdown.Divider />
+                        <NavDropdown.Item onClick={signOut}>
+                          <FormattedMessage id="Login" />
+                        </NavDropdown.Item>
+                      </>
+                    )}
+
+                    {user.user.email !== 'anonymous_email' && (
+                      <>
+                        <span className="bold" style={{ padding: '1.5em' }}>
+                          {user.user.username}
+                        </span>
+                        <NavDropdown.Divider />
+                        <NavDropdown.Item as={Link} to="/profile/progress">
+                          <FormattedMessage id="Profile" />
+                        </NavDropdown.Item>
+                        <NavDropdown.Item data-cy="navbar-logout-button" onClick={signOut}>
+                          <FormattedMessage id="sign-out" />
+                        </NavDropdown.Item>
+                      </>
+                    )}
+                  </NavDropdown>
+
+                  {user && user.user.last_used_language && (
+                    <Link to="/learningLanguage">
+                      <img
+                        className="navbar-basic-item navbar-flag"
+                        style={{
+                          height: '1.5em',
+                          border: '1px solid black',
+                        }}
+                        src={getLearningLanguageFlag()}
+                        alt="learningLanguageFlag"
+                      />
+                    </Link>
+                  )}
+
+                  <NavDropdown
+                    className="navbar-dropdown-icon-cont"
+                    title={
+                      <Icon
+                        data-cy="navbar-info-dropdown"
+                        className="navbar-dropdown-icon"
+                        name="info circle"
+                        size="large"
+                      />
+                    }
+                  >
+                    <NavDropdown.Item
+                      data-cy="navbar-about-button"
+                      className="navbar-external-link"
+                      href="https://www2.helsinki.fi/en/projects/revita-language-learning-and-ai/about-the-project"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                    >
+                      <FormattedMessage id="about" />
+                    </NavDropdown.Item>
+                    <NavDropdown.Divider />
+                    <NavDropdown.Item as={Link} to="/help">
+                      <FormattedMessage id="help" />
+                    </NavDropdown.Item>
+                    <NavDropdown.Divider />
+                    <NavDropdown.Item
+                      className="navbar-external-link"
+                      href="https://www2.helsinki.fi/en/projects/revita-language-learning-and-ai/faq"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                    >
+                      FAQ
+                    </NavDropdown.Item>
+                    <NavDropdown.Divider />
+                    <ContactUs
+                      trigger={
+                        <NavDropdown.Item>
+                          <FormattedMessage id="contact-us" />
+                        </NavDropdown.Item>
+                      }
                     />
-                  }
-                >
-                  <NavDropdown.Item
-                    data-cy="navbar-about-button"
-                    className="navbar-external-link"
-                    href="https://www2.helsinki.fi/en/projects/revita-language-learning-and-ai/about-the-project"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                  >
-                    <FormattedMessage id="about" />
-                  </NavDropdown.Item>
-                  <NavDropdown.Divider />
-                  <NavDropdown.Item as={Link} to="/help">
-                    <FormattedMessage id="help" />
-                  </NavDropdown.Item>
-                  <NavDropdown.Divider />
-                  <NavDropdown.Item
-                    className="navbar-external-link"
-                    href="https://www2.helsinki.fi/en/projects/revita-language-learning-and-ai/faq"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                  >
-                    FAQ
-                  </NavDropdown.Item>
-                  <NavDropdown.Divider />
-                  <ContactUs
-                    trigger={
-                      <NavDropdown.Item>
-                        <FormattedMessage id="contact-us" />
-                      </NavDropdown.Item>
-                    }
-                  />
-                  <NavDropdown.Divider />
-                  <TermsAndConditions
-                    trigger={
-                      <NavDropdown.Item data-cy="navbar-tc-button" style={{ fontSize: '0.9em' }}>
-                        {intl.formatMessage({ id: 'terms-and-conditions' })} &
-                        <br />
-                        {intl.formatMessage({ id: 'privacy-policy' })}
-                      </NavDropdown.Item>
-                    }
-                  />
-                </NavDropdown>
-              </>
-            )}
+                    <NavDropdown.Divider />
+                    <TermsAndConditions
+                      trigger={
+                        <NavDropdown.Item data-cy="navbar-tc-button" style={{ fontSize: '0.8em' }}>
+                          <span>
+                            {intl.formatMessage({ id: 'terms-and-conditions' })}
+                            <br /> & {intl.formatMessage({ id: 'privacy-policy' })}
+                          </span>
+                        </NavDropdown.Item>
+                      }
+                    />
+                  </NavDropdown>
+                </>
+              )}
 
-            <NewsModal
-              trigger={
-                <div style={{ paddingTop: '0.5em' }}>
-                  <span
-                    style={{
-                      color: 'white',
-                      position: 'relative',
-                      marginLeft: '0.3em',
-                      cursor: 'pointer',
-                    }}
-                  >
-                    <Icon name="bell" size="big" />
-                    {numUnreadNews > 0 ? (
-                      <Label color="red" size="mini" floating>
-                        <span style={{ fontSize: '0.9rem' }}>{numUnreadNews}</span>
-                      </Label>
-                    ) : null}
-                  </span>
-                </div>
-              }
-            />
-
-            <Link to="/profile/settings">
-              <Icon
-                data-cy="navbar-settings-button"
-                className="nav-basic-item"
-                name="setting"
-                size="big"
+              <NewsModal
+                trigger={
+                  <div>
+                    <span
+                      style={{
+                        position: 'relative',
+                        cursor: 'pointer',
+                      }}
+                    >
+                      <Icon className="navbar-basic-item" name="bell" size="large" />
+                      {numUnreadNews > 0 ? (
+                        <Label className="navbar-news-label" color="red" size="mini" floating>
+                          <span>{numUnreadNews}</span>
+                        </Label>
+                      ) : null}
+                    </span>
+                  </div>
+                }
               />
-            </Link>
+
+              <Link to="/profile/settings">
+                <Icon
+                  className="navbar-basic-item"
+                  data-cy="navbar-settings-button"
+                  name="setting"
+                  size="large"
+                />
+              </Link>
+            </div>
           </Nav>
         </Navbar.Collapse>
       </Navbar>
