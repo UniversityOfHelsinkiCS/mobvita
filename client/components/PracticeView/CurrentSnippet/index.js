@@ -25,15 +25,11 @@ import {
 } from 'Utilities/redux/practiceReducer'
 import SnippetActions from './SnippetActions'
 import PracticeText from './PracticeText'
-import ProgressBar from './ProgressBar'
 
 const CurrentSnippet = ({ storyId, handleInputChange }) => {
-  const [progress, setProgress] = useState(0)
   const [exerciseCount, setExerciseCount] = useState(0)
   const practiceForm = useRef(null)
-
   const dispatch = useDispatch()
-
   const snippets = useSelector(({ snippets }) => snippets)
   const answersPending = useSelector(({ snippets }) => snippets.answersPending)
   const { snippetFinished, isNewSnippet, attempt } = useSelector(({ practice }) => practice)
@@ -46,11 +42,6 @@ const CurrentSnippet = ({ storyId, handleInputChange }) => {
   }
 
   const [finished, setFinished] = useState(false)
-
-  let snippetsCompleted = ''
-  if (snippets.focused) {
-    snippetsCompleted = finished ? currentSnippetId() + 1 : currentSnippetId()
-  }
 
   const getExerciseCount = () => {
     let count = 0
@@ -108,7 +99,6 @@ const CurrentSnippet = ({ storyId, handleInputChange }) => {
       dispatch(getNextSnippet(storyId, currentSnippetId()))
     } else {
       setFinished(true)
-      setProgress(currentSnippetId() + 1 / snippets.focused.total_num)
     }
   }
 
@@ -135,8 +125,6 @@ const CurrentSnippet = ({ storyId, handleInputChange }) => {
   useEffect(() => {
     const currentSnippetIsLoaded = !!snippets.focused
     if (currentSnippetIsLoaded) {
-      setProgress(snippetsCompleted / snippets.focused.total_num)
-
       const wasLastAttempt =
         snippets.focused.skip_second ||
         snippetFinished ||
@@ -171,7 +159,6 @@ const CurrentSnippet = ({ storyId, handleInputChange }) => {
     dispatch(setPrevious([]))
     dispatch(getNextSnippet(storyId, currentSnippetId()))
     setFinished(false)
-    setProgress(0)
   }
 
   const handleMultiselectChange = (event, word, data) => {
@@ -211,13 +198,6 @@ const CurrentSnippet = ({ storyId, handleInputChange }) => {
         <Button variant="primary" block onClick={() => startOver()}>
           <FormattedMessage id="restart-story" />
         </Button>
-      )}
-      {snippets.focused && (
-        <ProgressBar
-          snippetProgress={snippetsCompleted}
-          snippetsTotal={snippets.focused.total_num}
-          progress={progress}
-        />
       )}
     </form>
   )

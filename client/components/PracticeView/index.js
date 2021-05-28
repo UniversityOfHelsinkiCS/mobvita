@@ -17,13 +17,24 @@ import ReferenceModal from './ReferenceModal'
 import Footer from '../Footer'
 import { keyboardLayouts } from './KeyboardLayouts'
 import ScrollArrow from '../ScrollArrow'
+import ProgressBar from './CurrentSnippet/ProgressBar'
 
 const PracticeView = () => {
   const learningLanguage = useSelector(learningLanguageSelector)
   const dispatch = useDispatch()
   const { id } = useParams()
   const { width } = useWindowDimensions()
+  const snippets = useSelector(({ snippets }) => snippets)
+  const smallScreen = width < 700
 
+  const currentSnippetId = () => {
+    if (!snippets.focused) return -1
+    const { snippetid } = snippets.focused
+    return snippetid[snippetid.length - 1]
+  }
+
+  const currentSnippetNum = currentSnippetId() + 1
+  const snippetsTotalNum = snippets?.focused?.total_num
   const { focused: story, pending } = useSelector(({ stories }) => stories)
 
   useEffect(() => {
@@ -62,6 +73,18 @@ const PracticeView = () => {
       <div className="justify-center">
         <div className="cont">
           <Segment>
+            <div
+              className="progress-bar-cont"
+              style={{
+                top: smallScreen ? '1.25em' : '3.25em',
+              }}
+            >
+              <ProgressBar
+                snippetProgress={currentSnippetNum}
+                snippetsTotal={snippetsTotalNum}
+                progress={(currentSnippetNum / snippetsTotalNum).toFixed(2)}
+              />
+            </div>
             <h3
               style={{
                 ...getTextStyle(learningLanguage, 'title'),
