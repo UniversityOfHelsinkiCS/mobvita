@@ -76,7 +76,7 @@ const PracticeView = () => {
             <div
               className="progress-bar-cont"
               style={{
-                top: smallScreen ? '1.25em' : '3.25em',
+                top: smallScreen ? '.25em' : '3.25em',
               }}
             >
               <ProgressBar

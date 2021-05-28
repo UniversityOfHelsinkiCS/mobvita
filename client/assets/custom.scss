@@ -1355,7 +1355,7 @@ html, body, #root {
   }
   
   &-row{
-  display: flex;  
+  display: flex;
   align-items: baseline;
   flex-direction: row;
   justify-content: space-between;
@@ -1370,7 +1370,7 @@ html, body, #root {
 
 .progress-bar {
   border-radius: 1rem;
-  height: 2em;
+  height: 1.5em;
 
   &-cont {
     position: sticky;

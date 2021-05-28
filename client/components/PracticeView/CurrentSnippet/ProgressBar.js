@@ -15,9 +15,8 @@ const ProgressBar = ({ snippetProgress, snippetsTotal, progress }) => {
       ) : (
         <div
           style={{
-            height: '2em',
+            height: '1.5em',
             textAlign: 'center',
-            borderRadius: '2rem',
           }}
           className="progress"
         >
@@ -26,7 +25,6 @@ const ProgressBar = ({ snippetProgress, snippetsTotal, progress }) => {
             style={{
               ...getFontStyle(),
               marginTop: '0.75em',
-              fontSize: 'larger',
               position: 'absolute',
               right: 0,
               left: 0,
