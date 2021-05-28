@@ -1,7 +1,10 @@
 import React, { useState, useEffect, useCallback } from 'react'
 import { Icon } from 'semantic-ui-react'
+import useWindowDimensions from 'Utilities/windowDimensions'
 
 const ScrollArrow = () => {
+  const smallWindow = useWindowDimensions().width < 700
+  const iconSize = smallWindow ? 'big' : 'huge'
   const [showScroll, setShowScroll] = useState(null)
   const checkScrollTop = useCallback(() => {
     const headerHeight = 400
@@ -27,10 +30,10 @@ const ScrollArrow = () => {
       className="scroll-to-top"
       style={{
         display: showScroll ? 'flex' : 'none',
-        width: '75%',
+        width: '85%',
       }}
     >
-      <Icon name="arrow circle up" size="huge" onClick={scrollTop} />
+      <Icon name="arrow circle up" size={iconSize} onClick={scrollTop} />
     </div>
   )
 }
