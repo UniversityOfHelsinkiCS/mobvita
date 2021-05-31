@@ -605,47 +605,51 @@ html, body, #root {
 .check-answers-button {
   width: 100%;
   padding: 0;
-  border: none;
+  border: 1px solid $button-border-color;
   border-radius: .3rem;
   margin-bottom: .5rem;
   position: relative;
   outline: 0;
-  background-color: #e9ecef;
   text-align: center;
+
+  &:hover {
+    border: 1px solid $primary-color;
+
+    & > div {
+      box-shadow: inset 0 0 100px 100px rgba(0, 0, 0, 0.1)!important;
+    }
+  }
+
+  &:focus {
+    outline: 0;
+    background-color: #d7d7d7;
+
+    & > div {
+      box-shadow: inset 0 0 100px 100px rgba(0, 0, 0, 0.1)!important;
+    }
+  }
+
   & > div {
     height: 2.5rem;
-    background-color: #4c91cd;
     border-radius: .25rem;
     transition: width 500ms ease-in-out;
   }
+
   & > span {
     position: absolute;
     top: 50%;
     left: 50%;
     transform: translateX(-50%) translateY(-50%);
   }
+
   &:disabled {
     & > div {
       background-color: #007bff;
       opacity: 0.65;
     }
   }
-  &:focus {
-    outline: 0;
-    background-color: #d7d7d7;
-      & > div {
-        background-color: #0069d9;
-      }
-  }
-  @media (hover: hover) {
-    &:hover {
-      background-color: #d7d7d7;
-      & > div {
-        background-color: #0069d9;
-      }
-    }
-  }
 }
+
 
 .virtual-keyboard {
   &-ctrl-alt {

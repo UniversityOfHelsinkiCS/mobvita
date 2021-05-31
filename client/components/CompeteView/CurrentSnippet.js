@@ -1,7 +1,11 @@
 import React, { useState, useEffect } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import { Segment } from 'semantic-ui-react'
-import { getCurrentSnippet, postAnswers, setTotalNumberAction } from 'Utilities/redux/snippetsReducer'
+import {
+  getCurrentSnippet,
+  postAnswers,
+  setTotalNumberAction,
+} from 'Utilities/redux/snippetsReducer'
 import { getTranslationAction } from 'Utilities/redux/translationReducer'
 import { capitalize, learningLanguageSelector } from 'Utilities/common'
 import ExerciseCloze from 'Components/CompeteView/ExerciseCloze'
@@ -23,7 +27,6 @@ const CurrentPractice = ({ storyId }) => {
   const dictionaryLanguage = useSelector(({ user }) => user.data.user.last_trans_language)
   const learningLanguage = useSelector(learningLanguageSelector)
 
-
   const setInitialAnswers = () => {
     if (snippets.focused) {
       const filteredSnippet = snippets.focused.practice_snippet.filter(word => word.id)
@@ -34,7 +37,7 @@ const CurrentPractice = ({ storyId }) => {
           ...answerObject,
           [ID]: {
             correct: surface,
-            users_answer: (listen || choices) ? '' : (base || bases),
+            users_answer: listen || choices ? '' : base || bases,
             id,
           },
         }
@@ -48,7 +51,7 @@ const CurrentPractice = ({ storyId }) => {
 
   const getExerciseCount = () => {
     let count = 0
-    snippets.focused.practice_snippet.forEach((word) => {
+    snippets.focused.practice_snippet.forEach(word => {
       if (word.id) {
         count++
       }
@@ -87,9 +90,18 @@ const CurrentPractice = ({ storyId }) => {
 
   const textToSpeech = (surfaceWord, wordLemmas) => {
     // const selectedLocale = localeOptions.find(localeOption => localeOption.code === locale)
-    window.responsiveVoice.speak(surfaceWord, `${learningLanguage === 'german' ? 'Deutsch' : capitalize(learningLanguage)} Female`)
+    window.responsiveVoice.speak(
+      surfaceWord,
+      `${learningLanguage === 'german' ? 'Deutsch' : capitalize(learningLanguage)} Female`
+    )
     if (wordLemmas) {
-      dispatch(getTranslationAction(capitalize(learningLanguage), wordLemmas, capitalize(dictionaryLanguage)))
+      dispatch(
+        getTranslationAction(
+          capitalize(learningLanguage),
+          wordLemmas,
+          capitalize(dictionaryLanguage)
+        )
+      )
     }
   }
 
@@ -130,15 +142,16 @@ const CurrentPractice = ({ storyId }) => {
     setAnswers(newAnswers)
   }
 
-
-  const wordInput = (word) => {
+  const wordInput = word => {
     if (!word.id && !word.lemmas) return word.surface
     if (!word.id) {
       return (
         <span
           role="button"
           tabIndex={-1}
-          className={!word.base && answers[word.ID] ? 'word-interactive--exercise' : 'word-interactive '}
+          className={
+            !word.base && answers[word.ID] ? 'word-interactive--exercise' : 'word-interactive '
+          }
           key={word.ID}
           onKeyDown={() => textToSpeech(word.surface, word.lemmas)}
           onClick={() => textToSpeech(word.surface, word.lemmas)}
@@ -192,16 +205,16 @@ const CurrentPractice = ({ storyId }) => {
   const { practice_snippet: practice } = snippets.focused
   return (
     <>
-
       <Segment style={{ marginBottom: '5px', wordSpacing: '1px', lineHeight: '2em' }}>
         {practice.map(exercise => wordInput(exercise))}
       </Segment>
       <OpponentProgress />
 
-      <Button variant="primary" block onClick={checkAnswers}>Continue to next snippet </Button>
+      <Button variant="primary" block onClick={checkAnswers}>
+        Continue to next snippet{' '}
+      </Button>
     </>
   )
 }
-
 
 export default CurrentPractice
