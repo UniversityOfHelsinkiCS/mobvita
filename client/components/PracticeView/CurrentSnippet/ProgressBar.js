@@ -4,9 +4,9 @@ import Spinner from 'Components/Spinner'
 const ProgressBar = ({ snippetProgress, snippetsTotal, progress }) => {
   const getFontStyle = () => {
     if (progress > 0.5) {
-      return { color: 'white', textShadow: '4px 4px 4px #000' }
+      return { color: 'white', textShadow: '0px 0px 2px #000' }
     }
-    return { color: 'black' }
+    return { color: 'black', textShadow: '0px 0px 2px #FFF' }
   }
   return (
     <>
@@ -17,6 +17,7 @@ const ProgressBar = ({ snippetProgress, snippetsTotal, progress }) => {
           style={{
             height: '1.5em',
             textAlign: 'center',
+            borderRadius: '1rem',
           }}
           className="progress"
         >
