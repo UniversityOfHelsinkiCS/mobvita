@@ -34,11 +34,13 @@ const Quick = ({ card, cardNumbering, answerCard }) => {
     ? [...new Set(glosses)].map(item => <li key={item}>{item}</li>)
     : glosses
 
+  const fontClass = lemma.length < 15 ? 'header-2 auto' : 'header-3 auto'
+
   return (
     <ReactCardFlip isFlipped={flipped}>
       <Flashcard {...cardProps}>
         <div className="flex-col grow">
-          <span className="header-2 auto">{lemma}</span>
+          <span className={fontClass}>{lemma}</span>
           {!answered && (
             <div className="flex space-evenly padding-bottom-4">
               <Button

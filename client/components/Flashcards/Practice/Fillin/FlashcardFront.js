@@ -19,28 +19,28 @@ const FlashcardFront = ({
 }) => {
   const learningLanguage = useSelector(learningLanguageSelector)
   const dictionaryLanguage = useSelector(dictionaryLanguageSelector)
-
   const sameLanguage = learningLanguage === dictionaryLanguage
+  const fontClass = lemma.length < 15 ? 'flashcard-title' : 'flashcard-title-small'
 
   return (
     <Flashcard stage={stage} {...props}>
       <div className="flashcard-text-container">
         <FlashcardHint hints={hints} stage={stage} />
-        <h2 data-cy="flashcard-title" className="flashcard-title">{lemma}</h2>
+        <h2 data-cy="flashcard-title" className={fontClass}>
+          {lemma}
+        </h2>
         <h3 className="flashcard-phonetics">{phonetics && phonetics}</h3>
       </div>
-      {!sameLanguage
-        && (
-          <div className="flashcard-input-and-result-container">
-            <FlashcardInput
-              answerChecked={answerChecked}
-              checkAnswer={checkAnswer}
-              focusedAndBigScreen={focusedAndBigScreen}
-            />
-            <FlashcardResult answerCorrect={answerCorrect} />
-          </div>
-        )
-      }
+      {!sameLanguage && (
+        <div className="flashcard-input-and-result-container">
+          <FlashcardInput
+            answerChecked={answerChecked}
+            checkAnswer={checkAnswer}
+            focusedAndBigScreen={focusedAndBigScreen}
+          />
+          <FlashcardResult answerCorrect={answerCorrect} />
+        </div>
+      )}
     </Flashcard>
   )
 }
