@@ -110,7 +110,15 @@ const PracticeView = () => {
               <VirtualKeyboard />
             </div>
           )}
-          <ReportButton extraClass="mb-sm" />
+          {width >= 500 ? (
+            <div className="flex-col align-end" style={{ marginTop: '0.5em' }}>
+              <ReportButton />
+            </div>
+          ) : (
+            <div style={{ marginBottom: '0.5em' }}>
+              <ReportButton />
+            </div>
+          )}
         </div>
         <DictionaryHelp />
         <ReferenceModal />
