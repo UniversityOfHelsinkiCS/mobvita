@@ -377,6 +377,10 @@ html, body, #root {
   }
 }
 
+.headroom {
+  z-index: 99!important;
+}
+
 .navbar {
   background-color: $primary-color;
   align-items: center;
@@ -1391,6 +1395,7 @@ html, body, #root {
     background-color: #DEDEDE;
     padding: 0.15em;
     border-radius: 1em;
+    z-index: 1;
   }
 }
 

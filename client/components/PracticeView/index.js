@@ -73,12 +73,7 @@ const PracticeView = () => {
       <div className="justify-center">
         <div className="cont">
           <Segment>
-            <div
-              className="progress-bar-cont"
-              style={{
-                top: smallScreen ? '.25em' : '3.25em',
-              }}
-            >
+            <div className="progress-bar-cont" style={{ top: smallScreen ? '.25em' : '3.25em' }}>
               <ProgressBar
                 snippetProgress={currentSnippetNum}
                 snippetsTotal={snippetsTotalNum}
