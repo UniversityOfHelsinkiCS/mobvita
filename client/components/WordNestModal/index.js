@@ -12,7 +12,7 @@ import ReportButton from 'Components/ReportButton'
 
 const NestWord = ({ wordNest, wordToCheck, children }) => {
   const dispatch = useDispatch()
-  const { word, raw, ancestors, others } = wordNest
+  const { word, raw, rank, others } = wordNest
   const learningLanguage = useSelector(learningLanguageSelector)
   const autoSpeak = useSelector(({ user }) => user.data.user.auto_speak)
   const dictionaryLanguage = useSelector(({ user }) => user.data.user.last_trans_language)
@@ -27,9 +27,13 @@ const NestWord = ({ wordNest, wordToCheck, children }) => {
         borderRadius: '10px',
         backgroundColor: '#E6FCE7',
       }
-    if (ancestors?.length === 0) return { color: '#013A70', marginTop: '1em' }
-    if (ancestors?.length % 2 === 0) return { color: '#3C9DFA' }
-    return { color: '#026CD1' }
+
+    if (!rank) return { color: '#56e3ff' }
+    if (rank < 2000) return { color: '#000000' }
+    if (rank < 4000) return { color: '#0f066f' }
+    if (rank < 8000) return { color: '#0045a4' }
+    if (rank < 16000) return { color: '#007acc' }
+    if (rank >= 16000) return { color: '#00afe8' }
   }
 
   const handleWordClick = (surface, lemma) => {
@@ -52,8 +56,7 @@ const NestWord = ({ wordNest, wordToCheck, children }) => {
     .replace(morphemeBoundaryRegex, '⋅')
     .replace(removeExtraDotRegex, '')
     .replace(hyphenCleanupRegex, '-')
-    .replace(/«/g, '<b>')
-    .replace(/»/g, '</b>')
+    .replace(/«(.*?)»/g, '<u>$1</u>')
     .replace('=', '-')
 
   // Don't print these words. They are very rare or might even not exist
@@ -127,7 +130,8 @@ const WordNestModal = ({ open, setOpen, wordToCheck }) => {
   useEffect(() => {
     if (wordToCheck) {
       const rootForms = rootLemmas?.map(w => w.word)
-      setModalTitle(rootForms?.join(', '))
+      const uniqueRootForms = [...new Set(rootForms)]
+      setModalTitle(uniqueRootForms?.join(', '))
     }
   }, [open])
 
