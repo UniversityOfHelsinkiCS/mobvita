@@ -45,11 +45,13 @@ const NestWord = ({ wordNest, wordToCheck, children }) => {
   }
 
   const wordStyle = getWordStyle(word)
-  const MorphemeBoundaryRegex = /[{}()[\]\-/]+/g
-  const RemoveExtraDotsRegex = /(^⋅)|(⋅$)|[<>]+/g
+  const morphemeBoundaryRegex = /[{}()[\]\-/]+/g
+  const removeExtraDotRegex = /(^⋅)|(⋅$)|[<>]+/g
+  const hyphenCleanupRegex = /(⋅=)|(=⋅)/g
   const cleanedWord = raw
-    .replace(MorphemeBoundaryRegex, '⋅')
-    .replace(RemoveExtraDotsRegex, '')
+    .replace(morphemeBoundaryRegex, '⋅')
+    .replace(removeExtraDotRegex, '')
+    .replace(hyphenCleanupRegex, '-')
     .replace(/«/g, '<b>')
     .replace(/»/g, '</b>')
     .replace('=', '-')
