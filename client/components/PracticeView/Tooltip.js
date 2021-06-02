@@ -2,21 +2,13 @@ import React from 'react'
 import TooltipTrigger from 'react-popper-tooltip'
 import 'react-popper-tooltip/dist/styles.css'
 
-
 // Usage:
 // additionalClassnames defines the varians of the Tooptip
 
 const Tooltip = ({ children, tooltip, hideArrow, additionalClassnames = '', ...props }) => (
-
   <TooltipTrigger
     {...props}
-    tooltip={({
-      arrowRef,
-      tooltipRef,
-      getArrowProps,
-      getTooltipProps,
-      placement,
-    }) => (
+    tooltip={({ arrowRef, tooltipRef, getArrowProps, getTooltipProps, placement }) => (
       <div
         {...getTooltipProps({
           ref: tooltipRef,
@@ -24,13 +16,13 @@ const Tooltip = ({ children, tooltip, hideArrow, additionalClassnames = '', ...p
         })}
       >
         {!hideArrow && (
-        <div
-          {...getArrowProps({
-            ref: arrowRef,
-            className: 'tooltip-arrow',
-            'data-placement': placement,
-          })}
-        />
+          <div
+            {...getArrowProps({
+              ref: arrowRef,
+              className: 'tooltip-arrow',
+              'data-placement': placement,
+            })}
+          />
         )}
         {tooltip}
       </div>
