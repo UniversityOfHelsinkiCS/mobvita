@@ -1345,6 +1345,14 @@ html, body, #root {
     background-color: #E6FCE7;
   }
 
+  &-additional-info {
+    color: #3b3b3b;
+    font-size: 0.75em;
+    background-color: #ededed;
+    border-radius: 0.5em;
+    padding: 0.1em;
+  }
+
   @media (max-width: 760px) {
     padding-left: 2em;
 

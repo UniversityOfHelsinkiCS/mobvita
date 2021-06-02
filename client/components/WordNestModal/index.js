@@ -5,12 +5,18 @@ import { Collapse } from 'react-collapse'
 import DictionaryHelp from 'Components/DictionaryHelp'
 import { getTranslationAction } from 'Utilities/redux/translationReducer'
 import { getWordNestAction } from 'Utilities/redux/wordNestReducer'
-import { learningLanguageSelector, speak, respVoiceLanguages } from 'Utilities/common'
+import {
+  learningLanguageSelector,
+  speak,
+  respVoiceLanguages,
+  hiddenFeatures,
+} from 'Utilities/common'
 import useWindowDimensions from 'Utilities/windowDimensions'
 import { FormattedMessage } from 'react-intl'
 import ReportButton from 'Components/ReportButton'
+import AdditionalInfoToggle from './AdditionalInfoToggle'
 
-const NestWord = ({ wordNest, wordToCheck, children }) => {
+const NestWord = ({ wordNest, wordToCheck, showMoreInfo, children }) => {
   const dispatch = useDispatch()
   const { word, raw, rank, others } = wordNest
   const learningLanguage = useSelector(learningLanguageSelector)
@@ -62,19 +68,28 @@ const NestWord = ({ wordNest, wordToCheck, children }) => {
   // Don't print these words. They are very rare or might even not exist
   if (others.includes('---')) return null
 
+  const additionalInfo = others?.map(e => e.replace(/,[\s]+/g, ''))
+  const additionalInfoCleaned = additionalInfo?.filter(e => !e.includes('---'))
+  const additionalInfoString = additionalInfoCleaned.join(', ')
+
   return (
     <div className="wordnest">
       <div className="wordnest-row">
         <div style={{ display: 'flex', flex: 1 }}>
           <span
-            className="wordnest-word"
-            style={wordStyle}
             onClick={() => handleWordClick(word, word)}
             onKeyPress={() => setOpen(!open)}
             role="button"
             tabIndex="0"
           >
-            <span dangerouslySetInnerHTML={{ __html: cleanedWord }} />
+            <span
+              className="wordnest-word"
+              style={wordStyle}
+              dangerouslySetInnerHTML={{ __html: cleanedWord }}
+            />{' '}
+            {showMoreInfo && additionalInfoCleaned.length > 0 && (
+              <span className="wordnest-additional-info">{additionalInfoString}</span>
+            )}
           </span>
         </div>
       </div>
@@ -83,24 +98,30 @@ const NestWord = ({ wordNest, wordToCheck, children }) => {
   )
 }
 
-const NestBranch = ({ wordNest, children, wordToCheck, ...props }) => {
+const NestBranch = ({ wordNest, children, wordToCheck, showMoreInfo, ...props }) => {
   return (
-    <NestWord wordToCheck={wordToCheck} wordNest={wordNest} {...props}>
+    <NestWord wordToCheck={wordToCheck} wordNest={wordNest} showMoreInfo={showMoreInfo} {...props}>
       {children}
     </NestWord>
   )
 }
 
-const WordNest = ({ wordNest, wordToCheck }) => {
+const WordNest = ({ wordNest, wordToCheck, showMoreInfo }) => {
   return (
     <NestBranch
       wordToCheck={wordToCheck}
       key={`${wordNest.word}-${wordNest.children?.length}`}
       wordNest={wordNest}
+      showMoreInfo={showMoreInfo}
     >
       {wordNest.children &&
         wordNest.children?.map((n, index) => (
-          <WordNest key={`${wordNest.word}-${index}`} wordNest={n} wordToCheck={wordToCheck} />
+          <WordNest
+            key={`${wordNest.word}-${index}`}
+            wordNest={n}
+            wordToCheck={wordToCheck}
+            showMoreInfo={showMoreInfo}
+          />
         ))}
     </NestBranch>
   )
@@ -124,10 +145,12 @@ const WordNestModal = ({ open, setOpen, wordToCheck }) => {
   const { width: windowWidth, height: windowHeight } = useWindowDimensions()
   const smallWindow = windowWidth < 1024
   const [modalTitle, setModalTitle] = useState()
+  const [showMoreInfo, setShowMoreInfo] = useState(false)
   const rootLemmas = words?.filter(e => e.parents?.length === 0)
   const wordNest = makeWordNest(rootLemmas, words)
 
   useEffect(() => {
+    setShowMoreInfo(false)
     if (wordToCheck) {
       const rootForms = rootLemmas?.map(w => w.word)
       const uniqueRootForms = [...new Set(rootForms)]
@@ -156,11 +179,15 @@ const WordNestModal = ({ open, setOpen, wordToCheck }) => {
       centered={false}
       dimmer="blurring"
       size="large"
-      closeIcon={{ style: { top: '1.0535rem', right: '1rem' }, color: 'black', name: 'close' }}
       onClose={() => setOpen(false)}
     >
       <Modal.Header className="bold" as="h2">
-        <FormattedMessage id="nest" />: {modalTitle}
+        <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+          <FormattedMessage id="nest" />: {modalTitle}{' '}
+          {!smallWindow && hiddenFeatures && (
+            <AdditionalInfoToggle showMoreInfo={showMoreInfo} setShowMoreInfo={setShowMoreInfo} />
+          )}
+        </div>
       </Modal.Header>
       <Modal.Content>
         {!smallWindow ? (
@@ -173,7 +200,12 @@ const WordNestModal = ({ open, setOpen, wordToCheck }) => {
               }}
             >
               {wordNest?.map((n, index) => (
-                <WordNest key={`${n.word}-${index}`} wordNest={n} wordToCheck={wordToCheck} />
+                <WordNest
+                  key={`${n.word}-${index}`}
+                  wordNest={n}
+                  wordToCheck={wordToCheck}
+                  showMoreInfo={showMoreInfo}
+                />
               ))}
             </div>
             <div
