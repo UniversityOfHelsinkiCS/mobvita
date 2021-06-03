@@ -21,7 +21,7 @@ import ConfirmationWarning from 'Components/ConfirmationWarning'
 import GroupActionModal from './GroupActionModal'
 import AddToGroup from './AddToGroup'
 import NoGroupsView from './NoGroupsView'
-import Row from '../StoryView/Row'
+import Row from './Row'
 
 const GroupInviteInfo = ({ group }) => {
   const anyPeopleAdded = !!group.addedPeople.length
@@ -63,6 +63,7 @@ const GroupInviteInfo = ({ group }) => {
 
 const GroupInfoModal = ({
   trigger,
+  id,
   title,
   description,
   creationDate,
@@ -94,7 +95,15 @@ const GroupInfoModal = ({
             <Row translationId="creation-date"> {creationDate}</Row>
             <Row translationId="language"> {intl.formatMessage({ id: language })}</Row>
             <Row translationId="students"> {numOfStudents}</Row>
-            <Row translationId="shared-stories"> {numOfStories}</Row>
+            <Row
+              translationId="shared-stories"
+              id={id}
+              updateLibrarySelect={updateLibrarySelect}
+              updateGroupSelect={updateGroupSelect}
+            >
+              {' '}
+              {numOfStories}
+            </Row>
           </tbody>
         </Table>
       </Modal.Content>
@@ -239,6 +248,7 @@ const GroupCard = ({
     <Card fluid>
       <GroupInfoModal
         title={groupName}
+        id={id}
         description={description}
         creationDate={creationDate}
         language={language}
