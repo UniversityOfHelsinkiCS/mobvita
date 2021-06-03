@@ -1818,7 +1818,7 @@ html, body, #root {
 }
 
 .group-management-buttons {
-  @media (max-width: 760px) {
+  @media (max-width: 910px) {
     flex-direction: column;
     & > button {
       margin-bottom: map.get($spacing, "sm");

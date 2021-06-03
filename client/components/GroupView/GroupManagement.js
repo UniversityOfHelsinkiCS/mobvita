@@ -150,11 +150,7 @@ const GroupCard = ({
   const timezone = deadlineObject.toString().split(' ')[5]
   const deadlineHumanFormat = `${deadlineObject.toLocaleString()} (${timezone})`
 
-  const testButtonText = testEnabled ? (
-    <FormattedMessage id="disable-test" />
-  ) : (
-    <FormattedMessage id="enable-test" />
-  )
+  const testButtonTextKey = testEnabled ? 'disable-test' : 'enable-test'
 
   const handleAnalyticsClick = () => {
     dispatch(updateGroupSelect(id))
@@ -292,7 +288,7 @@ const GroupCard = ({
                 onClick={handleTestEnableDisableButtonClick}
                 variant={testButtonVariant}
               >
-                <Icon name="pencil alternate" /> {testButtonText}
+                <Icon name="pencil alternate" /> <FormattedMessage id={testButtonTextKey} />
               </Button>
             </div>
           )}
