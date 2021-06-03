@@ -5,7 +5,8 @@ import { FormattedMessage, useIntl } from 'react-intl'
 import { CopyToClipboard } from 'react-copy-to-clipboard'
 import { Card, Icon, Label, Dropdown, Popup, Modal } from 'semantic-ui-react'
 import { Button, Table } from 'react-bootstrap'
-import { updateGroupSelect } from 'Utilities/redux/userReducer'
+import { updateLibrarySelect, updateGroupSelect } from 'Utilities/redux/userReducer'
+
 import {
   deleteGroup,
   getGroupToken,
@@ -152,6 +153,12 @@ const GroupCard = ({
     history.push(`/groups/${role}/analytics`)
   }
 
+  const handleStoriesClick = async () => {
+    await dispatch(updateGroupSelect(id))
+    await dispatch(updateLibrarySelect('group'))
+    history.push('/library')
+  }
+
   const handleSettingsClick = () => {
     const role = isTeaching ? 'teacher' : 'student'
     history.push(`/groups/${role}/${id}/concepts`)
@@ -257,6 +264,9 @@ const GroupCard = ({
             <div className="gap-col-sm wrap-and-grow group-management-buttons">
               <Button onClick={handleAnalyticsClick}>
                 <Icon name="chart line" /> <FormattedMessage id="Analytics" />
+              </Button>
+              <Button onClick={handleStoriesClick}>
+                <Icon name="book" /> <FormattedMessage id="Stories" />
               </Button>
               <Button onClick={handleSettingsClick}>
                 <Icon name="settings" /> <FormattedMessage id="learning-settings" />
