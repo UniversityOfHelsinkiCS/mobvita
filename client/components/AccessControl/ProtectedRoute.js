@@ -15,14 +15,17 @@ const ProtectedRoute = ({ component: Component, languageRequired = true, ...rest
   }
 
   const componentRender = useCallback(routerProps => <Component {...routerProps} />, [Component])
-  const redirectRender = useCallback(({ location }) => (
-    <Redirect
-      to={{
-        pathname: redirectPath,
-        state: { from: location },
-      }}
-    />
-  ), [redirectPath])
+  const redirectRender = useCallback(
+    ({ location }) => (
+      <Redirect
+        to={{
+          pathname: redirectPath,
+          state: { from: location },
+        }}
+      />
+    ),
+    [redirectPath]
+  )
 
   const renderer = isRedirected ? redirectRender : componentRender
 
@@ -30,12 +33,7 @@ const ProtectedRoute = ({ component: Component, languageRequired = true, ...rest
   //   return null
   // }
 
-  return (
-    <Route
-      {...rest}
-      render={renderer}
-    />
-  )
+  return <Route {...rest} render={renderer} />
 }
 
 export default ProtectedRoute
