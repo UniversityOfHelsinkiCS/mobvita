@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import { useParams } from 'react-router-dom'
 import { Collapse } from 'react-collapse'
-import { Icon } from 'semantic-ui-react'
+import { Icon, Popup } from 'semantic-ui-react'
 import { Form } from 'react-bootstrap'
 import { useIntl } from 'react-intl'
 
@@ -15,6 +15,7 @@ const Concept = ({
   handleTestQuestionAmountChange,
   children,
 }) => {
+  const CONCEPT_NAME_MAX_LEN = 50
   const [open, setOpen] = useState(false)
   const {
     exer_enabled: exerEnabled,
@@ -48,6 +49,10 @@ const Concept = ({
     return handleTestQuestionAmountChange(event)
   }
 
+  const truncateConceptName = name => {
+    return `${name.slice(0, CONCEPT_NAME_MAX_LEN)}...`
+  }
+
   const indeterminateCheck = conceptTurnedOn && conceptTurnedOn !== 1 && conceptTurnedOn !== 0
 
   return (
@@ -78,7 +83,11 @@ const Concept = ({
             tabIndex="0"
             className={conceptNameClass}
           >
-            {name}
+            {name.length > CONCEPT_NAME_MAX_LEN ? (
+              <Popup content={name} trigger={<span>{truncateConceptName(name)}</span>} />
+            ) : (
+              <span>{name}</span>
+            )}
           </span>
           {renderLevels && (
             <div>
@@ -90,23 +99,33 @@ const Concept = ({
             </div>
           )}
           {renderTestConcepts && (
-            <>
-              &nbsp;|&nbsp;{intl.formatMessage({ id: 'questions' })}:&nbsp;
-              <Form.Control
-                type="text"
-                size="sm"
-                style={{ width: '4em' }}
-                disabled={testEnabled !== undefined && !testEnabled}
-                placeholder={testConceptQuestionAmount}
-                onBlur={e => validateNumberInput(e)}
-                isInvalid={numberError}
+            <div style={{ marginLeft: '1.5em', display: 'flex' }}>
+              {defaultNumQuestions > 0 ? (
+                <span style={{ marginRight: '0.3em' }}>
+                  {intl.formatMessage({ id: 'questions' })}:
+                </span>
+              ) : (
+                <span style={{ color: 'gray', marginRight: '0.3em' }}>
+                  {intl.formatMessage({ id: 'no-questions' })}:
+                </span>
+              )}
+              <Popup
+                content={`max: ${maxNumQuestions}, ${intl.formatMessage({
+                  id: 'default',
+                })}: ${defaultNumQuestions}`}
+                trigger={
+                  <Form.Control
+                    type="text"
+                    size="sm"
+                    style={{ width: '4em' }}
+                    disabled={testEnabled !== undefined && !testEnabled}
+                    placeholder={testConceptQuestionAmount}
+                    onBlur={e => validateNumberInput(e)}
+                    isInvalid={numberError}
+                  />
+                }
               />
-              {defaultNumQuestions > 0
-                ? `(max: ${maxNumQuestions},  ${intl.formatMessage({
-                    id: 'default',
-                  })}: ${defaultNumQuestions})`
-                : `(${intl.formatMessage({ id: 'no-questions' })})`}
-            </>
+            </div>
           )}
         </div>
       </div>
