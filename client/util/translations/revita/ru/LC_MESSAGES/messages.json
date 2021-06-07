@@ -968,9 +968,9 @@
     "turkish": "Турецкий",
     "translate-into": "Перевод на",
     "nest": "Гнездо",
-    "show-additional-info": "Show additional information",
-    "people": "People",
-    "student": "Student",
-    "no-students-in-group": "This group doesn't have any students at the moment",
-    "wordnest-info-text": "<add info text here>"
+    "show-additional-info": "Дополнительная информация",
+    "people": "Участники",
+    "student": "Ученик",
+    "no-students-in-group": "В группе нет учеников",
+    "wordnest-info-text": "Главные слова в гнезде - слева, слова образованные от них - под ними, чуть правее, и т.д. Более частотные слова выделены более темным шрифтом, более редкие - более светлым. По ссылкам → можно пройти на связанные гнезда."
 }
