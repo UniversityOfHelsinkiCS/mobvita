@@ -1218,6 +1218,11 @@ html, body, #root {
   }
 }
 
+// No blurring/dimming for popups inside modal elements.
+.blurring.dimmed.dimmable > :not(.dimmer).popup {
+  filter: none;
+}
+
 .tooltip { //Overwrites react-popper-tooltip styles.
 
   &-container {
@@ -1612,13 +1617,13 @@ html, body, #root {
   text-align: center;
   padding-top: .5rem;
   font-weight: 500;
-  font-size: 12px;
+  font-size: 13px;
   color: dimgray;
   word-break: break-all;
 }
 
 .leaderboard-winner-record {
-  font-size: 13px;
+  font-size: 12px;
   font-weight: 650;
   color: steelblue;
 }
