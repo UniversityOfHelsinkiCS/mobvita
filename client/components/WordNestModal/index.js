@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import { Modal } from 'semantic-ui-react'
+import { Modal, Popup, Icon } from 'semantic-ui-react'
 import { useDispatch, useSelector } from 'react-redux'
 import { Collapse } from 'react-collapse'
 import DictionaryHelp from 'Components/DictionaryHelp'
@@ -12,7 +12,7 @@ import {
   hiddenFeatures,
 } from 'Utilities/common'
 import useWindowDimensions from 'Utilities/windowDimensions'
-import { FormattedMessage } from 'react-intl'
+import { FormattedMessage, useIntl } from 'react-intl'
 import ReportButton from 'Components/ReportButton'
 import AdditionalInfoToggle from './AdditionalInfoToggle'
 
@@ -148,6 +148,7 @@ const WordNestModal = ({ open, setOpen, wordToCheck }) => {
   const [showMoreInfo, setShowMoreInfo] = useState(false)
   const rootLemmas = words?.filter(e => e.parents?.length === 0)
   const wordNest = makeWordNest(rootLemmas, words)
+  const intl = useIntl()
 
   useEffect(() => {
     setShowMoreInfo(false)
@@ -183,7 +184,16 @@ const WordNestModal = ({ open, setOpen, wordToCheck }) => {
     >
       <Modal.Header className="bold" as="h2">
         <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-          <FormattedMessage id="nest" />: {modalTitle}{' '}
+          <span>
+            {hiddenFeatures && (
+              <Popup
+                content={intl.formatMessage({ id: 'wordnest-info-text' })}
+                trigger={<Icon name="info circle" size="small" />}
+              />
+            )}
+            <FormattedMessage id="nest" />: {modalTitle}{' '}
+          </span>
+
           {!smallWindow && hiddenFeatures && (
             <AdditionalInfoToggle showMoreInfo={showMoreInfo} setShowMoreInfo={setShowMoreInfo} />
           )}

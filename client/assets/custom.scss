@@ -1436,6 +1436,7 @@ html, body, #root {
   border-color: #DEE2E6;
   background-color: #F9FAFB;
   border-radius: 7.5px;
+  margin-top: 1.5em;
 }
 
 .date-pickers {
@@ -1823,7 +1824,7 @@ html, body, #root {
 }
 
 .group-management-buttons {
-  @media (max-width: 910px) {
+  @media (max-width: 1024px) {
     flex-direction: column;
     & > button {
       margin-bottom: map.get($spacing, "sm");
@@ -1864,6 +1865,26 @@ html, body, #root {
       margin-top: 0.5em;
     }
   }
+}
+
+.group-analytics-student-dropdown {
+  display: flex;
+  margin-top: 1em;
+  margin-bottom: 1em;
+  font-weight: bold;
+  text-align: bottom;
+  padding-left: 0.2rem;
+  align-items: center;
+  gap: 2em;
+}
+
+.group-analytics-no-students {
+  padding-top: 5rem;
+  font-size: 1.3rem;
+  font-style: italic;
+  display: flex;
+  justify-content: center;
+  color: #777;
 }
 
 .tab-text {
