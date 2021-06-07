@@ -966,5 +966,9 @@
     "turkish": "Turco",
     "translate-into": "Tradurre in",
     "nest": "Nido",
-    "show-additional-info": "Show additional information"
+    "show-additional-info": "Mostra le informazioni aggiuntive",
+    "people": "Persone",
+    "student": "Studente",
+    "no-students-in-group": "Il gruppo non contiene nessuno studente al momento",
+    "wordnest-info-text": ""
 }

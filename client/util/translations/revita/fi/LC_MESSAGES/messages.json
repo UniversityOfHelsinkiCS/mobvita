@@ -966,5 +966,9 @@
     "turkish": "Turkki",
     "translate-into": "Käännä",
     "nest": "Sanapuu",
-    "show-additional-info": "Show additional information"
+    "show-additional-info": "Näytä enemmän tietoja",
+    "people": "Jäsenet",
+    "student": "Opiskelija",
+    "no-students-in-group": "Ryhmässä ei ole tällä hetkellä opiskelijoita",
+    "wordnest-info-text": ""
 }

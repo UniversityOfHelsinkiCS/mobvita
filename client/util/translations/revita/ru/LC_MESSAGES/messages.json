@@ -968,5 +968,9 @@
     "turkish": "Турецкий",
     "translate-into": "Перевод на",
     "nest": "Гнездо",
-    "show-additional-info": "Show additional information"
+    "show-additional-info": "Show additional information",
+    "people": "People",
+    "student": "Student",
+    "no-students-in-group": "This group doesn't have any students at the moment",
+    "wordnest-info-text": ""
 }
