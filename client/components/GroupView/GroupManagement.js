@@ -1,13 +1,15 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
-import { useHistory } from 'react-router-dom'
+import { useHistory, useParams } from 'react-router-dom'
 import { FormattedMessage, useIntl } from 'react-intl'
 import { CopyToClipboard } from 'react-copy-to-clipboard'
 import { Card, Icon, Label, Dropdown, Popup, Modal } from 'semantic-ui-react'
 import { Button, Table } from 'react-bootstrap'
+
 import { updateLibrarySelect, updateGroupSelect } from 'Utilities/redux/userReducer'
 
 import {
+  getGroups,
   deleteGroup,
   getGroupToken,
   leaveFromGroup,
@@ -113,7 +115,6 @@ const GroupInfoModal = ({
 
 const GroupCard = ({
   group,
-  setAddToGroupId,
   setDeleteGroupId,
   setLeaveGroupId,
   showTokenGroupId,
@@ -145,16 +146,16 @@ const GroupCard = ({
 
   const testEnabled = currTestDeadline - Date.now() > 0
   const testButtonVariant = testEnabled ? 'danger' : 'primary'
+  const testButtonTextKey = testEnabled ? 'disable-test' : 'enable-test'
 
   const deadlineObject = new Date(currTestDeadline)
   const timezone = deadlineObject.toString().split(' ')[5]
   const deadlineHumanFormat = `${deadlineObject.toLocaleString()} (${timezone})`
 
-  const testButtonTextKey = testEnabled ? 'disable-test' : 'enable-test'
+  const role = isTeaching ? 'teacher' : 'student'
 
   const handleAnalyticsClick = () => {
     dispatch(updateGroupSelect(id))
-    const role = isTeaching ? 'teacher' : 'student'
     history.push(`/groups/${role}/analytics`)
   }
 
@@ -165,8 +166,12 @@ const GroupCard = ({
   }
 
   const handleSettingsClick = () => {
-    const role = isTeaching ? 'teacher' : 'student'
     history.push(`/groups/${role}/${id}/concepts`)
+  }
+
+  const handlePeopleClick = () => {
+    dispatch(updateGroupSelect(id))
+    history.push(`/groups/${role}/people`)
   }
 
   const handleTestDisable = async () => {
@@ -266,32 +271,39 @@ const GroupCard = ({
       />
       <Card.Content extra>
         <div className="space-between group-buttons sm" style={{ whiteSpace: 'nowrap' }}>
-          {isTeaching && (
-            <div className="gap-col-sm wrap-and-grow group-management-buttons">
-              <Button onClick={handleAnalyticsClick}>
-                <Icon name="chart line" /> <FormattedMessage id="Analytics" />
-              </Button>
-              <Button onClick={handleStoriesClick}>
-                <Icon name="book" /> <FormattedMessage id="Stories" />
-              </Button>
-              <Button onClick={handleSettingsClick}>
-                <Icon name="settings" /> <FormattedMessage id="learning-settings" />
-              </Button>
-              <Button data-cy="add-to-group-modal" onClick={() => setAddToGroupId(id)}>
-                <Icon name="plus" /> <FormattedMessage id="add-people-to-group" />
-              </Button>
-              <Button onClick={handleShowTokenClick}>
-                <Icon name="key" /> <FormattedMessage id="show-group-token" />
-              </Button>
-              <Button
-                data-cy="enable-test-button"
-                onClick={handleTestEnableDisableButtonClick}
-                variant={testButtonVariant}
-              >
-                <Icon name="pencil alternate" /> <FormattedMessage id={testButtonTextKey} />
-              </Button>
-            </div>
-          )}
+          <div className="gap-col-sm wrap-and-grow group-management-buttons">
+            {isTeaching && (
+              <>
+                <Button onClick={handleAnalyticsClick}>
+                  <Icon name="chart line" /> <FormattedMessage id="Analytics" />
+                </Button>
+              </>
+            )}
+            <Button onClick={handleStoriesClick}>
+              <Icon name="book" /> <FormattedMessage id="Stories" />
+            </Button>
+            <Button data-cy="people-button" onClick={handlePeopleClick}>
+              <Icon name="user" /> <FormattedMessage id="people" />
+            </Button>
+            {isTeaching && (
+              <>
+                <Button onClick={handleSettingsClick}>
+                  <Icon name="settings" /> <FormattedMessage id="learning-settings" />
+                </Button>
+
+                <Button onClick={handleShowTokenClick}>
+                  <Icon name="key" /> <FormattedMessage id="show-group-token" />
+                </Button>
+                <Button
+                  data-cy="enable-test-button"
+                  onClick={handleTestEnableDisableButtonClick}
+                  variant={testButtonVariant}
+                >
+                  <Icon name="pencil alternate" /> <FormattedMessage id={testButtonTextKey} />
+                </Button>
+              </>
+            )}
+          </div>
           <div
             className="group-management-buttons flex gap-col-sm"
             style={{ display: 'flex', alignItems: 'center' }}
@@ -422,8 +434,9 @@ const GroupCard = ({
   )
 }
 
-const GroupManagement = ({ role }) => {
+const GroupManagement = () => {
   const { groups: totalGroups, pending } = useSelector(({ groups }) => groups)
+  const { role } = useParams()
   const groups = totalGroups.filter(group => group.is_teaching === (role === 'teacher'))
   const userId = useSelector(state => state.user.data.user.oid)
 
@@ -433,9 +446,12 @@ const GroupManagement = ({ role }) => {
   const [showTokenGroupId, setShowTokenGroupId] = useState(null)
 
   const [showTestEnableMenuGroupId, setShowTestEnableMenuGroupId] = useState(null)
-  //
 
   const dispatch = useDispatch()
+
+  useEffect(() => {
+    dispatch(getGroups())
+  }, [])
 
   const handleGroupDelete = () => {
     dispatch(deleteGroup(deleteGroupId))
@@ -450,48 +466,50 @@ const GroupManagement = ({ role }) => {
   if (groups.length === 0) return <NoGroupsView role={role} />
 
   return (
-    <div className="ps-nm" data-cy="group-list">
-      <GroupActionModal
-        role={role}
-        trigger={
-          <Button
-            data-cy={role === 'teacher' ? 'create-group-button' : 'join-group-button'}
-            size="lg"
-            style={{ marginTop: '1em', marginBottom: '1em', backgroundColor: '#00B5AD' }}
-          >
-            <FormattedMessage id={role === 'teacher' ? 'create-new-group' : 'join-a-group'} />
-          </Button>
-        }
-      />
-
-      <AddToGroup groupId={addToGroupId} setGroupId={setAddToGroupId} />
-      <ConfirmationWarning
-        open={!!deleteGroupId}
-        setOpen={setDeleteGroupId}
-        action={handleGroupDelete}
-      >
-        <FormattedMessage id="this-will-remove-the-group-are-you-sure-you-want-to-proceed" />
-      </ConfirmationWarning>
-      <ConfirmationWarning
-        open={!!leaveGroupId}
-        setOpen={setLeaveGroupId}
-        action={handleGroupLeave}
-      >
-        <FormattedMessage id="Are you sure you want to leave the group?" />
-      </ConfirmationWarning>
-      {groups.map(group => (
-        <GroupCard
-          key={group.group_id}
-          group={group}
-          setAddToGroupId={setAddToGroupId}
-          setDeleteGroupId={setDeleteGroupId}
-          setLeaveGroupId={setLeaveGroupId}
-          showTokenGroupId={showTokenGroupId}
-          setShowTokenGroupId={setShowTokenGroupId}
-          showTestEnableMenuGroupId={showTestEnableMenuGroupId}
-          setShowTestEnableMenuGroupId={setShowTestEnableMenuGroupId}
+    <div className="group-container">
+      <div className="ps-nm" data-cy="group-list">
+        <GroupActionModal
+          role={role}
+          trigger={
+            <Button
+              data-cy={role === 'teacher' ? 'create-group-button' : 'join-group-button'}
+              size="lg"
+              style={{ marginTop: '1em', marginBottom: '1em', backgroundColor: '#00B5AD' }}
+            >
+              <FormattedMessage id={role === 'teacher' ? 'create-new-group' : 'join-a-group'} />
+            </Button>
+          }
         />
-      ))}
+
+        <AddToGroup groupId={addToGroupId} setGroupId={setAddToGroupId} />
+        <ConfirmationWarning
+          open={!!deleteGroupId}
+          setOpen={setDeleteGroupId}
+          action={handleGroupDelete}
+        >
+          <FormattedMessage id="this-will-remove-the-group-are-you-sure-you-want-to-proceed" />
+        </ConfirmationWarning>
+        <ConfirmationWarning
+          open={!!leaveGroupId}
+          setOpen={setLeaveGroupId}
+          action={handleGroupLeave}
+        >
+          <FormattedMessage id="Are you sure you want to leave the group?" />
+        </ConfirmationWarning>
+        {groups.map(group => (
+          <GroupCard
+            key={group.group_id}
+            group={group}
+            setAddToGroupId={setAddToGroupId}
+            setDeleteGroupId={setDeleteGroupId}
+            setLeaveGroupId={setLeaveGroupId}
+            showTokenGroupId={showTokenGroupId}
+            setShowTokenGroupId={setShowTokenGroupId}
+            showTestEnableMenuGroupId={showTestEnableMenuGroupId}
+            setShowTestEnableMenuGroupId={setShowTestEnableMenuGroupId}
+          />
+        ))}
+      </div>
     </div>
   )
 }

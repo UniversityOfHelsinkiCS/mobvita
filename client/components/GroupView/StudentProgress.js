@@ -1,62 +1,53 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { learningLanguageSelector } from 'Utilities/common'
 import { getStudentProgress } from 'Utilities/redux/groupProgressReducer'
 import { FormattedMessage } from 'react-intl'
+import { Dropdown } from 'semantic-ui-react'
 import ProgressGraph from 'Components/ProgressGraph'
 import Spinner from 'Components/Spinner'
-import ResponsiveDatePicker from 'Components/ResponsiveDatePicker'
-import moment from 'moment'
 
-const StudentProgress = ({ student, groupId }) => {
-  const [startDate, setStartDate] = useState(moment().subtract(2, 'month').toDate())
-  const [endDate, setEndDate] = useState(moment().toDate())
-
+const StudentProgress = ({ student, setStudent, startDate, endDate, group }) => {
   const { pending, exerciseHistory, flashcardHistory } = useSelector(({ studentProgress }) => {
     const { progress, pending } = studentProgress
     const { exercise_history: exerciseHistory, flashcard_history: flashcardHistory } = progress
     return { pending, exerciseHistory, flashcardHistory }
   })
-  const learningLanguage = useSelector(learningLanguageSelector)
 
+  const learningLanguage = useSelector(learningLanguageSelector)
   const dispatch = useDispatch()
+
+  const studentOptions = group?.students.map(student => ({
+    key: student._id,
+    text: `${student?.userName} (${student?.email})`,
+    value: student,
+  }))
+
+  const dropDownMenuText = student ? `${student?.userName} (${student?.email})` : '-'
 
   useEffect(() => {
     if (!student) return
-    dispatch(getStudentProgress(student._id, groupId, learningLanguage))
+    dispatch(getStudentProgress(student._id, group.group_id, learningLanguage))
   }, [student])
+
+  const handleStudentChange = key => {
+    setStudent(key)
+  }
 
   if (pending) return <Spinner />
 
   return (
     <div>
-      <hr />
-      <span className="sm-label pl-sm">
-        {' '}
-        <FormattedMessage id="Showing results for" />
-      </span>
-      <div className="flex pl-sm">
-        <div className="gap-col-sm">
-          <span className="sm-label">
-            <FormattedMessage id="date-start" />:
-          </span>
-          <ResponsiveDatePicker
-            maxDate={Math.min(moment().valueOf(), endDate)}
-            selected={startDate}
-            onChange={date => setStartDate(date)}
-          />
-        </div>
-        <div className="gap-col-sm pl-lg">
-          <span className="sm-label">
-            <FormattedMessage id="date-end" />:
-          </span>
-          <ResponsiveDatePicker
-            minDate={startDate}
-            maxDate={moment().valueOf()}
-            selected={endDate}
-            onChange={date => setEndDate(date)}
-          />
-        </div>
+      <div className="group-analytics-student-dropdown">
+        <FormattedMessage id="student" />:{' '}
+        <Dropdown
+          text={dropDownMenuText}
+          selection
+          fluid
+          options={studentOptions}
+          onChange={(_, { key }) => handleStudentChange(key)}
+          disabled={!student}
+        />
       </div>
       {student ? (
         <ProgressGraph
@@ -66,17 +57,8 @@ const StudentProgress = ({ student, groupId }) => {
           endDate={endDate}
         />
       ) : (
-        <div
-          style={{
-            paddingTop: '5rem',
-            fontSize: '1.3rem',
-            fontStyle: 'italic',
-            display: 'flex',
-            justifyContent: 'center',
-            color: '#777',
-          }}
-        >
-          <FormattedMessage id="select-a-student-from-list" />
+        <div className="group-analytics-no-results">
+          <FormattedMessage id="no-students-in-group" />
         </div>
       )}
     </div>

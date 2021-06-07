@@ -22,10 +22,8 @@ describe('test view', function() {
     cy.get('textarea').eq(2).type(this.teacher.email)
     cy.get('[type=submit]').click()
     cy.contains('my_test_group')
-    cy.reload()
-    cy.get('[class=card-header]').eq(0).click()
+    cy.visit('http://localhost:8000/groups/teacher/people')
     cy.contains(this.teacher.username)
-    cy.get('[class=card-header]').eq(1).click()
     cy.contains(this.teacher.username)
     
     cy.visit('http://localhost:8000/groups/teacher')

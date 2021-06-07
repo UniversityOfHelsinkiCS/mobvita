@@ -24,10 +24,8 @@ describe("groups", function () {
 
     cy.get('[type=submit]').click()
     cy.contains('my_test_group')
-    cy.reload()
-    cy.get('[class=card-header]').eq(0).click()
+    cy.visit('http://localhost:8000/groups/teacher/people')
     cy.contains(this.teacher.username)
-    cy.get('[class=card-header]').eq(1).click()
     cy.contains(this.student.username)
 
     cy.visit('http://localhost:8000/groups/teacher')
@@ -81,17 +79,18 @@ describe("groups", function () {
       }
     })
     cy.reload()
-    cy.contains('other group').parent().parent().parent().find('[data-cy=add-to-group-modal]').click()
+    cy.contains('other group')
+
+    cy.get('[data-cy=people-button]').click()
+    cy.visit('http://localhost:8000/groups/teacher/people')
+    cy.contains('other group')
+    cy.get('[data-cy=add-to-group-button]').click()
+
     cy.get('textarea').eq(0).type(this.teacher.email)
     cy.get('textarea').eq(1).type(this.student.email)
     cy.get('[type=submit]').click()
 
-    cy.get('[data-cy=group-analytics]').click()
-
-    cy.get('[class=card-header]').eq(0).click()
     cy.contains(this.teacher.username)
-
-    cy.get('[class=card-header]').eq(1).click()
     cy.contains(this.student.username)
 
     cy.get(`[data-cy=remove-from-group-${this.student.username}]`).click()

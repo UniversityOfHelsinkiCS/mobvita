@@ -1,21 +1,26 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { getStudentHistory } from 'Utilities/redux/groupHistoryReducer'
 import { FormattedMessage } from 'react-intl'
 import History from 'Components/History'
 import Spinner from 'Components/Spinner'
-import { Icon, Button } from 'semantic-ui-react'
+import { Dropdown } from 'semantic-ui-react'
 import moment from 'moment'
 
-const StudentHistory = ({ student, groupId, view }) => {
-  const [startDate, setStartDate] = useState(
-    moment().clone().startOf('month').subtract(6, 'month').toDate()
-  )
-  const [endDate, setEndDate] = useState(moment().clone().startOf('month').toDate())
-  const maxDate = moment().clone().startOf('month').valueOf()
-  const minDate = 0
-  const [pageSize, setPageSize] = useState(1)
+const StudentHistory = ({ student, setStudent, startDate, endDate, group, view }) => {
   const { pending, history } = useSelector(({ studentHistory }) => studentHistory)
+
+  const studentOptions = group?.students.map(student => ({
+    key: student._id,
+    text: `${student?.userName} (${student?.email})`,
+    value: student,
+  }))
+
+  const filterTestHistoryByDate = () =>
+    history?.filter(test => {
+      const testTime = moment(test.date)
+      return testTime.isAfter(startDate) && testTime.isBefore(endDate)
+    })
 
   /*
   const windowWidth = useWindowDimensions().width
@@ -29,86 +34,57 @@ const StudentHistory = ({ student, groupId, view }) => {
     else setPageSize(1)
   }, [windowWidth])
   */
-  const switchPage = change => {
-    setStartDate(Math.max(minDate, moment(startDate).add(pageSize * change, 'month')))
-    setEndDate(Math.min(maxDate, moment(endDate).add(pageSize * change, 'month')))
-  }
 
   const dispatch = useDispatch()
 
+  const handleStudentChange = student => {
+    setStudent(student)
+  }
+
   useEffect(() => {
     if (!student) return
-    dispatch(getStudentHistory(student._id, groupId, startDate, endDate, view))
+    dispatch(getStudentHistory(student._id, group.group_id, startDate, endDate, view))
   }, [student, view, startDate, endDate])
 
   if (pending) return <Spinner />
-  // <ResponsiveDatePicker maxDate={Math.min(moment().valueOf(), endDate)} selected={startDate} onChange={date => setStartDate(date)} />
-  // <ResponsiveDatePicker minDate={startDate} maxDate={moment().valueOf()} selected={endDate} onChange={date => setEndDate(date)}/>
+
+  const dropDownMenuText = student ? `${student?.userName} (${student?.email})` : '-'
+
   return (
     <div>
-      <hr />
-      {view === 'exercise' ? (
-        <div>
-          <h3>
+      <div className="group-analytics-student-dropdown">
+        <FormattedMessage id="student" />:{' '}
+        <Dropdown
+          text={dropDownMenuText}
+          selection
+          fluid
+          options={studentOptions}
+          onChange={(_, { value }) => handleStudentChange(value)}
+          disabled={!student}
+        />
+      </div>
+
+      <div>
+        <h3>
+          {view === 'exercise' ? (
             <FormattedMessage id="Practice history" />
-          </h3>
-          <br />
-          <span className="sm-label pl-sm">
-            <FormattedMessage id="Showing results for" />
-          </span>
-          <div className="flex pl-sm">
-            <div className="gap-col-sm">
-              <span className="sm-label">
-                <FormattedMessage id="date-start" />:
-              </span>
-              <span>{moment(startDate).format('YYYY.MM.DD')}</span>
-            </div>
-            <div className="gap-col-sm pl-lg">
-              <span className="sm-label">
-                <FormattedMessage id="date-end" />:
-              </span>
-              <span>{moment(endDate).format('YYYY.MM.DD')}</span>
-            </div>
-          </div>
-          <div>
-            <Button
-              onClick={() => switchPage(1)}
-              disabled={endDate >= moment(maxDate).subtract(1, 'day')}
-            >
-              <Icon name="angle left" />
-            </Button>
-            <Button onClick={() => switchPage(-1)} disabled={startDate <= minDate}>
-              <Icon name="angle right" />
-            </Button>
-          </div>
-        </div>
-      ) : (
-        <div>
-          <h3>
+          ) : (
             <FormattedMessage id="Test History" />
-          </h3>
-        </div>
-      )}
+          )}
+        </h3>
+      </div>
+
       {student ? (
         <div>
           {view === 'exercise' ? (
-            <History history={history} dateFormat="YYYY.MM" />
+            <History history={filterTestHistoryByDate()} dateFormat="YYYY.MM" />
           ) : (
-            <History history={history} dateFormat="YYYY.MM.DD" />
+            <History history={filterTestHistoryByDate()} dateFormat="YYYY.MM.DD" />
           )}
         </div>
       ) : (
-        <div
-          style={{
-            paddingTop: '5rem',
-            fontSize: '1.3rem',
-            fontStyle: 'italic',
-            display: 'flex',
-            justifyContent: 'center',
-            color: '#777',
-          }}
-        >
-          <FormattedMessage id="select-a-student-from-list" />
+        <div className="group-analytics-no-results">
+          <FormattedMessage id="no-students-in-group" />
         </div>
       )}
     </div>

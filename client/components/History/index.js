@@ -188,7 +188,13 @@ const History = ({ history, dateFormat, handleDelete = null }) => {
     setColors({ ...colors, [color]: e.target.value })
   }
 
-  if (!history) return null
+  if (!history || history.length < 1) {
+    return (
+      <div className="group-analytics-no-results">
+        <FormattedMessage id="no-results-for-chosen-time-period" />
+      </div>
+    )
+  }
   return (
     <div style={{ overflowX: 'scroll', maxWidth: '100%', marginTop: '1em' }}>
       {maxPage > 1 && (
@@ -204,7 +210,7 @@ const History = ({ history, dateFormat, handleDelete = null }) => {
           </Button>
         </div>
       )}
-      {hiddenFeatures && (
+      {hiddenFeatures && 1 === 2 && (
         <>
           <br />
           best:
