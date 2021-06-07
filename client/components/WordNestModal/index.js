@@ -197,6 +197,7 @@ const WordNestModal = ({ open, setOpen, wordToCheck }) => {
           {!smallWindow && hiddenFeatures && (
             <AdditionalInfoToggle showMoreInfo={showMoreInfo} setShowMoreInfo={setShowMoreInfo} />
           )}
+          <Icon onClick={() => setOpen(false)} size="small" name="close" />
         </div>
       </Modal.Header>
       <Modal.Content>
