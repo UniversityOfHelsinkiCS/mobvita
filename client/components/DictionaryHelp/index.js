@@ -220,7 +220,7 @@ const DictionaryHelp = ({ minimized, inWordNestModal }) => {
           <div style={{ display: 'flex' }}>
             <div>{translations}</div>
             <div style={{ alignSelf: 'flex-start', marginLeft: '1em' }}>
-              {!inWordNestModal && words?.length > 0 && learningLanguage === 'Russian' && (
+              {!inWordNestModal && words?.length > 0 && learningLanguage === 'Russian' && !clue && (
                 <Button basic size="mini" onClick={handleNestButtonClick} data-cy="nest-button">
                   <img src={images.nestIcon} alt="nest icon" width="22" />
                 </Button>
