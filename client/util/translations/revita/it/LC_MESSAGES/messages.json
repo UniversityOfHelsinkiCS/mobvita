@@ -970,5 +970,7 @@
     "people": "Persone",
     "student": "Studente",
     "no-students-in-group": "Il gruppo non contiene nessuno studente al momento",
-    "wordnest-info-text": "The main word in the nest is on the left, words derived from it are below it and indented once to the right, and so on.  More common and frequent words have stronger color.  Click on the links →to see related nests."
+    "wordnest-info-text": "La parola principale del nodo si trova sulla sinistra, le sue parole derivate di trovano sotto di essa e venogno indendate verso destra. Le parole comuni e più frequenti hanno un colore più acceso. Clicca sui link → per vedere i suoi nidi.",
+    "no-results-for-time-period": "No results for this time period",
+    "no-results-for-chosen-time-period": "Nessun risultato per il periodo di tempo selezionato"
 }
