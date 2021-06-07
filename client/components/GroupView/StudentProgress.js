@@ -30,8 +30,8 @@ const StudentProgress = ({ student, setStudent, startDate, endDate, group }) => 
     dispatch(getStudentProgress(student._id, group.group_id, learningLanguage))
   }, [student])
 
-  const handleStudentChange = key => {
-    setStudent(key)
+  const handleStudentChange = value => {
+    setStudent(value)
   }
 
   if (pending) return <Spinner />
@@ -45,7 +45,7 @@ const StudentProgress = ({ student, setStudent, startDate, endDate, group }) => 
           selection
           fluid
           options={studentOptions}
-          onChange={(_, { key }) => handleStudentChange(key)}
+          onChange={(_, { value }) => handleStudentChange(value)}
           disabled={!student}
         />
       </div>
