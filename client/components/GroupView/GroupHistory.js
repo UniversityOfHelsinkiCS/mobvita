@@ -4,17 +4,10 @@ import { getStudentHistory } from 'Utilities/redux/groupHistoryReducer'
 import { FormattedMessage } from 'react-intl'
 import History from 'Components/History'
 import Spinner from 'Components/Spinner'
-import { Dropdown } from 'semantic-ui-react'
 import moment from 'moment'
 
-const StudentHistory = ({ student, setStudent, startDate, endDate, group, view }) => {
+const StudentHistory = ({ student, startDate, endDate, group, view }) => {
   const { pending, history } = useSelector(({ studentHistory }) => studentHistory)
-
-  const studentOptions = group?.students.map(student => ({
-    key: student._id,
-    text: `${student?.userName} (${student?.email})`,
-    value: student,
-  }))
 
   const filterTestHistoryByDate = () =>
     history?.filter(test => {
@@ -37,10 +30,6 @@ const StudentHistory = ({ student, setStudent, startDate, endDate, group, view }
 
   const dispatch = useDispatch()
 
-  const handleStudentChange = student => {
-    setStudent(student)
-  }
-
   useEffect(() => {
     if (!student) return
     dispatch(getStudentHistory(student._id, group.group_id, startDate, endDate, view))
@@ -48,22 +37,8 @@ const StudentHistory = ({ student, setStudent, startDate, endDate, group, view }
 
   if (pending) return <Spinner />
 
-  const dropDownMenuText = student ? `${student?.userName} (${student?.email})` : '-'
-
   return (
     <div>
-      <div className="group-analytics-student-dropdown">
-        <FormattedMessage id="student" />:{' '}
-        <Dropdown
-          text={dropDownMenuText}
-          selection
-          fluid
-          options={studentOptions}
-          onChange={(_, { value }) => handleStudentChange(value)}
-          disabled={!student}
-        />
-      </div>
-
       <div>
         <h3>
           {view === 'exercise' ? (

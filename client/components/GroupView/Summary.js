@@ -86,14 +86,13 @@ const Summary = ({ setStudent, startDate, endDate, group, isTeaching, getSummary
 
   return (
     <>
-      <br />
       {pending ? (
         <Spinner />
       ) : (
         <>
           {summary?.length > 0 ? (
             <>
-              <div style={{ display: 'flex', justifyContent: 'flex-end' }}>
+              <div className="justify-end" style={{ marginTop: '2em' }}>
                 <CSVLink filename={filename} data={summary}>
                   <FormattedMessage id="download-csv" />
                 </CSVLink>

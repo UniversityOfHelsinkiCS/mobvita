@@ -10,6 +10,7 @@ import Spinner from 'Components/Spinner'
 import useWindowDimension from 'Utilities/windowDimensions'
 import ResponsiveDatePicker from 'Components/ResponsiveDatePicker'
 import moment from 'moment'
+import { Dropdown } from 'semantic-ui-react'
 import Summary from './Summary'
 import StudentProgress from './StudentProgress'
 import NoGroupsView from './NoGroupsView'
@@ -31,10 +32,25 @@ const GroupAnalytics = ({ role }) => {
   const groups = totalGroups.filter(group => group.is_teaching === (role === 'teacher'))
   const currentGroup = totalGroups.find(group => group.group_id === currentGroupId)
   const bigScreen = useWindowDimension().width >= 650
+  const marginLeftButton = '2px'
+
+  const dropDownMenuText = currentStudent
+    ? `${currentStudent?.userName} (${currentStudent?.email})`
+    : '-'
+
+  const studentOptions = currentGroup?.students.map(student => ({
+    key: student._id,
+    text: `${student?.userName} (${student?.email})`,
+    value: JSON.stringify(student), // needs to be string
+  }))
 
   const PickDate = ({ date, setDate }) => (
     <ResponsiveDatePicker selected={date} onChange={date => setDate(date)} />
   )
+
+  const handleStudentChange = value => {
+    setCurrentStudent(JSON.parse(value))
+  }
 
   useEffect(() => {
     dispatch(getGroups())
@@ -74,8 +90,6 @@ const GroupAnalytics = ({ role }) => {
     currentGroup.students.sort(compare)
   }
 
-  const marginLeftButton = '2px'
-
   if (pending || (totalGroups.length > 0 && !currentGroup))
     return (
       <div style={{ height: '80vh' }}>
@@ -84,8 +98,6 @@ const GroupAnalytics = ({ role }) => {
     )
 
   if (totalGroups.length === 0) return <NoGroupsView role={role} />
-
-  const currentUserIsTeacher = currentGroup.is_teaching
 
   return (
     <div className="group-container">
@@ -169,6 +181,20 @@ const GroupAnalytics = ({ role }) => {
         )}
       </div>
 
+      {content !== 'summary' && (
+        <div className="group-analytics-student-dropdown">
+          <FormattedMessage id="student" />:{' '}
+          <Dropdown
+            text={dropDownMenuText}
+            selection
+            fluid
+            options={studentOptions}
+            onChange={(_, { value }) => handleStudentChange(value)}
+            disabled={!currentStudent}
+          />
+        </div>
+      )}
+
       {content === 'summary' && currentGroup.is_teaching && (
         <>
           <Summary
@@ -187,7 +213,6 @@ const GroupAnalytics = ({ role }) => {
       {content === 'progress' && currentGroup.is_teaching && (
         <StudentProgress
           student={currentStudent}
-          setStudent={setCurrentStudent}
           startDate={startDate}
           endDate={endDate}
           group={currentGroup}
@@ -227,7 +252,6 @@ const GroupAnalytics = ({ role }) => {
           </div>
           <GroupHistory
             student={currentStudent}
-            setStudent={setCurrentStudent}
             startDate={startDate}
             endDate={endDate}
             group={currentGroup}
