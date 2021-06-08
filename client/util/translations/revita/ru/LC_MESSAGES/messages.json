@@ -974,5 +974,6 @@
     "no-students-in-group": "В группе нет учеников",
     "wordnest-info-text": "Главные слова в гнезде - слева, слова образованные от них - под ними, чуть правее, и т.д. Более частотные слова выделены более темным шрифтом, более редкие - более светлым. По ссылкам → можно пройти на связанные гнезда.",
     "no-results-for-time-period": "No results for this time period",
-    "no-results-for-chosen-time-period": "No results for chosen time period"
+    "no-results-for-chosen-time-period": "No results for chosen time period",
+    "start-test": "Начать тест"
 }

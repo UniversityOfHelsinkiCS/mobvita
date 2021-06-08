@@ -972,5 +972,6 @@
     "no-students-in-group": "Il gruppo non contiene nessuno studente al momento",
     "wordnest-info-text": "La parola principale del nodo si trova sulla sinistra, le sue parole derivate di trovano sotto di essa e venogno indendate verso destra. Le parole comuni e più frequenti hanno un colore più acceso. Clicca sui link → per vedere i suoi nidi.",
     "no-results-for-time-period": "No results for this time period",
-    "no-results-for-chosen-time-period": "Nessun risultato per il periodo di tempo selezionato"
+    "no-results-for-chosen-time-period": "Nessun risultato per il periodo di tempo selezionato",
+    "start-test": "Inizia il test"
 }

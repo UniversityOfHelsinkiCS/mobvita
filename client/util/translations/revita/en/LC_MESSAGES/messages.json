@@ -971,5 +971,6 @@
     "no-students-in-group": "This group doesn't have any students at the moment",
     "wordnest-info-text": "The main word in the nest is on the left, words derived from it are below it and indented once to the right, and so on.  More common and frequent words have stronger color.  Click on the links →to see related nests.",
     "no-results-for-time-period": "No results for this time period",
-    "no-results-for-chosen-time-period": "No results for chosen time period"
+    "no-results-for-chosen-time-period": "No results for chosen time period",
+    "start-test": "Start test"
 }
