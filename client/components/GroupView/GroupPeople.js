@@ -1,9 +1,8 @@
-import React, { useEffect, useState } from 'react'
+import React, { useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { getGroups, removeFromGroup, getGroupToken } from 'Utilities/redux/groupsReducer'
+import { removeFromGroup } from 'Utilities/redux/groupsReducer'
 import { FormattedMessage } from 'react-intl'
 import { Icon, Table } from 'semantic-ui-react'
-import { updateGroupSelect } from 'Utilities/redux/userReducer'
 import Spinner from 'Components/Spinner'
 import NoGroupsView from './NoGroupsView'
 import AddToGroup from './AddToGroup'
@@ -13,30 +12,8 @@ const GroupPeople = ({ role }) => {
   const dispatch = useDispatch()
 
   const [addToGroupId, setAddToGroupId] = useState(null)
-  const { groups: totalGroups, created, pending } = useSelector(({ groups }) => groups)
-  const groups = totalGroups.filter(group => group.is_teaching === (role === 'teacher'))
+  const { groups: totalGroups, pending } = useSelector(({ groups }) => groups)
   const currentGroup = totalGroups.find(group => group.group_id === currentGroupId)
-
-  useEffect(() => {
-    dispatch(getGroups())
-  }, [])
-
-  useEffect(() => {
-    if (!groups || groups.length === 0) return
-    if (currentGroupId && groups.some(group => group.group_id === currentGroupId)) return
-    dispatch(updateGroupSelect(groups[0].group_id))
-  }, [totalGroups])
-
-  useEffect(() => {
-    if (currentGroup && currentGroup.is_teaching) {
-      dispatch(getGroupToken(currentGroupId))
-    }
-  }, [currentGroup])
-
-  useEffect(() => {
-    if (!created) return
-    dispatch(updateGroupSelect(created.group_id))
-  }, [created])
 
   const compare = (a, b) => {
     if (a.userName.toLowerCase() < b.userName.toLowerCase()) return -1

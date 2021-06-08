@@ -156,8 +156,8 @@ const GroupCard = ({
 
   const role = isTeaching ? 'teacher' : 'student'
 
-  const handleAnalyticsClick = () => {
-    dispatch(updateGroupSelect(id))
+  const handleAnalyticsClick = async () => {
+    await dispatch(updateGroupSelect(id))
     history.push(`/groups/${role}/analytics`)
   }
 
@@ -171,8 +171,8 @@ const GroupCard = ({
     history.push(`/groups/${role}/${id}/concepts`)
   }
 
-  const handlePeopleClick = () => {
-    dispatch(updateGroupSelect(id))
+  const handlePeopleClick = async () => {
+    await dispatch(updateGroupSelect(id))
     history.push(`/groups/${role}/people`)
   }
 

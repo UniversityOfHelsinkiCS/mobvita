@@ -1,11 +1,9 @@
 import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { getGroups, getGroupToken } from 'Utilities/redux/groupsReducer'
 import { ButtonGroup, ToggleButton } from 'react-bootstrap'
 import { FormattedMessage } from 'react-intl'
 import { getSummary } from 'Utilities/redux/groupSummaryReducer'
 import { learningLanguageSelector } from 'Utilities/common'
-import { updateGroupSelect } from 'Utilities/redux/userReducer'
 import Spinner from 'Components/Spinner'
 import useWindowDimension from 'Utilities/windowDimensions'
 import ResponsiveDatePicker from 'Components/ResponsiveDatePicker'
@@ -28,8 +26,7 @@ const GroupAnalytics = ({ role }) => {
   const dispatch = useDispatch()
   const currentGroupId = useSelector(({ user }) => user.data.user.last_selected_group)
   const learningLanguage = useSelector(learningLanguageSelector)
-  const { groups: totalGroups, created, pending } = useSelector(({ groups }) => groups)
-  const groups = totalGroups.filter(group => group.is_teaching === (role === 'teacher'))
+  const { groups: totalGroups, pending } = useSelector(({ groups }) => groups)
   const currentGroup = totalGroups.find(group => group.group_id === currentGroupId)
   const bigScreen = useWindowDimension().width >= 650
   const marginLeftButton = '2px'
@@ -51,27 +48,6 @@ const GroupAnalytics = ({ role }) => {
   const handleStudentChange = value => {
     setCurrentStudent(JSON.parse(value))
   }
-
-  useEffect(() => {
-    dispatch(getGroups())
-  }, [])
-
-  useEffect(() => {
-    if (!groups || groups.length === 0) return
-    if (currentGroupId && groups.some(group => group.group_id === currentGroupId)) return
-    dispatch(updateGroupSelect(groups[0].group_id))
-  }, [totalGroups])
-
-  useEffect(() => {
-    if (currentGroup && currentGroup.is_teaching) {
-      dispatch(getGroupToken(currentGroupId))
-    }
-  }, [currentGroup])
-
-  useEffect(() => {
-    if (!created) return
-    dispatch(updateGroupSelect(created.group_id))
-  }, [created])
 
   useEffect(() => {
     if (currentGroup?.students) {
