@@ -30,9 +30,7 @@ const Concept = ({
   const intl = useIntl()
 
   const conceptNameClass =
-    exerEnabled === undefined || exerEnabled || (showTestConcepts && testEnabled)
-      ? 'concept-name'
-      : 'concept-name concept-disabled'
+    exerEnabled === undefined || exerEnabled ? 'concept-name' : 'concept-name concept-disabled'
 
   const caretIconName = open ? 'caret down' : 'caret right'
   const isLeaf = concept.children.length === 0
