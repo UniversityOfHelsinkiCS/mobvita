@@ -24,7 +24,7 @@ describe("groups", function () {
 
     cy.get('[type=submit]').click()
     cy.contains('my_test_group')
-    cy.visit('http://localhost:8000/groups/teacher/people')
+    cy.get('[data-cy=people-button]').click()
     cy.contains(this.teacher.username)
     cy.contains(this.student.username)
 
@@ -78,11 +78,11 @@ describe("groups", function () {
         group_name: 'other group'
       }
     })
+    cy.visit('http://localhost:8000/groups/teacher')
     cy.reload()
     cy.contains('other group')
 
     cy.get('[data-cy=people-button]').click()
-    cy.visit('http://localhost:8000/groups/teacher/people')
     cy.contains('other group')
     cy.get('[data-cy=add-to-group-button]').click()
 

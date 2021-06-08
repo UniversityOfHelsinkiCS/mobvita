@@ -28,7 +28,7 @@ const GroupActionModal = ({ trigger, role }) => {
     const teachersToAdd = teachers.split(',').map(p => p.trim())
 
     dispatch(createGroup(groupName, description, studentsToAdd, teachersToAdd))
-    history.push(`/groups/${role}/analytics`)
+    history.push(`/groups/${role}`)
   }
 
   return (
