@@ -25,6 +25,8 @@ const NestWord = ({ wordNest, wordToCheck, showMoreInfo, children }) => {
   const voice = respVoiceLanguages[learningLanguage]
   const [open, setOpen] = useState(true)
 
+  console.log('word nest:', wordNest)
+
   const getWordStyle = word => {
     if (word === wordToCheck)
       return {

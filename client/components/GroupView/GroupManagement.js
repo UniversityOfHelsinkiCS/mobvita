@@ -16,6 +16,8 @@ import {
   setGroupTestDeadline,
 } from 'Utilities/redux/groupsReducer'
 
+import { getTestQuestions } from 'Utilities/redux/testReducer'
+
 import { setNotification } from 'Utilities/redux/notificationReducer'
 import Spinner from 'Components/Spinner'
 import Subheader from 'Components/Subheader'
@@ -222,6 +224,11 @@ const GroupCard = ({
     setChosenTestDuration(Date.now() + value)
   }
 
+  const handleTestStartClick = async () => {
+    await history.push('/tests')
+    dispatch(getTestQuestions(language, id, true))
+  }
+
   const testTimeOptions = [
     {
       key: '2-hours',
@@ -302,6 +309,11 @@ const GroupCard = ({
                   <Icon name="pencil alternate" /> <FormattedMessage id={testButtonTextKey} />
                 </Button>
               </>
+            )}
+            {!isTeaching && testEnabled && (
+              <Button data-cy="start-test-button" onClick={handleTestStartClick}>
+                <Icon name="pencil alternate" /> <FormattedMessage id="start-test" />
+              </Button>
             )}
           </div>
           <div
