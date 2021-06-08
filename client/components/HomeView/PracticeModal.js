@@ -106,8 +106,7 @@ const PracticeModal = ({ trigger }) => {
     setFilteredStories(filtered)
   }, [stories, libraries, categories])
 
-
-  useEffect(()=>{
+  useEffect(() => {
     let jump = false
     for (const value of Object.values(libraries)) {
       if (!value) jump = true
@@ -115,9 +114,9 @@ const PracticeModal = ({ trigger }) => {
     for (const value of Object.values(categories)) {
       if (!value) jump = true
     }
-    if (jump && filteredStories.length > 0){
-      console.log(jump)
-      console.log(`/stories/${filteredStories[randomStoryIndex]._id}/practice`)
+    if (jump && filteredStories.length > 0) {
+      // console.log(jump)
+      // console.log(`/stories/${filteredStories[randomStoryIndex]._id}/practice`)
       history.push(`/stories/${filteredStories[randomStoryIndex]._id}/practice`)
     }
   }, [filteredStories, randomStoryIndex])
@@ -134,7 +133,7 @@ const PracticeModal = ({ trigger }) => {
       public: false,
       group: false,
     }
-    const initCategories ={
+    const initCategories = {
       culture: true,
       politics: true,
       science: true,
@@ -174,9 +173,9 @@ const PracticeModal = ({ trigger }) => {
       group: true,
     }
     setLibraries(initLibraries)
-    setCategories( {
-      ...initCategories, 
-      [category]: true
+    setCategories({
+      ...initCategories,
+      [category]: true,
     })
   }
 
@@ -201,12 +200,12 @@ const PracticeModal = ({ trigger }) => {
         </div>
 
         <div className="pt-sm pb-sm">
-          <br/>
-          <br/>
+          <br />
+          <br />
           <div className="sm-label">
             <FormattedMessage id="Library" />:
           </div>
-          <br/>
+          <br />
           <CheckboxGroup
             values={libraries}
             onClick={handleLibraryChange}
@@ -215,12 +214,12 @@ const PracticeModal = ({ trigger }) => {
           />
         </div>
         <div>
-          <br/>
-          <br/>
+          <br />
+          <br />
           <div className="sm-label">
             <FormattedMessage id="Category" />:
           </div>
-          <br/>
+          <br />
           <div
             className="checkbox-group"
             style={{ flexWrap: 'wrap' }}
@@ -248,17 +247,17 @@ const PracticeModal = ({ trigger }) => {
                   </span>
                 </Button>
               ))}
-          <br/>
+            <br />
           </div>
           {false && (
-           <Button
-            block
-            onClick={() => handleCategoryChange('uncategorized')}
-            variant={categories.uncategorized ? 'btn btn-toggle-on' : 'btn btn-toggle-off'}
-            data-cy="other-category"
-           >
-            <FormattedMessage id="Uncategorized" />
-          </Button>
+            <Button
+              block
+              onClick={() => handleCategoryChange('uncategorized')}
+              variant={categories.uncategorized ? 'btn btn-toggle-on' : 'btn btn-toggle-off'}
+              data-cy="other-category"
+            >
+              <FormattedMessage id="Uncategorized" />
+            </Button>
           )}
         </div>
         <div />
