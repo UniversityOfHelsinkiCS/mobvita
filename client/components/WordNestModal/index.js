@@ -4,7 +4,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import { Collapse } from 'react-collapse'
 import DictionaryHelp from 'Components/DictionaryHelp'
 import { getTranslationAction } from 'Utilities/redux/translationReducer'
-import { getWordNestAction } from 'Utilities/redux/wordNestReducer'
+import { getWordNestAction, getLinkedWordNestAction } from 'Utilities/redux/wordNestReducer'
 import {
   learningLanguageSelector,
   speak,
@@ -18,14 +18,19 @@ import AdditionalInfoToggle from './AdditionalInfoToggle'
 
 const NestWord = ({ wordNest, wordToCheck, showMoreInfo, children }) => {
   const dispatch = useDispatch()
-  const { word, raw, rank, others } = wordNest
+  const {
+    word,
+    raw,
+    rank,
+    others,
+    general_ref: generalRef,
+    part_of_compound: partOfCompound,
+  } = wordNest
   const learningLanguage = useSelector(learningLanguageSelector)
   const autoSpeak = useSelector(({ user }) => user.data.user.auto_speak)
   const dictionaryLanguage = useSelector(({ user }) => user.data.user.last_trans_language)
   const voice = respVoiceLanguages[learningLanguage]
   const [open, setOpen] = useState(true)
-
-  console.log('word nest:', wordNest)
 
   const getWordStyle = word => {
     if (word === wordToCheck)
@@ -56,6 +61,15 @@ const NestWord = ({ wordNest, wordToCheck, showMoreInfo, children }) => {
     )
   }
 
+  const handleNestLinkClick = word => {
+    dispatch(
+      getLinkedWordNestAction({
+        word,
+        language: learningLanguage,
+      })
+    )
+  }
+
   const wordStyle = getWordStyle(word)
   const morphemeBoundaryRegex = /[{}()[\]\-/]+/g
   const removeExtraDotRegex = /(^⋅)|(⋅$)|[<>]+/g
@@ -68,11 +82,14 @@ const NestWord = ({ wordNest, wordToCheck, showMoreInfo, children }) => {
     .replace('=', '-')
 
   // Don't print these words. They are very rare or might even not exist
-  if (others.includes('---')) return null
+  if (others.includes('---') || others.includes('???')) return null
 
   const additionalInfo = others?.map(e => e.replace(/,[\s]+/g, ''))
-  const additionalInfoCleaned = additionalInfo?.filter(e => !e.includes('---'))
+  const additionalInfoCleaned = additionalInfo?.filter(
+    e => !e.includes('---') && !e.includes('!!!')
+  )
   const additionalInfoString = additionalInfoCleaned.join(', ')
+  const linkedNests = partOfCompound.concat(generalRef)
 
   return (
     <div className="wordnest">
@@ -89,10 +106,24 @@ const NestWord = ({ wordNest, wordToCheck, showMoreInfo, children }) => {
               style={wordStyle}
               dangerouslySetInnerHTML={{ __html: cleanedWord }}
             />{' '}
-            {showMoreInfo && additionalInfoCleaned.length > 0 && (
-              <span className="wordnest-additional-info">{additionalInfoString}</span>
-            )}
           </span>
+
+          {linkedNests.map(nestLink => (
+            <span
+              key={nestLink}
+              className="wordnest-additional-info wordnest-link"
+              onClick={() => handleNestLinkClick(nestLink)}
+              onKeyPress={() => setOpen(!open)}
+              role="button"
+              tabIndex="0"
+            >
+              ⇒ {nestLink}
+            </span>
+          ))}
+
+          {showMoreInfo && additionalInfoCleaned.length > 0 && (
+            <span className="wordnest-additional-info">{additionalInfoString}</span>
+          )}
         </div>
       </div>
       <Collapse isOpened={open}>{children}</Collapse>
@@ -140,7 +171,7 @@ const makeWordNest = (parents, wordsWithIDs) =>
     return cleanConcept
   })
 
-const WordNestModal = ({ open, setOpen, wordToCheck }) => {
+const WordNestModal = ({ open, setOpen, wordToCheck, setWordToCheck }) => {
   const dispatch = useDispatch()
   const learningLanguage = useSelector(learningLanguageSelector)
   const { data: words } = useSelector(({ wordNest }) => wordNest)
@@ -152,14 +183,21 @@ const WordNestModal = ({ open, setOpen, wordToCheck }) => {
   const wordNest = makeWordNest(rootLemmas, words)
   const intl = useIntl()
 
+  const formatModalTitle = () => [...new Set(rootLemmas?.map(w => w.word))]?.join(', ')
+
+  const handleModalclose = () => {
+    setWordToCheck('-')
+    setOpen(false)
+  }
+
   useEffect(() => {
     setShowMoreInfo(false)
-    if (wordToCheck) {
-      const rootForms = rootLemmas?.map(w => w.word)
-      const uniqueRootForms = [...new Set(rootForms)]
-      setModalTitle(uniqueRootForms?.join(', '))
-    }
+    if (wordToCheck) setModalTitle(formatModalTitle())
   }, [open])
+
+  useEffect(() => {
+    setModalTitle(formatModalTitle())
+  }, [rootLemmas])
 
   useEffect(() => {
     if (wordToCheck) {
@@ -177,13 +215,7 @@ const WordNestModal = ({ open, setOpen, wordToCheck }) => {
   }, [wordToCheck])
 
   return (
-    <Modal
-      open={open}
-      centered={false}
-      dimmer="blurring"
-      size="large"
-      onClose={() => setOpen(false)}
-    >
+    <Modal open={open} centered={false} dimmer="blurring" size="large" onClose={handleModalclose}>
       <Modal.Header className="bold" as="h2">
         <div style={{ display: 'flex', justifyContent: 'space-between' }}>
           <span>
@@ -199,7 +231,7 @@ const WordNestModal = ({ open, setOpen, wordToCheck }) => {
           {!smallWindow && hiddenFeatures && (
             <AdditionalInfoToggle showMoreInfo={showMoreInfo} setShowMoreInfo={setShowMoreInfo} />
           )}
-          <Icon onClick={() => setOpen(false)} size="small" name="close" />
+          <Icon onClick={handleModalclose} size="small" name="close" />
         </div>
       </Modal.Header>
       <Modal.Content>

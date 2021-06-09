@@ -83,7 +83,7 @@ const Lemma = ({ lemma, sourceWord, handleSourceWordClick, userUrl, inflectionRe
           <Icon name="angle double left" />
           {sourceWord}
         </span>
-      )}
+      )}  
     </div>
   )
 }
@@ -92,7 +92,7 @@ const DictionaryHelp = ({ minimized, inWordNestModal }) => {
   const [showHelp, setShow] = useState(false)
   const { width: windowWidth } = useWindowDimensions()
   const [wordNestModalOpen, setWordNestModalOpen] = useState(false)
-
+  const [wordNestChosenWord, setWordNestChosenWord] = useState('')
   const translationLanguageCode = useSelector(({ user }) => user.data.user.last_trans_language)
   const learningLanguage = useLearningLanguage()
   const dictionaryLanguage = useDictionaryLanguage()
@@ -128,6 +128,10 @@ const DictionaryHelp = ({ minimized, inWordNestModal }) => {
       })
     )
   }
+
+  useEffect(() => {
+    if (translation) setWordNestChosenWord(translation[0]?.lemma)
+  }, [translation])
 
   const dictionaryOptions = translatableLanguages[learningLanguage]
     ? translatableLanguages[learningLanguage].map(element => ({
@@ -301,7 +305,8 @@ const DictionaryHelp = ({ minimized, inWordNestModal }) => {
           </div>
           {!inWordNestModal && learningLanguage === 'Russian' && (
             <WordNestModal
-              wordToCheck={translation ? translation[0]?.lemma : ''}
+              wordToCheck={wordNestChosenWord}
+              setWordToCheck={setWordNestChosenWord}
               open={wordNestModalOpen}
               setOpen={setWordNestModalOpen}
             />

@@ -1340,12 +1340,16 @@ html, body, #root {
     font-size: 16px;
   }
 
-  &-word:hover {
-    color: black!important;
-  }
+  &-word {
+    margin-right: 0.5em;
 
-  &-word:focus {
-    color: black;
+    &:hover {
+      color: black!important;
+    }
+
+    &:focus {
+      color: black;
+    }
   }
 
   &-chosen-word {
@@ -1359,10 +1363,32 @@ html, body, #root {
   &-additional-info {
     color: #3b3b3b;
     font-size: 0.75em;
-    background-color: #ededed;
+    background-color: #f1f1f1;
     border-radius: 0.5em;
     padding: 0.1em;
+    margin: 0.1em;
   }
+
+  &-link {
+    color: #3b3b3b;
+    font-size: 0.75em;
+    background-color: #e6effa;
+    border-radius: 0.5em;
+    padding: 0.1em;
+    margin: 0.1em;
+
+    &:hover {
+      background-color: #c2ddfc;
+    }
+
+    &:focus {
+      transition-delay:1.5s;
+      color: rgb(247, 62, 62);
+      background-color: #c2ddfc;
+    }
+  }
+
+  
 
   @media (max-width: 760px) {
     padding-left: 2em;
