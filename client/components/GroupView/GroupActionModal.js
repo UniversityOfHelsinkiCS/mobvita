@@ -19,7 +19,7 @@ const GroupActionModal = ({ trigger, role }) => {
   const join = event => {
     event.preventDefault()
     dispatch(joinGroup(token))
-    history.push(`/groups/${role}/management`)
+    history.push(`/groups/${role}`)
   }
 
   const addGroup = event => {
