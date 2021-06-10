@@ -95,7 +95,7 @@ const NestWord = ({ wordNest, hasSeveralRoots, wordToCheck, showMoreInfo, childr
 
   return (
     <div className="wordnest">
-      {ancestors.length === 0 && hasSeveralRoots && <Divider />}
+      {ancestors.length === 0 && hasSeveralRoots && <Divider style={{ width: '95%' }} />}
       <div className="wordnest-row">
         <div style={{ display: 'flex', flex: 1 }}>
           <span
