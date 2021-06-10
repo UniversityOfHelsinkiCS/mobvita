@@ -90,6 +90,7 @@ const NestWord = ({ wordNest, wordToCheck, showMoreInfo, children }) => {
   )
   const additionalInfoString = additionalInfoCleaned.join(', ')
   const linkedNests = partOfCompound.concat(generalRef)
+  const linkedNestsCleaned = linkedNests?.map(e => e.trim().replace(/;/g, ''))
 
   return (
     <div className="wordnest">
@@ -108,7 +109,7 @@ const NestWord = ({ wordNest, wordToCheck, showMoreInfo, children }) => {
             />{' '}
           </span>
 
-          {linkedNests.map(nestLink => (
+          {linkedNestsCleaned.map(nestLink => (
             <span
               key={nestLink}
               className="wordnest-additional-info wordnest-link"
