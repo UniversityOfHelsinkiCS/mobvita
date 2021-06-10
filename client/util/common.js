@@ -231,7 +231,23 @@ export const checkRevitaStatus = async () => {
   return result
 }
 
-const defaultAllowed = ['b', 'i', 'em', 'strong', 'br', 'mark', 'small', 'sub', 'sup', 'ins', 'del']
+const defaultAllowed = [
+  'b',
+  'i',
+  'em',
+  'strong',
+  'br',
+  'mark',
+  'small',
+  'sub',
+  'sup',
+  'ins',
+  'del',
+  'h3',
+  'br',
+  'ul',
+  'li',
+]
 
 export const sanitizeHtml = (dirty, allowedTags = defaultAllowed) => {
   const defaultOptions = { allowedTags }
