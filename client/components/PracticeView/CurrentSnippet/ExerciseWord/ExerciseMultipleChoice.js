@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { useSelector } from 'react-redux'
 import { Dropdown } from 'semantic-ui-react'
-import { getTextWidth } from 'Utilities/common'
+import { getTextWidth, sanitizeHtml } from 'Utilities/common'
 import Tooltip from 'Components/PracticeView/Tooltip'
 
 const ExerciseMultipleChoice = ({ word, handleChange }) => {
@@ -25,7 +25,6 @@ const ExerciseMultipleChoice = ({ word, handleChange }) => {
     setClassName(getExerciseClass(tested, isWrong))
   }, [tested])
 
-
   useEffect(() => {
     const temp = word.choices.sort().map(choice => ({
       key: `${word.ID}_${choice}`,
@@ -35,15 +34,13 @@ const ExerciseMultipleChoice = ({ word, handleChange }) => {
     setOptions(temp)
   }, [word])
 
-
   const maximumLength = word.choices.reduce((maxLength, currLength) => {
     if (currLength.length > maxLength) return currLength.length
     return maxLength
   }, 0)
 
-
   let testString = ''
-  word.choices.forEach((choice) => {
+  word.choices.forEach(choice => {
     if (choice.length > testString.length) {
       testString = choice
     }
@@ -59,10 +56,16 @@ const ExerciseMultipleChoice = ({ word, handleChange }) => {
 
     handleChange(e, word, data)
   }
-  
+
+  const formattedGreenTooltipText = word.message?.replace(/(\.)[\s]*/g, '$1<br />')
+
   const tooltip = (
     <div>
-      {word.message && <div className="tooltip-green">{word.message}</div>}
+      {word.message && (
+        <div className="tooltip-green">
+          <span dangerouslySetInnerHTML={sanitizeHtml(formattedGreenTooltipText)} />
+        </div>
+      )}
     </div>
   )
 

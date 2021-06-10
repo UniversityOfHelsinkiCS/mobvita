@@ -1,7 +1,13 @@
 import React, { createRef, useState, useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { Icon } from 'semantic-ui-react'
-import { getTextWidth, speak, learningLanguageSelector, respVoiceLanguages } from 'Utilities/common'
+import {
+  getTextWidth,
+  speak,
+  learningLanguageSelector,
+  respVoiceLanguages,
+  sanitizeHtml,
+} from 'Utilities/common'
 import { setFocusedWord } from 'Utilities/redux/practiceReducer'
 import Tooltip from 'Components/PracticeView/Tooltip'
 
@@ -44,7 +50,7 @@ const ExerciseHearing = ({ word, handleChange }) => {
   }, [currentAnswer])
 
   const speakerClickHandler = word => {
-    //speak(word.audio, voice)
+    // speak(word.audio, voice)
     inputRef.current.focus()
   }
 
@@ -100,9 +106,15 @@ const ExerciseHearing = ({ word, handleChange }) => {
     }
   }
 
+  const formattedGreenTooltipText = word.message?.replace(/(\.)[\s]*/g, '$1<br />')
+
   const tooltip = (
     <div>
-      {word.message && <div className="tooltip-green">{word.message}</div>}
+      {word.message && (
+        <div className="tooltip-green">
+          <span dangerouslySetInnerHTML={sanitizeHtml(formattedGreenTooltipText)} />
+        </div>
+      )}
     </div>
   )
 

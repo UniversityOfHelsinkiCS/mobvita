@@ -5,6 +5,7 @@ import {
   learningLanguageSelector,
   respVoiceLanguages,
   speak,
+  sanitizeHtml,
 } from 'Utilities/common'
 import { getTranslationAction, setWords } from 'Utilities/redux/translationReducer'
 import Tooltip from 'Components/PracticeView/Tooltip'
@@ -40,9 +41,13 @@ const RightAnswer = ({ word }) => {
     }
   }
 
+  const formattedGreenTooltipText = word.message?.replace(/(\.)[\s]*/g, '$1<br />')
+
   const tooltip = (
     <div className="tooltip-green">
-      <div>{word.message}</div>
+      <div>
+        <span dangerouslySetInnerHTML={sanitizeHtml(formattedGreenTooltipText)} />
+      </div>
     </div>
   )
 
