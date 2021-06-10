@@ -1362,20 +1362,20 @@ html, body, #root {
 
   &-additional-info {
     color: #3b3b3b;
-    font-size: 0.75em;
+    font-size: 0.85em;
     background-color: #f1f1f1;
     border-radius: 0.5em;
-    padding: 0.1em;
-    margin: 0.1em;
+    padding: 0em  0.15em;
+    margin: 0.075em;
   }
 
   &-link {
     color: #3b3b3b;
-    font-size: 0.75em;
+    font-size: 0.85em;
     background-color: #e6effa;
     border-radius: 0.5em;
-    padding: 0.1em;
-    margin: 0.1em;
+    padding: 0em  0.15em;
+    margin: 0.075em;
 
     &:hover {
       background-color: #c2ddfc;

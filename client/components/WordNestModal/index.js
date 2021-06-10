@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import { Modal, Popup, Icon } from 'semantic-ui-react'
+import { Modal, Popup, Icon, Divider } from 'semantic-ui-react'
 import { useDispatch, useSelector } from 'react-redux'
 import { Collapse } from 'react-collapse'
 import DictionaryHelp from 'Components/DictionaryHelp'
@@ -16,12 +16,13 @@ import { FormattedMessage, useIntl } from 'react-intl'
 import ReportButton from 'Components/ReportButton'
 import AdditionalInfoToggle from './AdditionalInfoToggle'
 
-const NestWord = ({ wordNest, wordToCheck, showMoreInfo, children }) => {
+const NestWord = ({ wordNest, hasSeveralRoots, wordToCheck, showMoreInfo, children }) => {
   const dispatch = useDispatch()
   const {
     word,
     raw,
     rank,
+    ancestors,
     others,
     general_ref: generalRef,
     part_of_compound: partOfCompound,
@@ -94,6 +95,7 @@ const NestWord = ({ wordNest, wordToCheck, showMoreInfo, children }) => {
 
   return (
     <div className="wordnest">
+      {ancestors.length === 0 && hasSeveralRoots && <Divider />}
       <div className="wordnest-row">
         <div style={{ display: 'flex', flex: 1 }}>
           <span
@@ -132,20 +134,34 @@ const NestWord = ({ wordNest, wordToCheck, showMoreInfo, children }) => {
   )
 }
 
-const NestBranch = ({ wordNest, children, wordToCheck, showMoreInfo, ...props }) => {
+const NestBranch = ({
+  wordNest,
+  wordToCheck,
+  hasSeveralRoots,
+  showMoreInfo,
+  children,
+  ...props
+}) => {
   return (
-    <NestWord wordToCheck={wordToCheck} wordNest={wordNest} showMoreInfo={showMoreInfo} {...props}>
+    <NestWord
+      wordNest={wordNest}
+      hasSeveralRoots={hasSeveralRoots}
+      wordToCheck={wordToCheck}
+      showMoreInfo={showMoreInfo}
+      {...props}
+    >
       {children}
     </NestWord>
   )
 }
 
-const WordNest = ({ wordNest, wordToCheck, showMoreInfo }) => {
+const WordNest = ({ wordNest, hasSeveralRoots, wordToCheck, showMoreInfo }) => {
   return (
     <NestBranch
       wordToCheck={wordToCheck}
       key={`${wordNest.word}-${wordNest.children?.length}`}
       wordNest={wordNest}
+      hasSeveralRoots={hasSeveralRoots}
       showMoreInfo={showMoreInfo}
     >
       {wordNest.children &&
@@ -153,6 +169,7 @@ const WordNest = ({ wordNest, wordToCheck, showMoreInfo }) => {
           <WordNest
             key={`${wordNest.word}-${index}`}
             wordNest={n}
+            hasSeveralRoots={hasSeveralRoots}
             wordToCheck={wordToCheck}
             showMoreInfo={showMoreInfo}
           />
@@ -173,16 +190,18 @@ const makeWordNest = (parents, wordsWithIDs) =>
   })
 
 const WordNestModal = ({ open, setOpen, wordToCheck, setWordToCheck }) => {
+  const intl = useIntl()
   const dispatch = useDispatch()
   const learningLanguage = useSelector(learningLanguageSelector)
   const { data: words } = useSelector(({ wordNest }) => wordNest)
   const { width: windowWidth, height: windowHeight } = useWindowDimensions()
   const smallWindow = windowWidth < 1024
+
   const [modalTitle, setModalTitle] = useState()
   const [showMoreInfo, setShowMoreInfo] = useState(false)
   const rootLemmas = words?.filter(e => e.parents?.length === 0)
+  const hasSeveralRoots = rootLemmas?.length > 1
   const wordNest = makeWordNest(rootLemmas, words)
-  const intl = useIntl()
 
   const formatModalTitle = () => [...new Set(rootLemmas?.map(w => w.word))]?.join(', ')
 
@@ -249,6 +268,7 @@ const WordNestModal = ({ open, setOpen, wordToCheck, setWordToCheck }) => {
                 <WordNest
                   key={`${n.word}-${index}`}
                   wordNest={n}
+                  hasSeveralRoots={hasSeveralRoots}
                   wordToCheck={wordToCheck}
                   showMoreInfo={showMoreInfo}
                 />
@@ -280,7 +300,12 @@ const WordNestModal = ({ open, setOpen, wordToCheck, setWordToCheck }) => {
               }}
             >
               {wordNest?.map((n, index) => (
-                <WordNest key={`${n.word}-${index}`} wordNest={n} wordToCheck={wordToCheck} />
+                <WordNest
+                  key={`${n.word}-${index}`}
+                  wordNest={n}
+                  hasSeveralRoots={hasSeveralRoots}
+                  wordToCheck={wordToCheck}
+                />
               ))}
             </div>
             <hr />
