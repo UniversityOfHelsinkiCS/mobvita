@@ -4,7 +4,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import { FormattedMessage } from 'react-intl'
 import { getNews } from 'Utilities/redux/newsReducer'
 import { getMetadata } from 'Utilities/redux/metadataReducer'
-import { learningLanguageSelector } from 'Utilities/common'
+import { sanitizeHtml, learningLanguageSelector } from 'Utilities/common'
 
 export default function NewsModal({ trigger }) {
   const dispatch = useDispatch()
@@ -35,7 +35,7 @@ export default function NewsModal({ trigger }) {
           return (
             <div key={e.date}>
               {new Date(e?.date).toLocaleString().split(/([, ])/)[0]}
-              <span dangerouslySetInnerHTML={{ __html: e?.content }} />
+              <span dangerouslySetInnerHTML={sanitizeHtml(e?.content)} />
               <Divider />
             </div>
           )
