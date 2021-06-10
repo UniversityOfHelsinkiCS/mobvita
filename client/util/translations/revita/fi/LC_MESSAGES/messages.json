@@ -728,7 +728,7 @@
     "completed-exercises": "Suoritetut tehtävät",
     "join-group-message": "Liity opettajan hallinnoimaan ryhmään saadaksesi pääsyn ryhmän jaettuihin tarinoihin.",
     "create-group": "Luo",
-    "create-group-message": "Luo ryhmä jakaaksesi tarinoita ja seurataksesi ryhmäläistesi edistymistä",
+    "create-group-message": "Luo ryhmä jakaaksesi tarinoita ja seurataksesi ryhmäläistesi edistymistä.",
     "post-answers-error": "Jotain meni vikaan vastausten tarkistamisen kanssa. Ole hyvä ja yritä uudelleen.",
     "token-copied": "Koodi kopioitu leikepöydälle",
     "server-issues": "Palvelinvirhe. Yritä myöhemmin uudelleen.",
@@ -973,5 +973,7 @@
     "wordnest-info-text": "The main word in the nest is on the left, words derived from it are below it and indented once to the right, and so on.  More common and frequent words have stronger color.  Click on the links →to see related nests.",
     "no-results-for-time-period": "Ei tuloksia tälle aikavälille",
     "no-results-for-chosen-time-period": "Ei tuloksia valitulla aikavälillä",
-    "start-test": "Aloita testi"
+    "start-test": "Aloita testi",
+    "cant-find-group": "Etkö löydä etsimääsi ryhmää? Tarkista, että opiskeltavana kielenä on varmasti oikea kieli!",
+    "less_than_min_size": "Tämä teksti on liian lyhyt. Minimi: {} merkkiä."
 }

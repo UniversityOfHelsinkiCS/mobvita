@@ -735,9 +735,9 @@
     "date-end": "End date",
     "download-csv": "Download csv",
     "completed-exercises": "Completed exercises",
-    "join-group-message": "Join a group maintained by a teacher",
+    "join-group-message": "Join a group maintained by a teacher to get access to the group's shared stories.",
     "create-group": "Create",
-    "create-group-message": "Create a new group to share stories and track your students progress",
+    "create-group-message": "Create a new group to share stories and track your students progress.",
     "post-answers-error": "Something went wrong while processing your answers. Please try again.",
     "token-copied": "Group key copied to clipboard",
     "server-issues": "The server is experiencing problems. Please check back later!",
@@ -972,5 +972,7 @@
     "wordnest-info-text": "The main word in the nest is on the left, words derived from it are below it and indented once to the right, and so on.  More common and frequent words have stronger color.  Click on the links →to see related nests.",
     "no-results-for-time-period": "No results for this time period",
     "no-results-for-chosen-time-period": "No results for chosen time period",
-    "start-test": "Start test"
+    "start-test": "Start test",
+    "cant-find-group": "Can't find the group you're looking for? Make sure you have chosen the correct learning language!",
+    "less_than_min_size": "This text is too short. Minimum: {} characters."
 }

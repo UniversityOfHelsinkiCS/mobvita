@@ -728,9 +728,9 @@
     "date-end": "Data di fine",
     "download-csv": "Download csv",
     "completed-exercises": "Esercizi completati",
-    "join-group-message": "Unisciti ad un gruppo creato da un insegnante per accedere alle storie di gruppo",
+    "join-group-message": "Unisciti ad un gruppo creato da un insegnante per accedere alle storie di gruppo.",
     "create-group": "Crea gruppo",
-    "create-group-message": "Crea un nuovo gruppo per condividere storie e tenere traccia dei progressi dei tuoi studenti",
+    "create-group-message": "Crea un nuovo gruppo per condividere storie e tenere traccia dei progressi dei tuoi studenti.",
     "post-answers-error": "Qualcosa è andato storto mentre processavamo la tua risposta. Perfavore ritenta.",
     "token-copied": "Il token è stato copiato nella tua clipboard",
     "register-to-save-your-progress": "Registrati per salvare i tuoi progressi",
@@ -973,5 +973,7 @@
     "wordnest-info-text": "La parola principale del nodo si trova sulla sinistra, le sue parole derivate di trovano sotto di essa e venogno indendate verso destra. Le parole comuni e più frequenti hanno un colore più acceso. Clicca sui link → per vedere i suoi nidi.",
     "no-results-for-time-period": "No results for this time period",
     "no-results-for-chosen-time-period": "Nessun risultato per il periodo di tempo selezionato",
-    "start-test": "Inizia il test"
+    "start-test": "Inizia il test",
+    "cant-find-group": "Can't find the group you're looking for? Make sure you have chosen the correct learning language!",
+    "less_than_min_size": "Il testo è troppo corto. Minimo: {} caratteri."
 }
