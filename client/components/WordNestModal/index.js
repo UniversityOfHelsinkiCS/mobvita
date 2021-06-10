@@ -10,6 +10,7 @@ import {
   speak,
   respVoiceLanguages,
   hiddenFeatures,
+  sanitizeHtml,
 } from 'Utilities/common'
 import useWindowDimensions from 'Utilities/windowDimensions'
 import { FormattedMessage, useIntl } from 'react-intl'
@@ -107,7 +108,7 @@ const NestWord = ({ wordNest, hasSeveralRoots, wordToCheck, showMoreInfo, childr
             <span
               className="wordnest-word"
               style={wordStyle}
-              dangerouslySetInnerHTML={{ __html: cleanedWord }}
+              dangerouslySetInnerHTML={sanitizeHtml(cleanedWord)}
             />{' '}
           </span>
 

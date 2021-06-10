@@ -234,6 +234,7 @@ export const checkRevitaStatus = async () => {
 const defaultAllowed = [
   'b',
   'i',
+  'u',
   'em',
   'strong',
   'br',
