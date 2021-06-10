@@ -15,6 +15,11 @@ const StudentHistory = ({ student, startDate, endDate, group, view }) => {
       return testTime.isAfter(startDate) && testTime.isBefore(endDate)
     })
 
+  const reverseOrder = object =>
+    object?.sort((a, b) => {
+      return new Date(a.date) - new Date(b.date)
+    })
+
   /*
   const windowWidth = useWindowDimensions().width
   useEffect(() => {
@@ -52,9 +57,9 @@ const StudentHistory = ({ student, startDate, endDate, group, view }) => {
       {student ? (
         <div>
           {view === 'exercise' ? (
-            <History history={filterTestHistoryByDate()} dateFormat="YYYY.MM" />
+            <History history={reverseOrder(filterTestHistoryByDate())} dateFormat="MM/YYYY" />
           ) : (
-            <History history={filterTestHistoryByDate()} dateFormat="YYYY.MM.DD" />
+            <History history={reverseOrder(filterTestHistoryByDate())} dateFormat="YYYY.MM.DD" />
           )}
         </div>
       ) : (
