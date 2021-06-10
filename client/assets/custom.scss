@@ -1332,6 +1332,12 @@ html, body, #root {
   }
 }
 
+.wordnest-cont {
+  overflow-y: auto;
+  padding: 1em 6em 1em 1em;
+  width: 100%;
+}
+
 .wordnest {
   padding-left: 3.5em;
   &-row {

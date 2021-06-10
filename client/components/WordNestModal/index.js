@@ -259,11 +259,9 @@ const WordNestModal = ({ open, setOpen, wordToCheck, setWordToCheck }) => {
         {!smallWindow ? (
           <div className="space-between">
             <div
+              className="wordnest-cont"
               style={{
                 maxHeight: windowHeight * 0.85,
-                overflowY: 'auto',
-                padding: '1em 6em 1em 1em',
-                width: '100%',
               }}
             >
               {wordNest?.map((n, index) => (
