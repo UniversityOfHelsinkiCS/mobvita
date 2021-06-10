@@ -9,6 +9,7 @@ import {
   exerciseMaskedLanguages,
   respVoiceLanguages,
   speak,
+  sanitizeHtml,
 } from 'Utilities/common'
 import { setFocusedWord } from 'Utilities/redux/practiceReducer'
 import { getTranslationAction, setWords } from 'Utilities/redux/translationReducer'
@@ -73,9 +74,14 @@ const ExerciseCloze = ({ word, handleChange }) => {
     setClassName(getExerciseClass(tested, isWrong))
   }, [tested])
 
+  const formattedGreenTooltipText = word.message?.replace(/(\.)[\s]*/g, '$1<br />')
   const tooltip = (
     <div>
-      {word.message && <div className="tooltip-green">{word.message}</div>}
+      {word.message && (
+        <div className="tooltip-green">
+          <span dangerouslySetInnerHTML={sanitizeHtml(formattedGreenTooltipText)} />
+        </div>
+      )}
       <div
         className="tooltip-blue"
         onMouseDown={handleTooltipWordClick}
