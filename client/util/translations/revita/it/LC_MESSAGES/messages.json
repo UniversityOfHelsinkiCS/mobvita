@@ -974,6 +974,6 @@
     "no-results-for-time-period": "No results for this time period",
     "no-results-for-chosen-time-period": "Nessun risultato per il periodo di tempo selezionato",
     "start-test": "Inizia il test",
-    "cant-find-group": "Can't find the group you're looking for? Make sure you have chosen the correct learning language!",
+    "cant-find-group": "Non riesci a trovare il tuo gruppo? Assicurati di aver selezionato correttamente la lingua di apprendimento.",
     "less_than_min_size": "Il testo è troppo corto. Minimo: {} caratteri."
 }

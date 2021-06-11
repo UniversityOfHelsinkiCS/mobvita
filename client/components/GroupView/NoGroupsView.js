@@ -27,7 +27,8 @@ const NoGroupsView = ({ role }) => {
       <br />
       <span className="additional-info">
         <FormattedMessage id={role === 'student' ? 'join-group-message' : 'create-group-message'} />
-        <br /><br />
+        <br />
+        <br />
         <FormattedMessage id="cant-find-group" />
       </span>
     </div>
