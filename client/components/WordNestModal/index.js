@@ -238,18 +238,16 @@ const WordNestModal = ({ open, setOpen, wordToCheck, setWordToCheck }) => {
   return (
     <Modal open={open} centered={false} dimmer="blurring" size="large" onClose={handleModalclose}>
       <Modal.Header className="bold" as="h2">
-        <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+        <div className="space-between" style={{ alignItems: 'center' }}>
           <span>
-            {hiddenFeatures && (
-              <Popup
-                content={intl.formatMessage({ id: 'wordnest-info-text' })}
-                trigger={<Icon name="info circle" size="small" />}
-              />
-            )}
+            <Popup
+              content={intl.formatMessage({ id: 'wordnest-info-text' })}
+              trigger={<Icon name="info circle" size="small" />}
+            />
             <FormattedMessage id="nest" />: {modalTitle}{' '}
           </span>
 
-          {!smallWindow && hiddenFeatures && (
+          {!smallWindow && (
             <AdditionalInfoToggle showMoreInfo={showMoreInfo} setShowMoreInfo={setShowMoreInfo} />
           )}
           <Icon onClick={handleModalclose} size="small" name="close" />
