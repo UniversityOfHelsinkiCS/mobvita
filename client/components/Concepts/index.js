@@ -107,14 +107,21 @@ const Concepts = () => {
   return (
     <div className="cont-tall cont auto flex-col pb-nm ps-sm">
       <ConceptHeader target={target} />
-      <div className="flex">
+      <div className="concept-setting-cont">
         <ConceptToggles
           showTestConcepts={showTestConcepts}
           handleTestConceptToggle={handleTestConceptToggle}
           showLevels={showLevels}
           setShowLevels={setShowLevels}
         />
-        {showTestConcepts && <TotalTestQuestions />}
+        {showTestConcepts && (
+          <TotalTestQuestions
+            concepts={concepts}
+            setShowTestConcepts={setShowTestConcepts}
+            groupId={group.group.group_id}
+            learningLanguage={learningLanguage}
+          />
+        )}
       </div>
       <br />
       <SelectAllCheckbox />
