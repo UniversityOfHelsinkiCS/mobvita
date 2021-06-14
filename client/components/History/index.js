@@ -210,7 +210,7 @@ const History = ({ history, dateFormat, handleDelete = null }) => {
           </Button>
         </div>
       )}
-      {hiddenFeatures && 1 === 2 && (
+      {hiddenFeatures && (
         <>
           <br />
           best:
