@@ -974,5 +974,6 @@
     "start-test": "Start test",
     "cant-find-group": "Can't find the group you're looking for? Make sure you have chosen the correct learning language!",
     "less_than_min_size": "Denna text är för kort. Minimi: {} tecken.",
-    "reset-to-default": "*TODO*"
+    "reset-to-default": "*TODO*",
+    "total-questions": "questions in total"
 }

@@ -975,5 +975,6 @@
     "start-test": "Start test",
     "cant-find-group": "Can't find the group you're looking for? Make sure you have chosen the correct learning language!",
     "less_than_min_size": "This text is too short. Minimum: {} characters.",
-    "reset-to-default": "Reset to default"
+    "reset-to-default": "Reset to default",
+    "total-questions": "questions in total"
 }
