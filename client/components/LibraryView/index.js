@@ -198,6 +198,7 @@ const StoryList = () => {
         trigger={
           <span>
             <Button
+              className="tour-add-new-stories"
               data-cy="add-story-button"
               fluid
               color="teal"

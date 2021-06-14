@@ -35,7 +35,7 @@ export default function NavBar() {
 
   const handleTourStart = () => {
     dispatch(sidebarSetOpen(false))
-    dispatch({ type: 'RESTART' })
+    dispatch({ type: 'TOUR_RESTART' })
   }
 
   const getLearningLanguageFlag = () => {
@@ -72,6 +72,7 @@ export default function NavBar() {
   return (
     <Headroom disableInlineStyles={!smallWindow} style={navBarStyle}>
       <Navbar style={{ paddingLeft: '0.5em' }}>
+        <Tour />
         <div>
           {smallWindow && (
             <Icon
@@ -211,7 +212,7 @@ export default function NavBar() {
                   {user && user.user.last_used_language && (
                     <Link to="/learningLanguage">
                       <img
-                        className="navbar-basic-item navbar-flag"
+                        className="tour-navbar-learning-language navbar-basic-item navbar-flag"
                         style={{
                           height: '1.5em',
                           border: '1px solid black',
@@ -245,6 +246,10 @@ export default function NavBar() {
                     <NavDropdown.Divider />
                     <NavDropdown.Item as={Link} to="/help">
                       <FormattedMessage id="help" />
+                    </NavDropdown.Item>
+                    <NavDropdown.Divider />
+                    <NavDropdown.Item className="navbar-external-link" onClick={handleTourStart}>
+                      <FormattedMessage id="start-tour" />
                     </NavDropdown.Item>
                     <NavDropdown.Divider />
                     <NavDropdown.Item

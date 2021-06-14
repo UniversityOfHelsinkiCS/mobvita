@@ -71,7 +71,7 @@ export default function Sidebar({ history }) {
 
   const handleTourStart = () => {
     dispatch(sidebarSetOpen(false))
-    dispatch({ type: 'RESTART' })
+    dispatch({ type: 'TOUR_RESTART' })
   }
 
   let actualLocale = locale
@@ -279,7 +279,7 @@ export default function Sidebar({ history }) {
               }}
             >
               <Menu.Item style={{ paddingBottom: '0px' }}>
-                {/* {learningLanguage && ( Tour disabled for now!
+                {learningLanguage && (
                   <Button
                     variant="secondary"
                     block
@@ -290,7 +290,7 @@ export default function Sidebar({ history }) {
                   >
                     <Icon name="info circle" /> <FormattedMessage id="start-tour" />
                   </Button>
-                )} */}
+                )}
                 <Button
                   variant="secondary"
                   block

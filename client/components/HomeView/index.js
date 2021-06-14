@@ -33,7 +33,7 @@ const PracticeButton = props => {
 const AddStoriesButton = props => {
   return (
     <Button
-      className="home-btn-wide"
+      className="tour-add-new-stories home-btn-wide"
       style={{
         backgroundImage: `url(${images.addStory})`,
       }}
@@ -55,7 +55,7 @@ const LibraryButton = props => {
   return (
     <Button
       onClick={handleClick}
-      className="home-btn-wide"
+      className="tour-library home-btn-wide"
       style={{
         backgroundImage: `url(${images.library})`,
         width: '49.5%',
