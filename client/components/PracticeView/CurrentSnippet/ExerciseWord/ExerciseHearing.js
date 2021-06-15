@@ -6,7 +6,7 @@ import {
   speak,
   learningLanguageSelector,
   respVoiceLanguages,
-  sanitizeHtml,
+  formatGreenFeedbackText,
 } from 'Utilities/common'
 import { setFocusedWord } from 'Utilities/redux/practiceReducer'
 import Tooltip from 'Components/PracticeView/Tooltip'
@@ -106,13 +106,11 @@ const ExerciseHearing = ({ word, handleChange }) => {
     }
   }
 
-  const formattedGreenTooltipText = word.message?.replace(/(\.)[\s]*/g, '$1<br />')
-
   const tooltip = (
     <div>
       {word.message && (
         <div className="tooltip-green">
-          <span dangerouslySetInnerHTML={sanitizeHtml(formattedGreenTooltipText)} />
+          <span dangerouslySetInnerHTML={formatGreenFeedbackText(word?.message)} />
         </div>
       )}
     </div>

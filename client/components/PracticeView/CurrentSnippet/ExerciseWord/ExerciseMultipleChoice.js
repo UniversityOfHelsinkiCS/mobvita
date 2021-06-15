@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { useSelector } from 'react-redux'
 import { Dropdown } from 'semantic-ui-react'
-import { getTextWidth, sanitizeHtml } from 'Utilities/common'
+import { getTextWidth, formatGreenFeedbackText } from 'Utilities/common'
 import Tooltip from 'Components/PracticeView/Tooltip'
 
 const ExerciseMultipleChoice = ({ word, handleChange }) => {
@@ -57,13 +57,11 @@ const ExerciseMultipleChoice = ({ word, handleChange }) => {
     handleChange(e, word, data)
   }
 
-  const formattedGreenTooltipText = word.message?.replace(/(\.)[\s]*/g, '$1<br />')
-
   const tooltip = (
     <div>
       {word.message && (
         <div className="tooltip-green">
-          <span dangerouslySetInnerHTML={sanitizeHtml(formattedGreenTooltipText)} />
+          <span dangerouslySetInnerHTML={formatGreenFeedbackText(word?.message)} />
         </div>
       )}
     </div>

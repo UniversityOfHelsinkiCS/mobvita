@@ -257,6 +257,9 @@ export const sanitizeHtml = (dirty, allowedTags = defaultAllowed) => {
   return { __html: sanitize(dirty, defaultOptions) }
 }
 
+export const formatGreenFeedbackText = text =>
+  sanitizeHtml(text.replace(/[.]{2,}/g, '.').replace(/(\.)[\s]*/g, '$1<br />'))
+
 export * from '@root/config/common'
 
 export const rightAlignedLanguages = ['Syriac']

@@ -8,7 +8,7 @@ import {
   dictionaryLanguageSelector,
   speak,
   respVoiceLanguages,
-  sanitizeHtml,
+  formatGreenFeedbackText,
 } from 'Utilities/common'
 import { setReferences } from 'Utilities/redux/practiceReducer'
 import { getTranslationAction, setWords } from 'Utilities/redux/translationReducer'
@@ -53,13 +53,11 @@ const WrongAnswer = ({ word }) => {
     if (ref) dispatch(setReferences(ref))
   }
 
-  const formattedGreenTooltipText = word.message?.replace(/(\.)[\s]*/g, '$1<br />')
-
   const tooltip = (
     <div className="tooltip-green" style={{ cursor: 'pointer' }} onMouseDown={handleTooltipClick}>
       {word.message && (
         <div className="flex">
-          <span dangerouslySetInnerHTML={sanitizeHtml(formattedGreenTooltipText)} />{' '}
+          <span dangerouslySetInnerHTML={formatGreenFeedbackText(word?.message)} />{' '}
           {ref && (
             <Icon
               name="external"
