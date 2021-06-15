@@ -632,7 +632,6 @@
     "Account": "Tili",
     "Achievements": "Saavutukset",
     "Groups": "Ryhmät",
-    "Friends": "Kaverisi",
     "click-here-to-enable-facebook-login": "Klikkaa tästä ottaaksesi käyttöön Facebook sisäänkirjautumisen",
     "you-can-log-in-to-revita-with-your-facebook-account": "Voit kirjautua sisään Facebook-tililläsi",
     "Save": "Tallenna",
@@ -866,7 +865,7 @@
     "participle-exercise": "Valitse perusmuoto partisiippitehtäviin",
     "participle-base-exer": "partisiipin perusmuoto (helpompi)",
     "verb-base-exer": "verbin perusmuoto (vaikeampi)",
-    "tour-welcome-message": "<div>Revitan avulla voit opiskella kieliä käyttämällä itse valitsemiasi tekstejä.<br/><br/>Esittelemme nyt sinulle muutaman Revitan pääominaisuuksista. Esittelykierros kestää noin minuutin.<br/><br/>Aloitetaan!</div>",
+    "tour-welcome-message": "<div>Revitan avulla voit opiskella kieliä käyttämällä itse valitsemiasi tekstejä.<br/><br/>Esittelemme nyt sinulle muutaman Revitan pääominaisuuksista.<br/><br/>Aloitetaan!</div>",
     "sidebar": "Sivupalkki",
     "tour-sidebar-message": "<div>Täältä voit avata sivupalkin. Sieltä löydät useita tärkeitä ja hyödyllisiä valikoita.</div>",
     "tour-learning-language-message": "<div>Tästä voit valita kielen, jota haluat opiskella. Voit vaihtaa sen milloin vain.</div>",
@@ -874,7 +873,7 @@
     "begin-practicing": "Aloita harjoittelu",
     "tour-practice-now-message": "<div>Tästä pääset harjoittelemaan kertomuksilla.<br><br>Voit valita kertomuksia eri kategorioista ja kirjastoista tai harjoitella aivan satunnaisella kertomuksella.</div>",
     "tour-flashcards-message": "<div>Revita luo automaattisesti kysymyskortteja kertomuksissa esiintyvistä sinulle vieraista sanoista.<br/><br/>Tästä pääset harjoittelemaan niillä!</div>",
-    "tour-library-message": "<div>Täältä löydät kaikki lataamasi kertomukset sekä myös kertomuksia, jotka olemme ladanneet sinulle valmiiksi.</div>",
+    "tour-library-message": "Täältä löydät kaikki lataamasi kertomukset sekä myös kertomuksia, jotka olemme ladanneet sinulle valmiiksi.",
     "tour-add-content-message": "<div>Voit myös lisätä itse valitsemiasi tekstejä, ja käyttää niitä harjoitteluun.<br/><br/>Vain sinä itse näet lisäämäsi tekstit.</div>",
     "tour-begin-practicing-message": "<div>Nyt voit aloittaa harjoittelun!<br/><br/>Jos haluat, että Revita muistaa<br/><ul><li>suosikkitekstisi ja itse lisäämäsi tekstit</li><li>taitotasosi</li><li>edistymisesi,</li></ul>tulee sinun rekisteröityä ja kirjautua sisään.<br/><br/><i>Bon voyage!</i></div>",
     "end-tour": "Lopeta esittelykierros",
@@ -977,5 +976,9 @@
     "cant-find-group": "Etkö löydä etsimääsi ryhmää? Tarkista, että opiskeltavana kielenä on varmasti oikea kieli!",
     "less_than_min_size": "Tämä teksti on liian lyhyt. Minimi: {} merkkiä.",
     "reset-to-default": "Palauta oletusasetukset",
-    "total-questions": "kysymystä yhteensä"
+    "total-questions": "kysymystä yhteensä",
+    "friends": "Kaverit",
+    "tour-welcome-message-OLD": "<div>Revitan avulla voit opiskella kieliä käyttämällä itse valitsemiasi tekstejä.<br/><br/>Esittelemme nyt sinulle muutaman Revitan pääominaisuuksista. Esittelykierros kestää noin minuutin.<br/><br/>Aloitetaan!</div>",
+    "governed-by": "Taipuu {}:n mukaan",
+    "need-to-agree-with": "Taipuu kuin {}"
 }

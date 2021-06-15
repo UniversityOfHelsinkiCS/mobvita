@@ -870,11 +870,11 @@
     "tour-learning-language-message": "<div>Here you select the language you wish to learn. You can change it any time.</div>",
     "add-content": "Lägg till texter",
     "begin-practicing": "Börja öva",
-    "tour-practice-now-message": "<div>Here you can start practicing with stories.</div>",
+    "tour-practice-now-message": "<div>Here you can start practicing with random stories.</div>",
     "tour-flashcards-message": "<div>Revita automatically creates flashcards from unfamiliar words that you find inside stories.<br/><br/>You can practice them here!</div>",
-    "tour-library-message": "<div>Here you can all the stories you have uploaded and some sample texts we have pre-loaded for you.<br/><br/>You can add more!</div>",
-    "tour-add-content-message": "<div>You can add <b>any</b> stories of your choice, and use them for practising.<br/><br/>These stories will be in your private library.</div>",
-    "tour-begin-practicing-message": "<div>Now you can begin practicing!<br /><br />Please register and log in, if you wish Revita to remember<ul><li>stories that you like and upload,</li><li>your settings and preferences,</li><li>and your skill levels and progress.</li></ul><br /><i>Bon voyage!</i></div>",
+    "tour-library-message": "<div>Library contains all stories that you upload and some sample texts we have pre-loaded for you.</div>",
+    "tour-add-content-message": "<div>You can upload <b>any</b> stories of your choice, and use them for practising.<br/>→ They will appear in your private library.</div>",
+    "tour-begin-practicing-message": "<div>Now you can begin practicing!<br /><br />Please register and log in, so Revita can preserve your<ul><li>stories and flashcards,</li><li>settings and preferences,</li><li>skill levels and progress.</li></ul><br /><i>Bon voyage!</i></div>",
     "end-tour": "End tour",
     "next": "Next",
     "start-tour": "Start Tour",
@@ -975,5 +975,9 @@
     "cant-find-group": "Can't find the group you're looking for? Make sure you have chosen the correct learning language!",
     "less_than_min_size": "Denna text är för kort. Minimi: {} tecken.",
     "reset-to-default": "*TODO*",
-    "total-questions": "questions in total"
+    "total-questions": "questions in total",
+    "friends": "Vänner",
+    "tour-welcome-message-OLD": "Revita hjälper dig att träna språk med berättelser. &rarr;",
+    "governed-by": "Governed by {}",
+    "need-to-agree-with": "Need to agree with {}"
 }

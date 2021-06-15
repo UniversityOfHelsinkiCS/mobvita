@@ -866,7 +866,7 @@
     "participle-exercise": "Scegli la forma base per gli esercizi sui Participi",
     "participle-base-exer": "Esercizi derivati dai participio",
     "verb-base-exer": "Esercizi derivati dal verbo",
-    "tour-welcome-message": "<div>Revita ti aiuta ad imparare una nuova lingua, faendoti esercitare su storie scelte da te.<br/><br/> Ora ti mostreremo alcune funzionalità principali.<br/><br/>Iniziamo! (Questo tour durerà circa un minuto) →</div>",
+    "tour-welcome-message": "<div>Revita ti aiuta ad imparare una nuova lingua, faendoti esercitare su storie scelte da te.<br/><br/> Ora ti mostreremo alcune funzionalità principali.<br/><br/>Iniziamo! →</div>",
     "sidebar": "Menù a comparsa",
     "tour-sidebar-message": "<div>Qui puoi aprire il menù a comparsa. Contiene delle impostazioni utili.</div>",
     "tour-learning-language-message": "<div>Qui puoi selezionare la lingua che vuoi imparare. Potrai cambiarla in qualsiasi momento.</div>",
@@ -977,5 +977,9 @@
     "cant-find-group": "Non riesci a trovare il tuo gruppo? Assicurati di aver selezionato correttamente la lingua di apprendimento.",
     "less_than_min_size": "Il testo è troppo corto. Minimo: {} caratteri.",
     "reset-to-default": "Вернуться к исходным настройкам",
-    "total-questions": "domande in totale"
+    "total-questions": "domande in totale",
+    "friends": "Amici",
+    "tour-welcome-message-OLD": "<div>Revita ti aiuta ad imparare una nuova lingua, faendoti esercitare su storie scelte da te.<br/><br/> Ora ti mostreremo alcune funzionalità principali.<br/><br/>Iniziamo! (Questo tour durerà circa un minuto) →</div>",
+    "governed-by": "Governata da {}",
+    "need-to-agree-with": "Deve concordare con {}"
 }
