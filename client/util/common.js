@@ -536,7 +536,11 @@ const desktopTourSteps = [
   {
     target: '.tour-start-finish',
     title: <FormattedMessage id="welcome" />,
-    content: <FormattedHTMLMessage id="tour-welcome-message" />,
+    content: (
+      <div>
+        <FormattedHTMLMessage id="tour-welcome-message" />
+      </div>
+    ),
     disableBeacon: true,
     hideBackButton: true,
     showProgress: true,
@@ -544,7 +548,11 @@ const desktopTourSteps = [
   {
     target: '.tour-navbar-learning-language',
     title: <FormattedMessage id="Learning-language" />,
-    content: <FormattedHTMLMessage id="tour-learning-language-message" />,
+    content: (
+      <div>
+        <FormattedHTMLMessage id="tour-learning-language-message" />
+      </div>
+    ),
     placement: 'right',
     placementBeacon: 'left',
     disableBeacon: true,
@@ -559,7 +567,11 @@ const desktopTourSteps = [
   {
     target: '.tour-practice-now',
     title: <FormattedMessage id="practice-now" />,
-    content: <FormattedHTMLMessage id="tour-practice-now-message" />,
+    content: (
+      <div>
+        <FormattedHTMLMessage id="tour-practice-now-message" />
+      </div>
+    ),
     placement: 'right',
     placementBeacon: 'left',
     disableBeacon: true,
@@ -569,7 +581,11 @@ const desktopTourSteps = [
   {
     target: '.tour-add-new-stories',
     title: <FormattedMessage id="add-content" />,
-    content: <FormattedHTMLMessage id="tour-add-content-message" />,
+    content: (
+      <div>
+        <FormattedHTMLMessage id="tour-add-content-message" />
+      </div>
+    ),
     placement: 'top',
     disableBeacon: true,
     hideBackButton: true,
@@ -578,7 +594,11 @@ const desktopTourSteps = [
   {
     target: '.tour-library',
     title: <FormattedMessage id="Library" />,
-    content: <FormattedHTMLMessage id="tour-library-message" />,
+    content: (
+      <div>
+        <FormattedHTMLMessage id="tour-library-message" />
+      </div>
+    ),
     placement: 'right',
     placementBeacon: 'left',
     disableBeacon: true,
@@ -588,7 +608,11 @@ const desktopTourSteps = [
   {
     target: '.tour-flashcards',
     title: <FormattedMessage id="Flashcards" />,
-    content: <FormattedHTMLMessage id="tour-flashcards-message" />,
+    content: (
+      <div>
+        <FormattedHTMLMessage id="tour-flashcards-message" />
+      </div>
+    ),
     placement: 'right',
     placementBeacon: 'left',
     disableBeacon: true,
@@ -598,7 +622,11 @@ const desktopTourSteps = [
   {
     target: '.tour-start-finish',
     title: <FormattedMessage id="begin-practicing" />,
-    content: <FormattedHTMLMessage id="tour-begin-practicing-message" />,
+    content: (
+      <div>
+        <FormattedHTMLMessage id="tour-begin-practicing-message" />
+      </div>
+    ),
     placement: 'top',
     opacity: 0,
     disableBeacon: true,
@@ -610,7 +638,11 @@ const mobileTourSteps = [
   {
     target: '.tour-start-finish',
     title: <FormattedMessage id="welcome" />,
-    content: <FormattedHTMLMessage id="tour-welcome-message" />,
+    content: (
+      <div className="tour-mobile-message">
+        <FormattedHTMLMessage id="tour-welcome-message" />
+      </div>
+    ),
     disableBeacon: true,
     hideBackButton: true,
     showProgress: true,
@@ -618,7 +650,11 @@ const mobileTourSteps = [
   {
     target: '.tour-sidebar',
     title: <FormattedMessage id="sidebar" />,
-    content: <FormattedHTMLMessage id="tour-sidebar-message" />,
+    content: (
+      <div className="tour-mobile-message">
+        <FormattedHTMLMessage id="tour-sidebar-message" />
+      </div>
+    ),
     textAlign: 'center',
     placement: 'bottom',
     disableBeacon: true,
@@ -633,7 +669,11 @@ const mobileTourSteps = [
   {
     target: '.tour-learning-language',
     title: <FormattedMessage id="Learning-language" />,
-    content: <FormattedHTMLMessage id="tour-learning-language-message" />,
+    content: (
+      <div className="tour-mobile-message">
+        <FormattedHTMLMessage id="tour-learning-language-message" />
+      </div>
+    ),
     placement: 'right',
     placementBeacon: 'left',
     disableBeacon: true,
@@ -648,7 +688,11 @@ const mobileTourSteps = [
   {
     target: '.tour-practice-now',
     title: <FormattedMessage id="practice-now" />,
-    content: <FormattedHTMLMessage id="tour-practice-now-message" />,
+    content: (
+      <div className="tour-mobile-message">
+        <FormattedHTMLMessage id="tour-practice-now-message" />
+      </div>
+    ),
     placement: 'right',
     placementBeacon: 'left',
     disableBeacon: true,
@@ -658,7 +702,11 @@ const mobileTourSteps = [
   {
     target: '.tour-add-new-stories',
     title: <FormattedMessage id="add-content" />,
-    content: <FormattedHTMLMessage id="tour-add-content-message" />,
+    content: (
+      <div className="tour-mobile-message">
+        <FormattedHTMLMessage id="tour-add-content-message" />
+      </div>
+    ),
     placement: 'top',
     disableBeacon: true,
     hideBackButton: true,
@@ -667,7 +715,11 @@ const mobileTourSteps = [
   {
     target: '.tour-library',
     title: <FormattedMessage id="Library" />,
-    content: <FormattedHTMLMessage id="tour-library-message" />,
+    content: (
+      <div className="tour-mobile-message">
+        <FormattedHTMLMessage id="tour-library-message" />
+      </div>
+    ),
     placement: 'right',
     placementBeacon: 'left',
     disableBeacon: true,
@@ -677,7 +729,11 @@ const mobileTourSteps = [
   {
     target: '.tour-flashcards',
     title: <FormattedMessage id="Flashcards" />,
-    content: <FormattedHTMLMessage id="tour-flashcards-message" />,
+    content: (
+      <div className="tour-mobile-message">
+        <FormattedHTMLMessage id="tour-flashcards-message" />
+      </div>
+    ),
     placement: 'right',
     placementBeacon: 'left',
     disableBeacon: true,
@@ -687,7 +743,11 @@ const mobileTourSteps = [
   {
     target: '.tour-start-finish',
     title: <FormattedMessage id="begin-practicing" />,
-    content: <FormattedHTMLMessage id="tour-begin-practicing-message" />,
+    content: (
+      <div className="tour-mobile-message">
+        <FormattedHTMLMessage id="tour-begin-practicing-message" />
+      </div>
+    ),
     placement: 'top',
     opacity: 0,
     disableBeacon: true,
