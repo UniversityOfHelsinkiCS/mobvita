@@ -4,13 +4,13 @@ import JoyRide, { ACTIONS, EVENTS, STATUS } from 'react-joyride'
 import { sidebarSetOpen } from 'Utilities/redux/sidebarReducer'
 import { useSelector, useDispatch } from 'react-redux'
 import { updateToNonNewUser } from 'Utilities/redux/userReducer'
+import { startTour, handleNextTourStep, stopTour } from 'Utilities/redux/tourReducer'
 import { FormattedMessage } from 'react-intl'
 import useWindowDimensions from 'Utilities/windowDimensions'
 
 const Tour = () => {
   const dispatch = useDispatch()
   const tourState = useSelector(({ tour }) => tour)
-  const open = useSelector(({ sidebar }) => sidebar.open)
   const { user } = useSelector(({ user }) => ({ user: user.data }))
   const history = useHistory()
   const location = useLocation()
@@ -21,7 +21,7 @@ const Tour = () => {
     // Auto start the tour if the user hasn't seen it before
     if (user.user.is_new_user && history.location.pathname.includes('home')) {
       dispatch(sidebarSetOpen(false))
-      dispatch({ type: 'TOUR_START' })
+      dispatch(startTour())
     }
   }, [location])
 
@@ -38,17 +38,14 @@ const Tour = () => {
       status === STATUS.FINISHED
     ) {
       setTourViewed()
-      dispatch({ type: 'TOUR_STOP' })
+      dispatch(stopTour())
     } else if (type === EVENTS.STEP_AFTER || type === EVENTS.TARGET_NOT_FOUND) {
       // desktop
       if (bigScreen) {
         if (index === 0) {
           history.push('/home')
         }
-        dispatch({
-          type: 'TOUR_NEXT_OR_PREV',
-          payload: { stepIndex: index + (action === ACTIONS.PREV ? -1 : 1) },
-        })
+        dispatch(handleNextTourStep(index + (action === ACTIONS.PREV ? -1 : 1)))
 
         // mobile
       } else {
@@ -60,10 +57,7 @@ const Tour = () => {
           dispatch(sidebarSetOpen(true))
 
           setTimeout(() => {
-            dispatch({
-              type: 'TOUR_NEXT_OR_PREV',
-              payload: { stepIndex: index + (action === ACTIONS.PREV ? -1 : 1) },
-            })
+            dispatch(handleNextTourStep(index + (action === ACTIONS.PREV ? -1 : 1)))
           }, 600)
           return
         }
@@ -71,10 +65,7 @@ const Tour = () => {
           dispatch(sidebarSetOpen(false))
         }
 
-        dispatch({
-          type: 'TOUR_NEXT_OR_PREV',
-          payload: { stepIndex: index + (action === ACTIONS.PREV ? -1 : 1) },
-        })
+        dispatch(handleNextTourStep(index + (action === ACTIONS.PREV ? -1 : 1)))
       }
     }
   }

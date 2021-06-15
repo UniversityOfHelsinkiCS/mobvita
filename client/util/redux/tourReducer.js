@@ -1,13 +1,26 @@
 import { tourSteps } from 'Utilities/common'
 
 const initialState = {
-  key: new Date(), // This field makes the tour to re-render when we restart the tour
+  key: new Date(), // This field makes the tour to re-render it is restarted
   run: false,
   continuous: true,
   loading: false,
   stepIndex: 0,
   steps: tourSteps,
 }
+
+export const startTour = () => ({
+  type: 'TOUR_START',
+})
+
+export const handleNextTourStep = stepIndex => ({
+  type: 'TOUR_NEXT_OR_PREV',
+  payload: { stepIndex },
+})
+
+export const stopTour = () => ({
+  type: 'TOUR_STOP',
+})
 
 export default (state = initialState, action) => {
   switch (action.type) {
