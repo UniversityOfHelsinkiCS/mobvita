@@ -872,7 +872,7 @@
     "begin-practicing": "Börja öva",
     "tour-practice-now-message": "<div>Here you can start practicing with stories.</div>",
     "tour-flashcards-message": "<div>Revita automatically creates flashcards from unfamiliar words that you find inside stories.<br/><br/>You can practice them here!</div>",
-    "tour-library-message": "<div>Here you find some sample texts we have pre-loaded for you.<br/><br/>You can add more!</div>",
+    "tour-library-message": "<div>Here you can all the stories you have uploaded and some sample texts we have pre-loaded for you.<br/><br/>You can add more!</div>",
     "tour-add-content-message": "<div>You can add <b>any</b> stories of your choice, and use them for practising.<br/><br/>These stories will be in your private library.</div>",
     "tour-begin-practicing-message": "<div>Now you can begin practicing!<br /><br />Please register and log in, if you wish Revita to remember<ul><li>stories that you like and upload,</li><li>your settings and preferences,</li><li>and your skill levels and progress.</li></ul><br /><i>Bon voyage!</i></div>",
     "end-tour": "End tour",
