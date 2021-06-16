@@ -550,7 +550,7 @@
     "without-signing-in": "без регистрации,",
     "your-progress-will-not-be-saved-for-the-next-session": "но система не сможет сохранить результаты до следующего раза без аккаунта.",
     "write-a-message-for-the-receiver-optional": "Написать сообщение получателю (опционально)",
-    "enter-email-address": "Пожалуйста, введи адрес электронной почты...",
+    "enter-email-address": "Пожалуйста, введи адрес электронной почты.",
     "Share": "Поделиться текстом",
     "this-will-permanently-remove-this-story-from-your-collection-are-you-sure-you-want-to-proceed": "Удалить этот текст из библиотеки?",
     "well-done": "Отлично получается!",
@@ -989,5 +989,6 @@
     "no-blocked-users": "Никого нет в черном списке.",
     "no-friends": "Список друзей пуст.",
     "friend-remove-confirmation": "Are you sure you want to remove <b>{user}</b> from your friends?",
-    "user-unblock-confirmation": "Are you sure you want to remove <b>{user}</b> from your blocked list?"
+    "user-unblock-confirmation": "Are you sure you want to remove <b>{user}</b> from your blocked list?",
+    "multiple-emails-separated-by-space": "Можно ввести несколько адресов, разделенных пробелами."
 }

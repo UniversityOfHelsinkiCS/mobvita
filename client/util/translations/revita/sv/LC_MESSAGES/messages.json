@@ -546,7 +546,7 @@
     "without-signing-in": "utan att logga in.",
     "your-progress-will-not-be-saved-for-the-next-session": "(Dina framsteg sparas inte för nästa gång.)",
     "write-a-message-for-the-receiver-optional": "",
-    "enter-email-address": "Mata in e-post adress...",
+    "enter-email-address": "Mata in e-post adress.",
     "Share": "Dela",
     "this-will-permanently-remove-this-story-from-your-collection-are-you-sure-you-want-to-proceed": "Detta raderar denna berättelse för gott. Är du säker att du vill fortsätta?",
     "well-done": "",
@@ -985,5 +985,6 @@
     "no-blocked-users": "Du har inte blockerat någon.",
     "no-friends": "Du har inga vänner.",
     "friend-remove-confirmation": "Are you sure you want to remove <b>{user}</b> from your friends?",
-    "user-unblock-confirmation": "Are you sure you want to remove <b>{user}</b> from your blocked list?"
+    "user-unblock-confirmation": "Are you sure you want to remove <b>{user}</b> from your blocked list?",
+    "multiple-emails-separated-by-space": "Multiple emails can be separated by space."
 }

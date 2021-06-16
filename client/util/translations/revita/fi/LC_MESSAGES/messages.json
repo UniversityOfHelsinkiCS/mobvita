@@ -549,7 +549,7 @@
     "without-signing-in": "\"vieraana\", ilman kirjautumista.",
     "your-progress-will-not-be-saved-for-the-next-session": "mutta edistymistäsi ei tallenneta seuraavaa istuntoa varten. ",
     "write-a-message-for-the-receiver-optional": "Kirjoita viesti vastaanottajalle (valinnanvarainen)",
-    "enter-email-address": "Syötä sähköpostiosoite...",
+    "enter-email-address": "Syötä sähköpostiosoite.",
     "Share": "Jaa",
     "this-will-permanently-remove-this-story-from-your-collection-are-you-sure-you-want-to-proceed": "Oletko varma, että haluat poistaa tekstin?",
     "well-done": "Hyvin tehty!",
@@ -986,5 +986,6 @@
     "no-blocked-users": "Et ole estänyt ketään.",
     "no-friends": "Et ole lisännyt vielä yhtään kavereita.",
     "friend-remove-confirmation": "Oletko varma, että haluat poistaa käyttäjän <b>{user}</b> kavereistasi?",
-    "user-unblock-confirmation": "Oletko varma, että haluat poistaa käyttäjän <b>{user}</b> estettyjen käyttäjien listalta?"
+    "user-unblock-confirmation": "Oletko varma, että haluat poistaa käyttäjän <b>{user}</b> estolistalta?",
+    "multiple-emails-separated-by-space": "Voit syöttää myös useita osoitteita ja erotella ne välilyönnillä."
 }

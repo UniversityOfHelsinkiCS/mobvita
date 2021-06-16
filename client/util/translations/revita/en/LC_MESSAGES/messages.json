@@ -549,7 +549,7 @@
     "without-signing-in": "",
     "your-progress-will-not-be-saved-for-the-next-session": "",
     "write-a-message-for-the-receiver-optional": "Write a message for the receiver (optional)",
-    "enter-email-address": "Enter email address...",
+    "enter-email-address": "Enter an email address.",
     "Share": "Share story",
     "this-will-permanently-remove-this-story-from-your-collection-are-you-sure-you-want-to-proceed": "This will permanently remove this story from your collection, are you sure you want to proceed?",
     "well-done": "",
@@ -986,5 +986,6 @@
     "no-blocked-users": "You have no blocked users.",
     "no-friends": "You haven't added any friends yet.",
     "friend-remove-confirmation": "Are you sure you want to remove <b>{user}</b> from your friends?",
-    "user-unblock-confirmation": "Are you sure you want to remove <b>{user}</b> from your blocked list?"
+    "user-unblock-confirmation": "Are you sure you want to remove <b>{user}</b> from your blocked list?",
+    "multiple-emails-separated-by-space": "Multiple emails can be separated by space."
 }

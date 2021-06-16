@@ -548,7 +548,7 @@
     "without-signing-in": "senza registrazione,",
     "your-progress-will-not-be-saved-for-the-next-session": "I risultati non potranno essere utilizzati nella prossima sessione.",
     "write-a-message-for-the-receiver-optional": "Scrivi un messaggio al ricevente(opzionale)",
-    "enter-email-address": "Inserire l'indirizzo di posta elettronica…",
+    "enter-email-address": "Inserire l'indirizzo di posta elettronica.",
     "Share": "Condividere",
     "this-will-permanently-remove-this-story-from-your-collection-are-you-sure-you-want-to-proceed": "Sei sicuro/a di voler eliminare la seguente storia dalla tua lista?",
     "well-done": "Ben fatto!",
@@ -987,5 +987,6 @@
     "no-blocked-users": "Non ci sono utenti bloccati.",
     "no-friends": "La lista degli amici è vuota",
     "friend-remove-confirmation": "Vuoi davvero eliminare <b>{user}</b> dalla lista di amici?",
-    "user-unblock-confirmation": "Vuoi davvero eliminare <b>{user}</b> dalla lista dei bloccati?"
+    "user-unblock-confirmation": "Vuoi davvero eliminare <b>{user}</b> dalla lista dei bloccati?",
+    "multiple-emails-separated-by-space": "Si possono inserire vari indirizzi separati dallo spazio."
 }
