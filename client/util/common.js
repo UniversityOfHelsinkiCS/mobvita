@@ -260,6 +260,15 @@ export const sanitizeHtml = (dirty, allowedTags = defaultAllowed) => {
 export const formatGreenFeedbackText = text =>
   sanitizeHtml(text.replace(/[.]{2,}/g, '.').replace(/(\.)[\s]*/g, '$1<br />'))
 
+export const formatEmailList = emailListAsString => {
+  const separators = [' ', ',', ';']
+
+  return emailListAsString
+    .toLowerCase()
+    .split(new RegExp(`[${separators.join('')}]`, 'g'))
+    .map(p => p.trim())
+}
+
 export * from '@root/config/common'
 
 export const rightAlignedLanguages = ['Syriac']

@@ -37,6 +37,32 @@ export const updateLearningLanguage = language => {
   return callBuilder(route, prefix, 'post', payload)
 }
 
+export const addFriends = value => {
+  const route = '/user/friends'
+  const prefix = 'ADD_FRIENDS'
+  const payload = { emails: value }
+  return callBuilder(route, prefix, 'post', payload)
+}
+
+export const removeFriend = uid => {
+  const route = `/user/friends/${uid}`
+  const prefix = 'REMOVE_FRIEND'
+  return callBuilder(route, prefix, 'post')
+}
+
+export const blockUser = value => {
+  const route = '/user/blocked'
+  const prefix = 'BLOCK_USER'
+  const payload = { emails: value }
+  return callBuilder(route, prefix, 'post', payload)
+}
+
+export const unblockUser = uid => {
+  const route = `/user/blocked/${uid}`
+  const prefix = 'UNBLOCK_USER'
+  return callBuilder(route, prefix, 'post')
+}
+
 export const resetLearningLanguageChanged = () => ({ type: 'RESET_LEARNING_LANGUAGE_CHANGED' })
 
 export const updateLocale = locale => saveSelf({ interface_lang: localeCodeToName(locale) })
@@ -124,6 +150,90 @@ export default (state = { data: null, learningLanguageChanged: false }, action) 
         error: false,
       }
     case 'SAVE_SELF_FAILURE':
+      return {
+        ...state,
+        pending: false,
+        error: true,
+        errorMessage: action?.response,
+      }
+    case 'ADD_FRIENDS_SUCCESS':
+      return {
+        ...state,
+        data: { ...state.data, user: action.response.user },
+        pending: false,
+        error: false,
+        refreshed: true,
+      }
+    case 'ADD_FRIENDS_ATTEMPT':
+      return {
+        ...state,
+        pending: true,
+        error: false,
+      }
+    case 'ADD_FRIENDS_FAILURE':
+      return {
+        ...state,
+        pending: false,
+        error: true,
+        errorMessage: action?.response,
+      }
+
+    case 'REMOVE_FRIEND_SUCCESS':
+      return {
+        ...state,
+        data: { ...state.data, user: action.response.user },
+        pending: false,
+        error: false,
+        refreshed: true,
+      }
+    case 'REMOVE_FRIEND_ATTEMPT':
+      return {
+        ...state,
+        pending: true,
+      }
+    case 'REMOVE_FRIEND_FAILURE':
+      return {
+        ...state,
+        pending: true,
+      }
+
+    case 'BLOCK_USER_SUCCESS':
+      return {
+        ...state,
+        data: { ...state.data, user: action.response.user },
+        pending: false,
+        error: false,
+        refreshed: true,
+      }
+    case 'BLOCK_USER_ATTEMPT':
+      return {
+        ...state,
+        pending: true,
+        error: false,
+      }
+    case 'BLOCK_USER_FAILURE':
+      return {
+        ...state,
+        pending: false,
+        error: true,
+        errorMessage: action?.response,
+      }
+
+    case 'UNBLOCK_USER_SUCCESS':
+      return {
+        ...state,
+        data: { ...state.data, user: action.response.user },
+        pending: false,
+        error: false,
+        refreshed: true,
+      }
+    case 'UNBLOCK_USER_ATTEMPT':
+      return {
+        ...state,
+        pending: true,
+        error: false,
+      }
+    case 'UNBLOCK_USER_FAILURE':
       return {
         ...state,
         pending: false,

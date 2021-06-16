@@ -4,28 +4,16 @@ import { FormattedMessage } from 'react-intl'
 import { useDispatch } from 'react-redux'
 import { Button, FormControl, Form } from 'react-bootstrap'
 import { addToGroup } from 'Utilities/redux/groupsReducer'
+import { formatEmailList } from 'Utilities/common'
 
 const AddToGroup = ({ groupId, setGroupId }) => {
+  const dispatch = useDispatch()
   const [teachers, setTeachers] = useState('')
   const [students, setStudents] = useState('')
 
-  const dispatch = useDispatch()
-
   const add = event => {
     event.preventDefault()
-    const separators = [' ', ',', ';']
-
-    const studentsToAdd = students
-      .toLowerCase()
-      .split(new RegExp(`[${separators.join('')}]`, 'g'))
-      .map(p => p.trim())
-
-    const teachersToAdd = teachers
-      .toLowerCase()
-      .split(new RegExp(`[${separators.join('')}]`, 'g'))
-      .map(p => p.trim())
-
-    dispatch(addToGroup(studentsToAdd, teachersToAdd, groupId))
+    dispatch(addToGroup(formatEmailList(students), formatEmailList(teachers), groupId))
     setGroupId(null)
   }
 

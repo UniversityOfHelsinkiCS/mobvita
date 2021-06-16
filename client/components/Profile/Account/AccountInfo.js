@@ -23,10 +23,11 @@ const AccountInfo = () => {
         <FormattedMessage id="Email" />:
       </span>
       <p className="account-info-item">{email}</p>
-      <br/>
+      <br />
       <div style={{ display: 'flex', alignItems: 'flex-start' }}>
         <span className="sm-label">
-          <FormattedMessage id="Username" />:&nbsp;
+          <FormattedMessage id="username" />
+          :&nbsp;
         </span>
         {!editingUser && (
           <Icon
