@@ -732,8 +732,8 @@
     "token-copied": "Group key copied to clipboard",
     "server-issues": "The server is experiencing problems. Please check back later!",
     "learning-settings-saved": "Learning settings saved",
-    "validating-url": "Validating url-address...",
-    "processing-story": "Processing your story",
+    "validating-url": "Validating URL address...",
+    "processing-story": "Processing your story...",
     "done": "done",
     "failed-to-share-the-story": "Failed to share the story",
     "group-deleted": "Group deleted",
@@ -986,5 +986,16 @@
     "no-friends": "Du har inga vänner.",
     "friend-remove-confirmation": "Are you sure you want to remove <b>{user}</b> from your friends?",
     "user-unblock-confirmation": "Are you sure you want to remove <b>{user}</b> from your blocked list?",
-    "multiple-emails-separated-by-space": "Multiple emails can be separated by space."
+    "multiple-emails-separated-by-space": "Multiple emails can be separated by space.",
+    "friend-removed": "Vännen togs bort",
+    "friend-added": "Vännen tillades",
+    "click-to-add-site-to-favourites": "Click here to add the website to your favourites!",
+    "following-users-not-found": "Users with following email addresses were not found: {users}.",
+    "user-unblocked": "Vännen oblockerades",
+    "user-blocked": "Användaren blockerades",
+    "user-already-friend": "Users with following email addresses were already in your friend list: {users}.",
+    "user-already-blocked": "Users with following email addresses were already blocked: {users}.",
+    "users-already-friends": "Users with following email addresses were already in your friend list: {users}.",
+    "users-already-blocked": "Users with following email addresses were already blocked: {users}.",
+    "users-already-friended": "Users with following email addresses were already in your friend list: {users}."
 }

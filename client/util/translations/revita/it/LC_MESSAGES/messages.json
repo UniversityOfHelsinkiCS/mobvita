@@ -736,8 +736,8 @@
     "register-to-save-your-progress": "Registrati per salvare i tuoi progressi",
     "server-issues": "Il server sta avendo dei problemi. Riprova più tardi!",
     "learning-settings-saved": "Impostazioni di Apprendimento salvate",
-    "validating-url": "Sto verificando l'indirizzo url...",
-    "processing-story": "Sto processando la tua storia",
+    "validating-url": "Sto verificando l'indirizzo URL...",
+    "processing-story": "Sto processando la tua storia...",
     "done": "completato",
     "failed-to-share-the-story": "Condivisione della storia fallita",
     "group-deleted": "Gruppo eliminato",
@@ -988,5 +988,16 @@
     "no-friends": "La lista degli amici è vuota",
     "friend-remove-confirmation": "Vuoi davvero eliminare <b>{user}</b> dalla lista di amici?",
     "user-unblock-confirmation": "Vuoi davvero eliminare <b>{user}</b> dalla lista dei bloccati?",
-    "multiple-emails-separated-by-space": "Si possono inserire vari indirizzi separati dallo spazio."
+    "multiple-emails-separated-by-space": "Si possono inserire vari indirizzi separati dallo spazio.",
+    "friend-removed": "Utente rimosso dagli amici.",
+    "friend-added": "Amici aggiunti con successo",
+    "click-to-add-site-to-favourites": "Clicca qui per aggiungere il sito ai preferiti!",
+    "following-users-not-found": "Users with following email addresses were not found: {users}.",
+    "user-unblocked": "L'utente è stato sbloccato correttamente",
+    "user-blocked": "Utente bloccato",
+    "user-already-friend": "Users with following email addresses were already in your friend list: {users}.",
+    "user-already-blocked": "Users with following email addresses were already blocked: {users}.",
+    "users-already-friends": "Users with following email addresses were already in your friend list: {users}.",
+    "users-already-blocked": "Users with following email addresses were already blocked: {users}.",
+    "users-already-friended": "Users with following email addresses were already in your friend list: {users}."
 }

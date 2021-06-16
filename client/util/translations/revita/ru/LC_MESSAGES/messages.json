@@ -990,5 +990,16 @@
     "no-friends": "Список друзей пуст.",
     "friend-remove-confirmation": "Are you sure you want to remove <b>{user}</b> from your friends?",
     "user-unblock-confirmation": "Are you sure you want to remove <b>{user}</b> from your blocked list?",
-    "multiple-emails-separated-by-space": "Можно ввести несколько адресов, разделенных пробелами."
+    "multiple-emails-separated-by-space": "Можно ввести несколько адресов, разделенных пробелами.",
+    "friend-removed": "Пользователь удален из списка друзей.",
+    "friend-added": "Друг успешно добавлен.",
+    "click-to-add-site-to-favourites": "СОХРАНИТЬ этот сайт в моем списке !",
+    "following-users-not-found": "Users with following email addresses were not found: {users}.",
+    "user-unblocked": "Пользователь удален из черного списка.",
+    "user-blocked": "Пользователь заблокирован.",
+    "user-already-friend": "Users with following email addresses were already in your friend list: {users}.",
+    "user-already-blocked": "Users with following email addresses were already blocked: {users}.",
+    "users-already-friends": "Users with following email addresses were already in your friend list: {users}.",
+    "users-already-blocked": "Users with following email addresses were already blocked: {users}.",
+    "users-already-friended": "Users with following email addresses were already in your friend list: {users}."
 }
