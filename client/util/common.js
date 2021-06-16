@@ -258,7 +258,7 @@ export const sanitizeHtml = (dirty, allowedTags = defaultAllowed) => {
 }
 
 export const formatGreenFeedbackText = text =>
-  sanitizeHtml(text.replace(/[.]{2,}/g, '.').replace(/(\.)[\s]*/g, '$1<br />'))
+  sanitizeHtml(text?.replace(/[.]{2,}/g, '.')?.replace(/(\.)[\s]*/g, '$1<br />'))
 
 export const formatEmailList = emailListAsString => {
   const separators = [' ', ',', ';']
