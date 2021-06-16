@@ -637,7 +637,7 @@
     "Save": "Salva",
     "add-a-friend": "Aggiungi amici",
     "add-friend": "Aggiungi amico",
-    "block-a-user": "Bloccare utente",
+    "block-a-user": "Blocca utente",
     "Block": "Bloccare",
     "delete-group": "Cancellare gruppo",
     "create-new": "Creare nuovo gruppo",
@@ -980,6 +980,12 @@
     "total-questions": "domande in totale",
     "friends": "Amici",
     "tour-welcome-message-OLD": "Revita ti aiuta ad imparare una nuova lingua, faendoti esercitare su storie scelte da te.<br/><br/> Ora ti mostreremo alcune funzionalità principali.<br/><br/>Iniziamo! (Questo tour durerà circa un minuto) →",
-    "governed-by": "Governata da {}",
-    "need-to-agree-with": "Deve concordare con {}"
+    "governed-by": "Governata da \"{}\"",
+    "need-to-agree-with": "Deve concordare con {}",
+    "username": "Nome utente",
+    "actions": "Azioni",
+    "no-blocked-users": "Non ci sono utenti bloccati.",
+    "no-friends": "La lista degli amici è vuota",
+    "friend-remove-confirmation": "Vuoi davvero eliminare <b>{user}</b> dalla lista di amici?",
+    "user-unblock-confirmation": "Vuoi davvero eliminare <b>{user}</b> dalla lista dei bloccati?"
 }

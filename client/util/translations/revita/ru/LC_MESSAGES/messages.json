@@ -982,6 +982,12 @@
     "total-questions": "всего вопросов",
     "friends": "Друзья",
     "tour-welcome-message-OLD": "Ревита помогает тебе изучать языки! Она создает упражнения на основе <b>любого</b> текста, который ученик загружает сам.<br/><br/>Сейчас мы покажем основные функции.<br/><br/><i>(Введение займет 1 минуту.)</i> &rarr;",
-    "governed-by": "Зависит от",
-    "need-to-agree-with": "Согласуй с"
+    "governed-by": "Зависит от \"{}\"",
+    "need-to-agree-with": "Согласуй с {}",
+    "username": "Имя пользователя",
+    "actions": "Действия",
+    "no-blocked-users": "Никого нет в черном списке.",
+    "no-friends": "Список друзей пуст.",
+    "friend-remove-confirmation": "Are you sure you want to remove <b>{user}</b> from your friends?",
+    "user-unblock-confirmation": "Are you sure you want to remove <b>{user}</b> from your blocked list?"
 }

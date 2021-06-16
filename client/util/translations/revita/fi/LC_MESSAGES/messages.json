@@ -549,7 +549,7 @@
     "without-signing-in": "\"vieraana\", ilman kirjautumista.",
     "your-progress-will-not-be-saved-for-the-next-session": "mutta edistymistäsi ei tallenneta seuraavaa istuntoa varten. ",
     "write-a-message-for-the-receiver-optional": "Kirjoita viesti vastaanottajalle (valinnanvarainen)",
-    "enter-email-address": "Ole hyvä ja syötä sähköpostiosoite...",
+    "enter-email-address": "Syötä sähköpostiosoite...",
     "Share": "Jaa",
     "this-will-permanently-remove-this-story-from-your-collection-are-you-sure-you-want-to-proceed": "Oletko varma, että haluat poistaa tekstin?",
     "well-done": "Hyvin tehty!",
@@ -635,7 +635,7 @@
     "click-here-to-enable-facebook-login": "Klikkaa tästä ottaaksesi käyttöön Facebook sisäänkirjautumisen",
     "you-can-log-in-to-revita-with-your-facebook-account": "Voit kirjautua sisään Facebook-tililläsi",
     "Save": "Tallenna",
-    "add-a-friend": "Lisää kaverit",
+    "add-a-friend": "Lisää kaveri",
     "add-friend": "Lisää kaveriksi",
     "block-a-user": "Estä käyttäjä",
     "Block": "Estä",
@@ -979,6 +979,12 @@
     "total-questions": "kysymystä yhteensä",
     "friends": "Kaverit",
     "tour-welcome-message-OLD": "Revitan avulla voit opiskella kieliä käyttämällä itse valitsemiasi tekstejä.<br/><br/>Esittelemme nyt sinulle muutaman Revitan pääominaisuuksista. Esittelykierros kestää noin minuutin.<br/><br/>Aloitetaan!",
-    "governed-by": "Taipuu {}:n mukaan",
-    "need-to-agree-with": "Taipuu kuin {}"
+    "governed-by": "Taipuu \"{}\":n mukaan",
+    "need-to-agree-with": "Taipuu kuin {}",
+    "username": "Käyttäjänimi",
+    "actions": "Toiminnot",
+    "no-blocked-users": "Et ole estänyt ketään.",
+    "no-friends": "Et ole lisännyt vielä yhtään kavereita.",
+    "friend-remove-confirmation": "Oletko varma, että haluat poistaa käyttäjän <b>{user}</b> kavereistasi?",
+    "user-unblock-confirmation": "Oletko varma, että haluat poistaa käyttäjän <b>{user}</b> estettyjen käyttäjien listalta?"
 }

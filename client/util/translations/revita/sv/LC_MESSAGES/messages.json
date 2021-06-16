@@ -978,6 +978,12 @@
     "total-questions": "questions in total",
     "friends": "Vänner",
     "tour-welcome-message-OLD": "Revita hjälper dig att träna språk med berättelser. &rarr;",
-    "governed-by": "Governed by {}",
-    "need-to-agree-with": "Need to agree with {}"
+    "governed-by": "Governed by \"{}\"",
+    "need-to-agree-with": "Need to agree with {}",
+    "username": "Användarnamn",
+    "actions": "Åtgärder",
+    "no-blocked-users": "Du har inte blockerat någon.",
+    "no-friends": "Du har inga vänner.",
+    "friend-remove-confirmation": "Are you sure you want to remove <b>{user}</b> from your friends?",
+    "user-unblock-confirmation": "Are you sure you want to remove <b>{user}</b> from your blocked list?"
 }
