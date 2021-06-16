@@ -5,7 +5,7 @@ const type = {
   info: 'info',
 }
 
-export const setNotification = (translationID, type, options) => ({
+export const setNotification = (translationID, contextVariables, type, options) => ({
   type: 'SET_NOTIFICATION',
   payload: { translationID, type, options },
 })
@@ -163,6 +163,67 @@ export default (state = initialState, action) => {
       return {
         message: failureMessage(action.response),
         type: type.error,
+      }
+    case 'ADD_FRIENDS_SUCCESS':
+      if (action.response.not_existed_users.length > 0) {
+        const notFoundEmails = action.response.not_existed_users.join(', ')
+        return {
+          translationId: 'following-users-not-found',
+          type: type.info,
+          contextVariables: { users: notFoundEmails },
+          options: { autoClose: false },
+        }
+      }
+
+      if (action.response.friended_users.length > 0) {
+        const alreadyFriended = action.response.friended_users.join(', ')
+        return {
+          translationId: 'users-already-friended',
+          type: type.info,
+          contextVariables: { users: alreadyFriended },
+          options: { autoClose: false },
+        }
+      }
+
+      return {
+        translationId: 'friend-added',
+        type: type.success,
+      }
+    case 'REMOVE_FRIEND_SUCCESS':
+      return {
+        translationId: 'friend-removed',
+        type: type.success,
+      }
+
+    case 'BLOCK_USER_SUCCESS':
+      if (action.response.not_existed_users.length > 0) {
+        const notFoundEmails = action.response.not_existed_users.join(', ')
+        return {
+          translationId: 'following-users-not-found',
+          type: type.info,
+          contextVariables: { users: notFoundEmails },
+          options: { autoClose: false },
+        }
+      }
+
+      if (action.response.blocked_users.length > 0) {
+        const alreadyBlocked = action.response.blocked_users.join(', ')
+        return {
+          translationId: 'users-already-blocked',
+          type: type.info,
+          contextVariables: { users: alreadyBlocked },
+          options: { autoClose: false },
+        }
+      }
+
+      return {
+        translationId: 'user-blocked',
+        type: type.success,
+      }
+    case 'UNBLOCK_USER_SUCCESS':
+      return {
+        translationId: 'user-unblocked',
+        type: type.success,
       }
     default:
       return state

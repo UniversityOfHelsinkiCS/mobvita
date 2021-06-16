@@ -19,7 +19,9 @@ export default function Toaster() {
   const [progressToastId, setProgressToastId] = useState(null)
   const [serverErrorToastId, setServerErrorToastId] = useState(null)
 
-  const { message, type, options, translationId } = useSelector(({ notification }) => notification)
+  const { message, type, options, translationId, contextVariables } = useSelector(
+    ({ notification }) => notification
+  )
   const { serverError } = useSelector(({ serverError }) => serverError)
   const { newAchievements } = useSelector(({ newAchievements }) => newAchievements)
   const { storyId, progress, error, pending, processingError, custom, url } = useSelector(
@@ -38,10 +40,10 @@ export default function Toaster() {
     setProgressToastId(null)
   }
 
-  const isNewSite = useMemo(() =>  typeof url !== 'undefined' && !favouriteSites?.some(site => url?.includes(site.url)), [
-    url,
-    favouriteSites,
-  ])
+  const isNewSite = useMemo(
+    () => typeof url !== 'undefined' && !favouriteSites?.some(site => url?.includes(site.url)),
+    [url, favouriteSites]
+  )
 
   const handleNewFavouriteSite = () => {
     dispatch(updateFavouriteSites(favouriteSites.concat({ url })))
@@ -100,7 +102,7 @@ export default function Toaster() {
               <span>{intl.formatMessage({ id: 'story-uploaded-successfully' })}</span>
               {isNewSite && (
                 <div>
-                  <b>{intl.formatMessage({ id: 'Click here to add site to your favourites.' })}</b>
+                  <b>{intl.formatMessage({ id: 'click-to-add-site-to-favourites' })}</b>
                 </div>
               )}
             </div>,
@@ -163,7 +165,16 @@ export default function Toaster() {
   useEffect(() => {
     if (translationId) {
       // Used for messages that require translations.
-      toast(intl.formatMessage({ id: translationId }), { type, ...options })
+
+      if (contextVariables) {
+        toast(intl.formatMessage({ id: translationId }, { users: contextVariables.users }), {
+          type,
+          ...options,
+        })
+      } else {
+        toast(intl.formatMessage({ id: translationId }), { type, ...options })
+      }
+
       dispatch({ type: 'RESET_NOTIFICATION' })
       return
     }
