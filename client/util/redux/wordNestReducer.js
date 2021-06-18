@@ -4,16 +4,15 @@ import callBuilder from '../apiConnection'
  */
 
 export const getWordNestAction = ({ word, language }) => {
-  if (word !== '-') {
-    const query = {
-      word,
-      language,
-    }
-    const route = '/nests'
-    const prefix = 'GET_WORD_NEST'
-    return callBuilder(route, prefix, 'get', null, query)
+  if (word === '-') return null
+
+  const query = {
+    word,
+    language,
   }
-  return null
+  const route = '/nests'
+  const prefix = 'GET_WORD_NEST'
+  return callBuilder(route, prefix, 'get', null, query)
 }
 
 export const getLinkedWordNestAction = ({ word, language }) => {
