@@ -163,13 +163,11 @@ const StoryListItem = ({ story, userCanShare, libraryShown, selectedGroup }) => 
   const [shareModalOpen, setShareModalOpen] = useState(false)
   const [confirmationOpen, setConfirmationOpen] = useState(false)
   const { groups } = useSelector(({ groups }) => groups)
+  const { user: userId } = useSelector(({ user }) => ({ user: user.data.user.oid }))
 
   const currentGroup = groups.find(g => g.group_id === selectedGroup)
-
   const inGroupLibrary = libraryShown.group && story.groups
-
   const showGroupNames = story.groups && libraryShown.private
-  console.log('story:', story)
 
   const deleteStory = () => {
     dispatch(removeStory(story._id))
@@ -216,7 +214,7 @@ const StoryListItem = ({ story, userCanShare, libraryShown, selectedGroup }) => 
         <div className="flex align-center" style={{ overflow: 'hidden' }}>
           {showGroupNames && <GroupsSharedTo groups={story.groups} />}
           <div className="flex" style={{ gap: '1em' }}>
-            {story.shared && (
+            {story?.sharedwith?.includes(userId) && (
               <Popup
                 basic
                 content={
