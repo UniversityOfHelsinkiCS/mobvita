@@ -25,19 +25,15 @@ export default ({
     <tbody>
       {URL && (
         <Row translationId="Source">
-          <a href={URL} target="_blank" rel="noopener noreferrer">{URL}</a>
+          <a href={URL} target="_blank" rel="noopener noreferrer">
+            {URL}
+          </a>
         </Row>
       )}
       {!publicStory && date && (
-        <Row translationId="date-added">
-          {moment(date).format('YYYY-MM-DD')}
-        </Row>
+        <Row translationId="date-added">{moment(date).format('YYYY-MM-DD')}</Row>
       )}
-      {author && (
-        <Row translationId="Author">
-          {author}
-        </Row>
-      )}
+      {author && <Row translationId="Author">{author}</Row>}
       {category && (
         <Row translationId="Category">
           <FormattedMessage id={category} />
@@ -46,19 +42,11 @@ export default ({
       <Row translationId="Level">
         <DifficultyStars difficulty={difficulty} />
       </Row>
-      <Row translationId="story-rating">
-        {elo}
-      </Row>
+      <Row translationId="story-rating">{elo}</Row>
       {sharingInfo && (
         <>
-          <Row translationId="Sender">
-            {sharingInfo.sender}
-          </Row>
-          {sharingInfo.message && (
-            <Row translationId="Message">
-              {sharingInfo.message}
-            </Row>
-          )}
+          <Row translationId="shared-by">{sharingInfo.sender}</Row>
+          {sharingInfo.message && <Row translationId="Message">{sharingInfo.message}</Row>}
         </>
       )}
       <Row translationId="part-of-story-covered">

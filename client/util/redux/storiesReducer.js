@@ -41,6 +41,12 @@ export const removeStory = storyId => {
   return callBuilder(route, prefix)
 }
 
+export const acceptSharedStory = (storyId, token) => {
+  const route = `/stories/${storyId}/accept?token=${token}`
+  const prefix = 'ACCEPT_STORY'
+  return callBuilder(route, prefix, 'get')
+}
+
 export const unshareStory = (groupId, storyId) => {
   const route = `/groups/${groupId}/unshare/${storyId}`
   const prefix = 'UNSHARE_STORY'
@@ -149,6 +155,28 @@ export default (state = initialState, action) => {
         pending: false,
         error: false,
       }
+
+    //
+    case 'ACCEPT_STORY_ATTEMPT':
+      return {
+        ...state,
+        pending: true,
+        error: false,
+      }
+    case 'ACCEPT_STORY_FAILURE':
+      return {
+        ...state,
+        pending: false,
+        error: true,
+      }
+    case 'ACCEPT_STORY_SUCCESS':
+      return {
+        ...state,
+        pending: false,
+        error: false,
+      }
+
+    //
     case 'UNSHARE_STORY_ATTEMPT':
       return {
         ...state,

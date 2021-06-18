@@ -217,7 +217,7 @@ export default (state = initialState, action) => {
       }
 
       return {
-        translationId: 'user-blocked',
+        translationId: 'user-blocked-success',
         type: type.success,
       }
     case 'UNBLOCK_USER_SUCCESS':
@@ -225,6 +225,37 @@ export default (state = initialState, action) => {
         translationId: 'user-unblocked',
         type: type.success,
       }
+
+    case 'ACCEPT_STORY_SUCCESS':
+      return {
+        translationId: 'shared-story-accepted-successfully',
+        type: type.success,
+      }
+
+    case 'ACCEPT_STORY_FAILURE':
+      return {
+        translationId: 'could-not-find-story-to-accept',
+        type: type.success,
+      }
+
+    case 'BLOCK_STORY_SENDER_SUCCESS':
+      return {
+        translationId: 'user-blocked-success',
+        type: type.success,
+      }
+
+    case 'BLOCK_STORY_SENDER_FAILURE':
+      return {
+        translationId: 'user-blocked-failure',
+        type: type.success,
+      }
+
+    case 'ADD_FRIEND_STORY_SENDER_SUCCESS':
+      return {
+        translationId: 'friend-added',
+        type: type.success,
+      }
+
     default:
       return state
   }

@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { Card, Dropdown, Button as SemanticButton, Icon } from 'semantic-ui-react'
+import { Card, Dropdown, Button as SemanticButton, Icon, Popup } from 'semantic-ui-react'
 import { Button } from 'react-bootstrap'
 import { Link } from 'react-router-dom'
 import { FormattedMessage } from 'react-intl'
@@ -22,7 +22,6 @@ const StoryTitle = ({
   setConfirmationOpen,
 }) => {
   const { width } = useWindowDimensions()
-
   const learningLanguage = useSelector(learningLanguageSelector)
 
   const handleDelete = () => {
@@ -170,6 +169,7 @@ const StoryListItem = ({ story, userCanShare, libraryShown, selectedGroup }) => 
   const inGroupLibrary = libraryShown.group && story.groups
 
   const showGroupNames = story.groups && libraryShown.private
+  console.log('story:', story)
 
   const deleteStory = () => {
     dispatch(removeStory(story._id))
@@ -215,7 +215,33 @@ const StoryListItem = ({ story, userCanShare, libraryShown, selectedGroup }) => 
         <StoryActions story={story} />
         <div className="flex align-center" style={{ overflow: 'hidden' }}>
           {showGroupNames && <GroupsSharedTo groups={story.groups} />}
-          <DifficultyStars difficulty={story.difficulty} style={{ whiteSpace: 'nowrap' }} />
+          <div className="flex" style={{ gap: '1em' }}>
+            {story.shared && (
+              <Popup
+                basic
+                content={
+                  <>
+                    <b>
+                      <FormattedMessage id="shared-by" />:
+                    </b>{' '}
+                    {story.sharing_info?.sender}
+                    {story.sharing_info?.message && (
+                      <>
+                        <br />
+                        <b>
+                          <FormattedMessage id="message" />:
+                        </b>{' '}
+                        {story.sharing_info?.message}
+                      </>
+                    )}
+                  </>
+                }
+                trigger={<Icon name="envelope outline" />}
+              />
+            )}
+
+            <DifficultyStars difficulty={story.difficulty} style={{ whiteSpace: 'nowrap' }} />
+          </div>
         </div>
       </Card.Content>
       <ShareStory story={story} isOpen={shareModalOpen} setOpen={setShareModalOpen} />

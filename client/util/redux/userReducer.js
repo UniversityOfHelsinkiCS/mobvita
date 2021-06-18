@@ -63,6 +63,18 @@ export const unblockUser = uid => {
   return callBuilder(route, prefix, 'post')
 }
 
+export const blockStorySender = (uid, token) => {
+  const route = `/user/blocked/${uid}/request?token=${token}`
+  const prefix = 'BLOCK_STORY_SENDER'
+  return callBuilder(route, prefix, 'get')
+}
+
+export const addStorySenderAsFriend = (uid, token) => {
+  const route = `/user/friends/${uid}/request?token=${token}`
+  const prefix = 'ADD_FRIEND_STORY_SENDER'
+  return callBuilder(route, prefix, 'get')
+}
+
 export const resetLearningLanguageChanged = () => ({ type: 'RESET_LEARNING_LANGUAGE_CHANGED' })
 
 export const updateLocale = locale => saveSelf({ interface_lang: localeCodeToName(locale) })
@@ -239,6 +251,36 @@ export default (state = { data: null, learningLanguageChanged: false }, action) 
         pending: false,
         error: true,
         errorMessage: action?.response,
+      }
+
+    case 'BLOCK_STORY_SENDER_SUCCESS':
+      return {
+        ...state,
+        pending: false,
+        error: false,
+        refreshed: true,
+      }
+
+    case 'BLOCK_STORY_SENDER_ATTEMPT':
+      return {
+        ...state,
+        pending: true,
+        error: false,
+      }
+
+    case 'ADD_FRIEND_STORY_SENDER_SUCCESS':
+      return {
+        ...state,
+        pending: false,
+        error: false,
+        refreshed: true,
+      }
+
+    case 'ADD_FRIEND_STORY_SENDER_ATTEMPT':
+      return {
+        ...state,
+        pending: true,
+        error: false,
       }
     case 'UPDATE_LEARNING_LANGUAGE_SUCCESS':
       return {

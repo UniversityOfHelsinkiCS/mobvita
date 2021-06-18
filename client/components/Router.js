@@ -1,5 +1,5 @@
 import React from 'react'
-import { Route, Switch, Redirect } from 'react-router-dom'
+import { Route, Switch, Redirect, useLocation } from 'react-router-dom'
 import { useSelector } from 'react-redux'
 import HomeView from 'Components/HomeView'
 import LibraryView from 'Components/LibraryView'
@@ -8,6 +8,9 @@ import ReadView from 'Components/ReadView'
 import PracticeView from 'Components/PracticeView'
 import LanguageSelectView from 'Components/LanguageSelectView'
 import EmailConfirm from 'Components/AccessControl/EmailConfirm'
+import AcceptSharedStory from 'Components/AccessControl/AcceptSharedStory'
+import BlockStorySender from 'Components/AccessControl/BlockStorySender'
+import AcceptStoryAddFriend from 'Components/AccessControl/AcceptStoryAddFriend'
 import InvitationConfirm from 'Components/GroupView/InvitationConfirm'
 import ProtectedRoute from 'Components/AccessControl/ProtectedRoute'
 import CrosswordView from 'Components/CrosswordView'
@@ -28,6 +31,7 @@ import NavBar from './NavBar'
 
 export default () => {
   const user = useSelector(state => state.user.data)
+  const location = useLocation()
 
   return (
     <Switch>
@@ -43,6 +47,24 @@ export default () => {
             <Route exact path="/group-confirmation/:token" component={InvitationConfirm} />
             <Route exact path="/register" component={Register} />
             <Route exact path="/help" component={Help} />
+            <Route
+              exact
+              path="/accept_story"
+              render={() => <AcceptSharedStory queryParams={location.search} />}
+            />
+
+            <Route
+              exact
+              path="/block_user"
+              render={() => <BlockStorySender queryParams={location.search} />}
+            />
+
+            <Route
+              exact
+              path="/accept_and_add"
+              render={() => <AcceptStoryAddFriend queryParams={location.search} />}
+            />
+
             <ProtectedRoute
               languageRequired={false}
               exact
