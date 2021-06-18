@@ -992,11 +992,20 @@
     "friend-added": "Kaveri(t) lisätty onnistuneesti.",
     "click-to-add-site-to-favourites": "Klikkaa tästä, niin sivusto lisätään suosikkeihisi!",
     "following-users-not-found": "Käyttäjiä, joilla on seuraavat sähköpostiosoitteet, ei löytynyt: {users}",
-    "user-unblocked": "Esto poistettu onnistuneesti",
+    "user-unblocked": "Käyttäjän esto poistettu onnistuneesti",
     "user-blocked": "Käyttäjä estetty onnistuneesti",
     "user-already-friend": "Käyttäjät, joilla on seuraavat sähköpostiosoitteet, ovat jo valmiiksi kaverilistallasi: {users}",
     "user-already-blocked": "Käyttäjät, joilla on seuraavat sähköpostiosoitteet, on jo valmiiksi estetty: {users}",
     "users-already-friends": "Käyttäjät, joilla on seuraavat sähköpostiosoitteet, ovat jo valmiiksi kaverilistallasi: {users}",
     "users-already-blocked": "Käyttäjät, joilla on seuraavat sähköpostiosoitteet, on jo valmiiksi estetty: {users}",
-    "users-already-friended": "Käyttäjät, joilla on seuraavat sähköpostiosoitteet, ovat jo valmiiksi kaverilistallasi: {users}"
+    "users-already-friended": "Käyttäjät, joilla on seuraavat sähköpostiosoitteet, ovat jo valmiiksi kaverilistallasi: {users}",
+    "need-to-be-teacher-in-group-to-share": "You have to teacher for a group with the chosen learning language in order to share a story",
+    "add-friends-to-share-stories": "Add friends to share stories with them",
+    "friend": "Kaveri",
+    "shared-by": "Lähettäjä",
+    "message": "Viesti",
+    "could-not-find-story-to-accept": "Kertomusta, jonka koitit hyväksyä, ei löytynyt",
+    "shared-story-accepted-successfully": "Jaettu tarina hyväksytty onnistuneesti!",
+    "user-blocked-success": "Käyttäjä estetty onnistuneesti",
+    "user-blocked-failure": "Käyttäjän esto epäonnistui"
 }
