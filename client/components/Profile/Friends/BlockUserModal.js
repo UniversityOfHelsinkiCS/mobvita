@@ -4,7 +4,6 @@ import { useDispatch, useSelector } from 'react-redux'
 import { Button, FormControl, Form } from 'react-bootstrap'
 import { Modal } from 'semantic-ui-react'
 import { blockUser } from 'Utilities/redux/userReducer'
-import { setNotification } from 'Utilities/redux/notificationReducer'
 import { formatEmailList } from 'Utilities/common'
 
 const BlockUserModal = ({ showModal, setShowModal }) => {
@@ -19,14 +18,11 @@ const BlockUserModal = ({ showModal, setShowModal }) => {
     if (formatEmailList(userToBlock).includes(ownEmail)) {
       setShowSelfAddWarning(true)
     } else {
+      setShowSelfAddWarning(false)
       dispatch(blockUser(formatEmailList(userToBlock)))
       setuserToBlock('')
       setShowModal(false)
     }
-
-    // dispatch(blockUser(formatEmailList(userToBlock)))
-    //   setuserToBlock('')
-    //   setShowModal(false)
   }
 
   return (
