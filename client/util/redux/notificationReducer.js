@@ -64,6 +64,16 @@ export default (state = initialState, action) => {
         type: type.error,
       }
     case 'SHARE_STORY_SUCCESS':
+      if (action.response.not_existed_users.length > 0) {
+        const notFoundEmails = action.response.not_existed_users.map(e => e.email).join(', ')
+        return {
+          translationId: 'following-users-not-found',
+          type: type.info,
+          contextVariables: { users: notFoundEmails },
+          options: { autoClose: false },
+        }
+      }
+
       return {
         translationId: 'story-shared',
         type: type.success,
@@ -164,7 +174,7 @@ export default (state = initialState, action) => {
         message: failureMessage(action.response),
         type: type.error,
       }
-    case 'ADD_FRIENDS_SUCCESS':
+    case 'FOLLOW_USER_SUCCESS':
       if (action.response.not_existed_users.length > 0) {
         const notFoundEmails = action.response.not_existed_users.join(', ')
         return {
@@ -176,22 +186,22 @@ export default (state = initialState, action) => {
       }
 
       if (action.response.friended_users.length > 0) {
-        const alreadyFriended = action.response.friended_users.join(', ')
+        const alreadyFollowed = action.response.friended_users.join(', ')
         return {
-          translationId: 'users-already-friended',
+          translationId: 'users-already-followed',
           type: type.info,
-          contextVariables: { users: alreadyFriended },
+          contextVariables: { users: alreadyFollowed },
           options: { autoClose: false },
         }
       }
 
       return {
-        translationId: 'friend-added',
+        translationId: 'user-followed',
         type: type.success,
       }
-    case 'REMOVE_FRIEND_SUCCESS':
+    case 'UNFOLLOW_USER_SUCCESS':
       return {
-        translationId: 'friend-removed',
+        translationId: 'user-unfollowed-success',
         type: type.success,
       }
 
@@ -250,9 +260,15 @@ export default (state = initialState, action) => {
         type: type.success,
       }
 
-    case 'ADD_FRIEND_STORY_SENDER_SUCCESS':
+    case 'FOLLOW_STORY_SENDER_SUCCESS':
       return {
-        translationId: 'friend-added',
+        translationId: 'user-followed',
+        type: type.success,
+      }
+
+    case 'UNFOLLOW_STORY_SENDER_SUCCESS':
+      return {
+        translationId: 'user-unfollowed-success',
         type: type.success,
       }
 

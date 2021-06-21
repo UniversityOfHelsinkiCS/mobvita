@@ -857,8 +857,13 @@ html, body, #root {
 
 }
 
+.group-form {
+  margin-top: 1.5em;
+}
+
 .group-form > .form-control {
-  margin-bottom: 1em;
+  margin-top: 0.5em;
+  margin-bottom: 1.5em;
 }
 
 .label {

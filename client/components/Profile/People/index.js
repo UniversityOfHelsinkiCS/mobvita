@@ -2,33 +2,33 @@ import React, { useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { FormattedMessage, useIntl } from 'react-intl'
 import { Button } from 'react-bootstrap'
-import { removeFriend, unblockUser } from 'Utilities/redux/userReducer'
+import { unfollowUser, unblockUser } from 'Utilities/redux/userReducer'
 import { Icon, Table } from 'semantic-ui-react'
 import ConfirmationWarning from 'Components/ConfirmationWarning'
 import { sanitizeHtml } from 'Utilities/common'
-import AddFriendsModal from './AddFriendsModal'
+import FollowUserModal from './FollowUserModal'
 import BlockUserModal from './BlockUserModal'
 
-const Friends = () => {
-  const { friends, blocked } = useSelector(({ user }) => user.data.user)
+const People = () => {
+  const { friends: followedUsers, blocked } = useSelector(({ user }) => user.data.user)
 
   const dispatch = useDispatch()
   const intl = useIntl()
 
-  const [showAddFriendsModal, setShowAddFriendsModal] = useState(false)
+  const [showFollowUserModal, setShowFollowUserModal] = useState(false)
   const [showBlockUserModal, setShowBlockUserModal] = useState(false)
 
-  const [friendToRemove, setFriendToRemove] = useState(false)
+  const [userToUnfollow, setUserToUnfollow] = useState(false)
   const [userToUnblock, setUserToUnblock] = useState(false)
 
-  const remove = () => dispatch(removeFriend(friendToRemove.uid))
+  const remove = () => dispatch(unfollowUser(userToUnfollow.uid))
   const unblock = () => dispatch(unblockUser(userToUnblock.uid))
 
   const getWarningText = action => {
     if (action === 'remove') {
       return intl.formatMessage(
-        { id: 'friend-remove-confirmation' },
-        { user: friendToRemove?.username }
+        { id: 'user-unfollow-confirmation' },
+        { user: userToUnfollow?.username }
       )
     }
     return intl.formatMessage(
@@ -39,8 +39,8 @@ const Friends = () => {
 
   return (
     <div className="cont ps-nm">
-      <AddFriendsModal showModal={showAddFriendsModal} setShowModal={setShowAddFriendsModal} />
-      <ConfirmationWarning open={!!friendToRemove} setOpen={setFriendToRemove} action={remove}>
+      <FollowUserModal showModal={showFollowUserModal} setShowModal={setShowFollowUserModal} />
+      <ConfirmationWarning open={!!userToUnfollow} setOpen={setUserToUnfollow} action={remove}>
         <span dangerouslySetInnerHTML={sanitizeHtml(getWarningText('remove'))} />
       </ConfirmationWarning>
 
@@ -51,14 +51,14 @@ const Friends = () => {
 
       <div style={{ margin: '2em 0em' }}>
         <div className="header-2" style={{ marginBottom: '1em' }}>
-          <FormattedMessage id="friends" />
+          <FormattedMessage id="followed-users" />
         </div>
 
-        {friends.length > 0 ? (
+        {followedUsers.length > 0 ? (
           <Table size="small">
             <Table.Header>
               <Table.Row>
-                <Table.HeaderCell key="friend-list-header">
+                <Table.HeaderCell key="followed-list-header">
                   <div className="space-between">
                     <FormattedMessage id="username" />
                     <span>
@@ -69,15 +69,15 @@ const Friends = () => {
               </Table.Row>
             </Table.Header>
             <Table.Body>
-              {friends.map(friend => (
+              {followedUsers.map(followed => (
                 <Table.Row>
-                  <Table.Cell key={friend.uid}>
-                    {friend.username} ({friend.email})
+                  <Table.Cell key={followed.uid}>
+                    {followed.username} ({followed.email})
                     <Icon
                       style={{ cursor: 'pointer' }}
                       name="close"
                       color="red"
-                      onClick={() => setFriendToRemove(friend)}
+                      onClick={() => setUserToUnfollow(followed)}
                     />
                   </Table.Cell>
                 </Table.Row>
@@ -86,13 +86,13 @@ const Friends = () => {
           </Table>
         ) : (
           <span className="additional-info">
-            <FormattedMessage id="no-friends" />
+            <FormattedMessage id="no-followed-users" />
           </span>
         )}
       </div>
 
-      <Button onClick={() => setShowAddFriendsModal(true)}>
-        <FormattedMessage id="add-a-friend" />
+      <Button onClick={() => setShowFollowUserModal(true)}>
+        <FormattedMessage id="follow-a-user" />
       </Button>
       <hr />
 
@@ -144,4 +144,4 @@ const Friends = () => {
   )
 }
 
-export default Friends
+export default People

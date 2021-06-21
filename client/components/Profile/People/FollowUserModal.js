@@ -3,23 +3,23 @@ import { FormattedMessage } from 'react-intl'
 import { useDispatch, useSelector } from 'react-redux'
 import { Button, FormControl, Form } from 'react-bootstrap'
 import { Modal } from 'semantic-ui-react'
-import { addFriends } from 'Utilities/redux/userReducer'
+import { followUser } from 'Utilities/redux/userReducer'
 import { formatEmailList } from 'Utilities/common'
 
-const AddFriendsModal = ({ showModal, setShowModal }) => {
+const FollowUserModal = ({ showModal, setShowModal }) => {
   const dispatch = useDispatch()
   const ownEmail = useSelector(({ user }) => user.data.user.email)
-  const [friend, setFriend] = useState('')
+  const [usersToFollow, setUsersToFollow] = useState('')
   const [showSelfAddWarning, setShowSelfAddWarning] = useState(false)
 
-  const add = event => {
+  const follow = event => {
     event.preventDefault()
-    if (formatEmailList(friend).includes(ownEmail)) {
+    if (formatEmailList(usersToFollow).includes(ownEmail)) {
       setShowSelfAddWarning(true)
     } else {
       setShowSelfAddWarning(false)
-      dispatch(addFriends(formatEmailList(friend)))
-      setFriend('')
+      dispatch(followUser(formatEmailList(usersToFollow)))
+      setUsersToFollow('')
       setShowModal(false)
     }
   }
@@ -33,15 +33,19 @@ const AddFriendsModal = ({ showModal, setShowModal }) => {
       onOpen={() => setShowModal(true)}
     >
       <Modal.Header className="bold" as="h2">
-        <FormattedMessage id="add-a-friend" />
+        <FormattedMessage id="follow-a-user" />
       </Modal.Header>
       <Modal.Content>
-        <Form className="group-form" onSubmit={add}>
+        <Form className="group-form" onSubmit={follow}>
           <span className="sm-label">
             <FormattedMessage id="enter-email-address" />{' '}
             <FormattedMessage id="multiple-emails-separated-by-space" />
           </span>
-          <FormControl as="textarea" value={friend} onChange={e => setFriend(e.target.value)} />
+          <FormControl
+            as="textarea"
+            value={usersToFollow}
+            onChange={e => setUsersToFollow(e.target.value)}
+          />
           {showSelfAddWarning && (
             <div style={{ color: 'red', marginBottom: '1em' }}>
               <FormattedMessage id="you-cannot-add-yourself" />
@@ -56,4 +60,4 @@ const AddFriendsModal = ({ showModal, setShowModal }) => {
   )
 }
 
-export default AddFriendsModal
+export default FollowUserModal

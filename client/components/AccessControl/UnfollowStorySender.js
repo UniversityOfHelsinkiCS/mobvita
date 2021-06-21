@@ -1,14 +1,14 @@
 import { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { acceptSharedStory } from 'Utilities/redux/storiesReducer'
+import { unfollowStorySender } from 'Utilities/redux/userReducer'
 import { useHistory } from 'react-router'
 
-const AcceptSharedStory = ({ queryParams }) => {
+const UnfollowStorySender = ({ queryParams }) => {
   const dispatch = useDispatch()
   const user = useSelector(({ user }) => user.data)
   const history = useHistory()
 
-  const storyId = queryParams.replace(/^.*?story_id=(.*)&token=.*$/g, '$1')
+  const userId = queryParams.replace(/^.*?friend_id=(.*)&token=.*$/g, '$1')
   const token = queryParams.replace(/^.*?&token=(.*)\?.*$/g, '$1')
 
   useEffect(() => {
@@ -20,10 +20,10 @@ const AcceptSharedStory = ({ queryParams }) => {
   }, [user])
 
   useEffect(() => {
-    dispatch(acceptSharedStory(storyId, token))
+    dispatch(unfollowStorySender(userId, token))
   }, [])
 
   return null
 }
 
-export default AcceptSharedStory
+export default UnfollowStorySender

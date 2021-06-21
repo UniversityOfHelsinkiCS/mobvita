@@ -8,9 +8,10 @@ import ReadView from 'Components/ReadView'
 import PracticeView from 'Components/PracticeView'
 import LanguageSelectView from 'Components/LanguageSelectView'
 import EmailConfirm from 'Components/AccessControl/EmailConfirm'
-import AcceptSharedStory from 'Components/AccessControl/AcceptSharedStory'
+import AcceptSharedStory from 'Components/AccessControl/AcceptStory'
 import BlockStorySender from 'Components/AccessControl/BlockStorySender'
-import AcceptStoryAddFriend from 'Components/AccessControl/AcceptStoryAddFriend'
+import AcceptStoryFollowUser from 'Components/AccessControl/AcceptStoryFollowUser'
+import UnfollowStorySender from 'Components/AccessControl/UnfollowStorySender'
 import InvitationConfirm from 'Components/GroupView/InvitationConfirm'
 import ProtectedRoute from 'Components/AccessControl/ProtectedRoute'
 import CrosswordView from 'Components/CrosswordView'
@@ -61,8 +62,14 @@ export default () => {
 
             <Route
               exact
+              path="/remove_friend_email"
+              render={() => <UnfollowStorySender queryParams={location.search} />}
+            />
+
+            <Route
+              exact
               path="/accept_and_add"
-              render={() => <AcceptStoryAddFriend queryParams={location.search} />}
+              render={() => <AcceptStoryFollowUser queryParams={location.search} />}
             />
 
             <ProtectedRoute
@@ -90,7 +97,7 @@ export default () => {
             <ProtectedRoute exact path="/profile/account" component={Profile} />
             <ProtectedRoute exact path="/profile/progress" component={Profile} />
             <ProtectedRoute exact path="/profile/settings" component={Profile} />
-            <ProtectedRoute exact path="/profile/friends" component={Profile} />
+            <ProtectedRoute exact path="/profile/people" component={Profile} />
             <ProtectedRoute exact path="/tests" component={TestIndex} />
             <ProtectedRoute exact path="/achievements" component={Achievements} />
             <ProtectedRoute exact path="/leaderboard" component={Leaderboard} />

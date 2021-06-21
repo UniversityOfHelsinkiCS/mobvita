@@ -1,10 +1,10 @@
 import { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { addStorySenderAsFriend } from 'Utilities/redux/userReducer'
+import { followStorySender } from 'Utilities/redux/userReducer'
 import { acceptSharedStory } from 'Utilities/redux/storiesReducer'
 import { useHistory } from 'react-router'
 
-const AcceptStoryAddFriend = ({ queryParams }) => {
+const AcceptStoryFollowUser = ({ queryParams }) => {
   const dispatch = useDispatch()
   const user = useSelector(({ user }) => user.data)
   const history = useHistory()
@@ -23,10 +23,10 @@ const AcceptStoryAddFriend = ({ queryParams }) => {
 
   useEffect(() => {
     dispatch(acceptSharedStory(storyId, token))
-    dispatch(addStorySenderAsFriend(userId, token))
+    dispatch(followStorySender(userId, token))
   }, [])
 
   return null
 }
 
-export default AcceptStoryAddFriend
+export default AcceptStoryFollowUser

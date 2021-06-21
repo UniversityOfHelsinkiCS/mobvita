@@ -5,7 +5,7 @@ import { useIntl } from 'react-intl'
 import Progress from 'Components/Profile/Progress'
 import Account from './Account'
 import Settings from './Settings'
-import Friends from './Friends'
+import Friends from './People'
 
 export default function Profile({ location }) {
   const intl = useIntl()
@@ -41,9 +41,9 @@ export default function Profile({ location }) {
     {
       menuItem: {
         as: Link,
-        content: intl.formatMessage({ id: 'friends' }),
-        to: '/profile/friends',
-        key: 'friends',
+        content: intl.formatMessage({ id: 'people' }),
+        to: '/profile/people',
+        key: 'people',
       },
       render: () => <Friends />,
     },
@@ -51,7 +51,7 @@ export default function Profile({ location }) {
 
   let index
   switch (location.pathname) {
-    case '/profile/friends':
+    case '/profile/people':
       index = 3
       break
     case '/profile/settings':

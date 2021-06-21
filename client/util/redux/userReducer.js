@@ -37,16 +37,16 @@ export const updateLearningLanguage = language => {
   return callBuilder(route, prefix, 'post', payload)
 }
 
-export const addFriends = value => {
+export const followUser = value => {
   const route = '/user/friends'
-  const prefix = 'ADD_FRIENDS'
+  const prefix = 'FOLLOW_USER'
   const payload = { emails: value }
   return callBuilder(route, prefix, 'post', payload)
 }
 
-export const removeFriend = uid => {
+export const unfollowUser = uid => {
   const route = `/user/friends/${uid}`
-  const prefix = 'REMOVE_FRIEND'
+  const prefix = 'UNFOLLOW_USER'
   return callBuilder(route, prefix, 'post')
 }
 
@@ -69,9 +69,15 @@ export const blockStorySender = (uid, token) => {
   return callBuilder(route, prefix, 'get')
 }
 
-export const addStorySenderAsFriend = (uid, token) => {
+export const unfollowStorySender = (uid, token) => {
+  const route = `/user/friends/${uid}/remove?token=${token}`
+  const prefix = 'UNFOLLOW_STORY_SENDER'
+  return callBuilder(route, prefix, 'get')
+}
+
+export const followStorySender = (uid, token) => {
   const route = `/user/friends/${uid}/request?token=${token}`
-  const prefix = 'ADD_FRIEND_STORY_SENDER'
+  const prefix = 'FOLLOW_STORY_SENDER'
   return callBuilder(route, prefix, 'get')
 }
 
@@ -168,7 +174,7 @@ export default (state = { data: null, learningLanguageChanged: false }, action) 
         error: true,
         errorMessage: action?.response,
       }
-    case 'ADD_FRIENDS_SUCCESS':
+    case 'FOLLOW_USER_SUCCESS':
       return {
         ...state,
         data: { ...state.data, user: action.response.user },
@@ -176,13 +182,13 @@ export default (state = { data: null, learningLanguageChanged: false }, action) 
         error: false,
         refreshed: true,
       }
-    case 'ADD_FRIENDS_ATTEMPT':
+    case 'FOLLOW_USER_ATTEMPT':
       return {
         ...state,
         pending: true,
         error: false,
       }
-    case 'ADD_FRIENDS_FAILURE':
+    case 'FOLLOW_USER_FAILURE':
       return {
         ...state,
         pending: false,
@@ -190,7 +196,7 @@ export default (state = { data: null, learningLanguageChanged: false }, action) 
         errorMessage: action?.response,
       }
 
-    case 'REMOVE_FRIEND_SUCCESS':
+    case 'UNFOLLOW_USER_SUCCESS':
       return {
         ...state,
         data: { ...state.data, user: action.response.user },
@@ -198,12 +204,12 @@ export default (state = { data: null, learningLanguageChanged: false }, action) 
         error: false,
         refreshed: true,
       }
-    case 'REMOVE_FRIEND_ATTEMPT':
+    case 'UNFOLLOW_USER_ATTEMPT':
       return {
         ...state,
         pending: true,
       }
-    case 'REMOVE_FRIEND_FAILURE':
+    case 'UNFOLLOW_USER_FAILURE':
       return {
         ...state,
         pending: true,
@@ -268,7 +274,7 @@ export default (state = { data: null, learningLanguageChanged: false }, action) 
         error: false,
       }
 
-    case 'ADD_FRIEND_STORY_SENDER_SUCCESS':
+    case 'UNFOLLOW_STORY_SENDER_SUCCESS':
       return {
         ...state,
         pending: false,
@@ -276,7 +282,22 @@ export default (state = { data: null, learningLanguageChanged: false }, action) 
         refreshed: true,
       }
 
-    case 'ADD_FRIEND_STORY_SENDER_ATTEMPT':
+    case 'UNFOLLOW_STORY_SENDER_ATTEMPT':
+      return {
+        ...state,
+        pending: true,
+        error: false,
+      }
+
+    case 'FOLLOW_STORY_SENDER_SUCCESS':
+      return {
+        ...state,
+        pending: false,
+        error: false,
+        refreshed: true,
+      }
+
+    case 'FOLLOW_STORY_SENDER_ATTEMPT':
       return {
         ...state,
         pending: true,
