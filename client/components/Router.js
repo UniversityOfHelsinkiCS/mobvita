@@ -71,6 +71,8 @@ export default () => {
               path="/learningLanguage"
               component={LanguageSelectView}
             />
+
+            <ProtectedRoute exact path="/login" component={HomeView} />
             <ProtectedRoute exact path="/home" component={HomeView} />
             <ProtectedRoute exact path="/library" component={LibraryView} />
             <ProtectedRoute exact path="/flashcards" component={Flashcards} />
