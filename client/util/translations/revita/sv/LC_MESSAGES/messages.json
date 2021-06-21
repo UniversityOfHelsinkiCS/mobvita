@@ -998,7 +998,7 @@
     "users-already-friends": "Users with following email addresses were already in your friend list: {users}.",
     "users-already-blocked": "Users with following email addresses were already blocked: {users}",
     "users-already-friended": "Users with following email addresses were already in your friend list: {users}",
-    "need-to-be-teacher-in-group-to-share": "You have to teacher for a group with the chosen learning language in order to share a story",
+    "need-to-be-teacher-in-group-to-share": "You have to be the teacher of a group in order to share stories",
     "add-friends-to-share-stories": "Add friends to share stories with them",
     "friend": "Friend",
     "shared-by": "Shared by",
@@ -1006,5 +1006,14 @@
     "could-not-find-story-to-accept": "Berättelsen hittades inte",
     "shared-story-accepted-successfully": "Shared story accepted successfully!",
     "user-blocked-success": "Användaren blockerades",
-    "user-blocked-failure": ""
+    "user-blocked-failure": "Unable to block this user",
+    "followed-users": "Followed users",
+    "follow-a-user": "Follow a user",
+    "user-unfollow-confirmation": "Are you sure you want to unfollow <b>{user}</b> ?",
+    "share-story-with-a-user": "Share story with a user",
+    "no-followed-users": "You are not following any users yet.",
+    "user-unfollowed-success": "User successfully unfollowed",
+    "user-followed": "Followed user successfully added",
+    "users-already-followed": "You are already following users with the following email addresses: {users}",
+    "cant-share-story-with-yourself": "Du försökte dela berättelsen med dig själv..."
 }

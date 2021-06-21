@@ -139,7 +139,7 @@ const ShareStory = ({ story, isOpen, setOpen }) => {
               />
               {showSelfAddWarning && (
                 <div style={{ color: 'red', marginBottom: '1em' }}>
-                  <FormattedMessage id="you-cannot-add-yourself" />
+                  <FormattedMessage id="cant-share-story-with-yourself" />
                 </div>
               )}
               <span className="sm-label" style={{ marginTop: '5em' }}>
