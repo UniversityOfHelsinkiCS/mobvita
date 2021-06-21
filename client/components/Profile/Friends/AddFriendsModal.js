@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import { FormattedMessage } from 'react-intl'
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { Button, FormControl, Form } from 'react-bootstrap'
 import { Modal } from 'semantic-ui-react'
 import { addFriends } from 'Utilities/redux/userReducer'
@@ -8,13 +8,20 @@ import { formatEmailList } from 'Utilities/common'
 
 const AddFriendsModal = ({ showModal, setShowModal }) => {
   const dispatch = useDispatch()
+  const ownEmail = useSelector(({ user }) => user.data.user.email)
   const [friend, setFriend] = useState('')
+  const [showSelfAddWarning, setShowSelfAddWarning] = useState(false)
 
   const add = event => {
     event.preventDefault()
-    dispatch(addFriends(formatEmailList(friend)))
-    setFriend('')
-    setShowModal(false)
+    if (formatEmailList(friend).includes(ownEmail)) {
+      setShowSelfAddWarning(true)
+    } else {
+      setShowSelfAddWarning(false)
+      dispatch(addFriends(formatEmailList(friend)))
+      setFriend('')
+      setShowModal(false)
+    }
   }
 
   return (
@@ -35,6 +42,11 @@ const AddFriendsModal = ({ showModal, setShowModal }) => {
             <FormattedMessage id="multiple-emails-separated-by-space" />
           </span>
           <FormControl as="textarea" value={friend} onChange={e => setFriend(e.target.value)} />
+          {showSelfAddWarning && (
+            <div style={{ color: 'red', marginBottom: '1em' }}>
+              <FormattedMessage id="you-cannot-add-yourself" />
+            </div>
+          )}
           <Button variant="primary" type="submit">
             <FormattedMessage id="Confirm" />
           </Button>

@@ -1,20 +1,32 @@
 import React, { useState } from 'react'
 import { FormattedMessage } from 'react-intl'
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { Button, FormControl, Form } from 'react-bootstrap'
 import { Modal } from 'semantic-ui-react'
 import { blockUser } from 'Utilities/redux/userReducer'
+import { setNotification } from 'Utilities/redux/notificationReducer'
 import { formatEmailList } from 'Utilities/common'
 
 const BlockUserModal = ({ showModal, setShowModal }) => {
   const dispatch = useDispatch()
+  const ownEmail = useSelector(({ user }) => user.data.user.email)
   const [userToBlock, setuserToBlock] = useState('')
+  const [showSelfAddWarning, setShowSelfAddWarning] = useState(false)
 
   const block = event => {
     event.preventDefault()
-    dispatch(blockUser(formatEmailList(userToBlock)))
-    setuserToBlock('')
-    setShowModal(false)
+
+    if (formatEmailList(userToBlock).includes(ownEmail)) {
+      setShowSelfAddWarning(true)
+    } else {
+      dispatch(blockUser(formatEmailList(userToBlock)))
+      setuserToBlock('')
+      setShowModal(false)
+    }
+
+    // dispatch(blockUser(formatEmailList(userToBlock)))
+    //   setuserToBlock('')
+    //   setShowModal(false)
   }
 
   return (
@@ -39,6 +51,11 @@ const BlockUserModal = ({ showModal, setShowModal }) => {
             value={userToBlock}
             onChange={e => setuserToBlock(e.target.value)}
           />
+          {showSelfAddWarning && (
+            <div style={{ color: 'red', marginBottom: '1em' }}>
+              <FormattedMessage id="you-cannot-add-yourself" />
+            </div>
+          )}
           <Button variant="primary" type="submit">
             <FormattedMessage id="Confirm" />
           </Button>
