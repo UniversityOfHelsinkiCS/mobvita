@@ -520,7 +520,7 @@
     "exercises-answered-correctly": "% of exercises answered correctly",
     "part-of-story-covered": "% of story covered",
     "delete-story": "",
-    "share-story-with-a-friend": "Share story with a friend",
+    "share-story-with-a-friend": "Share story with a user",
     "your-friends": "Your friends",
     "Actions": "",
     "Teachers": "Teachers",
@@ -1018,5 +1018,7 @@
     "users-already-followed": "You are already following these users: {users}",
     "cant-share-story-with-yourself": "You can't share a story with yourself",
     "following-users-information": "By following a user, the stories they share with you are automatically accepted.",
-    "blocking-users-information": "Blocking a user prevents them from sharing stories with you."
+    "blocking-users-information": "Blocking a user prevents them from sharing stories with you.",
+    "apologies-no-translation": "(Apologies, we found no translations for this word to use as a clue.)",
+    "following": "Following"
 }

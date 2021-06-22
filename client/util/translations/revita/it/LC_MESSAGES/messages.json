@@ -1019,5 +1019,7 @@
     "users-already-followed": "Stai già seguenfo questi utenti: {users}",
     "cant-share-story-with-yourself": "Non puoi condividere la storia con te stesso",
     "following-users-information": "By following a user, the stories they share with you are automatically accepted.",
-    "blocking-users-information": "Blocking a user prevents them from sharing stories with you."
+    "blocking-users-information": "Blocking a user prevents them from sharing stories with you.",
+    "apologies-no-translation": "(Apologies, we found no translations for this word to use as a clue.)",
+    "following": "Seguiti"
 }

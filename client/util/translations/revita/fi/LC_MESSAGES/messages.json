@@ -520,7 +520,7 @@
     "exercises-answered-correctly": "% Vastattu oikein",
     "part-of-story-covered": "% Luettu osa",
     "delete-story": "Poista kertomus",
-    "share-story-with-a-friend": "Jaa kaverille",
+    "share-story-with-a-friend": "Jaa toiselle käyttäjälle",
     "your-friends": "Kaverisi",
     "Actions": "Toiminnot",
     "Teachers": "Opettajat",
@@ -1018,5 +1018,7 @@
     "users-already-followed": "Seuraat jo valmiiksi seuraavia käyttäjiä: {users}",
     "cant-share-story-with-yourself": "Et voi jakaa tarinaa itsellesi",
     "following-users-information": "Seuraamalla käyttäjää hänen jakamansa tarinat hyväksytään automaattisesti.",
-    "blocking-users-information": "Estetyt käyttäjät eivät voi jakaa sinulle kertomuksia."
+    "blocking-users-information": "Estetyt käyttäjät eivät voi jakaa sinulle kertomuksia.",
+    "apologies-no-translation": "(Valitettavasti emme löytäneet sanalle käännöksiä, joita käyttää vihjeinä.)",
+    "following": "Seuratut"
 }
