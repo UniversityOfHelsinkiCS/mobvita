@@ -59,7 +59,7 @@ const Following = () => {
         </div>
 
         {followedUsers.length > 0 ? (
-          <Table size="small">
+          <Table size="small" data-cy="followed-table">
             <Table.Header>
               <Table.Row key="followed-header-row">
                 <Table.HeaderCell>
@@ -101,7 +101,7 @@ const Following = () => {
         )}
       </div>
 
-      <Button onClick={() => setShowFollowUserModal(true)}>
+      <Button data-cy="follow-user-button" onClick={() => setShowFollowUserModal(true)}>
         <FormattedMessage id="follow-a-user" />
       </Button>
       <hr />
@@ -116,7 +116,7 @@ const Following = () => {
         </div>
 
         {blocked.length > 0 ? (
-          <Table size="small">
+          <Table size="small" data-cy="blocked-table">
             <Table.Header>
               <Table.Row key="blocked-header-row">
                 <Table.HeaderCell>
@@ -136,7 +136,7 @@ const Following = () => {
                 <Table.Row key={`${user.username}`}>
                   <Table.Cell>
                     <div className="space-between">
-                      <div>
+                      <div data-cy={user.email}>
                         {user.username} ({user.email})
                       </div>
                       <Icon
@@ -157,7 +157,7 @@ const Following = () => {
           </span>
         )}
       </div>
-      <Button onClick={() => setShowBlockUserModal(true)}>
+      <Button data-cy="block-user-button" onClick={() => setShowBlockUserModal(true)}>
         <FormattedMessage id="block-a-user" />
       </Button>
     </div>
