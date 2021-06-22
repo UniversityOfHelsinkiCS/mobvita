@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import { FormattedMessage, useIntl } from 'react-intl'
 import { Button } from 'react-bootstrap'
 import { unfollowUser, unblockUser } from 'Utilities/redux/userReducer'
-import { Icon, Table } from 'semantic-ui-react'
+import { Icon, Table, Popup } from 'semantic-ui-react'
 import ConfirmationWarning from 'Components/ConfirmationWarning'
 import { sanitizeHtml } from 'Utilities/common'
 import FollowUserModal from './FollowUserModal'
@@ -51,34 +51,44 @@ const People = () => {
 
       <div style={{ margin: '2em 0em' }}>
         <div className="header-2" style={{ marginBottom: '1em' }}>
-          <FormattedMessage id="followed-users" />
+          <FormattedMessage id="followed-users" />{' '}
+          <Popup
+            content={<FormattedMessage id="following-users-information" />}
+            trigger={<Icon name="info circle" size="small" />}
+          />
         </div>
 
         {followedUsers.length > 0 ? (
           <Table size="small">
             <Table.Header>
-              <Table.Row>
-                <Table.HeaderCell key="followed-list-header">
+              <Table.Row key="followed-header-row">
+                <Table.HeaderCell>
                   <div className="space-between">
-                    <FormattedMessage id="username" />
-                    <span>
+                    <div>
+                      <FormattedMessage id="username" />
+                    </div>
+                    <div>
                       <FormattedMessage id="actions" />
-                    </span>
+                    </div>
                   </div>
                 </Table.HeaderCell>
               </Table.Row>
             </Table.Header>
             <Table.Body>
               {followedUsers.map(followed => (
-                <Table.Row>
-                  <Table.Cell key={followed.uid}>
-                    {followed.username} ({followed.email})
-                    <Icon
-                      style={{ cursor: 'pointer' }}
-                      name="close"
-                      color="red"
-                      onClick={() => setUserToUnfollow(followed)}
-                    />
+                <Table.Row key={`${followed.usename}`}>
+                  <Table.Cell>
+                    <div className="space-between">
+                      <div>
+                        {followed.username} ({followed.email})
+                      </div>
+                      <Icon
+                        style={{ cursor: 'pointer' }}
+                        name="close"
+                        color="red"
+                        onClick={() => setUserToUnfollow(followed)}
+                      />
+                    </div>
                   </Table.Cell>
                 </Table.Row>
               ))}
@@ -98,34 +108,44 @@ const People = () => {
 
       <div style={{ margin: '2em 0em' }}>
         <div className="header-2" style={{ marginBottom: '1em' }}>
-          <FormattedMessage id="blocked-users" />
+          <FormattedMessage id="blocked-users" />{' '}
+          <Popup
+            content={<FormattedMessage id="blocking-users-information" />}
+            trigger={<Icon name="info circle" size="small" />}
+          />
         </div>
 
         {blocked.length > 0 ? (
           <Table size="small">
             <Table.Header>
-              <Table.Row>
-                <Table.HeaderCell key="blocked-list-header">
+              <Table.Row key="blocked-header-row">
+                <Table.HeaderCell>
                   <div className="space-between">
-                    <FormattedMessage id="username" />
-                    <span>
+                    <div>
+                      <FormattedMessage id="username" />
+                    </div>
+                    <div>
                       <FormattedMessage id="actions" />
-                    </span>
+                    </div>
                   </div>
                 </Table.HeaderCell>
               </Table.Row>
             </Table.Header>
             <Table.Body>
               {blocked.map(user => (
-                <Table.Row>
-                  <Table.Cell key={user.uid}>
-                    {user.username} ({user.email})
-                    <Icon
-                      style={{ cursor: 'pointer' }}
-                      name="close"
-                      color="red"
-                      onClick={() => setUserToUnblock(user)}
-                    />
+                <Table.Row key={`${user.username}`}>
+                  <Table.Cell>
+                    <div className="space-between">
+                      <div>
+                        {user.username} ({user.email})
+                      </div>
+                      <Icon
+                        style={{ cursor: 'pointer' }}
+                        name="close"
+                        color="red"
+                        onClick={() => setUserToUnblock(user)}
+                      />
+                    </div>
                   </Table.Cell>
                 </Table.Row>
               ))}

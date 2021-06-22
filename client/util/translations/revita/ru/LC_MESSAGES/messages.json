@@ -1019,5 +1019,7 @@
     "user-unfollowed-success": "Подписка на пользователя отменена",
     "user-followed": "Followed user successfully added",
     "users-already-followed": "Вы уже подписаны на этих пользователей: {users}",
-    "cant-share-story-with-yourself": "Невозможно поделиться текстом с самим собой..."
+    "cant-share-story-with-yourself": "Невозможно поделиться текстом с самим собой...",
+    "following-users-information": "By following a user, the stories they share are automatically accepted.",
+    "blocking-users-information": "Blocking a user prevents them from sharing stories with you."
 }

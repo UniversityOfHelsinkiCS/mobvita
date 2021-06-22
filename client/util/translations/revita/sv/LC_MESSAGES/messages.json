@@ -1015,5 +1015,7 @@
     "user-unfollowed-success": "User successfully unfollowed",
     "user-followed": "Followed user successfully added",
     "users-already-followed": "You are already following these users: {users}",
-    "cant-share-story-with-yourself": "Du försökte dela berättelsen med dig själv..."
+    "cant-share-story-with-yourself": "Du försökte dela berättelsen med dig själv...",
+    "following-users-information": "By following a user, the stories they share are automatically accepted.",
+    "blocking-users-information": "Blocking a user prevents them from sharing stories with you."
 }

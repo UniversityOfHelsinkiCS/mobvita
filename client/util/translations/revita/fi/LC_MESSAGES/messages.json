@@ -1016,5 +1016,7 @@
     "user-unfollowed-success": "Käyttäjän seuraaminen lopetettu onnistuneesti",
     "user-followed": "Käyttäjän seuraaminen onnistui",
     "users-already-followed": "Seuraat jo valmiiksi seuraavia käyttäjiä: {users}",
-    "cant-share-story-with-yourself": "Et voi jakaa tarinaa itsellesi"
+    "cant-share-story-with-yourself": "Et voi jakaa tarinaa itsellesi",
+    "following-users-information": "Seuraamalla käyttäjää hänen jakamansa tarinat hyväksytään automaattisesti. Voit lopettaa käyttäjän seuraamisen milloin tahansa.",
+    "blocking-users-information": "Estetyt käyttäjät eivät voi jakaa sinulle kertomuksia."
 }
