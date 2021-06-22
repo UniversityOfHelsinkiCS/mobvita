@@ -97,7 +97,7 @@ export default () => {
             <ProtectedRoute exact path="/profile/account" component={Profile} />
             <ProtectedRoute exact path="/profile/progress" component={Profile} />
             <ProtectedRoute exact path="/profile/settings" component={Profile} />
-            <ProtectedRoute exact path="/profile/people" component={Profile} />
+            <ProtectedRoute exact path="/profile/following" component={Profile} />
             <ProtectedRoute exact path="/tests" component={TestIndex} />
             <ProtectedRoute exact path="/achievements" component={Achievements} />
             <ProtectedRoute exact path="/leaderboard" component={Leaderboard} />

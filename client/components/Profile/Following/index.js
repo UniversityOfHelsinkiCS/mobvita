@@ -9,7 +9,7 @@ import { sanitizeHtml } from 'Utilities/common'
 import FollowUserModal from './FollowUserModal'
 import BlockUserModal from './BlockUserModal'
 
-const People = () => {
+const Following = () => {
   const { friends: followedUsers, blocked } = useSelector(({ user }) => user.data.user)
 
   const dispatch = useDispatch()
@@ -164,4 +164,4 @@ const People = () => {
   )
 }
 
-export default People
+export default Following
