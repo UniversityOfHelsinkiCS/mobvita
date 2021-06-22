@@ -9,7 +9,7 @@ import Crossword from 'Components/CrosswordView/Crossword'
 import PlainWord from 'Components/PracticeView/PlainWord'
 import { isEmpty } from 'lodash'
 import DictionaryHelp from 'Components/DictionaryHelp'
-import { setWords, getTranslationAction } from 'Utilities/redux/translationReducer'
+import { setWords, getClueTranslationAction } from 'Utilities/redux/translationReducer'
 import EndModal from './EndModal'
 
 const CrosswordView = () => {
@@ -106,7 +106,7 @@ const CrosswordView = () => {
         setWords({ surface, lemmas, clue: { number, direction: directionArrow(direction) } })
       )
       dispatch(
-        getTranslationAction({
+        getClueTranslationAction({
           learningLanguage,
           wordLemmas: lemmas,
           dictionaryLanguage,
@@ -288,7 +288,7 @@ const CrosswordView = () => {
           dimensions={dimensions}
         />
       </div>
-      <DictionaryHelp minimized={false} />
+      <DictionaryHelp minimized={false} inCrossword />
       <EndModal
         open={modalOpen}
         setOpen={setModalOpen}

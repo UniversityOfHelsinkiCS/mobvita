@@ -83,7 +83,7 @@ const Lemma = ({ lemma, sourceWord, handleSourceWordClick, userUrl, inflectionRe
           <Icon name="angle double left" />
           {sourceWord}
         </span>
-      )}  
+      )}
     </div>
   )
 }
@@ -143,7 +143,8 @@ const DictionaryHelp = ({ minimized, inWordNestModal }) => {
 
   const translations =
     translation &&
-    translation.map(translated => (
+    translation !== 'no-clue-translation' &&
+    translation?.map(translated => (
       <div
         key={translated.URL}
         data-cy="translations"
@@ -170,7 +171,7 @@ const DictionaryHelp = ({ minimized, inWordNestModal }) => {
 
   const handleDropdownChange = value => {
     if (translation) {
-      const lemmas = translation.map(t => t.lemma).join('+')
+      const lemmas = translation?.map(t => t?.lemma).join('+')
       if (lemmas !== '')
         dispatch(
           getTranslationAction({ learningLanguage, dictionaryLanguage: value, wordLemmas: lemmas })
@@ -191,7 +192,7 @@ const DictionaryHelp = ({ minimized, inWordNestModal }) => {
 
   const showSurfaceWord = () => {
     if (!surfaceWord || clue) return false
-    if (translation) {
+    if (translation && translation !== 'no-clue-translation') {
       return !translation.some(
         translated => translated.lemma.toLowerCase() === surfaceWord.toLowerCase()
       )
@@ -208,12 +209,25 @@ const DictionaryHelp = ({ minimized, inWordNestModal }) => {
       return (
         <div>
           <span>
-            <FormattedMessage id="(DictionaryHelp) Loading, please wait" />
+            <FormattedMessage id="dictionaryhelp-loading-please-wait" />
             ...{' '}
           </span>
           <Spinner animation="border" />
         </div>
       )
+    if (translation === 'no-clue-translation') {
+      return (
+        <>
+          <div style={{ marginBottom: '1em', width: '100%', ...getTextStyle(learningLanguage) }}>
+            <Speaker word={parsedLemmas()[0]} />
+            {maskSymbol || parsedLemmas()[0]}
+          </div>
+          <div className="additional-info">
+            <FormattedMessage id="apologies-no-translation" />
+          </div>
+        </>
+      )
+    }
     if (translations && translations.length > 0)
       return (
         <div
@@ -244,7 +258,7 @@ const DictionaryHelp = ({ minimized, inWordNestModal }) => {
           )}
           <List bulleted style={{ color: 'slateGrey', fontStyle: 'italic' }}>
             <span>
-              <FormattedMessage id="(DictionaryHelp) No translation available" />
+              <FormattedMessage id="dictionaryhelp-no-translation-available" />
             </span>
           </List>
         </List.Item>

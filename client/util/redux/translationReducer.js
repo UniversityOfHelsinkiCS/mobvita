@@ -26,6 +26,29 @@ export const getTranslationAction = ({
   return callBuilder(route, prefix, 'get', null, query)
 }
 
+export const getClueTranslationAction = ({
+  wordLemmas,
+  learningLanguage,
+  dictionaryLanguage,
+  storyId,
+  wordId,
+  record,
+  inflectionRef,
+}) => {
+  const query = {
+    w: wordLemmas,
+    lang_learn: learningLanguage,
+    lang_target: dictionaryLanguage,
+    story_id: storyId,
+    word_id: wordId,
+    record,
+    ref: inflectionRef,
+  }
+  const route = '/translate'
+  const prefix = 'GET_CLUE_TRANSLATION'
+  return callBuilder(route, prefix, 'get', null, query)
+}
+
 export const clearTranslationAction = () => ({ type: 'CLEAR_TRANSLATION' })
 
 export const setWords = ({ surface, lemmas, clue, maskSymbol }) => {
@@ -54,6 +77,34 @@ export default (state = { data: [] }, action) => {
         error: false,
       }
     case 'GET_TRANSLATION_FAILURE':
+      return {
+        ...state,
+        focused: action.response,
+        pending: false,
+        error: true,
+      }
+    case 'GET_CLUE_TRANSLATION_ATTEMPT':
+      return {
+        ...state,
+        pending: true,
+        error: false,
+      }
+    case 'GET_CLUE_TRANSLATION_SUCCESS':
+      if (!action.response['responses-json']) {
+        return {
+          ...state,
+          data: 'no-clue-translation',
+          pending: false,
+          error: false,
+        }
+      }
+      return {
+        ...state,
+        data: action.response['responses-json'],
+        pending: false,
+        error: false,
+      }
+    case 'GET_CLUE_TRANSLATION_FAILURE':
       return {
         ...state,
         focused: action.response,
