@@ -1021,5 +1021,7 @@
     "following-users-information": "By following a user, the stories they share with you are automatically accepted.",
     "blocking-users-information": "Blocking a user prevents them from sharing stories with you.",
     "apologies-no-translation": "(Apologies, we found no translations for this word to use as a clue.)",
-    "following": "Seguiti"
+    "following": "Seguiti",
+    "dictionaryhelp-loading-please-wait": "Attendi il caricamento ",
+    "dictionaryhelp-no-translation-available": "Traduzione non trovata"
 }

@@ -1020,5 +1020,7 @@
     "following-users-information": "Seuraamalla käyttäjää hänen jakamansa tarinat hyväksytään automaattisesti.",
     "blocking-users-information": "Estetyt käyttäjät eivät voi jakaa sinulle kertomuksia.",
     "apologies-no-translation": "(Valitettavasti emme löytäneet sanalle käännöksiä, joita käyttää vihjeinä.)",
-    "following": "Seuratut"
+    "following": "Seuratut",
+    "dictionaryhelp-loading-please-wait": "Ladataan, odota",
+    "dictionaryhelp-no-translation-available": "Käännöstä ei löydy"
 }
