@@ -1012,9 +1012,9 @@
     "follow-a-user": "Follow a user",
     "user-unfollow-confirmation": "Are you sure you want to unfollow <b>{user}</b> ?",
     "share-story-with-a-user": "Share story with a user",
-    "no-followed-users": "You are not following any users yet.",
+    "no-followed-users": "You are not following any users yet",
     "user-unfollowed-success": "User successfully unfollowed",
     "user-followed": "Followed user successfully added",
-    "users-already-followed": "You are already following users with the following email addresses: {users}",
+    "users-already-followed": "You are already following these users: {users}",
     "cant-share-story-with-yourself": "You can't share a story with yourself"
 }
