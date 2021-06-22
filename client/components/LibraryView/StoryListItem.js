@@ -237,7 +237,6 @@ const StoryListItem = ({ story, userCanShare, libraryShown, selectedGroup }) => 
                 trigger={<Icon name="envelope outline" />}
               />
             )}
-
             <DifficultyStars difficulty={story.difficulty} style={{ whiteSpace: 'nowrap' }} />
           </div>
         </div>

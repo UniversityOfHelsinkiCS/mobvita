@@ -264,6 +264,7 @@ export const formatEmailList = emailListAsString => {
   const separators = [' ', ',', ';']
 
   return emailListAsString
+    .trim()
     .toLowerCase()
     .split(new RegExp(`[${separators.join('')}]`, 'g'))
     .map(p => p.trim())
