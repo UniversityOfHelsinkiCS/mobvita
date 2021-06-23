@@ -100,10 +100,9 @@ const Summary = ({ setStudent, startDate, endDate, group, isTeaching, getSummary
 
               <Table striped bordered hover responsive size="sm">
                 <thead>
-                  <tr>
+                  <tr key="summary-header-row">
                     {columns.map(column => (
                       <th
-                        key={column}
                         className="clickable"
                         onClick={() => handleSort(column)}
                         style={{ textAlign: 'center', verticalAlign: 'middle' }}
@@ -120,7 +119,7 @@ const Summary = ({ setStudent, startDate, endDate, group, isTeaching, getSummary
                   {summary.map(user => (
                     <tr onClick={() => handleRowClick(user)} key={user.email}>
                       {columns.map(column => (
-                        <td key={user.username + column}>{user[column]}</td>
+                        <td>{user[column]}</td>
                       ))}
                     </tr>
                   ))}

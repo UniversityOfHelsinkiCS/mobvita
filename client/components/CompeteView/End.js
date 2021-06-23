@@ -5,7 +5,7 @@ const End = () => {
   const { compete } = useSelector(({ compete }) => ({ compete }))
 
   const { wrong, total, totalTime, startTime, opponentPercent } = compete
-  const timeNow = (new Date()).getTime()
+  const timeNow = new Date().getTime()
   const yourTime = ((timeNow - startTime) / 1000).toFixed(0)
   const right = total - wrong
   const opponentRight = (total * opponentPercent).toFixed(0)
@@ -24,12 +24,10 @@ const End = () => {
   return (
     <div>
       <div>
-        You scored {right} out of {total} tried.
-        In {yourTime}s.
+        You scored {right} out of {total} tried. In {yourTime}s.
       </div>
       <div>
-        Opponent scored {opponentRight} out of {total} tried.
-        In {totalTime}s.
+        Opponent scored {opponentRight} out of {total} tried. In {totalTime}s.
       </div>
       <h1>{resultText}</h1>
     </div>

@@ -17,7 +17,11 @@ const CompeteView = ({ match }) => {
   const { language } = match.params
   const dispatch = useDispatch()
   const storyId = match.params.id
-  const { story, startTime, snippets } = useSelector(({ stories, compete, snippets }) => ({ snippets, story: stories.focused, startTime: compete.startTime }))
+  const { story, startTime, snippets } = useSelector(({ stories, compete, snippets }) => ({
+    snippets,
+    story: stories.focused,
+    startTime: compete.startTime,
+  }))
 
   const initializeCompetition = async () => {
     await Promise.all([
@@ -29,7 +33,9 @@ const CompeteView = ({ match }) => {
     await dispatch(competitionStartNow())
   }
 
-  useEffect(() => { initializeCompetition() }, [])
+  useEffect(() => {
+    initializeCompetition()
+  }, [])
   if (!story || !startTime || !snippets.focused) return null
 
   const currentSnippetNumber = snippets.focused.snippetid[0] + 1
@@ -37,16 +43,19 @@ const CompeteView = ({ match }) => {
   return (
     <div style={{ paddingTop: '1em' }}>
       <Header>{story.title}</Header>
-      {story.url ? <a href={story.url}><FormattedMessage id="Source" /></a> : null}
+      {story.url ? (
+        <a href={story.url}>
+          <FormattedMessage id="Source" />
+        </a>
+      ) : null}
       <Divider />
-      <h1>
-        {`${currentSnippetNumber}/${snippets.focused.total_num}`}
-      </h1>
+      <h1>{`${currentSnippetNumber}/${snippets.focused.total_num}`}</h1>
       <PreviousSnippet snippet={snippets.previous} />
-      {snippets.previous && currentSnippetNumber === 1
-        ? <End />
-        : <CurrentSnippet storyId={match.params.id} />
-      }
+      {snippets.previous && currentSnippetNumber === 1 ? (
+        <End />
+      ) : (
+        <CurrentSnippet storyId={match.params.id} />
+      )}
       <DictionaryHelp />
     </div>
   )

@@ -17,7 +17,7 @@ const ExerciseHearing = ({ word, handleClick, handleChange, value }) => {
     }
   }, [tested])
 
-  const clickHandler = (word) => {
+  const clickHandler = word => {
     handleClick(word, '')
     inputRef.current.focus()
   }
@@ -28,7 +28,14 @@ const ExerciseHearing = ({ word, handleClick, handleChange, value }) => {
       key={word.ID}
       onChange={e => handleChange(e, word)}
       value={value}
-      icon={<Icon name="volume up" link onClick={() => clickHandler(word.surface)} style={{ marginRight: '4px' }} />}
+      icon={
+        <Icon
+          name="volume up"
+          link
+          onClick={() => clickHandler(word.surface)}
+          style={{ marginRight: '4px' }}
+        />
+      }
       transparent
       autoCapitalize="off"
       style={{

@@ -18,16 +18,19 @@ const OpponentProgress = () => {
   }, [compete.total])
 
   useEffect(() => {
-    const interval = setInterval(() => setTimeNow((new Date()).getTime()), 1000)
-    return () => { clearInterval(interval) }
+    const interval = setInterval(() => setTimeNow(new Date().getTime()), 1000)
+    return () => {
+      clearInterval(interval)
+    }
   }, [])
 
-  const theTimeWhenTheOpponentCompletedThisSnippet = Object.values(compete.snippetCompleteTime).reduce((acc, cur, idx) => {
+  const theTimeWhenTheOpponentCompletedThisSnippet = Object.values(
+    compete.snippetCompleteTime
+  ).reduce((acc, cur, idx) => {
     if (idx > snippetNumber) return acc
 
     return acc + cur
   }, 0)
-
 
   /*
     Good luck trying to figure this one out.
@@ -36,7 +39,8 @@ const OpponentProgress = () => {
   */
   const getPercentage = () => {
     const opponentTimeOnThisSnippet = compete.snippetCompleteTime[snippetNumber]
-    const opponentStartedThisSnippet = theTimeWhenTheOpponentCompletedThisSnippet - opponentTimeOnThisSnippet
+    const opponentStartedThisSnippet =
+      theTimeWhenTheOpponentCompletedThisSnippet - opponentTimeOnThisSnippet
 
     const timeSpentOnCompetition = (timeNow - compete.startTime) / 1000
     const status = timeSpentOnCompetition - opponentStartedThisSnippet
@@ -68,13 +72,23 @@ const OpponentProgress = () => {
   const status = percentToStatus()
   return (
     <>
-      {(compete.total + 1) ? (
+      {compete.total + 1 ? (
         <div style={{ display: 'flex', justifyContent: 'space-around' }}>
-          <span> Score: {compete.total - compete.wrong} / {compete.total}</span>
-          <span> Opponent: {opponentScore} / {compete.total}</span>
+          <span>
+            {' '}
+            Score: {compete.total - compete.wrong} / {compete.total}
+          </span>
+          <span>
+            {' '}
+            Opponent: {opponentScore} / {compete.total}
+          </span>
         </div>
       ) : null}
-      <Progress color={status.color} percent={percent} style={{ marginTop: '0px', marginBottom: '3em' }}>
+      <Progress
+        color={status.color}
+        percent={percent}
+        style={{ marginTop: '0px', marginBottom: '3em' }}
+      >
         <span>{status.text}</span>
       </Progress>
     </>
