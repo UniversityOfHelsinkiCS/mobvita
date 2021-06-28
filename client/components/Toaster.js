@@ -24,7 +24,7 @@ export default function Toaster() {
   )
   const { serverError } = useSelector(({ serverError }) => serverError)
   const { newAchievements } = useSelector(({ newAchievements }) => newAchievements)
-  const { storyId, progress, error, pending, processingError, custom, url } = useSelector(
+  const { storyId, progress, error, pending, processingErrorMsgId, custom, url } = useSelector(
     ({ uploadProgress }) => uploadProgress
   )
   const learningLanguage = useSelector(learningLanguageSelector)
@@ -90,7 +90,7 @@ export default function Toaster() {
       if (progress === 1) {
         clearInterval(interval)
         toast.done(progressToastId)
-        if (!processingError) {
+        if (processingErrorMsgId === 'no_error') {
           dispatch(
             getAllStories(learningLanguage, {
               sort_by: 'date',
@@ -122,14 +122,14 @@ export default function Toaster() {
   }, [progress])
 
   useEffect(() => {
-    if (!processingError && !error) return
-    if (processingError) {
-      handleError(processingError)
+    if (processingErrorMsgId === 'no_error' && !error) return
+    if (processingErrorMsgId) {
+      handleError(processingErrorMsgId)
     } else {
       toast.dismiss(progressToastId)
       setProgressToastId(null)
     }
-  }, [processingError, error])
+  }, [processingErrorMsgId, error])
 
   // Handles server error toast
   useEffect(() => {

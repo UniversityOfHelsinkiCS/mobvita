@@ -40,7 +40,7 @@ export default (state = initialState, action) => {
       return {
         ...state,
         progress: action.response.progress,
-        processingError: action.response.error_message,
+        processingErrorMsgId: action.response.loading_error,
         pending: false,
         error: false,
       }

@@ -17,7 +17,6 @@ const UploadFromWeb = ({ closeModal }) => {
   const { pending, storyId } = useSelector(({ uploadProgress }) => uploadProgress)
 
   const storyUploading = pending || storyId
-  const submitDisabled = storyUploading
 
   const handleStorySubmit = event => {
     event.preventDefault()
@@ -53,7 +52,6 @@ const UploadFromWeb = ({ closeModal }) => {
         <Button
           primary
           form="url-upload"
-          disabled={submitDisabled}
           type="submit"
           onClick={handleStorySubmit}
           data-cy="submit-story"

@@ -5,7 +5,7 @@ const type = {
   info: 'info',
 }
 
-export const setNotification = (translationID, contextVariables, type, options) => ({
+export const setNotification = (translationID, type, options) => ({
   type: 'SET_NOTIFICATION',
   payload: { translationID, type, options },
 })

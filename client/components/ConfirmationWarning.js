@@ -22,9 +22,7 @@ const ConfirmationWarning = ({ open, setOpen, action, children }) => {
       <Modal.Header>
         <FormattedMessage id="Warning" />
       </Modal.Header>
-      <Modal.Content>
-        {children}
-      </Modal.Content>
+      <Modal.Content>{children}</Modal.Content>
       <Modal.Actions>
         <Button negative onClick={() => handleAccept()} data-cy="confirm-warning-dialog">
           <FormattedMessage id="Confirm" />
@@ -34,7 +32,6 @@ const ConfirmationWarning = ({ open, setOpen, action, children }) => {
         </Button>
       </Modal.Actions>
     </Modal>
-
   )
 }
 
