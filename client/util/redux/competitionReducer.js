@@ -1,6 +1,6 @@
 import callBuilder from '../apiConnection'
 
-export const getOpponent = (storyId) => {
+export const getOpponent = storyId => {
   if (!storyId) return undefined
 
   const route = `/opponent?story_id=${storyId}`
@@ -8,20 +8,37 @@ export const getOpponent = (storyId) => {
   return callBuilder(route, prefix)
 }
 
-export const competitionStartNow = () => ({ type: 'COMPETITION_START', startTime: (new Date()).getTime() })
+export const competitionStartNow = () => ({
+  type: 'COMPETITION_START',
+  startTime: new Date().getTime(),
+})
+
+const filterDuplicates = snippets => {
+  return snippets.filter((v, i, a) => a.findIndex(t => t.snippetid[0] === v.snippetid[0]) === i)
+}
 
 export const addWrongExercises = amount => ({ type: 'WRONG_ADD', amount })
 
 export const addTotalExercises = amount => ({ type: 'TOTAL_ADD', amount })
 
-export default (state = {}, action) => {
+export const getAndCacheNextSnippet = (storyId, currentSnippetId) => {
+  const route = `/stories/${storyId}/snippets/next?previous=${currentSnippetId}`
+  const prefix = 'GET_AND_CACHE_NEXT_SNIPPET'
+  return callBuilder(route, prefix)
+}
+
+export const resetCachedSnippets = () => ({
+  type: 'RESET_CACHED_SNIPPETS',
+})
+
+export default (state = { cachedSnippets: [], currentCacheSnippet: 0 }, action) => {
   switch (action.type) {
     case 'GET_OPPONENT_SUCCESS':
       return {
         ...state,
         snippetCompleteTime: action.response.snippet_complete_time,
         totalTime: action.response.total_time,
-        opponentPercent: action.response.bnc,
+        botCorrectPercent: action.response.bnc,
       }
     case 'WRONG_ADD':
       return {
@@ -39,6 +56,36 @@ export default (state = {}, action) => {
         startTime: action.startTime,
         wrong: 0,
         total: 0,
+      }
+
+    case 'GET_AND_CACHE_NEXT_SNIPPET_ATTEMPT':
+      return {
+        ...state,
+        pending: true,
+        error: false,
+      }
+    case 'GET_AND_CACHE_NEXT_SNIPPET_FAILURE':
+      return {
+        ...state,
+        pending: false,
+        error: true,
+      }
+
+    case 'GET_AND_CACHE_NEXT_SNIPPET_SUCCESS':
+      return {
+        ...state,
+        cachedSnippets: filterDuplicates(state.cachedSnippets.concat(action.response)),
+        currentCacheSnippet: state.currentCacheSnippet + 1,
+        pending: false,
+        error: false,
+      }
+    case 'RESET_CACHED_SNIPPETS':
+      return {
+        ...state,
+        cachedSnippets: [],
+        currentCacheSnippet: 0,
+        pending: false,
+        error: false,
       }
     default:
       return state

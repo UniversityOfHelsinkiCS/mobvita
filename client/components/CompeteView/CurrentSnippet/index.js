@@ -1,13 +1,13 @@
 import React, { useState, useEffect, useRef } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
-import OpponentProgress from 'Components/CompeteView/OpponentProgress'
-import { useHistory } from 'react-router-dom'
 import {
   getCurrentSnippet,
   getNextSnippet,
   addToPrevious,
   setPrevious,
+  getNextSnippetFromCache,
 } from 'Utilities/redux/snippetsReducer'
+import { getAndCacheNextSnippet, resetCachedSnippets } from 'Utilities/redux/competitionReducer'
 import { clearTranslationAction } from 'Utilities/redux/translationReducer'
 import 'react-simple-keyboard/build/css/index.css'
 import { FormattedMessage } from 'react-intl'
@@ -28,18 +28,26 @@ import {
 import SnippetActions from './SnippetActions'
 import PracticeText from './PracticeText'
 
-const CurrentSnippet = ({ storyId, handleInputChange }) => {
+const CurrentSnippet = ({
+  storyId,
+  handleInputChange,
+  setPlayerDone,
+  playerFinished,
+  setPlayerFinished,
+}) => {
   const [exerciseCount, setExerciseCount] = useState(0)
   const practiceForm = useRef(null)
   const dispatch = useDispatch()
   const snippets = useSelector(({ snippets }) => snippets)
   const answersPending = useSelector(({ snippets }) => snippets.answersPending)
   const { snippetFinished, isNewSnippet, attempt } = useSelector(({ practice }) => practice)
+  const { cachedSnippets } = useSelector(({ compete }) => compete)
+  const { focused } = useSelector(({ stories }) => stories)
   const learningLanguage = useSelector(learningLanguageSelector)
 
-  const history = useHistory()
+  const SNIPPET_FETCH_INTERVAL = 4000
 
-  const isCompeteMode = history.location.pathname.includes('compete')
+  const [snippetToCacheId, setSnippetToCacheId] = useState(0)
 
   const currentSnippetId = () => {
     if (!snippets.focused) return -1
@@ -102,8 +110,9 @@ const CurrentSnippet = ({ storyId, handleInputChange }) => {
     dispatch(clearCurrentPractice())
 
     if (snippets.focused.total_num !== currentSnippetId() + 1 || finished) {
-      dispatch(getNextSnippet(storyId, currentSnippetId()))
+      dispatch(getNextSnippetFromCache(cachedSnippets[currentSnippetId()]))
     } else {
+      setPlayerDone(true)
       setFinished(true)
     }
   }
@@ -121,10 +130,30 @@ const CurrentSnippet = ({ storyId, handleInputChange }) => {
 
   useEffect(() => {
     dispatch(clearPractice())
+    dispatch(resetCachedSnippets())
   }, [])
 
   useEffect(() => {
-    dispatch(getCurrentSnippet(storyId))
+    const interval = setInterval(async () => {
+      await setSnippetToCacheId(snippetToCacheId => snippetToCacheId + 1)
+    }, SNIPPET_FETCH_INTERVAL)
+    return () => clearInterval(interval)
+  }, [])
+
+  useEffect(() => {
+    async function fetchSnippet() {
+      if (snippetToCacheId < focused.paragraph.length - 1) {
+        await dispatch(getAndCacheNextSnippet(storyId, snippetToCacheId))
+      }
+    }
+    fetchSnippet()
+  }, [snippetToCacheId])
+
+  useEffect(() => {
+    dispatch(clearPractice())
+  }, [])
+
+  useEffect(() => {
     dispatch(clearTranslationAction())
   }, [])
 
@@ -164,7 +193,9 @@ const CurrentSnippet = ({ storyId, handleInputChange }) => {
     dispatch(clearPractice())
     dispatch(setPrevious([]))
     dispatch(getNextSnippet(storyId, currentSnippetId()))
+    dispatch(resetCachedSnippets())
     setFinished(false)
+    setPlayerFinished(null)
   }
 
   const handleMultiselectChange = (event, word, data) => {
@@ -198,12 +229,15 @@ const CurrentSnippet = ({ storyId, handleInputChange }) => {
               handleMultiselectChange={handleMultiselectChange}
             />
           </div>
-          <SnippetActions storyId={storyId} exerciseCount={exerciseCount} />
-          {isCompeteMode && <OpponentProgress />}
+          <SnippetActions
+            storyId={storyId}
+            exerciseCount={exerciseCount}
+            playerFinished={playerFinished}
+          />
         </div>
       ) : (
-        <Button variant="primary" block onClick={() => startOver()}>
-          <FormattedMessage id="restart-story" />
+        <Button variant="primary" block onClick={() => startOver()} disabled>
+          <FormattedMessage id="restart-competition" />
         </Button>
       )}
     </form>

@@ -1,3 +1,5 @@
+
+
 import React, { useState, useEffect } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import { Segment } from 'semantic-ui-react'
@@ -26,6 +28,8 @@ const CurrentPractice = ({ storyId }) => {
   const { snippets } = useSelector(({ snippets, locale }) => ({ snippets, locale }))
   const dictionaryLanguage = useSelector(({ user }) => user.data.user.last_trans_language)
   const learningLanguage = useSelector(learningLanguageSelector)
+
+  const currentAnswer = useSelector(({ practice }) => practice.currentAnswers[word.ID])
 
   const setInitialAnswers = () => {
     if (snippets.focused) {
@@ -58,6 +62,21 @@ const CurrentPractice = ({ storyId }) => {
     })
 
     return count
+  }
+
+  useEffect(() => {
+    const val = currentAnswer ? currentAnswer.users_answer : ''
+    setValue(val)
+  }, [currentAnswer])
+
+  useEffect(() => {
+    setClassName(getExerciseClass(tested, isWrong))
+  }, [tested])
+
+  const getExerciseClass = (tested, isWrong) => {
+    if (!tested) return 'exercise cloze-untouched'
+    if (isWrong) return 'exercise wrong cloze'
+    return 'exercise correct'
   }
 
   const continueToNextSnippet = () => {

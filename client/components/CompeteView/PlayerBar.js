@@ -1,0 +1,81 @@
+import React, { useEffect } from 'react'
+import Spinner from 'Components/Spinner'
+import { Icon } from 'semantic-ui-react'
+
+const PlayerBar = ({
+  snippetsTotal,
+  currentSnippet,
+  playerFinished,
+  setPlayerFinished,
+  setEndModalOpen,
+  playerScore,
+}) => {
+  useEffect(() => {
+    if (currentSnippet === snippetsTotal) {
+      if (!playerFinished) {
+        setPlayerFinished('user')
+        setTimeout(() => {
+          setEndModalOpen(true)
+        }, 1000)
+      }
+    }
+  }, [currentSnippet])
+
+  const getLabelsWidth = () => {
+    if (currentSnippet > snippetsTotal) return 100
+    if (currentSnippet / snippetsTotal < 0.12) return 12
+    return (currentSnippet / snippetsTotal) * 100
+  }
+
+  return (
+    <>
+      {!snippetsTotal ? (
+        <Spinner />
+      ) : (
+        <div>
+          <div
+            style={{
+              height: '0.9em',
+              textAlign: 'center',
+              borderRadius: '0px 0px 10px 10px',
+            }}
+            className="progress"
+          >
+            <div
+              className="progress-bar bg-success"
+              style={{
+                width: `${(currentSnippet / snippetsTotal) * 100}%`,
+                backgroundColor: '#FA6',
+                borderRadius: '0',
+              }}
+              role="progressbar"
+              aria-valuenow={currentSnippet / snippetsTotal}
+              aria-valuemin="0"
+              aria-valuemax="100"
+            />
+          </div>
+
+          <div
+            className="competition-bar-label"
+            style={{
+              display: 'flex',
+              justifyContent: 'space-between',
+              width: `${getLabelsWidth()}%`,
+              marginRight: '0',
+            }}
+          >
+            <div className="bold" style={{ width: '150px' }}>
+              You
+            </div>
+            <div>
+              <Icon name="thumbs up outline" />
+              <div>{playerScore}</div>
+            </div>
+          </div>
+        </div>
+      )}
+    </>
+  )
+}
+
+export default PlayerBar

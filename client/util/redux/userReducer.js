@@ -69,15 +69,15 @@ export const blockStorySender = (uid, token) => {
   return callBuilder(route, prefix, 'get')
 }
 
-export const unfollowStorySender = (uid, token) => {
-  const route = `/user/friends/${uid}/remove?token=${token}`
-  const prefix = 'UNFOLLOW_STORY_SENDER'
-  return callBuilder(route, prefix, 'get')
-}
-
 export const followStorySender = (uid, token) => {
   const route = `/user/friends/${uid}/request?token=${token}`
   const prefix = 'FOLLOW_STORY_SENDER'
+  return callBuilder(route, prefix, 'get')
+}
+
+export const unfollowStorySender = (uid, token) => {
+  const route = `/user/friends/${uid}/remove?token=${token}`
+  const prefix = 'UNFOLLOW_STORY_SENDER'
   return callBuilder(route, prefix, 'get')
 }
 

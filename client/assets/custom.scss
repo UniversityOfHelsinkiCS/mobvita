@@ -773,6 +773,10 @@ html, body, #root {
     }
   }
 }
+ 
+.competition-bar-label {
+  transition:width .6s ease;
+}
 
 .add-story-accordion-focused-item {
   font-weight: 550;

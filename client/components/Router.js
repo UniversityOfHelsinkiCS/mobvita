@@ -15,6 +15,7 @@ import UnfollowStorySender from 'Components/AccessControl/UnfollowStorySender'
 import InvitationConfirm from 'Components/GroupView/InvitationConfirm'
 import ProtectedRoute from 'Components/AccessControl/ProtectedRoute'
 import CrosswordView from 'Components/CrosswordView'
+import CompeteView from 'Components/CompeteView'
 import GroupManagement from './GroupView/GroupManagement'
 import GroupAnalytics from './GroupView/GroupAnalytics'
 import GroupPeople from './GroupView/GroupPeople'
@@ -89,6 +90,7 @@ export default () => {
             <ProtectedRoute exact path="/stories/:id/practice/" component={PracticeView} />
             <ProtectedRoute exact path="/stories/:id/read/" component={ReadView} />
             <ProtectedRoute exact path="/crossword/:storyId" component={CrosswordView} />
+            <ProtectedRoute exact path="/compete/:id" component={CompeteView} />
             <ProtectedRoute exact path="/groups/:role" component={GroupManagement} />
             <ProtectedRoute exact path="/groups/teacher/analytics" component={GroupAnalytics} />
             <ProtectedRoute exact path="/groups/:role/people" component={GroupPeople} />

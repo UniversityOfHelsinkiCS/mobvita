@@ -9,7 +9,7 @@ const filterPrevious = (previous, snippet) => {
   return previous.concat(snippet)
 }
 
-export const getCurrentSnippet = (storyId) => {
+export const getCurrentSnippet = storyId => {
   const route = `/stories/${storyId}/snippets/next`
   const prefix = 'GET_CURRENT_SNIPPET'
   return callBuilder(route, prefix)
@@ -21,7 +21,12 @@ export const getNextSnippet = (storyId, currentSnippetId) => {
   return callBuilder(route, prefix)
 }
 
-export const resetCurrentSnippet = (storyId) => {
+export const getNextSnippetFromCache = snippet => ({
+  type: 'GET_NEXT_FROM_CACHE',
+  nextSnippet: snippet,
+})
+
+export const resetCurrentSnippet = storyId => {
   const route = `/stories/${storyId}/snippets/reset`
   const prefix = 'RESET_SNIPPET_INDEX'
   return callBuilder(route, prefix, 'post')
@@ -124,12 +129,20 @@ export default (state = { previous: [], pending: false, error: false }, action) 
     case 'ADD_TO_PREVIOUS':
       return {
         ...state,
-        previous: state.previous.concat(action.snippet)
+        previous: state.previous.concat(action.snippet),
       }
     case 'CLEAR_FOCUSED_SNIPPET':
       return {
         ...state,
         focused: undefined,
+      }
+
+    case 'GET_NEXT_FROM_CACHE':
+      return {
+        ...state,
+        focused: action.nextSnippet,
+        pending: false,
+        error: false,
       }
     default:
       return state

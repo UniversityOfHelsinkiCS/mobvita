@@ -20,7 +20,7 @@ const PreviousSnippet = ({ snippet }) => {
 
   return (
     <Segment>
-      {practices.map(word => {
+      {practices?.map(word => {
         const { surface, ID, mark, tested } = word
         if (mark === 'wrong')
           return (
