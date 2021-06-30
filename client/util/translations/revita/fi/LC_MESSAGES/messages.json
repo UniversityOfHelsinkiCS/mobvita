@@ -1022,5 +1022,6 @@
     "apologies-no-translation": "(Valitettavasti emme löytäneet sanalle käännöksiä, joita käyttää vihjeinä.)",
     "following": "Seuratut",
     "dictionaryhelp-loading-please-wait": "Ladataan, odota",
-    "dictionaryhelp-no-translation-available": "Käännöstä ei löydy"
+    "dictionaryhelp-no-translation-available": "Käännöstä ei löydy",
+    "restart-competition": "Restart competition"
 }

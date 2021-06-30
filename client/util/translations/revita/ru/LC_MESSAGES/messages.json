@@ -1025,5 +1025,6 @@
     "apologies-no-translation": "(Apologies, we found no translations for this word to use as a clue.)",
     "following": "Подписки",
     "dictionaryhelp-loading-please-wait": "Поиск в процессе",
-    "dictionaryhelp-no-translation-available": "Перевод не найден"
+    "dictionaryhelp-no-translation-available": "Перевод не найден",
+    "restart-competition": "Restart competition"
 }

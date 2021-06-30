@@ -1022,5 +1022,6 @@
     "apologies-no-translation": "(Apologies, we found no translations for this word to use as a clue.)",
     "following": "Following",
     "dictionaryhelp-loading-please-wait": "Loading, please wait",
-    "dictionaryhelp-no-translation-available": "No translation available"
+    "dictionaryhelp-no-translation-available": "No translation available",
+    "restart-competition": "Restart competition"
 }
