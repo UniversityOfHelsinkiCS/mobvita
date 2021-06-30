@@ -3,7 +3,7 @@ import { Modal } from 'semantic-ui-react'
 import { Button } from 'react-bootstrap'
 import { FormattedMessage } from 'react-intl'
 
-const CompeteEnd = ({ open, setOpen, fasterPlayer, playerScore, botScore, exercisesTotal }) => {
+const CompeteEnd = ({ open, setOpen, playerFinished, playerScore, botScore, exercisesTotal }) => {
   return (
     <Modal open={open} onClose={() => setOpen(false)} size="tiny">
       <Modal.Header>
@@ -11,7 +11,7 @@ const CompeteEnd = ({ open, setOpen, fasterPlayer, playerScore, botScore, exerci
       </Modal.Header>
       <Modal.Content>
         <div>
-          {fasterPlayer === 'bot' ? (
+          {playerFinished === 'bot' ? (
             <span>Opponent was faster...</span>
           ) : (
             <span>You were faster!</span>
