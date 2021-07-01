@@ -512,7 +512,7 @@
     "Read": "Чтение",
     "practice": "Практика",
     "Flashcards": "Флеш-карты",
-    "compete": "Соревнование",
+    "compete": "Соревнуйся",
     "Crossword": "Кроссворд",
     "Author": "Автор",
     "Source": "Источник",
@@ -624,10 +624,10 @@
     "check-answers-fbd50be28a1b94cbd482510d13639918": "Проверить",
     "restart-story": "Начать с начала",
     "game-over": "Игра окончена",
-    "you-won": "Вы победили!",
+    "you-won": "Победа!",
     "extra-apples": "дополнительные яблоки!",
     "tie-that-was-close-try-again": "Ничья! Попробуй еще раз!",
-    "you-lost": "Вы проиграли...",
+    "you-lost": "На этот раз &mdash; проигрыш...",
     "Continue": "Продолжить",
     "usernamess-profile": "%(username)s &mdash; Профиль",
     "Account": "Аккаунт",
@@ -1026,5 +1026,6 @@
     "following": "Подписки",
     "dictionaryhelp-loading-please-wait": "Поиск в процессе",
     "dictionaryhelp-no-translation-available": "Перевод не найден",
-    "restart-competition": "Restart competition"
+    "restart-competition": "Restart competition",
+    "tie-try-again": "Ничья! Попробуй еще раз!"
 }

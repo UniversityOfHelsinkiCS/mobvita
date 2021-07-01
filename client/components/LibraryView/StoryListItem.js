@@ -105,7 +105,7 @@ const StoryActions = ({ story }) => {
         {hiddenFeatures && (
           <Link to={`/compete/${story._id}/`}>
             <Button variant="secondary" style={{ marginRight: '0.5em' }}>
-              Compete
+              <FormattedMessage id="compete" />
             </Button>
           </Link>
         )}

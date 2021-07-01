@@ -623,10 +623,10 @@
     "check-answers-fbd50be28a1b94cbd482510d13639918": "",
     "restart-story": "Restart story",
     "game-over": "",
-    "you-won": "",
+    "you-won": "You won!",
     "extra-apples": "",
     "tie-that-was-close-try-again": "",
-    "you-lost": "",
+    "you-lost": "You lost...",
     "Continue": "Continue",
     "usernamess-profile": "",
     "Account": "Account",
@@ -1023,5 +1023,6 @@
     "following": "Following",
     "dictionaryhelp-loading-please-wait": "Loading, please wait",
     "dictionaryhelp-no-translation-available": "No translation available",
-    "restart-competition": "Restart competition"
+    "restart-competition": "Restart competition",
+    "tie-try-again": "Tie! That was close, try again!"
 }

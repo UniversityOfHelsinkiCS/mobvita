@@ -508,7 +508,7 @@
     "Read": "Läs",
     "practice": "Öva",
     "Flashcards": "Flash-kort",
-    "compete": "Tävla!",
+    "compete": "Tävla",
     "Crossword": "Korsord",
     "Author": "",
     "Source": "Källa",
@@ -623,7 +623,7 @@
     "you-won": "Du vann!",
     "extra-apples": "extra äppel!",
     "tie-that-was-close-try-again": "Oavgjort! Prova på nytt!",
-    "you-lost": "Du förlorade",
+    "you-lost": "Du förlorade...",
     "Continue": "Fortsätt",
     "usernamess-profile": "%(username)s &mdash; profil",
     "Account": "",
@@ -1022,5 +1022,6 @@
     "following": "Following",
     "dictionaryhelp-loading-please-wait": "Loading, please wait",
     "dictionaryhelp-no-translation-available": "Ingen översättning till förfogande",
-    "restart-competition": "Restart competition"
+    "restart-competition": "Restart competition",
+    "tie-try-again": "Oavgjort! Prova på nytt!"
 }

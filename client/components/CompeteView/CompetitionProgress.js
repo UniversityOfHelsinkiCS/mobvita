@@ -1,10 +1,13 @@
 import React, { useEffect, useState } from 'react'
-import { useSelector } from 'react-redux'
+import { getOpponent } from 'Utilities/redux/competitionReducer'
+import { useDispatch, useSelector } from 'react-redux'
+import { Button } from 'react-bootstrap'
 import OpponentBar from './OpponentBar'
 import PlayerBar from './PlayerBar'
 import CompeteEnd from './CompeteEnd'
 
-const CompetitionProgress = ({ playerDone, playerFinished, setPlayerFinished }) => {
+const CompetitionProgress = ({ storyId, playerDone, playerFinished, setPlayerFinished }) => {
+  const dispatch = useDispatch()
   const [exercisesInSnippets, setExercisesInSnippets] = useState([])
   const { previousAnswers } = useSelector(({ practice }) => practice)
   const [userCorrectAnswers, setUserCorrectAnswers] = useState(0)
@@ -39,6 +42,10 @@ const CompetitionProgress = ({ playerDone, playerFinished, setPlayerFinished }) 
     }
   }, [snippets])
 
+  const handleRetry = () => {
+    dispatch(getOpponent(storyId))
+  }
+
   useEffect(() => {
     if (cachedSnippets.length > 0) {
       const exercisesPerSnippet = []
@@ -51,13 +58,19 @@ const CompetitionProgress = ({ playerDone, playerFinished, setPlayerFinished }) 
     }
   }, [cachedSnippets])
 
-  if (!botSnippetTimes) return null
+  if (!botSnippetTimes)
+    return (
+      <div>
+        Loading opponent failed. <Button onClick={handleRetry}>Try again</Button>
+      </div>
+    )
 
   return (
     <div className="competition-progress" style={{ top: '3em' }}>
       <CompeteEnd
         open={endModalOpen}
         setOpen={setEndModalOpen}
+        setPlayerFinished={setPlayerFinished}
         playerFinished={playerFinished}
         playerScore={userCorrectAnswers}
         botScore={botScore}

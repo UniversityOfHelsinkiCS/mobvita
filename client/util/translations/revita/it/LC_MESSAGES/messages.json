@@ -510,7 +510,7 @@
     "Read": "Lettura",
     "practice": "Esercitati!",
     "Flashcards": "Flashcard",
-    "compete": "Sfida!",
+    "compete": "Completp",
     "Crossword": "Cruciverba",
     "Author": "Autore",
     "Source": "Fonte",
@@ -625,7 +625,7 @@
     "you-won": "Hai vinto!",
     "extra-apples": "Mele extra!",
     "tie-that-was-close-try-again": "Pareggio! Prova ancora!",
-    "you-lost": "Hai perso",
+    "you-lost": "Hai perso...",
     "Continue": "Continuare",
     "usernamess-profile": "%(username)s &mdash; Profilo",
     "Account": "Account",
@@ -1024,5 +1024,6 @@
     "following": "Seguiti",
     "dictionaryhelp-loading-please-wait": "Attendi il caricamento ",
     "dictionaryhelp-no-translation-available": "Traduzione non trovata",
-    "restart-competition": "Restart competition"
+    "restart-competition": "Restart competition",
+    "tie-try-again": "Pareggio! Prova ancora!"
 }

@@ -113,6 +113,7 @@ const CompeteView = ({ match }) => {
               </div>
             ) : (
               <CompetitionProgress
+                storyId={id}
                 playerDone={playerDone}
                 playerFinished={playerFinished}
                 setPlayerFinished={setPlayerFinished}

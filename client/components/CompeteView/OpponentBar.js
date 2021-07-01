@@ -14,9 +14,10 @@ const OpponentBar = ({
 }) => {
   const snippetsTotal = botSnippetTimes?.length
 
-  // const snippetsTotal = 3
-  // const botSnippetTimes = new Array(snippetsTotal).fill(4)
+  // const snippetsTotal = 3 // for debugging
+  // const botSnippetTimes = new Array(snippetsTotal).fill(3) // for debugging
 
+  const [timer, setTimer] = useState(null)
   const [interval, setInterval] = useState(botSnippetTimes[0])
   const [currentSnippetBot, setCurrentSnippetBot] = useState(0)
 
@@ -39,24 +40,37 @@ const OpponentBar = ({
       const numCorrectCurrentSnippet = computeNumCorrectForSnippet(
         exercisesPerSnippet[currentSnippetBot - 1]
       )
-
       setBotScore(botScore + numCorrectCurrentSnippet)
     }
   }, [currentSnippetBot])
 
+  const handleBotMove = () => {
+    setInterval(botSnippetTimes[currentSnippetBot + 1])
+    setCurrentSnippetBot(currentSnippetBot + 1)
+  }
+
+  const stopTimer = () => setTimer(() => clearTimeout(timer))
+
   useEffect(() => {
     if (currentSnippetBot <= snippetsTotal && !playerFinished) {
-      setTimeout(() => {
-        setInterval(botSnippetTimes[currentSnippetBot + 1])
-        setCurrentSnippetBot(currentSnippetBot + 1)
-      }, interval * 1000)
-    } else {
+      setTimer(
+        setTimeout(() => {
+          handleBotMove()
+        }, interval * 1000)
+      )
+    } else if (!playerFinished) {
       setPlayerFinished('bot')
       setTimeout(() => {
         setEndModalOpen(true)
       }, 1000)
     }
   }, [currentSnippetBot])
+
+  useEffect(() => {
+    if (playerFinished) {
+      stopTimer()
+    }
+  }, [playerFinished])
 
   const getLabelsWidth = () => {
     if (currentSnippetBot > snippetsTotal) return 100

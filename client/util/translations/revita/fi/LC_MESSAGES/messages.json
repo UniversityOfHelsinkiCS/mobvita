@@ -626,7 +626,7 @@
     "you-won": "Voitit!",
     "extra-apples": "ekstra omeinoita!",
     "tie-that-was-close-try-again": "Tasapeli! Se oli lähellä, kokeile uusiksi!",
-    "you-lost": "Hävisit..",
+    "you-lost": "Hävisit...",
     "Continue": "Jatka",
     "usernamess-profile": "%(username)s &mdash; profiili",
     "Account": "Tili",
@@ -1023,5 +1023,6 @@
     "following": "Seuratut",
     "dictionaryhelp-loading-please-wait": "Ladataan, odota",
     "dictionaryhelp-no-translation-available": "Käännöstä ei löydy",
-    "restart-competition": "Restart competition"
+    "restart-competition": "Restart competition",
+    "tie-try-again": "Tasapeli! Se oli lähellä, kokeile uusiksi!"
 }
