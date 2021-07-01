@@ -54,7 +54,7 @@ const CompetitionProgress = ({ playerDone, playerFinished, setPlayerFinished }) 
   if (!botSnippetTimes) return null
 
   return (
-    <>
+    <div className="competition-progress" style={{ top: '3em' }}>
       <CompeteEnd
         open={endModalOpen}
         setOpen={setEndModalOpen}
@@ -84,7 +84,7 @@ const CompetitionProgress = ({ playerDone, playerFinished, setPlayerFinished }) 
         playerFinished={playerFinished}
         setPlayerFinished={setPlayerFinished}
       />
-    </>
+    </div>
   )
 }
 

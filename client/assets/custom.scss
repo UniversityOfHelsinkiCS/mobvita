@@ -1476,6 +1476,11 @@ html, body, #root {
   }
 }
 
+.competition-progress {
+  position: sticky;
+  background-color: #FFF;
+}
+
 .stat {
   display: flex;
   flex-direction: column;
