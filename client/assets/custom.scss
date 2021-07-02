@@ -788,6 +788,14 @@ html, body, #root {
   align-items: center;
   gap: 1.75em;
 }
+
+.competition-results-buttons-cont {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  margin-top: 2.5em;
+  align-items: center;
+}
  
 .competition-bar-label {
   transition:width .6s ease;

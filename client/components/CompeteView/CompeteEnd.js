@@ -1,9 +1,12 @@
 import React from 'react'
-import { Modal, Divider } from 'semantic-ui-react'
+import { Modal, Icon, Divider } from 'semantic-ui-react'
+import { useHistory } from 'react-router-dom'
 import { Button } from 'react-bootstrap'
 import { FormattedMessage } from 'react-intl'
 
 const CompeteEnd = ({ open, setOpen, playerScore, botScore, exercisesTotal }) => {
+  const history = useHistory()
+
   const getHeaderText = () => {
     if (playerScore !== botScore)
       return (
@@ -38,6 +41,10 @@ const CompeteEnd = ({ open, setOpen, playerScore, botScore, exercisesTotal }) =>
     if (playerScore < botScore) return { color: 'green' }
   }
 
+  const handleBackToLibrary = () => {
+    history.push('/library')
+  }
+
   return (
     <Modal
       open={open}
@@ -70,13 +77,16 @@ const CompeteEnd = ({ open, setOpen, playerScore, botScore, exercisesTotal }) =>
             </div>
           </div>
         </div>
-        <div style={{ display: 'flex', justifyContent: 'center', marginTop: '2.5em' }}>
-          <Button disabled>
+        <div className="competition-results-buttons-cont">
+          <Button disabled style={{ marginBottom: '.25em' }}>
             {playerScore > botScore ? (
               <FormattedMessage id="restart-competition" />
             ) : (
               <FormattedMessage id="try-again" />
             )}
+          </Button>
+          <Button variant="outline-primary" onClick={handleBackToLibrary}>
+            <Icon name="arrow left" /> <FormattedMessage id="back-to-library" />
           </Button>
         </div>
       </Modal.Content>
