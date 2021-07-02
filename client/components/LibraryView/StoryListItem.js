@@ -129,6 +129,14 @@ const StoryActions = ({ story }) => {
         trigger={<React.Fragment />}
       >
         <Dropdown.Menu className="story-item-dropdown">
+          {hiddenFeatures && (
+            <Dropdown.Item
+              text={<FormattedMessage id="compete" />}
+              as={Link}
+              to={`/compete/${story._id}/`}
+              icon="lightning"
+            />
+          )}
           <Dropdown.Item
             text={<FormattedMessage id="Flashcards" />}
             as={Link}

@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react'
+import useWindowDimensions from 'Utilities/windowDimensions'
 import { getOpponent } from 'Utilities/redux/competitionReducer'
 import { useDispatch, useSelector } from 'react-redux'
 import { Button } from 'react-bootstrap'
@@ -8,6 +9,7 @@ import CompeteEnd from './CompeteEnd'
 
 const CompetitionProgress = ({ storyId, playerDone, playerFinished, setPlayerFinished }) => {
   const dispatch = useDispatch()
+  const { width } = useWindowDimensions()
   const [exercisesInSnippets, setExercisesInSnippets] = useState([])
   const { previousAnswers } = useSelector(({ practice }) => practice)
   const [userCorrectAnswers, setUserCorrectAnswers] = useState(0)
@@ -26,6 +28,7 @@ const CompetitionProgress = ({ storyId, playerDone, playerFinished, setPlayerFin
     })
   )
 
+  const smallScreen = width < 700
   const snippetsTotal = snippets.focused?.total_num
 
   useEffect(() => {
@@ -66,7 +69,7 @@ const CompetitionProgress = ({ storyId, playerDone, playerFinished, setPlayerFin
     )
 
   return (
-    <div className="competition-progress" style={{ top: '3em' }}>
+    <div className="competition-progress" style={{ top: smallScreen ? '0em' : '3em' }}>
       <CompeteEnd
         open={endModalOpen}
         setOpen={setEndModalOpen}
