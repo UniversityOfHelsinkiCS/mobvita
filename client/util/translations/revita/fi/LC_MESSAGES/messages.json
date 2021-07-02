@@ -33,7 +33,7 @@
     "please-enter-a-valid-email": "Ole hyvä ja syötä toimiva sähköpostiosoite!",
     "See": "Katso",
     "and": "ja",
-    "try-again": "Yritä uudelleen!",
+    "try-again": "Yritä uudelleen",
     "friend-successfully-removed": "Ystävä poistettu",
     "you-have-no-friends": "Ei kavereita",
     "teacher-successfully-removed-from-group": "Opettaja poistettu",
@@ -1023,6 +1023,9 @@
     "following": "Seuratut",
     "dictionaryhelp-loading-please-wait": "Ladataan, odota",
     "dictionaryhelp-no-translation-available": "Käännöstä ei löydy",
-    "restart-competition": "Restart competition",
-    "tie-try-again": "Tasapeli! Se oli lähellä, kokeile uusiksi!"
+    "restart-competition": "Kilpaile uudestaan",
+    "tie-try-again": "Tasapeli! Se oli lähellä, kokeile uusiksi!",
+    "better-luck-next-time": "Parempi onni ensi kerralla...",
+    "you": "Sinä",
+    "opponent": "Vastustaja"
 }

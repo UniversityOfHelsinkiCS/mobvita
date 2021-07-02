@@ -33,7 +33,7 @@
     "please-enter-a-valid-email": "Vänligen mata in en giltig e-post adress!",
     "See": "",
     "and": "",
-    "try-again": "",
+    "try-again": "Try again",
     "friend-successfully-removed": "Vännen togs bort",
     "you-have-no-friends": "Du har inga vänner.",
     "teacher-successfully-removed-from-group": "",
@@ -1023,5 +1023,8 @@
     "dictionaryhelp-loading-please-wait": "Loading, please wait",
     "dictionaryhelp-no-translation-available": "Ingen översättning till förfogande",
     "restart-competition": "Restart competition",
-    "tie-try-again": "Oavgjort! Prova på nytt!"
+    "tie-try-again": "Oavgjort! Prova på nytt!",
+    "better-luck-next-time": "Better luck next time...",
+    "you": "You",
+    "opponent": "Opponent"
 }

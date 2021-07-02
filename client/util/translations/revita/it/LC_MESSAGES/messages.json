@@ -33,7 +33,7 @@
     "please-enter-a-valid-email": "Inserisci un indirizzo email.",
     "See": "Guarda",
     "and": "e",
-    "try-again": "Riprova!",
+    "try-again": "Riprova",
     "friend-successfully-removed": "Utente rimosso dagli amici.",
     "you-have-no-friends": "La lista degli amici è vuota",
     "teacher-successfully-removed-from-group": "L'insegnante è stato rimosso dal gruppo",
@@ -1025,5 +1025,8 @@
     "dictionaryhelp-loading-please-wait": "Attendi il caricamento ",
     "dictionaryhelp-no-translation-available": "Traduzione non trovata",
     "restart-competition": "Restart competition",
-    "tie-try-again": "Pareggio! Prova ancora!"
+    "tie-try-again": "Pareggio! Prova ancora!",
+    "better-luck-next-time": "Better luck next time...",
+    "you": "You",
+    "opponent": "Opponent"
 }

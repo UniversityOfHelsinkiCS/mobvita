@@ -33,7 +33,7 @@
     "please-enter-a-valid-email": "",
     "See": "",
     "and": "",
-    "try-again": "",
+    "try-again": "Try again",
     "friend-successfully-removed": "",
     "you-have-no-friends": "List of friends is empty",
     "teacher-successfully-removed-from-group": "",
@@ -1024,5 +1024,8 @@
     "dictionaryhelp-loading-please-wait": "Loading, please wait",
     "dictionaryhelp-no-translation-available": "No translation available",
     "restart-competition": "Restart competition",
-    "tie-try-again": "Tie! That was close, try again!"
+    "tie-try-again": "Tie! That was close, try again!",
+    "better-luck-next-time": "Better luck next time...",
+    "you": "You",
+    "opponent": "Opponent"
 }

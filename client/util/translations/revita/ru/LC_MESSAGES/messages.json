@@ -33,7 +33,7 @@
     "please-enter-a-valid-email": "Пожалуйста, введи адрес электронной почты.",
     "See": "Смотри",
     "and": "и",
-    "try-again": "Попробуй ещё раз!",
+    "try-again": "Попробуй ещё раз",
     "friend-successfully-removed": "Пользователь удален из списка друзей.",
     "you-have-no-friends": "Список друзей пуст.",
     "teacher-successfully-removed-from-group": "Учитель удален из группы",
@@ -1027,5 +1027,8 @@
     "dictionaryhelp-loading-please-wait": "Поиск в процессе",
     "dictionaryhelp-no-translation-available": "Перевод не найден",
     "restart-competition": "Restart competition",
-    "tie-try-again": "Ничья! Попробуй еще раз!"
+    "tie-try-again": "Ничья! Попробуй еще раз!",
+    "better-luck-next-time": "Better luck next time...",
+    "you": "You",
+    "opponent": "Opponent"
 }
