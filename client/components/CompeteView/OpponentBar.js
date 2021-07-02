@@ -14,7 +14,7 @@ const OpponentBar = ({
 }) => {
   const snippetsTotal = botSnippetTimes?.length
 
-  // const snippetsTotal = 3 // for debugging
+  // const snippetsTotal = 3 // for faster debugging
   // const botSnippetTimes = new Array(snippetsTotal).fill(3) // for debugging
 
   const [timer, setTimer] = useState(null)

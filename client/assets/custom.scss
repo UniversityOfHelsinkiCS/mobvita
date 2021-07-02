@@ -773,6 +773,21 @@ html, body, #root {
     }
   }
 }
+
+.competition-results-cont {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+  position: relative;
+}
+
+.competition-player-results {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  align-items: center;
+  gap: 1.75em;
+}
  
 .competition-bar-label {
   transition:width .6s ease;

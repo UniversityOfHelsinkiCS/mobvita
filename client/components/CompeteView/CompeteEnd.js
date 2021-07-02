@@ -1,73 +1,83 @@
 import React from 'react'
-import { Modal, Icon, Divider, Segment, Grid } from 'semantic-ui-react'
+import { Modal, Divider } from 'semantic-ui-react'
 import { Button } from 'react-bootstrap'
 import { FormattedMessage } from 'react-intl'
 
 const CompeteEnd = ({ open, setOpen, playerScore, botScore, exercisesTotal }) => {
-  const titleMessage = () => {
-    if (playerScore > botScore)
+  const getHeaderText = () => {
+    if (playerScore !== botScore)
       return (
-        <>
-          <FormattedMessage id="you-won" /> <Icon name="thumbs up" />
-        </>
-      )
-    if (playerScore < botScore)
-      return (
-        <>
-          <FormattedMessage id="you-lost" /> <Icon name="frown outline" />
-        </>
+        <div className="header-2">
+          {playerScore > botScore ? (
+            <>
+              <FormattedMessage id="you-won" />{' '}
+              <span role="img" aria-label="party-popper">
+                🎉
+              </span>
+            </>
+          ) : (
+            <>
+              <FormattedMessage id="better-luck-next-time" />{' '}
+              <span role="img" aria-label="neutral-face">
+                😐
+              </span>
+            </>
+          )}
+        </div>
       )
 
     return <FormattedMessage id="tie-try-again" />
   }
 
+  const playerScoreColor = whoseScore => {
+    if (whoseScore === 'you') {
+      if (playerScore > botScore) return { color: 'green' }
+      if (playerScore < botScore) return { color: 'red' }
+    }
+    if (playerScore > botScore) return { color: 'red' }
+    if (playerScore < botScore) return { color: 'green' }
+  }
+
   return (
-    <Modal open={open} onClose={() => setOpen(false)} size="tiny">
-      <Modal.Header>
-        <h2>{titleMessage()}</h2>
-      </Modal.Header>
+    <Modal
+      open={open}
+      onClose={() => setOpen(false)}
+      size="tiny"
+      closeIcon={{
+        style: { top: '1.0535rem', right: '1rem' },
+        color: 'black',
+        name: 'close',
+      }}
+    >
+      <Modal.Header>{getHeaderText()}</Modal.Header>
       <Modal.Content>
-        <Segment placeholder>
-          <Grid columns={2} relaxed="very" stackable>
-            <Grid.Column>
-              <div
-                style={{
-                  display: 'flex',
-                  flexDirection: 'column',
-                  justifyContent: 'space-around',
-                  gap: '2.5em',
-                }}
-              >
-                <h4 style={{ alignSelf: 'center' }}>YOU</h4>
-
-                <div style={{ alignSelf: 'center', fontSize: '36px' }}>
-                  {playerScore}/{exercisesTotal}
-                </div>
-              </div>
-            </Grid.Column>
-
-            <Grid.Column verticalAlign="middle">
-              <div
-                style={{
-                  display: 'flex',
-                  flexDirection: 'column',
-                  justifyContent: 'space-around',
-                  gap: '3em',
-                }}
-              >
-                <h4 style={{ alignSelf: 'center' }}>OPPONENT</h4>
-
-                <div style={{ alignSelf: 'center', fontSize: '36px' }}>
-                  {botScore}/{exercisesTotal}
-                </div>
-              </div>
-            </Grid.Column>
-          </Grid>
-
+        <div className="competition-results-cont">
+          <div className="competition-player-results">
+            <div className="header-2">
+              <FormattedMessage id="you" />
+            </div>
+            <div style={{ ...playerScoreColor('you'), fontSize: '36px' }}>
+              <span>{playerScore}</span>/{exercisesTotal}
+            </div>
+          </div>
           <Divider vertical>VS</Divider>
-        </Segment>
-        <div style={{ display: 'flex', justifyContent: 'center', marginTop: '2em' }}>
-          <Button disabled>{playerScore > botScore ? 'Restart competition' : 'Try again'}</Button>
+          <div className="competition-player-results">
+            <div className="header-2">
+              <FormattedMessage id="opponent" />
+            </div>
+            <div style={{ ...playerScoreColor('opponent'), fontSize: '36px' }}>
+              <span>{botScore}</span>/{exercisesTotal}
+            </div>
+          </div>
+        </div>
+        <div style={{ display: 'flex', justifyContent: 'center', marginTop: '2.5em' }}>
+          <Button disabled>
+            {playerScore > botScore ? (
+              <FormattedMessage id="restart-competition" />
+            ) : (
+              <FormattedMessage id="try-again" />
+            )}
+          </Button>
         </div>
       </Modal.Content>
     </Modal>
