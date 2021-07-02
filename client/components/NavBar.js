@@ -6,14 +6,15 @@ import { Icon, Label } from 'semantic-ui-react'
 import { Link, useHistory } from 'react-router-dom'
 import { logout } from 'Utilities/redux/userReducer'
 import { sidebarSetOpen } from 'Utilities/redux/sidebarReducer'
+import { getMetadata } from 'Utilities/redux/metadataReducer'
+import { getNews } from 'Utilities/redux/newsReducer'
 import useWindowDimensions from 'Utilities/windowDimensions'
-import { hiddenFeatures, capitalize, images } from 'Utilities/common'
+import { hiddenFeatures, capitalize, images, learningLanguageSelector } from 'Utilities/common'
 import { Offline } from 'react-detect-offline'
 import { FormattedMessage, useIntl } from 'react-intl'
 import TermsAndConditions from 'Components/StaticContent/TermsAndConditions'
 import ContactUs from './StaticContent/ContactUs'
 import Tour from './Tour'
-import NewsModal from './NewsModal'
 
 export default function NavBar() {
   const { user } = useSelector(({ user }) => ({ user: user.data }))
@@ -23,6 +24,7 @@ export default function NavBar() {
   const history = useHistory()
   const smallWindow = useWindowDimensions().width < 700
   const intl = useIntl()
+  const learningLanguage = useSelector(learningLanguageSelector)
 
   const handleEloClick = () => {
     history.push('/profile/progress')
@@ -36,6 +38,11 @@ export default function NavBar() {
   const handleTourStart = () => {
     dispatch(sidebarSetOpen(false))
     dispatch({ type: 'TOUR_RESTART' })
+  }
+
+  const handleNewsClick = async () => {
+    await dispatch(getNews())
+    await dispatch(getMetadata(learningLanguage))
   }
 
   const getLearningLanguageFlag = () => {
@@ -282,26 +289,31 @@ export default function NavBar() {
                   </NavDropdown>
                 </>
               )}
-
-              <NewsModal
-                trigger={
-                  <div>
-                    <span
-                      style={{
-                        position: 'relative',
-                        cursor: 'pointer',
-                      }}
-                    >
-                      <Icon className="navbar-basic-item" name="bell" size="large" />
-                      {numUnreadNews > 0 ? (
-                        <Label className="navbar-news-label" color="red" size="mini" floating>
-                          <span>{numUnreadNews}</span>
-                        </Label>
-                      ) : null}
-                    </span>
-                  </div>
-                }
-              />
+              <a
+                style={{ display: 'table-cell' }}
+                href="https://www2.helsinki.fi/en/projects/revita-language-learning-and-ai/news"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                <span
+                  style={{
+                    position: 'relative',
+                    cursor: 'pointer',
+                  }}
+                >
+                  <Icon
+                    onClick={handleNewsClick}
+                    className="navbar-basic-item"
+                    name="bell"
+                    size="large"
+                  />
+                  {numUnreadNews > 0 ? (
+                    <Label className="navbar-news-label" color="red" size="mini" floating>
+                      <span>{numUnreadNews}</span>
+                    </Label>
+                  ) : null}
+                </span>
+              </a>
 
               <Link to="/profile/settings">
                 <Icon
