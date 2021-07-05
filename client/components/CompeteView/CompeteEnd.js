@@ -41,9 +41,8 @@ const CompeteEnd = ({ open, setOpen, playerScore, botScore, exercisesTotal }) =>
     if (playerScore < botScore) return { color: 'green' }
   }
 
-  const handleBackToLibrary = () => {
-    history.push('/library')
-  }
+  const handleBackToLibrary = () => history.push('/library')
+  const handleRestart = () => window.location.reload()
 
   return (
     <Modal
@@ -78,7 +77,7 @@ const CompeteEnd = ({ open, setOpen, playerScore, botScore, exercisesTotal }) =>
           </div>
         </div>
         <div className="competition-results-buttons-cont">
-          <Button disabled style={{ marginBottom: '.25em' }}>
+          <Button onClick={handleRestart} style={{ marginBottom: '.25em' }}>
             {playerScore > botScore ? (
               <FormattedMessage id="restart-competition" />
             ) : (

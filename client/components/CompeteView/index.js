@@ -1,9 +1,13 @@
 import React, { useEffect, useState } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import { Divider, Segment } from 'semantic-ui-react'
-import { getOpponent, competitionStartNow } from 'Utilities/redux/competitionReducer'
+import {
+  getOpponent,
+  competitionStartNow,
+  resetCachedSnippets,
+} from 'Utilities/redux/competitionReducer'
 import { clearTranslationAction } from 'Utilities/redux/translationReducer'
-import { resetCurrentSnippet, getCurrentSnippet } from 'Utilities/redux/snippetsReducer'
+import { resetCurrentSnippet } from 'Utilities/redux/snippetsReducer'
 import { getTextStyle, learningLanguageSelector } from 'Utilities/common'
 import ReportButton from 'Components/ReportButton'
 import useWindowDimensions from 'Utilities/windowDimensions'
@@ -42,6 +46,7 @@ const CompeteView = ({ match }) => {
 
   const initializeCompetition = async () => {
     await Promise.all([
+      dispatch(resetCachedSnippets()),
       dispatch(getStoryAction(id)),
       dispatch(resetCurrentSnippet(id)),
       dispatch(clearTranslationAction()),
@@ -69,6 +74,7 @@ const CompeteView = ({ match }) => {
   useEffect(() => {
     initializeCompetition()
   }, [])
+
   if (!story || !startTime || !snippets.focused) {
     return (
       <div className="cont-tall pt-sm flex-col space-between">
@@ -127,6 +133,7 @@ const CompeteView = ({ match }) => {
               setPlayerFinished={setPlayerFinished}
               playerFinished={playerFinished}
               setPlayerDone={setPlayerDone}
+              finished={playerFinished}
             />
             <ScrollArrow />
           </Segment>

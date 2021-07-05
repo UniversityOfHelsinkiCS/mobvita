@@ -15,7 +15,7 @@ const OpponentBar = ({
   const snippetsTotal = botSnippetTimes?.length
 
   // const snippetsTotal = 3 // for faster debugging
-  // const botSnippetTimes = new Array(snippetsTotal).fill(3) // for debugging
+  // const botSnippetTimes = new Array(snippetsTotal).fill(4) // for debugging
 
   const [timer, setTimer] = useState(null)
   const [interval, setInterval] = useState(botSnippetTimes[0])
@@ -67,9 +67,7 @@ const OpponentBar = ({
   }, [currentSnippetBot])
 
   useEffect(() => {
-    if (playerFinished) {
-      stopTimer()
-    }
+    if (playerFinished) stopTimer()
   }, [playerFinished])
 
   const getLabelsWidth = () => {

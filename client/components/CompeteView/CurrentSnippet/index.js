@@ -1,12 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
-import {
-  getCurrentSnippet,
-  getNextSnippet,
-  addToPrevious,
-  setPrevious,
-  getNextSnippetFromCache,
-} from 'Utilities/redux/snippetsReducer'
+import { addToPrevious, getNextSnippetFromCache } from 'Utilities/redux/snippetsReducer'
 import { getAndCacheNextSnippet, resetCachedSnippets } from 'Utilities/redux/competitionReducer'
 import { clearTranslationAction } from 'Utilities/redux/translationReducer'
 import 'react-simple-keyboard/build/css/index.css'
@@ -28,13 +22,7 @@ import {
 import SnippetActions from './SnippetActions'
 import PracticeText from './PracticeText'
 
-const CurrentSnippet = ({
-  storyId,
-  handleInputChange,
-  setPlayerDone,
-  playerFinished,
-  setPlayerFinished,
-}) => {
+const CurrentSnippet = ({ storyId, handleInputChange, setPlayerDone, finished }) => {
   const [exerciseCount, setExerciseCount] = useState(0)
   const practiceForm = useRef(null)
   const dispatch = useDispatch()
@@ -54,8 +42,6 @@ const CurrentSnippet = ({
     const { snippetid } = snippets.focused
     return snippetid[snippetid.length - 1]
   }
-
-  const [finished, setFinished] = useState(false)
 
   const getExerciseCount = () => {
     let count = 0
@@ -113,7 +99,6 @@ const CurrentSnippet = ({
       dispatch(getNextSnippetFromCache(cachedSnippets[currentSnippetId()]))
     } else {
       setPlayerDone(true)
-      setFinished(true)
     }
   }
 
@@ -190,12 +175,7 @@ const CurrentSnippet = ({
   }, [snippets.pending, snippets.previous])
 
   const startOver = async () => {
-    dispatch(clearPractice())
-    dispatch(setPrevious([]))
-    dispatch(getNextSnippet(storyId, currentSnippetId()))
-    dispatch(resetCachedSnippets())
-    setFinished(false)
-    setPlayerFinished(null)
+    window.location.reload()
   }
 
   const handleMultiselectChange = (event, word, data) => {
@@ -232,11 +212,11 @@ const CurrentSnippet = ({
           <SnippetActions
             storyId={storyId}
             exerciseCount={exerciseCount}
-            playerFinished={playerFinished}
+            playerFinished={finished}
           />
         </div>
       ) : (
-        <Button variant="primary" block onClick={() => startOver()} disabled>
+        <Button variant="primary" block onClick={() => startOver()}>
           <FormattedMessage id="restart-competition" />
         </Button>
       )}
