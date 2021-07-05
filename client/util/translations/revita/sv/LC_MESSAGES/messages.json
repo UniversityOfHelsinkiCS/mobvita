@@ -33,7 +33,7 @@
     "please-enter-a-valid-email": "Vänligen mata in en giltig e-post adress!",
     "See": "",
     "and": "",
-    "try-again": "Try again",
+    "try-again": "This is not a valid word 🤔\nTry again",
     "friend-successfully-removed": "Vännen togs bort",
     "you-have-no-friends": "Du har inga vänner.",
     "teacher-successfully-removed-from-group": "",
@@ -978,7 +978,7 @@
     "total-questions": "questions in total",
     "friends": "Vänner",
     "tour-welcome-message-OLD": "Revita hjälper dig att träna språk med berättelser. &rarr;",
-    "governed-by": "Governed by \"{}\"",
+    "governed-by": "Depends on \"{}\"",
     "need-to-agree-with": "Need to agree with {}",
     "username": "Användarnamn",
     "actions": "Åtgärder",
@@ -1027,5 +1027,6 @@
     "better-luck-next-time": "Better luck next time...",
     "you": "You",
     "opponent": "Opponent",
-    "back-to-library": "Back to library"
+    "back-to-library": "Back to library",
+    "OLD try-again": "Try again"
 }

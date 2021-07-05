@@ -33,7 +33,7 @@
     "please-enter-a-valid-email": "",
     "See": "",
     "and": "",
-    "try-again": "Try again",
+    "try-again": "This is not a valid word 🤔\nTry again",
     "friend-successfully-removed": "",
     "you-have-no-friends": "List of friends is empty",
     "teacher-successfully-removed-from-group": "",
@@ -979,7 +979,7 @@
     "total-questions": "questions in total",
     "friends": "Friends",
     "tour-welcome-message-OLD": "Revita helps you learn languages by practicing with stories of your choice.<br/><br/>We will now show you its main features.<br/><br/>(This tour takes 1 minute) →",
-    "governed-by": "Governed by \"{}\"",
+    "governed-by": "Depends on \"{}\"",
     "need-to-agree-with": "Need to agree with {}",
     "username": "Username",
     "actions": "Actions",
@@ -1028,5 +1028,6 @@
     "better-luck-next-time": "Better luck next time...",
     "you": "You",
     "opponent": "Opponent",
-    "back-to-library": "Back to library"
+    "back-to-library": "Back to library",
+    "OLD try-again": "Try again"
 }
