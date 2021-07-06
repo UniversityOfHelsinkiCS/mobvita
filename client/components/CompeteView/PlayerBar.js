@@ -79,7 +79,7 @@ const PlayerBar = ({
             </div>
             <div>
               <div className="justify-center">
-                <Icon name="thumbs up outline" style={{ marginBottom: '.2em' }} />
+                <Icon color="green" name="thumbs up outline" style={{ marginBottom: '.2em' }} />
               </div>
               <div className="justify-center">{playerScore}</div>
             </div>

@@ -104,7 +104,7 @@ const OpponentBar = ({
             <div style={{ backgroundColor: 'white' }}>
               <div className="justify-center">{botScore}</div>
               <div className="justify-center">
-                <Icon name="thumbs up outline" style={{ marginBottom: '.4em' }} />
+                <Icon color="orange" name="thumbs up outline" style={{ marginBottom: '.4em' }} />
               </div>
             </div>
           </div>
