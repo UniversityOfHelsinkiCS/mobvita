@@ -98,7 +98,7 @@ const SnippetActions = ({ storyId, exerciseCount, playerFinished }) => {
     }
 
     dispatch(clearTouchedIds())
-    dispatch(postAnswers(storyId, answersObj))
+    dispatch(postAnswers(storyId, answersObj, true))
     setcheckAnswersButtonTempDisable(true)
     setTimeout(() => {
       setcheckAnswersButtonTempDisable(false)

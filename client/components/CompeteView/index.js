@@ -14,7 +14,7 @@ import useWindowDimensions from 'Utilities/windowDimensions'
 import { keyboardLayouts } from 'Components/CompeteView/KeyboardLayouts'
 import Footer from 'Components/Footer'
 import VirtualKeyboard from 'Components/CompeteView/VirtualKeyboard'
-import { setTouchedIds, setAnswers } from 'Utilities/redux/practiceReducer'
+import { setTouchedIds, setAnswers, clearPractice } from 'Utilities/redux/practiceReducer'
 import { getStoryAction } from 'Utilities/redux/storiesReducer'
 import PreviousSnippets from 'Components/CompeteView/PreviousSnippets'
 import CurrentSnippet from 'Components/CompeteView/CurrentSnippet'
@@ -46,10 +46,11 @@ const CompeteView = ({ match }) => {
 
   const initializeCompetition = async () => {
     await Promise.all([
-      dispatch(resetCachedSnippets()),
       dispatch(getStoryAction(id)),
+      dispatch(clearPractice()),
       dispatch(resetCurrentSnippet(id)),
       dispatch(clearTranslationAction()),
+      dispatch(resetCachedSnippets()),
       dispatch(getOpponent(id)),
     ])
     await dispatch(competitionStartNow())
