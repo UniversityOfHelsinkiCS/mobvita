@@ -1,6 +1,7 @@
 import React, { useEffect } from 'react'
 import Spinner from 'Components/Spinner'
 import { Icon } from 'semantic-ui-react'
+import { FormattedMessage } from 'react-intl'
 
 const PlayerBar = ({
   snippetsTotal,
@@ -27,6 +28,11 @@ const PlayerBar = ({
     return (currentSnippet / snippetsTotal) * 100
   }
 
+  const getBarWidth = () => {
+    if (currentSnippet / snippetsTotal === 0) return 2
+    return (currentSnippet / snippetsTotal) * 100
+  }
+
   return (
     <>
       {!snippetsTotal ? (
@@ -44,12 +50,12 @@ const PlayerBar = ({
             <div
               className="progress-bar bg-success"
               style={{
-                width: `${(currentSnippet / snippetsTotal) * 100}%`,
+                width: `${getBarWidth()}%`,
                 backgroundColor: '#FA6',
                 borderRadius: '0',
               }}
               role="progressbar"
-              aria-valuenow={currentSnippet / snippetsTotal}
+              aria-valuenow={getBarWidth()}
               aria-valuemin="0"
               aria-valuemax="100"
             />
@@ -65,7 +71,7 @@ const PlayerBar = ({
             }}
           >
             <div className="bold" style={{ width: '150px' }}>
-              You
+              <FormattedMessage id="you" />
             </div>
             <div>
               <Icon name="thumbs up outline" />

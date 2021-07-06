@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import Spinner from 'Components/Spinner'
 import { Icon } from 'semantic-ui-react'
+import { FormattedMessage } from 'react-intl'
 
 const OpponentBar = ({
   botSnippetTimes,
@@ -76,6 +77,11 @@ const OpponentBar = ({
     return (currentSnippetBot / snippetsTotal) * 100
   }
 
+  const getBarWidth = () => {
+    if (currentSnippetBot / snippetsTotal === 0) return 2
+    return (currentSnippetBot / snippetsTotal) * 100
+  }
+
   return (
     <>
       {!snippetsTotal ? (
@@ -91,7 +97,9 @@ const OpponentBar = ({
               width: `${getLabelsWidth()}%`,
             }}
           >
-            <div className="bold">Opponent</div>
+            <div className="bold">
+              <FormattedMessage id="opponent" />
+            </div>
             <div style={{ backgroundColor: 'white' }}>
               <div>{botScore}</div>
               <Icon name="thumbs up outline" />
@@ -117,12 +125,12 @@ const OpponentBar = ({
             <div
               className="progress-bar bg-warning"
               style={{
-                width: `${(currentSnippetBot / snippetsTotal) * 100}%`,
+                width: `${getBarWidth()}%`,
                 backgroundColor: '#FA6',
                 borderRadius: '0',
               }}
               role="progressbar"
-              aria-valuenow={currentSnippetBot / snippetsTotal}
+              aria-valuenow={getBarWidth()}
               aria-valuemin="0"
               aria-valuemax="100"
               height="50%"
