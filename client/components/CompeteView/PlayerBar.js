@@ -70,8 +70,11 @@ const PlayerBar = ({
               marginRight: '0',
             }}
           >
-            <div className="bold" style={{ width: '150px' }}>
-              <FormattedMessage id="you" />
+            <div style={{ width: '150px' }}>
+              <span className="bold">
+                <FormattedMessage id="you" />
+              </span>{' '}
+              ({currentSnippet}/{snippetsTotal})
             </div>
             <div>
               <Icon name="thumbs up outline" />
