@@ -234,8 +234,8 @@
     "Portuguese": "Portoghese",
     "Swahili": "Swahili",
     "Turkish": "Turco",
-    "Syriac": "",
-    "Tatar": "",
+    "Syriac": "Siriaco",
+    "Tatar": "Tartaro",
     "translations-in-english": "Traduzione in inglese",
     "translations-in-russian": "Traduzione in russo",
     "translations-in-finnish": "Traduzione in finlandese",
@@ -1030,5 +1030,6 @@
     "you": "Tu",
     "opponent": "Sfidante",
     "back-to-library": "Torna alla raccolta",
-    "OLD try-again": "Riprova"
+    "OLD try-again": "Riprova",
+    "syriac": "Syriac"
 }
