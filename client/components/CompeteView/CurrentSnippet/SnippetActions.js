@@ -10,12 +10,26 @@ const CheckAnswersButton = ({ handleClick, checkAnswersButtonTempDisable, player
   const { focused: focusedSnippet, pending: snippetPending, answersPending } = useSelector(
     ({ snippets }) => snippets
   )
+  const { cachedSnippets } = useSelector(({ compete }) => compete)
   const [barColor, setBarColor] = useState('#4c91cd')
   const [attemptRatioPercentage, setAttemptRatioPercentage] = useState(100)
 
   const getFontStyle = () => {
     if (attemptRatioPercentage === 100) return { color: 'white' }
     return { color: 'black', textShadow: '0px 0px 4px #FFF' }
+  }
+
+  const currentSnippetId = () => {
+    if (!focusedSnippet) return -1
+    const { snippetid } = focusedSnippet
+    return snippetid[snippetid.length - 1]
+  }
+
+  const noSnippetToFetchFromCache = () => {
+    return (
+      currentSnippetId() === cachedSnippets.length &&
+      cachedSnippets.length !== focusedSnippet.total_num - 1
+    )
   }
 
   useEffect(() => {
@@ -52,7 +66,8 @@ const CheckAnswersButton = ({ handleClick, checkAnswersButtonTempDisable, player
         snippetPending ||
         !focusedSnippet ||
         checkAnswersButtonTempDisable ||
-        playerFinished !== null
+        playerFinished !== null ||
+        noSnippetToFetchFromCache()
       }
     >
       <div style={{ width: `${attemptRatioPercentage}%`, backgroundColor: barColor }} />
