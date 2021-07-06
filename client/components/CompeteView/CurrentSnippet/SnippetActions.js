@@ -2,8 +2,9 @@ import React, { useState, useMemo, useEffect } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import { FormattedMessage } from 'react-intl'
 import { Button } from 'react-bootstrap'
+import { Icon } from 'semantic-ui-react'
 import { postAnswers, getCurrentSnippet } from 'Utilities/redux/snippetsReducer'
-import { clearTouchedIds } from 'Utilities/redux/practiceReducer'
+import { finishSnippet, clearTouchedIds } from 'Utilities/redux/practiceReducer'
 
 const CheckAnswersButton = ({ handleClick, checkAnswersButtonTempDisable, playerFinished }) => {
   const attempt = useSelector(({ practice }) => practice.attempt)
@@ -80,6 +81,7 @@ const CheckAnswersButton = ({ handleClick, checkAnswersButtonTempDisable, player
 
 const SnippetActions = ({ storyId, exerciseCount, playerFinished }) => {
   const [checkAnswersButtonTempDisable, setcheckAnswersButtonTempDisable] = useState(false)
+  const { cachedSnippets } = useSelector(({ compete }) => compete)
   const { currentAnswers, touchedIds, attempt, options, audio } = useSelector(
     ({ practice }) => practice
   )
@@ -95,6 +97,19 @@ const SnippetActions = ({ storyId, exerciseCount, playerFinished }) => {
       ),
     [snippets]
   )
+
+  const currentSnippetId = () => {
+    if (!snippets.focused) return -1
+    const { snippetid } = snippets.focused
+    return snippetid[snippetid.length - 1]
+  }
+
+  const noSnippetToFetchFromCache = () => {
+    return (
+      currentSnippetId() === cachedSnippets.length &&
+      cachedSnippets.length !== snippets.focused?.total_num - 1
+    )
+  }
 
   const checkAnswers = async lastAttempt => {
     const { starttime, snippetid } = snippets.focused
@@ -124,6 +139,11 @@ const SnippetActions = ({ storyId, exerciseCount, playerFinished }) => {
     dispatch(getCurrentSnippet(storyId))
   }
 
+  const submitAnswers = () => {
+    dispatch(finishSnippet())
+    checkAnswers(true)
+  }
+
   const isSnippetFetchedSuccessfully =
     snippets.answersPending || snippets.pending || snippets.focused
 
@@ -136,6 +156,24 @@ const SnippetActions = ({ storyId, exerciseCount, playerFinished }) => {
             checkAnswersButtonTempDisable={checkAnswersButtonTempDisable}
             playerFinished={playerFinished}
           />
+          <div>
+            <Button
+              variant="secondary"
+              size="sm"
+              disabled={
+                snippets.answersPending ||
+                snippets.pending ||
+                !snippets.focused ||
+                noSnippetToFetchFromCache()
+              }
+              onClick={submitAnswers}
+              style={{ marginBottom: '0.5em' }}
+            >
+              <span>
+                <FormattedMessage id="go-to-next-snippet" /> <Icon name="level down alternate" />
+              </span>
+            </Button>
+          </div>
         </div>
       ) : (
         <Button
