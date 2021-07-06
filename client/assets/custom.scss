@@ -799,6 +799,8 @@ html, body, #root {
  
 .competition-bar-label {
   transition:width .6s ease;
+  display: flex;
+  justify-content: space-between;
 }
 
 .add-story-accordion-focused-item {

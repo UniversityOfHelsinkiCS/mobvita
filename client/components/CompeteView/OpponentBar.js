@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react'
 import Spinner from 'Components/Spinner'
 import { Icon } from 'semantic-ui-react'
 import { FormattedMessage } from 'react-intl'
+import useWindowDimensions from 'Utilities/windowDimensions'
 
 const OpponentBar = ({
   botSnippetTimes,
@@ -21,6 +22,7 @@ const OpponentBar = ({
   const [timer, setTimer] = useState(null)
   const [interval, setInterval] = useState(botSnippetTimes[0])
   const [currentSnippetBot, setCurrentSnippetBot] = useState(0)
+  const smallScreen = useWindowDimensions().width < 500
 
   const probCorrect = n => {
     return !!n && Math.random() <= n
@@ -73,7 +75,8 @@ const OpponentBar = ({
 
   const getLabelsWidth = () => {
     if (currentSnippetBot > snippetsTotal) return 100
-    if (currentSnippetBot / snippetsTotal < 0.12) return 12
+    if (smallScreen && currentSnippetBot / snippetsTotal < 0.3) return 30
+    if (!smallScreen && currentSnippetBot / snippetsTotal < 0.12) return 12
     return (currentSnippetBot / snippetsTotal) * 100
   }
 
@@ -91,8 +94,6 @@ const OpponentBar = ({
           <div
             className="competition-bar-label"
             style={{
-              display: 'flex',
-              justifyContent: 'space-between',
               alignItems: 'flex-end',
               width: `${getLabelsWidth()}%`,
             }}
@@ -101,8 +102,10 @@ const OpponentBar = ({
               <FormattedMessage id="opponent" />
             </div>
             <div style={{ backgroundColor: 'white' }}>
-              <div>{botScore}</div>
-              <Icon name="thumbs up outline" />
+              <div className="justify-center">{botScore}</div>
+              <div className="justify-center">
+                <Icon name="thumbs up outline" style={{ marginBottom: '.4em' }} />
+              </div>
             </div>
           </div>
           <div

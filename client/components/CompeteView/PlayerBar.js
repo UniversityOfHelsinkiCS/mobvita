@@ -2,6 +2,7 @@ import React, { useEffect } from 'react'
 import Spinner from 'Components/Spinner'
 import { Icon } from 'semantic-ui-react'
 import { FormattedMessage } from 'react-intl'
+import useWindowDimensions from 'Utilities/windowDimensions'
 
 const PlayerBar = ({
   snippetsTotal,
@@ -11,6 +12,8 @@ const PlayerBar = ({
   setEndModalOpen,
   playerScore,
 }) => {
+  const smallScreen = useWindowDimensions().width < 500
+
   useEffect(() => {
     if (currentSnippet === snippetsTotal) {
       if (!playerFinished) {
@@ -24,7 +27,8 @@ const PlayerBar = ({
 
   const getLabelsWidth = () => {
     if (currentSnippet > snippetsTotal) return 100
-    if (currentSnippet / snippetsTotal < 0.12) return 12
+    if (smallScreen && currentSnippet / snippetsTotal < 0.3) return 30
+    if (!smallScreen && currentSnippet / snippetsTotal < 0.12) return 12
     return (currentSnippet / snippetsTotal) * 100
   }
 
@@ -64,21 +68,20 @@ const PlayerBar = ({
           <div
             className="competition-bar-label"
             style={{
-              display: 'flex',
-              justifyContent: 'space-between',
               width: `${getLabelsWidth()}%`,
-              marginRight: '0',
             }}
           >
-            <div style={{ width: '150px' }}>
+            <div>
               <span className="bold">
                 <FormattedMessage id="you" />
               </span>{' '}
               ({currentSnippet}/{snippetsTotal})
             </div>
             <div>
-              <Icon name="thumbs up outline" />
-              <div>{playerScore}</div>
+              <div className="justify-center">
+                <Icon name="thumbs up outline" style={{ marginBottom: '.2em' }} />
+              </div>
+              <div className="justify-center">{playerScore}</div>
             </div>
           </div>
         </div>
