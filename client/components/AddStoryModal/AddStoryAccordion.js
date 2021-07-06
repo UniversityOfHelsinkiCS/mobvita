@@ -46,42 +46,40 @@ const AddStoryAccordion = ({ closeModal }) => {
       </Menu.Item>
 
       {!smallWindow && (
-        <>
-          <Menu.Item style={{ margin: '1rem' }}>
-            <Accordion.Title
-              active={accordionState === 1}
-              content={
-                <span className={getAccordionItemClass(accordionState, 1)}>
-                  <FormattedMessage id="upload-stories" />
-                </span>
-              }
-              index={1}
-              onClick={handleClick}
-            />
-            <Accordion.Content
-              active={accordionState === 1}
-              content={<UploadFromFile closeModal={closeModal} />}
-            />
-          </Menu.Item>
-
-          <Menu.Item style={{ margin: '1rem' }}>
-            <Accordion.Title
-              active={accordionState === 2}
-              content={
-                <span className={getAccordionItemClass(accordionState, 2)}>
-                  <FormattedMessage id="paste-a-text" />
-                </span>
-              }
-              index={2}
-              onClick={handleClick}
-            />
-            <Accordion.Content
-              active={accordionState === 2}
-              content={<UploadPastedText closeModal={closeModal} />}
-            />
-          </Menu.Item>
-        </>
+        <Menu.Item style={{ margin: '1rem' }}>
+          <Accordion.Title
+            active={accordionState === 1}
+            content={
+              <span className={getAccordionItemClass(accordionState, 1)}>
+                <FormattedMessage id="upload-stories" />
+              </span>
+            }
+            index={1}
+            onClick={handleClick}
+          />
+          <Accordion.Content
+            active={accordionState === 1}
+            content={<UploadFromFile closeModal={closeModal} />}
+          />
+        </Menu.Item>
       )}
+
+      <Menu.Item style={{ margin: '1rem' }}>
+        <Accordion.Title
+          active={accordionState === 2}
+          content={
+            <span className={getAccordionItemClass(accordionState, 2)}>
+              <FormattedMessage id="paste-a-text" />
+            </span>
+          }
+          index={2}
+          onClick={handleClick}
+        />
+        <Accordion.Content
+          active={accordionState === 2}
+          content={<UploadPastedText closeModal={closeModal} />}
+        />
+      </Menu.Item>
 
       <Menu.Item style={{ margin: '1rem' }}>
         <Accordion.Title

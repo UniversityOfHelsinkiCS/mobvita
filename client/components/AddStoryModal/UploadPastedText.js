@@ -59,21 +59,23 @@ const UploadPastedText = ({ closeModal }) => {
         className="story-text-input"
         value={text}
         onChange={handleTextChange}
-        style={{ marginTop: '1em' }}
+        style={{ marginTop: '1em', marginBottom: '1em' }}
       />
-      <span className="bold" style={{ marginRight: '1em' }}>
-        <FormattedMessage id="characters-left" />
-        {` ${charactersLeft}`}
-      </span>
-      <Button primary onClick={addText} disabled={submitDisabled} style={{ margin: '1em' }}>
-        {pending || storyId ? (
-          <Spinner animation="border" variant="dark" size="lg" />
-        ) : (
-          <span>
-            <FormattedMessage id="Confirm" />
-          </span>
-        )}
-      </Button>
+      <div>
+        <div className="bold">
+          <FormattedMessage id="characters-left" />
+          {` ${charactersLeft}`}
+        </div>
+        <Button primary onClick={addText} disabled={submitDisabled} style={{ marginTop: '1em' }}>
+          {pending || storyId ? (
+            <Spinner animation="border" variant="dark" size="lg" />
+          ) : (
+            <span>
+              <FormattedMessage id="Confirm" />
+            </span>
+          )}
+        </Button>
+      </div>
       {textTooLong && (
         <span className="additional-info">
           <FormattedMessage id="this-text-is-too-long-maximum-50000-characters" />
