@@ -90,14 +90,14 @@ const StoryActions = ({ story }) => {
             <FormattedMessage id="practice" />
           </Button>
         </Link>
-        <Link to={`/compete/${story._id}/`}>
-          <Button variant="primary" style={{ marginRight: '0.5em' }}>
-            <FormattedMessage id="compete" />
-          </Button>
-        </Link>
         <Link to={`/flashcards/fillin/${story._id}/`}>
           <Button variant="primary" style={{ marginRight: '0.5em' }}>
             <FormattedMessage id="Flashcards" />
+          </Button>
+        </Link>
+        <Link to={`/compete/${story._id}/`}>
+          <Button variant="secondary" style={{ marginRight: '0.5em' }}>
+            <FormattedMessage id="compete" />
           </Button>
         </Link>
         {showCrosswordsButton && (
@@ -128,12 +128,6 @@ const StoryActions = ({ story }) => {
       >
         <Dropdown.Menu className="story-item-dropdown">
           <Dropdown.Item
-            text={<FormattedMessage id="compete" />}
-            as={Link}
-            to={`/compete/${story._id}/`}
-            icon="lightning"
-          />
-          <Dropdown.Item
             text={<FormattedMessage id="Flashcards" />}
             as={Link}
             to={`/flashcards/fillin/${story._id}/`}
@@ -144,6 +138,12 @@ const StoryActions = ({ story }) => {
             as={Link}
             to={`/stories/${story._id}/read`}
             icon="book"
+          />
+          <Dropdown.Item
+            text={<FormattedMessage id="compete" />}
+            as={Link}
+            to={`/compete/${story._id}/`}
+            icon="lightning"
           />
         </Dropdown.Menu>
       </Dropdown>
