@@ -33,7 +33,7 @@ const CurrentSnippet = ({ storyId, handleInputChange, setPlayerDone, finished })
   const { focused } = useSelector(({ stories }) => stories)
   const learningLanguage = useSelector(learningLanguageSelector)
 
-  const SNIPPET_FETCH_INTERVAL = 4000
+  const SNIPPET_FETCH_INTERVAL = 5000
 
   const [snippetToCacheId, setSnippetToCacheId] = useState(0)
 

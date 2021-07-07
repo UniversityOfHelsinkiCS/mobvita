@@ -31,7 +31,7 @@ export const resetCachedSnippets = () => ({
   type: 'RESET_CACHED_SNIPPETS',
 })
 
-export default (state = { cachedSnippets: [], currentCacheSnippet: 0 }, action) => {
+export default (state = { cachedSnippets: [] }, action) => {
   switch (action.type) {
     case 'GET_OPPONENT_SUCCESS':
       return {
@@ -54,8 +54,6 @@ export default (state = { cachedSnippets: [], currentCacheSnippet: 0 }, action) 
       return {
         ...state,
         startTime: action.startTime,
-        wrong: 0,
-        total: 0,
       }
 
     case 'GET_AND_CACHE_NEXT_SNIPPET_ATTEMPT':
@@ -75,7 +73,6 @@ export default (state = { cachedSnippets: [], currentCacheSnippet: 0 }, action) 
       return {
         ...state,
         cachedSnippets: filterDuplicates(state.cachedSnippets.concat(action.response)),
-        currentCacheSnippet: state.currentCacheSnippet + 1,
         pending: false,
         error: false,
       }
@@ -83,7 +80,6 @@ export default (state = { cachedSnippets: [], currentCacheSnippet: 0 }, action) 
       return {
         ...state,
         cachedSnippets: [],
-        currentCacheSnippet: 0,
         pending: false,
         error: false,
       }
