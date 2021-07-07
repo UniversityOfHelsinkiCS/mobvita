@@ -7,7 +7,7 @@ import OpponentBar from './OpponentBar'
 import PlayerBar from './PlayerBar'
 import CompeteEnd from './CompeteEnd'
 
-const CompetitionProgress = ({ storyId, playerDone, playerFinished, setPlayerFinished }) => {
+const CompetitionProgress = ({ storyId, youWon, playerFinished, setPlayerFinished }) => {
   const dispatch = useDispatch()
   const { width } = useWindowDimensions()
   const [exercisesInSnippets, setExercisesInSnippets] = useState([])
@@ -17,7 +17,7 @@ const CompetitionProgress = ({ storyId, playerDone, playerFinished, setPlayerFin
   const [botScore, setBotScore] = useState(0)
   const [endModalOpen, setEndModalOpen] = useState(false)
 
-  const { botSnippetTimes, botCorrectPercent, cachedSnippets, startTime, snippets } = useSelector(
+  const { botSnippetTimes, botCorrectPercent, cachedSnippets, snippets } = useSelector(
     ({ stories, compete, snippets }) => ({
       snippets,
       story: stories.focused,
@@ -92,7 +92,7 @@ const CompetitionProgress = ({ storyId, playerDone, playerFinished, setPlayerFin
       <PlayerBar
         snippetsTotal={snippetsTotal}
         currentSnippet={
-          playerDone ? Number(snippets.focused?.snippetid) + 1 : snippets.focused?.snippetid
+          youWon ? Number(snippets.focused?.snippetid) + 1 : snippets.focused?.snippetid
         }
         exercisesPerSnippet={exercisesInSnippets}
         playerScore={userCorrectAnswers}

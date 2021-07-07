@@ -39,7 +39,7 @@ const CompeteView = ({ match }) => {
   }))
 
   const [playerFinished, setPlayerFinished] = useState(null)
-  const [playerDone, setPlayerDone] = useState(false)
+  const [youWon, setYouWon] = useState(false)
 
   const showFooter = width > 640
   const showVirtualKeyboard = width > 500 && keyboardLayouts[learningLanguage]
@@ -121,7 +121,7 @@ const CompeteView = ({ match }) => {
             ) : (
               <CompetitionProgress
                 storyId={id}
-                playerDone={playerDone}
+                youWon={youWon}
                 playerFinished={playerFinished}
                 setPlayerFinished={setPlayerFinished}
               />
@@ -132,8 +132,7 @@ const CompeteView = ({ match }) => {
               storyId={id}
               handleInputChange={handleAnswerChange}
               setPlayerFinished={setPlayerFinished}
-              playerFinished={playerFinished}
-              setPlayerDone={setPlayerDone}
+              setYouWon={setYouWon}
               finished={playerFinished}
             />
             <ScrollArrow />

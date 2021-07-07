@@ -22,20 +22,20 @@ import {
 import SnippetActions from './SnippetActions'
 import PracticeText from './PracticeText'
 
-const CurrentSnippet = ({ storyId, handleInputChange, setPlayerDone, finished }) => {
-  const [exerciseCount, setExerciseCount] = useState(0)
+const CurrentSnippet = ({ storyId, handleInputChange, setYouWon, finished }) => {
+  const SNIPPET_FETCH_INTERVAL = 5000
   const practiceForm = useRef(null)
   const dispatch = useDispatch()
+
+  const [exerciseCount, setExerciseCount] = useState(0)
+  const [snippetToCacheId, setSnippetToCacheId] = useState(0)
+
   const snippets = useSelector(({ snippets }) => snippets)
-  const answersPending = useSelector(({ snippets }) => snippets.answersPending)
+  const { answersPending } = snippets
   const { snippetFinished, isNewSnippet, attempt } = useSelector(({ practice }) => practice)
   const { cachedSnippets } = useSelector(({ compete }) => compete)
   const { focused } = useSelector(({ stories }) => stories)
   const learningLanguage = useSelector(learningLanguageSelector)
-
-  const SNIPPET_FETCH_INTERVAL = 5000
-
-  const [snippetToCacheId, setSnippetToCacheId] = useState(0)
 
   const currentSnippetId = () => {
     if (!snippets.focused) return -1
@@ -98,7 +98,7 @@ const CurrentSnippet = ({ storyId, handleInputChange, setPlayerDone, finished })
     if (snippets.focused.total_num !== currentSnippetId() + 1 || finished) {
       dispatch(getNextSnippetFromCache(cachedSnippets[currentSnippetId()]))
     } else {
-      setPlayerDone(true)
+      setYouWon(true)
     }
   }
 
@@ -116,11 +116,10 @@ const CurrentSnippet = ({ storyId, handleInputChange, setPlayerDone, finished })
   useEffect(() => {
     dispatch(clearPractice())
     dispatch(resetCachedSnippets())
-  }, [])
+    dispatch(clearTranslationAction())
 
-  useEffect(() => {
-    const interval = setInterval(async () => {
-      await setSnippetToCacheId(snippetToCacheId => snippetToCacheId + 1)
+    const interval = setInterval(() => {
+      setSnippetToCacheId(snippetToCacheId => snippetToCacheId + 1)
     }, SNIPPET_FETCH_INTERVAL)
     return () => clearInterval(interval)
   }, [])
@@ -133,14 +132,6 @@ const CurrentSnippet = ({ storyId, handleInputChange, setPlayerDone, finished })
     }
     fetchSnippet()
   }, [snippetToCacheId])
-
-  useEffect(() => {
-    dispatch(clearPractice())
-  }, [])
-
-  useEffect(() => {
-    dispatch(clearTranslationAction())
-  }, [])
 
   useEffect(() => {
     const currentSnippetIsLoaded = !!snippets.focused
