@@ -60,7 +60,7 @@
     "husky": "^4.2.3",
     "immer": "^8.0.1",
     "is-url": "^1.2.4",
-    "lodash": "^4.17.19",
+    "lodash": "^4.17.21",
     "mini-css-extract-plugin": "^0.5.0",
     "module-alias": "^2.1.0",
     "moment": "^2.24.0",
