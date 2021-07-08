@@ -45,10 +45,6 @@ const CompetitionProgress = ({ storyId, youWon, playerFinished, setPlayerFinishe
     }
   }, [snippets])
 
-  const handleRetry = () => {
-    dispatch(getOpponent(storyId))
-  }
-
   useEffect(() => {
     if (cachedSnippets.length > 0) {
       const exercisesPerSnippet = []
