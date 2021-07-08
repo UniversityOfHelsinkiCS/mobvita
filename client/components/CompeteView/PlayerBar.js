@@ -37,12 +37,14 @@ const PlayerBar = ({
     return (currentSnippet / snippetsTotal) * 100
   }
 
+  const playerProgressTestString = (currentSnippet / snippetsTotal).toFixed(2).replace('.', '')
+
   return (
     <>
       {!snippetsTotal ? (
         <Spinner />
       ) : (
-        <div>
+        <div data-cy="player-bar">
           <div
             style={{
               height: '0.9em',
@@ -62,6 +64,7 @@ const PlayerBar = ({
               aria-valuenow={getBarWidth()}
               aria-valuemin="0"
               aria-valuemax="100"
+              data-cy={`progress-${playerProgressTestString}`}
             />
           </div>
 

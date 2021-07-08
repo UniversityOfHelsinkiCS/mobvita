@@ -90,7 +90,7 @@ const OpponentBar = ({
       {!snippetsTotal ? (
         <Spinner />
       ) : (
-        <div>
+        <div data-cy="opponent-bar">
           <div
             className="competition-bar-label"
             style={{

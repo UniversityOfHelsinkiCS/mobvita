@@ -54,6 +54,7 @@ const CompeteEnd = ({ open, setOpen, playerScore, botScore, exercisesTotal }) =>
         color: 'black',
         name: 'close',
       }}
+      data-cy="competition-end-modal"
     >
       <Modal.Header>{getHeaderText()}</Modal.Header>
       <Modal.Content>

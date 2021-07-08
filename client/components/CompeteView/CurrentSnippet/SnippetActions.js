@@ -144,6 +144,9 @@ const SnippetActions = ({ storyId, exerciseCount, playerFinished }) => {
     checkAnswers(true)
   }
 
+  const nextSnippetButtonDisabled =
+    snippets.answersPending || snippets.pending || !snippets.focused || noSnippetToFetchFromCache()
+
   const isSnippetFetchedSuccessfully =
     snippets.answersPending || snippets.pending || snippets.focused
 
@@ -158,14 +161,10 @@ const SnippetActions = ({ storyId, exerciseCount, playerFinished }) => {
           />
           <div>
             <Button
+              data-cy={!nextSnippetButtonDisabled ? 'next-snippet-ready' : 'next-snippet-waiting'}
               variant="secondary"
               size="sm"
-              disabled={
-                snippets.answersPending ||
-                snippets.pending ||
-                !snippets.focused ||
-                noSnippetToFetchFromCache()
-              }
+              disabled={nextSnippetButtonDisabled}
               onClick={submitAnswers}
               style={{ marginBottom: '0.5em' }}
             >
