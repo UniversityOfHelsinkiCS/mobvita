@@ -1504,6 +1504,7 @@ html, body, #root {
 .competition-progress {
   position: sticky;
   background-color: #FFF;
+  z-index: 98;
 }
 
 .stat {
