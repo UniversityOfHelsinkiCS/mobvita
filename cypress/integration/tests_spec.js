@@ -39,7 +39,7 @@ describe('test view', function() {
     cy.visit('http://localhost:8000/groups/teacher')
     cy.contains('my_test_group').parent().parent().parent().find('[data-cy=delete-group]').click()
     cy.get('[data-cy=confirm-warning-dialog]').click()
-    cy.get('[data-cy=group-list]').should('not.contain', 'my_test_group')
+    cy.get('[data-cy=no-groups-view]').should('not.contain', 'my_test_group')
   })
 
   it('no "Tests" button when no tests are enabled for user\'s groups', function() {

@@ -47,7 +47,7 @@ describe("groups", function () {
     cy.reload()
     cy.contains('destroyed').parent().parent().parent().find('[data-cy=delete-group]').click()
     cy.get('[data-cy=confirm-warning-dialog]').click()
-    cy.get('[data-cy=group-list]').should('not.contain', 'destroyed')
+    cy.get('[data-cy=no-groups-view]').should('not.contain', 'destroyed')
   })
 
   // it('user can leave group', function () {

@@ -5,7 +5,7 @@ import GroupActionModal from './GroupActionModal'
 
 const NoGroupsView = ({ role }) => {
   return (
-    <div className="group-container nogroups">
+    <div className="group-container nogroups" data-cy="no-groups-view">
       <h2 id="title">
         <FormattedMessage id={role === 'student' ? 'Groups-for-students' : 'Groups-for-teachers'} />
       </h2>
