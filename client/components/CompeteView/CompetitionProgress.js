@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 import useWindowDimensions from 'Utilities/windowDimensions'
 import { getOpponent } from 'Utilities/redux/competitionReducer'
 import { useDispatch, useSelector } from 'react-redux'
-import { Button } from 'react-bootstrap'
+import { Spinner } from 'react-bootstrap'
 import OpponentBar from './OpponentBar'
 import PlayerBar from './PlayerBar'
 import CompeteEnd from './CompeteEnd'
@@ -61,12 +61,17 @@ const CompetitionProgress = ({ storyId, youWon, playerFinished, setPlayerFinishe
     }
   }, [cachedSnippets])
 
-  if (!botSnippetTimes)
+  if (!botSnippetTimes) {
+    setTimeout(() => {
+      dispatch(getOpponent(storyId))
+    }, 3000)
+
     return (
-      <div>
-        Loading opponent failed. <Button onClick={handleRetry}>Try again</Button>
+      <div className="justify-center">
+        <Spinner animation="border" variant="info" size="sm" />
       </div>
     )
+  }
 
   return (
     <div className="competition-progress" style={{ top: smallScreen ? '0em' : '3em' }}>
