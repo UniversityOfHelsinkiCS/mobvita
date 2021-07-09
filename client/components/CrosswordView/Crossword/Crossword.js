@@ -748,60 +748,65 @@ const Crossword = React.forwardRef(
         >
           <ThemeProvider theme={finalTheme}>
             <OuterWrapper correct={crosswordCorrect} ref={outerWrapperRef}>
-              <svg
-                viewBox={`0 0 ${width} ${height}`}
-                style={{
-                  height: '90vh',
-                  maxHeight: '90vh',
-                  flex: '0 0 auto',
-                  minWidth:
-                    height > width && `${(width / 100) * outerWrapperRef.current?.clientHeight}`,
-                }}
-              >
-                <rect x={0} y={0} width={width} height={height} fill={finalTheme.gridBackground} />
-                {cells}
-              </svg>
-              <input
-                ref={inputRef}
-                aria-label="crossword-input"
-                type="text"
-                onClick={handleInputClick}
-                onKeyDown={handleInputKeyDown}
-                onChange={handleInputChange}
-                value=""
-                // onInput={this.handleInput}
-                autoComplete="off"
-                spellCheck="false"
-                autoCorrect="off"
-                style={{
-                  position: 'absolute',
-                  top: 0,
-                  left: 0,
-                  width: 0,
-                  height: 0,
-                  fontSize: `${fontSize * 6}px`, // waaay too small...?
-                  textAlign: 'center',
-                  textAnchor: 'middle',
-                  backgroundColor: 'transparent',
-                  caretColor: 'transparent',
-                  margin: 0,
-                  padding: 0,
-                  border: 0,
-                  cursor: 'default',
-                  outline: 'none',
-                }}
-              />
-              <CluesWrapper>
-                {customClues ||
-                  (clues &&
-                    bothDirections.map(direction => (
-                      <DirectionClues
-                        key={direction}
-                        direction={direction}
-                        clues={clues[direction]}
-                      />
-                    )))}
-              </CluesWrapper>
+              <div style={{ display: 'flex', flexDirection: 'row' }}>
+                <div style={{ backgroundColor: finalTheme.gridBackground, width: '50%' }}>
+                  <svg
+                    viewBox={`0 0 ${width} ${height}`}
+                    style={{
+                      height: '80vh',
+                      maxHeight: '80vh',
+                      flex: '0 0 auto',
+                      width: '100%',
+                    }}
+                  >
+                    <rect x={0} y={0} width="100%" fill={finalTheme.gridBackground} />
+                    {cells}
+                  </svg>
+                </div>
+                <input
+                  ref={inputRef}
+                  aria-label="crossword-input"
+                  type="text"
+                  onClick={handleInputClick}
+                  onKeyDown={handleInputKeyDown}
+                  onChange={handleInputChange}
+                  value=""
+                  // onInput={this.handleInput}
+                  autoComplete="off"
+                  spellCheck="false"
+                  autoCorrect="off"
+                  style={{
+                    position: 'absolute',
+                    top: 0,
+                    left: 0,
+                    width: 0,
+                    height: 0,
+                    fontSize: `${fontSize * 6}px`, // waaay too small...?
+                    textAlign: 'center',
+                    textAnchor: 'middle',
+                    backgroundColor: 'transparent',
+                    caretColor: 'transparent',
+                    margin: 0,
+                    padding: 0,
+                    border: 0,
+                    cursor: 'default',
+                    outline: 'none',
+                  }}
+                />
+                <div style={{ width: '50%', maxHeight: '80vh', overflowY: 'auto' }}>
+                  <CluesWrapper>
+                    {customClues ||
+                      (clues &&
+                        bothDirections.map(direction => (
+                          <DirectionClues
+                            key={direction}
+                            direction={direction}
+                            clues={clues[direction]}
+                          />
+                        )))}
+                  </CluesWrapper>
+                </div>
+              </div>
             </OuterWrapper>
           </ThemeProvider>
         </CrosswordSizeContext.Provider>

@@ -5,13 +5,7 @@ import { Collapse } from 'react-collapse'
 import DictionaryHelp from 'Components/DictionaryHelp'
 import { getTranslationAction } from 'Utilities/redux/translationReducer'
 import { getWordNestAction, getLinkedWordNestAction } from 'Utilities/redux/wordNestReducer'
-import {
-  learningLanguageSelector,
-  speak,
-  respVoiceLanguages,
-  hiddenFeatures,
-  sanitizeHtml,
-} from 'Utilities/common'
+import { learningLanguageSelector, speak, respVoiceLanguages, sanitizeHtml } from 'Utilities/common'
 import useWindowDimensions from 'Utilities/windowDimensions'
 import { FormattedMessage, useIntl } from 'react-intl'
 import ReportButton from 'Components/ReportButton'
