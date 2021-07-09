@@ -28,9 +28,12 @@ const CrosswordView = () => {
 
   const learningLanguage = useLearningLanguage()
   const dictionaryLanguage = useDictionaryLanguage()
-  const { data: crosswordData, clues, dimensions, title } = useSelector(
-    ({ crossword }) => crossword
-  )
+  const {
+    data: crosswordData,
+    clues,
+    dimensions,
+    title,
+  } = useSelector(({ crossword }) => crossword)
 
   const handleOptionChange = field => event => {
     setCrosswordOptions({ ...crosswordOptions, [field]: event.target.value })

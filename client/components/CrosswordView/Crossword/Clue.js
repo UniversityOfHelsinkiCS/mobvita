@@ -13,9 +13,8 @@ const ClueWrapper = styled.div.attrs(props => ({
 
 export default function Clue({ direction, number, children, correct, ...props }) {
   const { highlightBackground } = useContext(ThemeContext)
-  const { focused, selectedDirection, selectedNumber, onClueSelected } = useContext(
-    CrosswordContext
-  )
+  const { focused, selectedDirection, selectedNumber, onClueSelected } =
+    useContext(CrosswordContext)
 
   const handleClick = useCallback(
     event => {
