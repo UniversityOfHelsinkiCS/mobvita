@@ -1919,7 +1919,10 @@ html, body, #root {
 }
 
 .group-management-buttons {
-  @media (max-width: 1024px) {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 2px;
+  @media (max-width: 700px) {
     flex-direction: column;
     & > button {
       margin-bottom: map.get($spacing, "sm");

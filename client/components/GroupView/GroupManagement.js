@@ -278,7 +278,7 @@ const GroupCard = ({
       />
       <Card.Content extra>
         <div className="space-between group-buttons sm" style={{ whiteSpace: 'nowrap' }}>
-          <div className="gap-col-sm wrap-and-grow group-management-buttons">
+          <div className="group-management-buttons">
             {isTeaching && (
               <>
                 <Button onClick={handleAnalyticsClick}>
@@ -316,10 +316,7 @@ const GroupCard = ({
               </Button>
             )}
           </div>
-          <div
-            className="group-management-buttons flex gap-col-sm"
-            style={{ display: 'flex', alignItems: 'center' }}
-          >
+          <div>
             <Popup
               content={intl.formatMessage({ id: 'Leave' })}
               position="top right"
