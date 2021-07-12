@@ -29,7 +29,7 @@ const CompeteEnd = ({ open, setOpen, playerScore, botScore, exercisesTotal }) =>
         </div>
       )
 
-    return <FormattedMessage id="tie-try-again" />
+    return <FormattedMessage id="compete:tie-try-again" />
   }
 
   const playerScoreColor = whoseScore => {
@@ -82,7 +82,7 @@ const CompeteEnd = ({ open, setOpen, playerScore, botScore, exercisesTotal }) =>
             {playerScore > botScore ? (
               <FormattedMessage id="restart-competition" />
             ) : (
-              <FormattedMessage id="try-again" />
+              <FormattedMessage id="compete:try-again" />
             )}
           </Button>
           <Button variant="outline-primary" onClick={handleBackToLibrary}>
