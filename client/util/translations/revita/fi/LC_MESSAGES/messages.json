@@ -1030,5 +1030,7 @@
     "opponent": "Vastustaja",
     "back-to-library": "Takaisin kirjastoon",
     "OLD try-again": "Yritä uudelleen",
-    "syriac": "Aramea"
+    "syriac": "Aramea",
+    "compete:try-again": "Yritä uudelleen",
+    "compete:tie-try-again": "Tasapeli! Se oli lähellä, kokeile uudestaan!"
 }

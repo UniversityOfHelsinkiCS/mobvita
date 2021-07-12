@@ -1031,5 +1031,7 @@
     "opponent": "Sfidante",
     "back-to-library": "Torna alla raccolta",
     "OLD try-again": "Riprova",
-    "syriac": "Syriac"
+    "syriac": "Syriac",
+    "compete:try-again": "Riprova",
+    "compete:tie-try-again": "Pareggio! Prova ancora!"
 }

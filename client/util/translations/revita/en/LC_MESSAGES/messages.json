@@ -1030,5 +1030,7 @@
     "opponent": "Opponent",
     "back-to-library": "Back to library",
     "OLD try-again": "Try again",
-    "syriac": "Syriac"
+    "syriac": "Syriac",
+    "compete:try-again": "Try again",
+    "compete:tie-try-again": "Tie! That was close, try again!"
 }
