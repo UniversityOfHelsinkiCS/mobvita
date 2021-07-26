@@ -22,7 +22,14 @@ const LanguageGroup = ({ languages, handleLearningLanguageChange }) => {
   return (
     <div className="language-group">
       {languages.map(lang => (
-        <div key={lang} onClick={() => handleLearningLanguageChange(lang)} className="language">
+        <div
+          key={lang}
+          role="button"
+          tabIndex={0}
+          onClick={() => handleLearningLanguageChange(lang)}
+          onKeyPress={() => handleLearningLanguageChange(lang)}
+          className="language"
+        >
           <img
             src={images[`flag${capitalize(lang.split('-').join(''))}`]}
             className="language-image"

@@ -49,7 +49,7 @@ export default function NavBar() {
     const lastUsedLanguage = user.user.last_used_language
 
     if (lastUsedLanguage) {
-      return images[`flag${capitalize(lastUsedLanguage.split('-').join(''))}`]
+      return images[`flag${capitalize(lastUsedLanguage.toLowerCase().split('-').join(''))}`]
     }
     return null
   }
@@ -57,7 +57,6 @@ export default function NavBar() {
   const showStoryElo = history.location.pathname.includes('practice')
   const showFlashcardElo = hiddenFeatures && history.location.pathname.includes('flashcards')
   const hasChosenLearningLanguage = user?.user?.last_used_language !== null
-  const isNewUser = user?.user?.total_time_spent < 0.5
 
   const storyElo =
     user && user.user.exercise_history && user.user.exercise_history.length > 0
