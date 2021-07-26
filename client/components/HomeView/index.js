@@ -142,7 +142,6 @@ const HomeView = () => {
                   <LibraryButton data-cy="library-button" />
                   <FlashcardsButton />
                 </div>
-
                 {hasTests && AtLeastOneTestEnabled && <TestsButton data-cy="tests-button" />}
               </div>
               <div className="vertical-line" />

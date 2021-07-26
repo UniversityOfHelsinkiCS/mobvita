@@ -275,6 +275,18 @@ html, body, #root {
   text-shadow: 0 0 3px #000000, 0 0 5px #0000FF!important;
 }
 
+.practice-now-tile-btn {
+  height: 10rem!important;
+  background-size: cover;
+  background-position: center;
+  flex-basis: 50%;
+  border: 1px solid white;
+  color: white;
+  text-shadow: 0 0 3px #000000, 0 0 5px #0000FF;
+  font-size: 1.2rem;
+  letter-spacing: .075em;
+}
+
 .modal {
   left:unset;
   position: relative !important;
@@ -282,10 +294,10 @@ html, body, #root {
 }
 
 .react-datepicker__input-container > input {
-    width: 120px;
-    border: 1px solid rgba(34,36,38,.15);
-    border-radius: 0.25em;
-    padding-left: 0.5em;
+  width: 120px;
+  border: 1px solid rgba(34,36,38,.15);
+  border-radius: 0.25em;
+  padding-left: 0.5em;
 }
 
 // SEMANTIC UI OVERRIDES:

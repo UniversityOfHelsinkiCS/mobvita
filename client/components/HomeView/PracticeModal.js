@@ -230,16 +230,11 @@ const PracticeModal = ({ trigger }) => {
               .slice(0, 4)
               .map(([name, enabled]) => (
                 <Button
+                  className={`practice-now-tile-btn ${!enabled ? 'disabled' : ''}`}
                   style={{
                     backgroundImage: `url(${images[name + 1]})`,
-                    height: '10rem',
-                    backgroundSize: 'cover',
-                    backgroundPosition: 'center',
-                    flexBasis: '50%',
-                    border: '1px solid white',
                   }}
                   onClick={() => handleCategoryChange(name)}
-                  className={!enabled && 'disabled'}
                   key={name}
                 >
                   <span style={{ fontWeight: '1000' }}>
