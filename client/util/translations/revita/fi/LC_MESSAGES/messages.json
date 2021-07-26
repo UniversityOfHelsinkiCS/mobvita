@@ -851,7 +851,7 @@
     "listen-to-words": "Kuuntele vain kyseinen sana (helpompi)",
     "no-listen-exer": "Ei kuunteluharjoituksia",
     "Groups-for-teachers": "Ryhmät (opettajalle)",
-    "Progress graph": "Progress graph",
+    "Progress graph": "Edistymiskaavio",
     "select-types-of-exercises-to-practice": "Valitse harjoiteltavat tehtävätyypit",
     "paused-click-to-resume": "Tauko.<br/>  Klikkaa ► jatkamiseksi...",
     "Confirm-Password": "Vahvista salasana",
@@ -1032,5 +1032,6 @@
     "OLD try-again": "Yritä uudelleen",
     "syriac": "Aramea",
     "compete:try-again": "Yritä uudelleen",
-    "compete:tie-try-again": "Tasapeli! Se oli lähellä, kokeile uudestaan!"
+    "compete:tie-try-again": "Tasapeli! Se oli lähellä, kokeile uudestaan!",
+    " ": "Substantiivi. Rektiot"
 }
