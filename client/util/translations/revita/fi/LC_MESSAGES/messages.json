@@ -1033,5 +1033,8 @@
     "syriac": "Aramea",
     "compete:try-again": "Yritä uudelleen",
     "compete:tie-try-again": "Tasapeli! Se oli lähellä, kokeile uudestaan!",
-    " ": "Substantiivi. Rektiot"
+    " ": "Substantiivi. Rektiot",
+    "please-input-non-negative-integer": "Syötä ei-negatiivinen kokonaisluku",
+    "practice-random-story-from": "Practice with a random story from...",
+    "all-stories": "All stories"
 }

@@ -1034,5 +1034,8 @@
     "syriac": "Syriac",
     "compete:try-again": "Riprova",
     "compete:tie-try-again": "Pareggio! Prova ancora!",
-    " ": "Noun. Case and postposition/preposition government"
+    " ": "Noun. Case and postposition/preposition government",
+    "please-input-non-negative-integer": "Inserisci un numero intero non negativo",
+    "practice-random-story-from": "Practice with a random story from...",
+    "all-stories": "All stories"
 }
