@@ -1,28 +1,19 @@
 import React from 'react'
 import { capitalize } from 'Utilities/common'
 import { FormattedMessage } from 'react-intl'
+import { Icon } from 'semantic-ui-react'
+import { Button } from 'react-bootstrap'
 
-const ToggleButton = ({ toggled, children, buttonStyle, ...props }) => {
-  let className = ''
-
-  if (buttonStyle === 'tab') {
-    className = toggled ? 'library-toggle-button-chosen' : 'library-toggle-button'
-  } else {
-    className = 'btn btn-toggle-on'
-  }
-
-  return (
-    <button type="button" className={className} style={{ margin: 0 }} {...props}>
-      {children}
-    </button>
-  )
-}
+const ToggleButton = ({ children, ...props }) => (
+  <Button className="btn btn-toggle-on" variant="primary" {...props}>
+    {children}
+  </Button>
+)
 
 const CheckboxGroup = ({
   values,
   onClick,
   additionalClass = '',
-  buttonStyle,
   dataCy,
   reverse = false,
   ...props
@@ -30,15 +21,23 @@ const CheckboxGroup = ({
   // .sort() keeps the button order on Safari
   let buttons = Object.entries(values)
     .sort()
-    .map(([key, val]) => (
-      <ToggleButton
-        key={key}
-        onClick={() => onClick(key)}
-        toggled={val}
-        buttonStyle={buttonStyle}
-        {...props}
-      >
-        <FormattedMessage id={capitalize(key)} />
+    .map(([key, _]) => (
+      <ToggleButton key={key} onClick={() => onClick(key)} {...props}>
+        <div style={{ position: 'relative' }}>
+          <Icon name={key === 'private' ? 'user' : 'group'} size="big" />
+          <div className="practice-now-overlay-icon">
+            <Icon name={key === 'public' ? 'lock open' : 'lock'} color="yellow" size="large" />
+          </div>
+        </div>
+        <span
+          style={{
+            fontSize: '1.2rem',
+            letterSpacing: '.05em',
+            fontWeight: 'bold',
+          }}
+        >
+          <FormattedMessage id={capitalize(key)} />
+        </span>
       </ToggleButton>
     ))
   // for having library buttons in right order

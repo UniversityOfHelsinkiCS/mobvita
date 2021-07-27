@@ -180,20 +180,33 @@ const PracticeModal = ({ trigger }) => {
   }
 
   return (
-    <Modal dimmer="inverted" closeIcon trigger={trigger} onClose={handleClose}>
+    <Modal
+      dimmer="inverted"
+      trigger={trigger}
+      onClose={handleClose}
+      closeIcon={{ style: { top: '1rem', right: '2.5rem' }, color: 'black', name: 'close' }}
+    >
       <Modal.Header>
-        <FormattedMessage id="practice-now" />
+        <FormattedMessage id="practice-random-story-from" />
       </Modal.Header>
       <Modal.Content className="practiceModal">
-        <div>
-          <Link to={filteredLink}>
+        <div className="flex justify-center">
+          <Link to={filteredLink} style={{ width: '50%' }}>
             {waiting ? (
               <Spinner animation="border" variant="primary" />
             ) : (
-              <Button variant="primary" data-cy="start-random" disabled={!filteredLink}>
-                <FormattedMessage id="practice-random-story" />
-                {` (${filteredStories.length} `}
-                <FormattedMessage id="stories-selected" />)
+              <Button
+                disabled={!filteredLink}
+                className="practice-now-tile-btn"
+                style={{
+                  backgroundImage: `url(${images.dices})`,
+                  width: '100%',
+                }}
+              >
+                <span style={{ fontWeight: '1000' }}>
+                  <FormattedMessage id="all-stories" />
+                  {` (${filteredStories.length})`}
+                </span>
               </Button>
             )}
           </Link>

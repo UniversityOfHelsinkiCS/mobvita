@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import { Placeholder, Card, Search, Select, Icon, Dropdown, Input, Button } from 'semantic-ui-react'
 import StoryListItem from 'Components/LibraryView/StoryListItem'
 import { useIntl } from 'react-intl'
-import CheckboxGroup from 'Components/CheckboxGroup'
+import LibraryTabs from 'Components/LibraryTabs'
 import { capitalize, useLearningLanguage } from 'Utilities/common'
 import { getGroups } from 'Utilities/redux/groupsReducer'
 import { List, WindowScroller } from 'react-virtualized'
@@ -176,7 +176,7 @@ const StoryList = () => {
   const libraryControls = (
     <div data-cy="library-controls" className="library-control">
       <div className="library-selection">
-        <CheckboxGroup
+        <LibraryTabs
           values={libraries}
           additionalClass="wrap-and-grow align-center pt-sm"
           buttonStyle="tab"

@@ -775,11 +775,33 @@ html, body, #root {
     }
 }
 
-.checkbox-group {
+.library-tabs {
   display: flex;
   min-width: 50%;
   button {
     height: 38px;
+    &:focus {
+      box-shadow: none;
+    }
+  }
+}
+
+.practice-now-overlay-icon {
+  position: absolute;
+  top: -10%;
+  left: 55%;
+
+  @media (max-width: 700px) {
+    left: 65%;
+  }
+  
+}
+
+.checkbox-group {
+  display: flex;
+  min-width: 50%;
+  button {
+    height: 70px;
     &:focus {
       box-shadow: none;
     }
