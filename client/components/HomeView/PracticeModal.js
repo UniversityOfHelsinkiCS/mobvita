@@ -64,6 +64,7 @@ const PracticeModal = ({ trigger }) => {
 
   // preload practice modal images
   useLayoutEffect(() => {
+    new Image().src = images.dices
     new Image().src = images.sport1
     new Image().src = images.culture1
     new Image().src = images.politics1
@@ -193,7 +194,9 @@ const PracticeModal = ({ trigger }) => {
         <div className="flex justify-center">
           <Link to={filteredLink} style={{ width: '50%' }}>
             {waiting ? (
-              <Spinner animation="border" variant="primary" />
+              <div className="flex justify-center">
+                <Spinner animation="border" variant="primary" />
+              </div>
             ) : (
               <Button
                 disabled={!filteredLink}
@@ -205,7 +208,7 @@ const PracticeModal = ({ trigger }) => {
                 data-cy="start-random"
               >
                 <span style={{ fontWeight: '1000' }}>
-                  <FormattedMessage id="all-stories" />
+                  <FormattedMessage id="(from)all-stories" />
                   {` (${filteredStories.length})`}
                 </span>
               </Button>
@@ -216,8 +219,8 @@ const PracticeModal = ({ trigger }) => {
         <div className="pt-sm pb-sm">
           <br />
           <br />
-          <div className="sm-label">
-            <FormattedMessage id="Library" />:
+          <div className="label">
+            <FormattedMessage id="(from)library" />:
           </div>
           <br />
           <CheckboxGroup
@@ -230,8 +233,8 @@ const PracticeModal = ({ trigger }) => {
         <div>
           <br />
           <br />
-          <div className="sm-label">
-            <FormattedMessage id="Category" />:
+          <div className="label">
+            <FormattedMessage id="(from)category" />:
           </div>
           <br />
           <div

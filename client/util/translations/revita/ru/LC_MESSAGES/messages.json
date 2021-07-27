@@ -1039,5 +1039,8 @@
     " ": "Существительные. Управление падежными формами. Управление послелогами/предлогами",
     "please-input-non-negative-integer": "Please input a non-negative integer",
     "practice-random-story-from": "Practice with a random story from...",
-    "all-stories": "All stories"
+    "all-stories": "All stories",
+    "(from)all-stories": "All stories",
+    "(from)library": "Library",
+    "(from)category": "Category"
 }

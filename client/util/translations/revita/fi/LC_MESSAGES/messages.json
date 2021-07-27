@@ -1035,6 +1035,9 @@
     "compete:tie-try-again": "Tasapeli! Se oli lähellä, kokeile uudestaan!",
     " ": "Substantiivi. Rektiot",
     "please-input-non-negative-integer": "Syötä ei-negatiivinen kokonaisluku",
-    "practice-random-story-from": "Practice with a random story from...",
-    "all-stories": "All stories"
+    "practice-random-story-from": "Valitse harjoiteltavaksi satunnainen kertomus...",
+    "all-stories": "All stories",
+    "(from)all-stories": "Kaikista kertomuksista",
+    "(from)library": "Kirjastosta",
+    "(from)category": "Kategoriasta"
 }
