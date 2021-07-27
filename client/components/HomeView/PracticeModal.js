@@ -202,6 +202,7 @@ const PracticeModal = ({ trigger }) => {
                   backgroundImage: `url(${images.dices})`,
                   width: '100%',
                 }}
+                data-cy="start-random"
               >
                 <span style={{ fontWeight: '1000' }}>
                   <FormattedMessage id="all-stories" />
