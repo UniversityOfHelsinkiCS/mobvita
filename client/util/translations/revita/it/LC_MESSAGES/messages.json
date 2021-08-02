@@ -1040,5 +1040,17 @@
     "all-stories": "All stories",
     "(from)all-stories": "All stories",
     "(from)library": "Raccolta",
-    "(from)category": "Categoria"
+    "(from)category": "Categoria",
+    "edit": "Modifica",
+    "notes": "Notes",
+    "create-a-note": "Create a note",
+    "cancel-highlighting": "Cancel highlighting",
+    "(you)wrote": "wrote",
+    "(he/she)wrote": "wrote",
+    "you-wrote": "<b>You</b> wrote",
+    "notes-info-text": "<Insert info text here>",
+    "all-notes": "All Notes",
+    "click-word-create-note": "Click any word to create a note for it",
+    "edit-your-note": "Edit your note",
+    "write-your-note-here": "Write your note here"
 }

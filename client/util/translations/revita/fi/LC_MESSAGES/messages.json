@@ -1039,5 +1039,17 @@
     "all-stories": "All stories",
     "(from)all-stories": "Kaikista kertomuksista",
     "(from)library": "Kirjastosta",
-    "(from)category": "Kategoriasta"
+    "(from)category": "Kategoriasta",
+    "edit": "Muokkaa",
+    "notes": "Muistiinpanot",
+    "create-a-note": "Luo muistiinpano",
+    "cancel-highlighting": "Cancel highlighting",
+    "(you)wrote": "kirjoitit",
+    "(he/she)wrote": "kirjoitti",
+    "you-wrote": "<b>Sinä</b> kirjoitit",
+    "notes-info-text": "<Insert info text here>",
+    "all-notes": "Kaikki muistiinpanot",
+    "click-word-create-note": "Klikkaa mitä tahansa sanaa liittääksesi siihen muistiinpanon",
+    "edit-your-note": "Muokkaa muistiinpanoasi",
+    "write-your-note-here": "Kirjoita muistiinpanosi tähän"
 }
