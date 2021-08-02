@@ -162,6 +162,7 @@ const ReadView = ({ match }) => {
   }
 
   const showFooter = width > 640
+  const showAnnotationBox = width >= 1024
 
   return (
     <div className="cont-tall flex-col space-between align-center pt-sm">
@@ -190,7 +191,7 @@ const ReadView = ({ match }) => {
         </Segment>
         <div style={{ display: 'flex', flexDirection: 'column', gap: '1em' }}>
           <DictionaryHelp />
-          <AnnotationBox />
+          {showAnnotationBox && <AnnotationBox />}
         </div>
       </div>
       {showFooter && <Footer />}
