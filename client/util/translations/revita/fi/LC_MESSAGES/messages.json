@@ -1051,5 +1051,9 @@
     "all-notes": "Kaikki muistiinpanot",
     "click-word-create-note": "Klikkaa mitä tahansa sanaa liittääksesi siihen muistiinpanon",
     "edit-your-note": "Muokkaa muistiinpanoasi",
-    "write-your-note-here": "Kirjoita muistiinpanosi tähän"
+    "write-your-note-here": "Kirjoita muistiinpanosi tähän",
+    "this-story-no-notes": "This story has no notes yet.",
+    "click-any-word-create-note": "Klikkaa mitä tahansa sanaa luodaksesi muistiinpanon.",
+    "click-any-word-to-create-one": "Klikkaa mitä tahansa sanaa luodaksesi muistiinpanon.",
+    "this-story-has-no-notes": "This story has no notes yet."
 }

@@ -1051,5 +1051,9 @@
     "all-notes": "All Notes",
     "click-word-create-note": "Click any word to create a note for it",
     "edit-your-note": "Edit your note",
-    "write-your-note-here": "Write your note here"
+    "write-your-note-here": "Write your note here",
+    "this-story-no-notes": "This story has no notes yet.",
+    "click-any-word-create-note": "Click any word to create a note.",
+    "click-any-word-to-create-one": "Click any word to create one.",
+    "this-story-has-no-notes": "This story has no notes yet."
 }

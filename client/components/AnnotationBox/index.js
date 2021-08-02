@@ -7,14 +7,14 @@ import {
   setFocusedWord,
   setHighlightedWord,
   annotateWord,
-  saveAnnotation,
-  setNoteVisibility,
-  setFormVisibility,
-} from 'Utilities/redux/notesReducer'
+  updateAnnotation,
+  setAnnotationsVisibility,
+  setAnnotationFormVisibility,
+} from 'Utilities/redux/annotationsReducer'
 
 import { useParams } from 'react-router-dom'
 
-const NotesBox = () => {
+const AnnotationBox = () => {
   const intl = useIntl()
   const dispatch = useDispatch()
   const { id: storyId } = useParams()
@@ -22,15 +22,14 @@ const NotesBox = () => {
 
   const [annotationText, setAnnotationText] = useState('')
   const [charactersLeft, setCharactersLeft] = useState(maxCharacters)
-  const { focusedWord, highlightedWord, annotations, showNotes, showNoteForm } = useSelector(
-    ({ notes }) => notes
-  )
+  const { focusedWord, highlightedWord, annotations, showAnnotations, showAnnotationForm } =
+    useSelector(({ annotations }) => annotations)
   const { user } = useSelector(({ user }) => ({ user: user.data.user }))
 
   const handleBackClick = () => {
     dispatch(setFocusedWord(null))
     dispatch(setHighlightedWord(null))
-    dispatch(setFormVisibility(false))
+    dispatch(setAnnotationFormVisibility(false))
   }
 
   const handleAnnotationItemClick = word => {
@@ -51,21 +50,21 @@ const NotesBox = () => {
     return [{ annotation: annotationText, username: user.userName, uid: user.oid }]
   }
 
-  const handleAnnotationSave = async saveType => {
+  const handleAnnotationSave = async () => {
     await dispatch(
       annotateWord(storyId, {
         op: 'edit',
         token_id: focusedWord.ID,
-        annotation: saveType === 'new' ? annotationText : annotationText,
+        annotation: annotationText,
       })
     )
 
     dispatch(setFocusedWord(null))
     dispatch(setHighlightedWord(null))
-    dispatch(setFormVisibility(false))
+    dispatch(setAnnotationFormVisibility(false))
 
     dispatch(
-      saveAnnotation(
+      updateAnnotation(
         annotations
           .filter(w => w.ID !== focusedWord.ID)
           .concat({
@@ -97,7 +96,7 @@ const NotesBox = () => {
     }
 
     dispatch(
-      saveAnnotation(
+      updateAnnotation(
         annotations
           .filter(w => w.ID !== focusedWord.ID)
           .concat({
@@ -112,43 +111,43 @@ const NotesBox = () => {
     dispatch(setHighlightedWord(null))
   }
 
-  const handleNoteBoxCollapse = () => {
-    dispatch(setNoteVisibility(false))
+  const handleAnnotationBoxCollapse = () => {
+    dispatch(setAnnotationsVisibility(false))
 
     if (highlightedWord) dispatch(setHighlightedWord(null))
     if (focusedWord) dispatch(setFocusedWord(null))
   }
 
   const handleEditButtonClick = text => {
-    dispatch(setFormVisibility(true))
+    dispatch(setAnnotationFormVisibility(true))
     setAnnotationText(text)
     setCharactersLeft(maxCharacters - text.length)
   }
 
-  const handleCreateNoteButtonClick = () => {
-    dispatch(setFormVisibility(true))
+  const handleCreateAnnotationButtonClick = () => {
+    dispatch(setAnnotationFormVisibility(true))
     setAnnotationText('')
   }
 
   const handleAnnotationItemMouseOver = word => dispatch(setHighlightedWord(word))
 
-  const filterAllNotes = notes => {
-    return notes.filter(
+  const filterAllAnnotations = annotations => {
+    return annotations.filter(
       w => w.annotation[0].annotation !== '<removed>' && w.annotation[0].length !== 1
     )
   }
 
-  const filterRemovedNotes = word => {
+  const filterRemovedAnnotations = word => {
     return word.annotation?.filter(a => a.annotation !== '<removed>')
   }
 
   const annotationResults = () => {
-    if (!showNotes) {
+    if (!showAnnotations) {
       return (
         <div
           className="space-between"
-          onClick={() => dispatch(setNoteVisibility(true))}
-          onKeyDown={() => dispatch(setNoteVisibility(true))}
+          onClick={() => dispatch(setAnnotationsVisibility(true))}
+          onKeyDown={() => dispatch(setAnnotationsVisibility(true))}
           role="button"
           tabIndex={0}
         >
@@ -166,7 +165,7 @@ const NotesBox = () => {
     }
 
     if (focusedWord) {
-      const filteredNotes = filterRemovedNotes(focusedWord)
+      const filteredAnnotations = filterRemovedAnnotations(focusedWord)
 
       return (
         <div>
@@ -180,20 +179,21 @@ const NotesBox = () => {
               <b>{focusedWord.surface}</b>
             </div>
             <Divider />
-            {filteredNotes?.length > 0 ? (
+            {filteredAnnotations?.length > 0 ? (
               <div>
-                {filteredNotes.map(a => (
+                {filteredAnnotations.map(a => (
                   <div
                     key={a.uid}
                     style={{
                       backgroundColor:
-                        showNoteForm && a.username === user.userName ? '#fff' : '#f5f5f5',
-                      margin: showNoteForm && a.username === user.userName ? '0rem' : '0.5rem 0rem',
+                        showAnnotationForm && a.username === user.userName ? '#fff' : '#f5f5f5',
+                      margin:
+                        showAnnotationForm && a.username === user.userName ? '0rem' : '0.5rem 0rem',
                       borderRadius: '.2rem',
                       padding: '.3em',
                     }}
                   >
-                    {a.username === user.userName && showNoteForm ? (
+                    {a.username === user.userName && showAnnotationForm ? (
                       <div className="bold">
                         <FormattedMessage id="edit-your-note" />:
                       </div>
@@ -243,13 +243,13 @@ const NotesBox = () => {
                   </div>
                 ))}
 
-                {filterRemovedNotes(focusedWord).every(
-                  a => a.username !== user.userName && !showNoteForm
+                {filterRemovedAnnotations(focusedWord).every(
+                  a => a.username !== user.userName && !showAnnotationForm
                 ) && (
                   <Button
                     style={{ marginTop: '.75em' }}
                     size="sm"
-                    onClick={handleCreateNoteButtonClick}
+                    onClick={handleCreateAnnotationButtonClick}
                   >
                     <FormattedMessage id="create-a-note" />
                   </Button>
@@ -257,7 +257,7 @@ const NotesBox = () => {
               </div>
             ) : (
               <div>
-                {!showNoteForm && (
+                {!showAnnotationForm && (
                   <>
                     <div style={{ color: 'slateGrey', fontStyle: 'italic', margin: '.5rem 0rem' }}>
                       This word has no notes yet
@@ -265,7 +265,7 @@ const NotesBox = () => {
                     <Button
                       style={{ marginTop: '.75em' }}
                       size="sm"
-                      onClick={handleCreateNoteButtonClick}
+                      onClick={handleCreateAnnotationButtonClick}
                     >
                       <FormattedMessage id="create-a-note" />
                     </Button>
@@ -274,7 +274,7 @@ const NotesBox = () => {
               </div>
             )}
           </div>
-          {showNoteForm && (
+          {showAnnotationForm && (
             <div>
               <Form>
                 <TextArea
@@ -293,14 +293,14 @@ const NotesBox = () => {
               <Button
                 variant="outline-secondary"
                 size="sm"
-                onClick={() => dispatch(setFormVisibility(false))}
+                onClick={() => dispatch(setAnnotationFormVisibility(false))}
               >
                 <FormattedMessage id="Cancel" />
               </Button>
               <Button
                 variant="primary"
                 size="sm"
-                onClick={() => handleAnnotationSave('new')}
+                onClick={handleAnnotationSave}
                 style={{ marginLeft: '.5em' }}
                 disabled={annotationText.length < 1}
               >
@@ -317,8 +317,8 @@ const NotesBox = () => {
         <div>
           <div
             className="space-between"
-            onClick={handleNoteBoxCollapse}
-            onKeyDown={handleNoteBoxCollapse}
+            onClick={handleAnnotationBoxCollapse}
+            onKeyDown={handleAnnotationBoxCollapse}
             role="button"
             tabIndex={0}
           >
@@ -335,7 +335,7 @@ const NotesBox = () => {
             <Icon name="angle up" size="large" />
           </div>
           <div style={{ marginTop: '1em' }}>
-            {filterAllNotes(annotations).map((word, index) => (
+            {filterAllAnnotations(annotations).map((word, index) => (
               <div>
                 {index + 1} -{' '}
                 <span
@@ -370,8 +370,8 @@ const NotesBox = () => {
       <div>
         <div
           className="space-between"
-          onClick={handleNoteBoxCollapse}
-          onKeyDown={handleNoteBoxCollapse}
+          onClick={handleAnnotationBoxCollapse}
+          onKeyDown={handleAnnotationBoxCollapse}
           role="button"
           tabIndex={0}
         >
@@ -388,7 +388,9 @@ const NotesBox = () => {
           <Icon name="angle up" size="large" />
         </div>
         <div style={{ marginTop: '1.5em', color: 'slateGrey', fontStyle: 'italic' }}>
-          <FormattedMessage id="click-word-create-note" />
+          <FormattedMessage id="this-story-has-no-notes" />
+          <br /> <br />
+          <FormattedMessage id="click-any-word-to-create-one" />
         </div>
       </div>
     )
@@ -403,4 +405,4 @@ const NotesBox = () => {
   )
 }
 
-export default NotesBox
+export default AnnotationBox

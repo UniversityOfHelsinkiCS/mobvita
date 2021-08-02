@@ -12,7 +12,7 @@ export const annotateWord = (storyId, payload) => {
 
 export const setFocusedWord = word => {
   return {
-    type: 'SET_NOTE_WORD',
+    type: 'SET_ANNOTATION_WORD',
     word,
   }
 }
@@ -31,23 +31,23 @@ export const initializeAnnotations = annotations => {
   }
 }
 
-export const saveAnnotation = annotations => {
+export const updateAnnotation = annotations => {
   return {
-    type: 'SAVE_ANNOTATION',
+    type: 'UPDATE_ANNOTATION',
     annotations,
   }
 }
 
-export const setNoteVisibility = visibility => {
+export const setAnnotationsVisibility = visibility => {
   return {
-    type: 'SET_NOTE_VISIBILITY',
+    type: 'SET_ANNOTATIONS_VISIBILITY',
     visibility,
   }
 }
 
-export const setFormVisibility = visibility => {
+export const setAnnotationFormVisibility = visibility => {
   return {
-    type: 'SET_FORM_VISIBILITY',
+    type: 'SET_ANNOTATION_FORM_VISIBILITY',
     visibility,
   }
 }
@@ -56,10 +56,9 @@ const initialState = {
   focusedWord: null,
   highlightedWord: null,
   annotations: [],
-  refreshed: false,
   pending: false,
-  showNotes: false,
-  showNoteForm: false,
+  showAnnotations: false,
+  showAnnotationForm: false,
 }
 
 export default (state = initialState, action) => {
@@ -74,14 +73,13 @@ export default (state = initialState, action) => {
         ...state,
         news: action.response.news,
         pending: false,
-        // refreshed: true,
       }
     case 'ANNOTATE_WORD_FAILURE':
       return {
         ...state,
         pending: false,
       }
-    case 'SET_NOTE_WORD':
+    case 'SET_ANNOTATION_WORD':
       return {
         ...state,
         focusedWord: action.word,
@@ -91,27 +89,25 @@ export default (state = initialState, action) => {
         ...state,
         highlightedWord: action.word,
       }
-    case 'SET_NOTE_VISIBILITY':
+    case 'SET_ANNOTATIONS_VISIBILITY':
       return {
         ...state,
-        showNotes: action.visibility,
+        showAnnotations: action.visibility,
       }
-    case 'SET_FORM_VISIBILITY':
+    case 'SET_ANNOTATION_FORM_VISIBILITY':
       return {
         ...state,
-        showNoteForm: action.visibility,
+        showAnnotationForm: action.visibility,
       }
     case 'INIT_ANNOTATIONS':
       return {
         ...state,
         annotations: action.annotations,
-        refreshed: false,
       }
-    case 'SAVE_ANNOTATION':
+    case 'UPDATE_ANNOTATION':
       return {
         ...state,
         annotations: sortById(action.annotations),
-        refreshed: true,
       }
     default:
       return state

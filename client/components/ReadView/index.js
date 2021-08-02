@@ -15,12 +15,12 @@ import {
   setFocusedWord,
   setHighlightedWord,
   initializeAnnotations,
-  setNoteVisibility,
-  setFormVisibility,
-} from 'Utilities/redux/notesReducer'
+  setAnnotationsVisibility,
+  setAnnotationFormVisibility,
+} from 'Utilities/redux/annotationsReducer'
 import { learningLanguageSelector, getTextStyle, speak, respVoiceLanguages } from 'Utilities/common'
 import DictionaryHelp from 'Components/DictionaryHelp'
-import NotesBox from 'Components/NotesBox'
+import AnnotationBox from 'Components/AnnotationBox'
 import Spinner from 'Components/Spinner'
 import Footer from '../Footer'
 import ScrollArrow from '../ScrollArrow'
@@ -28,7 +28,7 @@ import ScrollArrow from '../ScrollArrow'
 const ReadView = ({ match }) => {
   const dispatch = useDispatch()
   const { width } = useWindowDimensions()
-  let currentNoteIndex = 0
+  let currentAnnotationIndex = 0
 
   const { story, pending } = useSelector(({ stories, locale }) => ({
     story: stories.focused,
@@ -36,20 +36,19 @@ const ReadView = ({ match }) => {
     locale,
   }))
 
-  const { highlightedWord, annotations } = useSelector(({ notes }) => notes)
+  const { highlightedWord, annotations } = useSelector(({ annotations }) => annotations)
   const learningLanguage = useSelector(learningLanguageSelector)
   const dictionaryLanguage = useSelector(({ user }) => user.data.user.last_trans_language)
   const autoSpeak = useSelector(({ user }) => user.data.user.auto_speak)
   const { id } = match.params
   useEffect(() => {
     dispatch(getStoryAction(id))
-    dispatch(setNoteVisibility(false))
-    dispatch(setFormVisibility(false))
+    dispatch(setAnnotationsVisibility(false))
+    dispatch(setAnnotationFormVisibility(false))
     dispatch(clearTranslationAction())
     dispatch(setFocusedWord(null))
     dispatch(setHighlightedWord(null))
   }, [])
-
 
   useEffect(() => {
     if (story) {
@@ -64,11 +63,11 @@ const ReadView = ({ match }) => {
 
   const wordHasAnnotations = word => {
     const annotationIDs = annotations?.map(w => w.ID)
-    const matchingNoteInStore = annotations.find(w => w.ID === word.ID)
-    if (matchingNoteInStore) {
+    const matchingAnnotationInStore = annotations.find(w => w.ID === word.ID)
+    if (matchingAnnotationInStore) {
       if (
-        matchingNoteInStore.annotation.length === 1 &&
-        matchingNoteInStore.annotation[0].annotation === '<removed>'
+        matchingAnnotationInStore.annotation.length === 1 &&
+        matchingAnnotationInStore.annotation[0].annotation === '<removed>'
       ) {
         return false
       }
@@ -84,45 +83,41 @@ const ReadView = ({ match }) => {
     return true
   }
 
-  const handleWordClick = (surfaceWord, wordLemmas, wordId, inflectionRef, word) => {
-    if (autoSpeak === 'always' && voice) speak(surfaceWord, voice)
-    if (wordLemmas) {
-      dispatch(setWords({ surface: surfaceWord, lemmas: wordLemmas }))
-
+  const handleWordClick = word => {
+    if (autoSpeak === 'always' && voice) speak(word.surface, voice)
+    if (word.lemmas) {
+      dispatch(setWords(word))
       const annotationInStore = annotations.find(w => w.ID === word.ID)
-      if (annotationInStore) {
-        dispatch(setFocusedWord(annotationInStore))
-      } else {
-        dispatch(setFocusedWord(word))
-      }
+
+      if (annotationInStore) dispatch(setFocusedWord(annotationInStore))
+      else dispatch(setFocusedWord(word))
+
       dispatch(setHighlightedWord(word))
-      dispatch(setFormVisibility(false))
+      dispatch(setAnnotationFormVisibility(false))
       dispatch(
         getTranslationAction({
           learningLanguage,
-          wordLemmas,
+          wordLemmas: word.lemmas,
           dictionaryLanguage,
           storyId: id,
-          wordId,
-          inflectionRef,
+          wordId: word.ID,
+          inflectionRef: word.inflection_ref,
         })
       )
     }
   }
 
   const handleNonRecognizedWordclick = word => {
-    const annotatedWord = annotations.find(w => w.ID === word.ID)
-    if (annotatedWord) {
-      dispatch(setFocusedWord(annotations.find(w => w.ID === word.ID)))
-    } else {
-      dispatch(setFocusedWord(word))
-    }
+    const wordAnnotationInStore = annotations.find(w => w.ID === word.ID)
+    if (wordAnnotationInStore) dispatch(setFocusedWord(wordAnnotationInStore))
+    else dispatch(setFocusedWord(word))
+
     dispatch(setHighlightedWord(word))
-    dispatch(setFormVisibility(false))
+    dispatch(setAnnotationFormVisibility(false))
   }
 
   const wordVoice = word => {
-    if (wordHasAnnotations(word)) currentNoteIndex += 1
+    if (wordHasAnnotations(word)) currentAnnotationIndex += 1
 
     if (word.bases && !word.name_token) {
       return (
@@ -132,18 +127,16 @@ const ReadView = ({ match }) => {
               word.ID === highlightedWord?.ID && 'notes-highlighted-word'
             }`}
             key={word.ID}
-            onClick={() =>
-              handleWordClick(word.surface, word.lemmas, word.ID, word.inflection_ref, word)
-            }
-            onKeyDown={() =>
-              handleWordClick(word.surface, word.lemmas, word.ID, word.inflection_ref)
-            }
+            onClick={() => handleWordClick(word)}
+            onKeyDown={() => handleWordClick(word)}
             role="button"
             tabIndex="-1"
           >
             {word.surface}
           </span>
-          {wordHasAnnotations(word) && <sup className="notes-superscript">{currentNoteIndex}</sup>}
+          {wordHasAnnotations(word) && (
+            <sup className="notes-superscript">{currentAnnotationIndex}</sup>
+          )}
         </>
       )
     }
@@ -163,7 +156,7 @@ const ReadView = ({ match }) => {
       >
         {word.surface}
         {wordHasAnnotations(word) && (
-          <sup style={{ color: 'green', fontSize: '0.8rem' }}>{currentNoteIndex}</sup>
+          <sup className="notes-superscript">{currentAnnotationIndex}</sup>
         )}
       </span>
     )
@@ -198,7 +191,7 @@ const ReadView = ({ match }) => {
         </Segment>
         <div style={{ display: 'flex', flexDirection: 'column', gap: '1em' }}>
           <DictionaryHelp />
-          <NotesBox />
+          <AnnotationBox />
         </div>
       </div>
       {showFooter && <Footer />}
