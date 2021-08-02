@@ -245,7 +245,7 @@ export default (state = initialState, action) => {
     case 'ACCEPT_STORY_FAILURE':
       return {
         translationId: 'could-not-find-story-to-accept',
-        type: type.success,
+        type: type.error,
       }
 
     case 'BLOCK_STORY_SENDER_SUCCESS':
@@ -257,7 +257,7 @@ export default (state = initialState, action) => {
     case 'BLOCK_STORY_SENDER_FAILURE':
       return {
         translationId: 'user-blocked-failure',
-        type: type.success,
+        type: type.error,
       }
 
     case 'FOLLOW_STORY_SENDER_SUCCESS':
@@ -270,6 +270,27 @@ export default (state = initialState, action) => {
       return {
         translationId: 'user-unfollowed-success',
         type: type.success,
+      }
+    case 'SAVE_ANNOTATION_SUCCESS':
+      return {
+        translationId: 'note-save-success',
+        type: type.success,
+      }
+    case 'SAVE_ANNOTATION_FAILURE':
+      return {
+        translationId: 'note-save-failure',
+        type: type.error,
+      }
+
+    case 'REMOVE_ANNOTATION_SUCCESS':
+      return {
+        translationId: 'note-delete-success',
+        type: type.success,
+      }
+    case 'REMOVE_ANNOTATION_FAILURE':
+      return {
+        translationId: 'note-delete-failure',
+        type: type.error,
       }
 
     default:
