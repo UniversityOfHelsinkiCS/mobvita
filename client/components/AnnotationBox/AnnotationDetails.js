@@ -28,9 +28,9 @@ const AnnotationDetails = ({ focusedWord, annotations, showAnnotationForm }) => 
     if (focusedWord?.annotation) {
       return focusedWord.annotation
         .filter(a => a.uid !== user.oid)
-        .concat({ annotation: annotationText, username: user.userName, uid: user.oid })
+        .concat({ annotation: annotationText.trim(), username: user.userName, uid: user.oid })
     }
-    return [{ annotation: annotationText, username: user.userName, uid: user.oid }]
+    return [{ annotation: annotationText.trim(), username: user.userName, uid: user.oid }]
   }
 
   const handleEditButtonClick = text => {
@@ -56,7 +56,7 @@ const AnnotationDetails = ({ focusedWord, annotations, showAnnotationForm }) => 
   }
 
   const handleAnnotationSave = async () => {
-    await dispatch(saveAnnotation(storyId, 'edit', focusedWord.ID, annotationText))
+    await dispatch(saveAnnotation(storyId, 'edit', focusedWord.ID, annotationText.trim()))
     dispatch(setFocusedWord(null))
     dispatch(setHighlightedWord(null))
     dispatch(setAnnotationFormVisibility(false))

@@ -21,6 +21,11 @@ const AnnotationForm = ({
     setAnnotationText(e.target.value)
   }
 
+  const consistsOfOnlyWhitespace = text => {
+    if (text.match(/^\s+$/g)) return true
+    return false
+  }
+
   return (
     <div>
       <Form>
@@ -49,7 +54,7 @@ const AnnotationForm = ({
         size="sm"
         onClick={handleAnnotationSave}
         style={{ marginLeft: '.5em' }}
-        disabled={annotationText.length < 1}
+        disabled={annotationText.length < 1 || consistsOfOnlyWhitespace(annotationText)}
       >
         <FormattedMessage id="Save" />
       </Button>
