@@ -240,6 +240,32 @@ html, body, #root {
   width: 100%;
 }
 
+// TOASTIFY OVERRIDES FROM REVITA:
+.Toastify__toast--success {
+  font-weight: bold;
+  background-color: #0cc10c;
+  font-size: 1.15em;
+  border-radius: 5px
+}
+
+.Toastify__toast--warning {
+  font-weight: bold;
+  background-color: orange;
+  border-radius: 5px
+}
+
+.Toastify__toast--info {
+  font-weight: bold;
+  background-color: #4C91CD;
+  border-radius: 5px
+}
+
+.Toastify__toast--error {
+  font-weight: bold;
+  background-color: #E04331;
+  border-radius: 5px
+}
+
 // BOOTSTRAP OVERRIDES FROM REVITA:
 .btn-primary {
   color: $white;
