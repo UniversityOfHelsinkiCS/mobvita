@@ -753,6 +753,25 @@ html, body, #root {
   font-size: 0.8rem; 
 }
 
+.notes-info-text {
+  color: slategrey;
+  font-style: italic; 
+}
+
+.annotation-item {
+  border-radius: .2rem;
+  padding: .3em;
+
+  &-editing {
+    background-color: white;
+    margin: 0rem;
+  }
+  &-listed {
+    background-color: #f5f5f5;
+    margin: 0.5rem 0rem;
+  }
+}
+
 .dictionary-translations {
   & > * {
     padding-top: 1rem

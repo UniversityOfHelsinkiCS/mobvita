@@ -4,10 +4,16 @@ const sortById = annotations => {
   return annotations.sort((a, b) => (a.ID > b.ID ? 1 : -1))
 }
 
-export const annotateWord = (storyId, payload) => {
+export const saveAnnotation = (storyId, op, tokenId, annotation) => {
   const route = `/stories/${storyId}/annotate`
-  const prefix = 'ANNOTATE_WORD'
-  return callBuilder(route, prefix, 'post', payload)
+  const prefix = 'SAVE_ANNOTATION'
+  return callBuilder(route, prefix, 'post', { op, token_id: tokenId, annotation })
+}
+
+export const removeAnnotation = (storyId, op, tokenId) => {
+  const route = `/stories/${storyId}/annotate`
+  const prefix = 'REMOVE_ANNOTATION'
+  return callBuilder(route, prefix, 'post', { op, token_id: tokenId })
 }
 
 export const setFocusedWord = word => {
@@ -31,7 +37,7 @@ export const initializeAnnotations = annotations => {
   }
 }
 
-export const updateAnnotation = annotations => {
+export const updateAnnotationStore = annotations => {
   return {
     type: 'UPDATE_ANNOTATION',
     annotations,
@@ -63,18 +69,34 @@ const initialState = {
 
 export default (state = initialState, action) => {
   switch (action.type) {
-    case 'ANNOTATE_WORD_ATTEMPT':
+    case 'SAVE_ANNOTATION_ATTEMPT':
       return {
         ...state,
         pending: true,
       }
-    case 'ANNOTATE_WORD_SUCCESS':
+    case 'SAVE_ANNOTATION_SUCCESS':
       return {
         ...state,
         news: action.response.news,
         pending: false,
       }
-    case 'ANNOTATE_WORD_FAILURE':
+    case 'SAVE_ANNOTATION_FAILURE':
+      return {
+        ...state,
+        pending: false,
+      }
+    case 'REMOVE_ANNOTATION_ATTEMPT':
+      return {
+        ...state,
+        pending: true,
+      }
+    case 'REMOVE_ANNOTATION_SUCCESS':
+      return {
+        ...state,
+        news: action.response.news,
+        pending: false,
+      }
+    case 'REMOVE_ANNOTATION_FAILURE':
       return {
         ...state,
         pending: false,

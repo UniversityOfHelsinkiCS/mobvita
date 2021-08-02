@@ -1,0 +1,60 @@
+import React from 'react'
+import { useDispatch } from 'react-redux'
+import { Form, TextArea } from 'semantic-ui-react'
+import { Button } from 'react-bootstrap'
+import { FormattedMessage, useIntl } from 'react-intl'
+import { setAnnotationFormVisibility } from 'Utilities/redux/annotationsReducer'
+
+const AnnotationForm = ({
+  annotationText,
+  setAnnotationText,
+  handleAnnotationSave,
+  maxCharacters,
+  charactersLeft,
+  setCharactersLeft,
+}) => {
+  const intl = useIntl()
+  const dispatch = useDispatch()
+
+  const handleTextChange = e => {
+    setCharactersLeft(maxCharacters - e.target.value.length)
+    setAnnotationText(e.target.value)
+  }
+
+  return (
+    <div>
+      <Form>
+        <TextArea
+          value={annotationText}
+          onChange={handleTextChange}
+          placeholder={intl.formatMessage({ id: 'write-your-note-here' })}
+          maxLength={maxCharacters}
+          style={{ marginTop: '0rem', minHeight: '10em' }}
+          autoFocus
+        />
+      </Form>
+      <div className="bold" style={{ margin: '.75rem 0rem', fontSize: '.85rem' }}>
+        <FormattedMessage id="characters-left" />
+        {` ${charactersLeft}`}
+      </div>
+      <Button
+        variant="outline-secondary"
+        size="sm"
+        onClick={() => dispatch(setAnnotationFormVisibility(false))}
+      >
+        <FormattedMessage id="Cancel" />
+      </Button>
+      <Button
+        variant="primary"
+        size="sm"
+        onClick={handleAnnotationSave}
+        style={{ marginLeft: '.5em' }}
+        disabled={annotationText.length < 1}
+      >
+        <FormattedMessage id="Save" />
+      </Button>
+    </div>
+  )
+}
+
+export default AnnotationForm
