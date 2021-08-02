@@ -140,9 +140,8 @@ const ReadView = ({ match }) => {
         </>
       )
     }
-    if (word.surface === '\n\n') {
-      return <br key={word.ID} />
-    }
+    if (word.surface === '\n\n') return <br key={word.ID} />
+    if (word.surface === ' ') return word.surface
 
     return (
       <span
