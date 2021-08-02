@@ -1,6 +1,7 @@
 import { combineReducers } from 'redux'
 
 import stories from './storiesReducer'
+import notes from './notesReducer'
 import snippets from './snippetsReducer'
 import translation from './translationReducer'
 import locale from './localeReducer'
@@ -33,6 +34,7 @@ import wordNest from './wordNestReducer'
 
 const rootReducer = combineReducers({
   stories,
+  notes,
   snippets,
   translation,
   user,

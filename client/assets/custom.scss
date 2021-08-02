@@ -509,7 +509,10 @@ html, body, #root {
     padding-top: 0.2em;
     padding-bottom: 0.2em;
   }
+}
 
+.non-recognized-word{
+  cursor:pointer;
 }
 
 .exercise {
@@ -731,6 +734,23 @@ html, body, #root {
     width: 95%;
     margin-bottom: 1em;
   }
+}
+
+.notes-box {
+  width: 350px;
+  margin-left: 1em;
+  align-self: flex-start;
+  height: auto;
+  position: sticky;
+}
+
+.notes-highlighted-word {
+  background-color: rgb(255, 255, 116)!important;
+}
+
+.notes-superscript {
+  color: green;
+  font-size: 0.8rem; 
 }
 
 .dictionary-translations {

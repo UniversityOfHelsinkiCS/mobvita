@@ -11,8 +11,16 @@ import {
   clearTranslationAction,
   setWords,
 } from 'Utilities/redux/translationReducer'
+import {
+  setFocusedWord,
+  setHighlightedWord,
+  initializeAnnotations,
+  setNoteVisibility,
+  setFormVisibility,
+} from 'Utilities/redux/notesReducer'
 import { learningLanguageSelector, getTextStyle, speak, respVoiceLanguages } from 'Utilities/common'
 import DictionaryHelp from 'Components/DictionaryHelp'
+import NotesBox from 'Components/NotesBox'
 import Spinner from 'Components/Spinner'
 import Footer from '../Footer'
 import ScrollArrow from '../ScrollArrow'
@@ -20,29 +28,75 @@ import ScrollArrow from '../ScrollArrow'
 const ReadView = ({ match }) => {
   const dispatch = useDispatch()
   const { width } = useWindowDimensions()
+  let currentNoteIndex = 0
 
   const { story, pending } = useSelector(({ stories, locale }) => ({
     story: stories.focused,
     pending: stories.focusedPending,
     locale,
   }))
+
+  const { highlightedWord, annotations } = useSelector(({ notes }) => notes)
   const learningLanguage = useSelector(learningLanguageSelector)
   const dictionaryLanguage = useSelector(({ user }) => user.data.user.last_trans_language)
   const autoSpeak = useSelector(({ user }) => user.data.user.auto_speak)
   const { id } = match.params
   useEffect(() => {
     dispatch(getStoryAction(id))
+    dispatch(setNoteVisibility(false))
+    dispatch(setFormVisibility(false))
     dispatch(clearTranslationAction())
+    dispatch(setFocusedWord(null))
+    dispatch(setHighlightedWord(null))
   }, [])
+
+
+  useEffect(() => {
+    if (story) {
+      const test = story.paragraph.flat(1).filter(word => word.annotation)
+      dispatch(initializeAnnotations(test))
+    }
+  }, [story])
 
   if (!story || pending) return <Spinner fullHeight />
 
   const voice = respVoiceLanguages[learningLanguage]
 
-  const handleWordClick = (surfaceWord, wordLemmas, wordId, inflectionRef) => {
+  const wordHasAnnotations = word => {
+    const annotationIDs = annotations?.map(w => w.ID)
+    const matchingNoteInStore = annotations.find(w => w.ID === word.ID)
+    if (matchingNoteInStore) {
+      if (
+        matchingNoteInStore.annotation.length === 1 &&
+        matchingNoteInStore.annotation[0].annotation === '<removed>'
+      ) {
+        return false
+      }
+    }
+
+    if (
+      !annotationIDs.includes(word.ID) ||
+      (annotationIDs.filter(id => id === word.ID)?.annotation?.length === 1 &&
+        annotationIDs.filter(id => id === word.ID).annotation[0].annotation === '<removed>')
+    ) {
+      return false
+    }
+    return true
+  }
+
+  const handleWordClick = (surfaceWord, wordLemmas, wordId, inflectionRef, word) => {
     if (autoSpeak === 'always' && voice) speak(surfaceWord, voice)
     if (wordLemmas) {
       dispatch(setWords({ surface: surfaceWord, lemmas: wordLemmas }))
+
+      const annotationInStore = annotations.find(w => w.ID === word.ID)
+      if (annotationInStore) {
+        dispatch(setFocusedWord(annotationInStore))
+      } else {
+        dispatch(setFocusedWord(word))
+      }
+      dispatch(setHighlightedWord(word))
+      dispatch(setFormVisibility(false))
       dispatch(
         getTranslationAction({
           learningLanguage,
@@ -56,25 +110,63 @@ const ReadView = ({ match }) => {
     }
   }
 
+  const handleNonRecognizedWordclick = word => {
+    const annotatedWord = annotations.find(w => w.ID === word.ID)
+    if (annotatedWord) {
+      dispatch(setFocusedWord(annotations.find(w => w.ID === word.ID)))
+    } else {
+      dispatch(setFocusedWord(word))
+    }
+    dispatch(setHighlightedWord(word))
+    dispatch(setFormVisibility(false))
+  }
+
   const wordVoice = word => {
+    if (wordHasAnnotations(word)) currentNoteIndex += 1
+
     if (word.bases && !word.name_token) {
       return (
-        <span
-          className="word-interactive"
-          key={word.ID}
-          onClick={() => handleWordClick(word.surface, word.lemmas, word.ID, word.inflection_ref)}
-          onKeyDown={() => handleWordClick(word.surface, word.lemmas, word.ID, word.inflection_ref)}
-          role="button"
-          tabIndex="-1"
-        >
-          {word.surface}
-        </span>
+        <>
+          <span
+            className={`word-interactive ${
+              word.ID === highlightedWord?.ID && 'notes-highlighted-word'
+            }`}
+            key={word.ID}
+            onClick={() =>
+              handleWordClick(word.surface, word.lemmas, word.ID, word.inflection_ref, word)
+            }
+            onKeyDown={() =>
+              handleWordClick(word.surface, word.lemmas, word.ID, word.inflection_ref)
+            }
+            role="button"
+            tabIndex="-1"
+          >
+            {word.surface}
+          </span>
+          {wordHasAnnotations(word) && <sup className="notes-superscript">{currentNoteIndex}</sup>}
+        </>
       )
     }
     if (word.surface === '\n\n') {
       return <br key={word.ID} />
     }
-    return word.surface
+
+    return (
+      <span
+        onClick={() => handleNonRecognizedWordclick(word)}
+        onKeyDown={() => handleNonRecognizedWordclick(word)}
+        className={`non-recognized-word ${
+          word.ID === highlightedWord?.ID && 'notes-highlighted-word'
+        }`}
+        role="button"
+        tabIndex="-1"
+      >
+        {word.surface}
+        {wordHasAnnotations(word) && (
+          <sup style={{ color: 'green', fontSize: '0.8rem' }}>{currentNoteIndex}</sup>
+        )}
+      </span>
+    )
   }
 
   const showFooter = width > 640
@@ -104,7 +196,10 @@ const ReadView = ({ match }) => {
           ))}
           <ScrollArrow />
         </Segment>
-        <DictionaryHelp />
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '1em' }}>
+          <DictionaryHelp />
+          <NotesBox />
+        </div>
       </div>
       {showFooter && <Footer />}
     </div>
