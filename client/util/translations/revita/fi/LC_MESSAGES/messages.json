@@ -1056,5 +1056,9 @@
     "click-any-word-create-note": "Klikkaa mitä tahansa sanaa luodaksesi muistiinpanon.",
     "click-any-word-to-create-one": "Klikkaa mitä tahansa sanaa luodaksesi muistiinpanon.",
     "this-story-has-no-notes": "This story has no notes yet.",
-    "this-word-has-no-notes-yet": "This word has no notes yet"
+    "this-word-has-no-notes-yet": "This word has no notes yet",
+    "note-save-success": "Muistiinpano tallennettu",
+    "note-save-failure": "Tallentaminen epäonnistui. Yritä uudestaan.",
+    "note-delete-success": "Muistiinpano poistettu",
+    "note-delete-failure": "Poistaminen epäonnistui. Yritä uudestaan."
 }
