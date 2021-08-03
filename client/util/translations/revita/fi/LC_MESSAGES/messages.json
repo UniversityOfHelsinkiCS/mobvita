@@ -1061,5 +1061,6 @@
     "note-save-failure": "Tallentaminen epäonnistui. Yritä uudestaan.",
     "note-delete-success": "Muistiinpano poistettu",
     "note-delete-failure": "Poistaminen epäonnistui. Yritä uudestaan.",
-    "log-in-to-create-own-notes": "Log in to create your own notes"
+    "log-in-to-create-own-notes": "Kirjaudu sisään luodaksesi muistiinpanoja",
+    "notes-popup-info-text": "<Insert info text here>"
 }

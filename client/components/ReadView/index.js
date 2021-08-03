@@ -52,8 +52,8 @@ const ReadView = ({ match }) => {
 
   useEffect(() => {
     if (story) {
-      const test = story.paragraph.flat(1).filter(word => word.annotation)
-      dispatch(initializeAnnotations(test))
+      const allWordsWithAnnotations = story.paragraph.flat(1).filter(word => word.annotation)
+      dispatch(initializeAnnotations(allWordsWithAnnotations))
     }
   }, [story])
 
