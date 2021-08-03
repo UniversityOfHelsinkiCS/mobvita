@@ -37,7 +37,7 @@ const AnnotationBox = () => {
             <FormattedMessage id="notes" />{' '}
             <Popup
               position="top center"
-              content={intl.formatMessage({ id: 'notes-popup-info-text' })}
+              content={intl.formatMessage({ id: 'annotations-popup-info-text' })}
               trigger={<Icon name="info circle" size="small" />}
             />
           </div>
@@ -80,7 +80,7 @@ const AnnotationBox = () => {
               <FormattedMessage id="notes" />{' '}
               <Popup
                 position="top center"
-                content={intl.formatMessage({ id: 'notes-info-text' })}
+                content={intl.formatMessage({ id: 'annotations-popup-info-text' })}
                 trigger={<Icon name="info circle" size="small" />}
               />
             </div>
