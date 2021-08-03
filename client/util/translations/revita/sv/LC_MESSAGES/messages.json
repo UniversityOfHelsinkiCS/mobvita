@@ -1056,10 +1056,11 @@
     "click-any-word-to-create-one": "Click any word to create one.",
     "this-story-has-no-notes": "This story has no notes yet.",
     "this-word-has-no-notes-yet": "This word has no notes yet",
-    "note-save-success": "Note saved!",
-    "note-save-failure": "Saving note failed. Please, try again.",
-    "note-delete-success": "Note deleted!",
-    "note-delete-failure": "Deleting note failed. Please, try again.",
+    "note-save-success": "Note saved",
+    "note-save-failure": "Saving note failed. Please try again.",
+    "note-delete-success": "Note deleted",
+    "note-delete-failure": "Deleting note failed. Please try again.",
     "log-in-to-create-own-notes": "Log in to create your own notes",
-    "notes-popup-info-text": "<Insert info text here>"
+    "notes-popup-info-text": "You can add notes to any word — something important or interesting about how the language works.",
+    "annotations-popup-info-text": "You can add notes to any word — something important or interesting about how the language works."
 }
