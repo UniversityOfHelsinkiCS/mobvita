@@ -241,29 +241,28 @@ html, body, #root {
 }
 
 // TOASTIFY OVERRIDES FROM REVITA:
-.Toastify__toast--success {
-  font-weight: bold;
-  background-color: #0cc10c;
-  font-size: 1.15em;
-  border-radius: 5px
-}
+.Toastify__toast {
+  text-align: center;
+  border-radius: 5px;
+  font-weight: 700;
+  word-wrap: normal;
 
-.Toastify__toast--warning {
-  font-weight: bold;
-  background-color: orange;
-  border-radius: 5px
-}
+  &--success {
+    background-color: #0cc10c;
+    font-size: 1.15em;
+  }
 
-.Toastify__toast--info {
-  font-weight: bold;
-  background-color: #4C91CD;
-  border-radius: 5px
-}
+  &--warning {
+    background-color: orange;
+  }
 
-.Toastify__toast--error {
-  font-weight: bold;
-  background-color: #E04331;
-  border-radius: 5px
+  &--info {
+    background-color: #4C91CD;
+  }
+
+  &--error {
+    background-color: #E04331;
+  }
 }
 
 // BOOTSTRAP OVERRIDES FROM REVITA:
@@ -771,7 +770,6 @@ html, body, #root {
 .annotations-box {
   width: 350px;
   margin-left: 1em;
-  // align-self: flex-start;
   height: auto;
 }
 
