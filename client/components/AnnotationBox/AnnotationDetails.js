@@ -23,6 +23,7 @@ const AnnotationDetails = ({ focusedWord, annotations, showAnnotationForm }) => 
   const [charactersLeft, setCharactersLeft] = useState(maxCharacters)
   const { user } = useSelector(({ user }) => ({ user: user.data.user }))
   const { id: storyId } = useParams()
+  const userHasLoggedIn = user.userName !== 'Anonymous User'
 
   const addEditAnnotationInStore = () => {
     if (focusedWord?.annotation) {
@@ -177,7 +178,7 @@ const AnnotationDetails = ({ focusedWord, annotations, showAnnotationForm }) => 
               </div>
             ))}
 
-            {userHasNoAnnotationForWord(focusedWord) && !showAnnotationForm && (
+            {userHasNoAnnotationForWord(focusedWord) && !showAnnotationForm && userHasLoggedIn && (
               <Button
                 style={{ marginTop: '.75em' }}
                 size="sm"
@@ -189,7 +190,7 @@ const AnnotationDetails = ({ focusedWord, annotations, showAnnotationForm }) => 
           </div>
         ) : (
           <div>
-            {!showAnnotationForm && (
+            {!showAnnotationForm && userHasLoggedIn && (
               <>
                 <div className="notes-info-text" style={{ margin: '.5rem 0rem' }}>
                   <FormattedMessage id="this-word-has-no-notes-yet" />
@@ -206,6 +207,12 @@ const AnnotationDetails = ({ focusedWord, annotations, showAnnotationForm }) => 
           </div>
         )}
       </div>
+
+      {!userHasLoggedIn && (
+        <div className="italics" style={{ color: 'red' }}>
+          <FormattedMessage id="log-in-to-create-own-notes" />
+        </div>
+      )}
       {showAnnotationForm && (
         <AnnotationForm
           annotationText={annotationText}

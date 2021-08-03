@@ -1060,5 +1060,6 @@
     "note-save-success": "Note saved!",
     "note-save-failure": "Saving note failed. Please, try again.",
     "note-delete-success": "Note deleted!",
-    "note-delete-failure": "Deleting note failed. Please, try again."
+    "note-delete-failure": "Deleting note failed. Please, try again.",
+    "log-in-to-create-own-notes": "Log in to create your own notes"
 }

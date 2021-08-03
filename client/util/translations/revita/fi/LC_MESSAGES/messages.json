@@ -1060,5 +1060,6 @@
     "note-save-success": "Muistiinpano tallennettu",
     "note-save-failure": "Tallentaminen epäonnistui. Yritä uudestaan.",
     "note-delete-success": "Muistiinpano poistettu",
-    "note-delete-failure": "Poistaminen epäonnistui. Yritä uudestaan."
+    "note-delete-failure": "Poistaminen epäonnistui. Yritä uudestaan.",
+    "log-in-to-create-own-notes": "Log in to create your own notes"
 }
