@@ -741,13 +741,19 @@ html, body, #root {
   }
 }
 
+.dictionary-and-annotations-cont {
+  display: flex;
+  flex-direction: column;
+  gap: 1em; 
+  position: sticky;
+  top: 1em + $navbar-height;
+  align-self: flex-start;
+}
+
 .dictionary-help {
   width: 350px;
   margin-left: 1em;
-  align-self: flex-start;
   height: auto;
-  position: sticky;
-  top: 1em + $navbar-height;
   &-overlay {
     position: fixed;
     top: auto;
@@ -762,12 +768,11 @@ html, body, #root {
   }
 }
 
-.notes-box {
+.annotations-box {
   width: 350px;
   margin-left: 1em;
-  align-self: flex-start;
+  // align-self: flex-start;
   height: auto;
-  position: sticky;
 }
 
 .notes-highlighted-word {

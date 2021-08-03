@@ -189,7 +189,7 @@ const ReadView = ({ match }) => {
           ))}
           <ScrollArrow />
         </Segment>
-        <div style={{ display: 'flex', flexDirection: 'column', gap: '1em' }}>
+        <div className="dictionary-and-annotations-cont">
           <DictionaryHelp />
           {showAnnotationBox && <AnnotationBox />}
         </div>

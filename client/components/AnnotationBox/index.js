@@ -97,7 +97,7 @@ const AnnotationBox = () => {
   }
 
   return (
-    <div className="notes-box">
+    <div className="annotations-box">
       <Segment>
         <div>{annotationResults()}</div>
       </Segment>
