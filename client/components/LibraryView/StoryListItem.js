@@ -100,6 +100,16 @@ const StoryActions = ({ story }) => {
             <FormattedMessage id="compete" />
           </Button>
         </Link>
+        {hiddenFeatures && (
+          <Link to={`/stories/${story._id}/review`}>
+            <Button variant="secondary" style={{ marginRight: '0.5em' }}>
+              <FormattedMessage id="review" />
+              <sup>
+                <b>&beta;</b>
+              </sup>
+            </Button>
+          </Link>
+        )}
         {showCrosswordsButton && (
           <Link to={`/crossword/${story._id}/`}>
             <Button variant="secondary" style={{ marginRight: '0.5em' }}>

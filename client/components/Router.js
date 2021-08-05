@@ -5,6 +5,7 @@ import HomeView from 'Components/HomeView'
 import LibraryView from 'Components/LibraryView'
 import TestIndex from 'Components/TestView/index'
 import ReadView from 'Components/ReadView'
+import ReviewView from 'Components/ReviewView'
 import PracticeView from 'Components/PracticeView'
 import LanguageSelectView from 'Components/LanguageSelectView'
 import EmailConfirm from 'Components/AccessControl/EmailConfirm'
@@ -89,6 +90,7 @@ export default () => {
             <ProtectedRoute exact path="/stories/:id" component={StoryDetails} />
             <ProtectedRoute exact path="/stories/:id/practice/" component={PracticeView} />
             <ProtectedRoute exact path="/stories/:id/read/" component={ReadView} />
+            <ProtectedRoute exact path="/stories/:id/review/" component={ReviewView} />
             <ProtectedRoute exact path="/crossword/:storyId" component={CrosswordView} />
             <ProtectedRoute exact path="/compete/:id" component={CompeteView} />
             <ProtectedRoute exact path="/groups/:role" component={GroupManagement} />
