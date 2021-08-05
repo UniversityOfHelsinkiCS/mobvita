@@ -25,7 +25,7 @@ import Spinner from 'Components/Spinner'
 import Footer from '../Footer'
 import ScrollArrow from '../ScrollArrow'
 
-const ReadView = ({ match }) => {
+const ReviewView = ({ match }) => {
   const dispatch = useDispatch()
   const { width } = useWindowDimensions()
 
@@ -111,6 +111,31 @@ const ReadView = ({ match }) => {
   }
 
   const wordVoice = word => {
+    // ---
+
+    if (word.bases && !word.name_token && word.message && word.wrong) {
+      return (
+        <span key={word.ID}>
+          <span
+            className={`word-interactive${
+              word.ID === highlightedWord?.ID ? ' notes-highlighted-word' : ''
+            }`}
+            onClick={() => handleWordClick(word)}
+            onKeyDown={() => handleWordClick(word)}
+            role="button"
+            tabIndex="-1"
+            style={{ color: 'blue' }}
+          >
+            {word.surface}
+          </span>
+          {wordHasAnnotations(word) && (
+            <sup className="notes-superscript">{getSuperscript(word)}</sup>
+          )}
+        </span>
+      )
+    }
+
+    // ---
     if (word.bases && !word.name_token) {
       return (
         <span key={word.ID}>
@@ -191,4 +216,4 @@ const ReadView = ({ match }) => {
   )
 }
 
-export default ReadView
+export default ReviewView
