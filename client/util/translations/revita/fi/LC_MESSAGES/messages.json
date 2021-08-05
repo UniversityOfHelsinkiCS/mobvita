@@ -1066,5 +1066,6 @@
     "annotations-popup-info-text": "Voit lisätä muistiinpanoja mille vain sanalle — mitä tahansa tärkeää tai mielenkiintoista kielen toimintaan liittyvää.",
     "notes-added-to-history-appear-here": "Notes added to words before the current exercise snippet will appear here.",
     "click-any-word-in-history-to-create-note": "Click any word before the exercise snippet to add a note.",
-    "click-any-word-in-history-to-add-new": "Click any word before the exercise snippet to add a new one."
+    "click-any-word-in-history-to-add-new": "Click any word before the exercise snippet to add a new one.",
+    "review": "Review"
 }
