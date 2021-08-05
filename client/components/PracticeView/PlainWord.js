@@ -109,8 +109,8 @@ const PlainWord = ({ word, annotatingAllowed, ...props }) => {
         tabIndex={-1}
         onKeyDown={() => handleWordClick()}
         onClick={() => handleWordClick()}
-        className={`word-interactive ${
-          word.ID === highlightedWord?.ID && 'notes-highlighted-word'
+        className={`word-interactive${
+          word.ID === highlightedWord?.ID ? ' notes-highlighted-word' : ''
         }`}
         {...props}
       >
