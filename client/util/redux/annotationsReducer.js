@@ -30,6 +30,12 @@ export const setHighlightedWord = word => {
   }
 }
 
+export const resetAnnotations = () => {
+  return {
+    type: 'RESET_ANNOTATIONS',
+  }
+}
+
 export const initializeAnnotations = annotations => {
   return {
     type: 'INIT_ANNOTATIONS',
@@ -40,6 +46,13 @@ export const initializeAnnotations = annotations => {
 export const updateAnnotationStore = annotations => {
   return {
     type: 'UPDATE_ANNOTATION',
+    annotations,
+  }
+}
+
+export const updateSeveralAnnotationStore = annotations => {
+  return {
+    type: 'UPDATE_SEVERAL_ANNOTATIONS',
     annotations,
   }
 }
@@ -77,7 +90,6 @@ export default (state = initialState, action) => {
     case 'SAVE_ANNOTATION_SUCCESS':
       return {
         ...state,
-        news: action.response.news,
         pending: false,
       }
     case 'SAVE_ANNOTATION_FAILURE':
@@ -93,7 +105,6 @@ export default (state = initialState, action) => {
     case 'REMOVE_ANNOTATION_SUCCESS':
       return {
         ...state,
-        news: action.response.news,
         pending: false,
       }
     case 'REMOVE_ANNOTATION_FAILURE':
@@ -121,6 +132,8 @@ export default (state = initialState, action) => {
         ...state,
         showAnnotationForm: action.visibility,
       }
+    case 'RESET_ANNOTATIONS':
+      return initialState
     case 'INIT_ANNOTATIONS':
       return {
         ...state,
@@ -130,6 +143,11 @@ export default (state = initialState, action) => {
       return {
         ...state,
         annotations: sortById(action.annotations),
+      }
+    case 'UPDATE_SEVERAL_ANNOTATIONS':
+      return {
+        ...state,
+        annotations: state.annotations.concat(action.annotations),
       }
     default:
       return state

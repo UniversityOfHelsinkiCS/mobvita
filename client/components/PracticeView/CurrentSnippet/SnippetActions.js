@@ -9,13 +9,16 @@ import {
   getCurrentSnippet,
   resetCurrentSnippet,
 } from 'Utilities/redux/snippetsReducer'
+import { resetAnnotations } from 'Utilities/redux/annotationsReducer'
 import { finishSnippet, clearTouchedIds, clearPractice } from 'Utilities/redux/practiceReducer'
 
 const CheckAnswersButton = ({ handleClick, checkAnswersButtonTempDisable }) => {
   const attempt = useSelector(({ practice }) => practice.attempt)
-  const { focused: focusedSnippet, pending: snippetPending, answersPending } = useSelector(
-    ({ snippets }) => snippets
-  )
+  const {
+    focused: focusedSnippet,
+    pending: snippetPending,
+    answersPending,
+  } = useSelector(({ snippets }) => snippets)
   const [barColor, setBarColor] = useState('#4c91cd')
   const [attemptRatioPercentage, setAttemptRatioPercentage] = useState(100)
 
@@ -116,6 +119,7 @@ const SnippetActions = ({ storyId, exerciseCount }) => {
   const handleRestart = () => {
     dispatch(clearPractice())
     dispatch(resetCurrentSnippet(id))
+    dispatch(resetAnnotations())
     setcheckAnswersButtonTempDisable(true)
     setTimeout(() => {
       setcheckAnswersButtonTempDisable(false)

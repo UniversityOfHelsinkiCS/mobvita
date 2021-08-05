@@ -28,7 +28,6 @@ import ScrollArrow from '../ScrollArrow'
 const ReadView = ({ match }) => {
   const dispatch = useDispatch()
   const { width } = useWindowDimensions()
-  let currentAnnotationIndex = 0
 
   const { story, pending } = useSelector(({ stories, locale }) => ({
     story: stories.focused,
@@ -62,25 +61,20 @@ const ReadView = ({ match }) => {
   const voice = respVoiceLanguages[learningLanguage]
 
   const wordHasAnnotations = word => {
-    const annotationIDs = annotations?.map(w => w.ID)
     const matchingAnnotationInStore = annotations.find(w => w.ID === word.ID)
-    if (matchingAnnotationInStore) {
-      if (
-        matchingAnnotationInStore.annotation.length === 1 &&
-        matchingAnnotationInStore.annotation[0].annotation === '<removed>'
-      ) {
-        return false
-      }
-    }
+    const allAreRemoved = matchingAnnotationInStore?.annotation?.every(
+      annotation => annotation.annotation === '<removed>'
+    )
+    if (!matchingAnnotationInStore || allAreRemoved) return false
 
-    if (
-      !annotationIDs.includes(word.ID) ||
-      (annotationIDs.filter(id => id === word.ID)?.annotation?.length === 1 &&
-        annotationIDs.filter(id => id === word.ID).annotation[0].annotation === '<removed>')
-    ) {
-      return false
-    }
     return true
+  }
+
+  const getSuperscript = word => {
+    const existingAnnotations = annotations.filter(word =>
+      word.annotation.every(annotation => annotation.annotation !== '<removed>')
+    )
+    return existingAnnotations.findIndex(a => a.ID === word.ID) + 1
   }
 
   const handleWordClick = word => {
@@ -117,8 +111,6 @@ const ReadView = ({ match }) => {
   }
 
   const wordVoice = word => {
-    if (wordHasAnnotations(word)) currentAnnotationIndex += 1
-
     if (word.bases && !word.name_token) {
       return (
         <>
@@ -135,7 +127,7 @@ const ReadView = ({ match }) => {
             {word.surface}
           </span>
           {wordHasAnnotations(word) && (
-            <sup className="notes-superscript">{currentAnnotationIndex}</sup>
+            <sup className="notes-superscript">{getSuperscript(word)}</sup>
           )}
         </>
       )
@@ -155,7 +147,7 @@ const ReadView = ({ match }) => {
       >
         {word.surface}
         {wordHasAnnotations(word) && (
-          <sup className="notes-superscript">{currentAnnotationIndex}</sup>
+          <sup className="notes-superscript">{getSuperscript(word)}</sup>
         )}
       </span>
     )

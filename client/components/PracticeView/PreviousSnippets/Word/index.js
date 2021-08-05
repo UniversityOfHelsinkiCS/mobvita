@@ -7,7 +7,7 @@ const Word = ({ word, answer, tiedAnswer }) => {
     return <PreviousExerciseWord word={word} answer={answer} tiedAnswer={tiedAnswer} />
   }
 
-  return <PlainWord word={word} />
+  return <PlainWord word={word} annotatingAllowed />
 }
 
 export default Word

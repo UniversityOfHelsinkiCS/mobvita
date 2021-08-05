@@ -12,6 +12,7 @@ import {
 } from 'Utilities/common'
 import { setReferences } from 'Utilities/redux/practiceReducer'
 import { getTranslationAction, setWords } from 'Utilities/redux/translationReducer'
+import { setFocusedWord, setHighlightedWord } from 'Utilities/redux/annotationsReducer'
 import Tooltip from 'Components/PracticeView/Tooltip'
 
 const PreviousExerciseWord = ({ word, answer, tiedAnswer }) => {
@@ -31,17 +32,25 @@ const PreviousExerciseWord = ({ word, answer, tiedAnswer }) => {
   const learningLanguage = useSelector(learningLanguageSelector)
   const autoSpeak = useSelector(({ user }) => user.data.user.auto_speak)
   const dictionaryLanguage = useSelector(dictionaryLanguageSelector)
+  const { highlightedWord, annotations } = useSelector(({ annotations }) => annotations)
 
   const intl = useIntl()
   const dispatch = useDispatch()
 
   const voice = respVoiceLanguages[learningLanguage]
   let color = ''
-  if (tested) {
-    color = isWrong ? 'wrong-text' : 'right-text'
-  }
-
+  if (tested) color = isWrong ? 'wrong-text' : 'right-text'
   const wordClass = `word-interactive ${color}`
+
+  const wordHasAnnotations = word => {
+    const matchingAnnotationInStore = annotations.find(w => w.ID === word.ID)
+    const allAreRemoved = matchingAnnotationInStore?.annotation?.every(
+      annotation => annotation.annotation === '<removed>'
+    )
+    if (!matchingAnnotationInStore || allAreRemoved) return false
+
+    return true
+  }
 
   const handleClick = () => {
     setShow(true)
@@ -59,6 +68,17 @@ const PreviousExerciseWord = ({ word, answer, tiedAnswer }) => {
         })
       )
     }
+    dispatch(setHighlightedWord(word))
+    const annotationInStore = annotations.find(w => w.ID === word.ID)
+    if (annotationInStore) dispatch(setFocusedWord(annotationInStore))
+    else dispatch(setFocusedWord(word))
+  }
+
+  const getSuperscript = word => {
+    const existingAnnotations = annotations.filter(word =>
+      word.annotation.every(annotation => annotation.annotation !== '<removed>')
+    )
+    return existingAnnotations.findIndex(a => a.ID === word.ID) + 1
   }
 
   const handleTooltipClick = () => {
@@ -95,7 +115,7 @@ const PreviousExerciseWord = ({ word, answer, tiedAnswer }) => {
   return (
     <Tooltip placement="top" tooltipShown={show} trigger="none" tooltip={tooltip}>
       <span
-        className={wordClass}
+        className={`${wordClass} ${word.ID === highlightedWord?.ID && 'notes-highlighted-word'}`}
         role="button"
         onClick={handleClick}
         onKeyDown={handleClick}
@@ -104,6 +124,7 @@ const PreviousExerciseWord = ({ word, answer, tiedAnswer }) => {
       >
         {surface}
       </span>
+      {wordHasAnnotations(word) && <sup className="notes-superscript">{getSuperscript(word)}</sup>}
     </Tooltip>
   )
 }

@@ -1,7 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
-import OpponentProgress from 'Components/CompeteView/OpponentProgress'
-import { useHistory } from 'react-router-dom'
 import {
   getCurrentSnippet,
   getNextSnippet,
@@ -25,6 +23,7 @@ import {
   startSnippet,
   incrementAttempts,
 } from 'Utilities/redux/practiceReducer'
+import { updateSeveralAnnotationStore, resetAnnotations } from 'Utilities/redux/annotationsReducer'
 import SnippetActions from './SnippetActions'
 import PracticeText from './PracticeText'
 
@@ -36,10 +35,6 @@ const CurrentSnippet = ({ storyId, handleInputChange }) => {
   const answersPending = useSelector(({ snippets }) => snippets.answersPending)
   const { snippetFinished, isNewSnippet, attempt } = useSelector(({ practice }) => practice)
   const learningLanguage = useSelector(learningLanguageSelector)
-
-  const history = useHistory()
-
-  const isCompeteMode = history.location.pathname.includes('compete')
 
   const currentSnippetId = () => {
     if (!snippets.focused) return -1
@@ -99,6 +94,10 @@ const CurrentSnippet = ({ storyId, handleInputChange }) => {
   const finishSnippet = () => {
     dispatch(setPreviousAnswers(currentSnippetId()))
     dispatch(addToPrevious(snippets.focused))
+    const annotationsInCurrentSnippet = snippets.focused.practice_snippet.filter(
+      word => word.annotation
+    )
+    dispatch(updateSeveralAnnotationStore(annotationsInCurrentSnippet))
     dispatch(clearCurrentPractice())
 
     if (snippets.focused.total_num !== currentSnippetId() + 1 || finished) {
@@ -162,6 +161,7 @@ const CurrentSnippet = ({ storyId, handleInputChange }) => {
 
   const startOver = async () => {
     dispatch(clearPractice())
+    dispatch(resetAnnotations())
     dispatch(setPrevious([]))
     dispatch(getNextSnippet(storyId, currentSnippetId()))
     setFinished(false)
@@ -199,7 +199,6 @@ const CurrentSnippet = ({ storyId, handleInputChange }) => {
             />
           </div>
           <SnippetActions storyId={storyId} exerciseCount={exerciseCount} />
-          {isCompeteMode && <OpponentProgress />}
         </div>
       ) : (
         <Button variant="primary" block onClick={() => startOver()}>

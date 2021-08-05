@@ -2,22 +2,24 @@ import React, { useEffect } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import { FormattedMessage } from 'react-intl'
 import { useParams } from 'react-router-dom'
-import CurrentSnippet from 'Components/PracticeView/CurrentSnippet'
-import { getStoryAction } from 'Utilities/redux/storiesReducer'
-import DictionaryHelp from 'Components/DictionaryHelp'
-import ReportButton from 'Components/ReportButton'
 import { Segment } from 'semantic-ui-react'
+import { getStoryAction } from 'Utilities/redux/storiesReducer'
 import { clearFocusedSnippet } from 'Utilities/redux/snippetsReducer'
 import { setTouchedIds, setAnswers } from 'Utilities/redux/practiceReducer'
-import { getTextStyle, learningLanguageSelector } from 'Utilities/common'
+import { resetAnnotations } from 'Utilities/redux/annotationsReducer'
 import useWindowDimensions from 'Utilities/windowDimensions'
+import { getTextStyle, learningLanguageSelector } from 'Utilities/common'
+import CurrentSnippet from 'Components/PracticeView/CurrentSnippet'
+import DictionaryHelp from 'Components/DictionaryHelp'
+import ReportButton from 'Components/ReportButton'
+import AnnotationBox from 'Components/AnnotationBox'
 import PreviousSnippets from './PreviousSnippets'
 import VirtualKeyboard from './VirtualKeyboard'
 import ReferenceModal from './ReferenceModal'
-import Footer from '../Footer'
 import { keyboardLayouts } from './KeyboardLayouts'
-import ScrollArrow from '../ScrollArrow'
 import ProgressBar from './CurrentSnippet/ProgressBar'
+import Footer from '../Footer'
+import ScrollArrow from '../ScrollArrow'
 
 const PracticeView = () => {
   const learningLanguage = useSelector(learningLanguageSelector)
@@ -36,12 +38,15 @@ const PracticeView = () => {
   const currentSnippetNum = currentSnippetId() + 1
   const snippetsTotalNum = snippets?.focused?.total_num
   const { focused: story, pending } = useSelector(({ stories }) => stories)
+  const showAnnotationBox = width >= 1024
 
   useEffect(() => {
     dispatch(getStoryAction(id))
   }, [learningLanguage])
 
   useEffect(() => {
+    dispatch(resetAnnotations())
+
     return () => {
       dispatch(clearFocusedSnippet())
     }
@@ -115,7 +120,10 @@ const PracticeView = () => {
             </div>
           )}
         </div>
-        <DictionaryHelp />
+        <div className="dictionary-and-annotations-cont">
+          <DictionaryHelp />
+          {showAnnotationBox && <AnnotationBox />}
+        </div>
         <ReferenceModal />
       </div>
       {showFooter && <Footer />}
