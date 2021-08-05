@@ -113,12 +113,11 @@ const ReadView = ({ match }) => {
   const wordVoice = word => {
     if (word.bases && !word.name_token) {
       return (
-        <>
+        <span key={word.ID}>
           <span
             className={`word-interactive ${
               word.ID === highlightedWord?.ID && 'notes-highlighted-word'
             }`}
-            key={word.ID}
             onClick={() => handleWordClick(word)}
             onKeyDown={() => handleWordClick(word)}
             role="button"
@@ -129,7 +128,7 @@ const ReadView = ({ match }) => {
           {wordHasAnnotations(word) && (
             <sup className="notes-superscript">{getSuperscript(word)}</sup>
           )}
-        </>
+        </span>
       )
     }
     if (word.surface === '\n\n') return <br key={word.ID} />
@@ -137,6 +136,7 @@ const ReadView = ({ match }) => {
 
     return (
       <span
+        key={word.ID}
         onClick={() => handleNonRecognizedWordclick(word)}
         onKeyDown={() => handleNonRecognizedWordclick(word)}
         className={`non-recognized-word ${

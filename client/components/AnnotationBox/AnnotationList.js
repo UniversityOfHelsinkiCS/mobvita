@@ -38,7 +38,7 @@ const AnnotationList = ({ handleAnnotationBoxCollapse, annotations, highlightedW
       </div>
       <div style={{ marginTop: '1em' }}>
         {filterOutWordsWithOnlyRemovedAnnotations(annotations).map((word, index) => (
-          <div>
+          <div key={`${word.ID}-${word.surface}`}>
             {index + 1} -{' '}
             <span
               onClick={() => dispatch(setFocusedWord(word))}
