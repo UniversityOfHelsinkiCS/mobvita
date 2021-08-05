@@ -183,7 +183,7 @@ const ReadView = ({ match }) => {
         </Segment>
         <div className="dictionary-and-annotations-cont">
           <DictionaryHelp />
-          {showAnnotationBox && <AnnotationBox />}
+          {showAnnotationBox && <AnnotationBox mode="read" />}
         </div>
       </div>
       {showFooter && <Footer />}

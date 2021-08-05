@@ -10,7 +10,7 @@ import {
 import AnnotationList from './AnnotationList'
 import AnnotationDetails from './AnnotationDetails'
 
-const AnnotationBox = () => {
+const AnnotationBox = ({ mode }) => {
   const intl = useIntl()
   const dispatch = useDispatch()
   const { focusedWord, highlightedWord, annotations, showAnnotations, showAnnotationForm } =
@@ -88,9 +88,17 @@ const AnnotationBox = () => {
           <Icon name="angle up" size="large" />
         </div>
         <div className="notes-info-text" style={{ marginTop: '1.5em' }}>
-          <FormattedMessage id="this-story-has-no-notes" />
+          <FormattedMessage
+            id={mode === 'read' ? 'this-story-has-no-notes' : 'notes-added-to-history-appear-here'}
+          />
           <br /> <br />
-          <FormattedMessage id="click-any-word-to-create-one" />
+          <FormattedMessage
+            id={
+              mode === 'read'
+                ? 'click-any-word-to-create-one'
+                : 'click-any-word-in-history-to-add-new'
+            }
+          />
         </div>
       </div>
     )
