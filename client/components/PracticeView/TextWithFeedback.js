@@ -164,7 +164,7 @@ const TextWithFeedback = ({ snippet, exercise = false, answers, reviewMode, ...p
         return element
       })
 
-  return <span style={reviewMode && { display: 'inline-block', marginBottom: '1.5em' }}>{createdText}</span>
+  return <span>{createdText}</span>
 }
 
 export default TextWithFeedback

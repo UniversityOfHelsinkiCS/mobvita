@@ -68,7 +68,11 @@ const ReviewView = ({ match }) => {
           </div>
           <Divider />
           {story.paragraph.map(paragraph => (
-            <TextWithFeedback reviewMode snippet={paragraph} answers={null} />
+            <>
+              <TextWithFeedback reviewMode snippet={paragraph} answers={null} />
+              <br />
+              <br />
+            </>
           ))}
           <ScrollArrow />
         </Segment>
