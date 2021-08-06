@@ -20,6 +20,7 @@ const PreviousExerciseWord = ({ word, answer, tiedAnswer }) => {
     surface,
     isWrong,
     tested,
+    mark,
     lemmas,
     ref,
     ID: wordId,
@@ -39,7 +40,7 @@ const PreviousExerciseWord = ({ word, answer, tiedAnswer }) => {
 
   const voice = respVoiceLanguages[learningLanguage]
   let color = ''
-  if (tested) color = isWrong ? 'wrong-text' : 'right-text'
+  if (tested || mark) color = isWrong ? 'wrong-text' : 'right-text'
   const wordClass = `word-interactive ${color}`
 
   const wordHasAnnotations = word => {

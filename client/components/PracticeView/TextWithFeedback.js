@@ -2,7 +2,7 @@ import React, { useMemo } from 'react'
 import ExerciseWord from './CurrentSnippet/ExerciseWord'
 import Word from './PreviousSnippets/Word'
 
-const TextWithFeedback = ({ snippet, exercise = false, answers, ...props }) => {
+const TextWithFeedback = ({ snippet, exercise = false, answers, reviewMode, ...props }) => {
   let lowestLinePosition = 0
   const openLinePositions = [1, 2, 3, 4, 5]
   const reservedLinePositions = {}
@@ -72,8 +72,8 @@ const TextWithFeedback = ({ snippet, exercise = false, answers, ...props }) => {
       <Word
         key={word.ID}
         word={word}
-        answer={answers[word.ID]}
-        tiedAnswer={answers[word.tiedTo]}
+        answer={!reviewMode && answers[word.ID]}
+        tiedAnswer={!reviewMode && answers[word.tiedTo]}
         {...props}
       />
     )
@@ -91,10 +91,46 @@ const TextWithFeedback = ({ snippet, exercise = false, answers, ...props }) => {
     return element
   }
 
-  const createdText = useMemo(
-    () =>
-      snippet &&
-      snippet.map(word => {
+  const createdText = answers
+    ? useMemo(
+        () =>
+          snippet &&
+          snippet.map(word => {
+            const { pattern } = word
+
+            const chunkPosition = word.chunk && word.chunk.split('_')[1]
+
+            if (pattern) {
+              Object.entries(pattern)
+                .filter(([, position]) => position === 'pattern_start')
+                .forEach(([id]) => reserveLinePosition(id))
+            }
+
+            if (chunkPosition === 'start') {
+              inChunk = true
+              if (word.analytic_chunk) {
+                chunkIsOneVerb = true
+              }
+            }
+
+            const element = createElement(word, chunkPosition)
+
+            if (pattern) {
+              Object.entries(pattern)
+                .filter(([, position]) => position === 'pattern_end')
+                .forEach(([id]) => freeLinePosition(id))
+            }
+
+            if (chunkPosition === 'end') {
+              inChunk = false
+              chunkIsOneVerb = false
+            }
+
+            return element
+          }),
+        [snippet, answers]
+      )
+    : snippet.map(word => {
         const { pattern } = word
 
         const chunkPosition = word.chunk && word.chunk.split('_')[1]
@@ -126,9 +162,7 @@ const TextWithFeedback = ({ snippet, exercise = false, answers, ...props }) => {
         }
 
         return element
-      }),
-    [snippet, answers]
-  )
+      })
 
   return <span>{createdText}</span>
 }
