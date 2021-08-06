@@ -13,6 +13,7 @@ import DictionaryHelp from 'Components/DictionaryHelp'
 import AnnotationBox from 'Components/AnnotationBox'
 import Spinner from 'Components/Spinner'
 import TextWithFeedback from 'Components/PracticeView/TextWithFeedback'
+import ReferenceModal from 'Components/PracticeView/ReferenceModal'
 import Footer from '../Footer'
 import ScrollArrow from '../ScrollArrow'
 
@@ -75,6 +76,7 @@ const ReviewView = ({ match }) => {
           <DictionaryHelp />
           {showAnnotationBox && <AnnotationBox mode="read" />}
         </div>
+        <ReferenceModal />
       </div>
       {showFooter && <Footer />}
     </div>
