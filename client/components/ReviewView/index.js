@@ -121,7 +121,10 @@ const ReviewView = ({ match }) => {
   }
 
   const getInteractiveWordColor = word => {
-    if (wordHasFeedBack(word)) return { color: 'blue' }
+    if (wordHasFeedBack(word)) {
+      if (word.isWrong) return { color: 'blue' }
+      return { color: 'green' }
+    }
     return null
   }
 
@@ -148,7 +151,7 @@ const ReviewView = ({ match }) => {
   }
 
   const wordVoice = word => {
-    if (wordIsTranslatable && wordHasFeedBack(word)) {
+    if (wordIsTranslatable && wordHasFeedBack(word) && word.isWrong) {
       return (
         <Popup
           className="review-view-tooltip"
