@@ -149,6 +149,19 @@ const StoryActions = ({ story }) => {
             to={`/stories/${story._id}/read`}
             icon="book"
           />
+          {hiddenFeatures && (
+            <Dropdown.Item
+              text={
+                <>
+                  <FormattedMessage id="review" />
+                  <sup>β</sup>
+                </>
+              }
+              as={Link}
+              to={`/stories/${story._id}/review`}
+              icon="book"
+            />
+          )}
           <Dropdown.Item
             text={<FormattedMessage id="compete" />}
             as={Link}
