@@ -18,6 +18,7 @@ import share from './shareReducer'
 import metadata from './metadataReducer'
 import summary from './groupSummaryReducer'
 import practice from './practiceReducer'
+import review from './reviewReducer'
 import passwordReset from './passwordResetReducer'
 import studentProgress from './groupProgressReducer'
 import studentHistory from './groupHistoryReducer'
@@ -51,6 +52,7 @@ const rootReducer = combineReducers({
   metadata,
   summary,
   practice,
+  review,
   passwordReset,
   studentProgress,
   tests,

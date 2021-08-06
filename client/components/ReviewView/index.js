@@ -1,11 +1,12 @@
 import React, { useEffect } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import { Link } from 'react-router-dom'
-import { Divider, Segment, Header } from 'semantic-ui-react'
+import { Divider, Segment, Header, Icon, Popup } from 'semantic-ui-react'
 import { Button } from 'react-bootstrap'
-import { FormattedMessage } from 'react-intl'
+import { FormattedMessage, useIntl } from 'react-intl'
 import useWindowDimensions from 'Utilities/windowDimensions'
 import { getStoryAction } from 'Utilities/redux/storiesReducer'
+import { setReferences } from 'Utilities/redux/reviewReducer'
 import {
   getTranslationAction,
   clearTranslationAction,
@@ -22,11 +23,13 @@ import { learningLanguageSelector, getTextStyle, speak, respVoiceLanguages } fro
 import DictionaryHelp from 'Components/DictionaryHelp'
 import AnnotationBox from 'Components/AnnotationBox'
 import Spinner from 'Components/Spinner'
+import ReferenceModal from './ReferenceModal'
 import Footer from '../Footer'
 import ScrollArrow from '../ScrollArrow'
 
 const ReviewView = ({ match }) => {
   const dispatch = useDispatch()
+  const intl = useIntl()
   const { width } = useWindowDimensions()
 
   const { story, pending } = useSelector(({ stories, locale }) => ({
@@ -110,51 +113,80 @@ const ReviewView = ({ match }) => {
     dispatch(setAnnotationFormVisibility(false))
   }
 
-  const wordVoice = word => {
-    // ---
+  const wordIsTranslatable = word => word.bases && !word.name_token
 
-    if (word.bases && !word.name_token && word.message && word.wrong) {
-      return (
-        <span key={word.ID}>
-          <span
-            className={`word-interactive${
-              word.ID === highlightedWord?.ID ? ' notes-highlighted-word' : ''
-            }`}
-            onClick={() => handleWordClick(word)}
-            onKeyDown={() => handleWordClick(word)}
-            role="button"
-            tabIndex="-1"
-            style={{ color: 'blue' }}
-          >
-            {word.surface}
-          </span>
-          {wordHasAnnotations(word) && (
-            <sup className="notes-superscript">{getSuperscript(word)}</sup>
-          )}
+  const wordHasFeedBack = word => {
+    if (word.message || word.wrong) return true
+    return false
+  }
+
+  const getInteractiveWordColor = word => {
+    if (wordHasFeedBack(word)) return { color: 'blue' }
+    return null
+  }
+
+  const InteractiveWord = ({ word }) => {
+    return (
+      <span key={word.ID}>
+        <span
+          className={`word-interactive${
+            word.ID === highlightedWord?.ID ? ' notes-highlighted-word' : ''
+          }`}
+          onClick={() => handleWordClick(word)}
+          onKeyDown={() => handleWordClick(word)}
+          role="button"
+          tabIndex="-1"
+          style={getInteractiveWordColor(word)}
+        >
+          {word.surface}
         </span>
+        {wordHasAnnotations(word) && (
+          <sup className="notes-superscript">{getSuperscript(word)}</sup>
+        )}
+      </span>
+    )
+  }
+
+  const wordVoice = word => {
+    if (wordIsTranslatable && wordHasFeedBack(word)) {
+      return (
+        <Popup
+          className="review-view-tooltip"
+          position="top center"
+          hoverable
+          content={
+            <div className="flex-col">
+              {word?.message && (
+                <div className="flex">
+                  <span>{word.message}</span>
+                  {word.ref && (
+                    <Icon
+                      onClick={() => dispatch(setReferences(word.ref))}
+                      name="external"
+                      size="small"
+                      style={{ alignSelf: 'flex-start', marginLeft: '0.5rem' }}
+                    />
+                  )}
+                </div>
+              )}
+              {word?.wrong && (
+                <div>
+                  {intl.formatMessage({ id: 'you-used' })}: {word.wrong}
+                </div>
+              )}
+            </div>
+          }
+          trigger={
+            <span>
+              <InteractiveWord word={word} />
+            </span>
+          }
+        />
       )
     }
 
-    // ---
-    if (word.bases && !word.name_token) {
-      return (
-        <span key={word.ID}>
-          <span
-            className={`word-interactive ${
-              word.ID === highlightedWord?.ID && 'notes-highlighted-word'
-            }`}
-            onClick={() => handleWordClick(word)}
-            onKeyDown={() => handleWordClick(word)}
-            role="button"
-            tabIndex="-1"
-          >
-            {word.surface}
-          </span>
-          {wordHasAnnotations(word) && (
-            <sup className="notes-superscript">{getSuperscript(word)}</sup>
-          )}
-        </span>
-      )
+    if (wordIsTranslatable) {
+      return <InteractiveWord word={word} />
     }
     if (word.surface === '\n\n') return <br key={word.ID} />
     if (word.surface === ' ') return word.surface
@@ -211,6 +243,7 @@ const ReviewView = ({ match }) => {
           {showAnnotationBox && <AnnotationBox mode="read" />}
         </div>
       </div>
+      <ReferenceModal />
       {showFooter && <Footer />}
     </div>
   )

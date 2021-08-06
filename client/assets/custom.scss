@@ -1369,6 +1369,13 @@ html, body, #root {
   filter: none;
 }
 
+.review-view-tooltip {
+  text-align: center!important;
+  color: white!important;
+  background-color: $tooltip-green!important;
+  padding: .25rem .5rem .75rem .5rem!important;
+}
+
 .tooltip { //Overwrites react-popper-tooltip styles.
 
   &-container {
