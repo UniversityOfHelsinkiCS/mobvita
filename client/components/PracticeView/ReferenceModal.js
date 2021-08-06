@@ -2,6 +2,7 @@ import React from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import { Modal } from 'semantic-ui-react'
 import { clearReferences } from 'Utilities/redux/practiceReducer'
+import { FormattedMessage } from 'react-intl'
 
 const BookReference = ({ reference }) => (
   <li>
@@ -48,7 +49,9 @@ const ReferenceModal = () => {
       dimmer="inverted"
       closeIcon
     >
-      <Modal.Header>References</Modal.Header>
+      <Modal.Header>
+        <FormattedMessage id="references" />
+      </Modal.Header>
       <Modal.Content>
         <ul>{referenceList}</ul>
       </Modal.Content>

@@ -1,7 +1,7 @@
 import React from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import { Modal } from 'semantic-ui-react'
-import { clearReferences } from 'Utilities/redux/practiceReducer'
+import { clearReferences } from 'Utilities/redux/reviewReducer'
 import { FormattedMessage } from 'react-intl'
 
 const BookReference = ({ reference }) => (
@@ -22,7 +22,7 @@ const UrlReference = ({ reference }) => (
 )
 
 const ReferenceModal = () => {
-  const references = useSelector(state => state.practice.references)
+  const references = useSelector(state => state.review.references)
 
   const dispatch = useDispatch()
 

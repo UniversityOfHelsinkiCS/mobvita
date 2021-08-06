@@ -1067,5 +1067,6 @@
     "notes-added-to-history-appear-here": "Notes added to words before the current exercise snippet will appear here.",
     "click-any-word-in-history-to-create-note": "Click any word before the exercise snippet to add a note.",
     "click-any-word-in-history-to-add-new": "Click any word before the exercise snippet to add a new one.",
-    "review": "Review"
+    "review": "Review",
+    "references": "References"
 }
