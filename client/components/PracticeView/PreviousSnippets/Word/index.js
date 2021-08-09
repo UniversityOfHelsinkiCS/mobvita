@@ -3,11 +3,13 @@ import PlainWord from 'Components/PracticeView/PlainWord'
 import PreviousExerciseWord from './PreviousExerciseWord'
 
 const Word = ({ word, answer, tiedAnswer }) => {
+  // session history in practice & compete mode
   if (word.tested) {
     return <PreviousExerciseWord word={word} answer={answer} tiedAnswer={tiedAnswer} />
   }
 
-  if (word.mark) {
+  // review mode
+  if (word.wrong) {
     const answerObj = {
       correct: word.surface,
       concept: word.concept,
