@@ -4,7 +4,7 @@ const path = require('path')
 const { google } = require('googleapis');
 require('dotenv').config()
 
-const apiClient = google.auth.fromAPIKey(process.env.GOOGLE_APIKEY)
+const apiClient = google.auth.fromAPIKey("AIzaSyC6_s0ZAeHyZtd4RcHF43zcQ75iKGExtIo")
 addTranslations(apiClient)
 
 async function addTranslations(auth) {
@@ -18,17 +18,18 @@ async function addTranslations(auth) {
     const translations = {}
 
     for (row of rows) {
+      row.map(e => e.trim())
       if (!row[0]) continue
-      const eng = row[2] || ''
-      translations[row[0]] = {
+      const trimmedRow = row.map(e => e.trim())
+      const eng = trimmedRow[2] || ''
+      translations[trimmedRow[0]] = {
         en: eng,
-        it: row[3] || eng,
-        fi: row[4] || eng,
-        ru: row[5] || eng,
-        sv: row[6] || eng,
+        it: trimmedRow[3] || eng,
+        fi: trimmedRow[4] || eng,
+        ru: trimmedRow[5] || eng,
+        sv: trimmedRow[6] || eng,
       }
     }
-    
     makeTranslations(translations)
   }).catch(err => {
     console.log('The API returned an error: ' + err);
@@ -48,13 +49,9 @@ function makeTranslations(translations) {
       file[key] = langs[lang]
       if (orig === undefined) {
         news++
-      } else if (orig != file[key]) {
-        changes++
       }
-     else if (lang == 'it'){
-        console.log('---')
-        console.log(orig)
-        console.log(file[key])}
+      else if (orig != file[key]) {
+      changes++}
     }
 
     fs.writeFile(fileName, JSON.stringify(file, null, '    '), (err) => {
