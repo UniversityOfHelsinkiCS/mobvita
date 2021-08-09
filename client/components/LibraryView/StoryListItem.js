@@ -6,7 +6,7 @@ import { Link } from 'react-router-dom'
 import { FormattedMessage } from 'react-intl'
 import { removeStory, unshareStory as unshare } from 'Utilities/redux/storiesReducer'
 import useWindowDimensions from 'Utilities/windowDimensions'
-import { getTextStyle, learningLanguageSelector, hiddenFeatures } from 'Utilities/common'
+import { getTextStyle, learningLanguageSelector } from 'Utilities/common'
 import ConfirmationWarning from 'Components/ConfirmationWarning'
 import ShareStory from 'Components/StoryView/ShareStory'
 import StoryDetailsModal from 'Components/StoryView/StoryDetailsModal'
@@ -80,16 +80,25 @@ const StoryActions = ({ story }) => {
   if (width >= 640) {
     return (
       <div>
-        <Link to={`/stories/${story._id}/read`}>
-          <Button variant="secondary" style={{ marginRight: '0.5em' }}>
-            <FormattedMessage id="Read" />
-          </Button>
-        </Link>
+        {story.percent_cov === 0 && (
+          <Link to={`/stories/${story._id}/read`}>
+            <Button variant="secondary" style={{ marginRight: '0.5em' }}>
+              <FormattedMessage id="Read" />
+            </Button>
+          </Link>
+        )}
         <Link to={`/stories/${story._id}/practice`}>
           <Button variant="primary" style={{ marginRight: '0.5em' }}>
             <FormattedMessage id="practice" />
           </Button>
         </Link>
+        {story.percent_cov > 0 && (
+          <Link to={`/stories/${story._id}/review`}>
+            <Button variant="secondary" style={{ marginRight: '0.5em' }}>
+              <FormattedMessage id="review" />
+            </Button>
+          </Link>
+        )}
         <Link to={`/flashcards/fillin/${story._id}/`}>
           <Button variant="primary" style={{ marginRight: '0.5em' }}>
             <FormattedMessage id="Flashcards" />
@@ -100,16 +109,6 @@ const StoryActions = ({ story }) => {
             <FormattedMessage id="compete" />
           </Button>
         </Link>
-        {hiddenFeatures && (
-          <Link to={`/stories/${story._id}/review`}>
-            <Button variant="secondary" style={{ marginRight: '0.5em' }}>
-              <FormattedMessage id="review" />
-              <sup>
-                <b>&beta;</b>
-              </sup>
-            </Button>
-          </Link>
-        )}
         {showCrosswordsButton && (
           <Link to={`/crossword/${story._id}/`}>
             <Button variant="secondary" style={{ marginRight: '0.5em' }}>
@@ -143,22 +142,19 @@ const StoryActions = ({ story }) => {
             to={`/flashcards/fillin/${story._id}/`}
             icon="id card"
           />
-          <Dropdown.Item
-            text={<FormattedMessage id="Read" />}
-            as={Link}
-            to={`/stories/${story._id}/read`}
-            icon="book"
-          />
-          {hiddenFeatures && (
+          {story.percent_cov > 0 && (
             <Dropdown.Item
-              text={
-                <>
-                  <FormattedMessage id="review" />
-                  <sup>β</sup>
-                </>
-              }
+              text={<FormattedMessage id="review" />}
               as={Link}
               to={`/stories/${story._id}/review`}
+              icon="book"
+            />
+          )}
+          {story.percent_cov === 0 && (
+            <Dropdown.Item
+              text={<FormattedMessage id="Read" />}
+              as={Link}
+              to={`/stories/${story._id}/read`}
               icon="book"
             />
           )}
