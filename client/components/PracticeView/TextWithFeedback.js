@@ -2,7 +2,7 @@ import React, { useMemo } from 'react'
 import ExerciseWord from './CurrentSnippet/ExerciseWord'
 import Word from './PreviousSnippets/Word'
 
-const TextWithFeedback = ({ snippet, exercise = false, answers, reviewMode, ...props }) => {
+const TextWithFeedback = ({ snippet, exercise = false, answers, reviewMode, hideFeedback, ...props }) => {
   let lowestLinePosition = 0
   const openLinePositions = [1, 2, 3, 4, 5]
   const reservedLinePositions = {}
@@ -71,11 +71,12 @@ const TextWithFeedback = ({ snippet, exercise = false, answers, reviewMode, ...p
     return chunkStyle
   }
 
-  const createElement = (word, chunkPosition) => {
+  const createElement = (word, chunkPosition, hideFeedback) => {
     let element = exercise ? (
       <ExerciseWord key={word.ID} word={word} {...props} />
     ) : (
       <Word
+        hideFeedback={hideFeedback}
         key={word.ID}
         word={word}
         answer={!reviewMode && answers[word.ID]}
@@ -83,6 +84,8 @@ const TextWithFeedback = ({ snippet, exercise = false, answers, reviewMode, ...p
         {...props}
       />
     )
+    if (hideFeedback) return element
+
     if (inChunk) {
       const chunkStyle = createChunkStyle(chunkPosition)
 
@@ -119,7 +122,7 @@ const TextWithFeedback = ({ snippet, exercise = false, answers, reviewMode, ...p
               }
             }
 
-            const element = createElement(word, chunkPosition)
+            const element = createElement(word, chunkPosition, hideFeedback)
 
             if (pattern) {
               Object.entries(pattern)
@@ -154,7 +157,7 @@ const TextWithFeedback = ({ snippet, exercise = false, answers, reviewMode, ...p
           }
         }
 
-        const element = createElement(word, chunkPosition)
+        const element = createElement(word, chunkPosition, hideFeedback)
 
         if (pattern) {
           Object.entries(pattern)

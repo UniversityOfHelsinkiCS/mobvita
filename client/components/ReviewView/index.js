@@ -1,7 +1,7 @@
-import React, { useEffect } from 'react'
+import React, { useState, useEffect } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import { Link } from 'react-router-dom'
-import { Divider, Segment, Header } from 'semantic-ui-react'
+import { Divider, Segment, Header, Checkbox } from 'semantic-ui-react'
 import { Button } from 'react-bootstrap'
 import { FormattedMessage } from 'react-intl'
 import useWindowDimensions from 'Utilities/windowDimensions'
@@ -20,6 +20,7 @@ import ScrollArrow from '../ScrollArrow'
 const ReviewView = ({ match }) => {
   const dispatch = useDispatch()
   const { width } = useWindowDimensions()
+  const [hideFeedback, setHideFeedback] = useState(false)
 
   const { story, pending } = useSelector(({ stories, locale }) => ({
     story: stories.focused,
@@ -55,11 +56,20 @@ const ReviewView = ({ match }) => {
             <span className="pr-sm">{story.title}</span>
           </Header>
           <div className="flex-reverse space-between align-end">
-            <Link to={`/stories/${id}/practice`}>
-              <Button variant="primary">
-                <FormattedMessage id="practice-now" />
-              </Button>
-            </Link>
+            <div className="flex-row">
+              <Checkbox
+                toggle
+                label="Hide feedback"
+                checked={hideFeedback}
+                onChange={() => setHideFeedback(!hideFeedback)}
+                style={{ marginRight: '1em' }}
+              />
+              <Link to={`/stories/${id}/practice`}>
+                <Button variant="primary">
+                  <FormattedMessage id="practice-now" />
+                </Button>
+              </Link>
+            </div>
             {story.url && (
               <a href={story.url}>
                 <FormattedMessage id="Source" />
@@ -69,7 +79,12 @@ const ReviewView = ({ match }) => {
           <Divider />
           {story.paragraph.map(paragraph => (
             <>
-              <TextWithFeedback reviewMode snippet={paragraph} answers={null} />
+              <TextWithFeedback
+                hideFeedback={hideFeedback}
+                reviewMode
+                snippet={paragraph}
+                answers={null}
+              />
               <br />
               <br />
             </>
