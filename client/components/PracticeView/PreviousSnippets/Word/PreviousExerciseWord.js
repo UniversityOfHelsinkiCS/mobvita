@@ -54,8 +54,6 @@ const PreviousExerciseWord = ({ word, answer, tiedAnswer }) => {
   }
 
   const handleClick = () => {
-
-    console.log('word:', word)
     if (word.isWrong) setShow(true)
     if (autoSpeak === 'always' && voice) speak(surface, voice)
     if (lemmas) {
