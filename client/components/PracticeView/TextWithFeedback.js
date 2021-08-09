@@ -60,8 +60,14 @@ const TextWithFeedback = ({ snippet, exercise = false, answers, reviewMode, ...p
       paddingLeft: chunkStart ? sidePadding : 'none',
       paddingRight: chunkEnd ? sidePadding : 'none',
     }
-    if (chunkStart) chunkStyle.borderRadius = '4px 0 0 4px'
-    if (chunkEnd) chunkStyle.borderRadius = '0 4px 4px 0'
+    if (chunkStart) {
+      chunkStyle.borderRadius = '4px 0 0 4px'
+      chunkStyle.marginLeft = '1px'
+    }
+    if (chunkEnd) {
+      chunkStyle.borderRadius = '0 4px 4px 0'
+      chunkStyle.marginRight = '1px'
+    }
     return chunkStyle
   }
 
