@@ -9,7 +9,7 @@ const Word = ({ word, answer, tiedAnswer }) => {
   }
 
   // review mode
-  if (word.wrong) {
+  if ({}.propertyIsEnumerable.call(word, 'wrong')) { // exists but might be empty
     const answerObj = {
       correct: word.surface,
       concept: word.concept,
