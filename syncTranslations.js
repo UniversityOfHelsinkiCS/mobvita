@@ -4,7 +4,7 @@ const path = require('path')
 const { google } = require('googleapis');
 require('dotenv').config()
 
-const apiClient = google.auth.fromAPIKey("AIzaSyC6_s0ZAeHyZtd4RcHF43zcQ75iKGExtIo")
+const apiClient = google.auth.fromAPIKey(process.env.GOOGLE_APIKEY)
 addTranslations(apiClient)
 
 async function addTranslations(auth) {
