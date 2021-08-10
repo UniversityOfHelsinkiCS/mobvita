@@ -30,9 +30,8 @@ const Summary = ({ setStudent, startDate, endDate, group, isTeaching, getSummary
 
     summary.map(user => {
       Object.keys(user).forEach(key => {
-        if (user[key] === null) {
-          user[key] = '0'
-        }
+        // replace null values with zeros
+        if (user[key] === null) user[key] = 0
       })
       return user
     })
@@ -41,10 +40,11 @@ const Summary = ({ setStudent, startDate, endDate, group, isTeaching, getSummary
 
     if (field) {
       return summary.sort((a, b) => {
-        if (convertCellValue(a[field], field) < convertCellValue(b[field], field))
-          return direction[field] === 1 ? -1 : 1
-        if (convertCellValue(a[field], field) > convertCellValue(b[field], field))
-          return direction[field] === 1 ? 1 : -1
+        const convertedA = convertCellValue(a[field], field)
+        const convertedB = convertCellValue(b[field], field)
+
+        if (convertedA < convertedB) return direction[field] === 1 ? -1 : 1
+        if (convertedA > convertedB) return direction[field] === 1 ? 1 : -1
 
         return 0
       })
