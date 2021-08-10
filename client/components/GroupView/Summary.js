@@ -3,25 +3,49 @@ import { useSelector } from 'react-redux'
 import { Table } from 'react-bootstrap'
 import { Icon } from 'semantic-ui-react'
 import { CSVLink } from 'react-csv'
-import { FormattedMessage } from 'react-intl'
+import { FormattedMessage, useIntl } from 'react-intl'
 import Spinner from 'Components/Spinner'
 import { capitalize } from 'Utilities/common'
 import produce from 'immer'
 
 const Summary = ({ setStudent, startDate, endDate, group, isTeaching, getSummary, setContent }) => {
+  const intl = useIntl()
   const [sorter, setSorter] = useState({})
   const [columns, setColumns] = useState([])
 
   const groupName = group?.groupName
+
+  const convertCellValue = (value, field) => {
+    if (
+      field === intl.formatMessage({ id: 'Email' }) ||
+      field === intl.formatMessage({ id: 'username' })
+    ) {
+      return String(value).toLowerCase()
+    }
+    return parseInt(value, 10)
+  }
+
   const summary = useSelector(({ summary: { summary } }) => {
     if (!summary) return null
+
+    summary.map(user => {
+      Object.keys(user).forEach(key => {
+        if (user[key] === null) {
+          user[key] = '0'
+        }
+      })
+      return user
+    })
 
     const { field, direction } = sorter
 
     if (field) {
       return summary.sort((a, b) => {
-        if (a[field] < b[field]) return direction[field] === 1 ? -1 : 1
-        if (a[field] > b[field]) return direction[field] === 1 ? 1 : -1
+        if (convertCellValue(a[field], field) < convertCellValue(b[field], field))
+          return direction[field] === 1 ? -1 : 1
+        if (convertCellValue(a[field], field) > convertCellValue(b[field], field))
+          return direction[field] === 1 ? 1 : -1
+
         return 0
       })
     }
@@ -43,7 +67,7 @@ const Summary = ({ setStudent, startDate, endDate, group, isTeaching, getSummary
       })
 
       setSorter({
-        field: 'email',
+        field: intl.formatMessage({ id: 'Email' }),
         direction: directionsObj,
       })
 
