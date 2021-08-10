@@ -40,7 +40,7 @@ const ShareStory = ({ story, isOpen, setOpen }) => {
       setShowSelfAddWarning(true)
     } else {
       if (showOption === 'group') {
-        dispatch(shareStory(story._id, shareTargetGroupId, [], message))
+        dispatch(shareStory(story._id, [shareTargetGroupId], [], message))
       } else {
         dispatch(shareStory(story._id, [], formatEmailList(shareTargetUserEmails), message))
       }
