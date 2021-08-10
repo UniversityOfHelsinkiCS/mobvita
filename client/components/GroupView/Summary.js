@@ -22,7 +22,7 @@ const Summary = ({ setStudent, startDate, endDate, group, isTeaching, getSummary
     ) {
       return String(value).toLowerCase()
     }
-    return parseInt(value, 10)
+    return parseFloat(value)
   }
 
   const summary = useSelector(({ summary: { summary } }) => {
@@ -30,8 +30,8 @@ const Summary = ({ setStudent, startDate, endDate, group, isTeaching, getSummary
 
     summary.map(user => {
       Object.keys(user).forEach(key => {
-        // replace null values with zeros
-        if (user[key] === null) user[key] = 0
+        // replace null values with -Number.MAX_VALUE
+        if (user[key] === null) user[key] = -Number.MAX_VALUE
       })
       return user
     })
@@ -111,6 +111,11 @@ const Summary = ({ setStudent, startDate, endDate, group, isTeaching, getSummary
 
   const filename = `${cleanGroupName}_summary.csv`
 
+  const replaceMinusMaxValue = value => {
+    if (value === -Number.MAX_VALUE) return '-'
+    return value
+  }
+
   return (
     <>
       {pending ? (
@@ -146,7 +151,7 @@ const Summary = ({ setStudent, startDate, endDate, group, isTeaching, getSummary
                   {summary.map(user => (
                     <tr onClick={() => handleRowClick(user)} key={user.email}>
                       {columns.map(column => (
-                        <td>{user[column]}</td>
+                        <td>{replaceMinusMaxValue(user[column])}</td>
                       ))}
                     </tr>
                   ))}
