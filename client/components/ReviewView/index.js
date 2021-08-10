@@ -3,7 +3,7 @@ import { useSelector, useDispatch } from 'react-redux'
 import { Link } from 'react-router-dom'
 import { Divider, Segment, Header, Checkbox } from 'semantic-ui-react'
 import { Button } from 'react-bootstrap'
-import { FormattedMessage } from 'react-intl'
+import { FormattedMessage, useIntl } from 'react-intl'
 import useWindowDimensions from 'Utilities/windowDimensions'
 import { getStoryAction } from 'Utilities/redux/storiesReducer'
 import { clearTranslationAction } from 'Utilities/redux/translationReducer'
@@ -19,6 +19,7 @@ import ScrollArrow from '../ScrollArrow'
 
 const ReviewView = ({ match }) => {
   const dispatch = useDispatch()
+  const intl = useIntl()
   const { width } = useWindowDimensions()
   const [hideFeedback, setHideFeedback] = useState(false)
 
@@ -51,15 +52,15 @@ const ReviewView = ({ match }) => {
   return (
     <div className="cont-tall flex-col space-between align-center pt-sm">
       <div className="flex mb-nm">
-        <Segment data-cy="readmode-text" className="cont" style={getTextStyle(learningLanguage)}>
+        <Segment data-cy="reviewmode-text" className="cont" style={getTextStyle(learningLanguage)}>
           <Header style={getTextStyle(learningLanguage, 'title')}>
             <span className="pr-sm">{story.title}</span>
           </Header>
           <div className="flex-reverse space-between align-end">
-            <div className="flex-row">
+            <div>
               <Checkbox
                 toggle
-                label="Hide feedback"
+                label={intl.formatMessage({ id: 'hide-feedback' })}
                 checked={hideFeedback}
                 onChange={() => setHideFeedback(!hideFeedback)}
                 style={{ marginRight: '1em' }}
