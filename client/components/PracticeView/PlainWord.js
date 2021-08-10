@@ -49,8 +49,10 @@ const PlainWord = ({ word, annotatingAllowed, ...props }) => {
     return true
   }
 
+  const consistsOfOnlyWhitespace = word => !!word.match(/^\s+$/g)
+
   const handleNonRecognizedWordclick = word => {
-    if (annotatingAllowed) {
+    if (annotatingAllowed && !consistsOfOnlyWhitespace(word.surface)) {
       dispatch(setHighlightedWord(word))
       const annotationInStore = annotations.find(w => w.ID === word.ID)
 
