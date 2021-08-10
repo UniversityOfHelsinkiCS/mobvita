@@ -95,13 +95,9 @@ const Summary = ({ setStudent, startDate, endDate, group, isTeaching, getSummary
   }
 
   const handleRowClick = user => {
-    // not optimal but will have to do know because BE returns localized field names
     const student = group.students.find(
-      student =>
-        student?.userName === user?.Username ||
-        student?.userName === user?.Käyttäjänimi ||
-        student?.userName === user['Nome utente'] ||
-        student?.userName === user['Имя пользователя']
+      // BE returns localized name for 'username' field, so we get the translation
+      student => student?.userName === user?.[intl.formatMessage({ id: 'username' })]
     )
     setStudent(student)
     setContent('progress')
