@@ -62,7 +62,11 @@ const PreviousSnippets = () => {
           snippetsInPrevious.includes(snippet.snippetid[snippet.snippetid.length - 1])
         )
         .map(snippet => (
-          <TextWithFeedback snippet={snippet.practice_snippet} answers={previousAnswers} />
+          <TextWithFeedback
+            snippet={snippet.practice_snippet}
+            answers={previousAnswers}
+            mode="practice"
+          />
         )),
     [previous]
   )

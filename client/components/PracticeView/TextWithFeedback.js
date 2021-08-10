@@ -2,7 +2,7 @@ import React, { useMemo } from 'react'
 import ExerciseWord from './CurrentSnippet/ExerciseWord'
 import Word from './PreviousSnippets/Word'
 
-const TextWithFeedback = ({ snippet, exercise = false, answers, reviewMode, hideFeedback, ...props }) => {
+const TextWithFeedback = ({ snippet, exercise = false, answers, mode, hideFeedback, ...props }) => {
   let lowestLinePosition = 0
   const openLinePositions = [1, 2, 3, 4, 5]
   const reservedLinePositions = {}
@@ -79,8 +79,8 @@ const TextWithFeedback = ({ snippet, exercise = false, answers, reviewMode, hide
         hideFeedback={hideFeedback}
         key={word.ID}
         word={word}
-        answer={!reviewMode && answers[word.ID]}
-        tiedAnswer={!reviewMode && answers[word.tiedTo]}
+        answer={mode !== 'review' && answers[word.ID]}
+        tiedAnswer={mode !== 'review' && answers[word.tiedTo]}
         {...props}
       />
     )

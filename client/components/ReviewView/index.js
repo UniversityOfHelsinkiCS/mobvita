@@ -81,7 +81,7 @@ const ReviewView = ({ match }) => {
             <>
               <TextWithFeedback
                 hideFeedback={hideFeedback}
-                reviewMode
+                mode="review"
                 snippet={paragraph}
                 answers={null}
               />

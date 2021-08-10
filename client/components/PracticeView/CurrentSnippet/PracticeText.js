@@ -1,14 +1,16 @@
-import React, { useRef, useState, useEffect, useMemo } from 'react'
+import React, { useRef, useState, useEffect } from 'react'
 import { useSelector, shallowEqual } from 'react-redux'
 import { Spinner } from 'react-bootstrap'
 import TextWithFeedback from 'Components/PracticeView/TextWithFeedback'
 
-const PracticeText = (props) => {
+const PracticeText = props => {
   const snippets = useSelector(({ snippets }) => snippets)
   const textComponent = useRef(null)
   const [previousHeight, setPreviousHeight] = useState(0)
-  const practiceSnippet = useSelector(({ snippets }) => (
-    snippets.focused && snippets.focused.practice_snippet), shallowEqual)
+  const practiceSnippet = useSelector(
+    ({ snippets }) => snippets.focused && snippets.focused.practice_snippet,
+    shallowEqual
+  )
 
   useEffect(() => {
     if (textComponent.current) {
@@ -26,7 +28,7 @@ const PracticeText = (props) => {
 
   return (
     <div ref={textComponent}>
-      <TextWithFeedback exercise snippet={practiceSnippet} {...props} />
+      <TextWithFeedback exercise snippet={practiceSnippet} mode="practice" {...props} />
     </div>
   )
 }
