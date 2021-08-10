@@ -99,7 +99,7 @@ const AnnotationDetails = ({ focusedWord, annotations, showAnnotationForm }) => 
   }
 
   const userHasNoAnnotationForWord = word => {
-    return filterRemovedAnnotations(word).every(a => a.username !== user.userName)
+    return filterRemovedAnnotations(word).every(a => a.uid !== user.oid)
   }
 
   const filteredAnnotations = filterRemovedAnnotations(focusedWord)
@@ -122,13 +122,13 @@ const AnnotationDetails = ({ focusedWord, annotations, showAnnotationForm }) => 
               <div
                 key={a.uid}
                 className={`annotation-item ${
-                  showAnnotationForm && a.username === user.userName
+                  showAnnotationForm && a.uid === user.oid
                     ? 'annotation-item-editing'
                     : 'annotation-item-listed'
                 }
                 `}
               >
-                {a.username === user.userName && showAnnotationForm ? (
+                {a.uid === user.oid && showAnnotationForm ? (
                   <div className="bold">
                     <FormattedMessage id="edit-your-note" />:
                   </div>
@@ -136,7 +136,7 @@ const AnnotationDetails = ({ focusedWord, annotations, showAnnotationForm }) => 
                   <>
                     <div className="space-between" style={{ marginBottom: '1em' }}>
                       <div>
-                        {a.username === user.userName ? (
+                        {a.uid === user.oid ? (
                           <div>
                             <b>{intl.formatMessage({ id: 'you' })}</b>{' '}
                             {intl.formatMessage({ id: '(you)wrote' })}:
@@ -148,7 +148,7 @@ const AnnotationDetails = ({ focusedWord, annotations, showAnnotationForm }) => 
                         )}
                       </div>
 
-                      {a.username === user.userName && (
+                      {a.uid === user.oid && (
                         <div>
                           <Button
                             size="sm"
