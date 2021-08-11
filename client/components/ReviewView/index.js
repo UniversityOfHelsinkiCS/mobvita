@@ -60,8 +60,8 @@ const ReviewView = ({ match }) => {
             <div>
               <Checkbox
                 toggle
-                label={intl.formatMessage({ id: 'hide-feedback' })}
-                checked={hideFeedback}
+                label={intl.formatMessage({ id: 'show-feedback' })}
+                checked={!hideFeedback}
                 onChange={() => setHideFeedback(!hideFeedback)}
                 style={{ marginRight: '1em' }}
               />

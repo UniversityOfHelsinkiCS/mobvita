@@ -1055,7 +1055,7 @@
     "write-your-note-here": "Scrivi gli appunti qui",
     "this-story-no-notes": "This story has no notes yet.",
     "click-any-word-create-note": "Click any word to create a note.",
-    "click-any-word-to-create-one": "Clicca qualsiasi parola per crearne uno.",
+    "click-any-word-to-create-one": "Clicca qualsiasi parola per crearne un appunto.",
     "this-story-has-no-notes": "La storia non ha ancora degli appunti.",
     "this-word-has-no-notes-yet": "Questa parola non ha appunti al momento.",
     "note-save-success": "Appunti salvati",
@@ -1067,10 +1067,11 @@
     "annotations-popup-info-text": "Puoi aggiungere degli appunti su ogni parola — qualcosa importante o interessante su come funziona questa lingua.",
     "notes-added-to-history-appear-here": "Gli appunti aggiunti alle parole appartenenti agli snippet completati appaiono qui.",
     "click-any-word-in-history-to-create-note": "Click any word before the exercise snippet to add a note.",
-    "click-any-word-in-history-to-add-new": "Clicca su qualsiasi parola in uno snippet per aggiungerla agli appunti.",
+    "click-any-word-in-history-to-add-new": "Clicca su qualsiasi parola per aggiungerla agli appunti.",
     "review": "Riesamina",
     "references": "Riferimento",
     "": "Noun. Case and postposition/preposition government",
     "hide-feedback": "Nascondi feedback",
-    "Weather": "Tempo"
+    "Weather": "Tempo",
+    "show-feedback": "Visualizza il feedback"
 }
