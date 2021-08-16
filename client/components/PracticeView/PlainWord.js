@@ -1,6 +1,7 @@
 import React from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import { useParams } from 'react-router-dom'
+import useWindowDimensions from 'Utilities/windowDimensions'
 import {
   learningLanguageSelector,
   dictionaryLanguageSelector,
@@ -8,7 +9,11 @@ import {
   respVoiceLanguages,
 } from 'Utilities/common'
 import { getTranslationAction, setWords } from 'Utilities/redux/translationReducer'
-import { setFocusedWord, setHighlightedWord } from 'Utilities/redux/annotationsReducer'
+import {
+  setFocusedWord,
+  setHighlightedWord,
+  setAnnotationvisibilityMobile,
+} from 'Utilities/redux/annotationsReducer'
 
 const PlainWord = ({ word, annotatingAllowed, ...props }) => {
   const { lemmas, ID: wordId, surface, inflection_ref: inflectionRef, name_token: isName } = word
@@ -21,6 +26,8 @@ const PlainWord = ({ word, annotatingAllowed, ...props }) => {
 
   const dispatch = useDispatch()
   const { id: storyId } = useParams()
+  const { width } = useWindowDimensions()
+  const bigScreen = width >= 1024
 
   const getSuperscript = word => {
     const existingAnnotations = annotations.filter(word =>
@@ -51,7 +58,8 @@ const PlainWord = ({ word, annotatingAllowed, ...props }) => {
 
   const consistsOfOnlyWhitespace = word => !!word.match(/^\s+$/g)
 
-  const handleNonRecognizedWordclick = word => {
+  const handleNonRecognizedWordClick = word => {
+    if (!bigScreen) dispatch(setAnnotationvisibilityMobile(false))
     if (annotatingAllowed && !consistsOfOnlyWhitespace(word.surface)) {
       dispatch(setHighlightedWord(word))
       const annotationInStore = annotations.find(w => w.ID === word.ID)
@@ -68,8 +76,8 @@ const PlainWord = ({ word, annotatingAllowed, ...props }) => {
           className={`${word.ID === highlightedWord?.ID && 'notes-highlighted-word'}`}
           role={annotatingAllowed && 'button'}
           tabIndex="-1"
-          onClick={() => handleNonRecognizedWordclick(word)}
-          onKeyDown={() => handleNonRecognizedWordclick(word)}
+          onClick={() => handleNonRecognizedWordClick(word)}
+          onKeyDown={() => handleNonRecognizedWordClick(word)}
           {...props}
         >
           {surface}
