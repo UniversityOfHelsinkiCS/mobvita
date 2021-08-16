@@ -48,6 +48,7 @@ const AnnotationList = ({ handleAnnotationBoxCollapse, annotations, highlightedW
               role="button"
               tabIndex={0}
               className={word?.ID === highlightedWord?.ID ? 'notes-highlighted-word' : ''}
+              data-cy={`${word.ID}-${word.surface}`}
             >
               {word.surface}
             </span>

@@ -32,6 +32,7 @@ const AnnotationBox = ({ mode }) => {
           onKeyDown={() => dispatch(setAnnotationsVisibility(true))}
           role="button"
           tabIndex={0}
+          data-cy="annotations-visibility-button"
         >
           <div className="header-3">
             <FormattedMessage id="notes" />{' '}

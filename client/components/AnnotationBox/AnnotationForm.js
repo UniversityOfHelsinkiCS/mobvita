@@ -36,6 +36,7 @@ const AnnotationForm = ({
           maxLength={maxCharacters}
           style={{ marginTop: '0rem', minHeight: '10em' }}
           autoFocus
+          data-cy="annotation-text-field"
         />
       </Form>
       <div className="bold" style={{ margin: '.75rem 0rem', fontSize: '.85rem' }}>
@@ -55,6 +56,7 @@ const AnnotationForm = ({
         onClick={handleAnnotationSave}
         style={{ marginLeft: '.5em' }}
         disabled={annotationText.length < 1 || consistsOfOnlyWhitespace(annotationText)}
+        data-cy="save-annotation-button"
       >
         <FormattedMessage id="Save" />
       </Button>

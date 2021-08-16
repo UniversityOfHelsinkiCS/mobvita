@@ -162,6 +162,7 @@ const AnnotationDetails = ({ focusedWord, annotations, showAnnotationForm }) => 
                             size="sm"
                             variant="outline-danger"
                             onClick={handleAnnotationDelete}
+                            data-cy="delete-annotation-button"
                           >
                             <Icon name="trash alternate" />
                             <FormattedMessage id="Delete" />
@@ -199,6 +200,7 @@ const AnnotationDetails = ({ focusedWord, annotations, showAnnotationForm }) => 
                   style={{ marginTop: '.75em' }}
                   size="sm"
                   onClick={handleCreateAnnotationButtonClick}
+                  data-cy="create-annotation-button"
                 >
                   <FormattedMessage id="create-a-note" />
                 </Button>
