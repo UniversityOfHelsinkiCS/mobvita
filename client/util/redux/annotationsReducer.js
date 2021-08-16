@@ -71,6 +71,13 @@ export const setAnnotationFormVisibility = visibility => {
   }
 }
 
+export const setAnnotationvisibilityMobile = visibility => {
+  return {
+    type: 'SET_ANNOTATION_VISIBILITY_MOBILE',
+    visibility,
+  }
+}
+
 const initialState = {
   focusedWord: null,
   highlightedWord: null,
@@ -78,6 +85,7 @@ const initialState = {
   pending: false,
   showAnnotations: false,
   showAnnotationForm: false,
+  mobileDisplayAnnotations: false,
 }
 
 export default (state = initialState, action) => {
@@ -132,6 +140,11 @@ export default (state = initialState, action) => {
         ...state,
         showAnnotationForm: action.visibility,
       }
+    case 'SET_ANNOTATION_VISIBILITY_MOBILE':
+      return {
+        ...state,
+        mobileDisplayAnnotations: action.visibility,
+      }
     case 'RESET_ANNOTATIONS':
       return initialState
     case 'INIT_ANNOTATIONS':
@@ -149,6 +162,12 @@ export default (state = initialState, action) => {
         ...state,
         annotations: state.annotations.concat(action.annotations),
       }
+    case 'GET_TRANSLATION_ATTEMPT': // always switch to translation view when fetching them
+      return {
+        ...state,
+        mobileDisplayAnnotations: false,
+      }
+
     default:
       return state
   }

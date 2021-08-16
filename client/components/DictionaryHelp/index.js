@@ -15,7 +15,9 @@ import {
   images,
 } from 'Utilities/common'
 import useWindowDimensions from 'Utilities/windowDimensions'
+import { setAnnotationvisibilityMobile } from 'Utilities/redux/annotationsReducer'
 import { Spinner } from 'react-bootstrap'
+import AnnotationDetails from 'Components/AnnotationBox/AnnotationDetails'
 
 const Speaker = ({ word }) => {
   const learningLanguage = useLearningLanguage()
@@ -38,9 +40,16 @@ const Speaker = ({ word }) => {
 }
 
 const DictionaryButton = ({ setShow }) => {
+  const dispatch = useDispatch()
+
+  const handleDictionaryButtonClick = () => {
+    setShow(true)
+    dispatch(setAnnotationvisibilityMobile(false))
+  }
+
   return (
     <div className="dictionary-button">
-      <Button className="navigationbuttonopen" icon basic onClick={() => setShow(true)}>
+      <Button className="navigationbuttonopen" icon basic onClick={handleDictionaryButtonClick}>
         <Icon size="large" name="book" data-cy="dictionary-icon" />
       </Button>
     </div>
@@ -96,8 +105,17 @@ const DictionaryHelp = ({ minimized, inWordNestModal }) => {
   const translationLanguageCode = useSelector(({ user }) => user.data.user.last_trans_language)
   const learningLanguage = useLearningLanguage()
   const dictionaryLanguage = useDictionaryLanguage()
-  const { pending, data: translation, surfaceWord, lemmas, clue, maskSymbol } = useSelector(
-    ({ translation }) => translation
+  const {
+    pending,
+    data: translation,
+    surfaceWord,
+    lemmas,
+    clue,
+    maskSymbol,
+  } = useSelector(({ translation }) => translation)
+
+  const { focusedWord, annotations, mobileDisplayAnnotations } = useSelector(
+    ({ annotations }) => annotations
   )
 
   const { data: words } = useSelector(({ wordNest }) => wordNest)
@@ -265,9 +283,9 @@ const DictionaryHelp = ({ minimized, inWordNestModal }) => {
       )
     }
     return (
-      <span>
+      <div style={{ marginBottom: '1em' }}>
         <FormattedMessage id="click-on-words-near-the-exercises-to-explore-their-meaning" />
-      </span>
+      </div>
     )
   }
 
@@ -278,60 +296,91 @@ const DictionaryHelp = ({ minimized, inWordNestModal }) => {
       }`}
     >
       <Segment>
-        <div className="align-right" style={{ color: 'slateGrey' }}>
-          <FormattedMessage id="translation-target-language" />
-          <select
-            disabled={dictionaryOptions.length <= 1}
-            defaultValue={translationLanguageCode}
-            data-cy="dictionary-dropdown"
-            style={{
-              marginLeft: '0.5em',
-              border: 'none',
-              color: 'slateGrey',
-              backgroundColor: 'white',
-              marginBottom: '1em',
-            }}
-            onChange={e => handleDropdownChange(e.target.value)}
-          >
-            {dictionaryOptions.map(option => (
-              <option key={option.key} value={option.value}>
-                {option.text}
-              </option>
-            ))}
-          </select>
-        </div>
-
-        <div className="space-between pt-sm">
-          <div>
-            {showSurfaceWord() && !inWordNestModal && (
-              <div
+        {!mobileDisplayAnnotations ? (
+          <>
+            <div className="align-right" style={{ color: 'slateGrey' }}>
+              <FormattedMessage id="translation-target-language" />
+              <select
+                disabled={dictionaryOptions.length <= 1}
+                defaultValue={translationLanguageCode}
+                data-cy="dictionary-dropdown"
                 style={{
-                  paddingBottom: '0.5em',
-                  display: 'flex',
-                  ...getTextStyle(learningLanguage),
+                  marginLeft: '0.5em',
+                  border: 'none',
+                  color: 'slateGrey',
+                  backgroundColor: 'white',
+                  marginBottom: '1em',
                 }}
+                onChange={e => handleDropdownChange(e.target.value)}
               >
-                <Speaker word={surfaceWord} />
-                <span style={{ color: '#2185D0' }}>{maskSymbol || surfaceWord}</span>
-              </div>
-            )}
-            {translationResults()}
-          </div>
-          {!inWordNestModal && learningLanguage === 'Russian' && (
-            <WordNestModal
-              wordToCheck={wordNestChosenWord}
-              setWordToCheck={setWordNestChosenWord}
-              open={wordNestModalOpen}
-              setOpen={setWordNestModalOpen}
-            />
-          )}
+                {dictionaryOptions.map(option => (
+                  <option key={option.key} value={option.value}>
+                    {option.text}
+                  </option>
+                ))}
+              </select>
+            </div>
 
-          {smallWindow && !inWordNestModal ? (
-            <Button icon basic onClick={() => setShow(false)} style={{ alignSelf: 'flex-end' }}>
+            <div className="space-between pt-sm">
+              <div>
+                {showSurfaceWord() && !inWordNestModal && (
+                  <div
+                    style={{
+                      paddingBottom: '0.5em',
+                      display: 'flex',
+                      ...getTextStyle(learningLanguage),
+                    }}
+                  >
+                    <Speaker word={surfaceWord} />
+                    <span style={{ color: '#2185D0' }}>{maskSymbol || surfaceWord}</span>
+                  </div>
+                )}
+                {translationResults()}
+              </div>
+              {!inWordNestModal && learningLanguage === 'Russian' && (
+                <WordNestModal
+                  wordToCheck={wordNestChosenWord}
+                  setWordToCheck={setWordNestChosenWord}
+                  open={wordNestModalOpen}
+                  setOpen={setWordNestModalOpen}
+                />
+              )}
+            </div>
+          </>
+        ) : (
+          <div>
+            <div className="header-3">
+              <FormattedMessage id="notes" />
+            </div>
+            <AnnotationDetails
+              focusedWord={focusedWord}
+              annotations={annotations}
+              showAnnotationForm={false}
+            />
+          </div>
+        )}
+
+        {smallWindow && !inWordNestModal ? (
+          <div className="justify-end">
+            {focusedWord && focusedWord?.annotation && (
+              <Button
+                icon
+                basic
+                onClick={() => dispatch(setAnnotationvisibilityMobile(!mobileDisplayAnnotations))}
+                style={{ marginRight: '1em' }}
+              >
+                <Icon
+                  name={mobileDisplayAnnotations ? 'translate' : 'pencil alternate'}
+                  size="large"
+                  color="blue"
+                />
+              </Button>
+            )}
+            <Button icon basic onClick={() => setShow(false)}>
               <Icon name="angle down" size="large" color="blue" />
             </Button>
-          ) : null}
-        </div>
+          </div>
+        ) : null}
       </Segment>
     </div>
   )

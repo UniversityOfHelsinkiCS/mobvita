@@ -2,6 +2,7 @@ import React, { useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { Icon, Divider } from 'semantic-ui-react'
 import { Button } from 'react-bootstrap'
+import useWindowDimensions from 'Utilities/windowDimensions'
 import { FormattedMessage, useIntl } from 'react-intl'
 import {
   setFocusedWord,
@@ -18,6 +19,8 @@ const AnnotationDetails = ({ focusedWord, annotations, showAnnotationForm }) => 
   const dispatch = useDispatch()
   const maxCharacters = 1000
   const intl = useIntl()
+  const { width } = useWindowDimensions()
+  const bigScreen = width >= 1024
 
   const [annotationText, setAnnotationText] = useState('')
   const [charactersLeft, setCharactersLeft] = useState(maxCharacters)
@@ -106,11 +109,15 @@ const AnnotationDetails = ({ focusedWord, annotations, showAnnotationForm }) => 
 
   return (
     <div>
-      <div role="button" onClick={handleBackClick} onKeyDown={handleBackClick} tabIndex={0}>
-        <Icon name="arrow left" />
-        <FormattedMessage id="all-notes" />
-      </div>
-      <Divider />
+      {bigScreen && (
+        <>
+          <div role="button" onClick={handleBackClick} onKeyDown={handleBackClick} tabIndex={0}>
+            <Icon name="arrow left" />
+            <FormattedMessage id="all-notes" />
+          </div>
+          <Divider />
+        </>
+      )}
       <div>
         <div style={{ margin: '1.5em 0em' }}>
           <b>{focusedWord.surface}</b>
@@ -148,7 +155,7 @@ const AnnotationDetails = ({ focusedWord, annotations, showAnnotationForm }) => 
                         )}
                       </div>
 
-                      {a.uid === user.oid && (
+                      {a.uid === user.oid && bigScreen && (
                         <div>
                           <Button
                             size="sm"
