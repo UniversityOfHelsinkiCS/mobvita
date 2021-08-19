@@ -370,7 +370,7 @@ const DictionaryHelp = ({ minimized, inWordNestModal }) => {
                 style={{ marginRight: '1em' }}
               >
                 <Icon
-                  name={mobileDisplayAnnotations ? 'translate' : 'pencil alternate'}
+                  name={mobileDisplayAnnotations ? 'translate' : 'sticky note outline'}
                   size="large"
                   color="blue"
                 />
