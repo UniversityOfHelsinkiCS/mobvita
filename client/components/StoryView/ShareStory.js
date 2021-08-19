@@ -18,7 +18,6 @@ const ShareStory = ({ story, isOpen, setOpen }) => {
   const groupsUserCanShareWith = useSelector(({ groups }) =>
     groups.groups.filter(group => group.is_teaching)
   )
-  const activeGroup = useSelector(({ user }) => user.data.user.last_selected_group)
   const ownEmail = useSelector(({ user }) => user.data.user.email)
 
   const intl = useIntl()
@@ -26,10 +25,7 @@ const ShareStory = ({ story, isOpen, setOpen }) => {
 
   useEffect(() => {
     if (groupsUserCanShareWith.length > 0) {
-      const preferredGroup = groupsUserCanShareWith.find(group => group.group_id === activeGroup)
-      setShareTargetGroupId(
-        preferredGroup ? preferredGroup.group_id : groupsUserCanShareWith[0].group_id
-      )
+      setShareTargetGroupId(groupsUserCanShareWith[0].group_id)
     }
   }, [])
 
