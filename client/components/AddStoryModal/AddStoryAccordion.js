@@ -17,22 +17,25 @@ const AddStoryAccordion = ({ closeModal }) => {
     setAccordionState(newIndex)
   }
 
-  const getAccordionItemClass = (accordionState, index) => {
+  const getAccordionItemTitleClass = (accordionState, index) => {
     return accordionState === index
-      ? 'add-story-accordion-focused-item'
-      : 'add-story-accordion-item'
+      ? 'add-story-accordion-item-title-focused'
+      : 'add-story-accordion-item-title'
   }
 
   return (
     <Accordion as={Menu} fluid vertical>
-      <h2 style={{ marginTop: '1.5rem', marginLeft: '2rem', marginBottom: '1.5rem' }}>
+      <div
+        className="header-2"
+        style={{ marginTop: '1.5rem', marginLeft: '2rem', marginBottom: '1.5rem' }}
+      >
         <FormattedMessage id="add-your-stories" />
-      </h2>
-      <Menu.Item style={{ margin: '1rem' }}>
+      </div>
+      <Menu.Item className="add-story-accordion-item">
         <Accordion.Title
           active={accordionState === 0}
           content={
-            <span className={getAccordionItemClass(accordionState, 0)}>
+            <span className={getAccordionItemTitleClass(accordionState, 0)}>
               <FormattedMessage id="upload-from-web" />
             </span>
           }
@@ -40,17 +43,18 @@ const AddStoryAccordion = ({ closeModal }) => {
           onClick={handleClick}
         />
         <Accordion.Content
+          className="add-story-accordion-item-content"
           active={accordionState === 0}
           content={<UploadFromWeb closeModal={closeModal} />}
         />
       </Menu.Item>
 
       {!smallWindow && (
-        <Menu.Item style={{ margin: '1rem' }}>
+        <Menu.Item className="add-story-accordion-item">
           <Accordion.Title
             active={accordionState === 1}
             content={
-              <span className={getAccordionItemClass(accordionState, 1)}>
+              <span className={getAccordionItemTitleClass(accordionState, 1)}>
                 <FormattedMessage id="upload-stories" />
               </span>
             }
@@ -58,17 +62,18 @@ const AddStoryAccordion = ({ closeModal }) => {
             onClick={handleClick}
           />
           <Accordion.Content
+            className="add-story-accordion-item-content"
             active={accordionState === 1}
             content={<UploadFromFile closeModal={closeModal} />}
           />
         </Menu.Item>
       )}
 
-      <Menu.Item style={{ margin: '1rem' }}>
+      <Menu.Item className="add-story-accordion-item">
         <Accordion.Title
           active={accordionState === 2}
           content={
-            <span className={getAccordionItemClass(accordionState, 2)}>
+            <span className={getAccordionItemTitleClass(accordionState, 2)}>
               <FormattedMessage id="paste-a-text" />
             </span>
           }
@@ -76,16 +81,17 @@ const AddStoryAccordion = ({ closeModal }) => {
           onClick={handleClick}
         />
         <Accordion.Content
+          className="add-story-accordion-item-content"
           active={accordionState === 2}
           content={<UploadPastedText closeModal={closeModal} />}
         />
       </Menu.Item>
 
-      <Menu.Item style={{ margin: '1rem' }}>
+      <Menu.Item className="add-story-accordion-item">
         <Accordion.Title
           active={accordionState === 3}
           content={
-            <span className={getAccordionItemClass(accordionState, 3)}>
+            <span className={getAccordionItemTitleClass(accordionState, 3)}>
               <i>
                 <FormattedMessage id="recommended-sites" />
               </i>
@@ -94,7 +100,11 @@ const AddStoryAccordion = ({ closeModal }) => {
           index={3}
           onClick={handleClick}
         />
-        <Accordion.Content active={accordionState === 3} content={<RecommendedSites />} />
+        <Accordion.Content
+          className="add-story-accordion-item-content"
+          active={accordionState === 3}
+          content={<RecommendedSites />}
+        />
       </Menu.Item>
     </Accordion>
   )
