@@ -1072,5 +1072,6 @@
     "": "Substantiivi. Rektiot",
     "hide-feedback": "Piilota palaute",
     "Weather": "Sää",
-    "show-feedback": "Näytä palaute"
+    "show-feedback": "Näytä palaute",
+    "upload-from-web-instructions": "Syötä alla olevaan kenttään esimerkiksi jonkin uutisen tai lyhyen kertomuksen URL-osoite. Revita yrittää automaattisesti noutaa tekstin.  Jos noutaminen ei kuitenkaan onnistu, voit käyttää myös alla olevaa \"Liitä teksti\"-vaihtoehtoa, ja kopioida itse tekstin. Varmista, että tekstin kieli on sama kuin valitsemasi opiskelukieli."
 }

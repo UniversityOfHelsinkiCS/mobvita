@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { Form, Input, Button } from 'semantic-ui-react'
 import { useHistory } from 'react-router-dom'
-import { useIntl, FormattedMessage } from 'react-intl'
+import { useIntl, FormattedMessage, FormattedHTMLMessage } from 'react-intl'
 import { Spinner } from 'react-bootstrap'
 import { postStory } from 'Utilities/redux/uploadProgressReducer'
 import { capitalize, learningLanguageSelector } from 'Utilities/common'
@@ -38,6 +38,10 @@ const UploadFromWeb = ({ closeModal }) => {
 
   return (
     <div>
+      <br />
+      <span className="pb-sm">
+        <FormattedHTMLMessage id="upload-from-web-instructions" />
+      </span>
       <Form id="url-upload">
         <Input
           fluid
@@ -60,7 +64,7 @@ const UploadFromWeb = ({ closeModal }) => {
           {storyUploading ? (
             <Spinner animation="border" variant="white" size="lg" />
           ) : (
-            <FormattedMessage id="upload-from-web" />
+            <FormattedMessage id="Confirm" />
           )}
         </Button>
       </div>

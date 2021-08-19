@@ -1072,5 +1072,6 @@
     "": "Noun. Case and postposition/preposition government",
     "hide-feedback": "Hide feedback",
     "Weather": "Weather",
-    "show-feedback": "Display feedback"
+    "show-feedback": "Display feedback",
+    "upload-from-web-instructions": "Revita will try to find the story from your URL. If the result contains unwanted text or fails, please use the \"Paste a text\" option below to enter the story manually."
 }
