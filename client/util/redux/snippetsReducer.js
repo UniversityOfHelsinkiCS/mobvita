@@ -21,6 +21,12 @@ export const getNextSnippet = (storyId, currentSnippetId) => {
   return callBuilder(route, prefix)
 }
 
+export const initializePrevious = storyId => {
+  const route = `/stories/${storyId}/snippets/completed`
+  const prefix = 'GET_PREVIOUS_SNIPPETS'
+  return callBuilder(route, prefix)
+}
+
 export const getNextSnippetFromCache = snippet => ({
   type: 'GET_NEXT_FROM_CACHE',
   nextSnippet: snippet,
@@ -116,8 +122,27 @@ export default (state = { previous: [], pending: false, error: false }, action) 
     case 'GET_NEXT_SNIPPET_SUCCESS':
       return {
         ...state,
-        //previous: filterPrevious(state.previous, state.focused),
+        // previous: filterPrevious(state.previous, state.focused),
         focused: action.response,
+        pending: false,
+        error: false,
+      }
+    case 'GET_PREVIOUS_SNIPPETS_ATTEMPT':
+      return {
+        ...state,
+        pending: true,
+        error: false,
+      }
+    case 'GET_PREVIOUS_SNIPPETS_FAILURE':
+      return {
+        ...state,
+        pending: false,
+        error: true,
+      }
+    case 'GET_PREVIOUS_SNIPPETS_SUCCESS':
+      return {
+        ...state,
+        previous: action.response.paragraph,
         pending: false,
         error: false,
       }

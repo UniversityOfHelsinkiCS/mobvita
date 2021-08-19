@@ -4,11 +4,7 @@ import { useParams } from 'react-router-dom'
 import { FormattedMessage } from 'react-intl'
 import { Icon } from 'semantic-ui-react'
 import { Button } from 'react-bootstrap'
-import {
-  postAnswers,
-  getCurrentSnippet,
-  resetCurrentSnippet,
-} from 'Utilities/redux/snippetsReducer'
+import { postAnswers, resetCurrentSnippet } from 'Utilities/redux/snippetsReducer'
 import { resetAnnotations } from 'Utilities/redux/annotationsReducer'
 import { finishSnippet, clearTouchedIds, clearPractice } from 'Utilities/redux/practiceReducer'
 
@@ -112,10 +108,6 @@ const SnippetActions = ({ storyId, exerciseCount }) => {
     checkAnswers(true)
   }
 
-  const handleRetry = () => {
-    dispatch(getCurrentSnippet(storyId))
-  }
-
   const handleRestart = () => {
     dispatch(clearPractice())
     dispatch(resetCurrentSnippet(id))
@@ -126,52 +118,38 @@ const SnippetActions = ({ storyId, exerciseCount }) => {
     }, 5000)
   }
 
-  const isSnippetFetchedSuccessfully =
-    snippets.answersPending || snippets.pending || snippets.focused
-
   return (
     <div>
-      {isSnippetFetchedSuccessfully ? (
-        <div style={{ display: 'flex', flexDirection: 'column' }}>
-          <CheckAnswersButton
-            handleClick={checkAnswers}
-            checkAnswersButtonTempDisable={checkAnswersButtonTempDisable}
-          />
-          <div className="space-between">
-            <Button
-              variant="secondary"
-              size="sm"
-              disabled={snippets.answersPending || snippets.pending || !snippets.focused}
-              onClick={submitAnswers}
-              style={{ marginBottom: '0.5em' }}
-            >
-              <span>
-                <FormattedMessage id="go-to-next-snippet" /> <Icon name="level down alternate" />
-              </span>
-            </Button>
-            <Button
-              variant="secondary"
-              size="sm"
-              onClick={handleRestart}
-              style={{ marginBottom: '0.5em' }}
-              disabled={snippets.answersPending || snippets.pending}
-            >
-              <span>
-                <FormattedMessage id="start-over" /> <Icon name="level up alternate" />
-              </span>
-            </Button>
-          </div>
+      <div style={{ display: 'flex', flexDirection: 'column' }}>
+        <CheckAnswersButton
+          handleClick={checkAnswers}
+          checkAnswersButtonTempDisable={checkAnswersButtonTempDisable}
+        />
+        <div className="space-between">
+          <Button
+            variant="secondary"
+            size="sm"
+            disabled={snippets.answersPending || snippets.pending || !snippets.focused}
+            onClick={submitAnswers}
+            style={{ marginBottom: '0.5em' }}
+          >
+            <span>
+              <FormattedMessage id="go-to-next-snippet" /> <Icon name="level down alternate" />
+            </span>
+          </Button>
+          <Button
+            variant="secondary"
+            size="sm"
+            onClick={handleRestart}
+            style={{ marginBottom: '0.5em' }}
+            disabled={snippets.answersPending || snippets.pending}
+          >
+            <span>
+              <FormattedMessage id="start-over" /> <Icon name="level up alternate" />
+            </span>
+          </Button>
         </div>
-      ) : (
-        <Button
-          block
-          variant="primary"
-          disabled={snippets.answersPending || snippets.pending}
-          onClick={() => handleRetry()}
-        >
-          Retry loading snippet
-        </Button>
-      )}
+      </div>
     </div>
   )
 }

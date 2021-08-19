@@ -93,7 +93,7 @@ const CurrentSnippet = ({ storyId, handleInputChange }) => {
 
   const finishSnippet = () => {
     dispatch(setPreviousAnswers(currentSnippetId()))
-    dispatch(addToPrevious(snippets.focused))
+    dispatch(addToPrevious([snippets.focused.practice_snippet]))
     const annotationsInCurrentSnippet = snippets.focused.practice_snippet.filter(
       word => word.annotation
     )
