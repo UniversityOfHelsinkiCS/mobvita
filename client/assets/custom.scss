@@ -766,7 +766,7 @@ html, body, #root {
     width: calc(100vw - 2em)
   }
   @media (max-width: 639px) {
-    bottom: 2%;
+    bottom: 1%;
     width: 95%;
     margin-bottom: 1em;
   }
@@ -784,7 +784,7 @@ html, body, #root {
 
 .notes-superscript {
   color: green;
-  font-size: 0.8rem; 
+  font-size: .8rem; 
 }
 
 .notes-info-text {
@@ -802,7 +802,7 @@ html, body, #root {
   }
   &-listed {
     background-color: #f5f5f5;
-    margin: 0.5rem 0rem;
+    margin: .5rem 0rem;
   }
 }
 
@@ -922,9 +922,9 @@ html, body, #root {
 
   &-title-focused {
     font-family: $default-font;
-    font-weight: bold;
+    font-weight: 500;
     font-size: 1.3rem!important;
-    padding-left: 1em;
+    padding-left: .75em;
   }
 
   &-content {
@@ -975,6 +975,7 @@ html, body, #root {
 
 .story-item-title {
   font-family: $rubik;
+  font-weight: 400;
   white-space: nowrap;
   width: 100%;
   overflow: hidden;

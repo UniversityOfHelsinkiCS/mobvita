@@ -296,91 +296,95 @@ const DictionaryHelp = ({ minimized, inWordNestModal }) => {
       }`}
     >
       <Segment>
-        {!mobileDisplayAnnotations ? (
-          <>
-            <div className="align-right" style={{ color: 'slateGrey' }}>
-              <FormattedMessage id="translation-target-language" />
-              <select
-                disabled={dictionaryOptions.length <= 1}
-                defaultValue={translationLanguageCode}
-                data-cy="dictionary-dropdown"
-                style={{
-                  marginLeft: '0.5em',
-                  border: 'none',
-                  color: 'slateGrey',
-                  backgroundColor: 'white',
-                  marginBottom: '1em',
-                }}
-                onChange={e => handleDropdownChange(e.target.value)}
-              >
-                {dictionaryOptions.map(option => (
-                  <option key={option.key} value={option.value}>
-                    {option.text}
-                  </option>
-                ))}
-              </select>
-            </div>
-
-            <div className="space-between pt-sm">
-              <div>
-                {showSurfaceWord() && !inWordNestModal && (
-                  <div
-                    style={{
-                      paddingBottom: '0.5em',
-                      display: 'flex',
-                      ...getTextStyle(learningLanguage),
-                    }}
-                  >
-                    <Speaker word={surfaceWord} />
-                    <span style={{ color: '#2185D0' }}>{maskSymbol || surfaceWord}</span>
-                  </div>
-                )}
-                {translationResults()}
-              </div>
-              {!inWordNestModal && learningLanguage === 'Russian' && (
-                <WordNestModal
-                  wordToCheck={wordNestChosenWord}
-                  setWordToCheck={setWordNestChosenWord}
-                  open={wordNestModalOpen}
-                  setOpen={setWordNestModalOpen}
-                />
-              )}
-            </div>
-          </>
-        ) : (
-          <div>
-            <div className="header-3">
-              <FormattedMessage id="notes" />
-            </div>
-            <AnnotationDetails
-              focusedWord={focusedWord}
-              annotations={annotations}
-              showAnnotationForm={false}
-            />
+        {!mobileDisplayAnnotations && (
+          <div className="align-right" style={{ color: 'slateGrey' }}>
+            <FormattedMessage id="translation-target-language" />
+            <select
+              disabled={dictionaryOptions.length <= 1}
+              defaultValue={translationLanguageCode}
+              data-cy="dictionary-dropdown"
+              style={{
+                marginLeft: '0.5em',
+                border: 'none',
+                color: 'slateGrey',
+                backgroundColor: 'white',
+                marginBottom: '1em',
+              }}
+              onChange={e => handleDropdownChange(e.target.value)}
+            >
+              {dictionaryOptions.map(option => (
+                <option key={option.key} value={option.value}>
+                  {option.text}
+                </option>
+              ))}
+            </select>
           </div>
         )}
 
-        {smallWindow && !inWordNestModal ? (
-          <div className="justify-end">
-            {focusedWord && focusedWord?.annotation && (
-              <Button
-                icon
-                basic
-                onClick={() => dispatch(setAnnotationvisibilityMobile(!mobileDisplayAnnotations))}
-                style={{ marginRight: '1em' }}
-              >
-                <Icon
-                  name={mobileDisplayAnnotations ? 'translate' : 'sticky note outline'}
-                  size="large"
-                  color="blue"
-                />
+        <div className="space-between">
+          {!mobileDisplayAnnotations ? (
+            <div>
+              <div className="space-between pt-sm">
+                <div>
+                  {showSurfaceWord() && !inWordNestModal && (
+                    <div
+                      style={{
+                        paddingBottom: '0.5em',
+                        display: 'flex',
+                        ...getTextStyle(learningLanguage),
+                      }}
+                    >
+                      <Speaker word={surfaceWord} />
+                      <span style={{ color: '#2185D0' }}>{maskSymbol || surfaceWord}</span>
+                    </div>
+                  )}
+                  {translationResults()}
+                </div>
+                {!inWordNestModal && learningLanguage === 'Russian' && (
+                  <WordNestModal
+                    wordToCheck={wordNestChosenWord}
+                    setWordToCheck={setWordNestChosenWord}
+                    open={wordNestModalOpen}
+                    setOpen={setWordNestModalOpen}
+                  />
+                )}
+              </div>
+            </div>
+          ) : (
+            <div style={{ width: '100%' }}>
+              <div className="header-3" style={{ fontWeight: '500' }}>
+                <FormattedMessage id="notes" />
+              </div>
+              <AnnotationDetails
+                focusedWord={focusedWord}
+                annotations={annotations}
+                showAnnotationForm={false}
+              />
+            </div>
+          )}
+
+          {smallWindow && !inWordNestModal ? (
+            <div className="flex align-self-end">
+              {focusedWord && focusedWord?.annotation && (
+                <Button
+                  icon
+                  basic
+                  onClick={() => dispatch(setAnnotationvisibilityMobile(!mobileDisplayAnnotations))}
+                  style={{ margin: '0em 1em' }}
+                >
+                  <Icon
+                    name={mobileDisplayAnnotations ? 'translate' : 'sticky note outline'}
+                    size="large"
+                    color="blue"
+                  />
+                </Button>
+              )}
+              <Button icon basic onClick={() => setShow(false)}>
+                <Icon name="angle down" size="large" color="blue" />
               </Button>
-            )}
-            <Button icon basic onClick={() => setShow(false)}>
-              <Icon name="angle down" size="large" color="blue" />
-            </Button>
-          </div>
-        ) : null}
+            </div>
+          ) : null}
+        </div>
       </Segment>
     </div>
   )

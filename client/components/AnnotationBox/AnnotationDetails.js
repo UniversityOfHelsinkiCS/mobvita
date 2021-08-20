@@ -119,9 +119,7 @@ const AnnotationDetails = ({ focusedWord, annotations, showAnnotationForm }) => 
         </>
       )}
       <div>
-        <div style={{ margin: '1.5em 0em' }}>
-          <b>{focusedWord.surface}</b>
-        </div>
+        <div style={{ margin: '1.5em 0em', fontWeight: '500' }}>{focusedWord.surface}</div>
         <Divider />
         {filteredAnnotations?.length > 0 ? (
           <div>
@@ -145,12 +143,15 @@ const AnnotationDetails = ({ focusedWord, annotations, showAnnotationForm }) => 
                       <div>
                         {a.uid === user.oid ? (
                           <div>
-                            <b>{intl.formatMessage({ id: 'you' })}</b>{' '}
+                            <span style={{ fontWeight: '500' }}>
+                              {intl.formatMessage({ id: 'you' })}
+                            </span>{' '}
                             {intl.formatMessage({ id: '(you)wrote' })}:
                           </div>
                         ) : (
                           <div>
-                            <b>{a.username}</b> {intl.formatMessage({ id: '(he/she)wrote' })}:
+                            <span style={{ fontWeight: '500' }}>{a.username}</span>{' '}
+                            {intl.formatMessage({ id: '(he/she)wrote' })}:
                           </div>
                         )}
                       </div>
@@ -186,15 +187,18 @@ const AnnotationDetails = ({ focusedWord, annotations, showAnnotationForm }) => 
               </div>
             ))}
 
-            {userHasNoAnnotationForWord(focusedWord) && !showAnnotationForm && userHasLoggedIn && (
-              <Button
-                style={{ marginTop: '.75em' }}
-                size="sm"
-                onClick={handleCreateAnnotationButtonClick}
-              >
-                <FormattedMessage id="create-a-note" />
-              </Button>
-            )}
+            {userHasNoAnnotationForWord(focusedWord) &&
+              !showAnnotationForm &&
+              userHasLoggedIn &&
+              bigScreen && (
+                <Button
+                  style={{ marginTop: '.75em' }}
+                  size="sm"
+                  onClick={handleCreateAnnotationButtonClick}
+                >
+                  <FormattedMessage id="create-a-note" />
+                </Button>
+              )}
           </div>
         ) : (
           <div>

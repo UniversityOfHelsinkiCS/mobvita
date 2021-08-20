@@ -27,7 +27,7 @@ const AddStoryAccordion = ({ closeModal }) => {
     <Accordion as={Menu} fluid vertical>
       <div
         className="header-2"
-        style={{ marginTop: '1.5rem', marginLeft: '2rem', marginBottom: '1.5rem' }}
+        style={{ marginTop: '1.5rem', marginLeft: '2rem', marginBottom: '1.5rem', fontWeight: 500 }}
       >
         <FormattedMessage id="add-your-stories" />
       </div>
