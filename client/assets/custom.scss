@@ -1,6 +1,6 @@
 @use "sass:map";
 
-@import url('https://fonts.googleapis.com/css2?family=Rubik&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Rubik:wght@300;400;500;600;700;800;900&display=swap');
 
 @font-face {
 	font-family: 'EastSyriacCtesiphon';
@@ -623,7 +623,7 @@ html, body, #root {
 
 .right-text {
   color: green;
-  font-weight: 600;
+  font-weight: 500;
 }
 
 .story-text-input {
