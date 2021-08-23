@@ -83,7 +83,7 @@ const initialState = {
   highlightedWord: null,
   annotations: [],
   pending: false,
-  showAnnotations: false,
+  showAnnotations: true,
   showAnnotationForm: false,
   mobileDisplayAnnotations: false,
 }

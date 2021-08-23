@@ -14,8 +14,8 @@ import {
 import {
   setFocusedWord,
   setHighlightedWord,
+  resetAnnotations,
   initializeAnnotations,
-  setAnnotationsVisibility,
   setAnnotationFormVisibility,
 } from 'Utilities/redux/annotationsReducer'
 import { learningLanguageSelector, getTextStyle, speak, respVoiceLanguages } from 'Utilities/common'
@@ -42,11 +42,8 @@ const ReadView = ({ match }) => {
   const { id } = match.params
   useEffect(() => {
     dispatch(getStoryAction(id))
-    dispatch(setAnnotationsVisibility(false))
-    dispatch(setAnnotationFormVisibility(false))
     dispatch(clearTranslationAction())
-    dispatch(setFocusedWord(null))
-    dispatch(setHighlightedWord(null))
+    dispatch(resetAnnotations())
   }, [])
 
   useEffect(() => {
