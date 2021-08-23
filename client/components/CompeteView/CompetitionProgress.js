@@ -59,9 +59,16 @@ const CompetitionProgress = ({ storyId, youWon, playerFinished, setPlayerFinishe
 
   if (!botSnippetTimes) {
     return (
-      <div className="justify-center">
-        Loading opponent failed. Click{' '}
-        <Button onClick={() => dispatch(getOpponent(storyId))}>here</Button> to try again.
+      <div className="justify-center" style={{ alignItems: 'center' }}>
+        Loading opponent failed. Click
+        <Button
+          style={{ margin: '0em .5em' }}
+          size="sm"
+          onClick={() => dispatch(getOpponent(storyId))}
+        >
+          here
+        </Button>
+        to try again.
       </div>
     )
   }
