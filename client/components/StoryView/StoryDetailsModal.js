@@ -54,20 +54,27 @@ const DetailedStoryModal = ({
       <Modal.Actions>
         <div className="space-between">
           <div className="gap-col-sm">
-            <LinkButton
-              variant="secondary"
-              to={`/stories/${story._id}/read`}
-              translationId="Read"
-            />
-            <LinkButton 
-              to={`/stories/${story._id}/practice`} 
-              translationId="practice"
-            />
+            {story.percent_cov === 0 && (
+              <LinkButton
+                variant="secondary"
+                to={`/stories/${story._id}/read`}
+                translationId="Read"
+              />
+            )}
+            <LinkButton to={`/stories/${story._id}/practice`} translationId="practice" />
+            {story.percent_cov > 0 && (
+              <LinkButton
+                variant="secondary"
+                to={`/stories/${story._id}/review`}
+                translationId="review"
+              />
+            )}
             <LinkButton
               variant="primary"
               to={`/flashcards/fillin/${story._id}/`}
               translationId="Flashcards"
             />
+            <LinkButton variant="secondary" to={`/compete/${story._id}`} translationId="compete" />
             <LinkButton
               variant="secondary"
               to={`/crossword/${story._id}`}
@@ -75,12 +82,12 @@ const DetailedStoryModal = ({
             />
           </div>
           <div className="gap-col-sm">
-            {/*<LinkButton
+            {/* <LinkButton
               condition={showLearningSettingsButton}
               variant="outline-secondary"
               to={`/stories/${story._id}/concepts`}
               translationId="learning-settings"
-            />*/}
+            /> */}
             <CustomButton
               condition={showShareButton}
               onClick={() => setShareModalOpen(true)}
