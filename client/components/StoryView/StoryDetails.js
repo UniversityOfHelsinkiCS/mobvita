@@ -117,13 +117,27 @@ const StoryDetails = () => {
       />
       <div className="flex-col gap-row-sm">
         <div className="gap-col-sm">
+          {story.percent_cov === 0 && (
+            <LinkButton
+              variant="secondary"
+              to={`/stories/${story._id}/read`}
+              translationId="Read"
+            />
+          )}
           <LinkButton to={`/stories/${id}/practice`} translationId="practice" />
+          {story.percent_cov > 0 && (
+            <LinkButton
+              variant="secondary"
+              to={`/stories/${story._id}/review`}
+              translationId="review"
+            />
+          )}
           <LinkButton
             variant="primary"
             to={`/flashcards/fillin/${id}/`}
             translationId="Flashcards"
           />
-          <LinkButton variant="secondary" to={`/stories/${id}/read`} translationId="Read" />
+          <LinkButton variant="secondary" to={`/compete/${story._id}`} translationId="compete" />
         </div>
       </div>
     </main>
