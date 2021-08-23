@@ -307,18 +307,17 @@ export default function Sidebar({ history }) {
               <Menu.Item
                 style={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-between' }}
               >
-                <AboutUs
-                  trigger={
-                    <Button
-                      onClick={() => menuClickWrapper()}
-                      data-cy="about-button"
-                      variant="secondary"
-                      style={{ flexBasis: '50%', marginRight: '0.5em' }}
-                    >
-                      <FormattedMessage id="about" />
-                    </Button>
-                  }
-                />
+                <Button
+                  onClick={() => menuClickWrapper()}
+                  data-cy="about-button"
+                  variant="secondary"
+                  href="https://www2.helsinki.fi/en/projects/revita-language-learning-and-ai/about-the-project"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  style={{ flexBasis: '50%', marginRight: '0.5em' }}
+                >
+                  <FormattedMessage id="about" />
+                </Button>
                 <ContactUs
                   trigger={
                     <Button
