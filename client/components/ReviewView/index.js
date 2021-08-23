@@ -57,7 +57,7 @@ const ReviewView = ({ match }) => {
             <span className="pr-sm">{story.title}</span>
             <br />
             {story.url && (
-              <a href={story.url} style={{ fontSize: '1rem', fontWeight: '200' }}>
+              <a href={story.url} style={{ fontSize: '1rem', fontWeight: '300' }}>
                 <FormattedMessage id="Source" />
               </a>
             )}
