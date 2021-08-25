@@ -20,11 +20,6 @@ describe("sidebar is open (only mobile)", function () {
     cy.get('.inverted').click(-50, -50, { force: true })
   })
 
-  it("can read about (mob|re)vita", function () {
-    cy.get('[data-cy=about-button]').click()
-    cy.get('[data-cy=about-content]')
-  })
-
   it("ui language can be changed and is saved", function () {
     cy.get('[data-cy=ui-lang-select]').click()
     cy.get('[data-cy=ui-lang-select] > .visible > :nth-child(4)').click()
