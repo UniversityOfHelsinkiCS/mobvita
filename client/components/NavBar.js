@@ -86,7 +86,8 @@ export default function NavBar() {
               size="big"
               onClick={() => dispatch(sidebarSetOpen(!open))}
               className="sidebar-hamburger tour-sidebar"
-              style={{ color: 'white' }}
+              // style={{ color: 'white' }}
+              style={{ color: 'rgb(0,0,190)' }}
               data-cy="hamburger"
             />
           )}
@@ -99,15 +100,23 @@ export default function NavBar() {
                   name="home"
                   size="large"
                   style={{
-                    color: 'white',
+                    // color: 'white',
+                    color: 'rgb(0,0,190)',
                     cursor: 'pointer',
                   }}
                 />
               </Link>
               <Link to="/home">
                 <Navbar.Brand className="navbar-revita-logo tour-start-finish">
-                  <img src={images.navbarLogo} alt="revita logo" width="70" />
-                  {hiddenFeatures && <sup> &beta;</sup>}
+                  <img
+                    src={images.navbarLogo}
+                    alt="revita logo"
+                    width="70"
+                    style={{
+                      filter: 'brightness(50%) sepia(100) saturate(100) hue-rotate(230deg)',
+                    }}
+                  />
+                  {hiddenFeatures && <sup style={{ color: 'rgb(0,0,190)' }}> &beta;</sup>}
                 </Navbar.Brand>
               </Link>
 

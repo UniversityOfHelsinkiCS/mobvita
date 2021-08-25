@@ -444,6 +444,7 @@ html, body, #root {
   position: sticky;
   width: 100%;
   top: 0;
+  background-color: rgb(230, 235, 233);
 
   &-container {
     display: flex;
@@ -461,7 +462,8 @@ html, body, #root {
   }
 
   &-basic-item {
-    color: white;
+    // color: white;
+    color: rgb(0,0,190)!important;
     margin-left: 0.3em!important;
     margin-right: 0.3em!important;
     cursor: pointer;
@@ -473,7 +475,8 @@ html, body, #root {
   }
 
   &-text-item {
-    color: white!important;
+    // color: white!important;
+    color: rgb(0,0,190)!important;
     margin-right: 2em;
 
     @media (max-width: 755px) {
@@ -482,7 +485,8 @@ html, body, #root {
   }
 
   &-dropdown-text {
-    color: white!important;
+    // color: white!important;
+    color: rgb(0,0,190)!important;
     margin-right: 0em;
   }
 
@@ -497,6 +501,7 @@ html, body, #root {
   }
 
   &-dropdown-icon{
+    color: rgb(0,0,190)!important;
     color: white;
     margin-right: -0.15em!important;
   }

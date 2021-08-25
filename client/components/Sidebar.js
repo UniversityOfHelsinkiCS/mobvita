@@ -98,7 +98,7 @@ export default function Sidebar({ history }) {
                 size="big"
                 onClick={() => menuClickWrapper()}
                 className="sidebar-hamburger"
-                style={{ position: 'fixed', paddingTop: 0 }}
+                style={{ position: 'fixed', paddingTop: 0, color: 'rgb(0,0,190)' }}
               />
               <div
                 style={{
