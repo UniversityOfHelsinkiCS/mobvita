@@ -408,6 +408,7 @@ html, body, #root {
   padding-right: map.get($spacing, "xs");
   padding-left: map.get($spacing, "xs");
   padding-top: $application-content-top-padding;
+  background-color: rgb(230, 235, 233);
 }
 
 .cont {
@@ -416,6 +417,7 @@ html, body, #root {
 
   &-tall {
     min-height: calc(100vh - #{$navbar-height} - #{$application-content-top-padding});
+    background-color: rgb(230, 235, 233);
   }
 
   &-narrow {
