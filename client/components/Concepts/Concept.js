@@ -98,7 +98,7 @@ const Concept = ({
           )}
           {renderTestConcepts && (
             <div style={{ marginLeft: '1.5em', display: 'flex' }}>
-              {defaultNumQuestions > 0 ? (
+              {maxNumQuestions > 0 ? (
                 <span style={{ marginRight: '0.3em' }}>
                   {intl.formatMessage({ id: 'questions' })}:
                 </span>
