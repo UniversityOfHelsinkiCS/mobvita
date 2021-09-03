@@ -12,7 +12,12 @@ import {
 } from 'Utilities/common'
 import { setReferences } from 'Utilities/redux/practiceReducer'
 import { getTranslationAction, setWords } from 'Utilities/redux/translationReducer'
-import { setFocusedWord, setHighlightedWord } from 'Utilities/redux/annotationsReducer'
+import {
+  setFocusedSpan,
+  setHighlightRange,
+  addAnnotationCandidates,
+  resetAnnotationCandidates,
+} from 'Utilities/redux/annotationsReducer'
 import Tooltip from 'Components/PracticeView/Tooltip'
 
 const PreviousExerciseWord = ({ word, answer, tiedAnswer }) => {
@@ -33,7 +38,7 @@ const PreviousExerciseWord = ({ word, answer, tiedAnswer }) => {
   const learningLanguage = useSelector(learningLanguageSelector)
   const autoSpeak = useSelector(({ user }) => user.data.user.auto_speak)
   const dictionaryLanguage = useSelector(dictionaryLanguageSelector)
-  const { highlightedWord, annotations } = useSelector(({ annotations }) => annotations)
+  const { spanAnnotations, highlightRange } = useSelector(({ annotations }) => annotations)
 
   const intl = useIntl()
   const dispatch = useDispatch()
@@ -43,14 +48,8 @@ const PreviousExerciseWord = ({ word, answer, tiedAnswer }) => {
   if (tested || typeof wrong !== 'undefined') color = isWrong ? 'wrong-text' : 'right-text'
   const wordClass = `word-interactive ${color}`
 
-  const wordHasAnnotations = word => {
-    const matchingAnnotationInStore = annotations.find(w => w.ID === word.ID)
-    const allAreRemoved = matchingAnnotationInStore?.annotation?.every(
-      annotation => annotation.annotation === '<removed>'
-    )
-    if (!matchingAnnotationInStore || allAreRemoved) return false
-
-    return true
+  const wordIsInSpan = word => {
+    return spanAnnotations.some(span => word.ID >= span.startId && word.ID <= span.endId)
   }
 
   const handleClick = () => {
@@ -69,22 +68,31 @@ const PreviousExerciseWord = ({ word, answer, tiedAnswer }) => {
         })
       )
     }
-    dispatch(setHighlightedWord(word))
-    const annotationInStore = annotations.find(w => w.ID === word.ID)
-    if (annotationInStore) dispatch(setFocusedWord(annotationInStore))
-    else dispatch(setFocusedWord(word))
+
+    if (wordIsInSpan(word)) {
+      const span = spanAnnotations.find(a => word.ID >= a.startId && word.ID <= a.endId)
+      dispatch(setFocusedSpan(span))
+      dispatch(setHighlightRange(span.startId, span.endId))
+    } else {
+      dispatch(setFocusedSpan(null))
+      dispatch(resetAnnotationCandidates())
+      dispatch(setHighlightRange(null, null))
+      dispatch(setHighlightRange(word.ID, word.ID))
+      dispatch(addAnnotationCandidates(word))
+    }
   }
 
-  const getSuperscript = word => {
-    const existingAnnotations = annotations.filter(word =>
-      word.annotation.every(annotation => annotation.annotation !== '<removed>')
-    )
-    return existingAnnotations.findIndex(a => a.ID === word.ID) + 1
-  }
+  const getSuperscript = word => spanAnnotations.findIndex(a => a.startId === word.ID) + 1
 
   const handleTooltipClick = () => {
     if (ref) dispatch(setReferences(ref))
   }
+
+  const wordShouldBeHighlighted = word => {
+    return word.ID >= highlightRange?.start && word.ID <= highlightRange?.end
+  }
+
+  const wordStartsSpan = word => !!word?.annotation
 
   const youAnsweredTooltip = answer || tiedAnswer
 
@@ -115,8 +123,9 @@ const PreviousExerciseWord = ({ word, answer, tiedAnswer }) => {
 
   return (
     <Tooltip placement="top" tooltipShown={show} trigger="none" tooltip={tooltip}>
+      {wordStartsSpan(word) && <sup className="notes-superscript">{getSuperscript(word)}</sup>}
       <span
-        className={`${wordClass} ${word.ID === highlightedWord?.ID && 'notes-highlighted-word'}`}
+        className={`${wordClass} ${wordShouldBeHighlighted(word) && 'notes-highlighted-word'}`}
         role="button"
         onClick={handleClick}
         onKeyDown={handleClick}
@@ -125,7 +134,6 @@ const PreviousExerciseWord = ({ word, answer, tiedAnswer }) => {
       >
         {surface}
       </span>
-      {wordHasAnnotations(word) && <sup className="notes-superscript">{getSuperscript(word)}</sup>}
     </Tooltip>
   )
 }

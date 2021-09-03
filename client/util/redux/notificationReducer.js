@@ -271,23 +271,23 @@ export default (state = initialState, action) => {
         translationId: 'user-unfollowed-success',
         type: type.success,
       }
-    case 'SAVE_ANNOTATION_SUCCESS':
+    case 'ADD_OR_EDIT_STORY_ANNOTATION_SUCCESS':
       return {
         translationId: 'note-save-success',
         type: type.success,
       }
-    case 'SAVE_ANNOTATION_FAILURE':
+    case 'ADD_OR_EDIT_STORY_ANNOTATION_FAILURE':
       return {
         translationId: 'note-save-failure',
         type: type.error,
       }
 
-    case 'REMOVE_ANNOTATION_SUCCESS':
+    case 'REMOVE_STORY_ANNOTATION_SUCCESS':
       return {
         translationId: 'note-delete-success',
         type: type.success,
       }
-    case 'REMOVE_ANNOTATION_FAILURE':
+    case 'REMOVE_STORY_ANNOTATION_FAILURE':
       return {
         translationId: 'note-delete-failure',
         type: type.error,

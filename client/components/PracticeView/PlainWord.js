@@ -10,9 +10,11 @@ import {
 } from 'Utilities/common'
 import { getTranslationAction, setWords } from 'Utilities/redux/translationReducer'
 import {
-  setFocusedWord,
-  setHighlightedWord,
+  setFocusedSpan,
+  setHighlightRange,
   setAnnotationvisibilityMobile,
+  addAnnotationCandidates,
+  resetAnnotationCandidates,
 } from 'Utilities/redux/annotationsReducer'
 
 const PlainWord = ({ word, annotatingAllowed, ...props }) => {
@@ -22,19 +24,12 @@ const PlainWord = ({ word, annotatingAllowed, ...props }) => {
   const learningLanguage = useSelector(learningLanguageSelector)
   const dictionaryLanguage = useSelector(dictionaryLanguageSelector)
 
-  const { highlightedWord, annotations } = useSelector(({ annotations }) => annotations)
+  const { spanAnnotations, highlightRange } = useSelector(({ annotations }) => annotations)
 
   const dispatch = useDispatch()
   const { id: storyId } = useParams()
   const { width } = useWindowDimensions()
   const bigScreen = width >= 1024
-
-  const getSuperscript = word => {
-    const existingAnnotations = annotations.filter(word =>
-      word.annotation.every(annotation => annotation.annotation !== '<removed>')
-    )
-    return existingAnnotations.findIndex(a => a.ID === word.ID) + 1
-  }
 
   const voice = respVoiceLanguages[learningLanguage]
 
@@ -46,14 +41,22 @@ const PlainWord = ({ word, annotatingAllowed, ...props }) => {
     )
   }
 
-  const wordHasAnnotations = word => {
-    const matchingAnnotationInStore = annotations.find(w => w.ID === word.ID)
-    const allAreRemoved = matchingAnnotationInStore?.annotation?.every(
-      annotation => annotation.annotation === '<removed>'
-    )
-    if (!matchingAnnotationInStore || allAreRemoved) return false
+  const wordStartsSpan = word => !!word?.annotation
 
-    return true
+  const getSuperscript = word => {
+    return spanAnnotations.findIndex(a => a.startId === word.ID) + 1
+  }
+
+  const getSpanthatIncludesWord = word => {
+    return spanAnnotations.find(span => word.ID >= span.startId && word.ID <= span.endId)
+  }
+
+  const wordShouldBeHighlighted = word => {
+    return (
+      word.ID >= highlightRange?.start &&
+      word.ID <= highlightRange?.end &&
+      highlightRange.start !== null
+    )
   }
 
   const consistsOfOnlyWhitespace = word => !!word.match(/^\s+$/g)
@@ -61,19 +64,28 @@ const PlainWord = ({ word, annotatingAllowed, ...props }) => {
   const handleNonRecognizedWordClick = word => {
     if (!bigScreen) dispatch(setAnnotationvisibilityMobile(false))
     if (annotatingAllowed && !consistsOfOnlyWhitespace(word.surface)) {
-      dispatch(setHighlightedWord(word))
-      const annotationInStore = annotations.find(w => w.ID === word.ID)
-
-      if (annotationInStore) dispatch(setFocusedWord(annotationInStore))
-      else dispatch(setFocusedWord(word))
+      const spanThatIncludesWord = getSpanthatIncludesWord(word)
+      if (spanThatIncludesWord) {
+        dispatch(setFocusedSpan(spanThatIncludesWord))
+        dispatch(setHighlightRange(spanThatIncludesWord.startId, spanThatIncludesWord.endId))
+      } else {
+        dispatch(setFocusedSpan(null))
+        dispatch(setHighlightRange(null, null))
+        dispatch(resetAnnotationCandidates())
+        dispatch(setHighlightRange(word.ID, word.ID))
+        dispatch(addAnnotationCandidates(word))
+      }
     }
   }
 
   if (!lemmas || isName)
     return (
       <>
+        {wordStartsSpan(word) && annotatingAllowed && (
+          <sup className="notes-superscript">{getSuperscript(word)}</sup>
+        )}
         <span
-          className={`${word.ID === highlightedWord?.ID && 'notes-highlighted-word'}`}
+          className={`${wordShouldBeHighlighted(word) && 'notes-highlighted-word'}`}
           role={annotatingAllowed && 'button'}
           tabIndex="-1"
           onClick={() => handleNonRecognizedWordClick(word)}
@@ -82,22 +94,26 @@ const PlainWord = ({ word, annotatingAllowed, ...props }) => {
         >
           {surface}
         </span>
-        {wordHasAnnotations(word) && (
-          <sup className="notes-superscript">{getSuperscript(word)}</sup>
-        )}
       </>
     )
 
   const handleWordClick = () => {
+    dispatch(setFocusedSpan(null))
     if (autoSpeak === 'always' && voice) speak(surface, voice)
     if (lemmas) {
       dispatch(setWords({ surface, lemmas }))
-      if (annotatingAllowed) {
-        dispatch(setHighlightedWord(word))
-        const annotationInStore = annotations.find(w => w.ID === word.ID)
-
-        if (annotationInStore) dispatch(setFocusedWord(annotationInStore))
-        else dispatch(setFocusedWord(word))
+      if (annotatingAllowed && !consistsOfOnlyWhitespace(word.surface)) {
+        const spanThatIncludesWord = getSpanthatIncludesWord(word)
+        if (spanThatIncludesWord) {
+          dispatch(setFocusedSpan(spanThatIncludesWord))
+          dispatch(setHighlightRange(spanThatIncludesWord.startId, spanThatIncludesWord.endId))
+        } else {
+          dispatch(setFocusedSpan(null))
+          dispatch(setHighlightRange(null, null))
+          dispatch(resetAnnotationCandidates())
+          dispatch(setHighlightRange(word.ID, word.ID))
+          dispatch(addAnnotationCandidates(word))
+        }
       }
       dispatch(
         getTranslationAction({
@@ -114,19 +130,19 @@ const PlainWord = ({ word, annotatingAllowed, ...props }) => {
 
   return (
     <>
+      {wordStartsSpan(word) && annotatingAllowed && (
+        <sup className="notes-superscript">{getSuperscript(word)}</sup>
+      )}
       <span
         role="button"
         tabIndex={-1}
         onKeyDown={() => handleWordClick()}
         onClick={() => handleWordClick()}
-        className={`word-interactive${
-          word.ID === highlightedWord?.ID ? ' notes-highlighted-word' : ''
-        }`}
+        className={`word-interactive ${wordShouldBeHighlighted(word) && 'notes-highlighted-word'}`}
         {...props}
       >
         {surface}
       </span>
-      {wordHasAnnotations(word) && <sup className="notes-superscript">{getSuperscript(word)}</sup>}
     </>
   )
 }

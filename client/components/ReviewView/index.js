@@ -7,7 +7,7 @@ import { FormattedMessage, useIntl } from 'react-intl'
 import useWindowDimensions from 'Utilities/windowDimensions'
 import { getStoryAction } from 'Utilities/redux/storiesReducer'
 import { clearTranslationAction } from 'Utilities/redux/translationReducer'
-import { resetAnnotations, initializeAnnotations } from 'Utilities/redux/annotationsReducer'
+import { resetAnnotations, setAnnotations } from 'Utilities/redux/annotationsReducer'
 import { learningLanguageSelector, getTextStyle } from 'Utilities/common'
 import DictionaryHelp from 'Components/DictionaryHelp'
 import AnnotationBox from 'Components/AnnotationBox'
@@ -39,8 +39,8 @@ const ReviewView = ({ match }) => {
 
   useEffect(() => {
     if (story) {
-      const allWordsWithAnnotations = story.paragraph.flat(1).filter(word => word.annotation)
-      dispatch(initializeAnnotations(allWordsWithAnnotations))
+      const storyWords = story.paragraph.flat(1)
+      dispatch(setAnnotations(storyWords))
     }
   }, [story])
 
@@ -93,7 +93,7 @@ const ReviewView = ({ match }) => {
         </Segment>
         <div className="dictionary-and-annotations-cont">
           <DictionaryHelp />
-          {showAnnotationBox && <AnnotationBox mode="read" />}
+          {showAnnotationBox && <AnnotationBox />}
         </div>
         <ReferenceModal />
       </div>

@@ -1,15 +1,16 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect } from 'react'
 import { useSelector, useDispatch, shallowEqual } from 'react-redux'
 import { getTextStyle, learningLanguageSelector } from 'Utilities/common'
 import { setPrevious, initializePrevious } from 'Utilities/redux/snippetsReducer'
-import { initializeAnnotations } from 'Utilities/redux/annotationsReducer'
+import { setAnnotations } from 'Utilities/redux/annotationsReducer'
 import TextWithFeedback from 'Components/PracticeView/TextWithFeedback'
 import { useParams } from 'react-router-dom'
 
 const PreviousSnippets = () => {
   const learningLanguage = useSelector(learningLanguageSelector)
-  const [annotationsInitialized, setAnnotationsInitialized] = useState(false)
   const { previousAnswers } = useSelector(({ practice }) => practice)
+
+  const { focused: focusedStory } = useSelector(({ stories }) => stories)
   const { id: storyId } = useParams()
   const { previous } = useSelector(({ snippets }) => {
     const { focused: focusedSnippet, pending } = snippets
@@ -25,24 +26,15 @@ const PreviousSnippets = () => {
   }, [])
 
   useEffect(() => {
-    if (previous.length > 0 && !annotationsInitialized) {
-      const annotationsInPreviousSnippets = previous
-        .map(par => par)
-        .flat(1)
-        .filter(word => word.annotation)
+    const updatedPrevious = focusedStory.paragraph.slice(0, previous.length)
+    const previousWords = updatedPrevious.flat(1)
+    dispatch(setAnnotations(previousWords))
+    dispatch(setPrevious(updatedPrevious))
+  }, [focusedStory])
 
-      dispatch(initializeAnnotations(annotationsInPreviousSnippets))
-      setAnnotationsInitialized(true)
-    }
-  }, [previous])
-
-  const historySuccessfullyInitialized = annotationsInitialized && previous.length > 0
-
-  const previousSnippets = historySuccessfullyInitialized
-    ? previous?.map(snippet => (
-        <TextWithFeedback snippet={snippet} answers={previousAnswers} mode="practice" />
-      ))
-    : null
+  const previousSnippets = previous?.map(snippet => (
+    <TextWithFeedback snippet={snippet} answers={previousAnswers} mode="practice" />
+  ))
 
   return (
     <div className="pt-nm" style={getTextStyle(learningLanguage)}>

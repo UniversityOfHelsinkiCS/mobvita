@@ -1,24 +1,33 @@
 import React from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { Segment, Icon, Popup } from 'semantic-ui-react'
+import { useHistory } from 'react-router-dom'
 import { FormattedMessage, useIntl } from 'react-intl'
 import {
-  setFocusedWord,
-  setHighlightedWord,
   setAnnotationsVisibility,
+  setFocusedSpan,
+  resetAnnotationCandidates,
 } from 'Utilities/redux/annotationsReducer'
 import AnnotationList from './AnnotationList'
 import AnnotationDetails from './AnnotationDetails'
 
-const AnnotationBox = ({ mode }) => {
+const AnnotationBox = () => {
   const intl = useIntl()
   const dispatch = useDispatch()
-  const { focusedWord, highlightedWord, annotations, showAnnotations, showAnnotationForm } =
-    useSelector(({ annotations }) => annotations)
+  const history = useHistory()
+  const {
+    focusedSpan,
+    spanAnnotations,
+    showAnnotations,
+    showAnnotationForm,
+    annotationCandidates,
+  } = useSelector(({ annotations }) => annotations)
+
+  const isPracticeMode = history.location.pathname.includes('practice')
 
   const handleAnnotationBoxCollapse = () => {
-    if (highlightedWord) dispatch(setHighlightedWord(null))
-    if (focusedWord) dispatch(setFocusedWord(null))
+    if (focusedSpan) dispatch(setFocusedSpan(null))
+    if (annotationCandidates) dispatch(resetAnnotationCandidates())
 
     dispatch(setAnnotationsVisibility(false))
   }
@@ -47,24 +56,18 @@ const AnnotationBox = ({ mode }) => {
       )
     }
 
-    if (focusedWord) {
+    if (focusedSpan || annotationCandidates.length > 0) {
       return (
         <AnnotationDetails
-          focusedWord={focusedWord}
-          annotations={annotations}
+          focusedSpan={focusedSpan}
+          spanAnnotations={spanAnnotations}
           showAnnotationForm={showAnnotationForm}
         />
       )
     }
 
-    if (annotations?.length > 0) {
-      return (
-        <AnnotationList
-          handleAnnotationBoxCollapse={handleAnnotationBoxCollapse}
-          annotations={annotations}
-          highlightedWord={highlightedWord}
-        />
-      )
+    if (spanAnnotations?.length > 0) {
+      return <AnnotationList handleAnnotationBoxCollapse={handleAnnotationBoxCollapse} />
     }
 
     return (
@@ -90,14 +93,14 @@ const AnnotationBox = ({ mode }) => {
         </div>
         <div className="notes-info-text" style={{ marginTop: '1.5em' }}>
           <FormattedMessage
-            id={mode === 'read' ? 'this-story-has-no-notes' : 'notes-added-to-history-appear-here'}
+            id={isPracticeMode ? 'notes-added-to-history-appear-here' : 'this-story-has-no-notes'}
           />
           <br /> <br />
           <FormattedMessage
             id={
-              mode === 'read'
-                ? 'click-any-word-to-create-one'
-                : 'click-any-word-in-history-to-add-new'
+              isPracticeMode
+                ? 'click-any-word-in-history-to-add-new'
+                : 'click-any-word-to-create-one'
             }
           />
         </div>

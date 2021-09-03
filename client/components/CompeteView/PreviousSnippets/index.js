@@ -2,7 +2,6 @@ import React, { useMemo, useEffect } from 'react'
 import { useSelector, useDispatch, shallowEqual } from 'react-redux'
 import { getTextStyle, learningLanguageSelector } from 'Utilities/common'
 import { setPrevious } from 'Utilities/redux/snippetsReducer'
-import { initializeAnnotations } from 'Utilities/redux/annotationsReducer'
 import PlainWord from 'Components/PracticeView/PlainWord'
 import TextWithFeedback from 'Components/PracticeView/TextWithFeedback'
 
@@ -26,13 +25,6 @@ const PreviousSnippets = () => {
 
     const initialPrevSnippets = prev.slice(0, focusedSnippet.snippetid[0])
     dispatch(setPrevious(initialPrevSnippets))
-
-    const annotationsInPreviousSnippets = initialPrevSnippets
-      .map(par => par.practice_snippet)
-      .flat(1)
-      .filter(word => word.annotation)
-
-    dispatch(initializeAnnotations(annotationsInPreviousSnippets))
   }
 
   useEffect(() => {
@@ -48,9 +40,7 @@ const PreviousSnippets = () => {
           snippet => !snippetsInPrevious.includes(snippet.snippetid[snippet.snippetid.length - 1])
         )
         .map(snippet =>
-          snippet.practice_snippet.map(word => (
-            <PlainWord key={word.ID} word={word} annotatingAllowed />
-          ))
+          snippet.practice_snippet.map(word => <PlainWord key={word.ID} word={word} />)
         ),
     [focusedStory, previous.length === 0]
   )

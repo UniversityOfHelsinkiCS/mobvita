@@ -114,9 +114,7 @@ const DictionaryHelp = ({ minimized, inWordNestModal }) => {
     maskSymbol,
   } = useSelector(({ translation }) => translation)
 
-  const { focusedWord, annotations, mobileDisplayAnnotations } = useSelector(
-    ({ annotations }) => annotations
-  )
+  const { focusedSpan, mobileDisplayAnnotations } = useSelector(({ annotations }) => annotations)
 
   const { data: words } = useSelector(({ wordNest }) => wordNest)
 
@@ -355,17 +353,13 @@ const DictionaryHelp = ({ minimized, inWordNestModal }) => {
               <div className="header-3" style={{ fontWeight: '500' }}>
                 <FormattedMessage id="notes" />
               </div>
-              <AnnotationDetails
-                focusedWord={focusedWord}
-                annotations={annotations}
-                showAnnotationForm={false}
-              />
+              <AnnotationDetails focusedSpan={focusedSpan} showAnnotationForm={false} />
             </div>
           )}
 
           {smallWindow && !inWordNestModal ? (
             <div className="flex align-self-end">
-              {focusedWord && focusedWord?.annotation && (
+              {focusedSpan && (
                 <Button
                   icon
                   basic

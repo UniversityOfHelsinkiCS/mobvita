@@ -1,18 +1,18 @@
 import React from 'react'
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { Icon, Popup } from 'semantic-ui-react'
 import { Button } from 'react-bootstrap'
 import { FormattedMessage, useIntl } from 'react-intl'
-import { setFocusedWord, setHighlightedWord } from 'Utilities/redux/annotationsReducer'
+import { setFocusedSpan, setHighlightRange } from 'Utilities/redux/annotationsReducer'
 
-const AnnotationList = ({ handleAnnotationBoxCollapse, annotations, highlightedWord }) => {
+const AnnotationList = ({ handleAnnotationBoxCollapse }) => {
   const intl = useIntl()
   const dispatch = useDispatch()
 
-  const filterOutWordsWithOnlyRemovedAnnotations = annotations => {
-    return annotations.filter(
-      w => w.annotation[0].annotation !== '<removed>' && w.annotation[0].length !== 1
-    )
+  const { spanAnnotations, highlightRange } = useSelector(({ annotations }) => annotations)
+
+  const wordShouldBeHighlighted = span => {
+    return span.startId === highlightRange?.start && span.endId === highlightRange?.end
   }
 
   return (
@@ -37,29 +37,29 @@ const AnnotationList = ({ handleAnnotationBoxCollapse, annotations, highlightedW
         <Icon name="angle up" size="large" />
       </div>
       <div style={{ marginTop: '1em' }}>
-        {filterOutWordsWithOnlyRemovedAnnotations(annotations).map((word, index) => (
-          <div key={`${word.ID}-${word.surface}`}>
-            {index + 1} -{' '}
+        {spanAnnotations.map((span, index) => (
+          <div key={`${span.startId}-${span.endId}`} style={{ marginBottom: '.5em' }}>
+            <b>{index + 1}</b> -{' '}
             <span
-              onClick={() => dispatch(setFocusedWord(word))}
-              onMouseOver={() => dispatch(setHighlightedWord(word))}
-              onFocus={() => dispatch(setHighlightedWord(word))}
-              onKeyDown={() => dispatch(setFocusedWord(word))}
+              onClick={() => dispatch(setFocusedSpan(span))}
+              onMouseOver={() => dispatch(setHighlightRange(span.startId, span.endId))}
+              onFocus={() => dispatch(setHighlightRange(span.startId, span.endId))}
+              onKeyDown={() => dispatch(setFocusedSpan(span))}
               role="button"
               tabIndex={0}
-              className={word?.ID === highlightedWord?.ID ? 'notes-highlighted-word' : ''}
-              data-cy={`${word.ID}-${word.surface}`}
+              className={wordShouldBeHighlighted(span) ? 'notes-highlighted-word' : ''}
+              data-cy={`${span.ID}-${span.surface}`}
             >
-              {word.surface}
+              {span.annotationString}
             </span>
           </div>
         ))}
       </div>
-      {highlightedWord && (
+      {highlightRange?.start && (
         <Button
           size="sm"
           variant="outline-secondary"
-          onClick={() => dispatch(setHighlightedWord(null))}
+          onClick={() => dispatch(setHighlightRange(null, null))}
           style={{ marginTop: '1em' }}
         >
           <FormattedMessage id="cancel-highlighting" />

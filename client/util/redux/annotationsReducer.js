@@ -1,32 +1,14 @@
-import callBuilder from '../apiConnection'
-
-const sortById = annotations => {
-  return annotations.sort((a, b) => (a.ID > b.ID ? 1 : -1))
-}
-
-export const saveAnnotation = (storyId, op, tokenId, annotation) => {
-  const route = `/stories/${storyId}/annotate`
-  const prefix = 'SAVE_ANNOTATION'
-  return callBuilder(route, prefix, 'post', { op, token_id: tokenId, annotation })
-}
-
-export const removeAnnotation = (storyId, op, tokenId) => {
-  const route = `/stories/${storyId}/annotate`
-  const prefix = 'REMOVE_ANNOTATION'
-  return callBuilder(route, prefix, 'post', { op, token_id: tokenId })
-}
-
-export const setFocusedWord = word => {
+export const setFocusedSpan = span => {
   return {
-    type: 'SET_ANNOTATION_WORD',
-    word,
+    type: 'SET_FOCUSED_SPAN',
+    span,
   }
 }
 
-export const setHighlightedWord = word => {
+export const setHighlightRange = (start, end) => {
   return {
-    type: 'SET_HIGHLIGHT_WORD',
-    word,
+    type: 'SET_HIGHLIGHT_RANGE',
+    highlightRange: { start, end },
   }
 }
 
@@ -36,24 +18,44 @@ export const resetAnnotations = () => {
   }
 }
 
-export const initializeAnnotations = annotations => {
+export const setAnnotations = words => {
+  const annotationsToSet = []
+  let currentSpan = { annotationString: '' }
+
+  words.forEach(word => {
+    if (word.annotation) {
+      currentSpan.startId = word.ID
+      currentSpan.endId = word.annotation[0].end_token_id
+      currentSpan.annotationString += word.surface
+      const annotationTexts = word.annotation.map(e => {
+        return { text: e.annotation, username: e.username, uid: e.uid }
+      })
+
+      currentSpan.annotationTexts = annotationTexts
+
+      if (word.ID === currentSpan.endId) {
+        annotationsToSet.push(currentSpan)
+        currentSpan = { annotationString: '' }
+      }
+    } else if (word.ID > currentSpan.startId && word.ID < currentSpan.endId) {
+      currentSpan.annotationString += word.surface
+    } else if (word.ID === currentSpan.endId) {
+      currentSpan.annotationString += word.surface
+      annotationsToSet.push(currentSpan)
+      currentSpan = { annotationString: '' }
+    }
+  })
+
   return {
-    type: 'INIT_ANNOTATIONS',
-    annotations,
+    type: 'SET_ANNOTATIONS',
+    annotations: annotationsToSet,
   }
 }
 
-export const updateAnnotationStore = annotations => {
+export const updateSeveralSpanAnnotationStore = spanAnnotations => {
   return {
-    type: 'UPDATE_ANNOTATION',
-    annotations,
-  }
-}
-
-export const updateSeveralAnnotationStore = annotations => {
-  return {
-    type: 'UPDATE_SEVERAL_ANNOTATIONS',
-    annotations,
+    type: 'UPDATE_SEVERAL_SPAN_ANNOTATIONS',
+    spanAnnotations,
   }
 }
 
@@ -61,6 +63,25 @@ export const setAnnotationsVisibility = visibility => {
   return {
     type: 'SET_ANNOTATIONS_VISIBILITY',
     visibility,
+  }
+}
+
+export const resetAnnotationCandidates = () => {
+  return {
+    type: 'RESET_ANNOTATION_CANDIDATES',
+  }
+}
+
+export const addAnnotationCandidates = candidates => {
+  return {
+    type: 'ADD_ANNOTATION_CANDIDATES',
+    candidates,
+  }
+}
+
+export const removeAnnotationCandidates = () => {
+  return {
+    type: 'REMOVE_ANNOTATION_CANDIDATES',
   }
 }
 
@@ -79,9 +100,10 @@ export const setAnnotationvisibilityMobile = visibility => {
 }
 
 const initialState = {
-  focusedWord: null,
-  highlightedWord: null,
-  annotations: [],
+  spanAnnotations: [],
+  highlightRange: null,
+  focusedSpan: null,
+  annotationCandidates: [],
   pending: false,
   showAnnotations: true,
   showAnnotationForm: false,
@@ -90,45 +112,41 @@ const initialState = {
 
 export default (state = initialState, action) => {
   switch (action.type) {
-    case 'SAVE_ANNOTATION_ATTEMPT':
+    case 'SET_FOCUSED_SPAN':
       return {
         ...state,
-        pending: true,
+        focusedSpan: action.span,
       }
-    case 'SAVE_ANNOTATION_SUCCESS':
+    case 'SET_ANNOTATIONS':
       return {
         ...state,
-        pending: false,
+        spanAnnotations: action.annotations,
       }
-    case 'SAVE_ANNOTATION_FAILURE':
+    case 'RESET_ANNOTATIONS':
+      return initialState
+
+    case 'SET_HIGHLIGHT_RANGE':
       return {
         ...state,
-        pending: false,
+        highlightRange: { start: action.highlightRange.start, end: action.highlightRange.end },
       }
-    case 'REMOVE_ANNOTATION_ATTEMPT':
+    case 'ADD_ANNOTATION_CANDIDATES':
       return {
         ...state,
-        pending: true,
+        annotationCandidates: state.annotationCandidates.concat(action.candidates),
       }
-    case 'REMOVE_ANNOTATION_SUCCESS':
+    case 'REMOVE_ANNOTATION_CANDIDATES':
       return {
         ...state,
-        pending: false,
+        annotationCandidates: state.annotationCandidates.slice(
+          0,
+          state.annotationCandidates.length - 2
+        ),
       }
-    case 'REMOVE_ANNOTATION_FAILURE':
+    case 'RESET_ANNOTATION_CANDIDATES':
       return {
         ...state,
-        pending: false,
-      }
-    case 'SET_ANNOTATION_WORD':
-      return {
-        ...state,
-        focusedWord: action.word,
-      }
-    case 'SET_HIGHLIGHT_WORD':
-      return {
-        ...state,
-        highlightedWord: action.word,
+        annotationCandidates: [],
       }
     case 'SET_ANNOTATIONS_VISIBILITY':
       return {
@@ -145,29 +163,17 @@ export default (state = initialState, action) => {
         ...state,
         mobileDisplayAnnotations: action.visibility,
       }
-    case 'RESET_ANNOTATIONS':
-      return initialState
-    case 'INIT_ANNOTATIONS':
+
+    case 'UPDATE_SEVERAL_SPAN_ANNOTATIONS':
       return {
         ...state,
-        annotations: action.annotations,
-      }
-    case 'UPDATE_ANNOTATION':
-      return {
-        ...state,
-        annotations: sortById(action.annotations),
-      }
-    case 'UPDATE_SEVERAL_ANNOTATIONS':
-      return {
-        ...state,
-        annotations: state.annotations.concat(action.annotations),
+        spanAnnotations: state.spanAnnotations.concat(action.spanAnnotations),
       }
     case 'GET_TRANSLATION_ATTEMPT': // always switch to translation view when fetching them
       return {
         ...state,
         mobileDisplayAnnotations: false,
       }
-
     default:
       return state
   }

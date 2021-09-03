@@ -53,6 +53,27 @@ export const unshareStory = (groupId, storyId) => {
   return callBuilder(route, prefix, 'post', {})
 }
 
+export const addEditStoryAnnotation = (storyId, startId, endId, annotation) => {
+  const route = `/stories/${storyId}/annotate`
+  const prefix = 'ADD_OR_EDIT_STORY_ANNOTATION'
+  return callBuilder(route, prefix, 'post', {
+    op: 'edit',
+    start_token_id: startId,
+    end_token_id: endId,
+    annotation,
+  })
+}
+
+export const removeStoryAnnotation = (storyId, startId, endId) => {
+  const route = `/stories/${storyId}/annotate`
+  const prefix = 'REMOVE_STORY_ANNOTATION'
+  return callBuilder(route, prefix, 'post', {
+    op: 'delete',
+    start_token_id: startId,
+    end_token_id: endId,
+  })
+}
+
 const initialState = {
   data: [],
   pending: false,
@@ -115,6 +136,39 @@ export default (state = initialState, action) => {
         focused: action.response,
         pending: false,
         focusedPending: false,
+        error: false,
+      }
+    case 'ADD_OR_EDIT_STORY_ANNOTATION_ATTEMPT':
+      return {
+        ...state,
+        error: false,
+      }
+    case 'ADD_OR_EDIT_STORY_ANNOTATION_FAILURE':
+      return {
+        ...state,
+        error: true,
+      }
+    case 'ADD_OR_EDIT_STORY_ANNOTATION_SUCCESS':
+      return {
+        ...state,
+        focused: action.response,
+        error: false,
+      }
+
+    case 'REMOVE_STORY_ANNOTATION_ATTEMPT':
+      return {
+        ...state,
+        error: false,
+      }
+    case 'REMOVE_STORY_ANNOTATION_FAILURE':
+      return {
+        ...state,
+        error: true,
+      }
+    case 'REMOVE_STORY_ANNOTATION_SUCCESS':
+      return {
+        ...state,
+        focused: action.response,
         error: false,
       }
     case 'SAVE_STORY_ATTEMPT':

@@ -23,7 +23,11 @@ import {
   startSnippet,
   incrementAttempts,
 } from 'Utilities/redux/practiceReducer'
-import { updateSeveralAnnotationStore, resetAnnotations } from 'Utilities/redux/annotationsReducer'
+import {
+  updateSeveralAnnotationStore,
+  updateSeveralSpanAnnotationStore,
+  resetAnnotations,
+} from 'Utilities/redux/annotationsReducer'
 import SnippetActions from './SnippetActions'
 import PracticeText from './PracticeText'
 
@@ -94,10 +98,36 @@ const CurrentSnippet = ({ storyId, handleInputChange }) => {
   const finishSnippet = () => {
     dispatch(setPreviousAnswers(currentSnippetId()))
     dispatch(addToPrevious([snippets.focused.practice_snippet]))
-    const annotationsInCurrentSnippet = snippets.focused.practice_snippet.filter(
-      word => word.annotation
-    )
-    dispatch(updateSeveralAnnotationStore(annotationsInCurrentSnippet))
+
+    const annotationsToInitialize = []
+    let currentSpan = { annotationString: '' }
+
+    snippets.focused.practice_snippet.forEach(word => {
+      if (word.annotation) {
+        currentSpan.startId = word.ID
+        currentSpan.endId = word.annotation[0].end_token_id
+        currentSpan.annotationString += word.surface
+        const annotationTexts = word.annotation.map(e => {
+          return { text: e.annotation, username: e.username, uid: e.uid }
+        })
+
+        currentSpan.annotationTexts = annotationTexts
+
+        if (word.ID === currentSpan.endId) {
+          annotationsToInitialize.push(currentSpan)
+          currentSpan = { annotationString: '' }
+        }
+      } else if (word.ID > currentSpan.startId && word.ID < currentSpan.endId) {
+        currentSpan.annotationString += word.surface
+      } else if (word.ID === currentSpan.endId) {
+        currentSpan.annotationString += word.surface
+        annotationsToInitialize.push(currentSpan)
+        currentSpan = { annotationString: '' }
+      }
+    })
+
+    dispatch(updateSeveralSpanAnnotationStore(annotationsToInitialize))
+
     dispatch(clearCurrentPractice())
 
     if (snippets.focused.total_num !== currentSnippetId() + 1 || finished) {

@@ -12,11 +12,13 @@ import {
   setWords,
 } from 'Utilities/redux/translationReducer'
 import {
-  setFocusedWord,
-  setHighlightedWord,
   resetAnnotations,
-  initializeAnnotations,
   setAnnotationFormVisibility,
+  setAnnotations,
+  setFocusedSpan,
+  setHighlightRange,
+  addAnnotationCandidates,
+  resetAnnotationCandidates,
 } from 'Utilities/redux/annotationsReducer'
 import { learningLanguageSelector, getTextStyle, speak, respVoiceLanguages } from 'Utilities/common'
 import DictionaryHelp from 'Components/DictionaryHelp'
@@ -35,7 +37,7 @@ const ReadView = ({ match }) => {
     locale,
   }))
 
-  const { highlightedWord, annotations } = useSelector(({ annotations }) => annotations)
+  const { spanAnnotations, highlightRange } = useSelector(({ annotations }) => annotations)
   const learningLanguage = useSelector(learningLanguageSelector)
   const dictionaryLanguage = useSelector(({ user }) => user.data.user.last_trans_language)
   const autoSpeak = useSelector(({ user }) => user.data.user.auto_speak)
@@ -48,8 +50,8 @@ const ReadView = ({ match }) => {
 
   useEffect(() => {
     if (story) {
-      const allWordsWithAnnotations = story.paragraph.flat(1).filter(word => word.annotation)
-      dispatch(initializeAnnotations(allWordsWithAnnotations))
+      const storyWords = story.paragraph.flat(1)
+      dispatch(setAnnotations(storyWords))
     }
   }, [story])
 
@@ -57,33 +59,37 @@ const ReadView = ({ match }) => {
 
   const voice = respVoiceLanguages[learningLanguage]
 
-  const wordHasAnnotations = word => {
-    const matchingAnnotationInStore = annotations.find(w => w.ID === word.ID)
-    const allAreRemoved = matchingAnnotationInStore?.annotation?.every(
-      annotation => annotation.annotation === '<removed>'
+  const wordShouldBeHighlighted = word => {
+    return (
+      word.ID >= highlightRange?.start &&
+      word.ID <= highlightRange?.end &&
+      highlightRange.start !== null
     )
-    if (!matchingAnnotationInStore || allAreRemoved) return false
-
-    return true
   }
 
-  const getSuperscript = word => {
-    const existingAnnotations = annotations.filter(word =>
-      word.annotation.every(annotation => annotation.annotation !== '<removed>')
-    )
-    return existingAnnotations.findIndex(a => a.ID === word.ID) + 1
+  const getSuperscript = word => spanAnnotations.findIndex(a => a.startId === word.ID) + 1
+
+  const getSpanthatIncludesWord = word => {
+    return spanAnnotations.find(span => word.ID >= span.startId && word.ID <= span.endId)
   }
 
   const handleWordClick = word => {
     if (autoSpeak === 'always' && voice) speak(word.surface, voice)
     if (word.lemmas) {
       dispatch(setWords(word))
-      const annotationInStore = annotations.find(w => w.ID === word.ID)
 
-      if (annotationInStore) dispatch(setFocusedWord(annotationInStore))
-      else dispatch(setFocusedWord(word))
+      const spanThatIncludesWord = getSpanthatIncludesWord(word)
+      if (spanThatIncludesWord) {
+        dispatch(setFocusedSpan(spanThatIncludesWord))
+        dispatch(setHighlightRange(spanThatIncludesWord.startId, spanThatIncludesWord.endId))
+      } else {
+        dispatch(setFocusedSpan(null))
+        dispatch(setHighlightRange(null, null))
+        dispatch(resetAnnotationCandidates())
+        dispatch(setHighlightRange(word.ID, word.ID))
+        dispatch(addAnnotationCandidates(word))
+      }
 
-      dispatch(setHighlightedWord(word))
       dispatch(setAnnotationFormVisibility(false))
       dispatch(
         getTranslationAction({
@@ -98,12 +104,21 @@ const ReadView = ({ match }) => {
     }
   }
 
-  const handleNonRecognizedWordclick = word => {
-    const wordAnnotationInStore = annotations.find(w => w.ID === word.ID)
-    if (wordAnnotationInStore) dispatch(setFocusedWord(wordAnnotationInStore))
-    else dispatch(setFocusedWord(word))
+  const wordStartsSpan = word => !!word?.annotation
 
-    dispatch(setHighlightedWord(word))
+  const handleNonRecognizedWordclick = word => {
+    const spanThatIncludesWord = getSpanthatIncludesWord(word)
+    if (spanThatIncludesWord) {
+      dispatch(setFocusedSpan(spanThatIncludesWord))
+      dispatch(setHighlightRange(spanThatIncludesWord.startId, spanThatIncludesWord.endId))
+    } else {
+      dispatch(setFocusedSpan(null))
+      dispatch(setHighlightRange(null, null))
+      dispatch(resetAnnotationCandidates())
+      dispatch(setHighlightRange(word.ID, word.ID))
+      dispatch(addAnnotationCandidates(word))
+    }
+
     dispatch(setAnnotationFormVisibility(false))
   }
 
@@ -111,9 +126,10 @@ const ReadView = ({ match }) => {
     if (word.bases && !word.name_token) {
       return (
         <span key={word.ID}>
+          {wordStartsSpan(word) && <sup className="notes-superscript">{getSuperscript(word)}</sup>}
           <span
             className={`word-interactive ${
-              word.ID === highlightedWord?.ID && 'notes-highlighted-word'
+              wordShouldBeHighlighted(word) && 'notes-highlighted-word'
             }`}
             onClick={() => handleWordClick(word)}
             onKeyDown={() => handleWordClick(word)}
@@ -122,30 +138,29 @@ const ReadView = ({ match }) => {
           >
             {word.surface}
           </span>
-          {wordHasAnnotations(word) && (
-            <sup className="notes-superscript">{getSuperscript(word)}</sup>
-          )}
         </span>
       )
     }
     if (word.surface === '\n\n') return <br key={word.ID} />
-    if (word.surface === ' ') return word.surface
+    if (word.surface === ' ')
+      return (
+        <span className={`${wordShouldBeHighlighted(word) && 'notes-highlighted-word'}`}>
+          {word.surface}
+        </span>
+      )
 
     return (
-      <span
-        key={word.ID}
-        onClick={() => handleNonRecognizedWordclick(word)}
-        onKeyDown={() => handleNonRecognizedWordclick(word)}
-        className={`non-recognized-word ${
-          word.ID === highlightedWord?.ID && 'notes-highlighted-word'
-        }`}
-        role="button"
-        tabIndex="-1"
-      >
-        {word.surface}
-        {wordHasAnnotations(word) && (
-          <sup className="notes-superscript">{getSuperscript(word)}</sup>
-        )}
+      <span key={word.ID}>
+        {wordStartsSpan(word) && <sup className="notes-superscript">{getSuperscript(word)}</sup>}
+        <span
+          onClick={() => handleNonRecognizedWordclick(word)}
+          onKeyDown={() => handleNonRecognizedWordclick(word)}
+          className={`${wordShouldBeHighlighted(word) && 'notes-highlighted-word'}`}
+          role="button"
+          tabIndex="-1"
+        >
+          {word.surface}
+        </span>
       </span>
     )
   }
@@ -180,7 +195,7 @@ const ReadView = ({ match }) => {
         </Segment>
         <div className="dictionary-and-annotations-cont">
           <DictionaryHelp />
-          {showAnnotationBox && <AnnotationBox mode="read" />}
+          {showAnnotationBox && <AnnotationBox />}
         </div>
       </div>
       {showFooter && <Footer />}
