@@ -98,7 +98,11 @@ const AnnotationDetails = ({ focusedSpan, showAnnotationForm }) => {
       dispatch(setHighlightRange(annotationCandidates[0].ID, nextWords[0].ID))
     }
     if (nextWords.length === 2) {
-      if (!nextWords[1].annotation && wordsInSameSentence(nextWords[1], word)) {
+      if (
+        !nextWords[0].annotation &&
+        !nextWords[1].annotation &&
+        wordsInSameSentence(nextWords[1], word)
+      ) {
         dispatch(addAnnotationCandidates(nextWords[1]))
         dispatch(setHighlightRange(annotationCandidates[0].ID, nextWords[1].ID))
       }
