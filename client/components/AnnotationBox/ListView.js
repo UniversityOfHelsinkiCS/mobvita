@@ -5,7 +5,7 @@ import { Button } from 'react-bootstrap'
 import { FormattedMessage, useIntl } from 'react-intl'
 import { setFocusedSpan, setHighlightRange } from 'Utilities/redux/annotationsReducer'
 
-const AnnotationList = ({ handleAnnotationBoxCollapse }) => {
+const ListView = ({ handleAnnotationBoxCollapse }) => {
   const intl = useIntl()
   const dispatch = useDispatch()
 
@@ -77,4 +77,4 @@ const AnnotationList = ({ handleAnnotationBoxCollapse }) => {
   )
 }
 
-export default AnnotationList
+export default ListView

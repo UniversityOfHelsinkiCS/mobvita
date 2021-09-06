@@ -1,19 +1,18 @@
 import React from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { Segment, Icon, Popup } from 'semantic-ui-react'
-import { FormattedMessage, useIntl } from 'react-intl'
+import { Segment } from 'semantic-ui-react'
 import {
   setAnnotationsVisibility,
   setFocusedSpan,
   setHighlightRange,
   resetAnnotationCandidates,
 } from 'Utilities/redux/annotationsReducer'
-import AnnotationList from './AnnotationList'
+import ListView from './ListView'
 import FocusedView from './FocusedView'
+import AnnotationsHiddenView from './AnnotationsHiddenView'
 import NoAnnotationsView from './NoAnnotationsView'
 
 const AnnotationBox = () => {
-  const intl = useIntl()
   const dispatch = useDispatch()
   const { focusedSpan, highlightRange, spanAnnotations, showAnnotations, annotationCandidates } =
     useSelector(({ annotations }) => annotations)
@@ -26,28 +25,9 @@ const AnnotationBox = () => {
     dispatch(setAnnotationsVisibility(false))
   }
 
-  const annotationResults = () => {
+  const annotationView = () => {
     if (!showAnnotations) {
-      return (
-        <div
-          className="space-between"
-          onClick={() => dispatch(setAnnotationsVisibility(true))}
-          onKeyDown={() => dispatch(setAnnotationsVisibility(true))}
-          role="button"
-          tabIndex={0}
-          data-cy="annotations-visibility-button"
-        >
-          <div className="header-3">
-            <FormattedMessage id="notes" />{' '}
-            <Popup
-              position="top center"
-              content={intl.formatMessage({ id: 'annotations-popup-info-text' })}
-              trigger={<Icon name="info circle" size="small" />}
-            />
-          </div>
-          <Icon name="angle down" size="large" />
-        </div>
-      )
+      return <AnnotationsHiddenView />
     }
 
     if (focusedSpan || annotationCandidates.length > 0) {
@@ -55,7 +35,7 @@ const AnnotationBox = () => {
     }
 
     if (spanAnnotations?.length > 0) {
-      return <AnnotationList handleAnnotationBoxCollapse={handleAnnotationBoxCollapse} />
+      return <ListView handleAnnotationBoxCollapse={handleAnnotationBoxCollapse} />
     }
 
     return <NoAnnotationsView handleAnnotationBoxCollapse={handleAnnotationBoxCollapse} />
@@ -64,7 +44,7 @@ const AnnotationBox = () => {
   return (
     <div className="annotations-box">
       <Segment>
-        <div>{annotationResults()}</div>
+        <div>{annotationView()}</div>
       </Segment>
     </div>
   )
