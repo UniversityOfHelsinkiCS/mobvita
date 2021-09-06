@@ -55,7 +55,7 @@ const AnnotationList = ({ handleAnnotationBoxCollapse }) => {
           </div>
         ))}
       </div>
-      {highlightRange?.start && (
+      {highlightRange?.start !== null && (
         <Button
           size="sm"
           variant="outline-secondary"
