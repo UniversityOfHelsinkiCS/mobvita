@@ -172,19 +172,20 @@ describe('Mobvita', function () {
         cy.contains("ehkä").click()
         cy.contains("ilmaisee jonkin mahdollista tapahtumista tai toteutumista", { timeout: 20000 })
       })
-      // it("can add and remove annotations", function () {
-      //   cy.viewport(1028, 720) // Set a big enough resolution for annotation box to show up
-      //   cy.contains("häirinneet").click()
-      //   cy.get('[data-cy="create-annotation-button"]').click()
-      //   cy.get('[data-cy="annotation-text-field"]').type('This is a test note')
-      //   cy.get('[data-cy="save-annotation-button"]').click()
-      //   cy.contains("Muistiinpano tallennettu")
+      it("can add and remove annotations", function () {
+        cy.viewport(1028, 720) // Set a big enough resolution for annotation box to show up
+        cy.contains("häirinneet").click()
+        cy.get('[data-cy="annotation-expand-btn"]').click()
+        cy.get('[data-cy="create-annotation-button"]').click()
+        cy.get('[data-cy="annotation-text-field"]').type('This is a test note')
+        cy.get('[data-cy="save-annotation-button"]').click()
+        cy.contains("Muistiinpano tallennettu")
 
-      //   cy.get('[data-cy="17-häirinneet"]').click()
-      //   cy.get('[data-cy="delete-annotation-button"]').click()
-      //   cy.contains("Muistiinpano poistettu")
-      //   cy.get('[data-cy="17-häirinneet"]').should('not.exist')
-      // })
+        cy.get('[data-cy="17-häirinneet lentokoneita"]').click()
+        cy.get('[data-cy="delete-annotation-button"]').click()
+        cy.contains("Muistiinpano poistettu")
+        cy.get('[data-cy="17-häirinneet lentokoneita"]').should('not.exist')
+      })
     })
 
   })

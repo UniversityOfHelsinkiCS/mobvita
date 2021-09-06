@@ -212,6 +212,7 @@ const AnnotationDetails = ({ focusedSpan, showAnnotationForm }) => {
                   style={{ marginTop: '.75em' }}
                   size="sm"
                   onClick={handleCreateAnnotationButtonClick}
+                  data-cy="create-annotation-button"
                 >
                   <FormattedMessage id="create-a-note" />
                 </Button>
@@ -233,6 +234,7 @@ const AnnotationDetails = ({ focusedSpan, showAnnotationForm }) => {
                       size="sm"
                       disabled={annotationCandidates.length <= 2}
                       onClick={handleShrink}
+                      data-cy="annotation-shrink-btn"
                     >
                       <Icon name="angle left" />
                     </Button>{' '}
@@ -241,6 +243,7 @@ const AnnotationDetails = ({ focusedSpan, showAnnotationForm }) => {
                       onClick={() =>
                         handleExpand(annotationCandidates[annotationCandidates.length - 1])
                       }
+                      data-cy="annotation-expand-btn"
                     >
                       <Icon name="angle right" />
                     </Button>
@@ -249,6 +252,7 @@ const AnnotationDetails = ({ focusedSpan, showAnnotationForm }) => {
                     style={{ marginRight: '1em' }}
                     onClick={handleCreateAnnotationButtonClick}
                     size="sm"
+                    data-cy="create-annotation-button"
                   >
                     <FormattedMessage id="create-a-note" />
                   </Button>

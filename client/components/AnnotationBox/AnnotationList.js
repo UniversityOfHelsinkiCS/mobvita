@@ -56,7 +56,7 @@ const AnnotationList = ({ handleAnnotationBoxCollapse }) => {
               role="button"
               tabIndex={0}
               className={wordShouldBeHighlighted(span) ? 'notes-highlighted-word' : ''}
-              data-cy={`${span.ID}-${span.surface}`}
+              data-cy={`${span.startId}-${span.annotationString}`}
             >
               {span.annotationString}
             </span>
