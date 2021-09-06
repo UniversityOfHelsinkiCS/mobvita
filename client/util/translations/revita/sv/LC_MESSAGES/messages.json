@@ -1072,5 +1072,7 @@
     "hide-feedback": "Hide feedback",
     "Weather": "Weather",
     "show-feedback": "Display feedback",
-    "upload-from-web-instructions": "Revita fösöker automatiskt välja bara berättelsens text från URLen du anger.  Om resultaten innehåller oväntad text, vänligen infoga berättelsen manuellt i text-fältet ovan. Vänligen ange en berättelse i det aktiva övnings språket."
+    "upload-from-web-instructions": "Revita fösöker automatiskt välja bara berättelsens text från URLen du anger.  Om resultaten innehåller oväntad text, vänligen infoga berättelsen manuellt i text-fältet ovan. Vänligen ange en berättelse i det aktiva övnings språket.",
+    "word-not-in-note-yet": "This word is not attached to any note yet.",
+    "click-arrow-buttons-to-expand-shrink": "Click the arrow buttons to expand/shrink the selection."
 }

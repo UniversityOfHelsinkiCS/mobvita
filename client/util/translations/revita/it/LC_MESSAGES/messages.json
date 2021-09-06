@@ -1074,5 +1074,7 @@
     "hide-feedback": "Nascondi feedback",
     "Weather": "Tempo",
     "show-feedback": "Visualizza il feedback",
-    "upload-from-web-instructions": "Revita tenterà di estrarre il testo dalla tua pagina web. Se il risultato non sarà ben riuscito, copialo manualmente e incollalo nel campo per il caricamento dei file (opzione \"Copia un testo\")."
+    "upload-from-web-instructions": "Revita tenterà di estrarre il testo dalla tua pagina web. Se il risultato non sarà ben riuscito, copialo manualmente e incollalo nel campo per il caricamento dei file (opzione \"Copia un testo\").",
+    "word-not-in-note-yet": "This word is not attached to any note yet.",
+    "click-arrow-buttons-to-expand-shrink": "Click the arrow buttons to expand/shrink the selection."
 }

@@ -1073,5 +1073,7 @@
     "hide-feedback": "Hide feedback",
     "Weather": "Weather",
     "show-feedback": "Display feedback",
-    "upload-from-web-instructions": "Revita will try to find the story from the URL. If it fails, or if the result contains unwanted text, please use the \"Paste a text\" box below to enter the story manually."
+    "upload-from-web-instructions": "Revita will try to find the story from the URL. If it fails, or if the result contains unwanted text, please use the \"Paste a text\" box below to enter the story manually.",
+    "word-not-in-note-yet": "This word is not attached to any note yet.",
+    "click-arrow-buttons-to-expand-shrink": "Click the arrow buttons to expand/shrink the selection."
 }

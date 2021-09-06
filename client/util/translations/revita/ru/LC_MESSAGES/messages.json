@@ -1058,7 +1058,7 @@
     "this-story-no-notes": "This story has no notes yet.",
     "click-any-word-create-note": "Click any word to create a note.",
     "click-any-word-to-create-one": "Кликни на любое слово, чтобы добавить заметку.",
-    "this-story-has-no-notes": "Нет заметок.",
+    "this-story-has-no-notes": "В тексте нет заметок.",
     "this-word-has-no-notes-yet": "У этого слова нет заметок.",
     "note-save-success": "Заметка добавлена",
     "note-save-failure": "Заметка не добавлена. Попробуй еще раз.",
@@ -1076,5 +1076,7 @@
     "hide-feedback": "Скрыть комментарии",
     "Weather": "Погода",
     "show-feedback": "Показать комментарии",
-    "upload-from-web-instructions": "Ревита попытается извлечь текст из данной веб-страницы. Если результат будет неудачным, пожалуйста, скопируй текст вручную и введи в поле для загрузки текста (ниже)"
+    "upload-from-web-instructions": "Ревита попытается извлечь текст из данной веб-страницы. Если результат будет неудачным, пожалуйста, скопируй текст вручную и введи в поле для загрузки текста (ниже)",
+    "word-not-in-note-yet": "This word is not attached to any note yet.",
+    "click-arrow-buttons-to-expand-shrink": "Click the arrow buttons to expand/shrink the selection."
 }
