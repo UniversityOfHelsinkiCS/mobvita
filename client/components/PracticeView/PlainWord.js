@@ -15,6 +15,7 @@ import {
   setAnnotationvisibilityMobile,
   addAnnotationCandidates,
   resetAnnotationCandidates,
+  setAnnotationFormVisibility,
 } from 'Utilities/redux/annotationsReducer'
 
 const PlainWord = ({ word, annotatingAllowed, ...props }) => {
@@ -24,7 +25,9 @@ const PlainWord = ({ word, annotatingAllowed, ...props }) => {
   const learningLanguage = useSelector(learningLanguageSelector)
   const dictionaryLanguage = useSelector(dictionaryLanguageSelector)
 
-  const { spanAnnotations, highlightRange } = useSelector(({ annotations }) => annotations)
+  const { spanAnnotations, highlightRange, showAnnotationForm } = useSelector(
+    ({ annotations }) => annotations
+  )
 
   const dispatch = useDispatch()
   const { id: storyId } = useParams()
@@ -62,6 +65,7 @@ const PlainWord = ({ word, annotatingAllowed, ...props }) => {
   const consistsOfOnlyWhitespace = word => !!word.match(/^\s+$/g)
 
   const handleNonRecognizedWordClick = word => {
+    if (showAnnotationForm) dispatch(setAnnotationFormVisibility(false))
     if (!bigScreen) dispatch(setAnnotationvisibilityMobile(false))
     if (annotatingAllowed && !consistsOfOnlyWhitespace(word.surface)) {
       const spanThatIncludesWord = getSpanthatIncludesWord(word)
@@ -99,6 +103,7 @@ const PlainWord = ({ word, annotatingAllowed, ...props }) => {
 
   const handleWordClick = () => {
     dispatch(setFocusedSpan(null))
+    if (showAnnotationForm) dispatch(setAnnotationFormVisibility(false))
     if (autoSpeak === 'always' && voice) speak(surface, voice)
     if (lemmas) {
       dispatch(setWords({ surface, lemmas }))

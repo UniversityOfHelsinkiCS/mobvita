@@ -17,7 +17,7 @@ import {
 import useWindowDimensions from 'Utilities/windowDimensions'
 import { setAnnotationvisibilityMobile } from 'Utilities/redux/annotationsReducer'
 import { Spinner } from 'react-bootstrap'
-import AnnotationDetails from 'Components/AnnotationBox/AnnotationDetails'
+import FocusedView from 'Components/AnnotationBox/FocusedView'
 
 const Speaker = ({ word }) => {
   const learningLanguage = useLearningLanguage()
@@ -353,7 +353,7 @@ const DictionaryHelp = ({ minimized, inWordNestModal }) => {
               <div className="header-3" style={{ fontWeight: '500' }}>
                 <FormattedMessage id="notes" />
               </div>
-              <AnnotationDetails focusedSpan={focusedSpan} showAnnotationForm={false} />
+              <FocusedView focusedSpan={focusedSpan} />
             </div>
           )}
 

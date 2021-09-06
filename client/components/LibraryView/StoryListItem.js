@@ -24,13 +24,17 @@ const StoryTitle = ({
   const { width } = useWindowDimensions()
   const learningLanguage = useSelector(learningLanguageSelector)
 
+  const { email: userEmail } = useSelector(({ user }) => user.data.user)
+
   const handleDelete = () => {
     setConfirmationOpen(true)
   }
 
   const isTeacher = inGroupLibrary && currentGroup && currentGroup.is_teaching
 
-  const showShareButton = userCanShare && !story.public && !inGroupLibrary
+  const showShareButton =
+    !!userCanShare && !story.public && !inGroupLibrary && userEmail !== 'anonymous_email'
+
   const showDeleteButton = libraryShown.private || isTeacher
 
   if (width >= 640) {

@@ -19,6 +19,7 @@ const StoryDetails = () => {
     oid: userId,
     last_selected_group: selectedGroupId,
     last_selected_library: selectedLibrary,
+    email: userEmail,
   } = useSelector(state => state.user.data.user)
   const groups = useSelector(state => state.groups.groups)
 
@@ -56,7 +57,7 @@ const StoryDetails = () => {
     selectedGroup?.is_teaching &&
     groupsSharedWith?.some(group => group.group_id === selectedGroupId)
 
-  const showShareButton = !publicStory && userOwnsStory
+  const showShareButton = !publicStory && userOwnsStory && userEmail !== 'anonymous_email'
   const showDeleteButton = !publicStory && (userOwnsStory || userIsATeacherOfSharedStory)
 
   return (

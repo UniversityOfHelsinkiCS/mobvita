@@ -13,6 +13,4 @@ export const CustomButton = ({ condition = true, translationId, ...props }) => {
   )
 }
 
-export const LinkButton = ({ ...props }) => (
-  <CustomButton as={Link} {...props} />
-)
+export const LinkButton = ({ ...props }) => <CustomButton as={Link} {...props} />
