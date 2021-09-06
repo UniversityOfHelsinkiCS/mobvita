@@ -6,6 +6,7 @@ import { FormattedMessage, useIntl } from 'react-intl'
 import {
   setAnnotationsVisibility,
   setFocusedSpan,
+  setHighlightRange,
   resetAnnotationCandidates,
 } from 'Utilities/redux/annotationsReducer'
 import AnnotationList from './AnnotationList'
@@ -17,6 +18,7 @@ const AnnotationBox = () => {
   const history = useHistory()
   const {
     focusedSpan,
+    highlightRange,
     spanAnnotations,
     showAnnotations,
     showAnnotationForm,
@@ -28,6 +30,7 @@ const AnnotationBox = () => {
   const handleAnnotationBoxCollapse = () => {
     if (focusedSpan) dispatch(setFocusedSpan(null))
     if (annotationCandidates) dispatch(resetAnnotationCandidates())
+    if (highlightRange) dispatch(setHighlightRange(null, null))
 
     dispatch(setAnnotationsVisibility(false))
   }
