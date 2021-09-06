@@ -199,10 +199,7 @@ const AnnotationDetails = ({ focusedSpan, showAnnotationForm }) => {
                         </div>
                       )}
                     </div>
-
-                    <div style={{ wordWrap: 'break-word' }}>
-                      <i>{a.text}</i>
-                    </div>
+                    <div className="annotation-text-content">{a.text}</div>
                   </>
                 )}
               </div>

@@ -813,6 +813,11 @@ html, body, #root {
   }
 }
 
+.annotation-text-content {
+  word-wrap: break-word;
+  font-style: italic;
+}
+
 .dictionary-translations {
   & > * {
     padding-top: 1rem
