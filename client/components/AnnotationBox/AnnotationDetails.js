@@ -250,7 +250,7 @@ const AnnotationDetails = ({ focusedSpan, showAnnotationForm }) => {
                   </div>
                   <Button
                     style={{ marginRight: '1em' }}
-                    onClick={() => dispatch(setAnnotationFormVisibility(true))}
+                    onClick={handleCreateAnnotationButtonClick}
                     size="sm"
                   >
                     <FormattedMessage id="create-a-note" />
