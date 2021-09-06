@@ -38,7 +38,15 @@ const AnnotationList = ({ handleAnnotationBoxCollapse }) => {
       </div>
       <div style={{ marginTop: '1em' }}>
         {spanAnnotations.map((span, index) => (
-          <div key={`${span.startId}-${span.endId}`} style={{ marginBottom: '.5em' }}>
+          <div
+            key={`${span.startId}-${span.endId}`}
+            style={{
+              marginBottom: '.5em',
+              overflow: 'hidden',
+              textOverflow: 'ellipsis',
+              whiteSpace: 'nowrap',
+            }}
+          >
             <b>{index + 1}</b> -{' '}
             <span
               onClick={() => dispatch(setFocusedSpan(span))}
