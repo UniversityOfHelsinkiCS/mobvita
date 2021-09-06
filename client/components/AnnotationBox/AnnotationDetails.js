@@ -257,9 +257,11 @@ const AnnotationDetails = ({ focusedSpan, showAnnotationForm }) => {
                   </Button>
                 </div>
               </div>
-              <div className="notes-info-text" style={{ margin: '1em 0em' }}>
-                This word is not attached to any note yet. Click the arrow buttons to expand/shrink
-                selection.
+              <div className="notes-info-text" style={{ margin: '1.5em 0em 0em 0em' }}>
+                <FormattedMessage id="word-not-in-note-yet" />
+                <br />
+                <br />
+                <FormattedMessage id="click-arrow-buttons-to-expand-shrink" />
               </div>
             </>
           )}
