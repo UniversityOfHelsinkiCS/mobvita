@@ -111,7 +111,7 @@ const Concept = ({
                     size="sm"
                     style={{ width: '4em' }}
                     disabled={(testEnabled !== undefined && !testEnabled) || maxNumQuestions === 0}
-                    placeholder={testConceptQuestionAmount > 0 ? testConceptQuestionAmount : ''}
+                    placeholder={maxNumQuestions > 0 ? testConceptQuestionAmount : ''}
                     onBlur={e => validateNumberInput(e)}
                     isInvalid={numberError}
                   />
