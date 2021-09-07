@@ -86,8 +86,8 @@ export default function NavBar() {
               size="big"
               onClick={() => dispatch(sidebarSetOpen(!open))}
               className="sidebar-hamburger tour-sidebar"
-              // style={{ color: 'white' }}
-              style={{ color: 'rgb(0,0,190)' }}
+              style={{ color: 'white' }}
+              // style={{ color: 'rgb(0,0,190)' }}
               data-cy="hamburger"
             />
           )}
