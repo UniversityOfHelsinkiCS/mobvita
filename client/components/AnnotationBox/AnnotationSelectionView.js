@@ -66,7 +66,7 @@ const AnnotationSelectionView = ({
                   onClick={handleShrink}
                   data-cy="annotation-shrink-btn"
                 >
-                  <Icon name="angle left" />
+                  <Icon name="double angle left" />
                 </Button>{' '}
                 <Button
                   size="sm"
@@ -75,7 +75,7 @@ const AnnotationSelectionView = ({
                   }
                   data-cy="annotation-expand-btn"
                 >
-                  <Icon name="angle right" />
+                  <Icon name="double angle right" />
                 </Button>
               </div>
               <Button
