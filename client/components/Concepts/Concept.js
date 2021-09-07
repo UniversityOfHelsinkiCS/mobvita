@@ -28,10 +28,6 @@ const Concept = ({
   const [numberError, setNumberError] = useState(false)
   const { target } = useParams()
   const intl = useIntl()
-
-  const conceptNameClass =
-    exerEnabled === undefined || exerEnabled ? 'concept-name' : 'concept-name concept-disabled'
-
   const caretIconName = open ? 'caret down' : 'caret right'
   const isLeaf = concept.children.length === 0
   const renderTestConcepts = isLeaf && showTestConcepts && target === 'groups'
@@ -79,7 +75,7 @@ const Concept = ({
             onKeyPress={() => setOpen(!open)}
             role="button"
             tabIndex="0"
-            className={conceptNameClass}
+            className="concept-name"
           >
             {name.length > CONCEPT_NAME_MAX_LEN ? (
               <Popup content={name} trigger={<span>{truncateConceptName(name)}</span>} />
@@ -98,15 +94,13 @@ const Concept = ({
           )}
           {renderTestConcepts && (
             <div style={{ marginLeft: '1.5em', display: 'flex' }}>
-              {maxNumQuestions > 0 ? (
-                <span style={{ marginRight: '0.3em' }}>
-                  {intl.formatMessage({ id: 'questions' })}:
-                </span>
-              ) : (
-                <span style={{ color: 'gray', marginRight: '0.3em' }}>
-                  {intl.formatMessage({ id: 'no-questions' })}:
-                </span>
-              )}
+              <span style={{ marginRight: '0.3em' }}>
+                {maxNumQuestions > 0 ? (
+                  <>{intl.formatMessage({ id: 'questions' })}:</>
+                ) : (
+                  intl.formatMessage({ id: 'no-questions' })
+                )}
+              </span>
               <Popup
                 content={`max: ${maxNumQuestions}, ${intl.formatMessage({
                   id: 'default',
