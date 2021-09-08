@@ -1062,7 +1062,7 @@
     "note-delete-failure": "Deleting note failed. Please try again.",
     "log-in-to-create-own-notes": "Log in to create your own notes",
     "notes-popup-info-text": "You can add notes to any word — something important or interesting about how the language works.",
-    "annotations-popup-info-text": "You can add notes to any word — something important or something interesting about how the language works.",
+    "annotations-popup-info-text": "You can add notes to any part of the story — something important or something interesting about how the language works.",
     "notes-added-to-history-appear-here": "Notes added to words in completed snippets will appear here.",
     "click-any-word-in-history-to-create-note": "Click any word before the exercise snippet to add a note.",
     "click-any-word-in-history-to-add-new": "Click any word to add your own notes.",
@@ -1073,6 +1073,7 @@
     "Weather": "Weather",
     "show-feedback": "Display feedback",
     "upload-from-web-instructions": "Revita fösöker automatiskt välja bara berättelsens text från URLen du anger.  Om resultaten innehåller oväntad text, vänligen infoga berättelsen manuellt i text-fältet ovan. Vänligen ange en berättelse i det aktiva övnings språket.",
-    "word-not-in-note-yet": "This word is not attached to any note yet.",
-    "click-arrow-buttons-to-expand-shrink": "Click the arrow buttons to expand/shrink the selection."
+    "word-not-in-note-yet": "No notes yet for this word.",
+    "click-arrow-buttons-to-expand-shrink": "Click the arrow buttons to expand/shrink the selection.",
+    "words-not-in-note-yet": "No notes yet for these words."
 }

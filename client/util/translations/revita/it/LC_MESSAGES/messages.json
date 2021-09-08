@@ -1064,7 +1064,7 @@
     "note-delete-failure": "Eliminazione degli appunti fallita. Ritenta.",
     "log-in-to-create-own-notes": "Fai il Log in per creare i tuoi appunti",
     "notes-popup-info-text": "Puoi aggiungere degli appunti su ogni parola — qualcosa importante o interessante su come funziona questa lingua.",
-    "annotations-popup-info-text": "Puoi aggiungere degli appunti su ogni parola — qualcosa importante o interessante su come funziona questa lingua.",
+    "annotations-popup-info-text": "Puoi aggiungere degli appunti su ogni parola — qualcosa di importante o di interessante su come funziona questa lingua.",
     "notes-added-to-history-appear-here": "Gli appunti aggiunti alle parole appartenenti agli snippet completati appaiono qui.",
     "click-any-word-in-history-to-create-note": "Click any word before the exercise snippet to add a note.",
     "click-any-word-in-history-to-add-new": "Clicca su qualsiasi parola per aggiungerla agli appunti.",
@@ -1075,6 +1075,7 @@
     "Weather": "Tempo",
     "show-feedback": "Visualizza il feedback",
     "upload-from-web-instructions": "Revita tenterà di estrarre il testo dalla tua pagina web. Se il risultato non sarà ben riuscito, copialo manualmente e incollalo nel campo per il caricamento dei file (opzione \"Copia un testo\").",
-    "word-not-in-note-yet": "This word is not attached to any note yet.",
-    "click-arrow-buttons-to-expand-shrink": "Click the arrow buttons to expand/shrink the selection."
+    "word-not-in-note-yet": "La parola selezionata non ha nessuna appunto al momento.",
+    "click-arrow-buttons-to-expand-shrink": "Clicca sul pulsante freccia per estendere/rimpicciolire la sezione.",
+    "words-not-in-note-yet": "Le parole selezionate non sono collegate a nessun appunto al momento."
 }

@@ -1066,7 +1066,7 @@
     "note-delete-failure": "Не удалось удалить заметку.  Попробуй еще раз.",
     "log-in-to-create-own-notes": "Зарегистрируйся в систему, чтобы добавить свои заметки",
     "notes-popup-info-text": "Добавь заметки о важных или интересных особенностях слов в тексте.",
-    "annotations-popup-info-text": "Добавь заметки о важных или интересных свойствах слов в тексте.",
+    "annotations-popup-info-text": "Можно прикрепить заметки к словам — о важных или интересных выражениях.",
     "notes-added-to-history-appear-here": "Заметки, прикрепленные к словам в тексте.",
     "click-any-word-in-history-to-create-note": "Click any word before the exercise snippet to add a note.",
     "click-any-word-in-history-to-add-new": "Кликни на любое слово, чтобы добавить заметку.",
@@ -1077,6 +1077,7 @@
     "Weather": "Погода",
     "show-feedback": "Показать комментарии",
     "upload-from-web-instructions": "Ревита попытается извлечь текст из данной веб-страницы. Если результат будет неудачным, пожалуйста, скопируй текст вручную и введи в поле для загрузки текста (ниже)",
-    "word-not-in-note-yet": "This word is not attached to any note yet.",
-    "click-arrow-buttons-to-expand-shrink": "Click the arrow buttons to expand/shrink the selection."
+    "word-not-in-note-yet": "У этого слова eще нет заметок.",
+    "click-arrow-buttons-to-expand-shrink": "Стрелками можно расширить / сузить заметку.",
+    "words-not-in-note-yet": "У этих слов eще нет заметок."
 }
