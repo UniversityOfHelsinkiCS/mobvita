@@ -415,6 +415,10 @@ html, body, #root {
   width: 100%;
   max-width: 1024px;
 
+  @media (min-width: 700px) {
+    min-width: 650px;
+  }
+
   &-tall {
     min-height: calc(100vh - #{$navbar-height} - #{$application-content-top-padding});
     // background-color: rgb(230, 235, 233);
