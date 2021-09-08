@@ -6,7 +6,6 @@ import useWindowDimensions from 'Utilities/windowDimensions'
 import { FormattedMessage, useIntl } from 'react-intl'
 
 const AnnotationTexts = ({
-  focusedSpan,
   handleEditButtonClick,
   handleCreateAnnotationButtonClick,
   showAnnotationForm,
@@ -15,6 +14,7 @@ const AnnotationTexts = ({
 }) => {
   const intl = useIntl()
   const { user } = useSelector(({ user }) => ({ user: user.data.user }))
+  const { focusedSpan } = useSelector(({ annotations }) => annotations)
 
   const { width } = useWindowDimensions()
   const bigScreen = width >= 1024

@@ -1,5 +1,5 @@
 import React from 'react'
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { Icon, Divider, Popup } from 'semantic-ui-react'
 import { Button } from 'react-bootstrap'
 import { FormattedMessage } from 'react-intl'
@@ -11,12 +11,13 @@ import {
 
 const AnnotationSelectionView = ({
   storyWords,
-  annotationCandidates,
   showAnnotationForm,
   userHasLoggedIn,
   handleCreateAnnotationButtonClick,
 }) => {
   const dispatch = useDispatch()
+
+  const { annotationCandidates } = useSelector(({ annotations }) => annotations)
 
   const handleExpand = word => {
     const nextWords = storyWords.filter(e => e.ID === word.ID + 1 || e.ID === word.ID + 2)

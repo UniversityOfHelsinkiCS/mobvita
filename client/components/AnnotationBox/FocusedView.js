@@ -15,10 +15,15 @@ import AnnotationForm from './AnnotationForm'
 import AnnotationSelectionView from './AnnotationSelectionView'
 import AnnotationTexts from './AnnotationTexts'
 
-const BackToAllNotes = ({ handleBackClick }) => {
+const BackToAllNotes = ({ resetAndGoToListView }) => {
   return (
     <>
-      <div role="button" onClick={handleBackClick} onKeyDown={handleBackClick} tabIndex={0}>
+      <div
+        role="button"
+        onClick={resetAndGoToListView}
+        onKeyDown={resetAndGoToListView}
+        tabIndex={0}
+      >
         <Icon name="arrow left" />
         <FormattedMessage id="all-notes" />
       </div>
@@ -35,6 +40,7 @@ const FocusedView = ({ focusedSpan }) => {
 
   const [annotationText, setAnnotationText] = useState('')
   const [charactersLeft, setCharactersLeft] = useState(maxCharacters)
+
   const { user } = useSelector(({ user }) => ({ user: user.data.user }))
   const { annotationCandidates, showAnnotationForm } = useSelector(({ annotations }) => annotations)
   const { id: storyId } = useParams()
@@ -42,6 +48,7 @@ const FocusedView = ({ focusedSpan }) => {
     story: stories.focused,
   }))
   const userHasLoggedIn = user.userName !== 'Anonymous User'
+  const storyWords = story.paragraph.flat(1)
 
   const handleEditButtonClick = text => {
     dispatch(setAnnotationFormVisibility(true))
@@ -49,9 +56,7 @@ const FocusedView = ({ focusedSpan }) => {
     setCharactersLeft(maxCharacters - text.length)
   }
 
-  const storyWords = story.paragraph.flat(1)
-
-  const handleBackClick = () => {
+  const resetAndGoToListView = () => {
     dispatch(setFocusedSpan(null))
     dispatch(setHighlightRange(null, null))
     dispatch(resetAnnotationCandidates())
@@ -84,11 +89,7 @@ const FocusedView = ({ focusedSpan }) => {
         )
       )
     }
-    dispatch(setHighlightRange(null, null))
-    dispatch(setFocusedSpan(null))
-    dispatch(resetAnnotationCandidates())
-    dispatch(setAnnotationFormVisibility(false))
-
+    resetAndGoToListView()
     setAnnotationText('')
   }
 
@@ -107,7 +108,7 @@ const FocusedView = ({ focusedSpan }) => {
 
   return (
     <div>
-      <div>{bigScreen && <BackToAllNotes handleBackClick={handleBackClick} />}</div>
+      <div>{bigScreen && <BackToAllNotes resetAndGoToListView={resetAndGoToListView} />}</div>
       {focusedSpan ? (
         <>
           <div style={{ margin: '1.5em 0em', fontWeight: '500' }}>
@@ -115,7 +116,7 @@ const FocusedView = ({ focusedSpan }) => {
           </div>
           <Divider />
           <AnnotationTexts
-            focusedSpan={focusedSpan}
+            // focusedSpan={focusedSpan}
             handleEditButtonClick={handleEditButtonClick}
             handleCreateAnnotationButtonClick={handleCreateAnnotationButtonClick}
             showAnnotationForm={showAnnotationForm}
@@ -126,7 +127,6 @@ const FocusedView = ({ focusedSpan }) => {
       ) : (
         <AnnotationSelectionView
           storyWords={storyWords}
-          annotationCandidates={annotationCandidates}
           showAnnotationForm={showAnnotationForm}
           userHasLoggedIn={userHasLoggedIn}
           handleCreateAnnotationButtonClick={handleCreateAnnotationButtonClick}
