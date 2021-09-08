@@ -116,7 +116,6 @@ const FocusedView = ({ focusedSpan }) => {
           </div>
           <Divider />
           <AnnotationTexts
-            // focusedSpan={focusedSpan}
             handleEditButtonClick={handleEditButtonClick}
             handleCreateAnnotationButtonClick={handleCreateAnnotationButtonClick}
             showAnnotationForm={showAnnotationForm}

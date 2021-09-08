@@ -39,7 +39,7 @@ const AnnotationTexts = ({
 
   return (
     <div>
-      {focusedSpan.annotationTexts.map(a => (
+      {focusedSpan?.annotationTexts.map(a => (
         <div
           key={a.uid}
           className={`annotation-item ${
