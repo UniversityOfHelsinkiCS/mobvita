@@ -24,7 +24,7 @@ const NoAnnotationsView = ({ handleAnnotationBoxCollapse }) => {
             <Popup
               position="top center"
               content={intl.formatMessage({ id: 'annotations-popup-info-text' })}
-              trigger={<Icon name="info circle" size="small" />}
+              trigger={<Icon name="info circle" size="small" color="grey" />}
             />
           </div>
         </div>

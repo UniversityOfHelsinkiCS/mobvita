@@ -1,6 +1,6 @@
 import React from 'react'
 import { useDispatch } from 'react-redux'
-import { Icon, Divider } from 'semantic-ui-react'
+import { Icon, Divider, Popup } from 'semantic-ui-react'
 import { Button } from 'react-bootstrap'
 import { FormattedMessage } from 'react-intl'
 import {
@@ -78,21 +78,33 @@ const AnnotationSelectionView = ({
                   <Icon name="double angle right" />
                 </Button>
               </div>
-              <Button
-                style={{ marginRight: '1em' }}
-                onClick={handleCreateAnnotationButtonClick}
-                size="sm"
-                data-cy="create-annotation-button"
-              >
-                <FormattedMessage id="create-a-note" />
-              </Button>
+              <div>
+                <Button
+                  style={{ marginRight: '1em' }}
+                  onClick={handleCreateAnnotationButtonClick}
+                  size="sm"
+                  data-cy="create-annotation-button"
+                >
+                  <FormattedMessage id="create-a-note" />
+                </Button>
+                <Popup
+                  position="bottom right"
+                  content={
+                    <>
+                      {annotationCandidates.length > 1 ? (
+                        <FormattedMessage id="words-not-in-note-yet" />
+                      ) : (
+                        <FormattedMessage id="word-not-in-note-yet" />
+                      )}
+                      <br />
+                      <br />
+                      <FormattedMessage id="click-arrow-buttons-to-expand-shrink" />
+                    </>
+                  }
+                  trigger={<Icon name="info circle" color="grey" size="large" />}
+                />
+              </div>
             </div>
-          </div>
-          <div className="notes-info-text" style={{ margin: '1.5em 0em 0em 0em' }}>
-            <FormattedMessage id="word-not-in-note-yet" />
-            <br />
-            <br />
-            <FormattedMessage id="click-arrow-buttons-to-expand-shrink" />
           </div>
         </>
       )}
