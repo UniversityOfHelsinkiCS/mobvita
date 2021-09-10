@@ -20,6 +20,7 @@ const LearningSettingsModal = ({ trigger }) => {
   const { exercise_setting_template: activeTemplate } = useSelector(({ user }) => user.data.user)
   const learningLanguage = useSelector(learningLanguageSelector)
   const [open, setOpen] = useState(false)
+  const bigWindow = useWindowDimensions().width >= 640
 
   useEffect(() => {
     if (!pending) {
@@ -106,8 +107,6 @@ const LearningSettingsModal = ({ trigger }) => {
     dispatch(updateExerciseTemplate(newValue))
   }
 
-  const smallscreen = useWindowDimensions().width < 500
-
   return (
     <Modal
       onClose={() => setOpen(false)}
@@ -122,8 +121,11 @@ const LearningSettingsModal = ({ trigger }) => {
         <label htmlFor="settings-template-selector" className="label">
           <FormattedMessage id="choose-settings-template" />:
         </label>
-        <div className="row justify-content-center align-items-center">
-          <div className="col-4">
+        <div className="space-between wrap" style={{ marginTop: '1em' }}>
+          <div>
+            <Radio disabled label="Automatic (system chooses)" />
+          </div>
+          <div>
             <Radio
               label={intl.formatMessage({ id: 'use-my-personal-settings' })}
               name="templateSelect"
@@ -132,15 +134,17 @@ const LearningSettingsModal = ({ trigger }) => {
               onChange={() => handleTemplateChange('custom')}
             />
           </div>
-          <div className="col-6">
-            <Radio
-              label={intl.formatMessage({ id: 'use-my-group-settings' })}
-              name="templateSelect"
-              checked={activeTemplate !== 'custom'}
-              disabled={templateOptions.length === 0}
-              onChange={() => handleTemplateChange(templateOptions[0].value)}
-            />
-            : &nbsp;
+          <div className="flex-col">
+            <span>
+              <Radio
+                label={intl.formatMessage({ id: 'use-my-group-settings' })}
+                name="templateSelect"
+                checked={activeTemplate !== 'custom'}
+                disabled={templateOptions.length === 0}
+                onChange={() => handleTemplateChange(templateOptions[0].value)}
+              />
+              :
+            </span>
             <Dropdown
               id="settings-template-selector"
               selection
@@ -172,7 +176,26 @@ const LearningSettingsModal = ({ trigger }) => {
             </Button>
           ))}
         </ButtonGroup>
+
+        {bigWindow && (
+          <>
+            <Divider />
+            <div>
+              <Button
+                as={Link}
+                to="/concepts"
+                variant="primary"
+                size="lg"
+                style={{ marginLeft: '2px' }}
+              >
+                <FormattedMessage id="advanced-settings" />
+              </Button>
+              <br />
+            </div>
+          </>
+        )}
         <Divider />
+
         <span className="additional-info">
           <FormattedMessage id="choose-settings-template-info" />
         </span>
