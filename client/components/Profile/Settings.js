@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
-import { Link } from 'react-router-dom'
 import { FormattedMessage, useIntl } from 'react-intl'
 import { Checkbox, Radio, Dropdown } from 'semantic-ui-react'
 import { localeNameToCode, localeOptions } from 'Utilities/common'
@@ -15,7 +14,6 @@ import {
   updatePublishProgress,
   updateParticipleExer,
 } from 'Utilities/redux/userReducer'
-import useWindowDimensions from 'Utilities/windowDimensions'
 import { setLocale } from 'Utilities/redux/localeReducer'
 import LearningSettingsModal from '../LearningSettingsModal'
 
@@ -29,7 +27,6 @@ const Settings = () => {
   const { user } = useSelector(({ user }) => user.data)
   const { pending } = useSelector(({ user }) => user)
   const locale = useSelector(({ locale }) => locale)
-  const bigWindow = useWindowDimensions().width >= 640
   const dispatch = useDispatch()
   const intl = useIntl()
 
@@ -90,20 +87,6 @@ const Settings = () => {
           </Button>
         }
       />
-      {bigWindow && (
-        <>
-          <Button
-            as={Link}
-            to="/concepts"
-            variant="primary"
-            size="lg"
-            style={{ marginLeft: '2px' }}
-          >
-            <FormattedMessage id="advanced-settings" />
-          </Button>
-          <br />
-        </>
-      )}
       <br />
       <br />
       <span className="pb-sm">

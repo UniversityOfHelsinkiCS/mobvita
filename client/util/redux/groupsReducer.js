@@ -76,6 +76,20 @@ export const updateExerciseSettings = (settings, groupId) => {
   return callBuilder(route, prefix, 'post', payload)
 }
 
+export const updateExerciseTemplate = (template, groupId) => {
+  const route = `/groups/${groupId}`
+  const prefix = 'SET_GROUP_EXERCISE_TEMPLATE'
+  const payload = { exercise_setting_template: template }
+  return callBuilder(route, prefix, 'post', payload)
+}
+
+export const updateGroupMaxPracticePercent = (value, groupId) => {
+  const route = `/groups/${groupId}`
+  const prefix = 'SET_GROUP_MAX_PRACTICE_PRCT'
+  const payload = { max_practice_prct: value }
+  return callBuilder(route, prefix, 'post', payload)
+}
+
 export const getGroupToken = groupId => {
   const route = `/groups/${groupId}/token`
   const prefix = 'GET_GROUP_TOKEN'
@@ -249,6 +263,45 @@ export default (state = { groups: [], joinPending: false }, action) => {
       return {
         ...state,
         group: { ...state.group, ...action.response },
+        pending: false,
+      }
+    case 'SET_GROUP_EXERCISE_TEMPLATE_ATTEMPT':
+      return {
+        ...state,
+        pending: true,
+      }
+    case 'SET_GROUP_EXERCISE_TEMPLATE_FAILURE':
+      return {
+        ...state,
+        pending: false,
+      }
+    case 'SET_GROUP_EXERCISE_TEMPLATE_SUCCESS':
+      return {
+        ...state,
+        groups: state.groups
+          .filter(group => group.group_id !== action.response.group.group_id)
+          .concat(action.response.group)
+          .sort((a, b) => a.groupName.localeCompare(b.groupName)),
+        pending: false,
+      }
+
+    case 'SET_GROUP_MAX_PRACTICE_PRCT_ATTEMPT':
+      return {
+        ...state,
+        pending: true,
+      }
+    case 'SET_GROUP_MAX_PRACTICE_PRCT_FAILURE':
+      return {
+        ...state,
+        pending: false,
+      }
+    case 'SET_GROUP_MAX_PRACTICE_PRCT_SUCCESS':
+      return {
+        ...state,
+        groups: state.groups
+          .filter(group => group.group_id !== action.response.group.group_id)
+          .concat(action.response.group)
+          .sort((a, b) => a.groupName.localeCompare(b.groupName)),
         pending: false,
       }
     case 'GET_GROUP_TOKEN_SUCCESS':

@@ -26,6 +26,7 @@ import GroupActionModal from './GroupActionModal'
 import AddToGroup from './AddToGroup'
 import NoGroupsView from './NoGroupsView'
 import Row from './Row'
+import GroupLearningSettingsModal from './GroupLearningSettingsModal'
 
 const GroupInviteInfo = ({ group }) => {
   const anyPeopleAdded = !!group.addedPeople.length
@@ -119,6 +120,7 @@ const GroupCard = ({
   group,
   setDeleteGroupId,
   setLeaveGroupId,
+  setLearningModalGroupId,
   showTokenGroupId,
   setShowTokenGroupId,
   showTestEnableMenuGroupId,
@@ -294,6 +296,8 @@ const GroupCard = ({
             </Button>
             {isTeaching && (
               <>
+                <Button onClick={() => setLearningModalGroupId(id)}>a</Button>
+
                 <Button onClick={handleSettingsClick}>
                   <Icon name="settings" /> <FormattedMessage id="learning-settings" />
                 </Button>
@@ -452,6 +456,7 @@ const GroupManagement = () => {
   const [addToGroupId, setAddToGroupId] = useState(null)
   const [deleteGroupId, setDeleteGroupId] = useState(false)
   const [leaveGroupId, setLeaveGroupId] = useState(false)
+  const [learningModalGroupId, setLearningModalGroupId] = useState(null)
   const [showTokenGroupId, setShowTokenGroupId] = useState(null)
 
   const [showTestEnableMenuGroupId, setShowTestEnableMenuGroupId] = useState(null)
@@ -470,7 +475,7 @@ const GroupManagement = () => {
     dispatch(leaveFromGroup(leaveGroupId, userId))
   }
 
-  if (pending) return <Spinner fullHeight />
+  // if (pending) return <Spinner fullHeight />
 
   if (groups.length === 0) return <NoGroupsView role={role} />
 
@@ -505,12 +510,20 @@ const GroupManagement = () => {
         >
           <FormattedMessage id="Are you sure you want to leave the group?" />
         </ConfirmationWarning>
+        {learningModalGroupId && (
+          <GroupLearningSettingsModal
+            open={!!learningModalGroupId}
+            setOpen={setLearningModalGroupId}
+            groupId={learningModalGroupId}
+          />
+        )}
         {groups.map(group => (
           <GroupCard
             key={group.group_id}
             group={group}
             setAddToGroupId={setAddToGroupId}
             setDeleteGroupId={setDeleteGroupId}
+            setLearningModalGroupId={setLearningModalGroupId}
             setLeaveGroupId={setLeaveGroupId}
             showTokenGroupId={showTokenGroupId}
             setShowTokenGroupId={setShowTokenGroupId}

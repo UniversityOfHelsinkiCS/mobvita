@@ -11,7 +11,6 @@ import { logout, updateLocale } from 'Utilities/redux/userReducer'
 import TermsAndConditions from 'Components/StaticContent/TermsAndConditions'
 import { Button } from 'react-bootstrap'
 import useWindowDimensions from 'Utilities/windowDimensions'
-import AboutUs from './StaticContent/AboutUs'
 import ContactUs from './StaticContent/ContactUs'
 import LearningSettingsModal from './LearningSettingsModal'
 
@@ -180,7 +179,7 @@ export default function Sidebar({ history }) {
                   </Link>
 
                   <>
-                    <LearningSettingsModal
+                    {/* <LearningSettingsModal
                       trigger={
                         <Button
                           onClick={() => menuClickWrapper()}
@@ -191,7 +190,7 @@ export default function Sidebar({ history }) {
                           <Icon name="settings" /> <FormattedMessage id="learning-settings" />
                         </Button>
                       }
-                    />
+                    /> */}
                     <Link to="/profile/progress">
                       <Button
                         data-cy="settings-link"

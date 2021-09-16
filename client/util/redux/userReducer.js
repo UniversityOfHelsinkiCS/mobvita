@@ -101,6 +101,10 @@ export const updateUsername = value => saveSelf({ username: value })
 export const updatePublishProgress = value => saveSelf({ publish_progress: value })
 export const updateSortCriterion = value => saveSelf({ library_sort_criterion: value })
 export const updateToNonNewUser = () => saveSelf({ is_new_user: false })
+export const updatePracticePrctMode = value => saveSelf({ practice_prct_mode: value })
+export const updateMaxPracticePercent = value => saveSelf({ max_practice_prct: value })
+export const updatePracticeSettingsToAuto = () =>
+  saveSelf({ practice_prct_mode: 'auto', exercise_setting_template: 'auto' })
 
 export const changePassword = (currentPassword, newPassword) => {
   const route = '/user/password'
