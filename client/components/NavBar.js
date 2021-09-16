@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import { Navbar, Nav, NavDropdown } from 'react-bootstrap'
 import Headroom from 'react-headroom'
@@ -53,6 +53,10 @@ export default function NavBar() {
     }
     return null
   }
+
+  useEffect(() => {
+    dispatch(getMetadata(learningLanguage))
+  }, [])
 
   const showStoryElo = history.location.pathname.includes('practice')
   const showFlashcardElo = hiddenFeatures && history.location.pathname.includes('flashcards')
