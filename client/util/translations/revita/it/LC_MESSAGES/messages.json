@@ -1077,5 +1077,10 @@
     "upload-from-web-instructions": "Revita tenterà di estrarre il testo dalla tua pagina web. Se il risultato non sarà ben riuscito, copialo manualmente e incollalo nel campo per il caricamento dei file (opzione \"Copia un testo\").",
     "word-not-in-note-yet": "La parola selezionata non ha nessuna appunto al momento.",
     "click-arrow-buttons-to-expand-shrink": "Clicca sul pulsante freccia per estendere/rimpicciolire la sezione.",
-    "words-not-in-note-yet": "Le parole selezionate non sono collegate a nessun appunto al momento."
+    "words-not-in-note-yet": "Le parole selezionate non sono collegate a nessun appunto al momento.",
+    "exercise-density": "Exercise density",
+    "custom": "Custom",
+    "difficult": "Difficile",
+    "average": "Medio",
+    "easy": "Facile"
 }

@@ -1079,5 +1079,10 @@
     "upload-from-web-instructions": "Ревита попытается извлечь текст из данной веб-страницы. Если результат будет неудачным, пожалуйста, скопируй текст вручную и введи в поле для загрузки текста (ниже)",
     "word-not-in-note-yet": "У этого слова eще нет заметок.",
     "click-arrow-buttons-to-expand-shrink": "Стрелками можно расширить / сузить заметку.",
-    "words-not-in-note-yet": "У этих слов eще нет заметок."
+    "words-not-in-note-yet": "У этих слов eще нет заметок.",
+    "exercise-density": "Exercise density",
+    "custom": "Custom",
+    "difficult": "Сложный",
+    "average": "Средней сложности",
+    "easy": "Простой"
 }
