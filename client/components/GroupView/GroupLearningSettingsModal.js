@@ -9,7 +9,7 @@ import {
   updateExerciseTemplate,
   updateGroupMaxPracticePercent,
 } from 'Utilities/redux/groupsReducer'
-import ExerciseDensitySlider from 'Components/ExerciseDensitySlider'
+// import ExerciseDensitySlider from 'Components/ExerciseDensitySlider'
 import { hiddenFeatures } from 'Utilities/common'
 
 const GroupLearningSettingsModal = ({ open, setOpen, groupId }) => {
@@ -54,12 +54,12 @@ const GroupLearningSettingsModal = ({ open, setOpen, groupId }) => {
           <FormattedMessage id="exercise-density" />{' '}
           {hiddenFeatures && <span style={{ color: 'grey' }}>({sliderValue})</span>}
         </h2>
-        <ExerciseDensitySlider
+        {/* <ExerciseDensitySlider
           sliderValue={sliderValue}
           setSliderValue={setSliderValue}
           onAfterChange={handleMaxPercentUpdate}
           isDisabled={false}
-        />
+        /> */}
 
         <>
           <Divider />
