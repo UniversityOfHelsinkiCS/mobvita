@@ -2,7 +2,6 @@ import React from 'react'
 import { FormattedMessage } from 'react-intl'
 import Slider from 'rc-slider'
 import useWindowDimensions from 'Utilities/windowDimensions'
-import 'rc-slider/assets/index.css'
 
 const ExerciseDensitySlider = ({ sliderValue, setSliderValue, onAfterChange, isDisabled }) => {
   const bigWindow = useWindowDimensions().width >= 640
