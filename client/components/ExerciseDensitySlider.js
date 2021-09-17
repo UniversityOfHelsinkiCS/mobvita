@@ -25,8 +25,6 @@ const ExerciseDensitySlider = ({ sliderValue, setSliderValue, onAfterChange, isD
             borderColor: '#c7c7c7',
           }}
           disabled={isDisabled}
-          handlePersonalOptionClick
-          included
           onChange={value => setSliderValue(value)}
           onAfterChange={() => onAfterChange(sliderValue)}
         />
