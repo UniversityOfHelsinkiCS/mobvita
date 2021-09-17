@@ -16,7 +16,7 @@ import { setNotification } from 'Utilities/redux/notificationReducer'
 import { sidebarSetOpen } from 'Utilities/redux/sidebarReducer'
 import { getGroups } from 'Utilities/redux/groupsReducer'
 import { hiddenFeatures, learningLanguageSelector } from 'Utilities/common'
-import ExerciseDensitySlider from './ExerciseDensitySlider'
+// import ExerciseDensitySlider from './ExerciseDensitySlider'
 import 'rc-slider/assets/index.css'
 
 const LearningSettingsModal = ({ trigger }) => {
@@ -172,12 +172,12 @@ const LearningSettingsModal = ({ trigger }) => {
           <FormattedMessage id="exercise-density" />{' '}
           {hiddenFeatures && <span style={{ color: 'grey' }}>({sliderValue})</span>}
         </h2>
-        <ExerciseDensitySlider
+        {/* <ExerciseDensitySlider
           sliderValue={sliderValue}
           setSliderValue={setSliderValue}
           onAfterChange={handleMaxPercentUpdate}
           isDisabled={practicePrctMode !== 'custom'}
-        />
+        /> */}
         <>
           <Divider />
           <h2 style={{ fontSize: '17px', fontWeight: '550' }}>
