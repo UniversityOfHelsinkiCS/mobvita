@@ -98,13 +98,8 @@ const GroupLearningSettingsModal = ({ open, setOpen, groupId }) => {
                 : { alignSelf: 'center' }
             }
           >
-            Custom
+            <FormattedMessage id="custom" />
           </Button>
-
-          <Divider />
-          <span className="additional-info">
-            <FormattedMessage id="choose-settings-template-info" />
-          </span>
         </>
       </Modal.Content>
     </Modal>

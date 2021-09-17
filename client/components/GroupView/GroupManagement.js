@@ -296,15 +296,14 @@ const GroupCard = ({
             </Button>
             {isTeaching && (
               <>
-                <Button onClick={() => setLearningModalGroupId(id)}>a</Button>
-
-                <Button onClick={handleSettingsClick}>
+                <Button onClick={() => setLearningModalGroupId(id)}>
                   <Icon name="settings" /> <FormattedMessage id="learning-settings" />
                 </Button>
 
                 <Button onClick={handleShowTokenClick}>
                   <Icon name="key" /> <FormattedMessage id="show-group-token" />
                 </Button>
+
                 <Button
                   data-cy="enable-test-button"
                   onClick={handleTestEnableDisableButtonClick}
@@ -475,41 +474,9 @@ const GroupManagement = () => {
     dispatch(leaveFromGroup(leaveGroupId, userId))
   }
 
-  // if (pending) return <Spinner fullHeight />
-
-  if (groups.length === 0) return <NoGroupsView role={role} />
-
-  return (
-    <div className="group-container">
-      <div className="ps-nm" data-cy="group-list">
-        <GroupActionModal
-          role={role}
-          trigger={
-            <Button
-              data-cy={role === 'teacher' ? 'create-group-button' : 'join-group-button'}
-              size="lg"
-              style={{ marginTop: '1em', marginBottom: '1em', backgroundColor: '#00B5AD' }}
-            >
-              <FormattedMessage id={role === 'teacher' ? 'create-new-group' : 'join-a-group'} />
-            </Button>
-          }
-        />
-
-        <AddToGroup groupId={addToGroupId} setGroupId={setAddToGroupId} />
-        <ConfirmationWarning
-          open={!!deleteGroupId}
-          setOpen={setDeleteGroupId}
-          action={handleGroupDelete}
-        >
-          <FormattedMessage id="this-will-remove-the-group-are-you-sure-you-want-to-proceed" />
-        </ConfirmationWarning>
-        <ConfirmationWarning
-          open={!!leaveGroupId}
-          setOpen={setLeaveGroupId}
-          action={handleGroupLeave}
-        >
-          <FormattedMessage id="Are you sure you want to leave the group?" />
-        </ConfirmationWarning>
+  if (pending || groups.length > 0) {
+    return (
+      <div className="group-container">
         {learningModalGroupId && (
           <GroupLearningSettingsModal
             open={!!learningModalGroupId}
@@ -517,23 +484,61 @@ const GroupManagement = () => {
             groupId={learningModalGroupId}
           />
         )}
-        {groups.map(group => (
-          <GroupCard
-            key={group.group_id}
-            group={group}
-            setAddToGroupId={setAddToGroupId}
-            setDeleteGroupId={setDeleteGroupId}
-            setLearningModalGroupId={setLearningModalGroupId}
-            setLeaveGroupId={setLeaveGroupId}
-            showTokenGroupId={showTokenGroupId}
-            setShowTokenGroupId={setShowTokenGroupId}
-            showTestEnableMenuGroupId={showTestEnableMenuGroupId}
-            setShowTestEnableMenuGroupId={setShowTestEnableMenuGroupId}
-          />
-        ))}
+        {pending ? (
+          <Spinner fullHeight />
+        ) : (
+          <>
+            <div className="ps-nm" data-cy="group-list">
+              <GroupActionModal
+                role={role}
+                trigger={
+                  <Button
+                    data-cy={role === 'teacher' ? 'create-group-button' : 'join-group-button'}
+                    size="lg"
+                    style={{ marginTop: '1em', marginBottom: '1em', backgroundColor: '#00B5AD' }}
+                  >
+                    <FormattedMessage
+                      id={role === 'teacher' ? 'create-new-group' : 'join-a-group'}
+                    />
+                  </Button>
+                }
+              />
+              <AddToGroup groupId={addToGroupId} setGroupId={setAddToGroupId} />
+              <ConfirmationWarning
+                open={!!deleteGroupId}
+                setOpen={setDeleteGroupId}
+                action={handleGroupDelete}
+              >
+                <FormattedMessage id="this-will-remove-the-group-are-you-sure-you-want-to-proceed" />
+              </ConfirmationWarning>
+              <ConfirmationWarning
+                open={!!leaveGroupId}
+                setOpen={setLeaveGroupId}
+                action={handleGroupLeave}
+              >
+                <FormattedMessage id="Are you sure you want to leave the group?" />
+              </ConfirmationWarning>
+              {groups.map(group => (
+                <GroupCard
+                  key={group.group_id}
+                  group={group}
+                  setAddToGroupId={setAddToGroupId}
+                  setDeleteGroupId={setDeleteGroupId}
+                  setLearningModalGroupId={setLearningModalGroupId}
+                  setLeaveGroupId={setLeaveGroupId}
+                  showTokenGroupId={showTokenGroupId}
+                  setShowTokenGroupId={setShowTokenGroupId}
+                  showTestEnableMenuGroupId={showTestEnableMenuGroupId}
+                  setShowTestEnableMenuGroupId={setShowTestEnableMenuGroupId}
+                />
+              ))}
+            </div>
+          </>
+        )}
       </div>
-    </div>
-  )
+    )
+  }
+  return <NoGroupsView role={role} />
 }
 
 export default GroupManagement
