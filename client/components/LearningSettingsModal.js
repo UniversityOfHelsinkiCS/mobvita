@@ -33,8 +33,6 @@ const LearningSettingsModal = ({ trigger }) => {
   const currentGroupId = useSelector(({ user }) => user.data.user.last_selected_group)
   const currentGroup = groups.find(group => group.group_id === currentGroupId)
 
-  console.log('currentGroup:', currentGroup)
-
   const getSliderValue = () => {
     if (practicePrctMode === 'auto') return autoPracticePrct
     if (practicePrctMode === 'custom') return maxPracticePrct
