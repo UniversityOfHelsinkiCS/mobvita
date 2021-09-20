@@ -1,6 +1,6 @@
 import React from 'react'
 import { FormattedMessage } from 'react-intl'
-import Slider from 'rc-slider'
+// import Slider from 'rc-slider'
 import useWindowDimensions from 'Utilities/windowDimensions'
 
 const ExerciseDensitySlider = ({ sliderValue, setSliderValue, onAfterChange, isDisabled }) => {
