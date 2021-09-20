@@ -37,7 +37,7 @@ const GroupLearningSettingsModal = ({ open, setOpen, groupId }) => {
     dispatch(setNotification('learning-settings-saved', 'success'))
   }
 
-  const getLvlButtonStyle = lvl => {
+  const getLevelButtonStyle = lvl => {
     if (lvl === exerciseSettingTemplate) {
       return { marginRight: '10px', color: 'yellow', fontWeight: 600 }
     }
@@ -74,7 +74,7 @@ const GroupLearningSettingsModal = ({ open, setOpen, groupId }) => {
           >
             {skillLevels.sort().map(level => (
               <Button
-                style={getLvlButtonStyle(level)}
+                style={getLevelButtonStyle(level)}
                 key={level}
                 onClick={() => handleLevelSelect(level)}
               >
