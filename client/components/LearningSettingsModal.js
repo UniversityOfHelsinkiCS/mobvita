@@ -10,7 +10,8 @@ import {
   updatePracticePrctMode,
   updateMaxPracticePercent,
   updateGroupSelect,
-  updatePracticeSettingsToAuto,
+  updateLearningSettingModeToAuto,
+  updateLearningSettingModeToPersonal,
 } from 'Utilities/redux/userReducer'
 import { setNotification } from 'Utilities/redux/notificationReducer'
 import { sidebarSetOpen } from 'Utilities/redux/sidebarReducer'
@@ -95,12 +96,12 @@ const LearningSettingsModal = ({ trigger }) => {
   }
 
   const handleAutomaticOptionClick = () => {
-    dispatch(updatePracticeSettingsToAuto())
+    dispatch(updateLearningSettingModeToAuto())
     setSliderValue(autoPracticePrct)
   }
 
   const handlePersonalOptionClick = () => {
-    dispatch(updatePracticePrctMode('custom'))
+    dispatch(updateLearningSettingModeToPersonal())
     setSliderValue(maxPracticePrct)
   }
 
