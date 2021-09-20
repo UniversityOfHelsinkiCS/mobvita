@@ -7,11 +7,9 @@ import { getMetadata } from 'Utilities/redux/metadataReducer'
 import { Link } from 'react-router-dom'
 import {
   updateExerciseTemplate,
-  updatePracticePrctMode,
   updateMaxPracticePercent,
-  updateGroupSelect,
-  updateLearningSettingModeToAuto,
-  updateLearningSettingModeToPersonal,
+  updateGroupTemplateSelection,
+  updateLearningSettingMode,
 } from 'Utilities/redux/userReducer'
 import { setNotification } from 'Utilities/redux/notificationReducer'
 import { sidebarSetOpen } from 'Utilities/redux/sidebarReducer'
@@ -89,24 +87,24 @@ const LearningSettingsModal = ({ trigger }) => {
     })
   )
 
-  const handleGroupChange = async value => {
-    await dispatch(updateGroupSelect(value))
-    const targetGroup = groups.find(group => group.group_id === value)
+  const handleGroupChange = groupId => {
+    dispatch(updateGroupTemplateSelection(groupId))
+    const targetGroup = groups.find(group => group.group_id === groupId)
     setSliderValue(targetGroup.max_practice_prct)
   }
 
   const handleAutomaticOptionClick = () => {
-    dispatch(updateLearningSettingModeToAuto())
+    dispatch(updateLearningSettingMode('auto'))
     setSliderValue(autoPracticePrct)
   }
 
   const handlePersonalOptionClick = () => {
-    dispatch(updateLearningSettingModeToPersonal())
+    dispatch(updateLearningSettingMode('personal'))
     setSliderValue(maxPracticePrct)
   }
 
   const handleGroupOptionClick = () => {
-    dispatch(updatePracticePrctMode('group'))
+    dispatch(updateLearningSettingMode('group', currentGroup.group_id))
     setSliderValue(currentGroup.max_practice_prct)
   }
 

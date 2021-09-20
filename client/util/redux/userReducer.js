@@ -103,10 +103,22 @@ export const updateSortCriterion = value => saveSelf({ library_sort_criterion: v
 export const updateToNonNewUser = () => saveSelf({ is_new_user: false })
 export const updatePracticePrctMode = value => saveSelf({ practice_prct_mode: value })
 export const updateMaxPracticePercent = value => saveSelf({ max_practice_prct: value })
-export const updateLearningSettingModeToAuto = () =>
-  saveSelf({ practice_prct_mode: 'auto', exercise_setting_template: 'auto' })
-export const updateLearningSettingModeToPersonal = () =>
-  saveSelf({ practice_prct_mode: 'custom', exercise_setting_template: 'personal' })
+
+export const updateGroupTemplateSelection = groupId => {
+  return saveSelf({ exercise_setting_template: groupId, last_selected_group: groupId })
+}
+
+export const updateLearningSettingMode = (mode, groupId = null) => {
+  if (mode === 'auto') {
+    return saveSelf({ practice_prct_mode: 'auto', exercise_setting_template: 'auto' })
+  }
+  if (mode === 'personal') {
+    return saveSelf({ practice_prct_mode: 'custom', exercise_setting_template: 'personal' })
+  }
+  if (mode === 'group') {
+    return saveSelf({ practice_prct_mode: 'group', exercise_setting_template: groupId })
+  }
+}
 
 export const changePassword = (currentPassword, newPassword) => {
   const route = '/user/password'
