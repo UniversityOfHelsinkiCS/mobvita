@@ -9,7 +9,7 @@ const ExerciseDensitySlider = ({ sliderValue, setSliderValue, onAfterChange, isD
   return (
     <>
       <div style={{ display: 'flex', width: bigWindow ? '50%' : '100%', margin: '1em 0em' }}>
-        <Slider
+        {/* <Slider
           style={{ margin: '1em 1em .1em 1em' }}
           value={sliderValue}
           min={0.185}
@@ -27,7 +27,7 @@ const ExerciseDensitySlider = ({ sliderValue, setSliderValue, onAfterChange, isD
           disabled={isDisabled}
           onChange={value => setSliderValue(value)}
           onAfterChange={() => onAfterChange(sliderValue)}
-        />
+        /> */}
       </div>
       <div
         className="bold"
