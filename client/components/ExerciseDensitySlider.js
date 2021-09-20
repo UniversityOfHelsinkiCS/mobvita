@@ -1,15 +1,36 @@
 import React from 'react'
 import { FormattedMessage } from 'react-intl'
-import Slider from 'rc-slider'
-import useWindowDimensions from 'Utilities/windowDimensions'
+// import Slider from 'rc-slider'
+import ReactSlider from 'react-slider'
+
+const Slider = ({ sliderValue, setSliderValue, onAfterChange, isDisabled }) => {
+  return (
+    <ReactSlider
+      className="exercise-density-slider"
+      thumbClassName="exercise-density-slider-thumb"
+      trackClassName="exercise-density-slider-track"
+      onChange={value => setSliderValue(value / 1000)}
+      onAfterChange={value => onAfterChange(value / 1000)}
+      min={185}
+      max={325}
+      value={sliderValue * 1000}
+      disabled={isDisabled}
+    />
+  )
+}
 
 const ExerciseDensitySlider = ({ sliderValue, setSliderValue, onAfterChange, isDisabled }) => {
-  const bigWindow = useWindowDimensions().width >= 640
-
   return (
     <>
-      <div style={{ display: 'flex', width: bigWindow ? '50%' : '100%', margin: '1em 0em' }}>
-        <Slider
+      <Slider
+        sliderValue={sliderValue}
+        setSliderValue={setSliderValue}
+        onAfterChange={onAfterChange}
+        isDisabled={isDisabled}
+      />
+
+      {/* <div style={{ display: 'flex', width: bigWindow ? '50%' : '100%', margin: '1em 0em' }}> */}
+      {/* <Slider
           style={{ margin: '1em 1em .1em 1em' }}
           value={sliderValue}
           min={0.185}
@@ -27,15 +48,15 @@ const ExerciseDensitySlider = ({ sliderValue, setSliderValue, onAfterChange, isD
           disabled={isDisabled}
           onChange={value => setSliderValue(value)}
           onAfterChange={() => onAfterChange(sliderValue)}
-        />
-      </div>
+        /> */}
+
+      {/* </div> */}
+
       <div
-        className="bold"
+        className="exercise-density-slider-label-cont bold"
         style={{
-          width: bigWindow ? '50%' : '100%',
           display: 'flex',
           justifyContent: 'space-between',
-          marginBottom: '1em',
         }}
       >
         <span>

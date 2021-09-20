@@ -2165,6 +2165,49 @@ html, body, #root {
   }
 }
 
+// EXERCISE DENSITY SLIDER
+
+.exercise-density-slider, .exercise-density-slider-label-cont {
+  width: 100%;
+  max-width: 500px;
+  height: 3em;
+  margin: auto;
+
+  &-thumb {
+    cursor: pointer;
+  position: absolute;
+  z-index: 100;
+  width: 1.5em!important;
+  height: 1.5em!important;
+  background: #f8f8f8;
+  border: 1px solid #8d8d8d;
+  border-radius: 100%;
+  display: block;
+  box-shadow: 0 0 2px 0 rgb(0 0 0 / 44%);
+  }
+  &-track {
+    position: relative;
+    background: #ddd;
+  }
+
+  &-track-0 {
+    background: #83a9ff;
+  }
+  
+}
+
+.exercise-density-slider .exercise-density-slider-track {
+  top: 20px;
+  height: 4px;
+}
+.exercise-density-slider .exercise-density-slider-thumb {
+  top: 12px;
+  width: 10px;
+  outline: none;
+  height: 10px;
+  line-height: 38px;
+}
+
 // General classes
 
 
@@ -2213,4 +2256,5 @@ html, body, #root {
 	  opacity: 0.5;
 	}
 }
+
 
