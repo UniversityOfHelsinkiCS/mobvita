@@ -7,21 +7,23 @@ import { shareStory } from 'Utilities/redux/shareReducer'
 import { formatEmailList } from 'Utilities/common'
 
 const ShareStory = ({ story, isOpen, setOpen }) => {
+  const intl = useIntl()
+  const dispatch = useDispatch()
+
   const [shareTargetGroupId, setShareTargetGroupId] = useState(null)
   const [shareTargetUserEmails, setShareTargetUserEmails] = useState('')
-  const [message, setMessage] = useState('')
   const [showOption, setShowOption] = useState('group')
   const [showSelfAddWarning, setShowSelfAddWarning] = useState(false)
+  const [message, setMessage] = useState(
+    intl.formatMessage({ id: 'share-story-with-group-default' })
+  )
 
   const EMAIL_MIN_LENGTH = 6
+  const ownEmail = useSelector(({ user }) => user.data.user.email)
 
   const groupsUserCanShareWith = useSelector(({ groups }) =>
     groups.groups.filter(group => group.is_teaching)
   )
-  const ownEmail = useSelector(({ user }) => user.data.user.email)
-
-  const intl = useIntl()
-  const dispatch = useDispatch()
 
   useEffect(() => {
     if (groupsUserCanShareWith.length > 0) {
@@ -45,6 +47,16 @@ const ShareStory = ({ story, isOpen, setOpen }) => {
     }
   }
 
+  const handleGroupOptionSelect = () => {
+    setShowOption('group')
+    setMessage(intl.formatMessage({ id: 'share-story-with-group-default' }))
+  }
+
+  const handleUserOptionSelect = () => {
+    setShowOption('user')
+    setMessage(intl.formatMessage({ id: 'share-story-with-user-default' }))
+  }
+
   const handleGroupChange = e => setShareTargetGroupId(e.target.value)
 
   return (
@@ -61,13 +73,13 @@ const ShareStory = ({ story, isOpen, setOpen }) => {
             name="group"
             label={intl.formatMessage({ id: 'share-story-with-a-group' })}
             checked={showOption === 'group'}
-            onClick={() => setShowOption('group')}
+            onClick={handleGroupOptionSelect}
           />
           <Radio
             name="user"
             label={intl.formatMessage({ id: 'share-story-with-a-user' })}
             checked={showOption === 'user'}
-            onClick={() => setShowOption('user')}
+            onClick={handleUserOptionSelect}
           />
         </div>
         <Form className="share-story-form" data-cy="share-story-form" onSubmit={share}>
@@ -80,8 +92,8 @@ const ShareStory = ({ story, isOpen, setOpen }) => {
                       style={{
                         display: 'flex',
                         alignItems: 'center',
-                        marginTop: '1em',
-                        marginBottom: '1em',
+                        marginTop: '2em',
+                        marginBottom: '2em',
                       }}
                     >
                       <span style={{ paddingRight: '2rem', fontWeight: 'bold' }}>
@@ -95,13 +107,13 @@ const ShareStory = ({ story, isOpen, setOpen }) => {
                         ))}
                       </select>
                     </div>
+                    <span className="sm-label" style={{ marginTop: '5em' }}>
+                      <FormattedMessage id="write-a-message-for-the-receiver-optional" />
+                    </span>
                     <FormControl
                       style={{ marginTop: '0.5em', marginBottom: '2rem' }}
                       as="input"
                       value={message}
-                      placeholder={intl.formatMessage({
-                        id: 'write-a-message-for-the-receiver-optional',
-                      })}
                       onChange={e => setMessage(e.target.value)}
                     />
                     <Button disabled={!shareTargetGroupId} type="submit">
