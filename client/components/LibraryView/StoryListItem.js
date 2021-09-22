@@ -76,6 +76,22 @@ const StoryTitle = ({
   )
 }
 
+const ShareInfoPopupContent = ({ infoObj }) => {
+  return (
+    <div>
+      <b>
+        <FormattedMessage id="shared-by" />:
+      </b>{' '}
+      {infoObj?.sender}
+      <br />
+      <b>
+        <FormattedMessage id="message" />:
+      </b>{' '}
+      {infoObj?.message}
+    </div>
+  )
+}
+
 const StoryActions = ({ story }) => {
   const { width } = useWindowDimensions()
 
@@ -254,26 +270,9 @@ const StoryListItem = ({ story, userCanShare, libraryShown, selectedGroup }) => 
 
           {libraryShown.group && (
             <>
-              {console.log('storyGroupShareInfo:', storyGroupShareInfo)}
               <Popup
                 basic
-                content={
-                  <>
-                    <b>
-                      <FormattedMessage id="shared-by" />:
-                    </b>{' '}
-                    {storyGroupShareInfo.sender}
-                    {storyGroupShareInfo.message && (
-                      <>
-                        <br />
-                        <b>
-                          <FormattedMessage id="message" />:
-                        </b>{' '}
-                        {storyGroupShareInfo.message}
-                      </>
-                    )}
-                  </>
-                }
+                content={<ShareInfoPopupContent infoObj={storyGroupShareInfo} />}
                 trigger={
                   <div>
                     <Icon name="envelope outline" />
@@ -283,36 +282,21 @@ const StoryListItem = ({ story, userCanShare, libraryShown, selectedGroup }) => 
             </>
           )}
 
-          <div className="flex" style={{ gap: '1em' }}>
-            {!libraryShown.group && story?.sharedwith?.includes(userId) && (
-              <Popup
-                basic
-                content={
-                  <>
-                    <b>
-                      <FormattedMessage id="shared-by" />:
-                    </b>{' '}
-                    {story.sharing_info?.sender}
-                    {story.sharing_info?.message && (
-                      <>
-                        <br />
-                        <b>
-                          <FormattedMessage id="message" />:
-                        </b>{' '}
-                        {story.sharing_info?.message}
-                      </>
-                    )}
-                  </>
-                }
-                trigger={
-                  <div>
-                    <Icon name="envelope outline" />
-                  </div>
-                }
-              />
-            )}
-            <DifficultyStars difficulty={story.difficulty} style={{ whiteSpace: 'nowrap' }} />
-          </div>
+          {!libraryShown.group && story?.sharedwith?.includes(userId) && (
+            <Popup
+              basic
+              content={<ShareInfoPopupContent infoObj={story.sharing_info} />}
+              trigger={
+                <div>
+                  <Icon name="envelope outline" />
+                </div>
+              }
+            />
+          )}
+          <DifficultyStars
+            difficulty={story.difficulty}
+            style={{ whiteSpace: 'nowrap', marginLeft: '1em' }}
+          />
         </div>
       </Card.Content>
       <ShareStory story={story} isOpen={shareModalOpen} setOpen={setShareModalOpen} />
