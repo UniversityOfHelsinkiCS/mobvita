@@ -211,6 +211,10 @@ const StoryListItem = ({ story, userCanShare, libraryShown, selectedGroup }) => 
     dispatch(unshare(selectedGroup, story._id))
   }
 
+  const storyGroupShareInfo = libraryShown.group
+    ? story.groups.find(g => g.group_id === currentGroup.group_id)
+    : null
+
   return (
     <Card
       fluid
@@ -247,8 +251,40 @@ const StoryListItem = ({ story, userCanShare, libraryShown, selectedGroup }) => 
         <StoryActions story={story} />
         <div className="flex align-center" style={{ overflow: 'hidden' }}>
           {showGroupNames && <GroupsSharedTo groups={story.groups} />}
+
+          {libraryShown.group && (
+            <>
+              {console.log('storyGroupShareInfo:', storyGroupShareInfo)}
+              <Popup
+                basic
+                content={
+                  <>
+                    <b>
+                      <FormattedMessage id="shared-by" />:
+                    </b>{' '}
+                    {storyGroupShareInfo.sender}
+                    {storyGroupShareInfo.message && (
+                      <>
+                        <br />
+                        <b>
+                          <FormattedMessage id="message" />:
+                        </b>{' '}
+                        {storyGroupShareInfo.message}
+                      </>
+                    )}
+                  </>
+                }
+                trigger={
+                  <div>
+                    <Icon name="envelope outline" />
+                  </div>
+                }
+              />
+            </>
+          )}
+
           <div className="flex" style={{ gap: '1em' }}>
-            {story?.sharedwith?.includes(userId) && (
+            {!libraryShown.group && story?.sharedwith?.includes(userId) && (
               <Popup
                 basic
                 content={
