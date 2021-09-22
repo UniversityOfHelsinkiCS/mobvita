@@ -62,12 +62,12 @@ const LearningSettingsModal = ({ trigger }) => {
 
   const handleMaxPercentUpdate = value => {
     dispatch(updateMaxPracticePercent(value))
-    dispatch(setNotification('learning-settings-saved', 'success'))
+    dispatch(setNotification('learning-settings-saved', 'success', { autoClose: 2500 }))
   }
 
   const handleLevelSelect = level => {
     dispatch(updateExerciseTemplate(level))
-    dispatch(setNotification('learning-settings-saved', 'success'))
+    dispatch(setNotification('learning-settings-saved', 'success', { autoClose: 2500 }))
     dispatch(sidebarSetOpen(false))
   }
 
