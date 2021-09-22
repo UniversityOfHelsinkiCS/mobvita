@@ -1,12 +1,13 @@
 import React, { useState } from 'react'
-import { Modal } from 'semantic-ui-react'
-import { FormattedMessage } from 'react-intl'
+import { Modal, Icon, Popup } from 'semantic-ui-react'
+import { FormattedMessage, useIntl } from 'react-intl'
 import { useDispatch } from 'react-redux'
 import { Button, FormControl, Form } from 'react-bootstrap'
 import { addToGroup } from 'Utilities/redux/groupsReducer'
 import { formatEmailList } from 'Utilities/common'
 
 const AddToGroup = ({ groupId, setGroupId }) => {
+  const intl = useIntl()
   const dispatch = useDispatch()
   const [teachers, setTeachers] = useState('')
   const [students, setStudents] = useState('')
@@ -29,7 +30,12 @@ const AddToGroup = ({ groupId, setGroupId }) => {
           </span>
           <FormControl as="textarea" value={teachers} onChange={e => setTeachers(e.target.value)} />
           <span className="sm-label">
-            <FormattedMessage id="student-emails" />
+            <FormattedMessage id="student-emails" />{' '}
+            <Popup
+              position="top center"
+              content={intl.formatMessage({ id: 'group-registration-documentation' })}
+              trigger={<Icon name="info circle" color="grey" />}
+            />
           </span>
           <FormControl as="textarea" value={students} onChange={e => setStudents(e.target.value)} />
           <Button variant="primary" type="submit">
