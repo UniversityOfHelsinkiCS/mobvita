@@ -28,7 +28,12 @@ const AddToGroup = ({ groupId, setGroupId }) => {
           <span className="sm-label">
             <FormattedMessage id="teacher-emails" />
           </span>
-          <FormControl as="textarea" value={teachers} onChange={e => setTeachers(e.target.value)} />
+          <FormControl
+            as="textarea"
+            value={teachers}
+            placeholder={intl.formatMessage({ id: 'multiple-email-separate-instructions' })}
+            onChange={e => setTeachers(e.target.value)}
+          />
           <span className="sm-label">
             <FormattedMessage id="student-emails" />{' '}
             <Popup
@@ -37,7 +42,12 @@ const AddToGroup = ({ groupId, setGroupId }) => {
               trigger={<Icon name="info circle" color="grey" />}
             />
           </span>
-          <FormControl as="textarea" value={students} onChange={e => setStudents(e.target.value)} />
+          <FormControl
+            as="textarea"
+            value={students}
+            placeholder={intl.formatMessage({ id: 'multiple-email-separate-instructions' })}
+            onChange={e => setStudents(e.target.value)}
+          />
           <Button variant="primary" type="submit">
             <FormattedMessage id="Confirm" />
           </Button>

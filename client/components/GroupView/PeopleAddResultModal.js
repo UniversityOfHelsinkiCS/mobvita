@@ -28,7 +28,7 @@ const PeopleAddResultModal = ({ lastAddInfo }) => {
   return (
     <Modal
       dimmer="inverted"
-      closeIcon={{ style: { top: '1.5rem', right: '2.5rem' }, color: 'black', name: 'close' }}
+      closeIcon={{ style: { top: '1rem', right: '2.5rem' }, color: 'black', name: 'close' }}
       open={!!lastAddInfo}
       onClose={() => dispatch(emptyLastAddInfo())}
     >
