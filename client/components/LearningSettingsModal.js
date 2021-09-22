@@ -135,7 +135,7 @@ const LearningSettingsModal = ({ trigger }) => {
             <Radio
               checked={practicePrctMode === 'auto'}
               value="auto"
-              label="Automatic (system chooses)"
+              label={intl.formatMessage({ id: 'learning-settings-modal-automatic' })}
               onChange={() => handleAutomaticOptionClick()}
             />
           </div>

@@ -860,7 +860,7 @@
     "Revita: for language learning and supporting endangered languages": "Strumenti per l'apprendimento delle lingue e per supporto alle lingue in pericolo di estinzione",
     "use-my-personal-settings": "Usa le mie impostazioni personali",
     "use-my-group-settings": "Usa le impostazioni del mio gruppo",
-    "select-cefr-level": "Seleziona il livello MASSIMO degli esercizi",
+    "select-cefr-level": "Il tuo livello degli esercizi",
     "This key is valid for the next 30 days": "Questa chiave è valida per i prossimi 30 giorni",
     "upload-from-web": "Carica dal Web",
     "participle-exercise": "Scegli la forma base per gli esercizi sui Participi",
@@ -1082,5 +1082,10 @@
     "custom": "Custom",
     "difficult": "Difficile",
     "average": "Medio",
-    "easy": "Facile"
+    "easy": "Facile",
+    "learning-settings-modal-automatic": "Automatic (system chooses)",
+    "share-story-with-user-default": "I wanted to share this story with you!",
+    "share-story-with-group-default": "Please work through the exercises in this story!",
+    "group-registration-documentation": "If you add a student to group, and have no privileges in the domain, the student will appear in the group after he has confirmed the invitation.\n(If you would like to request privileges for your domain, please contact revita@cs.helsinki.fi)",
+    "learning-settings-modal-CEFR-level-documentation": "This CEFR level is used to select your exercises."
 }
