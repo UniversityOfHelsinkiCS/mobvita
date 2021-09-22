@@ -19,6 +19,7 @@ const DetailedStoryModal = ({
     percent_perf: percentCorrect,
     URL,
     sharing_info: sharingInfo,
+    groups: groupsSharedWith,
     author,
     difficulty,
     elo_score: elo,
@@ -28,6 +29,10 @@ const DetailedStoryModal = ({
   } = story
 
   const showLearningSettingsButton = inGroupLibrary && currentGroup && currentGroup.is_teaching
+
+  const storyGroupSharingInfo = inGroupLibrary
+    ? groupsSharedWith.find(g => g.group_id === currentGroup.group_id)
+    : null
 
   return (
     <Modal
@@ -42,7 +47,7 @@ const DetailedStoryModal = ({
           author={author}
           difficulty={difficulty}
           elo={elo}
-          sharingInfo={sharingInfo}
+          sharingInfo={inGroupLibrary ? storyGroupSharingInfo : sharingInfo}
           percentCovered={percentCovered}
           percentCorrect={percentCorrect}
           URL={URL}

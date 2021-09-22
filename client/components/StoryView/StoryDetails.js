@@ -52,6 +52,7 @@ const StoryDetails = () => {
 
   const selectedGroup = groups.find(group => group.group_id === selectedGroupId)
 
+  const inGroupLibrary = selectedLibrary === 'group'
   const userOwnsStory = user === userId
   const userIsATeacherOfSharedStory =
     selectedGroup?.is_teaching &&
@@ -59,6 +60,10 @@ const StoryDetails = () => {
 
   const showShareButton = !publicStory && userOwnsStory && userEmail !== 'anonymous_email'
   const showDeleteButton = !publicStory && (userOwnsStory || userIsATeacherOfSharedStory)
+
+  const storyGroupSharingInfo = inGroupLibrary
+    ? groupsSharedWith.find(g => g.group_id === selectedGroupId)
+    : null
 
   return (
     <main className="application-content pt-nm">
@@ -68,7 +73,7 @@ const StoryDetails = () => {
         setOpen={setDeleteModalOpen}
         action={handleDelete}
       >
-        {selectedLibrary === 'group' ? (
+        {inGroupLibrary ? (
           <FormattedMessage
             id="remove-story-from-group-warning"
             values={{ group: selectedGroup?.groupName }}
@@ -108,7 +113,7 @@ const StoryDetails = () => {
         author={author}
         difficulty={difficulty}
         elo={elo}
-        sharingInfo={sharingInfo}
+        sharingInfo={inGroupLibrary ? storyGroupSharingInfo : sharingInfo}
         percentCovered={percentCovered}
         percentCorrect={percentCorrect}
         URL={URL}
