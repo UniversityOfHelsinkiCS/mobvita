@@ -1090,5 +1090,6 @@
     "share-story-with-group-default": "Please work through the exercises in this story!",
     "group-registration-documentation": "If you add a student to group, and have no privileges in the domain, the student will appear in the group after he has confirmed the invitation.\n(If you would like to request privileges for your domain, please contact revita@cs.helsinki.fi)",
     "learning-settings-modal-CEFR-level-documentation": "This CEFR level is used to select your exercises.",
-    "multiple-email-separate-instructions": "Separate email addresses by spaces or commas"
+    "multiple-email-separate-instructions": "Separate email addresses by spaces or commas",
+    "learning-settings-modal-exercise-density-documentation": "< write about density here >"
 }

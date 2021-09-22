@@ -1,10 +1,9 @@
 import React, { useState } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
-import { Modal, Divider } from 'semantic-ui-react'
-import { FormattedMessage } from 'react-intl'
+import { Modal, Divider, Icon, Popup } from 'semantic-ui-react'
+import { FormattedMessage, useIntl } from 'react-intl'
 import { ButtonGroup, Button } from 'react-bootstrap'
 import { Link } from 'react-router-dom'
-import { setNotification } from 'Utilities/redux/notificationReducer'
 import {
   updateExerciseTemplate,
   updateGroupMaxPracticePercent,
@@ -13,6 +12,7 @@ import ExerciseDensitySlider from 'Components/ExerciseDensitySlider'
 import { hiddenFeatures } from 'Utilities/common'
 
 const GroupLearningSettingsModal = ({ open, setOpen, groupId }) => {
+  const intl = useIntl()
   const dispatch = useDispatch()
   const { groups } = useSelector(({ groups }) => groups)
   const { practice_prct_mode: practicePrctMode } = useSelector(({ user }) => user.data.user)
@@ -50,6 +50,13 @@ const GroupLearningSettingsModal = ({ open, setOpen, groupId }) => {
       <Modal.Content style={{ display: 'flex', flexDirection: 'column' }}>
         <h2 style={{ fontSize: '17px', fontWeight: '550' }}>
           <FormattedMessage id="exercise-density" />{' '}
+          <Popup
+            position="top center"
+            content={intl.formatMessage({
+              id: 'learning-settings-modal-exercise-density-documentation',
+            })}
+            trigger={<Icon name="info circle" color="grey" />}
+          />
           {hiddenFeatures && <span style={{ color: 'grey' }}>({sliderValue})</span>}
         </h2>
         <ExerciseDensitySlider
@@ -62,7 +69,14 @@ const GroupLearningSettingsModal = ({ open, setOpen, groupId }) => {
         <>
           <Divider />
           <h2 style={{ fontSize: '17px', fontWeight: '550' }}>
-            <FormattedMessage id="select-cefr-level" />:
+            <FormattedMessage id="select-cefr-level" />{' '}
+            <Popup
+              position="top center"
+              content={intl.formatMessage({
+                id: 'learning-settings-modal-cefr-level-documentation',
+              })}
+              trigger={<Icon name="info circle" color="grey" />}
+            />
           </h2>
           <ButtonGroup
             name="difficultyButtons"

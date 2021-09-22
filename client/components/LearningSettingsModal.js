@@ -171,6 +171,13 @@ const LearningSettingsModal = ({ trigger }) => {
         <Divider />
         <h2 style={{ fontSize: '17px', fontWeight: '550' }}>
           <FormattedMessage id="exercise-density" />{' '}
+          <Popup
+            position="top center"
+            content={intl.formatMessage({
+              id: 'learning-settings-modal-exercise-density-documentation',
+            })}
+            trigger={<Icon name="info circle" color="grey" />}
+          />
           {hiddenFeatures && <span style={{ color: 'grey' }}>({sliderValue})</span>}
         </h2>
         <ExerciseDensitySlider
