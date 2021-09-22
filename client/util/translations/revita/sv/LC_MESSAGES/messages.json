@@ -986,7 +986,7 @@
     "no-friends": "Du har inga vänner.",
     "friend-remove-confirmation": "Are you sure you want to remove <b>{user}</b> from your friends?",
     "user-unblock-confirmation": "Are you sure you want to remove <b>{user}</b> from your blocked list?",
-    "multiple-emails-separated-by-space": "Multiple emails can be separated by space.",
+    "multiple-emails-separated-by-space": "Multiple email-addressess can be separated by space.",
     "friend-removed": "Vännen togs bort",
     "friend-added": "Vännen tillades",
     "click-to-add-site-to-favourites": "Click here to add the website to your favourites!",
@@ -1085,5 +1085,6 @@
     "share-story-with-user-default": "I wanted to share this story with you!",
     "share-story-with-group-default": "Please work through the exercises in this story!",
     "group-registration-documentation": "If you add a student to group, and have no privileges in the domain, the student will appear in the group after he has confirmed the invitation.\n(If you would like to request privileges for your domain, please contact revita@cs.helsinki.fi)",
-    "learning-settings-modal-CEFR-level-documentation": "This CEFR level is used to select your exercises."
+    "learning-settings-modal-CEFR-level-documentation": "This CEFR level is used to select your exercises.",
+    "multiple-email-separate-instructions": "Separate email addresses by spaces or commas (,)"
 }
