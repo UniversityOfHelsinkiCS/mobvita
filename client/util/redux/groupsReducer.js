@@ -110,6 +110,10 @@ export const confirmGroupInvitation = token => {
   return callBuilder(route, prefix, 'post', payload)
 }
 
+export const emptyLastAddInfo = () => ({
+  type: 'EMPTY_LAST_ADD_INFO',
+})
+
 export default (state = { groups: [], joinPending: false }, action) => {
   switch (action.type) {
     case 'GET_GROUPS_ATTEMPT':
@@ -158,6 +162,16 @@ export default (state = { groups: [], joinPending: false }, action) => {
     case 'ADD_PEOPLE_SUCCESS':
       return {
         ...state,
+        lastAddInfo: [
+          {
+            added_students: action.response.added_students,
+            to_be_confirmed_students: action.response.to_be_confirmed_students,
+            failed_students: action.response.failed_students,
+            added_teachers: action.response.added_teachers,
+            to_be_confirmed_teachers: action.response.to_be_confirmed_teachers,
+            failed_teachers: action.response.failed_teachers,
+          },
+        ],
         groups: state.groups
           .filter(g => g.group_id !== action.response.group.group_id)
           .concat({
@@ -342,6 +356,11 @@ export default (state = { groups: [], joinPending: false }, action) => {
         ...state,
         groups: action.response.groups.sort((a, b) => a.groupName.localeCompare(b.groupName)),
         pending: false,
+      }
+    case 'EMPTY_LAST_ADD_INFO':
+      return {
+        ...state,
+        lastAddInfo: null,
       }
     default:
       return state

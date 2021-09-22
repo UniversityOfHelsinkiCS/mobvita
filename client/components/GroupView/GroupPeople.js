@@ -6,13 +6,14 @@ import { Icon, Table } from 'semantic-ui-react'
 import Spinner from 'Components/Spinner'
 import NoGroupsView from './NoGroupsView'
 import AddToGroup from './AddToGroup'
+import PeopleAddResultModal from './PeopleAddResultModal'
 
 const GroupPeople = ({ role }) => {
   const currentGroupId = useSelector(({ user }) => user.data.user.last_selected_group)
   const dispatch = useDispatch()
 
   const [addToGroupId, setAddToGroupId] = useState(null)
-  const { groups: totalGroups, pending } = useSelector(({ groups }) => groups)
+  const { groups: totalGroups, lastAddInfo, pending } = useSelector(({ groups }) => groups)
   const currentGroup = totalGroups.find(group => group.group_id === currentGroupId)
 
   const compare = (a, b) => {
@@ -45,11 +46,13 @@ const GroupPeople = ({ role }) => {
 
   return (
     <div className="group-container">
+      <PeopleAddResultModal lastAddInfo={lastAddInfo} />
+
       <div style={{ margin: '1.5em 0em .75em 0em' }}>
         <div className="header-2">{currentGroup.groupName}</div>
-
         <p style={{ paddingLeft: '0.2rem', fontStyle: 'italic' }}>{currentGroup?.description}</p>
       </div>
+
       <AddToGroup groupId={addToGroupId} setGroupId={setAddToGroupId} />
 
       <Table size="small" celled>
