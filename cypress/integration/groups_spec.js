@@ -90,9 +90,10 @@ describe("groups", function () {
     cy.get('textarea').eq(1).type(this.student.email)
     cy.get('[type=submit]').click()
 
+    cy.get('.modal > .close').click()
     cy.contains(this.teacher.username)
     cy.contains(this.student.username)
-
+    
     cy.get(`[data-cy=remove-from-group-${this.student.username}]`).click()
     cy.contains(this.student.username).should('not.exist')
 
