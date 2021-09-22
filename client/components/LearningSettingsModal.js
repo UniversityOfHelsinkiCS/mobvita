@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
-import { Modal, Dropdown, Divider, Radio } from 'semantic-ui-react'
+import { Modal, Dropdown, Divider, Radio, Popup, Icon } from 'semantic-ui-react'
 import { FormattedMessage, useIntl } from 'react-intl'
 import { ButtonGroup, Button } from 'react-bootstrap'
 import { getMetadata } from 'Utilities/redux/metadataReducer'
@@ -11,7 +11,6 @@ import {
   updateGroupTemplateSelection,
   updateLearningSettingMode,
 } from 'Utilities/redux/userReducer'
-import { setNotification } from 'Utilities/redux/notificationReducer'
 import { sidebarSetOpen } from 'Utilities/redux/sidebarReducer'
 import { getGroups } from 'Utilities/redux/groupsReducer'
 import { hiddenFeatures, learningLanguageSelector } from 'Utilities/common'
@@ -183,7 +182,14 @@ const LearningSettingsModal = ({ trigger }) => {
         <>
           <Divider />
           <h2 style={{ fontSize: '17px', fontWeight: '550' }}>
-            <FormattedMessage id="select-cefr-level" />:
+            <FormattedMessage id="select-cefr-level" />{' '}
+            <Popup
+              position="top center"
+              content={intl.formatMessage({
+                id: 'learning-settings-modal-CEFR-level-documentation',
+              })}
+              trigger={<Icon name="info circle" color="grey" />}
+            />
           </h2>
           <ButtonGroup
             name="difficultyButtons"
