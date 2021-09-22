@@ -29,12 +29,10 @@ const GroupLearningSettingsModal = ({ open, setOpen, groupId }) => {
 
   const handleMaxPercentUpdate = value => {
     dispatch(updateGroupMaxPracticePercent(value, groupId))
-    dispatch(setNotification('learning-settings-saved', 'success'))
   }
 
   const handleLevelSelect = level => {
     dispatch(updateExerciseTemplate(level, groupId))
-    dispatch(setNotification('learning-settings-saved', 'success'))
   }
 
   const getLevelButtonStyle = lvl => {
