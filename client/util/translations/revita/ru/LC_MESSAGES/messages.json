@@ -1095,5 +1095,6 @@
     "resend-invitation": "Resend invitation",
     "CEFR-level-documentation": "Это уровень упражнений, которые система будет тебе предлагать.",
     "exercise-density-documentation": "This slider tells how many exercises are given in each paragraph:\n• \"Difficult\" means more exercises\n• \"Easy\" means fewer",
-    "exercise-setting-automatic": "Система подбирает настройки"
+    "exercise-setting-automatic": "Система подбирает настройки",
+    "cefr-level-documentation": "Это уровень упражнений, которые система будет тебе предлагать."
 }

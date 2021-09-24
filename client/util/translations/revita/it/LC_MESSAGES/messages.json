@@ -1093,5 +1093,6 @@
     "resend-invitation": "Rimanda l'invito",
     "CEFR-level-documentation": "Questo è il livello CEFR che il sistema usa per selezionare gli esercizi.",
     "exercise-density-documentation": "Lo \"slider\" ti indica quanti esericizi verranno restituiti per ogni paragrafo\n• \"Difficile\"indica esercizi più complessi\n• \"Facile\" indica meno esercizi",
-    "exercise-setting-automatic": "Revita adatta le impostazioni alle tue capacità"
+    "exercise-setting-automatic": "Revita adatta le impostazioni alle tue capacità",
+    "cefr-level-documentation": "Questo è il livello CEFR che il sistema usa per selezionare gli esercizi."
 }

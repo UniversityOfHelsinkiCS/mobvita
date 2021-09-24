@@ -1091,5 +1091,6 @@
     "resend-invitation": "Resend invitation",
     "CEFR-level-documentation": "This is the CEFR level the system use to select your exercises.",
     "exercise-density-documentation": "This slider tells how many exercises are given in each paragraph:\n• \"Difficult\" means more exercises\n• \"Easy\" means fewer",
-    "exercise-setting-automatic": "System adapts settings to your skills"
+    "exercise-setting-automatic": "System adapts settings to your skills",
+    "cefr-level-documentation": "This is the CEFR level the system use to select your exercises."
 }

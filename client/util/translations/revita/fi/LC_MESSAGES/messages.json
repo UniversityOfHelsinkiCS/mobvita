@@ -1092,5 +1092,6 @@
     "resend-invitation": "Lähetä kutsu uudestaan",
     "CEFR-level-documentation": "Sinulle valitaan enintään valitsemasi CEFR-tason tehtäviä.",
     "exercise-density-documentation": "Tällä säätimellä muokataan tehtävien määrää harjoitusleikkeissä:\n• \"Vaikea\" tarkoittaa enemmän tehtäviä\n• \"Helppo\" tarkoittaa vähemmän tehtäviä",
-    "exercise-setting-automatic": "Järjestelmä säätää asetukset taitotasosi mukaan"
+    "exercise-setting-automatic": "Järjestelmä säätää asetukset taitotasosi mukaan",
+    "cefr-level-documentation": "Sinulle valitaan enintään valitsemasi CEFR-tason tehtäviä."
 }
