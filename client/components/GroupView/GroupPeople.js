@@ -1,8 +1,9 @@
 import React, { useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { removeFromGroup } from 'Utilities/redux/groupsReducer'
+import { removeFromGroup, resendGroupInvitation } from 'Utilities/redux/groupsReducer'
 import { FormattedMessage } from 'react-intl'
 import { Icon, Table } from 'semantic-ui-react'
+import { Button } from 'react-bootstrap'
 import Spinner from 'Components/Spinner'
 import NoGroupsView from './NoGroupsView'
 import AddToGroup from './AddToGroup'
@@ -29,6 +30,10 @@ const GroupPeople = ({ role }) => {
 
   const removeUser = userId => {
     dispatch(removeFromGroup(currentGroupId, userId))
+  }
+
+  const handleResendInvitationClick = userId => {
+    dispatch(resendGroupInvitation(currentGroupId, userId))
   }
 
   if (pending || (totalGroups.length > 0 && !currentGroup))
@@ -80,6 +85,24 @@ const GroupPeople = ({ role }) => {
               <Table.Cell key={`teacher-${teacher.userName}`}>{teacher.userName}</Table.Cell>
             </Table.Row>
           ))}
+          {currentGroup.pending_teachers.map(teacher => (
+            <Table.Row>
+              <Table.Cell key={`teacher-${teacher.userName}`}>
+                <div className="flex space-between" style={{ alignItems: 'center' }}>
+                  <span style={{ color: 'gray' }}>{teacher.userName}</span>
+                  {currentUserIsTeacher && (
+                    <Button
+                      onClick={() => handleResendInvitationClick(teacher._id)}
+                      size="sm"
+                      style={{ marginRight: '1em' }}
+                    >
+                      <FormattedMessage id="resend-invitation" />
+                    </Button>
+                  )}
+                </div>
+              </Table.Cell>
+            </Table.Row>
+          ))}
         </Table.Body>
       </Table>
 
@@ -116,6 +139,35 @@ const GroupPeople = ({ role }) => {
                         onClick={() => removeUser(student._id)}
                       />
                     )}
+                  </Table.Cell>
+                </Table.Row>
+              ))}
+              {currentGroup.pending_students.map(student => (
+                <Table.Row>
+                  <Table.Cell key={`student-${student.userName}`}>
+                    <div className="flex space-between" style={{ alignItems: 'center' }}>
+                      <span style={{ color: 'gray' }}>
+                        {student.userName} ({student.email}){' '}
+                      </span>
+                      {currentUserIsTeacher && (
+                        <div className="flex" style={{ alignItems: 'center' }}>
+                          <Button
+                            onClick={() => handleResendInvitationClick(student._id)}
+                            size="sm"
+                            style={{ marginRight: '1em' }}
+                          >
+                            <FormattedMessage id="resend-invitation" />
+                          </Button>
+                          <Icon
+                            data-cy={`remove-from-group-${student.userName}`}
+                            style={{ cursor: 'pointer' }}
+                            name="close"
+                            color="red"
+                            onClick={() => removeUser(student._id)}
+                          />
+                        </div>
+                      )}
+                    </div>
                   </Table.Cell>
                 </Table.Row>
               ))}

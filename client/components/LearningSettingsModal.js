@@ -134,7 +134,7 @@ const LearningSettingsModal = ({ trigger }) => {
             <Radio
               checked={practicePrctMode === 'auto'}
               value="auto"
-              label={intl.formatMessage({ id: 'learning-settings-modal-automatic' })}
+              label={intl.formatMessage({ id: 'exercise-setting-automatic' })}
               onChange={() => handleAutomaticOptionClick()}
             />
           </div>
@@ -174,7 +174,7 @@ const LearningSettingsModal = ({ trigger }) => {
           <Popup
             position="top center"
             content={intl.formatMessage({
-              id: 'learning-settings-modal-exercise-density-documentation',
+              id: 'exercise-density-documentation',
             })}
             trigger={<Icon name="info circle" color="grey" />}
           />
@@ -193,7 +193,7 @@ const LearningSettingsModal = ({ trigger }) => {
             <Popup
               position="top center"
               content={intl.formatMessage({
-                id: 'learning-settings-modal-CEFR-level-documentation',
+                id: 'cefr-level-documentation',
               })}
               trigger={<Icon name="info circle" color="grey" />}
             />

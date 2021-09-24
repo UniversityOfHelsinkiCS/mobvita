@@ -103,6 +103,12 @@ export const joinGroup = token => {
   return callBuilder(route, prefix, 'post', payload)
 }
 
+export const resendGroupInvitation = (groupId, userId) => {
+  const route = `/groups/${groupId}/re-invite/${userId}`
+  const prefix = 'RESEND_GROUP_INVITATION'
+  return callBuilder(route, prefix, 'get')
+}
+
 export const confirmGroupInvitation = token => {
   const route = '/groups/accept-invitation'
   const prefix = 'JOIN_GROUP'
@@ -362,6 +368,22 @@ export default (state = { groups: [], joinPending: false }, action) => {
         ...state,
         lastAddInfo: null,
       }
+    case 'RESEND_GROUP_INVITATION_ATTEMPT':
+      return {
+        ...state,
+        pending: true,
+      }
+    case 'RESEND_GROUP_INVITATION_FAILURE':
+      return {
+        ...state,
+        pending: false,
+      }
+    case 'RESEND_GROUP_INVITATION_SUCCESS':
+      return {
+        ...state,
+        pending: false,
+      }
+
     default:
       return state
   }
