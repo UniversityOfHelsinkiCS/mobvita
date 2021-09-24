@@ -90,8 +90,8 @@ export default function NavBar() {
               size="big"
               onClick={() => dispatch(sidebarSetOpen(!open))}
               className="sidebar-hamburger tour-sidebar"
-              // style={{ color: 'white' }}
-              style={{ color: 'rgb(0,0,190)' }}
+              style={{ color: 'white' }}
+              // style={{ color: 'rgb(0,0,190)' }}
               data-cy="hamburger"
             />
           )}
@@ -104,8 +104,8 @@ export default function NavBar() {
                   name="home"
                   size="large"
                   style={{
-                    // color: 'white',
-                    color: 'rgb(0,0,190)',
+                    color: 'white',
+                    // color: 'rgb(0,0,190)',
                     cursor: 'pointer',
                   }}
                 />
@@ -116,12 +116,12 @@ export default function NavBar() {
                     src={images.navbarLogo}
                     alt="revita logo"
                     width="70"
-                    style={{
-                      filter: 'brightness(50%) sepia(100) saturate(100) hue-rotate(230deg)',
-                    }}
+                    // style={{
+                    //   filter: 'brightness(50%) sepia(100) saturate(100) hue-rotate(230deg)',
+                    // }}
                   />
-                  {hiddenFeatures && <sup style={{ color: 'rgb(0,0,190)' }}> &beta;</sup>}
-                  {/* {hiddenFeatures && <sup> &beta;</sup>} */}
+                  {/* {hiddenFeatures && <sup style={{ color: 'rgb(0,0,190)' }}> &beta;</sup>} */}
+                  {hiddenFeatures && <sup> &beta;</sup>}
                 </Navbar.Brand>
               </Link>
 
