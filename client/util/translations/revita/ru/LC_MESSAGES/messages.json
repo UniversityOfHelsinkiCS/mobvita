@@ -1078,7 +1078,7 @@
     "show-feedback": "Показать комментарии",
     "upload-from-web-instructions": "Ревита попытается извлечь текст из данной веб-страницы. Если результат будет неудачным, пожалуйста, скопируй текст вручную и введи в поле для загрузки текста (ниже)",
     "word-not-in-note-yet": "У этого слова eще нет заметок.",
-    "click-arrow-buttons-to-expand-shrink": "Стрелками можно расширить / сузить заметку.",
+    "click-arrow-buttons-to-expand-shrink": "Нажимая на стрелочки, можно удлинить или укоротить текст под заметкой.",
     "words-not-in-note-yet": "У этих слов eще нет заметок.",
     "exercise-density": "Уровень плотности упражнений",
     "custom": "Пользовательские настройки",
@@ -1092,9 +1092,15 @@
     "learning-settings-modal-CEFR-level-documentation": "Это уровень упражнений, которые система будет тебе предлагать.",
     "multiple-email-separate-instructions": "Адреса резделяются запятыми или пробелами",
     "learning-settings-modal-exercise-density-documentation": "This slider tells how many exercises are given in each paragraph:\n• \"Difficult\" means more exercises\n• \"Easy\" means fewer",
-    "resend-invitation": "Resend invitation",
+    "resend-invitation": "Послать приглашение еще раз",
     "CEFR-level-documentation": "Это уровень упражнений, которые система будет тебе предлагать.",
-    "exercise-density-documentation": "This slider tells how many exercises are given in each paragraph:\n• \"Difficult\" means more exercises\n• \"Easy\" means fewer",
+    "exercise-density-documentation": "Слайдер указывает плотность упражнений в каждом параграфе:\n• \"Сложнее\" — больше упражнений\n• \"Проще\" — меньше",
     "exercise-setting-automatic": "Система подбирает настройки",
-    "cefr-level-documentation": "Это уровень упражнений, которые система будет тебе предлагать."
+    "cefr-level-documentation": "Это уровень упражнений, которые система будет тебе предлагать.",
+    "teachers-added-to-the-group": "Учителя — добавлены:",
+    "teachers-awaiting-confirmation": "Учителя — ожидаем подтверждения:",
+    "teachers-not-registered-in-revita": "Учителя — не зарегистрированы в Ревите:",
+    "students-added-to-the-group": "Ученики — добавлены:",
+    "students-awaiting-confirmation": "Ученики — ожидаем подтверждения:",
+    "students-not-registered-in-revita": "Ученики — не зарегистрированы в Ревите:"
 }

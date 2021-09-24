@@ -1093,5 +1093,11 @@
     "CEFR-level-documentation": "This is the CEFR level the system use to select your exercises.",
     "exercise-density-documentation": "This slider tells how many exercises are given in each paragraph:\n• \"Difficult\" means more exercises\n• \"Easy\" means fewer",
     "exercise-setting-automatic": "System adapts settings to your skills",
-    "cefr-level-documentation": "This is the CEFR level the system use to select your exercises."
+    "cefr-level-documentation": "This is the CEFR level the system use to select your exercises.",
+    "teachers-added-to-the-group": "Teachers added to the group:",
+    "teachers-awaiting-confirmation": "Teachers awaiting confirmation:",
+    "teachers-not-registered-in-revita": "Teachers not registered in Revita:",
+    "students-added-to-the-group": "Students added to the group:",
+    "students-awaiting-confirmation": "Students awaiting confirmation:",
+    "students-not-registered-in-revita": "Students not registered in Revita:"
 }

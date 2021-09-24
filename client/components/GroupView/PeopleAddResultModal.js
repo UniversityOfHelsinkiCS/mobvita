@@ -33,32 +33,32 @@ const PeopleAddResultModal = ({ lastAddInfo }) => {
       onClose={() => dispatch(emptyLastAddInfo())}
     >
       <Modal.Header>
-        <FormattedMessage id="Results" />
+        <FormattedMessage id="summary" />
       </Modal.Header>
       <Modal.Content style={{ display: 'flex', flexDirection: 'column', margin: '1em' }}>
         <ResultItem
-          label={intl.formatMessage({ id: 'Teachers added to the group:' })}
+          label={intl.formatMessage({ id: 'teachers-added-to-the-group' })}
           resultList={lastAddInfo[0].added_teachers}
         />
         <ResultItem
-          label={intl.formatMessage({ id: 'Teachers awaiting confirmation:' })}
+          label={intl.formatMessage({ id: 'teachers-awaiting-confirmation' })}
           resultList={lastAddInfo[0].to_be_confirmed_teachers}
         />
         <ResultItem
-          label={intl.formatMessage({ id: 'Teachers not registered in Revita:' })}
+          label={intl.formatMessage({ id: 'teachers-not-registered-in-revita' })}
           resultList={lastAddInfo[0].failed_teachers}
         />
         <Divider />
         <ResultItem
-          label={intl.formatMessage({ id: 'Students added to the group:' })}
+          label={intl.formatMessage({ id: 'students-added-to-the-group' })}
           resultList={lastAddInfo[0].added_students}
         />
         <ResultItem
-          label={intl.formatMessage({ id: 'Students awaiting confirmation:' })}
+          label={intl.formatMessage({ id: 'students-awaiting-confirmation' })}
           resultList={lastAddInfo[0].to_be_confirmed_students}
         />
         <ResultItem
-          label={intl.formatMessage({ id: 'Students not registered in Revita:' })}
+          label={intl.formatMessage({ id: 'students-not-registered-in-revita' })}
           resultList={lastAddInfo[0].failed_students}
         />
       </Modal.Content>
