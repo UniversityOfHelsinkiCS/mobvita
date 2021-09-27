@@ -53,7 +53,7 @@ const GroupLearningSettingsModal = ({ open, setOpen, groupId }) => {
           <Popup
             position="top center"
             content={intl.formatMessage({
-              id: 'learning-settings-modal-exercise-density-documentation',
+              id: 'exercise-density-documentation',
             })}
             trigger={<Icon name="info circle" color="grey" />}
           />
@@ -73,7 +73,7 @@ const GroupLearningSettingsModal = ({ open, setOpen, groupId }) => {
             <Popup
               position="top center"
               content={intl.formatMessage({
-                id: 'learning-settings-modal-cefr-level-documentation',
+                id: 'cefr-level-documentation',
               })}
               trigger={<Icon name="info circle" color="grey" />}
             />

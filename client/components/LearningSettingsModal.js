@@ -26,10 +26,16 @@ const LearningSettingsModal = ({ trigger }) => {
     max_practice_prct: maxPracticePrct,
     auto_practice_prct: autoPracticePrct,
     practice_prct_mode: practicePrctMode,
+    last_selected_group: currentGroupId,
+    exercise_history: exerciseHistory,
   } = useSelector(({ user }) => user.data.user)
 
-  const currentGroupId = useSelector(({ user }) => user.data.user.last_selected_group)
+  const latestStoryElo = exerciseHistory[exerciseHistory.length - 1]?.score
   const currentGroup = groups.find(group => group.group_id === currentGroupId)
+  const learningLanguage = useSelector(learningLanguageSelector)
+  const [open, setOpen] = useState(false)
+
+  const skillLevels = ['A1', 'A2', 'B1', 'B2', 'C1', 'C2']
 
   const getSliderValue = () => {
     if (practicePrctMode === 'auto') return autoPracticePrct
@@ -37,8 +43,7 @@ const LearningSettingsModal = ({ trigger }) => {
     if (practicePrctMode === 'group' && currentGroup) return currentGroup.max_practice_prct
     return null
   }
-  const learningLanguage = useSelector(learningLanguageSelector)
-  const [open, setOpen] = useState(false)
+
   const [sliderValue, setSliderValue] = useState(getSliderValue())
 
   useEffect(() => {
@@ -57,7 +62,15 @@ const LearningSettingsModal = ({ trigger }) => {
     if (open) dispatch(getGroups())
   }, [open])
 
-  const skillLevels = ['A1', 'A2', 'B1', 'B2', 'C1', 'C2']
+  const convertEloToCefrLevel = elo => {
+    if (elo < 1450) return 'A1'
+    if (elo < 1650) return 'A2'
+    if (elo < 1850) return 'B1'
+    if (elo < 2050) return 'B2'
+    if (elo < 2250) return 'C1'
+    if (elo >= 2250) return 'C2'
+    return null
+  }
 
   const handleMaxPercentUpdate = value => {
     dispatch(updateMaxPracticePercent(value))
@@ -101,18 +114,32 @@ const LearningSettingsModal = ({ trigger }) => {
   }
 
   const handleGroupOptionClick = () => {
-    dispatch(updateLearningSettingMode('group', currentGroup.group_id))
-    setSliderValue(currentGroup.max_practice_prct)
+    if (currentGroup) {
+      dispatch(updateLearningSettingMode('group', currentGroup.group_id))
+      setSliderValue(currentGroup.max_practice_prct)
+    }
   }
 
   const getLevelButtonStyle = level => {
     if (
-      (level === exerciseSettingTemplate && practicePrctMode === 'custom') ||
-      (level === currentGroup?.exercise_setting_template && practicePrctMode === 'group')
+      (practicePrctMode === 'auto' && level === convertEloToCefrLevel(latestStoryElo)) ||
+      (practicePrctMode === 'custom' && level === exerciseSettingTemplate) ||
+      (practicePrctMode === 'group' && level === currentGroup?.exercise_setting_template)
     ) {
       return { marginRight: '10px', color: 'yellow', fontWeight: 600 }
     }
     return { marginRight: '10px' }
+  }
+
+  const getCustomButtonStyle = () => {
+    if (
+      (practicePrctMode === 'group' &&
+        !skillLevels.includes(currentGroup?.exercise_setting_template)) ||
+      (practicePrctMode === 'custom' && !skillLevels.includes(exerciseSettingTemplate))
+    ) {
+      return { alignSelf: 'center', color: 'yellow', fontWeight: 600 }
+    }
+    return { alignSelf: 'center' }
   }
 
   return (
@@ -224,11 +251,7 @@ const LearningSettingsModal = ({ trigger }) => {
             size="lg"
             onClick={handleCustomSelect}
             disabled={practicePrctMode !== 'custom'}
-            style={
-              exerciseSettingTemplate === 'custom'
-                ? { color: 'yellow', fontWeight: 600, alignSelf: 'center' }
-                : { alignSelf: 'center' }
-            }
+            style={getCustomButtonStyle()}
           >
             <FormattedMessage id="custom" />
           </Button>
