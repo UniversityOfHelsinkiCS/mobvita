@@ -91,6 +91,7 @@ export const updateLibrarySelect = library => saveSelf({ last_selected_library: 
 export const updateGroupSelect = group => saveSelf({ last_selected_group: group })
 export const updateExerciseTemplate = template => saveSelf({ exercise_setting_template: template })
 export const updateMultiChoice = value => saveSelf({ multi_choice: value })
+export const updateBlankFilling = value => saveSelf({ blank_filling: value })
 export const updateAudioTask = value => saveSelf({ task_audio: value })
 export const updateSecondTry = value => saveSelf({ second_try: value })
 export const updateNumberOfFlashcards = amount => saveSelf({ flashcard_num: amount })
