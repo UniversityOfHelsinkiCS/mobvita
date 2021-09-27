@@ -6,7 +6,7 @@ import { localeNameToCode, localeOptions, hiddenFeatures } from 'Utilities/commo
 import { Button } from 'react-bootstrap'
 import {
   updateLocale,
-  updateMultiChoice,
+  updateBlankFilling,
   updateAudioTask,
   updateSecondTry,
   updateNumberOfFlashcards,
@@ -82,15 +82,11 @@ const Settings = () => {
       </h2>
       <div className="flex-col align-start gap-row-sm">
         <SettingToggle
-          translationId="multiple-choice"
-          checked={user.multi_choice}
-          onChange={() => dispatch(updateMultiChoice(!user.multi_choice))}
+          translationId="multiple-choice-quizzes-only"
+          checked={!user.blank_filling}
+          onChange={() => dispatch(updateBlankFilling(!user.blank_filling))}
           disabled={pending}
         />
-        <span style={{ display: 'none', color: 'gray' }}>
-          <i>Temporarily unavailable due to technical problem</i>
-        </span>
-        <br />
         <SettingToggle
           translationId="multiple-chances-when-practicing"
           checked={user.second_try}
