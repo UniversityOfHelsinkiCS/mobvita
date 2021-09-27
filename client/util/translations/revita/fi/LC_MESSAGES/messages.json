@@ -1097,7 +1097,8 @@
     "teachers-added-to-the-group": "Ryhmään lisätyt opettajat:",
     "teachers-awaiting-confirmation": "Vahvistusta odottavat opettajat:",
     "teachers-not-registered-in-revita": "Opettajat, jotka eivät ole rekisteröityneet Revitaan:",
-    "students-added-to-the-group": "Ryhmään lisätyt opiskelija:",
+    "students-added-to-the-group": "Ryhmään lisätyt opiskelijat:",
     "students-awaiting-confirmation": "Vahvistusta odottavat opiskelijat:",
-    "students-not-registered-in-revita": "Opiskelijat, jotka eivät ole rekisteröityneet Revitaan:"
+    "students-not-registered-in-revita": "Opiskelijat, jotka eivät ole rekisteröityneet Revitaan:",
+    "edit-learning-settings": "Muuta opiskeluasetuksia"
 }
