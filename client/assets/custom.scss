@@ -1626,6 +1626,13 @@ html, body, #root {
   }
 }
 
+.profile-page-setting-header {
+  margin-bottom: 1em;
+  font-size: 22px;
+  font-family: $default-font;
+  font-weight: 500;
+}
+
 .table-progress-bar {
   height: 1.5em;
   border-radius: 1rem;
