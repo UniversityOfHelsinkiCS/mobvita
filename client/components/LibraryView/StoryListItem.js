@@ -228,7 +228,7 @@ const StoryListItem = ({ story, userCanShare, libraryShown, selectedGroup }) => 
   }
 
   const storyGroupShareInfo = libraryShown.group
-    ? story.groups.find(g => g.group_id === currentGroup.group_id)
+    ? story.groups.find(g => g?.group_id === currentGroup?.group_id)
     : null
 
   return (
