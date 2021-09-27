@@ -32,15 +32,16 @@ const Progress = () => {
 
   const bigScreen = useWindowDimension().width >= 650
 
-  const { exerciseHistory: exerciseHistoryGraph, flashcardHistory, pending } = useSelector(
-    ({ user }) => {
-      const exerciseHistory = user.data.user.exercise_history
-      const flashcardHistory = user.data.user.flashcard_history
-      const { pending } = user
-      return { exerciseHistory, flashcardHistory, pending }
-    },
-    shallowEqual
-  )
+  const {
+    exerciseHistory: exerciseHistoryGraph,
+    flashcardHistory,
+    pending,
+  } = useSelector(({ user }) => {
+    const exerciseHistory = user.data.user.exercise_history
+    const flashcardHistory = user.data.user.flashcard_history
+    const { pending } = user
+    return { exerciseHistory, flashcardHistory, pending }
+  }, shallowEqual)
 
   const filterTestHistoryByDate = () =>
     testHistory.filter(test => {
