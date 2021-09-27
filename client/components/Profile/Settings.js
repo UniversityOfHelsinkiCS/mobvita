@@ -75,19 +75,10 @@ const Settings = () => {
         data-cy="ui-lang-dropdown"
         style={{ color: '#777', marginTop: marginTopButton, width: '30%' }}
       />
+
       <hr />
       <h2 className="profile-page-setting-header">
-        <FormattedMessage id="Privacy" />
-      </h2>
-      <SettingToggle
-        translationId="Show my username in leaderboards"
-        checked={user.publish_progress}
-        onChange={() => dispatch(updatePublishProgress(!user.publish_progress))}
-        disabled={pending}
-      />
-      <hr />
-      <h2 className="profile-page-setting-header">
-        <FormattedMessage id="select-types-of-exercises-to-practice" />
+        <FormattedMessage id="practice-settings" />
       </h2>
       <div className="flex-col align-start gap-row-sm">
         <SettingToggle
@@ -199,16 +190,21 @@ const Settings = () => {
           onChange={() => dispatch(updateAudioTask('none'))}
         />
       </div>
-
       <hr />
-
       <h2 className="profile-page-setting-header">
-        <FormattedMessage id="learning-settings" />
+        <FormattedMessage id="Privacy" />
       </h2>
+      <SettingToggle
+        translationId="Show my username in leaderboards"
+        checked={user.publish_progress}
+        onChange={() => dispatch(updatePublishProgress(!user.publish_progress))}
+        disabled={pending}
+      />
+      <hr />
       <LearningSettingsModal
         trigger={
           <Button variant="primary" size="lg">
-            <FormattedMessage id="edit-learning-settings" />
+            <FormattedMessage id="learning-settings" />
           </Button>
         }
       />
