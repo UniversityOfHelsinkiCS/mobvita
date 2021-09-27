@@ -1092,7 +1092,7 @@
     "learning-settings-modal-exercise-density-documentation": "This slider tells how many exercises are given in each paragraph:\n• \"Difficult\" means more exercises\n• \"Easy\" means fewer",
     "resend-invitation": "Rimanda l'invito",
     "CEFR-level-documentation": "Questo è il livello CEFR che il sistema usa per selezionare gli esercizi.",
-    "exercise-density-documentation": "Lo \"slider\" ti indica quanti esericizi verranno restituiti per ogni paragrafo\n• \"Difficile\"indica più esercizi\n• \"Facile\" indica meno esercizi",
+    "exercise-density-documentation": "Lo \"slider\" ti indica quanti esericizi verranno restituiti per ogni paragrafo\n\"Difficile\"indica più esercizi. \"Facile\" indica meno esercizi.",
     "exercise-setting-automatic": "Revita adatta le impostazioni alle tue capacità",
     "cefr-level-documentation": "Questo è il livello CEFR che il sistema usa per selezionare gli esercizi.",
     "teachers-added-to-the-group": "Insegnanti aggiunti al gruppo:",
