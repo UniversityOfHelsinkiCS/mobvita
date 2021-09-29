@@ -2,7 +2,7 @@ import React, { useEffect } from 'react'
 import { Button } from 'react-bootstrap'
 import { FormattedMessage } from 'react-intl'
 import { useDispatch, useSelector } from 'react-redux'
-import { InitAdaptiveTest, resetTest } from 'Utilities/redux/testReducer'
+import { InitAdaptiveTest, resetTests } from 'Utilities/redux/testReducer'
 
 import { useLearningLanguage } from 'Utilities/common'
 import useWindowDimension from 'Utilities/windowDimensions'
@@ -14,17 +14,16 @@ import TestView from './AdaptiveTest'
 const AdaptiveTestView = () => {
   const dispatch = useDispatch()
   const learningLanguage = useLearningLanguage()
-  const { sessionId, report, pending, language } = useSelector(({ tests }) => tests)
-  const bigScreen = useWindowDimension().width >= 650
+  const { adaptiveTestSessionId, pending, language } = useSelector(({ tests }) => tests)
+  // const bigScreen = useWindowDimension().width >= 650
 
   const startTest = () => {
-    // dispatch(getTestQuestions(learningLanguage, selectedGroup, true))
     dispatch(InitAdaptiveTest(learningLanguage))
   }
 
   useEffect(() => {
     if (language !== learningLanguage) {
-      dispatch(resetTest())
+      dispatch(resetTests())
     }
   }, [learningLanguage])
 
@@ -35,7 +34,7 @@ const AdaptiveTestView = () => {
   return (
     <div className="cont-tall cont flex-col auto gap-row-sm">
       <div className="grow ps-nm flex-col gap-row-sm">
-        {!sessionId && (
+        {!adaptiveTestSessionId && (
           <div className="pl-nm pt-nm">
             <Button onClick={startTest} data-cy="start-test">
               <FormattedMessage id="start-a-new-test" />
@@ -43,7 +42,7 @@ const AdaptiveTestView = () => {
           </div>
         )}
         {/* {report && <TestReport />} */}
-        {sessionId && <TestView />}
+        {adaptiveTestSessionId && <TestView />}
         <ReportButton extraClass="align-self-end mb-sm" />
       </div>
     </div>

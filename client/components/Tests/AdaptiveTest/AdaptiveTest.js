@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import { useTimer } from 'react-compound-timer'
 import { Icon } from 'semantic-ui-react'
-import { sendAdaptiveTestAnswer } from 'Utilities/redux/testReducer'
+import { resetTests, sendAdaptiveTestAnswer } from 'Utilities/redux/testReducer'
 import { learningLanguageSelector } from 'Utilities/common'
 import { FormattedMessage, FormattedHTMLMessage } from 'react-intl'
 import MultipleChoice from '../MultipleChoice'
@@ -21,7 +21,7 @@ const AdaptiveTest = () => {
   const [willPause, setWillPause] = useState(false)
   const [paused, setPaused] = useState(false)
   const {
-    sessionId,
+    adaptiveTestSessionId,
     answerPending,
     answerFailure,
     cefrLevel,
@@ -42,7 +42,7 @@ const AdaptiveTest = () => {
     dispatch(
       sendAdaptiveTestAnswer(
         learningLanguage,
-        sessionId,
+        adaptiveTestSessionId,
         answer,
         currentAdaptiveQuestion.question_id
       )
@@ -50,11 +50,12 @@ const AdaptiveTest = () => {
   }
 
   useEffect(() => {
-    if (!sessionId) return
+    if (!adaptiveTestSessionId) return
     if (!currentAdaptiveQuestion) {
       timer.stop()
     } else if (willStop) {
       timer.stop()
+      dispatch(resetTests())
     } else if (willPause) {
       setPaused(true)
       setWillPause(false)
@@ -74,7 +75,13 @@ const AdaptiveTest = () => {
   }, [currentAdaptiveQuestion])
 
   // Send an empty answer if user leaves test
-  useEffect(() => () => checkAnswer(''), [])
+  useEffect(
+    () => () => {
+      dispatch(resetTests())
+      // checkAnswer('')
+    },
+    []
+  )
 
   const pauseTimer = () => {
     if (willPause) {
@@ -102,7 +109,7 @@ const AdaptiveTest = () => {
       <div>
         <div className="header-2 mb-lg">Test has ended</div>
         <div>
-          CEFR level:<span className="bold">{cefrLevel}</span>
+          CEFR level: <span className="bold">{cefrLevel}</span>
         </div>
       </div>
     )

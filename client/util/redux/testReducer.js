@@ -2,12 +2,13 @@ import moment from 'moment'
 import callBuilder from '../apiConnection'
 
 const initialState = {
+  language: window.localStorage.getItem('testLanguage'),
+  exhaustiveTestSessionId: null,
   currentExhaustiveQuestionIndex: 0,
   currentExhaustiveTestQuestion: null,
   exhaustiveTestQuestions: [],
   report: null,
-  sessionId: null,
-  language: window.localStorage.getItem('testLanguage'),
+  adaptiveTestSessionId: null,
   currentAdaptiveQuestionIndex: 0,
 }
 
@@ -41,7 +42,7 @@ export const InitAdaptiveTest = language => {
   return callBuilder(route, prefix, 'get')
 }
 
-export const sendAnswer = (language, sessionId, answer, breakTimestamp) => {
+export const sendExhaustiveTestAnswer = (language, sessionId, answer, breakTimestamp) => {
   const route = `/test/${language}/answer`
   const prefix = 'ANSWER_TEST_QUESTION'
   const breaks = breakTimestamp ? [breakTimestamp] : []
@@ -66,9 +67,9 @@ export const sendAdaptiveTestAnswer = (language, sessionId, answer, questionId) 
   return callBuilder(route, prefix, 'post', payload)
 }
 
-export const finishTest = (language, sessionId) => {
+export const finishExhaustiveTest = (language, sessionId) => {
   const route = `/test/${language}/answer`
-  const prefix = 'FINISH_TEST'
+  const prefix = 'FINISH_EXHAUSTIVE_TEST'
   const payload = {
     session_id: sessionId,
     language,
@@ -93,9 +94,9 @@ export const removeFromHistory = (language, sessionId) => {
   return callBuilder(route, prefix, 'post')
 }
 
-export const resetTest = () => {
+export const resetTests = () => {
   clearLocalStorage()
-  return { type: 'RESET_TEST' }
+  return { type: 'RESET_TESTS' }
 }
 
 export default (state = initialState, action) => {
@@ -115,7 +116,7 @@ export default (state = initialState, action) => {
         ...state,
         exhaustiveTestQuestions: response.question_list,
         currentExhaustiveTestQuestion: response.question_list[startingIndex || 0],
-        sessionId: response.session_id,
+        exhaustiveTestSessionId: response.session_id,
         currentExhaustiveQuestionIndex: startingIndex || 0,
         pending: false,
       }
@@ -134,7 +135,7 @@ export default (state = initialState, action) => {
       return {
         ...initialState,
         pending: false,
-        sessionId: response.session_id,
+        adaptiveTestSessionId: response.session_id,
         currentAdaptiveQuestion: response.next_question,
       }
     case 'INIT_ADAPTIVE_TEST_FAILURE':
@@ -180,7 +181,7 @@ export default (state = initialState, action) => {
         answerFailure: true,
         answerPending: false,
       }
-    case 'FINISH_TEST_SUCCESS':
+    case 'FINISH_EXHAUSTIVE_TEST_SUCCESS':
       return {
         ...initialState,
         language: null,
@@ -202,7 +203,7 @@ export default (state = initialState, action) => {
         ...state,
         history: state.history.filter(h => h.test_session !== response.session_id),
       }
-    case 'RESET_TEST':
+    case 'RESET_TESTS':
       return initialState
     default:
       return state

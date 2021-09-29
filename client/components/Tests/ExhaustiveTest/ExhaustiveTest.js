@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import { useTimer } from 'react-compound-timer'
 import { Icon } from 'semantic-ui-react'
-import { sendAnswer, finishTest } from 'Utilities/redux/testReducer'
+import { sendExhaustiveTestAnswer, finishExhaustiveTest } from 'Utilities/redux/testReducer'
 import { learningLanguageSelector } from 'Utilities/common'
 import { FormattedMessage, FormattedHTMLMessage } from 'react-intl'
 import MultipleChoice from '../MultipleChoice'
@@ -22,7 +22,7 @@ const Test = () => {
   const [paused, setPaused] = useState(false)
   const {
     currentExhaustiveTestQuestion,
-    sessionId,
+    exhaustiveTestSessionId,
     exhaustiveTestQuestions,
     currentExhaustiveQuestionIndex,
     answerPending,
@@ -40,9 +40,9 @@ const Test = () => {
     const pauseTimeStamp = willPause ? new Date() : null
 
     dispatch(
-      sendAnswer(
+      sendExhaustiveTestAnswer(
         learningLanguage,
-        sessionId,
+        exhaustiveTestSessionId,
         {
           type: currentExhaustiveTestQuestion.type,
           question_id: currentExhaustiveTestQuestion.question_id,
@@ -54,13 +54,13 @@ const Test = () => {
   }
 
   useEffect(() => {
-    if (!sessionId) return
+    if (!exhaustiveTestSessionId) return
     if (!currentExhaustiveTestQuestion) {
       timer.stop()
-      dispatch(finishTest(learningLanguage, sessionId))
+      dispatch(finishExhaustiveTest(learningLanguage, exhaustiveTestSessionId))
     } else if (willStop) {
       timer.stop()
-      dispatch(finishTest(learningLanguage, sessionId))
+      dispatch(finishExhaustiveTest(learningLanguage, exhaustiveTestSessionId))
     } else if (willPause) {
       setPaused(true)
       setWillPause(false)

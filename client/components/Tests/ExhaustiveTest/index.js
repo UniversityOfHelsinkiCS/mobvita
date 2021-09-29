@@ -5,7 +5,7 @@ import { FormattedMessage } from 'react-intl'
 import { useDispatch, useSelector } from 'react-redux'
 import {
   getTestQuestions,
-  resetTest,
+  resetTests,
   getHistory,
   removeFromHistory,
 } from 'Utilities/redux/testReducer'
@@ -37,7 +37,9 @@ const ExhaustiveTestView = () => {
   const [currentGroup, setCurrentGroup] = useState()
   const [showHistory, setShowHistory] = useState(false)
   const [sessionToDelete, setSessionToDelete] = useState(false)
-  const { sessionId, report, pending, language, history } = useSelector(({ tests }) => tests)
+  const { exhaustiveTestSessionId, report, pending, language, history } = useSelector(
+    ({ tests }) => tests
+  )
   const { groups } = useSelector(({ groups }) => groups)
   const bigScreen = useWindowDimension().width >= 650
 
@@ -67,11 +69,11 @@ const ExhaustiveTestView = () => {
   }
 
   useEffect(() => {
-    if (!sessionId) {
+    if (!exhaustiveTestSessionId) {
       dispatch(getGroups())
       dispatch(getHistory(learningLanguage, startDate, endDate))
     }
-  }, [sessionId])
+  }, [exhaustiveTestSessionId])
 
   useEffect(() => {
     dispatch(getHistory(learningLanguage, startDate, endDate))
@@ -95,7 +97,7 @@ const ExhaustiveTestView = () => {
 
   useEffect(() => {
     if (language !== learningLanguage) {
-      dispatch(resetTest())
+      dispatch(resetTests())
     }
   }, [learningLanguage])
 
@@ -120,7 +122,7 @@ const ExhaustiveTestView = () => {
   return (
     <div className="cont-tall cont flex-col auto gap-row-sm">
       <div className="grow ps-nm flex-col gap-row-sm">
-        {!sessionId && (
+        {!exhaustiveTestSessionId && (
           <div className="pl-nm pt-nm">
             <Button onClick={startTest} data-cy="start-test">
               <FormattedMessage id="start-a-new-test" />
@@ -206,7 +208,7 @@ const ExhaustiveTestView = () => {
           </div>
         )}
         {report && <TestReport />}
-        {sessionId && <TestView />}
+        {exhaustiveTestSessionId && <TestView />}
         <ReportButton extraClass="align-self-end mb-sm" />
       </div>
     </div>
