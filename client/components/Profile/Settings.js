@@ -75,7 +75,14 @@ const Settings = () => {
         data-cy="ui-lang-dropdown"
         style={{ color: '#777', marginTop: marginTopButton, width: '30%' }}
       />
-
+      <hr />
+      <LearningSettingsModal
+        trigger={
+          <Button variant="primary" size="lg">
+            <FormattedMessage id="learning-settings" />
+          </Button>
+        }
+      />
       <hr />
       <h2 className="profile-page-setting-header">
         <FormattedMessage id="practice-settings" />
@@ -195,14 +202,6 @@ const Settings = () => {
         checked={user.publish_progress}
         onChange={() => dispatch(updatePublishProgress(!user.publish_progress))}
         disabled={pending}
-      />
-      <hr />
-      <LearningSettingsModal
-        trigger={
-          <Button variant="primary" size="lg">
-            <FormattedMessage id="learning-settings" />
-          </Button>
-        }
       />
     </div>
   )
