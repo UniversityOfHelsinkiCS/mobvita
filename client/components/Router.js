@@ -3,10 +3,8 @@ import { Route, Switch, Redirect, useLocation } from 'react-router-dom'
 import { useSelector } from 'react-redux'
 import HomeView from 'Components/HomeView'
 import LibraryView from 'Components/LibraryView'
-import TestIndex from 'Components/TestView/index'
-
-import AdaptiveTestIndex from 'Components/AdaptiveTestView/index'
-
+import ExhaustiveTestView from 'Components/Tests/ExhaustiveTest/index'
+import AdaptiveTestView from 'Components/Tests/AdaptiveTest/index'
 import ReadView from 'Components/ReadView'
 import ReviewView from 'Components/ReviewView'
 import PracticeView from 'Components/PracticeView'
@@ -94,6 +92,7 @@ export default () => {
             <ProtectedRoute exact path="/stories/:id/practice/" component={PracticeView} />
             <ProtectedRoute exact path="/stories/:id/read/" component={ReadView} />
             <ProtectedRoute exact path="/stories/:id/review/" component={ReviewView} />
+            <ProtectedRoute exact path="/stories/:id/preview/" component={ReviewView} />
             <ProtectedRoute exact path="/crossword/:storyId" component={CrosswordView} />
             <ProtectedRoute exact path="/compete/:id" component={CompeteView} />
             <ProtectedRoute exact path="/groups/:role" component={GroupManagement} />
@@ -105,8 +104,8 @@ export default () => {
             <ProtectedRoute exact path="/profile/progress" component={Profile} />
             <ProtectedRoute exact path="/profile/settings" component={Profile} />
             <ProtectedRoute exact path="/profile/following" component={Profile} />
-            <ProtectedRoute exact path="/tests" component={TestIndex} />
-            <ProtectedRoute exact path="/adaptive-tests" component={AdaptiveTestIndex} />
+            <ProtectedRoute exact path="/tests" component={ExhaustiveTestView} />
+            <ProtectedRoute exact path="/adaptive-test" component={AdaptiveTestView} />
             <ProtectedRoute exact path="/achievements" component={Achievements} />
             <ProtectedRoute exact path="/leaderboard" component={Leaderboard} />
           </Switch>

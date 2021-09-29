@@ -21,7 +21,7 @@ const TestReport = () => {
             {translate('total-answers')}: {report.total || '-'}
           </div>
           <div>
-            {translate('Accuracy')}: {report.correctRate || '-'}%
+            {translate('accuracy')}: {report.correctRate || '-'}%
           </div>
         </>
         {report.message !== 'OK' && (

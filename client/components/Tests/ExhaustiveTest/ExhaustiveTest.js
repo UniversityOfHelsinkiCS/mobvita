@@ -5,7 +5,7 @@ import { Icon } from 'semantic-ui-react'
 import { sendAnswer, finishTest } from 'Utilities/redux/testReducer'
 import { learningLanguageSelector } from 'Utilities/common'
 import { FormattedMessage, FormattedHTMLMessage } from 'react-intl'
-import MultipleChoice from './MultipleChoice'
+import MultipleChoice from '../MultipleChoice'
 
 const TIMER_START_DELAY = 300
 
@@ -21,10 +21,10 @@ const Test = () => {
   const [willPause, setWillPause] = useState(false)
   const [paused, setPaused] = useState(false)
   const {
-    currentQuestion,
+    currentExhaustiveTestQuestion,
     sessionId,
-    questions,
-    currentIndex,
+    exhaustiveTestQuestions,
+    currentExhaustiveQuestionIndex,
     answerPending,
     answerFailure,
   } = useSelector(({ tests }) => tests)
@@ -33,7 +33,7 @@ const Test = () => {
   const dispatch = useDispatch()
 
   const checkAnswer = answer => {
-    if (!currentQuestion) return
+    if (!currentExhaustiveTestQuestion) return
     timer.stop()
     timer.reset()
 
@@ -44,8 +44,8 @@ const Test = () => {
         learningLanguage,
         sessionId,
         {
-          type: currentQuestion.type,
-          question_id: currentQuestion.question_id,
+          type: currentExhaustiveTestQuestion.type,
+          question_id: currentExhaustiveTestQuestion.question_id,
           answer,
         },
         pauseTimeStamp
@@ -55,7 +55,7 @@ const Test = () => {
 
   useEffect(() => {
     if (!sessionId) return
-    if (!currentQuestion) {
+    if (!currentExhaustiveTestQuestion) {
       timer.stop()
       dispatch(finishTest(learningLanguage, sessionId))
     } else if (willStop) {
@@ -65,9 +65,9 @@ const Test = () => {
       setPaused(true)
       setWillPause(false)
     } else {
-      timer.setTime(currentQuestion.time * 1000)
+      timer.setTime(currentExhaustiveTestQuestion.time * 1000)
       setTimeout(() => timer.start(), TIMER_START_DELAY)
-      window.localStorage.setItem('testIndex', currentIndex)
+      window.localStorage.setItem('testIndex', currentExhaustiveQuestionIndex)
     }
 
     timer.setCheckpoints([
@@ -78,7 +78,7 @@ const Test = () => {
         },
       },
     ])
-  }, [currentQuestion])
+  }, [currentExhaustiveTestQuestion])
 
   // Send an empty answer if user leaves test
   useEffect(() => () => checkAnswer(''), [])
@@ -104,7 +104,7 @@ const Test = () => {
     }
   }
 
-  if (!currentQuestion) {
+  if (!currentExhaustiveTestQuestion) {
     return null
   }
 
@@ -114,7 +114,7 @@ const Test = () => {
         <div className="test-container">
           <div className="test-top-info space-between">
             <div>
-              {currentIndex + 1} / {questions.length}
+              {currentExhaustiveQuestionIndex + 1} / {exhaustiveTestQuestions.length}
             </div>
           </div>
           <div className="test-question-container">
@@ -133,10 +133,10 @@ const Test = () => {
                 <FormattedHTMLMessage id="paused-click-to-resume" />
               </div>
             )}
-            {currentQuestion && !paused && !answerFailure && (
+            {currentExhaustiveTestQuestion && !paused && !answerFailure && (
               <div>
                 <MultipleChoice
-                  exercise={currentQuestion}
+                  exercise={currentExhaustiveTestQuestion}
                   onAnswer={checkAnswer}
                   answerPending={answerPending}
                 />

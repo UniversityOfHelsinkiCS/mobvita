@@ -2,9 +2,9 @@ import moment from 'moment'
 import callBuilder from '../apiConnection'
 
 const initialState = {
-  currentIndex: 0,
-  currentQuestion: null,
-  questions: [],
+  currentExhaustiveQuestionIndex: 0,
+  currentExhaustiveTestQuestion: null,
+  exhaustiveTestQuestions: [],
   report: null,
   sessionId: null,
   language: window.localStorage.getItem('testLanguage'),
@@ -99,7 +99,7 @@ export const resetTest = () => {
 }
 
 export default (state = initialState, action) => {
-  const { currentIndex, currentAdaptiveQuestionIndex, questions } = state
+  const { currentExhaustiveQuestionIndex, currentAdaptiveQuestionIndex, exhaustiveTestQuestions } = state
   const { response, startingIndex } = action
 
   switch (action.type) {
@@ -108,15 +108,15 @@ export default (state = initialState, action) => {
         ...initialState,
         pending: true,
         language: action.language,
-        currentIndex: startingIndex,
+        currentExhaustiveQuestionIndex: startingIndex,
       }
     case 'GET_TEST_QUESTIONS_SUCCESS':
       return {
         ...state,
-        questions: response.question_list,
-        currentQuestion: response.question_list[startingIndex || 0],
+        exhaustiveTestQuestions: response.question_list,
+        currentExhaustiveTestQuestion: response.question_list[startingIndex || 0],
         sessionId: response.session_id,
-        currentIndex: startingIndex || 0,
+        currentExhaustiveQuestionIndex: startingIndex || 0,
         pending: false,
       }
     case 'GET_TEST_QUESTIONS_FAILURE':
@@ -150,8 +150,8 @@ export default (state = initialState, action) => {
     case 'ANSWER_TEST_QUESTION_SUCCESS':
       return {
         ...state,
-        currentIndex: currentIndex + 1,
-        currentQuestion: questions[currentIndex + 1],
+        currentExhaustiveQuestionIndex: currentExhaustiveQuestionIndex + 1,
+        currentExhaustiveTestQuestion: exhaustiveTestQuestions[currentExhaustiveQuestionIndex + 1],
         answerPending: false,
       }
     case 'ANSWER_TEST_QUESTION_FAILURE':

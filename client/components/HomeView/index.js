@@ -118,7 +118,7 @@ const TestsButton = props => {
 const AdaptiveTestsButton = () => {
   const history = useHistory()
   const handleClick = () => {
-    history.push('/adaptive-tests')
+    history.push('/adaptive-test')
   }
 
   return <Button onClick={handleClick}> Adaptive test</Button>

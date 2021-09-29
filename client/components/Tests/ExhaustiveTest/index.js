@@ -19,15 +19,15 @@ import ResponsiveDatePicker from 'Components/ResponsiveDatePicker'
 import ConfirmationWarning from 'Components/ConfirmationWarning'
 import { getGroups } from 'Utilities/redux/groupsReducer'
 import ReportButton from 'Components/ReportButton'
-import TestView from './Test'
+import TestView from './ExhaustiveTest'
 import TestReport from './TestReport'
-import History from '../History'
+import History from '../../History'
 
 const PickDate = ({ date, setDate }) => (
   <ResponsiveDatePicker selected={date} onChange={date => setDate(date)} />
 )
 
-const TestIndex = () => {
+const ExhaustiveTestView = () => {
   const dispatch = useDispatch()
   const [startDate, setStartDate] = useState(moment().subtract(2, 'months').toDate())
   const [endDate, setEndDate] = useState(moment().endOf('day').toDate())
@@ -213,4 +213,4 @@ const TestIndex = () => {
   )
 }
 
-export default TestIndex
+export default ExhaustiveTestView

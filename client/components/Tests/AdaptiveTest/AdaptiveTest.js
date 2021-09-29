@@ -5,7 +5,7 @@ import { Icon } from 'semantic-ui-react'
 import { sendAdaptiveTestAnswer } from 'Utilities/redux/testReducer'
 import { learningLanguageSelector } from 'Utilities/common'
 import { FormattedMessage, FormattedHTMLMessage } from 'react-intl'
-import MultipleChoice from './MultipleChoice'
+import MultipleChoice from '../MultipleChoice'
 
 const TIMER_START_DELAY = 300
 
@@ -33,7 +33,6 @@ const AdaptiveTest = () => {
   const dispatch = useDispatch()
 
   const checkAnswer = answer => {
-    // if (!currentQuestion) return
     if (!currentAdaptiveQuestion) return
     timer.stop()
     timer.reset()
