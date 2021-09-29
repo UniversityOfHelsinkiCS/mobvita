@@ -1102,5 +1102,7 @@
     "students-not-registered-in-revita": "Opiskelijat, jotka eivät ole rekisteröityneet Revitaan:",
     "edit-learning-settings": "Muuta opiskeluasetuksia",
     "practice-settings": "Harjoitteluasetukset",
-    "multiple-choice-quizzes-only": "Vain monivalintatehtäviä"
+    "multiple-choice-quizzes-only": "Vain monivalintatehtäviä",
+    "audio-settings": "Ääniasetukset",
+    "listening-exercises": "Kuunteluharjoitukset"
 }
