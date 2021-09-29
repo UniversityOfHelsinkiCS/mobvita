@@ -8,6 +8,7 @@ const initialState = {
   report: null,
   sessionId: null,
   language: window.localStorage.getItem('testLanguage'),
+  currentAdaptiveQuestionIndex: 0,
 }
 
 const clearLocalStorage = () => {
@@ -98,7 +99,7 @@ export const resetTest = () => {
 }
 
 export default (state = initialState, action) => {
-  const { currentIndex, questions } = state
+  const { currentIndex, currentAdaptiveQuestionIndex, questions } = state
   const { response, startingIndex } = action
 
   switch (action.type) {
@@ -169,8 +170,9 @@ export default (state = initialState, action) => {
         ...state,
         theta: response.theta,
         currentAdaptiveQuestion: response.next_question,
-        cefrLevel: response.cefr_level,
+        cefrLevel: response.cefr,
         answerPending: false,
+        currentAdaptiveQuestionIndex: currentAdaptiveQuestionIndex + 1,
       }
     case 'ANSWER_ADAPTIVE_TEST_QUESTION_FAILURE':
       return {

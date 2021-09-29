@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import { useTimer } from 'react-compound-timer'
 import { Icon } from 'semantic-ui-react'
-import { finishTest, sendAdaptiveTestAnswer } from 'Utilities/redux/testReducer'
+import { sendAdaptiveTestAnswer } from 'Utilities/redux/testReducer'
 import { learningLanguageSelector } from 'Utilities/common'
 import { FormattedMessage, FormattedHTMLMessage } from 'react-intl'
 import MultipleChoice from './MultipleChoice'
@@ -22,11 +22,11 @@ const AdaptiveTest = () => {
   const [paused, setPaused] = useState(false)
   const {
     sessionId,
-    questions,
-    currentIndex,
     answerPending,
     answerFailure,
+    cefrLevel,
     currentAdaptiveQuestion,
+    currentAdaptiveQuestionIndex,
   } = useSelector(({ tests }) => tests)
   const learningLanguage = useSelector(learningLanguageSelector)
 
@@ -50,48 +50,18 @@ const AdaptiveTest = () => {
     )
   }
 
-  // useEffect(() => {
-  //   if (!sessionId) return
-  //   if (!currentQuestion) {
-  //     timer.stop()
-  //     dispatch(finishTest(learningLanguage, sessionId))
-  //   } else if (willStop) {
-  //     timer.stop()
-  //     dispatch(finishTest(learningLanguage, sessionId))
-  //   } else if (willPause) {
-  //     setPaused(true)
-  //     setWillPause(false)
-  //   } else {
-  //     timer.setTime(currentQuestion.time * 1000)
-  //     setTimeout(() => timer.start(), TIMER_START_DELAY)
-  //     window.localStorage.setItem('testIndex', currentIndex)
-  //   }
-
-  //   timer.setCheckpoints([
-  //     {
-  //       time: 0,
-  //       callback: () => {
-  //         checkAnswer('')
-  //       },
-  //     },
-  //   ])
-  // }, [currentQuestion])
-
   useEffect(() => {
     if (!sessionId) return
     if (!currentAdaptiveQuestion) {
       timer.stop()
-      // dispatch(finishTest(learningLanguage, sessionId))
     } else if (willStop) {
       timer.stop()
-      // dispatch(finishTest(learningLanguage, sessionId))
     } else if (willPause) {
       setPaused(true)
       setWillPause(false)
     } else {
       timer.setTime(currentAdaptiveQuestion.time * 1000)
       setTimeout(() => timer.start(), TIMER_START_DELAY)
-      // window.localStorage.setItem('testIndex', currentIndex)
     }
 
     timer.setCheckpoints([
@@ -129,7 +99,14 @@ const AdaptiveTest = () => {
   }
 
   if (!currentAdaptiveQuestion) {
-    return null
+    return (
+      <div>
+        <div className="header-2 mb-lg">Test has ended</div>
+        <div>
+          CEFR level:<span className="bold">{cefrLevel}</span>
+        </div>
+      </div>
+    )
   }
 
   return (
@@ -137,9 +114,7 @@ const AdaptiveTest = () => {
       <div className="space-between">
         <div className="test-container">
           <div className="test-top-info space-between">
-            <div>
-              {currentIndex + 1} / {questions.length}
-            </div>
+            <div>#{currentAdaptiveQuestionIndex + 1}</div>
           </div>
           <div className="test-question-container">
             {willPause && !willStop && (
