@@ -3,9 +3,8 @@ import { Button } from 'react-bootstrap'
 import { FormattedMessage } from 'react-intl'
 import { useDispatch, useSelector } from 'react-redux'
 import { InitAdaptiveTest, resetTests } from 'Utilities/redux/testReducer'
-
 import { useLearningLanguage } from 'Utilities/common'
-import useWindowDimension from 'Utilities/windowDimensions'
+// import useWindowDimension from 'Utilities/windowDimensions'
 import Spinner from 'Components/Spinner'
 import ReportButton from 'Components/ReportButton'
 import TestView from './AdaptiveTest'
@@ -33,7 +32,7 @@ const AdaptiveTestView = () => {
 
   return (
     <div className="cont-tall cont flex-col auto gap-row-sm">
-      <div className="grow ps-nm flex-col gap-row-sm">
+      <div className="grow ps-nm flex-col gap-row-sm mt-md">
         {!adaptiveTestSessionId && (
           <div className="pl-nm pt-nm">
             <Button onClick={startTest} data-cy="start-test">
@@ -43,6 +42,9 @@ const AdaptiveTestView = () => {
         )}
         {/* {report && <TestReport />} */}
         {adaptiveTestSessionId && <TestView />}
+        <div>
+          <hr className="my-2" />
+        </div>
         <ReportButton extraClass="align-self-end mb-sm" />
       </div>
     </div>
