@@ -1625,11 +1625,25 @@ html, body, #root {
   }
 }
 
-.profile-page-setting-header {
+.profile-page {
+
+  &-setting-header {
   margin-bottom: 1em;
   font-size: 22px;
   font-family: $default-font;
   font-weight: 500;
+  }
+
+  &-radio-button-group {
+    display: flex;
+    margin-top: .75em;
+    gap: 1em;
+
+    @media (max-width: 720px) {
+      flex-direction: column;
+      gap: .5em;
+    }
+  }
 }
 
 .table-progress-bar {

@@ -87,7 +87,7 @@ const Settings = () => {
       <h2 className="profile-page-setting-header">
         <FormattedMessage id="practice-settings" />
       </h2>
-      <div className="flex-col align-start gap-row-sm">
+      <div className="flex-col gap-row-nm">
         <SettingToggle
           translationId="multiple-choice-quizzes-only"
           checked={!user.blank_filling}
@@ -107,7 +107,7 @@ const Settings = () => {
             <span className="pb-sm">
               <FormattedMessage id="participle-exercise" /> (staging only):
             </span>
-            <div className="gap-col-nm" style={{ marginTop: '1em' }}>
+            <div className="profile-page-radio-button-group">
               <Radio
                 label={intl.formatMessage({ id: 'participle-base-exer' })}
                 name="part_exer"
@@ -145,12 +145,12 @@ const Settings = () => {
       />
       <hr />
       <h2 className="profile-page-setting-header">
-        <FormattedMessage id="Audio settings" />
+        <FormattedMessage id="audio-settings" />
       </h2>
       <span className="pb-sm">
         <FormattedMessage id="Pronounce clicked words" />:
       </span>
-      <div className="gap-col-nm">
+      <div className="profile-page-radio-button-group">
         <Radio
           label={intl.formatMessage({ id: 'Always' })}
           name="autoSpeak"
@@ -168,9 +168,9 @@ const Settings = () => {
       </div>
       <br />
       <span className="pb-sm">
-        <FormattedMessage id="type-the-word-you-hear" />:
+        <FormattedMessage id="listening-exercises" />:
       </span>
-      <div className="gap-col-nm">
+      <div className="profile-page-radio-button-group">
         <Radio
           label={intl.formatMessage({ id: 'listen-to-chunks-and-words' })}
           name="audioTask"
