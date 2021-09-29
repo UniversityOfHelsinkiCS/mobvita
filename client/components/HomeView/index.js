@@ -2,7 +2,7 @@ import React, { useEffect } from 'react'
 import { useHistory } from 'react-router'
 import { FormattedMessage } from 'react-intl'
 import { Button } from 'react-bootstrap'
-import { images } from 'Utilities/common'
+import { images, hiddenFeatures, learningLanguageSelector } from 'Utilities/common'
 import { useDispatch, useSelector } from 'react-redux'
 import { getGroups } from 'Utilities/redux/groupsReducer'
 
@@ -115,6 +115,15 @@ const TestsButton = props => {
   )
 }
 
+const AdaptiveTestsButton = () => {
+  const history = useHistory()
+  const handleClick = () => {
+    history.push('/adaptive-tests')
+  }
+
+  return <Button onClick={handleClick}> Adaptive test</Button>
+}
+
 const HomeView = () => {
   const { width } = useWindowDimensions()
   const bigScreen = width > 740
@@ -123,6 +132,8 @@ const HomeView = () => {
   const { hasTests } = useSelector(({ metadata }) => metadata)
   const { groups } = useSelector(({ groups }) => groups)
   const AtLeastOneTestEnabled = groups.some(e => e.test_deadline - Date.now() > 0)
+
+  const learningLanguage = useSelector(learningLanguageSelector)
 
   useEffect(() => {
     dispatch(getGroups())
@@ -143,6 +154,7 @@ const HomeView = () => {
                   <FlashcardsButton />
                 </div>
                 {hasTests && AtLeastOneTestEnabled && <TestsButton data-cy="tests-button" />}
+                {learningLanguage === 'Russian' && hiddenFeatures && <AdaptiveTestsButton />}
               </div>
               <div className="vertical-line" />
               <div style={{ width: '300px' }}>

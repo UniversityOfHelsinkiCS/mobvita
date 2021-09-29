@@ -20,7 +20,6 @@ export const getTestQuestions = (language, groupId, restart = false) => {
   const route = `/test/${language}?group_id=${groupId}`
   const prefix = 'GET_TEST_QUESTIONS'
 
-
   const cache = JSON.parse(localStorage.getItem('questions'))
   const cachedIndex = Number(window.localStorage.getItem('testIndex'))
   const lastIndex = !Number.isNaN(cachedIndex) ? cachedIndex : 0
@@ -34,6 +33,13 @@ export const getTestQuestions = (language, groupId, restart = false) => {
   return { ...call, language, startingIndex: 0 }
 }
 
+export const InitAdaptiveTest = language => {
+  const route = `/test/${language}/adaptive`
+  const prefix = 'INIT_ADAPTIVE_TEST'
+
+  return callBuilder(route, prefix, 'get')
+}
+
 export const sendAnswer = (language, sessionId, answer, breakTimestamp) => {
   const route = `/test/${language}/answer`
   const prefix = 'ANSWER_TEST_QUESTION'
@@ -44,6 +50,17 @@ export const sendAnswer = (language, sessionId, answer, breakTimestamp) => {
     breaks,
     is_completed: false,
     answers: [answer],
+  }
+  return callBuilder(route, prefix, 'post', payload)
+}
+
+export const sendAdaptiveTestAnswer = (language, sessionId, answer, questionId) => {
+  const route = `/test/${language}/adaptive/answer`
+  const prefix = 'ANSWER_ADAPTIVE_TEST_QUESTION'
+  const payload = {
+    session_id: sessionId,
+    answer,
+    question_id: questionId,
   }
   return callBuilder(route, prefix, 'post', payload)
 }
@@ -62,7 +79,7 @@ export const finishTest = (language, sessionId) => {
   return callBuilder(route, prefix, 'post', payload)
 }
 
-export const getHistory = (language) => {
+export const getHistory = language => {
   const now = moment().format('YYYY-MM-DD')
   const route = `/test/${language}/history?start_time=2019-01-01&end_time=${now}`
   const prefix = 'GET_TEST_HISTORY'
@@ -107,6 +124,23 @@ export default (state = initialState, action) => {
         error: true,
         pending: false,
       }
+    case 'INIT_ADAPTIVE_TEST_ATTEMPT':
+      return {
+        ...initialState,
+        pending: true,
+      }
+    case 'INIT_ADAPTIVE_TEST_SUCCESS':
+      return {
+        ...initialState,
+        pending: false,
+        sessionId: response.session_id,
+        currentAdaptiveQuestion: response.next_question,
+      }
+    case 'INIT_ADAPTIVE_TEST_FAILURE':
+      return {
+        ...initialState,
+        pending: false,
+      }
     case 'ANSWER_TEST_QUESTION_ATTEMPT':
       return {
         ...state,
@@ -120,6 +154,25 @@ export default (state = initialState, action) => {
         answerPending: false,
       }
     case 'ANSWER_TEST_QUESTION_FAILURE':
+      return {
+        ...state,
+        answerFailure: true,
+        answerPending: false,
+      }
+    case 'ANSWER_ADAPTIVE_TEST_QUESTION_ATTEMPT':
+      return {
+        ...state,
+        answerPending: false,
+      }
+    case 'ANSWER_ADAPTIVE_TEST_QUESTION_SUCCESS':
+      return {
+        ...state,
+        theta: response.theta,
+        currentAdaptiveQuestion: response.next_question,
+        cefrLevel: response.cefr_level,
+        answerPending: false,
+      }
+    case 'ANSWER_ADAPTIVE_TEST_QUESTION_FAILURE':
       return {
         ...state,
         answerFailure: true,

@@ -4,6 +4,9 @@ import { useSelector } from 'react-redux'
 import HomeView from 'Components/HomeView'
 import LibraryView from 'Components/LibraryView'
 import TestIndex from 'Components/TestView/index'
+
+import AdaptiveTestIndex from 'Components/AdaptiveTestView/index'
+
 import ReadView from 'Components/ReadView'
 import ReviewView from 'Components/ReviewView'
 import PracticeView from 'Components/PracticeView'
@@ -103,6 +106,7 @@ export default () => {
             <ProtectedRoute exact path="/profile/settings" component={Profile} />
             <ProtectedRoute exact path="/profile/following" component={Profile} />
             <ProtectedRoute exact path="/tests" component={TestIndex} />
+            <ProtectedRoute exact path="/adaptive-tests" component={AdaptiveTestIndex} />
             <ProtectedRoute exact path="/achievements" component={Achievements} />
             <ProtectedRoute exact path="/leaderboard" component={Leaderboard} />
           </Switch>
