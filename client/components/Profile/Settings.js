@@ -37,8 +37,6 @@ const Settings = () => {
     if (user) dispatch(updateLocale(newLocale)) // Updates user-object
   }
 
-  const marginTopButton = '8px'
-
   useEffect(() => {
     const temp = localeOptions.map(option => ({
       value: option.code,
@@ -57,7 +55,11 @@ const Settings = () => {
     { value: 20, text: <b>20</b>, key: 20 },
     { value: 50, text: <b>50</b>, key: 50 },
     { value: 100, text: <b>100</b>, key: 100 },
-    { value: 'all', text: <b>all</b>, key: 'all' },
+    {
+      value: 'all',
+      text: <b>{intl.formatMessage({ id: 'all' })}</b>,
+      key: 'all',
+    },
   ]
 
   return (
@@ -73,7 +75,7 @@ const Settings = () => {
         selection
         onChange={(e, data) => handleLocaleChange(data.value)}
         data-cy="ui-lang-dropdown"
-        style={{ color: '#777', marginTop: marginTopButton, width: '30%' }}
+        style={{ width: '200px' }}
       />
       <hr />
       <LearningSettingsModal
@@ -104,7 +106,7 @@ const Settings = () => {
         {hiddenFeatures && (
           <div>
             <hr />
-            <span className="pb-sm">
+            <span className="pb-sm bold">
               <FormattedMessage id="participle-exercise" /> (staging only):
             </span>
             <div className="profile-page-radio-button-group">
@@ -126,9 +128,7 @@ const Settings = () => {
           </div>
         )}
       </div>
-
       <hr />
-
       <h2 className="profile-page-setting-header">
         <FormattedMessage id="Flashcards" />
       </h2>
@@ -147,7 +147,7 @@ const Settings = () => {
       <h2 className="profile-page-setting-header">
         <FormattedMessage id="audio-settings" />
       </h2>
-      <span className="pb-sm">
+      <span className="pb-sm bold">
         <FormattedMessage id="Pronounce clicked words" />:
       </span>
       <div className="profile-page-radio-button-group">
@@ -167,7 +167,7 @@ const Settings = () => {
         />
       </div>
       <br />
-      <span className="pb-sm">
+      <span className="pb-sm bold">
         <FormattedMessage id="listening-exercises" />:
       </span>
       <div className="profile-page-radio-button-group">
