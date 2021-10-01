@@ -6,7 +6,7 @@ import { Link } from 'react-router-dom'
 import { FormattedMessage } from 'react-intl'
 import { removeStory, unshareStory as unshare } from 'Utilities/redux/storiesReducer'
 import useWindowDimensions from 'Utilities/windowDimensions'
-import { getTextStyle, learningLanguageSelector } from 'Utilities/common'
+import { getTextStyle, learningLanguageSelector, hiddenFeatures } from 'Utilities/common'
 import ConfirmationWarning from 'Components/ConfirmationWarning'
 import ShareStory from 'Components/StoryView/ShareStory'
 import StoryDetailsModal from 'Components/StoryView/StoryDetailsModal'
@@ -99,39 +99,44 @@ const StoryActions = ({ story }) => {
 
   if (width >= 640) {
     return (
-      <div>
+      <div className="story-actions">
         {story.percent_cov === 0 && (
           <Link to={`/stories/${story._id}/read`}>
-            <Button variant="secondary" style={{ marginRight: '0.5em' }}>
+            <Button variant="secondary">
               <FormattedMessage id="Read" />
             </Button>
           </Link>
         )}
         <Link to={`/stories/${story._id}/practice`}>
-          <Button variant="primary" style={{ marginRight: '0.5em' }}>
+          <Button variant="primary">
             <FormattedMessage id="practice" />
           </Button>
         </Link>
         {story.percent_cov > 0 && (
           <Link to={`/stories/${story._id}/review`}>
-            <Button variant="secondary" style={{ marginRight: '0.5em' }}>
+            <Button variant="secondary">
               <FormattedMessage id="review" />
             </Button>
           </Link>
         )}
         <Link to={`/flashcards/fillin/${story._id}/`}>
-          <Button variant="primary" style={{ marginRight: '0.5em' }}>
+          <Button variant="primary">
             <FormattedMessage id="Flashcards" />
           </Button>
         </Link>
         <Link to={`/compete/${story._id}/`}>
-          <Button variant="secondary" style={{ marginRight: '0.5em' }}>
+          <Button variant="secondary">
             <FormattedMessage id="compete" />
           </Button>
         </Link>
+        {/* {hiddenFeatures && (
+          <Link to={`/stories/${story._id}/preview`}>
+            <Button variant="secondary">β</Button>
+          </Link>
+        )} */}
         {showCrosswordsButton && (
           <Link to={`/crossword/${story._id}/`}>
-            <Button variant="secondary" style={{ marginRight: '0.5em' }}>
+            <Button variant="secondary">
               <FormattedMessage id="Crossword" />
             </Button>
           </Link>

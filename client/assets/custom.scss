@@ -845,6 +845,10 @@ html, body, #root {
   }
 }
 
+.story-actions > a {
+  margin-right: .5em;
+}
+
 .library-control {
   display: flex;
   flex-direction: column;
