@@ -1108,5 +1108,11 @@
     "multiple-choice-quizzes-only": "Multiple-choice quizzes only",
     "audio-settings": "Настройки аудио/звука",
     "listening-exercises": "Упражнения на слуховое восприятие",
-    "all": "All"
+    "all": "All",
+    "explain-Case:illative": "The case meaning moving into something",
+    "explain-Case:translative": "",
+    "explain-Case:allative": "",
+    "explain-Case:essive": "",
+    "explain-Case:": "",
+    "test-results": "Test results"
 }

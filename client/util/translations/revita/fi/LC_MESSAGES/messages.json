@@ -800,7 +800,7 @@
     "report-button": "Ilmoita ongelmasta",
     "report-problem": "Ilmoita ongelmasta",
     "thank-you-for-reporting-problem": "Kiitos ongelman ilmoittamisesta — käymme sen läpi mahdollisimman pian!",
-    "enter-more-about-problem": "REVITA-tiimi tulee näkemään näkymän, jossa ongelma tuli vastaan. Halutessasi voit kirjoittaa tähän lisätietoja ongelmasta.",
+    "enter-more-about-problem": "Revita-tiimi saa tiedot näkymästä, jossa ongelma tuli vastaan. Halutessasi voit kirjoittaa tähän lisätietoja ongelmasta.",
     "Participate in weekly leaderboards": "Osallistu viikottaisiin pistetaulukkoihin",
     "Privacy": "Yksityisyys",
     "Show my username in leaderboards": "Näytä käyttäjänimeni pistetaulukoissa",
@@ -1105,5 +1105,11 @@
     "multiple-choice-quizzes-only": "Vain monivalintatehtäviä",
     "audio-settings": "Ääniasetukset",
     "listening-exercises": "Kuunteluharjoitukset",
-    "all": "Kaikki"
+    "all": "Kaikki",
+    "explain-Case:illative": "The case meaning moving into something",
+    "explain-Case:translative": "",
+    "explain-Case:allative": "",
+    "explain-Case:essive": "",
+    "explain-Case:": "",
+    "test-results": "Kokeen tulokset"
 }

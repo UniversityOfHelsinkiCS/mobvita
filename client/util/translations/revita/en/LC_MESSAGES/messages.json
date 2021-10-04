@@ -807,7 +807,7 @@
     "report-button": "Report a problem",
     "report-problem": "Report a problem",
     "thank-you-for-reporting-problem": "Thank you for reporting a problem — we will review it as soon as possible!",
-    "enter-more-about-problem": "REVITA Team will see this page where you encountered the problem.  If you want to tell us more, please write here what went wrong...",
+    "enter-more-about-problem": "Revita team will see this page where you encountered the problem.  If you want to tell us more, please write here what went wrong...",
     "Participate in weekly leaderboards": "Participate in weekly leaderboards",
     "Privacy": "Privacy",
     "Show my username in leaderboards": "Show my username in leaderboards",
@@ -1105,5 +1105,11 @@
     "multiple-choice-quizzes-only": "Multiple-choice quizzes only",
     "audio-settings": "Audio settings",
     "listening-exercises": "Listening exercises",
-    "all": "All"
+    "all": "All",
+    "explain-Case:illative": "The case meaning moving into something",
+    "explain-Case:translative": "",
+    "explain-Case:allative": "",
+    "explain-Case:essive": "",
+    "explain-Case:": "",
+    "test-results": "Test results"
 }

@@ -800,7 +800,7 @@
     "report-button": "Segnala",
     "report-problem": "Segnala un problema",
     "thank-you-for-reporting-problem": "Grazie per aver segnalato il problema — ce ne occuperemo il prima possibile!",
-    "enter-more-about-problem": "Il team di REVITA controllerà la pagina dove hai osservato il problema. Se vuoi fornirci informazioni aggiuntive, scrivi qui cosa non ha funzionato correttamente...",
+    "enter-more-about-problem": "Il team di Revita controllerà la pagina dove hai osservato il problema. Se vuoi fornirci informazioni aggiuntive, scrivi qui cosa non ha funzionato correttamente...",
     "Participate in weekly leaderboards": "Participate in weekly leaderboards",
     "Privacy": "Privacy",
     "Show my username in leaderboards": "Mostra il mio nome nella classifica",
@@ -1106,5 +1106,11 @@
     "multiple-choice-quizzes-only": "Solo esercizi a risposta multipla",
     "audio-settings": "Preferenze Audio",
     "listening-exercises": "Esercizi di ascolto",
-    "all": "Tutti"
+    "all": "Tutti",
+    "explain-Case:illative": "The case meaning moving into something",
+    "explain-Case:translative": "",
+    "explain-Case:allative": "",
+    "explain-Case:essive": "",
+    "explain-Case:": "",
+    "test-results": "Test results"
 }
