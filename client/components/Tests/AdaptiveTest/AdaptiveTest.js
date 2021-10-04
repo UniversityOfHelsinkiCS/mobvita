@@ -2,16 +2,17 @@ import React, { useState, useEffect } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import { useTimer } from 'react-compound-timer'
 import { Icon } from 'semantic-ui-react'
+import { Spinner } from 'react-bootstrap'
 import { resetTests, sendAdaptiveTestAnswer } from 'Utilities/redux/testReducer'
 import { learningLanguageSelector } from 'Utilities/common'
 import { FormattedMessage, FormattedHTMLMessage } from 'react-intl'
 import MultipleChoice from '../MultipleChoice'
 
-const TIMER_START_DELAY = 300
+const TIMER_START_DELAY = 2000
 
 const AdaptiveTest = () => {
   const { controls: timer } = useTimer({
-    initialTime: 15000,
+    initialTime: 20000,
     direction: 'backward',
     startImmediately: false,
     timeToUpdate: 100,
@@ -19,6 +20,7 @@ const AdaptiveTest = () => {
 
   const [willStop, setWillStop] = useState(false)
   const [willPause, setWillPause] = useState(false)
+  const [displaySpinner, setDisplaySpinner] = useState(false)
   const [paused, setPaused] = useState(false)
   const {
     adaptiveTestSessionId,
@@ -61,7 +63,11 @@ const AdaptiveTest = () => {
       setWillPause(false)
     } else {
       timer.setTime(currentAdaptiveQuestion.time * 1000)
-      setTimeout(() => timer.start(), TIMER_START_DELAY)
+      if (currentAdaptiveQuestionIndex !== 0) setDisplaySpinner(true)
+      setTimeout(() => {
+        timer.start()
+        setDisplaySpinner(false)
+      }, TIMER_START_DELAY)
     }
 
     timer.setCheckpoints([
@@ -138,13 +144,18 @@ const AdaptiveTest = () => {
                 <FormattedHTMLMessage id="paused-click-to-resume" />
               </div>
             )}
-            {currentAdaptiveQuestion && !paused && !answerFailure && (
+            {currentAdaptiveQuestion && !paused && !answerFailure && !displaySpinner && (
               <div>
                 <MultipleChoice
                   exercise={currentAdaptiveQuestion}
                   onAnswer={checkAnswer}
                   answerPending={answerPending}
                 />
+              </div>
+            )}
+            {displaySpinner && (
+              <div className="test-question-spinner-container">
+                <Spinner animation="border" variant="info" size="lg" />
               </div>
             )}
           </div>

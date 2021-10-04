@@ -636,6 +636,11 @@ html, body, #root {
   font-weight: 500;
 }
 
+.preview-text {
+  color: rgb(107, 6, 153);
+  font-weight: 500;
+}
+
 .story-text-input {
   width: 100%;
   height: 20vh;
@@ -1352,7 +1357,15 @@ html, body, #root {
   }
   &-question-container {
     min-width: 100%;
+    height: 500px;
     padding-top: 1em;
+  }
+  &-question-spinner-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-width: 350px;
+    min-height: 350px;
   }
   &-info {
     font-style: italic;
