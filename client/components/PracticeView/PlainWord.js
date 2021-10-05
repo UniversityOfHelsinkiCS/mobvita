@@ -1,6 +1,6 @@
 import React from 'react'
 import { useSelector, useDispatch } from 'react-redux'
-import { useParams } from 'react-router-dom'
+import { useParams, useHistory } from 'react-router-dom'
 import useWindowDimensions from 'Utilities/windowDimensions'
 import {
   learningLanguageSelector,
@@ -19,11 +19,13 @@ import {
 } from 'Utilities/redux/annotationsReducer'
 
 const PlainWord = ({ word, annotatingAllowed, ...props }) => {
+  const history = useHistory()
   const { lemmas, ID: wordId, surface, inflection_ref: inflectionRef, name_token: isName } = word
 
   const autoSpeak = useSelector(({ user }) => user.data.user.auto_speak)
   const learningLanguage = useSelector(learningLanguageSelector)
   const dictionaryLanguage = useSelector(dictionaryLanguageSelector)
+  const isCompeteMode = history.location.pathname.includes('compete')
 
   const { spanAnnotations, highlightRange, showAnnotationForm } = useSelector(
     ({ annotations }) => annotations
@@ -85,7 +87,7 @@ const PlainWord = ({ word, annotatingAllowed, ...props }) => {
   if (!lemmas || isName)
     return (
       <>
-        {wordStartsSpan(word) && annotatingAllowed && (
+        {wordStartsSpan(word) && annotatingAllowed && !isCompeteMode && (
           <sup className="notes-superscript">{getSuperscript(word)}</sup>
         )}
         <span
@@ -135,7 +137,7 @@ const PlainWord = ({ word, annotatingAllowed, ...props }) => {
 
   return (
     <>
-      {wordStartsSpan(word) && annotatingAllowed && (
+      {wordStartsSpan(word) && annotatingAllowed && !isCompeteMode && (
         <sup className="notes-superscript">{getSuperscript(word)}</sup>
       )}
       <span

@@ -12,7 +12,6 @@ import {
 } from 'Utilities/common'
 import { setReferences } from 'Utilities/redux/practiceReducer'
 import { getTranslationAction, setWords } from 'Utilities/redux/translationReducer'
-import { setFocusedWord, setHighlightedWord } from 'Utilities/redux/annotationsReducer'
 import Tooltip from 'Components/PracticeView/Tooltip'
 
 const PreviousExerciseWord = ({ word, answer, tiedAnswer }) => {
@@ -43,16 +42,6 @@ const PreviousExerciseWord = ({ word, answer, tiedAnswer }) => {
   if (tested || typeof wrong !== 'undefined') color = isWrong ? 'wrong-text' : 'right-text'
   const wordClass = `word-interactive ${color}`
 
-  const wordHasAnnotations = word => {
-    const matchingAnnotationInStore = annotations.find(w => w.ID === word.ID)
-    const allAreRemoved = matchingAnnotationInStore?.annotation?.every(
-      annotation => annotation.annotation === '<removed>'
-    )
-    if (!matchingAnnotationInStore || allAreRemoved) return false
-
-    return true
-  }
-
   const handleClick = () => {
     if (word.isWrong) setShow(true)
     if (autoSpeak === 'always' && voice) speak(surface, voice)
@@ -69,10 +58,6 @@ const PreviousExerciseWord = ({ word, answer, tiedAnswer }) => {
         })
       )
     }
-    dispatch(setHighlightedWord(word))
-    const annotationInStore = annotations.find(w => w.ID === word.ID)
-    if (annotationInStore) dispatch(setFocusedWord(annotationInStore))
-    else dispatch(setFocusedWord(word))
   }
 
   const getSuperscript = word => {
@@ -125,7 +110,6 @@ const PreviousExerciseWord = ({ word, answer, tiedAnswer }) => {
       >
         {surface}
       </span>
-      {wordHasAnnotations(word) && <sup className="notes-superscript">{getSuperscript(word)}</sup>}
     </Tooltip>
   )
 }
