@@ -10,6 +10,12 @@ export const getStoryAction = storyId => {
   return callBuilder(route, prefix)
 }
 
+export const getStoryPreview = storyId => {
+  const route = `/stories/${storyId}/preview`
+  const prefix = 'GET_STORY_PREVIEW'
+  return callBuilder(route, prefix)
+}
+
 export const getAllStories = (language, query) => {
   const queryString = Object.keys(query)
     .map(key => `${key}=${query[key]}`)
@@ -131,6 +137,28 @@ export default (state = initialState, action) => {
         error: true,
       }
     case 'GET_STORY_SUCCESS':
+      return {
+        ...state,
+        focused: action.response,
+        pending: false,
+        focusedPending: false,
+        error: false,
+      }
+    case 'GET_STORY_PREVIEW_ATTEMPT':
+      return {
+        ...state,
+        pending: true,
+        focusedPending: true,
+        error: false,
+      }
+    case 'GET_STORY_PREVIEW_FAILURE':
+      return {
+        ...state,
+        pending: false,
+        focusedPending: false,
+        error: true,
+      }
+    case 'GET_STORY_PREVIEW_SUCCESS':
       return {
         ...state,
         focused: action.response,
