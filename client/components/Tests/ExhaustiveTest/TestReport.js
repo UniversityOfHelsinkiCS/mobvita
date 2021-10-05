@@ -1,7 +1,7 @@
 import React from 'react'
 import { useSelector } from 'react-redux'
 import { Modal } from 'semantic-ui-react'
-import { useIntl } from 'react-intl'
+import { useIntl, FormattedMessage } from 'react-intl'
 import { hiddenFeatures } from 'Utilities/common'
 
 const TestReport = () => {
@@ -14,7 +14,9 @@ const TestReport = () => {
 
   return (
     <Modal size="mini" dimmer="inverted" closeIcon defaultOpen centered={false}>
-      <Modal.Header>{translate('overall-score')}</Modal.Header>
+      <Modal.Header>
+        <FormattedMessage id="test-results" />
+      </Modal.Header>
       <Modal.Content>
         <>
           <div>

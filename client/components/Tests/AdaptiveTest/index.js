@@ -4,17 +4,17 @@ import { FormattedMessage } from 'react-intl'
 import { useDispatch, useSelector } from 'react-redux'
 import { InitAdaptiveTest, resetTests } from 'Utilities/redux/testReducer'
 import { useLearningLanguage } from 'Utilities/common'
-// import useWindowDimension from 'Utilities/windowDimensions'
 import Spinner from 'Components/Spinner'
 import ReportButton from 'Components/ReportButton'
 import TestView from './AdaptiveTest'
-// import TestReport from './TestReport'
+import ResultModal from './ResultModal'
 
 const AdaptiveTestView = () => {
   const dispatch = useDispatch()
   const learningLanguage = useLearningLanguage()
-  const { adaptiveTestSessionId, pending, language } = useSelector(({ tests }) => tests)
-  // const bigScreen = useWindowDimension().width >= 650
+  const { adaptiveTestSessionId, pending, language, cefrLevel, adaptiveTestResults } = useSelector(
+    ({ tests }) => tests
+  )
 
   const startTest = () => {
     dispatch(InitAdaptiveTest(learningLanguage))
@@ -40,7 +40,9 @@ const AdaptiveTestView = () => {
             </Button>
           </div>
         )}
-        {/* {report && <TestReport />} */}
+        {adaptiveTestResults && (
+          <ResultModal cefrLevel={cefrLevel} adaptiveTestResults={adaptiveTestResults} />
+        )}
         {adaptiveTestSessionId && <TestView />}
         <div>
           <hr className="my-2" />

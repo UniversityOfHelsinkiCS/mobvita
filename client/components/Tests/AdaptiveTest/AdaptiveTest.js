@@ -18,7 +18,6 @@ const AdaptiveTest = () => {
     timeToUpdate: 100,
   })
 
-  const [willStop, setWillStop] = useState(false)
   const [willPause, setWillPause] = useState(false)
   const [displaySpinner, setDisplaySpinner] = useState(false)
   const [paused, setPaused] = useState(false)
@@ -26,7 +25,6 @@ const AdaptiveTest = () => {
     adaptiveTestSessionId,
     answerPending,
     answerFailure,
-    cefrLevel,
     currentAdaptiveQuestion,
     currentAdaptiveQuestionIndex,
   } = useSelector(({ tests }) => tests)
@@ -38,8 +36,6 @@ const AdaptiveTest = () => {
     if (!currentAdaptiveQuestion) return
     timer.stop()
     timer.reset()
-
-    const pauseTimeStamp = willPause ? new Date() : null
 
     dispatch(
       sendAdaptiveTestAnswer(
@@ -55,9 +51,6 @@ const AdaptiveTest = () => {
     if (!adaptiveTestSessionId) return
     if (!currentAdaptiveQuestion) {
       timer.stop()
-    } else if (willStop) {
-      timer.stop()
-      dispatch(resetTests())
     } else if (willPause) {
       setPaused(true)
       setWillPause(false)
@@ -80,11 +73,10 @@ const AdaptiveTest = () => {
     ])
   }, [currentAdaptiveQuestion])
 
-  // Send an empty answer if user leaves test
+  // Reset tests if user leaves
   useEffect(
     () => () => {
       dispatch(resetTests())
-      // checkAnswer('')
     },
     []
   )
@@ -102,25 +94,6 @@ const AdaptiveTest = () => {
     setTimeout(() => timer.start(), TIMER_START_DELAY)
   }
 
-  const stop = () => {
-    if (willStop) {
-      setWillStop(false)
-    } else {
-      setWillStop(true)
-    }
-  }
-
-  if (!currentAdaptiveQuestion) {
-    return (
-      <div>
-        <div className="header-2 mb-lg">Test has ended</div>
-        <div>
-          CEFR level: <span className="bold">{cefrLevel}</span>
-        </div>
-      </div>
-    )
-  }
-
   return (
     <div className="cont">
       <div className="space-between">
@@ -129,14 +102,9 @@ const AdaptiveTest = () => {
             <div>#{currentAdaptiveQuestionIndex + 1}</div>
           </div>
           <div className="test-question-container">
-            {willPause && !willStop && (
+            {willPause && (
               <span className="test-info">
                 <FormattedMessage id="pause-after-you-answer-this-question" />
-              </span>
-            )}
-            {willStop && (
-              <span className="test-info">
-                <FormattedMessage id="quitting-after-this-question" />
               </span>
             )}
             {paused && (
@@ -181,9 +149,9 @@ const AdaptiveTest = () => {
               />
               <Icon
                 size="large"
-                color={willStop ? 'grey' : 'blue'}
+                color="blue"
                 name="stop"
-                onClick={stop}
+                onClick={() => dispatch(resetTests())}
                 style={{ margin: '0.25em' }}
               />
             </div>

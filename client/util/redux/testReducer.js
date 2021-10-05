@@ -10,6 +10,7 @@ const initialState = {
   report: null,
   adaptiveTestSessionId: null,
   currentAdaptiveQuestionIndex: 0,
+  adaptiveTestResults: null,
 }
 
 const clearLocalStorage = () => {
@@ -174,6 +175,7 @@ export default (state = initialState, action) => {
         cefrLevel: response.cefr,
         answerPending: false,
         currentAdaptiveQuestionIndex: currentAdaptiveQuestionIndex + 1,
+        adaptiveTestResults: response.result,
       }
     case 'ANSWER_ADAPTIVE_TEST_QUESTION_FAILURE':
       return {
