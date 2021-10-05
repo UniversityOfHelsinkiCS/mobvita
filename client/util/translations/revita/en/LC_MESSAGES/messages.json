@@ -1116,5 +1116,6 @@
     "%-correct": "% correct",
     "your-estimated-cefr-level": "Your estimated CEFR level",
     "questions-correct": "Correct",
-    "overall": "Overall"
+    "overall": "Overall",
+    "explanations": "Explanations"
 }

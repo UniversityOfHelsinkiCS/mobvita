@@ -1112,10 +1112,11 @@
     "explain-Case:allative": "",
     "explain-Case:essive": "",
     "explain-Case:": "",
-    "test-results": "Test results",
-    "question-level": "Question level",
+    "test-results": "Risultati del test",
+    "question-level": "Livello delle domande",
     "%-correct": "% correct",
-    "your-estimated-cefr-level": "Your estimated CEFR level",
+    "your-estimated-cefr-level": "La stima del tuo livello CEFR",
     "questions-correct": "Correct",
-    "overall": "Overall"
+    "overall": "Overall",
+    "explanations": "Explanations"
 }

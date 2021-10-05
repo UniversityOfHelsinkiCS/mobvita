@@ -1116,5 +1116,6 @@
     "%-correct": "Prosentuaalisesti oikein",
     "your-estimated-cefr-level": "Arvioitu CEFR-tasosi",
     "questions-correct": "Oikein",
-    "overall": "Yhteensä"
+    "overall": "Yhteensä",
+    "explanations": "Explanations"
 }
