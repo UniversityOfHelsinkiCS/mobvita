@@ -129,11 +129,13 @@ const StoryActions = ({ story }) => {
             <FormattedMessage id="compete" />
           </Button>
         </Link>
-        {/* {hiddenFeatures && (
+        {hiddenFeatures && (
           <Link to={`/stories/${story._id}/preview`}>
-            <Button variant="secondary">β</Button>
+            <Button variant="secondary">
+              Preview<sup>β</sup>
+            </Button>
           </Link>
-        )} */}
+        )}
         {showCrosswordsButton && (
           <Link to={`/crossword/${story._id}/`}>
             <Button variant="secondary">

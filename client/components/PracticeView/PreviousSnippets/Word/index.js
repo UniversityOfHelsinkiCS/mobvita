@@ -5,8 +5,9 @@ import PreviousExerciseWord from './PreviousExerciseWord'
 const Word = ({ word, answer, tiedAnswer, hideFeedback }) => {
   if (hideFeedback) return <PlainWord word={word} annotatingAllowed />
 
-  // session history in practice & compete mode
-  if (word.tested) {
+  // session history in practice & compete mode OR Preview mode
+  // TODO: Clean this up
+  if (word.tested || word.concept) {
     return <PreviousExerciseWord word={word} answer={answer} tiedAnswer={tiedAnswer} />
   }
 

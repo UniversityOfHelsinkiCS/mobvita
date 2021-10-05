@@ -1,5 +1,6 @@
 import React, { useState } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
+import { useHistory } from 'react-router-dom'
 import { useIntl } from 'react-intl'
 import { Icon } from 'semantic-ui-react'
 import {
@@ -35,6 +36,7 @@ const PreviousExerciseWord = ({ word, answer, tiedAnswer }) => {
 
   const [show, setShow] = useState(false)
 
+  const history = useHistory()
   const learningLanguage = useSelector(learningLanguageSelector)
   const autoSpeak = useSelector(({ user }) => user.data.user.auto_speak)
   const dictionaryLanguage = useSelector(dictionaryLanguageSelector)
@@ -46,6 +48,7 @@ const PreviousExerciseWord = ({ word, answer, tiedAnswer }) => {
   const voice = respVoiceLanguages[learningLanguage]
   let color = ''
   if (tested || typeof wrong !== 'undefined') color = isWrong ? 'wrong-text' : 'right-text'
+  if (history.location.pathname.includes('preview') && word.concept) color = 'preview-text'
   const wordClass = `word-interactive ${color}`
 
   const wordIsInSpan = word => {
@@ -54,6 +57,7 @@ const PreviousExerciseWord = ({ word, answer, tiedAnswer }) => {
 
   const handleClick = () => {
     if (word.isWrong) setShow(true)
+    if (word.concept) setShow(true)
     if (autoSpeak === 'always' && voice) speak(surface, voice)
     if (lemmas) {
       dispatch(setWords({ surface, lemmas }))
@@ -118,6 +122,7 @@ const PreviousExerciseWord = ({ word, answer, tiedAnswer }) => {
           </span>
         </div>
       )}
+      {word.concept && <div>{word.concept}</div>}
     </div>
   )
 

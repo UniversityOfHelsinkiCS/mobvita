@@ -1,11 +1,12 @@
 import React, { useState, useEffect } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
-import { Link } from 'react-router-dom'
+import { Link, useHistory } from 'react-router-dom'
 import { Divider, Segment, Header, Checkbox } from 'semantic-ui-react'
 import { Button } from 'react-bootstrap'
 import { FormattedMessage, useIntl } from 'react-intl'
 import useWindowDimensions from 'Utilities/windowDimensions'
-import { getStoryAction } from 'Utilities/redux/storiesReducer'
+import { getStoryPreview, getStoryAction } from 'Utilities/redux/storiesReducer'
+
 import { clearTranslationAction } from 'Utilities/redux/translationReducer'
 import { resetAnnotations, setAnnotations } from 'Utilities/redux/annotationsReducer'
 import { learningLanguageSelector, getTextStyle } from 'Utilities/common'
@@ -17,8 +18,9 @@ import ReferenceModal from 'Components/PracticeView/ReferenceModal'
 import Footer from '../Footer'
 import ScrollArrow from '../ScrollArrow'
 
-const ReviewView = ({ match }) => {
+const ReadViews = ({ match }) => {
   const dispatch = useDispatch()
+  const history = useHistory()
   const intl = useIntl()
   const { width } = useWindowDimensions()
   const [hideFeedback, setHideFeedback] = useState(false)
@@ -29,10 +31,16 @@ const ReviewView = ({ match }) => {
     locale,
   }))
 
+  const isPreviewMode = history.location.pathname.includes('preview')
+
   const learningLanguage = useSelector(learningLanguageSelector)
   const { id } = match.params
   useEffect(() => {
-    dispatch(getStoryAction(id))
+    if (isPreviewMode) {
+      dispatch(getStoryPreview(id))
+    } else {
+      dispatch(getStoryAction(id))
+    }
     dispatch(clearTranslationAction())
     dispatch(resetAnnotations())
   }, [])
@@ -47,7 +55,7 @@ const ReviewView = ({ match }) => {
   if (!story || pending) return <Spinner fullHeight />
 
   const showFooter = width > 640
-  const showAnnotationBox = width >= 1024
+  const showAnnotationBox = width >= 1024 && !isPreviewMode
 
   return (
     <div className="cont-tall flex-col space-between align-center pt-sm">
@@ -102,4 +110,4 @@ const ReviewView = ({ match }) => {
   )
 }
 
-export default ReviewView
+export default ReadViews
