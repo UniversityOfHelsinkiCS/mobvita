@@ -11,7 +11,7 @@ import {
   respVoiceLanguages,
   formatGreenFeedbackText,
 } from 'Utilities/common'
-import { setReferences } from 'Utilities/redux/practiceReducer'
+import { setReferences, setExplanation } from 'Utilities/redux/practiceReducer'
 import { getTranslationAction, setWords } from 'Utilities/redux/translationReducer'
 import {
   setFocusedSpan,
@@ -29,7 +29,7 @@ const PreviousExerciseWord = ({ word, answer, tiedAnswer }) => {
     wrong,
     lemmas,
     ref,
-    // explanation,
+    explanation,
     ID: wordId,
     id: storyId,
     inflection_ref: inflectionRef,
@@ -91,7 +91,7 @@ const PreviousExerciseWord = ({ word, answer, tiedAnswer }) => {
 
   const handleTooltipClick = () => {
     if (ref) dispatch(setReferences(ref))
-    // if (explanation) dispatch(setExplanation(explanation))
+    if (explanation) dispatch(setExplanation(explanation))
   }
 
   const wordShouldBeHighlighted = word => {
@@ -114,16 +114,13 @@ const PreviousExerciseWord = ({ word, answer, tiedAnswer }) => {
               style={{ alignSelf: 'flex-start', marginLeft: '0.5rem' }}
             />
           )}
-          {/* {explanation && (
-            <>
-            testing
-              <Icon
-                name="info circle"
-                size="small"
-                style={{ alignSelf: 'flex-start', marginLeft: '0.5rem' }}
-              />
-            </>
-          )} */}
+          {explanation && (
+            <Icon
+              name="info circle"
+              size="small"
+              style={{ alignSelf: 'flex-start', marginLeft: '0.5rem' }}
+            />
+          )}
         </div>
       )}
       {youAnsweredTooltip && (

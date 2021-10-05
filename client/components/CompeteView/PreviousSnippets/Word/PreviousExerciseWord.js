@@ -10,7 +10,7 @@ import {
   respVoiceLanguages,
   formatGreenFeedbackText,
 } from 'Utilities/common'
-import { setReferences } from 'Utilities/redux/practiceReducer'
+import { setReferences, setExplanation } from 'Utilities/redux/practiceReducer'
 import { getTranslationAction, setWords } from 'Utilities/redux/translationReducer'
 import Tooltip from 'Components/PracticeView/Tooltip'
 
@@ -22,6 +22,7 @@ const PreviousExerciseWord = ({ word, answer, tiedAnswer }) => {
     wrong,
     lemmas,
     ref,
+    explanation,
     ID: wordId,
     id: storyId,
     inflection_ref: inflectionRef,
@@ -32,7 +33,6 @@ const PreviousExerciseWord = ({ word, answer, tiedAnswer }) => {
   const learningLanguage = useSelector(learningLanguageSelector)
   const autoSpeak = useSelector(({ user }) => user.data.user.auto_speak)
   const dictionaryLanguage = useSelector(dictionaryLanguageSelector)
-  const { highlightedWord, annotations } = useSelector(({ annotations }) => annotations)
 
   const intl = useIntl()
   const dispatch = useDispatch()
@@ -60,15 +60,10 @@ const PreviousExerciseWord = ({ word, answer, tiedAnswer }) => {
     }
   }
 
-  const getSuperscript = word => {
-    const existingAnnotations = annotations.filter(word =>
-      word.annotation.every(annotation => annotation.annotation !== '<removed>')
-    )
-    return existingAnnotations.findIndex(a => a.ID === word.ID) + 1
-  }
 
   const handleTooltipClick = () => {
     if (ref) dispatch(setReferences(ref))
+    if (explanation) dispatch(setExplanation(explanation))
   }
 
   const youAnsweredTooltip = answer || tiedAnswer
@@ -81,6 +76,13 @@ const PreviousExerciseWord = ({ word, answer, tiedAnswer }) => {
           {ref && (
             <Icon
               name="external"
+              size="small"
+              style={{ alignSelf: 'flex-start', marginLeft: '0.5rem' }}
+            />
+          )}
+          {explanation && (
+            <Icon
+              name="info circle"
               size="small"
               style={{ alignSelf: 'flex-start', marginLeft: '0.5rem' }}
             />
@@ -101,7 +103,7 @@ const PreviousExerciseWord = ({ word, answer, tiedAnswer }) => {
   return (
     <Tooltip placement="top" tooltipShown={show} trigger="none" tooltip={tooltip}>
       <span
-        className={`${wordClass} ${word.ID === highlightedWord?.ID && 'notes-highlighted-word'}`}
+        className={wordClass}
         role="button"
         onClick={handleClick}
         onKeyDown={handleClick}

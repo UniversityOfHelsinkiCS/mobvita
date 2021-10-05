@@ -11,8 +11,9 @@ import {
   speak,
   formatGreenFeedbackText,
 } from 'Utilities/common'
-import { setFocusedWord } from 'Utilities/redux/practiceReducer'
+import { setFocusedWord, setReferences, setExplanation } from 'Utilities/redux/practiceReducer'
 import { getTranslationAction, setWords } from 'Utilities/redux/translationReducer'
+import { Icon } from 'semantic-ui-react'
 import Tooltip from 'Components/PracticeView/Tooltip'
 
 const ExerciseCloze = ({ word, handleChange }) => {
@@ -26,7 +27,7 @@ const ExerciseCloze = ({ word, handleChange }) => {
   const autoSpeak = useSelector(({ user }) => user.data.user.auto_speak)
   const currentAnswer = useSelector(({ practice }) => practice.currentAnswers[word.ID])
 
-  const { isWrong, tested, surface, lemmas, ID: wordId, id: storyId } = word
+  const { isWrong, tested, surface, ref, explanation, lemmas, ID: wordId, id: storyId } = word
 
   const target = useRef()
   const dispatch = useDispatch()
@@ -59,6 +60,11 @@ const ExerciseCloze = ({ word, handleChange }) => {
     setValue(e.target.value)
   }
 
+  const handleTooltipClick = () => {
+    if (ref) dispatch(setReferences(ref))
+    if (explanation) dispatch(setExplanation(explanation))
+  }
+
   const getExerciseClass = (tested, isWrong) => {
     if (!tested) return 'exercise cloze-untouched'
     if (isWrong) return 'exercise wrong cloze'
@@ -77,8 +83,30 @@ const ExerciseCloze = ({ word, handleChange }) => {
   const tooltip = (
     <div>
       {word.message && (
-        <div className="tooltip-green">
-          <span dangerouslySetInnerHTML={formatGreenFeedbackText(word?.message)} />
+        <div
+          className="tooltip-green"
+          style={{ cursor: 'pointer' }}
+          onMouseDown={handleTooltipClick}
+        >
+          {word.message && (
+            <div className="flex">
+              <span dangerouslySetInnerHTML={formatGreenFeedbackText(word?.message)} />{' '}
+              {ref && (
+                <Icon
+                  name="external"
+                  size="small"
+                  style={{ alignSelf: 'flex-start', marginLeft: '0.5rem' }}
+                />
+              )}
+              {explanation && (
+                <Icon
+                  name="info circle"
+                  size="small"
+                  style={{ alignSelf: 'flex-start', marginLeft: '0.5rem' }}
+                />
+              )}
+            </div>
+          )}
         </div>
       )}
       <div

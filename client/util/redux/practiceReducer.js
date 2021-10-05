@@ -12,6 +12,8 @@ export const clearTouchedIds = () => ({ type: 'CLEAR_TOUCHED_IDS' })
 export const finishSnippet = () => ({ type: 'FINISH_SNIPPET' })
 export const setReferences = references => ({ type: 'SET_REFERENCES', references })
 export const clearReferences = () => ({ type: 'CLEAR_REFERENCES' })
+export const setExplanation = explanation => ({ type: 'SET_EXPLANATION', explanation })
+export const clearExplanation = () => ({ type: 'CLEAR_EXPLANATION' })
 export const startSnippet = () => ({ type: 'SET_SNIPPET_STARTED' })
 
 const initialState = {
@@ -25,6 +27,7 @@ const initialState = {
   audio: {},
   snippetFinished: false,
   references: null,
+  explanation: null,
   refModalOpen: false,
   isNewSnippet: true,
 }
@@ -112,6 +115,16 @@ export default (state = initialState, action) => {
       return {
         ...state,
         references: initialState.references,
+      }
+    case 'SET_EXPLANATION':
+      return {
+        ...state,
+        explanation: action.explanation,
+      }
+    case 'CLEAR_EXPLANATION':
+      return {
+        ...state,
+        explanation: initialState.explanation,
       }
     default:
       return state

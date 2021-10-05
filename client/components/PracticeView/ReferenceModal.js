@@ -1,7 +1,7 @@
 import React from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import { Modal } from 'semantic-ui-react'
-import { clearReferences } from 'Utilities/redux/practiceReducer'
+import { clearReferences, clearExplanation } from 'Utilities/redux/practiceReducer'
 import { FormattedMessage } from 'react-intl'
 
 const BookReference = ({ reference }) => (
@@ -23,11 +23,16 @@ const UrlReference = ({ reference }) => (
 
 const ReferenceModal = () => {
   const references = useSelector(state => state.practice.references)
+  const explanation = useSelector(state => state.practice.explanation)
 
   const dispatch = useDispatch()
 
+  const explanationString = explanation
+    ? `${Object.keys(explanation)[0]}: ${explanation[Object.keys(explanation)[0]]}`
+    : null
+
   const referenceList =
-    references &&
+    !!references &&
     Object.values(references).map(grammaticalFeature =>
       grammaticalFeature.map(reference =>
         reference.url ? (
@@ -41,19 +46,25 @@ const ReferenceModal = () => {
       )
     )
 
+  const handleModalClose = () => {
+    dispatch(clearReferences())
+    dispatch(clearExplanation())
+  }
+
   return (
     <Modal
-      open={!!references}
-      onClose={() => dispatch(clearReferences())}
+      open={!!references || !!explanation}
+      onClose={handleModalClose}
       size="tiny"
       dimmer="inverted"
       closeIcon
     >
       <Modal.Header>
-        <FormattedMessage id="references" />
+        {references ? <FormattedMessage id="references" /> : <FormattedMessage id="explanations" />}
       </Modal.Header>
       <Modal.Content>
         <ul>{referenceList}</ul>
+        {explanationString}
       </Modal.Content>
     </Modal>
   )
