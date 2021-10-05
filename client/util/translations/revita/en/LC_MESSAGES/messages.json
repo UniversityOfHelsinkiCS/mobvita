@@ -562,8 +562,8 @@
     "total-answers": "Total answers",
     "Accuracy": "",
     "correct-answers-given": "",
-    "total-number-of-answers": "",
-    "percentage-of-correct-answers": "",
+    "total-number-of-answers": "Total number of answers",
+    "percentage-of-correct-answers": "Percentage of correct answers",
     "add-your-stories": "Add new stories",
     "to-add-your-own-stories": "",
     "you-can-add-your-own-stories-from-your-files-or-from-any-web-page": "",
@@ -1111,5 +1111,10 @@
     "explain-Case:allative": "",
     "explain-Case:essive": "",
     "explain-Case:": "",
-    "test-results": "Test results"
+    "test-results": "Test results",
+    "question-level": "Question level",
+    "%-correct": "% correct",
+    "your-estimated-cefr-level": "Your estimated CEFR level",
+    "questions-correct": "Correct",
+    "overall": "Overall"
 }
