@@ -29,14 +29,15 @@ const PreviousExerciseWord = ({ word, answer, tiedAnswer }) => {
     wrong,
     lemmas,
     ref,
+    // explanation,
     ID: wordId,
     id: storyId,
     inflection_ref: inflectionRef,
   } = word
 
   const [show, setShow] = useState(false)
-
   const history = useHistory()
+  const isPreviewMode = history.location.pathname.includes('preview')
   const learningLanguage = useSelector(learningLanguageSelector)
   const autoSpeak = useSelector(({ user }) => user.data.user.auto_speak)
   const dictionaryLanguage = useSelector(dictionaryLanguageSelector)
@@ -48,7 +49,7 @@ const PreviousExerciseWord = ({ word, answer, tiedAnswer }) => {
   const voice = respVoiceLanguages[learningLanguage]
   let color = ''
   if (tested || typeof wrong !== 'undefined') color = isWrong ? 'wrong-text' : 'right-text'
-  if (history.location.pathname.includes('preview') && word.concept) color = 'preview-text'
+  if (isPreviewMode && word.concept) color = 'preview-text'
   const wordClass = `word-interactive ${color}`
 
   const wordIsInSpan = word => {
@@ -90,6 +91,7 @@ const PreviousExerciseWord = ({ word, answer, tiedAnswer }) => {
 
   const handleTooltipClick = () => {
     if (ref) dispatch(setReferences(ref))
+    // if (explanation) dispatch(setExplanation(explanation))
   }
 
   const wordShouldBeHighlighted = word => {
@@ -112,6 +114,16 @@ const PreviousExerciseWord = ({ word, answer, tiedAnswer }) => {
               style={{ alignSelf: 'flex-start', marginLeft: '0.5rem' }}
             />
           )}
+          {/* {explanation && (
+            <>
+            testing
+              <Icon
+                name="info circle"
+                size="small"
+                style={{ alignSelf: 'flex-start', marginLeft: '0.5rem' }}
+              />
+            </>
+          )} */}
         </div>
       )}
       {youAnsweredTooltip && (
@@ -122,7 +134,7 @@ const PreviousExerciseWord = ({ word, answer, tiedAnswer }) => {
           </span>
         </div>
       )}
-      {word.concept && <div>{word.concept}</div>}
+      {isPreviewMode && word.concept && <div>{word.concept}</div>}
     </div>
   )
 
