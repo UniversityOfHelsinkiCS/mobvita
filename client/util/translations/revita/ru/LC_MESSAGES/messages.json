@@ -1114,11 +1114,12 @@
     "explain-Case:allative": "",
     "explain-Case:essive": "",
     "explain-Case:": "",
-    "test-results": "Test results",
-    "question-level": "Question level",
+    "test-results": "Результат теста",
+    "question-level": "Уровень вопросов",
     "%-correct": "% correct",
-    "your-estimated-cefr-level": "Your estimated CEFR level",
+    "your-estimated-cefr-level": "Твой оцененный уровень CEFR",
     "questions-correct": "Correct",
     "overall": "Overall",
-    "explanations": "Explanations"
+    "explanations": "Explanations",
+    "possible-concepts": "Possible concepts"
 }
