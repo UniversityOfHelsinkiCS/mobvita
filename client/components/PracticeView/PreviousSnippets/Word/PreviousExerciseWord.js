@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import { useHistory } from 'react-router-dom'
-import { useIntl } from 'react-intl'
+import { FormattedMessage, useIntl } from 'react-intl'
 import { Icon } from 'semantic-ui-react'
 import {
   getTextStyle,
@@ -49,7 +49,7 @@ const PreviousExerciseWord = ({ word, answer, tiedAnswer }) => {
   const voice = respVoiceLanguages[learningLanguage]
   let color = ''
   if (tested || typeof wrong !== 'undefined') color = isWrong ? 'wrong-text' : 'right-text'
-  if (isPreviewMode && word.concept) color = 'preview-text'
+  if (isPreviewMode && word.concepts) color = 'preview-text'
   const wordClass = `word-interactive ${color}`
 
   const wordIsInSpan = word => {
@@ -58,7 +58,7 @@ const PreviousExerciseWord = ({ word, answer, tiedAnswer }) => {
 
   const handleClick = () => {
     if (word.isWrong) setShow(true)
-    if (word.concept) setShow(true)
+    if (word.concepts) setShow(true)
     if (autoSpeak === 'always' && voice) speak(surface, voice)
     if (lemmas) {
       dispatch(setWords({ surface, lemmas }))
@@ -131,7 +131,16 @@ const PreviousExerciseWord = ({ word, answer, tiedAnswer }) => {
           </span>
         </div>
       )}
-      {isPreviewMode && word.concept && <div>{word.concept}</div>}
+      {isPreviewMode && word.concepts && (
+        <div style={{ textAlign: 'left' }}>
+          <FormattedMessage id="possible-concepts" />:
+          <ul>
+            {word.concepts.map(concept => (
+              <li> {concept}</li>
+            ))}
+          </ul>
+        </div>
+      )}
     </div>
   )
 

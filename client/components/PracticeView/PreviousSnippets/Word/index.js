@@ -7,7 +7,7 @@ const Word = ({ word, answer, tiedAnswer, hideFeedback }) => {
 
   // session history in practice & compete mode OR Preview mode
   // TODO: Clean this up
-  if (word.tested || word.concept) {
+  if (word.tested || word.concepts) {
     return <PreviousExerciseWord word={word} answer={answer} tiedAnswer={tiedAnswer} />
   }
 
