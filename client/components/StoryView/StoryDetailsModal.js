@@ -31,7 +31,7 @@ const DetailedStoryModal = ({
   const showLearningSettingsButton = inGroupLibrary && currentGroup && currentGroup.is_teaching
 
   const storyGroupSharingInfo = inGroupLibrary
-    ? groupsSharedWith.find(g => g.group_id === currentGroup.group_id)
+    ? groupsSharedWith.find(g => g?.group_id === currentGroup?.group_id)
     : null
 
   return (
