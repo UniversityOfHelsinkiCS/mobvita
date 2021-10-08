@@ -150,6 +150,13 @@ const LearningSettingsModal = ({ trigger }) => {
       trigger={trigger}
     >
       <Modal.Header>
+        <Popup
+          position="top center"
+          content={intl.formatMessage({
+            id: 'choose-settings-template-info',
+          })}
+          trigger={<Icon name="info circle" color="grey" />}
+        />{' '}
         <FormattedMessage id="learning-settings" />
       </Modal.Header>
       <Modal.Content style={{ display: 'flex', flexDirection: 'column' }}>
@@ -257,11 +264,6 @@ const LearningSettingsModal = ({ trigger }) => {
           >
             <FormattedMessage id="custom" />
           </Button>
-
-          <Divider />
-          <span className="additional-info">
-            <FormattedMessage id="choose-settings-template-info" />
-          </span>
         </>
       </Modal.Content>
     </Modal>
