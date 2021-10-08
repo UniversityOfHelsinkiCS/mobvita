@@ -49,15 +49,17 @@ const GroupLearningSettingsModal = ({ open, setOpen, groupId }) => {
       </Modal.Header>
       <Modal.Content style={{ display: 'flex', flexDirection: 'column' }}>
         <h2 style={{ fontSize: '17px', fontWeight: '550' }}>
-          <FormattedMessage id="exercise-density" />{' '}
           <Popup
             position="top center"
             content={intl.formatMessage({
               id: 'exercise-density-documentation',
             })}
             trigger={<Icon name="info circle" color="grey" />}
-          />
-          {hiddenFeatures && <span style={{ color: 'grey' }}>({sliderValue})</span>}
+          />{' '}
+          <FormattedMessage id="exercise-density" />
+          {hiddenFeatures && (
+            <span style={{ color: 'grey', marginLeft: '.5em' }}>({sliderValue})</span>
+          )}
         </h2>
         <ExerciseDensitySlider
           sliderValue={sliderValue}
@@ -69,14 +71,14 @@ const GroupLearningSettingsModal = ({ open, setOpen, groupId }) => {
         <>
           <Divider />
           <h2 style={{ fontSize: '17px', fontWeight: '550' }}>
-            <FormattedMessage id="select-cefr-level" />{' '}
             <Popup
               position="top center"
               content={intl.formatMessage({
                 id: 'cefr-level-documentation',
               })}
               trigger={<Icon name="info circle" color="grey" />}
-            />
+            />{' '}
+            <FormattedMessage id="select-cefr-level" />
           </h2>
           <ButtonGroup
             name="difficultyButtons"
