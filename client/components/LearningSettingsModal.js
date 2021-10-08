@@ -163,8 +163,8 @@ const LearningSettingsModal = ({ trigger }) => {
         <label htmlFor="settings-template-selector" className="label">
           <FormattedMessage id="choose-settings-template" />:
         </label>
-        <div className="space-between wrap" style={{ marginTop: '1em' }}>
-          <div>
+        <div className="learning-settings-radio-button-cont">
+          <div className="learning-settings-radio-button-item">
             <Radio
               checked={practicePrctMode === 'auto'}
               value="auto"
@@ -172,7 +172,7 @@ const LearningSettingsModal = ({ trigger }) => {
               onChange={() => handleAutomaticOptionClick()}
             />
           </div>
-          <div>
+          <div className="learning-settings-radio-button-item">
             <Radio
               label={intl.formatMessage({ id: 'use-my-personal-settings' })}
               name="templateSelect"
@@ -181,7 +181,7 @@ const LearningSettingsModal = ({ trigger }) => {
               onChange={() => handlePersonalOptionClick()}
             />
           </div>
-          <div className="flex-col">
+          <div className="flex-col learning-settings-radio-button-item">
             <span>
               <Radio
                 label={intl.formatMessage({ id: 'use-my-group-settings' })}

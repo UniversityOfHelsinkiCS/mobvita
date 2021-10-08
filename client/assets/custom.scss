@@ -1663,6 +1663,29 @@ html, body, #root {
   }
 }
 
+.learning-settings-radio-button-cont {
+  display: flex;
+  justify-content: space-between;
+  gap: 1em;
+  margin-top: 1em;
+
+  @media (max-width: 700px) {
+    display: flex;
+    flex-direction: column;
+  }
+
+}
+
+.learning-settings-radio-button-item {
+  flex-basis: 150px;
+  flex-grow: 1;
+  min-width: 200px;
+
+  @media (max-width: 700px) {
+    flex-basis: 15px;
+  }
+}
+
 .table-progress-bar {
   height: 1.5em;
   border-radius: 1rem;
