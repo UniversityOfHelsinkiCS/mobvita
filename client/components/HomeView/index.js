@@ -121,7 +121,11 @@ const AdaptiveTestsButton = () => {
     history.push('/adaptive-test')
   }
 
-  return <Button onClick={handleClick}> Adaptive test</Button>
+  return (
+    <Button onClick={handleClick}>
+      <FormattedMessage id="adaptive-test" />
+    </Button>
+  )
 }
 
 const HomeView = () => {
