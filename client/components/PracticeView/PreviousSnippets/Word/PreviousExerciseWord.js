@@ -10,6 +10,7 @@ import {
   speak,
   respVoiceLanguages,
   formatGreenFeedbackText,
+  hiddenFeatures,
 } from 'Utilities/common'
 import { setReferences, setExplanation } from 'Utilities/redux/practiceReducer'
 import { getTranslationAction, setWords } from 'Utilities/redux/translationReducer'
@@ -50,7 +51,8 @@ const PreviousExerciseWord = ({ word, answer, tiedAnswer }) => {
   let color = ''
   if (tested || typeof wrong !== 'undefined') color = isWrong ? 'wrong-text' : 'right-text'
   if (isPreviewMode && word.concepts) color = 'preview-text'
-  if (isPreviewMode && word.concepts.length === 0) color = 'preview-text-no-concepts'
+  if (isPreviewMode && hiddenFeatures && word.concepts.length === 0)
+    color = 'preview-text-no-concepts'
   const wordClass = `word-interactive ${color}`
 
   const wordIsInSpan = word => {
@@ -132,20 +134,20 @@ const PreviousExerciseWord = ({ word, answer, tiedAnswer }) => {
           </span>
         </div>
       )}
-      {isPreviewMode && word.concepts && (
+      {isPreviewMode && word.concepts.length === 0 && hiddenFeatures && (
         <div style={{ textAlign: 'left' }}>
-          {word.concepts.length === 0 ? (
-            <FormattedMessage id="no-topics-available" />
-          ) : (
-            <>
-              <FormattedMessage id="topics" />:
-              <ul>
-                {word.concepts.map(concept => (
-                  <li> {concept}</li>
-                ))}
-              </ul>
-            </>
-          )}
+          <FormattedMessage id="no-topics-available" />
+        </div>
+      )}
+
+      {isPreviewMode && word.concepts.length > 0 && (
+        <div style={{ textAlign: 'left' }}>
+          <FormattedMessage id="topics" />:
+          <ul>
+            {word.concepts.map(concept => (
+              <li>{concept}</li>
+            ))}
+          </ul>
         </div>
       )}
     </div>
