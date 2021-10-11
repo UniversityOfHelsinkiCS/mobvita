@@ -149,17 +149,17 @@ describe('Mobvita', function () {
         cy.get('[data-cy="submit-story"]')
           .click()
         cy.contains('Vappu', { timeout: 120000 })
-        cy.contains('Lue')
+        cy.contains('Tarkastele')
           .click()
         cy.contains('Harjoittele', { timeout: 20000 })
         cy.contains('Vappu on kevään juhla.')
       })
     })
 
-    describe("read mode", function () {
+    describe("preview mode", function () {
 
       this.beforeEach(function () {
-        cy.visit('http://localhost:8000/stories/5c407e9eff634503466b0dde/read')
+        cy.visit('http://localhost:8000/stories/5c407e9eff634503466b0dde/preview')
       })
 
       it("opens", function () {
