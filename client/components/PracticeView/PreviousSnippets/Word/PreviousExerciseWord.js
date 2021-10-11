@@ -51,7 +51,7 @@ const PreviousExerciseWord = ({ word, answer, tiedAnswer }) => {
   let color = ''
   if (tested || typeof wrong !== 'undefined') color = isWrong ? 'wrong-text' : 'right-text'
   if (isPreviewMode && word.concepts) color = 'preview-text'
-  if (isPreviewMode && hiddenFeatures && word.concepts.length === 0)
+  if (isPreviewMode && hiddenFeatures && word.concepts?.length === 0)
     color = 'preview-text-no-concepts'
   const wordClass = `word-interactive ${color}`
 
@@ -134,13 +134,13 @@ const PreviousExerciseWord = ({ word, answer, tiedAnswer }) => {
           </span>
         </div>
       )}
-      {isPreviewMode && word.concepts.length === 0 && hiddenFeatures && (
+      {isPreviewMode && word.concepts?.length === 0 && hiddenFeatures && (
         <div style={{ textAlign: 'left' }}>
           <FormattedMessage id="no-topics-available" />
         </div>
       )}
 
-      {isPreviewMode && word.concepts.length > 0 && (
+      {isPreviewMode && word.concepts?.length > 0 && (
         <div style={{ textAlign: 'left' }}>
           <FormattedMessage id="topics" />:
           <ul className="mb-0">
