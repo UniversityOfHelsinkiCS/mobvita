@@ -111,7 +111,10 @@ const StoryActions = ({ story }) => {
           </Button>
         </Link>
         <Link to={`/stories/${story._id}/review`}>
-          <Button variant="secondary" disabled={story.percent_cov === 0}>
+          <Button
+            variant={story.percent_cov === 0 ? 'outline-danger' : 'secondary'}
+            disabled={story.percent_cov === 0}
+          >
             <FormattedMessage id="review" />
           </Button>
         </Link>
