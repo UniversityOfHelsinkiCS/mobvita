@@ -50,6 +50,7 @@ const PreviousExerciseWord = ({ word, answer, tiedAnswer }) => {
   let color = ''
   if (tested || typeof wrong !== 'undefined') color = isWrong ? 'wrong-text' : 'right-text'
   if (isPreviewMode && word.concepts) color = 'preview-text'
+  if (isPreviewMode && word.concepts.length === 0) color = 'preview-text-no-concepts'
   const wordClass = `word-interactive ${color}`
 
   const wordIsInSpan = word => {
@@ -104,7 +105,7 @@ const PreviousExerciseWord = ({ word, answer, tiedAnswer }) => {
 
   const tooltip = (
     <div className="tooltip-green" style={{ cursor: 'pointer' }} onMouseDown={handleTooltipClick}>
-      {word.message && (
+      {word.message && !isPreviewMode && (
         <div className="flex">
           <span dangerouslySetInnerHTML={formatGreenFeedbackText(word?.message)} />{' '}
           {ref && (
@@ -123,7 +124,7 @@ const PreviousExerciseWord = ({ word, answer, tiedAnswer }) => {
           )}
         </div>
       )}
-      {youAnsweredTooltip && (
+      {youAnsweredTooltip && !isPreviewMode && (
         <div>
           {`${intl.formatMessage({ id: 'you-used' })}: `}
           <span style={getTextStyle(learningLanguage, 'tooltip')}>
@@ -133,12 +134,18 @@ const PreviousExerciseWord = ({ word, answer, tiedAnswer }) => {
       )}
       {isPreviewMode && word.concepts && (
         <div style={{ textAlign: 'left' }}>
-          <FormattedMessage id="possible-concepts" />:
-          <ul>
-            {word.concepts.map(concept => (
-              <li> {concept}</li>
-            ))}
-          </ul>
+          {word.concepts.length === 0 ? (
+            <FormattedMessage id="no-topics-available" />
+          ) : (
+            <>
+              <FormattedMessage id="topics" />:
+              <ul>
+                {word.concepts.map(concept => (
+                  <li> {concept}</li>
+                ))}
+              </ul>
+            </>
+          )}
         </div>
       )}
     </div>
