@@ -153,7 +153,7 @@ const LearningSettingsModal = ({ trigger }) => {
         <FormattedMessage id="learning-settings" />
       </Modal.Header>
       <Modal.Content style={{ display: 'flex', flexDirection: 'column' }}>
-        <label htmlFor="settings-template-selector" className="label">
+        <h2 style={{ fontSize: '17px', fontWeight: '550' }}>
           <Popup
             position="top center"
             content={intl.formatMessage({
@@ -162,7 +162,7 @@ const LearningSettingsModal = ({ trigger }) => {
             trigger={<Icon name="info circle" color="grey" />}
           />{' '}
           <FormattedMessage id="choose-settings-template" />:
-        </label>
+        </h2>
         <div className="learning-settings-radio-button-cont">
           <div className="learning-settings-radio-button-item">
             <Radio
