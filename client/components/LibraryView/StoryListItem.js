@@ -6,7 +6,7 @@ import { Link } from 'react-router-dom'
 import { FormattedMessage } from 'react-intl'
 import { removeStory, unshareStory as unshare } from 'Utilities/redux/storiesReducer'
 import useWindowDimensions from 'Utilities/windowDimensions'
-import { getTextStyle, learningLanguageSelector, hiddenFeatures } from 'Utilities/common'
+import { getTextStyle, learningLanguageSelector } from 'Utilities/common'
 import ConfirmationWarning from 'Components/ConfirmationWarning'
 import ShareStory from 'Components/StoryView/ShareStory'
 import StoryDetailsModal from 'Components/StoryView/StoryDetailsModal'
@@ -100,25 +100,21 @@ const StoryActions = ({ story }) => {
   if (width >= 640) {
     return (
       <div className="story-actions">
-        {story.percent_cov === 0 && (
-          <Link to={`/stories/${story._id}/read`}>
-            <Button variant="secondary">
-              <FormattedMessage id="Read" />
-            </Button>
-          </Link>
-        )}
+        <Link to={`/stories/${story._id}/preview`}>
+          <Button variant="secondary">
+            <FormattedMessage id="preview" />
+          </Button>
+        </Link>
         <Link to={`/stories/${story._id}/practice`}>
           <Button variant="primary">
             <FormattedMessage id="practice" />
           </Button>
         </Link>
-        {story.percent_cov > 0 && (
-          <Link to={`/stories/${story._id}/review`}>
-            <Button variant="secondary">
-              <FormattedMessage id="review" />
-            </Button>
-          </Link>
-        )}
+        <Link to={`/stories/${story._id}/review`}>
+          <Button variant="secondary" disabled={story.percent_cov === 0}>
+            <FormattedMessage id="review" />
+          </Button>
+        </Link>
         <Link to={`/flashcards/fillin/${story._id}/`}>
           <Button variant="primary">
             <FormattedMessage id="Flashcards" />
@@ -129,13 +125,6 @@ const StoryActions = ({ story }) => {
             <FormattedMessage id="compete" />
           </Button>
         </Link>
-        {hiddenFeatures && (
-          <Link to={`/stories/${story._id}/preview`}>
-            <Button variant="secondary">
-              Preview<sup>β</sup>
-            </Button>
-          </Link>
-        )}
         {showCrosswordsButton && (
           <Link to={`/crossword/${story._id}/`}>
             <Button variant="secondary">
@@ -177,14 +166,12 @@ const StoryActions = ({ story }) => {
               icon="book"
             />
           )}
-          {story.percent_cov === 0 && (
-            <Dropdown.Item
-              text={<FormattedMessage id="Read" />}
-              as={Link}
-              to={`/stories/${story._id}/read`}
-              icon="book"
-            />
-          )}
+          <Dropdown.Item
+            text={<FormattedMessage id="preview" />}
+            as={Link}
+            to={`/stories/${story._id}/preview`}
+            icon="book"
+          />
           <Dropdown.Item
             text={<FormattedMessage id="compete" />}
             as={Link}
