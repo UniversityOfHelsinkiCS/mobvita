@@ -15,6 +15,7 @@ import AnnotationBox from 'Components/AnnotationBox'
 import Spinner from 'Components/Spinner'
 import TextWithFeedback from 'Components/PracticeView/TextWithFeedback'
 import FeedbackInfoModal from 'Components/PracticeView/FeedbackInfoModal'
+import ReportButton from 'Components/ReportButton'
 import Footer from '../Footer'
 import ScrollArrow from '../ScrollArrow'
 
@@ -53,45 +54,60 @@ const ReadViews = ({ match }) => {
   return (
     <div className="cont-tall flex-col space-between align-center pt-sm">
       <div className="flex mb-nm">
-        <Segment data-cy="reviewmode-text" className="cont" style={getTextStyle(learningLanguage)}>
-          <Header style={getTextStyle(learningLanguage, 'title')}>
-            <span className="pr-sm">{story.title}</span>
-            <br />
-            {story.url && (
-              <a href={story.url} style={{ fontSize: '1rem', fontWeight: '300' }}>
-                <FormattedMessage id="Source" />
-              </a>
-            )}
-          </Header>
-          <div className="space-between" style={{ alignItems: 'center' }}>
-            <Checkbox
-              toggle
-              label={intl.formatMessage({ id: 'show-feedback' })}
-              checked={!hideFeedback}
-              onChange={() => setHideFeedback(!hideFeedback)}
-              style={{ paddingTop: '.5em' }}
-            />
-            <Link to={`/stories/${id}/practice`}>
-              <Button variant="primary">
-                <FormattedMessage id="practice-now" />
-              </Button>
-            </Link>
-          </div>
-          <Divider />
-          {story.paragraph.map(paragraph => (
-            <>
-              <TextWithFeedback
-                hideFeedback={hideFeedback}
-                mode="review"
-                snippet={paragraph}
-                answers={null}
+        <div>
+          <Segment
+            data-cy="reviewmode-text"
+            className="cont"
+            style={getTextStyle(learningLanguage)}
+          >
+            <Header style={getTextStyle(learningLanguage, 'title')}>
+              <span className="pr-sm">{story.title}</span>
+              <br />
+              {story.url && (
+                <a href={story.url} style={{ fontSize: '1rem', fontWeight: '300' }}>
+                  <FormattedMessage id="Source" />
+                </a>
+              )}
+            </Header>
+            <div className="space-between" style={{ alignItems: 'center' }}>
+              <Checkbox
+                toggle
+                label={intl.formatMessage({ id: 'show-feedback' })}
+                checked={!hideFeedback}
+                onChange={() => setHideFeedback(!hideFeedback)}
+                style={{ paddingTop: '.5em' }}
               />
-              <br />
-              <br />
-            </>
-          ))}
-          <ScrollArrow />
-        </Segment>
+              <Link to={`/stories/${id}/practice`}>
+                <Button variant="primary">
+                  <FormattedMessage id="practice-now" />
+                </Button>
+              </Link>
+            </div>
+            <Divider />
+            {story.paragraph.map(paragraph => (
+              <>
+                <TextWithFeedback
+                  hideFeedback={hideFeedback}
+                  mode="review"
+                  snippet={paragraph}
+                  answers={null}
+                />
+                <br />
+                <br />
+              </>
+            ))}
+            <ScrollArrow />
+          </Segment>
+          {width >= 500 ? (
+            <div className="flex-col align-end" style={{ marginTop: '0.5em' }}>
+              <ReportButton />
+            </div>
+          ) : (
+            <div style={{ marginBottom: '0.5em' }}>
+              <ReportButton />
+            </div>
+          )}
+        </div>
         <div className="dictionary-and-annotations-cont">
           <DictionaryHelp />
           {showAnnotationBox && <AnnotationBox />}
