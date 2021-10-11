@@ -3,6 +3,7 @@ import { useSelector, useDispatch } from 'react-redux'
 import { Modal, Divider } from 'semantic-ui-react'
 import { clearReferences, clearExplanation } from 'Utilities/redux/practiceReducer'
 import { FormattedMessage } from 'react-intl'
+import { capitalize } from 'Utilities/common'
 
 const BookReference = ({ reference }) => (
   <li>
@@ -32,7 +33,7 @@ const FeedbackInfoModal = () => {
         {Object.keys(explanation).map(title => (
           <div className="mb-lg">
             <div className="bold header-3">
-              <FormattedMessage id={title} />
+              {capitalize(title)}
               <Divider style={{ width: '50%' }} />
             </div>
             <ul>
@@ -55,7 +56,9 @@ const FeedbackInfoModal = () => {
           {Object.keys(references).map(referenceKey => {
             return (
               <>
-                <div style={{ marginBottom: '.5em', fontWeight: '600' }}>{referenceKey}:</div>
+                <div style={{ marginBottom: '.5em', fontWeight: '600' }}>
+                  {capitalize(referenceKey)}:
+                </div>
                 {references[referenceKey].map(ref => {
                   return (
                     <>
