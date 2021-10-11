@@ -31,7 +31,7 @@ const FeedbackInfoModal = () => {
     return (
       <>
         {Object.keys(explanation).map(title => (
-          <div className="mb-lg">
+          <div className="mb-lg" key={title}>
             <div className="bold header-3">
               {capitalize(title)}
               <Divider style={{ width: '50%' }} />
@@ -55,13 +55,13 @@ const FeedbackInfoModal = () => {
         <div className="mb-lg">
           {Object.keys(references).map(referenceKey => {
             return (
-              <>
+              <div key={referenceKey}>
                 <div style={{ marginBottom: '.5em', fontWeight: '600' }}>
                   {capitalize(referenceKey)}:
                 </div>
                 {references[referenceKey].map(ref => {
                   return (
-                    <>
+                    <div key={ref.title}>
                       {ref.url ? (
                         <UrlReference key={`${ref.url}-${ref.title}`} reference={ref} />
                       ) : (
@@ -70,10 +70,10 @@ const FeedbackInfoModal = () => {
                           reference={ref}
                         />
                       )}
-                    </>
+                    </div>
                   )
                 })}
-              </>
+              </div>
             )
           })}
         </div>
