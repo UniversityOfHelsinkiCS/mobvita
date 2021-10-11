@@ -1119,5 +1119,7 @@
     "overall": "Yhteensä",
     "explanations": "Explanations",
     "possible-concepts": "Aiheet",
-    "preview": "Esikatselu"
+    "preview": "Esikatselu",
+    "topics": "Aiheet",
+    "no-topics-available": "No topics available"
 }

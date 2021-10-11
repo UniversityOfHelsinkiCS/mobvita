@@ -1120,5 +1120,7 @@
     "overall": "Overall",
     "explanations": "Spiegazioni",
     "possible-concepts": "Temi",
-    "preview": "Anteprima"
+    "preview": "Anteprima",
+    "topics": "Temi",
+    "no-topics-available": "No topics available"
 }

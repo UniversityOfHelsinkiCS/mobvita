@@ -1122,5 +1122,7 @@
     "overall": "Overall",
     "explanations": "Explanations",
     "possible-concepts": "Темы",
-    "preview": "Просмотр"
+    "preview": "Просмотр",
+    "topics": "Темы",
+    "no-topics-available": "No topics available"
 }

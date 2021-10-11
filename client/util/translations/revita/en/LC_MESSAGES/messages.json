@@ -1119,5 +1119,7 @@
     "overall": "Overall",
     "explanations": "Explanations",
     "possible-concepts": "Topics",
-    "preview": "Preview"
+    "preview": "Preview",
+    "topics": "Topics",
+    "no-topics-available": "No topics available"
 }
