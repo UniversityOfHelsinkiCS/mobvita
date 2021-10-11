@@ -22,7 +22,7 @@ import ScrollArrow from 'Components/ScrollArrow'
 import DictionaryHelp from 'Components/DictionaryHelp'
 import { FormattedMessage } from 'react-intl'
 import { Spinner } from 'react-bootstrap'
-import ReferenceModal from 'Components/PracticeView/ReferenceModal'
+import FeedbackInfoModal from 'Components/PracticeView/FeedbackInfoModal'
 import CompetitionProgress from 'Components/CompeteView/CompetitionProgress'
 
 const CompeteView = ({ match }) => {
@@ -153,7 +153,7 @@ const CompeteView = ({ match }) => {
           )}
         </div>
         <DictionaryHelp />
-        <ReferenceModal />
+        <FeedbackInfoModal />
       </div>
       {showFooter && <Footer />}
     </div>

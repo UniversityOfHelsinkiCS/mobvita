@@ -15,7 +15,7 @@ import ReportButton from 'Components/ReportButton'
 import AnnotationBox from 'Components/AnnotationBox'
 import PreviousSnippets from './PreviousSnippets'
 import VirtualKeyboard from './VirtualKeyboard'
-import ReferenceModal from './ReferenceModal'
+import FeedbackInfoModal from './FeedbackInfoModal'
 import { keyboardLayouts } from './KeyboardLayouts'
 import ProgressBar from './CurrentSnippet/ProgressBar'
 import Footer from '../Footer'
@@ -124,7 +124,7 @@ const PracticeView = () => {
           <DictionaryHelp />
           {showAnnotationBox && <AnnotationBox />}
         </div>
-        <ReferenceModal />
+        <FeedbackInfoModal />
       </div>
       {showFooter && <Footer />}
     </div>

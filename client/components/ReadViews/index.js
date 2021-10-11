@@ -1,11 +1,11 @@
 import React, { useState, useEffect } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
-import { Link, useHistory } from 'react-router-dom'
+import { Link } from 'react-router-dom'
 import { Divider, Segment, Header, Checkbox } from 'semantic-ui-react'
 import { Button } from 'react-bootstrap'
 import { FormattedMessage, useIntl } from 'react-intl'
 import useWindowDimensions from 'Utilities/windowDimensions'
-import { getStoryPreview, getStoryAction } from 'Utilities/redux/storiesReducer'
+import { getStoryAction } from 'Utilities/redux/storiesReducer'
 
 import { clearTranslationAction } from 'Utilities/redux/translationReducer'
 import { resetAnnotations, setAnnotations } from 'Utilities/redux/annotationsReducer'
@@ -14,13 +14,12 @@ import DictionaryHelp from 'Components/DictionaryHelp'
 import AnnotationBox from 'Components/AnnotationBox'
 import Spinner from 'Components/Spinner'
 import TextWithFeedback from 'Components/PracticeView/TextWithFeedback'
-import ReferenceModal from 'Components/PracticeView/ReferenceModal'
+import FeedbackInfoModal from 'Components/PracticeView/FeedbackInfoModal'
 import Footer from '../Footer'
 import ScrollArrow from '../ScrollArrow'
 
 const ReadViews = ({ match }) => {
   const dispatch = useDispatch()
-  const history = useHistory()
   const intl = useIntl()
   const { width } = useWindowDimensions()
   const [hideFeedback, setHideFeedback] = useState(false)
@@ -31,16 +30,10 @@ const ReadViews = ({ match }) => {
     locale,
   }))
 
-  const isPreviewMode = history.location.pathname.includes('preview')
-
   const learningLanguage = useSelector(learningLanguageSelector)
   const { id } = match.params
   useEffect(() => {
-    if (isPreviewMode) {
-      dispatch(getStoryPreview(id))
-    } else {
-      dispatch(getStoryAction(id))
-    }
+    dispatch(getStoryAction(id))
     dispatch(clearTranslationAction())
     dispatch(resetAnnotations())
   }, [])
@@ -55,7 +48,7 @@ const ReadViews = ({ match }) => {
   if (!story || pending) return <Spinner fullHeight />
 
   const showFooter = width > 640
-  const showAnnotationBox = width >= 1024 && !isPreviewMode
+  const showAnnotationBox = width >= 1024
 
   return (
     <div className="cont-tall flex-col space-between align-center pt-sm">
@@ -103,7 +96,7 @@ const ReadViews = ({ match }) => {
           <DictionaryHelp />
           {showAnnotationBox && <AnnotationBox />}
         </div>
-        <ReferenceModal />
+        <FeedbackInfoModal />
       </div>
       {showFooter && <Footer />}
     </div>
