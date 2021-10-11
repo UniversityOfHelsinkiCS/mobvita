@@ -158,7 +158,7 @@ const HomeView = () => {
                   <FlashcardsButton />
                 </div>
                 {hasTests && AtLeastOneTestEnabled && <TestsButton data-cy="tests-button" />}
-                {learningLanguage === 'Russian' && hiddenFeatures && <AdaptiveTestsButton />}
+                {learningLanguage === 'Russian' && <AdaptiveTestsButton />}
               </div>
               <div className="vertical-line" />
               <div style={{ width: '300px' }}>
