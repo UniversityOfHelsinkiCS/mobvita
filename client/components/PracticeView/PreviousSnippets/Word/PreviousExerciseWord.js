@@ -143,7 +143,7 @@ const PreviousExerciseWord = ({ word, answer, tiedAnswer }) => {
       {isPreviewMode && word.concepts.length > 0 && (
         <div style={{ textAlign: 'left' }}>
           <FormattedMessage id="topics" />:
-          <ul>
+          <ul className="mb-0">
             {word.concepts.map(concept => (
               <li>{concept}</li>
             ))}
