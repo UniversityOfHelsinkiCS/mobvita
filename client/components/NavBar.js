@@ -2,7 +2,7 @@ import React, { useEffect } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import { Navbar, Nav, NavDropdown } from 'react-bootstrap'
 import Headroom from 'react-headroom'
-import { Icon, Label } from 'semantic-ui-react'
+import { Icon, Label, Popup } from 'semantic-ui-react'
 import { Link, useHistory } from 'react-router-dom'
 import { logout } from 'Utilities/redux/userReducer'
 import { sidebarSetOpen } from 'Utilities/redux/sidebarReducer'
@@ -321,9 +321,20 @@ export default function NavBar() {
                     size="large"
                   />
                   {numUnreadNews > 0 ? (
-                    <Label className="navbar-news-label" color="red" size="mini" floating>
-                      <span>{numUnreadNews}</span>
-                    </Label>
+                    <Popup
+                      position="top right"
+                      content={
+                        <FormattedMessage
+                          id="news-bell-info-popup-text"
+                          values={{ numUnreadNews }}
+                        />
+                      }
+                      trigger={
+                        <Label className="navbar-news-label" color="red" size="mini" floating>
+                          <span>{numUnreadNews}</span>
+                        </Label>
+                      }
+                    />
                   ) : null}
                 </span>
               </a>
