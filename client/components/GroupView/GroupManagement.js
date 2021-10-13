@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
-import { useHistory, useParams } from 'react-router-dom'
+import { useHistory, useParams, Link } from 'react-router-dom'
 import { FormattedMessage, useIntl } from 'react-intl'
 import { CopyToClipboard } from 'react-copy-to-clipboard'
 import { Card, Icon, Label, Dropdown, Popup, Modal } from 'semantic-ui-react'
@@ -280,44 +280,57 @@ const GroupCard = ({
       />
       <Card.Content extra>
         <div className="space-between group-buttons sm" style={{ whiteSpace: 'nowrap' }}>
-          <div className="group-management-buttons">
-            {isTeaching && (
-              <>
-                <Button onClick={handleAnalyticsClick}>
-                  <Icon name="chart line" /> <FormattedMessage id="Analytics" />
-                </Button>
-              </>
-            )}
-            <Button onClick={handleStoriesClick}>
-              <Icon name="book" /> <FormattedMessage id="Stories" />
-            </Button>
-            <Button data-cy="people-button" onClick={handlePeopleClick}>
-              <Icon name="user" /> <FormattedMessage id="people" />
-            </Button>
-            {isTeaching && (
-              <>
-                <Button onClick={() => setLearningModalGroupId(id)}>
-                  <Icon name="settings" /> <FormattedMessage id="learning-settings" />
-                </Button>
+          {/* <div className="group-management-buttons"> */}
+          <div className="flex-col" style={{ gap: '.25em' }}>
+            <div className="flex" style={{ gap: '.25em', flexWrap: 'wrap' }}>
+              {isTeaching && (
+                <>
+                  <Button onClick={handleAnalyticsClick}>
+                    <Icon name="chart line" /> <FormattedMessage id="Analytics" />
+                  </Button>
+                </>
+              )}
+              {isTeaching && (
+                <>
+                  <Button onClick={() => setLearningModalGroupId(id)}>
+                    <Icon name="settings" /> <FormattedMessage id="learning-settings" />
+                  </Button>
+                  <Button
+                    data-cy="enable-test-button"
+                    onClick={handleTestEnableDisableButtonClick}
+                    variant={testButtonVariant}
+                  >
+                    <Icon name="pencil alternate" /> <FormattedMessage id={testButtonTextKey} />
+                  </Button>
+                  <Button
+                    as={Link}
+                    to={`/groups/teacher/${id}/concepts`}
+                    style={{ color: 'white' }}
+                  >
+                    <Icon name="settings" /> <FormattedMessage id="test-settings" />
+                  </Button>
+                </>
+              )}
+            </div>
 
+            <div className="flex" style={{ gap: '.25em', flexWrap: 'wrap' }}>
+              <Button onClick={handleStoriesClick}>
+                <Icon name="book" /> <FormattedMessage id="Stories" />
+              </Button>
+              <Button data-cy="people-button" onClick={handlePeopleClick}>
+                <Icon name="user" /> <FormattedMessage id="people" />
+              </Button>
+              {isTeaching && (
                 <Button onClick={handleShowTokenClick}>
                   <Icon name="key" /> <FormattedMessage id="show-group-token" />
                 </Button>
-
-                <Button
-                  data-cy="enable-test-button"
-                  onClick={handleTestEnableDisableButtonClick}
-                  variant={testButtonVariant}
-                >
-                  <Icon name="pencil alternate" /> <FormattedMessage id={testButtonTextKey} />
+              )}
+              {!isTeaching && testEnabled && (
+                <Button data-cy="start-test-button" onClick={handleTestStartClick}>
+                  <Icon name="pencil alternate" /> <FormattedMessage id="start-test" />
                 </Button>
-              </>
-            )}
-            {!isTeaching && testEnabled && (
-              <Button data-cy="start-test-button" onClick={handleTestStartClick}>
-                <Icon name="pencil alternate" /> <FormattedMessage id="start-test" />
-              </Button>
-            )}
+              )}
+            </div>
           </div>
           <div>
             <Popup

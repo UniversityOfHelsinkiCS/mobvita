@@ -1078,7 +1078,7 @@
     "show-feedback": "Показать комментарии",
     "upload-from-web-instructions": "Ревита попытается извлечь текст из данной веб-страницы. Если результат будет неудачным, пожалуйста, скопируй текст вручную и введи в поле для загрузки текста (ниже)",
     "word-not-in-note-yet": "У этого слова eще нет заметок.",
-    "click-arrow-buttons-to-expand-shrink": "Нажимая на стрелочки ← → , можно удлинить или укоротить текст под заметкой.",
+    "click-arrow-buttons-to-expand-shrink": "Нажимая на стрелочки «  » , можно удлинить или укоротить текст под заметкой.",
     "words-not-in-note-yet": "У этих слов eще нет заметок.",
     "exercise-density": "Уровень плотности упражнений",
     "custom": "Персонализировать",
@@ -1125,5 +1125,7 @@
     "preview": "Просмотр",
     "topics": "Темы",
     "no-topics-available": "Темы отсутствуют",
-    "adaptive-test": "Проверь свой уровень!"
+    "adaptive-test": "Проверь свой уровень!",
+    "news-bell-info-popup-text": "You have {numUnreadNews} unread messages. Click to see News!",
+    "test-settings": "Test settings"
 }

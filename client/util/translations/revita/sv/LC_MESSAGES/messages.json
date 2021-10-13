@@ -1074,7 +1074,7 @@
     "show-feedback": "Display feedback",
     "upload-from-web-instructions": "Revita fösöker automatiskt välja bara berättelsens text från URLen du anger.  Om resultaten innehåller oväntad text, vänligen infoga berättelsen manuellt i text-fältet ovan. Vänligen ange en berättelse i det aktiva övnings språket.",
     "word-not-in-note-yet": "No notes yet for this word.",
-    "click-arrow-buttons-to-expand-shrink": "Click the arrow buttons ← → to expand/shrink the selection.",
+    "click-arrow-buttons-to-expand-shrink": "Click the arrow buttons «  »  to expand/shrink the selection.",
     "words-not-in-note-yet": "No notes yet for these words.",
     "exercise-density": "Exercise density",
     "custom": "Custom",
@@ -1121,5 +1121,7 @@
     "preview": "Preview",
     "topics": "Topics",
     "no-topics-available": "No topics available",
-    "adaptive-test": "Check your skill level!"
+    "adaptive-test": "Check your skill level!",
+    "news-bell-info-popup-text": "You have {numUnreadNews} unread messages. Click to see News!",
+    "test-settings": "Test settings"
 }

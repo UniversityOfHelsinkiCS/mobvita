@@ -1075,7 +1075,7 @@
     "show-feedback": "Näytä merkinnät",
     "upload-from-web-instructions": "Syötä alla olevaan kenttään esimerkiksi jonkin uutisen tai lyhyen kertomuksen URL-osoite. Revita yrittää noutaa tekstin.  Jos noutaminen ei kuitenkaan onnistu, voit käyttää myös alla olevaa \"Liitä teksti\"-vaihtoehtoa, ja kopioida itse tekstin. (Varmista, että tekstin kieli on sama kuin valitsemasi opiskelukieli.)",
     "word-not-in-note-yet": "Valittu sana ei kuulu vielä yhteenkään muistiinpanoon.",
-    "click-arrow-buttons-to-expand-shrink": "Käytä nuolipainikkeita ← → laajentaaksesi/pienentääksesi valintaa.",
+    "click-arrow-buttons-to-expand-shrink": "Käytä nuolipainikkeita «  »  laajentaaksesi/pienentääksesi valintaa.",
     "words-not-in-note-yet": "Valitut sanat eivät kuulu vielä yhteenkään muistiinpanoon.",
     "exercise-density": "Tehtävien tiheystaso",
     "custom": "Mukautettu",
@@ -1122,5 +1122,7 @@
     "preview": "Tarkastele",
     "topics": "Aiheet",
     "no-topics-available": "Ei aiheita saatavilla",
-    "adaptive-test": "Testaa taitotasosi"
+    "adaptive-test": "Testaa taitotasosi",
+    "news-bell-info-popup-text": "Sinulla on {numOfUnreadNews} lukematonta viestiä. Klikkaa tästä lukeaksesi ne!",
+    "test-settings": "Koeasetukset"
 }

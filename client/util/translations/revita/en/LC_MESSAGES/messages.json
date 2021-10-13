@@ -1075,7 +1075,7 @@
     "show-feedback": "Display feedback",
     "upload-from-web-instructions": "Revita will try to find the story from the URL. If it fails, or if the result contains unwanted text, please use the \"Paste a text\" box below to enter the story manually.",
     "word-not-in-note-yet": "No notes yet for this word.",
-    "click-arrow-buttons-to-expand-shrink": "Click the arrow buttons ← → to expand/shrink the selection.",
+    "click-arrow-buttons-to-expand-shrink": "Click the arrow buttons «  »  to expand/shrink the selection.",
     "words-not-in-note-yet": "No notes yet for these words.",
     "exercise-density": "Exercise density",
     "custom": "Custom",
@@ -1122,5 +1122,7 @@
     "preview": "Preview",
     "topics": "Topics",
     "no-topics-available": "No topics available",
-    "adaptive-test": "Check your skill level!"
+    "adaptive-test": "Check your skill level!",
+    "news-bell-info-popup-text": "You have {numUnreadNews} unread messages. Click to see News!",
+    "test-settings": "Test settings"
 }

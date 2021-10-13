@@ -1076,7 +1076,7 @@
     "show-feedback": "Visualizza il feedback",
     "upload-from-web-instructions": "Revita tenterà di estrarre il testo dalla tua pagina web. Se il risultato non sarà ben riuscito, copialo manualmente e incollalo nel campo per il caricamento dei file (opzione \"Copia un testo\").",
     "word-not-in-note-yet": "La parola selezionata non ha nessuna appunto al momento.",
-    "click-arrow-buttons-to-expand-shrink": "Clicca sul pulsante freccia ← → per estendere/rimpicciolire la selezione.",
+    "click-arrow-buttons-to-expand-shrink": "Clicca sul pulsante freccia «  »  per estendere/rimpicciolire la selezione.",
     "words-not-in-note-yet": "Le parole selezionate non sono collegate a nessun appunto al momento.",
     "exercise-density": "Densità degli esercizi",
     "custom": "Personalizza",
@@ -1123,5 +1123,7 @@
     "preview": "Anteprima",
     "topics": "Argomento",
     "no-topics-available": "Nessun argomento disponibile",
-    "adaptive-test": "Scopri il tuo livello"
+    "adaptive-test": "Scopri il tuo livello",
+    "news-bell-info-popup-text": "You have {numUnreadNews} unread messages. Click to see News!",
+    "test-settings": "Test settings"
 }
