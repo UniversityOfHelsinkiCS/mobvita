@@ -1,27 +1,19 @@
-import React, { useState } from 'react'
+import React from 'react'
 import { Modal } from 'semantic-ui-react'
 import AddStoryAccordion from './AddStoryAccordion'
 
-const AddStoryModal = ({ trigger }) => {
-  const [showModal, setShowModal] = useState(false)
-
-  const closeModal = () => {
-    setShowModal(false)
-  }
-
+const AddStoryModal = ({ open, setOpen }) => {
   return (
     <Modal
       basic
-      open={showModal}
+      open={open}
       centered={false}
       dimmer="inverted"
       closeIcon={{ style: { top: '2.5rem', right: '2.5rem' }, color: 'black', name: 'close' }}
-      trigger={trigger}
-      onClose={() => setShowModal(false)}
-      onOpen={() => setShowModal(true)}
+      onClose={() => setOpen(false)}
     >
       <Modal.Content>
-        <AddStoryAccordion closeModal={closeModal} />
+        <AddStoryAccordion closeModal={() => setOpen(false)} />
       </Modal.Content>
     </Modal>
   )

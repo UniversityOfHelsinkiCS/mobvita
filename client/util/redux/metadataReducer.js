@@ -38,6 +38,7 @@ export default (state = initialState, action) => {
         suggestedSites: response.suggested_sites,
         banners: response.banner_messages.map(b => ({ message: b, open: true })),
         hasTests: response.has_tests,
+        hasAdaptiveTests: response.has_adaptive_test,
         numUnreadNews: response.num_unread_news,
         pending: false,
         error: false,

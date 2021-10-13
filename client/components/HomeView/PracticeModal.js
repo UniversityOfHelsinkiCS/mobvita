@@ -12,7 +12,7 @@ const extractFilters = object =>
     .filter(entry => entry[1])
     .map(([key]) => capitalize(key))
 
-const PracticeModal = ({ trigger }) => {
+const PracticeModal = ({ open, setOpen }) => {
   const history = useHistory()
   const [libraries, setLibraries] = useState({
     public: true,
@@ -158,6 +158,7 @@ const PracticeModal = ({ trigger }) => {
       sport: true,
       uncategorized: true,
     })
+    setOpen(false)
   }
 
   const handleCategoryChange = category => {
@@ -183,7 +184,7 @@ const PracticeModal = ({ trigger }) => {
   return (
     <Modal
       dimmer="inverted"
-      trigger={trigger}
+      open={open}
       onClose={handleClose}
       closeIcon={{ style: { top: '1rem', right: '2.5rem' }, color: 'black', name: 'close' }}
     >
@@ -200,7 +201,7 @@ const PracticeModal = ({ trigger }) => {
             ) : (
               <Button
                 disabled={!filteredLink}
-                className="practice-now-tile-btn"
+                className="practice-modal-tile-btn"
                 style={{
                   backgroundImage: `url(${images.dices})`,
                   width: '100%',
@@ -247,7 +248,7 @@ const PracticeModal = ({ trigger }) => {
               .slice(0, 4)
               .map(([name, enabled]) => (
                 <Button
-                  className={`practice-now-tile-btn ${!enabled ? 'disabled' : ''}`}
+                  className={`practice-modal-tile-btn ${!enabled ? 'disabled' : ''}`}
                   style={{
                     backgroundImage: `url(${images[name + 1]})`,
                   }}

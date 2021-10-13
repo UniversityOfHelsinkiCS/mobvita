@@ -26,6 +26,18 @@ import flagTurkish from 'Assets/images/flags/flag_turkish.png'
 import flagItalian from 'Assets/images/flags/flag_italian.png'
 import flagSyriac from 'Assets/images/flags/flag_syriac.png'
 import flagChinese from 'Assets/images/flags/flag_prc.png'
+// ---
+import cultureNew from 'Assets/images/culture_new.png'
+import politicsNew from 'Assets/images/politics_new.png'
+import scienceNew from 'Assets/images/science_new.png'
+import sportNew from 'Assets/images/sport_new.png'
+import flashcardsNew from 'Assets/images/flashcards_new.png'
+import libraryNew from 'Assets/images/library_new.png'
+import publicNew from 'Assets/images/public_new.png'
+import groupNew from 'Assets/images/group_new.png'
+import privateNew from 'Assets/images/private_new.png'
+import randomNew from 'Assets/images/random_new.png'
+// ---
 import culture1 from 'Assets/images/culture1.jpg'
 import politics1 from 'Assets/images/politics1.jpg'
 import science1 from 'Assets/images/science1.jpg'
@@ -105,6 +117,16 @@ export const images = {
   leaderboard,
   nestIcon,
   dices,
+  cultureNew,
+  politicsNew,
+  scienceNew,
+  sportNew,
+  flashcardsNew,
+  libraryNew,
+  publicNew,
+  groupNew,
+  privateNew,
+  randomNew,
 }
 
 export const capitalize = word => {
@@ -148,15 +170,9 @@ export const supportedLearningLanguages = {
     'chinese',
     'turkish',
   ].sort((a, b) => a.localeCompare(b)),
-  minor: [
-    'erzya',
-    'komi-zyrian',
-    'meadow-mari',
-    'north-saami',
-    'sakha',
-    'tatar',
-    'udmurt',
-  ].sort((a, b) => a.localeCompare(b)),
+  minor: ['erzya', 'komi-zyrian', 'meadow-mari', 'north-saami', 'sakha', 'tatar', 'udmurt'].sort(
+    (a, b) => a.localeCompare(b)
+  ),
   experimental: ['syriac'],
 }
 

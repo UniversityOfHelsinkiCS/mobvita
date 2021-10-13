@@ -296,26 +296,6 @@ html, body, #root {
   @extend .btn-secondary;
 }
 
-.home-btn-wide {
-  height: 10em!important;
-  background-size: cover!important;
-  background-position: center!important;
-  color: white!important;
-  text-shadow: 0 0 3px #000000, 0 0 5px #0000FF!important;
-}
-
-.practice-now-tile-btn {
-  height: 10rem!important;
-  background-size: cover;
-  background-position: center;
-  flex-basis: 50%;
-  border: 1px solid white;
-  color: white;
-  text-shadow: 0 0 3px #000000, 0 0 5px #0000FF;
-  font-size: 1.2rem;
-  letter-spacing: .075em;
-}
-
 .modal {
   left:unset;
   position: relative !important;
@@ -407,7 +387,7 @@ html, body, #root {
   padding-right: map.get($spacing, "xs");
   padding-left: map.get($spacing, "xs");
   padding-top: $application-content-top-padding;
-  // background-color: rgb(230, 235, 233);
+  background-color: rgb(230, 235, 233);
 }
 
 .cont {
@@ -420,7 +400,7 @@ html, body, #root {
 
   &-tall {
     min-height: calc(100vh - #{$navbar-height} - #{$application-content-top-padding});
-    // background-color: rgb(230, 235, 233);
+    background-color: rgb(230, 235, 233);
   }
 
   &-narrow {
@@ -437,6 +417,71 @@ html, body, #root {
   font-size: 1rem;
 }
 
+// Homeview buttons
+.home-btns-cont  {
+  width: 100%;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: 0.4fr 1.3fr 1.3fr 0.4fr;
+  gap: 17px 17px;
+  grid-auto-flow: row;
+  grid-template-areas:
+    "add-new-stories add-new-stories"
+    "practice library"
+    "flashcards test-btn"
+    "adaptive-test adaptive-test";
+
+    @media (max-width: 730px) {
+      gap: 10px 10px;
+    }
+}
+
+.add-new-stories-btn-cont { grid-area: add-new-stories; }
+.practice-btn-cont { grid-area: practice; }
+.library-btn-cont { grid-area: library; }
+.flashcards-btn-cont { grid-area: flashcards; }
+.test-btn-cont { grid-area: test-btn; }
+.adaptive-test-btn-cont { grid-area: adaptive-test; }
+
+.homeview-btn {
+  background: white;
+  height: 100%;
+  width: 100%;
+  border: 2px solid #CFD3D1;
+  border-radius: 12px;
+
+  &-narrow {
+    padding: 10px 10px 25px 10px;
+
+  }
+  &-wide {
+    padding: 10px 10px 10px 10px!important;
+    background: rgb(50, 170, 248);
+    border: 2px solid #000;
+  }
+  &-text {
+    font-size: 1.5em!important;
+    font-weight: 500;
+  }
+}
+
+.homeview-btn:hover {
+  background-color: rgb(255, 209, 80)!important;
+}
+
+.practice-modal-tile-btn {
+  height: 10rem!important;
+  background-size: cover;
+  background-position: center;
+  flex-basis: 50%;
+  border: 1px solid white;
+  color: white;
+  text-shadow: 0 0 3px #000000, 0 0 5px #0000FF;
+  font-size: 1.2rem;
+  letter-spacing: .075em;
+}
+
+// Navbar
 .navbar {
   background-color: $primary-color;
   align-items: center;
