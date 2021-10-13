@@ -61,7 +61,7 @@ const PreviousExerciseWord = ({ word, answer, tiedAnswer }) => {
 
   const handleClick = () => {
     if (word.isWrong) setShow(true)
-    if (word.concepts) setShow(true)
+    if (isPreviewMode && word.concepts) setShow(true)
     if (autoSpeak === 'always' && voice) speak(surface, voice)
     if (lemmas) {
       dispatch(setWords({ surface, lemmas }))
@@ -126,7 +126,7 @@ const PreviousExerciseWord = ({ word, answer, tiedAnswer }) => {
           )}
         </div>
       )}
-      {youAnsweredTooltip && !isPreviewMode && (
+      {youAnsweredTooltip && (
         <div>
           {`${intl.formatMessage({ id: 'you-used' })}: `}
           <span style={getTextStyle(learningLanguage, 'tooltip')}>
