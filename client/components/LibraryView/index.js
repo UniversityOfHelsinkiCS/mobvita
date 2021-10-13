@@ -42,6 +42,7 @@ const StoryList = () => {
   const [sortDirection, setSortDirection] = useState(
     savedSortCriterion[savedLibrarySelection].direction
   )
+  const [addStoryModalOpen, setAddStoryModalOpen] = useState(false)
   const [searchString, setSearchString] = useState('')
   const [smallScreenSearchOpen, setSmallScreenSearchOpen] = useState(false)
   const [searchedStories, setSearchedStories] = useState([])
@@ -175,6 +176,7 @@ const StoryList = () => {
 
   const libraryControls = (
     <div data-cy="library-controls" className="library-control">
+      <AddStoryModal open={addStoryModalOpen} setOpen={setAddStoryModalOpen} />
       <div className="library-selection">
         <LibraryTabs
           values={libraries}
@@ -192,23 +194,19 @@ const StoryList = () => {
           />
         )}
       </div>
-      <AddStoryModal
-        setLibraries={setLibraries}
-        trigger={
-          <span>
-            <Button
-              className="tour-add-new-stories"
-              data-cy="add-story-button"
-              fluid
-              color="teal"
-              size="big"
-              style={{ marginTop: '1em', marginBottom: '1em' }}
-            >
-              {intl.formatMessage({ id: 'add-your-stories' })}
-            </Button>
-          </span>
-        }
-      />
+      <span>
+        <Button
+          className="tour-add-new-stories"
+          onClick={() => setAddStoryModalOpen(true)}
+          data-cy="add-story-button"
+          fluid
+          color="teal"
+          size="big"
+          style={{ marginTop: '1em', marginBottom: '1em' }}
+        >
+          {intl.formatMessage({ id: 'add-your-stories' })}
+        </Button>
+      </span>
       <div className="search-and-sort">
         <div className="flex align-center">
           <Dropdown
