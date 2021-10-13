@@ -13,12 +13,13 @@ import PracticeModal from './PracticeModal'
 import EloChart from './EloChart'
 import LeaderboardSummary from './LeaderboardSummary'
 
-const HomeviewButton = ({ imgSrc, altText, translationKey, handleClick, wide }) => {
+const HomeviewButton = ({ imgSrc, altText, translationKey, handleClick, dataCy, wide }) => {
   return (
     <button
       className={`homeview-btn${wide ? ' homeview-btn-wide' : ' homeview-btn-narrow'}`}
       type="button"
       onClick={handleClick}
+      data-cy={dataCy}
     >
       <div
         className={`align-center ${!wide ? 'flex-col space-evenly' : 'flex justify-center'}`}
@@ -44,6 +45,7 @@ const HomeviewButtons = ({ setPracticeModalOpen, setAddStoryModalOpen, aTestIsEn
           wide
           translationKey="add-your-stories"
           handleClick={() => setAddStoryModalOpen(true)}
+          dataCy="add-story-button"
         />
       </div>
       <div className="practice-btn-cont tour-practice-now">
@@ -52,7 +54,7 @@ const HomeviewButtons = ({ setPracticeModalOpen, setAddStoryModalOpen, aTestIsEn
           altText="two dices"
           translationKey="practice-now"
           handleClick={() => setPracticeModalOpen(true)}
-          data-cy="practice-now"
+          dataCy="practice-now"
         />
       </div>
       <div className="library-btn-cont tour-library">
@@ -61,7 +63,7 @@ const HomeviewButtons = ({ setPracticeModalOpen, setAddStoryModalOpen, aTestIsEn
           altText="two books in a pile"
           translationKey="Library"
           handleClick={() => history.push('/library')}
-          data-cy="library-button"
+          dataCy="library-button"
         />
       </div>
 
@@ -81,7 +83,7 @@ const HomeviewButtons = ({ setPracticeModalOpen, setAddStoryModalOpen, aTestIsEn
             altText="<insert alt text here>"
             translationKey="Tests"
             handleClick={() => history.push('/tests')}
-            data-cy="tests-button"
+            dataCy="tests-button"
           />
         </div>
       )}
