@@ -56,7 +56,7 @@ export default function NavBar() {
 
   useEffect(() => {
     dispatch(getMetadata(learningLanguage))
-  }, [])
+  }, [learningLanguage])
 
   const showStoryElo = history.location.pathname.includes('practice')
   const showFlashcardElo = hiddenFeatures && history.location.pathname.includes('flashcards')
