@@ -55,6 +55,23 @@ const TotalRow = history => {
   )
 }
 
+const CefrLevelRow = ({ history }) => {
+  return (
+    <TableRow textAlign="center">
+      <Table.Cell key="total">
+        <b>
+          <FormattedMessage id="cefr-level" />
+        </b>
+      </Table.Cell>
+      {history.map(resultsObj => (
+        <Table.Cell>
+          <div>{resultsObj.cefr_level ?? '-'}</div>
+        </Table.Cell>
+      ))}
+    </TableRow>
+  )
+}
+
 const History = ({ history, dateFormat, handleDelete = null }) => {
   const [colors, setColors] = useState({
     best: '144, 239, 144',
@@ -240,7 +257,9 @@ const History = ({ history, dateFormat, handleDelete = null }) => {
       <Table celled fixed unstackable>
         <Table.Header>
           <Table.Row>
-            <Table.HeaderCell>Concepts</Table.HeaderCell>
+            <Table.HeaderCell>
+              <FormattedMessage id="concepts" />
+            </Table.HeaderCell>
             {calculatePage().map(test => (
               <Table.HeaderCell key={test.date}>
                 <span className="space-between">
@@ -268,6 +287,7 @@ const History = ({ history, dateFormat, handleDelete = null }) => {
               fromPreviousScored={fromPreviousScored}
             />
           ))}
+          <CefrLevelRow history={history.slice(page * pageSize, page * pageSize + pageSize)} />
           <TotalRow history={history.slice(page * pageSize, page * pageSize + pageSize)} />
         </Table.Body>
       </Table>
