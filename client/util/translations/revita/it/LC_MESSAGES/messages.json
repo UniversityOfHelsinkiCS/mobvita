@@ -851,7 +851,7 @@
     "listen-to-words": "Ascolta solo le parole",
     "no-listen-exer": "Nessun esercizio di ascolto",
     "Groups-for-teachers": "Gestione Gruppi (per Insegnanti)",
-    "Progress graph": "Grafico dei Progressi",
+    "Progress graph": "I progressi",
     "(DictionaryHelp) No translation available": "Traduzione non trovata",
     "select-types-of-exercises-to-practice": "Scegli il tema grammaticale da praticare",
     "paused-click-to-resume": "Pausa...<br/>Fai clic su ► per riprendere ...",
@@ -1064,10 +1064,10 @@
     "note-delete-failure": "Eliminazione degli appunti fallita. Ritenta.",
     "log-in-to-create-own-notes": "Fai il Log in per creare i tuoi appunti",
     "notes-popup-info-text": "Puoi aggiungere degli appunti su ogni parola — qualcosa importante o interessante su come funziona questa lingua.",
-    "annotations-popup-info-text": "Puoi aggiungere degli appunti su ogni parola — qualcosa di importante o di interessante su come funziona questa lingua.",
+    "annotations-popup-info-text": "Clicca su qualsiasi parola per aggiungerla agli appunti. \nPuoi aggiungere degli appunti su qualsiasi parola o frase — qualcosa di importante o di interessante su come funziona questa lingua.",
     "notes-added-to-history-appear-here": "Gli appunti aggiunti alle parole appartenenti agli snippet completati appaiono qui.",
     "click-any-word-in-history-to-create-note": "Click any word before the exercise snippet to add a note.",
-    "click-any-word-in-history-to-add-new": "Clicca su qualsiasi parola per aggiungerla agli appunti.",
+    "click-any-word-in-history-to-add-new": "",
     "review": "Riesamina",
     "references": "Riferimento",
     "": "Noun. Case and postposition/preposition government",
@@ -1124,6 +1124,8 @@
     "topics": "Argomento",
     "no-topics-available": "Nessun argomento disponibile",
     "adaptive-test": "Scopri il tuo livello",
-    "news-bell-info-popup-text": "You have {numUnreadNews} unread messages. Click to see News!",
-    "test-settings": "Test settings"
+    "news-bell-info-popup-text": "You have {numUnreadNews} unread messages. Click to see the News!",
+    "test-settings": "Impostazioni dei test",
+    "concepts": "Concepts",
+    "cefr-level": "CEFR level"
 }
