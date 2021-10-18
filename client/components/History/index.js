@@ -64,7 +64,7 @@ const CefrLevelRow = ({ history }) => {
         </b>
       </Table.Cell>
       {history.map(resultsObj => (
-        <Table.Cell>
+        <Table.Cell key={`${resultsObj.test_session}-${resultsObj.date}`}>
           <div>{resultsObj.cefr_level ?? '-'}</div>
         </Table.Cell>
       ))}
@@ -76,10 +76,12 @@ const TestTypeRow = ({ history }) => {
   return (
     <TableRow>
       <Table.Cell key="total">
-        <b>Test type</b>
+        <b>
+          <FormattedMessage id="test-type" />
+        </b>
       </Table.Cell>
       {history.map(resultsObj => (
-        <Table.Cell>
+        <Table.Cell key={`${resultsObj.test_session}-${resultsObj.date}`}>
           <div>{resultsObj?.type ? <FormattedMessage id={resultsObj.type} /> : 'N/A'}</div>
         </Table.Cell>
       ))}

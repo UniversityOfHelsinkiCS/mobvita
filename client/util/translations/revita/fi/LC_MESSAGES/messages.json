@@ -1128,5 +1128,6 @@
     "concepts": "Aiheet",
     "cefr-level": "CEFR-taitotaso",
     "adaptive_test": "Taitotasotesti",
-    "exhaustive test": "Exhaustive test"
+    "exhaustive test": "Exhaustive test",
+    "test-type": "Test type"
 }
