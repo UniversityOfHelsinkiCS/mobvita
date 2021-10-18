@@ -1129,5 +1129,7 @@
     "news-bell-info-popup-text": "{numUnreadNews} новых сообщений в Новостях !",
     "test-settings": "Настройки для тестов",
     "concepts": "Concepts",
-    "cefr-level": "CEFR level"
+    "cefr-level": "CEFR level",
+    "adaptive_test": "Adaptive test",
+    "exhaustive test": "Exhaustive test"
 }

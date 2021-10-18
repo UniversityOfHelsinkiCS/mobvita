@@ -1126,5 +1126,7 @@
     "news-bell-info-popup-text": "You have {numUnreadNews} unread messages. Click to see the News!",
     "test-settings": "Test settings",
     "concepts": "Concepts",
-    "cefr-level": "CEFR level"
+    "cefr-level": "CEFR level",
+    "adaptive_test": "Adaptive test",
+    "exhaustive test": "Exhaustive test"
 }

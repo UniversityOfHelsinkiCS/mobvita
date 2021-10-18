@@ -1126,5 +1126,7 @@
     "news-bell-info-popup-text": "Sinulla on {numOfUnreadNews} lukematonta viestiä. Klikkaa tästä lukeaksesi ne!",
     "test-settings": "Koeasetukset",
     "concepts": "Aiheet",
-    "cefr-level": "CEFR-taitotaso"
+    "cefr-level": "CEFR-taitotaso",
+    "adaptive_test": "Taitotasotesti",
+    "exhaustive test": "Exhaustive test"
 }
