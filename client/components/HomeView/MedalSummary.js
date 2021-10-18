@@ -44,7 +44,11 @@ const MedalSummary = () => {
   )
 
   return (
-    <Link to="/achievements" className="space-evenly ps-sm pt-nm pb-nm gap-col-sm">
+    <Link
+      to="/achievements"
+      className="homeview-item space-evenly"
+      style={{ padding: '1.2em .5em 1em .5em' }}
+    >
       <MedalAmount medal="bronze" amount={medals.bronze} />
       <MedalAmount medal="silver" amount={medals.silver} />
       <MedalAmount medal="gold" amount={medals.gold} />

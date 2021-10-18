@@ -16,8 +16,10 @@ const LeaderboardSummary = () => {
 
   return (
     <Link to="/leaderboard" style={{ color: '#212529', textDecoration: 'none' }}>
-      <LastWeeksWinners />
-      <LeaderboardList amountToShow={3} />
+      <div className="homeview-item" style={{ padding: '1em .2em 0 .2em' }}>
+        <LastWeeksWinners />
+        <LeaderboardList amountToShow={3} />
+      </div>
     </Link>
   )
 }

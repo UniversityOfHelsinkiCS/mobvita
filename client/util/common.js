@@ -66,6 +66,7 @@ import nestIcon from 'Assets/images/nest.png'
 import dices from 'Assets/images/dices.png'
 
 import { useSelector } from 'react-redux'
+import { useHistory } from 'react-router-dom'
 import { callApi } from './apiConnection'
 
 export const images = {
@@ -307,6 +308,11 @@ export const getTextStyle = (language, type) => {
     style = { ...style, fontSize: tooltipFontSizes[language] }
   }
   return style
+}
+
+export const getBackgroundColor = () => {
+  const history = useHistory()
+  return history.location.pathname.includes('/home') ? 'blue-bg' : 'grey-bg'
 }
 
 export const getTextWidth = text => {

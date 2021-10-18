@@ -22,13 +22,13 @@ const HomeviewButton = ({ imgSrc, altText, translationKey, handleClick, dataCy, 
       data-cy={dataCy}
     >
       <div
-        className={`align-center ${!wide ? 'flex-col space-evenly' : 'flex justify-center'}`}
+        className={`align-center ${!wide ? 'flex-col space-between' : 'flex justify-center'}`}
         style={{ height: '100%' }}
       >
         <div className="homeview-btn-text">
           <FormattedMessage id={translationKey} />
         </div>
-        {!wide && <img src={imgSrc} alt={altText} style={{ maxWidth: '65%', maxHeight: '65%' }} />}
+        {!wide && <img src={imgSrc} alt={altText} style={{ maxWidth: '60%', maxHeight: '60%' }} />}
       </div>
     </button>
   )
@@ -39,7 +39,7 @@ const HomeviewButtons = ({ setPracticeModalOpen, setAddStoryModalOpen, aTestIsEn
   const { hasTests, hasAdaptiveTests } = useSelector(({ metadata }) => metadata)
 
   return (
-    <div className="home-btns-cont">
+    <div className="homeview-btns-cont">
       <div className="practice-btn-cont tour-practice-now">
         <HomeviewButton
           imgSrc={images.randomNew}
@@ -114,40 +114,40 @@ const HomeView = () => {
   }, [])
 
   return (
-    <div className="cont-tall cont flex-col auto gap-row-sm pt-lg">
+    <div className="cont-tall cont flex-col auto gap-row-sm pt-lg blue-bg">
       <AddStoryModal open={addStoryModalOpen} setOpen={setAddStoryModalOpen} />
       <PracticeModal open={practiceModalOpen} setOpen={setPracticeModalOpen} />
       <div className="grow flex-col">
         {bigScreen ? (
           <div className="grow flex-col space-between gap-row-nm">
-            <div className="flex pb-nm">
+            <div className="flex pb-nm" style={{ gap: '1.5em' }}>
               <HomeviewButtons
                 setPracticeModalOpen={setPracticeModalOpen}
                 setAddStoryModalOpen={setAddStoryModalOpen}
                 aTestIsEnabled={aTestIsEnabled}
               />
-              <div className="vertical-line" />
-              <div style={{ width: '300px' }}>
+              <div
+                className="flex-col"
+                style={{
+                  width: '500px',
+                  gap: '1em',
+                }}
+              >
                 <EloChart width="100%" />
-                <hr />
                 <LeaderboardSummary />
-                <hr />
                 <MedalSummary />
               </div>
             </div>
           </div>
         ) : (
-          <div className="pb-nm">
+          <div className="flex-col" style={{ gap: '1em', marginBottom: '.5em' }}>
             <HomeviewButtons
               setPracticeModalOpen={setPracticeModalOpen}
               setAddStoryModalOpen={setAddStoryModalOpen}
               aTestIsEnabled={aTestIsEnabled}
             />
-            <hr />
             <EloChart width="100%" />
-            <hr />
             <LeaderboardSummary />
-            <hr />
             <MedalSummary />
           </div>
         )}

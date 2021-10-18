@@ -3,7 +3,7 @@ import React from 'react'
 const LeaderboardItem = ({ position, username, value, rankingHistory, highlighted = false }) => (
   <div
     className="leaderboard-item-container"
-    style={highlighted ? { backgroundColor: '#CEFFC9', color: '#2CB22C' } : {}}
+    style={highlighted ? { backgroundColor: '#32AAF8', color: '#000' } : {}}
   >
     <div className="flex" style={{ maxWidth: '75%' }}>
       <div className="justify-center" style={{ width: '2.5rem', fontSize: '1.1rem' }}>
@@ -34,8 +34,9 @@ const LeaderboardItem = ({ position, username, value, rankingHistory, highlighte
     </div>
     <span
       style={{
+        fontWeight: 400,
         fontSize: '1.1rem',
-        color: highlighted ? '#77DD77' : '#777',
+        color: highlighted ? '#000' : '#000',
         paddingRight: '.75rem',
       }}
     >

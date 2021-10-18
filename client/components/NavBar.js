@@ -9,7 +9,13 @@ import { sidebarSetOpen } from 'Utilities/redux/sidebarReducer'
 import { getMetadata } from 'Utilities/redux/metadataReducer'
 import { getNews } from 'Utilities/redux/newsReducer'
 import useWindowDimensions from 'Utilities/windowDimensions'
-import { hiddenFeatures, capitalize, images, learningLanguageSelector } from 'Utilities/common'
+import {
+  hiddenFeatures,
+  capitalize,
+  images,
+  learningLanguageSelector,
+  getBackgroundColor,
+} from 'Utilities/common'
 import { Offline } from 'react-detect-offline'
 import { FormattedMessage, useIntl } from 'react-intl'
 import TermsAndConditions from 'Components/StaticContent/TermsAndConditions'
@@ -81,7 +87,7 @@ export default function NavBar() {
 
   return (
     <Headroom disableInlineStyles={!smallWindow} style={navBarStyle}>
-      <Navbar style={{ paddingLeft: '0.5em' }}>
+      <Navbar className={getBackgroundColor()} style={{ paddingLeft: '0.5em' }}>
         <Tour />
         <div>
           {smallWindow && (
@@ -90,8 +96,7 @@ export default function NavBar() {
               size="big"
               onClick={() => dispatch(sidebarSetOpen(!open))}
               className="sidebar-hamburger tour-sidebar"
-              style={{ color: 'white' }}
-              // style={{ color: 'rgb(0,0,190)' }}
+              style={{ color: 'black' }}
               data-cy="hamburger"
             />
           )}
@@ -104,8 +109,7 @@ export default function NavBar() {
                   name="home"
                   size="large"
                   style={{
-                    color: 'white',
-                    // color: 'rgb(0,0,190)',
+                    color: 'black',
                     cursor: 'pointer',
                   }}
                 />
@@ -116,11 +120,10 @@ export default function NavBar() {
                     src={images.navbarLogo}
                     alt="revita logo"
                     width="70"
-                    // style={{
-                    //   filter: 'brightness(50%) sepia(100) saturate(100) hue-rotate(230deg)',
-                    // }}
+                    style={{
+                      filter: 'brightness(0%) sepia(100) saturate(100) hue-rotate(0deg)',
+                    }}
                   />
-                  {/* {hiddenFeatures && <sup style={{ color: 'rgb(0,0,190)' }}> &beta;</sup>} */}
                   {hiddenFeatures && <sup> &beta;</sup>}
                 </Navbar.Brand>
               </Link>

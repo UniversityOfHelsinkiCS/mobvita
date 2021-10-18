@@ -387,7 +387,11 @@ html, body, #root {
   padding-right: map.get($spacing, "xs");
   padding-left: map.get($spacing, "xs");
   padding-top: $application-content-top-padding;
-  background-color: rgb(230, 235, 233);
+  background-color: rgb(239, 239, 239);
+}
+
+.blue-bg {
+  background-color: rgb(173, 209, 240)!important;
 }
 
 .cont {
@@ -400,7 +404,6 @@ html, body, #root {
 
   &-tall {
     min-height: calc(100vh - #{$navbar-height} - #{$application-content-top-padding});
-    background-color: rgb(230, 235, 233);
   }
 
   &-narrow {
@@ -418,8 +421,10 @@ html, body, #root {
 }
 
 // Homeview buttons
-.home-btns-cont  {
+.homeview-btns-cont  {
   width: 100%;
+  max-height: 500px;
+  margin-bottom: 1.5em;
   display: grid;
   grid-template-columns: 1fr 1fr;
   grid-template-rows: 0.4fr 1.3fr 1.3fr 0.4fr;
@@ -450,21 +455,26 @@ html, body, #root {
 .test-btn-cont { grid-area: exhaustive-test; }
 .adaptive-test-btn-cont { grid-area: adaptive-test; }
 
+.homeview-item {
+  border: 2px solid #000;
+  border-radius: 12px;
+  background: #FFF;
+}
+
 .homeview-btn {
   background: white;
   height: 100%;
   width: 100%;
-  border: 2px solid #CFD3D1;
+  border: 2px solid #000;
   border-radius: 12px;
 
   &-narrow {
-    padding: 10px 10px 25px 10px;
+    padding: 15px 5px 30px 5px;
 
   }
   &-wide {
-    padding: 10px 10px 10px 10px!important;
+    padding: 10px!important;
     background: rgb(50, 170, 248);
-    border: 2px solid #000;
   }
   &-text {
     font-size: 1.5em!important;
@@ -490,7 +500,7 @@ html, body, #root {
 
 // Navbar
 .navbar {
-  background-color: $primary-color;
+  background-color: rgb(239, 239, 239);
   align-items: center;
   display: flex;
   justify-content: space-between;
@@ -499,7 +509,6 @@ html, body, #root {
   position: sticky;
   width: 100%;
   top: 0;
-  // background-color: rgb(230, 235, 233);
 
   &-container {
     display: flex;
@@ -508,7 +517,7 @@ html, body, #root {
   }
 
   &-revita-logo {
-    color: white!important;
+    color: black!important;
     margin-right: 2em;
 
     @media (max-width: 755px) {
@@ -517,8 +526,7 @@ html, body, #root {
   }
 
   &-basic-item {
-    color: white;
-    // color: rgb(0,0,190)!important;
+    color: black;
     margin-left: 0.3em!important;
     margin-right: 0.3em!important;
     cursor: pointer;
@@ -530,8 +538,7 @@ html, body, #root {
   }
 
   &-text-item {
-    color: white!important;
-    // color: rgb(0,0,190)!important;
+    color: black!important;
     margin-right: 2em;
 
     @media (max-width: 755px) {
@@ -540,8 +547,7 @@ html, body, #root {
   }
 
   &-dropdown-text {
-    color: white!important;
-    // color: rgb(0,0,190)!important;
+    color: black!important;
     margin-right: 0em;
   }
 
@@ -556,8 +562,7 @@ html, body, #root {
   }
 
   &-dropdown-icon{
-    // color: rgb(0,0,190)!important;
-    color: white;
+    color: black;
     margin-right: -0.15em!important;
   }
 
@@ -1893,7 +1898,6 @@ html, body, #root {
   justify-content: space-between;
   font-weight: bold;
   padding: 1em 1.2em;
-  border-bottom: 1px solid lightgray;
   margin-right: - map.get($spacing, "xs");
   margin-left: - map.get($spacing, "xs");
 }

@@ -127,7 +127,14 @@ const EloChart = ({ width }) => {
 
   return (
     <div
-      style={{ textAlign: 'center', width, cursor: 'pointer', alignSelf: 'flex-start' }}
+      className="homeview-item"
+      style={{
+        width: '100%',
+        textAlign: 'center',
+        cursor: 'pointer',
+        alignSelf: 'flex-start',
+        padding: '1em .5em 0em .5em'
+      }}
       onClick={() => history.push('/profile/progress')}
     >
       <div className="space-evenly pb-sm">

@@ -1,6 +1,7 @@
 import React from 'react'
 import { Route, Switch, Redirect, useLocation } from 'react-router-dom'
 import { useSelector } from 'react-redux'
+import { getBackgroundColor } from 'Utilities/common'
 import HomeView from 'Components/HomeView'
 import LibraryView from 'Components/LibraryView'
 import ExhaustiveTestView from 'Components/Tests/ExhaustiveTest/index'
@@ -44,7 +45,7 @@ export default () => {
       </Route>
       <Route>
         <NavBar />
-        <main className="application-content">
+        <main className={`application-content ${getBackgroundColor()}`}>
           <Switch>
             <Route exact path="/email-confirm/:token" component={EmailConfirm} />
             <Route exact path="/reset-password/:token" component={ResetPassword} />
