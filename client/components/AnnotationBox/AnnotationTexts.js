@@ -64,6 +64,7 @@ const AnnotationTexts = ({
                       size="sm"
                       variant="outline-secondary"
                       onClick={() => handleEditButtonClick(a.text)}
+                      style={{ marginRight: '1em' }}
                     >
                       <Icon name="pencil alternate" />
                       <FormattedMessage id="edit" />

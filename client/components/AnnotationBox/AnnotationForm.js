@@ -54,7 +54,7 @@ const AnnotationForm = ({
         variant="primary"
         size="sm"
         onClick={handleAnnotationSave}
-        style={{ marginLeft: '.5em' }}
+        style={{ marginLeft: '1em' }}
         disabled={annotationText.length < 1 || consistsOfOnlyWhitespace(annotationText)}
         data-cy="save-annotation-button"
       >
