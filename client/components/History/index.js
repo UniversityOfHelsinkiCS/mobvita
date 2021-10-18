@@ -72,6 +72,21 @@ const CefrLevelRow = ({ history }) => {
   )
 }
 
+const TestTypeRow = ({ history }) => {
+  return (
+    <TableRow>
+      <Table.Cell key="total">
+        <b>Test type</b>
+      </Table.Cell>
+      {history.map(resultsObj => (
+        <Table.Cell>
+          <div>{resultsObj?.type ? <FormattedMessage id={resultsObj.type} /> : 'N/A'}</div>
+        </Table.Cell>
+      ))}
+    </TableRow>
+  )
+}
+
 const History = ({ history, dateFormat, handleDelete = null }) => {
   const [colors, setColors] = useState({
     best: '144, 239, 144',
@@ -277,6 +292,7 @@ const History = ({ history, dateFormat, handleDelete = null }) => {
           </Table.Row>
         </Table.Header>
         <Table.Body>
+          <TestTypeRow history={history.slice(page * pageSize, page * pageSize + pageSize)} />
           {buildConceptTree()?.map(concept => (
             <Concept
               key={concept.id}
