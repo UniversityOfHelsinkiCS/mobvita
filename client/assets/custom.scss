@@ -1019,7 +1019,8 @@ html, body, #root {
 
 .library-toggle-button-chosen {
   color: black;
-  background-color: white;
+  font-weight: 500;
+  background-color: rgb(239, 239, 239);
   border-radius: 6px 6px 0px 0px;
   border-width: 1px 1px 0px 1px;
   border-style: solid;
@@ -1032,7 +1033,7 @@ html, body, #root {
 
 .library-toggle-button {
   color: rgb(119, 119, 119);
-  background-color: white;
+  background-color: rgb(239, 239, 239);
   border-width: 0px 0px 1px 0px;
   border-style: solid;
   border-color: rgb(119, 119, 119);
