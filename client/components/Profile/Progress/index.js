@@ -150,7 +150,7 @@ const Progress = () => {
             <h3 className="header-3">
               <FormattedMessage id="Test History" />
             </h3>
-            <History history={filterTestHistoryByDate()} dateFormat="YYYY.MM.DD HH:mm" />
+            <History history={filterTestHistoryByDate()} testView dateFormat="YYYY.MM.DD HH:mm" />
           </>
         )}
       </div>

@@ -59,7 +59,11 @@ const StudentHistory = ({ student, startDate, endDate, group, view }) => {
           {view === 'exercise' ? (
             <History history={reverseOrder(filterTestHistoryByDate())} dateFormat="MM/YYYY" />
           ) : (
-            <History history={reverseOrder(filterTestHistoryByDate())} dateFormat="YYYY.MM.DD" />
+            <History
+              history={reverseOrder(filterTestHistoryByDate())}
+              testView
+              dateFormat="YYYY.MM.DD HH:mm"
+            />
           )}
         </div>
       ) : (

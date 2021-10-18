@@ -55,6 +55,23 @@ const TotalRow = history => {
   )
 }
 
+const TestTypeRow = ({ history }) => {
+  return (
+    <TableRow textAlign="center">
+      <Table.Cell key="total">
+        <b>
+          <FormattedMessage id="test-type" />
+        </b>
+      </Table.Cell>
+      {history.map(resultsObj => (
+        <Table.Cell key={`${resultsObj.test_session}-${resultsObj.date}`}>
+          <div>{resultsObj?.type ? <FormattedMessage id={resultsObj.type} /> : 'N/A'}</div>
+        </Table.Cell>
+      ))}
+    </TableRow>
+  )
+}
+
 const CefrLevelRow = ({ history }) => {
   return (
     <TableRow textAlign="center">
@@ -72,24 +89,7 @@ const CefrLevelRow = ({ history }) => {
   )
 }
 
-const TestTypeRow = ({ history }) => {
-  return (
-    <TableRow>
-      <Table.Cell key="total">
-        <b>
-          <FormattedMessage id="test-type" />
-        </b>
-      </Table.Cell>
-      {history.map(resultsObj => (
-        <Table.Cell key={`${resultsObj.test_session}-${resultsObj.date}`}>
-          <div>{resultsObj?.type ? <FormattedMessage id={resultsObj.type} /> : 'N/A'}</div>
-        </Table.Cell>
-      ))}
-    </TableRow>
-  )
-}
-
-const History = ({ history, dateFormat, handleDelete = null }) => {
+const History = ({ history, testView, dateFormat, handleDelete = null }) => {
   const [colors, setColors] = useState({
     best: '144, 239, 144',
     medium: '246, 247, 221',
@@ -294,7 +294,6 @@ const History = ({ history, dateFormat, handleDelete = null }) => {
           </Table.Row>
         </Table.Header>
         <Table.Body>
-          <TestTypeRow history={history.slice(page * pageSize, page * pageSize + pageSize)} />
           {buildConceptTree()?.map(concept => (
             <Concept
               key={concept.id}
@@ -305,7 +304,13 @@ const History = ({ history, dateFormat, handleDelete = null }) => {
               fromPreviousScored={fromPreviousScored}
             />
           ))}
-          <CefrLevelRow history={history.slice(page * pageSize, page * pageSize + pageSize)} />
+          {testView && (
+            <>
+              <TestTypeRow history={history.slice(page * pageSize, page * pageSize + pageSize)} />
+              <CefrLevelRow history={history.slice(page * pageSize, page * pageSize + pageSize)} />
+            </>
+          )}
+
           <TotalRow history={history.slice(page * pageSize, page * pageSize + pageSize)} />
         </Table.Body>
       </Table>

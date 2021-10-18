@@ -200,6 +200,7 @@ const ExhaustiveTestView = () => {
                   </ConfirmationWarning>
                   <History
                     history={filterHistoryByDate()}
+                    testView
                     handleDelete={handleSessionDeleteClick}
                   />
                 </>
