@@ -423,16 +423,23 @@ html, body, #root {
   display: grid;
   grid-template-columns: 1fr 1fr;
   grid-template-rows: 0.4fr 1.3fr 1.3fr 0.4fr;
-  gap: 17px 17px;
+  gap: 10px 10px;
   grid-auto-flow: row;
   grid-template-areas:
     "add-new-stories add-new-stories"
     "practice library"
-    "flashcards test-btn"
+    "flashcards exhaustive-test"
     "adaptive-test adaptive-test";
 
-    @media (max-width: 730px) {
-      gap: 10px 10px;
+  @media (min-width: 900px) {
+    gap: 17px 17px;
+    grid-template-columns: 1fr 1fr 1fr; 
+    grid-template-rows: 0.3fr 1fr 1fr; 
+    gap: 15px 15px; 
+    grid-template-areas: 
+      "add-new-stories add-new-stories add-new-stories"
+      "practice library flashcards"
+      "adaptive-test exhaustive-test .";
     }
 }
 
@@ -440,7 +447,7 @@ html, body, #root {
 .practice-btn-cont { grid-area: practice; }
 .library-btn-cont { grid-area: library; }
 .flashcards-btn-cont { grid-area: flashcards; }
-.test-btn-cont { grid-area: test-btn; }
+.test-btn-cont { grid-area: exhaustive-test; }
 .adaptive-test-btn-cont { grid-area: adaptive-test; }
 
 .homeview-btn {

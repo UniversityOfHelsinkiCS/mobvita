@@ -40,14 +40,6 @@ const HomeviewButtons = ({ setPracticeModalOpen, setAddStoryModalOpen, aTestIsEn
 
   return (
     <div className="home-btns-cont">
-      <div className="add-new-stories-btn-cont tour-add-new-stories">
-        <HomeviewButton
-          wide
-          translationKey="add-your-stories"
-          handleClick={() => setAddStoryModalOpen(true)}
-          dataCy="add-story-button"
-        />
-      </div>
       <div className="practice-btn-cont tour-practice-now">
         <HomeviewButton
           imgSrc={images.randomNew}
@@ -66,7 +58,14 @@ const HomeviewButtons = ({ setPracticeModalOpen, setAddStoryModalOpen, aTestIsEn
           dataCy="library-button"
         />
       </div>
-
+      <div className="add-new-stories-btn-cont tour-add-new-stories">
+        <HomeviewButton
+          wide
+          translationKey="add-your-stories"
+          handleClick={() => setAddStoryModalOpen(true)}
+          dataCy="add-story-button"
+        />
+      </div>
       <div className="flashcards-btn-cont tour-flashcards">
         <HomeviewButton
           imgSrc={images.flashcardsNew}
@@ -75,7 +74,15 @@ const HomeviewButtons = ({ setPracticeModalOpen, setAddStoryModalOpen, aTestIsEn
           handleClick={() => history.push('/flashcards')}
         />
       </div>
-
+      {hasAdaptiveTests && (
+        <div className="adaptive-test-btn-cont">
+          <HomeviewButton
+            wide
+            translationKey="adaptive-test"
+            handleClick={() => history.push('/adaptive-test')}
+          />
+        </div>
+      )}
       {hasTests && aTestIsEnabled && (
         <div className="test-btn-cont">
           <HomeviewButton
@@ -84,16 +91,6 @@ const HomeviewButtons = ({ setPracticeModalOpen, setAddStoryModalOpen, aTestIsEn
             translationKey="Tests"
             handleClick={() => history.push('/tests')}
             dataCy="tests-button"
-          />
-        </div>
-      )}
-
-      {hasAdaptiveTests && (
-        <div className="adaptive-test-btn-cont">
-          <HomeviewButton
-            wide
-            translationKey="adaptive-test"
-            handleClick={() => history.push('/adaptive-test')}
           />
         </div>
       )}
