@@ -140,7 +140,7 @@ const HomeView = () => {
             </div>
           </div>
         ) : (
-          <div className="flex-col" style={{ gap: '1em', marginBottom: '.5em' }}>
+          <div className="flex-col" style={{ gap: '1.5em', marginBottom: '.5em' }}>
             <HomeviewButtons
               setPracticeModalOpen={setPracticeModalOpen}
               setAddStoryModalOpen={setAddStoryModalOpen}
