@@ -92,16 +92,11 @@ const ExerciseCloze = ({ word, handleChange }) => {
             <div className="flex">
               <span dangerouslySetInnerHTML={formatGreenFeedbackText(word?.message)} />{' '}
               {ref && (
-                <Icon
-                  name="external"
-                  size="small"
-                  style={{ alignSelf: 'flex-start', marginLeft: '0.5rem' }}
-                />
+                <Icon name="external" style={{ alignSelf: 'flex-start', marginLeft: '0.5rem' }} />
               )}
               {explanation && (
                 <Icon
                   name="info circle"
-                  size="small"
                   style={{ alignSelf: 'flex-start', marginLeft: '0.5rem' }}
                 />
               )}

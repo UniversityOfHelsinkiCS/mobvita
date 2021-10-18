@@ -30,15 +30,9 @@ const NoAnnotationsView = ({ handleAnnotationBoxCollapse }) => {
         </div>
         <Icon name="angle up" size="large" />
       </div>
-      <div className="notes-info-text" style={{ marginTop: '1.5em' }}>
+      <div className="notes-info-text" style={{ marginTop: '1.5em', marginBottom: '1.5em' }}>
         <FormattedMessage
           id={isPracticeMode ? 'notes-added-to-history-appear-here' : 'this-story-has-no-notes'}
-        />
-        <br /> <br />
-        <FormattedMessage
-          id={
-            isPracticeMode ? 'click-any-word-in-history-to-add-new' : 'click-any-word-to-create-one'
-          }
         />
       </div>
     </div>
