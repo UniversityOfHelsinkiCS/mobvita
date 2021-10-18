@@ -159,7 +159,13 @@ const StoryActions = ({ story }) => {
             text={<FormattedMessage id="Flashcards" />}
             as={Link}
             to={`/flashcards/fillin/${story._id}/`}
-            icon="id card"
+            icon="lightning"
+          />
+          <Dropdown.Item
+            text={<FormattedMessage id="preview" />}
+            as={Link}
+            to={`/stories/${story._id}/preview`}
+            icon="book"
           />
           {story.percent_cov > 0 && (
             <Dropdown.Item
@@ -170,16 +176,10 @@ const StoryActions = ({ story }) => {
             />
           )}
           <Dropdown.Item
-            text={<FormattedMessage id="preview" />}
-            as={Link}
-            to={`/stories/${story._id}/preview`}
-            icon="book"
-          />
-          <Dropdown.Item
             text={<FormattedMessage id="compete" />}
             as={Link}
             to={`/compete/${story._id}/`}
-            icon="lightning"
+            icon="clock"
           />
         </Dropdown.Menu>
       </Dropdown>
