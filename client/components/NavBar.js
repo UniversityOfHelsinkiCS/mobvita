@@ -337,7 +337,11 @@ export default function NavBar() {
                 </span>
               </a>
 
-              <Link to="/profile/settings" className="navbar-basic-icon">
+              <Link
+                to="/profile/settings"
+                data-cy="navbar-settings-button"
+                className="navbar-basic-icon"
+              >
                 <NavbarIcon imgSrc={images.settingsIcon} altText="gear icon" />
               </Link>
             </div>
