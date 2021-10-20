@@ -1908,6 +1908,10 @@ html, body, #root {
   margin-left: - map.get($spacing, "xs");
 }
 
+.leaderboard-item-container:last-of-type {
+  border-radius: 0 0 10px 10px;
+}
+
 .leaderboard-reward {
   height: 1.3rem;
   width: 1.3rem;
