@@ -43,7 +43,7 @@ export const InitAdaptiveTest = language => {
   return callBuilder(route, prefix, 'get')
 }
 
-export const sendExhaustiveTestAnswer = (language, sessionId, answer, breakTimestamp) => {
+export const sendExhaustiveTestAnswer = (language, sessionId, answer, duration, breakTimestamp) => {
   const route = `/test/${language}/answer`
   const prefix = 'ANSWER_TEST_QUESTION'
   const breaks = breakTimestamp ? [breakTimestamp] : []
@@ -51,18 +51,20 @@ export const sendExhaustiveTestAnswer = (language, sessionId, answer, breakTimes
     session_id: sessionId,
     language,
     breaks,
+    duration,
     is_completed: false,
     answers: [answer],
   }
   return callBuilder(route, prefix, 'post', payload)
 }
 
-export const sendAdaptiveTestAnswer = (language, sessionId, answer, questionId) => {
+export const sendAdaptiveTestAnswer = (language, sessionId, answer, duration, questionId) => {
   const route = `/test/${language}/adaptive/answer`
   const prefix = 'ANSWER_ADAPTIVE_TEST_QUESTION'
   const payload = {
     session_id: sessionId,
     answer,
+    duration,
     question_id: questionId,
   }
   return callBuilder(route, prefix, 'post', payload)

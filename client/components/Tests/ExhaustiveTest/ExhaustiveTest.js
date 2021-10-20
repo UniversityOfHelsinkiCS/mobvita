@@ -36,6 +36,10 @@ const Test = () => {
 
   const checkAnswer = answer => {
     if (!currentExhaustiveTestQuestion) return
+
+    const timeToAnswer = currentExhaustiveTestQuestion.time * 1000
+    const duration = timer.getTime() < 0 ? timeToAnswer : timeToAnswer - timer.getTime()
+
     timer.stop()
     timer.reset()
 
@@ -50,6 +54,7 @@ const Test = () => {
           question_id: currentExhaustiveTestQuestion.question_id,
           answer,
         },
+        duration,
         pauseTimeStamp
       )
     )
