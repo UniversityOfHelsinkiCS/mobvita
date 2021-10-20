@@ -131,7 +131,7 @@ export default function NavBar() {
 
               {!smallWindow && (
                 <>
-                  <Link data-cy="navbar-library-button" to="/home">
+                  <Link to="/home">
                     <Navbar.Brand className="navbar-text-item">
                       <FormattedMessage id="Home" />
                     </Navbar.Brand>
@@ -245,6 +245,7 @@ export default function NavBar() {
                   )}
 
                   <NavDropdown
+                    data-cy="navbar-info-dropdown"
                     className="navbar-dropdown-icon-cont"
                     title={
                       <NavbarIcon
