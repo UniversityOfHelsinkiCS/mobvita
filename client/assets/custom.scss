@@ -279,6 +279,12 @@ html, body, #root {
 }
 
 // BOOTSTRAP OVERRIDES FROM REVITA:
+.btn:hover {
+  color: $black;
+  background: $btn-highlight-color-primary;
+  border-color: $black;
+}
+
 .btn-primary {
   color: #000;
   // background-color: $primary-color;
@@ -287,6 +293,16 @@ html, body, #root {
   border: $btn-border-primary;
   border-color: $btn-border-color-primary;
   border-radius: $btn-border-radius-primary;
+}
+
+.btn-primary[disabled]  {
+  background: rgb(142, 187, 249);
+  border: 1px solid rgb(112, 114 ,120);
+}
+
+.btn-primary[disabled]:hover  {
+  color: white;
+  cursor: not-allowed;
 }
 
 .btn-secondary {
@@ -306,10 +322,13 @@ html, body, #root {
   border-color: #f0f0f0;
 }
 
-.btn:hover {
-  color: $black;
-  background: $btn-highlight-color-primary;
-  border-color: $black;
+.btn-sm  {
+  border: 1px solid rgb(112, 114, 120);
+}
+
+.btn-outline-danger[disabled]:hover {
+  background: $white;
+  cursor: not-allowed;
 }
 
 .btn-toggle-on {
@@ -331,10 +350,7 @@ html, body, #root {
   height: auto;
 }
 
-button[disabled]:hover {
-  background: $white;
-  cursor: not-allowed;
-}
+
 
 .react-datepicker__input-container > input {
   width: 120px;
