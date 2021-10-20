@@ -26,9 +26,18 @@ $primary-color: #4c91cd;
 $button-border-color: #76c8d4;
 $secondary-text-color: #777;
 $white: #fff;
-$action-text-hover-color: #2185D0;  
+$black: #000;
+// $action-text-hover-color: #2185D0;
+$action-text-hover-color: rgb(81, 138, 248);
 $tooltip-blue: rgba(30, 120, 225, 1);
 $tooltip-green: green;
+
+// new design
+$btn-color-primary: rgb(50, 170, 248);
+$btn-highlight-color-primary: rgb(255, 209, 80);
+$btn-border-primary: 2px solid #000;
+$btn-border-color-primary: #000;
+$btn-border-radius-primary: 10px;
 
 // $default-font: Arial;
 $rubik: 'Rubik', sans-serif;
@@ -271,21 +280,36 @@ html, body, #root {
 
 // BOOTSTRAP OVERRIDES FROM REVITA:
 .btn-primary {
-  color: $white;
-  background-color: $primary-color;
-  border-color: $button-border-color
+  color: #000;
+  // background-color: $primary-color;
+  // border-color: $button-border-color;
+  background-color: $btn-color-primary;
+  border: $btn-border-primary;
+  border-color: $btn-border-color-primary;
+  border-radius: $btn-border-radius-primary;
 }
 
 .btn-secondary {
-  color: $secondary-text-color;
+  // color: $secondary-text-color;
+  // background-color: $white;
+  // border-color: $button-border-color;
+  color: $black;
   background-color: $white;
-  border-color: $button-border-color
+  border: $btn-border-primary;
+  border-color: $btn-border-color-primary;
+  border-radius: $btn-border-radius-primary;
 }
 
 .btn-tertiary {
   color: $secondary-text-color;
   background-color: $white;
   border-color: #f0f0f0;
+}
+
+.btn:hover {
+  color: $black;
+  background: $btn-highlight-color-primary;
+  border-color: $black;
 }
 
 .btn-toggle-on {
@@ -296,10 +320,20 @@ html, body, #root {
   @extend .btn-secondary;
 }
 
+.card {
+  border: 2px solid #000!important;
+  border-radius: 10px!important;
+}
+
 .modal {
   left:unset;
   position: relative !important;
   height: auto;
+}
+
+button[disabled]:hover {
+  background: $white;
+  cursor: not-allowed;
 }
 
 .react-datepicker__input-container > input {
@@ -1027,9 +1061,9 @@ html, body, #root {
   font-weight: 500;
   background-color: rgb(239, 239, 239);
   border-radius: 6px 6px 0px 0px;
-  border-width: 1px 1px 0px 1px;
+  border-width: 2px 2px 0px 2px;
   border-style: solid;
-  border-color: rgb(119, 119, 119);
+  border-color: $black;
 }
 
 .library-toggle-button-chosen:focus {
@@ -1039,9 +1073,9 @@ html, body, #root {
 .library-toggle-button {
   color: rgb(119, 119, 119);
   background-color: rgb(239, 239, 239);
-  border-width: 0px 0px 1px 0px;
+  border-width: 0px 0px 2px 0px;
   border-style: solid;
-  border-color: rgb(119, 119, 119);
+  border-color: $black;
 }
 
 .library-toggle-button:hover {
@@ -1066,8 +1100,9 @@ html, body, #root {
 
 .story-item-title {
   font-family: $rubik;
-  font-weight: 400;
+  font-weight: 500;
   white-space: nowrap;
+  color: $black;
   width: 100%;
   overflow: hidden;
   -o-text-overflow: ellipsis;

@@ -48,7 +48,7 @@ const StoryTitle = ({
             >
               {story.title}
             </h5>
-            <Icon name="ellipsis vertical" style={{ marginLeft: '1rem' }} />
+            <Icon color="black" name="ellipsis vertical" style={{ marginLeft: '1rem' }} />
           </span>
         }
         story={story}
@@ -272,7 +272,7 @@ const StoryListItem = ({ story, userCanShare, libraryShown, selectedGroup }) => 
                 content={<ShareInfoPopupContent infoObj={storyGroupShareInfo} />}
                 trigger={
                   <div>
-                    <Icon name="envelope outline" />
+                    <Icon color="black" name="envelope outline" />
                   </div>
                 }
               />
@@ -285,7 +285,7 @@ const StoryListItem = ({ story, userCanShare, libraryShown, selectedGroup }) => 
               content={<ShareInfoPopupContent infoObj={story.sharing_info} />}
               trigger={
                 <div>
-                  <Icon name="envelope outline" />
+                  <Icon color="black" name="envelope outline" />
                 </div>
               }
             />

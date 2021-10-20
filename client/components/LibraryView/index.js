@@ -1,6 +1,7 @@
 import React, { useEffect, useState, useRef } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { Placeholder, Card, Search, Select, Icon, Dropdown, Input, Button } from 'semantic-ui-react'
+import { Placeholder, Card, Search, Select, Icon, Dropdown, Input } from 'semantic-ui-react'
+import { Button } from 'react-bootstrap'
 import StoryListItem from 'Components/LibraryView/StoryListItem'
 import { useIntl } from 'react-intl'
 import LibraryTabs from 'Components/LibraryTabs'
@@ -202,7 +203,13 @@ const StoryList = () => {
           fluid
           color="teal"
           size="big"
-          style={{ marginTop: '1em', marginBottom: '1em' }}
+          style={{
+            fontSize: '1.2em',
+            margin: '1em 0',
+            padding: '1rem 0',
+            width: '100%',
+            border: '2px solid',
+          }}
         >
           {intl.formatMessage({ id: 'add-your-stories' })}
         </Button>
