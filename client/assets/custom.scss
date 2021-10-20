@@ -527,8 +527,8 @@ html, body, #root {
   }
 
   &-basic-icon {
-    margin-left: 10px!important;
-    margin-right: 10px!important;
+    margin-left: 11px!important;
+    margin-right: 11px!important;
     cursor: pointer;
   
     @media (max-width: 755px) {
@@ -557,7 +557,7 @@ html, body, #root {
 
   &-dropdown-icon-cont {
     margin-left: 10px;
-    margin-right: 8px;
+    margin-right: 3px;
 
     @media (max-width: 850px) {
       margin-left: 0.2em;
