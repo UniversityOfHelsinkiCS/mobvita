@@ -129,11 +129,11 @@ const EloChart = ({ width }) => {
     <div
       className="homeview-item"
       style={{
-        width: '100%',
+        width,
         textAlign: 'center',
         cursor: 'pointer',
         alignSelf: 'flex-start',
-        padding: '1em .5em 0em .5em'
+        padding: '1em .5em 0em .5em',
       }}
       onClick={() => history.push('/profile/progress')}
     >
