@@ -197,7 +197,7 @@ const GroupsSharedTo = ({ groups }) => {
       style={{ padding: '0 .5rem', fontSize: '.7rem', overflow: 'hidden', whiteSpace: 'nowrap' }}
     >
       {groupsToShow.map(({ group_name: groupName, group_id: id }) => (
-        <span key={id} style={{ overflow: 'hidden', textOverflow: 'ellipsis' }}>
+        <span key={id} style={{ overflow: 'hidden', textOverflow: 'ellipsis', color: '#000' }}>
           {groupName}
         </span>
       ))}
