@@ -5,7 +5,6 @@ import sanitize from 'sanitize-html'
 import { FormattedMessage, FormattedHTMLMessage } from 'react-intl'
 import React from 'react'
 import revitaLogoTransparent from 'Assets/images/revita_logo_transparent.png'
-import practiceNow from 'Assets/images/practice_now.jpg'
 import flagFinnish from 'Assets/images/flags/flag_finnish.png'
 import flagErzya from 'Assets/images/flags/flag_erzya.png'
 import flagKomizyrian from 'Assets/images/flags/flag_komi-zyrian.png'
@@ -31,19 +30,21 @@ import cultureNew from 'Assets/images/culture_new.png'
 import politicsNew from 'Assets/images/politics_new.png'
 import scienceNew from 'Assets/images/science_new.png'
 import sportNew from 'Assets/images/sport_new.png'
-import flashcardsNew from 'Assets/images/flashcards_new.png'
-import libraryNew from 'Assets/images/library_new.png'
+import flashcards from 'Assets/images/flashcards.png'
+import library from 'Assets/images/library.png'
 import publicNew from 'Assets/images/public_new.png'
 import groupNew from 'Assets/images/group_new.png'
 import privateNew from 'Assets/images/private_new.png'
-import randomNew from 'Assets/images/random_new.png'
+import dices from 'Assets/images/dices.png'
+import practice from 'Assets/images/practice.png'
+import adaptiveTest from 'Assets/images/adaptive_test.png'
+import exhaustiveTest from 'Assets/images/exhaustive_test.png'
+import help from 'Assets/images/help.png'
 // ---
 import culture1 from 'Assets/images/culture1.jpg'
 import politics1 from 'Assets/images/politics1.jpg'
 import science1 from 'Assets/images/science1.jpg'
 import sport1 from 'Assets/images/sport1.jpg'
-import flashcards from 'Assets/images/flashcards.jpg'
-import library from 'Assets/images/library.jpg'
 import addStory from 'Assets/images/add_story.jpg'
 import tests from 'Assets/images/tests.jpg'
 import logo from 'Assets/images/logo_transparent.png'
@@ -63,7 +64,7 @@ import fancyWreadth from 'Assets/images/fancy_wreadth.png'
 import trophy from 'Assets/images/trophy.svg'
 import leaderboard from 'Assets/images/leaderboard.svg'
 import nestIcon from 'Assets/images/nest.png'
-import dices from 'Assets/images/dices.png'
+import dicesOld from 'Assets/images/dices_old.png'
 
 import { useSelector } from 'react-redux'
 import { useHistory } from 'react-router-dom'
@@ -71,7 +72,6 @@ import { callApi } from './apiConnection'
 
 export const images = {
   revitaLogoTransparent,
-  practiceNow,
   culture1,
   politics1,
   science1,
@@ -96,8 +96,8 @@ export const images = {
   flagFrench,
   flagSyriac,
   flagChinese,
-  flashcards,
-  library,
+  // flashcards,
+  // library,
   tests,
   addStory,
   logo,
@@ -117,17 +117,21 @@ export const images = {
   trophy,
   leaderboard,
   nestIcon,
-  dices,
+  dicesOld,
   cultureNew,
   politicsNew,
   scienceNew,
   sportNew,
-  flashcardsNew,
-  libraryNew,
+  flashcards,
+  library,
   publicNew,
   groupNew,
   privateNew,
-  randomNew,
+  dices,
+  practice,
+  adaptiveTest,
+  exhaustiveTest,
+  help,
 }
 
 export const capitalize = word => {

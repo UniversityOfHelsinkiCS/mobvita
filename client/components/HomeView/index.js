@@ -28,7 +28,7 @@ const HomeviewButton = ({ imgSrc, altText, translationKey, handleClick, dataCy, 
         <div className="homeview-btn-text">
           <FormattedMessage id={translationKey} />
         </div>
-        {!wide && <img src={imgSrc} alt={altText} style={{ maxWidth: '60%', maxHeight: '60%' }} />}
+        {!wide && <img src={imgSrc} alt={altText} style={{ maxWidth: '55%', maxHeight: '55%' }} />}
       </div>
     </button>
   )
@@ -40,24 +40,6 @@ const HomeviewButtons = ({ setPracticeModalOpen, setAddStoryModalOpen, aTestIsEn
 
   return (
     <div className="homeview-btns-cont">
-      <div className="practice-btn-cont tour-practice-now">
-        <HomeviewButton
-          imgSrc={images.randomNew}
-          altText="two dices"
-          translationKey="practice-now"
-          handleClick={() => setPracticeModalOpen(true)}
-          dataCy="practice-now"
-        />
-      </div>
-      <div className="library-btn-cont tour-library">
-        <HomeviewButton
-          imgSrc={images.libraryNew}
-          altText="two books in a pile"
-          translationKey="Library"
-          handleClick={() => history.push('/library')}
-          dataCy="library-button"
-        />
-      </div>
       <div className="add-new-stories-btn-cont tour-add-new-stories">
         <HomeviewButton
           wide
@@ -66,9 +48,27 @@ const HomeviewButtons = ({ setPracticeModalOpen, setAddStoryModalOpen, aTestIsEn
           dataCy="add-story-button"
         />
       </div>
+      <div className="practice-btn-cont tour-practice-now">
+        <HomeviewButton
+          imgSrc={images.dices}
+          altText="two dices"
+          translationKey="practice-now"
+          handleClick={() => setPracticeModalOpen(true)}
+          dataCy="practice-now"
+        />
+      </div>
+      <div className="library-btn-cont tour-library">
+        <HomeviewButton
+          imgSrc={images.library}
+          altText="two books in a pile"
+          translationKey="Library"
+          handleClick={() => history.push('/library')}
+          dataCy="library-button"
+        />
+      </div>
       <div className="flashcards-btn-cont tour-flashcards">
         <HomeviewButton
-          imgSrc={images.flashcardsNew}
+          imgSrc={images.flashcards}
           altText="three playing cards"
           translationKey="Flashcards"
           handleClick={() => history.push('/flashcards')}
@@ -77,7 +77,8 @@ const HomeviewButtons = ({ setPracticeModalOpen, setAddStoryModalOpen, aTestIsEn
       {hasAdaptiveTests && (
         <div className="adaptive-test-btn-cont">
           <HomeviewButton
-            wide
+            imgSrc={images.adaptiveTest}
+            altText="a test form with a star on it"
             translationKey="adaptive-test"
             handleClick={() => history.push('/adaptive-test')}
           />
@@ -86,8 +87,8 @@ const HomeviewButtons = ({ setPracticeModalOpen, setAddStoryModalOpen, aTestIsEn
       {hasTests && aTestIsEnabled && (
         <div className="test-btn-cont">
           <HomeviewButton
-            imgSrc={images.scienceNew}
-            altText="<insert alt text here>"
+            imgSrc={images.exhaustiveTest}
+            altText="a test form with a clock on it"
             translationKey="Tests"
             handleClick={() => history.push('/tests')}
             dataCy="tests-button"

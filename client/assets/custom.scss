@@ -425,17 +425,17 @@ html, body, #root {
   width: 100%;
   display: grid;
   grid-template-columns: 1fr 1fr;
-  grid-template-rows: 0.4fr 1.3fr 1.3fr 0.4fr;
+  grid-template-rows: 0.4fr 1.3fr 1.3fr 1.3fr;
   gap: 10px 10px;
   grid-auto-flow: row;
   grid-template-areas:
     "add-new-stories add-new-stories"
     "practice library"
-    "flashcards exhaustive-test"
-    "adaptive-test adaptive-test";
+    "flashcards adaptive-test"
+    "exhaustive-test .";
 
   @media (min-width: 900px) {
-    max-height: 500px;
+    max-height: 525px;
     gap: 17px 17px;
     grid-template-columns: 1fr 1fr 1fr; 
     grid-template-rows: 0.3fr 1fr 1fr; 

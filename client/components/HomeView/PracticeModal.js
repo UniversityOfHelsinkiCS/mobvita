@@ -64,7 +64,7 @@ const PracticeModal = ({ open, setOpen }) => {
 
   // preload practice modal images
   useLayoutEffect(() => {
-    new Image().src = images.dices
+    new Image().src = images.dicesOld
     new Image().src = images.sport1
     new Image().src = images.culture1
     new Image().src = images.politics1
@@ -203,7 +203,7 @@ const PracticeModal = ({ open, setOpen }) => {
                 disabled={!filteredLink}
                 className="practice-modal-tile-btn"
                 style={{
-                  backgroundImage: `url(${images.dices})`,
+                  backgroundImage: `url(${images.dicesOld})`,
                   width: '100%',
                 }}
                 data-cy="start-random"
