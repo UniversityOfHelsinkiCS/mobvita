@@ -200,7 +200,6 @@ const StoryList = () => {
           className="tour-add-new-stories"
           onClick={() => setAddStoryModalOpen(true)}
           data-cy="add-story-button"
-          fluid
           color="teal"
           size="big"
           style={{
