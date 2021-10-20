@@ -59,21 +59,19 @@ const DetailedStoryModal = ({
       <Modal.Actions>
         <div className="space-between">
           <div className="gap-col-sm">
-            {story.percent_cov === 0 && (
-              <LinkButton
-                variant="secondary"
-                to={`/stories/${story._id}/read`}
-                translationId="Read"
-              />
-            )}
+            <LinkButton
+              variant="secondary"
+              to={`/stories/${story._id}/preview`}
+              translationId="preview"
+            />
             <LinkButton to={`/stories/${story._id}/practice`} translationId="practice" />
-            {story.percent_cov > 0 && (
-              <LinkButton
-                variant="secondary"
-                to={`/stories/${story._id}/review`}
-                translationId="review"
-              />
-            )}
+            <LinkButton
+              variant={story.percent_cov === 0 ? 'outline-danger' : 'secondary'}
+              disabled={story.percent_cov === 0}
+              to={`/stories/${story._id}/review`}
+              translationId="review"
+            />
+
             <LinkButton
               variant="primary"
               to={`/flashcards/fillin/${story._id}/`}
