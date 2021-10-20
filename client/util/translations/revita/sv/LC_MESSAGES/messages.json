@@ -1128,5 +1128,6 @@
     "cefr-level": "CEFR level",
     "adaptive_test": "Adaptive test",
     "exhaustive test": "Exhaustive test",
-    "test-type": "Test type"
+    "test-type": "Test type",
+    "faq": "FAQ"
 }
