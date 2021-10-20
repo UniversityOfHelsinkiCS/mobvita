@@ -305,7 +305,7 @@ const GroupCard = ({
                   <Button
                     as={Link}
                     to={`/groups/teacher/${id}/concepts`}
-                    style={{ color: 'white' }}
+                    style={{ color: 'black' }}
                   >
                     <Icon name="settings" /> <FormattedMessage id="test-settings" />
                   </Button>
