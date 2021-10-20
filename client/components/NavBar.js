@@ -22,13 +22,24 @@ import TermsAndConditions from 'Components/StaticContent/TermsAndConditions'
 import ContactUs from './StaticContent/ContactUs'
 import Tour from './Tour'
 
+const NavbarIcon = ({ imgSrc, altText, extraClass }) => {
+  return (
+    <img
+      className={extraClass ?? ''}
+      src={imgSrc}
+      alt={altText}
+      style={{ width: '21px', height: '21px' }}
+    />
+  )
+}
+
 export default function NavBar() {
   const { user } = useSelector(({ user }) => ({ user: user.data }))
   const { numUnreadNews } = useSelector(({ metadata }) => metadata)
   const open = useSelector(({ sidebar }) => sidebar.open)
   const dispatch = useDispatch()
   const history = useHistory()
-  const smallWindow = useWindowDimensions().width < 700
+  const smallWindow = useWindowDimensions().width < 730
   const intl = useIntl()
   const learningLanguage = useSelector(learningLanguageSelector)
 
@@ -105,16 +116,6 @@ export default function NavBar() {
           <Nav className="mr-auto">
             <div className="navbar-container">
               <Link to="/home">
-                <Icon
-                  name="home"
-                  size="large"
-                  style={{
-                    color: 'black',
-                    cursor: 'pointer',
-                  }}
-                />
-              </Link>
-              <Link to="/home">
                 <Navbar.Brand className="navbar-revita-logo tour-start-finish">
                   <img
                     src={images.navbarLogo}
@@ -130,6 +131,11 @@ export default function NavBar() {
 
               {!smallWindow && (
                 <>
+                  <Link data-cy="navbar-library-button" to="/home">
+                    <Navbar.Brand className="navbar-text-item">
+                      <FormattedMessage id="Home" />
+                    </Navbar.Brand>
+                  </Link>
                   <Link data-cy="navbar-library-button" to="/library">
                     <Navbar.Brand className="navbar-text-item">
                       <FormattedMessage id="Library" />
@@ -178,15 +184,7 @@ export default function NavBar() {
                 )}
                 {showFlashcardElo && (
                   <div className="navbar-basic-item">
-                    <img
-                      src={images.flashcardIcon}
-                      alt="three cards"
-                      width="16px"
-                      style={{
-                        filter: blackToWhiteFilter,
-                      }}
-                    />{' '}
-                    {flashcardElo}
+                    <img src={images.flashcardIcon} alt="three cards" width="16px" /> {flashcardElo}
                   </div>
                 )}
               </Navbar.Text>
@@ -235,9 +233,9 @@ export default function NavBar() {
                   {user && user.user.last_used_language && (
                     <Link to="/learningLanguage">
                       <img
-                        className="tour-navbar-learning-language navbar-basic-item navbar-flag"
+                        className="tour-navbar-learning-language navbar-basic-icon navbar-flag"
                         style={{
-                          height: '1.5em',
+                          height: '21px',
                           border: '1px solid black',
                         }}
                         src={getLearningLanguageFlag()}
@@ -249,11 +247,10 @@ export default function NavBar() {
                   <NavDropdown
                     className="navbar-dropdown-icon-cont"
                     title={
-                      <Icon
-                        data-cy="navbar-info-dropdown"
-                        className="navbar-dropdown-icon"
-                        name="info circle"
-                        size="large"
+                      <NavbarIcon
+                        imgSrc={images.infoIcon}
+                        altText="info icon"
+                        extraClass="navbar-dropdown-icon"
                       />
                     }
                   >
@@ -281,7 +278,7 @@ export default function NavBar() {
                       target="_blank"
                       rel="noopener noreferrer"
                     >
-                      FAQ
+                      <FormattedMessage id="faq" />
                     </NavDropdown.Item>
                     <NavDropdown.Divider />
                     <ContactUs
@@ -305,7 +302,9 @@ export default function NavBar() {
                   </NavDropdown>
                 </>
               )}
+
               <a
+                className="navbar-basic-icon"
                 style={{ display: 'table-cell' }}
                 href="https://www2.helsinki.fi/en/projects/revita-language-learning-and-ai/news"
                 target="_blank"
@@ -317,12 +316,7 @@ export default function NavBar() {
                     cursor: 'pointer',
                   }}
                 >
-                  <Icon
-                    onClick={handleNewsClick}
-                    className="navbar-basic-item"
-                    name="bell"
-                    size="large"
-                  />
+                  <NavbarIcon imgSrc={images.bellIcon} altText="bell icon" />
                   {numUnreadNews > 0 ? (
                     <Popup
                       position="top right"
@@ -342,13 +336,8 @@ export default function NavBar() {
                 </span>
               </a>
 
-              <Link to="/profile/settings">
-                <Icon
-                  className="navbar-basic-item"
-                  data-cy="navbar-settings-button"
-                  name="setting"
-                  size="large"
-                />
+              <Link to="/profile/settings" className="navbar-basic-icon">
+                <NavbarIcon imgSrc={images.settingsIcon} altText="gear icon" />
               </Link>
             </div>
           </Nav>

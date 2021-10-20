@@ -517,44 +517,49 @@ html, body, #root {
 
   &-revita-logo {
     color: black!important;
-    margin-right: 2em;
+    margin-left: 1.5em;
+    margin-right: 3em;
 
-    @media (max-width: 755px) {
+    @media (max-width: 850px) {
+      margin-left: .5em;
       margin-right: 1em;
     }
   }
 
-  &-basic-item {
-    color: black;
-    margin-left: 0.3em!important;
-    margin-right: 0.3em!important;
+  &-basic-icon {
+    margin-left: 10px!important;
+    margin-right: 10px!important;
     cursor: pointer;
   
     @media (max-width: 755px) {
       margin-left: 0.2em;
       margin-right: 0.2em;
     }
-  }
+  } 
 
   &-text-item {
+    margin-top: .4em;
+    font-weight: 400;
     color: black!important;
     margin-right: 2em;
 
-    @media (max-width: 755px) {
+    @media (max-width: 850px) {
       margin-right: 1em;
     }
   }
 
   &-dropdown-text {
+    margin-left: -.4em;
+    margin-top: .4em;
     color: black!important;
     margin-right: 0em;
   }
 
   &-dropdown-icon-cont {
-    margin-left: 0.3em;
-    margin-right: 0.3em;
+    margin-left: 10px;
+    margin-right: 8px;
 
-    @media (max-width: 755px) {
+    @media (max-width: 850px) {
       margin-left: 0.2em;
       margin-right: 0.2em;
     }
@@ -565,9 +570,10 @@ html, body, #root {
     margin-right: -0.15em!important;
   }
 
-  &-basic-item:hover, &-dropdown-icon:hover, &-text-item:hover, &-dropdown-text:hover {
+  &-text-item:hover, &-dropdown-text:hover {
     text-decoration: underline;
   }
+
 
   &-external-link {
     &:visited {
@@ -582,7 +588,7 @@ html, body, #root {
   }
 
   &-flag:hover {
-    border: 1px solid #76C8D4!important;
+    border: 1px solid rgb(255, 209, 80)!important;
   }
 
   &-news-label {

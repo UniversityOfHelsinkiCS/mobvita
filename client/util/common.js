@@ -40,6 +40,9 @@ import practice from 'Assets/images/practice.png'
 import adaptiveTest from 'Assets/images/adaptive_test.png'
 import exhaustiveTest from 'Assets/images/exhaustive_test.png'
 import help from 'Assets/images/help.png'
+import settingsIcon from 'Assets/images/settings_icon.png'
+import bellIcon from 'Assets/images/bell_icon.png'
+import infoIcon from 'Assets/images/info_icon.png'
 // ---
 import culture1 from 'Assets/images/culture1.jpg'
 import politics1 from 'Assets/images/politics1.jpg'
@@ -132,6 +135,9 @@ export const images = {
   adaptiveTest,
   exhaustiveTest,
   help,
+  infoIcon,
+  bellIcon,
+  settingsIcon,
 }
 
 export const capitalize = word => {
