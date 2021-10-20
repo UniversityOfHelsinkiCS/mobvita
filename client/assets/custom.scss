@@ -468,6 +468,10 @@ html, body, #root {
   z-index: 99!important;
 }
 
+.tabular > .active {
+  background: rgb(239, 239, 239)!important;
+}
+
 .tour-mobile-message {
   font-size: 1rem;
 }
