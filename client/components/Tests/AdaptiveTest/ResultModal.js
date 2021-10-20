@@ -18,7 +18,11 @@ const ResultModal = ({ cefrLevel, adaptiveTestResults }) => {
     { ...C2, name: 'C2' },
   ]
 
-  const getPercentCorrect = scoreObj => ((scoreObj.correct / scoreObj.total) * 100).toFixed(1)
+  const getPercentCorrect = scoreObj => {
+    if (scoreObj.total === 0) return 0
+
+    return ((scoreObj.correct / scoreObj.total) * 100).toFixed(1)
+  }
 
   return (
     <Modal
