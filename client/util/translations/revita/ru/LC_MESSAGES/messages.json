@@ -1128,10 +1128,10 @@
     "adaptive-test": "Проверь свой уровень!",
     "news-bell-info-popup-text": "{numUnreadNews} новых сообщений в Новостях !",
     "test-settings": "Настройки для тестов",
-    "concepts": "Concepts",
-    "cefr-level": "CEFR level",
-    "adaptive_test": "Adaptive test",
-    "exhaustive test": "Exhaustive test",
-    "test-type": "Test type",
+    "concepts": "Темы",
+    "cefr-level": "Уровень CEFR",
+    "adaptive_test": "Адаптивный тест",
+    "exhaustive test": "Длинный тест",
+    "test-type": "Тип теста",
     "faq": "FAQ"
 }

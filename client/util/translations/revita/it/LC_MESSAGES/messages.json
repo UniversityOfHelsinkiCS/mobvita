@@ -1124,12 +1124,12 @@
     "topics": "Argomento",
     "no-topics-available": "Nessun argomento disponibile",
     "adaptive-test": "Scopri il tuo livello",
-    "news-bell-info-popup-text": "You have {numUnreadNews} unread messages. Click to see the News!",
+    "news-bell-info-popup-text": "Hai {numUnreadNews} messaggi non letti. Clicca per vedere le News!",
     "test-settings": "Impostazioni dei test",
-    "concepts": "Concepts",
-    "cefr-level": "CEFR level",
-    "adaptive_test": "Adaptive test",
-    "exhaustive test": "Exhaustive test",
-    "test-type": "Test type",
+    "concepts": "Concetti",
+    "cefr-level": "Livello CEFR",
+    "adaptive_test": "Test adattivo",
+    "exhaustive test": "Test lungo",
+    "test-type": "Tipo di test",
     "faq": "FAQ"
 }
