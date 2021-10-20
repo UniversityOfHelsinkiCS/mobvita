@@ -197,7 +197,7 @@ export default function NavBar() {
                       <Icon
                         className="navbar-dropdown-icon"
                         data-cy="navbar-user-dropdown"
-                        name="user"
+                        name="user outline"
                         size="large"
                       />
                     }
