@@ -1451,9 +1451,9 @@ html, body, #root {
     justify-content: center;
   }
   &-prephrase {
-    font-style: italic;
+    font-weight: 500;
     color: $primary-color;
-    font-size: 18px;
+    font-size: 20px;
     padding-bottom: 1em;
   }
   &-question {
