@@ -35,8 +35,8 @@ const AdaptiveTest = () => {
   const checkAnswer = answer => {
     if (!currentAdaptiveQuestion) return
 
-    const timeToAnswer = currentAdaptiveQuestion.time * 1000
-    const duration = timer.getTime() < 0 ? timeToAnswer : timeToAnswer - timer.getTime()
+    const timeToAnswer = currentAdaptiveQuestion.time
+    const duration = timer.getTime() < 0 ? timeToAnswer : timeToAnswer - timer.getTime() / 1000
 
     timer.stop()
     timer.reset()
