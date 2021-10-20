@@ -1,4 +1,5 @@
 import React from 'react'
+import { getBackgroundColor } from 'Utilities/common'
 import { useHistory } from 'react-router-dom'
 import TermsAndConditions from 'Components/StaticContent/TermsAndConditions'
 
@@ -10,7 +11,7 @@ const Footer = () => {
 
   return (
     <footer className="footer-wrapper">
-      <div className="footer">
+      <div className={`footer ${getBackgroundColor()}`}>
         {showTermsAndConditionsAndBuildVersion && (
           <>
             <TermsAndConditions

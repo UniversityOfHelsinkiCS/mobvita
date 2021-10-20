@@ -2034,7 +2034,7 @@ html, body, #root {
 .footer {
   font-size: 0.9rem;
   padding: 0.5em;
-  width: 95%;
+  width: 100%;
   max-width: 1400px;
   margin-left: auto;
   margin-right: auto;
@@ -2042,7 +2042,7 @@ html, body, #root {
   border-radius: 5px;
   display: flex;
   justify-content: space-between;
-  color: #708090;
+  color: rgb(112, 114, 120);
   flex-wrap: wrap;
 
   &-wrapper {
@@ -2064,8 +2064,12 @@ html, body, #root {
   }
 
   &-button:hover {
-    color: $primary-color;
+    color: #000;
   }
+
+  // &-button:hover {
+  //   color: $primary-color;
+  // }
 
   & a {
     color: $primary-color;
