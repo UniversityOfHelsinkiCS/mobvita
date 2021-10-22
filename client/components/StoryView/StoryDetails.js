@@ -83,11 +83,7 @@ const StoryDetails = () => {
         )}
       </ConfirmationWarning>
       <div className="space-between pb-sm">
-        <button
-          type="button"
-          onClick={() => history.goBack()}
-          style={{ border: 'none', backgroundColor: 'white' }}
-        >
+        <button type="button" onClick={() => history.goBack()} style={{ border: 'none' }}>
           <Icon name="arrow left" />
           <FormattedMessage id="Back" />
         </button>
@@ -108,7 +104,9 @@ const StoryDetails = () => {
           />
         </div>
       </div>
-      <h1 style={{ fontSize: '18px', color: '#777', paddingBottom: '0.5em' }}>{title}</h1>
+      <h1 className="pt-lg pb-sm" style={{ fontSize: '18px' }}>
+        {title}
+      </h1>
       <DetailsTable
         author={author}
         difficulty={difficulty}
@@ -122,22 +120,19 @@ const StoryDetails = () => {
         date={date}
       />
       <div className="flex-col gap-row-sm">
-        <div className="gap-col-sm">
-          {story.percent_cov === 0 && (
-            <LinkButton
-              variant="secondary"
-              to={`/stories/${story._id}/read`}
-              translationId="Read"
-            />
-          )}
+        <div className="gap-col-sm gap-row-sm">
+          <LinkButton
+            variant="secondary"
+            to={`/stories/${story._id}/preview`}
+            translationId="preview"
+          />
           <LinkButton to={`/stories/${id}/practice`} translationId="practice" />
-          {story.percent_cov > 0 && (
-            <LinkButton
-              variant="secondary"
-              to={`/stories/${story._id}/review`}
-              translationId="review"
-            />
-          )}
+          <LinkButton
+            variant={percentCovered === 0 ? 'outline-danger' : 'secondary'}
+            disabled={percentCovered === 0}
+            to={`/stories/${story._id}/review`}
+            translationId="review"
+          />
           <LinkButton
             variant="primary"
             to={`/flashcards/fillin/${id}/`}
