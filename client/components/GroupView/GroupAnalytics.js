@@ -21,7 +21,7 @@ const GroupAnalytics = ({ role }) => {
   const [startDate, setStartDate] = useState(
     moment().clone().startOf('month').subtract(6, 'month').toDate()
   )
-  const [endDate, setEndDate] = useState(moment().clone().startOf('month').toDate())
+  const [endDate, setEndDate] = useState(moment().clone().add(1, 'days').toDate())
 
   const dispatch = useDispatch()
   const currentGroupId = useSelector(({ user }) => user.data.user.last_selected_group)
