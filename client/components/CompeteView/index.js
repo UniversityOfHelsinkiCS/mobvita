@@ -8,7 +8,7 @@ import {
 } from 'Utilities/redux/competitionReducer'
 import { clearTranslationAction } from 'Utilities/redux/translationReducer'
 import { resetCurrentSnippet } from 'Utilities/redux/snippetsReducer'
-import { getTextStyle, learningLanguageSelector } from 'Utilities/common'
+import { getTextStyle, learningLanguageSelector, getMode } from 'Utilities/common'
 import ReportButton from 'Components/ReportButton'
 import useWindowDimensions from 'Utilities/windowDimensions'
 import { keyboardLayouts } from 'Components/PracticeView/KeyboardLayouts'
@@ -40,13 +40,14 @@ const CompeteView = ({ match }) => {
 
   const [playerFinished, setPlayerFinished] = useState(null)
   const [youWon, setYouWon] = useState(false)
+  const mode = getMode()
 
   const showFooter = width > 640
   const showVirtualKeyboard = width > 500 && keyboardLayouts[learningLanguage]
 
   const initializeCompetition = async () => {
     await Promise.all([
-      dispatch(getStoryAction(id)),
+      dispatch(getStoryAction(id, mode)),
       dispatch(clearPractice()),
       dispatch(resetCurrentSnippet(id)),
       dispatch(clearTranslationAction()),

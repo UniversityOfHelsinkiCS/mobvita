@@ -4,8 +4,8 @@ import callBuilder from '../apiConnection'
  * Actions and reducers are in the same file for readability
  */
 
-export const getStoryAction = storyId => {
-  const route = `/stories/${storyId}`
+export const getStoryAction = (storyId, mode) => {
+  const route = `/stories/${storyId}?user_mode=${mode}`
   const prefix = 'GET_STORY'
   return callBuilder(route, prefix)
 }

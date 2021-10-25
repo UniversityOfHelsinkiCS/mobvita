@@ -262,6 +262,8 @@ export const checkRevitaStatus = async () => {
   return result
 }
 
+export const getMode = () => useHistory().location.pathname.split('/').pop()
+
 const defaultAllowed = [
   'b',
   'i',

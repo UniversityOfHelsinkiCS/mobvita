@@ -3,13 +3,14 @@ import { useDispatch, useSelector } from 'react-redux'
 import { Icon, Divider } from 'semantic-ui-react'
 import useWindowDimensions from 'Utilities/windowDimensions'
 import { FormattedMessage } from 'react-intl'
+import { getMode } from 'Utilities/common'
 import {
   setFocusedSpan,
   setAnnotationFormVisibility,
   setHighlightRange,
   resetAnnotationCandidates,
 } from 'Utilities/redux/annotationsReducer'
-import { useParams, useHistory } from 'react-router-dom'
+import { useParams } from 'react-router-dom'
 import { addEditStoryAnnotation, removeStoryAnnotation } from 'Utilities/redux/storiesReducer'
 import AnnotationForm from './AnnotationForm'
 import AnnotationSelectionView from './AnnotationSelectionView'
@@ -34,7 +35,6 @@ const BackToAllNotes = ({ resetAndGoToListView }) => {
 
 const FocusedView = ({ focusedSpan }) => {
   const dispatch = useDispatch()
-  const history = useHistory()
   const maxCharacters = 1000
   const { width } = useWindowDimensions()
   const bigScreen = width >= 1024
@@ -49,7 +49,7 @@ const FocusedView = ({ focusedSpan }) => {
     story: stories.focused,
   }))
   const userHasLoggedIn = user.userName !== 'Anonymous User'
-  const mode = history.location.pathname.split('/').pop()
+  const mode = getMode()
   const storyWords = story.paragraph.flat(1)
 
   const handleEditButtonClick = text => {

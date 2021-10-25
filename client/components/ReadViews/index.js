@@ -9,7 +9,7 @@ import { getStoryAction } from 'Utilities/redux/storiesReducer'
 
 import { clearTranslationAction } from 'Utilities/redux/translationReducer'
 import { resetAnnotations, setAnnotations } from 'Utilities/redux/annotationsReducer'
-import { learningLanguageSelector, getTextStyle } from 'Utilities/common'
+import { learningLanguageSelector, getTextStyle, getMode } from 'Utilities/common'
 import DictionaryHelp from 'Components/DictionaryHelp'
 import AnnotationBox from 'Components/AnnotationBox'
 import Spinner from 'Components/Spinner'
@@ -24,6 +24,7 @@ const ReadViews = ({ match }) => {
   const intl = useIntl()
   const { width } = useWindowDimensions()
   const [hideFeedback, setHideFeedback] = useState(false)
+  const mode = getMode()
 
   const { story, pending } = useSelector(({ stories, locale }) => ({
     story: stories.focused,
@@ -34,7 +35,7 @@ const ReadViews = ({ match }) => {
   const learningLanguage = useSelector(learningLanguageSelector)
   const { id } = match.params
   useEffect(() => {
-    dispatch(getStoryAction(id))
+    dispatch(getStoryAction(id, mode))
     dispatch(clearTranslationAction())
     dispatch(resetAnnotations())
   }, [])
