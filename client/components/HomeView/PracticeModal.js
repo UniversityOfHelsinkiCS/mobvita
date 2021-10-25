@@ -1,16 +1,30 @@
 import React, { useState, useEffect, useLayoutEffect } from 'react'
 import { Modal } from 'semantic-ui-react'
-import { Link, useHistory } from 'react-router-dom'
+import { useHistory } from 'react-router-dom'
 import { useSelector } from 'react-redux'
 import { capitalize, images } from 'Utilities/common'
-import CheckboxGroup from 'Components/CheckboxGroup'
 import { FormattedMessage } from 'react-intl'
-import { Button, Spinner } from 'react-bootstrap'
+import { Spinner } from 'react-bootstrap'
 
 const extractFilters = object =>
   Object.entries(object)
     .filter(entry => entry[1])
     .map(([key]) => capitalize(key))
+
+const PracticeModalButton = ({ handleClick, name, extraImgSrc, storyNum }) => {
+  const imgSrc = extraImgSrc ?? `${name}1`
+
+  return (
+    <button className="practice-now-modal-btn" type="button" onClick={handleClick}>
+      <div className="align-center flex-col space-between">
+        <div style={{ marginBottom: '1em' }}>
+          <FormattedMessage id={capitalize(name)} /> {storyNum && <span> ({storyNum})</span>}
+        </div>
+        <img src={images[imgSrc]} alt={name} style={{ maxWidth: '45%', maxHeight: '45%' }} />
+      </div>
+    </button>
+  )
+}
 
 const PracticeModal = ({ open, setOpen }) => {
   const history = useHistory()
@@ -64,11 +78,15 @@ const PracticeModal = ({ open, setOpen }) => {
 
   // preload practice modal images
   useLayoutEffect(() => {
-    new Image().src = images.dicesOld
-    new Image().src = images.sport1
+    new Image().src = images.dices
+    new Image().src = images.public1
+    new Image().src = images.group1
+    new Image().src = images.private1
+
     new Image().src = images.culture1
     new Image().src = images.politics1
     new Image().src = images.science1
+    new Image().src = images.sport1
   }, [])
 
   useEffect(() => {
@@ -188,92 +206,48 @@ const PracticeModal = ({ open, setOpen }) => {
       onClose={handleClose}
       closeIcon={{ style: { top: '1rem', right: '2.5rem' }, color: 'black', name: 'close' }}
     >
-      <Modal.Header>
-        <FormattedMessage id="practice-random-story-from" />
-      </Modal.Header>
-      <Modal.Content className="practiceModal">
-        <div className="flex justify-center">
-          <Link to={filteredLink} style={{ width: '50%' }}>
-            {waiting ? (
-              <div className="flex justify-center">
-                <Spinner animation="border" variant="primary" />
-              </div>
-            ) : (
-              <Button
-                disabled={!filteredLink}
-                className="practice-modal-tile-btn"
-                style={{
-                  backgroundImage: `url(${images.dicesOld})`,
-                  width: '100%',
-                }}
-                data-cy="start-random"
-              >
-                <span style={{ fontWeight: '1000' }}>
-                  <FormattedMessage id="(from)all-stories" />
-                  {` (${filteredStories.length})`}
-                </span>
-              </Button>
-            )}
-          </Link>
-        </div>
+      <Modal.Content style={{ background: 'rgb(230, 235, 233)' }}>
+        <div className="flex-col" style={{ gap: '3em' }}>
+          <div>
+            <div className="practice-now-modal-label">
+              <FormattedMessage id="practice-random-story-from-library" />
+            </div>
 
-        <div className="pt-sm pb-sm">
-          <br />
-          <br />
-          <div className="label">
-            <FormattedMessage id="(from)library" />:
-          </div>
-          <br />
-          <CheckboxGroup
-            values={libraries}
-            onClick={handleLibraryChange}
-            additionalClass="wrap-and-grow"
-            reverse
-          />
-        </div>
-        <div>
-          <br />
-          <br />
-          <div className="label">
-            <FormattedMessage id="(from)category" />:
-          </div>
-          <br />
-          <div
-            className="checkbox-group"
-            style={{ flexWrap: 'wrap' }}
-            data-cy="practice-categories"
-          >
-            {Object.entries(categories)
-              .sort()
-              .slice(0, 4)
-              .map(([name, enabled]) => (
-                <Button
-                  className={`practice-modal-tile-btn ${!enabled ? 'disabled' : ''}`}
-                  style={{
-                    backgroundImage: `url(${images[name + 1]})`,
-                  }}
-                  onClick={() => handleCategoryChange(name)}
-                  key={name}
-                >
-                  <span style={{ fontWeight: '1000' }}>
-                    <FormattedMessage id={capitalize(name)} />
-                  </span>
-                </Button>
+            <div className="practice-now-modal-group-cont" data-cy="practice-libraries">
+              {waiting ? (
+                <button type="button" className="practice-now-modal-btn">
+                  <div className="align-center flex-col space-between">
+                    <Spinner animation="border" variant="primary" />
+                  </div>
+                </button>
+              ) : (
+                <PracticeModalButton
+                  handleClick={() => history.push(filteredLink)}
+                  name="All-Stories"
+                  extraImgSrc="dices"
+                  storyNum={filteredStories.length}
+                />
+              )}
+              {Object.entries(libraries).map(([key, _]) => (
+                <PracticeModalButton handleClick={() => handleLibraryChange(key)} name={key} />
               ))}
-            <br />
+            </div>
           </div>
-          {false && (
-            <Button
-              block
-              onClick={() => handleCategoryChange('uncategorized')}
-              variant={categories.uncategorized ? 'btn btn-toggle-on' : 'btn btn-toggle-off'}
-              data-cy="other-category"
-            >
-              <FormattedMessage id="Uncategorized" />
-            </Button>
-          )}
+
+          <div style={{ width: '100%' }}>
+            <div className="practice-now-modal-label">
+              <FormattedMessage id="or-from-category" />
+            </div>
+            <div className="practice-now-modal-group-cont" data-cy="practice-categories">
+              {Object.entries(categories)
+                .sort()
+                .slice(0, 4)
+                .map(([name, _]) => (
+                  <PracticeModalButton handleClick={() => handleCategoryChange(name)} name={name} />
+                ))}
+            </div>
+          </div>
         </div>
-        <div />
       </Modal.Content>
     </Modal>
   )

@@ -541,20 +541,46 @@ html, body, #root {
   background-color: rgb(255, 209, 80)!important;
 }
 
-.practice-modal-tile-btn {
-  height: 10rem!important;
-  background-size: cover;
-  background-position: center;
-  flex-basis: 50%;
-  border: 1px solid white;
-  color: white;
-  text-shadow: 0 0 3px #000000, 0 0 5px #0000FF;
-  font-size: 1.2rem;
-  letter-spacing: .075em;
-}
+.practice-now-modal {
 
-.practice-modal-tile-btn:hover {
-  color: white;
+  &-group-cont {
+    display: flex;
+    justify-content: space-evenly;
+    flex-wrap: wrap;
+    padding: 5px;
+  }
+
+  &-label {
+    font-weight: 500;
+    font-size: 1.5em;
+    margin-bottom: 1em;
+
+    @media (max-width: 800px) {
+      font-size: 1.2em;
+    }
+
+  }
+
+  &-btn {
+    padding: 10px 5px 15px 5px;
+    border: 2px solid #000;
+    border-radius: 12px;
+    width: calc(100% * (1 / 4) - 14px);
+    font-size: 1.2em;
+    font-weight: 500;
+    margin: 7px;
+    position: relative;
+    background: white;
+
+    @media (max-width: 800px) {
+      width: calc(100% * (1 / 2) - 8px);
+      margin: 4px;
+    }
+  }
+
+  &-btn:hover {
+    background-color: rgb(255, 209, 80)!important;
+  }
 }
 
 // Navbar

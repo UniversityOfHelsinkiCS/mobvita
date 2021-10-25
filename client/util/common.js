@@ -26,15 +26,15 @@ import flagItalian from 'Assets/images/flags/flag_italian.png'
 import flagSyriac from 'Assets/images/flags/flag_syriac.png'
 import flagChinese from 'Assets/images/flags/flag_prc.png'
 // ---
-import cultureNew from 'Assets/images/culture_new.png'
-import politicsNew from 'Assets/images/politics_new.png'
-import scienceNew from 'Assets/images/science_new.png'
-import sportNew from 'Assets/images/sport_new.png'
+import culture1 from 'Assets/images/culture.png'
+import politics1 from 'Assets/images/politics.png'
+import science1 from 'Assets/images/science.png'
+import sport1 from 'Assets/images/sport.png'
 import flashcards from 'Assets/images/flashcards.png'
 import library from 'Assets/images/library.png'
-import publicNew from 'Assets/images/public_new.png'
-import groupNew from 'Assets/images/group_new.png'
-import privateNew from 'Assets/images/private_new.png'
+import public1 from 'Assets/images/public.png'
+import group1 from 'Assets/images/group.png'
+import private1 from 'Assets/images/private.png'
 import dices from 'Assets/images/dices.png'
 import practice from 'Assets/images/practice.png'
 import adaptiveTest from 'Assets/images/adaptive_test.png'
@@ -44,10 +44,6 @@ import settingsIcon from 'Assets/images/settings_icon.png'
 import bellIcon from 'Assets/images/bell_icon.png'
 import infoIcon from 'Assets/images/info_icon.png'
 // ---
-import culture1 from 'Assets/images/culture1.jpg'
-import politics1 from 'Assets/images/politics1.jpg'
-import science1 from 'Assets/images/science1.jpg'
-import sport1 from 'Assets/images/sport1.jpg'
 import addStory from 'Assets/images/add_story.jpg'
 import tests from 'Assets/images/tests.jpg'
 import logo from 'Assets/images/logo_transparent.png'
@@ -67,7 +63,6 @@ import fancyWreadth from 'Assets/images/fancy_wreadth.png'
 import trophy from 'Assets/images/trophy.svg'
 import leaderboard from 'Assets/images/leaderboard.svg'
 import nestIcon from 'Assets/images/nest.png'
-import dicesOld from 'Assets/images/dices_old.png'
 
 import { useSelector } from 'react-redux'
 import { useHistory } from 'react-router-dom'
@@ -75,10 +70,6 @@ import { callApi } from './apiConnection'
 
 export const images = {
   revitaLogoTransparent,
-  culture1,
-  politics1,
-  science1,
-  sport1,
   flagFinnish,
   flagUdmurt,
   flagErzya,
@@ -99,8 +90,6 @@ export const images = {
   flagFrench,
   flagSyriac,
   flagChinese,
-  // flashcards,
-  // library,
   tests,
   addStory,
   logo,
@@ -119,25 +108,24 @@ export const images = {
   fancyWreadth,
   trophy,
   leaderboard,
-  nestIcon,
-  dicesOld,
-  cultureNew,
-  politicsNew,
-  scienceNew,
-  sportNew,
+  dices, // practice now modal ->
+  public1,
+  private1,
+  group1,
+  culture1,
+  politics1,
+  science1,
+  sport1,
+  practice, // homeview -->
   flashcards,
   library,
-  publicNew,
-  groupNew,
-  privateNew,
-  dices,
-  practice,
   adaptiveTest,
   exhaustiveTest,
   help,
-  infoIcon,
+  infoIcon, // icons -->
   bellIcon,
   settingsIcon,
+  nestIcon,
 }
 
 export const capitalize = word => {
