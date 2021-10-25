@@ -1,5 +1,5 @@
 describe("competition mode", function () {
-  const competeURL = "http://localhost:8000/compete/5c080874ff6345361ec09dd8/"
+  const competeURL = "http://localhost:8000/stories/5c080874ff6345361ec09dd8/compete"
 
   this.beforeAll(function () {
     cy.login()

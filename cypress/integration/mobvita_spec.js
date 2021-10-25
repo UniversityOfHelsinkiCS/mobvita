@@ -110,7 +110,7 @@ describe('Mobvita', function () {
 
     it('can start random practice', function () {
       cy.get('[data-cy=practice-now]').click()
-      cy.get('[data-cy=start-random]', { timeout: 20000 }).click()
+      cy.get('[data-cy=All-Stories]', { timeout: 20000 }).click()
       cy.get('[data-cy=practice-view]')
     })
 

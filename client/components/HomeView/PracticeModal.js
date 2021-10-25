@@ -15,7 +15,7 @@ const PracticeModalButton = ({ handleClick, name, extraImgSrc, storyNum }) => {
   const imgSrc = extraImgSrc ?? `${name}1`
 
   return (
-    <button className="practice-now-modal-btn" type="button" onClick={handleClick}>
+    <button data-cy={name} className="practice-now-modal-btn" type="button" onClick={handleClick}>
       <div className="align-center flex-col space-between">
         <div style={{ marginBottom: '1em' }}>
           <FormattedMessage id={capitalize(name)} /> {storyNum && <span> ({storyNum})</span>}
