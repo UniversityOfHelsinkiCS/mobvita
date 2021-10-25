@@ -53,7 +53,7 @@ export const unshareStory = (groupId, storyId) => {
   return callBuilder(route, prefix, 'post', {})
 }
 
-export const addEditStoryAnnotation = (storyId, startId, endId, annotation) => {
+export const addEditStoryAnnotation = (storyId, startId, endId, annotation, mode) => {
   const route = `/stories/${storyId}/annotate`
   const prefix = 'ADD_OR_EDIT_STORY_ANNOTATION'
   return callBuilder(route, prefix, 'post', {
@@ -61,16 +61,18 @@ export const addEditStoryAnnotation = (storyId, startId, endId, annotation) => {
     start_token_id: startId,
     end_token_id: endId,
     annotation,
+    user_mode: mode,
   })
 }
 
-export const removeStoryAnnotation = (storyId, startId, endId) => {
+export const removeStoryAnnotation = (storyId, startId, endId, mode) => {
   const route = `/stories/${storyId}/annotate`
   const prefix = 'REMOVE_STORY_ANNOTATION'
   return callBuilder(route, prefix, 'post', {
     op: 'delete',
     start_token_id: startId,
     end_token_id: endId,
+    user_mode: mode,
   })
 }
 
