@@ -1039,7 +1039,7 @@
     " ": "Существительные. Управление падежными формами. Управление послелогами/предлогами",
     "please-input-non-negative-integer": "Введи неотрицательное число",
     "practice-random-story-from": "Выбрать историю из...",
-    "all-stories": "All stories",
+    "all-stories": "всех текстов",
     "(from)all-stories": "всех текстов",
     "(from)library": "библиотеки",
     "(from)category": "категории",
@@ -1133,5 +1133,9 @@
     "adaptive_test": "Адаптивный тест",
     "exhaustive test": "Длинный тест",
     "test-type": "Тип теста",
-    "faq": "FAQ"
+    "faq": "FAQ",
+    "or-from-category": "категории",
+    "practice-random-story-from-library": "Выбрать историю из...",
+    "All-stories": "всех текстов",
+    "All-Stories": "всех текстов"
 }

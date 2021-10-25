@@ -1037,7 +1037,7 @@
     " ": "Noun. Case and postposition/preposition government",
     "please-input-non-negative-integer": "Inserisci un numero intero non negativo",
     "practice-random-story-from": "Allenati con una storia casuale da...",
-    "all-stories": "All stories",
+    "all-stories": "Tutte le storie",
     "(from)all-stories": "Tutte le storie",
     "(from)library": "Raccolta",
     "(from)category": "Categoria",
@@ -1131,5 +1131,9 @@
     "adaptive_test": "Test adattivo",
     "exhaustive test": "Test lungo",
     "test-type": "Tipo di test",
-    "faq": "FAQ"
+    "faq": "FAQ",
+    "or-from-category": "O da una categoria:",
+    "practice-random-story-from-library": "Esercitati con una storia estratta casualmente dalla raccolta:",
+    "All-stories": "Tutte le storie",
+    "All-Stories": "Tutte le storie"
 }

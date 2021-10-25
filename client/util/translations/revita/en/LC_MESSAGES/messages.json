@@ -1130,5 +1130,9 @@
     "adaptive_test": "Adaptive test",
     "exhaustive test": "Long test",
     "test-type": "Test type",
-    "faq": "FAQ"
+    "faq": "FAQ",
+    "or-from-category": "Or from a category:",
+    "practice-random-story-from-library": "Practice with a random story from a library:",
+    "All-stories": "All stories",
+    "All-Stories": "All stories"
 }

@@ -1036,8 +1036,8 @@
     " ": "Substantiivi. Rektiot",
     "please-input-non-negative-integer": "Syötä ei-negatiivinen kokonaisluku",
     "practice-random-story-from": "Valitse harjoiteltavaksi satunnainen kertomus...",
-    "all-stories": "All stories",
-    "(from)all-stories": "Kaikista kertomuksista",
+    "all-stories": "Kaikki",
+    "(from)all-stories": "Kaikki",
     "(from)library": "Kirjastosta",
     "(from)category": "Kategoriasta",
     "edit": "Muokkaa",
@@ -1130,5 +1130,9 @@
     "adaptive_test": "Taitotasotesti",
     "exhaustive test": "Pitkä testi",
     "test-type": "Testin tyyppi",
-    "faq": "UKK"
+    "faq": "UKK",
+    "or-from-category": "Tai kategoriasta:",
+    "practice-random-story-from-library": "Valitse harjoiteltavaksi satunnainen kertomus kirjastosta:",
+    "All-stories": "Kaikki",
+    "All-Stories": "Kaikki"
 }
