@@ -123,7 +123,7 @@ const StoryActions = ({ story }) => {
             <FormattedMessage id="Flashcards" />
           </Button>
         </Link>
-        <Link to={`/compete/${story._id}/`}>
+        <Link to={`/stories/${story._id}/compete`}>
           <Button variant="secondary">
             <FormattedMessage id="compete" />
           </Button>
@@ -135,6 +135,9 @@ const StoryActions = ({ story }) => {
             </Button>
           </Link>
         )}
+        {/* <Link to={`/stories/${story._id}/exercise-picker`}>
+          <Button variant="secondary">&beta;</Button>
+        </Link> */}
       </div>
     )
   }
@@ -178,7 +181,7 @@ const StoryActions = ({ story }) => {
           <Dropdown.Item
             text={<FormattedMessage id="compete" />}
             as={Link}
-            to={`/compete/${story._id}/`}
+            to={`/stories/${story._id}/compete`}
             icon="clock"
           />
         </Dropdown.Menu>

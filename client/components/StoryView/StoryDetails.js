@@ -138,7 +138,11 @@ const StoryDetails = () => {
             to={`/flashcards/fillin/${id}/`}
             translationId="Flashcards"
           />
-          <LinkButton variant="secondary" to={`/compete/${story._id}`} translationId="compete" />
+          <LinkButton
+            variant="secondary"
+            to={`/stories/${story._id}/compete`}
+            translationId="compete"
+          />
         </div>
       </div>
     </main>

@@ -77,7 +77,11 @@ const DetailedStoryModal = ({
               to={`/flashcards/fillin/${story._id}/`}
               translationId="Flashcards"
             />
-            <LinkButton variant="secondary" to={`/compete/${story._id}`} translationId="compete" />
+            <LinkButton
+              variant="secondary"
+              to={`/stories/${story._id}/compete`}
+              translationId="compete"
+            />
             <LinkButton
               variant="secondary"
               to={`/crossword/${story._id}`}

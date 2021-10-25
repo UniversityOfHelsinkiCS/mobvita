@@ -200,14 +200,14 @@ const StoryList = () => {
           className="tour-add-new-stories"
           onClick={() => setAddStoryModalOpen(true)}
           data-cy="add-story-button"
-          color="teal"
           size="big"
           style={{
-            fontSize: '1.2em',
+            fontSize: '1.3em',
+            fontWeight: 500,
             margin: '1em 0',
             padding: '1rem 0',
             width: '100%',
-            border: '2px solid',
+            border: '2px solid #000',
           }}
         >
           {intl.formatMessage({ id: 'add-your-stories' })}
