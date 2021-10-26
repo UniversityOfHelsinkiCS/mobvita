@@ -168,6 +168,10 @@ const Help = () => {
             the Sidebar.
           </li>
         </ul>
+        <b>Icons:</b>
+        <ul>
+          <li>Icons made by Freepik from www.flaticon.com</li>
+        </ul>
         <h4>Technical</h4>
         We recommend the newest versions of these browsers:
         <ul>
@@ -348,6 +352,10 @@ const Help = () => {
             Per qualsiasi domanda o commento ti preghiamo di contattarci! Puoiu trovare il pulsante
             "Contatti" nel menu a comparsa.
           </li>
+        </ul>
+        <b>Icons:</b>
+        <ul>
+          <li>Icons made by Freepik from www.flaticon.com</li>
         </ul>
         <h4>Informazioni Tecniche</h4>
         Raccomandiamo l'utilizzo le ultime versioni dei seguenti browsers:
