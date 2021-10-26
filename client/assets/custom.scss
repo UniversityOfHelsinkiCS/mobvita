@@ -282,7 +282,7 @@ html, body, #root {
 }
 
 .btn-link:hover {
-  color: rgb(50, 170, 248);
+  color: $btn-color-primary;
   background: none;
   border: none;
 }
@@ -534,8 +534,8 @@ html, body, #root {
   }
 }
 
-.homeview-btn:hover {
-  background-color: rgb(255, 209, 80)!important;
+.homeview-btn:hover, .practice-now-modal-btn:hover {
+  background-color: $btn-highlight-color-primary;
 }
 
 .practice-now-modal {
@@ -574,9 +574,6 @@ html, body, #root {
     }
   }
 
-  &-btn:hover {
-    background-color: rgb(255, 209, 80)!important;
-  }
 }
 
 // Navbar
@@ -670,7 +667,7 @@ html, body, #root {
   }
 
   &-flag:hover {
-    border: 1px solid rgb(255, 209, 80)!important;
+    border: 1px solid $btn-highlight-color-primary!important;
   }
 
   &-news-label {

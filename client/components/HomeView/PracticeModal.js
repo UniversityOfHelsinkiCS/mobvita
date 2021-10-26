@@ -209,7 +209,7 @@ const PracticeModal = ({ open, setOpen }) => {
       <Modal.Content style={{ background: 'rgb(230, 235, 233)' }}>
         <div className="flex-col" style={{ gap: '3em' }}>
           <div>
-            <div className="practice-now-modal-label" style={{ width: '80%' }}>
+            <div className="practice-now-modal-label" style={{ width: '85%' }}>
               <FormattedMessage id="practice-random-story-from-library" />
             </div>
 
