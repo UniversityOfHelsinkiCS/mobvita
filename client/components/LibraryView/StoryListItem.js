@@ -135,9 +135,9 @@ const StoryActions = ({ story }) => {
             </Button>
           </Link>
         )}
-        {/* <Link to={`/stories/${story._id}/exercise-picker`}>
+        <Link to={`/stories/${story._id}/exercise-picker`}>
           <Button variant="secondary">&beta;</Button>
-        </Link> */}
+        </Link>
       </div>
     )
   }
