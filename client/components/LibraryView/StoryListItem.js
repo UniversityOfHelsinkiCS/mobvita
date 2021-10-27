@@ -6,7 +6,7 @@ import { Link } from 'react-router-dom'
 import { FormattedMessage } from 'react-intl'
 import { removeStory, unshareStory as unshare } from 'Utilities/redux/storiesReducer'
 import useWindowDimensions from 'Utilities/windowDimensions'
-import { getTextStyle, learningLanguageSelector } from 'Utilities/common'
+import { getTextStyle, learningLanguageSelector, hiddenFeatures } from 'Utilities/common'
 import ConfirmationWarning from 'Components/ConfirmationWarning'
 import ShareStory from 'Components/StoryView/ShareStory'
 import StoryDetailsModal from 'Components/StoryView/StoryDetailsModal'
@@ -135,9 +135,11 @@ const StoryActions = ({ story }) => {
             </Button>
           </Link>
         )}
-        <Link to={`/stories/${story._id}/exercise-picker`}>
-          <Button variant="secondary">&beta;</Button>
-        </Link>
+        {hiddenFeatures && (
+          <Link to={`/stories/${story._id}/exercise-picker`}>
+            <Button variant="secondary">&beta;</Button>
+          </Link>
+        )}
       </div>
     )
   }

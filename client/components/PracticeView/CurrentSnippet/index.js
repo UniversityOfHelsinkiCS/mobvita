@@ -24,7 +24,6 @@ import {
   incrementAttempts,
 } from 'Utilities/redux/practiceReducer'
 import {
-  updateSeveralAnnotationStore,
   updateSeveralSpanAnnotationStore,
   resetAnnotations,
 } from 'Utilities/redux/annotationsReducer'
