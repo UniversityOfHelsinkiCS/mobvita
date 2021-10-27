@@ -123,6 +123,9 @@ export default (
         ...state,
         // previous: filterPrevious(state.previous, state.focused),
         focused: action.response,
+        acceptedTokens: state.acceptedTokens.concat(
+          action.response.practice_snippet.filter(word => word.id)
+        ),
         pending: false,
         error: false,
       }
