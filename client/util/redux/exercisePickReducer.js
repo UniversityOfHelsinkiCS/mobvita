@@ -22,7 +22,7 @@ export const refreshCurrentSnippet = (storyId, currentSnippetId, acceptedTokens)
 export const getNextSnippetFrozen = (storyId, currentSnippetId, acceptedTokens) => {
   const route = `/stories/${storyId}/frozen_snippet/next?previous=${currentSnippetId}`
   const prefix = 'GET_NEXT_SNIPPET_FROZEN'
-  const payload = { accepted_tokens: acceptedTokens }
+  const payload = { accepted_tokens: acceptedTokens, freeze_snippet: true }
   return callBuilder(route, prefix, 'post', payload)
 }
 
