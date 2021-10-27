@@ -139,6 +139,9 @@ const CurrentSnippet = ({ storyId, handleInputChange }) => {
     // if (snippets.focused.total_num !== currentSnippetId() + 1 || finished) {
     if (exercisePick.focused.total_num !== currentSnippetId() + 1 || finished) {
       dispatch(getNextSnippetFrozen(storyId, currentSnippetId(), exercisePick.acceptedTokens))
+    } else if (exercisePick.focused.total_num === currentSnippetId() + 1 || finished) {
+      dispatch(getNextSnippetFrozen(storyId, currentSnippetId(), exercisePick.acceptedTokens))
+      setFinished(true)
     } else {
       setFinished(true)
     }
@@ -166,12 +169,10 @@ const CurrentSnippet = ({ storyId, handleInputChange }) => {
   }, [])
 
   useEffect(() => {
-    console.log('focused :( ', exercisePick)
     if (snippetFinished) finishSnippet()
   }, [snippetFinished])
 
   useEffect(() => {
-    console.log('we got here?')
     // const currentSnippetIsLoaded = !!snippets.focused
     const currentSnippetIsLoaded = !!exercisePick.focused
     if (currentSnippetIsLoaded) {
@@ -255,7 +256,7 @@ const CurrentSnippet = ({ storyId, handleInputChange }) => {
           <SnippetActions storyId={storyId} exerciseCount={exerciseCount} />
         </div>
       ) : (
-        <Button variant="primary" block onClick={() => startOver()}>
+        <Button disabled variant="primary" block onClick={() => startOver()}>
           <FormattedMessage id="restart-story" />
         </Button>
       )}
