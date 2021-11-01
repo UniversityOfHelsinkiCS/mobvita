@@ -19,7 +19,6 @@ import {
   clearCurrentPractice,
   setTouchedIds,
   addToAudio,
-  setPreviousAnswers,
   addToOptions,
   startSnippet,
   incrementAttempts,
@@ -100,10 +99,16 @@ const CurrentSnippet = ({ storyId, handleInputChange }) => {
   }
 
   const finishSnippet = () => {
-    // dispatch(setPreviousAnswers(currentSnippetId()))
-    // dispatch(addToPrevious([snippets.focused.practice_snippet]))
+    const filteredPreviousSnippets = exercisePick.focused.practice_snippet.map(wordObj => {
+      if (wordObj?.id && !exercisePick.acceptedTokens.map(t => t.ID).includes(wordObj.ID)) {
+        delete wordObj.id
+        return wordObj
+      }
 
-    dispatch(addToPrevious([exercisePick.focused.practice_snippet]))
+      return wordObj
+    })
+
+    dispatch(addToPrevious([filteredPreviousSnippets]))
 
     const annotationsToInitialize = []
     let currentSpan = { annotationString: '' }
@@ -144,17 +149,6 @@ const CurrentSnippet = ({ storyId, handleInputChange }) => {
       setFinished(true)
     } else {
       setFinished(true)
-    }
-  }
-
-  const focusFirstCloze = () => {
-    if (practiceForm.current) {
-      const { elements } = practiceForm.current
-      const firstCloze = Object.entries(elements).filter(
-        e => e[1].className.includes('cloze') && !e[1].className.includes('correct')
-      )[0]
-
-      if (firstCloze) firstCloze[1].focus()
     }
   }
 

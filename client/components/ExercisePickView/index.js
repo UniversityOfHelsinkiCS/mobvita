@@ -15,7 +15,6 @@ import ReportButton from 'Components/ReportButton'
 import AnnotationBox from 'Components/AnnotationBox'
 import PreviousSnippets from './PreviousSnippets'
 import VirtualKeyboard from './VirtualKeyboard'
-import FeedbackInfoModal from './FeedbackInfoModal'
 import { keyboardLayouts } from './KeyboardLayouts'
 import ProgressBar from './CurrentSnippet/ProgressBar'
 import Footer from '../Footer'
@@ -37,9 +36,12 @@ const ExercisePickView = () => {
   }
 
   // const currentSnippetNum = currentSnippetId() + 1
-  const currentExercisePickNum = currentSnippetId() + 1
-  // const snippetsTotalNum = snippets?.focused?.total_num
   const exercisePickTotalNum = exercisePick?.focused?.total_num
+  const currentExercisePickNum = isNaN(currentSnippetId() + 1)
+    ? exercisePickTotalNum
+    : currentSnippetId() + 1
+  // const snippetsTotalNum = snippets?.focused?.total_num
+
   const { focused: story, pending } = useSelector(({ stories }) => stories)
   const showAnnotationBox = width >= 1024
 
@@ -84,9 +86,7 @@ const ExercisePickView = () => {
             <div className="progress-bar-cont" style={{ top: smallScreen ? '.25em' : '3.25em' }}>
               <ProgressBar
                 // snippetProgress={currentSnippetNum}
-                snippetProgress={
-                  isNaN(currentExercisePickNum) ? exercisePickTotalNum : currentExercisePickNum
-                }
+                snippetProgress={currentExercisePickNum}
                 // snippetsTotal={snippetsTotalNum}
                 snippetsTotal={exercisePickTotalNum}
                 progress={(currentExercisePickNum / exercisePickTotalNum).toFixed(2)}
@@ -131,7 +131,6 @@ const ExercisePickView = () => {
           <DictionaryHelp />
           {showAnnotationBox && <AnnotationBox />}
         </div>
-        <FeedbackInfoModal />
       </div>
       {showFooter && <Footer />}
     </div>

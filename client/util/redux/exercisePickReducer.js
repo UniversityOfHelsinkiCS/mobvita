@@ -36,7 +36,7 @@ export const addExercise = wordObj => ({ type: 'ADD_EXERCISE', wordObj })
 export const removeExercise = id => ({ type: 'REMOVE_EXERCISE', id })
 
 export const setPrevious = previous => ({ type: 'SET_PREVIOUS', payload: previous })
-export const addToPrevious = snippet => ({ type: 'ADD_TO_PREVIOUS', snippet })
+export const addToPrevious = snippet => ({ type: 'ADD_TO_PREVIOUS_FROZEN', snippet })
 export const clearFocusedSnippet = () => ({ type: 'CLEAR_FOCUSED_SNIPPET' })
 
 // Reducer
@@ -149,7 +149,7 @@ export default (
         previous: action.payload,
       }
 
-    case 'ADD_TO_PREVIOUS':
+    case 'ADD_TO_PREVIOUS_FROZEN':
       return {
         ...state,
         previous: state.previous.concat(action.snippet),

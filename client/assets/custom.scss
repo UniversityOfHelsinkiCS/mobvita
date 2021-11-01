@@ -762,6 +762,10 @@ html, body, #root {
   &-unchosen {
     background-color: #fabbbb!important;
   }
+
+  &-previous-chosen {
+    background-color: #f6fabb!important;
+  }
 }
 
 .hearing-untouched {
