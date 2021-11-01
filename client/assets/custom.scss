@@ -708,31 +708,6 @@ html, body, #root {
   }
 }
 
-.cloze-untouched{
-  background-color:#fbfbb5;
-}
-
-.cloze-touched {
-  background-color: lightyellow;
-}
-
-.hearing-untouched {
-  background-color: #DCF6FF;
-
-}
-
-.hearing-touched{
-  background-color: #cdf3ff;
-}
-
-.wrong {
-  background-color: $wrong-answer-background-color;
-}
-
-.correct {
-  background-color: #d3ffd8;
-}
-
 .exercise-multiple{
   min-height: 0 !important;
   height: 1.5em !important;
@@ -764,6 +739,47 @@ html, body, #root {
   }
 }
 
+.cloze-untouched{
+  background-color:#fbfbb5;
+}
+
+.cloze-touched {
+  background-color: lightyellow;
+}
+
+.exercise.control-mode {
+  &:read-only {
+    opacity: 1;
+    color: rgb(49, 49, 49);
+  }
+}
+
+.control-mode {
+  &-chosen {
+    background-color: #c0f6ff!important;
+  }
+
+  &-unchosen {
+    background-color: #fabbbb!important;
+  }
+}
+
+.hearing-untouched {
+  background-color: #DCF6FF;
+}
+
+.hearing-touched{
+  background-color: #cdf3ff;
+}
+
+.wrong {
+  background-color: $wrong-answer-background-color;
+}
+
+.correct {
+  background-color: #d3ffd8;
+}
+
 .wrong-text {
   color: #0000FF;
 }
@@ -779,7 +795,7 @@ html, body, #root {
 
 .preview-text {
   color: rgb(107, 6, 153);
-  font-weight: 500;
+  font-weight: 400;
 }
 
 .preview-text-no-concepts {

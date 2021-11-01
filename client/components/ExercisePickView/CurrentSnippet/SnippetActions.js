@@ -5,11 +5,7 @@ import { FormattedMessage } from 'react-intl'
 import { Icon } from 'semantic-ui-react'
 import { Button } from 'react-bootstrap'
 // import { postAnswers, resetCurrentSnippet } from 'Utilities/redux/snippetsReducer'
-import {
-  postAnswers,
-  resetCurrentSnippet,
-  refreshCurrentSnippet,
-} from 'Utilities/redux/exercisePickReducer'
+import { resetCurrentSnippet, refreshCurrentSnippet } from 'Utilities/redux/exercisePickReducer'
 import { resetAnnotations } from 'Utilities/redux/annotationsReducer'
 // import { refreshCurrentSnippet } from 'Utilities/redux/exercisePickReducer'
 import { finishSnippet, clearTouchedIds, clearPractice } from 'Utilities/redux/practiceReducer'
@@ -108,7 +104,7 @@ const SnippetActions = ({ storyId, exerciseCount }) => {
     }
 
     dispatch(clearTouchedIds())
-    dispatch(postAnswers(storyId, answersObj))
+    // dispatch(postAnswers(storyId, answersObj))
   }
 
   const submitAnswers = () => {

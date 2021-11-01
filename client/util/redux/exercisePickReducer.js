@@ -32,6 +32,9 @@ export const resetCurrentSnippet = storyId => {
   return callBuilder(route, prefix, 'post')
 }
 
+export const addExercise = wordObj => ({ type: 'ADD_EXERCISE', wordObj })
+export const removeExercise = id => ({ type: 'REMOVE_EXERCISE', id })
+
 export const setPrevious = previous => ({ type: 'SET_PREVIOUS', payload: previous })
 export const addToPrevious = snippet => ({ type: 'ADD_TO_PREVIOUS', snippet })
 export const clearFocusedSnippet = () => ({ type: 'CLEAR_FOCUSED_SNIPPET' })
@@ -43,6 +46,16 @@ export default (
   action
 ) => {
   switch (action.type) {
+    case 'ADD_EXERCISE':
+      return {
+        ...state,
+        acceptedTokens: state.acceptedTokens.concat(action.wordObj),
+      }
+    case 'REMOVE_EXERCISE':
+      return {
+        ...state,
+        acceptedTokens: state.acceptedTokens.filter(word => word.ID !== action.id),
+      }
     case 'RESET_SNIPPET_INDEX_SUCCESS':
       return {
         ...state,

@@ -1,74 +1,29 @@
 import React, { useState, useEffect, useRef } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
-import {
-  getTextWidth,
-  dictionaryLanguageSelector,
-  rightAlignedLanguages,
-  learningLanguageSelector,
-  getTextStyle,
-  exerciseMaskedLanguages,
-  respVoiceLanguages,
-  speak,
-  formatGreenFeedbackText,
-} from 'Utilities/common'
-import { setFocusedWord, setReferences, setExplanation } from 'Utilities/redux/practiceReducer'
-import { getTranslationAction, setWords } from 'Utilities/redux/translationReducer'
-import { Icon } from 'semantic-ui-react'
-import Tooltip from 'Components/PracticeView/Tooltip'
+import { getTextWidth, rightAlignedLanguages, learningLanguageSelector } from 'Utilities/common'
+import { addExercise, removeExercise } from 'Utilities/redux/exercisePickReducer'
 
 const ExerciseCloze = ({ word, handleChange }) => {
   const [value, setValue] = useState('')
-  const [className, setClassName] = useState('exercise cloze-untouched')
-  const [touched, setTouched] = useState(false)
-  const [show, setShow] = useState(false)
-
-  const dictionaryLanguage = useSelector(dictionaryLanguageSelector)
+  const [bgColorClassName, setBgColorClassName] = useState('control-mode-chosen')
   const learningLanguage = useSelector(learningLanguageSelector)
-  const autoSpeak = useSelector(({ user }) => user.data.user.auto_speak)
   const currentAnswer = useSelector(({ practice }) => practice.currentAnswers[word.ID])
+  const { acceptedTokens } = useSelector(({ exercisePick }) => exercisePick)
 
-  const { isWrong, tested, surface, ref, explanation, lemmas, ID: wordId, id: storyId } = word
+  const { ID: wordId } = word
 
   const target = useRef()
   const dispatch = useDispatch()
 
-  const voice = respVoiceLanguages[learningLanguage]
-
-  const handleTooltipWordClick = () => {
-    const showAsSurface = exerciseMaskedLanguages.includes(learningLanguage)
-      ? word.surface
-      : word.base || word.bases
-    const maskSymbol = exerciseMaskedLanguages.includes(learningLanguage)
-      ? word.base || word.bases
-      : null
-    if (autoSpeak === 'always' && voice) speak(surface, voice)
-    if (lemmas) {
-      dispatch(setWords({ surface: showAsSurface, lemmas, maskSymbol }))
-      dispatch(
-        getTranslationAction({
-          learningLanguage,
-          wordLemmas: lemmas,
-          dictionaryLanguage,
-          storyId,
-          wordId,
-        })
-      )
-    }
+  const getExerciseClass = () => {
+    return acceptedTokens.map(t => t.ID).includes(wordId)
+      ? 'control-mode-chosen'
+      : 'control-mode-unchosen'
   }
 
-  const changeValue = e => {
-    setValue(e.target.value)
-  }
-
-  const handleTooltipClick = () => {
-    if (ref) dispatch(setReferences(ref))
-    if (explanation) dispatch(setExplanation(explanation))
-  }
-
-  const getExerciseClass = (tested, isWrong) => {
-    if (!tested) return 'exercise cloze-untouched'
-    if (isWrong) return 'exercise wrong cloze'
-    return 'exercise correct'
+  const handleExerciseClick = () => {
+    if (acceptedTokens.map(t => t.ID).includes(wordId)) dispatch(removeExercise(wordId))
+    else dispatch(addExercise(word))
   }
 
   useEffect(() => {
@@ -77,122 +32,31 @@ const ExerciseCloze = ({ word, handleChange }) => {
   }, [currentAnswer])
 
   useEffect(() => {
-    setClassName(getExerciseClass(tested, isWrong))
-  }, [tested])
-
-  const tooltip = (
-    <div>
-      {word.message && (
-        <div
-          className="tooltip-green"
-          style={{ cursor: 'pointer' }}
-          onMouseDown={handleTooltipClick}
-        >
-          {word.message && (
-            <div className="flex">
-              <span dangerouslySetInnerHTML={formatGreenFeedbackText(word?.message)} />{' '}
-              {ref && (
-                <Icon name="external" style={{ alignSelf: 'flex-start', marginLeft: '0.5rem' }} />
-              )}
-              {explanation && (
-                <Icon
-                  name="info circle"
-                  style={{ alignSelf: 'flex-start', marginLeft: '0.5rem' }}
-                />
-              )}
-            </div>
-          )}
-        </div>
-      )}
-      <div
-        className="tooltip-blue"
-        onMouseDown={handleTooltipWordClick}
-        onClick={handleTooltipWordClick}
-      >
-        <span style={getTextStyle(learningLanguage, 'tooltip')}>{word.base || word.bases}</span>
-        {` → ${dictionaryLanguage}`}
-      </div>
-    </div>
-  )
-
-  // Font is changed to 16px and back to disable iOS safari zoom in effect
-  const changeElementFont = (element, size = '') => {
-    element.style.fontSize = size
-  }
-
-  const handleBlur = () => {
-    handleChange(value, word)
-    setShow(false)
-  }
-
-  const handleFocus = e => {
-    if (!touched) {
-      setTouched(true)
-      if (!tested) setClassName('exercise cloze-touched')
-      handleChange(value, word)
-    }
-    setShow(!show)
-    dispatch(setFocusedWord(word))
-    changeElementFont(e.target)
-  }
-
-  const handleMouseDown = e => {
-    changeElementFont(e.target, '16px')
-  }
-
-  const focusNextClozeOrHearing = element => {
-    const { form } = element
-    const nextElement = form.elements[Array.prototype.indexOf.call(form, element) + 1]
-    const isNextElementInput = nextElement.className.includes('exercize')
-    if (isNextElementInput) changeElementFont(nextElement, '16px')
-    nextElement.focus()
-  }
-
-  const handleKeyDown = e => {
-    const isEnterPressed = e.keyCode === 13
-    if (isEnterPressed) {
-      focusNextClozeOrHearing(e.target)
-      e.preventDefault()
-    }
-  }
+    setBgColorClassName(getExerciseClass())
+  }, [acceptedTokens])
 
   const direction = rightAlignedLanguages.includes(learningLanguage) ? 'bidi-override' : ''
 
   return (
-    <Tooltip
-      placement="top"
-      trigger="none"
-      onVisibilityChange={setShow}
-      tooltipShown={show}
-      closeOnOutOfBoundaries
-      tooltip={tooltip}
-      additionalClassnames="clickable"
-    >
-      <input
-        onKeyDown={handleKeyDown}
-        ref={target}
-        data-cy="exercise-cloze"
-        autoCapitalize="off"
-        readOnly={tested && !isWrong}
-        key={word.ID}
-        name={word.ID}
-        placeholder={`${word.base || word.bases}`}
-        value={value}
-        onChange={changeValue}
-        onBlur={handleBlur}
-        onMouseDown={handleMouseDown}
-        onFocus={handleFocus}
-        className={className}
-        style={{
-          width: word.surface > word.base ? getTextWidth(word.surface) : getTextWidth(word.base),
-          marginRight: '2px',
-          height: '1.5em',
-          lineHeight: 'normal',
-          unicodeBidi: direction,
-        }}
-      />
-      {false && word.negation && <sup style={{ color: '#0000FF' }}>(neg)</sup>}
-    </Tooltip>
+    <input
+      ref={target}
+      data-cy="exercise-cloze"
+      autoCapitalize="off"
+      readOnly
+      key={word.ID}
+      name={word.ID}
+      placeholder={`${word.base || word.bases}`}
+      value={value}
+      onClick={handleExerciseClick}
+      className={`exercise control-mode ${bgColorClassName}`}
+      style={{
+        width: word.surface > word.base ? getTextWidth(word.surface) : getTextWidth(word.base),
+        marginRight: '2px',
+        height: '1.5em',
+        lineHeight: 'normal',
+        unicodeBidi: direction,
+      }}
+    />
   )
 }
 

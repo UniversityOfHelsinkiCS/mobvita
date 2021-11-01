@@ -1,48 +1,34 @@
 import React, { createRef, useState, useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { Icon } from 'semantic-ui-react'
-import {
-  getTextWidth,
-  speak,
-  learningLanguageSelector,
-  respVoiceLanguages,
-  formatGreenFeedbackText,
-} from 'Utilities/common'
-import { setFocusedWord } from 'Utilities/redux/practiceReducer'
-import Tooltip from 'Components/PracticeView/Tooltip'
+import { getTextWidth, speak, learningLanguageSelector, respVoiceLanguages } from 'Utilities/common'
+import { addExercise, removeExercise } from 'Utilities/redux/exercisePickReducer'
 
 const ExerciseHearing = ({ word, handleChange }) => {
   const [value, setValue] = useState('')
 
-  const [className, setClassname] = useState('exercise hearing-untouched')
-  const [touched, setTouched] = useState(false)
-  const [show, setShow] = useState(false)
-  const [focusTimeout, setFocusTimeout] = useState(false)
+  const [bgColorClassName, setBgColorClassName] = useState(
+    'exercise control-mode control-mode-chosen'
+  )
   const inputRef = createRef(null)
 
+  const dispatch = useDispatch()
   const currentAnswer = useSelector(({ practice }) => practice.currentAnswers[word.ID])
+  const { acceptedTokens } = useSelector(({ exercisePick }) => exercisePick)
   const learningLanguage = useSelector(learningLanguageSelector)
 
-  const dispatch = useDispatch()
-
-  const { isWrong, tested } = word
-
+  const { ID: wordId } = word
   const voice = respVoiceLanguages[learningLanguage]
 
-  const giveHint = () => {
-    if (word.base !== word.surface) handleChange(word.base, word)
-  }
-
-  const getExerciseClass = (tested, isWrong) => {
-    if (!tested) return 'exercise hearing-untouched'
-    if (isWrong) return 'exercise wrong'
-    return 'exercise correct'
+  const getExerciseClass = () => {
+    return acceptedTokens.map(t => t.ID).includes(wordId)
+      ? 'control-mode-chosen'
+      : 'control-mode-unchosen'
   }
 
   useEffect(() => {
-    setClassname(getExerciseClass(tested, isWrong))
-    if (tested && isWrong) giveHint()
-  }, [tested])
+    setBgColorClassName(getExerciseClass())
+  }, [acceptedTokens])
 
   useEffect(() => {
     const val = currentAnswer ? currentAnswer.users_answer : ''
@@ -50,112 +36,42 @@ const ExerciseHearing = ({ word, handleChange }) => {
   }, [currentAnswer])
 
   const speakerClickHandler = word => {
-    // speak(word.audio, voice)
+    speak(word.audio, voice)
     inputRef.current.focus()
   }
 
-  // Font is changed to 16px and back to disable iOS safari zoom in effect
-  const changeElementFont = (element, size = '') => {
-    element.style.fontSize = size
+  const handleExerciseClick = () => {
+    if (acceptedTokens.map(t => t.ID).includes(wordId)) dispatch(removeExercise(wordId))
+    else dispatch(addExercise(word))
   }
-
-  const handleInputFocus = e => {
-    if (!touched) {
-      if (!tested) setClassname('exercise hearing-touched')
-      setTouched(true)
-      handleChange(value, word)
-    }
-    dispatch(setFocusedWord(word))
-    if (!focusTimeout) {
-      speak(word.audio, voice)
-      setFocusTimeout(true)
-      setTimeout(() => {
-        setFocusTimeout(false)
-      }, 500)
-    }
-    setShow(!show)
-    changeElementFont(e.target)
-  }
-
-  const handleMouseDown = e => {
-    changeElementFont(e.target, '16px')
-  }
-
-  const handle = e => {
-    setValue(e.target.value)
-  }
-
-  const handleBlur = () => {
-    handleChange(value, word)
-    setShow(false)
-  }
-
-  const focusNextClozeOrHearing = element => {
-    const { form } = element
-    const nextElement = form.elements[Array.prototype.indexOf.call(form, element) + 1]
-    const isNextElementInput = nextElement.className.includes('exercize')
-    if (isNextElementInput) changeElementFont(nextElement, '16px')
-    nextElement.focus()
-  }
-
-  const handleKeyDown = e => {
-    const isEnterPressed = e.keyCode === 13
-    if (isEnterPressed) {
-      focusNextClozeOrHearing(e.target)
-      e.preventDefault()
-    }
-  }
-
-  const tooltip = (
-    <div>
-      {word.message && (
-        <div className="tooltip-green">
-          <span dangerouslySetInnerHTML={formatGreenFeedbackText(word?.message)} />
-        </div>
-      )}
-    </div>
-  )
 
   return (
-    <Tooltip
-      placement="top"
-      trigger="none"
-      onVisibilityChange={setShow}
-      tooltipShown={show}
-      closeOnOutOfBoundaries
-      tooltip={tooltip}
-      additionalClassnames="clickable"
-    >
-      <span>
-        <input
-          onKeyDown={handleKeyDown}
-          data-cy="exercise-hearing"
-          readOnly={tested && !isWrong}
-          ref={inputRef}
-          key={word.ID}
-          onChange={handle}
-          value={value}
-          onFocus={handleInputFocus}
-          onBlur={handleBlur}
-          onMouseDown={handleMouseDown}
-          className={className}
-          style={{
-            width: getTextWidth(word.surface),
-            minWidth: getTextWidth(word.surface),
-            marginRight: '2px',
-            height: '1.5em',
-            lineHeight: 'normal',
-          }}
-        />
-        <Icon
-          name="volume up"
-          link
-          onClick={() => speakerClickHandler(word)}
-          style={{ marginLeft: '-25px' }}
-        />
-        {word.negation && <sup style={{ marginLeft: '3px', color: '#0000FF' }}>(neg)</sup>}
-      </span>
-    </Tooltip>
+    <span>
+      <input
+        data-cy="exercise-hearing"
+        readOnly
+        ref={inputRef}
+        key={word.ID}
+        placeholder={`${word.base || word.bases}`}
+        value={value}
+        onClick={handleExerciseClick}
+        className={`exercise control-mode ${bgColorClassName}`}
+        style={{
+          width: getTextWidth(word.surface),
+          minWidth: getTextWidth(word.surface),
+          marginRight: '2px',
+          height: '1.5em',
+          lineHeight: 'normal',
+        }}
+      />
+      <Icon
+        name="volume up"
+        link
+        onClick={() => speakerClickHandler(word)}
+        style={{ marginLeft: '-25px' }}
+      />
+      {word.negation && <sup style={{ marginLeft: '3px', color: '#0000FF' }}>(neg)</sup>}
+    </span>
   )
 }
 

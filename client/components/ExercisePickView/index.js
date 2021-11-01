@@ -30,12 +30,6 @@ const ExercisePickView = () => {
   const exercisePick = useSelector(({ exercisePick }) => exercisePick)
   const smallScreen = width < 700
 
-  // const currentSnippetId = () => {
-  //   if (!snippets.focused) return -1
-  //   const { snippetid } = snippets.focused
-  //   return snippetid[snippetid.length - 1]
-  // }
-
   const currentSnippetId = () => {
     if (!exercisePick.focused) return -1
     const { snippetid } = exercisePick.focused
@@ -90,7 +84,9 @@ const ExercisePickView = () => {
             <div className="progress-bar-cont" style={{ top: smallScreen ? '.25em' : '3.25em' }}>
               <ProgressBar
                 // snippetProgress={currentSnippetNum}
-                snippetProgress={currentExercisePickNum}
+                snippetProgress={
+                  isNaN(currentExercisePickNum) ? exercisePickTotalNum : currentExercisePickNum
+                }
                 // snippetsTotal={snippetsTotalNum}
                 snippetsTotal={exercisePickTotalNum}
                 progress={(currentExercisePickNum / exercisePickTotalNum).toFixed(2)}
