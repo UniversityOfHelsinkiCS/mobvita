@@ -20,8 +20,6 @@ const ExercisePopup = ({ translationId, children }) => {
 }
 
 const ExerciseWord = ({ word, handleAnswerChange, handleMultiselectChange }) => {
-  const { attempt } = useSelector(({ practice }) => practice)
-
   const { acceptedTokens } = useSelector(({ exercisePick }) => exercisePick)
 
   const translationId = acceptedTokens.map(t => t.ID).includes(word.ID)
@@ -48,18 +46,16 @@ const ExerciseWord = ({ word, handleAnswerChange, handleMultiselectChange }) => 
     )
   }
   if (word.choices) {
-    if (attempt < word.choices.length - 1)
-      return (
-        <ExercisePopup translationId={translationId}>
-          <ExerciseMultipleChoice
-            tabIndex={word.ID}
-            handleChange={handleMultiselectChange}
-            key={word.ID}
-            word={word}
-          />
-        </ExercisePopup>
-      )
-    return <PlainWord word={word} />
+    return (
+      <ExercisePopup translationId={translationId}>
+        <ExerciseMultipleChoice
+          tabIndex={word.ID}
+          handleChange={handleMultiselectChange}
+          key={word.ID}
+          word={word}
+        />
+      </ExercisePopup>
+    )
   }
   return (
     <ExercisePopup translationId={translationId}>
