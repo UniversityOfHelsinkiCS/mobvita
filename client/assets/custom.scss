@@ -343,6 +343,10 @@ html, body, #root {
 .card {
   border: 1px solid rgb(112, 114, 120);
   border-radius: 10px!important;
+
+  &-controlled-story {
+    background: rgb(255,239, 213)!important;
+  }
 }
 
 .modal {

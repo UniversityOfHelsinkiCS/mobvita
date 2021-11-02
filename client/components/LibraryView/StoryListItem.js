@@ -92,7 +92,7 @@ const ShareInfoPopupContent = ({ infoObj }) => {
   )
 }
 
-const StoryActions = ({ story, libraryShown, userIsTeacher }) => {
+const StoryActions = ({ story, libraryShown, isControlled, userIsTeacher }) => {
   const { width } = useWindowDimensions()
 
   const showCrosswordsButton = width > 1023
@@ -137,7 +137,7 @@ const StoryActions = ({ story, libraryShown, userIsTeacher }) => {
         )}
         {userIsTeacher && libraryShown.private && hiddenFeatures && (
           <Link to={`/stories/${story._id}/exercise-picker`}>
-            <Button variant="secondary">
+            <Button variant={isControlled ? 'outline-danger' : 'secondary'} disabled={isControlled}>
               <FormattedMessage id="create-controlled-exercise" />
             </Button>
           </Link>
@@ -219,6 +219,7 @@ const StoryListItem = ({ story, userCanShare, libraryShown, selectedGroup }) => 
   const { groups } = useSelector(({ groups }) => groups)
   const { user: userId } = useSelector(({ user }) => ({ user: user.data.user.oid }))
   const userIsTeacher = groups.length > 0 // definition of teacher in private library
+  const isControlledStory = !!story?.control_story
 
   const currentGroup = groups.find(g => g.group_id === selectedGroup)
   const inGroupLibrary = libraryShown.group && story.groups
@@ -240,6 +241,7 @@ const StoryListItem = ({ story, userCanShare, libraryShown, selectedGroup }) => 
     <Card
       fluid
       key={story._id}
+      className={isControlledStory ? 'card-controlled-story' : ''}
       style={{
         marginBottom: '10px',
         marginTop: '10px',
@@ -269,7 +271,12 @@ const StoryListItem = ({ story, userCanShare, libraryShown, selectedGroup }) => 
           justifyContent: 'space-between',
         }}
       >
-        <StoryActions story={story} libraryShown={libraryShown} userIsTeacher={userIsTeacher} />
+        <StoryActions
+          story={story}
+          libraryShown={libraryShown}
+          isControlled={isControlledStory}
+          userIsTeacher={userIsTeacher}
+        />
         <div className="flex align-center" style={{ overflow: 'hidden' }}>
           {showGroupNames && <GroupsSharedTo groups={story.groups} />}
 
