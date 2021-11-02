@@ -92,7 +92,7 @@ const ShareInfoPopupContent = ({ infoObj }) => {
   )
 }
 
-const StoryActions = ({ story, libraryShown, isControlled, userIsTeacher }) => {
+const StoryActions = ({ story, libraryShown, enableOnlyPractice, isControlled, userIsTeacher }) => {
   const { width } = useWindowDimensions()
 
   const showCrosswordsButton = width > 1023
@@ -101,7 +101,10 @@ const StoryActions = ({ story, libraryShown, isControlled, userIsTeacher }) => {
     return (
       <div className="story-actions">
         <Link to={`/stories/${story._id}/preview`}>
-          <Button variant="secondary">
+          <Button
+            variant={enableOnlyPractice ? 'outline-danger' : 'secondary'}
+            disabled={enableOnlyPractice}
+          >
             <FormattedMessage id="preview" />
           </Button>
         </Link>
@@ -112,25 +115,34 @@ const StoryActions = ({ story, libraryShown, isControlled, userIsTeacher }) => {
         </Link>
         <Link to={`/stories/${story._id}/review`}>
           <Button
-            variant={story.percent_cov === 0 ? 'outline-danger' : 'secondary'}
-            disabled={story.percent_cov === 0}
+            variant={story.percent_cov === 0 || enableOnlyPractice ? 'outline-danger' : 'secondary'}
+            disabled={story.percent_cov === 0 || enableOnlyPractice}
           >
             <FormattedMessage id="review" />
           </Button>
         </Link>
         <Link to={`/flashcards/fillin/${story._id}/`}>
-          <Button variant="primary">
+          <Button
+            variant={enableOnlyPractice ? 'outline-danger' : 'primary'}
+            disabled={enableOnlyPractice}
+          >
             <FormattedMessage id="Flashcards" />
           </Button>
         </Link>
         <Link to={`/stories/${story._id}/compete`}>
-          <Button variant="secondary">
+          <Button
+            variant={enableOnlyPractice ? 'outline-danger' : 'secondary'}
+            disabled={enableOnlyPractice}
+          >
             <FormattedMessage id="compete" />
           </Button>
         </Link>
         {showCrosswordsButton && (
           <Link to={`/crossword/${story._id}/`}>
-            <Button variant="secondary">
+            <Button
+              variant={enableOnlyPractice ? 'outline-danger' : 'secondary'}
+              disabled={enableOnlyPractice}
+            >
               <FormattedMessage id="Crossword" />
             </Button>
           </Link>
@@ -218,12 +230,13 @@ const StoryListItem = ({ story, userCanShare, libraryShown, selectedGroup }) => 
   const [confirmationOpen, setConfirmationOpen] = useState(false)
   const { groups } = useSelector(({ groups }) => groups)
   const { user: userId } = useSelector(({ user }) => ({ user: user.data.user.oid }))
-  const userIsTeacher = groups.length > 0 // definition of teacher in private library
+  const userIsTeacher = groups.some(group => group.is_teaching) // definition of being teacher
   const isControlledStory = !!story?.control_story
 
   const currentGroup = groups.find(g => g.group_id === selectedGroup)
   const inGroupLibrary = libraryShown.group && story.groups
   const showGroupNames = story.groups && libraryShown.private
+  const enableOnlyPractice = inGroupLibrary && !currentGroup.is_teaching && isControlledStory
 
   const deleteStory = () => {
     dispatch(removeStory(story._id))
@@ -274,6 +287,7 @@ const StoryListItem = ({ story, userCanShare, libraryShown, selectedGroup }) => 
         <StoryActions
           story={story}
           libraryShown={libraryShown}
+          enableOnlyPractice={enableOnlyPractice}
           isControlled={isControlledStory}
           userIsTeacher={userIsTeacher}
         />
