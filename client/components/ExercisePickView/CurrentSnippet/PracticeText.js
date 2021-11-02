@@ -8,10 +8,6 @@ const PracticeText = props => {
   const exercisePick = useSelector(({ exercisePick }) => exercisePick)
   const textComponent = useRef(null)
   const [previousHeight, setPreviousHeight] = useState(0)
-  // const practiceSnippet = useSelector(
-  //   ({ snippets }) => snippets.focused && snippets.focused.practice_snippet,
-  //   shallowEqual
-  // )
 
   const practiceSnippet = useSelector(
     ({ exercisePick }) => exercisePick.focused && exercisePick.focused.practice_snippet,

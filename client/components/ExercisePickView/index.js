@@ -14,8 +14,6 @@ import DictionaryHelp from 'Components/DictionaryHelp'
 import ReportButton from 'Components/ReportButton'
 import AnnotationBox from 'Components/AnnotationBox'
 import PreviousSnippets from './PreviousSnippets'
-import VirtualKeyboard from './VirtualKeyboard'
-import { keyboardLayouts } from './KeyboardLayouts'
 import ProgressBar from './CurrentSnippet/ProgressBar'
 import Footer from '../Footer'
 import ScrollArrow from '../ScrollArrow'
@@ -25,22 +23,18 @@ const ExercisePickView = () => {
   const dispatch = useDispatch()
   const { id } = useParams()
   const { width } = useWindowDimensions()
-  const snippets = useSelector(({ snippets }) => snippets)
   const exercisePick = useSelector(({ exercisePick }) => exercisePick)
   const smallScreen = width < 700
+
+  const exercisePickTotalNum = exercisePick?.focused?.total_num
 
   const currentSnippetId = () => {
     if (!exercisePick.focused) return -1
     const { snippetid } = exercisePick.focused
-    return snippetid[snippetid.length - 1]
+    return snippetid[snippetid.length - 1] ?? exercisePickTotalNum - 1
   }
 
-  // const currentSnippetNum = currentSnippetId() + 1
-  const exercisePickTotalNum = exercisePick?.focused?.total_num
-  const currentExercisePickNum = isNaN(currentSnippetId() + 1)
-    ? exercisePickTotalNum
-    : currentSnippetId() + 1
-  // const snippetsTotalNum = snippets?.focused?.total_num
+  const currentExercisePickNum = currentSnippetId() + 1
 
   const { focused: story, pending } = useSelector(({ stories }) => stories)
   const showAnnotationBox = width >= 1024
@@ -75,7 +69,6 @@ const ExercisePickView = () => {
     dispatch(setAnswers(newAnswer))
   }
 
-  const showVirtualKeyboard = width > 500 && keyboardLayouts[learningLanguage]
   const showFooter = width > 640
 
   return (
@@ -85,9 +78,7 @@ const ExercisePickView = () => {
           <Segment>
             <div className="progress-bar-cont" style={{ top: smallScreen ? '.25em' : '3.25em' }}>
               <ProgressBar
-                // snippetProgress={currentSnippetNum}
                 snippetProgress={currentExercisePickNum}
-                // snippetsTotal={snippetsTotalNum}
                 snippetsTotal={exercisePickTotalNum}
                 progress={(currentExercisePickNum / exercisePickTotalNum).toFixed(2)}
               />
@@ -112,11 +103,6 @@ const ExercisePickView = () => {
             <CurrentSnippet storyId={id} handleInputChange={handleAnswerChange} />
             <ScrollArrow />
           </Segment>
-          {showVirtualKeyboard && (
-            <div>
-              <VirtualKeyboard />
-            </div>
-          )}
           {width >= 500 ? (
             <div className="flex-col align-end" style={{ marginTop: '0.5em' }}>
               <ReportButton />

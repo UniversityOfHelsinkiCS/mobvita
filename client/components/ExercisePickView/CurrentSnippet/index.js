@@ -6,7 +6,6 @@ import {
   setPrevious,
   getCurrentSnippetFrozen,
 } from 'Utilities/redux/exercisePickReducer'
-// import { getCurrentSnippetFrozen } from 'Utilities/redux/exercisePickReducer'
 import { clearTranslationAction } from 'Utilities/redux/translationReducer'
 import 'react-simple-keyboard/build/css/index.css'
 import { FormattedMessage } from 'react-intl'
@@ -17,11 +16,9 @@ import {
   setAnswers,
   clearPractice,
   clearCurrentPractice,
-  setTouchedIds,
   addToAudio,
   addToOptions,
   startSnippet,
-  incrementAttempts,
 } from 'Utilities/redux/practiceReducer'
 import {
   updateSeveralSpanAnnotationStore,
@@ -30,14 +27,12 @@ import {
 import SnippetActions from './SnippetActions'
 import PracticeText from './PracticeText'
 
-const CurrentSnippet = ({ storyId, handleInputChange }) => {
-  const [exerciseCount, setExerciseCount] = useState(0)
+const CurrentSnippet = ({ storyId }) => {
   const practiceForm = useRef(null)
   const dispatch = useDispatch()
-  // const snippets = useSelector(({ snippets }) => snippets)
   const exercisePick = useSelector(({ exercisePick }) => exercisePick)
   const answersPending = useSelector(({ snippets }) => snippets.answersPending)
-  const { snippetFinished, isNewSnippet, attempt } = useSelector(({ practice }) => practice)
+  const { snippetFinished, isNewSnippet } = useSelector(({ practice }) => practice)
   const learningLanguage = useSelector(learningLanguageSelector)
 
   const currentSnippetId = () => {
@@ -48,21 +43,8 @@ const CurrentSnippet = ({ storyId, handleInputChange }) => {
 
   const [finished, setFinished] = useState(false)
 
-  const getExerciseCount = () => {
-    let count = 0
-    // snippets.focused.practice_snippet.forEach(word => {
-    exercisePick.focused.practice_snippet.forEach(word => {
-      if (word.id) {
-        count++
-      }
-    })
-    return count
-  }
-
   const setInitialAnswers = () => {
-    // if (snippets.focused && snippets.focused.storyid === storyId) {
     if (exercisePick.focused && exercisePick.focused.storyid === storyId) {
-      // const filteredSnippet = snippets.focused.practice_snippet.filter(word => word.id)
       const filteredSnippet = exercisePick.focused.practice_snippet.filter(word => word.id)
       const initialAnswers = filteredSnippet.reduce((answerObject, currentWord) => {
         const { surface, id, ID, base, bases, listen, choices, concept, audio } = currentWord
@@ -93,7 +75,6 @@ const CurrentSnippet = ({ storyId, handleInputChange }) => {
         }
       }, {})
       if (Object.keys(initialAnswers).length > 0) dispatch(setAnswers({ ...initialAnswers }))
-      setExerciseCount(getExerciseCount())
       dispatch(startSnippet())
     }
   }
@@ -113,7 +94,6 @@ const CurrentSnippet = ({ storyId, handleInputChange }) => {
     const annotationsToInitialize = []
     let currentSpan = { annotationString: '' }
 
-    // snippets.focused.practice_snippet.forEach(word => {
     exercisePick.focused.practice_snippet.forEach(word => {
       if (word.annotation) {
         currentSpan.startId = word.ID
@@ -141,7 +121,6 @@ const CurrentSnippet = ({ storyId, handleInputChange }) => {
     dispatch(updateSeveralSpanAnnotationStore(annotationsToInitialize))
     dispatch(clearCurrentPractice())
 
-    // if (snippets.focused.total_num !== currentSnippetId() + 1 || finished) {
     if (exercisePick.focused.total_num !== currentSnippetId() + 1 || finished) {
       dispatch(getNextSnippetFrozen(storyId, currentSnippetId(), exercisePick.acceptedTokens))
     } else if (exercisePick.focused.total_num === currentSnippetId() + 1 || finished) {
@@ -157,7 +136,6 @@ const CurrentSnippet = ({ storyId, handleInputChange }) => {
   }, [])
 
   useEffect(() => {
-    // dispatch(getCurrentSnippet(storyId))
     dispatch(getCurrentSnippetFrozen(storyId))
     dispatch(clearTranslationAction())
   }, [])
@@ -167,46 +145,23 @@ const CurrentSnippet = ({ storyId, handleInputChange }) => {
   }, [snippetFinished])
 
   useEffect(() => {
-    // const currentSnippetIsLoaded = !!snippets.focused
     const currentSnippetIsLoaded = !!exercisePick.focused
     if (currentSnippetIsLoaded) {
-      const wasLastAttempt =
-        // snippets.focused.skip_second ||
-        exercisePick.focused.skip_second ||
-        snippetFinished ||
-        // attempt + 1 >= snippets.focused.max_attempt
-        attempt + 1 >= exercisePick.focused.max_attempt
       if (isNewSnippet) setInitialAnswers()
-      else if (wasLastAttempt) finishSnippet()
-      else dispatch(incrementAttempts())
     }
-
-    // const practiceFormIsLoaded = !!practiceForm.current?.elements
-    // if (practiceFormIsLoaded) {
-    //   setTimeout(() => {
-    //     focusFirstCloze()
-    //   }, 100)
-    // }
   }, [exercisePick.focused])
-  // }, [snippets.focused])
 
   useEffect(() => {
     if (!answersPending) dispatch(getSelf())
   }, [answersPending])
 
   useEffect(() => {
-    // if (!snippets.pending && practiceForm.current) {
-    //   setTimeout(() => {
-    //     if (practiceForm.current) practiceForm.current.scrollIntoView({ behavior: 'smooth' })
-    //   }, 50)
-    // }
     if (!exercisePick.pending && practiceForm.current) {
       setTimeout(() => {
         if (practiceForm.current) practiceForm.current.scrollIntoView({ behavior: 'smooth' })
       }, 50)
     }
   }, [exercisePick.pending, exercisePick.previous])
-  // }, [snippets.pending, snippets.previous])
 
   const startOver = async () => {
     dispatch(clearPractice())
@@ -214,23 +169,6 @@ const CurrentSnippet = ({ storyId, handleInputChange }) => {
     dispatch(setPrevious([]))
     dispatch(getNextSnippetFrozen(storyId, currentSnippetId()))
     setFinished(false)
-  }
-
-  const handleMultiselectChange = (event, word, data) => {
-    const { id, ID, surface, concept } = word
-    const { value } = data
-
-    dispatch(setTouchedIds(ID))
-
-    const newAnswer = {
-      [ID]: {
-        correct: surface,
-        users_answer: value,
-        id,
-        concept,
-      },
-    }
-    dispatch(setAnswers(newAnswer))
   }
 
   return (
@@ -242,12 +180,9 @@ const CurrentSnippet = ({ storyId, handleInputChange }) => {
             style={getTextStyle(learningLanguage)}
             data-cy="practice-view"
           >
-            <PracticeText
-              handleAnswerChange={handleInputChange}
-              handleMultiselectChange={handleMultiselectChange}
-            />
+            <PracticeText />
           </div>
-          <SnippetActions storyId={storyId} exerciseCount={exerciseCount} />
+          <SnippetActions storyId={storyId} />
         </div>
       ) : (
         <Button disabled variant="primary" block onClick={() => startOver()}>

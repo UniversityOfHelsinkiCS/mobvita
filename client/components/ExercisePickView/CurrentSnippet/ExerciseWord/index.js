@@ -6,7 +6,6 @@ import { useIntl } from 'react-intl'
 import ExerciseCloze from './ExerciseCloze'
 import ExerciseMultipleChoice from './ExerciseMultipleChoice'
 import ExerciseHearing from './ExerciseHearing'
-import RightAnswer from './RightAsnwer'
 
 const ExercisePopup = ({ translationId, children }) => {
   const intl = useIntl()
@@ -19,7 +18,7 @@ const ExercisePopup = ({ translationId, children }) => {
   )
 }
 
-const ExerciseWord = ({ word, handleAnswerChange, handleMultiselectChange }) => {
+const ExerciseWord = ({ word }) => {
   const { acceptedTokens } = useSelector(({ exercisePick }) => exercisePick)
 
   const translationId = acceptedTokens.map(t => t.ID).includes(word.ID)
@@ -29,42 +28,24 @@ const ExerciseWord = ({ word, handleAnswerChange, handleMultiselectChange }) => 
   if (word.surface === '\n\n' || !word.id) {
     return <PlainWord word={word} />
   }
-  if (word.tested && !word.isWrong) {
-    return <RightAnswer word={word} />
-  }
 
   if (word.listen) {
     return (
       <ExercisePopup translationId={translationId}>
-        <ExerciseHearing
-          tabIndex={word.ID}
-          handleChange={handleAnswerChange}
-          key={word.ID}
-          word={word}
-        />
+        <ExerciseHearing tabIndex={word.ID} key={word.ID} word={word} />
       </ExercisePopup>
     )
   }
   if (word.choices) {
     return (
       <ExercisePopup translationId={translationId}>
-        <ExerciseMultipleChoice
-          tabIndex={word.ID}
-          handleChange={handleMultiselectChange}
-          key={word.ID}
-          word={word}
-        />
+        <ExerciseMultipleChoice tabIndex={word.ID} key={word.ID} word={word} />
       </ExercisePopup>
     )
   }
   return (
     <ExercisePopup translationId={translationId}>
-      <ExerciseCloze
-        tabIndex={word.ID}
-        handleChange={handleAnswerChange}
-        key={word.ID}
-        word={word}
-      />
+      <ExerciseCloze tabIndex={word.ID} key={word.ID} word={word} />
     </ExercisePopup>
   )
 }

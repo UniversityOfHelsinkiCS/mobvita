@@ -1,11 +1,9 @@
 import React, { useState, useEffect } from 'react'
 import { useSelector, useDispatch, shallowEqual } from 'react-redux'
 import { getTextStyle, learningLanguageSelector } from 'Utilities/common'
-import { setPrevious, initializePrevious } from 'Utilities/redux/exercisePickReducer'
-// import { setPrevious, initializePrevious } from 'Utilities/redux/snippetsReducer'
+import { setPrevious } from 'Utilities/redux/exercisePickReducer'
 import { setAnnotations } from 'Utilities/redux/annotationsReducer'
 import TextWithFeedback from 'Components/ExercisePickView/TextWithFeedback'
-import { useParams } from 'react-router-dom'
 
 const PreviousSnippets = () => {
   const [annotationsInitialized, setAnnotationsInitialized] = useState(false)
@@ -13,7 +11,6 @@ const PreviousSnippets = () => {
   const { previousAnswers } = useSelector(({ practice }) => practice)
 
   const { focused: focusedStory } = useSelector(({ stories }) => stories)
-  const { id: storyId } = useParams()
 
   const { previous } = useSelector(({ exercisePick }) => {
     const { focused: focusedSnippet, pending } = exercisePick

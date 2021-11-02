@@ -3,7 +3,7 @@ import { useSelector, useDispatch } from 'react-redux'
 import { getTextWidth, rightAlignedLanguages, learningLanguageSelector } from 'Utilities/common'
 import { addExercise, removeExercise } from 'Utilities/redux/exercisePickReducer'
 
-const ExerciseCloze = ({ word, handleChange }) => {
+const ExerciseCloze = ({ word }) => {
   const [value, setValue] = useState('')
   const [bgColorClassName, setBgColorClassName] = useState('control-mode-chosen')
   const learningLanguage = useSelector(learningLanguageSelector)

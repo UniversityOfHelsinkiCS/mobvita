@@ -4,20 +4,17 @@ import { useParams } from 'react-router-dom'
 import { FormattedMessage } from 'react-intl'
 import { Icon } from 'semantic-ui-react'
 import { Button } from 'react-bootstrap'
-// import { postAnswers, resetCurrentSnippet } from 'Utilities/redux/snippetsReducer'
 import { resetCurrentSnippet, refreshCurrentSnippet } from 'Utilities/redux/exercisePickReducer'
 import { resetAnnotations } from 'Utilities/redux/annotationsReducer'
-// import { refreshCurrentSnippet } from 'Utilities/redux/exercisePickReducer'
 import { finishSnippet, clearPractice } from 'Utilities/redux/practiceReducer'
 
-const SnippetActions = ({ storyId, exerciseCount }) => {
+const SnippetActions = ({ storyId }) => {
   const exercisePick = useSelector(({ exercisePick }) => exercisePick)
   const dispatch = useDispatch()
   const { id } = useParams()
 
   const submitAnswers = () => {
     dispatch(finishSnippet())
-    // checkAnswers(true)
   }
 
   const handleRestart = () => {
