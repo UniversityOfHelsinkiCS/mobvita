@@ -29,7 +29,11 @@ const ExerciseMultipleChoice = ({ word }) => {
       value=""
       selection
       floating
-      style={{ width: getTextWidth(testString), minWidth: getTextWidth(testString) }}
+      style={{
+        width: getTextWidth(testString),
+        minWidth: getTextWidth(testString),
+        height: '1.5em',
+      }}
       className="exercise-multiple control-mode control-mode-previous-chosen"
     />
   )

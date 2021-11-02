@@ -44,7 +44,7 @@ const PreviousSnippets = () => {
   }, [focusedStory])
 
   const previousSnippets = previous?.map(snippet => (
-    <TextWithFeedback snippet={snippet} answers={previousAnswers} mode="practice" />
+    <TextWithFeedback snippet={snippet} answers={previousAnswers} />
   ))
 
   return (

@@ -49,14 +49,14 @@ const TextWithFeedback = ({ snippet, exercise = false, answers, mode, hideFeedba
     const chunkStart = chunkPosition === 'start'
     const chunkEnd = chunkPosition === 'end'
     const chunkBorder = chunkIsOneVerb ? '1px red dashed' : '1px red solid'
-    const sidePadding = exercise ? '5px' : '2px'
+    const sidePadding = '5px'
     const chunkStyle = {
       borderBottom: chunkBorder,
       borderTop: chunkBorder,
       borderLeft: chunkStart ? chunkBorder : 'none',
       borderRight: chunkEnd ? chunkBorder : 'none',
-      paddingTop: exercise ? '3px' : 0,
-      paddingBottom: exercise ? '4px' : '1px',
+      paddingTop: '3px',
+      paddingBottom: '4px',
       paddingLeft: chunkStart ? sidePadding : 'none',
       paddingRight: chunkEnd ? sidePadding : 'none',
     }
@@ -173,7 +173,7 @@ const TextWithFeedback = ({ snippet, exercise = false, answers, mode, hideFeedba
         return element
       })
 
-  return <span>{createdText}</span>
+  return <span style={{ lineHeight: '2' }}>{createdText}</span>
 }
 
 export default TextWithFeedback
