@@ -1135,7 +1135,9 @@
     "practice-random-story-from-library": "Valitse harjoiteltavaksi satunnainen kertomus kirjastosta:",
     "All-stories": "Kaikki",
     "All-Stories": "Kaikki",
-    "click-to-remove-exercise": "Click to remove this exercise",
-    "click-to-add-exercise": "Click to add this exercise",
-    "create-controlled-exercise": "Create controlled story"
+    "click-to-remove-exercise": "Klikkaa poistaaksesi tehtävän",
+    "click-to-add-exercise": "Klikkaa lisätäksesi tehtävän",
+    "create-controlled-exercise": "Create controlled story",
+    "controlled-story-saved": "Controlled story saved!",
+    "refresh": "Refresh"
 }

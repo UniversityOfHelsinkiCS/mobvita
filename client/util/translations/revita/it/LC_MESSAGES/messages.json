@@ -1138,5 +1138,7 @@
     "All-Stories": "Tutte le storie",
     "click-to-remove-exercise": "Click to remove this exercise",
     "click-to-add-exercise": "Click to add this exercise",
-    "create-controlled-exercise": "Create controlled story"
+    "create-controlled-exercise": "Create controlled story",
+    "controlled-story-saved": "Controlled story saved!",
+    "refresh": "Refresh"
 }
