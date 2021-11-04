@@ -51,11 +51,13 @@ export default (
         ...state,
         acceptedTokens: state.acceptedTokens.concat(action.wordObj),
       }
+
     case 'REMOVE_EXERCISE':
       return {
         ...state,
         acceptedTokens: state.acceptedTokens.filter(word => word.ID !== action.id),
       }
+
     case 'RESET_SNIPPET_INDEX_SUCCESS':
       return {
         ...state,
@@ -64,12 +66,14 @@ export default (
         pending: false,
         error: false,
       }
+
     case 'GET_CURRENT_SNIPPET_FROZEN_ATTEMPT':
       return {
         ...state,
         pending: true,
         error: false,
       }
+
     case 'GET_CURRENT_SNIPPET_FROZEN_FAILURE':
       return {
         ...state,
@@ -80,30 +84,28 @@ export default (
       return {
         ...state,
         focused: action.response,
-        acceptedTokens: action.response.practice_snippet.filter(word => word.id),
         pending: false,
         error: false,
       }
+
     case 'REFRESH_CURRENT_SNIPPET_ATTEMPT':
       return {
         ...state,
         pending: true,
         error: false,
-        acceptedTokens: [],
       }
+
     case 'REFRESH_CURRENT_SNIPPET_FAILURE':
       return {
         ...state,
         pending: false,
         error: true,
       }
+
     case 'REFRESH_CURRENT_SNIPPET_SUCCESS':
       return {
         ...state,
         focused: action.response,
-        acceptedTokens: state.acceptedTokens.concat(
-          action.response.practice_snippet.filter(word => word.id)
-        ),
         pending: false,
         error: false,
       }
@@ -114,7 +116,6 @@ export default (
         focused: undefined,
         previous: [],
       }
-    // ---
 
     case 'GET_NEXT_SNIPPET_FROZEN_ATTEMPT':
       return {
@@ -134,11 +135,7 @@ export default (
     case 'GET_NEXT_SNIPPET_FROZEN_SUCCESS':
       return {
         ...state,
-        // previous: filterPrevious(state.previous, state.focused),
         focused: action.response,
-        acceptedTokens: state.acceptedTokens.concat(
-          action.response.practice_snippet.filter(word => word.id)
-        ),
         pending: false,
         error: false,
       }
