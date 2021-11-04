@@ -165,10 +165,11 @@ export default function Sidebar({ history }) {
                         {user && user.user.last_used_language && (
                           <img
                             style={{
-                              height: '1.8em',
+                              height: '1.7em',
                               position: 'absolute',
                               left: '2em',
                               border: '1px solid black',
+                              borderRadius: '6px',
                             }}
                             src={getLearningLanguageFlag()}
                             alt="learningLanguageFlag"
