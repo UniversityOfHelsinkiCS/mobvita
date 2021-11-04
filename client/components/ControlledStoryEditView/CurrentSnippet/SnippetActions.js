@@ -39,7 +39,8 @@ const SnippetActions = ({ storyId }) => {
             style={{ marginBottom: '0.5em' }}
           >
             <span>
-              <FormattedMessage id="go-to-next-snippet" /> <Icon name="level down alternate" />
+              <FormattedMessage id="save-and-go-to-next-snippet" />{' '}
+              <Icon name="level down alternate" />
             </span>
           </Button>
         </div>

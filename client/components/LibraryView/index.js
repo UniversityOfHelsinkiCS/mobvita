@@ -354,7 +354,7 @@ const StoryList = () => {
   }
 
   return (
-    <div className="cont-tall cont flex-col auto gap-row-sm pt-lg">
+    <div className="cont-tall pt-lg cont flex-col auto gap-row-sm ">
       {libraryControls}
       <Card.Group itemsPerRow={1} doubling data-cy="story-items">
         <WindowScroller>
