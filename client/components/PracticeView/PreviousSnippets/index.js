@@ -4,12 +4,14 @@ import { getTextStyle, learningLanguageSelector } from 'Utilities/common'
 import { setPrevious, initializePrevious } from 'Utilities/redux/snippetsReducer'
 import { setAnnotations } from 'Utilities/redux/annotationsReducer'
 import TextWithFeedback from 'Components/PracticeView/TextWithFeedback'
-import { useParams } from 'react-router-dom'
+import { useParams, useHistory } from 'react-router-dom'
 
 const PreviousSnippets = () => {
   const [annotationsInitialized, setAnnotationsInitialized] = useState(false)
   const learningLanguage = useSelector(learningLanguageSelector)
   const { previousAnswers } = useSelector(({ practice }) => practice)
+  const history = useHistory()
+  const isControlledStory = history.location.pathname.includes('controlled-practice')
 
   const { focused: focusedStory } = useSelector(({ stories }) => stories)
   const { id: storyId } = useParams()
@@ -23,7 +25,7 @@ const PreviousSnippets = () => {
 
   useEffect(() => {
     dispatch(setPrevious([]))
-    dispatch(initializePrevious(storyId))
+    dispatch(initializePrevious(storyId, isControlledStory))
   }, [])
 
   useEffect(() => {

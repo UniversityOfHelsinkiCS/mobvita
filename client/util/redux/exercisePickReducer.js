@@ -84,6 +84,7 @@ export default (
       return {
         ...state,
         focused: action.response,
+        previous: action.response.previous_snippets,
         pending: false,
         error: false,
       }

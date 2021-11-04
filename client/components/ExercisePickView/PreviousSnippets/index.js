@@ -22,7 +22,6 @@ const PreviousSnippets = () => {
 
   useEffect(() => {
     dispatch(setPrevious([]))
-    // dispatch(initializePrevious(storyId))
   }, [])
 
   useEffect(() => {

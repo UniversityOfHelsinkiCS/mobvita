@@ -8,7 +8,7 @@ import { clearFocusedSnippet } from 'Utilities/redux/snippetsReducer'
 import { setTouchedIds, setAnswers } from 'Utilities/redux/practiceReducer'
 import { resetAnnotations } from 'Utilities/redux/annotationsReducer'
 import useWindowDimensions from 'Utilities/windowDimensions'
-import { getTextStyle, learningLanguageSelector } from 'Utilities/common'
+import { getTextStyle, learningLanguageSelector, getMode } from 'Utilities/common'
 import CurrentSnippet from 'Components/ExercisePickView/CurrentSnippet'
 import DictionaryHelp from 'Components/DictionaryHelp'
 import ReportButton from 'Components/ReportButton'
@@ -25,6 +25,7 @@ const ExercisePickView = () => {
   const { width } = useWindowDimensions()
   const exercisePick = useSelector(({ exercisePick }) => exercisePick)
   const smallScreen = width < 700
+  const mode = getMode()
 
   const exercisePickTotalNum = exercisePick?.focused?.total_num
 
@@ -40,7 +41,7 @@ const ExercisePickView = () => {
   const showAnnotationBox = width >= 1024
 
   useEffect(() => {
-    dispatch(getStoryAction(id))
+    dispatch(getStoryAction(id, mode))
   }, [learningLanguage])
 
   useEffect(() => {

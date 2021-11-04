@@ -25,8 +25,10 @@ export const getNextSnippet = (storyId, currentSnippetId, controlledStory) => {
   return callBuilder(route, prefix)
 }
 
-export const initializePrevious = storyId => {
-  const route = `/stories/${storyId}/snippets/completed`
+export const initializePrevious = (storyId, controlledStory) => {
+  const route = controlledStory
+    ? `/stories/${storyId}/snippets/completed?frozen_exercise=True`
+    : `/stories/${storyId}/snippets/completed`
   const prefix = 'GET_PREVIOUS_SNIPPETS'
   return callBuilder(route, prefix)
 }
