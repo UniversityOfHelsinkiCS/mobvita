@@ -2203,12 +2203,18 @@ html, body, #root {
   &-image {
     height: 40px;
     width: 60px;
-    border: 1px solid whitesmoke;
+    border-radius: 8px;
+    border: 2px solid black;
+
+    &:hover {
+      border: 2px solid $btn-highlight-color-primary;
+    }
   }
 
   &-name {
     color: black;
   }
+  
 }
 
 .banner {

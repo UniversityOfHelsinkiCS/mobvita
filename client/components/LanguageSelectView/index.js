@@ -98,9 +98,9 @@ const LearningLanguageSelectView = () => {
       <Dimmer active={pending}>
         <Loader />
       </Dimmer>
-      <h2 data-cy="choose-lang">
+      <div className="header-2 mt-lg bold" data-cy="choose-lang">
         <FormattedMessage id="Learning-language" />
-      </h2>
+      </div>
       <Segment>
         <LanguageGroup
           languages={supportedLearningLanguages.major}
