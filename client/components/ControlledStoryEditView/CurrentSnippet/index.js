@@ -4,7 +4,7 @@ import {
   getNextSnippetFrozen,
   addToPrevious,
   getCurrentSnippetFrozen,
-} from 'Utilities/redux/exercisePickReducer'
+} from 'Utilities/redux/controlledPracticeReducer'
 import { useHistory } from 'react-router-dom'
 import { getAllStories } from 'Utilities/redux/storiesReducer'
 import { clearTranslationAction } from 'Utilities/redux/translationReducer'
@@ -49,22 +49,22 @@ const EditingFinishedActions = ({ snippetPending }) => {
 const CurrentSnippet = ({ storyId }) => {
   const practiceForm = useRef(null)
   const dispatch = useDispatch()
-  const exercisePick = useSelector(({ exercisePick }) => exercisePick)
-  const snippetPending = useSelector(({ exercisePick }) => exercisePick.pending)
+  const controlledPractice = useSelector(({ controlledPractice }) => controlledPractice)
+  const snippetPending = useSelector(({ controlledPractice }) => controlledPractice.pending)
   const { snippetFinished, isNewSnippet } = useSelector(({ practice }) => practice)
   const learningLanguage = useSelector(learningLanguageSelector)
 
   const currentSnippetId = () => {
-    if (!exercisePick.focused) return -1
-    const { snippetid } = exercisePick.focused
+    if (!controlledPractice.focused) return -1
+    const { snippetid } = controlledPractice.focused
     return snippetid[snippetid.length - 1]
   }
 
   const [finished, setFinished] = useState(false)
 
   const setInitialAnswers = () => {
-    if (exercisePick.focused && exercisePick.focused.storyid === storyId) {
-      const filteredSnippet = exercisePick.focused.practice_snippet.filter(word => word.id)
+    if (controlledPractice.focused && controlledPractice.focused.storyid === storyId) {
+      const filteredSnippet = controlledPractice.focused.practice_snippet.filter(word => word.id)
       const initialAnswers = filteredSnippet.reduce((answerObject, currentWord) => {
         const { surface, id, ID, base, bases, listen, choices, concept, audio } = currentWord
 
@@ -99,8 +99,8 @@ const CurrentSnippet = ({ storyId }) => {
   }
 
   const finishSnippet = () => {
-    const filteredPreviousSnippets = exercisePick.focused.practice_snippet.map(wordObj => {
-      if (wordObj?.id && !exercisePick.acceptedTokens.map(t => t.ID).includes(wordObj.ID)) {
+    const filteredPreviousSnippets = controlledPractice.focused.practice_snippet.map(wordObj => {
+      if (wordObj?.id && !controlledPractice.acceptedTokens.map(t => t.ID).includes(wordObj.ID)) {
         delete wordObj.id
         return wordObj
       }
@@ -113,7 +113,7 @@ const CurrentSnippet = ({ storyId }) => {
     const annotationsToInitialize = []
     let currentSpan = { annotationString: '' }
 
-    exercisePick.focused.practice_snippet.forEach(word => {
+    controlledPractice.focused.practice_snippet.forEach(word => {
       if (word.annotation) {
         currentSpan.startId = word.ID
         currentSpan.endId = word.annotation[0].end_token_id
@@ -140,10 +140,10 @@ const CurrentSnippet = ({ storyId }) => {
     dispatch(updateSeveralSpanAnnotationStore(annotationsToInitialize))
     dispatch(clearCurrentPractice())
 
-    if (exercisePick.focused.total_num !== currentSnippetId() + 1 || finished) {
-      dispatch(getNextSnippetFrozen(storyId, currentSnippetId(), exercisePick.acceptedTokens))
-    } else if (exercisePick.focused.total_num === currentSnippetId() + 1 || finished) {
-      dispatch(getNextSnippetFrozen(storyId, currentSnippetId(), exercisePick.acceptedTokens))
+    if (controlledPractice.focused.total_num !== currentSnippetId() + 1 || finished) {
+      dispatch(getNextSnippetFrozen(storyId, currentSnippetId(), controlledPractice.acceptedTokens))
+    } else if (controlledPractice.focused.total_num === currentSnippetId() + 1 || finished) {
+      dispatch(getNextSnippetFrozen(storyId, currentSnippetId(), controlledPractice.acceptedTokens))
       setFinished(true)
     } else {
       setFinished(true)
@@ -172,19 +172,19 @@ const CurrentSnippet = ({ storyId }) => {
   }, [snippetFinished])
 
   useEffect(() => {
-    const currentSnippetIsLoaded = !!exercisePick.focused
+    const currentSnippetIsLoaded = !!controlledPractice.focused
     if (currentSnippetIsLoaded) {
       if (isNewSnippet) setInitialAnswers()
     }
-  }, [exercisePick.focused])
+  }, [controlledPractice.focused])
 
   useEffect(() => {
-    if (!exercisePick.pending && practiceForm.current) {
+    if (!controlledPractice.pending && practiceForm.current) {
       setTimeout(() => {
         if (practiceForm.current) practiceForm.current.scrollIntoView({ behavior: 'smooth' })
       }, 50)
     }
-  }, [exercisePick.pending, exercisePick.previous])
+  }, [controlledPractice.pending, controlledPractice.previous])
 
   return (
     <form ref={practiceForm}>

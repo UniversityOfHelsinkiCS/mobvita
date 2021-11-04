@@ -1,14 +1,14 @@
 import React, { useState, useEffect, useRef } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import { getTextWidth, rightAlignedLanguages, learningLanguageSelector } from 'Utilities/common'
-import { addExercise, removeExercise } from 'Utilities/redux/exercisePickReducer'
+import { addExercise, removeExercise } from 'Utilities/redux/controlledPracticeReducer'
 
 const ExerciseCloze = ({ word }) => {
   const [value, setValue] = useState('')
   const [bgColorClassName, setBgColorClassName] = useState('control-mode-chosen')
   const learningLanguage = useSelector(learningLanguageSelector)
   const currentAnswer = useSelector(({ practice }) => practice.currentAnswers[word.ID])
-  const { acceptedTokens } = useSelector(({ exercisePick }) => exercisePick)
+  const { acceptedTokens } = useSelector(({ controlledPractice }) => controlledPractice)
 
   const { ID: wordId } = word
 

@@ -229,7 +229,11 @@ const PracticeModal = ({ open, setOpen }) => {
                 />
               )}
               {Object.entries(libraries).map(([key, _]) => (
-                <PracticeModalButton handleClick={() => handleLibraryChange(key)} name={key} />
+                <PracticeModalButton
+                  key={key}
+                  handleClick={() => handleLibraryChange(key)}
+                  name={key}
+                />
               ))}
             </div>
           </div>
@@ -243,7 +247,11 @@ const PracticeModal = ({ open, setOpen }) => {
                 .sort()
                 .slice(0, 4)
                 .map(([name, _]) => (
-                  <PracticeModalButton handleClick={() => handleCategoryChange(name)} name={name} />
+                  <PracticeModalButton
+                    key={name}
+                    handleClick={() => handleCategoryChange(name)}
+                    name={name}
+                  />
                 ))}
             </div>
           </div>

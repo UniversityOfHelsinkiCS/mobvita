@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from 'react'
 import { useSelector, useDispatch, shallowEqual } from 'react-redux'
 import { getTextStyle, learningLanguageSelector } from 'Utilities/common'
-import { setPrevious } from 'Utilities/redux/exercisePickReducer'
+import { setPrevious } from 'Utilities/redux/controlledPracticeReducer'
 import { setAnnotations } from 'Utilities/redux/annotationsReducer'
-import TextWithFeedback from 'Components/ExercisePickView/TextWithFeedback'
+import TextWithFeedback from 'Components/ControlledStoryEditView/TextWithFeedback'
 
 const PreviousSnippets = () => {
   const [annotationsInitialized, setAnnotationsInitialized] = useState(false)
@@ -12,9 +12,9 @@ const PreviousSnippets = () => {
 
   const { focused: focusedStory } = useSelector(({ stories }) => stories)
 
-  const { previous } = useSelector(({ exercisePick }) => {
-    const { focused: focusedSnippet, pending } = exercisePick
-    const previous = exercisePick.previous.filter(Boolean)
+  const { previous } = useSelector(({ controlledPractice }) => {
+    const { focused: focusedSnippet, pending } = controlledPractice
+    const previous = controlledPractice.previous.filter(Boolean)
     return { previous, focusedSnippet, pending }
   }, shallowEqual)
 

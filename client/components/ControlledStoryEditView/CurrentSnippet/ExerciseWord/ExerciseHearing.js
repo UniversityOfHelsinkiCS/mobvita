@@ -2,9 +2,9 @@ import React, { createRef, useState, useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { Icon } from 'semantic-ui-react'
 import { getTextWidth, speak, learningLanguageSelector, respVoiceLanguages } from 'Utilities/common'
-import { addExercise, removeExercise } from 'Utilities/redux/exercisePickReducer'
+import { addExercise, removeExercise } from 'Utilities/redux/controlledPracticeReducer'
 
-const ExerciseHearing = ({ word, handleChange }) => {
+const ExerciseHearing = ({ word }) => {
   const [value, setValue] = useState('')
 
   const [bgColorClassName, setBgColorClassName] = useState(
@@ -14,7 +14,7 @@ const ExerciseHearing = ({ word, handleChange }) => {
 
   const dispatch = useDispatch()
   const currentAnswer = useSelector(({ practice }) => practice.currentAnswers[word.ID])
-  const { acceptedTokens } = useSelector(({ exercisePick }) => exercisePick)
+  const { acceptedTokens } = useSelector(({ controlledPractice }) => controlledPractice)
   const learningLanguage = useSelector(learningLanguageSelector)
 
   const { ID: wordId } = word

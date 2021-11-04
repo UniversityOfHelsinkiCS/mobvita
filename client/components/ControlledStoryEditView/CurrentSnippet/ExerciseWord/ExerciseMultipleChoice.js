@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import { Dropdown } from 'semantic-ui-react'
 import { getTextWidth } from 'Utilities/common'
-import { addExercise, removeExercise } from 'Utilities/redux/exercisePickReducer'
+import { addExercise, removeExercise } from 'Utilities/redux/controlledPracticeReducer'
 
 const ExerciseMultipleChoice = ({ word }) => {
   const [bgColorClassName, setBgColorClassName] = useState('exercise-multiple control-mode-chosen')
@@ -10,7 +10,7 @@ const ExerciseMultipleChoice = ({ word }) => {
 
   const dispatch = useDispatch()
   const currentAnswer = useSelector(({ practice }) => practice.currentAnswers[word.ID])
-  const { acceptedTokens } = useSelector(({ exercisePick }) => exercisePick)
+  const { acceptedTokens } = useSelector(({ controlledPractice }) => controlledPractice)
 
   const { tested, isWrong, ID: wordId } = word
   const value = currentAnswer ? currentAnswer.users_answer : ''

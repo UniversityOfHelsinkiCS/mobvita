@@ -1,5 +1,5 @@
 import React from 'react'
-import PlainWord from 'Components/ExercisePickView/PlainWord'
+import PlainWord from 'Components/ControlledStoryEditView/PlainWord'
 import { useSelector } from 'react-redux'
 import { Popup } from 'semantic-ui-react'
 import { useIntl } from 'react-intl'
@@ -19,7 +19,7 @@ const ExercisePopup = ({ translationId, children }) => {
 }
 
 const ExerciseWord = ({ word }) => {
-  const { acceptedTokens } = useSelector(({ exercisePick }) => exercisePick)
+  const { acceptedTokens } = useSelector(({ controlledPractice }) => controlledPractice)
 
   const translationId = acceptedTokens.map(t => t.ID).includes(word.ID)
     ? 'click-to-remove-exercise'

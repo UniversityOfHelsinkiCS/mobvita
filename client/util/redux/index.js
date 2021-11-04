@@ -31,7 +31,7 @@ import flashcardList from './flashcardListReducer'
 import tour from './tourReducer'
 import news from './newsReducer'
 import wordNest from './wordNestReducer'
-import exercisePick from './exercisePickReducer'
+import controlledPractice from './controlledPracticeReducer'
 
 const rootReducer = combineReducers({
   stories,
@@ -65,7 +65,7 @@ const rootReducer = combineReducers({
   tour,
   news,
   wordNest,
-  exercisePick,
+  controlledPractice,
 })
 
 export default (state, action) =>

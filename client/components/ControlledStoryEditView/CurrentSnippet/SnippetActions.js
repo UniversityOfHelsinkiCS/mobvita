@@ -3,11 +3,11 @@ import { useSelector, useDispatch } from 'react-redux'
 import { FormattedMessage } from 'react-intl'
 import { Icon } from 'semantic-ui-react'
 import { Button } from 'react-bootstrap'
-import { refreshCurrentSnippet } from 'Utilities/redux/exercisePickReducer'
+import { refreshCurrentSnippet } from 'Utilities/redux/controlledPracticeReducer'
 import { finishSnippet } from 'Utilities/redux/practiceReducer'
 
 const SnippetActions = ({ storyId }) => {
-  const exercisePick = useSelector(({ exercisePick }) => exercisePick)
+  const controlledPractice = useSelector(({ controlledPractice }) => controlledPractice)
   const dispatch = useDispatch()
 
   return (
@@ -19,8 +19,8 @@ const SnippetActions = ({ storyId }) => {
             dispatch(
               refreshCurrentSnippet(
                 storyId,
-                exercisePick.focused.snippetid[0],
-                exercisePick.acceptedTokens
+                controlledPractice.focused.snippetid[0],
+                controlledPractice.acceptedTokens
               )
             )
           }
@@ -34,7 +34,7 @@ const SnippetActions = ({ storyId }) => {
             variant="secondary"
             size="sm"
             // disabled={snippets.answersPending || snippets.pending || !snippets.focused}
-            disabled={exercisePick.pending}
+            disabled={controlledPractice.pending}
             onClick={() => dispatch(finishSnippet())}
             style={{ marginBottom: '0.5em' }}
           >

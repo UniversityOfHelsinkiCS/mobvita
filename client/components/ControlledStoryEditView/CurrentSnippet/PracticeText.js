@@ -1,16 +1,17 @@
 import React, { useRef, useState, useEffect } from 'react'
 import { useSelector, shallowEqual } from 'react-redux'
 import { Spinner } from 'react-bootstrap'
-import TextWithFeedback from 'Components/ExercisePickView/TextWithFeedback'
+import TextWithFeedback from 'Components/ControlledStoryEditView/TextWithFeedback'
 
 const PracticeText = props => {
   const snippets = useSelector(({ snippets }) => snippets)
-  const exercisePick = useSelector(({ exercisePick }) => exercisePick)
+  const controlledPractice = useSelector(({ controlledPractice }) => controlledPractice)
   const textComponent = useRef(null)
   const [previousHeight, setPreviousHeight] = useState(0)
 
   const practiceSnippet = useSelector(
-    ({ exercisePick }) => exercisePick.focused && exercisePick.focused.practice_snippet,
+    ({ controlledPractice }) =>
+      controlledPractice.focused && controlledPractice.focused.practice_snippet,
     shallowEqual
   )
 
@@ -20,7 +21,12 @@ const PracticeText = props => {
     }
   }, [practiceSnippet])
 
-  if (snippets.pending || !practiceSnippet || snippets.answersPending || exercisePick.pending) {
+  if (
+    snippets.pending ||
+    !practiceSnippet ||
+    snippets.answersPending ||
+    controlledPractice.pending
+  ) {
     return (
       <div className="spinner-container" style={{ minHeight: previousHeight }}>
         <Spinner animation="border" variant="primary" size="lg" />

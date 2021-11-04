@@ -3,7 +3,6 @@ import { useSelector, useDispatch } from 'react-redux'
 import { getAllStories } from 'Utilities/redux/storiesReducer'
 import { getSelf } from 'Utilities/redux/userReducer'
 
-
 export default function StoryFetcher() {
   const { data: user, refreshed } = useSelector(({ user }) => user)
   const { joinPending } = useSelector(({ groups }) => groups)
@@ -20,7 +19,7 @@ export default function StoryFetcher() {
         getAllStories(learningLanguage, {
           sort_by: 'date',
           order: -1,
-        }),
+        })
       )
     }
   }, [learningLanguage, refreshed, joinPending])
