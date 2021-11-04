@@ -11,6 +11,7 @@ import 'react-simple-keyboard/build/css/index.css'
 import { FormattedMessage } from 'react-intl'
 import { getSelf } from 'Utilities/redux/userReducer'
 import { getTextStyle, learningLanguageSelector } from 'Utilities/common'
+import { useHistory } from 'react-router-dom'
 import { Button } from 'react-bootstrap'
 import {
   setAnswers,
@@ -38,6 +39,8 @@ const CurrentSnippet = ({ storyId, handleInputChange }) => {
   const answersPending = useSelector(({ snippets }) => snippets.answersPending)
   const { snippetFinished, isNewSnippet, attempt } = useSelector(({ practice }) => practice)
   const learningLanguage = useSelector(learningLanguageSelector)
+  const history = useHistory()
+  const isControlledStory = history.location.pathname.includes('controlled-practice')
 
   const currentSnippetId = () => {
     if (!snippets.focused) return -1
@@ -130,7 +133,7 @@ const CurrentSnippet = ({ storyId, handleInputChange }) => {
     dispatch(clearCurrentPractice())
 
     if (snippets.focused.total_num !== currentSnippetId() + 1 || finished) {
-      dispatch(getNextSnippet(storyId, currentSnippetId()))
+      dispatch(getNextSnippet(storyId, currentSnippetId(), isControlledStory))
     } else {
       setFinished(true)
     }
@@ -152,7 +155,7 @@ const CurrentSnippet = ({ storyId, handleInputChange }) => {
   }, [])
 
   useEffect(() => {
-    dispatch(getCurrentSnippet(storyId))
+    dispatch(getCurrentSnippet(storyId, isControlledStory))
     dispatch(clearTranslationAction())
   }, [])
 
@@ -192,7 +195,7 @@ const CurrentSnippet = ({ storyId, handleInputChange }) => {
     dispatch(clearPractice())
     dispatch(resetAnnotations())
     dispatch(setPrevious([]))
-    dispatch(getNextSnippet(storyId, currentSnippetId()))
+    dispatch(getNextSnippet(storyId, currentSnippetId(), isControlledStory))
     setFinished(false)
   }
 

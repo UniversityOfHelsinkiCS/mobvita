@@ -1,6 +1,6 @@
 import React, { useState, useMemo, useEffect } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
-import { useParams } from 'react-router-dom'
+import { useParams, useHistory } from 'react-router-dom'
 import { FormattedMessage } from 'react-intl'
 import { Icon } from 'semantic-ui-react'
 import { Button } from 'react-bootstrap'
@@ -72,6 +72,8 @@ const SnippetActions = ({ storyId, exerciseCount }) => {
   const { snippets } = useSelector(({ snippets }) => ({ snippets }))
   const dispatch = useDispatch()
   const { id } = useParams()
+  const history = useHistory()
+  const isControlledStory = history.location.pathname.includes('controlled-practice')
 
   const rightAnswerAmount = useMemo(
     () =>
@@ -110,7 +112,7 @@ const SnippetActions = ({ storyId, exerciseCount }) => {
 
   const handleRestart = () => {
     dispatch(clearPractice())
-    dispatch(resetCurrentSnippet(id))
+    dispatch(resetCurrentSnippet(id, isControlledStory))
     dispatch(resetAnnotations())
     setcheckAnswersButtonTempDisable(true)
     setTimeout(() => {

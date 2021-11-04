@@ -23,19 +23,14 @@ const StoryTitle = ({
 }) => {
   const { width } = useWindowDimensions()
   const learningLanguage = useSelector(learningLanguageSelector)
-
   const { email: userEmail } = useSelector(({ user }) => user.data.user)
-
-  const handleDelete = () => {
-    setConfirmationOpen(true)
-  }
-
   const isTeacher = inGroupLibrary && currentGroup && currentGroup.is_teaching
+  const showDeleteButton = libraryShown.private || isTeacher
 
   const showShareButton =
     !!userCanShare && !story.public && !inGroupLibrary && userEmail !== 'anonymous_email'
 
-  const showDeleteButton = libraryShown.private || isTeacher
+  const handleDelete = () => setConfirmationOpen(true)
 
   if (width >= 640) {
     return (
@@ -97,6 +92,10 @@ const StoryActions = ({ story, libraryShown, enableOnlyPractice, isControlled, u
 
   const showCrosswordsButton = width > 1023
 
+  const practiceLink = isControlled
+    ? `/stories/${story._id}/controlled-practice`
+    : `/stories/${story._id}/practice`
+
   if (width >= 640) {
     return (
       <div className="story-actions">
@@ -108,7 +107,7 @@ const StoryActions = ({ story, libraryShown, enableOnlyPractice, isControlled, u
             <FormattedMessage id="preview" />
           </Button>
         </Link>
-        <Link to={`/stories/${story._id}/practice`}>
+        <Link to={practiceLink}>
           <Button variant="primary">
             <FormattedMessage id="practice" />
           </Button>
@@ -162,7 +161,7 @@ const StoryActions = ({ story, libraryShown, enableOnlyPractice, isControlled, u
     <SemanticButton.Group>
       <SemanticButton
         as={Link}
-        to={`/stories/${story._id}/practice`}
+        to={practiceLink}
         style={{ backgroundColor: 'hsla(208, 56%, 55%, 1)', color: 'white' }}
       >
         <FormattedMessage id="practice" />
