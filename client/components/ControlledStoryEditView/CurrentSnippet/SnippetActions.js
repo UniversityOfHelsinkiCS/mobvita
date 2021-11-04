@@ -27,7 +27,7 @@ const SnippetActions = ({ storyId }) => {
           type="button"
           style={{ width: '100%', marginBottom: '.5em' }}
         >
-          <FormattedMessage id="refresh" />
+          <FormattedMessage id="regenerate-exercises" />
         </Button>
         <div className="space-between">
           <Button
@@ -39,8 +39,7 @@ const SnippetActions = ({ storyId }) => {
             style={{ marginBottom: '0.5em' }}
           >
             <span>
-              <FormattedMessage id="save-and-go-to-next-snippet" />{' '}
-              <Icon name="level down alternate" />
+              <FormattedMessage id="freeze-snippet" /> <Icon name="level down alternate" />
             </span>
           </Button>
         </div>

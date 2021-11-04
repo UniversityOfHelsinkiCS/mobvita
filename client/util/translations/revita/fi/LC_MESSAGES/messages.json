@@ -1140,5 +1140,7 @@
     "create-controlled-exercise": "Create controlled story",
     "controlled-story-saved": "Controlled story saved!",
     "refresh": "Refresh",
-    "save-and-go-to-next-snippet": "Save chosen exercises and go to next snippet"
+    "save-and-go-to-next-snippet": "Save chosen exercises and go to next snippet",
+    "regenerate-exercises": "Regenerate exercises",
+    "freeze-snippet": "Freeze snippet"
 }
