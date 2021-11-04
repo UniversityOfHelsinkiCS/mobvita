@@ -102,7 +102,7 @@ const SnippetActions = ({ storyId, exerciseCount }) => {
     }
 
     dispatch(clearTouchedIds())
-    dispatch(postAnswers(storyId, answersObj))
+    dispatch(postAnswers(storyId, answersObj, false, isControlledStory))
   }
 
   const submitAnswers = () => {
