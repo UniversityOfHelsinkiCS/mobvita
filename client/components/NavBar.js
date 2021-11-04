@@ -328,7 +328,13 @@ export default function NavBar() {
                         />
                       }
                       trigger={
-                        <Label className="navbar-news-label" color="red" size="mini" floating>
+                        <Label
+                          onClick={handleNewsClick}
+                          className="navbar-news-label"
+                          color="red"
+                          size="mini"
+                          floating
+                        >
                           <span>{numUnreadNews}</span>
                         </Label>
                       }
