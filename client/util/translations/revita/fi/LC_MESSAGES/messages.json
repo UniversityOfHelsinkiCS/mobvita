@@ -1139,5 +1139,6 @@
     "click-to-add-exercise": "Klikkaa lisätäksesi tehtävän",
     "create-controlled-exercise": "Create controlled story",
     "controlled-story-saved": "Controlled story saved!",
-    "refresh": "Refresh"
+    "refresh": "Refresh",
+    "save-and-go-to-next-snippet": "Save chosen exercises and go to next snippet"
 }

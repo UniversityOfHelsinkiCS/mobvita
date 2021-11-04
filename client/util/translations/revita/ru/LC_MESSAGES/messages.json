@@ -1142,5 +1142,6 @@
     "click-to-add-exercise": "Click to add this exercise",
     "create-controlled-exercise": "Create controlled story",
     "controlled-story-saved": "Controlled story saved!",
-    "refresh": "Refresh"
+    "refresh": "Refresh",
+    "save-and-go-to-next-snippet": "Save chosen exercises and go to next snippet"
 }
