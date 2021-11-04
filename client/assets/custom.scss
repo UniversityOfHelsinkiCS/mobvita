@@ -670,8 +670,12 @@ html, body, #root {
     }
   }
 
-  &-flag:hover {
-    border: 1px solid $btn-highlight-color-primary!important;
+  &-flag {
+    border-radius: 4px;
+
+    &:hover {
+      border: 1px solid $btn-highlight-color-primary!important;
+    }
   }
 
   &-news-label {
