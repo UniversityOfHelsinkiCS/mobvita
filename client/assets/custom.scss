@@ -672,9 +672,11 @@ html, body, #root {
 
   &-flag {
     border-radius: 4px;
+    height: 21px;
+    border: 2px solid black;
 
     &:hover {
-      border: 1px solid $btn-highlight-color-primary!important;
+      border: 2px solid $btn-highlight-color-primary;
     }
   }
 

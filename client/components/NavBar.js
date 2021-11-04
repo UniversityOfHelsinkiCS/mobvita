@@ -234,10 +234,6 @@ export default function NavBar() {
                     <Link to="/learningLanguage">
                       <img
                         className="tour-navbar-learning-language navbar-basic-icon navbar-flag"
-                        style={{
-                          height: '21px',
-                          border: '1px solid black',
-                        }}
                         src={getLearningLanguageFlag()}
                         alt="learningLanguageFlag"
                       />
