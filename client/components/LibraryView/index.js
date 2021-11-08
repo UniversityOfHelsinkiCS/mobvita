@@ -90,7 +90,7 @@ const StoryList = () => {
 
   useEffect(() => {
     setLibrary(savedLibrarySelection)
-    if (savedLibrarySelection !== 'private' && sorter === 'date') {
+    if (savedLibrarySelection === 'public' && sorter === 'date') {
       setSorter('title')
     }
   }, [savedLibrarySelection])
