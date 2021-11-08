@@ -162,13 +162,17 @@ const StoryActions = ({ story, libraryShown, enableOnlyPractice, isControlled, u
       <SemanticButton
         as={Link}
         to={practiceLink}
-        style={{ backgroundColor: 'hsla(208, 56%, 55%, 1)', color: 'white' }}
+        style={{ backgroundColor: 'rgb(50, 170, 248)', color: 'white' }}
       >
         <FormattedMessage id="practice" />
       </SemanticButton>
       <Dropdown
         className="button icon"
-        style={{ backgroundColor: 'rgb(97, 166, 226)', color: 'white' }}
+        style={{
+          backgroundColor: 'rgb(50, 170, 248)',
+          color: 'white',
+          borderLeft: '2px solid rgb(81, 138, 248)',
+        }}
         floating
         trigger={<React.Fragment />}
       >
