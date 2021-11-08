@@ -1026,8 +1026,11 @@ html, body, #root {
   }
 }
 
-.story-actions > a {
-  margin-right: .5em;
+.story-actions {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  gap: .5em;
 }
 
 .library-control {
