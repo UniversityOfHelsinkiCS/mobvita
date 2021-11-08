@@ -1143,5 +1143,6 @@
     "refresh": "Refresh",
     "save-and-go-to-next-snippet": "Save chosen exercises and go to next snippet",
     "regenerate-exercises": "Regenerate exercises",
-    "freeze-snippet": "Freeze snippet"
+    "freeze-snippet": "Freeze snippet",
+    "controlled-exercise-popup-text": "< insert info here >"
 }
