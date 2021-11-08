@@ -997,6 +997,7 @@ html, body, #root {
 }
 
 .annotation-text-content {
+  white-space: pre-line;
   word-wrap: break-word;
   font-style: italic;
 }
