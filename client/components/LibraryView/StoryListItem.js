@@ -235,7 +235,7 @@ const StoryListItem = ({ story, userCanShare, libraryShown, selectedGroup }) => 
   const currentGroup = groups.find(g => g.group_id === selectedGroup)
   const inGroupLibrary = libraryShown.group && story.groups
   const showGroupNames = story.groups && libraryShown.private
-  const enableOnlyPractice = inGroupLibrary && !currentGroup.is_teaching && isControlledStory
+  const enableOnlyPractice = inGroupLibrary && !currentGroup?.is_teaching && isControlledStory
 
   const deleteStory = () => {
     dispatch(removeStory(story._id))
