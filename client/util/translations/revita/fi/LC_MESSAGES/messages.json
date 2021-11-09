@@ -1085,7 +1085,7 @@
     "learning-settings-modal-automatic": "Järjestelmä säätää asetukset taitotasosi mukaan",
     "share-story-with-user-default": "Halusin jakaa tämän kertomuksen sinulle!",
     "share-story-with-group-default": "Tee tähän kertomukseen liittyvät tehtävät!",
-    "group-registration-documentation": "Jos sinulla ei ole \"Master\"-oikeuksia lisätessäsi opiskelijoita ryhmään, he saavat kutsun ja heidät lisätään ryhmään vasta kun he ovat ovat hyväksyneet sen. (Mikäli haluat anoa \"Master\"-oikeuksia, ota yhteyttä osoitteeseen revita@cs.helsinki.fi)",
+    "group-registration-documentation": "Jos sinulla ei ole \"Master\"-oikeuksia lisätessäsi opiskelijoita ryhmään, he saavat kutsun ja heidät lisätään ryhmään vasta kun he ovat ovat hyväksyneet sen.\n(Mikäli haluat anoa \"Master\"-oikeuksia, ota yhteyttä osoitteeseen revita@cs.helsinki.fi)",
     "learning-settings-modal-CEFR-level-documentation": "Sinulle valitaan enintään valitsemasi CEFR-tason tehtäviä.",
     "multiple-email-separate-instructions": "Erottele sähköpostiosoitteet pilkulla tai välilyönnillä",
     "learning-settings-modal-exercise-density-documentation": "Tällä säätimellä muokataan tehtävien määrää harjoitusleikkeissä:\n• \"Vaikea\" tarkoittaa enemmän tehtäviä\n• \"Helppo\" tarkoittaa vähemmän tehtäviä",
@@ -1143,5 +1143,5 @@
     "save-and-go-to-next-snippet": "Save chosen exercises and go to next snippet",
     "regenerate-exercises": "Regeneroi harjoitukset",
     "freeze-snippet": "Jäädytä osa",
-    "controlled-exercise-popup-text": "< insert info here >"
+    "controlled-exercise-popup-text": "Klikkaa generoituja tehtäviä (punaiset) lisätäksesi ne ohjattuun harjoitukseen. Jos valitut tehtävät ovat mielestäsi hyviä, mutta haluaisit lisää tehtäviä samasta tehtäväosasta, voit painaa \"Regeneroi harjoitukset\"-painiketta — tällöin jo hyväksymäsi tehtävät säilytetään, ja järjestelmä antaa sinulle lisää tehtäviä, joista valita.\n\nKun olet tyytyväinen kaikkiin tehtäväosaan valittuihin tehtäviin, klikkaa \"Jäädytä osa\"-painiketta, jolloin valitut tehtävät (vihreät) tallennetaan ja siirryt seuraavaan osaan."
 }
