@@ -42,6 +42,7 @@ const SnippetActions = ({ storyId }) => {
             </span>
           </Button>
           <Popup
+            style={{ whiteSpace: 'pre-line' }}
             position="top center"
             content={<FormattedMessage id="controlled-exercise-popup-text" />}
             trigger={<Icon className="pt-sm" name="info circle" size="large" color="grey" />}
