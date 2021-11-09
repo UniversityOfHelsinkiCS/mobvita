@@ -207,7 +207,7 @@ const DictionaryHelp = ({ minimized, inWordNestModal }) => {
   const parsedLemmas = () => lemmas.split('+').join(',').split('|').join(',').split(',')
 
   const showSurfaceWord = () => {
-    if (!surfaceWord || clue) return false
+    if (!surfaceWord || clue || surfaceWord?.includes(' + ')) return false
     if (translation && translation !== 'no-clue-translation') {
       return !translation.some(
         translated => translated.lemma.toLowerCase() === surfaceWord.toLowerCase()
