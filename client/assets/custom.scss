@@ -332,6 +332,21 @@ html, body, #root {
   cursor: not-allowed;
 }
 
+.btn.active.btn-success {
+  border: none;
+  background: rgb(112, 114, 120)!important;
+  cursor: default;
+}
+
+.disabled.btn.btn-success {
+  cursor: not-allowed;
+}
+
+.btn.btn-success {
+  border: none;
+  background: rgb(189, 202, 212);
+}
+
 .btn-toggle-on {
   @extend .btn-primary;
 }
@@ -1843,6 +1858,19 @@ html, body, #root {
   }
 }
 
+.progress-page {
+  &-header {
+    font-size: 20px;
+    font-weight: 500;
+  }
+
+  &-graph-cont {
+    border-radius: 7.5px;
+    background: white;
+    padding: 2em .5em .5em .5em;
+  }
+}
+
 .learning-settings-radio-button-cont {
   display: flex;
   justify-content: space-between;
@@ -1900,14 +1928,13 @@ html, body, #root {
   margin-bottom: auto;
   & span:first-child {
     text-align: center;
-    color: gray;
   }
 
   & span:nth-child(2) {
     margin-bottom: 0;
     font-size: 34px;
     font-weight: 500;
-    color: darkgreen;
+    color: rgb(112, 114, 120);
   }
 }
 .date-pickers-container {

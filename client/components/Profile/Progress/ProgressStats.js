@@ -31,7 +31,7 @@ const ProgressStats = ({ startDate, endDate }) => {
         src={getLearningLanguageFlag()}
         alt="learning language flag"
         height="72px"
-        style={{ border: '1px solid gray' }}
+        style={{ border: '1px solid rgb(189, 202, 212)', borderRadius: '7px' }}
       />
       <div className="stat">
         <span>{intl.formatMessage({ id: 'completed-exercises' })}: </span>

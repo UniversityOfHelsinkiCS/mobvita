@@ -6,6 +6,7 @@ import { FormattedMessage } from 'react-intl'
 import { getSelf } from 'Utilities/redux/userReducer'
 import ProgressGraph from 'Components/ProgressGraph'
 import Spinner from 'Components/Spinner'
+import { Divider } from 'semantic-ui-react'
 import ResponsiveDatePicker from 'Components/ResponsiveDatePicker'
 import History from 'Components/History'
 import { getHistory as getExerciseHistory } from 'Utilities/redux/exerciseHistoryReducer'
@@ -98,22 +99,24 @@ const Progress = () => {
       </div>
       <br />
       <div>
-        <h3 className="header-3">
+        <div className="progress-page-header">
           <FormattedMessage id="Progress graph" />
-        </h3>
+        </div>
         <ProgressStats startDate={startDate} endDate={endDate} />
-        <ProgressGraph
-          exerciseHistory={exerciseHistoryGraph}
-          flashcardHistory={flashcardHistory}
-          startDate={startDate}
-          endDate={endDate}
-        />
+        <div className="progress-page-graph-cont">
+          <ProgressGraph
+            exerciseHistory={exerciseHistoryGraph}
+            flashcardHistory={flashcardHistory}
+            startDate={startDate}
+            endDate={endDate}
+          />
+        </div>
       </div>
+      <Divider />
       <ButtonGroup
         toggle
         style={{
           float: 'right',
-          paddingTop: '1rem',
         }}
       >
         <ToggleButton
@@ -140,16 +143,16 @@ const Progress = () => {
       <div>
         {historyView === 'exercise' ? (
           <>
-            <h3 className="header-3">
+            <div className="progress-page-header">
               <FormattedMessage id="Practice history" />
-            </h3>
+            </div>
             <History history={exerciseHistory} dateFormat="YYYY.MM" />
           </>
         ) : (
           <>
-            <h3 className="header-3">
+            <div className="progress-page-header">
               <FormattedMessage id="Test History" />
-            </h3>
+            </div>
             <History history={filterTestHistoryByDate()} testView dateFormat="YYYY.MM.DD HH:mm" />
           </>
         )}
