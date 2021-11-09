@@ -72,6 +72,7 @@ describe('flashcards', function () {
 
   describe('multiple cards', function () {
     this.beforeEach(function () {
+      cy.viewport(1200, 900) 
       cy.visit('http://localhost:8000/stories/5c407e9eff634503466b0dde/read')
 
       cy.contains('lentokoneita').click()
