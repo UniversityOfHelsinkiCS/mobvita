@@ -1403,14 +1403,13 @@ html, body, #root {
   &-arrow-button {
     height: 6em;
     margin: auto;
-    background-color: white;
     border: none;
-    color: hsla(208, 56%, 55%, 1);
+    color: $btn-color-primary;
     &:focus {
       outline: none;
     }
     &:hover {
-      color: #0069d9
+      color: $btn-highlight-color-primary;
     }
     &:disabled {
       color: grey
