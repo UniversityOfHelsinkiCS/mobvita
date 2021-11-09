@@ -38,28 +38,28 @@ const PeopleAddResultModal = ({ lastAddInfo }) => {
       <Modal.Content style={{ display: 'flex', flexDirection: 'column', margin: '1em' }}>
         <ResultItem
           label={intl.formatMessage({ id: 'teachers-added-to-the-group' })}
-          resultList={lastAddInfo[0].added_teachers}
+          resultList={lastAddInfo[0].teachersAdded}
         />
         <ResultItem
           label={intl.formatMessage({ id: 'teachers-awaiting-confirmation' })}
-          resultList={lastAddInfo[0].to_be_confirmed_teachers}
+          resultList={lastAddInfo[0].toBeConfirmedTeachers}
         />
         <ResultItem
           label={intl.formatMessage({ id: 'teachers-not-registered-in-revita' })}
-          resultList={lastAddInfo[0].failed_teachers}
+          resultList={lastAddInfo[0].addingFailedTeachers}
         />
         <Divider />
         <ResultItem
           label={intl.formatMessage({ id: 'students-added-to-the-group' })}
-          resultList={lastAddInfo[0].added_students}
+          resultList={lastAddInfo[0].studentsAdded}
         />
         <ResultItem
           label={intl.formatMessage({ id: 'students-awaiting-confirmation' })}
-          resultList={lastAddInfo[0].to_be_confirmed_students}
+          resultList={lastAddInfo[0].toBeConfirmedStudents}
         />
         <ResultItem
           label={intl.formatMessage({ id: 'students-not-registered-in-revita' })}
-          resultList={lastAddInfo[0].failed_students}
+          resultList={lastAddInfo[0].addingFailedStudents}
         />
       </Modal.Content>
     </Modal>

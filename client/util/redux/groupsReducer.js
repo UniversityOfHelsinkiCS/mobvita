@@ -170,12 +170,12 @@ export default (state = { groups: [], joinPending: false }, action) => {
         ...state,
         lastAddInfo: [
           {
-            added_students: action.response.added_students,
-            to_be_confirmed_students: action.response.to_be_confirmed_students,
-            failed_students: action.response.failed_students,
-            added_teachers: action.response.added_teachers,
-            to_be_confirmed_teachers: action.response.to_be_confirmed_teachers,
-            failed_teachers: action.response.failed_teachers,
+            studentsAdded: action.response.added_students,
+            toBeConfirmedStudents: action.response.to_be_confirmed_students,
+            addingFailedStudents: action.response.failed_students,
+            teachersAdded: action.response.added_teachers,
+            toBeConfirmedTeachers: action.response.to_be_confirmed_teachers,
+            addingFailedTeachers: action.response.failed_teachers,
           },
         ],
         groups: state.groups
@@ -207,6 +207,16 @@ export default (state = { groups: [], joinPending: false }, action) => {
     case 'CREATE_GROUP_SUCCESS':
       return {
         ...state,
+        lastAddInfo: [
+          {
+            studentsAdded: action.response.added_students,
+            toBeConfirmedStudents: action.response.to_be_confirmed_students,
+            addingFailedStudents: action.response.failed_students,
+            teachersAdded: action.response.added_teachers,
+            toBeConfirmedTeachers: action.response.to_be_confirmed_teachers,
+            addingFailedTeachers: action.response.failed_teachers,
+          },
+        ],
         groups: state.groups
           .concat(action.response.group)
           .sort((a, b) => a.groupName.localeCompare(b.groupName)),

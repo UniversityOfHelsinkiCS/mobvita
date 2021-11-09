@@ -17,11 +17,11 @@ import {
 } from 'Utilities/redux/groupsReducer'
 
 import { getTestQuestions } from 'Utilities/redux/testReducer'
-
 import { setNotification } from 'Utilities/redux/notificationReducer'
 import Spinner from 'Components/Spinner'
 import Subheader from 'Components/Subheader'
 import ConfirmationWarning from 'Components/ConfirmationWarning'
+import PeopleAddResultModal from './PeopleAddResultModal'
 import GroupActionModal from './GroupActionModal'
 import AddToGroup from './AddToGroup'
 import NoGroupsView from './NoGroupsView'
@@ -461,7 +461,7 @@ const GroupCard = ({
 }
 
 const GroupManagement = () => {
-  const { groups: totalGroups, pending } = useSelector(({ groups }) => groups)
+  const { groups: totalGroups, lastAddInfo, pending } = useSelector(({ groups }) => groups)
   const { role } = useParams()
   const groups = totalGroups.filter(group => group.is_teaching === (role === 'teacher'))
   const userId = useSelector(state => state.user.data.user.oid)
@@ -498,6 +498,7 @@ const GroupManagement = () => {
             groupId={learningModalGroupId}
           />
         )}
+        <PeopleAddResultModal lastAddInfo={lastAddInfo} />
         {pending ? (
           <Spinner fullHeight />
         ) : (
