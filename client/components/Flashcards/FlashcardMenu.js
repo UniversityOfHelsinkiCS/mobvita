@@ -31,7 +31,7 @@ const CardManagmentOptions = ({ handleOptionClick, handleOptionClickWithStory })
           handleClick={() => handleOptionClick('all')}
           translationId="all-flashcards"
           style={{
-            backgroundColor: '#B5EAD7',
+            backgroundColor: 'rgb(189, 202, 212)',
             border: 'none',
           }}
         >
@@ -42,7 +42,7 @@ const CardManagmentOptions = ({ handleOptionClick, handleOptionClickWithStory })
         handleClick={() => handleOptionClickWithStory('list')}
         translationId="Flashcard list"
         style={{
-          backgroundColor: '#e1f7d5',
+          backgroundColor: 'rgb(131, 215, 181)',
           border: 'none',
         }}
       >
@@ -52,7 +52,7 @@ const CardManagmentOptions = ({ handleOptionClick, handleOptionClickWithStory })
         handleClick={() => handleOptionClick('new')}
         translationId="add-new-flashcard"
         style={{
-          backgroundColor: '#FFFFD8',
+          backgroundColor: 'rgb(255, 239, 213)',
           borderRadius: '0 0 1em 1em',
           border: 'none',
         }}
@@ -74,7 +74,7 @@ const PracticeModeOptions = ({ handleOptionClickWithStory }) => {
         handleClick={() => handleOptionClickWithStory('fillin')}
         translationId="fill-in"
         style={{
-          backgroundColor: '#C7CEEA',
+          backgroundColor: 'rgb(142, 187, 249)',
           border: 'none',
           borderRadius: '1em 1em 0 0',
         }}
@@ -99,7 +99,7 @@ const PracticeModeOptions = ({ handleOptionClickWithStory }) => {
         handleClick={() => handleOptionClickWithStory('quick')}
         translationId="Quick cards"
         style={{
-          backgroundColor: '#fdfd96',
+          backgroundColor: 'rgb(255, 217, 112)',
           border: 'none',
           borderRadius: '0 0 1em 1em',
         }}
