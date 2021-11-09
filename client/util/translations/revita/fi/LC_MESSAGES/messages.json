@@ -1137,11 +1137,11 @@
     "All-Stories": "Kaikki",
     "click-to-remove-exercise": "Klikkaa poistaaksesi tehtävän",
     "click-to-add-exercise": "Klikkaa lisätäksesi tehtävän",
-    "create-controlled-exercise": "Create controlled story",
-    "controlled-story-saved": "Controlled story saved!",
+    "create-controlled-exercise": "Luo ohjattu harjoitus",
+    "controlled-story-saved": "Ohjattu harjoitus tallennettu!",
     "refresh": "Refresh",
     "save-and-go-to-next-snippet": "Save chosen exercises and go to next snippet",
-    "regenerate-exercises": "Regenerate exercises",
-    "freeze-snippet": "Freeze snippet",
+    "regenerate-exercises": "Regeneroi harjoitukset",
+    "freeze-snippet": "Jäädytä osa",
     "controlled-exercise-popup-text": "< insert info here >"
 }
