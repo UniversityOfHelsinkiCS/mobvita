@@ -64,14 +64,14 @@ const GroupPeople = ({ role }) => {
         <Table.Header>
           <Table.Row>
             <Table.HeaderCell key="teachers-header" colSpan="2">
-              <div className="space-between">
+              <div className="space-between" style={{ fontSize: '1.2em' }}>
                 <FormattedMessage id="Teachers" /> ({currentGroup.teachers?.length})
                 {currentGroup.is_teaching && (
                   <Icon
                     data-cy="add-to-group-button"
-                    style={{ cursor: 'pointer' }}
+                    style={{ cursor: 'pointer', color: 'rgb(0, 214, 126)' }}
                     name="plus"
-                    color="olive"
+                    size="large"
                     onClick={() => setAddToGroupId(currentGroupId)}
                   />
                 )}
@@ -112,13 +112,13 @@ const GroupPeople = ({ role }) => {
             <Table.Header>
               <Table.Row>
                 <Table.HeaderCell key="students-header" colSpan="2">
-                  <div className="space-between">
+                  <div className="space-between" style={{ fontSize: '1.2em' }}>
                     <FormattedMessage id="Students" /> ({currentGroup.students?.length})
                     <Icon
                       data-cy="add-to-group"
-                      style={{ cursor: 'pointer' }}
+                      style={{ cursor: 'pointer', color: 'rgb(0, 214, 126)' }}
                       name="plus"
-                      color="olive"
+                      size="large"
                       onClick={() => setAddToGroupId(currentGroupId)}
                     />
                   </div>
@@ -133,9 +133,9 @@ const GroupPeople = ({ role }) => {
                     {currentUserIsTeacher && (
                       <Icon
                         data-cy={`remove-from-group-${student.userName}`}
-                        style={{ cursor: 'pointer' }}
+                        style={{ cursor: 'pointer', color: 'rgb(239, 135, 132)' }}
                         name="close"
-                        color="red"
+                        size="large"
                         onClick={() => removeUser(student._id)}
                       />
                     )}
