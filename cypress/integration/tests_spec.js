@@ -21,6 +21,12 @@ describe('test view', function() {
     cy.get('textarea').eq(1).type(this.teacher.email)
     cy.get('textarea').eq(2).type(this.teacher.email)
     cy.get('[type=submit]').click()
+
+    // Close modal with esc
+    cy.get('[data-cy=people-add-result-modal').trigger('keydown', { keyCode: 27});
+    cy.wait(200);
+    cy.get('body').trigger('keyup', { keyCode: 27});
+
     cy.contains('my_test_group')
     cy.get('[data-cy=people-button]').click()
     cy.contains(this.teacher.username)

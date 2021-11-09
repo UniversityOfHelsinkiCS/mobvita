@@ -31,6 +31,7 @@ const PeopleAddResultModal = ({ lastAddInfo }) => {
       closeIcon={{ style: { top: '1rem', right: '2.5rem' }, color: 'black', name: 'close' }}
       open={!!lastAddInfo}
       onClose={() => dispatch(emptyLastAddInfo())}
+      data-cy="people-add-result-modal"
     >
       <Modal.Header>
         <FormattedMessage id="summary" />
