@@ -10,10 +10,10 @@ describe('flashcards', function () {
 
   it('flashcards can be added from reading mode', function () {
     cy.visit('http://localhost:8000/stories/5c407e9eff634503466b0dde/read')
-    cy.get('[data-cy=readmode-text]').contains('lentokoneita').click()
-    cy.get('[data-cy=translations]').contains('plane')
+    cy.get('[data-cy=readmode-text]').contains('häirinneet').click()
+    cy.get('[data-cy=translations]').contains('disturb')
     cy.visit('http://localhost:8000/flashcards/')
-    cy.contains('lentokone')
+    cy.contains('häiritä')
   })
 
   it('flashcards can be added from practice mode', function () {
@@ -28,8 +28,8 @@ describe('flashcards', function () {
 
     this.beforeEach(function () {
       cy.visit('http://localhost:8000/stories/5c407e9eff634503466b0dde/read')
-      cy.contains('lentokoneita').click()
-      cy.get('[data-cy=translations]').contains('plane')
+      cy.contains('häirinneet').click()
+      cy.get('[data-cy=translations]').contains('disturb')
       cy.visit('http://localhost:8000/flashcards/')
     })
 
@@ -40,7 +40,7 @@ describe('flashcards', function () {
 
     it('shows answers after flipping card', function () {
       cy.get('[class=flashcard-footer]').children().eq(0).click()
-      cy.get('[class=flashcard-translations]').contains('plane')
+      cy.get('[class=flashcard-translations]').contains('disturb')
     })
 
     it('cannot be answered after flipping card', function () {
@@ -50,21 +50,21 @@ describe('flashcards', function () {
     })
 
     it('right answer flips the card and shows thumbs up with correct translations', function () {
-      cy.get('input').eq(0).type('plane')
+      cy.get('input').eq(0).type('disturb')
       cy.get('.flashcard-button').eq(0).click()
       cy.get('.flashcard-result > .thumbs.up')
-      cy.contains('plane')
+      cy.contains('disturb')
     })
 
     it('wrong answer flips the cards and shows thumbs down with correct translations', function () {
       cy.get('input').eq(0).type('minttu')
       cy.get('.flashcard-button').eq(0).click()
       cy.get('.flashcard-result > .thumbs.down')
-      cy.contains('plane')
+      cy.contains('disturb')
     })
 
     it('language can be changed', function () {
-      cy.contains('lentokone')
+      cy.contains('häiritä')
       cy.get('[class=flashcard-footer]').get('select').eq(0).select('Espanja')
       cy.get('[data-cy=no-flashcards-text]')
     })
@@ -75,8 +75,8 @@ describe('flashcards', function () {
       cy.viewport(1200, 900) 
       cy.visit('http://localhost:8000/stories/5c407e9eff634503466b0dde/read')
 
-      cy.contains('lentokoneita').click()
-      cy.get('[data-cy=translations]').contains('plane')
+      cy.contains('häirinneet').click()
+      cy.get('[data-cy=translations]').contains('disturb')
       cy.contains('virkamiehet').click()
       cy.get('[data-cy=translations]').contains('civil servant')
       cy.visit('http://localhost:8000/flashcards/')
