@@ -1141,7 +1141,7 @@
     "controlled-story-saved": "Ohjattu harjoitus tallennettu!",
     "refresh": "Refresh",
     "save-and-go-to-next-snippet": "Save chosen exercises and go to next snippet",
-    "regenerate-exercises": "Regeneroi harjoitukset",
+    "regenerate-exercises": "Regeneroi tehtävät",
     "freeze-snippet": "Jäädytä osa",
     "controlled-exercise-popup-text": "Klikkaa generoituja tehtäviä (punaiset) lisätäksesi ne ohjattuun harjoitukseen. Jos valitut tehtävät ovat mielestäsi hyviä, mutta haluaisit lisää tehtäviä samasta tehtäväosasta, voit painaa \"Regeneroi harjoitukset\"-painiketta — tällöin jo hyväksymäsi tehtävät säilytetään, ja järjestelmä antaa sinulle lisää tehtäviä, joista valita.\n\nKun olet tyytyväinen kaikkiin tehtäväosaan valittuihin tehtäviin, klikkaa \"Jäädytä osa\"-painiketta, jolloin valitut tehtävät (vihreät) tallennetaan ja siirryt seuraavaan osaan."
 }

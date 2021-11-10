@@ -1136,13 +1136,13 @@
     "practice-random-story-from-library": "Esercitati con una storia estratta casualmente dalla raccolta:",
     "All-stories": "Tutte le storie",
     "All-Stories": "Tutte le storie",
-    "click-to-remove-exercise": "Click to remove this exercise",
-    "click-to-add-exercise": "Click to add this exercise",
-    "create-controlled-exercise": "Create controlled story",
-    "controlled-story-saved": "Controlled story saved!",
+    "click-to-remove-exercise": "Clicca per rimuovere l'esercizio",
+    "click-to-add-exercise": "Clicca per aggiungere l'esercizio",
+    "create-controlled-exercise": "Crea una storia di valutazione",
+    "controlled-story-saved": "Storia di valutazione salvata!",
     "refresh": "Refresh",
     "save-and-go-to-next-snippet": "Save chosen exercises and go to next snippet",
-    "regenerate-exercises": "Regenerate exercises",
-    "freeze-snippet": "Freeze snippet",
-    "controlled-exercise-popup-text": "Click the generated exercises (red) to select them for the control. If you like the exercises you've selected, but want more exercises for the current snippet, you can press \"Regenerate exercises\" — this will keep the selected exercises, and will generate some more exercises to select.\n\nOnce you like all selected exercises for the current snippet (green), you can save them and move on to the next snippet by clicking \"Freeze snippet\"."
+    "regenerate-exercises": "Rigenera esercizi",
+    "freeze-snippet": "Congela lo snippet",
+    "controlled-exercise-popup-text": "Clicca sugli esercizi generati (rossi) per selezionarli per il test. Se gli esercizi che hai selezionato ti soddisfano, ma desideri più esercizi per questo snippet, puoi cliccare su \"Rigenera esercizi\" — questo manterrà gli esercizi slezionati, e genererà altri esercizi da selezionare (se disponibili).\n\nQuando gli esercizi selezionati per l'attuale snippet (verdi) ti soddisfano, puoi salvarli e passare allo snippet successivo cliccando \"Congela lo snippet\"."
 }
