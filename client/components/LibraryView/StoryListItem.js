@@ -6,7 +6,7 @@ import { Link } from 'react-router-dom'
 import { FormattedMessage } from 'react-intl'
 import { removeStory, unshareStory as unshare } from 'Utilities/redux/storiesReducer'
 import useWindowDimensions from 'Utilities/windowDimensions'
-import { getTextStyle, learningLanguageSelector, hiddenFeatures } from 'Utilities/common'
+import { getTextStyle, learningLanguageSelector } from 'Utilities/common'
 import ConfirmationWarning from 'Components/ConfirmationWarning'
 import ShareStory from 'Components/StoryView/ShareStory'
 import StoryDetailsModal from 'Components/StoryView/StoryDetailsModal'
@@ -146,7 +146,7 @@ const StoryActions = ({ story, libraryShown, enableOnlyPractice, isControlled, u
             </Button>
           </Link>
         )}
-        {userIsTeacher && libraryShown.private && hiddenFeatures && (
+        {userIsTeacher && libraryShown.private && (
           <Link to={`/stories/${story._id}/controlled-story-editor`}>
             <Button variant={isControlled ? 'outline-danger' : 'secondary'} disabled={isControlled}>
               <FormattedMessage id="create-controlled-exercise" />
