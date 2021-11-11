@@ -22,7 +22,7 @@ import InvitationConfirm from 'Components/GroupView/InvitationConfirm'
 import ProtectedRoute from 'Components/AccessControl/ProtectedRoute'
 import CrosswordView from 'Components/CrosswordView'
 import CompeteView from 'Components/CompeteView'
-import GroupManagement from './GroupView/GroupManagement'
+import GroupView from 'Components/GroupView'
 import GroupAnalytics from './GroupView/GroupAnalytics'
 import GroupPeople from './GroupView/GroupPeople'
 import Concepts from './Concepts'
@@ -110,7 +110,7 @@ export default () => {
             />
             <ProtectedRoute exact path="/crossword/:storyId" component={CrosswordView} />
 
-            <ProtectedRoute exact path="/groups/:role" component={GroupManagement} />
+            <ProtectedRoute exact path="/groups/:role" component={GroupView} />
             <ProtectedRoute exact path="/groups/teacher/analytics" component={GroupAnalytics} />
             <ProtectedRoute exact path="/groups/:role/people" component={GroupPeople} />
             <ProtectedRoute exact path="/:target/:role/:id/concepts" component={Concepts} />
