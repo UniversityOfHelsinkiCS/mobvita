@@ -1,9 +1,9 @@
 import React, { useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { Form, Input, Button } from 'semantic-ui-react'
+import { Form, Input } from 'semantic-ui-react'
 import { useHistory } from 'react-router-dom'
 import { useIntl, FormattedMessage, FormattedHTMLMessage } from 'react-intl'
-import { Spinner } from 'react-bootstrap'
+import { Spinner, Button } from 'react-bootstrap'
 import { postStory } from 'Utilities/redux/uploadProgressReducer'
 import { capitalize, learningLanguageSelector } from 'Utilities/common'
 import { updateLibrarySelect } from 'Utilities/redux/userReducer'
@@ -54,7 +54,6 @@ const UploadFromWeb = ({ closeModal }) => {
       </Form>
       <div className="flex pb-sm">
         <Button
-          primary
           form="url-upload"
           type="submit"
           onClick={handleStorySubmit}

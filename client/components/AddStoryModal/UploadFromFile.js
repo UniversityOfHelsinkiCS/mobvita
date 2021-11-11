@@ -1,10 +1,9 @@
 import React, { useState, useEffect } from 'react'
-import { Button } from 'semantic-ui-react'
 import { useDispatch, useSelector } from 'react-redux'
 import { useHistory } from 'react-router-dom'
 import { FormattedMessage, FormattedHTMLMessage, useIntl } from 'react-intl'
 import { postStory, setCustomUpload } from 'Utilities/redux/uploadProgressReducer'
-import { Spinner } from 'react-bootstrap'
+import { Spinner, Button } from 'react-bootstrap'
 import { learningLanguageSelector } from 'Utilities/common'
 import { updateLibrarySelect } from 'Utilities/redux/userReducer'
 import { setNotification } from 'Utilities/redux/notificationReducer'
@@ -68,13 +67,10 @@ const UploadFromFile = ({ closeModal }) => {
       )}
       <div className="space-evenly pt-lg">
         <input id="file" name="file" type="file" accept=".docx, .txt" onChange={onChange} />
-        <label htmlFor="file">{label}</label>
-        <Button
-          primary
-          disabled={submitDisabled}
-          onClick={handleSubmit}
-          style={{ minWidth: '10em' }}
-        >
+        <label className="file-upload-btn" htmlFor="file">
+          {label}
+        </label>
+        <Button disabled={submitDisabled} onClick={handleSubmit} style={{ minWidth: '10em' }}>
           {storyUploading ? (
             <Spinner animation="border" variant="white" size="lg" />
           ) : (

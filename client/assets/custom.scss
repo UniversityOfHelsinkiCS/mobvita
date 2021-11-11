@@ -258,19 +258,19 @@ html, body, #root {
   word-wrap: normal;
 
   &--success {
-    background-color: #0cc10c;
+    background-color: rgb(131, 214,126);
   }
 
   &--warning {
-    background-color: orange;
+    background-color: rgb(255, 184, 107); 
   }
 
   &--info {
-    background-color: #4C91CD;
+    background-color: rgb(81, 138, 248);
   }
 
   &--error {
-    background-color: #E04331;
+    background-color: rgb(239, 135, 132);
   }
 }
 
@@ -368,6 +368,10 @@ html, body, #root {
   left:unset;
   position: relative !important;
   height: auto;
+}
+
+.modal > .header {
+  font-family: $rubik!important;
 }
 
 .react-datepicker__input-container > input {
@@ -1147,6 +1151,18 @@ html, body, #root {
 
   &-content {
     padding-left: 1em!important;
+  }
+}
+
+label.file-upload-btn {
+  background: rgb(239, 239, 239);
+  color: black;
+  border: 1px solid rgb(112, 114, 120);
+  border-radius: 10px;
+
+  &:hover, :active {
+    background: rgb(189, 202, 212);
+    border-color: black;
   }
 }
 

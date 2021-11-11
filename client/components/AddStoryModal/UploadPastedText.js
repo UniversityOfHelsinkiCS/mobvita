@@ -1,10 +1,9 @@
 import React, { useState, useEffect } from 'react'
-import { Button } from 'semantic-ui-react'
 import { useDispatch, useSelector } from 'react-redux'
 import { useHistory } from 'react-router-dom'
 import { FormattedMessage, FormattedHTMLMessage } from 'react-intl'
 import { postStory, setCustomUpload } from 'Utilities/redux/uploadProgressReducer'
-import { FormControl, Spinner } from 'react-bootstrap'
+import { FormControl, Spinner, Button } from 'react-bootstrap'
 import { capitalize, learningLanguageSelector } from 'Utilities/common'
 import { updateLibrarySelect } from 'Utilities/redux/userReducer'
 import { setNotification } from 'Utilities/redux/notificationReducer'
@@ -66,7 +65,7 @@ const UploadPastedText = ({ closeModal }) => {
           <FormattedMessage id="characters-left" />
           {` ${charactersLeft}`}
         </div>
-        <Button primary onClick={addText} disabled={submitDisabled} style={{ marginTop: '1em' }}>
+        <Button onClick={addText} disabled={submitDisabled} style={{ marginTop: '1em' }}>
           {pending || storyId ? (
             <Spinner animation="border" variant="dark" size="lg" />
           ) : (
