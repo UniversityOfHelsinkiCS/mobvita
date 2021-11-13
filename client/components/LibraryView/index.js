@@ -338,13 +338,11 @@ const StoryList = () => {
     return dir * multiplier
   })
 
-  const userCanShare = groups.find(group => group.is_teaching)
   function rowRenderer({ key, index, style }) {
     return (
       <div key={key} style={{ ...style, paddingRight: '0.5em', paddingLeft: '0.5em' }}>
         <StoryListItem
           key={key}
-          userCanShare={userCanShare}
           libraryShown={libraries}
           story={libraryFilteredStories[index]}
           selectedGroup={savedGroupSelection}

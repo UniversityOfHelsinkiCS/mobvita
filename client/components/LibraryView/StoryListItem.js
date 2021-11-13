@@ -15,7 +15,6 @@ import DifficultyStars from 'Components/DifficultyStars'
 const StoryTitle = ({
   story,
   setShareModalOpen,
-  userCanShare,
   inGroupLibrary,
   currentGroup,
   libraryShown,
@@ -27,8 +26,7 @@ const StoryTitle = ({
   const isTeacher = inGroupLibrary && currentGroup && currentGroup.is_teaching
   const showDeleteButton = libraryShown.private || isTeacher
 
-  const showShareButton =
-    !!userCanShare && !story.public && !inGroupLibrary && userEmail !== 'anonymous_email'
+  const showShareButton = !story.public && !inGroupLibrary && userEmail !== 'anonymous_email'
 
   const handleDelete = () => setConfirmationOpen(true)
 
@@ -227,7 +225,7 @@ const GroupsSharedTo = ({ groups }) => {
   )
 }
 
-const StoryListItem = ({ story, userCanShare, libraryShown, selectedGroup }) => {
+const StoryListItem = ({ story, libraryShown, selectedGroup }) => {
   const dispatch = useDispatch()
   const [shareModalOpen, setShareModalOpen] = useState(false)
   const [confirmationOpen, setConfirmationOpen] = useState(false)
@@ -272,7 +270,6 @@ const StoryListItem = ({ story, userCanShare, libraryShown, selectedGroup }) => 
           story={story}
           setConfirmationOpen={setConfirmationOpen}
           setShareModalOpen={setShareModalOpen}
-          userCanShare={userCanShare}
           inGroupLibrary={inGroupLibrary}
           currentGroup={currentGroup}
           libraryShown={libraryShown}
