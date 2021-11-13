@@ -53,7 +53,7 @@ const Concept = ({
         </Table.Cell>
         {history.map(test => (
           <StatisticCell
-            key={`${test.date}-${concept.id}`}
+            key={`${test.date}-${concept.id}-${Math.floor(Math.random() * 10000)}`}
             test={test}
             concept={concept}
             fromPreviousScored={fromPreviousScored}

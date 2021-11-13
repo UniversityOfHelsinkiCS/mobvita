@@ -7,19 +7,23 @@ import { hiddenFeatures } from 'Utilities/common'
 import useWindowDimensions from 'Utilities/windowDimensions'
 import Concept from './Concept'
 
-const TotalRow = history => {
+const TotalRow = ({ history, rootConcepts }) => {
   const rootConceptResults = []
-  Object.values(history).forEach(allResults => {
-    allResults.forEach(oneDayResults => {
-      const rootConcepts = Object.keys(oneDayResults.concept_statistics)
-        .filter(key => key.includes('000'))
+
+  history.forEach(oneDayResults => {
+    rootConceptResults.push(
+      Object.keys(oneDayResults.concept_statistics)
+        .filter(key => rootConcepts?.includes(key))
         .reduce((obj, key) => {
-          obj[key] = oneDayResults.concept_statistics[key]
+          obj[key] = {
+            ...oneDayResults.concept_statistics[key],
+            id: Math.floor(Math.random() * 10000),
+            date: oneDayResults.date,
+          }
+
           return obj
         }, {})
-
-      rootConceptResults.push(rootConcepts)
-    })
+    )
   })
 
   const sumPropertyValues = (items, property) => {
@@ -35,8 +39,8 @@ const TotalRow = history => {
           <FormattedMessage id="total" />
         </b>
       </Table.Cell>
-      {rootConceptResults.map((oneDayResults, index) => (
-        <Table.Cell key={new Date().getTime() + index} positive>
+      {rootConceptResults.map(oneDayResults => (
+        <Table.Cell key={`${oneDayResults['0-0'].date}-${oneDayResults['0-0'].id}`} positive>
           {sumPropertyValues(Object.values(oneDayResults), 'total') > 0 ? (
             <>
               {Math.round(
@@ -64,7 +68,11 @@ const TestTypeRow = ({ history }) => {
         </b>
       </Table.Cell>
       {history.map(resultsObj => (
-        <Table.Cell key={`${resultsObj.test_session}-${resultsObj.date}`}>
+        <Table.Cell
+          key={`${resultsObj.type}-${resultsObj.test_session ?? resultsObj.story_id}-${
+            resultsObj.date
+          }`}
+        >
           <div>{resultsObj?.type ? <FormattedMessage id={resultsObj.type} /> : 'N/A'}</div>
         </Table.Cell>
       ))}
@@ -81,7 +89,11 @@ const CefrLevelRow = ({ history }) => {
         </b>
       </Table.Cell>
       {history.map(resultsObj => (
-        <Table.Cell key={`${resultsObj.test_session}-${resultsObj.date}`}>
+        <Table.Cell
+          key={`${resultsObj.type}-${resultsObj.test_session ?? resultsObj.story_id}-${
+            resultsObj.date
+          }`}
+        >
           <div>{resultsObj.cefr_level ?? '-'}</div>
         </Table.Cell>
       ))}
@@ -104,6 +116,8 @@ const History = ({ history, testView, dateFormat, handleDelete = null }) => {
 
   const [page, setPage] = useState(0)
   const { concepts } = useSelector(({ metadata }) => metadata)
+
+  const rootConcepts = concepts?.filter(e => e.super)?.map(e => e.concept_id)
 
   const windowWidth = useWindowDimensions().width
 
@@ -222,6 +236,12 @@ const History = ({ history, testView, dateFormat, handleDelete = null }) => {
     setColors({ ...colors, [color]: e.target.value })
   }
 
+  const getDate = column => {
+    return column?.type === 'control story'
+      ? moment(column.date).format('YYYY.MM.DD')
+      : moment(column.date).format(dateFormat || 'YYYY.MM.DD HH:mm')
+  }
+
   if (!history || history.length < 1) {
     return (
       <div className="group-analytics-no-results">
@@ -244,7 +264,7 @@ const History = ({ history, testView, dateFormat, handleDelete = null }) => {
           </Button>
         </div>
       )}
-      {hiddenFeatures && (
+      {/* {hiddenFeatures && (
         <>
           <br />
           best:
@@ -270,7 +290,7 @@ const History = ({ history, testView, dateFormat, handleDelete = null }) => {
             onChange={() => setFillFromHistory(!fillFromHistory)}
           />
         </>
-      )}
+      )} */}
       <Table celled fixed unstackable>
         <Table.Header>
           <Table.Row>
@@ -278,9 +298,9 @@ const History = ({ history, testView, dateFormat, handleDelete = null }) => {
               <FormattedMessage id="concepts" />
             </Table.HeaderCell>
             {calculatePage().map(test => (
-              <Table.HeaderCell key={test.date}>
+              <Table.HeaderCell key={`${test.date}-${Math.floor(Math.random() * 10000)}`}>
                 <span className="space-between">
-                  {moment(test.date).format(dateFormat || 'YYYY.MM.DD HH:mm')}
+                  {getDate(test)}
                   {handleDelete && (
                     <Icon
                       name="close"
@@ -311,7 +331,10 @@ const History = ({ history, testView, dateFormat, handleDelete = null }) => {
             </>
           )}
 
-          <TotalRow history={history.slice(page * pageSize, page * pageSize + pageSize)} />
+          <TotalRow
+            history={history.slice(page * pageSize, page * pageSize + pageSize)}
+            rootConcepts={rootConcepts}
+          />
         </Table.Body>
       </Table>
     </div>
