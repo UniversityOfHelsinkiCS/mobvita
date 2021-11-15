@@ -776,7 +776,7 @@ html, body, #root {
   background-color: lightyellow;
 }
 
-.exercise.control-mode {
+.exercise.control-mode, .exercise-multiple {
   &:read-only {
     opacity: 1;
     color: rgb(49, 49, 49);
@@ -790,6 +790,10 @@ html, body, #root {
   &-unchosen {
     background-color: #fabbbb!important;
   }
+}
+
+.control-mode > .default.text {
+  color: rgb(49, 49, 49)!important;
 }
 
 .hearing-untouched {

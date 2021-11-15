@@ -25,7 +25,7 @@ const ExerciseMultipleChoice = ({ word }) => {
     <Dropdown
       key={word.ID}
       options={options}
-      placeholder=" "
+      placeholder={word.choices[0]}
       value=""
       selection
       floating

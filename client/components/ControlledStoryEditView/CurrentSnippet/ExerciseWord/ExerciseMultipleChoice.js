@@ -51,7 +51,7 @@ const ExerciseMultipleChoice = ({ word }) => {
     }
   })
 
-  const placeholder = '_'.repeat(maximumLength)
+  const placeholder = word.choices[0]
 
   return (
     <Dropdown
@@ -64,7 +64,7 @@ const ExerciseMultipleChoice = ({ word }) => {
       selection
       floating
       style={{ width: getTextWidth(testString), minWidth: getTextWidth(testString) }}
-      className={`exercise-multiple ${bgColorClassName}`}
+      className={`exercise-multiple control-mode ${bgColorClassName}`}
     />
   )
 }
