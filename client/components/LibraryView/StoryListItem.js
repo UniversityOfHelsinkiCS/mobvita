@@ -35,13 +35,13 @@ const StoryTitle = ({
       <StoryDetailsModal
         trigger={
           <span className="space-between" style={{ overflow: 'hidden', width: '100%' }}>
+            <Icon color="gray" name="ellipsis vertical" className="story-item-dots" />
             <h5
               className="story-item-title"
               style={{ marginBottom: '.5rem', ...getTextStyle(learningLanguage) }}
             >
               {story.title}
             </h5>
-            <Icon color="black" name="ellipsis vertical" style={{ marginLeft: '1rem' }} />
           </span>
         }
         story={story}

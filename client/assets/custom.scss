@@ -1217,9 +1217,18 @@ label.file-upload-btn {
   -o-text-overflow: ellipsis;
   text-overflow:    ellipsis;
   @media (min-width: 640px) {
+    margin-left: 1rem;
     &:hover {
       cursor: pointer;
       color: $action-text-hover-color;
+    }
+  }
+}
+
+.story-item-dots {
+  @media (min-width: 640px) {
+    &:hover {
+      cursor: pointer;
     }
   }
 }
