@@ -3,6 +3,12 @@ import callBuilder from '../apiConnection'
  * Actions and reducers are in the same file for readability
  */
 
+export const resetControlledStoryEditor = storyId => {
+  const route = `/stories/${storyId}/frozen_snippet/next?reset=true`
+  const prefix = 'RESET_FROZEN_STORY_EDITOR'
+  return callBuilder(route, prefix, 'get')
+}
+
 export const getCurrentSnippetFrozen = storyId => {
   const route = `/stories/${storyId}/frozen_snippet/next`
   const prefix = 'GET_CURRENT_SNIPPET_FROZEN'
@@ -63,6 +69,29 @@ export default (
         ...state,
         previous: [],
         focused: action.response,
+        pending: false,
+        error: false,
+      }
+
+    case 'RESET_FROZEN_STORY_EDITOR_ATTEMPT':
+      return {
+        ...state,
+        pending: true,
+        error: false,
+      }
+
+    case 'RESET_FROZEN_STORY_EDITOR_FAILURE':
+      return {
+        ...state,
+        pending: false,
+        error: true,
+      }
+
+    case 'RESET_FROZEN_STORY_EDITOR_SUCCESS':
+      return {
+        ...state,
+        focused: action.response,
+        previous: [],
         pending: false,
         error: false,
       }

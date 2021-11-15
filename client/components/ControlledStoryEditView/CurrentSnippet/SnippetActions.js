@@ -3,12 +3,19 @@ import { useSelector, useDispatch } from 'react-redux'
 import { FormattedMessage } from 'react-intl'
 import { Icon, Popup } from 'semantic-ui-react'
 import { Button } from 'react-bootstrap'
-import { refreshCurrentSnippet } from 'Utilities/redux/controlledPracticeReducer'
+import {
+  refreshCurrentSnippet,
+  resetControlledStoryEditor,
+} from 'Utilities/redux/controlledPracticeReducer'
 import { finishSnippet } from 'Utilities/redux/practiceReducer'
 
 const SnippetActions = ({ storyId }) => {
   const controlledPractice = useSelector(({ controlledPractice }) => controlledPractice)
   const dispatch = useDispatch()
+
+  const handleEditorReset = () => {
+    dispatch(resetControlledStoryEditor(storyId))
+  }
 
   return (
     <div>
@@ -43,10 +50,21 @@ const SnippetActions = ({ storyId }) => {
           </Button>
           <Popup
             style={{ whiteSpace: 'pre-line' }}
-            position="top center"
+            position="bottom center"
             content={<FormattedMessage id="controlled-exercise-popup-text" />}
             trigger={<Icon className="pt-sm" name="info circle" size="large" color="grey" />}
           />
+          <Button
+            variant="secondary"
+            size="sm"
+            onClick={handleEditorReset}
+            style={{ marginBottom: '0.5em' }}
+            // disabled={null.answersPending || snippets.pending}
+          >
+            <span>
+              <FormattedMessage id="start-over" /> <Icon name="level up alternate" />
+            </span>
+          </Button>
         </div>
       </div>
     </div>

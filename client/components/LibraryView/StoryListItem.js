@@ -147,6 +147,7 @@ const StoryActions = ({ story, libraryShown, enableOnlyPractice, isControlled, u
         {userIsTeacher && libraryShown.private && (
           <Link to={`/stories/${story._id}/controlled-story-editor`}>
             <Button variant={isControlled ? 'outline-danger' : 'secondary'} disabled={isControlled}>
+            {/* <Button variant="secondary"> */}
               <FormattedMessage id="create-controlled-exercise" />
             </Button>
           </Link>
