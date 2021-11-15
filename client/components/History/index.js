@@ -26,6 +26,8 @@ const TotalRow = ({ history, rootConcepts }) => {
     )
   })
 
+  const firstConceptKey = Object.keys(rootConceptResults[0])[0]
+
   const sumPropertyValues = (items, property) => {
     return items.reduce((a, b) => {
       return a + b[property]
@@ -39,8 +41,11 @@ const TotalRow = ({ history, rootConcepts }) => {
           <FormattedMessage id="total" />
         </b>
       </Table.Cell>
-      {rootConceptResults.map(oneDayResults => (
-        <Table.Cell key={`${oneDayResults['0-0'].date}-${oneDayResults['0-0'].id}`} positive>
+      {rootConceptResults?.map(oneDayResults => (
+        <Table.Cell
+          key={`${oneDayResults[firstConceptKey]?.date}-${oneDayResults[firstConceptKey]?.id}`}
+          positive
+        >
           {sumPropertyValues(Object.values(oneDayResults), 'total') > 0 ? (
             <>
               {Math.round(
@@ -73,7 +78,13 @@ const TestTypeRow = ({ history }) => {
             resultsObj.date
           }`}
         >
-          <div>{resultsObj?.type ? <FormattedMessage id={resultsObj.type} /> : 'N/A'}</div>
+          <div>
+            {resultsObj?.type ? (
+              <FormattedMessage id={resultsObj.type.replace(/[\s_]/i, '-')} />
+            ) : (
+              'N/A'
+            )}
+          </div>
         </Table.Cell>
       ))}
     </TableRow>
