@@ -57,7 +57,7 @@ const DetailedStoryModal = ({
         />
       </Modal.Content>
       <Modal.Actions>
-        <div className="space-between">
+        <div className="flex-col gap-row-sm align-start">
           <div className="gap-col-sm">
             <LinkButton
               variant="secondary"

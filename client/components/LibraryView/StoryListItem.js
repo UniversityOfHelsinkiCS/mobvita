@@ -110,20 +110,20 @@ const StoryActions = ({ story, libraryShown, enableOnlyPractice, isControlled, u
             <FormattedMessage id="practice" />
           </Button>
         </Link>
-        <Link to={`/stories/${story._id}/review`}>
-          <Button
-            variant={story.percent_cov === 0 || enableOnlyPractice ? 'outline-danger' : 'secondary'}
-            disabled={story.percent_cov === 0 || enableOnlyPractice}
-          >
-            <FormattedMessage id="review" />
-          </Button>
-        </Link>
         <Link to={`/flashcards/fillin/${story._id}/`}>
           <Button
             variant={enableOnlyPractice ? 'outline-danger' : 'primary'}
             disabled={enableOnlyPractice}
           >
             <FormattedMessage id="Flashcards" />
+          </Button>
+        </Link>
+        <Link to={`/stories/${story._id}/review`}>
+          <Button
+            variant={story.percent_cov === 0 || enableOnlyPractice ? 'outline-danger' : 'secondary'}
+            disabled={story.percent_cov === 0 || enableOnlyPractice}
+          >
+            <FormattedMessage id="review" />
           </Button>
         </Link>
         <Link to={`/stories/${story._id}/compete`}>
