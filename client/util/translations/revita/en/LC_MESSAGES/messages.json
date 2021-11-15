@@ -1122,7 +1122,7 @@
     "preview": "Preview",
     "topics": "Topics",
     "no-topics-available": "No topics available",
-    "adaptive-test": "Check your skill level!",
+    "adaptive-test": "Adaptive test",
     "news-bell-info-popup-text": "You have {numUnreadNews} unread messages. Click to see the News!",
     "test-settings": "Test settings",
     "concepts": "Concepts",
@@ -1143,5 +1143,8 @@
     "save-and-go-to-next-snippet": "Save chosen exercises and go to next snippet",
     "regenerate-exercises": "Regenerate exercises",
     "freeze-snippet": "Freeze snippet",
-    "controlled-exercise-popup-text": "Click the generated exercises (red) to select them for the control. If you like the exercises you've selected, but want more exercises for the current snippet, you can press \"Regenerate exercises\" — this will keep the selected exercises, and will generate some more exercises to select.\n\nOnce you like all selected exercises for the current snippet (green), you can save them and move on to the next snippet by clicking \"Freeze snippet\"."
+    "controlled-exercise-popup-text": "Click the generated exercises (red) to select them for the control. If you like the exercises you've selected, but want more exercises for the current snippet, you can press \"Regenerate exercises\" — this will keep the selected exercises, and will generate some more exercises to select.\n\nOnce you like all selected exercises for the current snippet (green), you can save them and move on to the next snippet by clicking \"Freeze snippet\".",
+    "control story": "Controlled story",
+    "exhaustive-test": "Long test",
+    "control-story": "Controlled story"
 }
