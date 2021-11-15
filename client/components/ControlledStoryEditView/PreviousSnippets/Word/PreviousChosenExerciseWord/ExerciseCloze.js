@@ -18,7 +18,7 @@ const ExerciseCloze = ({ word }) => {
       name={word.ID}
       placeholder={`${word.base || word.bases}`}
       value=""
-      className="exercise control-mode control-mode-previous-chosen"
+      className="exercise control-mode control-mode-chosen"
       style={{
         width: word.surface > word.base ? getTextWidth(word.surface) : getTextWidth(word.base),
         marginRight: '2px',

@@ -34,7 +34,7 @@ const ExerciseMultipleChoice = ({ word }) => {
         minWidth: getTextWidth(testString),
         height: '1.5em',
       }}
-      className="exercise-multiple control-mode control-mode-previous-chosen"
+      className="exercise-multiple control-mode control-mode-chosen"
     />
   )
 }

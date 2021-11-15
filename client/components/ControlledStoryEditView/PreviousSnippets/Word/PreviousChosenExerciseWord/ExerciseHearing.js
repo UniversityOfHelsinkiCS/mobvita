@@ -22,7 +22,7 @@ const ExerciseHearing = ({ word }) => {
         key={word.ID}
         placeholder={`${word.base || word.bases}`}
         value=""
-        className="exercise control-mode control-mode-previous-chosen"
+        className="exercise control-mode control-mode-chosen"
         style={{
           width: getTextWidth(word.surface),
           minWidth: getTextWidth(word.surface),
