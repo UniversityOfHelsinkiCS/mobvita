@@ -361,7 +361,18 @@ html, body, #root {
 
   &-controlled-story {
     background: rgb(255,239, 213)!important;
-  }
+  }  
+}
+
+.story-card-title-cont {
+  padding: 15px 15px 5px 15px!important;
+}
+
+.story-card-actions-cont {
+  padding: 10px 15px 10px 15px!important;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
 }
 
 .modal {

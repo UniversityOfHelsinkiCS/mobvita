@@ -9,6 +9,12 @@ export const resetControlledStoryEditor = storyId => {
   return callBuilder(route, prefix, 'post')
 }
 
+export const cancelControlledStory = storyId => {
+  const route = `/stories/${storyId}/frozen_snippet/delete`
+  const prefix = 'CANCEL_CONTROLLED_STORY'
+  return callBuilder(route, prefix)
+}
+
 export const getCurrentSnippetFrozen = storyId => {
   const route = `/stories/${storyId}/frozen_snippet/next`
   const prefix = 'GET_CURRENT_SNIPPET_FROZEN'
@@ -92,6 +98,27 @@ export default (
         ...state,
         focused: action.response,
         previous: [],
+        pending: false,
+        error: false,
+      }
+
+    case 'CANCEL_CONTROLLED_STORY_ATTEMPT':
+      return {
+        ...state,
+        pending: true,
+        error: false,
+      }
+
+    case 'CANCEL_CONTROLLED_STORY_FAILURE':
+      return {
+        ...state,
+        pending: false,
+        error: true,
+      }
+
+    case 'CANCEL_CONTROLLED_STORY_SUCCESS':
+      return {
+        ...state,
         pending: false,
         error: false,
       }

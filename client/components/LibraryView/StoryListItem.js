@@ -4,13 +4,14 @@ import { Card, Dropdown, Button as SemanticButton, Icon, Popup } from 'semantic-
 import { Button } from 'react-bootstrap'
 import { Link } from 'react-router-dom'
 import { FormattedMessage } from 'react-intl'
-import { removeStory, unshareStory as unshare } from 'Utilities/redux/storiesReducer'
+import { removeStory, getAllStories, unshareStory as unshare } from 'Utilities/redux/storiesReducer'
 import useWindowDimensions from 'Utilities/windowDimensions'
 import { getTextStyle, learningLanguageSelector } from 'Utilities/common'
 import ConfirmationWarning from 'Components/ConfirmationWarning'
 import ShareStory from 'Components/StoryView/ShareStory'
 import StoryDetailsModal from 'Components/StoryView/StoryDetailsModal'
 import DifficultyStars from 'Components/DifficultyStars'
+import { cancelControlledStory } from 'Utilities/redux/controlledPracticeReducer'
 
 const StoryTitle = ({
   story,
@@ -19,53 +20,46 @@ const StoryTitle = ({
   currentGroup,
   libraryShown,
   setConfirmationOpen,
+  userTeachesAGroup,
+  handleControlledStoryCancel,
 }) => {
-  const { width } = useWindowDimensions()
   const learningLanguage = useSelector(learningLanguageSelector)
   const { email: userEmail } = useSelector(({ user }) => user.data.user)
-  const isTeacher = inGroupLibrary && currentGroup && currentGroup.is_teaching
-  const showDeleteButton = libraryShown.private || isTeacher
 
+  const isTeacher = inGroupLibrary && currentGroup && currentGroup.is_teaching
+  const isTeacherInPrivateLibrary = userTeachesAGroup && libraryShown.private
+  const isControlledStory = !!story?.control_story
+  const showDeleteButton = libraryShown.private || isTeacher
   const showShareButton = !story.public && !inGroupLibrary && userEmail !== 'anonymous_email'
+  const showCreateControlStoryButton = isTeacherInPrivateLibrary && !isControlledStory
+  const showCancelControlStoryButton = isTeacherInPrivateLibrary && isControlledStory
 
   const handleDelete = () => setConfirmationOpen(true)
 
-  if (width >= 640) {
-    return (
-      <StoryDetailsModal
-        trigger={
-          <span className="space-between" style={{ overflow: 'hidden', width: '100%' }}>
-            <Icon color="grey" name="ellipsis vertical" className="story-item-dots" />
-            <h5
-              className="story-item-title"
-              style={{ marginBottom: '.5rem', ...getTextStyle(learningLanguage) }}
-            >
-              {story.title}
-            </h5>
-          </span>
-        }
-        story={story}
-        setShareModalOpen={setShareModalOpen}
-        showShareButton={showShareButton}
-        showDeleteButton={showDeleteButton}
-        handleDelete={handleDelete}
-        inGroupLibrary={inGroupLibrary}
-        currentGroup={currentGroup}
-      />
-    )
-  }
-
   return (
-    <Link
-      to={`/stories/${story._id}`}
-      className="space-between"
-      style={{ overflow: 'hidden', width: '100%' }}
-    >
-      <h5 className="story-item-title" style={getTextStyle(learningLanguage)}>
-        {story.title}
-      </h5>
-      <Icon name="ellipsis vertical" style={{ marginLeft: '1rem' }} />
-    </Link>
+    <StoryDetailsModal
+      trigger={
+        <span className="space-between" style={{ overflow: 'hidden', width: '100%' }}>
+          <Icon color="grey" name="ellipsis vertical" className="story-item-dots" />
+          <h5
+            className="story-item-title"
+            style={{ marginBottom: '.5rem', ...getTextStyle(learningLanguage) }}
+          >
+            {story.title}
+          </h5>
+        </span>
+      }
+      story={story}
+      setShareModalOpen={setShareModalOpen}
+      showShareButton={showShareButton}
+      showDeleteButton={showDeleteButton}
+      showCreateControlStoryButton={showCreateControlStoryButton}
+      showCancelControlStoryButton={showCancelControlStoryButton}
+      handleDelete={handleDelete}
+      inGroupLibrary={inGroupLibrary}
+      currentGroup={currentGroup}
+      handleControlledStoryCancel={handleControlledStoryCancel}
+    />
   )
 }
 
@@ -85,10 +79,14 @@ const ShareInfoPopupContent = ({ infoObj }) => {
   )
 }
 
-const StoryActions = ({ story, libraryShown, enableOnlyPractice, isControlled, userIsTeacher }) => {
+const StoryActions = ({ story, enableOnlyPractice, isControlled }) => {
   const { width } = useWindowDimensions()
 
   const showCrosswordsButton = width > 1023
+  const buttonVariant = enableOnlyPractice ? 'outline-secondary' : 'secondary'
+
+  const reviewButtonVariant =
+    story.percent_cov === 0 || enableOnlyPractice ? 'outline-secondary' : 'secondary'
 
   const practiceLink = isControlled
     ? `/stories/${story._id}/controlled-practice`
@@ -102,63 +100,38 @@ const StoryActions = ({ story, libraryShown, enableOnlyPractice, isControlled, u
             <FormattedMessage id="practice" />
           </Button>
         </Link>
+
         <Link to={`/flashcards/fillin/${story._id}/`}>
-          <Button
-            variant={enableOnlyPractice ? 'outline-secondary' : 'primary'}
-            disabled={enableOnlyPractice}
-          >
+          <Button variant={buttonVariant} disabled={enableOnlyPractice}>
             <FormattedMessage id="Flashcards" />
           </Button>
         </Link>
+
         <Link to={`/stories/${story._id}/preview`}>
-          <Button
-            variant={enableOnlyPractice ? 'outline-secondary' : 'secondary'}
-            disabled={enableOnlyPractice}
-          >
+          <Button variant={buttonVariant} disabled={enableOnlyPractice}>
             <FormattedMessage id="preview" />
           </Button>
         </Link>
+
         <Link to={`/stories/${story._id}/review`}>
           <Button
-            variant={
-              story.percent_cov === 0 || enableOnlyPractice ? 'outline-secondary' : 'secondary'
-            }
+            variant={reviewButtonVariant}
             disabled={story.percent_cov === 0 || enableOnlyPractice}
           >
             <FormattedMessage id="review" />
           </Button>
         </Link>
+
         <Link to={`/stories/${story._id}/compete`}>
-          <Button
-            variant={enableOnlyPractice ? 'outline-secondary' : 'secondary'}
-            disabled={enableOnlyPractice}
-          >
+          <Button variant={buttonVariant} disabled={enableOnlyPractice}>
             <FormattedMessage id="compete" />
           </Button>
         </Link>
+
         {showCrosswordsButton && (
           <Link to={`/crossword/${story._id}/`}>
-            <Button
-              variant={enableOnlyPractice ? 'outline-secondary' : 'secondary'}
-              disabled={enableOnlyPractice}
-            >
+            <Button variant={buttonVariant} disabled={enableOnlyPractice}>
               <FormattedMessage id="Crossword" />
-            </Button>
-          </Link>
-        )}
-        {userIsTeacher && libraryShown.private && (
-          <Link to={`/stories/${story._id}/controlled-story-editor`}>
-            <Button
-              variant={isControlled ? 'outline-secondary' : 'secondary'}
-              disabled={isControlled}
-            >
-              {/* <Button variant="secondary"> */}
-              {isControlled ? (
-                <span>Cancel controlled story</span>
-              ) : (
-                <FormattedMessage id="create-controlled-exercise" />
-              )}
-              {/* <FormattedMessage id="create-controlled-exercise" /> */}
             </Button>
           </Link>
         )}
@@ -175,45 +148,47 @@ const StoryActions = ({ story, libraryShown, enableOnlyPractice, isControlled, u
       >
         <FormattedMessage id="practice" />
       </SemanticButton>
-      <Dropdown
-        className="button icon"
-        style={{
-          backgroundColor: 'rgb(50, 170, 248)',
-          color: 'white',
-          borderLeft: '2px solid rgb(81, 138, 248)',
-        }}
-        floating
-        trigger={<React.Fragment />}
-      >
-        <Dropdown.Menu className="story-item-dropdown">
-          <Dropdown.Item
-            text={<FormattedMessage id="Flashcards" />}
-            as={Link}
-            to={`/flashcards/fillin/${story._id}/`}
-            icon="lightning"
-          />
-          <Dropdown.Item
-            text={<FormattedMessage id="preview" />}
-            as={Link}
-            to={`/stories/${story._id}/preview`}
-            icon="book"
-          />
-          {story.percent_cov > 0 && (
+      {!enableOnlyPractice && (
+        <Dropdown
+          className="button icon"
+          style={{
+            backgroundColor: 'rgb(50, 170, 248)',
+            color: 'white',
+            borderLeft: '2px solid rgb(81, 138, 248)',
+          }}
+          floating
+          trigger={<React.Fragment />}
+        >
+          <Dropdown.Menu className="story-item-dropdown">
             <Dropdown.Item
-              text={<FormattedMessage id="review" />}
+              text={<FormattedMessage id="Flashcards" />}
               as={Link}
-              to={`/stories/${story._id}/review`}
+              to={`/flashcards/fillin/${story._id}/`}
+              icon="lightning"
+            />
+            <Dropdown.Item
+              text={<FormattedMessage id="preview" />}
+              as={Link}
+              to={`/stories/${story._id}/preview`}
               icon="book"
             />
-          )}
-          <Dropdown.Item
-            text={<FormattedMessage id="compete" />}
-            as={Link}
-            to={`/stories/${story._id}/compete`}
-            icon="clock"
-          />
-        </Dropdown.Menu>
-      </Dropdown>
+            {story.percent_cov > 0 && (
+              <Dropdown.Item
+                text={<FormattedMessage id="review" />}
+                as={Link}
+                to={`/stories/${story._id}/review`}
+                icon="book"
+              />
+            )}
+            <Dropdown.Item
+              text={<FormattedMessage id="compete" />}
+              as={Link}
+              to={`/stories/${story._id}/compete`}
+              icon="clock"
+            />
+          </Dropdown.Menu>
+        </Dropdown>
+      )}
     </SemanticButton.Group>
   )
 }
@@ -242,7 +217,8 @@ const StoryListItem = ({ story, libraryShown, selectedGroup }) => {
   const [confirmationOpen, setConfirmationOpen] = useState(false)
   const { groups } = useSelector(({ groups }) => groups)
   const { user: userId } = useSelector(({ user }) => ({ user: user.data.user.oid }))
-  const userIsTeacher = groups.some(group => group.is_teaching) // definition of being teacher
+  const learningLanguage = useSelector(learningLanguageSelector)
+  const userTeachesAGroup = groups.some(group => group.is_teaching) // definition of being teacher
   const isControlledStory = !!story?.control_story
 
   const currentGroup = groups.find(g => g.group_id === selectedGroup)
@@ -250,12 +226,17 @@ const StoryListItem = ({ story, libraryShown, selectedGroup }) => {
   const showGroupNames = story.groups && libraryShown.private
   const enableOnlyPractice = inGroupLibrary && !currentGroup?.is_teaching && isControlledStory
 
-  const deleteStory = () => {
-    dispatch(removeStory(story._id))
-  }
+  const deleteStory = () => dispatch(removeStory(story._id))
+  const unshareStory = () => dispatch(unshare(selectedGroup, story._id))
 
-  const unshareStory = () => {
-    dispatch(unshare(selectedGroup, story._id))
+  const handleControlledStoryCancel = async () => {
+    await dispatch(cancelControlledStory(story._id))
+    dispatch(
+      getAllStories(learningLanguage, {
+        sort_by: 'date',
+        order: -1,
+      })
+    )
   }
 
   const storyGroupShareInfo = libraryShown.group
@@ -263,20 +244,8 @@ const StoryListItem = ({ story, libraryShown, selectedGroup }) => {
     : null
 
   return (
-    <Card
-      fluid
-      key={story._id}
-      className={isControlledStory && 'card-controlled-story'}
-      style={{
-        marginBottom: '10px',
-        marginTop: '10px',
-        height: 'max-content',
-      }}
-    >
-      <Card.Content
-        extra
-        style={{ padding: '15px 15px 5px 15px', display: 'flex', justifyContent: 'space-between' }}
-      >
+    <Card fluid key={story._id} className={isControlledStory && 'card-controlled-story'}>
+      <Card.Content extra className="story-card-title-cont">
         <StoryTitle
           story={story}
           setConfirmationOpen={setConfirmationOpen}
@@ -284,23 +253,15 @@ const StoryListItem = ({ story, libraryShown, selectedGroup }) => {
           inGroupLibrary={inGroupLibrary}
           currentGroup={currentGroup}
           libraryShown={libraryShown}
+          userTeachesAGroup={userTeachesAGroup}
+          handleControlledStoryCancel={handleControlledStoryCancel}
         />
       </Card.Content>
-      <Card.Content
-        extra
-        style={{
-          padding: '10px 15px 10px 15px',
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'space-between',
-        }}
-      >
+      <Card.Content extra className="story-card-actions-cont">
         <StoryActions
           story={story}
-          libraryShown={libraryShown}
           enableOnlyPractice={enableOnlyPractice}
           isControlled={isControlledStory}
-          userIsTeacher={userIsTeacher}
         />
         <div className="flex align-center" style={{ overflow: 'hidden' }}>
           {showGroupNames && <GroupsSharedTo groups={story.groups} />}
@@ -336,6 +297,7 @@ const StoryListItem = ({ story, libraryShown, selectedGroup }) => {
           />
         </div>
       </Card.Content>
+
       <ShareStory story={story} isOpen={shareModalOpen} setOpen={setShareModalOpen} />
       <ConfirmationWarning
         open={confirmationOpen}

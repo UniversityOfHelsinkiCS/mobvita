@@ -46,11 +46,13 @@ const SnippetActions = ({ storyId, isLastSnippet }) => {
           >
             <span>
               {!isLastSnippet ? (
-                <FormattedMessage id="freeze-snippet" />
+                <>
+                  <FormattedMessage id="freeze-snippet" />
+                  <Icon name="level down alternate" />
+                </>
               ) : (
                 <FormattedMessage id="freeze-and-save-control-story" />
               )}
-              <Icon name="level down alternate" />
             </span>
           </Button>
           <Popup
