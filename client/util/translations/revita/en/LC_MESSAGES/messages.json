@@ -1150,5 +1150,7 @@
     "freeze-and-save-control-story": "Freeze snippet & save controlled story",
     "cancel-controlled-exercise": "Cancel controlled story",
     "create-controlled-story": "Create controlled story",
-    "cancel-controlled-story": "Cancel controlled story"
+    "cancel-controlled-story": "Cancel controlled story",
+    "story-remove-fail": "An error occurred while deleting the story!",
+    "story-remove-success": "Story was removed successfully!"
 }

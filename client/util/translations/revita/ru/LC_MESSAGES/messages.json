@@ -1153,5 +1153,7 @@
     "freeze-and-save-control-story": "Сохранить абзац и контрольный текст",
     "cancel-controlled-exercise": "Cancel controlled story",
     "create-controlled-story": "Создать контрольный текст",
-    "cancel-controlled-story": "Отменить контрольный текст"
+    "cancel-controlled-story": "Отменить контрольный текст",
+    "story-remove-fail": "При удалении текста произошла ошибка!",
+    "story-remove-success": "Текст удален успешно!"
 }
