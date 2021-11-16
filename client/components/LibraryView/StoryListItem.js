@@ -35,7 +35,7 @@ const StoryTitle = ({
       <StoryDetailsModal
         trigger={
           <span className="space-between" style={{ overflow: 'hidden', width: '100%' }}>
-            <Icon color="gray" name="ellipsis vertical" className="story-item-dots" />
+            <Icon color="grey" name="ellipsis vertical" className="story-item-dots" />
             <h5
               className="story-item-title"
               style={{ marginBottom: '.5rem', ...getTextStyle(learningLanguage) }}
@@ -97,14 +97,6 @@ const StoryActions = ({ story, libraryShown, enableOnlyPractice, isControlled, u
   if (width >= 640) {
     return (
       <div className="story-actions">
-        <Link to={`/stories/${story._id}/preview`}>
-          <Button
-            variant={enableOnlyPractice ? 'outline-danger' : 'secondary'}
-            disabled={enableOnlyPractice}
-          >
-            <FormattedMessage id="preview" />
-          </Button>
-        </Link>
         <Link to={practiceLink}>
           <Button variant="primary">
             <FormattedMessage id="practice" />
@@ -112,15 +104,25 @@ const StoryActions = ({ story, libraryShown, enableOnlyPractice, isControlled, u
         </Link>
         <Link to={`/flashcards/fillin/${story._id}/`}>
           <Button
-            variant={enableOnlyPractice ? 'outline-danger' : 'primary'}
+            variant={enableOnlyPractice ? 'outline-secondary' : 'primary'}
             disabled={enableOnlyPractice}
           >
             <FormattedMessage id="Flashcards" />
           </Button>
         </Link>
+        <Link to={`/stories/${story._id}/preview`}>
+          <Button
+            variant={enableOnlyPractice ? 'outline-secondary' : 'secondary'}
+            disabled={enableOnlyPractice}
+          >
+            <FormattedMessage id="preview" />
+          </Button>
+        </Link>
         <Link to={`/stories/${story._id}/review`}>
           <Button
-            variant={story.percent_cov === 0 || enableOnlyPractice ? 'outline-danger' : 'secondary'}
+            variant={
+              story.percent_cov === 0 || enableOnlyPractice ? 'outline-secondary' : 'secondary'
+            }
             disabled={story.percent_cov === 0 || enableOnlyPractice}
           >
             <FormattedMessage id="review" />
@@ -128,7 +130,7 @@ const StoryActions = ({ story, libraryShown, enableOnlyPractice, isControlled, u
         </Link>
         <Link to={`/stories/${story._id}/compete`}>
           <Button
-            variant={enableOnlyPractice ? 'outline-danger' : 'secondary'}
+            variant={enableOnlyPractice ? 'outline-secondary' : 'secondary'}
             disabled={enableOnlyPractice}
           >
             <FormattedMessage id="compete" />
@@ -137,7 +139,7 @@ const StoryActions = ({ story, libraryShown, enableOnlyPractice, isControlled, u
         {showCrosswordsButton && (
           <Link to={`/crossword/${story._id}/`}>
             <Button
-              variant={enableOnlyPractice ? 'outline-danger' : 'secondary'}
+              variant={enableOnlyPractice ? 'outline-secondary' : 'secondary'}
               disabled={enableOnlyPractice}
             >
               <FormattedMessage id="Crossword" />
@@ -146,9 +148,17 @@ const StoryActions = ({ story, libraryShown, enableOnlyPractice, isControlled, u
         )}
         {userIsTeacher && libraryShown.private && (
           <Link to={`/stories/${story._id}/controlled-story-editor`}>
-            <Button variant={isControlled ? 'outline-danger' : 'secondary'} disabled={isControlled}>
-            {/* <Button variant="secondary"> */}
-              <FormattedMessage id="create-controlled-exercise" />
+            <Button
+              variant={isControlled ? 'outline-secondary' : 'secondary'}
+              disabled={isControlled}
+            >
+              {/* <Button variant="secondary"> */}
+              {isControlled ? (
+                <span>Cancel controlled story</span>
+              ) : (
+                <FormattedMessage id="create-controlled-exercise" />
+              )}
+              {/* <FormattedMessage id="create-controlled-exercise" /> */}
             </Button>
           </Link>
         )}
@@ -256,7 +266,7 @@ const StoryListItem = ({ story, libraryShown, selectedGroup }) => {
     <Card
       fluid
       key={story._id}
-      className={isControlledStory ? 'card-controlled-story' : ''}
+      className={isControlledStory && 'card-controlled-story'}
       style={{
         marginBottom: '10px',
         marginTop: '10px',
