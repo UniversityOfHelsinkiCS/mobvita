@@ -61,23 +61,22 @@ const DetailedStoryModal = ({
       <Modal.Actions>
         <div className="flex-col gap-row-sm align-start">
           <div className="gap-col-sm">
+            <LinkButton to={`/stories/${story._id}/practice`} translationId="practice" />
+            <LinkButton
+              variant="primary"
+              to={`/flashcards/fillin/${story._id}/`}
+              translationId="Flashcards"
+            />
             <LinkButton
               variant="secondary"
               to={`/stories/${story._id}/preview`}
               translationId="preview"
             />
-            <LinkButton to={`/stories/${story._id}/practice`} translationId="practice" />
             <LinkButton
-              variant={story.percent_cov === 0 ? 'outline-danger' : 'secondary'}
+              variant={story.percent_cov === 0 ? 'outline-secondary' : 'secondary'}
               disabled={story.percent_cov === 0}
               to={`/stories/${story._id}/review`}
               translationId="review"
-            />
-
-            <LinkButton
-              variant="primary"
-              to={`/flashcards/fillin/${story._id}/`}
-              translationId="Flashcards"
             />
             <LinkButton
               variant="secondary"
@@ -90,13 +89,10 @@ const DetailedStoryModal = ({
               translationId="Crossword"
             />
           </div>
+          <div style={{ width: '100%' }}>
+            <hr />
+          </div>
           <div className="gap-col-sm">
-            {/* <LinkButton
-              condition={showLearningSettingsButton}
-              variant="outline-secondary"
-              to={`/stories/${story._id}/concepts`}
-              translationId="learning-settings"
-            /> */}
             <LinkButton
               to={`/stories/${story._id}/controlled-story-editor`}
               translationId="create-controlled-exercise"
