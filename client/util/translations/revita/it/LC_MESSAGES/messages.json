@@ -1148,5 +1148,8 @@
     "control story": "Storia di valutazione",
     "exhaustive-test": "Test lungo",
     "control-story": "Storia di valutazione",
-    "freeze-and-save-control-story": "Freeze snippet & save controlled story"
+    "freeze-and-save-control-story": "Congela lo snippet e salva la storia di valutazione",
+    "cancel-controlled-exercise": "Cancel controlled story",
+    "create-controlled-story": "Crea una storia di valutazione",
+    "cancel-controlled-story": "Elimina la storia di valutazione"
 }

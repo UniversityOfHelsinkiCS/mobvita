@@ -1147,5 +1147,8 @@
     "control story": "Controlled story",
     "exhaustive-test": "Long test",
     "control-story": "Controlled story",
-    "freeze-and-save-control-story": "Freeze snippet & save controlled story"
+    "freeze-and-save-control-story": "Freeze snippet & save controlled story",
+    "cancel-controlled-exercise": "Cancel controlled story",
+    "create-controlled-story": "Create controlled story",
+    "cancel-controlled-story": "Cancel controlled story"
 }

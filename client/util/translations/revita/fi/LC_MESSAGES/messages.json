@@ -1147,5 +1147,8 @@
     "control story": "Ohjattu harjoitus",
     "exhaustive-test": "Pitkä testi",
     "control-story": "Ohjattu harjoitus",
-    "freeze-and-save-control-story": "Jäädytä osa & tallenna ohjattu harjoitus"
+    "freeze-and-save-control-story": "Jäädytä osa & tallenna ohjattu harjoitus",
+    "cancel-controlled-exercise": "Nollaa ohjattu harjoitus",
+    "create-controlled-story": "Luo ohjattu harjoitus",
+    "cancel-controlled-story": "Nollaa ohjattu harjoitus"
 }

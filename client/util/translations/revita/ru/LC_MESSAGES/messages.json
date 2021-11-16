@@ -1150,5 +1150,8 @@
     "control story": "Controlled story",
     "exhaustive-test": "Длинный тест",
     "control-story": "Controlled story",
-    "freeze-and-save-control-story": "Freeze snippet & save controlled story"
+    "freeze-and-save-control-story": "Сохранить абзац и контрольный текст",
+    "cancel-controlled-exercise": "Cancel controlled story",
+    "create-controlled-story": "Создать контрольный текст",
+    "cancel-controlled-story": "Отменить контрольный текст"
 }
