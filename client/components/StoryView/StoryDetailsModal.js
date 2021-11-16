@@ -30,6 +30,8 @@ const DetailedStoryModal = ({
 
   const showLearningSettingsButton = inGroupLibrary && currentGroup && currentGroup.is_teaching
 
+  const isControlled = story?.control_story
+
   const storyGroupSharingInfo = inGroupLibrary
     ? groupsSharedWith.find(g => g?.group_id === currentGroup?.group_id)
     : null
@@ -95,10 +97,16 @@ const DetailedStoryModal = ({
               to={`/stories/${story._id}/concepts`}
               translationId="learning-settings"
             /> */}
+            <LinkButton
+              to={`/stories/${story._id}/controlled-story-editor`}
+              translationId="create-controlled-exercise"
+              variant={isControlled ? 'outline-danger' : 'secondary'}
+              disabled={isControlled}
+            />
             <CustomButton
               condition={showShareButton}
               onClick={() => setShareModalOpen(true)}
-              variant="outline-secondary"
+              variant="secondary"
               translationId="Share"
             />
             <CustomButton
