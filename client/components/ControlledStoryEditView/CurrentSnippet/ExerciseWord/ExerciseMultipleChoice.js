@@ -5,15 +5,13 @@ import { getTextWidth } from 'Utilities/common'
 import { addExercise, removeExercise } from 'Utilities/redux/controlledPracticeReducer'
 
 const ExerciseMultipleChoice = ({ word }) => {
+  const dispatch = useDispatch()
+
   const [bgColorClassName, setBgColorClassName] = useState('exercise-multiple control-mode-chosen')
   const [options, setOptions] = useState([])
 
-  const dispatch = useDispatch()
-  const currentAnswer = useSelector(({ practice }) => practice.currentAnswers[word.ID])
   const { acceptedTokens } = useSelector(({ controlledPractice }) => controlledPractice)
-
-  const { tested, isWrong, ID: wordId } = word
-  const value = currentAnswer ? currentAnswer.users_answer : ''
+  const { ID: wordId } = word
 
   const getExerciseClass = () => {
     return acceptedTokens.map(t => t.ID).includes(wordId)
@@ -27,7 +25,7 @@ const ExerciseMultipleChoice = ({ word }) => {
   }
 
   useEffect(() => {
-    setBgColorClassName(getExerciseClass(tested, isWrong))
+    setBgColorClassName(getExerciseClass())
   }, [acceptedTokens])
 
   useEffect(() => {
@@ -39,31 +37,16 @@ const ExerciseMultipleChoice = ({ word }) => {
     setOptions(temp)
   }, [word])
 
-  const maximumLength = word.choices.reduce((maxLength, currLength) => {
-    if (currLength.length > maxLength) return currLength.length
-    return maxLength
-  }, 0)
-
-  let testString = ''
-  word.choices.forEach(choice => {
-    if (choice.length > testString.length) {
-      testString = choice
-    }
-  })
-
-  const placeholder = word.choices[0]
-
   return (
     <Dropdown
       key={word.ID}
-      disabled={tested && !isWrong}
       options={options}
-      placeholder={placeholder}
-      value={value}
+      placeholder={word.choices[0]}
+      value={word.choices[0]}
       onClick={handleExerciseClick}
       selection
       floating
-      style={{ width: getTextWidth(testString), minWidth: getTextWidth(testString) }}
+      style={{ width: getTextWidth(word.choices[0]), minWidth: getTextWidth(word.choices[0]) }}
       className={`exercise-multiple control-mode ${bgColorClassName}`}
     />
   )

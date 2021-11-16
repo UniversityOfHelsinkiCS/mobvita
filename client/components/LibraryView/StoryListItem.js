@@ -247,7 +247,7 @@ const StoryListItem = ({ story, libraryShown, selectedGroup }) => {
     : null
 
   return (
-    <Card fluid key={story._id} className={isControlledStory && 'card-controlled-story'}>
+    <Card fluid key={story._id} className={`${isControlledStory ? 'card-controlled-story' : ''}`}>
       <Card.Content extra className="story-card-title-cont">
         <StoryTitle
           story={story}
