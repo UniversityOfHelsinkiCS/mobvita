@@ -9,7 +9,7 @@ import {
 } from 'Utilities/redux/controlledPracticeReducer'
 import { finishSnippet } from 'Utilities/redux/practiceReducer'
 
-const SnippetActions = ({ storyId }) => {
+const SnippetActions = ({ storyId, isLastSnippet }) => {
   const controlledPractice = useSelector(({ controlledPractice }) => controlledPractice)
   const dispatch = useDispatch()
 
@@ -45,7 +45,12 @@ const SnippetActions = ({ storyId }) => {
             style={{ marginBottom: '0.5em' }}
           >
             <span>
-              <FormattedMessage id="freeze-snippet" /> <Icon name="level down alternate" />
+              {!isLastSnippet ? (
+                <FormattedMessage id="freeze-snippet" />
+              ) : (
+                <FormattedMessage id="freeze-and-save-control-story" />
+              )}
+              <Icon name="level down alternate" />
             </span>
           </Button>
           <Popup
@@ -59,7 +64,6 @@ const SnippetActions = ({ storyId }) => {
             size="sm"
             onClick={handleEditorReset}
             style={{ marginBottom: '0.5em' }}
-            // disabled={null.answersPending || snippets.pending}
           >
             <span>
               <FormattedMessage id="start-over" /> <Icon name="level up alternate" />
