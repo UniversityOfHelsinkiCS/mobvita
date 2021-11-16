@@ -1146,5 +1146,6 @@
     "controlled-exercise-popup-text": "Klikkaa generoituja tehtäviä (punaiset) lisätäksesi ne ohjattuun harjoitukseen. Jos valitut tehtävät ovat mielestäsi hyviä, mutta haluaisit lisää tehtäviä samasta tehtäväosasta, voit painaa \"Regeneroi tehtävät\"-painiketta — tällöin jo hyväksymäsi tehtävät säilytetään, ja järjestelmä antaa sinulle lisää tehtäviä, joista valita.\n\nKun olet tyytyväinen kaikkiin tehtäväosaan valittuihin tehtäviin, klikkaa \"Jäädytä osa\"-painiketta, jolloin valitut tehtävät (vihreät) tallennetaan ja siirryt seuraavaan osaan.",
     "control story": "Ohjattu harjoitus",
     "exhaustive-test": "Pitkä testi",
-    "control-story": "Ohjattu harjoitus"
+    "control-story": "Ohjattu harjoitus",
+    "freeze-and-save-control-story": "Jäädytä osa & tallenna ohjattu harjoitus"
 }

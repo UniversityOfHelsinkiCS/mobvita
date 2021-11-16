@@ -1146,5 +1146,6 @@
     "controlled-exercise-popup-text": "Click the generated exercises (red) to select them for the control. If you like the exercises you've selected, but want more exercises for the current snippet, you can press \"Regenerate exercises\" — this will keep the selected exercises, and will generate some more exercises to select.\n\nOnce you like all selected exercises for the current snippet (green), you can save them and move on to the next snippet by clicking \"Freeze snippet\".",
     "control story": "Controlled story",
     "exhaustive-test": "Long test",
-    "control-story": "Controlled story"
+    "control-story": "Controlled story",
+    "freeze-and-save-control-story": "Freeze snippet & save controlled story"
 }

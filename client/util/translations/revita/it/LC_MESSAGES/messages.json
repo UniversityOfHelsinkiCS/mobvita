@@ -1147,5 +1147,6 @@
     "controlled-exercise-popup-text": "Clicca sugli esercizi generati (rossi) per selezionarli per il test. Se gli esercizi che hai selezionato ti soddisfano, ma desideri più esercizi per questo snippet, puoi cliccare su \"Rigenera esercizi\" — questo manterrà gli esercizi slezionati, e genererà altri esercizi da selezionare (se disponibili).\n\nQuando gli esercizi selezionati per l'attuale snippet (verdi) ti soddisfano, puoi salvarli e passare allo snippet successivo cliccando \"Congela lo snippet\".",
     "control story": "Storia di valutazione",
     "exhaustive-test": "Test lungo",
-    "control-story": "Storia di valutazione"
+    "control-story": "Storia di valutazione",
+    "freeze-and-save-control-story": "Freeze snippet & save controlled story"
 }

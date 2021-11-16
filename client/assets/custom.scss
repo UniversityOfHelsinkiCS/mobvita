@@ -327,7 +327,7 @@ html, body, #root {
   border-radius: 10px;
 }
 
-.btn-outline-danger[disabled]:hover {
+.btn-outline-danger[disabled]:hover, .btn-outline-secondary[disabled]:hover {
   background: white;
   cursor: not-allowed;
 }

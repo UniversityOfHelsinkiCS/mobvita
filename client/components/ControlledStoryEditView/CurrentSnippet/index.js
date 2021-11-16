@@ -60,6 +60,8 @@ const CurrentSnippet = ({ storyId }) => {
     return snippetid[snippetid.length - 1]
   }
 
+  const isLastSnippet = controlledPractice?.focused?.total_num === currentSnippetId() + 1
+
   const [finished, setFinished] = useState(false)
 
   const setInitialAnswers = () => {
@@ -197,7 +199,7 @@ const CurrentSnippet = ({ storyId }) => {
           >
             <PracticeText />
           </div>
-          <SnippetActions storyId={storyId} />
+          <SnippetActions storyId={storyId} isLastSnippet={isLastSnippet} />
         </div>
       ) : (
         <EditingFinishedActions snippetPending={snippetPending} />
