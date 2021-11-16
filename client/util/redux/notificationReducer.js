@@ -154,6 +154,16 @@ export default (state = initialState, action) => {
         translationId: 'story-unshared',
         type: type.success,
       }
+    case 'REMOVE_STORY_FAILURE':
+      return {
+        message: 'story-remove-fail',
+        type: type.error,
+      }
+    case 'REMOVE_STORY_SUCCESS':
+      return {
+        translationId: 'story-remove-success',
+        type: type.success,
+      }
     case 'CREATE_FLASHCARD_SUCCESS':
       return {
         translationId: 'submit-done',
