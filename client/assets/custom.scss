@@ -358,8 +358,11 @@ html, body, #root {
 .card {
   border: 1px solid rgb(112, 114, 120);
   border-radius: 10px!important;
+  margin-bottom: 10px;
+  margin-top: 10px;
+  height: max-content;
 
-  &-controlled-story {
+  &.controlled-story {
     background: rgb(255,239, 213)!important;
   }  
 }
@@ -1209,6 +1212,7 @@ label.file-upload-btn {
 .search-and-sort {
   display: flex;
   align-items: center;
+  margin-top: 2em;
   justify-content: space-between;
 }
 
