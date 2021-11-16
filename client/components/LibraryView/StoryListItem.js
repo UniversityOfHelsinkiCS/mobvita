@@ -102,7 +102,10 @@ const StoryActions = ({ story, enableOnlyPractice, isControlled }) => {
         </Link>
 
         <Link to={`/flashcards/fillin/${story._id}/`}>
-          <Button variant={buttonVariant} disabled={enableOnlyPractice}>
+          <Button
+            variant={enableOnlyPractice ? 'outline-secondary' : 'primary'}
+            disabled={enableOnlyPractice}
+          >
             <FormattedMessage id="Flashcards" />
           </Button>
         </Link>
