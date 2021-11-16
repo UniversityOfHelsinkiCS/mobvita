@@ -4,9 +4,9 @@ import callBuilder from '../apiConnection'
  */
 
 export const resetControlledStoryEditor = storyId => {
-  const route = `/stories/${storyId}/frozen_snippet/next?reset=true`
+  const route = `/stories/${storyId}/frozen_snippet/next?reset=True`
   const prefix = 'RESET_FROZEN_STORY_EDITOR'
-  return callBuilder(route, prefix, 'get')
+  return callBuilder(route, prefix, 'post')
 }
 
 export const getCurrentSnippetFrozen = storyId => {
