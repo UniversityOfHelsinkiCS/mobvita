@@ -6,6 +6,7 @@ import {
   addToPrevious,
   setPrevious,
   resetSessionId,
+  resetCurrentSnippet,
 } from 'Utilities/redux/snippetsReducer'
 import { clearTranslationAction } from 'Utilities/redux/translationReducer'
 import 'react-simple-keyboard/build/css/index.css'
@@ -195,7 +196,7 @@ const CurrentSnippet = ({ storyId, handleInputChange }) => {
     dispatch(clearPractice())
     dispatch(resetAnnotations())
     dispatch(setPrevious([]))
-    dispatch(getNextSnippet(storyId, currentSnippetId(), isControlledStory, sessionId))
+    dispatch(resetCurrentSnippet(storyId, isControlledStory))
     setFinished(false)
   }
 

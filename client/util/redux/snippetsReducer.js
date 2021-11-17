@@ -78,6 +78,7 @@ export default (state = { previous: [], pending: false, error: false }, action) 
         ...state,
         previous: [],
         focused: action.response,
+        sessionId: action.response.session_id,
         pending: false,
         error: false,
       }
