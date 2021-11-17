@@ -92,7 +92,7 @@ const TestTypeRow = ({ history }) => {
 }
 
 const StoryNameRow = ({ history }) => {
-  const STORY_NAME_MAX_LEN = 40
+  const STORY_NAME_MAX_LEN = 25
 
   const truncateStoryName = name => {
     return `${name.slice(0, STORY_NAME_MAX_LEN)}...`
