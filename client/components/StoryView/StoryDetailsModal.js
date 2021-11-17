@@ -34,9 +34,7 @@ const StoryDetailsModal = ({
     date,
   } = story
 
-  const { width } = useWindowDimensions()
   const enableOnlyPractice = inGroupLibrary && !currentGroup?.is_teaching && story?.control_story
-  
 
   const displayDivider =
     showCreateControlStoryButton ||
@@ -71,8 +69,8 @@ const StoryDetailsModal = ({
         />
       </Modal.Content>
       <Modal.Actions>
-        <div className="flex-col gap-row-sm align-start">
-          <div className="gap-col-sm gap-row-nm">
+        <div>
+          <div className="flex wrap" style={{ gap: '5px' }}>
             <LinkButton to={`/stories/${story._id}/practice`} translationId="practice" />
             {!enableOnlyPractice && (
               <>
@@ -112,7 +110,7 @@ const StoryDetailsModal = ({
             </div>
           )}
 
-          <div className="gap-col-sm">
+          <div className="flex wrap" style={{ gap: '5px' }}>
             {showCreateControlStoryButton && (
               <LinkButton
                 to={`/stories/${story._id}/controlled-story-editor`}

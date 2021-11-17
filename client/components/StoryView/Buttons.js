@@ -7,7 +7,7 @@ export const CustomButton = ({ condition = true, translationId, ...props }) => {
   if (!condition) return null
 
   return (
-    <Button {...props} style={{ marginBottom: '.2em' }}>
+    <Button {...props} style={{ marginBottom: '.1em' }}>
       <FormattedMessage id={translationId} />
     </Button>
   )
