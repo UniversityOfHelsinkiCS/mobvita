@@ -87,6 +87,7 @@ const SnippetActions = ({ storyId, exerciseCount }) => {
 
   const checkAnswers = async lastAttempt => {
     const { starttime, snippetid } = snippets.focused
+    const { sessionId } = snippets
 
     const answersObj = {
       starttime,
@@ -102,7 +103,7 @@ const SnippetActions = ({ storyId, exerciseCount }) => {
     }
 
     dispatch(clearTouchedIds())
-    dispatch(postAnswers(storyId, answersObj, false, isControlledStory))
+    dispatch(postAnswers(storyId, answersObj, false, isControlledStory, sessionId))
   }
 
   const submitAnswers = () => {

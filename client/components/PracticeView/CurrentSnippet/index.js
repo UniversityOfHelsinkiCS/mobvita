@@ -5,6 +5,7 @@ import {
   getNextSnippet,
   addToPrevious,
   setPrevious,
+  resetSessionId,
 } from 'Utilities/redux/snippetsReducer'
 import { clearTranslationAction } from 'Utilities/redux/translationReducer'
 import 'react-simple-keyboard/build/css/index.css'
@@ -41,6 +42,7 @@ const CurrentSnippet = ({ storyId, handleInputChange }) => {
   const learningLanguage = useSelector(learningLanguageSelector)
   const history = useHistory()
   const isControlledStory = history.location.pathname.includes('controlled-practice')
+  const sessionId = snippets?.sessionId ?? null
 
   const currentSnippetId = () => {
     if (!snippets.focused) return -1
@@ -133,7 +135,7 @@ const CurrentSnippet = ({ storyId, handleInputChange }) => {
     dispatch(clearCurrentPractice())
 
     if (snippets.focused.total_num !== currentSnippetId() + 1 || finished) {
-      dispatch(getNextSnippet(storyId, currentSnippetId(), isControlledStory))
+      dispatch(getNextSnippet(storyId, currentSnippetId(), isControlledStory, sessionId))
     } else {
       setFinished(true)
     }
@@ -152,9 +154,7 @@ const CurrentSnippet = ({ storyId, handleInputChange }) => {
 
   useEffect(() => {
     dispatch(clearPractice())
-  }, [])
-
-  useEffect(() => {
+    dispatch(resetSessionId())
     dispatch(getCurrentSnippet(storyId, isControlledStory))
     dispatch(clearTranslationAction())
   }, [])
@@ -195,7 +195,7 @@ const CurrentSnippet = ({ storyId, handleInputChange }) => {
     dispatch(clearPractice())
     dispatch(resetAnnotations())
     dispatch(setPrevious([]))
-    dispatch(getNextSnippet(storyId, currentSnippetId(), isControlledStory))
+    dispatch(getNextSnippet(storyId, currentSnippetId(), isControlledStory, sessionId))
     setFinished(false)
   }
 

@@ -17,10 +17,11 @@ export const getCurrentSnippet = (storyId, controlledStory) => {
   return callBuilder(route, prefix)
 }
 
-export const getNextSnippet = (storyId, currentSnippetId, controlledStory) => {
-  const route = controlledStory
-    ? `/stories/${storyId}/snippets/next?previous=${currentSnippetId}&frozen_exercise=True`
-    : `/stories/${storyId}/snippets/next?previous=${currentSnippetId}`
+export const getNextSnippet = (storyId, currentSnippetId, isControlledStory, sessionId) => {
+  const route =
+    isControlledStory && sessionId
+      ? `/stories/${storyId}/snippets/next?previous=${currentSnippetId}&frozen_exercise=True&session_id=${sessionId}`
+      : `/stories/${storyId}/snippets/next?previous=${currentSnippetId}`
   const prefix = 'GET_NEXT_SNIPPET'
   return callBuilder(route, prefix)
 }
@@ -46,21 +47,27 @@ export const resetCurrentSnippet = (storyId, controlledStory) => {
   return callBuilder(route, prefix, 'post')
 }
 
-export const postAnswers = (storyId, answersObject, compete = false, controlledStory) => {
+export const postAnswers = (
+  storyId,
+  answersObject,
+  compete = false,
+  isControlledStory,
+  sessionId
+) => {
   const payload = answersObject
   payload.compete = compete
-  const route = controlledStory
-    ? `/stories/${storyId}/snippets/answer?frozen_exercise=True`
-    : `/stories/${storyId}/snippets/answer`
+  const route =
+    isControlledStory && sessionId
+      ? `/stories/${storyId}/snippets/answer?frozen_exercise=True&session_id=${sessionId}`
+      : `/stories/${storyId}/snippets/answer`
   const prefix = 'GET_SNIPPET_ANSWERS'
   return callBuilder(route, prefix, 'post', payload)
 }
 
 export const setPrevious = previous => ({ type: 'SET_PREVIOUS', payload: previous })
-
 export const addToPrevious = snippet => ({ type: 'ADD_TO_PREVIOUS', snippet })
-
 export const clearFocusedSnippet = () => ({ type: 'CLEAR_FOCUSED_SNIPPET' })
+export const resetSessionId = () => ({ type: 'RESET_SESSION_ID' })
 
 // Reducer
 // You can include more app wide actions such as "selected: []" into the state
@@ -90,6 +97,7 @@ export default (state = { previous: [], pending: false, error: false }, action) 
       return {
         ...state,
         focused: action.response,
+        sessionId: action.response.session_id,
         pending: false,
         error: false,
       }
@@ -170,6 +178,12 @@ export default (state = { previous: [], pending: false, error: false }, action) 
       return {
         ...state,
         focused: undefined,
+      }
+
+    case 'RESET_SESSION_ID':
+      return {
+        ...state,
+        sessionId: undefined,
       }
 
     case 'GET_NEXT_FROM_CACHE':
