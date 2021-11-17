@@ -2,7 +2,6 @@ import React from 'react'
 import { Modal } from 'semantic-ui-react'
 import { Button } from 'react-bootstrap'
 import { FormattedMessage } from 'react-intl'
-import useWindowDimensions from 'Utilities/windowDimensions'
 import { CustomButton, LinkButton } from './Buttons'
 import DetailsTable from './DetailsTable'
 

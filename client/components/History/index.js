@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useLayoutEffect, useMemo } from 'react'
 import { useSelector } from 'react-redux'
-import { Table, Icon, Button, TableRow } from 'semantic-ui-react'
+import { Table, Icon, Button, TableRow, Popup } from 'semantic-ui-react'
 import moment from 'moment'
 import { FormattedMessage } from 'react-intl'
 import { hiddenFeatures } from 'Utilities/common'
@@ -37,9 +37,9 @@ const TotalRow = ({ history, rootConcepts }) => {
   return (
     <TableRow textAlign="center">
       <Table.Cell key="total" positive>
-        <b>
+        <span className="bold">
           <FormattedMessage id="total" />
-        </b>
+        </span>
       </Table.Cell>
       {rootConceptResults?.map(oneDayResults => (
         <Table.Cell
@@ -68,9 +68,9 @@ const TestTypeRow = ({ history }) => {
   return (
     <TableRow textAlign="center">
       <Table.Cell key="total">
-        <b>
-          <FormattedMessage id="test-type" />
-        </b>
+        <span className="bold">
+          <FormattedMessage className="bold" id="test-type" />
+        </span>
       </Table.Cell>
       {history.map(resultsObj => (
         <Table.Cell
@@ -85,6 +85,39 @@ const TestTypeRow = ({ history }) => {
               'N/A'
             )}
           </div>
+        </Table.Cell>
+      ))}
+    </TableRow>
+  )
+}
+
+const StoryNameRow = ({ history }) => {
+  const STORY_NAME_MAX_LEN = 40
+
+  const truncateStoryName = name => {
+    return `${name.slice(0, STORY_NAME_MAX_LEN)}...`
+  }
+  return (
+    <TableRow textAlign="center">
+      <Table.Cell key="total">
+        <span className="bold">
+          <FormattedMessage id="story-title" />
+        </span>
+      </Table.Cell>
+      {history.map(resultsObj => (
+        <Table.Cell
+          key={`${resultsObj.type}-${resultsObj.test_session ?? resultsObj.story_id}-${
+            resultsObj.session_id ?? resultsObj.date
+          }`}
+        >
+          {resultsObj?.story_name?.length > STORY_NAME_MAX_LEN ? (
+            <Popup
+              content={resultsObj.story_name}
+              trigger={<span>{truncateStoryName(resultsObj.story_name)}</span>}
+            />
+          ) : (
+            <div>{resultsObj?.story_name ?? '-'}</div>
+          )}
         </Table.Cell>
       ))}
     </TableRow>
@@ -247,12 +280,6 @@ const History = ({ history, testView, dateFormat, handleDelete = null }) => {
     setColors({ ...colors, [color]: e.target.value })
   }
 
-  const getDate = column => {
-    return column?.type === 'control story'
-      ? moment(column.date).format('YYYY.MM.DD')
-      : moment(column.date).format(dateFormat || 'YYYY.MM.DD HH:mm')
-  }
-
   if (!history || history.length < 1) {
     return (
       <div className="group-analytics-no-results">
@@ -308,14 +335,14 @@ const History = ({ history, testView, dateFormat, handleDelete = null }) => {
             <Table.HeaderCell>
               <FormattedMessage id="concepts" />
             </Table.HeaderCell>
-            {calculatePage().map(test => (
-              <Table.HeaderCell key={`${test.date}-${Math.floor(Math.random() * 10000)}`}>
+            {calculatePage().map(col => (
+              <Table.HeaderCell key={`${col.date}-${Math.floor(Math.random() * 10000)}`}>
                 <span className="space-between">
-                  {getDate(test)}
+                  {moment(col.date).format(dateFormat || 'YYYY.MM.DD HH:mm')}
                   {handleDelete && (
                     <Icon
                       name="close"
-                      onClick={() => handleDelete(test.test_session)}
+                      onClick={() => handleDelete(col.test_session)}
                       style={{ marginTop: '.25rem' }}
                     />
                   )}
@@ -337,6 +364,7 @@ const History = ({ history, testView, dateFormat, handleDelete = null }) => {
           ))}
           {testView && (
             <>
+              <StoryNameRow history={history.slice(page * pageSize, page * pageSize + pageSize)} />
               <TestTypeRow history={history.slice(page * pageSize, page * pageSize + pageSize)} />
               <CefrLevelRow history={history.slice(page * pageSize, page * pageSize + pageSize)} />
             </>
