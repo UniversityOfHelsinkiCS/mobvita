@@ -1155,5 +1155,6 @@
     "create-controlled-story": "Создать контрольный текст",
     "cancel-controlled-story": "Отменить контрольный текст",
     "story-remove-fail": "При удалении текста произошла ошибка!",
-    "story-remove-success": "Текст удален успешно!"
+    "story-remove-success": "Текст удален успешно!",
+    "story-title": "Название"
 }

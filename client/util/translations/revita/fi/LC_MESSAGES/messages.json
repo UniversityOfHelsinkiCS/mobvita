@@ -1152,5 +1152,6 @@
     "create-controlled-story": "Luo ohjattu harjoitus",
     "cancel-controlled-story": "Nollaa ohjattu harjoitus",
     "story-remove-fail": "Tekstin poistaminen epäonnistui. Yritä uudelleen.",
-    "story-remove-success": "Teksti poistettu onnistuneesti!"
+    "story-remove-success": "Teksti poistettu onnistuneesti!",
+    "story-title": "Tekstin otsikko"
 }
