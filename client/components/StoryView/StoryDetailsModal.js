@@ -118,12 +118,6 @@ const StoryDetailsModal = ({
               />
             )}
 
-            <LinkButton
-              to={`/stories/${story._id}/preview-controlled-story`}
-              translationId="preview-controlled-story"
-              variant="secondary"
-            />
-
             {showCancelControlStoryButton && (
               <>
                 <LinkButton
