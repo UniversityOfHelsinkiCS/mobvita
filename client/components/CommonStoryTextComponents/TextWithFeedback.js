@@ -1,5 +1,5 @@
 import React, { useMemo } from 'react'
-import ExerciseWord from './CurrentSnippet/ExerciseWord'
+import ExerciseWord from '../PracticeView/CurrentSnippet/ExerciseWord'
 import Word from './PreviousSnippets/Word'
 
 const TextWithFeedback = ({ snippet, exercise = false, answers, mode, hideFeedback, ...props }) => {
@@ -173,7 +173,7 @@ const TextWithFeedback = ({ snippet, exercise = false, answers, mode, hideFeedba
         return element
       })
 
-  return <span>{createdText}</span>
+  return <span style={{ lineHeight: '1.75' }}>{createdText}</span>
 }
 
 export default TextWithFeedback

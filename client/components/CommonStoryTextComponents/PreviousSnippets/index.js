@@ -3,7 +3,7 @@ import { useSelector, useDispatch, shallowEqual } from 'react-redux'
 import { getTextStyle, learningLanguageSelector } from 'Utilities/common'
 import { setPrevious, initializePrevious } from 'Utilities/redux/snippetsReducer'
 import { setAnnotations } from 'Utilities/redux/annotationsReducer'
-import TextWithFeedback from 'Components/PracticeView/TextWithFeedback'
+import TextWithFeedback from 'Components/CommonStoryTextComponents/TextWithFeedback'
 import { useParams, useHistory } from 'react-router-dom'
 
 const PreviousSnippets = () => {

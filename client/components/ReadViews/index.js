@@ -13,7 +13,7 @@ import { learningLanguageSelector, getTextStyle, getMode } from 'Utilities/commo
 import DictionaryHelp from 'Components/DictionaryHelp'
 import AnnotationBox from 'Components/AnnotationBox'
 import Spinner from 'Components/Spinner'
-import TextWithFeedback from 'Components/PracticeView/TextWithFeedback'
+import TextWithFeedback from 'Components/CommonStoryTextComponents/TextWithFeedback'
 import FeedbackInfoModal from 'Components/PracticeView/FeedbackInfoModal'
 import ReportButton from 'Components/ReportButton'
 import Footer from '../Footer'

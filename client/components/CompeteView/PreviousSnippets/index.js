@@ -3,7 +3,7 @@ import { useSelector, useDispatch, shallowEqual } from 'react-redux'
 import { getTextStyle, learningLanguageSelector } from 'Utilities/common'
 import { setPrevious } from 'Utilities/redux/snippetsReducer'
 import PlainWord from 'Components/CommonStoryTextComponents/PlainWord'
-import TextWithFeedback from 'Components/PracticeView/TextWithFeedback'
+import TextWithFeedback from 'Components/CommonStoryTextComponents/TextWithFeedback'
 
 const PreviousSnippets = () => {
   const learningLanguage = useSelector(learningLanguageSelector)
