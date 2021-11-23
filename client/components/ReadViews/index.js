@@ -56,11 +56,7 @@ const ReadViews = ({ match }) => {
     <div className="cont-tall flex-col space-between align-center pt-sm">
       <div className="flex mb-nm">
         <div>
-          <Segment
-            data-cy="reviewmode-text"
-            className="cont"
-            style={getTextStyle(learningLanguage)}
-          >
+          <Segment data-cy="readmodes-text" className="cont" style={getTextStyle(learningLanguage)}>
             <Header style={getTextStyle(learningLanguage, 'title')}>
               <span className="pr-sm">{story.title}</span>
               <br />

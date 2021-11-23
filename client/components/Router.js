@@ -6,7 +6,6 @@ import HomeView from 'Components/HomeView'
 import LibraryView from 'Components/LibraryView'
 import ExhaustiveTestView from 'Components/Tests/ExhaustiveTest/index'
 import AdaptiveTestView from 'Components/Tests/AdaptiveTest/index'
-import ReadView from 'Components/ReadView'
 import ReadViews from 'Components/ReadViews'
 import ControlledStoryEditView from 'Components/ControlledStoryEditView'
 import ControlledStoryPreviewView from 'Components/ControlledStoryPreviewView'
@@ -98,7 +97,6 @@ export default () => {
               path="/stories/:id/controlled-practice/"
               component={PracticeView}
             />
-            <ProtectedRoute exact path="/stories/:id/read/" component={ReadView} />
             <ProtectedRoute exact path="/stories/:id/review/" component={ReadViews} />
             <ProtectedRoute exact path="/stories/:id/preview/" component={ReadViews} />
             <ProtectedRoute

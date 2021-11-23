@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
-import { useHistory } from 'react-router-dom'
+import { useHistory, useParams } from 'react-router-dom'
 import { FormattedMessage, useIntl } from 'react-intl'
 import { Icon } from 'semantic-ui-react'
 import {
@@ -32,7 +32,6 @@ const PreviousExerciseWord = ({ word, answer, tiedAnswer }) => {
     ref,
     explanation,
     ID: wordId,
-    id: storyId,
     inflection_ref: inflectionRef,
   } = word
 
@@ -43,6 +42,7 @@ const PreviousExerciseWord = ({ word, answer, tiedAnswer }) => {
   const autoSpeak = useSelector(({ user }) => user.data.user.auto_speak)
   const dictionaryLanguage = useSelector(dictionaryLanguageSelector)
   const { spanAnnotations, highlightRange } = useSelector(({ annotations }) => annotations)
+  const { id: storyId } = useParams()
 
   const intl = useIntl()
   const dispatch = useDispatch()

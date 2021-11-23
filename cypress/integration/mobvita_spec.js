@@ -140,7 +140,7 @@ describe('Mobvita', function () {
           .click()
       })
 
-      it('can be created and new story can be read', function () {
+      it('can be created and new story can be previewed', function () {
         cy.get('[data-cy=story-items]')
         cy.get('[data-cy=add-story-button]').click()
         cy.get('[data-cy=new-story-input] > input')

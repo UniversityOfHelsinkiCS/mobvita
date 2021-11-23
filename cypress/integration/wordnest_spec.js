@@ -1,5 +1,5 @@
 describe('wordnest modal', function() {
-    const readURL = "http://localhost:8000/stories/5c082383ff63453c5423f99d/read"
+    const previewURL = "http://localhost:8000/stories/5c082383ff63453c5423f99d/preview"
 
     this.beforeAll(function () {
       cy.loginRussian()
@@ -7,7 +7,7 @@ describe('wordnest modal', function() {
   
     this.beforeEach(function () {
         cy.loginExisting()
-        cy.visit(readURL)
+        cy.visit(previewURL)
     })
   
     this.afterAll(function () {
@@ -15,7 +15,7 @@ describe('wordnest modal', function() {
     })
 
     it('fetches, displays and translates nest correctly', function() {
-      cy.visit(readURL)
+      cy.visit(previewURL)
       cy.contains("спортсменка").click()
       cy.contains('sportswoman')
       cy.get('[data-cy=nest-button]').click()
@@ -27,7 +27,7 @@ describe('wordnest modal', function() {
     })
 
     it('doesn\'t display nest icon when nest is not available', function() {
-      cy.visit(readURL)
+      cy.visit(previewURL)
       cy.contains("метровку").click()
       cy.wait(1000)
       cy.get('[data-cy=nest-button]').should('not.exist')
