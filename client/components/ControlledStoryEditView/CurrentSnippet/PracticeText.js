@@ -1,7 +1,7 @@
 import React, { useRef, useState, useEffect } from 'react'
 import { useSelector, shallowEqual } from 'react-redux'
 import { Spinner } from 'react-bootstrap'
-import TextWithFeedback from 'Components/ControlledStoryEditView/TextWithFeedback'
+import TextWithFeedback from 'Components/CommonStoryTextComponents/TextWithFeedback'
 
 const PracticeText = props => {
   const snippets = useSelector(({ snippets }) => snippets)

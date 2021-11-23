@@ -22,7 +22,7 @@ import ScrollArrow from 'Components/ScrollArrow'
 import DictionaryHelp from 'Components/DictionaryHelp'
 import { FormattedMessage } from 'react-intl'
 import { Spinner } from 'react-bootstrap'
-import FeedbackInfoModal from 'Components/PracticeView/FeedbackInfoModal'
+import FeedbackInfoModal from 'Components/CommonStoryTextComponents/FeedbackInfoModal'
 import CompetitionProgress from 'Components/CompeteView/CompetitionProgress'
 
 const CompeteView = ({ match }) => {

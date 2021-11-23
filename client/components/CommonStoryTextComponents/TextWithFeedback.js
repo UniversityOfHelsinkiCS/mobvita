@@ -1,6 +1,9 @@
 import React, { useMemo } from 'react'
-import ExerciseWord from '../PracticeView/CurrentSnippet/ExerciseWord'
-import Word from './PreviousSnippets/Word'
+import { useHistory } from 'react-router-dom'
+import ExerciseWord from 'Components/PracticeView/CurrentSnippet/ExerciseWord'
+import ControlWord from 'Components/ControlledStoryEditView/PreviousSnippets/ControlWord'
+import Word from 'Components/CommonStoryTextComponents/PreviousSnippets/Word'
+import ControlExerciseWord from '../ControlledStoryEditView/CurrentSnippet/ControlExerciseWord'
 
 const TextWithFeedback = ({ snippet, exercise = false, answers, mode, hideFeedback, ...props }) => {
   let lowestLinePosition = 0
@@ -9,7 +12,25 @@ const TextWithFeedback = ({ snippet, exercise = false, answers, mode, hideFeedba
   let inChunk = false
   let chunkIsOneVerb = false
 
+  const history = useHistory()
+  const inControlStoryEditor = history.location.pathname.includes('controlled')
+
   const lineColors = ['blue', 'green', 'black', 'purple', 'cyan']
+
+  const getSidePadding = exercise => {
+    if (inControlStoryEditor) return '5px'
+    return exercise ? '5px' : '2px'
+  }
+
+  const getPaddingTop = exercise => {
+    if (inControlStoryEditor) return '3px'
+    return exercise ? '3px' : '0px'
+  }
+
+  const getPaddingBottom = exercise => {
+    if (inControlStoryEditor) return '4px'
+    return exercise ? '4px' : '1px'
+  }
 
   const createNestedSpan = (element, id, position, counter) => {
     const spanStyle = {
@@ -49,14 +70,14 @@ const TextWithFeedback = ({ snippet, exercise = false, answers, mode, hideFeedba
     const chunkStart = chunkPosition === 'start'
     const chunkEnd = chunkPosition === 'end'
     const chunkBorder = chunkIsOneVerb ? '1px red dashed' : '1px red solid'
-    const sidePadding = exercise ? '5px' : '2px'
+    const sidePadding = getSidePadding(exercise)
     const chunkStyle = {
       borderBottom: chunkBorder,
       borderTop: chunkBorder,
       borderLeft: chunkStart ? chunkBorder : 'none',
       borderRight: chunkEnd ? chunkBorder : 'none',
-      paddingTop: exercise ? '3px' : 0,
-      paddingBottom: exercise ? '4px' : '1px',
+      paddingTop: getPaddingTop(exercise),
+      paddingBottom: getPaddingBottom(exercise),
       paddingLeft: chunkStart ? sidePadding : 'none',
       paddingRight: chunkEnd ? sidePadding : 'none',
     }
@@ -71,9 +92,24 @@ const TextWithFeedback = ({ snippet, exercise = false, answers, mode, hideFeedba
     return chunkStyle
   }
 
-  const createElement = (word, chunkPosition, hideFeedback) => {
-    let element = exercise ? (
+  const getExerciseWordComponent = (word, props) => {
+    return inControlStoryEditor ? (
+      <ControlExerciseWord key={word.ID} word={word} {...props} />
+    ) : (
       <ExerciseWord key={word.ID} word={word} {...props} />
+    )
+  }
+
+  const getNonExerciseWordComponent = (hideFeedback, word, props) => {
+    return inControlStoryEditor ? (
+      <ControlWord
+        hideFeedback={hideFeedback}
+        key={word.ID}
+        word={word}
+        answer={mode !== 'review' && answers[word.ID]}
+        tiedAnswer={mode !== 'review' && answers[word.tiedTo]}
+        {...props}
+      />
     ) : (
       <Word
         hideFeedback={hideFeedback}
@@ -84,6 +120,13 @@ const TextWithFeedback = ({ snippet, exercise = false, answers, mode, hideFeedba
         {...props}
       />
     )
+  }
+
+  const createElement = (word, chunkPosition, hideFeedback) => {
+    let element = exercise
+      ? getExerciseWordComponent(word, props)
+      : getNonExerciseWordComponent(hideFeedback, word, props)
+
     if (hideFeedback) return element
 
     if (inChunk) {
@@ -173,7 +216,11 @@ const TextWithFeedback = ({ snippet, exercise = false, answers, mode, hideFeedba
         return element
       })
 
-  return <span style={{ lineHeight: '1.75' }}>{createdText}</span>
+  return (
+    <span style={inControlStoryEditor ? { lineHeight: '2' } : { lineHeight: '1.75' }}>
+      {createdText}
+    </span>
+  )
 }
 
 export default TextWithFeedback

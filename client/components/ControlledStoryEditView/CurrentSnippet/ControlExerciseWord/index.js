@@ -18,7 +18,7 @@ const ExercisePopup = ({ translationId, children }) => {
   )
 }
 
-const ExerciseWord = ({ word }) => {
+const ControlExerciseWord = ({ word }) => {
   const { acceptedTokens } = useSelector(({ controlledPractice }) => controlledPractice)
 
   const translationId = acceptedTokens.map(t => t.ID).includes(word.ID)
@@ -50,4 +50,4 @@ const ExerciseWord = ({ word }) => {
   )
 }
 
-export default ExerciseWord
+export default ControlExerciseWord
