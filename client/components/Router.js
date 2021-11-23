@@ -30,7 +30,6 @@ import Register from './AccessControl/Register'
 import Help from './StaticContent/Help'
 import Flashcards from './Flashcards'
 import LandingPage from './LandingPage'
-import StoryDetails from './StoryView/StoryDetails'
 import Achievements from './Achievements'
 import Leaderboard from './LeaderboardView'
 import NavBar from './NavBar'
@@ -90,7 +89,6 @@ export default () => {
             <ProtectedRoute exact path="/flashcards" component={Flashcards} />
             <ProtectedRoute exact path="/flashcards/:mode" component={Flashcards} />
             <ProtectedRoute exact path="/flashcards/:mode/:storyId" component={Flashcards} />
-            <ProtectedRoute exact path="/stories/:id" component={StoryDetails} />
             <ProtectedRoute exact path="/stories/:id/practice/" component={PracticeView} />
             <ProtectedRoute
               exact
