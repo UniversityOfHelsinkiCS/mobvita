@@ -1,5 +1,5 @@
 import React from 'react'
-import PlainWord from 'Components/ControlledStoryEditView/PlainWord'
+import PlainWord from 'Components/CommonStoryTextComponents/PlainWord'
 import { useSelector } from 'react-redux'
 import { Popup } from 'semantic-ui-react'
 import { useIntl } from 'react-intl'

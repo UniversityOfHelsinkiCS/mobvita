@@ -1,5 +1,5 @@
 import React from 'react'
-import PlainWord from 'Components/ControlledStoryEditView/PlainWord'
+import PlainWord from 'Components/CommonStoryTextComponents/PlainWord'
 import ExerciseCloze from './ExerciseCloze'
 import ExerciseMultipleChoice from './ExerciseMultipleChoice'
 import ExerciseHearing from './ExerciseHearing'

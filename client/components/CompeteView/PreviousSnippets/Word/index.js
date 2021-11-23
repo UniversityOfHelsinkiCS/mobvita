@@ -1,5 +1,5 @@
 import React from 'react'
-import PlainWord from 'Components/PracticeView/PlainWord'
+import PlainWord from 'Components/CommonStoryTextComponents/PlainWord'
 import PreviousExerciseWord from './PreviousExerciseWord'
 
 const Word = ({ word, answer, tiedAnswer, hideFeedback }) => {

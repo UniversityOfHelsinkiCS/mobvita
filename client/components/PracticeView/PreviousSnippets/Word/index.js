@@ -1,7 +1,7 @@
 import React from 'react'
 import { useHistory } from 'react-router-dom'
 import { hiddenFeatures } from 'Utilities/common'
-import PlainWord from 'Components/PracticeView/PlainWord'
+import PlainWord from 'Components/CommonStoryTextComponents/PlainWord'
 import PreviousExerciseWord from './PreviousExerciseWord'
 
 const Word = ({ word, answer, tiedAnswer, hideFeedback }) => {
