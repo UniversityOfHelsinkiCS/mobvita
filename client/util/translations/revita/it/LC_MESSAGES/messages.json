@@ -1154,5 +1154,6 @@
     "cancel-controlled-story": "Elimina la storia di valutazione",
     "story-remove-fail": "Si è verificato un errore durante l'eliminazione della storia.",
     "story-remove-success": "Storia eliminata correttamente!",
-    "story-title": "Titolo"
+    "story-title": "Titolo",
+    "preview-controlled-story": "Preview controlled story"
 }
