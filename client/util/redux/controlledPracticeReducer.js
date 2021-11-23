@@ -38,6 +38,12 @@ export const getNextSnippetFrozen = (storyId, currentSnippetId, acceptedTokens) 
   return callBuilder(route, prefix, 'post', payload)
 }
 
+export const getFrozenSnippetsPreview = storyId => {
+  const route = `/stories/${storyId}/preview?frozen_snippet=True`
+  const prefix = 'GET_FROZEN_SNIPPETS_PREVIEW'
+  return callBuilder(route, prefix)
+}
+
 export const resetCurrentSnippet = storyId => {
   const route = `/stories/${storyId}/snippets/reset`
   const prefix = 'RESET_SNIPPET_INDEX'
@@ -47,7 +53,7 @@ export const resetCurrentSnippet = storyId => {
 export const addExercise = wordObj => ({ type: 'ADD_EXERCISE', wordObj })
 export const removeExercise = id => ({ type: 'REMOVE_EXERCISE', id })
 
-export const setPrevious = previous => ({ type: 'SET_PREVIOUS', payload: previous })
+export const setPrevious = previous => ({ type: 'SET_PREVIOUS_FROZEN_SNIPPETS', payload: previous })
 export const addToPrevious = snippet => ({ type: 'ADD_TO_FROZEN_SNIPPETS', snippet })
 export const clearFocusedSnippet = () => ({ type: 'CLEAR_FOCUSED_SNIPPET' })
 
@@ -197,7 +203,7 @@ export default (
         error: false,
       }
 
-    case 'SET_PREVIOUS':
+    case 'SET_PREVIOUS_FROZEN_SNIPPETS':
       return {
         ...state,
         previous: action.payload,
@@ -207,6 +213,28 @@ export default (
       return {
         ...state,
         previous: state.previous.concat(action.snippet),
+      }
+
+    case 'GET_FROZEN_SNIPPETS_PREVIEW_ATTEMPT':
+      return {
+        ...state,
+        pending: true,
+        error: false,
+      }
+
+    case 'GET_FROZEN_SNIPPETS_PREVIEW_FAILURE':
+      return {
+        ...state,
+        pending: false,
+        error: true,
+      }
+
+    case 'GET_FROZEN_SNIPPETS_PREVIEW_SUCCESS':
+      return {
+        ...state,
+        previous: action.response.paragraph,
+        pending: false,
+        error: false,
       }
 
     case 'CLEAR_FOCUSED_SNIPPET':

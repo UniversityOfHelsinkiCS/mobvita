@@ -118,10 +118,23 @@ const StoryDetailsModal = ({
               />
             )}
 
+            <LinkButton
+              to={`/stories/${story._id}/preview-controlled-story`}
+              translationId="preview-controlled-story"
+              variant="secondary"
+            />
+
             {showCancelControlStoryButton && (
-              <Button variant="secondary" onClick={handleControlledStoryCancel}>
-                <FormattedMessage id="cancel-controlled-story" />
-              </Button>
+              <>
+                <LinkButton
+                  to={`/stories/${story._id}/preview-controlled-story`}
+                  translationId="preview-controlled-story"
+                  variant="secondary"
+                />
+                <Button variant="secondary" onClick={handleControlledStoryCancel}>
+                  <FormattedMessage id="cancel-controlled-story" />
+                </Button>
+              </>
             )}
 
             <CustomButton

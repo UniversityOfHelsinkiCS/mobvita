@@ -8,9 +8,8 @@ import ExhaustiveTestView from 'Components/Tests/ExhaustiveTest/index'
 import AdaptiveTestView from 'Components/Tests/AdaptiveTest/index'
 import ReadView from 'Components/ReadView'
 import ReadViews from 'Components/ReadViews'
-// // ---
 import ControlledStoryEditView from 'Components/ControlledStoryEditView'
-// // ---
+import ControlledStoryPreviewView from 'Components/ControlledStoryPreviewView'
 import PracticeView from 'Components/PracticeView'
 import LanguageSelectView from 'Components/LanguageSelectView'
 import EmailConfirm from 'Components/AccessControl/EmailConfirm'
@@ -102,6 +101,11 @@ export default () => {
             <ProtectedRoute exact path="/stories/:id/read/" component={ReadView} />
             <ProtectedRoute exact path="/stories/:id/review/" component={ReadViews} />
             <ProtectedRoute exact path="/stories/:id/preview/" component={ReadViews} />
+            <ProtectedRoute
+              exact
+              path="/stories/:id/preview-controlled-story/"
+              component={ControlledStoryPreviewView}
+            />
             <ProtectedRoute exact path="/stories/:id/compete/" component={CompeteView} />
             <ProtectedRoute
               exact

@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react'
+import { useHistory } from 'react-router-dom'
 import { useSelector, useDispatch, shallowEqual } from 'react-redux'
 import { getTextStyle, learningLanguageSelector } from 'Utilities/common'
 import { setPrevious } from 'Utilities/redux/controlledPracticeReducer'
@@ -10,8 +11,10 @@ const PreviousSnippets = () => {
   const learningLanguage = useSelector(learningLanguageSelector)
   const { previousAnswers } = useSelector(({ practice }) => practice)
 
-  const { focused: focusedStory } = useSelector(({ stories }) => stories)
+  const history = useHistory()
+  const isEditor = history.location.pathname.includes('controlled-story-editor')
 
+  const { focused: focusedStory } = useSelector(({ stories }) => stories)
   const { previous } = useSelector(({ controlledPractice }) => {
     const { focused: focusedSnippet, pending } = controlledPractice
     const previous = controlledPractice.previous.filter(Boolean)
@@ -21,7 +24,7 @@ const PreviousSnippets = () => {
   const dispatch = useDispatch()
 
   useEffect(() => {
-    dispatch(setPrevious([]))
+    if (isEditor) dispatch(setPrevious([]))
   }, [])
 
   useEffect(() => {
