@@ -8,12 +8,8 @@ import TextWithFeedback from 'Components/ControlledStoryEditView/TextWithFeedbac
 
 const PreviousSnippets = () => {
   const [annotationsInitialized, setAnnotationsInitialized] = useState(false)
-  const learningLanguage = useSelector(learningLanguageSelector)
+
   const { previousAnswers } = useSelector(({ practice }) => practice)
-
-  const history = useHistory()
-  const isEditor = history.location.pathname.includes('controlled-story-editor')
-
   const { focused: focusedStory } = useSelector(({ stories }) => stories)
   const { previous } = useSelector(({ controlledPractice }) => {
     const { focused: focusedSnippet, pending } = controlledPractice
@@ -21,14 +17,17 @@ const PreviousSnippets = () => {
     return { previous, focusedSnippet, pending }
   }, shallowEqual)
 
+  const history = useHistory()
   const dispatch = useDispatch()
+  const learningLanguage = useSelector(learningLanguageSelector)
+  const isEditor = history.location.pathname.includes('controlled-story-editor')
 
   useEffect(() => {
     if (isEditor) dispatch(setPrevious([]))
   }, [])
 
   useEffect(() => {
-    if (previous.length > 0 && !annotationsInitialized) {
+    if (isEditor && previous.length > 0 && !annotationsInitialized) {
       dispatch(setAnnotations(previous.flat(1)))
       dispatch(setPrevious(previous))
       setAnnotationsInitialized(true)
@@ -36,10 +35,12 @@ const PreviousSnippets = () => {
   }, [previous])
 
   useEffect(() => {
-    const updatedPrevious = focusedStory.paragraph.slice(0, previous.length)
-    const previousWords = updatedPrevious.flat(1)
-    dispatch(setAnnotations(previousWords))
-    dispatch(setPrevious(updatedPrevious))
+    if (isEditor) {
+      const updatedPrevious = focusedStory.paragraph.slice(0, previous.length)
+      const previousWords = updatedPrevious.flat(1)
+      dispatch(setAnnotations(previousWords))
+      dispatch(setPrevious(updatedPrevious))
+    }
   }, [focusedStory])
 
   const previousSnippets = previous?.map(snippet => (
