@@ -7,6 +7,38 @@ import { hiddenFeatures } from 'Utilities/common'
 import useWindowDimensions from 'Utilities/windowDimensions'
 import Concept from './Concept'
 
+const sumPropertyValues = (items, property) => {
+  return items.reduce((a, b) => {
+    return a + b[property]
+  }, 0)
+}
+
+const TotalRowText = ({ isControlStory, hasZeroExercises, rawOneDayStatistics, oneDayCounts }) => {
+  if (isControlStory)
+    return (
+      <>
+        {Math.round((rawOneDayStatistics.points / rawOneDayStatistics.total_points) * 100)} %{' '}
+        <FormattedMessage id="correct" />
+        <br />({Math.round(rawOneDayStatistics.points * 10) / 10} /{' '}
+        {rawOneDayStatistics.total_points})
+      </>
+    )
+  if (hasZeroExercises) return null
+
+  return (
+    <>
+      {Math.round(
+        (sumPropertyValues(Object.values(oneDayCounts), 'correct') /
+          sumPropertyValues(Object.values(oneDayCounts), 'total')) *
+          100
+      )}{' '}
+      % <FormattedMessage id="correct" />
+      <br />({sumPropertyValues(Object.values(oneDayCounts), 'correct')} /{' '}
+      {sumPropertyValues(Object.values(oneDayCounts), 'total')})
+    </>
+  )
+}
+
 const TotalRow = ({ history, rootConcepts }) => {
   const rootConceptResults = []
 
@@ -28,12 +60,6 @@ const TotalRow = ({ history, rootConcepts }) => {
 
   const firstConceptKey = Object.keys(rootConceptResults[0])[0]
 
-  const sumPropertyValues = (items, property) => {
-    return items.reduce((a, b) => {
-      return a + b[property]
-    }, 0)
-  }
-
   return (
     <TableRow textAlign="center">
       <Table.Cell key="total" positive>
@@ -41,23 +67,17 @@ const TotalRow = ({ history, rootConcepts }) => {
           <FormattedMessage id="total" />
         </span>
       </Table.Cell>
-      {rootConceptResults?.map(oneDayResults => (
+      {rootConceptResults?.map((oneDayCounts, index) => (
         <Table.Cell
-          key={`${oneDayResults[firstConceptKey]?.date}-${oneDayResults[firstConceptKey]?.id}`}
+          key={`${oneDayCounts[firstConceptKey]?.date}-${oneDayCounts[firstConceptKey]?.id}`}
           positive
         >
-          {sumPropertyValues(Object.values(oneDayResults), 'total') > 0 ? (
-            <>
-              {Math.round(
-                (sumPropertyValues(Object.values(oneDayResults), 'correct') /
-                  sumPropertyValues(Object.values(oneDayResults), 'total')) *
-                  100
-              )}{' '}
-              % <FormattedMessage id="correct" />
-              <br />({sumPropertyValues(Object.values(oneDayResults), 'correct')} /{' '}
-              {sumPropertyValues(Object.values(oneDayResults), 'total')})
-            </>
-          ) : null}
+          <TotalRowText
+            isControlStory={history[index].type === 'control story'}
+            hasZeroExercises={sumPropertyValues(Object.values(oneDayCounts), 'total') < 1}
+            rawOneDayStatistics={history[index]}
+            oneDayCounts={oneDayCounts}
+          />
         </Table.Cell>
       ))}
     </TableRow>
