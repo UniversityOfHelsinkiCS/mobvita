@@ -4,13 +4,19 @@ import { FormattedMessage } from 'react-intl'
 import { Button } from 'react-bootstrap'
 import { Icon } from 'semantic-ui-react'
 import { postAnswers, getCurrentSnippet } from 'Utilities/redux/snippetsReducer'
-import { finishSnippet, clearTouchedIds } from 'Utilities/redux/practiceReducer'
+import {
+  finishSnippet,
+  clearTouchedIds,
+  addToCorrectAnswerIDs,
+} from 'Utilities/redux/practiceReducer'
 
 const CheckAnswersButton = ({ handleClick, checkAnswersButtonTempDisable, playerFinished }) => {
   const attempt = useSelector(({ practice }) => practice.attempt)
-  const { focused: focusedSnippet, pending: snippetPending, answersPending } = useSelector(
-    ({ snippets }) => snippets
-  )
+  const {
+    focused: focusedSnippet,
+    pending: snippetPending,
+    answersPending,
+  } = useSelector(({ snippets }) => snippets)
   const { cachedSnippets } = useSelector(({ compete }) => compete)
   const [barColor, setBarColor] = useState('#4c91cd')
   const [attemptRatioPercentage, setAttemptRatioPercentage] = useState(100)
@@ -82,7 +88,7 @@ const CheckAnswersButton = ({ handleClick, checkAnswersButtonTempDisable, player
 const SnippetActions = ({ storyId, exerciseCount, playerFinished }) => {
   const [checkAnswersButtonTempDisable, setcheckAnswersButtonTempDisable] = useState(false)
   const { cachedSnippets } = useSelector(({ compete }) => compete)
-  const { currentAnswers, touchedIds, attempt, options, audio } = useSelector(
+  const { currentAnswers, correctAnswerIDs, touchedIds, attempt, options, audio } = useSelector(
     ({ practice }) => practice
   )
   const { snippets } = useSelector(({ snippets }) => ({ snippets }))
@@ -97,6 +103,14 @@ const SnippetActions = ({ storyId, exerciseCount, playerFinished }) => {
       ),
     [snippets]
   )
+
+  useEffect(() => {
+    const testedAndCorrectIDs = snippets?.focused?.practice_snippet
+      .filter(w => w.tested && !w.isWrong)
+      .map(w => w.ID.toString())
+
+    dispatch(addToCorrectAnswerIDs(testedAndCorrectIDs))
+  }, [attempt])
 
   const currentSnippetId = () => {
     if (!snippets.focused) return -1
@@ -114,6 +128,13 @@ const SnippetActions = ({ storyId, exerciseCount, playerFinished }) => {
   const checkAnswers = async lastAttempt => {
     const { starttime, snippetid } = snippets.focused
 
+    const filteredCurrentAnswers = Object.keys(currentAnswers)
+      .filter(key => !correctAnswerIDs.includes(key))
+      .reduce((obj, key) => {
+        obj[key] = currentAnswers[key]
+        return obj
+      }, {})
+
     const answersObj = {
       starttime,
       story_id: storyId,
@@ -123,7 +144,7 @@ const SnippetActions = ({ storyId, exerciseCount, playerFinished }) => {
       attempt,
       options,
       audio,
-      answers: currentAnswers,
+      answers: filteredCurrentAnswers,
       last_attempt: lastAttempt,
     }
 

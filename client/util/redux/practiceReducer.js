@@ -15,6 +15,7 @@ export const clearReferences = () => ({ type: 'CLEAR_REFERENCES' })
 export const setExplanation = explanation => ({ type: 'SET_EXPLANATION', explanation })
 export const clearExplanation = () => ({ type: 'CLEAR_EXPLANATION' })
 export const startSnippet = () => ({ type: 'SET_SNIPPET_STARTED' })
+export const addToCorrectAnswerIDs = ids => ({ type: 'ADD_CORRECT_ANSWER_IDS', ids })
 
 const initialState = {
   previousAnswers: {},
@@ -30,6 +31,7 @@ const initialState = {
   explanation: null,
   refModalOpen: false,
   isNewSnippet: true,
+  correctAnswerIDs: [],
 }
 
 export default (state = initialState, action) => {
@@ -56,6 +58,11 @@ export default (state = initialState, action) => {
         touchedIds: state.touchedIds.includes(action.id)
           ? state.touchedIds
           : state.touchedIds.concat(action.id),
+      }
+    case 'ADD_CORRECT_ANSWER_IDS':
+      return {
+        ...state,
+        correctAnswerIDs: state.correctAnswerIDs.concat(action.ids),
       }
     case 'INCREMENT_ATTEMPTS':
       return {

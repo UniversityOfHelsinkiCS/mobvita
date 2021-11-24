@@ -6,7 +6,12 @@ import { Icon } from 'semantic-ui-react'
 import { Button } from 'react-bootstrap'
 import { postAnswers, resetCurrentSnippet } from 'Utilities/redux/snippetsReducer'
 import { resetAnnotations } from 'Utilities/redux/annotationsReducer'
-import { finishSnippet, clearTouchedIds, clearPractice } from 'Utilities/redux/practiceReducer'
+import {
+  finishSnippet,
+  clearTouchedIds,
+  clearPractice,
+  addToCorrectAnswerIDs,
+} from 'Utilities/redux/practiceReducer'
 
 const CheckAnswersButton = ({ handleClick, checkAnswersButtonTempDisable }) => {
   const attempt = useSelector(({ practice }) => practice.attempt)
@@ -66,7 +71,7 @@ const CheckAnswersButton = ({ handleClick, checkAnswersButtonTempDisable }) => {
 
 const SnippetActions = ({ storyId, exerciseCount }) => {
   const [checkAnswersButtonTempDisable, setcheckAnswersButtonTempDisable] = useState(false)
-  const { currentAnswers, touchedIds, attempt, options, audio } = useSelector(
+  const { currentAnswers, correctAnswerIDs, touchedIds, attempt, options, audio } = useSelector(
     ({ practice }) => practice
   )
   const { snippets } = useSelector(({ snippets }) => ({ snippets }))
@@ -85,9 +90,24 @@ const SnippetActions = ({ storyId, exerciseCount }) => {
     [snippets]
   )
 
+  useEffect(() => {
+    const testedAndCorrectIDs = snippets?.focused?.practice_snippet
+      .filter(w => w.tested && !w.isWrong)
+      .map(w => w.ID.toString())
+
+    dispatch(addToCorrectAnswerIDs(testedAndCorrectIDs))
+  }, [attempt])
+
   const checkAnswers = async lastAttempt => {
     const { starttime, snippetid } = snippets.focused
     const { sessionId } = snippets
+
+    const filteredCurrentAnswers = Object.keys(currentAnswers)
+      .filter(key => !correctAnswerIDs.includes(key))
+      .reduce((obj, key) => {
+        obj[key] = currentAnswers[key]
+        return obj
+      }, {})
 
     const answersObj = {
       starttime,
@@ -98,7 +118,7 @@ const SnippetActions = ({ storyId, exerciseCount }) => {
       attempt,
       options,
       audio,
-      answers: currentAnswers,
+      answers: filteredCurrentAnswers,
       last_attempt: lastAttempt,
     }
 
