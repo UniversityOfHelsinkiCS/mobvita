@@ -13,7 +13,7 @@ const TextWithFeedback = ({ snippet, exercise = false, answers, mode, hideFeedba
   let chunkIsOneVerb = false
 
   const history = useHistory()
-  const inControlStoryEditor = history.location.pathname.includes('controlled')
+  const inControlStoryEditor = history.location.pathname.includes('controlled-story')
 
   const lineColors = ['blue', 'green', 'black', 'purple', 'cyan']
 
