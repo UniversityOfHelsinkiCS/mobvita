@@ -43,6 +43,7 @@ const PreviousExerciseWord = ({ word, answer, tiedAnswer }) => {
   const dictionaryLanguage = useSelector(dictionaryLanguageSelector)
   const { spanAnnotations, highlightRange } = useSelector(({ annotations }) => annotations)
   const { id: storyId } = useParams()
+  const { correctAnswerIDs } = useSelector(({ practice }) => practice)
 
   const intl = useIntl()
   const dispatch = useDispatch()
@@ -50,6 +51,7 @@ const PreviousExerciseWord = ({ word, answer, tiedAnswer }) => {
   const voice = respVoiceLanguages[learningLanguage]
   let color = ''
   if (tested || typeof wrong !== 'undefined') color = isWrong ? 'wrong-text' : 'right-text'
+  if (correctAnswerIDs.includes(word.ID.toString())) color = 'right-text'
   if (isPreviewMode && word.concepts) color = 'preview-text'
   if (isPreviewMode && hiddenFeatures && word.concepts?.length === 0)
     color = 'preview-text-no-concepts'

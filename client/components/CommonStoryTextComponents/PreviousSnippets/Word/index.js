@@ -1,11 +1,13 @@
 import React from 'react'
 import { useHistory } from 'react-router-dom'
+import { useSelector } from 'react-redux'
 import { hiddenFeatures } from 'Utilities/common'
 import PlainWord from 'Components/CommonStoryTextComponents/PlainWord'
 import PreviousExerciseWord from './PreviousExerciseWord'
 
 const Word = ({ word, answer, tiedAnswer, hideFeedback }) => {
   const history = useHistory()
+  const { correctAnswerIDs } = useSelector(({ practice }) => practice)
   const isPreviewMode = history.location.pathname.includes('preview')
 
   // "Display feedback" toggle is off
@@ -22,7 +24,7 @@ const Word = ({ word, answer, tiedAnswer, hideFeedback }) => {
   }
 
   // session history in practice & compete mode
-  if (word.tested) {
+  if (word.tested || correctAnswerIDs.includes(word.ID.toString())) {
     return <PreviousExerciseWord word={word} answer={answer} tiedAnswer={tiedAnswer} />
   }
 
