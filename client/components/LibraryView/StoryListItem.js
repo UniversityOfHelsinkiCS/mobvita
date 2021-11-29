@@ -259,6 +259,7 @@ const StoryListItem = ({ story, libraryShown, selectedGroup }) => {
           inGroupLibrary={inGroupLibrary}
           currentGroup={currentGroup}
           libraryShown={libraryShown}
+          userTeachesAGroup={userTeachesAGroup}
           handleControlledStoryCancel={handleControlledStoryCancel}
         />
       </Card.Content>
