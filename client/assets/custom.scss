@@ -22,19 +22,19 @@
 $spacing: ("xs": .2rem, "sm": .5rem, "nm": 1rem, "lg": 2rem, "xl": 3rem);
 
 $wrong-answer-background-color: #FFDADA;
-$button-border-color: #76c8d4;
 $secondary-text-color: #777;
 $action-text-hover-color: rgb(81, 138, 248);
 $tooltip-blue: rgba(30, 120, 225, 1);
 $tooltip-green: green;
 
-// new design
+// button-related colors
 $btn-color-primary: rgb(50, 170, 248);
 $btn-color-primary-disabled: rgb(142, 187, 249);
 $btn-highlight-color-primary: rgb(255, 209, 80);
 $btn-border-primary: 1px solid rgb(112, 114, 120);
 $btn-border-color-primary: rgb(112, 114, 120);
 $btn-border-radius-primary: 10px;
+$button-border-color: #76c8d4; // Currently only 'Check answers' button
 
 $rubik: 'Rubik', sans-serif;
 $default-font: $rubik;
@@ -311,12 +311,6 @@ html, body, #root {
   border: $btn-border-primary;
   border-color: $btn-border-color-primary;
   border-radius: $btn-border-radius-primary;
-}
-
-.btn-tertiary {
-  color: $secondary-text-color;
-  background-color: white;
-  border-color: #f0f0f0;
 }
 
 .btn-sm  {
