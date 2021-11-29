@@ -79,7 +79,7 @@ const ShareInfoPopupContent = ({ infoObj }) => {
   )
 }
 
-const StoryActions = ({ story, enableOnlyPractice, disablePreview, isControlled }) => {
+const StoryActions = ({ story, enableOnlyPractice, isControlled }) => {
   const { width } = useWindowDimensions()
 
   const showCrosswordsButton = width > 1023
@@ -111,10 +111,7 @@ const StoryActions = ({ story, enableOnlyPractice, disablePreview, isControlled 
         </Link>
 
         <Link to={`/stories/${story._id}/preview`}>
-          <Button
-            variant={enableOnlyPractice || disablePreview ? 'outline-secondary' : 'secondary'}
-            disabled={enableOnlyPractice || disablePreview}
-          >
+          <Button variant={buttonVariant} disabled={enableOnlyPractice}>
             <FormattedMessage id="preview" />
           </Button>
         </Link>
@@ -267,7 +264,6 @@ const StoryListItem = ({ story, libraryShown, selectedGroup }) => {
         <StoryActions
           story={story}
           enableOnlyPractice={enableOnlyPractice}
-          disablePreview={!userTeachesAGroup && inGroupLibrary}
           isControlled={isControlledStory}
         />
         <div className="flex align-center" style={{ overflow: 'hidden' }}>
