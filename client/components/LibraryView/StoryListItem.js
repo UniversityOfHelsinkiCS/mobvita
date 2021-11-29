@@ -79,7 +79,7 @@ const ShareInfoPopupContent = ({ infoObj }) => {
   )
 }
 
-const StoryActions = ({ story, enableOnlyPractice, isControlled }) => {
+const StoryActions = ({ story, enableOnlyPractice, disablePreview, isControlled }) => {
   const { width } = useWindowDimensions()
 
   const showCrosswordsButton = width > 1023
@@ -111,7 +111,10 @@ const StoryActions = ({ story, enableOnlyPractice, isControlled }) => {
         </Link>
 
         <Link to={`/stories/${story._id}/preview`}>
-          <Button variant={buttonVariant} disabled={enableOnlyPractice}>
+          <Button
+            variant={enableOnlyPractice || disablePreview ? 'outline-secondary' : 'secondary'}
+            disabled={enableOnlyPractice || disablePreview}
+          >
             <FormattedMessage id="preview" />
           </Button>
         </Link>
@@ -225,7 +228,7 @@ const StoryListItem = ({ story, libraryShown, selectedGroup }) => {
   const isControlledStory = !!story?.control_story
 
   const currentGroup = groups.find(g => g.group_id === selectedGroup)
-  const inGroupLibrary = libraryShown.group && story.groups
+  const inGroupLibrary = libraryShown.group && !!story.groups
   const showGroupNames = story.groups && libraryShown.private
   const enableOnlyPractice = inGroupLibrary && !currentGroup?.is_teaching && isControlledStory
 
@@ -256,7 +259,6 @@ const StoryListItem = ({ story, libraryShown, selectedGroup }) => {
           inGroupLibrary={inGroupLibrary}
           currentGroup={currentGroup}
           libraryShown={libraryShown}
-          userTeachesAGroup={userTeachesAGroup}
           handleControlledStoryCancel={handleControlledStoryCancel}
         />
       </Card.Content>
@@ -264,6 +266,7 @@ const StoryListItem = ({ story, libraryShown, selectedGroup }) => {
         <StoryActions
           story={story}
           enableOnlyPractice={enableOnlyPractice}
+          disablePreview={!userTeachesAGroup && inGroupLibrary}
           isControlled={isControlledStory}
         />
         <div className="flex align-center" style={{ overflow: 'hidden' }}>
