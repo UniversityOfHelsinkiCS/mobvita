@@ -231,7 +231,11 @@ const CurrentSnippet = ({ storyId, handleInputChange }) => {
               handleMultiselectChange={handleMultiselectChange}
             />
           </div>
-          <SnippetActions storyId={storyId} exerciseCount={exerciseCount} />
+          <SnippetActions
+            storyId={storyId}
+            exerciseCount={exerciseCount}
+            isControlledStory={isControlledStory}
+          />
         </div>
       ) : (
         <Button variant="primary" block onClick={() => startOver()}>

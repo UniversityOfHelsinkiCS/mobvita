@@ -75,7 +75,7 @@ const CheckAnswersButton = ({ handleClick, checkAnswersButtonTempDisable }) => {
   )
 }
 
-const SnippetActions = ({ storyId, exerciseCount }) => {
+const SnippetActions = ({ storyId, exerciseCount, isControlledStory }) => {
   const [checkAnswersButtonTempDisable, setcheckAnswersButtonTempDisable] = useState(false)
   const { currentAnswers, correctAnswerIDs, touchedIds, attempt, options, audio } = useSelector(
     ({ practice }) => practice
@@ -83,8 +83,6 @@ const SnippetActions = ({ storyId, exerciseCount }) => {
   const { snippets } = useSelector(({ snippets }) => ({ snippets }))
   const dispatch = useDispatch()
   const { id } = useParams()
-  const history = useHistory()
-  const isControlledStory = history.location.pathname.includes('controlled-practice')
 
   const rightAnswerAmount = useMemo(
     () =>
@@ -166,17 +164,19 @@ const SnippetActions = ({ storyId, exerciseCount }) => {
               <FormattedMessage id="go-to-next-snippet" /> <Icon name="level down alternate" />
             </span>
           </Button>
-          <Button
-            variant="secondary"
-            size="sm"
-            onClick={handleRestart}
-            style={{ marginBottom: '0.5em' }}
-            disabled={snippets.answersPending || snippets.pending}
-          >
-            <span>
-              <FormattedMessage id="start-over" /> <Icon name="level up alternate" />
-            </span>
-          </Button>
+          {!isControlledStory && (
+            <Button
+              variant="secondary"
+              size="sm"
+              onClick={handleRestart}
+              style={{ marginBottom: '0.5em' }}
+              disabled={snippets.answersPending || snippets.pending}
+            >
+              <span>
+                <FormattedMessage id="start-over" /> <Icon name="level up alternate" />
+              </span>
+            </Button>
+          )}
         </div>
       </div>
     </div>
