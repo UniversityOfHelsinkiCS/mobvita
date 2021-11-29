@@ -58,7 +58,9 @@ const TotalRow = ({ history, rootConcepts }) => {
     )
   })
 
-  const firstConceptKey = Object.keys(rootConceptResults[0])[0]
+  if (rootConceptResults.length === 0) return null
+
+  const firstConceptKey = Object.keys(rootConceptResults[0])[0] ?? 'placeholder'
 
   return (
     <TableRow textAlign="center">
