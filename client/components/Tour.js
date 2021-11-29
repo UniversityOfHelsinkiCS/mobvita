@@ -79,13 +79,13 @@ const Tour = () => {
           textAlign: 'left',
         },
         options: {
-          arrowColor: '#4c91cd',
-          primaryColor: '#4c91cd',
+          arrowColor: 'rgb(50, 170, 248)',
+          primaryColor: 'rgb(50, 170, 248)',
           zIndex: 1000,
         },
         buttonNext: {
-          backgroundColor: '#4c91cd',
-          borderRadius: 4,
+          backgroundColor: 'rgb(50, 170, 248)',
+          borderRadius: 8,
         },
       }}
       locale={{
