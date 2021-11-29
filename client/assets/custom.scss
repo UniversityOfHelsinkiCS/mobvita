@@ -877,14 +877,17 @@ html, body, #root {
 }
 
 .check-answers-button {
+  letter-spacing: 1px;
+  font-weight: 500;
   width: 100%;
   padding: 0;
+  border-radius: 14px;
   border: 1px solid $button-border-color;
-  border-radius: .3rem;
   margin-bottom: .5rem;
   position: relative;
   outline: 0;
   text-align: center;
+  overflow: hidden;
 
   &:hover {
     border: 1px solid $btn-color-primary;

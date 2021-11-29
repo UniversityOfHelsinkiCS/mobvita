@@ -20,11 +20,11 @@ const CheckAnswersButton = ({ handleClick, checkAnswersButtonTempDisable }) => {
     pending: snippetPending,
     answersPending,
   } = useSelector(({ snippets }) => snippets)
-  const [barColor, setBarColor] = useState('#4c91cd')
+  const [barColor, setBarColor] = useState('rgb(50, 170, 248)')
   const [attemptRatioPercentage, setAttemptRatioPercentage] = useState(100)
 
   const getFontStyle = () => {
-    if (attemptRatioPercentage === 100) return { color: 'white' }
+    if (attemptRatioPercentage > 60) return { color: 'white' }
     return { color: 'black', textShadow: '0px 0px 4px #FFF' }
   }
 
@@ -33,11 +33,11 @@ const CheckAnswersButton = ({ handleClick, checkAnswersButtonTempDisable }) => {
       // const isFreshAttempt = !focusedSnippet?.max_attempt || attempt === 0
       const newAttemptRatioPercentage = 100 - 100 * ((attempt + 1) / focusedSnippet?.max_attempt)
 
-      if (typeof newAttemptRatioPercentage !== 'number') setBarColor('#4c91cd')
+      if (typeof newAttemptRatioPercentage !== 'number') setBarColor('rgb(50, 170, 248)')
       else {
-        if (newAttemptRatioPercentage <= 60) setBarColor('#719ac6')
-        if (newAttemptRatioPercentage <= 40) setBarColor('#84a1c2')
-        if (newAttemptRatioPercentage <= 20) setBarColor('#a5adb9')
+        if (newAttemptRatioPercentage <= 60) setBarColor('#67b5ed')
+        if (newAttemptRatioPercentage <= 40) setBarColor('#8ebfe2')
+        if (newAttemptRatioPercentage <= 20) setBarColor('#b0c8d8')
       }
 
       if (focusedSnippet?.max_attempt - attempt === 1) {
@@ -46,7 +46,7 @@ const CheckAnswersButton = ({ handleClick, checkAnswersButtonTempDisable }) => {
         setAttemptRatioPercentage(newAttemptRatioPercentage)
       } else {
         setAttemptRatioPercentage(100)
-        setBarColor('#4c91cd')
+        setBarColor('rgb(50, 170, 248)')
       }
     }
   }, [focusedSnippet, attempt])
@@ -61,7 +61,13 @@ const CheckAnswersButton = ({ handleClick, checkAnswersButtonTempDisable }) => {
         answersPending || snippetPending || !focusedSnippet || checkAnswersButtonTempDisable
       }
     >
-      <div style={{ width: `${attemptRatioPercentage}%`, backgroundColor: barColor }} />
+      <div
+        style={{
+          width: `${attemptRatioPercentage}%`,
+          backgroundColor: barColor,
+          borderRadius: '13px',
+        }}
+      />
       <span style={{ ...getFontStyle() }}>
         <FormattedMessage id="check-answer" />
       </span>
