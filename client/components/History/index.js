@@ -197,12 +197,12 @@ const History = ({ history, testView, dateFormat, handleDelete = null }) => {
   }, [maxPage])
 
   useEffect(() => {
-    if (windowWidth > 1040) setPageSize(7)
-    else if (windowWidth > 950) setPageSize(6)
-    else if (windowWidth > 800) setPageSize(5)
-    else if (windowWidth > 675) setPageSize(4)
-    else if (windowWidth > 550) setPageSize(3)
-    else if (windowWidth > 425) setPageSize(2)
+    if (windowWidth > 1040) setPageSize(6)
+    else if (windowWidth > 950) setPageSize(5)
+    else if (windowWidth > 800) setPageSize(4)
+    else if (windowWidth > 675) setPageSize(3)
+    else if (windowWidth > 550) setPageSize(2)
+    // else if (windowWidth > 425) setPageSize(2)
     else setPageSize(1)
   }, [windowWidth])
 
@@ -296,6 +296,18 @@ const History = ({ history, testView, dateFormat, handleDelete = null }) => {
     return conceptTree
   }
 
+  const getBiggestHistoryTotal = () => {
+    let biggestValue = 0
+
+    history.map(historyObj => {
+      const statsObj = historyObj.concept_statistics
+      Object.keys(statsObj).map(key => {
+        if (statsObj[key].total > biggestValue) biggestValue = statsObj[key].total
+      })
+    })
+    return biggestValue
+  }
+
   const handleColorChange = color => e => {
     setColors({ ...colors, [color]: e.target.value })
   }
@@ -376,6 +388,7 @@ const History = ({ history, testView, dateFormat, handleDelete = null }) => {
             <Concept
               key={concept.id}
               calculateColor={calculateColor}
+              biggestHistoryTotal={getBiggestHistoryTotal()}
               history={history.slice(page * pageSize, page * pageSize + pageSize)}
               concept={concept}
               getConceptName={conceptIdToConceptName}
