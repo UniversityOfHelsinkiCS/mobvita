@@ -20,12 +20,12 @@ const NoAnnotationsView = ({ handleAnnotationBoxCollapse }) => {
       >
         <div>
           <div className="header-3">
-            <FormattedMessage id="notes" />{' '}
             <Popup
               position="top center"
               content={intl.formatMessage({ id: 'annotations-popup-info-text' })}
               trigger={<Icon name="info circle" size="small" color="grey" />}
-            />
+            />{' '}
+            <FormattedMessage id="notes" />
           </div>
         </div>
         <Icon name="angle up" size="large" />
