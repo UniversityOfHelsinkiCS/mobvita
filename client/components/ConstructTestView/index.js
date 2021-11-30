@@ -13,8 +13,29 @@ const ConstructTestView = () => {
 
   const { patternResults, pending } = useSelector(({ constructionTest }) => constructionTest)
 
+  const consistsOfOnlyWhitespace = text => !!text.match(/^\s+$/g)
+
   const handleClick = () => {
-    dispatch(testConstruction(learningLanguage, text))
+    if (!consistsOfOnlyWhitespace(text) && text.length > 0) {
+      dispatch(testConstruction(learningLanguage, text))
+    }
+  }
+
+  const syntaxHighlight = json => {
+    json = json.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')
+
+    return json.replace(/(&lt;c[0-9]&gt;.*?&lt;\/c[0-9]&gt;)/g, match => {
+      let color = ''
+
+      if (/(&lt;c1&gt;.*?&lt;\/c1&gt;)/.test(match)) color = 'blue'
+      if (/(&lt;c2&gt;.*?&lt;\/c2&gt;)/.test(match)) color = 'red'
+      if (/(&lt;c3&gt;.*?&lt;\/c3&gt;)/.test(match)) color = 'green'
+
+      return `<span style="color: ${color}">${match.replace(
+        /&lt;c[0-9]&gt;(.*?)&lt;\/c[0-9]&gt;/g,
+        '$1'
+      )}</span>`
+    })
   }
 
   useEffect(() => {
@@ -54,8 +75,12 @@ const ConstructTestView = () => {
                     minHeight: '500px',
                   }}
                 >
-                  <div style={{ overflow: 'auto', maxHeight: '1000px' }}>
-                    <pre>{JSON.stringify(patternResults, null, 2)}</pre>
+                  <div style={{ overflow: 'auto', maxHeight: '1100px' }}>
+                    <pre
+                      dangerouslySetInnerHTML={{
+                        __html: syntaxHighlight(JSON.stringify(patternResults, null, 2)),
+                      }}
+                    />
                   </div>
                 </div>
               </>
