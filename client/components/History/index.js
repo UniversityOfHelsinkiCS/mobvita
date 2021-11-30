@@ -366,7 +366,7 @@ const History = ({ history, testView, dateFormat, handleDelete = null }) => {
       <Table celled fixed unstackable>
         <Table.Header>
           <Table.Row>
-            <Table.HeaderCell>
+            <Table.HeaderCell style={{ width: '250px' }}>
               <FormattedMessage id="concepts" />
             </Table.HeaderCell>
             {calculatePage().map(col => (

@@ -3,7 +3,7 @@ import { Table, Icon, Popup } from 'semantic-ui-react'
 import { FormattedMessage } from 'react-intl'
 
 const ConceptTitle = ({ title, isParent }) => {
-  const TITLE_MAX_LENGTH = 15
+  const TITLE_MAX_LENGTH = 30
   const hasTooLongWord = title.split(' ').some(w => w.length > TITLE_MAX_LENGTH)
 
   const getTitleToDisplay = () => {
@@ -20,7 +20,7 @@ const ConceptTitle = ({ title, isParent }) => {
         isParent ? (
           <div className="bold">{getTitleToDisplay()}</div>
         ) : (
-          <div style={{ marginLeft: '16px', textOverflow: 'ellipsis' }}>{getTitleToDisplay()}</div>
+          <div style={{ marginLeft: '18px', textOverflow: 'ellipsis' }}>{getTitleToDisplay()}</div>
         )
       }
     />
