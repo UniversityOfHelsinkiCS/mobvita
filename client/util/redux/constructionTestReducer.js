@@ -6,7 +6,7 @@ export const testConstruction = (language, sentence) => {
   return callBuilder(route, prefix, 'get')
 }
 
-export const resetConstructionResults = () => ({ type: 'RESET_RESULTS' })
+export const resetConstructionResults = () => ({ type: 'RESET_CONSTRUCTION_RESULTS' })
 
 const initialState = {
   patternResults: null,

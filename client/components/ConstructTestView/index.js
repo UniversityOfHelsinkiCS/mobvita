@@ -15,9 +15,21 @@ const ConstructTestView = () => {
 
   const consistsOfOnlyWhitespace = text => !!text.match(/^\s+$/g)
 
+  useEffect(() => {
+    dispatch(resetConstructionResults())
+  }, [])
+
   const handleClick = () => {
     if (!consistsOfOnlyWhitespace(text) && text.length > 0) {
       dispatch(testConstruction(learningLanguage, text))
+    }
+  }
+
+  const handleKeyDown = e => {
+    if (e.key === 'Enter') {
+      if (!consistsOfOnlyWhitespace(text) && text.length > 0) {
+        dispatch(testConstruction(learningLanguage, text))
+      }
     }
   }
 
@@ -38,10 +50,6 @@ const ConstructTestView = () => {
     })
   }
 
-  useEffect(() => {
-    dispatch(resetConstructionResults())
-  }, [])
-
   return (
     <div className="cont-tall pt-sm flex-col space-between">
       <div className="justify-center">
@@ -61,6 +69,7 @@ const ConstructTestView = () => {
                 size="large"
                 fluid
                 onChange={e => setText(e.target.value)}
+                onKeyDown={handleKeyDown}
               />
             </div>
 
