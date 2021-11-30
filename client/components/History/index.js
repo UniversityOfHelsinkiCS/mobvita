@@ -395,6 +395,7 @@ const History = ({ history, testView, dateFormat, handleDelete = null }) => {
               concept={concept}
               getConceptName={conceptIdToConceptName}
               fromPreviousScored={fromPreviousScored}
+              indentation={0}
             />
           ))}
           {testView && (

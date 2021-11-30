@@ -83,18 +83,21 @@ const Concept = ({
   biggestHistoryTotal,
   getConceptName,
   fromPreviousScored,
-  indented,
+  indentation,
   ...props
 }) => {
   const [collapsed, setCollapsed] = useState(false)
 
-  const indentation = indented ? '18px' : '0px'
+  // const indentation = indented ? '18px' : '0px'
 
   return (
     <Fragment {...props}>
       <Table.Row onClick={() => setCollapsed(!collapsed)}>
         <Table.Cell style={{ paddingLeft: '0.1em' }}>
-          <div className="flex" style={{ textOverflow: 'ellipsis', marginLeft: indentation }}>
+          <div
+            className="flex"
+            style={{ textOverflow: 'ellipsis', marginLeft: `${indentation}px` }}
+          >
             {concept.children.length > 0 && (
               <div>
                 <Icon name={collapsed ? 'angle down' : 'angle right'} />
@@ -127,7 +130,7 @@ const Concept = ({
             calculateColor={calculateColor}
             getConceptName={getConceptName}
             fromPreviousScored={fromPreviousScored}
-            indented
+            indentation={indentation + 20}
           />
         ))}
     </Fragment>
