@@ -3,7 +3,7 @@ import { Table, Icon, Popup } from 'semantic-ui-react'
 import { FormattedMessage } from 'react-intl'
 
 const ConceptTitle = ({ title, isParent }) => {
-  const TITLE_MAX_LENGTH = 30
+  const TITLE_MAX_LENGTH = 28
   const hasTooLongWord = title.split(' ').some(w => w.length > TITLE_MAX_LENGTH)
 
   const getTitleToDisplay = () => {
@@ -20,7 +20,7 @@ const ConceptTitle = ({ title, isParent }) => {
         isParent ? (
           <div className="bold">{getTitleToDisplay()}</div>
         ) : (
-          <div style={{ marginLeft: '18px', textOverflow: 'ellipsis' }}>{getTitleToDisplay()}</div>
+          <div style={{ marginLeft: '10px' }}>{getTitleToDisplay()}</div>
         )
       }
     />
@@ -52,8 +52,8 @@ const StatisticCell = ({
       ? fromPreviousScored(concept.id, test.date)
       : ownStatistics
 
-  const pointsToTotalRatio = (statistics.total / biggestHistoryTotal) * 100
-  const colorWidth = pointsToTotalRatio >= 5 ? pointsToTotalRatio : 5
+  const pointsToMaxTotalRatio = (statistics.total / biggestHistoryTotal) * 100
+  const colorWidth = pointsToMaxTotalRatio >= 5 ? pointsToMaxTotalRatio : 5
 
   return (
     <Popup
@@ -83,15 +83,18 @@ const Concept = ({
   biggestHistoryTotal,
   getConceptName,
   fromPreviousScored,
+  indented,
   ...props
 }) => {
   const [collapsed, setCollapsed] = useState(false)
+
+  const indentation = indented ? '18px' : '0px'
 
   return (
     <Fragment {...props}>
       <Table.Row onClick={() => setCollapsed(!collapsed)}>
         <Table.Cell style={{ paddingLeft: '0.1em' }}>
-          <div className="flex" style={{ textOverflow: 'ellipsis' }}>
+          <div className="flex" style={{ textOverflow: 'ellipsis', marginLeft: indentation }}>
             {concept.children.length > 0 && (
               <div>
                 <Icon name={collapsed ? 'angle down' : 'angle right'} />
@@ -124,6 +127,7 @@ const Concept = ({
             calculateColor={calculateColor}
             getConceptName={getConceptName}
             fromPreviousScored={fromPreviousScored}
+            indented
           />
         ))}
     </Fragment>
