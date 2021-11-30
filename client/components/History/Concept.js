@@ -3,12 +3,12 @@ import { Table, Icon, Popup } from 'semantic-ui-react'
 import { FormattedMessage } from 'react-intl'
 
 const ConceptTitle = ({ title, isParent }) => {
-  const TRUNCATED_TITLE_LENGTH = 15
-  const hasTooLongWord = title.split(' ').some(w => w.length > TRUNCATED_TITLE_LENGTH)
+  const TITLE_MAX_LENGTH = 15
+  const hasTooLongWord = title.split(' ').some(w => w.length > TITLE_MAX_LENGTH)
 
   const getTitleToDisplay = () => {
-    if (title.length > TRUNCATED_TITLE_LENGTH || hasTooLongWord) {
-      return `${title.slice(0, TRUNCATED_TITLE_LENGTH)}...`
+    if (title.length > TITLE_MAX_LENGTH || hasTooLongWord) {
+      return `${title.slice(0, TITLE_MAX_LENGTH)}...`
     }
     return title
   }
@@ -52,7 +52,8 @@ const StatisticCell = ({
       ? fromPreviousScored(concept.id, test.date)
       : ownStatistics
 
-  const colorWidth = (statistics.total / biggestHistoryTotal) * 100
+  const pointsToTotalRatio = (statistics.total / biggestHistoryTotal) * 100
+  const colorWidth = pointsToTotalRatio >= 5 ? pointsToTotalRatio : 5
 
   return (
     <Popup
