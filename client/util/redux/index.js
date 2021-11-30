@@ -32,6 +32,7 @@ import tour from './tourReducer'
 import news from './newsReducer'
 import wordNest from './wordNestReducer'
 import controlledPractice from './controlledPracticeReducer'
+import constructionTest from './constructionTestReducer'
 
 const rootReducer = combineReducers({
   stories,
@@ -66,6 +67,7 @@ const rootReducer = combineReducers({
   news,
   wordNest,
   controlledPractice,
+  constructionTest,
 })
 
 export default (state, action) =>

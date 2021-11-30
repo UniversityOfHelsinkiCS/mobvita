@@ -5,6 +5,8 @@ import { images } from 'Utilities/common'
 import { useDispatch, useSelector } from 'react-redux'
 import { getGroups } from 'Utilities/redux/groupsReducer'
 
+import { Button } from 'react-bootstrap'
+
 import useWindowDimensions from 'Utilities/windowDimensions'
 import Footer from 'Components/Footer'
 import AddStoryModal from 'Components/AddStoryModal'
@@ -95,6 +97,7 @@ const HomeviewButtons = ({ setPracticeModalOpen, setAddStoryModalOpen, aTestIsEn
           />
         </div>
       )}
+      <Button onClick={() => history.push('/test-construction')}>Test construction</Button>
     </div>
   )
 }

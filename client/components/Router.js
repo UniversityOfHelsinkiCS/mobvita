@@ -9,6 +9,7 @@ import AdaptiveTestView from 'Components/Tests/AdaptiveTest/index'
 import ReadViews from 'Components/ReadViews'
 import ControlledStoryEditView from 'Components/ControlledStoryEditView'
 import ControlledStoryPreviewView from 'Components/ControlledStoryPreviewView'
+import ConstructTestView from 'Components/ConstructTestView'
 import PracticeView from 'Components/PracticeView'
 import LanguageSelectView from 'Components/LanguageSelectView'
 import EmailConfirm from 'Components/AccessControl/EmailConfirm'
@@ -123,6 +124,7 @@ export default () => {
             <ProtectedRoute exact path="/adaptive-test" component={AdaptiveTestView} />
             <ProtectedRoute exact path="/achievements" component={Achievements} />
             <ProtectedRoute exact path="/leaderboard" component={Leaderboard} />
+            <ProtectedRoute exact path="/test-construction" component={ConstructTestView} />
           </Switch>
         </main>
       </Route>
