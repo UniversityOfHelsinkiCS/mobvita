@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import { useHistory } from 'react-router'
 import { FormattedMessage } from 'react-intl'
-import { images } from 'Utilities/common'
+import { images, hiddenFeatures } from 'Utilities/common'
 import { useDispatch, useSelector } from 'react-redux'
 import { getGroups } from 'Utilities/redux/groupsReducer'
 
@@ -97,7 +97,9 @@ const HomeviewButtons = ({ setPracticeModalOpen, setAddStoryModalOpen, aTestIsEn
           />
         </div>
       )}
-      <Button onClick={() => history.push('/test-construction')}>Test construction</Button>
+      {hiddenFeatures && (
+        <Button onClick={() => history.push('/test-construction')}>Test construction</Button>
+      )}
     </div>
   )
 }
