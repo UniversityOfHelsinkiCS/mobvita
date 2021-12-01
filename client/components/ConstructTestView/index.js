@@ -1,3 +1,4 @@
+/* eslint-disable react/no-array-index-key */
 /* eslint-disable react/no-danger */
 import React, { useState, useEffect } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
@@ -88,7 +89,7 @@ const ConstructTestView = () => {
                 </div>
 
                 <div className="flex-col" style={{ gap: '1em' }}>
-                  {patternResults.map(resultObj => (
+                  {patternResults.map((resultObj, index) => (
                     <div
                       style={{
                         borderRadius: '7px',
@@ -103,10 +104,14 @@ const ConstructTestView = () => {
                       <Table size="small" celled>
                         <Table.Body>
                           <Table.Row>
-                            <Table.Cell className="bold" width={3}>
-                              sentence
+                            <Table.Cell
+                              key={`${resultObj.sentence}-${index}`}
+                              className="bold"
+                              width={3}
+                            >
+                              Sentence
                             </Table.Cell>
-                            <Table.Cell>
+                            <Table.Cell key={wordHighlight(resultObj.sentence)}>
                               <div
                                 dangerouslySetInnerHTML={{
                                   __html: wordHighlight(resultObj.sentence),
@@ -117,20 +122,25 @@ const ConstructTestView = () => {
                         </Table.Body>
                       </Table>
 
-                      <Table size="small" celled>
-                        <Table.Body>
-                          {Object.keys(resultObj.table).map(key => (
-                            <Table.Row>
-                              <Table.Cell className="bold" width={3}>
-                                {key}
-                              </Table.Cell>
-                              <Table.Cell style={{ color: 'green' }}>
-                                {resultObj.table[key]}
-                              </Table.Cell>
-                            </Table.Row>
-                          ))}
-                        </Table.Body>
-                      </Table>
+                      {Object.keys(resultObj.table).length > 0 && (
+                        <Table size="small" celled>
+                          <Table.Body>
+                            {Object.keys(resultObj.table).map(key => (
+                              <Table.Row>
+                                <Table.Cell key={`${key}`} className="bold" width={3}>
+                                  {key}
+                                </Table.Cell>
+                                <Table.Cell
+                                  key={`${resultObj.table[key]}`}
+                                  style={{ color: 'green' }}
+                                >
+                                  {resultObj.table[key]}
+                                </Table.Cell>
+                              </Table.Row>
+                            ))}
+                          </Table.Body>
+                        </Table>
+                      )}
                       <div className="ml-sm mb-lg" style={{ whiteSpace: 'pre-line' }}>
                         {resultObj.matches}
                       </div>
