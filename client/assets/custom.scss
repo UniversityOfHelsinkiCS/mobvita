@@ -107,6 +107,13 @@ html, body, #root {
   }
 }
 
+@each $size, $value in $spacing {
+  .my-#{$size} {
+    margin-top: $value;
+    margin-bottom: $value;
+  }
+}
+
 .auto {
   margin: auto;
 

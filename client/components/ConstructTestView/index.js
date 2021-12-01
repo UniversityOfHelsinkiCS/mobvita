@@ -1,3 +1,4 @@
+/* eslint-disable react/no-danger */
 import React, { useState, useEffect } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import { Segment, Input, Divider, Table, Checkbox } from 'semantic-ui-react'
@@ -8,11 +9,10 @@ import { Spinner } from 'react-bootstrap'
 const ConstructTestView = () => {
   const dispatch = useDispatch()
   const learningLanguage = useSelector(learningLanguageSelector)
+  const { patternResults, pending } = useSelector(({ constructionTest }) => constructionTest)
 
   const [text, setText] = useState('')
   const [showAnalyses, setShowAnalyses] = useState(false)
-
-  const { patternResults, pending } = useSelector(({ constructionTest }) => constructionTest)
 
   const consistsOfOnlyWhitespace = text => !!text.match(/^\s+$/g)
 
@@ -34,14 +34,12 @@ const ConstructTestView = () => {
     }
   }
 
-  // console.log(patternResults)
-
-  const syntaxHighlight = json => {
+  const wordHighlight = json => {
     return json.replace(/(<c[0-9]>.*?<\/c[0-9]>)/g, match => {
       let color = ''
       if (/(<c1>.*?<\/c1>)/.test(match)) color = 'blue'
       if (/(<c2>.*?<\/c2>)/.test(match)) color = 'red'
-      if (/(<c3>.*?<\/c3>)/.test(match)) color = 'green'
+      if (/(<c3>.*?<\/c3>)/.test(match)) color = 'purple'
 
       return `<span style="color: ${color}">${match.replace(
         /<c[0-9]>(.*?)<\/c[0-9]>/g,
@@ -85,77 +83,72 @@ const ConstructTestView = () => {
 
             {patternResults && (
               <>
-                <Divider />
+                <div className="mt-nm mb-lg">
+                  <Divider />
+                </div>
 
-                <div style={{ marginTop: '1.5em' }}>
+                <div className="flex-col" style={{ gap: '1em' }}>
                   {patternResults.map(resultObj => (
                     <div
                       style={{
                         borderRadius: '7px',
                         padding: '1em',
-                        background: '#f5f5f5',
-                        marginBottom: '.75em',
+                        background: 'rgb(239, 239, 239)',
                       }}
                     >
-                      <div className="bold" style={{ marginLeft: '.5em', fontSize: '1.2em' }}>
-                        {patternResults[0].message}
+                      <div className="bold ml-sm" style={{ fontSize: '1.2em' }}>
+                        {resultObj.message}
                       </div>
 
                       <Table size="small" celled>
                         <Table.Body>
                           <Table.Row>
-                            <Table.Cell width={3}>
-                              <b>Sentence</b>
+                            <Table.Cell className="bold" width={3}>
+                              sentence
                             </Table.Cell>
                             <Table.Cell>
                               <div
                                 dangerouslySetInnerHTML={{
-                                  __html: syntaxHighlight(resultObj.sentence),
+                                  __html: wordHighlight(resultObj.sentence),
                                 }}
                               />
                             </Table.Cell>
                           </Table.Row>
                         </Table.Body>
                       </Table>
-                      {/* {console.log(resultObj.table)} */}
+
                       <Table size="small" celled>
                         <Table.Body>
                           {Object.keys(resultObj.table).map(key => (
                             <Table.Row>
-                              <Table.Cell width={3}>
-                                <b>{key}</b>
+                              <Table.Cell className="bold" width={3}>
+                                {key}
                               </Table.Cell>
                               <Table.Cell style={{ color: 'green' }}>
                                 {resultObj.table[key]}
                               </Table.Cell>
                             </Table.Row>
                           ))}
-
                         </Table.Body>
                       </Table>
-                      <div style={{ margin: '1em .5em 2em .5em', whiteSpace: 'pre-line' }}>
+                      <div className="ml-sm mb-lg" style={{ whiteSpace: 'pre-line' }}>
                         {resultObj.matches}
                       </div>
                       {showAnalyses && (
-                        <>
+                        <div className="ml-sm">
                           <Divider />
-                          <div className="bold" style={{ marginLeft: '.5em' }}>
-                            Analyses:
-                          </div>
-                          <div style={{ overflow: 'auto', maxHeight: '500px', marginLeft: '.5em' }}>
+                          <div className="bold">Analyses:</div>
+                          <div style={{ overflow: 'auto', maxHeight: '500px' }}>
                             <pre
                               dangerouslySetInnerHTML={{
-                                __html: syntaxHighlight(
-                                  JSON.stringify(resultObj.analysis, null, 2)
-                                ),
+                                __html: JSON.stringify(resultObj.analysis, null, 2),
                               }}
                             />
                           </div>
-                        </>
+                        </div>
                       )}
                     </div>
                   ))}
-
                 </div>
               </>
             )}
