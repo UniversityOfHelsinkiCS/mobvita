@@ -365,19 +365,19 @@ const History = ({ history, testView, dateFormat, handleDelete = null }) => {
       )} */}
       <Table celled fixed unstackable>
         <Table.Header>
-          <Table.Row>
+          <Table.Row textAlign="center">
             <Table.HeaderCell style={{ width: '250px' }}>
               <FormattedMessage id="concepts" />
             </Table.HeaderCell>
             {calculatePage().map(col => (
               <Table.HeaderCell key={`${col.date}-${Math.floor(Math.random() * 10000)}`}>
-                <span className="space-between">
+                <span className="justify-center align-center">
                   {moment(col.date).format(dateFormat || 'YYYY.MM.DD HH:mm')}
                   {handleDelete && (
                     <Icon
                       name="close"
                       onClick={() => handleDelete(col.test_session)}
-                      style={{ marginTop: '.25rem' }}
+                      style={{ marginLeft: '1em' }}
                     />
                   )}
                 </span>
