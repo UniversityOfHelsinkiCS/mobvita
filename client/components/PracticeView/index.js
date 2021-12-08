@@ -47,9 +47,6 @@ const PracticeView = () => {
 
   const TIMER_START_DELAY = 2000
 
-
-  
-
   const currentSnippetId = () => {
     if (!snippets.focused) return -1
     const { snippetid } = snippets.focused
@@ -63,7 +60,7 @@ const PracticeView = () => {
     (snippetsTotalNum - currentSnippetId() === 1 && isPaused)
 
   const { controls: timer } = useTimer({
-    initialTime: 60000,
+    initialTime: null,
     direction: 'backward',
     startImmediately: false,
     timeToUpdate: 100,
@@ -105,6 +102,7 @@ const PracticeView = () => {
   useEffect(() => {
     dispatch(resetAnnotations())
     timer.stop()
+    timer.setTime(null)
 
     return () => {
       dispatch(clearFocusedSnippet())
@@ -141,7 +139,8 @@ const PracticeView = () => {
   const showFooter = width > 640
 
   const getTimerContent = () => {
-    if (snippets.pending) return <Spinner animation="border" variant="info" size="sm" />
+    if (snippets.pending || !timer.getTime())
+      return <Spinner animation="border" variant="info" size="sm" />
     if (practiceFinished) return <Icon size="small" name="thumbs up" style={{ margin: 0 }} />
 
     return Math.round(timer.getTime() / 1000)
@@ -183,7 +182,11 @@ const PracticeView = () => {
             )}
             <PreviousSnippets />
             <hr />
-            <CurrentSnippet storyId={id} handleInputChange={handleAnswerChange} />
+            <CurrentSnippet
+              storyId={id}
+              handleInputChange={handleAnswerChange}
+              timerValue={Math.round(timer.getTime() / 1000)}
+            />
             <ScrollArrow />
 
             {willPause && !isPaused && (

@@ -76,7 +76,7 @@ const CheckAnswersButton = ({ handleClick, checkAnswersButtonTempDisable }) => {
   )
 }
 
-const SnippetActions = ({ storyId, exerciseCount, isControlledStory }) => {
+const SnippetActions = ({ storyId, exerciseCount, isControlledStory, timerValue }) => {
   const [checkAnswersButtonTempDisable, setcheckAnswersButtonTempDisable] = useState(false)
 
   const { snippets } = useSelector(({ snippets }) => ({ snippets }))
@@ -125,6 +125,7 @@ const SnippetActions = ({ storyId, exerciseCount, isControlledStory }) => {
       audio,
       answers: filteredCurrentAnswers,
       last_attempt: lastAttempt,
+      timer_value: isControlledStory ? timerValue : null,
     }
 
     dispatch(clearTouchedIds())

@@ -35,7 +35,7 @@ import {
 import SnippetActions from './SnippetActions'
 import PracticeText from './PracticeText'
 
-const CurrentSnippet = ({ storyId, handleInputChange }) => {
+const CurrentSnippet = ({ storyId, handleInputChange, timerValue }) => {
   const [exerciseCount, setExerciseCount] = useState(0)
   const practiceForm = useRef(null)
   const dispatch = useDispatch()
@@ -249,6 +249,7 @@ const CurrentSnippet = ({ storyId, handleInputChange }) => {
             storyId={storyId}
             exerciseCount={exerciseCount}
             isControlledStory={isControlledStory}
+            timerValue={timerValue}
           />
         </div>
       ) : (
