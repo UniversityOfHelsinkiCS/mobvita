@@ -2,11 +2,19 @@ import React, { useEffect } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import { FormattedMessage } from 'react-intl'
 import { useParams } from 'react-router-dom'
-import { Segment } from 'semantic-ui-react'
+import { Segment, Icon } from 'semantic-ui-react'
 import { getStoryAction } from 'Utilities/redux/storiesReducer'
 import { clearFocusedSnippet } from 'Utilities/redux/snippetsReducer'
-import { setTouchedIds, setAnswers } from 'Utilities/redux/practiceReducer'
+import { Spinner } from 'react-bootstrap'
+import {
+  setTouchedIds,
+  setAnswers,
+  setOutOfTime,
+  setWillPause,
+  setIsPaused,
+} from 'Utilities/redux/practiceReducer'
 import { resetAnnotations } from 'Utilities/redux/annotationsReducer'
+import { useTimer } from 'react-compound-timer'
 import useWindowDimensions from 'Utilities/windowDimensions'
 import { getTextStyle, learningLanguageSelector, getMode } from 'Utilities/common'
 import CurrentSnippet from 'Components/PracticeView/CurrentSnippet'
@@ -18,17 +26,29 @@ import VirtualKeyboard from './VirtualKeyboard'
 import FeedbackInfoModal from '../CommonStoryTextComponents/FeedbackInfoModal'
 import { keyboardLayouts } from './KeyboardLayouts'
 import ProgressBar from './CurrentSnippet/ProgressBar'
+import PracticeTimer from './PracticeTimer'
 import Footer from '../Footer'
 import ScrollArrow from '../ScrollArrow'
 
 const PracticeView = () => {
-  const learningLanguage = useSelector(learningLanguageSelector)
   const dispatch = useDispatch()
+  const learningLanguage = useSelector(learningLanguageSelector)
   const { id } = useParams()
   const { width } = useWindowDimensions()
+
   const snippets = useSelector(({ snippets }) => snippets)
+  const { focused: story, pending } = useSelector(({ stories }) => stories)
+  const { isPaused, willPause, practiceFinished } = useSelector(({ practice }) => practice)
+
   const smallScreen = width < 700
   const mode = getMode()
+  const snippetsTotalNum = snippets?.focused?.total_num
+  const controlledPractice = mode === 'controlled-practice'
+
+  const TIMER_START_DELAY = 2000
+
+
+  
 
   const currentSnippetId = () => {
     if (!snippets.focused) return -1
@@ -37,16 +57,54 @@ const PracticeView = () => {
   }
 
   const currentSnippetNum = currentSnippetId() + 1
-  const snippetsTotalNum = snippets?.focused?.total_num
-  const { focused: story, pending } = useSelector(({ stories }) => stories)
-  const showAnnotationBox = width >= 1024
+
+  const showPauseButton =
+    (snippetsTotalNum - currentSnippetId() > 1 && !practiceFinished) ||
+    (snippetsTotalNum - currentSnippetId() === 1 && isPaused)
+
+  const { controls: timer } = useTimer({
+    initialTime: 60000,
+    direction: 'backward',
+    startImmediately: false,
+    timeToUpdate: 100,
+  })
+
+  useEffect(() => {
+    if (!snippets.testTime || !snippets.focused) return
+
+    timer.setTime(snippets.testTime * 1000)
+    // timer.setTime(12000) // For testing with manual timer length
+
+    if (!willPause && !isPaused) {
+      setTimeout(() => {
+        timer.start()
+      }, TIMER_START_DELAY)
+    } else {
+      dispatch(setWillPause(false))
+      timer.stop()
+    }
+
+    timer.setCheckpoints([
+      {
+        time: 0,
+        callback: () => {
+          dispatch(setOutOfTime(true))
+        },
+      },
+    ])
+  }, [currentSnippetId()])
 
   useEffect(() => {
     dispatch(getStoryAction(id, mode))
   }, [learningLanguage])
 
   useEffect(() => {
+    if (!isPaused) timer.start()
+  }, [isPaused])
+
+  useEffect(() => {
     dispatch(resetAnnotations())
+    timer.stop()
 
     return () => {
       dispatch(clearFocusedSnippet())
@@ -71,8 +129,23 @@ const PracticeView = () => {
     dispatch(setAnswers(newAnswer))
   }
 
+  const handlePauseOrResumeClick = () => {
+    if (isPaused) {
+      dispatch(setIsPaused(false))
+    } else {
+      dispatch(setWillPause(true))
+    }
+  }
+
   const showVirtualKeyboard = width > 500 && keyboardLayouts[learningLanguage]
   const showFooter = width > 640
+
+  const getTimerContent = () => {
+    if (snippets.pending) return <Spinner animation="border" variant="info" size="sm" />
+    if (practiceFinished) return <Icon size="small" name="thumbs up" style={{ margin: 0 }} />
+
+    return Math.round(timer.getTime() / 1000)
+  }
 
   return (
     <div className="cont-tall pt-sm flex-col space-between">
@@ -86,44 +159,61 @@ const PracticeView = () => {
                 progress={(currentSnippetNum / snippetsTotalNum).toFixed(2)}
               />
             </div>
-            <h3
+
+            <PracticeTimer
+              controlledPractice={controlledPractice}
+              timerContent={getTimerContent()}
+              showPauseButton={showPauseButton}
+              handlePauseOrResumeClick={handlePauseOrResumeClick}
+            />
+
+            <div
+              className="story-title"
               style={{
                 ...getTextStyle(learningLanguage, 'title'),
-                width: '100%',
-                paddingRight: '1em',
-                marginBottom: 0,
+                width: `${controlledPractice ? '75%' : '100%'}`,
               }}
             >
               {!pending && `${story.title}`}
-            </h3>
-            {story.url && !pending ? (
+            </div>
+            {story.url && !pending && (
               <a target="blank" href={story.url}>
                 <FormattedMessage id="Source" />
               </a>
-            ) : null}
+            )}
             <PreviousSnippets />
             <hr />
             <CurrentSnippet storyId={id} handleInputChange={handleAnswerChange} />
             <ScrollArrow />
+
+            {willPause && !isPaused && (
+              <div
+                className="justify-center"
+                style={{ color: 'rgb(81, 138, 248)', fontWeight: '500' }}
+              >
+                <FormattedMessage id="pausing-after-this-snippet" />
+              </div>
+            )}
           </Segment>
+
           {showVirtualKeyboard && (
             <div>
               <VirtualKeyboard />
             </div>
           )}
           {width >= 500 ? (
-            <div className="flex-col align-end" style={{ marginTop: '0.5em' }}>
+            <div className="flex-col align-end">
               <ReportButton />
             </div>
           ) : (
-            <div style={{ marginBottom: '0.5em' }}>
+            <div className="mb-nm">
               <ReportButton />
             </div>
           )}
         </div>
         <div className="dictionary-and-annotations-cont">
           <DictionaryHelp />
-          {showAnnotationBox && <AnnotationBox />}
+          <AnnotationBox />
         </div>
         <FeedbackInfoModal />
       </div>

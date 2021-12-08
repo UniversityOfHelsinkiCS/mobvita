@@ -84,16 +84,15 @@ const ControlledStoryEditView = () => {
                 progress={(currentControlledPracticeNum / controlledPracticeTotalNum).toFixed(2)}
               />
             </div>
-            <h3
+            <div
+              className="story-title"
               style={{
                 ...getTextStyle(learningLanguage, 'title'),
                 width: '100%',
-                paddingRight: '1em',
-                marginBottom: 0,
               }}
             >
               {!pending && `${story.title}`}
-            </h3>
+            </div>
             {story.url && !pending ? (
               <a target="blank" href={story.url}>
                 <FormattedMessage id="Source" />
@@ -116,7 +115,7 @@ const ControlledStoryEditView = () => {
         </div>
         <div className="dictionary-and-annotations-cont">
           <DictionaryHelp />
-          {showAnnotationBox && <AnnotationBox />}
+          <AnnotationBox />
         </div>
       </div>
       {showFooter && <Footer />}

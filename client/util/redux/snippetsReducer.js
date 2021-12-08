@@ -99,6 +99,7 @@ export default (state = { previous: [], pending: false, error: false }, action) 
         ...state,
         focused: action.response,
         sessionId: action.response.session_id,
+        testTime: action.response.test_time,
         pending: false,
         error: false,
       }
@@ -143,6 +144,7 @@ export default (state = { previous: [], pending: false, error: false }, action) 
         ...state,
         // previous: filterPrevious(state.previous, state.focused),
         focused: action.response,
+        testTime: action.response.test_time,
         pending: false,
         error: false,
       }

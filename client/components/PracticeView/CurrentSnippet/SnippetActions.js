@@ -1,6 +1,6 @@
 import React, { useState, useMemo, useEffect } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
-import { useParams, useHistory } from 'react-router-dom'
+import { useParams } from 'react-router-dom'
 import { FormattedMessage } from 'react-intl'
 import { Icon } from 'semantic-ui-react'
 import { Button } from 'react-bootstrap'
@@ -11,6 +11,7 @@ import {
   clearTouchedIds,
   clearPractice,
   addToCorrectAnswerIDs,
+  setOutOfTime,
 } from 'Utilities/redux/practiceReducer'
 
 const CheckAnswersButton = ({ handleClick, checkAnswersButtonTempDisable }) => {
@@ -77,12 +78,12 @@ const CheckAnswersButton = ({ handleClick, checkAnswersButtonTempDisable }) => {
 
 const SnippetActions = ({ storyId, exerciseCount, isControlledStory }) => {
   const [checkAnswersButtonTempDisable, setcheckAnswersButtonTempDisable] = useState(false)
-  const { currentAnswers, correctAnswerIDs, touchedIds, attempt, options, audio } = useSelector(
-    ({ practice }) => practice
-  )
+
   const { snippets } = useSelector(({ snippets }) => ({ snippets }))
   const dispatch = useDispatch()
   const { id } = useParams()
+  const { currentAnswers, correctAnswerIDs, outOfTime, touchedIds, attempt, options, audio } =
+    useSelector(({ practice }) => practice)
 
   const rightAnswerAmount = useMemo(
     () =>
@@ -129,6 +130,13 @@ const SnippetActions = ({ storyId, exerciseCount, isControlledStory }) => {
     dispatch(clearTouchedIds())
     dispatch(postAnswers(storyId, answersObj, false, isControlledStory, sessionId))
   }
+
+  useEffect(() => {
+    if (outOfTime) {
+      checkAnswers(true)
+      dispatch(setOutOfTime(false))
+    }
+  }, [outOfTime])
 
   const submitAnswers = () => {
     dispatch(finishSnippet())

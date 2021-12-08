@@ -25,6 +25,8 @@ import {
   addToOptions,
   startSnippet,
   incrementAttempts,
+  setIsPaused,
+  setPracticeFinished,
 } from 'Utilities/redux/practiceReducer'
 import {
   updateSeveralSpanAnnotationStore,
@@ -39,7 +41,8 @@ const CurrentSnippet = ({ storyId, handleInputChange }) => {
   const dispatch = useDispatch()
   const snippets = useSelector(({ snippets }) => snippets)
   const answersPending = useSelector(({ snippets }) => snippets.answersPending)
-  const { snippetFinished, isNewSnippet, attempt } = useSelector(({ practice }) => practice)
+  const { practiceFinished, snippetFinished, isNewSnippet, attempt, willPause, isPaused } =
+    useSelector(({ practice }) => practice)
   const learningLanguage = useSelector(learningLanguageSelector)
   const history = useHistory()
   const isControlledStory = history.location.pathname.includes('controlled-practice')
@@ -50,8 +53,6 @@ const CurrentSnippet = ({ storyId, handleInputChange }) => {
     const { snippetid } = snippets.focused
     return snippetid[snippetid.length - 1]
   }
-
-  const [finished, setFinished] = useState(false)
 
   const getExerciseCount = () => {
     let count = 0
@@ -102,7 +103,7 @@ const CurrentSnippet = ({ storyId, handleInputChange }) => {
 
   const finishSnippet = () => {
     dispatch(setPreviousAnswers(currentSnippetId()))
-    dispatch(addToPrevious([snippets.focused.practice_snippet]))
+    dispatch(addToPrevious([snippets?.focused.practice_snippet]))
 
     const annotationsToInitialize = []
     let currentSpan = { annotationString: '' }
@@ -135,10 +136,10 @@ const CurrentSnippet = ({ storyId, handleInputChange }) => {
 
     dispatch(clearCurrentPractice())
 
-    if (snippets.focused.total_num !== currentSnippetId() + 1 || finished) {
+    if (snippets.focused.total_num !== currentSnippetId() + 1 || practiceFinished) {
       dispatch(getNextSnippet(storyId, currentSnippetId(), isControlledStory, sessionId))
     } else {
-      setFinished(true)
+      dispatch(setPracticeFinished(true))
     }
   }
 
@@ -167,6 +168,8 @@ const CurrentSnippet = ({ storyId, handleInputChange }) => {
         snippets.focused.skip_second ||
         snippetFinished ||
         attempt + 1 >= snippets.focused.max_attempt
+
+      if (wasLastAttempt && willPause) dispatch(setIsPaused(true))
       if (isNewSnippet) setInitialAnswers()
       else if (wasLastAttempt) finishSnippet()
       else dispatch(incrementAttempts())
@@ -197,7 +200,7 @@ const CurrentSnippet = ({ storyId, handleInputChange }) => {
     dispatch(resetAnnotations())
     dispatch(setPrevious([]))
     dispatch(resetCurrentSnippet(storyId, isControlledStory))
-    setFinished(false)
+    dispatch(setPracticeFinished(false))
   }
 
   const handleMultiselectChange = (event, word, data) => {
@@ -217,9 +220,20 @@ const CurrentSnippet = ({ storyId, handleInputChange }) => {
     dispatch(setAnswers(newAnswer))
   }
 
+  if (isPaused && !practiceFinished) {
+    return (
+      <div
+        className="bold justify-center mt-lg mb-nm"
+        style={{ fontSize: '1.2em', letterSpacing: '1px', justifyContent: 'center' }}
+      >
+        <FormattedMessage id="paused" />
+      </div>
+    )
+  }
+
   return (
     <form ref={practiceForm}>
-      {!finished ? (
+      {!practiceFinished ? (
         <div style={{ width: '100%' }}>
           <div
             className="practice-container"
