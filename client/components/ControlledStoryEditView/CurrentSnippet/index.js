@@ -33,7 +33,7 @@ const EditingFinishedActions = ({ snippetPending }) => {
         <Spinner animation="border" variant="info" size="lg" />
       ) : (
         <>
-          <div className="header-3 mb-nm">
+          <div className="bold my-lg" style={{ fontSize: '1.2em', letterSpacing: '1px' }}>
             <FormattedMessage id="controlled-story-saved" />
           </div>
           <Button variant="primary" block onClick={() => history.push('/library')}>
