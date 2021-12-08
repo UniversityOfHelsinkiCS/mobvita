@@ -44,6 +44,7 @@ const StatisticCell = ({
   concept,
   fromPreviousScored,
   calculateColor,
+  bgColor,
   ...props
 }) => {
   const ownStatistics = test.concept_statistics[concept.id]
@@ -53,14 +54,15 @@ const StatisticCell = ({
       : ownStatistics
 
   const pointsToMaxTotalRatio = (statistics.total / biggestHistoryTotal) * 100
-  const colorWidth = pointsToMaxTotalRatio >= 5 ? pointsToMaxTotalRatio : 5
+  const colorWidth =
+    pointsToMaxTotalRatio >= 5 || statistics.total === 0 ? pointsToMaxTotalRatio : 5
 
   return (
     <Popup
       {...props}
       content={<PopupContent correct={statistics.correct} total={statistics.total} />}
       trigger={
-        <Table.Cell style={{ padding: 0 }}>
+        <Table.Cell style={{ padding: 0, background: bgColor }}>
           <div
             style={{
               height: '75px',
@@ -88,12 +90,16 @@ const Concept = ({
 }) => {
   const [collapsed, setCollapsed] = useState(false)
 
-  // const indentation = indented ? '18px' : '0px'
+  const cellBgColor = () => {
+    if (indentation >= 40) return 'rgb(235, 235, 235)'
+    if (indentation >= 20) return 'rgb(247, 247, 247)'
+    return '#FFF'
+  }
 
   return (
     <Fragment {...props}>
       <Table.Row onClick={() => setCollapsed(!collapsed)}>
-        <Table.Cell style={{ paddingLeft: '0.1em' }}>
+        <Table.Cell style={{ paddingLeft: '0.1em', background: cellBgColor() }}>
           <div
             className="flex"
             style={{ textOverflow: 'ellipsis', marginLeft: `${indentation}px` }}
@@ -117,6 +123,7 @@ const Concept = ({
             concept={concept}
             fromPreviousScored={fromPreviousScored}
             calculateColor={calculateColor}
+            bgColor={cellBgColor()}
           />
         ))}
       </Table.Row>
