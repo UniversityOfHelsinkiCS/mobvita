@@ -48,14 +48,26 @@ const StatisticCell = ({
   ...props
 }) => {
   const ownStatistics = test.concept_statistics[concept.id]
+
   const statistics =
     !ownStatistics || ownStatistics.total === 0
       ? fromPreviousScored(concept.id, test.date)
       : ownStatistics
 
-  const pointsToMaxTotalRatio = (statistics.total / biggestHistoryTotal) * 100
-  const colorWidth =
-    pointsToMaxTotalRatio >= 5 || statistics.total === 0 ? pointsToMaxTotalRatio : 5
+  const minHeight = 8
+  const maxHeight = 70
+
+  const calculateDiameter = () => {
+    if (statistics.total === 0) return 0
+
+    const maxRadius = maxHeight / 2
+    const maxArea = Math.PI * maxRadius ** 2
+    const area = (statistics.total / biggestHistoryTotal) * maxArea
+    const radius = Math.sqrt(area / Math.PI)
+    const diameter = Math.round(radius * 2)
+
+    return diameter > minHeight ? diameter : minHeight
+  }
 
   return (
     <Popup
@@ -64,13 +76,21 @@ const StatisticCell = ({
       trigger={
         <Table.Cell style={{ padding: 0, background: bgColor }}>
           <div
+            className="justify-center align-center"
             style={{
-              height: '60px',
-              width: `${colorWidth}%`,
-              backgroundColor: calculateColor(statistics),
+              height: `${maxHeight + 5}px`,
+              width: '100%',
             }}
           >
-            {' '}
+            <div
+              style={{
+                backgroundColor: calculateColor(statistics),
+                height: `${calculateDiameter()}px`,
+                width: `${calculateDiameter()}px`,
+                borderRadius: '50%',
+                display: 'inline-block',
+              }}
+            />
           </div>
         </Table.Cell>
       }
