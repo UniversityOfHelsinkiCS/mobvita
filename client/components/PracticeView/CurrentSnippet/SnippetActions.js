@@ -103,6 +103,8 @@ const SnippetActions = ({ storyId, exerciseCount, isControlledStory, timerValue 
     dispatch(addToCorrectAnswerIDs(testedAndCorrectIDs))
   }, [attempt])
 
+  const formattedTimerValue = timerValue < 0 ? 0 : timerValue
+
   const checkAnswers = async lastAttempt => {
     const { starttime, snippetid } = snippets.focused
     const { sessionId } = snippets
@@ -125,7 +127,7 @@ const SnippetActions = ({ storyId, exerciseCount, isControlledStory, timerValue 
       audio,
       answers: filteredCurrentAnswers,
       last_attempt: lastAttempt,
-      timer_value: isControlledStory ? timerValue : null,
+      timer_value: isControlledStory ? formattedTimerValue : null,
     }
 
     dispatch(clearTouchedIds())
