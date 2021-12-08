@@ -65,7 +65,7 @@ const StatisticCell = ({
         <Table.Cell style={{ padding: 0, background: bgColor }}>
           <div
             style={{
-              height: '75px',
+              height: '60px',
               width: `${colorWidth}%`,
               backgroundColor: calculateColor(statistics),
             }}
