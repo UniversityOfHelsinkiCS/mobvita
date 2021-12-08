@@ -107,7 +107,7 @@ const ReadViews = ({ match }) => {
         </div>
         <div className="dictionary-and-annotations-cont">
           <DictionaryHelp />
-          {showAnnotationBox && <AnnotationBox />}
+          <AnnotationBox />
         </div>
         <FeedbackInfoModal />
       </div>

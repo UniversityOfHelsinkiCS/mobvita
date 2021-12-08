@@ -99,16 +99,15 @@ const CompeteView = ({ match }) => {
       <div className="justify-center">
         <div className="cont">
           <Segment>
-            <h3
+            <div
+              className="story-title"
               style={{
                 ...getTextStyle(learningLanguage, 'title'),
                 width: '100%',
-                paddingRight: '1em',
-                marginBottom: 0,
               }}
             >
               {!pending && story && `${story.title}`}
-            </h3>
+            </div>
             {story?.url && !pending ? (
               <a href={story.url}>
                 <FormattedMessage id="Source" />

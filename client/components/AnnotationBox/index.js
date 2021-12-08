@@ -1,5 +1,6 @@
 import React from 'react'
 import { useDispatch, useSelector } from 'react-redux'
+import useWindowDimensions from 'Utilities/windowDimensions'
 import { Segment } from 'semantic-ui-react'
 import {
   setAnnotationsVisibility,
@@ -14,6 +15,7 @@ import NoAnnotationsView from './NoAnnotationsView'
 
 const AnnotationBox = () => {
   const dispatch = useDispatch()
+  const { width } = useWindowDimensions()
   const { focusedSpan, highlightRange, spanAnnotations, showAnnotations, annotationCandidates } =
     useSelector(({ annotations }) => annotations)
 
@@ -41,13 +43,17 @@ const AnnotationBox = () => {
     return <NoAnnotationsView handleAnnotationBoxCollapse={handleAnnotationBoxCollapse} />
   }
 
-  return (
-    <div className="annotations-box">
-      <Segment>
-        <div>{annotationView()}</div>
-      </Segment>
-    </div>
-  )
+  if (width >= 1024) {
+    return (
+      <div className="annotations-box">
+        <Segment>
+          <div>{annotationView()}</div>
+        </Segment>
+      </div>
+    )
+  }
+
+  return null
 }
 
 export default AnnotationBox
