@@ -1154,5 +1154,7 @@
     "story-remove-fail": "An error occurred while deleting the story!",
     "story-remove-success": "Story was removed successfully!",
     "story-title": "Story title",
-    "preview-controlled-story": "Preview controlled story"
+    "preview-controlled-story": "Preview controlled story",
+    "pausing-after-this-snippet": "Pausing after this snippet",
+    "paused": "Paused"
 }

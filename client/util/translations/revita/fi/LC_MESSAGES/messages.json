@@ -1154,5 +1154,7 @@
     "story-remove-fail": "Tekstin poistaminen epäonnistui. Yritä uudelleen.",
     "story-remove-success": "Teksti poistettu onnistuneesti!",
     "story-title": "Tekstin otsikko",
-    "preview-controlled-story": "Preview controlled story"
+    "preview-controlled-story": "Esikatsele ohjattua harjoitusta",
+    "pausing-after-this-snippet": "Pausing after this snippet",
+    "paused": "Tauko"
 }

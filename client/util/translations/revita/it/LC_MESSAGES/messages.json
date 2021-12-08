@@ -1155,5 +1155,7 @@
     "story-remove-fail": "Si è verificato un errore durante l'eliminazione della storia.",
     "story-remove-success": "Storia eliminata correttamente!",
     "story-title": "Titolo",
-    "preview-controlled-story": "Preview controlled story"
+    "preview-controlled-story": "Preview controlled story",
+    "pausing-after-this-snippet": "Pausing after this snippet",
+    "paused": "Paused"
 }
