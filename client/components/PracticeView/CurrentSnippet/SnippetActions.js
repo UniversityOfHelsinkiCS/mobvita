@@ -11,7 +11,6 @@ import {
   clearTouchedIds,
   clearPractice,
   addToCorrectAnswerIDs,
-  setOutOfTime,
 } from 'Utilities/redux/practiceReducer'
 
 const CheckAnswersButton = ({ handleClick, checkAnswersButtonTempDisable }) => {
@@ -82,8 +81,9 @@ const SnippetActions = ({ storyId, exerciseCount, isControlledStory, timerValue 
   const { snippets } = useSelector(({ snippets }) => ({ snippets }))
   const dispatch = useDispatch()
   const { id } = useParams()
-  const { currentAnswers, correctAnswerIDs, outOfTime, touchedIds, attempt, options, audio } =
-    useSelector(({ practice }) => practice)
+  const { currentAnswers, correctAnswerIDs, touchedIds, attempt, options, audio } = useSelector(
+    ({ practice }) => practice
+  )
 
   const rightAnswerAmount = useMemo(
     () =>
@@ -133,13 +133,6 @@ const SnippetActions = ({ storyId, exerciseCount, isControlledStory, timerValue 
     dispatch(clearTouchedIds())
     dispatch(postAnswers(storyId, answersObj, false, isControlledStory, sessionId))
   }
-
-  useEffect(() => {
-    if (outOfTime) {
-      checkAnswers(true)
-      dispatch(setOutOfTime(false))
-    }
-  }, [outOfTime])
 
   const submitAnswers = () => {
     dispatch(finishSnippet())

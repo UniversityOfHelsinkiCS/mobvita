@@ -80,15 +80,6 @@ const Test = () => {
       }, TIMER_START_DELAY)
       window.localStorage.setItem('testIndex', currentExhaustiveQuestionIndex)
     }
-
-    timer.setCheckpoints([
-      {
-        time: 0,
-        callback: () => {
-          checkAnswer('')
-        },
-      },
-    ])
   }, [currentExhaustiveTestQuestion])
 
   // Send an empty answer if user leaves test
@@ -165,7 +156,7 @@ const Test = () => {
             className="test-counter"
             style={{
               fontWeight: 'bold',
-              color: Math.round(timer.getTime() / 1000) <= 5 ? '#f3172d' : '#212529',
+              color: '#212529',
             }}
           >
             {Math.round(timer.getTime() / 1000)}

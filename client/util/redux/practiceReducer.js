@@ -16,7 +16,6 @@ export const setExplanation = explanation => ({ type: 'SET_EXPLANATION', explana
 export const clearExplanation = () => ({ type: 'CLEAR_EXPLANATION' })
 export const startSnippet = () => ({ type: 'SET_SNIPPET_STARTED' })
 export const addToCorrectAnswerIDs = ids => ({ type: 'ADD_CORRECT_ANSWER_IDS', ids })
-export const setOutOfTime = state => ({ type: 'SET_OUT_OF_TIME', state })
 export const setWillPause = state => ({ type: 'SET_WILL_PAUSE', state })
 export const setIsPaused = state => ({ type: 'SET_IS_PAUSED', state })
 export const setPracticeFinished = state => ({ type: 'SET_PRACTICE_FINISHED', state })
@@ -36,7 +35,6 @@ const initialState = {
   refModalOpen: false,
   isNewSnippet: true,
   correctAnswerIDs: [],
-  outOfTime: false,
   willPause: false,
   isPaused: false,
   practiceFinished: false,
@@ -125,11 +123,6 @@ export default (state = initialState, action) => {
       return {
         ...state,
         references: action.references,
-      }
-    case 'SET_OUT_OF_TIME':
-      return {
-        ...state,
-        outOfTime: action.state,
       }
     case 'SET_WILL_PAUSE':
       return {

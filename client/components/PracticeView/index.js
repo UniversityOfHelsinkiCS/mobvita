@@ -9,7 +9,6 @@ import { Spinner } from 'react-bootstrap'
 import {
   setTouchedIds,
   setAnswers,
-  setOutOfTime,
   setWillPause,
   setIsPaused,
 } from 'Utilities/redux/practiceReducer'
@@ -70,7 +69,7 @@ const PracticeView = () => {
     if (!snippets.testTime || !snippets.focused) return
 
     timer.setTime(snippets.testTime * 1000)
-    // timer.setTime(12000) // For testing with manual timer length
+    // timer.setTime(8000) // For testing with manual timer value
 
     if (!willPause && !isPaused) {
       setTimeout(() => {
@@ -80,15 +79,6 @@ const PracticeView = () => {
       dispatch(setWillPause(false))
       timer.stop()
     }
-
-    timer.setCheckpoints([
-      {
-        time: 0,
-        callback: () => {
-          dispatch(setOutOfTime(true))
-        },
-      },
-    ])
   }, [currentSnippetId()])
 
   useEffect(() => {

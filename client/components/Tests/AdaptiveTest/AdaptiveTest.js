@@ -67,15 +67,6 @@ const AdaptiveTest = () => {
         setDisplaySpinner(false)
       }, TIMER_START_DELAY)
     }
-
-    timer.setCheckpoints([
-      {
-        time: 0,
-        callback: () => {
-          checkAnswer('')
-        },
-      },
-    ])
   }, [currentAdaptiveQuestion])
 
   // Reset tests if user leaves
@@ -138,7 +129,7 @@ const AdaptiveTest = () => {
             className="test-counter"
             style={{
               fontWeight: 'bold',
-              color: Math.round(timer.getTime() / 1000) <= 5 ? '#f3172d' : '#212529',
+              color: '#212529',
             }}
           >
             {Math.round(timer.getTime() / 1000)}
