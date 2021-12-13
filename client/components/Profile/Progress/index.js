@@ -1,6 +1,5 @@
 import React, { useState, useEffect, shallowEqual } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
-import { ButtonGroup, ToggleButton } from 'react-bootstrap'
 import moment from 'moment'
 import { FormattedMessage } from 'react-intl'
 import { getSelf } from 'Utilities/redux/userReducer'
@@ -18,8 +17,6 @@ import ProgressStats from './ProgressStats'
 const PickDate = ({ date, setDate }) => (
   <ResponsiveDatePicker selected={date} onChange={date => setDate(date)} />
 )
-
-const marginLeftButton = '2px'
 
 const Progress = () => {
   const dispatch = useDispatch()
@@ -113,48 +110,43 @@ const Progress = () => {
         </div>
       </div>
       <Divider />
-      <ButtonGroup
-        toggle
-        style={{
-          float: 'right',
-        }}
-      >
-        <ToggleButton
-          type="radio"
-          value="exercise"
-          variant="success"
-          checked={historyView === 'exercise'}
-          onChange={() => setHistoryView('exercise')}
-        >
-          <FormattedMessage id="Exercise" />
-        </ToggleButton>
-        <ToggleButton
-          type="radio"
-          value="test"
-          variant="success"
-          style={{ marginLeft: marginLeftButton }}
-          checked={historyView === 'test'}
-          onChange={() => setHistoryView('test')}
-          disabled={testHistory?.length === 0}
-        >
-          <FormattedMessage id="Test" />
-        </ToggleButton>
-      </ButtonGroup>
+
       <div>
+        <div className="flex align center" style={{ gap: '3em' }}>
+          <div className="progress-page-header">
+            <FormattedMessage id="history" />
+          </div>
+          <div className="flex">
+            <button
+              type="button"
+              onClick={() => setHistoryView('exercise')}
+              style={{ border: 'none' }}
+            >
+              <div className="flex align-center" style={{ gap: '.5em' }}>
+                <input
+                  type="radio"
+                  onChange={() => setHistoryView('exercise')}
+                  checked={historyView === 'exercise'}
+                />
+                <FormattedMessage id="Exercise" />
+              </div>
+            </button>
+            <button type="button" onClick={() => setHistoryView('test')} style={{ border: 'none' }}>
+              <div className="flex align-center" style={{ gap: '.5em' }}>
+                <input
+                  type="radio"
+                  onChange={() => setHistoryView('test')}
+                  checked={historyView === 'test'}
+                />
+                <FormattedMessage id="Test" />
+              </div>
+            </button>
+          </div>
+        </div>
         {historyView === 'exercise' ? (
-          <>
-            <div className="progress-page-header">
-              <FormattedMessage id="Practice history" />
-            </div>
-            <History history={exerciseHistory} dateFormat="YYYY.MM" />
-          </>
+          <History history={exerciseHistory} dateFormat="YYYY.MM" />
         ) : (
-          <>
-            <div className="progress-page-header">
-              <FormattedMessage id="Test History" />
-            </div>
-            <History history={filterTestHistoryByDate()} testView dateFormat="YYYY.MM.DD HH:mm" />
-          </>
+          <History history={filterTestHistoryByDate()} testView dateFormat="YYYY.MM.DD HH:mm" />
         )}
       </div>
     </div>
