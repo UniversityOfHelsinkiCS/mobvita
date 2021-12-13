@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useLayoutEffect, useMemo } from 'react'
 import { useSelector } from 'react-redux'
-import { Table, Icon, Button, TableRow, Popup } from 'semantic-ui-react'
+import { Table, Icon, TableRow, Popup } from 'semantic-ui-react'
+import { Button } from 'react-bootstrap'
 import moment from 'moment'
 import { FormattedMessage } from 'react-intl'
 import { hiddenFeatures } from 'Utilities/common'
@@ -324,14 +325,14 @@ const History = ({ history, testView, dateFormat, handleDelete = null }) => {
   return (
     <div style={{ overflowX: 'scroll', maxWidth: '100%', marginTop: '1em' }}>
       {maxPage > 1 && (
-        <div>
-          <Button onClick={() => switchPage(-1)}>
+        <div className="justify-center align-center">
+          <Button variant="secondary" onClick={() => switchPage(-1)}>
             <Icon name="angle left" />
           </Button>
           <span style={{ marginLeft: '1em', marginRight: '1em' }}>
             {page + 1} / {maxPage}
           </span>
-          <Button onClick={() => switchPage(1)}>
+          <Button variant="secondary" onClick={() => switchPage(1)}>
             <Icon name="angle right" />
           </Button>
         </div>
