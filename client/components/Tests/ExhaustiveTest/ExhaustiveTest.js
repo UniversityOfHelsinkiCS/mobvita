@@ -140,22 +140,20 @@ const ExhaustiveTest = ({ showingInfo }) => {
             style={{ position: 'absolute', top: '1em', right: '1em', gap: '.5em' }}
           >
             <div className="test-controls">
-              <div>
-                <Icon
-                  size="large"
-                  color={willPause ? 'grey' : 'black'}
-                  name={paused ? 'play' : 'pause'}
-                  onClick={paused ? resumeTimer : pauseTimer}
-                  style={{ margin: '0.25em' }}
-                />
-                <Icon
-                  size="large"
-                  color={willStop ? 'grey' : 'black'}
-                  name="stop"
-                  onClick={stop}
-                  style={{ margin: '0.25em' }}
-                />
-              </div>
+              <Icon
+                size="large"
+                color={willPause ? 'grey' : 'black'}
+                name={paused ? 'play' : 'pause'}
+                onClick={paused ? resumeTimer : pauseTimer}
+                style={{ margin: '0.25em' }}
+              />
+              <Icon
+                size="large"
+                color={willStop ? 'grey' : 'black'}
+                name="stop"
+                onClick={stop}
+                style={{ margin: '0.25em' }}
+              />
             </div>
             <div
               className="test-counter"
@@ -173,7 +171,7 @@ const ExhaustiveTest = ({ showingInfo }) => {
           <div className="test-container">
             <div className="test-top-info space-between">
               <div className="bold">
-                <FormattedHTMLMessage id="question" /> {currentExhaustiveQuestionIndex + 1} /{' '}
+                <FormattedHTMLMessage id="question" />: {currentExhaustiveQuestionIndex + 1} /{' '}
                 {exhaustiveTestQuestions.length}
               </div>
             </div>

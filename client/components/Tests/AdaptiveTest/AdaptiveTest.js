@@ -120,21 +120,19 @@ const AdaptiveTest = ({ showingInfo }) => {
             style={{ position: 'absolute', top: '1em', right: '1em', gap: '.5em' }}
           >
             <div className="test-controls">
-              <div>
-                <Icon
-                  size="large"
-                  color={willPause ? 'grey' : 'black'}
-                  name={paused ? 'play' : 'pause'}
-                  onClick={paused ? resumeTimer : pauseTimer}
-                  style={{ margin: '0.25em' }}
-                />
-                <Icon
-                  size="large"
-                  name="stop"
-                  onClick={() => dispatch(resetTests())}
-                  style={{ margin: '0.25em' }}
-                />
-              </div>
+              <Icon
+                size="large"
+                color={willPause ? 'grey' : 'black'}
+                name={paused ? 'play' : 'pause'}
+                onClick={paused ? resumeTimer : pauseTimer}
+                style={{ margin: '0.25em' }}
+              />
+              <Icon
+                size="large"
+                name="stop"
+                onClick={() => dispatch(resetTests())}
+                style={{ margin: '0.25em' }}
+              />
             </div>
             <div
               className="test-counter"

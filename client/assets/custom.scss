@@ -1658,10 +1658,13 @@ label.file-upload-btn {
     font-size: 22px;
   }
   &-controls {
+    @extend .align-center;
+    @extend .justify-center;
     background: rgb(239, 239, 239);
+    height: 65px;
+    width: 100px;
     border-radius: 0.5em;
-    gap: 1.5em;
-    padding: 10px;
+    gap: 0.75em;
   }
 }
 
