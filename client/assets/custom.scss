@@ -2342,10 +2342,13 @@ label.file-upload-btn {
     height: 40px;
     width: 60px;
     border-radius: 8px;
+    margin-bottom: 8px;
+    transition: transform .2s;
     border: 2px solid black;
 
     &:hover {
       border: 2px solid $btn-highlight-color-primary;
+      transform: scale(1.3);
     }
   }
 
