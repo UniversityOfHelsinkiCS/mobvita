@@ -135,7 +135,7 @@
     "fetching-the-story-from-the-web-page-failed-please-paste-the-text-into-the-upload-textbox-or-paste-t": "К сожалению, Ревита не может извлечь текст из этой веб-страницы!<br>\nПожалуйста, скопируй текст в поле для загрузки.<br>\nИли скопируй текст в файл и загрузи в Ревиту, используя кнопки для загрузки файлов.",
     "stories-flashcards": "Флеш-карты из текста",
     "no-such-page": "Несуществующая страница!",
-    "go-back": "Назад:",
+    "go-back": "Назад",
     "main-page": "Главная страница",
     "News": "Новости",
     "dear-names": "Здравствуйте, %(name)s!",
@@ -1160,5 +1160,12 @@
     "preview-controlled-story": "Preview controlled story",
     "pausing-after-this-snippet": "Pausing after this snippet",
     "paused": "Paused",
-    "history": "History"
+    "history": "History",
+    "question": "Question",
+    "start": "Start",
+    "test-strat-modal-info-content": "<INSERT TEST INFO HERE>",
+    "test-start-modal-info-content": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
+    "adaptive-test-info-text": "Adaptive. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco.",
+    "exhaustive-test-info-text": "Exhaustive. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco.",
+    "controlled-practice-info-text": "Controlled. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco."
 }

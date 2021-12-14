@@ -136,7 +136,7 @@
     "fetching-the-story-from-the-web-page-failed-please-paste-the-text-into-the-upload-textbox-or-paste-t": "Valittua sivua ei voi ladata.  Liita koko teksti suoraan tekstikenttään, tai tiedostoon, jonka voit lähettää.",
     "stories-flashcards": "Tarinan kysymyskortit",
     "no-such-page": "Hakemaasi sivua ei löytynyt!",
-    "go-back": "Takaisin:",
+    "go-back": "Takaisin",
     "main-page": "Pääsivu",
     "News": "Uutiset",
     "dear-names": "Hyvä %(name)s,",
@@ -1157,5 +1157,12 @@
     "preview-controlled-story": "Esikatsele ohjattua harjoitusta",
     "pausing-after-this-snippet": "Pausing after this snippet",
     "paused": "Tauko",
-    "history": "Historia"
+    "history": "Historia",
+    "question": "Kysymys",
+    "start": "Aloita",
+    "test-strat-modal-info-content": "<INSERT TEST INFO HERE>",
+    "test-start-modal-info-content": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
+    "adaptive-test-info-text": "Adaptive. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco.",
+    "exhaustive-test-info-text": "Exhaustive. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco.",
+    "controlled-practice-info-text": "Controlled. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco."
 }
