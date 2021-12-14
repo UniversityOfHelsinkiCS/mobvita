@@ -73,9 +73,11 @@ const PracticeView = () => {
     if (!snippets.testTime || !snippets.focused) return
 
     timer.setTime(snippets.testTime * 1000)
-    // timer.setTime(8000) // For testing with manual timer value
+    // timer.setTime(10000) // For testing with manual timer value
 
-    if (!willPause && !isPaused && !startModalOpen) {
+    if (startModalOpen) return
+
+    if (!willPause && !isPaused) {
       setTimeout(() => {
         timer.start()
       }, TIMER_START_DELAY)

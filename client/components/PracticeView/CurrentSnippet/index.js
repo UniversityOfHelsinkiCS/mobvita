@@ -179,9 +179,10 @@ const CurrentSnippet = ({ storyId, handleInputChange, timer }) => {
       else {
         dispatch(incrementAttempts())
 
-        if (isControlledStory) {
+        if (isControlledStory && Math.round(timer.getTime() / 1000) > 0) {
           const numWrongAnswers = snippets.focused.practice_snippet.filter(e => e?.isWrong).length
           timer.setTime(timer.getTime() + numWrongAnswers * SECONDS_PER_WRONG_EXERCISE * 1000)
+          timer.start()
         }
       }
     }
