@@ -1165,7 +1165,9 @@
     "start": "Start",
     "test-strat-modal-info-content": "<INSERT TEST INFO HERE>",
     "test-start-modal-info-content": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
-    "adaptive-test-info-text": "Adaptive. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco.",
-    "exhaustive-test-info-text": "Exhaustive. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco.",
-    "controlled-practice-info-text": "Controlled. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco."
+    "adaptive-test-info-text": "With the adaptive test, you can assess your own skill level. The system will select questions for you depending on how you do in the previous questions. There are about 40-60 questions depending on your performance. Try to answer each question within 20 seconds.\n<br/><br/> \nAt the end of the test, you'll see how you coped with the different levels of questions and get an estimate of your CEFR level.",
+    "exhaustive-test-info-text": "The \"long test\" includes questions related to topics chosen by the group teacher. Try to answer each question within 30 seconds.",
+    "controlled-practice-info-text": "Controlled. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco.",
+    "controlled-story-info-text": "Controlled. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco.",
+    "control-story-info-text": "The exercises in this practice session are selected by the group's teacher(s). Try to answer the exercises in each snippet before the timer reaches zero. In case you get some of the answers wrong, you'll get some extra time for your next attempt."
 }
