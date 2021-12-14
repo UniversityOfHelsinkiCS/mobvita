@@ -1,7 +1,7 @@
-import React, { useEffect } from 'react'
+import React, { useState, useEffect } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import { FormattedMessage } from 'react-intl'
-import { useParams } from 'react-router-dom'
+import { useParams, useHistory } from 'react-router-dom'
 import { Segment, Icon } from 'semantic-ui-react'
 import { getStoryAction } from 'Utilities/redux/storiesReducer'
 import { clearFocusedSnippet } from 'Utilities/redux/snippetsReducer'
@@ -20,6 +20,7 @@ import CurrentSnippet from 'Components/PracticeView/CurrentSnippet'
 import DictionaryHelp from 'Components/DictionaryHelp'
 import ReportButton from 'Components/ReportButton'
 import AnnotationBox from 'Components/AnnotationBox'
+import StartModal from 'Components/TimedActivityStartModal'
 import PreviousSnippets from '../CommonStoryTextComponents/PreviousSnippets'
 import VirtualKeyboard from './VirtualKeyboard'
 import FeedbackInfoModal from '../CommonStoryTextComponents/FeedbackInfoModal'
@@ -31,6 +32,7 @@ import ScrollArrow from '../ScrollArrow'
 
 const PracticeView = () => {
   const dispatch = useDispatch()
+  const history = useHistory()
   const learningLanguage = useSelector(learningLanguageSelector)
   const { id } = useParams()
   const { width } = useWindowDimensions()
@@ -38,6 +40,8 @@ const PracticeView = () => {
   const snippets = useSelector(({ snippets }) => snippets)
   const { focused: story, pending } = useSelector(({ stories }) => stories)
   const { isPaused, willPause, practiceFinished } = useSelector(({ practice }) => practice)
+
+  const [startModalOpen, setStartModalOpen] = useState(false)
 
   const smallScreen = width < 700
   const mode = getMode()
@@ -71,7 +75,7 @@ const PracticeView = () => {
     timer.setTime(snippets.testTime * 1000)
     // timer.setTime(8000) // For testing with manual timer value
 
-    if (!willPause && !isPaused) {
+    if (!willPause && !isPaused && !startModalOpen) {
       setTimeout(() => {
         timer.start()
       }, TIMER_START_DELAY)
@@ -90,6 +94,8 @@ const PracticeView = () => {
   }, [isPaused])
 
   useEffect(() => {
+    if (controlledPractice) setStartModalOpen(true)
+
     dispatch(resetAnnotations())
     timer.stop()
     timer.setTime(null)
@@ -98,6 +104,10 @@ const PracticeView = () => {
       dispatch(clearFocusedSnippet())
     }
   }, [])
+
+  useEffect(() => {
+    if (!startModalOpen) timer.start()
+  }, [startModalOpen])
 
   if (!story) return null
 
@@ -204,6 +214,12 @@ const PracticeView = () => {
             </div>
           )}
         </div>
+        <StartModal
+          open={startModalOpen}
+          setOpen={setStartModalOpen}
+          activity="control-story"
+          onBackClick={() => history.push('/library')}
+        />
         <div className="dictionary-and-annotations-cont">
           <DictionaryHelp />
           <AnnotationBox />
