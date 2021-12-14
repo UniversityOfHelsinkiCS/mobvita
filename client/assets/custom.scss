@@ -1599,7 +1599,8 @@ label.file-upload-btn {
 .test {
   &-container {
     display: flex;
-    max-width: 600px;
+    margin-top: 3em;
+    width: 500px;
     flex-direction: column;
   }
   &-question-container {
@@ -1611,21 +1612,29 @@ label.file-upload-btn {
     display: flex;
     justify-content: center;
     align-items: center;
-    min-width: 350px;
-    min-height: 350px;
+    width: 500px;
+    height: 500px;
   }
   &-info {
     font-style: italic;
+  }
+  &-paused-text-cont {
+    @extend .justify-center;
+    font-size: 1.5em;
+    color: rgb(112, 114, 120);
+    margin-top: 3em;
+    text-align: center
+
   }
   &-top-info {
     font-size: 22px;
   }
   &-counter {
-    font-size: 22px;
-    border: 2px solid #777;
-    border-radius: 0.5em;
-    height: 40px;
-    width: 40px;
+    font-size: 2.5em;
+    border-radius: 7px;
+    background: #FFD970;
+    height: 65px;
+    width: 65px;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -1633,13 +1642,14 @@ label.file-upload-btn {
   &-prephrase {
     font-weight: 400;
     color: rgb(81, 138, 248);
-    font-size: 20px;
+    font-size: 18px;
     padding-bottom: 1em;
   }
   &-question {
+    font-family: $default-font;
     padding-top: 0.5em;
     font-size: 22px;
-    margin-bottom: 0.5em;
+    margin: 1.5em 0 1em 0;
   }
   &-choice-button {
     width: 100%;
@@ -1648,18 +1658,10 @@ label.file-upload-btn {
     font-size: 22px;
   }
   &-controls {
-    font-size: 1.5em;
-    border: 1px solid #777;
+    background: rgb(239, 239, 239);
     border-radius: 0.5em;
-    align-self: flex-start;
+    gap: 1.5em;
     padding: 10px;
-    margin-top: 1em;
-    text-align: center;
-  }
-  &-aside {
-    display: flex;
-    flex-direction: column;
-    align-items: flex-end;
   }
 }
 

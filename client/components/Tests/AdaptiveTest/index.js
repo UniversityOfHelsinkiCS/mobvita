@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React, { useState, useEffect } from 'react'
 import { Button } from 'react-bootstrap'
 import { FormattedMessage } from 'react-intl'
 import { useDispatch, useSelector } from 'react-redux'
@@ -6,6 +6,7 @@ import { InitAdaptiveTest, resetTests } from 'Utilities/redux/testReducer'
 import { useLearningLanguage } from 'Utilities/common'
 import Spinner from 'Components/Spinner'
 import ReportButton from 'Components/ReportButton'
+import StartModal from 'Components/TimedActivityStartModal'
 import TestView from './AdaptiveTest'
 import ResultModal from './ResultModal'
 
@@ -16,7 +17,10 @@ const AdaptiveTestView = () => {
     ({ tests }) => tests
   )
 
+  const [startModalOpen, setStartModalOpen] = useState(false)
+
   const startTest = () => {
+    setStartModalOpen(true)
     dispatch(InitAdaptiveTest(learningLanguage))
   }
 
@@ -34,8 +38,8 @@ const AdaptiveTestView = () => {
     <div className="cont-tall cont flex-col auto gap-row-sm">
       <div className="grow ps-nm flex-col gap-row-sm mt-md">
         {!adaptiveTestSessionId && (
-          <div className="pl-nm pt-nm">
-            <Button onClick={startTest} data-cy="start-test">
+          <div className="my-xl pb-xl align-center">
+            <Button size="lg" onClick={startTest} data-cy="start-test">
               <FormattedMessage id="start-a-new-test" />
             </Button>
           </div>
@@ -43,10 +47,18 @@ const AdaptiveTestView = () => {
         {adaptiveTestResults && (
           <ResultModal cefrLevel={cefrLevel} adaptiveTestResults={adaptiveTestResults} />
         )}
-        {adaptiveTestSessionId && <TestView />}
-        <div>
-          <hr className="my-2" />
-        </div>
+        {adaptiveTestSessionId && <TestView showingInfo={startModalOpen} />}
+        {!adaptiveTestSessionId && (
+          <div>
+            <hr className="my-2" />
+          </div>
+        )}
+        <StartModal
+          open={startModalOpen}
+          setOpen={setStartModalOpen}
+          activity="adaptive-test"
+          onBackClick={() => dispatch(resetTests())}
+        />
         <ReportButton extraClass="align-self-end mb-sm" />
       </div>
     </div>

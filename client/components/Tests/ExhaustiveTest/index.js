@@ -19,7 +19,8 @@ import ResponsiveDatePicker from 'Components/ResponsiveDatePicker'
 import ConfirmationWarning from 'Components/ConfirmationWarning'
 import { getGroups } from 'Utilities/redux/groupsReducer'
 import ReportButton from 'Components/ReportButton'
-import TestView from './ExhaustiveTest'
+import StartModal from 'Components/TimedActivityStartModal'
+import ExhaustiveTest from './ExhaustiveTest'
 import TestReport from './TestReport'
 import History from '../../History'
 
@@ -35,6 +36,7 @@ const ExhaustiveTestView = () => {
   const currentGroupId = useSelector(({ user }) => user.data.user.last_selected_group)
   const [selectedGroup, setSelectedGroup] = useState(currentGroupId || '')
   const [currentGroup, setCurrentGroup] = useState()
+  const [startModalOpen, setStartModalOpen] = useState(false)
   const [showHistory, setShowHistory] = useState(false)
   const [sessionToDelete, setSessionToDelete] = useState(false)
   const { exhaustiveTestSessionId, report, pending, language, history } = useSelector(
@@ -44,6 +46,7 @@ const ExhaustiveTestView = () => {
   const bigScreen = useWindowDimension().width >= 650
 
   const startTest = () => {
+    setStartModalOpen(true)
     dispatch(getTestQuestions(learningLanguage, selectedGroup, true))
   }
 
@@ -209,7 +212,13 @@ const ExhaustiveTestView = () => {
           </div>
         )}
         {report && <TestReport />}
-        {exhaustiveTestSessionId && <TestView />}
+        {exhaustiveTestSessionId && <ExhaustiveTest showingInfo={startModalOpen} />}
+        <StartModal
+          open={startModalOpen}
+          setOpen={setStartModalOpen}
+          activity="exhaustive-test"
+          onBackClick={() => dispatch(resetTests())}
+        />
         <ReportButton extraClass="align-self-end mb-sm" />
       </div>
     </div>
