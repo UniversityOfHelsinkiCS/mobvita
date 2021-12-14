@@ -182,11 +182,7 @@ const PracticeView = () => {
             )}
             <PreviousSnippets />
             <hr />
-            <CurrentSnippet
-              storyId={id}
-              handleInputChange={handleAnswerChange}
-              timerValue={Math.round(timer.getTime() / 1000)}
-            />
+            <CurrentSnippet storyId={id} handleInputChange={handleAnswerChange} timer={timer} />
             <ScrollArrow />
 
             {willPause && !isPaused && (

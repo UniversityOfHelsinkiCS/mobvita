@@ -35,18 +35,22 @@ import {
 import SnippetActions from './SnippetActions'
 import PracticeText from './PracticeText'
 
-const CurrentSnippet = ({ storyId, handleInputChange, timerValue }) => {
+const CurrentSnippet = ({ storyId, handleInputChange, timer }) => {
   const [exerciseCount, setExerciseCount] = useState(0)
   const practiceForm = useRef(null)
   const dispatch = useDispatch()
   const snippets = useSelector(({ snippets }) => snippets)
   const answersPending = useSelector(({ snippets }) => snippets.answersPending)
+
   const { practiceFinished, snippetFinished, isNewSnippet, attempt, willPause, isPaused } =
     useSelector(({ practice }) => practice)
+
   const learningLanguage = useSelector(learningLanguageSelector)
   const history = useHistory()
   const isControlledStory = history.location.pathname.includes('controlled-practice')
   const sessionId = snippets?.sessionId ?? null
+
+  const SECONDS_PER_WRONG_EXERCISE = 20
 
   const currentSnippetId = () => {
     if (!snippets.focused) return -1
@@ -172,7 +176,14 @@ const CurrentSnippet = ({ storyId, handleInputChange, timerValue }) => {
       if (wasLastAttempt && willPause) dispatch(setIsPaused(true))
       if (isNewSnippet) setInitialAnswers()
       else if (wasLastAttempt) finishSnippet()
-      else dispatch(incrementAttempts())
+      else {
+        dispatch(incrementAttempts())
+
+        if (isControlledStory) {
+          const numWrongAnswers = snippets.focused.practice_snippet.filter(e => e?.isWrong).length
+          timer.setTime(timer.getTime() + numWrongAnswers * SECONDS_PER_WRONG_EXERCISE * 1000)
+        }
+      }
     }
 
     const practiceFormIsLoaded = !!practiceForm.current?.elements
@@ -249,7 +260,7 @@ const CurrentSnippet = ({ storyId, handleInputChange, timerValue }) => {
             storyId={storyId}
             exerciseCount={exerciseCount}
             isControlledStory={isControlledStory}
-            timerValue={timerValue}
+            timerValue={Math.round(timer.getTime() / 1000)}
           />
         </div>
       ) : (
