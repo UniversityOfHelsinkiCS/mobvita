@@ -1165,10 +1165,10 @@
     "start": "Начать",
     "test-strat-modal-info-content": "<INSERT TEST INFO HERE>",
     "test-start-modal-info-content": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
-    "adaptive-test-info-text": "Скорый Тест поможет оценить твой уровень.  Ревита подбирает вопросы, в зависимости от ответов на предыдущие вопросы.  Тест состоит примерно из 40-60 вопросов. Постарайся ответить на каждый вопрос не более, чем за 30 секунд!\n<br/><br/>\nВ конце Ревита покажет итог теста и предложит оценку твоего уровня CEFR!",
+    "adaptive-test-info-text": "Быстрый Тест поможет оценить твой уровень.  Ревита подбирает вопросы в зависимости от предыдущих ответов.  Тест состоит примерно из 40-60 вопросов. Постарайся ответить на каждый вопрос не более, чем за 30 секунд!\n<br/><br/>\nВ конце Ревита покажет итог теста и предложит оценку твоего уровня CEFR!",
     "exhaustive-test-info-text": "Длинный Тест содержит вопросы на темы, выбранные учителем. Постарайся ответить на каждый вопрос не более, чем за 30 секунд!",
     "controlled-practice-info-text": "Controlled. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco.",
     "controlled-story-info-text": "Controlled. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco.",
-    "control-story-info-text": "Упражнения в Контрольном Тексте подобраны учителем.  На каждый абзац время ограничено — постарайся ответить на все задания за этот срок!  В случае неправильных ответов, Ревита добавит времени на дополнительные попытки.",
+    "control-story-info-text": "Упражнения в Контрольном Тексте подобраны учителем.  Время работы с каждым абзацем ограничено — постарайся успеть выполнить все задания!  Если ответы неправильные, ты получишь дополнительное время.",
     "what-language-would-you-like-to-learn": "Какой язык ты хочешь изучать?"
 }
