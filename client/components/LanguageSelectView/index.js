@@ -99,7 +99,7 @@ const LearningLanguageSelectView = () => {
         <Loader />
       </Dimmer>
       <div className="header-2 mt-lg bold" data-cy="choose-lang">
-        <FormattedMessage id="Learning-language" />
+        <FormattedMessage id="what-language-would-you-like-to-learn" />
       </div>
       <Segment>
         <LanguageGroup
