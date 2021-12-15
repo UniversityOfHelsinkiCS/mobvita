@@ -1162,9 +1162,10 @@
     "start": "Start",
     "test-strat-modal-info-content": "<INSERT TEST INFO HERE>",
     "test-start-modal-info-content": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
-    "adaptive-test-info-text": "With the adaptive test, you can assess your own skill level. The system will select questions for you depending on how you do in the previous questions. There are about 40-60 questions depending on your performance. Try to answer each question within 20 seconds.\n<br/><br/> \nAt the end of the test, you'll see how you coped with the different levels of questions and get an estimate of your CEFR level.",
-    "exhaustive-test-info-text": "The \"long test\" includes questions related to topics chosen by the group teacher. Try to answer each question within 30 seconds.",
+    "adaptive-test-info-text": "The Quick Test helps you assess your skill level.  Revita selects questions for you depending on how you do on the previous questions.  The test will have about 40-60 questions, depending on your replies.  Try to answer each question in 30 seconds or less!\n<br/><br/>\nAt the end of the test, you will get a summary of your answers, and an estimate of your CEFR level!",
+    "exhaustive-test-info-text": "The Long Test includes questions about topics chosen by the teacher. Try to answer each question within 30 seconds!",
     "controlled-practice-info-text": "Controlled. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco.",
     "controlled-story-info-text": "Controlled. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco.",
-    "control-story-info-text": "The exercises in this practice session are selected by the group's teacher(s). Try to answer the exercises in each snippet before the timer reaches zero. In case you get some of the answers wrong, you'll get some extra time for your next attempt."
+    "control-story-info-text": "The exercises in this story are chosen by the teacher. Try to answer the exercises in each snippet before the timer reaches zero! In case of incorrect answers, you'll get some extra time for additional attempts.",
+    "what-language-would-you-like-to-learn": "What language would you like to learn?"
 }

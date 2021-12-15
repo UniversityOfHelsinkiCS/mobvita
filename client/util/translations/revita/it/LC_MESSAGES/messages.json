@@ -1146,7 +1146,7 @@
     "freeze-snippet": "Congela lo snippet",
     "controlled-exercise-popup-text": "Clicca sugli esercizi generati (rossi) per selezionarli per il test. Se gli esercizi che hai selezionato ti soddisfano, ma desideri più esercizi per questo snippet, puoi cliccare su \"Rigenera esercizi\" — questo manterrà gli esercizi slezionati, e genererà altri esercizi da selezionare (se disponibili).\n\nQuando gli esercizi selezionati per l'attuale snippet (verdi) ti soddisfano, puoi salvarli e passare allo snippet successivo cliccando \"Congela lo snippet\".",
     "control story": "Storia di valutazione",
-    "exhaustive-test": "Test lungo",
+    "exhaustive-test": "Test esteso",
     "control-story": "Storia di valutazione",
     "freeze-and-save-control-story": "Congela lo snippet e salva la storia di valutazione",
     "cancel-controlled-exercise": "Cancel controlled story",
@@ -1160,12 +1160,13 @@
     "paused": "In pausa",
     "history": "Storico",
     "question": "Domanda",
-    "start": "Inizio",
+    "start": "Inizia",
     "test-strat-modal-info-content": "<INSERT TEST INFO HERE>",
     "test-start-modal-info-content": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
-    "adaptive-test-info-text": "With the adaptive test, you can assess your own skill level. The system will select questions for you depending on how you do in the previous questions. There are about 40-60 questions depending on your performance. Try to answer each question within 20 seconds.\n<br/><br/> \nAt the end of the test, you'll see how you coped with the different levels of questions and get an estimate of your CEFR level.",
-    "exhaustive-test-info-text": "The \"long test\" includes questions related to topics chosen by the group teacher. Try to answer each question within 30 seconds.",
+    "adaptive-test-info-text": "Il Test Rapido ti aiuta a determinare il tuo livello di capacità. Revita seleziona le domande in base alla risposta alla domanda precedente. Il test è formato da circa 40-60 domande, ma il numero di domande dipende dalle tue risposte. Cerca di rispondere alle domande entro 30 secondi!\n<br/><br/>\nAlla fine del test, verrà mostrato il riassunto delle tue risposte, e il tuo livelloCEFR stimato!",
+    "exhaustive-test-info-text": "Il Test Esteso include domande su argomenti scelti dall'insegnante. Cerca di rispondere ad ogni domanda entro 30 secondi!",
     "controlled-practice-info-text": "Controlled. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco.",
     "controlled-story-info-text": "Controlled. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco.",
-    "control-story-info-text": "The exercises in this practice session are selected by the group's teacher(s). Try to answer the exercises in each snippet before the timer reaches zero. In case you get some of the answers wrong, you'll get some extra time for your next attempt."
+    "control-story-info-text": "Gli esercizi in questa storia sono stati selezionati dall'insegnante. Cerca di rispondere ad ogni esercizio nello snippet prima che il timer raggiunga lo zero! In caso tu abbia risposto in maniera non corretta, ti verrà dato del tempo extra per ogni tentativo rimasto.",
+    "what-language-would-you-like-to-learn": "What language would you like to learn?"
 }

@@ -1162,9 +1162,10 @@
     "start": "Aloita",
     "test-strat-modal-info-content": "<INSERT TEST INFO HERE>",
     "test-start-modal-info-content": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
-    "adaptive-test-info-text": "Taitotasotestillä voit arvioida omaa kielitaitoasi. Järjestelmä valitsee sinulle kysymyksiä riippuen siitä, miten pärjäät edellisissä kysymyksissä. Kysymyksiä on on suoriutumisestasi riippuen n. 40-60. Yritä vastata kuhunkin kysymykseen 20 sekunnin kuluessa.<br/><br/>Testin päätyttyä näet, miten pärjäsit eri tasoisten kysymysten kanssa ja saat arvion omasta CEFR-tasostasi.",
-    "exhaustive-test-info-text": "Pitkässä testissä on ryhmän opettajan valitsemiin aiheisiin liittyviä kysymyksiä. Yritä vastata kuhunkin kysymykseen 30 sekunnin kuluessa.",
+    "adaptive-test-info-text": "Taitotasotestillä voit arvioida omaa kielitaitoasi. Revita valitsee sinulle kysymyksiä riippuen siitä, miten pärjäät edellisissä kysymyksissä. Kysymyksiä on on suoriutumisestasi riippuen n. 40-60. Yritä vastata kuhunkin kysymykseen 30 sekunnin kuluessa.\n<br/><br/>\nTestin päätyttyä näet, miten pärjäsit eri tasoisten kysymysten kanssa ja saat arvion omasta CEFR-tasostasi!",
+    "exhaustive-test-info-text": "Pitkässä testissä on ryhmän opettajan valitsemiin aiheisiin liittyviä kysymyksiä. Yritä vastata kuhunkin kysymykseen 30 sekunnin kuluessa!",
     "controlled-practice-info-text": "Controlled. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco.",
     "controlled-story-info-text": "Controlled. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco.",
-    "control-story-info-text": "Tässä harjoituksessa on ryhmän opettajan valitsemia aukkotehtäviä. Yritä vastata kuhunkin tehtävään ennen kuin ajastin on nollassa. Mikäli tehtäviä tarkastaessa kaikki tehtävät eivät ole oikein, saat hieman lisäaikaa seuraavalle yrityksellesi."
+    "control-story-info-text": "Tässä harjoituksessa on opettajan valitsemia aukkotehtäviä. Yritä vastata kuhunkin tehtävään ennen kuin ajastin on nollassa. Mikäli tehtäviä tarkastaessa kaikki tehtävät eivät ole oikein, saat hieman lisäaikaa seuraavalle yrityksellesi.",
+    "what-language-would-you-like-to-learn": "Mitä kieltä haluaisit opiskella?"
 }
