@@ -65,6 +65,10 @@ const CluesWrapper = styled.div.attrs(props => ({ className: 'clues' }))`
   padding-left: 1em;
   flex: 1;
 
+  > div {
+    background: #fff;
+  }
+
   @media (max-width: ${props => props.theme.columnBreakpoint}) {
     margin-top: 2em;
   }
