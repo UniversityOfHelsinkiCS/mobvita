@@ -12,7 +12,7 @@ const TIMER_START_DELAY = 2000
 
 const AdaptiveTest = ({ showingInfo }) => {
   const { controls: timer } = useTimer({
-    initialTime: 20000,
+    initialTime: 30000,
     direction: 'backward',
     startImmediately: false,
     timeToUpdate: 100,
@@ -148,7 +148,7 @@ const AdaptiveTest = ({ showingInfo }) => {
           </div>
           <div className="test-container">
             <div className="test-top-info space-between">
-              <div className="bold">
+              <div>
                 <FormattedHTMLMessage id="question" /> #{currentAdaptiveQuestionIndex + 1}
               </div>
             </div>

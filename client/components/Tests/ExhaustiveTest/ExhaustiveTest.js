@@ -170,7 +170,7 @@ const ExhaustiveTest = ({ showingInfo }) => {
 
           <div className="test-container">
             <div className="test-top-info space-between">
-              <div className="bold">
+              <div>
                 <FormattedHTMLMessage id="question" />: {currentExhaustiveQuestionIndex + 1} /{' '}
                 {exhaustiveTestQuestions.length}
               </div>
