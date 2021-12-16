@@ -2,8 +2,8 @@ import React, { useState, useEffect } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import { useTimer } from 'react-compound-timer'
 import { Icon, Segment } from 'semantic-ui-react'
-import { Spinner } from 'react-bootstrap'
-import { resetTests, sendAdaptiveTestAnswer } from 'Utilities/redux/testReducer'
+import { Spinner, Button } from 'react-bootstrap'
+import { resetTests, sendAdaptiveTestAnswer, resumeAdaptiveTest } from 'Utilities/redux/testReducer'
 import { learningLanguageSelector } from 'Utilities/common'
 import { FormattedMessage, FormattedHTMLMessage } from 'react-intl'
 import MultipleChoice from '../MultipleChoice'
@@ -106,6 +106,10 @@ const AdaptiveTest = ({ showingInfo }) => {
     }
   }
 
+  const handleTestResumeClick = () => {
+    dispatch(resumeAdaptiveTest(learningLanguage, adaptiveTestSessionId))
+  }
+
   const resumeTimer = () => {
     setPaused(false)
     setTimeout(() => timer.start(), TIMER_START_DELAY)
@@ -161,6 +165,13 @@ const AdaptiveTest = ({ showingInfo }) => {
               {paused && (
                 <div className="test-paused-text-cont">
                   <FormattedHTMLMessage id="paused-click-to-resume" />
+                </div>
+              )}
+              {answerFailure && (
+                <div className="justify-center mt-lg">
+                  <Button onClick={handleTestResumeClick}>
+                    <FormattedMessage id="network-error-click-to-resume" />
+                  </Button>
                 </div>
               )}
               {currentAdaptiveQuestion && !paused && !answerFailure && !displaySpinner && (

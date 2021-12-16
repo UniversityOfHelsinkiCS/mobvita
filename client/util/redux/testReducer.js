@@ -43,6 +43,14 @@ export const InitAdaptiveTest = language => {
   return callBuilder(route, prefix, 'get')
 }
 
+// in case of network error
+export const resumeAdaptiveTest = (language, sessionId) => {
+  const route = `/test/${language}/adaptive?session_id=${sessionId}`
+  const prefix = 'RESUME_ADAPTIVE_TEST'
+
+  return callBuilder(route, prefix, 'get')
+}
+
 export const sendExhaustiveTestAnswer = (language, sessionId, answer, duration, breakTimestamp) => {
   const route = `/test/${language}/answer`
   const prefix = 'ANSWER_TEST_QUESTION'
@@ -103,7 +111,8 @@ export const resetTests = () => {
 }
 
 export default (state = initialState, action) => {
-  const { currentExhaustiveQuestionIndex, currentAdaptiveQuestionIndex, exhaustiveTestQuestions } = state
+  const { currentExhaustiveQuestionIndex, currentAdaptiveQuestionIndex, exhaustiveTestQuestions } =
+    state
   const { response, startingIndex } = action
 
   switch (action.type) {
@@ -129,6 +138,7 @@ export default (state = initialState, action) => {
         error: true,
         pending: false,
       }
+
     case 'INIT_ADAPTIVE_TEST_ATTEMPT':
       return {
         ...initialState,
@@ -146,6 +156,27 @@ export default (state = initialState, action) => {
         ...initialState,
         pending: false,
       }
+
+    case 'RESUME_ADAPTIVE_TEST_ATTEMPT':
+      return {
+        ...state,
+        resumePending: true,
+      }
+    case 'RESUME_ADAPTIVE_TEST_SUCCESS':
+      return {
+        ...state,
+        pending: false,
+        adaptiveTestSessionId: response.session_id,
+        currentAdaptiveQuestion: response.next_question,
+        answerFailure: false,
+      }
+    case 'RESUME_ADAPTIVE_TEST_FAILURE':
+      return {
+        ...state,
+        resumePending: false,
+        answerFailure: true,
+      }
+
     case 'ANSWER_TEST_QUESTION_ATTEMPT':
       return {
         ...state,
@@ -164,6 +195,7 @@ export default (state = initialState, action) => {
         answerFailure: true,
         answerPending: false,
       }
+
     case 'ANSWER_ADAPTIVE_TEST_QUESTION_ATTEMPT':
       return {
         ...state,
@@ -178,6 +210,7 @@ export default (state = initialState, action) => {
         answerPending: false,
         currentAdaptiveQuestionIndex: currentAdaptiveQuestionIndex + 1,
         adaptiveTestResults: response.result,
+        answerFailure: false,
       }
     case 'ANSWER_ADAPTIVE_TEST_QUESTION_FAILURE':
       return {
@@ -185,6 +218,7 @@ export default (state = initialState, action) => {
         answerFailure: true,
         answerPending: false,
       }
+
     case 'FINISH_EXHAUSTIVE_TEST_SUCCESS':
       return {
         ...initialState,
@@ -197,18 +231,22 @@ export default (state = initialState, action) => {
         },
         debugReport: response,
       }
+
     case 'GET_TEST_HISTORY_SUCCESS':
       return {
         ...state,
         history: response.history,
       }
+
     case 'REMOVE_FROM_TEST_HISTORY_SUCCESS':
       return {
         ...state,
         history: state.history.filter(h => h.test_session !== response.session_id),
       }
+
     case 'RESET_TESTS':
       return initialState
+
     default:
       return state
   }
