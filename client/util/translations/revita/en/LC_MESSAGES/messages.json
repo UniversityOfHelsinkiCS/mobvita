@@ -1167,5 +1167,6 @@
     "controlled-practice-info-text": "Controlled. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco.",
     "controlled-story-info-text": "Controlled. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco.",
     "control-story-info-text": "The exercises in this story are chosen by the teacher. Try to answer the exercises in each snippet before the timer reaches zero! In case of incorrect answers, you'll get some extra time for additional attempts.",
-    "what-language-would-you-like-to-learn": "What language would you like to learn?"
+    "what-language-would-you-like-to-learn": "What language would you like to learn?",
+    "network-error-click-to-resume": "Network error. Click here to resume test"
 }

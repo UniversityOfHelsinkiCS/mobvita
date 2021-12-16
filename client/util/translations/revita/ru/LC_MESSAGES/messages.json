@@ -1146,7 +1146,7 @@
     "save-and-go-to-next-snippet": "Save chosen exercises and go to next snippet",
     "regenerate-exercises": "Обновить упражнения",
     "freeze-snippet": "Сохранить абзац",
-    "controlled-exercise-popup-text": "Система предлагает упражнения (красные поля). Нажми на упражнение, чтобы добавить его в <b>контрольный</b> набор. Если выбранный набор недостаточен, и требуются дополнительные упражнения в данном абзаце, нажми \"Обновить упражнения\" — выбранные упражнения останутся на своих местах, и система предложит новые.\n\nКогда в абзаце достаточно упражнений (зеленые поля), нажми \"Сохранить абзац\", чтобы перейти к следующему абзацу.",
+    "controlled-exercise-popup-text": "Ревита предлагает упражнения (красные поля). Нажми на упражнение, чтобы добавить его в <b>контрольный</b> набор. Если в данном абзаце требуются дополнительные упражнения, нажми \"Обновить упражнения\" — выбранные упражнения останутся на своих местах, и система предложит новые.\n\nКогда в абзаце достаточно упражнений (зеленые поля), нажми \"Сохранить абзац\", чтобы перейти к следующему абзацу.",
     "control story": "Controlled story",
     "exhaustive-test": "Длинный тест",
     "control-story": "Controlled story",
@@ -1170,5 +1170,6 @@
     "controlled-practice-info-text": "Controlled. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco.",
     "controlled-story-info-text": "Controlled. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco.",
     "control-story-info-text": "Упражнения в Контрольном Тексте подобраны учителем.  Время работы с каждым абзацем ограничено — постарайся успеть выполнить все задания!  Если ответы неправильные, ты получишь дополнительное время.",
-    "what-language-would-you-like-to-learn": "Какой язык ты хочешь изучать?"
+    "what-language-would-you-like-to-learn": "Какой язык ты хочешь изучать?",
+    "network-error-click-to-resume": "Network error. Click here to resume test"
 }
