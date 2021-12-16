@@ -5,7 +5,7 @@ import { Icon, Dropdown } from 'semantic-ui-react'
 import { images, localeOptions, localeCodeToName } from 'Utilities/common'
 import useWindowDimensions from 'Utilities/windowDimensions'
 import { sidebarSetOpen } from 'Utilities/redux/sidebarReducer'
-import { createAnonToken } from 'Utilities/redux/userReducer'
+import { createAnonToken, setLandingPageLangManuallySelected } from 'Utilities/redux/userReducer'
 import Login from 'Components/AccessControl/Login'
 import Register from 'Components/AccessControl/Register'
 import TermsAndConditions from 'Components/StaticContent/TermsAndConditions'
@@ -22,6 +22,7 @@ const LandingPage = () => {
 
   const open = useSelector(({ sidebar }) => sidebar.open)
   const locale = useSelector(({ locale }) => locale)
+  const { landingPageLangManuallySelected } = useSelector(({ user }) => user)
   const { pending, accountCreated } = useSelector(({ register }) => register)
 
   const actualLocale = locale
@@ -33,9 +34,19 @@ const LandingPage = () => {
       key: option.code,
     }))
     setLocaleDropdownOptions(temp)
+
+    // set browswer lang as the ui language (unless user has manually changed it)
+    const userLang = navigator.language || navigator.userLanguage
+
+    if (!landingPageLangManuallySelected) {
+      if (userLang === 'fi-FI') dispatch(setLocale('fi'))
+      if (userLang === 'it-IT') dispatch(setLocale('it'))
+      if (userLang === 'ru-RU') dispatch(setLocale('ru'))
+    }
   }, [])
 
   const handleLocaleChange = newLocale => {
+    dispatch(setLandingPageLangManuallySelected(true))
     dispatch(setLocale(newLocale))
   }
 

@@ -16,6 +16,10 @@ export const createAnonToken = locale => {
 }
 
 export const logout = () => ({ type: 'LOGOUT_SUCCESS' })
+export const setLandingPageLangManuallySelected = value => ({
+  type: 'SET_LP_LANG_MANUALLY_SELECTED',
+  value,
+})
 
 export const getSelf = () => {
   const route = '/user/'
@@ -360,6 +364,11 @@ export default (state = { data: null, learningLanguageChanged: false }, action) 
       return {
         ...state,
         refreshed: true,
+      }
+    case 'SET_LP_LANG_MANUALLY_SELECTED':
+      return {
+        ...state,
+        landingPageLangManuallySelected: action.value,
       }
     default:
       return state
