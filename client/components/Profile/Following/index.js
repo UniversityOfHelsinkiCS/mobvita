@@ -51,11 +51,11 @@ const Following = () => {
 
       <div style={{ margin: '2em 0em' }}>
         <div className="header-2" style={{ marginBottom: '1em' }}>
-          <FormattedMessage id="followed-users" />{' '}
           <Popup
             content={<FormattedMessage id="following-users-information" />}
-            trigger={<Icon name="info circle" size="small" />}
+            trigger={<Icon name="info circle" size="small" color="grey" />}
           />
+          <FormattedMessage id="followed-users" />{' '}
         </div>
 
         {followedUsers.length > 0 ? (
@@ -108,11 +108,11 @@ const Following = () => {
 
       <div style={{ margin: '2em 0em' }}>
         <div className="header-2" style={{ marginBottom: '1em' }}>
-          <FormattedMessage id="blocked-users" />{' '}
           <Popup
             content={<FormattedMessage id="blocking-users-information" />}
-            trigger={<Icon name="info circle" size="small" />}
+            trigger={<Icon name="info circle" size="small" color="grey" />}
           />
+          <FormattedMessage id="blocked-users" />{' '}
         </div>
 
         {blocked.length > 0 ? (
