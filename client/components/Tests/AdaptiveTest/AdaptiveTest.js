@@ -8,7 +8,7 @@ import { learningLanguageSelector } from 'Utilities/common'
 import { FormattedMessage, FormattedHTMLMessage } from 'react-intl'
 import MultipleChoice from '../MultipleChoice'
 
-const TIMER_START_DELAY = 2000
+const TIMER_START_DELAY = 3000
 
 const AdaptiveTest = ({ showingInfo }) => {
   const { controls: timer } = useTimer({
@@ -112,7 +112,10 @@ const AdaptiveTest = ({ showingInfo }) => {
 
   const resumeTimer = () => {
     setPaused(false)
-    setTimeout(() => timer.start(), TIMER_START_DELAY)
+    setTimeout(() => {
+      timer.reset()
+      timer.start()
+    }, TIMER_START_DELAY)
   }
 
   return (
