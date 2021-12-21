@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 import { useDispatch } from 'react-redux'
 import ReactCardFlip from 'react-card-flip'
 import { updateFlashcard } from 'Utilities/redux/flashcardReducer'
-import { levenshteinDistance } from 'Utilities/common'
+import { levenshteinDistance, normalizeDiacritics } from 'Utilities/common'
 import { useIntl } from 'react-intl'
 import FlashcardFront from './FlashcardFront'
 import FlashcardBack from './FlashcardBack'
@@ -65,10 +65,11 @@ const Fillin = ({
         gloss => gloss.toLowerCase().trim() === answer.toLowerCase().trim()
       )
 
-      const normalizedAnswer = answer.normalize('NFD').replace(/[\u0300-\u036f]/g, '')
+      const normalizedAnswer = normalizeDiacritics(answer)
 
       const normalizedCorrect = glosses.find(
-        gloss => gloss.toLowerCase().trim() === normalizedAnswer.toLowerCase().trim()
+        gloss =>
+          normalizeDiacritics(gloss).toLowerCase().trim() === normalizedAnswer.toLowerCase().trim()
       )
 
       const levenshteinCorrect = glosses.find(

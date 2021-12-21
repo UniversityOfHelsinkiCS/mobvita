@@ -332,6 +332,10 @@ export const speak = (surfaceWord, voice) => {
   }
 }
 
+export const normalizeDiacritics = word => {
+  return word.normalize('NFD').replace(/[\u0300-\u036f]/g, '')
+}
+
 export const levenshteinDistance = (a, b) => {
   if (a.length === 0) return b.length
   if (b.length === 0) return a.length
