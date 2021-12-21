@@ -16,15 +16,11 @@ const FlashcardDelete = ({ id }) => {
     <Modal
       dimmer="inverted"
       open={open}
-      trigger={(
-        <button
-          className="flashcard-blended-input"
-          type="button"
-          onClick={() => setOpen(true)}
-        >
+      trigger={
+        <button className="flashcard-blended-input" type="button" onClick={() => setOpen(true)}>
           <Icon name="delete" color="grey" />
         </button>
-      )}
+      }
     >
       <Modal.Header>
         <FormattedMessage id="Warning" />

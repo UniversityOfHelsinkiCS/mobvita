@@ -11,7 +11,7 @@ const FlashcardInput = ({ checkAnswer, focusedAndBigScreen, answerChecked }) => 
 
   if (answerChecked) return null
 
-  const handleSubmit = (e) => {
+  const handleSubmit = e => {
     e.preventDefault()
     checkAnswer(answer)
     setAnswer('')
@@ -32,12 +32,7 @@ const FlashcardInput = ({ checkAnswer, focusedAndBigScreen, answerChecked }) => 
           value={answer}
           onChange={event => setAnswer(event.target.value)}
         />
-        <Button
-          className="flashcard-button"
-          block
-          variant="outline-primary"
-          type="submit"
-        >
+        <Button className="flashcard-button" block variant="outline-primary" type="submit">
           {intl.formatMessage({ id: 'check-answer' })}
         </Button>
       </form>

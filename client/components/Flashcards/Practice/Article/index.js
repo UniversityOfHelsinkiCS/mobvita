@@ -87,8 +87,6 @@ const Article = ({ card, cardNumbering, answerCard }) => {
   else rightAnswer = `${correctArticlesByLang[lan_in][gender]} ${lemma}`
 
   const fontClass = lemma.length > 12 ? 'header-4' : 'header-2'
-  console.log('lemma.length:', lemma.length)
-
   const resultIconName = answerCorrect ? 'thumbs up outline' : 'thumbs down outline'
 
   return (
