@@ -4,14 +4,7 @@ import { FormattedMessage } from 'react-intl'
 import { flashcardColors } from 'Utilities/common'
 import FlashcardDelete from './FlashcardDelete'
 
-const Flashcard = ({
-  flipCard,
-  cardNumbering,
-  stage,
-  children,
-  id,
-  handleEdit,
-}) => {
+const Flashcard = ({ flipCard, cardNumbering, stage, children, id, handleEdit }) => {
   const { background, foreground } = flashcardColors
 
   return (
@@ -19,23 +12,14 @@ const Flashcard = ({
       className="flashcard"
       style={{ backgroundColor: background[stage], color: foreground[stage] }}
     >
-      <div
-        data-cy="flashcard-content"
-        className="flashcard-content"
-      >
+      <div data-cy="flashcard-content" className="flashcard-content">
         <div className="flashcard-header">
           <div>
-            {handleEdit
-              && (
-                <button
-                  className="flashcard-blended-input"
-                  type="button"
-                  onClick={handleEdit}
-                >
-                  <Icon name="edit" style={{ color: foreground[stage] || 'white' }} />
-                </button>
-              )
-            }
+            {handleEdit && (
+              <button className="flashcard-blended-input" type="button" onClick={handleEdit}>
+                <Icon name="edit" style={{ color: foreground[stage] || 'white' }} />
+              </button>
+            )}
             {cardNumbering}
           </div>
           <FlashcardDelete id={id} />
@@ -54,7 +38,6 @@ const Flashcard = ({
           <Icon name="arrow right" style={{ color: foreground[stage] }} />
         </button>
       </div>
-
     </div>
   )
 }
