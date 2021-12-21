@@ -1171,5 +1171,7 @@
     "controlled-story-info-text": "Controlled. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco.",
     "control-story-info-text": "Упражнения в Контрольном Тексте подобраны учителем.  Время работы с каждым абзацем ограничено — постарайся успеть выполнить все задания!  Если ответы неправильные, ты получишь дополнительное время.",
     "what-language-would-you-like-to-learn": "Какой язык ты хочешь изучать?",
-    "network-error-click-to-resume": "Network error. Click here to resume test"
+    "network-error-click-to-resume": "Проблемы с сервером или связью...<br/>Продолжить тест",
+    "pay-attention-to-diacritics": "Pay attention to diacritics! You wrote \"{answer}\" but the correct form is \"{normalizedCorrect}\".",
+    "pay-attention-to-spelling": "Pay attention to spelling! You wrote \"{answer}\" but the correct form is \"{levenshteinCorrect}\"."
 }

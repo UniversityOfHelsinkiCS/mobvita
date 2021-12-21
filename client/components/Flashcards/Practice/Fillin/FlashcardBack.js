@@ -9,6 +9,7 @@ const FlashcardBack = ({
   flipped,
   setSwipeIndex,
   swipeIndex,
+  infoMessage,
   lemma,
   ...props
 }) => {
@@ -45,6 +46,7 @@ const FlashcardBack = ({
       >
         {lemma}
       </span>
+      {infoMessage && <div className="justify-center">{infoMessage}</div>}
       <div className="flashcard-text-container">
         <div className="flashcard-translations">
           <ul>{translations}</ul>

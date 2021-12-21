@@ -2,6 +2,8 @@ import React, { useState } from 'react'
 import { useDispatch } from 'react-redux'
 import ReactCardFlip from 'react-card-flip'
 import { updateFlashcard } from 'Utilities/redux/flashcardReducer'
+import { levenshteinDistance } from 'Utilities/common'
+import { useIntl } from 'react-intl'
 import FlashcardFront from './FlashcardFront'
 import FlashcardBack from './FlashcardBack'
 import Template from '../../Template'
@@ -21,8 +23,10 @@ const Fillin = ({
   const [answerCorrect, setAnswerCorrect] = useState(null)
   const [hints, setHints] = useState(card.hint.map(h => h.hint))
   const [translations, setTranslations] = useState(card.glosses)
+  const [infoMessage, setInfoMessage] = useState('')
 
   const dispatch = useDispatch()
+  const intl = useIntl()
 
   const { glosses, format, _id: id, stage, lemma, phonetics } = card
 
@@ -57,9 +61,42 @@ const Fillin = ({
 
   const checkAnswer = answer => {
     if (answer !== '') {
-      const correct = glosses.some(
+      let correct = glosses.some(
         gloss => gloss.toLowerCase().trim() === answer.toLowerCase().trim()
       )
+
+      const normalizedAnswer = answer.normalize('NFD').replace(/[\u0300-\u036f]/g, '')
+
+      const normalizedCorrect = glosses.find(
+        gloss => gloss.toLowerCase().trim() === normalizedAnswer.toLowerCase().trim()
+      )
+
+      const levenshteinCorrect = glosses.find(
+        gloss =>
+          levenshteinDistance(gloss.toLowerCase().trim(), normalizedAnswer.toLowerCase().trim()) ===
+          1
+      )
+
+      // Accept if error just in diacritics
+      if (!correct && normalizedCorrect) {
+        correct = true
+        const msg = intl.formatMessage(
+          { id: 'pay-attention-to-diacritics' },
+          { answer, normalizedCorrect }
+        )
+        setInfoMessage(msg)
+      }
+
+      // Or edit distance is 1
+      if (!correct && !normalizedCorrect && levenshteinCorrect) {
+        correct = true
+        const msg = intl.formatMessage(
+          { id: 'pay-attention-to-spelling' },
+          { answer, levenshteinCorrect }
+        )
+        setInfoMessage(msg)
+      }
+
       answerCard(answer, correct, 'fillin')
       setAnswerCorrect(correct)
     }
@@ -110,6 +147,7 @@ const Fillin = ({
         glosses={translations}
         flipped={flipped}
         swipeIndex={swipeIndex}
+        infoMessage={infoMessage}
         {...cardProps}
       />
     </ReactCardFlip>
