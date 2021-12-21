@@ -15,20 +15,15 @@ const UploadFromFile = ({ closeModal }) => {
 
   const [file, setFile] = useState('')
   const [label, setLabel] = useState(intl.formatMessage({ id: 'choose-a-file' }))
-  const [filename, setfFilename] = useState('')
+  const [filename, setFilename] = useState('')
   const learningLanguage = useSelector(learningLanguageSelector)
   const { pending, storyId, progress } = useSelector(({ uploadProgress }) => uploadProgress)
-
-  const containsOnlyLatinCharacters = filename => {
-    if (filename) return /^[a-zA-Z0-9_\-.]+$/.test(filename)
-    return true
-  }
 
   const onChange = e => {
     if (e.target.files[0]) {
       setFile(e.target.files[0])
       setLabel(e.target.files[0].name)
-      setfFilename(e.target.files[0].name)
+      setFilename(e.target.files[0].name)
     }
   }
 
@@ -52,7 +47,7 @@ const UploadFromFile = ({ closeModal }) => {
   }, [progress])
 
   const storyUploading = pending || storyId
-  const submitDisabled = !file || storyUploading || !containsOnlyLatinCharacters(filename)
+  const submitDisabled = !file || storyUploading
 
   return (
     <div>
@@ -60,11 +55,6 @@ const UploadFromFile = ({ closeModal }) => {
       <span className="normal">
         <FormattedHTMLMessage id="file-upload-instructions" />
       </span>
-      {!containsOnlyLatinCharacters(filename) && (
-        <div style={{ color: 'red' }}>
-          <FormattedMessage id="check-for-non-latin-characters" />
-        </div>
-      )}
       <div className="space-evenly pt-lg">
         <input id="file" name="file" type="file" accept=".docx, .txt" onChange={onChange} />
         <label className="file-upload-btn" htmlFor="file">
