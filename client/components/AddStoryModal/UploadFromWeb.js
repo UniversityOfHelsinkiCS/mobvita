@@ -39,7 +39,7 @@ const UploadFromWeb = ({ closeModal }) => {
   return (
     <div>
       <br />
-      <span className="pb-sm">
+      <span className="pb-sm upload-instructions">
         <FormattedHTMLMessage id="upload-from-web-instructions" />
       </span>
       <Form id="url-upload">

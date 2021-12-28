@@ -52,7 +52,7 @@ const UploadFromFile = ({ closeModal }) => {
   return (
     <div>
       <br />
-      <span className="normal">
+      <span className="upload-instructions">
         <FormattedHTMLMessage id="file-upload-instructions" />
       </span>
       <div className="space-evenly pt-lg">
