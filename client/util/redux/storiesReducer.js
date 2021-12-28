@@ -19,6 +19,20 @@ export const getAllStories = (language, query) => {
   return callBuilder(route, prefix)
 }
 
+export const setLastQuery = query => ({
+  type: 'SET_LAST_QUERY',
+  query,
+})
+
+export const searchStories = (language, query) => {
+  const queryString = Object.keys(query)
+    .map(key => `${key}=${query[key]}`)
+    .join('&')
+  const route = `/stories?language=${language}&${queryString}`
+  const prefix = 'SEARCH_STORIES'
+  return callBuilder(route, prefix)
+}
+
 export const getStories = (language, query = { page: 0, page_size: 10 }) => {
   const queryString = Object.keys(query)
     .map(key => `${key}=${query[key]}`)
@@ -78,9 +92,11 @@ export const removeStoryAnnotation = (storyId, startId, endId, mode) => {
 
 const initialState = {
   data: [],
+  searchResults: null,
   pending: false,
   focusedPending: false,
   error: false,
+  currentQuery: '',
 }
 
 export default (state = initialState, action) => {
@@ -97,21 +113,32 @@ export default (state = initialState, action) => {
         pending: false,
         error: true,
       }
-    // case 'GET_ALL_STORIES_ATTEMPT':
-    //   return {
-    //     ...state,
-    //     allPending: true,
-    //   }
-    // case 'GET_ALL_STORIES_SUCCESS':
-    //   return {
-    //     ...state,
-    //     allStories: action.response.stories,
-    //     allPending: false,
-    //   }
+
     case 'GET_STORIES_SUCCESS':
       return {
         ...state,
         data: action.response.stories,
+        totalNum: action.response.total_num,
+        pending: false,
+        error: false,
+      }
+
+    case 'SEARCH_STORIES_ATTEMPT':
+      return {
+        ...state,
+        pending: true,
+        error: false,
+      }
+    case 'SEARCH_STORIES_FAILURE':
+      return {
+        ...state,
+        pending: false,
+        error: true,
+      }
+    case 'SEARCH_STORIES_SUCCESS':
+      return {
+        ...state,
+        searchResults: action.response.stories,
         totalNum: action.response.total_num,
         pending: false,
         error: false,
@@ -211,7 +238,6 @@ export default (state = initialState, action) => {
         error: false,
       }
 
-    //
     case 'ACCEPT_STORY_ATTEMPT':
       return {
         ...state,
@@ -231,7 +257,12 @@ export default (state = initialState, action) => {
         error: false,
       }
 
-    //
+    case 'SET_LAST_QUERY':
+      return {
+        ...state,
+        lastQuery: action.query,
+      }
+
     case 'UNSHARE_STORY_ATTEMPT':
       return {
         ...state,

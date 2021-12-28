@@ -1,9 +1,9 @@
 import React, { useEffect, useState, useRef } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { Placeholder, Card, Search, Select, Icon, Dropdown, Input } from 'semantic-ui-react'
+import { Placeholder, Card, Select, Icon, Dropdown } from 'semantic-ui-react'
 import { Button } from 'react-bootstrap'
 import StoryListItem from 'Components/LibraryView/StoryListItem'
-import { useIntl } from 'react-intl'
+import { useIntl, FormattedMessage } from 'react-intl'
 import LibraryTabs from 'Components/LibraryTabs'
 import { capitalize, useLearningLanguage } from 'Utilities/common'
 import { getGroups } from 'Utilities/redux/groupsReducer'
@@ -13,9 +13,10 @@ import {
   updateGroupSelect,
   updateSortCriterion,
 } from 'Utilities/redux/userReducer'
-import { getAllStories } from 'Utilities/redux/storiesReducer'
+import { getAllStories, setLastQuery } from 'Utilities/redux/storiesReducer'
 import useWindowDimensions from 'Utilities/windowDimensions'
 import AddStoryModal from 'Components/AddStoryModal'
+import LibrarySearch from './LibrarySearch'
 
 const StoryList = () => {
   const intl = useIntl()
@@ -28,10 +29,7 @@ const StoryList = () => {
   } = useSelector(({ user }) => user.data.user)
   const refreshed = useSelector(({ user }) => user.refreshed)
   const groups = useSelector(({ groups }) => groups.groups)
-  const { pending, stories } = useSelector(({ stories }) => ({
-    stories: stories.data,
-    pending: stories.pending,
-  }))
+  const { pending, data: stories, searchResults, lastQuery } = useSelector(({ stories }) => stories)
   const { sharedToGroupSinceLastFetch } = useSelector(({ share }) => share)
   const learningLanguage = useLearningLanguage()
 
@@ -44,9 +42,10 @@ const StoryList = () => {
     savedSortCriterion[savedLibrarySelection].direction
   )
   const [addStoryModalOpen, setAddStoryModalOpen] = useState(false)
-  const [searchString, setSearchString] = useState('')
   const [smallScreenSearchOpen, setSmallScreenSearchOpen] = useState(false)
-  const [searchedStories, setSearchedStories] = useState([])
+  const [displayedStories, setDisplayedStories] = useState(stories)
+  const [displaySearchResults, setDisplaySearchResults] = useState(false)
+
   const [libraries, setLibraries] = useState({
     public: false,
     private: false,
@@ -80,6 +79,8 @@ const StoryList = () => {
 
   useEffect(() => {
     dispatch(getGroups())
+    dispatch(setLastQuery(null))
+    setDisplayedStories(stories)
   }, [])
 
   useEffect(() => {
@@ -94,6 +95,32 @@ const StoryList = () => {
       setSorter('title')
     }
   }, [savedLibrarySelection])
+
+  useEffect(() => {
+    if (stories && !displaySearchResults) setDisplayedStories(stories)
+  }, [stories])
+
+  useEffect(() => {
+    if (displaySearchResults) {
+      setDisplayedStories(searchResults)
+    }
+  }, [searchResults])
+
+  useEffect(() => {
+    if (smallScreenSearchbar.current && smallScreenSearchOpen) smallScreenSearchbar.current.focus()
+  }, [smallScreenSearchOpen])
+
+  const handleGroupChange = (_e, option) => {
+    dispatch(updateGroupSelect(option.value))
+  }
+
+  const handleSearchIconClick = () => {
+    if (smallScreenSearchOpen) {
+      setSmallScreenSearchOpen(false)
+    } else {
+      setSmallScreenSearchOpen(true)
+    }
+  }
 
   const sortDropdownOptions = [
     { key: 'title', text: intl.formatMessage({ id: 'Title' }), value: 'title' },
@@ -141,39 +168,6 @@ const StoryList = () => {
       })
     )
   }
-
-  useEffect(() => {
-    if (stories && searchString.length === 0) {
-      setSearchedStories(stories)
-    }
-  }, [pending])
-
-  useEffect(() => {
-    const searchFilteredStories = stories
-      ? stories.filter(story => story.title.toLowerCase().includes(searchString.toLowerCase()))
-      : []
-
-    setSearchedStories(searchFilteredStories)
-  }, [searchString.length, pending])
-
-  useEffect(() => {
-    if (smallScreenSearchbar.current && smallScreenSearchOpen) smallScreenSearchbar.current.focus()
-  }, [smallScreenSearchOpen])
-
-  const handleGroupChange = (_e, option) => {
-    dispatch(updateGroupSelect(option.value))
-  }
-
-  const handleSearchIconClick = () => {
-    if (smallScreenSearchOpen) {
-      setSearchString('')
-      setSmallScreenSearchOpen(false)
-    } else {
-      setSmallScreenSearchOpen(true)
-    }
-  }
-
-  const noResults = !pending && searchString.length > 0 && searchedStories.length === 0
 
   const libraryControls = (
     <div data-cy="library-controls" className="library-control">
@@ -237,32 +231,23 @@ const StoryList = () => {
             onClick={handleSearchIconClick}
           />
         ) : (
-          <Search
-            open={false}
-            icon="search"
-            loading={pending}
-            value={searchString}
-            onSearchChange={e => setSearchString(e.target.value)}
-            size="tiny"
-            style={{ height: '100%' }}
+          <LibrarySearch
+            setDisplayedStories={setDisplayedStories}
+            setDisplaySearchResults={setDisplaySearchResults}
           />
         )}
       </div>
       {smallScreenSearchOpen && (
-        <Input
-          icon="search"
-          loading={pending}
-          value={searchString}
-          onChange={e => setSearchString(e.target.value)}
-          size="mini"
+        <LibrarySearch
+          setDisplayedStories={setDisplayedStories}
+          setDisplaySearchResults={setDisplaySearchResults}
           fluid
-          ref={smallScreenSearchbar}
         />
       )}
     </div>
   )
 
-  if (pending || !searchedStories || !refreshed) {
+  if (pending || !refreshed) {
     return (
       <div className="cont-tall cont flex-col auto gap-row-sm">
         {libraryControls}
@@ -277,7 +262,7 @@ const StoryList = () => {
     .filter(entry => entry[1])
     .map(([key]) => capitalize(key))
 
-  const libraryFilteredStories = searchedStories.filter(story => {
+  const libraryFilteredStories = displayedStories.filter(story => {
     if (story.public) {
       return librariesToShow.includes('Public')
     }
@@ -314,6 +299,8 @@ const StoryList = () => {
         return 4
     }
   }
+
+  const noResults = !pending && libraryFilteredStories.length === 0
 
   libraryFilteredStories.sort((a, b) => {
     let dir = 0
@@ -354,23 +341,37 @@ const StoryList = () => {
   return (
     <div className="cont-tall pt-lg cont flex-col auto gap-row-sm ">
       {libraryControls}
-      <Card.Group itemsPerRow={1} doubling data-cy="story-items">
-        <WindowScroller>
-          {({ height, isScrolling, onChildScroll, scrollTop }) => (
-            <List
-              autoHeight
-              height={height}
-              isScrolling={isScrolling}
-              onScroll={onChildScroll}
-              rowCount={libraryFilteredStories.length}
-              rowHeight={130}
-              rowRenderer={rowRenderer}
-              scrollTop={scrollTop}
-              width={10000}
-            />
-          )}
-        </WindowScroller>
-      </Card.Group>
+      {lastQuery && (
+        <div className="mt-nm ml-sm gap-col-sm">
+          <span>
+            <FormattedMessage id="showing-results-for" /> &quot;{lastQuery}&quot;:
+          </span>
+        </div>
+      )}
+
+      {noResults ? (
+        <div className="justify-center mt-lg" style={{ color: 'rgb(112, 114, 120)' }}>
+          <FormattedMessage id="no-stories-found" />
+        </div>
+      ) : (
+        <Card.Group itemsPerRow={1} doubling data-cy="story-items" style={{ marginTop: '.5em' }}>
+          <WindowScroller>
+            {({ height, isScrolling, onChildScroll, scrollTop }) => (
+              <List
+                autoHeight
+                height={height}
+                isScrolling={isScrolling}
+                onScroll={onChildScroll}
+                rowCount={libraryFilteredStories.length}
+                rowHeight={130}
+                rowRenderer={rowRenderer}
+                scrollTop={scrollTop}
+                width={10000}
+              />
+            )}
+          </WindowScroller>
+        </Card.Group>
+      )}
     </div>
   )
 }

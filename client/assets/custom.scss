@@ -1107,6 +1107,17 @@ html, body, #root {
   }
 }
 
+.library-search-cancel {
+  position: absolute;
+  right: 2em;
+  top: 10px;
+  margin: 0;
+
+  &:hover {
+    cursor: pointer;
+  }
+}
+
 .practice-now-overlay-icon {
   position: absolute;
   top: -10%;
