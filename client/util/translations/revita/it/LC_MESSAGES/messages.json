@@ -1171,5 +1171,7 @@
     "what-language-would-you-like-to-learn": "Quale lingua ti piacerebbe imparare?",
     "network-error-click-to-resume": "Errore di connessione. Clicca qui per riprendere il test",
     "pay-attention-to-diacritics": "Pay attention to diacritics! You wrote \"{answer}\" but the correct form is \"{normalizedCorrect}\".",
-    "pay-attention-to-spelling": "Pay attention to spelling! You wrote \"{answer}\" but the correct form is \"{levenshteinCorrect}\"."
+    "pay-attention-to-spelling": "Pay attention to spelling! You wrote \"{answer}\" but the correct form is \"{levenshteinCorrect}\".",
+    "showing-results-for": "Showing search results for",
+    "no-stories-found": "No stories found"
 }

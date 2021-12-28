@@ -1170,5 +1170,7 @@
     "what-language-would-you-like-to-learn": "Mitä kieltä haluaisit opiskella?",
     "network-error-click-to-resume": "Verkkovirhe. Paina tästä jatkaaksesi testiä",
     "pay-attention-to-diacritics": "Ole tarkkana tarkkeiden kanssa! Kirjoitit \"{answer}\", mutta oikea muoto on \"{normalizedCorrect}\".",
-    "pay-attention-to-spelling": "Ole tarkkana oikeinkirjoituksen kanssa! Kirjoitit \"{answer}\", mutta oikea muoto on \"{levenshteinCorrect}\"."
+    "pay-attention-to-spelling": "Ole tarkkana oikeinkirjoituksen kanssa! Kirjoitit \"{answer}\", mutta oikea muoto on \"{levenshteinCorrect}\".",
+    "showing-results-for": "Tulokset haulle",
+    "no-stories-found": "Ei tekstejä"
 }

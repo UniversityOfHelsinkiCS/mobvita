@@ -1173,5 +1173,7 @@
     "what-language-would-you-like-to-learn": "Какой язык ты хочешь изучать?",
     "network-error-click-to-resume": "Проблемы с сервером или связью...<br/>Продолжить тест",
     "pay-attention-to-diacritics": "Pay attention to diacritics! You wrote \"{answer}\" but the correct form is \"{normalizedCorrect}\".",
-    "pay-attention-to-spelling": "Pay attention to spelling! You wrote \"{answer}\" but the correct form is \"{levenshteinCorrect}\"."
+    "pay-attention-to-spelling": "Pay attention to spelling! You wrote \"{answer}\" but the correct form is \"{levenshteinCorrect}\".",
+    "showing-results-for": "Showing search results for",
+    "no-stories-found": "No stories found"
 }
