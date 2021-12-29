@@ -82,8 +82,8 @@ const Lemma = ({ lemma, sourceWord, handleSourceWordClick, userUrl, inflectionRe
       )}
       {sourceWord && (
         <span
-          onClick={() => handleSourceWordClick(sourceWord)}
-          onKeyDown={() => handleSourceWordClick(sourceWord)}
+          onClick={() => handleSourceWordClick(sourceWord[0])}
+          onKeyDown={() => handleSourceWordClick(sourceWord[0])}
           className="source-word"
           role="button"
           tabIndex={-1}
