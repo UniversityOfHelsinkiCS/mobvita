@@ -2,7 +2,7 @@ import React, { useState, useRef } from 'react'
 import { Button, Form } from 'react-bootstrap'
 import { useIntl } from 'react-intl'
 
-const FlashcardInput = ({ checkAnswer, focusedAndBigScreen, answerChecked }) => {
+const FlashcardInput = ({ checkAnswer, focusedAndBigScreen, answerChecked, displayedHints }) => {
   const [answer, setAnswer] = useState('')
 
   const intl = useIntl()

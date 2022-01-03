@@ -67,3 +67,6 @@ dist/
 # cypress videos
 cypress/videos/
 cypress/screenshots/
+
+# others
+divide_rus_construction_rows.py

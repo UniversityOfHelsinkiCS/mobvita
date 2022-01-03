@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { useSelector } from 'react-redux'
 import { learningLanguageSelector, dictionaryLanguageSelector } from 'Utilities/common'
 import FlashcardInput from './FlashcardInput'
@@ -22,10 +22,17 @@ const FlashcardFront = ({
   const sameLanguage = learningLanguage === dictionaryLanguage
   const fontClass = lemma.length < 15 ? 'flashcard-title' : 'flashcard-title-small'
 
+  const [displayedHints, setDisplayedHints] = useState([])
+
   return (
     <Flashcard stage={stage} {...props}>
       <div className="flashcard-text-container">
-        <FlashcardHint hints={hints} stage={stage} />
+        <FlashcardHint
+          hints={hints}
+          stage={stage}
+          displayedHints={displayedHints}
+          setDisplayedHints={setDisplayedHints}
+        />
         <h2 data-cy="flashcard-title" className={fontClass}>
           {lemma}
         </h2>
@@ -37,6 +44,7 @@ const FlashcardFront = ({
             answerChecked={answerChecked}
             checkAnswer={checkAnswer}
             focusedAndBigScreen={focusedAndBigScreen}
+            displayedHints={displayedHints}
           />
           <FlashcardResult answerCorrect={answerCorrect} />
         </div>
