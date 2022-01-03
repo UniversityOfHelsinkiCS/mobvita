@@ -108,6 +108,11 @@ const LearningLanguageSelectView = () => {
         />
         <hr />
         <LanguageGroup
+          languages={supportedLearningLanguages.majorBeta}
+          handleLearningLanguageChange={handleLearningLanguageChange}
+        />
+        <hr />
+        <LanguageGroup
           languages={supportedLearningLanguages.minor}
           handleLearningLanguageChange={handleLearningLanguageChange}
         />

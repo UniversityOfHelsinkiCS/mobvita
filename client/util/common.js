@@ -155,10 +155,9 @@ export const useDictionaryLanguage = () => useSelector(dictionaryLanguageSelecto
 export const useCurrentUser = () => useSelector(({ user }) => user.data.user)
 
 export const supportedLearningLanguages = {
-  major: [
-    'finnish',
+  major: ['finnish', 'russian'].sort((a, b) => a.localeCompare(b)),
+  majorBeta: [
     'german',
-    'russian',
     'kazakh',
     'catalan',
     'spanish',
