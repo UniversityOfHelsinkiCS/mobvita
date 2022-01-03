@@ -1172,5 +1172,6 @@
     "pay-attention-to-diacritics": "Pay attention to diacritics!<br/>You wrote \"{answer}\",<br/>the correct form is \"{normalizedCorrect}\".",
     "pay-attention-to-spelling": "Pay attention to spelling!<br/>You wrote \"{answer}\",<br/>the correct form is \"{levenshteinCorrect}\".",
     "showing-results-for": "Showing search results for",
-    "no-stories-found": "No stories found"
+    "no-stories-found": "No stories found",
+    "previous": "Previous"
 }

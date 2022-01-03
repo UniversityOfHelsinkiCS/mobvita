@@ -1172,5 +1172,6 @@
     "pay-attention-to-diacritics": "Ole tarkkana tarkkeiden kanssa!<br/>Kirjoitit \"{answer}\",<br/>mutta oikea muoto on \"{normalizedCorrect}\".",
     "pay-attention-to-spelling": "Ole tarkkana oikeinkirjoituksen kanssa!<br/>Kirjoitit \"{answer}\",<br/>mutta oikea muoto on \"{levenshteinCorrect}\".",
     "showing-results-for": "Tulokset haulle",
-    "no-stories-found": "Ei tekstejä"
+    "no-stories-found": "Ei tekstejä",
+    "previous": "Edellinen"
 }

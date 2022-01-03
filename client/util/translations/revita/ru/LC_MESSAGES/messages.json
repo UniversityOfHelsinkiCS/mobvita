@@ -1175,5 +1175,6 @@
     "pay-attention-to-diacritics": "Пожалуйста, следи за правописанием!<br/>Твой ответ: \"{answer}\",<br/>правильный ответ: \"{normalizedCorrect}\".",
     "pay-attention-to-spelling": "Пожалуйста, следи за правописанием!<br/>Твой ответ: \"{answer}\",<br/>правильный ответ: \"{levenshteinCorrect}\".",
     "showing-results-for": "Результаты поиска",
-    "no-stories-found": "Не найдено"
+    "no-stories-found": "Не найдено",
+    "previous": "Previous"
 }
