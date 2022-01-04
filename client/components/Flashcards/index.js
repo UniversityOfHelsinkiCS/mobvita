@@ -28,7 +28,7 @@ const Flashcards = () => {
   }
 
   return (
-    <div className="cont-tall cont pb-nm flex-col auto space-between">
+    <div className="cont-tall cont pb-nm flex-col auto pt-xl space-between">
       <div className="flex">
         {width < 940 ? <FloatMenu /> : <FlashcardMenu />}
         {content()}
