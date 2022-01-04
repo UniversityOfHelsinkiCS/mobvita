@@ -27,17 +27,18 @@ const FlashcardFront = ({
   return (
     <Flashcard stage={stage} {...props}>
       <div className="flashcard-text-container">
-        <FlashcardHint
-          hints={hints}
-          stage={stage}
-          displayedHints={displayedHints}
-          setDisplayedHints={setDisplayedHints}
-        />
         <h2 data-cy="flashcard-title" className={fontClass}>
           {lemma}
         </h2>
         <h3 className="flashcard-phonetics">{phonetics && phonetics}</h3>
       </div>
+      <FlashcardHint
+        lemma={lemma}
+        hints={hints}
+        stage={stage}
+        displayedHints={displayedHints}
+        setDisplayedHints={setDisplayedHints}
+      />
       {!sameLanguage && (
         <div className="flashcard-input-and-result-container">
           <FlashcardInput

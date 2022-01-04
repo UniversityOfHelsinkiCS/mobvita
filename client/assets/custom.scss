@@ -1384,7 +1384,7 @@ label.file-upload-btn {
   }
 
   &-phonetics {
-    height: 2.5em;
+    height: 1.5em;
     display: flex;
     justify-content: center;
     align-content: flex-end;
@@ -1392,10 +1392,8 @@ label.file-upload-btn {
   }
 
   &-hint {
-    height: 10em;
     display: flex;
-    flex-direction: column;
-    justify-content: flex-end;
+    justify-content: center;
   }
 
   &-translations {
@@ -1424,7 +1422,7 @@ label.file-upload-btn {
   &-input-and-result-container {
     height: 25%;
     display: flex;
-    padding-top: 1em;
+    padding-top: .2em;
     margin-bottom: 3em;
   }
 

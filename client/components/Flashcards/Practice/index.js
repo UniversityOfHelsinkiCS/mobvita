@@ -33,7 +33,11 @@ const Practice = ({ mode }) => {
     if (mode === 'article') {
       cards =
         flashcards.nounCards &&
-        flashcards.nounCards.filter(card => ['Feminine', 'Masculine', 'Neuter', 'ut', 'm', 'f', 'nt', 'Fem', 'Neut', 'Masc'].includes(card.gender) )
+        flashcards.nounCards.filter(card =>
+          ['Feminine', 'Masculine', 'Neuter', 'ut', 'm', 'f', 'nt', 'Fem', 'Neut', 'Masc'].includes(
+            card.gender
+          )
+        )
     } else {
       ;({ cards } = flashcards)
     }
@@ -161,7 +165,7 @@ const Practice = ({ mode }) => {
         enableMouseEvents={!bigScreen}
         disabled={editing}
       />
-      {!editing && (
+      {!editing && swipeIndex !== cards.length && cards[0].format !== 'no-cards' && (
         <button
           type="button"
           onClick={() => handleIndexChange(swipeIndex + 1)}

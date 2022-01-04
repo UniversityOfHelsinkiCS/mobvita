@@ -4,7 +4,7 @@ import { Button } from 'react-bootstrap'
 import { flashcardColors } from 'Utilities/common'
 import { Modal } from 'semantic-ui-react'
 
-const FlashcardHintModal = ({ open, setOpen, hints, displayedHints, setDisplayedHints }) => {
+const FlashcardHintModal = ({ lemma, open, setOpen, hints, displayedHints, setDisplayedHints }) => {
   const dummyHints = [
     'STM:n Pohjola: Norjan hurja tartuntaennuste kuvaa tilannetta, jossa mitään ei rajoiteta – hätäjarrun kahva saa vielä hetken odottaa\n\n##R#\n\nRokotetutkimuskeskuksen johtaja Mika Rämet näkee, että käytännössä kaikki suomalaiset tulevat <strong>altistumaan</strong> koronaviruksen jollekin muunnokselle.',
     'Kuva: Juuso Stoor / Yle\n\nNeljä (4) suurinta <stron…ää tänä viikonloppuna puoluevaltuuston kokouksen.',
@@ -41,28 +41,29 @@ const FlashcardHintModal = ({ open, setOpen, hints, displayedHints, setDisplayed
       closeIcon={{ style: { top: '1.0535rem', right: '1rem' }, color: 'black', name: 'close' }}
       open={open}
       onClose={() => setOpen(false)}
+      style={{ width: '300px', height: '400px' }}
     >
-      <Modal.Header>
-        <FormattedMessage id="Hint" />
-      </Modal.Header>
+      <Modal.Header>{lemma}</Modal.Header>
       <Modal.Content>
-        <div style={{ minHeight: '80px' }} dangerouslySetInnerHTML={{ __html: hints[hintIndex] }} />
-        {hints.length > 1 && (
-          <div className="flex justify-center mt-nm gap-col-sm">
-            <Button disabled={hintIndex === 0} onClick={handlePreviousClick}>
-              <FormattedMessage id="previous" />
-            </Button>
-            <Button disabled={hintIndex === hints.length - 1} onClick={handleNextClick}>
-              <FormattedMessage id="next" />
-            </Button>
-          </div>
-        )}
+        <div className="flex-col space-between" style={{ height: '300px' }}>
+          <div dangerouslySetInnerHTML={{ __html: hints[hintIndex] }} />
+          {hints.length > 1 && (
+            <div className="flex justify-center gap-col-sm">
+              <Button disabled={hintIndex === 0} onClick={handlePreviousClick}>
+                <FormattedMessage id="previous" />
+              </Button>
+              <Button disabled={hintIndex === hints.length - 1} onClick={handleNextClick}>
+                <FormattedMessage id="next" />
+              </Button>
+            </div>
+          )}
+        </div>
       </Modal.Content>
     </Modal>
   )
 }
 
-const FlashcardHint = ({ hints, stage, displayedHints, setDisplayedHints }) => {
+const FlashcardHint = ({ lemma, hints, stage, displayedHints, setDisplayedHints }) => {
   const [showHintModal, setShowHintModal] = useState(false)
   const { foreground } = flashcardColors
 
@@ -71,6 +72,7 @@ const FlashcardHint = ({ hints, stage, displayedHints, setDisplayedHints }) => {
   return (
     <div className="flashcard-hint">
       <FlashcardHintModal
+        lemma={lemma}
         open={showHintModal}
         setOpen={setShowHintModal}
         hints={hints}
