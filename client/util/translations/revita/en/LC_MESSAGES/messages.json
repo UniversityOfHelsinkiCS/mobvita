@@ -1175,5 +1175,5 @@
     "no-stories-found": "No stories found",
     "previous": "Previous",
     "competition-mode": "Competition mode",
-    "competition-mode-info-text": "In competition mode, you will compete against a <b>bot</b> that's roughly the same skill level as you. The competition will last until one of you finishes the last snippet, and the winner is the one to have the most exercises correct at that point."
+    "competition-mode-info-text": "In competition mode, you will compete against a <b>bot</b> that's on roughly the same skill level as you. The competition will last until one of you finishes the last snippet, and the winner is the one to have the most exercises correct at that point."
 }
