@@ -1,7 +1,12 @@
 import React, { useState, useEffect, useRef } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import { addToPrevious, getNextSnippetFromCache } from 'Utilities/redux/snippetsReducer'
-import { getAndCacheNextSnippet, resetCachedSnippets } from 'Utilities/redux/competitionReducer'
+import {
+  getAndCacheNextSnippet,
+  resetCachedSnippets,
+  setWillPause,
+  setIsPaused,
+} from 'Utilities/redux/competitionReducer'
 import { clearTranslationAction } from 'Utilities/redux/translationReducer'
 import 'react-simple-keyboard/build/css/index.css'
 import { FormattedMessage } from 'react-intl'
@@ -36,6 +41,7 @@ const CurrentSnippet = ({ storyId, handleInputChange, setYouWon, finished }) => 
   const { cachedSnippets } = useSelector(({ compete }) => compete)
   const { focused } = useSelector(({ stories }) => stories)
   const learningLanguage = useSelector(learningLanguageSelector)
+  const { willPause, isPaused, timerControls } = useSelector(({ compete }) => compete)
 
   const currentSnippetId = () => {
     if (!snippets.focused) return -1
@@ -140,6 +146,11 @@ const CurrentSnippet = ({ storyId, handleInputChange, setYouWon, finished }) => 
         snippets.focused.skip_second ||
         snippetFinished ||
         attempt + 1 >= snippets.focused.max_attempt
+      if (wasLastAttempt && willPause) {
+        dispatch(setIsPaused(true))
+        dispatch(setWillPause(false))
+        timerControls.stop()
+      }
       if (isNewSnippet) setInitialAnswers()
       else if (wasLastAttempt) finishSnippet()
       else dispatch(incrementAttempts())
@@ -184,6 +195,17 @@ const CurrentSnippet = ({ storyId, handleInputChange, setYouWon, finished }) => 
       },
     }
     dispatch(setAnswers(newAnswer))
+  }
+
+  if (isPaused) {
+    return (
+      <div
+        className="bold justify-center mt-lg mb-nm"
+        style={{ fontSize: '1.2em', letterSpacing: '1px', justifyContent: 'center' }}
+      >
+        <FormattedMessage id="paused" />
+      </div>
+    )
   }
 
   return (

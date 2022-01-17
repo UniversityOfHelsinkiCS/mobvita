@@ -2,7 +2,10 @@ import React, { useEffect, useState } from 'react'
 import Spinner from 'Components/Spinner'
 import { Icon } from 'semantic-ui-react'
 import { FormattedMessage } from 'react-intl'
+import { useDispatch, useSelector } from 'react-redux'
 import useWindowDimensions from 'Utilities/windowDimensions'
+import { useTimer } from 'react-compound-timer'
+import { initializeTimer } from 'Utilities/redux/competitionReducer'
 
 const OpponentBar = ({
   botSnippetTimes,
@@ -19,14 +22,27 @@ const OpponentBar = ({
   // const snippetsTotal = 3 // for faster debugging
   // const botSnippetTimes = new Array(snippetsTotal).fill(4) // for debugging
 
-  const [timer, setTimer] = useState(null)
-  const [interval, setInterval] = useState(botSnippetTimes[0])
   const [currentSnippetBot, setCurrentSnippetBot] = useState(0)
   const smallScreen = useWindowDimensions().width < 500
+  const dispatch = useDispatch()
+  const { timerControls } = useSelector(({ compete }) => compete)
 
-  const probCorrect = n => {
-    return !!n && Math.random() <= n
-  }
+  const { controls: timer } = useTimer({
+    initialTime: botSnippetTimes[0] * 1000,
+    direction: 'backward',
+    startImmediately: false,
+    timeToUpdate: 100,
+  })
+
+  useEffect(() => {
+    if (timer) dispatch(initializeTimer(timer))
+  }, [timer])
+
+  useEffect(() => {
+    if (playerFinished) timerControls.stop()
+  }, [playerFinished])
+
+  const probCorrect = n => !!n && Math.random() <= n
 
   const computeNumCorrectForSnippet = exercisesInSnippet => {
     const probResults = []
@@ -34,7 +50,6 @@ const OpponentBar = ({
     Array.from({ length: exercisesInSnippet }, _ =>
       probResults.push(probCorrect(botCorrectPercent))
     )
-
     return probResults.filter(e => e).length
   }
 
@@ -48,30 +63,30 @@ const OpponentBar = ({
   }, [currentSnippetBot])
 
   const handleBotMove = () => {
-    setInterval(botSnippetTimes[currentSnippetBot + 1])
     setCurrentSnippetBot(currentSnippetBot + 1)
+    timerControls.setTime(botSnippetTimes[currentSnippetBot + 1] * 1000)
   }
 
-  const stopTimer = () => setTimer(() => clearTimeout(timer))
+  timer.setCheckpoints([
+    {
+      time: 0,
+      callback: () => {
+        handleBotMove()
+      },
+    },
+  ])
 
   useEffect(() => {
-    if (currentSnippetBot <= snippetsTotal && !playerFinished) {
-      setTimer(
-        setTimeout(() => {
-          handleBotMove()
-        }, interval * 1000)
-      )
-    } else if (!playerFinished) {
+    if (currentSnippetBot < snippetsTotal && !playerFinished && timerControls) {
+      timerControls.start()
+    } else if (!playerFinished && timerControls) {
       setPlayerFinished('bot')
+      timerControls.stop()
       setTimeout(() => {
         setEndModalOpen(true)
       }, 1000)
     }
   }, [currentSnippetBot])
-
-  useEffect(() => {
-    if (playerFinished) stopTimer()
-  }, [playerFinished])
 
   const getLabelsWidth = () => {
     if (currentSnippetBot > snippetsTotal) return 100
@@ -91,6 +106,7 @@ const OpponentBar = ({
         <Spinner />
       ) : (
         <div data-cy="opponent-bar">
+          {/* <div>{Math.round(timerControls?.getTime() / 1000 ?? 0)}</div>  for debugging */}
           <div
             className="competition-bar-label"
             style={{

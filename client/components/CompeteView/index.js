@@ -5,6 +5,8 @@ import {
   getOpponent,
   competitionStartNow,
   resetCachedSnippets,
+  setWillPause,
+  setIsPaused,
 } from 'Utilities/redux/competitionReducer'
 import { clearTranslationAction } from 'Utilities/redux/translationReducer'
 import { resetCurrentSnippet } from 'Utilities/redux/snippetsReducer'
@@ -24,12 +26,19 @@ import { FormattedMessage } from 'react-intl'
 import { Spinner } from 'react-bootstrap'
 import FeedbackInfoModal from 'Components/CommonStoryTextComponents/FeedbackInfoModal'
 import CompetitionProgress from 'Components/CompeteView/CompetitionProgress'
+import StartModal from 'Components/TimedActivityStartModal'
+import { useHistory } from 'react-router-dom'
+import CompetitionPause from './CompetitionPause'
 
 const CompeteView = ({ match }) => {
   const dispatch = useDispatch()
   const { id } = match.params
   const learningLanguage = useSelector(learningLanguageSelector)
   const { width } = useWindowDimensions()
+  const history = useHistory()
+  const [startModalOpen, setStartModalOpen] = useState(true)
+  const { timerControls } = useSelector(({ compete }) => compete)
+
   const { story, startTime, snippets, pending } = useSelector(({ stories, compete, snippets }) => ({
     snippets,
     story: stories.focused,
@@ -41,6 +50,8 @@ const CompeteView = ({ match }) => {
   const [playerFinished, setPlayerFinished] = useState(null)
   const [youWon, setYouWon] = useState(false)
   const mode = getMode()
+
+  const { isPaused, willPause } = useSelector(({ compete }) => compete)
 
   const showFooter = width > 640
   const showVirtualKeyboard = width > 500 && keyboardLayouts[learningLanguage]
@@ -56,6 +67,16 @@ const CompeteView = ({ match }) => {
     ])
     await dispatch(competitionStartNow())
   }
+
+  useEffect(() => {
+    initializeCompetition()
+  }, [])
+
+  useEffect(() => {
+    if (!startModalOpen) {
+      timerControls.start()
+    }
+  }, [startModalOpen])
 
   const handleAnswerChange = (value, word) => {
     const { surface, id, ID, concept } = word
@@ -73,9 +94,14 @@ const CompeteView = ({ match }) => {
     dispatch(setAnswers(newAnswer))
   }
 
-  useEffect(() => {
-    initializeCompetition()
-  }, [])
+  const handlePauseOrResumeClick = () => {
+    if (isPaused) {
+      dispatch(setIsPaused(false))
+      timerControls.start()
+    } else {
+      dispatch(setWillPause(true))
+    }
+  }
 
   if (!story || !startTime || !snippets.focused) {
     return (
@@ -99,20 +125,25 @@ const CompeteView = ({ match }) => {
       <div className="justify-center">
         <div className="cont">
           <Segment>
-            <div
-              className="story-title"
-              style={{
-                ...getTextStyle(learningLanguage, 'title'),
-                width: '100%',
-              }}
-            >
-              {!pending && story && `${story.title}`}
+            <div className="flex space-between">
+              <div>
+                <div
+                  className="story-title"
+                  style={{
+                    ...getTextStyle(learningLanguage, 'title'),
+                    width: '100%',
+                  }}
+                >
+                  {!pending && story && `${story.title}`}
+                </div>
+                {story?.url && !pending ? (
+                  <a href={story.url}>
+                    <FormattedMessage id="Source" />
+                  </a>
+                ) : null}
+              </div>
+              <CompetitionPause handlePauseOrResumeClick={handlePauseOrResumeClick} />
             </div>
-            {story?.url && !pending ? (
-              <a href={story.url}>
-                <FormattedMessage id="Source" />
-              </a>
-            ) : null}
             <Divider />
             {!startTime ? (
               <div>
@@ -136,6 +167,14 @@ const CompeteView = ({ match }) => {
               finished={playerFinished}
             />
             <ScrollArrow />
+            {willPause && !isPaused && (
+              <div
+                className="justify-center"
+                style={{ color: 'rgb(81, 138, 248)', fontWeight: '500' }}
+              >
+                <FormattedMessage id="pausing-after-this-snippet" />
+              </div>
+            )}
           </Segment>
           {showVirtualKeyboard && (
             <div>
@@ -152,6 +191,12 @@ const CompeteView = ({ match }) => {
             </div>
           )}
         </div>
+        <StartModal
+          open={startModalOpen}
+          setOpen={setStartModalOpen}
+          activity="competition-mode"
+          onBackClick={() => history.push('/library')}
+        />
         <DictionaryHelp />
         <FeedbackInfoModal />
       </div>

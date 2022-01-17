@@ -31,7 +31,24 @@ export const resetCachedSnippets = () => ({
   type: 'RESET_CACHED_SNIPPETS',
 })
 
-export default (state = { cachedSnippets: [] }, action) => {
+export const initializeTimer = timerControls => ({
+  type: 'INITIALIZE_TIMER',
+  timerControls,
+})
+
+export const setWillPause = value => ({
+  type: 'SET_WILL_PAUSE',
+  value,
+})
+
+export const setIsPaused = value => ({
+  type: 'SET_IS_PAUSED',
+  value,
+})
+
+const initialState = { cachedSnippets: [], timerControls: null, isPaused: false, willPause: false }
+
+export default (state = initialState, action) => {
   switch (action.type) {
     case 'GET_OPPONENT_SUCCESS':
       return {
@@ -39,6 +56,23 @@ export default (state = { cachedSnippets: [] }, action) => {
         snippetCompleteTime: action.response.snippet_complete_time,
         totalTime: action.response.total_time,
         botCorrectPercent: action.response.bnc,
+      }
+    case 'INITIALIZE_TIMER':
+      return {
+        ...state,
+        timerControls: action.timerControls,
+      }
+
+    case 'SET_WILL_PAUSE':
+      return {
+        ...state,
+        willPause: action.value,
+      }
+
+    case 'SET_IS_PAUSED':
+      return {
+        ...state,
+        isPaused: action.value,
       }
     case 'WRONG_ADD':
       return {
@@ -54,6 +88,8 @@ export default (state = { cachedSnippets: [] }, action) => {
       return {
         ...state,
         startTime: action.startTime,
+        willPause: false,
+        isPaused: false,
       }
 
     case 'GET_AND_CACHE_NEXT_SNIPPET_ATTEMPT':
