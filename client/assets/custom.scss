@@ -273,7 +273,7 @@ html, body, #root {
   }
 
   &--info {
-    background-color: rgb(81, 138, 248);
+    background-color: $btn-color-primary;
   }
 
   &--error {
