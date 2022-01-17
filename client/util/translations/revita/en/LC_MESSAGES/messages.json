@@ -1173,5 +1173,7 @@
     "pay-attention-to-spelling": "Pay attention to spelling!<br/>You wrote \"{answer}\",<br/>the correct form is \"{levenshteinCorrect}\".",
     "showing-results-for": "Showing search results for",
     "no-stories-found": "No stories found",
-    "previous": "Previous"
+    "previous": "Previous",
+    "competition-mode": "Competition mode",
+    "competition-mode-info-text": "In competition mode, you will compete against a <b>bot</b> that's roughly the same skill level as you. The competition will last until one of you finishes the last snippet, and the winner is the one to have the most exercises correct at that point."
 }

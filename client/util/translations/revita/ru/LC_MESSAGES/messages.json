@@ -1176,5 +1176,7 @@
     "pay-attention-to-spelling": "Пожалуйста, следи за правописанием!<br/>Твой ответ: \"{answer}\",<br/>правильный ответ: \"{levenshteinCorrect}\".",
     "showing-results-for": "Результаты поиска",
     "no-stories-found": "Не найдено",
-    "previous": "Previous"
+    "previous": "Previous",
+    "competition-mode": "Competition mode",
+    "competition-mode-info-text": "In competition mode, you will compete against a <b>bot</b> that's roughly the same skill level as you. The competition will last until one of you finishes the last snippet, and the winner is the one to have the most exercises correct at that point."
 }
