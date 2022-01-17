@@ -1170,7 +1170,7 @@
     "controlled-practice-info-text": "Controlled. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco.",
     "controlled-story-info-text": "Controlled. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco.",
     "control-story-info-text": "Упражнения в Контрольном Тексте подобраны учителем.  Время работы с каждым абзацем ограничено — постарайся успеть выполнить все задания!  Если ответы неправильные, ты получишь дополнительное время.",
-    "what-language-would-you-like-to-learn": "Какой язык ты хочешь изучать?",
+    "what-language-would-you-like-to-learn": "Какой язык ты изучаешь?",
     "network-error-click-to-resume": "Проблемы с сервером или связью...<br/>Продолжить тест",
     "pay-attention-to-diacritics": "Пожалуйста, следи за правописанием!<br/>Твой ответ: \"{answer}\",<br/>правильный ответ: \"{normalizedCorrect}\".",
     "pay-attention-to-spelling": "Пожалуйста, следи за правописанием!<br/>Твой ответ: \"{answer}\",<br/>правильный ответ: \"{levenshteinCorrect}\".",
