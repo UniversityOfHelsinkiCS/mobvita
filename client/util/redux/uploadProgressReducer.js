@@ -1,12 +1,12 @@
 import callBuilder from '../apiConnection'
 
-export const getProgress = (storyId) => {
+export const getProgress = storyId => {
   const route = `/stories/${storyId}/loading`
   const prefix = 'GET_PROGRESS'
   return callBuilder(route, prefix)
 }
 
-export const postStory = (newStory) => {
+export const postStory = newStory => {
   const route = '/stories'
   const prefix = 'POST_NEW_STORY'
   return callBuilder(route, prefix, 'post', newStory)
