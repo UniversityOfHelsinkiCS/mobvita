@@ -20,7 +20,7 @@ const TimedActivityStartModal = ({ open, setOpen, activity, onBackClick }) => {
         </div>
         <div className="flex-col align-center gap-row-nm">
           <div>
-            <Button size="lg" onClick={() => setOpen(false)}>
+            <Button data-cy="start-timed-activity" size="lg" onClick={() => setOpen(false)}>
               <FormattedMessage id="start" />
             </Button>
           </div>
