@@ -157,7 +157,7 @@ const Practice = ({ mode }) => {
       <VirtualizeSwipeableViews
         index={swipeIndex}
         onChangeIndex={handleIndexChange}
-        containerStyle={{ width: '40em' }}
+        containerStyle={{ maxWidth: '40em' }}
         slideRenderer={slideRenderer}
         slideCount={cards.length + 1}
         overscanSlideAfter={1}
