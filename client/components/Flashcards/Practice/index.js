@@ -77,13 +77,14 @@ const Practice = ({ mode }) => {
     dispatch(getFlashcards(learningLanguage, dictionaryLanguage, storyId))
   }
 
-  const answerCard = (answer, correct, exercise) => {
+  const answerCard = (answer, correct, exercise, displayedHints) => {
     const { _id: flashcard_id, story, lemma, lan_in, lan_out } = cards[swipeIndex]
     const answerDetails = {
       flashcard_id,
       correct,
       answer,
       exercise,
+      hints_shown: displayedHints.length,
       mode: 'trans',
       story,
       lemma,

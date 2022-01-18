@@ -59,7 +59,7 @@ const Fillin = ({
     setEditing(true)
   }
 
-  const checkAnswer = (answer, hintsDisplayed = 0) => {
+  const checkAnswer = (answer, displayedHints = 0) => {
     if (answer !== '') {
       let correct = glosses.some(
         gloss => gloss.toLowerCase().trim() === answer.toLowerCase().trim()
@@ -98,7 +98,7 @@ const Fillin = ({
         setInfoMessage(msg)
       }
 
-      answerCard(answer, correct, 'fillin')
+      answerCard(answer, correct, 'fillin', displayedHints)
       setAnswerCorrect(correct)
     }
 

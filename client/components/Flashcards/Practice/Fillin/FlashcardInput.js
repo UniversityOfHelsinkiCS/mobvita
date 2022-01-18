@@ -13,7 +13,7 @@ const FlashcardInput = ({ checkAnswer, focusedAndBigScreen, answerChecked, displ
 
   const handleSubmit = e => {
     e.preventDefault()
-    checkAnswer(answer)
+    checkAnswer(answer, displayedHints)
     setAnswer('')
   }
 
