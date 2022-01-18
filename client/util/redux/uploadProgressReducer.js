@@ -20,6 +20,7 @@ const initialState = {
   pending: false,
   error: false,
   custom: false,
+  exerciseReady: false,
 }
 
 export default (state = initialState, action) => {
@@ -43,6 +44,7 @@ export default (state = initialState, action) => {
         processingErrorMsgId: action.response.loading_error,
         pending: false,
         error: false,
+        exerciseReady: action.response.exercise_ready,
       }
     case 'POST_NEW_STORY_ATTEMPT':
       return {

@@ -24,9 +24,8 @@ export default function Toaster() {
   )
   const { serverError } = useSelector(({ serverError }) => serverError)
   const { newAchievements } = useSelector(({ newAchievements }) => newAchievements)
-  const { storyId, progress, error, pending, processingErrorMsgId, custom, url } = useSelector(
-    ({ uploadProgress }) => uploadProgress
-  )
+  const { storyId, progress, error, pending, processingErrorMsgId, custom, url, exerciseReady } =
+    useSelector(({ uploadProgress }) => uploadProgress)
   const learningLanguage = useSelector(learningLanguageSelector)
   const favouriteSites = useSelector(({ user }) => user.data?.user?.favourite_sites)
 
@@ -61,7 +60,7 @@ export default function Toaster() {
   useEffect(() => {
     if (pending && !storyId && !custom) {
       setProgressToastId(
-        toast(intl.formatMessage({ id: 'validating-url' }), { autoClose: false, type: 'info' })
+        toast(intl.formatMessage({ id: 'validating-url' }), { autoClose: true, type: 'info' })
       )
     }
   }, [pending, storyId])
@@ -87,7 +86,7 @@ export default function Toaster() {
         })
       }
 
-      if (progress === 1) {
+      if (progress === 1 || exerciseReady) {
         clearInterval(interval)
         toast.done(progressToastId)
         if (processingErrorMsgId === 'no_error') {
@@ -119,7 +118,7 @@ export default function Toaster() {
         setProgressToastId(null)
       }
     }
-  }, [progress])
+  }, [progress, exerciseReady])
 
   useEffect(() => {
     if (processingErrorMsgId === 'no_error' && !error) return
