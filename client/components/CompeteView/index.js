@@ -1,6 +1,11 @@
 import React, { useEffect, useState } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
+import { Spinner } from 'react-bootstrap'
 import { Divider, Segment } from 'semantic-ui-react'
+import { useHistory } from 'react-router-dom'
+import { FormattedMessage } from 'react-intl'
+import useWindowDimensions from 'Utilities/windowDimensions'
+
 import {
   getOpponent,
   competitionStartNow,
@@ -8,37 +13,33 @@ import {
   setWillPause,
   setIsPaused,
 } from 'Utilities/redux/competitionReducer'
-import { clearTranslationAction } from 'Utilities/redux/translationReducer'
 import { resetCurrentSnippet } from 'Utilities/redux/snippetsReducer'
+import { getStoryAction } from 'Utilities/redux/storiesReducer'
+import { clearTranslationAction } from 'Utilities/redux/translationReducer'
+import { setTouchedIds, setAnswers, clearPractice } from 'Utilities/redux/practiceReducer'
 import { getTextStyle, learningLanguageSelector, getMode } from 'Utilities/common'
+
 import ReportButton from 'Components/ReportButton'
-import useWindowDimensions from 'Utilities/windowDimensions'
 import { keyboardLayouts } from 'Components/PracticeView/KeyboardLayouts'
 import Footer from 'Components/Footer'
 import VirtualKeyboard from 'Components/PracticeView/VirtualKeyboard'
-import { setTouchedIds, setAnswers, clearPractice } from 'Utilities/redux/practiceReducer'
-import { getStoryAction } from 'Utilities/redux/storiesReducer'
 import PreviousSnippets from 'Components/CompeteView/PreviousSnippets'
 import CurrentSnippet from 'Components/CompeteView/CurrentSnippet'
 import ScrollArrow from 'Components/ScrollArrow'
 import DictionaryHelp from 'Components/DictionaryHelp'
-import { FormattedMessage } from 'react-intl'
-import { Spinner } from 'react-bootstrap'
 import FeedbackInfoModal from 'Components/CommonStoryTextComponents/FeedbackInfoModal'
 import CompetitionProgress from 'Components/CompeteView/CompetitionProgress'
 import StartModal from 'Components/TimedActivityStartModal'
-import { useHistory } from 'react-router-dom'
 import CompetitionPause from './CompetitionPause'
 
 const CompeteView = ({ match }) => {
   const dispatch = useDispatch()
-  const { id } = match.params
-  const learningLanguage = useSelector(learningLanguageSelector)
-  const { width } = useWindowDimensions()
   const history = useHistory()
-  const [startModalOpen, setStartModalOpen] = useState(true)
-  const { timerControls } = useSelector(({ compete }) => compete)
+  const learningLanguage = useSelector(learningLanguageSelector)
+  const { id } = match.params
+  const { width } = useWindowDimensions()
 
+  const { isPaused, willPause, timerControls } = useSelector(({ compete }) => compete)
   const { story, startTime, snippets, pending } = useSelector(({ stories, compete, snippets }) => ({
     snippets,
     story: stories.focused,
@@ -47,12 +48,11 @@ const CompeteView = ({ match }) => {
     botCorrectPercent: compete.botCorrectPercent,
   }))
 
+  const [startModalOpen, setStartModalOpen] = useState(true)
   const [playerFinished, setPlayerFinished] = useState(null)
   const [youWon, setYouWon] = useState(false)
+
   const mode = getMode()
-
-  const { isPaused, willPause } = useSelector(({ compete }) => compete)
-
   const showFooter = width > 640
   const showVirtualKeyboard = width > 500 && keyboardLayouts[learningLanguage]
 
