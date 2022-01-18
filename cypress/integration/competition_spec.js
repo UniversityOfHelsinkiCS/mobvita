@@ -11,11 +11,13 @@ describe("competition mode", function () {
   })
 
   it("can be started", function () {
+    cy.get("[data-cy=start-timed-activity]").click()
     cy.get("[data-cy=opponent-bar]")
     cy.get("[data-cy=player-bar]")
   })
 
   it("shows player's progress correctly", function () {
+    cy.get("[data-cy=start-timed-activity]").click()
     cy.get('[data-cy=next-snippet-ready] > span').click()
     cy.get('[data-cy=progress-033]')
     cy.get('[data-cy=next-snippet-ready] > span').click()
@@ -25,6 +27,7 @@ describe("competition mode", function () {
   })
 
   it("shows end modal when competition has ended", function () {
+    cy.get("[data-cy=start-timed-activity]").click()
     cy.get('[data-cy=next-snippet-ready] > span').click()
     cy.get('[data-cy=next-snippet-ready] > span').click()
     cy.get('[data-cy=next-snippet-ready] > span').click()

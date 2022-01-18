@@ -19,13 +19,13 @@ describe('flashcards', function () {
     cy.contains('saapua')
   })
 
-  it('flashcards can be added from practice mode', function () {
-    cy.visit(previewURL)
-    cy.get('[class=word-interactive]').eq(1).click()
-    cy.get('[data-cy=translations]')
-    cy.visit('http://localhost:8000/flashcards/')
-    cy.get('[data-cy=flashcard-content]')
-  })
+  // it('flashcards can be added from practice mode', function () {
+  //   cy.visit(previewURL)
+  //   cy.get('[class=word-interactive]').eq(1).click()
+  //   cy.get('[data-cy=translations]')
+  //   cy.visit('http://localhost:8000/flashcards/')
+  //   cy.get('[data-cy=flashcard-content]')
+  // })
 
   describe('a card exists', function () {
 
