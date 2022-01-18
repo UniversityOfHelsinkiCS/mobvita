@@ -50,7 +50,6 @@ const ReadViews = ({ match }) => {
   if (!story || pending) return <Spinner fullHeight />
 
   const showFooter = width > 640
-  const showAnnotationBox = width >= 1024
 
   return (
     <div className="cont-tall flex-col space-between align-center pt-sm">
