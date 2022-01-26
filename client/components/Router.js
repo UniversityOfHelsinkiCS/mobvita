@@ -10,7 +10,6 @@ import ReadViews from 'Components/ReadViews'
 import ControlledStoryEditView from 'Components/ControlledStoryEditView'
 import ControlledStoryPreviewView from 'Components/ControlledStoryPreviewView'
 import ConstructTestView from 'Components/ConstructTestView'
-import GraphView from 'Components/GraphView'
 import HexagonTest from 'Components/GridHexagon'
 import PracticeView from 'Components/PracticeView'
 import LanguageSelectView from 'Components/LanguageSelectView'
@@ -127,7 +126,6 @@ export default () => {
             <ProtectedRoute exact path="/achievements" component={Achievements} />
             <ProtectedRoute exact path="/leaderboard" component={Leaderboard} />
             <ProtectedRoute exact path="/test-construction" component={ConstructTestView} />
-            <ProtectedRoute exact path="/test-graph" component={GraphView} />
             <ProtectedRoute exact path="/test-hexagon" component={HexagonTest} />
           </Switch>
         </main>
