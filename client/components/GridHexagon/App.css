@@ -1,0 +1,68 @@
+
+ 
+
+
+/* svg g:hover {
+  fill: #7be3f6;
+  fill-opacity: 0.7;
+} */
+
+/* svg g:hover text {
+  fill-opacity: 1;
+} */
+
+/* svg g.hexagon {
+  fill: #FFF; */
+  /* fill-opacity: 0.6; */
+/* } */
+
+svg g.hexagon {
+  fill: #f8f8f8;
+  /* fill-opacity: 0.6; */
+}
+
+svg g.hexagon-root g.hexagon {
+  fill: #7eaaf1; 
+  /* fill-opacity: 0.6; */
+ }
+
+svg g.hexagon polygon {
+  stroke: #909090;
+  stroke-width: 0.1;
+  /* transition: fill-opacity .5s; */
+}
+svg.grid g path {
+  fill: none;
+  stroke: #b1b1b1;
+  stroke-width: 0.0.5em;
+  stroke-opacity: 0.7;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+text.hexagon-text {
+  font-size: 0.14em;
+  font-weight: 400;
+  fill: rgb(42, 42, 42);
+}
+
+text.hexagon-root {
+  font-size: 0.35em;
+  font-weight: 400;
+  fill: rgb(42, 42, 42);
+}
+
+g.red5 g { fill: #ff7176 }
+g.red4 g { fill: #ff8b8d }
+g.red3 g { fill: #ffa4a5 }
+g.red2 g { fill: #ffbcbc }
+g.red1 g { fill: #ffd4d4 }
+
+g.green1 g { fill: #d5ffd4 }
+g.green2 g { fill: #bfffbf }
+g.green3 g { fill: #a8ffa9 }
+g.green4 g { fill: #8fff92 }
+g.green5 g { fill: #71ff7b }
+
+
+

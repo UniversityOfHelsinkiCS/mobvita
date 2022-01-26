@@ -1,6 +1,7 @@
 import React, { useState, useEffect, shallowEqual } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import moment from 'moment'
+import { Button } from 'react-bootstrap'
 import { FormattedMessage } from 'react-intl'
 import { getSelf } from 'Utilities/redux/userReducer'
 import ProgressGraph from 'Components/ProgressGraph'
@@ -12,6 +13,7 @@ import { getHistory as getExerciseHistory } from 'Utilities/redux/exerciseHistor
 import { getHistory as getTestHistory } from 'Utilities/redux/testReducer'
 import { useLearningLanguage } from 'Utilities/common'
 import useWindowDimension from 'Utilities/windowDimensions'
+import { useHistory } from 'react-router-dom'
 import ProgressStats from './ProgressStats'
 
 const PickDate = ({ date, setDate }) => (
@@ -20,6 +22,7 @@ const PickDate = ({ date, setDate }) => (
 
 const Progress = () => {
   const dispatch = useDispatch()
+  const history = useHistory()
 
   const [startDate, setStartDate] = useState(moment().subtract(2, 'months').toDate())
   const [endDate, setEndDate] = useState(moment().toDate())
@@ -109,6 +112,9 @@ const Progress = () => {
           />
         </div>
       </div>
+
+      <Divider />
+      <Button onClick={() => history.push('/test-hexagon')}>Test hexagon grid </Button>
       <Divider />
 
       <div>
