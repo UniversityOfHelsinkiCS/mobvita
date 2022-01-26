@@ -181,10 +181,10 @@ describe('Mobvita', function () {
         cy.get('[data-cy="save-annotation-button"]').click()
         cy.contains("Muistiinpano tallennettu")
 
-        cy.get('[data-cy="17-häirinneet lentokoneita"]').click()
+        cy.get('[data-cy="25-häirinneet lentokoneita"]').click()
         cy.get('[data-cy="delete-annotation-button"]').click()
         cy.contains("Muistiinpano poistettu")
-        cy.get('[data-cy="17-häirinneet lentokoneita"]').should('not.exist')
+        cy.get('[data-cy="25-häirinneet lentokoneita"]').should('not.exist')
       })
     })
 
