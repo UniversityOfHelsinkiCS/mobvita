@@ -20,22 +20,20 @@ import {
 
 const PlainWord = ({ word, annotatingAllowed, ...props }) => {
   const history = useHistory()
-  const { lemmas, ID: wordId, surface, inflection_ref: inflectionRef, name_token: isName } = word
+  const dispatch = useDispatch()
+  const { width } = useWindowDimensions()
+  const { id: storyId } = useParams()
 
   const autoSpeak = useSelector(({ user }) => user.data.user.auto_speak)
   const learningLanguage = useSelector(learningLanguageSelector)
   const dictionaryLanguage = useSelector(dictionaryLanguageSelector)
-  const isCompeteMode = history.location.pathname.includes('compete')
-
   const { spanAnnotations, highlightRange, showAnnotationForm } = useSelector(
     ({ annotations }) => annotations
   )
 
-  const dispatch = useDispatch()
-  const { id: storyId } = useParams()
-  const { width } = useWindowDimensions()
+  const { lemmas, ID: wordId, surface, inflection_ref: inflectionRef, name_token: isName } = word
+  const isCompeteMode = history.location.pathname.includes('compete')
   const bigScreen = width >= 1024
-
   const voice = respVoiceLanguages[learningLanguage]
 
   if (surface === '\n\n') {
