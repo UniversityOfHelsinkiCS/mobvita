@@ -84,6 +84,7 @@ const StoryActions = ({ story, enableOnlyPractice, isControlled }) => {
 
   const showCrosswordsButton = width > 1023
   const buttonVariant = enableOnlyPractice ? 'outline-secondary' : 'secondary'
+  const uploadUnfinished = story?.uploadUnfinished
 
   const reviewButtonVariant =
     story.percent_cov === 0 || enableOnlyPractice ? 'outline-secondary' : 'secondary'
@@ -126,14 +127,20 @@ const StoryActions = ({ story, enableOnlyPractice, isControlled }) => {
         </Link>
 
         <Link to={`/stories/${story._id}/compete`}>
-          <Button variant={buttonVariant} disabled={enableOnlyPractice}>
+          <Button
+            variant={uploadUnfinished ? 'outline-secondary' : buttonVariant}
+            disabled={enableOnlyPractice || uploadUnfinished}
+          >
             <FormattedMessage id="compete" />
           </Button>
         </Link>
 
         {showCrosswordsButton && (
           <Link to={`/crossword/${story._id}/`}>
-            <Button variant={buttonVariant} disabled={enableOnlyPractice}>
+            <Button
+              variant={uploadUnfinished ? 'outline-secondary' : buttonVariant}
+              disabled={enableOnlyPractice || uploadUnfinished}
+            >
               <FormattedMessage id="Crossword" />
             </Button>
           </Link>

@@ -24,6 +24,12 @@ export const setLastQuery = query => ({
   query,
 })
 
+export const setStoryUploadUnfinished = (value, storyId) => ({
+  type: 'SET_STORY_UPLOAD_UNFINISHED',
+  value,
+  storyId,
+})
+
 export const searchStories = (language, query) => {
   const queryString = Object.keys(query)
     .map(key => `${key}=${query[key]}`)
@@ -121,6 +127,14 @@ export default (state = initialState, action) => {
         totalNum: action.response.total_num,
         pending: false,
         error: false,
+      }
+
+    case 'SET_STORY_UPLOAD_UNFINISHED':
+      return {
+        ...state,
+        data: state.data.map(story =>
+          story._id === action.storyId ? { ...story, uploadUnfinished: action.value } : story
+        ),
       }
 
     case 'SEARCH_STORIES_ATTEMPT':

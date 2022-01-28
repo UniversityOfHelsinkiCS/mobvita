@@ -3,7 +3,7 @@ import 'react-toastify/dist/ReactToastify.css'
 import React, { useState, useEffect, useMemo } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { getProgress } from 'Utilities/redux/uploadProgressReducer'
-import { getAllStories } from 'Utilities/redux/storiesReducer'
+import { getAllStories, setStoryUploadUnfinished } from 'Utilities/redux/storiesReducer'
 import { setNotification } from 'Utilities/redux/notificationReducer'
 import { clearServerError } from 'Utilities/redux/serverErrorReducer'
 import { updateFavouriteSites } from 'Utilities/redux/userReducer'
@@ -18,10 +18,13 @@ export default function Toaster() {
   const [interval, saveInterval] = useState(null)
   const [progressToastId, setProgressToastId] = useState(null)
   const [serverErrorToastId, setServerErrorToastId] = useState(null)
+  const [canExercise, setCanExercise] = useState(false)
 
+  const { pending: storiesPending } = useSelector(({ stories }) => stories)
   const { message, type, options, translationId, contextVariables } = useSelector(
     ({ notification }) => notification
   )
+
   const { serverError } = useSelector(({ serverError }) => serverError)
   const { newAchievements } = useSelector(({ newAchievements }) => newAchievements)
   const { storyId, progress, error, pending, processingErrorMsgId, custom, url, exerciseReady } =
@@ -66,6 +69,12 @@ export default function Toaster() {
   }, [pending, storyId])
 
   useEffect(() => {
+    if (storyId && progress !== 1) {
+      dispatch(setStoryUploadUnfinished(true, storyId))
+    }
+  }, [storiesPending])
+
+  useEffect(() => {
     if (storyId !== null) {
       if (progressToastId === null) {
         setProgressToastId(
@@ -76,20 +85,11 @@ export default function Toaster() {
             { progress, type: 'info' }
           )
         )
-      } else {
-        toast.update(progressToastId, {
-          progress,
-          render: `${intl.formatMessage({ id: 'processing-story' })}, ${
-            progress * 100
-          }% ${intl.formatMessage({ id: 'done' })}`,
-          type: 'info',
-        })
       }
 
-      if (progress === 1 || exerciseReady) {
-        clearInterval(interval)
-        toast.done(progressToastId)
+      if (exerciseReady && !canExercise) {
         if (processingErrorMsgId === 'no_error') {
+          setCanExercise(true)
           dispatch(
             getAllStories(learningLanguage, {
               sort_by: 'date',
@@ -112,10 +112,16 @@ export default function Toaster() {
             }
           )
         }
+      }
 
-        dispatch({ type: 'CLEAR_UPLOADPROGRESS' })
+      if (progress === 1) {
+        clearInterval(interval)
+        setCanExercise(false)
         saveInterval(null)
         setProgressToastId(null)
+        toast.done(progressToastId)
+        dispatch({ type: 'CLEAR_UPLOADPROGRESS' })
+        dispatch(setStoryUploadUnfinished(false, storyId))
       }
     }
   }, [progress, exerciseReady])
