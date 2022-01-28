@@ -208,6 +208,10 @@ const ConstructionHexagon = ({ name, position }) => {
   )
 }
 
+const positionOffset = coords => {
+  return { q: coords.q - 4, r: coords.r, s: coords.s - 4 }
+}
+
 const HexagonTest = () => {
   const hexagonSize = { x: 15, y: 15 }
   // const moreHexas = GridGenerator.parallelogram(-2, 2, -2, 2)
@@ -219,15 +223,15 @@ const HexagonTest = () => {
     // <div style={{ background: 'white' }}>
     <div className="cont-tall pt-sm justify-center">
       <UncontrolledReactSVGPanZoom
-        width={1400}
+        width={1200}
         height={1000}
         // background="#FFF"
         background="#EFEFEF"
         defaultTool="auto"
       >
-        <svg width={1400} height={1000}>
+        <svg width={1200} height={1000}>
+          # bigger->moves left, bigger->moves up, width, height 
           <HexGrid width={1400} height={1000} viewBox="-150 300 500 400">
-            {/* Main grid with bit hexagons, all manual */}
             <Layout size={hexagonSize} flat spacing={1} origin={{ x: 0, y: 0 }}>
               {hexagons.map(hex => (
                 <Hexagon q={hex.q} r={hex.r} s={hex.s}>
@@ -235,7 +239,7 @@ const HexagonTest = () => {
                 </Hexagon>
               ))}
 
-              <Hexagon className="hexagon-root" q={7} r={18} s={-25}>
+              <Hexagon className="hexagon-root" q={3} r={18} s={-21}>
                 <Text className="hexagon-root">Suomi</Text>
               </Hexagon>
 
@@ -248,19 +252,17 @@ const HexagonTest = () => {
               {dummyData.map(hex => (
                 <ConstructionHexagon
                   name={hex.name}
-                  position={{ q: hex.coords.q, r: hex.coords.r, s: hex.coords.s }}
+                  // position={{ q: hex.coords.q, r: hex.coords.r, s: hex.coords.s }}
+                  position={positionOffset(hex.coords)}
                 />
               ))}
 
               {/* <ConstructionHexagon name="Test construction" position={[4, 19, -25]} />
-
               <ConstructionHexagon name="Test construction" position={[9, 16, -25]} />
               <ConstructionHexagon name="Test construction" position={[9, 15, -24]} />
               <ConstructionHexagon name="Test construction" position={[8, 15, -23]} />
-
               <ConstructionHexagon name="Test construction" position={[9, 17, -26]} />
               <ConstructionHexagon name="Test construction" position={[10, 18, -28]} />
-
               <ConstructionHexagon name="Test construction" position={[7, 15, -22]} />
               <ConstructionHexagon name="Test construction" position={[7, 14, -21]} />
               <ConstructionHexagon name="Test construction" position={[7, 13, -20]} />
@@ -270,25 +272,10 @@ const HexagonTest = () => {
               <ConstructionHexagon name="Test construction" position={[7, 11, -18]} />
               <ConstructionHexagon name="Test construction" position={[8, 11, -19]} />
               <ConstructionHexagon name="Test construction" position={[8, 12, -20]} />
-
               <ConstructionHexagon name="Test construction" position={[6, 21, -27]} />
               <ConstructionHexagon name="Test construction" position={[7, 21, -27]} />
               <ConstructionHexagon name="Test construction" position={[8, 21, -27]} />
-              <ConstructionHexagon name="Test construction" position={[9, 21, -27]} />
-
-              <ConstructionHexagon name="SYNTAX" position={[7, 17, -24]} />
-              <ConstructionHexagon name="POS: Noun" position={[7, 19, -26]} />
-              <ConstructionHexagon name="POS: Verb" position={[6, 19, -25]} />
-              <ConstructionHexagon name="Participle: Present Active -va" position={[6, 18, -24]} />
-              <ConstructionHexagon name="Morphophonemics" position={[8, 17, -25]} />
-              <ConstructionHexagon name="POS: Pronoun" position={[8, 18, -26]} />
-
-              <ConstructionHexagon name="NEGATIVE: Indicative verb" position={[5, 18, -23]} />
-              <ConstructionHexagon name="Tense: Present" position={[5, 19, -24]} />
-              <ConstructionHexagon
-                name="Participle: Present Passive -ttava"
-                position={[5, 20, -25]}
-              /> */}
+              <ConstructionHexagon name="Test construction" position={[9, 21, -27]} /> */}
             </Layout>
           </HexGrid>
         </svg>
