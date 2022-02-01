@@ -800,7 +800,7 @@
     "report-button": "Segnala",
     "report-problem": "Segnala un problema",
     "thank-you-for-reporting-problem": "Grazie per aver segnalato il problema — ce ne occuperemo il prima possibile!",
-    "enter-more-about-problem": "Il team di Revita controllerà la pagina dove hai osservato il problema. Se vuoi fornirci informazioni aggiuntive, scrivi qui cosa non ha funzionato correttamente...",
+    "enter-more-about-problem": "Il team di Revita controllerà la pagina dove hai osservato il problema. Per favore, scrivi qui cosa non ha funzionato correttamente.",
     "Participate in weekly leaderboards": "Participate in weekly leaderboards",
     "Privacy": "Privacy",
     "Show my username in leaderboards": "Mostra il mio nome nella classifica",
@@ -1175,6 +1175,7 @@
     "showing-results-for": "Risultati della ricerca per",
     "no-stories-found": "Nessun testo trovato",
     "previous": "Precedente",
-    "competition-mode": "Competition mode",
-    "competition-mode-info-text": "In competition mode, you will compete against a <b>bot</b> that's on roughly the same skill level as you. The competition will last until one of you finishes the last snippet, and the winner is the one to have the most exercises correct at that point."
+    "competition-mode": "Competizione",
+    "competition-mode-info-text": "In modalità competizione, gareggerai contro un <b>bot</b> che ha le tue stesse abilità. La competizione finirà quando uno di voi raggiungerà la fine della storia: il vincitore è colui che ha più risposte <b>corrette</b> in quel momento!",
+    "story-not-yet-processed": "La competizione e i cruciverba saranno abilitati presto — quando la storia sarà completamente elaborata"
 }

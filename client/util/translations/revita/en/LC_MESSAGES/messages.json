@@ -1174,6 +1174,7 @@
     "showing-results-for": "Showing search results for",
     "no-stories-found": "No stories found",
     "previous": "Previous",
-    "competition-mode": "Competition mode",
-    "competition-mode-info-text": "In competition mode, you will compete against a <b>bot</b> that's on roughly the same skill level as you. The competition will last until one of you finishes the last snippet, and the winner is the one to have the most exercises correct at that point."
+    "competition-mode": "Competition",
+    "competition-mode-info-text": "In competition mode, you will compete against a <b>bot</b> that has about the same skills as you. The competition will end when one of you reaches the end of the story — the winner is the one who has more <b>correct</b> answers at that time!",
+    "story-not-yet-processed": "Competition and crosswords will be enabled very shortly — as soon as the story is fully processed"
 }
