@@ -122,7 +122,7 @@ const StoryActions = ({ story, enableOnlyPractice, isControlled }) => {
             variant={reviewButtonVariant}
             disabled={story.percent_cov === 0 || enableOnlyPractice}
           >
-            <FormattedMessage id="review" />
+            <FormattedMessage id="review" />{' '}
           </Button>
         </Link>
 
@@ -131,7 +131,7 @@ const StoryActions = ({ story, enableOnlyPractice, isControlled }) => {
             variant={uploadUnfinished ? 'outline-secondary' : buttonVariant}
             disabled={enableOnlyPractice || uploadUnfinished}
           >
-            <FormattedMessage id="compete" />
+            <FormattedMessage id="compete" />{' '}
           </Button>
         </Link>
 
@@ -235,6 +235,7 @@ const StoryListItem = ({ story, libraryShown, selectedGroup }) => {
   const inGroupLibrary = libraryShown.group && !!story.groups
   const showGroupNames = story.groups && libraryShown.private
   const enableOnlyPractice = inGroupLibrary && !currentGroup?.is_teaching && isControlledStory
+  const uploadUnfinished = story?.uploadUnfinished
 
   const deleteStory = () => dispatch(removeStory(story._id))
   const unshareStory = () => dispatch(unshare(selectedGroup, story._id))
@@ -275,6 +276,20 @@ const StoryListItem = ({ story, libraryShown, selectedGroup }) => {
         />
         <div className="flex align-center" style={{ overflow: 'hidden' }}>
           {showGroupNames && <GroupsSharedTo groups={story.groups} />}
+
+          {uploadUnfinished && (
+            <div>
+              <Popup
+                position="top center"
+                content={<FormattedMessage id="placeholder" />}
+                trigger={
+                  <div>
+                    <Icon name="hourglass half" color="black" />
+                  </div>
+                }
+              />
+            </div>
+          )}
 
           {libraryShown.group && (
             <>
