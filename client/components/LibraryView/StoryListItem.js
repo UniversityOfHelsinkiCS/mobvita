@@ -281,7 +281,7 @@ const StoryListItem = ({ story, libraryShown, selectedGroup }) => {
             <div>
               <Popup
                 position="top center"
-                content={<FormattedMessage id="placeholder" />}
+                content={<FormattedMessage id="story-not-yet-processed" />}
                 trigger={
                   <div>
                     <Icon name="hourglass half" color="black" />
