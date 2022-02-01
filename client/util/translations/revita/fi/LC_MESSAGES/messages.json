@@ -1175,6 +1175,6 @@
     "no-stories-found": "Ei tekstejä",
     "previous": "Edellinen",
     "competition-mode": "Kilpailu",
-    "competition-mode-info-text": "In competition mode, you will compete against a <b>bot</b> that has about the same skills as you. The competition will end when one of you reaches the end of the story — the winner is the one who has more <b>correct</b> answers at that time!",
-    "story-not-yet-processed": "Kaikki harjoitusmuodot avautuvat, kun teksti on kokonaan prosessoitu"
+    "competition-mode-info-text": "Kilpailutilassa vastassasi on <b>botti</b>, joka on taidoiltaan samaa tasoa kuin sinä itse. Kisa päättyy, kun jompi kumpi pääsee tekstin loppuun, ja voittaja on se, jolla on sinä hetkenä eniten tehtäviä oikein!",
+    "story-not-yet-processed": "Kaikki harjoitusmuodot avautuvat hetken päästä – kun teksti on kokonaan prosessoitu"
 }
