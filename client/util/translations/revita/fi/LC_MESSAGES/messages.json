@@ -1174,6 +1174,7 @@
     "showing-results-for": "Tulokset haulle",
     "no-stories-found": "Ei tekstejä",
     "previous": "Edellinen",
-    "competition-mode": "Competition mode",
-    "competition-mode-info-text": "In competition mode, you will compete against a <b>bot</b> that's on roughly the same skill level as you. The competition will last until one of you finishes the last snippet, and the winner is the one to have the most exercises correct at that point."
+    "competition-mode": "Kilpailu",
+    "competition-mode-info-text": "In competition mode, you will compete against a <b>bot</b> that has about the same skills as you. The competition will end when one of you reaches the end of the story — the winner is the one who has more <b>correct</b> answers at that time!",
+    "story-not-yet-processed": "Kaikki harjoitusmuodot avautuvat, kun teksti on kokonaan prosessoitu"
 }

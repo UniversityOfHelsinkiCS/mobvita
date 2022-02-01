@@ -622,7 +622,7 @@
     "these-should-be-easy-for-you": "Эти упражнения простые для Вас!",
     "click-to-listen": "&#x1f5b0; прослушать",
     "check-answers-fbd50be28a1b94cbd482510d13639918": "Проверить",
-    "restart-story": "Начать с начала",
+    "restart-story": "Начать сначала",
     "game-over": "Игра окончена",
     "you-won": "Победа!",
     "extra-apples": "дополнительные яблоки!",
@@ -807,7 +807,7 @@
     "report-button": "Сообщить о проблеме",
     "report-problem": "Сообщить о проблеме",
     "thank-you-for-reporting-problem": "Спасибо за сообщение!  Мы постараемся исправить ошибку как можно скорее.",
-    "enter-more-about-problem": "Команда РЕВИТЫ увидит эту страницу, где вам встретилась ошибка.  Если вы хотите, пожалуйста, добавьте более подробное описание ошибки...",
+    "enter-more-about-problem": "Команда РЕВИТЫ увидит эту страницу, где вам встретилась ошибка.  Пожалуйста, добавьте краткое описание ошибки.",
     "Show my username in leaderboards": "Показать имя в таблице лидеров",
     "share-story-with-a-group": "Загрузить для группы",
     "Practice History": "История упражнений",
@@ -1026,7 +1026,7 @@
     "following": "Подписки",
     "dictionaryhelp-loading-please-wait": "Поиск в процессе",
     "dictionaryhelp-no-translation-available": "Перевод не найден",
-    "restart-competition": "Начать с начала",
+    "restart-competition": "Начать сначала",
     "tie-try-again": "Ничья! Попробуй еще раз!",
     "better-luck-next-time": "Лучшей удачи в следующий раз!",
     "you": "Ты",
@@ -1176,7 +1176,8 @@
     "pay-attention-to-spelling": "Пожалуйста, следи за правописанием! Твой ответ: \"{answer}\", правильный ответ: \"{levenshteinCorrect}\".",
     "showing-results-for": "Результаты поиска",
     "no-stories-found": "Не найдено",
-    "previous": "Previous",
-    "competition-mode": "Competition mode",
-    "competition-mode-info-text": "In competition mode, you will compete against a <b>bot</b> that's on roughly the same skill level as you. The competition will last until one of you finishes the last snippet, and the winner is the one to have the most exercises correct at that point."
+    "previous": "Предыдущая",
+    "competition-mode": "Соревнование",
+    "competition-mode-info-text": "Соревнование против <b>БОТА</b>, который примерно на твоем уровне. Соревнование закончится, когда один из вас достигнет конца истории — победителем будет тот, у кого больше будет <b>правильных</b> ответов в конце!",
+    "story-not-yet-processed": "Соревнование и кроссворды для этого текста вскоре будут доступны — когда закончится анализ текста"
 }
