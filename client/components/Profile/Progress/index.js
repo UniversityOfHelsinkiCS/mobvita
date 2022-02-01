@@ -11,7 +11,7 @@ import ResponsiveDatePicker from 'Components/ResponsiveDatePicker'
 import History from 'Components/History'
 import { getHistory as getExerciseHistory } from 'Utilities/redux/exerciseHistoryReducer'
 import { getHistory as getTestHistory } from 'Utilities/redux/testReducer'
-import { useLearningLanguage } from 'Utilities/common'
+import { hiddenFeatures, useLearningLanguage } from 'Utilities/common'
 import useWindowDimension from 'Utilities/windowDimensions'
 import { useHistory } from 'react-router-dom'
 import ProgressStats from './ProgressStats'
@@ -114,7 +114,9 @@ const Progress = () => {
       </div>
 
       <Divider />
-      <Button onClick={() => history.push('/test-hexagon')}>Test hexagon grid </Button>
+      {hiddenFeatures && (
+        <Button onClick={() => history.push('/test-hexagon')}>Test hexagon grid </Button>
+      )}
       <Divider />
 
       <div>
