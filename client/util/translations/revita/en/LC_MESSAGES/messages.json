@@ -1177,6 +1177,7 @@
     "competition-mode": "Competition",
     "competition-mode-info-text": "In competition mode, you will compete against a <b>bot</b> that has about the same skills as you. The competition will end when one of you reaches the end of the story — the winner is the one who has more <b>correct</b> answers at that time!",
     "story-not-yet-processed": "Competition and crosswords will be enabled very shortly — as soon as the story is fully processed",
-    "groups-for-only-registered-users": "Groups are only for registered user!",
-    "show-exercise-preview": "Hide exercise preview"
+    "groups-for-only-registered-users": "Creating and joining groups is limited for registered users only",
+    "show-exercise-preview": "Hide exercise preview",
+    "warning-for-anonymous-users": "Please note that saving stories for later use is possible only for registered users"
 }

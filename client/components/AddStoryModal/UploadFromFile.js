@@ -4,7 +4,7 @@ import { useHistory } from 'react-router-dom'
 import { FormattedMessage, FormattedHTMLMessage, useIntl } from 'react-intl'
 import { postStory, setCustomUpload } from 'Utilities/redux/uploadProgressReducer'
 import { Spinner, Button } from 'react-bootstrap'
-import { learningLanguageSelector } from 'Utilities/common'
+import { learningLanguageSelector, useCurrentUser } from 'Utilities/common'
 import { updateLibrarySelect } from 'Utilities/redux/userReducer'
 import { setNotification } from 'Utilities/redux/notificationReducer'
 
@@ -12,6 +12,7 @@ const UploadFromFile = ({ closeModal }) => {
   const dispatch = useDispatch()
   const intl = useIntl()
   const history = useHistory()
+  const user = useCurrentUser()
 
   const [file, setFile] = useState('')
   const [label, setLabel] = useState(intl.formatMessage({ id: 'choose-a-file' }))
@@ -54,6 +55,7 @@ const UploadFromFile = ({ closeModal }) => {
       <br />
       <span className="upload-instructions">
         <FormattedHTMLMessage id="file-upload-instructions" />
+        <div>test</div>
       </span>
       <div className="space-evenly pt-lg">
         <input id="file" name="file" type="file" accept=".docx, .txt" onChange={onChange} />

@@ -1180,6 +1180,7 @@
     "competition-mode": "Соревнование",
     "competition-mode-info-text": "Соревнование против <b>БОТА</b>, который примерно на твоем уровне. Соревнование закончится, когда один из вас достигнет конца истории — победителем будет тот, у кого больше будет <b>правильных</b> ответов в конце!",
     "story-not-yet-processed": "Соревнование и кроссворды для этого текста вскоре будут доступны — когда закончится анализ текста",
-    "groups-for-only-registered-users": "Groups are only for registered user!",
-    "show-exercise-preview": "Убрать разметку"
+    "groups-for-only-registered-users": "Creating and joining groups is limited for registered users only",
+    "show-exercise-preview": "Убрать разметку",
+    "warning-for-anonymous-users": "Please note that saving stories for later use is possible only for registered users"
 }

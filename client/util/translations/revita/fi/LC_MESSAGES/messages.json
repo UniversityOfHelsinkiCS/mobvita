@@ -1177,6 +1177,7 @@
     "competition-mode": "Kilpailu",
     "competition-mode-info-text": "Kilpailutilassa vastassasi on <b>botti</b>, joka on taidoiltaan samaa tasoa kuin sinä itse. Kisa päättyy, kun jompi kumpi pääsee tekstin loppuun, ja voittaja on se, jolla on sinä hetkenä eniten tehtäviä oikein!",
     "story-not-yet-processed": "Kaikki harjoitusmuodot avautuvat hetken päästä – kun teksti on kokonaan prosessoitu",
-    "groups-for-only-registered-users": "Groups are only for registered user!",
-    "show-exercise-preview": "Piilota tehtävien esikatselu"
+    "groups-for-only-registered-users": "Ryhmien luominen ja niihin liittyminen on varattu ainoastaan rekisteröityneille käyttäjille",
+    "show-exercise-preview": "Piilota tehtävien esikatselu",
+    "warning-for-anonymous-users": "Huomioithan, että tekstien tallentaminen myöhempään käyttöön on mahdollista vain rekisteröityneille käyttäjille"
 }

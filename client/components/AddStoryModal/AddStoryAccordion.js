@@ -2,6 +2,7 @@ import React, { useState } from 'react'
 import { Accordion, Menu } from 'semantic-ui-react'
 import { FormattedMessage } from 'react-intl'
 import useWindowDimensions from 'Utilities/windowDimensions'
+import { useCurrentUser } from 'Utilities/common'
 import UploadFromWeb from './UploadFromWeb'
 import UploadFromFile from './UploadFromFile'
 import UploadPastedText from './UploadPastedText'
@@ -10,6 +11,8 @@ import RecommendedSites from './RecommendedSites'
 const AddStoryAccordion = ({ closeModal }) => {
   const [accordionState, setAccordionState] = useState(0)
   const smallWindow = useWindowDimensions().width < 500
+  const user = useCurrentUser()
+  const userIsAnonymous = user.email === 'anonymous_email'
 
   const handleClick = (e, props) => {
     const { index } = props
@@ -31,6 +34,11 @@ const AddStoryAccordion = ({ closeModal }) => {
       >
         <FormattedMessage id="add-your-stories" />
       </div>
+      {userIsAnonymous && (
+        <div style={{ color: 'red', marginLeft: '2rem' }}>
+          <FormattedMessage id="warning-for-anonymous-users" />
+        </div>
+      )}
       <Menu.Item className="add-story-accordion-item">
         <Accordion.Title
           active={accordionState === 0}
