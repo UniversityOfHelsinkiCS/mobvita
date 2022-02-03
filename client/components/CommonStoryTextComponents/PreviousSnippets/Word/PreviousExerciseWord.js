@@ -44,6 +44,7 @@ const PreviousExerciseWord = ({ word, answer, tiedAnswer }) => {
   const { spanAnnotations, highlightRange } = useSelector(({ annotations }) => annotations)
   const { id: storyId } = useParams()
   const { correctAnswerIDs } = useSelector(({ practice }) => practice)
+  const [allowTranslating, setAllowTranslating] = useState(true)
 
   const intl = useIntl()
   const dispatch = useDispatch()
@@ -67,16 +68,24 @@ const PreviousExerciseWord = ({ word, answer, tiedAnswer }) => {
     if (autoSpeak === 'always' && voice) speak(surface, voice)
     if (lemmas) {
       dispatch(setWords({ surface, lemmas }))
-      dispatch(
-        getTranslationAction({
-          learningLanguage,
-          wordLemmas: lemmas,
-          dictionaryLanguage,
-          storyId,
-          wordId,
-          inflectionRef,
-        })
-      )
+
+      if (allowTranslating) {
+        dispatch(
+          getTranslationAction({
+            learningLanguage,
+            wordLemmas: lemmas,
+            dictionaryLanguage,
+            storyId,
+            wordId,
+            inflectionRef,
+          })
+        )
+
+        setAllowTranslating(false)
+        setTimeout(() => {
+          setAllowTranslating(true)
+        }, 1000)
+      }
     }
 
     if (wordIsInSpan(word)) {

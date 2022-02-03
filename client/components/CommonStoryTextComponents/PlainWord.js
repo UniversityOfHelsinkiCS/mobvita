@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import { useParams, useHistory } from 'react-router-dom'
 import useWindowDimensions from 'Utilities/windowDimensions'
@@ -23,6 +23,7 @@ const PlainWord = ({ word, annotatingAllowed, ...props }) => {
   const dispatch = useDispatch()
   const { width } = useWindowDimensions()
   const { id: storyId } = useParams()
+  const [allowTranslating, setAllowTranslating] = useState(true)
 
   const autoSpeak = useSelector(({ user }) => user.data.user.auto_speak)
   const learningLanguage = useSelector(learningLanguageSelector)
@@ -120,16 +121,24 @@ const PlainWord = ({ word, annotatingAllowed, ...props }) => {
           dispatch(addAnnotationCandidates(word))
         }
       }
-      dispatch(
-        getTranslationAction({
-          learningLanguage,
-          wordLemmas: lemmas,
-          dictionaryLanguage,
-          storyId,
-          wordId,
-          inflectionRef,
-        })
-      )
+
+      if (allowTranslating) {
+        dispatch(
+          getTranslationAction({
+            learningLanguage,
+            wordLemmas: lemmas,
+            dictionaryLanguage,
+            storyId,
+            wordId,
+            inflectionRef,
+          })
+        )
+
+        setAllowTranslating(false)
+        setTimeout(() => {
+          setAllowTranslating(true)
+        }, 1000)
+      }
     }
   }
 
