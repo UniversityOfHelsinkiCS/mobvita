@@ -1177,5 +1177,6 @@
     "previous": "Precedente",
     "competition-mode": "Competizione",
     "competition-mode-info-text": "In modalità competizione, gareggerai contro un <b>bot</b> che ha le tue stesse abilità. La competizione finirà quando uno di voi raggiungerà la fine della storia: il vincitore è colui che ha più risposte <b>corrette</b> in quel momento!",
-    "story-not-yet-processed": "La competizione e i cruciverba saranno abilitati presto — quando la storia sarà completamente elaborata"
+    "story-not-yet-processed": "La competizione e i cruciverba saranno abilitati presto — quando la storia sarà completamente elaborata",
+    "groups-for-only-registered-users": "Groups are only for registered user!"
 }

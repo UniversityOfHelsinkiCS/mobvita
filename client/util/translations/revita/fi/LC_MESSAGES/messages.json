@@ -1176,5 +1176,6 @@
     "previous": "Edellinen",
     "competition-mode": "Kilpailu",
     "competition-mode-info-text": "Kilpailutilassa vastassasi on <b>botti</b>, joka on taidoiltaan samaa tasoa kuin sinä itse. Kisa päättyy, kun jompi kumpi pääsee tekstin loppuun, ja voittaja on se, jolla on sinä hetkenä eniten tehtäviä oikein!",
-    "story-not-yet-processed": "Kaikki harjoitusmuodot avautuvat hetken päästä – kun teksti on kokonaan prosessoitu"
+    "story-not-yet-processed": "Kaikki harjoitusmuodot avautuvat hetken päästä – kun teksti on kokonaan prosessoitu",
+    "groups-for-only-registered-users": "Groups are only for registered user!"
 }
