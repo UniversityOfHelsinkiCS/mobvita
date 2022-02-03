@@ -35,7 +35,6 @@ const Login = () => {
   }, [user])
   return (
     <div className="login-form">
-      <h3 className="pb-sm">{intl.formatMessage({ id: 'Login' })} </h3>
       <Form onSubmit={login}>
         <Form.Field>
           <Form.Input

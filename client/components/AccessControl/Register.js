@@ -85,7 +85,6 @@ const Register = () => {
   }
   return (
     <div className="login-form">
-      <h3 className="pb-sm">{intl.formatMessage({ id: 'Register' })}</h3>
       <Form onSubmit={handleSubmit}>
         <Form.Field>
           <Form.Input
