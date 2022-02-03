@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
-import { Link } from 'react-router-dom'
+import { Link, useHistory } from 'react-router-dom'
 import { Divider, Segment, Header, Checkbox } from 'semantic-ui-react'
 import { Button } from 'react-bootstrap'
 import { FormattedMessage, useIntl } from 'react-intl'
@@ -25,6 +25,7 @@ const ReadViews = ({ match }) => {
   const { width } = useWindowDimensions()
   const [hideFeedback, setHideFeedback] = useState(false)
   const mode = getMode()
+  const history = useHistory()
 
   const { story, pending } = useSelector(({ stories, locale }) => ({
     story: stories.focused,
@@ -50,6 +51,15 @@ const ReadViews = ({ match }) => {
   if (!story || pending) return <Spinner fullHeight />
 
   const showFooter = width > 640
+  const url = history.location.pathname
+
+  const checkboxLabel = () => {
+    if (url.endsWith('/preview')) {
+      return intl.formatMessage({ id: 'show-exercise-preview' })
+    }
+
+    return intl.formatMessage({ id: 'show-feedback' })
+  }
 
   return (
     <div className="cont-tall flex-col space-between align-center pt-sm">
@@ -68,7 +78,7 @@ const ReadViews = ({ match }) => {
             <div className="space-between" style={{ alignItems: 'center' }}>
               <Checkbox
                 toggle
-                label={intl.formatMessage({ id: 'show-feedback' })}
+                label={checkboxLabel()}
                 checked={!hideFeedback}
                 onChange={() => setHideFeedback(!hideFeedback)}
                 style={{ paddingTop: '.5em' }}

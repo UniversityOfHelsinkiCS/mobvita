@@ -26,9 +26,12 @@ const Register = () => {
     setAccepted(!accepted)
   }
 
-  const { error, errorMessage, pending: registerPending, accountCreated } = useSelector(
-    ({ register }) => register
-  )
+  const {
+    error,
+    errorMessage,
+    pending: registerPending,
+    accountCreated,
+  } = useSelector(({ register }) => register)
   const userEmail = useSelector(({ user }) => user.data?.user?.email)
   const locale = useSelector(({ locale }) => locale)
 

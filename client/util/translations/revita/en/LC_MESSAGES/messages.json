@@ -1072,7 +1072,7 @@
     "": "Noun. Case and postposition/preposition government",
     "hide-feedback": "Hide feedback",
     "Weather": "Weather",
-    "show-feedback": "Display feedback",
+    "show-feedback": "Hide feedback",
     "upload-from-web-instructions": "Revita will try to find the story from the URL. If it fails, or if the result contains unwanted text, please use the \"Paste a text\" box below to enter the story manually.",
     "word-not-in-note-yet": "No notes yet for this word.",
     "click-arrow-buttons-to-expand-shrink": "Click the arrow buttons «  »  to expand/shrink the selection.",
@@ -1177,5 +1177,6 @@
     "competition-mode": "Competition",
     "competition-mode-info-text": "In competition mode, you will compete against a <b>bot</b> that has about the same skills as you. The competition will end when one of you reaches the end of the story — the winner is the one who has more <b>correct</b> answers at that time!",
     "story-not-yet-processed": "Competition and crosswords will be enabled very shortly — as soon as the story is fully processed",
-    "groups-for-only-registered-users": "Groups are only for registered user!"
+    "groups-for-only-registered-users": "Groups are only for registered user!",
+    "show-exercise-preview": "Hide exercise preview"
 }
