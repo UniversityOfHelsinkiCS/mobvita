@@ -1180,9 +1180,10 @@
     "competition-mode": "Соревнование",
     "competition-mode-info-text": "Соревнование против <b>БОТА</b>, который примерно на твоем уровне. Соревнование закончится, когда один из вас достигнет конца истории — победителем будет тот, у кого больше будет <b>правильных</b> ответов в конце!",
     "story-not-yet-processed": "Соревнование и кроссворды для этого текста вскоре будут доступны — когда закончится анализ текста",
-    "groups-for-only-registered-users": "Creating and joining groups is limited for registered users only",
+    "groups-for-only-registered-users": "Пожалуйста, войдите в систему с зарегистрированным аккаунтом, чтобы создать группу или вступить в группу.",
     "show-exercise-preview": "Убрать разметку",
-    "warning-for-anonymous-users": "Please note that saving stories for later use is possible only for registered users",
-    "preview-mode-info": "When enabled, you can click the colorized words to see what kind of concepts could be possible to practice with them.",
-    "review-mode-info": "When enabled, you can click the colorized words to see what you have answered during previous practice sessions."
+    "warning-for-anonymous-users": "Пожалуйста, войдите в систему с зарегистрированным аккаунтом, чтобы сохранить историю на будущее.",
+    "preview-mode-info": "When enabled, you can click the highlighted words and phrases to see what kinds of exercises are available for them.",
+    "review-mode-info": "When enabled, you can click the highlighted words to see what you had answered during previous practice sessions and the feedback.",
+    "shared-with-following-groups": "Shared with following groups:"
 }

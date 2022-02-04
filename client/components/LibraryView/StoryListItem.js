@@ -204,19 +204,22 @@ const StoryActions = ({ story, enableOnlyPractice, isControlled }) => {
 }
 
 const GroupsSharedTo = ({ groups }) => {
-  const groupsToShow =
-    groups.length > 3 ? groups.slice(2).concat({ group_name: '...', group_id: 'ellipsis' }) : groups
-
   return (
-    <div
-      className="flex-col"
-      style={{ padding: '0 .5rem', fontSize: '.7rem', overflow: 'hidden', whiteSpace: 'nowrap' }}
-    >
-      {groupsToShow.map(({ group_name: groupName, group_id: id }) => (
-        <span key={id} style={{ overflow: 'hidden', textOverflow: 'ellipsis', color: '#000' }}>
-          {groupName}
-        </span>
-      ))}
+    <div>
+      <Popup
+        position="top center"
+        content={
+          <div>
+            <FormattedMessage id="shared-with-following-groups" />
+            <div>
+              {groups.map(({ group_name: groupName, group_id: id }) => (
+                <span key={id}>{groupName}</span>
+              ))}
+            </div>
+          </div>
+        }
+        trigger={<Icon color="black" name="users" />}
+      />
     </div>
   )
 }
