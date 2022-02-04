@@ -211,11 +211,11 @@ const GroupsSharedTo = ({ groups }) => {
         content={
           <div>
             <FormattedMessage id="shared-with-following-groups" />
-            <div>
+            <ul>
               {groups.map(({ group_name: groupName, group_id: id }) => (
-                <span key={id}>{groupName}</span>
+                <li key={id}>{groupName}</li>
               ))}
-            </div>
+            </ul>
           </div>
         }
         trigger={<Icon color="black" name="users" />}
