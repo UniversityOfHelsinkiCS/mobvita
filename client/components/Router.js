@@ -28,13 +28,13 @@ import GroupPeople from './GroupView/GroupPeople'
 import Concepts from './Concepts'
 import Profile from './Profile/Profile'
 import ResetPassword from './AccessControl/ResetPassword'
-import Register from './AccessControl/Register'
 import Help from './StaticContent/Help'
 import Flashcards from './Flashcards'
 import LandingPage from './LandingPage'
 import Achievements from './Achievements'
 import Leaderboard from './LeaderboardView'
 import NavBar from './NavBar'
+import RegisterView from './RegisterView'
 
 export default () => {
   const user = useSelector(state => state.user.data)
@@ -52,7 +52,7 @@ export default () => {
             <Route exact path="/email-confirm/:token" component={EmailConfirm} />
             <Route exact path="/reset-password/:token" component={ResetPassword} />
             <Route exact path="/group-confirmation/:token" component={InvitationConfirm} />
-            <Route exact path="/register" component={Register} />
+            <Route exact path="/register" component={RegisterView} />
             <Route exact path="/help" component={Help} />
             <Route
               exact
