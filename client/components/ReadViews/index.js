@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import { Link, useHistory } from 'react-router-dom'
-import { Divider, Segment, Header, Checkbox } from 'semantic-ui-react'
+import { Divider, Segment, Header, Checkbox, Icon, Popup } from 'semantic-ui-react'
 import { Button } from 'react-bootstrap'
 import { FormattedMessage, useIntl } from 'react-intl'
 import useWindowDimensions from 'Utilities/windowDimensions'
@@ -61,6 +61,14 @@ const ReadViews = ({ match }) => {
     return intl.formatMessage({ id: 'show-feedback' })
   }
 
+  const infoBoxLabel = () => {
+    if (url.endsWith('/preview')) {
+      return intl.formatMessage({ id: 'preview-mode-info' })
+    }
+
+    return intl.formatMessage({ id: 'review-mode-info' })
+  }
+
   return (
     <div className="cont-tall flex-col space-between align-center pt-sm">
       <div className="flex mb-nm">
@@ -76,13 +84,19 @@ const ReadViews = ({ match }) => {
               )}
             </Header>
             <div className="space-between" style={{ alignItems: 'center' }}>
-              <Checkbox
-                toggle
-                label={checkboxLabel()}
-                checked={!hideFeedback}
-                onChange={() => setHideFeedback(!hideFeedback)}
-                style={{ paddingTop: '.5em' }}
-              />
+              <div>
+                <Checkbox
+                  toggle
+                  label={checkboxLabel()}
+                  checked={!hideFeedback}
+                  onChange={() => setHideFeedback(!hideFeedback)}
+                  style={{ paddingTop: '.5em' }}
+                />
+                <Popup
+                  content={infoBoxLabel()}
+                  trigger={<Icon className="pl-sm" name="info circle" color="grey" />}
+                />
+              </div>
               <Link to={`/stories/${id}/practice`}>
                 <Button variant="primary">
                   <FormattedMessage id="practice-now" />

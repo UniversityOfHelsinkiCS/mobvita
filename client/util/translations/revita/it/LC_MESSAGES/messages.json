@@ -1180,5 +1180,7 @@
     "story-not-yet-processed": "La competizione e i cruciverba saranno abilitati presto — quando la storia sarà completamente elaborata",
     "groups-for-only-registered-users": "Creating and joining groups is limited for registered users only",
     "show-exercise-preview": "Nascondi l'anteprima dei esercizi",
-    "warning-for-anonymous-users": "Please note that saving stories for later use is possible only for registered users"
+    "warning-for-anonymous-users": "Please note that saving stories for later use is possible only for registered users",
+    "preview-mode-info": "When enabled, you can click the colorized words to see what kind of concepts could be possible to practice with them.",
+    "review-mode-info": "When enabled, you can click the colorized words to see what you have answered during previous practice sessions."
 }
