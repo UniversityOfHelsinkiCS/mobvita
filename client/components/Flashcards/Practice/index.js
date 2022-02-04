@@ -84,7 +84,7 @@ const Practice = ({ mode }) => {
       correct,
       answer,
       exercise,
-      hints_shown: displayedHints.length,
+      hints_shown: displayedHints?.length || 0,
       mode: 'trans',
       story,
       lemma,
