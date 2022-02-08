@@ -12,7 +12,7 @@ async function addTranslations(auth) {
 
   sheets.spreadsheets.values.get({
     spreadsheetId: '1OVtLSEpLA6gmwS1LSRGQ1P6MwmhU1xAxOe6fsetCRZk',
-    range: 'C:H',
+    range: 'C:I',
   }).then(res => {
     const rows = res.data.values.slice(1);
     const translations = {}
@@ -27,6 +27,7 @@ async function addTranslations(auth) {
         it: trimmedRow[3] || eng,
         fi: trimmedRow[4] || eng,
         ru: trimmedRow[5] || eng,
+        zh: trimmedRow[6] || eng,
       }
     }
     makeTranslations(translations)
@@ -36,7 +37,7 @@ async function addTranslations(auth) {
 }
 
 function makeTranslations(translations) {
-  const languages = ['fi', 'en', 'ru', 'it']
+  const languages = ['fi', 'en', 'ru', 'it', 'zh']
   for (lang of languages) {
     let changes = 0
     let news = 0
