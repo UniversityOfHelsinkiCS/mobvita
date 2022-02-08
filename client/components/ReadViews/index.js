@@ -33,6 +33,8 @@ const ReadViews = ({ match }) => {
     locale,
   }))
 
+  const { progress, storyId } = useSelector(({ uploadProgress }) => uploadProgress)
+
   const learningLanguage = useSelector(learningLanguageSelector)
   const { id } = match.params
   useEffect(() => {
@@ -52,6 +54,7 @@ const ReadViews = ({ match }) => {
 
   const showFooter = width > 640
   const url = history.location.pathname
+  const processingCurrentStory = id === storyId
 
   const checkboxLabel = () => {
     if (url.endsWith('/preview')) {
@@ -103,6 +106,11 @@ const ReadViews = ({ match }) => {
                 </Button>
               </Link>
             </div>
+            {progress !== 0 && processingCurrentStory && (
+              <span style={{ color: 'red' }}>
+                <FormattedMessage id="story-not-yet-processed" />
+              </span>
+            )}
             <Divider />
             {story.paragraph.map(paragraph => (
               <>
