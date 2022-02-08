@@ -21,12 +21,12 @@ describe("practice mode", function () {
   })
 
   it("can get to next snippet after two retries", function () {
-    cy.contains('1 / 8', { timeout: 20000 })
+    cy.contains('1 / 13', { timeout: 20000 })
 
     cy.get("[data-cy=check-answer]").click()
     cy.get("[data-cy=check-answer]").click()
 
-    cy.contains('2 / 8', { timeout: 20000 })
+    cy.contains('2 / 13', { timeout: 20000 })
   })
 
   it("shows feedback", function () {
