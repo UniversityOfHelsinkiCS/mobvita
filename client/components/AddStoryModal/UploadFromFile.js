@@ -55,7 +55,6 @@ const UploadFromFile = ({ closeModal }) => {
       <br />
       <span className="upload-instructions">
         <FormattedHTMLMessage id="file-upload-instructions" />
-        <div>test</div>
       </span>
       <div className="space-evenly pt-lg">
         <input id="file" name="file" type="file" accept=".docx, .txt" onChange={onChange} />
