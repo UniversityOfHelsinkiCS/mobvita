@@ -1176,12 +1176,13 @@
     "previous": "Edellinen",
     "competition-mode": "Kilpailu",
     "competition-mode-info-text": "Kilpailutilassa vastassasi on <b>botti</b>, joka on taidoiltaan samaa tasoa kuin sinä itse. Kisa päättyy, kun jompi kumpi pääsee tekstin loppuun, ja voittaja on se, jolla on sinä hetkenä eniten tehtäviä oikein!",
-    "story-not-yet-processed": "This story hasn't yet been completely processed. Reload the page after a while.",
+    "story-not-yet-processed": "This story hasn't yet been completely processed",
     "groups-for-only-registered-users": "Ryhmien luominen ja niihin liittyminen on varattu ainoastaan rekisteröityneille käyttäjille",
     "show-exercise-preview": "Piilota tehtävien esikatselu",
     "warning-for-anonymous-users": "Huomioithan, että tekstien tallentaminen myöhempään käyttöön on mahdollista vain rekisteröityneille käyttäjille",
     "preview-mode-info": "Tämän asetuksen ollessa päällä voit klikata värjättyjä sanoja nähdäksesi millaisia aiheita niillä voi harjoitella.",
     "review-mode-info": "Tämän asetuksen ollessa päällä voit klikata korostettuja sanoja nähdäksesi, mitä olet vastannut edellisillä harjoituskerroilla.",
     "shared-with-following-groups": "Jaettu seuraaville ryhmille:",
-    "???": ""
+    "???": "",
+    "story-processing-now-finished": "The story has now been completely processed"
 }

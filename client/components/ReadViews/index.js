@@ -26,6 +26,7 @@ const ReadViews = ({ match }) => {
   const [hideFeedback, setHideFeedback] = useState(false)
   const mode = getMode()
   const history = useHistory()
+  const [showRefreshButton, setShowRefreshButton] = useState(false)
 
   const { story, pending } = useSelector(({ stories, locale }) => ({
     story: stories.focused,
@@ -50,6 +51,12 @@ const ReadViews = ({ match }) => {
     }
   }, [story])
 
+  useEffect(() => {
+    if (progress === 1) {
+      setShowRefreshButton(true)
+    }
+  }, [progress])
+
   if (!story || pending) return <Spinner fullHeight />
 
   const showFooter = width > 640
@@ -70,6 +77,11 @@ const ReadViews = ({ match }) => {
     }
 
     return intl.formatMessage({ id: 'review-mode-info' })
+  }
+
+  const refreshPage = () => {
+    dispatch(getStoryAction(id, mode))
+    setShowRefreshButton(false)
   }
 
   return (
@@ -110,6 +122,16 @@ const ReadViews = ({ match }) => {
               <span style={{ color: 'red' }}>
                 <FormattedMessage id="story-not-yet-processed" />
               </span>
+            )}
+            {showRefreshButton && (
+              <div className="flex gap-col-sm align-center">
+                <div className="bold">
+                  <FormattedMessage id="story-processing-now-finished" />
+                </div>
+                <Button onClick={refreshPage}>
+                  <FormattedMessage id="refresh" />
+                </Button>
+              </div>
             )}
             <Divider />
             {story.paragraph.map(paragraph => (

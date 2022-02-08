@@ -1176,12 +1176,13 @@
     "previous": "Previous",
     "competition-mode": "Competition",
     "competition-mode-info-text": "In competition mode, you will compete against a <b>bot</b> that has about the same skills as you. The competition will end when one of you reaches the end of the story — the winner is the one who has more <b>correct</b> answers at that time!",
-    "story-not-yet-processed": "This story hasn't yet been completely processed. Reload the page after a while.",
+    "story-not-yet-processed": "This story hasn't yet been completely processed",
     "groups-for-only-registered-users": "Creating a group and joining a group is possible for registered users only. Please register and log in!",
     "show-exercise-preview": "Hide exercise preview",
     "warning-for-anonymous-users": "Please note that saving stories for later use is possible only for registered users",
     "preview-mode-info": "When enabled, you can click the highlighted words and phrases to see what kinds of exercises are available for them.",
     "review-mode-info": "When enabled, you can click the highlighted words to see what you had answered during previous practice sessions and the feedback.",
     "shared-with-following-groups": "Shared with groups:",
-    "???": ""
+    "???": "",
+    "story-processing-now-finished": "The story has now been completely processed"
 }

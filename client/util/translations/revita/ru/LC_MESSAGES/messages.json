@@ -1179,12 +1179,13 @@
     "previous": "Предыдущая",
     "competition-mode": "Соревнование",
     "competition-mode-info-text": "Соревнование против <b>БОТА</b>, который примерно на твоем уровне. Соревнование закончится, когда один из вас достигнет конца истории — победителем будет тот, у кого больше будет <b>правильных</b> ответов в конце!",
-    "story-not-yet-processed": "This story hasn't yet been completely processed. Reload the page after a while.",
+    "story-not-yet-processed": "This story hasn't yet been completely processed",
     "groups-for-only-registered-users": "Пожалуйста, войдите в систему с зарегистрированным аккаунтом, чтобы создать группу или вступить в группу.",
     "show-exercise-preview": "Убрать разметку",
     "warning-for-anonymous-users": "Пожалуйста, войдите в систему с зарегистрированным аккаунтом, чтобы сохранить историю на будущее.",
     "preview-mode-info": "Если включить эту функцию, то можно кликать на подсвеченные слова и фразы, чтобы увидеть, какие упражнения для них система предлагает.",
     "review-mode-info": "Если включить эту функцию, то можно кликать на подсвеченные слова и фразы, чтобы увидеть, свои прежние ответы на эти упражнения",
     "shared-with-following-groups": "Текст отослан группам:",
-    "???": ""
+    "???": "",
+    "story-processing-now-finished": "The story has now been completely processed"
 }
