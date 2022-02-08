@@ -1,6 +1,7 @@
 import React from 'react'
 import AccountInfo from './AccountInfo'
 import ChangePassword from './ChangePassword'
+import DeleteAccount from './DeleteAccount'
 
 const Account = () => {
   return (
@@ -8,6 +9,8 @@ const Account = () => {
       <AccountInfo />
       <hr />
       <ChangePassword />
+      <hr />
+      <DeleteAccount />
     </div>
   )
 }

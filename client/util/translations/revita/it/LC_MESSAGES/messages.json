@@ -1185,5 +1185,9 @@
     "review-mode-info": "Quando abilitata, clicca parole e frasi evidenziate per vedere le tue risposte di sessioni precedenti e il feedback",
     "shared-with-following-groups": "Condivisio con i seguenti gruppi:",
     "???": "",
-    "story-processing-now-finished": "The story has now been completely processed"
+    "story-processing-now-finished": "The story has now been completely processed",
+    "delete-account": "Delete account",
+    "delete-account-confirmation": "Are you sure you want to delete your account?",
+    "delete-account-information": "Deleting your account will permanently delete your stories. Type your password below to confirm the deletion.",
+    "delete-account-success": "Account successfully deleted"
 }

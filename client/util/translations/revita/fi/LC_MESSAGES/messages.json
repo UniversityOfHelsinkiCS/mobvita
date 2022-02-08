@@ -1139,7 +1139,7 @@
     "click-to-add-exercise": "Klikkaa lisätäksesi tehtävän",
     "create-controlled-exercise": "Luo ohjattu harjoitus",
     "controlled-story-saved": "Ohjattu harjoitus tallennettu!",
-    "refresh": "Refresh",
+    "refresh": "Päivitä",
     "save-and-go-to-next-snippet": "Save chosen exercises and go to next snippet",
     "regenerate-exercises": "Regeneroi tehtävät",
     "freeze-snippet": "Jäädytä osa",
@@ -1184,5 +1184,9 @@
     "review-mode-info": "Tämän asetuksen ollessa päällä voit klikata korostettuja sanoja nähdäksesi, mitä olet vastannut edellisillä harjoituskerroilla.",
     "shared-with-following-groups": "Jaettu seuraaville ryhmille:",
     "???": "",
-    "story-processing-now-finished": "The story has now been completely processed"
+    "story-processing-now-finished": "The story has now been completely processed",
+    "delete-account": "Poista tili",
+    "delete-account-confirmation": "Haluatko varmasti poistaa tilisi?",
+    "delete-account-information": "Deleting your account will permanently delete your stories. Type your password below to confirm the deletion.",
+    "delete-account-success": "Tili poistettu onnistuneesti"
 }

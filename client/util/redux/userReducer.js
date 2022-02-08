@@ -15,6 +15,13 @@ export const createAnonToken = locale => {
   return callBuilder(route, prefix, 'post', payload)
 }
 
+export const deleteUser = password => {
+  const route = '/user/remove/'
+  const prefix = 'DELETE_USER'
+  const payload = { password }
+  return callBuilder(route, prefix, 'post', payload)
+}
+
 export const logout = () => ({ type: 'LOGOUT_SUCCESS' })
 export const setLandingPageLangManuallySelected = value => ({
   type: 'SET_LP_LANG_MANUALLY_SELECTED',
@@ -369,6 +376,24 @@ export default (state = { data: null, learningLanguageChanged: false }, action) 
       return {
         ...state,
         landingPageLangManuallySelected: action.value,
+      }
+    case 'DELETE_USER_ATTEMPT':
+      return {
+        ...state,
+        pending: true,
+        error: false,
+        errorMessage: null,
+      }
+    case 'DELETE_USER_SUCCESS':
+      return {
+        ...state,
+        deleteSuccessful: true,
+        pending: false,
+      }
+    case 'DELETE_USER_FAILURE':
+      return {
+        ...state,
+        pending: false,
       }
     default:
       return state

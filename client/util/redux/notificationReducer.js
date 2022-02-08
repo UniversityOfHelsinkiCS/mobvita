@@ -83,6 +83,16 @@ export default (state = initialState, action) => {
         message: failureMessage(action.response),
         type: type.error,
       }
+    case 'DELETE_USER_SUCCESS':
+      return {
+        translationId: 'delete-account-success',
+        type: type.success,
+      }
+    case 'DELETE_USER_FAILURE':
+      return {
+        message: failureMessage(action.response),
+        type: type.error,
+      }
     case 'DELETE_GROUP_FAILURE':
       return {
         message: failureMessage(action.response),

@@ -504,5 +504,9 @@
     "wordnest-info-text": "The main word in the nest is on the left, words derived from it are below it and indented once to the right, and so on.  More common and frequent words have stronger color.  Click on the links →to see related nests.",
     "???": "",
     "story-processing-now-finished": "The story has now been completely processed",
-    "refresh": "Refresh"
+    "refresh": "Refresh",
+    "delete-account": "Delete account",
+    "delete-account-confirmation": "Are you sure you want to delete your account?",
+    "delete-account-information": "Deleting your account will permanently delete your stories. Type your password below to confirm the deletion.",
+    "delete-account-success": "Account successfully deleted"
 }
