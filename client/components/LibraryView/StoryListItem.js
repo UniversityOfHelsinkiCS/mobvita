@@ -207,7 +207,7 @@ const GroupsSharedTo = ({ groups }) => {
   return (
     <div>
       <Popup
-        position="top center"
+        position="top right"
         content={
           <div>
             <FormattedMessage id="shared-with-following-groups" />
@@ -218,7 +218,7 @@ const GroupsSharedTo = ({ groups }) => {
             </ul>
           </div>
         }
-        trigger={<Icon color="black" name="users" />}
+        trigger={<Icon size="large" color="black" name="users" />}
       />
     </div>
   )
