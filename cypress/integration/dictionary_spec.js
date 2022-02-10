@@ -33,14 +33,14 @@ describe("dictionary", function () {
       .contains("yhteiskunnassa järjestystä ja turvallisuutta valvova ja ylläpitävä virkamies")
   })
 
-  // it("changing translate-to language re-translates the word", function () {
-  //   cy.contains("poliisi")
-  //     .click()
-  //   cy.get('[data-cy=translations]')
-  //     .contains("yhteiskunnassa järjestystä ja turvallisuutta valvova ja ylläpitävä virkamies")
-  //   cy.get("[data-cy=dictionary-dropdown]").select("Espanja")
-  //   cy.get('[data-cy=translations]')
-  //     .contains("policía")
-  // })
+  it("changing translate-to language re-translates the word", function () {
+    cy.contains("poliisi")
+      .click()
+    cy.get('[data-cy=translations]')
+      .contains("yhteiskunnassa järjestystä ja turvallisuutta valvova ja ylläpitävä virkamies")
+    cy.get("[data-cy=dictionary-dropdown]").select("Espanja")
+    cy.get('[data-cy=translations]')
+      .contains("policía")
+  })
 
 })
