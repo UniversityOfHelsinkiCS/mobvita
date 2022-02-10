@@ -501,12 +501,15 @@
     "upload-from-web-instructions": "Revita will try to find the story from the URL. If it fails, or if the result contains unwanted text, please use the \"Paste a text\" box below to enter the story manually.",
     "show-additional-info": "More information",
     "nest": "Nest",
-    "wordnest-info-text": "The main word in the nest is on the left, words derived from it are below it and indented once to the right, and so on.  More common and frequent words have stronger color.  Click on the links →to see related nests.",
+    "wordnest-info-text": "The main word in the nest is on the left, words derived from it are below it and indented once to the right, and so on.  More common and frequent words have stronger color.  Click on the links → to see related nests.",
     "???": "",
     "story-processing-now-finished": "The story has now been completely processed",
     "refresh": "Refresh",
     "delete-account": "Delete account",
     "delete-account-confirmation": "Are you sure you want to delete your account?",
     "delete-account-information": "Deleting your account will permanently delete your stories. Type your password below to confirm the deletion.",
-    "delete-account-success": "Account successfully deleted"
+    "delete-account-success": "Account successfully deleted",
+    "I declension. Basic": "I declension. Basic",
+    "II conjugation. Basic": "II conjugation. Basic",
+    "II declension. Basic": "II declension. Basic"
 }

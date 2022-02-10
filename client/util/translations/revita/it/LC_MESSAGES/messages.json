@@ -1189,5 +1189,8 @@
     "delete-account": "Delete account",
     "delete-account-confirmation": "Are you sure you want to delete your account?",
     "delete-account-information": "Deleting your account will permanently delete your stories. Type your password below to confirm the deletion.",
-    "delete-account-success": "Account successfully deleted"
+    "delete-account-success": "Account successfully deleted",
+    "I declension. Basic": "I declinazione. Altri",
+    "II conjugation. Basic": "II coniugazione",
+    "II declension. Basic": "II declinazione. Altri"
 }

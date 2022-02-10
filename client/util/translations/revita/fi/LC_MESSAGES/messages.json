@@ -1176,7 +1176,7 @@
     "previous": "Edellinen",
     "competition-mode": "Kilpailu",
     "competition-mode-info-text": "Kilpailutilassa vastassasi on <b>botti</b>, joka on taidoiltaan samaa tasoa kuin sinä itse. Kisa päättyy, kun jompi kumpi pääsee tekstin loppuun, ja voittaja on se, jolla on sinä hetkenä eniten tehtäviä oikein!",
-    "story-not-yet-processed": "This story hasn't yet been completely processed",
+    "story-not-yet-processed": "Teksti ei ole vielä täysin prosessoitu",
     "groups-for-only-registered-users": "Ryhmien luominen ja niihin liittyminen on varattu ainoastaan rekisteröityneille käyttäjille",
     "show-exercise-preview": "Piilota tehtävien esikatselu",
     "warning-for-anonymous-users": "Huomioithan, että tekstien tallentaminen myöhempään käyttöön on mahdollista vain rekisteröityneille käyttäjille",
@@ -1184,9 +1184,12 @@
     "review-mode-info": "Tämän asetuksen ollessa päällä voit klikata korostettuja sanoja nähdäksesi, mitä olet vastannut edellisillä harjoituskerroilla.",
     "shared-with-following-groups": "Jaettu seuraaville ryhmille:",
     "???": "",
-    "story-processing-now-finished": "The story has now been completely processed",
+    "story-processing-now-finished": "Teksti on nyt täysin prosessoitu",
     "delete-account": "Poista tili",
     "delete-account-confirmation": "Haluatko varmasti poistaa tilisi?",
-    "delete-account-information": "Deleting your account will permanently delete your stories. Type your password below to confirm the deletion.",
-    "delete-account-success": "Tili poistettu onnistuneesti"
+    "delete-account-information": "Poistaessasi tilisi lisäämäsi tekstit poistuvat pysyvästi. Kirjoita salasanasi alle vahvistaaksesi poistamisen.",
+    "delete-account-success": "Tili poistettu onnistuneesti",
+    "I declension. Basic": "Taivutustyyppi I (muut)",
+    "II conjugation. Basic": "2. verbitaivutus",
+    "II declension. Basic": "Taivutustyyppi II (muut)"
 }
