@@ -18,84 +18,80 @@ const VocabularyGraph = ({ vocabularyData }) => {
   const { flashcard, seen, total, visit } = vocabularyData
 
   const [showSeen, setShowSeen] = useState(true)
-  const [showFlashcard, setShowFlashcard] = useState(false)
-  const [showVisit, setShowVisit] = useState(false)
-  const [showTotal, setShowTotal] = useState(false)
+  const [showFlashcard, setShowFlashcard] = useState(true)
+  const [showVisit, setShowVisit] = useState(true)
+  const [showTotal, setShowTotal] = useState(true)
 
   const intl = useIntl()
   const smallScreen = useWindowDimensions().width < 640
 
-  const getSeries = () => {
-    const temp = []
+  // const getSeries = () => {
+  //   const temp = []
 
-    if (showSeen) {
-      const seenNow = {
-        name: 'Seen',
-        data: seen.now,
-      }
-      const seenBefore = {
-        name: 'Seen (before)',
-        data: seen[Object.keys(seen).filter(key => key !== 'now')[0]],
-      }
-      temp.push(seenNow)
-      temp.push(seenBefore)
-    }
-
-    if (showFlashcard) {
-      const flashcardNow = {
-        name: 'Flashcard',
-        data: flashcard.now,
-      }
-      const flashardBefore = {
-        name: 'Flashcard (before)',
-        data: flashcard[Object.keys(flashcard).filter(key => key !== 'now')[0]],
-      }
-      temp.push(flashcardNow)
-      temp.push(flashardBefore)
-    }
-
-    if (showVisit) {
-      const visitNow = {
-        name: 'Visit',
-        data: visit.now,
-      }
-      const visitBefore = {
-        name: 'Visit (before)',
-        data: visit[Object.keys(visit).filter(key => key !== 'now')[0]],
-      }
-      temp.push(visitNow)
-      temp.push(visitBefore)
-    }
-    if (showTotal) {
-      const totalNow = {
-        name: 'Total',
-        data: total.now,
-      }
-      const totalBefore = {
-        name: 'Total (before)',
-        data: total[Object.keys(total).filter(key => key !== 'now')[0]],
-      }
-      temp.push(totalNow)
-      temp.push(totalBefore)
-    }
-    return temp
-  }
-
-  const series = getSeries()
-
-  //   const storyData = exerciseHistory && exerciseHistory.map(e => [moment(e.date).valueOf(), e.score])
-  //   const flashcardData =
-  //     flashcardHistory && flashcardHistory.map(e => [moment(e.date).valueOf(), e.score])
-
-  //   const series = [{ name: intl.formatMessage({ id: 'Stories' }), data: storyData }]
-
-  //   if (hiddenFeatures) {
-  //     series.push({
-  //       name: intl.formatMessage({ id: 'Flashcards' }),
-  //       data: flashcardData,
-  //       color: '#dc3545',
-  //     })
+  //   if (showSeen) {
+  //     const seenNow = {
+  //       name: 'Seen',
+  //       data: seen.now,
+  //     }
+  //     const seenBefore = {
+  //       name: 'Seen (before)',
+  //       data: seen[Object.keys(seen).filter(key => key !== 'now')[0]],
+  //     }
+  //     temp.push(seenNow)
+  //     temp.push(seenBefore)
   //   }
+
+  //   if (showFlashcard) {
+  //     const flashcardNow = {
+  //       name: 'Flashcard',
+  //       data: flashcard.now,
+  //     }
+  //     const flashardBefore = {
+  //       name: 'Flashcard (before)',
+  //       data: flashcard[Object.keys(flashcard).filter(key => key !== 'now')[0]],
+  //     }
+  //     temp.push(flashcardNow)
+  //     temp.push(flashardBefore)
+  //   }
+
+  //   if (showVisit) {
+  //     const visitNow = {
+  //       name: 'Visit',
+  //       data: visit.now,
+  //     }
+  //     const visitBefore = {
+  //       name: 'Visit (before)',
+  //       data: visit[Object.keys(visit).filter(key => key !== 'now')[0]],
+  //     }
+  //     temp.push(visitNow)
+  //     temp.push(visitBefore)
+  //   }
+  //   if (showTotal) {
+  //     const totalNow = {
+  //       name: 'Total',
+  //       data: total.now,
+  //     }
+  //     const totalBefore = {
+  //       name: 'Total (before)',
+  //       data: total[Object.keys(total).filter(key => key !== 'now')[0]],
+  //     }
+  //     temp.push(totalNow)
+  //     temp.push(totalBefore)
+  //   }
+  //   return temp
+  // }
+
+  // const series = getSeries()
+
+  // const series = [{ name: intl.formatMessage({ id: 'Stories' }), data: storyData }]
+
+  // if (hiddenFeatures) {
+  //   series.push({
+  //     name: intl.formatMessage({ id: 'Flashcards' }),
+  //     data: flashcardData,
+  //     color: '#dc3545',
+  //   })
+  // }
 
   //   const height = smallScreen ? '75%' : '35%'
 
@@ -117,33 +113,41 @@ const VocabularyGraph = ({ vocabularyData }) => {
 
   const options = {
     title: { text: 'Vocabulary chart' },
-    series,
-    // series: [
-    //   {
-    //     name: 'Total',
-    //     data: total.now,
-    //   },
-    //   {
-    //     name: 'Total (before)',
-    //     data: total[Object.keys(total).filter(key => key !== 'now')[0]],
-    //   },
-    //   //   {
-    //   //     name: 'Visit',
-    //   //     data: visit.now,
-    //   //   },
-    //   //   {
-    //   //     name: 'Visit (before)',
-    //   //     data: visit[Object.keys(visit).filter(key => key !== 'now')[0]],
-    //   //   },
-    //   {
-    //     name: 'Seen',
-    //     data: seen.now,
-    //   },
-    //   {
-    //     name: 'Seen (before)',
-    //     data: seen[Object.keys(seen).filter(key => key !== 'now')[0]],
-    //   },
-    // ],
+    // series,
+    series: [
+      {
+        name: 'Total',
+        data: total.now,
+      },
+      {
+        name: 'Total (before)',
+        data: total[Object.keys(total).filter(key => key !== 'now')[0]],
+      },
+      {
+        name: 'Visit',
+        data: visit.now,
+      },
+      {
+        name: 'Visit (before)',
+        data: visit[Object.keys(visit).filter(key => key !== 'now')[0]],
+      },
+      {
+        name: 'Seen',
+        data: seen.now,
+      },
+      {
+        name: 'Seen (before)',
+        data: seen[Object.keys(seen).filter(key => key !== 'now')[0]],
+      },
+      {
+        name: 'Flashcard',
+        data: flashcard.now,
+      },
+      {
+        name: 'Flashcard (before)',
+        data: flashcard[Object.keys(flashcard).filter(key => key !== 'now')[0]],
+      },
+    ],
     chart: { height },
     credits: { enabled: false },
     allowDecimals: false,
@@ -202,36 +206,36 @@ const VocabularyGraph = ({ vocabularyData }) => {
   // }
 
   return (
-    <div>
-      <div className="flex gap-col-nm">
-        <Checkbox
-          label="Seen"
-          checked={showSeen}
-          onClick={() => setShowSeen(!showSeen)}
-          // onClick={() => handleCheckBoxClick(showSeen, setShowSeen)}
-        />
-        <Checkbox
-          label="Flashcard"
-          checked={showFlashcard}
-          onClick={() => setShowFlashcard(!showFlashcard)}
-          // onClick={() => handleCheckBoxClick(showFlashcard, setShowFlashcard)}
-        />
-        {/* <Checkbox label="Visit" checked={showVisit} onClick={() => setShowVisit(!showVisit)} /> */}
-        <Checkbox
-          label="Visit"
-          checked={showVisit}
-          onClick={() => setShowVisit(!showVisit)}
-          // onClick={() => handleCheckBoxClick(showVisit, setShowVisit)}
-        />
-        <Checkbox
-          label="Total"
-          checked={showTotal}
-          onClick={() => setShowTotal(!showTotal)}
-          // onClick={() => handleCheckBoxClick(showTotal, setShowTotal)}
-        />
-      </div>
-      <HighchartsReact highcharts={Highcharts} options={options} />
-    </div>
+    // <>
+    //   <div className="flex gap-col-nm">
+    //     <Checkbox
+    //       label="Seen"
+    //       checked={showSeen}
+    //       onClick={() => setShowSeen(!showSeen)}
+    //       // onClick={() => handleCheckBoxClick(showSeen, setShowSeen)}
+    //     />
+    //     <Checkbox
+    //       label="Flashcard"
+    //       checked={showFlashcard}
+    //       onClick={() => setShowFlashcard(!showFlashcard)}
+    //       // onClick={() => handleCheckBoxClick(showFlashcard, setShowFlashcard)}
+    //     />
+    //     {/* <Checkbox label="Visit" checked={showVisit} onClick={() => setShowVisit(!showVisit)} /> */}
+    //     <Checkbox
+    //       label="Visit"
+    //       checked={showVisit}
+    //       onClick={() => setShowVisit(!showVisit)}
+    //       // onClick={() => handleCheckBoxClick(showVisit, setShowVisit)}
+    //     />
+    //     <Checkbox
+    //       label="Total"
+    //       checked={showTotal}
+    //       onClick={() => setShowTotal(!showTotal)}
+    //       // onClick={() => handleCheckBoxClick(showTotal, setShowTotal)}
+    //     />
+    //   </div>
+    <HighchartsReact highcharts={Highcharts} options={options} />
+    // </>
   )
 }
 
