@@ -233,7 +233,7 @@ export const localeOptions = [
   { displayName: 'Русский', name: 'Russian', code: 'ru' },
   { displayName: 'English', name: 'English', code: 'en' },
   { displayName: 'Italiano', name: 'Italian', code: 'it' },
-  { displayName: '简体中文', name: 'Chinese', code: 'zh' },
+  // { displayName: '简体中文', name: 'Chinese', code: 'zh' },
 ]
 
 export const localeNameToCode = name => {
