@@ -11,6 +11,7 @@ import ControlledStoryEditView from 'Components/ControlledStoryEditView'
 import ControlledStoryPreviewView from 'Components/ControlledStoryPreviewView'
 import ConstructTestView from 'Components/ConstructTestView'
 import HexagonTest from 'Components/GridHexagon'
+import VocabularyView from 'Components/VocabularyView'
 import PracticeView from 'Components/PracticeView'
 import LanguageSelectView from 'Components/LanguageSelectView'
 import EmailConfirm from 'Components/AccessControl/EmailConfirm'
@@ -132,6 +133,7 @@ export default () => {
             <ProtectedRoute exact path="/leaderboard" component={Leaderboard} />
             <ProtectedRoute exact path="/test-construction" component={ConstructTestView} />
             <ProtectedRoute exact path="/test-hexagon" component={HexagonTest} />
+            <ProtectedRoute exact path="/vocabulary-view" component={VocabularyView} />
           </Switch>
         </main>
       </Route>

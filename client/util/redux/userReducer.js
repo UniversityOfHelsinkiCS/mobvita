@@ -34,6 +34,12 @@ export const getSelf = () => {
   return callBuilder(route, prefix)
 }
 
+export const getVocabularyData = () => {
+  const route = '/user/vocabulary'
+  const prefix = 'GET_VOCABULARY_DATA'
+  return callBuilder(route, prefix)
+}
+
 export const saveSelf = changes => {
   const route = '/user/'
   const prefix = 'SAVE_SELF'
@@ -394,6 +400,22 @@ export default (state = { data: null, learningLanguageChanged: false }, action) 
       return {
         ...state,
         pending: false,
+      }
+
+    case 'GET_VOCABULARY_DATA_ATTEMPT':
+      return {
+        ...state,
+        pending: true,
+        error: false,
+      }
+
+    case 'GET_VOCABULARY_DATA_SUCCESS':
+      return {
+        ...state,
+        pending: false,
+        error: false,
+        refreshed: true,
+        vocabularyData: action.response,
       }
     default:
       return state

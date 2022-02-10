@@ -115,7 +115,10 @@ const Progress = () => {
 
       <Divider />
       {hiddenFeatures && (
-        <Button onClick={() => history.push('/test-hexagon')}>Test hexagon grid </Button>
+        <div className="flex gap-col-nm">
+          <Button onClick={() => history.push('/test-hexagon')}>Test hexagon grid</Button>
+          <Button onClick={() => history.push('/vocabulary-view')}>Test vocabulary view</Button>
+        </div>
       )}
       <Divider />
 
