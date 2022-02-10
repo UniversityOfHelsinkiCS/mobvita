@@ -58,7 +58,9 @@ const Concepts = () => {
     group: groups.group,
   }))
 
-  const [showTestConcepts, setShowTestConcepts] = useState(false)
+  const [showTestConcepts, setShowTestConcepts] = useState(
+    history.location.pathname.endsWith('/settings')
+  )
   const [showLevels, setShowLevels] = useState(true)
 
   useEffect(() => {

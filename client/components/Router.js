@@ -116,6 +116,11 @@ export default () => {
             <ProtectedRoute exact path="/groups/teacher/analytics" component={GroupAnalytics} />
             <ProtectedRoute exact path="/groups/:role/people" component={GroupPeople} />
             <ProtectedRoute exact path="/:target/:role/:id/concepts" component={Concepts} />
+            <ProtectedRoute
+              exact
+              path="/:target/:role/:id/concepts/settings"
+              component={Concepts}
+            />
             <ProtectedRoute exact path="/concepts" component={Concepts} />
             <ProtectedRoute exact path="/profile/account" component={Profile} />
             <ProtectedRoute exact path="/profile/progress" component={Profile} />
