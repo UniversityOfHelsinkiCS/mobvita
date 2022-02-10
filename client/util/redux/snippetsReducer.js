@@ -73,6 +73,12 @@ export const resetSessionId = () => ({ type: 'RESET_SESSION_ID' })
 // You can include more app wide actions such as "selected: []" into the state
 export default (state = { previous: [], pending: false, error: false }, action) => {
   switch (action.type) {
+    case 'RESET_SNIPPET_INDEX_ATTEMPT':
+      return {
+        ...state,
+        pending: true,
+        error: false,
+      }
     case 'RESET_SNIPPET_INDEX_SUCCESS':
       return {
         ...state,
