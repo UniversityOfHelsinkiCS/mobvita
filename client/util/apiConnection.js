@@ -1,6 +1,9 @@
 import axios from 'axios'
 import { basePath } from 'Utilities/common'
 import * as Sentry from '@sentry/react'
+import { useHistory } from 'react-router-dom'
+import { logout } from './redux/userReducer'
+import { checkTokenTimestamp } from 'Utilities/common'
 /**
  * ApiConnection simplifies redux usage
  */
@@ -38,8 +41,8 @@ const SERVER_INTERNAL_ERROR_STATUS = 500
 
 class EndpointError extends Error {
   constructor(message) {
-    super(message);
-    this.name = "EndpointError";
+    super(message)
+    this.name = 'EndpointError'
   }
 }
 
@@ -48,15 +51,16 @@ const sendSentryEvent = (message, fingerprint) => {
 }
 
 const handleError = (store, error, prefix, query) => {
+  console.log('handle error')
   if (error?.response?.status === SERVER_INTERNAL_ERROR_STATUS) {
     const sentryMessage = `500 @ ${prefix}`
-    const sentryFingerprint = [`Type: 500`, `Action: ${prefix}`]
+    const sentryFingerprint = ['Type: 500', `Action: ${prefix}`]
     sendSentryEvent(sentryMessage, sentryFingerprint)
   }
 
   if (SERVER_UNRESPONSIVE_STATUSES.includes(error?.response?.status)) {
-    const sentryMessage = `Endpoint unresponsive`
-    const sentryFingerprint = [`Type: 502/503/504`]
+    const sentryMessage = 'Endpoint unresponsive'
+    const sentryFingerprint = ['Type: 502/503/504']
     sendSentryEvent(sentryMessage, sentryFingerprint)
     store.dispatch({ type: 'SET_SERVER_ERROR' })
     store.dispatch({ type: `${prefix}_FAILURE`, query })
@@ -98,6 +102,18 @@ const handleNewAchievement = (store, newAchievements) => {
 
 export const handleRequest = store => next => async action => {
   next(action)
+
+  const storageData = localStorage.getItem('user')
+  if (JSON.parse(storageData)?.timeStamp) {
+    const timeStamp = storageData ? JSON.parse(storageData).timeStamp : ''
+    const parsedDate = Date.parse(timeStamp)
+
+    const isExpired = checkTokenTimestamp(parsedDate)
+    if (isExpired) {
+      store.dispatch({ type: 'LOGOUT_SUCCESS' })
+    }
+  }
+ 
   const { requestSettings } = action
   if (requestSettings) {
     const { route, method, data, prefix, query, cache } = requestSettings

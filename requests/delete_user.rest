@@ -1,0 +1,7 @@
+POST http://localhost:8000/api/user/remove
+authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpYXQiOjE2NDQ0OTY1NTMsIm5iZiI6MTY0NDQ5NjU1MywianRpIjoiZWFlZDU0ZjUtYTYyYS00OWRiLTk3ZGUtZDgzNTNjYWNlZDY3IiwiaWRlbnRpdHkiOiI2MjA1MDY5M2U1Yzk2ZTAwMDFjZTI5NmIiLCJmcmVzaCI6ZmFsc2UsInR5cGUiOiJhY2Nlc3MifQ.qzsuMXUdxipyEFC0kjyeAG4zhsuakcqEdxqEtB_A_Sk
+content-type: application/json
+
+{
+    "password": "password"
+}
