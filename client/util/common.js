@@ -66,7 +66,8 @@ import nestIcon from 'Assets/images/nest.png'
 
 import { useSelector, useDispatch } from 'react-redux'
 import { useHistory } from 'react-router-dom'
-import { logout } from './redux/userReducer'
+import { hiddenFeatures } from 'Utilities/common'
+
 import { callApi } from './apiConnection'
 
 export const images = {
@@ -236,7 +237,16 @@ export const flashcardColors = {
   foreground: ['#055A5B', '#055A5B', '#055A5B', '#055A5B', '#055A5B'],
 }
 
-export const localeOptions = [
+const stagingOptions = [
+  { displayName: 'Suomi', name: 'Finnish', code: 'fi' },
+  // { displayName: 'Svenska', name: 'Swedish', code: 'sv' },
+  { displayName: 'Русский', name: 'Russian', code: 'ru' },
+  { displayName: 'English', name: 'English', code: 'en' },
+  { displayName: 'Italiano', name: 'Italian', code: 'it' },
+  { displayName: '简体中文', name: 'Chinese', code: 'zh' },
+]
+
+const prodOptions = [
   { displayName: 'Suomi', name: 'Finnish', code: 'fi' },
   // { displayName: 'Svenska', name: 'Swedish', code: 'sv' },
   { displayName: 'Русский', name: 'Russian', code: 'ru' },
@@ -244,6 +254,8 @@ export const localeOptions = [
   { displayName: 'Italiano', name: 'Italian', code: 'it' },
   // { displayName: '简体中文', name: 'Chinese', code: 'zh' },
 ]
+
+export const localeOptions = hiddenFeatures ? stagingOptions : prodOptions
 
 export const localeNameToCode = name => {
   const localeObject = localeOptions.find(option => option.name === name)
