@@ -7,7 +7,14 @@ const ResponsiveDatePicker = props => {
   const { width } = useWindowDimensions()
   const showPortalVersion = width < 600
 
-  return <DatePicker dateFormat="yyyy/MM/dd" withPortal={showPortalVersion} {...props} />
+  return (
+    <DatePicker
+      onChangeRaw={e => e.preventDefault()}
+      dateFormat="yyyy/MM/dd"
+      withPortal={showPortalVersion}
+      {...props}
+    />
+  )
 }
 
 export default ResponsiveDatePicker
