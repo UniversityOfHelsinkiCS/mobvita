@@ -64,9 +64,10 @@ import trophy from 'Assets/images/trophy.svg'
 import leaderboard from 'Assets/images/leaderboard.svg'
 import nestIcon from 'Assets/images/nest.png'
 
-import { useSelector } from 'react-redux'
+import { useSelector, useDispatch } from 'react-redux'
 import { useHistory } from 'react-router-dom'
 import { hiddenFeatures } from 'Utilities/common'
+
 import { callApi } from './apiConnection'
 
 export const images = {
@@ -127,6 +128,14 @@ export const images = {
   bellIcon,
   settingsIcon,
   nestIcon,
+}
+
+export const checkTokenTimestamp = parsedDate => {
+  const currentTime = new Date()
+  const dif = currentTime.valueOf() - parsedDate.valueOf()
+  const timeElapsed = dif / 1000 / 60 / 60
+
+  return timeElapsed > 24
 }
 
 export const capitalize = word => {

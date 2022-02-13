@@ -10,7 +10,7 @@ export const createRealToken = (email, password) => {
 
 export const createAnonToken = locale => {
   const route = '/session/'
-  const prefix = 'LOGIN'
+  const prefix = 'LOGIN_ANON'
   const payload = { is_anonymous: true, interface_language: locale }
   return callBuilder(route, prefix, 'post', payload)
 }
@@ -158,6 +158,29 @@ export const refresh = () => ({ type: 'REFRESH' })
 
 export default (state = { data: null, learningLanguageChanged: false }, action) => {
   switch (action.type) {
+    case 'LOGIN_ANON_SUCCESS':
+      return {
+        ...state,
+        data: { ...action.response, timeStamp: new Date() },
+        pending: false,
+        error: false,
+        errorMessage: null,
+        refreshed: true,
+      }
+    case 'LOGIN_ANON_ATTEMPT':
+      return {
+        ...state,
+        pending: true,
+        error: false,
+        errorMessage: null,
+      }
+    case 'LOGIN_ANON_FAILURE':
+      return {
+        ...state,
+        pending: false,
+        error: true,
+        errorMessage: action?.response,
+      }
     case 'LOGIN_SUCCESS':
       return {
         ...state,
