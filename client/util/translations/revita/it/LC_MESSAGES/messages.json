@@ -583,7 +583,7 @@
     "you-can-add-your-own-flashcards-from-your-files": "Puoi aggiungere le tue flashcard dai tuoi file",
     "please-submit-your-custom-flashcard-pack-in-a-txt-format-as-a-txt-file-use-tab-as-the-delimeter-you-": "Carica le tue flashcard in formato txt come un file .txt.\nUsa la tabella come delimitatore. Puoi trovare un file esempio del formato qui:",
     "language-in": "Lingua di input",
-    "translation-target-language": "Tradurre in ⇒",
+    "translation-target-language": "Lingua di traduzione",
     "customize-your-exercises": "Scegli i temi da praticare",
     "select-unselect-all": "Scegli tutti",
     "place-stress-inside-a-word": "Metti l'accento all'interno della parola",
@@ -796,7 +796,7 @@
     "Top people this week": "Top studenti questa settimana",
     "Updating leaderboard": "Updating leaderboard",
     "Updating": "Aggiornamento",
-    "cards total": "{numberOfCards}  carte totali",
+    "cards total": "{numberOfCards} carte totali",
     "report-button": "Segnala",
     "report-problem": "Segnala un problema",
     "thank-you-for-reporting-problem": "Grazie per aver segnalato il problema — ce ne occuperemo il prima possibile!",
@@ -1123,7 +1123,7 @@
     "preview": "Anteprima",
     "topics": "Argomento",
     "no-topics-available": "Nessun argomento disponibile",
-    "adaptive-test": "Test adattivo",
+    "adaptive-test": "Scopri il tuo livello",
     "news-bell-info-popup-text": "Hai {numUnreadNews} messaggi non letti. Clicca per vedere le News!",
     "test-settings": "Impostazioni dei test",
     "concepts": "Concetti",
@@ -1177,7 +1177,7 @@
     "previous": "Precedente",
     "competition-mode": "Competizione",
     "competition-mode-info-text": "In modalità competizione, gareggerai contro un <b>bot</b> che ha le tue stesse abilità. La competizione finirà quando uno di voi raggiungerà la fine della storia: il vincitore è colui che ha più risposte <b>corrette</b> in quel momento!",
-    "story-not-yet-processed": "This story hasn't yet been completely processed",
+    "story-not-yet-processed": "Questo testo è ancora in fase di elaborazione...",
     "groups-for-only-registered-users": "Per creare e unirsi al gruppo è possibile solo per utenti registrati. Per favore registrati e log in!",
     "show-exercise-preview": "Nascondi l'anteprima dei esercizi",
     "warning-for-anonymous-users": "E necessario registrarsi per salvare le storie per uso successivo",
@@ -1192,5 +1192,6 @@
     "delete-account-success": "Account successfully deleted",
     "I declension. Basic": "I declinazione. Altri",
     "II conjugation. Basic": "II coniugazione",
-    "II declension. Basic": "II declinazione. Altri"
+    "II declension. Basic": "II declinazione. Altri",
+    "II declension": "II declinazione"
 }

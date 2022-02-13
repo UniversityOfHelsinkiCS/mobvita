@@ -584,7 +584,7 @@
     "you-can-add-your-own-flashcards-from-your-files": "Voit lisätä omat kysymyskorttisi tiedostoistasi.",
     "please-submit-your-custom-flashcard-pack-in-a-txt-format-as-a-txt-file-use-tab-as-the-delimeter-you-": "Ystävällisesti anna oman kysymyskorttipakkasi .txt tiedostona. Käytä sarkainta\nvälimerkkinä. Löydät esimerkkitiedoston formaatista täältä:",
     "language-in": "Kieli",
-    "translation-target-language": "Käännä ⇒",
+    "translation-target-language": "Käännöksen kieli",
     "customize-your-exercises": "Valitse harjoitustyypit",
     "select-unselect-all": "Valitse kaikki",
     "place-stress-inside-a-word": "Aseta stressi sanan sisälle",
@@ -1122,7 +1122,7 @@
     "preview": "Tarkastele",
     "topics": "Aiheet",
     "no-topics-available": "Ei aiheita saatavilla",
-    "adaptive-test": "Taitotasotesti",
+    "adaptive-test": "Testaa taitotasosi",
     "news-bell-info-popup-text": "Sinulla on {numOfUnreadNews} lukematonta viestiä. Klikkaa tästä lukeaksesi ne!",
     "test-settings": "Koeasetukset",
     "concepts": "Aiheet",
@@ -1191,5 +1191,6 @@
     "delete-account-success": "Tili poistettu onnistuneesti",
     "I declension. Basic": "Taivutustyyppi I (muut)",
     "II conjugation. Basic": "2. verbitaivutus",
-    "II declension. Basic": "Taivutustyyppi II (muut)"
+    "II declension. Basic": "Taivutustyyppi II (muut)",
+    "II declension": "Taivutustyyppi II"
 }

@@ -115,7 +115,7 @@
     "submit-flashcard": "Submit flashcard",
     "this-will-permanently-remove-this-flashcard-are-you-sure-you-want-to-proceed": "This will permanently remove this flashcard, are you sure you want to proceed?",
     "fill-in": "Translate",
-    "translation-target-language": "Translate into ⇒",
+    "translation-target-language": "Translation target language",
     "new-translations": "Translations",
     "type-new-hint": "Type new hint...",
     "type-new-translation": "Type new translation...",
@@ -176,7 +176,7 @@
     "This key is valid for the next 30 days": "This key is valid for the next 30 days",
     "group-registration-documentation": "If you add a student to group, and have no \"Master\" privileges in the domain, the student will appear in the group after he has confirmed your invitation.\n(If you would like to request \"Master\" privileges for your domain, please contact revita@cs.helsinki.fi )",
     "practice-now": "Practice Now",
-    "adaptive-test": "Adaptive test",
+    "adaptive-test": "Check your skill level!",
     "welcome": "Welcome!",
     "about": "About",
     "choose-interface-language": "Choose interface language",
@@ -511,5 +511,6 @@
     "delete-account-success": "Account successfully deleted",
     "I declension. Basic": "I declension. Basic",
     "II conjugation. Basic": "II conjugation. Basic",
-    "II declension. Basic": "II declension. Basic"
+    "II declension. Basic": "II declension. Basic",
+    "II declension": "II declension"
 }

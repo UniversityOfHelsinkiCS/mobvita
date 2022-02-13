@@ -584,7 +584,7 @@
     "you-can-add-your-own-flashcards-from-your-files": "",
     "please-submit-your-custom-flashcard-pack-in-a-txt-format-as-a-txt-file-use-tab-as-the-delimeter-you-": "",
     "language-in": "",
-    "translation-target-language": "Translate into ⇒",
+    "translation-target-language": "Translation target language",
     "customize-your-exercises": "",
     "select-unselect-all": "Select/Unselect all",
     "place-stress-inside-a-word": "",
@@ -1122,7 +1122,7 @@
     "preview": "Preview",
     "topics": "Topics",
     "no-topics-available": "No topics available",
-    "adaptive-test": "Adaptive test",
+    "adaptive-test": "Check your skill level!",
     "news-bell-info-popup-text": "You have {numUnreadNews} unread messages. Click to see the News!",
     "test-settings": "Test settings",
     "concepts": "Concepts",
@@ -1191,5 +1191,6 @@
     "delete-account-success": "Account successfully deleted",
     "I declension. Basic": "I declension. Basic",
     "II conjugation. Basic": "II conjugation. Basic",
-    "II declension. Basic": "II declension. Basic"
+    "II declension. Basic": "II declension. Basic",
+    "II declension": "II declension"
 }
