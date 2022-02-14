@@ -111,8 +111,13 @@ const Summary = ({ setStudent, startDate, endDate, group, isTeaching, getSummary
 
   const filename = `${cleanGroupName}_summary.csv`
 
-  const replaceMinusMaxValue = value => {
-    if (value === -Number.MAX_VALUE) return '-'
+  const cleanColumnValue = value => {
+    if (value === -Number.MAX_VALUE) {
+      return '-'
+    }
+    if (String(value).length > 25) {
+      return `${String(value).slice(0, 24)}...`
+    }
     return value
   }
 
@@ -151,7 +156,7 @@ const Summary = ({ setStudent, startDate, endDate, group, isTeaching, getSummary
                   {summary.map(user => (
                     <tr onClick={() => handleRowClick(user)} key={user.email}>
                       {columns.map(column => (
-                        <td>{replaceMinusMaxValue(user[column])}</td>
+                        <td>{cleanColumnValue(user[column])}</td>
                       ))}
                     </tr>
                   ))}
