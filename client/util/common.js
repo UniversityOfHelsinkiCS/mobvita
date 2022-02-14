@@ -130,12 +130,12 @@ export const images = {
   nestIcon,
 }
 
-export const checkTokenTimestamp = parsedDate => {
+export const timerExpired = (parsedDate, timeLimit) => {
   const currentTime = new Date()
   const dif = currentTime.valueOf() - parsedDate.valueOf()
   const timeElapsed = dif / 1000 / 60 / 60
 
-  return timeElapsed > 24
+  return timeElapsed > timeLimit
 }
 
 export const capitalize = word => {

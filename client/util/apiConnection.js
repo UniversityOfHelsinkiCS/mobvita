@@ -1,9 +1,6 @@
 import axios from 'axios'
-import { basePath } from 'Utilities/common'
+import { basePath, timerExpired } from 'Utilities/common'
 import * as Sentry from '@sentry/react'
-import { useHistory } from 'react-router-dom'
-import { logout } from './redux/userReducer'
-import { checkTokenTimestamp } from 'Utilities/common'
 /**
  * ApiConnection simplifies redux usage
  */
@@ -103,17 +100,29 @@ const handleNewAchievement = (store, newAchievements) => {
 export const handleRequest = store => next => async action => {
   next(action)
 
-  const storageData = localStorage.getItem('user')
-  if (JSON.parse(storageData)?.timeStamp) {
-    const timeStamp = storageData ? JSON.parse(storageData).timeStamp : ''
+  const userStorage = localStorage.getItem('user')
+  const requestStorage = localStorage.getItem('last_request')
+  if (JSON.parse(userStorage)?.timeStamp) {
+    const timeStamp = userStorage ? JSON.parse(userStorage).timeStamp : ''
     const parsedDate = Date.parse(timeStamp)
 
-    const isExpired = checkTokenTimestamp(parsedDate)
+    const isExpired = timerExpired(parsedDate, 24)
     if (isExpired) {
       store.dispatch({ type: 'LOGOUT_SUCCESS' })
     }
+  } else {
+    const parsedDate = Date.parse(requestStorage)
+
+    const needsRefreshing = timerExpired(parsedDate, 10)
+    if (needsRefreshing) {
+      const requestSentAt = new Date()
+      window.localStorage.setItem('last_request', requestSentAt)
+
+      window.location.reload()
+      return
+    }
   }
- 
+
   const { requestSettings } = action
   if (requestSettings) {
     const { route, method, data, prefix, query, cache } = requestSettings
@@ -125,6 +134,9 @@ export const handleRequest = store => next => async action => {
       if (res.data?.new_achievements?.length > 0) {
         handleNewAchievement(store, res.data.new_achievements)
       }
+      const requestSentAt = new Date()
+      window.localStorage.setItem('last_request', requestSentAt)
+
       store.dispatch({ type: `${prefix}_SUCCESS`, response: res.data, query })
     } catch (err) {
       handleError(store, err, prefix, query)
