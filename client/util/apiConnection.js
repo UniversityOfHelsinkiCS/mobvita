@@ -110,17 +110,6 @@ export const handleRequest = store => next => async action => {
     if (isExpired) {
       store.dispatch({ type: 'LOGOUT_SUCCESS' })
     }
-  } else {
-    const parsedDate = Date.parse(requestStorage)
-
-    const needsRefreshing = timerExpired(parsedDate, 10)
-    if (needsRefreshing) {
-      const requestSentAt = new Date()
-      window.localStorage.setItem('last_request', requestSentAt)
-
-      window.location.reload()
-      return
-    }
   }
 
   const { requestSettings } = action
