@@ -2090,7 +2090,6 @@ label.file-upload-btn {
   padding: .5rem;
   display: flex;
   align-items: center;
-  width: 120px;
 }
 
 .medal-amount {
@@ -2100,6 +2099,7 @@ label.file-upload-btn {
 
 .medal-name {
   font-size: 13px;
+  margin: '2px';
   color: #777;
 }
 

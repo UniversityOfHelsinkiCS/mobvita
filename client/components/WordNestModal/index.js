@@ -78,9 +78,9 @@ const NestWord = ({ wordNest, hasSeveralRoots, wordToCheck, showMoreInfo, childr
     .replace('=', '-')
 
   // Don't print these words. They are very rare or might even not exist
-  
+
   if (others.includes('---') || others.includes('???') || rank >= 50000) return null
-  
+
   const additionalInfo = others?.map(e => e.replace(/,[\s]+/g, ''))
   const additionalInfoCleaned = additionalInfo?.filter(
     e => !e.includes('---') && !e.includes('!!!')
