@@ -101,7 +101,6 @@ export const handleRequest = store => next => async action => {
   next(action)
 
   const userStorage = localStorage.getItem('user')
-  const requestStorage = localStorage.getItem('last_request')
   if (JSON.parse(userStorage)?.timeStamp) {
     const timeStamp = userStorage ? JSON.parse(userStorage).timeStamp : ''
     const parsedDate = Date.parse(timeStamp)
