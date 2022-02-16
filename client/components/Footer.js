@@ -31,7 +31,9 @@ const Footer = () => {
 
         {showResonsiveVoiceMention && (
           <div className="footer-item">
-            <a href="https://responsivevoice.org">ResponsiveVoice-NonCommercial</a> licensed under{' '}
+            Powered by {' '}
+            <a href="https://tech.yandex.com/dictionary">Yandex.Dictionary</a>, {' '}
+            <a href="https://responsivevoice.org">ResponsiveVoice-NonCommercial</a> {' '}
             <a href="https://creativecommons.org/licenses/by-nc-nd/4.0/">
               <img
                 title="ResponsiveVoice Text To Speech"
