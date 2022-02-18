@@ -14,7 +14,7 @@ import {
 } from 'Utilities/redux/practiceReducer'
 
 const CheckAnswersButton = ({ handleClick, checkAnswersButtonTempDisable }) => {
-  const attempt = useSelector(({ practice }) => practice.attempt)
+  const {attempt, isNewSnippet} = useSelector(({ practice }) => practice)
   const {
     focused: focusedSnippet,
     pending: snippetPending,
@@ -30,6 +30,7 @@ const CheckAnswersButton = ({ handleClick, checkAnswersButtonTempDisable }) => {
 
   useEffect(() => {
     if (!snippetPending) {
+      console.log('a')
       // const isFreshAttempt = !focusedSnippet?.max_attempt || attempt === 0
       const newAttemptRatioPercentage = 100 - 100 * ((attempt + 1) / focusedSnippet?.max_attempt)
 
@@ -49,7 +50,7 @@ const CheckAnswersButton = ({ handleClick, checkAnswersButtonTempDisable }) => {
         setBarColor('rgb(50, 170, 248)')
       }
     }
-  }, [focusedSnippet])
+  }, [attempt, isNewSnippet])
 
   return (
     <button
