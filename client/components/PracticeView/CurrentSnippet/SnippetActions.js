@@ -49,7 +49,7 @@ const CheckAnswersButton = ({ handleClick, checkAnswersButtonTempDisable }) => {
         setBarColor('rgb(50, 170, 248)')
       }
     }
-  }, [focusedSnippet, attempt])
+  }, [focusedSnippet])
 
   return (
     <button
