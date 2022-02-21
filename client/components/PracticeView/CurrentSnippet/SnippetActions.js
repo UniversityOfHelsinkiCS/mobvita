@@ -14,7 +14,7 @@ import {
 } from 'Utilities/redux/practiceReducer'
 
 const CheckAnswersButton = ({ handleClick, checkAnswersButtonTempDisable }) => {
-  const {attempt, isNewSnippet} = useSelector(({ practice }) => practice)
+  const { attempt, isNewSnippet } = useSelector(({ practice }) => practice)
   const {
     focused: focusedSnippet,
     pending: snippetPending,
