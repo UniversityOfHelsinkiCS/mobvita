@@ -119,14 +119,18 @@ const ReadViews = ({ match }) => {
               </Link>
             </div>
             {progress !== 0 && processingCurrentStory && (
-              <span style={{ color: 'red' }}>
-                <FormattedMessage id="story-not-yet-processed" />
-              </span>
+              <div className="bold">
+                <span style={{ color: 'red' }}>
+                  <FormattedMessage id="story-not-yet-processed" />
+                </span>
+              </div>
             )}
             {showRefreshButton && (
               <div className="flex gap-col-sm align-center">
                 <div className="bold">
-                  <FormattedMessage id="story-processing-now-finished" />
+                  <span style={{ color: 'red' }}>
+                    <FormattedMessage id="story-processing-now-finished" />
+                  </span>
                 </div>
                 <Button onClick={refreshPage}>
                   <FormattedMessage id="refresh" />
