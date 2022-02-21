@@ -1,11 +1,13 @@
 import React, { useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { Input, Icon } from 'semantic-ui-react'
+import { Input, Icon, Popup } from 'semantic-ui-react'
 import { useLearningLanguage } from 'Utilities/common'
 import { searchStories, setLastQuery } from 'Utilities/redux/storiesReducer'
+import { useIntl } from 'react-intl'
 
 const LibrarySearch = ({ setDisplaySearchResults, setDisplayedStories, fluid }) => {
   const dispatch = useDispatch()
+  const intl = useIntl()
   const learningLanguage = useLearningLanguage()
   const { data: stories, lastQuery } = useSelector(({ stories }) => stories)
 
@@ -42,6 +44,10 @@ const LibrarySearch = ({ setDisplaySearchResults, setDisplayedStories, fluid }) 
 
   return (
     <div style={{ position: 'relative' }}>
+      <Popup
+        content={intl.formatMessage({ id: 'explanation-library-search' })}
+        trigger={<Icon style={{ paddingRight: '0.5em' }} name="info circle" color="grey" />}
+      />
       <Input
         action={{ icon: 'search', onClick: handleLibrarySearch, color: 'grey' }}
         placeholder="Search..."
