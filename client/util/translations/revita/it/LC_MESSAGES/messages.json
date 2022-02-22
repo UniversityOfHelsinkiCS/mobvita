@@ -709,7 +709,7 @@
     "add-people-to-group": "Aggungi persone",
     "learning-settings": "Impostazioni Apprendimento",
     "advanced-settings": "Impostazioni Avanzate",
-    "show-test-settings": "Mostra le Impostazioni del Test",
+    "show-test-settings": "Impostazioni del Test",
     "group-learning-settings-for": "Impostazioni di Apprendimento di gruppo per",
     "story-exercise-settings-for": "Impostazioni Esercizi sulle storie per",
     "user-exercise-settings": "Impostazioni Esercizi Utente",
@@ -1200,5 +1200,7 @@
     "North Saami": "North Saami",
     "Meadow Mari": "Meadow Mari",
     "explanation-inside-textbox-upload-cut-paste": "Metti il <b>titolo</b> della storia sulla prima riga: il titolo deve terminare con un punto.<br/><br/>Salta una riga vuota. Il corpo del testo inizia dopo una riga vuota...",
-    "explanation-upload-from-file": "Formatta la storia nel file come segue:<br/>Metti il <b>titolo</b> della storia sulla prima riga: il titolo deve terminare con un punto.<br/><br/>Salta una riga vuota. Il corpo del testo inizia dopo una riga vuota..."
+    "explanation-upload-from-file": "Formatta la storia nel file come segue:<br/>Metti il <b>titolo</b> della storia sulla prima riga: il titolo deve terminare con un punto.<br/><br/>Salta una riga vuota. Il corpo del testo inizia dopo una riga vuota...",
+    "show-exercise-settings": "Impostazioni dei esercizi",
+    "Please input a non-negative integer": "Please input a non-negative integer"
 }

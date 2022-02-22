@@ -555,5 +555,7 @@
     "Share": "分享文章",
     "Account": "账户",
     "explanation-inside-textbox-upload-cut-paste": "文章的第一行是<b>标题</b>并应以句号结尾。<br/><br/>空出一行，正文从这个空行后开始...",
-    "explanation-upload-from-file": "请确认文件符合以下格式：<br/>文章的第一行是<b>标题</b>并应以句号结尾。<br/><br/>空出一行，正文从这个空行后开始..."
+    "explanation-upload-from-file": "请确认文件符合以下格式：<br/>文章的第一行是<b>标题</b>并应以句号结尾。<br/><br/>空出一行，正文从这个空行后开始...",
+    "show-exercise-settings": "显示练习设置",
+    "Please input a non-negative integer": "Please input a non-negative integer"
 }

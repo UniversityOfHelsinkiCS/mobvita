@@ -1,8 +1,8 @@
 import React from 'react'
 import { useSelector } from 'react-redux'
 import { useParams } from 'react-router-dom'
-import { useIntl } from 'react-intl'
-import { Checkbox } from 'semantic-ui-react'
+import { FormattedMessage, useIntl } from 'react-intl'
+import { Checkbox, Label } from 'semantic-ui-react'
 import { Spinner } from 'react-bootstrap'
 
 const ConceptToggles = ({
@@ -25,15 +25,16 @@ const ConceptToggles = ({
         className="concept-toggle"
       />
       {target === 'groups' && (
-        <div>
+        <div style={{ display: 'flex', marginLeft:'6em'}}>
+          <label><FormattedMessage id="show-exercise-settings"/></label>
           <Checkbox
             toggle
-            label={intl.formatMessage({ id: 'show-test-settings' })}
             checked={showTestConcepts}
             onChange={handleTestConceptToggle}
             className="concept-toggle"
             disabled={pending}
           />
+          <label><FormattedMessage id="show-test-settings"  style={{  marginLeft: '1em' }}/></label>
           {pending && (
             <Spinner animation="border" variant="primary" size="sm" style={{ marginLeft: '1em' }} />
           )}

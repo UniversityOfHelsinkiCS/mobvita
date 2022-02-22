@@ -715,7 +715,7 @@
     "add-people-to-group": "Add people",
     "learning-settings": "Learning settings",
     "advanced-settings": "Advanced settings",
-    "show-test-settings": "Show test settings",
+    "show-test-settings": "Test settings",
     "share-story-with-a-group": "Share story with a group",
     "group-learning-settings-for": "Group learning settings for",
     "story-exercise-settings-for": "Story exercise settings for",
@@ -1199,5 +1199,7 @@
     "North Saami": "North Saami",
     "Meadow Mari": "Meadow Mari",
     "explanation-inside-textbox-upload-cut-paste": "Put the <b>title</b> of the story on the first line — should end with a period.<br/><br/>Skip one empty line.  The body of the text begins after one empty line...",
-    "explanation-upload-from-file": "Please format the story in the file as follows:<br/>Put the <b>title</b> of the story on the first line — should end with a period.<br/><br/>Skip one empty line.  The body of the text begins after one empty line..."
+    "explanation-upload-from-file": "Please format the story in the file as follows:<br/>Put the <b>title</b> of the story on the first line — should end with a period.<br/><br/>Skip one empty line.  The body of the text begins after one empty line...",
+    "show-exercise-settings": "Exercise settings",
+    "Please input a non-negative integer": "Please input a non-negative integer"
 }

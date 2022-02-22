@@ -3,7 +3,7 @@ import { useParams } from 'react-router-dom'
 import { Collapse } from 'react-collapse'
 import { Icon, Popup } from 'semantic-ui-react'
 import { Form } from 'react-bootstrap'
-import { useIntl } from 'react-intl'
+import { FormattedMessage, useIntl } from 'react-intl'
 
 const Concept = ({
   concept,
@@ -51,7 +51,7 @@ const Concept = ({
 
   return (
     <div className="concept">
-      {numberError && <div style={{ color: 'red' }}>Please input a non-negative integer</div>}
+      {numberError && <div style={{ color: 'red' }}><FormattedMessage id="please-input-non-negative-integer"/></div>}
       <div className="concept-row">
         <div style={{ display: 'flex', flex: 1 }}>
           <div className="concept-caret" style={{ paddingRight: '32px' }}>
@@ -62,12 +62,12 @@ const Concept = ({
               type="checkbox"
               inline
               onChange={handleCheckboxChange}
-              checked={conceptTurnedOn}
+              checked={conceptTurnedOn && !showTestConcepts}
               /* eslint-disable no-param-reassign */
               ref={el => {
                 if (el) el.indeterminate = indeterminateCheck
               }}
-              disabled={exerEnabled !== undefined && !exerEnabled}
+              disabled={exerEnabled !== undefined && !exerEnabled || showTestConcepts}
             />
           </Form.Group>
           <span

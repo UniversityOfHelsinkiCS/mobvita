@@ -126,7 +126,7 @@ const Concepts = () => {
         )}
       </div>
       <br />
-      <SelectAllCheckbox />
+      {!showTestConcepts && <SelectAllCheckbox />}
       <div style={{ paddingLeft: '10px' }} className="Full-Concept-Tree">
         {conceptTree.map(c => (
           <ConceptTree

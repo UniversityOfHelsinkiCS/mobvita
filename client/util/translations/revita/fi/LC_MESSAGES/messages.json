@@ -703,7 +703,7 @@
     "well-done-click-next-card-to-play-another-set-of-cards": "Hyvää työtä! Paina \"Seuraava kortti\" aloittaaksesi uuden korttipakan.",
     "learning-settings": "Opiskeluasetukset",
     "advanced-settings": "Lisäasetukset",
-    "show-test-settings": "Näytä koeasetukset",
+    "show-test-settings": "Koeasetukset",
     "you-must-accept-terms-and-conditions": "Sinun täytyy hyväksyä käyttöehdot.",
     "or-share-with-a-group-optional": "Tai jaa ryhmälle (valinnainen)",
     "group-learning-settings-for": "Opiskeluasetukset ryhmälle",
@@ -1199,5 +1199,7 @@
     "North Saami": "Pohjoissaame",
     "Meadow Mari": "Niittymari",
     "explanation-inside-textbox-upload-cut-paste": "Put the <b>title</b> of the story on the first line — should end with a period.<br/><br/>Skip one empty line.  The body of the text begins after one empty line...",
-    "explanation-upload-from-file": "Please format the story in the file as follows:<br/>Put the <b>title</b> of the story on the first line — should end with a period.<br/><br/>Skip one empty line.  The body of the text begins after one empty line..."
+    "explanation-upload-from-file": "Please format the story in the file as follows:<br/>Put the <b>title</b> of the story on the first line — should end with a period.<br/><br/>Skip one empty line.  The body of the text begins after one empty line...",
+    "show-exercise-settings": "Harjoitusasetukset",
+    "Please input a non-negative integer": "Please input a non-negative integer"
 }
