@@ -924,7 +924,7 @@
     "test-results-remove-confirmation": "This will permanently remove these test results, are you sure you want to proceed?",
     "enable-test-for": "Enable test for",
     "multiple-chances-when-practicing": "Allow multiple attempts when I practice with exercises in stories",
-    "paste-text-upload-instructions": "Paste the text of the story.  Revita will use the <b>first line</b> as the title.  Minimum length: 50.",
+    "paste-text-upload-instructions": "Paste the text of the story.  Revita will use the <b>first line</b> as the title.  Allowed length: 50 - 50 000 characters.",
     "recommended-sites": "Recommended sites",
     "story-remove-confirm": "This will permanently remove this story from your collection, are you sure you want to proceed?",
     "tests": "Tests",
@@ -1197,5 +1197,7 @@
     "explanation-library-search": "Here you can search for text contained in the story",
     "home": "Home",
     "North Saami": "North Saami",
-    "Meadow Mari": "Meadow Mari"
+    "Meadow Mari": "Meadow Mari",
+    "explanation-inside-textbox-upload-cut-paste": "Put the <b>title</b> of the story on the first line — should end with a period.<br/><br/>Skip one empty line.  The body of the text begins after one empty line...",
+    "explanation-upload-from-file": "Please format the story in the file as follows:<br/>Put the <b>title</b> of the story on the first line — should end with a period.<br/><br/>Skip one empty line.  The body of the text begins after one empty line..."
 }

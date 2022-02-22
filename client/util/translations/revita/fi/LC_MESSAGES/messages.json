@@ -924,7 +924,7 @@
     "test-results-remove-confirmation": "Tämä poistaa nämä koetulokset pysyvästi. Oletko varma?",
     "enable-test-for": "Ota testi käyttöön",
     "multiple-chances-when-practicing": "Monta yritystä harjoitellessa",
-    "paste-text-upload-instructions": "Kopioi tähän raakatekstinä teksti, jonka haluat lisätä. <b>Ensimmäisestä rivistä tulee</b> tekstin otsikko. Tekstin tulee olla sillä kielellä, joka on tällä hetkellä valittuna opiskelukieleksi. Minimipituus on 50 merkkiä.",
+    "paste-text-upload-instructions": "Kopioi tähän raakatekstinä teksti, jonka haluat lisätä. <b>Ensimmäisestä rivistä tulee</b> tekstin otsikko. Tekstin tulee olla sillä kielellä, joka on tällä hetkellä valittuna opiskelukieleksi. Pituus 50 - 50 000 merkkiä.",
     "recommended-sites": "Sivustosuositukset",
     "story-remove-confirm": "Oletko varma, että haluat poistaa tekstin?",
     "tests": "Kokeet",
@@ -1197,5 +1197,7 @@
     "explanation-library-search": "Hae tarinoita tekstin perusteella.",
     "home": "Etusivu",
     "North Saami": "Pohjoissaame",
-    "Meadow Mari": "Niittymari"
+    "Meadow Mari": "Niittymari",
+    "explanation-inside-textbox-upload-cut-paste": "Put the <b>title</b> of the story on the first line — should end with a period.<br/><br/>Skip one empty line.  The body of the text begins after one empty line...",
+    "explanation-upload-from-file": "Please format the story in the file as follows:<br/>Put the <b>title</b> of the story on the first line — should end with a period.<br/><br/>Skip one empty line.  The body of the text begins after one empty line..."
 }

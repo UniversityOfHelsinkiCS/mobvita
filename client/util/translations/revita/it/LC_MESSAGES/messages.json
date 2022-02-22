@@ -925,7 +925,7 @@
     "test-results-remove-confirmation": "Sicuro/a di voler cancellare i risultati del test?",
     "enable-test-for": "Abilita il test per",
     "multiple-chances-when-practicing": "Abilita più tentativi mentre ti eserciti con le storie",
-    "paste-text-upload-instructions": "Inserisci il testo della storia. Revita usa la <b>prima riga</b> come titolo",
+    "paste-text-upload-instructions": "Inserisci il testo della storia. Revita usa la <b>prima riga</b> come titolo. Incolla il testo della storia. Revita utilizzerà la <b>prima riga</b> come titolo. Lunghezza consentita: 50 - 50 000 caratteri.",
     "recommended-sites": "Siti web raccomandati",
     "story-remove-confirm": "Sei sicuro/a di voler eliminare la seguente storia dalla tua lista?",
     "tests": "Test",
@@ -1195,8 +1195,10 @@
     "II declension. Basic": "II declinazione. Altri",
     "II declension": "II declinazione",
     "Exaplanation-library-search": "Here you can search for text contained in the story",
-    "explanation-library-search": "Here you can search for text contained in the story",
+    "explanation-library-search": "Qui puoi cercare una parola o una frase contenuta nel testo",
     "home": "Home page",
     "North Saami": "North Saami",
-    "Meadow Mari": "Meadow Mari"
+    "Meadow Mari": "Meadow Mari",
+    "explanation-inside-textbox-upload-cut-paste": "Metti il <b>titolo</b> della storia sulla prima riga: il titolo deve terminare con un punto.<br/><br/>Salta una riga vuota. Il corpo del testo inizia dopo una riga vuota...",
+    "explanation-upload-from-file": "Formatta la storia nel file come segue:<br/>Metti il <b>titolo</b> della storia sulla prima riga: il titolo deve terminare con un punto.<br/><br/>Salta una riga vuota. Il corpo del testo inizia dopo una riga vuota..."
 }
