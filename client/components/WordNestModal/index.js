@@ -70,13 +70,13 @@ const NestWord = ({ wordNest, hasSeveralRoots, wordToCheck, showMoreInfo, childr
   const morphemeBoundaryRegex = /[{}()[\]\-/]+/g
   const removeExtraDotRegex = /(^⋅)|(⋅$)|[<>]+/g
   const hyphenCleanupRegex = /(⋅=)|(=⋅)/g
-  const cleanedWord = raw
+  const cleanedWord = (word.startsWith('-') && '-' || '') + raw
     .replace(morphemeBoundaryRegex, '⋅')
     .replace(removeExtraDotRegex, '')
     .replace(hyphenCleanupRegex, '-')
     .replace(/«(.*?)»/g, '<u>$1</u>')
     .replace('=', '-')
-
+  console.log(cleanedWord)
   // Don't print these words. They are very rare or might even not exist
 
   if (others.includes('---') || others.includes('???') || rank >= 50000) return null
