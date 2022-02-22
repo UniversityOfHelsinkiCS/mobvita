@@ -80,7 +80,7 @@ const NestWord = ({ wordNest, hasSeveralRoots, wordToCheck, showMoreInfo, childr
 
   if (others.includes('---') || others.includes('???') || rank >= 50000) return null
 
-  const additionalInfo = others?.map(e => e.replace(/,[\s]+/g, ''))
+  const additionalInfo = others?.map(e => e.replace(/[\s]+/g, ''))
   const additionalInfoCleaned = additionalInfo?.filter(
     e => !e.includes('---') && !e.includes('!!!')
   )
