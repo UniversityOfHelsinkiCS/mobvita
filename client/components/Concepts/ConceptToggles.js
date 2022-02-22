@@ -34,7 +34,7 @@ const ConceptToggles = ({
             className="concept-toggle"
             disabled={pending}
           />
-          <label><FormattedMessage id="show-test-settings"  style={{  marginLeft: '1em' }}/></label>
+          <label style={{  marginLeft: '1em' }}><FormattedMessage id="show-test-settings"/></label>
           {pending && (
             <Spinner animation="border" variant="primary" size="sm" style={{ marginLeft: '1em' }} />
           )}

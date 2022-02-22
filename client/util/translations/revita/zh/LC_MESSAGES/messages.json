@@ -417,7 +417,7 @@
     "Only on demand": "仅在需要的时候进行发音示范",
     "reset-to-default": "重置为默认",
     "show-levels": "显示等级",
-    "show-test-settings": "显示测试设置",
+    "show-test-settings": "测试设置",
     "story-exercise-settings-for": "测试设置",
     "user-exercise-settings": "用户练习设置",
     "Pronounce clicked words": "点击陌生词汇时",
@@ -556,6 +556,5 @@
     "Account": "账户",
     "explanation-inside-textbox-upload-cut-paste": "文章的第一行是<b>标题</b>并应以句号结尾。<br/><br/>空出一行，正文从这个空行后开始...",
     "explanation-upload-from-file": "请确认文件符合以下格式：<br/>文章的第一行是<b>标题</b>并应以句号结尾。<br/><br/>空出一行，正文从这个空行后开始...",
-    "show-exercise-settings": "显示练习设置",
-    "Please input a non-negative integer": "Please input a non-negative integer"
+    "show-exercise-settings": "练习设置"
 }
