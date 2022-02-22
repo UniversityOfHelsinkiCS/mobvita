@@ -84,7 +84,7 @@ const NestWord = ({ wordNest, hasSeveralRoots, wordToCheck, showMoreInfo, childr
   const additionalInfoCleaned = additionalInfo?.filter(
     e => !e.includes('---') && !e.includes('!!!')
   )
-  const additionalInfoString = additionalInfoCleaned.join(', ')
+  const additionalInfoString = additionalInfoCleaned.join('  ')
   const linkedNests = partOfCompound.concat(generalRef)
   const linkedNestsCleaned = linkedNests?.map(e => e.trim().replace(/;/g, ''))
 
