@@ -8,7 +8,7 @@ import { updateExerciseSettings as updateGroupSettings } from 'Utilities/redux/g
 import { updateExerciseSettings as updateStorySettings } from 'Utilities/redux/storiesReducer'
 
 
-const SelectAllCheckbox = () => {
+const SelectAllCheckbox = ({showTestConcepts}) => {
   const { concepts } = useSelector(({ metadata }) => metadata)
   const { target, id } = useParams()
   const dispatch = useDispatch()
@@ -58,9 +58,10 @@ const SelectAllCheckbox = () => {
           type="checkbox"
           inline
           onChange={handleCheckboxClick}
-          checked={checked}
+          checked={checked && !showTestConcepts}
           /* eslint-disable no-param-reassign */
           ref={(el) => { if (el) el.indeterminate = indeterminateCheck }}
+          disabled={showTestConcepts}
         />
       </Form.Group>
       <span>
