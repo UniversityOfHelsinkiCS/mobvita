@@ -713,7 +713,7 @@
     "add-people-to-group": "Добавить учеников",
     "learning-settings": "Настройки обучения",
     "advanced-settings": "Расширенные настройки",
-    "show-test-settings": "Настройки для тестов",
+    "show-test-settings": "Настройки тестов",
     "group-learning-settings-for": "Настройки для группы",
     "story-exercise-settings-for": "Настройки для текста",
     "user-exercise-settings": "Настройки для упражнений",
@@ -1203,6 +1203,6 @@
     "Meadow Mari": "Луговой марийский",
     "explanation-inside-textbox-upload-cut-paste": "<b>Заголовок</b> на первой строчке — точка после заголовка.<br/><br/>Пропустить одну пустую строку.  Текст начинается после пустой строки...",
     "explanation-upload-from-file": "Формат файла:<br/><b>Заголовок</b> на первой строчке — точка после заголовка.<br/><br/>Пропустить одну пустую строку.  Текст начинается после пустой строки...",
-    "show-exercise-settings": "Настройки для упражнений",
+    "show-exercise-settings": "Настройки упражнений",
     "Please input a non-negative integer": "Please input a non-negative integer"
 }
