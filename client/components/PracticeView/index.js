@@ -36,7 +36,6 @@ const PracticeView = () => {
   const learningLanguage = useSelector(learningLanguageSelector)
   const { id } = useParams()
   const { width } = useWindowDimensions()
-
   const snippets = useSelector(({ snippets }) => snippets)
   const { focused: story, pending } = useSelector(({ stories }) => stories)
   const { isPaused, willPause, practiceFinished } = useSelector(({ practice }) => practice)

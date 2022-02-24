@@ -30,7 +30,6 @@ const CheckAnswersButton = ({ handleClick, checkAnswersButtonTempDisable }) => {
 
   useEffect(() => {
     if (!snippetPending) {
-      console.log('a')
       // const isFreshAttempt = !focusedSnippet?.max_attempt || attempt === 0
       const newAttemptRatioPercentage = 100 - 100 * ((attempt + 1) / focusedSnippet?.max_attempt)
 

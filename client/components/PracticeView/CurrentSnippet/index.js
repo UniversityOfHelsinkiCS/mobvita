@@ -32,6 +32,7 @@ import {
   updateSeveralSpanAnnotationStore,
   resetAnnotations,
 } from 'Utilities/redux/annotationsReducer'
+import ExercisesEncouragementModal from 'Components/Encouragements/ExercisesEncouragementModal'
 import SnippetActions from './SnippetActions'
 import PracticeText from './PracticeText'
 
@@ -39,12 +40,12 @@ const CurrentSnippet = ({ storyId, handleInputChange, timer }) => {
   const [exerciseCount, setExerciseCount] = useState(0)
   const practiceForm = useRef(null)
   const dispatch = useDispatch()
+  const [openEncouragement, setOpenEncouragement] = useState(true)
   const snippets = useSelector(({ snippets }) => snippets)
   const answersPending = useSelector(({ snippets }) => snippets.answersPending)
-
   const { practiceFinished, snippetFinished, isNewSnippet, attempt, willPause, isPaused } =
     useSelector(({ practice }) => practice)
-
+  const storiesCovered = useSelector(state => state.user.data.user.stories_covered)
   const learningLanguage = useSelector(learningLanguageSelector)
   const history = useHistory()
   const isControlledStory = history.location.pathname.includes('controlled-practice')
@@ -244,32 +245,41 @@ const CurrentSnippet = ({ storyId, handleInputChange, timer }) => {
   }
 
   return (
-    <form ref={practiceForm}>
-      {!practiceFinished ? (
-        <div style={{ width: '100%' }}>
-          <div
-            className="practice-container"
-            style={getTextStyle(learningLanguage)}
-            data-cy="practice-view"
-          >
-            <PracticeText
-              handleAnswerChange={handleInputChange}
-              handleMultiselectChange={handleMultiselectChange}
+    <div>
+      <form ref={practiceForm}>
+        {!practiceFinished ? (
+          <div style={{ width: '100%' }}>
+            <div
+              className="practice-container"
+              style={getTextStyle(learningLanguage)}
+              data-cy="practice-view"
+            >
+              <PracticeText
+                handleAnswerChange={handleInputChange}
+                handleMultiselectChange={handleMultiselectChange}
+              />
+            </div>
+            <SnippetActions
+              storyId={storyId}
+              exerciseCount={exerciseCount}
+              isControlledStory={isControlledStory}
+              timerValue={Math.round(timer.getTime() / 1000)}
             />
           </div>
-          <SnippetActions
-            storyId={storyId}
-            exerciseCount={exerciseCount}
-            isControlledStory={isControlledStory}
-            timerValue={Math.round(timer.getTime() / 1000)}
-          />
-        </div>
-      ) : (
-        <Button variant="primary" block onClick={() => startOver()}>
-          <FormattedMessage id="restart-story" />
-        </Button>
-      )}
-    </form>
+        ) : (
+          <div>
+            <ExercisesEncouragementModal
+              open={openEncouragement}
+              setOpen={setOpenEncouragement}
+              storiesCovered={storiesCovered}
+            />
+            <Button variant="primary" block onClick={() => startOver()}>
+              <FormattedMessage id="restart-story" />
+            </Button>
+          </div>
+        )}
+      </form>
+    </div>
   )
 }
 
