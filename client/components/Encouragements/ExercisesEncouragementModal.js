@@ -1,9 +1,10 @@
-import React, { useState } from 'react'
+import React from 'react'
 import { Modal } from 'semantic-ui-react'
+import { FormattedMessage, useIntl } from 'react-intl'
+import { images } from 'Utilities/common'
 
 const ExercisesEncouragementModal = ({ open, setOpen, storiesCovered }) => {
-  console.log('rendered')
-  console.log('is open ', open)
+  const intl = useIntl()
 
   return (
     <Modal
@@ -15,7 +16,19 @@ const ExercisesEncouragementModal = ({ open, setOpen, storiesCovered }) => {
       onClose={() => setOpen(false)}
     >
       <Modal.Content>
-        <div className="bold">Congratulations! You have covered {storiesCovered} stories</div>
+        <div className="bold">
+          <FormattedMessage className="bold" id="story-completed-encouragement" />
+        </div>
+        <div className="pt-lg">
+          {intl.formatMessage({ id: 'stories-covered-encouragement' }, { stories: storiesCovered })}
+        </div>
+        <div className="pt-lg">
+          <img
+            src={images.balloons}
+            alt="encouraging balloons"
+            style={{ maxWidth: '35%', maxHeight: '35%' }}
+          />
+        </div>
       </Modal.Content>
     </Modal>
   )

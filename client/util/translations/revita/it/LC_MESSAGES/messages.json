@@ -1202,5 +1202,7 @@
     "explanation-inside-textbox-upload-cut-paste": "Metti il <b>titolo</b> della storia sulla prima riga: il titolo deve terminare con un punto.<br/><br/>Salta una riga vuota. Il corpo del testo inizia dopo una riga vuota...",
     "explanation-upload-from-file": "Formatta la storia nel file come segue:<br/>Metti il <b>titolo</b> della storia sulla prima riga: il titolo deve terminare con un punto.<br/><br/>Salta una riga vuota. Il corpo del testo inizia dopo una riga vuota...",
     "show-exercise-settings": "Impostazioni dei esercizi",
-    "Please input a non-negative integer": "Please input a non-negative integer"
+    "Please input a non-negative integer": "Please input a non-negative integer",
+    "story-completed-encouragement": "Congratulations! You have covered a story!",
+    "stories-covered-encouragement": "So far you have completed {stories} stories"
 }

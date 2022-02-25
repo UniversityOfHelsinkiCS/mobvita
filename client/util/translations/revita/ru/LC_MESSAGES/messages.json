@@ -1204,5 +1204,7 @@
     "explanation-inside-textbox-upload-cut-paste": "<b>Заголовок</b> на первой строчке — точка после заголовка.<br/><br/>Пропустить одну пустую строку.  Текст начинается после пустой строки...",
     "explanation-upload-from-file": "Формат файла:<br/><b>Заголовок</b> на первой строчке — точка после заголовка.<br/><br/>Пропустить одну пустую строку.  Текст начинается после пустой строки...",
     "show-exercise-settings": "Настройки упражнений",
-    "Please input a non-negative integer": "Please input a non-negative integer"
+    "Please input a non-negative integer": "Please input a non-negative integer",
+    "story-completed-encouragement": "Congratulations! You have covered a story!",
+    "stories-covered-encouragement": "So far you have completed {stories} stories"
 }
