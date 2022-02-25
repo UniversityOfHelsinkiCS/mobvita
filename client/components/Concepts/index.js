@@ -14,6 +14,7 @@ import SelectAllCheckbox from './SelectAllCheckbox'
 import ConceptHeader from './ConceptHeader'
 import ConceptToggles from './ConceptToggles'
 import TotalTestQuestions from './TotalTestQuestions'
+import { filter } from 'lodash'
 
 const ConceptTree = ({ concept, showTestConcepts, showLevels }) => {
   const { target } = useParams()
@@ -85,12 +86,13 @@ const Concepts = () => {
 
   if (conceptsPending || !concepts || (target === 'groups' && !group)) return <Spinner fullHeight />
 
+  const conceptsToShow = concepts.filter(concept => concept.display_settings === true)
   const makeConceptTree = parents =>
     parents
       .sort((a, b) => a['UI-order'] - b['UI-order'])
       .map(parent => {
         const children =
-          parent.children && concepts.filter(c => parent.children.includes(c.concept_id))
+          parent.children && conceptsToShow.filter(c => parent.children.includes(c.concept_id))
         const cleanConcept = {
           ...parent,
           children: makeConceptTree(children),
@@ -98,7 +100,7 @@ const Concepts = () => {
         return cleanConcept
       })
 
-  const superConcepts = concepts.filter(concept => concept.super)
+  const superConcepts = conceptsToShow.filter(concept => concept.super)
   const conceptTree = makeConceptTree(superConcepts)
 
   const handleTestConceptToggle = async () => {
@@ -118,7 +120,7 @@ const Concepts = () => {
         />
         {showTestConcepts && (
           <TotalTestQuestions
-            concepts={concepts}
+            concepts={conceptsToShow}
             setShowTestConcepts={setShowTestConcepts}
             groupId={group.group.group_id}
             learningLanguage={learningLanguage}
