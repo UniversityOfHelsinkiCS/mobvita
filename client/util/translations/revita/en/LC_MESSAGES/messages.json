@@ -1202,6 +1202,8 @@
     "explanation-upload-from-file": "Please format the story in the file as follows:<br/>Put the <b>title</b> of the story on the first line — should end with a period.<br/><br/>Skip one empty line.  The body of the text begins after one empty line...",
     "show-exercise-settings": "Exercise settings",
     "Please input a non-negative integer": "Please input a non-negative integer",
-    "story-completed-encouragement": "Congratulations! You have covered a story!",
-    "stories-covered-encouragement": "So far you have completed {stories} stories"
+    "story-completed-encouragement": "Congratulations! You have completed the story!",
+    "stories-covered-encouragement": "So far you have completed {stories} stories.",
+    "words-seen-encouragement": "You have worked with {Nwords} new words.",
+    "first-story-covered-encouragement": "Congratulations! You have completed your first story!"
 }

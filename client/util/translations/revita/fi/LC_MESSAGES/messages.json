@@ -1203,5 +1203,7 @@
     "show-exercise-settings": "Harjoitusasetukset",
     "Please input a non-negative integer": "Please input a non-negative integer",
     "story-completed-encouragement": "Onneksi olkoon! Olet päässyt tarinan loppuun!",
-    "stories-covered-encouragement": "Tähän mennessä olet päässyt loppuun {stories} tarinaa"
+    "stories-covered-encouragement": "Tähän mennessä olet päässyt loppuun {stories} tarinaa.",
+    "words-seen-encouragement": "You have worked with {Nwords} new words.",
+    "first-story-covered-encouragement": "Onneksi olkoon! Olet päässyt ensimmäisen tarinan loppuun!"
 }

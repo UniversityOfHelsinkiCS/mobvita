@@ -1205,6 +1205,8 @@
     "explanation-upload-from-file": "Формат файла:<br/><b>Заголовок</b> на первой строчке — точка после заголовка.<br/><br/>Пропустить одну пустую строку.  Текст начинается после пустой строки...",
     "show-exercise-settings": "Настройки упражнений",
     "Please input a non-negative integer": "Please input a non-negative integer",
-    "story-completed-encouragement": "Congratulations! You have covered a story!",
-    "stories-covered-encouragement": "So far you have completed {stories} stories"
+    "story-completed-encouragement": "Поздравляем! Ты изучил(а) новую историю!",
+    "stories-covered-encouragement": "На сегодняшний день ты изучил(а) {stories} историй.",
+    "words-seen-encouragement": "You have worked with {Nwords} new words.",
+    "first-story-covered-encouragement": "Поздравляем! Ты изучил(а) свою первую историю!"
 }

@@ -5,6 +5,7 @@ import { images } from 'Utilities/common'
 
 const ExercisesEncouragementModal = ({ open, setOpen, storiesCovered }) => {
   const intl = useIntl()
+  const notFirst = storiesCovered > 1
 
   return (
     <Modal
@@ -16,12 +17,23 @@ const ExercisesEncouragementModal = ({ open, setOpen, storiesCovered }) => {
       onClose={() => setOpen(false)}
     >
       <Modal.Content>
-        <div className="bold">
-          <FormattedMessage className="bold" id="story-completed-encouragement" />
-        </div>
-        <div className="pt-lg">
-          {intl.formatMessage({ id: 'stories-covered-encouragement' }, { stories: storiesCovered })}
-        </div>
+        {notFirst ? (
+          <div>
+            <div className="bold">
+              <FormattedMessage className="bold" id="story-completed-encouragement" />
+            </div>
+            <div className="pt-lg">
+              {intl.formatMessage(
+                { id: 'stories-covered-encouragement' },
+                { stories: storiesCovered }
+              )}
+            </div>
+          </div>
+        ) : (
+          <div className="bold">
+            <FormattedMessage className="bold" id="first-story-covered-encouragement" />
+          </div>
+        )}
         <div className="pt-lg">
           <img
             src={images.balloons}
