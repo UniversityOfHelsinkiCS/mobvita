@@ -41,13 +41,12 @@ const ExerciseHearing = ({ word, handleChange }) => {
 
   useEffect(() => {
     setClassname(getExerciseClass(tested, isWrong))
-    if (tested && isWrong) giveHint()
+    if (tested && isWrong) {
+      giveHint()
+      const val = currentAnswer ? currentAnswer.users_answer : ''
+      setValue(val)
+    }
   }, [tested])
-
-  useEffect(() => {
-    const val = currentAnswer ? currentAnswer.users_answer : ''
-    setValue(val)
-  }, [currentAnswer])
 
   const speakerClickHandler = word => {
     // speak(word.audio, voice)
