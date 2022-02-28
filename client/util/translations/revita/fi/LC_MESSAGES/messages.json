@@ -1204,6 +1204,7 @@
     "Please input a non-negative integer": "Please input a non-negative integer",
     "story-completed-encouragement": "Onneksi olkoon! Olet päässyt tarinan loppuun!",
     "stories-covered-encouragement": "Tähän mennessä olet päässyt loppuun {stories} tarinaa.",
-    "words-seen-encouragement": "You have worked with {Nwords} new words.",
-    "first-story-covered-encouragement": "Onneksi olkoon! Olet päässyt ensimmäisen tarinan loppuun!"
+    "words-seen-encouragement": "Olet nähnyt yhteensä {vocabulary_seen} sanaa harjoittelemissasi tarinoissa.",
+    "first-story-covered-encouragement": "Onneksi olkoon! Olet päässyt ensimmäisen tarinan loppuun!",
+    "words-interacted-encouragement": "You have worked with {Nwords} new words."
 }

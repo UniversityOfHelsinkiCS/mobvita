@@ -559,6 +559,7 @@
     "show-exercise-settings": "练习设置",
     "story-completed-encouragement": "Congratulations! You have completed the story!",
     "stories-covered-encouragement": "So far you have completed {stories} stories.",
-    "words-seen-encouragement": "You have worked with {Nwords} new words.",
-    "first-story-covered-encouragement": "Congratulations! You have completed your first story!"
+    "words-seen-encouragement": "From all your stories you have now seen a total of {vocabulary_seen} words.",
+    "first-story-covered-encouragement": "Congratulations! You have completed your first story!",
+    "words-interacted-encouragement": "You have worked with {Nwords} new words."
 }

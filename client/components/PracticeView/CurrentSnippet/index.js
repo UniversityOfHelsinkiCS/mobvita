@@ -45,11 +45,18 @@ const CurrentSnippet = ({ storyId, handleInputChange, timer }) => {
   const answersPending = useSelector(({ snippets }) => snippets.answersPending)
   const { practiceFinished, snippetFinished, isNewSnippet, attempt, willPause, isPaused } =
     useSelector(({ practice }) => practice)
-  const storiesCovered = useSelector(state => state.user.data.user.stories_covered)
+  const userData = useSelector(state => state.user.data.user)
   const learningLanguage = useSelector(learningLanguageSelector)
   const history = useHistory()
   const isControlledStory = history.location.pathname.includes('controlled-practice')
   const sessionId = snippets?.sessionId ?? null
+
+  if (!userData) {
+    return
+  }
+
+  const storiesCovered = userData.stories_covered
+  const vocabularySeen = userData.vocabulary_seen
 
   const SECONDS_PER_WRONG_EXERCISE = 20
 
@@ -272,6 +279,7 @@ const CurrentSnippet = ({ storyId, handleInputChange, timer }) => {
               open={openEncouragement}
               setOpen={setOpenEncouragement}
               storiesCovered={storiesCovered}
+              vocabularySeen={vocabularySeen}
             />
             <Button variant="primary" block onClick={() => startOver()}>
               <FormattedMessage id="restart-story" />

@@ -3,7 +3,7 @@ import { Modal } from 'semantic-ui-react'
 import { FormattedMessage, useIntl } from 'react-intl'
 import { images } from 'Utilities/common'
 
-const ExercisesEncouragementModal = ({ open, setOpen, storiesCovered }) => {
+const ExercisesEncouragementModal = ({ open, setOpen, storiesCovered, vocabularySeen }) => {
   const intl = useIntl()
   const notFirst = storiesCovered > 1
 
@@ -26,6 +26,12 @@ const ExercisesEncouragementModal = ({ open, setOpen, storiesCovered }) => {
               {intl.formatMessage(
                 { id: 'stories-covered-encouragement' },
                 { stories: storiesCovered }
+              )}
+            </div>
+            <div className="pt-sm">
+              {intl.formatMessage(
+                { id: 'words-seen-encouragement' },
+                { vocabulary_seen: vocabularySeen }
               )}
             </div>
           </div>
