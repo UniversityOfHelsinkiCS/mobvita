@@ -1207,7 +1207,9 @@
     "Please input a non-negative integer": "Please input a non-negative integer",
     "story-completed-encouragement": "Поздравляем! Ты изучил(а) новую историю!",
     "stories-covered-encouragement": "На сегодняшний день ты изучил(а) {stories} историй.",
-    "words-seen-encouragement": "From all your stories you have now seen a total of {vocabulary_seen} words.",
+    "words-seen-encouragement": "Количество изученных слов из всех историй: {vocabulary_seen}.",
     "first-story-covered-encouragement": "Поздравляем! Ты изучил(а) свою первую историю!",
-    "words-interacted-encouragement": "You have worked with {Nwords} new words."
+    "words-interacted-encouragement": "You have worked with {Nwords} new words.",
+    "welcome-back-encouragement": "Добро пожаловать, {username}!",
+    "would-you-like-to-continue-story": "В прошлый раз вы работали с текстом: {story}.<br/>Продолжить?"
 }

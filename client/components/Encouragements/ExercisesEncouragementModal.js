@@ -13,40 +13,56 @@ const ExercisesEncouragementModal = ({ open, setOpen, storiesCovered, vocabulary
       open={open}
       size="small"
       centered={false}
-      dimmer="inverted"
+      dimmer="blurring"
       closeIcon={{ style: { top: '2.5rem', right: '2.5rem' }, color: 'black', name: 'close' }}
       onClose={() => setOpen(false)}
     >
       <Modal.Content>
-        {notFirst ? (
-          <div>
-            <div className="bold">
-              <FormattedMessage className="bold" id="story-completed-encouragement" />
+        <div style={{ padding: '1.5rem', backgroundColor: '#FFFFFF' }}>
+          {notFirst ? (
+            <div>
+              <div
+                className="header-2"
+                style={{
+                  marginBottom: '1rem',
+                  fontWeight: 500,
+                  color: '#000000',
+                }}
+              >
+                <FormattedMessage id="story-completed-encouragement" />
+              </div>
+              <div className="bold pt-sm" style={{ color: '#000000' }}>
+                {intl.formatMessage(
+                  { id: 'stories-covered-encouragement' },
+                  { stories: storiesCovered }
+                )}
+              </div>
+              <div className="bold pt-sm" style={{ color: '#000000' }}>
+                {intl.formatMessage(
+                  { id: 'words-seen-encouragement' },
+                  { vocabulary_seen: vocabularySeen }
+                )}
+              </div>
             </div>
-            <div className="pt-lg">
-              {intl.formatMessage(
-                { id: 'stories-covered-encouragement' },
-                { stories: storiesCovered }
-              )}
+          ) : (
+            <div
+              className="header-2"
+              style={{
+                marginBottom: '1.5rem',
+                fontWeight: 500,
+                color: '#000000',
+              }}
+            >
+              <FormattedMessage id="first-story-covered-encouragement" />
             </div>
-            <div className="pt-sm">
-              {intl.formatMessage(
-                { id: 'words-seen-encouragement' },
-                { vocabulary_seen: vocabularySeen }
-              )}
-            </div>
+          )}
+          <div className="pt-lg">
+            <img
+              src={images.balloons}
+              alt="encouraging balloons"
+              style={{ maxWidth: '35%', maxHeight: '35%' }}
+            />
           </div>
-        ) : (
-          <div className="bold">
-            <FormattedMessage className="bold" id="first-story-covered-encouragement" />
-          </div>
-        )}
-        <div className="pt-lg">
-          <img
-            src={images.balloons}
-            alt="encouraging balloons"
-            style={{ maxWidth: '35%', maxHeight: '35%' }}
-          />
         </div>
       </Modal.Content>
     </Modal>
