@@ -1205,7 +1205,9 @@
     "Please input a non-negative integer": "Please input a non-negative integer",
     "story-completed-encouragement": "Congratulations! You have completed the story!",
     "stories-covered-encouragement": "So far you have completed {stories} stories.",
-    "words-seen-encouragement": "From all your stories you have now seen a total of {vocabulary_seen} words.",
+    "words-seen-encouragement": "Nelle storie che hai studiato, ora hai incontrato {vocabulary_seen} nuove parole.",
     "first-story-covered-encouragement": "Congratulations! You have completed your first story!",
-    "words-interacted-encouragement": "You have worked with {Nwords} new words."
+    "words-interacted-encouragement": "You have worked with {Nwords} new words.",
+    "welcome-back-encouragement": "Bentornata/o, {username}!",
+    "would-you-like-to-continue-story": "Last time your were working on the story: {story}.<br/>Would you like to continue?"
 }

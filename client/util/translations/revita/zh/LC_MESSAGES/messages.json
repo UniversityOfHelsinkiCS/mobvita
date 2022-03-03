@@ -557,9 +557,11 @@
     "explanation-inside-textbox-upload-cut-paste": "文章的第一行是<b>标题</b>并应以句号结尾。<br/><br/>空出一行，正文从这个空行后开始...",
     "explanation-upload-from-file": "请确认文件符合以下格式：<br/>文章的第一行是<b>标题</b>并应以句号结尾。<br/><br/>空出一行，正文从这个空行后开始...",
     "show-exercise-settings": "练习设置",
-    "story-completed-encouragement": "Congratulations! You have completed the story!",
-    "stories-covered-encouragement": "So far you have completed {stories} stories.",
-    "words-seen-encouragement": "From all your stories you have now seen a total of {vocabulary_seen} words.",
-    "first-story-covered-encouragement": "Congratulations! You have completed your first story!",
-    "words-interacted-encouragement": "You have worked with {Nwords} new words."
+    "story-completed-encouragement": "恭喜！您已经完成了这篇文章！",
+    "stories-covered-encouragement": "到目前为止您已经完成了{stories}篇文章。",
+    "words-seen-encouragement": "在您学习过的文章中，您遇见了{vocabulary_seen}个单词.",
+    "first-story-covered-encouragement": "恭喜！您已经完成了您的第一篇文章！",
+    "words-interacted-encouragement": "您已经练习到了{Nwords}个新单词.",
+    "welcome-back-encouragement": "欢迎回来, {username}!",
+    "would-you-like-to-continue-story": "您上次在学习的文章是：{story}.<br/>是否继续?"
 }

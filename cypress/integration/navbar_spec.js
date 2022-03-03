@@ -6,6 +6,9 @@ describe("via navbar", function () {
   this.beforeEach(function () {
     cy.loginExisting().as('user')
     cy.visit('http://localhost:8000')
+
+    cy.get('.modal > .close').click()
+
   })
 
   this.afterAll(function () {

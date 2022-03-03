@@ -44,7 +44,7 @@ export default () => {
   return (
     <Switch>
       <Route exact path="/">
-        {user ? <Redirect to="/home" /> : <LandingPage />}
+        {user ? <Redirect to="/welcome" /> : <LandingPage />}
       </Route>
       <Route>
         <NavBar />
@@ -88,6 +88,7 @@ export default () => {
 
             <ProtectedRoute exact path="/login" component={HomeView} />
             <ProtectedRoute exact path="/home" component={HomeView} />
+            <ProtectedRoute exact path="/welcome" component={HomeView} />
             <ProtectedRoute exact path="/library" component={LibraryView} />
             <ProtectedRoute exact path="/flashcards" component={Flashcards} />
             <ProtectedRoute exact path="/flashcards/:mode" component={Flashcards} />
