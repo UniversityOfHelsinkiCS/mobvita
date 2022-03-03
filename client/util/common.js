@@ -11,6 +11,7 @@ import flagKomizyrian from 'Assets/images/flags/flag_komi-zyrian.png'
 import flagSakha from 'Assets/images/flags/flag_sakha.png'
 import flagTatar from 'Assets/images/flags/flag_tatar.png'
 import flagUdmurt from 'Assets/images/flags/flag_udmurt.png'
+import flagUdmurtnew from 'Assets/images/flags/flag_udmurt.png'
 import flagMeadowmari from 'Assets/images/flags/flag_meadow-mari.png'
 import flagNorthsaami from 'Assets/images/flags/flag_north-saami.png'
 import flagCatalan from 'Assets/images/flags/flag_catalan.png'
@@ -75,6 +76,7 @@ export const images = {
   revitaLogoTransparent,
   flagFinnish,
   flagUdmurt,
+  flagUdmurtnew,
   flagErzya,
   flagKomizyrian,
   flagMeadowmari,
@@ -180,7 +182,7 @@ export const supportedLearningLanguages = {
     'chinese',
     'turkish',
   ].sort((a, b) => a.localeCompare(b)),
-  minor: ['erzya', 'komi-zyrian', 'meadow-mari', 'north-saami', 'sakha', 'tatar', 'udmurt'].sort(
+  minor: ['erzya', 'komi-zyrian', 'meadow-mari', 'north-saami', 'sakha', 'tatar', 'udmurt', 'udmurt-new'].sort(
     (a, b) => a.localeCompare(b)
   ),
   experimental: ['syriac'],
@@ -207,6 +209,7 @@ export const learningLanguageLocaleCodes = {
   Turkish: 'tr',
   Syriac: 'syc',
   Chinese: 'zh',
+  'Udmurt-New': 'udm'
 }
 
 export const betaLanguages = [
@@ -228,6 +231,7 @@ export const betaLanguages = [
   'tatar',
   'turkish',
   'udmurt',
+  'udmurt-new'
 ]
 
 export const exerciseMaskedLanguages = ['Chinese']
@@ -577,6 +581,7 @@ export const translatableLanguages = {
   'Komi-Zyrian': ['Russian'],
   'Meadow-Mari': ['Russian'],
   Udmurt: ['Russian'],
+  'Udmurt-New': ['Russian'],
   Sakha: ['Russian', 'English'],
   'North-Saami': ['Finnish', 'Norwegian'],
   Erzya: ['Russian'],
