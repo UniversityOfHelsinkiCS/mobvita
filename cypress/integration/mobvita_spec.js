@@ -100,6 +100,8 @@ describe('Mobvita', function () {
           window.localStorage.setItem('user', JSON.stringify(response.body))
           cy.reload()
         })
+
+      cy.get('.modal > .close').click()
     })
 
     it('library opens', function () {
