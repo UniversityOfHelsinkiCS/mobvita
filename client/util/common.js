@@ -10,6 +10,7 @@ import flagErzya from 'Assets/images/flags/flag_erzya.png'
 import flagKomizyrian from 'Assets/images/flags/flag_komi-zyrian.png'
 import flagSakha from 'Assets/images/flags/flag_sakha.png'
 import flagTatar from 'Assets/images/flags/flag_tatar.png'
+import flagTatarnew from 'Assets/images/flags/flag_tatar.png'
 import flagUdmurt from 'Assets/images/flags/flag_udmurt.png'
 import flagUdmurtarch from 'Assets/images/flags/flag_udmurt.png'
 import flagMeadowmari from 'Assets/images/flags/flag_meadow-mari.png'
@@ -82,6 +83,7 @@ export const images = {
   flagMeadowmari,
   flagSakha,
   flagTatar,
+  flagTatarnew,
   flagNorthsaami,
   flagSwedish,
   flagItalian,
@@ -182,7 +184,7 @@ export const supportedLearningLanguages = {
     'chinese',
     'turkish',
   ].sort((a, b) => a.localeCompare(b)),
-  minor: ['erzya', 'komi-zyrian', 'meadow-mari', 'north-saami', 'sakha', 'tatar', 'udmurt', 'udmurt-arch'].sort(
+  minor: ['erzya', 'komi-zyrian', 'meadow-mari', 'north-saami', 'sakha', 'tatar', 'tatar-new', 'udmurt', 'udmurt-arch'].sort(
     (a, b) => a.localeCompare(b)
   ),
   experimental: ['syriac'],
@@ -205,6 +207,7 @@ export const learningLanguageLocaleCodes = {
   'North-Saami': 'se',
   Sakha: 'ru-sa',
   Tatar: 'tt',
+  'Tatar-New': 'tt',
   Udmurt: 'udm',
   Turkish: 'tr',
   Syriac: 'syc',
@@ -229,6 +232,7 @@ export const betaLanguages = [
   'sakha',
   'syriac',
   'tatar',
+  'tatar-new',
   'turkish',
   'udmurt',
   'udmurt-arch'
@@ -587,6 +591,23 @@ export const translatableLanguages = {
   Erzya: ['Russian'],
   Kazakh: ['Russian', 'English'],
   Tatar: [
+    'Chinese',
+    'English',
+    'Finnish',
+    'French',
+    'Italian',
+    'Norwegian',
+    'Russian',
+    'Spanish',
+    'Swedish',
+    'Turkish',
+    'Japanese',
+    'Polish',
+    'Czech',
+    'Portuguese',
+    'Hindi',
+  ],
+   'Tatar-New': [
     'Chinese',
     'English',
     'Finnish',
