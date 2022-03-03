@@ -7,7 +7,7 @@ import {
   learningLanguageSelector,
   getTextStyle,
   exerciseMaskedLanguages,
-  respVoiceLanguages,
+  voiceLanguages,
   speak,
   formatGreenFeedbackText,
 } from 'Utilities/common'
@@ -32,7 +32,7 @@ const ExerciseCloze = ({ word, handleChange }) => {
   const target = useRef()
   const dispatch = useDispatch()
 
-  const voice = respVoiceLanguages[learningLanguage]
+  const voice = voiceLanguages[learningLanguage]
 
   const handleTooltipWordClick = () => {
     const showAsSurface = exerciseMaskedLanguages.includes(learningLanguage)

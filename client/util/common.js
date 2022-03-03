@@ -70,7 +70,8 @@ import { useSelector, useDispatch } from 'react-redux'
 import { useHistory } from 'react-router-dom'
 import { hiddenFeatures } from 'Utilities/common'
 
-import { callApi } from './apiConnection'
+import { callApi, yandexSpeak } from './apiConnection'
+import { sources } from 'webpack'
 
 export const images = {
   revitaLogoTransparent,
@@ -353,7 +354,9 @@ export const getTextWidth = text => {
 
 export const speak = (surfaceWord, voice) => {
   try {
-    if (window.responsiveVoice.voiceSupport()) window.responsiveVoice.speak(surfaceWord, voice)
+    source, lang_code, tone = voice
+    if (source==='responsive_voice' && window.responsiveVoice.voiceSupport()) window.responsiveVoice.speak(surfaceWord, lang_code + ' ' + tone)
+    else if (source==='yandex') yandexSpeak(surfaceWord, lang_code, tone)
   } catch (e) {
     console.log(`Failed to speak ${surfaceWord} in ${capitalize(voice)}`)
   }
@@ -403,18 +406,18 @@ export const levenshteinDistance = (a, b) => {
   return row[a.length]
 }
 
-export const respVoiceLanguages = {
-  Catalan: 'Catalan Male',
-  Finnish: 'Finnish Female',
-  French: 'French Female',
-  German: 'Deutsch Female',
-  Italian: 'Italian Female',
-  Portuguese: 'Portuguese Female',
-  Russian: 'Russian Female',
-  Spanish: 'Spanish Female',
-  Swedish: 'Swedish Female',
-  Turkish: 'Turkish Female',
-  Chinese: 'Chinese Female',
+export const voiceLanguages = {
+  Catalan: ['responsive_voice', 'Catalan', 'Male'],
+  Finnish: ['responsive_voice', 'Finnish', 'Female'],
+  French: ['responsive_voice', 'French', 'Female'],
+  German: ['responsive_voice', 'Deutsch', 'Female'],
+  Italian: ['responsive_voice', 'Italian', 'Female'],
+  Portuguese: ['responsive_voice', 'Portuguese', 'Female'],
+  Russian: ['yandex', 'ru-RU', 'oksana'],
+  Spanish: ['responsive_voice', 'Spanish', 'Female'],
+  Swedish: ['responsive_voice', 'Swedish', 'Female'],
+  Turkish: ['responsive_voice', 'Turkish', 'Female'],
+  Chinese: ['responsive_voice', 'Chinese', 'Female'],
 }
 
 export const translatableLanguages = {

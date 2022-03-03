@@ -10,7 +10,7 @@ import {
   useLearningLanguage,
   translatableLanguages,
   speak,
-  respVoiceLanguages,
+  voiceLanguages,
   getTextStyle,
   images,
 } from 'Utilities/common'
@@ -21,7 +21,7 @@ import FocusedView from 'Components/AnnotationBox/FocusedView'
 
 const Speaker = ({ word }) => {
   const learningLanguage = useLearningLanguage()
-  const voice = respVoiceLanguages[learningLanguage]
+  const voice = voiceLanguages[learningLanguage]
 
   const handleSpeakerClick = () => {
     speak(word, voice)

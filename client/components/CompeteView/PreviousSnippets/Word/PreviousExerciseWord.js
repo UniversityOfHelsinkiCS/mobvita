@@ -7,7 +7,7 @@ import {
   learningLanguageSelector,
   dictionaryLanguageSelector,
   speak,
-  respVoiceLanguages,
+  voiceLanguages,
   formatGreenFeedbackText,
 } from 'Utilities/common'
 import { setReferences, setExplanation } from 'Utilities/redux/practiceReducer'
@@ -37,7 +37,7 @@ const PreviousExerciseWord = ({ word, answer, tiedAnswer }) => {
   const intl = useIntl()
   const dispatch = useDispatch()
 
-  const voice = respVoiceLanguages[learningLanguage]
+  const voice = voiceLanguages[learningLanguage]
   let color = ''
   if (tested || typeof wrong !== 'undefined') color = isWrong ? 'wrong-text' : 'right-text'
   const wordClass = `word-interactive ${color}`

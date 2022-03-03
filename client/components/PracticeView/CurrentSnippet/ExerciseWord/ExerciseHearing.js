@@ -5,7 +5,7 @@ import {
   getTextWidth,
   speak,
   learningLanguageSelector,
-  respVoiceLanguages,
+  voiceLanguages,
   formatGreenFeedbackText,
 } from 'Utilities/common'
 import { setFocusedWord } from 'Utilities/redux/practiceReducer'
@@ -27,7 +27,7 @@ const ExerciseHearing = ({ word, handleChange }) => {
 
   const { isWrong, tested } = word
 
-  const voice = respVoiceLanguages[learningLanguage]
+  const voice = voiceLanguages[learningLanguage]
 
   const giveHint = () => {
     if (word.base !== word.surface) handleChange(word.base, word)

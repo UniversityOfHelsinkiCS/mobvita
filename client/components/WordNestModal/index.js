@@ -5,7 +5,7 @@ import { Collapse } from 'react-collapse'
 import DictionaryHelp from 'Components/DictionaryHelp'
 import { getTranslationAction } from 'Utilities/redux/translationReducer'
 import { getWordNestAction, getLinkedWordNestAction } from 'Utilities/redux/wordNestReducer'
-import { learningLanguageSelector, speak, respVoiceLanguages, sanitizeHtml } from 'Utilities/common'
+import { learningLanguageSelector, speak, voiceLanguages, sanitizeHtml } from 'Utilities/common'
 import useWindowDimensions from 'Utilities/windowDimensions'
 import { FormattedMessage, useIntl } from 'react-intl'
 import ReportButton from 'Components/ReportButton'
@@ -25,7 +25,7 @@ const NestWord = ({ wordNest, hasSeveralRoots, wordToCheck, showMoreInfo, childr
   const learningLanguage = useSelector(learningLanguageSelector)
   const autoSpeak = useSelector(({ user }) => user.data.user.auto_speak)
   const dictionaryLanguage = useSelector(({ user }) => user.data.user.last_trans_language)
-  const voice = respVoiceLanguages[learningLanguage]
+  const voice = voiceLanguages[learningLanguage]
   const [open, setOpen] = useState(true)
 
   const getWordStyle = word => {

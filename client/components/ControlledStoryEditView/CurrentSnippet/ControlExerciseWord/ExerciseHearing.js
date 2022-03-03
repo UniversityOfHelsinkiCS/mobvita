@@ -1,7 +1,7 @@
 import React, { createRef, useState, useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { Icon } from 'semantic-ui-react'
-import { getTextWidth, speak, learningLanguageSelector, respVoiceLanguages } from 'Utilities/common'
+import { getTextWidth, speak, learningLanguageSelector, voiceLanguages } from 'Utilities/common'
 import { addExercise, removeExercise } from 'Utilities/redux/controlledPracticeReducer'
 
 const ExerciseHearing = ({ word }) => {
@@ -18,7 +18,7 @@ const ExerciseHearing = ({ word }) => {
   const learningLanguage = useSelector(learningLanguageSelector)
 
   const { ID: wordId } = word
-  const voice = respVoiceLanguages[learningLanguage]
+  const voice = voiceLanguages[learningLanguage]
 
   const getExerciseClass = () => {
     return acceptedTokens.map(t => t.ID).includes(wordId)

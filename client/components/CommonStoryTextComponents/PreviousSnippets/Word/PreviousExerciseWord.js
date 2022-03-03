@@ -8,7 +8,7 @@ import {
   learningLanguageSelector,
   dictionaryLanguageSelector,
   speak,
-  respVoiceLanguages,
+  voiceLanguages,
   formatGreenFeedbackText,
   hiddenFeatures,
 } from 'Utilities/common'
@@ -49,7 +49,7 @@ const PreviousExerciseWord = ({ word, answer, tiedAnswer }) => {
   const intl = useIntl()
   const dispatch = useDispatch()
 
-  const voice = respVoiceLanguages[learningLanguage]
+  const voice = voiceLanguages[learningLanguage]
   let color = ''
   if (tested || typeof wrong !== 'undefined') color = isWrong ? 'wrong-text' : 'right-text'
   if (correctAnswerIDs.includes(word.ID.toString())) color = 'right-text'

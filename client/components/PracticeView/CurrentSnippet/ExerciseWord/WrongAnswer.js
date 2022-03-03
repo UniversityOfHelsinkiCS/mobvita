@@ -7,7 +7,7 @@ import {
   learningLanguageSelector,
   dictionaryLanguageSelector,
   speak,
-  respVoiceLanguages,
+  voiceLanguages,
   formatGreenFeedbackText,
 } from 'Utilities/common'
 import { setReferences } from 'Utilities/redux/practiceReducer'
@@ -27,7 +27,7 @@ const WrongAnswer = ({ word }) => {
   const intl = useIntl()
   const dispatch = useDispatch()
 
-  const voice = respVoiceLanguages[learningLanguage]
+  const voice = voiceLanguages[learningLanguage]
 
   const wordClass = 'word-interactive wrong-text'
 

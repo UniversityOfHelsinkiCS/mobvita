@@ -3,7 +3,7 @@ import { useSelector, useDispatch } from 'react-redux'
 import {
   dictionaryLanguageSelector,
   learningLanguageSelector,
-  respVoiceLanguages,
+  voiceLanguages,
   speak,
   formatGreenFeedbackText,
 } from 'Utilities/common'
@@ -21,7 +21,7 @@ const RightAnswer = ({ word }) => {
 
   const dispatch = useDispatch()
 
-  const voice = respVoiceLanguages[learningLanguage]
+  const voice = voiceLanguages[learningLanguage]
 
   const handleClick = () => {
     setShow(true)

@@ -1,12 +1,12 @@
 import React, { createRef } from 'react'
 import { useSelector } from 'react-redux'
 import { Icon } from 'semantic-ui-react'
-import { getTextWidth, speak, learningLanguageSelector, respVoiceLanguages } from 'Utilities/common'
+import { getTextWidth, speak, learningLanguageSelector, voiceLanguages } from 'Utilities/common'
 
 const ExerciseHearing = ({ word }) => {
   const inputRef = createRef(null)
   const learningLanguage = useSelector(learningLanguageSelector)
-  const voice = respVoiceLanguages[learningLanguage]
+  const voice = voiceLanguages[learningLanguage]
 
   const speakerClickHandler = word => {
     speak(word.audio, voice)

@@ -6,7 +6,7 @@ import {
   learningLanguageSelector,
   dictionaryLanguageSelector,
   speak,
-  respVoiceLanguages,
+  voiceLanguages,
 } from 'Utilities/common'
 import { getTranslationAction, setWords } from 'Utilities/redux/translationReducer'
 import {
@@ -35,7 +35,7 @@ const PlainWord = ({ word, annotatingAllowed, ...props }) => {
   const { lemmas, ID: wordId, surface, inflection_ref: inflectionRef, name_token: isName } = word
   const isCompeteMode = history.location.pathname.includes('compete')
   const bigScreen = width >= 1024
-  const voice = respVoiceLanguages[learningLanguage]
+  const voice = voiceLanguages[learningLanguage]
 
   if (surface === '\n\n') {
     return (
