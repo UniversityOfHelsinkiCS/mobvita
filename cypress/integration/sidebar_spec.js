@@ -7,6 +7,8 @@ describe("sidebar is open (only mobile)", function () {
     cy.viewport(375, 667) // Set a mobile resolution
     cy.loginExisting().as('user')
     cy.visit('http://localhost:8000')
+    cy.get('.modal > .close').click()
+
     cy.get('[data-cy=hamburger]').click()
   })
 
@@ -25,6 +27,8 @@ describe("sidebar is open (only mobile)", function () {
     cy.get('[data-cy=ui-lang-select] > .visible > :nth-child(4)').click()
     cy.contains('Profilo')
     cy.get('[data-cy=logout]').click()
+    cy.get('.modal > .close').click()
+
     cy.request('POST', '/api/session', { ...this.user })
       .as('user')
       .then(response => {
