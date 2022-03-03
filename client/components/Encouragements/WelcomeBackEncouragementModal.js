@@ -17,18 +17,18 @@ const WelcomeBackEncouragementModal = ({ open, setOpen, username, storiesCovered
       onClose={() => setOpen(false)}
     >
       <Modal.Content>
-        <div>
+        <div style={{ padding: '1.5rem', backgroundColor: '#FFFFFF' }}>
           <div
             className="header-2"
             style={{
-              marginTop: '1.5rem',
               marginBottom: '1.5rem',
               fontWeight: 500,
+              color: '#000000',
             }}
           >
             {intl.formatMessage({ id: 'welcome-back-encouragement' }, { username })}
           </div>
-          <div className="bold">
+          <div className="bold" style={{ color: '#000000' }}>
             {intl.formatMessage(
               { id: 'stories-covered-encouragement' },
               { stories: storiesCovered }

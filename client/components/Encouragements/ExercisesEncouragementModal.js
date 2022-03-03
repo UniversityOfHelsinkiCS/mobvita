@@ -13,7 +13,7 @@ const ExercisesEncouragementModal = ({ open, setOpen, storiesCovered, vocabulary
       open={open}
       size="small"
       centered={false}
-      dimmer="inverted"
+      dimmer="blurring"
       closeIcon={{ style: { top: '2.5rem', right: '2.5rem' }, color: 'black', name: 'close' }}
       onClose={() => setOpen(false)}
     >
