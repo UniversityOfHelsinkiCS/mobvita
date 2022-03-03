@@ -10,6 +10,7 @@ import { Button } from 'react-bootstrap'
 import useWindowDimensions from 'Utilities/windowDimensions'
 import Footer from 'Components/Footer'
 import AddStoryModal from 'Components/AddStoryModal'
+import WelcomeBackEncouragementModal from 'Components/Encouragements/WelcomeBackEncouragementModal'
 import MedalSummary from './MedalSummary'
 import PracticeModal from './PracticeModal'
 import EloChart from './EloChart'
@@ -111,9 +112,17 @@ const HomeView = () => {
   const dispatch = useDispatch()
   const { groups } = useSelector(({ groups }) => groups)
   const aTestIsEnabled = groups.some(e => e.test_deadline - Date.now() > 0)
+  const history = useHistory()
+  const userData = useSelector(state => state.user.data.user)
+  const { username } = userData
+  const storiesCovered = userData.stories_covered
 
   const [practiceModalOpen, setPracticeModalOpen] = useState(false)
   const [addStoryModalOpen, setAddStoryModalOpen] = useState(false)
+  const [openEncouragement, setOpenEncouragement] = useState(true)
+
+  const showWelcomeModal =
+    history.location.pathname.endsWith('/welcome') && username !== 'Anonymous User'
 
   useEffect(() => {
     dispatch(getGroups())
@@ -123,6 +132,14 @@ const HomeView = () => {
     <div className="cont-tall cont flex-col auto gap-row-sm pt-lg blue-bg">
       <AddStoryModal open={addStoryModalOpen} setOpen={setAddStoryModalOpen} />
       <PracticeModal open={practiceModalOpen} setOpen={setPracticeModalOpen} />
+      {showWelcomeModal && (
+        <WelcomeBackEncouragementModal
+          open={openEncouragement}
+          setOpen={setOpenEncouragement}
+          username={username}
+          storiesCovered={storiesCovered}
+        />
+      )}
       <div className="grow flex-col">
         {bigScreen ? (
           <div className="grow flex-col space-between gap-row-nm">
