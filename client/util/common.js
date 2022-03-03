@@ -72,7 +72,6 @@ import { useHistory } from 'react-router-dom'
 import { hiddenFeatures } from 'Utilities/common'
 
 import { callApi, yandexSpeak } from './apiConnection'
-import { sources } from 'webpack'
 
 export const images = {
   revitaLogoTransparent,
@@ -357,12 +356,12 @@ export const getTextWidth = text => {
 }
 
 export const speak = (surfaceWord, voice) => {
+  const [source, lang_code, tone] = voice
   try {
-    source, lang_code, tone = voice
     if (source==='responsive_voice' && window.responsiveVoice.voiceSupport()) window.responsiveVoice.speak(surfaceWord, lang_code + ' ' + tone)
     else if (source==='yandex') yandexSpeak(surfaceWord, lang_code, tone)
   } catch (e) {
-    console.log(`Failed to speak ${surfaceWord} in ${capitalize(voice)}`)
+    console.log(`Failed to speak ${surfaceWord} in ${capitalize(lang_code + ' ' + tone)}`)
   }
 }
 

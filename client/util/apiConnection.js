@@ -137,22 +137,22 @@ export const yandexSpeak = (text, lang_code, tone) => {
   data.append('text', text)
   data.append('lang', lang_code)
   data.append('voice', tone)
-  const config = {
-    method: 'post',
-    url: 'https://tts.api.cloud.yandex.net/speech/v1/tts:synthesize',
-    headers: { 
-      'Authorization': 'Api-Key AQVN3Y3Vf7AMbWtbgGnp3daPjL0M9SCa28g10u8N', 
-      ...data.getHeaders()
-    },
-    data : data
-  }
-  axios(config).then((response)=>{
+  
+  axios.post(
+    'https://tts.api.cloud.yandex.net/speech/v1/tts:synthesize', 
+    data, {
+      headers: {
+        Authorization: 'Api-Key AQVN3Y3Vf7AMbWtbgGnp3daPjL0M9SCa28g10u8N'
+      },
+      
+    }
+
+  ).then((response)=>{
     const blob = new Blob([response.value], { type: 'audio/ogg' });
     const url = window.URL.createObjectURL(blob)
     window.audio = new Audio();
     window.audio.src = url;
     window.audio.play();
   })
-
 }
 
