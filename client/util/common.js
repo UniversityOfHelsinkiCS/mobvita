@@ -416,7 +416,7 @@ export const voiceLanguages = {
   German: ['responsive_voice', 'Deutsch', 'Female'],
   Italian: ['responsive_voice', 'Italian', 'Female'],
   Portuguese: ['responsive_voice', 'Portuguese', 'Female'],
-  Russian: ['yandex', 'ru-RU', 'oksana'],
+  Russian: ['yandex', 'ru-RU', 'alena'],
   Spanish: ['responsive_voice', 'Spanish', 'Female'],
   Swedish: ['responsive_voice', 'Swedish', 'Female'],
   Turkish: ['responsive_voice', 'Turkish', 'Female'],
