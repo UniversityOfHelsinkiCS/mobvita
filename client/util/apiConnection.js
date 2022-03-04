@@ -132,27 +132,17 @@ export const handleRequest = store => next => async action => {
   }
 }
 
-export const yandexSpeak = (text, lang_code, tone) => {
-  const data = new FormData()
-  data.append('text', text)
-  data.append('lang', lang_code)
-  data.append('voice', tone)
+export const yandexSpeak = async (text, lang_code, tone) => {  
+  const response = await axios.post(`${basePath}api/yandex_tts`, 
+  {text: text, lang_code: lang_code, tone: tone}, {responseType: 'arraybuffer'})
+  window.AudioContext = window.AudioContext||window.webkitAudioContext;
+  const context = new AudioContext();
+  context.decodeAudioData(response.data, function(buffer) {
+    const source = context.createBufferSource();
+    source.buffer = buffer;
+    source.connect(context.destination);
+    source.start()
+  });
   
-  axios.post(
-    'https://tts.api.cloud.yandex.net/speech/v1/tts:synthesize', 
-    data, {
-      headers: {
-        Authorization: 'Api-Key AQVN3Y3Vf7AMbWtbgGnp3daPjL0M9SCa28g10u8N'
-      },
-      
-    }
-
-  ).then((response)=>{
-    const blob = new Blob([response.value], { type: 'audio/ogg' });
-    const url = window.URL.createObjectURL(blob)
-    window.audio = new Audio();
-    window.audio.src = url;
-    window.audio.play();
-  })
 }
 
