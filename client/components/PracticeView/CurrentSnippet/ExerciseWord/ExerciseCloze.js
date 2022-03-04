@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
+import { FormattedMessage, useIntl } from 'react-intl'
 import {
   getTextWidth,
   dictionaryLanguageSelector,
@@ -110,7 +111,7 @@ const ExerciseCloze = ({ word, handleChange }) => {
         onClick={handleTooltipWordClick}
       >
         <span style={getTextStyle(learningLanguage, 'tooltip')}>{word.base || word.bases}</span>
-        {` → ${dictionaryLanguage}`}
+        → <FormattedMessage id={dictionaryLanguage}/>
       </div>
     </div>
   )
