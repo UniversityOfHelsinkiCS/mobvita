@@ -18,7 +18,7 @@ const ExercisesEncouragementModal = ({ open, setOpen, storiesCovered, vocabulary
       onClose={() => setOpen(false)}
     >
       <Modal.Content>
-        <div style={{ padding: '1.5rem', backgroundColor: '#FFFFFF' }}>
+        <div className="encouragement" style={{ padding: '1.5rem' }}>
           {notFirst ? (
             <div>
               <div

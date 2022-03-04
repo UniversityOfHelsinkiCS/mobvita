@@ -545,6 +545,12 @@ html, body, #root {
 .test-btn-cont { grid-area: exhaustive-test; }
 .adaptive-test-btn-cont { grid-area: adaptive-test; }
 
+.encouragement {
+  border: 2px solid lightgrey;
+  border-radius: 12px;
+  background: #FFF;
+}
+
 .homeview-item {
   border: 2px solid #000;
   border-radius: 12px;
