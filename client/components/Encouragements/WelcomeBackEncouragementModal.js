@@ -17,7 +17,7 @@ const WelcomeBackEncouragementModal = ({ open, setOpen, username, storiesCovered
       onClose={() => setOpen(false)}
     >
       <Modal.Content>
-        <div style={{ padding: '1.5rem', backgroundColor: '#FFFFFF' }}>
+        <div className="encouragement" style={{ padding: '1.5rem' }}>
           <div
             className="header-2"
             style={{
