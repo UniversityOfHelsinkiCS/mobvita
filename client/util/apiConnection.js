@@ -1,6 +1,7 @@
 import axios from 'axios'
 import { basePath, timerExpired } from 'Utilities/common'
 import * as Sentry from '@sentry/react'
+import {Howl, Howler} from 'howler';
 /**
  * ApiConnection simplifies redux usage
  */
@@ -132,17 +133,16 @@ export const handleRequest = store => next => async action => {
   }
 }
 
-export const yandexSpeak = async (text, lang_code, tone) => {  
-  const response = await axios.post(`${basePath}api/yandex_tts`, 
-  {text: text, lang_code: lang_code, tone: tone}, {responseType: 'arraybuffer'})
-  window.AudioContext = window.AudioContext||window.webkitAudioContext;
-  const context = new AudioContext();
-  context.decodeAudioData(response.data, function(buffer) {
-    const source = context.createBufferSource();
-    source.buffer = buffer;
-    source.connect(context.destination);
-    source.start()
-  });
-  
+export const yandexSpeak = async (text, lang_code, tone) => {
+  const error_func = (sound_id, e) => {
+    console.log(sound_id, e)
+  }
+  new Howl({
+    src: [`${basePath}api/yandex_tts?text=${encodeURIComponent(text)}&tone=${tone}&lang_code=${lang_code}`],
+    format: ['opus'],
+    autoplay: true,
+    onloaderror: error_func,
+    onloaderror: error_func
+  })
 }
 
