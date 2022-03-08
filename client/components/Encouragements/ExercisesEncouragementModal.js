@@ -56,7 +56,7 @@ const ExercisesEncouragementModal = ({ open, setOpen, storiesCovered, vocabulary
               <FormattedMessage id="first-story-covered-encouragement" />
             </div>
           )}
-          <div className="pt-lg">
+          <div className="encouragement-picture">
             <img
               src={images.balloons}
               alt="encouraging balloons"
