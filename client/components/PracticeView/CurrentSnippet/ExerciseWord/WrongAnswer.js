@@ -33,7 +33,7 @@ const WrongAnswer = ({ word }) => {
 
   const handleClick = () => {
     setShow(true)
-    if (autoSpeak === 'always' && voice) speak(surface, voice)
+    if (autoSpeak === 'always' && voice) speak(surface, voice, 'dictionary')
     if (lemmas) {
       dispatch(setWords({ surface, lemmas }))
       dispatch(

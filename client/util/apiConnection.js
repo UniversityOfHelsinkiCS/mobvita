@@ -133,16 +133,35 @@ export const handleRequest = store => next => async action => {
   }
 }
 
-export const yandexSpeak = async (text, lang_code, tone) => {
+const recordSpeak = (text, voice_type, source, lang_code, is_success) => {
+  console.log(voice_type, source, lang_code, is_success)
+  callApi(`/listen?text=${encodeURIComponent(text)}&voice_type=${voice_type}&source=${source}&lang_code=${lang_code}&is_success=${is_success}`)
+}
+
+export const RVSpeak = (text, lang_code, tone, voice_type) => {
+  const parameters = {
+    onend: function(){
+      recordSpeak(text, voice_type, 'ResponsiveVoice', lang_code, 1)
+    },
+    onerror: function(){
+      recordSpeak(text, voice_type, 'ResponsiveVoice', lang_code, 0)
+    }
+  }
+  window.responsiveVoice.speak(text, lang_code + ' ' + tone, parameters)
+}
+
+export const yandexSpeak = async (text, lang_code, tone, voice_type) => {
   const error_func = (sound_id, e) => {
     console.log(sound_id, e)
+    recordSpeak(text, voice_type, 'Yandex', lang_code, 0)
   }
   new Howl({
     src: [`${basePath}api/yandex_tts?text=${encodeURIComponent(text)}&tone=${tone}&lang_code=${lang_code}`],
     format: ['opus'],
     autoplay: true,
+    onend: function(){recordSpeak(text, voice_type, 'Yandex', lang_code, 1)},
     onloaderror: error_func,
-    onloaderror: error_func
+    onplayerror: error_func
   })
 }
 

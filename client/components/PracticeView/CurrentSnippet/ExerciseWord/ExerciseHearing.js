@@ -66,7 +66,7 @@ const ExerciseHearing = ({ word, handleChange }) => {
     }
     dispatch(setFocusedWord(word))
     if (!focusTimeout) {
-      speak(word.audio, voice)
+      speak(word.audio, voice, 'exercise')
       setFocusTimeout(true)
       setTimeout(() => {
         setFocusTimeout(false)

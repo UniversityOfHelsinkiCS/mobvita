@@ -9,7 +9,7 @@ const ExerciseHearing = ({ word }) => {
   const voice = voiceLanguages[learningLanguage]
 
   const speakerClickHandler = word => {
-    speak(word.audio, voice)
+    speak(word.audio, voice, 'exercise')
     inputRef.current.focus()
   }
 

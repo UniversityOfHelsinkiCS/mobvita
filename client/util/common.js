@@ -71,7 +71,7 @@ import { useSelector, useDispatch } from 'react-redux'
 import { useHistory } from 'react-router-dom'
 import { hiddenFeatures } from 'Utilities/common'
 
-import { callApi, yandexSpeak } from './apiConnection'
+import { callApi, yandexSpeak, RVSpeak } from './apiConnection'
 
 export const images = {
   revitaLogoTransparent,
@@ -355,11 +355,11 @@ export const getTextWidth = text => {
   return 65 + metrics.width // add just random number, lets hope its fine.
 }
 
-export const speak = (surfaceWord, voice) => {
+export const speak = (surfaceWord, voice, voice_type) => {
   const [source, lang_code, tone] = voice
   try {
-    if (source==='responsive_voice' && window.responsiveVoice.voiceSupport()) window.responsiveVoice.speak(surfaceWord, lang_code + ' ' + tone)
-    else if (source==='yandex') yandexSpeak(surfaceWord, lang_code, tone)
+    if (source==='responsive_voice' && window.responsiveVoice.voiceSupport()) RVSpeak(surfaceWord, lang_code, tone, voice_type)
+    else if (source==='yandex') yandexSpeak(surfaceWord, lang_code, tone, voice_type)
   } catch (e) {
     console.log(`Failed to speak ${surfaceWord} in ${capitalize(lang_code + ' ' + tone)}`)
   }

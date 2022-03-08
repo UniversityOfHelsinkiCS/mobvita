@@ -24,7 +24,7 @@ const Speaker = ({ word }) => {
   const voice = voiceLanguages[learningLanguage]
 
   const handleSpeakerClick = () => {
-    speak(word, voice)
+    speak(word, voice, 'dictionary')
   }
 
   if (!voice) return null
