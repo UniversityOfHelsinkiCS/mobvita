@@ -156,7 +156,7 @@ export const yandexSpeak = async (text, lang_code, tone, voice_type) => {
     src: [`${basePath}api/yandex_tts?text=${encodeURIComponent(text)}&tone=${tone}&lang_code=${lang_code}`],
     format: ['opus'],
     autoplay: true,
-    onend: function(){recordSpeak(text, voice_type, 'Yandex', lang_code, 1)},
+    onend: function(){recordSpeak(text, voice_type, 'Yandex', lang_code, 1, '')},
     onloaderror: error_func('loading_error'),
     onplayerror: error_func('playing_error')
   })
