@@ -133,35 +133,32 @@ export const handleRequest = store => next => async action => {
   }
 }
 
-const recordSpeak = (text, voice_type, source, lang_code, is_success) => {
-  console.log(voice_type, source, lang_code, is_success)
-  callApi(`/listen?text=${encodeURIComponent(text)}&voice_type=${voice_type}&source=${source}&lang_code=${lang_code}&is_success=${is_success}`)
+const recordSpeak = (text, voice_type, source, lang_code, is_success, message) => {
+  callApi(`/listen?text=${encodeURIComponent(text)}&voice_type=${voice_type}&source=${source}&lang_code=${lang_code}&is_success=${is_success}&message=${message}`)
 }
 
 export const RVSpeak = (text, lang_code, tone, voice_type) => {
+  const callback_func = (is_success) => () => {
+    recordSpeak(text, voice_type, 'ResponsiveVoice', lang_code, is_success, '')
+  }
   const parameters = {
-    onend: function(){
-      recordSpeak(text, voice_type, 'ResponsiveVoice', lang_code, 1)
-    },
-    onerror: function(){
-      recordSpeak(text, voice_type, 'ResponsiveVoice', lang_code, 0)
-    }
+    onend: callback_func(1),
+    onerror: callback_func(0)
   }
   window.responsiveVoice.speak(text, lang_code + ' ' + tone, parameters)
 }
 
 export const yandexSpeak = async (text, lang_code, tone, voice_type) => {
-  const error_func = (sound_id, e) => {
-    console.log(sound_id, e)
-    recordSpeak(text, voice_type, 'Yandex', lang_code, 0)
+  const error_func = (error_type) => (sound_id, e) => {
+    recordSpeak(text, voice_type, 'Yandex', lang_code, 0, error_type + ': ' + sound_id + '->' + e)
   }
   new Howl({
     src: [`${basePath}api/yandex_tts?text=${encodeURIComponent(text)}&tone=${tone}&lang_code=${lang_code}`],
     format: ['opus'],
     autoplay: true,
     onend: function(){recordSpeak(text, voice_type, 'Yandex', lang_code, 1)},
-    onloaderror: error_func,
-    onplayerror: error_func
+    onloaderror: error_func('loading_error'),
+    onplayerror: error_func('playing_error')
   })
 }
 
