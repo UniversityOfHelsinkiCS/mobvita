@@ -72,6 +72,7 @@ import { useHistory } from 'react-router-dom'
 import { hiddenFeatures } from 'Utilities/common'
 
 import { callApi, yandexSpeak, RVSpeak } from './apiConnection'
+import { Howler } from 'howler'
 
 export const images = {
   revitaLogoTransparent,
@@ -359,7 +360,8 @@ export const speak = (surfaceWord, voice, voice_type) => {
   const [source, lang_code, tone] = voice
   try {
     if (source==='responsive_voice' && window.responsiveVoice.voiceSupport()) RVSpeak(surfaceWord, lang_code, tone, voice_type)
-    else if (source==='yandex') yandexSpeak(surfaceWord, lang_code, tone, voice_type)
+    else if (source==='yandex' && Howler._codecs.opus) yandexSpeak(surfaceWord, lang_code, tone, voice_type)
+    else if (speakFallbackConfig.hasOwnProperty(voice.join('-'))) speak(surfaceWord, speakFallbackConfig[voice.join('-')], voice_type)
   } catch (e) {
     console.log(`Failed to speak ${surfaceWord} in ${capitalize(lang_code + ' ' + tone)}`)
   }
@@ -421,6 +423,10 @@ export const voiceLanguages = {
   Swedish: ['responsive_voice', 'Swedish', 'Female'],
   Turkish: ['responsive_voice', 'Turkish', 'Female'],
   Chinese: ['responsive_voice', 'Chinese', 'Female'],
+}
+
+const speakFallbackConfig = {
+  'yandex-ru-RU-alena' : ['responsive_voice', 'Russian', 'Female']
 }
 
 export const translatableLanguages = {

@@ -1,7 +1,7 @@
 import axios from 'axios'
 import { basePath, timerExpired } from 'Utilities/common'
 import * as Sentry from '@sentry/react'
-import {Howl, Howler} from 'howler';
+import { Howl } from 'howler';
 /**
  * ApiConnection simplifies redux usage
  */
