@@ -101,6 +101,8 @@ describe('Mobvita', function () {
           cy.reload()
         })
 
+      cy.wait(500)  
+
       cy.get('.modal > .close').click()
     })
 

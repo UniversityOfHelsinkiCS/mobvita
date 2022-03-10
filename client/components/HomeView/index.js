@@ -6,11 +6,11 @@ import { useDispatch, useSelector } from 'react-redux'
 import { getGroups } from 'Utilities/redux/groupsReducer'
 
 import { Button } from 'react-bootstrap'
-
 import useWindowDimensions from 'Utilities/windowDimensions'
 import Footer from 'Components/Footer'
 import AddStoryModal from 'Components/AddStoryModal'
 import WelcomeBackEncouragementModal from 'Components/Encouragements/WelcomeBackEncouragementModal'
+
 import MedalSummary from './MedalSummary'
 import PracticeModal from './PracticeModal'
 import EloChart from './EloChart'
@@ -116,6 +116,11 @@ const HomeView = () => {
   const userData = useSelector(state => state.user.data.user)
   const { username } = userData
   const storiesCovered = userData.stories_covered
+  const learningLanguage = userData ? userData.last_used_language : null
+  const { stories, pending } = useSelector(({ stories }) => ({
+    stories: stories.data,
+    pending: stories.pending,
+  }))
 
   const [practiceModalOpen, setPracticeModalOpen] = useState(false)
   const [addStoryModalOpen, setAddStoryModalOpen] = useState(false)
@@ -128,6 +133,8 @@ const HomeView = () => {
     dispatch(getGroups())
   }, [])
 
+  console.log('stories ', stories)
+
   return (
     <div className="cont-tall cont flex-col auto gap-row-sm pt-lg blue-bg">
       <AddStoryModal open={addStoryModalOpen} setOpen={setAddStoryModalOpen} />
@@ -138,6 +145,9 @@ const HomeView = () => {
           setOpen={setOpenEncouragement}
           username={username}
           storiesCovered={storiesCovered}
+          stories={stories}
+          pending={pending}
+          learningLanguage={learningLanguage}
         />
       )}
       <div className="grow flex-col">

@@ -1208,5 +1208,7 @@
     "first-story-covered-encouragement": "Congratulations! You have completed your first story!",
     "words-interacted-encouragement": "You have worked with {Nwords} new words.",
     "welcome-back-encouragement": "Welcome back, {username}!",
-    "would-you-like-to-continue-story": "Last time your were working on the story: {story}.<br/>Would you like to continue?"
+    "would-you-like-to-continue-story": "Last time your were working on the story  \"{story}\".<br>Would you like to continue?",
+    "yes": "Yes",
+    "no": "No"
 }

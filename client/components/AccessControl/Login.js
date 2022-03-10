@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { createRealToken } from 'Utilities/redux/userReducer'
+import { disableFetcher } from 'Utilities/redux/disableStoryFetcherReducer'
 import { Form } from 'semantic-ui-react'
 import { useHistory, useLocation } from 'react-router'
 import { FormattedMessage, useIntl } from 'react-intl'
@@ -20,7 +21,10 @@ const Login = () => {
 
   const dispatch = useDispatch()
 
-  const login = () => dispatch(createRealToken(email, password))
+  const login = () => {
+    dispatch(disableFetcher())
+    dispatch(createRealToken(email, password))
+  }
 
   useEffect(() => {
     const { from } = location.state || { from: { pathname: '/' } }

@@ -1211,5 +1211,7 @@
     "first-story-covered-encouragement": "Поздравляем! Ты изучил(а) свою первую историю!",
     "words-interacted-encouragement": "You have worked with {Nwords} new words.",
     "welcome-back-encouragement": "Добро пожаловать, {username}!",
-    "would-you-like-to-continue-story": "В прошлый раз вы работали с текстом: {story}.<br/>Продолжить?"
+    "would-you-like-to-continue-story": "В прошлый раз вы работали с текстом: {story}.<br>Продолжить?",
+    "yes": "Да",
+    "no": "Нет"
 }

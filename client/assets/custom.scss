@@ -551,13 +551,29 @@ html, body, #root {
   background: #FFF;
 }
 
-.encouragement-picture {
+.row-flex {
   display: flex;
-  align-items: center;
-  justify-content: center;
-  padding-top: 1.5rem;
+  flex-direction: row;
 }
 
+.float-left {
+  float: left;
+}
+
+.approve {
+  color: #008000;
+  margin-top: 0.5rem;
+  margin-right: 1.5rem;
+}
+
+.decline {
+  color: #FF0000;
+  margin-top: 0.5rem;
+}
+
+.welcome-picture {
+  padding-top: 1.5rem;
+}
 .homeview-item {
   border: 2px solid #000;
   border-radius: 12px;
