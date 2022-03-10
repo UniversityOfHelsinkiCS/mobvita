@@ -42,7 +42,7 @@ const ExerciseCloze = ({ word, handleChange }) => {
     const maskSymbol = exerciseMaskedLanguages.includes(learningLanguage)
       ? word.base || word.bases
       : null
-    if (autoSpeak === 'always' && voice) speak(surface, voice)
+    if (autoSpeak === 'always' && voice) speak(surface, voice, 'dictionary')
     if (lemmas) {
       dispatch(setWords({ surface: showAsSurface, lemmas, maskSymbol }))
       dispatch(

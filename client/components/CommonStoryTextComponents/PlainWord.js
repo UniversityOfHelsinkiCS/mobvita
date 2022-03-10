@@ -105,7 +105,7 @@ const PlainWord = ({ word, annotatingAllowed, ...props }) => {
   const handleWordClick = () => {
     dispatch(setFocusedSpan(null))
     if (showAnnotationForm) dispatch(setAnnotationFormVisibility(false))
-    if (autoSpeak === 'always' && voice) speak(surface, voice)
+    if (autoSpeak === 'always' && voice) speak(surface, voice, 'dictionary')
     if (lemmas) {
       dispatch(setWords({ surface, lemmas }))
       if (annotatingAllowed && !consistsOfOnlyWhitespace(word.surface)) {

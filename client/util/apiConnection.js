@@ -1,6 +1,7 @@
 import axios from 'axios'
 import { basePath, timerExpired } from 'Utilities/common'
 import * as Sentry from '@sentry/react'
+import { Howl } from 'howler';
 /**
  * ApiConnection simplifies redux usage
  */
@@ -132,17 +133,32 @@ export const handleRequest = store => next => async action => {
   }
 }
 
-export const yandexSpeak = async (text, lang_code, tone) => {  
-  const response = await axios.post(`${basePath}api/yandex_tts`, 
-  {text: text, lang_code: lang_code, tone: tone}, {responseType: 'arraybuffer'})
-  window.AudioContext = window.AudioContext||window.webkitAudioContext;
-  const context = new AudioContext();
-  context.decodeAudioData(response.data, function(buffer) {
-    const source = context.createBufferSource();
-    source.buffer = buffer;
-    source.connect(context.destination);
-    source.start()
-  });
-  
+const recordSpeak = (text, voice_type, source, lang_code, is_success, message) => {
+  callApi(`/listen?text=${encodeURIComponent(text)}&voice_type=${voice_type}&source=${source}&lang_code=${lang_code}&is_success=${is_success}&message=${message}`)
+}
+
+export const RVSpeak = (text, lang_code, tone, voice_type) => {
+  const callback_func = (is_success) => () => {
+    recordSpeak(text, voice_type, 'ResponsiveVoice', lang_code, is_success, '')
+  }
+  const parameters = {
+    onend: callback_func(1),
+    onerror: callback_func(0)
+  }
+  window.responsiveVoice.speak(text, lang_code + ' ' + tone, parameters)
+}
+
+export const yandexSpeak = async (text, lang_code, tone, voice_type) => {
+  const error_func = (error_type) => (sound_id, e) => {
+    recordSpeak(text, voice_type, 'Yandex', lang_code, 0, error_type + ': ' + sound_id + '->' + e)
+  }
+  new Howl({
+    src: [`${basePath}api/yandex_tts?text=${encodeURIComponent(text)}&tone=${tone}&lang_code=${lang_code}`],
+    format: ['opus'],
+    autoplay: true,
+    onend: function(){recordSpeak(text, voice_type, 'Yandex', lang_code, 1, '')},
+    onloaderror: error_func('loading_error'),
+    onplayerror: error_func('playing_error')
+  })
 }
 

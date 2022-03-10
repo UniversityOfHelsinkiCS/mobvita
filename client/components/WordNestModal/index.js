@@ -46,7 +46,7 @@ const NestWord = ({ wordNest, hasSeveralRoots, wordToCheck, showMoreInfo, childr
   }
 
   const handleWordClick = (surface, lemma) => {
-    if (autoSpeak === 'always' && voice) speak(surface, voice)
+    if (autoSpeak === 'always' && voice) speak(surface, voice, 'dictionary')
 
     dispatch(
       getTranslationAction({
