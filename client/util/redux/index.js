@@ -14,7 +14,6 @@ import notification from './notificationReducer'
 import uploadProgress from './uploadProgressReducer'
 import flashcards from './flashcardReducer'
 import groups from './groupsReducer'
-import disabled from './disableStoryFetcherReducer'
 import share from './shareReducer'
 import metadata from './metadataReducer'
 import summary from './groupSummaryReducer'
@@ -34,6 +33,7 @@ import news from './newsReducer'
 import wordNest from './wordNestReducer'
 import controlledPractice from './controlledPracticeReducer'
 import constructionTest from './constructionTestReducer'
+import incomplete from './incompleteStoriesReducer'
 
 const rootReducer = combineReducers({
   stories,
@@ -50,7 +50,6 @@ const rootReducer = combineReducers({
   uploadProgress,
   flashcards,
   groups,
-  disabled,
   share,
   metadata,
   summary,
@@ -70,6 +69,7 @@ const rootReducer = combineReducers({
   wordNest,
   controlledPractice,
   constructionTest,
+  incomplete,
 })
 
 export default (state, action) =>

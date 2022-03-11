@@ -117,9 +117,9 @@ const HomeView = () => {
   const { username } = userData
   const storiesCovered = userData.stories_covered
   const learningLanguage = userData ? userData.last_used_language : null
-  const { stories, pending } = useSelector(({ stories }) => ({
-    stories: stories.data,
-    pending: stories.pending,
+  const { incomplete, loading } = useSelector(({ incomplete }) => ({
+    incomplete: incomplete.data,
+    loading: incomplete.pending,
   }))
 
   const [practiceModalOpen, setPracticeModalOpen] = useState(false)
@@ -143,8 +143,8 @@ const HomeView = () => {
           setOpen={setOpenEncouragement}
           username={username}
           storiesCovered={storiesCovered}
-          stories={stories}
-          pending={pending}
+          stories={incomplete}
+          pending={loading}
           learningLanguage={learningLanguage}
         />
       )}

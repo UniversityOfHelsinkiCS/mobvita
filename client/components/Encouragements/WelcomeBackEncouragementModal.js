@@ -4,8 +4,7 @@ import { useIntl, FormattedHTMLMessage, FormattedMessage } from 'react-intl'
 import { Link, useHistory } from 'react-router-dom'
 import { images } from 'Utilities/common'
 import { useDispatch } from 'react-redux'
-import { getStories, getAllStories } from 'Utilities/redux/storiesReducer'
-import { enableFetcher } from 'Utilities/redux/disableStoryFetcherReducer'
+import { getIncompleteStories } from 'Utilities/redux/incompleteStoriesReducer'
 
 const WelcomeBackEncouragementModal = ({
   open,
@@ -24,7 +23,7 @@ const WelcomeBackEncouragementModal = ({
 
   useEffect(() => {
     dispatch(
-      getStories(learningLanguage, {
+      getIncompleteStories(learningLanguage, {
         sort_by: 'access',
       })
     )
@@ -39,18 +38,15 @@ const WelcomeBackEncouragementModal = ({
 
   const closeModal = () => {
     setOpen(false)
-    dispatch(
-      getAllStories(learningLanguage, {
-        sort_by: 'date',
-        order: -1,
-      })
-    )
-    dispatch(enableFetcher())
   }
 
   const continueWithStory = () => {
     closeModal()
     history.replace(storyRoute)
+  }
+
+  if (pending) {
+    return null
   }
 
   return (
