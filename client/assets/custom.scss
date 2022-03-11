@@ -560,6 +560,14 @@ html, body, #root {
   float: left;
 }
 
+.encouragement-picture {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding-top: 1.5rem;
+  flex-direction: row;
+}
+
 .approve {
   color: #008000;
   margin-top: 0.5rem;
