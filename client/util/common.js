@@ -72,8 +72,8 @@ import { useSelector, useDispatch } from 'react-redux'
 import { useHistory } from 'react-router-dom'
 import { hiddenFeatures } from 'Utilities/common'
 
-import { callApi, yandexSpeak, RVSpeak } from './apiConnection'
 import { Howler } from 'howler'
+import { callApi, yandexSpeak, RVSpeak } from './apiConnection'
 
 export const images = {
   revitaLogoTransparent,
@@ -136,7 +136,7 @@ export const images = {
   settingsIcon,
   nestIcon,
   balloons,
-  fireworks
+  fireworks,
 }
 
 export const timerExpired = (parsedDate, timeLimit) => {
@@ -187,9 +187,17 @@ export const supportedLearningLanguages = {
     'chinese',
     'turkish',
   ].sort((a, b) => a.localeCompare(b)),
-  minor: ['erzya', 'komi-zyrian', 'meadow-mari', 'north-saami', 'sakha', 'tatar', 'tatar-new', 'udmurt', 'udmurt-arch'].sort(
-    (a, b) => a.localeCompare(b)
-  ),
+  minor: [
+    'erzya',
+    'komi-zyrian',
+    'meadow-mari',
+    'north-saami',
+    'sakha',
+    'tatar',
+    'tatar-new',
+    'udmurt',
+    'udmurt-arch',
+  ].sort((a, b) => a.localeCompare(b)),
   experimental: ['syriac'],
 }
 
@@ -215,7 +223,7 @@ export const learningLanguageLocaleCodes = {
   Turkish: 'tr',
   Syriac: 'syc',
   Chinese: 'zh',
-  'Udmurt-Arch': 'udm'
+  'Udmurt-Arch': 'udm',
 }
 
 export const betaLanguages = [
@@ -238,7 +246,7 @@ export const betaLanguages = [
   'tatar-new',
   'turkish',
   'udmurt',
-  'udmurt-arch'
+  'udmurt-arch',
 ]
 
 export const exerciseMaskedLanguages = ['Chinese']
@@ -346,7 +354,9 @@ export const getTextStyle = (language, type) => {
 
 export const getBackgroundColor = () => {
   const history = useHistory()
-  return history.location.pathname.includes('/home') ? 'blue-bg' : 'grey-bg'
+  const mainView =
+    history.location.pathname.includes('/home') || history.location.pathname.includes('/welcome')
+  return mainView ? 'blue-bg' : 'grey-bg'
 }
 
 export const getTextWidth = text => {
@@ -361,11 +371,14 @@ export const getTextWidth = text => {
 export const speak = (surfaceWord, voice, voice_type) => {
   const [source, lang_code, tone] = voice
   try {
-    if (source==='responsive_voice' && window.responsiveVoice.voiceSupport()) RVSpeak(surfaceWord, lang_code, tone, voice_type)
-    else if (source==='yandex' && Howler._codecs.opus) yandexSpeak(surfaceWord, lang_code, tone, voice_type)
-    else if (speakFallbackConfig.hasOwnProperty(voice.join('-'))) speak(surfaceWord, speakFallbackConfig[voice.join('-')], voice_type)
+    if (source === 'responsive_voice' && window.responsiveVoice.voiceSupport())
+      RVSpeak(surfaceWord, lang_code, tone, voice_type)
+    else if (source === 'yandex' && Howler._codecs.opus)
+      yandexSpeak(surfaceWord, lang_code, tone, voice_type)
+    else if (speakFallbackConfig.hasOwnProperty(voice.join('-')))
+      speak(surfaceWord, speakFallbackConfig[voice.join('-')], voice_type)
   } catch (e) {
-    console.log(`Failed to speak ${surfaceWord} in ${capitalize(lang_code + ' ' + tone)}`)
+    console.log(`Failed to speak ${surfaceWord} in ${capitalize(`${lang_code} ${tone}`)}`)
   }
 }
 
@@ -428,7 +441,7 @@ export const voiceLanguages = {
 }
 
 const speakFallbackConfig = {
-  'yandex-ru-RU-alena' : ['responsive_voice', 'Russian', 'Female']
+  'yandex-ru-RU-alena': ['responsive_voice', 'Russian', 'Female'],
 }
 
 export const translatableLanguages = {
@@ -617,7 +630,7 @@ export const translatableLanguages = {
     'Portuguese',
     'Hindi',
   ],
-   'Tatar-New': [
+  'Tatar-New': [
     'Chinese',
     'English',
     'Finnish',
