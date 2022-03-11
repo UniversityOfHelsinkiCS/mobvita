@@ -65,46 +65,55 @@ const WelcomeBackEncouragementModal = ({
     >
       <Modal.Content>
         <div className="encouragement" style={{ padding: '1.5rem' }}>
-          <div
-            className="header-2"
-            style={{
-              marginBottom: '1.5rem',
-              fontWeight: 500,
-              color: '#000000',
-            }}
-          >
-            {intl.formatMessage({ id: 'welcome-back-encouragement' }, { username })}
-          </div>
-          <div className="bold" style={{ color: '#000000', marginBottom: '0.5rem' }}>
-            {intl.formatMessage(
-              { id: 'stories-covered-encouragement' },
-              { stories: storiesCovered }
-            )}
-          </div>
-          {latestIncompleteStory && (
-            <div className="row-flex">
-              <div>
-                <div className="bold" style={{ color: '#000000' }}>
-                  <FormattedHTMLMessage
-                    id="would-you-like-to-continue-story"
-                    values={{ story: latestIncompleteStory.title }}
-                  />
-                </div>
-                <div className="row-flex">
-                  <Link onClick={continueWithStory}>
-                    <div className="bold approve">
-                      <FormattedMessage id="yes" />
-                    </div>
-                  </Link>
-                  <Link onClick={closeModal}>
-                    <div className="bold decline">
-                      <FormattedMessage id="no" />
-                    </div>
-                  </Link>
-                </div>
+          <div className="row-flex">
+            <div className="col-flex">
+              <div
+                className="header-2"
+                style={{
+                  marginBottom: '1.5rem',
+                  fontWeight: 500,
+                  color: '#000000',
+                }}
+              >
+                {intl.formatMessage({ id: 'welcome-back-encouragement' }, { username })}
               </div>
+              <div className="bold" style={{ color: '#000000', marginBottom: '0.5rem' }}>
+                {intl.formatMessage(
+                  { id: 'stories-covered-encouragement' },
+                  { stories: storiesCovered }
+                )}
+              </div>
+              {latestIncompleteStory && (
+                <div>
+                  <div>
+                    <div className="bold" style={{ color: '#000000', marginTop: '0.5rem' }}>
+                      <FormattedHTMLMessage
+                        id="would-you-like-to-continue-story"
+                        values={{ story: latestIncompleteStory.title }}
+                      />
+                    </div>
+                    <div className="row-flex">
+                      <Link onClick={continueWithStory}>
+                        <div className="bold approve">
+                          <FormattedMessage id="yes" />
+                        </div>
+                      </Link>
+                      <Link onClick={closeModal}>
+                        <div className="bold decline">
+                          <FormattedMessage id="no" />
+                        </div>
+                      </Link>
+                    </div>
+                  </div>
+                </div>
+              )}
             </div>
-          )}
+            <img
+              src={images.balloons}
+              alt="encouraging balloons"
+              style={{ maxWidth: '25%', maxHeight: '25%' }}
+            />
+          </div>
         </div>
       </Modal.Content>
     </Modal>

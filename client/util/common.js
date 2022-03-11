@@ -66,6 +66,7 @@ import trophy from 'Assets/images/trophy.svg'
 import leaderboard from 'Assets/images/leaderboard.svg'
 import nestIcon from 'Assets/images/nest.png'
 import balloons from 'Assets/images/balloons.png'
+import fireworks from 'Assets/images/fireworks.png'
 
 import { useSelector, useDispatch } from 'react-redux'
 import { useHistory } from 'react-router-dom'
@@ -135,6 +136,7 @@ export const images = {
   settingsIcon,
   nestIcon,
   balloons,
+  fireworks
 }
 
 export const timerExpired = (parsedDate, timeLimit) => {

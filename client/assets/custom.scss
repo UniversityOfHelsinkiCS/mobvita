@@ -556,8 +556,9 @@ html, body, #root {
   flex-direction: row;
 }
 
-.float-left {
-  float: left;
+.col-flex {
+  display: flex;
+  flex-direction: column;
 }
 
 .encouragement-picture {
