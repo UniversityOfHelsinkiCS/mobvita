@@ -231,6 +231,12 @@ html, body, #root {
   font-size: 20px;
 }
 
+.header-4 {
+  font-size: 22px;
+  font-family: $default-font;
+  text-align: center;
+}
+
 .bold-italics {
   font-size: 14px;
   font-weight: 550;
@@ -570,7 +576,7 @@ html, body, #root {
 }
 
 .approve {
-  color: #008000;
+  color: green;
   margin-top: 0.5rem;
   margin-right: 1.5rem;
 }

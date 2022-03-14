@@ -22,7 +22,7 @@ const ExercisesEncouragementModal = ({ open, setOpen, storiesCovered, vocabulary
           {notFirst ? (
             <div>
               <div
-                className="header-2"
+                className="header-4"
                 style={{
                   marginBottom: '1rem',
                   fontWeight: 500,
@@ -46,7 +46,7 @@ const ExercisesEncouragementModal = ({ open, setOpen, storiesCovered, vocabulary
             </div>
           ) : (
             <div
-              className="header-2"
+              className="header-4"
               style={{
                 marginBottom: '1.5rem',
                 fontWeight: 500,
