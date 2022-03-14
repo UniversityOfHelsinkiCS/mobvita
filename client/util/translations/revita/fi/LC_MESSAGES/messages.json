@@ -1211,5 +1211,7 @@
     "would-you-like-to-continue-story": "Viimeksi sinulla jäi kesken tarina \"{story}\".<br> Haluaisitko jatkaa tarinan lukemista?",
     "yes": "Kyllä",
     "no": "Ei",
-    "review-encouragement": "Haluaisitko käydä sanastoa läpi tarkemmin?"
+    "review-encouragement": "Haluaisitko käydä sanastoa läpi tarkemmin?",
+    "vocabulary-view": "Vocabulary View",
+    "number-of-words": "Number of words"
 }

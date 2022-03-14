@@ -1214,5 +1214,7 @@
     "would-you-like-to-continue-story": "В прошлый раз вы работали с текстом: {story}.<br>Продолжить?",
     "yes": "Да",
     "no": "Нет",
-    "review-encouragement": "Would you like to review the vocabulary?"
+    "review-encouragement": "Перейти к анализу словарного запаса?",
+    "vocabulary-view": "Словарный запас",
+    "number-of-words": "Количество слов"
 }

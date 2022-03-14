@@ -120,6 +120,9 @@ const Progress = () => {
           <Button onClick={() => history.push('/vocabulary-view')}>Test vocabulary view</Button>
         </div>
       )}
+      <Button onClick={() => history.push('/vocabulary-view')}>
+        <FormattedMessage id="vocabulary-view" />
+      </Button>
       <Divider />
 
       <div>
