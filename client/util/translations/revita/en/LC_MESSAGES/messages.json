@@ -1210,5 +1210,6 @@
     "welcome-back-encouragement": "Welcome back, {username}!",
     "would-you-like-to-continue-story": "Last time your were working on the story  \"{story}\".<br>Would you like to continue?",
     "yes": "Yes",
-    "no": "No"
+    "no": "No",
+    "review-encouragement": "Would you like to review the vocabulary?"
 }

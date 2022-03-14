@@ -117,35 +117,43 @@ const VocabularyGraph = ({ vocabularyData }) => {
     series: [
       {
         name: 'Total',
+        id: 'Total',
         data: total.now,
       },
       {
         name: 'Total (before)',
         data: total[Object.keys(total).filter(key => key !== 'now')[0]],
+        linkedTo: 'Total',
       },
       {
         name: 'Visit',
+        id: 'Visit',
         data: visit.now,
       },
       {
         name: 'Visit (before)',
         data: visit[Object.keys(visit).filter(key => key !== 'now')[0]],
+        linkedTo: 'Visit',
       },
       {
         name: 'Seen',
+        id: 'Seen',
         data: seen.now,
       },
       {
         name: 'Seen (before)',
         data: seen[Object.keys(seen).filter(key => key !== 'now')[0]],
+        linkedTo: 'Seen',
       },
       {
         name: 'Flashcard',
+        id: 'Flashcard',
         data: flashcard.now,
       },
       {
         name: 'Flashcard (before)',
         data: flashcard[Object.keys(flashcard).filter(key => key !== 'now')[0]],
+        linkedTo: 'Flashcard',
       },
     ],
     chart: { height },
@@ -184,6 +192,15 @@ const VocabularyGraph = ({ vocabularyData }) => {
       series: {
         allowPointSelect: true,
         marker: { enabled: true },
+        events: {
+          legendItemClick() {
+            this.chart.series.forEach(s => {
+              s.name.substring(0, 3) !== this.name.substring(0, 3) ? s.hide() : s.show()
+            }, this)
+
+            return false
+          },
+        },
       },
     },
   }

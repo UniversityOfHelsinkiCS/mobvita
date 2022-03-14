@@ -1210,5 +1210,6 @@
     "welcome-back-encouragement": "Tervetuloa takaisin, {username}!",
     "would-you-like-to-continue-story": "Viimeksi sinulla jäi kesken tarina \"{story}\".<br> Haluaisitko jatkaa tarinan lukemista?",
     "yes": "Kyllä",
-    "no": "Ei"
+    "no": "Ei",
+    "review-encouragement": "Haluaisitko käydä sanastoa läpi tarkemmin?"
 }

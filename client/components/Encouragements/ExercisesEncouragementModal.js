@@ -56,6 +56,7 @@ const ExercisesEncouragementModal = ({ open, setOpen, storiesCovered, vocabulary
               <FormattedMessage id="first-story-covered-encouragement" />
             </div>
           )}
+          <FormattedMessage id="review-encouragement" />
           <div className="encouragement-picture">
             <img
               src={images.fireworks}

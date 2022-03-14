@@ -1213,5 +1213,6 @@
     "welcome-back-encouragement": "Добро пожаловать, {username}!",
     "would-you-like-to-continue-story": "В прошлый раз вы работали с текстом: {story}.<br>Продолжить?",
     "yes": "Да",
-    "no": "Нет"
+    "no": "Нет",
+    "review-encouragement": "Would you like to review the vocabulary?"
 }

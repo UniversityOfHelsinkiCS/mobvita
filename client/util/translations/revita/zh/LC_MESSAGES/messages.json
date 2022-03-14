@@ -565,5 +565,6 @@
     "welcome-back-encouragement": "欢迎回来, {username}!",
     "would-you-like-to-continue-story": "您上次在学习的文章是：{story}.<br>是否继续?",
     "yes": "是",
-    "no": "否"
+    "no": "否",
+    "review-encouragement": "Would you like to review the vocabulary?"
 }
