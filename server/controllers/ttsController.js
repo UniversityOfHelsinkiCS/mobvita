@@ -70,7 +70,7 @@ const getFinTTS = async (req, res) => {
         }
 
         const response = await axios(config)
-        res.contentType('audio/wav')
+        res.contentType('audio/mp3')
         res.end(response.data)
     }catch(e){
         console.log(e)

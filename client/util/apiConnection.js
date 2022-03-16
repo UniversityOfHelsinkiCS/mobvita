@@ -160,7 +160,7 @@ export const tacotronSpeak = (text, lang_code, tone, voice_type) => {
     src: [
       `${basePath}api/${lang_code}_tts?text=${encodeURIComponent(text)}`,
     ],
-    format: ['wav'],
+    format: ['mp3'],
     autoplay: true,
     onend() {
       recordSpeak(text, voice_type, 'tacotron2', lang_code, 1, '')
