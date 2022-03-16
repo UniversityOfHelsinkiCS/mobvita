@@ -32,6 +32,7 @@ const Progress = () => {
 
   const learningLanguage = useLearningLanguage()
   const { history: testHistory } = useSelector(({ tests }) => tests)
+  const [shownChart, setShownChart] = useState('progress')
 
   const bigScreen = useWindowDimension().width >= 650
 
@@ -106,94 +107,128 @@ const Progress = () => {
         )}
       </div>
       <br />
-      <div>
-        <div className="progress-page-header">
-          <FormattedMessage id="Progress graph" />
-        </div>
-        <ProgressStats startDate={startDate} endDate={endDate} />
-        <div className="progress-page-graph-cont">
-          <ProgressGraph
-            exerciseHistory={exerciseHistoryGraph}
-            flashcardHistory={flashcardHistory}
-            startDate={startDate}
-            endDate={endDate}
-          />
-        </div>
-      </div>
-      {hiddenFeatures && (
-        <div>
-          <Divider />
-          <div className="flex gap-col-nm">
-            <Button onClick={() => history.push('/test-hexagon')}>Test hexagon grid</Button>
-            <Button onClick={() => history.push('/vocabulary-view')}>Test vocabulary view</Button>
+      <div className="space-evenly">
+        <button type="button" onClick={() => setShownChart('progress')} style={{ border: 'none' }}>
+          <div className="flex align-center" style={{ gap: '.5em' }}>
+            <input
+              type="radio"
+              onChange={() => setShownChart('progress')}
+              checked={shownChart === 'progress'}
+            />
+            <FormattedMessage id="Progress graph" />
           </div>
-        </div>
-      )}
-      <Divider />
-      <div>
-        <div className="row-flex">
-          <div className="progress-page-header">
-            <FormattedMessage id="vocabulary-chart-header" />
+        </button>
+        <button
+          type="button"
+          onClick={() => setShownChart('vocabulary')}
+          style={{ border: 'none' }}
+        >
+          <div className="flex align-center" style={{ gap: '.5em' }}>
+            <input
+              type="radio"
+              onChange={() => setShownChart('vocabulary')}
+              checked={shownChart === 'vocabulary'}
+            />
+            <FormattedMessage id="vocabulary-view" />
           </div>
-          <Popup
-            content={<FormattedHTMLMessage id="vocabulary-view-explanation" />}
-            trigger={
-              <Icon
-                style={{ paddingLeft: '0.5em', marginBottom: '0.35em' }}
-                name="info circle"
-                color="grey"
-              />
-            }
-          />
-        </div>
-        <div>
-          <div className="progress-page-graph-cont">
-            <div style={{ width: '1000px' }}>
-              <VocabularyGraph vocabularyData={vocabularyData} />
-            </div>
+        </button>
+        <button type="button" onClick={() => setShownChart('history')} style={{ border: 'none' }}>
+          <div className="flex align-center" style={{ gap: '.5em' }}>
+            <input
+              type="radio"
+              onChange={() => setShownChart('history')}
+              checked={shownChart === 'history'}
+            />
+            <FormattedMessage id="history" />
           </div>
-        </div>
+        </button>
       </div>
       <Divider />
 
-      <div>
-        <div className="flex align center" style={{ gap: '3em' }}>
+      {shownChart === 'progress' ? (
+        <div>
           <div className="progress-page-header">
-            <FormattedMessage id="history" />
+            <FormattedMessage id="Progress graph" />
           </div>
-          <div className="flex">
-            <button
-              type="button"
-              onClick={() => setHistoryView('exercise')}
-              style={{ border: 'none' }}
-            >
-              <div className="flex align-center" style={{ gap: '.5em' }}>
-                <input
-                  type="radio"
-                  onChange={() => setHistoryView('exercise')}
-                  checked={historyView === 'exercise'}
-                />
-                <FormattedMessage id="Exercise" />
-              </div>
-            </button>
-            <button type="button" onClick={() => setHistoryView('test')} style={{ border: 'none' }}>
-              <div className="flex align-center" style={{ gap: '.5em' }}>
-                <input
-                  type="radio"
-                  onChange={() => setHistoryView('test')}
-                  checked={historyView === 'test'}
-                />
-                <FormattedMessage id="Test" />
-              </div>
-            </button>
+          <ProgressStats startDate={startDate} endDate={endDate} />
+          <div className="progress-page-graph-cont">
+            <ProgressGraph
+              exerciseHistory={exerciseHistoryGraph}
+              flashcardHistory={flashcardHistory}
+              startDate={startDate}
+              endDate={endDate}
+            />
           </div>
         </div>
-        {historyView === 'exercise' ? (
-          <History history={exerciseHistory} dateFormat="YYYY.MM" />
-        ) : (
-          <History history={filterTestHistoryByDate()} testView dateFormat="YYYY.MM.DD HH:mm" />
-        )}
-      </div>
+      ) : shownChart === 'vocabulary' ? (
+        <div>
+          <div className="row-flex">
+            <div className="progress-page-header">
+              <FormattedMessage id="vocabulary-view" />
+            </div>
+            <Popup
+              content={<FormattedHTMLMessage id="vocabulary-view-explanation" />}
+              trigger={
+                <Icon
+                  style={{ paddingLeft: '0.5em', marginBottom: '0.35em' }}
+                  name="info circle"
+                  color="grey"
+                />
+              }
+            />
+          </div>
+          <div>
+            <div>
+              <div style={{ width: '1000px' }}>
+                <VocabularyGraph vocabularyData={vocabularyData} />
+              </div>
+            </div>
+          </div>
+        </div>
+      ) : (
+        <div>
+          <div className="flex align center" style={{ gap: '3em' }}>
+            <div className="progress-page-header">
+              <FormattedMessage id="history" />
+            </div>
+            <div className="flex">
+              <button
+                type="button"
+                onClick={() => setHistoryView('exercise')}
+                style={{ border: 'none' }}
+              >
+                <div className="flex align-center" style={{ gap: '.5em' }}>
+                  <input
+                    type="radio"
+                    onChange={() => setHistoryView('exercise')}
+                    checked={historyView === 'exercise'}
+                  />
+                  <FormattedMessage id="Exercise" />
+                </div>
+              </button>
+              <button
+                type="button"
+                onClick={() => setHistoryView('test')}
+                style={{ border: 'none' }}
+              >
+                <div className="flex align-center" style={{ gap: '.5em' }}>
+                  <input
+                    type="radio"
+                    onChange={() => setHistoryView('test')}
+                    checked={historyView === 'test'}
+                  />
+                  <FormattedMessage id="Test" />
+                </div>
+              </button>
+            </div>
+          </div>
+          {historyView === 'exercise' ? (
+            <History history={exerciseHistory} dateFormat="YYYY.MM" />
+          ) : (
+            <History history={filterTestHistoryByDate()} testView dateFormat="YYYY.MM.DD HH:mm" />
+          )}
+        </div>
+      )}
     </div>
   )
 }

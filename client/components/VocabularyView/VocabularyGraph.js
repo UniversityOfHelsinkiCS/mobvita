@@ -99,9 +99,6 @@ const VocabularyGraph = ({ vocabularyData }) => {
 
   const binNumbers = Array.from(Array(10).keys())
 
-  console.log('binNumbers:', binNumbers)
-  console.log('total:', total)
-
   const levels = {
     1250: 'A1',
     1450: 'A2',
@@ -218,6 +215,9 @@ const VocabularyGraph = ({ vocabularyData }) => {
 
             return false
           },
+        },
+        tooltip: {
+          headerFormat: '<b>{series.name}</b><br>',
         },
       },
     },
