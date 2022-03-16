@@ -112,7 +112,7 @@ const VocabularyGraph = ({ vocabularyData }) => {
   }
 
   const options = {
-    title: { text: intl.formatMessage({ id: 'vocabulary-chart-header' }) },
+    title: '',
     // series,
     series: [
       {

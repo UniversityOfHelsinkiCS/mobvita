@@ -2,11 +2,11 @@ import React, { useState, useEffect, shallowEqual } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import moment from 'moment'
 import { Button } from 'react-bootstrap'
-import { FormattedMessage } from 'react-intl'
+import { FormattedMessage, FormattedHTMLMessage } from 'react-intl'
 import { getSelf, getVocabularyData } from 'Utilities/redux/userReducer'
 import ProgressGraph from 'Components/ProgressGraph'
 import Spinner from 'Components/Spinner'
-import { Divider } from 'semantic-ui-react'
+import { Divider, Icon, Popup } from 'semantic-ui-react'
 import ResponsiveDatePicker from 'Components/ResponsiveDatePicker'
 import History from 'Components/History'
 import { getHistory as getExerciseHistory } from 'Utilities/redux/exerciseHistoryReducer'
@@ -65,7 +65,6 @@ const Progress = () => {
   useEffect(() => {
     dispatch(getVocabularyData())
   }, [])
-  console.log('vocab data ', vocabularyData)
 
   if (pending || pending === undefined) return <Spinner />
 
@@ -131,16 +130,27 @@ const Progress = () => {
         </div>
       )}
       <Divider />
-      <div
-        className="auto justify-center pt-lg"
-        style={{
-          width: '100%',
-          maxWidth: '1000px',
-        }}
-      >
+      <div>
+        <div className="row-flex">
+          <div className="progress-page-header">
+            <FormattedMessage id="vocabulary-chart-header" />
+          </div>
+          <Popup
+            content={<FormattedHTMLMessage id="vocabulary-view-explanation" />}
+            trigger={
+              <Icon
+                style={{ paddingLeft: '0.5em', marginBottom: '0.35em' }}
+                name="info circle"
+                color="grey"
+              />
+            }
+          />
+        </div>
         <div>
-          <div style={{ width: '1000px' }}>
-            <VocabularyGraph vocabularyData={vocabularyData} />
+          <div className="progress-page-graph-cont">
+            <div style={{ width: '1000px' }}>
+              <VocabularyGraph vocabularyData={vocabularyData} />
+            </div>
           </div>
         </div>
       </div>
