@@ -1226,5 +1226,6 @@
     "vocabulary-flashcard": "Mastered",
     "vocabulary-flashcard-explanation": "How many words you have mastered with flashcards",
     "vocabulary-follow-statistic-before": "(prima)",
-    "vocabulary-view-explanation": "This chart shows your performance on vocabulary<ul><li/>at present<li/>and at an earlier time.</ul>You can control the earlier time through the calendar."
+    "vocabulary-view-explanation": "This chart shows your performance on vocabulary<ul><li/>at present<li/>and at an earlier time.</ul>You can control the earlier time through the calendar.",
+    "vocabulary-chart-header": "Vocabulary chart"
 }

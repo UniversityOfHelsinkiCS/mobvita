@@ -1225,5 +1225,6 @@
     "vocabulary-flashcard": "Mastered",
     "vocabulary-flashcard-explanation": "Kuinka monta sanaa hallitset muistikorteilta",
     "vocabulary-follow-statistic-before": "(ennen)",
-    "vocabulary-view-explanation": "This chart shows your performance on vocabulary<ul><li/>at present<li/>and at an earlier time.</ul>You can control the earlier time through the calendar."
+    "vocabulary-view-explanation": "This chart shows your performance on vocabulary<ul><li/>at present<li/>and at an earlier time.</ul>You can control the earlier time through the calendar.",
+    "vocabulary-chart-header": "Sanastokaavio"
 }

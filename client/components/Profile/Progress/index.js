@@ -3,7 +3,7 @@ import { useSelector, useDispatch } from 'react-redux'
 import moment from 'moment'
 import { Button } from 'react-bootstrap'
 import { FormattedMessage } from 'react-intl'
-import { getSelf } from 'Utilities/redux/userReducer'
+import { getSelf, getVocabularyData } from 'Utilities/redux/userReducer'
 import ProgressGraph from 'Components/ProgressGraph'
 import Spinner from 'Components/Spinner'
 import { Divider } from 'semantic-ui-react'
@@ -11,9 +11,11 @@ import ResponsiveDatePicker from 'Components/ResponsiveDatePicker'
 import History from 'Components/History'
 import { getHistory as getExerciseHistory } from 'Utilities/redux/exerciseHistoryReducer'
 import { getHistory as getTestHistory } from 'Utilities/redux/testReducer'
+
 import { hiddenFeatures, useLearningLanguage } from 'Utilities/common'
 import useWindowDimension from 'Utilities/windowDimensions'
 import { useHistory } from 'react-router-dom'
+import VocabularyGraph from 'Components/VocabularyView/VocabularyGraph'
 import ProgressStats from './ProgressStats'
 
 const PickDate = ({ date, setDate }) => (
@@ -36,12 +38,14 @@ const Progress = () => {
   const {
     exerciseHistory: exerciseHistoryGraph,
     flashcardHistory,
+    vocabularyData,
     pending,
   } = useSelector(({ user }) => {
     const exerciseHistory = user.data.user.exercise_history
     const flashcardHistory = user.data.user.flashcard_history
+    const { vocabularyData } = user
     const { pending } = user
-    return { exerciseHistory, flashcardHistory, pending }
+    return { exerciseHistory, flashcardHistory, vocabularyData, pending }
   }, shallowEqual)
 
   const filterTestHistoryByDate = () =>
@@ -57,6 +61,11 @@ const Progress = () => {
     dispatch(getExerciseHistory(learningLanguage, startDate, endDate))
     dispatch(getTestHistory(learningLanguage, startDate, endDate))
   }, [startDate, endDate])
+
+  useEffect(() => {
+    dispatch(getVocabularyData())
+  }, [])
+  console.log('vocab data ', vocabularyData)
 
   if (pending || pending === undefined) return <Spinner />
 
@@ -112,17 +121,29 @@ const Progress = () => {
           />
         </div>
       </div>
-
-      <Divider />
       {hiddenFeatures && (
-        <div className="flex gap-col-nm">
-          <Button onClick={() => history.push('/test-hexagon')}>Test hexagon grid</Button>
-          <Button onClick={() => history.push('/vocabulary-view')}>Test vocabulary view</Button>
+        <div>
+          <Divider />
+          <div className="flex gap-col-nm">
+            <Button onClick={() => history.push('/test-hexagon')}>Test hexagon grid</Button>
+            <Button onClick={() => history.push('/vocabulary-view')}>Test vocabulary view</Button>
+          </div>
         </div>
       )}
-      <Button onClick={() => history.push('/vocabulary-view')}>
-        <FormattedMessage id="vocabulary-view" />
-      </Button>
+      <Divider />
+      <div
+        className="auto justify-center pt-lg"
+        style={{
+          width: '100%',
+          maxWidth: '1000px',
+        }}
+      >
+        <div>
+          <div style={{ width: '1000px' }}>
+            <VocabularyGraph vocabularyData={vocabularyData} />
+          </div>
+        </div>
+      </div>
       <Divider />
 
       <div>

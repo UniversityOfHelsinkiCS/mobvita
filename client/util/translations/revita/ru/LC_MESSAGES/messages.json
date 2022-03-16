@@ -1228,5 +1228,6 @@
     "vocabulary-flashcard": "Освоено",
     "vocabulary-flashcard-explanation": "Сколько слов вы освоили с помощью флешкарт",
     "vocabulary-follow-statistic-before": "(ранее)",
-    "vocabulary-view-explanation": "На этом графике видна твои показатели по лексикону<ul><li/>сейчас<li/>и ранее.</ul>Раннюю точку можно выбрать на календаре."
+    "vocabulary-view-explanation": "На этом графике видна твои показатели по лексикону<ul><li/>сейчас<li/>и ранее.</ul>Раннюю точку можно выбрать на календаре.",
+    "vocabulary-chart-header": "Vocabulary chart"
 }
