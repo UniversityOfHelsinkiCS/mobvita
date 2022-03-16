@@ -116,47 +116,59 @@ const VocabularyGraph = ({ vocabularyData }) => {
     // series,
     series: [
       {
-        name: 'Total',
+        name: intl.formatMessage({ id: 'vocabulary-total' }),
         id: 'Total',
         data: total.now,
       },
       {
-        name: 'Total (before)',
+        name: `${intl.formatMessage({ id: 'vocabulary-total' })} ${intl.formatMessage({
+          id: 'vocabulary-follow-statistic-before',
+        })}`,
+        id: 'Total (before)',
         data: total[Object.keys(total).filter(key => key !== 'now')[0]],
         linkedTo: 'Total',
       },
       {
-        name: 'Visit',
+        name: intl.formatMessage({ id: 'vocabulary-visit' }),
         id: 'Visit',
         data: visit.now,
         visible: false,
       },
       {
-        name: 'Visit (before)',
+        name: `${intl.formatMessage({ id: 'vocabulary-visit' })} ${intl.formatMessage({
+          id: 'vocabulary-follow-statistic-before',
+        })}`,
+        id: 'Visit (before)',
         data: visit[Object.keys(visit).filter(key => key !== 'now')[0]],
         linkedTo: 'Visit',
         visible: false,
       },
       {
-        name: 'Seen',
+        name: intl.formatMessage({ id: 'vocabulary-seen' }),
         id: 'Seen',
         data: seen.now,
         visible: false,
       },
       {
-        name: 'Seen (before)',
+        name: `${intl.formatMessage({ id: 'vocabulary-seen' })} ${intl.formatMessage({
+          id: 'vocabulary-follow-statistic-before',
+        })}`,
+        id: 'Seen (before)',
         data: seen[Object.keys(seen).filter(key => key !== 'now')[0]],
         linkedTo: 'Seen',
         visible: false,
       },
       {
-        name: 'Flashcard',
+        name: intl.formatMessage({ id: 'vocabulary-flashcard' }),
         id: 'Flashcard',
         data: flashcard.now,
         visible: false,
       },
       {
-        name: 'Flashcard (before)',
+        name: `${intl.formatMessage({ id: 'vocabulary-flashcard' })} ${intl.formatMessage({
+          id: 'vocabulary-follow-statistic-before',
+        })}`,
+        id: 'Flashcard (before)',
         data: flashcard[Object.keys(flashcard).filter(key => key !== 'now')[0]],
         linkedTo: 'Flashcard',
         visible: false,

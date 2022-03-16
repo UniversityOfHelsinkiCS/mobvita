@@ -1216,5 +1216,17 @@
     "no": "Нет",
     "review-encouragement": "Перейти к анализу словарного запаса?",
     "vocabulary-view": "Словарный запас",
-    "number-of-words": "Количество слов"
+    "number-of-words": "Количество слов",
+    "number-of-words-Y-axis": "Количество слов",
+    "vocabulary-difficulty-X-axis": "Уровни сложности",
+    "vocabulary-total": "Число запросов",
+    "vocabulary-total-explanation": "Сколько раз вы искали незнакомые слова — на каждом уровне сложности",
+    "vocabulary-visit": "Незнакомые слова",
+    "vocabulary-visit-explanation": "Для скольких слов вы запросили перевод или работали с флешкартами",
+    "vocabulary-seen": "Рабочий лексикон",
+    "vocabulary-seen-explanation": "Сколько различных слов вам встретилось в текстах за все время практики",
+    "vocabulary-flashcard": "Освоено",
+    "vocabulary-flashcard-explanation": "Сколько слов вы освоили с помощью флешкарт",
+    "vocabulary-follow-statistic-before": "(ранее)",
+    "vocabulary-view-explanation": "На этом графике видна твои показатели по лексикону<ul><li/>сейчас<li/>и ранее.</ul>Раннюю точку можно выбрать на календаре."
 }

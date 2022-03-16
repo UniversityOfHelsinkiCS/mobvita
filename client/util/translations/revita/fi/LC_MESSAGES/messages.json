@@ -1212,6 +1212,18 @@
     "yes": "Kyllä",
     "no": "Ei",
     "review-encouragement": "Haluaisitko käydä sanastoa läpi tarkemmin?",
-    "vocabulary-view": "Vocabulary View",
-    "number-of-words": "Number of words"
+    "vocabulary-view": "Vocabulary Progress",
+    "number-of-words": "Number of words",
+    "number-of-words-Y-axis": "Sanojen määrä",
+    "vocabulary-difficulty-X-axis": "Vaikeustasot",
+    "vocabulary-total": "Haut yhteensä",
+    "vocabulary-total-explanation": "Kuinka monta kertaa tarkistit sinulle tuntemattomia sanoja — vaikeustasoittain",
+    "vocabulary-visit": "Kertaluonteiset haut",
+    "vocabulary-visit-explanation": "Kuinka usealle sanalle/Niiden sanojen määrä joille olet pyytänyt käännöksen tai käyttänyt kortteja",
+    "vocabulary-seen": "Working lexicon",
+    "vocabulary-seen-explanation": "Harjoittelemissasi tarinoissa kohtaamiesi sanojen määrä tähän asti",
+    "vocabulary-flashcard": "Mastered",
+    "vocabulary-flashcard-explanation": "Kuinka monta sanaa hallitset muistikorteilta",
+    "vocabulary-follow-statistic-before": "(ennen)",
+    "vocabulary-view-explanation": "This chart shows your performance on vocabulary<ul><li/>at present<li/>and at an earlier time.</ul>You can control the earlier time through the calendar."
 }

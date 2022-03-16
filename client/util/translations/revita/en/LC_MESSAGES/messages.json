@@ -1212,6 +1212,18 @@
     "yes": "Yes",
     "no": "No",
     "review-encouragement": "Would you like to review the vocabulary?",
-    "vocabulary-view": "Vocabulary View",
-    "number-of-words": "Number of words"
+    "vocabulary-view": "Vocabulary Progress",
+    "number-of-words": "Number of words",
+    "number-of-words-Y-axis": "Number of words",
+    "vocabulary-difficulty-X-axis": "Difficulty levels",
+    "vocabulary-total": "Total lookups",
+    "vocabulary-total-explanation": "How many times you looked up unfamiliar words — at each difficulty level",
+    "vocabulary-visit": "Practiced words",
+    "vocabulary-visit-explanation": "For how many different words you requested a translation or played with a flashcard",
+    "vocabulary-seen": "Working lexicon",
+    "vocabulary-seen-explanation": "How many words you have seen in stories during your practice so far",
+    "vocabulary-flashcard": "Mastered words",
+    "vocabulary-flashcard-explanation": "How many words you have mastered with flashcards",
+    "vocabulary-follow-statistic-before": "(earlier)",
+    "vocabulary-view-explanation": "This chart shows your performance on vocabulary<ul><li/>at present<li/>and at an earlier time.</ul>You can control the earlier time through the calendar."
 }
