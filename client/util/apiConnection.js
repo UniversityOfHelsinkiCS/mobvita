@@ -152,6 +152,24 @@ export const RVSpeak = (text, lang_code, tone, voice_type) => {
   window.responsiveVoice.speak(text, `${lang_code} ${tone}`, parameters)
 }
 
+export const tacotronSpeak = (text, lang_code, tone, voice_type) => {
+  const error_func = error_type => (sound_id, e) => {
+    recordSpeak(text, voice_type, 'tacotron2', 0, `${error_type}: ${sound_id}->${e}`)
+  }
+  new Howl({
+    src: [
+      `${basePath}api/${lang_code}_tts?text=${encodeURIComponent(text)}`,
+    ],
+    format: ['wav'],
+    autoplay: true,
+    onend() {
+      recordSpeak(text, voice_type, 'tacotron2', lang_code, 1, '')
+    },
+    onloaderror: error_func('loading_error'),
+    onplayerror: error_func('playing_error'),
+  })
+}
+
 export const yandexSpeak = async (text, lang_code, tone, voice_type) => {
   const error_func = error_type => (sound_id, e) => {
     recordSpeak(text, voice_type, 'Yandex', lang_code, 0, `${error_type}: ${sound_id}->${e}`)

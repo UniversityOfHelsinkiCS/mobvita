@@ -6,13 +6,14 @@ const upload = multer({ storage })
 
 const { checkRevitaStatus } = require('@controllers/healthCheckController')
 const proxyController = require('@controllers/proxyController')
-const { postYandexTTS, getYandexTTS } = require('@controllers/yandexController')
+const { postYandexTTS, getYandexTTS, getFinTTS } = require('@controllers/ttsController')
 
 
 const router = Router()
 
 router.get('/revitaStatus', checkRevitaStatus)
 router.post('/yandex_tts', postYandexTTS)
+router.get('/fin_tts', getFinTTS)
 router.get('/yandex_tts', getYandexTTS)
 router.get('/', (_req, res) => res.send('welcome to root'))
 

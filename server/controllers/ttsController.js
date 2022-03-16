@@ -57,4 +57,27 @@ const getYandexTTS = async (req, res) => {
     
 }
 
-module.exports = { postYandexTTS, getYandexTTS }
+
+const getFinTTS = async (req, res) => {
+    try{
+        const { text } = req.query
+        var config = {
+            method: 'post',
+            url: 'http://hpz440-2.cs.helsinki.fi:6000/fin_synthesizer',
+            headers: {'Content-Type': 'application/json'},
+            data : {text: text},
+            responseType: 'arraybuffer'
+        }
+
+        const response = await axios(config)
+        res.contentType('audio/wav')
+        res.end(response.data)
+    }catch(e){
+        console.log(e)
+        res.status(500)
+        res.send('Not OK')
+    }
+    
+}
+
+module.exports = { postYandexTTS, getYandexTTS, getFinTTS }

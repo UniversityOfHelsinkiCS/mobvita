@@ -73,7 +73,7 @@ import { useHistory } from 'react-router-dom'
 import { hiddenFeatures } from 'Utilities/common'
 
 import { Howler } from 'howler'
-import { callApi, yandexSpeak, RVSpeak } from './apiConnection'
+import { callApi, yandexSpeak, RVSpeak, tacotronSpeak } from './apiConnection'
 
 export const images = {
   revitaLogoTransparent,
@@ -375,6 +375,8 @@ export const speak = (surfaceWord, voice, voice_type) => {
       RVSpeak(surfaceWord, lang_code, tone, voice_type)
     else if (source === 'yandex' && Howler._codecs.opus)
       yandexSpeak(surfaceWord, lang_code, tone, voice_type)
+    else if (source === 'tacotron2' && Howler._codecs.wav)
+      tacotronSpeak(surfaceWord, lang_code, tone, voice_type)
     else if (speakFallbackConfig.hasOwnProperty(voice.join('-')))
       speak(surfaceWord, speakFallbackConfig[voice.join('-')], voice_type)
   } catch (e) {
@@ -428,7 +430,7 @@ export const levenshteinDistance = (a, b) => {
 
 export const voiceLanguages = {
   Catalan: ['responsive_voice', 'Catalan', 'Male'],
-  Finnish: ['responsive_voice', 'Finnish', 'Female'],
+  Finnish: ['tacotron2', 'fin', 'Female'],
   French: ['responsive_voice', 'French', 'Female'],
   German: ['responsive_voice', 'Deutsch', 'Female'],
   Italian: ['responsive_voice', 'Italian', 'Female'],
@@ -442,6 +444,7 @@ export const voiceLanguages = {
 
 const speakFallbackConfig = {
   'yandex-ru-RU-alena': ['responsive_voice', 'Russian', 'Female'],
+  'responsive_voice-fin-Female': ['responsive_voice', 'Finnish', 'Female']
 }
 
 export const translatableLanguages = {
