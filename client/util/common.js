@@ -375,7 +375,7 @@ export const speak = (surfaceWord, voice, voice_type) => {
       RVSpeak(surfaceWord, lang_code, tone, voice_type)
     else if (source === 'yandex' && Howler._codecs.opus)
       yandexSpeak(surfaceWord, lang_code, tone, voice_type)
-    else if (source === 'tacotron2' && Howler._codecs.mp3)
+    else if (source === 'tacotron2' && Howler._codecs.mp3 && surfaceWord.length > 4 )
       tacotronSpeak(surfaceWord, lang_code, tone, voice_type)
     else if (speakFallbackConfig.hasOwnProperty(voice.join('-')))
       speak(surfaceWord, speakFallbackConfig[voice.join('-')], voice_type)
