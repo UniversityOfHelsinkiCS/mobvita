@@ -444,7 +444,7 @@ export const voiceLanguages = {
 
 const speakFallbackConfig = {
   'yandex-ru-RU-alena': ['responsive_voice', 'Russian', 'Female'],
-  'responsive_voice-fin-Female': ['responsive_voice', 'Finnish', 'Female']
+  'tacotron2-fin-Female': ['responsive_voice', 'Finnish', 'Female']
 }
 
 export const translatableLanguages = {
