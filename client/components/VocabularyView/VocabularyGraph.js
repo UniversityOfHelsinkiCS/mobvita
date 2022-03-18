@@ -126,21 +126,6 @@ const VocabularyGraph = ({ vocabularyData }) => {
         linkedTo: 'Total',
       },
       {
-        name: intl.formatMessage({ id: 'vocabulary-seen' }),
-        id: 'Seen',
-        data: seen.now,
-        visible: false,
-      },
-      {
-        name: `${intl.formatMessage({ id: 'vocabulary-seen' })} ${intl.formatMessage({
-          id: 'vocabulary-follow-statistic-before',
-        })}`,
-        id: 'Seen (before)',
-        data: seen[Object.keys(seen).filter(key => key !== 'now')[0]],
-        linkedTo: 'Seen',
-        visible: false,
-      },
-      {
         name: intl.formatMessage({ id: 'vocabulary-visit' }),
         id: 'Visit',
         data: visit.now,
@@ -153,6 +138,21 @@ const VocabularyGraph = ({ vocabularyData }) => {
         id: 'Visit (before)',
         data: visit[Object.keys(visit).filter(key => key !== 'now')[0]],
         linkedTo: 'Visit',
+        visible: false,
+      },
+      {
+        name: intl.formatMessage({ id: 'vocabulary-seen' }),
+        id: 'Seen',
+        data: seen.now,
+        visible: false,
+      },
+      {
+        name: `${intl.formatMessage({ id: 'vocabulary-seen' })} ${intl.formatMessage({
+          id: 'vocabulary-follow-statistic-before',
+        })}`,
+        id: 'Seen (before)',
+        data: seen[Object.keys(seen).filter(key => key !== 'now')[0]],
+        linkedTo: 'Seen',
         visible: false,
       },
       {
@@ -214,11 +214,6 @@ const VocabularyGraph = ({ vocabularyData }) => {
             }, this)
 
             return false
-          },
-        },
-        tooltip: {
-          formatter() {
-            return `The value for <b>${this.name}</b> in series ${this.series.name}`
           },
         },
       },
