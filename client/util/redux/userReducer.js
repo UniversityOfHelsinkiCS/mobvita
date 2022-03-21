@@ -40,6 +40,12 @@ export const getVocabularyData = () => {
   return callBuilder(route, prefix)
 }
 
+export const getPreviousVocabularyData = parsedDate => {
+  const route = `/user/vocabulary?earlier_date=${parsedDate}`
+  const prefix = 'GET_PREVIOUS_VOCABULARY_DATA'
+  return callBuilder(route, prefix)
+}
+
 export const saveSelf = changes => {
   const route = '/user/'
   const prefix = 'SAVE_SELF'
@@ -436,6 +442,20 @@ export default (state = { data: null, learningLanguageChanged: false }, action) 
       return {
         ...state,
         pending: false,
+        error: false,
+        refreshed: true,
+        vocabularyData: action.response,
+      }
+    case 'GET_PREVIOUS_VOCABULARY_DATA_ATTEMPT':
+      return {
+        ...state,
+        vocabularyPending: true,
+        error: false,
+      }
+    case 'GET_PREVIOUS_VOCABULARY_DATA_SUCCESS':
+      return {
+        ...state,
+        vocabularyPending: false,
         error: false,
         refreshed: true,
         vocabularyData: action.response,

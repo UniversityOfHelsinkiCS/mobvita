@@ -1,18 +1,18 @@
+/* eslint-disable no-nested-ternary */
 import React, { useState, useEffect, shallowEqual } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import moment from 'moment'
-import { Button } from 'react-bootstrap'
 import { FormattedMessage, FormattedHTMLMessage } from 'react-intl'
-import { getSelf, getVocabularyData } from 'Utilities/redux/userReducer'
+import { getSelf, getPreviousVocabularyData } from 'Utilities/redux/userReducer'
 import ProgressGraph from 'Components/ProgressGraph'
 import Spinner from 'Components/Spinner'
+import { Button } from 'react-bootstrap'
 import { Divider, Icon, Popup } from 'semantic-ui-react'
 import ResponsiveDatePicker from 'Components/ResponsiveDatePicker'
 import History from 'Components/History'
 import { getHistory as getExerciseHistory } from 'Utilities/redux/exerciseHistoryReducer'
 import { getHistory as getTestHistory } from 'Utilities/redux/testReducer'
-
-import { hiddenFeatures, useLearningLanguage } from 'Utilities/common'
+import { useLearningLanguage, hiddenFeatures } from 'Utilities/common'
 import useWindowDimension from 'Utilities/windowDimensions'
 import { useHistory } from 'react-router-dom'
 import VocabularyGraph from 'Components/VocabularyView/VocabularyGraph'
@@ -28,25 +28,26 @@ const Progress = () => {
 
   const [startDate, setStartDate] = useState(moment().subtract(2, 'months').toDate())
   const [endDate, setEndDate] = useState(moment().toDate())
-  const [historyView, setHistoryView] = useState('exercise')
 
   const learningLanguage = useLearningLanguage()
   const { history: testHistory } = useSelector(({ tests }) => tests)
   const [shownChart, setShownChart] = useState('progress')
-
+  const [parsedDate, setParsedDate] = useState(startDate.toJSON().slice(0, 10))
   const bigScreen = useWindowDimension().width >= 650
 
   const {
     exerciseHistory: exerciseHistoryGraph,
     flashcardHistory,
     vocabularyData,
+    vocabularyPending,
     pending,
   } = useSelector(({ user }) => {
     const exerciseHistory = user.data.user.exercise_history
     const flashcardHistory = user.data.user.flashcard_history
     const { vocabularyData } = user
     const { pending } = user
-    return { exerciseHistory, flashcardHistory, vocabularyData, pending }
+    const { vocabularyPending } = user
+    return { exerciseHistory, flashcardHistory, vocabularyData, pending, vocabularyPending }
   }, shallowEqual)
 
   const filterTestHistoryByDate = () =>
@@ -58,14 +59,15 @@ const Progress = () => {
   const { history: exerciseHistory } = useSelector(({ exerciseHistory }) => exerciseHistory)
 
   useEffect(() => {
+    dispatch(getPreviousVocabularyData(parsedDate))
+  }, [parsedDate])
+
+  useEffect(() => {
+    setParsedDate(startDate.toJSON().slice(0, 10))
     dispatch(getSelf())
     dispatch(getExerciseHistory(learningLanguage, startDate, endDate))
     dispatch(getTestHistory(learningLanguage, startDate, endDate))
   }, [startDate, endDate])
-
-  useEffect(() => {
-    dispatch(getVocabularyData())
-  }, [])
 
   if (pending || pending === undefined) return <Spinner />
 
@@ -107,6 +109,13 @@ const Progress = () => {
         )}
       </div>
       <br />
+      {hiddenFeatures && (
+        <div>
+          <Divider />
+          <Button onClick={() => history.push('/test-hexagon')}>Test hexagon grid</Button>
+          <Divider />
+        </div>
+      )}
       <div className="space-evenly">
         <button type="button" onClick={() => setShownChart('progress')} style={{ border: 'none' }}>
           <div className="flex align-center" style={{ gap: '.5em' }}>
@@ -198,7 +207,7 @@ const Progress = () => {
           <div>
             <div>
               <div className="progress-page-graph-cont">
-                <VocabularyGraph vocabularyData={vocabularyData} />
+                <VocabularyGraph vocabularyData={vocabularyData} pending={vocabularyPending} />
               </div>
             </div>
           </div>

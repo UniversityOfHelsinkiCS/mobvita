@@ -1,8 +1,6 @@
-import React, { useState, useEffect } from 'react'
-import userReducer, { getVocabularyData } from 'Utilities/redux/userReducer'
+import React, { useEffect } from 'react'
+import { getVocabularyData } from 'Utilities/redux/userReducer'
 import { useDispatch, useSelector } from 'react-redux'
-import { FormattedMessage } from 'react-intl'
-import { Checkbox } from 'semantic-ui-react'
 import VocabularyGraph from './VocabularyGraph'
 // import { Popup } from 'semantic-ui-react'
 

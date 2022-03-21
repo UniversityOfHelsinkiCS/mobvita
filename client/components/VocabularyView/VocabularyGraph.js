@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import Highcharts from 'highcharts'
 import HighchartsReact from 'highcharts-react-official'
 import moment from 'moment'
@@ -8,20 +8,19 @@ import useWindowDimensions from 'Utilities/windowDimensions'
 import { useDispatch, useSelector } from 'react-redux'
 import { Checkbox } from 'semantic-ui-react'
 
-const VocabularyGraph = ({ vocabularyData }) => {
+const VocabularyGraph = ({ vocabularyData, pending }) => {
   //   const { flashcard, seen, total, now, visit } = useSelector(({ user }) => user.vocabularyData)
 
   const dispatch = useDispatch()
-
-  if (!vocabularyData) return <div className="mt-xl">Loading...</div>
+  if (!vocabularyData || pending) return <div className="mt-xl">Loading...</div>
 
   const { flashcard, seen, total, visit } = vocabularyData
-
+  /*
   const [showSeen, setShowSeen] = useState(true)
   const [showFlashcard, setShowFlashcard] = useState(true)
   const [showVisit, setShowVisit] = useState(true)
   const [showTotal, setShowTotal] = useState(true)
-
+  */
   const intl = useIntl()
   const smallScreen = useWindowDimensions().width < 640
 
@@ -126,21 +125,6 @@ const VocabularyGraph = ({ vocabularyData }) => {
         linkedTo: 'Total',
       },
       {
-        name: intl.formatMessage({ id: 'vocabulary-visit' }),
-        id: 'Visit',
-        data: visit.now,
-        visible: false,
-      },
-      {
-        name: `${intl.formatMessage({ id: 'vocabulary-visit' })} ${intl.formatMessage({
-          id: 'vocabulary-follow-statistic-before',
-        })}`,
-        id: 'Visit (before)',
-        data: visit[Object.keys(visit).filter(key => key !== 'now')[0]],
-        linkedTo: 'Visit',
-        visible: false,
-      },
-      {
         name: intl.formatMessage({ id: 'vocabulary-seen' }),
         id: 'Seen',
         data: seen.now,
@@ -153,6 +137,21 @@ const VocabularyGraph = ({ vocabularyData }) => {
         id: 'Seen (before)',
         data: seen[Object.keys(seen).filter(key => key !== 'now')[0]],
         linkedTo: 'Seen',
+        visible: false,
+      },
+      {
+        name: intl.formatMessage({ id: 'vocabulary-visit' }),
+        id: 'Visit',
+        data: visit.now,
+        visible: false,
+      },
+      {
+        name: `${intl.formatMessage({ id: 'vocabulary-visit' })} ${intl.formatMessage({
+          id: 'vocabulary-follow-statistic-before',
+        })}`,
+        id: 'Visit (before)',
+        data: visit[Object.keys(visit).filter(key => key !== 'now')[0]],
+        linkedTo: 'Visit',
         visible: false,
       },
       {
@@ -171,7 +170,7 @@ const VocabularyGraph = ({ vocabularyData }) => {
         visible: false,
       },
     ],
-    chart: { height },
+    chart: { type: 'area' },
     credits: { enabled: false },
     allowDecimals: false,
     alignTicks: false,
