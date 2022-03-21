@@ -2,7 +2,7 @@
 import React, { useState, useEffect, shallowEqual } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import moment from 'moment'
-import { FormattedMessage, FormattedHTMLMessage } from 'react-intl'
+import { FormattedMessage, FormattedHTMLMessage, useIntl } from 'react-intl'
 import { getSelf, getPreviousVocabularyData } from 'Utilities/redux/userReducer'
 import ProgressGraph from 'Components/ProgressGraph'
 import Spinner from 'Components/Spinner'
@@ -25,6 +25,7 @@ const PickDate = ({ date, setDate }) => (
 const Progress = () => {
   const dispatch = useDispatch()
   const history = useHistory()
+  const intl = useIntl()
 
   const [startDate, setStartDate] = useState(moment().subtract(2, 'months').toDate())
   const [endDate, setEndDate] = useState(moment().toDate())
@@ -191,7 +192,39 @@ const Progress = () => {
         <div>
           <div className="row-flex align center">
             <Popup
-              content={<FormattedHTMLMessage id="vocabulary-view-explanation" />}
+              content={
+                <div>
+                  <FormattedHTMLMessage id="vocabulary-view-explanation" />
+                  <br />
+                  <br />
+                  <b>{intl.formatMessage({ id: 'vocabulary-total' })}</b>
+                  {''}
+                  {`: ${intl.formatMessage({
+                    id: 'vocabulary-total-explanation',
+                  })}`}
+                  <br />
+                  <br />
+                  <b>{intl.formatMessage({ id: 'vocabulary-seen' })}</b>
+                  {''}
+                  {`: ${intl.formatMessage({
+                    id: 'vocabulary-seen-explanation',
+                  })}`}
+                  <br />
+                  <br />
+                  <b>{intl.formatMessage({ id: 'vocabulary-visit' })}</b>
+                  {''}
+                  {`: ${intl.formatMessage({
+                    id: 'vocabulary-visit-explanation',
+                  })}`}
+                  <br />
+                  <br />
+                  <b>{intl.formatMessage({ id: 'vocabulary-flashcard' })}</b>
+                  {''}
+                  {`: ${intl.formatMessage({
+                    id: 'vocabulary-flashcard-explanation',
+                  })}`}
+                </div>
+              }
               trigger={
                 <Icon
                   style={{ paddingRight: '0.75em', marginBottom: '0.35em' }}
