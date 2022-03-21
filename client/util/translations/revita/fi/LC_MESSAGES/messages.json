@@ -1225,7 +1225,7 @@
     "vocabulary-flashcard": "Otettu haltuun",
     "vocabulary-flashcard-explanation": "Kuinka monta sanaa hallitset muistikorteilta",
     "vocabulary-follow-statistic-before": "(aikaisemmin)",
-    "vocabulary-view-explanation": "Tämä kaavio esittää edistymistäsi sanaston harjoittelussa<ul><li/>tällä hetkellä<li/>aikaisemmin.</ul>Voit määrittää aikaisemman ajankohdan kalenterin avulla.",
+    "vocabulary-view-explanation": "Tämä kaavio esittää edistymistäsi sanaston harjoittelussa:<ul><li/>tällä hetkellä<li/>aikaisemmin.</ul>Voit määrittää aikaisemman ajankohdan kalenterin avulla.",
     "vocabulary-chart-header": "Sanastokaavio",
     "exercise-history": "Tehtävähistoria"
 }
