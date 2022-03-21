@@ -154,7 +154,7 @@ export const RVSpeak = (text, lang_code, tone, voice_type) => {
 
 export const tacotronSpeak = (text, lang_code, tone, voice_type) => {
   const error_func = error_type => (sound_id, e) => {
-    recordSpeak(text, voice_type, 'tacotron2', 0, `${error_type}: ${sound_id}->${e}`)
+    recordSpeak(text, voice_type, 'tacotron2', lang_code, 0, `${error_type}: ${sound_id}->${e}`)
   }
   new Howl({
     src: [
