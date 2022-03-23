@@ -1206,7 +1206,7 @@
     "stories-covered-encouragement": "So far you have completed {stories} stories.",
     "words-seen-encouragement": "From the stories you have studied, you have now encountered {vocabulary_seen} new words.",
     "first-story-covered-encouragement": "Congratulations! You have completed your first story!",
-    "words-interacted-encouragement": "You have worked with {Nwords} new words.",
+    "words-interacted-encouragement": "From this story you interacted with {nWords} new words",
     "welcome-back-encouragement": "Welcome back, {username}!",
     "would-you-like-to-continue-story": "Last time your were working on the story  \"{story}\".<br>Would you like to continue?",
     "yes": "Yes",

@@ -34,6 +34,7 @@ import wordNest from './wordNestReducer'
 import controlledPractice from './controlledPracticeReducer'
 import constructionTest from './constructionTestReducer'
 import incomplete from './incompleteStoriesReducer'
+import newVocabulary from './newVocabularyReducer'
 
 const rootReducer = combineReducers({
   stories,
@@ -70,6 +71,7 @@ const rootReducer = combineReducers({
   controlledPractice,
   constructionTest,
   incomplete,
+  newVocabulary,
 })
 
 export default (state, action) =>

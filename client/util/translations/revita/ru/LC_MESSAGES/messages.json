@@ -1209,7 +1209,7 @@
     "stories-covered-encouragement": "На сегодняшний день ты изучил(а) {stories} историй.",
     "words-seen-encouragement": "Количество изученных слов из всех историй: {vocabulary_seen}.",
     "first-story-covered-encouragement": "Поздравляем! Ты изучил(а) свою первую историю!",
-    "words-interacted-encouragement": "You have worked with {Nwords} new words.",
+    "words-interacted-encouragement": "From this story you interacted with {nWords} new words",
     "welcome-back-encouragement": "Добро пожаловать, {username}!",
     "would-you-like-to-continue-story": "В прошлый раз ты работал(а) с текстом: {story}.<br>Продолжить?",
     "yes": "Да",

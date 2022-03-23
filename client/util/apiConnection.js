@@ -94,6 +94,15 @@ const handleNewAchievement = (store, newAchievements) => {
   }
 }
 
+const handleNewVocabulary = (store, newVocabulary) => {
+  if (newVocabulary) {
+    store.dispatch({
+      type: 'SET_NEW_VOCABULARY',
+      newVocabulary,
+    })
+  }
+}
+
 /**
  * This is a redux middleware used for tracking api calls
  */
@@ -122,6 +131,10 @@ export const handleRequest = store => next => async action => {
       }
       if (res.data?.new_achievements?.length > 0) {
         handleNewAchievement(store, res.data.new_achievements)
+      }
+
+      if (res.data?.num_new_vocabulary) {
+        handleNewVocabulary(store, res.data.num_new_vocabulary)
       }
       const requestSentAt = new Date()
       window.localStorage.setItem('last_request', requestSentAt)
@@ -157,9 +170,7 @@ export const tacotronSpeak = (text, lang_code, tone, voice_type) => {
     recordSpeak(text, voice_type, 'tacotron2', lang_code, 0, `${error_type}: ${sound_id}->${e}`)
   }
   new Howl({
-    src: [
-      `${basePath}api/${lang_code}_tts?text=${encodeURIComponent(text)}`,
-    ],
+    src: [`${basePath}api/${lang_code}_tts?text=${encodeURIComponent(text)}`],
     format: ['mp3'],
     autoplay: true,
     onend() {

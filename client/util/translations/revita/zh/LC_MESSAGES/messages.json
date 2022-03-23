@@ -561,7 +561,7 @@
     "stories-covered-encouragement": "到目前为止您已经完成了{stories}篇文章。",
     "words-seen-encouragement": "在您学习过的文章中，您遇见了{vocabulary_seen}个单词.",
     "first-story-covered-encouragement": "恭喜！您已经完成了您的第一篇文章！",
-    "words-interacted-encouragement": "您已经练习到了{Nwords}个新单词.",
+    "words-interacted-encouragement": "您已经练习到了{nWords}个新单词.",
     "welcome-back-encouragement": "欢迎回来, {username}!",
     "would-you-like-to-continue-story": "您上次在学习的文章是：{story}.<br>是否继续?",
     "yes": "是",

@@ -2,8 +2,10 @@ import React from 'react'
 import { Modal } from 'semantic-ui-react'
 import { FormattedMessage, useIntl } from 'react-intl'
 import { images } from 'Utilities/common'
+import { useSelector } from 'react-redux'
 
 const ExercisesEncouragementModal = ({ open, setOpen, storiesCovered, vocabularySeen }) => {
+  const { newVocabulary } = useSelector(({ newVocabulary }) => newVocabulary)
   const intl = useIntl()
   const notFirst = storiesCovered > 1
 
@@ -11,7 +13,7 @@ const ExercisesEncouragementModal = ({ open, setOpen, storiesCovered, vocabulary
     <Modal
       basic
       open={open}
-      size="tiny"
+      size="small"
       centered={false}
       dimmer="blurring"
       closeIcon={{ style: { top: '2.5rem', right: '2.5rem' }, color: 'black', name: 'close' }}
@@ -43,6 +45,14 @@ const ExercisesEncouragementModal = ({ open, setOpen, storiesCovered, vocabulary
                   { vocabulary_seen: vocabularySeen }
                 )}
               </div>
+              {newVocabulary > 0 && (
+                <div className="bold pt-sm" style={{ color: '#000000' }}>
+                  {intl.formatMessage(
+                    { id: 'words-interacted-encouragement' },
+                    { nWords: newVocabulary }
+                  )}
+                </div>
+              )}
             </div>
           ) : (
             <div
@@ -61,7 +71,7 @@ const ExercisesEncouragementModal = ({ open, setOpen, storiesCovered, vocabulary
             <img
               src={images.fireworks}
               alt="encouraging fireworks"
-              style={{ maxWidth: '24%', maxHeight: '24%' }}
+              style={{ maxWidth: '35%', maxHeight: '35%' }}
             />
           </div>
         </div>

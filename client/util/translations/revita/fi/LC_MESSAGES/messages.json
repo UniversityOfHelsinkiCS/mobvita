@@ -1206,7 +1206,7 @@
     "stories-covered-encouragement": "Tähän mennessä olet päässyt loppuun {stories} tarinaa.",
     "words-seen-encouragement": "Olet nähnyt yhteensä {vocabulary_seen} uutta sanaa harjoittelemissasi tarinoissa.",
     "first-story-covered-encouragement": "Onneksi olkoon! Olet päässyt ensimmäisen tarinan loppuun!",
-    "words-interacted-encouragement": "You have worked with {Nwords} new words.",
+    "words-interacted-encouragement": "Tässä tarinassa kohtasit {nWords} uutta sanaa.",
     "welcome-back-encouragement": "Tervetuloa takaisin, {username}!",
     "would-you-like-to-continue-story": "Viimeksi sinulla jäi kesken tarina \"{story}\".<br> Haluaisitko jatkaa tarinan lukemista?",
     "yes": "Kyllä",
