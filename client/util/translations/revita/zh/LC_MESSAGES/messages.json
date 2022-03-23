@@ -583,6 +583,6 @@
     "vocabulary-view-explanation": "这幅图展示了您的词汇能力<ul><li/>当前<li/>稍早一些</ul>您可以通过日历控件选择稍早的一个时间点",
     "vocabulary-chart-header": "Vocabulary chart",
     "exercise-history": "Exercise History",
-    "would-you-like-to-continue": "Last time your were working on the story  \"{story}\".<br>Would you like to",
-    "continue-reading": "continue"
+    "would-you-like-to-continue": "您上次在学习的文章是：{story}.<br>",
+    "continue-reading": "是否继续"
 }

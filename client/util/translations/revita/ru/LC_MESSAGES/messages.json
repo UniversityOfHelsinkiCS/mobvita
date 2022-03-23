@@ -1231,6 +1231,6 @@
     "vocabulary-view-explanation": "На этом графике видны твои показатели по лексикону:<ul><li/>сейчас<li/>и ранее.</ul>Раннюю точку можно выбрать на календаре.",
     "vocabulary-chart-header": "Vocabulary chart",
     "exercise-history": "Exercise History",
-    "would-you-like-to-continue": "Last time your were working on the story  \"{story}\".<br>Would you like to",
-    "continue-reading": "continue"
+    "would-you-like-to-continue": "В прошлый раз ты работал(а) с текстом: {story}.<br>",
+    "continue-reading": "Продолжить"
 }
