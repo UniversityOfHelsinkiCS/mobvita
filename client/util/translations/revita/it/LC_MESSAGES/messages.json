@@ -1228,5 +1228,7 @@
     "vocabulary-follow-statistic-before": "(prima)",
     "vocabulary-view-explanation": "This chart shows your performance on vocabulary:<ul><li/>at present<li/>and at an earlier time.</ul>You can control the earlier time through the calendar.",
     "vocabulary-chart-header": "Vocabulary chart",
-    "exercise-history": "Exercise History"
+    "exercise-history": "Exercise History",
+    "would-you-like-to-continue": "Last time your were working on the story  \"{story}\".<br>Would you like to",
+    "continue-reading": "continue"
 }

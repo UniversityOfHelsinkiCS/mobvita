@@ -40,11 +40,6 @@ const WelcomeBackEncouragementModal = ({
     setOpen(false)
   }
 
-  const continueWithStory = () => {
-    closeModal()
-    history.replace(storyRoute)
-  }
-
   if (pending) {
     return null
   }
@@ -53,7 +48,7 @@ const WelcomeBackEncouragementModal = ({
     <Modal
       basic
       open={open}
-      size="small"
+      size="tiny"
       centered={false}
       dimmer="blurring"
       closeIcon={{ style: { top: '2.5rem', right: '2.5rem' }, color: 'black', name: 'close' }}
@@ -61,7 +56,7 @@ const WelcomeBackEncouragementModal = ({
     >
       <Modal.Content>
         <div className="encouragement" style={{ padding: '1.5rem' }}>
-          <div className="row-flex">
+          <div>
             <div className="col-flex">
               <div
                 className="header-2"
@@ -84,31 +79,26 @@ const WelcomeBackEncouragementModal = ({
                   <div>
                     <div className="bold" style={{ color: '#000000', marginTop: '0.5rem' }}>
                       <FormattedHTMLMessage
-                        id="would-you-like-to-continue-story"
+                        id="would-you-like-to-continue"
                         values={{ story: latestIncompleteStory.title }}
                       />
-                    </div>
-                    <div className="row-flex">
-                      <Link onClick={continueWithStory}>
-                        <div className="bold approve">
-                          <FormattedMessage id="yes" />
-                        </div>
+                      &nbsp;
+                      <Link to={storyRoute}>
+                        <FormattedMessage id="continue-reading" />
                       </Link>
-                      <Link onClick={closeModal}>
-                        <div className="bold decline">
-                          <FormattedMessage id="no" />
-                        </div>
-                      </Link>
+                      ?
                     </div>
                   </div>
                 </div>
               )}
             </div>
-            <img
-              src={images.balloons}
-              alt="encouraging balloons"
-              style={{ maxWidth: '25%', maxHeight: '25%' }}
-            />
+            <div className="encouragement-picture">
+              <img
+                src={images.balloons}
+                alt="encouraging balloons"
+                style={{ maxWidth: '25%', maxHeight: '25%' }}
+              />
+            </div>
           </div>
         </div>
       </Modal.Content>
