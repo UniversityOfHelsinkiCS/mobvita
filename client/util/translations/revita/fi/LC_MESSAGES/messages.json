@@ -1228,6 +1228,6 @@
     "vocabulary-view-explanation": "Tämä kaavio esittää edistymistäsi sanaston harjoittelussa:<ul><li/>tällä hetkellä<li/>aikaisemmin.</ul>Voit määrittää aikaisemman ajankohdan kalenterin avulla.",
     "vocabulary-chart-header": "Sanastokaavio",
     "exercise-history": "Tehtävähistoria",
-    "would-you-like-to-continue": "Viimeksi sinulla jäi kesken tarina \"{story}\".<br> Haluaisitko",
-    "continue-reading": "jatkaa tarinan lukemista"
+    "would-you-like-to-continue": "Viimeksi sinulla jäi kesken tarina:<br/><i>{story}</i><br/>Haluaisitko",
+    "continue-reading": "jatkaa"
 }

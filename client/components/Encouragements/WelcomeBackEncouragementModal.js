@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { Modal } from 'semantic-ui-react'
 import { useIntl, FormattedHTMLMessage, FormattedMessage } from 'react-intl'
-import { Link, useHistory } from 'react-router-dom'
+import { Link } from 'react-router-dom'
 import { images } from 'Utilities/common'
 import { useDispatch } from 'react-redux'
 import { getIncompleteStories } from 'Utilities/redux/incompleteStoriesReducer'
@@ -19,7 +19,6 @@ const WelcomeBackEncouragementModal = ({
   const [latestIncompleteStory, setLatestIncompleteStory] = useState(null)
   const [storyRoute, setStoryRoute] = useState('')
   const dispatch = useDispatch()
-  const history = useHistory()
 
   useEffect(() => {
     dispatch(
