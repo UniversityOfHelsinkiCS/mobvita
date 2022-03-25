@@ -1,8 +1,0 @@
-POST http://localhost:8000/api/confirm/test
-content-type: application/json
-
-{
-    "email": "skidsk.skodsk@gmail.com",
-    "username": "Skidsk",
-    "password": "password"
-}
