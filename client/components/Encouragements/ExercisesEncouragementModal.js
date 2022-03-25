@@ -94,7 +94,7 @@ const ExercisesEncouragementModal = ({ open, setOpen, storiesCovered, vocabulary
             <img
               src={images.fireworks}
               alt="encouraging fireworks"
-              style={{ maxWidth: '35%', maxHeight: '35%' }}
+              style={{ maxWidth: '25%', maxHeight: '25%' }}
             />
           </div>
         </div>
