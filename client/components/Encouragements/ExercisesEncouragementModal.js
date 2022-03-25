@@ -12,22 +12,6 @@ const ExercisesEncouragementModal = ({ open, setOpen, storiesCovered, vocabulary
   const dispatch = useDispatch()
   const notFirst = storiesCovered > 1
 
-  const reviewProgress = () => {
-    return (
-      <Link to="/profile/progress">
-        <FormattedMessage id="review-progress" />
-      </Link>
-    )
-  }
-
-  const flashcards = () => {
-    return (
-      <Link to="/flashcards">
-        <FormattedMessage id="flashcards-review" />
-      </Link>
-    )
-  }
-
   const closeModal = () => {
     setOpen(false)
     dispatch(clearNewVocabulary())
@@ -57,24 +41,34 @@ const ExercisesEncouragementModal = ({ open, setOpen, storiesCovered, vocabulary
               >
                 <FormattedMessage id="story-completed-encouragement" />
               </div>
-              <div className="bold pt-sm" style={{ color: '#000000' }}>
+              <div className="pt-sm" style={{ color: '#000000' }}>
                 {intl.formatMessage(
                   { id: 'stories-covered-encouragement' },
                   { stories: storiesCovered }
                 )}
               </div>
-              <div className="bold pt-sm" style={{ color: '#000000' }}>
+              <div className="pt-sm" style={{ color: '#000000' }}>
                 {intl.formatMessage(
                   { id: 'words-seen-encouragement' },
-                  { vocabulary_seen: vocabularySeen, flashcards: flashcards() }
+                  { vocabulary_seen: vocabularySeen }
                 )}
+                &nbsp;
+                <Link to="/flashcards">
+                  <FormattedMessage id="flashcards-review" />
+                </Link>
+                ?
               </div>
               {newVocabulary > 0 && (
-                <div className="bold pt-sm" style={{ color: '#000000' }}>
+                <div className="pt-sm" style={{ color: '#000000' }}>
                   {intl.formatMessage(
                     { id: 'words-interacted-encouragement' },
-                    { nWords: newVocabulary, reviewProgress: reviewProgress() }
+                    { nWords: newVocabulary }
                   )}
+                  &nbsp;
+                  <Link to="/profile/progress">
+                    <FormattedMessage id="review-progress" />
+                  </Link>
+                  ?
                 </div>
               )}
             </div>

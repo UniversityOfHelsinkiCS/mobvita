@@ -106,7 +106,7 @@
     "hints-for-this-flashcard": "这张单词卡的提示",
     "new-word": "新单词",
     "next-card": "下一张单词卡…",
-    "no-flashcards-yet-when-you-practice-a-story-and-click-on-unfamiliar-words-they-will-be-added-to-your": "这个故事没有单词卡。请点击文本中不认识的单词，它们将被添加到单词卡里！",
+    "no-flashcards-yet-when-you-practice-a-story-and-click-on-unfamiliar-words-they-will-be-added-to-your": "这个故事没有单词卡。<br/>请点击文本中不认识的单词，它们将被添加到单词卡里！",
     "pay-attention-to-diacritics": "请注意变音符号！你写了\"{answer}\"，正确的形式是\"{normalizedCorrect}\"。",
     "pay-attention-to-spelling": "请注意你的拼写！你写了\"{answer}\"，正确的形式是\"{levenshtein Correct}\"。",
     "Quick cards": "“即时”卡片",
@@ -559,9 +559,9 @@
     "show-exercise-settings": "练习设置",
     "story-completed-encouragement": "恭喜！您已经完成了这篇文章！",
     "stories-covered-encouragement": "到目前为止您已经完成了{stories}篇文章。",
-    "words-seen-encouragement": "在您学习过的文章中，您遇见了{vocabulary_seen}个单词.",
+    "words-seen-encouragement": "在您学习过的文章中，您遇见了{vocabulary_seen}个单词。你是否需要回顾一下您的{flashcards}？",
     "first-story-covered-encouragement": "恭喜！您已经完成了您的第一篇文章！",
-    "words-interacted-encouragement": "您已经练习到了{nWords}个新单词.",
+    "words-interacted-encouragement": "您已经练习到了{nWords}个新单词。是否需要回顾您的{reviewProgress}?",
     "welcome-back-encouragement": "欢迎回来, {username}!",
     "would-you-like-to-continue-story": "您上次在学习的文章是：{story}.<br>是否继续?",
     "yes": "是",
@@ -582,9 +582,9 @@
     "vocabulary-follow-statistic-before": "(稍早一些)",
     "vocabulary-view-explanation": "这幅图展示了您的词汇能力<ul><li/>当前<li/>稍早一些</ul>您可以通过日历控件选择稍早的一个时间点",
     "vocabulary-chart-header": "Vocabulary chart",
-    "exercise-history": "Exercise History",
+    "exercise-history": "练习历史",
     "would-you-like-to-continue": "您上次在学习的文章是：<br/><i>{story}</i><br/>",
     "continue-reading": "继续",
-    "review-progress": "您上次在学习的文章是：{story}.<br>是否继续?",
-    "flashcards-review": "flashcards"
+    "review-progress": "进度",
+    "flashcards-review": "单词卡"
 }

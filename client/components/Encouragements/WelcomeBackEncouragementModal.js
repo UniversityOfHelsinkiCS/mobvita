@@ -18,6 +18,10 @@ const WelcomeBackEncouragementModal = ({
   const intl = useIntl()
   const [latestIncompleteStory, setLatestIncompleteStory] = useState(null)
   const [storyRoute, setStoryRoute] = useState('')
+  /*
+  const { leaderboard } = useSelector(({ leaderboard }) => leaderboard.data)
+  const [userRanking, setUserRanking] = useState(null)
+  */
   const dispatch = useDispatch()
 
   useEffect(() => {
@@ -26,6 +30,7 @@ const WelcomeBackEncouragementModal = ({
         sort_by: 'access',
       })
     )
+    // dispatch(getLeaderboards())
   }, [])
 
   useEffect(() => {
@@ -67,7 +72,7 @@ const WelcomeBackEncouragementModal = ({
               >
                 {intl.formatMessage({ id: 'welcome-back-encouragement' }, { username })}
               </div>
-              <div className="bold" style={{ color: '#000000', marginBottom: '0.5rem' }}>
+              <div style={{ color: '#000000', marginBottom: '0.5rem' }}>
                 {intl.formatMessage(
                   { id: 'stories-covered-encouragement' },
                   { stories: storiesCovered }
@@ -76,7 +81,7 @@ const WelcomeBackEncouragementModal = ({
               {latestIncompleteStory && (
                 <div>
                   <div>
-                    <div className="bold" style={{ color: '#000000', marginTop: '0.5rem' }}>
+                    <div style={{ color: '#000000', marginTop: '0.5rem' }}>
                       <FormattedHTMLMessage
                         id="would-you-like-to-continue"
                         values={{ story: latestIncompleteStory.title }}
