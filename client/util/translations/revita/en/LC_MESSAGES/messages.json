@@ -1204,7 +1204,7 @@
     "Please input a non-negative integer": "Please input a non-negative integer",
     "story-completed-encouragement": "Congratulations! You have completed the story!",
     "stories-covered-encouragement": "So far you have completed {stories} stories.",
-    "words-seen-encouragement": "From the stories you have studied, you have now encountered {vocabulary_seen} new words.",
+    "words-seen-encouragement": "From the stories you have studied, you have now encountered {vocabulary_seen} new words. Would you like to review the vocabulary with {flashcards}?",
     "first-story-covered-encouragement": "Congratulations! You have completed your first story!",
     "words-interacted-encouragement": "From this story you interacted with {nWords} new words. Would you like to review your {reviewProgress}?",
     "welcome-back-encouragement": "Welcome back, {username}!",
@@ -1230,5 +1230,6 @@
     "exercise-history": "Exercise History",
     "would-you-like-to-continue": "Last time your were working on the story:<br/><i>{story}</i><br/>Would you like to",
     "continue-reading": "continue",
-    "review-progress": "progress"
+    "review-progress": "progress",
+    "flashcards-review": "flashcards"
 }

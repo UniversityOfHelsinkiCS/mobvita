@@ -1204,7 +1204,7 @@
     "Please input a non-negative integer": "Please input a non-negative integer",
     "story-completed-encouragement": "Onneksi olkoon! Olet päässyt tarinan loppuun!",
     "stories-covered-encouragement": "Tähän mennessä olet päässyt loppuun {stories} tarinaa.",
-    "words-seen-encouragement": "Olet nähnyt yhteensä {vocabulary_seen} uutta sanaa harjoittelemissasi tarinoissa.",
+    "words-seen-encouragement": "Olet nähnyt yhteensä {vocabulary_seen} uutta sanaa harjoittelemissasi tarinoissa. Haluaisitko käydä sanastoa läpi {flashcards}?",
     "first-story-covered-encouragement": "Onneksi olkoon! Olet päässyt ensimmäisen tarinan loppuun!",
     "words-interacted-encouragement": "Tässä tarinassa kohtasit {nWords} uutta sanaa. Haluaisitko tarkastella {reviewProgress}?",
     "welcome-back-encouragement": "Tervetuloa takaisin, {username}!",
@@ -1230,5 +1230,6 @@
     "exercise-history": "Tehtävähistoria",
     "would-you-like-to-continue": "Viimeksi sinulla jäi kesken tarina:<br/><i>{story}</i><br/>Haluaisitko",
     "continue-reading": "jatkaa",
-    "review-progress": "edistymistäsi"
+    "review-progress": "edistymistäsi",
+    "flashcards-review": "kysymyskorteilla"
 }

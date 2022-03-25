@@ -585,5 +585,6 @@
     "exercise-history": "Exercise History",
     "would-you-like-to-continue": "您上次在学习的文章是：<br/><i>{story}</i><br/>",
     "continue-reading": "继续",
-    "review-progress": "您上次在学习的文章是：{story}.<br>是否继续?"
+    "review-progress": "您上次在学习的文章是：{story}.<br>是否继续?",
+    "flashcards-review": "flashcards"
 }

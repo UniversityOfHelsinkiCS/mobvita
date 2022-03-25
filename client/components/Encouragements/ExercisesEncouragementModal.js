@@ -20,6 +20,14 @@ const ExercisesEncouragementModal = ({ open, setOpen, storiesCovered, vocabulary
     )
   }
 
+  const flashcards = () => {
+    return (
+      <Link to="/flashcards">
+        <FormattedMessage id="flashcards-review" />
+      </Link>
+    )
+  }
+
   const closeModal = () => {
     setOpen(false)
     dispatch(clearNewVocabulary())
@@ -58,7 +66,7 @@ const ExercisesEncouragementModal = ({ open, setOpen, storiesCovered, vocabulary
               <div className="bold pt-sm" style={{ color: '#000000' }}>
                 {intl.formatMessage(
                   { id: 'words-seen-encouragement' },
-                  { vocabulary_seen: vocabularySeen }
+                  { vocabulary_seen: vocabularySeen, flashcards: flashcards() }
                 )}
               </div>
               {newVocabulary > 0 && (
@@ -82,7 +90,6 @@ const ExercisesEncouragementModal = ({ open, setOpen, storiesCovered, vocabulary
               <FormattedMessage id="first-story-covered-encouragement" />
             </div>
           )}
-          <FormattedMessage id="review-encouragement" />
           <div className="encouragement-picture">
             <img
               src={images.fireworks}

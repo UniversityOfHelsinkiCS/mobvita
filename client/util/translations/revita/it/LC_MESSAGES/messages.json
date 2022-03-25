@@ -1231,5 +1231,6 @@
     "exercise-history": "Exercise History",
     "would-you-like-to-continue": "Last time your were working on the story:<br/><i>{story}</i><br/>Would you like to",
     "continue-reading": "continue",
-    "review-progress": "progress"
+    "review-progress": "progress",
+    "flashcards-review": "flashcards"
 }
