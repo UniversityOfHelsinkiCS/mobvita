@@ -1207,7 +1207,7 @@
     "stories-covered-encouragement": "So far you have completed {stories} stories.",
     "words-seen-encouragement": "Nelle storie che hai studiato, ora hai incontrato {vocabulary_seen} nuove parole.",
     "first-story-covered-encouragement": "Congratulations! You have completed your first story!",
-    "words-interacted-encouragement": "From this story you interacted with {nWords} new words",
+    "words-interacted-encouragement": "From this story you interacted with {nWords} new words. Would you like to review your {reviewProgress}?",
     "welcome-back-encouragement": "Bentornata/o, {username}!",
     "would-you-like-to-continue-story": "Last time your were working on the story: {story}.<br>Would you like to continue?",
     "yes": "Si",
@@ -1230,5 +1230,6 @@
     "vocabulary-chart-header": "Vocabulary chart",
     "exercise-history": "Exercise History",
     "would-you-like-to-continue": "Last time your were working on the story:<br/><i>{story}</i><br/>Would you like to",
-    "continue-reading": "continue"
+    "continue-reading": "continue",
+    "review-progress": "progress"
 }

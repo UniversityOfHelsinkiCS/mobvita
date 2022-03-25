@@ -1,13 +1,29 @@
 import React from 'react'
 import { Modal } from 'semantic-ui-react'
 import { FormattedMessage, useIntl } from 'react-intl'
+import { Link } from 'react-router-dom'
 import { images } from 'Utilities/common'
-import { useSelector } from 'react-redux'
+import { clearNewVocabulary } from 'Utilities/redux/newVocabularyReducer'
+import { useSelector, useDispatch } from 'react-redux'
 
 const ExercisesEncouragementModal = ({ open, setOpen, storiesCovered, vocabularySeen }) => {
   const { newVocabulary } = useSelector(({ newVocabulary }) => newVocabulary)
   const intl = useIntl()
+  const dispatch = useDispatch()
   const notFirst = storiesCovered > 1
+
+  const reviewProgress = () => {
+    return (
+      <Link to="/profile/progress">
+        <FormattedMessage id="review-progress" />
+      </Link>
+    )
+  }
+
+  const closeModal = () => {
+    setOpen(false)
+    dispatch(clearNewVocabulary())
+  }
 
   return (
     <Modal
@@ -17,7 +33,7 @@ const ExercisesEncouragementModal = ({ open, setOpen, storiesCovered, vocabulary
       centered={false}
       dimmer="blurring"
       closeIcon={{ style: { top: '2.5rem', right: '2.5rem' }, color: 'black', name: 'close' }}
-      onClose={() => setOpen(false)}
+      onClose={closeModal}
     >
       <Modal.Content>
         <div className="encouragement" style={{ padding: '1.5rem' }}>
@@ -49,7 +65,7 @@ const ExercisesEncouragementModal = ({ open, setOpen, storiesCovered, vocabulary
                 <div className="bold pt-sm" style={{ color: '#000000' }}>
                   {intl.formatMessage(
                     { id: 'words-interacted-encouragement' },
-                    { nWords: newVocabulary }
+                    { nWords: newVocabulary, reviewProgress: reviewProgress() }
                   )}
                 </div>
               )}
