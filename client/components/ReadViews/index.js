@@ -18,12 +18,13 @@ import FeedbackInfoModal from 'Components/CommonStoryTextComponents/FeedbackInfo
 import ReportButton from 'Components/ReportButton'
 import Footer from '../Footer'
 import ScrollArrow from '../ScrollArrow'
+import { compose } from 'redux'
 
 const ReadViews = ({ match }) => {
   const dispatch = useDispatch()
   const intl = useIntl()
   const { width } = useWindowDimensions()
-  const [hideFeedback, setHideFeedback] = useState(false)
+  const [hideFeedback, setHideFeedback] = useState(true)
   const mode = getMode()
   const history = useHistory()
   const [showRefreshButton, setShowRefreshButton] = useState(false)
@@ -34,11 +35,18 @@ const ReadViews = ({ match }) => {
     locale,
   }))
 
+  const user = useSelector(state => state.user.data)
+
+  console.log('user is teacher ', user?.user.is_teacher)
+
   const { progress, storyId } = useSelector(({ uploadProgress }) => uploadProgress)
 
   const learningLanguage = useSelector(learningLanguageSelector)
   const { id } = match.params
   useEffect(() => {
+    if (user?.user.is_teacher) {
+      setHideFeedback(false)
+    }
     dispatch(getStoryAction(id, mode))
     dispatch(clearTranslationAction())
     dispatch(resetAnnotations())
@@ -57,7 +65,7 @@ const ReadViews = ({ match }) => {
     }
   }, [progress])
 
-  if (!story || pending) return <Spinner fullHeight />
+  if (!story || pending || !user) return <Spinner fullHeight />
 
   const showFooter = width > 640
   const url = history.location.pathname
