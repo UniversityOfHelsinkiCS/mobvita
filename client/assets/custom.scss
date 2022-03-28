@@ -617,7 +617,11 @@ html, body, #root {
   }
 }
 
-.homeview-btn:hover, .practice-now-modal-btn:hover {
+.attempt-bar {
+  background: rgb(50, 170, 248);
+}
+
+.homeview-btn:hover, .practice-now-modal-btn:hover, .attempt-bar:hover {
   background-color: $btn-highlight-color-primary;
 }
 
@@ -943,7 +947,7 @@ html, body, #root {
   width: 100%;
   padding: 0;
   border-radius: 14px;
-  border: 1px solid $button-border-color;
+  border: 1px solid #000;
   margin-bottom: .5rem;
   position: relative;
   outline: 0;

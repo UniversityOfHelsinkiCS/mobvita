@@ -78,9 +78,9 @@ const CheckAnswersButton = ({ handleClick, checkAnswersButtonTempDisable, player
       }
     >
       <div
+        className="attempt-bar"
         style={{
           width: `${attemptRatioPercentage}%`,
-          backgroundColor: barColor,
           borderRadius: '13px',
         }}
       />
