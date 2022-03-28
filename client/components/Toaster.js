@@ -51,6 +51,7 @@ export default function Toaster() {
     dispatch(updateFavouriteSites(favouriteSites.concat({ url })))
   }
 
+
   useEffect(() => {
     if (storyId !== null) {
       const progressCheckInterval = setInterval(() => {
@@ -76,19 +77,16 @@ export default function Toaster() {
 
   useEffect(() => {
     if (storyId !== null) {
-      if (progress !== 1 && !exerciseReady) {
+      if (progress !== 1 && progress > 0 && !exerciseReady && !pending) {
         setProgressToastId(
           toast(
             `${intl.formatMessage({ id: 'processing-story' })} ${Math.floor(
               progress * 100
             )}% ${intl.formatMessage({ id: 'done' })}`,
-            { type: 'info', autoClose: 12000 }
+            { autoClose: 5000, type: 'info' }
           )
         )
       }
-
-      console.log('EX READY ', exerciseReady)
-      console.log('CAN EX ', canExercise)
 
       if (exerciseReady && !canExercise) {
         if (processingErrorMsgId === 'no_error') {
@@ -127,7 +125,7 @@ export default function Toaster() {
         dispatch(setStoryUploadUnfinished(false, storyId))
       }
     }
-  }, [progress, exerciseReady])
+  }, [exerciseReady, pending])
 
   useEffect(() => {
     if (processingErrorMsgId === 'no_error' && !error) return
