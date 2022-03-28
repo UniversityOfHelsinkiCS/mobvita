@@ -82,7 +82,7 @@ export default function Toaster() {
             `${intl.formatMessage({ id: 'processing-story' })} ${Math.floor(
               progress * 100
             )}% ${intl.formatMessage({ id: 'done' })}`,
-            { type: 'info', autoClose: 10000 }
+            { type: 'info', autoClose: 12000 }
           )
         )
       }
