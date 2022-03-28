@@ -37,8 +37,6 @@ const ReadViews = ({ match }) => {
 
   const user = useSelector(state => state.user.data)
 
-  console.log('user is teacher ', user?.user.is_teacher)
-
   const { progress, storyId } = useSelector(({ uploadProgress }) => uploadProgress)
 
   const learningLanguage = useSelector(learningLanguageSelector)
