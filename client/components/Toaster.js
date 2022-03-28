@@ -76,16 +76,19 @@ export default function Toaster() {
 
   useEffect(() => {
     if (storyId !== null) {
-      if (progressToastId === null) {
+      if (progress !== 1 && !exerciseReady) {
         setProgressToastId(
           toast(
-            `${intl.formatMessage({ id: 'processing-story' })}, ${Math.floor(
+            `${intl.formatMessage({ id: 'processing-story' })} ${Math.floor(
               progress * 100
             )}% ${intl.formatMessage({ id: 'done' })}`,
-            { progress, type: 'info' }
+            { type: 'info', autoClose: 10000 }
           )
         )
       }
+
+      console.log('EX READY ', exerciseReady)
+      console.log('CAN EX ', canExercise)
 
       if (exerciseReady && !canExercise) {
         if (processingErrorMsgId === 'no_error') {
