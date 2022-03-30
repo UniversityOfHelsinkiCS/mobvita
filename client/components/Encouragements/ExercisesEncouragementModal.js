@@ -1,16 +1,29 @@
-import React from 'react'
+import React, { useState, useEffect } from 'react'
 import { Modal } from 'semantic-ui-react'
-import { FormattedMessage, useIntl } from 'react-intl'
+import { FormattedHTMLMessage, FormattedMessage, useIntl } from 'react-intl'
 import { Link } from 'react-router-dom'
 import { images } from 'Utilities/common'
 import { clearNewVocabulary } from 'Utilities/redux/newVocabularyReducer'
+import { getLeaderboards } from 'Utilities/redux/leaderboardReducer'
 import { useSelector, useDispatch } from 'react-redux'
 
 const ExercisesEncouragementModal = ({ open, setOpen, storiesCovered, vocabularySeen }) => {
   const { newVocabulary } = useSelector(({ newVocabulary }) => newVocabulary)
+  const { user_rank } = useSelector(({ leaderboard }) => leaderboard.data)
+  const [userRanking, setUserRanking] = useState(null)
   const intl = useIntl()
   const dispatch = useDispatch()
   const notFirst = storiesCovered > 1
+
+  useEffect(() => {
+    dispatch(getLeaderboards())
+  }, [])
+
+  useEffect(() => {
+    if (user_rank < 100) {
+      setUserRanking(user_rank + 1)
+    }
+  }, [user_rank])
 
   const closeModal = () => {
     setOpen(false)
@@ -41,6 +54,24 @@ const ExercisesEncouragementModal = ({ open, setOpen, storiesCovered, vocabulary
               >
                 <FormattedMessage id="story-completed-encouragement" />
               </div>
+              {userRanking && (
+                <div style={{ color: '#000000', marginTop: '0.5rem' }}>
+                  <div>
+                    <FormattedHTMLMessage
+                      id="leaderboard-ranking-encouragement"
+                      values={{ userRanking }}
+                    />
+                    <div>
+                      <Link to="/leaderboard">
+                        <FormattedMessage id="leaderboard-link-encouragement" />
+                      </Link>
+                    </div>
+                  </div>
+                  <div>
+                    <FormattedMessage id="practice-makes-perfect" />
+                  </div>
+                </div>
+              )}
               <div className="pt-sm" style={{ color: '#000000' }}>
                 {intl.formatMessage(
                   { id: 'stories-covered-encouragement' },
@@ -48,10 +79,10 @@ const ExercisesEncouragementModal = ({ open, setOpen, storiesCovered, vocabulary
                 )}
               </div>
               <div className="pt-sm" style={{ color: '#000000' }}>
-                {intl.formatMessage(
-                  { id: 'words-seen-encouragement' },
-                  { vocabulary_seen: vocabularySeen }
-                )}
+                <FormattedHTMLMessage
+                  id="words-seen-encouragement"
+                  values={{ vocabulary_seen: vocabularySeen }}
+                />
                 &nbsp;
                 <Link to="/flashcards">
                   <FormattedMessage id="flashcards-review" />
@@ -60,10 +91,10 @@ const ExercisesEncouragementModal = ({ open, setOpen, storiesCovered, vocabulary
               </div>
               {newVocabulary > 0 && (
                 <div className="pt-sm" style={{ color: '#000000' }}>
-                  {intl.formatMessage(
-                    { id: 'words-interacted-encouragement' },
-                    { nWords: newVocabulary }
-                  )}
+                  <FormattedHTMLMessage
+                    id="words-interacted-encouragement"
+                    values={{ nWords: newVocabulary }}
+                  />
                   &nbsp;
                   <Link to="/profile/progress">
                     <FormattedMessage id="review-progress" />

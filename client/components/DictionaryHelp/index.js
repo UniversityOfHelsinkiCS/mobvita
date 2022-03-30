@@ -89,8 +89,7 @@ const Lemma = ({ lemma, sourceWord, handleSourceWordClick, userUrl, inflectionRe
           tabIndex={-1}
           style={{ paddingTop: '0rem', paddingLeft: '1rem' }}
         >
-          <Icon name="angle double left" />
-          {sourceWord}
+          <img src={images.nestIcon} alt="nest icon" width="22" />
         </span>
       )}
     </div>

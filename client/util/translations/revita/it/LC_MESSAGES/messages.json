@@ -1185,7 +1185,7 @@
     "review-mode-info": "Quando abilitata, clicca parole e frasi evidenziate per vedere le tue risposte di sessioni precedenti e il feedback",
     "shared-with-following-groups": "Condivisio con i seguenti gruppi:",
     "???": "",
-    "story-processing-now-finished": "The story has now been completely processed!  Please, refresh",
+    "story-processing-now-finished": "Ora la storia è completamente elaborata! Per favore, aggiorna",
     "delete-account": "Delete account",
     "delete-account-confirmation": "Are you sure you want to delete your account?",
     "delete-account-information": "Deleting your account will permanently delete your stories. Type your password below to confirm the deletion.",
@@ -1217,7 +1217,7 @@
     "number-of-words": "Number of words",
     "number-of-words-Y-axis": "Numero di parole",
     "vocabulary-difficulty-X-axis": "Livelli di difficoltà",
-    "vocabulary-total": "Ricerche totali lessicale",
+    "vocabulary-total": "Numero totale di ricerche",
     "vocabulary-total-explanation": "Quante volte hai cercato parole sconosciute, a ogni livello di difficoltà",
     "vocabulary-visit": "Parole praticate",
     "vocabulary-visit-explanation": "Per quante parole hai richiesto una traduzione o lavorato con una flashcard",
@@ -1233,7 +1233,7 @@
     "continue-reading": "continuare",
     "review-progress": "il tuo progresso",
     "flashcards-review": "colle flashcard",
-    "leaderboard-ranking-encouragement": "Congratulations, you are number <b>{userRanking}</b> on this week's",
-    "leaderboard-link-encouragement": "leaderboard",
-    "practice-makes-perfect": "Remember: practice makes perfect."
+    "leaderboard-ranking-encouragement": "Congratulazioni, sei il numero <b>{userRanking}</b> nella",
+    "leaderboard-link-encouragement": "classifica di questa settimana",
+    "practice-makes-perfect": "La pratica rende perfetti!"
 }
