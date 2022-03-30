@@ -1232,7 +1232,7 @@
     "continue-reading": "jatkaa",
     "review-progress": "edistymistäsi",
     "flashcards-review": "kysymyskorteilla",
-    "leaderboard-ranking-encouragement": "Onneksi olkoon, olet sijalla <b>{userRanking}</b> tämän viikon pistetaulukossa!",
-    "leaderboard-link-encouragement": "Pistetaulukkoon",
+    "leaderboard-ranking-encouragement": "Onneksi olkoon! Olet sijalla <b>{userRanking}</b> tämän viikon",
+    "leaderboard-link-encouragement": "pistetaulukossa",
     "practice-makes-perfect": "Muista: harjoittelu tekee mestarin!"
 }
