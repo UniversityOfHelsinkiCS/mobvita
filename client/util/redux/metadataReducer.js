@@ -40,6 +40,7 @@ export default (state = initialState, action) => {
         hasTests: response.has_tests,
         hasAdaptiveTests: response.has_adaptive_test,
         numUnreadNews: response.num_unread_news,
+        root_hex_coord: response.root_hex_coord,
         pending: false,
         error: false,
       }
