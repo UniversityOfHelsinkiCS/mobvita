@@ -1235,7 +1235,7 @@
     "continue-reading": "продолжить",
     "review-progress": "твой прогресс",
     "flashcards-review": "с флешкартами",
-    "leaderboard-ranking-encouragement": "Поздравляем, ты достиг/ла уровня <b>{userRanking}</b> в таблице",
+    "leaderboard-ranking-encouragement": "Поздравляем! Ты достиг/ла уровня <b>{userRanking}</b> в таблице",
     "leaderboard-link-encouragement": "лидеров этой недели",
     "practice-makes-perfect": "Навык мастера ставит!"
 }

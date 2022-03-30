@@ -1233,7 +1233,7 @@
     "continue-reading": "continuare",
     "review-progress": "il tuo progresso",
     "flashcards-review": "colle flashcard",
-    "leaderboard-ranking-encouragement": "Congratulazioni, sei il numero <b>{userRanking}</b> nella",
+    "leaderboard-ranking-encouragement": "Congratulazioni! Sei il numero <b>{userRanking}</b> nella",
     "leaderboard-link-encouragement": "classifica di questa settimana",
     "practice-makes-perfect": "La pratica rende perfetti!"
 }
