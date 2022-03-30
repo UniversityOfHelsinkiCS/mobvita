@@ -17,7 +17,7 @@ const ExercisesEncouragementModal = ({ open, setOpen, storiesCovered, vocabulary
 
   useEffect(() => {
     dispatch(getLeaderboards())
-  })
+  }, [])
 
   useEffect(() => {
     if (user_rank < 100) {
@@ -61,11 +61,11 @@ const ExercisesEncouragementModal = ({ open, setOpen, storiesCovered, vocabulary
                       id="leaderboard-ranking-encouragement"
                       values={{ userRanking }}
                     />
-                    &nbsp;
-                    <Link to="/leaderboard">
-                      <FormattedMessage id="leaderboard-link-encouragement" />
-                    </Link>
-                    !
+                    <div>
+                      <Link to="/leaderboard">
+                        <FormattedMessage id="leaderboard-link-encouragement" />
+                      </Link>
+                    </div>
                   </div>
                   <div>
                     <FormattedMessage id="practice-makes-perfect" />
