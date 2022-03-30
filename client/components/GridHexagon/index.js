@@ -21,7 +21,7 @@ import {
   Hex,
   HexUtils,
 } from 'react-hexgrid'
-
+import GridText from './GridText'
 
 
 const ConstructionHexagon = ({ name, position, statistics, overallTotal }) => {
@@ -56,7 +56,8 @@ const ConstructionHexagon = ({ name, position, statistics, overallTotal }) => {
           >
             <Hexagon q={0} r={0} s={0} />
           </Layout>
-
+          <GridText className="hexagon-text">{name}</GridText>
+          {/*
           <foreignObject x="-12" y="-8" width="24" height="20">
             <div className="align-center justify-center" xmlns="http://www.w3.org/1999/xhtml">
               <span
@@ -73,7 +74,7 @@ const ConstructionHexagon = ({ name, position, statistics, overallTotal }) => {
             </div>
           </foreignObject>
 
-          {/* <Text className="hexagon-text">{name}</Text> */}
+          <Text className="hexagon-text">{name}</Text> */}
         </Hexagon>
       }
     />
