@@ -25,7 +25,7 @@ class GridText extends Component {
        </text>
       )
     else {
-        const splited_string = []
+        const splitted_string = []
         let remaining_string = children
         /*if (remaining_string.includes(': ') && remaining_string.length >= 18){
             const temp = remaining_string.split(': ')
@@ -43,7 +43,7 @@ class GridText extends Component {
                 remaining_string = temp.slice(1, temp.length ).join(' ')
             }
         }
-        splited_string.push(remaining_string)
+        splitted_string.push(remaining_string)
 
         return (
             <text  x="0" y="0" className={className} textAnchor="middle">
