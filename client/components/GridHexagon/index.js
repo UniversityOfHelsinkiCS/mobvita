@@ -1,6 +1,10 @@
 import React from 'react'
 import { UncontrolledReactSVGPanZoom } from 'react-svg-pan-zoom'
-import { useSelector } from 'react-redux'
+import { useSelector, useDispatch } from 'react-redux'
+import { useState } from 'react'
+import moment from 'moment'
+import { getHistory as getExerciseHistory } from 'Utilities/redux/exerciseHistoryReducer'
+import { getHistory as getTestHistory } from 'Utilities/redux/testReducer'
 import { learningLanguageSelector } from 'Utilities/common'
 import Spinner from 'Components/Spinner'
 import { Popup } from 'semantic-ui-react'
@@ -20,7 +24,9 @@ import {
 
 
 
-const ConstructionHexagon = ({ name, position }) => {
+const ConstructionHexagon = ({ name, position, statistics, overallTotal }) => {
+  const size = statistics.total / overallTotal * 13 + 2
+  const { q, r, s } = position
   const colorClasses = [
     'red1',
     'red2',
@@ -32,14 +38,9 @@ const ConstructionHexagon = ({ name, position }) => {
     'green3',
     'green4',
     'green5',
-  ]
-
-  const sizes = [2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15]
-  const { q, r, s } = position
-
-  const colorClass = colorClasses[Math.floor(Math.random() * colorClasses.length)]
-  const size = sizes[Math.floor(Math.random() * sizes.length)]
-
+  ] 
+  const colorClass = colorClasses[Math.ceil(statistics.correct / statistics.total * 10)]
+  
   return (
     <Popup
       position="top center"
@@ -86,16 +87,31 @@ const positionOffset = coords => {
 const HexagonTest = () => {
   const { concepts, root_hex_coord, pending: conceptsPending } = useSelector(({ metadata }) => metadata)
   const learningLanguage = useSelector(learningLanguageSelector)
-    
+  const { history } = useSelector(({ exerciseHistory }) => exerciseHistory)
+  const [startDate, setStartDate] = useState(moment().subtract(2, 'months').toDate())
+  const [endDate, setEndDate] = useState(moment().toDate())
+  const dispatch = useDispatch()
+  if (!history) dispatch(getExerciseHistory(learningLanguage, startDate, endDate))
   const hexagonSize = { x: 15, y: 15 }
   // const moreHexas = GridGenerator.parallelogram(-2, 2, -2, 2)
 
   const generator = GridGenerator.getGenerator('rectangle')
   const hexagons = generator.apply(generator, [35, 35])
-  if (conceptsPending || !concepts) return <Spinner fullHeight />
-  else if (!root_hex_coord) return (<div>Not available</div>)
+  if (conceptsPending || !concepts || !history) return <Spinner fullHeight />
+  else if (!root_hex_coord || !history.length ) return (<div>Not available</div>)
   else {
-    const data = concepts.filter(concept => concept.hex_coords)
+    const current = history[0].concept_statistics
+    const getBiggestHistoryTotal = () => {
+      let biggestValue = 0
+  
+      history.map(historyObj => {
+        const statsObj = historyObj.concept_statistics
+        Object.keys(statsObj).map(key => {
+          if (statsObj[key].total > biggestValue) biggestValue = statsObj[key].total
+        })
+      })
+      return biggestValue
+    }
     return (
       // <div style={{ background: 'white' }}>
       <div className="cont-tall pt-sm justify-center">
@@ -125,10 +141,12 @@ const HexagonTest = () => {
                   end={new Hex(9, 21, -31)}
                 /> */}
 
-                {data.map(hex => (
+                {concepts.filter(concept => concept.hex_coords).map(hex => (
                   <ConstructionHexagon
                     name={hex.short_name}
                     position={hex.hex_coords}
+                    statistics={current[hex.concept_id]}
+                    overallTotal={getBiggestHistoryTotal()}
                     // position={positionOffset(hex.coords)}
                   />
                 ))}
