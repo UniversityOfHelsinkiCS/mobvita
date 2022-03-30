@@ -25,7 +25,7 @@ import {
 
 
 const ConstructionHexagon = ({ name, position, statistics, overallTotal }) => {
-  const size = statistics.total / overallTotal * 13 + 2
+  const size = Math.floor(statistics.total / overallTotal * 13) + 2
   const { q, r, s } = position
   const colorClasses = [
     'red1',
