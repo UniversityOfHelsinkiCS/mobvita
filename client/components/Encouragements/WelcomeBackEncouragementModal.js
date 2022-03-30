@@ -95,7 +95,7 @@ const WelcomeBackEncouragementModal = ({
                     !
                   </div>
                   <div>
-                    <FormattedHTMLMessage id="practice-makes-perfect" />
+                    <FormattedMessage id="practice-makes-perfect" />
                   </div>
                 </div>
               )}
