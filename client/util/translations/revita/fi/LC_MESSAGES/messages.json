@@ -1231,5 +1231,8 @@
     "would-you-like-to-continue": "Viimeksi sinulla jäi kesken tarina:<br/><i>{story}</i><br/>Haluaisitko",
     "continue-reading": "jatkaa",
     "review-progress": "edistymistäsi",
-    "flashcards-review": "kysymyskorteilla"
+    "flashcards-review": "kysymyskorteilla",
+    "leaderboard-ranking-encouragement": "Onneksi olkoon, olet sijalla <b>{userRanking}</b> tämän viikon",
+    "leaderboard-link-encouragement": "pistetaulukossa",
+    "practice-makes-perfect": "Muista: harjoittelu tekee mestarin."
 }

@@ -3,8 +3,9 @@ import { Modal } from 'semantic-ui-react'
 import { useIntl, FormattedHTMLMessage, FormattedMessage } from 'react-intl'
 import { Link } from 'react-router-dom'
 import { images } from 'Utilities/common'
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { getIncompleteStories } from 'Utilities/redux/incompleteStoriesReducer'
+import { getLeaderboards } from 'Utilities/redux/leaderboardReducer'
 
 const WelcomeBackEncouragementModal = ({
   open,
@@ -17,11 +18,8 @@ const WelcomeBackEncouragementModal = ({
 }) => {
   const intl = useIntl()
   const [latestIncompleteStory, setLatestIncompleteStory] = useState(null)
-  const [storyRoute, setStoryRoute] = useState('')
-  /*
-  const { leaderboard } = useSelector(({ leaderboard }) => leaderboard.data)
+  const { user_rank } = useSelector(({ leaderboard }) => leaderboard.data)
   const [userRanking, setUserRanking] = useState(null)
-  */
   const dispatch = useDispatch()
 
   useEffect(() => {
@@ -30,13 +28,18 @@ const WelcomeBackEncouragementModal = ({
         sort_by: 'access',
       })
     )
-    // dispatch(getLeaderboards())
+    dispatch(getLeaderboards())
   }, [])
+
+  useEffect(() => {
+    if (user_rank < 100) {
+      setUserRanking(user_rank + 1)
+    }
+  }, [user_rank])
 
   useEffect(() => {
     if (!pending && stories?.length > 0) {
       setLatestIncompleteStory(stories[stories.length - 1])
-      setStoryRoute(`/stories/${stories[stories.length - 1]._id}/practice`)
     }
   }, [pending])
 
@@ -78,6 +81,24 @@ const WelcomeBackEncouragementModal = ({
                   { stories: storiesCovered }
                 )}
               </div>
+              {userRanking && (
+                <div style={{ color: '#000000', marginTop: '0.5rem' }}>
+                  <div>
+                    <FormattedHTMLMessage
+                      id="leaderboard-ranking-encouragement"
+                      values={{ userRanking }}
+                    />
+                    &nbsp;
+                    <Link to="/leaderboard">
+                      <FormattedMessage id="leaderboard-link-encouragement" />
+                    </Link>
+                    !
+                  </div>
+                  <div>
+                    <FormattedHTMLMessage id="practice-makes-perfect" />
+                  </div>
+                </div>
+              )}
               {latestIncompleteStory && (
                 <div>
                   <div>
@@ -87,7 +108,7 @@ const WelcomeBackEncouragementModal = ({
                         values={{ story: latestIncompleteStory.title }}
                       />
                       &nbsp;
-                      <Link to={storyRoute}>
+                      <Link to={`/stories/${stories[stories.length - 1]._id}/practice`}>
                         <FormattedMessage id="continue-reading" />
                       </Link>
                       ?

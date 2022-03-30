@@ -586,5 +586,8 @@
     "would-you-like-to-continue": "您上次在学习的文章是：<br/><i>{story}</i><br/>",
     "continue-reading": "继续",
     "review-progress": "进度",
-    "flashcards-review": "单词卡"
+    "flashcards-review": "单词卡",
+    "leaderboard-ranking-encouragement": "Congratulations, you are number <b>{userRanking}</b> on this week's",
+    "leaderboard-link-encouragement": "leaderboard",
+    "practice-makes-perfect": "Remember: practice makes perfect."
 }

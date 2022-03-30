@@ -1234,5 +1234,8 @@
     "would-you-like-to-continue": "В предыдущий раз ты работал/а с текстом:<br/><i>{story}</i><br/>",
     "continue-reading": "продолжить",
     "review-progress": "твой прогресс",
-    "flashcards-review": "с флешкартами"
+    "flashcards-review": "с флешкартами",
+    "leaderboard-ranking-encouragement": "Congratulations, you are number <b>{userRanking}</b> on this week's",
+    "leaderboard-link-encouragement": "leaderboard",
+    "practice-makes-perfect": "Remember: practice makes perfect."
 }

@@ -1232,5 +1232,8 @@
     "would-you-like-to-continue": "L'ultima volta stavi lavorando alla storia:<br/><i>{story}</i><br/>Vorresti",
     "continue-reading": "continuare",
     "review-progress": "il tuo progresso",
-    "flashcards-review": "colle flashcard"
+    "flashcards-review": "colle flashcard",
+    "leaderboard-ranking-encouragement": "Congratulations, you are number <b>{userRanking}</b> on this week's",
+    "leaderboard-link-encouragement": "leaderboard",
+    "practice-makes-perfect": "Remember: practice makes perfect."
 }

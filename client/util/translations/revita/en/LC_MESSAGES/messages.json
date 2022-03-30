@@ -1231,5 +1231,8 @@
     "would-you-like-to-continue": "Last time your were working on the story:<br/><i>{story}</i><br/>Would you like to",
     "continue-reading": "continue",
     "review-progress": "your progress",
-    "flashcards-review": "with flashcards"
+    "flashcards-review": "with flashcards",
+    "leaderboard-ranking-encouragement": "Congratulations, you are number <b>{userRanking}</b> on this week's",
+    "leaderboard-link-encouragement": "leaderboard",
+    "practice-makes-perfect": "Remember: practice makes perfect."
 }
