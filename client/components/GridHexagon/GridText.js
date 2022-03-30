@@ -35,11 +35,11 @@ class GridText extends Component {
         while(remaining_string.includes(' ') && remaining_string.length >= 18){
             const temp = remaining_string.split(' ')
             if (temp[0].length < 3  ) {
-                splited_string.push(temp.slice(0, 2).join(' '))
+                splitted_string.push(temp.slice(0, 2).join(' '))
                 remaining_string = temp.slice(2, temp.length).join(' ')
             }
             else {
-                splited_string.push(temp[0])
+                splitted_string.push(temp[0])
                 remaining_string = temp.slice(1, temp.length ).join(' ')
             }
         }
@@ -48,14 +48,14 @@ class GridText extends Component {
         return (
             <text  x="0" y="0" className={className} textAnchor="middle">
                 {
-                    (splited_string.length == 2) && 
-                    (<tspan x={x || 0} dy="-0.3em">{splited_string[0]}</tspan>) ||
-                    (splited_string.length == 3) && 
-                    (<tspan x={x || 0} dy="-0.6em">{splited_string[0]}</tspan>) ||
-                    (<tspan x={x || 0} dy="-1.2em">{splited_string[0]}</tspan>)
+                    (splitted_string.length == 2) && 
+                    (<tspan x={x || 0} dy="-0.3em">{splitted_string[0]}</tspan>) ||
+                    (splitted_string.length == 3) && 
+                    (<tspan x={x || 0} dy="-0.6em">{splitted_string[0]}</tspan>) ||
+                    (<tspan x={x || 0} dy="-1.2em">{splitted_string[0]}</tspan>)
                 }
                 {
-                    splited_string.slice(1, splited_string.length).map(string => (
+                    splitted_string.slice(1, splitted_string.length).map(string => (
                         <tspan x={x || 0} dy="1.2em">{string}</tspan>
                     ))
                 }
