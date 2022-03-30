@@ -39,7 +39,7 @@ const ConstructionHexagon = ({ name, position, statistics, overallTotal }) => {
     'green4',
     'green5',
   ] 
-  const colorClass = colorClasses[Math.ceil(statistics.correct / statistics.total * 10)]
+  const colorClass = colorClasses[Math.floor(statistics.correct / statistics.total * 10)]
   
   return (
     <Popup
