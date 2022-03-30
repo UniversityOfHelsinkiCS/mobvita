@@ -1232,7 +1232,7 @@
     "continue-reading": "continue",
     "review-progress": "your progress",
     "flashcards-review": "with flashcards",
-    "leaderboard-ranking-encouragement": "Congratulations, you are number <b>{userRanking}</b> on this week's",
-    "leaderboard-link-encouragement": "leaderboard",
-    "practice-makes-perfect": "Remember: practice makes perfect."
+    "leaderboard-ranking-encouragement": "Congratulations, you are number <b>{userRanking}</b> on this week's leaderboard!",
+    "leaderboard-link-encouragement": "Go to leaderboard",
+    "practice-makes-perfect": "Remember: practice makes perfect!"
 }

@@ -88,11 +88,11 @@ const WelcomeBackEncouragementModal = ({
                       id="leaderboard-ranking-encouragement"
                       values={{ userRanking }}
                     />
-                    &nbsp;
-                    <Link to="/leaderboard">
-                      <FormattedMessage id="leaderboard-link-encouragement" />
-                    </Link>
-                    !
+                    <div>
+                      <Link to="/leaderboard">
+                        <FormattedMessage id="leaderboard-link-encouragement" />
+                      </Link>
+                    </div>
                   </div>
                   <div>
                     <FormattedMessage id="practice-makes-perfect" />
