@@ -125,7 +125,7 @@ const HexagonTest = () => {
         >
           <svg width={1200} height={1000}>
             {/* # bigger->moves left, bigger->moves up, width, height  */}
-            <HexGrid width={1400} height={1000} viewBox="-150 300 500 400">
+            <HexGrid width={1400} height={1000} viewBox="-40 345 550 600">
               <Layout size={hexagonSize} flat spacing={1} origin={{ x: 0, y: 0 }}>
                 {hexagons.map(hex => (
                   <Hexagon q={hex.q} r={hex.r} s={hex.s}>
