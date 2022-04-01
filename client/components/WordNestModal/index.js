@@ -195,8 +195,10 @@ const WordNestModal = ({ open, setOpen, wordToCheck, setWordToCheck }) => {
   const [modalTitle, setModalTitle] = useState()
   const [showMoreInfo, setShowMoreInfo] = useState(false)
   const rootLemmas = words?.filter(e => e.parents?.length === 0)
-  const hasSeveralRoots = rootLemmas?.length > 1
-  const wordNest = makeWordNest(rootLemmas, words)
+  const secondRootLemmas = words?.filter(e => rootLemmas?.length && 
+    rootLemmas?.some(r => e.parents?.includes(r.nest_id)))
+  const hasSeveralRoots = rootLemmas?.length > 1 && rootLemmas?.length > 1 || secondRootLemmas?.length > 1
+  const wordNest = makeWordNest(rootLemmas?.length > 1 && rootLemmas || secondRootLemmas, words)
 
   const formatModalTitle = () => [...new Set(rootLemmas?.map(w => w.word))]?.join(', ')
 
