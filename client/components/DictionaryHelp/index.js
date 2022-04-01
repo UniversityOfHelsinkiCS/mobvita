@@ -80,18 +80,6 @@ const Lemma = ({ lemma, sourceWord, handleSourceWordClick, userUrl, inflectionRe
           <Icon name="external" style={{ marginLeft: '1rem' }} />
         </a>
       )}
-      {sourceWord && (
-        <span
-          onClick={() => handleSourceWordClick(sourceWord[0])}
-          onKeyDown={() => handleSourceWordClick(sourceWord[0])}
-          className="source-word"
-          role="button"
-          tabIndex={-1}
-          style={{ paddingTop: '0rem', paddingLeft: '1rem' }}
-        >
-          <img src={images.nestIcon} alt="nest icon" width="22" />
-        </span>
-      )}
     </div>
   )
 }
@@ -253,11 +241,14 @@ const DictionaryHelp = ({ minimized, inWordNestModal }) => {
           <div style={{ display: 'flex' }}>
             <div>{translations}</div>
             <div style={{ alignSelf: 'flex-start', marginLeft: '1em' }}>
-              {!inWordNestModal && words?.length > 0 && learningLanguage === 'Russian' && !clue && (
-                <Button basic size="mini" onClick={handleNestButtonClick} data-cy="nest-button">
-                  <img src={images.nestIcon} alt="nest icon" width="22" />
-                </Button>
-              )}
+              {!inWordNestModal &&
+                words?.length > 0 &&
+                (learningLanguage === 'Russian' || learningLanguage === 'Finnish') &&
+                !clue && (
+                  <Button basic size="mini" onClick={handleNestButtonClick} data-cy="nest-button">
+                    <img src={images.nestIcon} alt="nest icon" width="22" />
+                  </Button>
+                )}
             </div>
           </div>
         </div>
@@ -337,14 +328,15 @@ const DictionaryHelp = ({ minimized, inWordNestModal }) => {
                   )}
                   {translationResults()}
                 </div>
-                {!inWordNestModal && learningLanguage === 'Russian' && (
-                  <WordNestModal
-                    wordToCheck={wordNestChosenWord}
-                    setWordToCheck={setWordNestChosenWord}
-                    open={wordNestModalOpen}
-                    setOpen={setWordNestModalOpen}
-                  />
-                )}
+                {!inWordNestModal &&
+                  (learningLanguage === 'Russian' || learningLanguage === 'Finnish') && (
+                    <WordNestModal
+                      wordToCheck={wordNestChosenWord}
+                      setWordToCheck={setWordNestChosenWord}
+                      open={wordNestModalOpen}
+                      setOpen={setWordNestModalOpen}
+                    />
+                  )}
               </div>
             </div>
           ) : (
