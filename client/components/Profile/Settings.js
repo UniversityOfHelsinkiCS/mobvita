@@ -70,232 +70,219 @@ const Settings = () => {
   ]
 
   return (
-    <Accordion as={Menu} fluid vertical>
-      <div className="const ps-nm bg-settings">
-        <Menu.Item className="add-story-accordion-item">
-          <Accordion.Title
-            active={accordionState === 0}
-            content={
-              <h2 className="profile-page-setting-header">
-                <FormattedMessage id="interface-language" />
-              </h2>
-            }
-            index={0}
-            onClick={handleClick}
-          />
-          <Accordion.Content
-            className="add-story-accordion-item-content"
-            active={accordionState === 0}
-            content={
-              <div>
-                <Dropdown
-                  fluid
-                  placeholder={intl.formatMessage({ id: 'choose-interface-language' })}
-                  value={actualLocale}
-                  options={localeDropdownOptions}
-                  selection
-                  onChange={(e, data) => handleLocaleChange(data.value)}
-                  data-cy="ui-lang-dropdown"
-                  style={{ width: '200px' }}
-                />
-                <Divider />
-                <LearningSettingsModal
-                  trigger={
-                    <Button variant="primary" size="lg">
-                      <FormattedMessage id="learning-settings" />
-                    </Button>
-                  }
-                />
-              </div>
-            }
-          />
-        </Menu.Item>
-        <Menu.Item className="add-story-accordion-item">
-          <Accordion.Title
-            active={accordionState === 1}
-            content={
-              <h2 className="profile-page-setting-header">
-                <FormattedMessage id="practice-settings" />
-              </h2>
-            }
-            index={1}
-            onClick={handleClick}
-          />
-          <Accordion.Content
-            className="add-story-accordion-item-content"
-            active={accordionState === 1}
-            content={
-              <div className="flex-col gap-row-nm">
-                <Divider />
-                <SettingToggle
-                  translationId="multiple-choice-quizzes-only"
-                  checked={!user.blank_filling}
-                  onChange={() => dispatch(updateBlankFilling(!user.blank_filling))}
-                  disabled={pending}
-                />
-                <SettingToggle
-                  translationId="multiple-chances-when-practicing"
-                  checked={user.second_try}
-                  onChange={() => dispatch(updateSecondTry(!user.second_try))}
-                  disabled={pending}
-                />
-
-                {hiddenFeatures && (
-                  <div>
-                    <hr />
-                    <span className="pb-sm bold">
-                      <FormattedMessage id="participle-exercise" /> (staging only):
-                    </span>
-                    <div className="profile-page-radio-button-group">
-                      <Radio
-                        label={intl.formatMessage({ id: 'participle-base-exer' })}
-                        name="part_exer"
-                        value="participle"
-                        checked={user.part_exer === 'participle'}
-                        onChange={() => dispatch(updateParticipleExer('participle'))}
-                      />
-                      <Radio
-                        label={intl.formatMessage({ id: 'verb-base-exer' })}
-                        name="part_exer"
-                        value="verb"
-                        checked={user.part_exer === 'verb'}
-                        onChange={() => dispatch(updateParticipleExer('verb'))}
-                      />
-                    </div>
-                  </div>
-                )}
-              </div>
-            }
-          />
-        </Menu.Item>
-        <Menu.Item className="add-story-accordion-item">
-          <Accordion.Title
-            active={accordionState === 2}
-            content={
-              <h2 className="profile-page-setting-header">
-                <FormattedMessage id="Flashcards" />
-              </h2>
-            }
-            index={2}
-            onClick={handleClick}
-          />
-          <Accordion.Content
-            className="add-story-accordion-item-content"
-            active={accordionState === 2}
-            content={
-              <div>
-                <Divider />
-                <label htmlFor="flashcard-amount" style={{ paddingRight: '0.5rem' }}>
-                  <FormattedMessage id="how-many-cards-per-practice-session" />
-                  :&nbsp;&nbsp;
-                </label>
-                <Dropdown
-                  id="flashcard-amount"
-                  value={user.flashcard_num}
-                  options={deckSizeOptions}
-                  onChange={(e, data) => dispatch(updateNumberOfFlashcards(Number(data.value)))}
-                  disabled={pending}
-                />
-              </div>
-            }
-          />
-        </Menu.Item>
-        <Menu.Item className="add-story-accordion-item">
-          <Accordion.Title
-            active={accordionState === 3}
-            content={
-              <h2 className="profile-page-setting-header">
-                <FormattedMessage id="audio-settings" />
-              </h2>
-            }
-            index={3}
-            onClick={handleClick}
-          />
-          <Accordion.Content
-            className="add-story-accordion-item-content"
-            active={accordionState === 3}
-            content={
-              <div>
-                <Divider />
-                <span className="pb-sm bold">
-                  <FormattedMessage id="Pronounce clicked words" />:
-                </span>
-                <div className="profile-page-radio-button-group">
-                  <Radio
-                    label={intl.formatMessage({ id: 'Always' })}
-                    name="autoSpeak"
-                    value="always"
-                    checked={user.auto_speak === 'always'}
-                    onChange={() => dispatch(updateAutoSpeak('always'))}
-                  />
-                  <Radio
-                    label={intl.formatMessage({ id: 'Only on demand' })}
-                    name="autoSpeak"
-                    value="demand"
-                    checked={user.auto_speak === 'demand'}
-                    onChange={() => dispatch(updateAutoSpeak('demand'))}
-                  />
-                </div>
-                <br />
-                <span className="pb-sm bold">
-                  <FormattedMessage id="listening-exercises" />:
-                </span>
-                <div className="profile-page-radio-button-group">
-                  <Radio
-                    label={intl.formatMessage({ id: 'listen-to-chunks-and-words' })}
-                    name="audioTask"
-                    value="chunk"
-                    checked={user.task_audio === 'chunk'}
-                    onChange={() => dispatch(updateAudioTask('chunk'))}
-                  />
-                  <Radio
-                    label={intl.formatMessage({ id: 'listen-to-words' })}
-                    name="audioTask"
-                    value="word"
-                    checked={user.task_audio === 'word' || user.task_audio === true}
-                    onChange={() => dispatch(updateAudioTask('word'))}
-                  />
-                  <Radio
-                    label={intl.formatMessage({ id: 'no-listen-exer' })}
-                    name="audioTask"
-                    value="none"
-                    checked={user.task_audio === 'none' || user.task_audio === false}
-                    onChange={() => dispatch(updateAudioTask('none'))}
-                  />
-                </div>
-              </div>
-            }
-          />
-        </Menu.Item>
-        <Menu.Item className="add-story-accordion-item">
-          <Accordion.Title
-            active={accordionState === 4}
-            content={
-              <h2 className="profile-page-setting-header">
-                <FormattedMessage id="Privacy" />
-              </h2>
-            }
-            index={4}
-            onClick={handleClick}
-          />
-          <Accordion.Content
-            className="add-story-accordion-item-content"
-            active={accordionState === 4}
-            content={
-              <div>
-                <Divider />
-                <SettingToggle
-                  translationId="Show my username in leaderboards"
-                  checked={user.publish_progress}
-                  onChange={() => dispatch(updatePublishProgress(!user.publish_progress))}
-                  disabled={pending}
-                />
-              </div>
-            }
-          />
-        </Menu.Item>
+    <div>
+      <div>
+        <h2 className="profile-page-setting-header">
+          <FormattedMessage id="interface-language" />
+        </h2>
+        <Dropdown
+          fluid
+          placeholder={intl.formatMessage({ id: 'choose-interface-language' })}
+          value={actualLocale}
+          options={localeDropdownOptions}
+          selection
+          onChange={(e, data) => handleLocaleChange(data.value)}
+          data-cy="ui-lang-dropdown"
+          style={{ width: '200px' }}
+        />
+        <Divider />
+        <LearningSettingsModal
+          trigger={
+            <Button variant="primary" size="lg">
+              <FormattedMessage id="learning-settings" />
+            </Button>
+          }
+        />
       </div>
-    </Accordion>
+      <Accordion as={Menu} fluid vertical>
+        <div className="const ps-nm bg-settings">
+          <Menu.Item className="add-story-accordion-item">
+            <Accordion.Title
+              active={accordionState === 1}
+              content={
+                <h2 className="profile-page-setting-header">
+                  <FormattedMessage id="practice-settings" />
+                </h2>
+              }
+              index={1}
+              onClick={handleClick}
+            />
+            <Accordion.Content
+              className="add-story-accordion-item-content"
+              active={accordionState === 1}
+              content={
+                <div className="flex-col gap-row-nm">
+                  <Divider />
+                  <SettingToggle
+                    translationId="multiple-choice-quizzes-only"
+                    checked={!user.blank_filling}
+                    onChange={() => dispatch(updateBlankFilling(!user.blank_filling))}
+                    disabled={pending}
+                  />
+                  <SettingToggle
+                    translationId="multiple-chances-when-practicing"
+                    checked={user.second_try}
+                    onChange={() => dispatch(updateSecondTry(!user.second_try))}
+                    disabled={pending}
+                  />
+
+                  {hiddenFeatures && (
+                    <div>
+                      <hr />
+                      <span className="pb-sm bold">
+                        <FormattedMessage id="participle-exercise" /> (staging only):
+                      </span>
+                      <div className="profile-page-radio-button-group">
+                        <Radio
+                          label={intl.formatMessage({ id: 'participle-base-exer' })}
+                          name="part_exer"
+                          value="participle"
+                          checked={user.part_exer === 'participle'}
+                          onChange={() => dispatch(updateParticipleExer('participle'))}
+                        />
+                        <Radio
+                          label={intl.formatMessage({ id: 'verb-base-exer' })}
+                          name="part_exer"
+                          value="verb"
+                          checked={user.part_exer === 'verb'}
+                          onChange={() => dispatch(updateParticipleExer('verb'))}
+                        />
+                      </div>
+                    </div>
+                  )}
+                </div>
+              }
+            />
+          </Menu.Item>
+          <Menu.Item className="add-story-accordion-item">
+            <Accordion.Title
+              active={accordionState === 2}
+              content={
+                <h2 className="profile-page-setting-header">
+                  <FormattedMessage id="Flashcards" />
+                </h2>
+              }
+              index={2}
+              onClick={handleClick}
+            />
+            <Accordion.Content
+              className="add-story-accordion-item-content"
+              active={accordionState === 2}
+              content={
+                <div>
+                  <Divider />
+                  <label htmlFor="flashcard-amount" style={{ paddingRight: '0.5rem' }}>
+                    <FormattedMessage id="how-many-cards-per-practice-session" />
+                    :&nbsp;&nbsp;
+                  </label>
+                  <Dropdown
+                    id="flashcard-amount"
+                    value={user.flashcard_num}
+                    options={deckSizeOptions}
+                    onChange={(e, data) => dispatch(updateNumberOfFlashcards(Number(data.value)))}
+                    disabled={pending}
+                  />
+                </div>
+              }
+            />
+          </Menu.Item>
+          <Menu.Item className="add-story-accordion-item">
+            <Accordion.Title
+              active={accordionState === 3}
+              content={
+                <h2 className="profile-page-setting-header">
+                  <FormattedMessage id="audio-settings" />
+                </h2>
+              }
+              index={3}
+              onClick={handleClick}
+            />
+            <Accordion.Content
+              className="add-story-accordion-item-content"
+              active={accordionState === 3}
+              content={
+                <div>
+                  <Divider />
+                  <span className="pb-sm bold">
+                    <FormattedMessage id="Pronounce clicked words" />:
+                  </span>
+                  <div className="profile-page-radio-button-group">
+                    <Radio
+                      label={intl.formatMessage({ id: 'Always' })}
+                      name="autoSpeak"
+                      value="always"
+                      checked={user.auto_speak === 'always'}
+                      onChange={() => dispatch(updateAutoSpeak('always'))}
+                    />
+                    <Radio
+                      label={intl.formatMessage({ id: 'Only on demand' })}
+                      name="autoSpeak"
+                      value="demand"
+                      checked={user.auto_speak === 'demand'}
+                      onChange={() => dispatch(updateAutoSpeak('demand'))}
+                    />
+                  </div>
+                  <br />
+                  <span className="pb-sm bold">
+                    <FormattedMessage id="listening-exercises" />:
+                  </span>
+                  <div className="profile-page-radio-button-group">
+                    <Radio
+                      label={intl.formatMessage({ id: 'listen-to-chunks-and-words' })}
+                      name="audioTask"
+                      value="chunk"
+                      checked={user.task_audio === 'chunk'}
+                      onChange={() => dispatch(updateAudioTask('chunk'))}
+                    />
+                    <Radio
+                      label={intl.formatMessage({ id: 'listen-to-words' })}
+                      name="audioTask"
+                      value="word"
+                      checked={user.task_audio === 'word' || user.task_audio === true}
+                      onChange={() => dispatch(updateAudioTask('word'))}
+                    />
+                    <Radio
+                      label={intl.formatMessage({ id: 'no-listen-exer' })}
+                      name="audioTask"
+                      value="none"
+                      checked={user.task_audio === 'none' || user.task_audio === false}
+                      onChange={() => dispatch(updateAudioTask('none'))}
+                    />
+                  </div>
+                </div>
+              }
+            />
+          </Menu.Item>
+          <Menu.Item className="add-story-accordion-item">
+            <Accordion.Title
+              active={accordionState === 4}
+              content={
+                <h2 className="profile-page-setting-header">
+                  <FormattedMessage id="Privacy" />
+                </h2>
+              }
+              index={4}
+              onClick={handleClick}
+            />
+            <Accordion.Content
+              className="add-story-accordion-item-content"
+              active={accordionState === 4}
+              content={
+                <div>
+                  <Divider />
+                  <SettingToggle
+                    translationId="Show my username in leaderboards"
+                    checked={user.publish_progress}
+                    onChange={() => dispatch(updatePublishProgress(!user.publish_progress))}
+                    disabled={pending}
+                  />
+                </div>
+              }
+            />
+          </Menu.Item>
+        </div>
+      </Accordion>
+    </div>
   )
 }
 
