@@ -55,7 +55,7 @@ const ExercisesEncouragementModal = ({ open, setOpen, storiesCovered, vocabulary
                 <FormattedMessage id="story-completed-encouragement" />
               </div>
               {userRanking && (
-                <div style={{ color: '#000000', marginTop: '0.5rem' }}>
+                <div className="pt-lg" style={{ color: '#000000' }}>
                   <div>
                     <FormattedHTMLMessage
                       id="leaderboard-ranking-encouragement"
@@ -72,13 +72,13 @@ const ExercisesEncouragementModal = ({ open, setOpen, storiesCovered, vocabulary
                   </div>
                 </div>
               )}
-              <div className="pt-sm" style={{ color: '#000000' }}>
+              <div className="pt-lg" style={{ color: '#000000' }}>
                 {intl.formatMessage(
                   { id: 'stories-covered-encouragement' },
                   { stories: storiesCovered }
                 )}
               </div>
-              <div className="pt-sm" style={{ color: '#000000' }}>
+              <div className="pt-lg" style={{ color: '#000000' }}>
                 <FormattedHTMLMessage
                   id="words-seen-encouragement"
                   values={{ vocabulary_seen: vocabularySeen }}
@@ -90,7 +90,7 @@ const ExercisesEncouragementModal = ({ open, setOpen, storiesCovered, vocabulary
                 ?
               </div>
               {newVocabulary > 0 && (
-                <div className="pt-sm" style={{ color: '#000000' }}>
+                <div className="pt-lg" style={{ color: '#000000' }}>
                   <FormattedHTMLMessage
                     id="words-interacted-encouragement"
                     values={{ nWords: newVocabulary }}
@@ -115,7 +115,7 @@ const ExercisesEncouragementModal = ({ open, setOpen, storiesCovered, vocabulary
               <FormattedMessage id="first-story-covered-encouragement" />
             </div>
           )}
-          <div className="encouragement-picture">
+          <div className="encouragement-picture pt-sm">
             <img
               src={images.fireworks}
               alt="encouraging fireworks"

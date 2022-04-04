@@ -88,14 +88,14 @@ const WelcomeBackEncouragementModal = ({
               >
                 {intl.formatMessage({ id: 'welcome-back-encouragement' }, { username })}
               </div>
-              <div style={{ color: '#000000', marginBottom: '0.5rem' }}>
+              <div className="pt-lg" style={{ color: '#000000' }}>
                 {intl.formatMessage(
                   { id: 'stories-covered-encouragement' },
                   { stories: storiesCovered }
                 )}
               </div>
               {userRanking && (
-                <div style={{ color: '#000000', marginTop: '0.5rem' }}>
+                <div className="pt-lg" style={{ color: '#000000' }}>
                   <div>
                     <FormattedHTMLMessage
                       id="leaderboard-ranking-encouragement"
@@ -114,8 +114,8 @@ const WelcomeBackEncouragementModal = ({
               )}
               {latestIncompleteStory && (
                 <div>
-                  <div>
-                    <div style={{ color: '#000000', marginTop: '0.5rem' }}>
+                  <div className="pt-lg">
+                    <div style={{ color: '#000000' }}>
                       <FormattedHTMLMessage
                         id="would-you-like-to-continue"
                         values={{ story: latestIncompleteStory.title }}
@@ -129,9 +129,9 @@ const WelcomeBackEncouragementModal = ({
                   </div>
                 </div>
               )}
-              {storiesToReview && (
+              {storiesToReview.length > 0 && (
                 <div>
-                  <div style={{ color: '#000000', marginTop: '0.5rem' }}>
+                  <div className="pt-lg" style={{ color: '#000000' }}>
                     <FormattedMessage id="review-recent-stories" />
                   </div>
                   <ul>
@@ -144,7 +144,7 @@ const WelcomeBackEncouragementModal = ({
                 </div>
               )}
             </div>
-            <div className="encouragement-picture">
+            <div className="encouragement-picture pt-sm">
               <img
                 src={images.balloons}
                 alt="encouraging balloons"
