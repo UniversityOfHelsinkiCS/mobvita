@@ -1234,5 +1234,6 @@
     "flashcards-review": "with flashcards",
     "leaderboard-ranking-encouragement": "Congratulations! You are number <b>{userRanking}</b> on this week's",
     "leaderboard-link-encouragement": "leaderboard",
-    "practice-makes-perfect": "Remember: practice makes perfect!"
+    "practice-makes-perfect": "Remember: practice makes perfect!",
+    "review-recent-stories": "Would you like to review your recent stories?"
 }

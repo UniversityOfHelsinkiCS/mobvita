@@ -18,6 +18,7 @@ const WelcomeBackEncouragementModal = ({
 }) => {
   const intl = useIntl()
   const [latestIncompleteStory, setLatestIncompleteStory] = useState(null)
+  const [storiesToReview, setStoriesToReview] = useState([])
   const { user_rank } = useSelector(({ leaderboard }) => leaderboard.data)
   const [userRanking, setUserRanking] = useState(null)
   const dispatch = useDispatch()
@@ -39,7 +40,19 @@ const WelcomeBackEncouragementModal = ({
 
   useEffect(() => {
     if (!pending && stories?.length > 0) {
-      setLatestIncompleteStory(stories[stories.length - 1])
+      if (
+        stories[stories.length - 1].last_snippet_id !==
+        stories[stories.length - 1].num_snippets - 1
+      ) {
+        setLatestIncompleteStory(stories[stories.length - 1])
+      } else {
+        const previousStories = []
+        for (let i = stories.length - 1; i >= 0 && i >= stories.length - 3; i--) {
+          previousStories.push(stories[i])
+        }
+
+        setStoriesToReview(previousStories)
+      }
     }
   }, [pending])
 
@@ -114,6 +127,20 @@ const WelcomeBackEncouragementModal = ({
                       ?
                     </div>
                   </div>
+                </div>
+              )}
+              {storiesToReview && (
+                <div>
+                  <div style={{ color: '#000000', marginTop: '0.5rem' }}>
+                    <FormattedMessage id="review-recent-stories" />
+                  </div>
+                  <ul>
+                    {storiesToReview.map(story => (
+                      <li style={{ color: '#000000', marginTop: '0.5rem' }}>
+                        <Link to={`/stories/${story._id}/preview`}>{story.title}</Link>
+                      </li>
+                    ))}
+                  </ul>
                 </div>
               )}
             </div>

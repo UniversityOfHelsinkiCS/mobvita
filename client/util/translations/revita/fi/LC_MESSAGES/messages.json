@@ -1234,5 +1234,6 @@
     "flashcards-review": "kysymyskorteilla",
     "leaderboard-ranking-encouragement": "Onneksi olkoon! Olet sijalla <b>{userRanking}</b> tämän viikon",
     "leaderboard-link-encouragement": "pistetaulukossa",
-    "practice-makes-perfect": "Muista: harjoittelu tekee mestarin!"
+    "practice-makes-perfect": "Muista: harjoittelu tekee mestarin!",
+    "review-recent-stories": "Haluaistko kerrata aikaisempia tarinoitasi?"
 }

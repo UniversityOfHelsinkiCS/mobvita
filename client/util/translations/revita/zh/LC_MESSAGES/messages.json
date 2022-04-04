@@ -589,5 +589,6 @@
     "flashcards-review": "单词卡",
     "leaderboard-ranking-encouragement": "恭喜！您在本周的排名中位列第<b>{userRanking}</b>位。",
     "leaderboard-link-encouragement": "前往排名表",
-    "practice-makes-perfect": "记住：熟能生巧"
+    "practice-makes-perfect": "记住：熟能生巧",
+    "review-recent-stories": "Would you like to review your recent stories?"
 }
