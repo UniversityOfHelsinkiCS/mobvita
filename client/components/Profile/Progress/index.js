@@ -51,6 +51,11 @@ const Progress = () => {
     const { vocabularyPending } = user
     return { exerciseHistory, flashcardHistory, vocabularyData, pending, vocabularyPending }
   }, shallowEqual)
+  const {
+    concepts,
+    root_hex_coord,
+    pending: conceptsPending,
+  } = useSelector(({ metadata }) => metadata)
 
   const filterTestHistoryByDate = () =>
     testHistory.filter(test => {
@@ -129,7 +134,7 @@ const Progress = () => {
               onChange={() => setShownChart('progress')}
               checked={shownChart === 'progress'}
             />
-            <FormattedMessage id="Progress graph" />
+            <FormattedMessage id="progress-timeline" />
           </div>
         </button>
         <button
@@ -190,7 +195,7 @@ const Progress = () => {
       {shownChart === 'progress' ? (
         <div>
           <div className="progress-page-header">
-            <FormattedMessage id="Progress graph" />
+            <FormattedMessage id="progress-timeline" />
           </div>
           <ProgressStats startDate={startDate} endDate={endDate} />
           <div className="progress-page-graph-cont">
@@ -278,7 +283,13 @@ const Progress = () => {
           <div className="progress-page-header">
             <FormattedMessage id="hex-map" />
           </div>
-          <HexagonTest exerciseHistory={exerciseHistory} pending={historyPending} />
+          <HexagonTest
+            exerciseHistory={exerciseHistory}
+            pending={historyPending}
+            concepts={concepts}
+            conceptsPending={conceptsPending}
+            root_hex_coord={root_hex_coord}
+          />
         </div>
       )}
     </div>

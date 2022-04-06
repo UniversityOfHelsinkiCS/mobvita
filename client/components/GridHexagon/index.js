@@ -1,6 +1,7 @@
+/* eslint-disable react/destructuring-assignment */
 import React from 'react'
 import { UncontrolledReactSVGPanZoom } from 'react-svg-pan-zoom'
-import { useSelector } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { learningLanguageSelector } from 'Utilities/common'
 import Spinner from 'Components/Spinner'
 import { Popup } from 'semantic-ui-react'
@@ -80,27 +81,24 @@ const positionOffset = coords => {
   return { q: coords.q - 4, r: coords.r, s: coords.s - 4 }
 }
 
-const HexagonTest = (exerciseHistory, pending) => {
-  const {
-    concepts,
-    root_hex_coord,
-    pending: conceptsPending,
-  } = useSelector(({ metadata }) => metadata)
+const HexagonTest = props => {
   const learningLanguage = useSelector(learningLanguageSelector)
   const hexagonSize = { x: 15, y: 15 }
+
   // const moreHexas = GridGenerator.parallelogram(-2, 2, -2, 2)
 
   const generator = GridGenerator.getGenerator('rectangle')
   const hexagons = generator.apply(generator, [35, 35])
-  if (conceptsPending || !concepts || !exerciseHistory || !pending) return <Spinner fullHeight />
+  if (props.conceptsPending || !props.concepts || props.pending) return <Spinner fullHeight />
 
-  if (!root_hex_coord || !exerciseHistory) return <div>Not available</div>
+  if (!props.root_hex_coord || props.exerciseHistory?.length < 1) return <div>Not available</div>
 
-  const current = exerciseHistory.exerciseHistory[0].concept_statistics
+  const current = props.exerciseHistory[0].concept_statistics
+
   const getBiggestHistoryTotal = () => {
     let biggestValue = 0
 
-    exerciseHistory.exerciseHistory.map(historyObj => {
+    props.exerciseHistory.map(historyObj => {
       const statsObj = historyObj.concept_statistics
       Object.keys(statsObj).map(key => {
         if (statsObj[key].total > biggestValue) biggestValue = statsObj[key].total
@@ -113,15 +111,15 @@ const HexagonTest = (exerciseHistory, pending) => {
     // <div style={{ background: 'white' }}>
     <div className="cont-tall pt-sm justify-center">
       <UncontrolledReactSVGPanZoom
-        width={1200}
-        height={1000}
+        width={1000}
+        height={800}
         // background="#FFF"
         background="#EFEFEF"
         defaultTool="auto"
       >
-        <svg width={1200} height={1000}>
+        <svg width={1000} height={800}>
           {/* # bigger->moves left, bigger->moves up, width, height  */}
-          <HexGrid width={1400} height={1000} viewBox="-40 280 500 540">
+          <HexGrid width={1000} height={800} viewBox="-40 280 500 540">
             <Layout size={hexagonSize} flat spacing={1} origin={{ x: 0, y: 0 }}>
               {hexagons.map(hex => (
                 <Hexagon q={hex.q} r={hex.r} s={hex.s} />
@@ -129,9 +127,9 @@ const HexagonTest = (exerciseHistory, pending) => {
 
               <Hexagon
                 className="hexagon-root"
-                q={root_hex_coord.q}
-                r={root_hex_coord.r}
-                s={root_hex_coord.s}
+                q={props.root_hex_coord.q}
+                r={props.root_hex_coord.r}
+                s={props.root_hex_coord.s}
               >
                 <Text className="hexagon-root">{learningLanguage}</Text>
               </Hexagon>
@@ -142,7 +140,7 @@ const HexagonTest = (exerciseHistory, pending) => {
                   end={new Hex(9, 21, -31)}
                 /> */}
 
-              {concepts
+              {props.concepts
                 .filter(concept => concept.hex_coords)
                 .map(hex => (
                   <ConstructionHexagon
