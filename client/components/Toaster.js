@@ -51,7 +51,6 @@ export default function Toaster() {
     dispatch(updateFavouriteSites(favouriteSites.concat({ url })))
   }
 
-
   useEffect(() => {
     if (storyId !== null) {
       const progressCheckInterval = setInterval(() => {

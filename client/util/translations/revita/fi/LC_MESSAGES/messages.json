@@ -851,7 +851,7 @@
     "listen-to-words": "Kuuntele vain kyseinen sana (helpompi)",
     "no-listen-exer": "Ei kuunteluharjoituksia",
     "Groups-for-teachers": "Ryhmät (opettajalle)",
-    "Progress graph": "Edistymiskaavio",
+    "Progress graph": "Aikajana",
     "select-types-of-exercises-to-practice": "Valitse harjoiteltavat tehtävätyypit",
     "paused-click-to-resume": "Tauko.<br/><br/>Klikkaa ►-ikonia jatkaaksesi",
     "Confirm-Password": "Vahvista salasana",
@@ -1235,5 +1235,6 @@
     "leaderboard-ranking-encouragement": "Onneksi olkoon! Olet sijalla <b>{userRanking}</b> tämän viikon",
     "leaderboard-link-encouragement": "pistetaulukossa",
     "practice-makes-perfect": "Muista: harjoittelu tekee mestarin!",
-    "review-recent-stories": "Haluaisitko kerrata aikaisempia tarinoitasi?"
+    "review-recent-stories": "Haluaisitko kerrata aikaisempia tarinoitasi?",
+    "hex-map": "Kielioppikaavio"
 }

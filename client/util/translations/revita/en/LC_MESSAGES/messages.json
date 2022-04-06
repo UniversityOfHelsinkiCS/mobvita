@@ -773,7 +773,7 @@
     "Flashcard list": "Flashcard list",
     "go-to-next-snippet": "Next snippet",
     "Practice history": "Practice history",
-    "Progress graph": "Progress",
+    "Progress graph": "Timeline",
     "Your clue": "Your clue",
     "New crossword": "New crossword",
     "Back to library": "Back to library",
@@ -1235,5 +1235,6 @@
     "leaderboard-ranking-encouragement": "Congratulations! You are number <b>{userRanking}</b> on this week's",
     "leaderboard-link-encouragement": "leaderboard",
     "practice-makes-perfect": "Remember: practice makes perfect!",
-    "review-recent-stories": "Would you like to review your recent stories?"
+    "review-recent-stories": "Would you like to review your recent stories?",
+    "hex-map": "Grammar Progress"
 }

@@ -16,6 +16,7 @@ import { useLearningLanguage, hiddenFeatures } from 'Utilities/common'
 import useWindowDimension from 'Utilities/windowDimensions'
 import { useHistory } from 'react-router-dom'
 import VocabularyGraph from 'Components/VocabularyView/VocabularyGraph'
+import HexagonTest from 'Components/GridHexagon'
 import ProgressStats from './ProgressStats'
 
 const PickDate = ({ date, setDate }) => (
@@ -57,11 +58,21 @@ const Progress = () => {
       return testTime.isAfter(startDate) && testTime.isBefore(endDate)
     })
 
-  const { history: exerciseHistory } = useSelector(({ exerciseHistory }) => exerciseHistory)
+  const { history: exerciseHistory, pending: historyPending } = useSelector(
+    ({ exerciseHistory }) => exerciseHistory
+  )
 
   useEffect(() => {
     dispatch(getPreviousVocabularyData(parsedDate))
   }, [parsedDate])
+
+  /*
+  useEffect(() => {
+    if (exerciseHistoryGraph.length > 0) {
+      setEndDate(exerciseHistoryGraph[exerciseHistoryGraph.length - 1].date)
+    }
+  }, [exerciseHistoryGraph])
+  */
 
   useEffect(() => {
     setParsedDate(startDate.toJSON().slice(0, 10))
@@ -110,13 +121,6 @@ const Progress = () => {
         )}
       </div>
       <br />
-      {hiddenFeatures && (
-        <div>
-          <Divider />
-          <Button onClick={() => history.push('/test-hexagon')}>Test hexagon grid</Button>
-          <Divider />
-        </div>
-      )}
       <div className="space-evenly">
         <button type="button" onClick={() => setShownChart('progress')} style={{ border: 'none' }}>
           <div className="flex align-center" style={{ gap: '.5em' }}>
@@ -140,6 +144,16 @@ const Progress = () => {
               checked={shownChart === 'vocabulary'}
             />
             <FormattedMessage id="vocabulary-view" />
+          </div>
+        </button>
+        <button type="button" onClick={() => setShownChart('hex-map')} style={{ border: 'none' }}>
+          <div className="flex align-center" style={{ gap: '.5em' }}>
+            <input
+              type="radio"
+              onChange={() => setShownChart('hex-map')}
+              checked={shownChart === 'hex-map'}
+            />
+            <FormattedMessage id="hex-map" />
           </div>
         </button>
         <button
@@ -248,16 +262,23 @@ const Progress = () => {
       ) : shownChart === 'exercise-history' ? (
         <div>
           <div className="progress-page-header">
-            <FormattedMessage id="history" />
+            <FormattedMessage id="exercise-history" />
           </div>
           <History history={exerciseHistory} dateFormat="YYYY.MM" />
+        </div>
+      ) : shownChart === 'test-history' ? (
+        <div>
+          <div className="progress-page-header">
+            <FormattedMessage id="Test History" />
+          </div>
+          <History history={filterTestHistoryByDate()} testView dateFormat="YYYY.MM.DD HH:mm" />
         </div>
       ) : (
         <div>
           <div className="progress-page-header">
-            <FormattedMessage id="history" />
+            <FormattedMessage id="hex-map" />
           </div>
-          <History history={filterTestHistoryByDate()} testView dateFormat="YYYY.MM.DD HH:mm" />
+          <HexagonTest exerciseHistory={exerciseHistory} pending={historyPending} />
         </div>
       )}
     </div>

@@ -1,7 +1,7 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { UncontrolledReactSVGPanZoom } from 'react-svg-pan-zoom'
 import { useSelector, useDispatch } from 'react-redux'
-import { useState } from 'react'
+
 import moment from 'moment'
 import { getHistory as getExerciseHistory } from 'Utilities/redux/exerciseHistoryReducer'
 import { getHistory as getTestHistory } from 'Utilities/redux/testReducer'
@@ -23,9 +23,8 @@ import {
 } from 'react-hexgrid'
 import GridText from './GridText'
 
-
 const ConstructionHexagon = ({ name, position, statistics, overallTotal }) => {
-  const size = Math.floor(statistics.total / overallTotal * 13) + 2
+  const size = Math.floor((statistics.total / overallTotal) * 13) + 2
   const { q, r, s } = position
   const colorClasses = [
     'red1',
@@ -38,9 +37,9 @@ const ConstructionHexagon = ({ name, position, statistics, overallTotal }) => {
     'green3',
     'green4',
     'green5',
-  ] 
-  const colorClass = colorClasses[Math.floor(statistics.correct / statistics.total * 10)]
-  
+  ]
+  const colorClass = colorClasses[Math.floor((statistics.correct / statistics.total) * 10)]
+
   return (
     <Popup
       position="top center"
@@ -85,64 +84,71 @@ const positionOffset = coords => {
   return { q: coords.q - 4, r: coords.r, s: coords.s - 4 }
 }
 
-const HexagonTest = () => {
-  const { concepts, root_hex_coord, pending: conceptsPending } = useSelector(({ metadata }) => metadata)
+const HexagonTest = (exerciseHistory, pending) => {
+  const {
+    concepts,
+    root_hex_coord,
+    pending: conceptsPending,
+  } = useSelector(({ metadata }) => metadata)
   const learningLanguage = useSelector(learningLanguageSelector)
-  const { history } = useSelector(({ exerciseHistory }) => exerciseHistory)
-  const [startDate, setStartDate] = useState(moment().subtract(2, 'months').toDate())
-  const [endDate, setEndDate] = useState(moment().toDate())
-  const dispatch = useDispatch()
-  if (!history) dispatch(getExerciseHistory(learningLanguage, startDate, endDate))
   const hexagonSize = { x: 15, y: 15 }
   // const moreHexas = GridGenerator.parallelogram(-2, 2, -2, 2)
 
   const generator = GridGenerator.getGenerator('rectangle')
   const hexagons = generator.apply(generator, [35, 35])
-  if (conceptsPending || !concepts || !history) return <Spinner fullHeight />
-  else if (!root_hex_coord || !history.length ) return (<div>Not available</div>)
-  else {
-    const current = history[0].concept_statistics
-    const getBiggestHistoryTotal = () => {
-      let biggestValue = 0
-  
-      history.map(historyObj => {
-        const statsObj = historyObj.concept_statistics
-        Object.keys(statsObj).map(key => {
-          if (statsObj[key].total > biggestValue) biggestValue = statsObj[key].total
-        })
+  if (conceptsPending || !concepts || !exerciseHistory || !pending) return <Spinner fullHeight />
+
+  if (!root_hex_coord || !exerciseHistory) return <div>Not available</div>
+
+  const current = exerciseHistory.exerciseHistory[0].concept_statistics
+  const getBiggestHistoryTotal = () => {
+    let biggestValue = 0
+
+    exerciseHistory.exerciseHistory.map(historyObj => {
+      const statsObj = historyObj.concept_statistics
+      Object.keys(statsObj).map(key => {
+        if (statsObj[key].total > biggestValue) biggestValue = statsObj[key].total
       })
-      return biggestValue
-    }
-    return (
-      // <div style={{ background: 'white' }}>
-      <div className="cont-tall pt-sm justify-center">
-        <UncontrolledReactSVGPanZoom
-          width={1200}
-          height={1000}
-          // background="#FFF"
-          background="#EFEFEF"
-          defaultTool="auto"
-        >
-          <svg width={1200} height={1000}>
-            {/* # bigger->moves left, bigger->moves up, width, height  */}
-            <HexGrid width={1400} height={1000} viewBox="-40 280 500 540">
-              <Layout size={hexagonSize} flat spacing={1} origin={{ x: 0, y: 0 }}>
-                {hexagons.map(hex => (
-                  <Hexagon q={hex.q} r={hex.r} s={hex.s}>
-                  </Hexagon>
-                ))}
+    })
+    return biggestValue
+  }
 
-                <Hexagon className="hexagon-root" q={root_hex_coord.q} r={root_hex_coord.r} s={root_hex_coord.s}>
-                  <Text className="hexagon-root">{learningLanguage}</Text>
-                </Hexagon>
+  return (
+    // <div style={{ background: 'white' }}>
+    <div className="cont-tall pt-sm justify-center">
+      <UncontrolledReactSVGPanZoom
+        width={1200}
+        height={1000}
+        // background="#FFF"
+        background="#EFEFEF"
+        defaultTool="auto"
+      >
+        <svg width={1200} height={1000}>
+          {/* # bigger->moves left, bigger->moves up, width, height  */}
+          <HexGrid width={1400} height={1000} viewBox="-40 280 500 540">
+            <Layout size={hexagonSize} flat spacing={1} origin={{ x: 0, y: 0 }}>
+              {hexagons.map(hex => (
+                <Hexagon q={hex.q} r={hex.r} s={hex.s} />
+              ))}
 
-                {/* <Path
+              <Hexagon
+                className="hexagon-root"
+                q={root_hex_coord.q}
+                r={root_hex_coord.r}
+                s={root_hex_coord.s}
+              >
+                <Text className="hexagon-root">{learningLanguage}</Text>
+              </Hexagon>
+
+              {/* <Path
                   className="hexagon-path"
                   start={new Hex(10, 18, -28)}
                   end={new Hex(9, 21, -31)}
                 /> */}
 
-                {concepts.filter(concept => concept.hex_coords).map(hex => (
+              {concepts
+                .filter(concept => concept.hex_coords)
+                .map(hex => (
                   <ConstructionHexagon
                     name={hex.short_name}
                     position={hex.hex_coords}
@@ -151,13 +157,12 @@ const HexagonTest = () => {
                     // position={positionOffset(hex.coords)}
                   />
                 ))}
-              </Layout>
-            </HexGrid>
-          </svg>
-        </UncontrolledReactSVGPanZoom>
-      </div>
-    )
-  }
+            </Layout>
+          </HexGrid>
+        </svg>
+      </UncontrolledReactSVGPanZoom>
+    </div>
+  )
 }
 
 export default HexagonTest
