@@ -1,10 +1,6 @@
-import React, { useState } from 'react'
+import React from 'react'
 import { UncontrolledReactSVGPanZoom } from 'react-svg-pan-zoom'
-import { useSelector, useDispatch } from 'react-redux'
-
-import moment from 'moment'
-import { getHistory as getExerciseHistory } from 'Utilities/redux/exerciseHistoryReducer'
-import { getHistory as getTestHistory } from 'Utilities/redux/testReducer'
+import { useSelector } from 'react-redux'
 import { learningLanguageSelector } from 'Utilities/common'
 import Spinner from 'Components/Spinner'
 import { Popup } from 'semantic-ui-react'
