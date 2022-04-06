@@ -21,7 +21,7 @@ import {
 import GridText from './GridText'
 
 const ConstructionHexagon = ({ name, position, statistics, overallTotal }) => {
-  const size = Math.floor((statistics.total / overallTotal) * 13) + 2
+  const size = Math.floor((statistics.total / overallTotal) * 10) + 5
   const { q, r, s } = position
   const colorClasses = [
     'red1',
