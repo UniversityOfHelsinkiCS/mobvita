@@ -209,7 +209,7 @@ const Progress = () => {
             <Popup
               content={
                 <div>
-                  <FormattedMessage id="timeline-explanation" />
+                  <FormattedHTMLMessage id="timeline-explanation" />
                 </div>
               }
               trigger={

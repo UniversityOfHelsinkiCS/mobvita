@@ -1220,13 +1220,13 @@
     "number-of-words-Y-axis": "Количество слов",
     "vocabulary-difficulty-X-axis": "Уровни сложности",
     "vocabulary-total": "Число запросов",
-    "vocabulary-total-explanation": "Сколько раз ты искал/а незнакомые слова — на каждом уровне сложности",
+    "vocabulary-total-explanation": "Сколько раз ты <u>искал/а</u> незнакомые слова — на каждом уровне сложности",
     "vocabulary-visit": "Незнакомые слова",
-    "vocabulary-visit-explanation": "Для скольких слов ты запросил/а перевод или работал/а с флешкартами",
+    "vocabulary-visit-explanation": "Для скольких слов ты запросил/а <u>перевод</u> или работал/а с <u>флешкартами</u>",
     "vocabulary-seen": "Рабочий лексикон",
-    "vocabulary-seen-explanation": "Сколько различных слов тебе встретилось в текстах за все время практики",
+    "vocabulary-seen-explanation": "Сколько <u>различных слов</u> тебе встретилось в текстах за все время практики",
     "vocabulary-flashcard": "Освоено",
-    "vocabulary-flashcard-explanation": "Сколько слов ты освоил/а с помощью флешкарт",
+    "vocabulary-flashcard-explanation": "Сколько слов ты <u>освоил/а</u> с помощью флешкарт",
     "vocabulary-follow-statistic-before": "(ранее)",
     "vocabulary-view-explanation": "На этом графике видны твои показатели по лексикону:<ul><li/>сейчас<li/>и ранее.</ul>Раннее время можно выбрать на календаре.",
     "vocabulary-chart-header": "Vocabulary chart",
@@ -1240,5 +1240,9 @@
     "practice-makes-perfect": "Навык мастера ставит!",
     "review-recent-stories": "Хочешь повторить твои последние истории?",
     "hex-map": "Прогресс грамматики",
-    "progress-timeline": "График времени"
+    "progress-timeline": "График времени",
+    "timeline-explanation": "На этом графике видна ваша практика за выбранный период времени и рейтинг <i>Эло</i>, достигнутый за каждый день практики",
+    "hex-map-explanation": "Эта тепловая карта показывает, насколько хорошо освоены различные конструкты — за выбранный период времени.",
+    "exercise-history-explanation": "В этой таблице показано усвоение по разным конструктам — по месяцам, за выбранный период времени",
+    "test-history-explanation": "В этой таблице показана успеваемость по тестам — по месяцам за выбранный период времени."
 }

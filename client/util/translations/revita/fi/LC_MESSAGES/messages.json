@@ -1217,13 +1217,13 @@
     "number-of-words-Y-axis": "Sanojen määrä",
     "vocabulary-difficulty-X-axis": "Vaikeustasot",
     "vocabulary-total": "Haut yhteensä",
-    "vocabulary-total-explanation": "Kuinka monta kertaa tarkistit sinulle tuntemattomia sanoja — vaikeustasoittain",
+    "vocabulary-total-explanation": "Kuinka monta <u>kertaa</u> tarkistit sinulle tuntemattomia sanoja — vaikeustasoittain",
     "vocabulary-visit": "Kertaluonteiset haut",
-    "vocabulary-visit-explanation": "Kuinka usealle sanalle/Niiden sanojen määrä joille olet pyytänyt käännöksen tai käyttänyt kortteja",
+    "vocabulary-visit-explanation": "Kuinka usealle sanalle/Niiden sanojen määrä joille olet pyytänyt <u>käännöksen</u> tai käyttänyt <u>kortteja</u>",
     "vocabulary-seen": "Harjoitussanasto",
-    "vocabulary-seen-explanation": "Harjoittelemissasi tarinoissa kohtaamiesi sanojen määrä tähän asti",
+    "vocabulary-seen-explanation": "Harjoittelemissasi tarinoissa <u>kohtaamiesi sanojen</u> määrä tähän asti",
     "vocabulary-flashcard": "Otettu haltuun",
-    "vocabulary-flashcard-explanation": "Kuinka monta sanaa hallitset muistikorteilta",
+    "vocabulary-flashcard-explanation": "Kuinka monta sanaa <u>hallitset</u> muistikorteilta",
     "vocabulary-follow-statistic-before": "(aikaisemmin)",
     "vocabulary-view-explanation": "Tämä kaavio esittää edistymistäsi sanaston harjoittelussa:<ul><li/>tällä hetkellä<li/>aikaisemmin.</ul>Voit määrittää aikaisemman ajankohdan kalenterin avulla.",
     "vocabulary-chart-header": "Sanastokaavio",
@@ -1237,5 +1237,9 @@
     "practice-makes-perfect": "Muista: harjoittelu tekee mestarin!",
     "review-recent-stories": "Haluaisitko kerrata aikaisempia tarinoitasi?",
     "hex-map": "Kielioppikaavio",
-    "progress-timeline": "Aikajana"
+    "progress-timeline": "Aikajana",
+    "timeline-explanation": "Tämä kaavio näyttää harjoittelusi valitun ajanjakson aikana ja kunkin harjoituspäivän <i>Elo</i>-luokituksen",
+    "hex-map-explanation": "Tämä kaavio esittää, kuinka hyvin hallitset kieliopin — valitulla ajanjaksolla",
+    "exercise-history-explanation": "Tämä taulukko näyttää edistymisesi eri konsepteista kuukaudessa — valitulla ajanjaksolla",
+    "test-history-explanation": "Tämä taulukko näyttää edistymisesi testeissä kuukausittain — valitulla ajanjaksolla"
 }

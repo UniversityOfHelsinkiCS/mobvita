@@ -1218,13 +1218,13 @@
     "number-of-words-Y-axis": "Numero di parole",
     "vocabulary-difficulty-X-axis": "Livelli di difficoltà",
     "vocabulary-total": "Numero totale di ricerche",
-    "vocabulary-total-explanation": "Quante volte hai cercato parole sconosciute, a ogni livello di difficoltà",
+    "vocabulary-total-explanation": "Quante volte <u>hai cercato</u> parole sconosciute, a ogni livello di difficoltà",
     "vocabulary-visit": "Parole praticate",
-    "vocabulary-visit-explanation": "Per quante parole hai richiesto una traduzione o lavorato con una flashcard",
+    "vocabulary-visit-explanation": "Per quante parole hai richiesto una <u>traduzione</u> o lavorato con una <u>flashcard</u>",
     "vocabulary-seen": "Lessico totale",
-    "vocabulary-seen-explanation": "Quante parole hai visto nelle storie durante la tua pratica finora",
+    "vocabulary-seen-explanation": "<u>Quante parole</u> hai visto nelle storie durante la tua pratica finora",
     "vocabulary-flashcard": "Parole magistrali",
-    "vocabulary-flashcard-explanation": "Quante parole hai imparato con le flashcard",
+    "vocabulary-flashcard-explanation": "Quante parole hai <u>imparato</u> con le flashcard",
     "vocabulary-follow-statistic-before": "(prima)",
     "vocabulary-view-explanation": "Questo grafico mostra il tuo rendimento sul vocabolario:<ul><li/>attualmente<li/>e in un momento precedente.</ul>Puoi controllare l'orario precedente tramite il calendario.",
     "vocabulary-chart-header": "Vocabulary chart",
@@ -1238,5 +1238,9 @@
     "practice-makes-perfect": "La pratica rende perfetti!",
     "review-recent-stories": "Vuoi rivedere le tue storie recenti?",
     "hex-map": "Progresso grammaticale",
-    "progress-timeline": "Cronologia"
+    "progress-timeline": "Cronologia",
+    "timeline-explanation": "Questo grafico mostra la tua pratica nel periodo di tempo selezionato, e la valutazione <i>Elo</i> che hai ottenuto in ogni giorno di pratica",
+    "hex-map-explanation": "Questa mappa termica mostra come diventono conosciuti diversi concetti di apprendimento — nel periodo di tempo selezionato",
+    "exercise-history-explanation": "Questa tabella mostra i resultati su diversi concetti — al mese nel periodo di tempo selezionato",
+    "test-history-explanation": "Questa tabella mostra i resultati dei test — al mese nel periodo di tempo selezionato"
 }

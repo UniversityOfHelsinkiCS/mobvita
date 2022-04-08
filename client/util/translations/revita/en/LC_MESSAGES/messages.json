@@ -1217,13 +1217,13 @@
     "number-of-words-Y-axis": "Number of words",
     "vocabulary-difficulty-X-axis": "Difficulty levels",
     "vocabulary-total": "Total lookups",
-    "vocabulary-total-explanation": "How many times you looked up unfamiliar words — at each difficulty level",
+    "vocabulary-total-explanation": "How many times you <u>looked up</u> unfamiliar words — at each difficulty level",
     "vocabulary-visit": "Practiced words",
-    "vocabulary-visit-explanation": "For how many different words you requested a translation or played with a flashcard",
+    "vocabulary-visit-explanation": "For how many different words you requested a <u>translation</u> or played with a <u>flashcard</u>",
     "vocabulary-seen": "Working lexicon",
-    "vocabulary-seen-explanation": "How many words you have seen in stories during your practice so far",
+    "vocabulary-seen-explanation": "How many <u>distinct words</u> you have seen in stories during your practice so far",
     "vocabulary-flashcard": "Mastered words",
-    "vocabulary-flashcard-explanation": "How many words you have mastered with flashcards",
+    "vocabulary-flashcard-explanation": "How many words you have <u>mastered</u> with flashcards",
     "vocabulary-follow-statistic-before": "(earlier)",
     "vocabulary-view-explanation": "This chart shows your performance on vocabulary:<ul><li/>at present<li/>and at an earlier date.</ul>You can select the earlier date through the calendar.",
     "vocabulary-chart-header": "Vocabulary chart",
@@ -1237,5 +1237,9 @@
     "practice-makes-perfect": "Remember: practice makes perfect!",
     "review-recent-stories": "Would you like to review your recent stories?",
     "hex-map": "Grammar Progress",
-    "progress-timeline": "Timeline"
+    "progress-timeline": "Timeline",
+    "timeline-explanation": "This chart shows your practice over the selected time period, and the <i>Elo</i> rating you achieved on each day of practice",
+    "hex-map-explanation": "This heat map shows how well different learning concepts are mastered — over the selected time period",
+    "exercise-history-explanation": "This table shows performance on different concepts per month — over the selected time period",
+    "test-history-explanation": "This table shows performance on tests per month — over the selected time period"
 }

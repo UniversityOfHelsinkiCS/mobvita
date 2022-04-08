@@ -592,5 +592,9 @@
     "practice-makes-perfect": "记住：熟能生巧",
     "review-recent-stories": "你想回顾一下最近联系过的文章吗？",
     "hex-map": "语法进度",
-    "progress-timeline": "时间线"
+    "progress-timeline": "时间线",
+    "timeline-explanation": "此图展示了您在选定时间段内的练习进度和您每天练习所获得的<i>Elo</i> 分数",
+    "hex-map-explanation": "此热力图展示了在选定时间段内不同知识点的掌握情况",
+    "exercise-history-explanation": "此表展示了您在选定时间段内每个月对于不同知识点的表现",
+    "test-history-explanation": "此表展示了您在选定时间段内每个月在测验里的表现"
 }
