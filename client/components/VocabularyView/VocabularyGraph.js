@@ -14,6 +14,10 @@ const VocabularyGraph = ({ vocabularyData, pending }) => {
   const dispatch = useDispatch()
   if (!vocabularyData || pending) return <div className="mt-xl">Loading...</div>
 
+  if (vocabularyData.length < 1) {
+    return <div>No data to show</div>
+  }
+
   const { flashcard, seen, total, visit } = vocabularyData
   /*
   const [showSeen, setShowSeen] = useState(true)

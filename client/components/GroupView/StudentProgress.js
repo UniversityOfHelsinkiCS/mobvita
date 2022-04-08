@@ -12,7 +12,6 @@ const StudentProgress = ({ student, startDate, endDate, group }) => {
     const { exercise_history: exerciseHistory, flashcard_history: flashcardHistory } = progress
     return { pending, exerciseHistory, flashcardHistory }
   })
-
   const learningLanguage = useSelector(learningLanguageSelector)
   const dispatch = useDispatch()
 
@@ -20,6 +19,10 @@ const StudentProgress = ({ student, startDate, endDate, group }) => {
     if (!student) return
     dispatch(getStudentProgress(student._id, group.group_id, learningLanguage))
   }, [student])
+
+  console.log('PROGRESS ', exerciseHistory)
+  console.log('GROUP ', group.group_id)
+  console.log('USER ', student._id)
 
   if (pending) return <Spinner />
 

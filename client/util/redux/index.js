@@ -21,6 +21,7 @@ import practice from './practiceReducer'
 import passwordReset from './passwordResetReducer'
 import studentProgress from './groupProgressReducer'
 import studentHistory from './groupHistoryReducer'
+import studentVocabulary from './groupVocabularyReducer'
 import tests from './testReducer'
 import exerciseHistory from './exerciseHistoryReducer'
 import crossword from './crosswordReducer'
@@ -72,6 +73,7 @@ const rootReducer = combineReducers({
   constructionTest,
   incomplete,
   newVocabulary,
+  studentVocabulary,
 })
 
 export default (state, action) =>

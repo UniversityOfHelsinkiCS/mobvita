@@ -41,6 +41,7 @@ export const getVocabularyData = () => {
 }
 
 export const getPreviousVocabularyData = parsedDate => {
+  console.log('DATE', parsedDate)
   const route = `/user/vocabulary?earlier_date=${parsedDate}`
   const prefix = 'GET_PREVIOUS_VOCABULARY_DATA'
   return callBuilder(route, prefix)

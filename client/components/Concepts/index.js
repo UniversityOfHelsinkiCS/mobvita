@@ -104,6 +104,7 @@ const Concepts = () => {
   const conceptTree = makeConceptTree(superConcepts)
 
   const handleTestConceptToggle = async () => {
+    console.log('toggle')
     if (!showTestConcepts) await dispatch(getTestConcepts(id, learningLanguage))
     setShowTestConcepts(!showTestConcepts)
   }
