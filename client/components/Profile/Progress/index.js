@@ -194,8 +194,24 @@ const Progress = () => {
 
       {shownChart === 'progress' ? (
         <div>
-          <div className="progress-page-header">
-            <FormattedMessage id="progress-timeline" />
+          <div className="row-flex align center">
+            <Popup
+              content={
+                <div>
+                  <FormattedMessage id="timeline-explanation" />
+                </div>
+              }
+              trigger={
+                <Icon
+                  style={{ paddingRight: '0.75em', marginBottom: '0.35em' }}
+                  name="info circle"
+                  color="grey"
+                />
+              }
+            />
+            <div className="progress-page-header">
+              <FormattedMessage id="progress-timeline" />
+            </div>
           </div>
           <ProgressStats startDate={startDate} endDate={endDate} />
           <div className="progress-page-graph-cont">
@@ -266,22 +282,70 @@ const Progress = () => {
         </div>
       ) : shownChart === 'exercise-history' ? (
         <div>
-          <div className="progress-page-header">
-            <FormattedMessage id="exercise-history" />
+          <div className="row-flex align center">
+            <Popup
+              content={
+                <div>
+                  <FormattedMessage id="exercise-history-explanation" />
+                </div>
+              }
+              trigger={
+                <Icon
+                  style={{ paddingRight: '0.75em', marginBottom: '0.35em' }}
+                  name="info circle"
+                  color="grey"
+                />
+              }
+            />
+            <div className="progress-page-header">
+              <FormattedMessage id="exercise-history" />
+            </div>
           </div>
           <History history={exerciseHistory} dateFormat="YYYY.MM" />
         </div>
       ) : shownChart === 'test-history' ? (
         <div>
-          <div className="progress-page-header">
-            <FormattedMessage id="Test History" />
+          <div className="row-flex align center">
+            <Popup
+              content={
+                <div>
+                  <FormattedMessage id="test-history-explanation" />
+                </div>
+              }
+              trigger={
+                <Icon
+                  style={{ paddingRight: '0.75em', marginBottom: '0.35em' }}
+                  name="info circle"
+                  color="grey"
+                />
+              }
+            />
+            <div className="progress-page-header">
+              <FormattedMessage id="Test History" />
+            </div>
           </div>
           <History history={filterTestHistoryByDate()} testView dateFormat="YYYY.MM.DD HH:mm" />
         </div>
       ) : (
         <div>
-          <div className="progress-page-header">
-            <FormattedMessage id="hex-map" />
+          <div className="row-flex align center">
+            <Popup
+              content={
+                <div>
+                  <FormattedMessage id="hex-map-explanation" />
+                </div>
+              }
+              trigger={
+                <Icon
+                  style={{ paddingRight: '0.75em', marginBottom: '0.35em' }}
+                  name="info circle"
+                  color="grey"
+                />
+              }
+            />
+            <div className="progress-page-header">
+              <FormattedMessage id="hex-map" />
+            </div>
           </div>
           <HexagonTest
             exerciseHistory={exerciseHistory}
