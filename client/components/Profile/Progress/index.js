@@ -126,72 +126,83 @@ const Progress = () => {
         )}
       </div>
       <br />
-      <div className="space-evenly">
-        <button type="button" onClick={() => setShownChart('progress')} style={{ border: 'none' }}>
-          <div className="flex align-center" style={{ gap: '.5em' }}>
-            <input
-              type="radio"
-              onChange={() => setShownChart('progress')}
-              checked={shownChart === 'progress'}
-            />
-            <FormattedMessage id="progress-timeline" />
+      {bigScreen && (
+        <div>
+          <div className="space-evenly">
+            <button
+              type="button"
+              onClick={() => setShownChart('progress')}
+              style={{ border: 'none' }}
+            >
+              <div className="flex align-center" style={{ gap: '.5em' }}>
+                <input
+                  type="radio"
+                  onChange={() => setShownChart('progress')}
+                  checked={shownChart === 'progress'}
+                />
+                <FormattedMessage id="progress-timeline" />
+              </div>
+            </button>
+            <button
+              type="button"
+              onClick={() => setShownChart('vocabulary')}
+              style={{ border: 'none' }}
+            >
+              <div className="flex align-center" style={{ gap: '.5em' }}>
+                <input
+                  type="radio"
+                  onChange={() => setShownChart('vocabulary')}
+                  checked={shownChart === 'vocabulary'}
+                />
+                <FormattedMessage id="vocabulary-view" />
+              </div>
+            </button>
+            <button
+              type="button"
+              onClick={() => setShownChart('hex-map')}
+              style={{ border: 'none' }}
+            >
+              <div className="flex align-center" style={{ gap: '.5em' }}>
+                <input
+                  type="radio"
+                  onChange={() => setShownChart('hex-map')}
+                  checked={shownChart === 'hex-map'}
+                />
+                <FormattedMessage id="hex-map" />
+              </div>
+            </button>
+            <button
+              type="button"
+              onClick={() => setShownChart('exercise-history')}
+              style={{ border: 'none' }}
+            >
+              <div className="flex align-center" style={{ gap: '.5em' }}>
+                <input
+                  type="radio"
+                  onChange={() => setShownChart('exercise-history')}
+                  checked={shownChart === 'exercise-history'}
+                />
+                <FormattedMessage id="exercise-history" />
+              </div>
+            </button>
+            <button
+              type="button"
+              onClick={() => setShownChart('test-history')}
+              style={{ border: 'none' }}
+            >
+              <div className="flex align-center" style={{ gap: '.5em' }}>
+                <input
+                  type="radio"
+                  onChange={() => setShownChart('test-history')}
+                  checked={shownChart === 'test-history'}
+                />
+                <FormattedMessage id="Test History" />
+              </div>
+            </button>
           </div>
-        </button>
-        <button
-          type="button"
-          onClick={() => setShownChart('vocabulary')}
-          style={{ border: 'none' }}
-        >
-          <div className="flex align-center" style={{ gap: '.5em' }}>
-            <input
-              type="radio"
-              onChange={() => setShownChart('vocabulary')}
-              checked={shownChart === 'vocabulary'}
-            />
-            <FormattedMessage id="vocabulary-view" />
-          </div>
-        </button>
-        <button type="button" onClick={() => setShownChart('hex-map')} style={{ border: 'none' }}>
-          <div className="flex align-center" style={{ gap: '.5em' }}>
-            <input
-              type="radio"
-              onChange={() => setShownChart('hex-map')}
-              checked={shownChart === 'hex-map'}
-            />
-            <FormattedMessage id="hex-map" />
-          </div>
-        </button>
-        <button
-          type="button"
-          onClick={() => setShownChart('exercise-history')}
-          style={{ border: 'none' }}
-        >
-          <div className="flex align-center" style={{ gap: '.5em' }}>
-            <input
-              type="radio"
-              onChange={() => setShownChart('exercise-history')}
-              checked={shownChart === 'exercise-history'}
-            />
-            <FormattedMessage id="exercise-history" />
-          </div>
-        </button>
-        <button
-          type="button"
-          onClick={() => setShownChart('test-history')}
-          style={{ border: 'none' }}
-        >
-          <div className="flex align-center" style={{ gap: '.5em' }}>
-            <input
-              type="radio"
-              onChange={() => setShownChart('test-history')}
-              checked={shownChart === 'test-history'}
-            />
-            <FormattedMessage id="Test History" />
-          </div>
-        </button>
-      </div>
-      <Divider />
-
+          <Divider />
+        </div>
+      )}
       {shownChart === 'progress' ? (
         <div>
           <div className="row-flex align center">
