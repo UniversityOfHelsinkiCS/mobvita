@@ -12,9 +12,9 @@ const VocabularyGraph = ({ vocabularyData, pending }) => {
   //   const { flashcard, seen, total, now, visit } = useSelector(({ user }) => user.vocabularyData)
 
   const dispatch = useDispatch()
-  if (!vocabularyData || pending) return <div className="mt-xl">Loading...</div>
+  if (pending) return <div className="mt-xl">Loading...</div>
 
-  if (vocabularyData.length < 1) {
+  if (!vocabularyData) {
     return <div>No data to show</div>
   }
 
@@ -118,7 +118,7 @@ const VocabularyGraph = ({ vocabularyData, pending }) => {
       {
         name: intl.formatMessage({ id: 'vocabulary-total' }),
         id: 'Total',
-        data: total.now,
+        data: total[Object.keys(total).filter(key => key !== 'now')[1]],
       },
       {
         name: `${intl.formatMessage({ id: 'vocabulary-total' })} ${intl.formatMessage({
@@ -131,7 +131,7 @@ const VocabularyGraph = ({ vocabularyData, pending }) => {
       {
         name: intl.formatMessage({ id: 'vocabulary-seen' }),
         id: 'Seen',
-        data: seen.now,
+        data: seen[Object.keys(seen).filter(key => key !== 'now')[1]],
         visible: false,
       },
       {
@@ -146,7 +146,7 @@ const VocabularyGraph = ({ vocabularyData, pending }) => {
       {
         name: intl.formatMessage({ id: 'vocabulary-visit' }),
         id: 'Visit',
-        data: visit.now,
+        data: visit[Object.keys(visit).filter(key => key !== 'now')[1]],
         visible: false,
       },
       {
@@ -161,7 +161,7 @@ const VocabularyGraph = ({ vocabularyData, pending }) => {
       {
         name: intl.formatMessage({ id: 'vocabulary-flashcard' }),
         id: 'Flashcard',
-        data: flashcard.now,
+        data: flashcard[Object.keys(flashcard).filter(key => key !== 'now')[1]],
         visible: false,
       },
       {

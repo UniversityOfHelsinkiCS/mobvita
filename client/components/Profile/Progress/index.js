@@ -6,15 +6,13 @@ import { FormattedMessage, FormattedHTMLMessage, useIntl } from 'react-intl'
 import { getSelf, getPreviousVocabularyData } from 'Utilities/redux/userReducer'
 import ProgressGraph from 'Components/ProgressGraph'
 import Spinner from 'Components/Spinner'
-import { Button } from 'react-bootstrap'
-import { Divider, Form, Icon, Popup } from 'semantic-ui-react'
+import { Divider, Icon, Popup } from 'semantic-ui-react'
 import ResponsiveDatePicker from 'Components/ResponsiveDatePicker'
 import History from 'Components/History'
 import { getHistory as getExerciseHistory } from 'Utilities/redux/exerciseHistoryReducer'
 import { getHistory as getTestHistory } from 'Utilities/redux/testReducer'
 import { useLearningLanguage, hiddenFeatures } from 'Utilities/common'
 import useWindowDimension from 'Utilities/windowDimensions'
-import { useHistory } from 'react-router-dom'
 import VocabularyGraph from 'Components/VocabularyView/VocabularyGraph'
 import HexagonTest from 'Components/GridHexagon'
 import ProgressStats from './ProgressStats'
@@ -25,7 +23,6 @@ const PickDate = ({ date, setDate }) => (
 
 const Progress = () => {
   const dispatch = useDispatch()
-  const history = useHistory()
   const intl = useIntl()
 
   const [startDate, setStartDate] = useState(moment().subtract(2, 'months').toDate())
@@ -34,7 +31,9 @@ const Progress = () => {
   const learningLanguage = useLearningLanguage()
   const { history: testHistory } = useSelector(({ tests }) => tests)
   const [shownChart, setShownChart] = useState('progress')
-  const [parsedDate, setParsedDate] = useState(startDate.toJSON().slice(0, 10))
+  const [parsedStartDate, setParsedStartDate] = useState(startDate.toJSON().slice(0, 10))
+  const [parsedEndDate, setParsedEndDate] = useState(endDate.toJSON().slice(0, 10))
+
   const bigScreen = useWindowDimension().width >= 650
 
   const {
@@ -68,19 +67,12 @@ const Progress = () => {
   )
 
   useEffect(() => {
-    dispatch(getPreviousVocabularyData(parsedDate))
-  }, [parsedDate])
-
-  /*
-  useEffect(() => {
-    if (exerciseHistoryGraph.length > 0) {
-      setEndDate(exerciseHistoryGraph[exerciseHistoryGraph.length - 1].date)
-    }
-  }, [exerciseHistoryGraph])
-  */
+    dispatch(getPreviousVocabularyData(parsedStartDate, parsedEndDate))
+  }, [parsedStartDate, parsedEndDate])
 
   useEffect(() => {
-    setParsedDate(startDate.toJSON().slice(0, 10))
+    setParsedStartDate(startDate.toJSON().slice(0, 10))
+    setParsedEndDate(endDate.toJSON().slice(0, 10))
     dispatch(getSelf())
     dispatch(getExerciseHistory(learningLanguage, startDate, endDate))
     dispatch(getTestHistory(learningLanguage, startDate, endDate))

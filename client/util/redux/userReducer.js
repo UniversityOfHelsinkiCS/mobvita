@@ -40,8 +40,8 @@ export const getVocabularyData = () => {
   return callBuilder(route, prefix)
 }
 
-export const getPreviousVocabularyData = parsedDate => {
-  const route = `/user/vocabulary?earlier_date=${parsedDate}`
+export const getPreviousVocabularyData = (parsedStartDate, parsedEndDate) => {
+  const route = `/user/vocabulary?start_date=${parsedStartDate}&end_date=${parsedEndDate}`
   const prefix = 'GET_PREVIOUS_VOCABULARY_DATA'
   return callBuilder(route, prefix)
 }
