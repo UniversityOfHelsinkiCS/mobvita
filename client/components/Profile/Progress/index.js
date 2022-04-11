@@ -7,7 +7,7 @@ import { getSelf, getPreviousVocabularyData } from 'Utilities/redux/userReducer'
 import ProgressGraph from 'Components/ProgressGraph'
 import Spinner from 'Components/Spinner'
 import { Button } from 'react-bootstrap'
-import { Divider, Icon, Popup } from 'semantic-ui-react'
+import { Divider, Form, Icon, Popup } from 'semantic-ui-react'
 import ResponsiveDatePicker from 'Components/ResponsiveDatePicker'
 import History from 'Components/History'
 import { getHistory as getExerciseHistory } from 'Utilities/redux/exerciseHistoryReducer'
@@ -244,31 +244,23 @@ const Progress = () => {
                   <br />
                   <br />
                   <b>{intl.formatMessage({ id: 'vocabulary-total' })}</b>
-                  {''}
-                  {`: ${intl.formatMessage({
-                    id: 'vocabulary-total-explanation',
-                  })}`}
+                  {': '}
+                  <FormattedHTMLMessage id="vocabulary-total-explanation" />
                   <br />
                   <br />
                   <b>{intl.formatMessage({ id: 'vocabulary-seen' })}</b>
-                  {''}
-                  {`: ${intl.formatMessage({
-                    id: 'vocabulary-seen-explanation',
-                  })}`}
+                  {': '}
+                  <FormattedHTMLMessage id="vocabulary-seen-explanation" />
                   <br />
                   <br />
                   <b>{intl.formatMessage({ id: 'vocabulary-visit' })}</b>
-                  {''}
-                  {`: ${intl.formatMessage({
-                    id: 'vocabulary-visit-explanation',
-                  })}`}
+                  {': '}
+                  <FormattedHTMLMessage id="vocabulary-visit-explanation" />
                   <br />
                   <br />
                   <b>{intl.formatMessage({ id: 'vocabulary-flashcard' })}</b>
-                  {''}
-                  {`: ${intl.formatMessage({
-                    id: 'vocabulary-flashcard-explanation',
-                  })}`}
+                  {': '}
+                  <FormattedHTMLMessage id="vocabulary-flashcard-explanation" />
                 </div>
               }
               trigger={

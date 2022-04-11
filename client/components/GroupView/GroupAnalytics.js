@@ -290,31 +290,23 @@ const GroupAnalytics = ({ role }) => {
                   <br />
                   <br />
                   <b>{intl.formatMessage({ id: 'vocabulary-total' })}</b>
-                  {''}
-                  {`: ${intl.formatMessage({
-                    id: 'vocabulary-total-explanation',
-                  })}`}
+                  {': '}
+                  <FormattedHTMLMessage id="vocabulary-total-explanation" />
                   <br />
                   <br />
                   <b>{intl.formatMessage({ id: 'vocabulary-seen' })}</b>
-                  {''}
-                  {`: ${intl.formatMessage({
-                    id: 'vocabulary-seen-explanation',
-                  })}`}
+                  {': '}
+                  <FormattedHTMLMessage id="vocabulary-seen-explanation" />
                   <br />
                   <br />
                   <b>{intl.formatMessage({ id: 'vocabulary-visit' })}</b>
-                  {''}
-                  {`: ${intl.formatMessage({
-                    id: 'vocabulary-visit-explanation',
-                  })}`}
+                  {': '}
+                  <FormattedHTMLMessage id="vocabulary-visit-explanation" />
                   <br />
                   <br />
                   <b>{intl.formatMessage({ id: 'vocabulary-flashcard' })}</b>
-                  {''}
-                  {`: ${intl.formatMessage({
-                    id: 'vocabulary-flashcard-explanation',
-                  })}`}
+                  {': '}
+                  <FormattedHTMLMessage id="vocabulary-flashcard-explanation" />
                 </div>
               }
               trigger={
