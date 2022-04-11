@@ -2,15 +2,14 @@
 import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { ButtonGroup, ToggleButton } from 'react-bootstrap'
-import { FormattedMessage } from 'react-intl'
+import { FormattedMessage, useIntl, FormattedHTMLMessage } from 'react-intl'
 import { getSummary } from 'Utilities/redux/groupSummaryReducer'
 import { learningLanguageSelector } from 'Utilities/common'
 import Spinner from 'Components/Spinner'
 import useWindowDimension from 'Utilities/windowDimensions'
 import ResponsiveDatePicker from 'Components/ResponsiveDatePicker'
 import moment from 'moment'
-import { Divider, Dropdown } from 'semantic-ui-react'
-import HexagonTest from 'Components/GridHexagon'
+import { Divider, Dropdown, Icon, Popup } from 'semantic-ui-react'
 import Summary from './Summary'
 import StudentProgress from './StudentProgress'
 import StudentVocabularyProgress from './StudentVocabularyProgress'
@@ -19,6 +18,7 @@ import NoGroupsView from './NoGroupsView'
 import GroupHistory from './GroupHistory'
 
 const GroupAnalytics = ({ role }) => {
+  const intl = useIntl()
   const [content, setContent] = useState('summary')
   const [currentStudent, setCurrentStudent] = useState(null)
   const [startDate, setStartDate] = useState(
@@ -30,9 +30,6 @@ const GroupAnalytics = ({ role }) => {
   const dispatch = useDispatch()
   const currentGroupId = useSelector(({ user }) => user.data.user.last_selected_group)
   const learningLanguage = useSelector(learningLanguageSelector)
-  const { exerciseHistory, pending: historyPending } = useSelector(
-    ({ studentProgress }) => studentProgress
-  )
 
   const { groups: totalGroups, pending } = useSelector(({ groups }) => groups)
   const currentGroup = totalGroups.find(group => group.group_id === currentGroupId)
@@ -250,28 +247,122 @@ const GroupAnalytics = ({ role }) => {
           />
         </>
       ) : content === 'progress' && shownChart === 'timeline' && currentGroup.is_teaching ? (
-        <StudentProgress
-          student={currentStudent}
-          startDate={startDate}
-          endDate={endDate}
-          group={currentGroup}
-          groupId={currentGroupId}
-        />
-      ) : content === 'progress' && shownChart === 'vocabulary' && currentGroup.is_teaching ? (
-        <div className="progress-page-graph-cont">
-          <StudentVocabularyProgress
+        <div>
+          <div className="row-flex align center">
+            <Popup
+              content={
+                <div>
+                  <FormattedHTMLMessage id="timeline-explanation" />
+                </div>
+              }
+              trigger={
+                <Icon
+                  style={{ paddingRight: '0.75em', marginBottom: '0.35em' }}
+                  name="info circle"
+                  color="grey"
+                />
+              }
+            />
+            <div className="progress-page-header">
+              <FormattedMessage id="progress-timeline" />
+            </div>
+          </div>
+          <Divider />
+          <StudentProgress
             student={currentStudent}
-            earlierDate={parsedDate}
+            startDate={startDate}
+            endDate={endDate}
+            group={currentGroup}
+            groupId={currentGroupId}
+          />
+        </div>
+      ) : content === 'progress' && shownChart === 'vocabulary' && currentGroup.is_teaching ? (
+        <div>
+          <div className="row-flex align center">
+            <Popup
+              content={
+                <div>
+                  <FormattedHTMLMessage id="vocabulary-view-explanation" />
+                  <br />
+                  <br />
+                  <b>{intl.formatMessage({ id: 'vocabulary-total' })}</b>
+                  {''}
+                  {`: ${intl.formatMessage({
+                    id: 'vocabulary-total-explanation',
+                  })}`}
+                  <br />
+                  <br />
+                  <b>{intl.formatMessage({ id: 'vocabulary-seen' })}</b>
+                  {''}
+                  {`: ${intl.formatMessage({
+                    id: 'vocabulary-seen-explanation',
+                  })}`}
+                  <br />
+                  <br />
+                  <b>{intl.formatMessage({ id: 'vocabulary-visit' })}</b>
+                  {''}
+                  {`: ${intl.formatMessage({
+                    id: 'vocabulary-visit-explanation',
+                  })}`}
+                  <br />
+                  <br />
+                  <b>{intl.formatMessage({ id: 'vocabulary-flashcard' })}</b>
+                  {''}
+                  {`: ${intl.formatMessage({
+                    id: 'vocabulary-flashcard-explanation',
+                  })}`}
+                </div>
+              }
+              trigger={
+                <Icon
+                  style={{ paddingRight: '0.75em', marginBottom: '0.35em' }}
+                  name="info circle"
+                  color="grey"
+                />
+              }
+            />
+            <div className="progress-page-header">
+              <FormattedMessage id="vocabulary-view" />
+            </div>
+          </div>
+          <Divider />
+          <div className="progress-page-graph-cont">
+            <StudentVocabularyProgress
+              student={currentStudent}
+              earlierDate={parsedDate}
+              group={currentGroup}
+            />
+          </div>
+        </div>
+      ) : content === 'progress' && shownChart === 'hex-map' && currentGroup.is_teaching ? (
+        <div>
+          <div className="row-flex align center">
+            <Popup
+              content={
+                <div>
+                  <FormattedMessage id="hex-map-explanation" />
+                </div>
+              }
+              trigger={
+                <Icon
+                  style={{ paddingRight: '0.75em', marginBottom: '0.35em' }}
+                  name="info circle"
+                  color="grey"
+                />
+              }
+            />
+            <div className="progress-page-header">
+              <FormattedMessage id="hex-map" />
+            </div>
+          </div>
+          <Divider />
+          <StudentGrammarProgress
+            student={currentStudent}
+            startDate={startDate}
+            endDate={endDate}
             group={currentGroup}
           />
         </div>
-      ) : content === 'progress' && shownChart === 'hex-map' && currentGroup.is_teaching ? (
-        <StudentGrammarProgress
-          student={currentStudent}
-          startDate={startDate}
-          endDate={endDate}
-          group={currentGroup}
-        />
       ) : (
         <GroupHistory
           student={currentStudent}

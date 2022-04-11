@@ -1,6 +1,7 @@
 import React, { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { getStudentHistory } from 'Utilities/redux/groupHistoryReducer'
+import { Divider, Icon, Popup } from 'semantic-ui-react'
 import { FormattedMessage } from 'react-intl'
 import History from 'Components/History'
 import Spinner from 'Components/Spinner'
@@ -45,13 +46,48 @@ const StudentHistory = ({ student, startDate, endDate, group, view }) => {
   return (
     <div>
       <div>
-        <h3>
-          {view === 'exercise' ? (
-            <FormattedMessage id="Practice history" />
-          ) : (
-            <FormattedMessage id="Test History" />
-          )}
-        </h3>
+        {view === 'exercise' ? (
+          <div className="row-flex align center">
+            <Popup
+              content={
+                <div>
+                  <FormattedMessage id="exercise-history-explanation" />
+                </div>
+              }
+              trigger={
+                <Icon
+                  style={{ paddingRight: '0.75em', marginBottom: '0.35em' }}
+                  name="info circle"
+                  color="grey"
+                />
+              }
+            />
+            <div className="progress-page-header">
+              <FormattedMessage id="exercise-history" />
+            </div>
+          </div>
+        ) : (
+          <div className="row-flex align center">
+            <Popup
+              content={
+                <div>
+                  <FormattedMessage id="test-history-explanation" />
+                </div>
+              }
+              trigger={
+                <Icon
+                  style={{ paddingRight: '0.75em', marginBottom: '0.35em' }}
+                  name="info circle"
+                  color="grey"
+                />
+              }
+            />
+            <div className="progress-page-header">
+              <FormattedMessage id="Test History" />
+            </div>
+          </div>
+        )}
+        <Divider />
       </div>
 
       {student ? (
