@@ -1,7 +1,7 @@
 import callBuilder from '../apiConnection'
 
-export const getStudentVocabulary = (userId, groupId, earlierDate) => {
-  const route = `/groups/${groupId}/vocabulary?uid=${userId}&earlier_date=${earlierDate}`
+export const getStudentVocabulary = (userId, groupId, parsedStartDate, parsedEndDate) => {
+  const route = `/groups/${groupId}/vocabulary?uid=${userId}&start_date=${parsedStartDate}&end_date=${parsedEndDate}`
   const prefix = 'GET_STUDENT_VOCABULARY'
   return callBuilder(route, prefix, 'get')
 }

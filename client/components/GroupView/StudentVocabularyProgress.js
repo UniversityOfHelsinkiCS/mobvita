@@ -4,7 +4,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import { getStudentVocabulary } from 'Utilities/redux/groupVocabularyReducer'
 import Spinner from 'Components/Spinner'
 
-const StudentVocabularyProgress = ({ student, earlierDate, group }) => {
+const StudentVocabularyProgress = ({ student, group, parsedStartDate, parsedEndDate }) => {
   const dispatch = useDispatch()
   const { studentVocabulary, pending } = useSelector(({ studentVocabulary }) => studentVocabulary)
 
@@ -12,8 +12,8 @@ const StudentVocabularyProgress = ({ student, earlierDate, group }) => {
     if (!student) {
       return
     }
-    dispatch(getStudentVocabulary(student._id, group.group_id, earlierDate))
-  }, [student, earlierDate])
+    dispatch(getStudentVocabulary(student._id, group.group_id, parsedStartDate, parsedEndDate))
+  }, [student, parsedStartDate, parsedEndDate])
 
   if (pending) {
     return <Spinner />

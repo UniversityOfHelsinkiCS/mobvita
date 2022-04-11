@@ -26,7 +26,8 @@ const GroupAnalytics = ({ role }) => {
   )
   const [shownChart, setShownChart] = useState('timeline')
   const [endDate, setEndDate] = useState(moment().clone().add(1, 'days').toDate())
-  const [parsedDate, setParsedDate] = useState(startDate.toJSON().slice(0, 10))
+  const [parsedStartDate, setParsedStartDate] = useState(startDate.toJSON().slice(0, 10))
+  const [parsedEndDate, setParsedEndDate] = useState(endDate.toJSON().slice(0, 10))
   const dispatch = useDispatch()
   const currentGroupId = useSelector(({ user }) => user.data.user.last_selected_group)
   const learningLanguage = useSelector(learningLanguageSelector)
@@ -34,7 +35,6 @@ const GroupAnalytics = ({ role }) => {
   const { groups: totalGroups, pending } = useSelector(({ groups }) => groups)
   const currentGroup = totalGroups.find(group => group.group_id === currentGroupId)
   const bigScreen = useWindowDimension().width >= 650
-  const marginLeftButton = '2px'
 
   const dropDownMenuText = currentStudent
     ? `${currentStudent?.userName} (${currentStudent?.email})`
@@ -61,8 +61,9 @@ const GroupAnalytics = ({ role }) => {
   }, [currentGroup])
 
   useEffect(() => {
-    setParsedDate(startDate.toJSON().slice(0, 10))
-  }, [startDate])
+    setParsedStartDate(startDate.toJSON().slice(0, 10))
+    setParsedEndDate(endDate.toJSON().slice(0, 10))
+  }, [startDate, endDate])
 
   const compare = (a, b) => {
     if (a.userName.toLowerCase() < b.userName.toLowerCase()) return -1
@@ -120,11 +121,9 @@ const GroupAnalytics = ({ role }) => {
               <FormattedMessage id="date-start" />{' '}
               <PickDate id="start" date={startDate} setDate={setStartDate} />
             </div>
-            {shownChart !== 'vocabulary' && (
-              <div style={{ marginLeft: '2em' }}>
-                <FormattedMessage id="date-end" /> <PickDate date={endDate} setDate={setEndDate} />
-              </div>
-            )}
+            <div style={{ marginLeft: '2em' }}>
+              <FormattedMessage id="date-end" /> <PickDate date={endDate} setDate={setEndDate} />
+            </div>
           </div>
         ) : (
           <>
@@ -138,13 +137,11 @@ const GroupAnalytics = ({ role }) => {
                 <br />
                 <PickDate id="start" date={startDate} setDate={setStartDate} />
               </div>
-              {shownChart !== 'vocabulary' && (
-                <div>
-                  <FormattedMessage id="date-end" />
-                  <br />
-                  <PickDate date={endDate} setDate={setEndDate} />
-                </div>
-              )}
+              <div>
+                <FormattedMessage id="date-end" />
+                <br />
+                <PickDate date={endDate} setDate={setEndDate} />
+              </div>
             </div>
           </>
         )}
@@ -325,7 +322,8 @@ const GroupAnalytics = ({ role }) => {
           <div className="progress-page-graph-cont">
             <StudentVocabularyProgress
               student={currentStudent}
-              earlierDate={parsedDate}
+              parsedStartDate={parsedStartDate}
+              parsedEndDate={parsedEndDate}
               group={currentGroup}
             />
           </div>

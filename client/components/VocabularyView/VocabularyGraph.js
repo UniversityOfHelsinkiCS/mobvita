@@ -14,7 +14,7 @@ const VocabularyGraph = ({ vocabularyData, pending }) => {
   const dispatch = useDispatch()
   if (pending) return <div className="mt-xl">Loading...</div>
 
-  if (!vocabularyData) {
+  if (!vocabularyData || vocabularyData?.length < 1) {
     return <div>No data to show</div>
   }
 
