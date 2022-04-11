@@ -20,10 +20,6 @@ const StudentProgress = ({ student, startDate, endDate, group }) => {
     dispatch(getStudentProgress(student._id, group.group_id, learningLanguage))
   }, [student])
 
-  console.log('PROGRESS ', exerciseHistory)
-  console.log('GROUP ', group.group_id)
-  console.log('USER ', student._id)
-
   if (pending) return <Spinner />
 
   return (

@@ -12,8 +12,6 @@ const StudentVocabularyProgress = ({ student, earlierDate, group }) => {
     dispatch(getStudentVocabulary(student._id, group.group_id, earlierDate))
   }, [student, earlierDate])
 
-  console.log('student voc data ', studentVocabulary.stats)
-
   return <VocabularyGraph vocabularyData={studentVocabulary.stats} pending={pending} />
 }
 

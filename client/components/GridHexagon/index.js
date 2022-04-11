@@ -85,8 +85,6 @@ const HexagonTest = props => {
   const learningLanguage = useSelector(learningLanguageSelector)
   const hexagonSize = { x: 15, y: 15 }
 
-  // const moreHexas = GridGenerator.parallelogram(-2, 2, -2, 2)
-
   const generator = GridGenerator.getGenerator('rectangle')
   const hexagons = generator.apply(generator, [35, 35])
   if (props.conceptsPending || !props.concepts || props.pending) return <Spinner fullHeight />

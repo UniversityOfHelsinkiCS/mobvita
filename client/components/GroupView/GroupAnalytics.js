@@ -14,6 +14,7 @@ import HexagonTest from 'Components/GridHexagon'
 import Summary from './Summary'
 import StudentProgress from './StudentProgress'
 import StudentVocabularyProgress from './StudentVocabularyProgress'
+import StudentGrammarProgress from './StudentGrammarProgress'
 import NoGroupsView from './NoGroupsView'
 import GroupHistory from './GroupHistory'
 
@@ -29,14 +30,9 @@ const GroupAnalytics = ({ role }) => {
   const dispatch = useDispatch()
   const currentGroupId = useSelector(({ user }) => user.data.user.last_selected_group)
   const learningLanguage = useSelector(learningLanguageSelector)
-  const { history: exerciseHistory, pending: historyPending } = useSelector(
-    ({ exerciseHistory }) => exerciseHistory
+  const { exerciseHistory, pending: historyPending } = useSelector(
+    ({ studentProgress }) => studentProgress
   )
-  const {
-    concepts,
-    root_hex_coord,
-    pending: conceptsPending,
-  } = useSelector(({ metadata }) => metadata)
 
   const { groups: totalGroups, pending } = useSelector(({ groups }) => groups)
   const currentGroup = totalGroups.find(group => group.group_id === currentGroupId)
@@ -270,12 +266,11 @@ const GroupAnalytics = ({ role }) => {
           />
         </div>
       ) : content === 'progress' && shownChart === 'hex-map' && currentGroup.is_teaching ? (
-        <HexagonTest
-          exerciseHistory={exerciseHistory}
-          pending={historyPending}
-          concepts={concepts}
-          conceptsPending={conceptsPending}
-          root_hex_coord={root_hex_coord}
+        <StudentGrammarProgress
+          student={currentStudent}
+          startDate={startDate}
+          endDate={endDate}
+          group={currentGroup}
         />
       ) : (
         <GroupHistory
