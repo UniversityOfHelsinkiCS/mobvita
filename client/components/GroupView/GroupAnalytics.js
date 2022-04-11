@@ -120,9 +120,11 @@ const GroupAnalytics = ({ role }) => {
               <FormattedMessage id="date-start" />{' '}
               <PickDate id="start" date={startDate} setDate={setStartDate} />
             </div>
-            <div style={{ marginLeft: '2em' }}>
-              <FormattedMessage id="date-end" /> <PickDate date={endDate} setDate={setEndDate} />
-            </div>
+            {shownChart !== 'vocabulary' && (
+              <div style={{ marginLeft: '2em' }}>
+                <FormattedMessage id="date-end" /> <PickDate date={endDate} setDate={setEndDate} />
+              </div>
+            )}
           </div>
         ) : (
           <>
@@ -136,11 +138,13 @@ const GroupAnalytics = ({ role }) => {
                 <br />
                 <PickDate id="start" date={startDate} setDate={setStartDate} />
               </div>
-              <div>
-                <FormattedMessage id="date-end" />
-                <br />
-                <PickDate date={endDate} setDate={setEndDate} />
-              </div>
+              {shownChart !== 'vocabulary' && (
+                <div>
+                  <FormattedMessage id="date-end" />
+                  <br />
+                  <PickDate date={endDate} setDate={setEndDate} />
+                </div>
+              )}
             </div>
           </>
         )}
