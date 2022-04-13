@@ -7,6 +7,7 @@ import { getSelf } from 'Utilities/redux/userReducer'
 import { learningLanguageSelector } from 'Utilities/common'
 import Spinner from 'Components/Spinner'
 import ReportButton from 'Components/ReportButton'
+import { filter } from 'lodash'
 import UserConcept from './UserConcept'
 import GroupConcept from './GroupConcept'
 import StoryConcept from './StoryConcept'
@@ -14,7 +15,6 @@ import SelectAllCheckbox from './SelectAllCheckbox'
 import ConceptHeader from './ConceptHeader'
 import ConceptToggles from './ConceptToggles'
 import TotalTestQuestions from './TotalTestQuestions'
-import { filter } from 'lodash'
 
 const ConceptTree = ({ concept, showTestConcepts, showLevels }) => {
   const { target } = useParams()
@@ -129,7 +129,7 @@ const Concepts = () => {
         )}
       </div>
       <br />
-      <SelectAllCheckbox showTestConcepts={showTestConcepts}/>
+      {!showTestConcepts && <SelectAllCheckbox showTestConcepts={showTestConcepts} />}
       <div style={{ paddingLeft: '10px' }} className="Full-Concept-Tree">
         {conceptTree.map(c => (
           <ConceptTree
