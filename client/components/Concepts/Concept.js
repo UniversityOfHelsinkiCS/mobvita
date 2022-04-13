@@ -1,3 +1,4 @@
+/* eslint-disable no-nested-ternary */
 import React, { useState } from 'react'
 import { useParams } from 'react-router-dom'
 import { Collapse } from 'react-collapse'
@@ -85,8 +86,10 @@ const Concept = ({
           >
             {name.length > CONCEPT_NAME_MAX_LEN ? (
               <Popup content={name} trigger={<span>{truncateConceptName(name)}</span>} />
-            ) : (
+            ) : !isLeaf || maxNumQuestions > 0 ? (
               <span>{name}</span>
+            ) : (
+              <span className="disabled-text">{name}</span>
             )}
           </span>
           {renderLevels && (
@@ -104,7 +107,9 @@ const Concept = ({
                 {maxNumQuestions > 0 ? (
                   <>{intl.formatMessage({ id: 'questions' })}:</>
                 ) : (
-                  intl.formatMessage({ id: 'no-questions' })
+                  <span className="disabled-text">
+                    <>{intl.formatMessage({ id: 'no-questions' })}:</>
+                  </span>
                 )}
               </span>
               <Popup
