@@ -51,25 +51,31 @@ const Concept = ({
 
   return (
     <div className="concept">
-      {numberError && <div style={{ color: 'red' }}><FormattedMessage id="please-input-non-negative-integer"/></div>}
+      {numberError && (
+        <div style={{ color: 'red' }}>
+          <FormattedMessage id="please-input-non-negative-integer" />
+        </div>
+      )}
       <div className="concept-row">
         <div style={{ display: 'flex', flex: 1 }}>
           <div className="concept-caret" style={{ paddingRight: '32px' }}>
             {!isLeaf && <Icon name={caretIconName} onClick={() => setOpen(!open)} />}
           </div>
-          <Form.Group>
-            <Form.Check
-              type="checkbox"
-              inline
-              onChange={handleCheckboxChange}
-              checked={conceptTurnedOn && !showTestConcepts}
-              /* eslint-disable no-param-reassign */
-              ref={el => {
-                if (el) el.indeterminate = indeterminateCheck
-              }}
-              disabled={exerEnabled !== undefined && !exerEnabled || showTestConcepts}
-            />
-          </Form.Group>
+          {!showTestConcepts && (
+            <Form.Group>
+              <Form.Check
+                type="checkbox"
+                inline
+                onChange={handleCheckboxChange}
+                checked={conceptTurnedOn && !showTestConcepts}
+                /* eslint-disable no-param-reassign */
+                ref={el => {
+                  if (el) el.indeterminate = indeterminateCheck
+                }}
+                disabled={(exerEnabled !== undefined && !exerEnabled) || showTestConcepts}
+              />
+            </Form.Group>
+          )}
           <span
             onClick={() => setOpen(!open)}
             onKeyPress={() => setOpen(!open)}
