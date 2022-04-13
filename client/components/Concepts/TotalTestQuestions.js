@@ -10,7 +10,6 @@ const TotalTestQuestions = ({ concepts, setShowTestConcepts, groupId, learningLa
 
   const dispatch = useDispatch()
   const intl = useIntl()
-  console.log('testConcepts ', testConcepts)
 
   useEffect(() => {
     if (testConcepts) {
@@ -26,7 +25,6 @@ const TotalTestQuestions = ({ concepts, setShowTestConcepts, groupId, learningLa
         questionTemplate[concept.concept_id] = 0
       }
     })
-    console.log('question temp ', questionTemplate)
     setShowTestConcepts(false)
     await dispatch(updateTestConcepts(groupId, questionTemplate, learningLanguage))
     setShowTestConcepts(true)
@@ -40,7 +38,6 @@ const TotalTestQuestions = ({ concepts, setShowTestConcepts, groupId, learningLa
         questionTemplate[concept.concept_id] = concept.test_count
       }
     })
-    console.log('question temp ', questionTemplate)
     setShowTestConcepts(false)
     await dispatch(updateTestConcepts(groupId, questionTemplate, learningLanguage))
     setShowTestConcepts(true)
