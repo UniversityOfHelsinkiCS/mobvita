@@ -7,8 +7,7 @@ import { updateExerciseSettings as updateUserSettings } from 'Utilities/redux/us
 import { updateExerciseSettings as updateGroupSettings } from 'Utilities/redux/groupsReducer'
 import { updateExerciseSettings as updateStorySettings } from 'Utilities/redux/storiesReducer'
 
-
-const SelectAllCheckbox = ({showTestConcepts}) => {
+const SelectAllCheckbox = ({ showTestConcepts }) => {
   const { concepts } = useSelector(({ metadata }) => metadata)
   const { target, id } = useParams()
   const dispatch = useDispatch()
@@ -21,8 +20,9 @@ const SelectAllCheckbox = ({showTestConcepts}) => {
       updateSettings = updateGroupSettings
       break
     case 'stories':
-      exerciseSettings = useSelector(({ stories }) => (
-        stories.focused && stories.focused.exercise_setting))
+      exerciseSettings = useSelector(
+        ({ stories }) => stories.focused && stories.focused.exercise_setting
+      )
       updateSettings = updateStorySettings
       break
     default:
@@ -36,18 +36,20 @@ const SelectAllCheckbox = ({showTestConcepts}) => {
 
   // Tells if some/all/none of the super concepts are enabled or partially enabled.
   // 1 = all fully enabled, 0 = all fully disabled, 0 < x < 1 partially enabled
-  const childrenEnabledAverage = superConcepts
-    .reduce((sum, sc) => sum + exerciseSettings[sc.concept_id], 0) / superConcepts.length
+  const childrenEnabledAverage =
+    superConcepts.reduce((sum, sc) => sum + exerciseSettings[sc.concept_id], 0) /
+    superConcepts.length
   const checked = childrenEnabledAverage === 1
 
-  const indeterminateCheck = childrenEnabledAverage
-    && childrenEnabledAverage !== 1
-    && childrenEnabledAverage !== 0
+  const indeterminateCheck =
+    childrenEnabledAverage && childrenEnabledAverage !== 1 && childrenEnabledAverage !== 0
 
   const handleCheckboxClick = () => {
     const newValue = childrenEnabledAverage === 1 ? 0 : 1
-    const updatedValues = superConcepts
-      .reduce((values, sc) => ({ ...values, [sc.concept_id]: newValue }), {})
+    const updatedValues = superConcepts.reduce(
+      (values, sc) => ({ ...values, [sc.concept_id]: newValue }),
+      {}
+    )
     dispatch(updateSettings(updatedValues, id))
   }
 
@@ -60,7 +62,9 @@ const SelectAllCheckbox = ({showTestConcepts}) => {
           onChange={handleCheckboxClick}
           checked={checked && !showTestConcepts}
           /* eslint-disable no-param-reassign */
-          ref={(el) => { if (el) el.indeterminate = indeterminateCheck }}
+          ref={el => {
+            if (el) el.indeterminate = indeterminateCheck
+          }}
           disabled={showTestConcepts}
         />
       </Form.Group>

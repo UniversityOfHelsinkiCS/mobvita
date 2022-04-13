@@ -8,17 +8,32 @@ import useWindowDimensions from 'Utilities/windowDimensions'
 import { useDispatch, useSelector } from 'react-redux'
 import { Checkbox } from 'semantic-ui-react'
 
-const VocabularyGraph = ({ vocabularyData, pending }) => {
+const VocabularyGraph = ({
+  vocabularyData,
+  pending,
+  newerVocabularyData,
+  newerVocabularyPending,
+}) => {
   //   const { flashcard, seen, total, now, visit } = useSelector(({ user }) => user.vocabularyData)
-
+  console.log('PEND', newerVocabularyPending)
   const dispatch = useDispatch()
-  if (pending) return <div className="mt-xl">Loading...</div>
+  if (pending || newerVocabularyPending) return <div className="mt-xl">Loading...</div>
 
-  if (!vocabularyData || vocabularyData?.length < 1) {
+  if (
+    !vocabularyData ||
+    vocabularyData?.length < 1 ||
+    !newerVocabularyData ||
+    newerVocabularyData?.length < 1
+  ) {
     return <div>No data to show</div>
   }
 
   const { flashcard, seen, total, visit } = vocabularyData
+  const newFlashcard = newerVocabularyData.flashcard
+  const newSeen = newerVocabularyData.seen
+  const newTotal = newerVocabularyData.total
+  const newVisit = newerVocabularyData.visit
+
   /*
   const [showSeen, setShowSeen] = useState(true)
   const [showFlashcard, setShowFlashcard] = useState(true)
@@ -118,20 +133,20 @@ const VocabularyGraph = ({ vocabularyData, pending }) => {
       {
         name: intl.formatMessage({ id: 'vocabulary-total' }),
         id: 'Total',
-        data: total[Object.keys(total).filter(key => key !== 'now')[1]],
+        data: newTotal,
       },
       {
         name: `${intl.formatMessage({ id: 'vocabulary-total' })} ${intl.formatMessage({
           id: 'vocabulary-follow-statistic-before',
         })}`,
         id: 'Total (before)',
-        data: total[Object.keys(total).filter(key => key !== 'now')[0]],
+        data: total,
         linkedTo: 'Total',
       },
       {
         name: intl.formatMessage({ id: 'vocabulary-seen' }),
         id: 'Seen',
-        data: seen[Object.keys(seen).filter(key => key !== 'now')[1]],
+        data: newSeen,
         visible: false,
       },
       {
@@ -139,14 +154,14 @@ const VocabularyGraph = ({ vocabularyData, pending }) => {
           id: 'vocabulary-follow-statistic-before',
         })}`,
         id: 'Seen (before)',
-        data: seen[Object.keys(seen).filter(key => key !== 'now')[0]],
+        data: seen,
         linkedTo: 'Seen',
         visible: false,
       },
       {
         name: intl.formatMessage({ id: 'vocabulary-visit' }),
         id: 'Visit',
-        data: visit[Object.keys(visit).filter(key => key !== 'now')[1]],
+        data: newVisit,
         visible: false,
       },
       {
@@ -154,14 +169,14 @@ const VocabularyGraph = ({ vocabularyData, pending }) => {
           id: 'vocabulary-follow-statistic-before',
         })}`,
         id: 'Visit (before)',
-        data: visit[Object.keys(visit).filter(key => key !== 'now')[0]],
+        data: visit,
         linkedTo: 'Visit',
         visible: false,
       },
       {
         name: intl.formatMessage({ id: 'vocabulary-flashcard' }),
         id: 'Flashcard',
-        data: flashcard[Object.keys(flashcard).filter(key => key !== 'now')[1]],
+        data: newFlashcard,
         visible: false,
       },
       {
@@ -169,7 +184,7 @@ const VocabularyGraph = ({ vocabularyData, pending }) => {
           id: 'vocabulary-follow-statistic-before',
         })}`,
         id: 'Flashcard (before)',
-        data: flashcard[Object.keys(flashcard).filter(key => key !== 'now')[0]],
+        data: flashcard,
         linkedTo: 'Flashcard',
         visible: false,
       },

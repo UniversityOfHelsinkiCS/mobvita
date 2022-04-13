@@ -3,7 +3,11 @@ import React, { useState, useEffect, shallowEqual } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import moment from 'moment'
 import { FormattedMessage, FormattedHTMLMessage, useIntl } from 'react-intl'
-import { getSelf, getPreviousVocabularyData } from 'Utilities/redux/userReducer'
+import {
+  getSelf,
+  getPreviousVocabularyData,
+  getNewerVocabularyData,
+} from 'Utilities/redux/userReducer'
 import ProgressGraph from 'Components/ProgressGraph'
 import Spinner from 'Components/Spinner'
 import { Divider, Icon, Popup } from 'semantic-ui-react'
@@ -31,8 +35,6 @@ const Progress = () => {
   const learningLanguage = useLearningLanguage()
   const { history: testHistory } = useSelector(({ tests }) => tests)
   const [shownChart, setShownChart] = useState('progress')
-  const [parsedStartDate, setParsedStartDate] = useState(startDate.toJSON().slice(0, 10))
-  const [parsedEndDate, setParsedEndDate] = useState(endDate.toJSON().slice(0, 10))
 
   const bigScreen = useWindowDimension().width >= 650
 
@@ -41,14 +43,26 @@ const Progress = () => {
     flashcardHistory,
     vocabularyData,
     vocabularyPending,
+    newerVocabularyData,
+    newerVocabularyPending,
     pending,
   } = useSelector(({ user }) => {
     const exerciseHistory = user.data.user.exercise_history
     const flashcardHistory = user.data.user.flashcard_history
     const { vocabularyData } = user
+    const { newerVocabularyData } = user
+    const { newerVocabularyPending } = user
     const { pending } = user
     const { vocabularyPending } = user
-    return { exerciseHistory, flashcardHistory, vocabularyData, pending, vocabularyPending }
+    return {
+      exerciseHistory,
+      flashcardHistory,
+      vocabularyData,
+      pending,
+      vocabularyPending,
+      newerVocabularyData,
+      newerVocabularyPending,
+    }
   }, shallowEqual)
   const {
     concepts,
@@ -67,12 +81,14 @@ const Progress = () => {
   )
 
   useEffect(() => {
-    dispatch(getPreviousVocabularyData(parsedStartDate, parsedEndDate))
-  }, [parsedStartDate, parsedEndDate])
+    dispatch(getNewerVocabularyData(endDate.toJSON().slice(0, 10)))
+  }, [endDate])
 
   useEffect(() => {
-    setParsedStartDate(startDate.toJSON().slice(0, 10))
-    setParsedEndDate(endDate.toJSON().slice(0, 10))
+    dispatch(getPreviousVocabularyData(startDate.toJSON().slice(0, 10)))
+  }, [startDate])
+
+  useEffect(() => {
     dispatch(getSelf())
     dispatch(getExerciseHistory(learningLanguage, startDate, endDate))
     dispatch(getTestHistory(learningLanguage, startDate, endDate))
@@ -270,7 +286,12 @@ const Progress = () => {
           <div>
             <div>
               <div className="progress-page-graph-cont">
-                <VocabularyGraph vocabularyData={vocabularyData} pending={vocabularyPending} />
+                <VocabularyGraph
+                  vocabularyData={vocabularyData}
+                  pending={vocabularyPending}
+                  newerVocabularyData={newerVocabularyData}
+                  newerVocabularyPending={newerVocabularyPending}
+                />
               </div>
             </div>
           </div>

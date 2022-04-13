@@ -40,9 +40,15 @@ export const getVocabularyData = () => {
   return callBuilder(route, prefix)
 }
 
-export const getPreviousVocabularyData = (parsedStartDate, parsedEndDate) => {
-  const route = `/user/vocabulary?start_date=${parsedStartDate}&end_date=${parsedEndDate}`
+export const getPreviousVocabularyData = date => {
+  const route = `/user/vocabulary?date=${date}`
   const prefix = 'GET_PREVIOUS_VOCABULARY_DATA'
+  return callBuilder(route, prefix)
+}
+
+export const getNewerVocabularyData = date => {
+  const route = `/user/vocabulary?date=${date}`
+  const prefix = 'GET_NEWER_VOCABULARY_DATA'
   return callBuilder(route, prefix)
 }
 
@@ -459,6 +465,20 @@ export default (state = { data: null, learningLanguageChanged: false }, action) 
         error: false,
         refreshed: true,
         vocabularyData: action.response,
+      }
+    case 'GET_NEWER_VOCABULARY_DATA_ATTEMPT':
+      return {
+        ...state,
+        newerVocabularyPending: true,
+        error: false,
+      }
+    case 'GET_NEWER_VOCABULARY_DATA_SUCCESS':
+      return {
+        ...state,
+        newerVocabularyPending: false,
+        error: false,
+        refreshed: true,
+        newerVocabularyData: action.response,
       }
     default:
       return state

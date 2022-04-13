@@ -26,8 +26,6 @@ const GroupAnalytics = ({ role }) => {
   )
   const [shownChart, setShownChart] = useState('timeline')
   const [endDate, setEndDate] = useState(moment().clone().add(1, 'days').toDate())
-  const [parsedStartDate, setParsedStartDate] = useState(startDate.toJSON().slice(0, 10))
-  const [parsedEndDate, setParsedEndDate] = useState(endDate.toJSON().slice(0, 10))
   const dispatch = useDispatch()
   const currentGroupId = useSelector(({ user }) => user.data.user.last_selected_group)
   const learningLanguage = useSelector(learningLanguageSelector)
@@ -59,11 +57,6 @@ const GroupAnalytics = ({ role }) => {
       setCurrentStudent(currentGroup?.students[0])
     }
   }, [currentGroup])
-
-  useEffect(() => {
-    setParsedStartDate(startDate.toJSON().slice(0, 10))
-    setParsedEndDate(endDate.toJSON().slice(0, 10))
-  }, [startDate, endDate])
 
   const compare = (a, b) => {
     if (a.userName.toLowerCase() < b.userName.toLowerCase()) return -1
@@ -322,8 +315,8 @@ const GroupAnalytics = ({ role }) => {
           <div className="progress-page-graph-cont">
             <StudentVocabularyProgress
               student={currentStudent}
-              parsedStartDate={parsedStartDate}
-              parsedEndDate={parsedEndDate}
+              startDate={startDate.toJSON().slice(0, 10)}
+              endDate={endDate.toJSON().slice(0, 10)}
               group={currentGroup}
             />
           </div>
