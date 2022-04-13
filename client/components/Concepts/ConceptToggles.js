@@ -2,7 +2,7 @@ import React from 'react'
 import { useSelector } from 'react-redux'
 import { useParams } from 'react-router-dom'
 import { FormattedMessage, useIntl } from 'react-intl'
-import { Checkbox, Label } from 'semantic-ui-react'
+import { Checkbox } from 'semantic-ui-react'
 import { Spinner } from 'react-bootstrap'
 
 const ConceptToggles = ({

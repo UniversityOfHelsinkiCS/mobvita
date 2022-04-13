@@ -7,7 +7,6 @@ import { getSelf } from 'Utilities/redux/userReducer'
 import { learningLanguageSelector } from 'Utilities/common'
 import Spinner from 'Components/Spinner'
 import ReportButton from 'Components/ReportButton'
-import { filter } from 'lodash'
 import UserConcept from './UserConcept'
 import GroupConcept from './GroupConcept'
 import StoryConcept from './StoryConcept'
@@ -104,7 +103,6 @@ const Concepts = () => {
   const conceptTree = makeConceptTree(superConcepts)
 
   const handleTestConceptToggle = async () => {
-    console.log('toggle')
     if (!showTestConcepts) await dispatch(getTestConcepts(id, learningLanguage))
     setShowTestConcepts(!showTestConcepts)
   }
