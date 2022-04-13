@@ -10,12 +10,27 @@ const TotalTestQuestions = ({ concepts, setShowTestConcepts, groupId, learningLa
 
   const dispatch = useDispatch()
   const intl = useIntl()
+  console.log('testConcepts ', testConcepts)
 
   useEffect(() => {
     if (testConcepts) {
       setTotalQuestions(Object.values(testConcepts.test_template).reduce((a, b) => a + b, 0))
     }
   }, [testConceptsPending])
+
+  const handleZeroing = async () => {
+    const questionTemplate = {}
+
+    concepts.forEach(concept => {
+      if (concept.children?.length === 0 && concept.test_enabled) {
+        questionTemplate[concept.concept_id] = 0
+      }
+    })
+    console.log('question temp ', questionTemplate)
+    setShowTestConcepts(false)
+    await dispatch(updateTestConcepts(groupId, questionTemplate, learningLanguage))
+    setShowTestConcepts(true)
+  }
 
   const handleResetclick = async () => {
     const questionTemplate = {}
@@ -25,6 +40,7 @@ const TotalTestQuestions = ({ concepts, setShowTestConcepts, groupId, learningLa
         questionTemplate[concept.concept_id] = concept.test_count
       }
     })
+    console.log('question temp ', questionTemplate)
     setShowTestConcepts(false)
     await dispatch(updateTestConcepts(groupId, questionTemplate, learningLanguage))
     setShowTestConcepts(true)
@@ -40,6 +56,9 @@ const TotalTestQuestions = ({ concepts, setShowTestConcepts, groupId, learningLa
         fontWeight: 'bold',
       }}
     >
+      <Button onClick={handleZeroing} size="sm">
+        <FormattedMessage id="set-questions-to-zero" />
+      </Button>
       {totalQuestions} {intl.formatMessage({ id: 'total-questions' })}
       <Button onClick={handleResetclick} size="sm">
         <FormattedMessage id="reset-to-default" />
