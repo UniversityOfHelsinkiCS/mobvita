@@ -717,7 +717,7 @@
     "personal-settings": "Omat asetukset",
     "join-group": "Liity ryhmään",
     "add-people-to-group": "Lisää ihmisiä",
-    "summary": "Yhteenveto",
+    "summary": "Kaikki osallistujat",
     "show-group-token": "Näytä ryhmän koodi",
     "enter-token": "Ryhmän Koodi",
     "summary-for-language": "Yhteenveto",
@@ -1241,5 +1241,6 @@
     "timeline-explanation": "Tämä kaavio näyttää harjoittelusi valitun ajanjakson aikana ja kunkin harjoituspäivän <i>Elo</i>-luokituksen",
     "hex-map-explanation": "Tämä kaavio esittää, kuinka hyvin hallitset kieliopin — valitulla ajanjaksolla",
     "exercise-history-explanation": "Tämä taulukko näyttää edistymisesi eri konsepteista kuukaudessa — valitulla ajanjaksolla",
-    "test-history-explanation": "Tämä taulukko näyttää edistymisesi testeissä kuukausittain — valitulla ajanjaksolla"
+    "test-history-explanation": "Tämä taulukko näyttää edistymisesi testeissä kuukausittain — valitulla ajanjaksolla",
+    "set-questions-to-zero": "Nollaa kysymykset"
 }

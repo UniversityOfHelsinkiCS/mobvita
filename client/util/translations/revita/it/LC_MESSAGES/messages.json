@@ -720,7 +720,7 @@
     "choose-settings-template-info": "NB: nella libreria del gruppo tutte le storie sono gestite unicamente dalle impostazioni del gruppo, scelte dall'insegnante.",
     "personal-settings": "Impostazioni Personali",
     "join-group": "Unisciti al Gruppo",
-    "summary": "Riassunto",
+    "summary": "Tutti studenti",
     "show-group-token": "La chiave del gruppo",
     "enter-token": "Chiave del gruppo",
     "summary-for-language": "Riassunto",
@@ -1242,5 +1242,6 @@
     "timeline-explanation": "Questo grafico mostra la tua pratica nel periodo di tempo selezionato, e la valutazione <i>Elo</i> che hai ottenuto in ogni giorno di pratica",
     "hex-map-explanation": "Questa mappa termica mostra come diventono conosciuti diversi concetti di apprendimento — nel periodo di tempo selezionato",
     "exercise-history-explanation": "Questa tabella mostra i resultati su diversi concetti — al mese nel periodo di tempo selezionato",
-    "test-history-explanation": "Questa tabella mostra i resultati dei test — al mese nel periodo di tempo selezionato"
+    "test-history-explanation": "Questa tabella mostra i resultati dei test — al mese nel periodo di tempo selezionato",
+    "set-questions-to-zero": "Zero all"
 }

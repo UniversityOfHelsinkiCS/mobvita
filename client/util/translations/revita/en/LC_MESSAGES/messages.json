@@ -727,7 +727,7 @@
     "choose-settings-template-info": "Note: in the group library, exercises are controlled only by the group's own settings, chosen by teacher.",
     "personal-settings": "Personal settings",
     "join-group": "Join Group",
-    "summary": "Summary",
+    "summary": "All students",
     "show-group-token": "Show group key",
     "enter-token": "Enter Group Key",
     "summary-for-language": "Summary",
@@ -1241,5 +1241,6 @@
     "timeline-explanation": "This chart shows your practice over the selected time period, and the <i>Elo</i> rating you achieved on each day of practice",
     "hex-map-explanation": "This heat map shows how well different learning concepts are mastered — over the selected time period",
     "exercise-history-explanation": "This table shows performance on different concepts per month — over the selected time period",
-    "test-history-explanation": "This table shows performance on tests per month — over the selected time period"
+    "test-history-explanation": "This table shows performance on tests per month — over the selected time period",
+    "set-questions-to-zero": "Zero all"
 }
