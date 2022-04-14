@@ -7,6 +7,7 @@ import { getSelf } from 'Utilities/redux/userReducer'
 import { learningLanguageSelector } from 'Utilities/common'
 import Spinner from 'Components/Spinner'
 import ReportButton from 'Components/ReportButton'
+import useWindowDimension from 'Utilities/windowDimensions'
 import UserConcept from './UserConcept'
 import GroupConcept from './GroupConcept'
 import StoryConcept from './StoryConcept'
@@ -49,7 +50,7 @@ const Concepts = () => {
   const dispatch = useDispatch()
   const history = useHistory()
   const { target, id } = useParams()
-
+  const bigScreen = useWindowDimension().width >= 650
   const { concepts, pending: conceptsPending } = useSelector(({ metadata }) => metadata)
   const learningLanguage = useSelector(learningLanguageSelector)
   const { isTeaching, group } = useSelector(({ groups }) => ({
@@ -117,7 +118,7 @@ const Concepts = () => {
           showLevels={showLevels}
           setShowLevels={setShowLevels}
         />
-        {showTestConcepts && (
+        {bigScreen && showTestConcepts && (
           <TotalTestQuestions
             concepts={conceptsToShow}
             setShowTestConcepts={setShowTestConcepts}
