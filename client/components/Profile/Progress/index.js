@@ -165,6 +165,7 @@ const Progress = () => {
                 <FormattedMessage id="vocabulary-view" />
               </div>
             </button>
+            { hiddenFeatures && (
             <button
               type="button"
               onClick={() => setShownChart('hex-map')}
@@ -178,7 +179,7 @@ const Progress = () => {
                 />
                 <FormattedMessage id="hex-map" />
               </div>
-            </button>
+            </button>)}
             <button
               type="button"
               onClick={() => setShownChart('exercise-history')}
