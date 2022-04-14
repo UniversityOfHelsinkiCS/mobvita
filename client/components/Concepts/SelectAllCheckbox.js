@@ -53,8 +53,10 @@ const SelectAllCheckbox = ({ showTestConcepts }) => {
     dispatch(updateSettings(updatedValues, id))
   }
 
+  const hidden = showTestConcepts ? { visibility: 'hidden' } : { visibility: 'visible' }
+
   return (
-    <div className="concept-enable-all">
+    <div style={hidden} className="concept-enable-all">
       <Form.Group>
         <Form.Check
           type="checkbox"
