@@ -50,6 +50,7 @@ const Concept = ({
 
   const indeterminateCheck = conceptTurnedOn && conceptTurnedOn !== 1 && conceptTurnedOn !== 0
   const hidden = showTestConcepts ? { visibility: 'hidden' } : { visibility: 'visible' }
+  const levelsHidden = renderLevels ? { visibility: 'visible' } : { visibility: 'hidden' }
 
   return (
     <div className="concept">
@@ -92,8 +93,8 @@ const Concept = ({
               <span className="disabled-text">{name}</span>
             )}
           </span>
-          {renderLevels && (
-            <div>
+          {concept?.level && (
+            <div style={levelsHidden}>
               {concept.level.map(level => (
                 <sup key={`${concept.concept_id}${level}`} className="concept-level">
                   [{level}]
