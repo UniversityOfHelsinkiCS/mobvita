@@ -49,6 +49,7 @@ const Concept = ({
   }
 
   const indeterminateCheck = conceptTurnedOn && conceptTurnedOn !== 1 && conceptTurnedOn !== 0
+  const hidden = showTestConcepts ? { visibility: 'hidden' } : { visibility: 'visible' }
 
   return (
     <div className="concept">
@@ -62,21 +63,20 @@ const Concept = ({
           <div className="concept-caret" style={{ paddingRight: '32px' }}>
             {!isLeaf && <Icon name={caretIconName} onClick={() => setOpen(!open)} />}
           </div>
-          {!showTestConcepts && (
-            <Form.Group>
-              <Form.Check
-                type="checkbox"
-                inline
-                onChange={handleCheckboxChange}
-                checked={conceptTurnedOn && !showTestConcepts}
-                /* eslint-disable no-param-reassign */
-                ref={el => {
-                  if (el) el.indeterminate = indeterminateCheck
-                }}
-                disabled={(exerEnabled !== undefined && !exerEnabled) || showTestConcepts}
-              />
-            </Form.Group>
-          )}
+          <Form.Group>
+            <Form.Check
+              style={hidden}
+              type="checkbox"
+              inline
+              onChange={handleCheckboxChange}
+              checked={conceptTurnedOn && !showTestConcepts}
+              /* eslint-disable no-param-reassign */
+              ref={el => {
+                if (el) el.indeterminate = indeterminateCheck
+              }}
+              disabled={(exerEnabled !== undefined && !exerEnabled) || showTestConcepts}
+            />
+          </Form.Group>
           <span
             onClick={() => setOpen(!open)}
             onKeyPress={() => setOpen(!open)}
