@@ -53,10 +53,10 @@ const TotalTestQuestions = ({ concepts, setShowTestConcepts, groupId, learningLa
         fontWeight: 'bold',
       }}
     >
+      {totalQuestions} {intl.formatMessage({ id: 'total-questions' })}
       <Button onClick={handleZeroing} size="sm">
         <FormattedMessage id="set-questions-to-zero" />
       </Button>
-      {totalQuestions} {intl.formatMessage({ id: 'total-questions' })}
       <Button onClick={handleResetclick} size="sm">
         <FormattedMessage id="reset-to-default" />
       </Button>
