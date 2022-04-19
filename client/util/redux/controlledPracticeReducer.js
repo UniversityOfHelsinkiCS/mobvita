@@ -39,7 +39,7 @@ export const getNextSnippetFrozen = (storyId, currentSnippetId, acceptedTokens) 
 }
 
 export const getFrozenSnippetsPreview = storyId => {
-  const route = `/stories/${storyId}/preview?frozen_snippet=True`
+  const route = `/stories/${storyId}?frozen_snippet=True&user_mode=preview`
   const prefix = 'GET_FROZEN_SNIPPETS_PREVIEW'
   return callBuilder(route, prefix)
 }
