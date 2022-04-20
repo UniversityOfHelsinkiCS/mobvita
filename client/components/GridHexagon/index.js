@@ -22,10 +22,9 @@ import GridText from './GridText'
 
 const ConstructionHexagon = ({ name, position, statistics, overallTotal, general }) => {
   const { q, r, s } = position
-
   if (general) {
     return (
-      <Hexagon className="hexagon-root" q={q} r={r} s={s}>
+      <Hexagon className="hexagon-general" q={q} r={r} s={s}>
         <GridText className="hexagon-text">{name}</GridText>
       </Hexagon>
     )
@@ -62,24 +61,6 @@ const ConstructionHexagon = ({ name, position, statistics, overallTotal, general
             <Hexagon q={0} r={0} s={0} />
           </Layout>
           <GridText className="hexagon-text">{name}</GridText>
-          {/*
-          <foreignObject x="-12" y="-8" width="24" height="20">
-            <div className="align-center justify-center" xmlns="http://www.w3.org/1999/xhtml">
-              <span
-                style={{
-                  fontSize: '.22em',
-                  textAlign: 'center',
-                  lineHeight: '130%',
-                  textOverflow: 'ellipsis',
-                }}
-              >
-                <br />
-                {name}
-              </span>
-            </div>
-          </foreignObject>
-
-          <Text className="hexagon-text">{name}</Text> */}
         </Hexagon>
       }
     />
@@ -126,13 +107,16 @@ const HexagonTest = props => {
   }, {})
   */
 
+
   const getBiggestHistoryTotal = () => {
     let biggestValue = 0
 
     props.exerciseHistory.map(historyObj => {
       const statsObj = historyObj.concept_statistics
       Object.keys(statsObj).map(key => {
-        if (statsObj[key].total > biggestValue) biggestValue = statsObj[key].total
+        const concept = props.concepts.find(c => c.concept_id === key)
+        if (statsObj[key].total > biggestValue && !concept.hexmap_general)
+          biggestValue = statsObj[key].total
       })
     })
     return biggestValue
@@ -164,12 +148,6 @@ const HexagonTest = props => {
               >
                 <Text className="hexagon-root">{learningLanguage}</Text>
               </Hexagon>
-
-              {/* <Path
-                  className="hexagon-path"
-                  start={new Hex(10, 18, -28)}
-                  end={new Hex(9, 21, -31)}
-                /> */}
 
               {props.concepts
                 .filter(concept => concept.hex_coords)

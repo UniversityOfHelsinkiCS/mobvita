@@ -21,8 +21,13 @@ svg g.hexagon {
   /* fill-opacity: 0.6; */
 }
 
+svg g.hexagon-general g.hexagon {
+  fill: #add8e6;
+}
+
 svg g.hexagon-root g.hexagon {
-  fill: #7eaaf1; 
+  fill: #7eaaf1;
+  /*fill: #7eaaf1;*/ 
   /* fill-opacity: 0.6; */
  }
 
