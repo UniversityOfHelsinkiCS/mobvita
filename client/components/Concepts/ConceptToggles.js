@@ -25,8 +25,10 @@ const ConceptToggles = ({
         className="concept-toggle"
       />
       {target === 'groups' && (
-        <div style={{ display: 'flex', marginLeft:'6em'}}>
-          <label><FormattedMessage id="show-exercise-settings"/></label>
+        <div style={{ display: 'flex', marginLeft: '6em' }}>
+          <label style={{ textAlign: 'right'}}>
+            <FormattedMessage id="show-test-settings" />
+          </label>
           <Checkbox
             toggle
             checked={showTestConcepts}
@@ -34,7 +36,9 @@ const ConceptToggles = ({
             className="concept-toggle"
             disabled={pending}
           />
-          <label style={{  marginLeft: '1em' }}><FormattedMessage id="show-test-settings"/></label>
+          <label style={{marginLeft: '1em'}}>
+            <FormattedMessage id="show-exercise-settings" />
+          </label>
           {pending && (
             <Spinner animation="border" variant="primary" size="sm" style={{ marginLeft: '1em' }} />
           )}

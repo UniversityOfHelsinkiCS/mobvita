@@ -4,9 +4,32 @@ import { useSelector, useDispatch } from 'react-redux'
 import { Button } from 'react-bootstrap'
 import { updateTestConcepts } from 'Utilities/redux/groupsReducer'
 
-const TotalTestQuestions = ({ concepts, setShowTestConcepts, groupId, learningLanguage }) => {
+const TotalTestQuestions = ({
+  concepts,
+  setShowTestConcepts,
+  groupId,
+  learningLanguage,
+  showTestConcepts,
+}) => {
   const { testConcepts, testConceptsPending } = useSelector(({ groups }) => groups)
   const [totalQuestions, setTotalQuestions] = useState(0)
+  const hidden = showTestConcepts
+    ? {
+        visibility: 'hidden',
+        display: 'flex',
+        alignItems: 'center',
+        gap: '1em',
+        paddingLeft: '1rem',
+        fontWeight: 'bold',
+      }
+    : {
+        visibility: 'visible',
+        display: 'flex',
+        alignItems: 'center',
+        gap: '1em',
+        paddingLeft: '1rem',
+        fontWeight: 'bold',
+      }
 
   const dispatch = useDispatch()
   const intl = useIntl()
@@ -44,15 +67,7 @@ const TotalTestQuestions = ({ concepts, setShowTestConcepts, groupId, learningLa
   }
 
   return (
-    <div
-      style={{
-        display: 'flex',
-        alignItems: 'center',
-        gap: '1em',
-        paddingLeft: '1rem',
-        fontWeight: 'bold',
-      }}
-    >
+    <div style={hidden}>
       {totalQuestions} {intl.formatMessage({ id: 'total-questions' })}
       <Button onClick={handleZeroing} size="sm">
         <FormattedMessage id="set-questions-to-zero" />

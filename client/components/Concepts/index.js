@@ -118,14 +118,13 @@ const Concepts = () => {
           showLevels={showLevels}
           setShowLevels={setShowLevels}
         />
-        {bigScreen && showTestConcepts && (
-          <TotalTestQuestions
-            concepts={conceptsToShow}
-            setShowTestConcepts={setShowTestConcepts}
-            groupId={group.group.group_id}
-            learningLanguage={learningLanguage}
-          />
-        )}
+        <TotalTestQuestions
+          concepts={conceptsToShow}
+          setShowTestConcepts={setShowTestConcepts}
+          groupId={group.group.group_id}
+          learningLanguage={learningLanguage}
+          showTestConcepts={showTestConcepts}
+        />
       </div>
       <br />
       <SelectAllCheckbox showTestConcepts={showTestConcepts} />
