@@ -20,9 +20,18 @@ import {
 } from 'react-hexgrid'
 import GridText from './GridText'
 
-const ConstructionHexagon = ({ name, position, statistics, overallTotal }) => {
-  const size = Math.floor((statistics.total / overallTotal) * 10) + 5
+const ConstructionHexagon = ({ name, position, statistics, overallTotal, general }) => {
   const { q, r, s } = position
+
+  if (general) {
+    return (
+      <Hexagon className="hexagon-root" q={q} r={r} s={s}>
+        <GridText className="hexagon-text">{name}</GridText>
+      </Hexagon>
+    )
+  }
+
+  const size = Math.floor((statistics.total / overallTotal) * 10) + 5
   const colorClasses = [
     'red1',
     'red2',
@@ -93,6 +102,30 @@ const HexagonTest = props => {
 
   const current = props.exerciseHistory[0].concept_statistics
 
+  /*
+  const sumOfAll = props.exerciseHistory.reduce(
+    (previousValue, currentValue) =>
+      previousValue + currentValue.concept_statistics,
+    {}
+  )
+
+  console.log('SUM OF ALL ', sumOfAll)
+  const result = props.exerciseHistory.reduce((acc, elem) => {
+    const consept_statistics = Object.entries(elem)
+    console.log('cobs ', consept_statistics[0][1])
+    for (const [correct, total] of consept_statistics[0][1]) {
+      console.log('corr ', correct)
+      console.log('total ', total)
+      /*
+      acc[correct] = acc[correct] || []
+      acc[correct] += count
+      acc[total] = acc[total] || []
+      acc[total] += total
+    }
+    return acc
+  }, {})
+  */
+
   const getBiggestHistoryTotal = () => {
     let biggestValue = 0
 
@@ -146,6 +179,7 @@ const HexagonTest = props => {
                     position={hex.hex_coords}
                     statistics={current[hex.concept_id]}
                     overallTotal={getBiggestHistoryTotal()}
+                    general={hex.hexmap_general}
                     // position={positionOffset(hex.coords)}
                   />
                 ))}
