@@ -165,21 +165,22 @@ const Progress = () => {
                 <FormattedMessage id="vocabulary-view" />
               </div>
             </button>
-            { hiddenFeatures && (
-            <button
-              type="button"
-              onClick={() => setShownChart('hex-map')}
-              style={{ border: 'none' }}
-            >
-              <div className="flex align-center" style={{ gap: '.5em' }}>
-                <input
-                  type="radio"
-                  onChange={() => setShownChart('hex-map')}
-                  checked={shownChart === 'hex-map'}
-                />
-                <FormattedMessage id="hex-map" />
-              </div>
-            </button>)}
+            {hiddenFeatures && (
+              <button
+                type="button"
+                onClick={() => setShownChart('hex-map')}
+                style={{ border: 'none' }}
+              >
+                <div className="flex align-center" style={{ gap: '.5em' }}>
+                  <input
+                    type="radio"
+                    onChange={() => setShownChart('hex-map')}
+                    checked={shownChart === 'hex-map'}
+                  />
+                  <FormattedMessage id="hex-map" />
+                </div>
+              </button>
+            )}
             <button
               type="button"
               onClick={() => setShownChart('exercise-history')}
@@ -233,6 +234,7 @@ const Progress = () => {
               <FormattedMessage id="progress-timeline" />
             </div>
           </div>
+          <Divider />
           <ProgressStats startDate={startDate} endDate={endDate} />
           <div className="progress-page-graph-cont">
             <ProgressGraph
@@ -286,6 +288,7 @@ const Progress = () => {
           </div>
           <div>
             <div>
+              <Divider />
               <div className="progress-page-graph-cont">
                 <VocabularyGraph
                   vocabularyData={vocabularyData}
@@ -318,6 +321,7 @@ const Progress = () => {
               <FormattedMessage id="exercise-history" />
             </div>
           </div>
+          <Divider />
           <History history={exerciseHistory} dateFormat="YYYY.MM" />
         </div>
       ) : shownChart === 'test-history' ? (
@@ -341,6 +345,7 @@ const Progress = () => {
               <FormattedMessage id="Test History" />
             </div>
           </div>
+          <Divider />
           <History history={filterTestHistoryByDate()} testView dateFormat="YYYY.MM.DD HH:mm" />
         </div>
       ) : (
@@ -364,6 +369,7 @@ const Progress = () => {
               <FormattedMessage id="hex-map" />
             </div>
           </div>
+          <Divider />
           <HexagonTest
             exerciseHistory={exerciseHistory}
             pending={historyPending}
