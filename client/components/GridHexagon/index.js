@@ -81,32 +81,23 @@ const HexagonTest = props => {
 
   if (!props.root_hex_coord || props.exerciseHistory?.length < 1) return <div>Not available</div>
 
-  const current = props.exerciseHistory[0].concept_statistics
+  console.log('EX History ', props.exerciseHistory)
 
-  /*
-  const sumOfAll = props.exerciseHistory.reduce(
-    (previousValue, currentValue) =>
-      previousValue + currentValue.concept_statistics,
-    {}
-  )
+  const resultForAllMonths = props.exerciseHistory.reduce((acc, elem) => {
+    const concepts = Object.entries(elem.concept_statistics)
 
-  console.log('SUM OF ALL ', sumOfAll)
-  const result = props.exerciseHistory.reduce((acc, elem) => {
-    const consept_statistics = Object.entries(elem)
-    console.log('cobs ', consept_statistics[0][1])
-    for (const [correct, total] of consept_statistics[0][1]) {
-      console.log('corr ', correct)
-      console.log('total ', total)
-      /*
-      acc[correct] = acc[correct] || []
-      acc[correct] += count
-      acc[total] = acc[total] || []
-      acc[total] += total
+    for (const [concept, stats] of concepts) {
+      if (!acc[concept]) {
+        acc[concept] = stats
+      } else {
+        acc[concept].correct += stats.correct
+        acc[concept].total += stats.total
+      }
     }
     return acc
   }, {})
-  */
 
+  console.log('CURR ', resultForAllMonths)
 
   const getBiggestHistoryTotal = () => {
     let biggestValue = 0
@@ -155,7 +146,7 @@ const HexagonTest = props => {
                   <ConstructionHexagon
                     name={hex.short_name}
                     position={hex.hex_coords}
-                    statistics={current[hex.concept_id]}
+                    statistics={resultForAllMonths[hex.concept_id]}
                     overallTotal={getBiggestHistoryTotal()}
                     general={hex.hexmap_general}
                     // position={positionOffset(hex.coords)}
