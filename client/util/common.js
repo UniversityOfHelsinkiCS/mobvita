@@ -12,6 +12,7 @@ import flagSakha from 'Assets/images/flags/flag_sakha.png'
 import flagTatar from 'Assets/images/flags/flag_tatar.png'
 import flagTatarnew from 'Assets/images/flags/flag_tatar.png'
 import flagUdmurt from 'Assets/images/flags/flag_udmurt.png'
+import flagLivvi from 'Assets/images/flags/flag_karelia.png'
 import flagUdmurtarch from 'Assets/images/flags/flag_udmurt.png'
 import flagMeadowmari from 'Assets/images/flags/flag_meadow-mari.png'
 import flagNorthsaami from 'Assets/images/flags/flag_north-saami.png'
@@ -80,6 +81,7 @@ export const images = {
   flagFinnish,
   flagUdmurt,
   flagUdmurtarch,
+  flagLivvi,
   flagErzya,
   flagKomizyrian,
   flagMeadowmari,
@@ -197,6 +199,7 @@ export const supportedLearningLanguages = {
     'tatar-new',
     'udmurt',
     'udmurt-arch',
+    'livvi'
   ].sort((a, b) => a.localeCompare(b)),
   experimental: ['syriac'],
 }
@@ -224,6 +227,7 @@ export const learningLanguageLocaleCodes = {
   Syriac: 'syc',
   Chinese: 'zh',
   'Udmurt-Arch': 'udm',
+  'livvi': 'olo',
 }
 
 export const betaLanguages = [
@@ -247,6 +251,7 @@ export const betaLanguages = [
   'turkish',
   'udmurt',
   'udmurt-arch',
+  'livvi'
 ]
 
 export const exerciseMaskedLanguages = ['Chinese']
