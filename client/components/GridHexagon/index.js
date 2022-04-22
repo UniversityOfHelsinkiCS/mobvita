@@ -1,3 +1,4 @@
+/* eslint-disable no-restricted-syntax */
 /* eslint-disable react/destructuring-assignment */
 import React from 'react'
 import { UncontrolledReactSVGPanZoom } from 'react-svg-pan-zoom'
@@ -18,6 +19,7 @@ import {
   Hex,
   HexUtils,
 } from 'react-hexgrid'
+import { result } from 'lodash'
 import GridText from './GridText'
 
 const ConstructionHexagon = ({ name, position, statistics, overallTotal, general }) => {
@@ -74,14 +76,11 @@ const positionOffset = coords => {
 const HexagonTest = props => {
   const learningLanguage = useSelector(learningLanguageSelector)
   const hexagonSize = { x: 15, y: 15 }
-
   const generator = GridGenerator.getGenerator('rectangle')
   const hexagons = generator.apply(generator, [35, 35])
   if (props.conceptsPending || !props.concepts || props.pending) return <Spinner fullHeight />
 
   if (!props.root_hex_coord || props.exerciseHistory?.length < 1) return <div>Not available</div>
-
-  console.log('EX History ', props.exerciseHistory)
 
   const resultForAllMonths = props.exerciseHistory.reduce((acc, elem) => {
     const concepts = Object.entries(elem.concept_statistics)
@@ -97,18 +96,18 @@ const HexagonTest = props => {
     return acc
   }, {})
 
-  console.log('CURR ', resultForAllMonths)
-
+  console.log(props.concepts)
   const getBiggestHistoryTotal = () => {
     let biggestValue = 0
-
-    props.exerciseHistory.map(historyObj => {
-      const statsObj = historyObj.concept_statistics
-      Object.keys(statsObj).map(key => {
-        const concept = props.concepts.find(c => c.concept_id === key)
-        if (statsObj[key].total > biggestValue && !concept.hexmap_general)
-          biggestValue = statsObj[key].total
-      })
+    Object.keys(resultForAllMonths).map(key => {
+      const concept = props.concepts.find(c => c.concept_id === key)
+      if (
+        resultForAllMonths[key].total > biggestValue &&
+        !concept.hexmap_general &&
+        concept.hex_coords
+      ) {
+        biggestValue = resultForAllMonths[key].total
+      }
     })
     return biggestValue
   }

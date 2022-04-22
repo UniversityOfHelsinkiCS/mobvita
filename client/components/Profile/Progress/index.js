@@ -165,22 +165,20 @@ const Progress = () => {
                 <FormattedMessage id="vocabulary-view" />
               </div>
             </button>
-            {hiddenFeatures && (
-              <button
-                type="button"
-                onClick={() => setShownChart('hex-map')}
-                style={{ border: 'none' }}
-              >
-                <div className="flex align-center" style={{ gap: '.5em' }}>
-                  <input
-                    type="radio"
-                    onChange={() => setShownChart('hex-map')}
-                    checked={shownChart === 'hex-map'}
-                  />
-                  <FormattedMessage id="hex-map" />
-                </div>
-              </button>
-            )}
+            <button
+              type="button"
+              onClick={() => setShownChart('hex-map')}
+              style={{ border: 'none' }}
+            >
+              <div className="flex align-center" style={{ gap: '.5em' }}>
+                <input
+                  type="radio"
+                  onChange={() => setShownChart('hex-map')}
+                  checked={shownChart === 'hex-map'}
+                />
+                <FormattedMessage id="hex-map" />
+              </div>
+            </button>
             <button
               type="button"
               onClick={() => setShownChart('exercise-history')}

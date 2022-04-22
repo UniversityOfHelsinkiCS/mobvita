@@ -42,6 +42,7 @@ const TotalRowText = ({ isControlStory, hasZeroExercises, rawOneDayStatistics, o
 
 const TotalRow = ({ history, rootConcepts }) => {
   const rootConceptResults = []
+  console.log('HIS ', history)
 
   history.forEach(oneDayResults => {
     rootConceptResults.push(
