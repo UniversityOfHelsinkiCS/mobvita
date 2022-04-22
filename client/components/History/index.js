@@ -4,7 +4,6 @@ import { Table, Icon, TableRow, Popup } from 'semantic-ui-react'
 import { Button } from 'react-bootstrap'
 import moment from 'moment'
 import { FormattedMessage } from 'react-intl'
-import { hiddenFeatures } from 'Utilities/common'
 import useWindowDimensions from 'Utilities/windowDimensions'
 import Concept from './Concept'
 
@@ -42,7 +41,6 @@ const TotalRowText = ({ isControlStory, hasZeroExercises, rawOneDayStatistics, o
 
 const TotalRow = ({ history, rootConcepts }) => {
   const rootConceptResults = []
-  console.log('HIS ', history)
 
   history.forEach(oneDayResults => {
     rootConceptResults.push(
