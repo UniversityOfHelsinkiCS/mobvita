@@ -15,7 +15,7 @@ const TotalTestQuestions = ({
   const [totalQuestions, setTotalQuestions] = useState(0)
   const hidden = showTestConcepts
     ? {
-        visibility: 'hidden',
+        visibility: 'visible',
         display: 'flex',
         alignItems: 'center',
         gap: '1em',
@@ -23,7 +23,7 @@ const TotalTestQuestions = ({
         fontWeight: 'bold',
       }
     : {
-        visibility: 'visible',
+        visibility: 'hidden',
         display: 'flex',
         alignItems: 'center',
         gap: '1em',
