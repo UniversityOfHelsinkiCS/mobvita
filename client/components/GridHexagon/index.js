@@ -96,7 +96,6 @@ const HexagonTest = props => {
     return acc
   }, {})
 
-  console.log(props.concepts)
   const getBiggestHistoryTotal = () => {
     let biggestValue = 0
     Object.keys(resultForAllMonths).map(key => {
