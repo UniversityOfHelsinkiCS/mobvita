@@ -1243,5 +1243,7 @@
     "exercise-history-explanation": "Tämä taulukko näyttää edistymisesi eri konsepteista kuukaudessa — valitulla ajanjaksolla",
     "test-history-explanation": "Tämä taulukko näyttää edistymisesi testeissä kuukausittain — valitulla ajanjaksolla",
     "set-questions-to-zero": "Nollaa kysymykset",
-    "max-questions-exceeded": "Tälle konseptille on mahdollista asettaa enintään {maxNumQuestions} kysymystä"
+    "max-questions-exceeded": "Tälle konseptille on mahdollista asettaa enintään {maxNumQuestions} kysymystä",
+    "collapse-all-concepts": "Sulje kaikki",
+    "expand-all-concepts": "Avaa kaikki"
 }

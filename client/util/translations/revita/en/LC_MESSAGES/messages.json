@@ -1243,5 +1243,7 @@
     "exercise-history-explanation": "This table shows performance on different concepts per month — over the selected time period",
     "test-history-explanation": "This table shows performance on tests per month — over the selected time period",
     "set-questions-to-zero": "Zero all",
-    "max-questions-exceeded": "The number of questions for this concept cannot exceed {maxNumQuestions}"
+    "max-questions-exceeded": "The number of questions for this concept cannot exceed {maxNumQuestions}",
+    "collapse-all-concepts": "Collapse all",
+    "expand-all-concepts": "Expand all"
 }

@@ -1244,5 +1244,7 @@
     "exercise-history-explanation": "Questa tabella mostra i resultati su diversi concetti — al mese nel periodo di tempo selezionato",
     "test-history-explanation": "Questa tabella mostra i resultati dei test — al mese nel periodo di tempo selezionato",
     "set-questions-to-zero": "Azzera tutti",
-    "max-questions-exceeded": "The number of questions for this concept cannot exceed {maxNumQuestions}"
+    "max-questions-exceeded": "The number of questions for this concept cannot exceed {maxNumQuestions}",
+    "collapse-all-concepts": "Collapse all",
+    "expand-all-concepts": "Expand all"
 }

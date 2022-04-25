@@ -1246,5 +1246,7 @@
     "exercise-history-explanation": "В этой таблице показано усвоение по разным конструктам — по месяцам, за выбранный период времени",
     "test-history-explanation": "В этой таблице показана успеваемость по тестам — по месяцам за выбранный период времени.",
     "set-questions-to-zero": "Обнулить все",
-    "max-questions-exceeded": "The number of questions for this concept cannot exceed {maxNumQuestions}"
+    "max-questions-exceeded": "The number of questions for this concept cannot exceed {maxNumQuestions}",
+    "collapse-all-concepts": "Collapse all",
+    "expand-all-concepts": "Expand all"
 }

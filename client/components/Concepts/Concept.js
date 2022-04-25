@@ -15,7 +15,8 @@ const Concept = ({
   handleCheckboxChange,
   handleTestQuestionAmountChange,
   children,
-  conceptsExpanded,
+  expandConcepts,
+  collapseConcepts,
 }) => {
   const CONCEPT_NAME_MAX_LEN = 50
   const [open, setOpen] = useState(false)
@@ -35,18 +36,18 @@ const Concept = ({
   const renderTestConcepts = isLeaf && showTestConcepts && target === 'groups'
   const renderLevels = showLevels && concept.level !== null && concept.level !== undefined
   const [maxQuestionsExceeded, setMaxQuestionsExceeded] = useState(false)
-  /*
-  console.log('EXp ', conceptsExpanded)
 
   useEffect(() => {
-    if (!conceptsExpanded) {
-      console.log('close')
+    if (open) {
       setOpen(false)
     }
-    console.log('open')
-    setOpen(true)
-  }, [conceptsExpanded])
-  */
+  }, [collapseConcepts])
+
+  useEffect(() => {
+    if (!open) {
+      setOpen(true)
+    }
+  }, [expandConcepts])
 
   useEffect(() => {
     if (!showTestConcepts) {

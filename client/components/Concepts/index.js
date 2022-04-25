@@ -15,8 +15,15 @@ import SelectAllCheckbox from './SelectAllCheckbox'
 import ConceptHeader from './ConceptHeader'
 import ConceptToggles from './ConceptToggles'
 import TotalTestQuestions from './TotalTestQuestions'
+import OpenConceptsWidget from './OpenConceptsWidget'
 
-const ConceptTree = ({ concept, showTestConcepts, showLevels }) => {
+const ConceptTree = ({
+  concept,
+  showTestConcepts,
+  showLevels,
+  expandConcepts,
+  collapseConcepts,
+}) => {
   const { target } = useParams()
   const components = {
     user: UserConcept,
@@ -32,6 +39,8 @@ const ConceptTree = ({ concept, showTestConcepts, showLevels }) => {
       concept={concept}
       showTestConcepts={showTestConcepts}
       showLevels={showLevels}
+      expandConcepts={expandConcepts}
+      collapseConcepts={collapseConcepts}
     >
       {concept.children &&
         concept.children.map(c => (
@@ -40,6 +49,8 @@ const ConceptTree = ({ concept, showTestConcepts, showLevels }) => {
             concept={c}
             showTestConcepts={showTestConcepts}
             showLevels={showLevels}
+            expandConcepts={expandConcepts}
+            collapseConcepts={collapseConcepts}
           />
         ))}
     </TargetConcept>
@@ -63,6 +74,8 @@ const Concepts = () => {
     history.location.pathname.endsWith('/settings')
   )
   const [showLevels, setShowLevels] = useState(true)
+  const [expandConcepts, setExpandConcepts] = useState(false)
+  const [collapseConcepts, setCollapseConcepts] = useState(false)
 
   useEffect(() => {
     if (target === 'groups') {
@@ -128,6 +141,12 @@ const Concepts = () => {
       </div>
       <br />
       <SelectAllCheckbox showTestConcepts={showTestConcepts} />
+      <OpenConceptsWidget
+        expandConcepts={expandConcepts}
+        collapseConcepts={collapseConcepts}
+        setCollapseConcepts={setCollapseConcepts}
+        setExpandConcepts={setExpandConcepts}
+      />
       <div style={{ paddingLeft: '10px' }} className="Full-Concept-Tree">
         {conceptTree.map(c => (
           <ConceptTree
@@ -135,6 +154,8 @@ const Concepts = () => {
             concept={c}
             showTestConcepts={showTestConcepts}
             showLevels={showLevels}
+            expandConcepts={expandConcepts}
+            collapseConcepts={collapseConcepts}
           />
         ))}
       </div>
