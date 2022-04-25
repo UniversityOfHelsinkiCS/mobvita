@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 import Router from 'Components/Router'
 import { Router as ReactRouter } from 'react-router-dom'
 import { createBrowserHistory } from 'history'
-import { basePath, checkRevitaStatus, timerExpired } from 'Utilities/common'
+import { basePath, checkRevitaStatus } from 'Utilities/common'
 import { useDispatch } from 'react-redux'
 import { setServerError } from 'Utilities/redux/serverErrorReducer'
 import Toaster from './Toaster'
@@ -29,18 +29,6 @@ const App = () => {
       })
     })
   }
-
-  const activityCheckInterval = setInterval(() => {
-    const requestStorage = localStorage.getItem('last_request')
-    const parsedDate = Date.parse(requestStorage)
-
-    const needsRefreshing = timerExpired(parsedDate, 10)
-    if (needsRefreshing) {
-      const requestSentAt = new Date()
-      window.localStorage.setItem('last_request', requestSentAt)
-      window.location.reload()
-    }
-  }, 36_000_000)
 
   history.listen((location, action) => {
     // Scroll to top when page changes.

@@ -4,7 +4,7 @@ import { Sidebar as SemanticSidebar, Menu, Icon, Dropdown, Segment } from 'seman
 import { useDispatch, useSelector } from 'react-redux'
 import { Swipeable } from 'react-swipeable'
 import { FormattedMessage } from 'react-intl'
-import { localeOptions, capitalize, localeNameToCode, images } from 'Utilities/common'
+import { localeOptions, capitalize, localeNameToCode, images, timerExpired } from 'Utilities/common'
 import { setLocale } from 'Utilities/redux/localeReducer'
 import { sidebarSetOpen } from 'Utilities/redux/sidebarReducer'
 import { logout, updateLocale } from 'Utilities/redux/userReducer'
@@ -52,6 +52,18 @@ export default function Sidebar({ history }) {
     dispatch(logout())
     history.push('/')
   }
+
+  const activityCheckInterval = setInterval(() => {
+    const requestStorage = localStorage.getItem('last_request')
+    const parsedDate = Date.parse(requestStorage)
+
+    const needsRefreshing = timerExpired(parsedDate, 10)
+    if (needsRefreshing) {
+      const requestSentAt = new Date()
+      window.localStorage.setItem('last_request', requestSentAt)
+      history.push('/welcome')
+    }
+  }, 36_000_000)
 
   const menuClickWrapper = func => {
     if (func) func()
