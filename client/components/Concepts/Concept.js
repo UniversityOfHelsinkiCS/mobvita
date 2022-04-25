@@ -82,7 +82,7 @@ const Concept = ({
               type="checkbox"
               inline
               onChange={handleCheckboxChange}
-              checked={testEnabled && conceptTurnedOn && !showTestConcepts}
+              checked={conceptTurnedOn && !showTestConcepts}
               /* eslint-disable no-param-reassign */
               ref={el => {
                 if (el) el.indeterminate = indeterminateCheck
