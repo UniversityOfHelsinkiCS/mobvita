@@ -1242,5 +1242,6 @@
     "hex-map-explanation": "Tämä kaavio esittää, kuinka hyvin hallitset kieliopin — valitulla ajanjaksolla",
     "exercise-history-explanation": "Tämä taulukko näyttää edistymisesi eri konsepteista kuukaudessa — valitulla ajanjaksolla",
     "test-history-explanation": "Tämä taulukko näyttää edistymisesi testeissä kuukausittain — valitulla ajanjaksolla",
-    "set-questions-to-zero": "Nollaa kysymykset"
+    "set-questions-to-zero": "Nollaa kysymykset",
+    "max-questions-exceeded": "Tälle konseptille on mahdollista asettaa enintään {maxNumQuestions} kysymystä"
 }

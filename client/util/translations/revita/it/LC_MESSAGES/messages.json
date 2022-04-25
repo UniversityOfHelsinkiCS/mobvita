@@ -1243,5 +1243,6 @@
     "hex-map-explanation": "Questa mappa termica mostra come diventono conosciuti diversi concetti di apprendimento — nel periodo di tempo selezionato",
     "exercise-history-explanation": "Questa tabella mostra i resultati su diversi concetti — al mese nel periodo di tempo selezionato",
     "test-history-explanation": "Questa tabella mostra i resultati dei test — al mese nel periodo di tempo selezionato",
-    "set-questions-to-zero": "Azzera tutti"
+    "set-questions-to-zero": "Azzera tutti",
+    "max-questions-exceeded": "The number of questions for this concept cannot exceed {maxNumQuestions}"
 }

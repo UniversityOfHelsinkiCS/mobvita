@@ -1242,5 +1242,6 @@
     "hex-map-explanation": "This heat map shows how well different learning concepts are mastered — over the selected time period",
     "exercise-history-explanation": "This table shows performance on different concepts per month — over the selected time period",
     "test-history-explanation": "This table shows performance on tests per month — over the selected time period",
-    "set-questions-to-zero": "Zero all"
+    "set-questions-to-zero": "Zero all",
+    "max-questions-exceeded": "The number of questions for this concept cannot exceed {maxNumQuestions}"
 }

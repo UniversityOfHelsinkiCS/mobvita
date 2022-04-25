@@ -1245,5 +1245,6 @@
     "hex-map-explanation": "Эта тепловая карта показывает, насколько хорошо освоены различные конструкты — за выбранный период времени.",
     "exercise-history-explanation": "В этой таблице показано усвоение по разным конструктам — по месяцам, за выбранный период времени",
     "test-history-explanation": "В этой таблице показана успеваемость по тестам — по месяцам за выбранный период времени.",
-    "set-questions-to-zero": "Обнулить все"
+    "set-questions-to-zero": "Обнулить все",
+    "max-questions-exceeded": "The number of questions for this concept cannot exceed {maxNumQuestions}"
 }

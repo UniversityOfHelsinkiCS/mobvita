@@ -33,13 +33,20 @@ const Concept = ({
   const isLeaf = concept.children.length === 0
   const renderTestConcepts = isLeaf && showTestConcepts && target === 'groups'
   const renderLevels = showLevels && concept.level !== null && concept.level !== undefined
+  const [maxQuestionsExceeded, setMaxQuestionsExceeded] = useState(false)
 
   const validateNumberInput = event => {
     const number = Number(event.target.value)
-    if (Number.isNaN(number)) return setNumberError(true)
-    if (number < 0) return setNumberError(true)
-    if (!Number.isInteger(number)) return setNumberError(true)
+    if (Number.isNaN(number) || number < 0 || !Number.isInteger(number)) {
+      setMaxQuestionsExceeded(false)
+      return setNumberError(true)
+    }
+    if (number > maxNumQuestions) {
+      setNumberError(false)
+      return setMaxQuestionsExceeded(true)
+    }
 
+    setMaxQuestionsExceeded(false)
     setNumberError(false)
     return handleTestQuestionAmountChange(event)
   }
@@ -59,6 +66,11 @@ const Concept = ({
           <FormattedMessage id="please-input-non-negative-integer" />
         </div>
       )}
+      {maxQuestionsExceeded && (
+        <div style={{ color: 'red' }}>
+          <FormattedMessage id="max-questions-exceeded" values={{ maxNumQuestions }} />
+        </div>
+      )}
       <div className="concept-row">
         <div style={{ display: 'flex', flex: 1 }}>
           <div className="concept-caret" style={{ paddingRight: '32px' }}>
@@ -70,7 +82,7 @@ const Concept = ({
               type="checkbox"
               inline
               onChange={handleCheckboxChange}
-              checked={conceptTurnedOn && !showTestConcepts}
+              checked={testEnabled && conceptTurnedOn && !showTestConcepts}
               /* eslint-disable no-param-reassign */
               ref={el => {
                 if (el) el.indeterminate = indeterminateCheck

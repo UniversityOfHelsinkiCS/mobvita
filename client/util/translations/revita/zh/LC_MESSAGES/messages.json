@@ -597,5 +597,6 @@
     "hex-map-explanation": "此热力图展示了在选定时间段内不同知识点的掌握情况",
     "exercise-history-explanation": "此表展示了您在选定时间段内每个月对于不同知识点的表现",
     "test-history-explanation": "此表展示了您在选定时间段内每个月在测验里的表现",
-    "set-questions-to-zero": "清零"
+    "set-questions-to-zero": "清零",
+    "max-questions-exceeded": "The number of questions for this concept cannot exceed {maxNumQuestions}"
 }
