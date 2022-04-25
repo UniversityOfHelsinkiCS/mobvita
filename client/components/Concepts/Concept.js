@@ -73,7 +73,12 @@ const Concept = ({
   }
 
   const truncateConceptName = name => {
-    return `${name.slice(0, CONCEPT_NAME_MAX_LEN)}...`
+    const truncatedName = `${name.slice(0, CONCEPT_NAME_MAX_LEN)}...`
+
+    if ((maxNumQuestions > 0 && showTestConcepts) || (exerEnabled && !showTestConcepts)) {
+      return <Popup content={name} trigger={<span>{truncatedName}</span>} />
+    }
+    return <Popup content={name} trigger={<span className="disabled-text">{truncatedName}</span>} />
   }
 
   const indeterminateCheck = conceptTurnedOn && conceptTurnedOn !== 1 && conceptTurnedOn !== 0
@@ -119,8 +124,10 @@ const Concept = ({
             className="concept-name"
           >
             {name.length > CONCEPT_NAME_MAX_LEN ? (
-              <Popup content={name} trigger={<span>{truncateConceptName(name)}</span>} />
-            ) : !isLeaf || maxNumQuestions > 0 ? (
+              <span>{truncateConceptName(name)}</span>
+            ) : !isLeaf ||
+              (maxNumQuestions > 0 && showTestConcepts) ||
+              (exerEnabled && !showTestConcepts) ? (
               <span>{name}</span>
             ) : (
               <span className="disabled-text">{name}</span>
@@ -138,7 +145,7 @@ const Concept = ({
           {renderTestConcepts && (
             <div style={{ marginLeft: '1.5em', display: 'flex' }}>
               <span style={{ marginRight: '0.3em' }}>
-                {maxNumQuestions > 0 ? (
+                {(maxNumQuestions > 0 && showTestConcepts) || (exerEnabled && !showTestConcepts) ? (
                   <>{intl.formatMessage({ id: 'questions' })}:</>
                 ) : (
                   <span className="disabled-text">
