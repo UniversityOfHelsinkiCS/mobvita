@@ -1,5 +1,5 @@
 /* eslint-disable no-nested-ternary */
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { useParams } from 'react-router-dom'
 import { Collapse } from 'react-collapse'
 import { Icon, Popup } from 'semantic-ui-react'
@@ -15,6 +15,7 @@ const Concept = ({
   handleCheckboxChange,
   handleTestQuestionAmountChange,
   children,
+  conceptsExpanded,
 }) => {
   const CONCEPT_NAME_MAX_LEN = 50
   const [open, setOpen] = useState(false)
@@ -34,6 +35,25 @@ const Concept = ({
   const renderTestConcepts = isLeaf && showTestConcepts && target === 'groups'
   const renderLevels = showLevels && concept.level !== null && concept.level !== undefined
   const [maxQuestionsExceeded, setMaxQuestionsExceeded] = useState(false)
+  /*
+  console.log('EXp ', conceptsExpanded)
+
+  useEffect(() => {
+    if (!conceptsExpanded) {
+      console.log('close')
+      setOpen(false)
+    }
+    console.log('open')
+    setOpen(true)
+  }, [conceptsExpanded])
+  */
+
+  useEffect(() => {
+    if (!showTestConcepts) {
+      setNumberError(false)
+      setMaxQuestionsExceeded(false)
+    }
+  }, [showTestConcepts])
 
   const validateNumberInput = event => {
     const number = Number(event.target.value)
