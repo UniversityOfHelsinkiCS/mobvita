@@ -132,15 +132,15 @@ const Concepts = () => {
           setShowLevels={setShowLevels}
         />
         {target === 'groups' && (
-        <div>
-          <TotalTestQuestions
-            concepts={conceptsToShow}
-            setShowTestConcepts={setShowTestConcepts}
-            groupId={group.group.group_id}
-            learningLanguage={learningLanguage}
-            showTestConcepts={showTestConcepts}
-          />
-        </div>
+          <div>
+            <TotalTestQuestions
+              concepts={conceptsToShow}
+              setShowTestConcepts={setShowTestConcepts}
+              groupId={group.group.group_id}
+              learningLanguage={learningLanguage}
+              showTestConcepts={showTestConcepts}
+            />
+          </div>
         )}
       </div>
       <br />
