@@ -131,13 +131,17 @@ const Concepts = () => {
           showLevels={showLevels}
           setShowLevels={setShowLevels}
         />
-        <TotalTestQuestions
-          concepts={conceptsToShow}
-          setShowTestConcepts={setShowTestConcepts}
-          groupId={group.group.group_id}
-          learningLanguage={learningLanguage}
-          showTestConcepts={showTestConcepts}
-        />
+        {target === 'groups' && (
+        <div>
+          <TotalTestQuestions
+            concepts={conceptsToShow}
+            setShowTestConcepts={setShowTestConcepts}
+            groupId={group.group.group_id}
+            learningLanguage={learningLanguage}
+            showTestConcepts={showTestConcepts}
+          />
+        </div>
+        )}
       </div>
       <br />
       <OpenConceptsWidget
