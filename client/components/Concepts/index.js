@@ -140,13 +140,13 @@ const Concepts = () => {
         />
       </div>
       <br />
-      <SelectAllCheckbox showTestConcepts={showTestConcepts} />
       <OpenConceptsWidget
         expandConcepts={expandConcepts}
         collapseConcepts={collapseConcepts}
         setCollapseConcepts={setCollapseConcepts}
         setExpandConcepts={setExpandConcepts}
       />
+      <SelectAllCheckbox showTestConcepts={showTestConcepts} />
       <div style={{ paddingLeft: '10px' }} className="Full-Concept-Tree">
         {conceptTree.map(c => (
           <ConceptTree

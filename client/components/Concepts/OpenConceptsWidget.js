@@ -1,6 +1,6 @@
 import React from 'react'
 import { FormattedMessage } from 'react-intl'
-import { Button } from 'semantic-ui-react'
+import { Button } from 'react-bootstrap'
 
 const OpenConceptsWidget = ({
   expandConcepts,
@@ -18,10 +18,10 @@ const OpenConceptsWidget = ({
 
   return (
     <div className="flex">
-      <Button onClick={open}>
+      <Button style={{ marginLeft: '1rem', marginTop: '0.5rem' }} onClick={open} size="sm">
         <FormattedMessage id="expand-all-concepts" />
       </Button>
-      <Button onClick={close}>
+      <Button style={{ marginLeft: '1rem', marginTop: '0.5rem'}} onClick={close} size="sm">
         <FormattedMessage id="collapse-all-concepts" />
       </Button>
     </div>

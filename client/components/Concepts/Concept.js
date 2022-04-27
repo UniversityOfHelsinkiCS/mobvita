@@ -17,6 +17,8 @@ const Concept = ({
   children,
   expandConcepts,
   collapseConcepts,
+  conceptsCollapsed,
+  setConceptsCollapsed,
 }) => {
   const CONCEPT_NAME_MAX_LEN = 50
   const [open, setOpen] = useState(false)
@@ -48,6 +50,12 @@ const Concept = ({
       setOpen(true)
     }
   }, [expandConcepts])
+
+  useEffect(() => {
+    if (open !== conceptsCollapsed) {
+      setOpen(conceptsCollapsed)
+    }
+  }, [conceptsCollapsed])
 
   useEffect(() => {
     if (!showTestConcepts) {
