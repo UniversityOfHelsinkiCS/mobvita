@@ -227,6 +227,15 @@ const Settings = () => {
                     <FormattedMessage id="listening-exercises" />:
                   </span>
                   <div className="profile-page-radio-button-group">
+                    {hiddenFeatures && (
+                      <Radio
+                      label={intl.formatMessage({ id: 'listen-to-context' })}
+                      name="audioTask"
+                      value="context"
+                      checked={user.task_audio === 'context'}
+                      onChange={() => dispatch(updateAudioTask('context'))}
+                    />
+                    )}
                     <Radio
                       label={intl.formatMessage({ id: 'listen-to-chunks-and-words' })}
                       name="audioTask"
