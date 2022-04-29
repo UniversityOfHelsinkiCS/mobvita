@@ -94,7 +94,7 @@ const Article = ({ card, cardNumbering, answerCard }) => {
       <Flashcard {...cardProps}>
         <div className="flex align-center grow">
           {!answerChecked && <div className="flex-col gap-row-nm">{articleButtons}</div>}
-          <span className={`${fontClass} auto`}>{lemma} lol</span>
+          <span className={`${fontClass} auto`}>{lemma}</span>
         </div>
       </Flashcard>
       <Flashcard {...cardProps}>
