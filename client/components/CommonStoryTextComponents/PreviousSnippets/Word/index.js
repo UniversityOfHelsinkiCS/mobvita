@@ -8,7 +8,9 @@ import PreviousExerciseWord from './PreviousExerciseWord'
 const Word = ({ word, answer, tiedAnswer, hideFeedback }) => {
   const history = useHistory()
   const { correctAnswerIDs } = useSelector(({ practice }) => practice)
-  const isPreviewMode = history.location.pathname.includes('preview')
+  const isPreviewMode =
+    history.location.pathname.includes('preview') ||
+    history.location.pathname.includes('controlled-story')
 
   // "Display feedback" toggle is off
   if (hideFeedback) return <PlainWord word={word} annotatingAllowed />
@@ -20,6 +22,7 @@ const Word = ({ word, answer, tiedAnswer, hideFeedback }) => {
 
   // preview mode (if concept list is not empty)
   if (isPreviewMode && word.concepts?.length > 0) {
+    console.log(word)
     return <PreviousExerciseWord word={word} />
   }
 
@@ -29,7 +32,8 @@ const Word = ({ word, answer, tiedAnswer, hideFeedback }) => {
   }
 
   // review mode (highlight all word objs that have 'wrong' field))
-  if ({}.propertyIsEnumerable.call(word, 'wrong')) { // field exists but might be empty
+  if ({}.propertyIsEnumerable.call(word, 'wrong')) {
+    // field exists but might be empty
     const answerObj = {
       correct: word.surface,
       concept: word.concept,

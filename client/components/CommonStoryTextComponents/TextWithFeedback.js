@@ -11,9 +11,8 @@ const TextWithFeedback = ({ snippet, exercise = false, answers, mode, hideFeedba
   const reservedLinePositions = {}
   let inChunk = false
   let chunkIsOneVerb = false
-
   const history = useHistory()
-  const inControlStoryEditor = history.location.pathname.includes('controlled-story')
+  const inControlStoryEditor = history.location.pathname.includes('controlled-storpy')
 
   const lineColors = ['blue', 'green', 'black', 'purple', 'cyan']
 
@@ -101,6 +100,7 @@ const TextWithFeedback = ({ snippet, exercise = false, answers, mode, hideFeedba
   }
 
   const getNonExerciseWordComponent = (hideFeedback, word, props) => {
+    console.log(answers)
     return inControlStoryEditor ? (
       <ControlWord
         hideFeedback={hideFeedback}
