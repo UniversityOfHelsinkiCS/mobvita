@@ -98,34 +98,10 @@ const HexagonTest = props => {
     return acc
   }, {})
 
-  console.log('previous ', props.exerciseHistory)
-  console.log('reduced ', accumulatedConcepts)
-
-  /*
-  const sumUpAllMonths = () => {
-    let initialObject = {}
-    for (let i = 0; i < props.exerciseHistory.length; i++) {
-      const concepts = Object.entries(props.exerciseHistory[i].concept_statistics)
-      for (const [concept, stats] of concepts) {
-        if (!initialObject[concept]) {
-          initialObject[concept] = stats
-        } else {
-          initialObject[concept].correct += stats.correct
-          initialObject[concept].total += stats.total
-        }
-      }
-    }
-
-    return initialObject
-  }
-
-  const accumulatedConcepts = sumUpAllMonths()
-  */
-
   const getBiggestHistoryTotal = () => {
     let biggestValue = 0
     Object.keys(accumulatedConcepts).map(key => {
-      const concept = props.concepts.find(c => c.concept_id === key)
+      const concept = props.concepts.find(c => String(c.concept_id) === key)
       if (
         accumulatedConcepts[key].total > biggestValue &&
         !concept.hexmap_general &&
