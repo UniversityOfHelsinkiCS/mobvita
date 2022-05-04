@@ -41,7 +41,6 @@ const ControlledStoryEditView = ({ match }) => {
 
   const learningLanguage = useSelector(learningLanguageSelector)
   const { id } = match.params
-  console.log('ID ', id)
 
   useEffect(() => {
     if (user?.user.is_teacher) {
@@ -146,8 +145,7 @@ const ControlledStoryEditView = ({ match }) => {
                   snippet={paragraph}
                   answers={null}
                 />
-                <br />
-                <br />
+                <hr />
               </>
             ))}
             <ScrollArrow />

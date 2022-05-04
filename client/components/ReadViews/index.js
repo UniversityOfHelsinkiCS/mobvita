@@ -41,7 +41,6 @@ const ReadViews = ({ match }) => {
 
   const learningLanguage = useSelector(learningLanguageSelector)
   const { id } = match.params
-  console.log('ID ', id)
   useEffect(() => {
     if (user?.user.is_teacher) {
       setHideFeedback(false)

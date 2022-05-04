@@ -100,7 +100,6 @@ const TextWithFeedback = ({ snippet, exercise = false, answers, mode, hideFeedba
   }
 
   const getNonExerciseWordComponent = (hideFeedback, word, props) => {
-    console.log(answers)
     return inControlStoryEditor ? (
       <ControlWord
         hideFeedback={hideFeedback}

@@ -22,7 +22,6 @@ const Word = ({ word, answer, tiedAnswer, hideFeedback }) => {
 
   // preview mode (if concept list is not empty)
   if (isPreviewMode && word.concepts?.length > 0) {
-    console.log(word)
     return <PreviousExerciseWord word={word} />
   }
 

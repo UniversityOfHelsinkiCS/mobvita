@@ -37,7 +37,9 @@ const PreviousExerciseWord = ({ word, answer, tiedAnswer }) => {
 
   const [show, setShow] = useState(false)
   const history = useHistory()
-  const isPreviewMode = history.location.pathname.includes('preview')
+  const isPreviewMode =
+    history.location.pathname.includes('preview') ||
+    history.location.pathname.includes('controlled-story')
   const learningLanguage = useSelector(learningLanguageSelector)
   const autoSpeak = useSelector(({ user }) => user.data.user.auto_speak)
   const dictionaryLanguage = useSelector(dictionaryLanguageSelector)
