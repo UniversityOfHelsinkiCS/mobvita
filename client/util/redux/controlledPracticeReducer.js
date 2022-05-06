@@ -21,6 +21,13 @@ export const getCurrentSnippetFrozen = storyId => {
   return callBuilder(route, prefix, 'post', {})
 }
 
+export const freezeControlledStory = (storyId, snippets) => {
+  const route = `/stories/${storyId}/frozen`
+  const prefix = 'FREEZE_ALL_SNIPPETS'
+  const payload = { snippets }
+  return callBuilder(route, prefix, 'post', payload)
+}
+
 export const refreshCurrentSnippet = (storyId, currentSnippetId, acceptedTokens) => {
   const route =
     currentSnippetId > 0
@@ -52,7 +59,10 @@ export const resetCurrentSnippet = storyId => {
 
 export const addExercise = wordObj => ({ type: 'ADD_EXERCISE', wordObj })
 export const removeExercise = id => ({ type: 'REMOVE_EXERCISE', id })
-
+export const initControlledExerciseSnippets = snippets => ({
+  type: 'INIT_CONTROLLED_SNIPPETS',
+  snippets,
+})
 export const setPrevious = previous => ({ type: 'SET_PREVIOUS_FROZEN_SNIPPETS', payload: previous })
 export const addToPrevious = snippet => ({ type: 'ADD_TO_FROZEN_SNIPPETS', snippet })
 export const clearFocusedSnippet = () => ({ type: 'CLEAR_FOCUSED_SNIPPET' })
@@ -60,10 +70,22 @@ export const clearFocusedSnippet = () => ({ type: 'CLEAR_FOCUSED_SNIPPET' })
 // Reducer
 // You can include more app wide actions such as "selected: []" into the state
 export default (
-  state = { previous: [], acceptedTokens: [], pending: false, error: false, getNextSnippet: false },
+  state = {
+    previous: [],
+    acceptedTokens: [],
+    snippets: {},
+    pending: false,
+    error: false,
+    getNextSnippet: false,
+  },
   action
 ) => {
   switch (action.type) {
+    case 'INIT_CONTROLLED_SNIPPETS':
+      return {
+        ...state,
+        snippets: action.snippets,
+      }
     case 'ADD_EXERCISE':
       return {
         ...state,
@@ -179,7 +201,24 @@ export default (
         focused: undefined,
         previous: [],
       }
-
+    case 'FREEZE_ALL_SNIPPETS_ATTEMPT':
+      return {
+        ...state,
+        pending: true,
+        error: false,
+      }
+    case 'FREEZE_ALL_SNIPPETS_FAILURE':
+      return {
+        ...state,
+        pending: false,
+        error: true,
+      }
+    case 'FREEZE_ALL_SNIPPETS_SUCCESS':
+      return {
+        ...state,
+        pending: false,
+        error: false,
+      }
     case 'GET_NEXT_SNIPPET_FROZEN_ATTEMPT':
       return {
         ...state,

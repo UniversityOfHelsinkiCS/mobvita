@@ -11,6 +11,8 @@ import {
   setPrevious,
   getCurrentSnippetFrozen,
   getNextSnippetFrozen,
+  freezeControlledStory,
+  initControlledExerciseSnippets,
 } from 'Utilities/redux/controlledPracticeReducer'
 import { finishSnippet } from 'Utilities/redux/practiceReducer'
 import { clearTranslationAction } from 'Utilities/redux/translationReducer'
@@ -27,6 +29,7 @@ import Footer from '../Footer'
 import ScrollArrow from '../ScrollArrow'
 
 const ControlledStoryEditView = ({ match }) => {
+  const [initSnippets, setInitSnippets] = useState({})
   const dispatch = useDispatch()
   const intl = useIntl()
   const { width } = useWindowDimensions()
@@ -49,6 +52,16 @@ const ControlledStoryEditView = ({ match }) => {
   const learningLanguage = useSelector(learningLanguageSelector)
   const { id } = match.params
 
+  const initAcceptedTokens = () => {
+    const initialAcceptedTokensList = {}
+    for (let i = 0; i < story?.paragraph.length; i++) {
+      if (!initialAcceptedTokensList[i]) {
+        initialAcceptedTokensList[i] = []
+      }
+    }
+    return initialAcceptedTokensList
+  }
+
   console.log('contr ', controlledPractice)
 
   useEffect(() => {
@@ -63,18 +76,9 @@ const ControlledStoryEditView = ({ match }) => {
   }, [])
 
   useEffect(() => {
-    if (
-      controlledPractice?.focused?.total_num === story?.paragraph.length - 1 &&
-      controlledPractice.focused.previous.length === story.paragraph.length - 1
-    ) {
-      console.log('?')
-      dispatch(finishSnippet())
-    }
-  }, [story, controlledPractice])
-
-  useEffect(() => {
     if (story) {
       const storyWords = story.paragraph.flat(1)
+      dispatch(initControlledExerciseSnippets(initAcceptedTokens()))
       dispatch(setAnnotations(storyWords))
     }
   }, [story])
@@ -105,14 +109,7 @@ const ControlledStoryEditView = ({ match }) => {
   }
 
   const saveControlledStory = () => {
-    setDone(true)
-    dispatch(setPrevious([story.paragraph]))
-    if (story.paragraph.length > 1) {
-      dispatch(
-        getNextSnippetFrozen(id, story.paragraph.length - 1, controlledPractice.acceptedTokens)
-      )
-    }
-    console.log('++')
+    dispatch(freezeControlledStory(id, controlledPractice.snippets))
   }
 
   return (
