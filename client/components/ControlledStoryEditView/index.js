@@ -167,11 +167,10 @@ const ControlledStoryEditView = ({ match }) => {
               </div>
             )}
             <Divider />
-            {story.paragraph.map((paragraph, index) => (
+            {story.paragraph.map(paragraph => (
               <>
                 <TextWithFeedback
                   exercise
-                  snippetId={index}
                   hideFeedback={hideFeedback}
                   mode="review"
                   snippet={paragraph}

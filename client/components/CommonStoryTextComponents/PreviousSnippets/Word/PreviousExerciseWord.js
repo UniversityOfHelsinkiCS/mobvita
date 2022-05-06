@@ -23,7 +23,7 @@ import {
 } from 'Utilities/redux/annotationsReducer'
 import Tooltip from 'Components/PracticeView/Tooltip'
 
-const PreviousExerciseWord = ({ word, answer, tiedAnswer, snippetId }) => {
+const PreviousExerciseWord = ({ word, answer, tiedAnswer }) => {
   const {
     surface,
     isWrong,
@@ -71,9 +71,10 @@ const PreviousExerciseWord = ({ word, answer, tiedAnswer, snippetId }) => {
     if (controlledStory && word.concepts?.length > 0) {
       if (!chosen) {
         setChosen(true)
-        dispatch(addExercise(word, snippetId))
+        dispatch(addExercise(word))
       } else {
         setChosen(false)
+        dispatch(removeExercise(word))
       }
     }
 

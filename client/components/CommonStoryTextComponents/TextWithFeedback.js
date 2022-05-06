@@ -12,7 +12,6 @@ const TextWithFeedback = ({
   answers,
   mode,
   hideFeedback,
-  snippetId,
   ...props
 }) => {
   let lowestLinePosition = 0
@@ -102,7 +101,7 @@ const TextWithFeedback = ({
 
   const getExerciseWordComponent = (word, props) => {
     return inControlStoryEditor ? (
-      <PreviousExerciseWord word={word} snippetId={snippetId} />
+      <PreviousExerciseWord word={word} />
     ) : (
       /*
       <ControlExerciseWord
