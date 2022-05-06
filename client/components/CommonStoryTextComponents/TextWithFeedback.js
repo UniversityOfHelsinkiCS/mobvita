@@ -4,15 +4,24 @@ import ExerciseWord from 'Components/PracticeView/CurrentSnippet/ExerciseWord'
 import ControlWord from 'Components/ControlledStoryEditView/PreviousSnippets/ControlWord'
 import Word from 'Components/CommonStoryTextComponents/PreviousSnippets/Word'
 import ControlExerciseWord from '../ControlledStoryEditView/CurrentSnippet/ControlExerciseWord'
+import PreviousExerciseWord from './PreviousSnippets/Word/PreviousExerciseWord'
 
-const TextWithFeedback = ({ snippet, exercise = false, answers, mode, hideFeedback, ...props }) => {
+const TextWithFeedback = ({
+  snippet,
+  exercise = false,
+  answers,
+  mode,
+  hideFeedback,
+  snippetId,
+  ...props
+}) => {
   let lowestLinePosition = 0
   const openLinePositions = [1, 2, 3, 4, 5]
   const reservedLinePositions = {}
   let inChunk = false
   let chunkIsOneVerb = false
   const history = useHistory()
-  const inControlStoryEditor = history.location.pathname.includes('controlled-storpy')
+  const inControlStoryEditor = history.location.pathname.includes('controlled-story')
 
   const lineColors = ['blue', 'green', 'black', 'purple', 'cyan']
 
@@ -93,8 +102,18 @@ const TextWithFeedback = ({ snippet, exercise = false, answers, mode, hideFeedba
 
   const getExerciseWordComponent = (word, props) => {
     return inControlStoryEditor ? (
-      <ControlExerciseWord key={word.ID} word={word} {...props} />
+      <PreviousExerciseWord word={word} snippetId={snippetId} />
     ) : (
+      /*
+      <ControlExerciseWord
+        hideFeedback={hideFeedback}
+        key={word.ID}
+        word={word}
+        answer={mode !== 'review' && answers[word.ID]}
+        tiedAnswer={mode !== 'review' && answers[word.tiedTo]}
+        {...props}
+      />
+      */
       <ExerciseWord key={word.ID} word={word} {...props} />
     )
   }

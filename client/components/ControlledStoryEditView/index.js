@@ -10,9 +10,9 @@ import { clearFocusedSnippet } from 'Utilities/redux/snippetsReducer'
 import {
   setPrevious,
   getCurrentSnippetFrozen,
-  getNextSnippetFrozen,
   freezeControlledStory,
   initControlledExerciseSnippets,
+  resetControlledStoryEditor,
 } from 'Utilities/redux/controlledPracticeReducer'
 import { finishSnippet } from 'Utilities/redux/practiceReducer'
 import { clearTranslationAction } from 'Utilities/redux/translationReducer'
@@ -29,12 +29,10 @@ import Footer from '../Footer'
 import ScrollArrow from '../ScrollArrow'
 
 const ControlledStoryEditView = ({ match }) => {
-  const [initSnippets, setInitSnippets] = useState({})
   const dispatch = useDispatch()
   const intl = useIntl()
   const { width } = useWindowDimensions()
   const [hideFeedback, setHideFeedback] = useState(false)
-  const [done, setDone] = useState(false)
   const mode = getMode()
   const history = useHistory()
   const [showRefreshButton, setShowRefreshButton] = useState(false)
@@ -112,6 +110,10 @@ const ControlledStoryEditView = ({ match }) => {
     dispatch(freezeControlledStory(id, controlledPractice.snippets))
   }
 
+  const handleEditorReset = () => {
+    dispatch(initControlledExerciseSnippets(initAcceptedTokens()))
+  }
+
   return (
     <div className="cont-tall flex-col space-between align-center pt-sm">
       <div className="flex mb-nm">
@@ -166,9 +168,11 @@ const ControlledStoryEditView = ({ match }) => {
               </div>
             )}
             <Divider />
-            {story.paragraph.map(paragraph => (
+            {story.paragraph.map((paragraph, index) => (
               <>
                 <TextWithFeedback
+                  exercise
+                  snippetId={index}
                   hideFeedback={hideFeedback}
                   mode="review"
                   snippet={paragraph}
@@ -187,6 +191,16 @@ const ControlledStoryEditView = ({ match }) => {
                 <FormattedMessage id="freeze-and-save-control-story" />
               </Button>
             </div>
+            <Button
+              variant="secondary"
+              size="sm"
+              onClick={handleEditorReset}
+              style={{ marginBottom: '0.5em' }}
+            >
+              <span>
+                <FormattedMessage id="start-over" /> <Icon name="level up alternate" />
+              </span>
+            </Button>
             <ScrollArrow />
           </Segment>
           {width >= 500 ? (

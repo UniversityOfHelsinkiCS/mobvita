@@ -14,6 +14,7 @@ import {
 } from 'Utilities/common'
 import { setReferences, setExplanation } from 'Utilities/redux/practiceReducer'
 import { getTranslationAction, setWords } from 'Utilities/redux/translationReducer'
+import { addExercise, removeExercise } from 'Utilities/redux/controlledPracticeReducer'
 import {
   setFocusedSpan,
   setHighlightRange,
@@ -22,7 +23,7 @@ import {
 } from 'Utilities/redux/annotationsReducer'
 import Tooltip from 'Components/PracticeView/Tooltip'
 
-const PreviousExerciseWord = ({ word, answer, tiedAnswer }) => {
+const PreviousExerciseWord = ({ word, answer, tiedAnswer, snippetId }) => {
   const {
     surface,
     isWrong,
@@ -36,10 +37,12 @@ const PreviousExerciseWord = ({ word, answer, tiedAnswer }) => {
   } = word
 
   const [show, setShow] = useState(false)
+  const [chosen, setChosen] = useState(false)
   const history = useHistory()
   const isPreviewMode =
     history.location.pathname.includes('preview') ||
     history.location.pathname.includes('controlled-story')
+  const controlledStory = history.location.pathname.includes('controlled-story')
   const learningLanguage = useSelector(learningLanguageSelector)
   const autoSpeak = useSelector(({ user }) => user.data.user.auto_speak)
   const dictionaryLanguage = useSelector(dictionaryLanguageSelector)
@@ -65,6 +68,17 @@ const PreviousExerciseWord = ({ word, answer, tiedAnswer }) => {
   }
 
   const handleClick = () => {
+    if (controlledStory && word.concepts?.length > 0) {
+      if (!chosen) {
+        setChosen(true)
+        dispatch(addExercise(word, snippetId))
+        console.log('chosen')
+      } else {
+        setChosen(false)
+        console.log('unchosen')
+      }
+    }
+
     if (word.isWrong) setShow(true)
     if (isPreviewMode && word.concepts) setShow(true)
     if (autoSpeak === 'always' && voice) speak(surface, voice, 'dictionary')

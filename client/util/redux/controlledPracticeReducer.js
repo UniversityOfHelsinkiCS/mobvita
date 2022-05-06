@@ -57,8 +57,8 @@ export const resetCurrentSnippet = storyId => {
   return callBuilder(route, prefix, 'post')
 }
 
-export const addExercise = wordObj => ({ type: 'ADD_EXERCISE', wordObj })
-export const removeExercise = id => ({ type: 'REMOVE_EXERCISE', id })
+export const addExercise = (wordObj, snippetId) => ({ type: 'ADD_EXERCISE', wordObj, snippetId })
+export const removeExercise = (id, snippetId) => ({ type: 'REMOVE_EXERCISE', id, snippetId })
 export const initControlledExerciseSnippets = snippets => ({
   type: 'INIT_CONTROLLED_SNIPPETS',
   snippets,
@@ -89,13 +89,13 @@ export default (
     case 'ADD_EXERCISE':
       return {
         ...state,
-        acceptedTokens: state.acceptedTokens.concat(action.wordObj),
+        snippets: state.snippets[action.snippetId].concat(action.wordObj),
       }
 
     case 'REMOVE_EXERCISE':
       return {
         ...state,
-        acceptedTokens: state.acceptedTokens.filter(word => word.ID !== action.id),
+        snippets: state.snippets.filter(word => word.ID !== action.id),
       }
 
     case 'RESET_SNIPPET_INDEX_SUCCESS':
