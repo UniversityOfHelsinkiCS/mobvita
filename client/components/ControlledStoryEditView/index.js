@@ -12,7 +12,6 @@ import {
   getCurrentSnippetFrozen,
   freezeControlledStory,
   initControlledExerciseSnippets,
-  resetControlledStoryEditor,
 } from 'Utilities/redux/controlledPracticeReducer'
 import { finishSnippet } from 'Utilities/redux/practiceReducer'
 import { clearTranslationAction } from 'Utilities/redux/translationReducer'

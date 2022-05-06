@@ -87,9 +87,9 @@ export default (
         snippets: action.snippets,
       }
     case 'ADD_EXERCISE':
+      state.snippets[action.snippetId] = state.snippets[action.snippetId].concat(action.wordObj)
       return {
         ...state,
-        snippets: state.snippets[action.snippetId].concat(action.wordObj),
       }
 
     case 'REMOVE_EXERCISE':

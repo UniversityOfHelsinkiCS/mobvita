@@ -72,10 +72,8 @@ const PreviousExerciseWord = ({ word, answer, tiedAnswer, snippetId }) => {
       if (!chosen) {
         setChosen(true)
         dispatch(addExercise(word, snippetId))
-        console.log('chosen')
       } else {
         setChosen(false)
-        console.log('unchosen')
       }
     }
 
