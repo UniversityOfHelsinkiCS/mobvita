@@ -6,14 +6,7 @@ import Word from 'Components/CommonStoryTextComponents/PreviousSnippets/Word'
 import ControlExerciseWord from '../ControlledStoryEditView/CurrentSnippet/ControlExerciseWord'
 import PreviousExerciseWord from './PreviousSnippets/Word/PreviousExerciseWord'
 
-const TextWithFeedback = ({
-  snippet,
-  exercise = false,
-  answers,
-  mode,
-  hideFeedback,
-  ...props
-}) => {
+const TextWithFeedback = ({ snippet, exercise = false, answers, mode, hideFeedback, ...props }) => {
   let lowestLinePosition = 0
   const openLinePositions = [1, 2, 3, 4, 5]
   const reservedLinePositions = {}

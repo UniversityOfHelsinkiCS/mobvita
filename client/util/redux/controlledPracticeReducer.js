@@ -77,6 +77,7 @@ export default (
     pending: false,
     error: false,
     getNextSnippet: false,
+    finished: false,
   },
   action
 ) => {
@@ -98,7 +99,7 @@ export default (
     case 'REMOVE_EXERCISE':
       console.log('REMOVING')
       state.snippets[action.wordObj.snippet_id] = state.snippets[action.wordObj.snippet_id].filter(
-        word => word.ID !== action.wordObj.id
+        word => word.id !== action.wordObj.id
       )
       return {
         ...state,
@@ -212,6 +213,7 @@ export default (
         ...state,
         pending: true,
         error: false,
+        finished: false,
       }
     case 'FREEZE_ALL_SNIPPETS_FAILURE':
       return {
@@ -224,6 +226,7 @@ export default (
         ...state,
         pending: false,
         error: false,
+        finished: true,
       }
     case 'GET_NEXT_SNIPPET_FROZEN_ATTEMPT':
       return {

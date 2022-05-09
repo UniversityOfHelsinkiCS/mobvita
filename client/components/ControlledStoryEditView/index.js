@@ -5,7 +5,7 @@ import { Divider, Segment, Header, Checkbox, Icon, Popup } from 'semantic-ui-rea
 import { Button } from 'react-bootstrap'
 import { FormattedMessage, useIntl } from 'react-intl'
 import useWindowDimensions from 'Utilities/windowDimensions'
-import { getStoryAction } from 'Utilities/redux/storiesReducer'
+import { getStoryAction, getAllStories } from 'Utilities/redux/storiesReducer'
 import { clearFocusedSnippet } from 'Utilities/redux/snippetsReducer'
 import {
   setPrevious,
@@ -65,12 +65,21 @@ const ControlledStoryEditView = ({ match }) => {
     if (user?.user.is_teacher) {
       setHideFeedback(false)
     }
-    dispatch(getStoryAction(id, 'preview'))
+    dispatch(getStoryAction(id, mode))
     dispatch(clearTranslationAction())
     dispatch(resetAnnotations())
-    dispatch(setPrevious([]))
-    dispatch(getCurrentSnippetFrozen(id))
   }, [])
+
+  useEffect(() => {
+    if (controlledPractice.finished) {
+      dispatch(
+        getAllStories(learningLanguage, {
+          sort_by: 'date',
+          order: -1,
+        })
+      )
+    }
+  }, [controlledPractice?.finished])
 
   useEffect(() => {
     if (story) {
@@ -101,7 +110,7 @@ const ControlledStoryEditView = ({ match }) => {
   }
 
   const refreshPage = () => {
-    dispatch(getStoryAction(id, 'preview'))
+    dispatch(getStoryAction(id, mode))
     setShowRefreshButton(false)
   }
 
@@ -172,7 +181,7 @@ const ControlledStoryEditView = ({ match }) => {
                 <TextWithFeedback
                   exercise
                   hideFeedback={hideFeedback}
-                  mode="review"
+                  mode="practice"
                   snippet={paragraph}
                   answers={null}
                 />

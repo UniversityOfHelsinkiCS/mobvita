@@ -58,7 +58,7 @@ const PreviousExerciseWord = ({ word, answer, tiedAnswer }) => {
   let color = ''
   if (tested || typeof wrong !== 'undefined') color = isWrong ? 'wrong-text' : 'right-text'
   if (correctAnswerIDs.includes(word.ID.toString())) color = 'right-text'
-  if (isPreviewMode && word.concepts) color = 'preview-text'
+  if (isPreviewMode && (word.concepts || word.id)) color = 'preview-text'
   if (isPreviewMode && hiddenFeatures && word.concepts?.length === 0)
     color = 'preview-text-no-concepts'
   const wordClass = `word-interactive ${color}`
@@ -68,7 +68,7 @@ const PreviousExerciseWord = ({ word, answer, tiedAnswer }) => {
   }
 
   const handleClick = () => {
-    if (controlledStory && word.concepts?.length > 0) {
+    if (controlledStory && word?.id) {
       if (!chosen) {
         setChosen(true)
         dispatch(addExercise(word))
