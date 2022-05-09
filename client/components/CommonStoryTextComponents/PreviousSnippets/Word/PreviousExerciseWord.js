@@ -179,10 +179,25 @@ const PreviousExerciseWord = ({ word, answer, tiedAnswer }) => {
     </div>
   )
 
-  if (chosen) {
+  if (chosen && controlledPractice) {
     return (
       <span onClick={handleClick} onKeyDown={handleClick}>
         <ExerciseCloze tabIndex={word.ID} key={word.ID} word={word} />
+      </span>
+    )
+  }
+
+  if (controlledPractice) {
+    return (
+      <span
+        className={`${wordClass} ${wordShouldBeHighlighted(word) && 'notes-highlighted-word'}`}
+        role="button"
+        onClick={handleClick}
+        onKeyDown={handleClick}
+        tabIndex={-1}
+        onBlur={() => setShow(false)}
+      >
+        {surface}
       </span>
     )
   }
