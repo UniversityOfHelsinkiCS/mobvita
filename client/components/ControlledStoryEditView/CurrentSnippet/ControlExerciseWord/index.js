@@ -6,7 +6,6 @@ import { useIntl } from 'react-intl'
 import ExerciseCloze from './ExerciseCloze'
 import ExerciseMultipleChoice from './ExerciseMultipleChoice'
 import ExerciseHearing from './ExerciseHearing'
-import PreviousExerciseWord from 'Components/CommonStoryTextComponents/PreviousSnippets/Word/PreviousExerciseWord'
 
 const ExercisePopup = ({ translationId, children }) => {
   const intl = useIntl()

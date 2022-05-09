@@ -78,6 +78,7 @@ export default (
     error: false,
     getNextSnippet: false,
     finished: false,
+    inProgress: false,
   },
   action
 ) => {
@@ -86,18 +87,18 @@ export default (
       return {
         ...state,
         snippets: action.snippets,
+        inProgress: false,
       }
     case 'ADD_EXERCISE':
-      console.log('ADDING')
       state.snippets[action.wordObj.snippet_id] = state.snippets[action.wordObj.snippet_id].concat(
         action.wordObj
       )
       return {
         ...state,
+        inProgress: true,
       }
 
     case 'REMOVE_EXERCISE':
-      console.log('REMOVING')
       state.snippets[action.wordObj.snippet_id] = state.snippets[action.wordObj.snippet_id].filter(
         word => word.id !== action.wordObj.id
       )
@@ -213,7 +214,6 @@ export default (
         ...state,
         pending: true,
         error: false,
-        finished: false,
       }
     case 'FREEZE_ALL_SNIPPETS_FAILURE':
       return {

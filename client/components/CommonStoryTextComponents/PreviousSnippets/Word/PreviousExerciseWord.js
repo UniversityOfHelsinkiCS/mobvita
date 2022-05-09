@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import { useHistory, useParams } from 'react-router-dom'
 import { FormattedMessage, useIntl } from 'react-intl'
@@ -22,6 +22,7 @@ import {
   resetAnnotationCandidates,
 } from 'Utilities/redux/annotationsReducer'
 import Tooltip from 'Components/PracticeView/Tooltip'
+import ExerciseCloze from 'Components/ControlledStoryEditView/CurrentSnippet/ControlExerciseWord/ExerciseCloze'
 
 const PreviousExerciseWord = ({ word, answer, tiedAnswer }) => {
   const {
@@ -44,6 +45,7 @@ const PreviousExerciseWord = ({ word, answer, tiedAnswer }) => {
     history.location.pathname.includes('controlled-story')
   const controlledStory = history.location.pathname.includes('controlled-story')
   const learningLanguage = useSelector(learningLanguageSelector)
+  const controlledPractice = useSelector(({ controlledPractice }) => controlledPractice)
   const autoSpeak = useSelector(({ user }) => user.data.user.auto_speak)
   const dictionaryLanguage = useSelector(dictionaryLanguageSelector)
   const { spanAnnotations, highlightRange } = useSelector(({ annotations }) => annotations)
@@ -53,6 +55,12 @@ const PreviousExerciseWord = ({ word, answer, tiedAnswer }) => {
 
   const intl = useIntl()
   const dispatch = useDispatch()
+
+  useEffect(() => {
+    if (!controlledPractice.inProgress) {
+      setChosen(false)
+    }
+  }, [controlledPractice?.inProgress])
 
   const voice = voiceLanguages[learningLanguage]
   let color = ''
@@ -170,6 +178,14 @@ const PreviousExerciseWord = ({ word, answer, tiedAnswer }) => {
       )}
     </div>
   )
+
+  if (chosen) {
+    return (
+      <span onClick={handleClick} onKeyDown={handleClick}>
+        <ExerciseCloze tabIndex={word.ID} key={word.ID} word={word} />
+      </span>
+    )
+  }
 
   return (
     <Tooltip placement="top" tooltipShown={show} trigger="none" tooltip={tooltip}>
