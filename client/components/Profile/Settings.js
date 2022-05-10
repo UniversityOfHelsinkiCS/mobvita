@@ -223,41 +223,6 @@ const Settings = () => {
                     />
                   </div>
                   <br />
-                  <span className="pb-sm bold">
-                    <FormattedMessage id="listening-exercises" />:
-                  </span>
-                  <div className="profile-page-radio-button-group">
-                    {hiddenFeatures && (
-                      <Radio
-                      label={intl.formatMessage({ id: 'listen-to-context' })}
-                      name="audioTask"
-                      value="context"
-                      checked={user.task_audio === 'context'}
-                      onChange={() => dispatch(updateAudioTask('context'))}
-                    />
-                    )}
-                    <Radio
-                      label={intl.formatMessage({ id: 'listen-to-chunks-and-words' })}
-                      name="audioTask"
-                      value="chunk"
-                      checked={user.task_audio === 'chunk'}
-                      onChange={() => dispatch(updateAudioTask('chunk'))}
-                    />
-                    <Radio
-                      label={intl.formatMessage({ id: 'listen-to-words' })}
-                      name="audioTask"
-                      value="word"
-                      checked={user.task_audio === 'word' || user.task_audio === true}
-                      onChange={() => dispatch(updateAudioTask('word'))}
-                    />
-                    <Radio
-                      label={intl.formatMessage({ id: 'no-listen-exer' })}
-                      name="audioTask"
-                      value="none"
-                      checked={user.task_audio === 'none' || user.task_audio === false}
-                      onChange={() => dispatch(updateAudioTask('none'))}
-                    />
-                  </div>
                 </div>
               }
             />
