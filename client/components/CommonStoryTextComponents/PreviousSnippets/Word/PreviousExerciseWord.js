@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import { useHistory, useParams } from 'react-router-dom'
 import { FormattedMessage, useIntl } from 'react-intl'
@@ -14,7 +14,6 @@ import {
 } from 'Utilities/common'
 import { setReferences, setExplanation } from 'Utilities/redux/practiceReducer'
 import { getTranslationAction, setWords } from 'Utilities/redux/translationReducer'
-import { addExercise, removeExercise } from 'Utilities/redux/controlledPracticeReducer'
 import {
   setFocusedSpan,
   setHighlightRange,
@@ -22,7 +21,6 @@ import {
   resetAnnotationCandidates,
 } from 'Utilities/redux/annotationsReducer'
 import Tooltip from 'Components/PracticeView/Tooltip'
-import ExerciseCloze from 'Components/ControlledStoryEditView/CurrentSnippet/ControlExerciseWord/ExerciseCloze'
 
 const PreviousExerciseWord = ({ word, answer, tiedAnswer }) => {
   const {
@@ -38,14 +36,9 @@ const PreviousExerciseWord = ({ word, answer, tiedAnswer }) => {
   } = word
 
   const [show, setShow] = useState(false)
-  const [chosen, setChosen] = useState(false)
   const history = useHistory()
-  const isPreviewMode =
-    history.location.pathname.includes('preview') ||
-    history.location.pathname.includes('controlled-story')
-  const controlledStory = history.location.pathname.includes('controlled-story')
+  const isPreviewMode = history.location.pathname.includes('preview')
   const learningLanguage = useSelector(learningLanguageSelector)
-  const controlledPractice = useSelector(({ controlledPractice }) => controlledPractice)
   const autoSpeak = useSelector(({ user }) => user.data.user.auto_speak)
   const dictionaryLanguage = useSelector(dictionaryLanguageSelector)
   const { spanAnnotations, highlightRange } = useSelector(({ annotations }) => annotations)
@@ -56,17 +49,11 @@ const PreviousExerciseWord = ({ word, answer, tiedAnswer }) => {
   const intl = useIntl()
   const dispatch = useDispatch()
 
-  useEffect(() => {
-    if (!controlledPractice.inProgress) {
-      setChosen(false)
-    }
-  }, [controlledPractice?.inProgress])
-
   const voice = voiceLanguages[learningLanguage]
   let color = ''
   if (tested || typeof wrong !== 'undefined') color = isWrong ? 'wrong-text' : 'right-text'
   if (correctAnswerIDs.includes(word.ID.toString())) color = 'right-text'
-  if (isPreviewMode && (word.concepts || word.id)) color = 'preview-text'
+  if (isPreviewMode && word.concepts) color = 'preview-text'
   if (isPreviewMode && hiddenFeatures && word.concepts?.length === 0)
     color = 'preview-text-no-concepts'
   const wordClass = `word-interactive ${color}`
@@ -76,16 +63,6 @@ const PreviousExerciseWord = ({ word, answer, tiedAnswer }) => {
   }
 
   const handleClick = () => {
-    if (controlledStory && word?.id) {
-      if (!chosen) {
-        setChosen(true)
-        dispatch(addExercise(word))
-      } else {
-        setChosen(false)
-        dispatch(removeExercise(word))
-      }
-    }
-
     if (word.isWrong) setShow(true)
     if (isPreviewMode && word.concepts) setShow(true)
     if (autoSpeak === 'always' && voice) speak(surface, voice, 'dictionary')
@@ -178,29 +155,6 @@ const PreviousExerciseWord = ({ word, answer, tiedAnswer }) => {
       )}
     </div>
   )
-
-  if (chosen && controlledPractice) {
-    return (
-      <span onClick={handleClick} onKeyDown={handleClick}>
-        <ExerciseCloze tabIndex={word.ID} key={word.ID} word={word} />
-      </span>
-    )
-  }
-
-  if (controlledPractice) {
-    return (
-      <span
-        className={`${wordClass} ${wordShouldBeHighlighted(word) && 'notes-highlighted-word'}`}
-        role="button"
-        onClick={handleClick}
-        onKeyDown={handleClick}
-        tabIndex={-1}
-        onBlur={() => setShow(false)}
-      >
-        {surface}
-      </span>
-    )
-  }
 
   return (
     <Tooltip placement="top" tooltipShown={show} trigger="none" tooltip={tooltip}>

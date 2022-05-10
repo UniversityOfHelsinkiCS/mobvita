@@ -8,9 +8,7 @@ import PreviousExerciseWord from './PreviousExerciseWord'
 const Word = ({ word, answer, tiedAnswer, hideFeedback }) => {
   const history = useHistory()
   const { correctAnswerIDs } = useSelector(({ practice }) => practice)
-  const isPreviewMode =
-    history.location.pathname.includes('preview') ||
-    history.location.pathname.includes('controlled-story')
+  const isPreviewMode = history.location.pathname.includes('preview')
 
   // "Display feedback" toggle is off
   if (hideFeedback) return <PlainWord word={word} annotatingAllowed />
