@@ -6,7 +6,15 @@ import Word from 'Components/CommonStoryTextComponents/PreviousSnippets/Word'
 import ControlExerciseWord from '../ControlledStoryEditView/CurrentSnippet/ControlExerciseWord'
 import PreviousExerciseWord from './PreviousSnippets/Word/PreviousExerciseWord'
 
-const TextWithFeedback = ({ snippet, exercise = false, answers, mode, hideFeedback, ...props }) => {
+const TextWithFeedback = ({
+  snippet,
+  exercise = false,
+  answers,
+  mode,
+  hideFeedback,
+  snippetForTokens,
+  ...props
+}) => {
   let lowestLinePosition = 0
   const openLinePositions = [1, 2, 3, 4, 5]
   const reservedLinePositions = {}
@@ -14,6 +22,8 @@ const TextWithFeedback = ({ snippet, exercise = false, answers, mode, hideFeedba
   let chunkIsOneVerb = false
   const history = useHistory()
   const inControlStoryEditor = history.location.pathname.includes('controlled-story')
+
+  // console.log('tokens snippet ', snippetForTokens)
 
   const lineColors = ['blue', 'green', 'black', 'purple', 'cyan']
 
@@ -92,9 +102,9 @@ const TextWithFeedback = ({ snippet, exercise = false, answers, mode, hideFeedba
     return chunkStyle
   }
 
-  const getExerciseWordComponent = (word, props) => {
+  const getExerciseWordComponent = (word, tokenWord, props) => {
     return inControlStoryEditor ? (
-      <PreviousExerciseWord word={word} />
+      <PreviousExerciseWord word={word} tokenWord={tokenWord} />
     ) : (
       /*
       <ControlExerciseWord
@@ -132,9 +142,9 @@ const TextWithFeedback = ({ snippet, exercise = false, answers, mode, hideFeedba
     )
   }
 
-  const createElement = (word, chunkPosition, hideFeedback) => {
+  const createElement = (word, tokenWord, chunkPosition, hideFeedback) => {
     let element = exercise
-      ? getExerciseWordComponent(word, props)
+      ? getExerciseWordComponent(word, tokenWord, props)
       : getNonExerciseWordComponent(hideFeedback, word, props)
 
     if (hideFeedback) return element
@@ -157,7 +167,7 @@ const TextWithFeedback = ({ snippet, exercise = false, answers, mode, hideFeedba
     ? useMemo(
         () =>
           snippet &&
-          snippet.map(word => {
+          snippet.map((word, index) => {
             const { pattern } = word
 
             const chunkPosition = word.chunk && word.chunk.split('_')[1]
@@ -174,8 +184,8 @@ const TextWithFeedback = ({ snippet, exercise = false, answers, mode, hideFeedba
                 chunkIsOneVerb = true
               }
             }
-
-            const element = createElement(word, chunkPosition, hideFeedback)
+            const tokenWord = snippetForTokens ? snippetForTokens[index] : null
+            const element = createElement(word, tokenWord, chunkPosition, hideFeedback)
 
             if (pattern) {
               Object.entries(pattern)
@@ -192,7 +202,7 @@ const TextWithFeedback = ({ snippet, exercise = false, answers, mode, hideFeedba
           }),
         [snippet, answers]
       )
-    : snippet.map(word => {
+    : snippet.map((word, index) => {
         const { pattern } = word
 
         const chunkPosition = word.chunk && word.chunk.split('_')[1]
@@ -209,8 +219,8 @@ const TextWithFeedback = ({ snippet, exercise = false, answers, mode, hideFeedba
             chunkIsOneVerb = true
           }
         }
-
-        const element = createElement(word, chunkPosition, hideFeedback)
+        const tokenWord = snippetForTokens ? snippetForTokens[index] : null
+        const element = createElement(word, tokenWord, chunkPosition, hideFeedback)
 
         if (pattern) {
           Object.entries(pattern)

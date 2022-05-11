@@ -24,7 +24,7 @@ import {
 import Tooltip from 'Components/PracticeView/Tooltip'
 import ExerciseCloze from 'Components/ControlledStoryEditView/CurrentSnippet/ControlExerciseWord/ExerciseCloze'
 
-const PreviousExerciseWord = ({ word, answer, tiedAnswer }) => {
+const PreviousExerciseWord = ({ word, tokenWord, answer, tiedAnswer }) => {
   const {
     surface,
     isWrong,
@@ -76,13 +76,20 @@ const PreviousExerciseWord = ({ word, answer, tiedAnswer }) => {
   }
 
   const handleClick = () => {
-    if (controlledStory && word?.id) {
+    if (controlledStory && word?.concepts?.length > 0 && tokenWord) {
+      const tokenizedWord = {
+        ...word,
+        id: word.candidate_id,
+        isWrong: false,
+        mark: 'correct',
+      }
+
       if (!chosen) {
         setChosen(true)
-        dispatch(addExercise(word))
+        dispatch(addExercise(tokenizedWord))
       } else {
         setChosen(false)
-        dispatch(removeExercise(word))
+        dispatch(removeExercise(tokenizedWord))
       }
     }
 

@@ -6,10 +6,9 @@ import { Button } from 'react-bootstrap'
 import { FormattedMessage, useIntl } from 'react-intl'
 import useWindowDimensions from 'Utilities/windowDimensions'
 import { getStoryAction, getAllStories } from 'Utilities/redux/storiesReducer'
+import { getStoryTokensAction } from 'Utilities/redux/controlledStoryReducer'
 import { clearFocusedSnippet } from 'Utilities/redux/snippetsReducer'
 import {
-  setPrevious,
-  getCurrentSnippetFrozen,
   freezeControlledStory,
   initControlledExerciseSnippets,
 } from 'Utilities/redux/controlledPracticeReducer'
@@ -41,6 +40,7 @@ const ControlledStoryEditView = ({ match }) => {
     pending: stories.focusedPending,
     locale,
   }))
+  const acceptedTokens = useSelector(({ acceptedTokens }) => acceptedTokens)
 
   const user = useSelector(state => state.user.data)
 
@@ -59,13 +59,12 @@ const ControlledStoryEditView = ({ match }) => {
     return initialAcceptedTokensList
   }
 
-  console.log('contr ', controlledPractice)
-
   useEffect(() => {
     if (user?.user.is_teacher) {
       setHideFeedback(false)
     }
-    dispatch(getStoryAction(id, mode))
+    dispatch(getStoryAction(id, 'preview'))
+    dispatch(getStoryTokensAction(id, mode))
     dispatch(clearTranslationAction())
     dispatch(resetAnnotations())
   }, [])
@@ -95,7 +94,7 @@ const ControlledStoryEditView = ({ match }) => {
     }
   }, [progress])
 
-  if (!story || pending || !user) return <Spinner fullHeight />
+  if (!story || pending || !user || acceptedTokens.pending) return <Spinner fullHeight />
 
   const showFooter = width > 640
   const url = history.location.pathname
@@ -110,7 +109,8 @@ const ControlledStoryEditView = ({ match }) => {
   }
 
   const refreshPage = () => {
-    dispatch(getStoryAction(id, mode))
+    dispatch(getStoryAction(id, 'preview'))
+    dispatch(getStoryTokensAction(id, mode))
     setShowRefreshButton(false)
   }
 
@@ -121,6 +121,10 @@ const ControlledStoryEditView = ({ match }) => {
   const handleEditorReset = () => {
     dispatch(initControlledExerciseSnippets(initAcceptedTokens()))
   }
+
+  console.log('contr ', controlledPractice)
+  console.log('story ', story.paragraph)
+  console.log('tokens ', acceptedTokens)
 
   return (
     <div className="cont-tall flex-col space-between align-center pt-sm">
@@ -176,13 +180,14 @@ const ControlledStoryEditView = ({ match }) => {
               </div>
             )}
             <Divider />
-            {story.paragraph.map(paragraph => (
+            {story.paragraph.map((paragraph, index) => (
               <>
                 <TextWithFeedback
                   exercise
                   hideFeedback={hideFeedback}
                   mode="practice"
                   snippet={paragraph}
+                  snippetForTokens={acceptedTokens.data[index]}
                   answers={null}
                 />
                 <hr />

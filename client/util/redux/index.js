@@ -1,6 +1,7 @@
 import { combineReducers } from 'redux'
 
 import stories from './storiesReducer'
+import acceptedTokens from './controlledStoryReducer'
 import annotations from './annotationsReducer'
 import snippets from './snippetsReducer'
 import translation from './translationReducer'
@@ -74,6 +75,7 @@ const rootReducer = combineReducers({
   incomplete,
   newVocabulary,
   studentVocabulary,
+  acceptedTokens,
 })
 
 export default (state, action) =>
