@@ -183,7 +183,7 @@ const GroupAnalytics = ({ role }) => {
                 <FormattedMessage id="vocabulary-view" />
               </div>
             </button>
-            <button
+            { hiddenFeatures && (<button
               type="button"
               onClick={() => setShownChart('hex-map')}
               style={{ border: 'none' }}
@@ -196,7 +196,7 @@ const GroupAnalytics = ({ role }) => {
                 />
                 <FormattedMessage id="hex-map" />
               </div>
-            </button>
+            </button>)}
             <button
               type="button"
               onClick={() => setShownChart('exercise')}
