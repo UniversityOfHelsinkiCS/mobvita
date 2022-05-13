@@ -1,3 +1,4 @@
+/* eslint-disable jsx-a11y/no-static-element-interactions */
 import React, { useState, useEffect } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import { useHistory, useParams } from 'react-router-dom'
@@ -39,6 +40,7 @@ const PreviousExerciseWord = ({ word, tokenWord, answer, tiedAnswer }) => {
 
   const [show, setShow] = useState(false)
   const [showEditorTooltip, setShowEditorTooltip] = useState(false)
+  const [showExericseOptions, setShowExerciseOptions] = useState(false)
   const [chosen, setChosen] = useState(false)
   const history = useHistory()
   const isPreviewMode =
@@ -82,7 +84,30 @@ const PreviousExerciseWord = ({ word, tokenWord, answer, tiedAnswer }) => {
     }
   }
 
-  const handleAddExercise = () => {
+  const handleAddHearingExercise = () => {
+    if (controlledStory && word?.concepts?.length > 0 && tokenWord) {
+      const tokenizedWord = {
+        ...word,
+        id: word.candidate_id,
+        audio: word.surface,
+        listen: true,
+        isWrong: false,
+        mark: 'correct',
+      }
+
+      if (!chosen) {
+        setChosen(true)
+        dispatch(addExercise(tokenizedWord))
+      } else {
+        setChosen(false)
+        dispatch(removeExercise(tokenizedWord))
+      }
+    }
+    setShowEditorTooltip(false)
+    setShowExerciseOptions(false)
+  }
+
+  const handleAddClozeExercise = () => {
     if (controlledStory && word?.concepts?.length > 0 && tokenWord) {
       const tokenizedWord = {
         ...word,
@@ -100,6 +125,7 @@ const PreviousExerciseWord = ({ word, tokenWord, answer, tiedAnswer }) => {
       }
     }
     setShowEditorTooltip(false)
+    setShowExerciseOptions(false)
   }
 
   const handleClick = () => {
@@ -197,11 +223,44 @@ const PreviousExerciseWord = ({ word, tokenWord, answer, tiedAnswer }) => {
     </div>
   )
 
+  const exerciseOptionsToolTip = (
+    <div onBlur={() => setShowExerciseOptions(false)}>
+      <div>
+        <FormattedMessage id="choose-exercise-type" />
+      </div>
+      <div
+        className="select-exercise"
+        onClick={handleAddClozeExercise}
+        onKeyDown={handleAddClozeExercise}
+      >
+        <FormattedMessage id="choose-cloze-exercise" />
+      </div>
+      <div
+        className="select-preview"
+        onClick={handleAddHearingExercise}
+        onKeyDown={handleAddHearingExercise}
+      >
+        <FormattedMessage id="choose-listening-exercise" />
+      </div>
+    </div>
+  )
+
   const editorTooltip = (
     <div onBlur={() => setShowEditorTooltip(false)}>
-      <div className="select-exercise" onClick={handleAddExercise} onKeyDown={handleAddExercise}>
-        <FormattedMessage id="click-to-add-exercise" />
-      </div>
+      <Tooltip
+        placement="top"
+        tooltipShown={showExericseOptions}
+        trigger="none"
+        tooltip={exerciseOptionsToolTip}
+      >
+        <div
+          className="select-exercise"
+          onClick={() => setShowExerciseOptions(true)}
+          onKeyDown={() => setShowExerciseOptions(true)}
+        >
+          <FormattedMessage id="click-to-add-exercise" />
+        </div>
+      </Tooltip>
       <div className="select-preview" onClick={handleClick} onKeyDown={handleClick}>
         Show concepts attached to this word
       </div>
@@ -210,7 +269,7 @@ const PreviousExerciseWord = ({ word, tokenWord, answer, tiedAnswer }) => {
 
   if (chosen && controlledPractice) {
     return (
-      <span onClick={handleAddExercise} onKeyDown={handleAddExercise}>
+      <span onClick={handleAddClozeExercise} onKeyDown={handleAddClozeExercise}>
         <ExerciseCloze tabIndex={word.ID} key={word.ID} word={word} />
       </span>
     )

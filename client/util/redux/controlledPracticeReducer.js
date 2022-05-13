@@ -100,7 +100,7 @@ export default (
 
     case 'REMOVE_EXERCISE':
       state.snippets[action.wordObj.snippet_id] = state.snippets[action.wordObj.snippet_id].filter(
-        word => word.id !== action.wordObj.id
+        word => word.ID !== action.wordObj.ID
       )
       return {
         ...state,

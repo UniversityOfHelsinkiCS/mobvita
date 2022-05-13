@@ -374,6 +374,7 @@ export const getTextWidth = text => {
 }
 
 export const speak = (surfaceWord, voice, voice_type) => {
+  console.log('VOICE ', surfaceWord)
   const [source, lang_code, tone] = voice
   try {
     if (source === 'responsive_voice' && window.responsiveVoice.voiceSupport())
