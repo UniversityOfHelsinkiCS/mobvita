@@ -90,7 +90,7 @@ const ReadViews = ({ match }) => {
     setShowRefreshButton(false)
   }
 
-  console.log('MODE ', mode, ' ', 'preview')
+  console.log(story.paragraph)
 
   return (
     <div className="cont-tall flex-col space-between align-center pt-sm">

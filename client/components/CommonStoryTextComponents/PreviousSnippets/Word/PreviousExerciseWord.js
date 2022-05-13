@@ -4,6 +4,7 @@ import { useSelector, useDispatch } from 'react-redux'
 import { useHistory, useParams } from 'react-router-dom'
 import { FormattedMessage, useIntl } from 'react-intl'
 import { Icon } from 'semantic-ui-react'
+import { Button } from 'react-bootstrap'
 import {
   getTextStyle,
   learningLanguageSelector,
@@ -41,7 +42,11 @@ const PreviousExerciseWord = ({ word, tokenWord, answer, tiedAnswer }) => {
   const [show, setShow] = useState(false)
   const [showEditorTooltip, setShowEditorTooltip] = useState(false)
   const [showExericseOptions, setShowExerciseOptions] = useState(false)
+  const [showCustomChoices, setShowCustomChoices] = useState(false)
   const [chosen, setChosen] = useState(false)
+  const [customMultiChoice1, setCustomMultiChoice1] = useState('')
+  const [customMultiChoice2, setCustomMultiChoice2] = useState('')
+  const [customMultiChoice3, setCustomMultiChoice3] = useState('')
   const history = useHistory()
   const isPreviewMode =
     history.location.pathname.includes('preview') ||
@@ -84,48 +89,69 @@ const PreviousExerciseWord = ({ word, tokenWord, answer, tiedAnswer }) => {
     }
   }
 
+  const getWordBase = word => {
+    const splitBases = word.bases.split('|')
+    const splitConcatenations = splitBases[0].split('+')
+    return splitConcatenations[0]
+  }
+
+  const choicesMade = tokenizedWord => {
+    if (!chosen) {
+      setChosen(true)
+      dispatch(addExercise(tokenizedWord))
+    } else {
+      setChosen(false)
+      dispatch(removeExercise(tokenizedWord))
+    }
+
+    setShowEditorTooltip(false)
+    setShowExerciseOptions(false)
+    setShowCustomChoices(false)
+  }
+
   const handleAddHearingExercise = () => {
+    if (controlledStory && word?.concepts?.length > 0 && tokenWord) {
+      const { choices: removedProperty, ...wordRest } = word
+
+      const tokenizedWord = {
+        ...wordRest,
+        id: word.candidate_id,
+        audio: word.surface,
+        base: getWordBase(word),
+        listen: true,
+      }
+
+      choicesMade(tokenizedWord)
+    }
+  }
+
+  const handleAddMultichoiceExercise = () => {
+    const choices = []
+
     if (controlledStory && word?.concepts?.length > 0 && tokenWord) {
       const tokenizedWord = {
         ...word,
         id: word.candidate_id,
-        audio: word.surface,
-        listen: true,
-        isWrong: false,
-        mark: 'correct',
+        base: getWordBase(word),
+        choices: [word.surface, 'wrong', 'incorrect', 'could_be_wrong'],
       }
 
-      if (!chosen) {
-        setChosen(true)
-        dispatch(addExercise(tokenizedWord))
-      } else {
-        setChosen(false)
-        dispatch(removeExercise(tokenizedWord))
-      }
+      choicesMade(tokenizedWord)
     }
-    setShowEditorTooltip(false)
-    setShowExerciseOptions(false)
   }
 
   const handleAddClozeExercise = () => {
     if (controlledStory && word?.concepts?.length > 0 && tokenWord) {
+      const { choices: removedProperty, ...wordRest } = word
+
       const tokenizedWord = {
-        ...word,
+        ...wordRest,
         id: word.candidate_id,
-        isWrong: false,
-        mark: 'correct',
+        base: getWordBase(word),
       }
 
-      if (!chosen) {
-        setChosen(true)
-        dispatch(addExercise(tokenizedWord))
-      } else {
-        setChosen(false)
-        dispatch(removeExercise(tokenizedWord))
-      }
+      choicesMade(tokenizedWord)
     }
-    setShowEditorTooltip(false)
-    setShowExerciseOptions(false)
   }
 
   const handleClick = () => {
@@ -223,6 +249,29 @@ const PreviousExerciseWord = ({ word, tokenWord, answer, tiedAnswer }) => {
     </div>
   )
 
+  const customMultiOptionsForm = (
+    <form onSubmit={handleAddMultichoiceExercise}>
+      <input
+        type="text"
+        value={customMultiChoice1}
+        onChange={({ target }) => setCustomMultiChoice1(target.value)}
+      />
+      <input
+        type="text"
+        value={customMultiChoice2}
+        onChange={({ target }) => setCustomMultiChoice2(target.value)}
+      />
+      <input
+        type="text"
+        value={customMultiChoice3}
+        onChange={({ target }) => setCustomMultiChoice3(target.value)}
+      />
+      <Button className="flashcard-button" block variant="outline-primary" type="submit">
+        Submit
+      </Button>
+    </form>
+  )
+
   const exerciseOptionsToolTip = (
     <div onBlur={() => setShowExerciseOptions(false)}>
       <div>
@@ -235,9 +284,19 @@ const PreviousExerciseWord = ({ word, tokenWord, answer, tiedAnswer }) => {
       <div onClick={handleAddHearingExercise} onKeyDown={handleAddHearingExercise}>
         <FormattedMessage id="choose-listening-exercise" />
       </div>
-      <div>
-        <FormattedMessage id="choose-multichoice-exercise" />
-      </div>
+      <Tooltip
+        placement="top"
+        tooltipShown={showCustomChoices}
+        trigger="none"
+        tooltip={customMultiOptionsForm}
+      >
+        <div
+          onClick={() => setShowCustomChoices(true)}
+          onKeyDown={() => setShowCustomChoices(true)}
+        >
+          <FormattedMessage id="choose-multichoice-exercise" />
+        </div>
+      </Tooltip>
     </div>
   )
 
