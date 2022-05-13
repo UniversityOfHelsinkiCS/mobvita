@@ -122,6 +122,17 @@ const ControlledStoryEditView = ({ match }) => {
     dispatch(initControlledExerciseSnippets(initAcceptedTokens()))
   }
 
+  const emptySnippets = () => {
+    const snippets = Object.entries(controlledPractice.snippets)
+
+    for (const [snippet, array] of snippets) {
+      if (array.length < 1) {
+        return true
+      }
+    }
+    return false
+  }
+
   console.log('contr ', controlledPractice)
   console.log('story ', story.paragraph)
   console.log('tokens ', acceptedTokens)
@@ -194,6 +205,11 @@ const ControlledStoryEditView = ({ match }) => {
               </>
             ))}
             <div>
+              {emptySnippets() && (
+                <span style={{ color: '#ff0000', marginBottom: '0.5rem' }}>
+                  <FormattedMessage id="empty-snippets-warning" />
+                </span>
+              )}
               <Button
                 variant="primary"
                 onClick={saveControlledStory}

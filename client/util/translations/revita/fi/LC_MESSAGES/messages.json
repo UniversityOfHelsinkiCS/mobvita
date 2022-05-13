@@ -1249,5 +1249,6 @@
     "choose-exercise-type": "Choose the type of the exercise",
     "choose-cloze-exercise": "Cloze exercise",
     "choose-listening-exercise": "Listening exercise",
-    "choose-multichoice-exercise": "Multiple-choice exercise"
+    "choose-multichoice-exercise": "Multiple-choice exercise",
+    "empty-snippets-warning": "Warning: You have some snippets with no exercises"
 }
