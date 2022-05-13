@@ -38,6 +38,7 @@ const PreviousExerciseWord = ({ word, tokenWord, answer, tiedAnswer }) => {
   } = word
 
   const [show, setShow] = useState(false)
+  const [showEditorTooltip, setShowEditorTooltip] = useState(false)
   const [chosen, setChosen] = useState(false)
   const history = useHistory()
   const isPreviewMode =
@@ -75,7 +76,13 @@ const PreviousExerciseWord = ({ word, tokenWord, answer, tiedAnswer }) => {
     return spanAnnotations.some(span => word.ID >= span.startId && word.ID <= span.endId)
   }
 
-  const handleClick = () => {
+  const handleActionClick = () => {
+    if (controlledStory && word?.concepts?.length > 0 && tokenWord) {
+      setShowEditorTooltip(true)
+    }
+  }
+
+  const handleAddExercise = () => {
     if (controlledStory && word?.concepts?.length > 0 && tokenWord) {
       const tokenizedWord = {
         ...word,
@@ -92,7 +99,10 @@ const PreviousExerciseWord = ({ word, tokenWord, answer, tiedAnswer }) => {
         dispatch(removeExercise(tokenizedWord))
       }
     }
+    setShowEditorTooltip(false)
+  }
 
+  const handleClick = () => {
     if (word.isWrong) setShow(true)
     if (isPreviewMode && word.concepts) setShow(true)
     if (autoSpeak === 'always' && voice) speak(surface, voice, 'dictionary')
@@ -129,6 +139,7 @@ const PreviousExerciseWord = ({ word, tokenWord, answer, tiedAnswer }) => {
       dispatch(setHighlightRange(word.ID, word.ID))
       dispatch(addAnnotationCandidates(word))
     }
+    setShowEditorTooltip(false)
   }
 
   const getSuperscript = word => spanAnnotations.findIndex(a => a.startId === word.ID) + 1
@@ -186,9 +197,20 @@ const PreviousExerciseWord = ({ word, tokenWord, answer, tiedAnswer }) => {
     </div>
   )
 
+  const editorTooltip = (
+    <div onBlur={() => setShowEditorTooltip(false)}>
+      <div className="select-exercise" onClick={handleAddExercise} onKeyDown={handleAddExercise}>
+        <FormattedMessage id="click-to-add-exercise" />
+      </div>
+      <div className="select-preview" onClick={handleClick} onKeyDown={handleClick}>
+        Show concepts attached to this word
+      </div>
+    </div>
+  )
+
   if (chosen && controlledPractice) {
     return (
-      <span onClick={handleClick} onKeyDown={handleClick}>
+      <span onClick={handleAddExercise} onKeyDown={handleAddExercise}>
         <ExerciseCloze tabIndex={word.ID} key={word.ID} word={word} />
       </span>
     )
@@ -196,16 +218,22 @@ const PreviousExerciseWord = ({ word, tokenWord, answer, tiedAnswer }) => {
 
   if (controlledPractice) {
     return (
-      <span
-        className={`${wordClass} ${wordShouldBeHighlighted(word) && 'notes-highlighted-word'}`}
-        role="button"
-        onClick={handleClick}
-        onKeyDown={handleClick}
-        tabIndex={-1}
-        onBlur={() => setShow(false)}
+      <Tooltip
+        placement="top"
+        tooltipShown={showEditorTooltip}
+        trigger="none"
+        tooltip={editorTooltip}
       >
-        {surface}
-      </span>
+        <span
+          className={`${wordClass} ${wordShouldBeHighlighted(word) && 'notes-highlighted-word'}`}
+          role="button"
+          onClick={handleActionClick}
+          onKeyDown={handleActionClick}
+          tabIndex={-1}
+        >
+          {surface}
+        </span>
+      </Tooltip>
     )
   }
 
