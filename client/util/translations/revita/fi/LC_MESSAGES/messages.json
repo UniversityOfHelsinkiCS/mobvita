@@ -1245,5 +1245,9 @@
     "set-questions-to-zero": "Nollaa kysymykset",
     "max-questions-exceeded": "Tälle konseptille on mahdollista asettaa enintään {maxNumQuestions} kysymystä",
     "collapse-all-concepts": "Sulje kaikki",
-    "expand-all-concepts": "Avaa kaikki"
+    "expand-all-concepts": "Avaa kaikki",
+    "choose-exercise-type": "Choose the type of the exercise",
+    "choose-cloze-exercise": "Cloze exercise",
+    "choose-listening-exercise": "Listening exercise",
+    "choose-multichoice-exercise": "Multiple-choice exercise"
 }

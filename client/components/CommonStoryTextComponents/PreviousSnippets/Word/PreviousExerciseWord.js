@@ -228,19 +228,15 @@ const PreviousExerciseWord = ({ word, tokenWord, answer, tiedAnswer }) => {
       <div>
         <FormattedMessage id="choose-exercise-type" />
       </div>
-      <div
-        className="select-exercise"
-        onClick={handleAddClozeExercise}
-        onKeyDown={handleAddClozeExercise}
-      >
+      <hr />
+      <div onClick={handleAddClozeExercise} onKeyDown={handleAddClozeExercise}>
         <FormattedMessage id="choose-cloze-exercise" />
       </div>
-      <div
-        className="select-preview"
-        onClick={handleAddHearingExercise}
-        onKeyDown={handleAddHearingExercise}
-      >
+      <div onClick={handleAddHearingExercise} onKeyDown={handleAddHearingExercise}>
         <FormattedMessage id="choose-listening-exercise" />
+      </div>
+      <div>
+        <FormattedMessage id="choose-multichoice-exercise" />
       </div>
     </div>
   )

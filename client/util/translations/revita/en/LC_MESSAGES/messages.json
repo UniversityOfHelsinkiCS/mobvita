@@ -1245,5 +1245,9 @@
     "set-questions-to-zero": "Zero all",
     "max-questions-exceeded": "The number of questions for this concept cannot exceed {maxNumQuestions}",
     "collapse-all-concepts": "Collapse all",
-    "expand-all-concepts": "Expand all"
+    "expand-all-concepts": "Expand all",
+    "choose-exercise-type": "Choose the type of the exercise",
+    "choose-cloze-exercise": "Cloze exercise",
+    "choose-listening-exercise": "Listening exercise",
+    "choose-multichoice-exercise": "Multiple-choice exercise"
 }

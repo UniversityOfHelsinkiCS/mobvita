@@ -1244,7 +1244,11 @@
     "exercise-history-explanation": "Questa tabella mostra i resultati su diversi concetti — al mese nel periodo di tempo selezionato",
     "test-history-explanation": "Questa tabella mostra i resultati dei test — al mese nel periodo di tempo selezionato",
     "set-questions-to-zero": "Azzera tutti",
-    "max-questions-exceeded": "The number of questions for this concept cannot exceed {maxNumQuestions}",
-    "collapse-all-concepts": "Collapse all",
-    "expand-all-concepts": "Expand all"
+    "max-questions-exceeded": "Il numero di domande per questo concetto non può superare {maxNumQuestions}",
+    "collapse-all-concepts": "Chiudere tutti",
+    "expand-all-concepts": "Aprire tutti",
+    "choose-exercise-type": "Choose the type of the exercise",
+    "choose-cloze-exercise": "Cloze exercise",
+    "choose-listening-exercise": "Listening exercise",
+    "choose-multichoice-exercise": "Multiple-choice exercise"
 }
