@@ -1,10 +1,10 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState } from 'react'
 import { Modal } from 'semantic-ui-react'
 import { FormattedMessage } from 'react-intl'
 import { Button } from 'react-bootstrap'
 
 const MultipleChoiceModal = props => {
-  const [setOfChoices, setSetOfChoices] = useState([])
+  const [chosenSet, setChosenSet] = useState('custom')
   const [customMultiChoice1, setCustomMultiChoice1] = useState('')
   const [customMultiChoice2, setCustomMultiChoice2] = useState('')
   const [customMultiChoice3, setCustomMultiChoice3] = useState('')
@@ -13,12 +13,20 @@ const MultipleChoiceModal = props => {
     props.setOpen(false)
   }
 
-  useEffect(() => {
-    if (props.word.choices) {
-      console.log('PASS')
-      Object.keys(props.word.choices).map(key => console.log(props.word.choices[key][0]))
+  console.log('1: ', customMultiChoice1, ' 2: ', customMultiChoice2, ' 3: ', customMultiChoice3)
+  const handleSubmitChoices = async () => {
+    if (chosenSet !== 'custom') {
+      props.handleAddMultichoiceExercise(props.word.choices[chosenSet])
+    } else {
+      const customSet = [
+        props.word.surface,
+        customMultiChoice1,
+        customMultiChoice2,
+        customMultiChoice3,
+      ]
+      props.handleAddMultichoiceExercise(customSet.filter(word => word !== ''))
     }
-  }, [])
+  }
 
   return (
     <Modal
@@ -30,34 +38,47 @@ const MultipleChoiceModal = props => {
       onClose={closeModal}
     >
       <Modal.Content>
-        <div onClick={props.handleAddMultichoiceExercise}>
-          {props.word.surface}
-          {props.word.choices &&
-            Object.keys(props.word.choices).map(key => (
-              <div>
-                {props.word.choices[key].map(choice => (
-                  <input type="text" value={choice} disabled />
-                ))}
-                <hr />
-              </div>
-            ))}
-          <div>
-            <input
-              type="text"
-              value={customMultiChoice1}
-              onChange={({ target }) => setCustomMultiChoice1(target.value)}
-            />
-            <input
-              type="text"
-              value={customMultiChoice2}
-              onChange={({ target }) => setCustomMultiChoice2(target.value)}
-            />
-            <input
-              type="text"
-              value={customMultiChoice3}
-              onChange={({ target }) => setCustomMultiChoice3(target.value)}
-            />
-          </div>
+        <div className="encouragement">
+          <form onSubmit={handleSubmitChoices}>
+            {props.word.choices &&
+              Object.keys(props.word.choices).map(key => (
+                <div>
+                  {props.word.choices[key].map(choice => (
+                    <input type="text" value={choice} disabled />
+                  ))}
+                  <input
+                    type="radio"
+                    onChange={() => setChosenSet(key)}
+                    checked={chosenSet === key}
+                  />
+                  <hr />
+                </div>
+              ))}
+            <div>
+              <input
+                type="text"
+                value={customMultiChoice1}
+                onChange={({ target }) => setCustomMultiChoice1(target.value)}
+              />
+              <input
+                type="text"
+                value={customMultiChoice2}
+                onChange={({ target }) => setCustomMultiChoice2(target.value)}
+              />
+              <input
+                type="text"
+                value={customMultiChoice3}
+                onChange={({ target }) => setCustomMultiChoice3(target.value)}
+              />
+              <input
+                type="radio"
+                onChange={() => setChosenSet('custom')}
+                checked={chosenSet === 'custom'}
+              />
+              <hr />
+              <Button type="submit">Submit</Button>
+            </div>
+          </form>
         </div>
       </Modal.Content>
     </Modal>

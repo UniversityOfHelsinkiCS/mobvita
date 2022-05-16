@@ -121,10 +121,18 @@ const PreviousExerciseWord = ({ word, tokenWord, answer, tiedAnswer }) => {
     }
   }
 
-  const handleAddMultichoiceExercise = () => {
-    const choices = []
+  const handleAddMultichoiceExercise = choicesSet => {
+    console.log('CHOICES ', choicesSet)
+    if (choicesSet) {
+      const tokenizedWord = {
+        ...word,
+        id: word.candidate_id,
+        base: getWordBase(word),
+        choices: choicesSet,
+      }
 
-    if (controlledStory && word?.concepts?.length > 0 && tokenWord) {
+      choicesMade(tokenizedWord)
+    } else if (controlledStory && word?.concepts?.length > 0 && tokenWord) {
       const tokenizedWord = {
         ...word,
         id: word.candidate_id,
