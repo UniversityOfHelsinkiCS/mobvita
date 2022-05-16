@@ -13,7 +13,6 @@ const MultipleChoiceModal = props => {
     props.setOpen(false)
   }
 
-  console.log('1: ', customMultiChoice1, ' 2: ', customMultiChoice2, ' 3: ', customMultiChoice3)
   const handleSubmitChoices = async () => {
     if (chosenSet !== 'custom') {
       props.handleAddMultichoiceExercise(props.word.choices[chosenSet])
@@ -43,6 +42,7 @@ const MultipleChoiceModal = props => {
             {props.word.choices &&
               Object.keys(props.word.choices).map(key => (
                 <div>
+                  <input type="text" value={props.word.surface} disabled />
                   {props.word.choices[key].map(choice => (
                     <input type="text" value={choice} disabled />
                   ))}
@@ -55,6 +55,7 @@ const MultipleChoiceModal = props => {
                 </div>
               ))}
             <div>
+              <input type="text" value={props.word.surface} disabled />
               <input
                 type="text"
                 value={customMultiChoice1}
