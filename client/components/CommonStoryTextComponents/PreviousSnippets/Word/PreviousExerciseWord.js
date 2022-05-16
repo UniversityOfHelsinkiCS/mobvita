@@ -25,6 +25,7 @@ import {
 } from 'Utilities/redux/annotationsReducer'
 import Tooltip from 'Components/PracticeView/Tooltip'
 import ExerciseCloze from 'Components/ControlledStoryEditView/CurrentSnippet/ControlExerciseWord/ExerciseCloze'
+import SelectExerciseTypeModal from 'Components/ControlledStoryEditView/SelectExerciseTypeModal'
 
 const PreviousExerciseWord = ({ word, tokenWord, answer, tiedAnswer }) => {
   const {
@@ -41,12 +42,10 @@ const PreviousExerciseWord = ({ word, tokenWord, answer, tiedAnswer }) => {
 
   const [show, setShow] = useState(false)
   const [showEditorTooltip, setShowEditorTooltip] = useState(false)
-  const [showExericseOptions, setShowExerciseOptions] = useState(false)
+  const [showExerciseOptions, setShowExerciseOptions] = useState(false)
+  const [showExerciseOptionsModal, setShowExerciseOptionsModal] = useState(false)
   const [showCustomChoices, setShowCustomChoices] = useState(false)
   const [chosen, setChosen] = useState(false)
-  const [customMultiChoice1, setCustomMultiChoice1] = useState('')
-  const [customMultiChoice2, setCustomMultiChoice2] = useState('')
-  const [customMultiChoice3, setCustomMultiChoice3] = useState('')
   const history = useHistory()
   const isPreviewMode =
     history.location.pathname.includes('preview') ||
@@ -63,6 +62,8 @@ const PreviousExerciseWord = ({ word, tokenWord, answer, tiedAnswer }) => {
 
   const intl = useIntl()
   const dispatch = useDispatch()
+
+  // console.log('word: ', word.choices)
 
   useEffect(() => {
     if (!controlledPractice.inProgress) {
@@ -83,12 +84,6 @@ const PreviousExerciseWord = ({ word, tokenWord, answer, tiedAnswer }) => {
     return spanAnnotations.some(span => word.ID >= span.startId && word.ID <= span.endId)
   }
 
-  const handleActionClick = () => {
-    if (controlledStory && word?.concepts?.length > 0 && tokenWord) {
-      setShowEditorTooltip(true)
-    }
-  }
-
   const getWordBase = word => {
     const splitBases = word.bases.split('|')
     const splitConcatenations = splitBases[0].split('+')
@@ -101,6 +96,7 @@ const PreviousExerciseWord = ({ word, tokenWord, answer, tiedAnswer }) => {
       dispatch(addExercise(tokenizedWord))
     } else {
       setChosen(false)
+      setShowExerciseOptionsModal(false)
       dispatch(removeExercise(tokenizedWord))
     }
 
@@ -194,6 +190,18 @@ const PreviousExerciseWord = ({ word, tokenWord, answer, tiedAnswer }) => {
     setShowEditorTooltip(false)
   }
 
+  const handleExerciseOptionsModal = () => {
+    setShowExerciseOptionsModal(true)
+    setShowEditorTooltip(false)
+  }
+
+  const handleActionClick = () => {
+    if (controlledStory && word?.concepts?.length > 0 && tokenWord) {
+      handleClick()
+      setShowEditorTooltip(true)
+    }
+  }
+
   const getSuperscript = word => spanAnnotations.findIndex(a => a.startId === word.ID) + 1
 
   const handleTooltipClick = () => {
@@ -248,28 +256,46 @@ const PreviousExerciseWord = ({ word, tokenWord, answer, tiedAnswer }) => {
       )}
     </div>
   )
+  /*
+  const mapOptions = (
+    <div>
+      {Object.keys(word.choices).map(function (key, index) {
+        <span>
+          {key}
+          {word.choices[key].map(choice => (
+            <span>{choice}</span>
+          ))}
+        </span>
+      })}
+    </div>
+  )
+ 
 
   const customMultiOptionsForm = (
-    <form onSubmit={handleAddMultichoiceExercise}>
-      <input
-        type="text"
-        value={customMultiChoice1}
-        onChange={({ target }) => setCustomMultiChoice1(target.value)}
-      />
-      <input
-        type="text"
-        value={customMultiChoice2}
-        onChange={({ target }) => setCustomMultiChoice2(target.value)}
-      />
-      <input
-        type="text"
-        value={customMultiChoice3}
-        onChange={({ target }) => setCustomMultiChoice3(target.value)}
-      />
-      <Button className="flashcard-button" block variant="outline-primary" type="submit">
-        Submit
-      </Button>
-    </form>
+    <div>
+      { {word.choices?.map(options => options.map(choice => <span>{choice}</span>))} }
+      { word.choices && mapOptions }
+      <form onSubmit={handleAddMultichoiceExercise}>
+        <input
+          type="text"
+          value={customMultiChoice1}
+          onChange={({ target }) => setCustomMultiChoice1(target.value)}
+        />
+        <input
+          type="text"
+          value={customMultiChoice2}
+          onChange={({ target }) => setCustomMultiChoice2(target.value)}
+        />
+        <input
+          type="text"
+          value={customMultiChoice3}
+          onChange={({ target }) => setCustomMultiChoice3(target.value)}
+        />
+        <Button className="flashcard-button" block variant="outline-primary" type="submit">
+          Submit
+        </Button>
+      </form>
+    </div>
   )
 
   const exerciseOptionsToolTip = (
@@ -299,25 +325,17 @@ const PreviousExerciseWord = ({ word, tokenWord, answer, tiedAnswer }) => {
       </Tooltip>
     </div>
   )
+  */
 
   const editorTooltip = (
     <div onBlur={() => setShowEditorTooltip(false)}>
-      <Tooltip
-        placement="top"
-        tooltipShown={showExericseOptions}
-        trigger="none"
-        tooltip={exerciseOptionsToolTip}
+      <div>{tooltip}</div>
+      <div
+        className="select-exercise"
+        onClick={handleExerciseOptionsModal}
+        onKeyDown={handleExerciseOptionsModal}
       >
-        <div
-          className="select-exercise"
-          onClick={() => setShowExerciseOptions(true)}
-          onKeyDown={() => setShowExerciseOptions(true)}
-        >
-          <FormattedMessage id="click-to-add-exercise" />
-        </div>
-      </Tooltip>
-      <div className="select-preview" onClick={handleClick} onKeyDown={handleClick}>
-        Show concepts attached to this word
+        <FormattedMessage id="click-to-add-exercise" />
       </div>
     </div>
   )
@@ -330,24 +348,34 @@ const PreviousExerciseWord = ({ word, tokenWord, answer, tiedAnswer }) => {
     )
   }
 
-  if (controlledPractice) {
+  if (controlledStory) {
     return (
-      <Tooltip
-        placement="top"
-        tooltipShown={showEditorTooltip}
-        trigger="none"
-        tooltip={editorTooltip}
-      >
-        <span
-          className={`${wordClass} ${wordShouldBeHighlighted(word) && 'notes-highlighted-word'}`}
-          role="button"
-          onClick={handleActionClick}
-          onKeyDown={handleActionClick}
-          tabIndex={-1}
+      <span>
+        <SelectExerciseTypeModal
+          showExerciseOptionsModal={showExerciseOptionsModal}
+          setShowExerciseOptionsModal={setShowExerciseOptionsModal}
+          handleAddClozeExercise={handleAddClozeExercise}
+          handleAddHearingExercise={handleAddHearingExercise}
+          handleAddMultichoiceExercise={handleAddMultichoiceExercise}
+          word={word}
+        />
+        <Tooltip
+          placement="top"
+          tooltipShown={showEditorTooltip}
+          trigger="none"
+          tooltip={editorTooltip}
         >
-          {surface}
-        </span>
-      </Tooltip>
+          <span
+            className={`${wordClass} ${wordShouldBeHighlighted(word) && 'notes-highlighted-word'}`}
+            role="button"
+            onClick={handleActionClick}
+            onKeyDown={handleActionClick}
+            tabIndex={-1}
+          >
+            {surface}
+          </span>
+        </Tooltip>
+      </span>
     )
   }
 
