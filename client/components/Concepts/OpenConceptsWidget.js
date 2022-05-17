@@ -17,7 +17,7 @@ const OpenConceptsWidget = ({
   }
 
   return (
-    <div className="flex">
+    <div className="flex" style={{ marginBottom: '0.5rem' }}>
       <Button style={{ marginLeft: '1rem', marginTop: '0.5rem' }} onClick={open} size="sm">
         <FormattedMessage id="expand-all-concepts" />
       </Button>

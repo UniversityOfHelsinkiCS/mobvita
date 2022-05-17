@@ -376,13 +376,12 @@ export const getTextWidth = text => {
 export const speak = (surfaceWord, voice, voice_type) => {
   console.log('VOICE ', surfaceWord)
   const [source, lang_code, tone] = voice
-
   try {
     if (source === 'responsive_voice' && window.responsiveVoice.voiceSupport())
       RVSpeak(surfaceWord, lang_code, tone, voice_type)
-    else if (source === 'yandex' && Howler._codecs.opus)
+    else if (source === 'yandex' && Howler.codecs('opus'))
       yandexSpeak(surfaceWord, lang_code, tone, voice_type)
-    else if (source === 'tacotron2' && Howler._codecs.mp3 && surfaceWord.length > 4 )
+    else if (source === 'tacotron2' && Howler.codecs('mp3') && surfaceWord.length > 4 )
       tacotronSpeak(surfaceWord, lang_code, tone, voice_type)
     else if (speakFallbackConfig.hasOwnProperty(voice.join('-')))
       speak(surfaceWord, speakFallbackConfig[voice.join('-')], voice_type)

@@ -15,7 +15,7 @@ import ResponsiveDatePicker from 'Components/ResponsiveDatePicker'
 import History from 'Components/History'
 import { getHistory as getExerciseHistory } from 'Utilities/redux/exerciseHistoryReducer'
 import { getHistory as getTestHistory } from 'Utilities/redux/testReducer'
-import { useLearningLanguage } from 'Utilities/common'
+import { hiddenFeatures, useLearningLanguage } from 'Utilities/common'
 import useWindowDimension from 'Utilities/windowDimensions'
 import VocabularyGraph from 'Components/VocabularyView/VocabularyGraph'
 import HexagonTest from 'Components/GridHexagon'
@@ -165,7 +165,7 @@ const Progress = () => {
                 <FormattedMessage id="vocabulary-view" />
               </div>
             </button>
-            <button
+            { hiddenFeatures && (<button
               type="button"
               onClick={() => setShownChart('hex-map')}
               style={{ border: 'none' }}
@@ -178,7 +178,7 @@ const Progress = () => {
                 />
                 <FormattedMessage id="hex-map" />
               </div>
-            </button>
+            </button>)}
             <button
               type="button"
               onClick={() => setShownChart('exercise-history')}
