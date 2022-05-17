@@ -374,8 +374,10 @@ export const getTextWidth = text => {
 }
 
 export const speak = (surfaceWord, voice, voice_type) => {
-  console.log('VOICE ', surfaceWord)
   const [source, lang_code, tone] = voice
+
+  window.responsiveVoice.cancel()
+  Howler.stop()
   try {
     if (source === 'responsive_voice' && window.responsiveVoice.voiceSupport())
       RVSpeak(surfaceWord, lang_code, tone, voice_type)
