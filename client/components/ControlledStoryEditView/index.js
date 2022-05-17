@@ -206,7 +206,7 @@ const ControlledStoryEditView = ({ match }) => {
             ))}
             <div>
               {emptySnippets() && (
-                <span style={{ color: '#ff0000', marginBottom: '0.5rem' }}>
+                <span style={{ color: '#ff0000', marginBottom: '0.5em' }}>
                   <FormattedMessage id="empty-snippets-warning" />
                 </span>
               )}
@@ -214,9 +214,9 @@ const ControlledStoryEditView = ({ match }) => {
                 variant="primary"
                 onClick={saveControlledStory}
                 type="button"
-                style={{ width: '100%', marginBottom: '.5em' }}
+                style={{ width: '100%', marginBottom: '.5em', marginTop: '.5em' }}
               >
-                <FormattedMessage id="freeze-and-save-control-story" />
+                <FormattedMessage id="save-controlled-story" />
               </Button>
             </div>
             <Button

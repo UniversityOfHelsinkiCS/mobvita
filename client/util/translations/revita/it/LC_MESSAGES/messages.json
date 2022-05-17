@@ -1253,5 +1253,6 @@
     "choose-multichoice-exercise": "Multiple-choice exercise",
     "empty-snippets-warning": "Warning: You have some snippets with no exercises",
     "multiple-choice-tooltip": "The options will always be presented to the student in alphabetical order",
-    "pick-choices": "Choose the set of choices for the exercise"
+    "pick-choices": "Choose the set of choices for the exercise",
+    "save-controlled-story": "Save controlled story"
 }

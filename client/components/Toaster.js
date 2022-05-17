@@ -19,7 +19,7 @@ export default function Toaster() {
   const [progressToastId, setProgressToastId] = useState(null)
   const [serverErrorToastId, setServerErrorToastId] = useState(null)
   const [canExercise, setCanExercise] = useState(false)
-
+  const controlledPractice = useSelector(({ controlledPractice }) => controlledPractice)
   const { pending: storiesPending } = useSelector(({ stories }) => stories)
   const { message, type, options, translationId, contextVariables } = useSelector(
     ({ notification }) => notification
@@ -50,6 +50,17 @@ export default function Toaster() {
   const handleNewFavouriteSite = () => {
     dispatch(updateFavouriteSites(favouriteSites.concat({ url })))
   }
+
+  useEffect(() => {
+    if (controlledPractice.finished) {
+      setProgressToastId(
+        toast(intl.formatMessage({ id: 'controlled-story-saved' }), {
+          autoClose: 8000,
+          type: 'success',
+        })
+      )
+    }
+  }, [controlledPractice?.finished])
 
   useEffect(() => {
     if (storyId !== null) {
