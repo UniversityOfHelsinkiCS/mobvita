@@ -4,7 +4,6 @@ import { useSelector, useDispatch } from 'react-redux'
 import { useHistory, useParams } from 'react-router-dom'
 import { FormattedMessage, useIntl } from 'react-intl'
 import { Icon } from 'semantic-ui-react'
-import { Button } from 'react-bootstrap'
 import {
   getTextStyle,
   learningLanguageSelector,
@@ -26,6 +25,7 @@ import {
 import Tooltip from 'Components/PracticeView/Tooltip'
 import ExerciseCloze from 'Components/ControlledStoryEditView/CurrentSnippet/ControlExerciseWord/ExerciseCloze'
 import SelectExerciseTypeModal from 'Components/ControlledStoryEditView/SelectExerciseTypeModal'
+import ControlExerciseWord from 'Components/ControlledStoryEditView/CurrentSnippet/ControlExerciseWord'
 
 const PreviousExerciseWord = ({ word, tokenWord, answer, tiedAnswer }) => {
   const {
@@ -122,7 +122,6 @@ const PreviousExerciseWord = ({ word, tokenWord, answer, tiedAnswer }) => {
   }
 
   const handleAddMultichoiceExercise = choicesSet => {
-    console.log('CHOICES ', choicesSet)
     if (choicesSet) {
       const tokenizedWord = {
         ...word,
@@ -145,6 +144,7 @@ const PreviousExerciseWord = ({ word, tokenWord, answer, tiedAnswer }) => {
   }
 
   const handleAddClozeExercise = () => {
+    console.log('here')
     if (controlledStory && word?.concepts?.length > 0 && tokenWord) {
       const { choices: removedProperty, ...wordRest } = word
 
@@ -348,10 +348,26 @@ const PreviousExerciseWord = ({ word, tokenWord, answer, tiedAnswer }) => {
     </div>
   )
 
-  if (chosen && controlledPractice) {
+  if (chosen && controlledStory) {
+    const exerciseWord = controlledPractice.snippets[word.snippet_id].find(
+      tokenizedWord => tokenizedWord.ID === word.ID
+    )
+
+    const isListeningExercise = exerciseWord.listen !== undefined
+    const isMultiChoice = exerciseWord.choices !== undefined
+
     return (
       <span onClick={handleAddClozeExercise} onKeyDown={handleAddClozeExercise}>
-        <ExerciseCloze tabIndex={word.ID} key={word.ID} word={word} />
+        <ControlExerciseWord word={exerciseWord} handleAddClozeExercise={handleAddClozeExercise}/>
+        {/*
+        <ExerciseCloze
+          tabIndex={word.ID}
+          key={word.ID}
+          word={word}
+          isListeningExercise={isListeningExercise}
+          isMultiChoice={isMultiChoice}
+        />
+        */}
       </span>
     )
   }
@@ -372,6 +388,7 @@ const PreviousExerciseWord = ({ word, tokenWord, answer, tiedAnswer }) => {
           tooltipShown={showEditorTooltip}
           trigger="none"
           tooltip={editorTooltip}
+          onBlur={() => setShowEditorTooltip(false)}
         >
           <span
             className={`${wordClass} ${wordShouldBeHighlighted(word) && 'notes-highlighted-word'}`}

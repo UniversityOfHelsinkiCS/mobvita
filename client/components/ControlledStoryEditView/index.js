@@ -134,8 +134,8 @@ const ControlledStoryEditView = ({ match }) => {
   }
 
   console.log('contr ', controlledPractice)
-  console.log('story ', story.paragraph)
-  console.log('tokens ', acceptedTokens)
+  // console.log('story ', story.paragraph)
+  // console.log('tokens ', acceptedTokens)
 
   return (
     <div className="cont-tall flex-col space-between align-center pt-sm">
