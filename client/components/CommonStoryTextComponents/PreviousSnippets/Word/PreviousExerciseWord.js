@@ -195,7 +195,6 @@ const PreviousExerciseWord = ({ word, tokenWord, answer, tiedAnswer }) => {
       dispatch(setHighlightRange(word.ID, word.ID))
       dispatch(addAnnotationCandidates(word))
     }
-    setShowEditorTooltip(false)
   }
 
   const handleExerciseOptionsModal = () => {
@@ -334,15 +333,15 @@ const PreviousExerciseWord = ({ word, tokenWord, answer, tiedAnswer }) => {
     </div>
   )
   */
-
   const editorTooltip = (
-    <div onBlur={() => setShowEditorTooltip(false)}>
+    <div>
       <div>{tooltip}</div>
       <div
         style={{ cursor: 'pointer' }}
         className="select-exercise"
         onClick={handleExerciseOptionsModal}
         onKeyDown={handleExerciseOptionsModal}
+        onMouseDown={handleExerciseOptionsModal}
       >
         <FormattedMessage id="click-to-add-exercise" />
       </div>
@@ -356,7 +355,7 @@ const PreviousExerciseWord = ({ word, tokenWord, answer, tiedAnswer }) => {
 
     return (
       <span onClick={handleAddClozeExercise} onKeyDown={handleAddClozeExercise}>
-        <ControlExerciseWord word={exerciseWord} handleAddClozeExercise={handleAddClozeExercise}/>
+        <ControlExerciseWord word={exerciseWord} handleAddClozeExercise={handleAddClozeExercise} />
         {/*
         <ExerciseCloze
           tabIndex={word.ID}
@@ -381,23 +380,26 @@ const PreviousExerciseWord = ({ word, tokenWord, answer, tiedAnswer }) => {
           handleAddMultichoiceExercise={handleAddMultichoiceExercise}
           word={word}
         />
-        <Tooltip
-          placement="top"
-          tooltipShown={showEditorTooltip}
-          trigger="none"
-          tooltip={editorTooltip}
-          onBlur={() => setShowEditorTooltip(false)}
-        >
-          <span
-            className={`${wordClass} ${wordShouldBeHighlighted(word) && 'notes-highlighted-word'}`}
-            role="button"
-            onClick={handleActionClick}
-            onKeyDown={handleActionClick}
-            tabIndex={-1}
+        <span onBlur={() => setShowEditorTooltip(false)}>
+          <Tooltip
+            placement="top"
+            tooltipShown={showEditorTooltip}
+            trigger="none"
+            tooltip={editorTooltip}
           >
-            {surface}
-          </span>
-        </Tooltip>
+            <span
+              className={`${wordClass} ${
+                wordShouldBeHighlighted(word) && 'notes-highlighted-word'
+              }`}
+              role="button"
+              onClick={handleActionClick}
+              onKeyDown={handleActionClick}
+              tabIndex={-1}
+            >
+              {surface}
+            </span>
+          </Tooltip>
+        </span>
       </span>
     )
   }
