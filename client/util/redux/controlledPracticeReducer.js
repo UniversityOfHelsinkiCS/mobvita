@@ -87,6 +87,7 @@ export default (
       return {
         ...state,
         snippets: action.snippets,
+        finished: false,
         inProgress: false,
       }
     case 'ADD_EXERCISE':
