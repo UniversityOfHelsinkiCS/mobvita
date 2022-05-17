@@ -6,20 +6,15 @@ import { addExercise, removeExercise } from 'Utilities/redux/controlledPracticeR
 
 const ExerciseHearing = ({ word }) => {
   const [value, setValue] = useState('')
-
-  const [bgColorClassName, setBgColorClassName] = useState(
-    'exercise control-mode control-mode-chosen'
-  )
+  const { ID: wordId } = word
+  const voice = voiceLanguages[learningLanguage]
   const inputRef = createRef(null)
 
   const dispatch = useDispatch()
-  const currentAnswer = useSelector(({ practice }) => practice.currentAnswers[word.ID])
-  const { acceptedTokens } = useSelector(({ controlledPractice }) => controlledPractice)
+  // const currentAnswer = useSelector(({ practice }) => practice.currentAnswers[word.ID])
+  // const { acceptedTokens } = useSelector(({ controlledPractice }) => controlledPractice)
   const learningLanguage = useSelector(learningLanguageSelector)
-
-  const { ID: wordId } = word
-  const voice = voiceLanguages[learningLanguage]
-
+  /*
   const getExerciseClass = () => {
     return acceptedTokens.map(t => t.ID).includes(wordId)
       ? 'control-mode-chosen'
@@ -34,17 +29,17 @@ const ExerciseHearing = ({ word }) => {
     const val = currentAnswer ? currentAnswer.users_answer : ''
     setValue(val)
   }, [currentAnswer])
-
+  */
   const speakerClickHandler = word => {
     speak(word.audio, voice, 'exercise')
     inputRef.current.focus()
   }
-
+  /*
   const handleExerciseClick = () => {
     if (acceptedTokens.map(t => t.ID).includes(wordId)) dispatch(removeExercise(wordId))
     else dispatch(addExercise(word))
   }
-
+  */
   return (
     <span>
       <input
@@ -52,10 +47,9 @@ const ExerciseHearing = ({ word }) => {
         readOnly
         ref={inputRef}
         key={word.ID}
-        placeholder={`${word.base || word.bases}`}
+        placeholder={`${word.surface}`}
         value={value}
-        onClick={handleExerciseClick}
-        className={`exercise control-mode ${bgColorClassName}`}
+        className="exercise control-mode control-mode-chosen"
         style={{
           width: getTextWidth(word.surface),
           minWidth: getTextWidth(word.surface),

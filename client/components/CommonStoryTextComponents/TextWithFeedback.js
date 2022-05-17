@@ -4,6 +4,7 @@ import ExerciseWord from 'Components/PracticeView/CurrentSnippet/ExerciseWord'
 import ControlWord from 'Components/ControlledStoryEditView/PreviousSnippets/ControlWord'
 import Word from 'Components/CommonStoryTextComponents/PreviousSnippets/Word'
 import ControlExerciseWord from '../ControlledStoryEditView/CurrentSnippet/ControlExerciseWord'
+import PreviousExerciseWord from './PreviousSnippets/Word/PreviousExerciseWord'
 
 const TextWithFeedback = ({
   snippet,
@@ -105,12 +106,21 @@ const TextWithFeedback = ({
     return inControlStoryEditor ? (
       <PreviousExerciseWord word={word} tokenWord={tokenWord} />
     ) : (
+      /*
+      <ControlExerciseWord
+        hideFeedback={hideFeedback}
+        key={word.ID}
+        word={word}
+        answer={mode !== 'review' && answers[word.ID]}
+        tiedAnswer={mode !== 'review' && answers[word.tiedTo]}
+        {...props}
+      />
+      */
       <ExerciseWord key={word.ID} word={word} {...props} />
     )
   }
 
   const getNonExerciseWordComponent = (hideFeedback, word, props) => {
-
     return inControlStoryEditor ? (
       <ControlWord
         hideFeedback={hideFeedback}

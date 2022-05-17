@@ -83,7 +83,7 @@
     "Send": "发送",
     "click-to-add-exercise": "点击参与练习",
     "click-to-remove-exercise": "点击删除练习",
-    "controlled-story-saved": "测试文本成功保存",
+    "controlled-story-saved": "Controlled story saved successfully",
     "freeze-snippet": "保存段落",
     "freeze-and-save-control-story": "保存段落和测试文本",
     "regenerate-exercises": "重新生成练习",
@@ -605,5 +605,8 @@
     "choose-cloze-exercise": "Cloze exercise",
     "choose-listening-exercise": "Listening exercise",
     "choose-multichoice-exercise": "Multiple-choice exercise",
-    "empty-snippets-warning": "Warning: You have some snippets with no exercises"
+    "empty-snippets-warning": "Warning: You have some snippets with no exercises",
+    "multiple-choice-tooltip": "The options will always be presented to the student in alphabetical order",
+    "pick-choices": "Choose the set of choices for the exercise",
+    "save-controlled-story": "Save controlled story"
 }

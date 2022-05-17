@@ -4,7 +4,6 @@ import { useSelector, useDispatch } from 'react-redux'
 import { useHistory, useParams } from 'react-router-dom'
 import { FormattedMessage, useIntl } from 'react-intl'
 import { Icon } from 'semantic-ui-react'
-import { Button } from 'react-bootstrap'
 import {
   getTextStyle,
   learningLanguageSelector,
@@ -16,6 +15,7 @@ import {
 } from 'Utilities/common'
 import { setReferences, setExplanation } from 'Utilities/redux/practiceReducer'
 import { getTranslationAction, setWords } from 'Utilities/redux/translationReducer'
+import { addExercise, removeExercise } from 'Utilities/redux/controlledPracticeReducer'
 import {
   setFocusedSpan,
   setHighlightRange,
@@ -25,6 +25,7 @@ import {
 import Tooltip from 'Components/PracticeView/Tooltip'
 import ExerciseCloze from 'Components/ControlledStoryEditView/CurrentSnippet/ControlExerciseWord/ExerciseCloze'
 import SelectExerciseTypeModal from 'Components/ControlledStoryEditView/SelectExerciseTypeModal'
+import ControlExerciseWord from 'Components/ControlledStoryEditView/CurrentSnippet/ControlExerciseWord'
 
 const PreviousExerciseWord = ({ word, tokenWord, answer, tiedAnswer }) => {
   const {
@@ -46,8 +47,12 @@ const PreviousExerciseWord = ({ word, tokenWord, answer, tiedAnswer }) => {
   const [showCustomChoices, setShowCustomChoices] = useState(false)
   const [chosen, setChosen] = useState(false)
   const history = useHistory()
-  const isPreviewMode = history.location.pathname.includes('preview')
+  const isPreviewMode =
+    history.location.pathname.includes('preview') ||
+    history.location.pathname.includes('controlled-story')
+  const controlledStory = history.location.pathname.includes('controlled-story')
   const learningLanguage = useSelector(learningLanguageSelector)
+  const controlledPractice = useSelector(({ controlledPractice }) => controlledPractice)
   const autoSpeak = useSelector(({ user }) => user.data.user.auto_speak)
   const dictionaryLanguage = useSelector(dictionaryLanguageSelector)
   const { spanAnnotations, highlightRange } = useSelector(({ annotations }) => annotations)
@@ -70,7 +75,7 @@ const PreviousExerciseWord = ({ word, tokenWord, answer, tiedAnswer }) => {
   let color = ''
   if (tested || typeof wrong !== 'undefined') color = isWrong ? 'wrong-text' : 'right-text'
   if (correctAnswerIDs.includes(word.ID.toString())) color = 'right-text'
-  if (isPreviewMode && word.concepts) color = 'preview-text'
+  if (isPreviewMode && (word.concepts || word.id)) color = 'preview-text'
   if (isPreviewMode && hiddenFeatures && word.concepts?.length === 0)
     color = 'preview-text-no-concepts'
   const wordClass = `word-interactive ${color}`
@@ -117,7 +122,6 @@ const PreviousExerciseWord = ({ word, tokenWord, answer, tiedAnswer }) => {
   }
 
   const handleAddMultichoiceExercise = choicesSet => {
-    console.log('CHOICES ', choicesSet)
     if (choicesSet) {
       const tokenizedWord = {
         ...word,
@@ -140,6 +144,7 @@ const PreviousExerciseWord = ({ word, tokenWord, answer, tiedAnswer }) => {
   }
 
   const handleAddClozeExercise = () => {
+    console.log('here')
     if (controlledStory && word?.concepts?.length > 0 && tokenWord) {
       const { choices: removedProperty, ...wordRest } = word
 
@@ -190,7 +195,6 @@ const PreviousExerciseWord = ({ word, tokenWord, answer, tiedAnswer }) => {
       dispatch(setHighlightRange(word.ID, word.ID))
       dispatch(addAnnotationCandidates(word))
     }
-    setShowEditorTooltip(false)
   }
 
   const handleExerciseOptionsModal = () => {
@@ -329,24 +333,38 @@ const PreviousExerciseWord = ({ word, tokenWord, answer, tiedAnswer }) => {
     </div>
   )
   */
-
   const editorTooltip = (
-    <div onBlur={() => setShowEditorTooltip(false)}>
+    <div>
       <div>{tooltip}</div>
       <div
+        style={{ cursor: 'pointer' }}
         className="select-exercise"
         onClick={handleExerciseOptionsModal}
         onKeyDown={handleExerciseOptionsModal}
+        onMouseDown={handleExerciseOptionsModal}
       >
         <FormattedMessage id="click-to-add-exercise" />
       </div>
     </div>
   )
 
-  if (chosen && controlledPractice) {
+  if (chosen && controlledStory) {
+    const exerciseWord = controlledPractice.snippets[word.snippet_id].find(
+      tokenizedWord => tokenizedWord.ID === word.ID
+    )
+
     return (
       <span onClick={handleAddClozeExercise} onKeyDown={handleAddClozeExercise}>
-        <ExerciseCloze tabIndex={word.ID} key={word.ID} word={word} />
+        <ControlExerciseWord word={exerciseWord} handleAddClozeExercise={handleAddClozeExercise} />
+        {/*
+        <ExerciseCloze
+          tabIndex={word.ID}
+          key={word.ID}
+          word={word}
+          isListeningExercise={isListeningExercise}
+          isMultiChoice={isMultiChoice}
+        />
+        */}
       </span>
     )
   }
@@ -362,22 +380,26 @@ const PreviousExerciseWord = ({ word, tokenWord, answer, tiedAnswer }) => {
           handleAddMultichoiceExercise={handleAddMultichoiceExercise}
           word={word}
         />
-        <Tooltip
-          placement="top"
-          tooltipShown={showEditorTooltip}
-          trigger="none"
-          tooltip={editorTooltip}
-        >
-          <span
-            className={`${wordClass} ${wordShouldBeHighlighted(word) && 'notes-highlighted-word'}`}
-            role="button"
-            onClick={handleActionClick}
-            onKeyDown={handleActionClick}
-            tabIndex={-1}
+        <span onBlur={() => setShowEditorTooltip(false)}>
+          <Tooltip
+            placement="top"
+            tooltipShown={showEditorTooltip}
+            trigger="none"
+            tooltip={editorTooltip}
           >
-            {surface}
-          </span>
-        </Tooltip>
+            <span
+              className={`${wordClass} ${
+                wordShouldBeHighlighted(word) && 'notes-highlighted-word'
+              }`}
+              role="button"
+              onClick={handleActionClick}
+              onKeyDown={handleActionClick}
+              tabIndex={-1}
+            >
+              {surface}
+            </span>
+          </Tooltip>
+        </span>
       </span>
     )
   }
