@@ -339,6 +339,7 @@ const PreviousExerciseWord = ({ word, tokenWord, answer, tiedAnswer }) => {
     <div onBlur={() => setShowEditorTooltip(false)}>
       <div>{tooltip}</div>
       <div
+        style={{ cursor: 'pointer' }}
         className="select-exercise"
         onClick={handleExerciseOptionsModal}
         onKeyDown={handleExerciseOptionsModal}
@@ -352,9 +353,6 @@ const PreviousExerciseWord = ({ word, tokenWord, answer, tiedAnswer }) => {
     const exerciseWord = controlledPractice.snippets[word.snippet_id].find(
       tokenizedWord => tokenizedWord.ID === word.ID
     )
-
-    const isListeningExercise = exerciseWord.listen !== undefined
-    const isMultiChoice = exerciseWord.choices !== undefined
 
     return (
       <span onClick={handleAddClozeExercise} onKeyDown={handleAddClozeExercise}>
