@@ -28,7 +28,7 @@ const StoryList = () => {
     oid: userId,
   } = useSelector(({ user }) => user.data.user)
   const refreshed = useSelector(({ user }) => user.refreshed)
-  const groups = useSelector(({ groups }) => groups.groups)
+  const { groups, deleteSuccessful } = useSelector(({ groups }) => groups)
   const { pending, data: stories, searchResults, lastQuery } = useSelector(({ stories }) => stories)
   const { sharedToGroupSinceLastFetch } = useSelector(({ share }) => share)
   const learningLanguage = useLearningLanguage()
@@ -76,6 +76,17 @@ const StoryList = () => {
       )
     }
   }
+
+  useEffect(() => {
+    if (sharedToGroupSinceLastFetch || deleteSuccessful) {
+      dispatch(
+        getAllStories(learningLanguage, {
+          sort_by: 'date',
+          order: -1,
+        })
+      )
+    }
+  }, [sharedToGroupSinceLastFetch, deleteSuccessful])
 
   useEffect(() => {
     dispatch(getGroups())

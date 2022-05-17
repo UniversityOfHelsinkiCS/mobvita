@@ -120,7 +120,7 @@ export const emptyLastAddInfo = () => ({
   type: 'EMPTY_LAST_ADD_INFO',
 })
 
-export default (state = { groups: [], joinPending: false }, action) => {
+export default (state = { groups: [], joinPending: false, deleteSuccessful: false }, action) => {
   switch (action.type) {
     case 'GET_GROUPS_ATTEMPT':
       return {
@@ -235,6 +235,7 @@ export default (state = { groups: [], joinPending: false }, action) => {
       return {
         ...state,
         pending: true,
+        deleteSuccessful: false,
       }
     case 'DELETE_GROUP_FAILURE':
       return {
@@ -246,6 +247,7 @@ export default (state = { groups: [], joinPending: false }, action) => {
         ...state,
         groups: state.groups.filter(group => group.group_id !== action.response.removed),
         pending: false,
+        deleteSuccessful: true,
       }
     case 'GET_GROUP_TEST_CONCEPTS_ATTEMPT':
       return {

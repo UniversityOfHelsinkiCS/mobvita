@@ -16,7 +16,6 @@ import {
 } from 'Utilities/common'
 import { setReferences, setExplanation } from 'Utilities/redux/practiceReducer'
 import { getTranslationAction, setWords } from 'Utilities/redux/translationReducer'
-import { addExercise, removeExercise } from 'Utilities/redux/controlledPracticeReducer'
 import {
   setFocusedSpan,
   setHighlightRange,
@@ -47,12 +46,8 @@ const PreviousExerciseWord = ({ word, tokenWord, answer, tiedAnswer }) => {
   const [showCustomChoices, setShowCustomChoices] = useState(false)
   const [chosen, setChosen] = useState(false)
   const history = useHistory()
-  const isPreviewMode =
-    history.location.pathname.includes('preview') ||
-    history.location.pathname.includes('controlled-story')
-  const controlledStory = history.location.pathname.includes('controlled-story')
+  const isPreviewMode = history.location.pathname.includes('preview')
   const learningLanguage = useSelector(learningLanguageSelector)
-  const controlledPractice = useSelector(({ controlledPractice }) => controlledPractice)
   const autoSpeak = useSelector(({ user }) => user.data.user.auto_speak)
   const dictionaryLanguage = useSelector(dictionaryLanguageSelector)
   const { spanAnnotations, highlightRange } = useSelector(({ annotations }) => annotations)
@@ -75,7 +70,7 @@ const PreviousExerciseWord = ({ word, tokenWord, answer, tiedAnswer }) => {
   let color = ''
   if (tested || typeof wrong !== 'undefined') color = isWrong ? 'wrong-text' : 'right-text'
   if (correctAnswerIDs.includes(word.ID.toString())) color = 'right-text'
-  if (isPreviewMode && (word.concepts || word.id)) color = 'preview-text'
+  if (isPreviewMode && word.concepts) color = 'preview-text'
   if (isPreviewMode && hiddenFeatures && word.concepts?.length === 0)
     color = 'preview-text-no-concepts'
   const wordClass = `word-interactive ${color}`
