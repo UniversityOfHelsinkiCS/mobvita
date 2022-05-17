@@ -15,12 +15,13 @@ const ExerciseCloze = ({ word, isListeningExercise, isMultiChoice }) => {
 
   const target = useRef()
   const dispatch = useDispatch()
-
+  /*
   const getExerciseClass = () => {
     return acceptedTokens.map(t => t.ID).includes(wordId)
       ? 'control-mode-chosen'
       : 'control-mode-unchosen'
   }
+  */
 
   const handleExerciseClick = () => {
     if (acceptedTokens.map(t => t.ID).includes(wordId)) dispatch(removeExercise(wordId))
@@ -31,11 +32,11 @@ const ExerciseCloze = ({ word, isListeningExercise, isMultiChoice }) => {
     const val = currentAnswer ? currentAnswer.users_answer : ''
     setValue(val)
   }, [currentAnswer])
-
+  /*
   useEffect(() => {
     setBgColorClassName(getExerciseClass())
   }, [acceptedTokens])
-
+  */
   const direction = rightAlignedLanguages.includes(learningLanguage) ? 'bidi-override' : ''
 
   return (
