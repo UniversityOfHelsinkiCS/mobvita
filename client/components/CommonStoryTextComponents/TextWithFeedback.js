@@ -4,17 +4,8 @@ import ExerciseWord from 'Components/PracticeView/CurrentSnippet/ExerciseWord'
 import ControlWord from 'Components/ControlledStoryEditView/PreviousSnippets/ControlWord'
 import Word from 'Components/CommonStoryTextComponents/PreviousSnippets/Word'
 import ControlExerciseWord from '../ControlledStoryEditView/CurrentSnippet/ControlExerciseWord'
-import PreviousExerciseWord from './PreviousSnippets/Word/PreviousExerciseWord'
 
-const TextWithFeedback = ({
-  snippet,
-  exercise = false,
-  answers,
-  mode,
-  hideFeedback,
-  snippetForTokens,
-  ...props
-}) => {
+const TextWithFeedback = ({ snippet, exercise = false, answers, mode, hideFeedback, ...props }) => {
   let lowestLinePosition = 0
   const openLinePositions = [1, 2, 3, 4, 5]
   const reservedLinePositions = {}
@@ -22,8 +13,6 @@ const TextWithFeedback = ({
   let chunkIsOneVerb = false
   const history = useHistory()
   const inControlStoryEditor = history.location.pathname.includes('controlled-story')
-
-  // console.log('tokens snippet ', snippetForTokens)
 
   const lineColors = ['blue', 'green', 'black', 'purple', 'cyan']
 
@@ -102,25 +91,16 @@ const TextWithFeedback = ({
     return chunkStyle
   }
 
-  const getExerciseWordComponent = (word, tokenWord, props) => {
+  const getExerciseWordComponent = (word, props) => {
     return inControlStoryEditor ? (
-      <PreviousExerciseWord word={word} tokenWord={tokenWord} />
+      <ControlExerciseWord key={word.ID} word={word} {...props} />
     ) : (
-      /*
-      <ControlExerciseWord
-        hideFeedback={hideFeedback}
-        key={word.ID}
-        word={word}
-        answer={mode !== 'review' && answers[word.ID]}
-        tiedAnswer={mode !== 'review' && answers[word.tiedTo]}
-        {...props}
-      />
-      */
       <ExerciseWord key={word.ID} word={word} {...props} />
     )
   }
 
   const getNonExerciseWordComponent = (hideFeedback, word, props) => {
+
     return inControlStoryEditor ? (
       <ControlWord
         hideFeedback={hideFeedback}
@@ -142,9 +122,9 @@ const TextWithFeedback = ({
     )
   }
 
-  const createElement = (word, tokenWord, chunkPosition, hideFeedback) => {
+  const createElement = (word, chunkPosition, hideFeedback) => {
     let element = exercise
-      ? getExerciseWordComponent(word, tokenWord, props)
+      ? getExerciseWordComponent(word, props)
       : getNonExerciseWordComponent(hideFeedback, word, props)
 
     if (hideFeedback) return element
@@ -167,7 +147,7 @@ const TextWithFeedback = ({
     ? useMemo(
         () =>
           snippet &&
-          snippet.map((word, index) => {
+          snippet.map(word => {
             const { pattern } = word
 
             const chunkPosition = word.chunk && word.chunk.split('_')[1]
@@ -184,8 +164,8 @@ const TextWithFeedback = ({
                 chunkIsOneVerb = true
               }
             }
-            const tokenWord = snippetForTokens ? snippetForTokens[index] : null
-            const element = createElement(word, tokenWord, chunkPosition, hideFeedback)
+
+            const element = createElement(word, chunkPosition, hideFeedback)
 
             if (pattern) {
               Object.entries(pattern)
@@ -202,7 +182,7 @@ const TextWithFeedback = ({
           }),
         [snippet, answers]
       )
-    : snippet.map((word, index) => {
+    : snippet.map(word => {
         const { pattern } = word
 
         const chunkPosition = word.chunk && word.chunk.split('_')[1]
@@ -219,8 +199,8 @@ const TextWithFeedback = ({
             chunkIsOneVerb = true
           }
         }
-        const tokenWord = snippetForTokens ? snippetForTokens[index] : null
-        const element = createElement(word, tokenWord, chunkPosition, hideFeedback)
+
+        const element = createElement(word, chunkPosition, hideFeedback)
 
         if (pattern) {
           Object.entries(pattern)

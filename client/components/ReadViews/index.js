@@ -41,6 +41,7 @@ const ReadViews = ({ match }) => {
 
   const learningLanguage = useSelector(learningLanguageSelector)
   const { id } = match.params
+  console.log('ID ', id)
   useEffect(() => {
     if (user?.user.is_teacher) {
       setHideFeedback(false)
@@ -89,8 +90,6 @@ const ReadViews = ({ match }) => {
     dispatch(getStoryAction(id, mode))
     setShowRefreshButton(false)
   }
-
-  console.log(story.paragraph)
 
   return (
     <div className="cont-tall flex-col space-between align-center pt-sm">

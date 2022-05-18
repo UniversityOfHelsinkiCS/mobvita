@@ -21,13 +21,6 @@ export const getCurrentSnippetFrozen = storyId => {
   return callBuilder(route, prefix, 'post', {})
 }
 
-export const freezeControlledStory = (storyId, snippets) => {
-  const route = `/stories/${storyId}/frozen`
-  const prefix = 'FREEZE_ALL_SNIPPETS'
-  const payload = { snippets }
-  return callBuilder(route, prefix, 'post', payload)
-}
-
 export const refreshCurrentSnippet = (storyId, currentSnippetId, acceptedTokens) => {
   const route =
     currentSnippetId > 0
@@ -58,11 +51,8 @@ export const resetCurrentSnippet = storyId => {
 }
 
 export const addExercise = wordObj => ({ type: 'ADD_EXERCISE', wordObj })
-export const removeExercise = wordObj => ({ type: 'REMOVE_EXERCISE', wordObj })
-export const initControlledExerciseSnippets = snippets => ({
-  type: 'INIT_CONTROLLED_SNIPPETS',
-  snippets,
-})
+export const removeExercise = id => ({ type: 'REMOVE_EXERCISE', id })
+
 export const setPrevious = previous => ({ type: 'SET_PREVIOUS_FROZEN_SNIPPETS', payload: previous })
 export const addToPrevious = snippet => ({ type: 'ADD_TO_FROZEN_SNIPPETS', snippet })
 export const clearFocusedSnippet = () => ({ type: 'CLEAR_FOCUSED_SNIPPET' })
@@ -70,16 +60,7 @@ export const clearFocusedSnippet = () => ({ type: 'CLEAR_FOCUSED_SNIPPET' })
 // Reducer
 // You can include more app wide actions such as "selected: []" into the state
 export default (
-  state = {
-    previous: [],
-    acceptedTokens: [],
-    snippets: {},
-    pending: false,
-    error: false,
-    getNextSnippet: false,
-    finished: false,
-    inProgress: false,
-  },
+  state = { previous: [], acceptedTokens: [], pending: false, error: false, getNextSnippet: false },
   action
 ) => {
   switch (action.type) {
@@ -91,20 +72,15 @@ export default (
         inProgress: false,
       }
     case 'ADD_EXERCISE':
-      state.snippets[action.wordObj.snippet_id] = state.snippets[action.wordObj.snippet_id].concat(
-        action.wordObj
-      )
       return {
         ...state,
-        inProgress: true,
+        acceptedTokens: state.acceptedTokens.concat(action.wordObj),
       }
 
     case 'REMOVE_EXERCISE':
-      state.snippets[action.wordObj.snippet_id] = state.snippets[action.wordObj.snippet_id].filter(
-        word => word.ID !== action.wordObj.ID
-      )
       return {
         ...state,
+        acceptedTokens: state.acceptedTokens.filter(word => word.ID !== action.id),
       }
 
     case 'RESET_SNIPPET_INDEX_SUCCESS':
@@ -210,25 +186,7 @@ export default (
         focused: undefined,
         previous: [],
       }
-    case 'FREEZE_ALL_SNIPPETS_ATTEMPT':
-      return {
-        ...state,
-        pending: true,
-        error: false,
-      }
-    case 'FREEZE_ALL_SNIPPETS_FAILURE':
-      return {
-        ...state,
-        pending: false,
-        error: true,
-      }
-    case 'FREEZE_ALL_SNIPPETS_SUCCESS':
-      return {
-        ...state,
-        pending: false,
-        error: false,
-        finished: true,
-      }
+
     case 'GET_NEXT_SNIPPET_FROZEN_ATTEMPT':
       return {
         ...state,

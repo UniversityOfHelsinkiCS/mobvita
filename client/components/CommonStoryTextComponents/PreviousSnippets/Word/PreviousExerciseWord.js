@@ -1,5 +1,4 @@
-/* eslint-disable jsx-a11y/no-static-element-interactions */
-import React, { useState, useEffect } from 'react'
+import React, { useState } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import { useHistory, useParams } from 'react-router-dom'
 import { FormattedMessage, useIntl } from 'react-intl'
@@ -15,7 +14,6 @@ import {
 } from 'Utilities/common'
 import { setReferences, setExplanation } from 'Utilities/redux/practiceReducer'
 import { getTranslationAction, setWords } from 'Utilities/redux/translationReducer'
-import { addExercise, removeExercise } from 'Utilities/redux/controlledPracticeReducer'
 import {
   setFocusedSpan,
   setHighlightRange,
@@ -27,7 +25,7 @@ import ExerciseCloze from 'Components/ControlledStoryEditView/CurrentSnippet/Con
 import SelectExerciseTypeModal from 'Components/ControlledStoryEditView/SelectExerciseTypeModal'
 import ControlExerciseWord from 'Components/ControlledStoryEditView/CurrentSnippet/ControlExerciseWord'
 
-const PreviousExerciseWord = ({ word, tokenWord, answer, tiedAnswer }) => {
+const PreviousExerciseWord = ({ word, answer, tiedAnswer }) => {
   const {
     surface,
     isWrong,
@@ -41,18 +39,9 @@ const PreviousExerciseWord = ({ word, tokenWord, answer, tiedAnswer }) => {
   } = word
 
   const [show, setShow] = useState(false)
-  const [showEditorTooltip, setShowEditorTooltip] = useState(false)
-  const [showExerciseOptions, setShowExerciseOptions] = useState(false)
-  const [showExerciseOptionsModal, setShowExerciseOptionsModal] = useState(false)
-  const [showCustomChoices, setShowCustomChoices] = useState(false)
-  const [chosen, setChosen] = useState(false)
   const history = useHistory()
-  const isPreviewMode =
-    history.location.pathname.includes('preview') ||
-    history.location.pathname.includes('controlled-story')
-  const controlledStory = history.location.pathname.includes('controlled-story')
+  const isPreviewMode = history.location.pathname.includes('preview')
   const learningLanguage = useSelector(learningLanguageSelector)
-  const controlledPractice = useSelector(({ controlledPractice }) => controlledPractice)
   const autoSpeak = useSelector(({ user }) => user.data.user.auto_speak)
   const dictionaryLanguage = useSelector(dictionaryLanguageSelector)
   const { spanAnnotations, highlightRange } = useSelector(({ annotations }) => annotations)
@@ -63,19 +52,11 @@ const PreviousExerciseWord = ({ word, tokenWord, answer, tiedAnswer }) => {
   const intl = useIntl()
   const dispatch = useDispatch()
 
-  // console.log('word: ', word.choices)
-
-  useEffect(() => {
-    if (!controlledPractice.inProgress) {
-      setChosen(false)
-    }
-  }, [controlledPractice?.inProgress])
-
   const voice = voiceLanguages[learningLanguage]
   let color = ''
   if (tested || typeof wrong !== 'undefined') color = isWrong ? 'wrong-text' : 'right-text'
   if (correctAnswerIDs.includes(word.ID.toString())) color = 'right-text'
-  if (isPreviewMode && (word.concepts || word.id)) color = 'preview-text'
+  if (isPreviewMode && word.concepts) color = 'preview-text'
   if (isPreviewMode && hiddenFeatures && word.concepts?.length === 0)
     color = 'preview-text-no-concepts'
   const wordClass = `word-interactive ${color}`

@@ -4,7 +4,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import { ButtonGroup, ToggleButton } from 'react-bootstrap'
 import { FormattedMessage, useIntl, FormattedHTMLMessage } from 'react-intl'
 import { getSummary } from 'Utilities/redux/groupSummaryReducer'
-import { learningLanguageSelector } from 'Utilities/common'
+import { learningLanguageSelector, hiddenFeatures } from 'Utilities/common'
 import Spinner from 'Components/Spinner'
 import useWindowDimension from 'Utilities/windowDimensions'
 import ResponsiveDatePicker from 'Components/ResponsiveDatePicker'
@@ -183,7 +183,7 @@ const GroupAnalytics = ({ role }) => {
                 <FormattedMessage id="vocabulary-view" />
               </div>
             </button>
-            <button
+            { hiddenFeatures && (<button
               type="button"
               onClick={() => setShownChart('hex-map')}
               style={{ border: 'none' }}
@@ -196,7 +196,7 @@ const GroupAnalytics = ({ role }) => {
                 />
                 <FormattedMessage id="hex-map" />
               </div>
-            </button>
+            </button>)}
             <button
               type="button"
               onClick={() => setShownChart('exercise')}
