@@ -4,7 +4,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import { ButtonGroup, ToggleButton } from 'react-bootstrap'
 import { FormattedMessage, useIntl, FormattedHTMLMessage } from 'react-intl'
 import { getSummary } from 'Utilities/redux/groupSummaryReducer'
-import { learningLanguageSelector } from 'Utilities/common'
+import { learningLanguageSelector, hiddenFeatures } from 'Utilities/common'
 import Spinner from 'Components/Spinner'
 import useWindowDimension from 'Utilities/windowDimensions'
 import ResponsiveDatePicker from 'Components/ResponsiveDatePicker'
@@ -183,20 +183,22 @@ const GroupAnalytics = ({ role }) => {
                 <FormattedMessage id="vocabulary-view" />
               </div>
             </button>
-            { hiddenFeatures && (<button
-              type="button"
-              onClick={() => setShownChart('hex-map')}
-              style={{ border: 'none' }}
-            >
-              <div className="flex align-center" style={{ gap: '.5em' }}>
-                <input
-                  type="radio"
-                  onChange={() => setShownChart('hex-map')}
-                  checked={shownChart === 'hex-map'}
-                />
-                <FormattedMessage id="hex-map" />
-              </div>
-            </button>)}
+            {hiddenFeatures && (
+              <button
+                type="button"
+                onClick={() => setShownChart('hex-map')}
+                style={{ border: 'none' }}
+              >
+                <div className="flex align-center" style={{ gap: '.5em' }}>
+                  <input
+                    type="radio"
+                    onChange={() => setShownChart('hex-map')}
+                    checked={shownChart === 'hex-map'}
+                  />
+                  <FormattedMessage id="hex-map" />
+                </div>
+              </button>
+            )}
             <button
               type="button"
               onClick={() => setShownChart('exercise')}
