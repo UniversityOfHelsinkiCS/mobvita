@@ -5,21 +5,36 @@ import { getTextWidth } from 'Utilities/common'
 const ExerciseMultipleChoice = ({ word }) => {
   const [options, setOptions] = useState([])
 
+  const choicesObject = word.choices[Object.keys(word.choices)]
+  console.log(word.choices)
+  console.log(choicesObject)
   useEffect(() => {
-    const temp = word.choices.sort().map(choice => ({
-      key: `${word.ID}_${choice}`,
-      value: choice,
-      text: choice,
-    }))
-    setOptions(temp)
+    if (Array.isArray(word.choices)) {
+      const temp = word.choices.sort().map(choice => ({
+        key: `${word.ID}_${choice}`,
+        value: choice,
+        text: choice,
+      }))
+      setOptions(temp)
+    }
   }, [word])
 
   let testString = ''
-  word.choices.forEach(choice => {
-    if (choice.length > testString.length) {
-      testString = choice
-    }
-  })
+  if (Array.isArray(word.choices)) {
+    word.choices.forEach(choice => {
+      if (choice.length > testString.length) {
+        testString = choice
+      }
+    })
+  } else {
+    Object.keys(word.choices).map(key =>
+      word.choices[key].forEach(choice => {
+        if (choice.length > testString.length) {
+          testString = choice
+        }
+      })
+    )
+  }
 
   return (
     <Dropdown
