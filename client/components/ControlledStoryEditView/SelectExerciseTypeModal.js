@@ -27,16 +27,14 @@ const SelectExerciseTypeModal = props => {
               <FormattedMessage id="choose-exercise-type" />
             </div>
             <hr />
-            <div style={{ cursor: 'pointer' }}>
-              <div className="pt-sm" style={{ color: '#000000' }} onClick={props.handleAddClozeExercise} onKeyDown={props.handleAddClozeExercise}>
-                <FormattedMessage id="choose-cloze-exercise" />
-              </div>
-              <div className="pt-sm" style={{ color: '#000000' }} onClick={props.handleAddHearingExercise} onKeyDown={props.handleAddHearingExercise}>
-                <FormattedMessage id="choose-listening-exercise" />
-              </div>
-              <div className="pt-sm" style={{ color: '#000000' }} onClick={() => setShowChoices(true)} onKeyDown={() => setShowChoices(true)}>
-                <FormattedMessage id="choose-multichoice-exercise" />
-              </div>
+            <div className="pt-sm" style={{ color: '#000000' }} onClick={props.handleAddClozeExercise} onKeyDown={props.handleAddClozeExercise}>
+              <FormattedMessage id="choose-cloze-exercise" />
+            </div>
+            <div className="pt-sm" style={{ color: '#000000' }} onClick={props.handleAddHearingExercise} onKeyDown={props.handleAddHearingExercise}>
+              <FormattedMessage id="choose-listening-exercise" />
+            </div>
+            <div className="pt-sm" style={{ color: '#000000' }} onClick={() => setShowChoices(true)} onKeyDown={() => setShowChoices(true)}>
+              <FormattedMessage id="choose-multichoice-exercise" />
             </div>
           </div>
         </Modal.Content>

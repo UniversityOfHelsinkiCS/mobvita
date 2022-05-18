@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useEffect } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import { Link, useHistory } from 'react-router-dom'
 import { Divider, Segment, Header, Checkbox, Icon, Popup } from 'semantic-ui-react'
@@ -17,24 +17,33 @@ import { clearTranslationAction } from 'Utilities/redux/translationReducer'
 import { resetAnnotations, setAnnotations } from 'Utilities/redux/annotationsReducer'
 import { learningLanguageSelector, getTextStyle, getMode } from 'Utilities/common'
 import DictionaryHelp from 'Components/DictionaryHelp'
-import AnnotationBox from 'Components/AnnotationBox'
-import Spinner from 'Components/Spinner'
-import TextWithFeedback from 'Components/CommonStoryTextComponents/TextWithFeedback'
-import FeedbackInfoModal from 'Components/CommonStoryTextComponents/FeedbackInfoModal'
 import ReportButton from 'Components/ReportButton'
-import { compose } from 'redux'
+import AnnotationBox from 'Components/AnnotationBox'
+import TextWithFeedback from 'Components/CommonStoryTextComponents/TextWithFeedback'
+import PreviousSnippets from './PreviousSnippets'
+import ProgressBar from './CurrentSnippet/ProgressBar'
 import Footer from '../Footer'
 import ScrollArrow from '../ScrollArrow'
 
-const ControlledStoryEditView = ({ match }) => {
+const ControlledStoryEditView = () => {
+  const learningLanguage = useSelector(learningLanguageSelector)
   const dispatch = useDispatch()
-  const intl = useIntl()
+  const { id } = useParams()
   const { width } = useWindowDimensions()
-  const [hideFeedback, setHideFeedback] = useState(false)
-  const mode = getMode()
-  const history = useHistory()
-  const [showRefreshButton, setShowRefreshButton] = useState(false)
   const controlledPractice = useSelector(({ controlledPractice }) => controlledPractice)
+  const smallScreen = width < 700
+  const mode = getMode()
+
+  const controlledPracticeTotalNum = controlledPractice?.focused?.total_num
+
+  const currentSnippetId = () => {
+    if (!controlledPractice.focused) return -1
+    const { snippetid } = controlledPractice.focused
+    return snippetid[snippetid.length - 1] ?? controlledPracticeTotalNum - 1
+  }
+
+  const currentControlledPracticeNum = currentSnippetId() + 1
+
   const { story, pending } = useSelector(({ stories, locale }) => ({
     story: stories.focused,
     pending: stories.focusedPending,
@@ -70,27 +79,10 @@ const ControlledStoryEditView = ({ match }) => {
   }, [])
 
   useEffect(() => {
-    if (controlledPractice.finished) {
-      dispatch(
-        getAllStories(learningLanguage, {
-          sort_by: 'date',
-          order: -1,
-        })
-      )
-    }
-  }, [controlledPractice?.finished])
+    dispatch(resetAnnotations())
 
-  useEffect(() => {
-    if (story) {
-      const storyWords = story.paragraph.flat(1)
-      dispatch(initControlledExerciseSnippets(initAcceptedTokens()))
-      dispatch(setAnnotations(storyWords))
-    }
-  }, [story])
-
-  useEffect(() => {
-    if (progress === 1) {
-      setShowRefreshButton(true)
+    return () => {
+      dispatch(clearFocusedSnippet())
     }
   }, [progress])
 
@@ -100,13 +92,10 @@ const ControlledStoryEditView = ({ match }) => {
   const url = history.location.pathname
   const processingCurrentStory = id === storyId
 
-  const checkboxLabel = () => {
-    return intl.formatMessage({ id: 'show-exercise-preview' })
-  }
+  if (!story) return null
 
-  const infoBoxLabel = () => {
-    return intl.formatMessage({ id: 'preview-mode-info' })
-  }
+  const handleAnswerChange = (value, word) => {
+    const { surface, id, ID, concept } = word
 
   const refreshPage = () => {
     dispatch(getStoryAction(id, 'preview'))
@@ -114,13 +103,18 @@ const ControlledStoryEditView = ({ match }) => {
     setShowRefreshButton(false)
   }
 
-  const saveControlledStory = () => {
-    dispatch(freezeControlledStory(id, controlledPractice.snippets))
+    const newAnswer = {
+      [ID]: {
+        correct: surface,
+        users_answer: value,
+        id,
+        concept,
+      },
+    }
+    dispatch(setAnswers(newAnswer))
   }
 
-  const handleEditorReset = () => {
-    dispatch(initControlledExerciseSnippets(initAcceptedTokens()))
-  }
+  const showFooter = width > 640
 
   const emptySnippets = () => {
     const snippets = Object.entries(controlledPractice.snippets)
@@ -135,41 +129,19 @@ const ControlledStoryEditView = ({ match }) => {
 
   console.log('contr ', controlledPractice)
   console.log('story ', story.paragraph)
-  // console.log('tokens ', acceptedTokens)
+  console.log('tokens ', acceptedTokens)
 
   return (
-    <div className="cont-tall flex-col space-between align-center pt-sm">
-      <div className="flex mb-nm">
-        <div>
-          <Segment data-cy="readmodes-text" className="cont" style={getTextStyle(learningLanguage)}>
-            <Header style={getTextStyle(learningLanguage, 'title')}>
-              <span className="pr-sm">{story.title}</span>
-              <br />
-              {story.url && (
-                <a href={story.url} style={{ fontSize: '1rem', fontWeight: '300' }}>
-                  <FormattedMessage id="Source" />
-                </a>
-              )}
-            </Header>
-            <div className="space-between" style={{ alignItems: 'center' }}>
-              <div>
-                <Checkbox
-                  toggle
-                  label={checkboxLabel()}
-                  checked={!hideFeedback}
-                  onChange={() => setHideFeedback(!hideFeedback)}
-                  style={{ paddingTop: '.5em' }}
-                />
-                <Popup
-                  content={infoBoxLabel()}
-                  trigger={<Icon className="pl-sm" name="info circle" color="grey" />}
-                />
-              </div>
-              <Link to={`/stories/${id}/practice`}>
-                <Button variant="primary">
-                  <FormattedMessage id="practice-now" />
-                </Button>
-              </Link>
+    <div className="cont-tall pt-sm flex-col space-between">
+      <div className="justify-center">
+        <div className="cont">
+          <Segment>
+            <div className="progress-bar-cont" style={{ top: smallScreen ? '.25em' : '3.25em' }}>
+              <ProgressBar
+                snippetProgress={currentControlledPracticeNum}
+                snippetsTotal={controlledPracticeTotalNum}
+                progress={(currentControlledPracticeNum / controlledPracticeTotalNum).toFixed(2)}
+              />
             </div>
             {progress !== 0 && processingCurrentStory && (
               <div className="bold">
@@ -206,7 +178,7 @@ const ControlledStoryEditView = ({ match }) => {
             ))}
             <div>
               {emptySnippets() && (
-                <span style={{ color: '#ff0000', marginBottom: '0.5em' }}>
+                <span style={{ color: '#ff0000', marginBottom: '0.5rem' }}>
                   <FormattedMessage id="empty-snippets-warning" />
                 </span>
               )}
@@ -214,9 +186,9 @@ const ControlledStoryEditView = ({ match }) => {
                 variant="primary"
                 onClick={saveControlledStory}
                 type="button"
-                style={{ width: '100%', marginBottom: '.5em', marginTop: '.5em' }}
+                style={{ width: '100%', marginBottom: '.5em' }}
               >
-                <FormattedMessage id="save-controlled-story" />
+                <FormattedMessage id="freeze-and-save-control-story" />
               </Button>
             </div>
             <Button
@@ -225,10 +197,16 @@ const ControlledStoryEditView = ({ match }) => {
               onClick={handleEditorReset}
               style={{ marginBottom: '0.5em' }}
             >
-              <span>
-                <FormattedMessage id="start-over" /> <Icon name="level up alternate" />
-              </span>
-            </Button>
+              {!pending && `${story.title}`}
+            </div>
+            {story.url && !pending ? (
+              <a target="blank" href={story.url}>
+                <FormattedMessage id="Source" />
+              </a>
+            ) : null}
+            <PreviousSnippets />
+            <hr />
+            <CurrentSnippet storyId={id} handleInputChange={handleAnswerChange} />
             <ScrollArrow />
           </Segment>
           {width >= 500 ? (
@@ -245,7 +223,6 @@ const ControlledStoryEditView = ({ match }) => {
           <DictionaryHelp />
           <AnnotationBox />
         </div>
-        <FeedbackInfoModal />
       </div>
       {showFooter && <Footer />}
     </div>

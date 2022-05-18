@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { Modal, Popup, Icon, Form } from 'semantic-ui-react'
+import { Modal } from 'semantic-ui-react'
 import { FormattedMessage } from 'react-intl'
 import { Button } from 'react-bootstrap'
 
@@ -13,6 +13,7 @@ const MultipleChoiceModal = props => {
     props.setOpen(false)
   }
 
+  console.log('1: ', customMultiChoice1, ' 2: ', customMultiChoice2, ' 3: ', customMultiChoice3)
   const handleSubmitChoices = async () => {
     if (chosenSet !== 'custom') {
       props.handleAddMultichoiceExercise(props.word.choices[chosenSet])
@@ -38,93 +39,46 @@ const MultipleChoiceModal = props => {
     >
       <Modal.Content>
         <div className="encouragement">
-          <div style={{ position: 'relative' }}>
-            <Popup
-              content={
-                <div style={{ padding: '0.75em' }}>
-                  <FormattedMessage id="multiple-choice-tooltip" />
-                </div>
-              }
-              trigger={
-                <Icon
-                  style={{
-                    paddingRight: '0.75em',
-                    marginBottom: '0.5em',
-                    marginLeft: '0.5em',
-                    marginTop: '0.5em',
-                  }}
-                  name="info circle"
-                  color="grey"
-                />
-              }
-            />
-            <span className="pt-sm" style={{ color: '#000000' }}>
-              <FormattedMessage id="pick-choices" />
-            </span>
-          </div>
-          <hr />
-          <Form
-            style={{
-              paddingRight: '0.75em',
-              marginBottom: '0.5em',
-              marginLeft: '0.5em',
-              marginTop: '0.5em',
-            }}
-            onSubmit={handleSubmitChoices}
-          >
+          <form onSubmit={handleSubmitChoices}>
             {props.word.choices &&
               Object.keys(props.word.choices).map(key => (
                 <div>
-                  <Form.Group>
-                    <Form.Input type="text" value={props.word.surface} disabled width={4} />
-                    {props.word.choices[key]
-                      .filter(choice => choice !== props.word.surface)
-                      .map(choice => (
-                        <Form.Input type="text" value={choice} disabled width={4} />
-                      ))}
-
-                    <Form.Input
-                      style={{ marginTop: '0.9em', marginRight: '0.3em' }}
-                      type="radio"
-                      onChange={() => setChosenSet(key)}
-                      checked={chosenSet === key}
-                    />
-                  </Form.Group>
+                  {props.word.choices[key].map(choice => (
+                    <input type="text" value={choice} disabled />
+                  ))}
+                  <input
+                    type="radio"
+                    onChange={() => setChosenSet(key)}
+                    checked={chosenSet === key}
+                  />
                   <hr />
                 </div>
               ))}
             <div>
-              <Form.Group>
-                <Form.Input type="text" value={props.word.surface} disabled width={4} />
-                <Form.Input
-                  type="text"
-                  value={customMultiChoice1}
-                  onChange={({ target }) => setCustomMultiChoice1(target.value)}
-                  width={4}
-                />
-                <Form.Input
-                  type="text"
-                  value={customMultiChoice2}
-                  onChange={({ target }) => setCustomMultiChoice2(target.value)}
-                  width={4}
-                />
-                <Form.Input
-                  type="text"
-                  value={customMultiChoice3}
-                  onChange={({ target }) => setCustomMultiChoice3(target.value)}
-                  width={4}
-                />
-                <Form.Input
-                  style={{ marginTop: '0.9em', marginRight: '0.3em' }}
-                  type="radio"
-                  onChange={() => setChosenSet('custom')}
-                  checked={chosenSet === 'custom'}
-                />
-              </Form.Group>
+              <input
+                type="text"
+                value={customMultiChoice1}
+                onChange={({ target }) => setCustomMultiChoice1(target.value)}
+              />
+              <input
+                type="text"
+                value={customMultiChoice2}
+                onChange={({ target }) => setCustomMultiChoice2(target.value)}
+              />
+              <input
+                type="text"
+                value={customMultiChoice3}
+                onChange={({ target }) => setCustomMultiChoice3(target.value)}
+              />
+              <input
+                type="radio"
+                onChange={() => setChosenSet('custom')}
+                checked={chosenSet === 'custom'}
+              />
               <hr />
               <Button type="submit">Submit</Button>
             </div>
-          </Form>
+          </form>
         </div>
       </Modal.Content>
     </Modal>

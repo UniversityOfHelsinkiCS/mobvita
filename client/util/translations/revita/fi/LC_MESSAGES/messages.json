@@ -1138,7 +1138,7 @@
     "click-to-remove-exercise": "Klikkaa poistaaksesi tehtävän",
     "click-to-add-exercise": "Klikkaa lisätäksesi tehtävän",
     "create-controlled-exercise": "Luo ohjattu harjoitus",
-    "controlled-story-saved": "Controlled story saved successfully",
+    "controlled-story-saved": "Ohjattu harjoitus tallennettu!",
     "refresh": "Päivitä",
     "save-and-go-to-next-snippet": "Save chosen exercises and go to next snippet",
     "regenerate-exercises": "Regeneroi tehtävät",
@@ -1250,8 +1250,5 @@
     "choose-cloze-exercise": "Cloze exercise",
     "choose-listening-exercise": "Listening exercise",
     "choose-multichoice-exercise": "Multiple-choice exercise",
-    "empty-snippets-warning": "Warning: You have some snippets with no exercises",
-    "multiple-choice-tooltip": "The options will always be presented to the student in alphabetical order",
-    "pick-choices": "Choose the set of choices for the exercise",
-    "save-controlled-story": "Save controlled story"
+    "empty-snippets-warning": "Warning: You have some snippets with no exercises"
 }

@@ -1139,7 +1139,7 @@
     "click-to-remove-exercise": "Clicca per rimuovere l'esercizio",
     "click-to-add-exercise": "Clicca per aggiungere l'esercizio",
     "create-controlled-exercise": "Crea una storia di valutazione",
-    "controlled-story-saved": "Controlled story saved successfully",
+    "controlled-story-saved": "Storia di valutazione salvata!",
     "refresh": "Refresh",
     "save-and-go-to-next-snippet": "Save chosen exercises and go to next snippet",
     "regenerate-exercises": "Rigenera esercizi",
@@ -1251,8 +1251,5 @@
     "choose-cloze-exercise": "Cloze exercise",
     "choose-listening-exercise": "Listening exercise",
     "choose-multichoice-exercise": "Multiple-choice exercise",
-    "empty-snippets-warning": "Warning: You have some snippets with no exercises",
-    "multiple-choice-tooltip": "The options will always be presented to the student in alphabetical order",
-    "pick-choices": "Choose the set of choices for the exercise",
-    "save-controlled-story": "Save controlled story"
+    "empty-snippets-warning": "Warning: You have some snippets with no exercises"
 }
