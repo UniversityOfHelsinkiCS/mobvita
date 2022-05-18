@@ -93,6 +93,7 @@ const PreviousExerciseWord = ({ word, tokenWord, answer, tiedAnswer }) => {
   const choicesMade = tokenizedWord => {
     if (!chosen) {
       setChosen(true)
+      setShowExerciseOptionsModal(false)
       dispatch(addExercise(tokenizedWord))
     } else {
       setChosen(false)
@@ -352,6 +353,10 @@ const PreviousExerciseWord = ({ word, tokenWord, answer, tiedAnswer }) => {
     const exerciseWord = controlledPractice.snippets[word.snippet_id].find(
       tokenizedWord => tokenizedWord.ID === word.ID
     )
+
+    if (!exerciseWord) {
+      return null
+    }
 
     return (
       <span onClick={handleAddClozeExercise} onKeyDown={handleAddClozeExercise}>
