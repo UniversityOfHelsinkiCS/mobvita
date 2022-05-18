@@ -45,7 +45,7 @@ const ExerciseCloze = ({ word }) => {
       readOnly
       key={word.ID}
       name={word.ID}
-      placeholder={`${word.surface}`}
+      placeholder={`${word.base || word.bases}`}
       value={value}
       onClick={handleExerciseClick}
       className={`exercise control-mode ${bgColorClassName}`}

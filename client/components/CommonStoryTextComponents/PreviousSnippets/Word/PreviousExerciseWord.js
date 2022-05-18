@@ -1,10 +1,8 @@
-/* eslint-disable jsx-a11y/no-static-element-interactions */
-import React, { useState, useEffect } from 'react'
+import React, { useState } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import { useHistory, useParams } from 'react-router-dom'
 import { FormattedMessage, useIntl } from 'react-intl'
 import { Icon } from 'semantic-ui-react'
-import { Button } from 'react-bootstrap'
 import {
   getTextStyle,
   learningLanguageSelector,
@@ -23,10 +21,8 @@ import {
   resetAnnotationCandidates,
 } from 'Utilities/redux/annotationsReducer'
 import Tooltip from 'Components/PracticeView/Tooltip'
-import ExerciseCloze from 'Components/ControlledStoryEditView/CurrentSnippet/ControlExerciseWord/ExerciseCloze'
-import SelectExerciseTypeModal from 'Components/ControlledStoryEditView/SelectExerciseTypeModal'
 
-const PreviousExerciseWord = ({ word, tokenWord, answer, tiedAnswer }) => {
+const PreviousExerciseWord = ({ word, answer, tiedAnswer }) => {
   const {
     surface,
     isWrong,
@@ -40,11 +36,6 @@ const PreviousExerciseWord = ({ word, tokenWord, answer, tiedAnswer }) => {
   } = word
 
   const [show, setShow] = useState(false)
-  const [showEditorTooltip, setShowEditorTooltip] = useState(false)
-  const [showExerciseOptions, setShowExerciseOptions] = useState(false)
-  const [showExerciseOptionsModal, setShowExerciseOptionsModal] = useState(false)
-  const [showCustomChoices, setShowCustomChoices] = useState(false)
-  const [chosen, setChosen] = useState(false)
   const history = useHistory()
   const isPreviewMode = history.location.pathname.includes('preview')
   const learningLanguage = useSelector(learningLanguageSelector)
@@ -58,14 +49,6 @@ const PreviousExerciseWord = ({ word, tokenWord, answer, tiedAnswer }) => {
   const intl = useIntl()
   const dispatch = useDispatch()
 
-  // console.log('word: ', word.choices)
-
-  useEffect(() => {
-    if (!controlledPractice.inProgress) {
-      setChosen(false)
-    }
-  }, [controlledPractice?.inProgress])
-
   const voice = voiceLanguages[learningLanguage]
   let color = ''
   if (tested || typeof wrong !== 'undefined') color = isWrong ? 'wrong-text' : 'right-text'
@@ -77,80 +60,6 @@ const PreviousExerciseWord = ({ word, tokenWord, answer, tiedAnswer }) => {
 
   const wordIsInSpan = word => {
     return spanAnnotations.some(span => word.ID >= span.startId && word.ID <= span.endId)
-  }
-
-  const getWordBase = word => {
-    const splitBases = word.bases.split('|')
-    const splitConcatenations = splitBases[0].split('+')
-    return splitConcatenations[0]
-  }
-
-  const choicesMade = tokenizedWord => {
-    if (!chosen) {
-      setChosen(true)
-      dispatch(addExercise(tokenizedWord))
-    } else {
-      setChosen(false)
-      setShowExerciseOptionsModal(false)
-      dispatch(removeExercise(tokenizedWord))
-    }
-
-    setShowEditorTooltip(false)
-    setShowExerciseOptions(false)
-    setShowCustomChoices(false)
-  }
-
-  const handleAddHearingExercise = () => {
-    if (controlledStory && word?.concepts?.length > 0 && tokenWord) {
-      const { choices: removedProperty, ...wordRest } = word
-
-      const tokenizedWord = {
-        ...wordRest,
-        id: word.candidate_id,
-        audio: word.surface,
-        base: getWordBase(word),
-        listen: true,
-      }
-
-      choicesMade(tokenizedWord)
-    }
-  }
-
-  const handleAddMultichoiceExercise = choicesSet => {
-    console.log('CHOICES ', choicesSet)
-    if (choicesSet) {
-      const tokenizedWord = {
-        ...word,
-        id: word.candidate_id,
-        base: getWordBase(word),
-        choices: choicesSet,
-      }
-
-      choicesMade(tokenizedWord)
-    } else if (controlledStory && word?.concepts?.length > 0 && tokenWord) {
-      const tokenizedWord = {
-        ...word,
-        id: word.candidate_id,
-        base: getWordBase(word),
-        choices: [word.surface, 'wrong', 'incorrect', 'could_be_wrong'],
-      }
-
-      choicesMade(tokenizedWord)
-    }
-  }
-
-  const handleAddClozeExercise = () => {
-    if (controlledStory && word?.concepts?.length > 0 && tokenWord) {
-      const { choices: removedProperty, ...wordRest } = word
-
-      const tokenizedWord = {
-        ...wordRest,
-        id: word.candidate_id,
-        base: getWordBase(word),
-      }
-
-      choicesMade(tokenizedWord)
-    }
   }
 
   const handleClick = () => {
@@ -189,19 +98,6 @@ const PreviousExerciseWord = ({ word, tokenWord, answer, tiedAnswer }) => {
       dispatch(setHighlightRange(null, null))
       dispatch(setHighlightRange(word.ID, word.ID))
       dispatch(addAnnotationCandidates(word))
-    }
-    setShowEditorTooltip(false)
-  }
-
-  const handleExerciseOptionsModal = () => {
-    setShowExerciseOptionsModal(true)
-    setShowEditorTooltip(false)
-  }
-
-  const handleActionClick = () => {
-    if (controlledStory && word?.concepts?.length > 0 && tokenWord) {
-      handleClick()
-      setShowEditorTooltip(true)
     }
   }
 
@@ -259,128 +155,6 @@ const PreviousExerciseWord = ({ word, tokenWord, answer, tiedAnswer }) => {
       )}
     </div>
   )
-  /*
-  const mapOptions = (
-    <div>
-      {Object.keys(word.choices).map(function (key, index) {
-        <span>
-          {key}
-          {word.choices[key].map(choice => (
-            <span>{choice}</span>
-          ))}
-        </span>
-      })}
-    </div>
-  )
- 
-
-  const customMultiOptionsForm = (
-    <div>
-      { {word.choices?.map(options => options.map(choice => <span>{choice}</span>))} }
-      { word.choices && mapOptions }
-      <form onSubmit={handleAddMultichoiceExercise}>
-        <input
-          type="text"
-          value={customMultiChoice1}
-          onChange={({ target }) => setCustomMultiChoice1(target.value)}
-        />
-        <input
-          type="text"
-          value={customMultiChoice2}
-          onChange={({ target }) => setCustomMultiChoice2(target.value)}
-        />
-        <input
-          type="text"
-          value={customMultiChoice3}
-          onChange={({ target }) => setCustomMultiChoice3(target.value)}
-        />
-        <Button className="flashcard-button" block variant="outline-primary" type="submit">
-          Submit
-        </Button>
-      </form>
-    </div>
-  )
-
-  const exerciseOptionsToolTip = (
-    <div onBlur={() => setShowExerciseOptions(false)}>
-      <div>
-        <FormattedMessage id="choose-exercise-type" />
-      </div>
-      <hr />
-      <div onClick={handleAddClozeExercise} onKeyDown={handleAddClozeExercise}>
-        <FormattedMessage id="choose-cloze-exercise" />
-      </div>
-      <div onClick={handleAddHearingExercise} onKeyDown={handleAddHearingExercise}>
-        <FormattedMessage id="choose-listening-exercise" />
-      </div>
-      <Tooltip
-        placement="top"
-        tooltipShown={showCustomChoices}
-        trigger="none"
-        tooltip={customMultiOptionsForm}
-      >
-        <div
-          onClick={() => setShowCustomChoices(true)}
-          onKeyDown={() => setShowCustomChoices(true)}
-        >
-          <FormattedMessage id="choose-multichoice-exercise" />
-        </div>
-      </Tooltip>
-    </div>
-  )
-  */
-
-  const editorTooltip = (
-    <div onBlur={() => setShowEditorTooltip(false)}>
-      <div>{tooltip}</div>
-      <div
-        className="select-exercise"
-        onClick={handleExerciseOptionsModal}
-        onKeyDown={handleExerciseOptionsModal}
-      >
-        <FormattedMessage id="click-to-add-exercise" />
-      </div>
-    </div>
-  )
-
-  if (chosen && controlledPractice) {
-    return (
-      <span onClick={handleAddClozeExercise} onKeyDown={handleAddClozeExercise}>
-        <ExerciseCloze tabIndex={word.ID} key={word.ID} word={word} />
-      </span>
-    )
-  }
-
-  if (controlledStory) {
-    return (
-      <span>
-        <SelectExerciseTypeModal
-          showExerciseOptionsModal={showExerciseOptionsModal}
-          setShowExerciseOptionsModal={setShowExerciseOptionsModal}
-          handleAddClozeExercise={handleAddClozeExercise}
-          handleAddHearingExercise={handleAddHearingExercise}
-          handleAddMultichoiceExercise={handleAddMultichoiceExercise}
-          word={word}
-        />
-        <Tooltip
-          placement="top"
-          tooltipShown={showEditorTooltip}
-          trigger="none"
-          tooltip={editorTooltip}
-        >
-          <span
-            className={`${wordClass} ${wordShouldBeHighlighted(word) && 'notes-highlighted-word'}`}
-            role="button"
-            onClick={handleActionClick}
-            onKeyDown={handleActionClick}
-            tabIndex={-1}
-          >
-            {surface}
-          </span>
-        </Tooltip>
-      </span>
-    )
-  }
 
   return (
     <Tooltip placement="top" tooltipShown={show} trigger="none" tooltip={tooltip}>

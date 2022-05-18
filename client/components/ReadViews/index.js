@@ -91,8 +91,6 @@ const ReadViews = ({ match }) => {
     setShowRefreshButton(false)
   }
 
-  console.log(story.paragraph)
-
   return (
     <div className="cont-tall flex-col space-between align-center pt-sm">
       <div className="flex mb-nm">

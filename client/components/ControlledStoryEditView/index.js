@@ -1,21 +1,15 @@
 import React, { useEffect } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
-import { Link, useHistory } from 'react-router-dom'
-import { Divider, Segment, Header, Checkbox, Icon, Popup } from 'semantic-ui-react'
-import { Button } from 'react-bootstrap'
-import { FormattedMessage, useIntl } from 'react-intl'
-import useWindowDimensions from 'Utilities/windowDimensions'
-import { getStoryAction, getAllStories } from 'Utilities/redux/storiesReducer'
-import { getStoryTokensAction } from 'Utilities/redux/controlledStoryReducer'
+import { FormattedMessage } from 'react-intl'
+import { useParams } from 'react-router-dom'
+import { Segment } from 'semantic-ui-react'
+import { getStoryAction } from 'Utilities/redux/storiesReducer'
 import { clearFocusedSnippet } from 'Utilities/redux/snippetsReducer'
-import {
-  freezeControlledStory,
-  initControlledExerciseSnippets,
-} from 'Utilities/redux/controlledPracticeReducer'
-import { finishSnippet } from 'Utilities/redux/practiceReducer'
-import { clearTranslationAction } from 'Utilities/redux/translationReducer'
-import { resetAnnotations, setAnnotations } from 'Utilities/redux/annotationsReducer'
-import { learningLanguageSelector, getTextStyle, getMode } from 'Utilities/common'
+import { setTouchedIds, setAnswers } from 'Utilities/redux/practiceReducer'
+import { resetAnnotations } from 'Utilities/redux/annotationsReducer'
+import useWindowDimensions from 'Utilities/windowDimensions'
+import { getTextStyle, learningLanguageSelector, getMode } from 'Utilities/common'
+import CurrentSnippet from 'Components/ControlledStoryEditView/CurrentSnippet'
 import DictionaryHelp from 'Components/DictionaryHelp'
 import ReportButton from 'Components/ReportButton'
 import AnnotationBox from 'Components/AnnotationBox'
@@ -49,34 +43,12 @@ const ControlledStoryEditView = () => {
     pending: stories.focusedPending,
     locale,
   }))
-  const acceptedTokens = useSelector(({ acceptedTokens }) => acceptedTokens)
 
-  const user = useSelector(state => state.user.data)
-
-  const { progress, storyId } = useSelector(({ uploadProgress }) => uploadProgress)
-
-  const learningLanguage = useSelector(learningLanguageSelector)
-  const { id } = match.params
-
-  const initAcceptedTokens = () => {
-    const initialAcceptedTokensList = {}
-    for (let i = 0; i < story?.paragraph.length; i++) {
-      if (!initialAcceptedTokensList[i]) {
-        initialAcceptedTokensList[i] = []
-      }
-    }
-    return initialAcceptedTokensList
-  }
+  const showAnnotationBox = width >= 1024
 
   useEffect(() => {
-    if (user?.user.is_teacher) {
-      setHideFeedback(false)
-    }
-    dispatch(getStoryAction(id, 'preview'))
-    dispatch(getStoryTokensAction(id, mode))
-    dispatch(clearTranslationAction())
-    dispatch(resetAnnotations())
-  }, [])
+    dispatch(getStoryAction(id, mode))
+  }, [learningLanguage])
 
   useEffect(() => {
     dispatch(resetAnnotations())
@@ -84,24 +56,14 @@ const ControlledStoryEditView = () => {
     return () => {
       dispatch(clearFocusedSnippet())
     }
-  }, [progress])
-
-  if (!story || pending || !user || acceptedTokens.pending) return <Spinner fullHeight />
-
-  const showFooter = width > 640
-  const url = history.location.pathname
-  const processingCurrentStory = id === storyId
+  }, [])
 
   if (!story) return null
 
   const handleAnswerChange = (value, word) => {
     const { surface, id, ID, concept } = word
 
-  const refreshPage = () => {
-    dispatch(getStoryAction(id, 'preview'))
-    dispatch(getStoryTokensAction(id, mode))
-    setShowRefreshButton(false)
-  }
+    dispatch(setTouchedIds(ID))
 
     const newAnswer = {
       [ID]: {
@@ -116,21 +78,6 @@ const ControlledStoryEditView = () => {
 
   const showFooter = width > 640
 
-  const emptySnippets = () => {
-    const snippets = Object.entries(controlledPractice.snippets)
-
-    for (const [snippet, array] of snippets) {
-      if (array.length < 1) {
-        return true
-      }
-    }
-    return false
-  }
-
-  console.log('contr ', controlledPractice)
-  console.log('story ', story.paragraph)
-  console.log('tokens ', acceptedTokens)
-
   return (
     <div className="cont-tall pt-sm flex-col space-between">
       <div className="justify-center">
@@ -143,59 +90,12 @@ const ControlledStoryEditView = () => {
                 progress={(currentControlledPracticeNum / controlledPracticeTotalNum).toFixed(2)}
               />
             </div>
-            {progress !== 0 && processingCurrentStory && (
-              <div className="bold">
-                <span style={{ color: 'red' }}>
-                  <FormattedMessage id="story-not-yet-processed" />
-                </span>
-              </div>
-            )}
-            {showRefreshButton && (
-              <div className="flex gap-col-sm align-center">
-                <div className="bold">
-                  <span style={{ color: 'red' }}>
-                    <FormattedMessage id="story-processing-now-finished" />
-                  </span>
-                </div>
-                <Button onClick={refreshPage}>
-                  <FormattedMessage id="refresh" />
-                </Button>
-              </div>
-            )}
-            <Divider />
-            {story.paragraph.map((paragraph, index) => (
-              <>
-                <TextWithFeedback
-                  exercise
-                  hideFeedback={hideFeedback}
-                  mode="practice"
-                  snippet={paragraph}
-                  snippetForTokens={acceptedTokens.data[index]}
-                  answers={null}
-                />
-                <hr />
-              </>
-            ))}
-            <div>
-              {emptySnippets() && (
-                <span style={{ color: '#ff0000', marginBottom: '0.5rem' }}>
-                  <FormattedMessage id="empty-snippets-warning" />
-                </span>
-              )}
-              <Button
-                variant="primary"
-                onClick={saveControlledStory}
-                type="button"
-                style={{ width: '100%', marginBottom: '.5em' }}
-              >
-                <FormattedMessage id="freeze-and-save-control-story" />
-              </Button>
-            </div>
-            <Button
-              variant="secondary"
-              size="sm"
-              onClick={handleEditorReset}
-              style={{ marginBottom: '0.5em' }}
+            <div
+              className="story-title"
+              style={{
+                ...getTextStyle(learningLanguage, 'title'),
+                width: '100%',
+              }}
             >
               {!pending && `${story.title}`}
             </div>
