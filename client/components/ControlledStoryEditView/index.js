@@ -50,17 +50,19 @@ const ControlledStoryEditView = ({ match }) => {
   const learningLanguage = useSelector(learningLanguageSelector)
   const { id } = match.params
 
-  const initAcceptedTokens = () => {
+  const initAcceptedTokens = emptySnippets => {
+    console.log('emptySnippets ', emptySnippets)
     const initialAcceptedTokensList = {}
     for (let i = 0; i < story?.paragraph.length; i++) {
       if (!initialAcceptedTokensList[i]) {
-        if (!controlledPractice.frozen_snippets[i]) {
+        if (!controlledPractice.frozen_snippets[i] || emptySnippets) {
           initialAcceptedTokensList[i] = []
         } else {
           initialAcceptedTokensList[i] = controlledPractice.frozen_snippets[i]
         }
       }
     }
+    console.log('returned init list ', initialAcceptedTokensList)
     return initialAcceptedTokensList
   }
 
@@ -125,7 +127,8 @@ const ControlledStoryEditView = ({ match }) => {
   }
 
   const handleEditorReset = () => {
-    dispatch(initControlledExerciseSnippets(initAcceptedTokens()))
+    const emptySnippets = true
+    dispatch(initControlledExerciseSnippets(initAcceptedTokens(emptySnippets)))
   }
 
   const emptySnippets = () => {

@@ -63,8 +63,6 @@ const PreviousExerciseWord = ({ word, tokenWord, answer, tiedAnswer }) => {
   const intl = useIntl()
   const dispatch = useDispatch()
 
-  // console.log('word: ', word.choices)
-
   useEffect(() => {
     if (!controlledPractice.inProgress) {
       setChosen(false)
