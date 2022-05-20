@@ -11,6 +11,7 @@ import { clearFocusedSnippet } from 'Utilities/redux/snippetsReducer'
 import {
   freezeControlledStory,
   initControlledExerciseSnippets,
+  getFrozenTokens,
 } from 'Utilities/redux/controlledPracticeReducer'
 import { finishSnippet } from 'Utilities/redux/practiceReducer'
 import { clearTranslationAction } from 'Utilities/redux/translationReducer'
@@ -53,7 +54,11 @@ const ControlledStoryEditView = ({ match }) => {
     const initialAcceptedTokensList = {}
     for (let i = 0; i < story?.paragraph.length; i++) {
       if (!initialAcceptedTokensList[i]) {
-        initialAcceptedTokensList[i] = []
+        if (!controlledPractice.frozen_snippets[i]) {
+          initialAcceptedTokensList[i] = []
+        } else {
+          initialAcceptedTokensList[i] = controlledPractice.frozen_snippets[i]
+        }
       }
     }
     return initialAcceptedTokensList
@@ -67,6 +72,7 @@ const ControlledStoryEditView = ({ match }) => {
     dispatch(getStoryTokensAction(id, mode))
     dispatch(clearTranslationAction())
     dispatch(resetAnnotations())
+    dispatch(getFrozenTokens(id))
   }, [])
 
   useEffect(() => {
@@ -81,12 +87,12 @@ const ControlledStoryEditView = ({ match }) => {
   }, [controlledPractice?.finished])
 
   useEffect(() => {
-    if (story) {
+    if (story && controlledPractice) {
       const storyWords = story.paragraph.flat(1)
       dispatch(initControlledExerciseSnippets(initAcceptedTokens()))
       dispatch(setAnnotations(storyWords))
     }
-  }, [story])
+  }, [story || controlledPractice])
 
   useEffect(() => {
     if (progress === 1) {

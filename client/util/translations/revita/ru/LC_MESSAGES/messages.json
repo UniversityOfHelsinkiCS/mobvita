@@ -1141,7 +1141,7 @@
     "click-to-remove-exercise": "Удалить упражнение",
     "click-to-add-exercise": "Добавить упражнение",
     "create-controlled-exercise": "Создать контрольный текст",
-    "controlled-story-saved": "Контрольный текст сохранен!",
+    "controlled-story-saved": "Controlled story saved successfully",
     "refresh": "Обновить",
     "save-and-go-to-next-snippet": "Save chosen exercises and go to next snippet",
     "regenerate-exercises": "Обновить упражнения",
@@ -1256,5 +1256,6 @@
     "empty-snippets-warning": "Warning: You have some snippets with no exercises",
     "multiple-choice-tooltip": "The options will always be presented to the student in alphabetical order",
     "pick-choices": "Choose the set of choices for the exercise",
-    "save-controlled-story": "Save controlled story"
+    "save-controlled-story": "Save controlled story",
+    "edit-controlled-story": "Edit controlled story"
 }

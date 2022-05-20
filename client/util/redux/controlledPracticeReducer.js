@@ -28,6 +28,13 @@ export const freezeControlledStory = (storyId, snippets) => {
   return callBuilder(route, prefix, 'post', payload)
 }
 
+export const getFrozenTokens = storyId => {
+  const route = `/stories/${storyId}/frozen`
+  const prefix = 'GET_FROZEN_TOKENS'
+
+  return callBuilder(route, prefix)
+}
+
 export const refreshCurrentSnippet = (storyId, currentSnippetId, acceptedTokens) => {
   const route =
     currentSnippetId > 0
@@ -79,6 +86,7 @@ export default (
     getNextSnippet: false,
     finished: false,
     inProgress: false,
+    frozen_snippets: {},
   },
   action
 ) => {
@@ -228,6 +236,25 @@ export default (
         pending: false,
         error: false,
         finished: true,
+      }
+    case 'GET_FROZEN_TOKENS_ATTEMPT':
+      return {
+        ...state,
+        pending: true,
+        error: false,
+      }
+    case 'GET_FROZEN_TOKENS_FAILURE':
+      return {
+        ...state,
+        pending: false,
+        error: true,
+      }
+    case 'GET_FROZEN_TOKENS_SUCCESS':
+      return {
+        ...state,
+        pending: false,
+        error: false,
+        frozen_snippets: action.response.frozen_snippets,
       }
     case 'GET_NEXT_SNIPPET_FROZEN_ATTEMPT':
       return {

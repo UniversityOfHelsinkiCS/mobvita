@@ -25,7 +25,6 @@ const ControlExerciseWord = ({ word, handleAddClozeExercise }) => {
   }
   */
   if (word.listen) {
-    console.log('listen')
     return (
       <ExercisePopup>
         <ExerciseHearing tabIndex={word.ID} key={word.ID} word={word} />
@@ -33,7 +32,6 @@ const ControlExerciseWord = ({ word, handleAddClozeExercise }) => {
     )
   }
   if (word.choices) {
-    console.log('choices')
     return (
       <ExercisePopup>
         <ExerciseMultipleChoice
@@ -45,8 +43,6 @@ const ControlExerciseWord = ({ word, handleAddClozeExercise }) => {
       </ExercisePopup>
     )
   }
-
-  console.log('cloze')
 
   return (
     <ExercisePopup>

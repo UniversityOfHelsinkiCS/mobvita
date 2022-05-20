@@ -121,8 +121,8 @@ const StoryDetailsModal = ({
             {showCancelControlStoryButton && (
               <>
                 <LinkButton
-                  to={`/stories/${story._id}/preview-controlled-story`}
-                  translationId="preview-controlled-story"
+                  to={`/stories/${story._id}/controlled-story-editor`}
+                  translationId="edit-controlled-story"
                   variant="secondary"
                 />
                 <Button variant="secondary" onClick={handleControlledStoryCancel}>

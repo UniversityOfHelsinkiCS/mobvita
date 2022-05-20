@@ -71,6 +71,18 @@ const PreviousExerciseWord = ({ word, tokenWord, answer, tiedAnswer }) => {
     }
   }, [controlledPractice?.inProgress])
 
+  useEffect(() => {
+    if (controlledPractice.frozen_snippets[word.snippet_id]) {
+      if (
+        controlledPractice.frozen_snippets[word.snippet_id].find(
+          frozenTokenWord => frozenTokenWord.ID === word.ID
+        )
+      ) {
+        setChosen(true)
+      }
+    }
+  }, [controlledPractice.frozen_snippets])
+
   const voice = voiceLanguages[learningLanguage]
   let color = ''
   if (tested || typeof wrong !== 'undefined') color = isWrong ? 'wrong-text' : 'right-text'
