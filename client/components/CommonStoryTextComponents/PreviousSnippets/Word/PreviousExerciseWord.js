@@ -155,7 +155,6 @@ const PreviousExerciseWord = ({ word, tokenWord, answer, tiedAnswer }) => {
   }
 
   const handleAddClozeExercise = () => {
-    console.log('here')
     if (controlledStory && word?.concepts?.length > 0 && tokenWord) {
       const { choices: removedProperty, ...wordRest } = word
 
@@ -274,76 +273,7 @@ const PreviousExerciseWord = ({ word, tokenWord, answer, tiedAnswer }) => {
       )}
     </div>
   )
-  /*
-  const mapOptions = (
-    <div>
-      {Object.keys(word.choices).map(function (key, index) {
-        <span>
-          {key}
-          {word.choices[key].map(choice => (
-            <span>{choice}</span>
-          ))}
-        </span>
-      })}
-    </div>
-  )
- 
 
-  const customMultiOptionsForm = (
-    <div>
-      { {word.choices?.map(options => options.map(choice => <span>{choice}</span>))} }
-      { word.choices && mapOptions }
-      <form onSubmit={handleAddMultichoiceExercise}>
-        <input
-          type="text"
-          value={customMultiChoice1}
-          onChange={({ target }) => setCustomMultiChoice1(target.value)}
-        />
-        <input
-          type="text"
-          value={customMultiChoice2}
-          onChange={({ target }) => setCustomMultiChoice2(target.value)}
-        />
-        <input
-          type="text"
-          value={customMultiChoice3}
-          onChange={({ target }) => setCustomMultiChoice3(target.value)}
-        />
-        <Button className="flashcard-button" block variant="outline-primary" type="submit">
-          Submit
-        </Button>
-      </form>
-    </div>
-  )
-
-  const exerciseOptionsToolTip = (
-    <div onBlur={() => setShowExerciseOptions(false)}>
-      <div>
-        <FormattedMessage id="choose-exercise-type" />
-      </div>
-      <hr />
-      <div onClick={handleAddClozeExercise} onKeyDown={handleAddClozeExercise}>
-        <FormattedMessage id="choose-cloze-exercise" />
-      </div>
-      <div onClick={handleAddHearingExercise} onKeyDown={handleAddHearingExercise}>
-        <FormattedMessage id="choose-listening-exercise" />
-      </div>
-      <Tooltip
-        placement="top"
-        tooltipShown={showCustomChoices}
-        trigger="none"
-        tooltip={customMultiOptionsForm}
-      >
-        <div
-          onClick={() => setShowCustomChoices(true)}
-          onKeyDown={() => setShowCustomChoices(true)}
-        >
-          <FormattedMessage id="choose-multichoice-exercise" />
-        </div>
-      </Tooltip>
-    </div>
-  )
-  */
   const editorTooltip = (
     <div>
       <div>{tooltip}</div>

@@ -104,7 +104,14 @@ const TextWithFeedback = ({
 
   const getExerciseWordComponent = (word, tokenWord, props) => {
     return inControlStoryEditor ? (
-      <PreviousExerciseWord word={word} tokenWord={tokenWord} />
+      // <PreviousExerciseWord word={word} tokenWord={tokenWord} />
+      <Word
+        hideFeedback={hideFeedback}
+        key={word.ID}
+        word={word}
+        tokenWord={tokenWord}
+        {...props}
+      />
     ) : (
       /*
       <ControlExerciseWord

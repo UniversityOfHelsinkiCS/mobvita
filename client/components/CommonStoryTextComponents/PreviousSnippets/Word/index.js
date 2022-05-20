@@ -5,7 +5,7 @@ import { hiddenFeatures } from 'Utilities/common'
 import PlainWord from 'Components/CommonStoryTextComponents/PlainWord'
 import PreviousExerciseWord from './PreviousExerciseWord'
 
-const Word = ({ word, answer, tiedAnswer, hideFeedback }) => {
+const Word = ({ word, tokenWord, answer, tiedAnswer, hideFeedback }) => {
   const history = useHistory()
   const { correctAnswerIDs } = useSelector(({ practice }) => practice)
   const isPreviewMode =
@@ -17,17 +17,24 @@ const Word = ({ word, answer, tiedAnswer, hideFeedback }) => {
 
   // in stag, also highlight words with no exercise concepts in preview mode
   if (hiddenFeatures && isPreviewMode && word.concepts?.length === 0) {
-    return <PreviousExerciseWord word={word} />
+    return <PreviousExerciseWord word={word} tokenWord={tokenWord} />
   }
 
   // preview mode (if concept list is not empty)
   if (isPreviewMode && word.concepts?.length > 0) {
-    return <PreviousExerciseWord word={word} />
+    return <PreviousExerciseWord word={word} tokenWord={tokenWord} />
   }
 
   // session history in practice & compete mode
   if (word.tested || correctAnswerIDs.includes(word.ID.toString())) {
-    return <PreviousExerciseWord word={word} answer={answer} tiedAnswer={tiedAnswer} />
+    return (
+      <PreviousExerciseWord
+        word={word}
+        tokenWord={tokenWord}
+        answer={answer}
+        tiedAnswer={tiedAnswer}
+      />
+    )
   }
 
   // review mode (highlight all word objs that have 'wrong' field))
