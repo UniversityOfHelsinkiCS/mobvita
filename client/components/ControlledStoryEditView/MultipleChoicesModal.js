@@ -76,25 +76,30 @@ const MultipleChoiceModal = props => {
               Object.keys(props.word.choices).map(key => (
                 <div>
                   <Form.Group>
+                    <Form.Input
+                      style={{ marginTop: '0.9em', marginLeft: '0.5em' }}
+                      type="radio"
+                      onChange={() => setChosenSet(key)}
+                      checked={chosenSet === key}
+                    />
                     <Form.Input type="text" value={props.word.surface} disabled width={4} />
                     {props.word.choices[key]
                       .filter(choice => choice !== props.word.surface)
                       .map(choice => (
                         <Form.Input type="text" value={choice} disabled width={4} />
                       ))}
-
-                    <Form.Input
-                      style={{ marginTop: '0.9em', marginRight: '0.3em' }}
-                      type="radio"
-                      onChange={() => setChosenSet(key)}
-                      checked={chosenSet === key}
-                    />
                   </Form.Group>
                   <hr />
                 </div>
               ))}
             <div>
               <Form.Group>
+                <Form.Input
+                  style={{ marginTop: '0.9em', marginLeft: '0.5em' }}
+                  type="radio"
+                  onChange={() => setChosenSet('custom')}
+                  checked={chosenSet === 'custom'}
+                />
                 <Form.Input type="text" value={props.word.surface} disabled width={4} />
                 <Form.Input
                   type="text"
@@ -113,12 +118,6 @@ const MultipleChoiceModal = props => {
                   value={customMultiChoice3}
                   onChange={({ target }) => setCustomMultiChoice3(target.value)}
                   width={4}
-                />
-                <Form.Input
-                  style={{ marginTop: '0.9em', marginRight: '0.3em' }}
-                  type="radio"
-                  onChange={() => setChosenSet('custom')}
-                  checked={chosenSet === 'custom'}
                 />
               </Form.Group>
               <hr />
