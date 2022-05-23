@@ -51,7 +51,6 @@ const ControlledStoryEditView = ({ match }) => {
   const { id } = match.params
 
   const initAcceptedTokens = emptySnippets => {
-    console.log('emptySnippets ', emptySnippets)
     const initialAcceptedTokensList = {}
     for (let i = 0; i < story?.paragraph.length; i++) {
       if (!initialAcceptedTokensList[i]) {
@@ -62,7 +61,7 @@ const ControlledStoryEditView = ({ match }) => {
         }
       }
     }
-    console.log('returned init list ', initialAcceptedTokensList)
+
     return initialAcceptedTokensList
   }
 

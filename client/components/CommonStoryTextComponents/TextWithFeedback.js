@@ -22,7 +22,6 @@ const TextWithFeedback = ({
   let chunkIsOneVerb = false
   const history = useHistory()
   const inControlStoryEditor = history.location.pathname.includes('controlled-story')
-
   // console.log('tokens snippet ', snippetForTokens)
 
   const lineColors = ['blue', 'green', 'black', 'purple', 'cyan']

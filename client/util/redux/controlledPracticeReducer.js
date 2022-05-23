@@ -66,6 +66,8 @@ export const resetCurrentSnippet = storyId => {
 
 export const addExercise = wordObj => ({ type: 'ADD_EXERCISE', wordObj })
 export const removeExercise = wordObj => ({ type: 'REMOVE_EXERCISE', wordObj })
+export const addHiddenWords = wordList => ({ type: 'ADD_HIDDEN_WORDS', wordList })
+export const removeHiddenWords = wordList => ({ type: 'REMOVE_HIDDEN_WORDS', wordList })
 export const initControlledExerciseSnippets = snippets => ({
   type: 'INIT_CONTROLLED_SNIPPETS',
   snippets,
@@ -87,6 +89,7 @@ export default (
     finished: false,
     inProgress: false,
     frozen_snippets: {},
+    hiddenWords: [],
   },
   action
 ) => {
@@ -97,7 +100,25 @@ export default (
         snippets: action.snippets,
         finished: false,
         inProgress: false,
+        hiddenWords: [],
       }
+
+    case 'ADD_HIDDEN_WORDS':
+      for (let i = 0; i < action.wordList.length - 1; i++) {
+        state.hiddenWords = state.hiddenWords.concat(action.wordList[i])
+      }
+      return {
+        ...state,
+      }
+
+    case 'REMOVE_HIDDEN_WORDS':
+      for (let i = 0; i < action.wordList.length - 1; i++) {
+        state.hiddenWords = state.hiddenWords.filter(id => id !== action.wordList[i])
+      }
+      return {
+        ...state,
+      }
+
     case 'ADD_EXERCISE':
       state.snippets[action.wordObj.snippet_id] = state.snippets[action.wordObj.snippet_id].concat(
         action.wordObj

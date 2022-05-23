@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState, useEffect } from 'react'
 import { useHistory } from 'react-router-dom'
 import { useSelector } from 'react-redux'
 import { hiddenFeatures } from 'Utilities/common'
@@ -6,11 +6,21 @@ import PlainWord from 'Components/CommonStoryTextComponents/PlainWord'
 import PreviousExerciseWord from './PreviousExerciseWord'
 
 const Word = ({ word, tokenWord, answer, tiedAnswer, hideFeedback }) => {
+  const [shouldBeHidden, setShouldBeHidden] = useState(false)
   const history = useHistory()
   const { correctAnswerIDs } = useSelector(({ practice }) => practice)
+  const { hiddenWords } = useSelector(({ controlledPractice }) => controlledPractice)
   const isPreviewMode =
     history.location.pathname.includes('preview') ||
     history.location.pathname.includes('controlled-story')
+
+  useEffect(() => {
+    if (hiddenWords?.find(id => id === word.ID)) {
+      setShouldBeHidden(true)
+    } else {
+      setShouldBeHidden(false)
+    }
+  }, [hiddenWords])
 
   // "Display feedback" toggle is off
   if (hideFeedback) return <PlainWord word={word} annotatingAllowed />
@@ -26,7 +36,10 @@ const Word = ({ word, tokenWord, answer, tiedAnswer, hideFeedback }) => {
   }
 
   // session history in practice & compete mode
-  if (word.tested || correctAnswerIDs.includes(word.ID.toString())) {
+  if (
+    !history.location.pathname.includes('controlled-story') &&
+    (word.tested || correctAnswerIDs.includes(word.ID.toString()))
+  ) {
     return (
       <PreviousExerciseWord
         word={word}
@@ -35,6 +48,11 @@ const Word = ({ word, tokenWord, answer, tiedAnswer, hideFeedback }) => {
         tiedAnswer={tiedAnswer}
       />
     )
+  }
+
+  if (shouldBeHidden) {
+    console.log('NOT HERE')
+    return null
   }
 
   // review mode (highlight all word objs that have 'wrong' field))
@@ -48,6 +66,7 @@ const Word = ({ word, tokenWord, answer, tiedAnswer, hideFeedback }) => {
     }
     return <PreviousExerciseWord word={word} answer={answerObj} tiedAnswer={null} />
   }
+
   return <PlainWord word={word} annotatingAllowed />
 }
 

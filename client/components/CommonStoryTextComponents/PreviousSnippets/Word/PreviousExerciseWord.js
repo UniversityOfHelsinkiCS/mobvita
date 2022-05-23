@@ -15,7 +15,12 @@ import {
 } from 'Utilities/common'
 import { setReferences, setExplanation } from 'Utilities/redux/practiceReducer'
 import { getTranslationAction, setWords } from 'Utilities/redux/translationReducer'
-import { addExercise, removeExercise } from 'Utilities/redux/controlledPracticeReducer'
+import {
+  addExercise,
+  removeExercise,
+  addHiddenWords,
+  removeHiddenWords,
+} from 'Utilities/redux/controlledPracticeReducer'
 import {
   setFocusedSpan,
   setHighlightRange,
@@ -26,6 +31,7 @@ import Tooltip from 'Components/PracticeView/Tooltip'
 import ExerciseCloze from 'Components/ControlledStoryEditView/CurrentSnippet/ControlExerciseWord/ExerciseCloze'
 import SelectExerciseTypeModal from 'Components/ControlledStoryEditView/SelectExerciseTypeModal'
 import ControlExerciseWord from 'Components/ControlledStoryEditView/CurrentSnippet/ControlExerciseWord'
+import { words } from 'lodash'
 
 const PreviousExerciseWord = ({ word, tokenWord, answer, tiedAnswer }) => {
   const {
@@ -71,12 +77,15 @@ const PreviousExerciseWord = ({ word, tokenWord, answer, tiedAnswer }) => {
 
   useEffect(() => {
     if (controlledPractice.frozen_snippets[word.snippet_id]) {
-      if (
-        controlledPractice.frozen_snippets[word.snippet_id].find(
-          frozenTokenWord => frozenTokenWord.ID === word.ID
-        )
-      ) {
+      const wordFound = controlledPractice.frozen_snippets[word.snippet_id].find(
+        frozenTokenWord => frozenTokenWord.ID === word.ID
+      )
+      if (wordFound) {
         setChosen(true)
+        if (word.analytic && word.is_head) {
+          const wordList = word.cand_index
+          dispatch(addHiddenWords(wordList))
+        }
       }
     }
   }, [controlledPractice.frozen_snippets])
@@ -106,6 +115,10 @@ const PreviousExerciseWord = ({ word, tokenWord, answer, tiedAnswer }) => {
       setShowExerciseOptionsModal(false)
       dispatch(addExercise(tokenizedWord))
     } else {
+      if (tokenizedWord.analytic && tokenizedWord.is_head) {
+        const wordList = word.cand_index
+        dispatch(removeHiddenWords(wordList))
+      }
       setChosen(false)
       setShowExerciseOptionsModal(false)
       dispatch(removeExercise(tokenizedWord))
@@ -153,6 +166,8 @@ const PreviousExerciseWord = ({ word, tokenWord, answer, tiedAnswer }) => {
       choicesMade(tokenizedWord)
     }
   }
+
+  // console.log('hidden are ', controlledPractice.hiddenWords)
 
   const handleAddClozeExercise = () => {
     if (controlledStory && word?.concepts?.length > 0 && tokenWord) {
@@ -295,6 +310,7 @@ const PreviousExerciseWord = ({ word, tokenWord, answer, tiedAnswer }) => {
     )
 
     if (!exerciseWord) {
+      console.log('WORD ', word)
       return null
     }
 
