@@ -72,6 +72,8 @@ export const initControlledExerciseSnippets = snippets => ({
   type: 'INIT_CONTROLLED_SNIPPETS',
   snippets,
 })
+
+export const resetControlledStory = snippets => ({ type: 'RESET_CONTROLLED_STORY', snippets })
 export const setPrevious = previous => ({ type: 'SET_PREVIOUS_FROZEN_SNIPPETS', payload: previous })
 export const addToPrevious = snippet => ({ type: 'ADD_TO_FROZEN_SNIPPETS', snippet })
 export const clearFocusedSnippet = () => ({ type: 'CLEAR_FOCUSED_SNIPPET' })
@@ -95,6 +97,14 @@ export default (
 ) => {
   switch (action.type) {
     case 'INIT_CONTROLLED_SNIPPETS':
+      return {
+        ...state,
+        snippets: action.snippets,
+        finished: false,
+        inProgress: true,
+        hiddenWords: [],
+      }
+    case 'RESET_CONTROLLED_STORY':
       return {
         ...state,
         snippets: action.snippets,
@@ -134,6 +144,7 @@ export default (
       )
       return {
         ...state,
+        inProgress: true,
       }
 
     case 'RESET_SNIPPET_INDEX_SUCCESS':

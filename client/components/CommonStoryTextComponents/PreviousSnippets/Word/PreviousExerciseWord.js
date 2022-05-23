@@ -70,7 +70,7 @@ const PreviousExerciseWord = ({ word, tokenWord, answer, tiedAnswer }) => {
   const dispatch = useDispatch()
 
   useEffect(() => {
-    if (!controlledPractice.inProgress) {
+    if (!controlledPractice.inProgress && !controlledPractice.finished) {
       setChosen(false)
     }
   }, [controlledPractice?.inProgress])
@@ -310,7 +310,6 @@ const PreviousExerciseWord = ({ word, tokenWord, answer, tiedAnswer }) => {
     )
 
     if (!exerciseWord) {
-      console.log('WORD ', word)
       return null
     }
 

@@ -51,7 +51,6 @@ const Word = ({ word, tokenWord, answer, tiedAnswer, hideFeedback }) => {
   }
 
   if (shouldBeHidden) {
-    console.log('NOT HERE')
     return null
   }
 

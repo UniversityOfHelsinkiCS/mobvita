@@ -12,6 +12,7 @@ import {
   freezeControlledStory,
   initControlledExerciseSnippets,
   getFrozenTokens,
+  resetControlledStory,
 } from 'Utilities/redux/controlledPracticeReducer'
 import { finishSnippet } from 'Utilities/redux/practiceReducer'
 import { clearTranslationAction } from 'Utilities/redux/translationReducer'
@@ -127,7 +128,7 @@ const ControlledStoryEditView = ({ match }) => {
 
   const handleEditorReset = () => {
     const emptySnippets = true
-    dispatch(initControlledExerciseSnippets(initAcceptedTokens(emptySnippets)))
+    dispatch(resetControlledStory(initAcceptedTokens(emptySnippets)))
   }
 
   const emptySnippets = () => {
