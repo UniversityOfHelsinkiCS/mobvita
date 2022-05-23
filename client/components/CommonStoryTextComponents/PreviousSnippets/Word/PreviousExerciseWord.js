@@ -278,7 +278,7 @@ const PreviousExerciseWord = ({ word, tokenWord, answer, tiedAnswer }) => {
     <div>
       <div>{tooltip}</div>
       <div
-        style={{ cursor: 'pointer' }}
+        style={{ cursor: 'pointer', margin: '0.5em' }}
         className="select-exercise"
         onClick={handleExerciseOptionsModal}
         onKeyDown={handleExerciseOptionsModal}
