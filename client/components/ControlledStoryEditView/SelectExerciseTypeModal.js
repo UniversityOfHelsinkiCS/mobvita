@@ -29,12 +29,12 @@ const SelectExerciseTypeModal = props => {
       >
         <Modal.Content>
           <div className="encouragement">
-            <div className="pt-sm" style={{ color: '#000000' }}>
+            <div className="pt-sm" style={{ color: '#000000', marginLeft: '0.5em' }}>
               <FormattedMessage id="choose-exercise-type" />
             </div>
             <hr />
-            <div>
-              <span style={{ margin: '0.25em' }}>
+            <div style={{ marginBottom: '0.5em' }}>
+              <span style={{ marginBottom: '0.5em', marginLeft: '0.5em' }}>
                 <Button
                   type="submit"
                   onClick={props.handleAddClozeExercise}
@@ -43,7 +43,7 @@ const SelectExerciseTypeModal = props => {
                   <FormattedMessage id="choose-cloze-exercise" />
                 </Button>
               </span>
-              <span style={{ margin: '0.25em' }}>
+              <span style={{ marginBottom: '0.5em', marginLeft: '0.45em' }}>
                 <Button
                   type="submit"
                   onClick={props.handleAddHearingExercise}
@@ -52,7 +52,7 @@ const SelectExerciseTypeModal = props => {
                   <FormattedMessage id="choose-listening-exercise" />
                 </Button>
               </span>
-              <span style={{ margin: '0.25em' }}>
+              <span style={{ marginBottom: '0.5em', marginLeft: '0.45em' }}>
                 <Button
                   type="submit"
                   onClick={() => setShowChoices(true)}
