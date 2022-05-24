@@ -70,10 +70,10 @@ const ControlledStoryEditView = ({ match }) => {
     if (user?.user.is_teacher) {
       setHideFeedback(false)
     }
-    dispatch(getFrozenTokens(id)),
-    dispatch(getStoryAction(id, 'preview')),
-    dispatch(getStoryTokensAction(id, mode)),
-    dispatch(clearTranslationAction()),
+    dispatch(getFrozenTokens(id))
+    dispatch(getStoryAction(id, 'preview'))
+    dispatch(getStoryTokensAction(id, mode))
+    dispatch(clearTranslationAction())
     dispatch(resetAnnotations())
   }, [])
 
