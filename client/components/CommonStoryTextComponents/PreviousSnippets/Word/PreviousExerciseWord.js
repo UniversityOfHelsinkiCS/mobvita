@@ -77,7 +77,7 @@ const PreviousExerciseWord = ({ word, tokenWord, answer, tiedAnswer, snippet }) 
   }, [controlledPractice?.inProgress])
 
   useEffect(() => {
-    const wordFound = controlledPractice.snippets[word.snippet_id].find(
+    const wordFound = controlledPractice.snippets[word.snippet_id]?.find(
       addedTokenWord => addedTokenWord.ID === word.ID
     )
     if (
