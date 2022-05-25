@@ -77,34 +77,36 @@ const PreviousExerciseWord = ({ word, tokenWord, answer, tiedAnswer, snippet }) 
   }, [controlledPractice?.inProgress])
 
   useEffect(() => {
-    const wordFound = controlledPractice.snippets[word.snippet_id]?.find(
-      addedTokenWord => addedTokenWord.ID === word.ID
-    )
-    if (
-      wordFound &&
-      wordFound.analytic &&
-      wordFound.is_head &&
-      !wordFound.audio &&
-      !wordFound.choices
-    ) {
-      // console.log('something found', wordFound)
-      const intersection = snippet.filter(wordInSnippet =>
-        wordFound.cand_index.includes(wordInSnippet.ID)
+    if (controlledStory) {
+      const wordFound = controlledPractice.snippets[word.snippet_id]?.find(
+        addedTokenWord => addedTokenWord.ID === word.ID
       )
-      // console.log('intersection ', intersection)
+      if (
+        wordFound &&
+        wordFound.analytic &&
+        wordFound.is_head &&
+        !wordFound.audio &&
+        !wordFound.choices
+      ) {
+        // console.log('something found', wordFound)
+        const intersection = snippet.filter(wordInSnippet =>
+          wordFound.cand_index.includes(wordInSnippet.ID)
+        )
+        // console.log('intersection ', intersection)
 
-      if (intersection) {
-        intersection.sort((a, b) => a.ID - b.ID)
-        let concatChunk = ''
-        for (let i = 0; i < intersection.length; i++) {
-          concatChunk += `${intersection[i].surface} `
+        if (intersection) {
+          intersection.sort((a, b) => a.ID - b.ID)
+          let concatChunk = ''
+          for (let i = 0; i < intersection.length; i++) {
+            concatChunk += `${intersection[i].surface} `
+          }
+          // console.log('got ', concatChunk)
+          const updatedWord = {
+            ...wordFound,
+            surface: concatChunk,
+          }
+          setAnalyticChunkWord(updatedWord)
         }
-        // console.log('got ', concatChunk)
-        const updatedWord = {
-          ...wordFound,
-          surface: concatChunk,
-        }
-        setAnalyticChunkWord(updatedWord)
       }
     }
   }, [controlledPractice.hiddenWords, controlledPractice.snippets[word.snippet_id]])
