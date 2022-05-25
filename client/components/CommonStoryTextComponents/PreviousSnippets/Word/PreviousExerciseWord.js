@@ -112,17 +112,19 @@ const PreviousExerciseWord = ({ word, tokenWord, answer, tiedAnswer, snippet }) 
   }, [controlledPractice.hiddenWords, controlledPractice.snippets[word.snippet_id]])
 
   useEffect(() => {
-    if (controlledPractice.frozen_snippets[word.snippet_id]) {
-      const wordFound = controlledPractice.frozen_snippets[word.snippet_id].find(
-        frozenTokenWord => frozenTokenWord.ID === word.ID
-      )
-      if (wordFound) {
-        setChosen(true)
-        if (word.analytic && word.is_head && !wordFound.listen && !wordFound.choices) {
-          const wordList = snippet.filter(wordInSnippet =>
-            word.cand_index.includes(wordInSnippet.ID)
-          )
-          dispatch(addHiddenWords(wordList))
+    if (controlledStory) {
+      if (controlledPractice.frozen_snippets[word.snippet_id]) {
+        const wordFound = controlledPractice.frozen_snippets[word.snippet_id].find(
+          frozenTokenWord => frozenTokenWord.ID === word.ID
+        )
+        if (wordFound) {
+          setChosen(true)
+          if (word.analytic && word.is_head && !wordFound.listen && !wordFound.choices) {
+            const wordList = snippet.filter(wordInSnippet =>
+              word.cand_index.includes(wordInSnippet.ID)
+            )
+            dispatch(addHiddenWords(wordList))
+          }
         }
       }
     }
@@ -364,7 +366,6 @@ const PreviousExerciseWord = ({ word, tokenWord, answer, tiedAnswer, snippet }) 
     if (word.ID === 65) {
       console.log('word ', word)
     }
-  
 
     return (
       <span onClick={handleAddClozeExercise} onKeyDown={handleAddClozeExercise}>

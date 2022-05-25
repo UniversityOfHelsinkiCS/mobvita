@@ -10,6 +10,8 @@ const Word = ({ word, tokenWord, answer, tiedAnswer, hideFeedback, snippet }) =>
   const history = useHistory()
   const { correctAnswerIDs } = useSelector(({ practice }) => practice)
   const { hiddenWords } = useSelector(({ controlledPractice }) => controlledPractice)
+  const controlledStory = history.location.pathname.includes('controlled-story')
+
   const isPreviewMode =
     history.location.pathname.includes('preview') ||
     history.location.pathname.includes('controlled-story')
@@ -25,7 +27,7 @@ const Word = ({ word, tokenWord, answer, tiedAnswer, hideFeedback, snippet }) =>
   // "Display feedback" toggle is off
   if (hideFeedback) return <PlainWord word={word} annotatingAllowed />
 
-  if (shouldBeHidden) {
+  if (controlledStory && shouldBeHidden) {
     return null
   }
 
