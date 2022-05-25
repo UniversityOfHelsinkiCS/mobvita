@@ -143,7 +143,7 @@ const ControlledStoryEditView = ({ match }) => {
   }
 
   console.log('contr ', controlledPractice)
-  console.log('story ', story.paragraph)
+  // console.log('story ', story.paragraph)
   // console.log('tokens ', acceptedTokens)
 
   return (

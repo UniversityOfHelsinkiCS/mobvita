@@ -5,7 +5,7 @@ import { hiddenFeatures } from 'Utilities/common'
 import PlainWord from 'Components/CommonStoryTextComponents/PlainWord'
 import PreviousExerciseWord from './PreviousExerciseWord'
 
-const Word = ({ word, tokenWord, answer, tiedAnswer, hideFeedback }) => {
+const Word = ({ word, tokenWord, answer, tiedAnswer, hideFeedback, snippet }) => {
   const [shouldBeHidden, setShouldBeHidden] = useState(false)
   const history = useHistory()
   const { correctAnswerIDs } = useSelector(({ practice }) => practice)
@@ -15,7 +15,7 @@ const Word = ({ word, tokenWord, answer, tiedAnswer, hideFeedback }) => {
     history.location.pathname.includes('controlled-story')
 
   useEffect(() => {
-    if (hiddenWords?.find(id => id === word.ID)) {
+    if (hiddenWords?.find(hidden => hidden.ID === word.ID)) {
       setShouldBeHidden(true)
     } else {
       setShouldBeHidden(false)
@@ -27,12 +27,12 @@ const Word = ({ word, tokenWord, answer, tiedAnswer, hideFeedback }) => {
 
   // in stag, also highlight words with no exercise concepts in preview mode
   if (hiddenFeatures && isPreviewMode && word.concepts?.length === 0) {
-    return <PreviousExerciseWord word={word} tokenWord={tokenWord} />
+    return <PreviousExerciseWord word={word} tokenWord={tokenWord} snippet={snippet} />
   }
 
   // preview mode (if concept list is not empty)
   if (isPreviewMode && word.concepts?.length > 0) {
-    return <PreviousExerciseWord word={word} tokenWord={tokenWord} />
+    return <PreviousExerciseWord word={word} tokenWord={tokenWord} snippet={snippet} />
   }
 
   // session history in practice & compete mode
@@ -46,6 +46,7 @@ const Word = ({ word, tokenWord, answer, tiedAnswer, hideFeedback }) => {
         tokenWord={tokenWord}
         answer={answer}
         tiedAnswer={tiedAnswer}
+        snippet={snippet}
       />
     )
   }
@@ -63,7 +64,9 @@ const Word = ({ word, tokenWord, answer, tiedAnswer, hideFeedback }) => {
       users_answer: word.wrong,
       id: word.ID,
     }
-    return <PreviousExerciseWord word={word} answer={answerObj} tiedAnswer={null} />
+    return (
+      <PreviousExerciseWord word={word} answer={answerObj} tiedAnswer={null} snippet={snippet} />
+    )
   }
 
   return <PlainWord word={word} annotatingAllowed />

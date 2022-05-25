@@ -109,6 +109,7 @@ const TextWithFeedback = ({
         key={word.ID}
         word={word}
         tokenWord={tokenWord}
+        snippet={snippet}
         {...props}
       />
     ) : (

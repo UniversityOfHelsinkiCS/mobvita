@@ -33,7 +33,7 @@ import SelectExerciseTypeModal from 'Components/ControlledStoryEditView/SelectEx
 import ControlExerciseWord from 'Components/ControlledStoryEditView/CurrentSnippet/ControlExerciseWord'
 import { words } from 'lodash'
 
-const PreviousExerciseWord = ({ word, tokenWord, answer, tiedAnswer }) => {
+const PreviousExerciseWord = ({ word, tokenWord, answer, tiedAnswer, snippet }) => {
   const {
     surface,
     isWrong,
@@ -50,6 +50,7 @@ const PreviousExerciseWord = ({ word, tokenWord, answer, tiedAnswer }) => {
   const [showEditorTooltip, setShowEditorTooltip] = useState(false)
   const [showExerciseOptions, setShowExerciseOptions] = useState(false)
   const [showExerciseOptionsModal, setShowExerciseOptionsModal] = useState(false)
+  const [analyticChunkWord, setAnalyticChunkWord] = useState(null)
   const [showCustomChoices, setShowCustomChoices] = useState(false)
   const [chosen, setChosen] = useState(false)
   const history = useHistory()
@@ -76,14 +77,49 @@ const PreviousExerciseWord = ({ word, tokenWord, answer, tiedAnswer }) => {
   }, [controlledPractice?.inProgress])
 
   useEffect(() => {
+    const wordFound = controlledPractice.snippets[word.snippet_id].find(
+      addedTokenWord => addedTokenWord.ID === word.ID
+    )
+    if (
+      wordFound &&
+      wordFound.analytic &&
+      wordFound.is_head &&
+      !wordFound.audio &&
+      !wordFound.choices
+    ) {
+      // console.log('something found', wordFound)
+      const intersection = snippet.filter(wordInSnippet =>
+        wordFound.cand_index.includes(wordInSnippet.ID)
+      )
+      // console.log('intersection ', intersection)
+
+      if (intersection) {
+        intersection.sort((a, b) => a.ID - b.ID)
+        let concatChunk = ''
+        for (let i = 0; i < intersection.length; i++) {
+          concatChunk += `${intersection[i].surface} `
+        }
+        // console.log('got ', concatChunk)
+        const updatedWord = {
+          ...wordFound,
+          surface: concatChunk,
+        }
+        setAnalyticChunkWord(updatedWord)
+      }
+    }
+  }, [controlledPractice.hiddenWords, controlledPractice.snippets[word.snippet_id]])
+
+  useEffect(() => {
     if (controlledPractice.frozen_snippets[word.snippet_id]) {
       const wordFound = controlledPractice.frozen_snippets[word.snippet_id].find(
         frozenTokenWord => frozenTokenWord.ID === word.ID
       )
       if (wordFound) {
         setChosen(true)
-        if (word.analytic && word.is_head) {
-          const wordList = word.cand_index
+        if (word.analytic && word.is_head && !wordFound.listen && !wordFound.choices) {
+          const wordList = snippet.filter(wordInSnippet =>
+            word.cand_index.includes(wordInSnippet.ID)
+          )
           dispatch(addHiddenWords(wordList))
         }
       }
@@ -113,11 +149,21 @@ const PreviousExerciseWord = ({ word, tokenWord, answer, tiedAnswer }) => {
     if (!chosen) {
       setChosen(true)
       setShowExerciseOptionsModal(false)
+      if (
+        tokenizedWord.analytic &&
+        tokenizedWord.is_head &&
+        !tokenizedWord.audio &&
+        !tokenizedWord.choices
+      ) {
+        const wordList = snippet.filter(wordInSnippet => word.cand_index.includes(wordInSnippet.ID))
+        dispatch(addHiddenWords(wordList))
+      }
       dispatch(addExercise(tokenizedWord))
     } else {
       if (tokenizedWord.analytic && tokenizedWord.is_head) {
-        const wordList = word.cand_index
+        const wordList = snippet.filter(wordInSnippet => word.cand_index.includes(wordInSnippet.ID))
         dispatch(removeHiddenWords(wordList))
+        setAnalyticChunkWord(null)
       }
       setChosen(false)
       setShowExerciseOptionsModal(false)
@@ -171,7 +217,7 @@ const PreviousExerciseWord = ({ word, tokenWord, answer, tiedAnswer }) => {
 
   const handleAddClozeExercise = () => {
     if (controlledStory && word?.concepts?.length > 0 && tokenWord) {
-      const { choices: removedProperty, ...wordRest } = word
+      const { choices: removedProperty, audio: removedAudio, ...wordRest } = word
 
       const tokenizedWord = {
         ...wordRest,
@@ -312,10 +358,14 @@ const PreviousExerciseWord = ({ word, tokenWord, answer, tiedAnswer }) => {
     if (!exerciseWord) {
       return null
     }
+    console.log('Analytic ', analyticChunkWord)
 
     return (
       <span onClick={handleAddClozeExercise} onKeyDown={handleAddClozeExercise}>
-        <ControlExerciseWord word={exerciseWord} handleAddClozeExercise={handleAddClozeExercise} />
+        <ControlExerciseWord
+          word={analyticChunkWord || exerciseWord}
+          handleAddClozeExercise={handleAddClozeExercise}
+        />
         {/*
         <ExerciseCloze
           tabIndex={word.ID}

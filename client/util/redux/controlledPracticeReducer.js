@@ -123,7 +123,7 @@ export default (
 
     case 'REMOVE_HIDDEN_WORDS':
       for (let i = 0; i < action.wordList.length - 1; i++) {
-        state.hiddenWords = state.hiddenWords.filter(id => id !== action.wordList[i])
+        state.hiddenWords = state.hiddenWords.filter(word => word.ID !== action.wordList[i].ID)
       }
       return {
         ...state,
