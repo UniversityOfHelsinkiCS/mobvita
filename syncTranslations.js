@@ -24,8 +24,8 @@ async function addTranslations(auth) {
       const eng = trimmedRow[2] || ''
       translations[trimmedRow[0]] = {
         en: eng,
-        it: trimmedRow[3] || eng,
-        fi: trimmedRow[4] || eng,
+        fi: trimmedRow[3] || eng,
+        it: trimmedRow[4] || eng,
         ru: trimmedRow[5] || eng,
         zh: trimmedRow[6] || eng,
       }
