@@ -25,6 +25,10 @@ const Word = ({ word, tokenWord, answer, tiedAnswer, hideFeedback, snippet }) =>
   // "Display feedback" toggle is off
   if (hideFeedback) return <PlainWord word={word} annotatingAllowed />
 
+  if (shouldBeHidden) {
+    return null
+  }
+
   // in stag, also highlight words with no exercise concepts in preview mode
   if (hiddenFeatures && isPreviewMode && word.concepts?.length === 0) {
     return <PreviousExerciseWord word={word} tokenWord={tokenWord} snippet={snippet} />
@@ -49,10 +53,6 @@ const Word = ({ word, tokenWord, answer, tiedAnswer, hideFeedback, snippet }) =>
         snippet={snippet}
       />
     )
-  }
-
-  if (shouldBeHidden) {
-    return null
   }
 
   // review mode (highlight all word objs that have 'wrong' field))
