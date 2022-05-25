@@ -5,10 +5,10 @@ import { getTextWidth, rightAlignedLanguages, learningLanguageSelector } from 'U
 import { addExercise, removeExercise } from 'Utilities/redux/controlledPracticeReducer'
 
 const ExerciseCloze = ({ word, isListeningExercise, isMultiChoice }) => {
-  const [value, setValue] = useState('')
+  // const [value, setValue] = useState('')
   const [bgColorClassName, setBgColorClassName] = useState('control-mode-chosen')
   const learningLanguage = useSelector(learningLanguageSelector)
-  const currentAnswer = useSelector(({ practice }) => practice.currentAnswers[word.ID])
+  // const currentAnswer = useSelector(({ practice }) => practice.currentAnswers[word.ID])
   const { acceptedTokens } = useSelector(({ controlledPractice }) => controlledPractice)
 
   const { ID: wordId } = word
@@ -27,12 +27,12 @@ const ExerciseCloze = ({ word, isListeningExercise, isMultiChoice }) => {
     if (acceptedTokens.map(t => t.ID).includes(wordId)) dispatch(removeExercise(wordId))
     else dispatch(addExercise(word))
   }
-
+  /*
   useEffect(() => {
     const val = currentAnswer ? currentAnswer.users_answer : ''
     setValue(val)
   }, [currentAnswer])
-  /*
+
   useEffect(() => {
     setBgColorClassName(getExerciseClass())
   }, [acceptedTokens])
@@ -49,7 +49,6 @@ const ExerciseCloze = ({ word, isListeningExercise, isMultiChoice }) => {
         key={word.ID}
         name={word.ID}
         placeholder={`${word.surface}`}
-        value={value}
         onClick={handleExerciseClick}
         className={`exercise control-mode ${bgColorClassName}`}
         style={{

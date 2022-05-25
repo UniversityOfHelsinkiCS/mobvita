@@ -360,7 +360,11 @@ const PreviousExerciseWord = ({ word, tokenWord, answer, tiedAnswer, snippet }) 
     if (!exerciseWord) {
       return null
     }
-    console.log('Analytic ', analyticChunkWord)
+
+    if (word.ID === 65) {
+      console.log('word ', word)
+    }
+  
 
     return (
       <span onClick={handleAddClozeExercise} onKeyDown={handleAddClozeExercise}>
