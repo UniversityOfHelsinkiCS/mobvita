@@ -5,7 +5,6 @@ import { getTextWidth, speak, learningLanguageSelector, voiceLanguages } from 'U
 import { addExercise, removeExercise } from 'Utilities/redux/controlledPracticeReducer'
 
 const ExerciseHearing = ({ word }) => {
-  const [value, setValue] = useState('')
   const { ID: wordId } = word
   const voice = voiceLanguages[learningLanguage]
   const inputRef = createRef(null)
@@ -48,7 +47,6 @@ const ExerciseHearing = ({ word }) => {
         ref={inputRef}
         key={word.ID}
         placeholder={`${word.audio}`}
-        value={value}
         className="exercise control-mode control-mode-chosen"
         style={{
           width: getTextWidth(word.audio),

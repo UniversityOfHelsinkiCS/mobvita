@@ -50,8 +50,8 @@ const MultipleChoiceModal = props => {
                   style={{
                     paddingRight: '0.75em',
                     marginBottom: '0.5em',
-                    marginLeft: '0.5em',
-                    marginTop: '0.5em',
+                    marginLeft: '0.75em',
+                    marginTop: '0.75em',
                   }}
                   name="info circle"
                   color="grey"
@@ -65,9 +65,7 @@ const MultipleChoiceModal = props => {
           <hr />
           <Form
             style={{
-              paddingRight: '0.75em',
               marginBottom: '0.5em',
-              marginLeft: '0.5em',
               marginTop: '0.5em',
             }}
             onSubmit={handleSubmitChoices}
@@ -77,16 +75,28 @@ const MultipleChoiceModal = props => {
                 <div>
                   <Form.Group>
                     <Form.Input
-                      style={{ marginTop: '0.9em', marginLeft: '0.5em' }}
+                      style={{ marginTop: '0.9em', marginLeft: '0.5em', marginRight: '0.75em' }}
                       type="radio"
                       onChange={() => setChosenSet(key)}
                       checked={chosenSet === key}
                     />
-                    <Form.Input type="text" value={props.word.surface} disabled width={4} />
+                    <input
+                      className="multi-choice-input"
+                      type="text"
+                      name="disable_field"
+                      value={props.word.surface}
+                      disabled
+                    />
                     {props.word.choices[key]
                       .filter(choice => choice !== props.word.surface)
                       .map(choice => (
-                        <Form.Input type="text" value={choice} disabled width={4} />
+                        <input
+                          className="multi-choice-input"
+                          type="text"
+                          name="disable_field"
+                          disabled
+                          value={choice}
+                        />
                       ))}
                   </Form.Group>
                   <hr />
@@ -95,33 +105,39 @@ const MultipleChoiceModal = props => {
             <div>
               <Form.Group>
                 <Form.Input
-                  style={{ marginTop: '0.9em', marginLeft: '0.5em' }}
+                  style={{ marginTop: '0.9em', marginLeft: '0.5em', marginRight: '0.75em' }}
                   type="radio"
                   onChange={() => setChosenSet('custom')}
                   checked={chosenSet === 'custom'}
                 />
-                <Form.Input type="text" value={props.word.surface} disabled width={4} />
-                <Form.Input
+                <input
+                  className="multi-choice-input"
+                  type="text"
+                  name="disable_field"
+                  value={props.word.surface}
+                  disabled
+                />
+                <input
+                  className="multi-choice-input"
                   type="text"
                   value={customMultiChoice1}
                   onChange={({ target }) => setCustomMultiChoice1(target.value)}
-                  width={4}
                 />
-                <Form.Input
+                <input
+                  className="multi-choice-input"
                   type="text"
                   value={customMultiChoice2}
                   onChange={({ target }) => setCustomMultiChoice2(target.value)}
-                  width={4}
                 />
-                <Form.Input
+                <input
+                  className="multi-choice-input"
                   type="text"
                   value={customMultiChoice3}
                   onChange={({ target }) => setCustomMultiChoice3(target.value)}
-                  width={4}
                 />
               </Form.Group>
               <hr />
-              <Button type="submit">Submit</Button>
+              <Button style={{ marginBottom: '0.5em', marginLeft: '0.5em'}}type="submit">Submit</Button>
             </div>
           </Form>
         </div>
