@@ -12,13 +12,14 @@ const MultipleChoiceModal = props => {
   const closeModal = () => {
     props.setOpen(false)
   }
+  // console.log('analytic in modal: ', props.analyticChunkWord?.surface)
 
   const handleSubmitChoices = async () => {
     if (chosenSet !== 'custom') {
       props.handleAddMultichoiceExercise(props.word.choices[chosenSet])
     } else {
       const customSet = [
-        props.word.surface,
+        props.analyticChunkWord?.surface || props.word.surface,
         customMultiChoice1,
         customMultiChoice2,
         customMultiChoice3,
@@ -84,11 +85,11 @@ const MultipleChoiceModal = props => {
                       className="multi-choice-input"
                       type="text"
                       name="disable_field"
-                      value={props.word.surface}
+                      value={props.analyticChunkWord?.surface || props.word.surface}
                       disabled
                     />
                     {props.word.choices[key]
-                      .filter(choice => choice !== props.word.surface)
+                      .filter(choice => choice !== props.analyticChunkWord?.surface || props.word.surface)
                       .map(choice => (
                         <input
                           className="multi-choice-input"
@@ -114,7 +115,7 @@ const MultipleChoiceModal = props => {
                   className="multi-choice-input"
                   type="text"
                   name="disable_field"
-                  value={props.word.surface}
+                  value={props.analyticChunkWord?.surface || props.word.surface}
                   disabled
                 />
                 <input
@@ -137,7 +138,9 @@ const MultipleChoiceModal = props => {
                 />
               </Form.Group>
               <hr />
-              <Button style={{ marginBottom: '0.5em', marginLeft: '0.5em'}}type="submit">Submit</Button>
+              <Button style={{ marginBottom: '0.5em', marginLeft: '0.5em' }} type="submit">
+                Submit
+              </Button>
             </div>
           </Form>
         </div>

@@ -78,7 +78,7 @@ const TextWithFeedback = ({
   const createChunkStyle = chunkPosition => {
     const chunkStart = chunkPosition === 'start'
     const chunkEnd = chunkPosition === 'end'
-    const chunkBorder = chunkIsOneVerb ? '1px red dashed' : '1px red solid'
+    const chunkBorder = chunkIsOneVerb ? '1px red dotted' : '1px red solid'
     const sidePadding = getSidePadding(exercise)
     const chunkStyle = {
       borderBottom: chunkBorder,

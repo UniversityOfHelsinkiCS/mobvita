@@ -18,7 +18,7 @@ const ExercisePopup = ({ children }) => {
   )
 }
 
-const ControlExerciseWord = ({ word, handleAddClozeExercise }) => {
+const ControlExerciseWord = ({ word, handleAddClozeExercise, exerChoices }) => {
   /*
   if (word.surface === '\n\n' || !word.id) {
     return <PlainWord word={word} />
@@ -31,7 +31,8 @@ const ControlExerciseWord = ({ word, handleAddClozeExercise }) => {
       </ExercisePopup>
     )
   }
-  if (word.choices) {
+  if (word.choices || exerChoices) {
+    // console.log('word HAS choices ', word)
     return (
       <ExercisePopup>
         <ExerciseMultipleChoice
@@ -39,9 +40,14 @@ const ControlExerciseWord = ({ word, handleAddClozeExercise }) => {
           key={word.ID}
           word={word}
           handleAddClozeExercise={handleAddClozeExercise}
+          choices={exerChoices || word.choices}
         />
       </ExercisePopup>
     )
+  }
+
+  if (word.ID === 6) {
+    console.log('why is this a cloze?', word)
   }
 
   return (

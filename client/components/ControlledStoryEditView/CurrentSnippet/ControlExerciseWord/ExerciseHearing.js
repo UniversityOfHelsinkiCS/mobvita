@@ -39,6 +39,7 @@ const ExerciseHearing = ({ word }) => {
     else dispatch(addExercise(word))
   }
   */
+
   return (
     <span>
       <input

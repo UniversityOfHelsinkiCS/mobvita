@@ -4,7 +4,7 @@ import { Dropdown } from 'semantic-ui-react'
 import { getTextWidth } from 'Utilities/common'
 import { addExercise, removeExercise } from 'Utilities/redux/controlledPracticeReducer'
 
-const ExerciseMultipleChoice = ({ word, handleAddClozeExercise }) => {
+const ExerciseMultipleChoice = ({ word, handleAddClozeExercise, choices }) => {
   const dispatch = useDispatch()
   const [options, setOptions] = useState([])
   const { ID: wordId } = word
@@ -24,8 +24,9 @@ const ExerciseMultipleChoice = ({ word, handleAddClozeExercise }) => {
     setBgColorClassName(getExerciseClass())
   }, [acceptedTokens])
 */
+  console.log('multi choice ', word)
   useEffect(() => {
-    const temp = word.choices.sort().map(choice => ({
+    const temp = choices.sort().map(choice => ({
       key: `${word.ID}_${choice}`,
       value: choice,
       text: choice,
@@ -37,12 +38,12 @@ const ExerciseMultipleChoice = ({ word, handleAddClozeExercise }) => {
     <Dropdown
       key={word.ID}
       options={options}
-      placeholder={word.choices[0]}
-      value={word.choices[0]}
+      placeholder={choices[0]}
+      value={choices[0]}
       onClick={handleAddClozeExercise}
       selection
       floating
-      style={{ width: getTextWidth(word.choices[0]), minWidth: getTextWidth(word.choices[0]) }}
+      style={{ width: getTextWidth(choices[0]), minWidth: getTextWidth(choices[0]) }}
       className="exercise-multiple control-mode control-mode-chosen"
     />
   )

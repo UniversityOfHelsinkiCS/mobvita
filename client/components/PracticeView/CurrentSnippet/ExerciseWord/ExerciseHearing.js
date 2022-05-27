@@ -140,8 +140,8 @@ const ExerciseHearing = ({ word, handleChange }) => {
           onMouseDown={handleMouseDown}
           className={className}
           style={{
-            width: getTextWidth(word.surface),
-            minWidth: getTextWidth(word.surface),
+            width: getTextWidth(word.surface) + 10,
+            minWidth: getTextWidth(word.surface) + 10,
             marginRight: '2px',
             height: '1.5em',
             lineHeight: 'normal',
