@@ -1257,5 +1257,6 @@
     "multiple-choice-tooltip": "Варианты всегда показываются учащемуся в алфавитном порядке",
     "pick-choices": "Введите варианты для упражнения",
     "save-controlled-story": "Сохранить контрольную историю",
-    "edit-controlled-story": "Редактировать контрольную историю"
+    "edit-controlled-story": "Редактировать контрольную историю",
+    "multiple-choice-validation": "Please add at least one more choice"
 }

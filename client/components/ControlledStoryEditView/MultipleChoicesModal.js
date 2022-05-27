@@ -140,6 +140,11 @@ const MultipleChoiceModal = props => {
                 />
               </Form.Group>
               <hr />
+              {props.showValidationMessage && (
+                <div style={{ color: '#FF0000', marginLeft: '0.5em', marginBottom: '0.5em' }}>
+                  <FormattedMessage id="multiple-choice-validation" />
+                </div>
+              )}
               <Button style={{ marginBottom: '0.5em', marginLeft: '0.5em' }} type="submit">
                 Submit
               </Button>

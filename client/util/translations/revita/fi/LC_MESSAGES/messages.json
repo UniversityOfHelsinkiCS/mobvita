@@ -1254,5 +1254,6 @@
     "multiple-choice-tooltip": "Vaihtoehdot näytetään aina opiskelijalle aakkosjärjestyksessä",
     "pick-choices": "Syötä harjoituksen vaihtoehdot",
     "save-controlled-story": "Tallenna ohjattu tarina",
-    "edit-controlled-story": "Muokkaa ohjattua tarinaa"
+    "edit-controlled-story": "Muokkaa ohjattua tarinaa",
+    "multiple-choice-validation": "Ole hyvä ja lisää vielä ainakin yksi vaihtoehto"
 }

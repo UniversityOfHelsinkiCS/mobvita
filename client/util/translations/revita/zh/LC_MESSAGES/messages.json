@@ -609,5 +609,6 @@
     "multiple-choice-tooltip": "选项将以字母顺序呈现给学生",
     "pick-choices": "输入练习选项",
     "save-controlled-story": "保存测试",
-    "edit-controlled-story": "编辑测试"
+    "edit-controlled-story": "编辑测试",
+    "multiple-choice-validation": "Please add at least one more choice"
 }

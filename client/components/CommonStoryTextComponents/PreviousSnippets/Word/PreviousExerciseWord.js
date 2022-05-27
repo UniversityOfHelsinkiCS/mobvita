@@ -46,6 +46,7 @@ const PreviousExerciseWord = ({ word, tokenWord, answer, tiedAnswer, snippet }) 
   } = word
 
   const [show, setShow] = useState(false)
+  const [showValidationMessage, setShowValidationMessage] = useState(false)
   const [showEditorTooltip, setShowEditorTooltip] = useState(false)
   const [showExerciseOptions, setShowExerciseOptions] = useState(false)
   const [showExerciseOptionsModal, setShowExerciseOptionsModal] = useState(false)
@@ -93,9 +94,6 @@ const PreviousExerciseWord = ({ word, tokenWord, answer, tiedAnswer, snippet }) 
   }
   */
 
-  if (word.choices) {
-    console.log('choices found ', word)
-  }
   useEffect(() => {
     if (controlledStory) {
       if (word.analytic && word.is_head) {
@@ -223,7 +221,7 @@ const PreviousExerciseWord = ({ word, tokenWord, answer, tiedAnswer, snippet }) 
   const handleAddMultichoiceExercise = choicesSet => {
     const { audio: removedAudio, ...wordRest } = word
 
-    if (choicesSet) {
+    if (choicesSet?.length > 1) {
       const tokenizedWord = {
         ...wordRest,
         id: word.candidate_id,
@@ -232,6 +230,11 @@ const PreviousExerciseWord = ({ word, tokenWord, answer, tiedAnswer, snippet }) 
       }
 
       choicesMade(tokenizedWord)
+    } else {
+      setShowValidationMessage(true)
+      setTimeout(() => {
+        setShowValidationMessage(false)
+      }, 5000)
     }
   }
 
@@ -410,6 +413,7 @@ const PreviousExerciseWord = ({ word, tokenWord, answer, tiedAnswer, snippet }) 
           handleAddMultichoiceExercise={handleAddMultichoiceExercise}
           word={word}
           analyticChunkWord={analyticChunkWord}
+          showValidationMessage={showValidationMessage}
         />
         <span onBlur={() => setShowEditorTooltip(false)}>
           <Tooltip

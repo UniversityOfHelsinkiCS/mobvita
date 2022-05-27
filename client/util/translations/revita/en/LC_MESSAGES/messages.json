@@ -1254,5 +1254,6 @@
     "multiple-choice-tooltip": "The options are always shown to the student in alphabetical order",
     "pick-choices": "Enter the choices for the exercise",
     "save-controlled-story": "Save controlled story",
-    "edit-controlled-story": "Edit controlled story"
+    "edit-controlled-story": "Edit controlled story",
+    "multiple-choice-validation": "Please add at least one more choice"
 }

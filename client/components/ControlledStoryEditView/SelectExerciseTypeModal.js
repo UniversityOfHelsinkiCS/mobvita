@@ -19,6 +19,7 @@ const SelectExerciseTypeModal = props => {
         handleAddMultichoiceExercise={props.handleAddMultichoiceExercise}
         word={props.word}
         analyticChunkWord={props.analyticChunkWord}
+        showValidationMessage={props.showValidationMessage}
       />
       <Modal
         basic
