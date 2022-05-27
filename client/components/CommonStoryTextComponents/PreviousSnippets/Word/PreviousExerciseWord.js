@@ -92,6 +92,10 @@ const PreviousExerciseWord = ({ word, tokenWord, answer, tiedAnswer, snippet }) 
     }
   }
   */
+
+  if (word.choices) {
+    console.log('choices found ', word)
+  }
   useEffect(() => {
     if (controlledStory) {
       if (word.analytic && word.is_head) {

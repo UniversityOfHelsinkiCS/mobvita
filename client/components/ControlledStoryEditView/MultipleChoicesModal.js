@@ -81,13 +81,13 @@ const MultipleChoiceModal = props => {
                       onChange={() => setChosenSet(key)}
                       checked={chosenSet === key}
                     />
-                    <input
+                    {/*<input
                       className="multi-choice-input"
                       type="text"
                       name="disable_field"
                       value={props.analyticChunkWord?.surface || props.word.surface}
                       disabled
-                    />
+                    />*/}
                     {props.word.choices[key]
                       .filter(choice => choice !== props.analyticChunkWord?.surface || props.word.surface)
                       .map(choice => (
