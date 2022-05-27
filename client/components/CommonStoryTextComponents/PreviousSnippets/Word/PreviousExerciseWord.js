@@ -47,6 +47,7 @@ const PreviousExerciseWord = ({ word, tokenWord, answer, tiedAnswer, snippet }) 
 
   const [show, setShow] = useState(false)
   const [showValidationMessage, setShowValidationMessage] = useState(false)
+  const [showRemoveTooltip, setShowRemoveTooltip] = useState(false)
   const [showEditorTooltip, setShowEditorTooltip] = useState(false)
   const [showExerciseOptions, setShowExerciseOptions] = useState(false)
   const [showExerciseOptionsModal, setShowExerciseOptionsModal] = useState(false)
@@ -70,29 +71,6 @@ const PreviousExerciseWord = ({ word, tokenWord, answer, tiedAnswer, snippet }) 
 
   const intl = useIntl()
   const dispatch = useDispatch()
-  /*
-  const getChunkSurface = wordFound => {
-    const intersection = snippet.filter(wordInSnippet =>
-      wordFound.cand_index.includes(wordInSnippet.ID)
-    )
-    // console.log('intersection ', intersection)
-
-    if (intersection) {
-      intersection.sort((a, b) => a.ID - b.ID)
-      let concatChunk = ''
-      for (let i = 0; i < intersection.length; i++) {
-        concatChunk += `${intersection[i].surface} `
-      }
-      console.log('found intersection ', intersection)
-      // console.log('got ', concatChunk)
-      const updatedWord = {
-        ...wordFound,
-        surface: concatChunk,
-      }
-      setAnalyticChunkWord(updatedWord)
-    }
-  }
-  */
 
   useEffect(() => {
     if (controlledStory) {
@@ -129,9 +107,8 @@ const PreviousExerciseWord = ({ word, tokenWord, answer, tiedAnswer, snippet }) 
       const wordFound = controlledPractice.snippets[word.snippet_id]?.find(
         addedTokenWord => addedTokenWord.ID === word.ID
       )
-      // console.log('FOUND ', wordFound)
+
       if (wordFound && wordFound.analytic && wordFound.is_head && !wordFound.audio) {
-        // console.log('should not happen')
         setHideAuxiliaryWords(true)
       }
     }
@@ -170,6 +147,11 @@ const PreviousExerciseWord = ({ word, tokenWord, answer, tiedAnswer, snippet }) 
     return spanAnnotations.some(span => word.ID >= span.startId && word.ID <= span.endId)
   }
 
+  const handleRemovalTooltip = () => {
+    console.log('handling')
+    setShowRemoveTooltip(!showRemoveTooltip)
+  }
+
   const getWordBase = word => {
     const splitBases = word.bases.split('|')
     const splitConcatenations = splitBases[0].split('+')
@@ -178,7 +160,6 @@ const PreviousExerciseWord = ({ word, tokenWord, answer, tiedAnswer, snippet }) 
 
   const choicesMade = tokenizedWord => {
     if (!chosen) {
-      // console.log('is about to be chosen ', tokenizedWord)
       setChosen(true)
       setShowExerciseOptionsModal(false)
       if (tokenizedWord.analytic && tokenizedWord.is_head && !tokenizedWord.audio) {
@@ -373,6 +354,12 @@ const PreviousExerciseWord = ({ word, tokenWord, answer, tiedAnswer, snippet }) 
     </div>
   )
 
+  const removalTooltip = (
+    <div style={{ cursor: 'pointer' }} onMouseDown={handleAddClozeExercise}>
+      <FormattedMessage id="click-to-remove-exercise" />
+    </div>
+  )
+
   if (chosen && controlledStory) {
     const exerciseWord = controlledPractice.snippets[word.snippet_id].find(
       tokenizedWord => tokenizedWord.ID === word.ID
@@ -382,23 +369,23 @@ const PreviousExerciseWord = ({ word, tokenWord, answer, tiedAnswer, snippet }) 
       return null
     }
 
+    console.log(showRemoveTooltip)
     return (
-      <span onClick={handleAddClozeExercise} onKeyDown={handleAddClozeExercise}>
-        <ControlExerciseWord
-          word={hideAuxiliaryWords && analyticChunkWord ? analyticChunkWord : exerciseWord}
-          handleAddClozeExercise={handleAddClozeExercise}
-          exerChoices={exerciseWord.choices}
-        />
-        {/*
-        <ExerciseCloze
-          tabIndex={word.ID}
-          key={word.ID}
-          word={word}
-          isListeningExercise={isListeningExercise}
-          isMultiChoice={isMultiChoice}
-        />
-        */}
-      </span>
+      <Tooltip
+        placement="top"
+        tooltip={removalTooltip}
+        trigger="none"
+        tooltipShown={showRemoveTooltip}
+      >
+        <span onClick={handleRemovalTooltip} onBlur={() => setShowRemoveTooltip(false)}>
+          <ControlExerciseWord
+            word={hideAuxiliaryWords && analyticChunkWord ? analyticChunkWord : exerciseWord}
+            handleAddClozeExercise={handleAddClozeExercise}
+            exerChoices={exerciseWord.choices}
+            setShowRemoveTooltip={setShowRemoveTooltip}
+          />
+        </span>
+      </Tooltip>
     )
   }
 

@@ -1,6 +1,7 @@
 import React, { useState } from 'react'
 import { Modal, Popup, Icon, Form } from 'semantic-ui-react'
 import { FormattedMessage } from 'react-intl'
+import useWindowDimension from 'Utilities/windowDimensions'
 import { Button } from 'react-bootstrap'
 
 const MultipleChoiceModal = props => {
@@ -8,6 +9,8 @@ const MultipleChoiceModal = props => {
   const [customMultiChoice1, setCustomMultiChoice1] = useState('')
   const [customMultiChoice2, setCustomMultiChoice2] = useState('')
   const [customMultiChoice3, setCustomMultiChoice3] = useState('')
+
+  const bigScreen = useWindowDimension().width >= 650
 
   const closeModal = () => {
     props.setOpen(false)

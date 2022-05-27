@@ -22,12 +22,12 @@ const ExerciseCloze = ({ word, isListeningExercise, isMultiChoice }) => {
       : 'control-mode-unchosen'
   }
   */
-
+  /*
   const handleExerciseClick = () => {
     if (acceptedTokens.map(t => t.ID).includes(wordId)) dispatch(removeExercise(wordId))
     else dispatch(addExercise(word))
   }
-  /*
+
   useEffect(() => {
     const val = currentAnswer ? currentAnswer.users_answer : ''
     setValue(val)
@@ -49,7 +49,6 @@ const ExerciseCloze = ({ word, isListeningExercise, isMultiChoice }) => {
         key={word.ID}
         name={word.ID}
         placeholder={`${word.surface}`}
-        onClick={handleExerciseClick}
         className={`exercise control-mode ${bgColorClassName}`}
         style={{
           width: word.surface > word.base ? getTextWidth(word.surface) : getTextWidth(word.base),
