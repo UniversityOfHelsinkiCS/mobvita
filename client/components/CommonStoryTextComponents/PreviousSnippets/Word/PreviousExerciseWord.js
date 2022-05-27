@@ -190,7 +190,7 @@ const PreviousExerciseWord = ({ word, tokenWord, answer, tiedAnswer, snippet }) 
       const tokenizedWord = {
         ...wordRest,
         id: word.candidate_id,
-        audio: word.surface,
+        audio: word.audio || word.surface,
         base: getWordBase(word),
         listen: true,
       }

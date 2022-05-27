@@ -47,11 +47,11 @@ const ExerciseHearing = ({ word }) => {
         readOnly
         ref={inputRef}
         key={word.ID}
-        placeholder={`${word.audio}`}
+        placeholder={`${word.surface}`}
         className="exercise control-mode control-mode-chosen"
         style={{
-          width: getTextWidth(word.audio),
-          minWidth: getTextWidth(word.audio),
+          width: getTextWidth(word.surface),
+          minWidth: getTextWidth(word.surface),
           height: '1.5em',
           lineHeight: 'normal',
         }}
