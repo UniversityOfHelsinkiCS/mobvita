@@ -1255,5 +1255,6 @@
     "pick-choices": "Enter the choices for the exercise",
     "save-controlled-story": "Save controlled story",
     "edit-controlled-story": "Edit controlled story",
-    "multiple-choice-validation": "Please add at least one more choice"
+    "multiple-choice-validation": "Please add at least one more choice",
+    "controlled-story-reminder": "Reminder: you have a controlled story"
 }

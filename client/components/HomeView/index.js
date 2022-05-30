@@ -121,6 +121,7 @@ const HomeView = () => {
     incomplete: incomplete.data,
     loading: incomplete.pending,
   }))
+  
 
   const [practiceModalOpen, setPracticeModalOpen] = useState(false)
   const [addStoryModalOpen, setAddStoryModalOpen] = useState(false)
@@ -143,7 +144,7 @@ const HomeView = () => {
           setOpen={setOpenEncouragement}
           username={username}
           storiesCovered={storiesCovered}
-          stories={incomplete}
+          incompleteStories={incomplete}
           pending={loading}
           learningLanguage={learningLanguage}
         />

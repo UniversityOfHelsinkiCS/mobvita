@@ -1256,5 +1256,6 @@
     "pick-choices": "Immettere le scelte per l'esercizio",
     "save-controlled-story": "Salva la storia controllata",
     "edit-controlled-story": "Modifica storia controllata",
-    "multiple-choice-validation": "Please add at least one more choice"
+    "multiple-choice-validation": "Please add at least one more choice",
+    "controlled-story-reminder": "Reminder: you have a controlled story"
 }

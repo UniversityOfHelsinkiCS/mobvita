@@ -46,6 +46,8 @@ const StoryList = () => {
   const [displayedStories, setDisplayedStories] = useState(stories)
   const [displaySearchResults, setDisplaySearchResults] = useState(false)
 
+  console.log('stories ', stories)
+
   const [libraries, setLibraries] = useState({
     public: false,
     private: false,

@@ -610,5 +610,6 @@
     "pick-choices": "输入练习选项",
     "save-controlled-story": "保存测试",
     "edit-controlled-story": "编辑测试",
-    "multiple-choice-validation": "Please add at least one more choice"
+    "multiple-choice-validation": "Please add at least one more choice",
+    "controlled-story-reminder": "Reminder: you have a controlled story"
 }

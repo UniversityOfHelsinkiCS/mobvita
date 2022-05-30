@@ -12,7 +12,7 @@ const WelcomeBackEncouragementModal = ({
   setOpen,
   username,
   storiesCovered,
-  stories,
+  incompleteStories,
   pending,
   learningLanguage,
 }) => {
@@ -20,7 +20,9 @@ const WelcomeBackEncouragementModal = ({
   const [latestIncompleteStory, setLatestIncompleteStory] = useState(null)
   const [storiesToReview, setStoriesToReview] = useState([])
   const { user_rank } = useSelector(({ leaderboard }) => leaderboard.data)
+  const stories = useSelector(({ stories }) => stories.data)
   const [userRanking, setUserRanking] = useState(null)
+  const [sharedStory, setSharedStory] = useState(null)
   const dispatch = useDispatch()
 
   useEffect(() => {
@@ -37,18 +39,33 @@ const WelcomeBackEncouragementModal = ({
       setUserRanking(user_rank + 1)
     }
   }, [user_rank])
+  console.log('stories ', stories)
 
   useEffect(() => {
-    if (!pending && stories?.length > 0) {
+    if (stories) {
+      const sharedIncompleteStories = stories.filter(story => story.shared && !story.has_read)
+      console.log('not one? ', sharedIncompleteStories)
+      if (sharedIncompleteStories) {
+        setSharedStory(sharedIncompleteStories[0])
+      }
+    }
+  }, [stories])
+
+  useEffect(() => {
+    if (!pending && incompleteStories?.length > 0) {
       if (
-        stories[stories.length - 1].last_snippet_id !==
-        stories[stories.length - 1].num_snippets - 1
+        incompleteStories[incompleteStories.length - 1].last_snippet_id !==
+        incompleteStories[incompleteStories.length - 1].num_snippets - 1
       ) {
-        setLatestIncompleteStory(stories[stories.length - 1])
+        setLatestIncompleteStory(incompleteStories[incompleteStories.length - 1])
       } else {
         const previousStories = []
-        for (let i = stories.length - 1; i >= 0 && i >= stories.length - 3; i--) {
-          previousStories.push(stories[i])
+        for (
+          let i = incompleteStories.length - 1;
+          i >= 0 && i >= incompleteStories.length - 3;
+          i--
+        ) {
+          previousStories.push(incompleteStories[i])
         }
 
         setStoriesToReview(previousStories)
@@ -94,6 +111,17 @@ const WelcomeBackEncouragementModal = ({
                   { stories: storiesCovered }
                 )}
               </div>
+              {sharedStory && (
+                <div>
+                  <div className="pt-lg">
+                    <div style={{ color: '#000000' }}>
+                      <FormattedHTMLMessage id="controlled-story-reminder" />
+                      &nbsp;
+                      <Link to={`/stories/${sharedStory._id}/practice`}>{sharedStory.title}</Link>
+                    </div>
+                  </div>
+                </div>
+              )}
               {userRanking && (
                 <div className="pt-lg" style={{ color: '#000000' }}>
                   <div>
@@ -121,7 +149,11 @@ const WelcomeBackEncouragementModal = ({
                         values={{ story: latestIncompleteStory.title }}
                       />
                       &nbsp;
-                      <Link to={`/stories/${stories[stories.length - 1]._id}/practice`}>
+                      <Link
+                        to={`/stories/${
+                          incompleteStories[incompleteStories.length - 1]._id
+                        }/practice`}
+                      >
                         <FormattedMessage id="continue-reading" />
                       </Link>
                       ?
