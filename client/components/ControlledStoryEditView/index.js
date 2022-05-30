@@ -166,11 +166,6 @@ const ControlledStoryEditView = ({ match }) => {
                   trigger={<Icon className="pl-sm" name="info circle" color="grey" />}
                 />
               </div>
-              <Link to={`/stories/${id}/practice`}>
-                <Button variant="primary">
-                  <FormattedMessage id="practice-now" />
-                </Button>
-              </Link>
             </div>
             {progress !== 0 && processingCurrentStory && (
               <div className="bold">

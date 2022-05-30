@@ -29,12 +29,6 @@ export const getFrozenSnippetsPreview = storyId => {
   return callBuilder(route, prefix)
 }
 
-export const resetCurrentSnippet = storyId => {
-  const route = `/stories/${storyId}/snippets/reset`
-  const prefix = 'RESET_SNIPPET_INDEX'
-  return callBuilder(route, prefix, 'post')
-}
-
 export const addExercise = wordObj => ({ type: 'ADD_EXERCISE', wordObj })
 export const removeExercise = wordObj => ({ type: 'REMOVE_EXERCISE', wordObj })
 export const addHiddenWords = wordList => ({ type: 'ADD_HIDDEN_WORDS', wordList })
@@ -113,15 +107,6 @@ export default (
       return {
         ...state,
         inProgress: true,
-      }
-
-    case 'RESET_SNIPPET_INDEX_SUCCESS':
-      return {
-        ...state,
-        previous: [],
-        focused: action.response,
-        pending: false,
-        error: false,
       }
 
     case 'CANCEL_CONTROLLED_STORY_ATTEMPT':
