@@ -3,6 +3,7 @@ import { useHistory } from 'react-router-dom'
 import { useSelector } from 'react-redux'
 import { hiddenFeatures } from 'Utilities/common'
 import PlainWord from 'Components/CommonStoryTextComponents/PlainWord'
+import ControlledStoryWord from 'Components/ControlledStoryEditView/ControlledStoryWord'
 import PreviousExerciseWord from './PreviousExerciseWord'
 
 const Word = ({ word, answer, tiedAnswer, hideFeedback, snippet }) => {
@@ -11,13 +12,10 @@ const Word = ({ word, answer, tiedAnswer, hideFeedback, snippet }) => {
   const { correctAnswerIDs } = useSelector(({ practice }) => practice)
   const { hiddenWords } = useSelector(({ controlledPractice }) => controlledPractice)
   const controlledStory = history.location.pathname.includes('controlled-story')
-
-  const isPreviewMode =
-    history.location.pathname.includes('preview') ||
-    history.location.pathname.includes('controlled-story')
+  const isPreviewMode = history.location.pathname.includes('preview')
 
   useEffect(() => {
-    if (hiddenWords?.find(hidden => hidden.ID === word.ID)) {
+    if (controlledStory && hiddenWords?.find(hidden => hidden.ID === word.ID)) {
       setShouldBeHidden(true)
     } else {
       setShouldBeHidden(false)
@@ -33,22 +31,23 @@ const Word = ({ word, answer, tiedAnswer, hideFeedback, snippet }) => {
 
   // in stag, also highlight words with no exercise concepts in preview mode
   if (hiddenFeatures && isPreviewMode && word.concepts?.length === 0) {
-    return <PreviousExerciseWord word={word} snippet={snippet} />
+    return <PreviousExerciseWord word={word} />
+  }
+  if (hiddenFeatures && controlledStory && word.concepts?.length === 0) {
+    return <ControlledStoryWord word={word} snippet={snippet} />
   }
 
   // preview mode (if concept list is not empty)
   if (isPreviewMode && word.concepts?.length > 0) {
-    return <PreviousExerciseWord word={word} snippet={snippet} />
+    return <PreviousExerciseWord word={word} />
+  }
+  if (controlledStory && word.concepts?.length > 0) {
+    return <ControlledStoryWord word={word} snippet={snippet} />
   }
 
   // session history in practice & compete mode
-  if (
-    !history.location.pathname.includes('controlled-story') &&
-    (word.tested || correctAnswerIDs.includes(word.ID.toString()))
-  ) {
-    return (
-      <PreviousExerciseWord word={word} answer={answer} tiedAnswer={tiedAnswer} snippet={snippet} />
-    )
+  if (!controlledStory && (word.tested || correctAnswerIDs.includes(word.ID.toString()))) {
+    return <PreviousExerciseWord word={word} answer={answer} tiedAnswer={tiedAnswer} />
   }
 
   // review mode (highlight all word objs that have 'wrong' field))
@@ -60,9 +59,7 @@ const Word = ({ word, answer, tiedAnswer, hideFeedback, snippet }) => {
       users_answer: word.wrong,
       id: word.ID,
     }
-    return (
-      <PreviousExerciseWord word={word} answer={answerObj} tiedAnswer={null} snippet={snippet} />
-    )
+    return <PreviousExerciseWord word={word} answer={answerObj} tiedAnswer={null} />
   }
 
   return <PlainWord word={word} annotatingAllowed />

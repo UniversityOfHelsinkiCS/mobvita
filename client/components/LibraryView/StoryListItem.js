@@ -29,7 +29,7 @@ const StoryTitle = ({
   const isTeacher = inGroupLibrary && currentGroup && currentGroup.is_teaching
   const isTeacherInPrivateLibrary = userTeachesAGroup && libraryShown.private
   const isControlledStory = !!story?.control_story
-  const showDeleteButton = (libraryShown.private || isTeacher)
+  const showDeleteButton = libraryShown.private || isTeacher
   const showShareButton = !story.public && !inGroupLibrary && userEmail !== 'anonymous_email'
   const showCreateControlStoryButton =
     isTeacherInPrivateLibrary && !isControlledStory && !story.shared

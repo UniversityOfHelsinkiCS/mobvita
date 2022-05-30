@@ -1,5 +1,5 @@
 /* eslint-disable jsx-a11y/no-static-element-interactions */
-import React, { useState, useEffect } from 'react'
+import React, { useState } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import { useHistory, useParams } from 'react-router-dom'
 import { FormattedMessage, useIntl } from 'react-intl'
@@ -16,23 +16,14 @@ import {
 import { setReferences, setExplanation } from 'Utilities/redux/practiceReducer'
 import { getTranslationAction, setWords } from 'Utilities/redux/translationReducer'
 import {
-  addExercise,
-  removeExercise,
-  addHiddenWords,
-  removeHiddenWords,
-} from 'Utilities/redux/controlledPracticeReducer'
-import {
   setFocusedSpan,
   setHighlightRange,
   addAnnotationCandidates,
   resetAnnotationCandidates,
 } from 'Utilities/redux/annotationsReducer'
 import Tooltip from 'Components/PracticeView/Tooltip'
-import ExerciseCloze from 'Components/ControlledStoryEditView/CurrentSnippet/ControlExerciseWord/ExerciseCloze'
-import SelectExerciseTypeModal from 'Components/ControlledStoryEditView/SelectExerciseTypeModal'
-import ControlExerciseWord from 'Components/ControlledStoryEditView/CurrentSnippet/ControlExerciseWord'
 
-const PreviousExerciseWord = ({ word, answer, tiedAnswer, snippet }) => {
+const PreviousExerciseWord = ({ word, answer, tiedAnswer }) => {
   const {
     surface,
     isWrong,
@@ -46,22 +37,9 @@ const PreviousExerciseWord = ({ word, answer, tiedAnswer, snippet }) => {
   } = word
 
   const [show, setShow] = useState(false)
-  const [showValidationMessage, setShowValidationMessage] = useState(false)
-  const [showRemoveTooltip, setShowRemoveTooltip] = useState(false)
-  const [showEditorTooltip, setShowEditorTooltip] = useState(false)
-  const [showExerciseOptions, setShowExerciseOptions] = useState(false)
-  const [showExerciseOptionsModal, setShowExerciseOptionsModal] = useState(false)
-  const [analyticChunkWord, setAnalyticChunkWord] = useState(null)
-  const [hideAuxiliaryWords, setHideAuxiliaryWords] = useState(false)
-  const [showCustomChoices, setShowCustomChoices] = useState(false)
-  const [chosen, setChosen] = useState(false)
   const history = useHistory()
-  const isPreviewMode =
-    history.location.pathname.includes('preview') ||
-    history.location.pathname.includes('controlled-story')
-  const controlledStory = history.location.pathname.includes('controlled-story')
+  const isPreviewMode = history.location.pathname.includes('preview')
   const learningLanguage = useSelector(learningLanguageSelector)
-  const controlledPractice = useSelector(({ controlledPractice }) => controlledPractice)
   const autoSpeak = useSelector(({ user }) => user.data.user.auto_speak)
   const dictionaryLanguage = useSelector(dictionaryLanguageSelector)
   const { spanAnnotations, highlightRange } = useSelector(({ annotations }) => annotations)
@@ -71,68 +49,6 @@ const PreviousExerciseWord = ({ word, answer, tiedAnswer, snippet }) => {
 
   const intl = useIntl()
   const dispatch = useDispatch()
-
-  useEffect(() => {
-    if (controlledStory) {
-      if (word.analytic && word.is_head) {
-        const intersection = snippet.filter(wordInSnippet =>
-          word.cand_index.includes(wordInSnippet.ID)
-        )
-        // console.log('intersection ', intersection)
-        if (intersection) {
-          intersection.sort((a, b) => a.ID - b.ID)
-          let concatChunk = ''
-          for (let i = 0; i < intersection.length; i++) {
-            concatChunk += `${intersection[i].surface} `
-          }
-          // console.log('got ', concatChunk)
-          const updatedWord = {
-            ...word,
-            surface: concatChunk,
-          }
-          setAnalyticChunkWord(updatedWord)
-        }
-      }
-    }
-  }, [])
-
-  useEffect(() => {
-    if (!controlledPractice.inProgress && !controlledPractice.finished) {
-      setChosen(false)
-    }
-  }, [controlledPractice?.inProgress])
-
-  useEffect(() => {
-    if (controlledStory) {
-      const wordFound = controlledPractice.snippets[word.snippet_id]?.find(
-        addedTokenWord => addedTokenWord.ID === word.ID
-      )
-
-      if (wordFound && wordFound.analytic && wordFound.is_head && !wordFound.audio) {
-        setHideAuxiliaryWords(true)
-      }
-    }
-  }, [controlledPractice.hiddenWords, controlledPractice.snippets[word.snippet_id]])
-
-  useEffect(() => {
-    if (controlledStory) {
-      if (controlledPractice.frozen_snippets[word.snippet_id]) {
-        const wordFound = controlledPractice.frozen_snippets[word.snippet_id].find(
-          frozenTokenWord => frozenTokenWord.ID === word.ID
-        )
-        if (wordFound) {
-          setChosen(true)
-          if (word.analytic && word.is_head && !wordFound.listen) {
-            const wordList = snippet.filter(wordInSnippet =>
-              word.cand_index.includes(wordInSnippet.ID)
-            )
-            dispatch(addHiddenWords(wordList))
-            setHideAuxiliaryWords(true)
-          }
-        }
-      }
-    }
-  }, [controlledPractice.frozen_snippets])
 
   const voice = voiceLanguages[learningLanguage]
   let color = ''
@@ -145,91 +61,6 @@ const PreviousExerciseWord = ({ word, answer, tiedAnswer, snippet }) => {
 
   const wordIsInSpan = word => {
     return spanAnnotations.some(span => word.ID >= span.startId && word.ID <= span.endId)
-  }
-
-  const handleRemovalTooltip = () => {
-    setShowRemoveTooltip(!showRemoveTooltip)
-  }
-
-  const getWordBase = word => {
-    const splitBases = word.bases.split('|')
-    const splitConcatenations = splitBases[0].split('+')
-    return splitConcatenations[0]
-  }
-
-  const choicesMade = tokenizedWord => {
-    if (!chosen) {
-      setChosen(true)
-      setShowExerciseOptionsModal(false)
-      if (tokenizedWord.analytic && tokenizedWord.is_head && !tokenizedWord.audio) {
-        const wordList = snippet.filter(wordInSnippet => word.cand_index.includes(wordInSnippet.ID))
-        dispatch(addHiddenWords(wordList))
-      }
-      dispatch(addExercise(tokenizedWord))
-    } else {
-      if (tokenizedWord.analytic && tokenizedWord.is_head) {
-        const wordList = snippet.filter(wordInSnippet => word.cand_index.includes(wordInSnippet.ID))
-        dispatch(removeHiddenWords(wordList))
-        setHideAuxiliaryWords(false)
-      }
-      setChosen(false)
-      setShowExerciseOptionsModal(false)
-      dispatch(removeExercise(tokenizedWord))
-    }
-
-    setShowEditorTooltip(false)
-    setShowExerciseOptions(false)
-    setShowCustomChoices(false)
-  }
-
-  const handleAddHearingExercise = () => {
-    if (controlledStory && word?.concepts?.length > 0) {
-      const { choices: removedProperty, ...wordRest } = word
-
-      const tokenizedWord = {
-        ...wordRest,
-        id: word.candidate_id,
-        audio: word.audio || word.surface,
-        base: getWordBase(word),
-        listen: true,
-      }
-
-      choicesMade(tokenizedWord)
-    }
-  }
-
-  const handleAddMultichoiceExercise = choicesSet => {
-    const { audio: removedAudio, ...wordRest } = word
-
-    if (choicesSet?.length > 1) {
-      const tokenizedWord = {
-        ...wordRest,
-        id: word.candidate_id,
-        base: getWordBase(word),
-        choices: choicesSet,
-      }
-
-      choicesMade(tokenizedWord)
-    } else {
-      setShowValidationMessage(true)
-      setTimeout(() => {
-        setShowValidationMessage(false)
-      }, 5000)
-    }
-  }
-
-  const handleAddClozeExercise = () => {
-    if (controlledStory && word?.concepts?.length > 0) {
-      const { choices: removedProperty, audio: removedAudio, ...wordRest } = word
-
-      const tokenizedWord = {
-        ...wordRest,
-        id: word.candidate_id,
-        base: getWordBase(word),
-      }
-
-      choicesMade(tokenizedWord)
-    }
   }
 
   const handleClick = () => {
@@ -268,18 +99,6 @@ const PreviousExerciseWord = ({ word, answer, tiedAnswer, snippet }) => {
       dispatch(setHighlightRange(null, null))
       dispatch(setHighlightRange(word.ID, word.ID))
       dispatch(addAnnotationCandidates(word))
-    }
-  }
-
-  const handleExerciseOptionsModal = () => {
-    setShowExerciseOptionsModal(true)
-    setShowEditorTooltip(false)
-  }
-
-  const handleActionClick = () => {
-    if (controlledStory && word?.concepts?.length > 0) {
-      handleClick()
-      setShowEditorTooltip(true)
     }
   }
 
@@ -337,92 +156,6 @@ const PreviousExerciseWord = ({ word, answer, tiedAnswer, snippet }) => {
       )}
     </div>
   )
-
-  const editorTooltip = (
-    <div>
-      <div>{tooltip}</div>
-      <div
-        style={{ cursor: 'pointer', margin: '0.5em' }}
-        className="select-exercise"
-        onClick={handleExerciseOptionsModal}
-        onKeyDown={handleExerciseOptionsModal}
-        onMouseDown={handleExerciseOptionsModal}
-      >
-        <FormattedMessage id="click-to-add-exercise" />
-      </div>
-    </div>
-  )
-
-  const removalTooltip = (
-    <div style={{ cursor: 'pointer', margin: '0.5em' }} onMouseDown={handleAddClozeExercise}>
-      <FormattedMessage id="click-to-remove-exercise" />
-    </div>
-  )
-
-  if (chosen && controlledStory) {
-    const exerciseWord = controlledPractice.snippets[word.snippet_id].find(
-      tokenizedWord => tokenizedWord.ID === word.ID
-    )
-
-    if (!exerciseWord) {
-      return null
-    }
-
-    return (
-      <Tooltip
-        placement="top"
-        tooltip={removalTooltip}
-        trigger="none"
-        tooltipShown={showRemoveTooltip}
-      >
-        <span onClick={handleRemovalTooltip} onBlur={() => setShowRemoveTooltip(false)}>
-          <ControlExerciseWord
-            word={hideAuxiliaryWords && analyticChunkWord ? analyticChunkWord : exerciseWord}
-            handleAddClozeExercise={handleAddClozeExercise}
-            exerChoices={exerciseWord.choices}
-            setShowRemoveTooltip={setShowRemoveTooltip}
-          />
-        </span>
-      </Tooltip>
-    )
-  }
-
-  if (controlledStory) {
-    return (
-      <span>
-        <SelectExerciseTypeModal
-          showExerciseOptionsModal={showExerciseOptionsModal}
-          setShowExerciseOptionsModal={setShowExerciseOptionsModal}
-          handleAddClozeExercise={handleAddClozeExercise}
-          handleAddHearingExercise={handleAddHearingExercise}
-          handleAddMultichoiceExercise={handleAddMultichoiceExercise}
-          word={word}
-          analyticChunkWord={analyticChunkWord}
-          showValidationMessage={showValidationMessage}
-        />
-        <span onBlur={() => setShowEditorTooltip(false)}>
-          <Tooltip
-            placement="top"
-            tooltipShown={showEditorTooltip}
-            trigger="none"
-            tooltip={editorTooltip}
-          >
-            <span
-              className={`${wordClass} ${
-                wordShouldBeHighlighted(word) && 'notes-highlighted-word'
-              }`}
-              role="button"
-              onClick={handleActionClick}
-              onKeyDown={handleActionClick}
-              tabIndex={-1}
-            >
-              {surface}
-            </span>
-          </Tooltip>
-        </span>
-      </span>
-    )
-  }
 
   return (
     <Tooltip placement="top" tooltipShown={show} trigger="none" tooltip={tooltip}>
