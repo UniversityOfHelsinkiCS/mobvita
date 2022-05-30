@@ -97,7 +97,7 @@ const MultipleChoiceModal = props => {
                       )
                       .map(choice => (
                         <input
-                          className="multi-choice-input"
+                          className={bigScreen ? "multi-choice-input": "multi-choice-input-mobile"}
                           type="text"
                           name="disable_field"
                           disabled
@@ -117,26 +117,26 @@ const MultipleChoiceModal = props => {
                   checked={chosenSet === 'custom'}
                 />
                 <input
-                  className="multi-choice-input"
+                  className={bigScreen ? "multi-choice-input": "multi-choice-input-mobile"}
                   type="text"
                   name="disable_field"
                   value={props.analyticChunkWord?.surface || props.word.surface}
                   disabled
                 />
                 <input
-                  className="multi-choice-input"
+                  className={bigScreen ? "multi-choice-input": "multi-choice-input-mobile"}
                   type="text"
                   value={customMultiChoice1}
                   onChange={({ target }) => setCustomMultiChoice1(target.value)}
                 />
                 <input
-                  className="multi-choice-input"
+                  className={bigScreen ? "multi-choice-input": "multi-choice-input-mobile"}
                   type="text"
                   value={customMultiChoice2}
                   onChange={({ target }) => setCustomMultiChoice2(target.value)}
                 />
                 <input
-                  className="multi-choice-input"
+                  className={bigScreen ? "multi-choice-input": "multi-choice-input-mobile"}
                   type="text"
                   value={customMultiChoice3}
                   onChange={({ target }) => setCustomMultiChoice3(target.value)}

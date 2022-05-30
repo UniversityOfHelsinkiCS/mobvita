@@ -148,7 +148,6 @@ const PreviousExerciseWord = ({ word, tokenWord, answer, tiedAnswer, snippet }) 
   }
 
   const handleRemovalTooltip = () => {
-    console.log('handling')
     setShowRemoveTooltip(!showRemoveTooltip)
   }
 
@@ -369,7 +368,6 @@ const PreviousExerciseWord = ({ word, tokenWord, answer, tiedAnswer, snippet }) 
       return null
     }
 
-    console.log(showRemoveTooltip)
     return (
       <Tooltip
         placement="top"
