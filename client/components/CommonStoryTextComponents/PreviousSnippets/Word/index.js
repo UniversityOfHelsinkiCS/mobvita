@@ -5,7 +5,7 @@ import { hiddenFeatures } from 'Utilities/common'
 import PlainWord from 'Components/CommonStoryTextComponents/PlainWord'
 import PreviousExerciseWord from './PreviousExerciseWord'
 
-const Word = ({ word, tokenWord, answer, tiedAnswer, hideFeedback, snippet }) => {
+const Word = ({ word, answer, tiedAnswer, hideFeedback, snippet }) => {
   const [shouldBeHidden, setShouldBeHidden] = useState(false)
   const history = useHistory()
   const { correctAnswerIDs } = useSelector(({ practice }) => practice)
@@ -33,12 +33,12 @@ const Word = ({ word, tokenWord, answer, tiedAnswer, hideFeedback, snippet }) =>
 
   // in stag, also highlight words with no exercise concepts in preview mode
   if (hiddenFeatures && isPreviewMode && word.concepts?.length === 0) {
-    return <PreviousExerciseWord word={word} tokenWord={tokenWord} snippet={snippet} />
+    return <PreviousExerciseWord word={word} snippet={snippet} />
   }
 
   // preview mode (if concept list is not empty)
   if (isPreviewMode && word.concepts?.length > 0) {
-    return <PreviousExerciseWord word={word} tokenWord={tokenWord} snippet={snippet} />
+    return <PreviousExerciseWord word={word} snippet={snippet} />
   }
 
   // session history in practice & compete mode
@@ -47,13 +47,7 @@ const Word = ({ word, tokenWord, answer, tiedAnswer, hideFeedback, snippet }) =>
     (word.tested || correctAnswerIDs.includes(word.ID.toString()))
   ) {
     return (
-      <PreviousExerciseWord
-        word={word}
-        tokenWord={tokenWord}
-        answer={answer}
-        tiedAnswer={tiedAnswer}
-        snippet={snippet}
-      />
+      <PreviousExerciseWord word={word} answer={answer} tiedAnswer={tiedAnswer} snippet={snippet} />
     )
   }
 

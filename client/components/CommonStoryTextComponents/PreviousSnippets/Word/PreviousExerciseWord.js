@@ -32,7 +32,7 @@ import ExerciseCloze from 'Components/ControlledStoryEditView/CurrentSnippet/Con
 import SelectExerciseTypeModal from 'Components/ControlledStoryEditView/SelectExerciseTypeModal'
 import ControlExerciseWord from 'Components/ControlledStoryEditView/CurrentSnippet/ControlExerciseWord'
 
-const PreviousExerciseWord = ({ word, tokenWord, answer, tiedAnswer, snippet }) => {
+const PreviousExerciseWord = ({ word, answer, tiedAnswer, snippet }) => {
   const {
     surface,
     isWrong,
@@ -183,7 +183,7 @@ const PreviousExerciseWord = ({ word, tokenWord, answer, tiedAnswer, snippet }) 
   }
 
   const handleAddHearingExercise = () => {
-    if (controlledStory && word?.concepts?.length > 0 && tokenWord) {
+    if (controlledStory && word?.concepts?.length > 0) {
       const { choices: removedProperty, ...wordRest } = word
 
       const tokenizedWord = {
@@ -219,7 +219,7 @@ const PreviousExerciseWord = ({ word, tokenWord, answer, tiedAnswer, snippet }) 
   }
 
   const handleAddClozeExercise = () => {
-    if (controlledStory && word?.concepts?.length > 0 && tokenWord) {
+    if (controlledStory && word?.concepts?.length > 0) {
       const { choices: removedProperty, audio: removedAudio, ...wordRest } = word
 
       const tokenizedWord = {
@@ -277,7 +277,7 @@ const PreviousExerciseWord = ({ word, tokenWord, answer, tiedAnswer, snippet }) 
   }
 
   const handleActionClick = () => {
-    if (controlledStory && word?.concepts?.length > 0 && tokenWord) {
+    if (controlledStory && word?.concepts?.length > 0) {
       handleClick()
       setShowEditorTooltip(true)
     }

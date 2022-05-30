@@ -6,15 +6,12 @@ import { Button } from 'react-bootstrap'
 import { FormattedMessage, useIntl } from 'react-intl'
 import useWindowDimensions from 'Utilities/windowDimensions'
 import { getStoryAction, getAllStories } from 'Utilities/redux/storiesReducer'
-import { getStoryTokensAction } from 'Utilities/redux/controlledStoryReducer'
-import { clearFocusedSnippet } from 'Utilities/redux/snippetsReducer'
 import {
   freezeControlledStory,
   initControlledExerciseSnippets,
   getFrozenTokens,
   resetControlledStory,
 } from 'Utilities/redux/controlledPracticeReducer'
-import { finishSnippet } from 'Utilities/redux/practiceReducer'
 import { clearTranslationAction } from 'Utilities/redux/translationReducer'
 import { resetAnnotations, setAnnotations } from 'Utilities/redux/annotationsReducer'
 import { learningLanguageSelector, getTextStyle, getMode } from 'Utilities/common'
@@ -24,7 +21,6 @@ import Spinner from 'Components/Spinner'
 import TextWithFeedback from 'Components/CommonStoryTextComponents/TextWithFeedback'
 import FeedbackInfoModal from 'Components/CommonStoryTextComponents/FeedbackInfoModal'
 import ReportButton from 'Components/ReportButton'
-import { compose } from 'redux'
 import Footer from '../Footer'
 import ScrollArrow from '../ScrollArrow'
 
@@ -42,7 +38,6 @@ const ControlledStoryEditView = ({ match }) => {
     pending: stories.focusedPending,
     locale,
   }))
-  const acceptedTokens = useSelector(({ acceptedTokens }) => acceptedTokens)
 
   const user = useSelector(state => state.user.data)
 
@@ -72,7 +67,6 @@ const ControlledStoryEditView = ({ match }) => {
     }
     dispatch(getFrozenTokens(id))
     dispatch(getStoryAction(id, 'preview'))
-    dispatch(getStoryTokensAction(id, mode))
     dispatch(clearTranslationAction())
     dispatch(resetAnnotations())
   }, [])
@@ -102,7 +96,7 @@ const ControlledStoryEditView = ({ match }) => {
     }
   }, [progress])
 
-  if (!story || pending || !user || acceptedTokens.pending) return <Spinner fullHeight />
+  if (!story || pending || !user) return <Spinner fullHeight />
 
   const showFooter = width > 640
   const url = history.location.pathname
@@ -118,7 +112,6 @@ const ControlledStoryEditView = ({ match }) => {
 
   const refreshPage = () => {
     dispatch(getStoryAction(id, 'preview'))
-    dispatch(getStoryTokensAction(id, mode))
     setShowRefreshButton(false)
   }
 
@@ -144,7 +137,6 @@ const ControlledStoryEditView = ({ match }) => {
 
   console.log('contr ', controlledPractice)
   // console.log('story ', story.paragraph)
-  // console.log('tokens ', acceptedTokens)
 
   return (
     <div className="cont-tall flex-col space-between align-center pt-sm">
@@ -200,14 +192,13 @@ const ControlledStoryEditView = ({ match }) => {
               </div>
             )}
             <Divider />
-            {story.paragraph.map((paragraph, index) => (
+            {story.paragraph.map(paragraph => (
               <>
                 <TextWithFeedback
                   exercise
                   hideFeedback={hideFeedback}
                   mode="practice"
                   snippet={paragraph}
-                  snippetForTokens={acceptedTokens.data[index]}
                   answers={null}
                 />
                 <hr />
