@@ -355,7 +355,7 @@ const PreviousExerciseWord = ({ word, tokenWord, answer, tiedAnswer, snippet }) 
   )
 
   const removalTooltip = (
-    <div style={{ cursor: 'pointer' }} onMouseDown={handleAddClozeExercise}>
+    <div style={{ cursor: 'pointer', margin: '0.5em' }} onMouseDown={handleAddClozeExercise}>
       <FormattedMessage id="click-to-remove-exercise" />
     </div>
   )
