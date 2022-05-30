@@ -39,7 +39,6 @@ export const initControlledExerciseSnippets = snippets => ({
 })
 
 export const resetControlledStory = snippets => ({ type: 'RESET_CONTROLLED_STORY', snippets })
-export const setPrevious = previous => ({ type: 'SET_PREVIOUS_FROZEN_SNIPPETS', payload: previous })
 
 // Reducer
 // You can include more app wide actions such as "selected: []" into the state
