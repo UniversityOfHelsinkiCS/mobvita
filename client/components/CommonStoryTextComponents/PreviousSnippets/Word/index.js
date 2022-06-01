@@ -10,17 +10,17 @@ const Word = ({ word, answer, tiedAnswer, hideFeedback, snippet }) => {
   const [shouldBeHidden, setShouldBeHidden] = useState(false)
   const history = useHistory()
   const { correctAnswerIDs } = useSelector(({ practice }) => practice)
-  const { hiddenWords } = useSelector(({ controlledPractice }) => controlledPractice)
+  const { hiddenWordIds } = useSelector(({ controlledPractice }) => controlledPractice)
   const controlledStory = history.location.pathname.includes('controlled-story')
   const isPreviewMode = history.location.pathname.includes('preview')
 
   useEffect(() => {
-    if (controlledStory && hiddenWords?.find(hidden => hidden === word.ID)) {
+    if (controlledStory && hiddenWordIds?.find(hidden => hidden === word.ID)) {
       setShouldBeHidden(true)
     } else {
       setShouldBeHidden(false)
     }
-  }, [hiddenWords])
+  }, [hiddenWordIds])
 
   // "Display feedback" toggle is off
   if (hideFeedback) return <PlainWord word={word} annotatingAllowed />

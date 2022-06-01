@@ -15,8 +15,6 @@ import { getTranslationAction, setWords } from 'Utilities/redux/translationReduc
 import {
   addExercise,
   removeExercise,
-  addHiddenWords,
-  removeHiddenWords,
 } from 'Utilities/redux/controlledPracticeReducer'
 import {
   setFocusedSpan,

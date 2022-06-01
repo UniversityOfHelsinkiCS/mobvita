@@ -36,7 +36,7 @@ export const initControlledExerciseSnippets = snippets => ({
   snippets,
 })
 
-const getHiddenWords = frozen_snippets => {
+const getHiddenWordIds = frozen_snippets => {
   if (frozen_snippets) {
     const tokens = Object.values(frozen_snippets).flat(1).filter(exerciseToken => 
       exerciseToken.analytic && exerciseToken.is_head && !exerciseToken.audio)
@@ -72,7 +72,7 @@ export default (
         snippets: action.snippets,
         finished: false,
         inProgress: true,
-        hiddenWords: getHiddenWords(action.snippets),
+        hiddenWordIds: getHiddenWordIds(action.snippets),
         reset: true,
       }
     case 'RESET_CONTROLLED_STORY':
@@ -81,7 +81,7 @@ export default (
         snippets: action.snippets,
         finished: false,
         inProgress: false,
-        hiddenWords: [],
+        hiddenWordIds: [],
       }
 
     case 'ADD_EXERCISE':
@@ -90,7 +90,7 @@ export default (
       )
       return {
         ...state,
-        hiddenWords: getHiddenWords(state.snippets),
+        hiddenWordIds: getHiddenWordIds(state.snippets),
         inProgress: true,
         reset: false,
       }
@@ -101,7 +101,7 @@ export default (
       )
       return {
         ...state,
-        hiddenWords: getHiddenWords(state.snippets),
+        hiddenWordIds: getHiddenWordIds(state.snippets),
         inProgress: true,
         reset: false,
       }
