@@ -130,13 +130,6 @@ const StoryDetailsModal = ({
                 </Button>
               </>
             )}
-            {story.shared && (
-              <LinkButton
-                to={`/stories/${story._id}/preview-controlled-story`}
-                translationId="preview-controlled-story"
-                variant="secondary"
-              />
-            )}
             <CustomButton
               condition={showShareButton}
               onClick={() => setShareModalOpen(true)}

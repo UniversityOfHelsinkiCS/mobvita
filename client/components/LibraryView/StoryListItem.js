@@ -24,8 +24,8 @@ const StoryTitle = ({
   handleControlledStoryCancel,
 }) => {
   const learningLanguage = useSelector(learningLanguageSelector)
-  const { email: userEmail } = useSelector(({ user }) => user.data.user)
-
+  const { email: userEmail, username } = useSelector(({ user }) => user.data.user)
+  const user = useSelector(({ user }) => user.data.user)
   const isTeacher = inGroupLibrary && currentGroup && currentGroup.is_teaching
   const isTeacherInPrivateLibrary = userTeachesAGroup && libraryShown.private
   const isControlledStory = !!story?.control_story
@@ -34,7 +34,7 @@ const StoryTitle = ({
   const showCreateControlStoryButton =
     isTeacherInPrivateLibrary && !isControlledStory && !story.shared
   const showCancelControlStoryButton =
-    isTeacherInPrivateLibrary && isControlledStory && !story.shared
+    isTeacherInPrivateLibrary && isControlledStory && story.user === user?.oid
 
   const handleDelete = () => setConfirmationOpen(true)
 

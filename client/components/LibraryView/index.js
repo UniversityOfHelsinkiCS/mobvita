@@ -5,7 +5,7 @@ import { Button } from 'react-bootstrap'
 import StoryListItem from 'Components/LibraryView/StoryListItem'
 import { useIntl, FormattedMessage } from 'react-intl'
 import LibraryTabs from 'Components/LibraryTabs'
-import { capitalize, useLearningLanguage } from 'Utilities/common'
+import { capitalize, useLearningLanguage, useCurrentUser } from 'Utilities/common'
 import { getGroups } from 'Utilities/redux/groupsReducer'
 import { List, WindowScroller } from 'react-virtualized'
 import {
@@ -26,6 +26,7 @@ const StoryList = () => {
     last_selected_library: savedLibrarySelection,
     last_selected_group: savedGroupSelection,
     oid: userId,
+    username,
   } = useSelector(({ user }) => user.data.user)
   const refreshed = useSelector(({ user }) => user.refreshed)
   const { groups, deleteSuccessful } = useSelector(({ groups }) => groups)
@@ -34,6 +35,7 @@ const StoryList = () => {
   const learningLanguage = useLearningLanguage()
 
   const smallWindow = useWindowDimensions().width < 520
+  const user = useCurrentUser()
 
   const smallScreenSearchbar = useRef()
 
@@ -346,6 +348,7 @@ const StoryList = () => {
           libraryShown={libraries}
           story={libraryFilteredStories[index]}
           selectedGroup={savedGroupSelection}
+          user={username}
         />
       </div>
     )

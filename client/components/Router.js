@@ -101,11 +101,11 @@ export default () => {
             />
             <ProtectedRoute exact path="/stories/:id/review/" component={ReadViews} />
             <ProtectedRoute exact path="/stories/:id/preview/" component={ReadViews} />
-            <ProtectedRoute
+            {/* <ProtectedRoute
               exact
               path="/stories/:id/preview-controlled-story/"
               component={ControlledStoryPreviewView}
-            />
+            /> */}
             <ProtectedRoute exact path="/stories/:id/compete/" component={CompeteView} />
             <ProtectedRoute
               exact
@@ -133,7 +133,6 @@ export default () => {
             <ProtectedRoute exact path="/achievements" component={Achievements} />
             <ProtectedRoute exact path="/leaderboard" component={Leaderboard} />
             <ProtectedRoute exact path="/test-construction" component={ConstructTestView} />
-            <ProtectedRoute exact path="/test-hexagon" component={HexagonTest} />
             <ProtectedRoute exact path="/vocabulary-view" component={VocabularyView} />
           </Switch>
         </main>

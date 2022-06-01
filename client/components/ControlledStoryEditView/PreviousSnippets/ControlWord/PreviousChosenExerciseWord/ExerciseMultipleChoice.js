@@ -4,7 +4,7 @@ import { getTextWidth } from 'Utilities/common'
 
 const ExerciseMultipleChoice = ({ word }) => {
   const [options, setOptions] = useState([])
-  console.log(console.log('CHOICES', word.choices))
+
   useEffect(() => {
     if (Array.isArray(word.choices)) {
       const temp = word.choices.sort().map(choice => ({
@@ -47,7 +47,7 @@ const ExerciseMultipleChoice = ({ word }) => {
       })
     )
   }
-  console.log('options final ', options)
+
   if (options.length < 2) {
     return null
   }
