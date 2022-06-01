@@ -98,7 +98,7 @@ const ControlledStoryWord = ({ word, snippet }) => {
   }, [controlledPractice.hiddenWords, controlledPractice.snippets[word.snippet_id]])
 
   useEffect(() => {
-    if (controlledPractice.frozen_snippets[word.snippet_id]) {
+    if (controlledPractice.reset && controlledPractice.frozen_snippets[word.snippet_id]) {
       const wordFound = controlledPractice.frozen_snippets[word.snippet_id].find(
         frozenTokenWord => frozenTokenWord.ID === word.ID
       )
@@ -113,7 +113,7 @@ const ControlledStoryWord = ({ word, snippet }) => {
         }
       }
     }
-  }, [controlledPractice.frozen_snippets])
+  }, [controlledPractice.frozen_snippets, controlledPractice.reset])
 
   const voice = voiceLanguages[learningLanguage]
   let color = ''

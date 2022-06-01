@@ -88,7 +88,7 @@ const ControlledStoryEditView = ({ match }) => {
       dispatch(initControlledExerciseSnippets(initAcceptedTokens()))
       dispatch(setAnnotations(storyWords))
     }
-  }, [story || controlledPractice])
+  }, [story])
 
   useEffect(() => {
     if (progress === 1) {

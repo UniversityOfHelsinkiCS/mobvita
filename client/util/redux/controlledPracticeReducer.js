@@ -53,6 +53,7 @@ export default (
     inProgress: false,
     frozen_snippets: {},
     hiddenWords: [],
+    reset: false,
   },
   action
 ) => {
@@ -64,6 +65,7 @@ export default (
         finished: false,
         inProgress: true,
         hiddenWords: [],
+        reset: true,
       }
     case 'RESET_CONTROLLED_STORY':
       return {
@@ -80,6 +82,7 @@ export default (
       }
       return {
         ...state,
+        reset: false,
       }
 
     case 'REMOVE_HIDDEN_WORDS':
@@ -97,6 +100,7 @@ export default (
       return {
         ...state,
         inProgress: true,
+        reset: false,
       }
 
     case 'REMOVE_EXERCISE':
@@ -106,6 +110,7 @@ export default (
       return {
         ...state,
         inProgress: true,
+        reset: false,
       }
 
     case 'CANCEL_CONTROLLED_STORY_ATTEMPT':
@@ -152,12 +157,14 @@ export default (
         pending: false,
         error: false,
         finished: true,
+        reset: false,
       }
     case 'GET_FROZEN_TOKENS_ATTEMPT':
       return {
         ...state,
         pending: true,
         error: false,
+        reset: false,
       }
     case 'GET_FROZEN_TOKENS_FAILURE':
       return {
