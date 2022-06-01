@@ -176,12 +176,13 @@ const ControlledStoryWord = ({ word, snippet }) => {
     }
   }
 
-  const handleAddMultichoiceExercise = choicesSet => {
+  const handleAddMultichoiceExercise = (choicesSet, correct_form) => {
     const { audio: removedAudio, ...wordRest } = word
 
     if (choicesSet?.length > 1) {
       const tokenizedWord = {
         ...wordRest,
+        surface: correct_form,
         id: word.candidate_id,
         base: getWordBase(word),
         choices: choicesSet,

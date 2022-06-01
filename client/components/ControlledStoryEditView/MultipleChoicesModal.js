@@ -18,16 +18,19 @@ const MultipleChoiceModal = props => {
   // console.log('analytic in modal: ', props.analyticChunkWord?.surface)
 
   const handleSubmitChoices = async () => {
-    if (chosenSet !== 'custom') {
-      props.handleAddMultichoiceExercise(props.word.choices[chosenSet])
-    } else {
+    if (chosenSet === 'custom') {
       const customSet = [
         props.analyticChunkWord?.surface || props.word.surface,
         customMultiChoice1,
         customMultiChoice2,
         customMultiChoice3,
       ]
-      props.handleAddMultichoiceExercise(customSet.filter(word => word !== ''))
+      props.handleAddMultichoiceExercise(customSet.filter(word => word !== ''), props.word.surface)
+      
+    } else if (chosenSet === 'stress') {
+      props.handleAddMultichoiceExercise(props.word.stress, props.word.stressed)
+    } else {
+      props.handleAddMultichoiceExercise(props.word.choices[chosenSet], props.word.surface)
     }
   }
 
@@ -108,6 +111,28 @@ const MultipleChoiceModal = props => {
                   <hr />
                 </div>
               ))}
+            {
+              props.word.stress &&  props.word.stressed && (
+                <Form.Group>
+                    <Form.Input
+                      style={{ marginTop: '0.9em', marginLeft: '0.5em', marginRight: '0.75em' }}
+                      type="radio"
+                      onChange={() => setChosenSet('stress')}
+                      checked={chosenSet === 'stress'}
+                    />
+                    {props.word.stress
+                      .map(choice => (
+                        <input
+                          className={bigScreen ? "multi-choice-input": "multi-choice-input-mobile"}
+                          type="text"
+                          name="disable_field"
+                          disabled
+                          value={choice}
+                        />
+                      ))}
+                  </Form.Group>
+              )
+            }
             <div>
               <Form.Group>
                 <Form.Input
