@@ -46,7 +46,6 @@ const ControlledStoryWord = ({ word, snippet }) => {
   const [showEditorTooltip, setShowEditorTooltip] = useState(false)
   const [showExerciseOptionsModal, setShowExerciseOptionsModal] = useState(false)
   const [analyticChunkWord, setAnalyticChunkWord] = useState(null)
-  const [hideAuxiliaryWords, setHideAuxiliaryWords] = useState(false)
   const [chosen, setChosen] = useState(false)
   const learningLanguage = useSelector(learningLanguageSelector)
   const controlledPractice = useSelector(({ controlledPractice }) => controlledPractice)
@@ -87,15 +86,7 @@ const ControlledStoryWord = ({ word, snippet }) => {
     }
   }, [controlledPractice?.inProgress])
 
-  useEffect(() => {
-    const wordFound = controlledPractice.snippets[word.snippet_id]?.find(
-      addedTokenWord => addedTokenWord.ID === word.ID
-    )
 
-    if (wordFound && wordFound.analytic && wordFound.is_head && !wordFound.audio) {
-      setHideAuxiliaryWords(true)
-    }
-  }, [controlledPractice.hiddenWords, controlledPractice.snippets[word.snippet_id]])
 
   useEffect(() => {
     if (controlledPractice.reset && controlledPractice.frozen_snippets[word.snippet_id]) {
@@ -104,13 +95,6 @@ const ControlledStoryWord = ({ word, snippet }) => {
       )
       if (wordFound) {
         setChosen(true)
-        if (word.analytic && word.is_head && !wordFound.listen) {
-          const wordList = snippet.filter(wordInSnippet =>
-            word.cand_index.includes(wordInSnippet.ID)
-          )
-          dispatch(addHiddenWords(wordList))
-          setHideAuxiliaryWords(true)
-        }
       }
     }
   }, [controlledPractice.frozen_snippets, controlledPractice.reset])
@@ -141,17 +125,8 @@ const ControlledStoryWord = ({ word, snippet }) => {
     if (!chosen) {
       setChosen(true)
       setShowExerciseOptionsModal(false)
-      if (tokenizedWord.analytic && tokenizedWord.is_head && !tokenizedWord.audio) {
-        const wordList = snippet.filter(wordInSnippet => word.cand_index.includes(wordInSnippet.ID))
-        dispatch(addHiddenWords(wordList))
-      }
       dispatch(addExercise(tokenizedWord))
     } else {
-      if (tokenizedWord.analytic && tokenizedWord.is_head) {
-        const wordList = snippet.filter(wordInSnippet => word.cand_index.includes(wordInSnippet.ID))
-        dispatch(removeHiddenWords(wordList))
-        setHideAuxiliaryWords(false)
-      }
       setChosen(false)
       setShowExerciseOptionsModal(false)
       dispatch(removeExercise(tokenizedWord))
@@ -331,7 +306,7 @@ const ControlledStoryWord = ({ word, snippet }) => {
       >
         <span onClick={handleRemovalTooltip} onBlur={() => setShowRemoveTooltip(false)}>
           <ControlExerciseWord
-            word={hideAuxiliaryWords && analyticChunkWord ? analyticChunkWord : exerciseWord}
+            word={analyticChunkWord ? analyticChunkWord : exerciseWord}
             handleAddClozeExercise={handleAddClozeExercise}
             exerChoices={exerciseWord.choices}
             setShowRemoveTooltip={setShowRemoveTooltip}

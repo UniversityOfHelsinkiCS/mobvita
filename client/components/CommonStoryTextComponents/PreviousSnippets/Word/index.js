@@ -15,7 +15,7 @@ const Word = ({ word, answer, tiedAnswer, hideFeedback, snippet }) => {
   const isPreviewMode = history.location.pathname.includes('preview')
 
   useEffect(() => {
-    if (controlledStory && hiddenWords?.find(hidden => hidden.ID === word.ID)) {
+    if (controlledStory && hiddenWords?.find(hidden => hidden === word.ID)) {
       setShouldBeHidden(true)
     } else {
       setShouldBeHidden(false)

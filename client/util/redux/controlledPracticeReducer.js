@@ -31,12 +31,20 @@ export const getFrozenSnippetsPreview = storyId => {
 
 export const addExercise = wordObj => ({ type: 'ADD_EXERCISE', wordObj })
 export const removeExercise = wordObj => ({ type: 'REMOVE_EXERCISE', wordObj })
-export const addHiddenWords = wordList => ({ type: 'ADD_HIDDEN_WORDS', wordList })
-export const removeHiddenWords = wordList => ({ type: 'REMOVE_HIDDEN_WORDS', wordList })
 export const initControlledExerciseSnippets = snippets => ({
   type: 'INIT_CONTROLLED_SNIPPETS',
   snippets,
 })
+
+const getHiddenWords = frozen_snippets => {
+  if (frozen_snippets) {
+    const tokens = Object.values(frozen_snippets).flat(1).filter(exerciseToken => 
+      exerciseToken.analytic && exerciseToken.is_head && !exerciseToken.audio)
+    const headId = tokens.map(token => token.ID)
+    return  tokens.map(token => token.cand_index).flat(1).filter(index => !headId.includes(index))
+  } else return []
+  
+}
 
 export const resetControlledStory = snippets => ({ type: 'RESET_CONTROLLED_STORY', snippets })
 
@@ -64,7 +72,7 @@ export default (
         snippets: action.snippets,
         finished: false,
         inProgress: true,
-        hiddenWords: [],
+        hiddenWords: getHiddenWords(action.snippets),
         reset: true,
       }
     case 'RESET_CONTROLLED_STORY':
@@ -76,29 +84,13 @@ export default (
         hiddenWords: [],
       }
 
-    case 'ADD_HIDDEN_WORDS':
-      for (let i = 0; i < action.wordList.length - 1; i++) {
-        state.hiddenWords = state.hiddenWords.concat(action.wordList[i])
-      }
-      return {
-        ...state,
-        reset: false,
-      }
-
-    case 'REMOVE_HIDDEN_WORDS':
-      for (let i = 0; i < action.wordList.length - 1; i++) {
-        state.hiddenWords = state.hiddenWords.filter(word => word.ID !== action.wordList[i].ID)
-      }
-      return {
-        ...state,
-      }
-
     case 'ADD_EXERCISE':
       state.snippets[action.wordObj.snippet_id] = state.snippets[action.wordObj.snippet_id].concat(
         action.wordObj
       )
       return {
         ...state,
+        hiddenWords: getHiddenWords(state.snippets),
         inProgress: true,
         reset: false,
       }
@@ -109,6 +101,7 @@ export default (
       )
       return {
         ...state,
+        hiddenWords: getHiddenWords(state.snippets),
         inProgress: true,
         reset: false,
       }
