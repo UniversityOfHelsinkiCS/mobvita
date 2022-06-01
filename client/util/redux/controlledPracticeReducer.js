@@ -60,7 +60,7 @@ export default (
     finished: false,
     inProgress: false,
     frozen_snippets: {},
-    hiddenWords: [],
+    hiddenWordIds: [],
     reset: false,
   },
   action
