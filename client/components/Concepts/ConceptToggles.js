@@ -33,6 +33,9 @@ const ConceptToggles = ({
           </span>
         </div>
       )}
+      {pending && (
+        <Spinner animation="border" variant="primary" size="sm" style={{ marginLeft: '1em' }} />
+      )}
       <Checkbox
         style={{ marginLeft: '6em' }}
         toggle
@@ -41,26 +44,6 @@ const ConceptToggles = ({
         onChange={() => setShowLevels(!showLevels)}
         className="concept-toggle"
       />
-      {/* target === 'groups' && (
-        <div style={{ display: 'flex', marginLeft: '6em' }}>
-          <label style={{ textAlign: 'right' }}>
-            <FormattedMessage id="show-exercise-settings" />
-          </label>
-          <Checkbox
-            toggle
-            checked={showTestConcepts}
-            onChange={handleTestConceptToggle}
-            className="concept-toggle"
-            disabled={pending}
-          />
-          <label style={{ marginLeft: '1em' }}>
-            <FormattedMessage id="show-test-settings" />
-          </label>
-          {pending && (
-            <Spinner animation="border" variant="primary" size="sm" style={{ marginLeft: '1em' }} />
-          )}
-        </div>
-          ) */}
     </div>
   )
 }
