@@ -924,7 +924,7 @@
     "test-results-remove-confirmation": "This will permanently remove these test results, are you sure you want to proceed?",
     "enable-test-for": "Enable test for",
     "multiple-chances-when-practicing": "Allow multiple attempts when I practice with exercises in stories",
-    "paste-text-upload-instructions": "Paste the text of the story.  The first line must contain the <b>title</b> of the story.  Allowed length: 50 - 50 000 characters.",
+    "paste-text-upload-instructions": "The title must contain at least three characters.  Paste the text of the story.  Allowed length for the story: 50 - 50 000 characters.",
     "recommended-sites": "Recommended sites",
     "story-remove-confirm": "This will permanently remove this story from your collection, are you sure you want to proceed?",
     "tests": "Tests",

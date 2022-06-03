@@ -924,7 +924,7 @@
     "test-results-remove-confirmation": "Tämä poistaa nämä koetulokset pysyvästi. Oletko varma?",
     "enable-test-for": "Ota testi käyttöön",
     "multiple-chances-when-practicing": "Monta yritystä harjoitellessa",
-    "paste-text-upload-instructions": "Kopioi tähän raakatekstinä teksti, jonka haluat lisätä. <b>Ensimmäisestä rivistä tulee</b> tekstin otsikko. Tekstin tulee olla sillä kielellä, joka on tällä hetkellä valittuna opiskelukieleksi. Pituus 50 - 50 000 merkkiä.",
+    "paste-text-upload-instructions": "Otsikon on oltava vähintään kolme merkkiä pitkä. Kopioi tähän raakatekstinä teksti, jonka haluat lisätä. Tekstin tulee olla sillä kielellä, joka on tällä hetkellä valittuna opiskelukieleksi. Tarinan sallittu pituus 50 - 50 000 merkkiä.",
     "recommended-sites": "Sivustosuositukset",
     "story-remove-confirm": "Oletko varma, että haluat poistaa tekstin?",
     "tests": "Kokeet",

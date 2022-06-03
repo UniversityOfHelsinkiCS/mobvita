@@ -925,7 +925,7 @@
     "test-results-remove-confirmation": "Sicuro/a di voler cancellare i risultati del test?",
     "enable-test-for": "Abilita il test per",
     "multiple-chances-when-practicing": "Abilita più tentativi mentre ti eserciti con le storie",
-    "paste-text-upload-instructions": "Inserisci il testo della storia. Revita usa la <b>prima riga</b> come titolo. Incolla il testo della storia. La prima riga deve contenere il <b>titolo</b> della storia. Lunghezza consentita: 50 - 50 000 caratteri.",
+    "paste-text-upload-instructions": "Inserisci il titolo e il testo della storia.  Lunghezza del testo consentita: 50 - 50 000 caratteri.",
     "recommended-sites": "Siti web raccomandati",
     "story-remove-confirm": "Sei sicuro/a di voler eliminare la seguente storia dalla tua lista?",
     "tests": "Test",
