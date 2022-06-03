@@ -20,16 +20,16 @@ const ConceptToggles = ({
       {target === 'groups' && (
         <div style={{ display: 'flex', fontWeight: 'bold' }}>
           <span style={{ marginRight: '0.5em' }}>
-            <FormattedHTMLMessage id="show-exercise-settings" />
-          </span>
-          <span style={{ marginRight: '0.5em' }}>
             <input type="radio" onChange={handleTestConceptToggle} checked={!showTestConcepts} />
           </span>
           <span style={{ marginRight: '0.5em' }}>
-            <FormattedHTMLMessage id="show-test-settings" />
+            <FormattedHTMLMessage id="show-exercise-settings" />
           </span>
           <span style={{ marginRight: '0.5em' }}>
             <input type="radio" onChange={handleTestConceptToggle} checked={showTestConcepts} />
+          </span>
+          <span style={{ marginRight: '0.5em' }}>
+            <FormattedHTMLMessage id="show-test-settings" />
           </span>
         </div>
       )}
