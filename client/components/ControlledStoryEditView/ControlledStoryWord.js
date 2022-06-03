@@ -290,6 +290,12 @@ const ControlledStoryWord = ({ word, snippet }) => {
       return null
     }
 
+    if (word.surface === 'tööttää') {
+      console.log(analyticChunkWord)
+    }
+
+    const showAnalyticChunk = !exerciseWord.listen && analyticChunkWord
+
     return (
       <Tooltip
         placement="top"
@@ -299,7 +305,7 @@ const ControlledStoryWord = ({ word, snippet }) => {
       >
         <span onClick={handleRemovalTooltip} onBlur={() => setShowRemoveTooltip(false)}>
           <ControlExerciseWord
-            word={analyticChunkWord || exerciseWord}
+            word={showAnalyticChunk ? analyticChunkWord : exerciseWord}
             handleAddClozeExercise={handleAddClozeExercise}
             exerChoices={exerciseWord.choices}
             setShowRemoveTooltip={setShowRemoveTooltip}
