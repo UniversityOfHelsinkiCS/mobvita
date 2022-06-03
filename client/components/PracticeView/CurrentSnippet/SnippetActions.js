@@ -128,10 +128,12 @@ const SnippetActions = ({ storyId, exerciseCount, isControlledStory, timerValue 
       answers: filteredCurrentAnswers,
       last_attempt: lastAttempt,
       timer_value: isControlledStory ? formattedTimerValue : null,
+      session_id: sessionId,
+      frozen_exercise: isControlledStory
     }
 
     dispatch(clearTouchedIds())
-    dispatch(postAnswers(storyId, answersObj, false, isControlledStory, sessionId))
+    dispatch(postAnswers(storyId, answersObj, false))
   }
 
   const submitAnswers = () => {

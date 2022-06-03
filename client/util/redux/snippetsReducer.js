@@ -50,16 +50,11 @@ export const resetCurrentSnippet = (storyId, controlledStory) => {
 export const postAnswers = (
   storyId,
   answersObject,
-  compete = false,
-  isControlledStory,
-  sessionId
+  compete = false
 ) => {
   const payload = answersObject
   payload.compete = compete
-  const route =
-    isControlledStory && sessionId
-      ? `/stories/${storyId}/snippets/answer?frozen_exercise=True&session_id=${sessionId}`
-      : `/stories/${storyId}/snippets/answer`
+  const route = `/stories/${storyId}/snippets/answer`
   const prefix = 'GET_SNIPPET_ANSWERS'
   return callBuilder(route, prefix, 'post', payload)
 }
