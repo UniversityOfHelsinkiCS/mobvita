@@ -974,7 +974,7 @@
     "no-results-for-chosen-time-period": "Ei tuloksia valitulla aikavälillä",
     "start-test": "Aloita testi",
     "cant-find-group": "Etkö löydä etsimääsi ryhmää? Tarkista, että opiskeltavana kielenä on varmasti oikea kieli!",
-    "less_than_min_size": "Tämä teksti on liian lyhyt. Minimi: {} merkkiä.",
+    "less_than_min_size": "Tämä teksti on liian lyhyt. Minimi: 50 merkkiä.",
     "reset-to-default": "Palauta oletusasetukset",
     "total-questions": "kysymystä yhteensä",
     "friends": "Kaverit",
