@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { useHistory } from 'react-router-dom'
-import { FormattedMessage, FormattedHTMLMessage } from 'react-intl'
+import { FormattedMessage, FormattedHTMLMessage, useIntl } from 'react-intl'
 import { postStory, setCustomUpload } from 'Utilities/redux/uploadProgressReducer'
 import { FormControl, Spinner, Button } from 'react-bootstrap'
 import { capitalize, learningLanguageSelector } from 'Utilities/common'
@@ -9,6 +9,7 @@ import { updateLibrarySelect } from 'Utilities/redux/userReducer'
 import { setNotification } from 'Utilities/redux/notificationReducer'
 
 const UploadPastedText = ({ closeModal }) => {
+  const intl = useIntl()
   const history = useHistory()
   const maxCharacters = 50000
   const [title, setTitle] = useState('')
@@ -26,7 +27,6 @@ const UploadPastedText = ({ closeModal }) => {
 
   const addText = async () => {
     const combineTitleAndText = `${title}\n${text}`
-    console.log(combineTitleAndText)
     const newStory = {
       language: capitalize(learningLanguage),
       text: combineTitleAndText,
@@ -61,6 +61,7 @@ const UploadPastedText = ({ closeModal }) => {
         value={title}
         style={{ marginTop: '1em', marginBottom: '1em' }}
         onChange={({ target }) => setTitle(target.value)}
+        placeholder={intl.formatMessage({ id: 'story-title' })}
       />
       <FormControl
         as="textarea"
