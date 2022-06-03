@@ -12,10 +12,7 @@ import {
 } from 'Utilities/common'
 import { setReferences, setExplanation } from 'Utilities/redux/practiceReducer'
 import { getTranslationAction, setWords } from 'Utilities/redux/translationReducer'
-import {
-  addExercise,
-  removeExercise,
-} from 'Utilities/redux/controlledPracticeReducer'
+import { addExercise, removeExercise } from 'Utilities/redux/controlledPracticeReducer'
 import {
   setFocusedSpan,
   setHighlightRange,
@@ -83,8 +80,6 @@ const ControlledStoryWord = ({ word, snippet }) => {
       setChosen(false)
     }
   }, [controlledPractice?.inProgress])
-
-
 
   useEffect(() => {
     if (controlledPractice.reset && controlledPractice.frozen_snippets[word.snippet_id]) {
@@ -304,7 +299,7 @@ const ControlledStoryWord = ({ word, snippet }) => {
       >
         <span onClick={handleRemovalTooltip} onBlur={() => setShowRemoveTooltip(false)}>
           <ControlExerciseWord
-            word={analyticChunkWord ? analyticChunkWord : exerciseWord}
+            word={analyticChunkWord || exerciseWord}
             handleAddClozeExercise={handleAddClozeExercise}
             exerChoices={exerciseWord.choices}
             setShowRemoveTooltip={setShowRemoveTooltip}
