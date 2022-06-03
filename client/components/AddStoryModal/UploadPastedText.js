@@ -11,6 +11,7 @@ import { setNotification } from 'Utilities/redux/notificationReducer'
 const UploadPastedText = ({ closeModal }) => {
   const history = useHistory()
   const maxCharacters = 50000
+  const [title, setTitle] = useState('')
   const [text, setText] = useState('')
   const [charactersLeft, setCharactersLeft] = useState(maxCharacters)
   const learningLanguage = useSelector(learningLanguageSelector)
@@ -24,9 +25,11 @@ const UploadPastedText = ({ closeModal }) => {
   }
 
   const addText = async () => {
+    const combineTitleAndText = `${title}\n${text}`
+    console.log(combineTitleAndText)
     const newStory = {
       language: capitalize(learningLanguage),
-      text,
+      text: combineTitleAndText,
     }
     dispatch(updateLibrarySelect('private'))
     dispatch(setCustomUpload(true))
@@ -44,7 +47,8 @@ const UploadPastedText = ({ closeModal }) => {
   }, [progress])
 
   const textTooLong = charactersLeft < 0
-  const submitDisabled = !text || pending || storyId || textTooLong || charactersLeft > 49950
+  const submitDisabled =
+    !text || pending || storyId || textTooLong || charactersLeft > 49950 || title.length < 3
 
   return (
     <div>
@@ -52,6 +56,12 @@ const UploadPastedText = ({ closeModal }) => {
       <span className="pb-sm upload-instructions">
         <FormattedHTMLMessage id="paste-text-upload-instructions" />
       </span>
+      <FormControl
+        as="input"
+        value={title}
+        style={{ marginTop: '1em', marginBottom: '1em' }}
+        onChange={({ target }) => setTitle(target.value)}
+      />
       <FormControl
         as="textarea"
         rows={8}
