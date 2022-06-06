@@ -14,7 +14,7 @@ import Tooltip from 'Components/PracticeView/Tooltip'
 const ExerciseHearing = ({ word, handleChange }) => {
   const [value, setValue] = useState('')
 
-  const [className, setClassname] = useState('exercise hearing-untouched')
+  const [className, setClassName] = useState('exercise hearing-untouched')
   const [touched, setTouched] = useState(false)
   const [show, setShow] = useState(false)
   const [focusTimeout, setFocusTimeout] = useState(false)
@@ -40,7 +40,7 @@ const ExerciseHearing = ({ word, handleChange }) => {
   }
 
   useEffect(() => {
-    setClassname(getExerciseClass(tested, isWrong))
+    setClassName(getExerciseClass(tested, isWrong))
     if (tested && isWrong) {
       giveHint()
       const val = currentAnswer ? currentAnswer.users_answer : ''
@@ -60,7 +60,7 @@ const ExerciseHearing = ({ word, handleChange }) => {
 
   const handleInputFocus = e => {
     if (!touched) {
-      if (!tested) setClassname('exercise hearing-touched')
+      if (!tested) setClassName('exercise hearing-touched')
       setTouched(true)
       handleChange(value, word)
     }
@@ -93,7 +93,7 @@ const ExerciseHearing = ({ word, handleChange }) => {
   const focusNextClozeOrHearing = element => {
     const { form } = element
     const nextElement = form.elements[Array.prototype.indexOf.call(form, element) + 1]
-    const isNextElementInput = nextElement.className.includes('exercize')
+    const isNextElementInput = nextElement.className.includes('exercise')
     if (isNextElementInput) changeElementFont(nextElement, '16px')
     nextElement.focus()
   }
