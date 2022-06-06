@@ -102,7 +102,9 @@ const HexagonTest = props => {
     let biggestValue = 0
     Object.keys(accumulatedConcepts).map(key => {
       const concept = props.concepts.find(c => String(c.concept_id) === key)
+      if (!concept) console.log(concept)
       if (
+        concept &&
         accumulatedConcepts[key].total > biggestValue &&
         !concept.hexmap_general &&
         concept.hex_coords
