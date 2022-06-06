@@ -129,19 +129,18 @@ const ControlledStoryWord = ({ word, snippet }) => {
   }
 
   const handleAddHearingExercise = () => {
-    if (word?.concepts?.length > 0) {
-      const { choices: removedProperty, ...wordRest } = word
+    const { choices: removedProperty, ...wordRest } = word
+    const generatedID = `custom_${storyId}_${word.ID}`
 
-      const tokenizedWord = {
-        ...wordRest,
-        id: word.candidate_id,
-        audio: word.audio || word.surface,
-        base: getWordBase(word),
-        listen: true,
-      }
-
-      choicesMade(tokenizedWord)
+    const tokenizedWord = {
+      ...wordRest,
+      id: word.candidate_id || word.id || generatedID,
+      audio: word.audio || word.surface,
+      base: getWordBase(word),
+      listen: true,
     }
+
+    choicesMade(tokenizedWord)
   }
 
   const handleAddMultichoiceExercise = (choicesSet, correct_form) => {

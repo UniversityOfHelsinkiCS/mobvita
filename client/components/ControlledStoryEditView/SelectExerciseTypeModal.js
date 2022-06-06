@@ -47,17 +47,15 @@ const SelectExerciseTypeModal = props => {
                   </Button>
                 </span>
               )}
-              {!props.noConcepts && (
-                <span style={{ marginBottom: '0.5em', marginLeft: '0.45em' }}>
-                  <Button
-                    type="submit"
-                    onClick={props.handleAddHearingExercise}
-                    onKeyDown={props.handleAddHearingExercise}
-                  >
-                    <FormattedMessage id="choose-listening-exercise" />
-                  </Button>
-                </span>
-              )}
+              <span style={{ marginBottom: '0.5em', marginLeft: '0.45em' }}>
+                <Button
+                  type="submit"
+                  onClick={props.handleAddHearingExercise}
+                  onKeyDown={props.handleAddHearingExercise}
+                >
+                  <FormattedMessage id="choose-listening-exercise" />
+                </Button>
+              </span>
               <span style={{ marginBottom: '0.5em', marginLeft: '0.45em' }}>
                 <Button
                   type="submit"
