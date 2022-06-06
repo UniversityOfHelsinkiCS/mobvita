@@ -97,7 +97,7 @@ const ControlledStoryWord = ({ word, snippet }) => {
   if (tested || typeof wrong !== 'undefined') color = isWrong ? 'wrong-text' : 'right-text'
   if (correctAnswerIDs.includes(word.ID.toString())) color = 'right-text'
   if (word.concepts) color = 'preview-text'
-  if (hiddenFeatures && word.concepts?.length === 0) color = '' //'preview-text-no-concepts'
+  if (hiddenFeatures && word.concepts?.length === 0) color = 'preview-text-no-concepts'
   const wordClass = `word-interactive ${color}`
 
   const wordIsInSpan = word => {
