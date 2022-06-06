@@ -3,6 +3,7 @@
 import React from 'react'
 import { UncontrolledReactSVGPanZoom } from 'react-svg-pan-zoom'
 import { useSelector } from 'react-redux'
+import { useIntl } from 'react-intl'
 import { learningLanguageSelector } from 'Utilities/common'
 import Spinner from 'Components/Spinner'
 import { Popup } from 'semantic-ui-react'
@@ -23,6 +24,7 @@ import { result } from 'lodash'
 import GridText from './GridText'
 
 const ConstructionHexagon = ({ name, position, statistics, overallTotal, general }) => {
+  const intl = useIntl()
   const { q, r, s } = position
   if (general) {
     return (
@@ -46,11 +48,24 @@ const ConstructionHexagon = ({ name, position, statistics, overallTotal, general
     'green5',
   ]
   const colorClass = colorClasses[Math.floor((statistics.correct / statistics.total) * 10)]
+  const percentageCorrect = Math.floor((statistics.correct / statistics.total) * 100)
+
+  const hexagonTooltip = (
+    <span>
+      <div>{name}</div>
+      {statistics.total > 0 && (
+        <div>
+          {statistics.correct}/{statistics.total} {intl.formatMessage({ id: 'correct' })}:{' '}
+          {percentageCorrect}%
+        </div>
+      )}
+    </span>
+  )
 
   return (
     <Popup
       position="top center"
-      content={name}
+      content={hexagonTooltip}
       trigger={
         <Hexagon className="hexagon" q={q} r={r} s={s} fill="none">
           <Layout
