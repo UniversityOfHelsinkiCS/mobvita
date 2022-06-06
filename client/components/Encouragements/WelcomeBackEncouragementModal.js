@@ -39,12 +39,10 @@ const WelcomeBackEncouragementModal = ({
       setUserRanking(user_rank + 1)
     }
   }, [user_rank])
-  console.log('stories ', stories)
 
   useEffect(() => {
     if (stories) {
       const sharedIncompleteStories = stories.filter(story => story.shared && !story.has_read)
-      console.log('not one? ', sharedIncompleteStories)
       if (sharedIncompleteStories) {
         setSharedStory(sharedIncompleteStories[0])
       }

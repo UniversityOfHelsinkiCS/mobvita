@@ -36,24 +36,28 @@ const SelectExerciseTypeModal = props => {
             </div>
             <hr />
             <div style={{ marginBottom: '0.5em' }}>
-              <span style={{ marginBottom: '0.5em', marginLeft: '0.5em' }}>
-                <Button
-                  type="submit"
-                  onClick={props.handleAddClozeExercise}
-                  onKeyDown={props.handleAddClozeExercise}
-                >
-                  <FormattedMessage id="choose-cloze-exercise" />
-                </Button>
-              </span>
-              <span style={{ marginBottom: '0.5em', marginLeft: '0.45em' }}>
-                <Button
-                  type="submit"
-                  onClick={props.handleAddHearingExercise}
-                  onKeyDown={props.handleAddHearingExercise}
-                >
-                  <FormattedMessage id="choose-listening-exercise" />
-                </Button>
-              </span>
+              {!props.noConcepts && (
+                <span style={{ marginBottom: '0.5em', marginLeft: '0.5em' }}>
+                  <Button
+                    type="submit"
+                    onClick={props.handleAddClozeExercise}
+                    onKeyDown={props.handleAddClozeExercise}
+                  >
+                    <FormattedMessage id="choose-cloze-exercise" />
+                  </Button>
+                </span>
+              )}
+              {!props.noConcepts && (
+                <span style={{ marginBottom: '0.5em', marginLeft: '0.45em' }}>
+                  <Button
+                    type="submit"
+                    onClick={props.handleAddHearingExercise}
+                    onKeyDown={props.handleAddHearingExercise}
+                  >
+                    <FormattedMessage id="choose-listening-exercise" />
+                  </Button>
+                </span>
+              )}
               <span style={{ marginBottom: '0.5em', marginLeft: '0.45em' }}>
                 <Button
                   type="submit"

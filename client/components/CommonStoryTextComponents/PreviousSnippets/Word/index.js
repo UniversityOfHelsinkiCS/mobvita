@@ -28,21 +28,19 @@ const Word = ({ word, answer, tiedAnswer, hideFeedback, snippet }) => {
   if (controlledStory && shouldBeHidden) {
     return null
   }
+  
+  if (controlledStory) {
+    return <ControlledStoryWord word={word} snippet={snippet} />
+  }
 
   // in stag, also highlight words with no exercise concepts in preview mode
   if (hiddenFeatures && isPreviewMode && word.concepts?.length === 0) {
     return <PreviousExerciseWord word={word} />
   }
-  if (hiddenFeatures && controlledStory && word.concepts?.length === 0) {
-    return <ControlledStoryWord word={word} snippet={snippet} />
-  }
 
   // preview mode (if concept list is not empty)
   if (isPreviewMode && word.concepts?.length > 0) {
     return <PreviousExerciseWord word={word} />
-  }
-  if (controlledStory && word.concepts?.length > 0) {
-    return <ControlledStoryWord word={word} snippet={snippet} />
   }
 
   // session history in practice & compete mode

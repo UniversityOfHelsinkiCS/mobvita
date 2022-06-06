@@ -22,6 +22,7 @@ import {
 import Tooltip from 'Components/PracticeView/Tooltip'
 import SelectExerciseTypeModal from 'Components/ControlledStoryEditView/SelectExerciseTypeModal'
 import ControlExerciseWord from 'Components/ControlledStoryEditView/CurrentSnippet/ControlExerciseWord'
+import PlainWord from 'Components/CommonStoryTextComponents/PlainWord'
 
 const ControlledStoryWord = ({ word, snippet }) => {
   const {
@@ -50,7 +51,6 @@ const ControlledStoryWord = ({ word, snippet }) => {
   const { id: storyId } = useParams()
   const { correctAnswerIDs } = useSelector(({ practice }) => practice)
   const [allowTranslating, setAllowTranslating] = useState(true)
-
   const dispatch = useDispatch()
 
   useEffect(() => {
@@ -146,12 +146,13 @@ const ControlledStoryWord = ({ word, snippet }) => {
 
   const handleAddMultichoiceExercise = (choicesSet, correct_form) => {
     const { audio: removedAudio, ...wordRest } = word
+    const generatedID = `custom_${storyId}_${word.ID}`
 
     if (choicesSet?.length > 1) {
       const tokenizedWord = {
         ...wordRest,
         surface: correct_form,
-        id: word.candidate_id,
+        id: word.candidate_id || word.id || generatedID,
         base: getWordBase(word),
         choices: choicesSet,
       }
@@ -224,10 +225,8 @@ const ControlledStoryWord = ({ word, snippet }) => {
   }
 
   const handleActionClick = () => {
-    if (word?.concepts?.length > 0) {
-      handleClick()
-      setShowEditorTooltip(true)
-    }
+    handleClick()
+    setShowEditorTooltip(true)
   }
 
   const handleTooltipClick = () => {
@@ -262,7 +261,7 @@ const ControlledStoryWord = ({ word, snippet }) => {
 
   const editorTooltip = (
     <div>
-      <div>{tooltip}</div>
+      {word.concepts?.length > 0 && <div>{tooltip}</div>}
       <div
         style={{ cursor: 'pointer', margin: '0.5em' }}
         className="select-exercise"
@@ -290,10 +289,6 @@ const ControlledStoryWord = ({ word, snippet }) => {
       return null
     }
 
-    if (word.surface === 'tööttää') {
-      console.log(analyticChunkWord)
-    }
-
     const showAnalyticChunk = !exerciseWord.listen && analyticChunkWord
 
     return (
@@ -315,17 +310,53 @@ const ControlledStoryWord = ({ word, snippet }) => {
     )
   }
 
+  if (word.concepts) {
+    return (
+      <span>
+        <SelectExerciseTypeModal
+          showExerciseOptionsModal={showExerciseOptionsModal}
+          setShowExerciseOptionsModal={setShowExerciseOptionsModal}
+          handleAddClozeExercise={handleAddClozeExercise}
+          handleAddHearingExercise={handleAddHearingExercise}
+          handleAddMultichoiceExercise={handleAddMultichoiceExercise}
+          word={word}
+          analyticChunkWord={analyticChunkWord}
+          showValidationMessage={showValidationMessage}
+        />
+        <span onBlur={() => setShowEditorTooltip(false)}>
+          <Tooltip
+            placement="top"
+            tooltipShown={showEditorTooltip}
+            trigger="none"
+            tooltip={editorTooltip}
+          >
+            <span
+              className={`${wordClass} ${
+                wordShouldBeHighlighted(word) && 'notes-highlighted-word'
+              }`}
+              role="button"
+              onClick={handleActionClick}
+              onKeyDown={handleActionClick}
+              tabIndex={-1}
+            >
+              {surface}
+            </span>
+          </Tooltip>
+        </span>
+      </span>
+    )
+  }
+
   return (
     <span>
       <SelectExerciseTypeModal
         showExerciseOptionsModal={showExerciseOptionsModal}
         setShowExerciseOptionsModal={setShowExerciseOptionsModal}
-        handleAddClozeExercise={handleAddClozeExercise}
         handleAddHearingExercise={handleAddHearingExercise}
         handleAddMultichoiceExercise={handleAddMultichoiceExercise}
         word={word}
-        analyticChunkWord={analyticChunkWord}
         showValidationMessage={showValidationMessage}
+        noConcepts
       />
       <span onBlur={() => setShowEditorTooltip(false)}>
         <Tooltip
@@ -335,13 +366,12 @@ const ControlledStoryWord = ({ word, snippet }) => {
           tooltip={editorTooltip}
         >
           <span
-            className={`${wordClass} ${wordShouldBeHighlighted(word) && 'notes-highlighted-word'}`}
             role="button"
             onClick={handleActionClick}
             onKeyDown={handleActionClick}
             tabIndex={-1}
           >
-            {surface}
+            <PlainWord word={word} annotatingAllowed />
           </span>
         </Tooltip>
       </span>
