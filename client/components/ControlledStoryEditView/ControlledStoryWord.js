@@ -167,17 +167,15 @@ const ControlledStoryWord = ({ word, snippet }) => {
   }
 
   const handleAddClozeExercise = () => {
-    if (word?.concepts?.length > 0) {
-      const { choices: removedProperty, audio: removedAudio, ...wordRest } = word
+    const { choices: removedProperty, audio: removedAudio, ...wordRest } = word
 
-      const tokenizedWord = {
-        ...wordRest,
-        id: word.candidate_id,
-        base: getWordBase(word),
-      }
-
-      choicesMade(tokenizedWord)
+    const tokenizedWord = {
+      ...wordRest,
+      id: word.candidate_id,
+      base: getWordBase(word),
     }
+
+    choicesMade(tokenizedWord)
   }
 
   const handleClick = () => {
