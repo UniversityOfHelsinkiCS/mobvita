@@ -28,6 +28,7 @@ import flagTurkish from 'Assets/images/flags/flag_turkish.png'
 import flagItalian from 'Assets/images/flags/flag_italian.png'
 import flagSyriac from 'Assets/images/flags/flag_syriac.png'
 import flagChinese from 'Assets/images/flags/flag_prc.png'
+import flagEnglish from 'Assets/images/flags/flag_uk.png'
 // ---
 import culture1 from 'Assets/images/culture.png'
 import politics1 from 'Assets/images/politics.png'
@@ -101,6 +102,7 @@ export const images = {
   flagFrench,
   flagSyriac,
   flagChinese,
+  flagEnglish,
   tests,
   addStory,
   logo,
@@ -188,6 +190,7 @@ export const supportedLearningLanguages = {
     'portuguese',
     'chinese',
     'turkish',
+    'english'
   ].sort((a, b) => a.localeCompare(b)),
   minor: [
     'erzya',
@@ -228,6 +231,7 @@ export const learningLanguageLocaleCodes = {
   Chinese: 'zh',
   'Udmurt-Arch': 'udm',
   'livvi': 'olo',
+  English: 'en'
 }
 
 export const betaLanguages = [
@@ -251,7 +255,8 @@ export const betaLanguages = [
   'turkish',
   'udmurt',
   'udmurt-arch',
-  'livvi'
+  'livvi',
+  'english'
 ]
 
 export const exerciseMaskedLanguages = ['Chinese']
@@ -491,6 +496,23 @@ export const translatableLanguages = {
     'Portuguese',
     'Hindi',
   ],
+  English: [
+    'Finnish',
+    'French',
+    'German',
+    'Russian',
+    'Spanish',
+    'Swedish',
+    'Turkish',
+    'Italian',
+    'Polish',
+    'Czech',
+    'Norwegian',
+    'Portuguese',
+    'Chinese',
+    'Japanese',
+    'Hindi',
+    ],
   Spanish: [
     'Chinese',
     'English',
