@@ -15,9 +15,41 @@ export const getCrossword = (storyId, options = {}) => {
   return callBuilder(route, prefix, 'get', null, query)
 }
 
+export const sendActivity = (
+  storyId,
+  crossword_id,
+  learningLanguage,
+  correct,
+  entries,
+  start_time,
+) => {
+  const route = `/stories/${storyId}/crossword`
+  const prefix = 'SEND_ACTIVITY'
+  const payload = {
+    crossword_id,
+    language: learningLanguage,
+    num_correct: correct,
+    num_total: Object.keys(entries).length,
+    answers: entries,
+    start_time,
+    end_time: new Date(),
+  }
+
+  return callBuilder(route, prefix, 'post', payload)
+}
+
+export const incrementCorrectAnswers = () => ({ type: 'INCREMENT_CORRECT_ANSWERS' })
+
 export const revealClue = (direction, number) => ({ type: 'REVEAL_CLUE', direction, number })
 
-const initialState = { data: {}, dimensions: {}, title: '', pending: false, error: false }
+const initialState = {
+  data: {},
+  dimensions: {},
+  title: '',
+  pending: false,
+  error: false,
+  correct: 0,
+}
 
 export default (state = initialState, action) => {
   switch (action.type) {
@@ -26,6 +58,7 @@ export default (state = initialState, action) => {
         ...initialState,
         pending: true,
         error: false,
+        correct: 0,
       }
     case 'GET_CROSSWORD_SUCCESS':
       return {
@@ -35,14 +68,21 @@ export default (state = initialState, action) => {
         entries: action.response.entries,
         dimensions: action.response.dimension,
         title: action.response.title,
+        crossword_id: action.response.crossword_id,
         pending: false,
         error: false,
+        start_time: new Date(),
       }
     case 'GET_CROSSWORD_FAILURE':
       return {
         ...state,
         pending: false,
         error: true,
+      }
+    case 'INCREMENT_CORRECT_ANSWERS':
+      return {
+        ...state,
+        correct: state.correct + 1,
       }
     case 'REVEAL_CLUE':
       return produce(state, draft => {

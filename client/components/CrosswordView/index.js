@@ -4,7 +4,12 @@ import { useParams } from 'react-router-dom'
 import { FormattedMessage } from 'react-intl'
 import { Spinner } from 'react-bootstrap'
 import { useLearningLanguage, useDictionaryLanguage, hiddenFeatures } from 'Utilities/common'
-import { getCrossword, revealClue } from 'Utilities/redux/crosswordReducer'
+import {
+  getCrossword,
+  revealClue,
+  sendActivity,
+  incrementCorrectAnswers,
+} from 'Utilities/redux/crosswordReducer'
 import Crossword from 'Components/CrosswordView/Crossword'
 import PlainWord from 'Components/CommonStoryTextComponents/PlainWord'
 import { isEmpty } from 'lodash'
@@ -33,6 +38,10 @@ const CrosswordView = () => {
     clues,
     dimensions,
     title,
+    correct,
+    entries,
+    start_time,
+    crossword_id,
   } = useSelector(({ crossword }) => crossword)
 
   const handleOptionChange = field => event => {
@@ -204,6 +213,7 @@ const CrosswordView = () => {
 
   const handleCorrect = (direction, number) => {
     setTimeout(() => {
+      dispatch(incrementCorrectAnswers())
       dispatch(revealClue(direction, Number(number)))
       const index = clues.findIndex(clue => clue.ID === currentClue.ID)
       const nextClue = findNextClue(index)
@@ -216,6 +226,11 @@ const CrosswordView = () => {
     if (correct) {
       setTimeout(() => setModalOpen(true), 500)
     }
+  }
+
+  const solveCrossword = () => {
+    crosswordRef.current.fillAllAnswers()
+    dispatch(sendActivity(storyId, crossword_id, learningLanguage, correct, entries, start_time))
   }
 
   useEffect(() => {
@@ -257,7 +272,7 @@ const CrosswordView = () => {
             <button type="button" onClick={refetchCrossword}>
               refetch
             </button>
-            <button onClick={() => crosswordRef.current.fillAllAnswers()} type="button">
+            <button onClick={solveCrossword} type="button">
               solve crossword
             </button>
           </>
