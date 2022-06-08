@@ -4,12 +4,7 @@ import { useParams } from 'react-router-dom'
 import { FormattedMessage } from 'react-intl'
 import { Spinner } from 'react-bootstrap'
 import { useLearningLanguage, useDictionaryLanguage, hiddenFeatures } from 'Utilities/common'
-import {
-  getCrossword,
-  revealClue,
-  sendActivity,
-  incrementCorrectAnswers,
-} from 'Utilities/redux/crosswordReducer'
+import { getCrossword, revealClue, sendActivity } from 'Utilities/redux/crosswordReducer'
 import Crossword from 'Components/CrosswordView/Crossword'
 import PlainWord from 'Components/CommonStoryTextComponents/PlainWord'
 import { isEmpty } from 'lodash'
@@ -38,7 +33,6 @@ const CrosswordView = () => {
     clues,
     dimensions,
     title,
-    correct,
     entries,
     start_time,
     crossword_id,
@@ -213,7 +207,9 @@ const CrosswordView = () => {
 
   const handleCorrect = (direction, number) => {
     setTimeout(() => {
-      dispatch(incrementCorrectAnswers())
+      const entry = entries[number - 1]
+
+      dispatch(sendActivity(storyId, crossword_id, learningLanguage, entry, entries, start_time))
       dispatch(revealClue(direction, Number(number)))
       const index = clues.findIndex(clue => clue.ID === currentClue.ID)
       const nextClue = findNextClue(index)
@@ -230,7 +226,6 @@ const CrosswordView = () => {
 
   const solveCrossword = () => {
     crosswordRef.current.fillAllAnswers()
-    dispatch(sendActivity(storyId, crossword_id, learningLanguage, correct, entries, start_time))
   }
 
   useEffect(() => {

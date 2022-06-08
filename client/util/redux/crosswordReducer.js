@@ -19,26 +19,24 @@ export const sendActivity = (
   storyId,
   crossword_id,
   learningLanguage,
-  correct,
+  entry,
   entries,
   start_time,
 ) => {
   const route = `/stories/${storyId}/crossword`
   const prefix = 'SEND_ACTIVITY'
+
   const payload = {
     crossword_id,
     language: learningLanguage,
-    num_correct: correct,
     num_total: Object.keys(entries).length,
-    answers: entries,
+    answers: entry,
     start_time,
     end_time: new Date(),
   }
 
   return callBuilder(route, prefix, 'post', payload)
 }
-
-export const incrementCorrectAnswers = () => ({ type: 'INCREMENT_CORRECT_ANSWERS' })
 
 export const revealClue = (direction, number) => ({ type: 'REVEAL_CLUE', direction, number })
 
@@ -48,7 +46,6 @@ const initialState = {
   title: '',
   pending: false,
   error: false,
-  correct: 0,
 }
 
 export default (state = initialState, action) => {
@@ -58,7 +55,6 @@ export default (state = initialState, action) => {
         ...initialState,
         pending: true,
         error: false,
-        correct: 0,
       }
     case 'GET_CROSSWORD_SUCCESS':
       return {
@@ -78,11 +74,6 @@ export default (state = initialState, action) => {
         ...state,
         pending: false,
         error: true,
-      }
-    case 'INCREMENT_CORRECT_ANSWERS':
-      return {
-        ...state,
-        correct: state.correct + 1,
       }
     case 'REVEAL_CLUE':
       return produce(state, draft => {
