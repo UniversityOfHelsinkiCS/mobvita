@@ -11,6 +11,11 @@ const SelectExerciseTypeModal = props => {
     props.setShowExerciseOptionsModal(false)
   }
 
+  const handleOpenMCModal = () => {
+    setShowChoices(true)
+    props.setShowExerciseOptionsModal(false)
+  }
+
   return (
     <>
       <MultipleChoiceModal
@@ -57,11 +62,7 @@ const SelectExerciseTypeModal = props => {
                 </Button>
               </span>
               <span style={{ marginBottom: '0.5em', marginLeft: '0.45em' }}>
-                <Button
-                  type="submit"
-                  onClick={() => setShowChoices(true)}
-                  onKeyDown={() => setShowChoices(true)}
-                >
+                <Button type="submit" onClick={handleOpenMCModal} onKeyDown={handleOpenMCModal}>
                   <FormattedMessage id="choose-multichoice-exercise" />
                 </Button>
               </span>
