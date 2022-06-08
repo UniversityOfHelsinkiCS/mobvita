@@ -8,18 +8,17 @@ import {
   voiceLanguages,
   formatGreenFeedbackText,
 } from 'Utilities/common'
-import { setFocusedWord } from 'Utilities/redux/practiceReducer'
+import { setFocusedWord, handleVoiceSampleCooldown } from 'Utilities/redux/practiceReducer'
 import Tooltip from 'Components/PracticeView/Tooltip'
 
 const ExerciseHearing = ({ word, handleChange }) => {
   const [value, setValue] = useState('')
-
   const [className, setClassName] = useState('exercise hearing-untouched')
   const [touched, setTouched] = useState(false)
   const [show, setShow] = useState(false)
   const [focusTimeout, setFocusTimeout] = useState(false)
   const inputRef = createRef(null)
-
+  const { voiceSampleOnCooldown } = useSelector(({ practice }) => practice)
   const currentAnswer = useSelector(({ practice }) => practice.currentAnswers[word.ID])
   const learningLanguage = useSelector(learningLanguageSelector)
 
@@ -65,13 +64,17 @@ const ExerciseHearing = ({ word, handleChange }) => {
       handleChange(value, word)
     }
     dispatch(setFocusedWord(word))
-    if (!focusTimeout) {
+    if (!focusTimeout && !voiceSampleOnCooldown) {
       console.log('speaking ', word.audio, '  ', voice)
       speak(word.audio, voice, 'exercise')
       setFocusTimeout(true)
+      dispatch(handleVoiceSampleCooldown())
       setTimeout(() => {
         setFocusTimeout(false)
       }, 500)
+      setTimeout(() => {
+        dispatch(handleVoiceSampleCooldown())
+      }, 4000)
     }
     setShow(!show)
     changeElementFont(e.target)

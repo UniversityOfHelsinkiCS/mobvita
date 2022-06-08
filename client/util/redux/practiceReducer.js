@@ -19,6 +19,7 @@ export const addToCorrectAnswerIDs = ids => ({ type: 'ADD_CORRECT_ANSWER_IDS', i
 export const setWillPause = state => ({ type: 'SET_WILL_PAUSE', state })
 export const setIsPaused = state => ({ type: 'SET_IS_PAUSED', state })
 export const setPracticeFinished = state => ({ type: 'SET_PRACTICE_FINISHED', state })
+export const handleVoiceSampleCooldown = () => ({ type: 'HANDLE_VOICE_SAMPLE_COOLDOWN' })
 
 const initialState = {
   previousAnswers: {},
@@ -38,10 +39,16 @@ const initialState = {
   willPause: false,
   isPaused: false,
   practiceFinished: false,
+  voiceSampleOnCooldown: false,
 }
 
 export default (state = initialState, action) => {
   switch (action.type) {
+    case 'HANDLE_VOICE_SAMPLE_COOLDOWN':
+      return {
+        ...state,
+        voiceSampleOnCooldown: !state.voiceSampleOnCooldown,
+      }
     case 'SET_ANSWERS':
       return {
         ...state,
