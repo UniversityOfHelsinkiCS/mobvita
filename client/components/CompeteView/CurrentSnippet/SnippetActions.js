@@ -3,7 +3,9 @@ import { useSelector, useDispatch } from 'react-redux'
 import { FormattedMessage } from 'react-intl'
 import { Button } from 'react-bootstrap'
 import { Icon } from 'semantic-ui-react'
+import { useLearningLanguage } from 'Utilities/common'
 import { postAnswers, getCurrentSnippet } from 'Utilities/redux/snippetsReducer'
+import { sendActivity } from 'Utilities/redux/competitionReducer'
 import {
   finishSnippet,
   clearTouchedIds,
@@ -92,12 +94,14 @@ const CheckAnswersButton = ({ handleClick, checkAnswersButtonTempDisable, player
 }
 
 const SnippetActions = ({ storyId, exerciseCount, playerFinished }) => {
+  const learningLanguage = useLearningLanguage()
   const [checkAnswersButtonTempDisable, setcheckAnswersButtonTempDisable] = useState(false)
   const { cachedSnippets } = useSelector(({ compete }) => compete)
   const { currentAnswers, correctAnswerIDs, touchedIds, attempt, options, audio } = useSelector(
     ({ practice }) => practice
   )
   const { snippets } = useSelector(({ snippets }) => ({ snippets }))
+  const { competition_id, botCorrectPercent, startTime } = useSelector(({ compete }) => compete)
   const dispatch = useDispatch()
 
   const rightAnswerAmount = useMemo(
@@ -154,6 +158,26 @@ const SnippetActions = ({ storyId, exerciseCount, playerFinished }) => {
       last_attempt: lastAttempt,
     }
 
+    const correct = Object.keys(currentAnswers).filter(
+      key => currentAnswers[key].correct === currentAnswers[key].users_answer
+    )
+    const totalExercises = Object.keys(currentAnswers).length
+    const num_correct = Object.keys(correct).length
+
+    if (lastAttempt || totalExercises === num_correct) {
+      dispatch(
+        sendActivity(
+          storyId,
+          competition_id,
+          botCorrectPercent,
+          startTime,
+          learningLanguage,
+          num_correct,
+          totalExercises
+        )
+      )
+    }
+
     dispatch(clearTouchedIds())
     dispatch(postAnswers(storyId, answersObj, true))
     setcheckAnswersButtonTempDisable(true)
@@ -168,6 +192,7 @@ const SnippetActions = ({ storyId, exerciseCount, playerFinished }) => {
 
   const submitAnswers = () => {
     dispatch(finishSnippet())
+
     checkAnswers(true)
   }
 

@@ -27,6 +27,30 @@ export const getAndCacheNextSnippet = (storyId, currentSnippetId) => {
   return callBuilder(route, prefix)
 }
 
+export const sendActivity = (
+  storyId,
+  competition_id,
+  botCorrectPercent,
+  startTime,
+  learningLanguage,
+  num_correct,
+  totalExercises,
+) => {
+  const route = `/stories/${storyId}/competition`
+  const prefix = 'SEND_COMPETE_ACTIVITY'
+  const payload = {
+    competition_id,
+    bnc: botCorrectPercent,
+    start_time: startTime,
+    end_time: new Date(),
+    language: learningLanguage,
+    num_correct,
+    num_total: totalExercises,
+  }
+
+  return callBuilder(route, prefix, 'post', payload)
+}
+
 export const resetCachedSnippets = () => ({
   type: 'RESET_CACHED_SNIPPETS',
 })
@@ -56,6 +80,7 @@ export default (state = initialState, action) => {
         snippetCompleteTime: action.response.snippet_complete_time,
         totalTime: action.response.total_time,
         botCorrectPercent: action.response.bnc,
+        competition_id: action.response.competition_id,
       }
     case 'INITIALIZE_TIMER':
       return {
@@ -87,7 +112,7 @@ export default (state = initialState, action) => {
     case 'COMPETITION_START':
       return {
         ...state,
-        startTime: action.startTime,
+        startTime: new Date(),
         willPause: false,
         isPaused: false,
       }
