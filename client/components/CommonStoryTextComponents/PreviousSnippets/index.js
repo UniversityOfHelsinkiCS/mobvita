@@ -43,6 +43,10 @@ const PreviousSnippets = () => {
     dispatch(setPrevious(updatedPrevious))
   }, [focusedStory])
 
+  if (previous?.length > 0 && previous[0].practice_snippet) {
+    return null
+  }
+
   const previousSnippets = previous?.map(snippet => (
     <TextWithFeedback snippet={snippet} answers={previousAnswers} mode="practice" />
   ))

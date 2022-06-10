@@ -150,7 +150,7 @@ const TextWithFeedback = ({ snippet, exercise = false, answers, mode, hideFeedba
     element = createNestedSpan(element, word.ID, 1, lowestLinePosition)
     return element
   }
-
+  // console.log('SNIPPET ', snippet)
   const createdText = answers
     ? useMemo(
         () =>
