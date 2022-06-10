@@ -135,8 +135,7 @@ const ControlledStoryEditView = ({ match }) => {
     return false
   }
 
-  console.log('contr ', controlledPractice)
-  // console.log('story ', story.paragraph)
+  // console.log('contr ', controlledPractice)
 
   return (
     <div className="cont-tall flex-col space-between align-center pt-sm">

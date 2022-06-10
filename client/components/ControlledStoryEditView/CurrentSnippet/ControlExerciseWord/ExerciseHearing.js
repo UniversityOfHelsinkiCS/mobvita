@@ -9,6 +9,7 @@ const ExerciseHearing = ({ word }) => {
   const [focusTimeout, setFocusTimeout] = useState(false)
   const { ID: wordId } = word
   const learningLanguage = useSelector(learningLanguageSelector)
+  const { resource_usage } = useSelector(state => state.user.data.user)
 
   const voice = voiceLanguages[learningLanguage]
   const inputRef = createRef(null)
@@ -32,7 +33,7 @@ const ExerciseHearing = ({ word }) => {
     dispatch(setFocusedWord(word))
     if (!focusTimeout && !voiceSampleOnCooldown) {
       console.log('speaking ', word.audio, '  ', voice)
-      speak(word.audio, voice, 'exercise')
+      speak(word.audio, voice, 'exercise', resource_usage)
       setFocusTimeout(true)
       dispatch(handleVoiceSampleCooldown())
       setTimeout(() => {

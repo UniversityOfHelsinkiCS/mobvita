@@ -190,7 +190,7 @@ export const supportedLearningLanguages = {
     'portuguese',
     'chinese',
     'turkish',
-    'english'
+    'english',
   ].sort((a, b) => a.localeCompare(b)),
   minor: [
     'erzya',
@@ -202,7 +202,7 @@ export const supportedLearningLanguages = {
     'tatar-new',
     'udmurt',
     'udmurt-arch',
-    'livvi'
+    'livvi',
   ].sort((a, b) => a.localeCompare(b)),
   experimental: ['syriac'],
 }
@@ -230,8 +230,8 @@ export const learningLanguageLocaleCodes = {
   Syriac: 'syc',
   Chinese: 'zh',
   'Udmurt-Arch': 'udm',
-  'livvi': 'olo',
-  English: 'en'
+  livvi: 'olo',
+  English: 'en',
 }
 
 export const betaLanguages = [
@@ -256,7 +256,7 @@ export const betaLanguages = [
   'udmurt',
   'udmurt-arch',
   'livvi',
-  'english'
+  'english',
 ]
 
 export const exerciseMaskedLanguages = ['Chinese']
@@ -378,16 +378,19 @@ export const getTextWidth = text => {
   return 65 + metrics.width // add just random number, lets hope its fine.
 }
 
-export const speak = (surfaceWord, voice, voice_type) => {
+export const speak = (surfaceWord, voice, voice_type, resource_usage) => {
   const [source, lang_code, tone] = voice
   window.responsiveVoice.cancel()
   Howler.stop()
   try {
-    if (source === 'responsive_voice' && window.responsiveVoice.voiceSupport())
+    if (
+      (source === 'responsive_voice' && window.responsiveVoice.voiceSupport()) ||
+      (source === 'yandex' && Howler.codecs('opus') && !resource_usage.tts.Yandex.access)
+    )
       RVSpeak(surfaceWord, lang_code, tone, voice_type)
     else if (source === 'yandex' && Howler.codecs('opus'))
       yandexSpeak(surfaceWord, lang_code, tone, voice_type)
-    else if (source === 'tacotron2' && Howler.codecs('mp3') && surfaceWord.length > 4 )
+    else if (source === 'tacotron2' && Howler.codecs('mp3') && surfaceWord.length > 4)
       tacotronSpeak(surfaceWord, lang_code, tone, voice_type)
     else if (speakFallbackConfig.hasOwnProperty(voice.join('-')))
       speak(surfaceWord, speakFallbackConfig[voice.join('-')], voice_type)
@@ -456,7 +459,7 @@ export const voiceLanguages = {
 
 const speakFallbackConfig = {
   'yandex-ru-RU-alena': ['responsive_voice', 'Russian', 'Female'],
-  'tacotron2-fin-Female': ['responsive_voice', 'Finnish', 'Female']
+  'tacotron2-fin-Female': ['responsive_voice', 'Finnish', 'Female'],
 }
 
 export const translatableLanguages = {
@@ -512,7 +515,7 @@ export const translatableLanguages = {
     'Chinese',
     'Japanese',
     'Hindi',
-    ],
+  ],
   Spanish: [
     'Chinese',
     'English',
