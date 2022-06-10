@@ -25,7 +25,6 @@ const ExerciseHearing = ({ word }) => {
   }, [voiceSampleOnCooldown])
 
   const speakerClickHandler = word => {
-    speak(word.audio, voice, 'exercise')
     inputRef.current.focus()
   }
 
