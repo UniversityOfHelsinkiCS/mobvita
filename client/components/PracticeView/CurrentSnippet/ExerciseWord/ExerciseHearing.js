@@ -15,6 +15,7 @@ const ExerciseHearing = ({ word, handleChange }) => {
   const [value, setValue] = useState('')
   const [className, setClassName] = useState('exercise hearing-untouched')
   const [touched, setTouched] = useState(false)
+  const [iconDisabled, setIconDisabled] = useState(false)
   const [show, setShow] = useState(false)
   const [focusTimeout, setFocusTimeout] = useState(false)
   const inputRef = createRef(null)
@@ -46,6 +47,14 @@ const ExerciseHearing = ({ word, handleChange }) => {
       setValue(val)
     }
   }, [tested])
+
+  useEffect(() => {
+    if (voiceSampleOnCooldown) {
+      setIconDisabled(true)
+    } else {
+      setIconDisabled(false)
+    }
+  }, [voiceSampleOnCooldown])
 
   const speakerClickHandler = word => {
     // speak(word.audio, voice)
@@ -155,6 +164,7 @@ const ExerciseHearing = ({ word, handleChange }) => {
           link
           onClick={() => speakerClickHandler(word)}
           style={{ marginLeft: '-25px' }}
+          disabled={iconDisabled}
         />
         {word.negation && <sup style={{ marginLeft: '3px', color: '#0000FF' }}>(neg)</sup>}
       </span>
