@@ -2,43 +2,48 @@ import React, { createRef, useState, useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { Icon } from 'semantic-ui-react'
 import { getTextWidth, speak, learningLanguageSelector, voiceLanguages } from 'Utilities/common'
-import { addExercise, removeExercise } from 'Utilities/redux/controlledPracticeReducer'
+import { setFocusedWord, handleVoiceSampleCooldown } from 'Utilities/redux/practiceReducer'
 
 const ExerciseHearing = ({ word }) => {
+  const [iconDisabled, setIconDisabled] = useState(false)
+  const [focusTimeout, setFocusTimeout] = useState(false)
   const { ID: wordId } = word
+  const learningLanguage = useSelector(learningLanguageSelector)
+
   const voice = voiceLanguages[learningLanguage]
   const inputRef = createRef(null)
+  const { voiceSampleOnCooldown } = useSelector(({ practice }) => practice)
 
   const dispatch = useDispatch()
-  // const currentAnswer = useSelector(({ practice }) => practice.currentAnswers[word.ID])
-  // const { acceptedTokens } = useSelector(({ controlledPractice }) => controlledPractice)
-  const learningLanguage = useSelector(learningLanguageSelector)
-  /*
-  const getExerciseClass = () => {
-    return acceptedTokens.map(t => t.ID).includes(wordId)
-      ? 'control-mode-chosen'
-      : 'control-mode-unchosen'
-  }
 
   useEffect(() => {
-    setBgColorClassName(getExerciseClass())
-  }, [acceptedTokens])
+    if (voiceSampleOnCooldown) {
+      setIconDisabled(true)
+    } else {
+      setIconDisabled(false)
+    }
+  }, [voiceSampleOnCooldown])
 
-  useEffect(() => {
-    const val = currentAnswer ? currentAnswer.users_answer : ''
-    setValue(val)
-  }, [currentAnswer])
-  */
   const speakerClickHandler = word => {
     speak(word.audio, voice, 'exercise')
     inputRef.current.focus()
   }
-  /*
-  const handleExerciseClick = () => {
-    if (acceptedTokens.map(t => t.ID).includes(wordId)) dispatch(removeExercise(wordId))
-    else dispatch(addExercise(word))
+
+  const handleInputFocus = () => {
+    dispatch(setFocusedWord(word))
+    if (!focusTimeout && !voiceSampleOnCooldown) {
+      console.log('speaking ', word.audio, '  ', voice)
+      speak(word.audio, voice, 'exercise')
+      setFocusTimeout(true)
+      dispatch(handleVoiceSampleCooldown())
+      setTimeout(() => {
+        setFocusTimeout(false)
+      }, 500)
+      setTimeout(() => {
+        dispatch(handleVoiceSampleCooldown())
+      }, 4000)
+    }
   }
-  */
 
   return (
     <span>
@@ -48,6 +53,7 @@ const ExerciseHearing = ({ word }) => {
         ref={inputRef}
         key={word.ID}
         placeholder={`${word.surface}`}
+        onFocus={handleInputFocus}
         className="exercise control-mode control-mode-chosen"
         style={{
           width: getTextWidth(word.surface),
@@ -61,6 +67,7 @@ const ExerciseHearing = ({ word }) => {
         link
         onClick={() => speakerClickHandler(word)}
         style={{ marginLeft: '-25px' }}
+        disabled={iconDisabled}
       />
       {word.negation && <sup style={{ marginLeft: '3px', color: '#0000FF' }}>(neg)</sup>}
     </span>
