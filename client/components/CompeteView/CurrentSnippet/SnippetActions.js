@@ -64,11 +64,19 @@ const CheckAnswersButton = ({ handleClick, checkAnswersButtonTempDisable, player
     }
   }, [focusedSnippet, attempt])
 
+  const handleSubmitAnswers = () => {
+    if (attemptRatioPercentage <= 1) {
+      handleClick(true)
+    } else {
+      handleClick()
+    }
+  }
+
   return (
     <button
       data-cy="check-answer"
       type="button"
-      onClick={() => handleClick()}
+      onClick={handleSubmitAnswers}
       className="check-answers-button"
       disabled={
         answersPending ||
@@ -161,6 +169,8 @@ const SnippetActions = ({ storyId, exerciseCount, playerFinished }) => {
     const correct = Object.keys(currentAnswers).filter(
       key => currentAnswers[key].correct === currentAnswers[key].users_answer
     )
+
+    console.log(currentAnswers)
     const totalExercises = Object.keys(currentAnswers).length
     const num_correct = Object.keys(correct).length
 
