@@ -561,6 +561,13 @@ html, body, #root {
   background: #FFF;
 }
 
+.draggable-modal {
+  border: 2px solid lightgrey;
+  border-radius: 12px;
+  position: absolute;
+  background: #FFF;
+}
+
 .row-flex {
   display: flex;
   flex-direction: row;

@@ -16,7 +16,6 @@ const MultipleChoiceModal = props => {
   const closeModal = () => {
     props.setOpen(false)
   }
-  // console.log('analytic in modal: ', props.analyticChunkWord?.surface)
 
   const handleSubmitChoices = async () => {
     if (chosenSet === 'custom') {
@@ -37,19 +36,14 @@ const MultipleChoiceModal = props => {
     }
   }
 
-  return (
-    <Draggable>
-      <Modal
-        basic
-        open={props.open}
-        size="small"
-        centered={false}
-        closeIcon={{ style: { top: '2.5rem', right: '2.5rem' }, color: 'black', name: 'close' }}
-        onClose={closeModal}
-      >
-        <Modal.Content>
-          <div className="encouragement">
-            <div style={{ position: 'relative' }}>
+  const { open } = props
+
+  if (open) {
+    return (
+      <Draggable>
+        <div className="draggable-modal">
+          <div>
+            <div>
               <Popup
                 content={
                   <div style={{ padding: '0.75em' }}>
@@ -72,121 +66,131 @@ const MultipleChoiceModal = props => {
               <span className="pt-sm" style={{ color: '#000000' }}>
                 <FormattedMessage id="pick-choices" />
               </span>
+              <Icon
+                style={{
+                  paddingRight: '0.75em',
+                  marginBottom: '0.5em',
+                  marginLeft: '0.75em',
+                  marginTop: '0.75em',
+                }}
+                size="large"
+                name="close"
+                onClick={closeModal}
+              />
             </div>
-            <hr />
-            <Form
-              style={{
-                marginBottom: '0.5em',
-                marginTop: '0.5em',
-              }}
-              onSubmit={handleSubmitChoices}
-            >
-              {props.word.choices &&
-                Object.keys(props.word.choices).map(key => (
-                  <div>
-                    <Form.Group>
-                      <Form.Input
-                        style={{ marginTop: '0.9em', marginLeft: '0.5em', marginRight: '0.75em' }}
-                        type="radio"
-                        onChange={() => setChosenSet(key)}
-                        checked={chosenSet === key}
+          </div>
+          <hr />
+          <div>
+            <div>
+              <Form
+                style={{
+                  marginBottom: '0.5em',
+                  marginTop: '0.5em',
+                }}
+                onSubmit={handleSubmitChoices}
+              >
+                {props.word.choices &&
+                  Object.keys(props.word.choices).map(key => (
+                    <div>
+                      <Form.Group>
+                        <Form.Input
+                          style={{ marginTop: '0.9em', marginLeft: '0.5em', marginRight: '0.75em' }}
+                          type="radio"
+                          onChange={() => setChosenSet(key)}
+                          checked={chosenSet === key}
+                        />
+                        {props.word.choices[key]
+                          .filter(
+                            choice =>
+                              choice !== props.analyticChunkWord?.surface || props.word.surface
+                          )
+                          .map(choice => (
+                            <input
+                              className={
+                                bigScreen ? 'multi-choice-input' : 'multi-choice-input-mobile'
+                              }
+                              type="text"
+                              name="disable_field"
+                              disabled
+                              value={choice}
+                            />
+                          ))}
+                      </Form.Group>
+                      <hr />
+                    </div>
+                  ))}
+                {props.word.stress && props.word.stressed && (
+                  <Form.Group>
+                    <Form.Input
+                      style={{ marginTop: '0.9em', marginLeft: '0.5em', marginRight: '0.75em' }}
+                      type="radio"
+                      onChange={() => setChosenSet('stress')}
+                      checked={chosenSet === 'stress'}
+                    />
+                    {props.word.stress.map(choice => (
+                      <input
+                        className={bigScreen ? 'multi-choice-input' : 'multi-choice-input-mobile'}
+                        type="text"
+                        name="disable_field"
+                        disabled
+                        value={choice}
                       />
-                      {/* <input
-                      className="multi-choice-input"
-                      type="text"
-                      name="disable_field"
-                      value={props.analyticChunkWord?.surface || props.word.surface}
-                      disabled
-                    /> */}
-                      {props.word.choices[key]
-                        .filter(
-                          choice =>
-                            choice !== props.analyticChunkWord?.surface || props.word.surface
-                        )
-                        .map(choice => (
-                          <input
-                            className={
-                              bigScreen ? 'multi-choice-input' : 'multi-choice-input-mobile'
-                            }
-                            type="text"
-                            name="disable_field"
-                            disabled
-                            value={choice}
-                          />
-                        ))}
-                    </Form.Group>
-                    <hr />
-                  </div>
-                ))}
-              {props.word.stress && props.word.stressed && (
-                <Form.Group>
-                  <Form.Input
-                    style={{ marginTop: '0.9em', marginLeft: '0.5em', marginRight: '0.75em' }}
-                    type="radio"
-                    onChange={() => setChosenSet('stress')}
-                    checked={chosenSet === 'stress'}
-                  />
-                  {props.word.stress.map(choice => (
+                    ))}
+                  </Form.Group>
+                )}
+                <div>
+                  <Form.Group>
+                    <Form.Input
+                      style={{ marginTop: '0.9em', marginLeft: '0.5em', marginRight: '0.75em' }}
+                      type="radio"
+                      onChange={() => setChosenSet('custom')}
+                      checked={chosenSet === 'custom'}
+                    />
                     <input
                       className={bigScreen ? 'multi-choice-input' : 'multi-choice-input-mobile'}
                       type="text"
                       name="disable_field"
+                      value={props.analyticChunkWord?.surface || props.word.surface}
                       disabled
-                      value={choice}
                     />
-                  ))}
-                </Form.Group>
-              )}
-              <div>
-                <Form.Group>
-                  <Form.Input
-                    style={{ marginTop: '0.9em', marginLeft: '0.5em', marginRight: '0.75em' }}
-                    type="radio"
-                    onChange={() => setChosenSet('custom')}
-                    checked={chosenSet === 'custom'}
-                  />
-                  <input
-                    className={bigScreen ? 'multi-choice-input' : 'multi-choice-input-mobile'}
-                    type="text"
-                    name="disable_field"
-                    value={props.analyticChunkWord?.surface || props.word.surface}
-                    disabled
-                  />
-                  <input
-                    className={bigScreen ? 'multi-choice-input' : 'multi-choice-input-mobile'}
-                    type="text"
-                    value={customMultiChoice1}
-                    onChange={({ target }) => setCustomMultiChoice1(target.value)}
-                  />
-                  <input
-                    className={bigScreen ? 'multi-choice-input' : 'multi-choice-input-mobile'}
-                    type="text"
-                    value={customMultiChoice2}
-                    onChange={({ target }) => setCustomMultiChoice2(target.value)}
-                  />
-                  <input
-                    className={bigScreen ? 'multi-choice-input' : 'multi-choice-input-mobile'}
-                    type="text"
-                    value={customMultiChoice3}
-                    onChange={({ target }) => setCustomMultiChoice3(target.value)}
-                  />
-                </Form.Group>
-                <hr />
-                {props.showValidationMessage && (
-                  <div style={{ color: '#FF0000', marginLeft: '0.5em', marginBottom: '0.5em' }}>
-                    <FormattedMessage id="multiple-choice-validation" />
-                  </div>
-                )}
-                <Button style={{ marginBottom: '0.5em', marginLeft: '0.5em' }} type="submit">
-                  Submit
-                </Button>
-              </div>
-            </Form>
+                    <input
+                      className={bigScreen ? 'multi-choice-input' : 'multi-choice-input-mobile'}
+                      type="text"
+                      value={customMultiChoice1}
+                      onChange={({ target }) => setCustomMultiChoice1(target.value)}
+                    />
+                    <input
+                      className={bigScreen ? 'multi-choice-input' : 'multi-choice-input-mobile'}
+                      type="text"
+                      value={customMultiChoice2}
+                      onChange={({ target }) => setCustomMultiChoice2(target.value)}
+                    />
+                    <input
+                      className={bigScreen ? 'multi-choice-input' : 'multi-choice-input-mobile'}
+                      type="text"
+                      value={customMultiChoice3}
+                      onChange={({ target }) => setCustomMultiChoice3(target.value)}
+                    />
+                  </Form.Group>
+                  <hr />
+                  {props.showValidationMessage && (
+                    <div style={{ color: '#FF0000', marginLeft: '0.5em', marginBottom: '0.5em' }}>
+                      <FormattedMessage id="multiple-choice-validation" />
+                    </div>
+                  )}
+                  <Button style={{ marginBottom: '0.5em', marginLeft: '0.5em' }} type="submit">
+                    Submit
+                  </Button>
+                </div>
+              </Form>
+            </div>
           </div>
-        </Modal.Content>
-      </Modal>
-    </Draggable>
-  )
+        </div>
+      </Draggable>
+    )
+  }
+
+  return null
 }
 
 export default MultipleChoiceModal
