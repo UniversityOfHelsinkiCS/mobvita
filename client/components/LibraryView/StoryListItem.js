@@ -12,6 +12,7 @@ import ShareStory from 'Components/StoryView/ShareStory'
 import StoryDetailsModal from 'Components/StoryView/StoryDetailsModal'
 import DifficultyStars from 'Components/DifficultyStars'
 import { cancelControlledStory } from 'Utilities/redux/controlledPracticeReducer'
+import { current } from 'immer'
 
 const StoryTitle = ({
   story,
@@ -81,7 +82,7 @@ const ShareInfoPopupContent = ({ infoObj }) => {
   )
 }
 
-const StoryActions = ({ story, enableOnlyPractice, isControlled }) => {
+const StoryActions = ({ story, enableOnlyPractice, isControlled, inGroupLibrary, isTeacher }) => {
   const { width } = useWindowDimensions()
 
   const showCrosswordsButton = width > 1023
@@ -99,14 +100,14 @@ const StoryActions = ({ story, enableOnlyPractice, isControlled }) => {
     return (
       <div className="story-actions">
         <Link to={practiceLink}>
-          <Button variant="primary">
+          <Button variant={isTeacher && inGroupLibrary ? 'secondary' : 'primary'}>
             <FormattedMessage id="practice" />
           </Button>
         </Link>
 
         <Link to={`/flashcards/fillin/${story._id}/`}>
           <Button
-            variant={enableOnlyPractice ? 'outline-secondary' : 'primary'}
+            variant={isTeacher && inGroupLibrary ? 'secondary' : 'primary'}
             disabled={enableOnlyPractice}
           >
             <FormattedMessage id="Flashcards" />
@@ -114,7 +115,10 @@ const StoryActions = ({ story, enableOnlyPractice, isControlled }) => {
         </Link>
 
         <Link to={`/stories/${story._id}/preview`}>
-          <Button variant={buttonVariant} disabled={enableOnlyPractice}>
+          <Button
+            variant={isTeacher && inGroupLibrary ? 'primary' : buttonVariant}
+            disabled={enableOnlyPractice}
+          >
             <FormattedMessage id="preview" />
           </Button>
         </Link>
@@ -130,8 +134,12 @@ const StoryActions = ({ story, enableOnlyPractice, isControlled }) => {
 
         <Link to={`/stories/${story._id}/compete`}>
           <Button
-            variant={uploadUnfinished ? 'outline-secondary' : buttonVariant}
-            disabled={enableOnlyPractice || uploadUnfinished}
+            variant={
+              uploadUnfinished || (isTeacher && inGroupLibrary)
+                ? 'outline-secondary'
+                : buttonVariant
+            }
+            disabled={enableOnlyPractice || uploadUnfinished || (isTeacher && inGroupLibrary)}
           >
             <FormattedMessage id="compete" />{' '}
           </Button>
@@ -140,8 +148,12 @@ const StoryActions = ({ story, enableOnlyPractice, isControlled }) => {
         {showCrosswordsButton && (
           <Link to={`/crossword/${story._id}/`}>
             <Button
-              variant={uploadUnfinished ? 'outline-secondary' : buttonVariant}
-              disabled={enableOnlyPractice || uploadUnfinished}
+              variant={
+                uploadUnfinished || (isTeacher && inGroupLibrary)
+                  ? 'outline-secondary'
+                  : buttonVariant
+              }
+              disabled={enableOnlyPractice || uploadUnfinished || (isTeacher && inGroupLibrary)}
             >
               <FormattedMessage id="Crossword" />
             </Button>
@@ -278,6 +290,8 @@ const StoryListItem = ({ story, libraryShown, selectedGroup }) => {
           story={story}
           enableOnlyPractice={enableOnlyPractice}
           isControlled={isControlledStory}
+          inGroupLibrary={inGroupLibrary}
+          isTeacher={inGroupLibrary && currentGroup && currentGroup.is_teaching}
         />
         <div className="flex align-center" style={{ overflow: 'hidden' }}>
           {showGroupNames && <GroupsSharedTo groups={story.groups} />}
