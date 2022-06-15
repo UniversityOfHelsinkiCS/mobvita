@@ -91,7 +91,7 @@ const Progress = () => {
     setEndDate(endPoint)
 
     const firstPractice = moment(exerciseHistoryGraph[0]?.date).toDate()
-    const sixMonthsAgo = moment().subtract(6, 'months').toDate()
+    const sixMonthsAgo = moment(endPoint).subtract(6, 'months').toDate()
 
     if (firstPractice < sixMonthsAgo) {
       setStartDate(sixMonthsAgo)
