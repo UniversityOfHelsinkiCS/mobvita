@@ -81,7 +81,7 @@ const MultipleChoiceModal = props => {
           </div>
           <hr />
           <div>
-            <div>
+            <div style={{ marginRight: '0.5em' }}>
               <Form
                 style={{
                   marginBottom: '0.5em',
@@ -138,7 +138,7 @@ const MultipleChoiceModal = props => {
                     ))}
                   </Form.Group>
                 )}
-                <div>
+                <div style={{ marginRight: '0.5em' }}>
                   <Form.Group>
                     <Form.Input
                       style={{ marginTop: '0.9em', marginLeft: '0.5em', marginRight: '0.75em' }}
@@ -172,13 +172,15 @@ const MultipleChoiceModal = props => {
                       onChange={({ target }) => setCustomMultiChoice3(target.value)}
                     />
                   </Form.Group>
-                  <hr />
                   {props.showValidationMessage && (
                     <div style={{ color: '#FF0000', marginLeft: '0.5em', marginBottom: '0.5em' }}>
                       <FormattedMessage id="multiple-choice-validation" />
                     </div>
                   )}
-                  <Button style={{ marginBottom: '0.5em', marginLeft: '0.5em' }} type="submit">
+                  <Button
+                    style={{ marginBottom: '0.5em', marginLeft: '0.5em', marginTop: '0.5em' }}
+                    type="submit"
+                  >
                     Submit
                   </Button>
                 </div>
