@@ -69,6 +69,7 @@ const Progress = () => {
     root_hex_coord,
     pending: conceptsPending,
   } = useSelector(({ metadata }) => metadata)
+  const userData = useSelector(({ user }) => user.data)
 
   const filterTestHistoryByDate = () =>
     testHistory.filter(test => {
