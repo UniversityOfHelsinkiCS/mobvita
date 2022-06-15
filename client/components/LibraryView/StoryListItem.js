@@ -60,6 +60,7 @@ const StoryTitle = ({
       showCancelControlStoryButton={showCancelControlStoryButton}
       handleDelete={handleDelete}
       inGroupLibrary={inGroupLibrary}
+      isTeacher={isTeacher}
       currentGroup={currentGroup}
       handleControlledStoryCancel={handleControlledStoryCancel}
     />
@@ -82,7 +83,14 @@ const ShareInfoPopupContent = ({ infoObj }) => {
   )
 }
 
-const StoryActions = ({ story, enableOnlyPractice, isControlled, inGroupLibrary, isTeacher }) => {
+const StoryActions = ({
+  story,
+  currentGroup,
+  enableOnlyPractice,
+  isControlled,
+  inGroupLibrary,
+  isTeacher,
+}) => {
   const { width } = useWindowDimensions()
 
   const showCrosswordsButton = width > 1023
@@ -288,6 +296,7 @@ const StoryListItem = ({ story, libraryShown, selectedGroup }) => {
       <Card.Content extra className="story-card-actions-cont">
         <StoryActions
           story={story}
+          currentGroup={currentGroup}
           enableOnlyPractice={enableOnlyPractice}
           isControlled={isControlledStory}
           inGroupLibrary={inGroupLibrary}

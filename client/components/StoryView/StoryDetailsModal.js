@@ -1,6 +1,7 @@
 import React from 'react'
 import { Modal } from 'semantic-ui-react'
 import { Button } from 'react-bootstrap'
+import { Link } from 'react-router-dom'
 import { FormattedMessage } from 'react-intl'
 import { CustomButton, LinkButton } from './Buttons'
 import DetailsTable from './DetailsTable'
@@ -15,6 +16,7 @@ const StoryDetailsModal = ({
   showCancelControlStoryButton,
   handleDelete,
   inGroupLibrary,
+  isTeacher,
   currentGroup,
   handleControlledStoryCancel,
 }) => {
@@ -70,35 +72,47 @@ const StoryDetailsModal = ({
       <Modal.Actions>
         <div>
           <div className="flex wrap" style={{ gap: '5px' }}>
-            <LinkButton to={`/stories/${story._id}/practice`} translationId="practice" />
+            <LinkButton
+              variant={isTeacher && inGroupLibrary ? 'secondary' : 'primary'}
+              to={`/stories/${story._id}/practice`}
+              translationId="practice"
+            />
             {!enableOnlyPractice && (
               <>
                 <LinkButton
-                  variant="primary"
+                  variant={isTeacher && inGroupLibrary ? 'secondary' : 'primary'}
                   to={`/flashcards/fillin/${story._id}/`}
                   translationId="Flashcards"
                 />
                 <LinkButton
-                  variant="secondary"
+                  variant={isTeacher && inGroupLibrary ? 'primary' : 'secondary'}
                   to={`/stories/${story._id}/preview`}
                   translationId="preview"
                 />
-                <LinkButton
-                  variant={story.percent_cov === 0 ? 'outline-secondary' : 'secondary'}
-                  disabled={story.percent_cov === 0}
-                  to={`/stories/${story._id}/review`}
-                  translationId="review"
-                />
-                <LinkButton
-                  variant="secondary"
-                  to={`/stories/${story._id}/compete`}
-                  translationId="compete"
-                />
-                <LinkButton
-                  variant="secondary"
-                  to={`/crossword/${story._id}`}
-                  translationId="Crossword"
-                />
+                <Link to={`/stories/${story._id}/review`}>
+                  <Button
+                    variant={story.percent_cov === 0 ? 'outline-secondary' : 'secondary'}
+                    disabled={story.percent_cov === 0}
+                  >
+                    <FormattedMessage id="review" />
+                  </Button>
+                </Link>
+                <Link to={`/stories/${story._id}/compete`}>
+                  <Button
+                    variant={isTeacher && inGroupLibrary ? 'outline-secondary' : 'secondary'}
+                    disabled={enableOnlyPractice || (isTeacher && inGroupLibrary)}
+                  >
+                    <FormattedMessage id="compete" />
+                  </Button>
+                </Link>
+                <Link to={`/crossword/${story._id}`}>
+                  <Button
+                    variant={isTeacher && inGroupLibrary ? 'outline-secondary' : 'secondary'}
+                    disabled={enableOnlyPractice || (isTeacher && inGroupLibrary)}
+                  >
+                    <FormattedMessage id="Crossword" />
+                  </Button>
+                </Link>
               </>
             )}
           </div>

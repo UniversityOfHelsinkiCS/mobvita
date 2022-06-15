@@ -37,7 +37,6 @@ const Summary = ({
 
   const summary = useSelector(({ summary: { summary } }) => {
     if (!summary) return null
-
     summary.map(user => {
       Object.keys(user).forEach(key => {
         // replace null values with -Number.MAX_VALUE
