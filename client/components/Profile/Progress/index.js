@@ -69,7 +69,6 @@ const Progress = () => {
     root_hex_coord,
     pending: conceptsPending,
   } = useSelector(({ metadata }) => metadata)
-  const userData = useSelector(({ user }) => user.data)
 
   const filterTestHistoryByDate = () =>
     testHistory.filter(test => {
@@ -80,6 +79,26 @@ const Progress = () => {
   const { history: exerciseHistory, pending: historyPending } = useSelector(
     ({ exerciseHistory }) => exerciseHistory
   )
+
+  useEffect(() => {
+    const endPoint =
+      exerciseHistoryGraph?.length > 0
+        ? moment(exerciseHistoryGraph[exerciseHistoryGraph.length - 1]?.date)
+            .add(1, 'days')
+            .toDate()
+        : moment().toDate()
+
+    setEndDate(endPoint)
+
+    const firstPractice = moment(exerciseHistoryGraph[0]?.date).toDate()
+    const sixMonthsAgo = moment().subtract(6, 'months').toDate()
+
+    if (firstPractice < sixMonthsAgo) {
+      setStartDate(sixMonthsAgo)
+    } else {
+      setStartDate(firstPractice)
+    }
+  }, [])
 
   useEffect(() => {
     dispatch(getNewerVocabularyData(endDate.toJSON().slice(0, 10)))
@@ -166,20 +185,22 @@ const Progress = () => {
                 <FormattedMessage id="vocabulary-view" />
               </div>
             </button>
-            { hiddenFeatures && (<button
-              type="button"
-              onClick={() => setShownChart('hex-map')}
-              style={{ border: 'none' }}
-            >
-              <div className="flex align-center" style={{ gap: '.5em' }}>
-                <input
-                  type="radio"
-                  onChange={() => setShownChart('hex-map')}
-                  checked={shownChart === 'hex-map'}
-                />
-                <FormattedMessage id="hex-map" />
-              </div>
-            </button>)}
+            {hiddenFeatures && (
+              <button
+                type="button"
+                onClick={() => setShownChart('hex-map')}
+                style={{ border: 'none' }}
+              >
+                <div className="flex align-center" style={{ gap: '.5em' }}>
+                  <input
+                    type="radio"
+                    onChange={() => setShownChart('hex-map')}
+                    checked={shownChart === 'hex-map'}
+                  />
+                  <FormattedMessage id="hex-map" />
+                </div>
+              </button>
+            )}
             <button
               type="button"
               onClick={() => setShownChart('exercise-history')}
