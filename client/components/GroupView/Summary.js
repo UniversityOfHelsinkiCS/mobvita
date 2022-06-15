@@ -8,7 +8,17 @@ import Spinner from 'Components/Spinner'
 import { capitalize } from 'Utilities/common'
 import produce from 'immer'
 
-const Summary = ({ setStudent, startDate, endDate, group, isTeaching, getSummary, setContent }) => {
+const Summary = ({
+  setStudent,
+  startDate,
+  endDate,
+  group,
+  isTeaching,
+  getSummary,
+  getInitSummary,
+  setContent,
+  initState,
+}) => {
   const intl = useIntl()
   const [sorter, setSorter] = useState({})
   const [columns, setColumns] = useState([])
@@ -79,6 +89,12 @@ const Summary = ({ setStudent, startDate, endDate, group, isTeaching, getSummary
 
   useEffect(() => {
     if (isTeaching) {
+      getInitSummary()
+    }
+  }, [])
+
+  useEffect(() => {
+    if (isTeaching && !initState) {
       getSummary(startDate, endDate)
     }
   }, [startDate, endDate, group])

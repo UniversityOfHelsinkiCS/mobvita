@@ -3,7 +3,7 @@ import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { ButtonGroup, ToggleButton } from 'react-bootstrap'
 import { FormattedMessage, useIntl, FormattedHTMLMessage } from 'react-intl'
-import { getSummary } from 'Utilities/redux/groupSummaryReducer'
+import { getSummary, getInitSummary } from 'Utilities/redux/groupSummaryReducer'
 import { learningLanguageSelector, hiddenFeatures } from 'Utilities/common'
 import Spinner from 'Components/Spinner'
 import useWindowDimension from 'Utilities/windowDimensions'
@@ -24,16 +24,17 @@ const GroupAnalytics = ({ role }) => {
   const [startDate, setStartDate] = useState(
     moment().clone().startOf('month').subtract(6, 'month').toDate()
   )
+  const [initState, setInitState] = useState(true)
   const [shownChart, setShownChart] = useState('timeline')
   const [endDate, setEndDate] = useState(moment().clone().add(1, 'days').toDate())
   const dispatch = useDispatch()
   const currentGroupId = useSelector(({ user }) => user.data.user.last_selected_group)
   const learningLanguage = useSelector(learningLanguageSelector)
+  const { start_date, end_date } = useSelector(({ summary }) => summary)
 
   const { groups: totalGroups, pending } = useSelector(({ groups }) => groups)
   const currentGroup = totalGroups.find(group => group.group_id === currentGroupId)
   const bigScreen = useWindowDimension().width >= 650
-
   const dropDownMenuText = currentStudent
     ? `${currentStudent?.userName} (${currentStudent?.email})`
     : '-'
@@ -44,8 +45,14 @@ const GroupAnalytics = ({ role }) => {
     value: JSON.stringify(student), // needs to be string
   }))
 
-  const PickDate = ({ date, setDate }) => (
-    <ResponsiveDatePicker selected={date} onChange={date => setDate(date)} />
+  const PickDate = ({ date, setDate, setInitState }) => (
+    <ResponsiveDatePicker
+      selected={date}
+      onChange={date => {
+        setDate(date)
+        setInitState(false)
+      }}
+    />
   )
 
   const handleStudentChange = value => {
@@ -53,11 +60,20 @@ const GroupAnalytics = ({ role }) => {
   }
 
   useEffect(() => {
+    if (start_date) {
+      setStartDate(moment.unix(start_date).toDate())
+    }
+
+    if (end_date) {
+      setEndDate(moment.unix(end_date).add(1, 'days').toDate())
+    }
+  }, [start_date, end_date])
+
+  useEffect(() => {
     if (currentGroup?.students) {
       setCurrentStudent(currentGroup?.students[0])
     }
   }, [currentGroup])
-
   const compare = (a, b) => {
     if (a.userName.toLowerCase() < b.userName.toLowerCase()) return -1
     if (a.userName.toLowerCase() > b.userName.toLowerCase()) return 1
@@ -112,10 +128,16 @@ const GroupAnalytics = ({ role }) => {
             </span>
             <div style={{ marginLeft: '2em' }}>
               <FormattedMessage id="date-start" />{' '}
-              <PickDate id="start" date={startDate} setDate={setStartDate} />
+              <PickDate
+                id="start"
+                date={startDate}
+                setDate={setStartDate}
+                setInitState={setInitState}
+              />
             </div>
             <div style={{ marginLeft: '2em' }}>
-              <FormattedMessage id="date-end" /> <PickDate date={endDate} setDate={setEndDate} />
+              <FormattedMessage id="date-end" />{' '}
+              <PickDate date={endDate} setDate={setEndDate} setInitState={setInitState} />
             </div>
           </div>
         ) : (
@@ -128,12 +150,17 @@ const GroupAnalytics = ({ role }) => {
               <div>
                 <FormattedMessage id="date-start" />
                 <br />
-                <PickDate id="start" date={startDate} setDate={setStartDate} />
+                <PickDate
+                  id="start"
+                  date={startDate}
+                  setDate={setStartDate}
+                  setInitState={setInitState}
+                />
               </div>
               <div>
                 <FormattedMessage id="date-end" />
                 <br />
-                <PickDate date={endDate} setDate={setEndDate} />
+                <PickDate date={endDate} setDate={setEndDate} setInitState={setInitState} />
               </div>
             </div>
           </>
@@ -183,20 +210,22 @@ const GroupAnalytics = ({ role }) => {
                 <FormattedMessage id="vocabulary-view" />
               </div>
             </button>
-            { hiddenFeatures && (<button
-              type="button"
-              onClick={() => setShownChart('hex-map')}
-              style={{ border: 'none' }}
-            >
-              <div className="flex align-center" style={{ gap: '.5em' }}>
-                <input
-                  type="radio"
-                  onChange={() => setShownChart('hex-map')}
-                  checked={shownChart === 'hex-map'}
-                />
-                <FormattedMessage id="hex-map" />
-              </div>
-            </button>)}
+            {hiddenFeatures && (
+              <button
+                type="button"
+                onClick={() => setShownChart('hex-map')}
+                style={{ border: 'none' }}
+              >
+                <div className="flex align-center" style={{ gap: '.5em' }}>
+                  <input
+                    type="radio"
+                    onChange={() => setShownChart('hex-map')}
+                    checked={shownChart === 'hex-map'}
+                  />
+                  <FormattedMessage id="hex-map" />
+                </div>
+              </button>
+            )}
             <button
               type="button"
               onClick={() => setShownChart('exercise')}
@@ -237,7 +266,9 @@ const GroupAnalytics = ({ role }) => {
             isTeaching={currentGroup.is_teaching}
             learningLanguage={learningLanguage}
             getSummary={(start, end) => dispatch(getSummary(currentGroupId, start, end))}
+            getInitSummary={() => dispatch(getInitSummary(currentGroupId))}
             setContent={setContent}
+            initState={initState}
           />
         </>
       ) : content === 'progress' && shownChart === 'timeline' && currentGroup.is_teaching ? (
