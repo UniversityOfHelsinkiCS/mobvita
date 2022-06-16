@@ -1,7 +1,7 @@
 import callBuilder from '../apiConnection'
 
 export const testConstruction = (language, sentence) => {
-  const route = `/testing/${language}?sentence=${sentence}`
+  const route = `/debug/${language}?sentence=${sentence}`
   const prefix = 'TEST_CONSTRUCTION'
   return callBuilder(route, prefix, 'get')
 }
