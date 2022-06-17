@@ -36,18 +36,19 @@ const ConstructionHexagon = ({ name, position, statistics, overallTotal, general
 
   const size = Math.floor((statistics.total / overallTotal) * 10) + 5
   const colorClasses = [
-    'red1',
-    'red2',
-    'red3',
-    'red4',
     'red5',
+    'red4',
+    'red3',
+    'red2',
+    'red1',
     'green1',
     'green2',
     'green3',
     'green4',
     'green5',
   ]
-  const colorClass = colorClasses[Math.floor((statistics.correct / statistics.total) * 10)]
+  const colorClass = colorClasses[Math.floor((statistics.correct / statistics.total) * 9)]
+
   const percentageCorrect = Math.floor((statistics.correct / statistics.total) * 100)
 
   const hexagonTooltip = (
