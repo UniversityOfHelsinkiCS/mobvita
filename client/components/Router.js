@@ -8,9 +8,7 @@ import ExhaustiveTestView from 'Components/Tests/ExhaustiveTest/index'
 import AdaptiveTestView from 'Components/Tests/AdaptiveTest/index'
 import ReadViews from 'Components/ReadViews'
 import ControlledStoryEditView from 'Components/ControlledStoryEditView'
-import ControlledStoryPreviewView from 'Components/ControlledStoryPreviewView'
 import ConstructTestView from 'Components/ConstructTestView'
-import HexagonTest from 'Components/GridHexagon'
 import VocabularyView from 'Components/VocabularyView'
 import PracticeView from 'Components/PracticeView'
 import LanguageSelectView from 'Components/LanguageSelectView'
@@ -101,6 +99,8 @@ export default () => {
             />
             <ProtectedRoute exact path="/stories/:id/review/" component={ReadViews} />
             <ProtectedRoute exact path="/stories/:id/preview/" component={ReadViews} />
+            <ProtectedRoute exact path="/stories/:id/group-review" component={ReadViews} />
+
             {/* <ProtectedRoute
               exact
               path="/stories/:id/preview-controlled-story/"

@@ -130,15 +130,22 @@ const StoryActions = ({
             <FormattedMessage id="preview" />
           </Button>
         </Link>
-
-        <Link to={`/stories/${story._id}/review`}>
-          <Button
-            variant={reviewButtonVariant}
-            disabled={story.percent_cov === 0 || enableOnlyPractice}
-          >
-            <FormattedMessage id="review" />{' '}
-          </Button>
-        </Link>
+        {isTeacher && inGroupLibrary ? (
+          <Link to={`/stories/${story._id}/group-review`}>
+            <Button variant="primary">
+              <FormattedMessage id="review" />{' '}
+            </Button>
+          </Link>
+        ) : (
+          <Link to={`/stories/${story._id}/review`}>
+            <Button
+              variant={reviewButtonVariant}
+              disabled={story.percent_cov === 0 || enableOnlyPractice}
+            >
+              <FormattedMessage id="review" />{' '}
+            </Button>
+          </Link>
+        )}
 
         <Link to={`/stories/${story._id}/compete`}>
           <Button

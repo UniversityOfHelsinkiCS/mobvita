@@ -1,12 +1,11 @@
 import React, { useState, useEffect } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import { Link, useHistory } from 'react-router-dom'
-import { Divider, Segment, Header, Checkbox, Icon, Popup } from 'semantic-ui-react'
+import { Divider, Segment, Header, Checkbox, Icon, Popup, Dropdown } from 'semantic-ui-react'
 import { Button } from 'react-bootstrap'
 import { FormattedMessage, useIntl } from 'react-intl'
 import useWindowDimensions from 'Utilities/windowDimensions'
-import { getStoryAction } from 'Utilities/redux/storiesReducer'
-
+import { getStoryAction, getStudentStoryAction } from 'Utilities/redux/storiesReducer'
 import { clearTranslationAction } from 'Utilities/redux/translationReducer'
 import { resetAnnotations, setAnnotations } from 'Utilities/redux/annotationsReducer'
 import { learningLanguageSelector, getTextStyle, getMode } from 'Utilities/common'
@@ -16,9 +15,9 @@ import Spinner from 'Components/Spinner'
 import TextWithFeedback from 'Components/CommonStoryTextComponents/TextWithFeedback'
 import FeedbackInfoModal from 'Components/CommonStoryTextComponents/FeedbackInfoModal'
 import ReportButton from 'Components/ReportButton'
+import { compose } from 'redux'
 import Footer from '../Footer'
 import ScrollArrow from '../ScrollArrow'
-import { compose } from 'redux'
 
 const ReadViews = ({ match }) => {
   const dispatch = useDispatch()
@@ -28,7 +27,8 @@ const ReadViews = ({ match }) => {
   const mode = getMode()
   const history = useHistory()
   const [showRefreshButton, setShowRefreshButton] = useState(false)
-
+  const [currentStudent, setCurrentStudent] = useState(null)
+  const isGroupReview = history.location.pathname.includes('group-review')
   const { story, pending } = useSelector(({ stories, locale }) => ({
     story: stories.focused,
     pending: stories.focusedPending,
@@ -38,9 +38,27 @@ const ReadViews = ({ match }) => {
   const user = useSelector(state => state.user.data)
 
   const { progress, storyId } = useSelector(({ uploadProgress }) => uploadProgress)
+  const currentGroupId = useSelector(({ user }) => user.data.user.last_selected_group)
+  const { groups: totalGroups, pending: groupsPending } = useSelector(({ groups }) => groups)
+  const currentGroup = totalGroups.find(group => group.group_id === currentGroupId)
+  const dropDownMenuText = currentStudent
+    ? `${currentStudent?.userName} (${currentStudent?.email})`
+    : 'Choose the student to review'
+
+  const studentOptions = currentGroup?.students.map(student => ({
+    key: student._id,
+    text: `${student?.userName} (${student?.email})`,
+    value: JSON.stringify(student), // needs to be string
+  }))
 
   const learningLanguage = useSelector(learningLanguageSelector)
   const { id } = match.params
+
+  const handleStudentChange = value => {
+    const parsedValue = JSON.parse(value)
+    setCurrentStudent(parsedValue)
+    dispatch(getStudentStoryAction(id, currentGroupId, parsedValue._id))
+  }
 
   useEffect(() => {
     if (user?.user.is_teacher) {
@@ -64,7 +82,7 @@ const ReadViews = ({ match }) => {
     }
   }, [progress])
 
-  if (!story || pending || !user) return <Spinner fullHeight />
+  if (!story || pending || !user || groupsPending) return <Spinner fullHeight />
 
   const showFooter = width > 640
   const url = history.location.pathname
@@ -106,7 +124,7 @@ const ReadViews = ({ match }) => {
               )}
             </Header>
             <div className="space-between" style={{ alignItems: 'center' }}>
-              <div>
+              <div style={{ display: 'flex' }}>
                 <Checkbox
                   toggle
                   label={checkboxLabel()}
@@ -116,8 +134,27 @@ const ReadViews = ({ match }) => {
                 />
                 <Popup
                   content={infoBoxLabel()}
-                  trigger={<Icon className="pl-sm" name="info circle" color="grey" />}
+                  trigger={
+                    <Icon
+                      className="pl-sm"
+                      style={{ marginTop: '0.45em' }}
+                      name="info circle"
+                      color="grey"
+                    />
+                  }
                 />
+                {isGroupReview && (
+                  <span style={{ marginLeft: '3em' }}>
+                    <FormattedMessage id="student" />:{' '}
+                    <Dropdown
+                      text={dropDownMenuText}
+                      selection
+                      fluid
+                      options={studentOptions}
+                      onChange={(_, { value }) => handleStudentChange(value)}
+                    />
+                  </span>
+                )}
               </div>
               <Link to={`/stories/${id}/practice`}>
                 <Button variant="primary">

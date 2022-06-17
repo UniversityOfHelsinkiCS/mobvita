@@ -10,6 +10,12 @@ export const getStoryAction = (storyId, mode) => {
   return callBuilder(route, prefix)
 }
 
+export const getStudentStoryAction = (storyId, groupId, studentId) => {
+  const route = `/groups/${groupId}/review?story_id=${storyId}&student_id=${studentId}`
+  const prefix = 'GET_STUDENT_STORY'
+  return callBuilder(route, prefix)
+}
+
 export const getAllStories = (language, query) => {
   const queryString = Object.keys(query)
     .map(key => `${key}=${query[key]}`)
@@ -174,6 +180,28 @@ export default (state = initialState, action) => {
         error: true,
       }
     case 'GET_STORY_SUCCESS':
+      return {
+        ...state,
+        focused: action.response,
+        pending: false,
+        focusedPending: false,
+        error: false,
+      }
+    case 'GET_STUDENT_STORY_ATTEMPT':
+      return {
+        ...state,
+        pending: true,
+        focusedPending: true,
+        error: false,
+      }
+    case 'GET_STUDENT_STORY_FAILURE':
+      return {
+        ...state,
+        pending: false,
+        focusedPending: false,
+        error: true,
+      }
+    case 'GET_STUDENT_STORY_SUCCESS':
       return {
         ...state,
         focused: action.response,

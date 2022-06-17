@@ -89,14 +89,22 @@ const StoryDetailsModal = ({
                   to={`/stories/${story._id}/preview`}
                   translationId="preview"
                 />
-                <Link to={`/stories/${story._id}/review`}>
-                  <Button
-                    variant={story.percent_cov === 0 ? 'outline-secondary' : 'secondary'}
-                    disabled={story.percent_cov === 0}
-                  >
-                    <FormattedMessage id="review" />
-                  </Button>
-                </Link>
+                {isTeacher && inGroupLibrary ? (
+                  <Link to={`/stories/${story._id}/group-review`}>
+                    <Button variant="primary">
+                      <FormattedMessage id="review" />
+                    </Button>
+                  </Link>
+                ) : (
+                  <Link to={`/stories/${story._id}/review`}>
+                    <Button
+                      variant={story.percent_cov === 0 ? 'outline-secondary' : 'secondary'}
+                      disabled={story.percent_cov === 0}
+                    >
+                      <FormattedMessage id="review" />
+                    </Button>
+                  </Link>
+                )}
                 <Link to={`/stories/${story._id}/compete`}>
                   <Button
                     variant={isTeacher && inGroupLibrary ? 'outline-secondary' : 'secondary'}

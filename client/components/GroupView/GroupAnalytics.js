@@ -55,6 +55,8 @@ const GroupAnalytics = ({ role }) => {
     />
   )
 
+  console.log(currentGroupId)
+
   const handleStudentChange = value => {
     setCurrentStudent(JSON.parse(value))
   }
@@ -93,6 +95,8 @@ const GroupAnalytics = ({ role }) => {
     )
 
   if (totalGroups.length === 0) return <NoGroupsView role={role} />
+
+  console.log(currentStudent)
 
   return (
     <div className="group-container">
