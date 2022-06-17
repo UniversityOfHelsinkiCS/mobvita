@@ -54,12 +54,15 @@ const DebugTestView = () => {
                   <Table.HeaderCell style={{ width: '250px ' }}>User answer</Table.HeaderCell>
                   <Table.HeaderCell style={{ width: '250px ' }}>Correct answer</Table.HeaderCell>
                 </Table.Row>
-                {Object.keys(feedback.user_features).map(key => (
+                {Array.from(new Set(Object.keys(feedback.user_features).concat(
+                  Object.keys(feedback.true_features)))).map(key => (
                   <Table.Row textAlign="center">
                     <Table.Cell>{key}</Table.Cell>
-                    <Table.Cell>{feedback.user_features[key].toString()}</Table.Cell>
                     <Table.Cell>
-                      {feedback.true_features[key].toString() || 'not available'}
+                      {(feedback.user_features[key] || '').toString()}
+                    </Table.Cell>
+                    <Table.Cell>
+                      {(feedback.true_features[key] || '').toString()}
                     </Table.Cell>
                   </Table.Row>
                 ))}
