@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import Draggable from 'react-draggable'
-import { Modal, Popup, Icon, Form } from 'semantic-ui-react'
+import { Popup, Icon, Form } from 'semantic-ui-react'
 import { FormattedMessage } from 'react-intl'
 import useWindowDimension from 'Utilities/windowDimensions'
 import { Button } from 'react-bootstrap'

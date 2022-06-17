@@ -99,7 +99,10 @@ const HomeviewButtons = ({ setPracticeModalOpen, setAddStoryModalOpen, aTestIsEn
         </div>
       )}
       {hiddenFeatures && (
-        <Button onClick={() => history.push('/test-construction')}>Test construction</Button>
+        <>
+          <Button onClick={() => history.push('/test-construction')}>Test construction</Button>
+          <Button onClick={() => history.push('test-debug')}>Feedback debugger</Button>
+        </>
       )}
     </div>
   )

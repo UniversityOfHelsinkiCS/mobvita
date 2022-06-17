@@ -34,6 +34,7 @@ import Achievements from './Achievements'
 import Leaderboard from './LeaderboardView'
 import NavBar from './NavBar'
 import RegisterView from './RegisterView'
+import DebugTestView from './DebugTestView'
 
 export default () => {
   const user = useSelector(state => state.user.data)
@@ -133,6 +134,7 @@ export default () => {
             <ProtectedRoute exact path="/achievements" component={Achievements} />
             <ProtectedRoute exact path="/leaderboard" component={Leaderboard} />
             <ProtectedRoute exact path="/test-construction" component={ConstructTestView} />
+            <ProtectedRoute exact path="/test-debug" component={DebugTestView} />
             <ProtectedRoute exact path="/vocabulary-view" component={VocabularyView} />
           </Switch>
         </main>

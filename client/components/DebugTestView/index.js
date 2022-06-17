@@ -1,0 +1,75 @@
+import React, { useState } from 'react'
+import { learningLanguageSelector } from 'Utilities/common'
+import { useSelector, useDispatch } from 'react-redux'
+import { getAnswerFeedback } from 'Utilities/redux/feedbackDebuggerReducer'
+import { Table, Form } from 'semantic-ui-react'
+import { Button } from 'react-bootstrap'
+
+const DebugTestView = () => {
+  const dispatch = useDispatch()
+  const learningLanguage = useSelector(learningLanguageSelector)
+  const { feedback, pending } = useSelector(({ debugFeedback }) => debugFeedback)
+  const [userAnswer, setUserAnswer] = useState('')
+  const [correctAnswer, setCorrectAnswer] = useState('')
+
+  console.log(feedback, '  ', pending)
+
+  const handleSubmit = event => {
+    event.preventDefault()
+
+    dispatch(getAnswerFeedback(learningLanguage, userAnswer, correctAnswer))
+
+    setUserAnswer('')
+    setCorrectAnswer('')
+  }
+
+  return (
+    <div className="cont-tall pt-sm flex-col space-between">
+      <div className="justify-center">
+        <div className="cont">
+          <Form onSubmit={handleSubmit}>
+            <div>
+              User answer:
+              <input
+                type="text"
+                value={userAnswer}
+                onChange={({ target }) => setUserAnswer(target.value)}
+              />
+            </div>
+            <div>
+              Correct answer:
+              <input
+                type="text"
+                value={correctAnswer}
+                onChange={({ target }) => setCorrectAnswer(target.value)}
+              />
+            </div>
+            <Button type="submit" style={{ marginTop: '0.5em' }}>submit</Button>
+          </Form>
+          {feedback && (
+            <Table celled fixed unstackable>
+              <Table.Header>
+                <Table.Row textAlign="center">
+                  <Table.HeaderCell style={{ width: '250px' }}>Features</Table.HeaderCell>
+                  <Table.HeaderCell style={{ width: '250px ' }}>User answer</Table.HeaderCell>
+                  <Table.HeaderCell style={{ width: '250px ' }}>Correct answer</Table.HeaderCell>
+                </Table.Row>
+                {Object.keys(feedback.user_features).map(key => (
+                  <Table.Row textAlign="center">
+                    <Table.Cell>{key}</Table.Cell>
+                    <Table.Cell>{feedback.user_features[key].toString()}</Table.Cell>
+                    <Table.Cell>
+                      {feedback.true_features[key].toString() || 'not available'}
+                    </Table.Cell>
+                  </Table.Row>
+                ))}
+              </Table.Header>
+            </Table>
+          )}
+        </div>
+      </div>
+    </div>
+  )
+}
+
+export default DebugTestView
