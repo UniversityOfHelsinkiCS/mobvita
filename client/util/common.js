@@ -383,17 +383,14 @@ export const speak = (surfaceWord, voice, voice_type, resource_usage) => {
   window.responsiveVoice.cancel()
   Howler.stop()
   try {
-    if (
-      (source === 'responsive_voice' && window.responsiveVoice.voiceSupport()) ||
-      (source === 'yandex' && Howler.codecs('opus') && !resource_usage.tts.Yandex.access)
-    )
+    if (source === 'responsive_voice' && window.responsiveVoice.voiceSupport())
       RVSpeak(surfaceWord, lang_code, tone, voice_type)
-    else if (source === 'yandex' && Howler.codecs('opus'))
+    else if (source === 'yandex' && Howler.codecs('opus') && (resource_usage.tts.Yandex?.access ?? true))
       yandexSpeak(surfaceWord, lang_code, tone, voice_type)
     else if (source === 'tacotron2' && Howler.codecs('mp3') && surfaceWord.length > 4)
       tacotronSpeak(surfaceWord, lang_code, tone, voice_type)
     else if (speakFallbackConfig.hasOwnProperty(voice.join('-')))
-      speak(surfaceWord, speakFallbackConfig[voice.join('-')], voice_type)
+      speak(surfaceWord, speakFallbackConfig[voice.join('-')], voice_type, resource_usage)
   } catch (e) {
     console.log(`Failed to speak ${surfaceWord} in ${capitalize(`${lang_code} ${tone}`)}`)
   }

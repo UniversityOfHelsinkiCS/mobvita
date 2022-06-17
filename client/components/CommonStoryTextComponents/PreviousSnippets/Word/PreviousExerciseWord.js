@@ -40,7 +40,7 @@ const PreviousExerciseWord = ({ word, answer, tiedAnswer }) => {
   const history = useHistory()
   const isPreviewMode = history.location.pathname.includes('preview')
   const learningLanguage = useSelector(learningLanguageSelector)
-  const autoSpeak = useSelector(({ user }) => user.data.user.auto_speak)
+  const { resource_usage, autoSpeak } = useSelector(state => state.user.data.user)
   const dictionaryLanguage = useSelector(dictionaryLanguageSelector)
   const { spanAnnotations, highlightRange } = useSelector(({ annotations }) => annotations)
   const { id: storyId } = useParams()
@@ -66,7 +66,7 @@ const PreviousExerciseWord = ({ word, answer, tiedAnswer }) => {
   const handleClick = () => {
     if (word.isWrong) setShow(true)
     if (isPreviewMode && word.concepts) setShow(true)
-    if (autoSpeak === 'always' && voice) speak(surface, voice, 'dictionary')
+    if (autoSpeak === 'always' && voice) speak(surface, voice, 'dictionary', resource_usage)
     if (lemmas) {
       dispatch(setWords({ surface, lemmas }))
 

@@ -7,9 +7,10 @@ const ExerciseHearing = ({ word }) => {
   const inputRef = createRef(null)
   const learningLanguage = useSelector(learningLanguageSelector)
   const voice = voiceLanguages[learningLanguage]
+  const { resource_usage } = useSelector(state => state.user.data.user)
 
   const speakerClickHandler = word => {
-    speak(word.audio, voice, 'exercise')
+    speak(word.audio, voice, 'exercise', resource_usage)
     inputRef.current.focus()
   }
 

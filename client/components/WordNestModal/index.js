@@ -23,7 +23,7 @@ const NestWord = ({ wordNest, hasSeveralRoots, wordToCheck, showMoreInfo, childr
     part_of_compound: partOfCompound,
   } = wordNest
   const learningLanguage = useSelector(learningLanguageSelector)
-  const autoSpeak = useSelector(({ user }) => user.data.user.auto_speak)
+  const { resource_usage, autoSpeak } = useSelector(state => state.user.data.user)
   const dictionaryLanguage = useSelector(({ user }) => user.data.user.last_trans_language)
   const voice = voiceLanguages[learningLanguage]
   const [open, setOpen] = useState(true)
@@ -46,7 +46,7 @@ const NestWord = ({ wordNest, hasSeveralRoots, wordToCheck, showMoreInfo, childr
   }
 
   const handleWordClick = (surface, lemma) => {
-    if (autoSpeak === 'always' && voice) speak(surface, voice, 'dictionary')
+    if (autoSpeak === 'always' && voice) speak(surface, voice, 'dictionary', resource_usage)
 
     dispatch(
       getTranslationAction({

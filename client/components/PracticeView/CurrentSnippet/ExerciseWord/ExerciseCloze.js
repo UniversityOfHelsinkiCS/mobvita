@@ -25,7 +25,7 @@ const ExerciseCloze = ({ word, handleChange }) => {
 
   const dictionaryLanguage = useSelector(dictionaryLanguageSelector)
   const learningLanguage = useSelector(learningLanguageSelector)
-  const autoSpeak = useSelector(({ user }) => user.data.user.auto_speak)
+  const { resource_usage, autoSpeak } = useSelector(state => state.user.data.user)
   const currentAnswer = useSelector(({ practice }) => practice.currentAnswers[word.ID])
 
   const { isWrong, tested, surface, ref, explanation, lemmas, ID: wordId, id: storyId } = word
@@ -42,7 +42,7 @@ const ExerciseCloze = ({ word, handleChange }) => {
     const maskSymbol = exerciseMaskedLanguages.includes(learningLanguage)
       ? word.base || word.bases
       : null
-    if (autoSpeak === 'always' && voice) speak(surface, voice, 'dictionary')
+    if (autoSpeak === 'always' && voice) speak(surface, voice, 'dictionary', resource_usage)
     if (lemmas) {
       dispatch(setWords({ surface: showAsSurface, lemmas, maskSymbol }))
       dispatch(

@@ -25,7 +25,7 @@ const PlainWord = ({ word, annotatingAllowed, ...props }) => {
   const { id: storyId } = useParams()
   const [allowTranslating, setAllowTranslating] = useState(true)
 
-  const autoSpeak = useSelector(({ user }) => user.data.user.auto_speak)
+  const { resource_usage, autoSpeak } = useSelector(state => state.user.data.user)
   const learningLanguage = useSelector(learningLanguageSelector)
   const dictionaryLanguage = useSelector(dictionaryLanguageSelector)
   const { spanAnnotations, highlightRange, showAnnotationForm } = useSelector(
@@ -105,7 +105,7 @@ const PlainWord = ({ word, annotatingAllowed, ...props }) => {
   const handleWordClick = () => {
     dispatch(setFocusedSpan(null))
     if (showAnnotationForm) dispatch(setAnnotationFormVisibility(false))
-    if (autoSpeak === 'always' && voice) speak(surface, voice, 'dictionary')
+    if (autoSpeak === 'always' && voice) speak(surface, voice, 'dictionary', resource_usage)
     if (lemmas) {
       dispatch(setWords({ surface, lemmas }))
       if (annotatingAllowed && !consistsOfOnlyWhitespace(word.surface)) {

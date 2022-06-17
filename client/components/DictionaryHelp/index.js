@@ -22,9 +22,10 @@ import FocusedView from 'Components/AnnotationBox/FocusedView'
 const Speaker = ({ word }) => {
   const learningLanguage = useLearningLanguage()
   const voice = voiceLanguages[learningLanguage]
+  const { resource_usage } = useSelector(state => state.user.data.user)
 
   const handleSpeakerClick = () => {
-    speak(word, voice, 'dictionary')
+    speak(word, voice, 'dictionary', resource_usage)
   }
 
   if (!voice) return null

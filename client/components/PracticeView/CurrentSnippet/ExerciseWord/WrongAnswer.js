@@ -21,7 +21,7 @@ const WrongAnswer = ({ word }) => {
   const [show, setShow] = useState(false)
 
   const learningLanguage = useSelector(learningLanguageSelector)
-  const autoSpeak = useSelector(({ user }) => user.data.user.auto_speak)
+  const { resource_usage, autoSpeak } = useSelector(state => state.user.data.user)
   const dictionaryLanguage = useSelector(dictionaryLanguageSelector)
 
   const intl = useIntl()
@@ -33,7 +33,7 @@ const WrongAnswer = ({ word }) => {
 
   const handleClick = () => {
     setShow(true)
-    if (autoSpeak === 'always' && voice) speak(surface, voice, 'dictionary')
+    if (autoSpeak === 'always' && voice) speak(surface, voice, 'dictionary', resource_usage)
     if (lemmas) {
       dispatch(setWords({ surface, lemmas }))
       dispatch(
