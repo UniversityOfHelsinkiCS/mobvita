@@ -18,9 +18,6 @@ const DebugTestView = () => {
     event.preventDefault()
 
     dispatch(getAnswerFeedback(learningLanguage, userAnswer, correctAnswer))
-
-    setUserAnswer('')
-    setCorrectAnswer('')
   }
 
   return (
