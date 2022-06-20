@@ -1,6 +1,6 @@
 import React, { useState, Fragment } from 'react'
 import { Table, Icon, Popup } from 'semantic-ui-react'
-import { FormattedMessage } from 'react-intl'
+import { FormattedMessage, useIntl } from 'react-intl'
 
 const ConceptTitle = ({ title, isParent }) => {
   const TITLE_MAX_LENGTH = 28
@@ -56,7 +56,7 @@ const StatisticCell = ({
 
   const minHeight = 8
   const maxHeight = 70
-
+  const intl = useIntl()
   const calculateDiameter = () => {
     if (statistics.total === 0) return 0
 
@@ -69,19 +69,32 @@ const StatisticCell = ({
     return diameter > minHeight ? diameter : minHeight
   }
 
+  const percentageCorrect = Math.round((statistics.correct / statistics.total) * 100)
+
+  const tooltip = (
+    <span>
+      {statistics.total > 0 && (
+        <div>
+          {statistics.correct}/{statistics.total} {intl.formatMessage({ id: 'correct' })}:{' '}
+          {percentageCorrect}%
+        </div>
+      )}
+    </span>
+  )
+
   return (
-    <Popup
-      {...props}
-      content={<PopupContent correct={statistics.correct} total={statistics.total} />}
-      trigger={
-        <Table.Cell style={{ padding: 0, background: bgColor }}>
-          <div
-            className="justify-center align-center"
-            style={{
-              height: `${maxHeight + 5}px`,
-              width: '100%',
-            }}
-          >
+    <Table.Cell style={{ padding: 0, background: bgColor }}>
+      <div
+        className="justify-center align-center"
+        style={{
+          height: `${maxHeight + 5}px`,
+          width: '100%',
+        }}
+      >
+        <Popup
+          {...props}
+          content={tooltip}
+          trigger={
             <div
               style={{
                 backgroundColor: calculateColor(statistics),
@@ -91,10 +104,10 @@ const StatisticCell = ({
                 display: 'inline-block',
               }}
             />
-          </div>
-        </Table.Cell>
-      }
-    />
+          }
+        />
+      </div>
+    </Table.Cell>
   )
 }
 

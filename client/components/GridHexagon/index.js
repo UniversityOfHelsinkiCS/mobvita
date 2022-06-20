@@ -49,7 +49,7 @@ const ConstructionHexagon = ({ name, position, statistics, overallTotal, general
   ]
   const colorClass = colorClasses[Math.floor((statistics.correct / statistics.total) * 9)]
 
-  const percentageCorrect = Math.floor((statistics.correct / statistics.total) * 100)
+  const percentageCorrect = Math.round((statistics.correct / statistics.total) * 100)
 
   const hexagonTooltip = (
     <span>
