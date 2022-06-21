@@ -13,14 +13,9 @@ import {
   GridGenerator,
   HexGrid,
   Layout,
-  Path,
   Hexagon,
   Text,
-  Pattern,
-  Hex,
-  HexUtils,
 } from 'react-hexgrid'
-import { result } from 'lodash'
 import GridText from './GridText'
 
 const ConstructionHexagon = ({ name, position, statistics, overallTotal, general }) => {
@@ -35,21 +30,9 @@ const ConstructionHexagon = ({ name, position, statistics, overallTotal, general
   }
 
   const size = Math.floor((statistics.total / overallTotal) * 10) + 5
-  const colorClasses = [
-    'red5',
-    'red4',
-    'red3',
-    'red2',
-    'red1',
-    'green1',
-    'green2',
-    'green3',
-    'green4',
-    'green5',
-  ]
-  const colorClass = colorClasses[Math.floor((statistics.correct / statistics.total) * 9)]
-
   const percentageCorrect = Math.round((statistics.correct / statistics.total) * 100)
+  const score = parseInt(percentageCorrect)
+  const colorClass = 'score' + score
 
   const hexagonTooltip = (
     <span>
@@ -135,7 +118,6 @@ const HexagonTest = props => {
       <UncontrolledReactSVGPanZoom
         width={1000}
         height={800}
-        // background="#FFF"
         background="#EFEFEF"
         defaultTool="auto"
       >
@@ -165,7 +147,7 @@ const HexagonTest = props => {
                     statistics={accumulatedConcepts[hex.concept_id]}
                     overallTotal={getBiggestHistoryTotal()}
                     general={hex.hexmap_general}
-                    // position={positionOffset(hex.coords)}
+                  // position={positionOffset(hex.coords)}
                   />
                 ))}
             </Layout>
