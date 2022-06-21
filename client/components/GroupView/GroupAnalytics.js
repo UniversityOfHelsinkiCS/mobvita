@@ -20,6 +20,7 @@ import GroupHistory from './GroupHistory'
 const GroupAnalytics = ({ role }) => {
   const intl = useIntl()
   const [content, setContent] = useState('summary')
+  const [groupSummaryShown, setGroupSummaryShown] = useState(true)
   const [currentStudent, setCurrentStudent] = useState(null)
   const [startDate, setStartDate] = useState(
     moment().clone().startOf('month').subtract(6, 'month').toDate()
@@ -95,8 +96,6 @@ const GroupAnalytics = ({ role }) => {
     )
 
   if (totalGroups.length === 0) return <NoGroupsView role={role} />
-
-  console.log(currentStudent)
 
   return (
     <div className="group-container">
@@ -261,19 +260,54 @@ const GroupAnalytics = ({ role }) => {
 
       {content === 'summary' && currentGroup.is_teaching ? (
         <>
-          <Summary
-            setStudent={setCurrentStudent}
-            startDate={startDate}
-            endDate={endDate}
-            group={currentGroup}
-            groupName={currentGroup.groupName}
-            isTeaching={currentGroup.is_teaching}
-            learningLanguage={learningLanguage}
-            getSummary={(start, end) => dispatch(getSummary(currentGroupId, start, end))}
-            getInitSummary={() => dispatch(getInitSummary(currentGroupId))}
-            setContent={setContent}
-            initState={initState}
-          />
+          <div
+            className="space-evenly"
+            style={{ display: 'flex', fontWeight: 'bold', marginTop: '1em', marginBottom: '0.5em' }}
+          >
+            <span style={{ marginRight: '0.5em' }}>
+              <input
+                type="radio"
+                onChange={() => setGroupSummaryShown(!groupSummaryShown)}
+                checked={groupSummaryShown}
+              />
+              <span style={{ marginLeft: '0.5em' }}>
+                <FormattedHTMLMessage id="general-group-summary" />
+              </span>
+            </span>
+            <span style={{ marginRight: '0.5em' }}>
+              <input
+                style={{ marginRight: '0.5em'}}
+                type="radio"
+                onChange={() => setGroupSummaryShown(!groupSummaryShown)}
+                checked={!groupSummaryShown}
+              />
+              <span style={{ marginLft: '0.5em' }}>
+                <FormattedHTMLMessage id="group-grammar-progress" />
+              </span>
+            </span>
+          </div>
+          {groupSummaryShown ? (
+            <Summary
+              setStudent={setCurrentStudent}
+              startDate={startDate}
+              endDate={endDate}
+              group={currentGroup}
+              groupName={currentGroup.groupName}
+              isTeaching={currentGroup.is_teaching}
+              learningLanguage={learningLanguage}
+              getSummary={(start, end) => dispatch(getSummary(currentGroupId, start, end))}
+              getInitSummary={() => dispatch(getInitSummary(currentGroupId))}
+              setContent={setContent}
+              initState={initState}
+            />
+          ) : (
+            <StudentGrammarProgress
+              summaryView
+              startDate={startDate}
+              endDate={endDate}
+              group={currentGroup}
+            />
+          )}
         </>
       ) : content === 'progress' && shownChart === 'timeline' && currentGroup.is_teaching ? (
         <div>

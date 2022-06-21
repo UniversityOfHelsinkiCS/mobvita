@@ -79,7 +79,8 @@ const HexagonTest = props => {
   const hexagons = generator.apply(generator, [35, 35])
   if (props.conceptsPending || !props.concepts || props.pending) return <Spinner fullHeight />
 
-  if (!props.root_hex_coord || props.exerciseHistory?.length < 1) return <div>Not available</div>
+  if (!props.root_hex_coord || props.exerciseHistory?.length < 1 || !props.exerciseHistory)
+    return <div>Not available</div>
 
   const accumulatedConcepts = props.exerciseHistory.reduce((acc, elem) => {
     const concepts = Object.entries(elem.concept_statistics)

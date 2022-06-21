@@ -5,6 +5,7 @@ import { registerUser } from 'Utilities/redux/registerReducer'
 import { getSelf } from 'Utilities//redux/userReducer'
 import { Form, Checkbox } from 'semantic-ui-react'
 import TermsAndConditions from 'Components/StaticContent/TermsAndConditions'
+import CERFLevelSlider from 'Components/CERFLevelSlider'
 import { useIntl } from 'react-intl'
 import { setNotification } from 'Utilities/redux/notificationReducer'
 import { localeCodeToName } from 'Utilities/common'
@@ -21,6 +22,7 @@ const Register = () => {
     passwordAgain: '',
   })
   const [accepted, setAccepted] = useState(false)
+  const [sliderValue, setSliderValue] = useState(0)
 
   const toggleAccepted = () => {
     setAccepted(!accepted)
@@ -120,6 +122,7 @@ const Register = () => {
             placeholder={intl.formatMessage({ id: 'repeat-password' })}
           />
         </Form.Field>
+        <CERFLevelSlider sliderValue={sliderValue} setSliderValue={setSliderValue} />
         <div style={{ display: 'flex', alignItems: 'center' }}>
           <Checkbox data-cy="accept-terms" checked={accepted} onChange={() => toggleAccepted()} />
           <TermsAndConditions

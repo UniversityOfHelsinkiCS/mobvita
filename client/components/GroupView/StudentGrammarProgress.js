@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { getStudentHistory } from 'Utilities/redux/groupHistoryReducer'
+import { getStudentHistory, getGroupHistory } from 'Utilities/redux/groupHistoryReducer'
 import HexagonTest from 'Components/GridHexagon'
 import Spinner from 'Components/Spinner'
 
-const StudentGrammarProgress = ({ student, startDate, endDate, group }) => {
+const StudentGrammarProgress = ({ summaryView = false, student, startDate, endDate, group }) => {
   const [view, setView] = useState('exercise')
   const dispatch = useDispatch()
   const { pending, history } = useSelector(({ studentHistory }) => studentHistory)
@@ -15,8 +15,13 @@ const StudentGrammarProgress = ({ student, startDate, endDate, group }) => {
   } = useSelector(({ metadata }) => metadata)
 
   useEffect(() => {
-    if (!student) return
-    dispatch(getStudentHistory(student._id, group.group_id, startDate, endDate, view))
+    if (!student && !summaryView) return
+    
+    if (!summaryView) {
+      dispatch(getStudentHistory(student._id, group.group_id, startDate, endDate, view))
+    } else {
+      dispatch(getGroupHistory(group.group_id, startDate, endDate, view))
+    }
   }, [student, startDate, endDate])
 
   if (pending) {
