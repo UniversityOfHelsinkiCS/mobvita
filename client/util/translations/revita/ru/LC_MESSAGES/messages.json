@@ -1259,5 +1259,7 @@
     "save-controlled-story": "Сохранить контрольную историю",
     "edit-controlled-story": "Редактировать контрольную историю",
     "multiple-choice-validation": "Пожалуйста, добавь еще один вариант",
-    "controlled-story-reminder": "Напоминание: тебя ждет контрольная история"
+    "controlled-story-reminder": "Напоминание: тебя ждет контрольная история",
+    "general-group-summary": "Сводка группы",
+    "group-grammar-progress": "Прогресс грамматики"
 }

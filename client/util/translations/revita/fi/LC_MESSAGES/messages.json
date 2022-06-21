@@ -1256,5 +1256,7 @@
     "save-controlled-story": "Tallenna ohjattu tarina",
     "edit-controlled-story": "Muokkaa ohjattua tarinaa",
     "multiple-choice-validation": "Ole hyvä ja lisää vielä ainakin yksi vaihtoehto",
-    "controlled-story-reminder": "Muistutus: sinulle on jaettu ohjattu tarina"
+    "controlled-story-reminder": "Muistutus: sinulle on jaettu ohjattu tarina",
+    "general-group-summary": "Ryhmän yhteenveto",
+    "group-grammar-progress": "Kielioppikaavio"
 }

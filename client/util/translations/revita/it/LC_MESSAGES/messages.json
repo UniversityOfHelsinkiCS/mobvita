@@ -1257,5 +1257,7 @@
     "save-controlled-story": "Salva la storia controllata",
     "edit-controlled-story": "Modifica storia controllata",
     "multiple-choice-validation": "Si prega di aggiungere almeno un'altra opzione",
-    "controlled-story-reminder": "Promemoria: hai una storia controllata"
+    "controlled-story-reminder": "Promemoria: hai una storia controllata",
+    "general-group-summary": "Riassunto del gruppo",
+    "group-grammar-progress": "Progresso grammaticale"
 }

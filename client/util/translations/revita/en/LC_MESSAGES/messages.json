@@ -1256,5 +1256,7 @@
     "save-controlled-story": "Save tailored story",
     "edit-controlled-story": "Edit tailored story",
     "multiple-choice-validation": "Please add at least one more option",
-    "controlled-story-reminder": "Reminder: you have a tailored story"
+    "controlled-story-reminder": "Reminder: you have a tailored story",
+    "general-group-summary": "Group summary",
+    "group-grammar-progress": "Group grammar progress"
 }

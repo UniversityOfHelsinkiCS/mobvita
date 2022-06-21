@@ -8,7 +8,7 @@ import TermsAndConditions from 'Components/StaticContent/TermsAndConditions'
 import CERFLevelSlider from 'Components/CERFLevelSlider'
 import { useIntl } from 'react-intl'
 import { setNotification } from 'Utilities/redux/notificationReducer'
-import { localeCodeToName } from 'Utilities/common'
+import { localeCodeToName, hiddenFeatures } from 'Utilities/common'
 import { Button, Spinner } from 'react-bootstrap'
 
 const Register = () => {
@@ -122,7 +122,7 @@ const Register = () => {
             placeholder={intl.formatMessage({ id: 'repeat-password' })}
           />
         </Form.Field>
-        <CERFLevelSlider sliderValue={sliderValue} setSliderValue={setSliderValue} />
+        {hiddenFeatures && (<CERFLevelSlider sliderValue={sliderValue} setSliderValue={setSliderValue} />)}
         <div style={{ display: 'flex', alignItems: 'center' }}>
           <Checkbox data-cy="accept-terms" checked={accepted} onChange={() => toggleAccepted()} />
           <TermsAndConditions
