@@ -119,6 +119,7 @@ export const updateExerciseSettings = settings => saveSelf({ exercise_settings: 
 export const updateLibrarySelect = library => saveSelf({ last_selected_library: library })
 export const updateGroupSelect = group => saveSelf({ last_selected_group: group })
 export const updateExerciseTemplate = template => saveSelf({ exercise_setting_template: template })
+export const updateUserGrade = value => saveSelf({ grade: value })
 export const updateMultiChoice = value => saveSelf({ multi_choice: value })
 export const updateBlankFilling = value => saveSelf({ blank_filling: value })
 export const updateAudioTask = value => saveSelf({ task_audio: value })

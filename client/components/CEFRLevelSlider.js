@@ -2,10 +2,14 @@
 import React from 'react'
 import ReactSlider from 'react-slider'
 import { useDispatch } from 'react-redux'
-import { updateExerciseTemplate } from 'Utilities/redux/userReducer'
+import { useHistory } from 'react-router'
+import { updateExerciseTemplate, updateUserGrade } from 'Utilities/redux/userReducer'
 
 const CERFLevelSlider = props => {
+  const history = useHistory()
   const dispatch = useDispatch()
+
+  const isInSettings = history.location.pathname.includes('settings')
   const skillLevels = [
     'A1',
     'A1/A2',
@@ -24,16 +28,22 @@ const CERFLevelSlider = props => {
     props.setSliderValue(value)
     const minified = value / 11
     const rounded = Math.floor(minified / 10)
-    console.log(rounded)
     if (rounded === 11) {
       // props.setChosenSkillLevel('C2')
-      dispatch(updateExerciseTemplate('C2'))
+      if (isInSettings) {
+        dispatch(updateExerciseTemplate('C2'))
+      } else {
+        dispatch(updateUserGrade('C2'))
+      }
     } else {
       // props.setChosenSkillLevel(skillLevels[rounded])
-      dispatch(updateExerciseTemplate(skillLevels[rounded]))
+      if (isInSettings) {
+        dispatch(updateExerciseTemplate(skillLevels[rounded]))
+      } else {
+        dispatch(updateUserGrade(skillLevels[rounded]))
+      }
     }
   }
-  console.log('ACTUAL ', props.sliderValue)
 
   return (
     <>

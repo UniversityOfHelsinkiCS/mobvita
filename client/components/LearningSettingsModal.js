@@ -58,7 +58,6 @@ const LearningSettingsModal = ({ trigger }) => {
   }
 
   const getCERFSliderValue = () => {
-    console.log(exerciseSettingTemplate)
     if (exerciseSettingTemplate) {
       const index = skillLevels.findIndex(level => {
         return level === exerciseSettingTemplate
@@ -131,7 +130,7 @@ const LearningSettingsModal = ({ trigger }) => {
     setSliderValue(targetGroup.max_practice_prct)
   }
 
-  console.log(exerciseSettingTemplate)
+  console.log(exerciseSettingTemplate, '   ', cerfSliderValue)
 
   const handleAutomaticOptionClick = () => {
     dispatch(updateLearningSettingMode('auto'))

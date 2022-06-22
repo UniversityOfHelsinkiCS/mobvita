@@ -144,6 +144,8 @@ const HomeView = () => {
     dispatch(getGroups())
   }, [])
 
+  console.log('grade ', userData.grade)
+
   return (
     <div className="cont-tall cont flex-col auto gap-row-sm pt-lg blue-bg">
       <AddStoryModal open={addStoryModalOpen} setOpen={setAddStoryModalOpen} />
@@ -159,7 +161,7 @@ const HomeView = () => {
           learningLanguage={learningLanguage}
         />
       )}
-      {exerciseSettingTemplate === 'custom' && userData.email !== 'anonymous_email' && (
+      {!userData.grade && userData.email !== 'anonymous_email' && (
         <SetCEFRReminder open={openReminder} setOpen={setOpenReminder} />
       )}
       <div className="grow flex-col">
