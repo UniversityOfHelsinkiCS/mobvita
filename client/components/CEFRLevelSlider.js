@@ -50,7 +50,7 @@ const CERFLevelSlider = props => {
       <ReactSlider
         className="exercise-density-slider"
         thumbClassName="exercise-density-slider-thumb"
-        trackClassName="exercise-density-slider-track"
+        trackClassName={!props.isDisabled ? 'exercise-density-slider-track' : 'disabled-track'}
         onAfterChange={value => handleSlider(value)}
         min={0}
         max={1210}

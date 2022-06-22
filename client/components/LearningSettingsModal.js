@@ -71,7 +71,8 @@ const LearningSettingsModal = ({ trigger }) => {
   const [cerfSliderValue, setCerfSliderValue] = useState(getCERFSliderValue())
   const [sliderValue, setSliderValue] = useState(getSliderValue())
 
-  console.log('slider ', cerfSliderValue)
+  console.log('cerf_slider ', cerfSliderValue)
+  console.log('density slider ', sliderValue)
 
   useEffect(() => {
     if (!pending) {
@@ -248,8 +249,8 @@ const LearningSettingsModal = ({ trigger }) => {
           )}
         </h2>
         <ExerciseDensitySlider
-          sliderValue={cerfSliderValue}
-          setSliderValue={setCerfSliderValue}
+          sliderValue={sliderValue}
+          setSliderValue={setSliderValue}
           onAfterChange={handleMaxPercentUpdate}
           isDisabled={practicePrctMode !== 'custom'}
         />
@@ -266,8 +267,8 @@ const LearningSettingsModal = ({ trigger }) => {
             <FormattedMessage id="select-cefr-level" />
           </h2>
           <CEFRLevelSlider
-            sliderValue={sliderValue}
-            setSliderValue={setSliderValue}
+            sliderValue={cerfSliderValue}
+            setSliderValue={setCerfSliderValue}
             setChosenSkillLevel={setChosenSkillLevel}
             isDisabled={practicePrctMode !== 'custom'}
           />
