@@ -9,6 +9,10 @@ describe("via navbar", function () {
 
     cy.get('.modal > .close').click()
 
+    cy.wait(500)
+
+    cy.get('.modal > .close').click()
+
   })
 
   this.afterAll(function () {

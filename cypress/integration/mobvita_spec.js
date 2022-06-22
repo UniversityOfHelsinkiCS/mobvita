@@ -100,8 +100,9 @@ describe('Mobvita', function () {
           window.localStorage.setItem('user', JSON.stringify(response.body))
           cy.reload()
         })
+      cy.get('.modal > .close').click()
 
-      cy.wait(500)  
+      cy.wait(500)
 
       cy.get('.modal > .close').click()
     })

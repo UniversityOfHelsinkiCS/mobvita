@@ -33,10 +33,14 @@ describe('test view', function() {
     cy.contains(this.teacher.username)
     
     cy.visit('http://localhost:8000/groups/teacher')
+
     cy.get('[data-cy=enable-test-button]').click()
     cy.get('[data-cy=enable-test-ok-button').click()
 
     cy.visit('http://localhost:8000/home')
+    cy.get('.modal > .close').click()
+    cy.wait(500)
+    cy.get('.modal > .close').click()
     cy.get('[data-cy=tests-button]').click()
     cy.url().should('include', '/tests')
     cy.get('[data-cy=start-test]').click()
@@ -50,6 +54,9 @@ describe('test view', function() {
 
   it('no "Tests" button when no tests are enabled for user\'s groups', function() {
     cy.visit('http://localhost:8000')
+    cy.get('.modal > .close').click()
+    cy.wait(500)
+    cy.get('.modal > .close').click()
     cy.get('[data-cy=tests-button]').should('not.exist')
   })
 

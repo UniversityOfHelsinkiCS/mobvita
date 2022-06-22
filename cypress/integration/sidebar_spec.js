@@ -9,6 +9,9 @@ describe("sidebar is open (only mobile)", function () {
     cy.visit('http://localhost:8000')
     cy.get('.modal > .close').click()
 
+    cy.wait(500)
+    cy.get('.modal > .close').click()
+
     cy.get('[data-cy=hamburger]').click()
   })
 
