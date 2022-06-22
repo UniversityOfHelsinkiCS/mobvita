@@ -7,7 +7,6 @@ describe("sidebar is open (only mobile)", function () {
     cy.viewport(375, 667) // Set a mobile resolution
     cy.loginExisting().as('user')
     cy.visit('http://localhost:8000')
-    cy.get('.modal > .close').click()
 
     cy.wait(500)
     cy.get('.modal > .close').click()
