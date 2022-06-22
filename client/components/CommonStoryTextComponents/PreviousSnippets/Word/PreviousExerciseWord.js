@@ -46,9 +46,23 @@ const PreviousExerciseWord = ({ word, answer, tiedAnswer }) => {
   const { id: storyId } = useParams()
   const { correctAnswerIDs } = useSelector(({ practice }) => practice)
   const [allowTranslating, setAllowTranslating] = useState(true)
+  const { grade } = useSelector(state => state.user.data.user)
 
   const intl = useIntl()
   const dispatch = useDispatch()
+  const skillLevels = [
+    'A1',
+    'A1/A2',
+    'A2',
+    'A2/B1',
+    'B1',
+    'B1/B2',
+    'B2',
+    'B2/C1',
+    'C1',
+    'C1/C2',
+    'C2',
+  ]
 
   const voice = voiceLanguages[learningLanguage]
   let color = ''
@@ -117,8 +131,40 @@ const PreviousExerciseWord = ({ word, answer, tiedAnswer }) => {
 
   const youAnsweredTooltip = answer || tiedAnswer
 
+  const getDifficultyColor = () => {
+    console.log(word.level)
+    if (!word.level || !grade) {
+      return 'tooltip-green'
+    }
+    const wordDifficulty = skillLevels.findIndex(level => {
+      return level === word.level
+    })
+    const userGrade = skillLevels.findIndex(level => {
+      return level === grade
+    })
+
+    const difference = wordDifficulty - userGrade
+    console.log(word.level, ' - ', grade, ' = ', difference)
+
+    if (difference < -3) {
+      return 'tooltip-green'
+    } else if (difference < -2) {
+      return 'tooltip-greenish'
+    } else if (difference < 2) {
+      return 'tooltip-yellow'
+    } else if (difference < 3) {
+      return 'tooltip-orange'
+    } 
+
+    return 'tooltip-red'
+  }
+
   const tooltip = (
-    <div className="tooltip-green" style={{ cursor: 'pointer' }} onMouseDown={handleTooltipClick}>
+    <div
+      className={getDifficultyColor()}
+      style={{ cursor: 'pointer' }}
+      onMouseDown={handleTooltipClick}
+    >
       {word.message && !isPreviewMode && (
         <div className="flex">
           <span dangerouslySetInnerHTML={formatGreenFeedbackText(word?.message)} />{' '}

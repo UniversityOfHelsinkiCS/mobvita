@@ -8,14 +8,7 @@ import { learningLanguageSelector } from 'Utilities/common'
 import Spinner from 'Components/Spinner'
 import { Popup } from 'semantic-ui-react'
 import './App.css'
-
-import {
-  GridGenerator,
-  HexGrid,
-  Layout,
-  Hexagon,
-  Text,
-} from 'react-hexgrid'
+import { GridGenerator, HexGrid, Layout, Hexagon, Text } from 'react-hexgrid'
 import GridText from './GridText'
 
 const ConstructionHexagon = ({ name, position, statistics, overallTotal, general }) => {
@@ -32,7 +25,7 @@ const ConstructionHexagon = ({ name, position, statistics, overallTotal, general
   const size = Math.floor((statistics.total / overallTotal) * 10) + 5
   const percentageCorrect = Math.round((statistics.correct / statistics.total) * 100)
   const score = parseInt(percentageCorrect)
-  const colorClass = 'score' + score
+  const colorClass = `score${score}`
 
   const hexagonTooltip = (
     <span>
@@ -148,7 +141,7 @@ const HexagonTest = props => {
                     statistics={accumulatedConcepts[hex.concept_id]}
                     overallTotal={getBiggestHistoryTotal()}
                     general={hex.hexmap_general}
-                  // position={positionOffset(hex.coords)}
+                    // position={positionOffset(hex.coords)}
                   />
                 ))}
             </Layout>

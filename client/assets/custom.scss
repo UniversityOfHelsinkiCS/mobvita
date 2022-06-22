@@ -26,6 +26,10 @@ $secondary-text-color: #777;
 $action-text-hover-color: rgb(81, 138, 248);
 $tooltip-blue: rgba(30, 120, 225, 1);
 $tooltip-green: green;
+$tool-tip-greenish: rgb(119, 128, 0);
+$tooltip-yellow: yellow;
+$tooltip-orange: orange;
+$tooltip-red: red;
 
 // button-related colors
 $btn-color-primary: rgb(50, 170, 248);
@@ -1789,8 +1793,32 @@ label.file-upload-btn {
     padding: 0.3em;
   }
 
-  &-green{
+  &-green {
     background-color: $tooltip-green;
+    color:white;
+    padding: 0.3em;
+  }
+
+  &-greenish {
+    background-color: $tool-tip-greenish;
+    color:white;
+    padding: 0.3em;
+  }
+
+  &-yellow {
+    background-color:  $tooltip-yellow;
+    color:black;
+    padding: 0.3em;
+  }
+
+  &-orange {
+    background-color: $tooltip-orange;
+    color:black;
+    padding: 0.3em;
+  }
+
+  &-red {
+    background-color:  $tooltip-red;
     color:white;
     padding: 0.3em;
   }
