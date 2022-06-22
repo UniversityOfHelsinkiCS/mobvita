@@ -56,10 +56,23 @@ const LearningSettingsModal = ({ trigger }) => {
     if (practicePrctMode === 'group' && currentGroup) return currentGroup.max_practice_prct
     return null
   }
+
+  const getCERFSliderValue = () => {
+    console.log(exerciseSettingTemplate)
+    if (exerciseSettingTemplate) {
+      const index = skillLevels.findIndex(level => {
+        return level === exerciseSettingTemplate
+      })
+      return index * 11 * 11
+    }
+    return 0
+  }
   const [chosenSkillLevel, setChosenSkillLevel] = useState('A1')
 
-  const [cerfSliderValue, setCerfSliderValue] = useState(0)
+  const [cerfSliderValue, setCerfSliderValue] = useState(getCERFSliderValue())
   const [sliderValue, setSliderValue] = useState(getSliderValue())
+
+  console.log('slider ', cerfSliderValue)
 
   useEffect(() => {
     if (!pending) {
@@ -117,6 +130,8 @@ const LearningSettingsModal = ({ trigger }) => {
     const targetGroup = groups.find(group => group.group_id === groupId)
     setSliderValue(targetGroup.max_practice_prct)
   }
+
+  console.log(exerciseSettingTemplate)
 
   const handleAutomaticOptionClick = () => {
     dispatch(updateLearningSettingMode('auto'))
@@ -255,6 +270,7 @@ const LearningSettingsModal = ({ trigger }) => {
             sliderValue={sliderValue}
             setSliderValue={setSliderValue}
             setChosenSkillLevel={setChosenSkillLevel}
+            isDisabled={practicePrctMode !== 'custom'}
           />
           {/*
           <ButtonGroup

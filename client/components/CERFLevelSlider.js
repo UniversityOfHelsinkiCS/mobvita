@@ -36,6 +36,7 @@ const CERFLevelSlider = props => {
       dispatch(updateExerciseTemplate(skillLevels[rounded]))
     }
   }
+  console.log('ACUAL ', props.sliderValue)
 
   return (
     <>
@@ -48,6 +49,7 @@ const CERFLevelSlider = props => {
         max={1210}
         step={121}
         value={props.sliderValue}
+        disabled={props.isDisabled}
       />
 
       <div className="space-between exercise-density-slider-label-cont bold">
