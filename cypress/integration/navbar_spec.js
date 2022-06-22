@@ -7,8 +7,6 @@ describe("via navbar", function () {
     cy.loginExisting().as('user')
     cy.visit('http://localhost:8000')
 
-    cy.get('.modal > .close').click()
-
     cy.wait(500)
 
     cy.get('.modal > .close').click()

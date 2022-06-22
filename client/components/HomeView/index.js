@@ -127,9 +127,6 @@ const HomeView = () => {
     ({ user }) => user.data.user
   )
 
-  console.log('ex ', exerciseSettingTemplate)
-  console.log('user ', userData)
-
   const [practiceModalOpen, setPracticeModalOpen] = useState(false)
   const [addStoryModalOpen, setAddStoryModalOpen] = useState(false)
   const [openEncouragement, setOpenEncouragement] = useState(true)
@@ -144,13 +141,11 @@ const HomeView = () => {
     dispatch(getGroups())
   }, [])
 
-  console.log('grade ', userData.grade)
-
   return (
     <div className="cont-tall cont flex-col auto gap-row-sm pt-lg blue-bg">
       <AddStoryModal open={addStoryModalOpen} setOpen={setAddStoryModalOpen} />
       <PracticeModal open={practiceModalOpen} setOpen={setPracticeModalOpen} />
-      {showWelcomeModal && (
+      {(showWelcomeModal && userData.grade) && (
         <WelcomeBackEncouragementModal
           open={openEncouragement}
           setOpen={setOpenEncouragement}
