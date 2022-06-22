@@ -1258,5 +1258,6 @@
     "multiple-choice-validation": "Please add at least one more option",
     "controlled-story-reminder": "Reminder: you have a tailored story",
     "general-group-summary": "Group summary",
-    "group-grammar-progress": "Group grammar progress"
+    "group-grammar-progress": "Group grammar progress",
+    "select-cefr-reminder": "Please select your CEFR-level"
 }

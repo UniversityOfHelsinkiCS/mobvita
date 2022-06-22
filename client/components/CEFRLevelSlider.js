@@ -1,14 +1,11 @@
 /* eslint-disable react/destructuring-assignment */
 import React from 'react'
 import ReactSlider from 'react-slider'
-import { useHistory } from 'react-router-dom'
 import { useDispatch } from 'react-redux'
 import { updateExerciseTemplate } from 'Utilities/redux/userReducer'
 
 const CERFLevelSlider = props => {
-  const history = useHistory()
   const dispatch = useDispatch()
-  const inSettingsView = history.location.pathname.includes('settings')
   const skillLevels = [
     'A1',
     'A1/A2',
@@ -29,14 +26,14 @@ const CERFLevelSlider = props => {
     const rounded = Math.floor(minified / 10)
     console.log(rounded)
     if (rounded === 11) {
-      props.setChosenSkillLevel('C2')
+      // props.setChosenSkillLevel('C2')
       dispatch(updateExerciseTemplate('C2'))
     } else {
-      props.setChosenSkillLevel(skillLevels[rounded])
+      // props.setChosenSkillLevel(skillLevels[rounded])
       dispatch(updateExerciseTemplate(skillLevels[rounded]))
     }
   }
-  console.log('ACUAL ', props.sliderValue)
+  console.log('ACTUAL ', props.sliderValue)
 
   return (
     <>

@@ -5,7 +5,7 @@ import { registerUser } from 'Utilities/redux/registerReducer'
 import { getSelf } from 'Utilities//redux/userReducer'
 import { Form, Checkbox } from 'semantic-ui-react'
 import TermsAndConditions from 'Components/StaticContent/TermsAndConditions'
-import CERFLevelSlider from 'Components/CERFLevelSlider'
+import CEFRLevelSlider from 'Components/CEFRLevelSlider'
 import { useIntl } from 'react-intl'
 import { setNotification } from 'Utilities/redux/notificationReducer'
 import { localeCodeToName, hiddenFeatures } from 'Utilities/common'
@@ -129,7 +129,7 @@ const Register = () => {
         </Form.Field>
         {/*
         {hiddenFeatures && (
-          <CERFLevelSlider
+          <CEFRLevelSlider
             sliderValue={sliderValue}
             setSliderValue={setSliderValue}
             setChosenSkillLevel={setChosenSkillLevel}

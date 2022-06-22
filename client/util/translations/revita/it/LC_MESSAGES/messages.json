@@ -1259,5 +1259,6 @@
     "multiple-choice-validation": "Si prega di aggiungere almeno un'altra opzione",
     "controlled-story-reminder": "Promemoria: hai una storia controllata",
     "general-group-summary": "Riassunto del gruppo",
-    "group-grammar-progress": "Progresso grammaticale"
+    "group-grammar-progress": "Progresso grammaticale",
+    "select-cefr-reminder": "Please select your CEFR-level"
 }

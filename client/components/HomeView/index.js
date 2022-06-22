@@ -4,13 +4,12 @@ import { FormattedMessage } from 'react-intl'
 import { images, hiddenFeatures } from 'Utilities/common'
 import { useDispatch, useSelector } from 'react-redux'
 import { getGroups } from 'Utilities/redux/groupsReducer'
-
 import { Button } from 'react-bootstrap'
 import useWindowDimensions from 'Utilities/windowDimensions'
 import Footer from 'Components/Footer'
 import AddStoryModal from 'Components/AddStoryModal'
 import WelcomeBackEncouragementModal from 'Components/Encouragements/WelcomeBackEncouragementModal'
-
+import SetCEFRReminder from 'Components/SetCEFRReminder'
 import MedalSummary from './MedalSummary'
 import PracticeModal from './PracticeModal'
 import EloChart from './EloChart'
@@ -124,13 +123,22 @@ const HomeView = () => {
     incomplete: incomplete.data,
     loading: incomplete.pending,
   }))
+  const { exercise_setting_template: exerciseSettingTemplate } = useSelector(
+    ({ user }) => user.data.user
+  )
+
+  console.log('ex ', exerciseSettingTemplate)
+  console.log('user ', userData)
 
   const [practiceModalOpen, setPracticeModalOpen] = useState(false)
   const [addStoryModalOpen, setAddStoryModalOpen] = useState(false)
   const [openEncouragement, setOpenEncouragement] = useState(true)
+  const [openReminder, setOpenReminder] = useState(true)
 
   const showWelcomeModal =
-    history.location.pathname.endsWith('/welcome') && username !== 'Anonymous User'
+    history.location.pathname.endsWith('/welcome') &&
+    username !== 'Anonymous User' &&
+    !userData.is_new_user
 
   useEffect(() => {
     dispatch(getGroups())
@@ -150,6 +158,9 @@ const HomeView = () => {
           pending={loading}
           learningLanguage={learningLanguage}
         />
+      )}
+      {exerciseSettingTemplate === 'custom' && userData.email !== 'anonymous_email' && (
+        <SetCEFRReminder open={openReminder} setOpen={setOpenReminder} />
       )}
       <div className="grow flex-col">
         {bigScreen ? (

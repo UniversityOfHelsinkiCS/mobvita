@@ -1261,5 +1261,6 @@
     "multiple-choice-validation": "Пожалуйста, добавь еще один вариант",
     "controlled-story-reminder": "Напоминание: тебя ждет контрольная история",
     "general-group-summary": "Сводка группы",
-    "group-grammar-progress": "Прогресс грамматики"
+    "group-grammar-progress": "Прогресс грамматики",
+    "select-cefr-reminder": "Please select your CEFR-level"
 }

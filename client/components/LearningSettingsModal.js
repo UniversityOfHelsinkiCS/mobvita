@@ -14,7 +14,7 @@ import {
 import { sidebarSetOpen } from 'Utilities/redux/sidebarReducer'
 import { getGroups } from 'Utilities/redux/groupsReducer'
 import { hiddenFeatures, learningLanguageSelector } from 'Utilities/common'
-import CERFLevelSlider from 'Components/CERFLevelSlider'
+import CEFRLevelSlider from 'Components/CEFRLevelSlider'
 import ExerciseDensitySlider from './ExerciseDensitySlider'
 
 const LearningSettingsModal = ({ trigger }) => {
@@ -266,7 +266,7 @@ const LearningSettingsModal = ({ trigger }) => {
             />{' '}
             <FormattedMessage id="select-cefr-level" />
           </h2>
-          <CERFLevelSlider
+          <CEFRLevelSlider
             sliderValue={sliderValue}
             setSliderValue={setSliderValue}
             setChosenSkillLevel={setChosenSkillLevel}

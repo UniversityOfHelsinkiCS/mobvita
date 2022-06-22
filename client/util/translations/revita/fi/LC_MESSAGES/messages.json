@@ -1258,5 +1258,6 @@
     "multiple-choice-validation": "Ole hyvä ja lisää vielä ainakin yksi vaihtoehto",
     "controlled-story-reminder": "Muistutus: sinulle on jaettu ohjattu tarina",
     "general-group-summary": "Ryhmän yhteenveto",
-    "group-grammar-progress": "Kielioppikaavio"
+    "group-grammar-progress": "Kielioppikaavio",
+    "select-cefr-reminder": "Ole hyvä ja valitse CEFR-tasosi"
 }
