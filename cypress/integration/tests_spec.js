@@ -38,7 +38,7 @@ describe('test view', function() {
     cy.get('[data-cy=enable-test-ok-button').click()
 
     cy.visit('http://localhost:8000/home')
-    cy.get('.modal > .close').click()
+
     cy.wait(500)
     cy.get('.modal > .close').click()
     cy.get('[data-cy=tests-button]').click()
