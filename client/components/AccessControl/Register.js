@@ -127,6 +127,7 @@ const Register = () => {
             placeholder={intl.formatMessage({ id: 'repeat-password' })}
           />
         </Form.Field>
+        {/*
         {hiddenFeatures && (
           <CERFLevelSlider
             sliderValue={sliderValue}
@@ -134,6 +135,7 @@ const Register = () => {
             setChosenSkillLevel={setChosenSkillLevel}
           />
         )}
+        */}
         <div style={{ display: 'flex', alignItems: 'center' }}>
           <Checkbox data-cy="accept-terms" checked={accepted} onChange={() => toggleAccepted()} />
           <TermsAndConditions

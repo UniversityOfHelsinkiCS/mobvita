@@ -14,6 +14,7 @@ import {
 import { sidebarSetOpen } from 'Utilities/redux/sidebarReducer'
 import { getGroups } from 'Utilities/redux/groupsReducer'
 import { hiddenFeatures, learningLanguageSelector } from 'Utilities/common'
+import CERFLevelSlider from 'Components/CERFLevelSlider'
 import ExerciseDensitySlider from './ExerciseDensitySlider'
 
 const LearningSettingsModal = ({ trigger }) => {
@@ -35,7 +36,19 @@ const LearningSettingsModal = ({ trigger }) => {
   const learningLanguage = useSelector(learningLanguageSelector)
   const [open, setOpen] = useState(false)
 
-  const skillLevels = ['A1', 'A2', 'B1', 'B2', 'C1', 'C2']
+  const skillLevels = [
+    'A1',
+    'A1/A2',
+    'A2',
+    'A2/B1',
+    'B1',
+    'B1/B2',
+    'B2',
+    'B2/C1',
+    'C1',
+    'C1/C2',
+    'C2',
+  ]
 
   const getSliderValue = () => {
     if (practicePrctMode === 'auto') return autoPracticePrct
@@ -43,7 +56,9 @@ const LearningSettingsModal = ({ trigger }) => {
     if (practicePrctMode === 'group' && currentGroup) return currentGroup.max_practice_prct
     return null
   }
+  const [chosenSkillLevel, setChosenSkillLevel] = useState('A1')
 
+  const [cerfSliderValue, setCerfSliderValue] = useState(0)
   const [sliderValue, setSliderValue] = useState(getSliderValue())
 
   useEffect(() => {
@@ -120,6 +135,7 @@ const LearningSettingsModal = ({ trigger }) => {
     }
   }
 
+  /*
   const getLevelButtonStyle = level => {
     if (
       (practicePrctMode === 'auto' && level === convertEloToCefrLevel(latestStoryElo)) ||
@@ -130,6 +146,7 @@ const LearningSettingsModal = ({ trigger }) => {
     }
     return { marginRight: '10px' }
   }
+  */
 
   const getCustomButtonStyle = () => {
     if (
@@ -217,8 +234,8 @@ const LearningSettingsModal = ({ trigger }) => {
           )}
         </h2>
         <ExerciseDensitySlider
-          sliderValue={sliderValue}
-          setSliderValue={setSliderValue}
+          sliderValue={cerfSliderValue}
+          setSliderValue={setCerfSliderValue}
           onAfterChange={handleMaxPercentUpdate}
           isDisabled={practicePrctMode !== 'custom'}
         />
@@ -234,6 +251,12 @@ const LearningSettingsModal = ({ trigger }) => {
             />{' '}
             <FormattedMessage id="select-cefr-level" />
           </h2>
+          <CERFLevelSlider
+            sliderValue={sliderValue}
+            setSliderValue={setSliderValue}
+            setChosenSkillLevel={setChosenSkillLevel}
+          />
+          {/*
           <ButtonGroup
             name="difficultyButtons"
             id="difficultyButtons"
@@ -251,8 +274,8 @@ const LearningSettingsModal = ({ trigger }) => {
               </Button>
             ))}
           </ButtonGroup>
+          */}
           <br />
-
           <Button
             as={practicePrctMode === 'custom' ? Link : Button}
             to="/concepts"
