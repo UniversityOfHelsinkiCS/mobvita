@@ -614,5 +614,6 @@
     "controlled-story-reminder": "注意：你有一个测试",
     "general-group-summary": "小组总结",
     "group-grammar-progress": "小组语法进度",
-    "select-cefr-reminder": "Please select your CEFR-level"
+    "select-cefr-reminder": "Please select your CEFR-level",
+    "update-settings": "Update settings"
 }

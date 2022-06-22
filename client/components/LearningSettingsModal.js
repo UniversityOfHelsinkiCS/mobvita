@@ -66,13 +66,9 @@ const LearningSettingsModal = ({ trigger }) => {
     }
     return 0
   }
-  const [chosenSkillLevel, setChosenSkillLevel] = useState('A1')
 
   const [cerfSliderValue, setCerfSliderValue] = useState(getCERFSliderValue())
   const [sliderValue, setSliderValue] = useState(getSliderValue())
-
-  console.log('cerf_slider ', cerfSliderValue)
-  console.log('density slider ', sliderValue)
 
   useEffect(() => {
     if (!pending) {
@@ -104,15 +100,21 @@ const LearningSettingsModal = ({ trigger }) => {
     dispatch(updateMaxPracticePercent(value))
   }
 
-  const handleLevelSelect = level => {
-    dispatch(updateExerciseTemplate(level))
-    dispatch(sidebarSetOpen(false))
-  }
-
   const handleCustomSelect = () => {
     dispatch(updateExerciseTemplate('custom'))
     dispatch(sidebarSetOpen(false))
     setOpen(false)
+  }
+
+  const submitSettings = () => {
+    const minified = cerfSliderValue / 11
+    const rounded = Math.floor(minified / 10)
+    console.log('ROUNDED ', rounded)
+    if (rounded === 11) {
+      dispatch(updateExerciseTemplate('C2'))
+    } else {
+      dispatch(updateExerciseTemplate(skillLevels[rounded]))
+    }
   }
 
   const templateOptions = []
@@ -130,8 +132,6 @@ const LearningSettingsModal = ({ trigger }) => {
     const targetGroup = groups.find(group => group.group_id === groupId)
     setSliderValue(targetGroup.max_practice_prct)
   }
-
-  console.log(exerciseSettingTemplate, '   ', cerfSliderValue)
 
   const handleAutomaticOptionClick = () => {
     dispatch(updateLearningSettingMode('auto'))
@@ -185,16 +185,29 @@ const LearningSettingsModal = ({ trigger }) => {
         <FormattedMessage id="learning-settings" />
       </Modal.Header>
       <Modal.Content style={{ display: 'flex', flexDirection: 'column' }}>
-        <h2 style={{ fontSize: '17px', fontWeight: '550' }}>
-          <Popup
-            position="top center"
-            content={intl.formatMessage({
-              id: 'choose-settings-template-info',
-            })}
-            trigger={<Icon name="info circle" color="grey" />}
-          />{' '}
-          <FormattedMessage id="choose-settings-template" />:
-        </h2>
+        <div className="space-between" style={{ marginBottom: '0.5em' }}>
+          <h2 style={{ fontSize: '17px', fontWeight: '550' }}>
+            <Popup
+              position="top center"
+              content={intl.formatMessage({
+                id: 'choose-settings-template-info',
+              })}
+              trigger={<Icon name="info circle" color="grey" />}
+            />{' '}
+            <FormattedMessage id="choose-settings-template" />:
+          </h2>
+          <Button
+            as={practicePrctMode === 'custom' ? Link : Button}
+            to="/concepts"
+            variant="primary"
+            size="lg"
+            onClick={handleCustomSelect}
+            disabled={practicePrctMode !== 'custom'}
+            style={getCustomButtonStyle()}
+          >
+            <FormattedMessage id="custom" />
+          </Button>
+        </div>
         <div className="learning-settings-radio-button-cont">
           <div className="learning-settings-radio-button-item">
             <Radio
@@ -269,39 +282,11 @@ const LearningSettingsModal = ({ trigger }) => {
           <CEFRLevelSlider
             sliderValue={cerfSliderValue}
             setSliderValue={setCerfSliderValue}
-            setChosenSkillLevel={setChosenSkillLevel}
             isDisabled={practicePrctMode !== 'custom'}
           />
-          {/*
-          <ButtonGroup
-            name="difficultyButtons"
-            id="difficultyButtons"
-            size="md"
-            style={{ marginTop: '1em' }}
-          >
-            {skillLevels.sort().map(level => (
-              <Button
-                style={getLevelButtonStyle(level)}
-                disabled={practicePrctMode !== 'custom'}
-                key={level}
-                onClick={() => handleLevelSelect(level)}
-              >
-                {level}
-              </Button>
-            ))}
-          </ButtonGroup>
-          */}
           <br />
-          <Button
-            as={practicePrctMode === 'custom' ? Link : Button}
-            to="/concepts"
-            variant="primary"
-            size="lg"
-            onClick={handleCustomSelect}
-            disabled={practicePrctMode !== 'custom'}
-            style={getCustomButtonStyle()}
-          >
-            <FormattedMessage id="custom" />
+          <Button variant="primary" size="lg" onClick={submitSettings}>
+            <FormattedMessage id="update-settings" />
           </Button>
         </>
       </Modal.Content>

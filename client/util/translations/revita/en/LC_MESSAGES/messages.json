@@ -1259,5 +1259,6 @@
     "controlled-story-reminder": "Reminder: you have a tailored story",
     "general-group-summary": "Group summary",
     "group-grammar-progress": "Group grammar progress",
-    "select-cefr-reminder": "Please select your CEFR-level"
+    "select-cefr-reminder": "Please select your CEFR-level",
+    "update-settings": "Update settings"
 }
