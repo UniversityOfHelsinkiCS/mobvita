@@ -4,8 +4,6 @@ import { FormattedMessage } from 'react-intl'
 import ReactSlider from 'react-slider'
 
 const CERFLevelSlider = props => {
-  console.log('value ', props.sliderValue, '  setSlider ', props.setSliderValue)
-
   const skillLevels = [
     'A1',
     'A1/A2',
@@ -21,7 +19,15 @@ const CERFLevelSlider = props => {
   ]
 
   const handleSlider = value => {
-    props.setSliderValue(value / 10)
+    props.setSliderValue(value)
+    const minified = value / 11
+    const rounded = Math.floor(minified / 10)
+    console.log(rounded)
+    if (rounded === 11) {
+      props.setChosenSkillLevel('C2')
+    } else {
+      props.setChosenSkillLevel(skillLevels[rounded])
+    }
   }
 
   return (
@@ -30,7 +36,7 @@ const CERFLevelSlider = props => {
         className="exercise-density-slider"
         thumbClassName="exercise-density-slider-thumb"
         trackClassName="exercise-density-slider-track"
-        onChange={value => handleSlider(value)}
+        onAfterChange={value => handleSlider(value)}
         min={0}
         max={1210}
         step={121}

@@ -15,6 +15,7 @@ const Register = () => {
   const intl = useIntl()
   const history = useHistory()
 
+  const [chosenSkillLevel, setChosenSkillLevel] = useState('A1')
   const [formState, setFormState] = useState({
     email: '',
     username: '',
@@ -27,6 +28,8 @@ const Register = () => {
   const toggleAccepted = () => {
     setAccepted(!accepted)
   }
+
+  console.log('chosen skill level: ', chosenSkillLevel)
 
   const {
     error,
@@ -67,7 +70,9 @@ const Register = () => {
         password,
         email,
         interface_language: localeCodeToName(locale),
+        grade: chosenSkillLevel,
       }
+      console.log('payload ', payload)
 
       dispatch(registerUser(payload))
     } else {
@@ -122,7 +127,13 @@ const Register = () => {
             placeholder={intl.formatMessage({ id: 'repeat-password' })}
           />
         </Form.Field>
-        {hiddenFeatures && (<CERFLevelSlider sliderValue={sliderValue} setSliderValue={setSliderValue} />)}
+        {hiddenFeatures && (
+          <CERFLevelSlider
+            sliderValue={sliderValue}
+            setSliderValue={setSliderValue}
+            setChosenSkillLevel={setChosenSkillLevel}
+          />
+        )}
         <div style={{ display: 'flex', alignItems: 'center' }}>
           <Checkbox data-cy="accept-terms" checked={accepted} onChange={() => toggleAccepted()} />
           <TermsAndConditions
