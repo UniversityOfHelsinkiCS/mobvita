@@ -4,24 +4,12 @@ import { useDispatch } from 'react-redux'
 import { Modal } from 'semantic-ui-react'
 import { Button } from 'react-bootstrap'
 import { updateUserGrade } from 'Utilities/redux/userReducer'
+import { skillLevels } from 'Utilities/common'
 import CERFLevelSlider from './CEFRLevelSlider'
 
 const SetCEFRReminder = props => {
   const dispatch = useDispatch()
   const [sliderValue, setSliderValue] = useState(121)
-  const skillLevels = [
-    'A1',
-    'A1/A2',
-    'A2',
-    'A2/B1',
-    'B1',
-    'B1/B2',
-    'B2',
-    'B2/C1',
-    'C1',
-    'C1/C2',
-    'C2',
-  ]
 
   const closeModal = () => {
     props.setOpen(false)

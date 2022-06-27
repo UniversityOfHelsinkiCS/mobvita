@@ -11,6 +11,8 @@ import {
   voiceLanguages,
   speak,
   formatGreenFeedbackText,
+  getWordColor,
+  skillLevels,
 } from 'Utilities/common'
 import { setFocusedWord, setReferences, setExplanation } from 'Utilities/redux/practiceReducer'
 import { getTranslationAction, setWords } from 'Utilities/redux/translationReducer'
@@ -19,10 +21,10 @@ import Tooltip from 'Components/PracticeView/Tooltip'
 
 const ExerciseCloze = ({ word, handleChange }) => {
   const [value, setValue] = useState('')
-  const [className, setClassName] = useState('exercise cloze-untouched')
+  const [className, setClassName] = useState('exercise')
   const [touched, setTouched] = useState(false)
   const [show, setShow] = useState(false)
-
+  const { grade } = useSelector(state => state.user.data.user)
   const dictionaryLanguage = useSelector(dictionaryLanguageSelector)
   const learningLanguage = useSelector(learningLanguageSelector)
   const { resource_usage, autoSpeak } = useSelector(state => state.user.data.user)
@@ -67,7 +69,7 @@ const ExerciseCloze = ({ word, handleChange }) => {
   }
 
   const getExerciseClass = (tested, isWrong) => {
-    if (!tested) return 'exercise cloze-untouched'
+    if (!tested) return 'exercise'
     if (isWrong) return 'exercise wrong cloze'
     return 'exercise correct'
   }
@@ -106,7 +108,8 @@ const ExerciseCloze = ({ word, handleChange }) => {
         </div>
       )}
       <div
-        className="tooltip-blue"
+        className="tooltip-diff"
+        style={{ backgroundColor: getWordColor(word.level, grade, skillLevels) }}
         onMouseDown={handleTooltipWordClick}
         onClick={handleTooltipWordClick}
       >
@@ -129,7 +132,7 @@ const ExerciseCloze = ({ word, handleChange }) => {
   const handleFocus = e => {
     if (!touched) {
       setTouched(true)
-      if (!tested) setClassName('exercise cloze-touched')
+      if (!tested) setClassName('exercise')
       handleChange(value, word)
     }
     setShow(!show)
@@ -186,6 +189,7 @@ const ExerciseCloze = ({ word, handleChange }) => {
         className={className}
         style={{
           width: word.surface > word.base ? getTextWidth(word.surface) : getTextWidth(word.base),
+          backgroundColor: getWordColor(word.level, grade, skillLevels),
           marginRight: '2px',
           height: '1.5em',
           lineHeight: 'normal',

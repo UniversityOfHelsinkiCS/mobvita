@@ -13,7 +13,7 @@ import {
 } from 'Utilities/redux/userReducer'
 import { sidebarSetOpen } from 'Utilities/redux/sidebarReducer'
 import { getGroups } from 'Utilities/redux/groupsReducer'
-import { hiddenFeatures, learningLanguageSelector } from 'Utilities/common'
+import { hiddenFeatures, learningLanguageSelector, skillLevels } from 'Utilities/common'
 import CEFRLevelSlider from 'Components/CEFRLevelSlider'
 import ExerciseDensitySlider from './ExerciseDensitySlider'
 
@@ -35,20 +35,6 @@ const LearningSettingsModal = ({ trigger }) => {
   const currentGroup = groups.find(group => group.group_id === currentGroupId)
   const learningLanguage = useSelector(learningLanguageSelector)
   const [open, setOpen] = useState(false)
-
-  const skillLevels = [
-    'A1',
-    'A1/A2',
-    'A2',
-    'A2/B1',
-    'B1',
-    'B1/B2',
-    'B2',
-    'B2/C1',
-    'C1',
-    'C1/C2',
-    'C2',
-  ]
 
   const getSliderValue = () => {
     if (practicePrctMode === 'auto') return autoPracticePrct

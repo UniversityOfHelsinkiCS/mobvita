@@ -24,6 +24,8 @@ const ExerciseHearing = ({ word, handleChange }) => {
   const learningLanguage = useSelector(learningLanguageSelector)
   const { resource_usage } = useSelector(state => state.user.data.user)
 
+  console.log('word ', word)
+
   const dispatch = useDispatch()
 
   const { isWrong, tested } = word
