@@ -1,29 +1,11 @@
 import React, { useEffect, useState } from 'react'
-import { useSelector, useDispatch } from 'react-redux'
 import { Dropdown } from 'semantic-ui-react'
 import { getTextWidth } from 'Utilities/common'
-import { addExercise, removeExercise } from 'Utilities/redux/controlledPracticeReducer'
 
 const ExerciseMultipleChoice = ({ word, choices, setShowRemoveTooltip }) => {
-  const dispatch = useDispatch()
   const [options, setOptions] = useState([])
   const { ID: wordId } = word
-/*
-  const getExerciseClass = () => {
-    return acceptedTokens.map(t => t.ID).includes(wordId)
-      ? 'control-mode-chosen'
-      : 'control-mode-unchosen'
-  }
 
-  const handleExerciseClick = () => {
-    if (acceptedTokens.map(t => t.ID).includes(wordId)) dispatch(removeExercise(wordId))
-    else dispatch(addExercise(word))
-  }
-
-  useEffect(() => {
-    setBgColorClassName(getExerciseClass())
-  }, [acceptedTokens])
-*/
   useEffect(() => {
     const temp = choices.sort().map(choice => ({
       key: `${word.ID}_${choice}`,

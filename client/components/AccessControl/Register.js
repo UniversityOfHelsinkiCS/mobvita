@@ -5,17 +5,15 @@ import { registerUser } from 'Utilities/redux/registerReducer'
 import { getSelf } from 'Utilities//redux/userReducer'
 import { Form, Checkbox } from 'semantic-ui-react'
 import TermsAndConditions from 'Components/StaticContent/TermsAndConditions'
-import CEFRLevelSlider from 'Components/CEFRLevelSlider'
 import { useIntl } from 'react-intl'
 import { setNotification } from 'Utilities/redux/notificationReducer'
-import { localeCodeToName, hiddenFeatures } from 'Utilities/common'
+import { localeCodeToName } from 'Utilities/common'
 import { Button, Spinner } from 'react-bootstrap'
 
 const Register = () => {
   const intl = useIntl()
   const history = useHistory()
 
-  const [chosenSkillLevel, setChosenSkillLevel] = useState('A1')
   const [formState, setFormState] = useState({
     email: '',
     username: '',
@@ -23,13 +21,10 @@ const Register = () => {
     passwordAgain: '',
   })
   const [accepted, setAccepted] = useState(false)
-  const [sliderValue, setSliderValue] = useState(0)
 
   const toggleAccepted = () => {
     setAccepted(!accepted)
   }
-
-  console.log('chosen skill level: ', chosenSkillLevel)
 
   const {
     error,
@@ -70,9 +65,7 @@ const Register = () => {
         password,
         email,
         interface_language: localeCodeToName(locale),
-        grade: chosenSkillLevel,
       }
-      console.log('payload ', payload)
 
       dispatch(registerUser(payload))
     } else {
@@ -127,15 +120,6 @@ const Register = () => {
             placeholder={intl.formatMessage({ id: 'repeat-password' })}
           />
         </Form.Field>
-        {/*
-        {hiddenFeatures && (
-          <CEFRLevelSlider
-            sliderValue={sliderValue}
-            setSliderValue={setSliderValue}
-            setChosenSkillLevel={setChosenSkillLevel}
-          />
-        )}
-        */}
         <div style={{ display: 'flex', alignItems: 'center' }}>
           <Checkbox data-cy="accept-terms" checked={accepted} onChange={() => toggleAccepted()} />
           <TermsAndConditions

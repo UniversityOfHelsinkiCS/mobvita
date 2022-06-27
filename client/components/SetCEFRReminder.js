@@ -8,7 +8,7 @@ import CERFLevelSlider from './CEFRLevelSlider'
 
 const SetCEFRReminder = props => {
   const dispatch = useDispatch()
-  const [sliderValue, setSliderValue] = useState(0)
+  const [sliderValue, setSliderValue] = useState(121)
   const skillLevels = [
     'A1',
     'A1/A2',

@@ -152,7 +152,7 @@ const PreviousExerciseWord = ({ word, answer, tiedAnswer }) => {
       return 'tooltip-yellow'
     } else if (difference < 3) {
       return 'tooltip-orange'
-    } 
+    }
 
     return 'tooltip-red'
   }
@@ -182,14 +182,14 @@ const PreviousExerciseWord = ({ word, answer, tiedAnswer }) => {
     var hexadecimal = color.toString(16);
     return hexadecimal.length == 1 ? "0" + hexadecimal : hexadecimal;
   }
-  
+
   function ConvertRGBtoHex(red, green, blue) {
     return "#" + ColorToHex(red) + ColorToHex(green) + ColorToHex(blue);
   }
 
   function getWordColor(word_level, user_grade) {
     if (!word.level || !grade) {
-      return '' // white background
+      return '#FFFFFF' // white background
     }
     const wordDifficulty = skillLevels.findIndex(level => {
       return level === word_level
@@ -197,20 +197,20 @@ const PreviousExerciseWord = ({ word, answer, tiedAnswer }) => {
     const userGrade = skillLevels.findIndex(level => {
       return level === user_grade
     })
-    const difference =  userGrade - wordDifficulty
+    const difference = userGrade - wordDifficulty
     const difference_intval = Math.abs(difference) / skillLevels.length
-    
+
     let rgbMin = 'rgb(255, 255, 255)'
     let rgbMax = 'rgb(255, 255, 255)'
     if (difference <= 0)
       rgbMax = 'rgb(252, 108, 133)' //'#90ef90', 
     else
       rgbMax = 'rgb(144, 239, 144)' //'#fc6c85',
-    
+
     // (difference + skillLevels.length) / (2*skillLevels.length)
     const word_rgb = colorInterpolate(
-      rgbMin,  
-      rgbMax, 
+      rgbMin,
+      rgbMax,
       difference_intval
     )
     console.log(difference, word_rgb)
@@ -222,11 +222,7 @@ const PreviousExerciseWord = ({ word, answer, tiedAnswer }) => {
   };
 
   const tooltip = (
-    <div
-      className={getDifficultyColor()}
-      style={{ cursor: 'pointer' }}
-      onMouseDown={handleTooltipClick}
-    >
+    <div className="tooltip-green" style={{ cursor: 'pointer' }} onMouseDown={handleTooltipClick}>
       {word.message && !isPreviewMode && (
         <div className="flex">
           <span dangerouslySetInnerHTML={formatGreenFeedbackText(word?.message)} />{' '}

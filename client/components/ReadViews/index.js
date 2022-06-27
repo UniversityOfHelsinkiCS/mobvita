@@ -45,11 +45,17 @@ const ReadViews = ({ match }) => {
     ? `${currentStudent?.userName} (${currentStudent?.email})`
     : 'Choose the student to review'
 
-  const studentOptions = currentGroup?.students.map(student => ({
-    key: student._id,
-    text: `${student?.userName} (${student?.email})`,
-    value: JSON.stringify(student), // needs to be string
-  }))
+  const studentOptions = currentGroup?.students
+    .map(student => ({
+      key: student._id,
+      text: `${student?.userName} (${student?.email})`,
+      value: JSON.stringify(student), // needs to be string
+    }))
+    .sort(function (a, b) {
+      const textA = a.text.toUpperCase()
+      const textB = b.text.toUpperCase()
+      return textA < textB ? -1 : textA > textB ? 1 : 0
+    })
 
   const learningLanguage = useSelector(learningLanguageSelector)
   const { id } = match.params
