@@ -132,7 +132,6 @@ const PreviousExerciseWord = ({ word, answer, tiedAnswer }) => {
   const youAnsweredTooltip = answer || tiedAnswer
 
   const getDifficultyColor = () => {
-    console.log(word.level)
     if (!word.level || !grade) {
       return 'tooltip-green'
     }
@@ -144,7 +143,6 @@ const PreviousExerciseWord = ({ word, answer, tiedAnswer }) => {
     })
 
     const difference = wordDifficulty - userGrade
-    console.log(word.level, ' - ', grade, ' = ', difference)
 
     if (difference < -3) {
       return 'tooltip-green'
@@ -158,6 +156,70 @@ const PreviousExerciseWord = ({ word, answer, tiedAnswer }) => {
 
     return 'tooltip-red'
   }
+
+  // coloring difficulty
+  function getRgb(color) {
+    let [r, g, b] = color.replace('rgb(', '')
+      .replace(')', '')
+      .split(',')
+      .map(str => Number(str));;
+    return { r, g, b }
+  }
+
+  function colorInterpolate(colorA, colorB, intval) {
+    const rgbA = getRgb(colorA),
+      rgbB = getRgb(colorB);
+    const colorVal = (prop) =>
+      Math.round(rgbA[prop] * (1 - intval) + rgbB[prop] * intval);
+    return {
+      r: colorVal('r'),
+      g: colorVal('g'),
+      b: colorVal('b'),
+    }
+  }
+
+  function ColorToHex(color) {
+    var hexadecimal = color.toString(16);
+    return hexadecimal.length == 1 ? "0" + hexadecimal : hexadecimal;
+  }
+  
+  function ConvertRGBtoHex(red, green, blue) {
+    return "#" + ColorToHex(red) + ColorToHex(green) + ColorToHex(blue);
+  }
+
+  function getWordColor(word_level, user_grade) {
+    if (!word.level || !grade) {
+      return '' // white background
+    }
+    const wordDifficulty = skillLevels.findIndex(level => {
+      return level === word_level
+    })
+    const userGrade = skillLevels.findIndex(level => {
+      return level === user_grade
+    })
+    const difference =  userGrade - wordDifficulty
+    const difference_intval = Math.abs(difference) / skillLevels.length
+    
+    let rgbMin = 'rgb(255, 255, 255)'
+    let rgbMax = 'rgb(255, 255, 255)'
+    if (difference <= 0)
+      rgbMax = 'rgb(252, 108, 133)' //'#90ef90', 
+    else
+      rgbMax = 'rgb(144, 239, 144)' //'#fc6c85',
+    
+    // (difference + skillLevels.length) / (2*skillLevels.length)
+    const word_rgb = colorInterpolate(
+      rgbMin,  
+      rgbMax, 
+      difference_intval
+    )
+    console.log(difference, word_rgb)
+    return ConvertRGBtoHex(word_rgb.r, word_rgb.g, word_rgb.b)
+  }
+
+  const wordColorStyle = {
+    backgroundColor: getWordColor(word.level, grade),
+  };
 
   const tooltip = (
     <div
@@ -208,7 +270,9 @@ const PreviousExerciseWord = ({ word, answer, tiedAnswer }) => {
       {wordStartsSpan(word) && <sup className="notes-superscript">{getSuperscript(word)}</sup>}
       <span
         className={`${wordClass} ${wordShouldBeHighlighted(word) && 'notes-highlighted-word'}`}
+        style={wordColorStyle}
         role="button"
+        // style={'fill: blue;'}
         onClick={handleClick}
         onKeyDown={handleClick}
         tabIndex={-1}
