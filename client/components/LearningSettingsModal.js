@@ -247,6 +247,7 @@ const LearningSettingsModal = ({ trigger }) => {
             />
           </div>
         </div>
+        {/*
         <Divider />
         <h2 style={{ fontSize: '17px', fontWeight: '550' }}>
           <Popup
@@ -267,6 +268,7 @@ const LearningSettingsModal = ({ trigger }) => {
           onAfterChange={handleMaxPercentUpdate}
           isDisabled={practicePrctMode !== 'custom'}
         />
+        */}
         <>
           <Divider />
           <h2 style={{ fontSize: '17px', fontWeight: '550' }}>
