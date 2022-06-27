@@ -7,13 +7,15 @@ import {
   learningLanguageSelector,
   voiceLanguages,
   formatGreenFeedbackText,
+  getWordColor,
+  skillLevels,
 } from 'Utilities/common'
 import { setFocusedWord, handleVoiceSampleCooldown } from 'Utilities/redux/practiceReducer'
 import Tooltip from 'Components/PracticeView/Tooltip'
 
 const ExerciseHearing = ({ word, handleChange }) => {
   const [value, setValue] = useState('')
-  const [className, setClassName] = useState('exercise hearing-untouched')
+  const [className, setClassName] = useState('exercise')
   const [touched, setTouched] = useState(false)
   const [iconDisabled, setIconDisabled] = useState(false)
   const [show, setShow] = useState(false)
@@ -23,8 +25,7 @@ const ExerciseHearing = ({ word, handleChange }) => {
   const currentAnswer = useSelector(({ practice }) => practice.currentAnswers[word.ID])
   const learningLanguage = useSelector(learningLanguageSelector)
   const { resource_usage } = useSelector(state => state.user.data.user)
-
-  console.log('word ', word)
+  const { grade } = useSelector(state => state.user.data.user)
 
   const dispatch = useDispatch()
 
@@ -37,7 +38,7 @@ const ExerciseHearing = ({ word, handleChange }) => {
   }
 
   const getExerciseClass = (tested, isWrong) => {
-    if (!tested) return 'exercise hearing-untouched'
+    if (!tested) return 'exercise'
     if (isWrong) return 'exercise wrong'
     return 'exercise correct'
   }
@@ -71,7 +72,7 @@ const ExerciseHearing = ({ word, handleChange }) => {
 
   const handleInputFocus = e => {
     if (!touched) {
-      if (!tested) setClassName('exercise hearing-touched')
+      if (!tested) setClassName('exercise')
       setTouched(true)
       handleChange(value, word)
     }
@@ -157,6 +158,7 @@ const ExerciseHearing = ({ word, handleChange }) => {
           style={{
             width: getTextWidth(word.surface) + 10,
             minWidth: getTextWidth(word.surface) + 10,
+            backgroundColor: getWordColor(word.level, grade, skillLevels),
             marginRight: '2px',
             height: '1.5em',
             lineHeight: 'normal',

@@ -87,8 +87,8 @@ const ExerciseCloze = ({ word, handleChange }) => {
     <div>
       {word.message && (
         <div
-          className="tooltip-green"
-          style={{ cursor: 'pointer' }}
+          className="tooltip-diff"
+          style={{ cursor: 'pointer', background: getWordColor(word.level, grade, skillLevels) }}
           onMouseDown={handleTooltipClick}
         >
           {word.message && (

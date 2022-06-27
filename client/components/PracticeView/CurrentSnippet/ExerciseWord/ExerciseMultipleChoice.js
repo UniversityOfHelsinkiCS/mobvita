@@ -1,22 +1,25 @@
 import React, { useEffect, useState } from 'react'
 import { useSelector } from 'react-redux'
 import { Dropdown } from 'semantic-ui-react'
-import { getTextWidth, formatGreenFeedbackText } from 'Utilities/common'
+import { getTextWidth, formatGreenFeedbackText, getWordColor, skillLevels } from 'Utilities/common'
 import Tooltip from 'Components/PracticeView/Tooltip'
 
 const ExerciseMultipleChoice = ({ word, handleChange }) => {
-  const [className, setClassName] = useState('exercise-multiple untouched')
+  const [className, setClassName] = useState('exercise-multiple')
   const [options, setOptions] = useState([])
   const [touched, setTouched] = useState(false)
   const [show, setShow] = useState(false)
+  const { grade } = useSelector(state => state.user.data.user)
 
   const currentAnswer = useSelector(({ practice }) => practice.currentAnswers[word.ID])
+
+  console.log('word ', word)
 
   const { tested, isWrong } = word
   const value = currentAnswer ? currentAnswer.users_answer : ''
 
   const getExerciseClass = (tested, isWrong) => {
-    if (!tested) return 'exercise-multiple untouched'
+    if (!tested) return 'exercise-multiple'
     if (isWrong) return 'exercise-multiple wrong'
     return 'exercise-multiple correct'
   }
@@ -51,7 +54,7 @@ const ExerciseMultipleChoice = ({ word, handleChange }) => {
   const handle = (e, word, data) => {
     if (!touched) {
       setTouched(true)
-      if (!tested) setClassName('exercise-multiple touched')
+      if (!tested) setClassName('exercise-multiple')
     }
 
     handleChange(e, word, data)
@@ -88,7 +91,11 @@ const ExerciseMultipleChoice = ({ word, handleChange }) => {
         onFocus={() => setShow(!show)}
         selection
         floating
-        style={{ width: getTextWidth(testString), minWidth: getTextWidth(testString) }}
+        style={{
+          width: getTextWidth(testString),
+          minWidth: getTextWidth(testString),
+          backgroundColor: getWordColor(word.level, grade, skillLevels),
+        }}
         className={`${className}`}
       />
     </Tooltip>
