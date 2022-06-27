@@ -131,35 +131,6 @@ const PreviousExerciseWord = ({ word, answer, tiedAnswer }) => {
 
   const youAnsweredTooltip = answer || tiedAnswer
 
-  const getDifficultyColor = () => {
-    if (!word.level || !grade) {
-      return 'tooltip-green'
-    }
-    const wordDifficulty = skillLevels.findIndex(level => {
-      return level === word.level
-    })
-    const userGrade = skillLevels.findIndex(level => {
-      return level === grade
-    })
-
-    const difference = wordDifficulty - userGrade
-
-    if (difference < -3) {
-      return 'tooltip-green'
-    }
-    if (difference < -2) {
-      return 'tooltip-greenish'
-    }
-    if (difference < 2) {
-      return 'tooltip-yellow'
-    }
-    if (difference < 3) {
-      return 'tooltip-orange'
-    }
-
-    return 'tooltip-red'
-  }
-
   // coloring difficulty
   function getRgb(color) {
     const [r, g, b] = color
