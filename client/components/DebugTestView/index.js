@@ -57,30 +57,34 @@ const DebugTestView = () => {
                   new Set(
                     Object.keys(feedback.user_features).concat(Object.keys(feedback.true_features))
                   )
-                ).map(key => (
-                  <Table.Row textAlign="center">
-                    {feedback.user_features[key]?.toString() ===
-                    feedback.true_features[key]?.toString() ? (
-                      <>
-                        <Table.Cell className="correct">{key}</Table.Cell>
-                        <Table.Cell className="correct">
-                          {(feedback.user_features[key] || '').toString()}
-                        </Table.Cell>
-                        <Table.Cell className="correct">
-                          {(feedback.true_features[key] || '').toString()}
-                        </Table.Cell>
-                      </>
-                    ) : (
-                      <>
-                        <Table.Cell>
-                          <div>{key}</div>
-                        </Table.Cell>
-                        <Table.Cell>{(feedback.user_features[key] || '').toString()}</Table.Cell>
-                        <Table.Cell>{(feedback.true_features[key] || '').toString()}</Table.Cell>
-                      </>
-                    )}
-                  </Table.Row>
-                ))}
+                )
+                  .sort(function (a, b) {
+                    const textA = a.toUpperCase()
+                    const textB = b.toUpperCase()
+                    return textA < textB ? -1 : textA > textB ? 1 : 0
+                  })
+                  .map(key => (
+                    <Table.Row textAlign="center">
+                      {feedback.user_features[key]?.toString() ===
+                      feedback.true_features[key]?.toString() ? (
+                        <>
+                          <Table.Cell className="correct">{key}</Table.Cell>
+                          <Table.Cell className="correct">
+                            {(feedback.user_features[key] || '').toString()}
+                          </Table.Cell>
+                          <Table.Cell className="correct">
+                            {(feedback.true_features[key] || '').toString()}
+                          </Table.Cell>
+                        </>
+                      ) : (
+                        <>
+                          <Table.Cell>{key}</Table.Cell>
+                          <Table.Cell>{(feedback.user_features[key] || '').toString()}</Table.Cell>
+                          <Table.Cell>{(feedback.true_features[key] || '').toString()}</Table.Cell>
+                        </>
+                      )}
+                    </Table.Row>
+                  ))}
               </Table.Header>
             </Table>
           )}
