@@ -4,7 +4,13 @@ import ReactSlider from 'react-slider'
 
 const CERFLevelSlider = props => {
   const handleSlider = value => {
-    props.setSliderValue(value)
+    if (value < 121) {
+      props.setSliderValue(121)
+    } else if (value > 968) {
+      props.setSliderValue(968)
+    } else {
+      props.setSliderValue(value)
+    }
   }
 
   return (

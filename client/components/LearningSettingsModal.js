@@ -64,7 +64,7 @@ const LearningSettingsModal = ({ trigger }) => {
       })
       return index * 11 * 11
     }
-    return 0
+    return 121
   }
 
   const [cerfSliderValue, setCerfSliderValue] = useState(getCERFSliderValue())
@@ -247,7 +247,7 @@ const LearningSettingsModal = ({ trigger }) => {
             />
           </div>
         </div>
-        {/*
+        {/* 
         <Divider />
         <h2 style={{ fontSize: '17px', fontWeight: '550' }}>
           <Popup
