@@ -41,7 +41,9 @@ const DebugTestView = () => {
                 onChange={({ target }) => setCorrectAnswer(target.value)}
               />
             </div>
-            <Button type="submit" style={{ marginTop: '0.5em' }}>submit</Button>
+            <Button type="submit" style={{ marginTop: '0.5em' }}>
+              submit
+            </Button>
           </Form>
           {feedback && (
             <Table celled fixed unstackable>
@@ -51,16 +53,32 @@ const DebugTestView = () => {
                   <Table.HeaderCell style={{ width: '250px ' }}>User answer</Table.HeaderCell>
                   <Table.HeaderCell style={{ width: '250px ' }}>Correct answer</Table.HeaderCell>
                 </Table.Row>
-                {Array.from(new Set(Object.keys(feedback.user_features).concat(
-                  Object.keys(feedback.true_features)))).map(key => (
+                {Array.from(
+                  new Set(
+                    Object.keys(feedback.user_features).concat(Object.keys(feedback.true_features))
+                  )
+                ).map(key => (
                   <Table.Row textAlign="center">
-                    <Table.Cell>{key}</Table.Cell>
-                    <Table.Cell>
-                      {(feedback.user_features[key] || '').toString()}
-                    </Table.Cell>
-                    <Table.Cell>
-                      {(feedback.true_features[key] || '').toString()}
-                    </Table.Cell>
+                    {feedback.user_features[key]?.toString() ===
+                    feedback.true_features[key]?.toString() ? (
+                      <>
+                        <Table.Cell className="correct">{key}</Table.Cell>
+                        <Table.Cell className="correct">
+                          {(feedback.user_features[key] || '').toString()}
+                        </Table.Cell>
+                        <Table.Cell className="correct">
+                          {(feedback.true_features[key] || '').toString()}
+                        </Table.Cell>
+                      </>
+                    ) : (
+                      <>
+                        <Table.Cell>
+                          <div>{key}</div>
+                        </Table.Cell>
+                        <Table.Cell>{(feedback.user_features[key] || '').toString()}</Table.Cell>
+                        <Table.Cell>{(feedback.true_features[key] || '').toString()}</Table.Cell>
+                      </>
+                    )}
                   </Table.Row>
                 ))}
               </Table.Header>
