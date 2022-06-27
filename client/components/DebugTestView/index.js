@@ -3,7 +3,7 @@ import { learningLanguageSelector } from 'Utilities/common'
 import { useSelector, useDispatch } from 'react-redux'
 import { getAnswerFeedback } from 'Utilities/redux/feedbackDebuggerReducer'
 import { Table, Form } from 'semantic-ui-react'
-import { Button } from 'react-bootstrap'
+import { Button, Spinner } from 'react-bootstrap'
 
 const DebugTestView = () => {
   const dispatch = useDispatch()
@@ -18,6 +18,10 @@ const DebugTestView = () => {
     event.preventDefault()
 
     dispatch(getAnswerFeedback(learningLanguage, userAnswer, correctAnswer))
+  }
+
+  if (pending) {
+    return <Spinner />
   }
 
   return (
