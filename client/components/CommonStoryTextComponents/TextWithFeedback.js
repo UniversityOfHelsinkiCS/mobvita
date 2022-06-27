@@ -94,16 +94,6 @@ const TextWithFeedback = ({ snippet, exercise = false, answers, mode, hideFeedba
     return inControlStoryEditor ? (
       <Word hideFeedback={hideFeedback} key={word.ID} word={word} snippet={snippet} {...props} />
     ) : (
-      /*
-      <ControlExerciseWord
-        hideFeedback={hideFeedback}
-        key={word.ID}
-        word={word}
-        answer={mode !== 'review' && answers[word.ID]}
-        tiedAnswer={mode !== 'review' && answers[word.tiedTo]}
-        {...props}
-      />
-      */
       <ExerciseWord key={word.ID} word={word} {...props} />
     )
   }

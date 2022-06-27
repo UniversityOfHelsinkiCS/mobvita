@@ -143,6 +143,20 @@ export const images = {
   fireworks,
 }
 
+export const skillLevels = [
+  'A1',
+  'A1/A2',
+  'A2',
+  'A2/B1',
+  'B1',
+  'B1/B2',
+  'B2',
+  'B2/C1',
+  'C1',
+  'C1/C2',
+  'C2',
+]
+
 export const timerExpired = (parsedDate, timeLimit) => {
   const currentTime = new Date()
   const dif = currentTime.valueOf() - parsedDate.valueOf()
@@ -159,6 +173,61 @@ export const capitalize = word => {
   })
 
   return capitalizedParts.join('-')
+}
+
+// coloring difficulty
+function getRgb(color) {
+  const [r, g, b] = color
+    .replace('rgb(', '')
+    .replace(')', '')
+    .split(',')
+    .map(str => Number(str))
+  return { r, g, b }
+}
+
+function colorInterpolate(colorA, colorB, intval) {
+  const rgbA = getRgb(colorA)
+  const rgbB = getRgb(colorB)
+  const colorVal = prop => Math.round(rgbA[prop] * (1 - intval) + rgbB[prop] * intval)
+  return {
+    r: colorVal('r'),
+    g: colorVal('g'),
+    b: colorVal('b'),
+  }
+}
+
+function ColorToHex(color) {
+  const hexadecimal = color.toString(16)
+  return hexadecimal.length == 1 ? `0${hexadecimal}` : hexadecimal
+}
+
+function ConvertRGBtoHex(red, green, blue) {
+  return `#${ColorToHex(red)}${ColorToHex(green)}${ColorToHex(blue)}`
+}
+
+export function getWordColor(word_level, user_grade, skillLevels) {
+  if (!word_level || !user_grade) {
+    return '#FFFFFF' // white background
+  }
+  const wordDifficulty = skillLevels.findIndex(level => {
+    return level === word_level
+  })
+  const userGrade = skillLevels.findIndex(level => {
+    return level === user_grade
+  })
+  const difference = userGrade - wordDifficulty
+  const difference_intval = Math.abs(difference) / skillLevels.length
+
+  const rgbMin = 'rgb(255, 255, 255)'
+  let rgbMax = 'rgb(255, 255, 255)'
+  if (difference <= 0) rgbMax = 'rgb(252, 108, 133)'
+  // '#90ef90',
+  else rgbMax = 'rgb(144, 239, 144)' // '#fc6c85',
+
+  // (difference + skillLevels.length) / (2*skillLevels.length)
+  const word_rgb = colorInterpolate(rgbMin, rgbMax, difference_intval)
+  console.log(difference, word_rgb)
+  return ConvertRGBtoHex(word_rgb.r, word_rgb.g, word_rgb.b)
 }
 
 /*
