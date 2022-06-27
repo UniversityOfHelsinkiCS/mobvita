@@ -7,7 +7,7 @@ import { Form, Checkbox } from 'semantic-ui-react'
 import TermsAndConditions from 'Components/StaticContent/TermsAndConditions'
 import { useIntl } from 'react-intl'
 import { setNotification } from 'Utilities/redux/notificationReducer'
-import { localeCodeToName, hiddenFeatures } from 'Utilities/common'
+import { localeCodeToName } from 'Utilities/common'
 import { Button, Spinner } from 'react-bootstrap'
 
 const Register = () => {
@@ -66,7 +66,6 @@ const Register = () => {
         email,
         interface_language: localeCodeToName(locale),
       }
-      console.log('payload ', payload)
 
       dispatch(registerUser(payload))
     } else {

@@ -130,7 +130,7 @@ const PreviousExerciseWord = ({ word, answer, tiedAnswer }) => {
   const wordStartsSpan = word => !!word?.annotation
 
   const youAnsweredTooltip = answer || tiedAnswer
-
+  /*
   const getDifficultyColor = () => {
     console.log(word.level)
     if (!word.level || !grade) {
@@ -158,13 +158,9 @@ const PreviousExerciseWord = ({ word, answer, tiedAnswer }) => {
 
     return 'tooltip-red'
   }
-
+  */
   const tooltip = (
-    <div
-      className={getDifficultyColor()}
-      style={{ cursor: 'pointer' }}
-      onMouseDown={handleTooltipClick}
-    >
+    <div className="tooltip-green" style={{ cursor: 'pointer' }} onMouseDown={handleTooltipClick}>
       {word.message && !isPreviewMode && (
         <div className="flex">
           <span dangerouslySetInnerHTML={formatGreenFeedbackText(word?.message)} />{' '}

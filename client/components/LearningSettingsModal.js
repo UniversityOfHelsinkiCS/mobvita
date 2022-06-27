@@ -85,7 +85,7 @@ const LearningSettingsModal = ({ trigger }) => {
   useEffect(() => {
     if (open) dispatch(getGroups())
   }, [open])
-
+  /*
   const convertEloToCefrLevel = elo => {
     if (elo < 1450) return 'A1'
     if (elo < 1650) return 'A2'
@@ -99,7 +99,7 @@ const LearningSettingsModal = ({ trigger }) => {
   const handleMaxPercentUpdate = value => {
     dispatch(updateMaxPracticePercent(value))
   }
-
+  */
   const handleCustomSelect = () => {
     dispatch(updateExerciseTemplate('custom'))
     dispatch(sidebarSetOpen(false))
@@ -109,7 +109,7 @@ const LearningSettingsModal = ({ trigger }) => {
   const submitSettings = () => {
     const minified = cerfSliderValue / 11
     const rounded = Math.floor(minified / 10)
-    console.log('ROUNDED ', rounded)
+
     if (rounded === 11) {
       dispatch(updateExerciseTemplate('C2'))
     } else {

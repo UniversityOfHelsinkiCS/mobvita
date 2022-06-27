@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from 'react'
-import { useDispatch } from 'react-redux'
 import { Dropdown } from 'semantic-ui-react'
 import { getTextWidth } from 'Utilities/common'
 
