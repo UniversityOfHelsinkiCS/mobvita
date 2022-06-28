@@ -158,7 +158,7 @@ const ExerciseHearing = ({ word, handleChange }) => {
           style={{
             width: getTextWidth(word.surface) + 10,
             minWidth: getTextWidth(word.surface) + 10,
-            backgroundColor: getWordColor(word.level, grade, skillLevels),
+            // backgroundColor: getWordColor(word.level, grade, skillLevels),
             marginRight: '2px',
             height: '1.5em',
             lineHeight: 'normal',

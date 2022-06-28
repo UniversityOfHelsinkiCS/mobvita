@@ -87,8 +87,8 @@ const ExerciseCloze = ({ word, handleChange }) => {
     <div>
       {word.message && (
         <div
-          className="tooltip-diff"
-          style={{ cursor: 'pointer', background: getWordColor(word.level, grade, skillLevels) }}
+          className="tooltip-green"
+          // style={{ cursor: 'pointer', background: getWordColor(word.level, grade, skillLevels) }}
           onMouseDown={handleTooltipClick}
         >
           {word.message && (
@@ -108,8 +108,8 @@ const ExerciseCloze = ({ word, handleChange }) => {
         </div>
       )}
       <div
-        className="tooltip-diff"
-        style={{ backgroundColor: getWordColor(word.level, grade, skillLevels) }}
+        className="tooltip-blue"
+        // style={{ backgroundColor: getWordColor(word.level, grade, skillLevels) }}
         onMouseDown={handleTooltipWordClick}
         onClick={handleTooltipWordClick}
       >
@@ -189,7 +189,7 @@ const ExerciseCloze = ({ word, handleChange }) => {
         className={className}
         style={{
           width: word.surface > word.base ? getTextWidth(word.surface) : getTextWidth(word.base),
-          backgroundColor: getWordColor(word.level, grade, skillLevels),
+          // backgroundColor: getWordColor(word.level, grade, skillLevels),
           marginRight: '2px',
           height: '1.5em',
           lineHeight: 'normal',

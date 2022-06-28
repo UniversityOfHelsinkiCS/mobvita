@@ -3,6 +3,7 @@ import { useHistory } from 'react-router-dom'
 import ExerciseWord from 'Components/PracticeView/CurrentSnippet/ExerciseWord'
 import ControlWord from 'Components/ControlledStoryEditView/PreviousSnippets/ControlWord'
 import Word from 'Components/CommonStoryTextComponents/PreviousSnippets/Word'
+import { getWordColor } from 'Utilities/common'
 
 const TextWithFeedback = ({ snippet, exercise = false, answers, mode, hideFeedback, ...props }) => {
   let lowestLinePosition = 0
@@ -140,7 +141,7 @@ const TextWithFeedback = ({ snippet, exercise = false, answers, mode, hideFeedba
     element = createNestedSpan(element, word.ID, 1, lowestLinePosition)
     return element
   }
-  // console.log('SNIPPET ', snippet)
+
   const createdText = answers
     ? useMemo(
         () =>
@@ -181,6 +182,19 @@ const TextWithFeedback = ({ snippet, exercise = false, answers, mode, hideFeedba
       )
     : snippet.map((word, index) => {
         const { pattern } = word
+        if (word.surface === " "){
+          if (index == 0 & snippet.length > 1){
+            word.level = snippet[index+1].level
+          }
+          if (index == snippet.length - 1 & snippet.length > 1){
+            word.level = snippet[index-1].level
+          }
+          if (index > 0 & index < snippet.length & snippet.length > 1) {
+            if (snippet[index-1].level & snippet[index+1].level){
+              word.level = snippet[index-1].level
+            }
+          }
+        }
 
         const chunkPosition = word.chunk && word.chunk.split('_')[1]
 

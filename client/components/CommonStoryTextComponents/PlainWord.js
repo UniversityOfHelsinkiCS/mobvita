@@ -7,6 +7,8 @@ import {
   dictionaryLanguageSelector,
   speak,
   voiceLanguages,
+  getWordColor,
+  skillLevels,
 } from 'Utilities/common'
 import { getTranslationAction, setWords } from 'Utilities/redux/translationReducer'
 import {
@@ -31,6 +33,7 @@ const PlainWord = ({ word, annotatingAllowed, ...props }) => {
   const { spanAnnotations, highlightRange, showAnnotationForm } = useSelector(
     ({ annotations }) => annotations
   )
+  const { grade } = useSelector(state => state.user.data.user)
 
   const { lemmas, ID: wordId, surface, inflection_ref: inflectionRef, name_token: isName } = word
   const isCompeteMode = history.location.pathname.includes('compete')
@@ -83,7 +86,7 @@ const PlainWord = ({ word, annotatingAllowed, ...props }) => {
     }
   }
 
-  if (!lemmas || isName)
+  if ((!lemmas || isName) & !word.level)
     return (
       <>
         {wordStartsSpan(word) && annotatingAllowed && !isCompeteMode && (
@@ -142,6 +145,10 @@ const PlainWord = ({ word, annotatingAllowed, ...props }) => {
     }
   }
 
+  const wordColorStyle = {
+    backgroundColor: getWordColor(word.level, grade, skillLevels),
+  }
+
   return (
     <>
       {wordStartsSpan(word) && annotatingAllowed && !isCompeteMode && (
@@ -149,6 +156,7 @@ const PlainWord = ({ word, annotatingAllowed, ...props }) => {
       )}
       <span
         role="button"
+        style={wordColorStyle}
         tabIndex={-1}
         onKeyDown={() => handleWordClick()}
         onClick={() => handleWordClick()}

@@ -18,12 +18,13 @@ const SetCEFRReminder = props => {
   const submitSettings = () => {
     const minified = sliderValue / 11
     const rounded = Math.floor(minified / 10)
-    console.log('ROUNDED ', rounded)
-    if (rounded === 11) {
-      dispatch(updateUserGrade('C2'))
-    } else {
-      dispatch(updateUserGrade(skillLevels[rounded]))
-    }
+    dispatch(updateUserGrade(rounded))
+    // console.log('ROUNDED ', rounded)
+    // if (rounded === 11) {
+    //   dispatch(updateUserGrade('C2'))
+    // } else {
+    //   dispatch(updateUserGrade(skillLevels[rounded]))
+    // }
 
     closeModal()
   }

@@ -95,12 +95,13 @@ const LearningSettingsModal = ({ trigger }) => {
   const submitSettings = () => {
     const minified = cerfSliderValue / 11
     const rounded = Math.floor(minified / 10)
+    dispatch(updateExerciseTemplate(rounded))
 
-    if (rounded === 11) {
-      dispatch(updateExerciseTemplate('C2'))
-    } else {
-      dispatch(updateExerciseTemplate(skillLevels[rounded]))
-    }
+    // if (rounded === 11) {
+    //   dispatch(updateExerciseTemplate('C2'))
+    // } else {
+    //   dispatch(updateExerciseTemplate(skillLevels[rounded]))
+    // }
   }
 
   const templateOptions = []

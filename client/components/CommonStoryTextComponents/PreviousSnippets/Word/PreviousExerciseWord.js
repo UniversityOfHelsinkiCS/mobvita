@@ -126,8 +126,9 @@ const PreviousExerciseWord = ({ word, answer, tiedAnswer }) => {
 
   const tooltip = (
     <div
-      className="tooltip-diff"
-      style={{ cursor: 'pointer', backgroundColor: getWordColor(word.level, grade, skillLevels) }}
+      className="tooltip-green"
+      style={{ cursor: 'pointer'}}
+      // backgroundColor: getWordColor(word.level, grade, skillLevels) 
       onMouseDown={handleTooltipClick}
     >
       {word.message && !isPreviewMode && (
@@ -167,7 +168,6 @@ const PreviousExerciseWord = ({ word, answer, tiedAnswer }) => {
       )}
     </div>
   )
-
   return (
     <Tooltip placement="top" tooltipShown={show} trigger="none" tooltip={tooltip}>
       {wordStartsSpan(word) && <sup className="notes-superscript">{getSuperscript(word)}</sup>}
@@ -175,7 +175,6 @@ const PreviousExerciseWord = ({ word, answer, tiedAnswer }) => {
         className={`${wordClass} ${wordShouldBeHighlighted(word) && 'notes-highlighted-word'}`}
         style={wordColorStyle}
         role="button"
-        // style={'fill: blue;'}
         onClick={handleClick}
         onKeyDown={handleClick}
         tabIndex={-1}

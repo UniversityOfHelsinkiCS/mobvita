@@ -209,13 +209,13 @@ export function getWordColor(word_level, user_grade, skillLevels) {
   if (!word_level || !user_grade) {
     return '#FFFFFF' // white background
   }
-  const wordDifficulty = skillLevels.findIndex(level => {
-    return level === word_level
-  })
-  const userGrade = skillLevels.findIndex(level => {
-    return level === user_grade
-  })
-  const difference = userGrade - wordDifficulty
+  // const wordDifficulty = skillLevels.findIndex(level => {
+  //   return level === word_level
+  // })
+  // const userGrade = skillLevels.findIndex(level => {
+  //   return level === user_grade
+  // })
+  const difference = user_grade - word_level// userGrade - wordDifficulty
   const difference_intval = Math.abs(difference) / skillLevels.length
 
   const rgbMin = 'rgb(255, 255, 255)'
@@ -226,7 +226,6 @@ export function getWordColor(word_level, user_grade, skillLevels) {
 
   // (difference + skillLevels.length) / (2*skillLevels.length)
   const word_rgb = colorInterpolate(rgbMin, rgbMax, difference_intval)
-  console.log(difference, word_rgb)
   return ConvertRGBtoHex(word_rgb.r, word_rgb.g, word_rgb.b)
 }
 
