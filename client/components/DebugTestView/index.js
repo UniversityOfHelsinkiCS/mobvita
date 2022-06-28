@@ -54,8 +54,8 @@ const DebugTestView = () => {
               <Table.Header>
                 <Table.Row textAlign="center">
                   <Table.HeaderCell style={{ width: '250px' }}>Features</Table.HeaderCell>
-                  <Table.HeaderCell style={{ width: '250px ' }}>User answer</Table.HeaderCell>
                   <Table.HeaderCell style={{ width: '250px ' }}>Correct answer</Table.HeaderCell>
+                  <Table.HeaderCell style={{ width: '250px ' }}>User answer</Table.HeaderCell>
                 </Table.Row>
                 {Array.from(
                   new Set(
@@ -74,17 +74,17 @@ const DebugTestView = () => {
                         <>
                           <Table.Cell className="correct">{key}</Table.Cell>
                           <Table.Cell className="correct">
-                            {(feedback.user_features[key] || '').toString()}
+                            {(feedback.true_features[key] || '').toString()}
                           </Table.Cell>
                           <Table.Cell className="correct">
-                            {(feedback.true_features[key] || '').toString()}
+                            {(feedback.user_features[key] || '').toString()}
                           </Table.Cell>
                         </>
                       ) : (
                         <>
                           <Table.Cell>{key}</Table.Cell>
-                          <Table.Cell>{(feedback.user_features[key] || '').toString()}</Table.Cell>
                           <Table.Cell>{(feedback.true_features[key] || '').toString()}</Table.Cell>
+                          <Table.Cell>{(feedback.user_features[key] || '').toString()}</Table.Cell>
                         </>
                       )}
                     </Table.Row>
