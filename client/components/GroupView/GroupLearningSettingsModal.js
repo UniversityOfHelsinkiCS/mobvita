@@ -32,11 +32,7 @@ const GroupLearningSettingsModal = ({ open, setOpen, groupId }) => {
   const handleMaxPercentUpdate = value => {
     dispatch(updateGroupMaxPracticePercent(value, groupId))
   }
-  /*
-  const handleLevelSelect = level => {
-    dispatch(updateExerciseTemplate(level, groupId))
-  }
-  */
+
   const getLevelButtonStyle = lvl => {
     if (lvl === exerciseSettingTemplate) {
       return { marginRight: '10px', color: 'yellow', fontWeight: 600 }
@@ -84,51 +80,6 @@ const GroupLearningSettingsModal = ({ open, setOpen, groupId }) => {
           <Button variant="primary" size="lg" onClick={submitSettings}>
             <FormattedMessage id="update-settings" />
           </Button>
-          {/* 
-          <h2 style={{ fontSize: '17px', fontWeight: '550' }}>
-            <Popup
-              position="top center"
-              content={intl.formatMessage({
-                id: 'cefr-level-documentation',
-              })}
-              trigger={<Icon name="info circle" color="grey" />}
-            />{' '}
-            <FormattedMessage id="select-cefr-level" />
-          </h2>
-          <ButtonGroup
-            name="difficultyButtons"
-            id="difficultyButtons"
-            size="md"
-            style={{ marginTop: '1em' }}
-          >
-            {skillLevels.sort().map(level => (
-              <Button
-                style={getLevelButtonStyle(level)}
-                key={level}
-                onClick={() => handleLevelSelect(level)}
-              >
-                {level}
-              </Button>
-            ))}
-          </ButtonGroup>
-          <br />
-
-          <Button
-            as={Link}
-            to={`/groups/teacher/${groupId}/concepts`}
-            variant="primary"
-            size="lg"
-            onClick={() => dispatch(updateExerciseTemplate('custom', groupId))}
-            disabled={practicePrctMode !== 'custom'}
-            style={
-              exerciseSettingTemplate === 'custom'
-                ? { color: 'yellow', alignSelf: 'center', fontWeight: 600 }
-                : { alignSelf: 'center' }
-            }
-          >
-            <FormattedMessage id="custom" />
-          </Button>
-          */}
         </>
       </Modal.Content>
     </Modal>
