@@ -69,6 +69,7 @@ const ExerciseCloze = ({ word, handleChange }) => {
   }
 
   const getExerciseClass = (tested, isWrong) => {
+    console.log('something done... ', word, '  ', tested, ' ', isWrong)
     if (!tested) return 'exercise'
     if (isWrong) return 'exercise wrong cloze'
     return 'exercise correct'
@@ -78,10 +79,12 @@ const ExerciseCloze = ({ word, handleChange }) => {
     const val = currentAnswer ? currentAnswer.users_answer : ''
     setValue(val)
   }, [currentAnswer])
-
+  
   useEffect(() => {
     setClassName(getExerciseClass(tested, isWrong))
   }, [tested])
+
+  console.log(word, '  ', className)
 
   const tooltip = (
     <div>
@@ -115,7 +118,7 @@ const ExerciseCloze = ({ word, handleChange }) => {
         onClick={handleTooltipWordClick}
       >
         <span style={getTextStyle(learningLanguage, 'tooltip')}>{word.base || word.bases}</span>
-        → <FormattedMessage id={dictionaryLanguage}/>
+        → <FormattedMessage id={dictionaryLanguage} />
       </div>
     </div>
   )
@@ -190,7 +193,7 @@ const ExerciseCloze = ({ word, handleChange }) => {
         className={className}
         style={{
           width: word.surface > word.base ? getTextWidth(word.surface) : getTextWidth(word.base),
-          // backgroundColor: getWordColor(word.level, grade, skillLevels),
+          backgroundColor: getWordColor(word.level, grade, skillLevels),
           marginRight: '2px',
           height: '1.5em',
           lineHeight: 'normal',

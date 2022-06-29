@@ -51,6 +51,7 @@ const PracticeView = () => {
 
   const currentSnippetId = () => {
     if (!snippets.focused) return -1
+    console.log('snippet ', snippets.focused)
     const { snippetid } = snippets.focused
     return snippetid[snippetid.length - 1]
   }

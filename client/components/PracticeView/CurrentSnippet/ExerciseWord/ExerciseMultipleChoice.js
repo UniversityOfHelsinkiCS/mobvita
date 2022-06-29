@@ -13,8 +13,6 @@ const ExerciseMultipleChoice = ({ word, handleChange }) => {
 
   const currentAnswer = useSelector(({ practice }) => practice.currentAnswers[word.ID])
 
-  console.log('word ', word)
-
   const { tested, isWrong } = word
   const value = currentAnswer ? currentAnswer.users_answer : ''
 
