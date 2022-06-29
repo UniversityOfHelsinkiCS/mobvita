@@ -9,6 +9,7 @@ import {
   updateGroupMaxPracticePercent,
 } from 'Utilities/redux/groupsReducer'
 import ExerciseDensitySlider from 'Components/ExerciseDensitySlider'
+import CERFLevelSlider from 'Components/CEFRLevelSlider'
 import { hiddenFeatures } from 'Utilities/common'
 
 const GroupLearningSettingsModal = ({ open, setOpen, groupId }) => {
@@ -25,21 +26,28 @@ const GroupLearningSettingsModal = ({ open, setOpen, groupId }) => {
   } = group
 
   const [sliderValue, setSliderValue] = useState(maxPracticePercent)
+  const [cefrSliderValue, setCefrSliderValue] = useState(121)
   const skillLevels = ['A1', 'A2', 'B1', 'B2', 'C1', 'C2']
 
   const handleMaxPercentUpdate = value => {
     dispatch(updateGroupMaxPracticePercent(value, groupId))
   }
-
+  /*
   const handleLevelSelect = level => {
     dispatch(updateExerciseTemplate(level, groupId))
   }
-
+  */
   const getLevelButtonStyle = lvl => {
     if (lvl === exerciseSettingTemplate) {
       return { marginRight: '10px', color: 'yellow', fontWeight: 600 }
     }
     return { marginRight: '10px' }
+  }
+
+  const submitSettings = () => {
+    const minified = cefrSliderValue / 11
+    const rounded = Math.floor(minified / 10)
+    dispatch(updateExerciseTemplate(rounded, groupId))
   }
 
   return (
@@ -70,6 +78,13 @@ const GroupLearningSettingsModal = ({ open, setOpen, groupId }) => {
 
         <>
           <Divider />
+          <div>
+            <CERFLevelSlider sliderValue={cefrSliderValue} setSliderValue={setCefrSliderValue} />
+          </div>
+          <Button variant="primary" size="lg" onClick={submitSettings}>
+            <FormattedMessage id="update-settings" />
+          </Button>
+          {/* 
           <h2 style={{ fontSize: '17px', fontWeight: '550' }}>
             <Popup
               position="top center"
@@ -113,6 +128,7 @@ const GroupLearningSettingsModal = ({ open, setOpen, groupId }) => {
           >
             <FormattedMessage id="custom" />
           </Button>
+          */}
         </>
       </Modal.Content>
     </Modal>

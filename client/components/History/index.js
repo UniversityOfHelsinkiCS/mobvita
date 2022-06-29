@@ -147,6 +147,7 @@ const StoryNameRow = ({ history }) => {
 }
 
 const CefrLevelRow = ({ history }) => {
+  console.log(history)
   return (
     <TableRow textAlign="center">
       <Table.Cell key="total">

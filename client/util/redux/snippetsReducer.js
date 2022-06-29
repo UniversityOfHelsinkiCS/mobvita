@@ -75,7 +75,6 @@ export default (state = { previous: [], pending: false, error: false }, action) 
         error: false,
       }
     case 'RESET_SNIPPET_INDEX_SUCCESS':
-      console.log('ACTION ', action)
       return {
         ...state,
         previous: [],
