@@ -183,12 +183,14 @@ const TextWithFeedback = ({ snippet, exercise = false, answers, mode, hideFeedba
     : snippet.map((word, index) => {
         const { pattern } = word
         if (word.surface === ' ' && mode !== 'practice') {
+          /*
           if ((index == 0) & (snippet.length > 1)) {
             word.level = snippet[index + 1].level
           }
           if ((index == snippet.length - 1) & (snippet.length > 1)) {
             word.level = snippet[index - 1].level
           }
+          */
           if ((index > 0) & (index < snippet.length) & (snippet.length > 1)) {
             if (snippet[index - 1].level & snippet[index + 1].level) {
               word.level = snippet[index - 1].level

@@ -69,7 +69,6 @@ const ExerciseCloze = ({ word, handleChange }) => {
   }
 
   const getExerciseClass = (tested, isWrong) => {
-    console.log('something done... ', word, '  ', tested, ' ', isWrong)
     if (!tested) return 'exercise'
     if (isWrong) return 'exercise wrong cloze'
     return 'exercise correct'
@@ -83,8 +82,6 @@ const ExerciseCloze = ({ word, handleChange }) => {
   useEffect(() => {
     setClassName(getExerciseClass(tested, isWrong))
   }, [tested])
-
-  console.log(word, '  ', className)
 
   const tooltip = (
     <div>
