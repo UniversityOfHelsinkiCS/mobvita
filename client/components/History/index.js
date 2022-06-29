@@ -5,6 +5,7 @@ import { Button } from 'react-bootstrap'
 import moment from 'moment'
 import { FormattedMessage } from 'react-intl'
 import useWindowDimensions from 'Utilities/windowDimensions'
+import { skillLevels } from 'Utilities/common'
 import Concept from './Concept'
 
 const sumPropertyValues = (items, property) => {
@@ -146,8 +147,14 @@ const StoryNameRow = ({ history }) => {
   )
 }
 
+const convertToCefr = value => {
+  if (value <= 0 && value < 11) {
+    return skillLevels[value]
+  }
+  return '-'
+}
+
 const CefrLevelRow = ({ history }) => {
-  console.log(history)
   return (
     <TableRow textAlign="center">
       <Table.Cell key="total">
@@ -161,7 +168,7 @@ const CefrLevelRow = ({ history }) => {
             resultsObj.date
           }`}
         >
-          <div>{resultsObj.cefr_level ?? '-'}</div>
+          {convertToCefr(resultsObj?.cefr_level)}
         </Table.Cell>
       ))}
     </TableRow>

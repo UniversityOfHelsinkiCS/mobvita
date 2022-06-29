@@ -33,7 +33,7 @@ const Progress = () => {
   const [endDate, setEndDate] = useState(moment().toDate())
 
   const learningLanguage = useLearningLanguage()
-  const { history: testHistory } = useSelector(({ tests }) => tests)
+  const { history: testHistory, pending: testPending } = useSelector(({ tests }) => tests)
   const [shownChart, setShownChart] = useState('progress')
 
   const bigScreen = useWindowDimension().width >= 650
@@ -71,7 +71,7 @@ const Progress = () => {
   } = useSelector(({ metadata }) => metadata)
 
   const filterTestHistoryByDate = () =>
-    testHistory.filter(test => {
+    testHistory?.filter(test => {
       const testTime = moment(test.date)
       return testTime.isAfter(startDate) && testTime.isBefore(endDate)
     })
@@ -114,7 +114,7 @@ const Progress = () => {
     dispatch(getTestHistory(learningLanguage, startDate, endDate))
   }, [startDate, endDate])
 
-  if (pending || pending === undefined) return <Spinner />
+  if (pending || pending === undefined || testPending) return <Spinner />
 
   return (
     <div className="cont ps-nm">
