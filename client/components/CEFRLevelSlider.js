@@ -23,6 +23,7 @@ const CERFLevelSlider = props => {
         min={0}
         max={1210}
         step={121}
+        marks
         value={props.sliderValue}
         disabled={props.isDisabled}
       />

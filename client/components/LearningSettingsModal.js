@@ -45,10 +45,7 @@ const LearningSettingsModal = ({ trigger }) => {
 
   const getCERFSliderValue = () => {
     if (exerciseSettingTemplate) {
-      const index = skillLevels.findIndex(level => {
-        return level === exerciseSettingTemplate
-      })
-      return index * 11 * 11
+      return exerciseSettingTemplate * 11 * 11
     }
     return 121
   }
