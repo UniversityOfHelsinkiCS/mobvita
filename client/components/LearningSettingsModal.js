@@ -45,6 +45,9 @@ const LearningSettingsModal = ({ trigger }) => {
 
   const getCERFSliderValue = () => {
     if (exerciseSettingTemplate) {
+      if (typeof exerciseSettingTemplate !== 'number'){
+        return 0
+      }
       return exerciseSettingTemplate * 11 * 11
     }
     return 121
