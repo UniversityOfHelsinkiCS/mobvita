@@ -23,18 +23,17 @@ const CERFLevelSlider = props => {
         min={0}
         max={1210}
         step={121}
-        marks
         value={props.sliderValue}
         disabled={props.isDisabled}
       />
 
       <div className="space-between exercise-density-slider-label-cont bold">
-        <span>A1</span>
+        <span style={{'color':'lightgrey'}}>A1</span>
         <span>A2</span>
         <span>B1</span>
         <span>B2</span>
         <span>C1</span>
-        <span>C2</span>
+        <span style={{'color':'lightgrey'}}>C2</span>
       </div>
     </>
   )

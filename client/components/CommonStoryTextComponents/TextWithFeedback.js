@@ -3,7 +3,6 @@ import { useHistory } from 'react-router-dom'
 import ExerciseWord from 'Components/PracticeView/CurrentSnippet/ExerciseWord'
 import ControlWord from 'Components/ControlledStoryEditView/PreviousSnippets/ControlWord'
 import Word from 'Components/CommonStoryTextComponents/PreviousSnippets/Word'
-import { getWordColor } from 'Utilities/common'
 
 const TextWithFeedback = ({ snippet, exercise = false, answers, mode, hideFeedback, ...props }) => {
   let lowestLinePosition = 0
