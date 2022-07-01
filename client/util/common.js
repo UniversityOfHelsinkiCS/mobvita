@@ -205,10 +205,12 @@ function ConvertRGBtoHex(red, green, blue) {
   return `#${ColorToHex(red)}${ColorToHex(green)}${ColorToHex(blue)}`
 }
 
-export function getWordColor(word_level, user_grade, skillLevels) {
-  if (!word_level || !user_grade) {
+export function getWordColor(word_level, user_grade, skillLevels, hideDifficulty, show_review_diff) {
+  // console.log('hide diff ', hideDifficulty, ' ', word_level, '  ', user_grade)
+  if (!word_level || !user_grade || hideDifficulty || !show_review_diff) {
     return '#FFFFFF' // white background
   }
+
   // const wordDifficulty = skillLevels.findIndex(level => {
   //   return level === word_level
   // })

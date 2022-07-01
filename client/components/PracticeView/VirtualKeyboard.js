@@ -90,6 +90,7 @@ const VirtualKeyboard = () => {
         concept,
       },
     }
+
     dispatch(setAnswers(newAnswer))
   }
 

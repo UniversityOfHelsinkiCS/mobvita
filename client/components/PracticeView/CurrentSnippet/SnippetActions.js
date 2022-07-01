@@ -134,6 +134,7 @@ const SnippetActions = ({ storyId, exerciseCount, isControlledStory, timerValue 
 
     dispatch(clearTouchedIds())
     dispatch(postAnswers(storyId, answersObj, false))
+    console.log('posted answers')
   }
 
   const submitAnswers = () => {

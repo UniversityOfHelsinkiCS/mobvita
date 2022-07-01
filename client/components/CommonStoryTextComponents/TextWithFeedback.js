@@ -4,7 +4,15 @@ import ExerciseWord from 'Components/PracticeView/CurrentSnippet/ExerciseWord'
 import ControlWord from 'Components/ControlledStoryEditView/PreviousSnippets/ControlWord'
 import Word from 'Components/CommonStoryTextComponents/PreviousSnippets/Word'
 
-const TextWithFeedback = ({ snippet, exercise = false, answers, mode, hideFeedback, ...props }) => {
+const TextWithFeedback = ({
+  snippet,
+  exercise = false,
+  answers,
+  mode,
+  hideFeedback,
+  hideDifficulty,
+  ...props
+}) => {
   let lowestLinePosition = 0
   const openLinePositions = [1, 2, 3, 4, 5]
   const reservedLinePositions = {}
@@ -91,10 +99,11 @@ const TextWithFeedback = ({ snippet, exercise = false, answers, mode, hideFeedba
   }
 
   const getExerciseWordComponent = (word, props) => {
+    console.log(hideDifficulty)
     return inControlStoryEditor ? (
       <Word hideFeedback={hideFeedback} key={word.ID} word={word} snippet={snippet} {...props} />
     ) : (
-      <ExerciseWord key={word.ID} word={word} {...props} />
+      <ExerciseWord key={word.ID} word={word} {...props} hideDifficulty={hideDifficulty} />
     )
   }
 
@@ -111,6 +120,7 @@ const TextWithFeedback = ({ snippet, exercise = false, answers, mode, hideFeedba
     ) : (
       <Word
         hideFeedback={hideFeedback}
+        hideDifficulty={hideDifficulty}
         key={word.ID}
         word={word}
         answer={mode !== 'review' && answers[word.ID]}

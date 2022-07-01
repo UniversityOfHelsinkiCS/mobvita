@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
-import { FormattedMessage } from 'react-intl'
+import { FormattedMessage, useIntl } from 'react-intl'
 import { useParams, useHistory } from 'react-router-dom'
-import { Segment, Icon } from 'semantic-ui-react'
+import { Segment, Icon, Checkbox } from 'semantic-ui-react'
 import { getStoryAction } from 'Utilities/redux/storiesReducer'
 import { clearFocusedSnippet } from 'Utilities/redux/snippetsReducer'
 import { Spinner } from 'react-bootstrap'
@@ -39,9 +39,9 @@ const PracticeView = () => {
   const snippets = useSelector(({ snippets }) => snippets)
   const { focused: story, pending } = useSelector(({ stories }) => stories)
   const { isPaused, willPause, practiceFinished } = useSelector(({ practice }) => practice)
-
+  const [hideDifficulty, setHideDifficulty] = useState(false)
   const [startModalOpen, setStartModalOpen] = useState(false)
-
+  const intl = useIntl()
   const smallScreen = width < 700
   const mode = getMode()
   const snippetsTotalNum = snippets?.focused?.total_num
@@ -51,7 +51,6 @@ const PracticeView = () => {
 
   const currentSnippetId = () => {
     if (!snippets.focused) return -1
-    console.log('snippet ', snippets.focused)
     const { snippetid } = snippets.focused
     return snippetid[snippetid.length - 1]
   }
@@ -126,6 +125,7 @@ const PracticeView = () => {
         concept,
       },
     }
+
     dispatch(setAnswers(newAnswer))
   }
 
@@ -182,7 +182,14 @@ const PracticeView = () => {
                 <FormattedMessage id="Source" />
               </a>
             )}
-            <PreviousSnippets />
+            <Checkbox
+              toggle
+              label={intl.formatMessage({ id: 'show-difficulty-level' })}
+              checked={!hideDifficulty}
+              onChange={() => setHideDifficulty(!hideDifficulty)}
+              style={{ paddingTop: '.5em', marginLeft: '.5em' }}
+            />
+            <PreviousSnippets hideDifficulty={hideDifficulty} />
             <hr />
             <CurrentSnippet storyId={id} handleInputChange={handleAnswerChange} timer={timer} />
             <ScrollArrow />

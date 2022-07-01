@@ -7,11 +7,10 @@ import ExerciseHearing from './ExerciseHearing'
 import RightAnswer from './RightAsnwer'
 import WrongAnswer from './WrongAnswer'
 
-const ExerciseWord = ({ word, handleAnswerChange, handleMultiselectChange }) => {
+const ExerciseWord = ({ word, handleAnswerChange, handleMultiselectChange, hideDifficulty }) => {
   const { attempt, correctAnswerIDs, snippetFinished } = useSelector(({ practice }) => practice)
-
   if ((word.tested && !word.isWrong) || correctAnswerIDs.includes(word.ID.toString())) {
-    return <RightAnswer word={word} />
+    return <RightAnswer word={word} hideDifficulty={hideDifficulty} />
   }
 
   if (word.surface === '\n\n' || !word.id) {
@@ -39,7 +38,7 @@ const ExerciseWord = ({ word, handleAnswerChange, handleMultiselectChange }) => 
           word={word}
         />
       )
-    return <WrongAnswer word={word} />
+    return <WrongAnswer word={word} hideDifficulty={hideDifficulty} />
   }
   return (
     <ExerciseCloze tabIndex={word.ID} handleChange={handleAnswerChange} key={word.ID} word={word} />

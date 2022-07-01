@@ -134,6 +134,8 @@ export const updateSortCriterion = value => saveSelf({ library_sort_criterion: v
 export const updateToNonNewUser = () => saveSelf({ is_new_user: false })
 export const updatePracticePrctMode = value => saveSelf({ practice_prct_mode: value })
 export const updateMaxPracticePercent = value => saveSelf({ max_practice_prct: value })
+export const updateShowReviewDiff = value => saveSelf({ show_review_diff: value })
+export const updatePreviewExer = value => saveSelf({ show_preview_exer: value })
 
 export const updateGroupTemplateSelection = groupId => {
   return saveSelf({ exercise_setting_template: groupId, last_selected_group: groupId })

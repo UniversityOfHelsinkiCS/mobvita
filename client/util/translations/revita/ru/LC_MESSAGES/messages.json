@@ -1263,5 +1263,6 @@
     "general-group-summary": "Сводка группы",
     "group-grammar-progress": "Прогресс грамматики",
     "select-cefr-reminder": "Please select your CEFR-level",
-    "update-settings": "Update settings"
+    "update-settings": "Update settings",
+    "show-difficulty-level": "Show exercise difficulty levels"
 }

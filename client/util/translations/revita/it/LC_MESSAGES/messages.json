@@ -1261,5 +1261,6 @@
     "general-group-summary": "Riassunto del gruppo",
     "group-grammar-progress": "Progresso grammaticale",
     "select-cefr-reminder": "Please select your CEFR-level",
-    "update-settings": "Update settings"
+    "update-settings": "Update settings",
+    "show-difficulty-level": "Show exercise difficulty levels"
 }

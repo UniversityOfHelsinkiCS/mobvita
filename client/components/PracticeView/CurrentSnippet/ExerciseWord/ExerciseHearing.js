@@ -37,6 +37,8 @@ const ExerciseHearing = ({ word, handleChange }) => {
     if (word.base !== word.surface) handleChange(word.base, word)
   }
 
+  // console.log('word ', word)
+
   const getExerciseClass = (tested, isWrong) => {
     if (!tested) return 'exercise'
     if (isWrong) return 'exercise wrong'
@@ -48,6 +50,7 @@ const ExerciseHearing = ({ word, handleChange }) => {
     if (tested && isWrong) {
       giveHint()
       const val = currentAnswer ? currentAnswer.users_answer : ''
+      
       setValue(val)
     }
   }, [tested])
@@ -105,6 +108,7 @@ const ExerciseHearing = ({ word, handleChange }) => {
     handleChange(value, word)
     setShow(false)
   }
+
 
   const focusNextClozeOrHearing = element => {
     const { form } = element

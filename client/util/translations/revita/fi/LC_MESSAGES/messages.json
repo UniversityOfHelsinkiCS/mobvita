@@ -1260,5 +1260,6 @@
     "general-group-summary": "Ryhmän yhteenveto",
     "group-grammar-progress": "Kielioppikaavio",
     "select-cefr-reminder": "Ole hyvä ja valitse CEFR-tasosi",
-    "update-settings": "Päivitä asetukset"
+    "update-settings": "Päivitä asetukset",
+    "show-difficulty-level": "Näytä tehtävien vaikeustasot"
 }

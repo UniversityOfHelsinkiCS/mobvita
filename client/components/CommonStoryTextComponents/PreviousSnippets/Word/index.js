@@ -6,7 +6,7 @@ import PlainWord from 'Components/CommonStoryTextComponents/PlainWord'
 import ControlledStoryWord from 'Components/ControlledStoryEditView/ControlledStoryWord'
 import PreviousExerciseWord from './PreviousExerciseWord'
 
-const Word = ({ word, answer, tiedAnswer, hideFeedback, snippet }) => {
+const Word = ({ word, answer, tiedAnswer, hideFeedback, snippet, hideDifficulty }) => {
   const [shouldBeHidden, setShouldBeHidden] = useState(false)
   const history = useHistory()
   const { correctAnswerIDs } = useSelector(({ practice }) => practice)
@@ -28,7 +28,7 @@ const Word = ({ word, answer, tiedAnswer, hideFeedback, snippet }) => {
   if (controlledStory && shouldBeHidden) {
     return null
   }
-  
+
   if (controlledStory) {
     return <ControlledStoryWord word={word} snippet={snippet} />
   }
@@ -57,10 +57,17 @@ const Word = ({ word, answer, tiedAnswer, hideFeedback, snippet }) => {
       users_answer: word.wrong,
       id: word.ID,
     }
-    return <PreviousExerciseWord word={word} answer={answerObj} tiedAnswer={null} />
+    return (
+      <PreviousExerciseWord
+        word={word}
+        answer={answerObj}
+        tiedAnswer={null}
+        hideDifficulty={hideDifficulty}
+      />
+    )
   }
 
-  return <PlainWord word={word} annotatingAllowed />
+  return <PlainWord word={word} annotatingAllowed hideDifficulty={hideDifficulty} />
 }
 
 export default Word

@@ -8,6 +8,7 @@ import useWindowDimensions from 'Utilities/windowDimensions'
 import { getStoryAction, getStudentStoryAction } from 'Utilities/redux/storiesReducer'
 import { clearTranslationAction } from 'Utilities/redux/translationReducer'
 import { resetAnnotations, setAnnotations } from 'Utilities/redux/annotationsReducer'
+import { updateShowReviewDiff } from 'Utilities/redux/userReducer'
 import { learningLanguageSelector, getTextStyle, getMode } from 'Utilities/common'
 import DictionaryHelp from 'Components/DictionaryHelp'
 import AnnotationBox from 'Components/AnnotationBox'
@@ -23,18 +24,28 @@ const ReadViews = ({ match }) => {
   const dispatch = useDispatch()
   const intl = useIntl()
   const { width } = useWindowDimensions()
-  const [hideFeedback, setHideFeedback] = useState(true)
   const mode = getMode()
   const history = useHistory()
   const [showRefreshButton, setShowRefreshButton] = useState(false)
   const [currentStudent, setCurrentStudent] = useState(null)
   const isGroupReview = history.location.pathname.includes('group-review')
+  const { show_review_diff } = useSelector(({ user }) => user.data.user)
   const { story, pending } = useSelector(({ stories, locale }) => ({
     story: stories.focused,
     pending: stories.focusedPending,
     locale,
   }))
 
+  const defineFeedback = () => {
+    if (mode === 'review') {
+      return false
+    }
+
+    return true
+  }
+  console.log('show re ', show_review_diff)
+
+  const [hideFeedback, setHideFeedback] = useState(defineFeedback())
   const user = useSelector(state => state.user.data)
 
   const { progress, storyId } = useSelector(({ uploadProgress }) => uploadProgress)
@@ -56,7 +67,7 @@ const ReadViews = ({ match }) => {
       const textB = b.text.toUpperCase()
       return textA < textB ? -1 : textA > textB ? 1 : 0
     })
-
+  const [hideDifficulty, setHideDifficulty] = useState(show_review_diff || false)
   const learningLanguage = useSelector(learningLanguageSelector)
   const { id } = match.params
 
@@ -115,6 +126,12 @@ const ReadViews = ({ match }) => {
     setShowRefreshButton(false)
   }
 
+  const updateUserReviewDiff = () => {
+    console.log('called')
+    dispatch(updateShowReviewDiff(!hideDifficulty))
+    setHideDifficulty(!hideDifficulty)
+  }
+
   // console.log('story ', story)
 
   return (
@@ -132,6 +149,7 @@ const ReadViews = ({ match }) => {
               )}
             </Header>
             <div className="space-between" style={{ alignItems: 'center' }}>
+              {/* 
               <div style={{ display: 'flex' }}>
                 <Checkbox
                   toggle
@@ -150,6 +168,15 @@ const ReadViews = ({ match }) => {
                       color="grey"
                     />
                   }
+                />
+                */}
+              <div style={{ display: 'flex' }}>
+                <Checkbox
+                  toggle
+                  label={intl.formatMessage({ id: 'show-difficulty-level' })}
+                  checked={!hideDifficulty}
+                  onChange={updateUserReviewDiff}
+                  style={{ paddingTop: '.5em' }}
                 />
                 {isGroupReview && (
                   <span style={{ marginLeft: '3em' }}>
@@ -194,6 +221,7 @@ const ReadViews = ({ match }) => {
               <>
                 <TextWithFeedback
                   hideFeedback={hideFeedback}
+                  hideDifficulty={hideDifficulty}
                   mode="review"
                   snippet={paragraph}
                   answers={null}
