@@ -50,6 +50,10 @@ const DebugTestView = () => {
             </Button>
           </Form>
           {feedback && (
+            <div>
+              <br/>
+              <br/>
+            <h4>Feedback: {feedback.message}</h4>
             <Table celled fixed unstackable>
               <Table.Header>
                 <Table.Row textAlign="center">
@@ -91,6 +95,7 @@ const DebugTestView = () => {
                   ))}
               </Table.Header>
             </Table>
+            </div>
           )}
         </div>
       </div>
