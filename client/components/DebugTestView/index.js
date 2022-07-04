@@ -30,14 +30,6 @@ const DebugTestView = () => {
         <div className="cont">
           <Form onSubmit={handleSubmit}>
             <div>
-              User answer:
-              <input
-                type="text"
-                value={userAnswer}
-                onChange={({ target }) => setUserAnswer(target.value)}
-              />
-            </div>
-            <div>
               Correct answer:
               <input
                 type="text"
@@ -45,11 +37,23 @@ const DebugTestView = () => {
                 onChange={({ target }) => setCorrectAnswer(target.value)}
               />
             </div>
+            <div>
+              User answer:
+              <input
+                type="text"
+                value={userAnswer}
+                onChange={({ target }) => setUserAnswer(target.value)}
+              />
+            </div>
             <Button type="submit" style={{ marginTop: '0.5em' }}>
               submit
             </Button>
           </Form>
           {feedback && (
+            <div>
+              <br/>
+              <br/>
+            <h4>Feedback: {feedback.message}</h4>
             <Table celled fixed unstackable>
               <Table.Header>
                 <Table.Row textAlign="center">
@@ -91,6 +95,7 @@ const DebugTestView = () => {
                   ))}
               </Table.Header>
             </Table>
+            </div>
           )}
         </div>
       </div>
