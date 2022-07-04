@@ -24,7 +24,7 @@ const Word = ({ word, answer, tiedAnswer, hideFeedback, snippet, hideDifficulty 
   }, [hiddenWordIds])
 
   // "Display feedback" toggle is off
-  if (!show_preview_exer) return <PlainWord word={word} annotatingAllowed />
+  if (!show_preview_exer && isPreviewMode) return <PlainWord word={word} annotatingAllowed />
 
   if (controlledStory && shouldBeHidden) {
     return null
