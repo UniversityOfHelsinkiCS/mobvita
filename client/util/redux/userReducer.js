@@ -136,6 +136,7 @@ export const updatePracticePrctMode = value => saveSelf({ practice_prct_mode: va
 export const updateMaxPracticePercent = value => saveSelf({ max_practice_prct: value })
 export const updateShowReviewDiff = value => saveSelf({ show_review_diff: value })
 export const updatePreviewExer = value => saveSelf({ show_preview_exer: value })
+export const updateEnableRecmd = value => saveSelf({ enable_recmd: value })
 
 export const updateGroupTemplateSelection = groupId => {
   return saveSelf({ exercise_setting_template: groupId, last_selected_group: groupId })
@@ -169,10 +170,17 @@ export const confirmUser = token => {
   return callBuilder(route, prefix, 'get')
 }
 
+export const updateCurrentState = newState => ({ type: 'UPDATE_CURRENT_STATE', newState })
+
 export const refresh = () => ({ type: 'REFRESH' })
 
 export default (state = { data: null, learningLanguageChanged: false }, action) => {
   switch (action.type) {
+    case 'UPDATE_CURRENT_STATE':
+      return {
+        ...state,
+        current_state: action.newState,
+      }
     case 'LOGIN_ANON_SUCCESS':
       return {
         ...state,

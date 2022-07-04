@@ -13,6 +13,7 @@ import {
   updateAutoSpeak,
   updatePublishProgress,
   updateParticipleExer,
+  updateEnableRecmd,
 } from 'Utilities/redux/userReducer'
 import { setLocale } from 'Utilities/redux/localeReducer'
 import LearningSettingsModal from '../LearningSettingsModal'
@@ -29,7 +30,6 @@ const Settings = () => {
   const locale = useSelector(({ locale }) => locale)
   const dispatch = useDispatch()
   const intl = useIntl()
-
   const [localeDropdownOptions, setLocaleDropdownOptions] = useState([])
   const [accordionState, setAccordionState] = useState(0)
 
@@ -248,6 +248,33 @@ const Settings = () => {
                     translationId="Show my username in leaderboards"
                     checked={user.publish_progress}
                     onChange={() => dispatch(updatePublishProgress(!user.publish_progress))}
+                    disabled={pending}
+                  />
+                </div>
+              }
+            />
+          </Menu.Item>
+          <Menu.Item>
+            <Accordion.Title
+              active={accordionState === 5}
+              content={
+                <h2 className="profile-page-setting-header">
+                  <FormattedMessage id="notification-settings" />
+                </h2>
+              }
+              index={5}
+              onClick={handleClick}
+            />
+            <Accordion.Content
+              className="add-story-accordion-item-content"
+              active={accordionState === 5}
+              content={
+                <div>
+                  <Divider />
+                  <SettingToggle
+                    translationId="enable-recommendations"
+                    checked={user.enable_recmd}
+                    onChange={() => dispatch(updateEnableRecmd(!user.enable_recmd))}
                     disabled={pending}
                   />
                 </div>

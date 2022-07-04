@@ -33,6 +33,7 @@ import {
   resetAnnotations,
 } from 'Utilities/redux/annotationsReducer'
 import ExercisesEncouragementModal from 'Components/Encouragements/ExercisesEncouragementModal'
+import RecommendationsModal from 'Components/RecommendationsModal'
 import SnippetActions from './SnippetActions'
 import PracticeText from './PracticeText'
 
@@ -41,6 +42,7 @@ const CurrentSnippet = ({ storyId, handleInputChange, timer }) => {
   const practiceForm = useRef(null)
   const dispatch = useDispatch()
   const [openEncouragement, setOpenEncouragement] = useState(true)
+  const { enable_recmd } = useSelector(({ user }) => user.data.user)
   const snippets = useSelector(({ snippets }) => snippets)
   const answersPending = useSelector(({ snippets }) => snippets.answersPending)
   const { practiceFinished, snippetFinished, isNewSnippet, attempt, willPause, isPaused } =
@@ -65,6 +67,7 @@ const CurrentSnippet = ({ storyId, handleInputChange, timer }) => {
     const { snippetid } = snippets.focused
     return snippetid[snippetid.length - 1]
   }
+  const [openRecmd, setOpenRecmd] = useState(false)
 
   const getExerciseCount = () => {
     let count = 0
@@ -278,9 +281,12 @@ const CurrentSnippet = ({ storyId, handleInputChange, timer }) => {
             <ExercisesEncouragementModal
               open={openEncouragement}
               setOpen={setOpenEncouragement}
+              setOpenRecmd={setOpenRecmd}
+              enable_recmd={enable_recmd}
               storiesCovered={storiesCovered}
               vocabularySeen={vocabularySeen}
             />
+            <RecommendationsModal open={openRecmd} setOpen={setOpenRecmd} />
             <Button variant="primary" block onClick={() => startOver()}>
               <FormattedMessage id="restart-story" />
             </Button>

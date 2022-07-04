@@ -1261,5 +1261,9 @@
     "group-grammar-progress": "Kielioppikaavio",
     "select-cefr-reminder": "Ole hyvä ja valitse CEFR-tasosi",
     "update-settings": "Päivitä asetukset",
-    "show-difficulty-level": "Näytä tehtävien vaikeustasot"
+    "show-difficulty-level": "Näytä tehtävien vaikeustasot",
+    "story-completed-to-blue-flashcards": "",
+    "enable-recommendations": "Salli suositusten näyttäminen",
+    "notification-settings": "Ilmoitukset",
+    "never-show-recommendations": "Lopeta suositusten näyttäminen"
 }

@@ -7,7 +7,14 @@ import { clearNewVocabulary } from 'Utilities/redux/newVocabularyReducer'
 import { getLeaderboards } from 'Utilities/redux/leaderboardReducer'
 import { useSelector, useDispatch } from 'react-redux'
 
-const ExercisesEncouragementModal = ({ open, setOpen, storiesCovered, vocabularySeen }) => {
+const ExercisesEncouragementModal = ({
+  open,
+  setOpen,
+  setOpenRecmd,
+  enable_recmd,
+  storiesCovered,
+  vocabularySeen,
+}) => {
   const { newVocabulary } = useSelector(({ newVocabulary }) => newVocabulary)
   const { user_rank } = useSelector(({ leaderboard }) => leaderboard.data)
   const [userRanking, setUserRanking] = useState(null)
@@ -28,6 +35,9 @@ const ExercisesEncouragementModal = ({ open, setOpen, storiesCovered, vocabulary
   const closeModal = () => {
     setOpen(false)
     dispatch(clearNewVocabulary())
+    if (enable_recmd) {
+      setOpenRecmd(true)
+    }
   }
 
   return (

@@ -1262,5 +1262,9 @@
     "group-grammar-progress": "Progresso grammaticale",
     "select-cefr-reminder": "Please select your CEFR-level",
     "update-settings": "Update settings",
-    "show-difficulty-level": "Show exercise difficulty levels"
+    "show-difficulty-level": "Show exercise difficulty levels",
+    "story-completed-to-blue-flashcards": "",
+    "enable-recommendations": "Enable recommendations",
+    "notification-settings": "Notifications",
+    "never-show-recommendations": "Turn off recommendations"
 }
