@@ -1262,8 +1262,9 @@
     "select-cefr-reminder": "Ole hyvä ja valitse CEFR-tasosi",
     "update-settings": "Päivitä asetukset",
     "show-difficulty-level": "Näytä tehtävien vaikeustasot",
-    "story-completed-to-blue-flashcards": "",
+    "story-completed-to-blue-flashcards": "In this story you encountered {nWords} new words -- for which you did not check translation.\nYou can get credit for those {nWords} words!  \nLet's check some of them, to make sure that you know them!",
     "enable-recommendations": "Salli suositusten näyttäminen",
     "notification-settings": "Ilmoitukset",
-    "never-show-recommendations": "Lopeta suositusten näyttäminen"
+    "never-show-recommendations": "Lopeta suositusten näyttäminen",
+    "go-to-blue-flashcards": "Go to flashcards"
 }

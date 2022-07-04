@@ -34,9 +34,10 @@ const ExercisesEncouragementModal = ({
 
   const closeModal = () => {
     setOpen(false)
-    dispatch(clearNewVocabulary())
     if (enable_recmd) {
       setOpenRecmd(true)
+    } else {
+      dispatch(clearNewVocabulary())
     }
   }
 

@@ -1263,8 +1263,9 @@
     "select-cefr-reminder": "Please select your CEFR-level",
     "update-settings": "Update settings",
     "show-difficulty-level": "Show exercise difficulty levels",
-    "story-completed-to-blue-flashcards": "",
+    "story-completed-to-blue-flashcards": "In this story you encountered {nWords} new words -- for which you did not check translation.\nYou can get credit for those {nWords} words!  \nLet's check some of them, to make sure that you know them!",
     "enable-recommendations": "Enable recommendations",
     "notification-settings": "Notifications",
-    "never-show-recommendations": "Turn off recommendations"
+    "never-show-recommendations": "Turn off recommendations",
+    "go-to-blue-flashcards": "Go to flashcards"
 }
