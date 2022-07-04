@@ -32,7 +32,7 @@ const RecommendationsModal = ({ open, setOpen }) => {
       size="tiny"
       centered={false}
       dimmer="blurring"
-      closeIcon={{ style: { top: '2.5rem', right: '2.5rem' }, color: 'black', name: 'close' }}
+      closeIcon={{ style: { top: '2rem', right: '2rem' }, color: 'black', name: 'close' }}
       onClose={closeModal}
     >
       <Modal.Content>
