@@ -6,13 +6,12 @@ import { setAnnotations } from 'Utilities/redux/annotationsReducer'
 import TextWithFeedback from 'Components/CommonStoryTextComponents/TextWithFeedback'
 import { useParams, useHistory } from 'react-router-dom'
 
-const PreviousSnippets = props => {
+const PreviousSnippets = () => {
   const [annotationsInitialized, setAnnotationsInitialized] = useState(false)
   const learningLanguage = useSelector(learningLanguageSelector)
   const { previousAnswers } = useSelector(({ practice }) => practice)
   const history = useHistory()
   const isControlledStory = history.location.pathname.includes('controlled-practice')
-  const { hideDifficulty } = props
   const { focused: focusedStory } = useSelector(({ stories }) => stories)
   const { id: storyId } = useParams()
   const { previous } = useSelector(({ snippets }) => {
@@ -46,14 +45,9 @@ const PreviousSnippets = props => {
   if (previous?.length > 0 && previous[0].practice_snippet) {
     return null
   }
-  console.log('DIFF IS HIDDEN ', hideDifficulty)
+
   const previousSnippets = previous?.map(snippet => (
-    <TextWithFeedback
-      snippet={snippet}
-      answers={previousAnswers}
-      mode="practice"
-      hideDifficulty={hideDifficulty}
-    />
+    <TextWithFeedback snippet={snippet} answers={previousAnswers} mode="practice" />
   ))
 
   return (

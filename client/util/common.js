@@ -205,9 +205,21 @@ function ConvertRGBtoHex(red, green, blue) {
   return `#${ColorToHex(red)}${ColorToHex(green)}${ColorToHex(blue)}`
 }
 
-export function getWordColor(word_level, user_grade, skillLevels, hideDifficulty, show_review_diff) {
-  // console.log('hide diff ', hideDifficulty, ' ', word_level, '  ', user_grade)
-  if (!word_level || !user_grade || hideDifficulty || !show_review_diff) {
+export function getWordColor(
+  word_level,
+  user_grade,
+  skillLevels,
+  show_review_diff,
+  show_preview_exer,
+  mode
+) {
+  // console.log('mode on word ', mode, ' and show is ', show_review_diff)
+  if (
+    !word_level ||
+    !user_grade ||
+    ((mode === 'review' || mode === 'practice') && !show_review_diff) ||
+    (mode === 'preview' && !show_preview_exer)
+  ) {
     return '#FFFFFF' // white background
   }
 
@@ -217,7 +229,7 @@ export function getWordColor(word_level, user_grade, skillLevels, hideDifficulty
   // const userGrade = skillLevels.findIndex(level => {
   //   return level === user_grade
   // })
-  const difference = user_grade - word_level// userGrade - wordDifficulty
+  const difference = user_grade - word_level // userGrade - wordDifficulty
   const difference_intval = Math.abs(difference) / skillLevels.length
 
   const rgbMin = 'rgb(255, 255, 255)'
@@ -455,7 +467,11 @@ export const speak = (surfaceWord, voice, voice_type, resource_usage) => {
   try {
     if (source === 'responsive_voice' && window.responsiveVoice.voiceSupport())
       RVSpeak(surfaceWord, lang_code, tone, voice_type)
-    else if (source === 'yandex' && Howler.codecs('opus') && (resource_usage.tts.Yandex?.access ?? true))
+    else if (
+      source === 'yandex' &&
+      Howler.codecs('opus') &&
+      (resource_usage.tts.Yandex?.access ?? true)
+    )
       yandexSpeak(surfaceWord, lang_code, tone, voice_type)
     else if (source === 'tacotron2' && Howler.codecs('mp3') && surfaceWord.length > 4)
       tacotronSpeak(surfaceWord, lang_code, tone, voice_type)

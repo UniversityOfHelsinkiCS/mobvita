@@ -1,5 +1,6 @@
 import React, { useMemo } from 'react'
 import { useHistory } from 'react-router-dom'
+import { useSelector } from 'react-redux'
 import ExerciseWord from 'Components/PracticeView/CurrentSnippet/ExerciseWord'
 import ControlWord from 'Components/ControlledStoryEditView/PreviousSnippets/ControlWord'
 import Word from 'Components/CommonStoryTextComponents/PreviousSnippets/Word'
@@ -10,7 +11,6 @@ const TextWithFeedback = ({
   answers,
   mode,
   hideFeedback,
-  hideDifficulty,
   ...props
 }) => {
   let lowestLinePosition = 0
@@ -99,11 +99,10 @@ const TextWithFeedback = ({
   }
 
   const getExerciseWordComponent = (word, props) => {
-    console.log(hideDifficulty)
     return inControlStoryEditor ? (
       <Word hideFeedback={hideFeedback} key={word.ID} word={word} snippet={snippet} {...props} />
     ) : (
-      <ExerciseWord key={word.ID} word={word} {...props} hideDifficulty={hideDifficulty} />
+      <ExerciseWord key={word.ID} word={word} {...props} />
     )
   }
 
@@ -120,7 +119,6 @@ const TextWithFeedback = ({
     ) : (
       <Word
         hideFeedback={hideFeedback}
-        hideDifficulty={hideDifficulty}
         key={word.ID}
         word={word}
         answer={mode !== 'review' && answers[word.ID]}

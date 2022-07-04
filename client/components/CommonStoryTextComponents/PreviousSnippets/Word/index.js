@@ -10,6 +10,7 @@ const Word = ({ word, answer, tiedAnswer, hideFeedback, snippet, hideDifficulty 
   const [shouldBeHidden, setShouldBeHidden] = useState(false)
   const history = useHistory()
   const { correctAnswerIDs } = useSelector(({ practice }) => practice)
+  const { show_review_diff, show_preview_exer } = useSelector(({ user }) => user.data.user)
   const { hiddenWordIds } = useSelector(({ controlledPractice }) => controlledPractice)
   const controlledStory = history.location.pathname.includes('controlled-story')
   const isPreviewMode = history.location.pathname.includes('preview')
@@ -23,7 +24,7 @@ const Word = ({ word, answer, tiedAnswer, hideFeedback, snippet, hideDifficulty 
   }, [hiddenWordIds])
 
   // "Display feedback" toggle is off
-  if (hideFeedback) return <PlainWord word={word} annotatingAllowed />
+  if (!show_preview_exer) return <PlainWord word={word} annotatingAllowed />
 
   if (controlledStory && shouldBeHidden) {
     return null

@@ -9,6 +9,7 @@ import {
   voiceLanguages,
   getWordColor,
   skillLevels,
+  getMode,
 } from 'Utilities/common'
 import { getTranslationAction, setWords } from 'Utilities/redux/translationReducer'
 import {
@@ -26,7 +27,7 @@ const PlainWord = ({ word, annotatingAllowed, ...props }) => {
   const { width } = useWindowDimensions()
   const { id: storyId } = useParams()
   const [allowTranslating, setAllowTranslating] = useState(true)
-
+  const mode = getMode()
   const { resource_usage, autoSpeak } = useSelector(state => state.user.data.user)
   const learningLanguage = useSelector(learningLanguageSelector)
   const dictionaryLanguage = useSelector(dictionaryLanguageSelector)
@@ -34,6 +35,7 @@ const PlainWord = ({ word, annotatingAllowed, ...props }) => {
     ({ annotations }) => annotations
   )
   const { grade } = useSelector(state => state.user.data.user)
+  const { show_review_diff, show_preview_exer } = useSelector(state => state.user.data.user)
 
   const { lemmas, ID: wordId, surface, inflection_ref: inflectionRef, name_token: isName } = word
   const isCompeteMode = history.location.pathname.includes('compete')
@@ -146,7 +148,14 @@ const PlainWord = ({ word, annotatingAllowed, ...props }) => {
   }
 
   const wordColorStyle = {
-    backgroundColor: getWordColor(word.level, grade, skillLevels),
+    backgroundColor: getWordColor(
+      word.level,
+      grade,
+      skillLevels,
+      show_review_diff,
+      show_preview_exer,
+      mode
+    ),
   }
 
   return (

@@ -14,6 +14,7 @@ import {
   hiddenFeatures,
   getWordColor,
   skillLevels,
+  getMode,
 } from 'Utilities/common'
 import { setReferences, setExplanation } from 'Utilities/redux/practiceReducer'
 import { getTranslationAction, setWords } from 'Utilities/redux/translationReducer'
@@ -25,7 +26,7 @@ import {
 } from 'Utilities/redux/annotationsReducer'
 import Tooltip from 'Components/PracticeView/Tooltip'
 
-const PreviousExerciseWord = ({ word, answer, tiedAnswer, hideDifficulty }) => {
+const PreviousExerciseWord = ({ word, answer, tiedAnswer }) => {
   const {
     surface,
     isWrong,
@@ -42,13 +43,16 @@ const PreviousExerciseWord = ({ word, answer, tiedAnswer, hideDifficulty }) => {
   const history = useHistory()
   const isPreviewMode = history.location.pathname.includes('preview')
   const learningLanguage = useSelector(learningLanguageSelector)
-  const { resource_usage, autoSpeak } = useSelector(state => state.user.data.user)
+  const { resource_usage, autoSpeak, show_review_diff, show_preview_exer } = useSelector(
+    state => state.user.data.user
+  )
   const dictionaryLanguage = useSelector(dictionaryLanguageSelector)
   const { spanAnnotations, highlightRange } = useSelector(({ annotations }) => annotations)
   const { id: storyId } = useParams()
   const { correctAnswerIDs } = useSelector(({ practice }) => practice)
   const [allowTranslating, setAllowTranslating] = useState(true)
   const { grade } = useSelector(state => state.user.data.user)
+  const mode = getMode()
 
   const intl = useIntl()
   const dispatch = useDispatch()
@@ -119,16 +123,22 @@ const PreviousExerciseWord = ({ word, answer, tiedAnswer, hideDifficulty }) => {
   const wordStartsSpan = word => !!word?.annotation
 
   const youAnsweredTooltip = answer || tiedAnswer
-
   const wordColorStyle = {
-    backgroundColor: getWordColor(word.level, grade, skillLevels, hideDifficulty),
+    backgroundColor: getWordColor(
+      word.level,
+      grade,
+      skillLevels,
+      show_review_diff,
+      show_preview_exer,
+      mode
+    ),
   }
 
   const tooltip = (
     <div
       className="tooltip-green"
-      style={{ cursor: 'pointer'}}
-      // backgroundColor: getWordColor(word.level, grade, skillLevels) 
+      style={{ cursor: 'pointer' }}
+      // backgroundColor: getWordColor(word.level, grade, skillLevels)
       onMouseDown={handleTooltipClick}
     >
       {word.message && !isPreviewMode && (

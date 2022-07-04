@@ -39,7 +39,7 @@ const PracticeView = () => {
   const snippets = useSelector(({ snippets }) => snippets)
   const { focused: story, pending } = useSelector(({ stories }) => stories)
   const { isPaused, willPause, practiceFinished } = useSelector(({ practice }) => practice)
-  const [hideDifficulty, setHideDifficulty] = useState(false)
+  const { show_review_diff } = useSelector(({ user }) => user.data.user)
   const [startModalOpen, setStartModalOpen] = useState(false)
   const intl = useIntl()
   const smallScreen = width < 700
@@ -56,7 +56,7 @@ const PracticeView = () => {
   }
 
   const currentSnippetNum = currentSnippetId() + 1
-
+  const [showDifficulty, setShowDifficulty] = useState(show_review_diff || false)
   const showPauseButton =
     (snippetsTotalNum - currentSnippetId() > 1 && !practiceFinished) ||
     (snippetsTotalNum - currentSnippetId() === 1 && isPaused)
@@ -67,6 +67,8 @@ const PracticeView = () => {
     startImmediately: false,
     timeToUpdate: 100,
   })
+
+  console.log('show practice diff ', showDifficulty)
 
   useEffect(() => {
     if (!snippets.testTime || !snippets.focused) return
@@ -185,11 +187,11 @@ const PracticeView = () => {
             <Checkbox
               toggle
               label={intl.formatMessage({ id: 'show-difficulty-level' })}
-              checked={!hideDifficulty}
-              onChange={() => setHideDifficulty(!hideDifficulty)}
+              checked={showDifficulty}
+              onChange={() => setShowDifficulty(!showDifficulty)}
               style={{ paddingTop: '.5em', marginLeft: '.5em' }}
             />
-            <PreviousSnippets hideDifficulty={hideDifficulty} />
+            <PreviousSnippets showDifficulty={showDifficulty} />
             <hr />
             <CurrentSnippet storyId={id} handleInputChange={handleAnswerChange} timer={timer} />
             <ScrollArrow />
