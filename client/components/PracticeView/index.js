@@ -5,6 +5,7 @@ import { useParams, useHistory } from 'react-router-dom'
 import { Segment, Icon, Checkbox } from 'semantic-ui-react'
 import { getStoryAction } from 'Utilities/redux/storiesReducer'
 import { clearFocusedSnippet } from 'Utilities/redux/snippetsReducer'
+import { updateShowReviewDiff } from 'Utilities/redux/userReducer'
 import { Spinner } from 'react-bootstrap'
 import {
   setTouchedIds,
@@ -68,7 +69,7 @@ const PracticeView = () => {
     timeToUpdate: 100,
   })
 
-  console.log('show practice diff ', showDifficulty)
+  // console.log('show practice diff ', showDifficulty)
 
   useEffect(() => {
     if (!snippets.testTime || !snippets.focused) return
@@ -139,6 +140,11 @@ const PracticeView = () => {
     }
   }
 
+  const updateUserReviewDiff = () => {
+    dispatch(updateShowReviewDiff(!showDifficulty))
+    setShowDifficulty(!showDifficulty)
+  }
+
   const showVirtualKeyboard = width > 500 && keyboardLayouts[learningLanguage]
   const showFooter = width > 640
 
@@ -188,7 +194,7 @@ const PracticeView = () => {
               toggle
               label={intl.formatMessage({ id: 'show-difficulty-level' })}
               checked={showDifficulty}
-              onChange={() => setShowDifficulty(!showDifficulty)}
+              onChange={updateUserReviewDiff}
               style={{ paddingTop: '.5em', marginLeft: '.5em' }}
             />
             <PreviousSnippets showDifficulty={showDifficulty} />

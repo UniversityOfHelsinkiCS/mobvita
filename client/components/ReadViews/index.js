@@ -135,7 +135,6 @@ const ReadViews = ({ match }) => {
   }
 
   const updateUserPreviewExer = () => {
-    console.log('updating exer')
     dispatch(updatePreviewExer(!previewToggleOn))
     setPreviewToggleOn(!previewToggleOn)
     setHideFeedback(!hideFeedback)

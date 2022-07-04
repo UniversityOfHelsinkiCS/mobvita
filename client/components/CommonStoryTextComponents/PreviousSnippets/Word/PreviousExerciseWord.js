@@ -123,6 +123,7 @@ const PreviousExerciseWord = ({ word, answer, tiedAnswer }) => {
   const wordStartsSpan = word => !!word?.annotation
 
   const youAnsweredTooltip = answer || tiedAnswer
+
   const wordColorStyle = {
     backgroundColor: getWordColor(
       word.level,

@@ -20,7 +20,7 @@ const TextWithFeedback = ({
   let chunkIsOneVerb = false
   const history = useHistory()
   const inControlStoryEditor = history.location.pathname.includes('controlled-story')
-
+  console.log('FEEDBACK TEXT')
   const lineColors = ['blue', 'green', 'black', 'purple', 'cyan']
 
   const getSidePadding = exercise => {

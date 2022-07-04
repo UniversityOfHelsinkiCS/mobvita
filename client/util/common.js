@@ -213,12 +213,12 @@ export function getWordColor(
   show_preview_exer,
   mode
 ) {
-  // console.log('mode on word ', mode, ' and show is ', show_review_diff)
+
   if (
     !word_level ||
     !user_grade ||
-    ((mode === 'review' || mode === 'practice') && !show_review_diff) ||
-    (mode === 'preview' && !show_preview_exer)
+    ((mode === 'review' || mode === 'practice' || mode === 'controlled-practice') && !show_review_diff) ||
+    (mode === 'preview' && !show_preview_exer) 
   ) {
     return '#FFFFFF' // white background
   }
