@@ -24,6 +24,7 @@ const LearningSettingsModal = ({ trigger }) => {
   const { groups } = useSelector(({ groups }) => groups)
   const {
     exercise_setting_template: exerciseSettingTemplate,
+    grade: grade,
     max_practice_prct: maxPracticePrct,
     auto_practice_prct: autoPracticePrct,
     practice_prct_mode: practicePrctMode,
@@ -44,11 +45,8 @@ const LearningSettingsModal = ({ trigger }) => {
   }
 
   const getCERFSliderValue = () => {
-    if (exerciseSettingTemplate) {
-      if (typeof exerciseSettingTemplate !== 'number'){
-        return 0
-      }
-      return exerciseSettingTemplate * 11 * 11
+    if (grade) {
+      return grade * 11 * 11
     }
     return 121
   }
