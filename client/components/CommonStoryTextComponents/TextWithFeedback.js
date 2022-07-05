@@ -151,89 +151,107 @@ const TextWithFeedback = ({
 
   const createdText = answers
     ? useMemo(
-        () =>
-          snippet &&
-          snippet.map((word, index) => {
-            const { pattern } = word
+      () =>
+        snippet &&
+        snippet.map((word, index) => {
+          const { pattern } = word
 
-            const chunkPosition = word.chunk && word.chunk.split('_')[1]
+          const chunkPosition = word.chunk && word.chunk.split('_')[1]
 
-            if (pattern) {
-              Object.entries(pattern)
-                .filter(([, position]) => position === 'pattern_start')
-                .forEach(([id]) => reserveLinePosition(id))
-            }
-
-            if (chunkPosition === 'start') {
-              inChunk = true
-              if (word.analytic_chunk) {
-                chunkIsOneVerb = true
-              }
-            }
-            const element = createElement(word, chunkPosition, hideFeedback)
-
-            if (pattern) {
-              Object.entries(pattern)
-                .filter(([, position]) => position === 'pattern_end')
-                .forEach(([id]) => freeLinePosition(id))
-            }
-
-            if (chunkPosition === 'end') {
-              inChunk = false
-              chunkIsOneVerb = false
-            }
-
-            return element
-          }),
-        [snippet, answers]
-      )
-    : snippet.map((word, index) => {
-        const { pattern } = word
-        if (word.surface === ' ' && mode !== 'practice') {
-          /*
-          if ((index == 0) & (snippet.length > 1)) {
-            word.level = snippet[index + 1].level
+          if (pattern) {
+            Object.entries(pattern)
+              .filter(([, position]) => position === 'pattern_start')
+              .forEach(([id]) => reserveLinePosition(id))
           }
-          if ((index == snippet.length - 1) & (snippet.length > 1)) {
+
+          if (chunkPosition === 'start') {
+            inChunk = true
+            if (word.analytic_chunk) {
+              chunkIsOneVerb = true
+            }
+          }
+          const element = createElement(word, chunkPosition, hideFeedback)
+
+          if (pattern) {
+            Object.entries(pattern)
+              .filter(([, position]) => position === 'pattern_end')
+              .forEach(([id]) => freeLinePosition(id))
+          }
+
+          if (chunkPosition === 'end') {
+            inChunk = false
+            chunkIsOneVerb = false
+          }
+
+          return element
+        }),
+      [snippet, answers]
+    )
+    : snippet.map((word, index) => {
+      const { pattern } = word
+
+      // color spaces between colored tokens
+      if (word.surface === ' ') {
+        if ((index > 0) & (index < snippet.length) & (snippet.length > 1)) {
+          if (snippet[index - 1].level & snippet[index + 1].level) {
             word.level = snippet[index - 1].level
           }
-          */
-          if ((index > 0) & (index < snippet.length) & (snippet.length > 1)) {
-            if (snippet[index - 1].level & snippet[index + 1].level) {
-              word.level = snippet[index - 1].level
+        }
+      }
+
+      // color whole analytic chunks
+      if (word.analytic_chunk) {
+        if (word.chunk === 'chunk_start') {
+          let analytic_chunk_token_idxes = [index]
+
+          let found_chunk_end = false
+          let chunk_level = undefined
+          while (!found_chunk_end) {
+            let checking_token = snippet[index + analytic_chunk_token_idxes.length]
+            analytic_chunk_token_idxes.push(index + analytic_chunk_token_idxes.length)
+            if (checking_token.level) {
+              chunk_level = checking_token.level
+            }
+            if (checking_token.chunk === 'chunk_end') {
+              found_chunk_end = true
             }
           }
+
+          analytic_chunk_token_idxes.forEach(function (idx, index) {
+            snippet[idx].level = chunk_level
+          })
         }
+      }
 
-        const chunkPosition = word.chunk && word.chunk.split('_')[1]
+      const chunkPosition = word.chunk && word.chunk.split('_')[1]
 
-        if (pattern) {
-          Object.entries(pattern)
-            .filter(([, position]) => position === 'pattern_start')
-            .forEach(([id]) => reserveLinePosition(id))
+      if (pattern) {
+        Object.entries(pattern)
+          .filter(([, position]) => position === 'pattern_start')
+          .forEach(([id]) => reserveLinePosition(id))
+      }
+
+      if (chunkPosition === 'start') {
+        inChunk = true
+        if (word.analytic_chunk) {
+          chunkIsOneVerb = true
         }
+      }
+      const element = createElement(word, chunkPosition, hideFeedback)
 
-        if (chunkPosition === 'start') {
-          inChunk = true
-          if (word.analytic_chunk) {
-            chunkIsOneVerb = true
-          }
-        }
-        const element = createElement(word, chunkPosition, hideFeedback)
+      if (pattern) {
+        Object.entries(pattern)
+          .filter(([, position]) => position === 'pattern_end')
+          .forEach(([id]) => freeLinePosition(id))
+      }
 
-        if (pattern) {
-          Object.entries(pattern)
-            .filter(([, position]) => position === 'pattern_end')
-            .forEach(([id]) => freeLinePosition(id))
-        }
+      if (chunkPosition === 'end') {
+        inChunk = false
+        chunkIsOneVerb = false
+      }
 
-        if (chunkPosition === 'end') {
-          inChunk = false
-          chunkIsOneVerb = false
-        }
-
-        return element
-      })
+      return element
+    })
 
   return (
     <span style={inControlStoryEditor ? { lineHeight: '2' } : { lineHeight: '1.75' }}>
