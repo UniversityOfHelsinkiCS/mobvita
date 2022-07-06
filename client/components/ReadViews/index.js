@@ -39,7 +39,8 @@ const ReadViews = ({ match }) => {
   const defineFeedback = () => {
     if (mode === 'review') {
       return false
-    } else if (mode === 'preview') {
+    }
+    if (mode === 'preview') {
       return !show_preview_exer
     }
 
@@ -178,11 +179,11 @@ const ReadViews = ({ match }) => {
                   }
                 />
                 */}
-              <div style={{ display: 'flex' }}>
+              <div>
                 {mode === 'preview' ? (
                   <Checkbox
                     toggle
-                    label='show preview'
+                    label="show preview"
                     checked={previewToggleOn}
                     onChange={updateUserPreviewExer}
                     style={{ paddingTop: '.5em' }}
@@ -196,24 +197,25 @@ const ReadViews = ({ match }) => {
                     style={{ paddingTop: '.5em' }}
                   />
                 )}
-                {isGroupReview && (
-                  <span style={{ marginLeft: '3em' }}>
-                    <FormattedMessage id="student" />:{' '}
-                    <Dropdown
-                      text={dropDownMenuText}
-                      selection
-                      fluid
-                      options={studentOptions}
-                      onChange={(_, { value }) => handleStudentChange(value)}
-                    />
-                  </span>
-                )}
               </div>
-              <Link to={`/stories/${id}/practice`}>
-                <Button variant="primary">
-                  <FormattedMessage id="practice-now" />
-                </Button>
-              </Link>
+              {isGroupReview ? (
+                <span style={{ marginLeft: '3em' }}>
+                  <FormattedMessage id="student" />:{' '}
+                  <Dropdown
+                    text={dropDownMenuText}
+                    selection
+                    fluid
+                    options={studentOptions}
+                    onChange={(_, { value }) => handleStudentChange(value)}
+                  />
+                </span>
+              ) : (
+                <Link to={`/stories/${id}/practice`}>
+                  <Button variant="primary">
+                    <FormattedMessage id="practice-now" />
+                  </Button>
+                </Link>
+              )}
             </div>
             {progress !== 0 && processingCurrentStory && (
               <div className="bold">
