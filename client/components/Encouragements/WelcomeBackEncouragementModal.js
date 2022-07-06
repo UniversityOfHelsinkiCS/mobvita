@@ -114,7 +114,7 @@ const WelcomeBackEncouragementModal = ({
                   <div className="pt-lg">
                     <div style={{ color: '#000000' }}>
                       <FormattedHTMLMessage id="controlled-story-reminder" />
-                      &nbsp;
+                      <br />
                       <Link to={`/stories/${sharedStory._id}/practice`}>{sharedStory.title}</Link>
                     </div>
                   </div>
