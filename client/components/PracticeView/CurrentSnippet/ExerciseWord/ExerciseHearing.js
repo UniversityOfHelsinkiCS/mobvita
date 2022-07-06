@@ -172,7 +172,7 @@ const ExerciseHearing = ({ word, handleChange }) => {
           name="volume up"
           link
           onClick={() => speakerClickHandler(word)}
-          style={{ marginLeft: '-25px' }}
+          style={{ marginLeft: '-25px', marginRight: '0.5em' }}
           disabled={iconDisabled}
         />
         {word.negation && <sup style={{ marginLeft: '3px', color: '#0000FF' }}>(neg)</sup>}
