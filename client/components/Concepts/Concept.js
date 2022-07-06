@@ -5,6 +5,7 @@ import { Collapse } from 'react-collapse'
 import { Icon, Popup } from 'semantic-ui-react'
 import { Form } from 'react-bootstrap'
 import { FormattedMessage, useIntl } from 'react-intl'
+import { skillLevels } from 'Utilities/common'
 
 const Concept = ({
   concept,
@@ -137,7 +138,7 @@ const Concept = ({
             <div style={levelsHidden}>
               {concept.level.map(level => (
                 <sup key={`${concept.concept_id}${level}`} className="concept-level">
-                  [{level}]
+                  [{skillLevels[level]}]
                 </sup>
               ))}
             </div>
