@@ -1042,7 +1042,7 @@
     "(from)category": "Category",
     "edit": "Edit",
     "notes": "Notes",
-    "create-a-note": "Create a note",
+    "create-a-note": "Add a note",
     "cancel-highlighting": "Cancel highlighting",
     "(you)wrote": "wrote",
     "(he/she)wrote": "wrote",
@@ -1206,7 +1206,7 @@
     "stories-covered-encouragement": "So far you have completed {stories} stories.",
     "words-seen-encouragement": "From the stories you have studied, you have now encountered {vocabulary_seen} new words.<br/>Would you like to review the vocabulary",
     "first-story-covered-encouragement": "Congratulations! You have completed your first story!",
-    "words-interacted-encouragement": "From this story you interacted with {nWords} new words.<br/>Would you like to review",
+    "words-interacted-encouragement": "From this story you looked up {nWords} new words.<br/>Would you like to review",
     "welcome-back-encouragement": "Welcome back, {username}!",
     "would-you-like-to-continue-story": "Last time your were working on the story  \"{story}\".<br>Would you like to continue?",
     "yes": "Yes",
@@ -1261,10 +1261,11 @@
     "group-grammar-progress": "Group grammar progress",
     "select-cefr-reminder": "Please select your CEFR-level",
     "update-settings": "Update settings",
-    "show-difficulty-level": "Show exercise difficulty levels",
-    "story-completed-to-blue-flashcards": "In this story you encountered {nWords} new words -- for which you did not check translation.\nYou can get credit for those {nWords} words!  \nLet's check some of them, to make sure that you know them!",
+    "show-difficulty-level": "Highlight exercise difficulty",
+    "story-completed-to-blue-flashcards": "In this story you encountered {nWords} new words — for which you did not check translation.\nYou can get credit for these {nWords} words!  Let's check a few of them →",
     "enable-recommendations": "Enable recommendations",
     "notification-settings": "Notifications",
     "never-show-recommendations": "Turn off recommendations",
-    "go-to-blue-flashcards": "Go to flashcards"
+    "go-to-blue-flashcards": "Go to flashcards",
+    "disable-recmd-tooltip": "This can be changed later in your personal settings page"
 }

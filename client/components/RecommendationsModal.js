@@ -1,5 +1,5 @@
 import React from 'react'
-import { updateEnableRecmd } from 'Utilities/redux/userReducer'
+import userReducer, { updateEnableRecmd } from 'Utilities/redux/userReducer'
 import { clearNewVocabulary } from 'Utilities/redux/newVocabularyReducer'
 import { useHistory, Link, useParams } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
@@ -15,6 +15,8 @@ const RecommendationsModal = ({ open, setOpen }) => {
   const { newVocabulary } = useSelector(({ newVocabulary }) => newVocabulary)
   const { pending } = useSelector(({ user }) => user)
   const { enable_recmd } = useSelector(({ user }) => user.data.user)
+  const { user } = useSelector(({ user }) => user.data.user)
+  console.log('USER ', user)
 
   const closeModal = () => {
     dispatch(clearNewVocabulary())

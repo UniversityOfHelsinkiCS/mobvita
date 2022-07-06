@@ -1260,12 +1260,13 @@
     "controlled-story-reminder": "Promemoria: hai una storia controllata",
     "general-group-summary": "Riassunto del gruppo",
     "group-grammar-progress": "Progresso grammaticale",
-    "select-cefr-reminder": "Please select your CEFR-level",
-    "update-settings": "Update settings",
-    "show-difficulty-level": "Show exercise difficulty levels",
-    "story-completed-to-blue-flashcards": "In this story you encountered {nWords} new words -- for which you did not check translation.\nYou can get credit for those {nWords} words!  \nLet's check some of them, to make sure that you know them!",
-    "enable-recommendations": "Enable recommendations",
-    "notification-settings": "Notifications",
-    "never-show-recommendations": "Turn off recommendations",
-    "go-to-blue-flashcards": "Go to flashcards"
+    "select-cefr-reminder": "Seleziona il tuo livello QCER",
+    "update-settings": "Aggiorna impostazioni",
+    "show-difficulty-level": "Evidenzia i livelli di difficoltà",
+    "story-completed-to-blue-flashcards": "In this story you encountered {nWords} new words — for which you did not check translation.\nYou can get credit for these {nWords} words!  Let's check a few of them →",
+    "enable-recommendations": "Abilita consigli",
+    "notification-settings": "Notifiche",
+    "never-show-recommendations": "Disattiva i consigli",
+    "go-to-blue-flashcards": "Go to flashcards",
+    "disable-recmd-tooltip": "This can be changed later in your personal settings page"
 }

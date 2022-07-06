@@ -1,11 +1,13 @@
 import React, { useState, useEffect } from 'react'
-import { Modal } from 'semantic-ui-react'
+import { Modal, Popup, Icon } from 'semantic-ui-react'
 import { FormattedHTMLMessage, FormattedMessage, useIntl } from 'react-intl'
-import { Link } from 'react-router-dom'
+import { updateEnableRecmd } from 'Utilities/redux/userReducer'
+import { Link, useParams } from 'react-router-dom'
 import { images } from 'Utilities/common'
 import { clearNewVocabulary } from 'Utilities/redux/newVocabularyReducer'
 import { getLeaderboards } from 'Utilities/redux/leaderboardReducer'
 import { useSelector, useDispatch } from 'react-redux'
+import { Form, Button } from 'react-bootstrap'
 
 const ExercisesEncouragementModal = ({
   open,
@@ -15,12 +17,84 @@ const ExercisesEncouragementModal = ({
   storiesCovered,
   vocabularySeen,
 }) => {
+  const { id: storyId } = useParams()
+  const [upperBound, setUpperBound] = useState(3)
+  const [recmdList, setRecmdList] = useState([])
   const { newVocabulary } = useSelector(({ newVocabulary }) => newVocabulary)
   const { user_rank } = useSelector(({ leaderboard }) => leaderboard.data)
   const [userRanking, setUserRanking] = useState(null)
   const intl = useIntl()
+  const { pending } = useSelector(({ user }) => user)
   const dispatch = useDispatch()
   const notFirst = storiesCovered > 1
+
+  const fillList = () => {
+    let initList = []
+    if (userRanking) {
+      initList = initList.concat(
+        <div className="pt-lg">
+          <div>
+            <FormattedHTMLMessage id="leaderboard-ranking-encouragement" values={{ userRanking }} />
+            &nbsp;
+            <Link to="/leaderboard">
+              <FormattedMessage id="leaderboard-link-encouragement" />
+            </Link>
+            !
+          </div>
+          <div>
+            <FormattedMessage id="practice-makes-perfect" />
+          </div>
+        </div>
+      )
+    }
+    initList = initList.concat(
+      <div className="pt-lg">
+        {intl.formatMessage({ id: 'stories-covered-encouragement' }, { stories: storiesCovered })}
+      </div>
+    )
+    initList = initList.concat(
+      <div className="pt-lg">
+        <FormattedHTMLMessage
+          id="words-seen-encouragement"
+          values={{ vocabulary_seen: vocabularySeen }}
+        />
+        &nbsp;
+        <Link to="/flashcards">
+          <FormattedMessage id="flashcards-review" />
+        </Link>
+        ?
+      </div>
+    )
+    if (newVocabulary > 0) {
+      initList = initList.concat(
+        <div className="pt-lg">
+          <FormattedHTMLMessage
+            id="story-completed-to-blue-flashcards"
+            values={{ nWords: newVocabulary }}
+          />
+          &nbsp;
+          <Link to={`/flashcards/fillin/${storyId}`}>
+            <FormattedMessage id="go-to-blue-flashcards" />
+          </Link>
+        </div>
+      )
+      initList = initList.concat(
+        <div className="pt-lg">
+          <FormattedHTMLMessage
+            id="words-interacted-encouragement"
+            values={{ nWords: newVocabulary }}
+          />
+          &nbsp;
+          <Link to="/profile/progress">
+            <FormattedMessage id="review-progress" />
+          </Link>
+          ?
+        </div>
+      )
+    }
+
+    return initList
+  }
 
   useEffect(() => {
     dispatch(getLeaderboards())
@@ -32,13 +106,19 @@ const ExercisesEncouragementModal = ({
     }
   }, [user_rank])
 
-  const closeModal = () => {
-    setOpen(false)
-    if (enable_recmd) {
-      setOpenRecmd(true)
-    } else {
-      dispatch(clearNewVocabulary())
+  useEffect(() => {
+    if (!pending) {
+      setRecmdList(fillList())
     }
+  }, [userRanking, newVocabulary])
+
+  const closeModal = () => {
+    dispatch(clearNewVocabulary())
+    setOpen(false)
+  }
+
+  const updatePreferences = () => {
+    dispatch(updateEnableRecmd(!enable_recmd))
   }
 
   return (
@@ -52,7 +132,7 @@ const ExercisesEncouragementModal = ({
       onClose={closeModal}
     >
       <Modal.Content>
-        <div className="encouragement" style={{ padding: '1.5rem' }}>
+        <div className="encouragement" style={{ padding: '1.5rem', color: '#000000' }}>
           {notFirst ? (
             <div>
               <div
@@ -60,59 +140,40 @@ const ExercisesEncouragementModal = ({
                 style={{
                   marginBottom: '1rem',
                   fontWeight: 500,
-                  color: '#000000',
                 }}
               >
                 <FormattedMessage id="story-completed-encouragement" />
               </div>
-              {userRanking && (
-                <div className="pt-lg" style={{ color: '#000000' }}>
-                  <div>
-                    <FormattedHTMLMessage
-                      id="leaderboard-ranking-encouragement"
-                      values={{ userRanking }}
-                    />
-                    &nbsp;
-                    <Link to="/leaderboard">
-                      <FormattedMessage id="leaderboard-link-encouragement" />
-                    </Link>
-                    !
-                  </div>
-                  <div>
-                    <FormattedMessage id="practice-makes-perfect" />
-                  </div>
-                </div>
+              {recmdList.map((recommendation, index) => index < upperBound && recommendation)}
+              {recmdList.length > upperBound && (
+                <Button
+                  onClick={() => setUpperBound(upperBound + 10)}
+                  styles={{ marginTop: '0.5em' }}
+                >
+                  <FormattedMessage id="show-more-recommendations" />
+                </Button>
               )}
-              <div className="pt-lg" style={{ color: '#000000' }}>
-                {intl.formatMessage(
-                  { id: 'stories-covered-encouragement' },
-                  { stories: storiesCovered }
-                )}
-              </div>
-              <div className="pt-lg" style={{ color: '#000000' }}>
-                <FormattedHTMLMessage
-                  id="words-seen-encouragement"
-                  values={{ vocabulary_seen: vocabularySeen }}
+              <div className="flex pt-lg">
+                <Popup
+                  content={intl.formatMessage({ id: 'disable-recmd-tooltip' })}
+                  trigger={
+                    <Icon style={{ marginRight: '0.5em' }} name="info circle" color="grey" />
+                  }
                 />
-                &nbsp;
-                <Link to="/flashcards">
-                  <FormattedMessage id="flashcards-review" />
-                </Link>
-                ?
-              </div>
-              {newVocabulary > 0 && (
-                <div className="pt-lg" style={{ color: '#000000' }}>
-                  <FormattedHTMLMessage
-                    id="words-interacted-encouragement"
-                    values={{ nWords: newVocabulary }}
+                <span style={{ color: '#708090' }}>
+                  <FormattedMessage id="never-show-recommendations" />
+                </span>
+                <Form.Group>
+                  <Form.Check
+                    style={{ marginLeft: '.5em', marginTop: '.25em' }}
+                    type="checkbox"
+                    inline
+                    onChange={updatePreferences}
+                    checked={!enable_recmd}
+                    disabled={pending}
                   />
-                  &nbsp;
-                  <Link to="/profile/progress">
-                    <FormattedMessage id="review-progress" />
-                  </Link>
-                  ?
-                </div>
-              )}
+                </Form.Group>
+              </div>
             </div>
           ) : (
             <div
@@ -120,7 +181,6 @@ const ExercisesEncouragementModal = ({
               style={{
                 marginBottom: '1.5rem',
                 fontWeight: 500,
-                color: '#000000',
               }}
             >
               <FormattedMessage id="first-story-covered-encouragement" />

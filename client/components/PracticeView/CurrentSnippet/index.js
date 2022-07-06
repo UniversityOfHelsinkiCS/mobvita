@@ -286,7 +286,9 @@ const CurrentSnippet = ({ storyId, handleInputChange, timer }) => {
               storiesCovered={storiesCovered}
               vocabularySeen={vocabularySeen}
             />
+            {/* 
             <RecommendationsModal open={openRecmd} setOpen={setOpenRecmd} />
+            */}
             <Button variant="primary" block onClick={() => startOver()}>
               <FormattedMessage id="restart-story" />
             </Button>

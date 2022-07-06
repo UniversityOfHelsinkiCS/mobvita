@@ -1262,9 +1262,10 @@
     "select-cefr-reminder": "Ole hyvä ja valitse CEFR-tasosi",
     "update-settings": "Päivitä asetukset",
     "show-difficulty-level": "Näytä tehtävien vaikeustasot",
-    "story-completed-to-blue-flashcards": "In this story you encountered {nWords} new words -- for which you did not check translation.\nYou can get credit for those {nWords} words!  \nLet's check some of them, to make sure that you know them!",
+    "story-completed-to-blue-flashcards": "In this story you encountered {nWords} new words — for which you did not check translation.\nYou can get credit for these {nWords} words!  Let's check a few of them →",
     "enable-recommendations": "Salli suositusten näyttäminen",
     "notification-settings": "Ilmoitukset",
     "never-show-recommendations": "Lopeta suositusten näyttäminen",
-    "go-to-blue-flashcards": "Go to flashcards"
+    "go-to-blue-flashcards": "Go to flashcards",
+    "disable-recmd-tooltip": "Tämän voi myöhemmin muuttaa profiilisi asetuksista"
 }
