@@ -28,8 +28,9 @@ const GroupPeople = ({ role }) => {
     currentGroup.students.sort(compare)
   }
 
-  const removeUser = userId => {
-    dispatch(removeFromGroup(currentGroupId, userId))
+  const removeUser = (userId, role) => {
+    console.log('role of the student is ', role)
+    dispatch(removeFromGroup(currentGroupId, userId, role))
   }
 
   const handleResendInvitationClick = userId => {
@@ -136,7 +137,7 @@ const GroupPeople = ({ role }) => {
                         style={{ cursor: 'pointer', color: 'rgb(239, 135, 132)' }}
                         name="close"
                         size="large"
-                        onClick={() => removeUser(student._id)}
+                        onClick={() => removeUser(student._id, 'student')}
                       />
                     )}
                   </Table.Cell>
@@ -163,7 +164,7 @@ const GroupPeople = ({ role }) => {
                             style={{ cursor: 'pointer' }}
                             name="close"
                             color="red"
-                            onClick={() => removeUser(student._id)}
+                            onClick={() => removeUser(student._id, 'pending_student')}
                           />
                         </div>
                       )}

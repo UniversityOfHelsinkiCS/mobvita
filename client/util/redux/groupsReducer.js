@@ -31,10 +31,13 @@ export const createGroup = (groupName, description, students, teachers) => {
   return callBuilder(route, prefix, 'post', payload)
 }
 
-export const removeFromGroup = (groupId, userId) => {
+export const removeFromGroup = (groupId, userId, role) => {
   const route = `/groups/${groupId}/remove/${userId}`
   const prefix = 'REMOVE_FROM_GROUP'
-  return callBuilder(route, prefix, 'post')
+  const payload = {
+    role,
+  }
+  return callBuilder(route, prefix, 'post', payload)
 }
 
 export const leaveFromGroup = (groupId, userId) => {
