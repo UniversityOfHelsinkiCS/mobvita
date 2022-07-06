@@ -103,7 +103,7 @@ const StoryActions = ({
   const practiceLink = isControlled
     ? `/stories/${story._id}/controlled-practice`
     : `/stories/${story._id}/preview`
-    // : `/stories/${story._id}/practice`
+  // : `/stories/${story._id}/practice`
 
   if (width >= 640) {
     return (
@@ -122,15 +122,19 @@ const StoryActions = ({
             <FormattedMessage id="Flashcards" />
           </Button>
         </Link>
-
-        <Link to={`/stories/${story._id}/preview`}>
-          <Button
-            variant={isTeacher && inGroupLibrary ? 'primary' : buttonVariant}
-            disabled={enableOnlyPractice}
-          >
-            <FormattedMessage id="preview" />
-          </Button>
-        </Link>
+        {isTeacher && inGroupLibrary ? (
+          <Link to={`/stories/${story._id}/group-preview`}>
+            <Button variant="primary" disabled={enableOnlyPractice}>
+              <FormattedMessage id="preview" />
+            </Button>
+          </Link>
+        ) : (
+          <Link to={`/stories/${story._id}/preview`}>
+            <Button variant={buttonVariant} disabled={enableOnlyPractice}>
+              <FormattedMessage id="preview" />
+            </Button>
+          </Link>
+        )}
         {isTeacher && inGroupLibrary ? (
           <Link to={`/stories/${story._id}/group-review`}>
             <Button variant="primary">

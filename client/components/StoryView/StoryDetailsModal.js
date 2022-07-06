@@ -84,11 +84,19 @@ const StoryDetailsModal = ({
                   to={`/flashcards/fillin/${story._id}/`}
                   translationId="Flashcards"
                 />
-                <LinkButton
-                  variant={isTeacher && inGroupLibrary ? 'primary' : 'secondary'}
-                  to={`/stories/${story._id}/preview`}
-                  translationId="preview"
-                />
+                {isTeacher && inGroupLibrary ? (
+                  <LinkButton
+                    variant="primary"
+                    to={`/stories/${story._id}/group-preview`}
+                    translationId="preview"
+                  />
+                ) : (
+                  <LinkButton
+                    variant="secondary"
+                    to={`/stories/${story._id}/preview`}
+                    translationId="preview"
+                  />
+                )}
                 {isTeacher && inGroupLibrary ? (
                   <Link to={`/stories/${story._id}/group-review`}>
                     <Button variant="primary">

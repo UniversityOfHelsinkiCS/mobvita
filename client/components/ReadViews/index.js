@@ -29,6 +29,7 @@ const ReadViews = ({ match }) => {
   const [showRefreshButton, setShowRefreshButton] = useState(false)
   const [currentStudent, setCurrentStudent] = useState(null)
   const isGroupReview = history.location.pathname.includes('group-review')
+  const isGroupPreview = history.location.pathname.includes('group-preview')
   const { show_review_diff, show_preview_exer } = useSelector(({ user }) => user.data.user)
   const { story, pending } = useSelector(({ stories, locale }) => ({
     story: stories.focused,
@@ -158,27 +159,6 @@ const ReadViews = ({ match }) => {
               )}
             </Header>
             <div className="space-between" style={{ alignItems: 'center' }}>
-              {/* 
-              <div style={{ display: 'flex' }}>
-                <Checkbox
-                  toggle
-                  label={checkboxLabel()}
-                  checked={!hideFeedback}
-                  onChange={() => setHideFeedback(!hideFeedback)}
-                  style={{ paddingTop: '.5em' }}
-                />
-                <Popup
-                  content={infoBoxLabel()}
-                  trigger={
-                    <Icon
-                      className="pl-sm"
-                      style={{ marginTop: '0.45em' }}
-                      name="info circle"
-                      color="grey"
-                    />
-                  }
-                />
-                */}
               <div>
                 {mode === 'preview' ? (
                   <Checkbox
@@ -198,7 +178,7 @@ const ReadViews = ({ match }) => {
                   />
                 )}
               </div>
-              {isGroupReview ? (
+              {isGroupReview && (
                 <span style={{ marginLeft: '3em' }}>
                   <FormattedMessage id="student" />:{' '}
                   <Dropdown
@@ -209,7 +189,8 @@ const ReadViews = ({ match }) => {
                     onChange={(_, { value }) => handleStudentChange(value)}
                   />
                 </span>
-              ) : (
+              )}
+              {!isGroupPreview && !isGroupReview && (
                 <Link to={`/stories/${id}/practice`}>
                   <Button variant="primary">
                     <FormattedMessage id="practice-now" />
