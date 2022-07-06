@@ -126,6 +126,8 @@ const HomeView = () => {
   const { exercise_setting_template: exerciseSettingTemplate } = useSelector(
     ({ user }) => user.data.user
   )
+  const { enable_recmd } = useSelector(({ user }) => user.data.user)
+
 
   const [practiceModalOpen, setPracticeModalOpen] = useState(false)
   const [addStoryModalOpen, setAddStoryModalOpen] = useState(false)
@@ -154,6 +156,7 @@ const HomeView = () => {
           incompleteStories={incomplete}
           pending={loading}
           learningLanguage={learningLanguage}
+          enable_recmd={enable_recmd}
         />
       )}
       {!userData.grade && userData.email !== 'anonymous_email' && (

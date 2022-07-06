@@ -33,7 +33,6 @@ import {
   resetAnnotations,
 } from 'Utilities/redux/annotationsReducer'
 import ExercisesEncouragementModal from 'Components/Encouragements/ExercisesEncouragementModal'
-import RecommendationsModal from 'Components/RecommendationsModal'
 import SnippetActions from './SnippetActions'
 import PracticeText from './PracticeText'
 
@@ -67,7 +66,6 @@ const CurrentSnippet = ({ storyId, handleInputChange, timer }) => {
     const { snippetid } = snippets.focused
     return snippetid[snippetid.length - 1]
   }
-  const [openRecmd, setOpenRecmd] = useState(false)
 
   const getExerciseCount = () => {
     let count = 0
@@ -281,14 +279,10 @@ const CurrentSnippet = ({ storyId, handleInputChange, timer }) => {
             <ExercisesEncouragementModal
               open={openEncouragement}
               setOpen={setOpenEncouragement}
-              setOpenRecmd={setOpenRecmd}
               enable_recmd={enable_recmd}
               storiesCovered={storiesCovered}
               vocabularySeen={vocabularySeen}
             />
-            {/* 
-            <RecommendationsModal open={openRecmd} setOpen={setOpenRecmd} />
-            */}
             <Button variant="primary" block onClick={() => startOver()}>
               <FormattedMessage id="restart-story" />
             </Button>

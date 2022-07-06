@@ -12,7 +12,6 @@ import { Form, Button } from 'react-bootstrap'
 const ExercisesEncouragementModal = ({
   open,
   setOpen,
-  setOpenRecmd,
   enable_recmd,
   storiesCovered,
   vocabularySeen,
