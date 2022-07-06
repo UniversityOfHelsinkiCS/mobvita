@@ -217,6 +217,7 @@ export function getWordColor(
   if (
     !word_level ||
     !user_grade ||
+    mode === 'controlled-story-editor' ||
     ((mode === 'review' || mode === 'practice' || mode === 'controlled-practice') && !show_review_diff) ||
     (mode === 'preview' && !show_preview_exer) 
   ) {
