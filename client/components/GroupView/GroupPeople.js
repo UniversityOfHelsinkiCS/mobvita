@@ -29,7 +29,6 @@ const GroupPeople = ({ role }) => {
   }
 
   const removeUser = (userId, role) => {
-    console.log('role of the student is ', role)
     dispatch(removeFromGroup(currentGroupId, userId, role))
   }
 

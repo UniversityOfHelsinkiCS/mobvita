@@ -42,7 +42,7 @@ const WelcomeBackEncouragementModal = ({
 
   useEffect(() => {
     if (stories) {
-      const sharedIncompleteStories = stories.filter(story => story.shared && !story.has_read)
+      const sharedIncompleteStories = stories.filter(story => story.shared && !story.has_read && story.control_story)
       if (sharedIncompleteStories) {
         setSharedStory(sharedIncompleteStories[0])
       }
