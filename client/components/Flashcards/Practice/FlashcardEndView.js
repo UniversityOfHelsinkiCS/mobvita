@@ -1,9 +1,16 @@
 import React, { useState, useEffect } from 'react'
 import { FormattedMessage } from 'react-intl'
+import { useSelector } from 'react-redux'
 import { Button } from 'react-bootstrap'
+import FlashcardsEncouragement from 'Components/Encouragements/FlashcardsEncouragement'
 
-const FlashcardEndView = ({ handleNewDeck }) => {
+const FlashcardEndView = ({ handleNewDeck, deckSize }) => {
   // A bit hacky way to move to next deck with right arrow or enter
+  const { correctAnswers, wrongAnswers } = useSelector(({ flashcards }) => flashcards)
+  const { enable_recmd } = useSelector(({ user }) => user.data.user)
+
+  console.log(correctAnswers, ' out of ', deckSize)
+  const allCorrect = correctAnswers === deckSize
   const useKeyPress = targetKey => {
     const [keyPressed, setKeyPressed] = useState(false)
     function downHandler({ key }) {
@@ -31,6 +38,7 @@ const FlashcardEndView = ({ handleNewDeck }) => {
 
   const RightArrowPress = useKeyPress('ArrowRight')
   const EnterPress = useKeyPress('Enter')
+  const [open, setOpen] = useState(enable_recmd)
 
   if (RightArrowPress || EnterPress) {
     handleNewDeck()
@@ -39,6 +47,14 @@ const FlashcardEndView = ({ handleNewDeck }) => {
   return (
     <div className="flashcard justify-center">
       <div>
+        {wrongAnswers + correctAnswers === deckSize && (
+          <FlashcardsEncouragement
+            open={open}
+            setOpen={setOpen}
+            allCorrect={allCorrect}
+            enable_recmd={enable_recmd}
+          />
+        )}
         <p style={{ fontWeight: '500', fontSize: '1.2em', padding: '1em' }}>
           <FormattedMessage id="well-done-click-next-card-to-play-another-set-of-cards" />
         </p>

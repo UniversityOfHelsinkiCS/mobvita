@@ -40,7 +40,6 @@ const CurrentSnippet = ({ storyId, handleInputChange, timer }) => {
   const [exerciseCount, setExerciseCount] = useState(0)
   const practiceForm = useRef(null)
   const dispatch = useDispatch()
-  const [openEncouragement, setOpenEncouragement] = useState(true)
   const { enable_recmd } = useSelector(({ user }) => user.data.user)
   const snippets = useSelector(({ snippets }) => snippets)
   const answersPending = useSelector(({ snippets }) => snippets.answersPending)
@@ -51,7 +50,7 @@ const CurrentSnippet = ({ storyId, handleInputChange, timer }) => {
   const history = useHistory()
   const isControlledStory = history.location.pathname.includes('controlled-practice')
   const sessionId = snippets?.sessionId ?? null
-
+  const [openEncouragement, setOpenEncouragement] = useState(enable_recmd)
   if (!userData) {
     return
   }

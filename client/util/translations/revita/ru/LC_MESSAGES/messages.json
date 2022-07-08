@@ -1270,5 +1270,9 @@
     "notification-settings": "Уведомления",
     "never-show-recommendations": "Отключить рекомендации",
     "go-to-blue-flashcards": "Go to flashcards",
-    "disable-recmd-tooltip": "This can be changed later in your personal settings page"
+    "disable-recmd-tooltip": "This can be changed later in your personal settings page",
+    "show-more-recommendations": "Дополнительные рекоммендации",
+    "all-correct-flashcards": "Well done! Would you like to",
+    "some-incorrect-flashcards": "Some answers were wrong. Would you like to",
+    "flashcards-try-again": "Try again"
 }

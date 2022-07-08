@@ -114,7 +114,9 @@ const Practice = ({ mode }) => {
 
   const slideRenderer = ({ key, index }) => {
     if (index >= cards.length) {
-      return <FlashcardEndView key="end-view" handleNewDeck={handleNewDeck} />
+      return (
+        <FlashcardEndView key="end-view" handleNewDeck={handleNewDeck} deckSize={cards.length} />
+      )
     }
 
     switch (mode) {

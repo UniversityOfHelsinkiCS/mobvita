@@ -38,16 +38,34 @@ export const updateFlashcard = (id, removedHints, newHints, glosses) => {
   return callBuilder(route, prefix, 'post', data)
 }
 
+export const addToCorrectAnswers = () => ({ type: 'ADD_TO_CORRECT_ANSWERS' })
+
+export const addToWrongAnswers = () => ({ type: 'ADD_TO_WRONG_ANSWERS' })
+
+// Reducer
+
 const initialState = {
   pending: false,
   cards: [],
   nounCards: [],
+  correctAnswers: 0,
+  wrongAnswers: 0,
 }
 
 const deleteCard = (cards, response) => cards.filter(card => card._id !== response.flashcard_id)
 
 export default (state = initialState, action) => {
   switch (action.type) {
+    case 'ADD_TO_CORRECT_ANSWERS':
+      return {
+        ...state,
+        correctAnswers: state.correctAnswers + 1,
+      }
+    case 'ADD_TO_WRONG_ANSWERS':
+      return {
+        ...state,
+        wrongAnswers: state.wrongAnswers + 1,
+      }
     case 'GET_FLASHCARDS_ATTEMPT':
       return {
         ...state,
@@ -60,6 +78,8 @@ export default (state = initialState, action) => {
         nounCards: action.response.flashcards.nouns,
         sessionId: action.response.session_id,
         pending: false,
+        correctAnswers: 0,
+        wrongAnswers: 0,
       }
     case 'GET_FLASHCARDS_FAILURE':
       return {

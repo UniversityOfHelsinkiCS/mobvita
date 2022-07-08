@@ -117,6 +117,7 @@ const HomeView = () => {
   const history = useHistory()
   const userData = useSelector(state => state.user.data.user)
   const { username } = userData
+  const { enable_recmd } = useSelector(({ user }) => user.data.user)
   const storiesCovered = userData.stories_covered
   const learningLanguage = userData ? userData.last_used_language : null
   const { incomplete, loading } = useSelector(({ incomplete }) => ({
@@ -126,12 +127,13 @@ const HomeView = () => {
   const { exercise_setting_template: exerciseSettingTemplate } = useSelector(
     ({ user }) => user.data.user
   )
-  const { enable_recmd } = useSelector(({ user }) => user.data.user)
+
 
 
   const [practiceModalOpen, setPracticeModalOpen] = useState(false)
   const [addStoryModalOpen, setAddStoryModalOpen] = useState(false)
-  const [openEncouragement, setOpenEncouragement] = useState(true)
+  console.log('encouragements open ', enable_recmd)
+  const [openEncouragement, setOpenEncouragement] = useState(enable_recmd)
   const [openReminder, setOpenReminder] = useState(true)
 
   const showWelcomeModal =

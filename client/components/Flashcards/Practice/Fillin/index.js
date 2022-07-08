@@ -1,7 +1,11 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { useDispatch } from 'react-redux'
 import ReactCardFlip from 'react-card-flip'
-import { updateFlashcard } from 'Utilities/redux/flashcardReducer'
+import {
+  updateFlashcard,
+  addToCorrectAnswers,
+  addToWrongAnswers,
+} from 'Utilities/redux/flashcardReducer'
 import { levenshteinDistance, normalizeDiacritics } from 'Utilities/common'
 import { useIntl } from 'react-intl'
 import FlashcardFront from './FlashcardFront'
@@ -35,6 +39,15 @@ const Fillin = ({
     const newSavedHints = hints.filter(h => !card.hint.some(oh => oh.hint === h))
     return unsavedHint ? newSavedHints.concat(unsavedHint) : newSavedHints
   }
+
+  useEffect(() => {
+    if (answerCorrect === true) {
+      dispatch(addToCorrectAnswers())
+    } else if (answerCorrect === false) {
+      console.log('answer should be false')
+      dispatch(addToWrongAnswers())
+    }
+  }, [answerCorrect])
 
   const saveCard = unsavedHint => {
     dispatch(updateFlashcard(id, getRemovedHints(), getNewHints(unsavedHint), translations))
