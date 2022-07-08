@@ -46,6 +46,20 @@ const ExercisesEncouragementModal = ({
         </div>
       )
     }
+    if (newVocabulary > 0) {
+      initList = initList.concat(
+        <div className="pt-lg">
+          <FormattedHTMLMessage
+            id="story-completed-to-blue-flashcards"
+            values={{ nWords: newVocabulary }}
+          />
+          &nbsp;
+          <Link to={`/flashcards/fillin/${storyId}`}>
+            <FormattedMessage id="go-to-blue-flashcards" />
+          </Link>
+        </div>
+      )
+    }
     initList = initList.concat(
       <div className="pt-lg">
         {intl.formatMessage({ id: 'stories-covered-encouragement' }, { stories: storiesCovered })}
@@ -65,18 +79,6 @@ const ExercisesEncouragementModal = ({
       </div>
     )
     if (newVocabulary > 0) {
-      initList = initList.concat(
-        <div className="pt-lg">
-          <FormattedHTMLMessage
-            id="story-completed-to-blue-flashcards"
-            values={{ nWords: newVocabulary }}
-          />
-          &nbsp;
-          <Link to={`/flashcards/fillin/${storyId}`}>
-            <FormattedMessage id="go-to-blue-flashcards" />
-          </Link>
-        </div>
-      )
       initList = initList.concat(
         <div className="pt-lg">
           <FormattedHTMLMessage
