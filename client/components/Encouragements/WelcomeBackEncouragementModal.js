@@ -50,64 +50,62 @@ const WelcomeBackEncouragementModal = ({
           </div>
         </div>
       )
-      if (latestIncompleteStory) {
-        initList = initList.concat(
-          <div>
-            <div className="pt-lg">
-              <div style={{ color: '#000000' }}>
-                <FormattedHTMLMessage
-                  id="would-you-like-to-continue"
-                  values={{ story: latestIncompleteStory.title }}
-                />
-                &nbsp;
-                <Link
-                  to={`/stories/${incompleteStories[incompleteStories.length - 1]._id}/practice`}
-                >
-                  <FormattedMessage id="continue-reading" />
-                </Link>
-                ?
-              </div>
-            </div>
-          </div>
-        )
-      }
-      if (sharedStory) {
-        initList = initList.concat(
-          <div>
-            <div className="pt-lg">
-              <div style={{ color: '#000000' }}>
-                <FormattedHTMLMessage id="controlled-story-reminder" />
-                <br />
-                <Link to={`/stories/${sharedStory._id}/controlled-practice`}>
-                  {sharedStory.title}
-                </Link>
-              </div>
-            </div>
-          </div>
-        )
-      }
-      if (storiesToReview.length > 0) {
-        initList = initList.concat(
-          <div>
-            <div className="pt-lg" style={{ color: '#000000' }}>
-              <FormattedMessage id="review-recent-stories" />
-            </div>
-            <ul>
-              {storiesToReview.map(story => (
-                <li style={{ color: '#000000', marginTop: '0.5rem' }}>
-                  <Link to={`/stories/${story._id}/preview`}>{story.title}</Link>
-                </li>
-              ))}
-            </ul>
-          </div>
-        )
-      }
+    }
+    if (sharedStory) {
       initList = initList.concat(
-        <div className="pt-lg" style={{ color: '#000000' }}>
-          {intl.formatMessage({ id: 'stories-covered-encouragement' }, { stories: storiesCovered })}
+        <div>
+          <div className="pt-lg">
+            <div style={{ color: '#000000' }}>
+              <FormattedHTMLMessage id="controlled-story-reminder" />
+              <br />
+              <Link to={`/stories/${sharedStory._id}/controlled-practice`}>
+                {sharedStory.title}
+              </Link>
+            </div>
+          </div>
         </div>
       )
     }
+    if (latestIncompleteStory) {
+      initList = initList.concat(
+        <div>
+          <div className="pt-lg">
+            <div style={{ color: '#000000' }}>
+              <FormattedHTMLMessage
+                id="would-you-like-to-continue"
+                values={{ story: latestIncompleteStory.title }}
+              />
+              &nbsp;
+              <Link to={`/stories/${incompleteStories[incompleteStories.length - 1]._id}/practice`}>
+                <FormattedMessage id="continue-reading" />
+              </Link>
+              ?
+            </div>
+          </div>
+        </div>
+      )
+    }
+    if (storiesToReview.length > 0) {
+      initList = initList.concat(
+        <div>
+          <div className="pt-lg" style={{ color: '#000000' }}>
+            <FormattedMessage id="review-recent-stories" />
+          </div>
+          <ul>
+            {storiesToReview.map(story => (
+              <li style={{ color: '#000000', marginTop: '0.5rem' }}>
+                <Link to={`/stories/${story._id}/preview`}>{story.title}</Link>
+              </li>
+            ))}
+          </ul>
+        </div>
+      )
+    }
+    initList = initList.concat(
+      <div className="pt-lg" style={{ color: '#000000' }}>
+        {intl.formatMessage({ id: 'stories-covered-encouragement' }, { stories: storiesCovered })}
+      </div>
+    )
 
     return initList
   }
