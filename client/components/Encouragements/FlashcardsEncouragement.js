@@ -5,8 +5,18 @@ import { useDispatch, useSelector } from 'react-redux'
 import { updateEnableRecmd } from 'Utilities/redux/userReducer'
 import { Link, useHistory } from 'react-router-dom'
 import { Form } from 'react-bootstrap'
+import { images } from 'Utilities/common'
 
-const FlashcardsEncouragement = ({ open, setOpen, allCorrect, enable_recmd }) => {
+const FlashcardsEncouragement = ({
+  open,
+  setOpen,
+  correctAnswers,
+  deckSize,
+  enable_recmd,
+  handleNewDeck,
+  vocabularySeen,
+  incomplete,
+}) => {
   const history = useHistory()
   const intl = useIntl()
   const dispatch = useDispatch()
@@ -15,13 +25,11 @@ const FlashcardsEncouragement = ({ open, setOpen, allCorrect, enable_recmd }) =>
   const blueFlashcards = history.location.pathname.includes('fillin')
   const { pending } = useSelector(({ user }) => user)
 
-  console.log(history.location.pathname)
-
   const fillList = () => {
     let initList = []
 
     if (blueFlashcards) {
-      if (allCorrect) {
+      if (correctAnswers === deckSize) {
         initList = initList.concat(
           <div className="pt-lg">
             <FormattedHTMLMessage id="all-correct-flashcards" />
@@ -37,13 +45,61 @@ const FlashcardsEncouragement = ({ open, setOpen, allCorrect, enable_recmd }) =>
           <div className="pt-lg">
             <FormattedHTMLMessage id="some-incorrect-flashcards" />
             &nbsp;
-            <Link to={`${history.location.pathname}-retry`}>
+            <Link onClick={() => handleNewDeck()}>
               <FormattedMessage id="flashcards-try-again" />
             </Link>
             ?
           </div>
         )
       }
+
+      initList = initList.concat(
+        <div className="pt-lg">
+          <FormattedHTMLMessage
+            id="words-seen-encouragement"
+            values={{ vocabulary_seen: vocabularySeen }}
+          />
+          &nbsp;
+          <Link to="/flashcards">
+            <FormattedMessage id="flashcards-review" />
+          </Link>
+          ?
+        </div>
+      )
+    } else {
+      if (incomplete.length > 0) {
+        initList = initList.concat(
+          <div>
+            <div className="pt-lg">
+              <div style={{ color: '#000000' }}>
+                <FormattedHTMLMessage
+                  id="would-you-like-to-continue"
+                  values={{ story: incomplete[incomplete.length - 1].title }}
+                />
+                &nbsp;
+                <Link to={`/stories/${incomplete[incomplete.length - 1]._id}/practice`}>
+                  <FormattedMessage id="continue-reading" />
+                </Link>
+                ?
+              </div>
+            </div>
+          </div>
+        )
+      }
+      init = initList.concat(
+        <div>
+          <div className="pt-lg">
+            <div style={{ color: '#000000' }}>
+              <FormattedMessage id="go-back-to-library" />
+              &nbsp;
+              <Link to="/library">
+                <FormattedMessage id="go-back-to-library2" />
+              </Link>
+              ?
+            </div>
+          </div>
+        </div>
+      )
     }
 
     return initList
@@ -55,7 +111,7 @@ const FlashcardsEncouragement = ({ open, setOpen, allCorrect, enable_recmd }) =>
 
   useEffect(() => {
     setRecmdList(fillList())
-  }, [allCorrect])
+  }, [])
 
   const updatePreferences = () => {
     dispatch(updateEnableRecmd(!enable_recmd))
@@ -65,7 +121,7 @@ const FlashcardsEncouragement = ({ open, setOpen, allCorrect, enable_recmd }) =>
     <Modal
       basic
       open={open}
-      size="small"
+      size="tiny"
       centered={false}
       dimmer="blurring"
       closeIcon={{ style: { top: '2.5rem', right: '2.5rem' }, color: 'black', name: 'close' }}
@@ -74,6 +130,13 @@ const FlashcardsEncouragement = ({ open, setOpen, allCorrect, enable_recmd }) =>
       <Modal.Content>
         <div className="encouragement" style={{ padding: '1.5rem', color: '#000000' }}>
           {recmdList.map((recommendation, index) => index < upperBound && recommendation)}
+          <div className="encouragement-picture pt-sm">
+            <img
+              src={images.fireworks}
+              alt="encouraging fireworks"
+              style={{ maxWidth: '25%', maxHeight: '25%' }}
+            />
+          </div>
           <div className="flex pt-lg">
             <Form.Group>
               <Form.Check

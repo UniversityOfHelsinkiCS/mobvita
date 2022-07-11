@@ -1,16 +1,32 @@
 import React, { useState, useEffect } from 'react'
 import { FormattedMessage } from 'react-intl'
-import { useSelector } from 'react-redux'
+import { useSelector, useDispatch } from 'react-redux'
 import { Button } from 'react-bootstrap'
+import { getIncompleteStories } from 'Utilities/redux/incompleteStoriesReducer'
+import { learningLanguageSelector } from 'Utilities/common'
 import FlashcardsEncouragement from 'Components/Encouragements/FlashcardsEncouragement'
 
 const FlashcardEndView = ({ handleNewDeck, deckSize }) => {
   // A bit hacky way to move to next deck with right arrow or enter
-  const { correctAnswers, wrongAnswers } = useSelector(({ flashcards }) => flashcards)
+  const { correctAnswers, totalAnswers } = useSelector(({ flashcards }) => flashcards)
   const { enable_recmd } = useSelector(({ user }) => user.data.user)
-
+  const dispatch = useDispatch()
+  const { vocabularySeen } = useSelector(state => state.user.data.user)
+  const { incomplete, loading } = useSelector(({ incomplete }) => ({
+    incomplete: incomplete.data,
+    loading: incomplete.pending,
+  }))
+  const learningLanguage = useSelector(learningLanguageSelector)
   console.log(correctAnswers, ' out of ', deckSize)
-  const allCorrect = correctAnswers === deckSize
+
+  useEffect(() => {
+    dispatch(
+      getIncompleteStories(learningLanguage, {
+        sort_by: 'access',
+      })
+    )
+  }, [])
+
   const useKeyPress = targetKey => {
     const [keyPressed, setKeyPressed] = useState(false)
     function downHandler({ key }) {
@@ -40,19 +56,23 @@ const FlashcardEndView = ({ handleNewDeck, deckSize }) => {
   const EnterPress = useKeyPress('Enter')
   const [open, setOpen] = useState(enable_recmd)
 
-  if (RightArrowPress || EnterPress) {
+  if ((RightArrowPress || EnterPress) && !open) {
     handleNewDeck()
   }
 
   return (
     <div className="flashcard justify-center">
       <div>
-        {wrongAnswers + correctAnswers === deckSize && (
+        {totalAnswers === deckSize && !loading && (
           <FlashcardsEncouragement
             open={open}
             setOpen={setOpen}
-            allCorrect={allCorrect}
+            correctAnswers={correctAnswers}
+            deckSize={deckSize}
             enable_recmd={enable_recmd}
+            handleNewDeck={handleNewDeck}
+            vocabularySeen={vocabularySeen}
+            incomplete={incomplete}
           />
         )}
         <p style={{ fontWeight: '500', fontSize: '1.2em', padding: '1em' }}>

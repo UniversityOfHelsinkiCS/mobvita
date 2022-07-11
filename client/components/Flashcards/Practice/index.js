@@ -3,9 +3,14 @@ import SwipeableViews from 'react-swipeable-views'
 import { virtualize, bindKeyboard } from 'react-swipeable-views-utils'
 import flowRight from 'lodash/flowRight'
 import { useDispatch, useSelector, shallowEqual } from 'react-redux'
-import { useParams } from 'react-router-dom'
+import { useParams, useHistory } from 'react-router-dom'
 import { Icon } from 'semantic-ui-react'
-import { getFlashcards, recordFlashcardAnswer } from 'Utilities/redux/flashcardReducer'
+import {
+  getFlashcards,
+  getBlueFlashcards,
+  recordFlashcardAnswer,
+  addToTotal,
+} from 'Utilities/redux/flashcardReducer'
 import { getSelf } from 'Utilities/redux/userReducer'
 import { learningLanguageSelector, dictionaryLanguageSelector } from 'Utilities/common'
 import useWindowDimension from 'Utilities/windowDimensions'
@@ -22,7 +27,7 @@ const Practice = ({ mode }) => {
   const [swipeIndex, setSwipeIndex] = useState(0)
   const [editing, setEditing] = useState(false)
   const [amountAnswered, setAmountAnswered] = useState(0)
-
+  const history = useHistory()
   const learningLanguage = useSelector(learningLanguageSelector)
   const dictionaryLanguage = useSelector(dictionaryLanguageSelector)
   const { flashcardArticles } = useSelector(({ metadata }) => metadata)
@@ -49,6 +54,7 @@ const Practice = ({ mode }) => {
   const { storyId } = useParams()
   const dispatch = useDispatch()
 
+  const inFillin = history.location.pathname.includes('fillin')
   useEffect(() => {
     setSwipeIndex(0)
   }, [pending])
@@ -59,7 +65,11 @@ const Practice = ({ mode }) => {
   }, [amountAnswered])
 
   useEffect(() => {
-    dispatch(getFlashcards(learningLanguage, dictionaryLanguage, storyId))
+    if (inFillin) {
+      dispatch(getBlueFlashcards(learningLanguage, dictionaryLanguage, storyId))
+    } else {
+      dispatch(getFlashcards(learningLanguage, dictionaryLanguage, storyId))
+    }
   }, [storyId, dictionaryLanguage, mode])
 
   // Limits so that you cant swipe back more than once.
@@ -67,6 +77,7 @@ const Practice = ({ mode }) => {
   const handleIndexChange = index => {
     const oldIndex = swipeIndex
     setSwipeIndex(index)
+    dispatch(addToTotal())
     setTimeout(() => {
       if (index < oldIndex) setSwipeIndex(oldIndex)
     }, 1)
@@ -74,7 +85,11 @@ const Practice = ({ mode }) => {
 
   const handleNewDeck = () => {
     setSwipeIndex(0)
-    dispatch(getFlashcards(learningLanguage, dictionaryLanguage, storyId))
+    if (inFillin) {
+      dispatch(getBlueFlashcards(learningLanguage, dictionaryLanguage, storyId))
+    } else {
+      dispatch(getFlashcards(learningLanguage, dictionaryLanguage, storyId))
+    }
   }
 
   const answerCard = (answer, correct, exercise, displayedHints) => {

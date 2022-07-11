@@ -7,6 +7,12 @@ export const getFlashcards = (inputLanguage, outputLanguage, storyId = '') => {
   return callBuilder(route, prefix, 'get')
 }
 
+export const getBlueFlashcards = (inputLanguage, outputLanguage, storyId = '') => {
+  const route = `/flashcards/${inputLanguage}/${outputLanguage}?story_id=${storyId}&flashcard_test=True`
+  const prefix = 'GET_BLUE_FLASHCARDS'
+  return callBuilder(route, prefix, 'get')
+}
+
 export const recordFlashcardAnswer = (inputLanguage, outputLanguage, answerDetails) => {
   const route = `/flashcards/${inputLanguage}/${outputLanguage}/answer`
   const prefix = 'ANSWER_FLASHCARD'
@@ -40,7 +46,7 @@ export const updateFlashcard = (id, removedHints, newHints, glosses) => {
 
 export const addToCorrectAnswers = () => ({ type: 'ADD_TO_CORRECT_ANSWERS' })
 
-export const addToWrongAnswers = () => ({ type: 'ADD_TO_WRONG_ANSWERS' })
+export const addToTotal = () => ({ type: 'ADD_TO_TOTAL_ANSWERS' })
 
 // Reducer
 
@@ -49,7 +55,7 @@ const initialState = {
   cards: [],
   nounCards: [],
   correctAnswers: 0,
-  wrongAnswers: 0,
+  totalAnswers: 0,
 }
 
 const deleteCard = (cards, response) => cards.filter(card => card._id !== response.flashcard_id)
@@ -61,10 +67,10 @@ export default (state = initialState, action) => {
         ...state,
         correctAnswers: state.correctAnswers + 1,
       }
-    case 'ADD_TO_WRONG_ANSWERS':
+    case 'ADD_TO_TOTAL_ANSWERS':
       return {
         ...state,
-        wrongAnswers: state.wrongAnswers + 1,
+        totalAnswers: state.totalAnswers + 1,
       }
     case 'GET_FLASHCARDS_ATTEMPT':
       return {
@@ -72,6 +78,7 @@ export default (state = initialState, action) => {
         pending: true,
       }
     case 'GET_FLASHCARDS_SUCCESS':
+      console.log('RES ', action.response)
       return {
         ...state,
         cards: action.response.flashcards.all,
@@ -79,9 +86,30 @@ export default (state = initialState, action) => {
         sessionId: action.response.session_id,
         pending: false,
         correctAnswers: 0,
-        wrongAnswers: 0,
+        totalAnswers: 0,
       }
     case 'GET_FLASHCARDS_FAILURE':
+      return {
+        ...state,
+        pending: false,
+      }
+    case 'GET_BLUE_FLASHCARDS_ATTEMPT':
+      return {
+        ...state,
+        pending: true,
+      }
+    case 'GET_BLUE_FLASHCARDS_SUCCESS':
+      console.log('RES BLUE ', action.response)
+      return {
+        ...state,
+        cards: action.response.flashcards.r_all,
+        nounCards: action.response.flashcards.nouns,
+        sessionId: action.response.session_id,
+        pending: false,
+        correctAnswers: 0,
+        totalAnswers: 0,
+      }
+    case 'GET_BLUE_FLASHCARDS_FAILURE':
       return {
         ...state,
         pending: false,

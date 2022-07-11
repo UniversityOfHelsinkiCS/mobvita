@@ -1,11 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import { useDispatch } from 'react-redux'
 import ReactCardFlip from 'react-card-flip'
-import {
-  updateFlashcard,
-  addToCorrectAnswers,
-  addToWrongAnswers,
-} from 'Utilities/redux/flashcardReducer'
+import { updateFlashcard, addToCorrectAnswers } from 'Utilities/redux/flashcardReducer'
 import { levenshteinDistance, normalizeDiacritics } from 'Utilities/common'
 import { useIntl } from 'react-intl'
 import FlashcardFront from './FlashcardFront'
@@ -43,9 +39,6 @@ const Fillin = ({
   useEffect(() => {
     if (answerCorrect === true) {
       dispatch(addToCorrectAnswers())
-    } else if (answerCorrect === false) {
-      console.log('answer should be false')
-      dispatch(addToWrongAnswers())
     }
   }, [answerCorrect])
 

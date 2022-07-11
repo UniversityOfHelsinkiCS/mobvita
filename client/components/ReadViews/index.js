@@ -163,7 +163,7 @@ const ReadViews = ({ match }) => {
                 {mode === 'preview' ? (
                   <Checkbox
                     toggle
-                    label="show preview"
+                    label={intl.formatMessage({ id: 'show preview' })}
                     checked={previewToggleOn}
                     onChange={updateUserPreviewExer}
                     style={{ paddingTop: '.5em' }}
