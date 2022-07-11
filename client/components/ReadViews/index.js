@@ -179,8 +179,10 @@ const ReadViews = ({ match }) => {
                 )}
               </div>
               {isGroupReview && (
-                <span style={{ marginLeft: '3em' }}>
-                  <FormattedMessage id="student" />:{' '}
+                <div className="row-flex" style={{ marginLeft: '3em' }}>
+                  <span style={{ marginRight: '.5em' }}>
+                    <FormattedMessage id="student" />:{' '}
+                  </span>
                   <Dropdown
                     text={dropDownMenuText}
                     selection
@@ -188,7 +190,7 @@ const ReadViews = ({ match }) => {
                     options={studentOptions}
                     onChange={(_, { value }) => handleStudentChange(value)}
                   />
-                </span>
+                </div>
               )}
               {!isGroupPreview && !isGroupReview && (
                 <Link to={`/stories/${id}/practice`}>
