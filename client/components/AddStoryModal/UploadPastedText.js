@@ -15,9 +15,10 @@ const UploadPastedText = ({ closeModal }) => {
   const [title, setTitle] = useState('')
   const [text, setText] = useState('')
   const [charactersLeft, setCharactersLeft] = useState(maxCharacters)
+  const [titleTaken, setTitleTaken] = useState(false)
   const learningLanguage = useSelector(learningLanguageSelector)
   const { pending, storyId, progress } = useSelector(({ uploadProgress }) => uploadProgress)
-
+  const { data } = useSelector(({ stories }) => stories)
   const dispatch = useDispatch()
 
   const handleTextChange = e => {
@@ -26,18 +27,24 @@ const UploadPastedText = ({ closeModal }) => {
   }
 
   const addText = async () => {
-    const combineTitleAndText = `${title}\n${text}`
-    const newStory = {
-      language: capitalize(learningLanguage),
-      text: combineTitleAndText,
-    }
-    dispatch(updateLibrarySelect('private'))
-    dispatch(setCustomUpload(true))
-    await dispatch(postStory(newStory))
-    dispatch(setNotification('processing-story', 'info'))
-    closeModal()
+    const storyWithSameTitle = data.find(story => story.title === title)
+    if (!storyWithSameTitle) {
+      const combineTitleAndText = `${title}\n${text}`
+      const newStory = {
+        language: capitalize(learningLanguage),
+        text: combineTitleAndText,
+      }
 
-    if (history.location.pathname !== 'library') history.push('/library')
+      dispatch(updateLibrarySelect('private'))
+      dispatch(setCustomUpload(true))
+      await dispatch(postStory(newStory))
+      dispatch(setNotification('processing-story', 'info'))
+      closeModal()
+
+      if (history.location.pathname !== 'library') history.push('/library')
+    } else {
+      setTitleTaken(true)
+    }
   }
 
   useEffect(() => {
@@ -76,18 +83,25 @@ const UploadPastedText = ({ closeModal }) => {
           <FormattedMessage id="characters-left" />
           {` ${charactersLeft}`}
         </div>
-        <Button onClick={addText} disabled={submitDisabled} style={{ marginTop: '1em' }}>
-          {pending || storyId ? (
-            <Spinner animation="border" variant="dark" size="lg" />
-          ) : (
-            <span>
-              <FormattedMessage id="Confirm" />
+        <div className="row-flex">
+          <Button onClick={addText} disabled={submitDisabled} style={{ marginTop: '1em' }}>
+            {pending || storyId ? (
+              <Spinner animation="border" variant="dark" size="lg" />
+            ) : (
+              <span>
+                <FormattedMessage id="Confirm" />
+              </span>
+            )}
+          </Button>
+          {titleTaken && (
+            <span style={{ marginLeft: '.5em', marginTop: '.75em', color: '#FF0000' }}>
+              <FormattedMessage id="story-title-already-taken" />
             </span>
           )}
-        </Button>
+        </div>
       </div>
       {textTooLong && (
-        <span className="additional-info">
+        <span className="additional-info" style={{ marginTop: '.5en' }}>
           <FormattedMessage id="this-text-is-too-long-maximum-50000-characters" />
         </span>
       )}
