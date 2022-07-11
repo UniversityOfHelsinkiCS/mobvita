@@ -54,7 +54,7 @@ const Practice = ({ mode }) => {
   const { storyId } = useParams()
   const dispatch = useDispatch()
 
-  const inFillin = history.location.pathname.includes('fillin')
+  const inFillin = history.location.pathname.includes('test')
   useEffect(() => {
     setSwipeIndex(0)
   }, [pending])

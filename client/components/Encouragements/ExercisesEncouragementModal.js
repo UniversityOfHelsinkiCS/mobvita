@@ -54,7 +54,7 @@ const ExercisesEncouragementModal = ({
             values={{ nWords: newVocabulary }}
           />
           &nbsp;
-          <Link to={`/flashcards/fillin/${storyId}`}>
+          <Link to={`/flashcards/fillin/test/${storyId}`}>
             <FormattedMessage id="go-to-blue-flashcards" />
           </Link>
         </div>
