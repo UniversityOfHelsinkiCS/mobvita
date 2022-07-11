@@ -75,16 +75,9 @@ const FlashcardsEncouragement = ({ open, setOpen, allCorrect, enable_recmd }) =>
         <div className="encouragement" style={{ padding: '1.5rem', color: '#000000' }}>
           {recmdList.map((recommendation, index) => index < upperBound && recommendation)}
           <div className="flex pt-lg">
-            <Popup
-              content={intl.formatMessage({ id: 'disable-recmd-tooltip' })}
-              trigger={<Icon style={{ marginRight: '0.5em' }} name="info circle" color="grey" />}
-            />
-            <span style={{ color: '#708090' }}>
-              <FormattedMessage id="never-show-recommendations" />
-            </span>
             <Form.Group>
               <Form.Check
-                style={{ marginLeft: '.5em', marginTop: '.25em' }}
+                style={{ marginTop: '0.15em' }}
                 type="checkbox"
                 inline
                 onChange={updatePreferences}
@@ -92,6 +85,13 @@ const FlashcardsEncouragement = ({ open, setOpen, allCorrect, enable_recmd }) =>
                 disabled={pending}
               />
             </Form.Group>
+            <span style={{ color: '#708090' }}>
+              <FormattedMessage id="never-show-recommendations" />
+            </span>
+            <Popup
+              content={intl.formatMessage({ id: 'disable-recmd-tooltip' })}
+              trigger={<Icon style={{ marginLeft: '0.5em' }} name="info circle" color="grey" />}
+            />
           </div>
         </div>
       </Modal.Content>

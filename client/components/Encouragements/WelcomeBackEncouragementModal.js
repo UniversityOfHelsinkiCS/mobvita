@@ -209,33 +209,31 @@ const WelcomeBackEncouragementModal = ({
                   <FormattedMessage id="show-more-recommendations" />
                 </Button>
               )}
-              <div className="flex pt-lg">
-                <Popup
-                  content={intl.formatMessage({ id: 'disable-recmd-tooltip' })}
-                  trigger={
-                    <Icon style={{ marginRight: '0.5em' }} name="info circle" color="grey" />
-                  }
-                />
-                <span style={{ color: '#708090' }}>
-                  <FormattedMessage id="never-show-recommendations" />
-                </span>
-                <Form.Group>
-                  <Form.Check
-                    style={{ marginLeft: '.5em', marginTop: '.25em' }}
-                    type="checkbox"
-                    inline
-                    onChange={updatePreferences}
-                    checked={!enable_recmd}
-                    disabled={pending}
-                  />
-                </Form.Group>
-              </div>
             </div>
             <div className="encouragement-picture pt-sm">
               <img
                 src={images.balloons}
                 alt="encouraging balloons"
                 style={{ maxWidth: '25%', maxHeight: '25%' }}
+              />
+            </div>
+            <div className="flex pt-lg">
+              <Form.Group>
+                <Form.Check
+                  style={{ marginTop: '0.15em' }}
+                  type="checkbox"
+                  inline
+                  onChange={updatePreferences}
+                  checked={!enable_recmd}
+                  disabled={pending}
+                />
+              </Form.Group>
+              <span style={{ color: '#708090' }}>
+                <FormattedMessage id="never-show-recommendations" />
+              </span>
+              <Popup
+                content={intl.formatMessage({ id: 'disable-recmd-tooltip' })}
+                trigger={<Icon style={{ marginLeft: '0.5em' }} name="info circle" color="grey" />}
               />
             </div>
           </div>
