@@ -1270,6 +1270,8 @@
     "disable-recmd-tooltip": "Valinnan voi myöhemmin muuttaa profiilisi asetuksista",
     "show-more-recommendations": "Näytä lisää",
     "all-correct-flashcards": "Hyvää työtä! Haluaisitko tarkastella",
-    "some-incorrect-flashcards": "Osa vastauksistasi oli vääriä. Haluaisitko",
-    "flashcards-try-again": "yrittää uudelleen?"
+    "some-incorrect-flashcards": "Osa vastauksistasi oli väärin. Haluaisitko",
+    "flashcards-try-again": "yrittää uudelleen?",
+    "show preview": "Näytä tehtävien vaikeustasot ja korostukset",
+    "story-title-already-taken": "Samalla otsikolla löytyy toinen tarina. Ole hyvä ja valitse toinen."
 }
