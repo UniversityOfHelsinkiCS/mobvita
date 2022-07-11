@@ -30,7 +30,7 @@ const SelectExerciseTypeModal = props => {
         basic
         open={props.showExerciseOptionsModal}
         size="tiny"
-        centered={false}
+        centered={true}
         closeIcon={{ style: { top: '2rem', right: '2rem' }, color: 'black', name: 'close' }}
         onClose={closeModal}
       >
