@@ -628,5 +628,7 @@
     "some-incorrect-flashcards": "Some answers were wrong. Would you like to",
     "flashcards-try-again": "try again",
     "show preview": "Highlight exercises and difficulty levels",
-    "story-title-already-taken": "Story title is already taken. Please choose another one."
+    "story-title-already-taken": "Story title is already taken. Please choose another one.",
+    "go-back-to-library": "Practice with a new story? Go to",
+    "go-back-to-library-2": "library"
 }

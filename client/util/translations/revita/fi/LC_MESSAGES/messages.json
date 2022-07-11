@@ -1273,5 +1273,7 @@
     "some-incorrect-flashcards": "Osa vastauksistasi oli väärin. Haluaisitko",
     "flashcards-try-again": "yrittää uudelleen?",
     "show preview": "Näytä tehtävien vaikeustasot ja korostukset",
-    "story-title-already-taken": "Samalla otsikolla löytyy toinen tarina. Ole hyvä ja valitse toinen."
+    "story-title-already-taken": "Samalla otsikolla löytyy toinen tarina. Ole hyvä ja valitse toinen.",
+    "go-back-to-library": "Haluaisitko harjoitella uudella tarinalla? Selaa",
+    "go-back-to-library-2": "kirjastoa"
 }

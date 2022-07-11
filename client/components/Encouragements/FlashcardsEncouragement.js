@@ -86,7 +86,7 @@ const FlashcardsEncouragement = ({
           </div>
         )
       }
-      init = initList.concat(
+      initList = initList.concat(
         <div>
           <div className="pt-lg">
             <div style={{ color: '#000000' }}>
