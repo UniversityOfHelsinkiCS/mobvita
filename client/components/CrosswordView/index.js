@@ -3,7 +3,12 @@ import { useSelector, useDispatch } from 'react-redux'
 import { useParams } from 'react-router-dom'
 import { FormattedMessage } from 'react-intl'
 import { Spinner } from 'react-bootstrap'
-import { useLearningLanguage, useDictionaryLanguage, hiddenFeatures } from 'Utilities/common'
+import {
+  useLearningLanguage,
+  useDictionaryLanguage,
+  hiddenFeatures,
+  finalConfettiRain,
+} from 'Utilities/common'
 import { getCrossword, revealClue, sendActivity } from 'Utilities/redux/crosswordReducer'
 import Crossword from 'Components/CrosswordView/Crossword'
 import PlainWord from 'Components/CommonStoryTextComponents/PlainWord'
@@ -220,6 +225,10 @@ const CrosswordView = () => {
 
   const handleCrosswordCorrect = correct => {
     if (correct) {
+      const endDate = Date.now() + 2 * 1000
+      const colors = ['#bb0000', '#ffffff']
+
+      finalConfettiRain(colors, endDate)
       setTimeout(() => setModalOpen(true), 500)
     }
   }
