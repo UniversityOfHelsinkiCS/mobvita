@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react'
 import { FormattedMessage } from 'react-intl'
 import { useSelector, useDispatch } from 'react-redux'
 import { Button } from 'react-bootstrap'
+import { Link } from 'react-router-dom'
 import { getIncompleteStories } from 'Utilities/redux/incompleteStoriesReducer'
 import { learningLanguageSelector } from 'Utilities/common'
 import FlashcardsEncouragement from 'Components/Encouragements/FlashcardsEncouragement'
@@ -75,6 +76,16 @@ const FlashcardEndView = ({ handleNewDeck, deckSize }) => {
             incomplete={incomplete}
           />
         )}
+      </div>
+      <p style={{ fontWeight: '500', fontSize: '1.2em', padding: '1em' }}>
+        <FormattedMessage id="well-done-flashcards" />
+      </p>
+      <div className="flashcard-input" style={{ flex: 0 }}>
+        <Link to="/">
+          <Button className="flashcard-button" block variant="outline-primary">
+            <FormattedMessage id="return-to-main-page" />
+          </Button>
+        </Link>
       </div>
     </div>
   )

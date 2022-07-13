@@ -1275,5 +1275,7 @@
     "show preview": "Highlight exercises and difficulty levels",
     "story-title-already-taken": "Story title is already taken. Please choose another one.",
     "go-back-to-library": "Practice with a new story? Go to",
-    "go-back-to-library-2": "library"
+    "go-back-to-library-2": "library",
+    "well-done-flashcards": "Well Done!",
+    "return-to-main-page": "Return to home page"
 }

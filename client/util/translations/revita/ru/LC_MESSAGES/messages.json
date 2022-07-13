@@ -1278,5 +1278,7 @@
     "show preview": "Показать упражнения и их уровни сложности",
     "story-title-already-taken": "Story title is already taken. Please choose another one.",
     "go-back-to-library": "Practice with a new story? Go to",
-    "go-back-to-library-2": "library"
+    "go-back-to-library-2": "library",
+    "well-done-flashcards": "Отлично получается!",
+    "return-to-main-page": "Return to home page"
 }

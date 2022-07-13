@@ -1275,5 +1275,7 @@
     "show preview": "Näytä tehtävien vaikeustasot ja korostukset",
     "story-title-already-taken": "Samalla otsikolla löytyy toinen tarina. Ole hyvä ja valitse toinen.",
     "go-back-to-library": "Haluaisitko harjoitella uudella tarinalla? Selaa",
-    "go-back-to-library-2": "kirjastoa"
+    "go-back-to-library-2": "kirjastoa",
+    "well-done-flashcards": "Hyvin tehty!",
+    "return-to-main-page": "Palaa pääsivulle"
 }
