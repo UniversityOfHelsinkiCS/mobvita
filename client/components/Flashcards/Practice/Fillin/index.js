@@ -2,7 +2,12 @@ import React, { useState, useEffect } from 'react'
 import { useDispatch } from 'react-redux'
 import ReactCardFlip from 'react-card-flip'
 import { updateFlashcard, addToCorrectAnswers } from 'Utilities/redux/flashcardReducer'
-import { levenshteinDistance, normalizeDiacritics } from 'Utilities/common'
+import {
+  levenshteinDistance,
+  normalizeDiacritics,
+  confettiRain,
+  finalConfettiRain,
+} from 'Utilities/common'
 import { useIntl } from 'react-intl'
 import FlashcardFront from './FlashcardFront'
 import FlashcardBack from './FlashcardBack'
@@ -17,6 +22,7 @@ const Fillin = ({
   editing,
   setEditing,
   answerCard,
+  deckSize,
 }) => {
   const [flipped, setFlipped] = useState(false)
   const [answerChecked, setAnswerChecked] = useState(false)
@@ -24,7 +30,6 @@ const Fillin = ({
   const [hints, setHints] = useState(card.hint.map(h => h.hint))
   const [translations, setTranslations] = useState(card.glosses)
   const [infoMessage, setInfoMessage] = useState('')
-
   const dispatch = useDispatch()
   const intl = useIntl()
 
@@ -106,6 +111,12 @@ const Fillin = ({
 
       answerCard(answer, correct, 'fillin', displayedHints)
       setAnswerCorrect(correct)
+
+      if (correct && swipeIndex === deckSize - 1) {
+        finalConfettiRain()
+      } else if (correct) {
+        confettiRain()
+      }
     }
 
     // Hack to get the thumbs up/down icon to render before card flips

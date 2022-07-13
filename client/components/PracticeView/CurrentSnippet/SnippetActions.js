@@ -145,8 +145,9 @@ const SnippetActions = ({ storyId, exerciseCount, isControlledStory, timerValue,
     if (!wrongAnswers || wrongAnswers.length < 1) {
       if (snippetid[0] === numSnippets - 1) {
         finalConfettiRain()
+      } else {
+        confettiRain()
       }
-      confettiRain()
     }
   }
 

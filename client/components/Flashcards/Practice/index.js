@@ -163,6 +163,7 @@ const Practice = ({ mode }) => {
             setEditing={setEditing}
             focusedAndBigScreen={swipeIndex === index && bigScreen}
             answerCard={answerCard}
+            deckSize={cards.length}
           />
         )
     }
