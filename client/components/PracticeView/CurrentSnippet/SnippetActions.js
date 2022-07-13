@@ -4,6 +4,7 @@ import { useParams } from 'react-router-dom'
 import { FormattedMessage } from 'react-intl'
 import { Icon } from 'semantic-ui-react'
 import { Button } from 'react-bootstrap'
+import { confettiRain, finalConfettiRain } from 'Utilities/common'
 import { postAnswers, resetCurrentSnippet } from 'Utilities/redux/snippetsReducer'
 import { resetAnnotations } from 'Utilities/redux/annotationsReducer'
 import {
@@ -75,15 +76,7 @@ const CheckAnswersButton = ({ handleClick, checkAnswersButtonTempDisable }) => {
   )
 }
 
-const SnippetActions = ({
-  storyId,
-  exerciseCount,
-  isControlledStory,
-  timerValue,
-  confettiRain,
-  finalConfettiRain,
-  numSnippets,
-}) => {
+const SnippetActions = ({ storyId, exerciseCount, isControlledStory, timerValue, numSnippets }) => {
   const [checkAnswersButtonTempDisable, setcheckAnswersButtonTempDisable] = useState(false)
 
   const { snippets } = useSelector(({ snippets }) => ({ snippets }))

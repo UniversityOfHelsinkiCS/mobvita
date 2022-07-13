@@ -72,8 +72,6 @@ const Practice = ({ mode }) => {
     }
   }, [storyId, dictionaryLanguage, mode])
 
-  console.log('cards ', cards)
-
   // Limits so that you cant swipe back more than once.
   // React-swipeable-views has some weird behaviour with its index. This tries to fix it.
   const handleIndexChange = index => {

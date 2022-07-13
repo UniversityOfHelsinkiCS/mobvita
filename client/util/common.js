@@ -76,6 +76,7 @@ import { hiddenFeatures } from 'Utilities/common'
 
 import { Howler } from 'howler'
 import { callApi, yandexSpeak, RVSpeak, tacotronSpeak } from './apiConnection'
+import confetti from 'canvas-confetti'
 
 export const images = {
   revitaLogoTransparent,
@@ -156,6 +157,45 @@ export const skillLevels = [
   'C1/C2',
   'C2',
 ]
+
+export const confettiRain = () => {
+  function randomInRange(min, max) {
+    return Math.random() * (max - min) + min
+  }
+
+  confetti({
+    angle: randomInRange(55, 125),
+    spread: randomInRange(50, 70),
+    particleCount: randomInRange(50, 100),
+    origin: { y: 0.6, x: 0.4 },
+  })
+}
+
+export const finalConfettiRain = () => {
+  const end = Date.now() + 2 * 1000
+  const colors = ['#bb0000', '#ffffff'](
+    (function frame() {
+      confetti({
+        particleCount: 2,
+        angle: 60,
+        spread: 55,
+        origin: { x: 0 },
+        colors,
+      })
+      confetti({
+        particleCount: 2,
+        angle: 120,
+        spread: 55,
+        origin: { x: 1 },
+        colors,
+      })
+
+      if (Date.now() < end) {
+        requestAnimationFrame(frame)
+      }
+    })()
+  )
+}
 
 export const timerExpired = (parsedDate, timeLimit) => {
   const currentTime = new Date()

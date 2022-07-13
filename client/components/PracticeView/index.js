@@ -22,7 +22,6 @@ import DictionaryHelp from 'Components/DictionaryHelp'
 import ReportButton from 'Components/ReportButton'
 import AnnotationBox from 'Components/AnnotationBox'
 import StartModal from 'Components/TimedActivityStartModal'
-import confetti from 'canvas-confetti'
 import PreviousSnippets from '../CommonStoryTextComponents/PreviousSnippets'
 import VirtualKeyboard from './VirtualKeyboard'
 import FeedbackInfoModal from '../CommonStoryTextComponents/FeedbackInfoModal'
@@ -132,12 +131,17 @@ const PracticeView = () => {
 
     dispatch(setAnswers(newAnswer))
   }
-
+/*
   const confettiRain = () => {
+    function randomInRange(min, max) {
+      return Math.random() * (max - min) + min
+    }
+
     confetti({
-      particleCount: 100,
-      spread: 70,
-      origin: { y: 0.6 },
+      angle: randomInRange(55, 125),
+      spread: randomInRange(50, 70),
+      particleCount: randomInRange(50, 100),
+      origin: { y: 0.6, x: 0.4 },
     })
   }
 
@@ -166,7 +170,7 @@ const PracticeView = () => {
       })()
     )
   }
-
+*/
   const handlePauseOrResumeClick = () => {
     if (isPaused) {
       dispatch(setIsPaused(false))
@@ -239,8 +243,6 @@ const PracticeView = () => {
               handleInputChange={handleAnswerChange}
               timer={timer}
               numSnippets={story?.paragraph?.length}
-              confettiRain={confettiRain}
-              finalConfettiRain={finalConfettiRain}
             />
             <ScrollArrow />
 
