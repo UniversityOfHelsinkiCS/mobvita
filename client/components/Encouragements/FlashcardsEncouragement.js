@@ -93,7 +93,7 @@ const FlashcardsEncouragement = ({
               <FormattedMessage id="go-back-to-library" />
               &nbsp;
               <Link to="/library">
-                <FormattedMessage id="go-back-to-library2" />
+                <FormattedMessage id="go-back-to-library-2" />
               </Link>
               ?
             </div>
