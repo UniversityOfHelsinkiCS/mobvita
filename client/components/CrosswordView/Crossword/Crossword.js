@@ -10,6 +10,7 @@ import React, {
 
 import produce from 'immer'
 import styled, { ThemeContext, ThemeProvider } from 'styled-components'
+import { confettiRain } from 'Utilities/common'
 
 import Cell from './Cell'
 import DirectionClues from './DirectionClues'
@@ -179,6 +180,7 @@ const Crossword = React.forwardRef(
             draft[row][col].questionCorrect = true
           })
         )
+        confettiRain()
 
         setCheckQueue(
           produce(draft => {

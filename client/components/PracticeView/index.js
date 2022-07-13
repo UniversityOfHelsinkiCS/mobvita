@@ -69,8 +69,6 @@ const PracticeView = () => {
     timeToUpdate: 100,
   })
 
-  // console.log('show practice diff ', showDifficulty)
-
   useEffect(() => {
     if (!snippets.testTime || !snippets.focused) return
 
