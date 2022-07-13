@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import { Link, useHistory } from 'react-router-dom'
-import { Divider, Segment, Header, Checkbox, Icon, Popup, Dropdown } from 'semantic-ui-react'
+import { Divider, Segment, Header, Checkbox, Dropdown } from 'semantic-ui-react'
 import { Button } from 'react-bootstrap'
 import { FormattedMessage, useIntl } from 'react-intl'
 import useWindowDimensions from 'Utilities/windowDimensions'
@@ -59,10 +59,18 @@ const ReadViews = ({ match }) => {
     ? `${currentStudent?.userName} (${currentStudent?.email})`
     : 'Choose the student to review'
 
+  const truncateStudentName = studentName => {
+    if (studentName.length > 50) {
+      return `${studentName.slice(0, 50)}...`
+    }
+
+    return studentName
+  }
+
   const studentOptions = currentGroup?.students
     .map(student => ({
       key: student._id,
-      text: `${student?.userName} (${student?.email})`,
+      text: truncateStudentName(`${student?.userName} (${student?.email})`),
       value: JSON.stringify(student), // needs to be string
     }))
     .sort(function (a, b) {

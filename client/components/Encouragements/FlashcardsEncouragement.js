@@ -4,7 +4,7 @@ import { Modal, Popup, Icon } from 'semantic-ui-react'
 import { useDispatch, useSelector } from 'react-redux'
 import { updateEnableRecmd } from 'Utilities/redux/userReducer'
 import { Link, useHistory } from 'react-router-dom'
-import { Form } from 'react-bootstrap'
+import { Form, Button } from 'react-bootstrap'
 import { images } from 'Utilities/common'
 
 const FlashcardsEncouragement = ({
@@ -130,6 +130,17 @@ const FlashcardsEncouragement = ({
       <Modal.Content>
         <div className="encouragement" style={{ padding: '1.5rem', color: '#000000' }}>
           {recmdList.map((recommendation, index) => index < upperBound && recommendation)}
+
+          {!blueFlashcards && (
+            <div className="pt-lg">
+              <FormattedMessage id="well-done-click-next-card-to-play-another-set-of-cards" />
+              <div style={{ marginTop: '0.5em' }}>
+                <Button variant="primary" onClick={() => handleNewDeck()}>
+                  <FormattedMessage id="next-card" />
+                </Button>
+              </div>
+            </div>
+          )}
           <div className="encouragement-picture pt-sm">
             <img
               src={images.fireworks}

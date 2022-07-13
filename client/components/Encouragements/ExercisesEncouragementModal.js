@@ -134,38 +134,30 @@ const ExercisesEncouragementModal = ({
     >
       <Modal.Content>
         <div className="encouragement" style={{ padding: '1.5rem', color: '#000000' }}>
-          {notFirst ? (
-            <div>
-              <div
-                className="header-4"
-                style={{
-                  marginBottom: '1rem',
-                  fontWeight: 500,
-                }}
-              >
-                <FormattedMessage id="story-completed-encouragement" />
-              </div>
-              {recmdList.map((recommendation, index) => index < upperBound && recommendation)}
-              {recmdList.length > upperBound && (
-                <Button
-                  onClick={() => setUpperBound(upperBound + 10)}
-                  styles={{ marginTop: '0.5em' }}
-                >
-                  <FormattedMessage id="show-more-recommendations" />
-                </Button>
-              )}
-            </div>
-          ) : (
+          <div>
             <div
               className="header-4"
               style={{
-                marginBottom: '1.5rem',
+                marginBottom: '1rem',
                 fontWeight: 500,
               }}
             >
-              <FormattedMessage id="first-story-covered-encouragement" />
+              <FormattedMessage
+                id={
+                  notFirst ? 'story-completed-encouragement' : 'first-story-covered-encouragement'
+                }
+              />
             </div>
-          )}
+            {recmdList.map((recommendation, index) => index < upperBound && recommendation)}
+            {recmdList.length > upperBound && (
+              <Button
+                onClick={() => setUpperBound(upperBound + 10)}
+                styles={{ marginTop: '0.5em' }}
+              >
+                <FormattedMessage id="show-more-recommendations" />
+              </Button>
+            )}
+          </div>
           <div className="encouragement-picture pt-sm">
             <img
               src={images.fireworks}

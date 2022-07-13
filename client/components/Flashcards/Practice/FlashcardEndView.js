@@ -75,19 +75,6 @@ const FlashcardEndView = ({ handleNewDeck, deckSize }) => {
             incomplete={incomplete}
           />
         )}
-        <p style={{ fontWeight: '500', fontSize: '1.2em', padding: '1em' }}>
-          <FormattedMessage id="well-done-click-next-card-to-play-another-set-of-cards" />
-        </p>
-        <div className="flashcard-input" style={{ flex: 0 }}>
-          <Button
-            className="flashcard-button"
-            block
-            variant="outline-primary"
-            onClick={() => handleNewDeck()}
-          >
-            <FormattedMessage id="next-card" />
-          </Button>
-        </div>
       </div>
     </div>
   )
