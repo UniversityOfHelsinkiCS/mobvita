@@ -129,46 +129,7 @@ const PracticeView = () => {
 
     dispatch(setAnswers(newAnswer))
   }
-/*
-  const confettiRain = () => {
-    function randomInRange(min, max) {
-      return Math.random() * (max - min) + min
-    }
 
-    confetti({
-      angle: randomInRange(55, 125),
-      spread: randomInRange(50, 70),
-      particleCount: randomInRange(50, 100),
-      origin: { y: 0.6, x: 0.4 },
-    })
-  }
-
-  const finalConfettiRain = () => {
-    const end = Date.now() + 2 * 1000
-    const colors = ['#bb0000', '#ffffff'](
-      (function frame() {
-        confetti({
-          particleCount: 2,
-          angle: 60,
-          spread: 55,
-          origin: { x: 0 },
-          colors,
-        })
-        confetti({
-          particleCount: 2,
-          angle: 120,
-          spread: 55,
-          origin: { x: 1 },
-          colors,
-        })
-
-        if (Date.now() < end) {
-          requestAnimationFrame(frame)
-        }
-      })()
-    )
-  }
-*/
   const handlePauseOrResumeClick = () => {
     if (isPaused) {
       dispatch(setIsPaused(false))

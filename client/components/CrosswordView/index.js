@@ -302,11 +302,13 @@ const CrosswordView = () => {
         />
       </div>
       <DictionaryHelp minimized={false} inCrossword />
-      <EndModal
-        open={modalOpen}
-        setOpen={setModalOpen}
-        restart={() => dispatch(getCrossword(storyId))}
-      />
+      {modalOpen && (
+        <EndModal
+          open={modalOpen}
+          setOpen={setModalOpen}
+          restart={() => dispatch(getCrossword(storyId))}
+        />
+      )}
     </div>
   )
 }

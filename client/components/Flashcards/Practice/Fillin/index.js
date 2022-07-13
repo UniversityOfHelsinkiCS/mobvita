@@ -113,7 +113,9 @@ const Fillin = ({
       setAnswerCorrect(correct)
 
       if (correct && swipeIndex === deckSize - 1) {
-        finalConfettiRain()
+        const endDate = Date.now() + 2 * 1000
+        const colors = ['#bb0000', '#ffffff']
+        finalConfettiRain(colors, endDate)
       } else if (correct) {
         confettiRain()
       }

@@ -75,8 +75,8 @@ import { useHistory } from 'react-router-dom'
 import { hiddenFeatures } from 'Utilities/common'
 
 import { Howler } from 'howler'
-import { callApi, yandexSpeak, RVSpeak, tacotronSpeak } from './apiConnection'
 import confetti from 'canvas-confetti'
+import { callApi, yandexSpeak, RVSpeak, tacotronSpeak } from './apiConnection'
 
 export const images = {
   revitaLogoTransparent,
@@ -171,30 +171,27 @@ export const confettiRain = () => {
   })
 }
 
-export const finalConfettiRain = () => {
-  const end = Date.now() + 2 * 1000
-  const colors = ['#bb0000', '#ffffff'](
-    (function frame() {
-      confetti({
-        particleCount: 2,
-        angle: 60,
-        spread: 55,
-        origin: { x: 0 },
-        colors,
-      })
-      confetti({
-        particleCount: 2,
-        angle: 120,
-        spread: 55,
-        origin: { x: 1 },
-        colors,
-      })
+export const finalConfettiRain = (colors, endDate) => {
+  ;(function frame() {
+    confetti({
+      particleCount: 2,
+      angle: 60,
+      spread: 55,
+      origin: { x: 0 },
+      colors,
+    })
+    confetti({
+      particleCount: 2,
+      angle: 120,
+      spread: 55,
+      origin: { x: 1 },
+      colors,
+    })
 
-      if (Date.now() < end) {
-        requestAnimationFrame(frame)
-      }
-    })()
-  )
+    if (Date.now() < endDate) {
+      requestAnimationFrame(frame)
+    }
+  })()
 }
 
 export const timerExpired = (parsedDate, timeLimit) => {
@@ -253,13 +250,13 @@ export function getWordColor(
   show_preview_exer,
   mode
 ) {
-
   if (
     !word_level ||
     !user_grade ||
     mode === 'controlled-story-editor' ||
-    ((mode === 'review' || mode === 'practice' || mode === 'controlled-practice') && !show_review_diff) ||
-    (mode === 'preview' && !show_preview_exer) 
+    ((mode === 'review' || mode === 'practice' || mode === 'controlled-practice') &&
+      !show_review_diff) ||
+    (mode === 'preview' && !show_preview_exer)
   ) {
     return '#FFFFFF' // white background
   }
