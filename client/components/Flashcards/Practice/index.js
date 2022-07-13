@@ -72,6 +72,8 @@ const Practice = ({ mode }) => {
     }
   }, [storyId, dictionaryLanguage, mode])
 
+  console.log('cards ', cards)
+
   // Limits so that you cant swipe back more than once.
   // React-swipeable-views has some weird behaviour with its index. This tries to fix it.
   const handleIndexChange = index => {
@@ -85,9 +87,7 @@ const Practice = ({ mode }) => {
 
   const handleNewDeck = () => {
     setSwipeIndex(0)
-    if (inFillin) {
-      dispatch(getBlueFlashcards(learningLanguage, dictionaryLanguage, storyId))
-    } else {
+    if (!inFillin) {
       dispatch(getFlashcards(learningLanguage, dictionaryLanguage, storyId))
     }
   }
