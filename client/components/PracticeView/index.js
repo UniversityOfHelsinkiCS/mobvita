@@ -22,6 +22,7 @@ import DictionaryHelp from 'Components/DictionaryHelp'
 import ReportButton from 'Components/ReportButton'
 import AnnotationBox from 'Components/AnnotationBox'
 import StartModal from 'Components/TimedActivityStartModal'
+import confetti from 'canvas-confetti'
 import PreviousSnippets from '../CommonStoryTextComponents/PreviousSnippets'
 import VirtualKeyboard from './VirtualKeyboard'
 import FeedbackInfoModal from '../CommonStoryTextComponents/FeedbackInfoModal'
@@ -132,6 +133,40 @@ const PracticeView = () => {
     dispatch(setAnswers(newAnswer))
   }
 
+  const confettiRain = () => {
+    confetti({
+      particleCount: 100,
+      spread: 70,
+      origin: { y: 0.6 },
+    })
+  }
+
+  const finalConfettiRain = () => {
+    const end = Date.now() + 2 * 1000
+    const colors = ['#bb0000', '#ffffff'](
+      (function frame() {
+        confetti({
+          particleCount: 2,
+          angle: 60,
+          spread: 55,
+          origin: { x: 0 },
+          colors,
+        })
+        confetti({
+          particleCount: 2,
+          angle: 120,
+          spread: 55,
+          origin: { x: 1 },
+          colors,
+        })
+
+        if (Date.now() < end) {
+          requestAnimationFrame(frame)
+        }
+      })()
+    )
+  }
+
   const handlePauseOrResumeClick = () => {
     if (isPaused) {
       dispatch(setIsPaused(false))
@@ -199,7 +234,14 @@ const PracticeView = () => {
             />
             <PreviousSnippets showDifficulty={showDifficulty} />
             <hr />
-            <CurrentSnippet storyId={id} handleInputChange={handleAnswerChange} timer={timer} />
+            <CurrentSnippet
+              storyId={id}
+              handleInputChange={handleAnswerChange}
+              timer={timer}
+              numSnippets={story?.paragraph?.length}
+              confettiRain={confettiRain}
+              finalConfettiRain={finalConfettiRain}
+            />
             <ScrollArrow />
 
             {willPause && !isPaused && (

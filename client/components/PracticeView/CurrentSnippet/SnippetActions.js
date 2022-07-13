@@ -75,7 +75,15 @@ const CheckAnswersButton = ({ handleClick, checkAnswersButtonTempDisable }) => {
   )
 }
 
-const SnippetActions = ({ storyId, exerciseCount, isControlledStory, timerValue }) => {
+const SnippetActions = ({
+  storyId,
+  exerciseCount,
+  isControlledStory,
+  timerValue,
+  confettiRain,
+  finalConfettiRain,
+  numSnippets,
+}) => {
   const [checkAnswersButtonTempDisable, setcheckAnswersButtonTempDisable] = useState(false)
 
   const { snippets } = useSelector(({ snippets }) => ({ snippets }))
@@ -129,12 +137,24 @@ const SnippetActions = ({ storyId, exerciseCount, isControlledStory, timerValue 
       last_attempt: lastAttempt,
       timer_value: isControlledStory ? formattedTimerValue : null,
       session_id: sessionId,
-      frozen_exercise: isControlledStory
+      frozen_exercise: isControlledStory,
     }
 
     dispatch(clearTouchedIds())
     dispatch(postAnswers(storyId, answersObj, false))
-    console.log('posted answers')
+
+    const wrongAnswers = Object.keys(filteredCurrentAnswers).filter(
+      key =>
+        filteredCurrentAnswers[key].users_answer.toLowerCase() !==
+        filteredCurrentAnswers[key].correct.toLowerCase()
+    )
+
+    if (!wrongAnswers || wrongAnswers.length < 1) {
+      if (snippetid[0] === numSnippets - 1) {
+        finalConfettiRain()
+      }
+      confettiRain()
+    }
   }
 
   const submitAnswers = () => {

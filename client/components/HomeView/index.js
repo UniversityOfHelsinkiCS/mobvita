@@ -128,11 +128,9 @@ const HomeView = () => {
     ({ user }) => user.data.user
   )
 
-
-
   const [practiceModalOpen, setPracticeModalOpen] = useState(false)
   const [addStoryModalOpen, setAddStoryModalOpen] = useState(false)
-  console.log('encouragements open ', enable_recmd)
+
   const [openEncouragement, setOpenEncouragement] = useState(enable_recmd)
   const [openReminder, setOpenReminder] = useState(true)
 

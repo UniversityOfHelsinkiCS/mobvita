@@ -47,11 +47,7 @@ export const resetCurrentSnippet = (storyId, controlledStory) => {
   return callBuilder(route, prefix, 'post')
 }
 
-export const postAnswers = (
-  storyId,
-  answersObject,
-  compete = false
-) => {
+export const postAnswers = (storyId, answersObject, compete = false) => {
   const payload = answersObject
   payload.compete = compete
   const route = `/stories/${storyId}/snippets/answer`
