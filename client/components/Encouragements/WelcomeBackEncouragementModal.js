@@ -137,12 +137,9 @@ const WelcomeBackEncouragementModal = ({
   }, [stories])
 
   useEffect(() => {
-    if (!pending && incompleteStories?.length > 0) {
-      if (
-        incompleteStories[incompleteStories.length - 1].last_snippet_id !==
-        incompleteStories[incompleteStories.length - 1].num_snippets - 1
-      ) {
-        setLatestIncompleteStory(incompleteStories[incompleteStories.length - 1])
+    if (incompleteStories?.length > 0) {
+      if (incompleteStories[0].last_snippet_id !== incompleteStories[0].num_snippets - 1) {
+        setLatestIncompleteStory(incompleteStories[0])
       } else {
         const previousStories = []
         for (
@@ -156,7 +153,7 @@ const WelcomeBackEncouragementModal = ({
         setStoriesToReview(previousStories)
       }
     }
-  }, [pending])
+  }, [incompleteStories])
 
   useEffect(() => {
     if (!userPending) {
