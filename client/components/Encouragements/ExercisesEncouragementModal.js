@@ -60,11 +60,13 @@ const ExercisesEncouragementModal = ({
         </div>
       )
     }
-    initList = initList.concat(
-      <div className="pt-lg">
-        {intl.formatMessage({ id: 'stories-covered-encouragement' }, { stories: storiesCovered })}
-      </div>
-    )
+    if (storiesCovered > 0) {
+      initList = initList.concat(
+        <div className="pt-lg">
+          {intl.formatMessage({ id: 'stories-covered-encouragement' }, { stories: storiesCovered })}
+        </div>
+      )
+    }
     initList = initList.concat(
       <div className="pt-lg">
         <FormattedHTMLMessage

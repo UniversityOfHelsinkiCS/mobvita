@@ -15,7 +15,7 @@ const FlashcardsEncouragement = ({
   enable_recmd,
   handleNewDeck,
   vocabularySeen,
-  incomplete,
+  latestStories,
 }) => {
   const history = useHistory()
   const intl = useIntl()
@@ -24,6 +24,8 @@ const FlashcardsEncouragement = ({
   const [recmdList, setRecmdList] = useState([])
   const blueFlashcards = history.location.pathname.includes('fillin')
   const { pending } = useSelector(({ user }) => user)
+
+  console.log('incomplete ', latestStories)
 
   const fillList = () => {
     let initList = []
@@ -74,22 +76,17 @@ const FlashcardsEncouragement = ({
           </div>
         )
       }
-      if (incomplete.length > 0) {
+      if (latestStories.length > 0) {
         initList = initList.concat(
           <div>
             <div className="pt-lg">
-              <div style={{ color: '#000000' }}>
-                <FormattedHTMLMessage
-                  id="would-you-like-to-continue"
-                  values={{ story: incomplete[incomplete.length - 1].title }}
-                />
-                &nbsp;
-                <Link to={`/stories/${incomplete[incomplete.length - 1]._id}/practice`}>
-                  <FormattedMessage id="continue-reading" />
-                </Link>
-                ?
-              </div>
+              <FormattedMessage id="list-of-recent-stories" />
             </div>
+            {latestStories.map(story => (
+              <li style={{ marginTop: '0.5rem' }}>
+                <Link to={`/stories/${story._id}/practice`}>{story.title}</Link>
+              </li>
+            ))}
           </div>
         )
       }

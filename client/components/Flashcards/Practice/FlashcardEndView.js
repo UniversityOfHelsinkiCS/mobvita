@@ -6,6 +6,7 @@ import { Link } from 'react-router-dom'
 import { getIncompleteStories } from 'Utilities/redux/incompleteStoriesReducer'
 import { learningLanguageSelector } from 'Utilities/common'
 import FlashcardsEncouragement from 'Components/Encouragements/FlashcardsEncouragement'
+import { last } from 'lodash'
 
 const FlashcardEndView = ({ handleNewDeck, deckSize }) => {
   // A bit hacky way to move to next deck with right arrow or enter
@@ -18,6 +19,8 @@ const FlashcardEndView = ({ handleNewDeck, deckSize }) => {
     loading: incomplete.pending,
   }))
   const learningLanguage = useSelector(learningLanguageSelector)
+  const [latestStories, setLatestStories] = useState([])
+
   console.log(correctAnswers, ' out of ', deckSize)
 
   useEffect(() => {
@@ -27,6 +30,17 @@ const FlashcardEndView = ({ handleNewDeck, deckSize }) => {
       })
     )
   }, [])
+
+  useEffect(() => {
+    if (incomplete.length > 0) {
+      const previousStories = []
+      for (let i = incomplete.length - 1; i >= 0 && i >= incomplete.length - 3; i--) {
+        previousStories.push(incomplete[i])
+      }
+
+      setLatestStories(previousStories)
+    }
+  }, [incomplete])
 
   const useKeyPress = targetKey => {
     const [keyPressed, setKeyPressed] = useState(false)
@@ -73,7 +87,7 @@ const FlashcardEndView = ({ handleNewDeck, deckSize }) => {
             enable_recmd={enable_recmd}
             handleNewDeck={handleNewDeck}
             vocabularySeen={vocabularySeen}
-            incomplete={incomplete}
+            latestStories={latestStories}
           />
         )}
       </div>
