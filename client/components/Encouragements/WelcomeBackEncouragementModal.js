@@ -20,7 +20,7 @@ const WelcomeBackEncouragementModal = ({
   enable_recmd,
 }) => {
   const intl = useIntl()
-  const [latestIncompleteStory, setLatestIncompleteStory] = useState(null)
+  const [latestIncompleteStories, setLatestIncompleteStories] = useState([])
   const [storiesToReview, setStoriesToReview] = useState([])
   const [upperBound, setUpperBound] = useState(3)
   const [recmdList, setRecmdList] = useState([])
@@ -31,12 +31,14 @@ const WelcomeBackEncouragementModal = ({
   const { pending: userPending } = useSelector(({ user }) => user)
   const dispatch = useDispatch()
 
+  console.log('incomplete ', incompleteStories)
+
   const fillList = () => {
     let initList = []
 
     if (userRanking) {
       initList = initList.concat(
-        <div className="pt-lg" style={{ color: '#000000' }}>
+        <div className="pt-lg">
           <div>
             <FormattedHTMLMessage id="leaderboard-ranking-encouragement" values={{ userRanking }} />
             &nbsp;
@@ -55,7 +57,7 @@ const WelcomeBackEncouragementModal = ({
       initList = initList.concat(
         <div>
           <div className="pt-lg">
-            <div style={{ color: '#000000' }}>
+            <div>
               <FormattedHTMLMessage id="controlled-story-reminder" />
               <br />
               <Link to={`/stories/${sharedStory._id}/controlled-practice`}>
@@ -66,35 +68,30 @@ const WelcomeBackEncouragementModal = ({
         </div>
       )
     }
-    if (latestIncompleteStory) {
+    if (latestIncompleteStories.length > 0) {
       initList = initList.concat(
         <div>
           <div className="pt-lg">
-            <div style={{ color: '#000000' }}>
-              <FormattedHTMLMessage
-                id="would-you-like-to-continue"
-                values={{ story: latestIncompleteStory.title }}
-              />
-              &nbsp;
-              <Link to={`/stories/${incompleteStories[incompleteStories.length - 1]._id}/practice`}>
-                <FormattedMessage id="continue-reading" />
-              </Link>
-              ?
-            </div>
+            <FormattedMessage id="list-of-recent-stories" />
           </div>
+          {latestIncompleteStories.map(story => (
+            <li style={{ marginTop: '0.5rem' }}>
+              <Link to={`/stories/${story._id}/practice`}>{story.title}</Link>
+            </li>
+          ))}
         </div>
       )
     }
     if (storiesToReview.length > 0) {
       initList = initList.concat(
         <div>
-          <div className="pt-lg" style={{ color: '#000000' }}>
+          <div className="pt-lg">
             <FormattedMessage id="review-recent-stories" />
           </div>
           <ul>
             {storiesToReview.map(story => (
-              <li style={{ color: '#000000', marginTop: '0.5rem' }}>
-                <Link to={`/stories/${story._id}/preview`}>{story.title}</Link>
+              <li style={{ marginTop: '0.5rem' }}>
+                <Link to={`/stories/${story._id}/review`}>{story.title}</Link>
               </li>
             ))}
           </ul>
@@ -102,7 +99,7 @@ const WelcomeBackEncouragementModal = ({
       )
     }
     initList = initList.concat(
-      <div className="pt-lg" style={{ color: '#000000' }}>
+      <div className="pt-lg">
         {intl.formatMessage({ id: 'stories-covered-encouragement' }, { stories: storiesCovered })}
       </div>
     )
@@ -138,6 +135,32 @@ const WelcomeBackEncouragementModal = ({
 
   useEffect(() => {
     if (incompleteStories?.length > 0) {
+      const readyToReview = incompleteStories.filter(
+        story => story.last_snippet_id === story.num_snippets - 1
+      )
+      const previousStories = []
+
+      for (let i = readyToReview.length - 1; i >= 0 && i >= readyToReview.length - 3; i--) {
+        previousStories.push(readyToReview[i])
+      }
+
+      setStoriesToReview(previousStories)
+
+      const latestIncompleteStories = incompleteStories.filter(
+        story => story.last_snippet_id !== story.num_snippets - 1
+      )
+      const previousIncStories = []
+      for (
+        let i = latestIncompleteStories.length - 1;
+        i >= 0 && i >= latestIncompleteStories.length - 3;
+        i--
+      ) {
+        previousIncStories.push(latestIncompleteStories[i])
+      }
+
+      setLatestIncompleteStories(previousIncStories)
+
+      /*
       if (incompleteStories[0].last_snippet_id !== incompleteStories[0].num_snippets - 1) {
         setLatestIncompleteStory(incompleteStories[0])
       } else {
@@ -152,6 +175,7 @@ const WelcomeBackEncouragementModal = ({
 
         setStoriesToReview(previousStories)
       }
+      */
     }
   }, [incompleteStories])
 
@@ -159,7 +183,7 @@ const WelcomeBackEncouragementModal = ({
     if (!userPending) {
       setRecmdList(fillList())
     }
-  }, [userRanking, storiesCovered, storiesToReview, latestIncompleteStory, sharedStory])
+  }, [userRanking, storiesCovered, storiesToReview, latestIncompleteStories, sharedStory])
 
   const closeModal = () => {
     setOpen(false)
@@ -184,7 +208,7 @@ const WelcomeBackEncouragementModal = ({
       onClose={closeModal}
     >
       <Modal.Content>
-        <div className="encouragement" style={{ padding: '1.5rem' }}>
+        <div className="encouragement" style={{ padding: '1.5rem', color: '#000000' }}>
           <div>
             <div className="col-flex">
               <div
@@ -192,7 +216,6 @@ const WelcomeBackEncouragementModal = ({
                 style={{
                   marginBottom: '1.5rem',
                   fontWeight: 500,
-                  color: '#000000',
                 }}
               >
                 {intl.formatMessage({ id: 'welcome-back-encouragement' }, { username })}

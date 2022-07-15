@@ -33,9 +33,16 @@ const FlashcardEndView = ({ handleNewDeck, deckSize }) => {
 
   useEffect(() => {
     if (incomplete.length > 0) {
+      const latestIncompleteStories = incomplete.filter(
+        story => story.last_snippet_id !== story.num_snippets - 1
+      )
       const previousStories = []
-      for (let i = incomplete.length - 1; i >= 0 && i >= incomplete.length - 3; i--) {
-        previousStories.push(incomplete[i])
+      for (
+        let i = latestIncompleteStories.length - 1;
+        i >= 0 && i >= latestIncompleteStories.length - 3;
+        i--
+      ) {
+        previousStories.push(latestIncompleteStories[i])
       }
 
       setLatestStories(previousStories)
