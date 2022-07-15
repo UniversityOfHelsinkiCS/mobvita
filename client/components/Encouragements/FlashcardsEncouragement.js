@@ -67,6 +67,13 @@ const FlashcardsEncouragement = ({
         </div>
       )
     } else {
+      if (correctAnswers > 0) {
+        initList = initList.concat(
+          <div className="pt-lg">
+            <FormattedHTMLMessage id="mastering-new-words" values={{ nWords: correctAnswers }} />
+          </div>
+        )
+      }
       if (incomplete.length > 0) {
         initList = initList.concat(
           <div>
@@ -95,7 +102,6 @@ const FlashcardsEncouragement = ({
               <Link to="/library">
                 <FormattedMessage id="go-back-to-library-2" />
               </Link>
-              ?
             </div>
           </div>
         </div>
@@ -130,7 +136,11 @@ const FlashcardsEncouragement = ({
       <Modal.Content>
         <div className="encouragement" style={{ padding: '1.5rem', color: '#000000' }}>
           {recmdList.map((recommendation, index) => index < upperBound && recommendation)}
-
+          {recmdList.length > upperBound && (
+            <Button onClick={() => setUpperBound(upperBound + 10)} styles={{ marginTop: '0.5em' }}>
+              <FormattedMessage id="show-more-recommendations" />
+            </Button>
+          )}
           {!blueFlashcards && (
             <div className="pt-lg">
               <FormattedMessage id="well-done-click-next-card-to-play-another-set-of-cards" />

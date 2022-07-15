@@ -1280,5 +1280,6 @@
     "go-back-to-library": "Practice with a new story? Go to",
     "go-back-to-library-2": "library",
     "well-done-flashcards": "Отлично получается!",
-    "return-to-main-page": "Return to home page"
+    "return-to-main-page": "Return to home page",
+    "mastering-new-words": "Congratulations: you are on the way to mastering {nWords} new words!"
 }
