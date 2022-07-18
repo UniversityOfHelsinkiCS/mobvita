@@ -7,7 +7,7 @@ import { Form, Checkbox, Dropdown } from 'semantic-ui-react'
 import TermsAndConditions from 'Components/StaticContent/TermsAndConditions'
 import { useIntl, FormattedMessage } from 'react-intl'
 import { setNotification } from 'Utilities/redux/notificationReducer'
-import { localeCodeToName, supportedLearningLanguages, capitalize } from 'Utilities/common'
+import { localeCodeToName, supportedLearningLanguages, capitalize, images } from 'Utilities/common'
 import { Button, Spinner } from 'react-bootstrap'
 
 const Register = () => {
@@ -33,6 +33,10 @@ const Register = () => {
       key: language,
       text: capitalize(language),
       value: JSON.stringify(language), // needs to be string
+      image: {
+        avatar: true,
+        src: images[`flag${capitalize(language.split('-').join(''))}`],
+      },
     }))
 
   const {
