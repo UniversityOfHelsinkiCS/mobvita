@@ -29,44 +29,7 @@ const ExercisesEncouragementModal = ({
 
   const fillList = () => {
     let initList = []
-    if (userRanking) {
-      initList = initList.concat(
-        <div className="pt-lg">
-          <div>
-            <FormattedHTMLMessage id="leaderboard-ranking-encouragement" values={{ userRanking }} />
-            &nbsp;
-            <Link to="/leaderboard">
-              <FormattedMessage id="leaderboard-link-encouragement" />
-            </Link>
-            !
-          </div>
-          <div>
-            <FormattedMessage id="practice-makes-perfect" />
-          </div>
-        </div>
-      )
-    }
-    if (newVocabulary > 0) {
-      initList = initList.concat(
-        <div className="pt-lg">
-          <FormattedHTMLMessage
-            id="story-completed-to-blue-flashcards"
-            values={{ nWords: newVocabulary }}
-          />
-          &nbsp;
-          <Link to={`/flashcards/fillin/test/${storyId}`}>
-            <FormattedMessage id="go-to-blue-flashcards" />
-          </Link>
-        </div>
-      )
-    }
-    if (storiesCovered > 0) {
-      initList = initList.concat(
-        <div className="pt-lg">
-          {intl.formatMessage({ id: 'stories-covered-encouragement' }, { stories: storiesCovered })}
-        </div>
-      )
-    }
+
     initList = initList.concat(
       <div className="pt-lg">
         <FormattedHTMLMessage
@@ -110,7 +73,7 @@ const ExercisesEncouragementModal = ({
   }, [user_rank])
 
   useEffect(() => {
-    if (!pending) {
+    if (!pending && enable_recmd) {
       setRecmdList(fillList())
     }
   }, [userRanking, newVocabulary])
@@ -150,6 +113,44 @@ const ExercisesEncouragementModal = ({
                 }
               />
             </div>
+            {storiesCovered > 0 && (
+              <div>
+                {intl.formatMessage(
+                  { id: 'stories-covered-encouragement' },
+                  { stories: storiesCovered }
+                )}
+              </div>
+            )}
+            {userRanking && (
+              <div className="pt-lg">
+                <div>
+                  <FormattedHTMLMessage
+                    id="leaderboard-ranking-encouragement"
+                    values={{ userRanking }}
+                  />
+                  &nbsp;
+                  <Link to="/leaderboard">
+                    <FormattedMessage id="leaderboard-link-encouragement" />
+                  </Link>
+                  !
+                </div>
+                <div>
+                  <FormattedMessage id="practice-makes-perfect" />
+                </div>
+              </div>
+            )}
+            {newVocabulary > 0 && (
+              <div className="pt-lg">
+                <FormattedHTMLMessage
+                  id="story-completed-to-blue-flashcards"
+                  values={{ nWords: newVocabulary }}
+                />
+                &nbsp;
+                <Link to={`/flashcards/fillin/test/${storyId}`}>
+                  <FormattedMessage id="go-to-blue-flashcards" />
+                </Link>
+              </div>
+            )}
             {recmdList.map((recommendation, index) => index < upperBound && recommendation)}
             {recmdList.length > upperBound && (
               <Button

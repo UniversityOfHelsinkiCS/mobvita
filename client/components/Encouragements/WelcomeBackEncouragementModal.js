@@ -33,21 +33,6 @@ const WelcomeBackEncouragementModal = ({
 
   const fillList = () => {
     let initList = []
-    if (sharedStory) {
-      initList = initList.concat(
-        <div>
-          <div className="pt-lg">
-            <div>
-              <FormattedHTMLMessage id="controlled-story-reminder" />
-              <br />
-              <Link to={`/stories/${sharedStory._id}/controlled-practice`}>
-                {sharedStory.title}
-              </Link>
-            </div>
-          </div>
-        </div>
-      )
-    }
     if (latestIncompleteStories.length > 0) {
       initList = initList.concat(
         <div>
@@ -136,23 +121,6 @@ const WelcomeBackEncouragementModal = ({
       }
 
       setLatestIncompleteStories(previousIncStories)
-
-      /*
-      if (incompleteStories[0].last_snippet_id !== incompleteStories[0].num_snippets - 1) {
-        setLatestIncompleteStory(incompleteStories[0])
-      } else {
-        const previousStories = []
-        for (
-          let i = incompleteStories.length - 1;
-          i >= 0 && i >= incompleteStories.length - 3;
-          i--
-        ) {
-          previousStories.push(incompleteStories[i])
-        }
-
-        setStoriesToReview(previousStories)
-      }
-      */
     }
   }, [incompleteStories])
 
@@ -220,6 +188,19 @@ const WelcomeBackEncouragementModal = ({
                   </div>
                   <div>
                     <FormattedMessage id="practice-makes-perfect" />
+                  </div>
+                </div>
+              )}
+              {sharedStory && (
+                <div>
+                  <div className="pt-lg">
+                    <div>
+                      <FormattedHTMLMessage id="controlled-story-reminder" />
+                      <br />
+                      <Link to={`/stories/${sharedStory._id}/controlled-practice`}>
+                        {sharedStory.title}
+                      </Link>
+                    </div>
                   </div>
                 </div>
               )}

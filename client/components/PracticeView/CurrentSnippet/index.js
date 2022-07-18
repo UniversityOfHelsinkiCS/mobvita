@@ -50,7 +50,7 @@ const CurrentSnippet = ({ storyId, handleInputChange, timer, numSnippets }) => {
   const history = useHistory()
   const isControlledStory = history.location.pathname.includes('controlled-practice')
   const sessionId = snippets?.sessionId ?? null
-  const [openEncouragement, setOpenEncouragement] = useState(enable_recmd)
+  const [openEncouragement, setOpenEncouragement] = useState(true)
   if (!userData) {
     return
   }
