@@ -254,7 +254,7 @@ const Settings = () => {
               }
             />
           </Menu.Item>
-          <Menu.Item>
+          <Menu.Item className="add-story-accordion-item">
             <Accordion.Title
               active={accordionState === 5}
               content={
