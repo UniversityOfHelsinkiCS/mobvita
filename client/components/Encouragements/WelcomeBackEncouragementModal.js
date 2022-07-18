@@ -33,7 +33,39 @@ const WelcomeBackEncouragementModal = ({
 
   const fillList = () => {
     let initList = []
-    if (latestIncompleteStory) {
+    if (userRanking) {
+      initList = initList.concat(
+        <div className="pt-lg">
+          <div>
+            <FormattedHTMLMessage id="leaderboard-ranking-encouragement" values={{ userRanking }} />
+            &nbsp;
+            <Link to="/leaderboard">
+              <FormattedMessage id="leaderboard-link-encouragement" />
+            </Link>
+            !
+          </div>
+          <div>
+            <FormattedMessage id="practice-makes-perfect" />
+          </div>
+        </div>
+      )
+    }
+    if (sharedStory) {
+      initList = initList.concat(
+        <div>
+          <div className="pt-lg">
+            <div>
+              <FormattedHTMLMessage id="controlled-story-reminder" />
+              <br />
+              <Link to={`/stories/${sharedStory._id}/controlled-practice`}>
+                {sharedStory.title}
+              </Link>
+            </div>
+          </div>
+        </div>
+      )
+    }
+    if (latestIncompleteStory && enable_recmd) {
       initList = initList.concat(
         <div>
           <div className="pt-lg">
@@ -45,7 +77,7 @@ const WelcomeBackEncouragementModal = ({
         </div>
       )
     }
-    if (storiesToReview.length > 0) {
+    if (storiesToReview.length > 0 && enable_recmd) {
       initList = initList.concat(
         <div>
           <div className="pt-lg">
@@ -115,7 +147,7 @@ const WelcomeBackEncouragementModal = ({
   }, [incompleteStories])
 
   useEffect(() => {
-    if (!userPending && enable_recmd) {
+    if (!userPending) {
       setRecmdList(fillList())
     }
   }, [userRanking, storiesCovered, storiesToReview, latestIncompleteStory, sharedStory])
@@ -161,37 +193,6 @@ const WelcomeBackEncouragementModal = ({
                     { id: 'stories-covered-encouragement' },
                     { stories: storiesCovered }
                   )}
-                </div>
-              )}
-              {userRanking && (
-                <div className="pt-lg">
-                  <div>
-                    <FormattedHTMLMessage
-                      id="leaderboard-ranking-encouragement"
-                      values={{ userRanking }}
-                    />
-                    &nbsp;
-                    <Link to="/leaderboard">
-                      <FormattedMessage id="leaderboard-link-encouragement" />
-                    </Link>
-                    !
-                  </div>
-                  <div>
-                    <FormattedMessage id="practice-makes-perfect" />
-                  </div>
-                </div>
-              )}
-              {sharedStory && (
-                <div>
-                  <div className="pt-lg">
-                    <div>
-                      <FormattedHTMLMessage id="controlled-story-reminder" />
-                      <br />
-                      <Link to={`/stories/${sharedStory._id}/controlled-practice`}>
-                        {sharedStory.title}
-                      </Link>
-                    </div>
-                  </div>
                 </div>
               )}
               {recmdList.map((recommendation, index) => index < upperBound && recommendation)}

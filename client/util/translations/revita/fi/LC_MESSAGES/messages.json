@@ -1281,5 +1281,8 @@
     "mastering-new-words": "Onneksi olkoon! Olet ottamassa haltuun {nWords} uutta sanaa!",
     "list-of-recent-stories": "Last time you were working on:",
     "review-recent-completed-stories": "Haluaisitko kerrata aikaisempia tarinoitasi?",
-    "continue-last-story-left-in-the-middle": "Voit jatkaa tarinaa, joka jäi sinulta viimeksi kesken:"
+    "continue-last-story-left-in-the-middle": "Voit jatkaa tarinaa, joka jäi sinulta viimeksi kesken:",
+    "ask-for-a-hint": "Anna vihje!",
+    "user-role-select-teacher": "Olen opettaja",
+    "user-role-select-student": "Olen opiskelija"
 }

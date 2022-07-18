@@ -636,5 +636,8 @@
     "mastering-new-words": "Congratulations: you are on the way to mastering {nWords} new words!",
     "list-of-recent-stories": "Last time you were working on:",
     "review-recent-completed-stories": "你想回顾一下最近联系过的文章吗？",
-    "continue-last-story-left-in-the-middle": "You can continue with the story on which you were working last time:"
+    "continue-last-story-left-in-the-middle": "You can continue with the story on which you were working last time:",
+    "ask-for-a-hint": "给提示吗？",
+    "user-role-select-teacher": "I am a teacher",
+    "user-role-select-student": "I am a student"
 }

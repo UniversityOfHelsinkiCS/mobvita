@@ -32,7 +32,38 @@ const ExercisesEncouragementModal = ({
 
   const fillList = () => {
     let initList = []
-    if (latestIncompleteStory) {
+    if (userRanking) {
+      initList = initList.concat(
+        <div className="pt-lg">
+          <div>
+            <FormattedHTMLMessage id="leaderboard-ranking-encouragement" values={{ userRanking }} />
+            &nbsp;
+            <Link to="/leaderboard">
+              <FormattedMessage id="leaderboard-link-encouragement" />
+            </Link>
+            !
+          </div>
+          <div>
+            <FormattedMessage id="practice-makes-perfect" />
+          </div>
+        </div>
+      )
+    }
+    if (newVocabulary > 0) {
+      initList = initList.concat(
+        <div className="pt-lg">
+          <FormattedHTMLMessage
+            id="story-completed-to-blue-flashcards"
+            values={{ nWords: newVocabulary }}
+          />
+          &nbsp;
+          <Link to={`/flashcards/fillin/test/${storyId}`}>
+            <FormattedMessage id="go-to-blue-flashcards" />
+          </Link>
+        </div>
+      )
+    }
+    if (latestIncompleteStory && enable_recmd) {
       initList = initList.concat(
         <div>
           <div className="pt-lg">
@@ -44,20 +75,23 @@ const ExercisesEncouragementModal = ({
         </div>
       )
     }
-    initList = initList.concat(
-      <div className="pt-lg">
-        <FormattedHTMLMessage
-          id="words-seen-encouragement"
-          values={{ vocabulary_seen: vocabularySeen }}
-        />
-        &nbsp;
-        <Link to="/flashcards">
-          <FormattedMessage id="flashcards-review" />
-        </Link>
-        ?
-      </div>
-    )
-    if (newVocabulary > 0) {
+    if (enable_recmd) {
+      initList = initList.concat(
+        <div className="pt-lg">
+          <FormattedHTMLMessage
+            id="words-seen-encouragement"
+            values={{ vocabulary_seen: vocabularySeen }}
+          />
+          &nbsp;
+          <Link to="/flashcards">
+            <FormattedMessage id="flashcards-review" />
+          </Link>
+          ?
+        </div>
+      )
+    }
+
+    if (newVocabulary > 0 && enable_recmd) {
       initList = initList.concat(
         <div className="pt-lg">
           <FormattedHTMLMessage
@@ -87,7 +121,7 @@ const ExercisesEncouragementModal = ({
   }, [user_rank])
 
   useEffect(() => {
-    if (!pending && enable_recmd) {
+    if (!pending) {
       setRecmdList(fillList())
     }
   }, [userRanking, newVocabulary, latestIncompleteStory])
@@ -149,36 +183,6 @@ const ExercisesEncouragementModal = ({
                   { id: 'stories-covered-encouragement' },
                   { stories: storiesCovered }
                 )}
-              </div>
-            )}
-            {userRanking && (
-              <div className="pt-lg">
-                <div>
-                  <FormattedHTMLMessage
-                    id="leaderboard-ranking-encouragement"
-                    values={{ userRanking }}
-                  />
-                  &nbsp;
-                  <Link to="/leaderboard">
-                    <FormattedMessage id="leaderboard-link-encouragement" />
-                  </Link>
-                  !
-                </div>
-                <div>
-                  <FormattedMessage id="practice-makes-perfect" />
-                </div>
-              </div>
-            )}
-            {newVocabulary > 0 && (
-              <div className="pt-lg">
-                <FormattedHTMLMessage
-                  id="story-completed-to-blue-flashcards"
-                  values={{ nWords: newVocabulary }}
-                />
-                &nbsp;
-                <Link to={`/flashcards/fillin/test/${storyId}`}>
-                  <FormattedMessage id="go-to-blue-flashcards" />
-                </Link>
               </div>
             )}
             {recmdList.map((recommendation, index) => index < upperBound && recommendation)}
