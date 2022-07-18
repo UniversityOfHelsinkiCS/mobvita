@@ -54,6 +54,10 @@ const CurrentSnippet = ({ storyId, handleInputChange, timer, numSnippets }) => {
   if (!userData) {
     return
   }
+  const { incomplete, loading } = useSelector(({ incomplete }) => ({
+    incomplete: incomplete.data,
+    loading: incomplete.pending,
+  }))
 
   const storiesCovered = userData.stories_covered
   const vocabularySeen = userData.vocabulary_seen
@@ -282,6 +286,8 @@ const CurrentSnippet = ({ storyId, handleInputChange, timer, numSnippets }) => {
               enable_recmd={enable_recmd}
               storiesCovered={storiesCovered}
               vocabularySeen={vocabularySeen}
+              incompleteStories={incomplete}
+              loading={loading}
             />
             <Button variant="primary" block onClick={() => startOver()}>
               <FormattedMessage id="restart-story" />

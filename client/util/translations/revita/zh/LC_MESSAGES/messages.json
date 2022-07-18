@@ -634,5 +634,7 @@
     "well-done-flashcards": "好样的！",
     "return-to-main-page": "Return to home page",
     "mastering-new-words": "Congratulations: you are on the way to mastering {nWords} new words!",
-    "list-of-recent-stories": "Last time you were working on:"
+    "list-of-recent-stories": "Last time you were working on:",
+    "review-recent-completed-stories": "你想回顾一下最近联系过的文章吗？",
+    "continue-last-story-left-in-the-middle": "You can continue with the story on which you were working last time:"
 }

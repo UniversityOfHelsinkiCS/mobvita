@@ -766,7 +766,7 @@
     "Show history": "Показать историю",
     "History": "История",
     "Hide history": "Скрыть историю",
-    "Flashcard list": "Список карт",
+    "Flashcard list": "Все карты",
     "go-to-next-snippet": "Следующий абзац",
     "Your clue": "Подсказка",
     "New crossword": "Новый кроссворд",
@@ -1282,5 +1282,7 @@
     "well-done-flashcards": "Отлично получается!",
     "return-to-main-page": "Return to home page",
     "mastering-new-words": "Congratulations: you are on the way to mastering {nWords} new words!",
-    "list-of-recent-stories": "Last time you were working on:"
+    "list-of-recent-stories": "Last time you were working on:",
+    "review-recent-completed-stories": "Хочешь повторить твои последние истории?",
+    "continue-last-story-left-in-the-middle": "You can continue with the story on which you were working last time:"
 }

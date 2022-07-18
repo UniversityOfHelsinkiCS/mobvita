@@ -1268,7 +1268,7 @@
     "never-show-recommendations": "Lopeta suositusten näyttäminen",
     "go-to-blue-flashcards": "Go to flashcards",
     "disable-recmd-tooltip": "Valinnan voi myöhemmin muuttaa profiilisi asetuksista",
-    "show-more-recommendations": "Näytä lisää",
+    "show-more-recommendations": "Näytä lisää suosituksia",
     "all-correct-flashcards": "Hyvää työtä! Haluaisitko tarkastella",
     "some-incorrect-flashcards": "Osa vastauksistasi oli väärin. Haluaisitko",
     "flashcards-try-again": "yrittää uudelleen?",
@@ -1279,5 +1279,7 @@
     "well-done-flashcards": "Hyvin tehty!",
     "return-to-main-page": "Palaa pääsivulle",
     "mastering-new-words": "Onneksi olkoon! Olet ottamassa haltuun {nWords} uutta sanaa!",
-    "list-of-recent-stories": "Last time you were working on:"
+    "list-of-recent-stories": "Last time you were working on:",
+    "review-recent-completed-stories": "Haluaisitko kerrata aikaisempia tarinoitasi?",
+    "continue-last-story-left-in-the-middle": "Voit jatkaa tarinaa, joka jäi sinulta viimeksi kesken:"
 }

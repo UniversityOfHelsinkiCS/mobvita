@@ -20,7 +20,7 @@ const WelcomeBackEncouragementModal = ({
   enable_recmd,
 }) => {
   const intl = useIntl()
-  const [latestIncompleteStories, setLatestIncompleteStories] = useState([])
+  const [latestIncompleteStory, setLatestIncompleteStory] = useState(null)
   const [storiesToReview, setStoriesToReview] = useState([])
   const [upperBound, setUpperBound] = useState(3)
   const [recmdList, setRecmdList] = useState([])
@@ -33,19 +33,15 @@ const WelcomeBackEncouragementModal = ({
 
   const fillList = () => {
     let initList = []
-    if (latestIncompleteStories.length > 0) {
+    if (latestIncompleteStory) {
       initList = initList.concat(
         <div>
           <div className="pt-lg">
-            <FormattedMessage id="list-of-recent-stories" />
+            <FormattedMessage id="continue-last-story-left-in-the-middle" />
           </div>
-          <ul>
-            {latestIncompleteStories.map(story => (
-              <li style={{ marginTop: '0.5rem' }}>
-                <Link to={`/stories/${story._id}/practice`}>{story.title}</Link>
-              </li>
-            ))}
-          </ul>
+          <Link to={`/stories/${latestIncompleteStory._id}/practice`}>
+            {latestIncompleteStory.title}
+          </Link>
         </div>
       )
     }
@@ -108,19 +104,13 @@ const WelcomeBackEncouragementModal = ({
 
       setStoriesToReview(previousStories)
 
-      const latestIncompleteStories = incompleteStories.filter(
+      const listOfLatest = incompleteStories.filter(
         story => story.last_snippet_id !== story.num_snippets - 1
       )
-      const previousIncStories = []
-      for (
-        let i = latestIncompleteStories.length - 1;
-        i >= 0 && i >= latestIncompleteStories.length - 3;
-        i--
-      ) {
-        previousIncStories.push(latestIncompleteStories[i])
-      }
 
-      setLatestIncompleteStories(previousIncStories)
+      if (listOfLatest.length > 0) {
+        setLatestIncompleteStory(listOfLatest[listOfLatest.length - 1])
+      }
     }
   }, [incompleteStories])
 
@@ -128,7 +118,7 @@ const WelcomeBackEncouragementModal = ({
     if (!userPending && enable_recmd) {
       setRecmdList(fillList())
     }
-  }, [userRanking, storiesCovered, storiesToReview, latestIncompleteStories, sharedStory])
+  }, [userRanking, storiesCovered, storiesToReview, latestIncompleteStory, sharedStory])
 
   const closeModal = () => {
     setOpen(false)

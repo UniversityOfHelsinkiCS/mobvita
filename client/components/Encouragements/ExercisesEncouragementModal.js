@@ -15,12 +15,15 @@ const ExercisesEncouragementModal = ({
   enable_recmd,
   storiesCovered,
   vocabularySeen,
+  incompleteStories,
+  loading,
 }) => {
   const { id: storyId } = useParams()
   const [upperBound, setUpperBound] = useState(3)
   const [recmdList, setRecmdList] = useState([])
   const { newVocabulary } = useSelector(({ newVocabulary }) => newVocabulary)
   const { user_rank } = useSelector(({ leaderboard }) => leaderboard.data)
+  const [latestIncompleteStory, setLatestIncompleteStory] = useState(null)
   const [userRanking, setUserRanking] = useState(null)
   const intl = useIntl()
   const { pending } = useSelector(({ user }) => user)
@@ -29,7 +32,18 @@ const ExercisesEncouragementModal = ({
 
   const fillList = () => {
     let initList = []
-
+    if (latestIncompleteStory) {
+      initList = initList.concat(
+        <div>
+          <div className="pt-lg">
+            <FormattedMessage id="continue-last-story-left-in-the-middle" />
+          </div>
+          <Link to={`/stories/${latestIncompleteStory._id}/practice`}>
+            {latestIncompleteStory.title}
+          </Link>
+        </div>
+      )
+    }
     initList = initList.concat(
       <div className="pt-lg">
         <FormattedHTMLMessage
@@ -76,7 +90,19 @@ const ExercisesEncouragementModal = ({
     if (!pending && enable_recmd) {
       setRecmdList(fillList())
     }
-  }, [userRanking, newVocabulary])
+  }, [userRanking, newVocabulary, latestIncompleteStory])
+
+  useEffect(() => {
+    if (incompleteStories.length > 0) {
+      const listOfLatest = incompleteStories.filter(
+        story => story.last_snippet_id !== story.num_snippets - 1
+      )
+
+      if (listOfLatest.length > 0) {
+        setLatestIncompleteStory(listOfLatest[listOfLatest.length - 1])
+      }
+    }
+  }, [incompleteStories])
 
   const closeModal = () => {
     dispatch(clearNewVocabulary())
@@ -85,6 +111,10 @@ const ExercisesEncouragementModal = ({
 
   const updatePreferences = () => {
     dispatch(updateEnableRecmd(!enable_recmd))
+  }
+
+  if (loading) {
+    return null
   }
 
   return (

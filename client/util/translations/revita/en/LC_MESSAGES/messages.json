@@ -770,7 +770,7 @@
     "Show history": "Show history",
     "History": "History",
     "Hide history": "Hide history",
-    "Flashcard list": "Flashcard list",
+    "Flashcard list": "List of all flashcards",
     "go-to-next-snippet": "Next snippet",
     "Practice history": "Practice history",
     "Progress graph": "Timeline",
@@ -1268,7 +1268,7 @@
     "never-show-recommendations": "Turn off recommendations",
     "go-to-blue-flashcards": "Go to flashcards",
     "disable-recmd-tooltip": "This can be changed later in your personal settings page",
-    "show-more-recommendations": "Show more",
+    "show-more-recommendations": "More suggestions",
     "all-correct-flashcards": "Well done! Would you like to",
     "some-incorrect-flashcards": "Some answers were wrong. Would you like to",
     "flashcards-try-again": "try again",
@@ -1279,5 +1279,7 @@
     "well-done-flashcards": "Well Done!",
     "return-to-main-page": "Return to home page",
     "mastering-new-words": "Congratulations: you are on the way to mastering {nWords} new words!",
-    "list-of-recent-stories": "Last time you were working on:"
+    "list-of-recent-stories": "Last time you were working on:",
+    "review-recent-completed-stories": "Would you like to review your recent stories?",
+    "continue-last-story-left-in-the-middle": "You can continue with the story on which you were working last time:"
 }
