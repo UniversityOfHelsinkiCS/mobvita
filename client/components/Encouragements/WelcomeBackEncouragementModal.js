@@ -31,28 +31,8 @@ const WelcomeBackEncouragementModal = ({
   const { pending: userPending } = useSelector(({ user }) => user)
   const dispatch = useDispatch()
 
-  console.log('incomplete ', incompleteStories)
-
   const fillList = () => {
     let initList = []
-
-    if (userRanking) {
-      initList = initList.concat(
-        <div className="pt-lg">
-          <div>
-            <FormattedHTMLMessage id="leaderboard-ranking-encouragement" values={{ userRanking }} />
-            &nbsp;
-            <Link to="/leaderboard">
-              <FormattedMessage id="leaderboard-link-encouragement" />
-            </Link>
-            !
-          </div>
-          <div>
-            <FormattedMessage id="practice-makes-perfect" />
-          </div>
-        </div>
-      )
-    }
     if (sharedStory) {
       initList = initList.concat(
         <div>
@@ -74,11 +54,13 @@ const WelcomeBackEncouragementModal = ({
           <div className="pt-lg">
             <FormattedMessage id="list-of-recent-stories" />
           </div>
-          {latestIncompleteStories.map(story => (
-            <li style={{ marginTop: '0.5rem' }}>
-              <Link to={`/stories/${story._id}/practice`}>{story.title}</Link>
-            </li>
-          ))}
+          <ul>
+            {latestIncompleteStories.map(story => (
+              <li style={{ marginTop: '0.5rem' }}>
+                <Link to={`/stories/${story._id}/practice`}>{story.title}</Link>
+              </li>
+            ))}
+          </ul>
         </div>
       )
     }
@@ -98,11 +80,6 @@ const WelcomeBackEncouragementModal = ({
         </div>
       )
     }
-    initList = initList.concat(
-      <div className="pt-lg">
-        {intl.formatMessage({ id: 'stories-covered-encouragement' }, { stories: storiesCovered })}
-      </div>
-    )
 
     return initList
   }
@@ -180,7 +157,7 @@ const WelcomeBackEncouragementModal = ({
   }, [incompleteStories])
 
   useEffect(() => {
-    if (!userPending) {
+    if (!userPending && enable_recmd) {
       setRecmdList(fillList())
     }
   }, [userRanking, storiesCovered, storiesToReview, latestIncompleteStories, sharedStory])
@@ -220,6 +197,32 @@ const WelcomeBackEncouragementModal = ({
               >
                 {intl.formatMessage({ id: 'welcome-back-encouragement' }, { username })}
               </div>
+              {storiesCovered > 0 && (
+                <div>
+                  {intl.formatMessage(
+                    { id: 'stories-covered-encouragement' },
+                    { stories: storiesCovered }
+                  )}
+                </div>
+              )}
+              {userRanking && (
+                <div className="pt-lg">
+                  <div>
+                    <FormattedHTMLMessage
+                      id="leaderboard-ranking-encouragement"
+                      values={{ userRanking }}
+                    />
+                    &nbsp;
+                    <Link to="/leaderboard">
+                      <FormattedMessage id="leaderboard-link-encouragement" />
+                    </Link>
+                    !
+                  </div>
+                  <div>
+                    <FormattedMessage id="practice-makes-perfect" />
+                  </div>
+                </div>
+              )}
               {recmdList.map((recommendation, index) => index < upperBound && recommendation)}
               {recmdList.length > upperBound && (
                 <Button

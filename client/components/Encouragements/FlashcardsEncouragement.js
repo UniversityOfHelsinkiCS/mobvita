@@ -25,8 +25,6 @@ const FlashcardsEncouragement = ({
   const blueFlashcards = history.location.pathname.includes('fillin')
   const { pending } = useSelector(({ user }) => user)
 
-  console.log('incomplete ', latestStories)
-
   const fillList = () => {
     let initList = []
 

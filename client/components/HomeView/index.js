@@ -131,7 +131,7 @@ const HomeView = () => {
   const [practiceModalOpen, setPracticeModalOpen] = useState(false)
   const [addStoryModalOpen, setAddStoryModalOpen] = useState(false)
 
-  const [openEncouragement, setOpenEncouragement] = useState(enable_recmd)
+  const [openEncouragement, setOpenEncouragement] = useState(true)
   const [openReminder, setOpenReminder] = useState(true)
 
   const showWelcomeModal =
