@@ -5,12 +5,12 @@ import TemplateTranslations from './TemplateTranslations'
 import TemplateActions from './TemplateActions'
 
 const TemplateDesktopView = props => (
-  <div className="cont flex">
+  <div className="flex">
     <div className="flashcard">
       <TemplateWord {...props} />
       <TemplateHints {...props} />
     </div>
-    <div className="flashcard ml-lg">
+    <div className="flashcard ml-lg" style={{ marginLeft: '1em' }}>
       <TemplateTranslations bigScreen {...props} />
       <TemplateActions {...props} />
     </div>
