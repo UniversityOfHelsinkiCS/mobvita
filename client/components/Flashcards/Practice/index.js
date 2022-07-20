@@ -69,7 +69,7 @@ const Practice = ({ mode }) => {
 
   useEffect(() => {
     if (inFillin) {
-      dispatch(getBlueFlashcards(learningLanguage, dictionaryLanguage))
+      dispatch(getBlueFlashcards(learningLanguage, dictionaryLanguage, storyId))
     } else {
       dispatch(getFlashcards(learningLanguage, dictionaryLanguage, storyId))
     }
