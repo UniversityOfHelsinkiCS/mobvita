@@ -16,6 +16,7 @@ const FlashcardsEncouragement = ({
   handleNewDeck,
   vocabularySeen,
   latestStories,
+  prevBlueCards,
 }) => {
   const history = useHistory()
   const intl = useIntl()
@@ -40,6 +41,25 @@ const FlashcardsEncouragement = ({
             ?
           </div>
         )
+        if (prevBlueCards.length > 0) {
+          initList = initList.concat(
+            <div>
+              <div className="pt-lg">
+                <FormattedHTMLMessage id="previous-stories-blue-cards" />
+              </div>
+              <ul>
+                {prevBlueCards.map(
+                  (story, index) =>
+                    index < 3 && (
+                      <li style={{ marginTop: '0.5rem' }}>
+                        <Link to={`/flashcards/fillin/test/${story.story_d}`}>{story.story_id}</Link>
+                      </li>
+                    )
+                )}
+              </ul>
+            </div>
+          )
+        }
       } else {
         initList = initList.concat(
           <div className="pt-lg">
@@ -80,11 +100,13 @@ const FlashcardsEncouragement = ({
             <div className="pt-lg">
               <FormattedMessage id="list-of-recent-stories" />
             </div>
-            {latestStories.map(story => (
-              <li style={{ marginTop: '0.5rem' }}>
-                <Link to={`/stories/${story._id}/practice`}>{story.title}</Link>
-              </li>
-            ))}
+            <ul>
+              {latestStories.map(story => (
+                <li style={{ marginTop: '0.5rem' }}>
+                  <Link to={`/stories/${story._id}/practice`}>{story.title}</Link>
+                </li>
+              ))}
+            </ul>
           </div>
         )
       }

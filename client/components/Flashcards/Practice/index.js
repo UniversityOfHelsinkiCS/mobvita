@@ -144,8 +144,6 @@ const Practice = ({ mode }) => {
           open={open}
           setOpen={setOpen}
           cardsCorrect={cardsCorrect}
-          lan_in={learningLanguage}
-          lan_out={dictionaryLanguage}
         />
       )
     }

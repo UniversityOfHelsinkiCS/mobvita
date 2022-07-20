@@ -1284,5 +1284,6 @@
     "continue-last-story-left-in-the-middle": "Voit jatkaa tarinaa, joka jäi sinulta viimeksi kesken:",
     "ask-for-a-hint": "Anna vihje!",
     "user-role-select-teacher": "Olen opettaja",
-    "user-role-select-student": "Olen opiskelija"
+    "user-role-select-student": "Olen opiskelija",
+    "previous-stories-blue-cards": "Olet kohdannut uusia sanoja aiemmissa tarinoissasi — joiden käännöksiä et tarkistanut.\nVoit saada pisteet näistä sanoista! Tarkistetaan muutama näistä →"
 }

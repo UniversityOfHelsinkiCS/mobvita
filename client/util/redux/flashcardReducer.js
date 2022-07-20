@@ -12,13 +12,13 @@ export const getBlueFlashcards = (inputLanguage, outputLanguage, storyId = '') =
   const prefix = 'GET_BLUE_FLASHCARDS'
   return callBuilder(route, prefix, 'get')
 }
-/*
-export const getAllBlueFlashcards = (inputLanguage, outputLanguage, storyId = '') => {
-  const route = `flashcards/${inputLanguage}/${outputLanguage}/blue_flashcards?story_id=${storyId}`
+
+export const getStoriesBlueFlashcards = (inputLanguage, outputLanguage) => {
+  const route = `flashcards/${inputLanguage}/${outputLanguage}/blue_flashcards`
   const prefix = 'GET_ALL_BLUE_FLASHCARDS'
   return callBuilder(route, prefix, 'get')
 }
-*/
+
 export const recordFlashcardAnswer = (inputLanguage, outputLanguage, answerDetails) => {
   const route = `/flashcards/${inputLanguage}/${outputLanguage}/answer`
   const prefix = 'ANSWER_FLASHCARD'
@@ -100,6 +100,7 @@ export default (state = initialState, action) => {
         pending: false,
         correctAnswers: 0,
         totalAnswers: 0,
+        storyBlueCards: [],
       }
     case 'GET_FLASHCARDS_FAILURE':
       return {
@@ -120,35 +121,30 @@ export default (state = initialState, action) => {
         pending: false,
         correctAnswers: 0,
         totalAnswers: 0,
+        storyBlueCards: [],
       }
     case 'GET_BLUE_FLASHCARDS_FAILURE':
       return {
         ...state,
         pending: false,
       }
-    {/* 
     case 'GET_ALL_BLUE_FLASHCARDS_ATTEMPT':
       return {
         ...state,
-        pending: true,
+        storyCardsPending: true,
       }
     case 'GET_ALL_BLUE_FLASHCARDS_SUCCESS':
       console.log('RES ', action.response)
       return {
         ...state,
-        cards: action.response.story_blue_flashcards,
-        nounCards: action.response.flashcards.nouns,
-        sessionId: action.response.session_id,
-        pending: false,
-        correctAnswers: 0,
-        totalAnswers: 0,
+        storyBlueCards: action.response.story_blueFlashcards,
+        storyCardsPending: false,
       }
     case 'GET_ALL_BLUE_FLASHCARDS_FAILURE':
       return {
         ...state,
-        pending: false,
+        storyCardsPending: false,
       }
-    */}
     case 'DELETE_FLASHCARD_ATTEMPT':
       return {
         ...state,

@@ -2,23 +2,17 @@ import React, { useState, useEffect } from 'react'
 import { FormattedMessage } from 'react-intl'
 import { useSelector, useDispatch } from 'react-redux'
 import { Button } from 'react-bootstrap'
-import { Link } from 'react-router-dom'
+import { Link, useParams } from 'react-router-dom'
 import { getIncompleteStories } from 'Utilities/redux/incompleteStoriesReducer'
-import { answerBluecards } from 'Utilities/redux/flashcardReducer'
-import { learningLanguageSelector } from 'Utilities/common'
+import { answerBluecards, getStoriesBlueFlashcards } from 'Utilities/redux/flashcardReducer'
+import { learningLanguageSelector, dictionaryLanguageSelector } from 'Utilities/common'
 import FlashcardsEncouragement from 'Components/Encouragements/FlashcardsEncouragement'
 
-const FlashcardEndView = ({
-  handleNewDeck,
-  deckSize,
-  open,
-  setOpen,
-  cardsCorrect,
-  lan_in,
-  lan_out,
-}) => {
+const FlashcardEndView = ({ handleNewDeck, deckSize, open, setOpen, cardsCorrect }) => {
   // A bit hacky way to move to next deck with right arrow or enter
-  const { correctAnswers, totalAnswers } = useSelector(({ flashcards }) => flashcards)
+  const { correctAnswers, totalAnswers, storyBlueCards, storyCardsPending } = useSelector(
+    ({ flashcards }) => flashcards
+  )
   const dispatch = useDispatch()
   const { vocabularySeen } = useSelector(state => state.user.data.user)
   const { incomplete, loading } = useSelector(({ incomplete }) => ({
@@ -27,8 +21,10 @@ const FlashcardEndView = ({
   }))
   const { enable_recmd } = useSelector(({ user }) => user.data.user)
   const learningLanguage = useSelector(learningLanguageSelector)
+  const dictionaryLanguage = useSelector(dictionaryLanguageSelector)
   const [latestStories, setLatestStories] = useState([])
-
+  const [prevBlueCards, setPrevBlueCards] = useState([])
+  const { storyId } = useParams()
   console.log(correctAnswers, ' out of ', deckSize)
 
   useEffect(() => {
@@ -37,7 +33,16 @@ const FlashcardEndView = ({
         sort_by: 'access',
       })
     )
+    dispatch(getStoriesBlueFlashcards(learningLanguage, dictionaryLanguage))
   }, [])
+
+  useEffect(() => {
+    const filteredBlueCards = storyBlueCards.filter(story => story.story_id !== storyId)
+
+    setPrevBlueCards(filteredBlueCards)
+  }, [storyBlueCards])
+
+  console.log('acual ', prevBlueCards)
 
   useEffect(() => {
     if (incomplete.length > 0) {
@@ -58,13 +63,12 @@ const FlashcardEndView = ({
   }, [incomplete])
 
   useEffect(() => {
-    console.log('SHOULD SEND BLUE CARDS')
     if (totalAnswers === deckSize && !loading) {
       const answerOjb = {
         flashcard_answers: cardsCorrect,
       }
- 
-      dispatch(answerBluecards(lan_in, lan_out, answerOjb))
+
+      dispatch(answerBluecards(learningLanguage, dictionaryLanguage, answerOjb))
     }
   }, [totalAnswers])
 
@@ -103,7 +107,7 @@ const FlashcardEndView = ({
   return (
     <div className="flashcard justify-center">
       <div>
-        {totalAnswers === deckSize && !loading && (
+        {totalAnswers === deckSize && (
           <FlashcardsEncouragement
             open={open}
             setOpen={setOpen}
@@ -113,6 +117,8 @@ const FlashcardEndView = ({
             handleNewDeck={handleNewDeck}
             vocabularySeen={vocabularySeen}
             latestStories={latestStories}
+            prevBlueCards={prevBlueCards}
+            loading={loading}
           />
         )}
       </div>
