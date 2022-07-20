@@ -79,11 +79,11 @@ const ExerciseCloze = ({ word, handleChange }) => {
     const val = currentAnswer ? currentAnswer.users_answer : ''
     setValue(val)
   }, [currentAnswer])
-  
+
   useEffect(() => {
     setClassName(getExerciseClass(tested, isWrong))
   }, [tested])
-/*
+  /*
   if (word.message) {
     console.log('MESS ', word)
   }
@@ -93,11 +93,10 @@ const ExerciseCloze = ({ word, handleChange }) => {
       {word.message && (
         <div
           className="tooltip-green"
-          style={{cursor: 'pointer'}}
+          style={{ cursor: 'pointer' }}
           // style={{ cursor: 'pointer', background: getWordColor(word.level, grade, skillLevels) }}
           onMouseDown={handleTooltipClick}
         >
-          {/* 
           {word.message && (
             <div className="flex">
               <span dangerouslySetInnerHTML={formatGreenFeedbackText(word?.message)} />{' '}
@@ -112,12 +111,6 @@ const ExerciseCloze = ({ word, handleChange }) => {
               )}
             </div>
           )}
-          */}
-          <div>
-            <Button>
-              <FormattedMessage id="ask-for-a-hint" />
-            </Button>
-          </div>
         </div>
       )}
       <div
