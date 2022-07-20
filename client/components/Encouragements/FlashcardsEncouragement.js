@@ -26,6 +26,8 @@ const FlashcardsEncouragement = ({
   const blueFlashcards = history.location.pathname.includes('fillin')
   const { pending } = useSelector(({ user }) => user)
 
+  console.log('LIST ', prevBlueCards)
+
   const fillList = () => {
     let initList = []
 
@@ -52,7 +54,7 @@ const FlashcardsEncouragement = ({
                   (story, index) =>
                     index < 3 && (
                       <li style={{ marginTop: '0.5rem' }}>
-                        <Link to={`/flashcards/fillin/test/${story.story_d}`}>{story.story_id}</Link>
+                        <Link to={`/flashcards/fillin/test/${story.story_id}`}>{story.title}</Link>
                       </li>
                     )
                 )}

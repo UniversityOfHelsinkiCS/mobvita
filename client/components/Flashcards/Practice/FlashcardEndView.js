@@ -37,12 +37,11 @@ const FlashcardEndView = ({ handleNewDeck, deckSize, open, setOpen, cardsCorrect
   }, [])
 
   useEffect(() => {
+    console.log('acual ', prevBlueCards)
     const filteredBlueCards = storyBlueCards.filter(story => story.story_id !== storyId)
-
+    console.log('filtered ', filteredBlueCards)
     setPrevBlueCards(filteredBlueCards)
   }, [storyBlueCards])
-
-  console.log('acual ', prevBlueCards)
 
   useEffect(() => {
     if (incomplete.length > 0) {
@@ -107,7 +106,7 @@ const FlashcardEndView = ({ handleNewDeck, deckSize, open, setOpen, cardsCorrect
   return (
     <div className="flashcard justify-center">
       <div>
-        {totalAnswers === deckSize && (
+        {totalAnswers === deckSize && !loading && !storyCardsPending && (
           <FlashcardsEncouragement
             open={open}
             setOpen={setOpen}
@@ -118,7 +117,6 @@ const FlashcardEndView = ({ handleNewDeck, deckSize, open, setOpen, cardsCorrect
             vocabularySeen={vocabularySeen}
             latestStories={latestStories}
             prevBlueCards={prevBlueCards}
-            loading={loading}
           />
         )}
       </div>
