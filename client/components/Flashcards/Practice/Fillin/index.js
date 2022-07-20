@@ -44,9 +44,10 @@ const Fillin = ({
   }
 
   useEffect(() => {
+    card['correct'] = answerCorrect
+    setCardsCorrect(cardsCorrect.concat(card))
     if (answerCorrect === true) {
       dispatch(addToCorrectAnswers())
-      setCardsCorrect(cardsCorrect.concat(card))
     }
   }, [answerCorrect])
 
