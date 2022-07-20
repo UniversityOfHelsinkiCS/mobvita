@@ -164,7 +164,7 @@ const Register = () => {
             selection
             fluid
             options={mergeList}
-            text={chosenLanguage}
+            text={<b>{chosenLanguage}</b>}
             onChange={(_, { value }) => setChosenLanguage(capitalize(JSON.parse(value)))}
           />
         </div>
