@@ -128,6 +128,8 @@ const HomeView = () => {
     ({ user }) => user.data.user
   )
 
+  console.log('USER ', userData)
+
   const [practiceModalOpen, setPracticeModalOpen] = useState(false)
   const [addStoryModalOpen, setAddStoryModalOpen] = useState(false)
 

@@ -12,11 +12,25 @@ export const getBlueFlashcards = (inputLanguage, outputLanguage, storyId = '') =
   const prefix = 'GET_BLUE_FLASHCARDS'
   return callBuilder(route, prefix, 'get')
 }
-
+/*
+export const getAllBlueFlashcards = (inputLanguage, outputLanguage, storyId = '') => {
+  const route = `flashcards/${inputLanguage}/${outputLanguage}/blue_flashcards?story_id=${storyId}`
+  const prefix = 'GET_ALL_BLUE_FLASHCARDS'
+  return callBuilder(route, prefix, 'get')
+}
+*/
 export const recordFlashcardAnswer = (inputLanguage, outputLanguage, answerDetails) => {
   const route = `/flashcards/${inputLanguage}/${outputLanguage}/answer`
   const prefix = 'ANSWER_FLASHCARD'
   const payload = answerDetails
+  return callBuilder(route, prefix, 'post', payload)
+}
+
+export const answerBluecards = (inputLanguage, outputLanguage, answerObj) => {
+  const route = `/flashcards/${inputLanguage}/${outputLanguage}/batch_answer`
+  const prefix = 'ANSWER_BLUE_CARDS'
+
+  const payload = answerObj
   return callBuilder(route, prefix, 'post', payload)
 }
 
@@ -78,7 +92,6 @@ export default (state = initialState, action) => {
         pending: true,
       }
     case 'GET_FLASHCARDS_SUCCESS':
-      console.log('RES ', action.response)
       return {
         ...state,
         cards: action.response.flashcards.all,
@@ -99,7 +112,6 @@ export default (state = initialState, action) => {
         pending: true,
       }
     case 'GET_BLUE_FLASHCARDS_SUCCESS':
-      console.log('RES BLUE ', action.response)
       return {
         ...state,
         cards: action.response.flashcards.r_all,
@@ -114,6 +126,29 @@ export default (state = initialState, action) => {
         ...state,
         pending: false,
       }
+    {/* 
+    case 'GET_ALL_BLUE_FLASHCARDS_ATTEMPT':
+      return {
+        ...state,
+        pending: true,
+      }
+    case 'GET_ALL_BLUE_FLASHCARDS_SUCCESS':
+      console.log('RES ', action.response)
+      return {
+        ...state,
+        cards: action.response.story_blue_flashcards,
+        nounCards: action.response.flashcards.nouns,
+        sessionId: action.response.session_id,
+        pending: false,
+        correctAnswers: 0,
+        totalAnswers: 0,
+      }
+    case 'GET_ALL_BLUE_FLASHCARDS_FAILURE':
+      return {
+        ...state,
+        pending: false,
+      }
+    */}
     case 'DELETE_FLASHCARD_ATTEMPT':
       return {
         ...state,

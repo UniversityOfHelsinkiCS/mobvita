@@ -28,8 +28,10 @@ const Practice = ({ mode }) => {
   const [editing, setEditing] = useState(false)
   const [amountAnswered, setAmountAnswered] = useState(0)
   const history = useHistory()
+  const { enable_recmd } = useSelector(({ user }) => user.data.user)
   const learningLanguage = useSelector(learningLanguageSelector)
   const dictionaryLanguage = useSelector(dictionaryLanguageSelector)
+  const [cardsCorrect, setCardsCorrect] = useState([])
   const { flashcardArticles } = useSelector(({ metadata }) => metadata)
   const { cards, pending, deletePending, sessionId } = useSelector(({ flashcards }) => {
     const { pending, deletePending, sessionId } = flashcards
@@ -53,6 +55,7 @@ const Practice = ({ mode }) => {
   const bigScreen = useWindowDimension().width >= 415
   const { storyId } = useParams()
   const dispatch = useDispatch()
+  const [open, setOpen] = useState(true)
 
   const inFillin = history.location.pathname.includes('test')
   useEffect(() => {
@@ -66,7 +69,7 @@ const Practice = ({ mode }) => {
 
   useEffect(() => {
     if (inFillin) {
-      dispatch(getBlueFlashcards(learningLanguage, dictionaryLanguage, storyId))
+      dispatch(getBlueFlashcards(learningLanguage, dictionaryLanguage))
     } else {
       dispatch(getFlashcards(learningLanguage, dictionaryLanguage, storyId))
     }
@@ -85,10 +88,16 @@ const Practice = ({ mode }) => {
 
   const handleNewDeck = () => {
     setSwipeIndex(0)
+    setCardsCorrect([])
+    setOpen(true)
     if (!inFillin) {
       dispatch(getFlashcards(learningLanguage, dictionaryLanguage, storyId))
+    } else {
+      dispatch(getBlueFlashcards(learningLanguage, dictionaryLanguage, storyId))
     }
   }
+
+  console.log('cards correct ', cardsCorrect)
 
   const answerCard = (answer, correct, exercise, displayedHints) => {
     const { _id: flashcard_id, story, lemma, lan_in, lan_out } = cards[swipeIndex]
@@ -128,7 +137,16 @@ const Practice = ({ mode }) => {
   const slideRenderer = ({ key, index }) => {
     if (index >= cards.length) {
       return (
-        <FlashcardEndView key="end-view" handleNewDeck={handleNewDeck} deckSize={cards.length} />
+        <FlashcardEndView
+          key="end-view"
+          handleNewDeck={handleNewDeck}
+          deckSize={cards.length}
+          open={open}
+          setOpen={setOpen}
+          cardsCorrect={cardsCorrect}
+          lan_in={learningLanguage}
+          lan_out={dictionaryLanguage}
+        />
       )
     }
 
@@ -164,6 +182,8 @@ const Practice = ({ mode }) => {
             focusedAndBigScreen={swipeIndex === index && bigScreen}
             answerCard={answerCard}
             deckSize={cards.length}
+            cardsCorrect={cardsCorrect}
+            setCardsCorrect={setCardsCorrect}
           />
         )
     }

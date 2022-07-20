@@ -23,6 +23,8 @@ const Fillin = ({
   setEditing,
   answerCard,
   deckSize,
+  cardsCorrect,
+  setCardsCorrect,
 }) => {
   const [flipped, setFlipped] = useState(false)
   const [answerChecked, setAnswerChecked] = useState(false)
@@ -44,6 +46,7 @@ const Fillin = ({
   useEffect(() => {
     if (answerCorrect === true) {
       dispatch(addToCorrectAnswers())
+      setCardsCorrect(cardsCorrect.concat(card))
     }
   }, [answerCorrect])
 

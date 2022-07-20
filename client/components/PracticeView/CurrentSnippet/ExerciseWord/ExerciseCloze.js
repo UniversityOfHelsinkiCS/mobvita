@@ -17,6 +17,7 @@ import {
 import { setFocusedWord, setReferences, setExplanation } from 'Utilities/redux/practiceReducer'
 import { getTranslationAction, setWords } from 'Utilities/redux/translationReducer'
 import { Icon } from 'semantic-ui-react'
+import { Button } from 'react-bootstrap'
 import Tooltip from 'Components/PracticeView/Tooltip'
 
 const ExerciseCloze = ({ word, handleChange }) => {
@@ -82,7 +83,11 @@ const ExerciseCloze = ({ word, handleChange }) => {
   useEffect(() => {
     setClassName(getExerciseClass(tested, isWrong))
   }, [tested])
-
+/*
+  if (word.message) {
+    console.log('MESS ', word)
+  }
+*/
   const tooltip = (
     <div>
       {word.message && (
@@ -92,6 +97,7 @@ const ExerciseCloze = ({ word, handleChange }) => {
           // style={{ cursor: 'pointer', background: getWordColor(word.level, grade, skillLevels) }}
           onMouseDown={handleTooltipClick}
         >
+          {/* 
           {word.message && (
             <div className="flex">
               <span dangerouslySetInnerHTML={formatGreenFeedbackText(word?.message)} />{' '}
@@ -106,6 +112,12 @@ const ExerciseCloze = ({ word, handleChange }) => {
               )}
             </div>
           )}
+          */}
+          <div>
+            <Button>
+              <FormattedMessage id="ask-for-a-hint" />
+            </Button>
+          </div>
         </div>
       )}
       <div
