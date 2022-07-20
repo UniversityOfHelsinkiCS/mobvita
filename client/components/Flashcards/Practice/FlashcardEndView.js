@@ -37,9 +37,8 @@ const FlashcardEndView = ({ handleNewDeck, deckSize, open, setOpen, cardsCorrect
   }, [])
 
   useEffect(() => {
-    console.log('acual ', prevBlueCards)
     const filteredBlueCards = storyBlueCards.filter(story => story.story_id !== storyId)
-    console.log('filtered ', filteredBlueCards)
+
     setPrevBlueCards(filteredBlueCards)
   }, [storyBlueCards])
 

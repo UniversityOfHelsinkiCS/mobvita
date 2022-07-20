@@ -13,7 +13,7 @@ import { Button, Spinner } from 'react-bootstrap'
 const Register = () => {
   const intl = useIntl()
   const history = useHistory()
-  const [userRole, setUserRole] = 'student'
+  const [userRole, setUserRole] = useState('student')
   const [chosenLanguage, setChosenLanguage] = useState('Finnish')
   const [formState, setFormState] = useState({
     email: '',
@@ -78,6 +78,8 @@ const Register = () => {
         password,
         email,
         interface_language: localeCodeToName(locale),
+        user_role: userRole,
+        learning_language: chosenLanguage,
       }
 
       dispatch(registerUser(payload))
@@ -133,35 +135,27 @@ const Register = () => {
             placeholder={intl.formatMessage({ id: 'repeat-password' })}
           />
         </Form.Field>
-        <div>
-          <button
-            type="button"
-            onClick={() => setUserRole('student')}
-            style={{ border: 'none', backgroundColor: '#FFFFFF' }}
-          >
-            <div className="flex align-center" style={{ gap: '.5em' }}>
-              <input
-                type="radio"
-                onChange={() => setUserRole('student')}
-                checked={userRole === 'studnet'}
-              />
-              <FormattedMessage id="user-role-select-student" />
-            </div>
-          </button>
-          <button
-            type="button"
-            onClick={() => setUserRole('teacher')}
-            style={{ border: 'none', backgroundColor: '#FFFFFF' }}
-          >
-            <div className="flex align-center" style={{ gap: '.5em' }}>
-              <input
-                type="radio"
-                onChange={() => setUserRole('teacher')}
-                checked={userRole === 'teacher'}
-              />
-              <FormattedMessage id="user-role-select-teacher" />
-            </div>
-          </button>
+        <div style={{ display: 'flex' }}>
+          <span style={{ marginRight: '0.5em' }}>
+            <input
+              type="radio"
+              onChange={() => setUserRole('student')}
+              checked={userRole === 'student'}
+            />
+          </span>
+          <span style={{ marginRight: '0.5em' }}>
+            <FormattedMessage id="user-role-select-student" />
+          </span>
+          <span style={{ marginRight: '0.5em' }}>
+            <input
+              type="radio"
+              onChange={() => setUserRole('teacher')}
+              checked={userRole === 'teacher'}
+            />
+          </span>
+          <span style={{ marginRight: '0.5em' }}>
+            <FormattedMessage id="user-role-select-teacher" />
+          </span>
         </div>
         <hr />
         <div className="flex">
