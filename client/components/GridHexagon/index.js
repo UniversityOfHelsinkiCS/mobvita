@@ -22,7 +22,11 @@ const ConstructionHexagon = ({ name, position, statistics, overallTotal, general
     )
   }
 
-  const size = Math.floor((statistics.total / overallTotal) * 10) + 5
+  let stat_total = statistics.total
+  if (stat_total > overallTotal){
+    stat_total = overallTotal
+  }
+  const size = Math.floor((stat_total / overallTotal) * 10) + 5
   const percentageCorrect = Math.round((statistics.correct / statistics.total) * 100)
   const score = parseInt(percentageCorrect)
   const colorClass = `score${score}`
@@ -75,6 +79,7 @@ const HexagonTest = props => {
   if (!props.root_hex_coord || props.exerciseHistory?.length < 1 || !props.exerciseHistory)
     return <div>Not available</div>
 
+  const no_outliner_max = props.exerciseHistory[0].no_oultiner_max
   const accumulatedConcepts = props.exerciseHistory.reduce((acc, elem) => {
     const concepts = Object.entries(elem.concept_statistics)
     for (const [concept, stats] of concepts) {
@@ -93,16 +98,19 @@ const HexagonTest = props => {
 
   const getBiggestHistoryTotal = () => {
     let biggestValue = 0
-    Object.keys(accumulatedConcepts).map(key => {
-      const concept = props.concepts.find(c => String(c.concept_id) === key)
-      if (
-        accumulatedConcepts[key].total > biggestValue &&
-        !concept.hexmap_general &&
-        concept.hex_coords
-      ) {
-        biggestValue = accumulatedConcepts[key].total
-      }
-    })
+    if(typeof no_outliner_max == 'number'){
+      biggestValue = no_outliner_max
+    } 
+    // Object.keys(accumulatedConcepts).map(key => {
+    //   const concept = props.concepts.find(c => String(c.concept_id) === key)
+    //   if (
+    //     accumulatedConcepts[key].total > biggestValue &&
+    //     !concept.hexmap_general &&
+    //     concept.hex_coords
+    //   ) {
+    //     biggestValue = accumulatedConcepts[key].total
+    //   }
+    // })
     return biggestValue
   }
 
