@@ -144,6 +144,36 @@ export const images = {
   fireworks,
 }
 
+export const annotationsMock = [
+  {
+    name: 'ylitti',
+    story: {
+      title: 'Ari Huusela ylitti Atlantin jo neljännen kerran',
+      story_id: '5c080874ff6345361ec09dd8',
+    },
+    categories: [],
+    _id: '1234',
+  },
+  {
+    name: 'sanoo',
+    story: {
+      title: 'Ari Huusela ylitti Atlantin jo neljännen kerran',
+      story_id: '5c080874ff6345361ec09dd8',
+    },
+    categories: [],
+    _id: '1235',
+  },
+  {
+    name: 'naiset',
+    story: {
+      title: 'Demokraatit voittivat USA:n vaalit',
+      story_id: '5c080867ff6345361ec099c0',
+    },
+    categories: [],
+    _id: '1236',
+  },
+]
+
 export const skillLevels = [
   'A1',
   'A1/A2',

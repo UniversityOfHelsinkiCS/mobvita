@@ -101,6 +101,7 @@ const HomeviewButtons = ({ setPracticeModalOpen, setAddStoryModalOpen, aTestIsEn
         <>
           <Button onClick={() => history.push('/test-construction')}>Test construction</Button>
           <Button onClick={() => history.push('test-debug')}>Feedback debugger</Button>
+          {/* <Button onClick={() => history.push('/annotations-library')}>Notes</Button>*/}
         </>
       )}
     </div>

@@ -35,6 +35,7 @@ import Leaderboard from './LeaderboardView'
 import NavBar from './NavBar'
 import RegisterView from './RegisterView'
 import DebugTestView from './DebugTestView'
+import AnnotationsLibrary from './AnnotationsLibrary'
 
 export default () => {
   const user = useSelector(state => state.user.data)
@@ -135,6 +136,7 @@ export default () => {
             <ProtectedRoute exact path="/adaptive-test" component={AdaptiveTestView} />
             <ProtectedRoute exact path="/achievements" component={Achievements} />
             <ProtectedRoute exact path="/leaderboard" component={Leaderboard} />
+            <ProtectedRoute exact path="/annotations-library" component={AnnotationsLibrary} />
             <ProtectedRoute exact path="/test-construction" component={ConstructTestView} />
             <ProtectedRoute exact path="/test-debug" component={DebugTestView} />
             <ProtectedRoute exact path="/vocabulary-view" component={VocabularyView} />
