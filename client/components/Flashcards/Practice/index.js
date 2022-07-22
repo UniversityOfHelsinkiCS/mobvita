@@ -31,7 +31,8 @@ const Practice = ({ mode }) => {
   const { enable_recmd } = useSelector(({ user }) => user.data.user)
   const learningLanguage = useSelector(learningLanguageSelector)
   const dictionaryLanguage = useSelector(dictionaryLanguageSelector)
-  const [cardsCorrect, setCardsCorrect] = useState([])
+  const [blueCardsAnswered, setBlueCardsAnswered] = useState([])
+  const blueCardsTest = history.location.pathname.includes('test')
   const { flashcardArticles } = useSelector(({ metadata }) => metadata)
   const { cards, pending, deletePending, sessionId } = useSelector(({ flashcards }) => {
     const { pending, deletePending, sessionId } = flashcards
@@ -56,7 +57,7 @@ const Practice = ({ mode }) => {
   const { storyId } = useParams()
   const dispatch = useDispatch()
   const [open, setOpen] = useState(true)
-
+  console.log('cards ', cards)
   const inFillin = history.location.pathname.includes('test')
   useEffect(() => {
     setSwipeIndex(0)
@@ -80,6 +81,16 @@ const Practice = ({ mode }) => {
   const handleIndexChange = index => {
     const oldIndex = swipeIndex
     setSwipeIndex(index)
+
+    if (index > blueCardsAnswered.length) {
+      const wrongAnswerObj = {
+        correct: false,
+        story_id: cards[oldIndex].story,
+        flashcard_id: cards[oldIndex]._id,
+        session_id: sessionId,
+      }
+      setBlueCardsAnswered(blueCardsAnswered.concat(wrongAnswerObj))
+    }
     dispatch(addToTotal())
     setTimeout(() => {
       if (index < oldIndex) setSwipeIndex(oldIndex)
@@ -88,7 +99,7 @@ const Practice = ({ mode }) => {
 
   const handleNewDeck = () => {
     setSwipeIndex(0)
-    setCardsCorrect([])
+    setBlueCardsAnswered([])
     setOpen(true)
     if (!inFillin) {
       dispatch(getFlashcards(learningLanguage, dictionaryLanguage, storyId))
@@ -97,7 +108,7 @@ const Practice = ({ mode }) => {
     }
   }
 
-  console.log('cards correct ', cardsCorrect)
+  console.log('answered blue cards ', blueCardsAnswered)
 
   const answerCard = (answer, correct, exercise, displayedHints) => {
     const { _id: flashcard_id, story, lemma, lan_in, lan_out } = cards[swipeIndex]
@@ -112,7 +123,12 @@ const Practice = ({ mode }) => {
       lemma,
       session_id: sessionId,
     }
-    dispatch(recordFlashcardAnswer(lan_in, lan_out, answerDetails))
+    if (!blueCardsTest) {
+      dispatch(recordFlashcardAnswer(lan_in, lan_out, answerDetails))
+    } else {
+      setBlueCardsAnswered(blueCardsAnswered.concat(answerDetails))
+    }
+
     setAmountAnswered(amountAnswered + 1)
   }
 
@@ -143,7 +159,7 @@ const Practice = ({ mode }) => {
           deckSize={cards.length}
           open={open}
           setOpen={setOpen}
-          cardsCorrect={cardsCorrect}
+          blueCardsAnswered={blueCardsAnswered}
         />
       )
     }
@@ -180,8 +196,6 @@ const Practice = ({ mode }) => {
             focusedAndBigScreen={swipeIndex === index && bigScreen}
             answerCard={answerCard}
             deckSize={cards.length}
-            cardsCorrect={cardsCorrect}
-            setCardsCorrect={setCardsCorrect}
           />
         )
     }

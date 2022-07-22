@@ -8,7 +8,7 @@ import { answerBluecards, getStoriesBlueFlashcards } from 'Utilities/redux/flash
 import { learningLanguageSelector, dictionaryLanguageSelector } from 'Utilities/common'
 import FlashcardsEncouragement from 'Components/Encouragements/FlashcardsEncouragement'
 
-const FlashcardEndView = ({ handleNewDeck, deckSize, open, setOpen, cardsCorrect }) => {
+const FlashcardEndView = ({ handleNewDeck, deckSize, open, setOpen, blueCardsAnswered }) => {
   // A bit hacky way to move to next deck with right arrow or enter
   const { correctAnswers, totalAnswers, storyBlueCards, storyCardsPending } = useSelector(
     ({ flashcards }) => flashcards
@@ -61,14 +61,15 @@ const FlashcardEndView = ({ handleNewDeck, deckSize, open, setOpen, cardsCorrect
   }, [incomplete])
 
   useEffect(() => {
-    if (totalAnswers === deckSize && !loading) {
-      const answerOjb = {
-        flashcard_answers: cardsCorrect,
+    if (blueCardsAnswered.length === deckSize && !loading) {
+      const answerObj = {
+        flashcard_answers: blueCardsAnswered,
       }
+      console.log('answer object ', answerObj)
 
-      dispatch(answerBluecards(learningLanguage, dictionaryLanguage, answerOjb))
+      dispatch(answerBluecards(learningLanguage, dictionaryLanguage, answerObj))
     }
-  }, [totalAnswers])
+  }, [blueCardsAnswered])
 
   const useKeyPress = targetKey => {
     const [keyPressed, setKeyPressed] = useState(false)
