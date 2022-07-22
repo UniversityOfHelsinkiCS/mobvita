@@ -13,7 +13,7 @@ import { Button, Spinner } from 'react-bootstrap'
 const Register = () => {
   const intl = useIntl()
   const history = useHistory()
-  const [userRole, setUserRole] = useState('student')
+  const [isTeacher, setIsTeacher] = useState(false)
   const [chosenLanguage, setChosenLanguage] = useState('Finnish')
   const [formState, setFormState] = useState({
     email: '',
@@ -78,7 +78,7 @@ const Register = () => {
         password,
         email,
         interface_language: localeCodeToName(locale),
-        user_role: userRole,
+        is_teacher: isTeacher,
         learning_language: chosenLanguage,
       }
 
@@ -137,21 +137,13 @@ const Register = () => {
         </Form.Field>
         <div style={{ display: 'flex' }}>
           <span style={{ marginRight: '0.5em' }}>
-            <input
-              type="radio"
-              onChange={() => setUserRole('student')}
-              checked={userRole === 'student'}
-            />
+            <input type="radio" onChange={() => setIsTeacher(false)} checked={!isTeacher} />
           </span>
           <span style={{ marginRight: '0.5em' }}>
             <FormattedMessage id="user-role-select-student" />
           </span>
           <span style={{ marginRight: '0.5em' }}>
-            <input
-              type="radio"
-              onChange={() => setUserRole('teacher')}
-              checked={userRole === 'teacher'}
-            />
+            <input type="radio" onChange={() => setIsTeacher(true)} checked={isTeacher} />
           </span>
           <span style={{ marginRight: '0.5em' }}>
             <FormattedMessage id="user-role-select-teacher" />
