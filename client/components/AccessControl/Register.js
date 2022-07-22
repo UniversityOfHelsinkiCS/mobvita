@@ -3,18 +3,16 @@ import { useDispatch, useSelector } from 'react-redux'
 import { useHistory } from 'react-router-dom'
 import { registerUser } from 'Utilities/redux/registerReducer'
 import { getSelf } from 'Utilities//redux/userReducer'
-import { Form, Checkbox, Dropdown } from 'semantic-ui-react'
+import { Form, Checkbox } from 'semantic-ui-react'
 import TermsAndConditions from 'Components/StaticContent/TermsAndConditions'
 import { useIntl, FormattedMessage } from 'react-intl'
 import { setNotification } from 'Utilities/redux/notificationReducer'
-import { localeCodeToName, supportedLearningLanguages, capitalize, images } from 'Utilities/common'
+import { localeCodeToName } from 'Utilities/common'
 import { Button, Spinner } from 'react-bootstrap'
 
 const Register = () => {
   const intl = useIntl()
   const history = useHistory()
-  const [isTeacher, setIsTeacher] = useState(false)
-  const [chosenLanguage, setChosenLanguage] = useState('Finnish')
   const [formState, setFormState] = useState({
     email: '',
     username: '',
@@ -26,18 +24,6 @@ const Register = () => {
   const toggleAccepted = () => {
     setAccepted(!accepted)
   }
-  const mergeList = supportedLearningLanguages.major
-    .concat(supportedLearningLanguages.majorBeta)
-    .concat(supportedLearningLanguages.minor)
-    .map(language => ({
-      key: language,
-      text: capitalize(language),
-      value: JSON.stringify(language), // needs to be string
-      image: {
-        avatar: true,
-        src: images[`flag${capitalize(language.split('-').join(''))}`],
-      },
-    }))
 
   const {
     error,
@@ -78,8 +64,6 @@ const Register = () => {
         password,
         email,
         interface_language: localeCodeToName(locale),
-        is_teacher: isTeacher,
-        learning_language: chosenLanguage,
       }
 
       dispatch(registerUser(payload))
@@ -135,31 +119,6 @@ const Register = () => {
             placeholder={intl.formatMessage({ id: 'repeat-password' })}
           />
         </Form.Field>
-        <div style={{ display: 'flex' }}>
-          <span style={{ marginRight: '0.5em' }}>
-            <input type="radio" onChange={() => setIsTeacher(false)} checked={!isTeacher} />
-          </span>
-          <span style={{ marginRight: '0.5em' }}>
-            <FormattedMessage id="user-role-select-student" />
-          </span>
-          <span style={{ marginRight: '0.5em' }}>
-            <input type="radio" onChange={() => setIsTeacher(true)} checked={isTeacher} />
-          </span>
-          <span style={{ marginRight: '0.5em' }}>
-            <FormattedMessage id="user-role-select-teacher" />
-          </span>
-        </div>
-        <hr />
-        <div className="flex">
-          <FormattedMessage id="Learning-language" />
-          <Dropdown
-            selection
-            fluid
-            options={mergeList}
-            text={<b>{chosenLanguage}</b>}
-            onChange={(_, { value }) => setChosenLanguage(capitalize(JSON.parse(value)))}
-          />
-        </div>
         <hr />
         <div style={{ display: 'flex', alignItems: 'center', marginBottom: '0.5em' }}>
           <Checkbox data-cy="accept-terms" checked={accepted} onChange={() => toggleAccepted()} />

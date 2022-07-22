@@ -10,6 +10,7 @@ import CERFLevelSlider from './CEFRLevelSlider'
 const SetCEFRReminder = props => {
   const dispatch = useDispatch()
   const [sliderValue, setSliderValue] = useState(121)
+  const [isTeacher, setIsTeacher] = useState(false)
 
   const closeModal = () => {
     props.setOpen(false)
@@ -41,11 +42,29 @@ const SetCEFRReminder = props => {
     >
       <Modal.Content>
         <div className="encouragement" style={{ padding: '1.5rem', color: '#000000' }}>
-          <h2>
+          <div style={{ display: 'flex', marginLeft: '.5em', marginTop: '.5em' }}>
+            <span style={{ marginRight: '.5em' }}>
+              <input type="radio" onChange={() => setIsTeacher(false)} checked={!isTeacher} />
+            </span>
+            <span style={{ marginRight: '.5em' }}>
+              <FormattedMessage id="user-role-select-student" />
+            </span>
+            <span style={{ marginRight: '.5em' }}>
+              <input type="radio" onChange={() => setIsTeacher(true)} checked={isTeacher} />
+            </span>
+            <span style={{ marginRight: '.5em' }}>
+              <FormattedMessage id="user-role-select-teacher" />
+            </span>
+          </div>
+          <h3 style={{ marginTop: '1em', color: isTeacher ? '#D3D3D3' : '#000000' }}>
             <FormattedMessage id="select-cefr-reminder" />
-          </h2>
+          </h3>
           <div>
-            <CERFLevelSlider sliderValue={sliderValue} setSliderValue={setSliderValue} />
+            <CERFLevelSlider
+              isDisabled={isTeacher}
+              sliderValue={sliderValue}
+              setSliderValue={setSliderValue}
+            />
           </div>
           <br />
           <Button variant="primary" size="lg" onClick={submitSettings}>

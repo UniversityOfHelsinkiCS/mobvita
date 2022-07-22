@@ -2,14 +2,14 @@
 import React from 'react'
 import ReactSlider from 'react-slider'
 
-const CERFLevelSlider = props => {
+const CERFLevelSlider = ({ isDisabled, sliderValue, setSliderValue }) => {
   const handleSlider = value => {
     if (value < 121) {
-      props.setSliderValue(121)
+      setSliderValue(121)
     } else if (value > 968) {
-      props.setSliderValue(968)
+      setSliderValue(968)
     } else {
-      props.setSliderValue(value)
+      setSliderValue(value)
     }
   }
 
@@ -18,13 +18,13 @@ const CERFLevelSlider = props => {
       <ReactSlider
         className="exercise-density-slider"
         thumbClassName="exercise-density-slider-thumb"
-        trackClassName={!props.isDisabled ? 'exercise-density-slider-track' : 'disabled-track'}
+        trackClassName={!isDisabled ? 'exercise-density-slider-track' : 'disabled-track'}
         onAfterChange={value => handleSlider(value)}
         min={0}
         max={1210}
         step={121}
-        value={props.sliderValue}
-        disabled={props.isDisabled}
+        value={sliderValue}
+        disabled={isDisabled}
       />
 
       <div className="space-between exercise-density-slider-label-cont bold">
