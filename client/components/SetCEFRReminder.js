@@ -3,29 +3,31 @@ import { FormattedMessage } from 'react-intl'
 import { useDispatch } from 'react-redux'
 import { Modal } from 'semantic-ui-react'
 import { Button } from 'react-bootstrap'
+import { sidebarSetOpen } from 'Utilities/redux/sidebarReducer'
 import { updateUserGrade } from 'Utilities/redux/userReducer'
-import { skillLevels } from 'Utilities/common'
 import CERFLevelSlider from './CEFRLevelSlider'
 
-const SetCEFRReminder = props => {
+const SetCEFRReminder = ({ open, setOpen, newUser }) => {
   const dispatch = useDispatch()
   const [sliderValue, setSliderValue] = useState(121)
   const [isTeacher, setIsTeacher] = useState(false)
 
+  const startTour = () => {
+    dispatch(sidebarSetOpen(false))
+    dispatch({ type: 'TOUR_RESTART' })
+  }
+
   const closeModal = () => {
-    props.setOpen(false)
+    setOpen(false)
+    if (newUser) {
+      startTour()
+    }
   }
 
   const submitSettings = () => {
     const minified = sliderValue / 11
     const rounded = Math.floor(minified / 10)
     dispatch(updateUserGrade(rounded))
-    // console.log('ROUNDED ', rounded)
-    // if (rounded === 11) {
-    //   dispatch(updateUserGrade('C2'))
-    // } else {
-    //   dispatch(updateUserGrade(skillLevels[rounded]))
-    // }
 
     closeModal()
   }
@@ -33,7 +35,7 @@ const SetCEFRReminder = props => {
   return (
     <Modal
       basic
-      open={props.open}
+      open={open}
       size="tiny"
       centered={false}
       dimmer="blurring"

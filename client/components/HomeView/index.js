@@ -101,7 +101,7 @@ const HomeviewButtons = ({ setPracticeModalOpen, setAddStoryModalOpen, aTestIsEn
         <>
           <Button onClick={() => history.push('/test-construction')}>Test construction</Button>
           <Button onClick={() => history.push('test-debug')}>Feedback debugger</Button>
-          {/* <Button onClick={() => history.push('/annotations-library')}>Notes</Button>*/}
+          {/* <Button onClick={() => history.push('/annotations-library')}>Notes</Button> */}
         </>
       )}
     </div>
@@ -144,11 +144,12 @@ const HomeView = () => {
     dispatch(getGroups())
   }, [])
 
+  console.log('user data ', userData)
   return (
     <div className="cont-tall cont flex-col auto gap-row-sm pt-lg blue-bg">
       <AddStoryModal open={addStoryModalOpen} setOpen={setAddStoryModalOpen} />
       <PracticeModal open={practiceModalOpen} setOpen={setPracticeModalOpen} />
-      {(showWelcomeModal && userData.grade) && (
+      {showWelcomeModal && userData.grade && (
         <WelcomeBackEncouragementModal
           open={openEncouragement}
           setOpen={setOpenEncouragement}
@@ -161,7 +162,11 @@ const HomeView = () => {
         />
       )}
       {!userData.grade && userData.email !== 'anonymous_email' && (
-        <SetCEFRReminder open={openReminder} setOpen={setOpenReminder} />
+        <SetCEFRReminder
+          open={openReminder}
+          setOpen={setOpenReminder}
+          newUser={userData.is_new_user}
+        />
       )}
       <div className="grow flex-col">
         {bigScreen ? (
