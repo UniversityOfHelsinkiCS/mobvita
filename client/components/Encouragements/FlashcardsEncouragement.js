@@ -41,22 +41,22 @@ const FlashcardsEncouragement = ({
             ?
           </div>
         )
-        if (prevBlueCards.length > 0) {
+        if (prevBlueCards) {
           initList = initList.concat(
-            <div>
-              <div className="pt-lg">
-                <FormattedHTMLMessage id="previous-stories-blue-cards" />
+            <div className="pt-lg">
+              <div>
+                <FormattedHTMLMessage
+                  id="previous-stories-blue-cards"
+                  values={{
+                    nWords: 30,
+                    story: prevBlueCards.title,
+                  }}
+                />
+                &nbsp;
+                <Link to={`/flashcards/fillin/test/${prevBlueCards.story_id}`}>
+                  <FormattedMessage id="flashcards-review" />
+                </Link>
               </div>
-              <ul>
-                {prevBlueCards.map(
-                  (story, index) =>
-                    index < 3 && (
-                      <li style={{ marginTop: '0.5rem' }}>
-                        <Link to={`/flashcards/fillin/test/${story.story_id}`}>{story.title}</Link>
-                      </li>
-                    )
-                )}
-              </ul>
             </div>
           )
         }

@@ -2,9 +2,10 @@ import React, { useEffect, useState } from 'react'
 import { Modal, Popup, Icon } from 'semantic-ui-react'
 import { useIntl, FormattedHTMLMessage, FormattedMessage } from 'react-intl'
 import { Link } from 'react-router-dom'
-import { images } from 'Utilities/common'
+import { images, dictionaryLanguageSelector } from 'Utilities/common'
 import { useDispatch, useSelector } from 'react-redux'
 import { updateEnableRecmd } from 'Utilities/redux/userReducer'
+import { getStoriesBlueFlashcards } from 'Utilities/redux/flashcardReducer'
 import { getIncompleteStories } from 'Utilities/redux/incompleteStoriesReducer'
 import { getLeaderboards } from 'Utilities/redux/leaderboardReducer'
 import { Form, Button } from 'react-bootstrap'
@@ -23,6 +24,9 @@ const WelcomeBackEncouragementModal = ({
   const [latestIncompleteStory, setLatestIncompleteStory] = useState(null)
   const [storiesToReview, setStoriesToReview] = useState([])
   const [upperBound, setUpperBound] = useState(3)
+  const dictionaryLanguage = useSelector(dictionaryLanguageSelector)
+  const { storyBlueCards, storyCardsPending } = useSelector(({ flashcards }) => flashcards)
+  const [prevBlueCards, setPrevBlueCards] = useState(null)
   const [recmdList, setRecmdList] = useState([])
   const { user_rank } = useSelector(({ leaderboard }) => leaderboard.data)
   const stories = useSelector(({ stories }) => stories.data)
@@ -61,6 +65,25 @@ const WelcomeBackEncouragementModal = ({
                 {sharedStory.title}
               </Link>
             </div>
+          </div>
+        </div>
+      )
+    }
+    if (prevBlueCards) {
+      initList = initList.concat(
+        <div className="pt-lg">
+          <div>
+            <FormattedHTMLMessage
+              id="previous-stories-blue-cards"
+              values={{
+                nWords: 30,
+                story: prevBlueCards.title,
+              }}
+            />
+            &nbsp;
+            <Link to={`/flashcards/fillin/test/${prevBlueCards.story_id}`}>
+              <FormattedMessage id="flashcards-review" />
+            </Link>
           </div>
         </div>
       )
@@ -104,6 +127,7 @@ const WelcomeBackEncouragementModal = ({
       })
     )
     dispatch(getLeaderboards())
+    dispatch(getStoriesBlueFlashcards(learningLanguage, dictionaryLanguage))
   }, [])
 
   useEffect(() => {
@@ -122,6 +146,12 @@ const WelcomeBackEncouragementModal = ({
       }
     }
   }, [stories])
+
+  useEffect(() => {
+    if (storyBlueCards?.length > 0) {
+      setPrevBlueCards(storyBlueCards[storyBlueCards.length - 1])
+    }
+  }, [storyBlueCards])
 
   useEffect(() => {
     if (incompleteStories?.length > 0) {
@@ -150,7 +180,14 @@ const WelcomeBackEncouragementModal = ({
     if (!userPending) {
       setRecmdList(fillList())
     }
-  }, [userRanking, storiesCovered, storiesToReview, latestIncompleteStory, sharedStory])
+  }, [
+    userRanking,
+    storiesCovered,
+    storiesToReview,
+    latestIncompleteStory,
+    sharedStory,
+    storyBlueCards,
+  ])
 
   const closeModal = () => {
     setOpen(false)
@@ -160,7 +197,7 @@ const WelcomeBackEncouragementModal = ({
     dispatch(updateEnableRecmd(!enable_recmd))
   }
 
-  if (pending) {
+  if (pending || storyCardsPending) {
     return null
   }
 

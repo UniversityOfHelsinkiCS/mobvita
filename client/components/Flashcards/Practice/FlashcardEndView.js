@@ -23,7 +23,7 @@ const FlashcardEndView = ({ handleNewDeck, deckSize, open, setOpen, blueCardsAns
   const learningLanguage = useSelector(learningLanguageSelector)
   const dictionaryLanguage = useSelector(dictionaryLanguageSelector)
   const [latestStories, setLatestStories] = useState([])
-  const [prevBlueCards, setPrevBlueCards] = useState([])
+  const [prevBlueCards, setPrevBlueCards] = useState(null)
   const { storyId } = useParams()
 
   useEffect(() => {
@@ -37,8 +37,10 @@ const FlashcardEndView = ({ handleNewDeck, deckSize, open, setOpen, blueCardsAns
 
   useEffect(() => {
     const filteredBlueCards = storyBlueCards.filter(story => story.story_id !== storyId)
-
-    setPrevBlueCards(filteredBlueCards)
+    
+    if (filteredBlueCards.length > 0) {
+      setPrevBlueCards(filteredBlueCards[filteredBlueCards.length - 1])
+    }
   }, [storyBlueCards])
 
   useEffect(() => {
@@ -64,7 +66,6 @@ const FlashcardEndView = ({ handleNewDeck, deckSize, open, setOpen, blueCardsAns
       const answerObj = {
         flashcard_answers: blueCardsAnswered,
       }
-      console.log('answer object ', answerObj)
 
       dispatch(answerBluecards(learningLanguage, dictionaryLanguage, answerObj))
     }

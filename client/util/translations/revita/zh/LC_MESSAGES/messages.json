@@ -640,5 +640,7 @@
     "ask-for-a-hint": "给提示吗？",
     "user-role-select-teacher": "I am a teacher",
     "user-role-select-student": "I am a student",
-    "previous-stories-blue-cards": "You have encountered new words in your previous stories — for which you did not check translation.\nYou can get credit for these words!  Let's check a few of them →"
+    "previous-stories-blue-cards": "You have encountered {nWords} new words for which you did not check translation — in a previous story:\n<br/>{story}<br/>\nYou can get credit for these {nWords} words!  \nLet's check 5 of them →",
+    "hide-home-page-recommendations": "Do not show recommendations on the Home Page",
+    "tutorial-recommendation": ""
 }

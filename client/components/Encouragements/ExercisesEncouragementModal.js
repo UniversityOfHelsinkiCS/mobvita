@@ -2,11 +2,13 @@ import React, { useState, useEffect } from 'react'
 import { Modal, Popup, Icon } from 'semantic-ui-react'
 import { FormattedHTMLMessage, FormattedMessage, useIntl } from 'react-intl'
 import { updateEnableRecmd } from 'Utilities/redux/userReducer'
+import { getStoriesBlueFlashcards } from 'Utilities/redux/flashcardReducer'
 import { Link, useParams } from 'react-router-dom'
-import { images } from 'Utilities/common'
+import { images, learningLanguageSelector, dictionaryLanguageSelector } from 'Utilities/common'
 import { clearNewVocabulary } from 'Utilities/redux/newVocabularyReducer'
 import { getLeaderboards } from 'Utilities/redux/leaderboardReducer'
 import { useSelector, useDispatch } from 'react-redux'
+
 import { Form, Button } from 'react-bootstrap'
 
 const ExercisesEncouragementModal = ({
@@ -20,9 +22,13 @@ const ExercisesEncouragementModal = ({
 }) => {
   const { id: storyId } = useParams()
   const [upperBound, setUpperBound] = useState(3)
+  const learningLanguage = useSelector(learningLanguageSelector)
+  const dictionaryLanguage = useSelector(dictionaryLanguageSelector)
   const [recmdList, setRecmdList] = useState([])
   const { newVocabulary } = useSelector(({ newVocabulary }) => newVocabulary)
   const { user_rank } = useSelector(({ leaderboard }) => leaderboard.data)
+  const { storyBlueCards, storyCardsPending } = useSelector(({ flashcards }) => flashcards)
+  const [prevBlueCards, setPrevBlueCards] = useState(null)
   const [latestIncompleteStory, setLatestIncompleteStory] = useState(null)
   const [userRanking, setUserRanking] = useState(null)
   const intl = useIntl()
@@ -60,6 +66,25 @@ const ExercisesEncouragementModal = ({
           <Link to={`/flashcards/fillin/test/${storyId}`}>
             <FormattedMessage id="go-to-blue-flashcards" />
           </Link>
+        </div>
+      )
+    }
+    if (prevBlueCards) {
+      initList = initList.concat(
+        <div className="pt-lg">
+          <div>
+            <FormattedHTMLMessage
+              id="previous-stories-blue-cards"
+              values={{
+                nWords: 30,
+                story: prevBlueCards.title,
+              }}
+            />
+            &nbsp;
+            <Link to={`/flashcards/fillin/test/${prevBlueCards.story_id}`}>
+              <FormattedMessage id="flashcards-review" />
+            </Link>
+          </div>
         </div>
       )
     }
@@ -112,6 +137,7 @@ const ExercisesEncouragementModal = ({
 
   useEffect(() => {
     dispatch(getLeaderboards())
+    dispatch(getStoriesBlueFlashcards(learningLanguage, dictionaryLanguage))
   }, [])
 
   useEffect(() => {
@@ -121,10 +147,10 @@ const ExercisesEncouragementModal = ({
   }, [user_rank])
 
   useEffect(() => {
-    if (!pending) {
+    if (!pending && !storyCardsPending) {
       setRecmdList(fillList())
     }
-  }, [userRanking, newVocabulary, latestIncompleteStory])
+  }, [userRanking, newVocabulary, latestIncompleteStory, prevBlueCards])
 
   useEffect(() => {
     if (incompleteStories.length > 0) {
@@ -137,6 +163,16 @@ const ExercisesEncouragementModal = ({
       }
     }
   }, [incompleteStories])
+
+  useEffect(() => {
+    if (storyBlueCards) {
+      const filteredBlueCards = storyBlueCards.filter(story => story.story_id !== storyId)
+
+      if (filteredBlueCards.length > 0) {
+        setPrevBlueCards(filteredBlueCards[filteredBlueCards.length - 1])
+      }
+    }
+  }, [storyBlueCards])
 
   const closeModal = () => {
     dispatch(clearNewVocabulary())

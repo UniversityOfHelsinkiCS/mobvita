@@ -1204,7 +1204,7 @@
     "show-exercise-settings": "Impostazioni dei esercizi",
     "Please input a non-negative integer": "Please input a non-negative integer",
     "story-completed-encouragement": "Congratulazioni! Hai completato la storia!",
-    "stories-covered-encouragement": "Finora hai completato {storie} storie.",
+    "stories-covered-encouragement": "Finora hai completato {stories} storie.",
     "words-seen-encouragement": "Nelle storie che hai studiato, ora hai incontrato {vocabulary_seen} nuove parole.<br/>Vuoi continuare",
     "first-story-covered-encouragement": "Congratulazioni! Hai completato la tua prima storia!",
     "words-interacted-encouragement": "Da questa storia hai interagito con {nWords} nuove parole.<br/>Vuoi recensire",
@@ -1286,5 +1286,7 @@
     "ask-for-a-hint": "Mostra un indizio?",
     "user-role-select-teacher": "I am a teacher",
     "user-role-select-student": "I am a student",
-    "previous-stories-blue-cards": "You have encountered new words in your previous stories — for which you did not check translation.\nYou can get credit for these words!  Let's check a few of them →"
+    "previous-stories-blue-cards": "You have encountered {nWords} new words for which you did not check translation — in a previous story:\n<br/>{story}<br/>\nYou can get credit for these {nWords} words!  \nLet's check 5 of them →",
+    "hide-home-page-recommendations": "Do not show recommendations on the Home Page",
+    "tutorial-recommendation": ""
 }
