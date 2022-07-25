@@ -42,7 +42,7 @@ const SetCEFRReminder = props => {
     >
       <Modal.Content>
         <div className="encouragement" style={{ padding: '1.5rem', color: '#000000' }}>
-          <div style={{ display: 'flex', marginLeft: '.5em', marginTop: '.5em' }}>
+          <div className="space-evenly" style={{ marginLeft: '.5em', marginTop: '.5em' }}>
             <span style={{ marginRight: '.5em' }}>
               <input type="radio" onChange={() => setIsTeacher(false)} checked={!isTeacher} />
             </span>
@@ -56,6 +56,7 @@ const SetCEFRReminder = props => {
               <FormattedMessage id="user-role-select-teacher" />
             </span>
           </div>
+          <hr />
           <h3 style={{ marginTop: '1em', color: isTeacher ? '#D3D3D3' : '#000000' }}>
             <FormattedMessage id="select-cefr-reminder" />
           </h3>

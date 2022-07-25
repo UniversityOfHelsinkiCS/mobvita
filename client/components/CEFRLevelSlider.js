@@ -28,12 +28,12 @@ const CERFLevelSlider = ({ isDisabled, sliderValue, setSliderValue }) => {
       />
 
       <div className="space-between exercise-density-slider-label-cont bold">
-        <span style={{'color':'lightgrey'}}>A1</span>
-        <span>A2</span>
-        <span>B1</span>
-        <span>B2</span>
-        <span>C1</span>
-        <span style={{'color':'lightgrey'}}>C2</span>
+        <span style={{ color: 'lightgrey' }}>A1</span>
+        <span style={{ color: isDisabled ? 'lightgrey' : '#000000' }}>A2</span>
+        <span style={{ color: isDisabled ? 'lightgrey' : '#000000' }}>B1</span>
+        <span style={{ color: isDisabled ? 'lightgrey' : '#000000' }}>B2</span>
+        <span style={{ color: isDisabled ? 'lightgrey' : '#000000' }}>C1</span>
+        <span style={{ color: 'lightgrey' }}>C2</span>
       </div>
     </>
   )
