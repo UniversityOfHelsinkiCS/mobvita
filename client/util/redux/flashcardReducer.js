@@ -134,6 +134,7 @@ export default (state = initialState, action) => {
         storyCardsPending: true,
       }
     case 'GET_ALL_BLUE_FLASHCARDS_SUCCESS':
+      console.log('previous cards ', action.response)
       return {
         ...state,
         storyBlueCards: action.response.story_blueFlashcards,

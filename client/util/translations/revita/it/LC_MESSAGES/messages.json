@@ -1288,5 +1288,6 @@
     "user-role-select-student": "I am a student",
     "previous-stories-blue-cards": "You have encountered {nWords} new words for which you did not check translation — in a previous story:\n<br/>{story}<br/>\nYou can get credit for these {nWords} words!  \nLet's check 5 of them →",
     "hide-home-page-recommendations": "Do not show recommendations on the Home Page",
-    "tutorial-recommendation": ""
+    "tutorial-recommendation": "",
+    "delete-annotation": "Delete note"
 }

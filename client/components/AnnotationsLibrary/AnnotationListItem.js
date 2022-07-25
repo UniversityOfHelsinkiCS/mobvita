@@ -10,7 +10,8 @@ const AnnotationListItem = ({ annotation }) => {
     <div>
       <Card fluid key={_id}>
         <Card.Content extra className="story-card-title-cont">
-          <h2>{name}</h2>
+          <h2 style={{ color: '#000000' }}>{name}</h2>
+          <div style={{ fontWeight: '16px' }}>{story.title}</div>
         </Card.Content>
         <Card.Content extra className="story-card-actions-cont">
           <AnnotationActions annotation={annotation} />

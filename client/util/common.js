@@ -151,7 +151,7 @@ export const annotationsMock = [
       title: 'Ari Huusela ylitti Atlantin jo neljännen kerran',
       story_id: '5c080874ff6345361ec09dd8',
     },
-    categories: [],
+    categories: ['Phrase'],
     _id: '1234',
   },
   {
@@ -160,7 +160,7 @@ export const annotationsMock = [
       title: 'Ari Huusela ylitti Atlantin jo neljännen kerran',
       story_id: '5c080874ff6345361ec09dd8',
     },
-    categories: [],
+    categories: ['Vocabulary', 'Grammar'],
     _id: '1235',
   },
   {
@@ -169,7 +169,7 @@ export const annotationsMock = [
       title: 'Demokraatit voittivat USA:n vaalit',
       story_id: '5c080867ff6345361ec099c0',
     },
-    categories: [],
+    categories: ['Vocabulary'],
     _id: '1236',
   },
 ]
