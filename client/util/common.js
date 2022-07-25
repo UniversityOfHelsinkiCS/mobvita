@@ -286,7 +286,7 @@ export function getWordColor(
     mode === 'controlled-story-editor' ||
     ((mode === 'review' || mode === 'practice' || mode === 'controlled-practice') &&
       !show_review_diff) ||
-    (mode === 'preview' && !show_preview_exer)
+    (mode === 'preview' && !show_preview_exer) || (user_grade >= word_level)
   ) {
     return '#FFFFFF' // white background
   }
