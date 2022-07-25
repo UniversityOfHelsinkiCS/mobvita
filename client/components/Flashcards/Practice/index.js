@@ -92,6 +92,7 @@ const Practice = ({ mode }) => {
         mode: 'trans',
         exercise: 'fillin',
         lemma: cards[oldIndex].lemma,
+        answer: '',
       }
       setBlueCardsAnswered(blueCardsAnswered.concat(wrongAnswerObj))
     }

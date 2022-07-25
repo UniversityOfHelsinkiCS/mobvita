@@ -25,7 +25,6 @@ const FlashcardEndView = ({ handleNewDeck, deckSize, open, setOpen, blueCardsAns
   const [latestStories, setLatestStories] = useState([])
   const [prevBlueCards, setPrevBlueCards] = useState([])
   const { storyId } = useParams()
-  console.log(correctAnswers, ' out of ', deckSize)
 
   useEffect(() => {
     dispatch(
@@ -61,7 +60,7 @@ const FlashcardEndView = ({ handleNewDeck, deckSize, open, setOpen, blueCardsAns
   }, [incomplete])
 
   useEffect(() => {
-    if (blueCardsAnswered.length === deckSize && !loading) {
+    if (blueCardsAnswered.length === deckSize) {
       const answerObj = {
         flashcard_answers: blueCardsAnswered,
       }
