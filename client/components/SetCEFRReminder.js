@@ -44,17 +44,23 @@ const SetCEFRReminder = ({ open, setOpen, newUser }) => {
     >
       <Modal.Content>
         <div className="encouragement" style={{ padding: '1.5rem', color: '#000000' }}>
-          <div className="space-evenly" style={{ marginLeft: '.5em', marginTop: '.5em' }}>
-            <span style={{ marginRight: '.5em' }}>
-              <input type="radio" onChange={() => setIsTeacher(false)} checked={!isTeacher} />
-            </span>
-            <span style={{ marginRight: '.5em' }}>
+          <div className="space-evenly" style={{ marginTop: '.5em' }}>
+            <span style={{ marginRight: '.5em', fontSize: '18px' }}>
+              <input
+                type="radio"
+                style={{ marginRight: '.75em' }}
+                onChange={() => setIsTeacher(false)}
+                checked={!isTeacher}
+              />
               <FormattedMessage id="user-role-select-student" />
             </span>
-            <span style={{ marginRight: '.5em' }}>
-              <input type="radio" onChange={() => setIsTeacher(true)} checked={isTeacher} />
-            </span>
-            <span style={{ marginRight: '.5em' }}>
+            <span style={{ marginRight: '.5em', fontSize: '18px' }}>
+              <input
+                type="radio"
+                style={{ marginRight: '.75em' }}
+                onChange={() => setIsTeacher(true)}
+                checked={isTeacher}
+              />
               <FormattedMessage id="user-role-select-teacher" />
             </span>
           </div>
