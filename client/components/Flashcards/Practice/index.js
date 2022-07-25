@@ -85,9 +85,13 @@ const Practice = ({ mode }) => {
     if (index > blueCardsAnswered.length) {
       const wrongAnswerObj = {
         correct: false,
-        story_id: cards[oldIndex].story,
+        story: cards[oldIndex].story,
         flashcard_id: cards[oldIndex]._id,
         session_id: sessionId,
+        hints_shown: cards[oldIndex].displayedHints?.length || 0,
+        mode: 'trans',
+        exercise: 'fillin',
+        lemma: cards[oldIndex].lemma,
       }
       setBlueCardsAnswered(blueCardsAnswered.concat(wrongAnswerObj))
     }
