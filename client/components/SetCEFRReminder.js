@@ -29,7 +29,7 @@ const SetCEFRReminder = ({ open, setOpen, newUser }) => {
     const rounded = Math.floor(minified / 10)
     dispatch(updateUserGrade(rounded))
     dispatch(updateIsTeacher(isTeacher))
-    console.log('updated')
+
     closeModal()
   }
 

@@ -140,6 +140,10 @@ const FlashcardsEncouragement = ({
     dispatch(updateEnableRecmd(!enable_recmd))
   }
 
+  if (pending) {
+    return null
+  }
+
   return (
     <Modal
       basic

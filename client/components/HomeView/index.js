@@ -10,6 +10,7 @@ import Footer from 'Components/Footer'
 import AddStoryModal from 'Components/AddStoryModal'
 import WelcomeBackEncouragementModal from 'Components/Encouragements/WelcomeBackEncouragementModal'
 import SetCEFRReminder from 'Components/SetCEFRReminder'
+import DefaultActivityModal from 'Components/Encouragements/DefaultActivityModal'
 import MedalSummary from './MedalSummary'
 import PracticeModal from './PracticeModal'
 import EloChart from './EloChart'
@@ -125,6 +126,7 @@ const HomeView = () => {
     incomplete: incomplete.data,
     loading: incomplete.pending,
   }))
+  const [showDAModal, setShowDAModal] = useState(enable_recmd || false)
   const { exercise_setting_template: exerciseSettingTemplate } = useSelector(
     ({ user }) => user.data.user
   )
@@ -168,6 +170,20 @@ const HomeView = () => {
           newUser={userData.is_new_user}
         />
       )}
+      {!showWelcomeModal &&
+        showDAModal &&
+        userData.grade &&
+        userData.email !== 'anonymous_email' && (
+          <DefaultActivityModal
+            open={openEncouragement}
+            setOpen={setOpenEncouragement}
+            storiesCovered={storiesCovered}
+            incompleteStories={incomplete}
+            pending={loading}
+            learningLanguage={learningLanguage}
+            enable_recmd={enable_recmd}
+          />
+        )}
       <div className="grow flex-col">
         {bigScreen ? (
           <div className="grow flex-col space-between gap-row-nm">

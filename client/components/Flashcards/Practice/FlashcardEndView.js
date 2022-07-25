@@ -14,7 +14,7 @@ const FlashcardEndView = ({ handleNewDeck, deckSize, open, setOpen, blueCardsAns
     ({ flashcards }) => flashcards
   )
   const dispatch = useDispatch()
-  const { vocabularySeen } = useSelector(state => state.user.data.user)
+  const { vocabularySeen, pending } = useSelector(state => state.user.data.user)
   const { incomplete, loading } = useSelector(({ incomplete }) => ({
     incomplete: incomplete.data,
     loading: incomplete.pending,
@@ -37,7 +37,7 @@ const FlashcardEndView = ({ handleNewDeck, deckSize, open, setOpen, blueCardsAns
 
   useEffect(() => {
     const filteredBlueCards = storyBlueCards.filter(story => story.story_id !== storyId)
-    
+
     if (filteredBlueCards.length > 0) {
       setPrevBlueCards(filteredBlueCards[filteredBlueCards.length - 1])
     }
