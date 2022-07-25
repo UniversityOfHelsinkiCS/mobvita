@@ -213,22 +213,20 @@ const GroupAnalytics = ({ role }) => {
                 <FormattedMessage id="vocabulary-view" />
               </div>
             </button>
-            {hiddenFeatures && (
-              <button
-                type="button"
-                onClick={() => setShownChart('hex-map')}
-                style={{ border: 'none' }}
-              >
-                <div className="flex align-center" style={{ gap: '.5em' }}>
-                  <input
-                    type="radio"
-                    onChange={() => setShownChart('hex-map')}
-                    checked={shownChart === 'hex-map'}
-                  />
-                  <FormattedMessage id="hex-map" />
-                </div>
-              </button>
-            )}
+            <button
+              type="button"
+              onClick={() => setShownChart('hex-map')}
+              style={{ border: 'none' }}
+            >
+              <div className="flex align-center" style={{ gap: '.5em' }}>
+                <input
+                  type="radio"
+                  onChange={() => setShownChart('hex-map')}
+                  checked={shownChart === 'hex-map'}
+                />
+                <FormattedMessage id="hex-map" />
+              </div>
+            </button>
             <button
               type="button"
               onClick={() => setShownChart('exercise')}
@@ -276,7 +274,7 @@ const GroupAnalytics = ({ role }) => {
             </span>
             <span style={{ marginRight: '0.5em' }}>
               <input
-                style={{ marginRight: '0.5em'}}
+                style={{ marginRight: '0.5em' }}
                 type="radio"
                 onChange={() => setGroupSummaryShown(!groupSummaryShown)}
                 checked={!groupSummaryShown}
