@@ -4,7 +4,7 @@ import { useDispatch } from 'react-redux'
 import { Modal } from 'semantic-ui-react'
 import { Button } from 'react-bootstrap'
 import { sidebarSetOpen } from 'Utilities/redux/sidebarReducer'
-import { updateUserGrade } from 'Utilities/redux/userReducer'
+import { updateUserGrade, updateIsTeacher } from 'Utilities/redux/userReducer'
 import CERFLevelSlider from './CEFRLevelSlider'
 
 const SetCEFRReminder = ({ open, setOpen, newUser }) => {
@@ -28,7 +28,8 @@ const SetCEFRReminder = ({ open, setOpen, newUser }) => {
     const minified = sliderValue / 11
     const rounded = Math.floor(minified / 10)
     dispatch(updateUserGrade(rounded))
-
+    dispatch(updateIsTeacher(isTeacher))
+    console.log('updated')
     closeModal()
   }
 

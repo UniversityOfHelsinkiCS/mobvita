@@ -137,6 +137,7 @@ export const updateMaxPracticePercent = value => saveSelf({ max_practice_prct: v
 export const updateShowReviewDiff = value => saveSelf({ show_review_diff: value })
 export const updatePreviewExer = value => saveSelf({ show_preview_exer: value })
 export const updateEnableRecmd = value => saveSelf({ enable_recmd: value })
+export const updateIsTeacher = value => saveSelf({ is_teacher: value })
 
 export const updateGroupTemplateSelection = groupId => {
   return saveSelf({ exercise_setting_template: groupId, last_selected_group: groupId })
