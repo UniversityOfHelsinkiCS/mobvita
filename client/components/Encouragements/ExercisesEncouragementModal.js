@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react'
 import { Modal, Popup, Icon } from 'semantic-ui-react'
 import { FormattedHTMLMessage, FormattedMessage, useIntl } from 'react-intl'
 import { updateEnableRecmd } from 'Utilities/redux/userReducer'
-import { getStoriesBlueFlashcards } from 'Utilities/redux/flashcardReducer'
+import { getStoriesBlueFlashcards, getBlueFlashcards } from 'Utilities/redux/flashcardReducer'
 import { Link, useParams } from 'react-router-dom'
 import { images, learningLanguageSelector, dictionaryLanguageSelector } from 'Utilities/common'
 import { clearNewVocabulary } from 'Utilities/redux/newVocabularyReducer'
@@ -27,7 +27,7 @@ const ExercisesEncouragementModal = ({
   const [recmdList, setRecmdList] = useState([])
   const { newVocabulary } = useSelector(({ newVocabulary }) => newVocabulary)
   const { user_rank } = useSelector(({ leaderboard }) => leaderboard.data)
-  const { storyBlueCards, storyCardsPending, rewardableWordsNum } = useSelector(
+  const { storyBlueCards, storyCardsPending, rewardableWordsNum, pending: cardsPending } = useSelector(
     ({ flashcards }) => flashcards
   )
   const [prevBlueCards, setPrevBlueCards] = useState(null)
@@ -102,7 +102,7 @@ const ExercisesEncouragementModal = ({
         </div>
       )
     }
-    if (enable_recmd) {
+    if (vocabularySeen > 0 && enable_recmd) {
       initList = initList.concat(
         <div className="pt-lg">
           <FormattedHTMLMessage
@@ -138,6 +138,7 @@ const ExercisesEncouragementModal = ({
   }
 
   useEffect(() => {
+    dispatch(getBlueFlashcards(learningLanguage, dictionaryLanguage, storyId))
     dispatch(getLeaderboards())
     dispatch(getStoriesBlueFlashcards(learningLanguage, dictionaryLanguage))
   }, [])
@@ -152,7 +153,7 @@ const ExercisesEncouragementModal = ({
     if (!pending && !storyCardsPending) {
       setRecmdList(fillList())
     }
-  }, [userRanking, newVocabulary, latestIncompleteStory, prevBlueCards])
+  }, [userRanking, newVocabulary, latestIncompleteStory, prevBlueCards, rewardableWordsNum])
 
   useEffect(() => {
     if (incompleteStories.length > 0) {
@@ -185,7 +186,7 @@ const ExercisesEncouragementModal = ({
     dispatch(updateEnableRecmd(!enable_recmd))
   }
 
-  if (loading) {
+  if (loading || storyCardsPending || cardsPending) {
     return null
   }
 
