@@ -27,7 +27,9 @@ const ExercisesEncouragementModal = ({
   const [recmdList, setRecmdList] = useState([])
   const { newVocabulary } = useSelector(({ newVocabulary }) => newVocabulary)
   const { user_rank } = useSelector(({ leaderboard }) => leaderboard.data)
-  const { storyBlueCards, storyCardsPending } = useSelector(({ flashcards }) => flashcards)
+  const { storyBlueCards, storyCardsPending, rewardableWordsNum } = useSelector(
+    ({ flashcards }) => flashcards
+  )
   const [prevBlueCards, setPrevBlueCards] = useState(null)
   const [latestIncompleteStory, setLatestIncompleteStory] = useState(null)
   const [userRanking, setUserRanking] = useState(null)
@@ -55,12 +57,12 @@ const ExercisesEncouragementModal = ({
         </div>
       )
     }
-    if (newVocabulary > 0) {
+    if (rewardableWordsNum > 0) {
       initList = initList.concat(
         <div className="pt-lg">
           <FormattedHTMLMessage
             id="story-completed-to-blue-flashcards"
-            values={{ nWords: newVocabulary }}
+            values={{ nWords: rewardableWordsNum }}
           />
           &nbsp;
           <Link to={`/flashcards/fillin/test/${storyId}`}>
