@@ -646,5 +646,6 @@
     "delete-annotation": "Delete",
     "well-done-click-next-card-to-play-another-set-of-cards-1": "优秀！",
     "well-done-click-next-card-to-play-another-set-of-cards-2": "请尝试下一套牌",
-    "good-job-blue-flashcards": "Congratulations!\n<br/>You get credit for knowing all {nWords} words in this story!"
+    "good-job-blue-flashcards": "Congratulations!\n<br/>You get credit for knowing all {nWords} words in this story!",
+    "annotation-remove-confirm": "Are you sure you want to remove this note?"
 }

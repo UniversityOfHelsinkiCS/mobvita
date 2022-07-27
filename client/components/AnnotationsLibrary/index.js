@@ -63,9 +63,9 @@ const AnnotationsLibrary = () => {
         selection
         fluid
         options={categoryOptions}
-        onChange={({ target }) => setCategory(JSON.parse(target.value))}
+        onChange={(_, { value }) => setCategory(value)}
       />
-      <Card.Group itemsPerRow={1} doubling data-cy="story-items" style={{ marginTop: '.5em' }}>
+      <Card.Group itemsPerRow={1} doubling data-cy="annotation-items" style={{ marginTop: '.5em' }}>
         <WindowScroller>
           {({ height, isScrolling, onChildScroll, scrollTop }) => (
             <List
@@ -74,7 +74,7 @@ const AnnotationsLibrary = () => {
               isScrolling={isScrolling}
               onScroll={onChildScroll}
               rowCount={annotationsList.length}
-              rowHeight={130}
+              rowHeight={160}
               rowRenderer={rowRenderer}
               scrollTop={scrollTop}
               width={10000}

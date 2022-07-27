@@ -3,13 +3,10 @@ import { Link } from 'react-router-dom'
 import { Button } from 'react-bootstrap'
 import { FormattedMessage } from 'react-intl'
 
-const AnnotationActions = ({ annotation }) => {
-  const deleteAnnotation = () => {
-    console.log('delete')
-  }
+const AnnotationActions = ({ annotation, setOpenWarning }) => {
 
   return (
-    <div className="flex">
+    <div className="story-actions">
       <Link
         to={`/stories/${annotation.story.story_id}/preview`}
         style={{ marginRight: '.5em', marginBottom: '.25em' }}
@@ -22,12 +19,12 @@ const AnnotationActions = ({ annotation }) => {
         to={`/stories/${annotation.story.story_id}/review`}
         style={{ marginRight: '.5em', marginBottom: '.25em' }}
       >
-        <Button variant="primary">
+        <Button variant="primary" disabled={annotation.story.percent_cov === 0}>
           <FormattedMessage id="review" />
         </Button>
       </Link>
       <Button
-        onClick={deleteAnnotation}
+        onClick={() => setOpenWarning(true)}
         variant="outline-danger"
         style={{ marginRight: '.5em', marginBottom: '.25em' }}
       >

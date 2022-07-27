@@ -267,7 +267,6 @@ const StoryListItem = ({ story, libraryShown, selectedGroup }) => {
   const learningLanguage = useSelector(learningLanguageSelector)
   const userTeachesAGroup = groups.some(group => group.is_teaching) // definition of being teacher
   const isControlledStory = !!story?.control_story
-
   const currentGroup = groups.find(g => g.group_id === selectedGroup)
   const inGroupLibrary = libraryShown.group && !!story.groups
   const showGroupNames = story.groups && libraryShown.private
