@@ -68,6 +68,8 @@ const Lemma = ({ lemma, sourceWord, handleSourceWordClick, userUrl, inflectionRe
   const learningLanguage = useLearningLanguage()
   const { maskSymbol } = useSelector(({ translation }) => translation)
 
+  console.log('Lemma ', lemma)
+
   return (
     <div className="flex" style={getTextStyle(learningLanguage)}>
       <Speaker word={lemma} />

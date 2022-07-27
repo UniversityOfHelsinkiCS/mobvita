@@ -34,6 +34,7 @@ const PlainWord = ({ word, annotatingAllowed, ...props }) => {
   const { spanAnnotations, highlightRange, showAnnotationForm } = useSelector(
     ({ annotations }) => annotations
   )
+
   const { grade } = useSelector(state => state.user.data.user)
   const { show_review_diff, show_preview_exer } = useSelector(state => state.user.data.user)
 
@@ -128,6 +129,7 @@ const PlainWord = ({ word, annotatingAllowed, ...props }) => {
       }
 
       if (allowTranslating) {
+        const prefLemma = word.pref_lemma
         dispatch(
           getTranslationAction({
             learningLanguage,
@@ -136,6 +138,7 @@ const PlainWord = ({ word, annotatingAllowed, ...props }) => {
             storyId,
             wordId,
             inflectionRef,
+            prefLemma,
           })
         )
 

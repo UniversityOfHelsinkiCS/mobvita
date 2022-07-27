@@ -47,6 +47,7 @@ const ExerciseCloze = ({ word, handleChange }) => {
       : null
     if (autoSpeak === 'always' && voice) speak(surface, voice, 'dictionary', resource_usage)
     if (lemmas) {
+      const prefLemma = word.pref_lemma
       dispatch(setWords({ surface: showAsSurface, lemmas, maskSymbol }))
       dispatch(
         getTranslationAction({
@@ -55,6 +56,7 @@ const ExerciseCloze = ({ word, handleChange }) => {
           dictionaryLanguage,
           storyId,
           wordId,
+          prefLemma,
         })
       )
     }

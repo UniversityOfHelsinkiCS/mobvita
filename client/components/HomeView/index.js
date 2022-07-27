@@ -146,7 +146,6 @@ const HomeView = () => {
     dispatch(getGroups())
   }, [])
 
-  console.log('user data ', userData)
   return (
     <div className="cont-tall cont flex-col auto gap-row-sm pt-lg blue-bg">
       <AddStoryModal open={addStoryModalOpen} setOpen={setAddStoryModalOpen} />

@@ -78,6 +78,7 @@ const PreviousExerciseWord = ({ word, answer, tiedAnswer }) => {
       dispatch(setWords({ surface, lemmas }))
 
       if (allowTranslating) {
+        const prefLemma = word.pref_lemma
         dispatch(
           getTranslationAction({
             learningLanguage,
@@ -86,6 +87,7 @@ const PreviousExerciseWord = ({ word, answer, tiedAnswer }) => {
             storyId,
             wordId,
             inflectionRef,
+            prefLemma,
           })
         )
 

@@ -129,7 +129,7 @@ const WelcomeBackEncouragementModal = ({
       })
     )
     dispatch(getLeaderboards())
-    dispatch(getStoriesBlueFlashcards(learningLanguage, dictionaryLanguage))
+    // dispatch(getStoriesBlueFlashcards(learningLanguage, dictionaryLanguage))
   }, [])
 
   useEffect(() => {

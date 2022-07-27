@@ -185,6 +185,7 @@ const ControlledStoryWord = ({ word, snippet }) => {
       dispatch(setWords({ surface, lemmas }))
 
       if (allowTranslating) {
+        const prefLemma = word.pref_lemma
         dispatch(
           getTranslationAction({
             learningLanguage,
@@ -193,6 +194,7 @@ const ControlledStoryWord = ({ word, snippet }) => {
             storyId,
             wordId,
             inflectionRef,
+            prefLemma,
           })
         )
 

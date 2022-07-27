@@ -11,6 +11,7 @@ export const getTranslationAction = ({
   wordId,
   record,
   inflectionRef,
+  prefLemma,
 }) => {
   const query = {
     w: wordLemmas,
@@ -20,6 +21,7 @@ export const getTranslationAction = ({
     word_id: wordId,
     record,
     ref: inflectionRef,
+    pref_leffa: prefLemma,
   }
   const route = '/translate'
   const prefix = 'GET_TRANSLATION'

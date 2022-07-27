@@ -35,6 +35,7 @@ const WrongAnswer = ({ word }) => {
     setShow(true)
     if (autoSpeak === 'always' && voice) speak(surface, voice, 'dictionary', resource_usage)
     if (lemmas) {
+      const prefLemma = word.pref_lemma
       dispatch(setWords({ surface, lemmas }))
       dispatch(
         getTranslationAction({
@@ -44,6 +45,7 @@ const WrongAnswer = ({ word }) => {
           storyId,
           wordId,
           inflectionRef,
+          prefLemma,
         })
       )
     }

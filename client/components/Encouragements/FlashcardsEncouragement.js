@@ -31,7 +31,7 @@ const FlashcardsEncouragement = ({
     let initList = []
 
     if (blueFlashcards) {
-      if (correctAnswers === deckSize) {
+      if (correctAnswers === deckSize && creditableWordsNum) {
         initList = initList.concat(
           <div className="pt-lg">
             <FormattedHTMLMessage
