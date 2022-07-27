@@ -13,11 +13,32 @@ const AnnotationListItem = ({ annotation }) => {
     console.log('delete note')
   }
 
+  const getCategoryColor = category => {
+    if (category === 'Grammar') {
+      return 'note-grammar'
+    }
+    if (category === 'Phrases') {
+      return 'note-phrases'
+    }
+    if (category === 'Vocabulary') {
+      return 'note-vocabulary'
+    }
+
+    return ''
+  }
+
   return (
     <Card fluid key={_id}>
       <Card.Content extra className="story-card-title-cont">
         <h2 style={{ color: '#000000' }}>{name}</h2>
-        <div style={{ fontWeight: '16px' }}>{story.title}</div>
+        <div className="flex space-between">
+          <div style={{ fontWeight: '16px' }}>{story.title}</div>
+          <div>
+            {annotation.categories?.map(category => (
+              <span className={getCategoryColor(category)} style={{ marginRight: '0.5em' }}>{category}</span>
+            ))}
+          </div>
+        </div>
       </Card.Content>
       <Card.Content extra className="story-card-actions-cont">
         <AnnotationActions annotation={annotation} setOpenWarning={setOpenWarning} />

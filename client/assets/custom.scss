@@ -2389,6 +2389,30 @@ label.file-upload-btn {
   font-size: 1.3rem;
 }
 
+.note-grammar {
+  color: #000000;
+  background-color: violet;
+  padding: 0.2em;
+  border: 2px solid violet;
+  border-radius: 12px;
+}
+
+.note-vocabulary {
+  color: #000000;
+  background-color: #00FFFF;
+  padding: 0.2em;
+  border: 2px solid #00FFFF;
+  border-radius: 12px;
+}
+
+.note-phrases {
+  color: #000000;
+  background-color: orange;
+  padding: 0.2em;
+  border: 2px solid orange;
+  border-radius: 12px;
+}
+
 .footer {
   font-size: 0.9rem;
   padding: 0.5em;

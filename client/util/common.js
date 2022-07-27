@@ -152,7 +152,7 @@ export const annotationsMock = [
       story_id: '5c080874ff6345361ec09dd8',
       percent_cov: 1,
     },
-    categories: ['Phrase'],
+    categories: ['Phrases'],
     _id: '1234',
   },
   {

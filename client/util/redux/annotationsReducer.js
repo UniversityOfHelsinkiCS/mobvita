@@ -1,3 +1,5 @@
+import callBuilder from '../apiConnection'
+
 export const setFocusedSpan = span => {
   return {
     type: 'SET_FOCUSED_SPAN',
@@ -99,6 +101,12 @@ export const setAnnotationvisibilityMobile = visibility => {
   }
 }
 
+export const getAllAnnotations = () => {
+  const route = '/annotation/'
+  const prefix = 'GET_ALL_ANNOTATIONS'
+  return callBuilder(route, prefix, 'get')
+}
+
 const initialState = {
   spanAnnotations: [],
   highlightRange: null,
@@ -108,10 +116,27 @@ const initialState = {
   showAnnotations: true,
   showAnnotationForm: false,
   mobileDisplayAnnotations: false,
+  annotationsLibrary: [],
 }
 
 export default (state = initialState, action) => {
   switch (action.type) {
+    case 'GET_ALL_ANNOTATIONS_ATTEMPT':
+      return {
+        ...state,
+        pending: true,
+      }
+    case 'GET_ALL_ANNOTATIONS_FAILURE':
+      return {
+        ...state,
+        pending: false,
+      }
+    case 'GET_ALL_ANNOTATIONS_SUCCESS':
+      console.log('ACTIONS RES ', action.response)
+      return {
+        ...state,
+        pending: false,
+      }
     case 'SET_FOCUSED_SPAN':
       return {
         ...state,

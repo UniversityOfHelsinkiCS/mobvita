@@ -1,15 +1,22 @@
 import React, { useState, useEffect } from 'react'
 import { Placeholder, Card, Select, Icon, Dropdown } from 'semantic-ui-react'
+import { getAllAnnotations } from 'Utilities/redux/annotationsReducer'
+import { useDispatch } from 'react-redux'
 import { List, WindowScroller } from 'react-virtualized'
 import { annotationsMock } from 'Utilities/common'
 import AnnotationListItem from './AnnotationListItem'
 
 const AnnotationsLibrary = () => {
+  const dispatch = useDispatch()
   const [category, setCategory] = useState('All')
   const [annotationsList, setAnnotationsList] = useState(annotationsMock || [])
 
   const dropDownMenuText = category ? `${category}` : 'All'
-
+{/* 
+  useEffect(() => {
+    dispatch(getAllAnnotations())
+  }, [])
+*/}
   useEffect(() => {
     if (category === 'All') {
       setAnnotationsList(annotationsMock)
