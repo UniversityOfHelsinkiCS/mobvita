@@ -14,12 +14,11 @@ const FlashcardEndView = ({ handleNewDeck, deckSize, open, setOpen, blueCardsAns
     ({ flashcards }) => flashcards
   )
   const dispatch = useDispatch()
-  const { vocabularySeen, pending } = useSelector(state => state.user.data.user)
   const { incomplete, loading } = useSelector(({ incomplete }) => ({
     incomplete: incomplete.data,
     loading: incomplete.pending,
   }))
-  const { enable_recmd } = useSelector(({ user }) => user.data.user)
+  const { enable_recmd, vocabulary_seen, pending } = useSelector(({ user }) => user.data.user)
   const learningLanguage = useSelector(learningLanguageSelector)
   const dictionaryLanguage = useSelector(dictionaryLanguageSelector)
   const [latestStories, setLatestStories] = useState([])
@@ -106,7 +105,7 @@ const FlashcardEndView = ({ handleNewDeck, deckSize, open, setOpen, blueCardsAns
   return (
     <div className="flashcard justify-center">
       <div>
-        {totalAnswers === deckSize && !loading && !storyCardsPending && (
+        {totalAnswers === deckSize && !loading && !storyCardsPending && !pending && (
           <FlashcardsEncouragement
             open={open}
             setOpen={setOpen}
@@ -114,7 +113,7 @@ const FlashcardEndView = ({ handleNewDeck, deckSize, open, setOpen, blueCardsAns
             deckSize={deckSize}
             enable_recmd={enable_recmd}
             handleNewDeck={handleNewDeck}
-            vocabularySeen={vocabularySeen}
+            vocabularySeen={vocabulary_seen}
             latestStories={latestStories}
             prevBlueCards={prevBlueCards}
           />

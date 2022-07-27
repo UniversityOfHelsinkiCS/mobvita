@@ -69,6 +69,7 @@ const WelcomeBackEncouragementModal = ({
         </div>
       )
     }
+    {/* 
     if (prevBlueCards) {
       initList = initList.concat(
         <div className="pt-lg">
@@ -88,6 +89,7 @@ const WelcomeBackEncouragementModal = ({
         </div>
       )
     }
+    */}
     if (latestIncompleteStory && enable_recmd) {
       initList = initList.concat(
         <div>

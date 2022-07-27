@@ -68,6 +68,7 @@ const DefaultActivityModal = ({
         </div>
       )
     }
+    {/* 
     if (prevBlueCards) {
       initList = initList.concat(
         <div className="pt-lg">
@@ -87,6 +88,7 @@ const DefaultActivityModal = ({
         </div>
       )
     }
+    */}
     if (latestIncompleteStory && enable_recmd) {
       initList = initList.concat(
         <div>

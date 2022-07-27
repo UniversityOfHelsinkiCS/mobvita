@@ -27,9 +27,12 @@ const ExercisesEncouragementModal = ({
   const [recmdList, setRecmdList] = useState([])
   const { newVocabulary } = useSelector(({ newVocabulary }) => newVocabulary)
   const { user_rank } = useSelector(({ leaderboard }) => leaderboard.data)
-  const { storyBlueCards, storyCardsPending, rewardableWordsNum, pending: cardsPending } = useSelector(
-    ({ flashcards }) => flashcards
-  )
+  const {
+    storyBlueCards,
+    storyCardsPending,
+    creditableWordsNum,
+    pending: cardsPending,
+  } = useSelector(({ flashcards }) => flashcards)
   const [prevBlueCards, setPrevBlueCards] = useState(null)
   const [latestIncompleteStory, setLatestIncompleteStory] = useState(null)
   const [userRanking, setUserRanking] = useState(null)
@@ -57,12 +60,13 @@ const ExercisesEncouragementModal = ({
         </div>
       )
     }
-    if (rewardableWordsNum > 0) {
+    console.log('creditable ', creditableWordsNum)
+    if (creditableWordsNum > 0) {
       initList = initList.concat(
         <div className="pt-lg">
           <FormattedHTMLMessage
             id="story-completed-to-blue-flashcards"
-            values={{ nWords: rewardableWordsNum }}
+            values={{ nWords: creditableWordsNum }}
           />
           &nbsp;
           <Link to={`/flashcards/fillin/test/${storyId}`}>
@@ -71,6 +75,7 @@ const ExercisesEncouragementModal = ({
         </div>
       )
     }
+    {/* 
     if (prevBlueCards) {
       initList = initList.concat(
         <div className="pt-lg">
@@ -90,6 +95,7 @@ const ExercisesEncouragementModal = ({
         </div>
       )
     }
+    */}
     if (latestIncompleteStory && enable_recmd) {
       initList = initList.concat(
         <div>
@@ -153,7 +159,7 @@ const ExercisesEncouragementModal = ({
     if (!pending && !storyCardsPending) {
       setRecmdList(fillList())
     }
-  }, [userRanking, newVocabulary, latestIncompleteStory, prevBlueCards, rewardableWordsNum])
+  }, [userRanking, newVocabulary, latestIncompleteStory, prevBlueCards, creditableWordsNum])
 
   useEffect(() => {
     if (incompleteStories.length > 0) {

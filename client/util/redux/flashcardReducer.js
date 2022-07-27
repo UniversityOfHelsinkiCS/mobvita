@@ -101,7 +101,7 @@ export default (state = initialState, action) => {
         correctAnswers: 0,
         totalAnswers: 0,
         storyBlueCards: [],
-        rewardableWordsNum: 0,
+        creditableWordsNum: 0,
       }
     case 'GET_FLASHCARDS_FAILURE':
       return {
@@ -123,7 +123,7 @@ export default (state = initialState, action) => {
         correctAnswers: 0,
         totalAnswers: 0,
         storyBlueCards: [],
-        rewardableWordsNum: action.response.flashcards.num_rewardable_words,
+        creditableWordsNum: action.response.flashcards.num_rewardable_words,
       }
     case 'GET_BLUE_FLASHCARDS_FAILURE':
       return {

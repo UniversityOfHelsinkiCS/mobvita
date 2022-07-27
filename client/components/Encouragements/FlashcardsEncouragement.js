@@ -26,6 +26,8 @@ const FlashcardsEncouragement = ({
   const blueFlashcards = history.location.pathname.includes('fillin')
   const { pending } = useSelector(({ user }) => user)
 
+  console.log('vocab seen ', vocabularySeen)
+
   const fillList = () => {
     let initList = []
 
@@ -41,6 +43,7 @@ const FlashcardsEncouragement = ({
             ?
           </div>
         )
+        {/* 
         if (prevBlueCards) {
           initList = initList.concat(
             <div className="pt-lg">
@@ -60,6 +63,7 @@ const FlashcardsEncouragement = ({
             </div>
           )
         }
+        */}
       } else {
         initList = initList.concat(
           <div className="pt-lg">
@@ -89,11 +93,26 @@ const FlashcardsEncouragement = ({
     } else {
       if (correctAnswers > 0) {
         initList = initList.concat(
-          <div className="pt-lg">
+          <div className="pt-lg" style={{ fontSize: '18px' }}>
             <FormattedHTMLMessage id="mastering-new-words" values={{ nWords: correctAnswers }} />
           </div>
         )
+      } else {
+        initList = initList.concat(
+          <div className="pt-lg" style={{ fontSize: '18px' }}>
+            <FormattedHTMLMessage id="well-done-click-next-card-to-play-another-set-of-cards-1" />
+          </div>
+        )
       }
+      initList = initList.concat(
+        <div className="pt-lg" style={{ marginTop: '0.5em' }}>
+          <FormattedHTMLMessage id="well-done-click-next-card-to-play-another-set-of-cards-2" />
+          &nbsp;
+          <Button variant="primary" onClick={() => handleNewDeck()}>
+            <FormattedMessage id="next-card" />
+          </Button>
+        </div>
+      )
       if (latestStories.length > 0) {
         initList = initList.concat(
           <div>
@@ -161,16 +180,6 @@ const FlashcardsEncouragement = ({
             <Button onClick={() => setUpperBound(upperBound + 10)} styles={{ marginTop: '0.5em' }}>
               <FormattedMessage id="show-more-recommendations" />
             </Button>
-          )}
-          {!blueFlashcards && (
-            <div className="pt-lg">
-              <FormattedMessage id="well-done-click-next-card-to-play-another-set-of-cards" />
-              <div style={{ marginTop: '0.5em' }}>
-                <Button variant="primary" onClick={() => handleNewDeck()}>
-                  <FormattedMessage id="next-card" />
-                </Button>
-              </div>
-            </div>
           )}
           <div className="encouragement-picture pt-sm">
             <img
