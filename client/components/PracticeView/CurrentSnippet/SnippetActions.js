@@ -142,7 +142,7 @@ const SnippetActions = ({ storyId, exerciseCount, isControlledStory, timerValue,
         filteredCurrentAnswers[key].correct.toLowerCase()
     )
 
-    if (!wrongAnswers || wrongAnswers.length < 1) {
+    if ((!wrongAnswers || wrongAnswers.length < 1) && attempt === 0) {
       if (snippetid[0] === numSnippets - 1) {
         const endDate = Date.now() + 2 * 1000
         const colors = ['#bb0000', '#ffffff']
