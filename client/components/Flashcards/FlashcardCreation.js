@@ -36,7 +36,10 @@ const FlashcardCreation = () => {
   const getTranslations = () => {
     dispatch(clearTranslationAction())
     if (word) {
-      dispatch(getTranslationAction({ learningLanguage, wordLemmas: word, dictionaryLanguage }))
+      const prefLemma = word.pref_lemma
+      dispatch(
+        getTranslationAction({ learningLanguage, wordLemmas: word, dictionaryLanguage, prefLemma })
+      )
     }
   }
 
