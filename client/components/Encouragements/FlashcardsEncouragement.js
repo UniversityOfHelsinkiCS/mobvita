@@ -25,8 +25,7 @@ const FlashcardsEncouragement = ({
   const [recmdList, setRecmdList] = useState([])
   const blueFlashcards = history.location.pathname.includes('fillin')
   const { pending } = useSelector(({ user }) => user)
-
-  console.log('vocab seen ', vocabularySeen)
+  const { creditableWordsNum } = useSelector(({ flashcards }) => flashcards)
 
   const fillList = () => {
     let initList = []
@@ -35,15 +34,14 @@ const FlashcardsEncouragement = ({
       if (correctAnswers === deckSize) {
         initList = initList.concat(
           <div className="pt-lg">
-            <FormattedHTMLMessage id="all-correct-flashcards" />
-            &nbsp;
-            <Link to="/profile/progress">
-              <FormattedMessage id="review-progress" />
-            </Link>
-            ?
+            <FormattedHTMLMessage
+              id="good-job-blue-flashcards"
+              values={{ nWords: creditableWordsNum }}
+            />
           </div>
         )
-        {/* 
+        {
+          /* 
         if (prevBlueCards) {
           initList = initList.concat(
             <div className="pt-lg">
@@ -63,7 +61,8 @@ const FlashcardsEncouragement = ({
             </div>
           )
         }
-        */}
+        */
+        }
       } else {
         initList = initList.concat(
           <div className="pt-lg">
