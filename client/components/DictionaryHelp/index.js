@@ -18,6 +18,7 @@ import useWindowDimensions from 'Utilities/windowDimensions'
 import { setAnnotationvisibilityMobile } from 'Utilities/redux/annotationsReducer'
 import { Spinner } from 'react-bootstrap'
 import FocusedView from 'Components/AnnotationBox/FocusedView'
+import { flashcardColors } from 'Utilities/common'
 
 const Speaker = ({ word }) => {
   const learningLanguage = useLearningLanguage()
@@ -108,6 +109,8 @@ const DictionaryHelp = ({ minimized, inWordNestModal }) => {
 
   const { data: words } = useSelector(({ wordNest }) => wordNest)
 
+  const { background } = flashcardColors
+
   const dispatch = useDispatch()
   const intl = useIntl()
 
@@ -154,7 +157,13 @@ const DictionaryHelp = ({ minimized, inWordNestModal }) => {
       <div
         key={translated.URL}
         data-cy="translations"
-        style={{ color: '#555555', marginBottom: '1em' }}
+        style={{ 
+          color: '#555555', 
+          marginBottom: '1em',  
+          padding: '1em', 
+          borderRadius: '15px', 
+          backgroundColor: `${background[translated.stage || 0]}4D`
+        }}
       >
         {clue ? (
           <Clue clue={clue} />
