@@ -21,7 +21,7 @@ export const getTranslationAction = ({
     word_id: wordId,
     record,
     ref: inflectionRef,
-    pref_leffa: prefLemma,
+    pref_lemma: prefLemma,
   }
   const route = '/translate'
   const prefix = 'GET_TRANSLATION'
@@ -50,6 +50,13 @@ export const getClueTranslationAction = ({
   const prefix = 'GET_CLUE_TRANSLATION'
   return callBuilder(route, prefix, 'get', null, query)
 }
+
+export const knowTranslationAction = (lemma, lang_learn, lang_target) => ({
+  type: 'KNOW_TRANSLATION',
+  lemma,
+  lang_learn,
+  lang_target,
+})
 
 export const clearTranslationAction = () => ({ type: 'CLEAR_TRANSLATION' })
 
@@ -129,6 +136,16 @@ export default (state = { data: [] }, action) => {
         lemmas: '',
         clue: undefined,
         maskSymbol: false,
+      }
+    }
+    case 'KNOW_TRANSLATION': {
+      return {
+        ...state,
+        data: state.data.map(
+          translated => (translated.lemma !== action.lemma || 
+            translated.language_in !== action.lang_learn || 
+            translated.language_out !== action.lang_target)
+          && translated || { ...translated, stage: 4, is_new_word: false }),
       }
     }
     default:

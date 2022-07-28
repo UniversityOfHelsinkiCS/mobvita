@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import { List, Button, Segment, Icon } from 'semantic-ui-react'
 import { FormattedMessage, useIntl } from 'react-intl'
 import { updateDictionaryLanguage } from 'Utilities/redux/userReducer'
-import { getTranslationAction, setWords } from 'Utilities/redux/translationReducer'
+import { getTranslationAction, setWords, knowTranslationAction } from 'Utilities/redux/translationReducer'
 import WordNestModal from 'Components/WordNestModal'
 import {
   useDictionaryLanguage,
@@ -13,12 +13,14 @@ import {
   voiceLanguages,
   getTextStyle,
   images,
+  flashcardColors, 
+  hiddenFeatures
 } from 'Utilities/common'
 import useWindowDimensions from 'Utilities/windowDimensions'
 import { setAnnotationvisibilityMobile } from 'Utilities/redux/annotationsReducer'
 import { Spinner } from 'react-bootstrap'
 import FocusedView from 'Components/AnnotationBox/FocusedView'
-import { flashcardColors } from 'Utilities/common'
+import { recordFlashcardAnswer } from 'Utilities/redux/flashcardReducer'
 
 const Speaker = ({ word }) => {
   const learningLanguage = useLearningLanguage()
@@ -65,7 +67,7 @@ const Clue = ({ clue }) => (
   </div>
 )
 
-const Lemma = ({ lemma, sourceWord, handleSourceWordClick, userUrl, inflectionRef }) => {
+const Lemma = ({ lemma, sourceWord, handleSourceWordClick, handleKnowningClick, userUrl, inflectionRef, stage, is_new_word }) => {
   const learningLanguage = useLearningLanguage()
   const { maskSymbol } = useSelector(({ translation }) => translation)
 
@@ -83,6 +85,9 @@ const Lemma = ({ lemma, sourceWord, handleSourceWordClick, userUrl, inflectionRe
         <a href={inflectionRef.url} target="_blank" rel="noopener noreferrer" className="flex">
           <Icon name="external" style={{ marginLeft: '1rem' }} />
         </a>
+      )}
+      {hiddenFeatures && is_new_word && (
+        <Icon name="check" onClick={handleKnowningClick} style={{ cursor: 'pointer', marginLeft: '2em' }} />
       )}
     </div>
   )
@@ -138,6 +143,20 @@ const DictionaryHelp = ({ minimized, inWordNestModal }) => {
     )
   }
 
+  const handleKnowningClick = lemma => async () => {
+    const answerDetails = {
+      correct: true,
+      answer: null,
+      exercise: 'knowing',
+      hints_shown: 0,
+      mode: 'trans',
+      lemma,
+    }
+    await dispatch(recordFlashcardAnswer(learningLanguage, dictionaryLanguage, answerDetails))
+    dispatch(knowTranslationAction(lemma, learningLanguage, dictionaryLanguage))
+  }
+
+
   useEffect(() => {
     if (translation) setWordNestChosenWord(translation[0]?.lemma)
   }, [translation])
@@ -153,7 +172,7 @@ const DictionaryHelp = ({ minimized, inWordNestModal }) => {
   const translations =
     translation &&
     translation !== 'no-clue-translation' &&
-    translation?.map(translated => (
+    translation?.sort((a, b)=> b.preferred - a.preferred).map(translated => (
       <div
         key={translated.URL}
         data-cy="translations"
@@ -162,7 +181,7 @@ const DictionaryHelp = ({ minimized, inWordNestModal }) => {
           marginBottom: '1em',  
           padding: '1em', 
           borderRadius: '15px', 
-          backgroundColor: `${background[translated.stage || 0]}4D`
+          backgroundColor: `${translated.preferred && background[translated.stage || 0] || '#FFFFFF'}4D`
         }}
       >
         {clue ? (
@@ -172,8 +191,11 @@ const DictionaryHelp = ({ minimized, inWordNestModal }) => {
             lemma={translated.lemma}
             sourceWord={translated.source_word}
             handleSourceWordClick={handleSourceWordClick}
+            handleKnowningClick={handleKnowningClick(translated.lemma)}
             inflectionRef={translated.ref}
             userUrl={translated.user_URL}
+            stage={translated.stage}
+            is_new_word={translated.is_new_word && translated.preferred}
           />
         )}
         <List bulleted style={{ color: 'slateGrey', fontStyle: 'italic', marginTop: '.5rem' }}>
