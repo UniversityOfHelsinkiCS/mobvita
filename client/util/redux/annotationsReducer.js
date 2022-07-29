@@ -116,7 +116,7 @@ const initialState = {
   showAnnotations: true,
   showAnnotationForm: false,
   mobileDisplayAnnotations: false,
-  annotationsLibrary: [],
+  allAnnotations: [],
 }
 
 export default (state = initialState, action) => {
@@ -136,6 +136,7 @@ export default (state = initialState, action) => {
       return {
         ...state,
         pending: false,
+        allAnnotations: action.response.annotations,
       }
     case 'SET_FOCUSED_SPAN':
       return {

@@ -1,34 +1,41 @@
 import React, { useState, useEffect } from 'react'
 import { Placeholder, Card, Select, Icon, Dropdown } from 'semantic-ui-react'
 import { getAllAnnotations } from 'Utilities/redux/annotationsReducer'
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { List, WindowScroller } from 'react-virtualized'
-import { annotationsMock } from 'Utilities/common'
+// import { annotationsMock } from 'Utilities/common'
 import AnnotationListItem from './AnnotationListItem'
 
 const AnnotationsLibrary = () => {
   const dispatch = useDispatch()
   const [category, setCategory] = useState('All')
-  const [annotationsList, setAnnotationsList] = useState(annotationsMock || [])
+  const [annotationsList, setAnnotationsList] = useState([])
+  const { allAnnotations } = useSelector(({ annotations }) => annotations)
 
   const dropDownMenuText = category ? `${category}` : 'All'
-{/* 
+
   useEffect(() => {
     dispatch(getAllAnnotations())
   }, [])
-*/}
+
+  useEffect(() => {
+    if (allAnnotations.length > 0) {
+      setAnnotationsList(allAnnotations)
+    }
+  }, [allAnnotations])
+
   useEffect(() => {
     if (category === 'All') {
-      setAnnotationsList(annotationsMock)
+      setAnnotationsList(allAnnotations)
     } else {
       setAnnotationsList(
-        annotationsMock.filter(annotation => annotation.categories.includes(category))
+        allAnnotations.filter(annotation => annotation.categories?.includes(category))
       )
     }
   }, [category])
 
-  console.log('annotation list ', annotationsList, ' category ', category)
-
+  // console.log('annotation list ', annotationsList, ' category ', category)
+  console.log('all ', allAnnotations)
   const categoryOptions = [
     {
       key: '0',
@@ -58,7 +65,11 @@ const AnnotationsLibrary = () => {
         key={key}
         style={{ ...style, paddingRight: '0.5em', paddingLeft: '0.5em', marginBottom: '.5em' }}
       >
-        <AnnotationListItem annotation={annotationsList[index]} />
+        <AnnotationListItem
+          annotationItem={annotationsList[index]}
+          annotationsList={annotationsList}
+          setAnnotationsList={setAnnotationsList}
+        />
       </div>
     )
   }
