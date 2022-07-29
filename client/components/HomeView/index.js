@@ -99,10 +99,19 @@ const HomeviewButtons = ({ setPracticeModalOpen, setAddStoryModalOpen, aTestIsEn
         </div>
       )}
       {hiddenFeatures && (
+        <div>
+          <HomeviewButton
+            imgSrc={images.notesIcon}
+            altText="post-it notes"
+            translationKey="notes-library"
+            handleClick={() => history.push('/notes-library')}
+          />
+        </div>
+      )}
+      {hiddenFeatures && (
         <>
           <Button onClick={() => history.push('/test-construction')}>Test construction</Button>
-          <Button onClick={() => history.push('test-debug')}>Feedback debugger</Button>
-          <Button style={{ padding: '2em' }} onClick={() => history.push('/notes-library')}>Notes</Button>
+          <Button style={{ padding: '5em' }} onClick={() => history.push('test-debug')}>Feedback debugger</Button>
         </>
       )}
     </div>

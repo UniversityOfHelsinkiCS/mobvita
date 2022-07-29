@@ -1042,7 +1042,7 @@
     "(from)category": "Kategoriasta",
     "edit": "Muokkaa",
     "notes": "Muistiinpanot",
-    "create-a-note": "Luo muistiinpano",
+    "create-a-note": "Notes",
     "cancel-highlighting": "Poista korostus",
     "(you)wrote": "kirjoitit",
     "(he/she)wrote": "kirjoitti",
@@ -1292,5 +1292,6 @@
     "well-done-click-next-card-to-play-another-set-of-cards-1": "Hyvää työtä!",
     "well-done-click-next-card-to-play-another-set-of-cards-2": "Haluaisitko aloittaa uuden korttipakan? ⇒",
     "good-job-blue-flashcards": "Onneksi olkoon!\n<br/>Saat pisteet jokaisesta {nWords} sanasta tässä tarinassa!",
-    "annotation-remove-confirm": "Haluatko varmasti poistaa muistiinpanon?"
+    "annotation-remove-confirm": "Haluatko varmasti poistaa muistiinpanon?",
+    "notes-library": "Muistiinpanot"
 }

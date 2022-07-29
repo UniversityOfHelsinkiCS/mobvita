@@ -554,6 +554,7 @@ html, body, #root {
 .flashcards-btn-cont { grid-area: flashcards; }
 .test-btn-cont { grid-area: exhaustive-test; }
 .adaptive-test-btn-cont { grid-area: adaptive-test; }
+.notes-library-btn-cont { grid-area: notes; }
 
 .encouragement {
   border: 2px solid lightgrey;
@@ -2394,7 +2395,7 @@ label.file-upload-btn {
   background-color: violet;
   padding: 0.2em;
   border: 2px solid violet;
-  border-radius: 12px;
+  border-radius: 9px;
 }
 
 .note-vocabulary {
@@ -2402,7 +2403,7 @@ label.file-upload-btn {
   background-color: #00FFFF;
   padding: 0.2em;
   border: 2px solid #00FFFF;
-  border-radius: 12px;
+  border-radius: 9px;
 }
 
 .note-phrases {
@@ -2410,7 +2411,7 @@ label.file-upload-btn {
   background-color: orange;
   padding: 0.2em;
   border: 2px solid orange;
-  border-radius: 12px;
+  border-radius: 9px;
 }
 
 .footer {
