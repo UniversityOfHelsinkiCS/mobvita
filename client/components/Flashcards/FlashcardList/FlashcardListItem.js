@@ -5,7 +5,7 @@ import { Icon } from 'semantic-ui-react'
 import { FormattedMessage } from 'react-intl'
 import { sanitizeHtml, flashcardColors, hiddenFeatures } from 'Utilities/common'
 import { deleteFlashcard, recordFlashcardAnswer } from 'Utilities/redux/flashcardReducer'
-import { knowFlashcard } from 'Utilities/redux/flashcardListReducer'
+import { changeFlashcardStage } from 'Utilities/redux/flashcardListReducer'
 
 const FlashcardListItem = ({ card, handleEdit }) => {
   const { lemma, _id, stage, is_new_word, lan_in, lan_out } = card
@@ -27,7 +27,20 @@ const FlashcardListItem = ({ card, handleEdit }) => {
       lemma,
     }
     dispatch(recordFlashcardAnswer(lan_in, lan_out, answerDetails))
-    dispatch(knowFlashcard(_id))
+    dispatch(changeFlashcardStage(_id, 4))
+  }
+
+  const handleNotKnowFlashcard = () => {
+    const answerDetails = {
+      correct: false,
+      answer: null,
+      exercise: 'knowing',
+      hints_shown: 0,
+      mode: 'trans',
+      lemma,
+    }
+    dispatch(recordFlashcardAnswer(lan_in, lan_out, answerDetails))
+    dispatch(changeFlashcardStage(_id, 0))
   }
 
   const uniqueGlossListItems = useMemo(() => (
@@ -60,7 +73,8 @@ const FlashcardListItem = ({ card, handleEdit }) => {
           <Icon name="edit outline" onClick={() => handleEdit(card)} />
           {lemma}
         </Accordion.Toggle>
-        {hiddenFeatures && is_new_word && <Icon name="check" onClick={handleKnowFlashcard} style={{ cursor: 'pointer' }} />}
+        <Icon name="check" onClick={handleKnowFlashcard} style={{ cursor: 'pointer' , marginRight: '1em'}} />
+        <Icon name="question" onClick={handleNotKnowFlashcard} style={{ cursor: 'pointer' , marginRight: '1em' }} />
         <Icon name="delete" onClick={handleDelete} style={{ cursor: 'pointer' }} />
       </ListGroup.Item>
       <Accordion.Collapse eventKey={_id}>

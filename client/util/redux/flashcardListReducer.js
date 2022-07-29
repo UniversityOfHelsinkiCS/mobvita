@@ -14,7 +14,8 @@ export const getFlashcardListPage = (inputLanguage, outputLanguage, page, storyI
 
 export const clearFlashcardList = () => ({ type: 'CLEAR_FLASHCARD_LIST' })
 
-export const knowFlashcard = (flashcard_id) => ({ type: 'SET_KNOWN_CARD', flashcard_id: flashcard_id })
+export const changeFlashcardStage = (flashcard_id, stage) => ({ 
+  type: 'SET_CARD_STAGE', flashcard_id, stage})
 
 const initialState = {
   pending: false,
@@ -63,13 +64,14 @@ export default (state = initialState, action) => {
     case 'CLEAR_FLASHCARD_LIST':
       return initialState
 
-    case 'SET_KNOWN_CARD': 
+    case 'SET_CARD_STAGE': {
+      console.log(action)
       return {
         ...state,
         cardsInCurrentPage: state.cardsInCurrentPage.map(
-          card => card._id !== action.flashcard_id && card || { ...card, stage: 4, is_new_word: false })
+          card => card._id !== action.flashcard_id && card || { ...card, stage: action.stage })
       }
-    
+    }
     default:
       return state
   }

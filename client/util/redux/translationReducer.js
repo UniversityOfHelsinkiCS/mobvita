@@ -51,11 +51,12 @@ export const getClueTranslationAction = ({
   return callBuilder(route, prefix, 'get', null, query)
 }
 
-export const knowTranslationAction = (lemma, lang_learn, lang_target) => ({
-  type: 'KNOW_TRANSLATION',
+export const changeTranslationStageAction = (lemma, lang_learn, lang_target, stage) => ({
+  type: 'SET_TRANSLATION_STAGE',
   lemma,
   lang_learn,
   lang_target,
+  stage
 })
 
 export const clearTranslationAction = () => ({ type: 'CLEAR_TRANSLATION' })
@@ -138,14 +139,14 @@ export default (state = { data: [] }, action) => {
         maskSymbol: false,
       }
     }
-    case 'KNOW_TRANSLATION': {
+    case 'SET_TRANSLATION_STAGE': {
       return {
         ...state,
         data: state.data.map(
           translated => (translated.lemma !== action.lemma || 
             translated.language_in !== action.lang_learn || 
             translated.language_out !== action.lang_target)
-          && translated || { ...translated, stage: 4, is_new_word: false }),
+          && translated || { ...translated, stage: action.stage, is_new_word: false }),
       }
     }
     default:
