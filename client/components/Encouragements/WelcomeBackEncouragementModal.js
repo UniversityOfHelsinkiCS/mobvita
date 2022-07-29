@@ -69,7 +69,6 @@ const WelcomeBackEncouragementModal = ({
         </div>
       )
     }
-    {/* 
     if (prevBlueCards) {
       initList = initList.concat(
         <div className="pt-lg">
@@ -77,7 +76,7 @@ const WelcomeBackEncouragementModal = ({
             <FormattedHTMLMessage
               id="previous-stories-blue-cards"
               values={{
-                nWords: 30,
+                nWords: prevBlueCards.num_of_rewardable_words,
                 story: prevBlueCards.title,
               }}
             />
@@ -89,7 +88,6 @@ const WelcomeBackEncouragementModal = ({
         </div>
       )
     }
-    */}
     if (latestIncompleteStory && enable_recmd) {
       initList = initList.concat(
         <div>

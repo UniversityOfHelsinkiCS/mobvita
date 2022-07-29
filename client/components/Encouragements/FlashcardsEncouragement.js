@@ -40,8 +40,6 @@ const FlashcardsEncouragement = ({
             />
           </div>
         )
-        {
-          /* 
         if (prevBlueCards) {
           initList = initList.concat(
             <div className="pt-lg">
@@ -49,7 +47,7 @@ const FlashcardsEncouragement = ({
                 <FormattedHTMLMessage
                   id="previous-stories-blue-cards"
                   values={{
-                    nWords: 30,
+                    nWords: prevBlueCards.num_of_rewardable_words,
                     story: prevBlueCards.title,
                   }}
                 />
@@ -60,8 +58,6 @@ const FlashcardsEncouragement = ({
               </div>
             </div>
           )
-        }
-        */
         }
       } else {
         initList = initList.concat(

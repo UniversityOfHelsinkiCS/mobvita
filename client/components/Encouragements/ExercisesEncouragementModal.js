@@ -60,7 +60,7 @@ const ExercisesEncouragementModal = ({
         </div>
       )
     }
-    console.log('creditable ', creditableWordsNum)
+
     if (creditableWordsNum > 0) {
       initList = initList.concat(
         <div className="pt-lg">
@@ -75,7 +75,7 @@ const ExercisesEncouragementModal = ({
         </div>
       )
     }
-    {/* 
+
     if (prevBlueCards) {
       initList = initList.concat(
         <div className="pt-lg">
@@ -83,7 +83,7 @@ const ExercisesEncouragementModal = ({
             <FormattedHTMLMessage
               id="previous-stories-blue-cards"
               values={{
-                nWords: 30,
+                nWords: prevBlueCards.num_of_rewardable_words,
                 story: prevBlueCards.title,
               }}
             />
@@ -95,7 +95,7 @@ const ExercisesEncouragementModal = ({
         </div>
       )
     }
-    */}
+
     if (latestIncompleteStory && enable_recmd) {
       initList = initList.concat(
         <div>
