@@ -1,9 +1,10 @@
 import React from 'react'
 import { useDispatch } from 'react-redux'
-import { Form, TextArea } from 'semantic-ui-react'
+import { Form, TextArea, Checkbox } from 'semantic-ui-react'
 import { Button } from 'react-bootstrap'
 import { FormattedMessage, useIntl } from 'react-intl'
 import { setAnnotationFormVisibility } from 'Utilities/redux/annotationsReducer'
+import { getCategoryColor } from 'Utilities/common'
 
 const AnnotationForm = ({
   annotationText,
@@ -12,6 +13,8 @@ const AnnotationForm = ({
   maxCharacters,
   charactersLeft,
   setCharactersLeft,
+  categories,
+  setCategories,
 }) => {
   const intl = useIntl()
   const dispatch = useDispatch()
@@ -25,7 +28,17 @@ const AnnotationForm = ({
     if (text.match(/^\s+$/g)) return true
     return false
   }
+/*
+  const handleAddCategory = category => {
+    if (categories.includes(category)) {
+      setCategories(categories.filter(c => c !== category))
+    } else {
+      setCategories(categories.concat(category))
+    }
+  }
 
+  console.log('categories ', categories)
+*/
   return (
     <div>
       <Form>

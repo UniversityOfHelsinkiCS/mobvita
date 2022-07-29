@@ -47,6 +47,7 @@ import help from 'Assets/images/help.png'
 import settingsIcon from 'Assets/images/settings_icon.png'
 import bellIcon from 'Assets/images/bell_icon.png'
 import infoIcon from 'Assets/images/info_icon.png'
+import notesIcon from 'Assets/images/notes.png'
 // ---
 import addStory from 'Assets/images/add_story.jpg'
 import tests from 'Assets/images/tests.jpg'
@@ -142,6 +143,7 @@ export const images = {
   nestIcon,
   balloons,
   fireworks,
+  notesIcon,
 }
 
 export const annotationsMock = [
@@ -176,6 +178,20 @@ export const annotationsMock = [
     _id: '1236',
   },
 ]
+
+export const getCategoryColor = category => {
+  if (category === 'Grammar') {
+    return 'note-grammar'
+  }
+  if (category === 'Phrases') {
+    return 'note-phrases'
+  }
+  if (category === 'Vocabulary') {
+    return 'note-vocabulary'
+  }
+
+  return ''
+}
 
 export const skillLevels = [
   'A1',

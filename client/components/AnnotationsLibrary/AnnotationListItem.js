@@ -3,6 +3,7 @@ import { Card, Button as SemanticButton, Icon, Popup } from 'semantic-ui-react'
 import { FormattedMessage } from 'react-intl'
 import { addEditStoryAnnotation, removeStoryAnnotation } from 'Utilities/redux/storiesReducer'
 import { useDispatch } from 'react-redux'
+import { getCategoryColor } from 'Utilities/common'
 import ConfirmationWarning from 'Components/ConfirmationWarning'
 import Tooltip from 'Components/PracticeView/Tooltip'
 import AnnotationActions from './AnnotationActions'
@@ -29,20 +30,6 @@ const AnnotationListItem = ({ annotationItem, annotationsList, setAnnotationsLis
     const mode = 'preview'
     await dispatch(removeStoryAnnotation(story_id, token_id, end_token_id, mode))
     setAnnotationsList(annotationsList.filter(annotation => annotation !== annotationItem))
-  }
-
-  const getCategoryColor = category => {
-    if (category === 'Grammar') {
-      return 'note-grammar'
-    }
-    if (category === 'Phrases') {
-      return 'note-phrases'
-    }
-    if (category === 'Vocabulary') {
-      return 'note-vocabulary'
-    }
-
-    return ''
   }
 
   return (
