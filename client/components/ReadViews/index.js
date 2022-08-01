@@ -28,8 +28,8 @@ const ReadViews = ({ match }) => {
   const history = useHistory()
   const [showRefreshButton, setShowRefreshButton] = useState(false)
   const [currentStudent, setCurrentStudent] = useState(null)
-  const isGroupReview = history.location.pathname.includes('group-review')
-  const isGroupPreview = history.location.pathname.includes('group-preview')
+  const isGroupReview = history.location.pathname.includes('group/review')
+  const isGroupPreview = history.location.pathname.includes('group/preview')
   const { show_review_diff, show_preview_exer } = useSelector(({ user }) => user.data.user)
   const { story, pending } = useSelector(({ stories, locale }) => ({
     story: stories.focused,

@@ -87,7 +87,7 @@ const StoryDetailsModal = ({
                 {isTeacher && inGroupLibrary ? (
                   <LinkButton
                     variant="primary"
-                    to={`/stories/${story._id}/group-preview`}
+                    to={`/stories/${story._id}/group/preview`}
                     translationId="preview"
                   />
                 ) : (
@@ -98,7 +98,7 @@ const StoryDetailsModal = ({
                   />
                 )}
                 {isTeacher && inGroupLibrary ? (
-                  <Link to={`/stories/${story._id}/group-review`}>
+                  <Link to={`/stories/${story._id}/group/review`}>
                     <Button variant="primary">
                       <FormattedMessage id="review" />
                     </Button>

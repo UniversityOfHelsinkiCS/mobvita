@@ -102,8 +102,8 @@ export default () => {
             />
             <ProtectedRoute exact path="/stories/:id/review/" component={ReadViews} />
             <ProtectedRoute exact path="/stories/:id/preview/" component={ReadViews} />
-            <ProtectedRoute exact path="/stories/:id/group-review" component={ReadViews} />
-            <ProtectedRoute exact path="/stories/:id/group-preview" component={ReadViews} />
+            <ProtectedRoute exact path="/stories/:id/group/review" component={ReadViews} />
+            <ProtectedRoute exact path="/stories/:id/group/preview" component={ReadViews} />
 
             {/* <ProtectedRoute
               exact

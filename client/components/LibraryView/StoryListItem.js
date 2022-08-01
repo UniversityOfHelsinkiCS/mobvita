@@ -123,7 +123,7 @@ const StoryActions = ({
           </Button>
         </Link>
         {isTeacher && inGroupLibrary ? (
-          <Link to={`/stories/${story._id}/group-preview`}>
+          <Link to={`/stories/${story._id}/group/preview`}>
             <Button variant="primary" disabled={enableOnlyPractice}>
               <FormattedMessage id="preview" />
             </Button>
@@ -136,7 +136,7 @@ const StoryActions = ({
           </Link>
         )}
         {isTeacher && inGroupLibrary ? (
-          <Link to={`/stories/${story._id}/group-review`}>
+          <Link to={`/stories/${story._id}/group/review`}>
             <Button variant="primary">
               <FormattedMessage id="review" />{' '}
             </Button>
