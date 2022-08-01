@@ -1300,5 +1300,9 @@
     "notes-Grammar": "Kielioppi",
     "notes-Vocabulary": "Sanasto",
     "notes-Phrases": "Lausekkeet",
-    "notes-All": "Kaikki"
+    "notes-All": "Kaikki",
+    "go-to-flashcards-progress": "Haluaisitko tarkastella",
+    "i-know-tooltip": "Tiedän tämän sanan!",
+    "i-dont-know-tooltip": "En tiedä tätä sanaa...",
+    "remove-card-tooltip": "Poista kortti listalta"
 }

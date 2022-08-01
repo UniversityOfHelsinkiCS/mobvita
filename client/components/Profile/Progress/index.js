@@ -102,12 +102,10 @@ const Progress = () => {
   )
 
   useEffect(() => {
-    console.log('end date')
     dispatch(getNewerVocabularyData(endDate.toJSON().slice(0, 10)))
   }, [endDate])
 
   useEffect(() => {
-    console.log('start date')
     dispatch(getPreviousVocabularyData(startDate.toJSON().slice(0, 10)))
   }, [startDate])
 

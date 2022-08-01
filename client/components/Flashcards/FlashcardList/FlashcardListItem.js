@@ -1,7 +1,7 @@
 import React, { useMemo } from 'react'
 import { useDispatch } from 'react-redux'
 import { ListGroup, Card, Accordion } from 'react-bootstrap'
-import { Icon } from 'semantic-ui-react'
+import { Icon, Popup } from 'semantic-ui-react'
 import { FormattedMessage } from 'react-intl'
 import { sanitizeHtml, flashcardColors, hiddenFeatures } from 'Utilities/common'
 import { deleteFlashcard, recordFlashcardAnswer } from 'Utilities/redux/flashcardReducer'
@@ -43,12 +43,18 @@ const FlashcardListItem = ({ card, handleEdit }) => {
     dispatch(changeFlashcardStage(_id, 0))
   }
 
-  const uniqueGlossListItems = useMemo(() => (
-    [...new Set(card.glosses)].map(gloss => <li key={gloss}>{gloss}</li>)), [card])
+  const uniqueGlossListItems = useMemo(
+    () => [...new Set(card.glosses)].map(gloss => <li key={gloss}>{gloss}</li>),
+    [card]
+  )
 
-  const uniqueHintListItems = useMemo(() => (
-    [...new Set(card.hint.map(hintObject => hintObject.hint))].map(hint => (
-      <li key={hint} dangerouslySetInnerHTML={sanitizeHtml(hint)} />))), [card])
+  const uniqueHintListItems = useMemo(
+    () =>
+      [...new Set(card.hint.map(hintObject => hintObject.hint))].map(hint => (
+        <li key={hint} dangerouslySetInnerHTML={sanitizeHtml(hint)} />
+      )),
+    [card]
+  )
 
   return (
     <Card style={{ backgroundColor: background[stage] }}>
@@ -73,30 +79,50 @@ const FlashcardListItem = ({ card, handleEdit }) => {
           <Icon name="edit outline" onClick={() => handleEdit(card)} />
           {lemma}
         </Accordion.Toggle>
-        <Icon name="check" onClick={handleKnowFlashcard} style={{ cursor: 'pointer' , marginRight: '1em'}} />
-        <Icon name="question" onClick={handleNotKnowFlashcard} style={{ cursor: 'pointer' , marginRight: '1em' }} />
-        <Icon name="delete" onClick={handleDelete} style={{ cursor: 'pointer' }} />
+        <Popup
+          position="top center"
+          content={<FormattedMessage id="i-know-tooltip" />}
+          trigger={
+            <Icon
+              name="check"
+              onClick={handleKnowFlashcard}
+              style={{ cursor: 'pointer', marginRight: '1em' }}
+            />
+          }
+        />
+        <Popup
+          position="top center"
+          content={<FormattedMessage id="i-dont-know-tooltip" />}
+          trigger={
+            <Icon
+              name="question"
+              onClick={handleNotKnowFlashcard}
+              style={{ cursor: 'pointer', marginRight: '1em' }}
+            />
+          }
+        />
+        <Popup
+          position="top center"
+          content={<FormattedMessage id="remove-card-tooltip" />}
+          trigger={
+            <Icon name="trash alternate" onClick={handleDelete} style={{ cursor: 'pointer' }} />
+          }
+        />
       </ListGroup.Item>
       <Accordion.Collapse eventKey={_id}>
         <Card.Body>
           <span className="bold">
             <FormattedMessage id="Translations" />
           </span>
-          <ul>
-            {uniqueGlossListItems}
-          </ul>
-          {card.hint.length > 0
-            && (
+          <ul>{uniqueGlossListItems}</ul>
+          {card.hint.length > 0 && (
             <div>
               <span className="bold">
                 <FormattedMessage id="Hints" />
               </span>
-              <ul>
-                {uniqueHintListItems}
-              </ul>
+              <ul>{uniqueHintListItems}</ul>
             </div>
-            )
-          }
+          )}
         </Card.Body>
       </Accordion.Collapse>
     </Card>

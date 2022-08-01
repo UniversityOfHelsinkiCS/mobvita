@@ -1303,5 +1303,9 @@
     "notes-Grammar": "Grammar",
     "notes-Vocabulary": "Vocabulary",
     "notes-Phrases": "Phrases",
-    "notes-All": "All"
+    "notes-All": "All",
+    "go-to-flashcards-progress": "Would you like to review",
+    "i-know-tooltip": "I know this word!",
+    "i-dont-know-tooltip": "I don't know this word...",
+    "remove-card-tooltip": "Remove from card list"
 }
