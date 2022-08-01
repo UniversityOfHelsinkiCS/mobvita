@@ -17,6 +17,9 @@ const FlashcardsEncouragement = ({
   vocabularySeen,
   latestStories,
   prevBlueCards,
+  loading,
+  storyCardsPending,
+  totalAnswers,
 }) => {
   const history = useHistory()
   const intl = useIntl()
@@ -147,14 +150,15 @@ const FlashcardsEncouragement = ({
   }
 
   useEffect(() => {
+    console.log('calling use effect')
     setRecmdList(fillList())
-  }, [])
+  }, [latestStories, prevBlueCards, vocabularySeen, correctAnswers])
 
   const updatePreferences = () => {
     dispatch(updateEnableRecmd(!enable_recmd))
   }
 
-  if (pending) {
+  if (pending || loading || storyCardsPending || totalAnswers < deckSize) {
     return null
   }
 

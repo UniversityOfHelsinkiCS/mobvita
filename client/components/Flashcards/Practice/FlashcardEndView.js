@@ -35,9 +35,9 @@ const FlashcardEndView = ({ handleNewDeck, deckSize, open, setOpen, blueCardsAns
   }, [])
 
   useEffect(() => {
-    const filteredBlueCards = storyBlueCards.filter(story => story.story_id !== storyId)
+    const filteredBlueCards = storyBlueCards?.filter(story => story.story_id !== storyId)
 
-    if (filteredBlueCards.length > 0) {
+    if (filteredBlueCards?.length > 0) {
       setPrevBlueCards(filteredBlueCards[filteredBlueCards.length - 1])
     }
   }, [storyBlueCards])
@@ -105,19 +105,20 @@ const FlashcardEndView = ({ handleNewDeck, deckSize, open, setOpen, blueCardsAns
   return (
     <div className="flashcard justify-center">
       <div>
-        {totalAnswers === deckSize && !loading && !storyCardsPending && !pending && (
-          <FlashcardsEncouragement
-            open={open}
-            setOpen={setOpen}
-            correctAnswers={correctAnswers}
-            deckSize={deckSize}
-            enable_recmd={enable_recmd}
-            handleNewDeck={handleNewDeck}
-            vocabularySeen={vocabulary_seen}
-            latestStories={latestStories}
-            prevBlueCards={prevBlueCards}
-          />
-        )}
+        <FlashcardsEncouragement
+          open={open}
+          setOpen={setOpen}
+          correctAnswers={correctAnswers}
+          deckSize={deckSize}
+          enable_recmd={enable_recmd}
+          handleNewDeck={handleNewDeck}
+          vocabularySeen={vocabulary_seen}
+          latestStories={latestStories}
+          prevBlueCards={prevBlueCards}
+          loading={loading}
+          storyCardsPending={storyCardsPending}
+          totalAnswers={totalAnswers}
+        />
       </div>
       <p style={{ fontWeight: '500', fontSize: '1.2em', padding: '1em' }}>
         <FormattedMessage id="well-done-flashcards" />

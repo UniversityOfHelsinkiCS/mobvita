@@ -70,6 +70,7 @@ const initialState = {
   nounCards: [],
   correctAnswers: 0,
   totalAnswers: 0,
+  creditableWordsNum: 0,
 }
 
 const deleteCard = (cards, response) => cards.filter(card => card._id !== response.flashcard_id)
@@ -122,7 +123,6 @@ export default (state = initialState, action) => {
         pending: false,
         correctAnswers: 0,
         totalAnswers: 0,
-        storyBlueCards: [],
         creditableWordsNum: action.response.flashcards.num_rewardable_words,
       }
     case 'GET_BLUE_FLASHCARDS_FAILURE':
@@ -136,7 +136,6 @@ export default (state = initialState, action) => {
         storyCardsPending: true,
       }
     case 'GET_ALL_BLUE_FLASHCARDS_SUCCESS':
-      console.log('previous cards ', action.response)
       return {
         ...state,
         storyBlueCards: action.response.story_blueFlashcards,
