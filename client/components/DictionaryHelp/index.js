@@ -1,9 +1,13 @@
 import React, { useState, useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { List, Button, Segment, Icon } from 'semantic-ui-react'
+import { List, Button, Segment, Icon, Popup } from 'semantic-ui-react'
 import { FormattedMessage, useIntl } from 'react-intl'
 import { updateDictionaryLanguage } from 'Utilities/redux/userReducer'
-import { getTranslationAction, setWords, changeTranslationStageAction } from 'Utilities/redux/translationReducer'
+import {
+  getTranslationAction,
+  setWords,
+  changeTranslationStageAction,
+} from 'Utilities/redux/translationReducer'
 import WordNestModal from 'Components/WordNestModal'
 import {
   useDictionaryLanguage,
@@ -13,8 +17,8 @@ import {
   voiceLanguages,
   getTextStyle,
   images,
-  flashcardColors, 
-  hiddenFeatures
+  flashcardColors,
+  hiddenFeatures,
 } from 'Utilities/common'
 import useWindowDimensions from 'Utilities/windowDimensions'
 import { setAnnotationvisibilityMobile } from 'Utilities/redux/annotationsReducer'
@@ -67,12 +71,17 @@ const Clue = ({ clue }) => (
   </div>
 )
 
-const Lemma = ({ lemma, sourceWord, handleSourceWordClick, handleKnowningClick, handleNotKnowningClick,
-  userUrl, inflectionRef }) => {
+const Lemma = ({
+  lemma,
+  sourceWord,
+  handleSourceWordClick,
+  handleKnowningClick,
+  handleNotKnowningClick,
+  userUrl,
+  inflectionRef,
+}) => {
   const learningLanguage = useLearningLanguage()
   const { maskSymbol } = useSelector(({ translation }) => translation)
-
-  console.log('Lemma ', lemma)
 
   return (
     <div className="flex" style={getTextStyle(learningLanguage)}>
@@ -87,8 +96,28 @@ const Lemma = ({ lemma, sourceWord, handleSourceWordClick, handleKnowningClick, 
           <Icon name="external" style={{ marginLeft: '1rem' }} />
         </a>
       )}
-      <Icon name="check" onClick={handleKnowningClick} style={{ cursor: 'pointer', marginLeft: '2em' }} />
-      <Icon name="question" onClick={handleNotKnowningClick} style={{ cursor: 'pointer', marginLeft: '1em' }} />
+      <Popup
+        position="top center"
+        content={<FormattedMessage id="i-know-tooltip" />}
+        trigger={
+          <Icon
+            name="check"
+            onClick={handleKnowningClick}
+            style={{ cursor: 'pointer', marginLeft: '2em' }}
+          />
+        }
+      />
+      <Popup
+        position="top center"
+        content={<FormattedMessage id="i-dont-know-tooltip" />}
+        trigger={
+          <Icon
+            name="question"
+            onClick={handleNotKnowningClick}
+            style={{ cursor: 'pointer', marginLeft: '1em' }}
+          />
+        }
+      />
     </div>
   )
 }
@@ -169,7 +198,6 @@ const DictionaryHelp = ({ minimized, inWordNestModal }) => {
     dispatch(changeTranslationStageAction(lemma, learningLanguage, dictionaryLanguage, 0))
   }
 
-
   useEffect(() => {
     if (translation) setWordNestChosenWord(translation[0]?.lemma)
   }, [translation])
@@ -185,38 +213,42 @@ const DictionaryHelp = ({ minimized, inWordNestModal }) => {
   const translations =
     translation &&
     translation !== 'no-clue-translation' &&
-    translation?.sort((a, b)=> b.preferred - a.preferred).map(translated => (
-      <div
-        key={translated.URL}
-        data-cy="translations"
-        style={{ 
-          color: '#555555', 
-          marginBottom: '1em',  
-          padding: '1em', 
-          borderRadius: '15px', 
-          backgroundColor: `${translated.preferred && background[translated.stage || 0] || '#FFFFFF'}4D`
-        }}
-      >
-        {clue ? (
-          <Clue clue={clue} />
-        ) : (
-          <Lemma
-            lemma={translated.lemma}
-            sourceWord={translated.source_word}
-            handleSourceWordClick={handleSourceWordClick}
-            handleKnowningClick={handleKnowningClick(translated.lemma)}
-            handleNotKnowningClick={handleNotKnowningClick(translated.lemma)}
-            inflectionRef={translated.ref}
-            userUrl={translated.user_URL}
-          />
-        )}
-        <List bulleted style={{ color: 'slateGrey', fontStyle: 'italic', marginTop: '.5rem' }}>
-          {translated.glosses.map(word => (
-            <List.Item key={word}>{word}</List.Item>
-          ))}
-        </List>
-      </div>
-    ))
+    translation
+      ?.sort((a, b) => b.preferred - a.preferred)
+      .map(translated => (
+        <div
+          key={translated.URL}
+          data-cy="translations"
+          style={{
+            color: '#555555',
+            marginBottom: '1em',
+            padding: '1em',
+            borderRadius: '15px',
+            backgroundColor: `${
+              (translated.preferred && background[translated.stage || 0]) || '#FFFFFF'
+            }4D`,
+          }}
+        >
+          {clue ? (
+            <Clue clue={clue} />
+          ) : (
+            <Lemma
+              lemma={translated.lemma}
+              sourceWord={translated.source_word}
+              handleSourceWordClick={handleSourceWordClick}
+              handleKnowningClick={handleKnowningClick(translated.lemma)}
+              handleNotKnowningClick={handleNotKnowningClick(translated.lemma)}
+              inflectionRef={translated.ref}
+              userUrl={translated.user_URL}
+            />
+          )}
+          <List bulleted style={{ color: 'slateGrey', fontStyle: 'italic', marginTop: '.5rem' }}>
+            {translated.glosses.map(word => (
+              <List.Item key={word}>{word}</List.Item>
+            ))}
+          </List>
+        </div>
+      ))
 
   const handleDropdownChange = value => {
     if (translation) {
