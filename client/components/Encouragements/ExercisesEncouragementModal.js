@@ -161,9 +161,7 @@ const ExercisesEncouragementModal = ({
   }, [user_rank])
 
   useEffect(() => {
-    if (!pending && !storyCardsPending) {
-      setRecmdList(fillList())
-    }
+    setRecmdList(fillList())
   }, [userRanking, newVocabulary, latestIncompleteStory, prevBlueCards, creditableWordsNum])
 
   useEffect(() => {
