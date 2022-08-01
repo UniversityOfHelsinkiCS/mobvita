@@ -1,6 +1,6 @@
 import React from 'react'
 import { useDispatch } from 'react-redux'
-import { Form, TextArea, Checkbox } from 'semantic-ui-react'
+import { Form, TextArea, Dropdown } from 'semantic-ui-react'
 import { Button } from 'react-bootstrap'
 import { FormattedMessage, useIntl } from 'react-intl'
 import { setAnnotationFormVisibility } from 'Utilities/redux/annotationsReducer'
@@ -13,8 +13,9 @@ const AnnotationForm = ({
   maxCharacters,
   charactersLeft,
   setCharactersLeft,
-  categories,
-  setCategories,
+  getCategoryColor,
+  category,
+  setCategory,
 }) => {
   const intl = useIntl()
   const dispatch = useDispatch()
@@ -24,24 +25,50 @@ const AnnotationForm = ({
     setAnnotationText(e.target.value)
   }
 
+  const dropDownMenuText = category ? (
+    <FormattedMessage id={`notes-${category}`} />
+  ) : (
+    <FormattedMessage id="notes-Grammar" />
+  )
+
   const consistsOfOnlyWhitespace = text => {
     if (text.match(/^\s+$/g)) return true
     return false
   }
-/*
-  const handleAddCategory = category => {
-    if (categories.includes(category)) {
-      setCategories(categories.filter(c => c !== category))
-    } else {
-      setCategories(categories.concat(category))
-    }
-  }
 
-  console.log('categories ', categories)
-*/
+  const categoryOptions = [
+    {
+      key: '0',
+      text: <FormattedMessage id="notes-Grammar" />,
+      value: 'Grammar',
+    },
+    {
+      key: '1',
+      text: <FormattedMessage id="notes-Phrases" />,
+      value: 'Phrases',
+    },
+    {
+      key: '2',
+      text: <FormattedMessage id="notes-Vocabulary" />,
+      value: 'Vocabulary',
+    },
+  ]
+
   return (
     <div>
       <Form>
+        <div className="row-flex" style={{ marginBottom: '.5em' }}>
+          <span style={{ marginRight: '.5em' }}>
+            <FormattedMessage id="Category" />:{' '}
+          </span>
+          <Dropdown
+            text={dropDownMenuText}
+            selection
+            fluid
+            options={categoryOptions}
+            onChange={(_, { value }) => setCategory(value)}
+          />
+        </div>
         <TextArea
           value={annotationText}
           onChange={handleTextChange}

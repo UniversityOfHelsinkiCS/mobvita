@@ -12,7 +12,8 @@ const AnnotationListItem = ({ annotationItem, annotationsList, setAnnotationsLis
   // console.log('annotation ', annotation)
   const dispatch = useDispatch()
   const [openWarning, setOpenWarning] = useState(false)
-  const [showTooltip, setShowTooltip] = useState(false)
+  const [showAnnotationForm, setShowAnnotationForm] = useState(false)
+
   const {
     annotated_text,
     annotation,
@@ -21,7 +22,7 @@ const AnnotationListItem = ({ annotationItem, annotationsList, setAnnotationsLis
     precent_cov,
     token_id,
     end_token_id,
-    categories,
+    category,
     story_id,
     story_title,
   } = annotationItem
@@ -33,34 +34,45 @@ const AnnotationListItem = ({ annotationItem, annotationsList, setAnnotationsLis
   }
 
   return (
-    <Card fluid key={uid}>
-      <Card.Content extra className="story-card-title-cont">
-        <Popup
-          content={<div style={{ margin: '0.25em' }}>{annotation}</div>}
-          trigger={<h2 style={{ color: '#000000', cursor: 'pointer' }}>{annotated_text}</h2>}
-        />
-        <div className="flex space-between">
-          <div style={{ fontWeight: '16px' }}>{story_title}</div>
-          <div>
-            {categories?.map(category => (
-              <span className={getCategoryColor(category)} style={{ marginRight: '0.5em' }}>
-                {category}
-              </span>
-            ))}
+    <>
+      <Card fluid key={uid}>
+        <Card.Content extra className="story-card-title-cont">
+          <Popup
+            content={<div style={{ margin: '0.25em' }}>{annotation}</div>}
+            trigger={
+              <div className="header-2" style={{ color: '#000000', cursor: 'pointer' }}>
+                {annotated_text}
+              </div>
+            }
+          />
+          <div className="flex space-between">
+            <h5 sclassName="story-item-title">{story_title}</h5>
+            {category && (
+              <div className={getCategoryColor(category)} style={{ marginRight: '0.5em' }}>
+                <FormattedMessage id={`notes-${category}`} />
+              </div>
+            )}
           </div>
-        </div>
-      </Card.Content>
-      <Card.Content extra className="story-card-actions-cont">
-        <AnnotationActions
-          storyId={story_id}
-          percentCov={precent_cov}
-          setOpenWarning={setOpenWarning}
-        />
-      </Card.Content>
-      <ConfirmationWarning open={openWarning} setOpen={setOpenWarning} action={handleDelete}>
-        <FormattedMessage id="annotation-remove-confirm" />
-      </ConfirmationWarning>
-    </Card>
+        </Card.Content>
+        <Card.Content extra className="story-card-actions-cont">
+          <AnnotationActions
+            storyId={story_id}
+            percentCov={precent_cov}
+            setOpenWarning={setOpenWarning}
+            setShowAnnotationForm={setShowAnnotationForm}
+            showAnnotationForm={showAnnotationForm}
+          />
+        </Card.Content>
+        {showAnnotationForm && (
+          <Card.Content>
+            <div>FORM</div>
+          </Card.Content>
+        )}
+        <ConfirmationWarning open={openWarning} setOpen={setOpenWarning} action={handleDelete}>
+          <FormattedMessage id="annotation-remove-confirm" />
+        </ConfirmationWarning>
+      </Card>
+    </>
   )
 }
 

@@ -1294,5 +1294,12 @@
     "well-done-click-next-card-to-play-another-set-of-cards-2": "Provare un altro lotto? ⇒",
     "good-job-blue-flashcards": "Congratulazioni!\n<br/>Ti viene il merito di conoscere tutte le {nWords} parole in questa storia!",
     "annotation-remove-confirm": "Are you sure you want to remove this note?",
-    "notes-library": "Notes"
+    "notes-library": "Notes",
+    "notes-grammar": "Grammar",
+    "notes-vocabulary": "Vocabulary",
+    "notes-phrases": "Phrases",
+    "notes-Grammar": "Grammar",
+    "notes-Vocabulary": "Vocabulary",
+    "notes-Phrases": "Phrases",
+    "notes-All": "All"
 }

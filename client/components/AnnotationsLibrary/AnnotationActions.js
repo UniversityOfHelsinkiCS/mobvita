@@ -4,8 +4,6 @@ import { Button } from 'react-bootstrap'
 import { FormattedMessage } from 'react-intl'
 
 const AnnotationActions = ({ storyId, percentCov, setOpenWarning }) => {
-  const editAnnotation = () => {}
-
   return (
     <div className="story-actions">
       {percentCov === 0 ? (
@@ -27,9 +25,10 @@ const AnnotationActions = ({ storyId, percentCov, setOpenWarning }) => {
           </Button>
         </Link>
       )}
+      {/* 
       <Button
         variant="secondary"
-        onClick={editAnnotation}
+        onClick={() => setShowAnnotationForm(!showAnnotationForm)}
         style={{ marginRight: '.5em', marginBottom: '.25em' }}
       >
         <FormattedMessage id="edit" />
@@ -41,6 +40,7 @@ const AnnotationActions = ({ storyId, percentCov, setOpenWarning }) => {
       >
         <FormattedMessage id="delete-annotation" />
       </Button>
+      */}
     </div>
   )
 }

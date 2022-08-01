@@ -38,7 +38,7 @@ const FocusedView = ({ focusedSpan }) => {
   const maxCharacters = 1000
   const { width } = useWindowDimensions()
   const bigScreen = width >= 1024
-  const [categories, setCategories] = useState([])
+  const [category, setCategory] = useState('Grammar')
   const [annotationText, setAnnotationText] = useState('')
   const [charactersLeft, setCharactersLeft] = useState(maxCharacters)
 
@@ -79,7 +79,8 @@ const FocusedView = ({ focusedSpan }) => {
           focusedSpan.startId,
           focusedSpan.endId,
           annotationText.trim(),
-          mode
+          mode,
+          category
         )
       )
     } else {
@@ -89,7 +90,8 @@ const FocusedView = ({ focusedSpan }) => {
           annotationCandidates[0].ID,
           annotationCandidates[annotationCandidates.length - 1].ID,
           annotationText.trim(),
-          mode
+          mode,
+          category
         )
       )
     }
@@ -149,8 +151,8 @@ const FocusedView = ({ focusedSpan }) => {
           maxCharacters={maxCharacters}
           charactersLeft={charactersLeft}
           setCharactersLeft={setCharactersLeft}
-          categories={categories}
-          setCategories={setCategories}
+          category={category}
+          setCategory={setCategory}
         />
       )}
     </div>

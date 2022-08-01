@@ -3,7 +3,7 @@ import { Placeholder, Card, Select, Icon, Dropdown } from 'semantic-ui-react'
 import { getAllAnnotations } from 'Utilities/redux/annotationsReducer'
 import { useDispatch, useSelector } from 'react-redux'
 import { List, WindowScroller } from 'react-virtualized'
-// import { annotationsMock } from 'Utilities/common'
+import { FormattedMessage } from 'react-intl'
 import AnnotationListItem from './AnnotationListItem'
 
 const AnnotationsLibrary = () => {
@@ -12,7 +12,11 @@ const AnnotationsLibrary = () => {
   const [annotationsList, setAnnotationsList] = useState([])
   const { allAnnotations } = useSelector(({ annotations }) => annotations)
 
-  const dropDownMenuText = category ? `${category}` : 'All'
+  const dropDownMenuText = category ? (
+    <FormattedMessage id={`notes-${category}`} />
+  ) : (
+    <FormattedMessage id="notes-All" />
+  )
 
   useEffect(() => {
     dispatch(getAllAnnotations())
@@ -28,33 +32,29 @@ const AnnotationsLibrary = () => {
     if (category === 'All') {
       setAnnotationsList(allAnnotations)
     } else {
-      setAnnotationsList(
-        allAnnotations.filter(annotation => annotation.categories?.includes(category))
-      )
+      setAnnotationsList(allAnnotations.filter(annotation => annotation.category === category))
     }
   }, [category])
 
-  // console.log('annotation list ', annotationsList, ' category ', category)
-  console.log('all ', allAnnotations)
   const categoryOptions = [
     {
       key: '0',
-      text: 'All',
+      text: <FormattedMessage id="notes-All" />,
       value: 'All',
     },
     {
       key: '1',
-      text: 'Grammar',
+      text: <FormattedMessage id="notes-Grammar" />,
       value: 'Grammar',
     },
     {
       key: '2',
-      text: 'Phrases',
+      text: <FormattedMessage id="notes-Phrases" />,
       value: 'Phrases',
     },
     {
       key: '3',
-      text: 'Vocabulary',
+      text: <FormattedMessage id="notes-Vocabulary" />,
       value: 'Vocabulary',
     },
   ]

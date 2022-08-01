@@ -1293,5 +1293,12 @@
     "well-done-click-next-card-to-play-another-set-of-cards-2": "Haluaisitko aloittaa uuden korttipakan? ⇒",
     "good-job-blue-flashcards": "Onneksi olkoon!\n<br/>Saat pisteet jokaisesta {nWords} sanasta tässä tarinassa!",
     "annotation-remove-confirm": "Haluatko varmasti poistaa muistiinpanon?",
-    "notes-library": "Muistiinpanot"
+    "notes-library": "Muistiinpanot",
+    "notes-grammar": "Kielioppi",
+    "notes-vocabulary": "Sanasto",
+    "notes-phrases": "Lausekkeet",
+    "notes-Grammar": "Kielioppi",
+    "notes-Vocabulary": "Sanasto",
+    "notes-Phrases": "Lausekkeet",
+    "notes-All": "Kaikki"
 }

@@ -1296,5 +1296,12 @@
     "well-done-click-next-card-to-play-another-set-of-cards-2": "Попробуй следующий набор карточек  ⇒",
     "good-job-blue-flashcards": "Поздравляем!\n<br/>Tы получаешь баллы за все слова — {nWords} — в этой истории!",
     "annotation-remove-confirm": "Are you sure you want to remove this note?",
-    "notes-library": "Notes"
+    "notes-library": "Notes",
+    "notes-grammar": "Grammar",
+    "notes-vocabulary": "Vocabulary",
+    "notes-phrases": "Phrases",
+    "notes-Grammar": "Grammar",
+    "notes-Vocabulary": "Vocabulary",
+    "notes-Phrases": "Phrases",
+    "notes-All": "All"
 }
