@@ -139,39 +139,43 @@ const StoryDetailsModal = ({
             </div>
           )}
 
-          <div className="flex wrap" style={{ gap: '5px' }}>
-            {showCreateControlStoryButton && (
-              <LinkButton
-                to={`/stories/${story._id}/controlled-story-editor`}
-                translationId="create-controlled-story"
-                variant="secondary"
-              />
-            )}
-
-            {showCancelControlStoryButton && (
-              <>
+          <div className="flex space-between">
+            <div className="flex wrap" style={{ gap: '5px' }}>
+              {showCreateControlStoryButton && (
                 <LinkButton
                   to={`/stories/${story._id}/controlled-story-editor`}
-                  translationId="edit-controlled-story"
+                  translationId="create-controlled-story"
                   variant="secondary"
                 />
-                <Button variant="secondary" onClick={handleControlledStoryCancel}>
-                  <FormattedMessage id="cancel-controlled-story" />
-                </Button>
-              </>
-            )}
-            <CustomButton
-              condition={showShareButton}
-              onClick={() => setShareModalOpen(true)}
-              variant="secondary"
-              translationId="Share"
-            />
-            <CustomButton
-              condition={showDeleteButton}
-              onClick={handleDelete}
-              variant="outline-danger"
-              translationId="Delete"
-            />
+              )}
+
+              {showCancelControlStoryButton && (
+                <>
+                  <LinkButton
+                    to={`/stories/${story._id}/controlled-story-editor`}
+                    translationId="edit-controlled-story"
+                    variant="secondary"
+                  />
+                  <Button variant="secondary" onClick={handleControlledStoryCancel}>
+                    <FormattedMessage id="cancel-controlled-story" />
+                  </Button>
+                </>
+              )}
+              <CustomButton
+                condition={showShareButton}
+                onClick={() => setShareModalOpen(true)}
+                variant="secondary"
+                translationId="Share"
+              />
+            </div>
+            <div>
+              <CustomButton
+                condition={showDeleteButton}
+                onClick={handleDelete}
+                variant="outline-danger"
+                translationId="Delete"
+              />
+            </div>
           </div>
         </div>
       </Modal.Actions>
