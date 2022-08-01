@@ -70,6 +70,7 @@ import leaderboard from 'Assets/images/leaderboard.svg'
 import nestIcon from 'Assets/images/nest.png'
 import balloons from 'Assets/images/balloons.png'
 import fireworks from 'Assets/images/fireworks.png'
+import encTrophy from 'Assets/images/enc_trophy.png'
 
 import { useSelector, useDispatch } from 'react-redux'
 import { useHistory } from 'react-router-dom'
@@ -144,6 +145,7 @@ export const images = {
   balloons,
   fireworks,
   notesIcon,
+  encTrophy,
 }
 
 export const getCategoryColor = category => {

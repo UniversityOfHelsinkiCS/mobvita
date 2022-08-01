@@ -47,6 +47,11 @@ const WelcomeBackEncouragementModal = ({
               <FormattedMessage id="leaderboard-link-encouragement" />
             </Link>
             !
+            <img
+              src={images.encTrophy}
+              alt="encouraging trophy"
+              style={{ maxWidth: '5%', maxHeight: '5%', marginLeft: '.5em' }}
+            />
           </div>
           <div>
             <FormattedMessage id="practice-makes-perfect" />
