@@ -10,14 +10,14 @@ import { Checkbox } from 'semantic-ui-react'
 
 const VocabularyGraph = ({
   vocabularyData,
-  pending,
+  vocabularyPending,
   newerVocabularyData,
   newerVocabularyPending,
 }) => {
   //   const { flashcard, seen, total, now, visit } = useSelector(({ user }) => user.vocabularyData)
-  console.log('PEND', newerVocabularyPending)
+
   const dispatch = useDispatch()
-  if (pending || newerVocabularyPending) return <div className="mt-xl">Loading...</div>
+  if (vocabularyPending || newerVocabularyPending) return <div className="mt-xl">Loading...</div>
 
   if (
     !vocabularyData ||

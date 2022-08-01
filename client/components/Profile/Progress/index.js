@@ -10,6 +10,7 @@ import {
 } from 'Utilities/redux/userReducer'
 import ProgressGraph from 'Components/ProgressGraph'
 import Spinner from 'Components/Spinner'
+import { useHistory } from 'react-router-dom'
 import { Divider, Icon, Popup } from 'semantic-ui-react'
 import ResponsiveDatePicker from 'Components/ResponsiveDatePicker'
 import History from 'Components/History'
@@ -26,17 +27,10 @@ const PickDate = ({ date, setDate }) => (
 )
 
 const Progress = () => {
+  const history = useHistory()
+  const flashcardsView = history.location.pathname.includes('flashcards')
   const dispatch = useDispatch()
   const intl = useIntl()
-
-  const [startDate, setStartDate] = useState(moment().subtract(2, 'months').toDate())
-  const [endDate, setEndDate] = useState(moment().toDate())
-
-  const learningLanguage = useLearningLanguage()
-  const { history: testHistory, pending: testPending } = useSelector(({ tests }) => tests)
-  const [shownChart, setShownChart] = useState('progress')
-
-  const bigScreen = useWindowDimension().width >= 650
 
   const {
     exerciseHistory: exerciseHistoryGraph,
@@ -70,6 +64,33 @@ const Progress = () => {
     pending: conceptsPending,
   } = useSelector(({ metadata }) => metadata)
 
+  const learningLanguage = useLearningLanguage()
+  const { history: testHistory, pending: testPending } = useSelector(({ tests }) => tests)
+  const [shownChart, setShownChart] = useState(flashcardsView ? 'vocabulary' : 'progress')
+
+  const bigScreen = useWindowDimension().width >= 650
+
+  const originalEndPoint =
+    exerciseHistoryGraph?.length > 0
+      ? moment(exerciseHistoryGraph[exerciseHistoryGraph.length - 1]?.date)
+          .add(1, 'days')
+          .toDate()
+      : moment().toDate()
+
+  const getStartDate = () => {
+    const firstPractice = moment(exerciseHistoryGraph[0]?.date).toDate()
+    const sixMonthsAgo = moment(originalEndPoint).subtract(6, 'months').toDate()
+
+    if (firstPractice < sixMonthsAgo) {
+      return sixMonthsAgo
+    }
+
+    return firstPractice
+  }
+
+  const [startDate, setStartDate] = useState(getStartDate)
+  const [endDate, setEndDate] = useState(originalEndPoint)
+
   const filterTestHistoryByDate = () =>
     testHistory?.filter(test => {
       const testTime = moment(test.date)
@@ -81,30 +102,12 @@ const Progress = () => {
   )
 
   useEffect(() => {
-    const endPoint =
-      exerciseHistoryGraph?.length > 0
-        ? moment(exerciseHistoryGraph[exerciseHistoryGraph.length - 1]?.date)
-            .add(1, 'days')
-            .toDate()
-        : moment().toDate()
-
-    setEndDate(endPoint)
-
-    const firstPractice = moment(exerciseHistoryGraph[0]?.date).toDate()
-    const sixMonthsAgo = moment(endPoint).subtract(6, 'months').toDate()
-
-    if (firstPractice < sixMonthsAgo) {
-      setStartDate(sixMonthsAgo)
-    } else {
-      setStartDate(firstPractice)
-    }
-  }, [])
-
-  useEffect(() => {
+    console.log('end date')
     dispatch(getNewerVocabularyData(endDate.toJSON().slice(0, 10)))
   }, [endDate])
 
   useEffect(() => {
+    console.log('start date')
     dispatch(getPreviousVocabularyData(startDate.toJSON().slice(0, 10)))
   }, [startDate])
 
@@ -310,7 +313,7 @@ const Progress = () => {
               <div className="progress-page-graph-cont">
                 <VocabularyGraph
                   vocabularyData={vocabularyData}
-                  pending={vocabularyPending}
+                  vocabularyPending={vocabularyPending}
                   newerVocabularyData={newerVocabularyData}
                   newerVocabularyPending={newerVocabularyPending}
                 />

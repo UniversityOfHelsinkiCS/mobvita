@@ -88,6 +88,17 @@ const FlashcardsEncouragement = ({
           ?
         </div>
       )
+
+      initList = initList.concat(
+        <div className="pt-lg">
+          <FormattedMessage id="Would you like to review" />
+          &nbsp;
+          <Link to="/profile/progress/flashcards">
+            <FormattedMessage id="review-progress" />
+          </Link>
+          ?
+        </div>
+      )
     } else {
       if (correctAnswers > 0) {
         initList = initList.concat(
@@ -150,7 +161,6 @@ const FlashcardsEncouragement = ({
   }
 
   useEffect(() => {
-    console.log('calling use effect')
     setRecmdList(fillList())
   }, [latestStories, prevBlueCards, vocabularySeen, correctAnswers])
 

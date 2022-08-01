@@ -470,6 +470,12 @@ export default (state = { data: null, learningLanguageChanged: false }, action) 
         vocabularyPending: true,
         error: false,
       }
+    case 'GET_PREVIOUS_VOCABULARY_DATA_FAILURE':
+      return {
+        ...state,
+        vocabularyPending: false,
+        error: true,
+      }
     case 'GET_PREVIOUS_VOCABULARY_DATA_SUCCESS':
       return {
         ...state,
@@ -483,6 +489,12 @@ export default (state = { data: null, learningLanguageChanged: false }, action) 
         ...state,
         newerVocabularyPending: true,
         error: false,
+      }
+    case 'GET_NEWER_VOCABULARY_DATA_FAILURE':
+      return {
+        ...state,
+        newerVocabularyPending: false,
+        error: true,
       }
     case 'GET_NEWER_VOCABULARY_DATA_SUCCESS':
       return {
