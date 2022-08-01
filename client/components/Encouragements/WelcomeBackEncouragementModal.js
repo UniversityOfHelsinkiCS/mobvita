@@ -212,7 +212,7 @@ const WelcomeBackEncouragementModal = ({
       onClose={closeModal}
     >
       <Modal.Content>
-        <div className="encouragement" style={{ padding: '1.5rem', color: '#000000' }}>
+        <div className="encouragement" style={{ padding: '1.5rem' }}>
           <div>
             <div className="col-flex">
               <div

@@ -169,7 +169,7 @@ const FlashcardsEncouragement = ({
       onClose={closeModal}
     >
       <Modal.Content>
-        <div className="encouragement" style={{ padding: '1.5rem', color: '#000000' }}>
+        <div className="encouragement" style={{ padding: '1.5rem' }}>
           {recmdList.map((recommendation, index) => index < upperBound && recommendation)}
           {recmdList.length > upperBound && (
             <Button onClick={() => setUpperBound(upperBound + 10)} styles={{ marginTop: '0.5em' }}>
