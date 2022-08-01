@@ -8,22 +8,25 @@ const AnnotationActions = ({ storyId, percentCov, setOpenWarning }) => {
 
   return (
     <div className="story-actions">
-      <Link
-        to={`/stories/${storyId}/preview`}
-        style={{ marginRight: '.5em', marginBottom: '.25em' }}
-      >
-        <Button variant="primary">
-          <FormattedMessage id="preview" />
-        </Button>
-      </Link>
-      <Link
-        to={`/stories/${storyId}/review`}
-        style={{ marginRight: '.5em', marginBottom: '.25em' }}
-      >
-        <Button variant="primary" disabled={percentCov === 0}>
-          <FormattedMessage id="review" />
-        </Button>
-      </Link>
+      {percentCov === 0 ? (
+        <Link
+          to={`/stories/${storyId}/preview`}
+          style={{ marginRight: '.5em', marginBottom: '.25em' }}
+        >
+          <Button variant="primary">
+            <FormattedMessage id="preview" />
+          </Button>
+        </Link>
+      ) : (
+        <Link
+          to={`/stories/${storyId}/review`}
+          style={{ marginRight: '.5em', marginBottom: '.25em' }}
+        >
+          <Button variant="primary" disabled={percentCov === 0}>
+            <FormattedMessage id="review" />
+          </Button>
+        </Link>
+      )}
       <Button
         variant="secondary"
         onClick={editAnnotation}
