@@ -187,6 +187,7 @@ describe('Mobvita', function () {
 
         cy.get('[data-cy="25-häirinneet lentokoneita"]').click()
         cy.get('[data-cy="delete-annotation-button"]').click()
+        cy.get('[data-cy=confirm-warning-dialog').click()
         cy.contains("Muistiinpano poistettu")
         cy.get('[data-cy="25-häirinneet lentokoneita"]').should('not.exist')
       })
