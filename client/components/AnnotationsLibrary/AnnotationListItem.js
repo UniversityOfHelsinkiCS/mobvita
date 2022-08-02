@@ -40,28 +40,32 @@ const AnnotationListItem = ({ annotationItem, annotationsList, setAnnotationsLis
           <Popup
             content={<div style={{ margin: '0.25em' }}>{annotation}</div>}
             trigger={
-              <div className="header-2" style={{ color: '#000000', cursor: 'pointer' }}>
-                {annotated_text}
+              <div className="flex space-between">
+                <div className="header-2" style={{ color: '#000000', cursor: 'pointer' }}>
+                  {annotated_text}
+                </div>
+                <div>
+                  {category && (
+                    <div className={getCategoryColor(category)} style={{ marginRight: '0.5em' }}>
+                      <FormattedMessage id={`notes-${category}`} />
+                    </div>
+                  )}
+                </div>
               </div>
             }
           />
-          <div className="flex space-between">
-            <h5 sclassName="story-item-title">{story_title}</h5>
-            {category && (
-              <div className={getCategoryColor(category)} style={{ marginRight: '0.5em' }}>
-                <FormattedMessage id={`notes-${category}`} />
-              </div>
-            )}
-          </div>
         </Card.Content>
         <Card.Content extra className="story-card-actions-cont">
-          <AnnotationActions
-            storyId={story_id}
-            percentCov={precent_cov}
-            setOpenWarning={setOpenWarning}
-            setShowAnnotationForm={setShowAnnotationForm}
-            showAnnotationForm={showAnnotationForm}
-          />
+          <div className="flex">
+            <div className="header-2" style={{ color: 'grey', marginRight: '.5em' }}>{story_title}</div>
+            <AnnotationActions
+              storyId={story_id}
+              percentCov={precent_cov}
+              setOpenWarning={setOpenWarning}
+              setShowAnnotationForm={setShowAnnotationForm}
+              showAnnotationForm={showAnnotationForm}
+            />
+          </div>
         </Card.Content>
         {showAnnotationForm && (
           <Card.Content>

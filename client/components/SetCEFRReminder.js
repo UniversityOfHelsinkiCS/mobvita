@@ -19,9 +19,11 @@ const SetCEFRReminder = ({ open, setOpen, newUser }) => {
 
   const closeModal = () => {
     setOpen(false)
+    /*
     if (newUser) {
       startTour()
     }
+    */
   }
 
   const submitSettings = () => {

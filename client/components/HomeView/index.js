@@ -97,20 +97,20 @@ const HomeviewButtons = ({ setPracticeModalOpen, setAddStoryModalOpen, aTestIsEn
           />
         </div>
       )}
-      {hiddenFeatures && (
-        <div>
-          <HomeviewButton
-            imgSrc={images.notesIcon}
-            altText="post-it notes"
-            translationKey="notes-library"
-            handleClick={() => history.push('/notes-library')}
-          />
-        </div>
-      )}
+      <div>
+        <HomeviewButton
+          imgSrc={images.notesIcon}
+          altText="post-it notes"
+          translationKey="notes-library"
+          handleClick={() => history.push('/notes-library')}
+        />
+      </div>
       {hiddenFeatures && (
         <>
           <Button onClick={() => history.push('/test-construction')}>Test construction</Button>
-          <Button style={{ padding: '5em' }} onClick={() => history.push('test-debug')}>Feedback debugger</Button>
+          <Button style={{ padding: '5em' }} onClick={() => history.push('test-debug')}>
+            Feedback debugger
+          </Button>
         </>
       )}
     </div>
@@ -134,7 +134,7 @@ const HomeView = () => {
     incomplete: incomplete.data,
     loading: incomplete.pending,
   }))
-  const showDAModal = enable_recmd && !userData.is_new_user || false
+  const showDAModal = (enable_recmd && !userData.is_new_user) || false
   const { exercise_setting_template: exerciseSettingTemplate } = useSelector(
     ({ user }) => user.data.user
   )
@@ -173,7 +173,13 @@ const HomeView = () => {
           welcomeBack
         />
       )}
-
+      {!userData.grade && userData.email !== 'anonymous_email' && (
+        <SetCEFRReminder
+          open={openReminder}
+          setOpen={setOpenReminder}
+          newUser={userData.is_new_user}
+        />
+      )}
       {!showWelcomeModal &&
         showDAModal &&
         userData.grade &&
