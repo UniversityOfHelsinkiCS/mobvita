@@ -172,6 +172,8 @@ const FlashcardsEncouragement = ({
     return null
   }
 
+  console.log()
+
   return (
     <Modal
       basic
@@ -190,13 +192,24 @@ const FlashcardsEncouragement = ({
               <FormattedMessage id="show-more-recommendations" />
             </Button>
           )}
-          <div className="encouragement-picture pt-sm">
-            <img
-              src={images.fireworks}
-              alt="encouraging fireworks"
-              style={{ maxWidth: '25%', maxHeight: '25%' }}
-            />
-          </div>
+          {((correctAnswers === deckSize && blueFlashcards) ||
+            (!blueFlashcards && correctAnswers)) > 0 ? (
+              <div className="encouragement-picture pt-sm">
+                <img
+                  src={images.encTrophy}
+                  alt="encouraging trophy"
+                  style={{ maxWidth: '25%', maxHeight: '25%' }}
+                />
+              </div>
+          ) : (
+            <div className="encouragement-picture pt-sm">
+              <img
+                src={images.fireworks}
+                alt="encouraging fireworks"
+                style={{ maxWidth: '25%', maxHeight: '25%' }}
+              />
+            </div>
+          )}
           <div className="flex pt-lg">
             <Form.Group>
               <Form.Check
