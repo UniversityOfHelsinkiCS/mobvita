@@ -135,7 +135,7 @@ const HomeView = () => {
     incomplete: incomplete.data,
     loading: incomplete.pending,
   }))
-  const [showDAModal, setShowDAModal] = useState(enable_recmd || false)
+  const showDAModal = enable_recmd && !userData.is_new_user || false
   const { exercise_setting_template: exerciseSettingTemplate } = useSelector(
     ({ user }) => user.data.user
   )

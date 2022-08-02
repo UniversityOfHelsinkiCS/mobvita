@@ -201,7 +201,7 @@ const DefaultActivityModal = ({
     dispatch(updateEnableRecmd(!enable_recmd))
   }
 
-  if (pending || storyCardsPending) {
+  if (pending || storyCardsPending || recmdList.length < 1) {
     return null
   }
 

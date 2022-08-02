@@ -172,8 +172,6 @@ const FlashcardsEncouragement = ({
     return null
   }
 
-  console.log()
-
   return (
     <Modal
       basic
