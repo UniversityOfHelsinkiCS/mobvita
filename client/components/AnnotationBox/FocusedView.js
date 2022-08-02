@@ -12,6 +12,7 @@ import {
 } from 'Utilities/redux/annotationsReducer'
 import { useParams } from 'react-router-dom'
 import { addEditStoryAnnotation, removeStoryAnnotation } from 'Utilities/redux/storiesReducer'
+import ConfirmationWarning from 'Components/ConfirmationWarning'
 import AnnotationForm from './AnnotationForm'
 import AnnotationSelectionView from './AnnotationSelectionView'
 import AnnotationTexts from './AnnotationTexts'
@@ -41,7 +42,7 @@ const FocusedView = ({ focusedSpan }) => {
   const [category, setCategory] = useState('Grammar')
   const [annotationText, setAnnotationText] = useState('')
   const [charactersLeft, setCharactersLeft] = useState(maxCharacters)
-
+  const [openWarning, setOpenWarning] = useState(false)
   const { user } = useSelector(({ user }) => ({ user: user.data.user }))
   const { annotationCandidates, showAnnotationForm } = useSelector(({ annotations }) => annotations)
   const { id: storyId } = useParams()
@@ -127,7 +128,15 @@ const FocusedView = ({ focusedSpan }) => {
             showAnnotationForm={showAnnotationForm}
             showCreateNoteButton={showCreateNoteButton}
             handleAnnotationDelete={handleAnnotationDelete}
+            setOpenWarning={setOpenWarning}
           />
+          <ConfirmationWarning
+            open={openWarning}
+            setOpen={setOpenWarning}
+            action={handleAnnotationDelete}
+          >
+            <FormattedMessage id="annotation-remove-confirm" />
+          </ConfirmationWarning>
         </>
       ) : (
         <AnnotationSelectionView

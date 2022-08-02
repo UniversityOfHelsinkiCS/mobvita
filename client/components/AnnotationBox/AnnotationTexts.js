@@ -10,7 +10,7 @@ const AnnotationTexts = ({
   handleCreateAnnotationButtonClick,
   showAnnotationForm,
   showCreateNoteButton,
-  handleAnnotationDelete,
+  setOpenWarning,
 }) => {
   const intl = useIntl()
   const { user } = useSelector(({ user }) => ({ user: user.data.user }))
@@ -72,7 +72,7 @@ const AnnotationTexts = ({
                     <Button
                       size="sm"
                       variant="outline-danger"
-                      onClick={handleAnnotationDelete}
+                      onClick={() => setOpenWarning(true)}
                       data-cy="delete-annotation-button"
                     >
                       <Icon name="trash alternate" />
