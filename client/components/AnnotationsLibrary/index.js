@@ -5,18 +5,13 @@ import { useDispatch, useSelector } from 'react-redux'
 import { List, WindowScroller } from 'react-virtualized'
 import { FormattedMessage } from 'react-intl'
 import AnnotationListItem from './AnnotationListItem'
+import AnnotationsLibrarySearch from './AnnotationsLibrarySearch'
 
 const AnnotationsLibrary = () => {
   const dispatch = useDispatch()
   const [category, setCategory] = useState('All')
   const [annotationsList, setAnnotationsList] = useState([])
   const { allAnnotations } = useSelector(({ annotations }) => annotations)
-
-  const dropDownMenuText = category ? (
-    <FormattedMessage id={`notes-${category}`} />
-  ) : (
-    <FormattedMessage id="notes-All" />
-  )
 
   useEffect(() => {
     dispatch(getAllAnnotations())
@@ -27,37 +22,6 @@ const AnnotationsLibrary = () => {
       setAnnotationsList(allAnnotations)
     }
   }, [allAnnotations])
-
-  useEffect(() => {
-    if (category === 'All') {
-      setAnnotationsList(allAnnotations)
-    } else {
-      setAnnotationsList(allAnnotations.filter(annotation => annotation.category === category))
-    }
-  }, [category])
-
-  const categoryOptions = [
-    {
-      key: '0',
-      text: <FormattedMessage id="notes-All" />,
-      value: 'All',
-    },
-    {
-      key: '1',
-      text: <FormattedMessage id="notes-Grammar" />,
-      value: 'Grammar',
-    },
-    {
-      key: '2',
-      text: <FormattedMessage id="notes-Phrases" />,
-      value: 'Phrases',
-    },
-    {
-      key: '3',
-      text: <FormattedMessage id="notes-Vocabulary" />,
-      value: 'Vocabulary',
-    },
-  ]
 
   function rowRenderer({ key, index, style }) {
     return (
@@ -76,12 +40,12 @@ const AnnotationsLibrary = () => {
 
   return (
     <div className="cont-tall pt-lg cont flex-col auto gap-row-sm ">
-      <Dropdown
-        text={dropDownMenuText}
-        selection
-        fluid
-        options={categoryOptions}
-        onChange={(_, { value }) => setCategory(value)}
+      <AnnotationsLibrarySearch
+        category={category}
+        setCategory={setCategory}
+        allAnnotations={allAnnotations}
+        annotationsList={annotationsList}
+        setAnnotationsList={setAnnotationsList}
       />
       <Card.Group itemsPerRow={1} doubling data-cy="annotation-items" style={{ marginTop: '.5em' }}>
         <WindowScroller>

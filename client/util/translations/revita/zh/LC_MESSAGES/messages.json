@@ -659,5 +659,7 @@
     "go-to-flashcards-progress": "Would you like to review",
     "i-know-tooltip": "I know this word!",
     "i-dont-know-tooltip": "I don't know this word...",
-    "remove-card-tooltip": "Remove from card list"
+    "remove-card-tooltip": "Remove from card list",
+    "search-by-category": "Search by category:",
+    "annotations-search-by-text": "Search notes by text"
 }

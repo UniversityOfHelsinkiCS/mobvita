@@ -1304,5 +1304,7 @@
     "go-to-flashcards-progress": "Haluaisitko tarkastella",
     "i-know-tooltip": "Tiedän tämän sanan!",
     "i-dont-know-tooltip": "En tiedä tätä sanaa...",
-    "remove-card-tooltip": "Poista kortti listalta"
+    "remove-card-tooltip": "Poista kortti listalta",
+    "search-by-category": "Hae kategorioittain:",
+    "annotations-search-by-text": "Hae muistiinpanoja sisällön perusteella"
 }
