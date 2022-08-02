@@ -18,6 +18,8 @@ const DefaultActivityModal = ({
   pending,
   learningLanguage,
   enable_recmd,
+  username,
+  welcomeBack = false,
 }) => {
   const intl = useIntl()
   const [latestIncompleteStory, setLatestIncompleteStory] = useState(null)
@@ -219,6 +221,29 @@ const DefaultActivityModal = ({
         <div className="encouragement" style={{ padding: '1.5rem' }}>
           <div>
             <div className="col-flex">
+              {welcomeBack && (
+                <>
+                  <div
+                    className="header-2"
+                    style={{
+                      marginBottom: '1.5rem',
+                      fontWeight: 500,
+                    }}
+                  >
+                    {intl.formatMessage({ id: 'welcome-back-encouragement' }, { username })}
+                  </div>
+                  <>
+                    {storiesCovered > 0 && (
+                      <div>
+                        {intl.formatMessage(
+                          { id: 'stories-covered-encouragement' },
+                          { stories: storiesCovered }
+                        )}
+                      </div>
+                    )}
+                  </>
+                </>
+              )}
               {recmdList.map((recommendation, index) => index < upperBound && recommendation)}
               {recmdList.length > upperBound && (
                 <Button
@@ -228,6 +253,13 @@ const DefaultActivityModal = ({
                   <FormattedMessage id="show-more-recommendations" />
                 </Button>
               )}
+            </div>
+            <div className="encouragement-picture pt-sm">
+              <img
+                src={images.balloons}
+                alt="encouraging balloons"
+                style={{ maxWidth: '25%', maxHeight: '25%' }}
+              />
             </div>
             <div className="flex pt-lg">
               <Form.Group>

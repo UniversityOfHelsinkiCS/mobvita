@@ -8,7 +8,6 @@ import { Button } from 'react-bootstrap'
 import useWindowDimensions from 'Utilities/windowDimensions'
 import Footer from 'Components/Footer'
 import AddStoryModal from 'Components/AddStoryModal'
-import WelcomeBackEncouragementModal from 'Components/Encouragements/WelcomeBackEncouragementModal'
 import SetCEFRReminder from 'Components/SetCEFRReminder'
 import DefaultActivityModal from 'Components/Encouragements/DefaultActivityModal'
 import MedalSummary from './MedalSummary'
@@ -162,7 +161,7 @@ const HomeView = () => {
       <AddStoryModal open={addStoryModalOpen} setOpen={setAddStoryModalOpen} />
       <PracticeModal open={practiceModalOpen} setOpen={setPracticeModalOpen} />
       {showWelcomeModal && userData.grade && (
-        <WelcomeBackEncouragementModal
+        <DefaultActivityModal
           open={openEncouragement}
           setOpen={setOpenEncouragement}
           username={username}
@@ -171,6 +170,7 @@ const HomeView = () => {
           pending={loading}
           learningLanguage={learningLanguage}
           enable_recmd={enable_recmd}
+          welcomeBack
         />
       )}
       {!userData.grade && userData.email !== 'anonymous_email' && (

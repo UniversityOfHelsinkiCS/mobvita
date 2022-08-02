@@ -1306,5 +1306,9 @@
     "i-dont-know-tooltip": "I don't know this word...",
     "remove-card-tooltip": "Remove from card list",
     "search-by-category": "Search by category:",
-    "annotations-search-by-text": "Search notes by text"
+    "annotations-search-by-text": "Search notes by text",
+    "encouragements-excellent": "Excellent!",
+    "encouragements-default-1": "Good job!",
+    "encouragements-default-2": "Congratulations!",
+    "encouragements-default-3": "Well done!"
 }

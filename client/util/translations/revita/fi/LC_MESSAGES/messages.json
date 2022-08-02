@@ -1306,5 +1306,9 @@
     "i-dont-know-tooltip": "En tiedä tätä sanaa...",
     "remove-card-tooltip": "Poista kortti listalta",
     "search-by-category": "Hae kategorioittain:",
-    "annotations-search-by-text": "Hae muistiinpanoja sisällön perusteella"
+    "annotations-search-by-text": "Hae muistiinpanoja sisällön perusteella",
+    "encouragements-excellent": "Erinomaista!",
+    "encouragements-default-1": "Hyvää työtä!",
+    "encouragements-default-2": "Onneksi olkoon!",
+    "encouragements-default-3": "Hyvin tehty!"
 }
