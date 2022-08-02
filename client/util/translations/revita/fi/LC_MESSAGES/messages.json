@@ -1310,5 +1310,7 @@
     "encouragements-excellent": "Erinomaista!",
     "encouragements-default-1": "Hyvää työtä!",
     "encouragements-default-2": "Onneksi olkoon!",
-    "encouragements-default-3": "Hyvin tehty!"
+    "encouragements-default-3": "Hyvin tehty!",
+    "enc-grammar-progress-1": "Haluaisitko seurata edistymistäsi",
+    "enc-grammar-progress-2": "kieliopissa"
 }

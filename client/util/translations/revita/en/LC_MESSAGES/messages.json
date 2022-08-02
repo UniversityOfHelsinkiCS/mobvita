@@ -1291,7 +1291,7 @@
     "delete-annotation": "Delete",
     "well-done-click-next-card-to-play-another-set-of-cards-1": "Well done!",
     "well-done-click-next-card-to-play-another-set-of-cards-2": "Try another batch? ⇒",
-    "good-job-blue-flashcards": "Congratulations!\n<br/>You get credit for knowing all {nWords} words in this story!",
+    "good-job-blue-flashcards": "Congratulations!\n<br/>You get credit for knowing {nWords} words from this story!",
     "annotation-remove-confirm": "Are you sure you want to remove this note?",
     "notes-library": "Notes",
     "notes-grammar": "Grammar",
@@ -1310,5 +1310,7 @@
     "encouragements-excellent": "Excellent!",
     "encouragements-default-1": "Good job!",
     "encouragements-default-2": "Congratulations!",
-    "encouragements-default-3": "Well done!"
+    "encouragements-default-3": "Well done!",
+    "enc-grammar-progress-1": "Would you like to review your progress on",
+    "enc-grammar-progress-2": "grammar"
 }

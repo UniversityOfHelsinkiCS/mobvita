@@ -145,6 +145,17 @@ const ExercisesEncouragementModal = ({
       )
     }
 
+    initList = initList.concat(
+      <div className="pt-lg">
+        <FormattedMessage id="enc-grammar-progress-1" />
+        &nbsp;
+        <Link to="/profile/progress/grammar">
+          <FormattedMessage id="enc-grammar-progress-2" />
+        </Link>
+        ?
+      </div>
+    )
+
     return initList
   }
 

@@ -29,6 +29,7 @@ const PickDate = ({ date, setDate }) => (
 const Progress = () => {
   const history = useHistory()
   const flashcardsView = history.location.pathname.includes('flashcards')
+  const grammarView = history.location.pathname.includes('grammar')
   const dispatch = useDispatch()
   const intl = useIntl()
 
@@ -64,9 +65,20 @@ const Progress = () => {
     pending: conceptsPending,
   } = useSelector(({ metadata }) => metadata)
 
+  const defaultChart = () => {
+    if (flashcardsView) {
+      return 'vocabulary'
+    }
+    if (grammarView) {
+      return 'hex-map'
+    }
+
+    return 'progress'
+  }
+
   const learningLanguage = useLearningLanguage()
   const { history: testHistory, pending: testPending } = useSelector(({ tests }) => tests)
-  const [shownChart, setShownChart] = useState(flashcardsView ? 'vocabulary' : 'progress')
+  const [shownChart, setShownChart] = useState(defaultChart())
 
   const bigScreen = useWindowDimension().width >= 650
 

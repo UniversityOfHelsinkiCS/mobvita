@@ -173,13 +173,7 @@ const HomeView = () => {
           welcomeBack
         />
       )}
-      {!userData.grade && userData.email !== 'anonymous_email' && (
-        <SetCEFRReminder
-          open={openReminder}
-          setOpen={setOpenReminder}
-          newUser={userData.is_new_user}
-        />
-      )}
+
       {!showWelcomeModal &&
         showDAModal &&
         userData.grade &&

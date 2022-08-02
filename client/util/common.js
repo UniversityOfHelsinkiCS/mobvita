@@ -71,6 +71,7 @@ import nestIcon from 'Assets/images/nest.png'
 import balloons from 'Assets/images/balloons.png'
 import fireworks from 'Assets/images/fireworks.png'
 import encTrophy from 'Assets/images/enc_trophy.png'
+import racingFlag from 'Assets/images/racing_flag.png'
 
 import { useSelector, useDispatch } from 'react-redux'
 import { useHistory } from 'react-router-dom'
@@ -146,6 +147,7 @@ export const images = {
   fireworks,
   notesIcon,
   encTrophy,
+  racingFlag,
 }
 
 export const getCategoryColor = category => {
@@ -274,7 +276,8 @@ export function getWordColor(
     mode === 'controlled-story-editor' ||
     ((mode === 'review' || mode === 'practice' || mode === 'controlled-practice') &&
       !show_review_diff) ||
-    (mode === 'preview' && !show_preview_exer) || (user_grade >= word_level)
+    (mode === 'preview' && !show_preview_exer) ||
+    user_grade >= word_level
   ) {
     return '#FFFFFF' // white background
   }
@@ -952,6 +955,9 @@ const desktopTourSteps = [
     content: (
       <div>
         <FormattedHTMLMessage id="tour-begin-practicing-message" />
+        <div className="encouragement-picture pt-sm">
+          <img src={racingFlag} alt="start" style={{ maxWidth: '25%', maxHeight: '25%' }} />
+        </div>
       </div>
     ),
     placement: 'top',
@@ -1073,6 +1079,9 @@ const mobileTourSteps = [
     content: (
       <div className="tour-mobile-message">
         <FormattedHTMLMessage id="tour-begin-practicing-message" />
+        <div className="encouragement-picture pt-sm">
+          <img src={racingFlag} alt="start" style={{ maxWidth: '25%', maxHeight: '25%' }} />
+        </div>
       </div>
     ),
     placement: 'top',

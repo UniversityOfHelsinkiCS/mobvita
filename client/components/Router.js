@@ -131,6 +131,7 @@ export default () => {
             <ProtectedRoute exact path="/profile/account" component={Profile} />
             <ProtectedRoute exact path="/profile/progress" component={Profile} />
             <ProtectedRoute exact path="/profile/progress/flashcards" component={Profile} />
+            <ProtectedRoute exact path="/profile/progress/grammar" component={Profile} />
             <ProtectedRoute exact path="/profile/settings" component={Profile} />
             <ProtectedRoute exact path="/profile/following" component={Profile} />
             <ProtectedRoute exact path="/tests" component={ExhaustiveTestView} />
