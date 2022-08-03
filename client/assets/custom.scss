@@ -1329,6 +1329,34 @@ label.file-upload-btn {
   }
 }
 
+.annotation-item-title {
+  font-family: $rubik;
+  font-weight: 500;
+  white-space: nowrap;
+  color: black;
+  width: 100%;
+  overflow: hidden;
+  -o-text-overflow: ellipsis;
+  text-overflow:    ellipsis;
+  @media (min-width: 640px) {
+    margin-left: 1rem;
+    &:hover {
+      cursor: pointer;
+    }
+  }
+}
+
+.annotation-item-story {
+  font-family: $rubik;
+  font-weight: 500;
+  white-space: nowrap;
+  color: gray;
+  width: 100%;
+  overflow: hidden;
+  -o-text-overflow: ellipsis;
+  text-overflow:    ellipsis;
+}
+
 .story-item-title {
   font-family: $rubik;
   font-weight: 500;

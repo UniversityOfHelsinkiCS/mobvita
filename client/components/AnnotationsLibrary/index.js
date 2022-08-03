@@ -56,7 +56,7 @@ const AnnotationsLibrary = () => {
               isScrolling={isScrolling}
               onScroll={onChildScroll}
               rowCount={annotationsList.length}
-              rowHeight={160}
+              rowHeight={130}
               rowRenderer={rowRenderer}
               scrollTop={scrollTop}
               width={10000}

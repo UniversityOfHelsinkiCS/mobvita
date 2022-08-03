@@ -1,18 +1,20 @@
 import React, { useState } from 'react'
-import { Card, Button as SemanticButton, Icon, Popup } from 'semantic-ui-react'
+import { Card, Button as SemanticButton, Popup } from 'semantic-ui-react'
 import { FormattedMessage } from 'react-intl'
-import { addEditStoryAnnotation, removeStoryAnnotation } from 'Utilities/redux/storiesReducer'
+import { removeStoryAnnotation } from 'Utilities/redux/storiesReducer'
 import { useDispatch } from 'react-redux'
 import { getCategoryColor } from 'Utilities/common'
 import ConfirmationWarning from 'Components/ConfirmationWarning'
-import Tooltip from 'Components/PracticeView/Tooltip'
+import useWindowDimensions from 'Utilities/windowDimensions'
 import AnnotationActions from './AnnotationActions'
 
 const AnnotationListItem = ({ annotationItem, annotationsList, setAnnotationsList }) => {
   // console.log('annotation ', annotation)
   const dispatch = useDispatch()
   const [openWarning, setOpenWarning] = useState(false)
-  const maxLength = 80
+  const bigScreen = useWindowDimensions().width >= 700
+
+  const maxLength = bigScreen ? 95 : 30
 
   const {
     annotated_text,
@@ -45,9 +47,7 @@ const AnnotationListItem = ({ annotationItem, annotationsList, setAnnotationsLis
             content={<div style={{ margin: '0.25em' }}>{annotation}</div>}
             trigger={
               <div className="flex space-between">
-                <div className="header-2" style={{ color: '#000000', cursor: 'pointer' }}>
-                  {annotated_text}
-                </div>
+                <h5 className="annotation-item-title">{annotated_text}</h5>
                 <div>
                   {category && (
                     <div className={getCategoryColor(category)} style={{ marginRight: '0.5em' }}>
@@ -60,15 +60,15 @@ const AnnotationListItem = ({ annotationItem, annotationsList, setAnnotationsLis
           />
         </Card.Content>
         <Card.Content extra className="story-card-actions-cont">
-          <div className="flex">
+          <div className="flex" style={{ alignItems: 'center' }}>
             <AnnotationActions
               storyId={story_id}
               percentCov={precent_cov}
               setOpenWarning={setOpenWarning}
             />
-            <div className="header-2" style={{ color: 'grey', marginRight: '.5em' }}>
-              {story_title.length > 80 ? truncateStoryTitle(story_title) : story_title}
-            </div>
+            <h5 className="annotaion-item-story" style={{ marginLeft: '.5em' }}>
+              {story_title.length > maxLength ? truncateStoryTitle(story_title) : story_title}
+            </h5>
           </div>
         </Card.Content>
         <ConfirmationWarning open={openWarning} setOpen={setOpenWarning} action={handleDelete}>

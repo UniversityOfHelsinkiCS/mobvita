@@ -39,6 +39,7 @@ const StoryTitle = ({
 
   const handleDelete = () => setConfirmationOpen(true)
 
+
   return (
     <StoryDetailsModal
       trigger={
