@@ -79,6 +79,7 @@ const Lemma = ({
   handleNotKnowningClick,
   userUrl,
   inflectionRef,
+  preferred,
 }) => {
   const learningLanguage = useLearningLanguage()
   const { maskSymbol } = useSelector(({ translation }) => translation)
@@ -96,28 +97,32 @@ const Lemma = ({
           <Icon name="external" style={{ marginLeft: '1rem' }} />
         </a>
       )}
-      <Popup
-        position="top center"
-        content={<FormattedMessage id="i-know-tooltip" />}
-        trigger={
-          <Icon
-            name="check"
-            onClick={handleKnowningClick}
-            style={{ cursor: 'pointer', marginLeft: '2em' }}
+      {preferred && (
+        <div>
+          <Popup
+            position="top center"
+            content={<FormattedMessage id="i-know-tooltip" />}
+            trigger={
+              <Icon
+                name="check"
+                onClick={handleKnowningClick}
+                style={{ cursor: 'pointer', marginLeft: '2em' }}
+              />
+            }
           />
-        }
-      />
-      <Popup
-        position="top center"
-        content={<FormattedMessage id="i-dont-know-tooltip" />}
-        trigger={
-          <Icon
-            name="question"
-            onClick={handleNotKnowningClick}
-            style={{ cursor: 'pointer', marginLeft: '1em' }}
+          <Popup
+            position="top center"
+            content={<FormattedMessage id="i-dont-know-tooltip" />}
+            trigger={
+              <Icon
+                name="question"
+                onClick={handleNotKnowningClick}
+                style={{ cursor: 'pointer', marginLeft: '1em' }}
+              />
+            }
           />
-        }
-      />
+        </div>
+      )}
     </div>
   )
 }
@@ -240,6 +245,7 @@ const DictionaryHelp = ({ minimized, inWordNestModal }) => {
               handleNotKnowningClick={handleNotKnowningClick(translated.lemma)}
               inflectionRef={translated.ref}
               userUrl={translated.user_URL}
+              preferred={translated.preferred}
             />
           )}
           <List bulleted style={{ color: 'slateGrey', fontStyle: 'italic', marginTop: '.5rem' }}>
