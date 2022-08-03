@@ -1285,7 +1285,7 @@
     "ask-for-a-hint": "Anna vihje!",
     "user-role-select-teacher": "Olen opettaja",
     "user-role-select-student": "Olen opiskelija",
-    "previous-stories-blue-cards": "Olet kohdannut {nWords} uutta sanaa aiemmissa tarinoissasi, joiden käännöksiä et tarkistanut—tarinassa:\n<br/>{story}\n<br/>Voit saada pisteet kaikistä näistä sanoista!\n<br/>Tarkistetaan vain 5 näistä →",
+    "previous-stories-blue-cards": "Olet kohdannut {nWords} uutta sanaa aiemmissa tarinoissasi, joiden käännöksiä et tarkistanut—tarinassa:\n<br/><i>{story}</i>\n<br/>Voit saada pisteet kaikistä näistä sanoista!\n<br/>Tarkistetaan vain 5 näistä →",
     "hide-home-page-recommendations": "Älä näytä suosituksia etusivulla",
     "tutorial-recommendation": "",
     "delete-annotation": "Poista",

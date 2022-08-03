@@ -46,21 +46,25 @@ const ExercisesEncouragementModal = ({
     if (userRanking) {
       initList = initList.concat(
         <div className="pt-md">
-          <div>
-            <FormattedHTMLMessage id="leaderboard-ranking-encouragement" values={{ userRanking }} />
-            &nbsp;
-            <Link to="/leaderboard">
-              <FormattedMessage id="leaderboard-link-encouragement" />
-            </Link>
-            !
+          <div className="flex space-between" style={{ alignItems: 'center' }}>
+            <div>
+              <FormattedHTMLMessage
+                id="leaderboard-ranking-encouragement"
+                values={{ userRanking }}
+              />
+              &nbsp;
+              <Link to="/leaderboard">
+                <FormattedMessage id="leaderboard-link-encouragement" />
+              </Link>
+              !
+              <br />
+              <FormattedMessage id="practice-makes-perfect" />
+            </div>
             <img
               src={images.encTrophy}
               alt="encouraging trophy"
-              style={{ maxWidth: '5%', maxHeight: '5%', marginLeft: '.5em' }}
+              style={{ maxWidth: '8%', maxHeight: '8%', marginLeft: '.5em' }}
             />
-          </div>
-          <div>
-            <FormattedMessage id="practice-makes-perfect" />
           </div>
           <hr />
         </div>
@@ -70,19 +74,23 @@ const ExercisesEncouragementModal = ({
     if (creditableWordsNum > 0) {
       initList = initList.concat(
         <div className="pt-md">
-          <FormattedHTMLMessage
-            id="story-completed-to-blue-flashcards"
-            values={{ nWords: creditableWordsNum }}
-          />
-          &nbsp;
-          <Link to={`/flashcards/fillin/test/${storyId}`}>
-            <FormattedMessage id="go-to-blue-flashcards" />
-          </Link>
-          <img
-            src={images.flashcards}
-            alt="flashcard batch"
-            style={{ maxWidth: '5%', maxHeight: '5%', marginLeft: '.5em' }}
-          />
+          <div className="flex space-between" style={{ alignItems: 'center' }}>
+            <div>
+              <FormattedHTMLMessage
+                id="story-completed-to-blue-flashcards"
+                values={{ nWords: creditableWordsNum }}
+              />
+              &nbsp;
+              <Link to={`/flashcards/fillin/test/${storyId}`}>
+                <FormattedMessage id="go-to-blue-flashcards" />
+              </Link>
+            </div>
+            <img
+              src={images.flashcards}
+              alt="flashcard batch"
+              style={{ maxWidth: '8%', maxHeight: '8%', marginLeft: '.5em' }}
+            />
+          </div>
           <hr />
         </div>
       )
@@ -91,22 +99,24 @@ const ExercisesEncouragementModal = ({
     if (prevBlueCards) {
       initList = initList.concat(
         <div className="pt-md">
-          <div>
-            <FormattedHTMLMessage
-              id="previous-stories-blue-cards"
-              values={{
-                nWords: prevBlueCards.num_of_rewardable_words,
-                story: prevBlueCards.title,
-              }}
-            />
-            &nbsp;
-            <Link to={`/flashcards/fillin/test/${prevBlueCards.story_id}`}>
-              <FormattedMessage id="flashcards-review" />
-            </Link>
+          <div className="flex space-between" style={{ alignItems: 'center' }}>
+            <div>
+              <FormattedHTMLMessage
+                id="previous-stories-blue-cards"
+                values={{
+                  nWords: prevBlueCards.num_of_rewardable_words,
+                  story: prevBlueCards.title,
+                }}
+              />
+              &nbsp;
+              <Link to={`/flashcards/fillin/test/${prevBlueCards.story_id}`}>
+                <FormattedMessage id="flashcards-review" />
+              </Link>
+            </div>
             <img
               src={images.flashcards}
               alt="flashcard batch"
-              style={{ maxWidth: '5%', maxHeight: '5%', marginLeft: '.5em' }}
+              style={{ maxWidth: '8%', maxHeight: '8%', marginLeft: '.5em' }}
             />
           </div>
           <hr />
@@ -116,18 +126,21 @@ const ExercisesEncouragementModal = ({
 
     if (latestIncompleteStory && enable_recmd) {
       initList = initList.concat(
-        <div>
-          <div className="pt-md">
-            <FormattedMessage id="continue-last-story-left-in-the-middle" />
+        <div className="pt-md">
+          <div className="flex space-between" style={{ alignItems: 'center' }}>
+            <div>
+              <FormattedMessage id="continue-last-story-left-in-the-middle" />
+              <br />
+              <Link to={`/stories/${latestIncompleteStory._id}/practice`}>
+                {latestIncompleteStory.title}
+              </Link>
+            </div>
+            <img
+              src={images.dices}
+              alt="two dices"
+              style={{ maxWidth: '8%', maxHeight: '8%', marginLeft: '.5em' }}
+            />
           </div>
-          <Link to={`/stories/${latestIncompleteStory._id}/practice`}>
-            {latestIncompleteStory.title}
-          </Link>
-          <img
-            src={images.dices}
-            alt="two dices"
-            style={{ maxWidth: '5%', maxHeight: '5%', marginLeft: '.5em' }}
-          />
           <hr />
         </div>
       )

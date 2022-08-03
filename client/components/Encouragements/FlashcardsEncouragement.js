@@ -47,22 +47,24 @@ const FlashcardsEncouragement = ({
         if (prevBlueCards) {
           initList = initList.concat(
             <div className="pt-md">
-              <div>
-                <FormattedHTMLMessage
-                  id="previous-stories-blue-cards"
-                  values={{
-                    nWords: prevBlueCards.num_of_rewardable_words,
-                    story: prevBlueCards.title,
-                  }}
-                />
-                &nbsp;
-                <Link to={`/flashcards/fillin/test/${prevBlueCards.story_id}`}>
-                  <FormattedMessage id="flashcards-review" />
-                </Link>
+              <div className="flex space-between" style={{ alignItems: 'center' }}>
+                <div>
+                  <FormattedHTMLMessage
+                    id="previous-stories-blue-cards"
+                    values={{
+                      nWords: prevBlueCards.num_of_rewardable_words,
+                      story: prevBlueCards.title,
+                    }}
+                  />
+                  &nbsp;
+                  <Link to={`/flashcards/fillin/test/${prevBlueCards.story_id}`}>
+                    <FormattedMessage id="flashcards-review" />
+                  </Link>
+                </div>
                 <img
                   src={images.flashcards}
                   alt="flashcard batch"
-                  style={{ maxWidth: '5%', maxHeight: '5%', marginLeft: '.5em' }}
+                  style={{ maxWidth: '8%', maxHeight: '8%', marginLeft: '.5em' }}
                 />
               </div>
               <hr />
@@ -205,13 +207,13 @@ const FlashcardsEncouragement = ({
           )}
           {((correctAnswers === deckSize && blueFlashcards) ||
             (!blueFlashcards && correctAnswers)) > 0 ? (
-              <div className="encouragement-picture pt-sm">
-              <img
-                  src={images.encTrophy}
-                  alt="encouraging trophy"
-                  style={{ maxWidth: '25%', maxHeight: '25%' }}
-                />
-            </div>
+            <div className="encouragement-picture pt-sm">
+                <img
+                src={images.encTrophy}
+                alt="encouraging trophy"
+                style={{ maxWidth: '25%', maxHeight: '25%' }}
+              />
+              </div>
           ) : (
             <div className="encouragement-picture pt-sm">
               <img

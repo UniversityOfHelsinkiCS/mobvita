@@ -1288,7 +1288,7 @@
     "ask-for-a-hint": "Показать подсказку?",
     "user-role-select-teacher": "Я учитель",
     "user-role-select-student": "Я изучаю язык",
-    "previous-stories-blue-cards": "Ты встретил/а {nWords} новых слов, для которых не проверял/а перевод — в тексте:\n<br/>{story}\n<br/>Tы получишь баллы за <b>все</b> эти слова!\n<br/>Давай проверим только 5 из них →\"",
+    "previous-stories-blue-cards": "Ты встретил/а {nWords} новых слов, для которых не проверял/а перевод — в тексте:\n<br/><i>{story}</i>\n<br/>Tы получишь баллы за <b>все</b> эти слова!\n<br/>Давай проверим только 5 из них →\"",
     "hide-home-page-recommendations": "Не показывать рекомендации на главной странице",
     "tutorial-recommendation": "",
     "delete-annotation": "Удалить",
