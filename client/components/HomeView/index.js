@@ -160,7 +160,7 @@ const HomeView = () => {
     <div className="cont-tall cont flex-col auto gap-row-sm pt-lg blue-bg">
       <AddStoryModal open={addStoryModalOpen} setOpen={setAddStoryModalOpen} />
       <PracticeModal open={practiceModalOpen} setOpen={setPracticeModalOpen} />
-      {showWelcomeModal && userData.grade && (
+      {showWelcomeModal && userData.grade && !userData.is_new_user && (
         <DefaultActivityModal
           open={openEncouragement}
           setOpen={setOpenEncouragement}
