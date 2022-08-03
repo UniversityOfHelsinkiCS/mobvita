@@ -14,7 +14,7 @@ const AnnotationListItem = ({ annotationItem, annotationsList, setAnnotationsLis
   const [openWarning, setOpenWarning] = useState(false)
   const bigScreen = useWindowDimensions().width >= 700
 
-  const maxLength = bigScreen ? 95 : 30
+  const maxLength = bigScreen ? 90 : 30
 
   const {
     annotated_text,
@@ -36,7 +36,7 @@ const AnnotationListItem = ({ annotationItem, annotationsList, setAnnotationsLis
   }
 
   const truncateStoryTitle = title => {
-    return `${title.slice(0, maxLength)}...`
+    return <span>{`${title.slice(0, maxLength)}...`}</span>
   }
 
   return (
@@ -47,7 +47,9 @@ const AnnotationListItem = ({ annotationItem, annotationsList, setAnnotationsLis
             content={<div style={{ margin: '0.25em' }}>{annotation}</div>}
             trigger={
               <div className="flex space-between">
-                <h5 className="annotation-item-title">{annotated_text}</h5>
+                <h5 className="annotation-item-text" style={{ color: '#000000' }}>
+                  {annotated_text}
+                </h5>
                 <div>
                   {category && (
                     <div className={getCategoryColor(category)} style={{ marginRight: '0.5em' }}>
@@ -66,8 +68,11 @@ const AnnotationListItem = ({ annotationItem, annotationsList, setAnnotationsLis
               percentCov={precent_cov}
               setOpenWarning={setOpenWarning}
             />
-            <h5 className="annotaion-item-story" style={{ marginLeft: '.5em' }}>
-              {story_title.length > maxLength ? truncateStoryTitle(story_title) : story_title}
+            <h5 className="annotation-item-text" style={{ color: 'gray', marginLeft: '.5em' }}>
+              {story_title.length > maxLength ? <Popup
+              content={<div style={{ margin: '0.25em' }}>{story_title}</div>}
+              trigger={truncateStoryTitle(story_title)}
+            /> : story_title}
             </h5>
           </div>
         </Card.Content>

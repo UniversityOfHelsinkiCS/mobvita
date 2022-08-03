@@ -1329,11 +1329,10 @@ label.file-upload-btn {
   }
 }
 
-.annotation-item-title {
+.annotation-item-text {
   font-family: $rubik;
   font-weight: 500;
   white-space: nowrap;
-  color: black;
   width: 100%;
   overflow: hidden;
   -o-text-overflow: ellipsis;
@@ -1344,17 +1343,6 @@ label.file-upload-btn {
       cursor: pointer;
     }
   }
-}
-
-.annotation-item-story {
-  font-family: $rubik;
-  font-weight: 500;
-  white-space: nowrap;
-  color: gray;
-  width: 100%;
-  overflow: hidden;
-  -o-text-overflow: ellipsis;
-  text-overflow:    ellipsis;
 }
 
 .story-item-title {
@@ -2421,9 +2409,9 @@ label.file-upload-btn {
 
 .note-grammar {
   color: #000000;
-  background-color: violet;
+  background-color: #FFC0CB;
   padding: 0.2em;
-  border: 2px solid violet;
+  border: 2px solid #FFC0CB;
   border-radius: 9px;
 }
 
