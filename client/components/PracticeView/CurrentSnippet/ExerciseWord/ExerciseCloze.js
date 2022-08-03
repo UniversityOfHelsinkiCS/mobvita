@@ -30,8 +30,18 @@ const ExerciseCloze = ({ word, handleChange }) => {
   const learningLanguage = useSelector(learningLanguageSelector)
   const { resource_usage, autoSpeak } = useSelector(state => state.user.data.user)
   const currentAnswer = useSelector(({ practice }) => practice.currentAnswers[word.ID])
-
-  const { isWrong, tested, surface, ref, explanation, lemmas, ID: wordId, id: storyId } = word
+  const [preHint, setPreHint] = useState(null)
+  const {
+    isWrong,
+    tested,
+    surface,
+    ref,
+    explanation,
+    lemmas,
+    ID: wordId,
+    id: storyId,
+    message,
+  } = word
 
   const target = useRef()
   const dispatch = useDispatch()
@@ -66,6 +76,10 @@ const ExerciseCloze = ({ word, handleChange }) => {
     setValue(e.target.value)
   }
 
+  const handlePreHint = () => {
+    setPreHint(word.hints[0])
+  }
+
   const handleTooltipClick = () => {
     if (ref) dispatch(setReferences(ref))
     if (explanation) dispatch(setExplanation(explanation))
@@ -85,14 +99,16 @@ const ExerciseCloze = ({ word, handleChange }) => {
   useEffect(() => {
     setClassName(getExerciseClass(tested, isWrong))
   }, [tested])
-  /*
-  if (word.message) {
-    console.log('MESS ', word)
-  }
-*/
+
+  useEffect(() => {
+    if (message) {
+      setPreHint(null)
+    }
+  }, [message])
+
   const tooltip = (
     <div>
-      {word.message && (
+      {(word.message || preHint) && (
         <div
           className="tooltip-green"
           style={{ cursor: 'pointer' }}
@@ -113,8 +129,27 @@ const ExerciseCloze = ({ word, handleChange }) => {
               )}
             </div>
           )}
+          {preHint && (
+            <div className="flex">
+              <span dangerouslySetInnerHTML={formatGreenFeedbackText(preHint)} />{' '}
+              {ref && (
+                <Icon name="external" style={{ alignSelf: 'flex-start', marginLeft: '0.5rem' }} />
+              )}
+              {explanation && (
+                <Icon
+                  name="info circle"
+                  style={{ alignSelf: 'flex-start', marginLeft: '0.5rem' }}
+                />
+              )}
+            </div>
+          )}
         </div>
-      )}
+      )}{' '}
+      {word.hints?.length > 0 && !preHint && (
+        <div className="tooltip-green" style={{ cursor: 'pointer' }} onClick={handlePreHint} onMouseDown={handlePreHint}>
+          <FormattedMessage id="ask-for-a-hint" />
+        </div>
+      )}{' '}
       <div
         className="tooltip-blue"
         // style={{ backgroundColor: getWordColor(word.level, grade, skillLevels) }}

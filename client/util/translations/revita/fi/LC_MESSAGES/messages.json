@@ -1282,7 +1282,7 @@
     "list-of-recent-stories": "Last time you were working on:",
     "review-recent-completed-stories": "Haluaisitko kerrata aikaisempia tarinoitasi?",
     "continue-last-story-left-in-the-middle": "Voit jatkaa tarinaa, joka jäi sinulta viimeksi kesken:",
-    "ask-for-a-hint": "Anna vihje!",
+    "ask-for-a-hint": "Näytä vihje",
     "user-role-select-teacher": "Olen opettaja",
     "user-role-select-student": "Olen opiskelija",
     "previous-stories-blue-cards": "Olet kohdannut {nWords} uutta sanaa aiemmissa tarinoissasi, joiden käännöksiä et tarkistanut—tarinassa:\n<br/><i>{story}</i>\n<br/>Voit saada pisteet kaikistä näistä sanoista!\n<br/>Tarkistetaan vain 5 näistä →",
