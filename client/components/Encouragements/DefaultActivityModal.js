@@ -63,15 +63,16 @@ const DefaultActivityModal = ({
     }
     if (sharedStory) {
       initList = initList.concat(
-        <div>
-          <div className="pt-md">
-            <div>
-              <FormattedHTMLMessage id="controlled-story-reminder" />
-              <br />
-              <Link to={`/stories/${sharedStory._id}/controlled-practice`}>
-                {sharedStory.title}
-              </Link>
-            </div>
+        <div className="pt-md">
+          <div>
+            <FormattedHTMLMessage id="controlled-story-reminder" />
+            <img
+              src={images.exclamationMark}
+              alt="exclamation mark"
+              style={{ maxWidth: '5%', maxHeight: '5%', marginLeft: '.5em' }}
+            />
+            <br />
+            <Link to={`/stories/${sharedStory._id}/controlled-practice`}>{sharedStory.title}</Link>
           </div>
           <hr />
         </div>
@@ -92,6 +93,11 @@ const DefaultActivityModal = ({
             <Link to={`/flashcards/fillin/test/${prevBlueCards.story_id}`}>
               <FormattedMessage id="flashcards-review" />
             </Link>
+            <img
+              src={images.flashcards}
+              alt="flashcard batch"
+              style={{ maxWidth: '5%', maxHeight: '5%', marginLeft: '.5em' }}
+            />
           </div>
           <hr />
         </div>
@@ -106,6 +112,11 @@ const DefaultActivityModal = ({
           <Link to={`/stories/${latestIncompleteStory._id}/practice`}>
             {latestIncompleteStory.title}
           </Link>
+          <img
+            src={images.dices}
+            alt="two dices"
+            style={{ maxWidth: '5%', maxHeight: '5%', marginLeft: '.5em' }}
+          />
           <hr />
         </div>
       )
@@ -225,7 +236,7 @@ const DefaultActivityModal = ({
       <Modal.Content>
         <div className="encouragement" style={{ padding: '1.5rem' }}>
           <div>
-            <div className="col-flex">
+            <div className="col-flex" style={{ marginTop: '.5em' }}>
               {welcomeBack && (
                 <>
                   <div

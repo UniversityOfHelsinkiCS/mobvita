@@ -78,6 +78,11 @@ const ExercisesEncouragementModal = ({
           <Link to={`/flashcards/fillin/test/${storyId}`}>
             <FormattedMessage id="go-to-blue-flashcards" />
           </Link>
+          <img
+            src={images.flashcards}
+            alt="flashcard batch"
+            style={{ maxWidth: '5%', maxHeight: '5%', marginLeft: '.5em' }}
+          />
           <hr />
         </div>
       )
@@ -98,6 +103,11 @@ const ExercisesEncouragementModal = ({
             <Link to={`/flashcards/fillin/test/${prevBlueCards.story_id}`}>
               <FormattedMessage id="flashcards-review" />
             </Link>
+            <img
+              src={images.flashcards}
+              alt="flashcard batch"
+              style={{ maxWidth: '5%', maxHeight: '5%', marginLeft: '.5em' }}
+            />
           </div>
           <hr />
         </div>
@@ -113,6 +123,11 @@ const ExercisesEncouragementModal = ({
           <Link to={`/stories/${latestIncompleteStory._id}/practice`}>
             {latestIncompleteStory.title}
           </Link>
+          <img
+            src={images.dices}
+            alt="two dices"
+            style={{ maxWidth: '5%', maxHeight: '5%', marginLeft: '.5em' }}
+          />
           <hr />
         </div>
       )
