@@ -107,6 +107,7 @@ describe('Mobvita', function () {
     })
 
     it('library opens', function () {
+      cy.get('.react-joyride__spotlight').click()
       cy.get('[data-cy=navbar-library-button]').click()
       cy.get('[data-cy=library-controls]')
       cy.url().should('include', '/library')

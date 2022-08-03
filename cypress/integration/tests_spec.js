@@ -41,6 +41,7 @@ describe('test view', function() {
 
     cy.wait(500)
     cy.get('.modal > .close').click()
+    cy.get('.react-joyride__spotlight').click()
     cy.get('[data-cy=tests-button]').click()
     cy.url().should('include', '/tests')
     cy.get('[data-cy=start-test]').click()

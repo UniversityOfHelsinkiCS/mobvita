@@ -18,6 +18,7 @@ describe("via navbar", function () {
   })
 
   it("can open and close terms and conditions", function () {
+    cy.get('.react-joyride__spotlight').click()
     cy.get('[data-cy=navbar-info-dropdown]').click()
     cy.get('[data-cy=navbar-tc-button]').click()
     cy.get('[data-cy=tc-content]')

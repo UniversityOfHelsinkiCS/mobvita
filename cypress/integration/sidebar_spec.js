@@ -1,6 +1,11 @@
 describe("sidebar is open (only mobile)", function () {
   this.beforeAll(function () {
     cy.login()
+    cy.loginExisting().as('user')
+    cy.visit('http://localhost:8000')
+    cy.wait(500)
+    cy.get('.modal > .close').click()
+    cy.get('.react-joyride__spotlight').click()
   })
 
   this.beforeEach(function () {
@@ -10,7 +15,6 @@ describe("sidebar is open (only mobile)", function () {
 
     cy.wait(500)
     cy.get('.modal > .close').click()
-
     cy.get('[data-cy=hamburger]').click()
   })
 
@@ -28,6 +32,7 @@ describe("sidebar is open (only mobile)", function () {
     cy.get('[data-cy=ui-lang-select]').click()
     cy.get('[data-cy=ui-lang-select] > .visible > :nth-child(4)').click()
     cy.get('.modal > .close').click()
+
     cy.contains('Profilo')
     cy.get('[data-cy=hamburger]').click()
     cy.get('[data-cy=logout]').click()
