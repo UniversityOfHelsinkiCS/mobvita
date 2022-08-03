@@ -16,15 +16,19 @@ const Tour = () => {
   const location = useLocation()
 
   const bigScreen = useWindowDimensions().width >= 700
-  /*
+
   useEffect(() => {
-    // Auto start the tour if the user hasn't seen it before
-    if (user.user.is_new_user && history.location.pathname.includes('home')) {
+    // Auto start the tour if the user is anonymous and hasn't seen it before
+    if (
+      user.user.is_new_user &&
+      user.user.email === 'anonymous_email' &&
+      history.location.pathname.includes('home')
+    ) {
       dispatch(sidebarSetOpen(false))
       dispatch(startTour())
     }
   }, [location])
-  */
+
   const setTourViewed = () => {
     dispatch(updateToNonNewUser())
   }
