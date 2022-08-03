@@ -59,6 +59,11 @@ const FlashcardsEncouragement = ({
                 <Link to={`/flashcards/fillin/test/${prevBlueCards.story_id}`}>
                   <FormattedMessage id="flashcards-review" />
                 </Link>
+                <img
+                  src={images.flashcards}
+                  alt="flashcard batch"
+                  style={{ maxWidth: '5%', maxHeight: '5%', marginLeft: '.5em' }}
+                />
               </div>
               <hr />
             </div>
@@ -200,13 +205,13 @@ const FlashcardsEncouragement = ({
           )}
           {((correctAnswers === deckSize && blueFlashcards) ||
             (!blueFlashcards && correctAnswers)) > 0 ? (
-            <div className="encouragement-picture pt-sm">
-                <img
-                src={images.encTrophy}
-                alt="encouraging trophy"
-                style={{ maxWidth: '25%', maxHeight: '25%' }}
-              />
-              </div>
+              <div className="encouragement-picture pt-sm">
+              <img
+                  src={images.encTrophy}
+                  alt="encouraging trophy"
+                  style={{ maxWidth: '25%', maxHeight: '25%' }}
+                />
+            </div>
           ) : (
             <div className="encouragement-picture pt-sm">
               <img
