@@ -77,7 +77,7 @@ const ExerciseCloze = ({ word, handleChange }) => {
   }
 
   const handlePreHint = () => {
-    setPreHint(word.hints[0])
+    setPreHint(word.hints)
   }
 
   const handleTooltipClick = () => {
@@ -131,7 +131,9 @@ const ExerciseCloze = ({ word, handleChange }) => {
           )}
           {preHint && (
             <div className="flex">
-              <span dangerouslySetInnerHTML={formatGreenFeedbackText(preHint)} />{' '}
+              <ul>
+              {preHint.map(hint => <li dangerouslySetInnerHTML={formatGreenFeedbackText(hint)} />)}
+              </ul>
               {ref && (
                 <Icon name="external" style={{ alignSelf: 'flex-start', marginLeft: '0.5rem' }} />
               )}
