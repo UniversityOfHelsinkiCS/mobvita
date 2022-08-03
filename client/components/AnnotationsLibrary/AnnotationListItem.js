@@ -12,7 +12,7 @@ const AnnotationListItem = ({ annotationItem, annotationsList, setAnnotationsLis
   // console.log('annotation ', annotation)
   const dispatch = useDispatch()
   const [openWarning, setOpenWarning] = useState(false)
-  const [showAnnotationForm, setShowAnnotationForm] = useState(false)
+  const maxLength = 80
 
   const {
     annotated_text,
@@ -31,6 +31,10 @@ const AnnotationListItem = ({ annotationItem, annotationsList, setAnnotationsLis
     const mode = 'preview'
     await dispatch(removeStoryAnnotation(story_id, token_id, end_token_id, mode))
     setAnnotationsList(annotationsList.filter(annotation => annotation !== annotationItem))
+  }
+
+  const truncateStoryTitle = title => {
+    return `${title.slice(0, maxLength)}...`
   }
 
   return (
@@ -57,21 +61,16 @@ const AnnotationListItem = ({ annotationItem, annotationsList, setAnnotationsLis
         </Card.Content>
         <Card.Content extra className="story-card-actions-cont">
           <div className="flex">
-            <div className="header-2" style={{ color: 'grey', marginRight: '.5em' }}>{story_title}</div>
             <AnnotationActions
               storyId={story_id}
               percentCov={precent_cov}
               setOpenWarning={setOpenWarning}
-              setShowAnnotationForm={setShowAnnotationForm}
-              showAnnotationForm={showAnnotationForm}
             />
+            <div className="header-2" style={{ color: 'grey', marginRight: '.5em' }}>
+              {story_title.length > 80 ? truncateStoryTitle(story_title) : story_title}
+            </div>
           </div>
         </Card.Content>
-        {showAnnotationForm && (
-          <Card.Content>
-            <div>FORM</div>
-          </Card.Content>
-        )}
         <ConfirmationWarning open={openWarning} setOpen={setOpenWarning} action={handleDelete}>
           <FormattedMessage id="annotation-remove-confirm" />
         </ConfirmationWarning>
