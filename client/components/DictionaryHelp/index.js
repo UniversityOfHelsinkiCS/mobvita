@@ -85,20 +85,22 @@ const Lemma = ({
   const { maskSymbol } = useSelector(({ translation }) => translation)
 
   return (
-    <div className="flex" style={getTextStyle(learningLanguage)}>
-      <Speaker word={lemma} />
-      {maskSymbol || (
-        <a href={userUrl} target="_blank" rel="noopener noreferrer">
-          {lemma}
-        </a>
-      )}
-      {inflectionRef && (
-        <a href={inflectionRef.url} target="_blank" rel="noopener noreferrer" className="flex">
-          <Icon name="external" style={{ marginLeft: '1rem' }} />
-        </a>
-      )}
+    <div className="flex space-between" style={getTextStyle(learningLanguage)}>
+      <div className="flex">
+        <Speaker word={lemma} />
+        {maskSymbol || (
+          <a href={userUrl} target="_blank" rel="noopener noreferrer">
+            {lemma}
+          </a>
+        )}
+        {inflectionRef && (
+          <a href={inflectionRef.url} target="_blank" rel="noopener noreferrer" className="flex">
+            <Icon name="external" style={{ marginLeft: '1rem' }} />
+          </a>
+        )}
+      </div>
       {preferred && (
-        <div>
+        <div className="flex-col" style={{ alignItems: 'center' }}>
           <Popup
             position="top center"
             content={<FormattedMessage id="i-know-tooltip" />}
@@ -117,7 +119,7 @@ const Lemma = ({
               <Icon
                 name="question"
                 onClick={handleNotKnowningClick}
-                style={{ cursor: 'pointer', marginLeft: '1em' }}
+                style={{ cursor: 'pointer', marginLeft: '2em', marginTop: '.75em' }}
               />
             }
           />
