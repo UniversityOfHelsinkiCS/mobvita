@@ -40,7 +40,7 @@ const DefaultActivityModal = ({
     let initList = []
     if (userRanking) {
       initList = initList.concat(
-        <div className="pt-lg">
+        <div className="pt-md">
           <div>
             <FormattedHTMLMessage id="leaderboard-ranking-encouragement" values={{ userRanking }} />
             &nbsp;
@@ -57,13 +57,14 @@ const DefaultActivityModal = ({
           <div>
             <FormattedMessage id="practice-makes-perfect" />
           </div>
+          <hr />
         </div>
       )
     }
     if (sharedStory) {
       initList = initList.concat(
         <div>
-          <div className="pt-lg">
+          <div className="pt-md">
             <div>
               <FormattedHTMLMessage id="controlled-story-reminder" />
               <br />
@@ -72,12 +73,13 @@ const DefaultActivityModal = ({
               </Link>
             </div>
           </div>
+          <hr />
         </div>
       )
     }
     if (prevBlueCards) {
       initList = initList.concat(
-        <div className="pt-lg">
+        <div className="pt-md">
           <div>
             <FormattedHTMLMessage
               id="previous-stories-blue-cards"
@@ -91,25 +93,27 @@ const DefaultActivityModal = ({
               <FormattedMessage id="flashcards-review" />
             </Link>
           </div>
+          <hr />
         </div>
       )
     }
     if (latestIncompleteStory && enable_recmd) {
       initList = initList.concat(
         <div>
-          <div className="pt-lg">
+          <div className="pt-md">
             <FormattedMessage id="continue-last-story-left-in-the-middle" />
           </div>
           <Link to={`/stories/${latestIncompleteStory._id}/practice`}>
             {latestIncompleteStory.title}
           </Link>
+          <hr />
         </div>
       )
     }
     if (storiesToReview.length > 0 && enable_recmd) {
       initList = initList.concat(
         <div>
-          <div className="pt-lg">
+          <div className="pt-md">
             <FormattedMessage id="review-recent-stories" />
           </div>
           <ul>
@@ -119,6 +123,7 @@ const DefaultActivityModal = ({
               </li>
             ))}
           </ul>
+          <hr />
         </div>
       )
     }
@@ -242,6 +247,7 @@ const DefaultActivityModal = ({
                       </div>
                     )}
                   </>
+                  <hr />
                 </>
               )}
               {recmdList.map((recommendation, index) => index < upperBound && recommendation)}

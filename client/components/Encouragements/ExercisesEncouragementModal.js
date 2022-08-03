@@ -45,7 +45,7 @@ const ExercisesEncouragementModal = ({
     let initList = []
     if (userRanking) {
       initList = initList.concat(
-        <div className="pt-lg">
+        <div className="pt-md">
           <div>
             <FormattedHTMLMessage id="leaderboard-ranking-encouragement" values={{ userRanking }} />
             &nbsp;
@@ -62,13 +62,14 @@ const ExercisesEncouragementModal = ({
           <div>
             <FormattedMessage id="practice-makes-perfect" />
           </div>
+          <hr />
         </div>
       )
     }
 
     if (creditableWordsNum > 0) {
       initList = initList.concat(
-        <div className="pt-lg">
+        <div className="pt-md">
           <FormattedHTMLMessage
             id="story-completed-to-blue-flashcards"
             values={{ nWords: creditableWordsNum }}
@@ -77,13 +78,14 @@ const ExercisesEncouragementModal = ({
           <Link to={`/flashcards/fillin/test/${storyId}`}>
             <FormattedMessage id="go-to-blue-flashcards" />
           </Link>
+          <hr />
         </div>
       )
     }
 
     if (prevBlueCards) {
       initList = initList.concat(
-        <div className="pt-lg">
+        <div className="pt-md">
           <div>
             <FormattedHTMLMessage
               id="previous-stories-blue-cards"
@@ -97,6 +99,7 @@ const ExercisesEncouragementModal = ({
               <FormattedMessage id="flashcards-review" />
             </Link>
           </div>
+          <hr />
         </div>
       )
     }
@@ -104,18 +107,19 @@ const ExercisesEncouragementModal = ({
     if (latestIncompleteStory && enable_recmd) {
       initList = initList.concat(
         <div>
-          <div className="pt-lg">
+          <div className="pt-md">
             <FormattedMessage id="continue-last-story-left-in-the-middle" />
           </div>
           <Link to={`/stories/${latestIncompleteStory._id}/practice`}>
             {latestIncompleteStory.title}
           </Link>
+          <hr />
         </div>
       )
     }
     if (vocabularySeen > 0 && enable_recmd) {
       initList = initList.concat(
-        <div className="pt-lg">
+        <div className="pt-md">
           <FormattedHTMLMessage
             id="words-seen-encouragement"
             values={{ vocabulary_seen: vocabularySeen }}
@@ -125,13 +129,14 @@ const ExercisesEncouragementModal = ({
             <FormattedMessage id="flashcards-review" />
           </Link>
           ?
+          <hr />
         </div>
       )
     }
 
     if (newVocabulary > 0 && enable_recmd) {
       initList = initList.concat(
-        <div className="pt-lg">
+        <div className="pt-md">
           <FormattedHTMLMessage
             id="words-interacted-encouragement"
             values={{ nWords: newVocabulary }}
@@ -141,18 +146,20 @@ const ExercisesEncouragementModal = ({
             <FormattedMessage id="review-progress" />
           </Link>
           ?
+          <hr />
         </div>
       )
     }
 
     initList = initList.concat(
-      <div className="pt-lg">
+      <div className="pt-md">
         <FormattedMessage id="enc-grammar-progress-1" />
         &nbsp;
         <Link to="/profile/progress/grammar">
           <FormattedMessage id="enc-grammar-progress-2" />
         </Link>
         ?
+        <hr />
       </div>
     )
 
@@ -244,6 +251,7 @@ const ExercisesEncouragementModal = ({
                 )}
               </div>
             )}
+            <hr />
             {recmdList.map((recommendation, index) => index < upperBound && recommendation)}
             {recmdList.length > upperBound && (
               <Button

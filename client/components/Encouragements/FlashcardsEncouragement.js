@@ -36,16 +36,17 @@ const FlashcardsEncouragement = ({
     if (blueFlashcards) {
       if (correctAnswers === deckSize && creditableWordsNum) {
         initList = initList.concat(
-          <div className="pt-lg">
+          <div className="pt-md">
             <FormattedHTMLMessage
               id="good-job-blue-flashcards"
               values={{ nWords: creditableWordsNum }}
             />
+            <hr />
           </div>
         )
         if (prevBlueCards) {
           initList = initList.concat(
-            <div className="pt-lg">
+            <div className="pt-md">
               <div>
                 <FormattedHTMLMessage
                   id="previous-stories-blue-cards"
@@ -59,24 +60,26 @@ const FlashcardsEncouragement = ({
                   <FormattedMessage id="flashcards-review" />
                 </Link>
               </div>
+              <hr />
             </div>
           )
         }
       } else {
         initList = initList.concat(
-          <div className="pt-lg">
+          <div className="pt-md">
             <FormattedHTMLMessage id="some-incorrect-flashcards" />
             &nbsp;
             <Link onClick={() => handleNewDeck()}>
               <FormattedMessage id="flashcards-try-again" />
             </Link>
             ?
+            <hr />
           </div>
         )
       }
 
       initList = initList.concat(
-        <div className="pt-lg">
+        <div className="pt-md">
           <FormattedHTMLMessage
             id="words-seen-encouragement"
             values={{ vocabulary_seen: vocabularySeen }}
@@ -86,46 +89,51 @@ const FlashcardsEncouragement = ({
             <FormattedMessage id="flashcards-review" />
           </Link>
           ?
+          <hr />
         </div>
       )
 
       initList = initList.concat(
-        <div className="pt-lg">
+        <div className="pt-md">
           <FormattedMessage id="Would you like to review" />
           &nbsp;
           <Link to="/profile/progress/flashcards">
             <FormattedMessage id="review-progress" />
           </Link>
           ?
+          <hr />
         </div>
       )
     } else {
       if (correctAnswers > 0) {
         initList = initList.concat(
-          <div className="pt-lg" style={{ fontSize: '18px' }}>
+          <div className="pt-md" style={{ fontSize: '18px' }}>
             <FormattedHTMLMessage id="mastering-new-words" values={{ nWords: correctAnswers }} />
+            <hr />
           </div>
         )
       } else {
         initList = initList.concat(
-          <div className="pt-lg" style={{ fontSize: '18px' }}>
+          <div className="pt-md" style={{ fontSize: '18px' }}>
             <FormattedHTMLMessage id="well-done-click-next-card-to-play-another-set-of-cards-1" />
+            <hr />
           </div>
         )
       }
       initList = initList.concat(
-        <div className="pt-lg" style={{ marginTop: '0.5em' }}>
+        <div className="pt-md" style={{ marginTop: '0.5em' }}>
           <FormattedHTMLMessage id="well-done-click-next-card-to-play-another-set-of-cards-2" />
           &nbsp;
           <Button variant="primary" onClick={() => handleNewDeck()}>
             <FormattedMessage id="next-card" />
           </Button>
+          <hr />
         </div>
       )
       if (latestStories.length > 0) {
         initList = initList.concat(
           <div>
-            <div className="pt-lg">
+            <div className="pt-md">
               <FormattedMessage id="list-of-recent-stories" />
             </div>
             <ul>
@@ -135,20 +143,20 @@ const FlashcardsEncouragement = ({
                 </li>
               ))}
             </ul>
+            <hr />
           </div>
         )
       }
       initList = initList.concat(
-        <div>
-          <div className="pt-lg">
-            <div style={{ color: '#000000' }}>
-              <FormattedMessage id="go-back-to-library" />
-              &nbsp;
-              <Link to="/library">
-                <FormattedMessage id="go-back-to-library-2" />
-              </Link>
-            </div>
+        <div className="pt-md">
+          <div style={{ color: '#000000' }}>
+            <FormattedMessage id="go-back-to-library" />
+            &nbsp;
+            <Link to="/library">
+              <FormattedMessage id="go-back-to-library-2" />
+            </Link>
           </div>
+          <hr />
         </div>
       )
     }
@@ -192,12 +200,12 @@ const FlashcardsEncouragement = ({
           )}
           {((correctAnswers === deckSize && blueFlashcards) ||
             (!blueFlashcards && correctAnswers)) > 0 ? (
-              <div className="encouragement-picture pt-sm">
+            <div className="encouragement-picture pt-sm">
                 <img
-                  src={images.encTrophy}
-                  alt="encouraging trophy"
-                  style={{ maxWidth: '25%', maxHeight: '25%' }}
-                />
+                src={images.encTrophy}
+                alt="encouraging trophy"
+                style={{ maxWidth: '25%', maxHeight: '25%' }}
+              />
               </div>
           ) : (
             <div className="encouragement-picture pt-sm">
