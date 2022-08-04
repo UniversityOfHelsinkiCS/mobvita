@@ -11,7 +11,7 @@ const ExerciseMultipleChoice = ({ word, handleChange }) => {
   const [touched, setTouched] = useState(false)
   const [show, setShow] = useState(false)
   const { grade } = useSelector(state => state.user.data.user)
-  const [preHint, setPreHint] = useState(null)
+  const [preHints, setPreHints] = useState([])
 
   const currentAnswer = useSelector(({ practice }) => practice.currentAnswers[word.ID])
 
@@ -39,7 +39,7 @@ const ExerciseMultipleChoice = ({ word, handleChange }) => {
 
   useEffect(() => {
     if (message) {
-      setPreHint(null)
+      setPreHints([])
     }
   }, [message])
 
@@ -66,8 +66,8 @@ const ExerciseMultipleChoice = ({ word, handleChange }) => {
     handleChange(e, word, data)
   }
 
-  const handlePreHint = () => {
-    setPreHint(word.hints)
+  const handlePreHints = () => {
+    setPreHints(preHints.concat(word.hints[preHints.length]))
   }
 
   const tooltip = (
@@ -77,16 +77,16 @@ const ExerciseMultipleChoice = ({ word, handleChange }) => {
           <span dangerouslySetInnerHTML={formatGreenFeedbackText(word?.message)} />
         </div>
       )}
-      {preHint && (
-        <div className="tooltip-green">
-          <ul>
-            {preHint.map(hint => <li dangerouslySetInnerHTML={formatGreenFeedbackText(hint)} />)}
-          </ul>
+      {word.hints?.length > 0 && preHints.length < word.hints?.length && (
+        <div className="tooltip-green" style={{ cursor: 'pointer' }} onClick={handlePreHints} onMouseDown={handlePreHints}>
+          <FormattedMessage id="ask-for-a-hint" />
         </div>
       )}
-      {word.hints?.length > 0 && !preHint && (
-        <div className="tooltip-green" style={{ cursor: 'pointer' }} onClick={handlePreHint} onMouseDown={handlePreHint}>
-          <FormattedMessage id="ask-for-a-hint" />
+      {preHints.length > 0 && (
+        <div className="tooltip-green">
+          <ul>
+            {preHints.map(hint => <li dangerouslySetInnerHTML={formatGreenFeedbackText(hint)} />)}
+          </ul>
         </div>
       )}
     </div>
