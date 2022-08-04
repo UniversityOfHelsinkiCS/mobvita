@@ -83,7 +83,7 @@ const AnnotationsLibrarySearch = ({
 
   return (
     <div className="flex space-between" style={{ marginRight: '.5em', marginLeft: '.5em' }}>
-      <div className="row-flex">
+      <div className="row-flex" style={{ alignItems: 'center' }}>
         {bigScreen && (
           <span style={{ marginRight: '.5em' }}>
             <FormattedMessage id="search-by-category" />
@@ -99,10 +99,12 @@ const AnnotationsLibrarySearch = ({
         />
       </div>
       <div style={{ position: 'relative' }}>
-        <Popup
-          content={<FormattedMessage id="annotations-search-by-text" />}
-          trigger={<Icon style={{ paddingRight: '0.5em' }} name="info circle" color="grey" />}
-        />
+        {bigScreen && (
+          <Popup
+            content={<FormattedMessage id="annotations-search-by-text" />}
+            trigger={<Icon style={{ paddingRight: '0.5em' }} name="info circle" color="grey" />}
+          />
+        )}
         <Input
           action={{ icon: 'search', onClick: handleAnnotationsSearch, color: 'grey' }}
           placeholder="Search..."
