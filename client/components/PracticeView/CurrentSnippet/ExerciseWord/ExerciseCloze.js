@@ -30,7 +30,7 @@ const ExerciseCloze = ({ word, handleChange }) => {
   const learningLanguage = useSelector(learningLanguageSelector)
   const { resource_usage, autoSpeak } = useSelector(state => state.user.data.user)
   const currentAnswer = useSelector(({ practice }) => practice.currentAnswers[word.ID])
-  const [preHint, setPreHint] = useState(null)
+  const [preHints, setPreHints] = useState([])
   const {
     isWrong,
     tested,
@@ -76,8 +76,8 @@ const ExerciseCloze = ({ word, handleChange }) => {
     setValue(e.target.value)
   }
 
-  const handlePreHint = () => {
-    setPreHint(word.hints)
+  const handlePreHints = () => {
+    setPreHints(preHints.concat(word.hints[preHints.length]))
   }
 
   const handleTooltipClick = () => {
@@ -102,13 +102,13 @@ const ExerciseCloze = ({ word, handleChange }) => {
 
   useEffect(() => {
     if (message) {
-      setPreHint(null)
+      setPreHints([])
     }
   }, [message])
 
   const tooltip = (
     <div>
-      {(word.message || preHint) && (
+      {word.message && (
         <div
           className="tooltip-green"
           style={{ cursor: 'pointer' }}
@@ -129,29 +129,33 @@ const ExerciseCloze = ({ word, handleChange }) => {
               )}
             </div>
           )}
-          {preHint && (
-            <div className="flex">
-              <ul>
-                {preHint.map(hint => <li dangerouslySetInnerHTML={formatGreenFeedbackText(hint)} />)}
-              </ul>
-              {ref && (
-                <Icon name="external" style={{ alignSelf: 'flex-start', marginLeft: '0.5rem' }} />
-              )}
-              {explanation && (
-                <Icon
-                  name="info circle"
-                  style={{ alignSelf: 'flex-start', marginLeft: '0.5rem' }}
-                />
-              )}
-            </div>
-          )}
         </div>
       )}{' '}
-      {word.hints?.length > 0 && !preHint && (
-        <div className="tooltip-green" style={{ cursor: 'pointer' }} onClick={handlePreHint} onMouseDown={handlePreHint}>
+      {word.hints?.length > 0 && preHints.length < word.hints?.length && (
+        <div
+          className="tooltip-green"
+          style={{ cursor: 'pointer' }}
+          onClick={handlePreHints}
+          onMouseDown={handlePreHints}
+        >
           <FormattedMessage id="ask-for-a-hint" />
         </div>
       )}{' '}
+      {preHints?.length > 0 && (
+        <div className="tooltip-green">
+          <ul>
+            {preHints.map(hint => (
+              <li dangerouslySetInnerHTML={formatGreenFeedbackText(hint)} />
+            ))}
+          </ul>
+          {ref && (
+            <Icon name="external" style={{ alignSelf: 'flex-start', marginLeft: '0.5rem' }} />
+          )}
+          {explanation && (
+            <Icon name="info circle" style={{ alignSelf: 'flex-start', marginLeft: '0.5rem' }} />
+          )}
+        </div>
+      )}
       <div
         className="tooltip-blue"
         // style={{ backgroundColor: getWordColor(word.level, grade, skillLevels) }}
