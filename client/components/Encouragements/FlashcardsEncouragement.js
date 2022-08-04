@@ -139,17 +139,24 @@ const FlashcardsEncouragement = ({
       )
       if (latestStories.length > 0) {
         initList = initList.concat(
-          <div>
-            <div className="pt-md">
-              <FormattedMessage id="list-of-recent-stories" />
+          <div className="pt-md">
+            <div className="flex space-between" style={{ alignItems: 'center' }}>
+              <div>
+                <FormattedMessage id="list-of-recent-stories" />
+                <ul>
+                  {latestStories.map(story => (
+                    <li style={{ marginTop: '0.5rem' }}>
+                      <Link to={`/stories/${story._id}/practice`}>{story.title}</Link>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+              <img
+                src={images.magnifyingGlass}
+                alt="magnifying glass"
+                style={{ maxWidth: '8%', maxHeight: '8%', marginLeft: '.5em' }}
+              />
             </div>
-            <ul>
-              {latestStories.map(story => (
-                <li style={{ marginTop: '0.5rem' }}>
-                  <Link to={`/stories/${story._id}/practice`}>{story.title}</Link>
-                </li>
-              ))}
-            </ul>
             <hr />
           </div>
         )
