@@ -132,7 +132,7 @@ const ExerciseCloze = ({ word, handleChange }) => {
           {preHint && (
             <div className="flex">
               <ul>
-              {preHint.map(hint => <li dangerouslySetInnerHTML={formatGreenFeedbackText(hint)} />)}
+                {preHint.map(hint => <li dangerouslySetInnerHTML={formatGreenFeedbackText(hint)} />)}
               </ul>
               {ref && (
                 <Icon name="external" style={{ alignSelf: 'flex-start', marginLeft: '0.5rem' }} />

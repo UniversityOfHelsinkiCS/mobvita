@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { useSelector } from 'react-redux'
 import { Dropdown } from 'semantic-ui-react'
+import { FormattedMessage } from 'react-intl'
 import { getTextWidth, formatGreenFeedbackText, getWordColor, skillLevels } from 'Utilities/common'
 import Tooltip from 'Components/PracticeView/Tooltip'
 
@@ -10,10 +11,11 @@ const ExerciseMultipleChoice = ({ word, handleChange }) => {
   const [touched, setTouched] = useState(false)
   const [show, setShow] = useState(false)
   const { grade } = useSelector(state => state.user.data.user)
+  const [preHint, setPreHint] = useState(null)
 
   const currentAnswer = useSelector(({ practice }) => practice.currentAnswers[word.ID])
 
-  const { tested, isWrong } = word
+  const { tested, isWrong, message } = word
   const value = currentAnswer ? currentAnswer.users_answer : ''
 
   const getExerciseClass = (tested, isWrong) => {
@@ -34,6 +36,12 @@ const ExerciseMultipleChoice = ({ word, handleChange }) => {
     }))
     setOptions(temp)
   }, [word])
+
+  useEffect(() => {
+    if (message) {
+      setPreHint(null)
+    }
+  }, [message])
 
   const maximumLength = word.choices.reduce((maxLength, currLength) => {
     if (currLength.length > maxLength) return currLength.length
@@ -58,11 +66,27 @@ const ExerciseMultipleChoice = ({ word, handleChange }) => {
     handleChange(e, word, data)
   }
 
+  const handlePreHint = () => {
+    setPreHint(word.hints)
+  }
+
   const tooltip = (
     <div>
       {word.message && (
         <div className="tooltip-green">
           <span dangerouslySetInnerHTML={formatGreenFeedbackText(word?.message)} />
+        </div>
+      )}
+      {preHint && (
+        <div className="tooltip-green">
+          <ul>
+            {preHint.map(hint => <li dangerouslySetInnerHTML={formatGreenFeedbackText(hint)} />)}
+          </ul>
+        </div>
+      )}
+      {word.hints?.length > 0 && !preHint && (
+        <div className="tooltip-green" style={{ cursor: 'pointer' }} onClick={handlePreHint} onMouseDown={handlePreHint}>
+          <FormattedMessage id="ask-for-a-hint" />
         </div>
       )}
     </div>
