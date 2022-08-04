@@ -158,6 +158,17 @@ const TextWithFeedback = ({
 
           const chunkPosition = word.chunk && word.chunk.split('_')[1]
 
+          if (word.surface === ' ') {
+            if ((index > 0) & (index < snippet.length) & (snippet.length > 1)) {
+              if (snippet[index - 1].level & snippet[index + 1].level) {
+                word = {
+                  ...word,
+                  level: snippet[index - 1].level
+                }
+              }
+            }
+          }
+
           if (pattern) {
             Object.entries(pattern)
               .filter(([, position]) => position === 'pattern_start')
@@ -189,15 +200,20 @@ const TextWithFeedback = ({
     )
     : snippet.map((word, index) => {
       const { pattern } = word
-
       // color spaces between colored tokens
-      if (word.surface === ' ') {
-        if ((index > 0) & (index < snippet.length) & (snippet.length > 1)) {
-          if (snippet[index - 1].level & snippet[index + 1].level) {
-            word.level = snippet[index - 1].level
+      if (!exercise) {
+        if (word.surface === ' ') {
+          if ((index > 0) & (index < snippet.length) & (snippet.length > 1)) {
+            if (snippet[index - 1].level & snippet[index + 1].level) {
+              word = {
+                ...word,
+                level: snippet[index - 1].level
+              }
+            }
           }
         }
       }
+      
 
       // color whole analytic chunks
       if (word.analytic_chunk) {
