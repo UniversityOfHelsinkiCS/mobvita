@@ -139,12 +139,10 @@ const ExerciseCloze = ({ word, handleChange }) => {
         </div>
       )}{' '}
       {preHints?.length > 0 && (
-        <div className="tooltip-green">
-          <ul>
-            {preHints.map(hint => (
-              <li dangerouslySetInnerHTML={formatGreenFeedbackText(hint)} />
-            ))}
-          </ul>
+        <div className="tooltip-hint" style={{ textAlign: 'left' }}>
+          {preHints.map(hint => (
+            <li dangerouslySetInnerHTML={formatGreenFeedbackText(hint)} />
+          ))}
           {ref && (
             <Icon name="external" style={{ alignSelf: 'flex-start', marginLeft: '0.5rem' }} />
           )}

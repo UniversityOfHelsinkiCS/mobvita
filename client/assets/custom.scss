@@ -1790,7 +1790,6 @@ label.file-upload-btn {
 .tooltip { //Overwrites react-popper-tooltip styles.
 
   &-container {
-    text-align: center;
     padding: 0em;
 
     &.clickable{
@@ -1802,20 +1801,31 @@ label.file-upload-btn {
   }
 
   &-diff {
+    text-align: center;
     color: black;
     padding: 0.3em;
   }
 
   &-blue {
+    text-align: center;
     background-color: $tooltip-blue;
     color:white;
     padding: 0.3em;
   }
 
   &-green {
+    text-align: center;
     background-color: $tooltip-green;
     color:white;
     padding: 0.3em;
+  }
+
+  &-hint {
+    background-color: $tooltip-green;
+    color:white;
+    padding: .5em;
+    text-align: 'left';
+    margin: 0;
   }
 }
 

@@ -92,10 +92,8 @@ const ExerciseMultipleChoice = ({ word, handleChange }) => {
         </div>
       )}
       {preHints.length > 0 && (
-        <div className="tooltip-green">
-          <ul>
-            {preHints.map(hint => <li dangerouslySetInnerHTML={formatGreenFeedbackText(hint)} />)}
-          </ul>
+        <div className="tooltip-hint">
+          {preHints.map(hint => <li dangerouslySetInnerHTML={formatGreenFeedbackText(hint)} />)}
         </div>
       )}
     </div>
