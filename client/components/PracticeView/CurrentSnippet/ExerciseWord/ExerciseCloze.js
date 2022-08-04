@@ -31,6 +31,7 @@ const ExerciseCloze = ({ word, handleChange }) => {
   const { resource_usage, autoSpeak } = useSelector(state => state.user.data.user)
   const currentAnswer = useSelector(({ practice }) => practice.currentAnswers[word.ID])
   const [preHints, setPreHints] = useState([])
+  const [keepOpen, setKeepOpen] = useState(false)
   const {
     isWrong,
     tested,
@@ -78,6 +79,7 @@ const ExerciseCloze = ({ word, handleChange }) => {
 
   const handlePreHints = () => {
     setPreHints(preHints.concat(word.hints[preHints.length]))
+    setKeepOpen(true)
   }
 
   const handleTooltipClick = () => {
@@ -175,7 +177,11 @@ const ExerciseCloze = ({ word, handleChange }) => {
 
   const handleBlur = () => {
     handleChange(value, word)
-    setShow(false)
+
+    if (!keepOpen) {
+      setShow(false)
+    }
+    setKeepOpen(false)
   }
 
   const handleFocus = e => {

@@ -12,6 +12,7 @@ const ExerciseMultipleChoice = ({ word, handleChange }) => {
   const [show, setShow] = useState(false)
   const { grade } = useSelector(state => state.user.data.user)
   const [preHints, setPreHints] = useState([])
+  const [keepOpen, setKeepOpen] = useState(false)
 
   const currentAnswer = useSelector(({ practice }) => practice.currentAnswers[word.ID])
 
@@ -68,6 +69,14 @@ const ExerciseMultipleChoice = ({ word, handleChange }) => {
 
   const handlePreHints = () => {
     setPreHints(preHints.concat(word.hints[preHints.length]))
+    setKeepOpen(true)
+  }
+
+  const handleBlur = () => {
+    if (!keepOpen) {
+      setShow(false)
+    }
+    setKeepOpen(false)
   }
 
   const tooltip = (
@@ -109,7 +118,7 @@ const ExerciseMultipleChoice = ({ word, handleChange }) => {
         placeholder={placeholder}
         value={value}
         onChange={(e, data) => handle(e, word, data)}
-        onBlur={() => setShow(false)}
+        onBlur={handleBlur}
         onFocus={() => setShow(!show)}
         selection
         floating
