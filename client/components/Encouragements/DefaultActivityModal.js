@@ -43,7 +43,10 @@ const DefaultActivityModal = ({
         <div className="pt-md">
           <div className="flex space-between" style={{ alignItems: 'center' }}>
             <div>
-              <FormattedHTMLMessage id="leaderboard-ranking-encouragement" values={{ userRanking }} />
+              <FormattedHTMLMessage
+                id="leaderboard-ranking-encouragement"
+                values={{ userRanking }}
+              />
               &nbsp;
               <Link to="/leaderboard">
                 <FormattedMessage id="leaderboard-link-encouragement" />
@@ -69,7 +72,9 @@ const DefaultActivityModal = ({
             <div>
               <FormattedHTMLMessage id="controlled-story-reminder" />
               <br />
-              <Link to={`/stories/${sharedStory._id}/controlled-practice`}>{sharedStory.title}</Link>
+              <Link to={`/stories/${sharedStory._id}/controlled-practice`}>
+                {sharedStory.title}
+              </Link>
             </div>
             <img
               src={images.exclamationMark}
@@ -131,17 +136,25 @@ const DefaultActivityModal = ({
     }
     if (storiesToReview.length > 0 && enable_recmd) {
       initList = initList.concat(
-        <div>
-          <div className="pt-md">
-            <FormattedMessage id="review-recent-stories" />
+        <div className="pt-md">
+          <div className="flex space-between" style={{ alignItems: 'center' }}>
+            <div>
+              <FormattedMessage id="review-recent-stories" />
+
+              <ul>
+                {storiesToReview.map(story => (
+                  <li style={{ marginTop: '0.5rem' }}>
+                    <Link to={`/stories/${story._id}/review`}>{story.title}</Link>
+                  </li>
+                ))}
+              </ul>
+            </div>
+            <img
+              src={images.magnifyingGlass}
+              alt="magnifying glass"
+              style={{ maxWidth: '8%', maxHeight: '8%', marginLeft: '.5em' }}
+            />
           </div>
-          <ul>
-            {storiesToReview.map(story => (
-              <li style={{ marginTop: '0.5rem' }}>
-                <Link to={`/stories/${story._id}/review`}>{story.title}</Link>
-              </li>
-            ))}
-          </ul>
           <hr />
         </div>
       )

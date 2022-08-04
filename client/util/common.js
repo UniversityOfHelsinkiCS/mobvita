@@ -73,6 +73,7 @@ import fireworks from 'Assets/images/fireworks.png'
 import encTrophy from 'Assets/images/enc_trophy.png'
 import racingFlag from 'Assets/images/racing_flag.png'
 import exclamationMark from 'Assets/images/exclamation.png'
+import magnifyingGlass from 'Assets/images/glass.png'
 
 import { useSelector, useDispatch } from 'react-redux'
 import { useHistory } from 'react-router-dom'
@@ -150,6 +151,7 @@ export const images = {
   encTrophy,
   racingFlag,
   exclamationMark,
+  magnifyingGlass,
 }
 
 export const getCategoryColor = category => {
