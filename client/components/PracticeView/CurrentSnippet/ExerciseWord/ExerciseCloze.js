@@ -110,7 +110,7 @@ const ExerciseCloze = ({ word, handleChange }) => {
 
   const tooltip = (
     <div>
-      {word.message && (
+      {word.message && !word.hints && (
         <div
           className="tooltip-green"
           style={{ cursor: 'pointer' }}

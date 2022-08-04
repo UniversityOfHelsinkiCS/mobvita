@@ -81,7 +81,7 @@ const ExerciseMultipleChoice = ({ word, handleChange }) => {
 
   const tooltip = (
     <div>
-      {word.message && (
+      {word.message && !word.hints && (
         <div className="tooltip-green">
           <span dangerouslySetInnerHTML={formatGreenFeedbackText(word?.message)} />
         </div>
