@@ -134,12 +134,7 @@ const ExerciseCloze = ({ word, handleChange }) => {
         </div>
       )}{' '}
       {word.hints?.length > 0 && preHints.length < word.hints?.length && (
-        <div
-          className="tooltip-green"
-          style={{ cursor: 'pointer' }}
-          onClick={handlePreHints}
-          onMouseDown={handlePreHints}
-        >
+        <div className="tooltip-green" style={{ cursor: 'pointer' }} onMouseDown={handlePreHints}>
           <FormattedMessage id="ask-for-a-hint" />
         </div>
       )}{' '}
