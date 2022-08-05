@@ -22,6 +22,7 @@ const TextWithFeedback = ({
   const inControlStoryEditor = history.location.pathname.includes('controlled-story')
 
   const lineColors = ['blue', 'green', 'black', 'purple', 'cyan']
+  const { grade } = useSelector(state => state.user.data.user)
 
   const getSidePadding = exercise => {
     if (inControlStoryEditor) return '5px'
@@ -200,20 +201,24 @@ const TextWithFeedback = ({
     )
     : snippet.map((word, index) => {
       const { pattern } = word
+
       // color spaces between colored tokens
       if (!exercise) {
         if (word.surface === ' ') {
           if ((index > 0) & (index < snippet.length) & (snippet.length > 1)) {
-            if (snippet[index - 1].level & snippet[index + 1].level) {
+            if (
+              snippet[index - 1].level !== undefined & snippet[index - 1].level > grade &
+              snippet[index + 1].level !== undefined & snippet[index + 1].level > grade &
+              !(snippet[index - 1].chunk === 'chunk_end' & snippet[index + 1].chunk === 'chunk_start')
+            ) {
               word = {
                 ...word,
-                level: snippet[index - 1].level
+                level: (snippet[index - 1].level + snippet[index + 1].level) / 2
               }
             }
           }
         }
       }
-      
 
       // color whole analytic chunks
       if (word.analytic_chunk) {
