@@ -3,6 +3,7 @@ import { useSelector } from 'react-redux'
 import { Dropdown } from 'semantic-ui-react'
 import { FormattedMessage } from 'react-intl'
 import { getTextWidth, formatGreenFeedbackText, getWordColor, skillLevels } from 'Utilities/common'
+import { Button } from 'react-bootstrap'
 import Tooltip from 'Components/PracticeView/Tooltip'
 
 const ExerciseMultipleChoice = ({ word, handleChange }) => {
@@ -14,9 +15,10 @@ const ExerciseMultipleChoice = ({ word, handleChange }) => {
   const [preHints, setPreHints] = useState([])
   const [keepOpen, setKeepOpen] = useState(false)
   const [emptyHintsList, setEmptyHintsList] = useState(false)
+  const [filteredHintsList, setFilteredHintsList] = useState([])
   const currentAnswer = useSelector(({ practice }) => practice.currentAnswers[word.ID])
 
-  const { tested, isWrong, message } = word
+  const { tested, isWrong, message, hints } = word
   const value = currentAnswer ? currentAnswer.users_answer : ''
 
   const getExerciseClass = (tested, isWrong) => {
@@ -39,10 +41,9 @@ const ExerciseMultipleChoice = ({ word, handleChange }) => {
   }, [word])
 
   useEffect(() => {
-    if (message) {
-      setPreHints([])
-    }
-  }, [message])
+    setFilteredHintsList(hints?.filter(hint => hint !== message))
+    setPreHints([])
+  }, [message, hints])
 
   const maximumLength = word.choices.reduce((maxLength, currLength) => {
     if (currLength.length > maxLength) return currLength.length
@@ -68,11 +69,11 @@ const ExerciseMultipleChoice = ({ word, handleChange }) => {
   }
 
   const handlePreHints = () => {
-    if (word.hints.length < 1) {
+    if (!hints || filteredHintsList.length < 1) {
       setEmptyHintsList(true)
       setKeepOpen(true)
     } else {
-      setPreHints(preHints.concat(word.hints[preHints.length]))
+      setPreHints(preHints.concat(filteredHintsList[preHints.length]))
       setKeepOpen(true)
     }
   }
@@ -86,27 +87,25 @@ const ExerciseMultipleChoice = ({ word, handleChange }) => {
 
   const tooltip = (
     <div>
-      {word.message && (
-        <div className="tooltip-green">
-          <span dangerouslySetInnerHTML={formatGreenFeedbackText(word?.message)} />
+      {(!hints || filteredHintsList.length < 1 || preHints.length < filteredHintsList?.length) &&
+        !emptyHintsList && (
+          <div className="tooltip-green">
+            <Button variant="primary" onMouseDown={handlePreHints}>
+              <FormattedMessage id="ask-for-a-hint" />
+            </Button>
+          </div>
+        )}{' '}
+      {(preHints?.length > 0 || message) && (
+        <div className="tooltip-hint" style={{ textAlign: 'left' }}>
+          {message && <li dangerouslySetInnerHTML={formatGreenFeedbackText(word?.message)} />}
+          {preHints?.map(hint => (
+            <li dangerouslySetInnerHTML={formatGreenFeedbackText(hint)} />
+          ))}
         </div>
       )}
-      {(!word.hints || word.hints.length < 1 || preHints.length < word.hints?.length) &&
-        !emptyHintsList && (
-          <div className="tooltip-green" style={{ cursor: 'pointer' }} onMouseDown={handlePreHints}>
-            <FormattedMessage id="ask-for-a-hint" />
-          </div>
-        )}
       {emptyHintsList && (
         <div className="tooltip-green">
           <FormattedMessage id="no-hints-available" />
-        </div>
-      )}
-      {preHints.length > 0 && (
-        <div className="tooltip-hint">
-          {preHints.map(hint => (
-            <li dangerouslySetInnerHTML={formatGreenFeedbackText(hint)} />
-          ))}
         </div>
       )}
     </div>

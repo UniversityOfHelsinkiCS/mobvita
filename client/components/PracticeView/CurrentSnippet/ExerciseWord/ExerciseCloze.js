@@ -115,10 +115,6 @@ const ExerciseCloze = ({ word, handleChange }) => {
     setPreHints([])
   }, [message, hints])
 
-  if (word.base === 'leikkiä') {
-    console.log('pre hints ', preHints)
-  }
-
   const tooltip = (
     <div>
       {(!hints || filteredHintsList.length < 1 || preHints.length < filteredHintsList?.length) &&
