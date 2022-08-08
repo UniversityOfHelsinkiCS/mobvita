@@ -30,6 +30,7 @@ const ExerciseCloze = ({ word, handleChange }) => {
   const learningLanguage = useSelector(learningLanguageSelector)
   const { resource_usage, autoSpeak } = useSelector(state => state.user.data.user)
   const currentAnswer = useSelector(({ practice }) => practice.currentAnswers[word.ID])
+  const [filteredHintsList, setFilteredHintsList] = useState([])
   const [preHints, setPreHints] = useState([])
   const [keepOpen, setKeepOpen] = useState(false)
   const {
@@ -42,6 +43,7 @@ const ExerciseCloze = ({ word, handleChange }) => {
     ID: wordId,
     id: storyId,
     message,
+    hints,
   } = word
 
   const target = useRef()
@@ -79,11 +81,11 @@ const ExerciseCloze = ({ word, handleChange }) => {
   }
 
   const handlePreHints = () => {
-    if (!word.hints || word.hints.length < 1) {
+    if (!hints || filteredHintsList.length < 1) {
       setEmptyHintsList(true)
       setKeepOpen(true)
     } else {
-      setPreHints(preHints.concat(word.hints[preHints.length]))
+      setPreHints(preHints.concat(filteredHintsList[preHints.length]))
       setKeepOpen(true)
     }
   }
@@ -109,14 +111,17 @@ const ExerciseCloze = ({ word, handleChange }) => {
   }, [tested])
 
   useEffect(() => {
-    if (message) {
-      setPreHints([])
-    }
-  }, [message])
+    setFilteredHintsList(hints?.filter(hint => hint !== message))
+    setPreHints([])
+  }, [message, hints])
+
+  if (word.base === 'leikkiä') {
+    console.log('pre hints ', preHints)
+  }
 
   const tooltip = (
     <div>
-      {(!word.hints || word.hints.length < 1 || preHints.length < word.hints?.length) &&
+      {(!hints || filteredHintsList.length < 1 || preHints.length < filteredHintsList?.length) &&
         !emptyHintsList && (
           <div className="tooltip-green">
             <Button variant="primary" onMouseDown={handlePreHints}>
@@ -124,9 +129,14 @@ const ExerciseCloze = ({ word, handleChange }) => {
             </Button>
           </div>
         )}{' '}
-      {preHints?.length > 0 && (
-        <div className="tooltip-hint" style={{ textAlign: 'left' }}>
-          {preHints.map(hint => (
+      {(preHints?.length > 0 || message) && (
+        <div
+          className="tooltip-hint"
+          style={{ textAlign: 'left' }}
+          onMouseDown={handleTooltipClick}
+        >
+          {message && <li dangerouslySetInnerHTML={formatGreenFeedbackText(word?.message)} />}
+          {preHints?.map(hint => (
             <li dangerouslySetInnerHTML={formatGreenFeedbackText(hint)} />
           ))}
           {ref && (
@@ -138,33 +148,10 @@ const ExerciseCloze = ({ word, handleChange }) => {
         </div>
       )}
       {emptyHintsList && (
-        <div className="tooltip-green">
+        <div className="tooltip-hint" style={{ textAlign: 'left' }}>
           <FormattedMessage id="no-hints-available" />
         </div>
       )}
-      {word.message && (
-        <div
-          className="tooltip-green"
-          style={{ cursor: 'pointer' }}
-          // style={{ cursor: 'pointer', background: getWordColor(word.level, grade, skillLevels) }}
-          onMouseDown={handleTooltipClick}
-        >
-          {word.message && (
-            <div className="flex">
-              <span dangerouslySetInnerHTML={formatGreenFeedbackText(word?.message)} />{' '}
-              {ref && (
-                <Icon name="external" style={{ alignSelf: 'flex-start', marginLeft: '0.5rem' }} />
-              )}
-              {explanation && (
-                <Icon
-                  name="info circle"
-                  style={{ alignSelf: 'flex-start', marginLeft: '0.5rem' }}
-                />
-              )}
-            </div>
-          )}
-        </div>
-      )}{' '}
       <div
         className="tooltip-blue"
         // style={{ backgroundColor: getWordColor(word.level, grade, skillLevels) }}
