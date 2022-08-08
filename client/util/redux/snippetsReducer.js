@@ -49,7 +49,7 @@ export const resetCurrentSnippet = (storyId, controlledStory) => {
 
 export const postAnswers = (storyId, answersObject, compete = false) => {
   const payload = answersObject
-  console.log('ANSWER OBJ ', payload)
+
   payload.compete = compete
   const route = `/stories/${storyId}/snippets/answer`
   const prefix = 'GET_SNIPPET_ANSWERS'

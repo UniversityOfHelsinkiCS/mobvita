@@ -35,7 +35,7 @@ const ExerciseCloze = ({ word, handleChange }) => {
   const learningLanguage = useSelector(learningLanguageSelector)
   const { resource_usage, autoSpeak } = useSelector(state => state.user.data.user)
   const currentAnswer = useSelector(({ practice }) => practice.currentAnswers[word.ID])
-  const { attempt } = useSelector(({ practice }) => practice)
+  const { attempt, focusedWord } = useSelector(({ practice }) => practice)
   const [filteredHintsList, setFilteredHintsList] = useState([])
   const [preHints, setPreHints] = useState([])
   const [keepOpen, setKeepOpen] = useState(false)
@@ -55,7 +55,6 @@ const ExerciseCloze = ({ word, handleChange }) => {
   const target = useRef()
   const dispatch = useDispatch()
   const [emptyHintsList, setEmptyHintsList] = useState(false)
-
   const voice = voiceLanguages[learningLanguage]
 
   const handleTooltipWordClick = () => {
@@ -127,13 +126,23 @@ const ExerciseCloze = ({ word, handleChange }) => {
       setPreHints([])
     }
   }, [message, hints])
-  
+
+  useEffect(() => {
+    if (focusedWord !== word) {
+      setShow(false)
+    }
+  }, [focusedWord])
+
+  const handleTooltipBlur = () => {
+    setShow(false)
+  }
+
   const tooltip = (
     <div>
       {(!hints || filteredHintsList.length < 1 || preHints.length < filteredHintsList?.length) &&
         !emptyHintsList && attempt === 0 && (
           <div className="tooltip-green">
-            <Button variant="primary" onMouseDown={handlePreHints}>
+            <Button variant="primary" onMouseDown={handlePreHints} onBlur={handleTooltipBlur}>
               <FormattedMessage id="ask-for-a-hint" />
             </Button>
           </div>
@@ -144,7 +153,7 @@ const ExerciseCloze = ({ word, handleChange }) => {
           style={{ textAlign: 'left' }}
           onMouseDown={handleTooltipClick}
         >
-          {message && <li dangerouslySetInnerHTML={formatGreenFeedbackText(word?.message)} />}
+          {message && <li dangerouslySetInnerHTML={formatGreenFeedbackText(message)} />}
           {preHints?.map(hint => (
             <li dangerouslySetInnerHTML={formatGreenFeedbackText(hint)} />
           ))}
@@ -179,6 +188,7 @@ const ExerciseCloze = ({ word, handleChange }) => {
   }
 
   const handleBlur = () => {
+    console.log('handling blur...')
     handleChange(value, word)
 
     if (!keepOpen) {
