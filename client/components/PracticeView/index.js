@@ -39,7 +39,7 @@ const PracticeView = () => {
   const { width } = useWindowDimensions()
   const snippets = useSelector(({ snippets }) => snippets)
   const { focused: story, pending } = useSelector(({ stories }) => stories)
-  const { isPaused, willPause, practiceFinished } = useSelector(({ practice }) => practice)
+  const { isPaused, willPause, practiceFinished, currentAnswers } = useSelector(({ practice }) => practice)
   const { show_review_diff } = useSelector(({ user }) => user.data.user)
   const [startModalOpen, setStartModalOpen] = useState(false)
   const intl = useIntl()
@@ -124,6 +124,7 @@ const PracticeView = () => {
         users_answer: value,
         id,
         concept,
+        hintsRequested: currentAnswers[ID]?.hintsRequested,
       },
     }
 

@@ -20,6 +20,11 @@ export const setWillPause = state => ({ type: 'SET_WILL_PAUSE', state })
 export const setIsPaused = state => ({ type: 'SET_IS_PAUSED', state })
 export const setPracticeFinished = state => ({ type: 'SET_PRACTICE_FINISHED', state })
 export const handleVoiceSampleCooldown = () => ({ type: 'HANDLE_VOICE_SAMPLE_COOLDOWN' })
+export const incrementHintRequests = (wordId, newReqAmount) => ({
+  type: 'INCREMENT_HINT_REQUESTS',
+  wordId,
+  newReqAmount,
+})
 
 const initialState = {
   previousAnswers: {},
@@ -77,6 +82,17 @@ export default (state = initialState, action) => {
         ...state,
         correctAnswerIDs: state.correctAnswerIDs.concat(action.ids),
       }
+    case 'INCREMENT_HINT_REQUESTS':
+      return {
+        ...state,
+        currentAnswers: {
+          ...state.currentAnswers,
+          [action.wordId]: {
+            ...state.currentAnswers[action.wordId],
+            hintsRequested: action.newReqAmount,
+          },
+        },
+      }
     case 'INCREMENT_ATTEMPTS':
       return {
         ...state,
@@ -110,11 +126,13 @@ export default (state = initialState, action) => {
         audio: initialState.audio,
         snippetFinished: initialState.snippetFinished,
         isNewSnippet: initialState.isNewSnippet,
+        hintRequestsNum: {},
       }
     case 'CLEAR_CURRENT_ANSWERS':
       return {
         ...state,
         currentAnswers: {},
+        hintRequestsNum: {},
       }
     case 'CLEAR_TOUCHED_IDS':
       return {
