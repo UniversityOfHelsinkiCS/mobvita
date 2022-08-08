@@ -125,8 +125,8 @@ const DefaultActivityModal = ({
               </Link>
             </div>
             <img
-              src={images.dices}
-              alt="two dices"
+              src={images.practice}
+              alt="weight"
               style={{ maxWidth: '8%', maxHeight: '8%', marginLeft: '.5em' }}
             />
           </div>
