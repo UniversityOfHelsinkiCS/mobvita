@@ -1315,5 +1315,6 @@
     "encouragements-default-2": "Поздравляем!",
     "encouragements-default-3": "Браво!",
     "enc-grammar-progress-1": "Хочешь проверить свои успехи в",
-    "enc-grammar-progress-2": "грамматике"
+    "enc-grammar-progress-2": "грамматике",
+    "no-hints-available": "Sorry, no hints available"
 }

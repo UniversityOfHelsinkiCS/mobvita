@@ -1312,5 +1312,6 @@
     "encouragements-default-2": "Onneksi olkoon!",
     "encouragements-default-3": "Hyvin tehty!",
     "enc-grammar-progress-1": "Haluaisitko seurata edistymistäsi",
-    "enc-grammar-progress-2": "kieliopissa"
+    "enc-grammar-progress-2": "kieliopissa",
+    "no-hints-available": "Sorry, no hints available"
 }

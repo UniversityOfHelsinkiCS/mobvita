@@ -13,7 +13,7 @@ const ExerciseMultipleChoice = ({ word, handleChange }) => {
   const { grade } = useSelector(state => state.user.data.user)
   const [preHints, setPreHints] = useState([])
   const [keepOpen, setKeepOpen] = useState(false)
-
+  const [emptyHintsList, setEmptyHintsList] = useState(false)
   const currentAnswer = useSelector(({ practice }) => practice.currentAnswers[word.ID])
 
   const { tested, isWrong, message } = word
@@ -68,8 +68,13 @@ const ExerciseMultipleChoice = ({ word, handleChange }) => {
   }
 
   const handlePreHints = () => {
-    setPreHints(preHints.concat(word.hints[preHints.length]))
-    setKeepOpen(true)
+    if (word.hints.length < 1) {
+      setEmptyHintsList(true)
+      setKeepOpen(true)
+    } else {
+      setPreHints(preHints.concat(word.hints[preHints.length]))
+      setKeepOpen(true)
+    }
   }
 
   const handleBlur = () => {
@@ -81,19 +86,27 @@ const ExerciseMultipleChoice = ({ word, handleChange }) => {
 
   const tooltip = (
     <div>
-      {word.message && !word.hints && (
+      {word.message && (
         <div className="tooltip-green">
           <span dangerouslySetInnerHTML={formatGreenFeedbackText(word?.message)} />
         </div>
       )}
-      {word.hints?.length > 0 && preHints.length < word.hints?.length && (
-        <div className="tooltip-green" style={{ cursor: 'pointer' }} onMouseDown={handlePreHints}>
-          <FormattedMessage id="ask-for-a-hint" />
+      {(!word.hints || word.hints.length < 1 || preHints.length < word.hints?.length) &&
+        !emptyHintsList && (
+          <div className="tooltip-green" style={{ cursor: 'pointer' }} onMouseDown={handlePreHints}>
+            <FormattedMessage id="ask-for-a-hint" />
+          </div>
+        )}
+      {emptyHintsList && (
+        <div className="tooltip-green">
+          <FormattedMessage id="no-hints-available" />
         </div>
       )}
       {preHints.length > 0 && (
         <div className="tooltip-hint">
-          {preHints.map(hint => <li dangerouslySetInnerHTML={formatGreenFeedbackText(hint)} />)}
+          {preHints.map(hint => (
+            <li dangerouslySetInnerHTML={formatGreenFeedbackText(hint)} />
+          ))}
         </div>
       )}
     </div>

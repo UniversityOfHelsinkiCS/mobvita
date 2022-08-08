@@ -1312,5 +1312,6 @@
     "encouragements-default-2": "Congratulations!",
     "encouragements-default-3": "Well done!",
     "enc-grammar-progress-1": "Would you like to review your progress on",
-    "enc-grammar-progress-2": "grammar"
+    "enc-grammar-progress-2": "grammar",
+    "no-hints-available": "Sorry, no hints available"
 }
