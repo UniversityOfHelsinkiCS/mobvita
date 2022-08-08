@@ -188,7 +188,6 @@ const ExerciseCloze = ({ word, handleChange }) => {
   }
 
   const handleBlur = () => {
-    console.log('handling blur...')
     handleChange(value, word)
 
     if (!keepOpen) {

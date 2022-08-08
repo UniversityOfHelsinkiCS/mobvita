@@ -17,6 +17,8 @@ const ExerciseMultipleChoice = ({ word, handleChange }) => {
   const [emptyHintsList, setEmptyHintsList] = useState(false)
   const [filteredHintsList, setFilteredHintsList] = useState([])
   const currentAnswer = useSelector(({ practice }) => practice.currentAnswers[word.ID])
+  const { attempt, focusedWord } = useSelector(({ practice }) => practice)
+
 
   const { tested, isWrong, message, hints } = word
   const value = currentAnswer ? currentAnswer.users_answer : ''
@@ -41,6 +43,12 @@ const ExerciseMultipleChoice = ({ word, handleChange }) => {
   }, [word])
 
   useEffect(() => {
+    if (focusedWord !== word) {
+      setShow(false)
+    }
+  }, [focusedWord])
+
+  useEffect(() => {
     setFilteredHintsList(hints?.filter(hint => hint !== message))
     setPreHints([])
   }, [message, hints])
@@ -56,6 +64,10 @@ const ExerciseMultipleChoice = ({ word, handleChange }) => {
       testString = choice
     }
   })
+
+  const handleTooltipBlur = () => {
+    setShow(false)
+  }
 
   const placeholder = '_'.repeat(maximumLength)
 
@@ -88,9 +100,9 @@ const ExerciseMultipleChoice = ({ word, handleChange }) => {
   const tooltip = (
     <div>
       {(!hints || filteredHintsList.length < 1 || preHints.length < filteredHintsList?.length) &&
-        !emptyHintsList && (
+        !emptyHintsList && attempt === 0 &&  (
           <div className="tooltip-green">
-            <Button variant="primary" onMouseDown={handlePreHints}>
+            <Button variant="primary" onMouseDown={handlePreHints} onBlur={handleTooltipBlur}>
               <FormattedMessage id="ask-for-a-hint" />
             </Button>
           </div>
