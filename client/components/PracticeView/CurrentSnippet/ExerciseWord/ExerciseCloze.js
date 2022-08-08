@@ -14,7 +14,12 @@ import {
   getWordColor,
   skillLevels,
 } from 'Utilities/common'
-import { setFocusedWord, setReferences, setExplanation } from 'Utilities/redux/practiceReducer'
+import {
+  setFocusedWord,
+  setReferences,
+  setExplanation,
+  incrementHintRequests,
+} from 'Utilities/redux/practiceReducer'
 import { getTranslationAction, setWords } from 'Utilities/redux/translationReducer'
 import { Icon } from 'semantic-ui-react'
 import { Button } from 'react-bootstrap'
@@ -30,6 +35,7 @@ const ExerciseCloze = ({ word, handleChange }) => {
   const learningLanguage = useSelector(learningLanguageSelector)
   const { resource_usage, autoSpeak } = useSelector(state => state.user.data.user)
   const currentAnswer = useSelector(({ practice }) => practice.currentAnswers[word.ID])
+  const { attempt } = useSelector(({ practice }) => practice)
   const [filteredHintsList, setFilteredHintsList] = useState([])
   const [preHints, setPreHints] = useState([])
   const [keepOpen, setKeepOpen] = useState(false)
@@ -85,6 +91,9 @@ const ExerciseCloze = ({ word, handleChange }) => {
       setEmptyHintsList(true)
       setKeepOpen(true)
     } else {
+      const newRequestNum = preHints.length + 1
+      dispatch(incrementHintRequests(wordId, newRequestNum))
+
       setPreHints(preHints.concat(filteredHintsList[preHints.length]))
       setKeepOpen(true)
     }
@@ -111,14 +120,18 @@ const ExerciseCloze = ({ word, handleChange }) => {
   }, [tested])
 
   useEffect(() => {
-    setFilteredHintsList(hints?.filter(hint => hint !== message))
-    setPreHints([])
+    if (message && !hints) {
+      setPreHints([])
+    } else {
+      setFilteredHintsList(hints?.filter(hint => hint !== message))
+      setPreHints([])
+    }
   }, [message, hints])
-
+  
   const tooltip = (
     <div>
       {(!hints || filteredHintsList.length < 1 || preHints.length < filteredHintsList?.length) &&
-        !emptyHintsList && (
+        !emptyHintsList && attempt === 0 && (
           <div className="tooltip-green">
             <Button variant="primary" onMouseDown={handlePreHints}>
               <FormattedMessage id="ask-for-a-hint" />
