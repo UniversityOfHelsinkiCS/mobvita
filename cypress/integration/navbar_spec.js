@@ -47,8 +47,7 @@ describe("via navbar", function () {
   })
 
   it("can visit groups view", function () {
-    cy.get('[data-cy=navbar-groups-dropdown]').click()
-    cy.get('[data-cy=navbar-student-groups-button]').click()
+    cy.get('[data-cy=navbar-groups-button]').click()
     cy.get('[data-cy=join-group-button]')
   })
 })
