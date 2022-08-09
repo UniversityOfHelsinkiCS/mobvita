@@ -14,6 +14,7 @@ import {
   updatePublishProgress,
   updateParticipleExer,
   updateEnableRecmd,
+  updateIsTeacher,
 } from 'Utilities/redux/userReducer'
 import { setLocale } from 'Utilities/redux/localeReducer'
 import LearningSettingsModal from '../LearningSettingsModal'
@@ -28,15 +29,17 @@ const Settings = () => {
   const { user } = useSelector(({ user }) => user.data)
   const { pending } = useSelector(({ user }) => user)
   const locale = useSelector(({ locale }) => locale)
+  const { groups } = useSelector(({ groups }) => groups)
   const dispatch = useDispatch()
   const intl = useIntl()
   const [localeDropdownOptions, setLocaleDropdownOptions] = useState([])
   const [accordionState, setAccordionState] = useState(0)
-
   const handleLocaleChange = newLocale => {
     dispatch(setLocale(newLocale)) // Sets locale in root reducer...
     if (user) dispatch(updateLocale(newLocale)) // Updates user-object
   }
+  const isTeachingAGroup = groups?.find(g => g.is_teaching)
+  const userIsAnonymous = user.email === 'anonymous_email'
 
   useEffect(() => {
     const temp = localeOptions.map(option => ({
@@ -101,7 +104,7 @@ const Settings = () => {
               active={accordionState === 1}
               content={
                 <h2 className="profile-page-setting-header">
-                  <FormattedMessage id="practice-settings" />
+                  <FormattedMessage id="user-settings-options" />
                 </h2>
               }
               index={1}
@@ -110,6 +113,53 @@ const Settings = () => {
             <Accordion.Content
               className="add-story-accordion-item-content"
               active={accordionState === 1}
+              content={
+                <div>
+                  <Divider />
+                  <div className="space-evenly" style={{ marginTop: '.5em' }}>
+                    <span style={{ marginRight: '.5em', fontSize: '18px' }}>
+                      <input
+                        type="radio"
+                        style={{ marginRight: '.75em' }}
+                        onChange={() => dispatch(updateIsTeacher(false))}
+                        checked={!user.is_teacher}
+                        disabled={isTeachingAGroup}
+                      />
+                      <span style={{ color: isTeachingAGroup ? '#D3D3D3' : '#000000' }}>
+                        <FormattedMessage id="user-role-select-student" />
+                      </span>
+                    </span>
+                    <span style={{ marginRight: '.5em', fontSize: '18px' }}>
+                      <input
+                        type="radio"
+                        style={{ marginRight: '.75em' }}
+                        onChange={() => dispatch(updateIsTeacher(true))}
+                        checked={user.is_teacher}
+                        disabled={userIsAnonymous}
+                      />
+                      <span style={{ color: userIsAnonymous ? '#D3D3D3' : '#000000' }}>
+                        <FormattedMessage id="user-role-select-teacher" />
+                      </span>
+                    </span>
+                  </div>
+                </div>
+              }
+            />
+          </Menu.Item>
+          <Menu.Item className="add-story-accordion-item">
+            <Accordion.Title
+              active={accordionState === 2}
+              content={
+                <h2 className="profile-page-setting-header">
+                  <FormattedMessage id="practice-settings" />
+                </h2>
+              }
+              index={2}
+              onClick={handleClick}
+            />
+            <Accordion.Content
+              className="add-story-accordion-item-content"
+              active={accordionState === 2}
               content={
                 <div className="flex-col gap-row-nm">
                   <Divider />
@@ -156,18 +206,18 @@ const Settings = () => {
           </Menu.Item>
           <Menu.Item className="add-story-accordion-item">
             <Accordion.Title
-              active={accordionState === 2}
+              active={accordionState === 3}
               content={
                 <h2 className="profile-page-setting-header">
                   <FormattedMessage id="Flashcards" />
                 </h2>
               }
-              index={2}
+              index={3}
               onClick={handleClick}
             />
             <Accordion.Content
               className="add-story-accordion-item-content"
-              active={accordionState === 2}
+              active={accordionState === 3}
               content={
                 <div>
                   <Divider />
@@ -188,18 +238,18 @@ const Settings = () => {
           </Menu.Item>
           <Menu.Item className="add-story-accordion-item">
             <Accordion.Title
-              active={accordionState === 3}
+              active={accordionState === 4}
               content={
                 <h2 className="profile-page-setting-header">
                   <FormattedMessage id="audio-settings" />
                 </h2>
               }
-              index={3}
+              index={4}
               onClick={handleClick}
             />
             <Accordion.Content
               className="add-story-accordion-item-content"
-              active={accordionState === 3}
+              active={accordionState === 4}
               content={
                 <div>
                   <Divider />
@@ -229,18 +279,18 @@ const Settings = () => {
           </Menu.Item>
           <Menu.Item className="add-story-accordion-item">
             <Accordion.Title
-              active={accordionState === 4}
+              active={accordionState === 5}
               content={
                 <h2 className="profile-page-setting-header">
                   <FormattedMessage id="Privacy" />
                 </h2>
               }
-              index={4}
+              index={5}
               onClick={handleClick}
             />
             <Accordion.Content
               className="add-story-accordion-item-content"
-              active={accordionState === 4}
+              active={accordionState === 5}
               content={
                 <div>
                   <Divider />
@@ -256,18 +306,18 @@ const Settings = () => {
           </Menu.Item>
           <Menu.Item className="add-story-accordion-item">
             <Accordion.Title
-              active={accordionState === 5}
+              active={accordionState === 6}
               content={
                 <h2 className="profile-page-setting-header">
                   <FormattedMessage id="notification-settings" />
                 </h2>
               }
-              index={5}
+              index={6}
               onClick={handleClick}
             />
             <Accordion.Content
               className="add-story-accordion-item-content"
-              active={accordionState === 5}
+              active={accordionState === 6}
               content={
                 <div>
                   <Divider />
