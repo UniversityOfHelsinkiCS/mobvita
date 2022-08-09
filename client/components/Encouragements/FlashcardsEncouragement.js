@@ -47,7 +47,12 @@ const FlashcardsEncouragement = ({
         if (prevBlueCards) {
           initList = initList.concat(
             <div className="pt-md">
-              <div className="flex space-between" style={{ alignItems: 'center' }}>
+              <div className="flex" style={{ alignItems: 'center' }}>
+                <img
+                  src={images.flashcards}
+                  alt="flashcard batch"
+                  style={{ maxWidth: '8%', maxHeight: '8%', marginRight: '1em' }}
+                />
                 <div>
                   <FormattedHTMLMessage
                     id="previous-stories-blue-cards"
@@ -61,11 +66,6 @@ const FlashcardsEncouragement = ({
                     <FormattedMessage id="flashcards-review" />
                   </Link>
                 </div>
-                <img
-                  src={images.flashcards}
-                  alt="flashcard batch"
-                  style={{ maxWidth: '8%', maxHeight: '8%', marginLeft: '.5em' }}
-                />
               </div>
               <hr />
             </div>
@@ -87,7 +87,12 @@ const FlashcardsEncouragement = ({
 
       initList = initList.concat(
         <div className="pt-md">
-          <div className="flex space-between" style={{ alignItems: 'center' }}>
+          <div className="flex" style={{ alignItems: 'center' }}>
+            <img
+              src={images.flashcards}
+              alt="batch of flashcards"
+              style={{ maxWidth: '8%', maxHeight: '8%', marginRight: '1em' }}
+            />
             <div>
               <FormattedHTMLMessage
                 id="words-seen-encouragement"
@@ -99,11 +104,6 @@ const FlashcardsEncouragement = ({
               </Link>
               ?
             </div>
-            <img
-              src={images.flashcards}
-              alt="batch of flashcards"
-              style={{ maxWidth: '8%', maxHeight: '8%', marginLeft: '.5em' }}
-            />
           </div>
           <hr />
         </div>
@@ -111,7 +111,12 @@ const FlashcardsEncouragement = ({
 
       initList = initList.concat(
         <div className="pt-md">
-          <div className="flex space-between" style={{ alignItems: 'center' }}>
+          <div className="flex" style={{ alignItems: 'center' }}>
+            <img
+              src={images.barChart}
+              alt="bar chart"
+              style={{ maxWidth: '8%', maxHeight: '8%', marginRight: '1em' }}
+            />
             <div>
               <FormattedMessage id="Would you like to review" />
               &nbsp;
@@ -120,11 +125,6 @@ const FlashcardsEncouragement = ({
               </Link>
               ?
             </div>
-            <img
-              src={images.barChart}
-              alt="bar chart"
-              style={{ maxWidth: '8%', maxHeight: '8%', marginLeft: '.5em' }}
-            />
           </div>
           <hr />
         </div>
@@ -158,7 +158,12 @@ const FlashcardsEncouragement = ({
       if (latestStories.length > 0) {
         initList = initList.concat(
           <div className="pt-md">
-            <div className="flex space-between" style={{ alignItems: 'center' }}>
+            <div className="flex" style={{ alignItems: 'center' }}>
+              <img
+                src={images.magnifyingGlass}
+                alt="magnifying glass"
+                style={{ maxWidth: '8%', maxHeight: '8%', marginLeft: '1em' }}
+              />
               <div>
                 <FormattedMessage id="list-of-recent-stories" />
                 <ul>
@@ -169,11 +174,6 @@ const FlashcardsEncouragement = ({
                   ))}
                 </ul>
               </div>
-              <img
-                src={images.magnifyingGlass}
-                alt="magnifying glass"
-                style={{ maxWidth: '8%', maxHeight: '8%', marginLeft: '.5em' }}
-              />
             </div>
             <hr />
           </div>
@@ -181,7 +181,12 @@ const FlashcardsEncouragement = ({
       }
       initList = initList.concat(
         <div className="pt-md">
-          <div className="flex space-between" style={{ alignItems: 'center' }}>
+          <div className="flex" style={{ alignItems: 'center' }}>
+            <img
+              src={images.practice}
+              alt="dumbbell"
+              style={{ maxWidth: '8%', maxHeight: '8%', marginLeft: '1em' }}
+            />
             <div>
               <FormattedMessage id="go-back-to-library" />
               &nbsp;
@@ -189,11 +194,6 @@ const FlashcardsEncouragement = ({
                 <FormattedMessage id="go-back-to-library-2" />
               </Link>
             </div>
-            <img
-                src={images.practice}
-                alt="dumbbell"
-                style={{ maxWidth: '8%', maxHeight: '8%', marginLeft: '.5em' }}
-              />
           </div>
           <hr />
         </div>
@@ -239,13 +239,13 @@ const FlashcardsEncouragement = ({
           )}
           {((correctAnswers === deckSize && blueFlashcards) ||
             (!blueFlashcards && correctAnswers)) > 0 ? (
-            <div className="encouragement-picture pt-sm">
-                <img
-                src={images.encTrophy}
-                alt="encouraging trophy"
-                style={{ maxWidth: '25%', maxHeight: '25%' }}
-              />
-              </div>
+              <div className="encouragement-picture pt-sm">
+              <img
+                  src={images.encTrophy}
+                  alt="encouraging trophy"
+                  style={{ maxWidth: '25%', maxHeight: '25%' }}
+                />
+            </div>
           ) : (
             <div className="encouragement-picture pt-sm">
               <img

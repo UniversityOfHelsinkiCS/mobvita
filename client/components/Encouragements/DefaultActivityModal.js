@@ -41,7 +41,12 @@ const DefaultActivityModal = ({
     if (userRanking) {
       initList = initList.concat(
         <div className="pt-md">
-          <div className="flex space-between" style={{ alignItems: 'center' }}>
+          <div className="flex" style={{ alignItems: 'center' }}>
+            <img
+              src={images.encTrophy}
+              alt="encouraging trophy"
+              style={{ maxWidth: '8%', maxHeight: '8%', marginRight: '1em' }}
+            />
             <div>
               <FormattedHTMLMessage
                 id="leaderboard-ranking-encouragement"
@@ -55,11 +60,6 @@ const DefaultActivityModal = ({
               <br />
               <FormattedMessage id="practice-makes-perfect" />
             </div>
-            <img
-              src={images.encTrophy}
-              alt="encouraging trophy"
-              style={{ maxWidth: '8%', maxHeight: '8%', marginLeft: '.5em' }}
-            />
           </div>
           <hr />
         </div>
@@ -68,7 +68,12 @@ const DefaultActivityModal = ({
     if (sharedStory) {
       initList = initList.concat(
         <div className="pt-md">
-          <div className="flex space-between" style={{ alignItems: 'center' }}>
+          <div className="flex" style={{ alignItems: 'center' }}>
+            <img
+              src={images.exclamationMark}
+              alt="exclamation mark"
+              style={{ maxWidth: '8%', maxHeight: '8%', marginRight: '1em' }}
+            />
             <div>
               <FormattedHTMLMessage id="controlled-story-reminder" />
               <br />
@@ -76,11 +81,6 @@ const DefaultActivityModal = ({
                 {sharedStory.title}
               </Link>
             </div>
-            <img
-              src={images.exclamationMark}
-              alt="exclamation mark"
-              style={{ maxWidth: '8%', maxHeight: '8%', marginLeft: '.5em' }}
-            />
           </div>
           <hr />
         </div>
@@ -89,7 +89,12 @@ const DefaultActivityModal = ({
     if (prevBlueCards) {
       initList = initList.concat(
         <div className="pt-md">
-          <div className="flex space-between" style={{ alignItems: 'center' }}>
+          <div className="flex" style={{ alignItems: 'center' }}>
+            <img
+              src={images.flashcards}
+              alt="flashcard batch"
+              style={{ maxWidth: '8%', maxHeight: '8%', marginRight: '1em' }}
+            />
             <div>
               <FormattedHTMLMessage
                 id="previous-stories-blue-cards"
@@ -103,11 +108,6 @@ const DefaultActivityModal = ({
                 <FormattedMessage id="flashcards-review" />
               </Link>
             </div>
-            <img
-              src={images.flashcards}
-              alt="flashcard batch"
-              style={{ maxWidth: '8%', maxHeight: '8%', marginLeft: '.5em' }}
-            />
           </div>
           <hr />
         </div>
@@ -116,7 +116,12 @@ const DefaultActivityModal = ({
     if (latestIncompleteStory && enable_recmd) {
       initList = initList.concat(
         <div className="pt-md">
-          <div className="flex space-between" style={{ alignItems: 'center' }}>
+          <div className="flex" style={{ alignItems: 'center' }}>
+            <img
+              src={images.practice}
+              alt="weight"
+              style={{ maxWidth: '8%', maxHeight: '8%', marginRight: '1em' }}
+            />
             <div>
               <FormattedMessage id="continue-last-story-left-in-the-middle" />
               <br />
@@ -124,11 +129,6 @@ const DefaultActivityModal = ({
                 {latestIncompleteStory.title}
               </Link>
             </div>
-            <img
-              src={images.practice}
-              alt="weight"
-              style={{ maxWidth: '8%', maxHeight: '8%', marginLeft: '.5em' }}
-            />
           </div>
           <hr />
         </div>
@@ -137,7 +137,12 @@ const DefaultActivityModal = ({
     if (storiesToReview.length > 0 && enable_recmd) {
       initList = initList.concat(
         <div className="pt-md">
-          <div className="flex space-between" style={{ alignItems: 'center' }}>
+          <div className="flex" style={{ alignItems: 'center' }}>
+            <img
+              src={images.magnifyingGlass}
+              alt="magnifying glass"
+              style={{ maxWidth: '8%', maxHeight: '8%', marginRight: '1em' }}
+            />
             <div>
               <FormattedMessage id="review-recent-stories" />
 
@@ -149,11 +154,6 @@ const DefaultActivityModal = ({
                 ))}
               </ul>
             </div>
-            <img
-              src={images.magnifyingGlass}
-              alt="magnifying glass"
-              style={{ maxWidth: '8%', maxHeight: '8%', marginLeft: '.5em' }}
-            />
           </div>
           <hr />
         </div>
