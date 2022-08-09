@@ -87,27 +87,45 @@ const FlashcardsEncouragement = ({
 
       initList = initList.concat(
         <div className="pt-md">
-          <FormattedHTMLMessage
-            id="words-seen-encouragement"
-            values={{ vocabulary_seen: vocabularySeen }}
-          />
-          &nbsp;
-          <Link to="/flashcards">
-            <FormattedMessage id="flashcards-review" />
-          </Link>
-          ?
+          <div className="flex space-between" style={{ alignItems: 'center' }}>
+            <div>
+              <FormattedHTMLMessage
+                id="words-seen-encouragement"
+                values={{ vocabulary_seen: vocabularySeen }}
+              />
+              &nbsp;
+              <Link to="/flashcards">
+                <FormattedMessage id="flashcards-review" />
+              </Link>
+              ?
+            </div>
+            <img
+              src={images.flashcards}
+              alt="batch of flashcards"
+              style={{ maxWidth: '8%', maxHeight: '8%', marginLeft: '.5em' }}
+            />
+          </div>
           <hr />
         </div>
       )
 
       initList = initList.concat(
         <div className="pt-md">
-          <FormattedMessage id="Would you like to review" />
-          &nbsp;
-          <Link to="/profile/progress/flashcards">
-            <FormattedMessage id="review-progress" />
-          </Link>
-          ?
+          <div className="flex space-between" style={{ alignItems: 'center' }}>
+            <div>
+              <FormattedMessage id="Would you like to review" />
+              &nbsp;
+              <Link to="/profile/progress/flashcards">
+                <FormattedMessage id="review-progress" />
+              </Link>
+              ?
+            </div>
+            <img
+              src={images.barChart}
+              alt="bar chart"
+              style={{ maxWidth: '8%', maxHeight: '8%', marginLeft: '.5em' }}
+            />
+          </div>
           <hr />
         </div>
       )
@@ -163,12 +181,19 @@ const FlashcardsEncouragement = ({
       }
       initList = initList.concat(
         <div className="pt-md">
-          <div style={{ color: '#000000' }}>
-            <FormattedMessage id="go-back-to-library" />
-            &nbsp;
-            <Link to="/library">
-              <FormattedMessage id="go-back-to-library-2" />
-            </Link>
+          <div className="flex space-between" style={{ alignItems: 'center' }}>
+            <div>
+              <FormattedMessage id="go-back-to-library" />
+              &nbsp;
+              <Link to="/library">
+                <FormattedMessage id="go-back-to-library-2" />
+              </Link>
+            </div>
+            <img
+                src={images.practice}
+                alt="dumbbell"
+                style={{ maxWidth: '8%', maxHeight: '8%', marginLeft: '.5em' }}
+              />
           </div>
           <hr />
         </div>

@@ -148,15 +148,24 @@ const ExercisesEncouragementModal = ({
     if (vocabularySeen > 0 && enable_recmd) {
       initList = initList.concat(
         <div className="pt-md">
-          <FormattedHTMLMessage
-            id="words-seen-encouragement"
-            values={{ vocabulary_seen: vocabularySeen }}
-          />
-          &nbsp;
-          <Link to="/flashcards">
-            <FormattedMessage id="flashcards-review" />
-          </Link>
-          ?
+          <div className="flex space-between" style={{ alignItems: 'center' }}>
+            <div>
+              <FormattedHTMLMessage
+                id="words-seen-encouragement"
+                values={{ vocabulary_seen: vocabularySeen }}
+              />
+              &nbsp;
+              <Link to="/flashcards">
+                <FormattedMessage id="flashcards-review" />
+              </Link>
+              ?
+            </div>
+            <img
+              src={images.flashcards}
+              alt="flashcards"
+              style={{ maxWidth: '8%', maxHeight: '8%', marginLeft: '.5em' }}
+            />
+          </div>
           <hr />
         </div>
       )
@@ -165,15 +174,22 @@ const ExercisesEncouragementModal = ({
     if (newVocabulary > 0 && enable_recmd) {
       initList = initList.concat(
         <div className="pt-md">
-          <FormattedHTMLMessage
-            id="words-interacted-encouragement"
-            values={{ nWords: newVocabulary }}
+          <div className="flex space-between" style={{ alignItems: 'center' }}>
+            <FormattedHTMLMessage
+              id="words-interacted-encouragement"
+              values={{ nWords: newVocabulary }}
+            />
+            &nbsp;
+            <Link to="/profile/progress">
+              <FormattedMessage id="review-progress" />
+            </Link>
+            ?
+          </div>
+          <img
+            src={images.barChart}
+            alt="bar chart"
+            style={{ maxWidth: '8%', maxHeight: '8%', marginLeft: '.5em' }}
           />
-          &nbsp;
-          <Link to="/profile/progress">
-            <FormattedMessage id="review-progress" />
-          </Link>
-          ?
           <hr />
         </div>
       )
@@ -181,12 +197,21 @@ const ExercisesEncouragementModal = ({
 
     initList = initList.concat(
       <div className="pt-md">
-        <FormattedMessage id="enc-grammar-progress-1" />
-        &nbsp;
-        <Link to="/profile/progress/grammar">
-          <FormattedMessage id="enc-grammar-progress-2" />
-        </Link>
-        ?
+        <div className="flex space-between" style={{ alignItems: 'center' }}>
+          <div>
+            <FormattedMessage id="enc-grammar-progress-1" />
+            &nbsp;
+            <Link to="/profile/progress/grammar">
+              <FormattedMessage id="enc-grammar-progress-2" />
+            </Link>
+            ?
+          </div>
+          <img
+            src={images.beeHive}
+            alt="beehive"
+            style={{ maxWidth: '8%', maxHeight: '8%', marginLeft: '.5em' }}
+          />
+        </div>
         <hr />
       </div>
     )
