@@ -285,28 +285,38 @@ const ExercisesEncouragementModal = ({
       <Modal.Content>
         <div className="encouragement" style={{ padding: '1.5rem' }}>
           <div>
-            <div
-              className="header-4"
-              style={{
-                marginBottom: '1rem',
-                fontWeight: 500,
-              }}
-            >
-              <FormattedMessage
-                id={
-                  notFirst ? 'story-completed-encouragement' : 'first-story-covered-encouragement'
-                }
-              />
-            </div>
-            {storiesCovered > 0 && (
+            <div className="flex space-evenly" style={{ marginTop: '.75em' }}>
               <div>
-                {intl.formatMessage(
-                  { id: 'stories-covered-encouragement' },
-                  { stories: storiesCovered }
+                <div
+                  className="header-2"
+                  style={{
+                    marginBottom: '1em',
+                    fontWeight: 500,
+                  }}
+                >
+                  <FormattedMessage
+                    id={
+                      notFirst
+                        ? 'story-completed-encouragement'
+                        : 'first-story-covered-encouragement'
+                    }
+                  />
+                </div>
+                {storiesCovered > 0 && (
+                  <div>
+                    {intl.formatMessage(
+                      { id: 'stories-covered-encouragement' },
+                      { stories: storiesCovered }
+                    )}
+                  </div>
                 )}
               </div>
-            )}
-            <hr />
+              <img
+                src={images.fireworks}
+                alt="encouraging fireworks"
+                style={{ maxWidth: '20%', maxHeight: '20%' }}
+              />
+            </div>
             {recmdList.map((recommendation, index) => index < upperBound && recommendation)}
             {recmdList.length > upperBound && (
               <Button
@@ -316,13 +326,6 @@ const ExercisesEncouragementModal = ({
                 <FormattedMessage id="show-more-recommendations" />
               </Button>
             )}
-          </div>
-          <div className="encouragement-picture pt-sm">
-            <img
-              src={images.fireworks}
-              alt="encouraging fireworks"
-              style={{ maxWidth: '25%', maxHeight: '25%' }}
-            />
           </div>
           <div className="flex pt-lg">
             <Form.Group>
