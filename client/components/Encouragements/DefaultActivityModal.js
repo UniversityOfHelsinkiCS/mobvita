@@ -256,31 +256,37 @@ const DefaultActivityModal = ({
     >
       <Modal.Content>
         <div className="encouragement" style={{ padding: '1.5rem' }}>
-          <div>
-            <div className="col-flex" style={{ marginTop: '.5em' }}>
+          <>
+            <div className="col-flex" style={{ marginTop: '.75em' }}>
               {welcomeBack && (
-                <>
-                  <div
-                    className="header-2"
-                    style={{
-                      marginBottom: '1.5rem',
-                      fontWeight: 500,
-                    }}
-                  >
-                    {intl.formatMessage({ id: 'welcome-back-encouragement' }, { username })}
+                <div className="flex space-evenly">
+                  <div>
+                    <div
+                      className="header-2"
+                      style={{
+                        marginBottom: '1em',
+                        fontWeight: 500,
+                      }}
+                    >
+                      {intl.formatMessage({ id: 'welcome-back-encouragement' }, { username })}
+                    </div>
+                    <>
+                      {storiesCovered > 0 && (
+                        <div style={{ marginBottom: '.5em' }}>
+                          {intl.formatMessage(
+                            { id: 'stories-covered-encouragement' },
+                            { stories: storiesCovered }
+                          )}
+                        </div>
+                      )}
+                    </>
                   </div>
-                  <>
-                    {storiesCovered > 0 && (
-                      <div>
-                        {intl.formatMessage(
-                          { id: 'stories-covered-encouragement' },
-                          { stories: storiesCovered }
-                        )}
-                      </div>
-                    )}
-                  </>
-                  <hr />
-                </>
+                  <img
+                    src={images.balloons}
+                    alt="encouraging balloons"
+                    style={{ maxWidth: '25%', maxHeight: '25%', marginBottom: '.5em' }}
+                  />
+                </div>
               )}
               {recmdList.map((recommendation, index) => index < upperBound && recommendation)}
               {recmdList.length > upperBound && (
@@ -291,13 +297,6 @@ const DefaultActivityModal = ({
                   <FormattedMessage id="show-more-recommendations" />
                 </Button>
               )}
-            </div>
-            <div className="encouragement-picture pt-sm">
-              <img
-                src={images.balloons}
-                alt="encouraging balloons"
-                style={{ maxWidth: '25%', maxHeight: '25%' }}
-              />
             </div>
             <div className="flex pt-lg">
               <Form.Group>
@@ -318,7 +317,7 @@ const DefaultActivityModal = ({
                 trigger={<Icon style={{ marginLeft: '0.5em' }} name="info circle" color="grey" />}
               />
             </div>
-          </div>
+          </>
         </div>
       </Modal.Content>
     </Modal>
