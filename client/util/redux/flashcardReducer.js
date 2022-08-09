@@ -101,7 +101,6 @@ export default (state = initialState, action) => {
         pending: false,
         correctAnswers: 0,
         totalAnswers: 0,
-        storyBlueCards: [],
         creditableWordsNum: 0,
       }
     case 'GET_FLASHCARDS_FAILURE':
