@@ -42,10 +42,10 @@ export default function NavBar() {
   const smallWindow = useWindowDimensions().width < 730
   const intl = useIntl()
   const learningLanguage = useSelector(learningLanguageSelector)
-
   const handleEloClick = () => {
     history.push('/profile/progress')
   }
+  const isTeacher = user?.user.is_teacher
 
   const signOut = () => {
     dispatch(logout())
@@ -146,26 +146,14 @@ export default function NavBar() {
                       <FormattedMessage id="Flashcards" />
                     </Navbar.Brand>
                   </Link>
-                  <NavDropdown
-                    data-cy="navbar-groups-dropdown"
-                    title={
-                      <Navbar.Brand className="navbar-dropdown-text">
-                        <FormattedMessage id="groups" />
-                      </Navbar.Brand>
-                    }
+                  <Link
+                    data-cy="navbar-groups-button"
+                    to={isTeacher ? '/groups/teacher' : '/groups/student'}
                   >
-                    <NavDropdown.Item
-                      data-cy="navbar-student-groups-button"
-                      as={Link}
-                      to="/groups/student"
-                    >
-                      <FormattedMessage id="Groups-for-students" />
-                    </NavDropdown.Item>
-                    <NavDropdown.Divider />
-                    <NavDropdown.Item as={Link} to="/groups/teacher">
-                      <FormattedMessage id="Groups-for-teachers" />
-                    </NavDropdown.Item>
-                  </NavDropdown>
+                    <Navbar.Brand className="navbar-text-item">
+                      <FormattedMessage id="groups" />
+                    </Navbar.Brand>
+                  </Link>
                 </>
               )}
             </div>
