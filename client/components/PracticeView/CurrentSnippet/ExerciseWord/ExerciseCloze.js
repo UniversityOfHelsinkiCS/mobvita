@@ -153,10 +153,12 @@ const ExerciseCloze = ({ word, handleChange }) => {
           style={{ textAlign: 'left' }}
           onMouseDown={handleTooltipClick}
         >
-          {message && <li dangerouslySetInnerHTML={formatGreenFeedbackText(message)} />}
-          {preHints?.map(hint => (
-            <li dangerouslySetInnerHTML={formatGreenFeedbackText(hint)} />
-          ))}
+          <ul>
+            {message && <li dangerouslySetInnerHTML={formatGreenFeedbackText(message)} />}
+            {preHints?.map(hint => (
+              <li dangerouslySetInnerHTML={formatGreenFeedbackText(hint)} />
+            ))}
+          </ul>
           {ref && (
             <Icon name="external" style={{ alignSelf: 'flex-start', marginLeft: '0.5rem' }} />
           )}

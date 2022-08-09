@@ -109,10 +109,12 @@ const ExerciseMultipleChoice = ({ word, handleChange }) => {
         )}{' '}
       {(preHints?.length > 0 || message) && (
         <div className="tooltip-hint" style={{ textAlign: 'left' }}>
-          {message && <li dangerouslySetInnerHTML={formatGreenFeedbackText(word?.message)} />}
-          {preHints?.map(hint => (
-            <li dangerouslySetInnerHTML={formatGreenFeedbackText(hint)} />
-          ))}
+          <ul>
+            {message && <li dangerouslySetInnerHTML={formatGreenFeedbackText(word?.message)} />}
+            {preHints?.map(hint => (
+              <li dangerouslySetInnerHTML={formatGreenFeedbackText(hint)} />
+            ))}
+          </ul>
         </div>
       )}
       {emptyHintsList && (
