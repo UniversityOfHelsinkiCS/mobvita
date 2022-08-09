@@ -255,11 +255,11 @@ const DefaultActivityModal = ({
       onClose={closeModal}
     >
       <Modal.Content>
-        <div className="encouragement" style={{ padding: '1.5rem' }}>
+        <div className="encouragement" style={{ padding: '1.5em' }}>
           <>
             <div className="col-flex" style={{ marginTop: '.75em' }}>
               {welcomeBack && (
-                <div className="flex space-evenly">
+                <div className="flex">
                   <div>
                     <div
                       className="header-2"
@@ -284,7 +284,12 @@ const DefaultActivityModal = ({
                   <img
                     src={images.balloons}
                     alt="encouraging balloons"
-                    style={{ maxWidth: '25%', maxHeight: '25%', marginBottom: '.5em' }}
+                    style={{
+                      maxWidth: '25%',
+                      maxHeight: '25%',
+                      marginBottom: '.5em',
+                      marginLeft: 'auto',
+                    }}
                   />
                 </div>
               )}

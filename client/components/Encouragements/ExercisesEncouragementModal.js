@@ -285,7 +285,7 @@ const ExercisesEncouragementModal = ({
       <Modal.Content>
         <div className="encouragement" style={{ padding: '1.5rem' }}>
           <div>
-            <div className="flex space-evenly" style={{ marginTop: '.75em' }}>
+            <div className="flex" style={{ marginTop: '.75em' }}>
               <div>
                 <div
                   className="header-2"
@@ -314,7 +314,7 @@ const ExercisesEncouragementModal = ({
               <img
                 src={images.fireworks}
                 alt="encouraging fireworks"
-                style={{ maxWidth: '20%', maxHeight: '20%' }}
+                style={{ maxWidth: '20%', maxHeight: '20%', marginLeft: 'auto' }}
               />
             </div>
             {recmdList.map((recommendation, index) => index < upperBound && recommendation)}
