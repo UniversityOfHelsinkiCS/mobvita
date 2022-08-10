@@ -79,7 +79,15 @@ export const unshareStory = (groupId, storyId) => {
   return callBuilder(route, prefix, 'post', {})
 }
 
-export const addEditStoryAnnotation = (storyId, startId, endId, annotation, mode, category) => {
+export const addEditStoryAnnotation = (
+  storyId,
+  startId,
+  endId,
+  annotation,
+  mode,
+  category,
+  thread_id,
+) => {
   const route = `/stories/${storyId}/annotate`
   const prefix = 'ADD_OR_EDIT_STORY_ANNOTATION'
   return callBuilder(route, prefix, 'post', {
@@ -89,6 +97,7 @@ export const addEditStoryAnnotation = (storyId, startId, endId, annotation, mode
     annotation,
     user_mode: mode,
     category,
+    thread_id,
   })
 }
 

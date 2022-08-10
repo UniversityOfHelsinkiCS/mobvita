@@ -74,6 +74,7 @@ const FocusedView = ({ focusedSpan }) => {
 
   const handleAnnotationSave = async () => {
     if (focusedSpan) {
+      console.log('FOCUSED SPAN ', focusedSpan)
       await dispatch(
         addEditStoryAnnotation(
           storyId,
@@ -81,10 +82,12 @@ const FocusedView = ({ focusedSpan }) => {
           focusedSpan.endId,
           annotationText.trim(),
           mode,
-          category
+          category,
+          focusedSpan.annotationTexts[0].thread_id
         )
       )
     } else {
+      console.log('candidates ', annotationCandidates)
       await dispatch(
         addEditStoryAnnotation(
           storyId,

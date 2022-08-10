@@ -30,7 +30,7 @@ export const setAnnotations = words => {
       currentSpan.endId = word.annotation[0].end_token_id
       currentSpan.annotationString += word.surface
       const annotationTexts = word.annotation.map(e => {
-        return { text: e.annotation, username: e.username, uid: e.uid }
+        return { text: e.annotation, username: e.username, uid: e.uid, thread_id: e.thread_id }
       })
 
       currentSpan.annotationTexts = annotationTexts
@@ -132,7 +132,6 @@ export default (state = initialState, action) => {
         pending: false,
       }
     case 'GET_ALL_ANNOTATIONS_SUCCESS':
-      console.log('ACTIONS RES ', action.response)
       return {
         ...state,
         pending: false,
