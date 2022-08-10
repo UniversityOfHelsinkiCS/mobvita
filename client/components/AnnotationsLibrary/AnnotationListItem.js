@@ -27,6 +27,7 @@ const AnnotationListItem = ({ annotationItem, annotationsList, setAnnotationsLis
     category,
     story_id,
     story_title,
+    name,
   } = annotationItem
 
   const handleDelete = async () => {
@@ -50,9 +51,12 @@ const AnnotationListItem = ({ annotationItem, annotationsList, setAnnotationsLis
                 <h5 className="annotation-item-text" style={{ color: '#000000' }}>
                   {annotated_text}
                 </h5>
-                <div>
+                <div className="flex" style={{ alignItems: 'center' }}>
+                  <h5 className="annotation-item-text" style={{ color: '#000000', marginRight: '.5em' }}>
+                    {name}
+                  </h5>
                   {category && (
-                    <div className={getCategoryColor(category)} style={{ marginRight: '0.5em' }}>
+                    <div className={getCategoryColor(category)} style={{ marginRight: '.5em', marginBottom: '.5em' }}>
                       <FormattedMessage id={`notes-${category}`} />
                     </div>
                   )}
