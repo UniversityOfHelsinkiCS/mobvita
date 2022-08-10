@@ -86,6 +86,7 @@ export const addEditStoryAnnotation = (
   annotation,
   mode,
   category,
+  annotationName,
   thread_id,
 ) => {
   const route = `/stories/${storyId}/annotate`
@@ -97,6 +98,7 @@ export const addEditStoryAnnotation = (
     annotation,
     user_mode: mode,
     category,
+    name: annotationName,
     thread_id,
   })
 }

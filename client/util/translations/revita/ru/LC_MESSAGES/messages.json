@@ -1317,5 +1317,6 @@
     "enc-grammar-progress-1": "Хочешь проверить свои успехи в",
     "enc-grammar-progress-2": "грамматике",
     "no-hints-available": "Sorry, no hints available",
-    "user-settings-options": "User settings"
+    "user-settings-options": "User settings",
+    "annotation-name": "Note name (optional)"
 }

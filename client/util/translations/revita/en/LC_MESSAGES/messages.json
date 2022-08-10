@@ -1314,5 +1314,6 @@
     "enc-grammar-progress-1": "Would you like to review your progress on",
     "enc-grammar-progress-2": "grammar",
     "no-hints-available": "Sorry, no hints available",
-    "user-settings-options": "User settings"
+    "user-settings-options": "User settings",
+    "annotation-name": "Note name (optional)"
 }

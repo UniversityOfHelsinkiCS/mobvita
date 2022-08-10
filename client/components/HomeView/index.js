@@ -154,7 +154,7 @@ const HomeView = () => {
     dispatch(getGroups())
   }, [])
 
-  console.log('USER ', userData)
+  // console.log('USER ', userData)
 
   return (
     <div className="cont-tall cont flex-col auto gap-row-sm pt-lg blue-bg">

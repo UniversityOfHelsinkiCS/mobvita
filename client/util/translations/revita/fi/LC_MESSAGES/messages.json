@@ -1314,5 +1314,6 @@
     "enc-grammar-progress-1": "Haluaisitko seurata edistymistäsi",
     "enc-grammar-progress-2": "kieliopissa",
     "no-hints-available": "Sorry, no hints available",
-    "user-settings-options": "Käyttäjäasetukset"
+    "user-settings-options": "Käyttäjäasetukset",
+    "annotation-name": "Muistiinpanon nimi (vapaavalintainen)"
 }

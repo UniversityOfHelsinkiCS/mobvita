@@ -669,5 +669,6 @@
     "enc-grammar-progress-1": "您是否希望回顾一下",
     "enc-grammar-progress-2": "语法",
     "no-hints-available": "Sorry, no hints available",
-    "user-settings-options": "User settings"
+    "user-settings-options": "User settings",
+    "annotation-name": "Note name (optional)"
 }

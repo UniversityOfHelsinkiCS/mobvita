@@ -40,6 +40,7 @@ const AnnotationTexts = ({
   return (
     <div>
       {focusedSpan?.annotationTexts.map(a => (
+        console.log(a),
         <div
           key={a.uid}
           className={`annotation-item ${
@@ -63,7 +64,7 @@ const AnnotationTexts = ({
                     <Button
                       size="sm"
                       variant="outline-secondary"
-                      onClick={() => handleEditButtonClick(a.text)}
+                      onClick={() => handleEditButtonClick(a.text, a.name)}
                       style={{ marginRight: '1em' }}
                     >
                       <Icon name="pencil alternate" />

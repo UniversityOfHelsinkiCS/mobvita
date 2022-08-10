@@ -23,6 +23,8 @@ const AnnotationsLibrary = () => {
     }
   }, [allAnnotations])
 
+  console.log('annotations ', allAnnotations)
+
   function rowRenderer({ key, index, style }) {
     return (
       <div

@@ -16,6 +16,8 @@ const AnnotationForm = ({
   getCategoryColor,
   category,
   setCategory,
+  annotationName,
+  setAnnotationName
 }) => {
   const intl = useIntl()
   const dispatch = useDispatch()
@@ -58,6 +60,15 @@ const AnnotationForm = ({
     <div>
       <Form>
         <div className="row-flex" style={{ marginBottom: '.5em' }}>
+          <Form.Input
+            className="annotation-name-input"
+            type="text"
+            value={annotationName}
+            onChange={(_, { value }) => setAnnotationName(value)}
+            placeholder={intl.formatMessage({ id: 'annotation-name' })}
+          />
+        </div>
+        <div className="row-flex" style={{ marginBottom: '.5em' }}>
           <span style={{ marginRight: '.5em' }}>
             <FormattedMessage id="Category" />:{' '}
           </span>
@@ -95,7 +106,7 @@ const AnnotationForm = ({
         size="sm"
         onClick={handleAnnotationSave}
         style={{ marginLeft: '1em' }}
-        disabled={annotationText.length < 1 || consistsOfOnlyWhitespace(annotationText)}
+        disabled={annotationText?.length < 1 || consistsOfOnlyWhitespace(annotationText)}
         data-cy="save-annotation-button"
       >
         <FormattedMessage id="Save" />

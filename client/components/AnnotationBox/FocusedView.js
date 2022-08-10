@@ -40,6 +40,7 @@ const FocusedView = ({ focusedSpan }) => {
   const { width } = useWindowDimensions()
   const bigScreen = width >= 1024
   const [category, setCategory] = useState('Grammar')
+  const [annotationName, setAnnotationName] = useState('')
   const [annotationText, setAnnotationText] = useState('')
   const [charactersLeft, setCharactersLeft] = useState(maxCharacters)
   const [openWarning, setOpenWarning] = useState(false)
@@ -53,9 +54,10 @@ const FocusedView = ({ focusedSpan }) => {
   const mode = getMode()
   const storyWords = story.paragraph.flat(1)
 
-  const handleEditButtonClick = text => {
+  const handleEditButtonClick = (text, name) => {
     dispatch(setAnnotationFormVisibility(true))
     setAnnotationText(text)
+    // setAnnotationName(name)
     setCharactersLeft(maxCharacters - text.length)
   }
 
@@ -74,7 +76,6 @@ const FocusedView = ({ focusedSpan }) => {
 
   const handleAnnotationSave = async () => {
     if (focusedSpan) {
-      console.log('FOCUSED SPAN ', focusedSpan)
       await dispatch(
         addEditStoryAnnotation(
           storyId,
@@ -83,11 +84,11 @@ const FocusedView = ({ focusedSpan }) => {
           annotationText.trim(),
           mode,
           category,
+          annotationName,
           focusedSpan.annotationTexts[0].thread_id
         )
       )
     } else {
-      console.log('candidates ', annotationCandidates)
       await dispatch(
         addEditStoryAnnotation(
           storyId,
@@ -95,7 +96,8 @@ const FocusedView = ({ focusedSpan }) => {
           annotationCandidates[annotationCandidates.length - 1].ID,
           annotationText.trim(),
           mode,
-          category
+          category,
+          annotationName
         )
       )
     }
@@ -165,6 +167,8 @@ const FocusedView = ({ focusedSpan }) => {
           setCharactersLeft={setCharactersLeft}
           category={category}
           setCategory={setCategory}
+          annotationName={annotationName}
+          setAnnotationName={setAnnotationName}
         />
       )}
     </div>
