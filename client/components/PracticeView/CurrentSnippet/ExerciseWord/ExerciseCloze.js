@@ -142,15 +142,16 @@ const ExerciseCloze = ({ word, handleChange }) => {
       setShow(false)
     }
   }, [focusedWord])
-
+  /*
   const handleTooltipBlur = () => {
+    console.log('NOT THIS ONE?')
     setShow(false)
   }
-
+  */
   // console.log('elohearts', eloScoreHearts)
 
   const tooltip = (
-    <div onBlur={handleTooltipBlur}>
+    <div>
       {attempt === 0 && (
         <div className="tooltip-green">
           <Button
@@ -210,6 +211,7 @@ const ExerciseCloze = ({ word, handleChange }) => {
   }
 
   const handleBlur = () => {
+    console.log('this one also?')
     handleChange(value, word)
 
     if (!keepOpen) {
