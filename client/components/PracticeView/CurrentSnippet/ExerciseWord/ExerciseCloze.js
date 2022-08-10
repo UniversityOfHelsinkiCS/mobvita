@@ -39,6 +39,8 @@ const ExerciseCloze = ({ word, handleChange }) => {
   const [filteredHintsList, setFilteredHintsList] = useState([])
   const [preHints, setPreHints] = useState([])
   const [keepOpen, setKeepOpen] = useState(false)
+  const [eloScoreHearts, setEloScoreHearts] = useState([1, 2, 3, 4, 5])
+  const [spentHints, setSpentHints] = useState([])
   const {
     isWrong,
     tested,
@@ -56,6 +58,12 @@ const ExerciseCloze = ({ word, handleChange }) => {
   const dispatch = useDispatch()
   const [emptyHintsList, setEmptyHintsList] = useState(false)
   const voice = voiceLanguages[learningLanguage]
+  const hintButtonVisibility =
+    (!hints || filteredHintsList.length < 1 || preHints.length < filteredHintsList?.length) &&
+    !emptyHintsList &&
+    attempt === 0
+      ? { visibility: 'visible' }
+      : { visibility: 'hidden' }
 
   const handleTooltipWordClick = () => {
     const showAsSurface = exerciseMaskedLanguages.includes(learningLanguage)
@@ -94,6 +102,8 @@ const ExerciseCloze = ({ word, handleChange }) => {
       dispatch(incrementHintRequests(wordId, newRequestNum))
 
       setPreHints(preHints.concat(filteredHintsList[preHints.length]))
+      setEloScoreHearts(eloScoreHearts.slice(0, -1))
+      setSpentHints(spentHints.concat(spentHints.length + 1))
       setKeepOpen(true)
     }
   }
@@ -137,16 +147,27 @@ const ExerciseCloze = ({ word, handleChange }) => {
     setShow(false)
   }
 
+  // console.log('elohearts', eloScoreHearts)
+
   const tooltip = (
-    <div>
-      {(!hints || filteredHintsList.length < 1 || preHints.length < filteredHintsList?.length) &&
-        !emptyHintsList && attempt === 0 && (
-          <div className="tooltip-green">
-            <Button variant="primary" onMouseDown={handlePreHints} onBlur={handleTooltipBlur}>
-              <FormattedMessage id="ask-for-a-hint" />
-            </Button>
-          </div>
-        )}{' '}
+    <div onBlur={handleTooltipBlur}>
+      {attempt === 0 && (
+        <div className="tooltip-green">
+          <Button
+            style={hintButtonVisibility}
+            variant="primary"
+            onMouseDown={handlePreHints}
+          >
+            <FormattedMessage id="ask-for-a-hint" />
+          </Button>
+          {eloScoreHearts.map(heart => (
+            <Icon name="heart" style={{ marginLeft: '0.25em' }} />
+          ))}
+          {spentHints.map(hint => (
+            <Icon name="heart outline" style={{ marginLeft: '0.25em' }} />
+          ))}
+        </div>
+      )}{' '}
       {(preHints?.length > 0 || message) && (
         <div
           className="tooltip-hint"
@@ -154,17 +175,16 @@ const ExerciseCloze = ({ word, handleChange }) => {
           onMouseDown={handleTooltipClick}
         >
           <ul>
-            {message && <li dangerouslySetInnerHTML={formatGreenFeedbackText(message)} />}
-            {preHints?.map(hint => (
-              <li dangerouslySetInnerHTML={formatGreenFeedbackText(hint)} />
-            ))}
-          </ul>
-          {ref && (
+            {message && <span className="flex"><li dangerouslySetInnerHTML={formatGreenFeedbackText(message)} />{ref && (
             <Icon name="external" style={{ alignSelf: 'flex-start', marginLeft: '0.5rem' }} />
           )}
           {explanation && (
             <Icon name="info circle" style={{ alignSelf: 'flex-start', marginLeft: '0.5rem' }} />
-          )}
+          )}</span>}
+            {preHints?.map(hint => (
+              <li dangerouslySetInnerHTML={formatGreenFeedbackText(hint)} />
+            ))}
+          </ul>
         </div>
       )}
       {emptyHintsList && (
