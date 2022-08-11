@@ -97,6 +97,8 @@ const ExercisesEncouragementModal = ({
     }
 
     if (prevBlueCards) {
+      console.log('and definetely not here', prevBlueCards)
+
       initList = initList.concat(
         <div className="pt-md">
           <div className="flex" style={{ alignItems: 'center' }}>
@@ -250,11 +252,11 @@ const ExercisesEncouragementModal = ({
   }, [incompleteStories])
 
   useEffect(() => {
-    if (storyBlueCards) {
+    if (storyBlueCards.length > 0) {
       const filteredBlueCards = storyBlueCards.filter(story => story.story_id !== storyId)
-
       if (filteredBlueCards.length > 0) {
-        setPrevBlueCards(filteredBlueCards[filteredBlueCards.length - 1])
+        console.log('not here')
+        setPrevBlueCards(filteredBlueCards[0])
       }
     }
   }, [storyBlueCards])
