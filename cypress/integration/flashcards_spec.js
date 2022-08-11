@@ -34,8 +34,6 @@ describe('flashcards', function () {
       cy.contains('saapua').click()
       cy.get('[data-cy=translations]').contains('arrive')
       cy.visit('http://localhost:8000/flashcards/')
-      cy.wait(5000)
-      cy.get('.modal > .close').click()
     })
 
     it('story specific flashcards can be accessed', function () {
@@ -85,8 +83,6 @@ describe('flashcards', function () {
       cy.contains('viikolla').click()
       cy.get('[data-cy=translations]').contains('week')
       cy.visit('http://localhost:8000/flashcards/')
-      cy.wait(5000)
-      cy.get('.modal > .close').last().click()
     })
 
     it('can get to the next card', function () {
