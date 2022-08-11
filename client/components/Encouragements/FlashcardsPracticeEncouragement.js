@@ -9,9 +9,11 @@ const FlashcardsPracticeEncouragement = ({ open, setOpen, prevBlueCards }) => {
     setOpen(false)
   }
 
-  if (!prevBlueCards) {
+  if (!prevBlueCards || prevBlueCards.length < 1) {
     return null
   }
+
+  console.log('prev ', prevBlueCards)
 
   return (
     <Modal
@@ -25,7 +27,7 @@ const FlashcardsPracticeEncouragement = ({ open, setOpen, prevBlueCards }) => {
     >
       <Modal.Content>
         <div className="encouragement" style={{ padding: '1.5rem' }}>
-          <div className="flex" style={{ alignItems: 'center' }}>
+          <div className="flex" style={{ alignItems: 'center', marginTop: '.5em' }}>
             <img
               src={images.flashcards}
               alt="flashcard batch"
@@ -35,12 +37,12 @@ const FlashcardsPracticeEncouragement = ({ open, setOpen, prevBlueCards }) => {
               <FormattedHTMLMessage
                 id="previous-stories-blue-cards"
                 values={{
-                  nWords: prevBlueCards.num_of_rewardable_words,
-                  story: prevBlueCards.title,
+                  nWords: prevBlueCards[0].num_of_rewardable_words,
+                  story: prevBlueCards[0].title,
                 }}
               />
               &nbsp;
-              <Link to={`/flashcards/fillin/test/${prevBlueCards.story_id}`}>
+              <Link to={`/flashcards/fillin/test/${prevBlueCards[0].story_id}`}>
                 <FormattedMessage id="flashcards-review" />
               </Link>
             </div>

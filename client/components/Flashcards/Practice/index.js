@@ -10,13 +10,11 @@ import {
   getBlueFlashcards,
   recordFlashcardAnswer,
   addToTotal,
-  getStoriesBlueFlashcards,
 } from 'Utilities/redux/flashcardReducer'
 import { getSelf } from 'Utilities/redux/userReducer'
 import { learningLanguageSelector, dictionaryLanguageSelector } from 'Utilities/common'
 import useWindowDimension from 'Utilities/windowDimensions'
 import Spinner from 'Components/Spinner'
-import FlashcardsPracticeEncouragement from 'Components/Encouragements/FlashcardsPracticeEncouragement'
 import FlashcardEndView from './FlashcardEndView'
 import FlashcardNoCards from './FlashCardNoCards'
 import Fillin from './Fillin'
@@ -27,7 +25,6 @@ const VirtualizeSwipeableViews = flowRight(bindKeyboard, virtualize)(SwipeableVi
 
 const Practice = ({ mode }) => {
   const [swipeIndex, setSwipeIndex] = useState(0)
-  const [openModal, setOpenModal] = useState(false)
   const [editing, setEditing] = useState(false)
   const [amountAnswered, setAmountAnswered] = useState(0)
   const history = useHistory()
@@ -37,35 +34,24 @@ const Practice = ({ mode }) => {
   const [blueCardsAnswered, setBlueCardsAnswered] = useState([])
   const blueCardsTest = history.location.pathname.includes('test')
   const { flashcardArticles } = useSelector(({ metadata }) => metadata)
-  const { storyBlueCards } = useSelector(({ flashcards }) => flashcards)
-  const { cards, pending, deletePending, sessionId } =
-    useSelector(({ flashcards }) => {
-      const { pending, deletePending, sessionId } = flashcards
+  const { cards, pending, deletePending, sessionId } = useSelector(({ flashcards }) => {
+    const { pending, deletePending, sessionId } = flashcards
 
-      let cards
-      if (mode === 'article') {
-        cards =
-          flashcards.nounCards &&
-          flashcards.nounCards.filter(card =>
-            [
-              'Feminine',
-              'Masculine',
-              'Neuter',
-              'ut',
-              'm',
-              'f',
-              'nt',
-              'Fem',
-              'Neut',
-              'Masc',
-            ].includes(card.gender)
+    let cards
+    if (mode === 'article') {
+      cards =
+        flashcards.nounCards &&
+        flashcards.nounCards.filter(card =>
+          ['Feminine', 'Masculine', 'Neuter', 'ut', 'm', 'f', 'nt', 'Fem', 'Neut', 'Masc'].includes(
+            card.gender
           )
-      } else {
-        ;({ cards } = flashcards)
-      }
+        )
+    } else {
+      ;({ cards } = flashcards)
+    }
 
-      return { cards, pending, deletePending, sessionId }
-    }, shallowEqual)
+    return { cards, pending, deletePending, sessionId }
+  }, shallowEqual)
 
   const bigScreen = useWindowDimension().width >= 415
   const { storyId } = useParams()
@@ -73,17 +59,6 @@ const Practice = ({ mode }) => {
   const [open, setOpen] = useState(true)
   console.log('cards ', cards)
   const inFillin = history.location.pathname.includes('test')
-
-  useEffect(() => {
-    dispatch(getStoriesBlueFlashcards(learningLanguage, dictionaryLanguage))
-  }, [])
-
-  useEffect(() => {
-    if (storyBlueCards) {
-      setOpenModal(true)
-    }
-  }, [storyBlueCards])
-
   useEffect(() => {
     setSwipeIndex(0)
   }, [pending])
@@ -215,25 +190,18 @@ const Practice = ({ mode }) => {
         )
       default:
         return (
-          <>
-            <FlashcardsPracticeEncouragement
-              open={openModal}
-              setOpen={setOpenModal}
-              prevBlueCards={storyBlueCards}
-            />
-            <Fillin
-              key={key}
-              card={cards[index]}
-              cardNumbering={`${index + 1} / ${cards.length}`}
-              swipeIndex={swipeIndex}
-              setSwipeIndex={setSwipeIndex}
-              editing={editing && swipeIndex === index}
-              setEditing={setEditing}
-              focusedAndBigScreen={swipeIndex === index && bigScreen}
-              answerCard={answerCard}
-              deckSize={cards.length}
-            />
-          </>
+          <Fillin
+            key={key}
+            card={cards[index]}
+            cardNumbering={`${index + 1} / ${cards.length}`}
+            swipeIndex={swipeIndex}
+            setSwipeIndex={setSwipeIndex}
+            editing={editing && swipeIndex === index}
+            setEditing={setEditing}
+            focusedAndBigScreen={swipeIndex === index && bigScreen}
+            answerCard={answerCard}
+            deckSize={cards.length}
+          />
         )
     }
   }
