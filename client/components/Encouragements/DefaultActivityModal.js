@@ -171,6 +171,9 @@ const DefaultActivityModal = ({
     )
     dispatch(getLeaderboards())
     dispatch(getStoriesBlueFlashcards(learningLanguage, dictionaryLanguage))
+    if (storyBlueCards?.length > 0) {
+      setPrevBlueCards(storyBlueCards[0])
+    }
   }, [])
 
   useEffect(() => {
@@ -192,7 +195,7 @@ const DefaultActivityModal = ({
 
   useEffect(() => {
     if (storyBlueCards?.length > 0) {
-      setPrevBlueCards(storyBlueCards[storyBlueCards.length - 1])
+      setPrevBlueCards(storyBlueCards[0])
     }
   }, [storyBlueCards])
 
@@ -229,7 +232,7 @@ const DefaultActivityModal = ({
     storiesToReview,
     latestIncompleteStory,
     sharedStory,
-    storyBlueCards,
+    prevBlueCards,
   ])
 
   const closeModal = () => {
