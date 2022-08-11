@@ -250,9 +250,9 @@ const ExercisesEncouragementModal = ({
   }, [incompleteStories])
 
   useEffect(() => {
-    if (storyBlueCards.length > 0) {
+    if (storyBlueCards?.length > 0) {
       const filteredBlueCards = storyBlueCards.filter(story => story.story_id !== storyId)
-      if (filteredBlueCards.length > 0) {
+      if (filteredBlueCards?.length > 0) {
         setPrevBlueCards(filteredBlueCards[0])
       }
     }
