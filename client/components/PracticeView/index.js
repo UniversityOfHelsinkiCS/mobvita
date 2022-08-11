@@ -185,7 +185,7 @@ const PracticeView = () => {
               {!pending && `${story.title}`}
             </div>
             {story.url && !pending && (
-              <a target="blank" href={story.url}>
+              <a href={story.url} target="_blank" rel="noopener noreferrer">
                 <FormattedMessage id="Source" />
               </a>
             )}

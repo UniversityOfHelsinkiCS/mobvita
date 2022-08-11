@@ -161,7 +161,7 @@ const ReadViews = ({ match }) => {
               <span className="pr-sm">{story.title}</span>
               <br />
               {story.url && (
-                <a href={story.url} style={{ fontSize: '1rem', fontWeight: '300' }}>
+                <a href={story.url} target="_blank" rel="noopener noreferrer" style={{ fontSize: '1rem', fontWeight: '300' }}>
                   <FormattedMessage id="Source" />
                 </a>
               )}
