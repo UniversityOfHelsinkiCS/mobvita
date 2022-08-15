@@ -2,11 +2,11 @@ import React, { useEffect, useState } from 'react'
 import Highcharts from 'highcharts'
 import HighchartsReact from 'highcharts-react-official'
 import moment from 'moment'
-import { useIntl } from 'react-intl'
+import { useIntl, FormattedHTMLMessage } from 'react-intl'
 import { hiddenFeatures } from 'Utilities/common'
 import useWindowDimensions from 'Utilities/windowDimensions'
 import { useDispatch, useSelector } from 'react-redux'
-import { Checkbox } from 'semantic-ui-react'
+import { Checkbox, Icon, Popup } from 'semantic-ui-react'
 
 const VocabularyGraph = ({
   vocabularyData,
@@ -128,7 +128,7 @@ const VocabularyGraph = ({
 
   const options = {
     title: '',
-    // series,
+    // series,'
     series: [
       {
         name: intl.formatMessage({ id: 'vocabulary-total' }),
@@ -284,7 +284,75 @@ const VocabularyGraph = ({
     //       // onClick={() => handleCheckBoxClick(showTotal, setShowTotal)}
     //     />
     //   </div>
-    <HighchartsReact highcharts={Highcharts} options={options} />
+    <>
+      <HighchartsReact highcharts={Highcharts} options={options} />
+      <div className="flex">
+        <Popup
+          content={
+            <div>
+              <b>{intl.formatMessage({ id: 'vocabulary-total' })}</b>
+              {': '}
+              <FormattedHTMLMessage id="vocabulary-total-explanation" />
+            </div>
+          }
+          trigger={
+            <Icon
+              style={{ paddingRight: '0.75em', marginBottom: '0.35em', marginLeft: '20em' }}
+              name="info circle"
+              color="grey"
+            />
+          }
+        />
+        <Popup
+          content={
+            <div>
+              <b>{intl.formatMessage({ id: 'vocabulary-seen' })}</b>
+              {': '}
+              <FormattedHTMLMessage id="vocabulary-seen-explanation" />
+            </div>
+          }
+          trigger={
+            <Icon
+              style={{ paddingRight: '0.75em', marginBottom: '0.35em', marginLeft: '8em' }}
+              name="info circle"
+              color="grey"
+            />
+          }
+        />
+        <Popup
+          content={
+            <div>
+              <b>{intl.formatMessage({ id: 'vocabulary-visit' })}</b>
+              {': '}
+              <FormattedHTMLMessage id="vocabulary-visit-explanation" />
+            </div>
+          }
+          trigger={
+            <Icon
+              style={{ paddingRight: '0.75em', marginBottom: '0.35em', marginLeft: '8em' }}
+              name="info circle"
+              color="grey"
+            />
+          }
+        />
+        <Popup
+          content={
+            <div>
+              <b>{intl.formatMessage({ id: 'vocabulary-flashcard' })}</b>
+              {': '}
+              <FormattedHTMLMessage id="vocabulary-flashcard-explanation" />
+            </div>
+          }
+          trigger={
+            <Icon
+              style={{ paddingRight: '0.75em', marginBottom: '0.35em', marginLeft: '8em' }}
+              name="info circle"
+              color="grey"
+            />
+          }
+        />
+      </div>
+    </>
     // </>
   )
 }
