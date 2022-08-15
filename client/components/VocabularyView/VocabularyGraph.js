@@ -1,12 +1,11 @@
-import React, { useEffect, useState } from 'react'
+import React from 'react'
 import Highcharts from 'highcharts'
 import HighchartsReact from 'highcharts-react-official'
 import moment from 'moment'
 import { useIntl, FormattedHTMLMessage } from 'react-intl'
-import { hiddenFeatures } from 'Utilities/common'
 import useWindowDimensions from 'Utilities/windowDimensions'
-import { useDispatch, useSelector } from 'react-redux'
-import { Checkbox, Icon, Popup } from 'semantic-ui-react'
+import { useDispatch } from 'react-redux'
+import { Icon, Popup } from 'semantic-ui-react'
 
 const VocabularyGraph = ({
   vocabularyData,

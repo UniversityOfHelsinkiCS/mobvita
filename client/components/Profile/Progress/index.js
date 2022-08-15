@@ -2,7 +2,7 @@
 import React, { useState, useEffect, shallowEqual } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import moment from 'moment'
-import { FormattedMessage, FormattedHTMLMessage, useIntl } from 'react-intl'
+import { FormattedMessage, FormattedHTMLMessage } from 'react-intl'
 import {
   getSelf,
   getPreviousVocabularyData,
@@ -16,7 +16,7 @@ import ResponsiveDatePicker from 'Components/ResponsiveDatePicker'
 import History from 'Components/History'
 import { getHistory as getExerciseHistory } from 'Utilities/redux/exerciseHistoryReducer'
 import { getHistory as getTestHistory } from 'Utilities/redux/testReducer'
-import { hiddenFeatures, useLearningLanguage } from 'Utilities/common'
+import { useLearningLanguage } from 'Utilities/common'
 import useWindowDimension from 'Utilities/windowDimensions'
 import VocabularyGraph from 'Components/VocabularyView/VocabularyGraph'
 import HexagonTest from 'Components/GridHexagon'
@@ -31,7 +31,6 @@ const Progress = () => {
   const flashcardsView = history.location.pathname.includes('flashcards')
   const grammarView = history.location.pathname.includes('grammar')
   const dispatch = useDispatch()
-  const intl = useIntl()
 
   const {
     exerciseHistory: exerciseHistoryGraph,
