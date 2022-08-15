@@ -121,7 +121,7 @@ const ExerciseCloze = ({ word, handleChange }) => {
   }
 
   useEffect(() => {
-    if (eloHearts[wordId] >= 0) {
+    if (eloHearts?.hasOwnProperty(wordId) && eloHearts[wordId] >= 0) {
       if (eloHearts[wordId] === 0) {
         setEloScoreHearts([])
       } else {
@@ -133,7 +133,7 @@ const ExerciseCloze = ({ word, handleChange }) => {
       const newSpentHearts = Array.from(Array(difference).keys())
       setSpentHints(newSpentHearts)
     }
-  }, [eloHearts[wordId]])
+  }, [eloHearts ? eloHearts[wordId] : eloHearts])
 
   useEffect(() => {
     const val = currentAnswer ? currentAnswer.users_answer : ''
