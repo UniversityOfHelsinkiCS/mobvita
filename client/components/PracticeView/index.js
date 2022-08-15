@@ -30,6 +30,7 @@ import ProgressBar from './CurrentSnippet/ProgressBar'
 import PracticeTimer from './PracticeTimer'
 import Footer from '../Footer'
 import ScrollArrow from '../ScrollArrow'
+import StoryTopics from 'Components/StoryView/StoryTopics'
 
 const PracticeView = () => {
   const dispatch = useDispatch()
@@ -238,6 +239,7 @@ const PracticeView = () => {
           onBackClick={() => history.push('/library')}
         />
         <div className="dictionary-and-annotations-cont">
+          <StoryTopics conceptCount={story.concept_count} />
           <DictionaryHelp />
           <AnnotationBox />
         </div>
