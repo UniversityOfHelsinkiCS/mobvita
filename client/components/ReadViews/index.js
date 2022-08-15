@@ -19,6 +19,7 @@ import ReportButton from 'Components/ReportButton'
 import { compose } from 'redux'
 import Footer from '../Footer'
 import ScrollArrow from '../ScrollArrow'
+import StoryTopics from 'Components/StoryView/StoryTopics'
 
 const ReadViews = ({ match }) => {
   const dispatch = useDispatch()
@@ -254,6 +255,7 @@ const ReadViews = ({ match }) => {
           )}
         </div>
         <div className="dictionary-and-annotations-cont">
+          <StoryTopics conceptCount={story.concept_count} />
           <DictionaryHelp />
           <AnnotationBox />
         </div>

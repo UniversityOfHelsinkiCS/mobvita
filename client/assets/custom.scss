@@ -3,23 +3,29 @@
 @import url('https://fonts.googleapis.com/css2?family=Rubik:wght@300;400;500;600;700;800;900&display=swap');
 
 @font-face {
-	font-family: 'EastSyriacCtesiphon';
-	src: local('East Syriac Ctesiphon');
-	src: url('./fonts/syrcomctesiphon.eot');
-	src: url('./fonts/syrcomctesiphon.eot?#iefix') format('embedded-opentype'), url('./fonts/syrcomctesiphon.woff') format('woff'), url('./fonts/syrcomctesiphon.ttf') format('truetype'), url('./fonts/syrcomctesiphon.svg#syrcomctesiphon') format('svg');
-	font-weight: normal;
+  font-family: 'EastSyriacCtesiphon';
+  src: local('East Syriac Ctesiphon');
+  src: url('./fonts/syrcomctesiphon.eot');
+  src: url('./fonts/syrcomctesiphon.eot?#iefix') format('embedded-opentype'), url('./fonts/syrcomctesiphon.woff') format('woff'), url('./fonts/syrcomctesiphon.ttf') format('truetype'), url('./fonts/syrcomctesiphon.svg#syrcomctesiphon') format('svg');
+  font-weight: normal;
   font-style: normal;
 }
 
 @font-face {
-	font-family: 'NotoSansSyriacEastern';
-	src: local('Noto Sans Syriac Eastern');
-	src: url('./fonts/NotoSansSyriacEastern-Regular.ttf') format('truetype');
-	font-weight: normal;
+  font-family: 'NotoSansSyriacEastern';
+  src: local('Noto Sans Syriac Eastern');
+  src: url('./fonts/NotoSansSyriacEastern-Regular.ttf') format('truetype');
+  font-weight: normal;
   font-style: normal;
 }
 
-$spacing: ("xs": .2rem, "sm": .5rem, "nm": 1rem, "lg": 2rem, "xl": 3rem);
+$spacing: (
+  "xs": .2rem,
+  "sm": .5rem,
+  "nm": 1rem,
+  "lg": 2rem,
+  "xl": 3rem
+);
 
 $wrong-answer-background-color: #FFDADA;
 $secondary-text-color: #777;
@@ -44,70 +50,82 @@ $navbar-height: 3em;
 $application-content-top-padding: map.get($spacing, "sm");
 
 body {
-  font-family: Rubik,-apple-system,BlinkMacSystemFont,Segoe UI,Helvetica,Arial,sans-serif,Apple Color Emoji,Segoe UI Emoji;
+  font-family: Rubik, -apple-system, BlinkMacSystemFont, Segoe UI, Helvetica, Arial, sans-serif, Apple Color Emoji, Segoe UI Emoji;
 }
 
-html, body, #root {
+html,
+body,
+#root {
   height: 100%;
 }
 
 // HELPERS
-@each $size, $value in $spacing {
+@each $size,
+$value in $spacing {
   .pt-#{$size} {
     padding-top: $value;
   }
 }
 
-@each $size, $value in $spacing {
+@each $size,
+$value in $spacing {
   .pb-#{$size} {
     padding-bottom: $value;
   }
 }
 
-@each $size, $value in $spacing {
+@each $size,
+$value in $spacing {
   .pr-#{$size} {
     padding-right: $value;
   }
 }
 
-@each $size, $value in $spacing {
+@each $size,
+$value in $spacing {
   .pl-#{$size} {
     padding-left: $value;
   }
 }
 
-@each $size, $value in $spacing {
+@each $size,
+$value in $spacing {
   .ps-#{$size} {
     padding-left: $value;
     padding-right: $value;
   }
 }
 
-@each $size, $value in $spacing {
+@each $size,
+$value in $spacing {
   .mt-#{$size} {
     margin-top: $value;
   }
 }
 
-@each $size, $value in $spacing {
+@each $size,
+$value in $spacing {
   .mb-#{$size} {
     margin-bottom: $value;
   }
 }
 
-@each $size, $value in $spacing {
+@each $size,
+$value in $spacing {
   .mr-#{$size} {
     margin-right: $value;
   }
 }
 
-@each $size, $value in $spacing {
+@each $size,
+$value in $spacing {
   .ml-#{$size} {
     margin-left: $value;
   }
 }
 
-@each $size, $value in $spacing {
+@each $size,
+$value in $spacing {
   .my-#{$size} {
     margin-top: $value;
     margin-bottom: $value;
@@ -124,25 +142,29 @@ html, body, #root {
   &-right {
     margin-right: auto;
   }
+
   &-left {
     margin-left: auto;
   }
+
   &-top {
     margin-top: auto;
   }
 }
 
-@each $size, $value in $spacing {
+@each $size,
+$value in $spacing {
   .gap-row-#{$size} {
-    & > :not(:last-child) {
+    &> :not(:last-child) {
       margin-bottom: $value;
     }
   }
 }
 
-@each $size, $value in $spacing {
+@each $size,
+$value in $spacing {
   .gap-col-#{$size} {
-    & > :not(:last-child) {
+    &> :not(:last-child) {
       margin-right: $value;
     }
   }
@@ -208,7 +230,7 @@ html, body, #root {
 }
 
 .grow-children {
-  & > * {
+  &>* {
     flex-basis: 0;
     flex-grow: 1;
   }
@@ -275,11 +297,11 @@ html, body, #root {
   word-wrap: normal;
 
   &--success {
-    background-color: rgb(131, 214,126);
+    background-color: rgb(131, 214, 126);
   }
 
   &--warning {
-    background-color: rgb(255, 184, 107); 
+    background-color: rgb(255, 184, 107);
   }
 
   &--info {
@@ -301,7 +323,7 @@ html, body, #root {
 .btn-link:hover {
   color: $btn-color-primary;
   background: none;
-  border-color:  white;
+  border-color: white;
 }
 
 .btn-primary {
@@ -312,12 +334,12 @@ html, body, #root {
   border-radius: $btn-border-radius-primary;
 }
 
-.btn-primary[disabled]  {
+.btn-primary[disabled] {
   background: $btn-color-primary-disabled;
-  border: 1px solid rgb(112, 114 ,120);
+  border: 1px solid rgb(112, 114, 120);
 }
 
-.btn-primary[disabled]:hover  {
+.btn-primary[disabled]:hover {
   color: white;
   cursor: not-allowed;
 }
@@ -330,22 +352,24 @@ html, body, #root {
   border-radius: $btn-border-radius-primary;
 }
 
-.btn-sm  {
+.btn-sm {
   border: 1px solid rgb(112, 114, 120);
 }
 
-.btn-outline-danger, .btn-outline-secondary {
+.btn-outline-danger,
+.btn-outline-secondary {
   border-radius: 10px;
 }
 
-.btn-outline-danger[disabled]:hover, .btn-outline-secondary[disabled]:hover {
+.btn-outline-danger[disabled]:hover,
+.btn-outline-secondary[disabled]:hover {
   background: white;
   cursor: not-allowed;
 }
 
 .btn.active.btn-success {
   border: none;
-  background: rgb(112, 114, 120)!important;
+  background: rgb(112, 114, 120) !important;
   cursor: default;
 }
 
@@ -368,46 +392,46 @@ html, body, #root {
 
 .card {
   border: 1px solid rgb(112, 114, 120);
-  border-radius: 10px!important;
+  border-radius: 10px !important;
   margin-bottom: 10px;
   margin-top: 10px;
   height: max-content;
 
   &-controlled-story {
-    background: rgb(255,239, 213)!important;
-  }  
+    background: rgb(255, 239, 213) !important;
+  }
 }
 
 .story-card-title-cont {
-  padding: 15px 15px 5px 15px!important;
+  padding: 15px 15px 5px 15px !important;
 }
 
 .story-card-actions-cont {
-  padding: 10px 15px 10px 15px!important;
+  padding: 10px 15px 10px 15px !important;
   display: flex;
   align-items: center;
   justify-content: space-between;
 }
 
 .modal {
-  left:unset;
+  left: unset;
   position: relative !important;
   height: auto;
 }
 
-.modal > .header {
-  font-family: $rubik!important;
+.modal>.header {
+  font-family: $rubik !important;
 }
 
-.react-datepicker__input-container > input {
+.react-datepicker__input-container>input {
   width: 120px;
-  border: 1px solid rgba(34,36,38,.15);
+  border: 1px solid rgba(34, 36, 38, .15);
   border-radius: 0.25em;
   padding-left: 0.5em;
 }
 
 // SEMANTIC UI OVERRIDES:
-.ui.input>input  {
+.ui.input>input {
   font-family: $default-font
 }
 
@@ -427,11 +451,13 @@ html, body, #root {
   }
 }
 
-.ui.card>.content:after, .ui.cards>.card>.content:after {
+.ui.card>.content:after,
+.ui.cards>.card>.content:after {
   content: none;
 }
 
-.ui.placeholder .line:after, .ui.placeholder .line:before {
+.ui.placeholder .line:after,
+.ui.placeholder .line:before {
   height: 0;
 }
 
@@ -455,8 +481,8 @@ html, body, #root {
   white-space: nowrap;
   width: 1px;
 }
- 
-[type="file"] + label {
+
+[type="file"]+label {
   background-color: #17a2b8;
   border-radius: 0.25rem;
   color: #fff;
@@ -467,13 +493,13 @@ html, body, #root {
   min-width: 10em;
   justify-content: center;
 }
-  
-[type="file"]:focus + label,
-[type="file"] + label:hover {
-    background-color: #138496;
+
+[type="file"]:focus+label,
+[type="file"]+label:hover {
+  background-color: #138496;
 }
-  
-[type="file"]:focus + label {
+
+[type="file"]:focus+label {
   outline: 1px dotted #000;
 }
 
@@ -488,7 +514,7 @@ html, body, #root {
 }
 
 .blue-bg {
-  background-color: rgb(173, 209, 240)!important;
+  background-color: rgb(173, 209, 240) !important;
 }
 
 .cont {
@@ -510,11 +536,11 @@ html, body, #root {
 }
 
 .headroom {
-  z-index: 99!important;
+  z-index: 99 !important;
 }
 
-.tabular > .active {
-  background: rgb(239, 239, 239)!important;
+.tabular>.active {
+  background: rgb(239, 239, 239) !important;
 }
 
 .tour-mobile-message {
@@ -522,7 +548,7 @@ html, body, #root {
 }
 
 // Homeview buttons
-.homeview-btns-cont  {
+.homeview-btns-cont {
   width: 100%;
   display: grid;
   grid-template-columns: 1fr 1fr;
@@ -538,23 +564,43 @@ html, body, #root {
   @media (min-width: 900px) {
     max-height: 525px;
     gap: 17px 17px;
-    grid-template-columns: 1fr 1fr 1fr; 
-    grid-template-rows: 0.3fr 1fr 1fr; 
-    gap: 15px 15px; 
-    grid-template-areas: 
+    grid-template-columns: 1fr 1fr 1fr;
+    grid-template-rows: 0.3fr 1fr 1fr;
+    gap: 15px 15px;
+    grid-template-areas:
       "add-new-stories add-new-stories add-new-stories"
       "practice library flashcards"
       "adaptive-test exhaustive-test .";
-    }
+  }
 }
 
-.add-new-stories-btn-cont { grid-area: add-new-stories; }
-.practice-btn-cont { grid-area: practice; }
-.library-btn-cont { grid-area: library; }
-.flashcards-btn-cont { grid-area: flashcards; }
-.test-btn-cont { grid-area: exhaustive-test; }
-.adaptive-test-btn-cont { grid-area: adaptive-test; }
-.notes-library-btn-cont { grid-area: notes; }
+.add-new-stories-btn-cont {
+  grid-area: add-new-stories;
+}
+
+.practice-btn-cont {
+  grid-area: practice;
+}
+
+.library-btn-cont {
+  grid-area: library;
+}
+
+.flashcards-btn-cont {
+  grid-area: flashcards;
+}
+
+.test-btn-cont {
+  grid-area: exhaustive-test;
+}
+
+.adaptive-test-btn-cont {
+  grid-area: adaptive-test;
+}
+
+.notes-library-btn-cont {
+  grid-area: notes;
+}
 
 .encouragement {
   border: 2px solid lightgrey;
@@ -604,6 +650,7 @@ html, body, #root {
 .welcome-picture {
   padding-top: 1.5rem;
 }
+
 .homeview-item {
   border: 2px solid #000;
   border-radius: 12px;
@@ -635,12 +682,14 @@ html, body, #root {
     padding: 15px 5px 30px 5px;
 
   }
+
   &-wide {
-    padding: 10px!important;
+    padding: 10px !important;
     background: rgb(50, 170, 248);
   }
+
   &-text {
-    font-size: 1.5em!important;
+    font-size: 1.5em !important;
     font-weight: 500;
   }
 }
@@ -649,7 +698,9 @@ html, body, #root {
   background: rgb(50, 170, 248);
 }
 
-.homeview-btn:hover, .practice-now-modal-btn:hover, .attempt-bar:hover {
+.homeview-btn:hover,
+.practice-now-modal-btn:hover,
+.attempt-bar:hover {
   background-color: $btn-highlight-color-primary;
 }
 
@@ -697,7 +748,7 @@ html, body, #root {
   align-items: center;
   display: flex;
   justify-content: space-between;
-  height:$navbar-height;
+  height: $navbar-height;
   z-index: 100;
   position: sticky;
   width: 100%;
@@ -710,7 +761,7 @@ html, body, #root {
   }
 
   &-revita-logo {
-    color: black!important;
+    color: black !important;
     margin-left: 1.5em;
     margin-right: 3em;
 
@@ -721,20 +772,20 @@ html, body, #root {
   }
 
   &-basic-icon {
-    margin-left: 11px!important;
-    margin-right: 11px!important;
+    margin-left: 11px !important;
+    margin-right: 11px !important;
     cursor: pointer;
-  
+
     @media (max-width: 755px) {
       margin-left: 0.2em;
       margin-right: 0.2em;
     }
-  } 
+  }
 
   &-text-item {
     margin-top: .4em;
     font-weight: 400;
-    color: black!important;
+    color: black !important;
     margin-right: 2em;
 
     @media (max-width: 850px) {
@@ -745,7 +796,7 @@ html, body, #root {
   &-dropdown-text {
     margin-left: -.4em;
     margin-top: .4em;
-    color: black!important;
+    color: black !important;
     margin-right: 0em;
   }
 
@@ -759,12 +810,13 @@ html, body, #root {
     }
   }
 
-  &-dropdown-icon{
+  &-dropdown-icon {
     color: black;
-    margin-right: -0.15em!important;
+    margin-right: -0.15em !important;
   }
 
-  &-text-item:hover, &-dropdown-text:hover {
+  &-text-item:hover,
+  &-dropdown-text:hover {
     text-decoration: underline;
   }
 
@@ -792,7 +844,7 @@ html, body, #root {
   }
 
   &-news-label {
-    font-size: 0.7em!important;
+    font-size: 0.7em !important;
   }
 }
 
@@ -805,14 +857,15 @@ html, body, #root {
   height: auto;
 }
 
-.word-interactive{
-  cursor:pointer;
+.word-interactive {
+  cursor: pointer;
 
-  &:hover{
+  &:hover {
     background-color: lightblue;
   }
 
-  &--exercise{ // Related to snippet history...
+  &--exercise {
+    // Related to snippet history...
     background-color: lightblue;
     border-radius: 1em;
     padding-left: 1em;
@@ -822,8 +875,8 @@ html, body, #root {
   }
 }
 
-.non-recognized-word{
-  cursor:pointer;
+.non-recognized-word {
+  cursor: pointer;
 }
 
 .exercise {
@@ -832,13 +885,14 @@ html, body, #root {
   border-radius: 4px;
   border-width: thin;
   padding-left: 4px;
+
   &:read-only {
     opacity: 0.45;
     cursor: pointer;
   }
 }
 
-.exercise-multiple{
+.exercise-multiple {
   min-height: 0 !important;
   height: 1.5em !important;
   padding: 2px 0 1px 4px !important;
@@ -846,14 +900,14 @@ html, body, #root {
   border-style: solid !important;
   border-color: lightgrey !important;
   border-width: thin !important;
-  
+
   &.dropdown .icon {
     padding-top: 0.3em !important;
     padding-right: 0.5em !important;
   }
 
   &.wrong {
-    background-color: $wrong-answer-background-color !important;
+    background-color: $wrong-answer-background-color  !important;
   }
 
   &.correct {
@@ -861,7 +915,7 @@ html, body, #root {
   }
 
   &.untouched {
-    background-color:#fbfbb5 !important;
+    background-color: #fbfbb5 !important;
   }
 
   &.touched {
@@ -869,15 +923,16 @@ html, body, #root {
   }
 }
 
-.cloze-untouched{
-  background-color:#fbfbb5;
+.cloze-untouched {
+  background-color: #fbfbb5;
 }
 
 .cloze-touched {
   background-color: lightyellow;
 }
 
-.exercise.control-mode, .exercise-multiple {
+.exercise.control-mode,
+.exercise-multiple {
   &:read-only {
     opacity: 1;
     color: rgb(49, 49, 49);
@@ -886,22 +941,23 @@ html, body, #root {
 
 .control-mode {
   &-chosen {
-    background-color: rgb(164, 240, 209)!important;
+    background-color: rgb(164, 240, 209) !important;
   }
+
   &-unchosen {
-    background-color: #fabbbb!important;
+    background-color: #fabbbb !important;
   }
 }
 
-.control-mode > .default.text {
-  color: rgb(49, 49, 49)!important;
+.control-mode>.default.text {
+  color: rgb(49, 49, 49) !important;
 }
 
 .hearing-untouched {
   background-color: #DCF6FF;
 }
 
-.hearing-touched{
+.hearing-touched {
   background-color: #cdf3ff;
 }
 
@@ -935,13 +991,14 @@ html, body, #root {
   color: rgb(0, 141, 129);
   font-weight: 500;
 }
+
 .story-text-input {
   width: 100%;
   height: 20vh;
 }
 
-.sidebar{
-  &-hamburger{
+.sidebar {
+  &-hamburger {
     z-index: 102;
     cursor: pointer;
   }
@@ -949,20 +1006,20 @@ html, body, #root {
   &-swipeable {
     width: $sidebar-swipeable-width;
     left: 0;
-    top:0;
+    top: 0;
     z-index: 102;
     position: fixed;
     height: 100vh;
   }
 
-  &-content{
-    display:flex;
+  &-content {
+    display: flex;
     flex-direction: column;
-    height:100%;
+    height: 100%;
   }
 }
 
-.practice-container{
+.practice-container {
   margin-bottom: 2em;
   word-spacing: 1px;
   line-height: 2em;
@@ -985,8 +1042,8 @@ html, body, #root {
   &:hover {
     border: 1px solid $btn-color-primary;
 
-    & > div {
-      box-shadow: inset 0 0 100px 100px rgba(0, 0, 0, 0.1)!important;
+    &>div {
+      box-shadow: inset 0 0 100px 100px rgba(0, 0, 0, 0.1) !important;
     }
   }
 
@@ -994,18 +1051,18 @@ html, body, #root {
     outline: 0;
     background-color: #d7d7d7;
 
-    & > div {
-      box-shadow: inset 0 0 100px 100px rgba(0, 0, 0, 0.1)!important;
+    &>div {
+      box-shadow: inset 0 0 100px 100px rgba(0, 0, 0, 0.1) !important;
     }
   }
 
-  & > div {
+  &>div {
     height: 2.5rem;
     border-radius: .25rem;
     transition: width 500ms ease-in-out;
   }
 
-  & > span {
+  &>span {
     position: absolute;
     top: 50%;
     left: 50%;
@@ -1013,7 +1070,7 @@ html, body, #root {
   }
 
   &:disabled {
-    & > div {
+    &>div {
       background-color: #007bff;
       opacity: 0.65;
     }
@@ -1027,8 +1084,9 @@ html, body, #root {
     padding-left: 2rem !important;
     padding-right: 2rem !important;
   }
+
   &-active-key {
-    background-color: $btn-color-primary !important;
+    background-color: $btn-color-primary  !important;
     color: white !important;
   }
 }
@@ -1039,6 +1097,7 @@ html, body, #root {
   bottom: 0.5%;
   background-color: #fafafa;
   z-index: 1;
+
   @media (min-width: 695px) {
     bottom: 3em;
   }
@@ -1052,6 +1111,7 @@ html, body, #root {
   font-style: italic;
   background-color: white;
   border: none;
+
   &:hover {
     color: $secondary-text-color;
   }
@@ -1060,7 +1120,7 @@ html, body, #root {
 .dictionary-and-annotations-cont {
   display: flex;
   flex-direction: column;
-  gap: 1em; 
+  gap: 1em;
   position: sticky;
   top: 1em + $navbar-height;
   align-self: flex-start;
@@ -1070,6 +1130,7 @@ html, body, #root {
   width: 350px;
   margin-left: 1em;
   height: auto;
+
   &-overlay {
     position: fixed;
     top: auto;
@@ -1077,11 +1138,21 @@ html, body, #root {
     bottom: 3em;
     width: calc(100vw - 2em)
   }
+
   @media (max-width: 639px) {
     bottom: 1%;
     width: 95%;
     margin-bottom: 1em;
   }
+}
+
+.story-topics-box {
+  width: 350px;
+  margin-left: 1em;
+  height: auto;
+  background-color: #FFFFFF;
+  border: 1px solid lightgrey;
+  border-radius: 4px;
 }
 
 .annotations-box {
@@ -1091,17 +1162,17 @@ html, body, #root {
 }
 
 .notes-highlighted-word {
-  background-color: rgb(255, 255, 116)!important;
+  background-color: rgb(255, 255, 116) !important;
 }
 
 .notes-superscript {
   color: green;
-  font-size: .8rem; 
+  font-size: .8rem;
 }
 
 .notes-info-text {
   color: slategrey;
-  font-style: italic; 
+  font-style: italic;
 }
 
 .annotation-item {
@@ -1112,6 +1183,7 @@ html, body, #root {
     background-color: white;
     margin: 0rem;
   }
+
   &-listed {
     background-color: #f5f5f5;
     margin: .5rem 0rem;
@@ -1125,7 +1197,7 @@ html, body, #root {
 }
 
 .dictionary-translations {
-  & > * {
+  &>* {
     padding-top: 1rem
   }
 
@@ -1133,7 +1205,8 @@ html, body, #root {
     display: flex;
     flex-wrap: wrap;
     margin-left: -2rem;
-    & > * {
+
+    &>* {
       margin-left: 2rem
     }
   }
@@ -1143,6 +1216,7 @@ html, body, #root {
   cursor: pointer;
   padding-top: .5rem;
   color: slategray;
+
   &:hover {
     color: $action-text-hover-color;
   }
@@ -1160,7 +1234,8 @@ html, body, #root {
   flex-direction: column;
   padding: 0 0.5em 1em 0.5em;
   margin-top: -0.5em;
-  & > * {
+
+  &>* {
     margin-top: 0.5em;
   }
 }
@@ -1168,16 +1243,19 @@ html, body, #root {
 .library-selection {
   display: flex;
   flex-wrap: wrap;
+
   @media (max-width: 520px) {
-       flex-direction: column;
-    }
+    flex-direction: column;
+  }
 }
 
 .library-tabs {
   display: flex;
   min-width: 50%;
+
   button {
     height: 38px;
+
     &:focus {
       box-shadow: none;
     }
@@ -1203,14 +1281,16 @@ html, body, #root {
   @media (max-width: 700px) {
     left: 65%;
   }
-  
+
 }
 
 .checkbox-group {
   display: flex;
   min-width: 50%;
+
   button {
     height: 70px;
+
     &:focus {
       box-shadow: none;
     }
@@ -1239,9 +1319,9 @@ html, body, #root {
   margin-top: 2.5em;
   align-items: center;
 }
- 
+
 .competition-bar-label {
-  transition:width .6s ease;
+  transition: width .6s ease;
   display: flex;
   justify-content: space-between;
 }
@@ -1252,19 +1332,19 @@ html, body, #root {
 
   &-title {
     font-family: $default-font;
-    font-size: 1.2rem!important;
+    font-size: 1.2rem !important;
     padding-left: 1em;
   }
 
   &-title-focused {
     font-family: $default-font;
     font-weight: 500;
-    font-size: 1.3rem!important;
+    font-size: 1.3rem !important;
     padding-left: .75em;
   }
 
   &-content {
-    padding-left: 1em!important;
+    padding-left: 1em !important;
   }
 }
 
@@ -1278,7 +1358,8 @@ label.file-upload-btn {
   border: 1px solid rgb(112, 114, 120);
   border-radius: 10px;
 
-  &:hover, :active {
+  &:hover,
+  :active {
     background: rgb(189, 202, 212);
     border-color: black;
   }
@@ -1302,7 +1383,7 @@ label.file-upload-btn {
   background-color: rgb(239, 239, 239);
   padding-top: 1em;
   padding-bottom: 1em;
-} 
+}
 
 .library-toggle-button {
   color: rgb(119, 119, 119);
@@ -1328,8 +1409,8 @@ label.file-upload-btn {
 }
 
 .story-item-dropdown {
-  & > a {
-    color: rgba(0,0,0,.87) !important;
+  &>a {
+    color: rgba(0, 0, 0, .87) !important;
   }
 }
 
@@ -1340,9 +1421,11 @@ label.file-upload-btn {
   width: 100%;
   overflow: hidden;
   -o-text-overflow: ellipsis;
-  text-overflow:    ellipsis;
+  text-overflow: ellipsis;
+
   @media (min-width: 640px) {
     margin-left: 1rem;
+
     &:hover {
       cursor: pointer;
     }
@@ -1357,9 +1440,11 @@ label.file-upload-btn {
   width: 100%;
   overflow: hidden;
   -o-text-overflow: ellipsis;
-  text-overflow:    ellipsis;
+  text-overflow: ellipsis;
+
   @media (min-width: 640px) {
     margin-left: 1rem;
+
     &:hover {
       cursor: pointer;
       color: $action-text-hover-color;
@@ -1381,12 +1466,12 @@ label.file-upload-btn {
   padding-left: 1em;
   padding-right: 1em;
 
-  &.nogroups{
+  &.nogroups {
     margin-top: 2em;
-    display:flex;
+    display: flex;
     flex-direction: column;
 
-    #title{
+    #title {
       padding-bottom: 1em;
     }
 
@@ -1398,7 +1483,7 @@ label.file-upload-btn {
   margin-top: 1.5em;
 }
 
-.group-form > .form-control {
+.group-form>.form-control {
   margin-top: 0.5em;
   margin-bottom: 1.5em;
 }
@@ -1441,6 +1526,7 @@ label.file-upload-btn {
   box-shadow: 0.5em 0.5em 0.6em grey;
   background-color: hsla(208, 56%, 55%, 1);
   color: #fff;
+
   &:focus {
     outline: none;
   }
@@ -1503,7 +1589,8 @@ label.file-upload-btn {
     justify-content: center;
     align-items: center;
     padding-top: 1rem;
-    & > ul {
+
+    &>ul {
       max-height: 16em;
       padding-left: 0;
     }
@@ -1549,6 +1636,7 @@ label.file-upload-btn {
   &-blended-input {
     background-color: inherit;
     border: none;
+
     &:focus {
       outline: none;
     }
@@ -1559,21 +1647,25 @@ label.file-upload-btn {
     height: 2em;
     display: flex;
     flex-direction: row;
-    & > button {
+
+    &>button {
       color: white;
       font-weight: 550;
       padding-right: 0;
     }
-    & > select {
+
+    &>select {
       background-color: inherit;
       border: none;
       color: white;
       font-weight: 550;
       width: 7em;
+
       &:focus {
         outline: none;
       }
-      & > option {
+
+      &>option {
         color: black;
       }
     }
@@ -1584,15 +1676,19 @@ label.file-upload-btn {
     margin: auto;
     border: none;
     color: $btn-color-primary;
+
     &:focus {
       outline: none;
     }
+
     &:hover {
       color: $btn-highlight-color-primary;
     }
+
     &:disabled {
       color: grey
     }
+
     @media (max-width: 415px) {
       display: none;
     }
@@ -1623,6 +1719,7 @@ label.file-upload-btn {
     align-items: center;
     justify-content: center;
     padding: 1em;
+
     &:focus {
       outline: 0;
     }
@@ -1638,7 +1735,7 @@ label.file-upload-btn {
     position: fixed;
     bottom: 1em;
     left: 1em;
-    display:  flex;
+    display: flex;
     flex-direction: column-reverse;
     pointer-events: none;
     z-index: 1;
@@ -1653,6 +1750,7 @@ label.file-upload-btn {
     height: 3.5em;
     box-shadow: 0 6px 10px 0 #666;
     pointer-events: auto;
+
     &:focus {
       outline: 0;
     }
@@ -1715,11 +1813,13 @@ label.file-upload-btn {
     width: 500px;
     flex-direction: column;
   }
+
   &-question-container {
     min-width: 100%;
     height: 500px;
     padding-top: 1em;
   }
+
   &-question-spinner-container {
     display: flex;
     justify-content: center;
@@ -1727,20 +1827,23 @@ label.file-upload-btn {
     width: 500px;
     height: 500px;
   }
+
   &-info {
     font-style: italic;
   }
+
   &-paused-text-cont {
     @extend .justify-center;
     font-size: 1.5em;
     color: rgb(112, 114, 120);
     margin-top: 3em;
     text-align: center
-
   }
+
   &-top-info {
     font-size: 22px;
   }
+
   &-counter {
     font-size: 2.5em;
     border-radius: 7px;
@@ -1751,23 +1854,27 @@ label.file-upload-btn {
     align-items: center;
     justify-content: center;
   }
+
   &-prephrase {
     font-weight: 400;
     color: rgb(81, 138, 248);
     font-size: 18px;
     padding-bottom: 1em;
   }
+
   &-question {
     padding-top: 0.5em;
     font-size: 22px;
     margin: 1.5em 0 1em 0;
   }
+
   &-choice-button {
     width: 100%;
     min-width: 100%;
     margin-bottom: 1em;
     font-size: 22px;
   }
+
   &-controls {
     @extend .align-center;
     @extend .justify-center;
@@ -1780,24 +1887,25 @@ label.file-upload-btn {
 }
 
 // No blurring/dimming for popups inside modal elements.
-.blurring.dimmed.dimmable > :not(.dimmer).popup {
+.blurring.dimmed.dimmable> :not(.dimmer).popup {
   filter: none;
 }
 
 .review-view-tooltip {
-  text-align: center!important;
-  color: white!important;
-  background-color: $tooltip-green!important;
-  padding: .25rem .5rem .75rem .5rem!important;
+  text-align: center !important;
+  color: white !important;
+  background-color: $tooltip-green !important;
+  padding: .25rem .5rem .75rem .5rem !important;
 }
 
-.tooltip { //Overwrites react-popper-tooltip styles.
+.tooltip {
+  //Overwrites react-popper-tooltip styles.
 
   &-container {
     padding: 0em;
 
-    &.clickable{
-      &:hover{
+    &.clickable {
+      &:hover {
         cursor: pointer;
       }
     }
@@ -1813,20 +1921,20 @@ label.file-upload-btn {
   &-blue {
     text-align: center;
     background-color: $tooltip-blue;
-    color:white;
+    color: white;
     padding: 0.3em;
   }
 
   &-green {
     text-align: center;
     background-color: $tooltip-green;
-    color:white;
+    color: white;
     padding: 0.3em;
   }
 
   &-hint {
     background-color: $tooltip-green;
-    color:white;
+    color: white;
     padding: .5em;
     text-align: 'left';
     margin: 0;
@@ -1834,12 +1942,12 @@ label.file-upload-btn {
 }
 
 .story-item-dropdown {
-  .delete-button{
-    color:white !important;
+  .delete-button {
+    color: white !important;
   }
 }
 
-.offline-notification{
+.offline-notification {
   position: absolute;
   z-index: 1000;
   margin: 0 auto;
@@ -1853,7 +1961,7 @@ label.file-upload-btn {
   opacity: 0.8;
 
   h3 {
-    margin:1em;
+    margin: 1em;
   }
 
 }
@@ -1871,6 +1979,7 @@ label.file-upload-btn {
 
 .concept {
   padding-left: 2em;
+
   input {
     margin-right: 0.5em;
   }
@@ -1879,6 +1988,7 @@ label.file-upload-btn {
     display: flex;
     justify-content: space-between;
     font-size: 18px;
+
     &:focus {
       outline: none;
     }
@@ -1929,6 +2039,7 @@ label.file-upload-btn {
 
 .wordnest {
   padding-left: 3.5em;
+
   &-row {
     display: flex;
     justify-content: space-between;
@@ -1939,7 +2050,7 @@ label.file-upload-btn {
     margin-right: 0.5em;
 
     &:hover {
-      color: black!important;
+      color: black !important;
     }
 
     &:focus {
@@ -1960,7 +2071,7 @@ label.file-upload-btn {
     font-size: 0.85em;
     background-color: #f1f1f1;
     border-radius: 0.5em;
-    padding: 0em  0.15em;
+    padding: 0em 0.15em;
     margin: 0.075em;
   }
 
@@ -1969,7 +2080,7 @@ label.file-upload-btn {
     font-size: 0.85em;
     background-color: #e6effa;
     border-radius: 0.5em;
-    padding: 0em  0.15em;
+    padding: 0em 0.15em;
     margin: 0.075em;
 
     &:hover {
@@ -1977,13 +2088,13 @@ label.file-upload-btn {
     }
 
     &:focus {
-      transition-delay:1.5s;
+      transition-delay: 1.5s;
       color: rgb(247, 62, 62);
       background-color: #c2ddfc;
     }
   }
 
-  
+
 
   @media (max-width: 760px) {
     padding-left: 2em;
@@ -2005,18 +2116,18 @@ label.file-upload-btn {
   align-items: center;
 }
 
-.suggestedSources{
+.suggestedSources {
 
-  &-container{
+  &-container {
     padding-top: 1em;
   }
-  
-  &-row{
-  display: flex;
-  align-items: baseline;
-  flex-direction: row;
-  justify-content: space-between;
-  padding: 0.5em 0;
+
+  &-row {
+    display: flex;
+    align-items: baseline;
+    flex-direction: row;
+    justify-content: space-between;
+    padding: 0.5em 0;
   }
 }
 
@@ -2104,12 +2215,13 @@ label.file-upload-btn {
   width: 40px;
   border-radius: 7px;
   background: rgb(239, 239, 239);
-  margin-left: 1em; 
+  margin-left: 1em;
 
-  & > .unclicked:hover {
+  &>.unclicked:hover {
     cursor: pointer;
   }
-  & > .clicked:hover {
+
+  &>.clicked:hover {
     cursor: auto;
   }
 }
@@ -2121,7 +2233,7 @@ label.file-upload-btn {
   height: 2em;
   width: 2em;
   font-size: 1.5em;
-  
+
   &-cont {
     display: flex;
     position: sticky;
@@ -2147,10 +2259,11 @@ label.file-upload-btn {
     @extend .practice-timer;
     background: rgb(239, 239, 239);
 
-    & > .unclicked:hover {
+    &>.unclicked:hover {
       cursor: pointer;
     }
-    & > .clicked:hover {
+
+    &>.clicked:hover {
       cursor: auto;
     }
   }
@@ -2160,7 +2273,7 @@ label.file-upload-btn {
     background: #FFD970;
   }
 }
-    
+
 .competition-progress {
   position: sticky;
   background-color: #FFF;
@@ -2173,6 +2286,7 @@ label.file-upload-btn {
   align-items: center;
   margin-top: auto;
   margin-bottom: auto;
+
   & span:first-child {
     text-align: center;
   }
@@ -2184,6 +2298,7 @@ label.file-upload-btn {
     color: rgb(112, 114, 120);
   }
 }
+
 .date-pickers-container {
   padding: 1em;
   border: 1px solid rgb(189, 202, 212);
@@ -2267,9 +2382,11 @@ label.file-upload-btn {
   height: 2rem;
   border-radius: .5rem;
   position: relative;
-  & > div {
+
+  &>div {
     border-radius: .5rem;
   }
+
   & span {
     position: absolute;
     left: 50%;
@@ -2282,7 +2399,7 @@ label.file-upload-btn {
 .achievement-toast {
   border-radius: 5px;
   margin: 1rem;
-  background-color: rgb(131, 214,126);
+  background-color: rgb(131, 214, 126);
 }
 
 .leaderboard-item-container {
@@ -2334,7 +2451,8 @@ label.file-upload-btn {
   justify-content: space-evenly;
   max-width: 512px;
   margin: auto;
-  & > * {
+
+  &>* {
     flex: 1 1 0px;
   }
 }
@@ -2405,10 +2523,11 @@ label.file-upload-btn {
 .crosswords-clue {
   white-space: nowrap;
   border: 1px solid #ccc;
-  box-shadow: inset 0 1px 1px rgba(0,0,0,.075);
+  box-shadow: inset 0 1px 1px rgba(0, 0, 0, .075);
   padding: 0.1em;
   border-radius: 0.3em;
   cursor: pointer;
+
   &:hover {
     background-color: rgb(255, 255, 204);
   }
@@ -2523,7 +2642,7 @@ label.file-upload-btn {
   &-name {
     color: black;
   }
-  
+
 }
 
 .banner {
@@ -2537,8 +2656,11 @@ label.file-upload-btn {
 
   transform: translateX(-100%);
   animation: slide-in 0.5s forwards;
+
   @keyframes slide-in {
-    100% { transform: translateX(0%); }
+    100% {
+      transform: translateX(0%);
+    }
   }
 }
 
@@ -2547,8 +2669,10 @@ label.file-upload-btn {
     position: relative;
     overflow: hidden;
     width: 100%;
-    padding-top: 56.25%; /* 16:9 Aspect Ratio (divide 9 by 16 = 0.5625) */
+    padding-top: 56.25%;
+    /* 16:9 Aspect Ratio (divide 9 by 16 = 0.5625) */
   }
+
   position: absolute;
   top: 0;
   left: 0;
@@ -2567,12 +2691,12 @@ label.file-upload-btn {
     bottom: 0;
     left: 0;
     -webkit-backdrop-filter: blur(3px);
-    backdrop-filter: blur(3px); 
+    backdrop-filter: blur(3px);
     z-index: -1;
   }
-  background-image:
-      linear-gradient(rgba(0, 0, 0, 0.45), rgba(0, 0, 0, 0.45)),
-      url('./images/bookstack.jpg');
+
+  background-image: linear-gradient(rgba(0, 0, 0, 0.45), rgba(0, 0, 0, 0.45)),
+  url('./images/bookstack.jpg');
   background-size: cover;
   height: 100%;
   min-height: 100vh;
@@ -2632,27 +2756,29 @@ label.file-upload-btn {
   display: flex;
   flex-wrap: wrap;
   gap: 2px;
+
   @media (max-width: 700px) {
     flex-direction: column;
-    & > button {
+
+    &>button {
       margin-bottom: map.get($spacing, "sm");
     }
 
-    & > :not(:last-child) {
+    &> :not(:last-child) {
       margin-right: 0;
     }
   }
 }
 
 .group-buttons {
-  & > button {
+  &>button {
     align-self: flex-start;
   }
 
   @media (max-width: 400px) {
     flex-direction: column;
-    
-    & > button {
+
+    &>button {
       align-self: stretch;
       margin-top: 0.5em;
       margin-left: 0;
@@ -2668,7 +2794,8 @@ label.file-upload-btn {
   @media (max-width: 640px) {
     flex-direction: column;
     margin-top: -0.5em;
-    & > * {
+
+    &>* {
       flex-grow: 1;
       margin-top: 0.5em;
     }
@@ -2701,12 +2828,15 @@ label.file-upload-btn {
   @media (max-width: 450px) {
     font-size: 13px;
   }
+
   @media (max-width: 380px) {
     font-size: 12px;
   }
+
   @media (max-width: 355px) {
     font-size: 11px;
   }
+
   @media (max-width: 330px) {
     font-size: 10px;
   }
@@ -2715,6 +2845,7 @@ label.file-upload-btn {
 .wrap-and-grow {
   display: flex;
   flex-wrap: wrap;
+
   & button {
     flex-grow: 1;
   }
@@ -2724,7 +2855,8 @@ label.file-upload-btn {
   display: flex;
   flex-grow: 1;
   max-width: 500px;
-  & > * {
+
+  &>* {
     flex-basis: 0 !important;
     flex-grow: 1 !important;
     justify-content: center !important;
@@ -2734,7 +2866,8 @@ label.file-upload-btn {
 
 // EXERCISE DENSITY SLIDER
 
-.exercise-density-slider, .exercise-density-slider-label-cont {
+.exercise-density-slider,
+.exercise-density-slider-label-cont {
   width: 100%;
   max-width: 500px;
   height: 3em;
@@ -2779,47 +2912,52 @@ label.file-upload-btn {
 // ANIMATIONS
 .slide-from-left {
   transform: translateX(-100%);
-    animation: slide-in 0.5s forwards;
-      @keyframes slide-in {
-      100% { transform: translateX(0%); }
+  animation: slide-in 0.5s forwards;
+
+  @keyframes slide-in {
+    100% {
+      transform: translateX(0%);
     }
+  }
 }
 
 .slide-from-bottom {
   transform: translateY(100%);
-    animation: slide-in 0.4s forwards;
-      @keyframes slide-in {
-      100% { transform: translateY(0%); }
+  animation: slide-in 0.4s forwards;
+
+  @keyframes slide-in {
+    100% {
+      transform: translateY(0%);
     }
+  }
 }
 
 // SCROLL TO TOP ARROW
 .scroll-to-top {
-    color: $btn-color-primary;
-    position: fixed; 
-    width: 1em;
-    bottom: 20px;
-    align-items: center;
-    height: 1em;
-    justify-content: center;
-    z-index: 1000;
-    cursor: pointer;
-    animation: fadeIn 0.3s;
-    transition: opacity 0.1s;
-    opacity: 0.2;
+  color: $btn-color-primary;
+  position: fixed;
+  width: 1em;
+  bottom: 20px;
+  align-items: center;
+  height: 1em;
+  justify-content: center;
+  z-index: 1000;
+  cursor: pointer;
+  animation: fadeIn 0.3s;
+  transition: opacity 0.1s;
+  opacity: 0.2;
 
-    &:hover {
-      opacity: 1;
-    }
+  &:hover {
+    opacity: 1;
+  }
 }
-  
+
 @keyframes fadeIn {
-	0% {
-	  opacity: 0;
-	}
-	100% {
-	  opacity: 0.5;
-	}
+  0% {
+    opacity: 0;
+  }
+
+  100% {
+    opacity: 0.5;
+  }
 }
-
-

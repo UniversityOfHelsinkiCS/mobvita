@@ -670,5 +670,6 @@
     "enc-grammar-progress-2": "语法",
     "no-hints-available": "Sorry, no hints available",
     "user-settings-options": "User settings",
-    "annotation-name": "Note name (optional)"
+    "annotation-name": "Note name (optional)",
+    "story-top-topics": "Working on this story will help you master especially these topics"
 }
