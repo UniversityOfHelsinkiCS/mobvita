@@ -26,7 +26,6 @@ export const setAnnotations = words => {
 
   words.forEach(word => {
     if (word.annotation) {
-      console.log('word ', word)
       currentSpan.startId = word.ID
       currentSpan.endId = word.annotation[0].end_token_id
       currentSpan.annotationString += word.surface

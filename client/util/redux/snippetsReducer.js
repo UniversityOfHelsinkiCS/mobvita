@@ -61,6 +61,12 @@ export const addToPrevious = snippet => ({ type: 'ADD_TO_PREVIOUS', snippet })
 export const clearFocusedSnippet = () => ({ type: 'CLEAR_FOCUSED_SNIPPET' })
 export const resetSessionId = () => ({ type: 'RESET_SESSION_ID' })
 
+export const initEloHearts = wordId => ({ type: 'SET_INITIAL_ELO_HEARTS', wordId })
+
+export const decreaseEloHearts = wordId => ({ type: 'DECREASE_ELO_HEARTS', wordId })
+
+export const clearEloHearts = () => ({ type: 'CLEAR_ELO_HEARTS' })
+
 // Reducer
 // You can include more app wide actions such as "selected: []" into the state
 export default (state = { previous: [], pending: false, error: false }, action) => {
@@ -100,6 +106,7 @@ export default (state = { previous: [], pending: false, error: false }, action) 
         testTime: action.response.test_time,
         pending: false,
         error: false,
+        eloHearts: {},
       }
     case 'GET_SNIPPET_ANSWERS_ATTEMPT':
       return {
@@ -145,6 +152,7 @@ export default (state = { previous: [], pending: false, error: false }, action) 
         testTime: action.response.test_time,
         pending: false,
         error: false,
+        eloHearts: {},
       }
     case 'GET_PREVIOUS_SNIPPETS_ATTEMPT':
       return {
@@ -179,6 +187,7 @@ export default (state = { previous: [], pending: false, error: false }, action) 
       return {
         ...state,
         focused: undefined,
+        eloHearts: {},
       }
 
     case 'RESET_SESSION_ID':
@@ -193,6 +202,32 @@ export default (state = { previous: [], pending: false, error: false }, action) 
         focused: action.nextSnippet,
         pending: false,
         error: false,
+      }
+    case 'SET_INITIAL_ELO_HEARTS':
+      return {
+        ...state,
+        eloHearts: {
+          ...state.eloHearts,
+          [action.wordId]: 5,
+        },
+      }
+    case 'DECREASE_ELO_HEARTS':
+      if (state.eloHearts[action.wordId] === 0) {
+        return {
+          ...state,
+        }
+      }
+      return {
+        ...state,
+        eloHearts: {
+          ...state.eloHearts,
+          [action.wordId]: state.eloHearts[action.wordId] - 1,
+        },
+      }
+    case 'CLEAR_ELO_HEARTS':
+      return {
+        ...state,
+        eloHearts: {},
       }
     default:
       return state

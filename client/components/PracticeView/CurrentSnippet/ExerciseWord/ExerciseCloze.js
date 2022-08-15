@@ -20,6 +20,7 @@ import {
   setExplanation,
   incrementHintRequests,
 } from 'Utilities/redux/practiceReducer'
+import { decreaseEloHearts } from 'Utilities/redux/snippetsReducer'
 import { getTranslationAction, setWords } from 'Utilities/redux/translationReducer'
 import { Icon } from 'semantic-ui-react'
 import { Button } from 'react-bootstrap'
@@ -36,6 +37,7 @@ const ExerciseCloze = ({ word, handleChange }) => {
   const { resource_usage, autoSpeak } = useSelector(state => state.user.data.user)
   const currentAnswer = useSelector(({ practice }) => practice.currentAnswers[word.ID])
   const { attempt, focusedWord } = useSelector(({ practice }) => practice)
+  const { eloHearts } = useSelector(({ snippets }) => snippets)
   const [filteredHintsList, setFilteredHintsList] = useState([])
   const [preHints, setPreHints] = useState([])
   const [keepOpen, setKeepOpen] = useState(false)
@@ -60,8 +62,7 @@ const ExerciseCloze = ({ word, handleChange }) => {
   const voice = voiceLanguages[learningLanguage]
   const hintButtonVisibility =
     (!hints || filteredHintsList.length < 1 || preHints.length < filteredHintsList?.length) &&
-    !emptyHintsList &&
-    attempt === 0
+    !emptyHintsList
       ? { visibility: 'visible' }
       : { visibility: 'hidden' }
 
@@ -102,8 +103,8 @@ const ExerciseCloze = ({ word, handleChange }) => {
       dispatch(incrementHintRequests(wordId, newRequestNum))
 
       setPreHints(preHints.concat(filteredHintsList[preHints.length]))
-      setEloScoreHearts(eloScoreHearts.slice(0, -1))
-      setSpentHints(spentHints.concat(spentHints.length + 1))
+
+      dispatch(decreaseEloHearts(wordId))
       setKeepOpen(true)
     }
   }
@@ -120,6 +121,21 @@ const ExerciseCloze = ({ word, handleChange }) => {
   }
 
   useEffect(() => {
+    if (eloHearts[wordId] >= 0) {
+      if (eloHearts[wordId] === 0) {
+        setEloScoreHearts([])
+      } else {
+        const currentEloHearts = Array.from(Array(eloHearts[wordId]).keys())
+        setEloScoreHearts(currentEloHearts)
+      }
+
+      const difference = 5 - eloHearts[wordId]
+      const newSpentHearts = Array.from(Array(difference).keys())
+      setSpentHints(newSpentHearts)
+    }
+  }, [eloHearts[wordId]])
+
+  useEffect(() => {
     const val = currentAnswer ? currentAnswer.users_answer : ''
     setValue(val)
   }, [currentAnswer])
@@ -131,11 +147,14 @@ const ExerciseCloze = ({ word, handleChange }) => {
   useEffect(() => {
     if (message && !hints) {
       setPreHints([])
+    } else if (attempt !== 0) {
+      setFilteredHintsList(hints)
+      setPreHints([])
     } else {
       setFilteredHintsList(hints?.filter(hint => hint !== message))
       setPreHints([])
     }
-  }, [message, hints])
+  }, [message, hints, attempt])
 
   useEffect(() => {
     if (focusedWord !== word) {
@@ -148,19 +167,18 @@ const ExerciseCloze = ({ word, handleChange }) => {
     setShow(false)
   }
   */
-  // console.log('elohearts', eloScoreHearts)
 
   const tooltip = (
     <div>
-      {attempt === 0 && (
-        <div className="tooltip-green">
-          <Button
-            style={hintButtonVisibility}
-            variant="primary"
-            onMouseDown={handlePreHints}
-          >
-            <FormattedMessage id="ask-for-a-hint" />
-          </Button>
+      <div className="tooltip-green flex space-between">
+        <Button
+          style={hintButtonVisibility}
+          variant="primary"
+          onMouseDown={handlePreHints}
+        >
+          <FormattedMessage id="ask-for-a-hint" />
+        </Button>
+        <div>
           {eloScoreHearts.map(heart => (
             <Icon name="heart" style={{ marginLeft: '0.25em' }} />
           ))}
@@ -168,15 +186,15 @@ const ExerciseCloze = ({ word, handleChange }) => {
             <Icon name="heart outline" style={{ marginLeft: '0.25em' }} />
           ))}
         </div>
-      )}{' '}
-      {(preHints?.length > 0 || message) && (
+      </div>{' '}
+      {(preHints?.length > 0 || (message && attempt === 0)) && (
         <div
           className="tooltip-hint"
           style={{ textAlign: 'left' }}
           onMouseDown={handleTooltipClick}
         >
           <ul>
-            {message && <span className="flex"><li dangerouslySetInnerHTML={formatGreenFeedbackText(message)} />{ref && (
+            {message && attempt === 0 && <span className="flex"><li dangerouslySetInnerHTML={formatGreenFeedbackText(message)} />{ref && (
             <Icon name="external" style={{ alignSelf: 'flex-start', marginLeft: '0.5rem' }} />
           )}
           {explanation && (
@@ -211,7 +229,6 @@ const ExerciseCloze = ({ word, handleChange }) => {
   }
 
   const handleBlur = () => {
-    console.log('this one also?')
     handleChange(value, word)
 
     if (!keepOpen) {

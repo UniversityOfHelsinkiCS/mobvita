@@ -1,12 +1,15 @@
 import React, { useEffect, useState } from 'react'
-import { useSelector } from 'react-redux'
+import { useSelector, useDispatch } from 'react-redux'
 import { Dropdown, Icon } from 'semantic-ui-react'
 import { FormattedMessage } from 'react-intl'
 import { getTextWidth, formatGreenFeedbackText, getWordColor, skillLevels } from 'Utilities/common'
+import { incrementHintRequests } from 'Utilities/redux/practiceReducer'
+import { decreaseEloHearts } from 'Utilities/redux/snippetsReducer'
 import { Button } from 'react-bootstrap'
 import Tooltip from 'Components/PracticeView/Tooltip'
 
 const ExerciseMultipleChoice = ({ word, handleChange }) => {
+  const dispatch = useDispatch()
   const [className, setClassName] = useState('exercise-multiple')
   const [options, setOptions] = useState([])
   const [touched, setTouched] = useState(false)
@@ -17,16 +20,16 @@ const ExerciseMultipleChoice = ({ word, handleChange }) => {
   const [emptyHintsList, setEmptyHintsList] = useState(false)
   const [filteredHintsList, setFilteredHintsList] = useState([])
   const currentAnswer = useSelector(({ practice }) => practice.currentAnswers[word.ID])
+  const { eloHearts } = useSelector(({ snippets }) => snippets)
   const { attempt, focusedWord } = useSelector(({ practice }) => practice)
   const [eloScoreHearts, setEloScoreHearts] = useState([1, 2, 3, 4, 5])
   const [spentHints, setSpentHints] = useState([])
 
-  const { tested, isWrong, message, hints } = word
+  const { tested, isWrong, message, hints, ID: wordId } = word
   const value = currentAnswer ? currentAnswer.users_answer : ''
   const hintButtonVisibility =
     (!hints || filteredHintsList.length < 1 || preHints.length < filteredHintsList?.length) &&
-    !emptyHintsList &&
-    attempt === 0
+    !emptyHintsList
       ? { visibility: 'visible' }
       : { visibility: 'hidden' }
   const getExerciseClass = (tested, isWrong) => {
@@ -49,15 +52,37 @@ const ExerciseMultipleChoice = ({ word, handleChange }) => {
   }, [word])
 
   useEffect(() => {
+    if (eloHearts[wordId] >= 0) {
+      if (eloHearts[wordId] === 0) {
+        setEloScoreHearts([])
+      } else {
+        const currentEloHearts = Array.from(Array(eloHearts[wordId]).keys())
+        setEloScoreHearts(currentEloHearts)
+      }
+
+      const difference = 5 - eloHearts[wordId]
+      const newSpentHearts = Array.from(Array(difference).keys())
+      setSpentHints(newSpentHearts)
+    }
+  }, [eloHearts[wordId]])
+
+  useEffect(() => {
     if (focusedWord !== word) {
       setShow(false)
     }
   }, [focusedWord])
 
   useEffect(() => {
-    setFilteredHintsList(hints?.filter(hint => hint !== message))
-    setPreHints([])
-  }, [message, hints])
+    if (message && !hints) {
+      setPreHints([])
+    } else if (attempt !== 0) {
+      setFilteredHintsList(hints)
+      setPreHints([])
+    } else {
+      setFilteredHintsList(hints?.filter(hint => hint !== message))
+      setPreHints([])
+    }
+  }, [message, hints, attempt])
 
   const maximumLength = word.choices.reduce((maxLength, currLength) => {
     if (currLength.length > maxLength) return currLength.length
@@ -91,9 +116,12 @@ const ExerciseMultipleChoice = ({ word, handleChange }) => {
       setEmptyHintsList(true)
       setKeepOpen(true)
     } else {
+      const newRequestNum = preHints.length + 1
+      dispatch(incrementHintRequests(wordId, newRequestNum))
+
       setPreHints(preHints.concat(filteredHintsList[preHints.length]))
-      setEloScoreHearts(eloScoreHearts.slice(0, -1))
-      setSpentHints(spentHints.concat(spentHints.length + 1))
+
+      dispatch(decreaseEloHearts(wordId))
       setKeepOpen(true)
     }
   }
@@ -107,15 +135,15 @@ const ExerciseMultipleChoice = ({ word, handleChange }) => {
 
   const tooltip = (
     <div onBlur={handleTooltipBlur}>
-      {attempt === 0 && (
-        <div className="tooltip-green">
-          <Button
-            style={hintButtonVisibility}
-            variant="primary"
-            onMouseDown={handlePreHints}
-          >
-            <FormattedMessage id="ask-for-a-hint" />
-          </Button>
+      <div className="tooltip-green flex space-between">
+        <Button
+          style={hintButtonVisibility}
+          variant="primary"
+          onMouseDown={handlePreHints}
+        >
+          <FormattedMessage id="ask-for-a-hint" />
+        </Button>
+        <div>
           {eloScoreHearts.map(heart => (
             <Icon name="heart" style={{ marginLeft: '0.25em' }} />
           ))}
@@ -123,11 +151,11 @@ const ExerciseMultipleChoice = ({ word, handleChange }) => {
             <Icon name="heart outline" style={{ marginLeft: '0.25em' }} />
           ))}
         </div>
-      )}{' '}
-      {(preHints?.length > 0 || message) && (
+      </div>{' '}
+      {(preHints?.length > 0 || (message && attempt === 0)) && (
         <div className="tooltip-hint" style={{ textAlign: 'left' }}>
           <ul>
-            {message && <li dangerouslySetInnerHTML={formatGreenFeedbackText(word?.message)} />}
+            {message && attempt === 0 && <li dangerouslySetInnerHTML={formatGreenFeedbackText(word?.message)} />}
             {preHints?.map(hint => (
               <li dangerouslySetInnerHTML={formatGreenFeedbackText(hint)} />
             ))}

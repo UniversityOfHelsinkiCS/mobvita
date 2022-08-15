@@ -7,6 +7,8 @@ import {
   setPrevious,
   resetSessionId,
   resetCurrentSnippet,
+  initEloHearts,
+  clearEloHearts,
 } from 'Utilities/redux/snippetsReducer'
 import { clearTranslationAction } from 'Utilities/redux/translationReducer'
 import 'react-simple-keyboard/build/css/index.css'
@@ -43,13 +45,14 @@ const CurrentSnippet = ({ storyId, handleInputChange, timer, numSnippets }) => {
   const { enable_recmd } = useSelector(({ user }) => user.data.user)
   const snippets = useSelector(({ snippets }) => snippets)
   const answersPending = useSelector(({ snippets }) => snippets.answersPending)
-  const { practiceFinished, snippetFinished, isNewSnippet, attempt, willPause, isPaused } =
+  const { practiceFinished, snippetFinished, isNewSnippet, attempt, willPause, isPaused, previousAnswers } =
     useSelector(({ practice }) => practice)
   const userData = useSelector(state => state.user.data.user)
   const learningLanguage = useSelector(learningLanguageSelector)
   const history = useHistory()
   const isControlledStory = history.location.pathname.includes('controlled-practice')
   const sessionId = snippets?.sessionId ?? null
+  const [initRender, setInitRender] = useState(false)
   const [openEncouragement, setOpenEncouragement] = useState(true)
   if (!userData) {
     return
@@ -112,8 +115,14 @@ const CurrentSnippet = ({ storyId, handleInputChange, timer, numSnippets }) => {
         }
       }, {})
       if (Object.keys(initialAnswers).length > 0) dispatch(setAnswers({ ...initialAnswers }))
+      dispatch(clearEloHearts())
       setExerciseCount(getExerciseCount())
       dispatch(startSnippet())
+      if (snippets?.focused?.practice_snippet) {
+        snippets.focused.practice_snippet.forEach(word => (
+          word.surface !== '\n\n' && word.id && !word.listen && dispatch(initEloHearts(word.ID))
+        ))
+      }
     }
   }
 

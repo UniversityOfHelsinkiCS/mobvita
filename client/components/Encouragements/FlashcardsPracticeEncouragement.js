@@ -13,8 +13,6 @@ const FlashcardsPracticeEncouragement = ({ open, setOpen, prevBlueCards }) => {
     return null
   }
 
-  console.log('prev ', prevBlueCards)
-
   return (
     <Modal
       basic
