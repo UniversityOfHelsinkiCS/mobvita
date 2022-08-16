@@ -96,14 +96,16 @@ const CurrentSnippet = ({ storyId, handleInputChange, setYouWon, finished }) => 
         }
       }, {})
       if (Object.keys(initialAnswers).length > 0) dispatch(setAnswers({ ...initialAnswers }))
-      dispatch(clearEloHearts())
+      // dispatch(clearEloHearts())
       setExerciseCount(getExerciseCount())
       dispatch(startSnippet())
+      /*
       if (snippets?.focused?.practice_snippet) {
         snippets.focused.practice_snippet.forEach(word => (
           word.surface !== '\n\n' && word.id && !word.listen && dispatch(initEloHearts(word.ID))
         ))
       }
+      */
     }
   }
 

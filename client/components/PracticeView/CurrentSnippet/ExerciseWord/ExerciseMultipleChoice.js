@@ -20,7 +20,7 @@ const ExerciseMultipleChoice = ({ word, handleChange }) => {
   const [emptyHintsList, setEmptyHintsList] = useState(false)
   const [filteredHintsList, setFilteredHintsList] = useState([])
   const currentAnswer = useSelector(({ practice }) => practice.currentAnswers[word.ID])
-  const { eloHearts } = useSelector(({ snippets }) => snippets)
+  // const { eloHearts } = useSelector(({ snippets }) => snippets)
   const { attempt, focusedWord } = useSelector(({ practice }) => practice)
   const [eloScoreHearts, setEloScoreHearts] = useState([1, 2, 3, 4, 5])
   const [spentHints, setSpentHints] = useState([])
@@ -50,7 +50,7 @@ const ExerciseMultipleChoice = ({ word, handleChange }) => {
     }))
     setOptions(temp)
   }, [word])
-
+  /*
   useEffect(() => {
     if (eloHearts[wordId] >= 0) {
       if (eloHearts[wordId] === 0) {
@@ -65,7 +65,7 @@ const ExerciseMultipleChoice = ({ word, handleChange }) => {
       setSpentHints(newSpentHearts)
     }
   }, [eloHearts[wordId]])
-
+  */
   useEffect(() => {
     if (focusedWord !== word) {
       setShow(false)
@@ -120,8 +120,9 @@ const ExerciseMultipleChoice = ({ word, handleChange }) => {
       dispatch(incrementHintRequests(wordId, newRequestNum))
 
       setPreHints(preHints.concat(filteredHintsList[preHints.length]))
-
-      dispatch(decreaseEloHearts(wordId))
+      setSpentHints(spentHints.concat(1))
+      setEloScoreHearts(eloScoreHearts.slice(0, -1))
+      // dispatch(decreaseEloHearts(wordId))
       setKeepOpen(true)
     }
   }

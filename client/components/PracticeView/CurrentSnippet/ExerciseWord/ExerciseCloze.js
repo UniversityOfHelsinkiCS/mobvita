@@ -37,7 +37,7 @@ const ExerciseCloze = ({ word, handleChange }) => {
   const { resource_usage, autoSpeak } = useSelector(state => state.user.data.user)
   const currentAnswer = useSelector(({ practice }) => practice.currentAnswers[word.ID])
   const { attempt, focusedWord } = useSelector(({ practice }) => practice)
-  const { eloHearts } = useSelector(({ snippets }) => snippets)
+  // const { eloHearts } = useSelector(({ snippets }) => snippets)
   const [filteredHintsList, setFilteredHintsList] = useState([])
   const [preHints, setPreHints] = useState([])
   const [keepOpen, setKeepOpen] = useState(false)
@@ -103,8 +103,9 @@ const ExerciseCloze = ({ word, handleChange }) => {
       dispatch(incrementHintRequests(wordId, newRequestNum))
 
       setPreHints(preHints.concat(filteredHintsList[preHints.length]))
-
-      dispatch(decreaseEloHearts(wordId))
+      setSpentHints(spentHints.concat(1))
+      setEloScoreHearts(eloScoreHearts.slice(0, -1))
+      // dispatch(decreaseEloHearts(wordId))
       setKeepOpen(true)
     }
   }
@@ -119,7 +120,7 @@ const ExerciseCloze = ({ word, handleChange }) => {
     if (isWrong) return 'exercise wrong cloze'
     return 'exercise correct'
   }
-
+  /*
   useEffect(() => {
     if (eloHearts?.hasOwnProperty(wordId) && eloHearts[wordId] >= 0) {
       if (eloHearts[wordId] === 0) {
@@ -134,6 +135,7 @@ const ExerciseCloze = ({ word, handleChange }) => {
       setSpentHints(newSpentHearts)
     }
   }, [eloHearts ? eloHearts[wordId] : eloHearts])
+  */
 
   useEffect(() => {
     const val = currentAnswer ? currentAnswer.users_answer : ''
