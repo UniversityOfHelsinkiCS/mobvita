@@ -145,10 +145,10 @@ const ExerciseMultipleChoice = ({ word, handleChange }) => {
         </Button>
         <div>
           {eloScoreHearts.map(heart => (
-            <Icon name="heart" style={{ marginLeft: '0.25em' }} />
+            <Icon size="small" name="heart" style={{ marginLeft: '0.25em' }} />
           ))}
           {spentHints.map(hint => (
-            <Icon name="heart outline" style={{ marginLeft: '0.25em' }} />
+            <Icon size="small" name="heart outline" style={{ marginLeft: '0.25em' }} />
           ))}
         </div>
       </div>{' '}
