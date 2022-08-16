@@ -57,7 +57,9 @@ const FocusedView = ({ focusedSpan }) => {
   const handleEditButtonClick = (text, name) => {
     dispatch(setAnnotationFormVisibility(true))
     setAnnotationText(text)
-    // setAnnotationName(name)
+    if (name.length > 0) {
+      setAnnotationName(name)
+    }
     setCharactersLeft(maxCharacters - text.length)
   }
 
