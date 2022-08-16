@@ -148,7 +148,7 @@ const FlashcardsEncouragement = ({
               style={{ maxWidth: '8%', maxHeight: '8%', marginRight: '1em' }}
             />
             <div>
-              <FormattedMessage id="Would you like to review" />
+              <FormattedMessage id="go-to-flashcards-progress" />
               &nbsp;
               <Link to="/profile/progress/flashcards">
                 <FormattedMessage id="review-progress" />
