@@ -36,24 +36,27 @@ const FlashcardsEncouragement = ({
     if (blueFlashcards) {
       if (correctAnswers === deckSize && creditableWordsNum) {
         initList = initList.concat(
-          <div className="flex" style={{ alignItems: 'center' }}>
-            <div
-              className="header-2"
-              style={{
-                marginBottom: '1em',
-                fontWeight: 500,
-              }}
-            >
-              <FormattedHTMLMessage
-                id="good-job-blue-flashcards"
-                values={{ nWords: creditableWordsNum }}
+          <div className="pt-md">
+            <div className="flex" style={{ alignItems: 'center' }}>
+              <div
+                className="header-2"
+                style={{
+                  marginBottom: '1em',
+                  fontWeight: 500,
+                }}
+              >
+                <FormattedHTMLMessage
+                  id="good-job-blue-flashcards"
+                  values={{ nWords: creditableWordsNum }}
+                />
+              </div>
+              <img
+                src={images.encTrophy}
+                alt="encouraging trophy"
+                style={{ maxWidth: '25%', maxHeight: '25%', marginLeft: 'auto' }}
               />
             </div>
-            <img
-              src={images.encTrophy}
-              alt="encouraging trophy"
-              style={{ maxWidth: '25%', maxHeight: '25%', marginLeft: 'auto' }}
-            />
+            <hr />
           </div>
         )
         if (prevBlueCards) {
@@ -85,26 +88,29 @@ const FlashcardsEncouragement = ({
         }
       } else {
         initList = initList.concat(
-          <div className="flex" style={{ alignItems: 'center' }}>
-            <div
-              className="header-2"
-              style={{
-                marginBottom: '1em',
-                fontWeight: 500,
-              }}
-            >
-              <FormattedHTMLMessage id="some-incorrect-flashcards" />
-              &nbsp;
-              <Link onClick={() => handleNewDeck()}>
-                <FormattedMessage id="flashcards-try-again" />
-              </Link>
-              ?
+          <div className="pt-md">
+            <div className="flex" style={{ alignItems: 'center' }}>
+              <div
+                className="header-2"
+                style={{
+                  marginBottom: '1em',
+                  fontWeight: 500,
+                }}
+              >
+                <FormattedHTMLMessage id="some-incorrect-flashcards" />
+                &nbsp;
+                <Link onClick={() => handleNewDeck()}>
+                  <FormattedMessage id="flashcards-try-again" />
+                </Link>
+                ?
+              </div>
+              <img
+                src={images.fireworks}
+                alt="encouraging fireworks"
+                style={{ maxWidth: '25%', maxHeight: '25%', marginLeft: 'auto' }}
+              />
             </div>
-            <img
-              src={images.fireworks}
-              alt="encouraging fireworks"
-              style={{ maxWidth: '25%', maxHeight: '25%', marginLeft: 'auto' }}
-            />
+            <hr />
           </div>
         )
       }
@@ -156,50 +162,65 @@ const FlashcardsEncouragement = ({
     } else {
       if (correctAnswers > 0) {
         initList = initList.concat(
-          <div className="flex" style={{ alignItems: 'center' }}>
-            <div
-              className="header-2"
-              style={{
-                marginBottom: '1em',
-                fontWeight: 500,
-              }}
-            >
-              <FormattedHTMLMessage id="mastering-new-words" values={{ nWords: correctAnswers }} />
+          <div className="pt-md">
+            <div className="flex" style={{ alignItems: 'center' }}>
+              <div
+                className="header-2"
+                style={{
+                  marginBottom: '1em',
+                  fontWeight: 500,
+                }}
+              >
+                <FormattedHTMLMessage id="mastering-new-words" values={{ nWords: correctAnswers }} />
+              </div>
+              <img
+                src={images.encTrophy}
+                alt="encouraging trophy"
+                style={{ maxWidth: '25%', maxHeight: '25%', marginLeft: 'auto' }}
+              />
             </div>
-            <img
-              src={images.encTrophy}
-              alt="encouraging trophy"
-              style={{ maxWidth: '25%', maxHeight: '25%', marginLeft: 'auto' }}
-            />
+            <hr />
           </div>
         )
       } else {
         initList = initList.concat(
-          <div className="flex" style={{ alignItems: 'center' }}>
-            <div
-              className="header-2"
-              style={{
-                marginBottom: '1em',
-                fontWeight: 500,
-              }}
-            >
-              <FormattedHTMLMessage id="well-done-click-next-card-to-play-another-set-of-cards-1" />
+          <div className="pt-md">
+            <div className="flex" style={{ alignItems: 'center' }}>
+              <div
+                className="header-2"
+                style={{
+                  marginBottom: '1em',
+                  fontWeight: 500,
+                }}
+              >
+                <FormattedHTMLMessage id="well-done-click-next-card-to-play-another-set-of-cards-1" />
+              </div>
+              <img
+                src={images.fireworks}
+                alt="encouraging fireworks"
+                style={{ maxWidth: '25%', maxHeight: '25%', marginLeft: 'auto' }}
+              />
             </div>
-            <img
-              src={images.fireworks}
-              alt="encouraging fireworks"
-              style={{ maxWidth: '25%', maxHeight: '25%', marginLeft: 'auto' }}
-            />
+            <hr />
           </div>
         )
       }
       initList = initList.concat(
-        <div className="pt-md" style={{ marginTop: '0.5em' }}>
-          <FormattedHTMLMessage id="well-done-click-next-card-to-play-another-set-of-cards-2" />
-          &nbsp;
-          <Button variant="primary" onClick={() => handleNewDeck()}>
-            <FormattedMessage id="next-card" />
-          </Button>
+        <div className="pt-md">
+          <div className="flex" style={{ alignItems: 'center' }}>
+            <img
+              src={images.flashcards}
+              alt="bar chart"
+              style={{ maxWidth: '8%', maxHeight: '8%', marginRight: '1em' }}
+            />
+            <div>
+              <FormattedHTMLMessage id="well-done-click-next-card-to-play-another-set-of-cards-2" />
+              &nbsp;
+              <Button variant="primary" onClick={() => handleNewDeck()}>
+                <FormattedMessage id="next-card" />
+              </Button>
+            </div>
+          </div>
           <hr />
         </div>
       )
@@ -210,7 +231,7 @@ const FlashcardsEncouragement = ({
               <img
                 src={images.magnifyingGlass}
                 alt="magnifying glass"
-                style={{ maxWidth: '8%', maxHeight: '8%', marginLeft: '1em' }}
+                style={{ maxWidth: '8%', maxHeight: '8%', marginRight: '1em' }}
               />
               <div>
                 <FormattedMessage id="list-of-recent-stories" />
@@ -233,7 +254,7 @@ const FlashcardsEncouragement = ({
             <img
               src={images.practice}
               alt="dumbbell"
-              style={{ maxWidth: '8%', maxHeight: '8%', marginLeft: '1em' }}
+              style={{ maxWidth: '8%', maxHeight: '8%', marginRight: '1em' }}
             />
             <div>
               <FormattedMessage id="go-back-to-library" />

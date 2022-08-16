@@ -1316,5 +1316,6 @@
     "no-hints-available": "Sorry, no hints available",
     "user-settings-options": "Käyttäjäasetukset",
     "annotation-name": "Muistiinpanon nimi (vapaavalintainen)",
-    "story-top-topics": "Working on this story will help you master especially these topics"
+    "story-top-topics": "Working on this story will help you master especially these topics",
+    "next-card-deck": "Seuraava pakka"
 }

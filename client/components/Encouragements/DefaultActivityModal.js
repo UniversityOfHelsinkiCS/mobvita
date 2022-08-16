@@ -314,7 +314,7 @@ const DefaultActivityModal = ({
                   inline
                   onChange={updatePreferences}
                   checked={!enable_recmd}
-                  disabled={pending}
+                  disabled={userPending}
                 />
               </Form.Group>
               <span style={{ color: '#708090' }}>
