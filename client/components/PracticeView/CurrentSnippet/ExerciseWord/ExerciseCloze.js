@@ -161,6 +161,16 @@ const ExerciseCloze = ({ word, handleChange }) => {
       setShow(false)
     }
   }, [focusedWord])
+
+  const checkString = hint => {
+    const explanationKey = Object.keys(explanation)[0]
+    if (hint?.includes(explanationKey)) {
+      return <Icon name="info circle" style={{ alignSelf: 'flex-start', marginLeft: '0.5rem' }} />
+    }
+
+    return null
+  }
+
   /*
   const handleTooltipBlur = () => {
     console.log('NOT THIS ONE?')
@@ -201,7 +211,12 @@ const ExerciseCloze = ({ word, handleChange }) => {
             <Icon name="info circle" style={{ alignSelf: 'flex-start', marginLeft: '0.5rem' }} />
           )}</span>}
             {preHints?.map(hint => (
-              <li dangerouslySetInnerHTML={formatGreenFeedbackText(hint)} />
+              <span className="flex"><li dangerouslySetInnerHTML={formatGreenFeedbackText(hint)} />{ref && (
+                <Icon name="external" style={{ alignSelf: 'flex-start', marginLeft: '0.5rem' }} />
+              )}
+              {explanation && (
+                checkString(hint)
+              )}</span>
             ))}
           </ul>
         </div>
