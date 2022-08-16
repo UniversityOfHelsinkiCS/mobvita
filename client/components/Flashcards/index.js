@@ -13,7 +13,7 @@ import Practice from './Practice'
 import FlashcardList from './FlashcardList'
 
 const Flashcards = () => {
-  const [openModal, setOpenModal] = useState(false)
+  const [openModal, setOpenModal] = useState(true)
   const { storyBlueCards } = useSelector(({ flashcards }) => flashcards)
   const history = useHistory()
   const learningLanguage = useSelector(learningLanguageSelector)
@@ -27,12 +27,6 @@ const Flashcards = () => {
   useEffect(() => {
     dispatch(getStoriesBlueFlashcards(learningLanguage, dictionaryLanguage))
   }, [])
-
-  useEffect(() => {
-    if (storyBlueCards) {
-      setOpenModal(true)
-    }
-  }, [storyBlueCards])
 
   const content = () => {
     switch (mode) {
