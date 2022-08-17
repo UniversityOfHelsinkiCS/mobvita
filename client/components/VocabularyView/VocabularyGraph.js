@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import Highcharts from 'highcharts'
 import HighchartsReact from 'highcharts-react-official'
 import moment from 'moment'
@@ -12,6 +12,10 @@ const VocabularyGraph = ({
   vocabularyPending,
   newerVocabularyData,
   newerVocabularyPending,
+  graphType,
+  setGraphType,
+  notMastered,
+  notMasteredBefore
 }) => {
   //   const { flashcard, seen, total, now, visit } = useSelector(({ user }) => user.vocabularyData)
 
@@ -187,8 +191,71 @@ const VocabularyGraph = ({
         linkedTo: 'Flashcard',
         visible: false,
       },
+      {
+        name: 'Mastered',
+        id: 'New Mastered',
+        data: newFlashcard,
+        visible: false,
+        color: '#228B22',
+        stack: 'present',
+      },
+      {
+        name: 'Not Mastered',
+        id: 'New Not Mastered',
+        data: notMastered,
+        visible: false,
+        linkedTo: 'Mastered',
+        color: '#DC143C',
+        stack: 'present',
+      },
+      {
+        name: `Mastered ${intl.formatMessage({
+          id: 'vocabulary-follow-statistic-before',
+        })}`,
+        id: 'New Mastered (before)',
+        data: flashcard,
+        linkedTo: 'Mastered',
+        visible: false,
+        color: '#90EE90',
+        stack: 'before',
+      },
+      {
+        name: `Not Mastered ${intl.formatMessage({
+          id: 'vocabulary-follow-statistic-before',
+        })}`,
+        id: 'New Not Mastered (before)',
+        data: notMasteredBefore,
+        linkedTo: 'Mastered',
+        visible: false,
+        stack: 'before',
+        color: '#FAA0A0',
+      },
     ],
-    chart: { type: 'area' },
+    chart: {
+      type: graphType,
+      /*
+      events: {
+        load: function () {
+          var chart = this,
+            legend = chart.legend;
+
+            for (var i = 0, len = legend.allItems.length; i < len; i++) {
+                (function(i) {
+                    var item = legend.allItems[i].legendItem;
+                    item.on('mouseover', function (e) {
+                        setTestState(true)
+                        console.log("mouseover" + i);
+                    }).on('mouseout', function (e) {
+                        setTestState(false)
+                        console.log("mouseout" + i);
+                    });
+                })(i);
+            }
+
+        },
+      },
+      */
+    },
     credits: { enabled: false },
     allowDecimals: false,
     alignTicks: false,
@@ -211,6 +278,7 @@ const VocabularyGraph = ({
     //     title: { enabled: false },
     //   },
     // ],
+
     xAxis: {
       //   type: 'datetime',
       type: 'category',
@@ -226,13 +294,21 @@ const VocabularyGraph = ({
         marker: { enabled: true },
         events: {
           legendItemClick() {
+            if (this.userOptions.id === 'New Mastered') {
+              setGraphType('column')
+            } else {
+              setGraphType('area')
+            }
             this.chart.series.forEach(s => {
-              s.name.substring(0, 3) !== this.name.substring(0, 3) ? s.hide() : s.show()
+              s.userOptions.id.substring(0, 3) !== this.userOptions.id.substring(0, 3) ? s.hide() : s.show()
             }, this)
 
             return false
           },
         },
+      },
+      column: {
+        stacking: 'normal',
       },
     },
   }

@@ -31,7 +31,7 @@ const Progress = () => {
   const flashcardsView = history.location.pathname.includes('flashcards')
   const grammarView = history.location.pathname.includes('grammar')
   const dispatch = useDispatch()
-
+  const [graphType, setGraphType] = useState('area')
   const {
     exerciseHistory: exerciseHistoryGraph,
     flashcardHistory,
@@ -78,7 +78,8 @@ const Progress = () => {
   const learningLanguage = useLearningLanguage()
   const { history: testHistory, pending: testPending } = useSelector(({ tests }) => tests)
   const [shownChart, setShownChart] = useState(defaultChart())
-
+  const [notMastered, setNotMastered] = useState([])
+  const [notMasteredBefore, setNotMasteredBefore] = useState([])
   const bigScreen = useWindowDimension().width >= 650
 
   const originalEndPoint =
@@ -125,6 +126,23 @@ const Progress = () => {
     dispatch(getExerciseHistory(learningLanguage, startDate, endDate))
     dispatch(getTestHistory(learningLanguage, startDate, endDate))
   }, [startDate, endDate])
+
+  useEffect(() => {
+    if (newerVocabularyData && vocabularyData) {
+      let initList = []
+      for (let i = 0; i < newerVocabularyData.visit.length; i++) {
+        initList = initList.concat(newerVocabularyData.visit[i] - newerVocabularyData.flashcard[i])
+      }
+      setNotMastered(initList)
+      let initBeforeList = []
+      for (let i = 0; i < vocabularyData.visit.length; i++) {
+        initBeforeList = initBeforeList.concat(
+          vocabularyData.visit[i] - vocabularyData.flashcard[i]
+        )
+      }
+      setNotMasteredBefore(initBeforeList)
+    }
+  }, [newerVocabularyData, vocabularyData])
 
   if (pending || pending === undefined || testPending) return <Spinner />
 
@@ -305,6 +323,10 @@ const Progress = () => {
                   vocabularyPending={vocabularyPending}
                   newerVocabularyData={newerVocabularyData}
                   newerVocabularyPending={newerVocabularyPending}
+                  graphType={graphType}
+                  setGraphType={setGraphType}
+                  notMastered={notMastered}
+                  notMasteredBefore={notMasteredBefore}
                 />
               </div>
             </div>
