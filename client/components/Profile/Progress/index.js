@@ -80,8 +80,8 @@ const Progress = () => {
   const [shownChart, setShownChart] = useState(defaultChart())
   const [notMastered, setNotMastered] = useState([])
   const [notMasteredBefore, setNotMasteredBefore] = useState([])
+  const [endWords, setEndWords] = useState(0)
   const bigScreen = useWindowDimension().width >= 650
-
   const originalEndPoint =
     exerciseHistoryGraph?.length > 0
       ? moment(exerciseHistoryGraph[exerciseHistoryGraph.length - 1]?.date)
@@ -130,8 +130,12 @@ const Progress = () => {
   useEffect(() => {
     if (newerVocabularyData && vocabularyData) {
       let initList = []
+      let wordsAtEnd = 0
       for (let i = 0; i < newerVocabularyData.visit.length; i++) {
         initList = initList.concat(newerVocabularyData.visit[i] - newerVocabularyData.flashcard[i])
+        if (i > 49) {
+          wordsAtEnd += (newerVocabularyData.visit[i] + newerVocabularyData.flashcard[i])
+        }
       }
       setNotMastered(initList)
       let initBeforeList = []
@@ -139,12 +143,18 @@ const Progress = () => {
         initBeforeList = initBeforeList.concat(
           vocabularyData.visit[i] - vocabularyData.flashcard[i]
         )
+        if (i > 49) {
+          wordsAtEnd += (vocabularyData.visit[i] + vocabularyData.flashcard[i])
+        }
       }
+      setEndWords(wordsAtEnd)
       setNotMasteredBefore(initBeforeList)
     }
   }, [newerVocabularyData, vocabularyData])
 
   if (pending || pending === undefined || testPending) return <Spinner />
+
+  console.log('num of words at end ', endWords)
 
   return (
     <div className="cont ps-nm">
@@ -327,6 +337,7 @@ const Progress = () => {
                   setGraphType={setGraphType}
                   notMastered={notMastered}
                   notMasteredBefore={notMasteredBefore}
+                  endWords={endWords}
                 />
               </div>
             </div>

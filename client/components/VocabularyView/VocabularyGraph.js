@@ -15,7 +15,8 @@ const VocabularyGraph = ({
   graphType,
   setGraphType,
   notMastered,
-  notMasteredBefore
+  notMasteredBefore,
+  endWords,
 }) => {
   //   const { flashcard, seen, total, now, visit } = useSelector(({ user }) => user.vocabularyData)
 
@@ -286,7 +287,7 @@ const VocabularyGraph = ({
       //   labels: binNumbers,
       //   allowDecimals: false,
       min: -1,
-      max: 102,
+      max: endWords < 100 && graphType === 'column' ? 50 : 102,
     },
     plotOptions: {
       series: {
