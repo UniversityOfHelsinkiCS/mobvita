@@ -121,7 +121,7 @@ describe('Mobvita', function () {
 
     it("can start filtered practice", function () {
       cy.get('[data-cy=practice-now]').click()
-      
+
       cy.get('[data-cy=practice-categories]').children()
         .then(children => {
           children[2].click()
@@ -177,7 +177,7 @@ describe('Mobvita', function () {
         cy.contains("ehkä").click()
         cy.contains("ilmaisee jonkin mahdollista tapahtumista tai toteutumista", { timeout: 20000 })
       })
-      it("can add and remove annotations", function () {
+      it("can add and see annotations in the library", function () {
         cy.viewport(1028, 720) // Set a big enough resolution for annotation box to show up
         cy.contains("häirinneet").click()
         cy.get('[data-cy="annotation-expand-btn"]').click()
@@ -186,11 +186,19 @@ describe('Mobvita', function () {
         cy.get('[data-cy="save-annotation-button"]').click()
         cy.contains("Muistiinpano tallennettu")
 
-        cy.get('[data-cy="25-häirinneet lentokoneita"]').click()
+        cy.visit('http://localhost:8000/notes-library')
+
+        cy.contains("häirinneet lentokoneita")
+        cy.get('[data-cy="annotation-item-button"').click()
+        cy.wait(1000)
+        cy.contains('Lauantai 22.12.2018 (radio)')
+        /*
+        cy.contains('[data-cy="25-häirinneet lentokoneita"]').click()
         cy.get('[data-cy="delete-annotation-button"]').click()
         cy.get('[data-cy=confirm-warning-dialog').click()
         cy.contains("Muistiinpano poistettu")
         cy.get('[data-cy="25-häirinneet lentokoneita"]').should('not.exist')
+        */
       })
     })
 

@@ -11,7 +11,7 @@ const AnnotationActions = ({ storyId, percentCov, setOpenWarning }) => {
           to={`/stories/${storyId}/preview`}
           style={{ marginRight: '.5em', marginBottom: '.25em' }}
         >
-          <Button variant="primary">
+          <Button variant="primary" data-cy="annotation-item-button">
             <FormattedMessage id="preview" />
           </Button>
         </Link>
