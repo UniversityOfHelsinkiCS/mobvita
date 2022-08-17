@@ -155,7 +155,7 @@ const Progress = () => {
 
   if (pending || pending === undefined || testPending) return <Spinner />
 
-  console.log('num of words at end ', endWords)
+  // console.log('num of words at end ', endWords)
 
   return (
     <div className="cont ps-nm">
