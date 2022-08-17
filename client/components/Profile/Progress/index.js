@@ -125,6 +125,7 @@ const Progress = () => {
     dispatch(getSelf())
     dispatch(getExerciseHistory(learningLanguage, startDate, endDate))
     dispatch(getTestHistory(learningLanguage, startDate, endDate))
+    setGraphType('area')
   }, [startDate, endDate])
 
   useEffect(() => {
