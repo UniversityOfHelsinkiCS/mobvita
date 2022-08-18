@@ -9,9 +9,9 @@ const ResponsiveDatePicker = props => {
 
   return (
     <DatePicker
-      onChangeRaw={e => e.preventDefault()}
       dateFormat="yyyy/MM/dd"
       withPortal={showPortalVersion}
+      onCalendarClose={props.onCalendarClose}
       {...props}
     />
   )

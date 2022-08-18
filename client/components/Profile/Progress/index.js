@@ -22,8 +22,12 @@ import VocabularyGraph from 'Components/VocabularyView/VocabularyGraph'
 import HexagonTest from 'Components/GridHexagon'
 import ProgressStats from './ProgressStats'
 
-const PickDate = ({ date, setDate }) => (
-  <ResponsiveDatePicker selected={date} onChange={date => setDate(date)} />
+const PickDate = ({ date, setDate, onCalendarClose }) => (
+  <ResponsiveDatePicker
+    selected={date}
+    onChange={date => setDate(date)}
+    onCalendarClose={onCalendarClose}
+  />
 )
 
 const Progress = () => {
@@ -81,6 +85,7 @@ const Progress = () => {
   const [notMastered, setNotMastered] = useState([])
   const [notMasteredBefore, setNotMasteredBefore] = useState([])
   const [endWords, setEndWords] = useState(0)
+  const [firstFetch, setFirstFetch] = useState(true)
   const bigScreen = useWindowDimension().width >= 650
   const originalEndPoint =
     exerciseHistoryGraph?.length > 0
@@ -113,13 +118,32 @@ const Progress = () => {
     ({ exerciseHistory }) => exerciseHistory
   )
 
-  useEffect(() => {
-    dispatch(getNewerVocabularyData(endDate.toJSON().slice(0, 10)))
-  }, [endDate])
+  const handlePreviousVocabulary = () => {
+    console.log('start ', startDate)
+    if (moment(startDate, 'MM/DD/YYYY', true).isValid()) {
+      dispatch(getPreviousVocabularyData(startDate.toJSON().slice(0, 10)))
+    }
+  }
+
+  const handleVocabulary = () => {
+    console.log('end ', endDate)
+    if (moment(endDate, 'MM/DD/YYYY', true).isValid()) {
+      dispatch(getNewerVocabularyData(endDate.toJSON().slice(0, 10)))
+    }
+  }
 
   useEffect(() => {
-    dispatch(getPreviousVocabularyData(startDate.toJSON().slice(0, 10)))
-  }, [startDate])
+    if (
+      firstFetch &&
+      moment(endDate, 'MM/DD/YYYY', true).isValid() &&
+      moment(startDate, 'MM/DD/YYYY', true).isValid()
+    ) {
+      dispatch(getNewerVocabularyData(endDate.toJSON().slice(0, 10)))
+      dispatch(getPreviousVocabularyData(startDate.toJSON().slice(0, 10)))
+
+      setFirstFetch(false)
+    }
+  }, [startDate, endDate])
 
   useEffect(() => {
     dispatch(getSelf())
@@ -135,7 +159,7 @@ const Progress = () => {
       for (let i = 0; i < newerVocabularyData.visit.length; i++) {
         initList = initList.concat(newerVocabularyData.visit[i] - newerVocabularyData.flashcard[i])
         if (i > 49) {
-          wordsAtEnd += (newerVocabularyData.visit[i] + newerVocabularyData.flashcard[i])
+          wordsAtEnd += newerVocabularyData.visit[i] + newerVocabularyData.flashcard[i]
         }
       }
       setNotMastered(initList)
@@ -145,7 +169,7 @@ const Progress = () => {
           vocabularyData.visit[i] - vocabularyData.flashcard[i]
         )
         if (i > 49) {
-          wordsAtEnd += (vocabularyData.visit[i] + vocabularyData.flashcard[i])
+          wordsAtEnd += vocabularyData.visit[i] + vocabularyData.flashcard[i]
         }
       }
       setEndWords(wordsAtEnd)
@@ -167,10 +191,16 @@ const Progress = () => {
             </span>
             <div style={{ marginLeft: '2em' }}>
               <FormattedMessage id="date-start" />{' '}
-              <PickDate id="start" date={startDate} setDate={setStartDate} />
+              <PickDate
+                id="start"
+                date={startDate}
+                setDate={setStartDate}
+                onCalendarClose={handlePreviousVocabulary}
+              />
             </div>
             <div style={{ marginLeft: '2em' }}>
-              <FormattedMessage id="date-end" /> <PickDate date={endDate} setDate={setEndDate} />
+              <FormattedMessage id="date-end" />{' '}
+              <PickDate date={endDate} setDate={setEndDate} onCalendarClose={handleVocabulary} />
             </div>
           </div>
         ) : (

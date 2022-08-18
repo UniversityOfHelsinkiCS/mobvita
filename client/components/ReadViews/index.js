@@ -17,9 +17,9 @@ import TextWithFeedback from 'Components/CommonStoryTextComponents/TextWithFeedb
 import FeedbackInfoModal from 'Components/CommonStoryTextComponents/FeedbackInfoModal'
 import ReportButton from 'Components/ReportButton'
 import { compose } from 'redux'
+import StoryTopics from 'Components/StoryView/StoryTopics'
 import Footer from '../Footer'
 import ScrollArrow from '../ScrollArrow'
-import StoryTopics from 'Components/StoryView/StoryTopics'
 
 const ReadViews = ({ match }) => {
   const dispatch = useDispatch()
@@ -147,7 +147,12 @@ const ReadViews = ({ match }) => {
               <span className="pr-sm">{story.title}</span>
               <br />
               {story.url && (
-                <a href={story.url} target="_blank" rel="noopener noreferrer" style={{ fontSize: '1rem', fontWeight: '300' }}>
+                <a
+                  href={story.url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  style={{ fontSize: '1rem', fontWeight: '300' }}
+                >
                   <FormattedMessage id="Source" />
                 </a>
               )}
