@@ -285,7 +285,7 @@ const VocabularyGraph = ({
       //   labels: binNumbers,
       //   allowDecimals: false,
       min: -1,
-      max: endWords < 100 && graphType === 'column' ? 50 : 102,
+      max: endWords < 200 && graphType === 'column' ? 50 : 102,
     },
     plotOptions: {
       series: {
