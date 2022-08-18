@@ -31,7 +31,7 @@ const StudentVocabularyProgress = ({ student, group, startDate, endDate }) => {
     if (previousStudentVocabulary?.stats && studentVocabulary?.stats) {
       let initList = []
       let wordsAtEnd = 0
-      for (let i = 0; i < studentVocabulary.stats.visit.length; i++) {
+      for (let i = 0; i < studentVocabulary.stats.visit?.length; i++) {
         initList = initList.concat(studentVocabulary.stats.visit[i] - studentVocabulary.stats.flashcard[i])
         if (i > 49) {
           wordsAtEnd += (studentVocabulary.stats.visit[i] + studentVocabulary.stats.flashcard[i])
@@ -39,7 +39,7 @@ const StudentVocabularyProgress = ({ student, group, startDate, endDate }) => {
       }
       setNotMastered(initList)
       let initBeforeList = []
-      for (let i = 0; i < previousStudentVocabulary.stats.visit.length; i++) {
+      for (let i = 0; i < previousStudentVocabulary.stats.visit?.length; i++) {
         initBeforeList = initBeforeList.concat(
           previousStudentVocabulary.stats.visit[i] - previousStudentVocabulary.stats.flashcard[i]
         )
@@ -52,7 +52,7 @@ const StudentVocabularyProgress = ({ student, group, startDate, endDate }) => {
     }
   }, [previousStudentVocabulary?.stats, studentVocabulary?.stats])
 
-  if (pending) {
+  if (pending || previousPending) {
     return <Spinner />
   }
 
