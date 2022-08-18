@@ -171,7 +171,7 @@ const Summary = ({
                   {summary.map(user => (
                     <tr onClick={() => handleRowClick(user)} key={user.email}>
                       {columns.map(column => (
-                        <td>{cleanColumnValue(user[column])}</td>
+                        <td className="clickable">{cleanColumnValue(user[column])}</td>
                       ))}
                     </tr>
                   ))}
