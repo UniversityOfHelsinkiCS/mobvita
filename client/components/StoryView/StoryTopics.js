@@ -1,11 +1,9 @@
 import React, { useState, useEffect } from 'react'
 import useWindowDimensions from 'Utilities/windowDimensions'
 import { FormattedMessage } from 'react-intl'
-import { Button } from 'react-bootstrap'
 
 const StoryTopics = ({ conceptCount }) => {
   const [topTopics, setTopTopics] = useState([])
-  const [maxShown, setMaxShown] = useState(3)
   const { width } = useWindowDimensions()
 
   useEffect(() => {

@@ -94,20 +94,22 @@ const ExerciseCloze = ({ word, handleChange }) => {
     setValue(e.target.value)
   }
 
+  const handleHintRequest = () => {
+    const newRequestNum = preHints.length + 1
+    dispatch(incrementHintRequests(wordId, newRequestNum))
+
+    setSpentHints(spentHints.concat(1))
+    setEloScoreHearts(eloScoreHearts.slice(0, -1))
+  }
+
   const handlePreHints = () => {
     if (!hints || filteredHintsList.length < 1) {
       setEmptyHintsList(true)
-      setKeepOpen(true)
     } else {
-      const newRequestNum = preHints.length + 1
-      dispatch(incrementHintRequests(wordId, newRequestNum))
-
       setPreHints(preHints.concat(filteredHintsList[preHints.length]))
-      setSpentHints(spentHints.concat(1))
-      setEloScoreHearts(eloScoreHearts.slice(0, -1))
-      // dispatch(decreaseEloHearts(wordId))
-      setKeepOpen(true)
     }
+    handleHintRequest()
+    setKeepOpen(true)
   }
 
   const handleTooltipClick = () => {
