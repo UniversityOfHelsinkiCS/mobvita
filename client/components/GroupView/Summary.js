@@ -17,7 +17,7 @@ const Summary = ({
   getSummary,
   getInitSummary,
   setContent,
-  initState,
+  firstFetch,
 }) => {
   const intl = useIntl()
   const [sorter, setSorter] = useState({})
@@ -93,7 +93,7 @@ const Summary = ({
   }, [])
 
   useEffect(() => {
-    if (isTeaching && !initState) {
+    if (isTeaching && !firstFetch) {
       getSummary(startDate, endDate)
     }
   }, [startDate, endDate, group])

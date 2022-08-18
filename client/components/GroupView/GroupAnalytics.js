@@ -5,6 +5,10 @@ import { ButtonGroup, ToggleButton } from 'react-bootstrap'
 import { FormattedMessage, useIntl, FormattedHTMLMessage } from 'react-intl'
 import { getSummary, getInitSummary } from 'Utilities/redux/groupSummaryReducer'
 import { learningLanguageSelector, hiddenFeatures } from 'Utilities/common'
+import {
+  getStudentVocabulary,
+  getPreviousStudentVocabulary,
+} from 'Utilities/redux/groupVocabularyReducer'
 import Spinner from 'Components/Spinner'
 import useWindowDimension from 'Utilities/windowDimensions'
 import ResponsiveDatePicker from 'Components/ResponsiveDatePicker'
@@ -17,22 +21,36 @@ import StudentGrammarProgress from './StudentGrammarProgress'
 import NoGroupsView from './NoGroupsView'
 import GroupHistory from './GroupHistory'
 
+const PickDate = ({ date, setDate, onCalendarClose }) => (
+  <ResponsiveDatePicker
+    selected={date}
+    onChange={date => setDate(date)}
+    onCalendarClose={onCalendarClose}
+  />
+)
+
 const GroupAnalytics = ({ role }) => {
   const intl = useIntl()
   const [content, setContent] = useState('summary')
   const [groupSummaryShown, setGroupSummaryShown] = useState(true)
   const [currentStudent, setCurrentStudent] = useState(null)
   const [startDate, setStartDate] = useState(
-    moment().clone().startOf('month').subtract(6, 'month').toDate()
+    moment().startOf('month').subtract(6, 'month').toDate()
   )
-  const [initState, setInitState] = useState(true)
+  const [graphType, setGraphType] = useState('area')
   const [shownChart, setShownChart] = useState('timeline')
-  const [endDate, setEndDate] = useState(moment().clone().add(1, 'days').toDate())
+  const [firstFetch, setFirstFetch] = useState(true)
+  const [endDate, setEndDate] = useState(moment().add(1, 'days').toDate())
   const dispatch = useDispatch()
   const currentGroupId = useSelector(({ user }) => user.data.user.last_selected_group)
   const learningLanguage = useSelector(learningLanguageSelector)
   const { start_date, end_date } = useSelector(({ summary }) => summary)
-
+  const {
+    studentVocabulary,
+    pending: vocabularyPending,
+    previousStudentVocabulary,
+    previousPending,
+  } = useSelector(({ studentVocabulary }) => studentVocabulary)
   const { groups: totalGroups, pending } = useSelector(({ groups }) => groups)
   const currentGroup = totalGroups.find(group => group.group_id === currentGroupId)
   const bigScreen = useWindowDimension().width >= 650
@@ -46,19 +64,63 @@ const GroupAnalytics = ({ role }) => {
     value: JSON.stringify(student), // needs to be string
   }))
 
-  const PickDate = ({ date, setDate, setInitState }) => (
-    <ResponsiveDatePicker
-      selected={date}
-      onChange={date => {
-        setDate(date)
-        setInitState(false)
-      }}
-    />
-  )
 
   const handleStudentChange = value => {
     setCurrentStudent(JSON.parse(value))
   }
+
+  const handlePreviousVocabulary = () => {
+    console.log('start ', startDate)
+    if (moment(startDate, 'MM/DD/YYYY', true).isValid()) {
+      dispatch(
+        getPreviousStudentVocabulary(
+          currentStudent._id,
+          currentGroup.group_id,
+          startDate.toJSON().slice(0, 10)
+        )
+      )
+    }
+  }
+
+  const handleVocabulary = () => {
+    console.log('end ', endDate)
+    if (moment(endDate, 'MM/DD/YYYY', true).isValid()) {
+      dispatch(
+        getStudentVocabulary(
+          currentStudent._id,
+          currentGroup.group_id,
+          endDate.toJSON().slice(0, 10)
+        )
+      )
+    }
+  }
+
+  useEffect(() => {
+    if (
+      firstFetch &&
+      currentGroup &&
+      currentStudent &&
+      moment(endDate, 'MM/DD/YYYY', true).isValid() &&
+      moment(startDate, 'MM/DD/YYYY', true).isValid()
+    ) {
+      dispatch(
+        getPreviousStudentVocabulary(
+          currentStudent._id,
+          currentGroup.group_id,
+          startDate.toJSON().slice(0, 10)
+        )
+      )
+      dispatch(
+        getStudentVocabulary(
+          currentStudent._id,
+          currentGroup.group_id,
+          endDate.toJSON().slice(0, 10)
+        )
+      )
+
+      setFirstFetch(false)
+    }
+  }, [startDate, endDate, currentStudent, currentGroup])
 
   useEffect(() => {
     if (start_date) {
@@ -133,12 +195,12 @@ const GroupAnalytics = ({ role }) => {
                 id="start"
                 date={startDate}
                 setDate={setStartDate}
-                setInitState={setInitState}
+                onCalendarClose={handlePreviousVocabulary}
               />
             </div>
             <div style={{ marginLeft: '2em' }}>
               <FormattedMessage id="date-end" />{' '}
-              <PickDate date={endDate} setDate={setEndDate} setInitState={setInitState} />
+              <PickDate date={endDate} setDate={setEndDate} onCalendarClose={handleVocabulary} />
             </div>
           </div>
         ) : (
@@ -155,13 +217,13 @@ const GroupAnalytics = ({ role }) => {
                   id="start"
                   date={startDate}
                   setDate={setStartDate}
-                  setInitState={setInitState}
+                  onCalendarClose={handlePreviousVocabulary}
                 />
               </div>
               <div>
                 <FormattedMessage id="date-end" />
                 <br />
-                <PickDate date={endDate} setDate={setEndDate} setInitState={setInitState} />
+                <PickDate date={endDate} setDate={setEndDate} onCalendarClose={handleVocabulary} />
               </div>
             </div>
           </>
@@ -258,26 +320,26 @@ const GroupAnalytics = ({ role }) => {
         <>
           <div
             className="space-evenly"
-            style={{ display: 'flex', fontWeight: 'bold', marginTop: '1em', marginBottom: '0.5em' }}
+            style={{ display: 'flex', fontWeight: 'bold', marginTop: '1em', marginBottom: '.5em' }}
           >
-            <span style={{ marginRight: '0.5em' }}>
+            <span style={{ marginRight: '.5em' }}>
               <input
                 type="radio"
                 onChange={() => setGroupSummaryShown(!groupSummaryShown)}
                 checked={groupSummaryShown}
               />
-              <span style={{ marginLeft: '0.5em' }}>
+              <span style={{ marginLeft: '.5em' }}>
                 <FormattedHTMLMessage id="general-group-summary" />
               </span>
             </span>
-            <span style={{ marginRight: '0.5em' }}>
+            <span style={{ marginRight: '.5em' }}>
               <input
-                style={{ marginRight: '0.5em' }}
+                style={{ marginRight: '.5em' }}
                 type="radio"
                 onChange={() => setGroupSummaryShown(!groupSummaryShown)}
                 checked={!groupSummaryShown}
               />
-              <span style={{ marginLft: '0.5em' }}>
+              <span style={{ marginLft: '.5em' }}>
                 <FormattedHTMLMessage id="group-grammar-progress" />
               </span>
             </span>
@@ -294,7 +356,7 @@ const GroupAnalytics = ({ role }) => {
               getSummary={(start, end) => dispatch(getSummary(currentGroupId, start, end))}
               getInitSummary={() => dispatch(getInitSummary(currentGroupId))}
               setContent={setContent}
-              initState={initState}
+              firstFetch={firstFetch}
             />
           ) : (
             <StudentGrammarProgress
@@ -379,10 +441,12 @@ const GroupAnalytics = ({ role }) => {
           <Divider />
           <div className="progress-page-graph-cont">
             <StudentVocabularyProgress
-              student={currentStudent}
-              startDate={startDate.toJSON().slice(0, 10)}
-              endDate={endDate.toJSON().slice(0, 10)}
-              group={currentGroup}
+              studentVocabulary={studentVocabulary}
+              vocabularyPending={vocabularyPending}
+              previousStudentVocabulary={previousStudentVocabulary}
+              previousPending={previousPending}
+              graphType={graphType}
+              setGraphType={setGraphType}
             />
           </div>
         </div>
