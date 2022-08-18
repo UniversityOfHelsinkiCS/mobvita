@@ -56,8 +56,6 @@ const GroupAnalytics = ({ role }) => {
     />
   )
 
-  console.log(currentGroupId)
-
   const handleStudentChange = value => {
     setCurrentStudent(JSON.parse(value))
   }
