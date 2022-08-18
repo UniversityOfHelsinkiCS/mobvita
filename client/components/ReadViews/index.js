@@ -43,12 +43,13 @@ const ReadViews = ({ match }) => {
       return false
     }
     if (mode === 'preview') {
-      return !show_preview_exer
+      return true
     }
 
     return true
   }
   // console.log('show re ', show_review_diff)
+  // console.log('exer preview ', show_preview_exer)
 
   const [hideFeedback, setHideFeedback] = useState(defineFeedback())
   const user = useSelector(state => state.user.data)
@@ -118,22 +119,6 @@ const ReadViews = ({ match }) => {
   const showFooter = width > 640
   const url = history.location.pathname
   const processingCurrentStory = id === storyId
-
-  const checkboxLabel = () => {
-    if (url.endsWith('/preview')) {
-      return intl.formatMessage({ id: 'show-exercise-preview' })
-    }
-
-    return intl.formatMessage({ id: 'show-feedback' })
-  }
-
-  const infoBoxLabel = () => {
-    if (url.endsWith('/preview')) {
-      return intl.formatMessage({ id: 'preview-mode-info' })
-    }
-
-    return intl.formatMessage({ id: 'review-mode-info' })
-  }
 
   const refreshPage = () => {
     dispatch(getStoryAction(id, mode))
@@ -232,11 +217,12 @@ const ReadViews = ({ match }) => {
             {story.paragraph.map(paragraph => (
               <>
                 <TextWithFeedback
-                  hideFeedback={hideFeedback}
+                  hideFeedback={!show_preview_exer}
                   showDifficulty={showDifficulty}
                   mode="review"
                   snippet={paragraph}
                   answers={null}
+                  show_preview_exer
                 />
                 <br />
                 <br />
