@@ -39,7 +39,6 @@ const StoryTitle = ({
 
   const handleDelete = () => setConfirmationOpen(true)
 
-
   return (
     <StoryDetailsModal
       trigger={
@@ -97,7 +96,7 @@ const StoryActions = ({
   const showCrosswordsButton = width > 1023
   const buttonVariant = enableOnlyPractice ? 'outline-secondary' : 'secondary'
   const uploadUnfinished = story?.uploadUnfinished
-
+  const teacherInGroupView = isTeacher && inGroupLibrary
   const reviewButtonVariant =
     story.percent_cov === 0 || enableOnlyPractice ? 'outline-secondary' : 'secondary'
 
@@ -110,20 +109,20 @@ const StoryActions = ({
     return (
       <div className="story-actions">
         <Link to={practiceLink}>
-          <Button variant={isTeacher && inGroupLibrary ? 'secondary' : 'primary'}>
+          <Button variant={teacherInGroupView ? 'secondary' : 'primary'}>
             <FormattedMessage id="practice" />
           </Button>
         </Link>
 
         <Link to={`/flashcards/fillin/${story._id}/`}>
           <Button
-            variant={isTeacher && inGroupLibrary ? 'secondary' : 'primary'}
+            variant={teacherInGroupView ? 'secondary' : 'primary'}
             disabled={enableOnlyPractice}
           >
             <FormattedMessage id="Flashcards" />
           </Button>
         </Link>
-        {isTeacher && inGroupLibrary ? (
+        {teacherInGroupView ? (
           <Link to={`/stories/${story._id}/group/preview`}>
             <Button variant="primary" disabled={enableOnlyPractice}>
               <FormattedMessage id="preview" />
@@ -136,7 +135,7 @@ const StoryActions = ({
             </Button>
           </Link>
         )}
-        {isTeacher && inGroupLibrary ? (
+        {teacherInGroupView ? (
           <Link to={`/stories/${story._id}/group/review`}>
             <Button variant="primary">
               <FormattedMessage id="review" />{' '}
@@ -155,12 +154,8 @@ const StoryActions = ({
 
         <Link to={`/stories/${story._id}/compete`}>
           <Button
-            variant={
-              uploadUnfinished || (isTeacher && inGroupLibrary)
-                ? 'outline-secondary'
-                : buttonVariant
-            }
-            disabled={enableOnlyPractice || uploadUnfinished || (isTeacher && inGroupLibrary)}
+            variant={uploadUnfinished || teacherInGroupView ? 'outline-secondary' : buttonVariant}
+            disabled={enableOnlyPractice || uploadUnfinished || teacherInGroupView}
           >
             <FormattedMessage id="compete" />{' '}
           </Button>
@@ -169,12 +164,8 @@ const StoryActions = ({
         {showCrosswordsButton && (
           <Link to={`/crossword/${story._id}/`}>
             <Button
-              variant={
-                uploadUnfinished || (isTeacher && inGroupLibrary)
-                  ? 'outline-secondary'
-                  : buttonVariant
-              }
-              disabled={enableOnlyPractice || uploadUnfinished || (isTeacher && inGroupLibrary)}
+              variant={uploadUnfinished || teacherInGroupView ? 'outline-secondary' : buttonVariant}
+              disabled={enableOnlyPractice || uploadUnfinished || teacherInGroupView}
             >
               <FormattedMessage id="Crossword" />
             </Button>
@@ -186,14 +177,63 @@ const StoryActions = ({
 
   return (
     <SemanticButton.Group>
-      <SemanticButton
-        as={Link}
-        to={practiceLink}
-        style={{ backgroundColor: 'rgb(50, 170, 248)', color: 'white' }}
-      >
-        <FormattedMessage id="practice" />
-      </SemanticButton>
-      {!enableOnlyPractice && (
+      {teacherInGroupView ? (
+        <>
+          <SemanticButton
+            as={Link}
+            to={`/stories/${story._id}/group/review`}
+            style={{ backgroundColor: 'rgb(50, 170, 248)', color: 'white' }}
+          >
+            <FormattedMessage id="review" />
+          </SemanticButton>
+          <Dropdown
+            className="button icon"
+            style={{
+              backgroundColor: 'rgb(50, 170, 248)',
+              color: 'white',
+              borderLeft: '2px solid rgb(81, 138, 248)',
+            }}
+            floating
+            trigger={<React.Fragment />}
+          >
+            <Dropdown.Menu className="story-item-dropdown">
+              <Dropdown.Item
+                text={<FormattedMessage id="preview" />}
+                as={Link}
+                to={`/stories/${story._id}/preview`}
+                icon="book"
+              />
+              <Dropdown.Item
+                text={<FormattedMessage id="practice" />}
+                as={Link}
+                to={practiceLink}
+                icon="pencil alternate"
+              />
+              <Dropdown.Item
+                text={<FormattedMessage id="Flashcards" />}
+                as={Link}
+                to={`/flashcards/fillin/${story._id}/`}
+                icon="lightning"
+              />
+              <Dropdown.Item
+                text={<FormattedMessage id="compete" />}
+                as={Link}
+                to={`/stories/${story._id}/compete`}
+                icon="clock"
+              />
+            </Dropdown.Menu>
+          </Dropdown>
+        </>
+      ) : (
+        <SemanticButton
+          as={Link}
+          to={practiceLink}
+          style={{ backgroundColor: 'rgb(50, 170, 248)', color: 'white' }}
+        >
+          <FormattedMessage id="practice" />
+        </SemanticButton>
+      )}
+      {!enableOnlyPractice && !teacherInGroupView && (
         <Dropdown
           className="button icon"
           style={{
