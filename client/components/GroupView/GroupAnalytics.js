@@ -70,7 +70,6 @@ const GroupAnalytics = ({ role }) => {
   }
 
   const handlePreviousVocabulary = () => {
-    console.log('start ', startDate)
     if (moment(startDate, 'MM/DD/YYYY', true).isValid()) {
       dispatch(
         getPreviousStudentVocabulary(
@@ -83,7 +82,6 @@ const GroupAnalytics = ({ role }) => {
   }
 
   const handleVocabulary = () => {
-    console.log('end ', endDate)
     if (moment(endDate, 'MM/DD/YYYY', true).isValid()) {
       dispatch(
         getStudentVocabulary(

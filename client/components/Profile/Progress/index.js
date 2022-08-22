@@ -87,6 +87,7 @@ const Progress = () => {
   const [endWords, setEndWords] = useState(0)
   const [firstFetch, setFirstFetch] = useState(true)
   const bigScreen = useWindowDimension().width >= 650
+  const [targetCurve, setTargetCurve] = useState([])
   const originalEndPoint =
     exerciseHistoryGraph?.length > 0
       ? moment(exerciseHistoryGraph[exerciseHistoryGraph.length - 1]?.date)
@@ -119,14 +120,12 @@ const Progress = () => {
   )
 
   const handlePreviousVocabulary = () => {
-    console.log('start ', startDate)
     if (moment(startDate, 'MM/DD/YYYY', true).isValid()) {
       dispatch(getPreviousVocabularyData(startDate.toJSON().slice(0, 10)))
     }
   }
 
   const handleVocabulary = () => {
-    console.log('end ', endDate)
     if (moment(endDate, 'MM/DD/YYYY', true).isValid()) {
       dispatch(getNewerVocabularyData(endDate.toJSON().slice(0, 10)))
     }
@@ -156,6 +155,7 @@ const Progress = () => {
     if (newerVocabularyData && vocabularyData) {
       let initList = []
       let wordsAtEnd = 0
+      const B2 = newerVocabularyData.target_mastering_curves.B2.params
       for (let i = 0; i < newerVocabularyData.visit.length; i++) {
         initList = initList.concat(newerVocabularyData.visit[i] - newerVocabularyData.flashcard[i])
         if (i > 49) {
@@ -174,6 +174,13 @@ const Progress = () => {
       }
       setEndWords(wordsAtEnd)
       setNotMasteredBefore(initBeforeList)
+      let initTarget = []
+      for (let i = 0; i < newerVocabularyData.mastering_percentage.vocab_bins.length; i++) {
+        initTarget = initTarget.concat(
+          B2.B / (B2.C * i + B2.D)
+        )
+      }
+      setTargetCurve(initTarget)
     }
   }, [newerVocabularyData, vocabularyData])
 
@@ -369,6 +376,7 @@ const Progress = () => {
                   notMastered={notMastered}
                   notMasteredBefore={notMasteredBefore}
                   endWords={endWords}
+                  targetCurve={targetCurve}
                 />
               </div>
             </div>

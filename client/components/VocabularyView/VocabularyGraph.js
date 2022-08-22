@@ -16,6 +16,7 @@ const VocabularyGraph = ({
   notMastered,
   notMasteredBefore,
   endWords,
+  targetCurve,
 }) => {
   //   const { flashcard, seen, total, now, visit } = useSelector(({ user }) => user.vocabularyData)
 
@@ -30,18 +31,16 @@ const VocabularyGraph = ({
     return <div>No data to show</div>
   }
 
+  const currentPerc = newerVocabularyData.mastering_percentage
+  const previousPerc = vocabularyData.mastering_percentage
+
+
   const { flashcard, seen, total, visit } = vocabularyData
   const newFlashcard = newerVocabularyData.flashcard
   const newSeen = newerVocabularyData.seen
   const newTotal = newerVocabularyData.total
   const newVisit = newerVocabularyData.visit
 
-  /*
-  const [showSeen, setShowSeen] = useState(true)
-  const [showFlashcard, setShowFlashcard] = useState(true)
-  const [showVisit, setShowVisit] = useState(true)
-  const [showTotal, setShowTotal] = useState(true)
-  */
   const intl = useIntl()
   const smallScreen = useWindowDimensions().width < 640
 
@@ -229,6 +228,31 @@ const VocabularyGraph = ({
         stack: 'before',
         color: '#FAA0A0',
       },
+      {
+        name: 'Percentage',
+        id: 'Percentage',
+        data: currentPerc.vocab_bins.map(v => v.mastering_percentage),
+        visible: false,
+        stack: 'present',
+      },
+      {
+        name: `Percentage ${intl.formatMessage({
+          id: 'vocabulary-follow-statistic-before',
+        })}`,
+        data: previousPerc.vocab_bins.map(v => v.mastering_percentage),
+        id: 'Percentage (before)',
+        linkedTo: 'Percentage',
+        visible: false,
+        stack: 'before',
+      },
+      {
+        name: 'Percentage target',
+        id: 'Percentage target',
+        data: targetCurve,
+        linkedTo: 'Percentage',
+        type: 'spline',
+        visible: false,
+      },
     ],
     chart: {
       type: graphType,
@@ -293,7 +317,7 @@ const VocabularyGraph = ({
         marker: { enabled: true },
         events: {
           legendItemClick() {
-            if (this.userOptions.id === 'New Mastered') {
+            if (this.userOptions.id === 'New Mastered' || this.userOptions.id === 'Percentage') {
               setGraphType('column')
             } else {
               setGraphType('area')
@@ -312,52 +336,7 @@ const VocabularyGraph = ({
     },
   }
 
-  // const handleCheckBoxClick = (value, func) => {
-  //   const categories = [showSeen, showFlashcard, showVisit, showTotal]
-  //   let someOtherChecked = false
-  //   let currentlyChecked = false
-
-  //   categories.forEach(cat => {
-  //     if (cat === value && value) currentlyChecked = true
-  //     if (cat !== value && cat === true) someOtherChecked = true
-  //   })
-
-  //   if (currentlyChecked && !someOtherChecked) {
-  //     console.log('not ok')
-  //     return
-  //   }
-  //   func(!value)
-  // }
-
   return (
-    // <>
-    //   <div className="flex gap-col-nm">
-    //     <Checkbox
-    //       label="Seen"
-    //       checked={showSeen}
-    //       onClick={() => setShowSeen(!showSeen)}
-    //       // onClick={() => handleCheckBoxClick(showSeen, setShowSeen)}
-    //     />
-    //     <Checkbox
-    //       label="Flashcard"
-    //       checked={showFlashcard}
-    //       onClick={() => setShowFlashcard(!showFlashcard)}
-    //       // onClick={() => handleCheckBoxClick(showFlashcard, setShowFlashcard)}
-    //     />
-    //     {/* <Checkbox label="Visit" checked={showVisit} onClick={() => setShowVisit(!showVisit)} /> */}
-    //     <Checkbox
-    //       label="Visit"
-    //       checked={showVisit}
-    //       onClick={() => setShowVisit(!showVisit)}
-    //       // onClick={() => handleCheckBoxClick(showVisit, setShowVisit)}
-    //     />
-    //     <Checkbox
-    //       label="Total"
-    //       checked={showTotal}
-    //       onClick={() => setShowTotal(!showTotal)}
-    //       // onClick={() => handleCheckBoxClick(showTotal, setShowTotal)}
-    //     />
-    //   </div>
     <>
       <HighchartsReact highcharts={Highcharts} options={options} />
       <VocabularyTooltips />
