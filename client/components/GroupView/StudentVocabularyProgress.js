@@ -15,6 +15,7 @@ const StudentVocabularyProgress = ({
   const [notMastered, setNotMastered] = useState([])
   const [notMasteredBefore, setNotMasteredBefore] = useState([])
   const [endWords, setEndWords] = useState(0)
+  const [targetCurve, setTargetCurve] = useState([])
   /*
   const { studentVocabulary, pending, previousStudentVocabulary, previousPending } = useSelector(
     ({ studentVocabulary }) => studentVocabulary
@@ -25,27 +26,36 @@ const StudentVocabularyProgress = ({
     if (previousStudentVocabulary?.stats && studentVocabulary?.stats) {
       let initList = []
       let wordsAtEnd = 0
-      for (let i = 0; i < studentVocabulary.stats.visit?.length; i++) {
+      const B2 = studentVocabulary.stats.target_mastering_curves.B2.params
+
+      for (let i = 0; i < studentVocabulary.stats.seen?.length; i++) {
         initList = initList.concat(
-          studentVocabulary.stats.visit[i] - studentVocabulary.stats.flashcard[i]
+          studentVocabulary.stats.seen[i] - studentVocabulary.stats.flashcard[i]
         )
         if (i > 49) {
-          wordsAtEnd += studentVocabulary.stats.visit[i] + studentVocabulary.stats.flashcard[i]
+          wordsAtEnd += studentVocabulary.stats.seen[i] + studentVocabulary.stats.flashcard[i]
         }
       }
       setNotMastered(initList)
       let initBeforeList = []
-      for (let i = 0; i < previousStudentVocabulary.stats.visit?.length; i++) {
+      for (let i = 0; i < previousStudentVocabulary.stats.seen?.length; i++) {
         initBeforeList = initBeforeList.concat(
-          previousStudentVocabulary.stats.visit[i] - previousStudentVocabulary.stats.flashcard[i]
+          previousStudentVocabulary.stats.seen[i] - previousStudentVocabulary.stats.flashcard[i]
         )
         if (i > 49) {
           wordsAtEnd +=
-            previousStudentVocabulary.stats.visit[i] + previousStudentVocabulary.stats.flashcard[i]
+            previousStudentVocabulary.stats.seen[i] + previousStudentVocabulary.stats.flashcard[i]
         }
       }
       setEndWords(wordsAtEnd)
       setNotMasteredBefore(initBeforeList)
+      let initTarget = []
+      for (let i = 0; i < studentVocabulary.stats.mastering_percentage.vocab_bins.length; i++) {
+        initTarget = initTarget.concat(
+          B2.B / (B2.C * i + B2.D)
+        )
+      }
+      setTargetCurve(initTarget)
     }
   }, [previousStudentVocabulary?.stats, studentVocabulary?.stats])
 
@@ -64,6 +74,7 @@ const StudentVocabularyProgress = ({
       notMastered={notMastered}
       notMasteredBefore={notMasteredBefore}
       endWords={endWords}
+      targetCurve={targetCurve}
     />
   )
 }

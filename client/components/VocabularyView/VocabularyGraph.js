@@ -2,7 +2,7 @@ import React from 'react'
 import Highcharts from 'highcharts'
 import HighchartsReact from 'highcharts-react-official'
 import moment from 'moment'
-import { useIntl } from 'react-intl'
+import { FormattedMessage, useIntl } from 'react-intl'
 import useWindowDimensions from 'Utilities/windowDimensions'
 import { Icon, Popup } from 'semantic-ui-react'
 import VocabularyTooltips from './VocabularyTooltips'
@@ -343,7 +343,7 @@ const VocabularyGraph = ({
       {graphType === 'column' && (
         <div className="flex-reverse">
           <Popup
-            content={<div>Tooltip</div>}
+            content={<FormattedMessage id="vocabulary-top-right-tooltip" />}
             trigger={
               <Icon
                 style={{ paddingRight: '0.75em', marginBottom: '0.5em', marginRight: '2em' }}
