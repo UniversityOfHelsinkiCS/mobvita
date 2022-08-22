@@ -190,14 +190,6 @@ const VocabularyGraph = ({
         visible: false,
       },
       {
-        name: 'Mastered',
-        id: 'New Mastered',
-        data: newFlashcard,
-        visible: false,
-        color: '#228B22',
-        stack: 'present',
-      },
-      {
         name: 'Not Mastered',
         id: 'New Not Mastered',
         data: notMastered,
@@ -207,15 +199,12 @@ const VocabularyGraph = ({
         stack: 'present',
       },
       {
-        name: `Mastered ${intl.formatMessage({
-          id: 'vocabulary-follow-statistic-before',
-        })}`,
-        id: 'New Mastered (before)',
-        data: flashcard,
-        linkedTo: 'Mastered',
+        name: 'Mastered',
+        id: 'New Mastered',
+        data: newFlashcard,
         visible: false,
-        color: '#90EE90',
-        stack: 'before',
+        color: '#228B22',
+        stack: 'present',
       },
       {
         name: `Not Mastered ${intl.formatMessage({
@@ -227,6 +216,17 @@ const VocabularyGraph = ({
         visible: false,
         stack: 'before',
         color: '#FAA0A0',
+      },
+      {
+        name: `Mastered ${intl.formatMessage({
+          id: 'vocabulary-follow-statistic-before',
+        })}`,
+        id: 'New Mastered (before)',
+        data: flashcard,
+        linkedTo: 'Mastered',
+        visible: false,
+        color: '#90EE90',
+        stack: 'before',
       },
       {
         name: 'Percentage',
