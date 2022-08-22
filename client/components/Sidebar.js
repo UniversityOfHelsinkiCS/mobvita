@@ -23,6 +23,8 @@ export default function Sidebar({ history }) {
   const locale = useSelector(({ locale }) => locale)
   const [localeDropdownOptions, setLocaleDropdownOptions] = useState([])
 
+  const isTeacher = user?.user.is_teacher
+
   const handleLocaleChange = newLocale => {
     dispatch(setLocale(newLocale)) // Sets locale in root reducer...
     if (user) dispatch(updateLocale(newLocale)) // Updates user-object
@@ -238,28 +240,15 @@ export default function Sidebar({ history }) {
                     </Link>
                   </>
 
-                  <Link to="/groups/student">
+                  <Link to={isTeacher ? '/groups/teacher' : '/groups/student'}>
                     <Button
                       data-cy="groups-link"
                       variant="secondary"
                       style={{ marginTop: marginTopButton }}
                       onClick={() => menuClickWrapper()}
                       block
-                      disabled={user.user.email === 'anonymous_email'}
                     >
-                      <Icon name="group" /> <FormattedMessage id="Groups-for-students" />
-                    </Button>
-                  </Link>
-                  <Link to="/groups/teacher">
-                    <Button
-                      data-cy="groups-link"
-                      variant="secondary"
-                      style={{ marginTop: marginTopButton }}
-                      onClick={() => menuClickWrapper()}
-                      block
-                      disabled={user.user.email === 'anonymous_email'}
-                    >
-                      <Icon name="group" /> <FormattedMessage id="Groups-for-teachers" />
+                      <Icon name="group" /> <FormattedMessage id="groups" />
                     </Button>
                   </Link>
                 </Menu.Item>
