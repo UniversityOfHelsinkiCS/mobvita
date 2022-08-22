@@ -4,6 +4,7 @@ import HighchartsReact from 'highcharts-react-official'
 import moment from 'moment'
 import { useIntl } from 'react-intl'
 import useWindowDimensions from 'Utilities/windowDimensions'
+import { Icon, Popup } from 'semantic-ui-react'
 import VocabularyTooltips from './VocabularyTooltips'
 
 const VocabularyGraph = ({
@@ -33,7 +34,6 @@ const VocabularyGraph = ({
 
   const currentPerc = newerVocabularyData.mastering_percentage
   const previousPerc = vocabularyData.mastering_percentage
-
 
   const { flashcard, seen, total, visit } = vocabularyData
   const newFlashcard = newerVocabularyData.flashcard
@@ -323,7 +323,9 @@ const VocabularyGraph = ({
               setGraphType('area')
             }
             this.chart.series.forEach(s => {
-              s.userOptions.id.substring(0, 3) !== this.userOptions.id.substring(0, 3) ? s.hide() : s.show()
+              s.userOptions.id.substring(0, 3) !== this.userOptions.id.substring(0, 3)
+                ? s.hide()
+                : s.show()
             }, this)
 
             return false
@@ -338,6 +340,20 @@ const VocabularyGraph = ({
 
   return (
     <>
+      {graphType === 'column' && (
+        <div className="flex-reverse">
+          <Popup
+            content={<div>Tooltip</div>}
+            trigger={
+              <Icon
+                style={{ paddingRight: '0.75em', marginBottom: '0.5em', marginRight: '2em' }}
+                name="info circle"
+                color="grey"
+              />
+            }
+          />
+        </div>
+      )}
       <HighchartsReact highcharts={Highcharts} options={options} />
       <VocabularyTooltips />
     </>
