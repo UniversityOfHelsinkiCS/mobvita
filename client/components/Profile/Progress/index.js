@@ -156,20 +156,20 @@ const Progress = () => {
       let initList = []
       let wordsAtEnd = 0
       const B2 = newerVocabularyData.target_mastering_curves.B2.params
-      for (let i = 0; i < newerVocabularyData.visit.length; i++) {
-        initList = initList.concat(newerVocabularyData.visit[i] - newerVocabularyData.flashcard[i])
+      for (let i = 0; i < newerVocabularyData.seen.length; i++) {
+        initList = initList.concat(newerVocabularyData.seen[i] - newerVocabularyData.flashcard[i])
         if (i > 49) {
-          wordsAtEnd += newerVocabularyData.visit[i] + newerVocabularyData.flashcard[i]
+          wordsAtEnd += newerVocabularyData.seen[i] + newerVocabularyData.flashcard[i]
         }
       }
       setNotMastered(initList)
       let initBeforeList = []
-      for (let i = 0; i < vocabularyData.visit.length; i++) {
+      for (let i = 0; i < vocabularyData.seen.length; i++) {
         initBeforeList = initBeforeList.concat(
-          vocabularyData.visit[i] - vocabularyData.flashcard[i]
+          vocabularyData.seen[i] - vocabularyData.seen[i]
         )
         if (i > 49) {
-          wordsAtEnd += vocabularyData.visit[i] + vocabularyData.flashcard[i]
+          wordsAtEnd += vocabularyData.seen[i] + vocabularyData.flashcard[i]
         }
       }
       setEndWords(wordsAtEnd)
