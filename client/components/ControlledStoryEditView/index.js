@@ -23,6 +23,7 @@ import FeedbackInfoModal from 'Components/CommonStoryTextComponents/FeedbackInfo
 import ReportButton from 'Components/ReportButton'
 import Footer from '../Footer'
 import ScrollArrow from '../ScrollArrow'
+import StoryTopics from 'Components/StoryView/StoryTopics'
 
 const ControlledStoryEditView = ({ match }) => {
   const dispatch = useDispatch()
@@ -32,6 +33,7 @@ const ControlledStoryEditView = ({ match }) => {
   const mode = getMode()
   const history = useHistory()
   const [showRefreshButton, setShowRefreshButton] = useState(false)
+  const [focusedConcept, setFocusedConcept] = useState(null)
   const controlledPractice = useSelector(({ controlledPractice }) => controlledPractice)
   const { story, pending } = useSelector(({ stories, locale }) => ({
     story: stories.focused,
@@ -134,7 +136,6 @@ const ControlledStoryEditView = ({ match }) => {
     }
     return false
   }
-
   // console.log('contr ', controlledPractice)
 
   return (
@@ -193,6 +194,7 @@ const ControlledStoryEditView = ({ match }) => {
                   hideFeedback={hideFeedback}
                   mode="practice"
                   snippet={paragraph}
+                  focusedConcept={focusedConcept}
                   answers={null}
                 />
                 <hr />
@@ -236,6 +238,11 @@ const ControlledStoryEditView = ({ match }) => {
           )}
         </div>
         <div className="dictionary-and-annotations-cont">
+          <StoryTopics
+            conceptCount={story.concept_count}
+            focusedConcept={focusedConcept}
+            setFocusedConcept={setFocusedConcept}
+          />
           <DictionaryHelp />
           <AnnotationBox />
         </div>

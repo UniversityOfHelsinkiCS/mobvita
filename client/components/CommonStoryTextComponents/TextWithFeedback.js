@@ -102,7 +102,14 @@ const TextWithFeedback = ({
 
   const getExerciseWordComponent = (word, props) => {
     return inControlStoryEditor ? (
-      <Word hideFeedback={hideFeedback} key={word.ID} word={word} snippet={snippet} {...props} />
+      <Word
+        hideFeedback={hideFeedback}
+        key={word.ID}
+        word={word}
+        snippet={snippet}
+        {...props}
+        focusedConcept={focusedConcept}
+      />
     ) : (
       <ExerciseWord key={word.ID} word={word} {...props} />
     )
@@ -116,6 +123,7 @@ const TextWithFeedback = ({
         word={word}
         answer={mode !== 'review' && answers[word.ID]}
         tiedAnswer={mode !== 'review' && answers[word.tiedTo]}
+        focusedConcept={focusedConcept}
         {...props}
       />
     ) : (

@@ -24,7 +24,7 @@ import SelectExerciseTypeModal from 'Components/ControlledStoryEditView/SelectEx
 import ControlExerciseWord from 'Components/ControlledStoryEditView/CurrentSnippet/ControlExerciseWord'
 import PlainWord from 'Components/CommonStoryTextComponents/PlainWord'
 
-const ControlledStoryWord = ({ word, snippet }) => {
+const ControlledStoryWord = ({ word, snippet, focusedConcept }) => {
   const {
     surface,
     isWrong,
@@ -52,7 +52,7 @@ const ControlledStoryWord = ({ word, snippet }) => {
   const { correctAnswerIDs } = useSelector(({ practice }) => practice)
   const [allowTranslating, setAllowTranslating] = useState(true)
   const dispatch = useDispatch()
-
+  const conceptHighlighting = word.concepts?.includes(focusedConcept)
   useEffect(() => {
     if (word.analytic && word.is_head) {
       const intersection = snippet.filter(wordInSnippet =>
@@ -330,9 +330,11 @@ const ControlledStoryWord = ({ word, snippet }) => {
             tooltip={editorTooltip}
           >
             <span
-              className={`${wordClass} ${
-                wordShouldBeHighlighted(word) && 'notes-highlighted-word'
-              }`}
+              className={
+                conceptHighlighting
+                  ? 'notes-highlighted-word'
+                  : `${wordClass} ${wordShouldBeHighlighted(word) && 'notes-highlighted-word'}`
+              }
               role="button"
               onClick={handleActionClick}
               onKeyDown={handleActionClick}

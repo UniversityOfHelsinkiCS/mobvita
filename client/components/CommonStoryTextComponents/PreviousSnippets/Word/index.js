@@ -22,7 +22,6 @@ const Word = ({ word, answer, tiedAnswer, snippet, hideDifficulty, focusedConcep
       setShouldBeHidden(false)
     }
   }, [hiddenWordIds])
-  console.log('component in use')
 
   // "Display feedback" toggle is off
   if (!show_preview_exer && isPreviewMode) {
@@ -34,7 +33,7 @@ const Word = ({ word, answer, tiedAnswer, snippet, hideDifficulty, focusedConcep
   }
 
   if (controlledStory) {
-    return <ControlledStoryWord word={word} snippet={snippet} />
+    return <ControlledStoryWord word={word} snippet={snippet} focusedConcept={focusedConcept} />
   }
 
   // in stag, also highlight words with no exercise concepts in preview mode
