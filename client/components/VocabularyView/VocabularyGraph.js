@@ -183,6 +183,11 @@ const VocabularyGraph = ({
         visible: false,
       },
     ],
+    tooltip: {
+      formatter:function(){
+        return `<b>${this.series.userOptions.name}</b>` + ' in <br /> ' + 'word group ' + `<b>${this.key}</b>`
+      }
+    },
     chart: {
       type: graphType,
       /*
