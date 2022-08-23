@@ -241,7 +241,7 @@ const VocabularyGraph = ({
     },
     yAxis: {
       title: {
-        text: null,
+        text: 'words',
       },
       labels: {
         enabled: true,
