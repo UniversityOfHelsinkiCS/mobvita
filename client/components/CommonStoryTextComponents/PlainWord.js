@@ -97,7 +97,7 @@ const PlainWord = ({ word, annotatingAllowed, focusedConcept, ...props }) => {
           <sup className="notes-superscript">{getSuperscript(word)}</sup>
         )}
         <span
-          className={`${wordShouldBeHighlighted(word) && 'notes-highlighted-word'}`}
+          className={`${(wordShouldBeHighlighted(word) || conceptHighlighting) && 'notes-highlighted-word'}`}
           role={annotatingAllowed && 'button'}
           tabIndex="-1"
           onClick={() => handleNonRecognizedWordClick(word)}
