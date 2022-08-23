@@ -6,7 +6,7 @@ import PlainWord from 'Components/CommonStoryTextComponents/PlainWord'
 import ControlledStoryWord from 'Components/ControlledStoryEditView/ControlledStoryWord'
 import PreviousExerciseWord from './PreviousExerciseWord'
 
-const Word = ({ word, answer, tiedAnswer, hideFeedback, snippet, hideDifficulty }) => {
+const Word = ({ word, answer, tiedAnswer, snippet, hideDifficulty, focusedConcept }) => {
   const [shouldBeHidden, setShouldBeHidden] = useState(false)
   const history = useHistory()
   const { correctAnswerIDs } = useSelector(({ practice }) => practice)
@@ -41,7 +41,7 @@ const Word = ({ word, answer, tiedAnswer, hideFeedback, snippet, hideDifficulty 
 
   // preview mode (if concept list is not empty)
   if (isPreviewMode && word.concepts?.length > 0) {
-    return <PreviousExerciseWord word={word} />
+    return <PreviousExerciseWord word={word} focusedConcept={focusedConcept} />
   }
 
   // session history in practice & compete mode

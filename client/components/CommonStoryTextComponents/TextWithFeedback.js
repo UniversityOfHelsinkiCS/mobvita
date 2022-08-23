@@ -5,7 +5,15 @@ import ExerciseWord from 'Components/PracticeView/CurrentSnippet/ExerciseWord'
 import ControlWord from 'Components/ControlledStoryEditView/PreviousSnippets/ControlWord'
 import Word from 'Components/CommonStoryTextComponents/PreviousSnippets/Word'
 
-const TextWithFeedback = ({ snippet, exercise = false, answers, mode, hideFeedback, ...props }) => {
+const TextWithFeedback = ({
+  snippet,
+  exercise = false,
+  answers,
+  mode,
+  hideFeedback,
+  focusedConcept,
+  ...props
+}) => {
   let lowestLinePosition = 0
   const openLinePositions = [1, 2, 3, 4, 5]
   const reservedLinePositions = {}
@@ -117,6 +125,7 @@ const TextWithFeedback = ({ snippet, exercise = false, answers, mode, hideFeedba
         word={word}
         answer={mode !== 'review' && answers[word.ID]}
         tiedAnswer={mode !== 'review' && answers[word.tiedTo]}
+        focusedConcept={focusedConcept}
         {...props}
       />
     )

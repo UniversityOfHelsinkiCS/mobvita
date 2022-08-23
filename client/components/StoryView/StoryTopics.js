@@ -3,10 +3,18 @@ import useWindowDimensions from 'Utilities/windowDimensions'
 import { Icon } from 'semantic-ui-react'
 import { FormattedMessage } from 'react-intl'
 
-const StoryTopics = ({ conceptCount }) => {
+const StoryTopics = ({ conceptCount, focusedConcept, setFocusedConcept }) => {
   const [topTopics, setTopTopics] = useState([])
   const { width } = useWindowDimensions()
   const [collapsed, setCollapsed] = useState(false)
+
+  const handleFocusedConcept = topic => {
+    if (topic === focusedConcept) {
+      setFocusedConcept(null)
+    } else {
+      setFocusedConcept(topic)
+    }
+  }
 
   useEffect(() => {
     const keysSorted = Object.entries(conceptCount).sort((a, b) => {
@@ -36,7 +44,14 @@ const StoryTopics = ({ conceptCount }) => {
             <ul style={{ overflow: 'auto', maxHeight: 120 }}>
               {topTopics.map(topic => (
                 <li>
-                  {topic[0]}: {topic[1]}
+                  <span
+                    className={focusedConcept === topic[0] && 'notes-highlighted-word'}
+                    style={{ cursor: 'pointer' }}
+                    onClick={() => handleFocusedConcept(topic[0])}
+                  >
+                    {topic[0]}:
+                  </span>{' '}
+                  <span>{topic[1]}</span>
                 </li>
               ))}
             </ul>

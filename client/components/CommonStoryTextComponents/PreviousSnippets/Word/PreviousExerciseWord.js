@@ -26,7 +26,7 @@ import {
 } from 'Utilities/redux/annotationsReducer'
 import Tooltip from 'Components/PracticeView/Tooltip'
 
-const PreviousExerciseWord = ({ word, answer, tiedAnswer }) => {
+const PreviousExerciseWord = ({ word, answer, tiedAnswer, focusedConcept }) => {
   const {
     surface,
     isWrong,
@@ -53,6 +53,7 @@ const PreviousExerciseWord = ({ word, answer, tiedAnswer }) => {
   const [allowTranslating, setAllowTranslating] = useState(true)
   const { grade } = useSelector(state => state.user.data.user)
   const mode = getMode()
+  const conceptHighlighting = word.concepts?.includes(focusedConcept)
 
   const intl = useIntl()
   const dispatch = useDispatch()
@@ -185,7 +186,9 @@ const PreviousExerciseWord = ({ word, answer, tiedAnswer }) => {
     <Tooltip placement="top" tooltipShown={show} trigger="none" tooltip={tooltip}>
       {wordStartsSpan(word) && <sup className="notes-superscript">{getSuperscript(word)}</sup>}
       <span
-        className={`${wordClass} ${wordShouldBeHighlighted(word) && 'notes-highlighted-word'}`}
+        className={`${wordClass} ${
+          (wordShouldBeHighlighted(word) || conceptHighlighting) && 'notes-highlighted-word'
+        }`}
         style={wordColorStyle}
         role="button"
         onClick={handleClick}

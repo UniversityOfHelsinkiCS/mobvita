@@ -52,6 +52,7 @@ const ReadViews = ({ match }) => {
   // console.log('exer preview ', show_preview_exer)
 
   const [hideFeedback, setHideFeedback] = useState(defineFeedback())
+  const [focusedConcept, setFocusedConcept] = useState(null)
   const user = useSelector(state => state.user.data)
   const { progress, storyId } = useSelector(({ uploadProgress }) => uploadProgress)
   const currentGroupId = useSelector(({ user }) => user.data.user.last_selected_group)
@@ -137,6 +138,7 @@ const ReadViews = ({ match }) => {
   }
 
   // console.log('story ', story.paragraph)
+  console.log('focused ', focusedConcept)
 
   return (
     <div className="cont-tall flex-col space-between align-center pt-sm">
@@ -227,6 +229,7 @@ const ReadViews = ({ match }) => {
                   mode="review"
                   snippet={paragraph}
                   answers={null}
+                  focusedConcept={focusedConcept}
                   show_preview_exer
                 />
                 <br />
@@ -246,7 +249,11 @@ const ReadViews = ({ match }) => {
           )}
         </div>
         <div className="dictionary-and-annotations-cont">
-          <StoryTopics conceptCount={story.concept_count} />
+          <StoryTopics
+            conceptCount={story.concept_count}
+            focusedConcept={focusedConcept}
+            setFocusedConcept={setFocusedConcept}
+          />
           <DictionaryHelp />
           <AnnotationBox />
         </div>
