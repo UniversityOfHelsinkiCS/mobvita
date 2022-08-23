@@ -16,7 +16,6 @@ const VocabularyGraph = ({
   setGraphType,
   notMastered,
   notMasteredBefore,
-  endWords,
   xAxisLength,
   targetCurve,
 }) => {
@@ -312,6 +311,15 @@ const VocabularyGraph = ({
       min: -1,
       max: xAxisLength,
     },
+    yAxis: {
+      title: {
+        text: null,
+      },
+      labels: {
+        enabled: true,
+      },
+      endOnTick: false,
+    },
     plotOptions: {
       series: {
         allowPointSelect: true,
@@ -341,20 +349,6 @@ const VocabularyGraph = ({
 
   return (
     <>
-      {graphType === 'column' && (
-        <div className="flex-reverse">
-          <Popup
-            content={<FormattedMessage id="vocabulary-top-right-tooltip" />}
-            trigger={
-              <Icon
-                style={{ paddingRight: '0.75em', marginBottom: '0.5em', marginRight: '2em' }}
-                name="info circle"
-                color="grey"
-              />
-            }
-          />
-        </div>
-      )}
       <HighchartsReact highcharts={Highcharts} options={options} />
       <VocabularyTooltips />
     </>

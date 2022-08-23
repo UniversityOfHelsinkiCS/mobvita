@@ -75,7 +75,6 @@ const Progress = () => {
     if (grammarView) {
       return 'hex-map'
     }
-
     return 'progress'
   }
 
@@ -174,9 +173,7 @@ const Progress = () => {
       setNotMastered(initList)
       let initBeforeList = []
       for (let i = 0; i < vocabularyData.seen.length; i++) {
-        initBeforeList = initBeforeList.concat(
-          vocabularyData.seen[i] - vocabularyData.seen[i]
-        )
+        initBeforeList = initBeforeList.concat(vocabularyData.seen[i] - vocabularyData.seen[i])
         if (i > 49) {
           wordsAtEnd += vocabularyData.seen[i] + vocabularyData.flashcard[i]
         }
@@ -385,7 +382,6 @@ const Progress = () => {
                   notMastered={notMastered}
                   notMasteredBefore={notMasteredBefore}
                   xAxisLength={xAxisLength}
-                  endWords={endWords}
                   targetCurve={targetCurve}
                 />
               </div>
