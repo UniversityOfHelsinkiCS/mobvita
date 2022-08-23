@@ -138,7 +138,7 @@ const ReadViews = ({ match }) => {
   }
 
   // console.log('story ', story.paragraph)
-  console.log('focused ', focusedConcept)
+  // console.log('focused ', focusedConcept)
 
   return (
     <div className="cont-tall flex-col space-between align-center pt-sm">

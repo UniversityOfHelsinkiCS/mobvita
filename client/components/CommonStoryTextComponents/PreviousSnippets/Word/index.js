@@ -22,6 +22,7 @@ const Word = ({ word, answer, tiedAnswer, snippet, hideDifficulty, focusedConcep
       setShouldBeHidden(false)
     }
   }, [hiddenWordIds])
+  console.log('component in use')
 
   // "Display feedback" toggle is off
   if (!show_preview_exer && isPreviewMode) {
@@ -71,7 +72,14 @@ const Word = ({ word, answer, tiedAnswer, snippet, hideDifficulty, focusedConcep
     )
   }
 
-  return <PlainWord word={word} annotatingAllowed hideDifficulty={hideDifficulty} />
+  return (
+    <PlainWord
+      word={word}
+      annotatingAllowed
+      hideDifficulty={hideDifficulty}
+      focusedConcept={focusedConcept}
+    />
+  )
 }
 
 export default Word
