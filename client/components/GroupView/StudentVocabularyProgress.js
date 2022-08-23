@@ -10,17 +10,19 @@ const StudentVocabularyProgress = ({
   graphType,
   setGraphType,
 }) => {
-  // const dispatch = useDispatch()
-  // const [graphType, setGraphType] = useState('area')
   const [notMastered, setNotMastered] = useState([])
   const [notMasteredBefore, setNotMasteredBefore] = useState([])
   const [endWords, setEndWords] = useState(0)
   const [targetCurve, setTargetCurve] = useState([])
-  /*
-  const { studentVocabulary, pending, previousStudentVocabulary, previousPending } = useSelector(
-    ({ studentVocabulary }) => studentVocabulary
-  )
-  */
+  const [xAxisLength, setXAxisLength] = useState(102)
+
+  useEffect(() => {
+    if (endWords < 300) {
+      setXAxisLength(50)
+    } else {
+      setXAxisLength(102)
+    }
+  }, [endWords])
 
   useEffect(() => {
     if (previousStudentVocabulary?.stats && studentVocabulary?.stats) {
@@ -73,8 +75,8 @@ const StudentVocabularyProgress = ({
       setGraphType={setGraphType}
       notMastered={notMastered}
       notMasteredBefore={notMasteredBefore}
-      endWords={endWords}
       targetCurve={targetCurve}
+      xAxisLength={xAxisLength}
     />
   )
 }
