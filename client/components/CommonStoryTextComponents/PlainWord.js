@@ -21,7 +21,7 @@ import {
   setAnnotationFormVisibility,
 } from 'Utilities/redux/annotationsReducer'
 
-const PlainWord = ({ word, annotatingAllowed, ...props }) => {
+const PlainWord = ({ word, annotatingAllowed, focusedConcept, ...props }) => {
   const history = useHistory()
   const dispatch = useDispatch()
   const { width } = useWindowDimensions()
@@ -42,6 +42,7 @@ const PlainWord = ({ word, annotatingAllowed, ...props }) => {
   const isCompeteMode = history.location.pathname.includes('compete')
   const bigScreen = width >= 1024
   const voice = voiceLanguages[learningLanguage]
+  const conceptHighlighting = word.concepts?.includes(focusedConcept)
 
   if (surface === '\n\n') {
     return (
@@ -173,7 +174,7 @@ const PlainWord = ({ word, annotatingAllowed, ...props }) => {
         onKeyDown={() => handleWordClick()}
         onClick={() => handleWordClick()}
         className={`word-interactive${
-          wordShouldBeHighlighted(word) ? ' notes-highlighted-word' : ''
+          (wordShouldBeHighlighted(word) || conceptHighlighting) ? ' notes-highlighted-word' : ''
         }`}
         {...props}
       >

@@ -24,7 +24,9 @@ const Word = ({ word, answer, tiedAnswer, snippet, hideDifficulty, focusedConcep
   }, [hiddenWordIds])
 
   // "Display feedback" toggle is off
-  if (!show_preview_exer && isPreviewMode) return <PlainWord word={word} annotatingAllowed />
+  if (!show_preview_exer && isPreviewMode) {
+    return <PlainWord word={word} annotatingAllowed focusedConcept={focusedConcept} />
+  }
 
   if (controlledStory && shouldBeHidden) {
     return null
@@ -64,6 +66,7 @@ const Word = ({ word, answer, tiedAnswer, snippet, hideDifficulty, focusedConcep
         answer={answerObj}
         tiedAnswer={null}
         hideDifficulty={hideDifficulty}
+        focusedConcept={focusedConcept}
       />
     )
   }
