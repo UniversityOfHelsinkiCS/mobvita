@@ -88,6 +88,7 @@ const Progress = () => {
   const [firstFetch, setFirstFetch] = useState(true)
   const bigScreen = useWindowDimension().width >= 650
   const [targetCurve, setTargetCurve] = useState([])
+  const [xAxisLength, setXAxisLength] = useState(102)
   const originalEndPoint =
     exerciseHistoryGraph?.length > 0
       ? moment(exerciseHistoryGraph[exerciseHistoryGraph.length - 1]?.date)
@@ -130,6 +131,14 @@ const Progress = () => {
       dispatch(getNewerVocabularyData(endDate.toJSON().slice(0, 10)))
     }
   }
+
+  useEffect(() => {
+    if (endWords < 300) {
+      setXAxisLength(50)
+    } else {
+      setXAxisLength(102)
+    }
+  }, [endWords])
 
   useEffect(() => {
     if (
@@ -375,6 +384,7 @@ const Progress = () => {
                   setGraphType={setGraphType}
                   notMastered={notMastered}
                   notMasteredBefore={notMasteredBefore}
+                  xAxisLength={xAxisLength}
                   endWords={endWords}
                   targetCurve={targetCurve}
                 />
