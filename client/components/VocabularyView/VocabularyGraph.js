@@ -2,9 +2,8 @@ import React from 'react'
 import Highcharts from 'highcharts'
 import HighchartsReact from 'highcharts-react-official'
 import moment from 'moment'
-import { FormattedMessage, useIntl } from 'react-intl'
+import { useIntl } from 'react-intl'
 import useWindowDimensions from 'Utilities/windowDimensions'
-import { Icon, Popup } from 'semantic-ui-react'
 import VocabularyTooltips from './VocabularyTooltips'
 
 const VocabularyGraph = ({
@@ -43,76 +42,6 @@ const VocabularyGraph = ({
 
   const intl = useIntl()
   const smallScreen = useWindowDimensions().width < 640
-
-  // const getSeries = () => {
-  //   const temp = []
-
-  //   if (showSeen) {
-  //     const seenNow = {
-  //       name: 'Seen',
-  //       data: seen.now,
-  //     }
-  //     const seenBefore = {
-  //       name: 'Seen (before)',
-  //       data: seen[Object.keys(seen).filter(key => key !== 'now')[0]],
-  //     }
-  //     temp.push(seenNow)
-  //     temp.push(seenBefore)
-  //   }
-
-  //   if (showFlashcard) {
-  //     const flashcardNow = {
-  //       name: 'Flashcard',
-  //       data: flashcard.now,
-  //     }
-  //     const flashardBefore = {
-  //       name: 'Flashcard (before)',
-  //       data: flashcard[Object.keys(flashcard).filter(key => key !== 'now')[0]],
-  //     }
-  //     temp.push(flashcardNow)
-  //     temp.push(flashardBefore)
-  //   }
-
-  //   if (showVisit) {
-  //     const visitNow = {
-  //       name: 'Visit',
-  //       data: visit.now,
-  //     }
-  //     const visitBefore = {
-  //       name: 'Visit (before)',
-  //       data: visit[Object.keys(visit).filter(key => key !== 'now')[0]],
-  //     }
-  //     temp.push(visitNow)
-  //     temp.push(visitBefore)
-  //   }
-  //   if (showTotal) {
-  //     const totalNow = {
-  //       name: 'Total',
-  //       data: total.now,
-  //     }
-  //     const totalBefore = {
-  //       name: 'Total (before)',
-  //       data: total[Object.keys(total).filter(key => key !== 'now')[0]],
-  //     }
-  //     temp.push(totalNow)
-  //     temp.push(totalBefore)
-  //   }
-  //   return temp
-  // }
-
-  // const series = getSeries()
-
-  // const series = [{ name: intl.formatMessage({ id: 'Stories' }), data: storyData }]
-
-  // if (hiddenFeatures) {
-  //   series.push({
-  //     name: intl.formatMessage({ id: 'Flashcards' }),
-  //     data: flashcardData,
-  //     color: '#dc3545',
-  //   })
-  // }
-
-  //   const height = smallScreen ? '75%' : '35%'
 
   const height = '70%'
 
@@ -282,32 +211,31 @@ const VocabularyGraph = ({
     credits: { enabled: false },
     allowDecimals: false,
     alignTicks: false,
-    // yAxis: [
-    //   { title: { text: intl.formatMessage({ id: 'score' }) } },
-    //   {
-    //     opposite: true,
-    //     linkedTo: 0,
-    //     gridLineWidth: 0,
-    //     tickPositions: Object.keys(levels).map(Number),
-    //     labels: {
-    //       formatter: function () {
-    //         return levels[this.value]
-    //       },
-    //       style: {
-    //         fontSize: '16px',
-    //         color: 'slateGrey',
-    //       },
-    //     },
-    //     title: { enabled: false },
-    //   },
-    // ],
 
     xAxis: {
-      //   type: 'datetime',
       type: 'category',
-      //   labels: { format: '{value:%Y/%m/%d}' },
-      //   labels: binNumbers,
-      //   allowDecimals: false,
+      labels: {
+        rotation: 0,
+        overflow: true,
+        formatter: function() {
+          if (this.value === 3 && xAxisLength > 100 || this.value === 2 && xAxisLength < 100) {
+            return '<b>simple</b>'
+          }
+          if (this.value === 96 || this.value === 48 && xAxisLength < 100) {
+            return '<b>difficult</b>'
+          }
+          if (this.value % 25 === 0 ) {
+            if (xAxisLength <= 50 && this.value === 25) {
+              return this.value.toString()
+            } else if (this.value > 0 && this.value < 100) {
+              return this.value.toString()
+            }
+            
+          }
+
+          return ""
+        },
+      },
       min: -1,
       max: xAxisLength,
     },
@@ -323,6 +251,10 @@ const VocabularyGraph = ({
     plotOptions: {
       series: {
         allowPointSelect: true,
+        shadow: false,
+        dataLabels: {
+          allowOverlap: false,
+        },
         marker: { enabled: true },
         events: {
           legendItemClick() {
@@ -352,7 +284,6 @@ const VocabularyGraph = ({
       <HighchartsReact highcharts={Highcharts} options={options} />
       <VocabularyTooltips />
     </>
-    // </>
   )
 }
 
