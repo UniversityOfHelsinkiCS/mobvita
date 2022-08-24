@@ -1,4 +1,4 @@
-import React, { useRef } from 'react'
+import React from 'react'
 import Highcharts from 'highcharts'
 import HighchartsReact from 'highcharts-react-official'
 import moment from 'moment'
@@ -19,9 +19,9 @@ const VocabularyGraph = ({
   notMasteredBefore,
   xAxisLength,
   targetCurve,
+  element,
 }) => {
   //   const { flashcard, seen, total, now, visit } = useSelector(({ user }) => user.vocabularyData)
-  const element = useRef()
   if (vocabularyPending || newerVocabularyPending) return <div className="mt-xl">Loading...</div>
 
   if (
@@ -61,6 +61,7 @@ const VocabularyGraph = ({
     2050: 'C1',
     2250: 'C2',
   }
+  let toggleOn = false
 
   const handleToggle = () => {
     console.log('attempting')
@@ -68,10 +69,12 @@ const VocabularyGraph = ({
       element.current.chart.series[8].hide()
       element.current.chart.series[9].hide()
       element.current.chart.series[10].hide()
+      toggleOn = false
     } else {
       element.current.chart.series[8].show()
       element.current.chart.series[9].show()
       element.current.chart.series[10].show()
+      toggleOn = true
     }
   }
 
@@ -334,12 +337,7 @@ const VocabularyGraph = ({
     <>
       {graphType === 'column mastered' && (
         <div className="flex space-between">
-          <Checkbox
-            toggle
-            checked={element?.current?.chart?.series[8].userOptions.visible}
-            onChange={handleToggle}
-            label="label"
-          />
+          <Checkbox toggle checked={toggleOn} onChange={handleToggle} label="label" />
           <MasteredLegends
             numEncountered={numEncountered}
             numRewardable={numRewardable}

@@ -1,5 +1,5 @@
 /* eslint-disable no-nested-ternary */
-import React, { useState, useEffect, shallowEqual } from 'react'
+import React, { useState, useEffect, shallowEqual, useRef } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import moment from 'moment'
 import { FormattedMessage, FormattedHTMLMessage } from 'react-intl'
@@ -35,6 +35,7 @@ const Progress = () => {
   const flashcardsView = history.location.pathname.includes('flashcards')
   const grammarView = history.location.pathname.includes('grammar')
   const dispatch = useDispatch()
+  const element = useRef()
   const [graphType, setGraphType] = useState('area')
   const {
     exerciseHistory: exerciseHistoryGraph,
@@ -393,6 +394,7 @@ const Progress = () => {
                   notMasteredBefore={notMasteredBefore}
                   xAxisLength={xAxisLength}
                   targetCurve={targetCurve}
+                  element={element}
                 />
               </div>
             </div>
