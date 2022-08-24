@@ -4,6 +4,7 @@ import HighchartsReact from 'highcharts-react-official'
 import moment from 'moment'
 import { useIntl } from 'react-intl'
 import useWindowDimensions from 'Utilities/windowDimensions'
+import MasteredLegends from './MasteredLegends'
 import VocabularyTooltips from './VocabularyTooltips'
 
 const VocabularyGraph = ({
@@ -33,6 +34,11 @@ const VocabularyGraph = ({
 
   const currentPerc = newerVocabularyData.mastering_percentage
   const previousPerc = vocabularyData.mastering_percentage
+
+  const numEncountered = currentPerc.vocab_bins.reduce((prev, curr) => prev + curr.encountered, 0)
+  const numRewardable = currentPerc.vocab_bins.reduce((prev, curr) => prev + curr.rewardable, 0)
+  const numMastered = currentPerc.vocab_bins.reduce((prev, curr) => prev + curr.mastered, 0)
+  const numNotMastered = notMastered.reduce((prev, curr) => prev + curr, 0)
 
   const { flashcard, seen, total, visit } = vocabularyData
   const newFlashcard = newerVocabularyData.flashcard
@@ -204,9 +210,14 @@ const VocabularyGraph = ({
       },
     ],
     tooltip: {
-      formatter:function(){
-        return `<b>${this.series.userOptions.name}</b>` + ' in <br /> ' + 'word group ' + `<b>${this.key}</b>`
-      }
+      formatter() {
+        return (
+          `<b>${this.series.userOptions.name}</b>` +
+          ' in <br /> ' +
+          'word group ' +
+          `<b>${this.key}</b>`
+        )
+      },
     },
     chart: {
       type: graphType,
@@ -242,23 +253,23 @@ const VocabularyGraph = ({
       labels: {
         rotation: 0,
         overflow: true,
-        formatter: function() {
-          if (this.value === 3 && xAxisLength > 100 || this.value === 2 && xAxisLength < 100) {
+        formatter() {
+          if ((this.value === 3 && xAxisLength > 100) || (this.value === 2 && xAxisLength < 100)) {
             return '<b>simple</b>'
           }
-          if (this.value === 96 || this.value === 48 && xAxisLength < 100) {
+          if (this.value === 96 || (this.value === 48 && xAxisLength < 100)) {
             return '<b>difficult</b>'
           }
-          if (this.value % 25 === 0 ) {
+          if (this.value % 25 === 0) {
             if (xAxisLength <= 50 && this.value === 25) {
               return this.value.toString()
-            } else if (this.value > 0 && this.value < 100) {
+            }
+            if (this.value > 0 && this.value < 100) {
               return this.value.toString()
             }
-            
           }
 
-          return ""
+          return ''
         },
       },
       min: -1,
@@ -306,6 +317,14 @@ const VocabularyGraph = ({
 
   return (
     <>
+      {graphType === 'column' && (
+        <MasteredLegends
+          numEncountered={numEncountered}
+          numRewardable={numRewardable}
+          numMastered={numMastered}
+          numNotMastered={numNotMastered}
+        />
+      )}
       <HighchartsReact highcharts={Highcharts} options={options} />
       <VocabularyTooltips />
     </>

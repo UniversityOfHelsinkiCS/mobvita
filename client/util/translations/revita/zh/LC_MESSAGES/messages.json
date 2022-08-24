@@ -668,9 +668,16 @@
     "encouragements-default-3": "做得好！",
     "enc-grammar-progress-1": "您是否希望回顾一下",
     "enc-grammar-progress-2": "语法",
-    "no-hints-available": "Sorry, no hints available",
-    "user-settings-options": "User settings",
-    "annotation-name": "Note name (optional)",
+    "no-hints-available": "抱歉，没有可用提示",
+    "user-settings-options": "用户设置",
+    "annotation-name": "笔记名（可选）",
     "story-top-topics": "Working on this story will help you master especially these topics",
-    "next-card-deck": "Next deck"
+    "next-card-deck": "Next deck",
+    "vocabulary-top-right-tooltip": "",
+    "red-bar-explanation": "Read more stories to increase this",
+    "blue-bar-explanation": "Check these words with blue cards to turn them green",
+    "green-bar-explanation": "Practice with flashcards to increase this",
+    "red-bar-label": "{nWords} words not mastered ({percent}%)",
+    "blue-bar-label": "{nWords} words you <b>probably</b> know ({percent}%)",
+    "green-bar-label": "{nWords} words mastered ({percent}%)"
 }
