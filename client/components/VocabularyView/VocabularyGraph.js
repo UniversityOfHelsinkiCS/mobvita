@@ -130,6 +130,17 @@ const VocabularyGraph = ({
         color: '#FAA0A0',
       },
       {
+        name: `Rewardable ${intl.formatMessage({
+          id: 'vocabulary-follow-statistic-before',
+        })}`,
+        id: 'New Mastered (before rewardable)',
+        data: previousPerc.vocab_bins.map(v => v.rewardable),
+        linkedTo: 'Mastered',
+        visible: false,
+        color: '#5FBDC2',
+        stack: 'before',
+      },
+      {
         name: `Mastered ${intl.formatMessage({
           id: 'vocabulary-follow-statistic-before',
         })}`,
@@ -147,6 +158,15 @@ const VocabularyGraph = ({
         visible: false,
         linkedTo: 'Mastered',
         color: '#DC143C',
+        stack: 'present',
+      },
+      {
+        name: 'Rewardable',
+        id: 'New Mastered (rewardable)',
+        data: currentPerc.vocab_bins.map(v => v.rewardable),
+        visible: false,
+        linkedTo: 'Mastered',
+        color: '#4169e1',
         stack: 'present',
       },
       {

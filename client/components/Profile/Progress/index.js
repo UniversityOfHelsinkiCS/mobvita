@@ -164,27 +164,32 @@ const Progress = () => {
       let initList = []
       let wordsAtEnd = 0
       const B2 = newerVocabularyData.target_mastering_curves.B2.params
-      for (let i = 0; i < newerVocabularyData.seen.length; i++) {
-        initList = initList.concat(newerVocabularyData.seen[i] - newerVocabularyData.flashcard[i])
+      const newBins = newerVocabularyData.mastering_percentage.vocab_bins
+      const oldBins = vocabularyData.mastering_percentage.vocab_bins
+
+      for (let i = 0; i < newBins.length; i++) {
+        initList = initList.concat(
+          newBins[i].encountered - newBins[i].mastered - newBins[i].rewardable
+        )
         if (i > 49) {
-          wordsAtEnd += newerVocabularyData.seen[i] + newerVocabularyData.flashcard[i]
+          wordsAtEnd += newBins[i].encountered
         }
       }
       setNotMastered(initList)
       let initBeforeList = []
-      for (let i = 0; i < vocabularyData.seen.length; i++) {
-        initBeforeList = initBeforeList.concat(vocabularyData.seen[i] - vocabularyData.seen[i])
+      for (let i = 0; i < oldBins.length; i++) {
+        initBeforeList = initBeforeList.concat(
+          oldBins[i].encountered - oldBins[i].mastered - oldBins[i].rewardable
+        )
         if (i > 49) {
-          wordsAtEnd += vocabularyData.seen[i] + vocabularyData.flashcard[i]
+          wordsAtEnd += oldBins[i].encountered
         }
       }
       setEndWords(wordsAtEnd)
       setNotMasteredBefore(initBeforeList)
       let initTarget = []
-      for (let i = 0; i < newerVocabularyData.mastering_percentage.vocab_bins.length; i++) {
-        initTarget = initTarget.concat(
-          B2.B / (B2.C * i + B2.D)
-        )
+      for (let i = 0; i < newBins.length; i++) {
+        initTarget = initTarget.concat(B2.B / (B2.C * i + B2.D))
       }
       setTargetCurve(initTarget)
     }
