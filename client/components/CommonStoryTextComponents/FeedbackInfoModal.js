@@ -9,8 +9,8 @@ const BookReference = ({ reference }) => (
   <li>
     {reference.author && `${reference.author}`}
     {reference.title && `, ${reference.title}`}
+    {reference.paragraph && `, §. ${reference.paragraph}`}
     {reference.page && `, p. ${reference.page}`}
-    {reference.paragraph && `, para. ${reference.paragraph}`}
   </li>
 )
 
@@ -46,6 +46,7 @@ const FeedbackInfoModal = () => {
   }
 
   const ReferenceList = ({ references }) => {
+    console.log(ref)
     return (
       <>
         <div className="bold header-3 mx-lg">
