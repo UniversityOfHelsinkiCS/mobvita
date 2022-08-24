@@ -220,7 +220,7 @@ const VocabularyGraph = ({
       },
     },
     chart: {
-      type: graphType,
+      type: graphType.substring(0, 6),
       /*
       events: {
         load: function () {
@@ -294,7 +294,9 @@ const VocabularyGraph = ({
         marker: { enabled: true },
         events: {
           legendItemClick() {
-            if (this.userOptions.id === 'New Mastered' || this.userOptions.id === 'Percentage') {
+            if (this.userOptions.id === 'New Mastered') {
+              setGraphType('column mastered')
+            } else if (this.userOptions.id === 'Percentage') {
               setGraphType('column')
             } else {
               setGraphType('area')
@@ -317,7 +319,7 @@ const VocabularyGraph = ({
 
   return (
     <>
-      {graphType === 'column' && (
+      {graphType === 'column mastered' && (
         <MasteredLegends
           numEncountered={numEncountered}
           numRewardable={numRewardable}
