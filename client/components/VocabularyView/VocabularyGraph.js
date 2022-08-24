@@ -1,8 +1,9 @@
-import React from 'react'
+import React, { useRef } from 'react'
 import Highcharts from 'highcharts'
 import HighchartsReact from 'highcharts-react-official'
 import moment from 'moment'
 import { useIntl } from 'react-intl'
+import { Checkbox } from 'semantic-ui-react'
 import useWindowDimensions from 'Utilities/windowDimensions'
 import MasteredLegends from './MasteredLegends'
 import VocabularyTooltips from './VocabularyTooltips'
@@ -20,7 +21,7 @@ const VocabularyGraph = ({
   targetCurve,
 }) => {
   //   const { flashcard, seen, total, now, visit } = useSelector(({ user }) => user.vocabularyData)
-
+  // const element = useRef()
   if (vocabularyPending || newerVocabularyPending) return <div className="mt-xl">Loading...</div>
 
   if (
@@ -52,7 +53,6 @@ const VocabularyGraph = ({
   const height = '70%'
 
   const binNumbers = Array.from(Array(10).keys())
-
   const levels = {
     1250: 'A1',
     1450: 'A2',
@@ -61,7 +61,20 @@ const VocabularyGraph = ({
     2050: 'C1',
     2250: 'C2',
   }
-
+/*
+  const handleToggle = () => {
+    console.log('attempting')
+    if (element?.current.chart.series[8].userOptions.visible) {
+      element.current.chart.series[8].hide()
+      element.current.chart.series[9].hide()
+      element.current.chart.series[10].hide()
+    } else {
+      element.current.chart.series[8].show()
+      element.current.chart.series[9].show()
+      element.current.chart.series[10].show()
+    }
+  }
+*/
   const options = {
     title: '',
     // series,'
@@ -212,7 +225,7 @@ const VocabularyGraph = ({
     tooltip: {
       formatter() {
         return (
-          `<b>${this.series.userOptions.name}</b>` +
+          `<b>${this.y} ${this.series.userOptions.name}</b>` +
           ' in <br /> ' +
           'word group ' +
           `<b>${this.key}</b>`
@@ -320,12 +333,12 @@ const VocabularyGraph = ({
   return (
     <>
       {graphType === 'column mastered' && (
-        <MasteredLegends
-          numEncountered={numEncountered}
-          numRewardable={numRewardable}
-          numMastered={numMastered}
-          numNotMastered={numNotMastered}
-        />
+          <MasteredLegends
+            numEncountered={numEncountered}
+            numRewardable={numRewardable}
+            numMastered={numMastered}
+            numNotMastered={numNotMastered}
+          />
       )}
       <HighchartsReact highcharts={Highcharts} options={options} />
       <VocabularyTooltips />
