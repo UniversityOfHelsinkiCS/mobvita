@@ -21,7 +21,7 @@ const VocabularyGraph = ({
   targetCurve,
 }) => {
   //   const { flashcard, seen, total, now, visit } = useSelector(({ user }) => user.vocabularyData)
-  // const element = useRef()
+  const element = useRef()
   if (vocabularyPending || newerVocabularyPending) return <div className="mt-xl">Loading...</div>
 
   if (
@@ -61,7 +61,7 @@ const VocabularyGraph = ({
     2050: 'C1',
     2250: 'C2',
   }
-/*
+
   const handleToggle = () => {
     console.log('attempting')
     if (element?.current.chart.series[8].userOptions.visible) {
@@ -74,7 +74,7 @@ const VocabularyGraph = ({
       element.current.chart.series[10].show()
     }
   }
-*/
+
   const options = {
     title: '',
     // series,'
@@ -141,7 +141,7 @@ const VocabularyGraph = ({
         name: `Not Mastered ${intl.formatMessage({
           id: 'vocabulary-follow-statistic-before',
         })}`,
-        id: 'New Not Mastered (before)',
+        id: 'Not Mastered (before)',
         data: notMasteredBefore,
         linkedTo: 'Mastered',
         visible: false,
@@ -152,7 +152,7 @@ const VocabularyGraph = ({
         name: `Rewardable ${intl.formatMessage({
           id: 'vocabulary-follow-statistic-before',
         })}`,
-        id: 'New Mastered (before rewardable)',
+        id: 'Mastered (before rewardable)',
         data: previousPerc.vocab_bins.map(v => v.rewardable),
         linkedTo: 'Mastered',
         visible: false,
@@ -163,7 +163,7 @@ const VocabularyGraph = ({
         name: `Mastered ${intl.formatMessage({
           id: 'vocabulary-follow-statistic-before',
         })}`,
-        id: 'New Mastered (before)',
+        id: 'Mastered (before)',
         data: flashcard,
         linkedTo: 'Mastered',
         visible: false,
@@ -333,14 +333,22 @@ const VocabularyGraph = ({
   return (
     <>
       {graphType === 'column mastered' && (
+        <div className="flex space-between">
+          <Checkbox
+            toggle
+            checked={element?.current?.chart?.series[8].userOptions.visible}
+            onChange={handleToggle}
+            label="label"
+          />
           <MasteredLegends
             numEncountered={numEncountered}
             numRewardable={numRewardable}
             numMastered={numMastered}
             numNotMastered={numNotMastered}
           />
+        </div>
       )}
-      <HighchartsReact highcharts={Highcharts} options={options} />
+      <HighchartsReact ref={element} highcharts={Highcharts} options={options} />
       <VocabularyTooltips />
     </>
   )

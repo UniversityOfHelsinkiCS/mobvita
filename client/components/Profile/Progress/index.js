@@ -195,6 +195,11 @@ const Progress = () => {
     }
   }, [newerVocabularyData, vocabularyData])
 
+  const handleChartChange = newChart => {
+    setShownChart(newChart)
+    setGraphType('area')
+  }
+
   if (pending || pending === undefined || testPending) return <Spinner />
 
   // console.log('num of words at end ', endWords)
@@ -248,13 +253,13 @@ const Progress = () => {
           <div className="space-evenly">
             <button
               type="button"
-              onClick={() => setShownChart('progress')}
+              onClick={() => handleChartChange('progress')}
               style={{ border: 'none' }}
             >
               <div className="flex align-center" style={{ gap: '.5em' }}>
                 <input
                   type="radio"
-                  onChange={() => setShownChart('progress')}
+                  onChange={() => handleChartChange('progress')}
                   checked={shownChart === 'progress'}
                 />
                 <FormattedMessage id="progress-timeline" />
@@ -262,13 +267,13 @@ const Progress = () => {
             </button>
             <button
               type="button"
-              onClick={() => setShownChart('vocabulary')}
+              onClick={() => handleChartChange('vocabulary')}
               style={{ border: 'none' }}
             >
               <div className="flex align-center" style={{ gap: '.5em' }}>
                 <input
                   type="radio"
-                  onChange={() => setShownChart('vocabulary')}
+                  onChange={() => handleChartChange('vocabulary')}
                   checked={shownChart === 'vocabulary'}
                 />
                 <FormattedMessage id="vocabulary-view" />
@@ -276,13 +281,13 @@ const Progress = () => {
             </button>
             <button
               type="button"
-              onClick={() => setShownChart('hex-map')}
+              onClick={() => handleChartChange('hex-map')}
               style={{ border: 'none' }}
             >
               <div className="flex align-center" style={{ gap: '.5em' }}>
                 <input
                   type="radio"
-                  onChange={() => setShownChart('hex-map')}
+                  onChange={() => handleChartChange('hex-map')}
                   checked={shownChart === 'hex-map'}
                 />
                 <FormattedMessage id="hex-map" />
@@ -290,13 +295,13 @@ const Progress = () => {
             </button>
             <button
               type="button"
-              onClick={() => setShownChart('exercise-history')}
+              onClick={() => handleChartChange('exercise-history')}
               style={{ border: 'none' }}
             >
               <div className="flex align-center" style={{ gap: '.5em' }}>
                 <input
                   type="radio"
-                  onChange={() => setShownChart('exercise-history')}
+                  onChange={() => handleChartChange('exercise-history')}
                   checked={shownChart === 'exercise-history'}
                 />
                 <FormattedMessage id="exercise-history" />
@@ -304,13 +309,13 @@ const Progress = () => {
             </button>
             <button
               type="button"
-              onClick={() => setShownChart('test-history')}
+              onClick={() => handleChartChange('test-history')}
               style={{ border: 'none' }}
             >
               <div className="flex align-center" style={{ gap: '.5em' }}>
                 <input
                   type="radio"
-                  onChange={() => setShownChart('test-history')}
+                  onChange={() => handleChartChange('test-history')}
                   checked={shownChart === 'test-history'}
                 />
                 <FormattedMessage id="Test History" />
