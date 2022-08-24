@@ -4,16 +4,26 @@ import { Button } from 'react-bootstrap'
 import { FormattedMessage } from 'react-intl'
 import MultipleChoiceModal from './MultipleChoicesModal'
 
-const SelectExerciseTypeModal = props => {
+const SelectExerciseTypeModal = ({
+  showExerciseOptionsModal,
+  setShowExerciseOptionsModal,
+  handleAddClozeExercise,
+  handleAddHearingExercise,
+  handleAddMultichoiceExercise,
+  word,
+  analyticChunkWord,
+  showValidationMessage,
+  noConcepts,
+}) => {
   const [showChoices, setShowChoices] = useState(false)
 
   const closeModal = () => {
-    props.setShowExerciseOptionsModal(false)
+    setShowExerciseOptionsModal(false)
   }
 
   const handleOpenMCModal = () => {
     setShowChoices(true)
-    props.setShowExerciseOptionsModal(false)
+    setShowExerciseOptionsModal(false)
   }
 
   return (
@@ -21,16 +31,16 @@ const SelectExerciseTypeModal = props => {
       <MultipleChoiceModal
         open={showChoices}
         setOpen={setShowChoices}
-        handleAddMultichoiceExercise={props.handleAddMultichoiceExercise}
-        word={props.word}
-        analyticChunkWord={props.analyticChunkWord}
-        showValidationMessage={props.showValidationMessage}
+        handleAddMultichoiceExercise={handleAddMultichoiceExercise}
+        word={word}
+        analyticChunkWord={analyticChunkWord}
+        showValidationMessage={showValidationMessage}
       />
       <Modal
         basic
-        open={props.showExerciseOptionsModal}
+        open={showExerciseOptionsModal}
         size="tiny"
-        centered={true}
+        centered
         closeIcon={{ style: { top: '2rem', right: '2rem' }, color: 'black', name: 'close' }}
         onClose={closeModal}
       >
@@ -41,12 +51,12 @@ const SelectExerciseTypeModal = props => {
             </div>
             <hr />
             <div style={{ marginBottom: '0.5em' }}>
-              {!props.noConcepts && (
+              {!noConcepts && (
                 <span style={{ marginBottom: '0.5em', marginLeft: '0.5em' }}>
                   <Button
                     type="submit"
-                    onClick={props.handleAddClozeExercise}
-                    onKeyDown={props.handleAddClozeExercise}
+                    onClick={handleAddClozeExercise}
+                    onKeyDown={handleAddClozeExercise}
                   >
                     <FormattedMessage id="choose-cloze-exercise" />
                   </Button>
@@ -55,8 +65,8 @@ const SelectExerciseTypeModal = props => {
               <span style={{ marginBottom: '0.5em', marginLeft: '0.45em' }}>
                 <Button
                   type="submit"
-                  onClick={props.handleAddHearingExercise}
-                  onKeyDown={props.handleAddHearingExercise}
+                  onClick={handleAddHearingExercise}
+                  onKeyDown={handleAddHearingExercise}
                 >
                   <FormattedMessage id="choose-listening-exercise" />
                 </Button>

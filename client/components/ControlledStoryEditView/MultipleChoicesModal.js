@@ -5,7 +5,14 @@ import { FormattedMessage } from 'react-intl'
 import useWindowDimension from 'Utilities/windowDimensions'
 import { Button } from 'react-bootstrap'
 
-const MultipleChoiceModal = props => {
+const MultipleChoiceModal = ({
+  open,
+  setOpen,
+  handleAddMultichoiceExercise,
+  word,
+  analyticChunkWord,
+  showValidationMessage,
+}) => {
   const [chosenSet, setChosenSet] = useState('custom')
   const [customMultiChoice1, setCustomMultiChoice1] = useState('')
   const [customMultiChoice2, setCustomMultiChoice2] = useState('')
@@ -13,30 +20,48 @@ const MultipleChoiceModal = props => {
 
   const bigScreen = useWindowDimension().width >= 650
 
+  const longInput = () => {
+    let max = word.surface.length
+    if (word.choices) {
+      Object.keys(word.choices).map(key =>
+        word.choices[key].forEach(option => (max = Math.max(max, option.length)))
+      )
+    }
+    if (word.stress && word.stressed) {
+      word.stress.forEach(stressOption => (max = Math.max(max, stressOption.length)))
+    }
+
+    if (max > 15) {
+      return true
+    }
+
+    return false
+  }
+
+  const containsLongInput = longInput()
+
   const closeModal = () => {
-    props.setOpen(false)
+    setOpen(false)
   }
 
   const handleSubmitChoices = async () => {
     if (chosenSet === 'custom') {
       const customSet = [
-        props.analyticChunkWord?.surface || props.word.surface,
+        analyticChunkWord?.surface || word.surface,
         customMultiChoice1,
         customMultiChoice2,
         customMultiChoice3,
       ]
-      props.handleAddMultichoiceExercise(
+      handleAddMultichoiceExercise(
         customSet.filter(word => word !== ''),
-        props.word.surface
+        word.surface
       )
     } else if (chosenSet === 'stress') {
-      props.handleAddMultichoiceExercise(props.word.stress, props.word.stressed)
+      handleAddMultichoiceExercise(word.stress, word.stressed)
     } else {
-      props.handleAddMultichoiceExercise(props.word.choices[chosenSet], props.word.surface)
+      handleAddMultichoiceExercise(word.choices[chosenSet], word.surface)
     }
   }
-
-  const { open } = props
 
   if (open) {
     return (
@@ -68,6 +93,7 @@ const MultipleChoiceModal = props => {
               </span>
               <Icon
                 style={{
+                  cursor: 'pointer',
                   paddingRight: '0.75em',
                   marginBottom: '0.5em',
                   marginLeft: '0.75em',
@@ -89,8 +115,8 @@ const MultipleChoiceModal = props => {
                 }}
                 onSubmit={handleSubmitChoices}
               >
-                {props.word.choices &&
-                  Object.keys(props.word.choices).map(key => (
+                {word.choices &&
+                  Object.keys(word.choices).map(key => (
                     <div>
                       <Form.Group>
                         <Form.Input
@@ -99,15 +125,16 @@ const MultipleChoiceModal = props => {
                           onChange={() => setChosenSet(key)}
                           checked={chosenSet === key}
                         />
-                        {props.word.choices[key]
-                          .filter(
-                            choice =>
-                              choice !== props.analyticChunkWord?.surface || props.word.surface
-                          )
+                        {word.choices[key]
+                          .filter(choice => choice !== analyticChunkWord?.surface || word.surface)
                           .map(choice => (
                             <input
                               className={
-                                bigScreen ? 'multi-choice-input' : 'multi-choice-input-mobile'
+                                bigScreen && containsLongInput
+                                ? 'multi-choice-long-input'
+                                : bigScreen
+                                ? 'multi-choice-input'
+                                : 'multi-choice-input-mobile'
                               }
                               type="text"
                               name="disable_field"
@@ -119,7 +146,7 @@ const MultipleChoiceModal = props => {
                       <hr />
                     </div>
                   ))}
-                {props.word.stress && props.word.stressed && (
+                {word.stress && word.stressed && (
                   <Form.Group>
                     <Form.Input
                       style={{ marginTop: '0.9em', marginLeft: '0.5em', marginRight: '0.75em' }}
@@ -127,9 +154,15 @@ const MultipleChoiceModal = props => {
                       onChange={() => setChosenSet('stress')}
                       checked={chosenSet === 'stress'}
                     />
-                    {props.word.stress.map(choice => (
+                    {word.stress.map(choice => (
                       <input
-                        className={bigScreen ? 'multi-choice-input' : 'multi-choice-input-mobile'}
+                        className={
+                          bigScreen && containsLongInput
+                            ? 'multi-choice-long-input'
+                            : bigScreen
+                            ? 'multi-choice-input'
+                            : 'multi-choice-input-mobile'
+                        }
                         type="text"
                         name="disable_field"
                         disabled
@@ -147,32 +180,56 @@ const MultipleChoiceModal = props => {
                       checked={chosenSet === 'custom'}
                     />
                     <input
-                      className={bigScreen ? 'multi-choice-input' : 'multi-choice-input-mobile'}
+                      className={
+                        bigScreen && containsLongInput
+                          ? 'multi-choice-long-input'
+                          : bigScreen
+                          ? 'multi-choice-input'
+                          : 'multi-choice-input-mobile'
+                      }
                       type="text"
                       name="disable_field"
-                      value={props.analyticChunkWord?.surface || props.word.surface}
+                      value={analyticChunkWord?.surface || word.surface}
                       disabled
                     />
                     <input
-                      className={bigScreen ? 'multi-choice-input' : 'multi-choice-input-mobile'}
+                      className={
+                        bigScreen && containsLongInput
+                          ? 'multi-choice-long-input'
+                          : bigScreen
+                          ? 'multi-choice-input'
+                          : 'multi-choice-input-mobile'
+                      }
                       type="text"
                       value={customMultiChoice1}
                       onChange={({ target }) => setCustomMultiChoice1(target.value)}
                     />
                     <input
-                      className={bigScreen ? 'multi-choice-input' : 'multi-choice-input-mobile'}
+                      className={
+                        bigScreen && containsLongInput
+                          ? 'multi-choice-long-input'
+                          : bigScreen
+                          ? 'multi-choice-input'
+                          : 'multi-choice-input-mobile'
+                      }
                       type="text"
                       value={customMultiChoice2}
                       onChange={({ target }) => setCustomMultiChoice2(target.value)}
                     />
                     <input
-                      className={bigScreen ? 'multi-choice-input' : 'multi-choice-input-mobile'}
+                      className={
+                        bigScreen && containsLongInput
+                          ? 'multi-choice-long-input'
+                          : bigScreen
+                          ? 'multi-choice-input'
+                          : 'multi-choice-input-mobile'
+                      }
                       type="text"
                       value={customMultiChoice3}
                       onChange={({ target }) => setCustomMultiChoice3(target.value)}
                     />
                   </Form.Group>
-                  {props.showValidationMessage && (
+                  {showValidationMessage && (
                     <div style={{ color: '#FF0000', marginLeft: '0.5em', marginBottom: '0.5em' }}>
                       <FormattedMessage id="multiple-choice-validation" />
                     </div>
