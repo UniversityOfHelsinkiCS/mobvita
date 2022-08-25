@@ -334,7 +334,7 @@ const VocabularyGraph = ({
   }
 
   return (
-    <>
+    <div>
       {graphType === 'column mastered' && (
         <div className="flex space-between">
           <Checkbox toggle checked={toggleOn} onChange={handleToggle} label="label" />
@@ -348,7 +348,7 @@ const VocabularyGraph = ({
       )}
       <HighchartsReact ref={element} highcharts={Highcharts} options={options} />
       <VocabularyTooltips />
-    </>
+    </div>
   )
 }
 

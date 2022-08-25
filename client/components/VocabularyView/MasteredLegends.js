@@ -9,49 +9,55 @@ const MasteredLegends = ({ numEncountered, numRewardable, numMastered, numNotMas
 
   return (
     <>
-      <div className="flex-reverse">
-        <Popup
-          content={<FormattedMessage id="red-bar-explanation" />}
-          trigger={
-            <span style={{ color: '#DC143C', cursor: 'pointer' }}>
-              <FormattedHTMLMessage
-                id="red-bar-label"
-                values={{
-                  nWords: numNotMastered,
-                  percent: calculatePercent(numNotMastered, numEncountered),
-                }}
-              />
-            </span>
-          }
-        />
-        <Popup
-          content={<FormattedMessage id="blue-bar-explanation" />}
-          trigger={
-            <span style={{ color: '#4169e1', cursor: 'pointer', marginRight: '.5em' }}>
-              <FormattedHTMLMessage
-                id="blue-bar-label"
-                values={{
-                  nWords: numRewardable,
-                  percent: calculatePercent(numRewardable, numEncountered),
-                }}
-              />
-            </span>
-          }
-        />
-        <Popup
-          content={<FormattedMessage id="green-bar-explanation" />}
-          trigger={
-            <span style={{ color: '#228B22', cursor: 'pointer', marginRight: '.5em' }}>
-              <FormattedHTMLMessage
-                id="green-bar-label"
-                values={{
-                  nWords: numMastered,
-                  percent: calculatePercent(numMastered, numEncountered),
-                }}
-              />
-            </span>
-          }
-        />
+      <div className="col-flex">
+        <div>
+          <Popup
+            content={<FormattedMessage id="red-bar-explanation" />}
+            trigger={
+              <span style={{ color: '#DC143C', cursor: 'pointer' }}>
+                <FormattedHTMLMessage
+                  id="red-bar-label"
+                  values={{
+                    nWords: numNotMastered,
+                    percent: calculatePercent(numNotMastered, numEncountered),
+                  }}
+                />
+              </span>
+            }
+          />
+        </div>
+        <div>
+          <Popup
+            content={<FormattedMessage id="blue-bar-explanation" />}
+            trigger={
+              <span style={{ color: '#4169e1', cursor: 'pointer', marginRight: '.5em' }}>
+                <FormattedHTMLMessage
+                  id="blue-bar-label"
+                  values={{
+                    nWords: numRewardable,
+                    percent: calculatePercent(numRewardable, numEncountered),
+                  }}
+                />
+              </span>
+            }
+          />
+        </div>
+        <div>
+          <Popup
+            content={<FormattedMessage id="green-bar-explanation" />}
+            trigger={
+              <span style={{ color: '#228B22', cursor: 'pointer', marginRight: '.5em' }}>
+                <FormattedHTMLMessage
+                  id="green-bar-label"
+                  values={{
+                    nWords: numMastered,
+                    percent: calculatePercent(numMastered, numEncountered),
+                  }}
+                />
+              </span>
+            }
+          />
+        </div>
       </div>
     </>
   )
