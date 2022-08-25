@@ -46,7 +46,6 @@ const FeedbackInfoModal = () => {
   }
 
   const ReferenceList = ({ references }) => {
-    console.log(ref)
     return (
       <>
         <div className="bold header-3 mx-lg">
