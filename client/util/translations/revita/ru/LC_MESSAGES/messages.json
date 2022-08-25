@@ -1319,7 +1319,7 @@
     "no-hints-available": "Sorry, no hints available",
     "user-settings-options": "User settings",
     "annotation-name": "Note name (optional)",
-    "story-top-topics": "Working on this story will help you master especially these topics",
+    "story-top-topics": "Working with this story helps you master especially these topics",
     "next-card-deck": "Next deck",
     "vocabulary-top-right-tooltip": "",
     "red-bar-explanation": "Read more stories to increase this",
@@ -1327,5 +1327,7 @@
     "green-bar-explanation": "Practice with flashcards to increase this",
     "red-bar-label": "{nWords} words not mastered ({percent}%)",
     "blue-bar-label": "{nWords} words you <b>probably</b> know ({percent}%)",
-    "green-bar-label": "{nWords} words mastered ({percent}%)"
+    "green-bar-label": "{nWords} words mastered ({percent}%)",
+    "vocab-master-toggle": "Show previous progress",
+    "total-words-encountered": "{nWords} words seen during practice"
 }

@@ -2,8 +2,9 @@ import React from 'react'
 import Highcharts from 'highcharts'
 import HighchartsReact from 'highcharts-react-official'
 import moment from 'moment'
-import { useIntl } from 'react-intl'
+import { useIntl, FormattedMessage } from 'react-intl'
 import { Checkbox } from 'semantic-ui-react'
+import { Button } from 'react-bootstrap'
 import useWindowDimensions from 'Utilities/windowDimensions'
 import MasteredLegends from './MasteredLegends'
 import VocabularyTooltips from './VocabularyTooltips'
@@ -334,21 +335,34 @@ const VocabularyGraph = ({
   }
 
   return (
-    <>
+    <div>
       {graphType === 'column mastered' && (
-        <div className="flex space-between">
-          <Checkbox toggle checked={toggleOn} onChange={handleToggle} label="label" />
+        <div className="flex-reverse">
           <MasteredLegends
             numEncountered={numEncountered}
             numRewardable={numRewardable}
             numMastered={numMastered}
             numNotMastered={numNotMastered}
           />
+          {/*
+          <Checkbox
+            toggle
+            checked={toggleOn}
+            onChange={handleToggle}
+            label={`${intl.formatMessage({ id: 'vocab-master-toggle' })}`}
+            style={{ marginRight: '.5em' }}
+          />
+          */}
+          <span style={{ marginRight: '.5em' }}>
+            <Button onClick={handleToggle}>
+              <FormattedMessage id="vocab-master-toggle" />
+            </Button>
+          </span>
         </div>
       )}
       <HighchartsReact ref={element} highcharts={Highcharts} options={options} />
       <VocabularyTooltips />
-    </>
+    </div>
   )
 }
 
