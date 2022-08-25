@@ -167,7 +167,7 @@ const VocabularyGraph = ({
           id: 'vocabulary-follow-statistic-before',
         })}`,
         id: 'Mastered (before)',
-        data: flashcard,
+        data: previousPerc.vocab_bins.map(v => v.mastered),
         linkedTo: 'Mastered',
         visible: false,
         color: '#90EE90',
@@ -194,7 +194,7 @@ const VocabularyGraph = ({
       {
         name: 'Mastered',
         id: 'New Mastered',
-        data: newFlashcard,
+        data: currentPerc.vocab_bins.map(v => v.mastered),
         visible: false,
         color: '#228B22',
         stack: 'present',

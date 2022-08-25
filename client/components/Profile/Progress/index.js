@@ -133,7 +133,7 @@ const Progress = () => {
   }
 
   useEffect(() => {
-    if (endWords < 300) {
+    if (endWords < 500) {
       setXAxisLength(50)
     } else {
       setXAxisLength(102)
