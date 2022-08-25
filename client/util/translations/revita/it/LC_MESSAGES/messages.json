@@ -1326,6 +1326,14 @@
     "red-bar-label": "{nWords} words not mastered ({percent}%)",
     "blue-bar-label": "{nWords} words you <b>probably</b> know ({percent}%)",
     "green-bar-label": "{nWords} words mastered ({percent}%)",
-    "vocab-master-toggle": "Show previous progress",
-    "total-words-encountered": "{nWords} words seen during practice"
+    "vocab-master-toggle": "Earlier date",
+    "total-words-encountered": "{nWords} words seen during practice",
+    "rewardable-words": "Rewardable",
+    "mastered-words": "Mastered",
+    "not-mastered": "Not mastered",
+    "target-curve": "Target level",
+    "percent-graph": "Percentage mastered",
+    "word-group-tooltip": "in word group <b>{binNum}</b>",
+    "x-axis-simple": "simple",
+    "x-axis-difficult": "difficult"
 }

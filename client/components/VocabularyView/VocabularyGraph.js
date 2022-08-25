@@ -2,7 +2,7 @@ import React from 'react'
 import Highcharts from 'highcharts'
 import HighchartsReact from 'highcharts-react-official'
 import moment from 'moment'
-import { useIntl, FormattedMessage } from 'react-intl'
+import { useIntl, FormattedMessage, FormattedHTMLMessage } from 'react-intl'
 import { Checkbox } from 'semantic-ui-react'
 import { Button } from 'react-bootstrap'
 import useWindowDimensions from 'Utilities/windowDimensions'
@@ -230,9 +230,8 @@ const VocabularyGraph = ({
       formatter() {
         return (
           `<b>${this.y} ${this.series.userOptions.name}</b>` +
-          ' in <br /> ' +
-          'word group ' +
-          `<b>${this.key}</b>`
+          '<br /> ' +
+          `${intl.formatMessage({ id: 'word-group-tooltip' }, { binNum: this.key })}`
         )
       },
     },
@@ -272,10 +271,10 @@ const VocabularyGraph = ({
         overflow: true,
         formatter() {
           if ((this.value === 3 && xAxisLength > 100) || (this.value === 2 && xAxisLength < 100)) {
-            return '<b>simple</b>'
+            return `<b>${intl.formatMessage({ id: 'x-axis-simple' })}</b>`
           }
           if (this.value === 96 || (this.value === 48 && xAxisLength < 100)) {
-            return '<b>difficult</b>'
+            return `<b>${intl.formatMessage({ id: 'x-axis-difficult' })}</b>`
           }
           if (this.value % 25 === 0) {
             if (xAxisLength <= 50 && this.value === 25) {
@@ -352,15 +351,20 @@ const VocabularyGraph = ({
             label={`${intl.formatMessage({ id: 'vocab-master-toggle' })}`}
             style={{ marginRight: '.5em' }}
           />
-          */}
           <span style={{ marginRight: '.5em' }}>
             <Button onClick={handleToggle}>
               <FormattedMessage id="vocab-master-toggle" />
             </Button>
           </span>
+          */}
         </div>
       )}
       <HighchartsReact ref={element} highcharts={Highcharts} options={options} />
+      <div className="flex-reverse">
+        <Button onClick={handleToggle}>
+          <FormattedMessage id="vocab-master-toggle" />
+        </Button>
+      </div>
       <VocabularyTooltips />
     </div>
   )
