@@ -142,7 +142,7 @@ const VocabularyGraph = ({
         visible: false,
       },
       {
-        name: `Not Mastered ${intl.formatMessage({
+        name: `${intl.formatMessage({ id: 'not-mastered' })} ${intl.formatMessage({
           id: 'vocabulary-follow-statistic-before',
         })}`,
         id: 'Not Mastered (before)',
@@ -153,7 +153,7 @@ const VocabularyGraph = ({
         color: '#FAA0A0',
       },
       {
-        name: `Rewardable ${intl.formatMessage({
+        name: `${intl.formatMessage({ id: 'rewardable-words' })} Rewardable ${intl.formatMessage({
           id: 'vocabulary-follow-statistic-before',
         })}`,
         id: 'Mastered (before rewardable)',
@@ -164,7 +164,7 @@ const VocabularyGraph = ({
         stack: 'before',
       },
       {
-        name: `Mastered ${intl.formatMessage({
+        name: `${intl.formatMessage({ id: 'mastered-words' })} Mastered ${intl.formatMessage({
           id: 'vocabulary-follow-statistic-before',
         })}`,
         id: 'Mastered (before)',
@@ -175,7 +175,7 @@ const VocabularyGraph = ({
         stack: 'before',
       },
       {
-        name: 'Not Mastered',
+        name: `${intl.formatMessage({ id: 'not-mastered' })}`,
         id: 'New Not Mastered',
         data: notMastered,
         visible: false,
@@ -184,7 +184,7 @@ const VocabularyGraph = ({
         stack: 'present',
       },
       {
-        name: 'Rewardable',
+        name: `${intl.formatMessage({ id: 'rewardable-words' })}`,
         id: 'New Mastered (rewardable)',
         data: currentPerc.vocab_bins.map(v => v.rewardable),
         visible: false,
@@ -193,7 +193,7 @@ const VocabularyGraph = ({
         stack: 'present',
       },
       {
-        name: 'Mastered',
+        name: `${intl.formatMessage({ id: 'mastered-words' })}`,
         id: 'New Mastered',
         data: currentPerc.vocab_bins.map(v => v.mastered),
         visible: false,
@@ -201,14 +201,14 @@ const VocabularyGraph = ({
         stack: 'present',
       },
       {
-        name: 'Percentage',
+        name: `${intl.formatMessage({ id: 'percent-graph' })}`,
         id: 'Percentage',
         data: currentPerc.vocab_bins.map(v => v.mastering_percentage),
         visible: false,
         stack: 'present',
       },
       {
-        name: `Percentage ${intl.formatMessage({
+        name: `${intl.formatMessage({ id: 'percent-graph' })} ${intl.formatMessage({
           id: 'vocabulary-follow-statistic-before',
         })}`,
         data: previousPerc.vocab_bins.map(v => v.mastering_percentage),
@@ -218,7 +218,7 @@ const VocabularyGraph = ({
         stack: 'before',
       },
       {
-        name: 'Percentage target',
+        name: `${intl.formatMessage({ id: 'target-curve' })}`,
         id: 'Percentage target',
         data: targetCurve,
         linkedTo: 'Percentage',
