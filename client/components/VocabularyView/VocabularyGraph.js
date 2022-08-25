@@ -343,7 +343,13 @@ const VocabularyGraph = ({
             numMastered={numMastered}
             numNotMastered={numNotMastered}
           />
-          <Checkbox toggle checked={toggleOn} onChange={handleToggle} label="label" style={{ marginRight: '.5em' }} />
+          <Checkbox
+            toggle
+            checked={toggleOn}
+            onChange={handleToggle}
+            label={`${intl.formatMessage({ id: 'vocab-master-toggle' })}`}
+            style={{ marginRight: '.5em' }}
+          />
         </div>
       )}
       <HighchartsReact ref={element} highcharts={Highcharts} options={options} />

@@ -11,6 +11,9 @@ const MasteredLegends = ({ numEncountered, numRewardable, numMastered, numNotMas
     <>
       <div className="col-flex">
         <div>
+          <FormattedHTMLMessage id="total-words-encountered" values={{ nWords: numEncountered }} />
+        </div>
+        <div>
           <Popup
             content={<FormattedMessage id="red-bar-explanation" />}
             trigger={
