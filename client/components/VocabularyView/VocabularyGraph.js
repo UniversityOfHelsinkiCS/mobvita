@@ -229,7 +229,11 @@ const VocabularyGraph = ({
     tooltip: {
       formatter() {
         return (
-          `<b>${this.y} ${this.series.userOptions.name}</b>` +
+          `<b>${
+            this.series.userOptions.id.substring(0, 10) === 'Percentage'
+              ? (this.y * 100).toFixed(2) + '%'
+              : this.y
+          } ${this.series.userOptions.name}</b>` +
           '<br /> ' +
           `${intl.formatMessage({ id: 'word-group-tooltip' }, { binNum: this.key })}`
         )
