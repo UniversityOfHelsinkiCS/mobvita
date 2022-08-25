@@ -12,8 +12,6 @@ const DebugTestView = () => {
   const [userAnswer, setUserAnswer] = useState('')
   const [correctAnswer, setCorrectAnswer] = useState('')
 
-  console.log(feedback, '  ', pending)
-
   const handleSubmit = event => {
     event.preventDefault()
 

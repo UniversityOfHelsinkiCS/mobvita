@@ -336,14 +336,14 @@ const VocabularyGraph = ({
   return (
     <div>
       {graphType === 'column mastered' && (
-        <div className="flex space-between">
-          <Checkbox toggle checked={toggleOn} onChange={handleToggle} label="label" />
+        <div className="flex-reverse">
           <MasteredLegends
             numEncountered={numEncountered}
             numRewardable={numRewardable}
             numMastered={numMastered}
             numNotMastered={numNotMastered}
           />
+          <Checkbox toggle checked={toggleOn} onChange={handleToggle} label="label" style={{ marginRight: '.5em' }} />
         </div>
       )}
       <HighchartsReact ref={element} highcharts={Highcharts} options={options} />
