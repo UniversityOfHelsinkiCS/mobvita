@@ -82,6 +82,9 @@ const ExerciseMultipleChoice = ({ word, handleChange }) => {
       setFilteredHintsList(hints?.filter(hint => hint !== message))
       setPreHints([])
     }
+    if (!hints || !hints.length || message && !hints.filter(hint => hint !== message)) {
+      setEmptyHintsList(true)
+    }
   }, [message, hints, attempt])
 
   const maximumLength = word.choices.reduce((maxLength, currLength) => {
