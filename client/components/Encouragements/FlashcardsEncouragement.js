@@ -59,7 +59,7 @@ const FlashcardsEncouragement = ({
             <hr />
           </div>
         )
-        if (prevBlueCards) {
+        if (prevBlueCards?.num_of_rewardable_words >= 5) {
           initList = initList.concat(
             <div className="pt-md">
               <div className="flex" style={{ alignItems: 'center' }}>
