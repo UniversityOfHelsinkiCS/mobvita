@@ -18,7 +18,9 @@ const StoryTopics = ({ conceptCount, focusedConcept, setFocusedConcept }) => {
 
   useEffect(() => {
     const keysSorted = Object.entries(conceptCount).sort((a, b) => {
-      return b[1] - a[1]
+      if (b[1][0] == a[1][0])
+        return b[1][1] - a[1][1]
+      return b[1][0] - a[1][0]
     })
     setTopTopics(keysSorted)
   }, [conceptCount])
@@ -49,9 +51,8 @@ const StoryTopics = ({ conceptCount, focusedConcept, setFocusedConcept }) => {
                     style={{ cursor: 'pointer' }}
                     onClick={() => handleFocusedConcept(topic[0])}
                   >
-                    {topic[0]}:
-                  </span>{' '}
-                  <span>{topic[1]}</span>
+                    {topic[0]}
+                  </span>
                 </li>
               ))}
             </ul>
