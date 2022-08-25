@@ -185,6 +185,14 @@ const ExerciseCloze = ({ word, handleChange }) => {
   }
   */
 
+  const showRefIcon = hint => {
+    if (Object.keys(ref).find(key => hint.includes(key))) {
+      return true
+    }
+    
+    return false
+  }
+
   const tooltip = (
     <div>
       <div className="tooltip-green flex space-between">
@@ -218,7 +226,7 @@ const ExerciseCloze = ({ word, handleChange }) => {
             <Icon name="info circle" style={{ alignSelf: 'flex-start', marginLeft: '0.5rem' }} />
           )}</span>}
             {preHints?.map(hint => (
-              <span className="flex"><li dangerouslySetInnerHTML={formatGreenFeedbackText(hint)} />{ref && (
+              <span className="flex"><li dangerouslySetInnerHTML={formatGreenFeedbackText(hint)} />{ref && showRefIcon(hint) && (
                 <Icon name="external" style={{ alignSelf: 'flex-start', marginLeft: '0.5rem' }} />
               )}
               {explanation && (
