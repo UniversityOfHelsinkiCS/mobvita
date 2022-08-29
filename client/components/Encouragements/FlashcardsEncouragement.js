@@ -184,7 +184,7 @@ const FlashcardsEncouragement = ({
       if (correctAnswers > 0) {
         initList = initList.concat(
           <div className="pt-md">
-            <div className="flex" style={{ alignItems: 'center' }}>
+            <div className="flex">
               <div
                 className="header-2"
                 style={{

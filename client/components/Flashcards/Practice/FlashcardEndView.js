@@ -25,51 +25,6 @@ const FlashcardEndView = ({ handleNewDeck, deckSize, open, setOpen, blueCardsAns
   const [prevBlueCards, setPrevBlueCards] = useState(null)
   const { storyId } = useParams()
 
-  useEffect(() => {
-    dispatch(
-      getIncompleteStories(learningLanguage, {
-        sort_by: 'access',
-      })
-    )
-    dispatch(getStoriesBlueFlashcards(learningLanguage, dictionaryLanguage))
-  }, [])
-
-  useEffect(() => {
-    const filteredBlueCards = storyBlueCards?.filter(story => story.story_id !== storyId)
-
-    if (filteredBlueCards?.length > 0) {
-      setPrevBlueCards(filteredBlueCards[filteredBlueCards.length - 1])
-    }
-  }, [storyBlueCards])
-
-  useEffect(() => {
-    if (incomplete.length > 0) {
-      const latestIncompleteStories = incomplete.filter(
-        story => story.last_snippet_id !== story.num_snippets - 1
-      )
-      const previousStories = []
-      for (
-        let i = latestIncompleteStories.length - 1;
-        i >= 0 && i >= latestIncompleteStories.length - 3;
-        i--
-      ) {
-        previousStories.push(latestIncompleteStories[i])
-      }
-
-      setLatestStories(previousStories)
-    }
-  }, [incomplete])
-
-  useEffect(() => {
-    if (blueCardsAnswered.length === deckSize) {
-      const answerObj = {
-        flashcard_answers: blueCardsAnswered,
-      }
-
-      dispatch(answerBluecards(learningLanguage, dictionaryLanguage, answerObj))
-    }
-  }, [blueCardsAnswered])
-
   const useKeyPress = targetKey => {
     const [keyPressed, setKeyPressed] = useState(false)
     function downHandler({ key }) {
@@ -105,20 +60,6 @@ const FlashcardEndView = ({ handleNewDeck, deckSize, open, setOpen, blueCardsAns
   return (
     <div className="flashcard justify-center">
       <div>
-        <FlashcardsEncouragement
-          open={open}
-          setOpen={setOpen}
-          correctAnswers={correctAnswers}
-          deckSize={deckSize}
-          enable_recmd={enable_recmd}
-          handleNewDeck={handleNewDeck}
-          vocabularySeen={vocabulary_seen}
-          latestStories={latestStories}
-          prevBlueCards={prevBlueCards}
-          loading={loading}
-          storyCardsPending={storyCardsPending}
-          totalAnswers={totalAnswers}
-        />
       </div>
       <p style={{ fontWeight: '500', fontSize: '1.2em', padding: '1em' }}>
         <FormattedMessage id="well-done-flashcards" />

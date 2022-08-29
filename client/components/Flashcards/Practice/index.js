@@ -10,13 +10,18 @@ import {
   getBlueFlashcards,
   recordFlashcardAnswer,
   addToTotal,
+  answerBluecards,
+  getStoriesBlueFlashcards,
 } from 'Utilities/redux/flashcardReducer'
+import { getIncompleteStories } from 'Utilities/redux/incompleteStoriesReducer'
 import { getSelf } from 'Utilities/redux/userReducer'
 import { learningLanguageSelector, dictionaryLanguageSelector } from 'Utilities/common'
 import useWindowDimension from 'Utilities/windowDimensions'
 import Spinner from 'Components/Spinner'
+import FlashcardsEncouragement from 'Components/Encouragements/FlashcardsEncouragement'
 import FlashcardEndView from './FlashcardEndView'
 import FlashcardNoCards from './FlashCardNoCards'
+
 import Fillin from './Fillin'
 import Article from './Article'
 import Quick from './Quick'
@@ -28,12 +33,21 @@ const Practice = ({ mode }) => {
   const [editing, setEditing] = useState(false)
   const [amountAnswered, setAmountAnswered] = useState(0)
   const history = useHistory()
-  const { enable_recmd } = useSelector(({ user }) => user.data.user)
+  const { enable_recmd, vocabulary_seen } = useSelector(({ user }) => user.data.user)
   const learningLanguage = useSelector(learningLanguageSelector)
   const dictionaryLanguage = useSelector(dictionaryLanguageSelector)
   const [blueCardsAnswered, setBlueCardsAnswered] = useState([])
   const blueCardsTest = history.location.pathname.includes('test')
+  const [latestStories, setLatestStories] = useState([])
+  const [prevBlueCards, setPrevBlueCards] = useState(null)
   const { flashcardArticles } = useSelector(({ metadata }) => metadata)
+  const { correctAnswers, totalAnswers, storyBlueCards, storyCardsPending } = useSelector(
+    ({ flashcards }) => flashcards
+  )
+  const { incomplete, loading } = useSelector(({ incomplete }) => ({
+    incomplete: incomplete.data,
+    loading: incomplete.pending,
+  }))
   const { cards, pending, deletePending, sessionId } = useSelector(({ flashcards }) => {
     const { pending, deletePending, sessionId } = flashcards
 
@@ -62,6 +76,51 @@ const Practice = ({ mode }) => {
   useEffect(() => {
     setSwipeIndex(0)
   }, [pending])
+
+  useEffect(() => {
+    dispatch(
+      getIncompleteStories(learningLanguage, {
+        sort_by: 'access',
+      })
+    )
+    dispatch(getStoriesBlueFlashcards(learningLanguage, dictionaryLanguage))
+  }, [])
+
+  useEffect(() => {
+    const filteredBlueCards = storyBlueCards?.filter(story => story.story_id !== storyId)
+
+    if (filteredBlueCards?.length > 0) {
+      setPrevBlueCards(filteredBlueCards[filteredBlueCards.length - 1])
+    }
+  }, [storyBlueCards])
+
+  useEffect(() => {
+    if (incomplete.length > 0) {
+      const latestIncompleteStories = incomplete.filter(
+        story => story.last_snippet_id !== story.num_snippets - 1
+      )
+      const previousStories = []
+      for (
+        let i = latestIncompleteStories.length - 1;
+        i >= 0 && i >= latestIncompleteStories.length - 3;
+        i--
+      ) {
+        previousStories.push(latestIncompleteStories[i])
+      }
+
+      setLatestStories(previousStories)
+    }
+  }, [incomplete])
+
+  useEffect(() => {
+    if (blueCardsAnswered.length === cards.length) {
+      const answerObj = {
+        flashcard_answers: blueCardsAnswered,
+      }
+
+      dispatch(answerBluecards(learningLanguage, dictionaryLanguage, answerObj))
+    }
+  }, [blueCardsAnswered])
 
   // Updates elo after every 10 answers
   useEffect(() => {
@@ -112,8 +171,6 @@ const Practice = ({ mode }) => {
       dispatch(getBlueFlashcards(learningLanguage, dictionaryLanguage, storyId))
     }
   }
-
-  console.log('answered blue cards ', blueCardsAnswered)
 
   const answerCard = (answer, correct, exercise, displayedHints) => {
     const { _id: flashcard_id, story, lemma, lan_in, lan_out } = cards[swipeIndex]
@@ -208,6 +265,20 @@ const Practice = ({ mode }) => {
 
   return (
     <div className="cont grow flex space-evenly">
+      <FlashcardsEncouragement
+        open={open}
+        setOpen={setOpen}
+        correctAnswers={correctAnswers}
+        deckSize={cards.length}
+        enable_recmd={enable_recmd}
+        handleNewDeck={handleNewDeck}
+        vocabularySeen={vocabulary_seen}
+        latestStories={latestStories}
+        prevBlueCards={prevBlueCards}
+        loading={loading}
+        storyCardsPending={storyCardsPending}
+        totalAnswers={totalAnswers}
+      />
       <VirtualizeSwipeableViews
         index={swipeIndex}
         onChangeIndex={handleIndexChange}
