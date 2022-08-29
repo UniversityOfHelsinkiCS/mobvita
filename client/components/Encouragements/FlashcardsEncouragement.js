@@ -75,7 +75,7 @@ const FlashcardsEncouragement = ({
         if (prevBlueCards?.num_of_rewardable_words >= 5) {
           initList = initList.concat(
             <div className="pt-md">
-              <div className="flex">
+              <div className="flex" style={{ alignItems: 'center' }}>
                 <img
                   src={images.flashcards}
                   alt="flashcard batch"
@@ -138,7 +138,7 @@ const FlashcardsEncouragement = ({
 
       initList = initList.concat(
         <div className="pt-md">
-          <div className="flex">
+          <div className="flex" style={{ alignItems: 'center' }}>
             <img
               src={images.flashcards}
               alt="batch of flashcards"
@@ -217,7 +217,7 @@ const FlashcardsEncouragement = ({
       } else {
         initList = initList.concat(
           <div className="pt-md">
-            <div className="flex" style={{ alignItems: 'center' }}>
+            <div className="flex">
               <div
                 className="header-2"
                 style={{

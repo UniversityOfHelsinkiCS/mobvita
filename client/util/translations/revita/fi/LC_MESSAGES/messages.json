@@ -1271,7 +1271,7 @@
     "show-more-recommendations": "Näytä lisää suosituksia",
     "all-correct-flashcards": "Hyvää työtä! Haluaisitko tarkastella",
     "some-incorrect-flashcards": "Osa vastauksistasi oli väärin. Haluaisitko",
-    "flashcards-try-again": "yrittää uudelleen?",
+    "flashcards-try-again": "yrittää uudelleen",
     "show preview": "Näytä tehtävien vaikeustasot ja korostukset",
     "story-title-already-taken": "Samalla otsikolla löytyy toinen tarina.\n<br/>Ole hyvä ja valitse toinen.",
     "go-back-to-library": "Haluaisitko harjoitella uudella tarinalla?",
@@ -1331,8 +1331,9 @@
     "mastered-words": "Otettu haltuun",
     "not-mastered": "Ottamatta haltuun",
     "target-curve": "Tavoitetaso",
-    "percent-graph": "Percentage mastered",
+    "percent-graph": "Prosenttikaavio",
     "word-group-tooltip": "sanaryhmässä <b>{binNum}</b>",
     "x-axis-simple": "yksinkertaiset",
-    "x-axis-difficult": "hankalat"
+    "x-axis-difficult": "hankalat",
+    "FEEDBACK-TUA-Temporaalirakenne": "This is construction of type \"Temporal\" (Temporaalirakenne)"
 }
