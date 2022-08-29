@@ -61,6 +61,7 @@ const FlashcardsEncouragement = ({
                 style={{ maxWidth: '25%', maxHeight: '25%', marginLeft: 'auto' }}
               />
               <Icon
+                className="interactable"
                 style={{
                   cursor: 'pointer',
                 }}
@@ -90,7 +91,10 @@ const FlashcardsEncouragement = ({
                     }}
                   />
                   &nbsp;
-                  <Link to={`/flashcards/fillin/test/${prevBlueCards.story_id}`}>
+                  <Link
+                    className="interactable"
+                    to={`/flashcards/fillin/test/${prevBlueCards.story_id}`}
+                  >
                     <FormattedMessage id="flashcards-review" />
                   </Link>
                 </div>
@@ -112,7 +116,7 @@ const FlashcardsEncouragement = ({
               >
                 <FormattedHTMLMessage id="some-incorrect-flashcards" />
                 &nbsp;
-                <Link onClick={() => handleNewDeck()}>
+                <Link className="interactable" onClick={() => handleNewDeck()}>
                   <FormattedMessage id="flashcards-try-again" />
                 </Link>
                 ?
@@ -123,6 +127,7 @@ const FlashcardsEncouragement = ({
                 style={{ maxWidth: '25%', maxHeight: '25%', marginLeft: 'auto' }}
               />
               <Icon
+                className="interactable"
                 style={{
                   cursor: 'pointer',
                 }}
@@ -150,7 +155,7 @@ const FlashcardsEncouragement = ({
                 values={{ vocabulary_seen: vocabularySeen }}
               />
               &nbsp;
-              <Link to="/flashcards">
+              <Link className="interactable" to="/flashcards">
                 <FormattedMessage id="flashcards-review" />
               </Link>
               ?
@@ -171,7 +176,7 @@ const FlashcardsEncouragement = ({
             <div>
               <FormattedMessage id="go-to-flashcards-progress" />
               &nbsp;
-              <Link to="/profile/progress/flashcards">
+              <Link className="interactable" to="/profile/progress/flashcards">
                 <FormattedMessage id="review-progress" />
               </Link>
               ?
@@ -203,6 +208,7 @@ const FlashcardsEncouragement = ({
                 style={{ maxWidth: '25%', maxHeight: '25%', marginLeft: 'auto' }}
               />
               <Icon
+                className="interactable"
                 style={{
                   cursor: 'pointer',
                 }}
@@ -233,6 +239,7 @@ const FlashcardsEncouragement = ({
                 style={{ maxWidth: '25%', maxHeight: '25%', marginLeft: 'auto' }}
               />
               <Icon
+                className="interactable"
                 style={{
                   cursor: 'pointer',
                 }}
@@ -256,7 +263,7 @@ const FlashcardsEncouragement = ({
             <div>
               <FormattedHTMLMessage id="well-done-click-next-card-to-play-another-set-of-cards-2" />
               &nbsp;
-              <Button variant="primary" onClick={() => handleNewDeck()}>
+              <Button className="interactable" variant="primary" onClick={() => handleNewDeck()}>
                 <FormattedMessage id="next-card" />
               </Button>
             </div>
@@ -278,7 +285,9 @@ const FlashcardsEncouragement = ({
                 <ul>
                   {latestStories.map(story => (
                     <li style={{ marginTop: '0.5rem' }}>
-                      <Link to={`/stories/${story._id}/practice`}>{story.title}</Link>
+                      <Link className="interactable" to={`/stories/${story._id}/practice`}>
+                        {story.title}
+                      </Link>
                     </li>
                   ))}
                 </ul>
@@ -299,7 +308,7 @@ const FlashcardsEncouragement = ({
             <div>
               <FormattedMessage id="go-back-to-library" />
               &nbsp;
-              <Link to="/library">
+              <Link className="interactable" to="/library">
                 <FormattedMessage id="go-back-to-library-2" />
               </Link>
             </div>
@@ -326,12 +335,13 @@ const FlashcardsEncouragement = ({
 
   if (open) {
     return (
-      <Draggable>
+      <Draggable cancel=".interactable">
         <div className="draggable-encouragement">
           <div style={{ margin: '.75em' }}>
             {recmdList.map((recommendation, index) => index < upperBound && recommendation)}
             {recmdList.length > upperBound && (
               <Button
+                className="interactable"
                 onClick={() => setUpperBound(upperBound + 10)}
                 styles={{ marginTop: '0.5em' }}
               >
@@ -341,6 +351,7 @@ const FlashcardsEncouragement = ({
             <div className="flex pt-lg">
               <Form.Group>
                 <Form.Check
+                  className="interactable"
                   style={{ marginTop: '0.15em' }}
                   type="checkbox"
                   inline
@@ -353,8 +364,16 @@ const FlashcardsEncouragement = ({
                 <FormattedMessage id="never-show-recommendations" />
               </span>
               <Popup
+                className="interactable"
                 content={intl.formatMessage({ id: 'disable-recmd-tooltip' })}
-                trigger={<Icon style={{ marginLeft: '0.5em' }} name="info circle" color="grey" />}
+                trigger={
+                  <Icon
+                    className="interactable"
+                    style={{ marginLeft: '0.5em' }}
+                    name="info circle"
+                    color="grey"
+                  />
+                }
               />
             </div>
           </div>

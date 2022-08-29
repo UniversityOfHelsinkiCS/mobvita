@@ -16,11 +16,12 @@ const FlashcardsPracticeEncouragement = ({ open, setOpen, prevBlueCards }) => {
 
   if (open) {
     return (
-      <Draggable>
+      <Draggable cancel=".interactable">
         <div className="draggable-encouragement">
           <div style={{ margin: '.75em' }}>
             <div className="flex-reverse">
               <Icon
+                className="interactable"
                 style={{
                   cursor: 'pointer',
                 }}
@@ -44,7 +45,7 @@ const FlashcardsPracticeEncouragement = ({ open, setOpen, prevBlueCards }) => {
                   }}
                 />
                 &nbsp;
-                <Link to={`/flashcards/fillin/test/${prevBlueCards[0].story_id}`}>
+                <Link className="interactable" to={`/flashcards/fillin/test/${prevBlueCards[0].story_id}`}>
                   <FormattedMessage id="flashcards-review" />
                 </Link>
               </div>

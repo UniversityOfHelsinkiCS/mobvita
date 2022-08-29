@@ -54,7 +54,7 @@ const DefaultActivityModal = ({
                 values={{ userRanking }}
               />
               &nbsp;
-              <Link to="/leaderboard">
+              <Link className="interactable" to="/leaderboard">
                 <FormattedMessage id="leaderboard-link-encouragement" />
               </Link>
               !
@@ -78,7 +78,7 @@ const DefaultActivityModal = ({
             <div>
               <FormattedHTMLMessage id="controlled-story-reminder" />
               <br />
-              <Link to={`/stories/${sharedStory._id}/controlled-practice`}>
+              <Link className="interactable" to={`/stories/${sharedStory._id}/controlled-practice`}>
                 {sharedStory.title}
               </Link>
             </div>
@@ -105,7 +105,7 @@ const DefaultActivityModal = ({
                 }}
               />
               &nbsp;
-              <Link to={`/flashcards/fillin/test/${prevBlueCards.story_id}`}>
+              <Link className="interactable" to={`/flashcards/fillin/test/${prevBlueCards.story_id}`}>
                 <FormattedMessage id="flashcards-review" />
               </Link>
             </div>
@@ -126,7 +126,7 @@ const DefaultActivityModal = ({
             <div>
               <FormattedMessage id="continue-last-story-left-in-the-middle" />
               <br />
-              <Link to={`/stories/${latestIncompleteStory._id}/practice`}>
+              <Link className="interactable" to={`/stories/${latestIncompleteStory._id}/practice`}>
                 {latestIncompleteStory.title}
               </Link>
             </div>
@@ -150,7 +150,7 @@ const DefaultActivityModal = ({
               <ul>
                 {storiesToReview.map(story => (
                   <li style={{ marginTop: '0.5rem' }}>
-                    <Link to={`/stories/${story._id}/review`}>{story.title}</Link>
+                    <Link className="interactable" to={`/stories/${story._id}/review`}>{story.title}</Link>
                   </li>
                 ))}
               </ul>
@@ -250,7 +250,7 @@ const DefaultActivityModal = ({
 
   if (open) {
     return (
-      <Draggable>
+      <Draggable cancel=".interactable">
         <div className="draggable-encouragement">
           <div style={{ margin: '.75em' }}>
             <div className="col-flex" style={{ marginTop: '.75em' }}>
@@ -288,6 +288,7 @@ const DefaultActivityModal = ({
                     }}
                   />
                   <Icon
+                    className="interactable"
                     style={{
                       cursor: 'pointer',
                     }}
@@ -299,6 +300,7 @@ const DefaultActivityModal = ({
               ) : (
                 <div className="flex-reverse">
                   <Icon
+                    className="interactable"
                     style={{
                       cursor: 'pointer',
                     }}
@@ -311,6 +313,7 @@ const DefaultActivityModal = ({
               {recmdList.map((recommendation, index) => index < upperBound && recommendation)}
               {recmdList.length > upperBound && (
                 <Button
+                  className="interactable"
                   onClick={() => setUpperBound(upperBound + 10)}
                   styles={{ marginTop: '0.5em' }}
                 >
@@ -321,6 +324,7 @@ const DefaultActivityModal = ({
             <div className="flex pt-lg">
               <Form.Group>
                 <Form.Check
+                  className="interactable"
                   style={{ marginTop: '0.15em' }}
                   type="checkbox"
                   inline
@@ -333,8 +337,9 @@ const DefaultActivityModal = ({
                 <FormattedMessage id="never-show-recommendations" />
               </span>
               <Popup
+                className="interactable"
                 content={intl.formatMessage({ id: 'disable-recmd-tooltip' })}
-                trigger={<Icon style={{ marginLeft: '0.5em' }} name="info circle" color="grey" />}
+                trigger={<Icon className="interactable" style={{ marginLeft: '0.5em' }} name="info circle" color="grey" />}
               />
             </div>
           </div>

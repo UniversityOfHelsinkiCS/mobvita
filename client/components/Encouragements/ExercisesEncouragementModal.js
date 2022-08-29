@@ -59,7 +59,7 @@ const ExercisesEncouragementModal = ({
                 values={{ userRanking }}
               />
               &nbsp;
-              <Link to="/leaderboard">
+              <Link className="interactable" to="/leaderboard">
                 <FormattedMessage id="leaderboard-link-encouragement" />
               </Link>
               !
@@ -87,7 +87,7 @@ const ExercisesEncouragementModal = ({
                 values={{ nWords: creditableWordsNum }}
               />
               &nbsp;
-              <Link to={`/flashcards/fillin/test/${storyId}`}>
+              <Link className="interactable" to={`/flashcards/fillin/test/${storyId}`}>
                 <FormattedMessage id="go-to-blue-flashcards" />
               </Link>
             </div>
@@ -115,7 +115,7 @@ const ExercisesEncouragementModal = ({
                 }}
               />
               &nbsp;
-              <Link to={`/flashcards/fillin/test/${prevBlueCards.story_id}`}>
+              <Link className="interactable" to={`/flashcards/fillin/test/${prevBlueCards.story_id}`}>
                 <FormattedMessage id="flashcards-review" />
               </Link>
             </div>
@@ -137,7 +137,7 @@ const ExercisesEncouragementModal = ({
             <div>
               <FormattedMessage id="continue-last-story-left-in-the-middle" />
               <br />
-              <Link to={`/stories/${latestIncompleteStory._id}/practice`}>
+              <Link className="interactable" to={`/stories/${latestIncompleteStory._id}/practice`}>
                 {latestIncompleteStory.title}
               </Link>
             </div>
@@ -161,7 +161,7 @@ const ExercisesEncouragementModal = ({
                 values={{ vocabulary_seen: vocabularySeen }}
               />
               &nbsp;
-              <Link to="/flashcards">
+              <Link className="interactable" to="/flashcards">
                 <FormattedMessage id="flashcards-review" />
               </Link>
               ?
@@ -187,7 +187,7 @@ const ExercisesEncouragementModal = ({
                 values={{ nWords: newVocabulary }}
               />
               &nbsp;
-              <Link to="/profile/progress">
+              <Link className="interactable" to="/profile/progress">
                 <FormattedMessage id="review-progress" />
               </Link>
               ?
@@ -209,7 +209,7 @@ const ExercisesEncouragementModal = ({
           <div>
             <FormattedMessage id="enc-grammar-progress-1" />
             &nbsp;
-            <Link to="/profile/progress/grammar">
+            <Link className="interactable" to="/profile/progress/grammar">
               <FormattedMessage id="enc-grammar-progress-2" />
             </Link>
             ?
@@ -272,11 +272,9 @@ const ExercisesEncouragementModal = ({
     return null
   }
 
-  console.log('rendered even')
-
   if (open) {
     return (
-      <Draggable>
+      <Draggable cancel=".interactable">
         <div className="draggable-ex-encouragement">
           <div style={{ margin: '.75em' }}>
             <div className="flex" style={{ marginTop: '.75em' }}>
@@ -311,6 +309,7 @@ const ExercisesEncouragementModal = ({
                 style={{ maxWidth: '20%', maxHeight: '20%', marginLeft: 'auto' }}
               />
               <Icon
+                className="interactable"
                 style={{
                   cursor: 'pointer',
                 }}
@@ -322,6 +321,7 @@ const ExercisesEncouragementModal = ({
             {recmdList.map((recommendation, index) => index < upperBound && recommendation)}
             {recmdList.length > upperBound && (
               <Button
+                className="interactable"
                 onClick={() => setUpperBound(upperBound + 10)}
                 styles={{ marginTop: '0.5em' }}
               >
@@ -332,6 +332,7 @@ const ExercisesEncouragementModal = ({
           <div className="flex pt-lg" style={{ margin: '.75em' }}>
             <Form.Group>
               <Form.Check
+                className="interactable"
                 style={{ marginTop: '0.15em' }}
                 type="checkbox"
                 inline
@@ -344,8 +345,16 @@ const ExercisesEncouragementModal = ({
               <FormattedMessage id="never-show-recommendations" />
             </span>
             <Popup
+              className="interactable"
               content={intl.formatMessage({ id: 'disable-recmd-tooltip' })}
-              trigger={<Icon style={{ marginLeft: '0.5em' }} name="info circle" color="grey" />}
+              trigger={
+                <Icon
+                  className="interactable"
+                  style={{ marginLeft: '0.5em' }}
+                  name="info circle"
+                  color="grey"
+                />
+              }
             />
           </div>
         </div>
