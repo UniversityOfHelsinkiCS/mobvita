@@ -79,6 +79,16 @@ const VocabularyGraph = ({
     }
   }
 
+  const handlePercentageToggle = () => {
+    if (element?.current.chart.series[14].userOptions.visible) {
+      element.current.chart.series[14].hide()
+      toggleOn = false
+    } else {
+      element.current.chart.series[14].show()
+      toggleOn = true
+    }
+  }
+
   const options = {
     title: '',
     // series,'
@@ -201,21 +211,23 @@ const VocabularyGraph = ({
         stack: 'present',
       },
       {
-        name: `${intl.formatMessage({ id: 'percent-graph' })}`,
-        id: 'Percentage',
-        data: currentPerc.vocab_bins.map(v => v.mastering_percentage),
-        visible: false,
-        stack: 'present',
-      },
-      {
         name: `${intl.formatMessage({ id: 'percent-graph' })} ${intl.formatMessage({
           id: 'vocabulary-follow-statistic-before',
         })}`,
         data: previousPerc.vocab_bins.map(v => v.mastering_percentage),
         id: 'Percentage (before)',
         linkedTo: 'Percentage',
+        color: '#90EE90',
         visible: false,
         stack: 'before',
+      },
+      {
+        name: `${intl.formatMessage({ id: 'percent-graph' })}`,
+        id: 'Percentage',
+        data: currentPerc.vocab_bins.map(v => v.mastering_percentage),
+        color: '#228B22',
+        visible: false,
+        stack: 'present',
       },
       {
         name: `${intl.formatMessage({ id: 'target-curve' })}`,
@@ -364,11 +376,19 @@ const VocabularyGraph = ({
         </div>
       )}
       <HighchartsReact ref={element} highcharts={Highcharts} options={options} />
-      <div className="flex-reverse">
-        <Button onClick={handleToggle}>
+      {graphType === 'column mastered' && (
+        <div className="flex-reverse">
+          <Button onClick={handleToggle}>
+            <FormattedMessage id="vocab-master-toggle" />
+          </Button>
+        </div>
+      )}
+      {graphType === 'column' && (
+        <div className="flex-reverse">
+        <Button onClick={handlePercentageToggle}>
           <FormattedMessage id="vocab-master-toggle" />
         </Button>
-      </div>
+      </div>)}
       <VocabularyTooltips />
     </div>
   )
