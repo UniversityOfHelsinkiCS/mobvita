@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { FormattedMessage, FormattedHTMLMessage, useIntl } from 'react-intl'
-import { Modal, Popup, Icon } from 'semantic-ui-react'
+import { Popup, Icon } from 'semantic-ui-react'
+import Draggable from 'react-draggable'
 import { useDispatch, useSelector } from 'react-redux'
 import { updateEnableRecmd } from 'Utilities/redux/userReducer'
 import { Link, useHistory } from 'react-router-dom'
@@ -30,6 +31,10 @@ const FlashcardsEncouragement = ({
   const { pending } = useSelector(({ user }) => user)
   const { creditableWordsNum } = useSelector(({ flashcards }) => flashcards)
 
+  const closeModal = () => {
+    setOpen(false)
+  }
+
   const fillList = () => {
     let initList = []
 
@@ -37,7 +42,7 @@ const FlashcardsEncouragement = ({
       if (correctAnswers === deckSize && creditableWordsNum) {
         initList = initList.concat(
           <div className="pt-md">
-            <div className="flex" style={{ alignItems: 'center' }}>
+            <div className="flex">
               <div
                 className="header-2"
                 style={{
@@ -55,6 +60,14 @@ const FlashcardsEncouragement = ({
                 alt="encouraging trophy"
                 style={{ maxWidth: '25%', maxHeight: '25%', marginLeft: 'auto' }}
               />
+              <Icon
+                style={{
+                  cursor: 'pointer',
+                }}
+                size="large"
+                name="close"
+                onClick={closeModal}
+              />
             </div>
             <hr />
           </div>
@@ -62,7 +75,7 @@ const FlashcardsEncouragement = ({
         if (prevBlueCards?.num_of_rewardable_words >= 5) {
           initList = initList.concat(
             <div className="pt-md">
-              <div className="flex" style={{ alignItems: 'center' }}>
+              <div className="flex">
                 <img
                   src={images.flashcards}
                   alt="flashcard batch"
@@ -89,7 +102,7 @@ const FlashcardsEncouragement = ({
       } else {
         initList = initList.concat(
           <div className="pt-md">
-            <div className="flex" style={{ alignItems: 'center' }}>
+            <div className="flex">
               <div
                 className="header-2"
                 style={{
@@ -109,6 +122,14 @@ const FlashcardsEncouragement = ({
                 alt="encouraging fireworks"
                 style={{ maxWidth: '25%', maxHeight: '25%', marginLeft: 'auto' }}
               />
+              <Icon
+                style={{
+                  cursor: 'pointer',
+                }}
+                size="large"
+                name="close"
+                onClick={closeModal}
+              />
             </div>
             <hr />
           </div>
@@ -117,7 +138,7 @@ const FlashcardsEncouragement = ({
 
       initList = initList.concat(
         <div className="pt-md">
-          <div className="flex" style={{ alignItems: 'center' }}>
+          <div className="flex">
             <img
               src={images.flashcards}
               alt="batch of flashcards"
@@ -171,12 +192,23 @@ const FlashcardsEncouragement = ({
                   fontWeight: 500,
                 }}
               >
-                <FormattedHTMLMessage id="mastering-new-words" values={{ nWords: correctAnswers }} />
+                <FormattedHTMLMessage
+                  id="mastering-new-words"
+                  values={{ nWords: correctAnswers }}
+                />
               </div>
               <img
                 src={images.encTrophy}
                 alt="encouraging trophy"
                 style={{ maxWidth: '25%', maxHeight: '25%', marginLeft: 'auto' }}
+              />
+              <Icon
+                style={{
+                  cursor: 'pointer',
+                }}
+                size="large"
+                name="close"
+                onClick={closeModal}
               />
             </div>
             <hr />
@@ -199,6 +231,14 @@ const FlashcardsEncouragement = ({
                 src={images.fireworks}
                 alt="encouraging fireworks"
                 style={{ maxWidth: '25%', maxHeight: '25%', marginLeft: 'auto' }}
+              />
+              <Icon
+                style={{
+                  cursor: 'pointer',
+                }}
+                size="large"
+                name="close"
+                onClick={closeModal}
               />
             </div>
             <hr />
@@ -272,10 +312,6 @@ const FlashcardsEncouragement = ({
     return initList
   }
 
-  const closeModal = () => {
-    setOpen(false)
-  }
-
   useEffect(() => {
     setRecmdList(fillList())
   }, [latestStories, prevBlueCards, vocabularySeen, correctAnswers])
@@ -288,47 +324,46 @@ const FlashcardsEncouragement = ({
     return null
   }
 
-  return (
-    <Modal
-      basic
-      open={open}
-      size="tiny"
-      centered={false}
-      dimmer="blurring"
-      closeIcon={{ style: { top: '2.5rem', right: '2.5rem' }, color: 'black', name: 'close' }}
-      onClose={closeModal}
-    >
-      <Modal.Content>
-        <div className="encouragement" style={{ padding: '1.5rem' }}>
-          {recmdList.map((recommendation, index) => index < upperBound && recommendation)}
-          {recmdList.length > upperBound && (
-            <Button onClick={() => setUpperBound(upperBound + 10)} styles={{ marginTop: '0.5em' }}>
-              <FormattedMessage id="show-more-recommendations" />
-            </Button>
-          )}
-          <div className="flex pt-lg">
-            <Form.Group>
-              <Form.Check
-                style={{ marginTop: '0.15em' }}
-                type="checkbox"
-                inline
-                onChange={updatePreferences}
-                checked={!enable_recmd}
-                disabled={pending}
+  if (open) {
+    return (
+      <Draggable>
+        <div className="draggable-encouragement">
+          <div style={{ margin: '.75em' }}>
+            {recmdList.map((recommendation, index) => index < upperBound && recommendation)}
+            {recmdList.length > upperBound && (
+              <Button
+                onClick={() => setUpperBound(upperBound + 10)}
+                styles={{ marginTop: '0.5em' }}
+              >
+                <FormattedMessage id="show-more-recommendations" />
+              </Button>
+            )}
+            <div className="flex pt-lg">
+              <Form.Group>
+                <Form.Check
+                  style={{ marginTop: '0.15em' }}
+                  type="checkbox"
+                  inline
+                  onChange={updatePreferences}
+                  checked={!enable_recmd}
+                  disabled={pending}
+                />
+              </Form.Group>
+              <span style={{ color: '#708090' }}>
+                <FormattedMessage id="never-show-recommendations" />
+              </span>
+              <Popup
+                content={intl.formatMessage({ id: 'disable-recmd-tooltip' })}
+                trigger={<Icon style={{ marginLeft: '0.5em' }} name="info circle" color="grey" />}
               />
-            </Form.Group>
-            <span style={{ color: '#708090' }}>
-              <FormattedMessage id="never-show-recommendations" />
-            </span>
-            <Popup
-              content={intl.formatMessage({ id: 'disable-recmd-tooltip' })}
-              trigger={<Icon style={{ marginLeft: '0.5em' }} name="info circle" color="grey" />}
-            />
+            </div>
           </div>
         </div>
-      </Modal.Content>
-    </Modal>
-  )
+      </Draggable>
+    )
+  }
+
+  return null
 }
 
 export default FlashcardsEncouragement

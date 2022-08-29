@@ -617,6 +617,16 @@ $value in $spacing {
   z-index: 103;
 }
 
+.draggable-encouragement {
+  border: 2px solid lightgrey;
+  border-radius: 12px;
+  position: absolute;
+  background: #FFF;
+  z-index: 103;
+  width: 450px;
+  color: #000000
+}
+
 .row-flex {
   display: flex;
   flex-direction: row;

@@ -1,9 +1,10 @@
 import React, { useEffect, useState } from 'react'
-import { Modal, Popup, Icon } from 'semantic-ui-react'
+import { Popup, Icon } from 'semantic-ui-react'
 import { useIntl, FormattedHTMLMessage, FormattedMessage } from 'react-intl'
 import { Link } from 'react-router-dom'
 import { images, dictionaryLanguageSelector } from 'Utilities/common'
 import { useDispatch, useSelector } from 'react-redux'
+import Draggable from 'react-draggable'
 import { updateEnableRecmd } from 'Utilities/redux/userReducer'
 import { getStoriesBlueFlashcards } from 'Utilities/redux/flashcardReducer'
 import { getIncompleteStories } from 'Utilities/redux/incompleteStoriesReducer'
@@ -247,21 +248,13 @@ const DefaultActivityModal = ({
     return null
   }
 
-  return (
-    <Modal
-      basic
-      open={open}
-      size="tiny"
-      centered={false}
-      dimmer="blurring"
-      closeIcon={{ style: { top: '2.5rem', right: '2.5rem' }, color: 'black', name: 'close' }}
-      onClose={closeModal}
-    >
-      <Modal.Content>
-        <div className="encouragement" style={{ padding: '1.5em' }}>
-          <>
+  if (open) {
+    return (
+      <Draggable>
+        <div className="draggable-encouragement">
+          <div style={{ margin: '.75em' }}>
             <div className="col-flex" style={{ marginTop: '.75em' }}>
-              {welcomeBack && (
+              {welcomeBack ? (
                 <div className="flex">
                   <div>
                     <div
@@ -294,6 +287,25 @@ const DefaultActivityModal = ({
                       marginLeft: 'auto',
                     }}
                   />
+                  <Icon
+                    style={{
+                      cursor: 'pointer',
+                    }}
+                    size="large"
+                    name="close"
+                    onClick={closeModal}
+                  />
+                </div>
+              ) : (
+                <div className="flex-reverse">
+                  <Icon
+                    style={{
+                      cursor: 'pointer',
+                    }}
+                    size="large"
+                    name="close"
+                    onClick={closeModal}
+                  />
                 </div>
               )}
               {recmdList.map((recommendation, index) => index < upperBound && recommendation)}
@@ -325,11 +337,13 @@ const DefaultActivityModal = ({
                 trigger={<Icon style={{ marginLeft: '0.5em' }} name="info circle" color="grey" />}
               />
             </div>
-          </>
+          </div>
         </div>
-      </Modal.Content>
-    </Modal>
-  )
+      </Draggable>
+    )
+  }
+
+  return null
 }
 
 export default DefaultActivityModal

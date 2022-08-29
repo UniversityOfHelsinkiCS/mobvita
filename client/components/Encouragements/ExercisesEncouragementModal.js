@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import { Modal, Popup, Icon } from 'semantic-ui-react'
+import Draggable from 'react-draggable'
 import { FormattedHTMLMessage, FormattedMessage, useIntl } from 'react-intl'
 import { updateEnableRecmd } from 'Utilities/redux/userReducer'
 import { getStoriesBlueFlashcards, getBlueFlashcards } from 'Utilities/redux/flashcardReducer'
@@ -271,19 +272,11 @@ const ExercisesEncouragementModal = ({
     return null
   }
 
-  return (
-    <Modal
-      basic
-      open={open}
-      size="small"
-      centered={false}
-      dimmer="blurring"
-      closeIcon={{ style: { top: '2.5rem', right: '2.5rem' }, color: 'black', name: 'close' }}
-      onClose={closeModal}
-    >
-      <Modal.Content>
-        <div className="encouragement" style={{ padding: '1.5rem' }}>
-          <div>
+  if (open) {
+    return (
+      <Draggable>
+        <div className="draggable-encouragement">
+          <div style={{ margin: '.75em' }}>
             <div className="flex" style={{ marginTop: '.75em' }}>
               <div>
                 <div
@@ -315,6 +308,14 @@ const ExercisesEncouragementModal = ({
                 alt="encouraging fireworks"
                 style={{ maxWidth: '20%', maxHeight: '20%', marginLeft: 'auto' }}
               />
+              <Icon
+                style={{
+                  cursor: 'pointer',
+                }}
+                size="large"
+                name="close"
+                onClick={closeModal}
+              />
             </div>
             {recmdList.map((recommendation, index) => index < upperBound && recommendation)}
             {recmdList.length > upperBound && (
@@ -326,7 +327,7 @@ const ExercisesEncouragementModal = ({
               </Button>
             )}
           </div>
-          <div className="flex pt-lg">
+          <div className="flex pt-lg" style={{ margin: '.75em' }}>
             <Form.Group>
               <Form.Check
                 style={{ marginTop: '0.15em' }}
@@ -346,9 +347,11 @@ const ExercisesEncouragementModal = ({
             />
           </div>
         </div>
-      </Modal.Content>
-    </Modal>
-  )
+      </Draggable>
+    )
+  }
+
+  return null
 }
 
 export default ExercisesEncouragementModal
