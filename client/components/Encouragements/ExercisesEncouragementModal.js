@@ -272,10 +272,12 @@ const ExercisesEncouragementModal = ({
     return null
   }
 
+  console.log('rendered even')
+
   if (open) {
     return (
       <Draggable>
-        <div className="draggable-encouragement">
+        <div className="draggable-ex-encouragement">
           <div style={{ margin: '.75em' }}>
             <div className="flex" style={{ marginTop: '.75em' }}>
               <div>
