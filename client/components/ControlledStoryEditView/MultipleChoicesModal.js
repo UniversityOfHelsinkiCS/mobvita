@@ -148,7 +148,7 @@ const MultipleChoiceModal = ({
                   ))
                 ) : word.choices ? (
                   Object.keys(word.choices).map(key => (
-                    <div className="flex" style={{ alignItems: 'center' }}>
+                    <div className="flex" style={{ alignItems: 'center', marginTop: '.5em' }}>
                       <Form.Group>
                         <Form.Input
                           className="interactable"
@@ -157,7 +157,7 @@ const MultipleChoiceModal = ({
                           onChange={() => setChosenSet(key)}
                           checked={chosenSet === key}
                         />
-                        <div className="flex-col">
+                        <div className="flex-col" style={{ marginLeft: '.5em' }}>
                           {word.choices[key]
                             .filter(choice => choice !== analyticChunkWord?.surface || word.surface)
                             .map(choice => (
@@ -197,7 +197,7 @@ const MultipleChoiceModal = ({
                     ))}
                   </Form.Group>
                 ) : word.stress && word.stressed ? (
-                  <div className="flex" style={{ alignItems: 'center' }}>
+                  <div className="flex" style={{ alignItems: 'center', marginTop: '.5em' }}>
                     <Form.Group>
                       <Form.Input
                         className="interactable"
@@ -206,7 +206,7 @@ const MultipleChoiceModal = ({
                         onChange={() => setChosenSet('stress')}
                         checked={chosenSet === 'stress'}
                       />
-                      <div className="flex-col">
+                      <div className="flex-col" style={{ marginLeft: '.5em' }}>
                         {word.stress.map(choice => (
                           <input
                             className={`${containsLongInput ? 'multi-choice-long-input' : 'multi-choice-input'} interactable`}
