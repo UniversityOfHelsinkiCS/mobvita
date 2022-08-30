@@ -71,7 +71,7 @@ const Practice = ({ mode }) => {
   const { storyId } = useParams()
   const dispatch = useDispatch()
   const [open, setOpen] = useState(true)
-  console.log('cards ', cards)
+  // console.log('cards ', cards)
   const inFillin = history.location.pathname.includes('test')
   useEffect(() => {
     setSwipeIndex(0)
@@ -113,7 +113,7 @@ const Practice = ({ mode }) => {
   }, [incomplete])
 
   useEffect(() => {
-    if (blueCardsAnswered.length === cards.length) {
+    if (blueCardsAnswered.length === cards.length && blueCardsAnswered.length > 0) {
       const answerObj = {
         flashcard_answers: blueCardsAnswered,
       }
@@ -193,6 +193,7 @@ const Practice = ({ mode }) => {
 
     setAmountAnswered(amountAnswered + 1)
   }
+  console.log('blue cards answered ', blueCardsAnswered)
 
   if (mode === 'article' && !flashcardArticles) return null
 
