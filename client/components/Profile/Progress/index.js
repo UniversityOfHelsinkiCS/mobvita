@@ -8,6 +8,7 @@ import {
   getPreviousVocabularyData,
   getNewerVocabularyData,
 } from 'Utilities/redux/userReducer'
+import { getStoriesBlueFlashcards } from 'Utilities/redux/flashcardReducer'
 import ProgressGraph from 'Components/ProgressGraph'
 import Spinner from 'Components/Spinner'
 import { useHistory } from 'react-router-dom'
@@ -16,11 +17,12 @@ import ResponsiveDatePicker from 'Components/ResponsiveDatePicker'
 import History from 'Components/History'
 import { getHistory as getExerciseHistory } from 'Utilities/redux/exerciseHistoryReducer'
 import { getHistory as getTestHistory } from 'Utilities/redux/testReducer'
-import { useLearningLanguage } from 'Utilities/common'
+import { useLearningLanguage, useDictionaryLanguage } from 'Utilities/common'
 import useWindowDimension from 'Utilities/windowDimensions'
 import VocabularyGraph from 'Components/VocabularyView/VocabularyGraph'
 import HexagonTest from 'Components/GridHexagon'
 import ProgressStats from './ProgressStats'
+import FlashcardsPracticeEncouragement from 'Components/Encouragements/FlashcardsPracticeEncouragement'
 
 const PickDate = ({ date, setDate, onCalendarClose }) => (
   <ResponsiveDatePicker
@@ -68,7 +70,7 @@ const Progress = () => {
     root_hex_coord,
     pending: conceptsPending,
   } = useSelector(({ metadata }) => metadata)
-
+  const { storyBlueCards } = useSelector(({ flashcards }) => flashcards)
   const defaultChart = () => {
     if (flashcardsView) {
       return 'vocabulary'
@@ -80,11 +82,13 @@ const Progress = () => {
   }
 
   const learningLanguage = useLearningLanguage()
+  const dictionaryLanguage = useDictionaryLanguage()
   const { history: testHistory, pending: testPending } = useSelector(({ tests }) => tests)
   const [shownChart, setShownChart] = useState(defaultChart())
   const [notMastered, setNotMastered] = useState([])
   const [notMasteredBefore, setNotMasteredBefore] = useState([])
   const [endWords, setEndWords] = useState(0)
+  const [openModal, setOpenModal] = useState(false)
   const [firstFetch, setFirstFetch] = useState(true)
   const bigScreen = useWindowDimension().width >= 650
   const [targetCurve, setTargetCurve] = useState([])
@@ -131,6 +135,18 @@ const Progress = () => {
       dispatch(getNewerVocabularyData(endDate.toJSON().slice(0, 10)))
     }
   }
+
+  useEffect(() => {
+    dispatch(getStoriesBlueFlashcards(learningLanguage, dictionaryLanguage))
+  }, [])
+
+  useEffect(() => {
+    if (shownChart === 'vocabulary') {
+      setOpenModal(true)
+    } else {
+      setOpenModal(false)
+    }
+  }, [shownChart])
 
   useEffect(() => {
     if (endWords < 500) {
@@ -326,6 +342,11 @@ const Progress = () => {
           <Divider />
         </div>
       )}
+      <FlashcardsPracticeEncouragement
+        open={openModal}
+        setOpen={setOpenModal}
+        prevBlueCards={storyBlueCards}
+      />
       {shownChart === 'progress' ? (
         <div>
           <div className="row-flex align center">
