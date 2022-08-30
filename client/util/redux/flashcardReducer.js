@@ -73,7 +73,7 @@ const initialState = {
   creditableWordsNum: 0,
 }
 
-const deleteCard = (cards, response) => cards.filter(card => card._id !== response.flashcard_id)
+const deleteCard = (cards, response) => cards?.filter(card => card._id !== response.flashcard_id)
 
 export default (state = initialState, action) => {
   switch (action.type) {
