@@ -1,3 +1,4 @@
+/* eslint-disable no-nested-ternary */
 import React, { useState } from 'react'
 import Draggable from 'react-draggable'
 import { Popup, Icon, Form } from 'semantic-ui-react'
@@ -65,11 +66,12 @@ const MultipleChoiceModal = ({
 
   if (open) {
     return (
-      <Draggable>
+      <Draggable cancel=".interactable">
         <div className="draggable-modal">
           <div>
             <div>
               <Popup
+                className="interactable"
                 content={
                   <div style={{ padding: '0.75em' }}>
                     <FormattedMessage id="multiple-choice-tooltip" />
@@ -77,6 +79,7 @@ const MultipleChoiceModal = ({
                 }
                 trigger={
                   <Icon
+                    className="interactable"
                     style={{
                       paddingRight: '0.75em',
                       marginBottom: '0.5em',
@@ -92,6 +95,7 @@ const MultipleChoiceModal = ({
                 <FormattedMessage id="pick-choices" />
               </span>
               <Icon
+                className="interactable"
                 style={{
                   cursor: 'pointer',
                   paddingRight: '0.75em',
@@ -109,17 +113,19 @@ const MultipleChoiceModal = ({
           <div>
             <div style={{ marginRight: '0.5em' }}>
               <Form
+                className="interactable"
                 style={{
                   marginBottom: '0.5em',
                   marginTop: '0.5em',
                 }}
                 onSubmit={handleSubmitChoices}
               >
-                {word.choices &&
+                {word.choices && bigScreen ? (
                   Object.keys(word.choices).map(key => (
                     <div>
                       <Form.Group>
                         <Form.Input
+                          className="interactable"
                           style={{ marginTop: '0.9em', marginLeft: '0.5em', marginRight: '0.75em' }}
                           type="radio"
                           onChange={() => setChosenSet(key)}
@@ -129,13 +135,7 @@ const MultipleChoiceModal = ({
                           .filter(choice => choice !== analyticChunkWord?.surface || word.surface)
                           .map(choice => (
                             <input
-                              className={
-                                bigScreen && containsLongInput
-                                ? 'multi-choice-long-input'
-                                : bigScreen
-                                ? 'multi-choice-input'
-                                : 'multi-choice-input-mobile'
-                              }
+                              className={`${containsLongInput ? 'multi-choice-long-input' : 'multi-choice-input'} interactable`}
                               type="text"
                               name="disable_field"
                               disabled
@@ -145,10 +145,42 @@ const MultipleChoiceModal = ({
                       </Form.Group>
                       <hr />
                     </div>
-                  ))}
-                {word.stress && word.stressed && (
+                  ))
+                ) : word.choices ? (
+                  Object.keys(word.choices).map(key => (
+                    <div className="flex" style={{ alignItems: 'center' }}>
+                      <Form.Group>
+                        <Form.Input
+                          className="interactable"
+                          style={{ marginTop: '0.9em', marginLeft: '0.5em', marginRight: '0.75em' }}
+                          type="radio"
+                          onChange={() => setChosenSet(key)}
+                          checked={chosenSet === key}
+                        />
+                        <div className="flex-col">
+                          {word.choices[key]
+                            .filter(choice => choice !== analyticChunkWord?.surface || word.surface)
+                            .map(choice => (
+                              <input
+                                className={`${containsLongInput ? 'multi-choice-long-input' : 'multi-choice-input'} interactable`}
+                                type="text"
+                                name="disable_field"
+                                disabled
+                                value={choice}
+                              />
+                            ))}
+                        </div>
+                      </Form.Group>
+                      <hr />
+                    </div>
+                  ))
+                ) : (
+                  <></>
+                )}
+                {word.stress && word.stressed && bigScreen ? (
                   <Form.Group>
                     <Form.Input
+                      className="interactable"
                       style={{ marginTop: '0.9em', marginLeft: '0.5em', marginRight: '0.75em' }}
                       type="radio"
                       onChange={() => setChosenSet('stress')}
@@ -156,13 +188,7 @@ const MultipleChoiceModal = ({
                     />
                     {word.stress.map(choice => (
                       <input
-                        className={
-                          bigScreen && containsLongInput
-                            ? 'multi-choice-long-input'
-                            : bigScreen
-                            ? 'multi-choice-input'
-                            : 'multi-choice-input-mobile'
-                        }
+                        className={`${containsLongInput ? 'multi-choice-long-input' : 'multi-choice-input'} interactable`}
                         type="text"
                         name="disable_field"
                         disabled
@@ -170,71 +196,115 @@ const MultipleChoiceModal = ({
                       />
                     ))}
                   </Form.Group>
+                ) : word.stress && word.stressed ? (
+                  <div className="flex" style={{ alignItems: 'center' }}>
+                    <Form.Group>
+                      <Form.Input
+                        className="interactable"
+                        style={{ marginTop: '0.9em', marginLeft: '0.5em', marginRight: '0.75em' }}
+                        type="radio"
+                        onChange={() => setChosenSet('stress')}
+                        checked={chosenSet === 'stress'}
+                      />
+                      <div className="flex-col">
+                        {word.stress.map(choice => (
+                          <input
+                            className={`${containsLongInput ? 'multi-choice-long-input' : 'multi-choice-input'} interactable`}
+                            type="text"
+                            name="disable_field"
+                            disabled
+                            value={choice}
+                          />
+                        ))}
+                      </div>
+                    </Form.Group>
+                  </div>
+                ) : (
+                  <></>
                 )}
                 <div style={{ marginRight: '0.5em' }}>
-                  <Form.Group>
-                    <Form.Input
-                      style={{ marginTop: '0.9em', marginLeft: '0.5em', marginRight: '0.75em' }}
-                      type="radio"
-                      onChange={() => setChosenSet('custom')}
-                      checked={chosenSet === 'custom'}
-                    />
-                    <input
-                      className={
-                        bigScreen && containsLongInput
-                          ? 'multi-choice-long-input'
-                          : bigScreen
-                          ? 'multi-choice-input'
-                          : 'multi-choice-input-mobile'
-                      }
-                      type="text"
-                      name="disable_field"
-                      value={analyticChunkWord?.surface || word.surface}
-                      disabled
-                    />
-                    <input
-                      className={
-                        bigScreen && containsLongInput
-                          ? 'multi-choice-long-input'
-                          : bigScreen
-                          ? 'multi-choice-input'
-                          : 'multi-choice-input-mobile'
-                      }
-                      type="text"
-                      value={customMultiChoice1}
-                      onChange={({ target }) => setCustomMultiChoice1(target.value)}
-                    />
-                    <input
-                      className={
-                        bigScreen && containsLongInput
-                          ? 'multi-choice-long-input'
-                          : bigScreen
-                          ? 'multi-choice-input'
-                          : 'multi-choice-input-mobile'
-                      }
-                      type="text"
-                      value={customMultiChoice2}
-                      onChange={({ target }) => setCustomMultiChoice2(target.value)}
-                    />
-                    <input
-                      className={
-                        bigScreen && containsLongInput
-                          ? 'multi-choice-long-input'
-                          : bigScreen
-                          ? 'multi-choice-input'
-                          : 'multi-choice-input-mobile'
-                      }
-                      type="text"
-                      value={customMultiChoice3}
-                      onChange={({ target }) => setCustomMultiChoice3(target.value)}
-                    />
-                  </Form.Group>
+                  {bigScreen ? (
+                    <Form.Group>
+                      <Form.Input
+                        className="interactable"
+                        style={{ marginTop: '0.9em', marginLeft: '0.5em', marginRight: '0.75em' }}
+                        type="radio"
+                        onChange={() => setChosenSet('custom')}
+                        checked={chosenSet === 'custom'}
+                      />
+                      <input
+                        className={`${containsLongInput ? 'multi-choice-long-input' : 'multi-choice-input'} interactable`}
+                        type="text"
+                        name="disable_field"
+                        value={analyticChunkWord?.surface || word.surface}
+                        disabled
+                      />
+                      <input
+                        className={`${containsLongInput ? 'multi-choice-long-input' : 'multi-choice-input'} interactable`}
+                        type="text"
+                        value={customMultiChoice1}
+                        onChange={({ target }) => setCustomMultiChoice1(target.value)}
+                      />
+                      <input
+                        className={`${containsLongInput ? 'multi-choice-long-input' : 'multi-choice-input'} interactable`}
+                        type="text"
+                        value={customMultiChoice2}
+                        onChange={({ target }) => setCustomMultiChoice2(target.value)}
+                      />
+                      <input
+                        className={`${containsLongInput ? 'multi-choice-long-input' : 'multi-choice-input'} interactable`}
+                        type="text"
+                        value={customMultiChoice3}
+                        onChange={({ target }) => setCustomMultiChoice3(target.value)}
+                      />
+                    </Form.Group>
+                  ) : (
+                    <Form.Group>
+                      <div className="flex" style={{ alignItems: 'center', marginTop: '.5em' }}>
+                        <Form.Input
+                          className="interactable"
+                          style={{ marginTop: '0.9em', marginLeft: '0.5em', marginRight: '0.75em' }}
+                          type="radio"
+                          onChange={() => setChosenSet('custom')}
+                          checked={chosenSet === 'custom'}
+                        />
+                        <div className="col-flex" style={{ marginLeft: '.5em' }}>
+                          <input
+                            className={`${containsLongInput ? 'multi-choice-long-input' : 'multi-choice-input'} interactable`}
+                            type="text"
+                            name="disable_field"
+                            value={analyticChunkWord?.surface || word.surface}
+                            disabled
+                          />
+                          <input
+                            className={`${containsLongInput ? 'multi-choice-long-input' : 'multi-choice-input'} interactable`}
+                            type="text"
+                            value={customMultiChoice1}
+                            onChange={({ target }) => setCustomMultiChoice1(target.value)}
+                          />
+                          <input
+                            className={`${containsLongInput ? 'multi-choice-long-input' : 'multi-choice-input'} interactable`}
+                            type="text"
+                            value={customMultiChoice2}
+                            onChange={({ target }) => setCustomMultiChoice2(target.value)}
+                          />
+                          <input
+                            className={`${containsLongInput ? 'multi-choice-long-input' : 'multi-choice-input'} interactable`}
+                            type="text"
+                            value={customMultiChoice3}
+                            onChange={({ target }) => setCustomMultiChoice3(target.value)}
+                          />
+                        </div>
+                      </div>
+                    </Form.Group>
+                  )}
                   {showValidationMessage && (
                     <div style={{ color: '#FF0000', marginLeft: '0.5em', marginBottom: '0.5em' }}>
                       <FormattedMessage id="multiple-choice-validation" />
                     </div>
                   )}
                   <Button
+                    className="interactable"
                     style={{ marginBottom: '0.5em', marginLeft: '0.5em', marginTop: '0.5em' }}
                     type="submit"
                   >
