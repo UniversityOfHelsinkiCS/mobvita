@@ -113,8 +113,23 @@ const ExerciseCloze = ({ word, handleChange }) => {
   }
 
   const handleTooltipClick = () => {
-    if (ref) dispatch(setReferences(ref))
-    if (explanation) dispatch(setExplanation(explanation))
+    const requestedExplanations = {}
+    const explKeys = Object.keys(explanation)
+
+    for (let i = 0; i < explKeys.length; i++) {
+      for (let j = 0; j < preHints.length; j++) {
+        if (!requestedExplanations[explKeys[i]] && preHints[j].includes(explKeys[i])) {
+          requestedExplanations[explKeys[i]] = explanation[explKeys[i]]
+        }
+      }
+    }
+
+    if (ref) {
+      dispatch(setReferences(ref))
+    }
+    if (explanation && Object.keys(requestedExplanations).length > 0) {
+      dispatch(setExplanation(requestedExplanations))
+    }
   }
 
   const getExerciseClass = (tested, isWrong) => {
@@ -189,7 +204,7 @@ const ExerciseCloze = ({ word, handleChange }) => {
     if (Object.keys(ref).find(key => hint.includes(key))) {
       return true
     }
-    
+
     return false
   }
 
