@@ -22,8 +22,6 @@ import useWindowDimension from 'Utilities/windowDimensions'
 import VocabularyGraph from 'Components/VocabularyView/VocabularyGraph'
 import HexagonTest from 'Components/GridHexagon'
 import ProgressStats from './ProgressStats'
-import FlashcardsPracticeEncouragement from 'Components/Encouragements/FlashcardsPracticeEncouragement'
-import EncouragementButton from 'Components/Encouragements/EncouragementButton'
 
 const PickDate = ({ date, setDate, onCalendarClose }) => (
   <ResponsiveDatePicker
@@ -89,7 +87,6 @@ const Progress = () => {
   const [notMastered, setNotMastered] = useState([])
   const [notMasteredBefore, setNotMasteredBefore] = useState([])
   const [endWords, setEndWords] = useState(0)
-  const [openModal, setOpenModal] = useState(false)
   const [firstFetch, setFirstFetch] = useState(true)
   const bigScreen = useWindowDimension().width >= 650
   const [targetCurve, setTargetCurve] = useState([])
@@ -97,8 +94,8 @@ const Progress = () => {
   const originalEndPoint =
     exerciseHistoryGraph?.length > 0
       ? moment(exerciseHistoryGraph[exerciseHistoryGraph.length - 1]?.date)
-        .add(1, 'days')
-        .toDate()
+          .add(1, 'days')
+          .toDate()
       : moment().toDate()
 
   const getStartDate = () => {
@@ -140,14 +137,6 @@ const Progress = () => {
   useEffect(() => {
     dispatch(getStoriesBlueFlashcards(learningLanguage, dictionaryLanguage))
   }, [])
-
-  useEffect(() => {
-    if (shownChart === 'vocabulary') {
-      setOpenModal(true)
-    } else {
-      setOpenModal(false)
-    }
-  }, [shownChart])
 
   useEffect(() => {
     if (endWords < 500) {
@@ -215,7 +204,7 @@ const Progress = () => {
 
   const handleChartChange = newChart => {
     setShownChart(newChart)
-    setGraphType('area')
+    setGraphType('column mastered')
   }
 
   if (pending || pending === undefined || testPending) return <Spinner />
@@ -226,56 +215,42 @@ const Progress = () => {
     <div className="cont ps-nm">
       <div className="date-pickers-container">
         {bigScreen ? (
-          <div className="flex space-between">
-            <div className="date-pickers gap-col-sm">
-              <span className="bold">
-                <FormattedMessage id="Showing results for" />
-              </span>
-              <div style={{ marginLeft: '2em' }}>
-                <FormattedMessage id="date-start" />{' '}
-                <PickDate
-                  id="start"
-                  date={startDate}
-                  setDate={setStartDate}
-                  onCalendarClose={handlePreviousVocabulary}
-                />
-              </div>
-              <div style={{ marginLeft: '2em' }}>
-                <FormattedMessage id="date-end" />{' '}
-                <PickDate date={endDate} setDate={setEndDate} onCalendarClose={handleVocabulary} />
-              </div>
+          <div className="date-pickers gap-col-sm">
+            <span className="bold">
+              <FormattedMessage id="Showing results for" />
+            </span>
+            <div style={{ marginLeft: '2em' }}>
+              <FormattedMessage id="date-start" />{' '}
+              <PickDate
+                id="start"
+                date={startDate}
+                setDate={setStartDate}
+                onCalendarClose={handlePreviousVocabulary}
+              />
             </div>
-            {shownChart === 'vocabulary' && (
-              <div className="flex-reverse">
-                <EncouragementButton handleShowEncouragement={() => setOpenModal(!openModal)} />
-              </div>
-            )}
+            <div style={{ marginLeft: '2em' }}>
+              <FormattedMessage id="date-end" />{' '}
+              <PickDate date={endDate} setDate={setEndDate} onCalendarClose={handleVocabulary} />
+            </div>
           </div>
         ) : (
           <>
-          <div className="flex space-between">
-            <span>
-              <span className="bold" style={{ fontSize: '1.3em' }}>
-                <FormattedMessage id="Showing results for" />
-              </span>
-              <br />
-              <div className="date-pickers gap-col-sm" style={{ marginTop: '0.5em' }}>
-                <div>
-                  <FormattedMessage id="date-start" />
-                  <br />
-                  <PickDate id="start" date={startDate} setDate={setStartDate} />
-                </div>
-                <div>
-                  <FormattedMessage id="date-end" />
-                  <br />
-                  <PickDate date={endDate} setDate={setEndDate} />
-                </div>
-              </div>
+            <span className="bold" style={{ fontSize: '1.3em' }}>
+              <FormattedMessage id="Showing results for" />
             </span>
-            <div className="flex-reverse">
-              <EncouragementButton handleShowEncouragement={() => setOpenModal(!openModal)} />
+            <br />
+            <div className="date-pickers gap-col-sm" style={{ marginTop: '0.5em' }}>
+              <div>
+                <FormattedMessage id="date-start" />
+                <br />
+                <PickDate id="start" date={startDate} setDate={setStartDate} />
+              </div>
+              <div>
+                <FormattedMessage id="date-end" />
+                <br />
+                <PickDate date={endDate} setDate={setEndDate} />
+              </div>
             </div>
-          </div>
           </>
         )}
       </div>
@@ -357,11 +332,6 @@ const Progress = () => {
           <Divider />
         </div>
       )}
-      <FlashcardsPracticeEncouragement
-        open={openModal}
-        setOpen={setOpenModal}
-        prevBlueCards={storyBlueCards}
-      />
       {shownChart === 'progress' ? (
         <div>
           <div className="row-flex align center">
@@ -431,6 +401,7 @@ const Progress = () => {
                   xAxisLength={xAxisLength}
                   targetCurve={targetCurve}
                   element={element}
+                  storyBlueCards={storyBlueCards}
                 />
               </div>
             </div>

@@ -23,6 +23,7 @@ const VocabularyTooltips = () => {
           />
         }
       />
+      {/* 
       <Popup
         content={
           <div>
@@ -55,6 +56,7 @@ const VocabularyTooltips = () => {
           />
         }
       />
+      */}
       <Popup
         content={
           <div>
