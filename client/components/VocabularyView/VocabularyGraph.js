@@ -1,10 +1,8 @@
 import React, { useState } from 'react'
 import Highcharts from 'highcharts'
 import HighchartsReact from 'highcharts-react-official'
-import moment from 'moment'
-import { useIntl, FormattedMessage, FormattedHTMLMessage } from 'react-intl'
+import { useIntl } from 'react-intl'
 import { Checkbox } from 'semantic-ui-react'
-import { Button } from 'react-bootstrap'
 import useWindowDimensions from 'Utilities/windowDimensions'
 import MasteredLegends from './MasteredLegends'
 import VocabularyTooltips from './VocabularyTooltips'
@@ -211,15 +209,13 @@ const VocabularyGraph = ({
     },
   ])
 
-  console.log('toggle ', toggleOn)
-
   const handleHide = (s, index) => {
     s.visible = false
     element.current.chart.series[index].hide()
   }
 
   const handleShow = (s, index) => {
-    console.log('SHOW ', s)
+
     s.visible = true
     element.current.chart.series[index].show()
   }
@@ -349,6 +345,8 @@ const VocabularyGraph = ({
         marker: { enabled: true },
         events: {
           legendItemClick() {
+            // console.log('toggle at click ', toggleOn)
+            setToggleOn(false)
             if (this.userOptions.id === 'New Mastered') {
               setGraphType('column mastered')
               setOptions({
@@ -376,8 +374,6 @@ const VocabularyGraph = ({
             }
             const copySeries = [...series]
             copySeries.forEach((s, index) => {
-              // console.log('index ', index)
-              console.log(s.id, '  ', this.userOptions.id)
               s.id.substring(0, 3) !== this.userOptions.id.substring(0, 3)
                 ? handleHide(s, index)
                 : handleShow(s, index)
