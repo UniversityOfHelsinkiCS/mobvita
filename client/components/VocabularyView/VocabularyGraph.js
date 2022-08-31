@@ -2,6 +2,7 @@ import React, { useState } from 'react'
 import Highcharts from 'highcharts'
 import HighchartsReact from 'highcharts-react-official'
 import { useIntl } from 'react-intl'
+import { hiddenFeatures } from 'Utilities/common'
 import { Checkbox } from 'semantic-ui-react'
 import useWindowDimensions from 'Utilities/windowDimensions'
 import MasteredLegends from './MasteredLegends'
@@ -61,66 +62,7 @@ const VocabularyGraph = ({
     2250: 'C2',
   }
   // let toggleOn = false
-
   const [series, setSeries] = useState([
-    {
-      name: intl.formatMessage({ id: 'vocabulary-total' }),
-      id: 'Total',
-      data: newTotal,
-    },
-    {
-      name: `${intl.formatMessage({ id: 'vocabulary-total' })} ${intl.formatMessage({
-        id: 'vocabulary-follow-statistic-before',
-      })}`,
-      id: 'Total (before)',
-      data: total,
-      linkedTo: 'Total',
-    },
-    {
-      name: intl.formatMessage({ id: 'vocabulary-seen' }),
-      id: 'Seen',
-      data: newSeen,
-      visible: false,
-    },
-    {
-      name: `${intl.formatMessage({ id: 'vocabulary-seen' })} ${intl.formatMessage({
-        id: 'vocabulary-follow-statistic-before',
-      })}`,
-      id: 'Seen (before)',
-      data: seen,
-      linkedTo: 'Seen',
-      visible: false,
-    },
-    {
-      name: intl.formatMessage({ id: 'vocabulary-visit' }),
-      id: 'Visit',
-      data: newVisit,
-      visible: false,
-    },
-    {
-      name: `${intl.formatMessage({ id: 'vocabulary-visit' })} ${intl.formatMessage({
-        id: 'vocabulary-follow-statistic-before',
-      })}`,
-      id: 'Visit (before)',
-      data: visit,
-      linkedTo: 'Visit',
-      visible: false,
-    },
-    {
-      name: intl.formatMessage({ id: 'vocabulary-flashcard' }),
-      id: 'Flashcard',
-      data: newFlashcard,
-      visible: false,
-    },
-    {
-      name: `${intl.formatMessage({ id: 'vocabulary-flashcard' })} ${intl.formatMessage({
-        id: 'vocabulary-follow-statistic-before',
-      })}`,
-      id: 'Flashcard (before)',
-      data: flashcard,
-      linkedTo: 'Flashcard',
-      visible: false,
-    },
     {
       name: `${intl.formatMessage({ id: 'not-mastered' })} ${intl.formatMessage({
         id: 'vocabulary-follow-statistic-before',
@@ -158,7 +100,6 @@ const VocabularyGraph = ({
       name: `${intl.formatMessage({ id: 'not-mastered' })}`,
       id: 'New Not Mastered',
       data: notMastered,
-      visible: false,
       linkedTo: 'Mastered',
       color: '#DC143C',
       stack: 'present',
@@ -167,7 +108,6 @@ const VocabularyGraph = ({
       name: `${intl.formatMessage({ id: 'rewardable-words' })}`,
       id: 'New Mastered (rewardable)',
       data: currentPerc.vocab_bins.map(v => v.rewardable),
-      visible: false,
       linkedTo: 'Mastered',
       color: '#4169e1',
       stack: 'present',
@@ -176,9 +116,70 @@ const VocabularyGraph = ({
       name: `${intl.formatMessage({ id: 'mastered-words' })}`,
       id: 'New Mastered',
       data: currentPerc.vocab_bins.map(v => v.mastered),
-      visible: false,
       color: '#228B22',
       stack: 'present',
+    },
+    {
+      name: intl.formatMessage({ id: 'vocabulary-total' }),
+      id: 'Total',
+      data: newTotal,
+      visible: false,
+    },
+    {
+      name: `${intl.formatMessage({ id: 'vocabulary-total' })} ${intl.formatMessage({
+        id: 'vocabulary-follow-statistic-before',
+      })}`,
+      id: 'Total (before)',
+      data: total,
+      linkedTo: 'Total',
+      visible: false,
+    },
+    /* 
+    {
+      name: intl.formatMessage({ id: 'vocabulary-seen' }),
+      id: 'Seen',
+      data: newSeen,
+      visible: false,
+    },
+    {
+      name: `${intl.formatMessage({ id: 'vocabulary-seen' })} ${intl.formatMessage({
+        id: 'vocabulary-follow-statistic-before',
+      })}`,
+      id: 'Seen (before)',
+      data: seen,
+      linkedTo: 'Seen',
+      visible: false,
+    },
+    {
+      name: intl.formatMessage({ id: 'vocabulary-visit' }),
+      id: 'Visit',
+      data: newVisit,
+      visible: false,
+    },
+    {
+      name: `${intl.formatMessage({ id: 'vocabulary-visit' })} ${intl.formatMessage({
+        id: 'vocabulary-follow-statistic-before',
+      })}`,
+      id: 'Visit (before)',
+      data: visit,
+      linkedTo: 'Visit',
+      visible: false,
+    },
+    */
+    {
+      name: intl.formatMessage({ id: 'vocabulary-flashcard' }),
+      id: 'Flashcard',
+      data: newFlashcard,
+      visible: false,
+    },
+    {
+      name: `${intl.formatMessage({ id: 'vocabulary-flashcard' })} ${intl.formatMessage({
+        id: 'vocabulary-follow-statistic-before',
+      })}`,
+      id: 'Flashcard (before)',
+      data: flashcard,
+      linkedTo: 'Flashcard',
+      visible: false,
     },
     {
       name: `${intl.formatMessage({ id: 'percent-graph' })} ${intl.formatMessage({
@@ -191,7 +192,7 @@ const VocabularyGraph = ({
       visible: false,
       stack: 'before',
     },
-    {
+    hiddenFeatures && {
       name: `${intl.formatMessage({ id: 'percent-graph' })}`,
       id: 'Curr Percentage',
       data: currentPerc.vocab_bins.map(v => v.mastering_percentage),
@@ -215,7 +216,6 @@ const VocabularyGraph = ({
   }
 
   const handleShow = (s, index) => {
-
     s.visible = true
     element.current.chart.series[index].show()
   }
@@ -223,16 +223,16 @@ const VocabularyGraph = ({
   const handleToggle = () => {
     const copySeries = [...series]
     if (toggleOn) {
-      handleHide(copySeries[8], 8)
-      handleHide(copySeries[9], 9)
-      handleHide(copySeries[10], 10)
+      handleHide(copySeries[0], 0)
+      handleHide(copySeries[1], 1)
+      handleHide(copySeries[2], 2)
 
       setSeries(copySeries)
       setToggleOn(false)
     } else {
-      handleShow(copySeries[8], 8)
-      handleShow(copySeries[9], 9)
-      handleShow(copySeries[10], 10)
+      handleShow(copySeries[0], 0)
+      handleShow(copySeries[1], 1)
+      handleShow(copySeries[2], 2)
 
       setSeries(copySeries)
       setToggleOn(true)
@@ -241,9 +241,8 @@ const VocabularyGraph = ({
 
   const handlePercentageToggle = () => {
     const copySeries = [...series]
-    if (element?.current.chart.series[14].userOptions.visible) {
-      handleHide(copySeries[14], 14)
-  
+    if (element?.current.chart.series[10].userOptions.visible) {
+      handleHide(copySeries[10], 10)
       setSeries(copySeries)
       setToggleOn(false)
     } else {
@@ -256,7 +255,7 @@ const VocabularyGraph = ({
 
   const [options, setOptions] = useState({
     title: '',
-    series: series,
+    series,
     tooltip: {
       formatter() {
         return (
@@ -271,7 +270,7 @@ const VocabularyGraph = ({
       },
     },
     chart: {
-      type: 'area',
+      type: 'column',
       /*
       events: {
         load: function () {
@@ -400,6 +399,24 @@ const VocabularyGraph = ({
             numMastered={numMastered}
             numNotMastered={numNotMastered}
           />
+        </div>
+      )}
+      {/* 
+      {graphType === 'column' && (
+        <div className="flex-reverse">
+          <Checkbox
+            toggle
+            checked={toggleOn}
+            onChange={handlePercentageToggle}
+            label={`${intl.formatMessage({ id: 'vocab-master-toggle' })}`}
+            style={{ marginRight: '.5em' }}
+          />
+        </div>
+      )}
+      */}
+      <HighchartsReact ref={element} highcharts={Highcharts} options={options} />
+      {graphType === 'column mastered' && (
+        <div className="flex-reverse">
           <Checkbox
             toggle
             checked={toggleOn}
@@ -420,23 +437,6 @@ const VocabularyGraph = ({
           />
         </div>
       )}
-      <HighchartsReact ref={element} highcharts={Highcharts} options={options} />
-      {/*
-      {graphType === 'column mastered' && (
-        <div className="flex-reverse">
-          <Button onClick={handleToggle}>
-            <FormattedMessage id="vocab-master-toggle" />
-          </Button>
-        </div>
-      )}    
-      {graphType === 'column' && (
-        <div className="flex-reverse">
-          <Button onClick={handlePercentageToggle}>
-            <FormattedMessage id="vocab-master-toggle" />
-          </Button>
-        </div>
-      )}
-      */}
       <VocabularyTooltips />
     </div>
   )

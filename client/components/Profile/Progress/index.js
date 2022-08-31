@@ -23,6 +23,7 @@ import VocabularyGraph from 'Components/VocabularyView/VocabularyGraph'
 import HexagonTest from 'Components/GridHexagon'
 import ProgressStats from './ProgressStats'
 import FlashcardsPracticeEncouragement from 'Components/Encouragements/FlashcardsPracticeEncouragement'
+import EncouragementButton from 'Components/Encouragements/EncouragementButton'
 
 const PickDate = ({ date, setDate, onCalendarClose }) => (
   <ResponsiveDatePicker
@@ -38,7 +39,7 @@ const Progress = () => {
   const grammarView = history.location.pathname.includes('grammar')
   const dispatch = useDispatch()
   const element = useRef()
-  const [graphType, setGraphType] = useState('area')
+  const [graphType, setGraphType] = useState('column mastered')
   const {
     exerciseHistory: exerciseHistoryGraph,
     flashcardHistory,
@@ -96,8 +97,8 @@ const Progress = () => {
   const originalEndPoint =
     exerciseHistoryGraph?.length > 0
       ? moment(exerciseHistoryGraph[exerciseHistoryGraph.length - 1]?.date)
-          .add(1, 'days')
-          .toDate()
+        .add(1, 'days')
+        .toDate()
       : moment().toDate()
 
   const getStartDate = () => {
@@ -173,7 +174,7 @@ const Progress = () => {
     dispatch(getSelf())
     dispatch(getExerciseHistory(learningLanguage, startDate, endDate))
     dispatch(getTestHistory(learningLanguage, startDate, endDate))
-    setGraphType('area')
+    setGraphType('column mastered')
   }, [startDate, endDate])
 
   useEffect(() => {
@@ -225,42 +226,56 @@ const Progress = () => {
     <div className="cont ps-nm">
       <div className="date-pickers-container">
         {bigScreen ? (
-          <div className="date-pickers gap-col-sm">
-            <span className="bold">
-              <FormattedMessage id="Showing results for" />
-            </span>
-            <div style={{ marginLeft: '2em' }}>
-              <FormattedMessage id="date-start" />{' '}
-              <PickDate
-                id="start"
-                date={startDate}
-                setDate={setStartDate}
-                onCalendarClose={handlePreviousVocabulary}
-              />
+          <div className="flex space-between">
+            <div className="date-pickers gap-col-sm">
+              <span className="bold">
+                <FormattedMessage id="Showing results for" />
+              </span>
+              <div style={{ marginLeft: '2em' }}>
+                <FormattedMessage id="date-start" />{' '}
+                <PickDate
+                  id="start"
+                  date={startDate}
+                  setDate={setStartDate}
+                  onCalendarClose={handlePreviousVocabulary}
+                />
+              </div>
+              <div style={{ marginLeft: '2em' }}>
+                <FormattedMessage id="date-end" />{' '}
+                <PickDate date={endDate} setDate={setEndDate} onCalendarClose={handleVocabulary} />
+              </div>
             </div>
-            <div style={{ marginLeft: '2em' }}>
-              <FormattedMessage id="date-end" />{' '}
-              <PickDate date={endDate} setDate={setEndDate} onCalendarClose={handleVocabulary} />
-            </div>
+            {shownChart === 'vocabulary' && (
+              <div className="flex-reverse">
+                <EncouragementButton handleShowEncouragement={() => setOpenModal(!openModal)} />
+              </div>
+            )}
           </div>
         ) : (
           <>
-            <span className="bold" style={{ fontSize: '1.3em' }}>
-              <FormattedMessage id="Showing results for" />
+          <div className="flex space-between">
+            <span>
+              <span className="bold" style={{ fontSize: '1.3em' }}>
+                <FormattedMessage id="Showing results for" />
+              </span>
+              <br />
+              <div className="date-pickers gap-col-sm" style={{ marginTop: '0.5em' }}>
+                <div>
+                  <FormattedMessage id="date-start" />
+                  <br />
+                  <PickDate id="start" date={startDate} setDate={setStartDate} />
+                </div>
+                <div>
+                  <FormattedMessage id="date-end" />
+                  <br />
+                  <PickDate date={endDate} setDate={setEndDate} />
+                </div>
+              </div>
             </span>
-            <br />
-            <div className="date-pickers gap-col-sm" style={{ marginTop: '0.5em' }}>
-              <div>
-                <FormattedMessage id="date-start" />
-                <br />
-                <PickDate id="start" date={startDate} setDate={setStartDate} />
-              </div>
-              <div>
-                <FormattedMessage id="date-end" />
-                <br />
-                <PickDate date={endDate} setDate={setEndDate} />
-              </div>
+            <div className="flex-reverse">
+              <EncouragementButton handleShowEncouragement={() => setOpenModal(!openModal)} />
             </div>
+          </div>
           </>
         )}
       </div>
