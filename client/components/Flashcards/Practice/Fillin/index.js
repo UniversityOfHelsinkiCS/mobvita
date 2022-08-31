@@ -21,6 +21,7 @@ const Fillin = ({
   swipeIndex,
   editing,
   setEditing,
+  handleIndexChange,
   answerCard,
   deckSize,
 }) => {
@@ -169,6 +170,7 @@ const Fillin = ({
         glosses={translations}
         flipped={flipped}
         swipeIndex={swipeIndex}
+        handleIndexChange={handleIndexChange}
         infoMessage={infoMessage}
         {...cardProps}
       />

@@ -44,6 +44,7 @@ const Practice = ({ mode }) => {
   const { correctAnswers, totalAnswers, storyBlueCards, storyCardsPending } = useSelector(
     ({ flashcards }) => flashcards
   )
+
   const { incomplete, loading } = useSelector(({ incomplete }) => ({
     incomplete: incomplete.data,
     loading: incomplete.pending,
@@ -253,6 +254,7 @@ const Practice = ({ mode }) => {
             card={cards[index]}
             cardNumbering={`${index + 1} / ${cards.length}`}
             swipeIndex={swipeIndex}
+            handleIndexChange={handleIndexChange}
             setSwipeIndex={setSwipeIndex}
             editing={editing && swipeIndex === index}
             setEditing={setEditing}
