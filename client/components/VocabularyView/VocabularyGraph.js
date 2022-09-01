@@ -7,8 +7,6 @@ import { Checkbox } from 'semantic-ui-react'
 import useWindowDimensions from 'Utilities/windowDimensions'
 import MasteredLegends from './MasteredLegends'
 import VocabularyTooltips from './VocabularyTooltips'
-import FlashcardsPracticeEncouragement from 'Components/Encouragements/FlashcardsPracticeEncouragement'
-import EncouragementButton from 'Components/Encouragements/EncouragementButton'
 
 const VocabularyGraph = ({
   vocabularyData,
@@ -22,7 +20,6 @@ const VocabularyGraph = ({
   xAxisLength,
   targetCurve,
   element,
-  storyBlueCards,
 }) => {
   //   const { flashcard, seen, total, now, visit } = useSelector(({ user }) => user.vocabularyData)
   if (vocabularyPending || newerVocabularyPending) return <div className="mt-xl">Loading...</div>
@@ -43,7 +40,6 @@ const VocabularyGraph = ({
   const numRewardable = currentPerc.vocab_bins.reduce((prev, curr) => prev + curr.rewardable, 0)
   const numMastered = currentPerc.vocab_bins.reduce((prev, curr) => prev + curr.mastered, 0)
   const numNotMastered = notMastered.reduce((prev, curr) => prev + curr, 0)
-  const [openModal, setOpenModal] = useState(true)
 
   const { flashcard, seen, total, visit } = vocabularyData
   const newFlashcard = newerVocabularyData.flashcard
@@ -314,6 +310,7 @@ const VocabularyGraph = ({
           if (this.value === 96 || (this.value === 48 && xAxisLength < 100)) {
             return `<b>${intl.formatMessage({ id: 'x-axis-difficult' })}</b>`
           }
+          /*
           if (this.value % 25 === 0) {
             if (xAxisLength <= 50 && this.value === 25) {
               return this.value.toString()
@@ -322,7 +319,7 @@ const VocabularyGraph = ({
               return this.value.toString()
             }
           }
-
+          */
           return ''
         },
       },
@@ -395,11 +392,6 @@ const VocabularyGraph = ({
 
   return (
     <div>
-      <FlashcardsPracticeEncouragement
-        open={openModal}
-        setOpen={setOpenModal}
-        prevBlueCards={storyBlueCards}
-      />
       {graphType === 'column mastered' && (
         <div className="flex-reverse">
           <MasteredLegends
@@ -424,8 +416,9 @@ const VocabularyGraph = ({
       )}
       */}
       <HighchartsReact ref={element} highcharts={Highcharts} options={options} />
+      <VocabularyTooltips />
       {graphType === 'column mastered' && (
-        <div className="flex-reverse">
+        <span className="flex-reverse">
           <Checkbox
             toggle
             checked={toggleOn}
@@ -433,10 +426,10 @@ const VocabularyGraph = ({
             label={`${intl.formatMessage({ id: 'vocab-master-toggle' })}`}
             style={{ marginRight: '.5em' }}
           />
-        </div>
+        </span>
       )}
       {graphType === 'column' && (
-        <div className="flex-reverse">
+        <span className="flex-reverse">
           <Checkbox
             toggle
             checked={toggleOn}
@@ -444,12 +437,8 @@ const VocabularyGraph = ({
             label={`${intl.formatMessage({ id: 'vocab-master-toggle' })}`}
             style={{ marginRight: '.5em' }}
           />
-        </div>
+        </span>
       )}
-      <VocabularyTooltips />
-      <div className="flex-reverse">
-        <EncouragementButton handleShowEncouragement={() => setOpenModal(!openModal)} />
-      </div>
     </div>
   )
 }

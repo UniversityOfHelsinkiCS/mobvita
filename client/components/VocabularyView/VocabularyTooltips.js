@@ -10,6 +10,22 @@ const VocabularyTooltips = () => {
       <Popup
         content={
           <div>
+            <b>{intl.formatMessage({ id: 'mastered-words' })}</b>
+            {': '}
+            <FormattedHTMLMessage id="overview-vocabulary-explanation" />
+          </div>
+        }
+        trigger={
+          <Icon
+            style={{ paddingRight: '0.75em', marginBottom: '0.35em', marginLeft: '20em' }}
+            name="info circle"
+            color="grey"
+          />
+        }
+      />
+      <Popup
+        content={
+          <div>
             <b>{intl.formatMessage({ id: 'vocabulary-total' })}</b>
             {': '}
             <FormattedHTMLMessage id="vocabulary-total-explanation" />
