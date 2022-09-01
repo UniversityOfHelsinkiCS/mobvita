@@ -280,10 +280,11 @@ const ExercisesEncouragementModal = ({
             <div className="flex" style={{ marginTop: '.75em' }}>
               <div>
                 <div
-                  className="header-2"
                   style={{
-                    marginBottom: '1em',
+                    marginTop: '.25em',
+                    marginBottom: '.75em',
                     fontWeight: 500,
+                    fontSize: '1.4rem',
                   }}
                 >
                   <FormattedMessage
@@ -294,8 +295,8 @@ const ExercisesEncouragementModal = ({
                     }
                   />
                 </div>
-                {storiesCovered > 0 && (
-                  <div>
+                {storiesCovered > 1 && (
+                  <div style={{ marginBottom: '.5em' }}>
                     {intl.formatMessage(
                       { id: 'stories-covered-encouragement' },
                       { stories: storiesCovered }

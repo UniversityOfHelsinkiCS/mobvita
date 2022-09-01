@@ -258,10 +258,11 @@ const DefaultActivityModal = ({
                 <div className="flex">
                   <div>
                     <div
-                      className="header-2"
                       style={{
-                        marginBottom: '1em',
+                        marginTop: '.25em',
+                        marginBottom: '.75em',
                         fontWeight: 500,
+                        fontSize: '1.4rem',
                       }}
                     >
                       {intl.formatMessage({ id: 'welcome-back-encouragement' }, { username })}
