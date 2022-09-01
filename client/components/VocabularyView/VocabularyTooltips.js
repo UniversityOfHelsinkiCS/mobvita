@@ -1,8 +1,10 @@
 import React from 'react'
 import { Icon, Popup } from 'semantic-ui-react'
+import { useSelector } from 'react-redux'
 import { FormattedHTMLMessage, useIntl } from 'react-intl'
 
 const VocabularyTooltips = () => {
+  const { interfaceLanguage } = useSelector(({ user }) => user.data.user)
   const intl = useIntl()
 
   return (
@@ -17,7 +19,7 @@ const VocabularyTooltips = () => {
         }
         trigger={
           <Icon
-            style={{ paddingRight: '0.75em', marginBottom: '0.35em', marginLeft: '20em' }}
+            style={{ paddingRight: '0.75em', marginBottom: '0.35em', marginLeft: '12em' }}
             name="info circle"
             color="grey"
           />
@@ -33,7 +35,7 @@ const VocabularyTooltips = () => {
         }
         trigger={
           <Icon
-            style={{ paddingRight: '0.75em', marginBottom: '0.35em', marginLeft: '20em' }}
+            style={{ paddingRight: '0.75em', marginBottom: '0.35em', marginLeft: '7em' }}
             name="info circle"
             color="grey"
           />
@@ -83,7 +85,7 @@ const VocabularyTooltips = () => {
         }
         trigger={
           <Icon
-            style={{ paddingRight: '0.75em', marginBottom: '0.35em', marginLeft: '8em' }}
+            style={{ paddingRight: '0.75em', marginBottom: '0.35em', marginLeft: '7em', marginRight: interfaceLanguage === 'Finnish' ? '8em' : '15em' }}
             name="info circle"
             color="grey"
           />

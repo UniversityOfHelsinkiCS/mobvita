@@ -201,6 +201,7 @@ const VocabularyGraph = ({
       visible: false,
       stack: 'before',
     },
+    /*
     hiddenFeatures && {
       name: `${intl.formatMessage({ id: 'percent-graph' })}`,
       id: 'Curr Percentage',
@@ -217,6 +218,7 @@ const VocabularyGraph = ({
       type: 'spline',
       visible: false,
     },
+    */
   ])
 
   const handleHide = (s, index) => {
@@ -411,29 +413,31 @@ const VocabularyGraph = ({
         </div>
       )}
       <HighchartsReact ref={element} highcharts={Highcharts} options={options} />
-      <VocabularyTooltips />
-      {graphType === 'column mastered' && (
-        <span className="flex-reverse">
-          <Checkbox
-            toggle
-            checked={toggleOn}
-            onChange={handleToggle}
-            label={`${intl.formatMessage({ id: 'vocab-master-toggle' })}`}
-            style={{ marginRight: '.5em' }}
-          />
-        </span>
-      )}
-      {graphType === 'column' && (
-        <span className="flex-reverse">
-          <Checkbox
-            toggle
-            checked={toggleOn}
-            onChange={handlePercentageToggle}
-            label={`${intl.formatMessage({ id: 'vocab-master-toggle' })}`}
-            style={{ marginRight: '.5em' }}
-          />
-        </span>
-      )}
+      <div className="flex-reverse">
+        {graphType === 'column mastered' && (
+          <span>
+            <Checkbox
+              toggle
+              checked={toggleOn}
+              onChange={handleToggle}
+              label={`${intl.formatMessage({ id: 'vocab-master-toggle' })}`}
+              style={{ marginRight: '.5em' }}
+            />
+          </span>
+        )}
+        {graphType === 'column' && (
+          <span>
+            <Checkbox
+              toggle
+              checked={toggleOn}
+              onChange={handlePercentageToggle}
+              label={`${intl.formatMessage({ id: 'vocab-master-toggle' })}`}
+              style={{ marginRight: '.5em' }}
+            />
+          </span>
+        )}
+        <VocabularyTooltips />
+      </div>
     </div>
   )
 }
