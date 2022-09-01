@@ -84,7 +84,7 @@ const VocabularyGraph = ({
       color: '#FAA0A0',
     },
     {
-      name: `${intl.formatMessage({ id: 'rewardable-words' })} Rewardable ${intl.formatMessage({
+      name: `${intl.formatMessage({ id: 'rewardable-words' })} ${intl.formatMessage({
         id: 'vocabulary-follow-statistic-before',
       })}`,
       id: 'Mastered (before rewardable)',
@@ -95,7 +95,7 @@ const VocabularyGraph = ({
       stack: 'before',
     },
     {
-      name: `${intl.formatMessage({ id: 'mastered-words' })} Mastered ${intl.formatMessage({
+      name: `${intl.formatMessage({ id: 'mastered-words' })} ${intl.formatMessage({
         id: 'vocabulary-follow-statistic-before',
       })}`,
       id: 'Mastered (before)',
