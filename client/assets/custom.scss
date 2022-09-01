@@ -644,6 +644,20 @@ $value in $spacing {
   color: #000000
 }
 
+.draggable-encouragement-mobile {
+  border: 2px solid lightgrey;
+  border-radius: 12px;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  margin-top: -326px;
+  margin-left: -176px;
+  background: #FFF;
+  z-index: 103;
+  width: 352px;
+  color: #000000
+}
+
 .row-flex {
   display: flex;
   flex-direction: row;

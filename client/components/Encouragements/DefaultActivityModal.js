@@ -4,6 +4,7 @@ import { useIntl, FormattedHTMLMessage, FormattedMessage } from 'react-intl'
 import { Link } from 'react-router-dom'
 import { images, dictionaryLanguageSelector } from 'Utilities/common'
 import { useDispatch, useSelector } from 'react-redux'
+import useWindowDimensions from 'Utilities/windowDimensions'
 import Draggable from 'react-draggable'
 import { updateEnableRecmd } from 'Utilities/redux/userReducer'
 import { getStoriesBlueFlashcards } from 'Utilities/redux/flashcardReducer'
@@ -31,11 +32,13 @@ const DefaultActivityModal = ({
   const [prevBlueCards, setPrevBlueCards] = useState(null)
   const [recmdList, setRecmdList] = useState([])
   const { user_rank } = useSelector(({ leaderboard }) => leaderboard.data)
+  const { width } = useWindowDimensions()
   const stories = useSelector(({ stories }) => stories.data)
   const [userRanking, setUserRanking] = useState(null)
   const [sharedStory, setSharedStory] = useState(null)
   const { pending: userPending } = useSelector(({ user }) => user)
   const dispatch = useDispatch()
+  const bigScreen = width > 700 
 
   const fillList = () => {
     let initList = []
@@ -251,7 +254,7 @@ const DefaultActivityModal = ({
   if (open) {
     return (
       <Draggable cancel=".interactable">
-        <div className="draggable-encouragement">
+        <div className={bigScreen ? "draggable-encouragement" : "draggable-encouragement-mobile"}>
           <div style={{ margin: '.75em' }}>
             <div className="col-flex" style={{ marginTop: '.75em' }}>
               {welcomeBack ? (
@@ -282,8 +285,8 @@ const DefaultActivityModal = ({
                     src={images.balloons}
                     alt="encouraging balloons"
                     style={{
-                      maxWidth: '25%',
-                      maxHeight: '25%',
+                      maxWidth: bigScreen ? '25%' : '25%',
+                      maxHeight: bigScreen ? '25%' : '20%',
                       marginBottom: '.5em',
                       marginLeft: 'auto',
                     }}
