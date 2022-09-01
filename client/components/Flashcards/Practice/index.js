@@ -28,7 +28,7 @@ import Quick from './Quick'
 
 const VirtualizeSwipeableViews = flowRight(bindKeyboard, virtualize)(SwipeableViews)
 
-const Practice = ({ mode }) => {
+const Practice = ({ mode, open, setOpen }) => {
   const [swipeIndex, setSwipeIndex] = useState(0)
   const [editing, setEditing] = useState(false)
   const [amountAnswered, setAmountAnswered] = useState(0)
@@ -44,7 +44,7 @@ const Practice = ({ mode }) => {
   const { correctAnswers, totalAnswers, storyBlueCards, storyCardsPending } = useSelector(
     ({ flashcards }) => flashcards
   )
-
+  console.log('MODE ', mode)
   const { incomplete, loading } = useSelector(({ incomplete }) => ({
     incomplete: incomplete.data,
     loading: incomplete.pending,
@@ -71,7 +71,7 @@ const Practice = ({ mode }) => {
   const bigScreen = useWindowDimension().width >= 415
   const { storyId } = useParams()
   const dispatch = useDispatch()
-  const [open, setOpen] = useState(true)
+  // const [open, setOpen] = useState(true)
   // console.log('cards ', cards)
   const inFillin = history.location.pathname.includes('test')
   useEffect(() => {

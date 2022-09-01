@@ -11,9 +11,11 @@ import FlashcardCreation from './FlashcardCreation'
 import FloatMenu from './FloatMenu'
 import Practice from './Practice'
 import FlashcardList from './FlashcardList'
+import EncouragementButton from 'Components/Encouragements/EncouragementButton'
 
 const Flashcards = () => {
   const [openModal, setOpenModal] = useState(true)
+  const [openPracModal, setOpenPracModal] = useState(true)
   const { storyBlueCards } = useSelector(({ flashcards }) => flashcards)
   const history = useHistory()
   const learningLanguage = useSelector(learningLanguageSelector)
@@ -35,11 +37,11 @@ const Flashcards = () => {
       case 'list':
         return <FlashcardList />
       case 'article':
-        return <Practice mode="article" />
+        return <Practice mode="article" open={openPracModal} setOpen={setOpenPracModal} />
       case 'quick':
-        return <Practice mode="quick" />
+        return <Practice mode="quick" open={openPracModal} setOpen={setOpenPracModal} />
       default:
-        return <Practice mode="fillin" />
+        return <Practice mode="fillin" open={openPracModal} setOpen={setOpenPracModal} />
     }
   }
 
@@ -56,7 +58,19 @@ const Flashcards = () => {
         {width < 940 ? <FloatMenu /> : <FlashcardMenu />}
         {content()}
       </div>
-      <ReportButton extraClass="align-self-end mr-sm" />
+      <div className="flex-reverse">
+        <ReportButton extraClass="align-self-end mr-sm" />
+        {!openPracModal && (
+          <span style={{ marginRight: '.25em' }}>
+            <EncouragementButton handleShowEncouragement={() => setOpenPracModal(true)} />
+          </span>
+        )}
+        {!openModal && !blueCardsTest && (
+          <span style={{ marginRight: '.25em' }}>
+            <EncouragementButton handleShowEncouragement={() => setOpenModal(true)} />
+          </span>
+        )}
+      </div>
     </div>
   )
 }

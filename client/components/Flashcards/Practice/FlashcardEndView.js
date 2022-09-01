@@ -1,29 +1,10 @@
 import React, { useState, useEffect } from 'react'
 import { FormattedMessage } from 'react-intl'
-import { useSelector, useDispatch } from 'react-redux'
 import { Button } from 'react-bootstrap'
-import { Link, useParams } from 'react-router-dom'
-import { getIncompleteStories } from 'Utilities/redux/incompleteStoriesReducer'
-import { answerBluecards, getStoriesBlueFlashcards } from 'Utilities/redux/flashcardReducer'
-import { learningLanguageSelector, dictionaryLanguageSelector } from 'Utilities/common'
-import FlashcardsEncouragement from 'Components/Encouragements/FlashcardsEncouragement'
+import { Link } from 'react-router-dom'
 
-const FlashcardEndView = ({ handleNewDeck, deckSize, open, setOpen, blueCardsAnswered }) => {
+const FlashcardEndView = ({ handleNewDeck, open }) => {
   // A bit hacky way to move to next deck with right arrow or enter
-  const { correctAnswers, totalAnswers, storyBlueCards, storyCardsPending } = useSelector(
-    ({ flashcards }) => flashcards
-  )
-  const dispatch = useDispatch()
-  const { incomplete, loading } = useSelector(({ incomplete }) => ({
-    incomplete: incomplete.data,
-    loading: incomplete.pending,
-  }))
-  const { enable_recmd, vocabulary_seen, pending } = useSelector(({ user }) => user.data.user)
-  const learningLanguage = useSelector(learningLanguageSelector)
-  const dictionaryLanguage = useSelector(dictionaryLanguageSelector)
-  const [latestStories, setLatestStories] = useState([])
-  const [prevBlueCards, setPrevBlueCards] = useState(null)
-  const { storyId } = useParams()
 
   const useKeyPress = targetKey => {
     const [keyPressed, setKeyPressed] = useState(false)
@@ -59,8 +40,6 @@ const FlashcardEndView = ({ handleNewDeck, deckSize, open, setOpen, blueCardsAns
 
   return (
     <div className="flashcard justify-center">
-      <div>
-      </div>
       <p style={{ fontWeight: '500', fontSize: '1.2em', padding: '1em' }}>
         <FormattedMessage id="well-done-flashcards" />
       </p>
