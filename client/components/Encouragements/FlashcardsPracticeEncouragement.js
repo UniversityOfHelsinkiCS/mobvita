@@ -1,23 +1,25 @@
 import React from 'react'
 import { FormattedMessage, FormattedHTMLMessage } from 'react-intl'
+import useWindowDimensions from 'Utilities/windowDimensions'
 import Draggable from 'react-draggable'
 import { Link } from 'react-router-dom'
 import { Icon } from 'semantic-ui-react'
 import { images } from 'Utilities/common'
 
 const FlashcardsPracticeEncouragement = ({ open, setOpen, prevBlueCards }) => {
+  const { width } = useWindowDimensions()
   const closeModal = () => {
     setOpen(false)
   }
 
-  if (!prevBlueCards || prevBlueCards.length < 1) {
+  if (!prevBlueCards || prevBlueCards.length < 1 || prevBlueCards[0].num_of_rewardable_words < 1) {
     return null
   }
 
   if (open) {
     return (
       <Draggable cancel=".interactable">
-        <div className="draggable-encouragement">
+        <div className={width > 700 ? "draggable-encouragement" : "draggable-encouragement-mobile"}>
           <div style={{ margin: '.75em' }}>
             <div className="flex-reverse">
               <Icon
