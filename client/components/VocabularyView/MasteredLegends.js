@@ -4,6 +4,9 @@ import { Popup } from 'semantic-ui-react'
 
 const MasteredLegends = ({ numEncountered, numRewardable, numMastered, numNotMastered }) => {
   const calculatePercent = (a, b) => {
+    if (b === 0 || a === 0) {
+      return 0
+    }
     return Math.round((a / b) * 100)
   }
 
