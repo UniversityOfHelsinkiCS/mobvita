@@ -37,7 +37,7 @@ const GroupAnalytics = ({ role }) => {
   const [startDate, setStartDate] = useState(
     moment().startOf('month').subtract(6, 'month').toDate()
   )
-  const [graphType, setGraphType] = useState('area')
+  const [graphType, setGraphType] = useState('column mastered')
   const [shownChart, setShownChart] = useState('timeline')
   const [firstFetch, setFirstFetch] = useState(true)
   const [endDate, setEndDate] = useState(moment().add(1, 'days').toDate())
