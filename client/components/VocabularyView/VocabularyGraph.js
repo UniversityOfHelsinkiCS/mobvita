@@ -436,7 +436,9 @@ const VocabularyGraph = ({
             />
           </span>
         )}
-        <VocabularyTooltips />
+        <span style={{ marginRight: graphType === 'column mastered' ? '.1em' : '10em' }}>
+          <VocabularyTooltips graphType={graphType} />
+        </span>
       </div>
     </div>
   )
