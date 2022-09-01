@@ -674,8 +674,8 @@
     "story-top-topics": "Working with this story helps you master especially these topics",
     "next-card-deck": "Next deck",
     "vocabulary-top-right-tooltip": "",
-    "red-bar-explanation": "Read more stories to increase this count",
-    "blue-bar-explanation": "Check these words with blue cards to turn them green",
+    "red-bar-explanation": "Practice with more stories to increase this count",
+    "blue-bar-explanation": "Check your \"blue cards\" to move these words to \"green\" → <it>mastered</it> words",
     "green-bar-explanation": "Practice with flashcards to increase this count",
     "red-bar-label": "{nWords} words not mastered ({percent}%)",
     "blue-bar-label": "{nWords} words you <b>probably</b> know ({percent}%)",
@@ -690,5 +690,6 @@
     "word-group-tooltip": "in word group <b>{binNum}</b>",
     "x-axis-simple": "simpler",
     "x-axis-difficult": "more difficult",
-    "FEEDBACK-TUA-Temporaalirakenne": "这是表达时间的结构(Temporaalirakenne)"
+    "FEEDBACK-TUA-Temporaalirakenne": "这是表达时间的结构(Temporaalirakenne)",
+    "overview-vocabulary-explanation": "All words that you have worked with in stories so far: mastered and not yet mastered"
 }

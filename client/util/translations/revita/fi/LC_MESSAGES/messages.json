@@ -1320,7 +1320,7 @@
     "next-card-deck": "Seuraava pakka",
     "vocabulary-top-right-tooltip": "",
     "red-bar-explanation": "Lue lisää tarinoita kasvattaaksesi tätä",
-    "blue-bar-explanation": "Tarkistamalla sanat sinisillä korteilla nämä muuttuvat vihreiksi",
+    "blue-bar-explanation": "Tarkistamalla sanat sinisillä korteilla nämä muuttuvat \"vihreiksi\"",
     "green-bar-explanation": "Harjoittele kysymyskorteilla kasvattaaksesi tätä",
     "red-bar-label": "{nWords} sanaa ottamatta haltuun ({percent}%)",
     "blue-bar-label": "{nWords} sanaa, jotka <b>todennäköisesti</b> hallitset ({percent}%)",
@@ -1335,5 +1335,6 @@
     "word-group-tooltip": "sanaryhmässä <b>{binNum}</b>",
     "x-axis-simple": "yksinkertaiset",
     "x-axis-difficult": "hankalat",
-    "FEEDBACK-TUA-Temporaalirakenne": "This is construction of type \"Temporal\" (Temporaalirakenne)"
+    "FEEDBACK-TUA-Temporaalirakenne": "This is construction of type \"Temporal\" (Temporaalirakenne)",
+    "overview-vocabulary-explanation": "Yleiskatsaus"
 }
