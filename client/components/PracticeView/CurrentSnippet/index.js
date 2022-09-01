@@ -38,22 +38,36 @@ import ExercisesEncouragementModal from 'Components/Encouragements/ExercisesEnco
 import SnippetActions from './SnippetActions'
 import PracticeText from './PracticeText'
 
-const CurrentSnippet = ({ storyId, handleInputChange, timer, numSnippets }) => {
+const CurrentSnippet = ({
+  storyId,
+  handleInputChange,
+  timer,
+  numSnippets,
+  openEncouragement,
+  setOpenEncouragement,
+}) => {
   const [exerciseCount, setExerciseCount] = useState(0)
   const practiceForm = useRef(null)
   const dispatch = useDispatch()
   const { enable_recmd } = useSelector(({ user }) => user.data.user)
   const snippets = useSelector(({ snippets }) => snippets)
   const answersPending = useSelector(({ snippets }) => snippets.answersPending)
-  const { practiceFinished, snippetFinished, isNewSnippet, attempt, willPause, isPaused, previousAnswers } =
-    useSelector(({ practice }) => practice)
+  const {
+    practiceFinished,
+    snippetFinished,
+    isNewSnippet,
+    attempt,
+    willPause,
+    isPaused,
+    previousAnswers,
+  } = useSelector(({ practice }) => practice)
   const userData = useSelector(state => state.user.data.user)
   const learningLanguage = useSelector(learningLanguageSelector)
   const history = useHistory()
   const isControlledStory = history.location.pathname.includes('controlled-practice')
   const sessionId = snippets?.sessionId ?? null
   const [initRender, setInitRender] = useState(false)
-  const [openEncouragement, setOpenEncouragement] = useState(true)
+  // const [openEncouragement, setOpenEncouragement] = useState(true)
   if (!userData) {
     return
   }
