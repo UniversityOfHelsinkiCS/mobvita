@@ -291,9 +291,10 @@ const DefaultActivityModal = ({
                     className="interactable"
                     style={{
                       cursor: 'pointer',
+                      marginBottom: '.25em',
                     }}
                     size="large"
-                    name="close"
+                    name="window minimize"
                     onClick={closeModal}
                   />
                 </div>
@@ -303,9 +304,10 @@ const DefaultActivityModal = ({
                     className="interactable"
                     style={{
                       cursor: 'pointer',
+                      marginBottom: '.25em',
                     }}
                     size="large"
-                    name="close"
+                    name="window minimize"
                     onClick={closeModal}
                   />
                 </div>

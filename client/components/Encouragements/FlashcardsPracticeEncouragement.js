@@ -24,9 +24,10 @@ const FlashcardsPracticeEncouragement = ({ open, setOpen, prevBlueCards }) => {
                 className="interactable"
                 style={{
                   cursor: 'pointer',
+                  marginBottom: '.25em',
                 }}
                 size="large"
-                name="close"
+                name="window minimize"
                 onClick={closeModal}
               />
             </div>
