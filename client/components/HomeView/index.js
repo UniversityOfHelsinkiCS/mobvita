@@ -10,6 +10,7 @@ import Footer from 'Components/Footer'
 import AddStoryModal from 'Components/AddStoryModal'
 import SetCEFRReminder from 'Components/SetCEFRReminder'
 import DefaultActivityModal from 'Components/Encouragements/DefaultActivityModal'
+import EncouragementButton from 'Components/Encouragements/EncouragementButton'
 import MedalSummary from './MedalSummary'
 import PracticeModal from './PracticeModal'
 import EloChart from './EloChart'
@@ -213,6 +214,11 @@ const HomeView = () => {
                 <EloChart width="100%" />
                 <LeaderboardSummary />
                 <MedalSummary />
+                {showDAModal && !openEncouragement && (
+                  <span style={{ width: '100px' }}>
+                    <EncouragementButton handleShowEncouragement={() => setOpenEncouragement(true)} />
+                  </span>
+                )}
               </div>
             </div>
           </div>
@@ -226,6 +232,11 @@ const HomeView = () => {
             <EloChart width="100%" />
             <LeaderboardSummary />
             <MedalSummary />
+            {showDAModal && (
+              <EncouragementButton
+                handleShowEncouragement={() => setOpenEncouragement(!openEncouragement)}
+              />
+            )}
           </div>
         )}
         {showFooter && <Footer />}

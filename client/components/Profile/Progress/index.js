@@ -21,6 +21,8 @@ import { useLearningLanguage, useDictionaryLanguage } from 'Utilities/common'
 import useWindowDimension from 'Utilities/windowDimensions'
 import VocabularyGraph from 'Components/VocabularyView/VocabularyGraph'
 import HexagonTest from 'Components/GridHexagon'
+import FlashcardsPracticeEncouragement from 'Components/Encouragements/FlashcardsPracticeEncouragement'
+import EncouragementButton from 'Components/Encouragements/EncouragementButton'
 import ProgressStats from './ProgressStats'
 
 const PickDate = ({ date, setDate, onCalendarClose }) => (
@@ -38,6 +40,7 @@ const Progress = () => {
   const dispatch = useDispatch()
   const element = useRef()
   const [graphType, setGraphType] = useState('column mastered')
+  const [openModal, setOpenModal] = useState(true)
   const {
     exerciseHistory: exerciseHistoryGraph,
     flashcardHistory,
@@ -387,6 +390,11 @@ const Progress = () => {
           </div>
           <div>
             <div>
+              <FlashcardsPracticeEncouragement
+                open={openModal}
+                setOpen={setOpenModal}
+                prevBlueCards={storyBlueCards}
+              />
               <Divider />
               <div className="progress-page-graph-cont">
                 <VocabularyGraph
@@ -404,6 +412,11 @@ const Progress = () => {
                   storyBlueCards={storyBlueCards}
                 />
               </div>
+              {!openModal && (
+                <div className="flex-reverse" style={{ marginTop: '.25em' }}>
+                  <EncouragementButton handleShowEncouragement={() => setOpenModal(true)} />
+                </div>
+              )}
             </div>
           </div>
         </div>
