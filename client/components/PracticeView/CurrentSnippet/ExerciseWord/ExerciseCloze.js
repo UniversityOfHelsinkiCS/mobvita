@@ -257,13 +257,15 @@ const ExerciseCloze = ({ word, handleChange }) => {
         </div>
       )}
       <div
-        className="tooltip-blue"
-        // style={{ backgroundColor: getWordColor(word.level, grade, skillLevels) }}
+        className="tooltip-hint"
+        /* style={{ backgroundColor: getWordColor(word.level, grade, skillLevels) }}
         onMouseDown={handleTooltipWordClick}
-        onClick={handleTooltipWordClick}
+        onClick={handleTooltipWordClick} */
       >
-        <span style={getTextStyle(learningLanguage, 'tooltip')}>{word.base || word.bases}</span>
-        → <FormattedMessage id={dictionaryLanguage} />
+        <Button variant="primary" onMouseDown={handleTooltipWordClick} onClick={handleTooltipWordClick}>
+          <span style={getTextStyle(learningLanguage, 'tooltip')}>{word.base || word.bases} </span>
+          → <FormattedMessage id={dictionaryLanguage} />
+        </Button>
       </div>
     </div>
   )
