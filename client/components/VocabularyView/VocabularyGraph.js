@@ -15,10 +15,7 @@ const VocabularyGraph = ({
   newerVocabularyPending,
   graphType,
   setGraphType,
-  notMastered,
-  notMasteredBefore,
   xAxisLength,
-  targetCurve,
   element,
 }) => {
   //   const { flashcard, seen, total, now, visit } = useSelector(({ user }) => user.vocabularyData)
@@ -36,11 +33,6 @@ const VocabularyGraph = ({
   const currentPerc = newerVocabularyData.mastering_percentage
   const previousPerc = vocabularyData.mastering_percentage
 
-  const numEncountered = currentPerc.vocab_bins.reduce((prev, curr) => prev + curr.encountered, 0)
-  const numRewardable = currentPerc.vocab_bins.reduce((prev, curr) => prev + curr.rewardable, 0)
-  const numMastered = currentPerc.vocab_bins.reduce((prev, curr) => prev + curr.mastered, 0)
-  const numNotMastered = notMastered.reduce((prev, curr) => prev + curr, 0)
-
   const { flashcard, seen, total, visit } = vocabularyData
   const newFlashcard = newerVocabularyData.flashcard
   const newSeen = newerVocabularyData.seen
@@ -50,25 +42,42 @@ const VocabularyGraph = ({
   const intl = useIntl()
   const smallScreen = useWindowDimensions().width < 640
 
-  const height = '70%'
-  console.log('chart ', graphType)
-  const binNumbers = Array.from(Array(10).keys())
-  const levels = {
-    1250: 'A1',
-    1450: 'A2',
-    1650: 'B1',
-    1850: 'B2',
-    2050: 'C1',
-    2250: 'C2',
+  const getTargetCurve = () => {
+    let initTarget = []
+    const B2 = newerVocabularyData.target_mastering_curves.B2.params
+
+    for (let i = 0; i < currentPerc.vocab_bins.length; i++) {
+      initTarget = initTarget.concat(B2.B / (B2.C * i + B2.D))
+    }
+    return initTarget
   }
-  // let toggleOn = false
+
+  const getNotMasteredData = vocabBins => {
+    let initList = []
+
+    for (let i = 0; i < vocabBins.length; i++) {
+      initList = initList.concat(
+        vocabBins[i].encountered - vocabBins[i].mastered - vocabBins[i].rewardable
+      )
+    }
+
+    return initList
+  }
+
+  const notMastered = getNotMasteredData(currentPerc.vocab_bins)
+
+  const numEncountered = currentPerc.vocab_bins.reduce((prev, curr) => prev + curr.encountered, 0)
+  const numRewardable = currentPerc.vocab_bins.reduce((prev, curr) => prev + curr.rewardable, 0)
+  const numMastered = currentPerc.vocab_bins.reduce((prev, curr) => prev + curr.mastered, 0)
+  const numNotMastered = notMastered.reduce((prev, curr) => prev + curr, 0)
+
   const [series, setSeries] = useState([
     {
       name: `${intl.formatMessage({ id: 'not-mastered' })} ${intl.formatMessage({
         id: 'vocabulary-follow-statistic-before',
       })}`,
       id: 'Not Mastered (before)',
-      data: notMasteredBefore,
+      data: getNotMasteredData(previousPerc.vocab_bins),
       linkedTo: 'Mastered',
       visible: false,
       stack: 'before',
@@ -98,7 +107,7 @@ const VocabularyGraph = ({
     },
     {
       name: `${intl.formatMessage({ id: 'not-mastered' })}`,
-      id: 'New Not Mastered',
+      id: 'Overview (not mastered)',
       data: notMastered,
       linkedTo: 'Mastered',
       color: '#DC143C',
@@ -106,7 +115,7 @@ const VocabularyGraph = ({
     },
     {
       name: `${intl.formatMessage({ id: 'rewardable-words' })}`,
-      id: 'New Mastered (rewardable)',
+      id: 'Overview (rewardable)',
       data: currentPerc.vocab_bins.map(v => v.rewardable),
       linkedTo: 'Mastered',
       color: '#4169e1',
@@ -114,7 +123,7 @@ const VocabularyGraph = ({
     },
     {
       name: `${intl.formatMessage({ id: 'mastered-words' })}`,
-      id: 'New Mastered',
+      id: 'Overview',
       data: currentPerc.vocab_bins.map(v => v.mastered),
       color: '#228B22',
       stack: 'present',
@@ -203,7 +212,7 @@ const VocabularyGraph = ({
     {
       name: `${intl.formatMessage({ id: 'target-curve' })}`,
       id: 'Curr Percentage target',
-      data: targetCurve,
+      data: getTargetCurve(),
       linkedTo: 'Percentage',
       type: 'spline',
       visible: false,
@@ -259,10 +268,9 @@ const VocabularyGraph = ({
     tooltip: {
       formatter() {
         return (
-          `<b>${
-            this.series.userOptions.id.substring(0, 10) === 'Percentage'
-              ? `${(this.y * 100).toFixed(2)}%`
-              : this.y
+          `<b>${this.series.userOptions.id.substring(0, 10) === 'Percentage'
+            ? `${(this.y * 100).toFixed(2)}%`
+            : this.y
           } ${this.series.userOptions.name}</b>` +
           '<br /> ' +
           `${intl.formatMessage({ id: 'word-group-tooltip' }, { binNum: this.key })}`
@@ -347,7 +355,7 @@ const VocabularyGraph = ({
           legendItemClick() {
             // console.log('toggle at click ', toggleOn)
             setToggleOn(false)
-            if (this.userOptions.id === 'New Mastered') {
+            if (this.userOptions.id === 'Overview') {
               setGraphType('column mastered')
               setOptions({
                 ...options,
@@ -402,19 +410,6 @@ const VocabularyGraph = ({
           />
         </div>
       )}
-      {/* 
-      {graphType === 'column' && (
-        <div className="flex-reverse">
-          <Checkbox
-            toggle
-            checked={toggleOn}
-            onChange={handlePercentageToggle}
-            label={`${intl.formatMessage({ id: 'vocab-master-toggle' })}`}
-            style={{ marginRight: '.5em' }}
-          />
-        </div>
-      )}
-      */}
       <HighchartsReact ref={element} highcharts={Highcharts} options={options} />
       <VocabularyTooltips />
       {graphType === 'column mastered' && (

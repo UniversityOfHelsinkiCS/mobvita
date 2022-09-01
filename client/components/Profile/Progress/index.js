@@ -87,12 +87,12 @@ const Progress = () => {
   const dictionaryLanguage = useDictionaryLanguage()
   const { history: testHistory, pending: testPending } = useSelector(({ tests }) => tests)
   const [shownChart, setShownChart] = useState(defaultChart())
-  const [notMastered, setNotMastered] = useState([])
-  const [notMasteredBefore, setNotMasteredBefore] = useState([])
+  // const [notMastered, setNotMastered] = useState([])
+  // const [notMasteredBefore, setNotMasteredBefore] = useState([])
   const [endWords, setEndWords] = useState(0)
   const [firstFetch, setFirstFetch] = useState(true)
   const bigScreen = useWindowDimension().width >= 650
-  const [targetCurve, setTargetCurve] = useState([])
+  // const [targetCurve, setTargetCurve] = useState([])
   const [xAxisLength, setXAxisLength] = useState(102)
   const originalEndPoint =
     exerciseHistoryGraph?.length > 0
@@ -171,37 +171,43 @@ const Progress = () => {
 
   useEffect(() => {
     if (newerVocabularyData && vocabularyData) {
-      let initList = []
+      // let initList = []
       let wordsAtEnd = 0
-      const B2 = newerVocabularyData.target_mastering_curves.B2.params
+      // const B2 = newerVocabularyData.target_mastering_curves.B2.params
       const newBins = newerVocabularyData.mastering_percentage.vocab_bins
       const oldBins = vocabularyData.mastering_percentage.vocab_bins
-
-      for (let i = 0; i < newBins.length; i++) {
+      
+      for (let i = 50; i < newBins.length; i++) {
+        /*
         initList = initList.concat(
           newBins[i].encountered - newBins[i].mastered - newBins[i].rewardable
         )
-        if (i > 49) {
-          wordsAtEnd += newBins[i].encountered
-        }
+        */
+        
+        wordsAtEnd += newBins[i].encountered
+        
       }
+      /*
       setNotMastered(initList)
       let initBeforeList = []
-      for (let i = 0; i < oldBins.length; i++) {
+      */
+      for (let i = 50; i < oldBins.length; i++) {
+        /*
         initBeforeList = initBeforeList.concat(
           oldBins[i].encountered - oldBins[i].mastered - oldBins[i].rewardable
         )
-        if (i > 49) {
-          wordsAtEnd += oldBins[i].encountered
-        }
+        */
+        wordsAtEnd += oldBins[i].encountered
       }
       setEndWords(wordsAtEnd)
+      /*
       setNotMasteredBefore(initBeforeList)
       let initTarget = []
       for (let i = 0; i < newBins.length; i++) {
         initTarget = initTarget.concat(B2.B / (B2.C * i + B2.D))
       }
       setTargetCurve(initTarget)
+      */
     }
   }, [newerVocabularyData, vocabularyData])
 
@@ -404,12 +410,8 @@ const Progress = () => {
                   newerVocabularyPending={newerVocabularyPending}
                   graphType={graphType}
                   setGraphType={setGraphType}
-                  notMastered={notMastered}
-                  notMasteredBefore={notMasteredBefore}
                   xAxisLength={xAxisLength}
-                  targetCurve={targetCurve}
                   element={element}
-                  storyBlueCards={storyBlueCards}
                 />
               </div>
               {!openModal && (
