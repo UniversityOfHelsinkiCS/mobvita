@@ -165,12 +165,12 @@ export const RVSpeak = (text, lang_code, tone, voice_type) => {
   window.responsiveVoice.speak(text, `${lang_code} ${tone}`, parameters)
 }
 
-export const tacotronSpeak = (text, lang_code, tone, voice_type) => {
+export const tacotronSpeak = (text, lang_code, tone, voice_type, speed) => {
   const error_func = error_type => (sound_id, e) => {
     recordSpeak(text, voice_type, 'tacotron2', lang_code, 0, `${error_type}: ${sound_id}->${e}`)
   }
   new Howl({
-    src: [`${basePath}api/${lang_code}_tts?text=${encodeURIComponent(text)}`],
+    src: [`${basePath}api/${lang_code}_tts?text=${encodeURIComponent(text)}&speed=${speed}`],
     format: ['mp3'],
     autoplay: true,
     onend() {
@@ -195,6 +195,22 @@ export const yandexSpeak = async (text, lang_code, tone, voice_type) => {
     autoplay: true,
     onend() {
       recordSpeak(text, voice_type, 'Yandex', lang_code, 1, '')
+    },
+    onloaderror: error_func('loading_error'),
+    onplayerror: error_func('playing_error'),
+  })
+}
+
+export const coquiSpeak = async (text, lang_code, tone, voice_type) => {
+  const error_func = error_type => (sound_id, e) => {
+    recordSpeak(text, voice_type, 'Coqui-AI', lang_code, 0, `${error_type}: ${sound_id}->${e}`)
+  }
+  new Howl({
+    src: [`${basePath}api/${lang_code}_tts?text=${encodeURIComponent(text)}`],
+    format: ['mp3'],
+    autoplay: true,
+    onend() {
+      recordSpeak(text, voice_type, 'tacotron2', lang_code, 1, '')
     },
     onloaderror: error_func('loading_error'),
     onplayerror: error_func('playing_error'),
