@@ -83,7 +83,7 @@ import { hiddenFeatures } from 'Utilities/common'
 
 import { Howler } from 'howler'
 import confetti from 'canvas-confetti'
-import { callApi, yandexSpeak, RVSpeak, tacotronSpeak } from './apiConnection'
+import { callApi, yandexSpeak, RVSpeak, tacotronSpeak, coquiSpeak } from './apiConnection'
 
 export const images = {
   revitaLogoTransparent,
@@ -541,7 +541,9 @@ export const speak = (surfaceWord, voice, voice_type, resource_usage) => {
     )
       yandexSpeak(surfaceWord, lang_code, tone, voice_type)
     else if (source === 'tacotron2' && Howler.codecs('mp3') && surfaceWord.length > 4)
-      tacotronSpeak(surfaceWord, lang_code, tone, voice_type)
+      tacotronSpeak(surfaceWord, lang_code, tone, voice_type, 0)
+    else if (source === 'coqui_ai' && Howler.codecs('mp3') && surfaceWord.length > 4)
+      coquiSpeak(surfaceWord, lang_code, tone, voice_type)
     else if (speakFallbackConfig.hasOwnProperty(voice.join('-')))
       speak(surfaceWord, speakFallbackConfig[voice.join('-')], voice_type, resource_usage)
   } catch (e) {
@@ -605,11 +607,13 @@ export const voiceLanguages = {
   Swedish: ['responsive_voice', 'Swedish', 'Female'],
   Turkish: ['responsive_voice', 'Turkish', 'Female'],
   Chinese: ['responsive_voice', 'Chinese', 'Female'],
+  English: ['coqui_ai', 'eng', 'none']
 }
 
 const speakFallbackConfig = {
   'yandex-ru-RU-alena': ['responsive_voice', 'Russian', 'Female'],
   'tacotron2-fin-Female': ['responsive_voice', 'Finnish', 'Female'],
+  'coqui_ai-eng-none': ['responsive_voice', 'US English', 'Female'],
 }
 
 export const translatableLanguages = {
