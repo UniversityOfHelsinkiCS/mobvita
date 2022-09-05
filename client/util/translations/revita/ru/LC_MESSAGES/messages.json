@@ -1339,5 +1339,6 @@
     "x-axis-simple": "simpler",
     "x-axis-difficult": "more difficult",
     "FEEDBACK-TUA-Temporaalirakenne": "Это конструкция с прошедшим временным значением (Temporaalirakenne)",
-    "overview-vocabulary-explanation": "Все слова, с которыми вы работали в текстах до сих пор: освоенные и еще не освоенные"
+    "overview-vocabulary-explanation": "Все слова, с которыми вы работали в текстах до сих пор: освоенные и еще не освоенные",
+    "current-cefr-level": "Student's current CEFR level"
 }
