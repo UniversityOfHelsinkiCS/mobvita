@@ -258,6 +258,7 @@ const ExerciseCloze = ({ word, handleChange }) => {
       )}
       <div
         className="tooltip-hint"
+        style={{ display: 'flex', justifyContent: 'center' }}
         /* style={{ backgroundColor: getWordColor(word.level, grade, skillLevels) }}
         onMouseDown={handleTooltipWordClick}
         onClick={handleTooltipWordClick} */
