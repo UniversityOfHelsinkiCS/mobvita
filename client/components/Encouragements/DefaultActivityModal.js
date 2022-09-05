@@ -298,7 +298,7 @@ const DefaultActivityModal = ({
                       marginBottom: '.25em',
                     }}
                     size="large"
-                    name="angle up"
+                    name="close"
                     onClick={closeModal}
                   />
                 </div>
@@ -311,7 +311,7 @@ const DefaultActivityModal = ({
                       marginBottom: '.25em',
                     }}
                     size="large"
-                    name="angle up"
+                    name="close"
                     onClick={closeModal}
                   />
                 </div>

@@ -67,7 +67,7 @@ const FlashcardsEncouragement = ({
                   marginBottom: '.25em',
                 }}
                 size="large"
-                name="angle up"
+                name="close"
                 onClick={closeModal}
               />
             </div>
@@ -134,7 +134,7 @@ const FlashcardsEncouragement = ({
                   marginBottom: '.25em',
                 }}
                 size="large"
-                name="angle up"
+                name="close"
                 onClick={closeModal}
               />
             </div>
@@ -216,7 +216,7 @@ const FlashcardsEncouragement = ({
                   marginBottom: '.25em',
                 }}
                 size="large"
-                name="angle up"
+                name="close"
                 onClick={closeModal}
               />
             </div>
@@ -248,7 +248,7 @@ const FlashcardsEncouragement = ({
                   marginBottom: '.25em',
                 }}
                 size="large"
-                name="angle up"
+                name="close"
                 onClick={closeModal}
               />
             </div>
