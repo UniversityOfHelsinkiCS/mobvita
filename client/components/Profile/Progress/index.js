@@ -176,22 +176,19 @@ const Progress = () => {
       // const B2 = newerVocabularyData.target_mastering_curves.B2.params
       const newBins = newerVocabularyData.mastering_percentage.vocab_bins
       const oldBins = vocabularyData.mastering_percentage.vocab_bins
-      
-      for (let i = 50; i < newBins.length; i++) {
+      for (let i = 50; i < newBins?.length; i++) {
         /*
         initList = initList.concat(
           newBins[i].encountered - newBins[i].mastered - newBins[i].rewardable
         )
         */
-        
         wordsAtEnd += newBins[i].encountered
-        
       }
       /*
       setNotMastered(initList)
       let initBeforeList = []
       */
-      for (let i = 50; i < oldBins.length; i++) {
+      for (let i = 50; i < oldBins?.length; i++) {
         /*
         initBeforeList = initBeforeList.concat(
           oldBins[i].encountered - oldBins[i].mastered - oldBins[i].rewardable

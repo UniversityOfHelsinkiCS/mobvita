@@ -46,7 +46,7 @@ const VocabularyGraph = ({
     let initTarget = []
     const B2 = newerVocabularyData.target_mastering_curves.B2.params
 
-    for (let i = 0; i < currentPerc.vocab_bins.length; i++) {
+    for (let i = 0; i < currentPerc?.vocab_bins.length; i++) {
       initTarget = initTarget.concat(B2.B / (B2.C * i + B2.D))
     }
     return initTarget
@@ -55,7 +55,7 @@ const VocabularyGraph = ({
   const getNotMasteredData = vocabBins => {
     let initList = []
 
-    for (let i = 0; i < vocabBins.length; i++) {
+    for (let i = 0; i < vocabBins?.length; i++) {
       initList = initList.concat(
         vocabBins[i].encountered - vocabBins[i].mastered - vocabBins[i].rewardable
       )
@@ -66,10 +66,10 @@ const VocabularyGraph = ({
 
   const notMastered = getNotMasteredData(currentPerc.vocab_bins)
 
-  const numEncountered = currentPerc.vocab_bins.reduce((prev, curr) => prev + curr.encountered, 0)
-  const numRewardable = currentPerc.vocab_bins.reduce((prev, curr) => prev + curr.rewardable, 0)
-  const numMastered = currentPerc.vocab_bins.reduce((prev, curr) => prev + curr.mastered, 0)
-  const numNotMastered = notMastered.reduce((prev, curr) => prev + curr, 0)
+  const numEncountered = currentPerc?.vocab_bins?.reduce((prev, curr) => prev + curr.encountered, 0)
+  const numRewardable = currentPerc?.vocab_bins?.reduce((prev, curr) => prev + curr.rewardable, 0)
+  const numMastered = currentPerc?.vocab_bins?.reduce((prev, curr) => prev + curr.mastered, 0)
+  const numNotMastered = notMastered?.reduce((prev, curr) => prev + curr, 0)
 
   const [series, setSeries] = useState([
     {
@@ -77,7 +77,7 @@ const VocabularyGraph = ({
         id: 'vocabulary-follow-statistic-before',
       })}`,
       id: 'Not Mastered (before)',
-      data: getNotMasteredData(previousPerc.vocab_bins),
+      data: getNotMasteredData(previousPerc?.vocab_bins),
       linkedTo: 'Mastered',
       visible: false,
       stack: 'before',
@@ -88,7 +88,7 @@ const VocabularyGraph = ({
         id: 'vocabulary-follow-statistic-before',
       })}`,
       id: 'Mastered (before rewardable)',
-      data: previousPerc.vocab_bins.map(v => v.rewardable),
+      data: previousPerc?.vocab_bins?.map(v => v.rewardable),
       linkedTo: 'Mastered',
       visible: false,
       color: '#5FBDC2',
@@ -99,7 +99,7 @@ const VocabularyGraph = ({
         id: 'vocabulary-follow-statistic-before',
       })}`,
       id: 'Mastered (before)',
-      data: previousPerc.vocab_bins.map(v => v.mastered),
+      data: previousPerc?.vocab_bins?.map(v => v.mastered),
       linkedTo: 'Mastered',
       visible: false,
       color: '#90EE90',
@@ -116,7 +116,7 @@ const VocabularyGraph = ({
     {
       name: `${intl.formatMessage({ id: 'rewardable-words' })}`,
       id: 'Overview (rewardable)',
-      data: currentPerc.vocab_bins.map(v => v.rewardable),
+      data: currentPerc?.vocab_bins?.map(v => v.rewardable),
       linkedTo: 'Mastered',
       color: '#4169e1',
       stack: 'present',
@@ -124,7 +124,7 @@ const VocabularyGraph = ({
     {
       name: `${intl.formatMessage({ id: 'mastered-words' })}`,
       id: 'Overview',
-      data: currentPerc.vocab_bins.map(v => v.mastered),
+      data: currentPerc?.vocab_bins?.map(v => v.mastered),
       color: '#228B22',
       stack: 'present',
     },
@@ -194,7 +194,7 @@ const VocabularyGraph = ({
       name: `${intl.formatMessage({ id: 'percent-graph' })} ${intl.formatMessage({
         id: 'vocabulary-follow-statistic-before',
       })}`,
-      data: previousPerc.vocab_bins.map(v => v.mastering_percentage),
+      data: previousPerc?.vocab_bins?.map(v => v.mastering_percentage),
       id: 'Percentage (before)',
       linkedTo: 'Percentage',
       color: '#90EE90',
@@ -402,7 +402,7 @@ const VocabularyGraph = ({
 
   return (
     <div>
-      {graphType === 'column mastered' && (
+      {graphType === 'column mastered' && numEncountered > 0 && (
         <div className="flex-reverse">
           <MasteredLegends
             numEncountered={numEncountered}
