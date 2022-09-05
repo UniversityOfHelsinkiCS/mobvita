@@ -5,7 +5,7 @@ import { Icon } from 'semantic-ui-react'
 import { CSVLink } from 'react-csv'
 import { FormattedMessage, useIntl } from 'react-intl'
 import Spinner from 'Components/Spinner'
-import { capitalize } from 'Utilities/common'
+import { capitalize, skillLevels } from 'Utilities/common'
 import produce from 'immer'
 
 const Summary = ({
@@ -18,6 +18,7 @@ const Summary = ({
   getInitSummary,
   setContent,
   firstFetch,
+  setCefrHistory,
 }) => {
   const intl = useIntl()
   const [sorter, setSorter] = useState({})
@@ -114,6 +115,8 @@ const Summary = ({
       // BE returns localized name for 'username' field, so we get the translation
       student => student?.userName === user?.[intl.formatMessage({ id: 'username' })]
     )
+
+    setCefrHistory(user.cefr_grade)
     setStudent(student)
     setContent('progress')
   }
@@ -126,13 +129,19 @@ const Summary = ({
 
   const filename = `${cleanGroupName}_summary.csv`
 
-  const cleanColumnValue = value => {
+  const cleanColumnValue = (value, column) => {
+    if (column === 'cefr_grade' && value?.length > 0) {
+      return skillLevels[value[0].grade]
+    }
+
     if (value === -Number.MAX_VALUE) {
       return '-'
     }
+
     if (String(value).length > 25) {
       return `${String(value).slice(0, 24)}...`
     }
+
     return value
   }
 
@@ -171,7 +180,7 @@ const Summary = ({
                   {summary.map(user => (
                     <tr onClick={() => handleRowClick(user)} key={user.email}>
                       {columns.map(column => (
-                        <td className="clickable">{cleanColumnValue(user[column])}</td>
+                        <td className="clickable">{cleanColumnValue(user[column], column)}</td>
                       ))}
                     </tr>
                   ))}

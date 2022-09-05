@@ -1,10 +1,10 @@
 /* eslint-disable no-nested-ternary */
 import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { ButtonGroup, ToggleButton } from 'react-bootstrap'
+import { ButtonGroup, ToggleButton, Button } from 'react-bootstrap'
 import { FormattedMessage, useIntl, FormattedHTMLMessage } from 'react-intl'
 import { getSummary, getInitSummary } from 'Utilities/redux/groupSummaryReducer'
-import { learningLanguageSelector, hiddenFeatures } from 'Utilities/common'
+import { learningLanguageSelector, hiddenFeatures, skillLevels } from 'Utilities/common'
 import {
   getStudentVocabulary,
   getPreviousStudentVocabulary,
@@ -37,8 +37,10 @@ const GroupAnalytics = ({ role }) => {
   const [startDate, setStartDate] = useState(
     moment().startOf('month').subtract(6, 'month').toDate()
   )
+  const [cefrHistory, setCefrHistory] = useState([])
   const [graphType, setGraphType] = useState('column mastered')
   const [shownChart, setShownChart] = useState('timeline')
+  const [openEditModal, setOpenEditModal] = useState(false)
   const [firstFetch, setFirstFetch] = useState(true)
   const [endDate, setEndDate] = useState(moment().add(1, 'days').toDate())
   const dispatch = useDispatch()
@@ -58,12 +60,17 @@ const GroupAnalytics = ({ role }) => {
     ? `${currentStudent?.userName} (${currentStudent?.email})`
     : '-'
 
+  const [currentCEFR, setCurrentCEFR] = useState('-')
+
   const studentOptions = currentGroup?.students.map(student => ({
     key: student._id,
     text: `${student?.userName} (${student?.email})`,
     value: JSON.stringify(student), // needs to be string
   }))
 
+  const cefrDropDownMenuText = `${currentCEFR}`
+
+  const cefrLevelOptions = skillLevels.slice(1, 8 + 1)
 
   const handleStudentChange = value => {
     setCurrentStudent(JSON.parse(value))
@@ -92,6 +99,12 @@ const GroupAnalytics = ({ role }) => {
       )
     }
   }
+
+  useEffect(() => {
+    if (cefrHistory.length > 0) {
+      setCurrentCEFR(skillLevels[cefrHistory[0].grade])
+    }
+  }, [cefrHistory])
 
   useEffect(() => {
     if (
@@ -241,6 +254,23 @@ const GroupAnalytics = ({ role }) => {
               disabled={!currentStudent}
             />
           </div>
+          <div>
+            <FormattedMessage id="current-cefr-level" />:{' '}
+            <b>{currentCEFR}</b>
+            <Button variant="primary" onClick={() => setOpenEditModal(true)}>
+              <FormattedMessage id="view-previous-and-edit" />
+            </Button>
+            {/* 
+            <Dropdown
+              text={cefrDropDownMenuText}
+              selection
+              fluid
+              options={cefrLevelOptions}
+              onChange={(_, { value }) => handleStudentChange(value)}
+              disabled={!currentStudent}
+            />
+            */}
+          </div>
           <Divider />
           <div className="space-evenly">
             <button
@@ -355,6 +385,7 @@ const GroupAnalytics = ({ role }) => {
               getInitSummary={() => dispatch(getInitSummary(currentGroupId))}
               setContent={setContent}
               firstFetch={firstFetch}
+              setCefrHistory={setCefrHistory}
             />
           ) : (
             <StudentGrammarProgress
