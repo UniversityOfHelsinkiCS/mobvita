@@ -29,7 +29,7 @@ const FlashcardsPracticeEncouragement = ({ open, setOpen, prevBlueCards }) => {
                   marginBottom: '.25em',
                 }}
                 size="large"
-                name="window minimize"
+                name="angle up"
                 onClick={closeModal}
               />
             </div>

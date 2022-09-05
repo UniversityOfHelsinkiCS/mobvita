@@ -39,7 +39,7 @@ const StoryTopics = ({ conceptCount, focusedConcept, setFocusedConcept }) => {
               role="button"
               tabIndex={0}
             >
-              <Icon name={collapsed ? 'angle up' : 'angle down'} size="large" />
+              <Icon name={collapsed ? 'angle down' : 'angle up'} size="large" />
             </div>
           </div>
           {!collapsed && (
