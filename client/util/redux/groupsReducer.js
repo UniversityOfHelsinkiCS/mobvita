@@ -123,13 +123,6 @@ export const emptyLastAddInfo = () => ({
   type: 'EMPTY_LAST_ADD_INFO',
 })
 
-export const updateStudentCEFRLevel = (groupId, sid, grade) => {
-  const route = `/groups/${groupId}/grade`
-  const prefix = 'UPDATE_STUDENT_CEFR'
-  const payload = { sid, grade }
-  return callBuilder(route, prefix, 'post', payload)
-}
-
 export default (state = { groups: [], joinPending: false, deleteSuccessful: false }, action) => {
   switch (action.type) {
     case 'GET_GROUPS_ATTEMPT':
@@ -401,21 +394,6 @@ export default (state = { groups: [], joinPending: false, deleteSuccessful: fals
         pending: false,
       }
     case 'RESEND_GROUP_INVITATION_SUCCESS':
-      return {
-        ...state,
-        pending: false,
-      }
-    case 'UPDATE_STUDENT_CEFR_ATTEMPT':
-      return {
-        ...state,
-        pending: true,
-      }
-    case 'UPDATE_STUDENT_CEFR_FAILURE':
-      return {
-        ...state,
-        pending: false,
-      }
-    case 'UPDATE_STUDENT_CEFR_SUCCESS':
       return {
         ...state,
         pending: false,

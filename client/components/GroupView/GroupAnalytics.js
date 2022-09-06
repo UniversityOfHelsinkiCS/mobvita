@@ -62,16 +62,11 @@ const GroupAnalytics = ({ role }) => {
     : '-'
 
   const [currentCEFR, setCurrentCEFR] = useState('-')
-
   const studentOptions = currentGroup?.students.map(student => ({
     key: student._id,
     text: `${student?.userName} (${student?.email})`,
     value: JSON.stringify(student), // needs to be string
   }))
-
-  const cefrDropDownMenuText = `${currentCEFR}`
-
-  const cefrLevelOptions = skillLevels.slice(1, 8 + 1)
 
   const handleStudentChange = value => {
     setCurrentStudent(JSON.parse(value))
@@ -261,6 +256,8 @@ const GroupAnalytics = ({ role }) => {
                 open={openEditModal}
                 setOpen={setOpenEditModal}
                 cefrHistory={cefrHistory}
+                groupId={currentGroupId}
+                sid={currentStudent._id}
               />
               <FormattedMessage id="current-cefr-level" />:{' '}
               <b style={{ marginRight: '.5em' }}>{currentCEFR}</b>

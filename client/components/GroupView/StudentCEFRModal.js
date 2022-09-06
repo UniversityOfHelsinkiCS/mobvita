@@ -1,12 +1,15 @@
 import React, { useState, useEffect } from 'react'
+import { useDispatch } from 'react-redux'
 import { Icon } from 'semantic-ui-react'
 import { Table, Button } from 'react-bootstrap'
+import { updateStudentCEFRLevels } from 'Utilities/redux/groupSummaryReducer'
 import Draggable from 'react-draggable'
-import { skillLevels, capitalize } from 'Utilities/common'
+import { capitalize } from 'Utilities/common'
 import moment from 'moment'
 import CEFRDropdown from './CEFRDropdown'
 
-const StudentCEFRModal = ({ open, setOpen, cefrHistory }) => {
+const StudentCEFRModal = ({ open, setOpen, cefrHistory, groupId, sid }) => {
+  const dispatch = useDispatch()
   const [updatedCEFRHistory, setUpdatedCEFRHistory] = useState(cefrHistory)
   const [modified, setModified] = useState(false)
 
@@ -20,6 +23,10 @@ const StudentCEFRModal = ({ open, setOpen, cefrHistory }) => {
     setOpen(false)
   }
 
+  const handleSubmit = () => {
+    dispatch(updateStudentCEFRLevels(groupId, sid, updatedCEFRHistory))
+  }
+
   const removeCEFR = removedIndex => {
     const newList = updatedCEFRHistory.filter((estimate, index) => index !== removedIndex)
     setUpdatedCEFRHistory(newList)
@@ -29,6 +36,7 @@ const StudentCEFRModal = ({ open, setOpen, cefrHistory }) => {
     setUpdatedCEFRHistory(cefrHistory)
     setModified(false)
   }
+  // console.log('UPDATED ', updatedCEFRHistory)
 
   if (open) {
     return (
@@ -52,7 +60,7 @@ const StudentCEFRModal = ({ open, setOpen, cefrHistory }) => {
             className="flex space-between"
             style={{ marginBottom: '.25em', marginRight: '.25em', marginLeft: '.25em' }}
           >
-            <Button variant="primary">Submit changes</Button>
+            <Button variant="primary" onClick={handleSubmit}>Submit changes</Button>
             {modified && (
               <Button variant="secondary" onClick={undoChanges}>
                 Undo changes
@@ -74,7 +82,12 @@ const StudentCEFRModal = ({ open, setOpen, cefrHistory }) => {
                   </th>
                   <th>
                     {/* {skillLevels[estimate.grade]} */}
-                    <CEFRDropdown grade={estimate.grade} />
+                    <CEFRDropdown
+                      estimate={estimate}
+                      index={index}
+                      updatedCEFRHistory={updatedCEFRHistory}
+                      setUpdatedCEFRHistory={setUpdatedCEFRHistory}
+                    />
                   </th>
                   <Icon
                     className="interactable"

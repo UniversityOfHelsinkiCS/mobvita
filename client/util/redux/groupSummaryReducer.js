@@ -31,6 +31,13 @@ export const getWeekSummary = groupId => {
   return getSummary(groupId, start, end)
 }
 
+export const updateStudentCEFRLevels = (groupId, sid, grades) => {
+  const route = `/groups/${groupId}/grade`
+  const prefix = 'UPDATE_STUDENT_CEFR'
+  const payload = { sid, grades }
+  return callBuilder(route, prefix, 'post', payload)
+}
+
 export default (state = {}, action) => {
   switch (action.type) {
     case 'GET_SUMMARY_ATTEMPT':
@@ -81,6 +88,21 @@ export default (state = {}, action) => {
         summary: [action.response],
         pending: false,
         error: false,
+      }
+    case 'UPDATE_STUDENT_CEFR_ATTEMPT':
+      return {
+        ...state,
+        pending: true,
+      }
+    case 'UPDATE_STUDENT_CEFR_FAILURE':
+      return {
+        ...state,
+        pending: false,
+      }
+    case 'UPDATE_STUDENT_CEFR_SUCCESS':
+      return {
+        ...state,
+        pending: false,
       }
     default:
       return state
