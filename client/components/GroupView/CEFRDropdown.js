@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { skillLevels } from 'Utilities/common'
 import { Dropdown } from 'semantic-ui-react'
 
@@ -9,6 +9,10 @@ const CEFRDropdown = ({ grade }) => {
     text: level,
     value: JSON.stringify(index + 1), // needs to be string
   }))
+
+  useEffect(() => {
+    setChosenValue(grade)
+  }, [grade])
 
   return (
     <Dropdown

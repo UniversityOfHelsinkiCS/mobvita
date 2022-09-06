@@ -255,7 +255,7 @@ const GroupAnalytics = ({ role }) => {
               disabled={!currentStudent}
             />
           </div>
-          {hiddenFeatures && (
+          {hiddenFeatures && currentCEFR && (
             <div>
               <StudentCEFRModal
                 open={openEditModal}
