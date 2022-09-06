@@ -14,7 +14,7 @@ const getYandexTTS = async (req, res) => {
             method: 'post',
             url: 'https://tts.api.cloud.yandex.net/speech/v1/tts:synthesize',
             headers: { 
-                'Authorization': 'Api-Key AQVN3Y3Vf7AMbWtbgGnp3daPjL0M9SCa28g10u8N', 
+                'Authorization': process.env.YANDEX_KEY,
                 ...form.getHeaders()
             },
             data : form,
