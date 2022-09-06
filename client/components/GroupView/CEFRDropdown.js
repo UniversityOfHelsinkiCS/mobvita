@@ -4,6 +4,7 @@ import { skillLevels } from 'Utilities/common'
 import { Dropdown } from 'semantic-ui-react'
 
 const CEFRDropdown = ({
+  addNew = false,
   estimate,
   index,
   updatedCEFRHistory,
@@ -11,36 +12,54 @@ const CEFRDropdown = ({
   setModified,
 }) => {
   const userId = useSelector(state => state.user.data.user.oid)
-  const [chosenValue, setChosenValue] = useState(estimate.grade)
-  const cefrLevelOptions = skillLevels.slice(1, 8 + 1).map((level, ind) => ({
-    key: ind + 1,
+  const [chosenValue, setChosenValue] = useState(estimate ? estimate.grade : 2)
+  const cefrLevelOptions = skillLevels.map((level, ind) => ({
+    key: ind,
     text: level,
-    value: JSON.stringify(ind + 1), // needs to be string
+    value: JSON.stringify(ind), // needs to be string
   }))
 
   useEffect(() => {
-    setChosenValue(estimate.grade)
-  }, [estimate.grade])
+    if (estimate) {
+      setChosenValue(estimate.grade)
+    }
+  }, [estimate?.grade])
 
   useEffect(() => {
-    const newList = [...updatedCEFRHistory]
-    newList[index] = {
-      ...newList[index],
-      grade: chosenValue,
-      source: 'teacher',
-      tagger: userId,
+    if (index) {
+      const newList = [...updatedCEFRHistory]
+      newList[index] = {
+        ...newList[index],
+        grade: chosenValue,
+        source: 'teacher',
+        tagger: userId,
+      }
+      setUpdatedCEFRHistory(newList)
+    } else {
+      const newList = [
+        {
+          grade: chosenValue,
+          source: 'teacher',
+          tagger: userId,
+          timestamp: parseInt(new Date() / 1000),
+        },
+        ...updatedCEFRHistory,
+      ]
+      setUpdatedCEFRHistory(newList)
     }
-
-    setUpdatedCEFRHistory(newList)
   }, [chosenValue])
 
   const handleCEFRChange = value => {
     setChosenValue(JSON.parse(value))
-    setModified(true)
+    if (index) {
+      setModified(true)
+    }
   }
 
   return (
     <Dropdown
+      style={{ width: addNew && '89px' }}
+      className="interactable"
       text={skillLevels[chosenValue]}
       selection
       fluid

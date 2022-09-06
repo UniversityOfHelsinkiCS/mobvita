@@ -230,6 +230,15 @@ export const timerExpired = (parsedDate, timeLimit) => {
   return timeElapsed > timeLimit
 }
 
+export const isToday = date => {
+  const today = new Date()
+  return (
+    date.getDate() === today.getDate() &&
+    date.getMonth() === today.getMonth() &&
+    date.getFullYear() === today.getFullYear()
+  )
+}
+
 export const capitalize = word => {
   const capitalizedParts = word.split('-').map(part => {
     const p1 = part.slice(0, 1)
@@ -607,7 +616,7 @@ export const voiceLanguages = {
   Swedish: ['responsive_voice', 'Swedish', 'Female'],
   Turkish: ['responsive_voice', 'Turkish', 'Female'],
   Chinese: ['responsive_voice', 'Chinese', 'Female'],
-  English: ['coqui_ai', 'eng', 'none']
+  English: ['coqui_ai', 'eng', 'none'],
 }
 
 const speakFallbackConfig = {
