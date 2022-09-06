@@ -12,24 +12,26 @@ const StudentCEFRModal = ({ open, setOpen, cefrHistory, groupId, sid }) => {
   const dispatch = useDispatch()
   const [updatedCEFRHistory, setUpdatedCEFRHistory] = useState(cefrHistory)
   const [modified, setModified] = useState(false)
-
+  /*
   useEffect(() => {
     if (updatedCEFRHistory !== cefrHistory) {
       setModified(true)
     }
   }, [updatedCEFRHistory])
-
+  */
   const closeModal = () => {
     setOpen(false)
   }
 
   const handleSubmit = () => {
     dispatch(updateStudentCEFRLevels(groupId, sid, updatedCEFRHistory))
+    setModified(false)
   }
 
   const removeCEFR = removedIndex => {
     const newList = updatedCEFRHistory.filter((estimate, index) => index !== removedIndex)
     setUpdatedCEFRHistory(newList)
+    setModified(true)
   }
 
   const undoChanges = () => {
@@ -87,6 +89,7 @@ const StudentCEFRModal = ({ open, setOpen, cefrHistory, groupId, sid }) => {
                       index={index}
                       updatedCEFRHistory={updatedCEFRHistory}
                       setUpdatedCEFRHistory={setUpdatedCEFRHistory}
+                      setModified={setModified}
                     />
                   </th>
                   <Icon

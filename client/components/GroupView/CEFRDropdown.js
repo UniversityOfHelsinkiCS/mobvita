@@ -3,7 +3,13 @@ import { useSelector } from 'react-redux'
 import { skillLevels } from 'Utilities/common'
 import { Dropdown } from 'semantic-ui-react'
 
-const CEFRDropdown = ({ estimate, index, updatedCEFRHistory, setUpdatedCEFRHistory }) => {
+const CEFRDropdown = ({
+  estimate,
+  index,
+  updatedCEFRHistory,
+  setUpdatedCEFRHistory,
+  setModified,
+}) => {
   const userId = useSelector(state => state.user.data.user.oid)
   const [chosenValue, setChosenValue] = useState(estimate.grade)
   const cefrLevelOptions = skillLevels.slice(1, 8 + 1).map((level, ind) => ({
@@ -30,6 +36,7 @@ const CEFRDropdown = ({ estimate, index, updatedCEFRHistory, setUpdatedCEFRHisto
 
   const handleCEFRChange = value => {
     setChosenValue(JSON.parse(value))
+    setModified(true)
   }
 
   return (
