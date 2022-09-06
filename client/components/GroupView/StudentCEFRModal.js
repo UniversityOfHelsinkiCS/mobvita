@@ -12,13 +12,7 @@ const StudentCEFRModal = ({ open, setOpen, cefrHistory, groupId, sid }) => {
   const dispatch = useDispatch()
   const [updatedCEFRHistory, setUpdatedCEFRHistory] = useState(cefrHistory)
   const [modified, setModified] = useState(false)
-  /*
-  useEffect(() => {
-    if (updatedCEFRHistory !== cefrHistory) {
-      setModified(true)
-    }
-  }, [updatedCEFRHistory])
-  */
+
   const closeModal = () => {
     setOpen(false)
   }
@@ -41,7 +35,6 @@ const StudentCEFRModal = ({ open, setOpen, cefrHistory, groupId, sid }) => {
     setUpdatedCEFRHistory(cefrHistory)
     setModified(false)
   }
-  // console.log('UPDATED ', updatedCEFRHistory)
 
   if (open) {
     return (
@@ -65,11 +58,11 @@ const StudentCEFRModal = ({ open, setOpen, cefrHistory, groupId, sid }) => {
             className="flex space-between"
             style={{ marginBottom: '.25em', marginRight: '.25em', marginLeft: '.25em' }}
           >
-            <Button variant="primary" onClick={handleSubmit}>
+            <Button className="interactable" variant="primary" onClick={handleSubmit}>
               Submit changes
             </Button>
             {modified && (
-              <Button variant="secondary" onClick={undoChanges}>
+              <Button className="interactable" variant="secondary" onClick={undoChanges}>
                 Undo changes
               </Button>
             )}

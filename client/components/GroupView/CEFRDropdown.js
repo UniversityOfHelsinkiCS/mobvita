@@ -41,6 +41,7 @@ const CEFRDropdown = ({
 
   return (
     <Dropdown
+      className="interactable"
       text={skillLevels[chosenValue]}
       selection
       fluid
