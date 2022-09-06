@@ -245,7 +245,9 @@ const PracticeView = () => {
           onBackClick={() => history.push('/library')}
         />
         <div className="dictionary-and-annotations-cont">
+          {/* 
           <StoryTopics conceptCount={story.concept_count} />
+          */}
           <DictionaryHelp />
           <AnnotationBox />
           {practiceFinished && !openEncouragement && width >= 1024 && (
