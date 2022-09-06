@@ -616,7 +616,7 @@ export const voiceLanguages = {
   Swedish: ['responsive_voice', 'Swedish', 'Female'],
   Turkish: ['responsive_voice', 'Turkish', 'Female'],
   Chinese: ['responsive_voice', 'Chinese', 'Female'],
-  English: ['coqui_ai', 'eng', 'none'],
+  English: ['responsive_voice', 'US English', 'Female'] //['coqui_ai', 'eng', 'none'],
 }
 
 const speakFallbackConfig = {
