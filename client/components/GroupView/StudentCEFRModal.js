@@ -12,7 +12,11 @@ const StudentCEFRModal = ({ open, setOpen, cefrHistory, groupId, sid }) => {
   const dispatch = useDispatch()
   const [updatedCEFRHistory, setUpdatedCEFRHistory] = useState(cefrHistory)
   const [modified, setModified] = useState(false)
-
+/*
+  useEffect(() => {
+    const 
+  }, [updatedCEFRHistory])
+*/
   const closeModal = () => {
     setOpen(false)
   }
@@ -39,15 +43,13 @@ const StudentCEFRModal = ({ open, setOpen, cefrHistory, groupId, sid }) => {
   if (open) {
     return (
       <Draggable cancel=".interactable">
-        <div className="draggable-modal">
+        <div className="draggable-modal" style={{ padding: '20px' }}>
           <div className="flex-reverse">
             <Icon
               className="interactable"
               style={{
                 cursor: 'pointer',
-                marginBottom: '.25em',
-                marginLeft: '.25em',
-                marginTop: '.25em',
+                marginBottom: '.5em',
               }}
               size="large"
               name="close"

@@ -12,10 +12,10 @@ const CEFRDropdown = ({
 }) => {
   const userId = useSelector(state => state.user.data.user.oid)
   const [chosenValue, setChosenValue] = useState(estimate.grade)
-  const cefrLevelOptions = skillLevels.slice(1, 8 + 1).map((level, ind) => ({
-    key: ind + 1,
+  const cefrLevelOptions = skillLevels.map((level, ind) => ({
+    key: ind,
     text: level,
-    value: JSON.stringify(ind + 1), // needs to be string
+    value: JSON.stringify(ind), // needs to be string
   }))
 
   useEffect(() => {
