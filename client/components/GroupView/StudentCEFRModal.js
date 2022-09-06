@@ -1,17 +1,16 @@
 import React from 'react'
 import { Icon } from 'semantic-ui-react'
-import { Table } from 'react-bootstrap'
+import { Table, Button } from 'react-bootstrap'
 import Draggable from 'react-draggable'
 import { skillLevels, capitalize } from 'Utilities/common'
 import moment from 'moment'
+import CEFRDropdown from './CEFRDropdown'
 
 const StudentCEFRModal = ({ open, setOpen, cefrHistory }) => {
   const closeModal = () => {
     setOpen(false)
   }
-  const date = moment.unix(cefrHistory[0].timestamp).format("MM/DD/YYYY")
-  console.log('date ', date)
-  
+
   if (open) {
     return (
       <Draggable cancel=".interactable">
@@ -22,11 +21,16 @@ const StudentCEFRModal = ({ open, setOpen, cefrHistory }) => {
               style={{
                 cursor: 'pointer',
                 marginBottom: '.25em',
+                marginLeft: '.25em',
+                marginTop: '.25em',
               }}
               size="large"
               name="close"
               onClick={closeModal}
             />
+          </div>
+          <div style={{ display: 'flex', justifyContent: 'center', marginBottom: '.25em' }}>
+            <Button variant="primary">Submit changes</Button>
           </div>
           <Table striped bordered hover responsive size="sm">
             <thead>
@@ -37,11 +41,14 @@ const StudentCEFRModal = ({ open, setOpen, cefrHistory }) => {
               </tr>
               {cefrHistory.map(estimate => (
                 <tr>
-                  <th>{moment.unix(estimate.timestamp).format("MM/DD/YYYY")}</th>
+                  <th>{moment.unix(estimate.timestamp).format('MM/DD/YYYY')}</th>
                   <th>
                     {estimate.source === 'self_estimation' ? 'Self' : capitalize(estimate.source)}
                   </th>
-                  <th>{skillLevels[estimate.grade]}</th>
+                  <th>
+                    {/* {skillLevels[estimate.grade]} */}
+                    <CEFRDropdown grade={estimate.grade} />
+                  </th>
                 </tr>
               ))}
             </thead>
