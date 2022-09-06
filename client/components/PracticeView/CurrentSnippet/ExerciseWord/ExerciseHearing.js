@@ -20,6 +20,8 @@ const ExerciseHearing = ({ word, handleChange }) => {
   const [iconDisabled, setIconDisabled] = useState(false)
   const [show, setShow] = useState(false)
   const [focusTimeout, setFocusTimeout] = useState(false)
+  const [count, setCount] = useState(0)
+  const [lastWord, setLastWord] = useState('')
   const inputRef = createRef(null)
   const { voiceSampleOnCooldown } = useSelector(({ practice }) => practice)
   const currentAnswer = useSelector(({ practice }) => practice.currentAnswers[word.ID])
@@ -82,7 +84,16 @@ const ExerciseHearing = ({ word, handleChange }) => {
     dispatch(setFocusedWord(word))
     if (!focusTimeout && !voiceSampleOnCooldown) {
       console.log('speaking ', word.audio, '  ', voice)
-      speak(word.audio, voice, 'exercise', resource_usage)
+      if (lastWord === ''){
+        setCount(count + 1)
+        setLastWord(word)
+      }
+      else if (word === lastWord) setCount(count + 1)
+      else{
+        setCount(0)
+        setLastWord(word)
+      }
+      speak(word.audio, voice, 'exercise', resource_usage, count)
       setFocusTimeout(true)
       dispatch(handleVoiceSampleCooldown())
       setTimeout(() => {

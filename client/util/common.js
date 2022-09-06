@@ -527,7 +527,7 @@ export const getTextWidth = text => {
   return 65 + metrics.width // add just random number, lets hope its fine.
 }
 
-export const speak = (surfaceWord, voice, voice_type, resource_usage) => {
+export const speak = (surfaceWord, voice, voice_type, resource_usage, nRepeat=0) => {
   const [source, lang_code, tone] = voice
   window.responsiveVoice.cancel()
   Howler.stop()
@@ -541,7 +541,7 @@ export const speak = (surfaceWord, voice, voice_type, resource_usage) => {
     )
       yandexSpeak(surfaceWord, lang_code, tone, voice_type)
     else if (source === 'tacotron2' && Howler.codecs('mp3') && surfaceWord.length > 4)
-      tacotronSpeak(surfaceWord, lang_code, tone, voice_type, 0)
+      tacotronSpeak(surfaceWord, lang_code, tone, voice_type, 0 - nRepeat * 3 % 6)
     else if (source === 'coqui_ai' && Howler.codecs('mp3') && surfaceWord.length > 4)
       coquiSpeak(surfaceWord, lang_code, tone, voice_type)
     else if (speakFallbackConfig.hasOwnProperty(voice.join('-')))
