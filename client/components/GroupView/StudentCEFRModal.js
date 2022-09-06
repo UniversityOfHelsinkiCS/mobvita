@@ -24,7 +24,10 @@ const StudentCEFRModal = ({ open, setOpen, cefrHistory, groupId, sid }) => {
   }
 
   const handleSubmit = () => {
-    dispatch(updateStudentCEFRLevels(groupId, sid, updatedCEFRHistory))
+    const withoutAdaptiveTests = updatedCEFRHistory.filter(
+      estimate => estimate.source !== 'adaptive_test'
+    )
+    dispatch(updateStudentCEFRLevels(groupId, sid, withoutAdaptiveTests))
     setModified(false)
   }
 
@@ -62,7 +65,9 @@ const StudentCEFRModal = ({ open, setOpen, cefrHistory, groupId, sid }) => {
             className="flex space-between"
             style={{ marginBottom: '.25em', marginRight: '.25em', marginLeft: '.25em' }}
           >
-            <Button variant="primary" onClick={handleSubmit}>Submit changes</Button>
+            <Button variant="primary" onClick={handleSubmit}>
+              Submit changes
+            </Button>
             {modified && (
               <Button variant="secondary" onClick={undoChanges}>
                 Undo changes
