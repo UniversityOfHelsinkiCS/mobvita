@@ -1338,5 +1338,6 @@
     "x-axis-difficult": "more difficult",
     "FEEDBACK-TUA-Temporaalirakenne": "This is construction of type \"Temporal\" (Temporaalirakenne)",
     "overview-vocabulary-explanation": "Panoramica",
-    "current-cefr-level": "Student's current CEFR level"
+    "current-cefr-level": "Student's current CEFR level",
+    "view-previous-and-edit": "View previous and edit"
 }

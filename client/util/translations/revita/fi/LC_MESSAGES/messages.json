@@ -1337,5 +1337,6 @@
     "x-axis-difficult": "hankalat",
     "FEEDBACK-TUA-Temporaalirakenne": "This is construction of type \"Temporal\" (Temporaalirakenne)",
     "overview-vocabulary-explanation": "Yleiskatsaus",
-    "current-cefr-level": "Oppilaan tämänhetkinen CEFR-taso"
+    "current-cefr-level": "Oppilaan tämänhetkinen CEFR-taso",
+    "view-previous-and-edit": "Tarkastele aiempia ja muokkaa"
 }

@@ -16,6 +16,7 @@ import moment from 'moment'
 import { Divider, Dropdown, Icon, Popup } from 'semantic-ui-react'
 import Summary from './Summary'
 import StudentProgress from './StudentProgress'
+import StudentCEFRModal from './StudentCEFRModal'
 import StudentVocabularyProgress from './StudentVocabularyProgress'
 import StudentGrammarProgress from './StudentGrammarProgress'
 import NoGroupsView from './NoGroupsView'
@@ -254,23 +255,30 @@ const GroupAnalytics = ({ role }) => {
               disabled={!currentStudent}
             />
           </div>
-          <div>
-            <FormattedMessage id="current-cefr-level" />:{' '}
-            <b>{currentCEFR}</b>
-            <Button variant="primary" onClick={() => setOpenEditModal(true)}>
-              <FormattedMessage id="view-previous-and-edit" />
-            </Button>
-            {/* 
-            <Dropdown
-              text={cefrDropDownMenuText}
-              selection
-              fluid
-              options={cefrLevelOptions}
-              onChange={(_, { value }) => handleStudentChange(value)}
-              disabled={!currentStudent}
-            />
-            */}
-          </div>
+          {hiddenFeatures && (
+            <div>
+              <StudentCEFRModal
+                open={openEditModal}
+                setOpen={setOpenEditModal}
+                cefrHistory={cefrHistory}
+              />
+              <FormattedMessage id="current-cefr-level" />:{' '}
+              <b style={{ marginRight: '.5em' }}>{currentCEFR}</b>
+              <Button variant="primary" onClick={() => setOpenEditModal(true)}>
+                <FormattedMessage id="view-previous-and-edit" />
+              </Button>
+              {/* 
+              <Dropdown
+                text={cefrDropDownMenuText}
+                selection
+                fluid
+                options={cefrLevelOptions}
+                onChange={(_, { value }) => handleStudentChange(value)}
+                disabled={!currentStudent}
+              />
+              */}
+            </div>
+          )}
           <Divider />
           <div className="space-evenly">
             <button
