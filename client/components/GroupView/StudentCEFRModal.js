@@ -99,16 +99,18 @@ const StudentCEFRModal = ({ open, setOpen, cefrHistory, groupId, sid }) => {
               <thead>
                 <tr key="summary-header-row">
                   <th style={{ textAlign: 'center', verticalAlign: 'middle' }}>Date</th>
-                  <th>Estimator</th>
-                  <th>Grade</th>
+                  <th style={{ textAlign: 'center', verticalAlign: 'middle' }}>Estimator</th>
+                  <th style={{ textAlign: 'center', verticalAlign: 'middle' }}>Grade</th>
                 </tr>
+              </thead>
+              <tbody>
                 {updatedCEFRHistory.map((estimate, index) => (
                   <tr>
-                    <th>{moment.unix(estimate.timestamp).format('MM/DD/YYYY')}</th>
-                    <th>
+                    <th style={{ verticalAlign: 'middle', fontWeight: '400' }}>{moment.unix(estimate.timestamp).format('MM/DD/YYYY')}</th>
+                    <th style={{ verticalAlign: 'middle', fontWeight: '400' }}>
                       {estimate.source === 'self_estimation' ? 'Self' : capitalize(estimate.source)}
                     </th>
-                    <th>
+                    <th style={{ verticalAlign: 'middle', fontWeight: '400' }}>
                       <CEFRDropdown
                         estimate={estimate}
                         index={index}
@@ -123,6 +125,7 @@ const StudentCEFRModal = ({ open, setOpen, cefrHistory, groupId, sid }) => {
                         cursor: 'pointer',
                         marginTop: '.6em',
                         marginLeft: '.25em',
+                        marginRight: '.75em',
                         color: 'red',
                       }}
                       size="large"
@@ -131,7 +134,7 @@ const StudentCEFRModal = ({ open, setOpen, cefrHistory, groupId, sid }) => {
                     />
                   </tr>
                 ))}
-              </thead>
+              </tbody>
             </Table>
           </div>
         </div>
