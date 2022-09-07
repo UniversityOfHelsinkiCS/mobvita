@@ -34,13 +34,13 @@ const getYandexTTS = async (req, res) => {
 
 const getFinTTS = async (req, res) => {
     try{
-        const { text } = req.query
+        const { text, speed } = req.query
         const url = process.env.FIN_TTS_URL || 'http://hpz440-2.cs.helsinki.fi:6000'
         var config = {
             method: 'post',
             url: `${url}/fin_synthesizer`,
             headers: {'Content-Type': 'application/json'},
-            data : {text: text},
+            data : {text: text, speed: speed},
             responseType: 'arraybuffer'
         }
 
