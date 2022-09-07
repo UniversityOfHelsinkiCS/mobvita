@@ -20,7 +20,7 @@ const FlashcardsPracticeEncouragement = ({ open, setOpen, prevBlueCards }) => {
     return (
       <Draggable cancel=".interactable">
         <div className={width > 700 ? "draggable-encouragement" : "draggable-encouragement-mobile"}>
-          <div style={{ margin: '.75em' }}>
+          <div>
             <div className="flex-reverse">
               <Icon
                 className="interactable"

@@ -41,7 +41,7 @@ const FlashcardsEncouragement = ({
     if (blueFlashcards) {
       if (correctAnswers === deckSize && creditableWordsNum) {
         initList = initList.concat(
-          <div className="pt-md">
+          <div>
             <div className="flex">
               <div
                 className="header-2"
@@ -106,7 +106,7 @@ const FlashcardsEncouragement = ({
         }
       } else {
         initList = initList.concat(
-          <div className="pt-md">
+          <div>
             <div className="flex">
               <div
                 className="header-2"
@@ -190,7 +190,7 @@ const FlashcardsEncouragement = ({
     } else {
       if (correctAnswers > 0) {
         initList = initList.concat(
-          <div className="pt-md">
+          <div>
             <div className="flex">
               <div
                 className="header-2"
@@ -225,7 +225,7 @@ const FlashcardsEncouragement = ({
         )
       } else {
         initList = initList.concat(
-          <div className="pt-md">
+          <div>
             <div className="flex">
               <div
                 className="header-2"
@@ -341,7 +341,7 @@ const FlashcardsEncouragement = ({
     return (
       <Draggable cancel=".interactable">
         <div className="draggable-encouragement">
-          <div style={{ margin: '.75em' }}>
+          <div>
             {recmdList.map((recommendation, index) => index < upperBound && recommendation)}
             {recmdList.length > upperBound && (
               <Button

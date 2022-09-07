@@ -54,7 +54,7 @@ const StudentCEFRModal = ({ open, setOpen, cefrHistory, groupId, sid }) => {
   if (open) {
     return (
       <Draggable cancel=".interactable">
-        <div className="draggable-modal" style={{ padding: '20px' }}>
+        <div className="draggable-modal">
           <div className="flex-reverse">
             <Icon
               className="interactable"

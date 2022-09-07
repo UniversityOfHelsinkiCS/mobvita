@@ -255,14 +255,13 @@ const DefaultActivityModal = ({
     return (
       <Draggable cancel=".interactable">
         <div className={bigScreen ? "draggable-encouragement" : "draggable-encouragement-mobile"}>
-          <div style={{ margin: '.75em' }}>
-            <div className="col-flex" style={{ marginTop: '.75em' }}>
+          <div>
+            <div className="col-flex">
               {welcomeBack ? (
                 <div className="flex">
                   <div>
                     <div
                       style={{
-                        marginTop: '.25em',
                         marginBottom: '.75em',
                         fontWeight: 500,
                         fontSize: '1.4rem',

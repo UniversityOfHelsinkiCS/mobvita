@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import { Modal, Popup, Icon } from 'semantic-ui-react'
+import { Popup, Icon } from 'semantic-ui-react'
 import Draggable from 'react-draggable'
 import { FormattedHTMLMessage, FormattedMessage, useIntl } from 'react-intl'
 import { updateEnableRecmd } from 'Utilities/redux/userReducer'
@@ -9,7 +9,6 @@ import { images, learningLanguageSelector, dictionaryLanguageSelector } from 'Ut
 import { clearNewVocabulary } from 'Utilities/redux/newVocabularyReducer'
 import { getLeaderboards } from 'Utilities/redux/leaderboardReducer'
 import { useSelector, useDispatch } from 'react-redux'
-
 import { Form, Button } from 'react-bootstrap'
 
 const ExercisesEncouragementModal = ({
@@ -276,12 +275,11 @@ const ExercisesEncouragementModal = ({
     return (
       <Draggable cancel=".interactable">
         <div className="draggable-ex-encouragement">
-          <div style={{ margin: '.75em' }}>
-            <div className="flex" style={{ marginTop: '.75em' }}>
+          <div>
+            <div className="flex">
               <div>
                 <div
                   style={{
-                    marginTop: '.25em',
                     marginBottom: '.75em',
                     fontWeight: 500,
                     fontSize: '1.4rem',
