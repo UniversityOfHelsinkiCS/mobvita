@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react'
 import { Popup, Icon } from 'semantic-ui-react'
 import Draggable from 'react-draggable'
 import { FormattedHTMLMessage, FormattedMessage, useIntl } from 'react-intl'
+import useWindowDimensions from 'Utilities/windowDimensions'
 import { updateEnableRecmd } from 'Utilities/redux/userReducer'
 import { getStoriesBlueFlashcards, getBlueFlashcards } from 'Utilities/redux/flashcardReducer'
 import { Link, useParams } from 'react-router-dom'
@@ -21,6 +22,7 @@ const ExercisesEncouragementModal = ({
   loading,
 }) => {
   const { id: storyId } = useParams()
+  const { width } = useWindowDimensions()
   const [upperBound, setUpperBound] = useState(3)
   const learningLanguage = useSelector(learningLanguageSelector)
   const dictionaryLanguage = useSelector(dictionaryLanguageSelector)
@@ -40,6 +42,7 @@ const ExercisesEncouragementModal = ({
   const { pending } = useSelector(({ user }) => user)
   const dispatch = useDispatch()
   const notFirst = storiesCovered > 1
+  const bigScreen = width > 700 
 
   const fillList = () => {
     let initList = []
@@ -274,7 +277,7 @@ const ExercisesEncouragementModal = ({
   if (open) {
     return (
       <Draggable cancel=".interactable">
-        <div className="draggable-ex-encouragement">
+        <div className={bigScreen ? "draggable-ex-encouragement" : "draggable-ex-encouragement-mobile"}>
           <div>
             <div className="flex">
               <div>
@@ -305,7 +308,7 @@ const ExercisesEncouragementModal = ({
               <img
                 src={images.fireworks}
                 alt="encouraging fireworks"
-                style={{ maxWidth: '20%', maxHeight: '20%', marginLeft: 'auto' }}
+                className={bigScreen ? 'enc-picture' : 'enc-picture-mobile'}
               />
               <Icon
                 className="interactable"

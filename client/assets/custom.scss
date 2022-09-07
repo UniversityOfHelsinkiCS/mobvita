@@ -609,6 +609,28 @@ $value in $spacing {
   color: #000000
 }
 
+.enc-picture {
+  display: block;
+  max-width: 112px;
+  max-height: 112px;
+  width: auto;
+  height: auto;
+  margin-bottom: .5em;
+  margin-left: auto;
+}
+
+.enc-picture-mobile {
+  display: block;
+  max-width: 86px;
+  max-height: 86px;
+  width: auto;
+  height: auto;
+  margin-bottom: .5em;
+  margin-left: auto;
+}
+
+
+
 .draggable-modal {
   border: 2px solid lightgrey;
   border-radius: 12px;
@@ -629,6 +651,20 @@ $value in $spacing {
   background: #FFF;
   z-index: 103;
   width: 452px;
+  color: #000000
+}
+
+.draggable-ex-encouragement-mobile {
+  border: 2px solid lightgrey;
+  border-radius: 12px;
+  padding: 20px;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  margin-left: -176px;
+  background: #FFF;
+  z-index: 103;
+  width: 352px;
   color: #000000
 }
 

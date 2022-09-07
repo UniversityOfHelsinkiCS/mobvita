@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react'
 import { FormattedMessage, FormattedHTMLMessage, useIntl } from 'react-intl'
 import { Popup, Icon } from 'semantic-ui-react'
 import Draggable from 'react-draggable'
+import useWindowDimensions from 'Utilities/windowDimensions'
 import { useDispatch, useSelector } from 'react-redux'
 import { updateEnableRecmd } from 'Utilities/redux/userReducer'
 import { Link, useHistory } from 'react-router-dom'
@@ -22,6 +23,7 @@ const FlashcardsEncouragement = ({
   storyCardsPending,
   totalAnswers,
 }) => {
+  const { width } = useWindowDimensions()
   const history = useHistory()
   const intl = useIntl()
   const dispatch = useDispatch()
@@ -30,6 +32,7 @@ const FlashcardsEncouragement = ({
   const blueFlashcards = history.location.pathname.includes('fillin')
   const { pending } = useSelector(({ user }) => user)
   const { creditableWordsNum } = useSelector(({ flashcards }) => flashcards)
+  const bigScreen = width > 700
 
   const closeModal = () => {
     setOpen(false)
@@ -44,8 +47,8 @@ const FlashcardsEncouragement = ({
           <div>
             <div className="flex">
               <div
-                className="header-2"
                 style={{
+                  fontSize: '1.4rem',
                   marginBottom: '1em',
                   fontWeight: 500,
                 }}
@@ -58,7 +61,7 @@ const FlashcardsEncouragement = ({
               <img
                 src={images.encTrophy}
                 alt="encouraging trophy"
-                style={{ maxWidth: '25%', maxHeight: '25%', marginLeft: 'auto' }}
+                className={bigScreen ? 'enc-picture' : 'enc-picture-mobile'}
               />
               <Icon
                 className="interactable"
@@ -109,8 +112,8 @@ const FlashcardsEncouragement = ({
           <div>
             <div className="flex">
               <div
-                className="header-2"
                 style={{
+                  fontSize: '1.4rem',
                   marginBottom: '1em',
                   fontWeight: 500,
                 }}
@@ -125,7 +128,7 @@ const FlashcardsEncouragement = ({
               <img
                 src={images.fireworks}
                 alt="encouraging fireworks"
-                style={{ maxWidth: '25%', maxHeight: '25%', marginLeft: 'auto' }}
+                className={bigScreen ? 'enc-picture' : 'enc-picture-mobile'}
               />
               <Icon
                 className="interactable"
@@ -193,8 +196,8 @@ const FlashcardsEncouragement = ({
           <div>
             <div className="flex">
               <div
-                className="header-2"
                 style={{
+                  fontSize: '1.4rem',
                   marginBottom: '1em',
                   fontWeight: 500,
                 }}
@@ -207,7 +210,7 @@ const FlashcardsEncouragement = ({
               <img
                 src={images.encTrophy}
                 alt="encouraging trophy"
-                style={{ maxWidth: '25%', maxHeight: '25%', marginLeft: 'auto' }}
+                className={bigScreen ? 'enc-picture' : 'enc-picture-mobile'}
               />
               <Icon
                 className="interactable"
@@ -228,8 +231,8 @@ const FlashcardsEncouragement = ({
           <div>
             <div className="flex">
               <div
-                className="header-2"
                 style={{
+                  fontSize: '1.4rem',
                   marginBottom: '1em',
                   fontWeight: 500,
                 }}
@@ -239,7 +242,7 @@ const FlashcardsEncouragement = ({
               <img
                 src={images.fireworks}
                 alt="encouraging fireworks"
-                style={{ maxWidth: '25%', maxHeight: '25%', marginLeft: 'auto' }}
+                className={bigScreen ? 'enc-picture' : 'enc-picture-mobile'}
               />
               <Icon
                 className="interactable"
@@ -340,7 +343,7 @@ const FlashcardsEncouragement = ({
   if (open) {
     return (
       <Draggable cancel=".interactable">
-        <div className="draggable-encouragement">
+        <div className={bigScreen ? "draggable-encouragement" : "draggable-encouragement-mobile"}>
           <div>
             {recmdList.map((recommendation, index) => index < upperBound && recommendation)}
             {recmdList.length > upperBound && (

@@ -259,12 +259,12 @@ const DefaultActivityModal = ({
             <div className="col-flex">
               {welcomeBack ? (
                 <div className="flex">
-                  <div>
+                  <div className="col-flex">
                     <div
                       style={{
-                        marginBottom: '.75em',
                         fontWeight: 500,
                         fontSize: '1.4rem',
+                        marginBottom: bigScreen ? '1em' : '.5em',
                       }}
                     >
                       {intl.formatMessage({ id: 'welcome-back-encouragement' }, { username })}
@@ -283,12 +283,7 @@ const DefaultActivityModal = ({
                   <img
                     src={images.balloons}
                     alt="encouraging balloons"
-                    style={{
-                      maxWidth: bigScreen ? '25%' : '25%',
-                      maxHeight: bigScreen ? '25%' : '20%',
-                      marginBottom: '.5em',
-                      marginLeft: 'auto',
-                    }}
+                    className={bigScreen ? 'enc-picture' : 'enc-picture-mobile'}
                   />
                   <Icon
                     className="interactable"
