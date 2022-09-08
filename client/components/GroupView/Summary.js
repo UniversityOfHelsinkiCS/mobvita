@@ -19,6 +19,7 @@ const Summary = ({
   setContent,
   firstFetch,
   setCefrHistory,
+  setFirstFetch,
 }) => {
   const intl = useIntl()
   const [sorter, setSorter] = useState({})
@@ -119,6 +120,7 @@ const Summary = ({
     setCefrHistory(user.cefr_grade)
     setStudent(student)
     setContent('progress')
+    setFirstFetch(true)
   }
 
   const cleanGroupName = groupName

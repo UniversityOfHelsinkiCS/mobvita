@@ -70,6 +70,7 @@ const GroupAnalytics = ({ role }) => {
 
   const handleStudentChange = value => {
     setCurrentStudent(JSON.parse(value))
+    setFirstFetch(true)
   }
 
   const handlePreviousVocabulary = () => {
@@ -142,8 +143,10 @@ const GroupAnalytics = ({ role }) => {
   useEffect(() => {
     if (currentGroup?.students) {
       setCurrentStudent(currentGroup?.students[0])
+      setFirstFetch(true)
     }
   }, [currentGroup])
+
   const compare = (a, b) => {
     if (a.userName.toLowerCase() < b.userName.toLowerCase()) return -1
     if (a.userName.toLowerCase() > b.userName.toLowerCase()) return 1
@@ -391,6 +394,7 @@ const GroupAnalytics = ({ role }) => {
               setContent={setContent}
               firstFetch={firstFetch}
               setCefrHistory={setCefrHistory}
+              setFirstFetch={setFirstFetch}
             />
           ) : (
             <StudentGrammarProgress
