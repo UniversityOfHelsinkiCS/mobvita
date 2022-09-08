@@ -108,7 +108,7 @@ const StudentCEFRModal = ({ open, setOpen, cefrHistory, groupId, sid }) => {
                   <tr>
                     <th style={{ verticalAlign: 'middle', fontWeight: '400' }}>{moment.unix(estimate.timestamp).format('MM/DD/YYYY')}</th>
                     <th style={{ verticalAlign: 'middle', fontWeight: '400' }}>
-                      {estimate.source === 'self_estimation' ? 'Self' : capitalize(estimate.source)}
+                      {estimate.source === 'self_estimation' ? 'Self' : capitalize(estimate.source.replace('_', ' '))}
                     </th>
                     <th style={{ verticalAlign: 'middle', fontWeight: '400' }}>
                       <CEFRDropdown

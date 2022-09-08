@@ -26,12 +26,12 @@ const CEFRDropdown = ({
   }, [estimate?.grade])
 
   useEffect(() => {
-    if (index) {
+    if (index != undefined) { // index 0 wont come here
       const newList = [...updatedCEFRHistory]
       newList[index] = {
         ...newList[index],
         grade: chosenValue,
-        source: 'teacher',
+        source: updatedCEFRHistory[index].source,//'teacher',
         tagger: userId,
       }
       setUpdatedCEFRHistory(newList)
