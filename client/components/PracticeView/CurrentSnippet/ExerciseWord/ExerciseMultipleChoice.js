@@ -25,10 +25,10 @@ const ExerciseMultipleChoice = ({ word, handleChange }) => {
   const [eloScoreHearts, setEloScoreHearts] = useState([1, 2, 3, 4, 5])
   const [spentHints, setSpentHints] = useState([])
 
-  const { tested, isWrong, message, hints, ID: wordId } = word
+  const { tested, isWrong, message, hints, ID: wordId, requested_hints } = word
   const value = currentAnswer ? currentAnswer.users_answer : ''
   const hintButtonVisibility =
-    (!hints || filteredHintsList.length < 1 || preHints.length < filteredHintsList?.length) &&
+    (!hints || filteredHintsList.length < 1 || preHints.length - requested_hints?.length < filteredHintsList?.length) &&
     !emptyHintsList
       ? { visibility: 'visible' }
       : { visibility: 'hidden' }
@@ -73,19 +73,21 @@ const ExerciseMultipleChoice = ({ word, handleChange }) => {
   }, [focusedWord])
 
   useEffect(() => {
-    if (message && !hints) {
+    if (message && !hints && !requested_hints) {
       setPreHints([])
     } else if (attempt !== 0) {
       setFilteredHintsList(hints)
-      setPreHints([])
+      setPreHints(requested_hints || [])
+      dispatch(incrementHintRequests(wordId, requested_hints?.length))
     } else {
       setFilteredHintsList(hints?.filter(hint => hint !== message))
-      setPreHints([])
+      setPreHints(requested_hints || [])
+      dispatch(incrementHintRequests(wordId, requested_hints?.length))
     }
     if (!hints || !hints.length || message && !hints.filter(hint => hint !== message)) {
       setEmptyHintsList(true)
     }
-  }, [message, hints, attempt])
+  }, [message, hints, requested_hints, attempt])
 
   const maximumLength = word.choices.reduce((maxLength, currLength) => {
     if (currLength.length > maxLength) return currLength.length
@@ -123,10 +125,10 @@ const ExerciseMultipleChoice = ({ word, handleChange }) => {
   }
 
   const handlePreHints = () => {
-    if (!hints || filteredHintsList.length < 1) {
+    if (!hints && !requested_hints || filteredHintsList.length < 1 && requested_hints.length < 1) {
       setEmptyHintsList(true)
     } else {
-      setPreHints(preHints.concat(filteredHintsList[preHints.length]))
+      setPreHints(preHints.concat(filteredHintsList[preHints.length - requested_hints?.length]))
     }
     handleHintRequest()
     setKeepOpen(true)
@@ -168,7 +170,7 @@ const ExerciseMultipleChoice = ({ word, handleChange }) => {
           </ul>
         </div>
       )}
-      {emptyHintsList && (
+      {emptyHintsList && requested_hints?.length < 1 && (
         <div className="tooltip-green">
           <FormattedMessage id="no-hints-available" />
         </div>

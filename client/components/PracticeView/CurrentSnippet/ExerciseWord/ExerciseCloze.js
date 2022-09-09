@@ -54,6 +54,7 @@ const ExerciseCloze = ({ word, handleChange }) => {
     id: storyId,
     message,
     hints,
+    requested_hints
   } = word
 
   const target = useRef()
@@ -61,7 +62,7 @@ const ExerciseCloze = ({ word, handleChange }) => {
   const [emptyHintsList, setEmptyHintsList] = useState(false)
   const voice = voiceLanguages[learningLanguage]
   const hintButtonVisibility =
-    (!hints || filteredHintsList.length < 1 || preHints.length < filteredHintsList?.length) &&
+    (!hints || filteredHintsList.length < 1 || preHints.length - requested_hints?.length < filteredHintsList?.length) &&
     !emptyHintsList
       ? { visibility: 'visible' }
       : { visibility: 'hidden' }
@@ -103,10 +104,10 @@ const ExerciseCloze = ({ word, handleChange }) => {
   }
 
   const handlePreHints = () => {
-    if (!hints || filteredHintsList.length < 1) {
+    if (!hints && !requested_hints || filteredHintsList.length < 1 && requested_hints.length < 1) {
       setEmptyHintsList(true)
     } else {
-      setPreHints(preHints.concat(filteredHintsList[preHints.length]))
+      setPreHints(preHints.concat(filteredHintsList[preHints.length - requested_hints?.length]))
     }
     handleHintRequest()
     setKeepOpen(true)
@@ -164,19 +165,21 @@ const ExerciseCloze = ({ word, handleChange }) => {
   }, [tested])
 
   useEffect(() => {
-    if (message && !hints) {
+    if (message && !hints && !requested_hints) {
       setPreHints([])
     } else if (attempt !== 0) {
       setFilteredHintsList(hints)
-      setPreHints([])
+      setPreHints(requested_hints || [])
+      dispatch(incrementHintRequests(wordId, requested_hints?.length))
     } else {
       setFilteredHintsList(hints?.filter(hint => hint !== message))
-      setPreHints([])
+      setPreHints(requested_hints || [])
+      dispatch(incrementHintRequests(wordId, requested_hints?.length))
     }
     if (!hints || !hints.length || message && !hints.filter(hint => hint !== message)) {
       setEmptyHintsList(true)
     }
-  }, [message, hints, attempt])
+  }, [message, hints, requested_hints, attempt])
 
   useEffect(() => {
     if (focusedWord !== word) {
@@ -251,7 +254,7 @@ const ExerciseCloze = ({ word, handleChange }) => {
           </ul>
         </div>
       )}
-      {emptyHintsList && (
+      {emptyHintsList && requested_hints?.length < 1 && (
         <div className="tooltip-hint" style={{ textAlign: 'left' }}>
           <FormattedMessage id="no-hints-available" />
         </div>
