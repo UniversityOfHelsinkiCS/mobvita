@@ -254,7 +254,7 @@ const ExerciseCloze = ({ word, handleChange }) => {
           </ul>
         </div>
       )}
-      {emptyHintsList && requested_hints?.length < 1 && (
+      {emptyHintsList && (!requested_hints || requested_hints.length < 1)  && (
         <div className="tooltip-hint" style={{ textAlign: 'left' }}>
           <FormattedMessage id="no-hints-available" />
         </div>
