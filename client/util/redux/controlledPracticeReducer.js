@@ -158,6 +158,7 @@ export default (
         pending: true,
         error: false,
         reset: false,
+        timedExercise: false,
       }
     case 'GET_FROZEN_TOKENS_FAILURE':
       return {
@@ -171,6 +172,7 @@ export default (
         pending: false,
         error: false,
         frozen_snippets: action.response.frozen_snippets,
+        timedExercise: action.response.timed_exercise,
       }
 
     case 'GET_FROZEN_SNIPPETS_PREVIEW_ATTEMPT':

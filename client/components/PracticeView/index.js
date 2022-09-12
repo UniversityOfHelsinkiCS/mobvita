@@ -52,6 +52,7 @@ const PracticeView = () => {
   const mode = getMode()
   const snippetsTotalNum = snippets?.focused?.total_num
   const controlledPractice = mode === 'controlled-practice'
+  const timedExercise = snippets?.focused?.timed_exercise
 
   const TIMER_START_DELAY = 2000
 
@@ -172,13 +173,14 @@ const PracticeView = () => {
                 progress={(currentSnippetNum / snippetsTotalNum).toFixed(2)}
               />
             </div>
-
-            <PracticeTimer
-              controlledPractice={controlledPractice}
-              timerContent={getTimerContent()}
-              showPauseButton={showPauseButton}
-              handlePauseOrResumeClick={handlePauseOrResumeClick}
-            />
+            {timedExercise && (
+              <PracticeTimer
+                controlledPractice={controlledPractice}
+                timerContent={getTimerContent()}
+                showPauseButton={showPauseButton}
+                handlePauseOrResumeClick={handlePauseOrResumeClick}
+              />
+            )}
 
             <div
               className="story-title"

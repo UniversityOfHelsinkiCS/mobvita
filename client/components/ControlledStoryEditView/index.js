@@ -33,7 +33,6 @@ const ControlledStoryEditView = ({ match }) => {
   const mode = getMode()
   const history = useHistory()
   const [showRefreshButton, setShowRefreshButton] = useState(false)
-  const [timedExercise, setTimedExercise] = useState(false)
   const [focusedConcept, setFocusedConcept] = useState(null)
   const controlledPractice = useSelector(({ controlledPractice }) => controlledPractice)
   const { story, pending } = useSelector(({ stories, locale }) => ({
@@ -41,7 +40,7 @@ const ControlledStoryEditView = ({ match }) => {
     pending: stories.focusedPending,
     locale,
   }))
-
+  const [timedExercise, setTimedExercise] = useState(controlledPractice?.timedExercise || true)
   const user = useSelector(state => state.user.data)
 
   const { progress, storyId } = useSelector(({ uploadProgress }) => uploadProgress)
@@ -63,6 +62,10 @@ const ControlledStoryEditView = ({ match }) => {
 
     return initialAcceptedTokensList
   }
+
+  useEffect(() => {
+    setTimedExercise(controlledPractice.timedExercise)
+  }, [controlledPractice?.timedExercise])
 
   useEffect(() => {
     if (user?.user.is_teacher) {
