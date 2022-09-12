@@ -94,10 +94,10 @@ const ExerciseMultipleChoice = ({ word, handleChange }) => {
     return maxLength
   }, 0)
 
-  let testString = ''
+  let longestWord = ''
   word.choices.forEach(choice => {
-    if (choice.length > testString.length) {
-      testString = choice
+    if (choice.length > longestWord.length) {
+      longestWord = choice
     }
   })
 
@@ -105,7 +105,7 @@ const ExerciseMultipleChoice = ({ word, handleChange }) => {
     setShow(false)
   }
 
-  const placeholder = '_'.repeat(maximumLength)
+  const placeholder = '_'.repeat(Math.min(maximumLength, 4))
 
   const handle = (e, word, data) => {
     if (!touched) {
@@ -139,6 +139,15 @@ const ExerciseMultipleChoice = ({ word, handleChange }) => {
       setShow(false)
     }
     setKeepOpen(false)
+  }
+
+  const getInputWidth = () => {
+    const width = getTextWidth(longestWord)
+    if (width >= 150) {
+      return width + 20
+    }
+
+    return width
   }
 
   const tooltip = (
@@ -200,8 +209,8 @@ const ExerciseMultipleChoice = ({ word, handleChange }) => {
         selection
         floating
         style={{
-          width: getTextWidth(testString),
-          minWidth: getTextWidth(testString),
+          width: getInputWidth(),
+          minWidth: getInputWidth(),
           backgroundColor: getWordColor(word.level, grade, skillLevels),
         }}
         className={`${className}`}
