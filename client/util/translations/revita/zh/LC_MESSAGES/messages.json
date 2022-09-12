@@ -693,5 +693,6 @@
     "FEEDBACK-TUA-Temporaalirakenne": "这是表达时间的结构(Temporaalirakenne)",
     "overview-vocabulary-explanation": "All words that you have worked with in stories so far: mastered and not yet mastered",
     "current-cefr-level": "Student's current CEFR level",
-    "view-previous-and-edit": "View and edit grades"
+    "view-previous-and-edit": "View and edit grades",
+    "timed-practice-toggle": "Timed practice"
 }

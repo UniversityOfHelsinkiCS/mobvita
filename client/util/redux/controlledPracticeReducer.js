@@ -9,10 +9,10 @@ export const cancelControlledStory = storyId => {
   return callBuilder(route, prefix)
 }
 
-export const freezeControlledStory = (storyId, snippets) => {
+export const freezeControlledStory = (storyId, snippets, timedExercise) => {
   const route = `/stories/${storyId}/frozen`
   const prefix = 'FREEZE_ALL_SNIPPETS'
-  const payload = { snippets }
+  const payload = { snippets, timedExercise }
   return callBuilder(route, prefix, 'post', payload)
 }
 

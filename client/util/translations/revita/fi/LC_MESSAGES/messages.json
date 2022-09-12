@@ -1338,5 +1338,6 @@
     "FEEDBACK-TUA-Temporaalirakenne": "This is construction of type \"Temporal\" (Temporaalirakenne)",
     "overview-vocabulary-explanation": "Yleiskatsaus",
     "current-cefr-level": "Oppilaan tämänhetkinen CEFR-taso",
-    "view-previous-and-edit": "Tarkastele ja muokkaa tasoja"
+    "view-previous-and-edit": "Tarkastele ja muokkaa tasoja",
+    "timed-practice-toggle": "Ajastettu tarina"
 }

@@ -1339,5 +1339,6 @@
     "FEEDBACK-TUA-Temporaalirakenne": "This is construction of type \"Temporal\" (Temporaalirakenne)",
     "overview-vocabulary-explanation": "Panoramica",
     "current-cefr-level": "Il livello CEFR corrente dello studente",
-    "view-previous-and-edit": "View and edit grades"
+    "view-previous-and-edit": "View and edit grades",
+    "timed-practice-toggle": "Timed practice"
 }

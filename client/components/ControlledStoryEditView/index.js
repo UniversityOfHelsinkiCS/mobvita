@@ -33,6 +33,7 @@ const ControlledStoryEditView = ({ match }) => {
   const mode = getMode()
   const history = useHistory()
   const [showRefreshButton, setShowRefreshButton] = useState(false)
+  const [timedExercise, setTimedExercise] = useState(false)
   const [focusedConcept, setFocusedConcept] = useState(null)
   const controlledPractice = useSelector(({ controlledPractice }) => controlledPractice)
   const { story, pending } = useSelector(({ stories, locale }) => ({
@@ -118,7 +119,7 @@ const ControlledStoryEditView = ({ match }) => {
   }
 
   const saveControlledStory = () => {
-    dispatch(freezeControlledStory(id, controlledPractice.snippets))
+    dispatch(freezeControlledStory(id, controlledPractice.snippets, timedExercise))
   }
 
   const handleEditorReset = () => {
@@ -164,6 +165,15 @@ const ControlledStoryEditView = ({ match }) => {
                 <Popup
                   content={infoBoxLabel()}
                   trigger={<Icon className="pl-sm" name="info circle" color="grey" />}
+                />
+              </div>
+              <div>
+                <Checkbox
+                  toggle
+                  label={intl.formatMessage({ id: 'timed-practice-toggle' })}
+                  checked={timedExercise}
+                  onChange={() => setTimedExercise(!timedExercise)}
+                  style={{ paddingTop: '.5em' }}
                 />
               </div>
             </div>

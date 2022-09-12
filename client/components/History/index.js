@@ -103,7 +103,12 @@ const TestTypeRow = ({ history }) => {
         >
           <div>
             {resultsObj?.type ? (
-              <FormattedMessage id={resultsObj.type.replace(/[\s_]/i, '-')} />
+              <>
+                <FormattedMessage id={resultsObj.type.replace(/[\s_]/i, '-')} />
+                {resultsObj.type === 'control story' && (
+                  <div>"{resultsObj.story_name}"</div>
+                )}
+              </>
             ) : (
               'N/A'
             )}
@@ -408,7 +413,6 @@ const History = ({ history, testView, dateFormat, handleDelete = null }) => {
           ))}
           {testView && (
             <>
-              <StoryNameRow history={history.slice(page * pageSize, page * pageSize + pageSize)} />
               <TestTypeRow history={history.slice(page * pageSize, page * pageSize + pageSize)} />
               <CefrLevelRow history={history.slice(page * pageSize, page * pageSize + pageSize)} />
             </>

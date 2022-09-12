@@ -1341,5 +1341,6 @@
     "FEEDBACK-TUA-Temporaalirakenne": "Это конструкция с прошедшим временным значением (Temporaalirakenne)",
     "overview-vocabulary-explanation": "Все слова, с которыми вы работали в текстах до сих пор: освоенные и еще не освоенные",
     "current-cefr-level": "Уровень CEFR студента",
-    "view-previous-and-edit": "Редактировать уровни студента"
+    "view-previous-and-edit": "Редактировать уровни студента",
+    "timed-practice-toggle": "Timed practice"
 }
