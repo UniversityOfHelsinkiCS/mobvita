@@ -98,6 +98,7 @@ const GroupAnalytics = ({ role }) => {
   }
 
   useEffect(() => {
+    console.log('cefr effect')
     if (cefrHistory.length > 0) {
       setCurrentCEFR(skillLevels[cefrHistory[0].grade])
     }
@@ -259,6 +260,7 @@ const GroupAnalytics = ({ role }) => {
                 open={openEditModal}
                 setOpen={setOpenEditModal}
                 cefrHistory={cefrHistory}
+                setCefrHistory={setCefrHistory}
                 groupId={currentGroupId}
                 sid={currentStudent._id}
               />

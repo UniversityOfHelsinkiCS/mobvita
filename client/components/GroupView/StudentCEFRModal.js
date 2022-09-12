@@ -4,11 +4,11 @@ import { Icon } from 'semantic-ui-react'
 import { Table, Button } from 'react-bootstrap'
 import { updateStudentCEFRLevels } from 'Utilities/redux/groupSummaryReducer'
 import Draggable from 'react-draggable'
-import { capitalize, isToday } from 'Utilities/common'
+import { capitalize, isToday, skillLevels } from 'Utilities/common'
 import moment from 'moment'
 import CEFRDropdown from './CEFRDropdown'
 
-const StudentCEFRModal = ({ open, setOpen, cefrHistory, groupId, sid }) => {
+const StudentCEFRModal = ({ open, setOpen, cefrHistory, setCefrHistory, groupId, sid }) => {
   const dispatch = useDispatch()
   const [updatedCEFRHistory, setUpdatedCEFRHistory] = useState(cefrHistory)
   const [modified, setModified] = useState(false)
@@ -37,6 +37,7 @@ const StudentCEFRModal = ({ open, setOpen, cefrHistory, groupId, sid }) => {
       estimate => estimate.source !== 'adaptive_test'
     )
     dispatch(updateStudentCEFRLevels(groupId, sid, withoutAdaptiveTests))
+    setCefrHistory(updatedCEFRHistory)
     setModified(false)
   }
 
@@ -111,27 +112,31 @@ const StudentCEFRModal = ({ open, setOpen, cefrHistory, groupId, sid }) => {
                       {estimate.source === 'self_estimation' ? 'Self' : capitalize(estimate.source.replace('_', ' '))}
                     </th>
                     <th style={{ verticalAlign: 'middle', fontWeight: '400' }}>
-                      <CEFRDropdown
-                        estimate={estimate}
-                        index={index}
-                        updatedCEFRHistory={updatedCEFRHistory}
-                        setUpdatedCEFRHistory={setUpdatedCEFRHistory}
-                        setModified={setModified}
-                      />
+                      {estimate.source === 'teacher' ? 
+                        <CEFRDropdown
+                          estimate={estimate}
+                          index={index}
+                          updatedCEFRHistory={updatedCEFRHistory}
+                          setUpdatedCEFRHistory={setUpdatedCEFRHistory}
+                          setModified={setModified}
+                        /> : skillLevels[estimate.grade]
+                      }
                     </th>
-                    <Icon
-                      className="interactable"
-                      style={{
-                        cursor: 'pointer',
-                        marginTop: '.6em',
-                        marginLeft: '.25em',
-                        marginRight: '.75em',
-                        color: 'red',
-                      }}
-                      size="large"
-                      name="close"
-                      onClick={() => removeCEFR(index)}
-                    />
+                    {estimate.source === 'teacher' && (
+                      <Icon
+                        className="interactable"
+                        style={{
+                          cursor: 'pointer',
+                          marginTop: '.6em',
+                          marginLeft: '.25em',
+                          marginRight: '.75em',
+                          color: 'red',
+                        }}
+                        size="large"
+                        name="close"
+                        onClick={() => removeCEFR(index)}
+                      />
+                    )}
                   </tr>
                 ))}
               </tbody>
