@@ -179,7 +179,7 @@ const ExerciseMultipleChoice = ({ word, handleChange }) => {
           </ul>
         </div>
       )}
-      {emptyHintsList && requested_hints?.length < 1 && (
+      {emptyHintsList && (!requested_hints || requested_hints.length < 1) && (
         <div className="tooltip-green">
           <FormattedMessage id="no-hints-available" />
         </div>
