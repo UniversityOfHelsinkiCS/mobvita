@@ -74,7 +74,7 @@ const ExercisesEncouragementModal = ({
       )
     }
 
-    if (creditableWordsNum > 0) {
+    if (creditableWordsNum >= 5) {
       initList = initList.concat(
         <div className="pt-md">
           <div className="flex" style={{ alignItems: 'center' }}>
@@ -97,9 +97,7 @@ const ExercisesEncouragementModal = ({
           <hr />
         </div>
       )
-    }
-
-    if (prevBlueCards?.num_of_rewardable_words >= 5) {
+    } else if (prevBlueCards?.num_of_rewardable_words >= 5) {
       initList = initList.concat(
         <div className="pt-md">
           <div className="flex" style={{ alignItems: 'center' }}>

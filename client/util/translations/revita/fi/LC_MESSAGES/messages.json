@@ -1262,7 +1262,7 @@
     "select-cefr-reminder": "Ole hyvä ja valitse CEFR-tasosi",
     "update-settings": "Päivitä asetukset",
     "show-difficulty-level": "Näytä tehtävien vaikeustasot",
-    "story-completed-to-blue-flashcards": "Tässä tarinassa kohtasit {nWords} uutta sanaa, joiden käännöstä et tarkistanut\n<br/>\nVoit saada pisteet näistä {nWords} sanasta!\n<br/>Tarkistetaan ainoastaan 5 niistä →",
+    "story-completed-to-blue-flashcards": "Tässä tarinassa kohtasit {nWords} uutta sanaa, joiden käännöksiä et tarkistanut.<br/>\nSaat pisteet kaikistä näistä sanoista — tarkistamalla vain 5 näistä →",
     "enable-recommendations": "Salli suositusten näyttäminen",
     "notification-settings": "Ilmoitukset",
     "never-show-recommendations": "Lopeta suositusten näyttäminen",
@@ -1285,7 +1285,7 @@
     "ask-for-a-hint": "Näytä vihje",
     "user-role-select-teacher": "Olen opettaja",
     "user-role-select-student": "Olen opiskelija",
-    "previous-stories-blue-cards": "Tarinassa:<br/>\n<i>{story}</i><br/>\nOlet kohdannut {nWords} uutta sanaa, joiden käännöksiä et tarkistanut.<br/>\nSaat pisteet kaikistä näistä sanoista — tarkistamalla vain 5 näistä →",
+    "previous-stories-blue-cards": "Tarinassa:<br/>\n<i>{story}</i><br/>\nkohtasit {nWords} uutta sanaa, joiden käännöksiä et tarkistanut.<br/>\nSaat pisteet kaikistä näistä sanoista — tarkistamalla vain 5 näistä →",
     "hide-home-page-recommendations": "Älä näytä suosituksia etusivulla",
     "tutorial-recommendation": "",
     "delete-annotation": "Poista",
@@ -1338,5 +1338,5 @@
     "FEEDBACK-TUA-Temporaalirakenne": "This is construction of type \"Temporal\" (Temporaalirakenne)",
     "overview-vocabulary-explanation": "Yleiskatsaus",
     "current-cefr-level": "Oppilaan tämänhetkinen CEFR-taso",
-    "view-previous-and-edit": "Tarkastele aiempia ja muokkaa"
+    "view-previous-and-edit": "Tarkastele ja muokkaa tasoja"
 }

@@ -640,7 +640,7 @@
     "ask-for-a-hint": "给提示吗？",
     "user-role-select-teacher": "我是一个老师",
     "user-role-select-student": "我是一个学生",
-    "previous-stories-blue-cards": "您之前遇见了{nWords}个新单词，在练习文章<i>{story}</i>的过程中，您并未要求过这些单词的翻译\n<br/>\n<br/>您可以通过练习这{nWords}个单词获得奖励!\n<br/>让我们来练习其中5个吧 →",
+    "previous-stories-blue-cards": "您之前遇见了{nWords}个新单词，在练习文章<i>{story}</i>的过程中，您并未要求过这些单词的翻译\n<br/>您可以通过练习这{nWords}个单词获得奖励!\n<br/>让我们来练习其中5个吧 →",
     "hide-home-page-recommendations": "不要在主页上显示推荐活动",
     "tutorial-recommendation": "",
     "delete-annotation": "删除",
@@ -693,5 +693,5 @@
     "FEEDBACK-TUA-Temporaalirakenne": "这是表达时间的结构(Temporaalirakenne)",
     "overview-vocabulary-explanation": "All words that you have worked with in stories so far: mastered and not yet mastered",
     "current-cefr-level": "Student's current CEFR level",
-    "view-previous-and-edit": "View previous and edit"
+    "view-previous-and-edit": "View and edit grades"
 }

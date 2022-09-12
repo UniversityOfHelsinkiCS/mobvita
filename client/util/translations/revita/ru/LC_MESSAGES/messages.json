@@ -1265,7 +1265,7 @@
     "select-cefr-reminder": "Выбери свой уровень CEFR",
     "update-settings": "Обновить настройки",
     "show-difficulty-level": "Показать сложность упражнения",
-    "story-completed-to-blue-flashcards": "In this story you encountered {nWords} new words — for which you did not check translation.\n<br/>You can get credit for these {nWords} words!\n<br/>Let's check just 5 of them →",
+    "story-completed-to-blue-flashcards": "В этом тексте есть {nWords} новых слов, для которых ты не проверял/а перевод — \n<br/>Проверим 5 из них, чтобы получить баллы за <b>все</b> эти слова! →",
     "enable-recommendations": "Включить рекомендации",
     "notification-settings": "Уведомления",
     "never-show-recommendations": "Отключить рекомендации",
@@ -1288,7 +1288,7 @@
     "ask-for-a-hint": "Показать подсказку?",
     "user-role-select-teacher": "Я учитель",
     "user-role-select-student": "Я изучаю язык",
-    "previous-stories-blue-cards": "В тексте:\n<br/><i>{story}</i>\n<br/>Ты встретил/а {nWords} новых слов, для которых ты не проверял/а перевод — \n<br/>Проверим 5 из них, чтобы получить баллы за <b>все</b> эти слова! →\"",
+    "previous-stories-blue-cards": "В тексте:\n<br/><i>{story}</i>\n<br/>ты встретил/а {nWords} новых слов, для которых ты не проверял/а перевод — \n<br/>Проверим 5 из них, чтобы получить баллы за <b>все</b> эти слова! →",
     "hide-home-page-recommendations": "Не показывать рекомендации на главной странице",
     "tutorial-recommendation": "",
     "delete-annotation": "Удалить",
@@ -1340,6 +1340,6 @@
     "x-axis-difficult": "more difficult",
     "FEEDBACK-TUA-Temporaalirakenne": "Это конструкция с прошедшим временным значением (Temporaalirakenne)",
     "overview-vocabulary-explanation": "Все слова, с которыми вы работали в текстах до сих пор: освоенные и еще не освоенные",
-    "current-cefr-level": "Student's current CEFR level",
-    "view-previous-and-edit": "View previous and edit"
+    "current-cefr-level": "Уровень CEFR студента",
+    "view-previous-and-edit": "Редактировать уровни студента"
 }

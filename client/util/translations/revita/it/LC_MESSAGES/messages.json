@@ -1263,7 +1263,7 @@
     "select-cefr-reminder": "Seleziona il tuo livello QCER",
     "update-settings": "Aggiorna impostazioni",
     "show-difficulty-level": "Evidenzia i livelli di difficoltà",
-    "story-completed-to-blue-flashcards": "In this story you encountered {nWords} new words — for which you did not check translation.\n<br/>You can get credit for these {nWords} words!\n<br/>Let's check just 5 of them →",
+    "story-completed-to-blue-flashcards": "In questa storia hai incontrato {nWords} nuove parole per le quali non hai controllato la traduzione.<br/>\nPuoi ottenere credito per tutte queste parole —\nControlliamo solo 5 di loro →",
     "enable-recommendations": "Abilita consigli",
     "notification-settings": "Notifiche",
     "never-show-recommendations": "Disattiva i consigli",
@@ -1286,7 +1286,7 @@
     "ask-for-a-hint": "Mostra un indizio?",
     "user-role-select-teacher": "Sono insegnante",
     "user-role-select-student": "Sono studente",
-    "previous-stories-blue-cards": "Nella storia:<br/>\n<i>{story}</i><br/>\nhai incontrato {nWords} nuove parole per le quali non hai controllato la traduzione.<br/>\nPuoi ottenere credito per tutte queste parole —\nControlliamo solo 5 di loro →\"",
+    "previous-stories-blue-cards": "Nella storia:<br/>\n<i>{story}</i><br/>\nhai incontrato {nWords} nuove parole per le quali non hai controllato la traduzione.<br/>\nPuoi ottenere credito per tutte queste parole —\nControlliamo solo 5 di loro →",
     "hide-home-page-recommendations": "Non mostrare consigli sulla Home Page",
     "tutorial-recommendation": "",
     "delete-annotation": "Eliminare",
@@ -1338,6 +1338,6 @@
     "x-axis-difficult": "more difficult",
     "FEEDBACK-TUA-Temporaalirakenne": "This is construction of type \"Temporal\" (Temporaalirakenne)",
     "overview-vocabulary-explanation": "Panoramica",
-    "current-cefr-level": "Student's current CEFR level",
-    "view-previous-and-edit": "View previous and edit"
+    "current-cefr-level": "Il livello CEFR corrente dello studente",
+    "view-previous-and-edit": "View and edit grades"
 }

@@ -1262,7 +1262,7 @@
     "select-cefr-reminder": "Please select your CEFR-level",
     "update-settings": "Update settings",
     "show-difficulty-level": "Highlight exercise difficulty",
-    "story-completed-to-blue-flashcards": "In this story you encountered {nWords} new words — for which you did not check translation.\n<br/>You can get credit for these {nWords} words!\n<br/>Let's check just 5 of them →",
+    "story-completed-to-blue-flashcards": "In this story you saw {nWords} new words you probably know! Let's confirm that you know them all,\nby checking just 5 of them →",
     "enable-recommendations": "Enable recommendations",
     "notification-settings": "Notifications",
     "never-show-recommendations": "Turn off recommendations",
@@ -1285,7 +1285,7 @@
     "ask-for-a-hint": "Give me a hint please?",
     "user-role-select-teacher": "I am a teacher",
     "user-role-select-student": "I am a student",
-    "previous-stories-blue-cards": "In the story:<br/>\n<i>{story}</i><br/>\nYou saw {nWords} new words you probably know! Let's confirm that you know them all,\nby checking just 5 of them →",
+    "previous-stories-blue-cards": "In the story:<br/>\n<i>{story}</i><br/>\nyou saw {nWords} new words you probably know! Let's confirm that you know them all,\nby checking just 5 of them →",
     "hide-home-page-recommendations": "Do not show recommendations on the Home Page",
     "tutorial-recommendation": "",
     "delete-annotation": "Delete",
@@ -1338,5 +1338,5 @@
     "FEEDBACK-TUA-Temporaalirakenne": "This is a past \"Temporal\" construction (Temporaalirakenne)",
     "overview-vocabulary-explanation": "All words that you have worked with in stories so far: mastered and not yet mastered",
     "current-cefr-level": "Student's current CEFR level",
-    "view-previous-and-edit": "View previous and edit"
+    "view-previous-and-edit": "View and edit grades"
 }
