@@ -19,6 +19,15 @@ const ExerciseMultipleChoice = ({ word, choices, setShowRemoveTooltip }) => {
     setShowRemoveTooltip(true)
   }
 
+  const getInputWidth = () => {
+    const width = getTextWidth(choices[0])
+    if (width >= 150) {
+      return width + 20
+    }
+
+    return width
+  }
+
   return (
     <Dropdown
       key={word.ID}
@@ -28,7 +37,7 @@ const ExerciseMultipleChoice = ({ word, choices, setShowRemoveTooltip }) => {
       onClick={handle}
       selection
       floating
-      style={{ width: getTextWidth(choices[0]), minWidth: getTextWidth(choices[0]) }}
+      style={{ width: getInputWidth(), minWidth: getInputWidth() }}
       className="exercise-multiple control-mode control-mode-chosen"
     />
   )
