@@ -89,7 +89,6 @@ const Progress = () => {
   const [shownChart, setShownChart] = useState(defaultChart())
   // const [notMastered, setNotMastered] = useState([])
   // const [notMasteredBefore, setNotMasteredBefore] = useState([])
-  const [endWords, setEndWords] = useState(0)
   const [firstFetch, setFirstFetch] = useState(true)
   const bigScreen = useWindowDimension().width >= 650
   // const [targetCurve, setTargetCurve] = useState([])
@@ -142,14 +141,6 @@ const Progress = () => {
   }, [])
 
   useEffect(() => {
-    if (endWords < 500) {
-      setXAxisLength(50)
-    } else {
-      setXAxisLength(102)
-    }
-  }, [endWords])
-
-  useEffect(() => {
     if (
       firstFetch &&
       moment(endDate, 'MM/DD/YYYY', true).isValid() &&
@@ -196,7 +187,7 @@ const Progress = () => {
         */
         wordsAtEnd += oldBins[i].encountered
       }
-      setEndWords(wordsAtEnd)
+      wordsAtEnd < 500 ? setXAxisLength(50) : setXAxisLength(102)
       /*
       setNotMasteredBefore(initBeforeList)
       let initTarget = []
