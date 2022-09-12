@@ -95,7 +95,7 @@ const UploadPastedText = ({ closeModal }) => {
           </Button>
           {titleTaken && (
             <span style={{ marginLeft: '.5em', marginTop: '.75em', color: '#FF0000' }}>
-              <FormattedMessage id="story-title-already-taken" />
+              <FormattedHTMLMessage id="story-title-already-taken" />
             </span>
           )}
         </div>
