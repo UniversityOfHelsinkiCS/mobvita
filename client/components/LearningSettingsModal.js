@@ -15,7 +15,6 @@ import { sidebarSetOpen } from 'Utilities/redux/sidebarReducer'
 import { getGroups } from 'Utilities/redux/groupsReducer'
 import { hiddenFeatures, learningLanguageSelector, skillLevels } from 'Utilities/common'
 import CEFRLevelSlider from 'Components/CEFRLevelSlider'
-import ExerciseDensitySlider from './ExerciseDensitySlider'
 
 const LearningSettingsModal = ({ trigger }) => {
   const dispatch = useDispatch()
@@ -94,12 +93,6 @@ const LearningSettingsModal = ({ trigger }) => {
     const minified = cerfSliderValue / 11
     const rounded = Math.floor(minified / 10)
     dispatch(updateExerciseTemplate(rounded))
-
-    // if (rounded === 11) {
-    //   dispatch(updateExerciseTemplate('C2'))
-    // } else {
-    //   dispatch(updateExerciseTemplate(skillLevels[rounded]))
-    // }
   }
 
   const templateOptions = []
