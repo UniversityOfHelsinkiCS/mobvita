@@ -30,7 +30,8 @@ const Summary = ({
   const convertCellValue = (value, field) => {
     if (
       field === intl.formatMessage({ id: 'Email' }) ||
-      field === intl.formatMessage({ id: 'username' })
+      field === intl.formatMessage({ id: 'username' }) ||
+      field === 'cefr_grade'
     ) {
       return String(value).toLowerCase()
     }
@@ -51,8 +52,18 @@ const Summary = ({
 
     if (field) {
       return summary.sort((a, b) => {
+        if (field === 'cefr_grade') {
+          const convertedA = convertCellValue(a[field][0]?.grade, field)
+          const convertedB = convertCellValue(b[field][0]?.grade, field)
+
+          if (convertedA < convertedB || !convertedA) return direction[field] === 1 ? -1 : 1
+          if (convertedA > convertedB || !convertedB) return direction[field] === 1 ? 1 : -1
+          return 0
+        }
+
         const convertedA = convertCellValue(a[field], field)
         const convertedB = convertCellValue(b[field], field)
+
 
         if (convertedA < convertedB) return direction[field] === 1 ? -1 : 1
         if (convertedA > convertedB) return direction[field] === 1 ? 1 : -1
@@ -133,7 +144,7 @@ const Summary = ({
 
   const cleanColumnValue = (value, column) => {
     if (column === 'cefr_grade' && value?.length > 0) {
-      return skillLevels[value[0].grade]
+      return `${String(skillLevels[value[0].grade])}`
     }
 
     if (value === -Number.MAX_VALUE) {

@@ -98,7 +98,6 @@ const GroupAnalytics = ({ role }) => {
   }
 
   useEffect(() => {
-    console.log('cefr effect')
     if (cefrHistory.length > 0) {
       setCurrentCEFR(skillLevels[cefrHistory[0].grade])
     }
