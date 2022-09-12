@@ -12,6 +12,7 @@ const StudentVocabularyProgress = ({
 }) => {
   const element = useRef()
   const [xAxisLength, setXAxisLength] = useState(102)
+  const [initComplete, setInitComplete] = useState(false)
 
   useEffect(() => {
     if (previousStudentVocabulary?.stats && studentVocabulary?.stats) {
@@ -26,6 +27,7 @@ const StudentVocabularyProgress = ({
           previousStudentVocabulary.stats.seen[i] + previousStudentVocabulary.stats.flashcard[i]
       }
       wordsAtEnd < 500 ? setXAxisLength(50) : setXAxisLength(102)
+      setInitComplete(true)
     }
   }, [previousStudentVocabulary?.stats, studentVocabulary?.stats])
 
@@ -33,7 +35,7 @@ const StudentVocabularyProgress = ({
     return <Spinner />
   }
 
-  return (
+  return initComplete ? (
     <VocabularyGraph
       vocabularyData={previousStudentVocabulary.stats}
       pending={previousPending}
@@ -44,6 +46,8 @@ const StudentVocabularyProgress = ({
       xAxisLength={xAxisLength}
       element={element}
     />
+  ) : (
+    <div>loading...</div>
   )
 }
 

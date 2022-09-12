@@ -41,6 +41,7 @@ const Progress = () => {
   const element = useRef()
   const [graphType, setGraphType] = useState('column mastered')
   const [openModal, setOpenModal] = useState(true)
+  const [initComplete, setInitComplete] = useState(false)
   const {
     exerciseHistory: exerciseHistoryGraph,
     flashcardHistory,
@@ -188,6 +189,7 @@ const Progress = () => {
         wordsAtEnd += oldBins[i].encountered
       }
       wordsAtEnd < 500 ? setXAxisLength(50) : setXAxisLength(102)
+      setInitComplete(true)
       /*
       setNotMasteredBefore(initBeforeList)
       let initTarget = []
@@ -390,18 +392,22 @@ const Progress = () => {
                 prevBlueCards={storyBlueCards}
               />
               <Divider />
-              <div className="progress-page-graph-cont">
-                <VocabularyGraph
-                  vocabularyData={vocabularyData}
-                  vocabularyPending={vocabularyPending}
-                  newerVocabularyData={newerVocabularyData}
-                  newerVocabularyPending={newerVocabularyPending}
-                  graphType={graphType}
-                  setGraphType={setGraphType}
-                  xAxisLength={xAxisLength}
-                  element={element}
-                />
-              </div>
+              {initComplete ? (
+                <div className="progress-page-graph-cont">
+                  <VocabularyGraph
+                    vocabularyData={vocabularyData}
+                    vocabularyPending={vocabularyPending}
+                    newerVocabularyData={newerVocabularyData}
+                    newerVocabularyPending={newerVocabularyPending}
+                    graphType={graphType}
+                    setGraphType={setGraphType}
+                    xAxisLength={xAxisLength}
+                    element={element}
+                  />
+                </div>
+              ) : (
+                <div>loading...</div>
+              )}
               {!openModal && (
                 <div className="flex-reverse" style={{ marginTop: '.25em' }}>
                   <EncouragementButton handleShowEncouragement={() => setOpenModal(true)} />
