@@ -8,7 +8,6 @@ import {
   updateExerciseTemplate,
   updateGroupMaxPracticePercent,
 } from 'Utilities/redux/groupsReducer'
-import ExerciseDensitySlider from 'Components/ExerciseDensitySlider'
 import CERFLevelSlider from 'Components/CEFRLevelSlider'
 import { hiddenFeatures } from 'Utilities/common'
 
@@ -25,9 +24,15 @@ const GroupLearningSettingsModal = ({ open, setOpen, groupId }) => {
     max_practice_prct: maxPracticePercent,
   } = group
 
+  const getCERFSliderValue = () => {
+    if (exerciseSettingTemplate) {
+      return exerciseSettingTemplate * 11 * 11
+    }
+    return 121
+  }
+
   const [sliderValue, setSliderValue] = useState(maxPracticePercent)
-  const [cefrSliderValue, setCefrSliderValue] = useState(121)
-  const skillLevels = ['A1', 'A2', 'B1', 'B2', 'C1', 'C2']
+  const [cefrSliderValue, setCefrSliderValue] = useState(getCERFSliderValue())
 
   const handleMaxPercentUpdate = value => {
     dispatch(updateGroupMaxPracticePercent(value, groupId))
@@ -52,6 +57,7 @@ const GroupLearningSettingsModal = ({ open, setOpen, groupId }) => {
         {groupName}: <FormattedMessage id="learning-settings" />
       </Modal.Header>
       <Modal.Content style={{ display: 'flex', flexDirection: 'column' }}>
+        {/* 
         <h2 style={{ fontSize: '17px', fontWeight: '550' }}>
           <Popup
             position="top center"
@@ -71,9 +77,9 @@ const GroupLearningSettingsModal = ({ open, setOpen, groupId }) => {
           onAfterChange={handleMaxPercentUpdate}
           isDisabled={false}
         />
-
+        <Divider />
+        */}
         <>
-          <Divider />
           <div>
             <CERFLevelSlider sliderValue={cefrSliderValue} setSliderValue={setCefrSliderValue} />
           </div>
