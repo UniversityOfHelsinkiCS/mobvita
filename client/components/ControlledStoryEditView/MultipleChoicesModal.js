@@ -14,11 +14,10 @@ const MultipleChoiceModal = ({
   analyticChunkWord,
   showValidationMessage,
 }) => {
-  const [chosenSet, setChosenSet] = useState('custom')
   const [customMultiChoice1, setCustomMultiChoice1] = useState('')
   const [customMultiChoice2, setCustomMultiChoice2] = useState('')
   const [customMultiChoice3, setCustomMultiChoice3] = useState('')
-
+  const [chosenSet, setChosenSet] = useState(word.choices ? Object.keys(word.choices)[0] : 'custom')
   const bigScreen = useWindowDimension().width >= 650
 
   const longInput = () => {
