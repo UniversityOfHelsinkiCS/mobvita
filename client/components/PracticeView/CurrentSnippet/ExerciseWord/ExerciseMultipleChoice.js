@@ -25,7 +25,7 @@ const ExerciseMultipleChoice = ({ word, handleChange }) => {
   const [eloScoreHearts, setEloScoreHearts] = useState([1, 2, 3, 4, 5])
   const [spentHints, setSpentHints] = useState([])
 
-  const { tested, isWrong, message, hints, ID: wordId, requested_hints } = word
+  const { tested, isWrong, message, hints, ID: wordId, requested_hints, frozen_messages } = word
   const value = currentAnswer ? currentAnswer.users_answer : ''
   const hintButtonVisibility =
     (!hints || filteredHintsList.length < 1 || preHints.length - requested_hints?.length < filteredHintsList?.length) &&
@@ -76,11 +76,11 @@ const ExerciseMultipleChoice = ({ word, handleChange }) => {
     if (message && !hints && !requested_hints) {
       setPreHints([])
     } else if (attempt !== 0) {
-      setFilteredHintsList(hints)
+      setFilteredHintsList(hints?.filter(hint => !frozen_messages.includes(hint.substring(0, hint.length - 1))))
       setPreHints(requested_hints || [])
       dispatch(incrementHintRequests(wordId, requested_hints?.length))
     } else {
-      setFilteredHintsList(hints?.filter(hint => hint !== message))
+      setFilteredHintsList(hints?.filter(hint => hint !== message && !frozen_messages.includes(hint.substring(0, hint.length - 1))))
       setPreHints(requested_hints || [])
       dispatch(incrementHintRequests(wordId, requested_hints?.length))
     }
@@ -171,16 +171,22 @@ const ExerciseMultipleChoice = ({ word, handleChange }) => {
           ))}
         </div>
       </div>{' '}
-      {(preHints?.length > 0 || (message && attempt === 0)) && (
-        <div className="tooltip-hint" style={{ textAlign: 'left' }}>
-          <ul>
-            {message && attempt === 0 && <li dangerouslySetInnerHTML={formatGreenFeedbackText(word?.message)} />}
-            {preHints?.map(hint => (
-              <li dangerouslySetInnerHTML={formatGreenFeedbackText(hint)} />
-            ))}
-          </ul>
-        </div>
-      )}
+      <div className="tooltip-hint" style={{ textAlign: 'left' }}>
+        <ul>
+          {message && attempt === 0 && <li dangerouslySetInnerHTML={formatGreenFeedbackText(word?.message)} />}
+          {preHints?.map(hint => (
+            <li dangerouslySetInnerHTML={formatGreenFeedbackText(hint)} />
+          ))}
+          {frozen_messages?.map(mess => (
+            <span className="flex"><li style={{ fontWeight: 'bold', fontStyle: 'italic' }} dangerouslySetInnerHTML={formatGreenFeedbackText(mess)} />{ref && showRefIcon(mess) && (
+              <Icon name="external" style={{ alignSelf: 'flex-start', marginLeft: '0.5rem' }} />
+            )}
+            {explanation && (
+              checkString(mess)
+            )}</span>
+          ))}
+        </ul>
+      </div>
       {emptyHintsList && preHints?.length < 1 && (
         <div className="tooltip-green">
           <FormattedMessage id="no-hints-available" />
