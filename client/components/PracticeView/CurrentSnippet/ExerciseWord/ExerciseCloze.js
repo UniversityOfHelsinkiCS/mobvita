@@ -54,7 +54,8 @@ const ExerciseCloze = ({ word, handleChange }) => {
     id: storyId,
     message,
     hints,
-    requested_hints
+    requested_hints,
+    frozen_messages,
   } = word
 
   const target = useRef()
@@ -168,11 +169,11 @@ const ExerciseCloze = ({ word, handleChange }) => {
     if (message && !hints && !requested_hints) {
       setPreHints([])
     } else if (attempt !== 0) {
-      setFilteredHintsList(hints)
+      setFilteredHintsList(hints?.filter(hint => !frozen_messages.includes(hint.substring(0, hint.length - 1))))
       setPreHints(requested_hints || [])
       dispatch(incrementHintRequests(wordId, requested_hints?.length))
     } else {
-      setFilteredHintsList(hints?.filter(hint => hint !== message))
+      setFilteredHintsList(hints?.filter(hint => hint !== message && !frozen_messages.includes(hint.substring(0, hint.length - 1))))
       setPreHints(requested_hints || [])
       dispatch(incrementHintRequests(wordId, requested_hints?.length))
     }
@@ -225,7 +226,6 @@ const ExerciseCloze = ({ word, handleChange }) => {
           ))}
         </div>
       </div>{' '}
-      {(preHints?.length > 0 || (message && attempt === 0)) && (
         <div
           className="tooltip-hint"
           style={{ textAlign: 'left' }}
@@ -246,9 +246,16 @@ const ExerciseCloze = ({ word, handleChange }) => {
                 checkString(hint)
               )}</span>
             ))}
+            {frozen_messages?.map(mess => (
+              <span className="flex"><li style={{ fontWeight: 'bold', fontStyle: 'italic' }} dangerouslySetInnerHTML={formatGreenFeedbackText(mess)} />{ref && showRefIcon(mess) && (
+                <Icon name="external" style={{ alignSelf: 'flex-start', marginLeft: '0.5rem' }} />
+              )}
+              {explanation && (
+                checkString(mess)
+              )}</span>
+            ))}
           </ul>
         </div>
-      )}
       {emptyHintsList && preHints?.length < 1 && (
         <div className="tooltip-hint" style={{ textAlign: 'left' }}>
           <FormattedMessage id="no-hints-available" />
