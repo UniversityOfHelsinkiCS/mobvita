@@ -88,7 +88,9 @@ const Practice = ({ mode, open, setOpen }) => {
   }, [])
 
   useEffect(() => {
-    const filteredBlueCards = storyBlueCards?.filter(story => story.story_id !== storyId)
+    const filteredBlueCards = storyBlueCards?.filter(
+      story => story.story_id !== storyId && story.num_of_rewardable_words >= 5
+    )
 
     if (filteredBlueCards?.length > 0) {
       setPrevBlueCards(filteredBlueCards[filteredBlueCards.length - 1])
