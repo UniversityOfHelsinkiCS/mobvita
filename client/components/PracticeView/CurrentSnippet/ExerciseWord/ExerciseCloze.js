@@ -91,6 +91,7 @@ const ExerciseCloze = ({ word, handleChange }) => {
       )
     }
   }
+  console.log('hints ', hints, ' filtHints ', filteredHintsList, '  preh ', preHints, ' empty ', emptyHintsList)
 
   const changeValue = e => {
     setValue(e.target.value)
@@ -105,7 +106,7 @@ const ExerciseCloze = ({ word, handleChange }) => {
   }
 
   const handlePreHints = () => {
-    if (!hints && !requested_hints || filteredHintsList.length < 1 && requested_hints.length < 1) {
+    if (!hints && !requested_hints || filteredHintsList.length < 1 && requested_hints.length < 1 || hints?.length < 1) {
       setEmptyHintsList(true)
       handleHintRequest()
     } else {
