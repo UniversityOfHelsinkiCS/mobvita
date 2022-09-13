@@ -63,7 +63,7 @@ const ExerciseCloze = ({ word, handleChange }) => {
   const [emptyHintsList, setEmptyHintsList] = useState(false)
   const voice = voiceLanguages[learningLanguage]
   const hintButtonVisibility =
-    (!hints || filteredHintsList.length < 1 || preHints.length - requested_hints?.length < filteredHintsList?.length) &&
+    (!hints || filteredHintsList.length < 1 || preHints.length - requested_hints?.length < filteredHintsList?.length && preHints.length < 5) &&
     !emptyHintsList
       ? { visibility: 'visible' }
       : { visibility: 'hidden' }
@@ -117,6 +117,9 @@ const ExerciseCloze = ({ word, handleChange }) => {
   }
 
   const handleTooltipClick = () => {
+    if (ref) {
+      dispatch(setReferences(ref))
+    }
     const requestedExplanations = {}
     const explKeys = Object.keys(explanation)
 
@@ -128,9 +131,6 @@ const ExerciseCloze = ({ word, handleChange }) => {
       }
     }
 
-    if (ref) {
-      dispatch(setReferences(ref))
-    }
     if (explanation && Object.keys(requestedExplanations).length > 0) {
       dispatch(setExplanation(requestedExplanations))
     }
@@ -167,7 +167,7 @@ const ExerciseCloze = ({ word, handleChange }) => {
     setClassName(getExerciseClass(tested, isWrong))
   }, [tested])
 
-  console.log('pre hints ', preHints)
+  // console.log('pre hints ', preHints)
 
   useEffect(() => {
     if (message && !hints && !requested_hints) {
