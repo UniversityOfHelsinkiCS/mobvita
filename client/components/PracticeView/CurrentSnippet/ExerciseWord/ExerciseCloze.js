@@ -91,7 +91,6 @@ const ExerciseCloze = ({ word, handleChange }) => {
       )
     }
   }
-  console.log('hints ', hints, ' filtHints ', filteredHintsList, '  preh ', preHints, ' empty ', emptyHintsList)
 
   const changeValue = e => {
     setValue(e.target.value)
