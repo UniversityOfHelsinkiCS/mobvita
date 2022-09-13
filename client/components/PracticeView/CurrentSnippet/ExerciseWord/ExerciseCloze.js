@@ -96,9 +96,9 @@ const ExerciseCloze = ({ word, handleChange }) => {
     setValue(e.target.value)
   }
 
-  const handleHintRequest = () => {
+  const handleHintRequest = newHintList => {
     const newRequestNum = preHints.length + 1
-    dispatch(incrementHintRequests(wordId, newRequestNum))
+    dispatch(incrementHintRequests(wordId, newRequestNum, newHintList))
 
     setSpentHints(spentHints.concat(1))
     setEloScoreHearts(eloScoreHearts.slice(0, -1))
@@ -107,10 +107,12 @@ const ExerciseCloze = ({ word, handleChange }) => {
   const handlePreHints = () => {
     if (!hints && !requested_hints || filteredHintsList.length < 1 && requested_hints.length < 1) {
       setEmptyHintsList(true)
+      handleHintRequest()
     } else {
-      setPreHints(preHints.concat(filteredHintsList[preHints.length - requested_hints?.length]))
+      const newHintList = preHints.concat(filteredHintsList[preHints.length - requested_hints?.length])
+      setPreHints(newHintList)
+      handleHintRequest(newHintList)
     }
-    handleHintRequest()
     setKeepOpen(true)
   }
 
@@ -165,17 +167,19 @@ const ExerciseCloze = ({ word, handleChange }) => {
     setClassName(getExerciseClass(tested, isWrong))
   }, [tested])
 
+  console.log('pre hints ', preHints)
+
   useEffect(() => {
     if (message && !hints && !requested_hints) {
       setPreHints([])
     } else if (attempt !== 0) {
       setFilteredHintsList(hints?.filter(hint => !frozen_messages.includes(hint.substring(0, hint.length - 1))))
       setPreHints(requested_hints || [])
-      dispatch(incrementHintRequests(wordId, requested_hints?.length))
+      // dispatch(incrementHintRequests(wordId, requested_hints?.length, filteredHintsList[preHints.length - requested_hints?.length]))
     } else {
       setFilteredHintsList(hints?.filter(hint => hint !== message && !frozen_messages.includes(hint.substring(0, hint.length - 1))))
       setPreHints(requested_hints || [])
-      dispatch(incrementHintRequests(wordId, requested_hints?.length))
+      // dispatch(incrementHintRequests(wordId, requested_hints?.length, filteredHintsList[preHints.length - requested_hints?.length]))
     }
     /*
     if (!hints || !hints.length || message && !hints.filter(hint => hint !== message)) {

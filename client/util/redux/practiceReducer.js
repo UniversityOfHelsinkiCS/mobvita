@@ -20,10 +20,11 @@ export const setWillPause = state => ({ type: 'SET_WILL_PAUSE', state })
 export const setIsPaused = state => ({ type: 'SET_IS_PAUSED', state })
 export const setPracticeFinished = state => ({ type: 'SET_PRACTICE_FINISHED', state })
 export const handleVoiceSampleCooldown = () => ({ type: 'HANDLE_VOICE_SAMPLE_COOLDOWN' })
-export const incrementHintRequests = (wordId, newReqAmount) => ({
+export const incrementHintRequests = (wordId, newReqAmount, newHintList) => ({
   type: 'INCREMENT_HINT_REQUESTS',
   wordId,
   newReqAmount,
+  newHintList,
 })
 
 const initialState = {
@@ -90,6 +91,7 @@ export default (state = initialState, action) => {
           [action.wordId]: {
             ...state.currentAnswers[action.wordId],
             hintsRequested: action.newReqAmount,
+            requestedHintsList: action.newHintList,
           },
         },
       }

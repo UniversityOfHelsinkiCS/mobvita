@@ -131,6 +131,7 @@ const PracticeView = () => {
         id,
         concept,
         hintsRequested: currentAnswers[ID]?.hintsRequested,
+        requestedHintsList: currentAnswers[ID]?.requestedHintsList,
       },
     }
 

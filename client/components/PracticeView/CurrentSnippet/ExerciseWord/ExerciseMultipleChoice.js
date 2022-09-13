@@ -4,7 +4,7 @@ import { Dropdown, Icon } from 'semantic-ui-react'
 import { FormattedMessage } from 'react-intl'
 import { getTextWidth, formatGreenFeedbackText, getWordColor, skillLevels } from 'Utilities/common'
 import { incrementHintRequests } from 'Utilities/redux/practiceReducer'
-import { decreaseEloHearts } from 'Utilities/redux/snippetsReducer'
+// import { decreaseEloHearts } from 'Utilities/redux/snippetsReducer'
 import { Button } from 'react-bootstrap'
 import Tooltip from 'Components/PracticeView/Tooltip'
 
@@ -76,13 +76,13 @@ const ExerciseMultipleChoice = ({ word, handleChange }) => {
     if (message && !hints && !requested_hints) {
       setPreHints([])
     } else if (attempt !== 0) {
-      setFilteredHintsList(hints?.filter(hint => !frozen_messages.includes(hint.substring(0, hint.length - 1))))
+      setFilteredHintsList(hints.filter(hint => !frozen_messages.includes(hint.substring(0, hint.length - 1))))
       setPreHints(requested_hints || [])
-      dispatch(incrementHintRequests(wordId, requested_hints?.length))
+      // dispatch(incrementHintRequests(wordId, requested_hints?.length, requested_hints))
     } else {
       setFilteredHintsList(hints?.filter(hint => hint !== message && !frozen_messages.includes(hint.substring(0, hint.length - 1))))
       setPreHints(requested_hints || [])
-      dispatch(incrementHintRequests(wordId, requested_hints?.length))
+      // dispatch(incrementHintRequests(wordId, requested_hints?.length, requested_hints))
     }
     /*
     if (!hints || !hints.length || message && !hints.filter(hint => hint !== message)) {
@@ -118,9 +118,9 @@ const ExerciseMultipleChoice = ({ word, handleChange }) => {
     handleChange(e, word, data)
   }
 
-  const handleHintRequest = () => {
+  const handleHintRequest = newHintList => {
     const newRequestNum = preHints.length + 1
-    dispatch(incrementHintRequests(wordId, newRequestNum))
+    dispatch(incrementHintRequests(wordId, newRequestNum, requested_hints, newHintList))
 
     setSpentHints(spentHints.concat(1))
     setEloScoreHearts(eloScoreHearts.slice(0, -1))
@@ -129,10 +129,12 @@ const ExerciseMultipleChoice = ({ word, handleChange }) => {
   const handlePreHints = () => {
     if (!hints && !requested_hints || filteredHintsList.length < 1 && requested_hints.length < 1) {
       setEmptyHintsList(true)
+      handleHintRequest()
     } else {
-      setPreHints(preHints.concat(filteredHintsList[preHints.length - requested_hints?.length]))
+      const newHintList = preHints.concat(filteredHintsList[preHints.length - requested_hints?.length])
+      setPreHints(newHintList)
+      handleHintRequest(newHintList)
     }
-    handleHintRequest()
     setKeepOpen(true)
   }
 
