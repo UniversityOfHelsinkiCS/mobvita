@@ -118,21 +118,34 @@ const ExerciseCloze = ({ word, handleChange }) => {
 
   const handleTooltipClick = () => {
     if (ref) {
-      dispatch(setReferences(ref))
-    }
-    const requestedExplanations = {}
-    const explKeys = Object.keys(explanation)
-
-    for (let i = 0; i < explKeys.length; i++) {
-      for (let j = 0; j < preHints.length; j++) {
-        if (!requestedExplanations[explKeys[i]] && preHints[j].includes(explKeys[i])) {
-          requestedExplanations[explKeys[i]] = explanation[explKeys[i]]
+      const requestedRefs = {}
+      const refKeys = Object.keys(ref)
+      for (let i = 0; i < refKeys.length; i++) {
+        for (let j = 0; j < preHints.length; j++) {
+          if (!requestedRefs[refKeys[i]] && preHints[j].includes(refKeys[i])) {
+            requestedRefs[refKeys[i]] = ref[refKeys[i]]
+          }
         }
+      }
+      if (Object.keys(requestedRefs).length > 0) {
+        dispatch(setReferences(requestedRefs))
       }
     }
 
-    if (explanation && Object.keys(requestedExplanations).length > 0) {
-      dispatch(setExplanation(requestedExplanations))
+    if (explanation) {
+      const requestedExplanations = {}
+      const explKeys = Object.keys(explanation)
+
+      for (let i = 0; i < explKeys.length; i++) {
+        for (let j = 0; j < preHints.length; j++) {
+          if (!requestedExplanations[explKeys[i]] && preHints[j].includes(explKeys[i])) {
+            requestedExplanations[explKeys[i]] = explanation[explKeys[i]]
+          }
+        }
+      }
+      if (Object.keys(requestedExplanations).length > 0) {
+        dispatch(setExplanation(requestedExplanations))
+      }
     }
   }
 
@@ -166,8 +179,6 @@ const ExerciseCloze = ({ word, handleChange }) => {
   useEffect(() => {
     setClassName(getExerciseClass(tested, isWrong))
   }, [tested])
-
-  // console.log('pre hints ', preHints)
 
   useEffect(() => {
     if (message && !hints && !requested_hints) {
