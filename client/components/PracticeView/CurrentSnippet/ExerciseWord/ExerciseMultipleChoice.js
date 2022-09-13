@@ -84,9 +84,11 @@ const ExerciseMultipleChoice = ({ word, handleChange }) => {
       setPreHints(requested_hints || [])
       dispatch(incrementHintRequests(wordId, requested_hints?.length))
     }
+    /*
     if (!hints || !hints.length || message && !hints.filter(hint => hint !== message)) {
       setEmptyHintsList(true)
     }
+    */
   }, [message, hints, requested_hints, attempt])
 
   const maximumLength = word.choices.reduce((maxLength, currLength) => {
@@ -179,7 +181,7 @@ const ExerciseMultipleChoice = ({ word, handleChange }) => {
           </ul>
         </div>
       )}
-      {emptyHintsList && (!requested_hints || requested_hints.length < 1) && (
+      {emptyHintsList && preHints?.length < 1 && (
         <div className="tooltip-green">
           <FormattedMessage id="no-hints-available" />
         </div>

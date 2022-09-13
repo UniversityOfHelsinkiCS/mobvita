@@ -66,7 +66,7 @@ const ExerciseCloze = ({ word, handleChange }) => {
     !emptyHintsList
       ? { visibility: 'visible' }
       : { visibility: 'hidden' }
-
+  // console.log('empty ', word, ' ', emptyHintsList)
   const handleTooltipWordClick = () => {
     const showAsSurface = exerciseMaskedLanguages.includes(learningLanguage)
       ? word.surface
@@ -176,9 +176,11 @@ const ExerciseCloze = ({ word, handleChange }) => {
       setPreHints(requested_hints || [])
       dispatch(incrementHintRequests(wordId, requested_hints?.length))
     }
+    /*
     if (!hints || !hints.length || message && !hints.filter(hint => hint !== message)) {
       setEmptyHintsList(true)
     }
+    */
   }, [message, hints, requested_hints, attempt])
 
   useEffect(() => {
@@ -195,13 +197,6 @@ const ExerciseCloze = ({ word, handleChange }) => {
 
     return null
   }
-
-  /*
-  const handleTooltipBlur = () => {
-    console.log('NOT THIS ONE?')
-    setShow(false)
-  }
-  */
 
   const showRefIcon = hint => {
     if (Object.keys(ref).find(key => hint.includes(key))) {
@@ -254,7 +249,7 @@ const ExerciseCloze = ({ word, handleChange }) => {
           </ul>
         </div>
       )}
-      {emptyHintsList && (!requested_hints || requested_hints.length < 1)  && (
+      {emptyHintsList && preHints?.length < 1 && (
         <div className="tooltip-hint" style={{ textAlign: 'left' }}>
           <FormattedMessage id="no-hints-available" />
         </div>
@@ -262,9 +257,6 @@ const ExerciseCloze = ({ word, handleChange }) => {
       <div
         className="tooltip-hint"
         style={{ display: 'flex', justifyContent: 'center' }}
-        /* style={{ backgroundColor: getWordColor(word.level, grade, skillLevels) }}
-        onMouseDown={handleTooltipWordClick}
-        onClick={handleTooltipWordClick} */
       >
         <Button variant="primary" onMouseDown={handleTooltipWordClick} onClick={handleTooltipWordClick}>
           <span style={getTextStyle(learningLanguage, 'tooltip')}>{word.base || word.bases} </span>
