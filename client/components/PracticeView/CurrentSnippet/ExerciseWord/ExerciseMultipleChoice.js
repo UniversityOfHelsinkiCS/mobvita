@@ -175,10 +175,6 @@ const ExerciseMultipleChoice = ({ word, handleChange }) => {
       </div>{' '}
       <div className="tooltip-hint" style={{ textAlign: 'left' }}>
         <ul>
-          {message && attempt === 0 && <li dangerouslySetInnerHTML={formatGreenFeedbackText(word?.message)} />}
-          {preHints?.map(hint => (
-            <li dangerouslySetInnerHTML={formatGreenFeedbackText(hint)} />
-          ))}
           {frozen_messages?.map(mess => (
             <span className="flex"><li style={{ fontWeight: 'bold', fontStyle: 'italic' }} dangerouslySetInnerHTML={formatGreenFeedbackText(mess)} />{ref && showRefIcon(mess) && (
               <Icon name="external" style={{ alignSelf: 'flex-start', marginLeft: '0.5rem' }} />
@@ -186,6 +182,10 @@ const ExerciseMultipleChoice = ({ word, handleChange }) => {
             {explanation && (
               checkString(mess)
             )}</span>
+          ))}
+          {message && attempt === 0 && <li dangerouslySetInnerHTML={formatGreenFeedbackText(word?.message)} />}
+          {preHints?.map(hint => (
+            <li dangerouslySetInnerHTML={formatGreenFeedbackText(hint)} />
           ))}
         </ul>
       </div>

@@ -247,6 +247,14 @@ const ExerciseCloze = ({ word, handleChange }) => {
           onMouseDown={handleTooltipClick}
         >
           <ul>
+            {frozen_messages?.map(mess => (
+              <span className="flex"><li style={{ fontWeight: 'bold', fontStyle: 'italic' }} dangerouslySetInnerHTML={formatGreenFeedbackText(mess)} />{ref && showRefIcon(mess) && (
+                <Icon name="external" style={{ alignSelf: 'flex-start', marginLeft: '0.5rem' }} />
+              )}
+              {explanation && (
+                checkString(mess)
+              )}</span>
+            ))}
             {message && attempt === 0 && <span className="flex"><li dangerouslySetInnerHTML={formatGreenFeedbackText(message)} />{ref && (
             <Icon name="external" style={{ alignSelf: 'flex-start', marginLeft: '0.5rem' }} />
           )}
@@ -259,14 +267,6 @@ const ExerciseCloze = ({ word, handleChange }) => {
               )}
               {explanation && (
                 checkString(hint)
-              )}</span>
-            ))}
-            {frozen_messages?.map(mess => (
-              <span className="flex"><li style={{ fontWeight: 'bold', fontStyle: 'italic' }} dangerouslySetInnerHTML={formatGreenFeedbackText(mess)} />{ref && showRefIcon(mess) && (
-                <Icon name="external" style={{ alignSelf: 'flex-start', marginLeft: '0.5rem' }} />
-              )}
-              {explanation && (
-                checkString(mess)
               )}</span>
             ))}
           </ul>
