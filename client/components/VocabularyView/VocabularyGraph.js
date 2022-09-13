@@ -416,8 +416,8 @@ const VocabularyGraph = ({
     tooltip: {
       formatter() {
         return (
-          `<b>${this.series.userOptions.id.substring(0, 10) === 'Percentage'
-            ? `${(this.y * 100).toFixed(2)}%`
+          `<b>${this.series.userOptions.id.includes('Percentage')
+            ? `${parseFloat((this.y * 100).toFixed(1))}%`
             : this.y
           } ${this.series.userOptions.name}</b>` +
           '<br /> ' +
