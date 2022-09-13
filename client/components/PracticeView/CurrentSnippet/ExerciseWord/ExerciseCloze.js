@@ -184,11 +184,11 @@ const ExerciseCloze = ({ word, handleChange }) => {
     if (message && !hints && !requested_hints) {
       setPreHints([])
     } else if (attempt !== 0) {
-      setFilteredHintsList(hints?.filter(hint => !frozen_messages.includes(hint.substring(0, hint.length - 1))))
+      setFilteredHintsList(hints)
       setPreHints(requested_hints || [])
       // dispatch(incrementHintRequests(wordId, requested_hints?.length, filteredHintsList[preHints.length - requested_hints?.length]))
     } else {
-      setFilteredHintsList(hints?.filter(hint => hint !== message && !frozen_messages.includes(hint.substring(0, hint.length - 1))))
+      setFilteredHintsList(hints?.filter(hint => hint !== message))
       setPreHints(requested_hints || [])
       // dispatch(incrementHintRequests(wordId, requested_hints?.length, filteredHintsList[preHints.length - requested_hints?.length]))
     }
