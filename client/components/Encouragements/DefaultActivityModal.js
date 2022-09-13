@@ -177,6 +177,8 @@ const DefaultActivityModal = ({
     dispatch(getStoriesBlueFlashcards(learningLanguage, dictionaryLanguage))
     if (storyBlueCards?.length > 0) {
       setPrevBlueCards(storyBlueCards[0])
+    } else {
+      setPrevBlueCards([])
     }
   }, [])
 
@@ -193,6 +195,8 @@ const DefaultActivityModal = ({
       )
       if (sharedIncompleteStories) {
         setSharedStory(sharedIncompleteStories[0])
+      } else {
+        setSharedStory(null)
       }
     }
   }, [stories])
@@ -200,6 +204,8 @@ const DefaultActivityModal = ({
   useEffect(() => {
     if (storyBlueCards?.length > 0) {
       setPrevBlueCards(storyBlueCards[0])
+    } else {
+      setPrevBlueCards(null)
     }
   }, [storyBlueCards])
 
@@ -222,12 +228,17 @@ const DefaultActivityModal = ({
 
       if (listOfLatest.length > 0) {
         setLatestIncompleteStory(listOfLatest[listOfLatest.length - 1])
+      } else {
+        setLatestIncompleteStory(null)
       }
+    } else {
+      setStoriesToReview([])
+      setLatestIncompleteStory(null)
     }
   }, [incompleteStories])
 
   useEffect(() => {
-    if (!userPending) {
+    if (!userPending && !storyCardsPending && !pending) {
       setRecmdList(fillList())
     }
   }, [
