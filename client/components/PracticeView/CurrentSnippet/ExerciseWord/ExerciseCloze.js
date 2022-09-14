@@ -63,12 +63,14 @@ const ExerciseCloze = ({ word, handleChange }) => {
   const [emptyHintsList, setEmptyHintsList] = useState(false)
   const voice = voiceLanguages[learningLanguage]
   const hintButtonVisibility =
-    (!hints || filteredHintsList.length < 1 || preHints.length - requested_hints?.length < filteredHintsList?.length && preHints.length < 5) &&
+    (!hints || (filteredHintsList.length < 1 && !message) || preHints.length - requested_hints?.length < filteredHintsList?.length && preHints.length < 5) &&
     !emptyHintsList
       ? { visibility: 'visible' }
       : { visibility: 'hidden' }
-  // console.log('empty ', word, ' ', emptyHintsList)
-  const handleTooltipWordClick = () => {
+      if (word.surface === 'rajoittaa') {
+        console.log('empty ', emptyHintsList, ' filt ', filteredHintsList.length, ' req ', requested_hints.length, ' pre ', preHints.length)
+      }
+    const handleTooltipWordClick = () => {
     const showAsSurface = exerciseMaskedLanguages.includes(learningLanguage)
       ? word.surface
       : word.base || word.bases
