@@ -57,6 +57,17 @@ const GroupLearningSettingsModal = ({ open, setOpen, groupId }) => {
         {groupName}: <FormattedMessage id="learning-settings" />
       </Modal.Header>
       <Modal.Content style={{ display: 'flex', flexDirection: 'column' }}>
+        <div className="flex-reverse" style={{ marginBottom: '.5em' }}>
+          <Button
+            variant="primary"
+            size="lg"
+            as={Link}
+            to={`/groups/teacher/${groupId}/concepts`}
+            style={{ color: 'yellow', fontWeight: 600 }}
+          >
+            <FormattedMessage id="custom" />
+          </Button>
+        </div>
         {/* 
         <h2 style={{ fontSize: '17px', fontWeight: '550' }}>
           <Popup
