@@ -36,6 +36,7 @@ import NavBar from './NavBar'
 import RegisterView from './RegisterView'
 import DebugTestView from './DebugTestView'
 import AnnotationsLibrary from './AnnotationsLibrary'
+import ReferenceView from './ReferenceView'
 
 export default () => {
   const user = useSelector(state => state.user.data)
@@ -142,6 +143,9 @@ export default () => {
             <ProtectedRoute exact path="/test-construction" component={ConstructTestView} />
             <ProtectedRoute exact path="/test-debug" component={DebugTestView} />
             <ProtectedRoute exact path="/vocabulary-view" component={VocabularyView} />
+
+            <ProtectedRoute exact path="/reference" component={ReferenceView} />
+
           </Switch>
         </main>
       </Route>
