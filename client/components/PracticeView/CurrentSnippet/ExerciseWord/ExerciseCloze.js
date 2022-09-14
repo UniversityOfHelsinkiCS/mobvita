@@ -67,9 +67,6 @@ const ExerciseCloze = ({ word, handleChange }) => {
     !emptyHintsList
       ? { visibility: 'visible' }
       : { visibility: 'hidden' }
-      if (word.surface === 'rajoittaa') {
-        console.log('empty ', emptyHintsList, ' filt ', filteredHintsList.length, ' req ', requested_hints.length, ' pre ', preHints.length)
-      }
     const handleTooltipWordClick = () => {
     const showAsSurface = exerciseMaskedLanguages.includes(learningLanguage)
       ? word.surface
