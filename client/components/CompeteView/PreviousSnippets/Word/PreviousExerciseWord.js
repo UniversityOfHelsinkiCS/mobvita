@@ -75,7 +75,7 @@ const PreviousExerciseWord = ({ word, answer, tiedAnswer }) => {
         <div className="flex">
           <span dangerouslySetInnerHTML={formatGreenFeedbackText(word?.message)} />{' '}
           {ref && (
-            <Icon name="external" style={{ alignSelf: 'flex-start', marginLeft: '0.5rem' }} />
+            <Icon name="info circle" style={{ alignSelf: 'flex-start', marginLeft: '0.5rem' }} />
           )}
           {explanation && (
             <Icon name="info circle" style={{ alignSelf: 'flex-start', marginLeft: '0.5rem' }} />

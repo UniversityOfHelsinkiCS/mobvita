@@ -177,7 +177,7 @@ const ExerciseMultipleChoice = ({ word, handleChange }) => {
         <ul>
           {frozen_messages?.map(mess => (
             <span className="flex"><li style={{ fontWeight: 'bold', fontStyle: 'italic' }} dangerouslySetInnerHTML={formatGreenFeedbackText(mess)} />{ref && showRefIcon(mess) && (
-              <Icon name="external" style={{ alignSelf: 'flex-start', marginLeft: '0.5rem' }} />
+              <Icon name="info circle" style={{ alignSelf: 'flex-start', marginLeft: '0.5rem' }} />
             )}
             {explanation && (
               checkString(mess)

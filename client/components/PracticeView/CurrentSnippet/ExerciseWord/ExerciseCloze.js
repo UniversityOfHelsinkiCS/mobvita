@@ -248,21 +248,21 @@ const ExerciseCloze = ({ word, handleChange }) => {
           <ul>
             {frozen_messages?.map(mess => (
               <span className="flex"><li style={{ fontWeight: 'bold', fontStyle: 'italic' }} dangerouslySetInnerHTML={formatGreenFeedbackText(mess)} />{ref && showRefIcon(mess) && (
-                <Icon name="external" style={{ alignSelf: 'flex-start', marginLeft: '0.5rem' }} />
+                <Icon name="info circle" style={{ alignSelf: 'flex-start', marginLeft: '0.5rem' }} />
               )}
               {explanation && (
                 checkString(mess)
               )}</span>
             ))}
             {message && attempt === 0 && <span className="flex"><li dangerouslySetInnerHTML={formatGreenFeedbackText(message)} />{ref && (
-            <Icon name="external" style={{ alignSelf: 'flex-start', marginLeft: '0.5rem' }} />
+            <Icon name="info circle" style={{ alignSelf: 'flex-start', marginLeft: '0.5rem' }} />
           )}
           {explanation && (
             <Icon name="info circle" style={{ alignSelf: 'flex-start', marginLeft: '0.5rem' }} />
           )}</span>}
             {preHints?.map(hint => (
               <span className="flex"><li dangerouslySetInnerHTML={formatGreenFeedbackText(hint)} />{ref && showRefIcon(hint) && (
-                <Icon name="external" style={{ alignSelf: 'flex-start', marginLeft: '0.5rem' }} />
+                <Icon name="info circle" style={{ alignSelf: 'flex-start', marginLeft: '0.5rem' }} />
               )}
               {explanation && (
                 checkString(hint)
