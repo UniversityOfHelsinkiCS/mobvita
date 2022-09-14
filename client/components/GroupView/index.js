@@ -3,9 +3,17 @@ import { useSelector, useDispatch } from 'react-redux'
 import { useHistory, useParams, Link } from 'react-router-dom'
 import { FormattedMessage, useIntl } from 'react-intl'
 import { CopyToClipboard } from 'react-copy-to-clipboard'
-import { Card, Icon, Label, Dropdown, Popup, Modal } from 'semantic-ui-react'
+import {
+  Card,
+  Icon,
+  Label,
+  Dropdown,
+  Popup,
+  Modal,
+  Button as SemanticButton,
+} from 'semantic-ui-react'
 import { Button, Table } from 'react-bootstrap'
-
+import useWindowDimensions from 'Utilities/windowDimensions'
 import { updateLibrarySelect, updateGroupSelect } from 'Utilities/redux/userReducer'
 
 import {
@@ -141,7 +149,7 @@ const GroupCard = ({
   const [currTestDeadline, setCurrTestDeadline] = useState(testDeadline)
   const [chosenTestDuration, setChosenTestDuration] = useState(Date.now() + 7200000)
   const showTestEnableMenu = showTestEnableMenuGroupId === id
-
+  const { width } = useWindowDimensions()
   const showToken = showTokenGroupId === id
   const token = useSelector(state => state.groups.token)
   const intl = useIntl()
@@ -281,58 +289,160 @@ const GroupCard = ({
       <Card.Content extra>
         <div className="space-between group-buttons sm" style={{ whiteSpace: 'nowrap' }}>
           {/* <div className="group-management-buttons"> */}
-          <div className="flex-col" style={{ gap: '.25em' }}>
-            <div className="flex" style={{ gap: '.25em', flexWrap: 'wrap' }}>
-              {isTeaching && (
-                <>
-                  <Button onClick={handleAnalyticsClick}>
-                    <Icon name="chart line" /> <FormattedMessage id="Analytics" />
-                  </Button>
-                </>
-              )}
-              {isTeaching && (
-                <>
-                  <Button onClick={() => setLearningModalGroupId(id)}>
-                    <Icon name="settings" /> <FormattedMessage id="learning-settings" />
-                  </Button>
-                  <Button
-                    data-cy="enable-test-button"
-                    onClick={handleTestEnableDisableButtonClick}
-                    variant={testButtonVariant}
-                  >
-                    <Icon name="pencil alternate" /> <FormattedMessage id={testButtonTextKey} />
-                  </Button>
-                  <Button
-                    variant="primary"
-                    as={Link}
-                    to={`/groups/teacher/${id}/concepts/settings`}
-                    style={{ color: 'white' }}
-                  >
-                    <Icon name="settings" /> <FormattedMessage id="test-settings" />
-                  </Button>
-                </>
-              )}
-            </div>
+          {width >= 640 ? (
+            <div className="flex-col" style={{ gap: '.25em' }}>
+              <div className="flex" style={{ gap: '.25em', flexWrap: 'wrap' }}>
+                {isTeaching && (
+                  <>
+                    <Button onClick={handleAnalyticsClick}>
+                      <Icon name="chart line" /> <FormattedMessage id="Analytics" />
+                    </Button>
+                  </>
+                )}
+                {isTeaching && (
+                  <>
+                    <Button onClick={() => setLearningModalGroupId(id)}>
+                      <Icon name="settings" /> <FormattedMessage id="learning-settings" />
+                    </Button>
+                    <Button
+                      data-cy="enable-test-button"
+                      onClick={handleTestEnableDisableButtonClick}
+                      variant={testButtonVariant}
+                    >
+                      <Icon name="pencil alternate" /> <FormattedMessage id={testButtonTextKey} />
+                    </Button>
+                    <Button
+                      variant="primary"
+                      as={Link}
+                      to={`/groups/teacher/${id}/concepts/settings`}
+                      style={{ color: 'white' }}
+                    >
+                      <Icon name="settings" /> <FormattedMessage id="test-settings" />
+                    </Button>
+                  </>
+                )}
+              </div>
 
-            <div className="flex" style={{ gap: '.25em', flexWrap: 'wrap' }}>
-              <Button onClick={handleStoriesClick}>
-                <Icon name="book" /> <FormattedMessage id="Stories" />
-              </Button>
-              <Button data-cy="people-button" onClick={handlePeopleClick}>
-                <Icon name="user" /> <FormattedMessage id="people" />
-              </Button>
-              {isTeaching && (
-                <Button onClick={handleShowTokenClick}>
-                  <Icon name="key" /> <FormattedMessage id="show-group-token" />
+              <div className="flex" style={{ gap: '.25em', flexWrap: 'wrap' }}>
+                <Button onClick={handleStoriesClick}>
+                  <Icon name="book" /> <FormattedMessage id="Stories" />
                 </Button>
-              )}
-              {!isTeaching && testEnabled && (
-                <Button data-cy="start-test-button" onClick={handleTestStartClick}>
-                  <Icon name="pencil alternate" /> <FormattedMessage id="start-test" />
+                <Button data-cy="people-button" onClick={handlePeopleClick}>
+                  <Icon name="user" /> <FormattedMessage id="people" />
                 </Button>
-              )}
+                {isTeaching && (
+                  <Button onClick={handleShowTokenClick}>
+                    <Icon name="key" /> <FormattedMessage id="show-group-token" />
+                  </Button>
+                )}
+                {!isTeaching && testEnabled && (
+                  <Button data-cy="start-test-button" onClick={handleTestStartClick}>
+                    <Icon name="pencil alternate" /> <FormattedMessage id="start-test" />
+                  </Button>
+                )}
+              </div>
             </div>
-          </div>
+          ) : (
+            <SemanticButton.Group>
+              {isTeaching ? (
+                <>
+                  <SemanticButton
+                    as={Link}
+                    onClick={handleAnalyticsClick}
+                    style={{ backgroundColor: 'rgb(50, 170, 248)', color: 'white' }}
+                  >
+                    <FormattedMessage id="Analytics" />
+                  </SemanticButton>
+                  <Dropdown
+                    className="button icon"
+                    style={{
+                      backgroundColor: 'rgb(50, 170, 248)',
+                      color: 'white',
+                      borderLeft: '2px solid rgb(81, 138, 248)',
+                    }}
+                    floating
+                    trigger={<React.Fragment />}
+                  >
+                    <Dropdown.Menu className="story-item-dropdown">
+                      <Dropdown.Item
+                        text={<FormattedMessage id="learning-settings" />}
+                        as={Link}
+                        onClick={() => setLearningModalGroupId(id)}
+                        icon="settings"
+                      />
+                      <Dropdown.Item
+                        text={<FormattedMessage id={testButtonTextKey} />}
+                        as={Link}
+                        onClick={handleTestEnableDisableButtonClick}
+                        icon="pencil alternate"
+                      />
+                      <Dropdown.Item
+                        text={<FormattedMessage id="test-settings" />}
+                        as={Link}
+                        to={`/groups/teacher/${id}/concepts/settings`}
+                        icon="settings"
+                      />
+                      <Dropdown.Item
+                        text={<FormattedMessage id="Stories" />}
+                        as={Link}
+                        onClick={handleStoriesClick}
+                        icon="book"
+                      />
+                      <Dropdown.Item
+                        text={<FormattedMessage id="people" />}
+                        as={Link}
+                        onClick={handlePeopleClick}
+                        icon="user"
+                      />
+                      <Dropdown.Item
+                        text={<FormattedMessage id="show-group-token" />}
+                        as={Link}
+                        onClick={handleShowTokenClick}
+                        icon="key"
+                      />
+                    </Dropdown.Menu>
+                  </Dropdown>
+                </>
+              ) : (
+                <>
+                  <SemanticButton
+                    as={Link}
+                    onClick={handleStoriesClick}
+                    style={{ backgroundColor: 'rgb(50, 170, 248)', color: 'white' }}
+                  >
+                    <FormattedMessage id="Stories" />
+                  </SemanticButton>
+                  <Dropdown
+                    className="button icon"
+                    style={{
+                      backgroundColor: 'rgb(50, 170, 248)',
+                      color: 'white',
+                      borderLeft: '2px solid rgb(81, 138, 248)',
+                    }}
+                    floating
+                    trigger={<React.Fragment />}
+                  >
+                    <Dropdown.Menu className="story-item-dropdown">
+                      <Dropdown.Item
+                        text={<FormattedMessage id="people" />}
+                        as={Link}
+                        onClick={handlePeopleClick}
+                        icon="user"
+                      />
+                      {testEnabled && (
+                        <Dropdown.Item
+                          text={<FormattedMessage id="start-test" />}
+                          as={Link}
+                          onClick={handleTestStartClick}
+                          icon="pencil alternate"
+                        />
+                      )}
+                    </Dropdown.Menu>
+                  </Dropdown>
+                </>
+              )}
+            </SemanticButton.Group>
+          )}
           <div>
             <Popup
               content={intl.formatMessage({ id: 'Leave' })}
