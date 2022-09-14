@@ -301,13 +301,13 @@ const History = ({ history, testView, dateFormat, handleDelete = null }) => {
     if (!concepts) return null
 
     const rootConcepts = concepts
-      .filter(c => !c.parents)
+      .filter(c => c.concept_id !== '0-0')
+      .filter(c => !c.parents || c.parents.length < 1)
       .sort((a, b) => a['UI-order'] - b['UI-order'])
     const conceptTree = []
     rootConcepts.forEach(concept => {
       conceptTree.push(buildSingleConcept(concept.concept_id))
     })
-
     return conceptTree
   }
 
