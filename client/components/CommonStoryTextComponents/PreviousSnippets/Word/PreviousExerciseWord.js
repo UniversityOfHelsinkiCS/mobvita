@@ -153,6 +153,7 @@ const PreviousExerciseWord = ({ word, answer, tiedAnswer, focusedConcept }) => {
       mode
     ),
   }
+  // console.log('one of these? ', word)
 
   const tooltip = (
     <div
