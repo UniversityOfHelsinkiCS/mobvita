@@ -1340,8 +1340,9 @@
     "current-cefr-level": "Oppilaan tämänhetkinen CEFR-taso",
     "view-previous-and-edit": "Tarkastele ja muokkaa tasoja",
     "timed-practice-toggle": "Ajastettu tarina",
-    "timed-practice-explanation": "",
+    "timed-practice-explanation": "Tämä on ajastettu tarina",
     "offer-adaptive-test": "Tai tee nopea taitotasotesti",
     "adaptive-test-link": "taitotasotesti",
-    "adaptive-test-button": "Tee testi"
+    "adaptive-test-button": "Tee testi",
+    "timed-practice-toggle-tooltip": ""
 }

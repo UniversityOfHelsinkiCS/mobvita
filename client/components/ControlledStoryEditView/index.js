@@ -179,7 +179,7 @@ const ControlledStoryEditView = ({ match }) => {
                   style={{ paddingTop: '.5em' }}
                 />
                 <Popup
-                  content={intl.formatMessage({ id: 'timed-practice-explanation' })}
+                  content={intl.formatMessage({ id: 'timed-practice-toggle-tooltip' })}
                   trigger={<Icon className="pl-sm" name="info circle" color="grey" />}
                 />
               </div>

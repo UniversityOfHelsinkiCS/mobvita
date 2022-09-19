@@ -313,7 +313,7 @@ const StoryListItem = ({ story, libraryShown, selectedGroup }) => {
   const showGroupNames = story.groups && libraryShown.private
   const enableOnlyPractice = inGroupLibrary && !currentGroup?.is_teaching && isControlledStory
   const uploadUnfinished = story?.uploadUnfinished
-
+  const timedExercise = story?.timed_exercise
   const deleteStory = () => dispatch(removeStory(story._id))
   const unshareStory = () => dispatch(unshare(selectedGroup, story._id))
 
@@ -326,6 +326,7 @@ const StoryListItem = ({ story, libraryShown, selectedGroup }) => {
       })
     )
   }
+  console.log('timed ', timedExercise)
 
   const storyGroupShareInfo = libraryShown.group
     ? story.groups.find(g => g?.group_id === currentGroup?.group_id)
@@ -369,6 +370,18 @@ const StoryListItem = ({ story, libraryShown, selectedGroup }) => {
                 }
               />
             </div>
+          )}
+
+          {timedExercise && (
+            <Popup
+              basic
+              content={<FormattedMessage id="timed-practice-explanation" />}
+              trigger={
+                <div>
+                  <Icon color="black" name="clock outline" />
+                </div>
+              }
+            />
           )}
 
           {libraryShown.group && (

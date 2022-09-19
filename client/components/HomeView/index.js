@@ -155,7 +155,7 @@ const HomeView = () => {
     dispatch(getGroups())
   }, [])
 
-  // console.log('USER ', userData)
+  console.log('new ', userData.is_new_user)
 
   return (
     <div className="cont-tall cont flex-col auto gap-row-sm pt-lg blue-bg">
@@ -174,7 +174,7 @@ const HomeView = () => {
           welcomeBack
         />
       )}
-      {!userData.grade && userData.email !== 'anonymous_email' && (
+      {!userData.grade && userData.email !== 'anonymous_email' && !userData.is_new_user && (
         <SetCEFRReminder
           open={openReminder}
           setOpen={setOpenReminder}
