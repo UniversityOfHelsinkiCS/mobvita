@@ -1546,6 +1546,10 @@ label.file-upload-btn {
   }
 }
 
+.disabled-link {
+  pointer-events: none;
+}
+
 .group-container {
   max-width: 1024px;
   margin: auto;

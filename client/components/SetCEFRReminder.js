@@ -1,8 +1,9 @@
 import React, { useState } from 'react'
 import { FormattedMessage } from 'react-intl'
 import { useDispatch } from 'react-redux'
-import { Modal } from 'semantic-ui-react'
+import { Divider, Modal } from 'semantic-ui-react'
 import { Button } from 'react-bootstrap'
+import { Link } from 'react-router-dom'
 import { sidebarSetOpen } from 'Utilities/redux/sidebarReducer'
 import { updateUserGrade, updateIsTeacher } from 'Utilities/redux/userReducer'
 import CERFLevelSlider from './CEFRLevelSlider'
@@ -77,9 +78,31 @@ const SetCEFRReminder = ({ open, setOpen, newUser }) => {
             />
           </div>
           <br />
-          <Button variant="primary" size="lg" onClick={submitSettings}>
+          <Button
+            style={{ marginBottom: '1em' }}
+            variant="primary"
+            size="lg"
+            onClick={submitSettings}
+          >
             <FormattedMessage id="update-settings" />
           </Button>
+          <Divider />
+          <div
+            style={{
+              marginTop: '1em',
+              color: isTeacher ? 'lightgrey' : '#000000',
+            }}
+          >
+            <h3>
+              <FormattedMessage id="offer-adaptive-test" />
+            </h3>
+            &nbsp;
+            <Link to="/adaptive-test">
+              <Button style={{ fontSize: '18px' }} variant="primary" disabled={isTeacher}>
+                <FormattedMessage id="adaptive-test-button" />
+              </Button>
+            </Link>
+          </div>
         </div>
       </Modal.Content>
     </Modal>

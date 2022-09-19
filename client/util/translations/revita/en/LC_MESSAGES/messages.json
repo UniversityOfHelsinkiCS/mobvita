@@ -1339,5 +1339,9 @@
     "overview-vocabulary-explanation": "All words that you have worked with in stories so far: mastered and not yet mastered",
     "current-cefr-level": "Student's current CEFR level",
     "view-previous-and-edit": "View and edit grades",
-    "timed-practice-toggle": "Timed practice"
+    "timed-practice-toggle": "Timed practice",
+    "timed-practice-explanation": "",
+    "offer-adaptive-test": "Or take a quick skill level test",
+    "adaptive-test-link": "skill level test",
+    "adaptive-test-button": "Go to test"
 }

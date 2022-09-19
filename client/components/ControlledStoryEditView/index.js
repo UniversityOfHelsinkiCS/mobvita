@@ -178,6 +178,10 @@ const ControlledStoryEditView = ({ match }) => {
                   onChange={() => setTimedExercise(!timedExercise)}
                   style={{ paddingTop: '.5em' }}
                 />
+                <Popup
+                  content={intl.formatMessage({ id: 'timed-practice-explanation' })}
+                  trigger={<Icon className="pl-sm" name="info circle" color="grey" />}
+                />
               </div>
             </div>
             {progress !== 0 && processingCurrentStory && (

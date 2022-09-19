@@ -1339,5 +1339,9 @@
     "overview-vocabulary-explanation": "Yleiskatsaus",
     "current-cefr-level": "Oppilaan tämänhetkinen CEFR-taso",
     "view-previous-and-edit": "Tarkastele ja muokkaa tasoja",
-    "timed-practice-toggle": "Ajastettu tarina"
+    "timed-practice-toggle": "Ajastettu tarina",
+    "timed-practice-explanation": "",
+    "offer-adaptive-test": "Tai tee nopea taitotasotesti",
+    "adaptive-test-link": "taitotasotesti",
+    "adaptive-test-button": "Tee testi"
 }
