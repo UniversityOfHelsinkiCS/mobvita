@@ -12,17 +12,19 @@ const SetCEFRReminder = ({ open, setOpen, newUser }) => {
   const dispatch = useDispatch()
   const [sliderValue, setSliderValue] = useState(121)
   const [isTeacher, setIsTeacher] = useState(false)
-
+/*
   const startTour = () => {
     dispatch(sidebarSetOpen(false))
     dispatch({ type: 'TOUR_RESTART' })
   }
-
+*/
   const closeModal = () => {
     setOpen(false)
+    /*
     if (newUser) {
       startTour()
     }
+    */
   }
 
   const submitSettings = () => {

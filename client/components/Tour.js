@@ -21,7 +21,6 @@ const Tour = () => {
     // Auto start the tour if the user is anonymous and hasn't seen it before
     if (
       user.user.is_new_user &&
-      user.user.email === 'anonymous_email' &&
       history.location.pathname.includes('home')
     ) {
       dispatch(sidebarSetOpen(false))

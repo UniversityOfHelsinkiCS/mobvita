@@ -326,7 +326,6 @@ const StoryListItem = ({ story, libraryShown, selectedGroup }) => {
       })
     )
   }
-  console.log('timed ', timedExercise)
 
   const storyGroupShareInfo = libraryShown.group
     ? story.groups.find(g => g?.group_id === currentGroup?.group_id)
