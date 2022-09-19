@@ -123,6 +123,22 @@ const PreviousExerciseWord = ({ word, answer, tiedAnswer, focusedConcept }) => {
     return word.ID >= highlightRange?.start && word.ID <= highlightRange?.end
   }
 
+  const checkString = hint => {
+    if (explanation) {
+      const explanationKey = Object.keys(explanation)[0]
+      if (hint?.includes(explanationKey)) {
+        return <Icon name="info circle" style={{ alignSelf: 'flex-start', marginLeft: '0.5rem' }} />
+      }
+    } else if (ref) {
+      const refKey = Object.keys(ref)[0]
+      if (hint?.includes(refKey)) {
+        return <Icon name="info circle" style={{ alignSelf: 'flex-start', marginLeft: '0.5rem' }} />
+      }
+    }
+
+    return null
+  }
+
   const wordStartsSpan = word => !!word?.annotation
 
   const youAnsweredTooltip = answer || tiedAnswer
@@ -141,11 +157,11 @@ const PreviousExerciseWord = ({ word, answer, tiedAnswer, focusedConcept }) => {
   const tooltip = (
     <div
       className="tooltip-green"
-      style={{ cursor: 'pointer' }}
+      style={{ cursor: 'pointer', textAlign: 'left', padding: '15px' }}
       // backgroundColor: getWordColor(word.level, grade, skillLevels)
       onMouseDown={handleTooltipClick}
     >
-      {word.message && !isPreviewMode && (
+      {/* word.message && !isPreviewMode && (
         <div className="flex">
           <span dangerouslySetInnerHTML={formatGreenFeedbackText(word?.message)} />{' '}
           {ref && (
@@ -155,9 +171,20 @@ const PreviousExerciseWord = ({ word, answer, tiedAnswer, focusedConcept }) => {
             <Icon name="info circle" style={{ alignSelf: 'flex-start', marginLeft: '0.5rem' }} />
           )}
         </div>
+          ) */}
+      {word.hints?.length > 0 && !isPreviewMode && (
+        <div>
+          {word.hints.map(hint => (
+            <span className="flex"><li dangerouslySetInnerHTML={formatGreenFeedbackText(hint)} />{ref || explanation && (
+              checkString(hint)
+            )}
+            </span>
+          ))}
+        </div>
       )}
       {youAnsweredTooltip && (
         <div>
+          <br />
           {`${intl.formatMessage({ id: 'you-used' })}: `}
           <span style={getTextStyle(learningLanguage, 'tooltip')}>
             {youAnsweredTooltip.users_answer}
