@@ -177,24 +177,27 @@ const MultipleChoiceModal = ({
                   <></>
                 )}
                 {word.stress && word.stressed && bigScreen ? (
-                  <Form.Group>
-                    <Form.Input
-                      className="interactable"
-                      style={{ marginTop: '0.9em', marginLeft: '0.5em', marginRight: '0.75em' }}
-                      type="radio"
-                      onChange={() => setChosenSet('stress')}
-                      checked={chosenSet === 'stress'}
-                    />
-                    {word.stress.map(choice => (
-                      <input
-                        className={`${containsLongInput ? 'multi-choice-long-input' : 'multi-choice-input'} interactable`}
-                        type="text"
-                        name="disable_field"
-                        disabled
-                        value={choice}
+                  <div>
+                    <Form.Group> 
+                      <Form.Input
+                        className="interactable"
+                        style={{ marginTop: '0.9em', marginLeft: '0.5em', marginRight: '0.75em' }}
+                        type="radio"
+                        onChange={() => setChosenSet('stress')}
+                        checked={chosenSet === 'stress'}
                       />
-                    ))}
-                  </Form.Group>
+                      {word.stress.map(choice => (
+                        <input
+                          className={`${containsLongInput ? 'multi-choice-long-input' : 'multi-choice-input'} interactable`}
+                          type="text"
+                          name="disable_field"
+                          disabled
+                          value={choice}
+                        />
+                      ))}
+                    </Form.Group>
+                    <hr />
+                  </div>
                 ) : word.stress && word.stressed ? (
                   <div className="flex" style={{ alignItems: 'center', marginTop: '.5em' }}>
                     <Form.Group>
@@ -217,6 +220,7 @@ const MultipleChoiceModal = ({
                         ))}
                       </div>
                     </Form.Group>
+                    <hr />
                   </div>
                 ) : (
                   <></>
