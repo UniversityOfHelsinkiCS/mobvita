@@ -37,8 +37,7 @@ const FlashcardsEncouragement = ({
   const closeModal = () => {
     setOpen(false)
   }
-  console.log('prev ', prevBlueCards)
-
+  
   const fillList = () => {
     let initList = []
 

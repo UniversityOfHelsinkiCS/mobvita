@@ -44,7 +44,7 @@ const Practice = ({ mode, open, setOpen }) => {
   const { correctAnswers, totalAnswers, storyBlueCards, storyCardsPending } = useSelector(
     ({ flashcards }) => flashcards
   )
-  console.log('MODE ', mode)
+  // console.log('MODE ', mode)
   const { incomplete, loading } = useSelector(({ incomplete }) => ({
     incomplete: incomplete.data,
     loading: incomplete.pending,
@@ -71,8 +71,7 @@ const Practice = ({ mode, open, setOpen }) => {
   const bigScreen = useWindowDimension().width >= 415
   const { storyId } = useParams()
   const dispatch = useDispatch()
-  // const [open, setOpen] = useState(true)
-  // console.log('cards ', cards)
+
   const inFillin = history.location.pathname.includes('test')
   useEffect(() => {
     setSwipeIndex(0)
@@ -88,12 +87,12 @@ const Practice = ({ mode, open, setOpen }) => {
   }, [])
 
   useEffect(() => {
-    const filteredBlueCards = storyBlueCards?.filter(
+    const filteredBlueCards = storyBlueCards?.find(
       story => story.story_id !== storyId && story.num_of_rewardable_words >= 5
     )
 
-    if (filteredBlueCards?.length > 0) {
-      setPrevBlueCards(filteredBlueCards[filteredBlueCards.length - 1])
+    if (filteredBlueCards) {
+      setPrevBlueCards(filteredBlueCards)
     }
   }, [storyBlueCards])
 
@@ -120,7 +119,7 @@ const Practice = ({ mode, open, setOpen }) => {
       const answerObj = {
         flashcard_answers: blueCardsAnswered,
       }
-
+      setBlueCardsAnswered([])
       dispatch(answerBluecards(learningLanguage, dictionaryLanguage, answerObj))
     }
   }, [blueCardsAnswered])
@@ -133,6 +132,7 @@ const Practice = ({ mode, open, setOpen }) => {
   useEffect(() => {
     if (inFillin) {
       dispatch(getBlueFlashcards(learningLanguage, dictionaryLanguage, storyId))
+      setBlueCardsAnswered([])
     } else {
       dispatch(getFlashcards(learningLanguage, dictionaryLanguage, storyId))
     }
@@ -172,6 +172,7 @@ const Practice = ({ mode, open, setOpen }) => {
       dispatch(getFlashcards(learningLanguage, dictionaryLanguage, storyId))
     } else {
       dispatch(getBlueFlashcards(learningLanguage, dictionaryLanguage, storyId))
+      dispatch(getStoriesBlueFlashcards(learningLanguage, dictionaryLanguage))
     }
   }
 
@@ -196,7 +197,6 @@ const Practice = ({ mode, open, setOpen }) => {
 
     setAmountAnswered(amountAnswered + 1)
   }
-  console.log('blue cards answered ', blueCardsAnswered)
 
   if (mode === 'article' && !flashcardArticles) return null
 
