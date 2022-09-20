@@ -1349,6 +1349,6 @@
     "sort-by-concept-freq": "Sort by frequency",
     "sort-by-concept-cefr": "Sort by CEFR level",
     "allow-listening-exercises": "Allow listening exercises",
-    "practice-listening-mode": "Practice (listening)",
-    "practice-grammar-mode": "Practice (grammar)"
+    "practice-listening-mode": "Harjoittele (kuuntelu)",
+    "practice-grammar-mode": "Harjoittele (kielioppi)"
 }
