@@ -1346,5 +1346,7 @@
     "adaptive-test-link": "skill level test",
     "adaptive-test-button": "Procedi con il test",
     "timed-practice-toggle-tooltip": "Usa il timer",
-    "timed-adaptive-test": "Timed test"
+    "timed-adaptive-test": "Timed test",
+    "sort-by-concept-freq": "Sort by frequency",
+    "sort-by-concept-cefr": "Sort by CEFR level"
 }

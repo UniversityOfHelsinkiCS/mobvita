@@ -1345,5 +1345,7 @@
     "adaptive-test-link": "taitotasotesti",
     "adaptive-test-button": "Tee testi",
     "timed-practice-toggle-tooltip": "Käytä ajastinta",
-    "timed-adaptive-test": "Ajastettu testi"
+    "timed-adaptive-test": "Ajastettu testi",
+    "sort-by-concept-freq": "Sort by frequency",
+    "sort-by-concept-cefr": "Sort by CEFR level"
 }
