@@ -20,7 +20,6 @@ const StoryTopics = ({ conceptCount, focusedConcept, setFocusedConcept }) => {
 
   const sortByFrequency = () => {
     const keysSorted = Object.entries(conceptCount).sort((a, b) => {
-      console.log(a, '  ', b)
       if (b[1].freq === a[1].freq)
         return b[1].level - a[1].level
       return b[1].freq - a[1].freq
@@ -30,7 +29,6 @@ const StoryTopics = ({ conceptCount, focusedConcept, setFocusedConcept }) => {
 
   const sortByCefr = () => {
     const keysSorted = Object.entries(conceptCount).sort((a, b) => {
-      console.log(a, '  ', b)
       if (b[1].level === a[1].level)
         return b[1].freq - a[1].freq
       return b[1].level - a[1].level
@@ -49,8 +47,6 @@ const StoryTopics = ({ conceptCount, focusedConcept, setFocusedConcept }) => {
   useEffect(() => {
     sortByFrequency()
   }, [conceptCount])
-
-  // console.log(topTopics)
 
   if (width >= 1024 && topTopics.length > 0) {
     return (
