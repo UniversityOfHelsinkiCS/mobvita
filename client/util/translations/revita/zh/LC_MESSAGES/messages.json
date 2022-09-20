@@ -695,9 +695,10 @@
     "current-cefr-level": "Student's current CEFR level",
     "view-previous-and-edit": "View and edit grades",
     "timed-practice-toggle": "Timed practice",
-    "timed-practice-explanation": "This is a timed practice",
-    "offer-adaptive-test": "Or take a quick skill level test",
+    "timed-practice-explanation": "Your answers will be timed",
+    "offer-adaptive-test": "Or take a quick test to estimate your level",
     "adaptive-test-link": "skill level test",
-    "adaptive-test-button": "Go to test",
-    "timed-practice-toggle-tooltip": ""
+    "adaptive-test-button": "Proceed to test",
+    "timed-practice-toggle-tooltip": "Use timer",
+    "timed-adaptive-test": "Timed test"
 }

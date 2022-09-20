@@ -34,6 +34,7 @@ const AdaptiveTest = ({ showingInfo }) => {
     answerFailure,
     currentAdaptiveQuestion,
     currentAdaptiveQuestionIndex,
+    timedTest,
   } = useSelector(({ tests }) => tests)
   const learningLanguage = useSelector(learningLanguageSelector)
 
@@ -58,7 +59,8 @@ const AdaptiveTest = ({ showingInfo }) => {
         adaptiveTestSessionId,
         answer,
         duration,
-        currentAdaptiveQuestion.question_id
+        currentAdaptiveQuestion.question_id,
+        timedTest
       )
     )
   }
@@ -122,37 +124,39 @@ const AdaptiveTest = ({ showingInfo }) => {
     <div className="cont mt-nm">
       <Segment style={{ minHeight: '700px', borderRadius: '20px' }}>
         <div className="align-center justify-center">
-          <div
-            className="flex align-start"
-            style={{ position: 'absolute', top: '1em', right: '1em', gap: '.5em' }}
-          >
-            <div className="test-controls">
-              <Icon
-                size="large"
-                color={willPause ? 'grey' : 'black'}
-                name={paused ? 'play' : 'pause'}
-                onClick={paused ? resumeTimer : pauseTimer}
-                style={{ margin: '0.25em' }}
-              />
-              <Icon
-                size="large"
-                name="stop"
-                onClick={() => dispatch(resetTests())}
-                style={{ margin: '0.25em' }}
-              />
-            </div>
+          {timedTest && (
             <div
-              className="test-counter"
-              style={{
-                fontSize: '2em',
-                fontWeight: 'bold',
-                color: '#212529',
-                padding: 0,
-              }}
+              className="flex align-start"
+              style={{ position: 'absolute', top: '1em', right: '1em', gap: '.5em' }}
             >
-              {Math.round(timer.getTime() / 1000)}
+              <div className="test-controls">
+                <Icon
+                  size="large"
+                  color={willPause ? 'grey' : 'black'}
+                  name={paused ? 'play' : 'pause'}
+                  onClick={paused ? resumeTimer : pauseTimer}
+                  style={{ margin: '0.25em' }}
+                />
+                <Icon
+                  size="large"
+                  name="stop"
+                  onClick={() => dispatch(resetTests())}
+                  style={{ margin: '0.25em' }}
+                />
+              </div>
+              <div
+                className="test-counter"
+                style={{
+                  fontSize: '2em',
+                  fontWeight: 'bold',
+                  color: '#212529',
+                  padding: 0,
+                }}
+              >
+                {Math.round(timer.getTime() / 1000)}
+              </div>
             </div>
-          </div>
+          )}
           <div className="test-container">
             <div className="test-top-info space-between">
               <div>

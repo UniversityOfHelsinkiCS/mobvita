@@ -1344,5 +1344,6 @@
     "offer-adaptive-test": "Tai tee nopea taitotasotesti",
     "adaptive-test-link": "taitotasotesti",
     "adaptive-test-button": "Tee testi",
-    "timed-practice-toggle-tooltip": ""
+    "timed-practice-toggle-tooltip": "Käytä ajastinta",
+    "timed-adaptive-test": "Ajastettu testi"
 }

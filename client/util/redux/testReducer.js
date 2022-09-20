@@ -11,6 +11,7 @@ const initialState = {
   adaptiveTestSessionId: null,
   currentAdaptiveQuestionIndex: 0,
   adaptiveTestResults: null,
+  timedTest: true,
 }
 
 const clearLocalStorage = () => {
@@ -66,7 +67,14 @@ export const sendExhaustiveTestAnswer = (language, sessionId, answer, duration, 
   return callBuilder(route, prefix, 'post', payload)
 }
 
-export const sendAdaptiveTestAnswer = (language, sessionId, answer, duration, questionId) => {
+export const sendAdaptiveTestAnswer = (
+  language,
+  sessionId,
+  answer,
+  duration,
+  questionId,
+  timedTest
+) => {
   const route = `/test/${language}/adaptive/answer`
   const prefix = 'ANSWER_ADAPTIVE_TEST_QUESTION'
   const payload = {
@@ -74,6 +82,7 @@ export const sendAdaptiveTestAnswer = (language, sessionId, answer, duration, qu
     answer,
     duration,
     question_id: questionId,
+    timed_test: timedTest,
   }
   return callBuilder(route, prefix, 'post', payload)
 }
@@ -105,6 +114,8 @@ export const removeFromHistory = (language, sessionId) => {
   return callBuilder(route, prefix, 'post')
 }
 
+export const updateTimed = isTimed => ({ type: 'UPDATE_TIMED_TEST', isTimed })
+
 export const resetTests = () => {
   clearLocalStorage()
   return { type: 'RESET_TESTS' }
@@ -116,9 +127,15 @@ export default (state = initialState, action) => {
   const { response, startingIndex } = action
 
   switch (action.type) {
+    case 'UPDATE_TIMED_TEST':
+      return {
+        ...initialState,
+        timedTest: action.isTimed,
+      }
     case 'GET_TEST_QUESTIONS_ATTEMPT':
       return {
         ...initialState,
+        timedTest: state.timedTest,
         pending: true,
         language: action.language,
         currentExhaustiveQuestionIndex: startingIndex,
@@ -142,11 +159,13 @@ export default (state = initialState, action) => {
     case 'INIT_ADAPTIVE_TEST_ATTEMPT':
       return {
         ...initialState,
+        timedTest: state.timedTest,
         pending: true,
       }
     case 'INIT_ADAPTIVE_TEST_SUCCESS':
       return {
         ...initialState,
+        timedTest: state.timedTest,
         pending: false,
         adaptiveTestSessionId: response.session_id,
         currentAdaptiveQuestion: response.next_question,
@@ -154,6 +173,7 @@ export default (state = initialState, action) => {
     case 'INIT_ADAPTIVE_TEST_FAILURE':
       return {
         ...initialState,
+        timedTest: state.timedTest,
         pending: false,
       }
 

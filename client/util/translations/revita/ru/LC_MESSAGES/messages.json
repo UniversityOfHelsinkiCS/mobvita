@@ -1342,10 +1342,11 @@
     "overview-vocabulary-explanation": "Все слова, с которыми вы работали в текстах до сих пор: освоенные и еще не освоенные",
     "current-cefr-level": "Уровень CEFR студента",
     "view-previous-and-edit": "Редактировать уровни студента",
-    "timed-practice-toggle": "Timed practice",
-    "timed-practice-explanation": "This is a timed practice",
-    "offer-adaptive-test": "Or take a quick skill level test",
+    "timed-practice-toggle": "Учитывать время ответов",
+    "timed-practice-explanation": "Время будет учитываться",
+    "offer-adaptive-test": "Или сдай короткий тест для определения уровня",
     "adaptive-test-link": "skill level test",
-    "adaptive-test-button": "Go to test",
-    "timed-practice-toggle-tooltip": ""
+    "adaptive-test-button": "Приступить к тесту",
+    "timed-practice-toggle-tooltip": "Использовать таймер",
+    "timed-adaptive-test": "Timed test"
 }

@@ -1340,10 +1340,11 @@
     "overview-vocabulary-explanation": "Panoramica",
     "current-cefr-level": "Il livello CEFR corrente dello studente",
     "view-previous-and-edit": "View and edit grades",
-    "timed-practice-toggle": "Timed practice",
-    "timed-practice-explanation": "This is a timed practice",
-    "offer-adaptive-test": "Or take a quick skill level test",
+    "timed-practice-toggle": "Considera il tempo di risposta",
+    "timed-practice-explanation": "Il tempo sarà preso in considerazione",
+    "offer-adaptive-test": "Oppure fai un rapido test per stimare il tuo livello",
     "adaptive-test-link": "skill level test",
-    "adaptive-test-button": "Go to test",
-    "timed-practice-toggle-tooltip": ""
+    "adaptive-test-button": "Procedi con il test",
+    "timed-practice-toggle-tooltip": "Usa il timer",
+    "timed-adaptive-test": "Timed test"
 }
