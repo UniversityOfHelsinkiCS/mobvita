@@ -65,6 +65,7 @@ const CurrentSnippet = ({
   const learningLanguage = useSelector(learningLanguageSelector)
   const history = useHistory()
   const isControlledStory = history.location.pathname.includes('controlled-practice')
+  const exerciseMode = history.location.pathname.includes('listening') ? 'listening' : 'grammar'
   const sessionId = snippets?.sessionId ?? null
   const [initRender, setInitRender] = useState(false)
   // const [openEncouragement, setOpenEncouragement] = useState(true)
@@ -178,7 +179,9 @@ const CurrentSnippet = ({
     dispatch(clearCurrentPractice())
 
     if (snippets.focused.total_num !== currentSnippetId() + 1 || practiceFinished) {
-      dispatch(getNextSnippet(storyId, currentSnippetId(), isControlledStory, sessionId))
+      dispatch(
+        getNextSnippet(storyId, currentSnippetId(), isControlledStory, sessionId, exerciseMode)
+      )
     } else {
       dispatch(setPracticeFinished(true))
     }
@@ -198,7 +201,7 @@ const CurrentSnippet = ({
   useEffect(() => {
     dispatch(clearPractice())
     dispatch(resetSessionId())
-    dispatch(getCurrentSnippet(storyId, isControlledStory))
+    dispatch(getCurrentSnippet(storyId, isControlledStory, exerciseMode))
     dispatch(clearTranslationAction())
   }, [])
 
@@ -248,7 +251,7 @@ const CurrentSnippet = ({
     dispatch(clearPractice())
     dispatch(resetAnnotations())
     dispatch(setPrevious([]))
-    dispatch(resetCurrentSnippet(storyId, isControlledStory))
+    dispatch(resetCurrentSnippet(storyId, isControlledStory, exerciseMode))
     dispatch(setPracticeFinished(false))
   }
 

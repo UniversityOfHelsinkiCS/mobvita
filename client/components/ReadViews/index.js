@@ -194,11 +194,18 @@ const ReadViews = ({ match }) => {
                 </div>
               )}
               {!isGroupPreview && !isGroupReview && (
-                <Link to={`/stories/${id}/practice`}>
-                  <Button variant="primary">
-                    <FormattedMessage id="practice-now" />
-                  </Button>
-                </Link>
+                <div>
+                  <Link to={`/stories/${id}/listening/practice/`}>
+                    <Button style={{ marginRight: '.5em' }} variant="primary">
+                      <FormattedMessage id="practice-listening-mode" />
+                    </Button>
+                  </Link>
+                  <Link to={`/stories/${id}/practice/`}>
+                    <Button variant="primary">
+                      <FormattedMessage id="practice-grammar-mode" />
+                    </Button>
+                  </Link>
+                </div>
               )}
             </div>
             {progress !== 0 && processingCurrentStory && (

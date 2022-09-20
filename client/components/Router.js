@@ -96,6 +96,7 @@ export default () => {
             <ProtectedRoute exact path="/flashcards/:mode/:storyId" component={Flashcards} />
             <ProtectedRoute exact path="/flashcards/:mode/test/:storyId" component={Flashcards} />
             <ProtectedRoute exact path="/stories/:id/practice/" component={PracticeView} />
+            <ProtectedRoute exact path="/stories/:id/listening/practice" component={PracticeView} />
             <ProtectedRoute
               exact
               path="/stories/:id/controlled-practice/"

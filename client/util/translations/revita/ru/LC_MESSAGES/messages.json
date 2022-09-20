@@ -1285,7 +1285,7 @@
     "list-of-recent-stories": "Last time you were working on:",
     "review-recent-completed-stories": "Хочешь повторить твои последние истории?",
     "continue-last-story-left-in-the-middle": "Ты можешь продолжить историю, над которой ты работал/а в прошлый раз:",
-    "ask-for-a-hint": "Показать подсказку?",
+    "ask-for-a-hint": "Показать подсказку!",
     "user-role-select-teacher": "Я учитель",
     "user-role-select-student": "Я изучаю язык",
     "previous-stories-blue-cards": "В тексте:\n<br/><i>{story}</i>\n<br/>ты встретил/а {nWords} новых слов, для которых ты не проверял/а перевод — \n<br/>Проверим 5 из них, чтобы получить баллы за <b>все</b> эти слова! →",
@@ -1350,5 +1350,8 @@
     "timed-practice-toggle-tooltip": "Использовать таймер",
     "timed-adaptive-test": "Timed test",
     "sort-by-concept-freq": "Sort by frequency",
-    "sort-by-concept-cefr": "Sort by CEFR level"
+    "sort-by-concept-cefr": "Sort by CEFR level",
+    "allow-listening-exercises": "Allow listening exercises",
+    "practice-listening-mode": "Practice (listening)",
+    "practice-grammar-mode": "Practice (grammar)"
 }

@@ -9,19 +9,25 @@ const filterPrevious = (previous, snippet) => {
   return previous.concat(snippet)
 }
 
-export const getCurrentSnippet = (storyId, controlledStory) => {
+export const getCurrentSnippet = (storyId, controlledStory, exerciseMode) => {
   const route = controlledStory
     ? `/stories/${storyId}/snippets/next?frozen_exercise=True`
-    : `/stories/${storyId}/snippets/next`
+    : `/stories/${storyId}/snippets/next?exercise_mode=${exerciseMode}`
   const prefix = 'GET_CURRENT_SNIPPET'
   return callBuilder(route, prefix)
 }
 
-export const getNextSnippet = (storyId, currentSnippetId, isControlledStory, sessionId) => {
+export const getNextSnippet = (
+  storyId,
+  currentSnippetId,
+  isControlledStory,
+  sessionId,
+  exerciseMode
+) => {
   const route =
     isControlledStory && sessionId
       ? `/stories/${storyId}/snippets/next?previous=${currentSnippetId}&frozen_exercise=True&session_id=${sessionId}`
-      : `/stories/${storyId}/snippets/next?previous=${currentSnippetId}`
+      : `/stories/${storyId}/snippets/next?previous=${currentSnippetId}&exercise_mode=${exerciseMode}`
   const prefix = 'GET_NEXT_SNIPPET'
   return callBuilder(route, prefix)
 }
@@ -39,10 +45,10 @@ export const getNextSnippetFromCache = snippet => ({
   nextSnippet: snippet,
 })
 
-export const resetCurrentSnippet = (storyId, controlledStory) => {
+export const resetCurrentSnippet = (storyId, controlledStory, exerciseMode) => {
   const route = controlledStory
     ? `/stories/${storyId}/snippets/reset?frozen_exercise=True`
-    : `/stories/${storyId}/snippets/reset`
+    : `/stories/${storyId}/snippets/reset?exercise_mode=${exerciseMode}`
   const prefix = 'RESET_SNIPPET_INDEX'
   return callBuilder(route, prefix, 'post')
 }
