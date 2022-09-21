@@ -158,6 +158,8 @@ export const images = {
   barChart,
 }
 
+export const backgroundColors = ['lightcyan', 'lightyellow', 'antiquewhite']
+
 export const getCategoryColor = category => {
   if (category === 'Grammar') {
     return 'note-grammar'

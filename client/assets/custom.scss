@@ -1605,6 +1605,13 @@ label.file-upload-btn {
   opacity: 0.5
 }
 
+.enc-message-body {
+  border: 2px solid cyan;
+  border-radius: 12px;
+  padding: 15px;
+  margin-bottom: 1em;
+}
+
 .flashcard {
   display: flex;
   flex-direction: column;

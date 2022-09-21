@@ -7,7 +7,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import { updateEnableRecmd } from 'Utilities/redux/userReducer'
 import { Link, useHistory } from 'react-router-dom'
 import { Form, Button } from 'react-bootstrap'
-import { images } from 'Utilities/common'
+import { images, backgroundColors } from 'Utilities/common'
 
 const FlashcardsEncouragement = ({
   open,
@@ -74,7 +74,6 @@ const FlashcardsEncouragement = ({
                 onClick={closeModal}
               />
             </div>
-            <hr />
           </div>
         )
         if (prevBlueCards?.num_of_rewardable_words >= 5) {
@@ -86,7 +85,10 @@ const FlashcardsEncouragement = ({
                   alt="flashcard batch"
                   style={{ maxWidth: '8%', maxHeight: '8%', marginRight: '1em' }}
                 />
-                <div>
+                <div
+                  className="enc-message-body"
+                  style={{ backgroundColor: backgroundColors[initList.length % 3] }}
+                >
                   <FormattedHTMLMessage
                     id="previous-stories-blue-cards"
                     values={{
@@ -103,7 +105,6 @@ const FlashcardsEncouragement = ({
                   </Link>
                 </div>
               </div>
-              <hr />
             </div>
           )
         }
@@ -141,7 +142,6 @@ const FlashcardsEncouragement = ({
                 onClick={closeModal}
               />
             </div>
-            <hr />
           </div>
         )
       }
@@ -154,7 +154,10 @@ const FlashcardsEncouragement = ({
               alt="batch of flashcards"
               style={{ maxWidth: '8%', maxHeight: '8%', marginRight: '1em' }}
             />
-            <div>
+            <div
+              className="enc-message-body"
+              style={{ backgroundColor: backgroundColors[initList.length % 3] }}
+            >
               <FormattedHTMLMessage
                 id="words-seen-encouragement"
                 values={{ vocabulary_seen: vocabularySeen }}
@@ -166,7 +169,6 @@ const FlashcardsEncouragement = ({
               ?
             </div>
           </div>
-          <hr />
         </div>
       )
 
@@ -178,7 +180,10 @@ const FlashcardsEncouragement = ({
               alt="bar chart"
               style={{ maxWidth: '8%', maxHeight: '8%', marginRight: '1em' }}
             />
-            <div>
+            <div
+              className="enc-message-body"
+              style={{ backgroundColor: backgroundColors[initList.length % 3] }}
+            >
               <FormattedMessage id="go-to-flashcards-progress" />
               &nbsp;
               <Link className="interactable" to="/profile/progress/flashcards">
@@ -187,7 +192,6 @@ const FlashcardsEncouragement = ({
               ?
             </div>
           </div>
-          <hr />
         </div>
       )
     } else {
@@ -223,7 +227,6 @@ const FlashcardsEncouragement = ({
                 onClick={closeModal}
               />
             </div>
-            <hr />
           </div>
         )
       } else {
@@ -255,7 +258,6 @@ const FlashcardsEncouragement = ({
                 onClick={closeModal}
               />
             </div>
-            <hr />
           </div>
         )
       }
@@ -267,7 +269,10 @@ const FlashcardsEncouragement = ({
               alt="bar chart"
               style={{ maxWidth: '8%', maxHeight: '8%', marginRight: '1em' }}
             />
-            <div>
+            <div
+              className="enc-message-body"
+              style={{ backgroundColor: backgroundColors[initList.length % 3] }}
+            >
               <FormattedHTMLMessage id="well-done-click-next-card-to-play-another-set-of-cards-2" />
               &nbsp;
               <Button className="interactable" variant="primary" onClick={() => handleNewDeck()}>
@@ -275,7 +280,6 @@ const FlashcardsEncouragement = ({
               </Button>
             </div>
           </div>
-          <hr />
         </div>
       )
       if (latestStories.length > 0) {
@@ -287,7 +291,10 @@ const FlashcardsEncouragement = ({
                 alt="magnifying glass"
                 style={{ maxWidth: '8%', maxHeight: '8%', marginRight: '1em' }}
               />
-              <div>
+              <div
+                className="enc-message-body"
+                style={{ backgroundColor: backgroundColors[initList.length % 3] }}
+              >
                 <FormattedMessage id="list-of-recent-stories" />
                 <ul>
                   {latestStories.map(story => (
@@ -300,7 +307,6 @@ const FlashcardsEncouragement = ({
                 </ul>
               </div>
             </div>
-            <hr />
           </div>
         )
       }
@@ -312,7 +318,10 @@ const FlashcardsEncouragement = ({
               alt="dumbbell"
               style={{ maxWidth: '8%', maxHeight: '8%', marginRight: '1em' }}
             />
-            <div>
+            <div
+              className="enc-message-body"
+              style={{ backgroundColor: backgroundColors[initList.length % 3] }}
+            >
               <FormattedMessage id="go-back-to-library" />
               &nbsp;
               <Link className="interactable" to="/library">
@@ -320,7 +329,6 @@ const FlashcardsEncouragement = ({
               </Link>
             </div>
           </div>
-          <hr />
         </div>
       )
     }

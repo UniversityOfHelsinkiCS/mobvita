@@ -6,7 +6,12 @@ import useWindowDimensions from 'Utilities/windowDimensions'
 import { updateEnableRecmd } from 'Utilities/redux/userReducer'
 import { getStoriesBlueFlashcards, getBlueFlashcards } from 'Utilities/redux/flashcardReducer'
 import { Link, useParams } from 'react-router-dom'
-import { images, learningLanguageSelector, dictionaryLanguageSelector } from 'Utilities/common'
+import {
+  images,
+  learningLanguageSelector,
+  dictionaryLanguageSelector,
+  backgroundColors,
+} from 'Utilities/common'
 import { clearNewVocabulary } from 'Utilities/redux/newVocabularyReducer'
 import { getLeaderboards } from 'Utilities/redux/leaderboardReducer'
 import { useSelector, useDispatch } from 'react-redux'
@@ -42,7 +47,7 @@ const ExercisesEncouragementModal = ({
   const { pending } = useSelector(({ user }) => user)
   const dispatch = useDispatch()
   const notFirst = storiesCovered > 1
-  const bigScreen = width > 700 
+  const bigScreen = width > 700
 
   const fillList = () => {
     let initList = []
@@ -55,7 +60,10 @@ const ExercisesEncouragementModal = ({
               alt="encouraging trophy"
               style={{ maxWidth: '8%', maxHeight: '8%', marginRight: '1em' }}
             />
-            <div>
+            <div
+              className="enc-message-body"
+              style={{ backgroundColor: backgroundColors[initList.length % 3] }}
+            >
               <FormattedHTMLMessage
                 id="leaderboard-ranking-encouragement"
                 values={{ userRanking }}
@@ -69,7 +77,6 @@ const ExercisesEncouragementModal = ({
               <FormattedMessage id="practice-makes-perfect" />
             </div>
           </div>
-          <hr />
         </div>
       )
     }
@@ -83,7 +90,10 @@ const ExercisesEncouragementModal = ({
               alt="flashcard batch"
               style={{ maxWidth: '8%', maxHeight: '8%', marginRight: '1em' }}
             />
-            <div>
+            <div
+              className="enc-message-body"
+              style={{ backgroundColor: backgroundColors[initList.length % 3] }}
+            >
               <FormattedHTMLMessage
                 id="story-completed-to-blue-flashcards"
                 values={{ nWords: creditableWordsNum }}
@@ -94,7 +104,6 @@ const ExercisesEncouragementModal = ({
               </Link>
             </div>
           </div>
-          <hr />
         </div>
       )
     } else if (prevBlueCards?.num_of_rewardable_words >= 5) {
@@ -106,7 +115,10 @@ const ExercisesEncouragementModal = ({
               alt="flashcard batch"
               style={{ maxWidth: '8%', maxHeight: '8%', marginRight: '1em' }}
             />
-            <div>
+            <div
+              className="enc-message-body"
+              style={{ backgroundColor: backgroundColors[initList.length % 3] }}
+            >
               <FormattedHTMLMessage
                 id="previous-stories-blue-cards"
                 values={{
@@ -115,12 +127,14 @@ const ExercisesEncouragementModal = ({
                 }}
               />
               &nbsp;
-              <Link className="interactable" to={`/flashcards/fillin/test/${prevBlueCards.story_id}`}>
+              <Link
+                className="interactable"
+                to={`/flashcards/fillin/test/${prevBlueCards.story_id}`}
+              >
                 <FormattedMessage id="flashcards-review" />
               </Link>
             </div>
           </div>
-          <hr />
         </div>
       )
     }
@@ -134,15 +148,19 @@ const ExercisesEncouragementModal = ({
               alt="weight"
               style={{ maxWidth: '8%', maxHeight: '8%', marginRight: '1em' }}
             />
-            <div>
+            <div
+              className="enc-message-body"
+              style={{ backgroundColor: backgroundColors[initList.length % 3] }}
+            >
               <FormattedMessage id="continue-last-story-left-in-the-middle" />
               <br />
-              <Link className="interactable" to={`/stories/${latestIncompleteStory._id}/practice`}>
-                {latestIncompleteStory.title}
-              </Link>
+              <li>
+                <Link className="interactable" to={`/stories/${latestIncompleteStory._id}/practice`}>
+                  {latestIncompleteStory.title}
+                </Link>
+              </li>
             </div>
           </div>
-          <hr />
         </div>
       )
     }
@@ -155,7 +173,10 @@ const ExercisesEncouragementModal = ({
               alt="flashcards"
               style={{ maxWidth: '8%', maxHeight: '8%', marginRight: '1em' }}
             />
-            <div>
+            <div
+              className="enc-message-body"
+              style={{ backgroundColor: backgroundColors[initList.length % 3] }}
+            >
               <FormattedHTMLMessage
                 id="words-seen-encouragement"
                 values={{ vocabulary_seen: vocabularySeen }}
@@ -167,7 +188,6 @@ const ExercisesEncouragementModal = ({
               ?
             </div>
           </div>
-          <hr />
         </div>
       )
     }
@@ -181,7 +201,10 @@ const ExercisesEncouragementModal = ({
               alt="bar chart"
               style={{ maxWidth: '8%', maxHeight: '8%', marginRight: '1em' }}
             />
-            <div>
+            <div
+              className="enc-message-body"
+              style={{ backgroundColor: backgroundColors[initList.length % 3] }}
+            >
               <FormattedHTMLMessage
                 id="words-interacted-encouragement"
                 values={{ nWords: newVocabulary }}
@@ -193,7 +216,6 @@ const ExercisesEncouragementModal = ({
               ?
             </div>
           </div>
-          <hr />
         </div>
       )
     }
@@ -206,7 +228,10 @@ const ExercisesEncouragementModal = ({
             alt="beehive"
             style={{ maxWidth: '8%', maxHeight: '8%', marginRight: '1em' }}
           />
-          <div>
+          <div
+            className="enc-message-body"
+            style={{ backgroundColor: backgroundColors[initList.length % 3] }}
+          >
             <FormattedMessage id="enc-grammar-progress-1" />
             &nbsp;
             <Link className="interactable" to="/profile/progress/grammar">
@@ -215,7 +240,6 @@ const ExercisesEncouragementModal = ({
             ?
           </div>
         </div>
-        <hr />
       </div>
     )
 
@@ -275,7 +299,9 @@ const ExercisesEncouragementModal = ({
   if (open) {
     return (
       <Draggable cancel=".interactable">
-        <div className={bigScreen ? "draggable-ex-encouragement" : "draggable-ex-encouragement-mobile"}>
+        <div
+          className={bigScreen ? 'draggable-ex-encouragement' : 'draggable-ex-encouragement-mobile'}
+        >
           <div>
             <div className="flex">
               <div>

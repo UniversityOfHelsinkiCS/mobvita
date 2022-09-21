@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 import { Popup, Icon } from 'semantic-ui-react'
 import { useIntl, FormattedHTMLMessage, FormattedMessage } from 'react-intl'
 import { Link } from 'react-router-dom'
-import { images, dictionaryLanguageSelector } from 'Utilities/common'
+import { images, dictionaryLanguageSelector, backgroundColors } from 'Utilities/common'
 import { useDispatch, useSelector } from 'react-redux'
 import useWindowDimensions from 'Utilities/windowDimensions'
 import Draggable from 'react-draggable'
@@ -38,7 +38,7 @@ const DefaultActivityModal = ({
   const [sharedStory, setSharedStory] = useState(null)
   const { pending: userPending } = useSelector(({ user }) => user)
   const dispatch = useDispatch()
-  const bigScreen = width > 700 
+  const bigScreen = width > 700
 
   const fillList = () => {
     let initList = []
@@ -51,7 +51,10 @@ const DefaultActivityModal = ({
               alt="encouraging trophy"
               style={{ maxWidth: '8%', maxHeight: '8%', marginRight: '1em' }}
             />
-            <div>
+            <div
+              className="enc-message-body"
+              style={{ backgroundColor: backgroundColors[initList.length % 3] }}
+            >
               <FormattedHTMLMessage
                 id="leaderboard-ranking-encouragement"
                 values={{ userRanking }}
@@ -65,7 +68,6 @@ const DefaultActivityModal = ({
               <FormattedMessage id="practice-makes-perfect" />
             </div>
           </div>
-          <hr />
         </div>
       )
     }
@@ -78,7 +80,10 @@ const DefaultActivityModal = ({
               alt="exclamation mark"
               style={{ maxWidth: '8%', maxHeight: '8%', marginRight: '1em' }}
             />
-            <div>
+            <div
+              className="enc-message-body"
+              style={{ backgroundColor: backgroundColors[initList.length % 3] }}
+            >
               <FormattedHTMLMessage id="controlled-story-reminder" />
               <br />
               <Link className="interactable" to={`/stories/${sharedStory._id}/controlled-practice`}>
@@ -86,7 +91,6 @@ const DefaultActivityModal = ({
               </Link>
             </div>
           </div>
-          <hr />
         </div>
       )
     }
@@ -99,7 +103,10 @@ const DefaultActivityModal = ({
               alt="flashcard batch"
               style={{ maxWidth: '8%', maxHeight: '8%', marginRight: '1em' }}
             />
-            <div>
+            <div
+              className="enc-message-body"
+              style={{ backgroundColor: backgroundColors[initList.length % 3] }}
+            >
               <FormattedHTMLMessage
                 id="previous-stories-blue-cards"
                 values={{
@@ -108,12 +115,14 @@ const DefaultActivityModal = ({
                 }}
               />
               &nbsp;
-              <Link className="interactable" to={`/flashcards/fillin/test/${prevBlueCards.story_id}`}>
+              <Link
+                className="interactable"
+                to={`/flashcards/fillin/test/${prevBlueCards.story_id}`}
+              >
                 <FormattedMessage id="flashcards-review" />
               </Link>
             </div>
           </div>
-          <hr />
         </div>
       )
     }
@@ -126,15 +135,19 @@ const DefaultActivityModal = ({
               alt="weight"
               style={{ maxWidth: '8%', maxHeight: '8%', marginRight: '1em' }}
             />
-            <div>
+            <div
+              className="enc-message-body"
+              style={{ backgroundColor: backgroundColors[initList.length % 3] }}
+            >
               <FormattedMessage id="continue-last-story-left-in-the-middle" />
               <br />
-              <Link className="interactable" to={`/stories/${latestIncompleteStory._id}/practice`}>
-                {latestIncompleteStory.title}
-              </Link>
+              <li>
+                <Link className="interactable" to={`/stories/${latestIncompleteStory._id}/practice`}>
+                  {latestIncompleteStory.title}
+                </Link>
+              </li>
             </div>
           </div>
-          <hr />
         </div>
       )
     }
@@ -147,19 +160,23 @@ const DefaultActivityModal = ({
               alt="magnifying glass"
               style={{ maxWidth: '8%', maxHeight: '8%', marginRight: '1em' }}
             />
-            <div>
+            <div
+              className="enc-message-body"
+              style={{ backgroundColor: backgroundColors[initList.length % 3] }}
+            >
               <FormattedMessage id="review-recent-stories" />
 
               <ul>
                 {storiesToReview.map(story => (
                   <li style={{ marginTop: '0.5rem' }}>
-                    <Link className="interactable" to={`/stories/${story._id}/review`}>{story.title}</Link>
+                    <Link className="interactable" to={`/stories/${story._id}/review`}>
+                      {story.title}
+                    </Link>
                   </li>
                 ))}
               </ul>
             </div>
           </div>
-          <hr />
         </div>
       )
     }
@@ -265,7 +282,7 @@ const DefaultActivityModal = ({
   if (open) {
     return (
       <Draggable cancel=".interactable">
-        <div className={bigScreen ? "draggable-encouragement" : "draggable-encouragement-mobile"}>
+        <div className={bigScreen ? 'draggable-encouragement' : 'draggable-encouragement-mobile'}>
           <div>
             <div className="col-flex">
               {welcomeBack ? (
@@ -350,7 +367,14 @@ const DefaultActivityModal = ({
               <Popup
                 className="interactable"
                 content={intl.formatMessage({ id: 'disable-recmd-tooltip' })}
-                trigger={<Icon className="interactable" style={{ marginLeft: '0.5em' }} name="info circle" color="grey" />}
+                trigger={
+                  <Icon
+                    className="interactable"
+                    style={{ marginLeft: '0.5em' }}
+                    name="info circle"
+                    color="grey"
+                  />
+                }
               />
             </div>
           </div>

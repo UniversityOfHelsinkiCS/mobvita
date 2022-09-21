@@ -39,7 +39,10 @@ const FlashcardsPracticeEncouragement = ({ open, setOpen, prevBlueCards }) => {
                 alt="flashcard batch"
                 style={{ maxWidth: '8%', maxHeight: '8%', marginRight: '1em' }}
               />
-              <div>
+              <div
+                className="enc-message-body"
+                style={{ backgroundColor: 'lightyellow' }}
+              >
                 <FormattedHTMLMessage
                   id="previous-stories-blue-cards"
                   values={{
