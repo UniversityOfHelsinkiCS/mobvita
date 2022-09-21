@@ -54,12 +54,13 @@ const MultipleChoiceModal = ({
       ]
       handleAddMultichoiceExercise(
         customSet.filter(word => word !== ''),
-        word.surface
+        word.surface,
+        'custom_concept_id'
       )
     } else if (chosenSet === 'stress') {
-      handleAddMultichoiceExercise(word.stress, word.stressed)
+      handleAddMultichoiceExercise(word.stress, word.stressed, 'Stress-*')
     } else {
-      handleAddMultichoiceExercise(word.choices[chosenSet], word.surface)
+      handleAddMultichoiceExercise(word.choices[chosenSet], word.surface, chosenSet)
     }
   }
 
