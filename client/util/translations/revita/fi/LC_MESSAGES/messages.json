@@ -1347,8 +1347,11 @@
     "timed-practice-toggle-tooltip": "Käytä ajastinta",
     "timed-adaptive-test": "Ajastettu testi",
     "sort-by-concept-freq": "Sort by frequency",
-    "sort-by-concept-cefr": "Sort by CEFR level",
+    "sort-by-concept-cefr": "Sort by difficulty",
     "allow-listening-exercises": "Allow listening exercises",
-    "practice-listening-mode": "Harjoittele (kuuntelu)",
-    "practice-grammar-mode": "Harjoittele (kielioppi)"
+    "practice-listening-mode": "Harjoittele kuuntelua",
+    "practice-grammar-mode": "Harjoittele kielioppia",
+    "LABEL-sort-by": "Sort by:",
+    "sort-by-concept-freq-short": "frequency",
+    "sort-by-concept-cefr-short": "difficulty"
 }

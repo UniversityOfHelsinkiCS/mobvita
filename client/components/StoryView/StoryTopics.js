@@ -65,6 +65,7 @@ const StoryTopics = ({ conceptCount, focusedConcept, setFocusedConcept }) => {
               <Icon name={collapsed ? 'angle down' : 'angle up'} size="large" />
             </div>
           </div>
+          <FormattedMessage id="LABEL-sort-by" />
           <div className="space-evenly" style={{ marginTop: '.5em' }}>
             <span style={{ marginRight: '.5em' }}>
               <input
@@ -73,7 +74,7 @@ const StoryTopics = ({ conceptCount, focusedConcept, setFocusedConcept }) => {
                 onChange={() => setSortByFreq(true)}
                 checked={sortByFreq}
               />
-              <FormattedMessage id="sort-by-concept-freq" />
+              <FormattedMessage id="sort-by-concept-freq-short" />
             </span>
             <span style={{ marginRight: '.5em' }}>
               <input
@@ -82,7 +83,7 @@ const StoryTopics = ({ conceptCount, focusedConcept, setFocusedConcept }) => {
                 onChange={() => setSortByFreq(false)}
                 checked={!sortByFreq}
               />
-              <FormattedMessage id="sort-by-concept-cefr" />
+              <FormattedMessage id="sort-by-concept-cefr-short" />
             </span>
           </div>
           <hr />
@@ -98,11 +99,7 @@ const StoryTopics = ({ conceptCount, focusedConcept, setFocusedConcept }) => {
                     {topic[0]}
                   </span>
                   <span style={{ marginRight: '.5em' }}>
-                    {sortByFreq ? (
-                      topic[1].freq
-                    ) : (
-                      skillLevels[topic[1].level]
-                    )}
+                    {topic[1].freq}
                   </span>
                 </li>
               ))}

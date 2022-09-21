@@ -1348,8 +1348,11 @@
     "timed-practice-toggle-tooltip": "Usa il timer",
     "timed-adaptive-test": "Timed test",
     "sort-by-concept-freq": "Sort by frequency",
-    "sort-by-concept-cefr": "Sort by CEFR level",
+    "sort-by-concept-cefr": "Sort by difficulty",
     "allow-listening-exercises": "Allow listening exercises",
-    "practice-listening-mode": "Practice (listening)",
-    "practice-grammar-mode": "Practice (grammar)"
+    "practice-listening-mode": "Practice listening",
+    "practice-grammar-mode": "Practice grammar",
+    "LABEL-sort-by": "Sort by:",
+    "sort-by-concept-freq-short": "frequency",
+    "sort-by-concept-cefr-short": "difficulty"
 }
