@@ -302,6 +302,7 @@ const CurrentSnippet = ({
               storyId={storyId}
               exerciseCount={exerciseCount}
               isControlledStory={isControlledStory}
+              exerciseMode={exerciseMode}
               timerValue={Math.round(timer.getTime() / 1000)}
               numSnippets={numSnippets}
             />

@@ -76,7 +76,7 @@ const CheckAnswersButton = ({ handleClick, checkAnswersButtonTempDisable }) => {
   )
 }
 
-const SnippetActions = ({ storyId, exerciseCount, isControlledStory, timerValue, numSnippets }) => {
+const SnippetActions = ({ storyId, exerciseCount, isControlledStory, exerciseMode, timerValue, numSnippets }) => {
   const [checkAnswersButtonTempDisable, setcheckAnswersButtonTempDisable] = useState(false)
 
   const { snippets } = useSelector(({ snippets }) => ({ snippets }))
@@ -160,7 +160,7 @@ const SnippetActions = ({ storyId, exerciseCount, isControlledStory, timerValue,
 
   const handleRestart = () => {
     dispatch(clearPractice())
-    dispatch(resetCurrentSnippet(id, isControlledStory))
+    dispatch(resetCurrentSnippet(id, isControlledStory, exerciseMode))
     dispatch(resetAnnotations())
     setcheckAnswersButtonTempDisable(true)
     setTimeout(() => {
