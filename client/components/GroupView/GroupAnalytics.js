@@ -270,8 +270,8 @@ const GroupAnalytics = ({ role }) => {
                 sid={currentStudent._id}
               />
               <FormattedMessage id="current-cefr-level" />:{' '}
-              <b style={{ marginRight: '.5em' }}>{currentCEFR}</b>
-              <Button variant="primary" onClick={() => setOpenEditModal(true)}>
+              <b style={{ marginRight: '1em' }}>{currentCEFR}</b>
+              <Button variant="primary" onClick={() => setOpenEditModal(true)} style={{ padding: '5px' }}>
                 <FormattedMessage id="view-previous-and-edit" />
               </Button>
               {/* 

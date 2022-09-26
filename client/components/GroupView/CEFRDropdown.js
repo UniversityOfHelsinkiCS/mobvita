@@ -51,9 +51,7 @@ const CEFRDropdown = ({
 
   const handleCEFRChange = value => {
     setChosenValue(JSON.parse(value))
-    if (index) {
-      setModified(true)
-    }
+    setModified(true)
   }
 
   return (

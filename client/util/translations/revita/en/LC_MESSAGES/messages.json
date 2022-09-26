@@ -1183,7 +1183,7 @@
     "preview-mode-info": "When enabled, you can click the highlighted words and phrases to see what kinds of exercises are available for them.",
     "review-mode-info": "When enabled, you can click the highlighted words to see what you had answered during previous practice sessions and the feedback.",
     "shared-with-following-groups": "Shared with groups:",
-    "???": "",
+    "???": "Comparativity",
     "story-processing-now-finished": "The story has now been completely processed!  Please refresh!",
     "delete-account": "Delete account",
     "delete-account-confirmation": "Are you sure you want to delete your account?",
@@ -1353,5 +1353,8 @@
     "practice-grammar-mode": "Practice grammar",
     "LABEL-sort-by": "Sort by:",
     "sort-by-concept-freq-short": "frequency",
-    "sort-by-concept-cefr-short": "difficulty"
+    "sort-by-concept-cefr-short": "difficulty",
+    "submit-student-cefr": "Submit changes",
+    "undo-student-cefr-edit": "Undo changes",
+    "add-cefr-estimate": "Add CEFR estimate for today:"
 }

@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react'
 import { useDispatch } from 'react-redux'
 import { Icon } from 'semantic-ui-react'
 import { Table, Button } from 'react-bootstrap'
+import { FormattedMessage } from 'react-intl'
 import { updateStudentCEFRLevels } from 'Utilities/redux/groupSummaryReducer'
 import Draggable from 'react-draggable'
 import { capitalize, isToday, skillLevels } from 'Utilities/common'
@@ -61,7 +62,7 @@ const StudentCEFRModal = ({ open, setOpen, cefrHistory, setCefrHistory, groupId,
               className="interactable"
               style={{
                 cursor: 'pointer',
-                marginBottom: '.5em',
+                marginBottom: '1em',
               }}
               size="large"
               name="close"
@@ -70,23 +71,23 @@ const StudentCEFRModal = ({ open, setOpen, cefrHistory, setCefrHistory, groupId,
           </div>
           <div
             className="flex space-between"
-            style={{ marginBottom: '.25em', marginRight: '.25em', marginLeft: '.25em' }}
+            style={{ paddingBottom: '15px' }}
           >
             <Button className="interactable" variant="primary" onClick={handleSubmit}>
-              Submit changes
+              <FormattedMessage id="submit-student-cefr" />
             </Button>
             {modified && (
               <Button className="interactable" variant="secondary" onClick={undoChanges}>
-                Undo changes
+                <FormattedMessage id="undo-student-cefr-edit" />
               </Button>
             )}
           </div>
           {showForm && (
             <div
               className="flex space-between"
-              style={{ alignItems: 'center', marginBottom: '.5em' }}
+              style={{ alignItems: 'center', marginBottom: '10px' }}
             >
-              Add CEFR estimate for today:
+              <FormattedMessage id="add-cefr-estimate"/>
               <CEFRDropdown
                 addNew
                 updatedCEFRHistory={updatedCEFRHistory}
