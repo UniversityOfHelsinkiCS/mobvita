@@ -175,6 +175,7 @@ export const getCategoryColor = category => {
 }
 
 export const skillLevels = [
+  'pre-A1',
   'A1',
   'A1/A2',
   'A2',
@@ -186,6 +187,7 @@ export const skillLevels = [
   'C1',
   'C1/C2',
   'C2',
+  'C2+',
 ]
 
 export const confettiRain = () => {
