@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import { FormattedMessage } from 'react-intl'
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { Divider, Modal } from 'semantic-ui-react'
 import { Button } from 'react-bootstrap'
 import { Link } from 'react-router-dom'
@@ -12,6 +12,7 @@ const SetCEFRReminder = ({ open, setOpen, newUser }) => {
   const dispatch = useDispatch()
   const [sliderValue, setSliderValue] = useState(121)
   const [isTeacher, setIsTeacher] = useState(false)
+  const { hasAdaptiveTests, pending } = useSelector(({ metadata }) => metadata)
 /*
   const startTour = () => {
     dispatch(sidebarSetOpen(false))
@@ -34,6 +35,10 @@ const SetCEFRReminder = ({ open, setOpen, newUser }) => {
     dispatch(updateIsTeacher(isTeacher))
 
     closeModal()
+  }
+
+  if (pending) {
+    return null
   }
 
   return (
@@ -88,23 +93,27 @@ const SetCEFRReminder = ({ open, setOpen, newUser }) => {
           >
             <FormattedMessage id="update-settings" />
           </Button>
-          <Divider />
-          <div
-            style={{
-              marginTop: '1em',
-              color: isTeacher ? 'lightgrey' : '#000000',
-            }}
-          >
-            <h3>
-              <FormattedMessage id="offer-adaptive-test" />
-            </h3>
-            &nbsp;
-            <Link to="/adaptive-test">
-              <Button style={{ fontSize: '18px' }} variant="primary" disabled={isTeacher}>
-                <FormattedMessage id="adaptive-test-button" />
-              </Button>
-            </Link>
-          </div>
+          {hasAdaptiveTests && (
+            <>
+              <Divider />
+              <div
+                style={{
+                  marginTop: '1em',
+                  color: isTeacher ? 'lightgrey' : '#000000',
+                }}
+              >
+                <h3>
+                  <FormattedMessage id="offer-adaptive-test" />
+                </h3>
+                &nbsp;
+                <Link to="/adaptive-test">
+                  <Button style={{ fontSize: '18px' }} variant="primary" disabled={isTeacher}>
+                    <FormattedMessage id="adaptive-test-button" />
+                  </Button>
+                </Link>
+              </div>
+            </>
+          )}
         </div>
       </Modal.Content>
     </Modal>
