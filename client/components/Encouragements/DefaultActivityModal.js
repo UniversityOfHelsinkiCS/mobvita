@@ -23,7 +23,6 @@ const DefaultActivityModal = ({
   enable_recmd,
   username,
   welcomeBack = false,
-  isNewUser = false,
 }) => {
   const intl = useIntl()
   const [latestIncompleteStory, setLatestIncompleteStory] = useState(null)
@@ -75,10 +74,6 @@ const DefaultActivityModal = ({
 
   const fillList = () => {
     let initList = []
-    if (isNewUser && cachedStories) {
-      initList = initList.concat(dailyStoriesEncouragement(initList.length))
-      return initList
-    }
     if (userRanking) {
       initList = initList.concat(
         <div className="pt-md">
@@ -222,6 +217,10 @@ const DefaultActivityModal = ({
           </div>
         </div>
       )
+    }
+    if (initList.length < 1 && cachedStories) {
+      initList = initList.concat(dailyStoriesEncouragement(initList.length))
+      return initList
     }
 
     return initList

@@ -190,7 +190,6 @@ const HomeView = () => {
             pending={loading}
             learningLanguage={learningLanguage}
             enable_recmd={enable_recmd}
-            isNewUser={userData.is_new_user}
           />
         )}
       <div className="grow flex-col">
