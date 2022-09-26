@@ -4,7 +4,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import { ButtonGroup, ToggleButton, Button } from 'react-bootstrap'
 import { FormattedMessage, useIntl, FormattedHTMLMessage } from 'react-intl'
 import { getSummary, getInitSummary } from 'Utilities/redux/groupSummaryReducer'
-import { learningLanguageSelector, hiddenFeatures, skillLevels } from 'Utilities/common'
+import { learningLanguageSelector, skillLevels } from 'Utilities/common'
 import {
   getStudentVocabulary,
   getPreviousStudentVocabulary,
@@ -21,6 +21,7 @@ import StudentVocabularyProgress from './StudentVocabularyProgress'
 import StudentGrammarProgress from './StudentGrammarProgress'
 import NoGroupsView from './NoGroupsView'
 import GroupHistory from './GroupHistory'
+// import GroupFunctions from './GroupFunctions'
 
 const PickDate = ({ date, setDate, onCalendarClose }) => (
   <ResponsiveDatePicker
@@ -67,6 +68,8 @@ const GroupAnalytics = ({ role }) => {
     text: `${student?.userName} (${student?.email})`,
     value: JSON.stringify(student), // needs to be string
   }))
+
+  console.log('current ', currentGroup)
 
   const handleStudentChange = value => {
     setCurrentStudent(JSON.parse(value))
@@ -192,7 +195,10 @@ const GroupAnalytics = ({ role }) => {
           )}
         </div>
       </div>
-
+      {/*
+      <GroupFunctions group={currentGroup} />
+      <hr />
+      */}
       <div className="date-pickers-container">
         {bigScreen ? (
           <div className="date-pickers gap-col-sm">
@@ -253,7 +259,7 @@ const GroupAnalytics = ({ role }) => {
               disabled={!currentStudent}
             />
           </div>
-          {hiddenFeatures && currentCEFR && (
+          {currentCEFR && (
             <div>
               <StudentCEFRModal
                 open={openEditModal}
