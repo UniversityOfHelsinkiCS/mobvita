@@ -135,7 +135,6 @@ const HomeView = () => {
     incomplete: incomplete.data,
     loading: incomplete.pending,
   }))
-  const showDAModal = (enable_recmd && !userData.is_new_user) || false
   const { exercise_setting_template: exerciseSettingTemplate } = useSelector(
     ({ user }) => user.data.user
   )
@@ -145,7 +144,7 @@ const HomeView = () => {
 
   const [openEncouragement, setOpenEncouragement] = useState(true)
   const [openReminder, setOpenReminder] = useState(true)
-
+  const showDAModal = enable_recmd
   const showWelcomeModal =
     history.location.pathname.endsWith('/welcome') &&
     username !== 'Anonymous User' &&
@@ -191,6 +190,7 @@ const HomeView = () => {
             pending={loading}
             learningLanguage={learningLanguage}
             enable_recmd={enable_recmd}
+            isNewUser={userData.is_new_user}
           />
         )}
       <div className="grow flex-col">

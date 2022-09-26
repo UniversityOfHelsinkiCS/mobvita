@@ -11,6 +11,7 @@ import { getStoriesBlueFlashcards } from 'Utilities/redux/flashcardReducer'
 import { getIncompleteStories } from 'Utilities/redux/incompleteStoriesReducer'
 import { getLeaderboards } from 'Utilities/redux/leaderboardReducer'
 import { Form, Button } from 'react-bootstrap'
+import DailyStories from './DailyStories'
 
 const DefaultActivityModal = ({
   open,
@@ -22,6 +23,7 @@ const DefaultActivityModal = ({
   enable_recmd,
   username,
   welcomeBack = false,
+  isNewUser = false,
 }) => {
   const intl = useIntl()
   const [latestIncompleteStory, setLatestIncompleteStory] = useState(null)
@@ -32,7 +34,9 @@ const DefaultActivityModal = ({
   const [prevBlueCards, setPrevBlueCards] = useState(null)
   const [recmdList, setRecmdList] = useState([])
   const { user_rank } = useSelector(({ leaderboard }) => leaderboard.data)
+  const { cachedStories, pending: metadataPending } = useSelector(({ metadata }) => metadata)
   const { width } = useWindowDimensions()
+  const [openDailyStories, setOpenDailyStories] = useState(false)
   const stories = useSelector(({ stories }) => stories.data)
   const [userRanking, setUserRanking] = useState(null)
   const [sharedStory, setSharedStory] = useState(null)
@@ -40,8 +44,41 @@ const DefaultActivityModal = ({
   const dispatch = useDispatch()
   const bigScreen = width > 700
 
+  const dailyStoriesEncouragement = listLen => {
+    return (
+      <div className="pt-md">
+        <div className="flex" style={{ alignItems: 'center' }}>
+          <img
+            src={images.library}
+            alt="pile of books"
+            style={{ maxWidth: '8%', maxHeight: '8%', marginRight: '1em' }}
+          />
+          <div
+            className="enc-message-body"
+            style={{ backgroundColor: backgroundColors[listLen % 3] }}
+          >
+            <div className="flex space-between">
+              <div>
+                <FormattedMessage id="daily-stories" />
+                &nbsp;
+                <FormattedMessage id="daily-stories-explanation" />
+              </div>
+              <Button onClick={() => setOpenDailyStories(true)}>
+                <FormattedMessage id="show-daily-stories-button" />
+              </Button>
+            </div>
+          </div>
+        </div>
+      </div>
+    )
+  }
+
   const fillList = () => {
     let initList = []
+    if (isNewUser && cachedStories) {
+      initList = initList.concat(dailyStoriesEncouragement(initList.length))
+      return initList
+    }
     if (userRanking) {
       initList = initList.concat(
         <div className="pt-md">
@@ -142,7 +179,10 @@ const DefaultActivityModal = ({
               <FormattedMessage id="continue-last-story-left-in-the-middle" />
               <br />
               <li>
-                <Link className="interactable" to={`/stories/${latestIncompleteStory._id}/practice`}>
+                <Link
+                  className="interactable"
+                  to={`/stories/${latestIncompleteStory._id}/practice`}
+                >
                   {latestIncompleteStory.title}
                 </Link>
               </li>
@@ -150,6 +190,9 @@ const DefaultActivityModal = ({
           </div>
         </div>
       )
+    }
+    if (cachedStories) {
+      initList = initList.concat(dailyStoriesEncouragement(initList.length))
     }
     if (storiesToReview.length > 0 && enable_recmd) {
       initList = initList.concat(
@@ -265,6 +308,7 @@ const DefaultActivityModal = ({
     latestIncompleteStory,
     sharedStory,
     prevBlueCards,
+    cachedStories,
   ])
 
   const closeModal = () => {
@@ -275,111 +319,119 @@ const DefaultActivityModal = ({
     dispatch(updateEnableRecmd(!enable_recmd))
   }
 
-  if (pending || storyCardsPending || recmdList.length < 1) {
+  if (pending || storyCardsPending || metadataPending || recmdList.length < 1) {
     return null
   }
 
   if (open) {
     return (
-      <Draggable cancel=".interactable">
-        <div className={bigScreen ? 'draggable-encouragement' : 'draggable-encouragement-mobile'}>
-          <div>
-            <div className="col-flex">
-              {welcomeBack ? (
-                <div className="flex">
-                  <div className="col-flex">
-                    <div
-                      style={{
-                        fontWeight: 500,
-                        fontSize: '1.4rem',
-                        marginBottom: bigScreen ? '1em' : '.5em',
-                      }}
-                    >
-                      {intl.formatMessage({ id: 'welcome-back-encouragement' }, { username })}
+      <>
+        <DailyStories
+          cachedStories={cachedStories}
+          bigScreen={bigScreen}
+          open={openDailyStories}
+          setOpen={setOpenDailyStories}
+        />
+        <Draggable cancel=".interactable">
+          <div className={bigScreen ? 'draggable-encouragement' : 'draggable-encouragement-mobile'}>
+            <div>
+              <div className="col-flex">
+                {welcomeBack ? (
+                  <div className="flex">
+                    <div className="col-flex">
+                      <div
+                        style={{
+                          fontWeight: 500,
+                          fontSize: '1.4rem',
+                          marginBottom: bigScreen ? '1em' : '.5em',
+                        }}
+                      >
+                        {intl.formatMessage({ id: 'welcome-back-encouragement' }, { username })}
+                      </div>
+                      <>
+                        {storiesCovered > 0 && (
+                          <div style={{ marginBottom: '.5em' }}>
+                            {intl.formatMessage(
+                              { id: 'stories-covered-encouragement' },
+                              { stories: storiesCovered }
+                            )}
+                          </div>
+                        )}
+                      </>
                     </div>
-                    <>
-                      {storiesCovered > 0 && (
-                        <div style={{ marginBottom: '.5em' }}>
-                          {intl.formatMessage(
-                            { id: 'stories-covered-encouragement' },
-                            { stories: storiesCovered }
-                          )}
-                        </div>
-                      )}
-                    </>
+                    <img
+                      src={images.balloons}
+                      alt="encouraging balloons"
+                      className={bigScreen ? 'enc-picture' : 'enc-picture-mobile'}
+                    />
+                    <Icon
+                      className="interactable"
+                      style={{
+                        cursor: 'pointer',
+                        marginBottom: '.25em',
+                      }}
+                      size="large"
+                      name="close"
+                      onClick={closeModal}
+                    />
                   </div>
-                  <img
-                    src={images.balloons}
-                    alt="encouraging balloons"
-                    className={bigScreen ? 'enc-picture' : 'enc-picture-mobile'}
-                  />
-                  <Icon
+                ) : (
+                  <div className="flex-reverse">
+                    <Icon
+                      className="interactable"
+                      style={{
+                        cursor: 'pointer',
+                        marginBottom: '.25em',
+                      }}
+                      size="large"
+                      name="close"
+                      onClick={closeModal}
+                    />
+                  </div>
+                )}
+                {recmdList.map((recommendation, index) => index < upperBound && recommendation)}
+                {recmdList.length > upperBound && (
+                  <Button
                     className="interactable"
-                    style={{
-                      cursor: 'pointer',
-                      marginBottom: '.25em',
-                    }}
-                    size="large"
-                    name="close"
-                    onClick={closeModal}
-                  />
-                </div>
-              ) : (
-                <div className="flex-reverse">
-                  <Icon
+                    onClick={() => setUpperBound(upperBound + 10)}
+                    styles={{ marginTop: '0.5em' }}
+                  >
+                    <FormattedMessage id="show-more-recommendations" />
+                  </Button>
+                )}
+              </div>
+              <div className="flex pt-lg">
+                <Form.Group>
+                  <Form.Check
                     className="interactable"
-                    style={{
-                      cursor: 'pointer',
-                      marginBottom: '.25em',
-                    }}
-                    size="large"
-                    name="close"
-                    onClick={closeModal}
+                    style={{ marginTop: '0.15em' }}
+                    type="checkbox"
+                    inline
+                    onChange={updatePreferences}
+                    checked={!enable_recmd}
+                    disabled={userPending}
                   />
-                </div>
-              )}
-              {recmdList.map((recommendation, index) => index < upperBound && recommendation)}
-              {recmdList.length > upperBound && (
-                <Button
+                </Form.Group>
+                <span style={{ color: '#708090' }}>
+                  <FormattedMessage id="never-show-recommendations" />
+                </span>
+                <Popup
                   className="interactable"
-                  onClick={() => setUpperBound(upperBound + 10)}
-                  styles={{ marginTop: '0.5em' }}
-                >
-                  <FormattedMessage id="show-more-recommendations" />
-                </Button>
-              )}
-            </div>
-            <div className="flex pt-lg">
-              <Form.Group>
-                <Form.Check
-                  className="interactable"
-                  style={{ marginTop: '0.15em' }}
-                  type="checkbox"
-                  inline
-                  onChange={updatePreferences}
-                  checked={!enable_recmd}
-                  disabled={userPending}
+                  content={intl.formatMessage({ id: 'disable-recmd-tooltip' })}
+                  trigger={
+                    <Icon
+                      className="interactable"
+                      style={{ marginLeft: '0.5em' }}
+                      name="info circle"
+                      color="grey"
+                    />
+                  }
                 />
-              </Form.Group>
-              <span style={{ color: '#708090' }}>
-                <FormattedMessage id="never-show-recommendations" />
-              </span>
-              <Popup
-                className="interactable"
-                content={intl.formatMessage({ id: 'disable-recmd-tooltip' })}
-                trigger={
-                  <Icon
-                    className="interactable"
-                    style={{ marginLeft: '0.5em' }}
-                    name="info circle"
-                    color="grey"
-                  />
-                }
-              />
+              </div>
             </div>
           </div>
-        </div>
-      </Draggable>
+        </Draggable>
+      </>
     )
   }
 

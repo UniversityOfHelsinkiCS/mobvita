@@ -36,6 +36,14 @@ export const setStoryUploadUnfinished = (value, storyId) => ({
   storyId,
 })
 
+export const uploadCachedStory = cachedId => {
+  const route = '/stories/cached'
+  const prefix = 'UPLOAD_CACHED_STORY'
+  const payload = { cached_id: cachedId }
+
+  return callBuilder(route, prefix, 'post', payload)
+}
+
 export const searchStories = (language, query) => {
   const queryString = Object.keys(query)
     .map(key => `${key}=${query[key]}`)
@@ -174,6 +182,26 @@ export default (state = initialState, action) => {
         totalNum: action.response.total_num,
         pending: false,
         error: false,
+      }
+    case 'UPLOAD_CACHED_STORY_ATTEMPT':
+      return {
+        ...state,
+        pending: true,
+        error: false,
+        uploaded: false,
+      }
+    case 'UPLOAD_CACHED_STORY_FAILURE':
+      return {
+        ...state,
+        pending: false,
+        error: true,
+        uploaded: false,
+      }
+    case 'UPLOAD_CACHED_STORY_SUCCESS':
+      return {
+        ...state,
+        pending: false,
+        uploaded: true,
       }
     case 'CLEAR_STORY_LIST':
       return initialState

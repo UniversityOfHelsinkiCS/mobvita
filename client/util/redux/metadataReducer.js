@@ -31,6 +31,7 @@ export default (state = initialState, action) => {
         error: true,
       }
     case 'GET_METADATA_SUCCESS':
+      console.log('res ', response)
       return {
         ...state,
         concepts: response.concept_list,
@@ -41,6 +42,7 @@ export default (state = initialState, action) => {
         hasAdaptiveTests: response.has_adaptive_test,
         numUnreadNews: response.num_unread_news,
         root_hex_coord: response.root_hex_coord,
+        cachedStories: response.available_cached_stories,
         pending: false,
         error: false,
       }

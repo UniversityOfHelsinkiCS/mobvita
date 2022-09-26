@@ -711,5 +711,11 @@
     "sort-by-concept-cefr-short": "difficulty",
     "submit-student-cefr": "Submit changes",
     "undo-student-cefr-edit": "Undo changes",
-    "add-cefr-estimate": "Add CEFR estimate for today:"
+    "add-cefr-estimate": "Add CEFR estimate for today:",
+    "daily-stories": "Daily stories:",
+    "daily-stories-explanation": "see some new stories that you might like to read.",
+    "daily-story-web-1": "Look at it on the",
+    "daily-story-web-2": "web",
+    "upload-daily-story": "Upload to my private library",
+    "show-daily-stories-button": "Show"
 }

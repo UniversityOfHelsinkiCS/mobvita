@@ -628,9 +628,13 @@ $value in $spacing {
   margin-bottom: .5em;
   margin-left: auto;
 }
-
-
-
+/*
+.encouragement-button {
+  background-color: transparent !important;
+  border: 2px solid lightgrey;
+  border-radius: 12px;
+}
+*/
 .draggable-modal {
   border: 2px solid lightgrey;
   border-radius: 12px;
@@ -1609,7 +1613,8 @@ label.file-upload-btn {
   border: 2px solid cyan;
   border-radius: 12px;
   padding: 15px;
-  margin-bottom: 1em;
+  margin-bottom: .5em;
+  margin-top: .5em;
 }
 
 .flashcard {

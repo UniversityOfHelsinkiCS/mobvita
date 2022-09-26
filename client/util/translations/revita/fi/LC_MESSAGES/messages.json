@@ -1356,5 +1356,11 @@
     "sort-by-concept-cefr-short": "vaikeustaso",
     "submit-student-cefr": "Hyväksy muutokset",
     "undo-student-cefr-edit": "Peruuta muutokset",
-    "add-cefr-estimate": "Lisää tämänhetkinen CEFR-arvio"
+    "add-cefr-estimate": "Lisää tämänhetkinen CEFR-arvio",
+    "daily-stories": "Päivän tarinat:",
+    "daily-stories-explanation": "uusia tarinoita, joista saattaisit olla kiinnostunut.",
+    "daily-story-web-1": "Tarkastele tarinaa",
+    "daily-story-web-2": "netissä",
+    "upload-daily-story": "Lataa omaan kirjastoon",
+    "show-daily-stories-button": "Näytä"
 }
