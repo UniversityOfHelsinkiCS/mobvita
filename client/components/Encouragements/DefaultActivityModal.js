@@ -158,6 +158,9 @@ const DefaultActivityModal = ({
         </div>
       )
     }
+    if (cachedStories?.length > 0) {
+      initList = initList.concat(dailyStoriesEncouragement(initList.length))
+    }
     if (latestIncompleteStory && enable_recmd) {
       initList = initList.concat(
         <div className="pt-md">
@@ -185,9 +188,6 @@ const DefaultActivityModal = ({
           </div>
         </div>
       )
-    }
-    if (cachedStories) {
-      initList = initList.concat(dailyStoriesEncouragement(initList.length))
     }
     if (storiesToReview.length > 0 && enable_recmd) {
       initList = initList.concat(
@@ -218,7 +218,7 @@ const DefaultActivityModal = ({
         </div>
       )
     }
-    if (initList.length < 1 && cachedStories) {
+    if (initList.length < 1 && cachedStories?.length > 0) {
       initList = initList.concat(dailyStoriesEncouragement(initList.length))
       return initList
     }
