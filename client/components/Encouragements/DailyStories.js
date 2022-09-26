@@ -5,6 +5,7 @@ import { uploadCachedStory, getAllStories } from 'Utilities/redux/storiesReducer
 import { Icon } from 'semantic-ui-react'
 import { learningLanguageSelector } from 'Utilities/common'
 import { FormattedMessage } from 'react-intl'
+import { Link } from 'react-router-dom'
 import { Button } from 'react-bootstrap'
 
 const DailyStories = ({ cachedStories, bigScreen, open, setOpen }) => {
@@ -59,8 +60,8 @@ const DailyStories = ({ cachedStories, bigScreen, open, setOpen }) => {
                 index < 3 && (
                   <li style={{ marginBottom: '1em' }}>
                     {truncateStoryTitle(story.title)}
-                    <ul>
-                      <li>
+                    <ul style={{ marginTop: '.5em' }}>
+                      <li style={{ marginBottom: '.5em' }}>
                         <FormattedMessage id="daily-story-web-1" />
                         &nbsp;
                         <a
@@ -72,13 +73,13 @@ const DailyStories = ({ cachedStories, bigScreen, open, setOpen }) => {
                           <FormattedMessage id="daily-story-web-2" />
                         </a>
                       </li>
-                      <li>
-                        <Button
+                      <li style={{ marginBottom: '.5em' }}>
+                        <Link
                           variant="primary"
                           onClick={() => dispatch(uploadCachedStory(story._id))}
                         >
                           <FormattedMessage id="upload-daily-story" />
-                        </Button>
+                        </Link>
                       </li>
                     </ul>
                   </li>
