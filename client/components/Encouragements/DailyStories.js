@@ -36,7 +36,7 @@ const DailyStories = ({ cachedStories, bigScreen, open, setOpen }) => {
       <Draggable cancel=".interactable">
         <div
           className={bigScreen ? 'draggable-encouragement' : 'draggable-encouragement-mobile'}
-          style={{ zIndex: 104 }}
+          style={{ zIndex: 104, left: '55%' }}
         >
           <div className="flex space-between" style={{ paddingBottom: '1rem' }}>
             <div style={{ fontSize: '1.25rem', paddingBottom: '.5rem' }}>
