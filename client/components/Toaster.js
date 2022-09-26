@@ -31,6 +31,7 @@ export default function Toaster() {
     useSelector(({ uploadProgress }) => uploadProgress)
   const learningLanguage = useSelector(learningLanguageSelector)
   const favouriteSites = useSelector(({ user }) => user.data?.user?.favourite_sites)
+  const { uploaded } = useSelector(({ stories }) => stories)
 
   const handleError = errorMessage => {
     clearInterval(interval)
@@ -61,6 +62,17 @@ export default function Toaster() {
       )
     }
   }, [controlledPractice?.finished])
+
+  useEffect(() => {
+    if (uploaded) {
+      setProgressToastId(
+        toast(intl.formatMessage({ id: 'story-uploaded-successfully' }), {
+          autoClose: 8000,
+          type: 'success',
+        })
+      )
+    }
+  }, [uploaded])
 
   useEffect(() => {
     if (storyId !== null) {
