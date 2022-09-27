@@ -5,11 +5,11 @@ import { uploadCachedStory, getAllStories } from 'Utilities/redux/storiesReducer
 import { Icon } from 'semantic-ui-react'
 import { learningLanguageSelector } from 'Utilities/common'
 import { FormattedMessage } from 'react-intl'
-import { Link } from 'react-router-dom'
-import { Button } from 'react-bootstrap'
+import { Link, useHistory } from 'react-router-dom'
 
 const DailyStories = ({ cachedStories, bigScreen, open, setOpen }) => {
   const dispatch = useDispatch()
+  const history = useHistory()
   const { uploaded } = useSelector(({ stories }) => stories)
   const learningLanguage = useSelector(learningLanguageSelector)
 
@@ -17,7 +17,6 @@ const DailyStories = ({ cachedStories, bigScreen, open, setOpen }) => {
     if (title.length > 40) {
       return `${title.slice(0, 40)}...`
     }
-
     return title
   }
 
@@ -29,6 +28,7 @@ const DailyStories = ({ cachedStories, bigScreen, open, setOpen }) => {
           order: -1,
         })
       )
+      history.push('/library')
     }
   }, [uploaded])
 
