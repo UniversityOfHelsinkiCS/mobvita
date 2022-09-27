@@ -204,7 +204,6 @@ const DefaultActivityModal = ({
             >
               <FormattedMessage id="review-recent-stories" />
 
-              <ul>
                 {storiesToReview.map(story => (
                   <li style={{ marginTop: '0.5rem' }}>
                     <Link className="interactable" to={`/stories/${story._id}/review`}>
@@ -212,7 +211,6 @@ const DefaultActivityModal = ({
                     </Link>
                   </li>
                 ))}
-              </ul>
             </div>
           </div>
         </div>
@@ -388,16 +386,18 @@ const DefaultActivityModal = ({
                     />
                   </div>
                 )}
-                {recmdList.map((recommendation, index) => index < upperBound && recommendation)}
-                {recmdList.length > upperBound && (
-                  <Button
-                    className="interactable"
-                    onClick={() => setUpperBound(upperBound + 10)}
-                    styles={{ marginTop: '0.5em' }}
-                  >
-                    <FormattedMessage id="show-more-recommendations" />
-                  </Button>
-                )}
+                <div style={{ overflow: 'auto', maxHeight: 250 }}>
+                  {recmdList.map((recommendation, index) => index < upperBound && recommendation)}
+                  {recmdList.length > upperBound && (
+                    <Button
+                      className="interactable"
+                      onClick={() => setUpperBound(upperBound + 10)}
+                      styles={{ marginTop: '0.5em' }}
+                    >
+                      <FormattedMessage id="show-more-recommendations" />
+                    </Button>
+                  )}
+                </div>
               </div>
               <div className="flex pt-lg">
                 <Form.Group>

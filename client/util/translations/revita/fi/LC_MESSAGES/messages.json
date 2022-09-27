@@ -1285,7 +1285,7 @@
     "ask-for-a-hint": "Näytä vihje!",
     "user-role-select-teacher": "Olen opettaja",
     "user-role-select-student": "Olen opiskelija",
-    "previous-stories-blue-cards": "Tarinassa:<br/>\n<i>{story}</i><br/>\nkohtasit {nWords} uutta sanaa, joiden käännöksiä et tarkistanut.<br/>\nSaat pisteet kaikistä näistä sanoista — tarkistamalla vain 5 näistä →",
+    "previous-stories-blue-cards": "Tarinassa:\n<li><i>{story}</i></li>\nkohtasit {nWords} uutta sanaa, joiden käännöksiä et tarkistanut.<br/>\nSaat pisteet kaikistä näistä sanoista — tarkistamalla vain 5 näistä →",
     "hide-home-page-recommendations": "Älä näytä suosituksia etusivulla",
     "tutorial-recommendation": "",
     "delete-annotation": "Poista",
@@ -1364,5 +1364,6 @@
     "upload-daily-story": "Lataa omaan kirjastoon",
     "show-daily-stories-button": "Näytä",
     "edit-story": "Muokkaa tarinaa",
-    "submit-changes": "Hyväksy muutokset"
+    "submit-changes": "Hyväksy muutokset",
+    "undo-changes": "Peruuta muutokset"
 }

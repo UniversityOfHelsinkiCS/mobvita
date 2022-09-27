@@ -640,7 +640,7 @@
     "ask-for-a-hint": "给提示吗!",
     "user-role-select-teacher": "我是一个老师",
     "user-role-select-student": "我是一个学生",
-    "previous-stories-blue-cards": "您之前遇见了{nWords}个新单词，在练习文章<i>{story}</i>的过程中，您并未要求过这些单词的翻译\n<br/>您可以通过练习这{nWords}个单词获得奖励!\n<br/>让我们来练习其中5个吧 →",
+    "previous-stories-blue-cards": "您之前遇见了{nWords}个新单词，在练习文章\n<li><i>{story}</i></li>的过程中，您并未要求过这些单词的翻译\n<br/>您可以通过练习这{nWords}个单词获得奖励!\n<br/>让我们来练习其中5个吧 →",
     "hide-home-page-recommendations": "不要在主页上显示推荐活动",
     "tutorial-recommendation": "",
     "delete-annotation": "删除",
@@ -712,12 +712,13 @@
     "submit-student-cefr": "Submit changes",
     "undo-student-cefr-edit": "Undo changes",
     "add-cefr-estimate": "Add CEFR estimate for today:",
-    "daily-stories": "Daily stories:",
-    "daily-stories-explanation": "see some new stories that you might like to read.",
+    "daily-stories": "Today's stories:",
+    "daily-stories-explanation": "some new stories that you might like to read.",
     "daily-story-web-1": "Look at it on the",
     "daily-story-web-2": "web",
     "upload-daily-story": "Upload to my private library",
     "show-daily-stories-button": "Show",
     "edit-story": "Edit story",
-    "submit-changes": "Submit changes"
+    "submit-changes": "Submit changes",
+    "undo-changes": "Undo changes"
 }

@@ -1285,7 +1285,7 @@
     "ask-for-a-hint": "Show me a hint!",
     "user-role-select-teacher": "I am a teacher",
     "user-role-select-student": "I am a student",
-    "previous-stories-blue-cards": "In the story:<br/>\n<i>{story}</i><br/>\nyou saw {nWords} new words you probably know! Let's confirm that you know them all,\nby checking just 5 of them →",
+    "previous-stories-blue-cards": "In the story:\n<li><i>{story}</i></li>\nyou saw {nWords} new words you probably know! Let's confirm that you know them all,\nby checking just 5 of them →",
     "hide-home-page-recommendations": "Do not show recommendations on the Home Page",
     "tutorial-recommendation": "",
     "delete-annotation": "Delete",
@@ -1357,12 +1357,13 @@
     "submit-student-cefr": "Submit changes",
     "undo-student-cefr-edit": "Undo changes",
     "add-cefr-estimate": "Add CEFR estimate for today:",
-    "daily-stories": "Daily stories:",
-    "daily-stories-explanation": "see some new stories that you might like to read.",
+    "daily-stories": "Today's stories:",
+    "daily-stories-explanation": "some new stories that you might like to read.",
     "daily-story-web-1": "Look at it on the",
     "daily-story-web-2": "web",
     "upload-daily-story": "Upload to my private library",
     "show-daily-stories-button": "Show",
     "edit-story": "Edit story",
-    "submit-changes": "Submit changes"
+    "submit-changes": "Submit changes",
+    "undo-changes": "Undo changes"
 }
