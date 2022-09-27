@@ -153,6 +153,7 @@ export default (state = initialState, action) => {
         totalNum: action.response.total_num,
         pending: false,
         error: false,
+        uploaded: false,
       }
 
     case 'SET_STORY_UPLOAD_UNFINISHED':
