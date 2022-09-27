@@ -3,9 +3,9 @@ import { Button, Icon } from 'semantic-ui-react'
 
 const EncouragementButton = ({ handleShowEncouragement }) => {
   return (
-    <Button icon basic onClick={handleShowEncouragement}>
-      <Icon size="large" name="idea" data-cy="encouragement-icon" />
-    </Button>
+    <button className="encouragement-button" onClick={handleShowEncouragement}>
+      <Icon style={{ marginLeft: '.1em' }} size="large" color="grey" name="idea" data-cy="encouragement-icon" />
+    </button>
   )
 }
 

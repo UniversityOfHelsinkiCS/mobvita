@@ -628,13 +628,24 @@ $value in $spacing {
   margin-bottom: .5em;
   margin-left: auto;
 }
-/*
+
 .encouragement-button {
-  background-color: transparent !important;
-  border: 2px solid lightgrey;
-  border-radius: 12px;
+  background-color: transparent; 
+  border: 2px solid !important;
+  border-radius: 10px !important;
+  padding: 0.5rem; 
+  border-color: darkgrey !important;
+  animation-name: flashButton !important;
+  animation-duration: 3s !important;
+
+  @keyframes flashButton {
+    0% {background-color: rgb(255, 209, 80);}
+    33% {background-color: transparent;}
+    66% {background-color: rgb(255, 209, 80);}
+    100% {background-color: transparent;}
+  }
 }
-*/
+
 .draggable-modal {
   border: 2px solid lightgrey;
   border-radius: 12px;
