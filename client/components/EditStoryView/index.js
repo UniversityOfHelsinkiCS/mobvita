@@ -2,7 +2,8 @@ import React, { useState, useEffect } from 'react'
 import { FormattedMessage, useIntl } from 'react-intl'
 import { useDispatch, useSelector } from 'react-redux'
 import { getStoryAction } from 'Utilities/redux/storiesReducer'
-import { postStory } from 'Utilities/redux/uploadProgressReducer'
+import { postStory, setCustomUpload } from 'Utilities/redux/uploadProgressReducer'
+import { setNotification } from 'Utilities/redux/notificationReducer'
 import useWindowDimensions from 'Utilities/windowDimensions'
 import { FormControl, Spinner, Button } from 'react-bootstrap'
 import { capitalize, learningLanguageSelector } from 'Utilities/common'
@@ -44,6 +45,8 @@ const EditStoryView = ({ match }) => {
     }
 
     dispatch(postStory(newStory))
+    dispatch(setCustomUpload(true))
+    dispatch(setNotification('processing-story', 'info'))
   }
 
   useEffect(() => {
