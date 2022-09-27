@@ -12,6 +12,12 @@ export const postStory = newStory => {
   return callBuilder(route, prefix, 'post', newStory)
 }
 
+export const editStory = newStory => {
+  const route = '/stories'
+  const prefix = 'EDIT_STORY'
+  return callBuilder(route, prefix, 'post', newStory)
+}
+
 export const setCustomUpload = custom => ({ type: 'SET_CUSTOM_UPLOAD', custom })
 
 const initialState = {
@@ -67,6 +73,30 @@ export default (state = initialState, action) => {
         progress: 0,
         error: false,
         custom: false,
+      }
+    case 'EDIT_STORY_ATTEMPT':
+      return {
+        ...state,
+        url: action.requestSettings.data.url,
+        pending: true,
+        error: false,
+        edited: false,
+      }
+    case 'EDIT_STORY_FAILURE':
+      return {
+        ...state,
+        pending: false,
+        error: true,
+      }
+    case 'EDIT_STORY_SUCCESS':
+      return {
+        ...state,
+        pending: false,
+        storyId: action.response.story_id,
+        progress: 0,
+        error: false,
+        custom: false,
+        edited: true,
       }
     case 'SET_CUSTOM_UPLOAD':
       return {

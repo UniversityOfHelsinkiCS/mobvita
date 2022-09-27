@@ -27,8 +27,17 @@ export default function Toaster() {
 
   const { serverError } = useSelector(({ serverError }) => serverError)
   const { newAchievements } = useSelector(({ newAchievements }) => newAchievements)
-  const { storyId, progress, error, pending, processingErrorMsgId, custom, url, exerciseReady } =
-    useSelector(({ uploadProgress }) => uploadProgress)
+  const {
+    storyId,
+    progress,
+    error,
+    pending,
+    processingErrorMsgId,
+    custom,
+    url,
+    exerciseReady,
+    edited,
+  } = useSelector(({ uploadProgress }) => uploadProgress)
   const learningLanguage = useSelector(learningLanguageSelector)
   const favouriteSites = useSelector(({ user }) => user.data?.user?.favourite_sites)
   const { uploaded } = useSelector(({ stories }) => stories)
@@ -121,7 +130,11 @@ export default function Toaster() {
           )
           toast(
             <div>
-              <span>{intl.formatMessage({ id: 'story-uploaded-successfully' })}</span>
+              <span>
+                {intl.formatMessage({
+                  id: edited ? 'story-updated-toaster' : 'story-uploaded-successfully',
+                })}
+              </span>
               {isNewSite && (
                 <div>
                   <b>{intl.formatMessage({ id: 'click-to-add-site-to-favourites' })}</b>

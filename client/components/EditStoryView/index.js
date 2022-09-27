@@ -3,7 +3,7 @@ import { FormattedMessage, useIntl } from 'react-intl'
 import { useDispatch, useSelector } from 'react-redux'
 import { useHistory } from 'react-router'
 import { getStoryAction } from 'Utilities/redux/storiesReducer'
-import { postStory, setCustomUpload } from 'Utilities/redux/uploadProgressReducer'
+import { editStory, setCustomUpload } from 'Utilities/redux/uploadProgressReducer'
 import { setNotification } from 'Utilities/redux/notificationReducer'
 import useWindowDimensions from 'Utilities/windowDimensions'
 import { FormControl, Spinner, Button } from 'react-bootstrap'
@@ -52,7 +52,7 @@ const EditStoryView = ({ match }) => {
       original_id: id,
     }
 
-    dispatch(postStory(newStory))
+    dispatch(editStory(newStory))
     dispatch(setCustomUpload(true))
     dispatch(setNotification('processing-story', 'info'))
   }
@@ -90,7 +90,7 @@ const EditStoryView = ({ match }) => {
             {modified && (
               <div>
                 <Button variant="primary" onClick={updateStory}>
-                  <FormattedMessage id="submit-changes" />
+                  <FormattedMessage id="save-story" />
                 </Button>
                 <Button
                   variant="secondary"
