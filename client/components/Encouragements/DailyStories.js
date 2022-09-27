@@ -59,7 +59,7 @@ const DailyStories = ({ cachedStories, bigScreen, open, setOpen }) => {
               (story, index) =>
                 index < 3 && (
                   <li style={{ marginBottom: '1em' }}>
-                    {truncateStoryTitle(story.title)}
+                    <i>{truncateStoryTitle(story.title)}</i>
                     <ul style={{ marginTop: '.5em' }}>
                       <li style={{ marginBottom: '.5em' }}>
                         <FormattedMessage id="daily-story-web-1" />

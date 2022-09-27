@@ -207,7 +207,7 @@ const DefaultActivityModal = ({
                 {storiesToReview.map(story => (
                   <li style={{ marginTop: '0.5rem' }}>
                     <Link className="interactable" to={`/stories/${story._id}/review`}>
-                      {story.title}
+                      <i>{story.title}</i>
                     </Link>
                   </li>
                 ))}
