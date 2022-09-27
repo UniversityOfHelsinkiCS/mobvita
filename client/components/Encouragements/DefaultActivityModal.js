@@ -386,7 +386,7 @@ const DefaultActivityModal = ({
                     />
                   </div>
                 )}
-                <div style={{ overflow: 'auto', maxHeight: 250 }}>
+                <div className="interactable" style={{ overflow: 'auto', maxHeight: 250 }}>
                   {recmdList.map((recommendation, index) => index < upperBound && recommendation)}
                   {recmdList.length > upperBound && (
                     <Button
