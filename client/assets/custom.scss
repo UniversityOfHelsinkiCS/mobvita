@@ -574,6 +574,13 @@ $value in $spacing {
   }
 }
 
+.borders-light-grey {
+  border: 2px solid lightgrey;
+  border-radius: 12px;
+  background: #FFF;
+  padding: 1rem;
+}
+
 .add-new-stories-btn-cont {
   grid-area: add-new-stories;
 }

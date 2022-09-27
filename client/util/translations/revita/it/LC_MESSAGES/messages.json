@@ -1366,5 +1366,6 @@
     "show-daily-stories-button": "Show",
     "edit-story": "Edit story",
     "submit-changes": "Submit changes",
-    "undo-changes": "Undo changes"
+    "undo-changes": "Undo changes",
+    "return-to-library": "Return to library"
 }

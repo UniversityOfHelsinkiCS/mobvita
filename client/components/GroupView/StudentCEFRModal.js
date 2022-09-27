@@ -78,7 +78,7 @@ const StudentCEFRModal = ({ open, setOpen, cefrHistory, setCefrHistory, groupId,
             </Button>
             {modified && (
               <Button className="interactable" variant="secondary" onClick={undoChanges}>
-                <FormattedMessage id="undo-student-cefr-edit" />
+                <FormattedMessage id="undo-changes" />
               </Button>
             )}
           </div>

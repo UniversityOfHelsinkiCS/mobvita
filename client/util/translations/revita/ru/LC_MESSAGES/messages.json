@@ -1368,5 +1368,6 @@
     "show-daily-stories-button": "Показать",
     "edit-story": "Редактировать историю",
     "submit-changes": "Отправить изменения",
-    "undo-changes": "Отменить изменения"
+    "undo-changes": "Отменить изменения",
+    "return-to-library": "Return to library"
 }

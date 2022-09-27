@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import { FormattedMessage, useIntl } from 'react-intl'
 import { useDispatch, useSelector } from 'react-redux'
+import { useHistory } from 'react-router'
 import { getStoryAction } from 'Utilities/redux/storiesReducer'
 import { postStory, setCustomUpload } from 'Utilities/redux/uploadProgressReducer'
 import { setNotification } from 'Utilities/redux/notificationReducer'
@@ -12,6 +13,7 @@ import { Divider } from 'semantic-ui-react'
 const EditStoryView = ({ match }) => {
   const dispatch = useDispatch()
   const intl = useIntl()
+  const history = useHistory()
   const { width } = useWindowDimensions()
   const learningLanguage = useSelector(learningLanguageSelector)
   const { id } = match.params
@@ -22,11 +24,16 @@ const EditStoryView = ({ match }) => {
   }))
   const [title, setTitle] = useState('')
   const [content, setContent] = useState('')
+
+  const [initTitle, setInitTitle] = useState('')
+  const [initContent, setInitContent] = useState('')
+  const [modified, setModified] = useState(false)
   const bigScreen = width > 700
 
   const initialSettings = () => {
     let string = ''
     setTitle(story.title)
+    setInitTitle(story.title)
     for (let i = 0; i < story.paragraph?.length; i++) {
       for (let j = 0; j < story.paragraph[i]?.length; j++) {
         string = string.concat(story.paragraph[i][j].surface)
@@ -34,6 +41,7 @@ const EditStoryView = ({ match }) => {
       string = string.concat('\n')
     }
     setContent(string)
+    setInitContent(string)
   }
 
   const updateStory = () => {
@@ -54,6 +62,14 @@ const EditStoryView = ({ match }) => {
   }, [])
 
   useEffect(() => {
+    if (content !== initContent || title !== initTitle) {
+      setModified(true)
+    } else {
+      setModified(false)
+    }
+  }, [content, title])
+
+  useEffect(() => {
     if (story) {
       initialSettings()
     }
@@ -66,17 +82,33 @@ const EditStoryView = ({ match }) => {
   return (
     <div className="cont-tall pt-sm flex-col space-between">
       <div className="justify-center">
-        <div className="cont">
-          <Button onClick={updateStory}>
-            <FormattedMessage id="submit-changes" />
-          </Button>
+        <div className="cont borders-light-grey">
+          <div className="flex space-between">
+            <Button variant="primary" onClick={() => history.push('/library')}>
+              <FormattedMessage id="return-to-library" />
+            </Button>
+            {modified && (
+              <div>
+                <Button variant="primary" onClick={updateStory}>
+                  <FormattedMessage id="submit-changes" />
+                </Button>
+                <Button
+                  variant="secondary"
+                  style={{ marginLeft: '.5rem' }}
+                  onClick={initialSettings}
+                >
+                  <FormattedMessage id="undo-changes" />
+                </Button>
+              </div>
+            )}
+          </div>
           <Divider />
           <div className="flex align-center">
             <span style={{ marginRight: '.5rem' }}>
               <FormattedMessage id="story-title" />:
             </span>
             <FormControl
-              className={bigScreen ? "story-title-input" : "story-title-input-mobile"}
+              className={bigScreen ? 'story-title-input' : 'story-title-input-mobile'}
               as="input"
               value={title}
               style={{ marginTop: '1em', marginBottom: '1em' }}
