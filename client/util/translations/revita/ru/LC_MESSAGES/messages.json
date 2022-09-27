@@ -1352,16 +1352,16 @@
     "sort-by-concept-freq": "Сортировать по частоте",
     "sort-by-concept-cefr": "Сортировать по сложности",
     "allow-listening-exercises": "Allow listening exercises",
-    "practice-listening-mode": "Упражнять восприятие на слух",
+    "practice-listening-mode": "Восприятие на слух",
     "practice-grammar-mode": "Упражнять грамматику",
     "LABEL-sort-by": "Сортировать по:",
     "sort-by-concept-freq-short": "частоте",
     "sort-by-concept-cefr-short": "сложности",
     "submit-student-cefr": "Submit changes",
     "undo-student-cefr-edit": "Undo changes",
-    "add-cefr-estimate": "Добавить CEFR уровень на сегодня:",
+    "add-cefr-estimate": "Добавить CEFR уровень за сегодня:",
     "daily-stories": "Сегодняшние истории:",
-    "daily-stories-explanation": "новые истории, которые ты, возможно, захочешь прочитать",
+    "daily-stories-explanation": "новые истории, которые тебе могут быть интересны",
     "daily-story-web-1": "Посмотреть",
     "daily-story-web-2": "онлайн",
     "upload-daily-story": "Загрузить в личную библиотеку",
@@ -1369,5 +1369,7 @@
     "edit-story": "Редактировать историю",
     "submit-changes": "Отправить изменения",
     "undo-changes": "Отменить изменения",
-    "return-to-library": "Return to library"
+    "return-to-library": "Вернуться в библиотеку",
+    "save-story": "Сохранить текст",
+    "story-updated-toaster": "Текст обновлен!"
 }

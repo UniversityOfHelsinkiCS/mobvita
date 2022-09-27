@@ -721,5 +721,7 @@
     "edit-story": "Edit story",
     "submit-changes": "Submit changes",
     "undo-changes": "Undo changes",
-    "return-to-library": "Return to library"
+    "return-to-library": "Return to library",
+    "save-story": "Save story",
+    "story-updated-toaster": "Story updated!"
 }

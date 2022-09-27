@@ -1366,5 +1366,7 @@
     "edit-story": "Muokkaa tarinaa",
     "submit-changes": "Hyväksy muutokset",
     "undo-changes": "Peruuta muutokset",
-    "return-to-library": "Palaa kirjastoon"
+    "return-to-library": "Palaa kirjastoon",
+    "save-story": "Tallenna tarina",
+    "story-updated-toaster": "Tarina päivitetty!"
 }
