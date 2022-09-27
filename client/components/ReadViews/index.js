@@ -31,12 +31,14 @@ const ReadViews = ({ match }) => {
   const [currentStudent, setCurrentStudent] = useState(null)
   const isGroupReview = history.location.pathname.includes('group/review')
   const isGroupPreview = history.location.pathname.includes('group/preview')
-  const { show_review_diff, show_preview_exer } = useSelector(({ user }) => user.data.user)
+  const { show_review_diff, show_preview_exer, oid } = useSelector(({ user }) => user.data.user)
   const { story, pending } = useSelector(({ stories, locale }) => ({
     story: stories.focused,
     pending: stories.focusedPending,
     locale,
   }))
+
+  const bigScreen = width > 700
 
   const defineFeedback = () => {
     if (mode === 'review') {
@@ -69,6 +71,7 @@ const ReadViews = ({ match }) => {
 
     return studentName
   }
+  const ownedStory = oid === story?.owner
 
   const studentOptions = currentGroup?.students
     .map(student => ({
@@ -195,6 +198,13 @@ const ReadViews = ({ match }) => {
               )}
               {!isGroupPreview && !isGroupReview && (
                 <div>
+                  {ownedStory && (
+                    <Link to={`/stories/${id}/edit`}>
+                      <Button style={{ marginRight: '.5em' }} variant="secondary">
+                        <FormattedMessage id="edit-story" />
+                      </Button>
+                    </Link>
+                  )}
                   <Link to={`/stories/${id}/listening/practice/`}>
                     <Button style={{ marginRight: '.5em' }} variant="primary">
                       <FormattedMessage id="practice-listening-mode" />

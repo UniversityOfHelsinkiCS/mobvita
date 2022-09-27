@@ -74,7 +74,7 @@ const StudentCEFRModal = ({ open, setOpen, cefrHistory, setCefrHistory, groupId,
             style={{ paddingBottom: '15px' }}
           >
             <Button className="interactable" variant="primary" onClick={handleSubmit}>
-              <FormattedMessage id="submit-student-cefr" />
+              <FormattedMessage id="submit-changes" />
             </Button>
             {modified && (
               <Button className="interactable" variant="secondary" onClick={undoChanges}>

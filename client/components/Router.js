@@ -37,6 +37,7 @@ import RegisterView from './RegisterView'
 import DebugTestView from './DebugTestView'
 import AnnotationsLibrary from './AnnotationsLibrary'
 import ReferenceView from './ReferenceView'
+import EditStoryView from './EditStoryView'
 
 export default () => {
   const user = useSelector(state => state.user.data)
@@ -104,6 +105,7 @@ export default () => {
             />
             <ProtectedRoute exact path="/stories/:id/review/" component={ReadViews} />
             <ProtectedRoute exact path="/stories/:id/preview/" component={ReadViews} />
+            <ProtectedRoute exact path="/stories/:id/edit" component={EditStoryView} />
             <ProtectedRoute exact path="/stories/:id/group/review" component={ReadViews} />
             <ProtectedRoute exact path="/stories/:id/group/preview" component={ReadViews} />
 

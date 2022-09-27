@@ -220,6 +220,7 @@ export default (state = initialState, action) => {
         error: true,
       }
     case 'GET_STORY_SUCCESS':
+      console.log('action ', action.response)
       return {
         ...state,
         focused: action.response,

@@ -1362,5 +1362,7 @@
     "daily-story-web-1": "Tarkastele tarinaa",
     "daily-story-web-2": "netissä",
     "upload-daily-story": "Lataa omaan kirjastoon",
-    "show-daily-stories-button": "Näytä"
+    "show-daily-stories-button": "Näytä",
+    "edit-story": "Muokkaa tarinaa",
+    "submit-changes": "Hyväksy muutokset"
 }

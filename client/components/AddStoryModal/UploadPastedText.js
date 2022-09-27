@@ -29,7 +29,7 @@ const UploadPastedText = ({ closeModal }) => {
   const addText = async () => {
     const storyWithSameTitle = data.find(story => story.title === title)
     if (!storyWithSameTitle) {
-      const combineTitleAndText = `${title}\n${text}`
+      const combineTitleAndText = `${title}\n\n${text}`
       const newStory = {
         language: capitalize(learningLanguage),
         text: combineTitleAndText,
