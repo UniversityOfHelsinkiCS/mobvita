@@ -271,20 +271,20 @@ const DefaultActivityModal = ({
 
   useEffect(() => {
     if (stories) {
-      const sharedIncompleteStories = stories.filter(
+      const sharedIncompleteStories = stories.find(
         story => story.shared && !story.has_read && story.control_story
       )
-      const unseenStoriesInGroup = stories.filter(
-        story => story.shared && !story.has_read && story.groups?.length > 0
+      const unseenStoriesInGroup = stories.find(
+        story => story.shared && !story.has_read && story.groups?.length > 0 && !story.control_story
       )
       if (sharedIncompleteStories) {
-        setSharedStory(sharedIncompleteStories[0])
+        setSharedStory(sharedIncompleteStories)
       } else {
         setSharedStory(null)
       }
 
       if (unseenStoriesInGroup) {
-        setUnseenInGroup(unseenStoriesInGroup[0])
+        setUnseenInGroup(unseenStoriesInGroup)
       } else {
         setUnseenInGroup(null)
       }
@@ -353,6 +353,7 @@ const DefaultActivityModal = ({
   if (pending || storyCardsPending || metadataPending || recmdList.length < 1) {
     return null
   }
+  console.log('unseen ', unseenInGroup)
 
   if (open) {
     return (
