@@ -1371,5 +1371,7 @@
     "undo-changes": "Отменить изменения",
     "return-to-library": "Вернуться в библиотеку",
     "save-story": "Сохранить текст",
-    "story-updated-toaster": "Текст обновлен!"
+    "story-updated-toaster": "Текст обновлен!",
+    "new-group-story-encouragement": "A new story has been posted in one of your groups — you can see it in the",
+    "go-to-group-library-link": "group library"
 }

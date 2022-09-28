@@ -1369,5 +1369,7 @@
     "undo-changes": "Annullare le modifiche",
     "return-to-library": "Ritorna al biblioteca",
     "save-story": "Salva la storia",
-    "story-updated-toaster": "Storia aggiornata!"
+    "story-updated-toaster": "Storia aggiornata!",
+    "new-group-story-encouragement": "A new story has been posted in one of your groups — you can see it in the",
+    "go-to-group-library-link": "group library"
 }

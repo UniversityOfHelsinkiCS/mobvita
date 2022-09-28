@@ -1368,5 +1368,7 @@
     "undo-changes": "Peruuta muutokset",
     "return-to-library": "Palaa kirjastoon",
     "save-story": "Tallenna tarina",
-    "story-updated-toaster": "Tarina päivitetty!"
+    "story-updated-toaster": "Tarina päivitetty!",
+    "new-group-story-encouragement": "Uusi tarina on lisätty yhteen ryhmistäsi — näet sen",
+    "go-to-group-library-link": "ryhmäkirjastossa"
 }
