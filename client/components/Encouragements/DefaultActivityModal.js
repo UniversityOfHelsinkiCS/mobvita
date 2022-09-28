@@ -36,6 +36,7 @@ const DefaultActivityModal = ({
   const { cachedStories, pending: metadataPending } = useSelector(({ metadata }) => metadata)
   const { width } = useWindowDimensions()
   const [openDailyStories, setOpenDailyStories] = useState(false)
+  const [unseenInGroup, setUnseenInGroup] = useState(null)
   const stories = useSelector(({ stories }) => stories.data)
   const [userRanking, setUserRanking] = useState(null)
   const [sharedStory, setSharedStory] = useState(null)
@@ -126,6 +127,29 @@ const DefaultActivityModal = ({
         </div>
       )
     }
+    if (unseenInGroup) {
+      initList = initList.concat(
+        <div className="pt-md">
+          <div className="flex" style={{ alignItems: 'center' }}>
+            <img
+              src={images.exclamationMark}
+              alt="exclamation mark"
+              style={{ maxWidth: '8%', maxHeight: '8%', marginRight: '1em' }}
+            />
+            <div
+              className="enc-message-body"
+              style={{ backgroundColor: backgroundColors[initList.length % 3] }}
+            >
+              <FormattedHTMLMessage id="new-group-story-encouragement" />
+              &nbsp;
+              <Link className="interactable" to="/library/group">
+                <FormattedMessage id="go-to-group-library-link" />
+              </Link>
+            </div>
+          </div>
+        </div>
+      )
+    }
     if (prevBlueCards?.num_of_rewardable_words >= 5) {
       initList = initList.concat(
         <div className="pt-md">
@@ -204,13 +228,13 @@ const DefaultActivityModal = ({
             >
               <FormattedMessage id="review-recent-stories" />
 
-                {storiesToReview.map(story => (
-                  <li style={{ marginTop: '0.5rem' }}>
-                    <Link className="interactable" to={`/stories/${story._id}/review`}>
-                      <i>{story.title}</i>
-                    </Link>
-                  </li>
-                ))}
+              {storiesToReview.map(story => (
+                <li style={{ marginTop: '0.5rem' }}>
+                  <Link className="interactable" to={`/stories/${story._id}/review`}>
+                    <i>{story.title}</i>
+                  </Link>
+                </li>
+              ))}
             </div>
           </div>
         </div>
@@ -250,10 +274,19 @@ const DefaultActivityModal = ({
       const sharedIncompleteStories = stories.filter(
         story => story.shared && !story.has_read && story.control_story
       )
+      const unseenStoriesInGroup = stories.filter(
+        story => story.shared && !story.has_read && story.groups?.length > 0
+      )
       if (sharedIncompleteStories) {
         setSharedStory(sharedIncompleteStories[0])
       } else {
         setSharedStory(null)
+      }
+
+      if (unseenStoriesInGroup) {
+        setUnseenInGroup(unseenStoriesInGroup[0])
+      } else {
+        setUnseenInGroup(null)
       }
     }
   }, [stories])
@@ -306,6 +339,7 @@ const DefaultActivityModal = ({
     sharedStory,
     prevBlueCards,
     cachedStories,
+    unseenInGroup,
   ])
 
   const closeModal = () => {

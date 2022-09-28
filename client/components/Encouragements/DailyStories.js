@@ -28,7 +28,7 @@ const DailyStories = ({ cachedStories, bigScreen, open, setOpen }) => {
           order: -1,
         })
       )
-      history.push('/library')
+      history.push('/library/private')
     }
   }, [uploaded])
 

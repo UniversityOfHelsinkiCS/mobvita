@@ -7,6 +7,7 @@ import { useIntl, FormattedMessage } from 'react-intl'
 import LibraryTabs from 'Components/LibraryTabs'
 import { capitalize, useLearningLanguage } from 'Utilities/common'
 import { getGroups } from 'Utilities/redux/groupsReducer'
+import { useHistory } from 'react-router'
 import { List, WindowScroller } from 'react-virtualized'
 import {
   updateLibrarySelect,
@@ -20,7 +21,7 @@ import LibrarySearch from './LibrarySearch'
 
 const StoryList = () => {
   const intl = useIntl()
-
+  const history = useHistory()
   const {
     library_sort_criterion: savedSortCriterion,
     last_selected_library: savedLibrarySelection,
@@ -45,7 +46,8 @@ const StoryList = () => {
   const [smallScreenSearchOpen, setSmallScreenSearchOpen] = useState(false)
   const [displayedStories, setDisplayedStories] = useState(stories)
   const [displaySearchResults, setDisplaySearchResults] = useState(false)
-
+  const groupsLibrary = history.location.pathname.includes('group')
+  const privateLibrary = history.location.pathname.includes('private')
   const [libraries, setLibraries] = useState({
     public: false,
     private: false,
@@ -78,6 +80,15 @@ const StoryList = () => {
   }
 
   useEffect(() => {
+    if (groupsLibrary) {
+      setLibrary('group')
+    }
+    if (privateLibrary) {
+      setLibrary('private')
+    }
+  }, [])
+
+  useEffect(() => {
     if (sharedToGroupSinceLastFetch || deleteSuccessful) {
       dispatch(
         getAllStories(learningLanguage, {
@@ -101,9 +112,11 @@ const StoryList = () => {
   }, [groups])
 
   useEffect(() => {
-    setLibrary(savedLibrarySelection)
-    if (savedLibrarySelection === 'public' && sorter === 'date') {
-      setSorter('title')
+    if (!groupsLibrary && !privateLibrary) {
+      setLibrary(savedLibrarySelection)
+      if (savedLibrarySelection === 'public' && sorter === 'date') {
+        setSorter('title')
+      }
     }
   }, [savedLibrarySelection])
 
