@@ -155,9 +155,11 @@ const ExercisesEncouragementModal = ({
               <FormattedMessage id="continue-last-story-left-in-the-middle" />
               <br />
               <li>
-                <Link className="interactable" to={`/stories/${latestIncompleteStory._id}/practice`}>
-                  {latestIncompleteStory.title}
-                </Link>
+                <i>
+                  <Link className="interactable" to={`/stories/${latestIncompleteStory._id}/practice`}>
+                    {latestIncompleteStory.title}
+                  </Link>
+                </i>
               </li>
             </div>
           </div>
@@ -345,16 +347,18 @@ const ExercisesEncouragementModal = ({
                 onClick={closeModal}
               />
             </div>
-            {recmdList.map((recommendation, index) => index < upperBound && recommendation)}
-            {recmdList.length > upperBound && (
-              <Button
-                className="interactable"
-                onClick={() => setUpperBound(upperBound + 10)}
-                styles={{ marginTop: '0.5em' }}
-              >
-                <FormattedMessage id="show-more-recommendations" />
-              </Button>
-            )}
+            <div className="interactable" style={{ overflow: 'auto', maxHeight: 250 }}>
+              {recmdList.map((recommendation, index) => index < upperBound && recommendation)}
+              {recmdList.length > upperBound && (
+                <Button
+                  className="interactable"
+                  onClick={() => setUpperBound(upperBound + 10)}
+                  styles={{ marginTop: '0.5em' }}
+                >
+                  <FormattedMessage id="show-more-recommendations" />
+                </Button>
+              )}
+            </div>
           </div>
           <div className="flex pt-lg" style={{ margin: '.75em' }}>
             <Form.Group>
