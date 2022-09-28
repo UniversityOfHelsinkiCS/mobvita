@@ -4,6 +4,7 @@ import { FormattedMessage } from 'react-intl'
 import { images, hiddenFeatures } from 'Utilities/common'
 import { useDispatch, useSelector } from 'react-redux'
 import { getGroups } from 'Utilities/redux/groupsReducer'
+import { getAllStories } from 'Utilities/redux/storiesReducer'
 import { Button } from 'react-bootstrap'
 import useWindowDimensions from 'Utilities/windowDimensions'
 import Footer from 'Components/Footer'
@@ -129,6 +130,7 @@ const HomeView = () => {
   const userData = useSelector(state => state.user.data.user)
   const { username } = userData
   const { enable_recmd } = useSelector(({ user }) => user.data.user)
+  // const { open } = useSelector(({ encouragement }) => encouragement)
   const storiesCovered = userData.stories_covered
   const learningLanguage = userData ? userData.last_used_language : null
   const { incomplete, loading } = useSelector(({ incomplete }) => ({
@@ -144,7 +146,7 @@ const HomeView = () => {
 
   const [openEncouragement, setOpenEncouragement] = useState(true)
   const [openReminder, setOpenReminder] = useState(true)
-  const showDAModal = enable_recmd
+  const showDAModal = enable_recmd && userData?.grade && userData?.email !== 'anonymous_email'
   const showWelcomeModal =
     history.location.pathname.endsWith('/welcome') &&
     username !== 'Anonymous User' &&
@@ -152,6 +154,14 @@ const HomeView = () => {
 
   useEffect(() => {
     dispatch(getGroups())
+    if (showDAModal && !showWelcomeModal) {
+      dispatch(
+        getAllStories(learningLanguage, {
+          sort_by: 'date',
+          order: -1,
+        })
+      )
+    }
   }, [])
 
   return (
@@ -178,20 +188,17 @@ const HomeView = () => {
           newUser={userData.is_new_user}
         />
       )}
-      {!showWelcomeModal &&
-        showDAModal &&
-        userData.grade &&
-        userData.email !== 'anonymous_email' && (
-          <DefaultActivityModal
-            open={openEncouragement}
-            setOpen={setOpenEncouragement}
-            storiesCovered={storiesCovered}
-            incompleteStories={incomplete}
-            pending={loading}
-            learningLanguage={learningLanguage}
-            enable_recmd={enable_recmd}
-          />
-        )}
+      {!showWelcomeModal && showDAModal && (
+        <DefaultActivityModal
+          open={openEncouragement}
+          setOpen={setOpenEncouragement}
+          storiesCovered={storiesCovered}
+          incompleteStories={incomplete}
+          pending={loading}
+          learningLanguage={learningLanguage}
+          enable_recmd={enable_recmd}
+        />
+      )}
       <div className="grow flex-col">
         {bigScreen ? (
           <div className="grow flex-col space-between gap-row-nm">
@@ -213,7 +220,9 @@ const HomeView = () => {
                 <MedalSummary />
                 {showDAModal && !openEncouragement && (
                   <span style={{ width: '100px' }}>
-                    <EncouragementButton handleShowEncouragement={() => setOpenEncouragement(true)} />
+                    <EncouragementButton
+                      handleShowEncouragement={() => setOpenEncouragement(true)}
+                    />
                   </span>
                 )}
               </div>
