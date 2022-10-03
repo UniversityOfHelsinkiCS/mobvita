@@ -119,9 +119,11 @@ const DefaultActivityModal = ({
             >
               <FormattedHTMLMessage id="controlled-story-reminder" />
               <br />
-              <Link className="interactable" to={`/stories/${sharedStory._id}/controlled-practice`}>
-                {sharedStory.title}
-              </Link>
+              <li>
+                <Link className="interactable" to={`/stories/${sharedStory._id}/controlled-practice`}>
+                  <i>{sharedStory.title}</i>
+                </Link>
+              </li>
             </div>
           </div>
         </div>
@@ -205,7 +207,7 @@ const DefaultActivityModal = ({
                   className="interactable"
                   to={`/stories/${latestIncompleteStory._id}/practice`}
                 >
-                  {latestIncompleteStory.title}
+                  <i>{latestIncompleteStory.title}</i>
                 </Link>
               </li>
             </div>

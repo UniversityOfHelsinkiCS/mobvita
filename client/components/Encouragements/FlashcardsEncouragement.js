@@ -301,7 +301,7 @@ const FlashcardsEncouragement = ({
                   {latestStories.map(story => (
                     <li style={{ marginTop: '0.5rem' }}>
                       <Link className="interactable" to={`/stories/${story._id}/practice`}>
-                        {story.title}
+                        <i>{story.title}</i>
                       </Link>
                     </li>
                   ))}
@@ -324,7 +324,7 @@ const FlashcardsEncouragement = ({
               style={{ backgroundColor: backgroundColors[initList.length % 3] }}
             >
               <FormattedMessage id="go-back-to-library" />
-              &nbsp;
+              <br />
               <Link className="interactable" to="/library">
                 <FormattedMessage id="go-back-to-library-2" />
               </Link>
