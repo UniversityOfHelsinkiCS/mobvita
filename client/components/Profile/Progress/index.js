@@ -9,6 +9,12 @@ import {
   getNewerVocabularyData,
 } from 'Utilities/redux/userReducer'
 import { getStoriesBlueFlashcards } from 'Utilities/redux/flashcardReducer'
+import {
+  closeEncouragement,
+  hideIcon,
+  openEncouragement,
+  showIcon,
+} from 'Utilities/redux/encouragementsReducer'
 import ProgressGraph from 'Components/ProgressGraph'
 import Spinner from 'Components/Spinner'
 import { useHistory } from 'react-router-dom'
@@ -22,7 +28,6 @@ import useWindowDimension from 'Utilities/windowDimensions'
 import VocabularyGraph from 'Components/VocabularyView/VocabularyGraph'
 import HexagonTest from 'Components/GridHexagon'
 import FlashcardsPracticeEncouragement from 'Components/Encouragements/FlashcardsPracticeEncouragement'
-import EncouragementButton from 'Components/Encouragements/EncouragementButton'
 import ProgressStats from './ProgressStats'
 
 const PickDate = ({ date, setDate, onCalendarClose }) => (
@@ -40,7 +45,6 @@ const Progress = () => {
   const dispatch = useDispatch()
   const element = useRef()
   const [graphType, setGraphType] = useState('column mastered')
-  const [openModal, setOpenModal] = useState(true)
   const [initComplete, setInitComplete] = useState(false)
   const {
     exerciseHistory: exerciseHistoryGraph,
@@ -87,6 +91,7 @@ const Progress = () => {
   const learningLanguage = useLearningLanguage()
   const dictionaryLanguage = useDictionaryLanguage()
   const { history: testHistory, pending: testPending } = useSelector(({ tests }) => tests)
+  const { open } = useSelector(({ encouragement }) => encouragement)
   const [shownChart, setShownChart] = useState(defaultChart())
   // const [notMastered, setNotMastered] = useState([])
   // const [notMasteredBefore, setNotMasteredBefore] = useState([])
@@ -140,6 +145,16 @@ const Progress = () => {
   useEffect(() => {
     dispatch(getStoriesBlueFlashcards(learningLanguage, dictionaryLanguage))
   }, [])
+
+  useEffect(() => {
+    if (shownChart !== 'vocabulary') {
+      dispatch(hideIcon())
+      dispatch(closeEncouragement)
+    } else {
+      dispatch(showIcon())
+      dispatch(openEncouragement())
+    }
+  }, [shownChart])
 
   useEffect(() => {
     if (
@@ -386,11 +401,7 @@ const Progress = () => {
           </div>
           <div>
             <div>
-              <FlashcardsPracticeEncouragement
-                open={openModal}
-                setOpen={setOpenModal}
-                prevBlueCards={storyBlueCards}
-              />
+              <FlashcardsPracticeEncouragement open={open} prevBlueCards={storyBlueCards} />
               <Divider />
               {initComplete ? (
                 <div className="progress-page-graph-cont">
@@ -407,11 +418,6 @@ const Progress = () => {
                 </div>
               ) : (
                 <div>loading...</div>
-              )}
-              {!openModal && (
-                <div className="flex-reverse" style={{ marginTop: '.25em' }}>
-                  <EncouragementButton handleShowEncouragement={() => setOpenModal(true)} />
-                </div>
               )}
             </div>
           </div>
