@@ -639,9 +639,10 @@ $value in $spacing {
 .encouragement-button {
   background-color: transparent; 
   border: 2px solid !important;
-  border-radius: 10px !important;
-  padding: 0.5rem; 
-  border-color: darkgrey !important;
+  border-radius:12px !important;
+  margin-left: .5rem;
+  padding: 0.1rem; 
+  border-color: black !important;
   animation-name: flashButton !important;
   animation-duration: 3s !important;
 

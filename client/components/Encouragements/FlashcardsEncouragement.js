@@ -38,7 +38,7 @@ const FlashcardsEncouragement = ({
     dispatch(showFCIcon())
     dispatch(closeFCEncouragement())
   }
-  
+
   const fillList = () => {
     let initList = []
 

@@ -197,15 +197,15 @@ export default function NavBar() {
                   </div>
                 )}
               </Navbar.Text>
+              {show && !encOpen && (
+                <EncouragementButton handleClick={() => dispatch(openEncouragement())} />
+              )}
+              {fcShow && !fcOpen && (
+                <EncouragementButton handleClick={() => dispatch(openFCEncouragement())} />
+              )}
 
               {!smallWindow && (
                 <>
-                  {show && !encOpen && (
-                    <EncouragementButton handleClick={() => dispatch(openEncouragement())} />
-                  )}
-                  {fcShow && !fcOpen && (
-                    <EncouragementButton handleClick={() => dispatch(openFCEncouragement())} />
-                  )}
                   <NavDropdown
                     className="navbar-dropdown-icon-cont"
                     title={
