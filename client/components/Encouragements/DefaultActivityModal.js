@@ -3,6 +3,7 @@ import { Popup, Icon } from 'semantic-ui-react'
 import { useIntl, FormattedHTMLMessage, FormattedMessage } from 'react-intl'
 import { Link } from 'react-router-dom'
 import { images, dictionaryLanguageSelector, backgroundColors } from 'Utilities/common'
+import { showIcon, closeEncouragement } from 'Utilities/redux/encouragementsReducer'
 import { useDispatch, useSelector } from 'react-redux'
 import useWindowDimensions from 'Utilities/windowDimensions'
 import Draggable from 'react-draggable'
@@ -15,7 +16,6 @@ import DailyStories from './DailyStories'
 
 const DefaultActivityModal = ({
   open,
-  setOpen,
   storiesCovered,
   incompleteStories,
   pending,
@@ -343,7 +343,8 @@ const DefaultActivityModal = ({
   ])
 
   const closeModal = () => {
-    setOpen(false)
+    dispatch(showIcon())
+    dispatch(closeEncouragement())
   }
 
   const updatePreferences = () => {
@@ -353,7 +354,6 @@ const DefaultActivityModal = ({
   if (pending || storyCardsPending || metadataPending || recmdList.length < 1) {
     return null
   }
-  console.log('unseen ', unseenInGroup)
 
   if (open) {
     return (

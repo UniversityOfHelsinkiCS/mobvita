@@ -1,20 +1,25 @@
 import React from 'react'
 import { FormattedMessage, FormattedHTMLMessage } from 'react-intl'
+import { useDispatch } from 'react-redux'
+import { showIcon, closeEncouragement } from 'Utilities/redux/encouragementsReducer'
 import useWindowDimensions from 'Utilities/windowDimensions'
 import Draggable from 'react-draggable'
 import { Link } from 'react-router-dom'
 import { Icon } from 'semantic-ui-react'
 import { images } from 'Utilities/common'
 
-const FlashcardsPracticeEncouragement = ({ open, setOpen, prevBlueCards }) => {
+const FlashcardsPracticeEncouragement = ({ open, prevBlueCards }) => {
+  const dispatch = useDispatch()
   const { width } = useWindowDimensions()
   const closeModal = () => {
-    setOpen(false)
+    dispatch(showIcon())
+    dispatch(closeEncouragement())
   }
 
   if (!prevBlueCards || prevBlueCards.length < 1 || prevBlueCards[0].num_of_rewardable_words < 1) {
     return null
   }
+  console.log('pi ', open)
 
   if (open) {
     return (

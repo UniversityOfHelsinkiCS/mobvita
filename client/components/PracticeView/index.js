@@ -22,8 +22,6 @@ import DictionaryHelp from 'Components/DictionaryHelp'
 import ReportButton from 'Components/ReportButton'
 import AnnotationBox from 'Components/AnnotationBox'
 import StartModal from 'Components/TimedActivityStartModal'
-import StoryTopics from 'Components/StoryView/StoryTopics'
-import EncouragementButton from 'Components/Encouragements/EncouragementButton'
 import PreviousSnippets from '../CommonStoryTextComponents/PreviousSnippets'
 import VirtualKeyboard from './VirtualKeyboard'
 import FeedbackInfoModal from '../CommonStoryTextComponents/FeedbackInfoModal'
@@ -46,7 +44,6 @@ const PracticeView = () => {
   )
   const { show_review_diff } = useSelector(({ user }) => user.data.user)
   const [startModalOpen, setStartModalOpen] = useState(false)
-  const [openEncouragement, setOpenEncouragement] = useState(true)
   const intl = useIntl()
   const smallScreen = width < 700
   const mode = getMode()
@@ -211,8 +208,6 @@ const PracticeView = () => {
               handleInputChange={handleAnswerChange}
               timer={timer}
               numSnippets={story?.paragraph?.length}
-              openEncouragement={openEncouragement}
-              setOpenEncouragement={setOpenEncouragement}
             />
             <ScrollArrow />
 
@@ -248,16 +243,8 @@ const PracticeView = () => {
           onBackClick={() => history.push('/library')}
         />
         <div className="dictionary-and-annotations-cont">
-          {/* 
-          <StoryTopics conceptCount={story.concept_count} />
-          */}
           <DictionaryHelp />
           <AnnotationBox />
-          {practiceFinished && !openEncouragement && width >= 1024 && (
-            <span style={{ width: '100px', marginLeft: '1em' }}>
-              <EncouragementButton handleShowEncouragement={() => setOpenEncouragement(true)} />
-            </span>
-          )}
         </div>
         <FeedbackInfoModal />
       </div>

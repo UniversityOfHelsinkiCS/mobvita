@@ -5,13 +5,13 @@ import { images, hiddenFeatures } from 'Utilities/common'
 import { useDispatch, useSelector } from 'react-redux'
 import { getGroups } from 'Utilities/redux/groupsReducer'
 import { getAllStories } from 'Utilities/redux/storiesReducer'
+import { openEncouragement } from 'Utilities/redux/encouragementsReducer'
 import { Button } from 'react-bootstrap'
 import useWindowDimensions from 'Utilities/windowDimensions'
 import Footer from 'Components/Footer'
 import AddStoryModal from 'Components/AddStoryModal'
 import SetCEFRReminder from 'Components/SetCEFRReminder'
 import DefaultActivityModal from 'Components/Encouragements/DefaultActivityModal'
-import EncouragementButton from 'Components/Encouragements/EncouragementButton'
 import MedalSummary from './MedalSummary'
 import PracticeModal from './PracticeModal'
 import EloChart from './EloChart'
@@ -130,7 +130,7 @@ const HomeView = () => {
   const userData = useSelector(state => state.user.data.user)
   const { username } = userData
   const { enable_recmd } = useSelector(({ user }) => user.data.user)
-  // const { open } = useSelector(({ encouragement }) => encouragement)
+  const { open } = useSelector(({ encouragement }) => encouragement)
   const storiesCovered = userData.stories_covered
   const learningLanguage = userData ? userData.last_used_language : null
   const { incomplete, loading } = useSelector(({ incomplete }) => ({
@@ -144,13 +144,13 @@ const HomeView = () => {
   const [practiceModalOpen, setPracticeModalOpen] = useState(false)
   const [addStoryModalOpen, setAddStoryModalOpen] = useState(false)
 
-  const [openEncouragement, setOpenEncouragement] = useState(true)
   const [openReminder, setOpenReminder] = useState(true)
   const showDAModal = enable_recmd && userData?.grade && userData?.email !== 'anonymous_email'
   const showWelcomeModal =
     history.location.pathname.endsWith('/welcome') &&
     username !== 'Anonymous User' &&
-    !userData.is_new_user
+    !userData.is_new_user &&
+    userData.grade
 
   useEffect(() => {
     dispatch(getGroups())
@@ -164,14 +164,19 @@ const HomeView = () => {
     }
   }, [])
 
+  useEffect(() => {
+    if (showDAModal || showWelcomeModal) {
+      dispatch(openEncouragement())
+    }
+  }, [showDAModal, showWelcomeModal])
+
   return (
     <div className="cont-tall cont flex-col auto gap-row-sm pt-lg blue-bg">
       <AddStoryModal open={addStoryModalOpen} setOpen={setAddStoryModalOpen} />
       <PracticeModal open={practiceModalOpen} setOpen={setPracticeModalOpen} />
-      {showWelcomeModal && userData.grade && !userData.is_new_user && (
+      {showWelcomeModal && (
         <DefaultActivityModal
-          open={openEncouragement}
-          setOpen={setOpenEncouragement}
+          open={open}
           username={username}
           storiesCovered={storiesCovered}
           incompleteStories={incomplete}
@@ -190,8 +195,7 @@ const HomeView = () => {
       )}
       {!showWelcomeModal && showDAModal && (
         <DefaultActivityModal
-          open={openEncouragement}
-          setOpen={setOpenEncouragement}
+          open={open}
           storiesCovered={storiesCovered}
           incompleteStories={incomplete}
           pending={loading}
@@ -218,13 +222,6 @@ const HomeView = () => {
                 <EloChart width="100%" />
                 <LeaderboardSummary />
                 <MedalSummary />
-                {showDAModal && !openEncouragement && (
-                  <span style={{ width: '100px' }}>
-                    <EncouragementButton
-                      handleShowEncouragement={() => setOpenEncouragement(true)}
-                    />
-                  </span>
-                )}
               </div>
             </div>
           </div>
@@ -238,11 +235,6 @@ const HomeView = () => {
             <EloChart width="100%" />
             <LeaderboardSummary />
             <MedalSummary />
-            {showDAModal && (
-              <EncouragementButton
-                handleShowEncouragement={() => setOpenEncouragement(!openEncouragement)}
-              />
-            )}
           </div>
         )}
         {showFooter && <Footer />}

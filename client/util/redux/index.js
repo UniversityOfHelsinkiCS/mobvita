@@ -17,6 +17,7 @@ import groups from './groupsReducer'
 import share from './shareReducer'
 import metadata from './metadataReducer'
 import summary from './groupSummaryReducer'
+import encouragement from './encouragementsReducer'
 import practice from './practiceReducer'
 import passwordReset from './passwordResetReducer'
 import studentProgress from './groupProgressReducer'
@@ -76,6 +77,7 @@ const rootReducer = combineReducers({
   newVocabulary,
   studentVocabulary,
   debugFeedback,
+  encouragement,
 })
 
 export default (state, action) =>

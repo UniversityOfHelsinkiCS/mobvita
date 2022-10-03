@@ -5,6 +5,7 @@ import { FormattedHTMLMessage, FormattedMessage, useIntl } from 'react-intl'
 import useWindowDimensions from 'Utilities/windowDimensions'
 import { updateEnableRecmd } from 'Utilities/redux/userReducer'
 import { getStoriesBlueFlashcards, getBlueFlashcards } from 'Utilities/redux/flashcardReducer'
+import { showIcon, closeEncouragement } from 'Utilities/redux/encouragementsReducer'
 import { Link, useParams } from 'react-router-dom'
 import {
   images,
@@ -19,7 +20,6 @@ import { Form, Button } from 'react-bootstrap'
 
 const ExercisesEncouragementModal = ({
   open,
-  setOpen,
   enable_recmd,
   storiesCovered,
   vocabularySeen,
@@ -287,7 +287,8 @@ const ExercisesEncouragementModal = ({
 
   const closeModal = () => {
     dispatch(clearNewVocabulary())
-    setOpen(false)
+    dispatch(showIcon())
+    dispatch(closeEncouragement())
   }
 
   const updatePreferences = () => {

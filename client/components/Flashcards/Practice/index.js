@@ -14,6 +14,7 @@ import {
   getStoriesBlueFlashcards,
 } from 'Utilities/redux/flashcardReducer'
 import { getIncompleteStories } from 'Utilities/redux/incompleteStoriesReducer'
+import { openFCEncouragement } from 'Utilities/redux/encouragementsReducer'
 import { getSelf } from 'Utilities/redux/userReducer'
 import { learningLanguageSelector, dictionaryLanguageSelector } from 'Utilities/common'
 import useWindowDimension from 'Utilities/windowDimensions'
@@ -28,7 +29,7 @@ import Quick from './Quick'
 
 const VirtualizeSwipeableViews = flowRight(bindKeyboard, virtualize)(SwipeableViews)
 
-const Practice = ({ mode, open, setOpen }) => {
+const Practice = ({ mode, open }) => {
   const [swipeIndex, setSwipeIndex] = useState(0)
   const [editing, setEditing] = useState(false)
   const [amountAnswered, setAmountAnswered] = useState(0)
@@ -134,6 +135,7 @@ const Practice = ({ mode, open, setOpen }) => {
       dispatch(getBlueFlashcards(learningLanguage, dictionaryLanguage, storyId))
       setBlueCardsAnswered([])
     } else {
+      console.log('here then?')
       dispatch(getFlashcards(learningLanguage, dictionaryLanguage, storyId))
     }
   }, [storyId, dictionaryLanguage, mode])
@@ -167,7 +169,8 @@ const Practice = ({ mode, open, setOpen }) => {
   const handleNewDeck = () => {
     setSwipeIndex(0)
     setBlueCardsAnswered([])
-    setOpen(true)
+    dispatch(openFCEncouragement)
+    console.log('pop')
     if (!inFillin) {
       dispatch(getFlashcards(learningLanguage, dictionaryLanguage, storyId))
     } else {
@@ -224,7 +227,6 @@ const Practice = ({ mode, open, setOpen }) => {
           handleNewDeck={handleNewDeck}
           deckSize={cards.length}
           open={open}
-          setOpen={setOpen}
           blueCardsAnswered={blueCardsAnswered}
         />
       )
@@ -272,7 +274,6 @@ const Practice = ({ mode, open, setOpen }) => {
     <div className="cont grow flex space-evenly">
       <FlashcardsEncouragement
         open={open}
-        setOpen={setOpen}
         correctAnswers={correctAnswers}
         deckSize={cards.length}
         enable_recmd={enable_recmd}

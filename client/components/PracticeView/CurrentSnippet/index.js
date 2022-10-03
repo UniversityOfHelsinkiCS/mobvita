@@ -11,6 +11,7 @@ import {
   clearEloHearts,
 } from 'Utilities/redux/snippetsReducer'
 import { clearTranslationAction } from 'Utilities/redux/translationReducer'
+import { openEncouragement } from 'Utilities/redux/encouragementsReducer'
 import 'react-simple-keyboard/build/css/index.css'
 import { FormattedMessage } from 'react-intl'
 import { getSelf } from 'Utilities/redux/userReducer'
@@ -43,14 +44,13 @@ const CurrentSnippet = ({
   handleInputChange,
   timer,
   numSnippets,
-  openEncouragement,
-  setOpenEncouragement,
 }) => {
   const [exerciseCount, setExerciseCount] = useState(0)
   const practiceForm = useRef(null)
   const dispatch = useDispatch()
   const { enable_recmd } = useSelector(({ user }) => user.data.user)
   const snippets = useSelector(({ snippets }) => snippets)
+  const { open } = useSelector(({ encouragement }) => encouragement)
   const answersPending = useSelector(({ snippets }) => snippets.answersPending)
   const {
     practiceFinished,
@@ -247,6 +247,12 @@ const CurrentSnippet = ({
     }
   }, [snippets.pending, snippets.previous])
 
+  useEffect(() => {
+    if (practiceFinished) {
+      dispatch(openEncouragement())
+    }
+  }, [practiceFinished])
+
   const startOver = async () => {
     dispatch(clearPractice())
     dispatch(resetAnnotations())
@@ -310,8 +316,7 @@ const CurrentSnippet = ({
         ) : (
           <div>
             <ExercisesEncouragementModal
-              open={openEncouragement}
-              setOpen={setOpenEncouragement}
+              open={open}
               enable_recmd={enable_recmd}
               storiesCovered={storiesCovered}
               vocabularySeen={vocabularySeen}

@@ -5,13 +5,13 @@ import Draggable from 'react-draggable'
 import useWindowDimensions from 'Utilities/windowDimensions'
 import { useDispatch, useSelector } from 'react-redux'
 import { updateEnableRecmd } from 'Utilities/redux/userReducer'
+import { showFCIcon, closeFCEncouragement } from 'Utilities/redux/encouragementsReducer'
 import { Link, useHistory } from 'react-router-dom'
 import { Form, Button } from 'react-bootstrap'
 import { images, backgroundColors } from 'Utilities/common'
 
 const FlashcardsEncouragement = ({
   open,
-  setOpen,
   correctAnswers,
   deckSize,
   enable_recmd,
@@ -35,7 +35,8 @@ const FlashcardsEncouragement = ({
   const bigScreen = width > 700
 
   const closeModal = () => {
-    setOpen(false)
+    dispatch(showFCIcon())
+    dispatch(closeFCEncouragement())
   }
   
   const fillList = () => {

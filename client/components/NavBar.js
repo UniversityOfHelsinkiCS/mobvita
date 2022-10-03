@@ -7,6 +7,13 @@ import { Link, useHistory } from 'react-router-dom'
 import { logout } from 'Utilities/redux/userReducer'
 import { sidebarSetOpen } from 'Utilities/redux/sidebarReducer'
 import { getMetadata } from 'Utilities/redux/metadataReducer'
+import {
+  hideIcon,
+  openEncouragement,
+  hideFCIcon,
+  openFCEncouragement,
+} from 'Utilities/redux/encouragementsReducer'
+
 import { getNews } from 'Utilities/redux/newsReducer'
 import useWindowDimensions from 'Utilities/windowDimensions'
 import {
@@ -19,6 +26,7 @@ import {
 import { Offline } from 'react-detect-offline'
 import { FormattedMessage, useIntl } from 'react-intl'
 import TermsAndConditions from 'Components/StaticContent/TermsAndConditions'
+import EncouragementButton from 'Components/Encouragements/EncouragementButton'
 import ContactUs from './StaticContent/ContactUs'
 import Tour from './Tour'
 
@@ -37,6 +45,7 @@ export default function NavBar() {
   const { user } = useSelector(({ user }) => ({ user: user.data }))
   const { numUnreadNews } = useSelector(({ metadata }) => metadata)
   const open = useSelector(({ sidebar }) => sidebar.open)
+  const { show, open: encOpen, fcShow, fcOpen } = useSelector(({ encouragement }) => encouragement)
   const dispatch = useDispatch()
   const history = useHistory()
   const smallWindow = useWindowDimensions().width < 730
@@ -46,6 +55,7 @@ export default function NavBar() {
     history.push('/profile/progress')
   }
   const isTeacher = user?.user.is_teacher
+  const check = history.location.pathname
 
   const signOut = () => {
     dispatch(logout())
@@ -70,6 +80,17 @@ export default function NavBar() {
     }
     return null
   }
+
+  useEffect(() => {
+    if (show) {
+      dispatch(hideIcon())
+    }
+    if (fcShow) {
+      dispatch(hideFCIcon())
+    }
+    dispatch(openEncouragement())
+    dispatch(openFCEncouragement())
+  }, [check])
 
   useEffect(() => {
     dispatch(getMetadata(learningLanguage))
@@ -179,6 +200,12 @@ export default function NavBar() {
 
               {!smallWindow && (
                 <>
+                  {show && !encOpen && (
+                    <EncouragementButton handleClick={() => dispatch(openEncouragement())} />
+                  )}
+                  {fcShow && !fcOpen && (
+                    <EncouragementButton handleClick={() => dispatch(openFCEncouragement())} />
+                  )}
                   <NavDropdown
                     className="navbar-dropdown-icon-cont"
                     title={

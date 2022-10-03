@@ -35,6 +35,7 @@ const FlashcardEndView = ({ handleNewDeck, open }) => {
   const EnterPress = useKeyPress('Enter')
 
   if ((RightArrowPress || EnterPress) && !open) {
+    console.log('whats this?')
     handleNewDeck()
   }
 
