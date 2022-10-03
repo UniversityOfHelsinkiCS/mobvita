@@ -63,7 +63,7 @@ const ReadViews = ({ match }) => {
   const [hideFeedback, setHideFeedback] = useState(defineFeedback())
   const [focusedConcept, setFocusedConcept] = useState(null)
   const user = useSelector(state => state.user.data)
-  const { progress, storyId, edited } = useSelector(({ uploadProgress }) => uploadProgress)
+  const { progress, storyId } = useSelector(({ uploadProgress }) => uploadProgress)
   const currentGroupId = useSelector(({ user }) => user.data.user.last_selected_group)
   const { groups: totalGroups, pending: groupsPending } = useSelector(({ groups }) => groups)
   const currentGroup = totalGroups.find(group => group.group_id === currentGroupId)
@@ -111,13 +111,6 @@ const ReadViews = ({ match }) => {
     dispatch(clearTranslationAction())
     dispatch(resetAnnotations())
   }, [])
-
-  useEffect(() => {
-    console.log('checking')
-    if (edited) {
-      history.push('/library')
-    }
-  }, [edited])
 
   useEffect(() => {
     if (story) {

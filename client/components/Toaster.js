@@ -1,6 +1,7 @@
 import { ToastContainer, toast, Flip } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
 import React, { useState, useEffect, useMemo } from 'react'
+import { useHistory } from 'react-router'
 import { useDispatch, useSelector } from 'react-redux'
 import { getProgress } from 'Utilities/redux/uploadProgressReducer'
 import { getAllStories, setStoryUploadUnfinished } from 'Utilities/redux/storiesReducer'
@@ -14,7 +15,7 @@ import AchievementToast from 'Components/Achievements/AchievementToast'
 export default function Toaster() {
   const dispatch = useDispatch()
   const intl = useIntl()
-
+  const history = useHistory()
   const [interval, saveInterval] = useState(null)
   const [progressToastId, setProgressToastId] = useState(null)
   const [serverErrorToastId, setServerErrorToastId] = useState(null)
@@ -147,6 +148,9 @@ export default function Toaster() {
               onClick: isNewSite ? () => handleNewFavouriteSite() : () => {},
             }
           )
+          if (edited) {
+            history.push('/library')
+          }
         }
       }
 

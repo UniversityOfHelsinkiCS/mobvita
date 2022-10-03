@@ -22,6 +22,7 @@ const EditStoryView = ({ match }) => {
     pending: stories.focusedPending,
     locale,
   }))
+  const { edited } = useSelector(({ uploadProgress }) => uploadProgress)
   const [title, setTitle] = useState('')
   const [content, setContent] = useState('')
 
@@ -60,7 +61,13 @@ const EditStoryView = ({ match }) => {
   useEffect(() => {
     dispatch(getStoryAction(id, 'preview'))
   }, [])
-
+/*
+  useEffect(() => {
+    if (edited) {
+      history.push('/library')
+    }
+  }, [edited])
+*/
   useEffect(() => {
     if (content !== initContent || title !== initTitle) {
       setModified(true)
