@@ -12,7 +12,6 @@ import ShareStory from 'Components/StoryView/ShareStory'
 import StoryDetailsModal from 'Components/StoryView/StoryDetailsModal'
 import DifficultyStars from 'Components/DifficultyStars'
 import { cancelControlledStory } from 'Utilities/redux/controlledPracticeReducer'
-import { current } from 'immer'
 
 const StoryTitle = ({
   story,

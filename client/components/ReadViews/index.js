@@ -1,7 +1,14 @@
 import React, { useState, useEffect } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import { Link, useHistory } from 'react-router-dom'
-import { Divider, Segment, Header, Checkbox, Dropdown } from 'semantic-ui-react'
+import {
+  Divider,
+  Segment,
+  Header,
+  Checkbox,
+  Dropdown,
+  Button as SemanticButton,
+} from 'semantic-ui-react'
 import { Button } from 'react-bootstrap'
 import { FormattedMessage, useIntl } from 'react-intl'
 import useWindowDimensions from 'Utilities/windowDimensions'
@@ -56,7 +63,7 @@ const ReadViews = ({ match }) => {
   const [hideFeedback, setHideFeedback] = useState(defineFeedback())
   const [focusedConcept, setFocusedConcept] = useState(null)
   const user = useSelector(state => state.user.data)
-  const { progress, storyId } = useSelector(({ uploadProgress }) => uploadProgress)
+  const { progress, storyId, edited } = useSelector(({ uploadProgress }) => uploadProgress)
   const currentGroupId = useSelector(({ user }) => user.data.user.last_selected_group)
   const { groups: totalGroups, pending: groupsPending } = useSelector(({ groups }) => groups)
   const currentGroup = totalGroups.find(group => group.group_id === currentGroupId)
@@ -104,6 +111,13 @@ const ReadViews = ({ match }) => {
     dispatch(clearTranslationAction())
     dispatch(resetAnnotations())
   }, [])
+
+  useEffect(() => {
+    console.log('checking')
+    if (edited) {
+      history.push('/library')
+    }
+  }, [edited])
 
   useEffect(() => {
     if (story) {
@@ -162,7 +176,7 @@ const ReadViews = ({ match }) => {
                 </a>
               )}
             </Header>
-            <div className="space-between" style={{ alignItems: 'center' }}>
+            <div className={bigScreen && "space-between"} style={{ alignItems: 'center' }}>
               <div>
                 {mode === 'preview' ? (
                   <Checkbox
@@ -182,39 +196,98 @@ const ReadViews = ({ match }) => {
                   />
                 )}
               </div>
-              {isGroupReview && (
-                <div className="row-flex" style={{ marginLeft: '3em' }}>
-                  <span style={{ marginRight: '.5em' }}>
-                    <FormattedMessage id="student" />:{' '}
-                  </span>
-                  <Dropdown
-                    text={dropDownMenuText}
-                    selection
-                    fluid
-                    options={studentOptions}
-                    onChange={(_, { value }) => handleStudentChange(value)}
-                  />
-                </div>
-              )}
-              {!isGroupPreview && !isGroupReview && (
-                <div>
-                  {ownedStory && (
-                    <Link to={`/stories/${id}/edit`}>
-                      <Button style={{ marginRight: '.5em' }} variant="secondary">
-                        <FormattedMessage id="edit-story" />
-                      </Button>
-                    </Link>
+              {bigScreen ? (
+                <>
+                  {isGroupReview && (
+                    <div className="row-flex" style={{ marginLeft: '3em' }}>
+                      <span style={{ marginRight: '.5em' }}>
+                        <FormattedMessage id="student" />:{' '}
+                      </span>
+                      <Dropdown
+                        text={dropDownMenuText}
+                        selection
+                        fluid
+                        options={studentOptions}
+                        onChange={(_, { value }) => handleStudentChange(value)}
+                      />
+                    </div>
                   )}
-                  <Link to={`/stories/${id}/listening/practice/`}>
-                    <Button style={{ marginRight: '.5em' }} variant="primary">
-                      <FormattedMessage id="practice-listening-mode" />
-                    </Button>
-                  </Link>
-                  <Link to={`/stories/${id}/practice/`}>
-                    <Button variant="primary">
-                      <FormattedMessage id="practice-grammar-mode" />
-                    </Button>
-                  </Link>
+                  {!isGroupPreview && !isGroupReview && (
+                    <div>
+                      {ownedStory && (
+                        <Link to={`/stories/${id}/edit`}>
+                          <Button style={{ marginRight: '.5em' }} variant="secondary">
+                            <FormattedMessage id="edit-story" />
+                          </Button>
+                        </Link>
+                      )}
+                      <Link to={`/stories/${id}/listening/practice/`}>
+                        <Button style={{ marginRight: '.5em' }} variant="primary">
+                          <FormattedMessage id="practice-listening-mode" />
+                        </Button>
+                      </Link>
+                      <Link to={`/stories/${id}/practice/`}>
+                        <Button variant="primary">
+                          <FormattedMessage id="practice-grammar-mode" />
+                        </Button>
+                      </Link>
+                    </div>
+                  )}
+                </>
+              ) : (
+                <div>
+                  {isGroupReview && (
+                  <div className="row-flex" style={{ marginLeft: '3em' }}>
+                    <span style={{ marginRight: '.5em' }}>
+                      <FormattedMessage id="student" />:{' '}
+                    </span>
+                    <Dropdown
+                      text={dropDownMenuText}
+                      selection
+                      fluid
+                      options={studentOptions}
+                      onChange={(_, { value }) => handleStudentChange(value)}
+                    />
+                  </div>
+                )}
+                  {!isGroupPreview && !isGroupReview && (
+                    <SemanticButton.Group>
+                      <SemanticButton
+                        as={Link}
+                        to={`/stories/${id}/practice/`}
+                        style={{ backgroundColor: 'rgb(50, 170, 248)', color: 'white' }}
+                      >
+                        <FormattedMessage id="practice-grammar-mode" />
+                      </SemanticButton>
+                      <Dropdown
+                        className="button icon"
+                        style={{
+                          backgroundColor: 'rgb(50, 170, 248)',
+                          color: 'white',
+                          borderLeft: '2px solid rgb(81, 138, 248)',
+                        }}
+                        floating
+                        trigger={<React.Fragment />}
+                      >
+                        <Dropdown.Menu className="story-item-dropdown">
+                          <Dropdown.Item
+                            text={<FormattedMessage id="practice-listening-mode" />}
+                            as={Link}
+                            to={`/stories/${id}/listening/practice/`}
+                            icon="volume up"
+                          />
+                          {ownedStory && (
+                            <Dropdown.Item
+                              text={<FormattedMessage id="edit-story" />}
+                              as={Link}
+                              to={`/stories/${id}/edit`}
+                              icon="edit"
+                            />
+                          )}
+                        </Dropdown.Menu>
+                      </Dropdown>
+                    </SemanticButton.Group>
+                  )}
                 </div>
               )}
             </div>
