@@ -1,6 +1,10 @@
 import React, { useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { removeFromGroup, resendGroupInvitation } from 'Utilities/redux/groupsReducer'
+import {
+  removeFromGroup,
+  resendGroupInvitation,
+  setGroupTestDeadline,
+} from 'Utilities/redux/groupsReducer'
 import { FormattedMessage } from 'react-intl'
 import { Icon, Table } from 'semantic-ui-react'
 import { Button } from 'react-bootstrap'
@@ -8,6 +12,9 @@ import Spinner from 'Components/Spinner'
 import NoGroupsView from './NoGroupsView'
 import AddToGroup from './AddToGroup'
 import PeopleAddResultModal from './PeopleAddResultModal'
+import GroupFunctions from './GroupFunctions'
+import GroupKey from './GroupKey'
+import EnableTestMenu from './EnableTestMenu'
 
 const GroupPeople = ({ role }) => {
   const currentGroupId = useSelector(({ user }) => user.data.user.last_selected_group)
@@ -16,7 +23,13 @@ const GroupPeople = ({ role }) => {
   const [addToGroupId, setAddToGroupId] = useState(null)
   const { groups: totalGroups, lastAddInfo, pending } = useSelector(({ groups }) => groups)
   const currentGroup = totalGroups.find(group => group.group_id === currentGroupId)
+  const [showTokenGroupId, setShowTokenGroupId] = useState(null)
 
+  const [showTestEnableMenuGroupId, setShowTestEnableMenuGroupId] = useState(null)
+
+  const [currTestDeadline, setCurrTestDeadline] = useState(currentGroup?.test_deadline)
+  const showToken = showTokenGroupId === currentGroupId
+  const showTestEnableMenu = showTestEnableMenuGroupId === currentGroupId
   const compare = (a, b) => {
     if (a.userName.toLowerCase() < b.userName.toLowerCase()) return -1
     if (a.userName.toLowerCase() > b.userName.toLowerCase()) return 1
@@ -57,6 +70,25 @@ const GroupPeople = ({ role }) => {
         <div className="header-2">{currentGroup.groupName}</div>
         <p style={{ paddingLeft: '0.2rem', fontStyle: 'italic' }}>{currentGroup?.description}</p>
       </div>
+      <GroupFunctions
+        group={currentGroup}
+        showToken={showToken}
+        setShowTokenGroupId={setShowTokenGroupId}
+        showTestEnableMenuGroupId={showTestEnableMenuGroupId}
+        setShowTestEnableMenuGroupId={setShowTestEnableMenuGroupId}
+        currTestDeadline={currTestDeadline}
+        setCurrTestDeadline={setCurrTestDeadline}
+      />
+      {showToken && <GroupKey />}
+      {showTestEnableMenu && (
+        <EnableTestMenu
+          setGroupTestDeadline={setGroupTestDeadline}
+          setCurrTestDeadline={setCurrTestDeadline}
+          setShowTestEnableMenuGroupId={setShowTestEnableMenuGroupId}
+          id
+        />
+      )}
+      <hr />
 
       <AddToGroup groupId={addToGroupId} setGroupId={setAddToGroupId} />
 
