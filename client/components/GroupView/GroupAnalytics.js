@@ -9,6 +9,7 @@ import {
   getStudentVocabulary,
   getPreviousStudentVocabulary,
 } from 'Utilities/redux/groupVocabularyReducer'
+import { setGroupTestDeadline } from 'Utilities/redux/groupsReducer'
 import Spinner from 'Components/Spinner'
 import useWindowDimension from 'Utilities/windowDimensions'
 import ResponsiveDatePicker from 'Components/ResponsiveDatePicker'
@@ -21,7 +22,9 @@ import StudentVocabularyProgress from './StudentVocabularyProgress'
 import StudentGrammarProgress from './StudentGrammarProgress'
 import NoGroupsView from './NoGroupsView'
 import GroupHistory from './GroupHistory'
-// import GroupFunctions from './GroupFunctions'
+import GroupFunctions from './GroupFunctions'
+import GroupKey from './GroupKey'
+import EnableTestMenu from './EnableTestMenu'
 
 const PickDate = ({ date, setDate, onCalendarClose }) => (
   <ResponsiveDatePicker
@@ -63,6 +66,14 @@ const GroupAnalytics = ({ role }) => {
     : '-'
 
   const [currentCEFR, setCurrentCEFR] = useState('-')
+  const [showTokenGroupId, setShowTokenGroupId] = useState(null)
+
+  const [showTestEnableMenuGroupId, setShowTestEnableMenuGroupId] = useState(null)
+
+  const [currTestDeadline, setCurrTestDeadline] = useState(currentGroup?.test_deadline)
+  const showToken = showTokenGroupId === currentGroupId
+  const showTestEnableMenu = showTestEnableMenuGroupId === currentGroupId
+
   const studentOptions = currentGroup?.students.map(student => ({
     key: student._id,
     text: `${student?.userName} (${student?.email})`,
@@ -195,10 +206,25 @@ const GroupAnalytics = ({ role }) => {
           )}
         </div>
       </div>
-      {/*
-      <GroupFunctions group={currentGroup} />
+      <GroupFunctions
+        group={currentGroup}
+        showToken={showToken}
+        setShowTokenGroupId={setShowTokenGroupId}
+        showTestEnableMenuGroupId={showTestEnableMenuGroupId}
+        setShowTestEnableMenuGroupId={setShowTestEnableMenuGroupId}
+        currTestDeadline={currTestDeadline}
+        setCurrTestDeadline={setCurrTestDeadline}
+      />
+      {showToken && <GroupKey />}
+      {showTestEnableMenu && (
+        <EnableTestMenu
+          setGroupTestDeadline={setGroupTestDeadline}
+          setCurrTestDeadline={setCurrTestDeadline}
+          setShowTestEnableMenuGroupId={setShowTestEnableMenuGroupId}
+          id
+        />
+      )}
       <hr />
-      */}
       <div className="date-pickers-container">
         {bigScreen ? (
           <div className="date-pickers gap-col-sm">
@@ -271,19 +297,13 @@ const GroupAnalytics = ({ role }) => {
               />
               <FormattedMessage id="current-cefr-level" />:{' '}
               <b style={{ marginRight: '1em' }}>{currentCEFR}</b>
-              <Button variant="primary" onClick={() => setOpenEditModal(true)} style={{ padding: '5px' }}>
+              <Button
+                variant="primary"
+                onClick={() => setOpenEditModal(true)}
+                style={{ padding: '5px' }}
+              >
                 <FormattedMessage id="view-previous-and-edit" />
               </Button>
-              {/* 
-              <Dropdown
-                text={cefrDropDownMenuText}
-                selection
-                fluid
-                options={cefrLevelOptions}
-                onChange={(_, { value }) => handleStudentChange(value)}
-                disabled={!currentStudent}
-              />
-              */}
             </div>
           )}
           <Divider />
