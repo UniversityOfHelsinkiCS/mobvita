@@ -221,7 +221,7 @@ const GroupAnalytics = ({ role }) => {
           setGroupTestDeadline={setGroupTestDeadline}
           setCurrTestDeadline={setCurrTestDeadline}
           setShowTestEnableMenuGroupId={setShowTestEnableMenuGroupId}
-          id
+          id={currentGroupId}
         />
       )}
       <hr />

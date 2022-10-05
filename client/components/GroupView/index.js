@@ -217,7 +217,7 @@ const GroupCard = ({
             setGroupTestDeadline={setGroupTestDeadline}
             setCurrTestDeadline={setCurrTestDeadline}
             setShowTestEnableMenuGroupId={setShowTestEnableMenuGroupId}
-            id
+            id={id}
           />
         )}
       </Card.Content>
