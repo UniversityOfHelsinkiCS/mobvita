@@ -740,7 +740,7 @@
     "create-group-message": "Create a new group to share stories and track your students progress.",
     "post-answers-error": "Something went wrong while processing your answers. Please try again.",
     "token-copied": "Group key copied to clipboard",
-    "server-issues": "The server is experiencing problems. Please check back later!",
+    "server-issues": "Communication with the main server is blocked due to a network problem.\nIt should be functioning shortly.",
     "learning-settings-saved": "Learning settings saved",
     "validating-url": "Validating URL address...",
     "processing-story": "Processing your story...",

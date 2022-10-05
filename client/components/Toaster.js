@@ -6,7 +6,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import { getProgress } from 'Utilities/redux/uploadProgressReducer'
 import { getAllStories, setStoryUploadUnfinished } from 'Utilities/redux/storiesReducer'
 import { setNotification } from 'Utilities/redux/notificationReducer'
-import { clearServerError } from 'Utilities/redux/serverErrorReducer'
+import { clearServerError, setServerError } from 'Utilities/redux/serverErrorReducer'
 import { updateFavouriteSites } from 'Utilities/redux/userReducer'
 import { useIntl } from 'react-intl'
 import { learningLanguageSelector } from 'Utilities/common'
@@ -229,5 +229,13 @@ export default function Toaster() {
     }
   }, [message])
 
-  return <ToastContainer position={toast.POSITION.BOTTOM_CENTER} />
+  return (
+    <ToastContainer
+      position={
+        serverError && !serverErrorToastId
+          ? toast.POSITION.TOP_CENTER
+          : toast.POSITION.BOTTOM_CENTER
+      }
+    />
+  )
 }
