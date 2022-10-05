@@ -39,7 +39,6 @@ const EditStoryView = ({ match }) => {
       for (let j = 0; j < story.paragraph[i]?.length; j++) {
         string = string.concat(story.paragraph[i][j].surface)
       }
-      string = string.concat('\n')
     }
     setContent(string)
     setInitContent(string)
