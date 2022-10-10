@@ -145,12 +145,12 @@ const HomeView = () => {
   const [betaModalOpen, setBetaModalOpen] = useState(false)
   const [practiceModalOpen, setPracticeModalOpen] = useState(false)
   const [addStoryModalOpen, setAddStoryModalOpen] = useState(false)
-
+  const userIsAnonymous = userData?.email === 'anonymous_email'
   const [openReminder, setOpenReminder] = useState(true)
-  const showDAModal = enable_recmd && userData?.grade && userData?.email !== 'anonymous_email'
+  const showDAModal = enable_recmd && userData?.grade && !userIsAnonymous
   const showWelcomeModal =
     history.location.pathname.endsWith('/welcome') &&
-    username !== 'Anonymous User' &&
+    !userIsAnonymous &&
     !userData.is_new_user &&
     userData.grade
 
@@ -168,6 +168,7 @@ const HomeView = () => {
 
   useEffect(() => {
     if (
+      !userIsAnonymous &&
       learningLanguage &&
       !supportedLearningLanguages.major.includes(learningLanguage.toLowerCase()) &&
       selected
@@ -203,7 +204,7 @@ const HomeView = () => {
           welcomeBack
         />
       )}
-      {!userData.grade && userData.email !== 'anonymous_email' && !userData.is_new_user && (
+      {!userData.grade && !userIsAnonymous && !userData.is_new_user && (
         <SetCEFRReminder
           open={openReminder}
           setOpen={setOpenReminder}
