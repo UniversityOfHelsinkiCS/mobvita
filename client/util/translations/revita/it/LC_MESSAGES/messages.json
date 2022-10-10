@@ -1371,5 +1371,7 @@
     "save-story": "Salva la storia",
     "story-updated-toaster": "Storia aggiornata!",
     "new-group-story-encouragement": "Una nuova storia è stata aggiunta a uno dei tuoi gruppi: la vedi nella",
-    "go-to-group-library-link": "biblioteca del gruppo"
+    "go-to-group-library-link": "biblioteca del gruppo",
+    "beta-language-warning": "Please note: {language} is a BETA language under development — it is work in progress!",
+    "story-title-validation": "Story title has to be at least 3 characters long"
 }

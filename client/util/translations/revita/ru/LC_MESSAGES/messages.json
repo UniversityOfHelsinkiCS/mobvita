@@ -1373,5 +1373,7 @@
     "save-story": "Сохранить текст",
     "story-updated-toaster": "Текст обновлен!",
     "new-group-story-encouragement": "A new story has been posted in one of your groups — you can see it in the",
-    "go-to-group-library-link": "group library"
+    "go-to-group-library-link": "group library",
+    "beta-language-warning": "Please note: {language} is a BETA language under development — it is work in progress!",
+    "story-title-validation": "Story title has to be at least 3 characters long"
 }

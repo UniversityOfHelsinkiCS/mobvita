@@ -1370,5 +1370,7 @@
     "save-story": "Tallenna tarina",
     "story-updated-toaster": "Tarina päivitetty!",
     "new-group-story-encouragement": "Uusi tarina on lisätty yhteen ryhmistäsi — näet sen",
-    "go-to-group-library-link": "ryhmäkirjastossa"
+    "go-to-group-library-link": "ryhmäkirjastossa",
+    "beta-language-warning": "Huomioi: {language} on BETA-kieli, jonka kehitys on vielä kesken.",
+    "story-title-validation": "Tarinan otsikon on oltava vähintään 3 kirjaimen pituinen"
 }

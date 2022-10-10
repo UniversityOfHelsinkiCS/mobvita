@@ -725,5 +725,8 @@
     "save-story": "保存文章",
     "story-updated-toaster": "文章已更新",
     "new-group-story-encouragement": "一片新的故事已被上传到您的班级组",
-    "go-to-group-library-link": "班级组图书馆"
+    "go-to-group-library-link": "班级组图书馆",
+    "beta-language-warning": "Please note: {language} is a BETA language under development — it is work in progress!",
+    "story-title-validation": "Story title has to be at least 3 characters long",
+    "this-text-is-too-short-minimum-50-characters": "文章过短。最少50个字符。"
 }

@@ -1,3 +1,4 @@
+/* eslint-disable no-nested-ternary */
 import React, { useState, useEffect } from 'react'
 import { FormattedMessage, useIntl } from 'react-intl'
 import { useDispatch, useSelector } from 'react-redux'
@@ -25,9 +26,11 @@ const EditStoryView = ({ match }) => {
   const { edited } = useSelector(({ uploadProgress }) => uploadProgress)
   const [title, setTitle] = useState('')
   const [content, setContent] = useState('')
-
+  const [titleMissing, setTitleMissing] = useState(false)
   const [initTitle, setInitTitle] = useState('')
   const [initContent, setInitContent] = useState('')
+  const maxCharacters = 50000
+  const [charactersLeft, setCharactersLeft] = useState(maxCharacters)
   const [modified, setModified] = useState(false)
   const bigScreen = width > 700
 
@@ -42,6 +45,20 @@ const EditStoryView = ({ match }) => {
     }
     setContent(string)
     setInitContent(string)
+  }
+
+  const handleTextChange = e => {
+    setCharactersLeft(maxCharacters - e.target.value.length)
+    setContent(e.target.value)
+  }
+
+  const handleTitleTextChange = e => {
+    setTitle(e.target.value)
+    if (e.target.value.length < 3) {
+      setTitleMissing(true)
+    } else {
+      setTitleMissing(false)
+    }
   }
 
   const updateStory = () => {
@@ -60,7 +77,8 @@ const EditStoryView = ({ match }) => {
   useEffect(() => {
     dispatch(getStoryAction(id, 'preview'))
   }, [])
-/*
+
+  /*
   useEffect(() => {
     if (edited) {
       history.push('/library')
@@ -81,9 +99,13 @@ const EditStoryView = ({ match }) => {
     }
   }, [story])
 
+  const textTooLong = charactersLeft < 0
+  const submitDisabled = !content || textTooLong || charactersLeft > 49950 || titleMissing
+
   if (!story || pending) {
     return <Spinner />
   }
+  console.log('text too long ', textTooLong, ' missin title ', titleMissing)
 
   return (
     <div className="cont-tall pt-sm flex-col space-between">
@@ -95,7 +117,7 @@ const EditStoryView = ({ match }) => {
             </Button>
             {modified && (
               <div>
-                <Button variant="primary" onClick={updateStory}>
+                <Button variant="primary" onClick={updateStory} disabled={submitDisabled}>
                   <FormattedMessage id="save-story" />
                 </Button>
                 <Button
@@ -118,16 +140,35 @@ const EditStoryView = ({ match }) => {
               as="input"
               value={title}
               style={{ marginTop: '1em', marginBottom: '1em' }}
-              onChange={({ target }) => setTitle(target.value)}
+              onChange={handleTitleTextChange}
               placeholder={intl.formatMessage({ id: 'story-title' })}
             />
+            {submitDisabled && (
+              <div>
+                {titleMissing && (
+                  <div style={{ color: '#ff0000', marginLeft: '.5rem' }}>
+                    <FormattedMessage id="story-title-validation" />
+                  </div>
+                )}
+                {textTooLong && (
+                  <div style={{ color: '#ff0000', marginLeft: '.5rem' }}>
+                    <FormattedMessage id="this-text-is-too-long-maximum-50000-characters" />
+                  </div>
+                )}
+                {charactersLeft > 49950 && (
+                  <div style={{ color: '#ff0000', marginLeft: '.5rem' }}>
+                    <FormattedMessage id="this-text-is-too-short-minimum-50-characters" />
+                  </div>
+                )}
+              </div>
+            )}
           </div>
           <FormControl
             as="textarea"
             className="story-text-input"
             value={content}
             rows={story.paragraph?.length * 3}
-            onChange={({ target }) => setContent(target.value)}
+            onChange={handleTextChange}
             style={{ marginTop: '1em', marginBottom: '1em' }}
           />
         </div>

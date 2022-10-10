@@ -101,7 +101,7 @@ const UploadPastedText = ({ closeModal }) => {
         </div>
       </div>
       {textTooLong && (
-        <span className="additional-info" style={{ marginTop: '.5en' }}>
+        <span className="additional-info" style={{ marginTop: '.5em' }}>
           <FormattedMessage id="this-text-is-too-long-maximum-50000-characters" />
         </span>
       )}

@@ -28,7 +28,7 @@
     "your-message-is-too-short": "",
     "your-message-is-too-long": "",
     "please-enter-address-of-a-web-page": "",
-    "this-text-is-too-short-minimum-50-characters": "",
+    "this-text-is-too-short-minimum-50-characters": "This text is too short. Minimum: 50 characters.",
     "this-text-is-too-long-maximum-50000-characters": "This text is too long. Maximum: 50000 characters.",
     "please-enter-a-valid-email": "",
     "See": "",
@@ -1370,5 +1370,7 @@
     "save-story": "Save story",
     "story-updated-toaster": "Story updated!",
     "new-group-story-encouragement": "A new story has been posted in one of your groups — you can see it in the",
-    "go-to-group-library-link": "group library"
+    "go-to-group-library-link": "group library",
+    "beta-language-warning": "Please note: {language} is a BETA language under development — it is work in progress!",
+    "story-title-validation": "Story title has to be at least 3 characters long"
 }
