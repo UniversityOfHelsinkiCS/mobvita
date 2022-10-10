@@ -202,7 +202,7 @@ const DefaultActivityModal = ({
             >
               <FormattedMessage id="continue-last-story-left-in-the-middle" />
               <br />
-              <li>
+              <li style={{ marginTop: '0.5rem' }}>
                 <Link
                   className="interactable"
                   to={`/stories/${latestIncompleteStory._id}/practice`}
