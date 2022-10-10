@@ -24,7 +24,7 @@ const FlashcardsPracticeEncouragement = ({ open, prevBlueCards }) => {
   if (open) {
     return (
       <Draggable cancel=".interactable">
-        <div className={width > 700 ? "draggable-encouragement" : "draggable-encouragement-mobile"}>
+        <div className={width > 700 ? 'draggable-encouragement' : 'draggable-encouragement-mobile'}>
           <div>
             <div className="flex-reverse">
               <Icon
@@ -38,16 +38,16 @@ const FlashcardsPracticeEncouragement = ({ open, prevBlueCards }) => {
                 onClick={closeModal}
               />
             </div>
-            <div className="flex" style={{ alignItems: 'center' }}>
+            <div
+              className="flex enc-message-body"
+              style={{ alignItems: 'center', backgroundColor: 'lightyellow' }}
+            >
               <img
                 src={images.flashcards}
                 alt="flashcard batch"
                 style={{ maxWidth: '8%', maxHeight: '8%', marginRight: '1em' }}
               />
-              <div
-                className="enc-message-body"
-                style={{ backgroundColor: 'lightyellow' }}
-              >
+              <div>
                 <FormattedHTMLMessage
                   id="previous-stories-blue-cards"
                   values={{
@@ -56,7 +56,10 @@ const FlashcardsPracticeEncouragement = ({ open, prevBlueCards }) => {
                   }}
                 />
                 &nbsp;
-                <Link className="interactable" to={`/flashcards/fillin/test/${prevBlueCards[0].story_id}`}>
+                <Link
+                  className="interactable"
+                  to={`/flashcards/fillin/test/${prevBlueCards[0].story_id}`}
+                >
                   <FormattedMessage id="flashcards-review" />
                 </Link>
               </div>

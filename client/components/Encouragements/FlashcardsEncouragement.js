@@ -27,7 +27,6 @@ const FlashcardsEncouragement = ({
   const history = useHistory()
   const intl = useIntl()
   const dispatch = useDispatch()
-  const [upperBound, setUpperBound] = useState(3)
   const [recmdList, setRecmdList] = useState([])
   const blueFlashcards = history.location.pathname.includes('fillin')
   const { pending } = useSelector(({ user }) => user)
@@ -80,16 +79,19 @@ const FlashcardsEncouragement = ({
         if (prevBlueCards?.num_of_rewardable_words >= 5) {
           initList = initList.concat(
             <div className="pt-md">
-              <div className="flex" style={{ alignItems: 'center' }}>
+              <div
+                className="flex enc-message-body"
+                style={{
+                  alignItems: 'center',
+                  backgroundColor: backgroundColors[initList.length % 3],
+                }}
+              >
                 <img
                   src={images.flashcards}
                   alt="flashcard batch"
                   style={{ maxWidth: '8%', maxHeight: '8%', marginRight: '1em' }}
                 />
-                <div
-                  className="enc-message-body"
-                  style={{ backgroundColor: backgroundColors[initList.length % 3] }}
-                >
+                <div>
                   <FormattedHTMLMessage
                     id="previous-stories-blue-cards"
                     values={{
@@ -149,16 +151,19 @@ const FlashcardsEncouragement = ({
 
       initList = initList.concat(
         <div className="pt-md">
-          <div className="flex" style={{ alignItems: 'center' }}>
+          <div
+            className="flex enc-message-body"
+            style={{
+              alignItems: 'center',
+              backgroundColor: backgroundColors[initList.length % 3],
+            }}
+          >
             <img
               src={images.flashcards}
               alt="batch of flashcards"
               style={{ maxWidth: '8%', maxHeight: '8%', marginRight: '1em' }}
             />
-            <div
-              className="enc-message-body"
-              style={{ backgroundColor: backgroundColors[initList.length % 3] }}
-            >
+            <div>
               <FormattedHTMLMessage
                 id="words-seen-encouragement"
                 values={{ vocabulary_seen: vocabularySeen }}
@@ -175,16 +180,19 @@ const FlashcardsEncouragement = ({
 
       initList = initList.concat(
         <div className="pt-md">
-          <div className="flex" style={{ alignItems: 'center' }}>
+          <div
+            className="flex enc-message-body"
+            style={{
+              alignItems: 'center',
+              backgroundColor: backgroundColors[initList.length % 3],
+            }}
+          >
             <img
               src={images.barChart}
               alt="bar chart"
               style={{ maxWidth: '8%', maxHeight: '8%', marginRight: '1em' }}
             />
-            <div
-              className="enc-message-body"
-              style={{ backgroundColor: backgroundColors[initList.length % 3] }}
-            >
+            <div>
               <FormattedMessage id="go-to-flashcards-progress" />
               &nbsp;
               <Link className="interactable" to="/profile/progress/flashcards">
@@ -264,16 +272,19 @@ const FlashcardsEncouragement = ({
       }
       initList = initList.concat(
         <div className="pt-md">
-          <div className="flex" style={{ alignItems: 'center' }}>
+          <div
+            className="flex enc-message-body"
+            style={{
+              alignItems: 'center',
+              backgroundColor: backgroundColors[initList.length % 3],
+            }}
+          >
             <img
               src={images.flashcards}
               alt="bar chart"
               style={{ maxWidth: '8%', maxHeight: '8%', marginRight: '1em' }}
             />
-            <div
-              className="enc-message-body"
-              style={{ backgroundColor: backgroundColors[initList.length % 3] }}
-            >
+            <div>
               <FormattedHTMLMessage id="well-done-click-next-card-to-play-another-set-of-cards-2" />
               &nbsp;
               <Button className="interactable" variant="primary" onClick={() => handleNewDeck()}>
@@ -286,16 +297,19 @@ const FlashcardsEncouragement = ({
       if (latestStories.length > 0) {
         initList = initList.concat(
           <div className="pt-md">
-            <div className="flex" style={{ alignItems: 'center' }}>
+            <div
+              className="flex enc-message-body"
+              style={{
+                alignItems: 'center',
+                backgroundColor: backgroundColors[initList.length % 3],
+              }}
+            >
               <img
                 src={images.magnifyingGlass}
                 alt="magnifying glass"
                 style={{ maxWidth: '8%', maxHeight: '8%', marginRight: '1em' }}
               />
-              <div
-                className="enc-message-body"
-                style={{ backgroundColor: backgroundColors[initList.length % 3] }}
-              >
+              <div>
                 <FormattedMessage id="list-of-recent-stories" />
                 <ul>
                   {latestStories.map(story => (
@@ -313,16 +327,19 @@ const FlashcardsEncouragement = ({
       }
       initList = initList.concat(
         <div className="pt-md">
-          <div className="flex" style={{ alignItems: 'center' }}>
+          <div
+            className="flex enc-message-body"
+            style={{
+              alignItems: 'center',
+              backgroundColor: backgroundColors[initList.length % 3],
+            }}
+          >
             <img
               src={images.practice}
               alt="dumbbell"
               style={{ maxWidth: '8%', maxHeight: '8%', marginRight: '1em' }}
             />
-            <div
-              className="enc-message-body"
-              style={{ backgroundColor: backgroundColors[initList.length % 3] }}
-            >
+            <div>
               <FormattedMessage id="go-back-to-library" />
               <br />
               <Link className="interactable" to="/library">
@@ -352,18 +369,11 @@ const FlashcardsEncouragement = ({
   if (open) {
     return (
       <Draggable cancel=".interactable">
-        <div className={bigScreen ? "draggable-encouragement" : "draggable-encouragement-mobile"}>
+        <div className={bigScreen ? 'draggable-encouragement' : 'draggable-encouragement-mobile'}>
           <div>
-            {recmdList.map((recommendation, index) => index < upperBound && recommendation)}
-            {recmdList.length > upperBound && (
-              <Button
-                className="interactable"
-                onClick={() => setUpperBound(upperBound + 10)}
-                styles={{ marginTop: '0.5em' }}
-              >
-                <FormattedMessage id="show-more-recommendations" />
-              </Button>
-            )}
+            <div className="interactable" style={{ overflow: 'auto', maxHeight: 300 }}>
+              {recmdList.map(recommendation => recommendation)}
+            </div>
             <div className="flex pt-lg">
               <Form.Group>
                 <Form.Check

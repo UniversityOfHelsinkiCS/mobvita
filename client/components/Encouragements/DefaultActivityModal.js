@@ -27,7 +27,6 @@ const DefaultActivityModal = ({
   const intl = useIntl()
   const [latestIncompleteStory, setLatestIncompleteStory] = useState(null)
   const [storiesToReview, setStoriesToReview] = useState([])
-  const [upperBound, setUpperBound] = useState(3)
   const dictionaryLanguage = useSelector(dictionaryLanguageSelector)
   const { storyBlueCards, storyCardsPending } = useSelector(({ flashcards }) => flashcards)
   const [prevBlueCards, setPrevBlueCards] = useState(null)
@@ -47,16 +46,16 @@ const DefaultActivityModal = ({
   const dailyStoriesEncouragement = listLen => {
     return (
       <div className="pt-md">
-        <div className="flex" style={{ alignItems: 'center' }}>
+        <div
+          className="flex enc-message-body"
+          style={{ alignItems: 'center', backgroundColor: backgroundColors[listLen % 3] }}
+        >
           <img
             src={images.library}
             alt="pile of books"
             style={{ maxWidth: '8%', maxHeight: '8%', marginRight: '1em' }}
           />
-          <div
-            className="enc-message-body"
-            style={{ backgroundColor: backgroundColors[listLen % 3] }}
-          >
+          <div>
             <div className="flex space-between">
               <div>
                 <FormattedMessage id="daily-stories" />
@@ -78,16 +77,16 @@ const DefaultActivityModal = ({
     if (userRanking) {
       initList = initList.concat(
         <div className="pt-md">
-          <div className="flex" style={{ alignItems: 'center' }}>
+          <div
+            className="flex enc-message-body"
+            style={{ alignItems: 'center', backgroundColor: backgroundColors[initList.length % 3] }}
+          >
             <img
               src={images.encTrophy}
               alt="encouraging trophy"
               style={{ maxWidth: '8%', maxHeight: '8%', marginRight: '1em' }}
             />
-            <div
-              className="enc-message-body"
-              style={{ backgroundColor: backgroundColors[initList.length % 3] }}
-            >
+            <div>
               <FormattedHTMLMessage
                 id="leaderboard-ranking-encouragement"
                 values={{ userRanking }}
@@ -107,20 +106,23 @@ const DefaultActivityModal = ({
     if (sharedStory) {
       initList = initList.concat(
         <div className="pt-md">
-          <div className="flex" style={{ alignItems: 'center' }}>
+          <div
+            className="flex enc-message-body"
+            style={{ alignItems: 'center', backgroundColor: backgroundColors[initList.length % 3] }}
+          >
             <img
               src={images.exclamationMark}
               alt="exclamation mark"
               style={{ maxWidth: '8%', maxHeight: '8%', marginRight: '1em' }}
             />
-            <div
-              className="enc-message-body"
-              style={{ backgroundColor: backgroundColors[initList.length % 3] }}
-            >
+            <div>
               <FormattedHTMLMessage id="controlled-story-reminder" />
               <br />
               <li>
-                <Link className="interactable" to={`/stories/${sharedStory._id}/controlled-practice`}>
+                <Link
+                  className="interactable"
+                  to={`/stories/${sharedStory._id}/controlled-practice`}
+                >
                   <i>{sharedStory.title}</i>
                 </Link>
               </li>
@@ -132,16 +134,16 @@ const DefaultActivityModal = ({
     if (unseenInGroup) {
       initList = initList.concat(
         <div className="pt-md">
-          <div className="flex" style={{ alignItems: 'center' }}>
+          <div
+            className="flex enc-message-body"
+            style={{ alignItems: 'center', backgroundColor: backgroundColors[initList.length % 3] }}
+          >
             <img
               src={images.exclamationMark}
               alt="exclamation mark"
               style={{ maxWidth: '8%', maxHeight: '8%', marginRight: '1em' }}
             />
-            <div
-              className="enc-message-body"
-              style={{ backgroundColor: backgroundColors[initList.length % 3] }}
-            >
+            <div>
               <FormattedHTMLMessage id="new-group-story-encouragement" />
               &nbsp;
               <Link className="interactable" to="/library/group">
@@ -155,16 +157,16 @@ const DefaultActivityModal = ({
     if (prevBlueCards?.num_of_rewardable_words >= 5) {
       initList = initList.concat(
         <div className="pt-md">
-          <div className="flex" style={{ alignItems: 'center' }}>
+          <div
+            className="flex enc-message-body"
+            style={{ alignItems: 'center', backgroundColor: backgroundColors[initList.length % 3] }}
+          >
             <img
               src={images.flashcards}
               alt="flashcard batch"
               style={{ maxWidth: '8%', maxHeight: '8%', marginRight: '1em' }}
             />
-            <div
-              className="enc-message-body"
-              style={{ backgroundColor: backgroundColors[initList.length % 3] }}
-            >
+            <div>
               <FormattedHTMLMessage
                 id="previous-stories-blue-cards"
                 values={{
@@ -190,16 +192,16 @@ const DefaultActivityModal = ({
     if (latestIncompleteStory && enable_recmd) {
       initList = initList.concat(
         <div className="pt-md">
-          <div className="flex" style={{ alignItems: 'center' }}>
+          <div
+            className="flex enc-message-body"
+            style={{ alignItems: 'center', backgroundColor: backgroundColors[initList.length % 3] }}
+          >
             <img
               src={images.practice}
               alt="weight"
               style={{ maxWidth: '8%', maxHeight: '8%', marginRight: '1em' }}
             />
-            <div
-              className="enc-message-body"
-              style={{ backgroundColor: backgroundColors[initList.length % 3] }}
-            >
+            <div>
               <FormattedMessage id="continue-last-story-left-in-the-middle" />
               <br />
               <li style={{ marginTop: '0.5rem' }}>
@@ -218,16 +220,16 @@ const DefaultActivityModal = ({
     if (storiesToReview.length > 0 && enable_recmd) {
       initList = initList.concat(
         <div className="pt-md">
-          <div className="flex" style={{ alignItems: 'center' }}>
+          <div
+            className="flex enc-message-body"
+            style={{ alignItems: 'center', backgroundColor: backgroundColors[initList.length % 3] }}
+          >
             <img
               src={images.magnifyingGlass}
               alt="magnifying glass"
               style={{ maxWidth: '8%', maxHeight: '8%', marginRight: '1em' }}
             />
-            <div
-              className="enc-message-body"
-              style={{ backgroundColor: backgroundColors[initList.length % 3] }}
-            >
+            <div>
               <FormattedMessage id="review-recent-stories" />
 
               {storiesToReview.map(story => (
@@ -423,17 +425,8 @@ const DefaultActivityModal = ({
                     />
                   </div>
                 )}
-                <div className="interactable" style={{ overflow: 'auto', maxHeight: 250 }}>
-                  {recmdList.map((recommendation, index) => index < upperBound && recommendation)}
-                  {recmdList.length > upperBound && (
-                    <Button
-                      className="interactable"
-                      onClick={() => setUpperBound(upperBound + 10)}
-                      styles={{ marginTop: '0.5em' }}
-                    >
-                      <FormattedMessage id="show-more-recommendations" />
-                    </Button>
-                  )}
+                <div className="interactable" style={{ overflow: 'auto', maxHeight: 300 }}>
+                  {recmdList.map(recommendation => recommendation)}
                 </div>
               </div>
               <div className="flex pt-lg">

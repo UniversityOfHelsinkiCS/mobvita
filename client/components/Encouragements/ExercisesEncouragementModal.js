@@ -28,7 +28,6 @@ const ExercisesEncouragementModal = ({
 }) => {
   const { id: storyId } = useParams()
   const { width } = useWindowDimensions()
-  const [upperBound, setUpperBound] = useState(3)
   const learningLanguage = useSelector(learningLanguageSelector)
   const dictionaryLanguage = useSelector(dictionaryLanguageSelector)
   const [recmdList, setRecmdList] = useState([])
@@ -54,16 +53,16 @@ const ExercisesEncouragementModal = ({
     if (userRanking) {
       initList = initList.concat(
         <div className="pt-md">
-          <div className="flex" style={{ alignItems: 'center' }}>
+          <div
+            className="flex enc-message-body"
+            style={{ alignItems: 'center', backgroundColor: backgroundColors[initList.length % 3] }}
+          >
             <img
               src={images.encTrophy}
               alt="encouraging trophy"
               style={{ maxWidth: '8%', maxHeight: '8%', marginRight: '1em' }}
             />
-            <div
-              className="enc-message-body"
-              style={{ backgroundColor: backgroundColors[initList.length % 3] }}
-            >
+            <div>
               <FormattedHTMLMessage
                 id="leaderboard-ranking-encouragement"
                 values={{ userRanking }}
@@ -84,16 +83,16 @@ const ExercisesEncouragementModal = ({
     if (creditableWordsNum >= 5) {
       initList = initList.concat(
         <div className="pt-md">
-          <div className="flex" style={{ alignItems: 'center' }}>
+          <div
+            className="flex enc-message-body"
+            style={{ alignItems: 'center', backgroundColor: backgroundColors[initList.length % 3] }}
+          >
             <img
               src={images.flashcards}
               alt="flashcard batch"
               style={{ maxWidth: '8%', maxHeight: '8%', marginRight: '1em' }}
             />
-            <div
-              className="enc-message-body"
-              style={{ backgroundColor: backgroundColors[initList.length % 3] }}
-            >
+            <div>
               <FormattedHTMLMessage
                 id="story-completed-to-blue-flashcards"
                 values={{ nWords: creditableWordsNum }}
@@ -109,16 +108,16 @@ const ExercisesEncouragementModal = ({
     } else if (prevBlueCards?.num_of_rewardable_words >= 5) {
       initList = initList.concat(
         <div className="pt-md">
-          <div className="flex" style={{ alignItems: 'center' }}>
+          <div
+            className="flex enc-message-body"
+            style={{ alignItems: 'center', backgroundColor: backgroundColors[initList.length % 3] }}
+          >
             <img
               src={images.flashcards}
               alt="flashcard batch"
               style={{ maxWidth: '8%', maxHeight: '8%', marginRight: '1em' }}
             />
-            <div
-              className="enc-message-body"
-              style={{ backgroundColor: backgroundColors[initList.length % 3] }}
-            >
+            <div>
               <FormattedHTMLMessage
                 id="previous-stories-blue-cards"
                 values={{
@@ -142,21 +141,24 @@ const ExercisesEncouragementModal = ({
     if (latestIncompleteStory && enable_recmd) {
       initList = initList.concat(
         <div className="pt-md">
-          <div className="flex" style={{ alignItems: 'center' }}>
+          <div
+            className="flex enc-message-body"
+            style={{ alignItems: 'center', backgroundColor: backgroundColors[initList.length % 3] }}
+          >
             <img
               src={images.practice}
               alt="weight"
               style={{ maxWidth: '8%', maxHeight: '8%', marginRight: '1em' }}
             />
-            <div
-              className="enc-message-body"
-              style={{ backgroundColor: backgroundColors[initList.length % 3] }}
-            >
+            <div>
               <FormattedMessage id="continue-last-story-left-in-the-middle" />
               <br />
               <li>
                 <i>
-                  <Link className="interactable" to={`/stories/${latestIncompleteStory._id}/practice`}>
+                  <Link
+                    className="interactable"
+                    to={`/stories/${latestIncompleteStory._id}/practice`}
+                  >
                     {latestIncompleteStory.title}
                   </Link>
                 </i>
@@ -169,16 +171,16 @@ const ExercisesEncouragementModal = ({
     if (vocabularySeen > 0 && enable_recmd) {
       initList = initList.concat(
         <div className="pt-md">
-          <div className="flex" style={{ alignItems: 'center' }}>
+          <div
+            className="flex enc-message-body"
+            style={{ alignItems: 'center', backgroundColor: backgroundColors[initList.length % 3] }}
+          >
             <img
               src={images.flashcards}
               alt="flashcards"
               style={{ maxWidth: '8%', maxHeight: '8%', marginRight: '1em' }}
             />
-            <div
-              className="enc-message-body"
-              style={{ backgroundColor: backgroundColors[initList.length % 3] }}
-            >
+            <div>
               <FormattedHTMLMessage
                 id="words-seen-encouragement"
                 values={{ vocabulary_seen: vocabularySeen }}
@@ -197,16 +199,16 @@ const ExercisesEncouragementModal = ({
     if (newVocabulary > 0 && enable_recmd) {
       initList = initList.concat(
         <div className="pt-md">
-          <div className="flex" style={{ alignItems: 'center' }}>
+          <div
+            className="flex enc-message-body"
+            style={{ alignItems: 'center', backgroundColor: backgroundColors[initList.length % 3] }}
+          >
             <img
               src={images.barChart}
               alt="bar chart"
               style={{ maxWidth: '8%', maxHeight: '8%', marginRight: '1em' }}
             />
-            <div
-              className="enc-message-body"
-              style={{ backgroundColor: backgroundColors[initList.length % 3] }}
-            >
+            <div>
               <FormattedHTMLMessage
                 id="words-interacted-encouragement"
                 values={{ nWords: newVocabulary }}
@@ -224,16 +226,16 @@ const ExercisesEncouragementModal = ({
 
     initList = initList.concat(
       <div className="pt-md">
-        <div className="flex" style={{ alignItems: 'center' }}>
+        <div
+          className="flex enc-message-body"
+          style={{ alignItems: 'center', backgroundColor: backgroundColors[initList.length % 3] }}
+        >
           <img
             src={images.beeHive}
             alt="beehive"
             style={{ maxWidth: '8%', maxHeight: '8%', marginRight: '1em' }}
           />
-          <div
-            className="enc-message-body"
-            style={{ backgroundColor: backgroundColors[initList.length % 3] }}
-          >
+          <div>
             <FormattedMessage id="enc-grammar-progress-1" />
             &nbsp;
             <Link className="interactable" to="/profile/progress/grammar">
@@ -348,17 +350,8 @@ const ExercisesEncouragementModal = ({
                 onClick={closeModal}
               />
             </div>
-            <div className="interactable" style={{ overflow: 'auto', maxHeight: 250 }}>
-              {recmdList.map((recommendation, index) => index < upperBound && recommendation)}
-              {recmdList.length > upperBound && (
-                <Button
-                  className="interactable"
-                  onClick={() => setUpperBound(upperBound + 10)}
-                  styles={{ marginTop: '0.5em' }}
-                >
-                  <FormattedMessage id="show-more-recommendations" />
-                </Button>
-              )}
+            <div className="interactable" style={{ overflow: 'auto', maxHeight: 300 }}>
+              {recmdList.map(recommendation => recommendation)}
             </div>
           </div>
           <div className="flex pt-lg" style={{ margin: '.75em' }}>
