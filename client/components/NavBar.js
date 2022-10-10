@@ -22,6 +22,7 @@ import {
   images,
   learningLanguageSelector,
   getBackgroundColor,
+  supportedLearningLanguages,
 } from 'Utilities/common'
 import { Offline } from 'react-detect-offline'
 import { FormattedMessage, useIntl } from 'react-intl'
@@ -56,7 +57,7 @@ export default function NavBar() {
   }
   const isTeacher = user?.user.is_teacher
   const check = history.location.pathname
-
+  const isMajorLanguage = supportedLearningLanguages.major.includes(learningLanguage.toLowerCase())
   const signOut = () => {
     dispatch(logout())
     history.push('/')
@@ -246,13 +247,37 @@ export default function NavBar() {
                   </NavDropdown>
 
                   {user && user.user.last_used_language && (
-                    <Link to="/learningLanguage">
-                      <img
-                        className="tour-navbar-learning-language navbar-basic-icon navbar-flag"
-                        src={getLearningLanguageFlag()}
-                        alt="learningLanguageFlag"
-                      />
-                    </Link>
+                    <span style={{ position: 'relative', cursor: 'pointer' }}>
+                      <Link to="/learningLanguage">
+                        <img
+                          className="tour-navbar-learning-language navbar-basic-icon navbar-flag"
+                          src={getLearningLanguageFlag()}
+                          alt="learningLanguageFlag"
+                        />
+                        {!isMajorLanguage && (
+                          <Popup
+                            position="top right"
+                            content={
+                              <FormattedMessage
+                                id="beta-language-warning"
+                                values={{ language: user.user.last_used_language }}
+                              />
+                            }
+                            trigger={
+                              <Label
+                                onClick={handleNewsClick}
+                                className="navbar-news-label"
+                                color="red"
+                                size="mini"
+                                floating
+                              >
+                                <span>&beta;</span>
+                              </Label>
+                            }
+                          />
+                        )}
+                      </Link>
+                    </span>
                   )}
 
                   <NavDropdown
