@@ -112,6 +112,8 @@ export const unfollowStorySender = (uid, token) => {
 
 export const resetLearningLanguageChanged = () => ({ type: 'RESET_LEARNING_LANGUAGE_CHANGED' })
 
+export const dismissBetaLanWarning = () => ({ type: 'DISMISS_BETA_LAN_WARNING' })
+
 export const updateLocale = locale => saveSelf({ interface_lang: localeCodeToName(locale) })
 export const updateDictionaryLanguage = language =>
   saveSelf({ last_trans_lang: capitalize(language) })
@@ -257,6 +259,11 @@ export default (state = { data: null, learningLanguageChanged: false }, action) 
         error: true,
         errorMessage: action?.response,
       }
+    case 'DISMISS_BETA_LAN_WARNING':
+      return {
+        ...state,
+        selected: false,
+      }
     case 'FOLLOW_USER_SUCCESS':
       return {
         ...state,
@@ -387,6 +394,7 @@ export default (state = { data: null, learningLanguageChanged: false }, action) 
         error: false,
       }
     case 'UPDATE_LEARNING_LANGUAGE_SUCCESS':
+      console.log('updating')
       return {
         ...state,
         data: { ...state.data, user: action.response.user },
@@ -394,6 +402,7 @@ export default (state = { data: null, learningLanguageChanged: false }, action) 
         error: false,
         refreshed: true,
         learningLanguageChanged: true,
+        selected: true,
       }
     case 'UPDATE_LEARNING_LANGUAGE_ATTEMPT':
       return {

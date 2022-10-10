@@ -52,7 +52,7 @@ const SetCEFRReminder = ({ open, setOpen, newUser }) => {
       onClose={closeModal}
     >
       <Modal.Content>
-        <div className="encouragement" style={{ padding: '1.5rem', color: '#000000' }}>
+        <div className="encouragement" style={{ padding: '1.5rem' }}>
           <div className="space-evenly" style={{ marginTop: '.5em' }}>
             <span style={{ marginRight: '.5em', fontSize: '18px' }}>
               <input

@@ -57,7 +57,7 @@ export default function NavBar() {
   }
   const isTeacher = user?.user.is_teacher
   const check = history.location.pathname
-  const isMajorLanguage = supportedLearningLanguages.major.includes(learningLanguage.toLowerCase())
+  const isMajorLanguage = supportedLearningLanguages?.major.includes(learningLanguage?.toLowerCase())
   const signOut = () => {
     dispatch(logout())
     history.push('/')

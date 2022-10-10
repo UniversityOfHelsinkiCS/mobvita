@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import { useHistory } from 'react-router'
 import { FormattedMessage } from 'react-intl'
-import { images, hiddenFeatures } from 'Utilities/common'
+import { images, hiddenFeatures, supportedLearningLanguages } from 'Utilities/common'
 import { useDispatch, useSelector } from 'react-redux'
 import { getGroups } from 'Utilities/redux/groupsReducer'
 import { getAllStories } from 'Utilities/redux/storiesReducer'
@@ -12,6 +12,7 @@ import Footer from 'Components/Footer'
 import AddStoryModal from 'Components/AddStoryModal'
 import SetCEFRReminder from 'Components/SetCEFRReminder'
 import DefaultActivityModal from 'Components/Encouragements/DefaultActivityModal'
+import BetaLanguageModal from 'Components/BetaLanguageModal'
 import MedalSummary from './MedalSummary'
 import PracticeModal from './PracticeModal'
 import EloChart from './EloChart'
@@ -130,6 +131,7 @@ const HomeView = () => {
   const userData = useSelector(state => state.user.data.user)
   const { username } = userData
   const { enable_recmd } = useSelector(({ user }) => user.data.user)
+  const { selected } = useSelector(({ user }) => user)
   const { open } = useSelector(({ encouragement }) => encouragement)
   const storiesCovered = userData.stories_covered
   const learningLanguage = userData ? userData.last_used_language : null
@@ -140,7 +142,7 @@ const HomeView = () => {
   const { exercise_setting_template: exerciseSettingTemplate } = useSelector(
     ({ user }) => user.data.user
   )
-
+  const [betaModalOpen, setBetaModalOpen] = useState(false)
   const [practiceModalOpen, setPracticeModalOpen] = useState(false)
   const [addStoryModalOpen, setAddStoryModalOpen] = useState(false)
 
@@ -165,6 +167,16 @@ const HomeView = () => {
   }, [])
 
   useEffect(() => {
+    if (
+      learningLanguage &&
+      !supportedLearningLanguages.major.includes(learningLanguage.toLowerCase()) &&
+      selected
+    ) {
+      setBetaModalOpen(true)
+    }
+  }, [learningLanguage])
+
+  useEffect(() => {
     if (showDAModal || showWelcomeModal) {
       dispatch(openEncouragement())
     }
@@ -174,6 +186,11 @@ const HomeView = () => {
     <div className="cont-tall cont flex-col auto gap-row-sm pt-lg blue-bg">
       <AddStoryModal open={addStoryModalOpen} setOpen={setAddStoryModalOpen} />
       <PracticeModal open={practiceModalOpen} setOpen={setPracticeModalOpen} />
+      <BetaLanguageModal
+        open={betaModalOpen}
+        setOpen={setBetaModalOpen}
+        language={learningLanguage}
+      />
       {showWelcomeModal && (
         <DefaultActivityModal
           open={open}
