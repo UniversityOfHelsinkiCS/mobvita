@@ -1286,7 +1286,7 @@
     "ask-for-a-hint": "Mostra un indizio!",
     "user-role-select-teacher": "Sono insegnante",
     "user-role-select-student": "Sono studente",
-    "previous-stories-blue-cards": "Nella storia:\n<li><i>{story}</i></li>\nhai incontrato {nWords} nuove parole per le quali non hai controllato la traduzione.<br/>\nPuoi ottenere credito per tutte queste parole —\nControlliamo solo 5 di loro →",
+    "previous-stories-blue-cards": "Nella storia:\n<ul><li><i>{story}</i></li></ul>\nhai incontrato {nWords} nuove parole per le quali non hai controllato la traduzione.<br/>\nPuoi ottenere credito per tutte queste parole —\nControlliamo solo 5 di loro →",
     "hide-home-page-recommendations": "Non mostrare consigli sulla Home Page",
     "tutorial-recommendation": "",
     "delete-annotation": "Eliminare",

@@ -118,14 +118,16 @@ const DefaultActivityModal = ({
             <div>
               <FormattedHTMLMessage id="controlled-story-reminder" />
               <br />
-              <li>
-                <Link
-                  className="interactable"
-                  to={`/stories/${sharedStory._id}/controlled-practice`}
-                >
-                  <i>{sharedStory.title}</i>
-                </Link>
-              </li>
+              <ul>
+                <li>
+                  <Link
+                    className="interactable"
+                    to={`/stories/${sharedStory._id}/controlled-practice`}
+                  >
+                    <i>{sharedStory.title}</i>
+                  </Link>
+                </li>
+              </ul>
             </div>
           </div>
         </div>
@@ -204,14 +206,16 @@ const DefaultActivityModal = ({
             <div>
               <FormattedMessage id="continue-last-story-left-in-the-middle" />
               <br />
-              <li style={{ marginTop: '0.5rem' }}>
-                <Link
-                  className="interactable"
-                  to={`/stories/${latestIncompleteStory._id}/practice`}
-                >
-                  <i>{latestIncompleteStory.title}</i>
-                </Link>
-              </li>
+              <ul>
+                <li style={{ marginTop: '0.5rem' }}>
+                  <Link
+                    className="interactable"
+                    to={`/stories/${latestIncompleteStory._id}/practice`}
+                  >
+                    <i>{latestIncompleteStory.title}</i>
+                  </Link>
+                </li>
+              </ul>
             </div>
           </div>
         </div>
@@ -231,14 +235,15 @@ const DefaultActivityModal = ({
             />
             <div>
               <FormattedMessage id="review-recent-stories" />
-
-              {storiesToReview.map(story => (
-                <li style={{ marginTop: '0.5rem' }}>
-                  <Link className="interactable" to={`/stories/${story._id}/review`}>
-                    <i>{story.title}</i>
-                  </Link>
-                </li>
-              ))}
+              <ul>
+                {storiesToReview.map(story => (
+                  <li style={{ marginTop: '0.5rem' }}>
+                    <Link className="interactable" to={`/stories/${story._id}/review`}>
+                      <i>{story.title}</i>
+                    </Link>
+                  </li>
+                ))}
+              </ul>
             </div>
           </div>
         </div>

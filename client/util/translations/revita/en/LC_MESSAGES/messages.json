@@ -1285,7 +1285,7 @@
     "ask-for-a-hint": "Show me a hint!",
     "user-role-select-teacher": "I am a teacher",
     "user-role-select-student": "I am a student",
-    "previous-stories-blue-cards": "In the story:\n<li><i>{story}</i></li>\nyou saw {nWords} new words you probably know! Let's confirm that you know them all,\nby checking just 5 of them →",
+    "previous-stories-blue-cards": "In the story:\n<ul><li><i>{story}</i></li></ul>\nyou saw {nWords} new words you probably know! Let's confirm that you know them all,\nby checking just 5 of them →",
     "hide-home-page-recommendations": "Do not show recommendations on the Home Page",
     "tutorial-recommendation": "",
     "delete-annotation": "Delete",

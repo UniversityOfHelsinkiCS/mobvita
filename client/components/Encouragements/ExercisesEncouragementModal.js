@@ -153,16 +153,18 @@ const ExercisesEncouragementModal = ({
             <div>
               <FormattedMessage id="continue-last-story-left-in-the-middle" />
               <br />
-              <li>
-                <i>
-                  <Link
-                    className="interactable"
-                    to={`/stories/${latestIncompleteStory._id}/practice`}
-                  >
-                    {latestIncompleteStory.title}
-                  </Link>
-                </i>
-              </li>
+              <ul>
+                <li>
+                  <i>
+                    <Link
+                      className="interactable"
+                      to={`/stories/${latestIncompleteStory._id}/practice`}
+                    >
+                      {latestIncompleteStory.title}
+                    </Link>
+                  </i>
+                </li>
+              </ul>
             </div>
           </div>
         </div>
