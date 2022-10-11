@@ -12,7 +12,7 @@ const initialState = {
   errorMessage: null,
 }
 
-const failureMessage = response => response?.response?.data || 'Server error'
+const failureMessage = message => message || 'Server error'
 
 export default (state = initialState, action) => {
   switch (action.type) {
