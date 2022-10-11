@@ -48,7 +48,6 @@ const EditStoryView = ({ match }) => {
   }
 
   const handleTextChange = e => {
-    setCharactersLeft(maxCharacters - e.target.value.length)
     setContent(e.target.value)
   }
 
@@ -77,6 +76,10 @@ const EditStoryView = ({ match }) => {
   useEffect(() => {
     dispatch(getStoryAction(id, 'preview'))
   }, [])
+
+  useEffect(() => {
+    setCharactersLeft(maxCharacters - content.length)
+  }, [content])
 
   /*
   useEffect(() => {
