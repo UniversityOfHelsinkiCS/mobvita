@@ -118,8 +118,8 @@ const DefaultActivityModal = ({
             <div>
               <FormattedHTMLMessage id="controlled-story-reminder" />
               <br />
-              <ul>
-                <li>
+              <ul style={{ paddingLeft: 0 }}>
+                <li style={{ listStylePosition: 'inside' }}>
                   <Link
                     className="interactable"
                     to={`/stories/${sharedStory._id}/controlled-practice`}
@@ -206,8 +206,8 @@ const DefaultActivityModal = ({
             <div>
               <FormattedMessage id="continue-last-story-left-in-the-middle" />
               <br />
-              <ul>
-                <li style={{ marginTop: '0.5rem' }}>
+              <ul style={{ paddingLeft: 0 }}>
+                <li style={{ marginTop: '0.5rem', listStylePosition: 'inside' }}>
                   <Link
                     className="interactable"
                     to={`/stories/${latestIncompleteStory._id}/practice`}
@@ -235,9 +235,9 @@ const DefaultActivityModal = ({
             />
             <div>
               <FormattedMessage id="review-recent-stories" />
-              <ul>
+              <ul style={{ paddingLeft: 0 }}>
                 {storiesToReview.map(story => (
-                  <li style={{ marginTop: '0.5rem' }}>
+                  <li style={{ marginTop: '0.5rem', listStylePosition: 'inside' }}>
                     <Link className="interactable" to={`/stories/${story._id}/review`}>
                       <i>{story.title}</i>
                     </Link>

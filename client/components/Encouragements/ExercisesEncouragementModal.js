@@ -16,7 +16,7 @@ import {
 import { clearNewVocabulary } from 'Utilities/redux/newVocabularyReducer'
 import { getLeaderboards } from 'Utilities/redux/leaderboardReducer'
 import { useSelector, useDispatch } from 'react-redux'
-import { Form, Button } from 'react-bootstrap'
+import { Form} from 'react-bootstrap'
 
 const ExercisesEncouragementModal = ({
   open,
@@ -153,8 +153,8 @@ const ExercisesEncouragementModal = ({
             <div>
               <FormattedMessage id="continue-last-story-left-in-the-middle" />
               <br />
-              <ul>
-                <li>
+              <ul style={{ paddingLeft: 0 }}>
+                <li style={{ listStylePosition: 'inside' }}>
                   <i>
                     <Link
                       className="interactable"
