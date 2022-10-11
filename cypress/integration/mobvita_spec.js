@@ -7,6 +7,7 @@ let randomID = Math.floor(Math.random() * 1000000000)
 describe('Mobvita', function () {
   this.beforeAll(function () {
     globalUser = createRandomUser()
+    cy.login()
   })
 
   this.afterAll(function () {
@@ -29,9 +30,10 @@ describe('Mobvita', function () {
 
   this.beforeEach(function () {
     window.localStorage.clear()
+    cy.loginExisting().as('user')
     cy.visit('http://localhost:8000')
   })
-
+  /*
   it('can create a new user, has English as default ui language', function () {
     const user = randomCredentials()
 
@@ -79,6 +81,7 @@ describe('Mobvita', function () {
       .click()
     cy.get('[data-cy=choose-lang]')
   })
+  */
 
   describe('when logged in', function () {
     this.beforeEach(function () {
@@ -211,7 +214,6 @@ function randomCredentials() {
 
 function createRandomUser() {
   const user = randomCredentials()
-  console.log('user 2 ', user)
   cy.request('POST', 'localhost:8000/api/register/test', { ...user })
     .then((response) => {
       user.token = response.body.access_token

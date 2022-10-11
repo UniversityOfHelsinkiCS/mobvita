@@ -135,7 +135,6 @@ const Practice = ({ mode, open }) => {
       dispatch(getBlueFlashcards(learningLanguage, dictionaryLanguage, storyId))
       setBlueCardsAnswered([])
     } else {
-      console.log('here then?')
       dispatch(getFlashcards(learningLanguage, dictionaryLanguage, storyId))
     }
   }, [storyId, dictionaryLanguage, mode])
