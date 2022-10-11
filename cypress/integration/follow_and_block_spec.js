@@ -48,7 +48,8 @@ describe("in 'Following' page", function () {
   
   function createRandomUser() {
     const user = randomCredentials()
-    cy.request('POST', 'localhost:8000/api/register', { ...user })
+    console.log('user 1 ', user)
+    cy.request('POST', 'localhost:8000/api/register/test', { ...user })
       .then((response) => {
         user.token = response.body.access_token
         console.log(user)

@@ -9,7 +9,7 @@ export const registerUser = payload => {
 const initialState = {
   pending: false,
   error: false,
-  errorMessage: null,
+  message: null,
 }
 
 const failureMessage = message => message || 'Server error'
@@ -21,7 +21,7 @@ export default (state = initialState, action) => {
         ...state,
         pending: true,
         error: false,
-        errorMessage: null,
+        message: null,
       }
     case 'POST_REGISTER_FAILURE':
       return {
@@ -29,7 +29,7 @@ export default (state = initialState, action) => {
         pending: false,
         error: true,
         accountCreated: false,
-        errorMessage: failureMessage(action.response),
+        message: failureMessage(action.response),
       }
     case 'POST_REGISTER_SUCCESS':
       return {
@@ -37,7 +37,7 @@ export default (state = initialState, action) => {
         pending: false,
         error: false,
         accountCreated: true,
-        errorMessage: null,
+        message: null,
       }
     default:
       return state

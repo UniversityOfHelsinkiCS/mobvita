@@ -27,7 +27,7 @@ const Register = () => {
 
   const {
     error,
-    errorMessage,
+    message: errorMessage,
     pending: registerPending,
     accountCreated,
   } = useSelector(({ register }) => register)
