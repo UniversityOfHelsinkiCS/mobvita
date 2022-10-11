@@ -12,8 +12,9 @@ import {
   openEncouragement,
   hideFCIcon,
   openFCEncouragement,
+  showIcon,
+  closeEncouragement,
 } from 'Utilities/redux/encouragementsReducer'
-
 import { getNews } from 'Utilities/redux/newsReducer'
 import useWindowDimensions from 'Utilities/windowDimensions'
 import {
@@ -83,6 +84,11 @@ export default function NavBar() {
   }
 
   useEffect(() => {
+    if (check.includes('home') && !user?.user.enable_recmd) {
+      dispatch(showIcon())
+      dispatch(closeEncouragement())
+      return
+    }
     if (show) {
       dispatch(hideIcon())
     }

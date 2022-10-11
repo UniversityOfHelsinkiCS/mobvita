@@ -147,12 +147,10 @@ const HomeView = () => {
   const [addStoryModalOpen, setAddStoryModalOpen] = useState(false)
   const userIsAnonymous = userData?.email === 'anonymous_email'
   const [openReminder, setOpenReminder] = useState(true)
-  const showDAModal = enable_recmd && userData?.grade && !userIsAnonymous
+  const welcomeView = history.location.pathname.endsWith('/welcome')
+  const showDAModal = open && userData?.grade && !userIsAnonymous
   const showWelcomeModal =
-    history.location.pathname.endsWith('/welcome') &&
-    !userIsAnonymous &&
-    !userData.is_new_user &&
-    userData.grade
+    open && welcomeView && !userIsAnonymous && !userData.is_new_user && userData.grade
 
   useEffect(() => {
     dispatch(getGroups())
@@ -176,13 +174,13 @@ const HomeView = () => {
       setBetaModalOpen(true)
     }
   }, [learningLanguage])
-
+  /*
   useEffect(() => {
     if (showDAModal || showWelcomeModal) {
       dispatch(openEncouragement())
     }
   }, [showDAModal, showWelcomeModal])
-
+  */
   return (
     <div className="cont-tall cont flex-col auto gap-row-sm pt-lg blue-bg">
       <AddStoryModal open={addStoryModalOpen} setOpen={setAddStoryModalOpen} />
@@ -192,9 +190,9 @@ const HomeView = () => {
         setOpen={setBetaModalOpen}
         language={learningLanguage}
       />
-      {showWelcomeModal && (
+      {welcomeView ? (
         <DefaultActivityModal
-          open={open}
+          open={showWelcomeModal}
           username={username}
           storiesCovered={storiesCovered}
           incompleteStories={incomplete}
@@ -203,22 +201,21 @@ const HomeView = () => {
           enable_recmd={enable_recmd}
           welcomeBack
         />
+      ) : (
+        <DefaultActivityModal
+          open={showDAModal}
+          storiesCovered={storiesCovered}
+          incompleteStories={incomplete}
+          pending={loading}
+          learningLanguage={learningLanguage}
+          enable_recmd={enable_recmd}
+        />
       )}
       {!userData.grade && !userIsAnonymous && !userData.is_new_user && (
         <SetCEFRReminder
           open={openReminder}
           setOpen={setOpenReminder}
           newUser={userData.is_new_user}
-        />
-      )}
-      {!showWelcomeModal && showDAModal && (
-        <DefaultActivityModal
-          open={open}
-          storiesCovered={storiesCovered}
-          incompleteStories={incomplete}
-          pending={loading}
-          learningLanguage={learningLanguage}
-          enable_recmd={enable_recmd}
         />
       )}
       <div className="grow flex-col">
