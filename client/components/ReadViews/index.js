@@ -125,7 +125,9 @@ const ReadViews = ({ match }) => {
     }
   }, [progress])
 
-  if (!story || pending || !user || groupsPending) return <Spinner fullHeight />
+  if (pending || !user || groupsPending) return <Spinner fullHeight />
+
+  if (!story) return null
 
   const showFooter = width > 640
   const url = history.location.pathname
