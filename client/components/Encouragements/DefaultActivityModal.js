@@ -62,7 +62,7 @@ const DefaultActivityModal = ({
                 &nbsp;
                 <FormattedMessage id="daily-stories-explanation" />
               </div>
-              <Button onClick={() => setOpenDailyStories(true)}>
+              <Button onClick={() => setOpenDailyStories(true)} style={{ marginLeft: '.5rem' }}>
                 <FormattedMessage id="show-daily-stories-button" />
               </Button>
             </div>
