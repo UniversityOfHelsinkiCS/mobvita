@@ -1377,5 +1377,6 @@
     "group-review-dropdown-placeholder": "Valitse tarkasteltava opiskelija",
     "sort-by-title-option": "Otsikko",
     "sort-by-difficulty-option": "Taso",
-    "story-difficulty": "Taso"
+    "story-difficulty": "Taso",
+    "student-cefr-placeholder": "Valitse CEFR-arvio tälle päivälle"
 }

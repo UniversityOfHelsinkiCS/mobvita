@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import { useSelector } from 'react-redux'
+import { useIntl } from 'react-intl'
 import { skillLevels } from 'Utilities/common'
 import { Dropdown } from 'semantic-ui-react'
 
@@ -11,8 +12,11 @@ const CEFRDropdown = ({
   setUpdatedCEFRHistory,
   setModified,
 }) => {
+  const intl = useIntl()
   const userId = useSelector(state => state.user.data.user.oid)
-  const [chosenValue, setChosenValue] = useState(estimate ? estimate.grade : 2)
+  const [chosenValue, setChosenValue] = useState(
+    `${intl.formatMessage({ id: 'student-cefr-placeholder' })}`
+  )
   const cefrLevelOptions = skillLevels.map((level, ind) => ({
     key: ind,
     text: level,
@@ -26,12 +30,13 @@ const CEFRDropdown = ({
   }, [estimate?.grade])
 
   useEffect(() => {
-    if (index != undefined) { // index 0 wont come here
+    if (index != undefined) {
+      // index 0 wont come here
       const newList = [...updatedCEFRHistory]
       newList[index] = {
         ...newList[index],
         grade: chosenValue,
-        source: updatedCEFRHistory[index].source,//'teacher',
+        source: updatedCEFRHistory[index].source, // 'teacher',
         tagger: userId,
       }
       setUpdatedCEFRHistory(newList)

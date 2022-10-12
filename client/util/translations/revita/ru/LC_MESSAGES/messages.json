@@ -1380,5 +1380,6 @@
     "group-review-dropdown-placeholder": "Choose the student to review",
     "sort-by-title-option": "Название",
     "sort-by-difficulty-option": "Сложность",
-    "story-difficulty": "Сложность"
+    "story-difficulty": "Сложность",
+    "student-cefr-placeholder": "Select CEFR grade for today"
 }

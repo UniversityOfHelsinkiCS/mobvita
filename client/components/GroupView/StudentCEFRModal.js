@@ -87,7 +87,7 @@ const StudentCEFRModal = ({ open, setOpen, cefrHistory, setCefrHistory, groupId,
               className="flex space-between"
               style={{ alignItems: 'center', marginBottom: '10px' }}
             >
-              <FormattedMessage id="add-cefr-estimate"/>
+              <FormattedMessage id="add-cefr-estimate" />
               <CEFRDropdown
                 addNew
                 updatedCEFRHistory={updatedCEFRHistory}
@@ -108,7 +108,7 @@ const StudentCEFRModal = ({ open, setOpen, cefrHistory, setCefrHistory, groupId,
               <tbody>
                 {updatedCEFRHistory.map((estimate, index) => (
                   <tr>
-                    <th style={{ verticalAlign: 'middle', fontWeight: '400' }}>{moment.unix(estimate.timestamp).format('MM/DD/YYYY')}</th>
+                    <th style={{ verticalAlign: 'middle', fontWeight: '400' }}>{moment.unix(estimate.timestamp).format('YYYY/MM/DD')}</th>
                     <th style={{ verticalAlign: 'middle', fontWeight: '400' }}>
                       {estimate.source === 'self_estimation' ? 'Self' : capitalize(estimate.source.replace('_', ' '))}
                     </th>
