@@ -517,8 +517,8 @@
     "Source": "Source",
     "Level": "Level",
     "story-rating": "Story Rating",
-    "exercises-answered-correctly": "% of exercises answered correctly",
-    "part-of-story-covered": "% of story covered",
+    "exercises-answered-correctly": "%% of exercises answered correctly",
+    "part-of-story-covered": "%% of story covered",
     "delete-story": "",
     "share-story-with-a-friend": "Share story with a user",
     "your-friends": "Your friends",
@@ -1372,5 +1372,10 @@
     "new-group-story-encouragement": "A new story has been posted in one of your groups — you can see it in the",
     "go-to-group-library-link": "group library",
     "beta-language-warning": "Please note: {language} is a BETA language under development — it is work in progress!",
-    "story-title-validation": "Story title has to be at least 3 characters long"
+    "story-title-validation": "Story title has to be at least 3 characters long",
+    "search-input-placeholder": "Search...",
+    "group-review-dropdown-placeholder": "Choose the student to review",
+    "sort-by-title-option": "Title",
+    "sort-by-difficulty-option": "Level",
+    "story-difficulty": "Level"
 }

@@ -147,8 +147,8 @@ const StoryList = () => {
   }
 
   const sortDropdownOptions = [
-    { key: 'title', text: intl.formatMessage({ id: 'Title' }), value: 'title' },
-    { key: 'difficulty', text: intl.formatMessage({ id: 'Difficulty' }), value: 'difficulty' },
+    { key: 'title', text: intl.formatMessage({ id: 'sort-by-title-option' }), value: 'title' },
+    { key: 'difficulty', text: intl.formatMessage({ id: 'story-difficulty' }), value: 'difficulty' },
     { key: 'progress', text: intl.formatMessage({ id: 'Progress' }), value: 'progress' },
   ]
 

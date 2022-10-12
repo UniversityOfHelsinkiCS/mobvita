@@ -50,7 +50,7 @@ const LibrarySearch = ({ setDisplaySearchResults, setDisplayedStories, fluid }) 
       />
       <Input
         action={{ icon: 'search', onClick: handleLibrarySearch, color: 'grey' }}
-        placeholder="Search..."
+        placeholder={intl.formatMessage({ id: 'search-input-placeholder' })}
         onChange={e => setCurrentQuery(e.target.value)}
         onKeyPress={handleSearchFieldKeyPress}
         value={currentQuery}

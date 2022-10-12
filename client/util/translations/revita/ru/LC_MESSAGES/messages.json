@@ -518,7 +518,7 @@
     "Source": "Источник",
     "Level": "Уровень",
     "story-rating": "Рейтинг текста",
-    "exercises-answered-correctly": "%% упражнений выполненных правильно",
+    "exercises-answered-correctly": "%% упражнений, выполненных правильно",
     "part-of-story-covered": "Часть истории пройдена",
     "delete-story": "Удалить историю",
     "share-story-with-a-friend": "Поделиться историей с другом",
@@ -1374,6 +1374,11 @@
     "story-updated-toaster": "Текст обновлен!",
     "new-group-story-encouragement": "A new story has been posted in one of your groups — you can see it in the",
     "go-to-group-library-link": "group library",
-    "beta-language-warning": "Please note: {language} is a BETA language under development — it is work in progress!",
-    "story-title-validation": "Story title has to be at least 3 characters long"
+    "beta-language-warning": "Внимание: {language} — это BETA-проект в стадии разработки, работа над ним еще не завершена!",
+    "story-title-validation": "Story title has to be at least 3 characters long",
+    "search-input-placeholder": "Search...",
+    "group-review-dropdown-placeholder": "Choose the student to review",
+    "sort-by-title-option": "Название",
+    "sort-by-difficulty-option": "Сложность",
+    "story-difficulty": "Сложность"
 }

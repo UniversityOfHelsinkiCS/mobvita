@@ -1372,6 +1372,11 @@
     "story-updated-toaster": "Storia aggiornata!",
     "new-group-story-encouragement": "Una nuova storia è stata aggiunta a uno dei tuoi gruppi: la vedi nella",
     "go-to-group-library-link": "biblioteca del gruppo",
-    "beta-language-warning": "Please note: {language} is a BETA language under development — it is work in progress!",
-    "story-title-validation": "Story title has to be at least 3 characters long"
+    "beta-language-warning": "Nota: {language} è un linguaggio BETA che è ancora in fase di sviluppo.",
+    "story-title-validation": "Il titolo della storia deve avere almeno 3 lettere",
+    "search-input-placeholder": "Search...",
+    "group-review-dropdown-placeholder": "Choose the student to review",
+    "sort-by-title-option": "Titolo",
+    "sort-by-difficulty-option": "Difficoltà",
+    "story-difficulty": "Difficoltà"
 }

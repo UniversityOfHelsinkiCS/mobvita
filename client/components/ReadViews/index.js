@@ -69,7 +69,7 @@ const ReadViews = ({ match }) => {
   const currentGroup = totalGroups.find(group => group.group_id === currentGroupId)
   const dropDownMenuText = currentStudent
     ? `${currentStudent?.userName} (${currentStudent?.email})`
-    : 'Choose the student to review'
+    : intl.formatMessage({ id: 'group-review-dropdown-placeholder' })
 
   const truncateStudentName = studentName => {
     if (studentName.length > 50) {

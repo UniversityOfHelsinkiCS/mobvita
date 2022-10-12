@@ -145,7 +145,7 @@ const GroupPeople = ({ role }) => {
               <Table.Row>
                 <Table.HeaderCell key="students-header" colSpan="2">
                   <div className="space-between" style={{ fontSize: '1.2em' }}>
-                    <FormattedMessage id="Students" /> ({currentGroup.students?.length})
+                    <FormattedMessage id="students" /> ({currentGroup.students?.length})
                     <Icon
                       data-cy="add-to-group"
                       style={{ cursor: 'pointer', color: 'rgb(0, 214, 126)' }}

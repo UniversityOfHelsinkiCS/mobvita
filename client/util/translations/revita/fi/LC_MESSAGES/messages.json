@@ -517,8 +517,8 @@
     "Source": "Lähde",
     "Level": "Taso",
     "story-rating": "Taso",
-    "exercises-answered-correctly": "% Vastattu oikein",
-    "part-of-story-covered": "% Luettu osa",
+    "exercises-answered-correctly": "%% Vastattu oikein",
+    "part-of-story-covered": "%% Luettu osa",
     "delete-story": "Poista kertomus",
     "share-story-with-a-friend": "Jaa toiselle käyttäjälle",
     "your-friends": "Kaverisi",
@@ -1372,5 +1372,10 @@
     "new-group-story-encouragement": "Uusi tarina on lisätty yhteen ryhmistäsi — näet sen",
     "go-to-group-library-link": "ryhmäkirjastossa",
     "beta-language-warning": "Huomioi: {language} on BETA-kieli, jonka kehitys on vielä kesken.",
-    "story-title-validation": "Tarinan otsikon on oltava vähintään 3 kirjaimen pituinen"
+    "story-title-validation": "Tarinan otsikon on oltava vähintään 3 kirjaimen pituinen",
+    "search-input-placeholder": "Etsi...",
+    "group-review-dropdown-placeholder": "Valitse tarkasteltava opiskelija",
+    "sort-by-title-option": "Otsikko",
+    "sort-by-difficulty-option": "Taso",
+    "story-difficulty": "Taso"
 }

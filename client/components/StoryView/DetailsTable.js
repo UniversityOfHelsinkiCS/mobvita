@@ -39,7 +39,7 @@ export default ({
           <FormattedMessage id={category} />
         </Row>
       )}
-      <Row translationId="Level">
+      <Row translationId="story-difficulty">
         <DifficultyStars difficulty={difficulty} />
       </Row>
       <Row translationId="story-rating">{elo}</Row>

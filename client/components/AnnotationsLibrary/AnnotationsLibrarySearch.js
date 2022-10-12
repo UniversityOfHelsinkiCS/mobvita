@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import { Dropdown, Popup, Icon, Input } from 'semantic-ui-react'
-import { FormattedMessage } from 'react-intl'
+import { FormattedMessage, useIntl } from 'react-intl'
 import useWindowDimensions from 'Utilities/windowDimensions'
 
 const AnnotationsLibrarySearch = ({
@@ -10,6 +10,7 @@ const AnnotationsLibrarySearch = ({
   setAnnotationsList,
   allAnnotations,
 }) => {
+  const intl = useIntl()
   const [searchString, setSearchString] = useState('')
   const [lastQuery, setLastQuery] = useState(false)
   const bigScreen = useWindowDimensions().width >= 700
@@ -107,7 +108,7 @@ const AnnotationsLibrarySearch = ({
         )}
         <Input
           action={{ icon: 'search', onClick: handleAnnotationsSearch, color: 'grey' }}
-          placeholder="Search..."
+          placeholder={intl.formatMessage({ id: 'search-input-placeholder' })}
           onChange={e => setSearchString(e.target.value)}
           value={searchString}
         />
