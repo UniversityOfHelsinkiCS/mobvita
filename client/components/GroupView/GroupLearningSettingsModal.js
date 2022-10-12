@@ -1,18 +1,16 @@
 import React, { useState } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
-import { Modal, Divider, Icon, Popup } from 'semantic-ui-react'
+import { Modal } from 'semantic-ui-react'
 import { FormattedMessage, useIntl } from 'react-intl'
-import { ButtonGroup, Button } from 'react-bootstrap'
+import { Button } from 'react-bootstrap'
 import { Link } from 'react-router-dom'
 import {
   updateExerciseTemplate,
   updateGroupMaxPracticePercent,
 } from 'Utilities/redux/groupsReducer'
 import CERFLevelSlider from 'Components/CEFRLevelSlider'
-import { hiddenFeatures } from 'Utilities/common'
 
 const GroupLearningSettingsModal = ({ open, setOpen, groupId }) => {
-  const intl = useIntl()
   const dispatch = useDispatch()
   const { groups } = useSelector(({ groups }) => groups)
   const { practice_prct_mode: practicePrctMode } = useSelector(({ user }) => user.data.user)
@@ -22,11 +20,12 @@ const GroupLearningSettingsModal = ({ open, setOpen, groupId }) => {
     groupName,
     exercise_setting_template: exerciseSettingTemplate,
     max_practice_prct: maxPracticePercent,
+    grade,
   } = group
 
   const getCERFSliderValue = () => {
-    if (exerciseSettingTemplate) {
-      return exerciseSettingTemplate * 11 * 11
+    if (grade) {
+      return grade * 11 * 11
     }
     return 121
   }
