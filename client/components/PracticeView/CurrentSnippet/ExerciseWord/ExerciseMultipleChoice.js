@@ -145,6 +145,12 @@ const ExerciseMultipleChoice = ({ word, handleChange }) => {
     setKeepOpen(false)
   }
 
+  const handleFocus = () => {
+    if (hints.length > 0 || frozen_messages.length > 0) {
+      setShow(!show)
+    }
+  }
+
   const getInputWidth = () => {
     const width = getTextWidth(longestWord)
     if (width >= 150) {
@@ -215,7 +221,7 @@ const ExerciseMultipleChoice = ({ word, handleChange }) => {
         value={value}
         onChange={(e, data) => handle(e, word, data)}
         onBlur={handleBlur}
-        onFocus={() => setShow(!show)}
+        onFocus={handleFocus}
         selection
         floating
         style={{
