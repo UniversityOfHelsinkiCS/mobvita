@@ -1378,5 +1378,6 @@
     "group-review-dropdown-placeholder": "Choose the student to review",
     "sort-by-title-option": "Titolo",
     "sort-by-difficulty-option": "Difficoltà",
-    "story-difficulty": "Difficoltà"
+    "story-difficulty": "Difficoltà",
+    "student-cefr-placeholder": "Select CEFR grade for today"
 }

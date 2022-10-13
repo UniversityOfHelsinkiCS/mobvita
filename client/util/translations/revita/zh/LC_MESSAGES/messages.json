@@ -742,5 +742,6 @@
     "exercises-answered-correctly": "已正确完成%%的练习",
     "part-of-story-covered": "已完成文章的%%",
     "Author": "作者",
-    "Teachers": "教师"
+    "Teachers": "教师",
+    "student-cefr-placeholder": "Select CEFR grade for today"
 }

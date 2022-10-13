@@ -906,7 +906,7 @@
     "other_error": "Sorry, an error occurred when trying to load this story. Please try again with another one.",
     "title_in_use": "A story with the same title already exists! Please try again with a different title!",
     "wrong_language": "Language of the text does not correspond to the current language",
-    "empty_tokens": "Sorry, Revita is unable to extract the story from this Web page. Please copy the text from the web page. If you would like to practice with this story, please save it into a .TXT file on your computer and upload the text file.",
+    "empty_tokens": "Sorry, Revita is unable to extract the story from this Web page.<br/>\nPlease copy the text from the Web page.<br/>\nThen paste the text into the box below, or save the text into a .txt file on your computer, and upload the file.",
     "empty_content": "Empty file!",
     "XXX": "The uploaded file is too large. Maximum file size is {:.2f} KiloBytes.",
     "default": "default",
@@ -1377,5 +1377,6 @@
     "group-review-dropdown-placeholder": "Choose the student to review",
     "sort-by-title-option": "Title",
     "sort-by-difficulty-option": "Level",
-    "story-difficulty": "Level"
+    "story-difficulty": "Level",
+    "student-cefr-placeholder": "Select CEFR grade for today"
 }
