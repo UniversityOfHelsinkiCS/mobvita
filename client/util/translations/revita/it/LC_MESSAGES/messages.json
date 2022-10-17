@@ -981,7 +981,7 @@
     "friends": "Amici",
     "tour-welcome-message-OLD": "Revita ti aiuta ad imparare una nuova lingua, faendoti esercitare su storie scelte da te.<br/><br/> Ora ti mostreremo alcune funzionalità principali.<br/><br/>Iniziamo! (Questo tour durerà circa un minuto) →",
     "governed-by": "Depende da \"{}\"",
-    "need-to-agree-with": "Deve concordare con {}",
+    "need-to-agree-with": "Deve concordare con \"{}\"",
     "username": "Nome utente",
     "actions": "Azioni",
     "no-blocked-users": "Non ci sono utenti bloccati.",
@@ -1374,10 +1374,14 @@
     "go-to-group-library-link": "biblioteca del gruppo",
     "beta-language-warning": "Nota: {language} è un linguaggio BETA che è ancora in fase di sviluppo.",
     "story-title-validation": "Il titolo della storia deve avere almeno 3 lettere",
-    "search-input-placeholder": "Search...",
-    "group-review-dropdown-placeholder": "Choose the student to review",
+    "search-input-placeholder": "Cerca...",
+    "group-review-dropdown-placeholder": "Student to review",
     "sort-by-title-option": "Titolo",
     "sort-by-difficulty-option": "Difficoltà",
     "story-difficulty": "Difficoltà",
-    "student-cefr-placeholder": "Select CEFR grade for today"
+    "student-cefr-placeholder": "Current CEFR grade",
+    "genitive-modifier-of": "Depende da \"{}\"",
+    "notes-catgory-none": "None",
+    "notes-category-none": "None",
+    "notes-None": "None"
 }

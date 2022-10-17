@@ -979,8 +979,8 @@
     "total-questions": "kysymystä yhteensä",
     "friends": "Kaverit",
     "tour-welcome-message-OLD": "Revitan avulla voit opiskella kieliä käyttämällä itse valitsemiasi tekstejä.<br/><br/>Esittelemme nyt sinulle muutaman Revitan pääominaisuuksista. Esittelykierros kestää noin minuutin.<br/><br/>Aloitetaan!",
-    "governed-by": "Taipuu \"{}\":n mukaan",
-    "need-to-agree-with": "Taipuu kuin {}",
+    "governed-by": "Mukautuu sanaan \"{}\"",
+    "need-to-agree-with": "Taipuu kuin \"{}\"",
     "username": "Käyttäjänimi",
     "actions": "Toiminnot",
     "no-blocked-users": "Et ole estänyt ketään.",
@@ -1378,5 +1378,9 @@
     "sort-by-title-option": "Otsikko",
     "sort-by-difficulty-option": "Taso",
     "story-difficulty": "Taso",
-    "student-cefr-placeholder": "Valitse CEFR-arvio tälle päivälle"
+    "student-cefr-placeholder": "Valitse CEFR-arvio tälle päivälle",
+    "genitive-modifier-of": "Liittyy pääsanaan \"{}\"",
+    "notes-catgory-none": "Ei mikään",
+    "notes-category-none": "Ei mikään",
+    "notes-None": "Ei mikään"
 }

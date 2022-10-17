@@ -730,7 +730,7 @@
     "story-title-validation": "文章标题至少需要包含3个字符",
     "this-text-is-too-short-minimum-50-characters": "文章过短。最少50个字符。",
     "search-input-placeholder": "Search...",
-    "group-review-dropdown-placeholder": "Choose the student to review",
+    "group-review-dropdown-placeholder": "Student to review",
     "sort-by-title-option": "标题",
     "sort-by-difficulty-option": "困难程度",
     "Culture": "文化",
@@ -743,5 +743,9 @@
     "part-of-story-covered": "已完成文章的%%",
     "Author": "作者",
     "Teachers": "教师",
-    "student-cefr-placeholder": "Select CEFR grade for today"
+    "student-cefr-placeholder": "Current CEFR grade",
+    "genitive-modifier-of": "与\"{}\"相关",
+    "notes-catgory-none": "None",
+    "notes-category-none": "None",
+    "notes-None": "None"
 }

@@ -980,7 +980,7 @@
     "friends": "Friends",
     "tour-welcome-message-OLD": "Revita helps you learn languages by practicing with stories of your choice.<br/><br/>We will now show you its main features.<br/><br/>(This tour takes 1 minute) →",
     "governed-by": "Depends on \"{}\"",
-    "need-to-agree-with": "Need to agree with {}",
+    "need-to-agree-with": "Need to agree with \"{}\"",
     "username": "Username",
     "actions": "Actions",
     "no-blocked-users": "You haven't blocked any users.",
@@ -1374,9 +1374,13 @@
     "beta-language-warning": "Please note: {language} is a BETA language under development — it is work in progress!",
     "story-title-validation": "Story title has to be at least 3 characters long",
     "search-input-placeholder": "Search...",
-    "group-review-dropdown-placeholder": "Choose the student to review",
+    "group-review-dropdown-placeholder": "Student to review",
     "sort-by-title-option": "Title",
     "sort-by-difficulty-option": "Level",
     "story-difficulty": "Level",
-    "student-cefr-placeholder": "Select CEFR grade for today"
+    "student-cefr-placeholder": "Current CEFR grade",
+    "genitive-modifier-of": "This is linked to the main word \"{}\"",
+    "notes-catgory-none": "None",
+    "notes-category-none": "None",
+    "notes-None": "None"
 }
