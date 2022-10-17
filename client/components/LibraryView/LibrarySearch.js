@@ -21,6 +21,7 @@ const LibrarySearch = ({ setDisplaySearchResults, setDisplayedStories, fluid }) 
   }
 
   const handleLibrarySearch = () => {
+    console.log('wooot')
     if (currentQuery === '') {
       cancelSearch()
     } else {

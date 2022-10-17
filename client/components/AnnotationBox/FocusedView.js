@@ -39,7 +39,7 @@ const FocusedView = ({ focusedSpan }) => {
   const maxCharacters = 1000
   const { width } = useWindowDimensions()
   const bigScreen = width >= 1024
-  const [category, setCategory] = useState('Grammar')
+  const [category, setCategory] = useState('None')
   const [annotationName, setAnnotationName] = useState('')
   const [annotationText, setAnnotationText] = useState('')
   const [charactersLeft, setCharactersLeft] = useState(maxCharacters)

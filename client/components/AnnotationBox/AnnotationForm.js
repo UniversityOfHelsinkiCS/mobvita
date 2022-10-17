@@ -41,16 +41,21 @@ const AnnotationForm = ({
   const categoryOptions = [
     {
       key: '0',
+      text: <FormattedMessage id="notes-None" />,
+      value: 'None',
+    },
+    {
+      key: '1',
       text: <FormattedMessage id="notes-Grammar" />,
       value: 'Grammar',
     },
     {
-      key: '1',
+      key: '2',
       text: <FormattedMessage id="notes-Phrases" />,
       value: 'Phrases',
     },
     {
-      key: '2',
+      key: '3',
       text: <FormattedMessage id="notes-Vocabulary" />,
       value: 'Vocabulary',
     },
@@ -59,6 +64,7 @@ const AnnotationForm = ({
   return (
     <div>
       <Form>
+        {/* 
         <div className="row-flex" style={{ marginBottom: '.5em' }}>
           <Form.Input
             className="annotation-name-input"
@@ -68,6 +74,7 @@ const AnnotationForm = ({
             placeholder={intl.formatMessage({ id: 'annotation-name' })}
           />
         </div>
+        */}
         <div className="row-flex" style={{ marginBottom: '.5em' }}>
           <span style={{ marginRight: '.5em' }}>
             <FormattedMessage id="Category" />:{' '}
@@ -85,15 +92,17 @@ const AnnotationForm = ({
           onChange={handleTextChange}
           placeholder={intl.formatMessage({ id: 'write-your-note-here' })}
           maxLength={maxCharacters}
-          style={{ marginTop: '0rem', minHeight: '10em' }}
+          style={{ marginTop: '0rem', minHeight: '10em', marginBottom: '.5rem' }}
           autoFocus
           data-cy="annotation-text-field"
         />
       </Form>
+      {/* 
       <div className="bold" style={{ margin: '.75rem 0rem', fontSize: '.85rem' }}>
         <FormattedMessage id="characters-left" />
         {` ${charactersLeft}`}
       </div>
+      */}
       <Button
         variant="outline-secondary"
         size="sm"

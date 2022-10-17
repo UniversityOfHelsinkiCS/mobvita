@@ -39,54 +39,51 @@ const AnnotationTexts = ({
 
   return (
     <div>
-      {focusedSpan?.annotationTexts.map(a => (
-        console.log(a),
-        <div
-          key={a.uid}
-          className={`annotation-item ${
-            showAnnotationForm && a.uid === user.oid
-              ? 'annotation-item-editing'
-              : 'annotation-item-listed'
-          }
+      {focusedSpan?.annotationTexts.map(
+        a => (
+          console.log(a),
+          (
+            <div
+              key={a.uid}
+              className={`annotation-item ${
+                showAnnotationForm && a.uid === user.oid
+                  ? 'annotation-item-editing'
+                  : 'annotation-item-listed'
+              }
                 `}
-        >
-          {a.uid === user.oid && showAnnotationForm ? (
-            <div className="bold">
-              <FormattedMessage id="edit-your-note" />:
+            >
+              <>
+                <div className="space-between" style={{ marginBottom: '1em' }}>
+                  {displayAuthorInfo(a)}
+                  {a.uid === user.oid && bigScreen && (
+                    <div>
+                      <Button
+                        size="sm"
+                        variant="outline-secondary"
+                        onClick={() => handleEditButtonClick(a.text, a.name)}
+                        style={{ marginRight: '1em' }}
+                      >
+                        <Icon name="pencil alternate" />
+                        <FormattedMessage id="edit" />
+                      </Button>
+                      <Button
+                        size="sm"
+                        variant="outline-danger"
+                        onClick={() => setOpenWarning(true)}
+                        data-cy="delete-annotation-button"
+                      >
+                        <Icon name="trash alternate" />
+                        <FormattedMessage id="Delete" />
+                      </Button>
+                    </div>
+                  )}
+                </div>
+                <div className="annotation-text-content">{a.text}</div>
+              </>
             </div>
-          ) : (
-            <>
-              <div className="space-between" style={{ marginBottom: '1em' }}>
-                {displayAuthorInfo(a)}
-
-                {a.uid === user.oid && bigScreen && (
-                  <div>
-                    <Button
-                      size="sm"
-                      variant="outline-secondary"
-                      onClick={() => handleEditButtonClick(a.text, a.name)}
-                      style={{ marginRight: '1em' }}
-                    >
-                      <Icon name="pencil alternate" />
-                      <FormattedMessage id="edit" />
-                    </Button>
-                    <Button
-                      size="sm"
-                      variant="outline-danger"
-                      onClick={() => setOpenWarning(true)}
-                      data-cy="delete-annotation-button"
-                    >
-                      <Icon name="trash alternate" />
-                      <FormattedMessage id="Delete" />
-                    </Button>
-                  </div>
-                )}
-              </div>
-              <div className="annotation-text-content">{a.text}</div>
-            </>
-          )}
-        </div>
-      ))}
+          )
+        )
+      )}
       {showCreateNoteButton && (
         <Button
           style={{ marginTop: '.75em' }}
