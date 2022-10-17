@@ -3,7 +3,7 @@ import { useSelector, useDispatch } from 'react-redux'
 import { Dropdown, Icon } from 'semantic-ui-react'
 import { FormattedMessage } from 'react-intl'
 import { getTextWidth, formatGreenFeedbackText, getWordColor, skillLevels } from 'Utilities/common'
-import { incrementHintRequests } from 'Utilities/redux/practiceReducer'
+import { incrementHintRequests, mcExerciseTouched } from 'Utilities/redux/practiceReducer'
 // import { decreaseEloHearts } from 'Utilities/redux/snippetsReducer'
 import { Button } from 'react-bootstrap'
 import Tooltip from 'Components/PracticeView/Tooltip'
@@ -21,7 +21,7 @@ const ExerciseMultipleChoice = ({ word, handleChange }) => {
   const [filteredHintsList, setFilteredHintsList] = useState([])
   const currentAnswer = useSelector(({ practice }) => practice.currentAnswers[word.ID])
   // const { eloHearts } = useSelector(({ snippets }) => snippets)
-  const { attempt, focusedWord } = useSelector(({ practice }) => practice)
+  const { attempt, focusedWord, latestMCTouched } = useSelector(({ practice }) => practice)
   const [eloScoreHearts, setEloScoreHearts] = useState([1, 2, 3, 4, 5])
   const [spentHints, setSpentHints] = useState([])
 
@@ -71,6 +71,12 @@ const ExerciseMultipleChoice = ({ word, handleChange }) => {
       setShow(false)
     }
   }, [focusedWord])
+
+  useEffect(() => {
+    if (latestMCTouched !== word) {
+      setShow(false)
+    }
+  }, [latestMCTouched])
 
   useEffect(() => {
     if (message && !hints && !requested_hints) {
@@ -222,6 +228,7 @@ const ExerciseMultipleChoice = ({ word, handleChange }) => {
         onChange={(e, data) => handle(e, word, data)}
         onBlur={handleBlur}
         onFocus={handleFocus}
+        onClick={() => dispatch(mcExerciseTouched(word))}
         selection
         floating
         style={{

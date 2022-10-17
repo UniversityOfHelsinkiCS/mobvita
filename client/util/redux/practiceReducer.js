@@ -26,6 +26,7 @@ export const incrementHintRequests = (wordId, newReqAmount, newHintList) => ({
   newReqAmount,
   newHintList,
 })
+export const mcExerciseTouched = word => ({ type: 'HANDLE_TOUCH_MC', word })
 
 const initialState = {
   previousAnswers: {},
@@ -46,6 +47,7 @@ const initialState = {
   isPaused: false,
   practiceFinished: false,
   voiceSampleOnCooldown: false,
+  latestMCTouched: null,
 }
 
 export default (state = initialState, action) => {
@@ -77,6 +79,11 @@ export default (state = initialState, action) => {
         touchedIds: state.touchedIds.includes(action.id)
           ? state.touchedIds
           : state.touchedIds.concat(action.id),
+      }
+    case 'HANDLE_TOUCH_MC':
+      return {
+        ...state,
+        latestMCTouched: action.word,
       }
     case 'ADD_CORRECT_ANSWER_IDS':
       return {
@@ -129,6 +136,7 @@ export default (state = initialState, action) => {
         snippetFinished: initialState.snippetFinished,
         isNewSnippet: initialState.isNewSnippet,
         hintRequestsNum: {},
+        latestMCTouched: initialState.latestMCTouched,
       }
     case 'CLEAR_CURRENT_ANSWERS':
       return {

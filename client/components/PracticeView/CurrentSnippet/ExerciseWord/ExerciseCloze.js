@@ -19,6 +19,7 @@ import {
   setReferences,
   setExplanation,
   incrementHintRequests,
+  mcExerciseTouched,
 } from 'Utilities/redux/practiceReducer'
 import { decreaseEloHearts } from 'Utilities/redux/snippetsReducer'
 import { getTranslationAction, setWords } from 'Utilities/redux/translationReducer'
@@ -36,7 +37,7 @@ const ExerciseCloze = ({ word, handleChange }) => {
   const learningLanguage = useSelector(learningLanguageSelector)
   const { resource_usage, autoSpeak } = useSelector(state => state.user.data.user)
   const currentAnswer = useSelector(({ practice }) => practice.currentAnswers[word.ID])
-  const { attempt, focusedWord } = useSelector(({ practice }) => practice)
+  const { attempt, focusedWord, latestMCTouched } = useSelector(({ practice }) => practice)
   // const { eloHearts } = useSelector(({ snippets }) => snippets)
   const [filteredHintsList, setFilteredHintsList] = useState([])
   const [preHints, setPreHints] = useState([])
@@ -204,6 +205,12 @@ const ExerciseCloze = ({ word, handleChange }) => {
     }
   }, [focusedWord])
 
+  useEffect(() => {
+    if (latestMCTouched && latestMCTouched !== word) {
+      setShow(false)
+    }
+  }, [latestMCTouched])
+
   const checkString = hint => {
     const explanationKey = Object.keys(explanation)[0]
     if (hint?.includes(explanationKey)) {
@@ -357,6 +364,7 @@ const ExerciseCloze = ({ word, handleChange }) => {
         onChange={changeValue}
         onBlur={handleBlur}
         onMouseDown={handleMouseDown}
+        onClick={() => dispatch(mcExerciseTouched(null))}
         onFocus={handleFocus}
         className={className}
         style={{
