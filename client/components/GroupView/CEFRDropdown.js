@@ -3,6 +3,7 @@ import { useSelector } from 'react-redux'
 import { useIntl } from 'react-intl'
 import { skillLevels } from 'Utilities/common'
 import { Dropdown } from 'semantic-ui-react'
+import { isNumber } from 'lodash'
 
 const CEFRDropdown = ({
   addNew = false,
@@ -15,7 +16,7 @@ const CEFRDropdown = ({
   const intl = useIntl()
   const userId = useSelector(state => state.user.data.user.oid)
   const [chosenValue, setChosenValue] = useState(
-    `${intl.formatMessage({ id: 'student-cefr-placeholder' })}`
+    addNew ? `${intl.formatMessage({ id: 'student-cefr-placeholder' })}` : estimate.grade
   )
   const cefrLevelOptions = skillLevels.map((level, ind) => ({
     key: ind,
@@ -30,7 +31,7 @@ const CEFRDropdown = ({
   }, [estimate?.grade])
 
   useEffect(() => {
-    if (index != undefined) {
+    if (index !== undefined) {
       // index 0 wont come here
       const newList = [...updatedCEFRHistory]
       newList[index] = {
@@ -40,7 +41,7 @@ const CEFRDropdown = ({
         tagger: userId,
       }
       setUpdatedCEFRHistory(newList)
-    } else {
+    } else if (isNumber(chosenValue)) {
       const newList = [
         {
           grade: chosenValue,
@@ -61,9 +62,9 @@ const CEFRDropdown = ({
 
   return (
     <Dropdown
-      style={{ width: addNew && '89px' }}
+      style={{ width: addNew && '280px' }}
       className="interactable"
-      text={skillLevels[chosenValue]}
+      text={addNew ? chosenValue : skillLevels[chosenValue]}
       selection
       fluid
       options={cefrLevelOptions}

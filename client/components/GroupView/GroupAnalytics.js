@@ -80,8 +80,6 @@ const GroupAnalytics = ({ role }) => {
     value: JSON.stringify(student), // needs to be string
   }))
 
-  // console.log('current ', currentGroup)
-
   const handleStudentChange = value => {
     setCurrentStudent(JSON.parse(value))
     setFirstFetch(true)

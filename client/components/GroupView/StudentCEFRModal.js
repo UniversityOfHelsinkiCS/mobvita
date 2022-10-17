@@ -69,25 +69,25 @@ const StudentCEFRModal = ({ open, setOpen, cefrHistory, setCefrHistory, groupId,
               onClick={closeModal}
             />
           </div>
-          <div
-            className="flex space-between"
-            style={{ paddingBottom: '15px' }}
-          >
-            <Button className="interactable" variant="primary" onClick={handleSubmit}>
-              <FormattedMessage id="submit-changes" />
-            </Button>
+          <div className="flex space-between" style={{ paddingBottom: '15px' }}>
             {modified && (
-              <Button className="interactable" variant="secondary" onClick={undoChanges}>
-                <FormattedMessage id="undo-changes" />
-              </Button>
+              <>
+                <Button className="interactable" variant="primary" onClick={handleSubmit}>
+                  <FormattedMessage id="submit-changes" />
+                </Button>
+                <Button
+                  className="interactable"
+                  style={{ marginLeft: '.5rem' }}
+                  variant="secondary"
+                  onClick={undoChanges}
+                >
+                  <FormattedMessage id="undo-changes" />
+                </Button>
+              </>
             )}
           </div>
           {showForm && (
-            <div
-              className="flex space-between"
-              style={{ alignItems: 'center', marginBottom: '10px' }}
-            >
-              <FormattedMessage id="add-cefr-estimate" />
+            <div style={{ marginBottom: '10px' }}>
               <CEFRDropdown
                 addNew
                 updatedCEFRHistory={updatedCEFRHistory}
@@ -108,20 +108,26 @@ const StudentCEFRModal = ({ open, setOpen, cefrHistory, setCefrHistory, groupId,
               <tbody>
                 {updatedCEFRHistory.map((estimate, index) => (
                   <tr>
-                    <th style={{ verticalAlign: 'middle', fontWeight: '400' }}>{moment.unix(estimate.timestamp).format('YYYY/MM/DD')}</th>
                     <th style={{ verticalAlign: 'middle', fontWeight: '400' }}>
-                      {estimate.source === 'self_estimation' ? 'Self' : capitalize(estimate.source.replace('_', ' '))}
+                      {moment.unix(estimate.timestamp).format('YYYY/MM/DD')}
                     </th>
                     <th style={{ verticalAlign: 'middle', fontWeight: '400' }}>
-                      {estimate.source === 'teacher' ? 
+                      {estimate.source === 'self_estimation'
+                        ? 'Self'
+                        : capitalize(estimate.source.replace('_', ' '))}
+                    </th>
+                    <th style={{ verticalAlign: 'middle', fontWeight: '400' }}>
+                      {estimate.source === 'teacher' ? (
                         <CEFRDropdown
                           estimate={estimate}
                           index={index}
                           updatedCEFRHistory={updatedCEFRHistory}
                           setUpdatedCEFRHistory={setUpdatedCEFRHistory}
                           setModified={setModified}
-                        /> : skillLevels[estimate.grade]
-                      }
+                        />
+                      ) : (
+                        skillLevels[estimate.grade]
+                      )}
                     </th>
                     {estimate.source === 'teacher' && (
                       <Icon
