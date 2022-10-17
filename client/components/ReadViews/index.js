@@ -4,6 +4,7 @@ import { Link, useHistory } from 'react-router-dom'
 import {
   Divider,
   Segment,
+  Icon,
   Header,
   Checkbox,
   Dropdown,
@@ -160,7 +161,7 @@ const ReadViews = ({ match }) => {
           to={`/stories/${id}/practice/`}
           style={{ backgroundColor: 'rgb(50, 170, 248)', color: 'white' }}
         >
-          <FormattedMessage id="practice-grammar-mode" />
+          <Icon name="pencil alternate" /><FormattedMessage id="practice-grammar-mode" />
         </SemanticButton>
         <Dropdown
           className="button icon"
@@ -179,14 +180,6 @@ const ReadViews = ({ match }) => {
               to={`/stories/${id}/listening/practice/`}
               icon="volume up"
             />
-            {ownedStory && (
-              <Dropdown.Item
-                text={<FormattedMessage id="edit-story" />}
-                as={Link}
-                to={`/stories/${id}/edit`}
-                icon="edit"
-              />
-            )}
           </Dropdown.Menu>
         </Dropdown>
       </SemanticButton.Group>
@@ -250,22 +243,14 @@ const ReadViews = ({ match }) => {
                   )}
                   {!isGroupPreview && !isGroupReview && (
                     <div>
-                      {ownedStory ? (
-                        storyFunctionsDropdown()
-                      ) : (
-                        <>
-                          <Link to={`/stories/${id}/listening/practice/`}>
-                            <Button style={{ marginRight: '.5em' }} variant="primary">
-                              <FormattedMessage id="practice-listening-mode" />
-                            </Button>
-                          </Link>
-                          <Link to={`/stories/${id}/practice/`}>
-                            <Button variant="primary">
-                              <FormattedMessage id="practice-grammar-mode" />
-                            </Button>
-                          </Link>
-                        </>
+                      {ownedStory && (
+                        <Link to={`/stories/${id}/edit`}>
+                          <Button style={{ marginRight: '.5em' }} variant="secondary" >
+                            <Icon name="edit" /> <FormattedMessage id="edit-story" />
+                          </Button>
+                        </Link>
                       )}
+                      {storyFunctionsDropdown()}
                     </div>
                   )}
                 </>
