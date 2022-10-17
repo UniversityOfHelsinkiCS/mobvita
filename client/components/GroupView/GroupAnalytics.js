@@ -67,7 +67,7 @@ const GroupAnalytics = ({ role }) => {
 
   const [currentCEFR, setCurrentCEFR] = useState('-')
   const [showTokenGroupId, setShowTokenGroupId] = useState(null)
-
+  const { summary, pending: summaryPending } = useSelector(({ summary }) => summary)
   const [showTestEnableMenuGroupId, setShowTestEnableMenuGroupId] = useState(null)
 
   const [currTestDeadline, setCurrTestDeadline] = useState(currentGroup?.test_deadline)
@@ -79,9 +79,12 @@ const GroupAnalytics = ({ role }) => {
     text: `${student?.userName} (${student?.email})`,
     value: JSON.stringify(student), // needs to be string
   }))
-
+  
   const handleStudentChange = value => {
-    setCurrentStudent(JSON.parse(value))
+    const parsedValue = JSON.parse(value)
+    const studentSummary = summary?.find(student => student.Email === parsedValue.email)
+    setCurrentStudent(parsedValue)
+    setCefrHistory(studentSummary.cefr_grade)
     setFirstFetch(true)
   }
 

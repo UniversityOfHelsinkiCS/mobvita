@@ -15,20 +15,6 @@ const StudentCEFRModal = ({ open, setOpen, cefrHistory, setCefrHistory, groupId,
   const [modified, setModified] = useState(false)
   const [showForm, setShowForm] = useState(false)
 
-  useEffect(() => {
-    const includesToday = updatedCEFRHistory.find(estimate =>
-      isToday(moment.unix(estimate.timestamp).toDate())
-    )
-
-    if (includesToday) {
-      setShowForm(false)
-    } else {
-      setShowForm(true)
-    }
-  }, [updatedCEFRHistory])
-
-  // console.log('upd ', updatedCEFRHistory)
-
   const closeModal = () => {
     setOpen(false)
   }
@@ -52,6 +38,22 @@ const StudentCEFRModal = ({ open, setOpen, cefrHistory, setCefrHistory, groupId,
     setUpdatedCEFRHistory(cefrHistory)
     setModified(false)
   }
+
+  useEffect(() => {
+    const includesToday = updatedCEFRHistory.find(estimate =>
+      isToday(moment.unix(estimate.timestamp).toDate())
+    )
+
+    if (includesToday) {
+      setShowForm(false)
+    } else {
+      setShowForm(true)
+    }
+  }, [updatedCEFRHistory])
+
+  useEffect(() => {
+    undoChanges()
+  }, [cefrHistory])
 
   if (open) {
     return (
