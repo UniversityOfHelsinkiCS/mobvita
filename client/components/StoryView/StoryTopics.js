@@ -7,7 +7,7 @@ import { FormattedMessage } from 'react-intl'
 const StoryTopics = ({ conceptCount, focusedConcept, setFocusedConcept }) => {
   const [topTopics, setTopTopics] = useState([])
   const { width } = useWindowDimensions()
-  const [collapsed, setCollapsed] = useState(false)
+  const [collapsed, setCollapsed] = useState(true)
   const [sortByFreq, setSortByFreq] = useState(true)
 
   const handleFocusedConcept = topic => {
@@ -65,45 +65,47 @@ const StoryTopics = ({ conceptCount, focusedConcept, setFocusedConcept }) => {
               <Icon name={collapsed ? 'angle down' : 'angle up'} size="large" />
             </div>
           </div>
-          <FormattedMessage id="LABEL-sort-by" />
-          <div className="space-evenly" style={{ marginTop: '.5em' }}>
-            <span style={{ marginRight: '.5em' }}>
-              <input
-                type="radio"
-                style={{ marginRight: '.75em' }}
-                onChange={() => setSortByFreq(true)}
-                checked={sortByFreq}
-              />
-              <FormattedMessage id="sort-by-concept-freq-short" />
-            </span>
-            <span style={{ marginRight: '.5em' }}>
-              <input
-                type="radio"
-                style={{ marginRight: '.75em' }}
-                onChange={() => setSortByFreq(false)}
-                checked={!sortByFreq}
-              />
-              <FormattedMessage id="sort-by-concept-cefr-short" />
-            </span>
-          </div>
-          <hr />
           {!collapsed && (
-            <ul style={{ overflow: 'auto', maxHeight: 120 }}>
-              {topTopics.map(topic => (
-                <li className="flex space-between">
-                  <span
-                    className={focusedConcept === topic[0] && 'notes-highlighted-word'}
-                    style={{ cursor: 'pointer' }}
-                    onClick={() => handleFocusedConcept(topic[0])}
-                  >
-                    {topic[0]}
-                  </span>
-                  <span style={{ marginRight: '.5em' }}>
-                    {topic[1].freq}
-                  </span>
-                </li>
-              ))}
-            </ul>
+            <>
+              <FormattedMessage id="LABEL-sort-by" />
+              <div className="space-evenly" style={{ marginTop: '.5em' }}>
+                <span style={{ marginRight: '.5em' }}>
+                  <input
+                    type="radio"
+                    style={{ marginRight: '.75em' }}
+                    onChange={() => setSortByFreq(true)}
+                    checked={sortByFreq}
+                  />
+                  <FormattedMessage id="sort-by-concept-freq-short" />
+                </span>
+                <span style={{ marginRight: '.5em' }}>
+                  <input
+                    type="radio"
+                    style={{ marginRight: '.75em' }}
+                    onChange={() => setSortByFreq(false)}
+                    checked={!sortByFreq}
+                  />
+                  <FormattedMessage id="sort-by-concept-cefr-short" />
+                </span>
+              </div>
+              <hr />
+              <ul style={{ overflow: 'auto', maxHeight: 120 }}>
+                {topTopics.map(topic => (
+                  <li className="flex space-between">
+                    <span
+                      className={focusedConcept === topic[0] && 'notes-highlighted-word'}
+                      style={{ cursor: 'pointer' }}
+                      onClick={() => handleFocusedConcept(topic[0])}
+                    >
+                      {topic[0]}
+                    </span>
+                    <span style={{ marginRight: '.5em' }}>
+                      {topic[1].freq}
+                    </span>
+                  </li>
+                ))}
+              </ul>
+            </>
           )}
         </div>
       </div>
