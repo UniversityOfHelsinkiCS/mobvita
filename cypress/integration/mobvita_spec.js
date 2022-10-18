@@ -187,7 +187,7 @@ describe('Mobvita', function () {
         cy.visit('http://localhost:8000/notes-library')
 
         cy.contains("häirinneet lentokoneita")
-        cy.get('[data-cy="annotation-item-button"').click()
+        cy.get('[data-cy="annotation-item-link"').click()
         cy.wait(1000)
         cy.contains('Lauantai 22.12.2018 (radio)')
         /*

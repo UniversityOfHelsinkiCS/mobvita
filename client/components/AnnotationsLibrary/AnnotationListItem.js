@@ -72,7 +72,7 @@ const AnnotationListItem = ({ annotationItem, annotationsList, setAnnotationsLis
             />
             */}
             <Link to={`/stories/${story_id}/${storyMode}`}>
-              <h5 className="annotation-item-text" style={{ color: 'gray', marginLeft: '.5em' }}>
+              <h5 className="annotation-item-text" style={{ color: 'gray', marginLeft: '.5em' }} data-cy="annotation-item-link">
                 {story_title.length > maxLength ? <Popup
                 content={<div style={{ margin: '0.25em' }}>{story_title}</div>}
                 trigger={truncateStoryTitle(story_title)}
