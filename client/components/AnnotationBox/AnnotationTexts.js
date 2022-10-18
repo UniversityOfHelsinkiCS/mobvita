@@ -94,7 +94,7 @@ const AnnotationTexts = ({
           >
             <FormattedMessage id={showAnswerForm ? 'Cancel' : 'reply-note'} />
           </Button>
-          {showAnswerForm && <AnswerAnnotationForm />}
+          {showAnswerForm && <AnswerAnnotationForm focusedSpan={focusedSpan} />}
         </>
         /*
         <Button

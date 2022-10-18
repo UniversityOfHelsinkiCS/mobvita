@@ -120,7 +120,6 @@ export const answerAnnotation = (
   endId,
   annotation,
   mode,
-  annotationName,
   thread_id,
 ) => {
   const route = `/stories/${storyId}/annotate`
@@ -132,8 +131,9 @@ export const answerAnnotation = (
     end_token_id: endId,
     annotation,
     user_mode: mode,
-    name: annotationName,
-    thread_id,
+    name: '',
+    reply_to: thread_id,
+    root_id: thread_id,
     public: true,
   })
 }

@@ -1,8 +1,8 @@
 import React, { useState } from 'react'
-import { useDispatch, useSelector } from 'react-redux'
+import { useDispatch } from 'react-redux'
 import { answerAnnotation } from 'Utilities/redux/storiesReducer'
 import { useParams } from 'react-router-dom'
-import { Form, TextArea, Dropdown, Checkbox } from 'semantic-ui-react'
+import { Form, TextArea } from 'semantic-ui-react'
 import { Button } from 'react-bootstrap'
 import { FormattedMessage, useIntl } from 'react-intl'
 import { consistsOfOnlyWhitespace, getMode } from 'Utilities/common'
@@ -23,7 +23,14 @@ const AnswerAnnotationForm = ({ focusedSpan }) => {
 
   const handleAnswerAnnotation = () => {
     dispatch(
-      answerAnnotation(storyId, focusedSpan.startId, focusedSpan.endId, annotationText.trim(), mode)
+      answerAnnotation(
+        storyId,
+        focusedSpan.startId,
+        focusedSpan.endId,
+        annotationText.trim(),
+        mode,
+        focusedSpan.annotationTexts[0].thread_id
+      )
     )
   }
 
