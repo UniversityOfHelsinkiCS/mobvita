@@ -88,6 +88,7 @@ export const unshareStory = (groupId, storyId) => {
 }
 
 export const addEditStoryAnnotation = (
+  publicNote,
   storyId,
   startId,
   endId,
@@ -108,6 +109,7 @@ export const addEditStoryAnnotation = (
     category,
     name: annotationName,
     thread_id,
+    public: publicNote,
   })
 }
 

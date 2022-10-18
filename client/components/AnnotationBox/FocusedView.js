@@ -82,10 +82,11 @@ const FocusedView = ({ focusedSpan }) => {
     setCharactersLeft(maxCharacters)
   }
 
-  const handleAnnotationSave = async () => {
+  const handleAnnotationSave = async publicNote => {
     if (focusedSpan) {
       await dispatch(
         addEditStoryAnnotation(
+          publicNote,
           storyId,
           focusedSpan.startId,
           focusedSpan.endId,
@@ -93,19 +94,20 @@ const FocusedView = ({ focusedSpan }) => {
           mode,
           category,
           annotationName,
-          focusedSpan.annotationTexts[0].thread_id
+          focusedSpan.annotationTexts[0].thread_id,
         )
       )
     } else {
       await dispatch(
         addEditStoryAnnotation(
+          publicNote,
           storyId,
           annotationCandidates[0].ID,
           annotationCandidates[annotationCandidates.length - 1].ID,
           annotationText.trim(),
           mode,
           category,
-          annotationName
+          annotationName,
         )
       )
     }
@@ -186,6 +188,8 @@ const FocusedView = ({ focusedSpan }) => {
           setCategory={setCategory}
           annotationName={annotationName}
           setAnnotationName={setAnnotationName}
+          publicStory={story?.public}
+          sharedStory={story?.private_share}
         />
       )}
     </div>

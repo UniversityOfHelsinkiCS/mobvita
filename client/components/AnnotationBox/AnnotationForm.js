@@ -1,5 +1,6 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { useDispatch } from 'react-redux'
+import { useHistory } from 'react-router'
 import { Form, TextArea, Dropdown } from 'semantic-ui-react'
 import { Button } from 'react-bootstrap'
 import { FormattedMessage, useIntl } from 'react-intl'
@@ -17,16 +18,19 @@ const AnnotationForm = ({
   category,
   setCategory,
   annotationName,
-  setAnnotationName
+  setAnnotationName,
+  publicStory,
+  sharedStory,
 }) => {
+  const history = useHistory()
   const intl = useIntl()
+  const inGroup = history.location.pathname.includes('group')
   const dispatch = useDispatch()
-
   const handleTextChange = e => {
     setCharactersLeft(maxCharacters - e.target.value.length)
     setAnnotationText(e.target.value)
   }
-
+  const [publicNote, setPublicNote] = useState(inGroup || sharedStory)
   const dropDownMenuText = category ? (
     <FormattedMessage id={`notes-${category}`} />
   ) : (
@@ -113,7 +117,7 @@ const AnnotationForm = ({
       <Button
         variant="primary"
         size="sm"
-        onClick={handleAnnotationSave}
+        onClick={() => handleAnnotationSave(publicNote)}
         style={{ marginLeft: '1em' }}
         disabled={annotationText?.length < 1 || consistsOfOnlyWhitespace(annotationText)}
         data-cy="save-annotation-button"
