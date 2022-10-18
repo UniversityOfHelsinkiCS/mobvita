@@ -5,7 +5,7 @@ import { Form, TextArea, Dropdown, Checkbox } from 'semantic-ui-react'
 import { Button } from 'react-bootstrap'
 import { FormattedMessage, useIntl } from 'react-intl'
 import { setAnnotationFormVisibility } from 'Utilities/redux/annotationsReducer'
-import { getCategoryColor } from 'Utilities/common'
+import { getCategoryColor, consistsOfOnlyWhitespace } from 'Utilities/common'
 
 const AnnotationForm = ({
   annotationText,
@@ -36,11 +36,6 @@ const AnnotationForm = ({
   ) : (
     <FormattedMessage id="notes-Grammar" />
   )
-
-  const consistsOfOnlyWhitespace = text => {
-    if (text.match(/^\s+$/g)) return true
-    return false
-  }
 
   const categoryOptions = [
     {

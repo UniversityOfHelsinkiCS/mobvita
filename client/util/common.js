@@ -540,6 +540,11 @@ export const getTextWidth = text => {
   return 65 + metrics.width // add just random number, lets hope its fine.
 }
 
+export const consistsOfOnlyWhitespace = text => {
+  if (text.match(/^\s+$/g)) return true
+  return false
+}
+
 export const speak = (surfaceWord, voice, voice_type, resource_usage, nRepeat=0) => {
   const [source, lang_code, tone] = voice
   window.responsiveVoice.cancel()
