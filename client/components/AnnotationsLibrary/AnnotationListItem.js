@@ -1,5 +1,6 @@
 import React, { useState } from 'react'
 import { Card, Button as SemanticButton, Popup } from 'semantic-ui-react'
+import { Link } from 'react-router-dom'
 import { FormattedMessage } from 'react-intl'
 import { removeStoryAnnotation } from 'Utilities/redux/storiesReducer'
 import { useDispatch } from 'react-redux'
@@ -29,6 +30,7 @@ const AnnotationListItem = ({ annotationItem, annotationsList, setAnnotationsLis
     story_title,
     name,
   } = annotationItem
+  const storyMode = precent_cov === 0 ? 'preview' : 'review'
 
   const handleDelete = async () => {
     const mode = 'preview'
@@ -48,9 +50,9 @@ const AnnotationListItem = ({ annotationItem, annotationsList, setAnnotationsLis
             content={<div style={{ margin: '0.25em' }}>{annotation}</div>}
             trigger={
               <div className="flex space-between" style={{ alignItems: 'center' }}>
-                <h5 className="annotation-item-text" style={{ color: '#000000' }}>
-                  {name}
-                </h5>
+                <Link to={`/stories/${story_id}/${storyMode}`}>
+                  <h5 className="story-item-title">{name}</h5>
+                </Link>
                 {category && category !== 'None' && (
                   <div className={getCategoryColor(category)} style={{ marginRight: '.5em', marginBottom: '.5em' }}>
                     <FormattedMessage id={`notes-${category}`} />
@@ -62,17 +64,21 @@ const AnnotationListItem = ({ annotationItem, annotationsList, setAnnotationsLis
         </Card.Content>
         <Card.Content extra className="story-card-actions-cont">
           <div className="flex" style={{ alignItems: 'center' }}>
+            {/* 
             <AnnotationActions
               storyId={story_id}
               percentCov={precent_cov}
               setOpenWarning={setOpenWarning}
             />
-            <h5 className="annotation-item-text" style={{ color: 'gray', marginLeft: '.5em' }}>
-              {story_title.length > maxLength ? <Popup
-              content={<div style={{ margin: '0.25em' }}>{story_title}</div>}
-              trigger={truncateStoryTitle(story_title)}
-            /> : story_title}
-            </h5>
+            */}
+            <Link to={`/stories/${story_id}/${storyMode}`}>
+              <h5 className="annotation-item-text" style={{ color: 'gray', marginLeft: '.5em' }}>
+                {story_title.length > maxLength ? <Popup
+                content={<div style={{ margin: '0.25em' }}>{story_title}</div>}
+                trigger={truncateStoryTitle(story_title)}
+              /> : story_title}
+              </h5>
+            </Link>
           </div>
         </Card.Content>
         <ConfirmationWarning open={openWarning} setOpen={setOpenWarning} action={handleDelete}>

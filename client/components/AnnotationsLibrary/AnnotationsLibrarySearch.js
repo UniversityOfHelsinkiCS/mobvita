@@ -51,12 +51,20 @@ const AnnotationsLibrarySearch = ({
   }
 
   const handleAnnotationsSearch = () => {
-    setAnnotationsList(
-      annotationsList.filter(annotation =>
-        annotation.annotated_text.toLowerCase().includes(searchString.toLowerCase())
+    if (searchString !== '') {
+      setAnnotationsList(
+        annotationsList.filter(annotation =>
+          annotation.annotated_text.toLowerCase().includes(searchString.toLowerCase())
+        )
       )
-    )
-    setLastQuery(true)
+      setLastQuery(true)
+    }
+  }
+
+  const handleSearchFieldKeyPress = e => {
+    if (e.key === 'Enter') {
+      handleAnnotationsSearch()
+    }
   }
 
   const categoryOptions = [
@@ -110,6 +118,7 @@ const AnnotationsLibrarySearch = ({
           action={{ icon: 'search', onClick: handleAnnotationsSearch, color: 'grey' }}
           placeholder={intl.formatMessage({ id: 'search-input-placeholder' })}
           onChange={e => setSearchString(e.target.value)}
+          onKeyPress={handleSearchFieldKeyPress}
           value={searchString}
         />
         {lastQuery && (
