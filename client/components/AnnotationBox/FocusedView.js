@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { Icon, Divider } from 'semantic-ui-react'
+import { Icon, Divider, Popup } from 'semantic-ui-react'
 import useWindowDimensions from 'Utilities/windowDimensions'
 import { FormattedMessage } from 'react-intl'
 import { getMode } from 'Utilities/common'
@@ -17,17 +17,23 @@ import AnnotationForm from './AnnotationForm'
 import AnnotationSelectionView from './AnnotationSelectionView'
 import AnnotationTexts from './AnnotationTexts'
 
-const BackToAllNotes = ({ resetAndGoToListView }) => {
+const BackToAllNotes = ({ resetAndGoToListView, annotationString }) => {
   return (
     <>
-      <div
-        role="button"
-        onClick={resetAndGoToListView}
-        onKeyDown={resetAndGoToListView}
-        tabIndex={0}
-      >
-        <Icon name="arrow left" />
-        <FormattedMessage id="all-notes" />
+      <div className="flex" style={{ margin: '.5rem 0em', fontWeight: '500' }}>
+        <Popup
+          content={<FormattedMessage id="back-to-all-notes" />}
+          trigger={
+            <Icon
+              name="arrow left"
+              style={{ cursor: 'pointer', marginRight: '.5rem' }}
+              onClick={resetAndGoToListView}
+              onKeyDown={resetAndGoToListView}
+              tabIndex={0}
+            />
+          }
+        />
+        <div>{annotationString}</div>
       </div>
       <Divider />
     </>
@@ -122,13 +128,22 @@ const FocusedView = ({ focusedSpan }) => {
 
   return (
     <div>
-      <div>{bigScreen && <BackToAllNotes resetAndGoToListView={resetAndGoToListView} />}</div>
+      <div>
+        {bigScreen && (
+          <BackToAllNotes
+            resetAndGoToListView={resetAndGoToListView}
+            annotationString={focusedSpan?.annotationString}
+          />
+        )}
+      </div>
       {focusedSpan ? (
         <>
+          {/* 
           <div style={{ margin: '1.5em 0em', fontWeight: '500' }}>
             {focusedSpan.annotationString}
           </div>
           <Divider />
+          */}
           <AnnotationTexts
             handleEditButtonClick={handleEditButtonClick}
             handleCreateAnnotationButtonClick={handleCreateAnnotationButtonClick}
