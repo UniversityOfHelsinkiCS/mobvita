@@ -749,5 +749,7 @@
     "notes-category-none": "None",
     "notes-None": "None",
     "back-to-all-notes": "Back to all notes",
-    "public-note-checkbox": "Public note"
+    "public-note-checkbox": "Public note",
+    "reply-note": "Reply",
+    "reply-note-form-placeholder": "Write your reply here"
 }

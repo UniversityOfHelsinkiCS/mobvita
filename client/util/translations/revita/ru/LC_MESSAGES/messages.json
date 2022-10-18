@@ -1366,7 +1366,7 @@
     "daily-story-web-2": "онлайн",
     "upload-daily-story": "Загрузить в личную библиотеку",
     "show-daily-stories-button": "Показать",
-    "edit-story": "Редактировать историю",
+    "edit-story": "Редактировать",
     "submit-changes": "Отправить изменения",
     "undo-changes": "Отменить изменения",
     "return-to-library": "Вернуться в библиотеку",
@@ -1387,5 +1387,7 @@
     "notes-category-none": "None",
     "notes-None": "None",
     "back-to-all-notes": "Back to all notes",
-    "public-note-checkbox": "Public note"
+    "public-note-checkbox": "Public note",
+    "reply-note": "Reply",
+    "reply-note-form-placeholder": "Write your reply here"
 }

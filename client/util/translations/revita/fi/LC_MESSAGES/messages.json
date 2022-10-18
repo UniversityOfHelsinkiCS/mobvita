@@ -1042,7 +1042,7 @@
     "(from)category": "Kategoriasta",
     "edit": "Muokkaa",
     "notes": "Muistiinpanot",
-    "create-a-note": "Notes",
+    "create-a-note": "Lisää muistiinpano",
     "cancel-highlighting": "Poista korostus",
     "(you)wrote": "kirjoitit",
     "(he/she)wrote": "kirjoitti",
@@ -1363,7 +1363,7 @@
     "daily-story-web-2": "netissä",
     "upload-daily-story": "Lataa omaan kirjastoon",
     "show-daily-stories-button": "Näytä",
-    "edit-story": "Muokkaa tarinaa",
+    "edit-story": "Muokkaa",
     "submit-changes": "Hyväksy muutokset",
     "undo-changes": "Peruuta muutokset",
     "return-to-library": "Palaa kirjastoon",
@@ -1384,5 +1384,7 @@
     "notes-category-none": "Ei mikään",
     "notes-None": "Ei mikään",
     "back-to-all-notes": "Takaisin muistiinpanoihin",
-    "public-note-checkbox": "Julkinen muistiinpano"
+    "public-note-checkbox": "Julkinen muistiinpano",
+    "reply-note": "Vastaa",
+    "reply-note-form-placeholder": "Kirjoita vastauksesi tähän"
 }

@@ -31,7 +31,6 @@ export default (state = initialState, action) => {
         error: true,
       }
     case 'GET_METADATA_SUCCESS':
-      console.log('res ', response)
       return {
         ...state,
         concepts: response.concept_list,

@@ -1,17 +1,30 @@
 import React, { useState } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
 import { answerAnnotation } from 'Utilities/redux/storiesReducer'
+import { useParams } from 'react-router-dom'
 import { Form, TextArea, Dropdown, Checkbox } from 'semantic-ui-react'
 import { Button } from 'react-bootstrap'
 import { FormattedMessage, useIntl } from 'react-intl'
-import { consistsOfOnlyWhitespace } from 'Utilities/common'
+import { consistsOfOnlyWhitespace, getMode } from 'Utilities/common'
 
-const AnswerAnnotationForm = () => {
+const AnswerAnnotationForm = ({ focusedSpan }) => {
   const intl = useIntl()
+  const dispatch = useDispatch()
+  const { id: storyId } = useParams()
+  const mode = getMode()
   const maxCharacters = 1000
   const [annotationText, setAnnotationText] = useState('')
+  // const [charactersLeft, setCharactersLeft] = useState(maxCharacters)
 
-  const handleTextChange = () => {
+  const handleTextChange = e => {
+    // setCharactersLeft(maxCharacters - e.target.value.length)
+    setAnnotationText(e.target.value)
+  }
 
+  const handleAnswerAnnotation = () => {
+    dispatch(
+      answerAnnotation(storyId, focusedSpan.startId, focusedSpan.endId, annotationText.trim(), mode)
+    )
   }
 
   return (
@@ -30,6 +43,7 @@ const AnswerAnnotationForm = () => {
           variant="primary"
           size="sm"
           style={{ marginLeft: '1em' }}
+          onClick={handleAnswerAnnotation}
           disabled={annotationText?.length < 1 || consistsOfOnlyWhitespace(annotationText)}
           data-cy="answer-annotation-button"
         >

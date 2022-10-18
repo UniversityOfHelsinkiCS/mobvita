@@ -1364,7 +1364,7 @@
     "daily-story-web-2": "sul web",
     "upload-daily-story": "Carica nella mia biblioteca privata",
     "show-daily-stories-button": "Mostra",
-    "edit-story": "Modifica la storia",
+    "edit-story": "Modifica",
     "submit-changes": "Accettare le modifiche",
     "undo-changes": "Annullare le modifiche",
     "return-to-library": "Ritorna al biblioteca",
@@ -1385,5 +1385,7 @@
     "notes-category-none": "None",
     "notes-None": "None",
     "back-to-all-notes": "Back to all notes",
-    "public-note-checkbox": "Public note"
+    "public-note-checkbox": "Public note",
+    "reply-note": "Reply",
+    "reply-note-form-placeholder": "Write your reply here"
 }

@@ -114,6 +114,30 @@ export const addEditStoryAnnotation = (
   })
 }
 
+export const answerAnnotation = (
+  storyId,
+  startId,
+  endId,
+  annotation,
+  mode,
+  annotationName,
+  thread_id,
+) => {
+  const route = `/stories/${storyId}/annotate`
+  const prefix = 'ADD_OR_EDIT_STORY_ANNOTATION'
+
+  return callBuilder(route, prefix, 'post', {
+    op: 'edit',
+    start_token_id: startId,
+    end_token_id: endId,
+    annotation,
+    user_mode: mode,
+    name: annotationName,
+    thread_id,
+    public: true,
+  })
+}
+
 export const removeStoryAnnotation = (storyId, startId, endId, mode) => {
   const route = `/stories/${storyId}/annotate`
   const prefix = 'REMOVE_STORY_ANNOTATION'

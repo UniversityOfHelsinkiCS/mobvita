@@ -1,9 +1,10 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { useSelector } from 'react-redux'
 import { Icon } from 'semantic-ui-react'
 import { Button } from 'react-bootstrap'
 import useWindowDimensions from 'Utilities/windowDimensions'
 import { FormattedMessage, useIntl } from 'react-intl'
+import AnswerAnnotationForm from './AnswerAnnotationForm'
 
 const AnnotationTexts = ({
   handleEditButtonClick,
@@ -15,7 +16,7 @@ const AnnotationTexts = ({
   const intl = useIntl()
   const { user } = useSelector(({ user }) => ({ user: user.data.user }))
   const { focusedSpan } = useSelector(({ annotations }) => annotations)
-
+  const [showAnswerForm, setShowAnswerForm] = useState(false)
   const { width } = useWindowDimensions()
   const bigScreen = width >= 1024
 
@@ -85,6 +86,17 @@ const AnnotationTexts = ({
         )
       )}
       {showCreateNoteButton && (
+        <>
+          <Button
+            style={{ marginTop: '.75em' }}
+            size="sm"
+            onClick={() => setShowAnswerForm(!showAnswerForm)}
+          >
+            <FormattedMessage id={showAnswerForm ? 'Cancel' : 'reply-note'} />
+          </Button>
+          {showAnswerForm && <AnswerAnnotationForm />}
+        </>
+        /*
         <Button
           style={{ marginTop: '.75em' }}
           size="sm"
@@ -93,6 +105,7 @@ const AnnotationTexts = ({
         >
           <FormattedMessage id="create-a-note" />
         </Button>
+        */
       )}
     </div>
   )
