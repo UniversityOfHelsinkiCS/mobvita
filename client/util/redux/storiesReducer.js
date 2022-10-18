@@ -98,6 +98,7 @@ export const addEditStoryAnnotation = (
   annotationName,
   thread_id,
 ) => {
+  console.log('in payload ', publicNote)
   const route = `/stories/${storyId}/annotate`
   const prefix = 'ADD_OR_EDIT_STORY_ANNOTATION'
   return callBuilder(route, prefix, 'post', {

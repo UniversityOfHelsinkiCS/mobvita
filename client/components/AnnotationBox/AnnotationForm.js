@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import { useDispatch } from 'react-redux'
 import { useHistory } from 'react-router'
-import { Form, TextArea, Dropdown } from 'semantic-ui-react'
+import { Form, TextArea, Dropdown, Checkbox } from 'semantic-ui-react'
 import { Button } from 'react-bootstrap'
 import { FormattedMessage, useIntl } from 'react-intl'
 import { setAnnotationFormVisibility } from 'Utilities/redux/annotationsReducer'
@@ -24,13 +24,13 @@ const AnnotationForm = ({
 }) => {
   const history = useHistory()
   const intl = useIntl()
-  const inGroup = history.location.pathname.includes('group')
+  const inGroupStory = history.location.pathname.includes('group')
   const dispatch = useDispatch()
   const handleTextChange = e => {
     setCharactersLeft(maxCharacters - e.target.value.length)
     setAnnotationText(e.target.value)
   }
-  const [publicNote, setPublicNote] = useState(inGroup || sharedStory)
+  const [publicNote, setPublicNote] = useState(inGroupStory || sharedStory)
   const dropDownMenuText = category ? (
     <FormattedMessage id={`notes-${category}`} />
   ) : (
@@ -91,6 +91,15 @@ const AnnotationForm = ({
             onChange={(_, { value }) => setCategory(value)}
           />
         </div>
+        {(inGroupStory || sharedStory) && (
+          <div style={{ marginTop: '.25rem', marginBottom: '.25rem' }}>
+            <Checkbox
+              label={intl.formatMessage({ id: 'public-note-checkbox' })}
+              checked={publicNote}
+              onChange={() => setPublicNote(!publicNote)}
+            />
+          </div>
+        )}
         <TextArea
           value={annotationText}
           onChange={handleTextChange}
