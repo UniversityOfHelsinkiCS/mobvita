@@ -46,7 +46,7 @@ const AnswerAnnotationForm = ({ focusedSpan, spanAnnotations, setShowAnswerForm 
     )
     // console.log('updated no ', updatedSpan)
     if (updatedSpan) {
-      setShowAnswerForm(false)
+      // setShowAnswerForm(false)
       dispatch(setFocusedSpan(updatedSpan))
     }
   }, [spanAnnotations])

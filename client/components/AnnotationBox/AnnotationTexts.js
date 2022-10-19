@@ -81,34 +81,22 @@ const AnnotationTexts = ({
           </>
         </div>
       ))}
-      {showCreateNoteButton && (
-        <>
-          <Button
-            style={{ marginTop: '.75em' }}
-            size="sm"
-            onClick={() => setShowAnswerForm(!showAnswerForm)}
-          >
-            <FormattedMessage id={showAnswerForm ? 'Cancel' : 'reply-note'} />
-          </Button>
-          {showAnswerForm && (
-            <AnswerAnnotationForm
-              focusedSpan={focusedSpan}
-              spanAnnotations={spanAnnotations}
-              setShowAnswerForm={setShowAnswerForm}
-            />
-          )}
-        </>
-        /*
+      <>
         <Button
           style={{ marginTop: '.75em' }}
           size="sm"
-          onClick={handleCreateAnnotationButtonClick}
-          data-cy="create-annotation-button"
+          onClick={() => setShowAnswerForm(!showAnswerForm)}
         >
-          <FormattedMessage id="create-a-note" />
+          <FormattedMessage id={showAnswerForm ? 'Cancel' : 'reply-note'} />
         </Button>
-        */
-      )}
+        {showAnswerForm && (
+          <AnswerAnnotationForm
+            focusedSpan={focusedSpan}
+            spanAnnotations={spanAnnotations}
+            setShowAnswerForm={setShowAnswerForm}
+          />
+        )}
+      </>
     </div>
   )
 }

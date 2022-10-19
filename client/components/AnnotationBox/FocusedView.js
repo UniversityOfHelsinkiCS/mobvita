@@ -140,12 +140,6 @@ const FocusedView = ({ focusedSpan }) => {
       </div>
       {focusedSpan ? (
         <>
-          {/* 
-          <div style={{ margin: '1.5em 0em', fontWeight: '500' }}>
-            {focusedSpan.annotationString}
-          </div>
-          <Divider />
-          */}
           <AnnotationTexts
             handleEditButtonClick={handleEditButtonClick}
             handleCreateAnnotationButtonClick={handleCreateAnnotationButtonClick}
