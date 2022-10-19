@@ -15,7 +15,7 @@ const AnnotationTexts = ({
 }) => {
   const intl = useIntl()
   const { user } = useSelector(({ user }) => ({ user: user.data.user }))
-  const { focusedSpan } = useSelector(({ annotations }) => annotations)
+  const { focusedSpan, spanAnnotations } = useSelector(({ annotations }) => annotations)
   const [showAnswerForm, setShowAnswerForm] = useState(false)
   const { width } = useWindowDimensions()
   const bigScreen = width >= 1024
@@ -40,51 +40,47 @@ const AnnotationTexts = ({
 
   return (
     <div>
-      {focusedSpan?.annotationTexts.map(
-        a => (
-          console.log(a),
-          (
-            <div
-              key={a.uid}
-              className={`annotation-item ${
-                showAnnotationForm && a.uid === user.oid
-                  ? 'annotation-item-editing'
-                  : 'annotation-item-listed'
-              }
+      {focusedSpan?.annotationTexts.map(a => (
+        // console.log(a),
+        <div
+          key={a.uid}
+          className={`annotation-item ${
+            showAnnotationForm && a.uid === user.oid
+              ? 'annotation-item-editing'
+              : 'annotation-item-listed'
+          }
                 `}
-            >
-              <>
-                <div className="space-between" style={{ marginBottom: '1em' }}>
-                  {displayAuthorInfo(a)}
-                  {a.uid === user.oid && bigScreen && (
-                    <div>
-                      <Button
-                        size="sm"
-                        variant="outline-secondary"
-                        onClick={() => handleEditButtonClick(a.text, a.name)}
-                        style={{ marginRight: '1em' }}
-                      >
-                        <Icon name="pencil alternate" />
-                        <FormattedMessage id="edit" />
-                      </Button>
-                      <Button
-                        size="sm"
-                        variant="outline-danger"
-                        onClick={() => setOpenWarning(true)}
-                        data-cy="delete-annotation-button"
-                      >
-                        <Icon name="trash alternate" />
-                        <FormattedMessage id="Delete" />
-                      </Button>
-                    </div>
-                  )}
+        >
+          <>
+            <div className="space-between" style={{ marginBottom: '1em' }}>
+              {displayAuthorInfo(a)}
+              {a.uid === user.oid && bigScreen && (
+                <div>
+                  <Button
+                    size="sm"
+                    variant="outline-secondary"
+                    onClick={() => handleEditButtonClick(a.text, a.name)}
+                    style={{ marginRight: '1em' }}
+                  >
+                    <Icon name="pencil alternate" />
+                    <FormattedMessage id="edit" />
+                  </Button>
+                  <Button
+                    size="sm"
+                    variant="outline-danger"
+                    onClick={() => setOpenWarning(true)}
+                    data-cy="delete-annotation-button"
+                  >
+                    <Icon name="trash alternate" />
+                    <FormattedMessage id="Delete" />
+                  </Button>
                 </div>
-                <div className="annotation-text-content">{a.text}</div>
-              </>
+              )}
             </div>
-          )
-        )
-      )}
+            <div className="annotation-text-content">{a.text}</div>
+          </>
+        </div>
+      ))}
       {showCreateNoteButton && (
         <>
           <Button
@@ -94,7 +90,13 @@ const AnnotationTexts = ({
           >
             <FormattedMessage id={showAnswerForm ? 'Cancel' : 'reply-note'} />
           </Button>
-          {showAnswerForm && <AnswerAnnotationForm focusedSpan={focusedSpan} />}
+          {showAnswerForm && (
+            <AnswerAnnotationForm
+              focusedSpan={focusedSpan}
+              spanAnnotations={spanAnnotations}
+              setShowAnswerForm={setShowAnswerForm}
+            />
+          )}
         </>
         /*
         <Button
