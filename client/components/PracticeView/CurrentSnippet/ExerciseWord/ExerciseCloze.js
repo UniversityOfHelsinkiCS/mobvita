@@ -57,6 +57,7 @@ const ExerciseCloze = ({ word, handleChange }) => {
     hints,
     requested_hints,
     frozen_messages,
+    hint2penalty,
   } = word
 
   const target = useRef()
@@ -98,7 +99,8 @@ const ExerciseCloze = ({ word, handleChange }) => {
 
   const handleHintRequest = newHintList => {
     const newRequestNum = preHints.length + 1
-    dispatch(incrementHintRequests(wordId, newRequestNum, newHintList))
+    const penalties = newHintList?.filter(hint=> hint2penalty[hint]).map(hint=> hint2penalty[hint])
+    dispatch(incrementHintRequests(wordId, newRequestNum, newHintList, penalties))
 
     setSpentHints(spentHints.concat(1))
     setEloScoreHearts(eloScoreHearts.slice(0, -1))

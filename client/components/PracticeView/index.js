@@ -129,6 +129,7 @@ const PracticeView = () => {
         concept,
         hintsRequested: currentAnswers[ID]?.hintsRequested,
         requestedHintsList: currentAnswers[ID]?.requestedHintsList,
+        penalties: currentAnswers[ID]?.penalties,
       },
     }
 
