@@ -176,7 +176,7 @@ const PreviousExerciseWord = ({ word, answer, tiedAnswer, focusedConcept }) => {
       {word.hints?.length > 0 && !isPreviewMode && (
         <div>
           {word.hints.map(hint => (
-            <span className="flex"><li dangerouslySetInnerHTML={formatGreenFeedbackText(hint)} />{ref || explanation && (
+            <span className="flex"><li dangerouslySetInnerHTML={formatGreenFeedbackText(hint)} />{(ref || explanation) && (
               checkString(hint)
             )}
             </span>
