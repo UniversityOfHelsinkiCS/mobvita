@@ -1,4 +1,3 @@
-/* eslint-disable no-nested-ternary */
 import React, { useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { Card, Dropdown, Button as SemanticButton, Icon, Popup } from 'semantic-ui-react'
@@ -219,23 +218,12 @@ const StoryActions = ({
             </Button>
           </Link>
         )}
-        {teacherInGroupView ? (
+        {inGroupLibrary ? (
           <Link to={`/stories/${story._id}/group/review`}>
-            <Button variant="'primary">
+            <Button variant={teacherInGroupView ? 'primary' : reviewButtonVariant}>
               <FormattedMessage id="review" />{' '}
             </Button>
-          </Link> ? (
-            inGroupLibrary
-          ) : (
-            <Link to={`/stories/${story._id}/group/review`}>
-              <Button
-                variant={reviewButtonVariant}
-                disabled={story.percent_cov === 0 || enableOnlyPractice}
-              >
-                <FormattedMessage id="review" />{' '}
-              </Button>
-            </Link>
-          )
+          </Link>
         ) : (
           <Link to={`/stories/${story._id}/review`}>
             <Button
