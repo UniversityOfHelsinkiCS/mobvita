@@ -82,6 +82,87 @@ const ShareInfoPopupContent = ({ infoObj }) => {
   )
 }
 
+const StoryFunctionsDropdown = ({
+  story,
+  practiceLink,
+  teacherInGroupView,
+  inGroupLibrary,
+  enableOnlyPractice,
+}) => {
+  return (
+    <SemanticButton.Group>
+      {teacherInGroupView ? (
+        <SemanticButton
+          as={Link}
+          to={`/stories/${story._id}/group/review`}
+          style={{ backgroundColor: 'rgb(50, 170, 248)', color: 'white' }}
+        >
+          <FormattedMessage id="review" />
+        </SemanticButton>
+      ) : (
+        <SemanticButton
+          as={Link}
+          to={practiceLink}
+          style={{ backgroundColor: 'rgb(50, 170, 248)', color: 'white' }}
+        >
+          <FormattedMessage id="practice" />
+        </SemanticButton>
+      )}
+      <Dropdown
+        className="button icon"
+        style={{
+          backgroundColor: 'rgb(50, 170, 248)',
+          color: 'white',
+          borderLeft: '2px solid rgb(81, 138, 248)',
+        }}
+        floating
+        trigger={<React.Fragment />}
+      >
+        <Dropdown.Menu className="story-item-dropdown">
+          {teacherInGroupView && (
+            <Dropdown.Item
+              text={<FormattedMessage id="practice" />}
+              as={Link}
+              to={practiceLink}
+              icon="pencil alternate"
+            />
+          )}
+          <Dropdown.Item
+            text={<FormattedMessage id="preview" />}
+            as={Link}
+            to={
+              inGroupLibrary
+                ? `/stories/${story._id}/group/preview`
+                : `/stories/${story._id}/preview`
+            }
+            icon="book"
+          />
+          {story.percent_cov > 0 && !teacherInGroupView && (
+            <Dropdown.Item
+              text={<FormattedMessage id="review" />}
+              as={Link}
+              to={`/stories/${story._id}/review`}
+              icon="book"
+            />
+          )}
+          <Dropdown.Item
+            text={<FormattedMessage id="Flashcards" />}
+            as={Link}
+            to={`/flashcards/fillin/${story._id}/`}
+            icon="lightning"
+          />
+          <Dropdown.Item
+            text={<FormattedMessage id="compete" />}
+            as={Link}
+            to={`/stories/${story._id}/compete`}
+            icon="clock"
+          />
+        </Dropdown.Menu>
+      </Dropdown>
+    </SemanticButton.Group>
+  )
+}
+
 const StoryActions = ({
   story,
   currentGroup,
@@ -121,9 +202,12 @@ const StoryActions = ({
             <FormattedMessage id="Flashcards" />
           </Button>
         </Link>
-        {teacherInGroupView ? (
+        {inGroupLibrary ? (
           <Link to={`/stories/${story._id}/group/preview`}>
-            <Button variant="primary" disabled={enableOnlyPractice}>
+            <Button
+              variant={teacherInGroupView ? 'primary' : buttonVariant}
+              disabled={enableOnlyPractice}
+            >
               <FormattedMessage id="preview" />
             </Button>
           </Link>
@@ -136,12 +220,16 @@ const StoryActions = ({
         )}
         {teacherInGroupView ? (
           <Link to={`/stories/${story._id}/group/review`}>
-            <Button variant="primary">
+            <Button variant="'primary">
               <FormattedMessage id="review" />{' '}
             </Button>
           </Link>
         ) : (
-          <Link to={`/stories/${story._id}/review`}>
+          <Link
+            to={
+              inGroupLibrary ? `/stories/${story._id}/group/review` : `/stories/${story._id}/review`
+            }
+          >
             <Button
               variant={reviewButtonVariant}
               disabled={story.percent_cov === 0 || enableOnlyPractice}
@@ -175,105 +263,13 @@ const StoryActions = ({
   }
 
   return (
-    <SemanticButton.Group>
-      {teacherInGroupView ? (
-        <>
-          <SemanticButton
-            as={Link}
-            to={`/stories/${story._id}/group/review`}
-            style={{ backgroundColor: 'rgb(50, 170, 248)', color: 'white' }}
-          >
-            <FormattedMessage id="review" />
-          </SemanticButton>
-          <Dropdown
-            className="button icon"
-            style={{
-              backgroundColor: 'rgb(50, 170, 248)',
-              color: 'white',
-              borderLeft: '2px solid rgb(81, 138, 248)',
-            }}
-            floating
-            trigger={<React.Fragment />}
-          >
-            <Dropdown.Menu className="story-item-dropdown">
-              <Dropdown.Item
-                text={<FormattedMessage id="preview" />}
-                as={Link}
-                to={`/stories/${story._id}/preview`}
-                icon="book"
-              />
-              <Dropdown.Item
-                text={<FormattedMessage id="practice" />}
-                as={Link}
-                to={practiceLink}
-                icon="pencil alternate"
-              />
-              <Dropdown.Item
-                text={<FormattedMessage id="Flashcards" />}
-                as={Link}
-                to={`/flashcards/fillin/${story._id}/`}
-                icon="lightning"
-              />
-              <Dropdown.Item
-                text={<FormattedMessage id="compete" />}
-                as={Link}
-                to={`/stories/${story._id}/compete`}
-                icon="clock"
-              />
-            </Dropdown.Menu>
-          </Dropdown>
-        </>
-      ) : (
-        <SemanticButton
-          as={Link}
-          to={practiceLink}
-          style={{ backgroundColor: 'rgb(50, 170, 248)', color: 'white' }}
-        >
-          <FormattedMessage id="practice" />
-        </SemanticButton>
-      )}
-      {!enableOnlyPractice && !teacherInGroupView && (
-        <Dropdown
-          className="button icon"
-          style={{
-            backgroundColor: 'rgb(50, 170, 248)',
-            color: 'white',
-            borderLeft: '2px solid rgb(81, 138, 248)',
-          }}
-          floating
-          trigger={<React.Fragment />}
-        >
-          <Dropdown.Menu className="story-item-dropdown">
-            <Dropdown.Item
-              text={<FormattedMessage id="Flashcards" />}
-              as={Link}
-              to={`/flashcards/fillin/${story._id}/`}
-              icon="lightning"
-            />
-            <Dropdown.Item
-              text={<FormattedMessage id="preview" />}
-              as={Link}
-              to={`/stories/${story._id}/preview`}
-              icon="book"
-            />
-            {story.percent_cov > 0 && (
-              <Dropdown.Item
-                text={<FormattedMessage id="review" />}
-                as={Link}
-                to={`/stories/${story._id}/review`}
-                icon="book"
-              />
-            )}
-            <Dropdown.Item
-              text={<FormattedMessage id="compete" />}
-              as={Link}
-              to={`/stories/${story._id}/compete`}
-              icon="clock"
-            />
-          </Dropdown.Menu>
-        </Dropdown>
-      )}
-    </SemanticButton.Group>
+    <StoryFunctionsDropdown
+      story={story}
+      practiceLink={practiceLink}
+      teacherInGroupView={teacherInGroupView}
+      inGroupLibrary={inGroupLibrary}
+      enableOnlyPractice={enableOnlyPractice}
+    />
   )
 }
 

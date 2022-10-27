@@ -59,6 +59,7 @@ const AnnotationForm = ({
       value: 'Vocabulary',
     },
   ]
+  console.log('pub ', publicNote)
 
   return (
     <div>

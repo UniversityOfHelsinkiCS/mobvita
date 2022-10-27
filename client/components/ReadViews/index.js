@@ -80,7 +80,7 @@ const ReadViews = ({ match }) => {
     return studentName
   }
   const ownedStory = oid === story?.owner
-
+  const isTeacher = user?.user.is_teacher
   const studentOptions = currentGroup?.students
     .map(student => ({
       key: student._id,
@@ -105,7 +105,7 @@ const ReadViews = ({ match }) => {
   }
 
   useEffect(() => {
-    if (user?.user.is_teacher) {
+    if (isTeacher) {
       setHideFeedback(false)
     }
     dispatch(getStoryAction(id, mode))
@@ -153,7 +153,7 @@ const ReadViews = ({ match }) => {
   // console.log('story ', story.paragraph)
   // console.log('focused ', focusedConcept)
 
-  const storyFunctionsDropdown = () => {
+  const StoryFunctionsDropdown = () => {
     return (
       <SemanticButton.Group>
         <SemanticButton
@@ -227,7 +227,7 @@ const ReadViews = ({ match }) => {
               </div>
               {bigScreen ? (
                 <>
-                  {isGroupReview && (
+                  {isGroupReview && isTeacher && (
                     <div className="row-flex" style={{ marginLeft: '3em' }}>
                       <span style={{ marginRight: '.5em' }}>
                         <FormattedMessage id="student" />:{' '}
@@ -245,18 +245,18 @@ const ReadViews = ({ match }) => {
                     <div>
                       {ownedStory && (
                         <Link to={`/stories/${id}/edit`}>
-                          <Button style={{ marginRight: '.5em' }} variant="secondary" >
+                          <Button style={{ marginRight: '.5em' }} variant="secondary">
                             <Icon name="edit" /> <FormattedMessage id="edit-story" />
                           </Button>
                         </Link>
                       )}
-                      {storyFunctionsDropdown()}
+                      <StoryFunctionsDropdown />
                     </div>
                   )}
                 </>
               ) : (
                 <div>
-                  {isGroupReview && (
+                  {isGroupReview && isTeacher && (
                     <div className="row-flex" style={{ marginLeft: '3em' }}>
                       <span style={{ marginRight: '.5em' }}>
                         <FormattedMessage id="student" />:{' '}
@@ -270,7 +270,7 @@ const ReadViews = ({ match }) => {
                       />
                     </div>
                   )}
-                  {!isGroupPreview && !isGroupReview && storyFunctionsDropdown()}
+                  {!isGroupPreview && !isGroupReview && <StoryFunctionsDropdown />}
                 </div>
               )}
             </div>
