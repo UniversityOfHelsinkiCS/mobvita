@@ -25,7 +25,7 @@ const ExerciseMultipleChoice = ({ word, handleChange }) => {
   const [eloScoreHearts, setEloScoreHearts] = useState([1, 2, 3, 4, 5])
   const [spentHints, setSpentHints] = useState([])
 
-  const { tested, isWrong, message, hints, ID: wordId, requested_hints, frozen_messages } = word
+  const { tested, isWrong, message, hints, ID: wordId, requested_hints, frozen_messages, hint2penalty } = word
   const value = currentAnswer ? currentAnswer.users_answer : ''
   const hintButtonVisibility =
     (!hints || filteredHintsList.length < 1 || preHints.length - requested_hints?.length < filteredHintsList?.length) &&
@@ -126,7 +126,8 @@ const ExerciseMultipleChoice = ({ word, handleChange }) => {
 
   const handleHintRequest = newHintList => {
     const newRequestNum = preHints.length + 1
-    dispatch(incrementHintRequests(wordId, newRequestNum, requested_hints, newHintList))
+    const penalties = newHintList?.filter(hint=> hint2penalty[hint]).map(hint=> hint2penalty[hint])
+    dispatch(incrementHintRequests(wordId, newRequestNum, newHintList, penalties))
 
     setSpentHints(spentHints.concat(1))
     setEloScoreHearts(eloScoreHearts.slice(0, -1))
