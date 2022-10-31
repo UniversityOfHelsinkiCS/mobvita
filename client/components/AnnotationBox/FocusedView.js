@@ -98,7 +98,7 @@ const FocusedView = ({ focusedSpan }) => {
           mode,
           category,
           annotationName,
-          threadId,
+          threadId
         )
       )
     } else {
@@ -112,7 +112,7 @@ const FocusedView = ({ focusedSpan }) => {
           annotationText.trim(),
           mode,
           category,
-          annotationName,
+          annotationName
         )
       )
     }
@@ -121,7 +121,9 @@ const FocusedView = ({ focusedSpan }) => {
   }
 
   const handleAnnotationDelete = async () => {
-    await dispatch(removeStoryAnnotation(storyId, focusedSpan.startId, focusedSpan.endId, mode))
+    await dispatch(
+      removeStoryAnnotation(storyId, focusedSpan.startId, focusedSpan.endId, mode, threadId)
+    )
     dispatch(setFocusedSpan(null))
     dispatch(setHighlightRange(null))
   }
@@ -152,6 +154,7 @@ const FocusedView = ({ focusedSpan }) => {
             showCreateNoteButton={showCreateNoteButton}
             handleAnnotationDelete={handleAnnotationDelete}
             setOpenWarning={setOpenWarning}
+            setThreadId={setThreadId}
           />
           <ConfirmationWarning
             open={openWarning}

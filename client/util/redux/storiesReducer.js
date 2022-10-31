@@ -140,7 +140,7 @@ export const answerAnnotation = (
   })
 }
 
-export const removeStoryAnnotation = (storyId, startId, endId, mode) => {
+export const removeStoryAnnotation = (storyId, startId, endId, mode, threadId) => {
   const route = `/stories/${storyId}/annotate`
   const prefix = 'REMOVE_STORY_ANNOTATION'
   return callBuilder(route, prefix, 'post', {
@@ -148,6 +148,7 @@ export const removeStoryAnnotation = (storyId, startId, endId, mode) => {
     start_token_id: startId,
     end_token_id: endId,
     user_mode: mode,
+    thread_id: threadId,
   })
 }
 

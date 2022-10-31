@@ -12,6 +12,7 @@ const AnnotationTexts = ({
   showAnnotationForm,
   showCreateNoteButton,
   setOpenWarning,
+  setThreadId,
 }) => {
   const intl = useIntl()
   const { user } = useSelector(({ user }) => ({ user: user.data.user }))
@@ -36,6 +37,11 @@ const AnnotationTexts = ({
         )}
       </div>
     )
+  }
+
+  const handleDeleteButtonClick = deletedId => {
+    setThreadId(deletedId)
+    setOpenWarning(true)
   }
 
   return (
@@ -67,7 +73,7 @@ const AnnotationTexts = ({
                   <Button
                     size="sm"
                     variant="outline-danger"
-                    onClick={() => setOpenWarning(true)}
+                    onClick={() => handleDeleteButtonClick(a.thread_id)}
                     data-cy="delete-annotation-button"
                   >
                     <Icon name="trash alternate" />
@@ -78,6 +84,7 @@ const AnnotationTexts = ({
             </div>
             <div className="annotation-text-content">{a.text}</div>
           </>
+          {index < focusedSpan.annotationTexts.length - 1 && <hr />}
         </div>
       ))}
       <>
