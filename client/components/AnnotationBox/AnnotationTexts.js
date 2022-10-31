@@ -58,7 +58,7 @@ const AnnotationTexts = ({
                   <Button
                     size="sm"
                     variant="outline-secondary"
-                    onClick={() => handleEditButtonClick(a.text, a.name)}
+                    onClick={() => handleEditButtonClick(a.text, a.name, a.thread_id)}
                     style={{ marginRight: '1em' }}
                   >
                     <Icon name="pencil alternate" />

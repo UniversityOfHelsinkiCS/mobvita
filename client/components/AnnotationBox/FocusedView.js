@@ -48,6 +48,7 @@ const FocusedView = ({ focusedSpan }) => {
   const [category, setCategory] = useState('None')
   const [annotationName, setAnnotationName] = useState('')
   const [annotationText, setAnnotationText] = useState('')
+  const [threadId, setThreadId] = useState(null)
   const [charactersLeft, setCharactersLeft] = useState(maxCharacters)
   const [openWarning, setOpenWarning] = useState(false)
   const { user } = useSelector(({ user }) => ({ user: user.data.user }))
@@ -61,9 +62,10 @@ const FocusedView = ({ focusedSpan }) => {
   const storyWords = story.paragraph.flat(1)
   const publicStory = story.public
 
-  const handleEditButtonClick = (text, name) => {
+  const handleEditButtonClick = (text, name, thread_id) => {
     dispatch(setAnnotationFormVisibility(true))
     setAnnotationText(text)
+    setThreadId(thread_id)
     if (name.length > 0) {
       setAnnotationName(name)
     }
@@ -96,7 +98,7 @@ const FocusedView = ({ focusedSpan }) => {
           mode,
           category,
           annotationName,
-          focusedSpan.annotationTexts[0].thread_id,
+          threadId,
         )
       )
     } else {
