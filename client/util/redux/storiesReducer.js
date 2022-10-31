@@ -88,6 +88,7 @@ export const unshareStory = (groupId, storyId) => {
 }
 
 export const addEditStoryAnnotation = (
+  publicStory,
   publicNote,
   storyId,
   startId,
@@ -98,7 +99,7 @@ export const addEditStoryAnnotation = (
   annotationName,
   thread_id,
 ) => {
-  console.log('in payload ', publicNote)
+  console.log('in payload ', publicStory)
   const route = `/stories/${storyId}/annotate`
   const prefix = 'ADD_OR_EDIT_STORY_ANNOTATION'
   return callBuilder(route, prefix, 'post', {
@@ -111,6 +112,7 @@ export const addEditStoryAnnotation = (
     name: annotationName,
     thread_id,
     public: publicNote,
+    public_story: publicStory,
   })
 }
 

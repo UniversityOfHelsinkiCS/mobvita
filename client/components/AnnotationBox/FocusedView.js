@@ -59,6 +59,7 @@ const FocusedView = ({ focusedSpan }) => {
   const userHasLoggedIn = user.userName !== 'Anonymous User'
   const mode = getMode()
   const storyWords = story.paragraph.flat(1)
+  const publicStory = story.public
 
   const handleEditButtonClick = (text, name) => {
     dispatch(setAnnotationFormVisibility(true))
@@ -86,6 +87,7 @@ const FocusedView = ({ focusedSpan }) => {
     if (focusedSpan) {
       await dispatch(
         addEditStoryAnnotation(
+          publicStory,
           publicNote,
           storyId,
           focusedSpan.startId,
@@ -100,6 +102,7 @@ const FocusedView = ({ focusedSpan }) => {
     } else {
       await dispatch(
         addEditStoryAnnotation(
+          publicStory,
           publicNote,
           storyId,
           annotationCandidates[0].ID,
