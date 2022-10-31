@@ -304,6 +304,7 @@ const StoryListItem = ({ story, libraryShown, selectedGroup }) => {
   const enableOnlyPractice = inGroupLibrary && !currentGroup?.is_teaching && isControlledStory
   const uploadUnfinished = story?.uploadUnfinished
   const timedExercise = story?.timed_exercise
+  const commentsOnStory = story?.annotation_count > 0
   const deleteStory = () => dispatch(removeStory(story._id))
   const unshareStory = () => dispatch(unshare(selectedGroup, story._id))
 
@@ -368,6 +369,17 @@ const StoryListItem = ({ story, libraryShown, selectedGroup }) => {
               trigger={
                 <div>
                   <Icon color="black" name="clock outline" />
+                </div>
+              }
+            />
+          )}
+          {commentsOnStory && (
+            <Popup
+              basic
+              content={<FormattedMessage id="comments-on-story-explanation" />}
+              trigger={
+                <div>
+                  <Icon color="black" name="comments" />
                 </div>
               }
             />
