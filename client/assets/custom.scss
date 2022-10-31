@@ -1296,6 +1296,10 @@ $value in $spacing {
   &-listed {
     background-color: #f5f5f5;
     margin: .5rem 0rem;
+
+    &-reply {
+      margin-left: 1rem;
+    }
   }
 }
 

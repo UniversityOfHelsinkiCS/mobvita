@@ -40,16 +40,15 @@ const AnnotationTexts = ({
 
   return (
     <div>
-      {focusedSpan?.annotationTexts.map(a => (
+      {focusedSpan?.annotationTexts.map((a, index) => (
         // console.log(a),
         <div
           key={a.uid}
           className={`annotation-item ${
             showAnnotationForm && a.uid === user.oid
-              ? 'annotation-item-editing'
-              : 'annotation-item-listed'
-          }
-                `}
+              ? `annotation-item-editing${index > 0 && '-reply'}`
+              : `annotation-item-listed${index > 0 && '-reply'}`
+          }`}
         >
           <>
             <div className="space-between" style={{ marginBottom: '1em' }}>
