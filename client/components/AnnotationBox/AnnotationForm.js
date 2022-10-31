@@ -1,36 +1,36 @@
 import React, { useState } from 'react'
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { useHistory } from 'react-router'
 import { Form, TextArea, Dropdown, Checkbox } from 'semantic-ui-react'
 import { Button } from 'react-bootstrap'
 import { FormattedMessage, useIntl } from 'react-intl'
 import { setAnnotationFormVisibility } from 'Utilities/redux/annotationsReducer'
-import { getCategoryColor, consistsOfOnlyWhitespace } from 'Utilities/common'
+import { consistsOfOnlyWhitespace } from 'Utilities/common'
 
 const AnnotationForm = ({
   annotationText,
   setAnnotationText,
   handleAnnotationSave,
   maxCharacters,
-  charactersLeft,
   setCharactersLeft,
-  getCategoryColor,
   category,
   setCategory,
-  annotationName,
-  setAnnotationName,
-  publicStory,
   sharedStory,
+  publicStory,
 }) => {
   const history = useHistory()
   const intl = useIntl()
   const inGroupStory = history.location.pathname.includes('group')
+  const { is_teacher } = useSelector(({ user }) => user.data.user)
   const dispatch = useDispatch()
   const handleTextChange = e => {
     setCharactersLeft(maxCharacters - e.target.value.length)
     setAnnotationText(e.target.value)
   }
-  const [publicNote, setPublicNote] = useState(inGroupStory || sharedStory)
+  const [publicNote, setPublicNote] = useState(
+    inGroupStory || sharedStory || (!publicStory && is_teacher)
+  )
+  console.log('pub  ', is_teacher)
   const dropDownMenuText = category ? (
     <FormattedMessage id={`notes-${category}`} />
   ) : (
@@ -87,7 +87,7 @@ const AnnotationForm = ({
             onChange={(_, { value }) => setCategory(value)}
           />
         </div>
-        {(inGroupStory || sharedStory) && (
+        {(inGroupStory || sharedStory || (!publicStory && is_teacher)) && (
           <div style={{ marginTop: '.25rem', marginBottom: '.25rem' }}>
             <Checkbox
               label={intl.formatMessage({ id: 'public-note-checkbox' })}
