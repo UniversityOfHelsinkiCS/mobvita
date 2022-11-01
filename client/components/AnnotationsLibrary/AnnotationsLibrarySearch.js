@@ -45,16 +45,16 @@ const AnnotationsLibrarySearch = ({
     setSearchString('')
 
     if (category === 'All') {
-      
+      setAnnotationsList(activeLibrary)
     } else {
-      setAnnotationsList(annotationsList.filter(annotation => annotation.category === category))
+      setAnnotationsList(activeLibrary.filter(annotation => annotation.category === category))
     }
   }
 
   const handleAnnotationsSearch = () => {
     if (searchString !== '') {
       setAnnotationsList(
-        annotationsList.filter(annotation =>
+        activeLibrary.filter(annotation =>
           annotation.annotated_text.toLowerCase().includes(searchString.toLowerCase())
         )
       )
