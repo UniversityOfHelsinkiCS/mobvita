@@ -3,14 +3,7 @@ import { Dropdown, Popup, Icon, Input } from 'semantic-ui-react'
 import { FormattedMessage, useIntl } from 'react-intl'
 import useWindowDimensions from 'Utilities/windowDimensions'
 
-const AnnotationsLibrarySearch = ({
-  category,
-  setCategory,
-  annotationsList,
-  setAnnotationsList,
-  allAnnotations,
-  activeLibrary
-}) => {
+const AnnotationsLibrarySearch = ({ category, setCategory, setAnnotationsList, activeLibrary }) => {
   const intl = useIntl()
   const [searchString, setSearchString] = useState('')
   const [lastQuery, setLastQuery] = useState(false)

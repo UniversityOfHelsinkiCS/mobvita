@@ -136,8 +136,6 @@ const AnnotationsLibrary = () => {
       <AnnotationsLibrarySearch
         category={category}
         setCategory={setCategory}
-        allAnnotations={allAnnotations}
-        annotationsList={annotationsList}
         setAnnotationsList={setAnnotationsList}
         activeLibrary={activeLibrary}
       />
