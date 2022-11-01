@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from 'react'
-import { Placeholder, Card, Select, Icon, Dropdown } from 'semantic-ui-react'
+import { Card } from 'semantic-ui-react'
 import { getAllAnnotations } from 'Utilities/redux/annotationsReducer'
 import { useDispatch, useSelector } from 'react-redux'
 import { List, WindowScroller } from 'react-virtualized'
 import { FormattedMessage } from 'react-intl'
+import LibraryTabs from 'Components/LibraryTabs'
 import AnnotationListItem from './AnnotationListItem'
 import AnnotationsLibrarySearch from './AnnotationsLibrarySearch'
 
@@ -12,14 +13,57 @@ const AnnotationsLibrary = () => {
   const [category, setCategory] = useState('All')
   const [annotationsList, setAnnotationsList] = useState([])
   const { allAnnotations } = useSelector(({ annotations }) => annotations)
+  const [libraries, setLibraries] = useState({
+    public: true,
+    private: false,
+    // group: false,
+  })
+
+  const setLibrary = library => {
+    const librariesCopy = {}
+    Object.keys(libraries).forEach(key => {
+      librariesCopy[key] = false
+    })
+
+    setLibraries({ ...librariesCopy, [library]: true })
+  }
+
+  const filterNotesByPublicity = () => {
+    if (libraries.private) {
+      setAnnotationsList(allAnnotations.filter(annotation => !annotation.public))
+    } else {
+      setAnnotationsList(allAnnotations.filter(annotation => annotation.public))
+    }
+  }
+
+  const handleLibraryChange = library => {
+    // dispatch(updateLibrarySelect(library))
+    setLibrary(library)
+    /*
+    setSorter(savedSortCriterion[library].sort_by)
+    setSortDirection(savedSortCriterion[library].direction)
+    if (library === 'group' && sharedToGroupSinceLastFetch) {
+      dispatch(
+        getAllStories(learningLanguage, {
+          sort_by: 'date',
+          order: -1,
+        })
+      )
+    }
+    */
+  }
 
   useEffect(() => {
     dispatch(getAllAnnotations())
   }, [])
 
   useEffect(() => {
+    filterNotesByPublicity()
+  }, [libraries])
+
+  useEffect(() => {
     if (allAnnotations.length > 0) {
-      setAnnotationsList(allAnnotations)
+      filterNotesByPublicity()
     }
   }, [allAnnotations])
 
@@ -42,6 +86,12 @@ const AnnotationsLibrary = () => {
 
   return (
     <div className="cont-tall pt-lg cont flex-col auto gap-row-sm ">
+      <LibraryTabs
+        values={libraries}
+        additionalClass="wrap-and-grow align-center pt-sm"
+        onClick={handleLibraryChange}
+        reverse
+      />
       <AnnotationsLibrarySearch
         category={category}
         setCategory={setCategory}
