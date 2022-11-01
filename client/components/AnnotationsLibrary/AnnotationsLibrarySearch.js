@@ -9,6 +9,7 @@ const AnnotationsLibrarySearch = ({
   annotationsList,
   setAnnotationsList,
   allAnnotations,
+  activeLibrary
 }) => {
   const intl = useIntl()
   const [searchString, setSearchString] = useState('')
@@ -18,13 +19,13 @@ const AnnotationsLibrarySearch = ({
   useEffect(() => {
     if (category === 'All') {
       setAnnotationsList(
-        allAnnotations.filter(annotation =>
+        activeLibrary.filter(annotation =>
           annotation.annotated_text.toLowerCase().includes(searchString.toLowerCase())
         )
       )
     } else {
       setAnnotationsList(
-        allAnnotations.filter(
+        activeLibrary.filter(
           annotation =>
             annotation.category === category &&
             annotation.annotated_text.toLowerCase().includes(searchString.toLowerCase())
@@ -44,9 +45,9 @@ const AnnotationsLibrarySearch = ({
     setSearchString('')
 
     if (category === 'All') {
-      setAnnotationsList(allAnnotations)
+      
     } else {
-      setAnnotationsList(allAnnotations.filter(annotation => annotation.category === category))
+      setAnnotationsList(annotationsList.filter(annotation => annotation.category === category))
     }
   }
 

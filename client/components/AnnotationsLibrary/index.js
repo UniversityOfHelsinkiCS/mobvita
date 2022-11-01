@@ -1,3 +1,4 @@
+/* eslint-disable no-lonely-if */
 import React, { useState, useEffect } from 'react'
 import { Card } from 'semantic-ui-react'
 import { getAllAnnotations } from 'Utilities/redux/annotationsReducer'
@@ -12,7 +13,10 @@ const AnnotationsLibrary = () => {
   const dispatch = useDispatch()
   const [category, setCategory] = useState('All')
   const [annotationsList, setAnnotationsList] = useState([])
+  const [publicAnnotations, setPublicAnnotations] = useState([])
+  const [privateAnnotations, setPrivateAnnotations] = useState([])
   const { allAnnotations } = useSelector(({ annotations }) => annotations)
+  const [activeLibrary, setActiveLibrary] = useState([])
   const [libraries, setLibraries] = useState({
     public: true,
     private: false,
@@ -28,16 +32,42 @@ const AnnotationsLibrary = () => {
     setLibraries({ ...librariesCopy, [library]: true })
   }
 
-  const filterNotesByPublicity = () => {
-    if (libraries.private) {
-      setAnnotationsList(allAnnotations.filter(annotation => !annotation.public))
+  const changeLibraryView = () => {
+    if (category === 'All') {
+      setAnnotationsList(activeLibrary)
     } else {
-      setAnnotationsList(allAnnotations.filter(annotation => annotation.public))
+      setAnnotationsList(activeLibrary.filter(annotation => annotation.category === category))
     }
+    /*
+    if (libraries.private) {
+      if (category === 'All') {
+        setAnnotationsList(allAnnotations.filter(annotation => !annotation.public))
+      } else {
+        setAnnotationsList(
+          allAnnotations.filter(
+            annotation => !annotation.public && annotation.category === category
+          )
+        )
+      }
+    } else {
+      if (category === 'All') {
+        setAnnotationsList(allAnnotations.filter(annotation => annotation.public))
+      } else {
+        setAnnotationsList(
+          allAnnotations.filter(annotation => annotation.public && annotation.category === category)
+        )
+      }
+    }
+    */
   }
 
   const handleLibraryChange = library => {
     // dispatch(updateLibrarySelect(library))
+    if (library === 'private') {
+      setActiveLibrary(privateAnnotations)
+    } else {
+      setActiveLibrary(publicAnnotations)
+    }
     setLibrary(library)
     /*
     setSorter(savedSortCriterion[library].sort_by)
@@ -58,12 +88,21 @@ const AnnotationsLibrary = () => {
   }, [])
 
   useEffect(() => {
-    filterNotesByPublicity()
+    if (libraries.private) {
+      setActiveLibrary(privateAnnotations)
+    } else {
+      setActiveLibrary(publicAnnotations)
+    }
+    changeLibraryView()
   }, [libraries])
 
   useEffect(() => {
     if (allAnnotations.length > 0) {
-      filterNotesByPublicity()
+      const allPublic = allAnnotations.filter(annotation => annotation.public)
+      setPrivateAnnotations(allAnnotations.filter(annotation => !annotation.public))
+      setPublicAnnotations(allPublic)
+      setActiveLibrary(allPublic)
+      setAnnotationsList(allPublic)
     }
   }, [allAnnotations])
 
@@ -86,18 +125,21 @@ const AnnotationsLibrary = () => {
 
   return (
     <div className="cont-tall pt-lg cont flex-col auto gap-row-sm ">
-      <LibraryTabs
-        values={libraries}
-        additionalClass="wrap-and-grow align-center pt-sm"
-        onClick={handleLibraryChange}
-        reverse
-      />
+      <div style={{ marginBottom: '1rem' }}>
+        <LibraryTabs
+          values={libraries}
+          additionalClass="wrap-and-grow align-center pt-sm"
+          onClick={handleLibraryChange}
+          reverse
+        />
+      </div>
       <AnnotationsLibrarySearch
         category={category}
         setCategory={setCategory}
         allAnnotations={allAnnotations}
         annotationsList={annotationsList}
         setAnnotationsList={setAnnotationsList}
+        activeLibrary={activeLibrary}
       />
       <Card.Group itemsPerRow={1} doubling data-cy="annotation-items" style={{ marginTop: '.5em' }}>
         <WindowScroller>
