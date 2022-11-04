@@ -1397,5 +1397,7 @@
     "lesson-grammar-practice": "Grammar practice",
     "lesson-listening-practice": "Listening practice",
     "lesson-crossword": "Crossword",
-    "lesson-competition": "Competition"
+    "lesson-competition": "Competition",
+    "create-lesson-btn": "Create lesson",
+    "no-practices-yet": "No practices added yet"
 }

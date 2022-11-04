@@ -5,10 +5,14 @@ import { Icon } from 'semantic-ui-react'
 const LessonPracticeList = ({ lessonsPractices, removePractice }) => {
 
   return (
-    <div>
+    <div style={{ marginBottom: '.5rem' }}>
+      {lessonsPractices.length < 1 && <FormattedMessage id="no-practices-yet" />}
       {lessonsPractices.map((practice, index) => (
         <div className="flex space-between" style={{ marginTop: '.5rem' }}>
-          <FormattedMessage id={practice} />
+          <div className="flex">
+            <b style={{ marginRight: '1rem' }}>{index + 1}.</b>
+            <FormattedMessage id={practice} />
+          </div>
           <Icon
             className="interactable"
             style={{

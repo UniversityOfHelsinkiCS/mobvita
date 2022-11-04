@@ -1,6 +1,7 @@
 import React, { useState } from 'react'
 import { FormattedMessage } from 'react-intl'
 import { Divider, Modal } from 'semantic-ui-react'
+import { Button } from 'react-bootstrap'
 import AddLessonPractice from './AddLessonPractice'
 import LessonPracticeList from './LessonPracticeList'
 
@@ -28,12 +29,17 @@ const SelectLessonModal = ({ open, setOpen }) => {
         </div>
       </Modal.Header>
       <Modal.Content>
-        <div>
+        <div style={{ marginBottom: '1rem', fontSize: '1.2rem' }}>
           <FormattedMessage id="select-lesson-story" />
         </div>
+        <Divider />
         <AddLessonPractice addPractice={addPractice} />
         <Divider />
         <LessonPracticeList lessonsPractices={lessonPractices} removePractice={removePractice} />
+        <Divider />
+        <Button variant="primary" disabled={lessonPractices.length < 1}>
+          <FormattedMessage id="create-lesson-btn" />
+        </Button>
       </Modal.Content>
     </Modal>
   )

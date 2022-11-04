@@ -1397,5 +1397,7 @@
     "lesson-grammar-practice": "Kielioppiharjoitus",
     "lesson-listening-practice": "Kuunteluharjoitus",
     "lesson-crossword": "Sanaristikko",
-    "lesson-competition": "Kilpailu"
+    "lesson-competition": "Kilpailu",
+    "create-lesson-btn": "Luo oppitunti",
+    "no-practices-yet": "Ei vielä lisättyjä harjoituksia"
 }
