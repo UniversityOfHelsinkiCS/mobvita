@@ -76,6 +76,7 @@ import exclamationMark from 'Assets/images/exclamation.png'
 import magnifyingGlass from 'Assets/images/glass.png'
 import beeHive from 'Assets/images/bee_hive.png'
 import barChart from 'Assets/images/bar_chart.png'
+import readingBook from 'Assets/images/reading-book.png'
 
 import { useSelector, useDispatch } from 'react-redux'
 import { useHistory } from 'react-router-dom'
@@ -156,6 +157,7 @@ export const images = {
   magnifyingGlass,
   beeHive,
   barChart,
+  readingBook,
 }
 
 export const backgroundColors = ['lightcyan', 'lightyellow', 'antiquewhite']

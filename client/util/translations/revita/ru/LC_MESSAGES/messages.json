@@ -1389,5 +1389,16 @@
     "back-to-all-notes": "Back to all notes",
     "public-note-checkbox": "Public note",
     "reply-note": "Reply",
-    "reply-note-form-placeholder": "Write your reply here"
+    "reply-note-form-placeholder": "Write your reply here",
+    "comments-on-story-explanation": "",
+    "lesson-home-btn": "Lesson",
+    "select-lesson-modal-header": "Create a lesson",
+    "lesson-modal-header": "Create a lesson",
+    "select-lesson-story": "Select a story for the lesson",
+    "add-lesson-practice-btn": "Add",
+    "remove-lesson-practice-btn": "Remove",
+    "lesson-grammar-practice": "Grammar practice",
+    "lesson-listening-practice": "Listening practice",
+    "lesson-crossword": "Crossword",
+    "lesson-competition": "Competition"
 }

@@ -1386,5 +1386,16 @@
     "back-to-all-notes": "Takaisin muistiinpanoihin",
     "public-note-checkbox": "Julkinen muistiinpano",
     "reply-note": "Vastaa",
-    "reply-note-form-placeholder": "Kirjoita vastauksesi tähän"
+    "reply-note-form-placeholder": "Kirjoita vastauksesi tähän",
+    "comments-on-story-explanation": "",
+    "lesson-home-btn": "Oppitunti",
+    "select-lesson-modal-header": "Luo oppitunti",
+    "lesson-modal-header": "Luo oppitunti",
+    "select-lesson-story": "Valitse tarina oppitunnille",
+    "add-lesson-practice-btn": "Lisää",
+    "remove-lesson-practice-btn": "Poista",
+    "lesson-grammar-practice": "Kielioppiharjoitus",
+    "lesson-listening-practice": "Kuunteluharjoitus",
+    "lesson-crossword": "Sanaristikko",
+    "lesson-competition": "Kilpailu"
 }

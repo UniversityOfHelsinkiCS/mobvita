@@ -17,6 +17,7 @@ import MedalSummary from './MedalSummary'
 import PracticeModal from './PracticeModal'
 import EloChart from './EloChart'
 import LeaderboardSummary from './LeaderboardSummary'
+import SelectLessonModal from 'Components/Lessons/SelectLessonModal'
 
 const HomeviewButton = ({ imgSrc, altText, translationKey, handleClick, dataCy, wide }) => {
   return (
@@ -39,7 +40,12 @@ const HomeviewButton = ({ imgSrc, altText, translationKey, handleClick, dataCy, 
   )
 }
 
-const HomeviewButtons = ({ setPracticeModalOpen, setAddStoryModalOpen, aTestIsEnabled }) => {
+const HomeviewButtons = ({
+  setPracticeModalOpen,
+  setAddStoryModalOpen,
+  setLessonModalOpen,
+  aTestIsEnabled,
+}) => {
   const history = useHistory()
   const { hasTests, hasAdaptiveTests } = useSelector(({ metadata }) => metadata)
 
@@ -109,6 +115,14 @@ const HomeviewButtons = ({ setPracticeModalOpen, setAddStoryModalOpen, aTestIsEn
         />
       </div>
       {hiddenFeatures && (
+        <HomeviewButton
+          imgSrc={images.readingBook}
+          altText="reading a book"
+          translationKey="lesson-home-btn"
+          handleClick={() => setLessonModalOpen(true)}
+        />
+      )}
+      {hiddenFeatures && (
         <>
           <Button onClick={() => history.push('/test-construction')}>Test construction</Button>
           <Button style={{ padding: '5em' }} onClick={() => history.push('test-debug')}>
@@ -145,6 +159,7 @@ const HomeView = () => {
   const [betaModalOpen, setBetaModalOpen] = useState(false)
   const [practiceModalOpen, setPracticeModalOpen] = useState(false)
   const [addStoryModalOpen, setAddStoryModalOpen] = useState(false)
+  const [lessonModalOpen, setLessonModalOpen] = useState(false)
   const userIsAnonymous = userData?.email === 'anonymous_email'
   const [openReminder, setOpenReminder] = useState(true)
   const welcomeView = history.location.pathname.endsWith('/welcome')
@@ -185,6 +200,7 @@ const HomeView = () => {
     <div className="cont-tall cont flex-col auto gap-row-sm pt-lg blue-bg">
       <AddStoryModal open={addStoryModalOpen} setOpen={setAddStoryModalOpen} />
       <PracticeModal open={practiceModalOpen} setOpen={setPracticeModalOpen} />
+      <SelectLessonModal open={lessonModalOpen} setOpen={setLessonModalOpen} />
       <BetaLanguageModal
         open={betaModalOpen}
         setOpen={setBetaModalOpen}
@@ -225,6 +241,7 @@ const HomeView = () => {
               <HomeviewButtons
                 setPracticeModalOpen={setPracticeModalOpen}
                 setAddStoryModalOpen={setAddStoryModalOpen}
+                setLessonModalOpen={setLessonModalOpen}
                 aTestIsEnabled={aTestIsEnabled}
               />
               <div
