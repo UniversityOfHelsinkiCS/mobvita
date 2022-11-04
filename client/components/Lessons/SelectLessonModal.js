@@ -16,6 +16,14 @@ const SelectLessonModal = ({ open, setOpen }) => {
     setLessonPractices(lessonPractices.concat(practice))
   }
 
+  const swapPracticeOrder = (a, b) => {
+    const copy = [...lessonPractices]
+    copy[a] = lessonPractices[b]
+    copy[b] = lessonPractices[a]
+
+    setLessonPractices(copy)
+  }
+
   return (
     <Modal
       dimmer="inverted"
@@ -35,7 +43,11 @@ const SelectLessonModal = ({ open, setOpen }) => {
         <Divider />
         <AddLessonPractice addPractice={addPractice} />
         <Divider />
-        <LessonPracticeList lessonsPractices={lessonPractices} removePractice={removePractice} />
+        <LessonPracticeList
+          lessonsPractices={lessonPractices}
+          removePractice={removePractice}
+          swapPracticeOrder={swapPracticeOrder}
+        />
         <Divider />
         <Button variant="primary" disabled={lessonPractices.length < 1}>
           <FormattedMessage id="create-lesson-btn" />
