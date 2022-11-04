@@ -30,7 +30,7 @@ const AnnotationForm = ({
   const [publicNote, setPublicNote] = useState(
     inGroupStory || sharedStory || (!publicStory && is_teacher)
   )
-  console.log('pub  ', is_teacher)
+
   const dropDownMenuText = category ? (
     <FormattedMessage id={`notes-${category}`} />
   ) : (
@@ -59,22 +59,10 @@ const AnnotationForm = ({
       value: 'Vocabulary',
     },
   ]
-  console.log('pub ', publicNote)
 
   return (
     <div>
       <Form>
-        {/* 
-        <div className="row-flex" style={{ marginBottom: '.5em' }}>
-          <Form.Input
-            className="annotation-name-input"
-            type="text"
-            value={annotationName}
-            onChange={(_, { value }) => setAnnotationName(value)}
-            placeholder={intl.formatMessage({ id: 'annotation-name' })}
-          />
-        </div>
-        */}
         <div className="row-flex" style={{ marginBottom: '.5em' }}>
           <span style={{ marginRight: '.5em' }}>
             <FormattedMessage id="Category" />:{' '}
@@ -106,12 +94,6 @@ const AnnotationForm = ({
           data-cy="annotation-text-field"
         />
       </Form>
-      {/* 
-      <div className="bold" style={{ margin: '.75rem 0rem', fontSize: '.85rem' }}>
-        <FormattedMessage id="characters-left" />
-        {` ${charactersLeft}`}
-      </div>
-      */}
       <Button
         variant="outline-secondary"
         size="sm"
