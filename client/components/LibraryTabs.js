@@ -23,8 +23,14 @@ const LibraryTabs = ({
   // .sort() keeps the button order on Safari
   let buttons = Object.entries(values)
     .sort()
-    .map(([key, val]) => (
-      <ToggleButton key={key} onClick={() => onClick(key)} toggled={val} {...props}>
+    .map(([key, val], index) => (
+      <ToggleButton
+        key={key}
+        onClick={() => onClick(key)}
+        toggled={val}
+        {...props}
+        data-cy={`library-toggle-${index}`}
+      >
         <FormattedMessage id={capitalize(key)} />
       </ToggleButton>
     ))

@@ -185,7 +185,8 @@ describe('Mobvita', function () {
         cy.contains("Muistiinpano tallennettu")
 
         cy.visit('http://localhost:8000/notes-library')
-
+        cy.wait(1000)
+        cy.get('[data-cy="library-toggle-0"]').click()
         cy.contains("häirinneet lentokoneita")
         cy.get('[data-cy="annotation-item-link"').click()
         cy.wait(1000)

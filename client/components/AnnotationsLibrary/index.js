@@ -38,27 +38,6 @@ const AnnotationsLibrary = () => {
     } else {
       setAnnotationsList(activeLibrary.filter(annotation => annotation.category === category))
     }
-    /*
-    if (libraries.private) {
-      if (category === 'All') {
-        setAnnotationsList(allAnnotations.filter(annotation => !annotation.public))
-      } else {
-        setAnnotationsList(
-          allAnnotations.filter(
-            annotation => !annotation.public && annotation.category === category
-          )
-        )
-      }
-    } else {
-      if (category === 'All') {
-        setAnnotationsList(allAnnotations.filter(annotation => annotation.public))
-      } else {
-        setAnnotationsList(
-          allAnnotations.filter(annotation => annotation.public && annotation.category === category)
-        )
-      }
-    }
-    */
   }
 
   const handleLibraryChange = library => {
