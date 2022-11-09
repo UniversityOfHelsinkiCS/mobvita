@@ -764,5 +764,6 @@
     "lesson-crossword": "Crossword",
     "lesson-competition": "Competition",
     "create-lesson-btn": "Create lesson",
-    "no-practices-yet": "No practices added yet"
+    "no-practices-yet": "No practices added yet",
+    "custom-feedback-header": "Add hints"
 }

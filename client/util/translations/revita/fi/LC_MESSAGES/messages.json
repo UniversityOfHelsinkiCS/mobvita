@@ -493,7 +493,7 @@
     "pause-after-you-answer-this-question": "Tauko alkaa tämän kysymyksen jälkeen",
     "paused-click-to-resume-27ac769f5d88934067af4294483b9807": "Tauko. Klikkaa ►jatkamiseksi...",
     "practice-with-your-favourite-stories-to-improve-your-skills": "Harjoittele suosikkikertomuksillasi parantaaksesi taitojasi!",
-    "start-a-new-test": "Aloita testi",
+    "start-a-new-test": "Aloita uusi testi",
     "new-test-help": "• Press this button to take a test.\n• The test uses the template of the group you have currently selected.\n• If you are not in any group, you will receive the default test.\n• During the test, you have 15 seconds for each question.\n• You can take breaks by pressing the Pause button.\n• You can end the test by pressing the Stop button.\n• Pause or Stop will take effect only AFTER you answer the current question.",
     "show-latest-history": "Viimeisimmät tulokset",
     "show-last-completed-tests": "Suoritetut kokeet",
@@ -712,7 +712,7 @@
     "show-levels": "Näytä tasot",
     "show-recommended-sites": "Näytä sivustosuositukset",
     "hide-recommended-sites": "Piilota sivustosuositukset",
-    "choose-settings-template": "Asetukset yksityisille ja julkisille teksteille",
+    "choose-settings-template": "Asetukset yksityisille ja yleisille teksteille",
     "choose-settings-template-info": "Huom! Ryhmäkirjaston asetuksia ohjaavat vain ryhmän omat opettajan valitsemat asetukset.",
     "personal-settings": "Omat asetukset",
     "join-group": "Liity ryhmään",
@@ -740,8 +740,8 @@
     "email-sent": "Sähköposti lähetetty",
     "joined-group": "Liityit ryhmään",
     "register-to-save-your-progress": "Luo tili ja tallenna edistymisesi",
-    "Public": "Julkiset",
-    "Private": "Omat",
+    "Public": "Yleinen",
+    "Private": "Oma",
     "Uncategorized": "Muut",
     "completed-snippets": "Suoritetut osat",
     "story-unshared": "Tarina poistettu ryhmän kirjastosta",
@@ -1399,5 +1399,6 @@
     "lesson-crossword": "Sanaristikko",
     "lesson-competition": "Kilpailu",
     "create-lesson-btn": "Luo oppitunti",
-    "no-practices-yet": "Ei vielä lisättyjä harjoituksia"
+    "no-practices-yet": "Ei vielä lisättyjä harjoituksia",
+    "custom-feedback-header": "Lisää vihjeitä"
 }
