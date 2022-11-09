@@ -1,10 +1,12 @@
 /* eslint-disable no-nested-ternary */
 import React, { useState } from 'react'
 import Draggable from 'react-draggable'
-import { Popup, Icon, Form } from 'semantic-ui-react'
+import { Popup, Icon, Form, Divider } from 'semantic-ui-react'
 import { FormattedMessage } from 'react-intl'
 import useWindowDimension from 'Utilities/windowDimensions'
 import { Button } from 'react-bootstrap'
+import MCFeedbackList from './MCFeedbackList'
+import AddFeedbackInput from './AddFeedbackInput'
 
 const MultipleChoiceModal = ({
   open,
@@ -18,7 +20,17 @@ const MultipleChoiceModal = ({
   const [customMultiChoice2, setCustomMultiChoice2] = useState('')
   const [customMultiChoice3, setCustomMultiChoice3] = useState('')
   const [chosenSet, setChosenSet] = useState(word.choices ? Object.keys(word.choices)[0] : 'custom')
+  const [feedbackList, setFeedbackList] = useState([])
+  const [customFeedback, setCustomFeedback] = useState('')
   const bigScreen = useWindowDimension().width >= 650
+
+  const addFeedback = () => {
+    setFeedbackList(feedbackList.concat(customFeedback))
+    setCustomFeedback('')
+  }
+
+  const removeFeedback = index =>
+    setFeedbackList(feedbackList.filter((feedback, feedbackIndex) => feedbackIndex !== index))
 
   const longInput = () => {
     let max = word.surface.length
@@ -58,9 +70,9 @@ const MultipleChoiceModal = ({
         'custom_concept_id'
       )
     } else if (chosenSet === 'stress') {
-      handleAddMultichoiceExercise(word.stress, word.stressed, 'Stress-*')
+      handleAddMultichoiceExercise(word.stress, word.stressed, 'Stress-*', feedbackList)
     } else {
-      handleAddMultichoiceExercise(word.choices[chosenSet], word.surface, chosenSet)
+      handleAddMultichoiceExercise(word.choices[chosenSet], word.surface, chosenSet, feedbackList)
     }
   }
 
@@ -135,7 +147,9 @@ const MultipleChoiceModal = ({
                           .filter(choice => choice !== analyticChunkWord?.surface || word.surface)
                           .map(choice => (
                             <input
-                              className={`${containsLongInput ? 'multi-choice-long-input' : 'multi-choice-input'} interactable`}
+                              className={`${
+                                containsLongInput ? 'multi-choice-long-input' : 'multi-choice-input'
+                              } interactable`}
                               type="text"
                               name="disable_field"
                               disabled
@@ -162,7 +176,11 @@ const MultipleChoiceModal = ({
                             .filter(choice => choice !== analyticChunkWord?.surface || word.surface)
                             .map(choice => (
                               <input
-                                className={`${containsLongInput ? 'multi-choice-long-input' : 'multi-choice-input'} interactable`}
+                                className={`${
+                                  containsLongInput
+                                    ? 'multi-choice-long-input'
+                                    : 'multi-choice-input'
+                                } interactable`}
                                 type="text"
                                 name="disable_field"
                                 disabled
@@ -179,7 +197,7 @@ const MultipleChoiceModal = ({
                 )}
                 {word.stress && word.stressed && bigScreen ? (
                   <div>
-                    <Form.Group> 
+                    <Form.Group>
                       <Form.Input
                         className="interactable"
                         style={{ marginTop: '0.9em', marginLeft: '0.5em', marginRight: '0.75em' }}
@@ -189,7 +207,9 @@ const MultipleChoiceModal = ({
                       />
                       {word.stress.map(choice => (
                         <input
-                          className={`${containsLongInput ? 'multi-choice-long-input' : 'multi-choice-input'} interactable`}
+                          className={`${
+                            containsLongInput ? 'multi-choice-long-input' : 'multi-choice-input'
+                          } interactable`}
                           type="text"
                           name="disable_field"
                           disabled
@@ -212,7 +232,9 @@ const MultipleChoiceModal = ({
                       <div className="flex-col" style={{ marginLeft: '.5em' }}>
                         {word.stress.map(choice => (
                           <input
-                            className={`${containsLongInput ? 'multi-choice-long-input' : 'multi-choice-input'} interactable`}
+                            className={`${
+                              containsLongInput ? 'multi-choice-long-input' : 'multi-choice-input'
+                            } interactable`}
                             type="text"
                             name="disable_field"
                             disabled
@@ -237,26 +259,34 @@ const MultipleChoiceModal = ({
                         checked={chosenSet === 'custom'}
                       />
                       <input
-                        className={`${containsLongInput ? 'multi-choice-long-input' : 'multi-choice-input'} interactable`}
+                        className={`${
+                          containsLongInput ? 'multi-choice-long-input' : 'multi-choice-input'
+                        } interactable`}
                         type="text"
                         name="disable_field"
                         value={analyticChunkWord?.surface || word.surface}
                         disabled
                       />
                       <input
-                        className={`${containsLongInput ? 'multi-choice-long-input' : 'multi-choice-input'} interactable`}
+                        className={`${
+                          containsLongInput ? 'multi-choice-long-input' : 'multi-choice-input'
+                        } interactable`}
                         type="text"
                         value={customMultiChoice1}
                         onChange={({ target }) => setCustomMultiChoice1(target.value)}
                       />
                       <input
-                        className={`${containsLongInput ? 'multi-choice-long-input' : 'multi-choice-input'} interactable`}
+                        className={`${
+                          containsLongInput ? 'multi-choice-long-input' : 'multi-choice-input'
+                        } interactable`}
                         type="text"
                         value={customMultiChoice2}
                         onChange={({ target }) => setCustomMultiChoice2(target.value)}
                       />
                       <input
-                        className={`${containsLongInput ? 'multi-choice-long-input' : 'multi-choice-input'} interactable`}
+                        className={`${
+                          containsLongInput ? 'multi-choice-long-input' : 'multi-choice-input'
+                        } interactable`}
                         type="text"
                         value={customMultiChoice3}
                         onChange={({ target }) => setCustomMultiChoice3(target.value)}
@@ -274,26 +304,34 @@ const MultipleChoiceModal = ({
                         />
                         <div className="col-flex" style={{ marginLeft: '.5em' }}>
                           <input
-                            className={`${containsLongInput ? 'multi-choice-long-input' : 'multi-choice-input'} interactable`}
+                            className={`${
+                              containsLongInput ? 'multi-choice-long-input' : 'multi-choice-input'
+                            } interactable`}
                             type="text"
                             name="disable_field"
                             value={analyticChunkWord?.surface || word.surface}
                             disabled
                           />
                           <input
-                            className={`${containsLongInput ? 'multi-choice-long-input' : 'multi-choice-input'} interactable`}
+                            className={`${
+                              containsLongInput ? 'multi-choice-long-input' : 'multi-choice-input'
+                            } interactable`}
                             type="text"
                             value={customMultiChoice1}
                             onChange={({ target }) => setCustomMultiChoice1(target.value)}
                           />
                           <input
-                            className={`${containsLongInput ? 'multi-choice-long-input' : 'multi-choice-input'} interactable`}
+                            className={`${
+                              containsLongInput ? 'multi-choice-long-input' : 'multi-choice-input'
+                            } interactable`}
                             type="text"
                             value={customMultiChoice2}
                             onChange={({ target }) => setCustomMultiChoice2(target.value)}
                           />
                           <input
-                            className={`${containsLongInput ? 'multi-choice-long-input' : 'multi-choice-input'} interactable`}
+                            className={`${
+                              containsLongInput ? 'multi-choice-long-input' : 'multi-choice-input'
+                            } interactable`}
                             type="text"
                             value={customMultiChoice3}
                             onChange={({ target }) => setCustomMultiChoice3(target.value)}
@@ -307,6 +345,12 @@ const MultipleChoiceModal = ({
                       <FormattedMessage id="multiple-choice-validation" />
                     </div>
                   )}
+                  <AddFeedbackInput
+                    addFeedback={addFeedback}
+                    customFeedback={customFeedback}
+                    setCustomFeedback={setCustomFeedback}
+                  />
+                  <MCFeedbackList feedbackList={feedbackList} removeFeedback={removeFeedback} />
                   <Button
                     className="interactable"
                     style={{ marginBottom: '0.5em', marginLeft: '0.5em', marginTop: '0.5em' }}
