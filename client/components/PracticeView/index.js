@@ -6,6 +6,7 @@ import { Segment, Icon, Checkbox } from 'semantic-ui-react'
 import { getStoryAction } from 'Utilities/redux/storiesReducer'
 import { clearFocusedSnippet } from 'Utilities/redux/snippetsReducer'
 import { updateShowReviewDiff } from 'Utilities/redux/userReducer'
+import { getExerciseLesson } from 'Utilities/redux/lessonsReducer'
 import { Spinner } from 'react-bootstrap'
 import {
   setTouchedIds,
@@ -42,6 +43,7 @@ const PracticeView = () => {
   const { isPaused, willPause, practiceFinished, currentAnswers } = useSelector(
     ({ practice }) => practice
   )
+  const { lessons } = useSelector(({ lessons }) => lessons)
   const { show_review_diff } = useSelector(({ user }) => user.data.user)
   const [startModalOpen, setStartModalOpen] = useState(false)
   const intl = useIntl()
@@ -49,6 +51,7 @@ const PracticeView = () => {
   const mode = getMode()
   const snippetsTotalNum = snippets?.focused?.total_num
   const controlledPractice = mode === 'controlled-practice'
+  const isLesson = history.location.pathname.includes('lesson')
   const timedExercise = snippets?.focused?.timed_exercise
 
   const TIMER_START_DELAY = 2000
@@ -117,15 +120,19 @@ const PracticeView = () => {
   if (!story) return null
 
   const handleAnswerChange = (value, word) => {
-    const { surface, id, ID, concept } = word
+    const { surface, id: candidateId, ID, concept, sentence_id, snippet_id } = word
 
     dispatch(setTouchedIds(ID))
 
     const newAnswer = {
-      [ID]: {
+      [`${ID}-${candidateId}`]: {
         correct: surface,
         users_answer: value,
-        id,
+        word_id: ID,
+        id: candidateId,
+        story_id: id,
+        sentence_id,
+        snippet_id,
         concept,
         hintsRequested: currentAnswers[ID]?.hintsRequested,
         requestedHintsList: currentAnswers[ID]?.requestedHintsList,
@@ -209,6 +216,7 @@ const PracticeView = () => {
               handleInputChange={handleAnswerChange}
               timer={timer}
               numSnippets={story?.paragraph?.length}
+              isLesson={isLesson}
             />
             <ScrollArrow />
 
