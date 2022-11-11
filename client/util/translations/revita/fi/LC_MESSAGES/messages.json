@@ -1004,7 +1004,7 @@
     "friend": "Kaveri",
     "shared-by": "Lähettäjä",
     "message": "Viesti",
-    "could-not-find-story-to-accept": "Kertomusta, jonka koitit hyväksyä, ei löytynyt",
+    "could-not-find-story-to-accept": "Kertomusta, jota yritit hyväksyä, ei löytynyt",
     "shared-story-accepted-successfully": "Jaettu teksti hyväksytty onnistuneesti!",
     "user-blocked-success": "Käyttäjä estetty onnistuneesti",
     "user-blocked-failure": "Käyttäjän estäminen epäonnistui",
