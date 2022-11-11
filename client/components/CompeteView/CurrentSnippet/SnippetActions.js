@@ -205,6 +205,7 @@ const SnippetActions = ({ storyId, exerciseCount, playerFinished }) => {
 
     checkAnswers(true)
   }
+  console.log('COMP')
 
   const nextSnippetButtonDisabled =
     snippets.answersPending || snippets.pending || !snippets.focused || noSnippetToFetchFromCache()

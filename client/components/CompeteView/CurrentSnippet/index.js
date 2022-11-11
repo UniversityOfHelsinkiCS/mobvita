@@ -78,16 +78,16 @@ const CurrentSnippet = ({ storyId, handleInputChange, setYouWon, finished }) => 
         }
 
         if (choices) {
-          dispatch(addToOptions({ [ID]: choices }))
+          dispatch(addToOptions({ [`${ID}-${id}`]: choices }))
         }
 
         if (listen) {
-          dispatch(addToAudio({ [ID]: audio }))
+          dispatch(addToAudio({ [`${ID}-${id}`]: audio }))
         }
 
         return {
           ...answerObject,
-          [ID]: {
+          [`${ID}-${id}`]: {
             correct: surface,
             users_answer: usersAnswer,
             id,
@@ -194,17 +194,19 @@ const CurrentSnippet = ({ storyId, handleInputChange, setYouWon, finished }) => 
   }
 
   const handleMultiselectChange = (event, word, data) => {
-    const { id, ID, surface, concept } = word
+    const { id, ID, surface, concept, sentence_id, snippet_id } = word
     const { value } = data
 
     dispatch(setTouchedIds(ID))
 
     const newAnswer = {
-      [ID]: {
+      [`${ID}-${id}`]: {
         correct: surface,
         users_answer: value,
         id,
         concept,
+        snippet_id,
+        sentence_id,
       },
     }
     dispatch(setAnswers(newAnswer))
