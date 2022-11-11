@@ -1,12 +1,23 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { FormattedMessage } from 'react-intl'
+import { useDispatch, useSelector } from 'react-redux'
+import { useHistory } from 'react-router'
+import { getLessons } from 'Utilities/redux/lessonsReducer'
 import { Divider, Modal } from 'semantic-ui-react'
 import { Button } from 'react-bootstrap'
+import { hiddenFeatures } from 'Utilities/common'
 import AddLessonPractice from './AddLessonPractice'
 import LessonPracticeList from './LessonPracticeList'
 
 const SelectLessonModal = ({ open, setOpen }) => {
+  const history = useHistory()
+  const dispatch = useDispatch()
+  const { lessons } = useSelector(({ lessons }) => lessons)
   const [lessonPractices, setLessonPractices] = useState([])
+  const lessonId = lessons[0]?.lesson_id
+  useEffect(() => {
+    dispatch(getLessons())
+  }, [])
 
   const removePractice = index => {
     setLessonPractices(lessonPractices.filter((practice, pracIndex) => pracIndex !== index))
@@ -15,6 +26,7 @@ const SelectLessonModal = ({ open, setOpen }) => {
   const addPractice = practice => {
     setLessonPractices(lessonPractices.concat(practice))
   }
+  console.log(' lessons ', lessons)
 
   const swapPracticeOrder = (a, b) => {
     const copy = [...lessonPractices]
@@ -52,6 +64,17 @@ const SelectLessonModal = ({ open, setOpen }) => {
         <Button variant="primary" disabled={lessonPractices.length < 1}>
           <FormattedMessage id="create-lesson-btn" />
         </Button>
+        {/* hiddenFeatures && lessonId && (
+          <>
+            <Divider />
+            <Button
+              variant="primary"
+              onClick={() => history.push(`/lesson/${lessons[0].lesson_id}/practice`)}
+            >
+              TEST EXERCISE
+            </Button>
+          </>
+        ) */}
       </Modal.Content>
     </Modal>
   )

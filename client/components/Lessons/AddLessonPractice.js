@@ -30,7 +30,7 @@ const AddLessonPractice = ({ addPractice }) => {
   ]
 
   return (
-    <div className="flex">
+    <div className="row-flex">
       <Dropdown
         style={{ width: '220px' }}
         text={<FormattedMessage id={practiceToAdd} />}
