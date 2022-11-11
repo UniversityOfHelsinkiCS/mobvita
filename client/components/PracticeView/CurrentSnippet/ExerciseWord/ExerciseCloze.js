@@ -36,7 +36,9 @@ const ExerciseCloze = ({ word, handleChange }) => {
   const dictionaryLanguage = useSelector(dictionaryLanguageSelector)
   const learningLanguage = useSelector(learningLanguageSelector)
   const { resource_usage, autoSpeak } = useSelector(state => state.user.data.user)
-  const currentAnswer = useSelector(({ practice }) => practice.currentAnswers[word.ID])
+  const currentAnswer = useSelector(
+    ({ practice }) => practice.currentAnswers[`${word.ID}-${word.id}`]
+  )
   const { attempt, focusedWord, latestMCTouched } = useSelector(({ practice }) => practice)
   // const { eloHearts } = useSelector(({ snippets }) => snippets)
   const [filteredHintsList, setFilteredHintsList] = useState([])
@@ -65,11 +67,14 @@ const ExerciseCloze = ({ word, handleChange }) => {
   const [emptyHintsList, setEmptyHintsList] = useState(false)
   const voice = voiceLanguages[learningLanguage]
   const hintButtonVisibility =
-    (!hints || (filteredHintsList.length < 1 && !message) || preHints.length - requested_hints?.length < filteredHintsList?.length && preHints.length < 5) &&
+    (!hints ||
+      (filteredHintsList.length < 1 && !message) ||
+      (preHints.length - requested_hints?.length < filteredHintsList?.length &&
+        preHints.length < 5)) &&
     !emptyHintsList
       ? { visibility: 'visible' }
       : { visibility: 'hidden' }
-    const handleTooltipWordClick = () => {
+  const handleTooltipWordClick = () => {
     const showAsSurface = exerciseMaskedLanguages.includes(learningLanguage)
       ? word.surface
       : word.base || word.bases
@@ -99,7 +104,9 @@ const ExerciseCloze = ({ word, handleChange }) => {
 
   const handleHintRequest = newHintList => {
     const newRequestNum = preHints.length + 1
-    const penalties = newHintList?.filter(hint=> hint2penalty[hint]).map(hint=> hint2penalty[hint])
+    const penalties = newHintList
+      ?.filter(hint => hint2penalty[hint])
+      .map(hint => hint2penalty[hint])
     dispatch(incrementHintRequests(`${word.ID}-${word.id}`, newRequestNum, newHintList, penalties))
 
     setSpentHints(spentHints.concat(1))
@@ -107,11 +114,17 @@ const ExerciseCloze = ({ word, handleChange }) => {
   }
 
   const handlePreHints = () => {
-    if (!hints && !requested_hints || filteredHintsList.length < 1 && requested_hints.length < 1 || hints?.length < 1) {
+    if (
+      (!hints && !requested_hints) ||
+      (filteredHintsList.length < 1 && requested_hints.length < 1) ||
+      hints?.length < 1
+    ) {
       setEmptyHintsList(true)
       handleHintRequest()
     } else {
-      const newHintList = preHints.concat(filteredHintsList[preHints.length - requested_hints?.length])
+      const newHintList = preHints.concat(
+        filteredHintsList[preHints.length - requested_hints?.length]
+      )
       setPreHints(newHintList)
       handleHintRequest(newHintList)
     }
@@ -233,11 +246,7 @@ const ExerciseCloze = ({ word, handleChange }) => {
   const tooltip = (
     <div>
       <div className="tooltip-green flex space-between">
-        <Button
-          style={hintButtonVisibility}
-          variant="primary"
-          onMouseDown={handlePreHints}
-        >
+        <Button style={hintButtonVisibility} variant="primary" onMouseDown={handlePreHints}>
           <FormattedMessage id="ask-for-a-hint" />
         </Button>
         <div>
@@ -249,46 +258,65 @@ const ExerciseCloze = ({ word, handleChange }) => {
           ))}
         </div>
       </div>{' '}
-        <div
-          className="tooltip-hint"
-          style={{ textAlign: 'left' }}
-          onMouseDown={handleTooltipClick}
-        >
-          <ul>
-            {frozen_messages?.map(mess => (
-              <span className="flex"><li style={{ fontWeight: 'bold', fontStyle: 'italic' }} dangerouslySetInnerHTML={formatGreenFeedbackText(mess)} />{ref && showRefIcon(mess) && (
-                <Icon name="info circle" style={{ alignSelf: 'flex-start', marginLeft: '0.5rem' }} />
+      <div className="tooltip-hint" style={{ textAlign: 'left' }} onMouseDown={handleTooltipClick}>
+        <ul>
+          {frozen_messages?.map(mess => (
+            <span className="flex">
+              <li
+                style={{ fontWeight: 'bold', fontStyle: 'italic' }}
+                dangerouslySetInnerHTML={formatGreenFeedbackText(mess)}
+              />
+              {ref && showRefIcon(mess) && (
+                <Icon
+                  name="info circle"
+                  style={{ alignSelf: 'flex-start', marginLeft: '0.5rem' }}
+                />
+              )}
+              {explanation && checkString(mess)}
+            </span>
+          ))}
+          {message && attempt === 0 && (
+            <span className="flex">
+              <li dangerouslySetInnerHTML={formatGreenFeedbackText(message)} />
+              {ref && (
+                <Icon
+                  name="info circle"
+                  style={{ alignSelf: 'flex-start', marginLeft: '0.5rem' }}
+                />
               )}
               {explanation && (
-                checkString(mess)
-              )}</span>
-            ))}
-            {message && attempt === 0 && <span className="flex"><li dangerouslySetInnerHTML={formatGreenFeedbackText(message)} />{ref && (
-            <Icon name="info circle" style={{ alignSelf: 'flex-start', marginLeft: '0.5rem' }} />
+                <Icon
+                  name="info circle"
+                  style={{ alignSelf: 'flex-start', marginLeft: '0.5rem' }}
+                />
+              )}
+            </span>
           )}
-          {explanation && (
-            <Icon name="info circle" style={{ alignSelf: 'flex-start', marginLeft: '0.5rem' }} />
-          )}</span>}
-            {preHints?.map(hint => (
-              <span className="flex"><li dangerouslySetInnerHTML={formatGreenFeedbackText(hint)} />{ref && showRefIcon(hint) && (
-                <Icon name="info circle" style={{ alignSelf: 'flex-start', marginLeft: '0.5rem' }} />
+          {preHints?.map(hint => (
+            <span className="flex">
+              <li dangerouslySetInnerHTML={formatGreenFeedbackText(hint)} />
+              {ref && showRefIcon(hint) && (
+                <Icon
+                  name="info circle"
+                  style={{ alignSelf: 'flex-start', marginLeft: '0.5rem' }}
+                />
               )}
-              {explanation && (
-                checkString(hint)
-              )}</span>
-            ))}
-          </ul>
-        </div>
+              {explanation && checkString(hint)}
+            </span>
+          ))}
+        </ul>
+      </div>
       {emptyHintsList && preHints?.length < 1 && (
         <div className="tooltip-hint" style={{ textAlign: 'left' }}>
           <FormattedMessage id="no-hints-available" />
         </div>
       )}
-      <div
-        className="tooltip-hint"
-        style={{ display: 'flex', justifyContent: 'center' }}
-      >
-        <Button variant="primary" onMouseDown={handleTooltipWordClick} onClick={handleTooltipWordClick}>
+      <div className="tooltip-hint" style={{ display: 'flex', justifyContent: 'center' }}>
+        <Button
+          variant="primary"
+          onMouseDown={handleTooltipWordClick}
+          onClick={handleTooltipWordClick}
+        >
           <span style={getTextStyle(learningLanguage, 'tooltip')}>{word.base || word.bases} </span>
           → <FormattedMessage id={dictionaryLanguage} />
         </Button>
