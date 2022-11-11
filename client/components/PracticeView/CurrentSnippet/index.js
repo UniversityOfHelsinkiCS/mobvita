@@ -120,11 +120,11 @@ const CurrentSnippet = ({ storyId, handleInputChange, timer, numSnippets, isLess
         }
 
         if (choices) {
-          dispatch(addToOptions({ [ID]: choices }))
+          dispatch(addToOptions({ [`${ID}-${id}`]: choices }))
         }
 
         if (listen) {
-          dispatch(addToAudio({ [ID]: audio }))
+          dispatch(addToAudio({ [`${ID}-${id}`]: audio }))
         }
 
         return {

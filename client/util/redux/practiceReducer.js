@@ -115,6 +115,7 @@ export default (state = initialState, action) => {
         options: { ...state.options, ...action.options },
       }
     case 'SET_AUDIO':
+      console.log('AUDIO', action.audio)
       return {
         ...state,
         audio: { ...state.audio, ...action.audio },
