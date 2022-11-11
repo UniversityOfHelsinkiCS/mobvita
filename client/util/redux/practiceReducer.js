@@ -100,7 +100,7 @@ export default (state = initialState, action) => {
             ...state.currentAnswers[action.wordId],
             hintsRequested: action.newReqAmount,
             requestedHintsList: action.newHintList,
-            penalties: action.penalties
+            penalties: action.penalties,
           },
         },
       }

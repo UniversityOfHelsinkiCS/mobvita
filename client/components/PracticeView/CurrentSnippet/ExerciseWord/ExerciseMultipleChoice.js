@@ -127,7 +127,7 @@ const ExerciseMultipleChoice = ({ word, handleChange }) => {
   const handleHintRequest = newHintList => {
     const newRequestNum = preHints.length + 1
     const penalties = newHintList?.filter(hint=> hint2penalty[hint]).map(hint=> hint2penalty[hint])
-    dispatch(incrementHintRequests(wordId, newRequestNum, newHintList, penalties))
+    dispatch(incrementHintRequests(`${word.ID}-${word.id}`, newRequestNum, newHintList, penalties))
 
     setSpentHints(spentHints.concat(1))
     setEloScoreHearts(eloScoreHearts.slice(0, -1))

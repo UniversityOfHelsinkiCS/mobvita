@@ -39,12 +39,7 @@ import ExercisesEncouragementModal from 'Components/Encouragements/ExercisesEnco
 import SnippetActions from './SnippetActions'
 import PracticeText from './PracticeText'
 
-const CurrentSnippet = ({
-  storyId,
-  handleInputChange,
-  timer,
-  numSnippets,
-}) => {
+const CurrentSnippet = ({ storyId, handleInputChange, timer, numSnippets, isLesson }) => {
   const [exerciseCount, setExerciseCount] = useState(0)
   const practiceForm = useRef(null)
   const dispatch = useDispatch()
@@ -52,6 +47,7 @@ const CurrentSnippet = ({
   const snippets = useSelector(({ snippets }) => snippets)
   const { open } = useSelector(({ encouragement }) => encouragement)
   const answersPending = useSelector(({ snippets }) => snippets.answersPending)
+  const { lessons } = useSelector(({ lessons }) => lessons)
   const {
     practiceFinished,
     snippetFinished,
@@ -102,7 +98,19 @@ const CurrentSnippet = ({
     if (snippets.focused && snippets.focused.storyid === storyId) {
       const filteredSnippet = snippets.focused.practice_snippet.filter(word => word.id)
       const initialAnswers = filteredSnippet.reduce((answerObject, currentWord) => {
-        const { surface, id, ID, base, bases, listen, choices, concept, audio } = currentWord
+        const {
+          surface,
+          id,
+          ID,
+          base,
+          bases,
+          listen,
+          choices,
+          concept,
+          audio,
+          sentence_id,
+          snippet_id,
+        } = currentWord
 
         let usersAnswer
         if (listen || choices) {
@@ -121,11 +129,13 @@ const CurrentSnippet = ({
 
         return {
           ...answerObject,
-          [ID]: {
+          [`${ID}-${id}`]: {
             correct: surface,
             users_answer: usersAnswer,
             id,
             concept,
+            sentence_id,
+            snippet_id,
           },
         }
       }, {})
