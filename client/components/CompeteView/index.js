@@ -79,7 +79,7 @@ const CompeteView = ({ match }) => {
   }, [startModalOpen])
 
   const handleAnswerChange = (value, word) => {
-    const { surface, id, ID, concept } = word
+    const { surface, id, ID, concept, sentence_id, snippet_id } = word
 
     dispatch(setTouchedIds(ID))
 
@@ -89,6 +89,9 @@ const CompeteView = ({ match }) => {
         users_answer: value,
         id,
         concept,
+        word_id: ID,
+        snippet_id,
+        sentence_id,
       },
     }
     dispatch(setAnswers(newAnswer))

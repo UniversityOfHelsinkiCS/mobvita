@@ -78,16 +78,19 @@ const VirtualKeyboard = () => {
   }
 
   const handleAnswerChange = (value, word = focusedWord) => {
-    const { surface, id, ID, concept } = word
+    const { surface, id, ID, concept, sentence_id, snippet_id } = word
 
     dispatch(setTouchedIds(ID))
 
     const newAnswer = {
-      [ID]: {
+      [`${ID}-${id}`]: {
         correct: surface,
         users_answer: value,
         id,
+        word_id: ID,
         concept,
+        sentence_id,
+        snippet_id,
       },
     }
 

@@ -19,7 +19,7 @@ const ExerciseMultipleChoice = ({ word, handleChange }) => {
   const [keepOpen, setKeepOpen] = useState(false)
   const [emptyHintsList, setEmptyHintsList] = useState(false)
   const [filteredHintsList, setFilteredHintsList] = useState([])
-  const currentAnswer = useSelector(({ practice }) => practice.currentAnswers[word.ID])
+  const currentAnswer = useSelector(({ practice }) => practice.currentAnswers[`${word.ID}-${word.id}`])
   // const { eloHearts } = useSelector(({ snippets }) => snippets)
   const { attempt, focusedWord, latestMCTouched } = useSelector(({ practice }) => practice)
   const [eloScoreHearts, setEloScoreHearts] = useState([1, 2, 3, 4, 5])
