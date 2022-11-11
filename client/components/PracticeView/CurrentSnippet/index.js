@@ -158,6 +158,8 @@ const CurrentSnippet = ({ storyId, handleInputChange, timer, numSnippets, isLess
             concept,
             sentence_id,
             snippet_id,
+            story_id: storyId,
+            word_id: ID,
           },
         }
       }, {})

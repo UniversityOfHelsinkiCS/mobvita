@@ -68,7 +68,19 @@ const CurrentSnippet = ({ storyId, handleInputChange, setYouWon, finished }) => 
     if (snippets.focused && snippets.focused.storyid === storyId) {
       const filteredSnippet = snippets.focused.practice_snippet.filter(word => word.id)
       const initialAnswers = filteredSnippet.reduce((answerObject, currentWord) => {
-        const { surface, id, ID, base, bases, listen, choices, concept, audio } = currentWord
+        const {
+          surface,
+          id,
+          ID,
+          base,
+          bases,
+          listen,
+          choices,
+          concept,
+          audio,
+          snippet_id,
+          sentence_id,
+        } = currentWord
 
         let usersAnswer
         if (listen || choices) {
@@ -78,11 +90,33 @@ const CurrentSnippet = ({ storyId, handleInputChange, setYouWon, finished }) => 
         }
 
         if (choices) {
-          dispatch(addToOptions({ [`${ID}-${id}`]: choices }))
+          dispatch(
+            addToOptions({
+              [`${ID}-${id}`]: {
+                distractors: choices,
+                word_id: ID,
+                id,
+                story_id: storyId,
+                snippet_id,
+                sentence_id,
+              },
+            })
+          )
         }
 
         if (listen) {
-          dispatch(addToAudio({ [`${ID}-${id}`]: audio }))
+          dispatch(
+            addToAudio({
+              [`${ID}-${id}`]: {
+                context: audio,
+                word_id: ID,
+                id,
+                story_id: storyId,
+                snippet_id,
+                sentence_id,
+              },
+            })
+          )
         }
 
         return {
@@ -92,6 +126,10 @@ const CurrentSnippet = ({ storyId, handleInputChange, setYouWon, finished }) => 
             users_answer: usersAnswer,
             id,
             concept,
+            word_id: ID,
+            snippet_id,
+            sentence_id,
+            story_id: storyId,
           },
         }
       }, {})
