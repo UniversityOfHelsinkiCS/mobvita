@@ -6,7 +6,7 @@ import { Segment } from 'semantic-ui-react'
 import { useParams } from 'react-router'
 import useWindowDimensions from 'Utilities/windowDimensions'
 import ProgressBar from 'Components/PracticeView/CurrentSnippet/ProgressBar'
-import CurrentSnippet from './LessonExercise'
+import LessonExercise from './LessonExercise'
 
 const LessonsPracticeView = () => {
   const dispatch = useDispatch()
@@ -63,7 +63,7 @@ const LessonsPracticeView = () => {
                 progress={(currentSnippetNum / snippetsTotalNum).toFixed(2)}
               />
   </div>*/}
-            <CurrentSnippet handleInputChange={handleAnswerChange} />
+            <LessonExercise handleInputChange={handleAnswerChange} />
           </Segment>
         </div>
       </div>

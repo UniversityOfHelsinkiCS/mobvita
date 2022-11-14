@@ -4,9 +4,9 @@ import { setFocusedSentence } from 'Utilities/redux/lessonSentencesReducer'
 import { getTextStyle, learningLanguageSelector } from 'Utilities/common'
 import PracticeText from 'Components/PracticeView/CurrentSnippet/PracticeText'
 import { Divider } from 'semantic-ui-react'
-import SnippetActions from './SnippetActions'
+import LessonExerciseActions from './LessonExerciseActions'
 
-const CurrentSnippet = ({ handleInputChange }) => {
+const LessonExercise = ({ handleInputChange }) => {
   const dispatch = useDispatch()
   const learningLanguage = useSelector(learningLanguageSelector)
   const practiceForm = useRef(null)
@@ -42,7 +42,7 @@ const CurrentSnippet = ({ handleInputChange }) => {
               handleMultiselectChange={handleMultiselectChange}
             />
             <Divider />
-            <SnippetActions />
+            <LessonExerciseActions />
           </div>
         </div>
       </form>
@@ -50,4 +50,4 @@ const CurrentSnippet = ({ handleInputChange }) => {
   )
 }
 
-export default CurrentSnippet
+export default LessonExercise

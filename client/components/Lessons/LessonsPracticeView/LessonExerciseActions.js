@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react'
 import { Button } from 'react-bootstrap'
 
-const SnippetActions = () => {
+const LessonExerciseActions = () => {
 
   return (
     <div>
@@ -14,4 +14,4 @@ const SnippetActions = () => {
   )
 }
 
-export default SnippetActions
+export default LessonExerciseActions
