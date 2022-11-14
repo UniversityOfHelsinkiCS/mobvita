@@ -1,16 +1,21 @@
 import React, { useRef, useState, useEffect } from 'react'
+import { useHistory } from 'react-router'
 import { useSelector, shallowEqual } from 'react-redux'
 import { Spinner } from 'react-bootstrap'
 import TextWithFeedback from 'Components/CommonStoryTextComponents/TextWithFeedback'
 
 const PracticeText = props => {
+  const history = useHistory()
+  const inLessonMode = history.location.pathname.includes('lesson')
   const snippets = useSelector(({ snippets }) => snippets)
   const textComponent = useRef(null)
   const [previousHeight, setPreviousHeight] = useState(0)
-  const practiceSnippet = useSelector(
-    ({ snippets }) => snippets.focused && snippets.focused.practice_snippet,
-    shallowEqual
-  )
+  const practiceSnippet = inLessonMode
+    ? useSelector(({ lessonSentences }) => lessonSentences.focused, shallowEqual)
+    : useSelector(
+        ({ snippets }) => snippets.focused && snippets.focused.practice_snippet,
+        shallowEqual
+      )
 
   useEffect(() => {
     if (textComponent.current) {

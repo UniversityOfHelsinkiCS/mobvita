@@ -64,7 +64,7 @@ const SelectLessonModal = ({ open, setOpen }) => {
         <Button variant="primary" disabled={lessonPractices.length < 1}>
           <FormattedMessage id="create-lesson-btn" />
         </Button>
-        {/* hiddenFeatures && lessonId && (
+        {hiddenFeatures && lessonId && (
           <>
             <Divider />
             <Button
@@ -74,7 +74,7 @@ const SelectLessonModal = ({ open, setOpen }) => {
               TEST EXERCISE
             </Button>
           </>
-        ) */}
+        )}
       </Modal.Content>
     </Modal>
   )

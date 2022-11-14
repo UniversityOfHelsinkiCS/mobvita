@@ -38,6 +38,7 @@ import DebugTestView from './DebugTestView'
 import AnnotationsLibrary from './AnnotationsLibrary'
 import ReferenceView from './ReferenceView'
 import EditStoryView from './EditStoryView'
+import LessonsPracticeView from './Lessons/LessonsPracticeView'
 
 export default () => {
   const user = useSelector(state => state.user.data)
@@ -99,6 +100,7 @@ export default () => {
             <ProtectedRoute exact path="/flashcards/:mode/:storyId" component={Flashcards} />
             <ProtectedRoute exact path="/flashcards/:mode/test/:storyId" component={Flashcards} />
             <ProtectedRoute exact path="/stories/:id/practice/" component={PracticeView} />
+            <ProtectedRoute exact path="/lesson/:id/practice" component={LessonsPracticeView} />
             <ProtectedRoute exact path="/stories/:id/listening/practice" component={PracticeView} />
             <ProtectedRoute
               exact
@@ -150,7 +152,6 @@ export default () => {
             <ProtectedRoute exact path="/vocabulary-view" component={VocabularyView} />
 
             <ProtectedRoute exact path="/reference" component={ReferenceView} />
-
           </Switch>
         </main>
       </Route>

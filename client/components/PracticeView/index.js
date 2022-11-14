@@ -6,7 +6,6 @@ import { Segment, Icon, Checkbox } from 'semantic-ui-react'
 import { getStoryAction } from 'Utilities/redux/storiesReducer'
 import { clearFocusedSnippet } from 'Utilities/redux/snippetsReducer'
 import { updateShowReviewDiff } from 'Utilities/redux/userReducer'
-import { getExerciseLesson } from 'Utilities/redux/lessonsReducer'
 import { Spinner } from 'react-bootstrap'
 import {
   setTouchedIds,
@@ -43,7 +42,6 @@ const PracticeView = () => {
   const { isPaused, willPause, practiceFinished, currentAnswers } = useSelector(
     ({ practice }) => practice
   )
-  const { lessons } = useSelector(({ lessons }) => lessons)
   const { show_review_diff } = useSelector(({ user }) => user.data.user)
   const [startModalOpen, setStartModalOpen] = useState(false)
   const intl = useIntl()

@@ -53,6 +53,7 @@ export default (state = initialState, action) => {
         error: true,
       }
     case 'GET_EXERCISE_LESSON_SUCCESS':
+      console.log(' act ', action.response)
       return {
         ...state,
         pending: false,

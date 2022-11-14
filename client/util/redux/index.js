@@ -39,6 +39,7 @@ import incomplete from './incompleteStoriesReducer'
 import newVocabulary from './newVocabularyReducer'
 import debugFeedback from './feedbackDebuggerReducer'
 import lessons from './lessonsReducer'
+import lessonSentences from './lessonSentencesReducer'
 
 const rootReducer = combineReducers({
   stories,
@@ -80,6 +81,7 @@ const rootReducer = combineReducers({
   debugFeedback,
   encouragement,
   lessons,
+  lessonSentences,
 })
 
 export default (state, action) =>
