@@ -11,7 +11,7 @@ const PracticeText = props => {
   const textComponent = useRef(null)
   const [previousHeight, setPreviousHeight] = useState(0)
   const practiceSnippet = inLessonMode
-    ? useSelector(({ lessonSentences }) => lessonSentences.focused, shallowEqual)
+    ? useSelector(({ lessonSentences }) => lessonSentences.focused.sent, shallowEqual)
     : useSelector(
         ({ snippets }) => snippets.focused && snippets.focused.practice_snippet,
         shallowEqual
