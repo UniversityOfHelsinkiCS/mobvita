@@ -6,6 +6,13 @@ export const addToPrevious = sentence => ({ type: 'ADD_TO_PREVIOUS', sentence })
 export const setFocusedSentence = sentence => ({ type: 'SET_FOCUSED_SENTENCE', sentence })
 export const clearFocusedSentence = () => ({ type: 'CLEAR_FOCUSED_SENTENCE' })
 
+export const postAnswers = lessonId => {
+  const route = `/lesson/${lessonId}/exercise`
+  const prefix = 'GET_LESSON_ANSWERS'
+
+  return callBuilder(route, prefix, 'post')
+}
+
 export default (state = { previous: [], pending: false, error: false }, action) => {
   switch (action.type) {
     case 'SET_PREVIOUS':
@@ -19,7 +26,6 @@ export default (state = { previous: [], pending: false, error: false }, action) 
         previous: state.previous.concat(action.sentence),
       }
     case 'SET_FOCUSED_SENTENCE':
-      console.log(' act ', action)
       return {
         ...state,
         focused: action.sentence,
@@ -28,6 +34,24 @@ export default (state = { previous: [], pending: false, error: false }, action) 
       return {
         ...state,
         focused: undefined,
+      }
+    case 'GET_LESSON_ANSWERS_ATTEMPT':
+      return {
+        ...state,
+        answersPending: true,
+      }
+    case 'GET_LESSON_ANSWERS_FAILURE':
+      return {
+        ...state,
+        answersPending: false,
+        pending: false,
+        error: true,
+      }
+    case 'GET_LESSON_ANSWERS_SUCCESS':
+      return {
+        ...state,
+        focused: action.response,
+        answersPending: false,
       }
     default:
       return state
