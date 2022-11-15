@@ -1,24 +1,16 @@
 import React, { useRef, useState, useEffect } from 'react'
+import { useHistory } from 'react-router'
 import { useSelector, shallowEqual } from 'react-redux'
 import { Spinner } from 'react-bootstrap'
 import TextWithFeedback from 'Components/CommonStoryTextComponents/TextWithFeedback'
+import { Divider } from 'semantic-ui-react'
 
 const PracticeText = props => {
-  const snippets = useSelector(({ snippets }) => snippets)
+  const { focused, pending } = useSelector(({ lessons }) => lessons, shallowEqual)
   const textComponent = useRef(null)
   const [previousHeight, setPreviousHeight] = useState(0)
-  const practiceSnippet = useSelector(
-    ({ snippets }) => snippets.focused && snippets.focused.practice_snippet,
-    shallowEqual
-  )
 
-  useEffect(() => {
-    if (textComponent.current) {
-      setPreviousHeight(textComponent.current.clientHeight)
-    }
-  }, [practiceSnippet])
-
-  if (snippets.pending || !practiceSnippet || snippets.answersPending) {
+  if (!focused || pending) {
     return (
       <div className="spinner-container" style={{ minHeight: previousHeight }}>
         <Spinner animation="border" variant="primary" size="lg" />
@@ -26,11 +18,13 @@ const PracticeText = props => {
     )
   }
 
-
   return (
-    <div ref={textComponent}>
-      <TextWithFeedback exercise snippet={practiceSnippet} mode="practice" {...props} />
-    </div>
+    focused.map(sentence => (
+      <div ref={textComponent}>
+        <TextWithFeedback exercise snippet={sentence.sent} mode="practice" {...props} />
+        <Divider />
+      </div>
+    ))
   )
 }
 
