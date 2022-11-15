@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { getExerciseLesson } from 'Utilities/redux/lessonsReducer'
-import { setAnswers } from 'Utilities/redux/practiceReducer'
+import { setAnswers, setTouchedIds } from 'Utilities/redux/practiceReducer'
 import { Segment } from 'semantic-ui-react'
 import { useParams } from 'react-router'
 import useWindowDimensions from 'Utilities/windowDimensions'
@@ -30,7 +30,9 @@ const LessonsPracticeView = () => {
 
   const handleAnswerChange = (value, word) => {
     const { surface, id: candidateId, ID, concept, sentence_id, snippet_id } = word
-    
+
+    setTouchedIds(ID)
+
     const newAnswer = {
       [`${ID}-${candidateId}`]: {
         correct: surface,

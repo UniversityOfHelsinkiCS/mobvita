@@ -6,11 +6,13 @@ export const addToPrevious = sentence => ({ type: 'ADD_TO_PREVIOUS', sentence })
 export const setFocusedSentence = sentence => ({ type: 'SET_FOCUSED_SENTENCE', sentence })
 export const clearFocusedSentence = () => ({ type: 'CLEAR_FOCUSED_SENTENCE' })
 
-export const postAnswers = lessonId => {
+export const postAnswers = (lessonId, answersObject, compete = false) => {
+  const payload = answersObject
+  payload.compete = compete
   const route = `/lesson/${lessonId}/exercise`
   const prefix = 'GET_LESSON_ANSWERS'
 
-  return callBuilder(route, prefix, 'post')
+  return callBuilder(route, prefix, 'post', payload)
 }
 
 export default (state = { previous: [], pending: false, error: false }, action) => {

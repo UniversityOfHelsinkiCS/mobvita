@@ -15,6 +15,13 @@ export const getExerciseLesson = lessonId => {
   return callBuilder(route, prefix)
 }
 
+export const postAnswers = lessonId => {
+  const route = `/lesson/${lessonId}/exercise`
+  const prefix = 'GET_LESSON_ANSWERS'
+
+  return callBuilder(route, prefix, 'post')
+}
+
 const initialState = {
   lessons: [],
   pending: false,
@@ -53,11 +60,30 @@ export default (state = initialState, action) => {
         error: true,
       }
     case 'GET_EXERCISE_LESSON_SUCCESS':
-      console.log(' act ', action.response)
       return {
         ...state,
         pending: false,
         focused: action.response.exercises,
+        sessionId: action.response.session_id,
+        starttime: action.response.starttime,
+      }
+    case 'GET_LESSON_ANSWERS_ATTEMPT':
+      return {
+        ...state,
+        answersPending: true,
+      }
+    case 'GET_LESSON_ANSWERS_FAILURE':
+      return {
+        ...state,
+        answersPending: false,
+        pending: false,
+        error: true,
+      }
+    case 'GET_LESSON_ANSWERS_SUCCESS':
+      return {
+        ...state,
+        focused: action.response,
+        answersPending: false,
       }
     default:
       return state

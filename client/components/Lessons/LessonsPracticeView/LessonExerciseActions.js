@@ -1,7 +1,10 @@
 import React, { useState, useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
+import { postAnswers } from 'Utilities/redux/lessonsReducer'
+import { clearTouchedIds } from 'Utilities/redux/practiceReducer'
 import { FormattedMessage } from 'react-intl'
 import { Button } from 'react-bootstrap'
+import { finalConfettiRain } from 'Utilities/common'
 
 const CheckAnswersButton = ({ handleClick, checkAnswersButtonTempDisable }) => {
   const { attempt, isNewSnippet } = useSelector(({ practice }) => practice)
@@ -65,9 +68,64 @@ const CheckAnswersButton = ({ handleClick, checkAnswersButtonTempDisable }) => {
   )
 }
 
-const LessonExerciseActions = () => {
+const LessonExerciseActions = ({ lessonId, exerciseCount }) => {
   const dispatch = useDispatch()
-  const { attempt, isNewSnippet } = useSelector(({ practice }) => practice)
+  const [checkAnswersButtonTempDisable, setcheckAnswersButtonTempDisable] = useState(false)
+  const { currentAnswers, correctAnswerIDs, touchedIds, attempt, options, audio } = useSelector(
+    ({ practice }) => practice
+  )
+  const { sessionId, starttime } = useSelector(({ lessons }) => lessons)
+
+  const getRightAnswerAmount = () => {
+    let total = 0
+    focused?.forEach(sentence => {
+      sentence.sent.forEach(word => {
+        if (word.tested && !word.isWrong) {
+          total++
+        }
+      })
+    })
+
+    return total
+  }
+
+  const checkAnswers = async lastAttempt => {
+    const filteredCurrentAnswers = Object.keys(currentAnswers)
+      .filter(key => !correctAnswerIDs.includes(key))
+      .reduce((obj, key) => {
+        obj[key] = currentAnswers[key]
+        return obj
+      }, {})
+
+    const answersObj = {
+      starttime,
+      touched: touchedIds.length,
+      untouched: exerciseCount - touchedIds.length - getRightAnswerAmount(),
+      attempt,
+      options,
+      audio,
+      answers: filteredCurrentAnswers,
+      last_attempt: lastAttempt,
+      timer_value: null,
+      session_id: sessionId,
+      frozen_exercise: false,
+    }
+
+    dispatch(clearTouchedIds())
+    dispatch(postAnswers(lessonId, answersObj, false))
+
+    const wrongAnswers = Object.keys(filteredCurrentAnswers).filter(
+      key =>
+        filteredCurrentAnswers[key].users_answer.toLowerCase() !==
+        filteredCurrentAnswers[key].correct.toLowerCase()
+    )
+
+    if ((!wrongAnswers || wrongAnswers.length < 1) && attempt === 0) {
+      const endDate = Date.now() + 2 * 1000
+      const colors = ['#bb0000', '#ffffff']
+      finalConfettiRain(colors, endDate)
+    }
+  }
 
   return (
     <div>

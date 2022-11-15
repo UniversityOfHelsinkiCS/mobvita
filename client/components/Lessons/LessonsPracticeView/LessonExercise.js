@@ -8,6 +8,7 @@ import {
   clearPractice,
   addToOptions,
   addToAudio,
+  setTouchedIds
 } from 'Utilities/redux/practiceReducer'
 import { getTextStyle, learningLanguageSelector } from 'Utilities/common'
 import { Divider } from 'semantic-ui-react'
@@ -149,6 +150,8 @@ const LessonExercise = ({ lessonId, handleInputChange }) => {
     const { id, ID, surface, concept, snippet_id, sentence_id } = word
     const { value } = data
 
+    setTouchedIds(ID)
+
     const newAnswer = {
       [`${ID}-${id}`]: {
         correct: surface,
@@ -182,7 +185,7 @@ const LessonExercise = ({ lessonId, handleInputChange }) => {
               handleMultiselectChange={handleMultiselectChange}
             />
             <Divider />
-            {/* <LessonExerciseActions lessonId={lessonId} exerciseCount={exerciseCount} /> */}
+            <LessonExerciseActions lessonId={lessonId} exerciseCount={exerciseCount} />
           </div>
         </div>
       </form>
