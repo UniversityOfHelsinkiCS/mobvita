@@ -1,12 +1,20 @@
 import React, { useState, useEffect, useRef } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { setFocusedSentence } from 'Utilities/redux/lessonSentencesReducer'
+import { clearTranslationAction } from 'Utilities/redux/translationReducer'
+import { resetSessionId } from 'Utilities/redux/snippetsReducer'
+import {
+  setAnswers,
+  clearPractice,
+  addToOptions,
+  addToAudio,
+} from 'Utilities/redux/practiceReducer'
 import { getTextStyle, learningLanguageSelector } from 'Utilities/common'
 import { Divider } from 'semantic-ui-react'
 import PracticeText from './PracticeText'
 import LessonExerciseActions from './LessonExerciseActions'
 
-const LessonExercise = ({ handleInputChange }) => {
+const LessonExercise = ({ lessonId, handleInputChange }) => {
   const dispatch = useDispatch()
   const learningLanguage = useSelector(learningLanguageSelector)
   const practiceForm = useRef(null)
@@ -26,18 +34,136 @@ const LessonExercise = ({ handleInputChange }) => {
     })
     return count
   }
+  
+  const getExerciseTokens = () => {
+    let tokens = []
+    focused?.forEach(sentence => {
+      sentence.sent.forEach(word => {
+        if (word.id) {
+          tokens = tokens.concat({
+            ...word,
+            story_id: sentence.story_id, 
+          })
+        }
+      })
+    })
 
-  useEffect(() => {
-    dispatch(setFocusedSentence(focused[0]))
-  }, [])
-
-  const handleMultiselectChange = () => {
-    console.log('hiio hoi')
+    return tokens
   }
 
-  console.log('focused ', lessonSentences)
+  console.log(' ex tokens ', getExerciseTokens())
 
-  if (!focusedSnippet) {
+  const setInitialAnswers = () => {
+    if (focused) {
+      const filteredSnippet = getExerciseTokens()
+      const initialAnswers = filteredSnippet.reduce((answerObject, currentWord) => {
+        const {
+          surface,
+          id,
+          ID,
+          base,
+          bases,
+          listen,
+          choices,
+          concept,
+          audio,
+          sentence_id,
+          snippet_id,
+          story_id,
+        } = currentWord
+
+        let usersAnswer
+        if (listen || choices) {
+          usersAnswer = ''
+        } else {
+          usersAnswer = base || bases
+        }
+
+        if (choices) {
+          dispatch(
+            addToOptions({
+              [`${ID}-${id}`]: {
+                distractors: choices,
+                snippet_id,
+                sentence_id,
+                id,
+                word_id: ID,
+                story_id,
+              },
+            })
+          )
+        }
+
+        if (listen) {
+          dispatch(
+            addToAudio({
+              [`${ID}-${id}`]: {
+                context: audio,
+                snippet_id,
+                sentence_id,
+                id,
+                word_id: ID,
+                story_id,
+              },
+            })
+          )
+        }
+
+        return {
+          ...answerObject,
+          [`${ID}-${id}`]: {
+            correct: surface,
+            users_answer: usersAnswer,
+            id,
+            concept,
+            sentence_id,
+            snippet_id,
+            story_id,
+            word_id: ID,
+          },
+        }
+      }, {})
+      if (Object.keys(initialAnswers).length > 0) dispatch(setAnswers({ ...initialAnswers }))
+      // dispatch(clearEloHearts())
+      setExerciseCount(getExerciseCount())
+      // dispatch(startSnippet())
+      /*
+      if (snippets?.focused?.practice_snippet) {
+        snippets.focused.practice_snippet.forEach(word => (
+          word.surface !== '\n\n' && word.id && !word.listen && dispatch(initEloHearts(word.ID))
+        ))
+      }
+      */
+    }
+  }
+
+  useEffect(() => {
+    dispatch(clearPractice())
+    dispatch(resetSessionId())
+    dispatch(clearTranslationAction())
+    // dispatch(setFocusedSentence(focused[0]))
+  }, [])
+
+  const handleMultiselectChange = (event, word, data) => {
+    const { id, ID, surface, concept, snippet_id, sentence_id } = word
+    const { value } = data
+
+    const newAnswer = {
+      [`${ID}-${id}`]: {
+        correct: surface,
+        users_answer: value,
+        id,
+        word_id: ID,
+        concept,
+        snippet_id,
+        sentence_id,
+      },
+    }
+
+    dispatch(setAnswers(newAnswer))
+  }
+
+  if (!focused) {
     return null
   }
 
@@ -55,7 +181,7 @@ const LessonExercise = ({ handleInputChange }) => {
               handleMultiselectChange={handleMultiselectChange}
             />
             <Divider />
-            {/*<LessonExerciseActions exerciseCount={exerciseCount} />*/}
+            {/* <LessonExerciseActions lessonId={lessonId} exerciseCount={exerciseCount} /> */}
           </div>
         </div>
       </form>

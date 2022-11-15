@@ -63,7 +63,7 @@ const LessonsPracticeView = () => {
                 progress={(currentSnippetNum / snippetsTotalNum).toFixed(2)}
               />
   </div>*/}
-            <LessonExercise handleInputChange={handleAnswerChange} />
+            <LessonExercise lessonId={id} handleInputChange={handleAnswerChange} />
           </Segment>
         </div>
       </div>

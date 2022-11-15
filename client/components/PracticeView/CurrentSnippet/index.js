@@ -166,6 +166,8 @@ const CurrentSnippet = ({ storyId, handleInputChange, timer, numSnippets }) => {
       // dispatch(clearEloHearts())
       setExerciseCount(getExerciseCount())
       dispatch(startSnippet())
+
+      console.log(' initial ans ', initialAnswers)
       /*
       if (snippets?.focused?.practice_snippet) {
         snippets.focused.practice_snippet.forEach(word => (
