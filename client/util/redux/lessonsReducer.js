@@ -15,11 +15,13 @@ export const getExerciseLesson = lessonId => {
   return callBuilder(route, prefix)
 }
 
-export const postAnswers = lessonId => {
+export const postAnswers = (lessonId, answersObject, compete = false) => {
+  const payload = answersObject
+  payload.compete = compete
   const route = `/lesson/${lessonId}/exercise`
   const prefix = 'GET_LESSON_ANSWERS'
 
-  return callBuilder(route, prefix, 'post')
+  return callBuilder(route, prefix, 'post', payload)
 }
 
 const initialState = {

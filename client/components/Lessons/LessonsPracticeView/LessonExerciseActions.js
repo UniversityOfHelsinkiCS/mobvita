@@ -11,8 +11,9 @@ const CheckAnswersButton = ({ handleClick, checkAnswersButtonTempDisable }) => {
   const {
     focused: focusedSnippet,
     pending: snippetPending,
-    answersPending,
+    answersPending: ans,
   } = useSelector(({ snippets }) => snippets)
+  const { focused, pending, answersPending } = useSelector(({ lessons }) => lessons)
   const [barColor, setBarColor] = useState('rgb(50, 170, 248)')
   const [attemptRatioPercentage, setAttemptRatioPercentage] = useState(100)
 
@@ -22,7 +23,7 @@ const CheckAnswersButton = ({ handleClick, checkAnswersButtonTempDisable }) => {
   }
 
   useEffect(() => {
-    if (!snippetPending) {
+    if (!pending) {
       // const isFreshAttempt = !focusedSnippet?.max_attempt || attempt === 0
       const newAttemptRatioPercentage = 100 - 100 * ((attempt + 1) / focusedSnippet?.max_attempt)
 
@@ -74,7 +75,7 @@ const LessonExerciseActions = ({ lessonId, exerciseCount }) => {
   const { currentAnswers, correctAnswerIDs, touchedIds, attempt, options, audio } = useSelector(
     ({ practice }) => practice
   )
-  const { sessionId, starttime } = useSelector(({ lessons }) => lessons)
+  const { focused, sessionId, starttime } = useSelector(({ lessons }) => lessons)
 
   const getRightAnswerAmount = () => {
     let total = 0
@@ -90,6 +91,7 @@ const LessonExerciseActions = ({ lessonId, exerciseCount }) => {
   }
 
   const checkAnswers = async lastAttempt => {
+    console.log('checkin answers')
     const filteredCurrentAnswers = Object.keys(currentAnswers)
       .filter(key => !correctAnswerIDs.includes(key))
       .reduce((obj, key) => {
@@ -130,6 +132,7 @@ const LessonExerciseActions = ({ lessonId, exerciseCount }) => {
   return (
     <div>
       <div style={{ display: 'flex', flexDirection: 'column' }}>
+        {/*<Button variant="primary" onClick={checkAnswers}>testing button</Button>*/}
         <CheckAnswersButton
           handleClick={checkAnswers}
           checkAnswersButtonTempDisable={checkAnswersButtonTempDisable}
