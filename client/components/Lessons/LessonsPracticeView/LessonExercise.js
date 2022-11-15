@@ -26,7 +26,7 @@ const LessonExercise = ({ lessonId, handleInputChange }) => {
   const getExerciseCount = () => {
     let count = 0
     focused.forEach(sentence => {
-      sentence.forEach(word => {
+      sentence.sent.forEach(word => {
         if (word.id) {
           count++
         }
@@ -50,8 +50,6 @@ const LessonExercise = ({ lessonId, handleInputChange }) => {
 
     return tokens
   }
-
-  console.log(' ex tokens ', getExerciseTokens())
 
   const setInitialAnswers = () => {
     if (focused) {
@@ -124,9 +122,7 @@ const LessonExercise = ({ lessonId, handleInputChange }) => {
         }
       }, {})
       if (Object.keys(initialAnswers).length > 0) dispatch(setAnswers({ ...initialAnswers }))
-      // dispatch(clearEloHearts())
       setExerciseCount(getExerciseCount())
-      // dispatch(startSnippet())
       /*
       if (snippets?.focused?.practice_snippet) {
         snippets.focused.practice_snippet.forEach(word => (
@@ -141,8 +137,13 @@ const LessonExercise = ({ lessonId, handleInputChange }) => {
     dispatch(clearPractice())
     dispatch(resetSessionId())
     dispatch(clearTranslationAction())
-    // dispatch(setFocusedSentence(focused[0]))
   }, [])
+
+  useEffect(() => {
+    if (focused) {
+      setInitialAnswers()
+    }
+  }, [focused])
 
   const handleMultiselectChange = (event, word, data) => {
     const { id, ID, surface, concept, snippet_id, sentence_id } = word
