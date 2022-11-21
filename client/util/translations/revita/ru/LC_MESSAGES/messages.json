@@ -1070,7 +1070,7 @@
     "notes-added-to-history-appear-here": "Заметки, прикрепленные к словам в тексте.",
     "click-any-word-in-history-to-create-note": "Click any word before the exercise snippet to add a note.",
     "click-any-word-in-history-to-add-new": "",
-    "review": "Мои ответы",
+    "review": "Проверь ответы",
     "references": "Ссылки и источники",
     "": "Существительные. Управление падежными формами. Управление послелогами/предлогами",
     "hide-feedback": "Скрыть комментарии",
@@ -1403,5 +1403,6 @@
     "lesson-competition": "Competition",
     "create-lesson-btn": "Create lesson",
     "no-practices-yet": "No practices added yet",
-    "custom-feedback-header": "Add hints"
+    "custom-feedback-header": "Add hints",
+    "practice-all-mode": "Practice all"
 }

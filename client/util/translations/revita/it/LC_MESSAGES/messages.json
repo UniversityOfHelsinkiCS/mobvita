@@ -1401,5 +1401,6 @@
     "lesson-competition": "Competition",
     "create-lesson-btn": "Create lesson",
     "no-practices-yet": "No practices added yet",
-    "custom-feedback-header": "Add hints"
+    "custom-feedback-header": "Add hints",
+    "practice-all-mode": "Tutti i tipi"
 }

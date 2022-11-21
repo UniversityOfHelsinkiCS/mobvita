@@ -107,6 +107,7 @@ export default () => {
               path="/stories/:id/controlled-practice/"
               component={PracticeView}
             />
+            <ProtectedRoute exact path="/stories/:id/practice-preview/" component={ReadViews} />
             <ProtectedRoute exact path="/stories/:id/review/" component={ReadViews} />
             <ProtectedRoute exact path="/stories/:id/preview/" component={ReadViews} />
             <ProtectedRoute exact path="/stories/:id/edit" component={EditStoryView} />

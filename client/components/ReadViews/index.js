@@ -34,6 +34,7 @@ const ReadViews = ({ match }) => {
   const intl = useIntl()
   const { width } = useWindowDimensions()
   const mode = getMode()
+  console.log(useHistory().location.pathname)
   const history = useHistory()
   const [showRefreshButton, setShowRefreshButton] = useState(false)
   const [currentStudent, setCurrentStudent] = useState(null)
@@ -161,7 +162,7 @@ const ReadViews = ({ match }) => {
           to={`/stories/${id}/practice/`}
           style={{ backgroundColor: 'rgb(50, 170, 248)', color: 'white' }}
         >
-          <Icon name="pencil alternate" /><FormattedMessage id="practice-grammar-mode" />
+          <Icon name="pencil alternate" /><FormattedMessage id="practice-all-mode" />
         </SemanticButton>
         <Dropdown
           className="button icon"
@@ -174,6 +175,12 @@ const ReadViews = ({ match }) => {
           trigger={<React.Fragment />}
         >
           <Dropdown.Menu className="story-item-dropdown">
+            <Dropdown.Item
+              text={<FormattedMessage id="practice-grammar-mode" />}
+              as={Link}
+              to={`/stories/${id}/practice/`}
+              icon="pencil alternate"
+            />
             <Dropdown.Item
               text={<FormattedMessage id="practice-listening-mode" />}
               as={Link}
@@ -207,7 +214,10 @@ const ReadViews = ({ match }) => {
             </Header>
             <div className={bigScreen && 'space-between'} style={{ alignItems: 'center' }}>
               <div>
-                {mode === 'preview' ? (
+                {mode === 'practice-preview' && (
+                  <div />
+                )}
+                {mode === 'preview' && (
                   <Checkbox
                     toggle
                     label={intl.formatMessage({ id: 'show preview' })}
@@ -215,7 +225,8 @@ const ReadViews = ({ match }) => {
                     onChange={updateUserPreviewExer}
                     style={{ paddingTop: '.5em' }}
                   />
-                ) : (
+                )}
+                {!['practice-preview','preview'].includes(mode) && (
                   <Checkbox
                     toggle
                     label={intl.formatMessage({ id: 'show-difficulty-level' })}
@@ -243,7 +254,7 @@ const ReadViews = ({ match }) => {
                   )}
                   {!isGroupPreview && !isGroupReview && (
                     <div>
-                      {ownedStory && (
+                      {ownedStory && mode !== 'practice-preview' && (
                         <Link to={`/stories/${id}/edit`}>
                           <Button style={{ marginRight: '.5em' }} variant="secondary">
                             <Icon name="edit" /> <FormattedMessage id="edit-story" />

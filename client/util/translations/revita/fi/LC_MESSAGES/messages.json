@@ -1067,7 +1067,7 @@
     "notes-added-to-history-appear-here": "Muistiinpanot, jotka on lisätty tekstiin ennen tehtäväosaa, näkyvät tässä.",
     "click-any-word-in-history-to-create-note": "Click any word before the exercise snippet to add a note.",
     "click-any-word-in-history-to-add-new": "",
-    "review": "Kertaa",
+    "review": "Tarkastele",
     "references": "Lähteet",
     "": "Substantiivi. Rektiot",
     "hide-feedback": "Piilota palaute",
@@ -1119,7 +1119,7 @@
     "overall": "Yhteensä",
     "explanations": "Explanations",
     "possible-concepts": "Aiheet",
-    "preview": "Tarkastele",
+    "preview": "Esikatsele",
     "topics": "Aiheet",
     "no-topics-available": "Ei aiheita saatavilla",
     "adaptive-test": "Taitotasotesti",
@@ -1400,5 +1400,6 @@
     "lesson-competition": "Kilpailu",
     "create-lesson-btn": "Luo oppitunti",
     "no-practices-yet": "Ei vielä lisättyjä harjoituksia",
-    "custom-feedback-header": "Lisää vihjeitä"
+    "custom-feedback-header": "Lisää vihjeitä",
+    "practice-all-mode": "Harjoittele kumpaakin"
 }
