@@ -152,7 +152,7 @@ describe('Mobvita', function () {
         cy.get('[data-cy="submit-story"]')
           .click()
         cy.contains('Vappu', { timeout: 120000 })
-        cy.contains('Tarkastele')
+        cy.contains('Esikatsele')
           .click()
         cy.contains('Harjoittele', { timeout: 20000 })
         cy.contains('Vappu on kevään juhla.')
