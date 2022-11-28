@@ -119,7 +119,7 @@ const HomeviewButtons = ({
           imgSrc={images.readingBook}
           altText="reading a book"
           translationKey="lesson-home-btn"
-          handleClick={() => setLessonModalOpen(true)}
+          handleClick={() => history.push('/lessons/library')} // setLessonModalOpen(true)
         />
       )}
       {hiddenFeatures && (

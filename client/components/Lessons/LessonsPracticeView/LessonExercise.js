@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { setFocusedSentence } from 'Utilities/redux/lessonSentencesReducer'
+import { getExerciseLesson } from 'Utilities/redux/lessonExercisesReducer'
 import { clearTranslationAction } from 'Utilities/redux/translationReducer'
 import { resetSessionId } from 'Utilities/redux/snippetsReducer'
 import {
@@ -15,18 +15,17 @@ import { Divider } from 'semantic-ui-react'
 import PracticeText from './PracticeText'
 import LessonExerciseActions from './LessonExerciseActions'
 
-const LessonExercise = ({ lessonId, handleInputChange }) => {
+const LessonExercise = ({ lesson_instance, handleInputChange }) => {
   const dispatch = useDispatch()
   const learningLanguage = useSelector(learningLanguageSelector)
   const practiceForm = useRef(null)
+  
+  const lessonExercises = useSelector(({ lessonExercises }) => lessonExercises.lesson_exercises)
   const [exerciseCount, setExerciseCount] = useState(0)
-  const lessonSentences = useSelector(({ lessonSentences }) => lessonSentences)
-  const { focused } = useSelector(({ lessons }) => lessons)
-  const { focused: focusedSnippet } = useSelector(({ lessonSentences }) => lessonSentences)
-
+  
   const getExerciseCount = () => {
     let count = 0
-    focused.forEach(sentence => {
+    lessonExercises.forEach(sentence => {
       sentence.sent.forEach(word => {
         if (word.id) {
           count++
@@ -38,7 +37,7 @@ const LessonExercise = ({ lessonId, handleInputChange }) => {
   
   const getExerciseTokens = () => {
     let tokens = []
-    focused?.forEach(sentence => {
+    lessonExercises?.forEach(sentence => {
       sentence.sent.forEach(word => {
         if (word.id) {
           tokens = tokens.concat({
@@ -53,7 +52,7 @@ const LessonExercise = ({ lessonId, handleInputChange }) => {
   }
 
   const setInitialAnswers = () => {
-    if (focused) {
+    if (lessonExercises) {
       const filteredSnippet = getExerciseTokens()
       const initialAnswers = filteredSnippet.reduce((answerObject, currentWord) => {
         const {
@@ -125,8 +124,8 @@ const LessonExercise = ({ lessonId, handleInputChange }) => {
       if (Object.keys(initialAnswers).length > 0) dispatch(setAnswers({ ...initialAnswers }))
       setExerciseCount(getExerciseCount())
       /*
-      if (snippets?.focused?.practice_snippet) {
-        snippets.focused.practice_snippet.forEach(word => (
+      if (snippets?.lessonExercises?.practice_snippet) {
+        snippets.lessonExercises.practice_snippet.forEach(word => (
           word.surface !== '\n\n' && word.id && !word.listen && dispatch(initEloHearts(word.ID))
         ))
       }
@@ -138,13 +137,14 @@ const LessonExercise = ({ lessonId, handleInputChange }) => {
     dispatch(clearPractice())
     dispatch(resetSessionId())
     dispatch(clearTranslationAction())
+    dispatch(getExerciseLesson(lesson_instance.lesson_id))
   }, [])
 
   useEffect(() => {
-    if (focused) {
+    if (lessonExercises) {
       setInitialAnswers()
     }
-  }, [focused])
+  }, [])
 
   const handleMultiselectChange = (event, word, data) => {
     const { id, ID, surface, concept, snippet_id, sentence_id } = word
@@ -167,7 +167,7 @@ const LessonExercise = ({ lessonId, handleInputChange }) => {
     dispatch(setAnswers(newAnswer))
   }
 
-  if (!focused) {
+  if (!lessonExercises) {
     return null
   }
 
@@ -185,7 +185,7 @@ const LessonExercise = ({ lessonId, handleInputChange }) => {
               handleMultiselectChange={handleMultiselectChange}
             />
             <Divider />
-            <LessonExerciseActions lessonId={lessonId} exerciseCount={exerciseCount} />
+            <LessonExerciseActions lessonId={lesson_instance.lesson_id} exerciseCount={exerciseCount} />
           </div>
         </div>
       </form>

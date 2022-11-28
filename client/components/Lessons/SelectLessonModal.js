@@ -26,7 +26,7 @@ const SelectLessonModal = ({ open, setOpen }) => {
   const addPractice = practice => {
     setLessonPractices(lessonPractices.concat(practice))
   }
-  console.log(' lessons ', lessons)
+  // console.log(' lessons ', lessons)
 
   const swapPracticeOrder = (a, b) => {
     const copy = [...lessonPractices]
@@ -61,9 +61,11 @@ const SelectLessonModal = ({ open, setOpen }) => {
           swapPracticeOrder={swapPracticeOrder}
         />
         <Divider />
-        <Button variant="primary" disabled={lessonPractices.length < 1}>
-          <FormattedMessage id="create-lesson-btn" />
-        </Button>
+        {/* <Link to={`/lessons/test`}> */}
+          <Button variant="primary" disabled={lessonPractices.length < 1}>
+            <FormattedMessage id="create-lesson-btn" />
+          </Button>
+        {/* </Link> */}
         {hiddenFeatures && lessonId && (
           <>
             <Divider />

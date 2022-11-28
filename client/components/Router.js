@@ -39,6 +39,7 @@ import AnnotationsLibrary from './AnnotationsLibrary'
 import ReferenceView from './ReferenceView'
 import EditStoryView from './EditStoryView'
 import LessonsPracticeView from './Lessons/LessonsPracticeView'
+import LessonLibrary from './Lessons/LessonLibrary'
 
 export default () => {
   const user = useSelector(state => state.user.data)
@@ -92,6 +93,10 @@ export default () => {
             <ProtectedRoute exact path="/login" component={HomeView} />
             <ProtectedRoute exact path="/home" component={HomeView} />
             <ProtectedRoute exact path="/welcome" component={HomeView} />
+
+            <ProtectedRoute exact path="/lessons/library" component={LessonLibrary} />
+            <ProtectedRoute exact path="/lesson/:lesson_syllabus_id/practice" component={LessonsPracticeView} />
+
             <ProtectedRoute exact path="/library" component={LibraryView} />
             <ProtectedRoute exact path="/library/private" component={LibraryView} />
             <ProtectedRoute exact path="/library/group" component={LibraryView} />
@@ -100,7 +105,6 @@ export default () => {
             <ProtectedRoute exact path="/flashcards/:mode/:storyId" component={Flashcards} />
             <ProtectedRoute exact path="/flashcards/:mode/test/:storyId" component={Flashcards} />
             <ProtectedRoute exact path="/stories/:id/practice/" component={PracticeView} />
-            <ProtectedRoute exact path="/lesson/:id/practice" component={LessonsPracticeView} />
             <ProtectedRoute exact path="/stories/:id/listening/practice" component={PracticeView} />
             <ProtectedRoute
               exact

@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { postAnswers } from 'Utilities/redux/lessonsReducer'
+import { postLessonExerciseAnswers } from 'Utilities/redux/lessonExercisesReducer'
 import { clearTouchedIds } from 'Utilities/redux/practiceReducer'
 import { FormattedMessage } from 'react-intl'
 import { Button } from 'react-bootstrap'
@@ -8,12 +8,7 @@ import { finalConfettiRain } from 'Utilities/common'
 
 const CheckAnswersButton = ({ handleClick, checkAnswersButtonTempDisable }) => {
   const { attempt, isNewSnippet } = useSelector(({ practice }) => practice)
-  const {
-    focused: focusedSnippet,
-    pending: snippetPending,
-    answersPending: ans,
-  } = useSelector(({ snippets }) => snippets)
-  const { focused, pending, answersPending } = useSelector(({ lessons }) => lessons)
+  const { lesson_exercises, pending } = useSelector(({ lessonExercises }) => lessonExercises)
   const [barColor, setBarColor] = useState('rgb(50, 170, 248)')
   const [attemptRatioPercentage, setAttemptRatioPercentage] = useState(100)
 
@@ -24,8 +19,8 @@ const CheckAnswersButton = ({ handleClick, checkAnswersButtonTempDisable }) => {
 
   useEffect(() => {
     if (!pending) {
-      // const isFreshAttempt = !focusedSnippet?.max_attempt || attempt === 0
-      const newAttemptRatioPercentage = 100 - 100 * ((attempt + 1) / focusedSnippet?.max_attempt)
+      const max_attempt = 3 //lesson_exercises?.max_attempt)
+      const newAttemptRatioPercentage = 100 - 100 * ((attempt + 1) / max_attempt)
 
       if (typeof newAttemptRatioPercentage !== 'number') setBarColor('rgb(50, 170, 248)')
       else {
@@ -34,7 +29,7 @@ const CheckAnswersButton = ({ handleClick, checkAnswersButtonTempDisable }) => {
         if (newAttemptRatioPercentage <= 20) setBarColor('#b0c8d8')
       }
 
-      if (focusedSnippet?.max_attempt - attempt === 1) {
+      if (max_attempt - attempt === 1) {
         setAttemptRatioPercentage(1)
       } else if (newAttemptRatioPercentage <= 100) {
         setAttemptRatioPercentage(newAttemptRatioPercentage)
@@ -52,7 +47,7 @@ const CheckAnswersButton = ({ handleClick, checkAnswersButtonTempDisable }) => {
       onClick={() => handleClick()}
       className="check-answers-button"
       disabled={
-        answersPending || snippetPending || !focusedSnippet || checkAnswersButtonTempDisable
+        pending || !lesson_exercises || checkAnswersButtonTempDisable
       }
     >
       <div
@@ -70,16 +65,17 @@ const CheckAnswersButton = ({ handleClick, checkAnswersButtonTempDisable }) => {
 }
 
 const LessonExerciseActions = ({ lessonId, exerciseCount }) => {
+  console.log('LessonExerciseActions', lessonId)
   const dispatch = useDispatch()
   const [checkAnswersButtonTempDisable, setcheckAnswersButtonTempDisable] = useState(false)
+  const { lesson_exercises, session_id, starttime, pending } = useSelector(({ lessonExercises }) => lessonExercises)
   const { currentAnswers, correctAnswerIDs, touchedIds, attempt, options, audio } = useSelector(
     ({ practice }) => practice
   )
-  const { focused, sessionId, starttime } = useSelector(({ lessons }) => lessons)
 
   const getRightAnswerAmount = () => {
     let total = 0
-    focused?.forEach(sentence => {
+    lesson_exercises?.forEach(sentence => {
       sentence.sent.forEach(word => {
         if (word.tested && !word.isWrong) {
           total++
@@ -91,7 +87,6 @@ const LessonExerciseActions = ({ lessonId, exerciseCount }) => {
   }
 
   const checkAnswers = async lastAttempt => {
-    console.log('checkin answers')
     const filteredCurrentAnswers = Object.keys(currentAnswers)
       .filter(key => !correctAnswerIDs.includes(key))
       .reduce((obj, key) => {
@@ -109,12 +104,12 @@ const LessonExerciseActions = ({ lessonId, exerciseCount }) => {
       answers: filteredCurrentAnswers,
       last_attempt: lastAttempt,
       timer_value: null,
-      session_id: sessionId,
+      session_id: session_id,
       frozen_exercise: false,
     }
 
     dispatch(clearTouchedIds())
-    dispatch(postAnswers(lessonId, answersObj, false))
+    dispatch(postLessonExerciseAnswers(lessonId, answersObj, false))
 
     const wrongAnswers = Object.keys(filteredCurrentAnswers).filter(
       key =>
