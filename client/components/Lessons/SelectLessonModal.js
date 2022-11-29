@@ -2,19 +2,22 @@ import React, { useState, useEffect } from 'react'
 import { FormattedMessage } from 'react-intl'
 import { useDispatch, useSelector } from 'react-redux'
 import { useHistory } from 'react-router'
-import { getLessons } from 'Utilities/redux/lessonsReducer'
 import { Divider, Modal, Dropdown } from 'semantic-ui-react'
 import { Button } from 'react-bootstrap'
 
 import { getLessonInstance, setLessonInstance } from 'Utilities/redux/lessonInstanceReducer'
+import { clearExerciseState } from 'Utilities/redux/lessonExercisesReducer'
 
 const SelectLessonModal = ({ open, setOpen, lesson_syllabus_id }) => {
-  const history = useHistory()
   const dispatch = useDispatch()
 
   const { pending, lesson_instance  } = useSelector(({ lessonInstance }) => lessonInstance)
 
   const [lessonSemanticTopic, setlessonSemanticTopic] = useState('All')
+
+  useEffect(() => {
+    dispatch(clearExerciseState())
+  }, [])
 
   useEffect(() => {
     dispatch(getLessonInstance(lesson_syllabus_id))
@@ -72,7 +75,7 @@ const SelectLessonModal = ({ open, setOpen, lesson_syllabus_id }) => {
       >
         <Modal.Header>
           <div>
-            <FormattedMessage id="lesson-modal-header" />
+            <FormattedMessage id="lesson-setup" />
           </div>
         </Modal.Header>
         <Modal.Content>

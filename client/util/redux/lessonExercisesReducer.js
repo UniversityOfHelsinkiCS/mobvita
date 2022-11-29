@@ -1,6 +1,6 @@
 import callBuilder from '../apiConnection'
 
-export const setPrevious = previous => ({ type: 'SET_PREVIOUS', payload: previous })
+export const clearExerciseState = () => ({ type: 'CLEAR_LESSON_EXERCISE_STATE' })
 export const addToPrevious = snippets => ({ type: 'ADD_TO_PREVIOUS_LESSON_SNIPPETS', snippets })
 export const setFocusingSnippets = snippets => ({ type: 'SET_FOCUSING_LESSON_SNIPPETS', snippets })
 
@@ -32,6 +32,14 @@ const initialState = {
 
 export default (state = initialState, action) => {
   switch (action.type) {
+    case 'CLEAR_LESSON_EXERCISE_STATE':
+      return {
+        ...state,
+        lesson_exercises: [],
+        focusing_snippets: [],
+        previous_snippets: [],
+      }
+
     case 'SET_FOCUSING_LESSON_SNIPPETS':
       return {
         ...state,
@@ -65,6 +73,8 @@ export default (state = initialState, action) => {
         lesson_exercises: lesson_exercises,
         session_id: action.response.session_id,
         starttime: action.response.starttime,
+        previous_snippets: [],
+        focusing_snippets: [],
       }
     case 'GET_LESSON_ANSWERS_ATTEMPT':
       return {
