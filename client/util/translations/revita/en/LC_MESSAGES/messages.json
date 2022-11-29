@@ -1254,7 +1254,7 @@
     "multiple-choice-tooltip": "The options are always shown to the student in alphabetical order",
     "pick-choices": "Enter the choices for the exercise",
     "save-controlled-story": "Save tailored story",
-    "edit-controlled-story": "Edit tailored story",
+    "edit-controlled-story": "Modify tailored story",
     "multiple-choice-validation": "Please add at least one more option",
     "controlled-story-reminder": "Reminder: you have a tailored story",
     "general-group-summary": "Group summary",
@@ -1401,5 +1401,10 @@
     "create-lesson-btn": "Create lesson",
     "no-practices-yet": "No practices added yet",
     "custom-feedback-header": "Add hints",
-    "practice-all-mode": "Practice all"
+    "practice-all-mode": "Practice all",
+    "continue-practice": "Practice lesson",
+    "lesson-setup": "Lesson setup",
+    "start-practice": "Practice",
+    "select-lesson-semantic-topic": "Choose lession topic",
+    "lesson-activities": "Activities"
 }

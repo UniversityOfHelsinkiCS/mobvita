@@ -1140,7 +1140,7 @@
     "click-to-add-exercise": "Clicca per aggiungere l'esercizio",
     "create-controlled-exercise": "Crea una storia di valutazione",
     "controlled-story-saved": "Storia su misura salvata correttamente",
-    "refresh": "Refresh",
+    "refresh": "Ricarica",
     "save-and-go-to-next-snippet": "Save chosen exercises and go to next snippet",
     "regenerate-exercises": "Rigenera esercizi",
     "freeze-snippet": "Congela lo snippet",
@@ -1184,7 +1184,7 @@
     "preview-mode-info": "Quando abilitata, clicca parole e frasi evidenziate per trovare i tipi di exercizi  disponibili",
     "review-mode-info": "Quando abilitata, clicca parole e frasi evidenziate per vedere le tue risposte di sessioni precedenti e il feedback",
     "shared-with-following-groups": "Condivisio con i seguenti gruppi:",
-    "???": "Comparativity",
+    "???": "Comparativo",
     "story-processing-now-finished": "Ora la storia è completamente elaborata! Per favore, aggiorna",
     "delete-account": "Delete account",
     "delete-account-confirmation": "Are you sure you want to delete your account?",
@@ -1255,7 +1255,7 @@
     "multiple-choice-tooltip": "Le opzioni sono sempre mostrate allo studente in ordine alfabetico",
     "pick-choices": "Immettere le scelte per l'esercizio",
     "save-controlled-story": "Salva la storia su misura",
-    "edit-controlled-story": "Modifica storia su misura",
+    "edit-controlled-story": "Muokkaa räätälöity tarina",
     "multiple-choice-validation": "Si prega di aggiungere almeno un'altra opzione",
     "controlled-story-reminder": "Promemoria: hai una storia su misura",
     "general-group-summary": "Riassunto del gruppo",
@@ -1402,5 +1402,10 @@
     "create-lesson-btn": "Create lesson",
     "no-practices-yet": "No practices added yet",
     "custom-feedback-header": "Add hints",
-    "practice-all-mode": "Tutti i tipi"
+    "practice-all-mode": "Tutti i tipi",
+    "continue-practice": "Pratica la lezione",
+    "lesson-setup": "Lesson setup",
+    "start-practice": "Practice",
+    "select-lesson-semantic-topic": "Choose lession topic",
+    "lesson-activities": "Activities"
 }

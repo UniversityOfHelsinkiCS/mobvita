@@ -8,7 +8,7 @@ import { List, WindowScroller } from 'react-virtualized'
 import React, { useEffect, useState, useRef } from 'react'
 import { Placeholder, Card, Select, Icon, Dropdown } from 'semantic-ui-react'
 
-import { getLessons, setLesson } from 'Utilities/redux/lessonsReducer'
+import { getLessons } from 'Utilities/redux/lessonsReducer'
 import { useLearningLanguage } from 'Utilities/common'
 
 import SelectLessonModal from 'Components/Lessons/SelectLessonModal'
@@ -35,8 +35,7 @@ const LessonList = () => {
   const [smallScreenSearchOpen, setSmallScreenSearchOpen] = useState(false)
   const [displayedLessons, setDisplayedLessons] = useState(lessons)
   const [lessonModalOpen, setLessonModalOpen] = useState(false)
-
-  console.log('lessonModalOpen', lessonModalOpen)
+  const [lessonSyllabusId, setlessonSyllabusId] = useState(null)
 
   const dispatch = useDispatch()
 
@@ -46,7 +45,7 @@ const LessonList = () => {
   }, [])
 
   useEffect(() => {
-    setSorter('title')
+    setSorter('chapter')
   }, [_selected_lesson_tab])
 
   useEffect(() => {
@@ -58,7 +57,7 @@ const LessonList = () => {
   }, [smallScreenSearchOpen])
 
   const sortDropdownOptions = [
-    { key: 'title', text: intl.formatMessage({ id: 'sort-by-title-option' }), value: 'title' },
+    { key: 'chapter', text: intl.formatMessage({ id: 'sort-by-title-option' }), value: 'chapter' },
   ]
 
   // HANDLERS 
@@ -69,6 +68,11 @@ const LessonList = () => {
   const handleDirectionChange = () => {
     const newDirection = sortDirection === 'asc' ? 'desc' : 'asc'
     setSortDirection(newDirection)
+  }
+
+  const handleOpenLessonModal = (lesson_syllabus_id, isOpen) => {
+    setlessonSyllabusId(lesson_syllabus_id)
+    setLessonModalOpen(isOpen)
   }
 
   const libraryControls = (
@@ -122,8 +126,8 @@ const LessonList = () => {
   libraryFilteredLessons.sort((a, b) => {
     let dir = 0
     switch (sorter) {
-      case 'title':
-        dir = a.title > b.title ? 1 : -1
+      case 'chapter':
+        dir = a.chapter > b.chapter ? 1 : -1
         break
       default:
         break
@@ -135,10 +139,10 @@ const LessonList = () => {
 
   function rowRenderer({ key, index, style }) {
     return (
-      <div key={key} style={{ ...style, paddingRight: '0.5em', paddingLeft: '0.5em' }}>
+      <div key={key} style={{ ...style, paddingRight: '0.5em', paddingLeft: '0.5em', marginBottom: '0.5em' }}>
         <LessonListItem
           lesson={libraryFilteredLessons[index]}
-          setLessonModalOpen={setLessonModalOpen}
+          handleOpenLessonModal={handleOpenLessonModal}
         />
       </div>
     )
@@ -157,23 +161,33 @@ const LessonList = () => {
   else {
     return (
       <div className="cont-tall pt-lg cont flex-col auto gap-row-sm ">
-        <SelectLessonModal open={lessonModalOpen} setOpen={setLessonModalOpen} />
+        <SelectLessonModal
+          open={lessonModalOpen}
+          setOpen={setLessonModalOpen}
+          lesson_syllabus_id={lessonSyllabusId}
+        />
         {libraryControls}
         {noResults ? (
           <div className="justify-center mt-lg" style={{ color: 'rgb(112, 114, 120)' }}>
             <FormattedMessage id="no-lessons-found" />
           </div>
         ) : (
+          // displayedLessons?.map((lesson, index) => {
+          //   libraryFilteredLessons[index]['_id'] = libraryFilteredLessons['chapter']
+          //   return (
+          //     rowRenderer('', index, {})
+          //   )
+          // })
           <Card.Group itemsPerRow={1} doubling data-cy="lesson-items" style={{ marginTop: '.5em' }}>
             <WindowScroller>
               {({ height, isScrolling, onChildScroll, scrollTop }) => (
                 <List
-                  autoHeight
+                  autoHeight={true}
                   height={height}
                   isScrolling={isScrolling}
                   onScroll={onChildScroll}
                   rowCount={libraryFilteredLessons.length}
-                  rowHeight={130}
+                  rowHeight={250}
                   rowRenderer={rowRenderer}
                   scrollTop={scrollTop}
                   width={10000}

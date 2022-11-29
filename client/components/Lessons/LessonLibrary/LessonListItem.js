@@ -24,7 +24,7 @@ const LessonTitle = ({
                     ...getTextStyle(learningLanguage) 
                 }}
             >
-                {topics[i]}
+                {topics[i].charAt(0).toUpperCase() + topics[i].slice(1)}
             </h6>
         );
     } 
@@ -81,7 +81,7 @@ const LessonFunctionsDropdown = ({
     )
 }
 
-const LessonActions = ({lesson, setLessonModalOpen}) => {
+const LessonActions = ({lesson, handleOpenLessonModal}) => {
     const { width } = useWindowDimensions()
     const practiceLink = `/lesson/${lesson.lesson_chapter}/practice`
     const hasPracticed = lesson.lesson_instances !== null & lesson.lesson_instances.length > 0
@@ -93,7 +93,7 @@ const LessonActions = ({lesson, setLessonModalOpen}) => {
                     <FormattedMessage id={hasPracticed ? "continue-practice" : "start-practice"} />
                 </Button>
             </Link>
-            <Button variant={'primary'} onClick={() => setLessonModalOpen(true)}>
+            <Button variant={'primary'} onClick={() => handleOpenLessonModal(lesson.lesson_chapter, true)} style={{margin: '0.5rem'}}>
                 <FormattedMessage id={"lesson-setup"} />
             </Button>
         </div>
@@ -110,7 +110,7 @@ const LessonActions = ({lesson, setLessonModalOpen}) => {
     //             <Button variant={'primary'}>
     //                 <FormattedMessage 
     //                     id={"lesson-setup"} 
-    //                     onClick={() => setLessonModalOpen(true)}
+    //                     onClick={() => handleOpenLessonModal(true)}
     //                 />
     //             </Button>
     //         </div>
@@ -125,9 +125,9 @@ const LessonActions = ({lesson, setLessonModalOpen}) => {
     // }
 }
 
-const LessonListItem = ({ lesson, setLessonModalOpen }) => {
-    const { user: userId } = useSelector(({ user }) => ({ user: user.data.user.oid }))
-    const learningLanguage = useSelector(learningLanguageSelector)
+const LessonListItem = ({ lesson, handleOpenLessonModal }) => {
+    // const { user: userId } = useSelector(({ user }) => ({ user: user.data.user.oid }))
+    // const learningLanguage = useSelector(learningLanguageSelector)
 
     return (
         <Card fluid key={lesson._id} className={'lesson-list-card'}>
@@ -139,7 +139,7 @@ const LessonListItem = ({ lesson, setLessonModalOpen }) => {
             <Card.Content extra className="lesson-card-actions-cont">
                 <LessonActions
                     lesson={lesson}
-                    setLessonModalOpen={setLessonModalOpen}
+                    handleOpenLessonModal={handleOpenLessonModal}
                 />
             </Card.Content>
         </Card>

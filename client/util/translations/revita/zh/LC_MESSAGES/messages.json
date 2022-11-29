@@ -766,5 +766,10 @@
     "create-lesson-btn": "Create lesson",
     "no-practices-yet": "No practices added yet",
     "custom-feedback-header": "Add hints",
-    "practice-all-mode": "Practice all"
+    "practice-all-mode": "Practice all",
+    "continue-practice": "Practice lesson",
+    "lesson-setup": "Lesson setup",
+    "start-practice": "Practice",
+    "select-lesson-semantic-topic": "Choose lession topic",
+    "lesson-activities": "Activities"
 }

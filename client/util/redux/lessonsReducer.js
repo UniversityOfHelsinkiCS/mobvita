@@ -9,16 +9,6 @@ export const getLessons = () => {
   return callBuilder(route, prefix)
 }
 
-export const setLesson = (lesson_instance_id, payload) => {
-  let route = '/lesson'
-  if (lesson_instance_id !== null){
-    route = `/lesson/${lesson_instance_id}`
-  }
-  const prefix = 'SET_LESSON'
-
-  return callBuilder(route, prefix, 'post', payload)
-}
-
 export const getExerciseLesson = lessonId => {
   const route = `/lesson/${lessonId}/exercise`
   const prefix = 'GET_EXERCISE_LESSON'
@@ -60,23 +50,7 @@ export default (state = initialState, action) => {
       return {
         ...state,
         pending: false,
-        lessons: action.response.lessons,
-      }
-    case 'SET_LESSON_ATTEMPT':
-      return {
-        ...state,
-        pending: true,
-      }
-    case 'SET_LESSON_FAILURE':
-      return {
-        ...state,
-        pending: false,
-        error: true,
-      }
-    case 'SET_LESSON_SUCCESS':
-      return {
-        ...state,
-        pending: false,
+        lessons: action.response.lessons.sort((a, b) => (a.chapter > b.chapter) ? 1 : -1),
       }
     case 'GET_EXERCISE_LESSON_ATTEMPT':
       return {

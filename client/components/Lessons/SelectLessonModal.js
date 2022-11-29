@@ -3,63 +3,122 @@ import { FormattedMessage } from 'react-intl'
 import { useDispatch, useSelector } from 'react-redux'
 import { useHistory } from 'react-router'
 import { getLessons } from 'Utilities/redux/lessonsReducer'
-import { Divider, Modal } from 'semantic-ui-react'
+import { Divider, Modal, Dropdown } from 'semantic-ui-react'
 import { Button } from 'react-bootstrap'
-import { hiddenFeatures } from 'Utilities/common'
-import AddLessonPractice from './AddLessonPractice'
-import LessonPracticeList from './LessonPracticeList'
 
-const SelectLessonModal = ({ open, setOpen }) => {
+import { getLessonInstance } from 'Utilities/redux/lessonInstanceReducer'
+
+const SelectLessonModal = ({ open, setOpen, lesson_syllabus_id }) => {
   const history = useHistory()
   const dispatch = useDispatch()
-  const { lessons } = useSelector(({ lessons }) => lessons)
-  const [lessonPractices, setLessonPractices] = useState([])
-  const lessonId = lessons[0]?.lesson_id
 
-  return (
-    <Modal
-      dimmer="inverted"
-      open={open}
-      onClose={() => setOpen(false)}
-      closeIcon={{ style: { top: '1rem', right: '2.5rem' }, color: 'black', name: 'close' }}
-    >
-      <Modal.Header>
-        <div>
-          <FormattedMessage id="lesson-modal-header" />
-        </div>
-      </Modal.Header>
-      <Modal.Content>
-        <div style={{ marginBottom: '1rem', fontSize: '1.2rem' }}>
-          <FormattedMessage id="select-lesson-story" />
-        </div>
-        <Divider />
-        <AddLessonPractice addPractice={() => {}} />
-        <Divider />
-        <LessonPracticeList
-          lessonsPractices={lessonPractices}
-          removePractice={() => {}}
-          swapPracticeOrder={() => {}}
-        />
-        <Divider />
-        {/* <Link to={`/lessons/test`}> */}
-          <Button variant="primary" disabled={lessonPractices.length < 1}>
+  const { pending, lesson_instance } = useSelector(({ lessonInstance }) => lessonInstance)
+
+  const [lessonSemanticTopic, setlessonSemanticTopic] = useState('All')
+
+  useEffect(() => {
+    dispatch(getLessonInstance(lesson_syllabus_id))
+  }, [lesson_syllabus_id])
+
+  const semantic_topic_options = [
+    {
+      key: 'all',
+      text: <FormattedMessage id="All" />,
+      value: 'All',
+    },
+    {
+      key: 'science',
+      text: <FormattedMessage id="Science" />,
+      value: 'Science',
+    },
+    {
+      key: 'sport',
+      text: <FormattedMessage id="Sport" />,
+      value: 'Sport',
+    },
+    {
+      key: 'culture',
+      text: <FormattedMessage id="Culture" />,
+      value: 'Culture',
+    },
+    {
+      key: 'culture',
+      text: <FormattedMessage id="Politics" />,
+      value: 'Politics',
+    },
+  ]
+
+  if (!pending && lesson_instance){
+    return (
+      <Modal
+        dimmer="inverted"
+        open={open}
+        onClose={() => setOpen(false)}
+        closeIcon={{ style: { top: '1rem', right: '2.5rem' }, color: 'black', name: 'close' }}
+      >
+        <Modal.Header>
+          <div>
+            <FormattedMessage id="lesson-modal-header" />
+          </div>
+        </Modal.Header>
+        <Modal.Content>
+  
+          <div style={{ marginBottom: '1rem', fontSize: '1.2rem' }}>
+            <FormattedMessage id="select-lesson-semantic-topic" />
+          </div>
+          <div className="row-flex">
+            <Dropdown
+              style={{ width: '220px' }}
+              text={<FormattedMessage id={lessonSemanticTopic} />}
+              selection
+              fluid
+              options={semantic_topic_options}
+              onChange={(_, { value }) => setlessonSemanticTopic(value)}
+            />
+          </div>
+          <Divider />
+
+          <div style={{ marginBottom: '1rem', fontSize: '1.2rem' }}>
+            <FormattedMessage id="lesson-activities" />
+          </div>
+          {lesson_instance?.activities?.map((activity, index) => (
+            <div>{`${index + 1}. ${activity}`}</div>
+          ))}
+  
+          {/* <LessonPracticeList
+            lessonsPractices={lessonSemanticTopics}
+            removePractice={() => { }}
+            swapPracticeOrder={() => { }}
+          /> */}
+          <Divider />
+  
+          {/* <Link to={`/lessons/test`}> */}
+          {/* <Button variant="primary" disabled={lessonSemanticTopics.length < 1}>
             <FormattedMessage id="create-lesson-btn" />
-          </Button>
-        {/* </Link> */}
-        {hiddenFeatures && lessonId && (
-          <>
-            <Divider />
-            <Button
-              variant="primary"
-              onClick={() => history.push(`/lesson/${lessons[0].lesson_id}/practice`)}
-            >
-              TEST EXERCISE
-            </Button>
-          </>
-        )}
-      </Modal.Content>
-    </Modal>
-  )
+          </Button> */}
+          {/* </Link> */}
+  
+          {/* {lessonId && (
+            <>
+              <Divider />
+              <Button
+                variant="primary"
+                onClick={() => history.push(`/lesson/${lessons[0].lesson_id}/practice`)}
+              >
+                TEST EXERCISE
+              </Button>
+            </>
+          )} */}
+        </Modal.Content>
+      </Modal>
+    )
+  } else {
+    return (
+      null
+    )
+  }
+  
+  
 }
 
 export default SelectLessonModal

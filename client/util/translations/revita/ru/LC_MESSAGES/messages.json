@@ -1257,7 +1257,7 @@
     "multiple-choice-tooltip": "Варианты всегда показываются учащемуся в алфавитном порядке",
     "pick-choices": "Введите варианты для упражнения",
     "save-controlled-story": "Сохранить контрольную историю",
-    "edit-controlled-story": "Редактировать контрольную историю",
+    "edit-controlled-story": "Изменить контрольную историю",
     "multiple-choice-validation": "Пожалуйста, добавь еще один вариант",
     "controlled-story-reminder": "Напоминание: тебя ждет контрольная история",
     "general-group-summary": "Сводка группы",
@@ -1404,5 +1404,10 @@
     "create-lesson-btn": "Create lesson",
     "no-practices-yet": "No practices added yet",
     "custom-feedback-header": "Add hints",
-    "practice-all-mode": "Practice all"
+    "practice-all-mode": "Practice all",
+    "continue-practice": "Practice lesson",
+    "lesson-setup": "Lesson setup",
+    "start-practice": "Practice",
+    "select-lesson-semantic-topic": "Выбери тему урока",
+    "lesson-activities": "Activities"
 }
