@@ -8,9 +8,10 @@ import { finalConfettiRain } from 'Utilities/common'
 
 const CheckAnswersButton = ({ handleClick, checkAnswersButtonTempDisable }) => {
   const { attempt, isNewSnippet } = useSelector(({ practice }) => practice)
-  const { lesson_exercises, pending } = useSelector(({ lessonExercises }) => lessonExercises)
-  const [barColor, setBarColor] = useState('rgb(50, 170, 248)')
-  const [attemptRatioPercentage, setAttemptRatioPercentage] = useState(100)
+  const { lesson_exercises, pending, focusing_snippets } = useSelector(({ lessonExercises }) => lessonExercises)
+
+  const [ barColor, setBarColor ] = useState('rgb(50, 170, 248)')
+  const [ attemptRatioPercentage, setAttemptRatioPercentage ] = useState(100)
 
   const getFontStyle = () => {
     if (attemptRatioPercentage > 60) return { color: 'white' }
@@ -65,10 +66,9 @@ const CheckAnswersButton = ({ handleClick, checkAnswersButtonTempDisable }) => {
 }
 
 const LessonExerciseActions = ({ lessonId, exerciseCount }) => {
-  console.log('LessonExerciseActions', lessonId)
   const dispatch = useDispatch()
-  const [checkAnswersButtonTempDisable, setcheckAnswersButtonTempDisable] = useState(false)
-  const { lesson_exercises, session_id, starttime, pending } = useSelector(({ lessonExercises }) => lessonExercises)
+  const [ checkAnswersButtonTempDisable, setcheckAnswersButtonTempDisable ] = useState(false)
+  const { lesson_exercises, session_id, starttime } = useSelector(({ lessonExercises }) => lessonExercises)
   const { currentAnswers, correctAnswerIDs, touchedIds, attempt, options, audio } = useSelector(
     ({ practice }) => practice
   )
@@ -82,7 +82,6 @@ const LessonExerciseActions = ({ lessonId, exerciseCount }) => {
         }
       })
     })
-
     return total
   }
 

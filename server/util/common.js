@@ -6,7 +6,10 @@ const PORT = process.env.PORT || 8000
 const Axios = require('axios')
 const https = require('https')
 
-const revitaUrl = process.env.REVITA_URL
+let revitaUrl = process.env.REVITA_URL
+// https://revita-test.cs.helsinki.fi/api
+// revitaUrl = 'http://127.0.0.1:5000/api/'
+console.log('revitaUrl', revitaUrl)
 
 if (!revitaUrl) {
   console.error('REVITA_URL missing') // eslint-disable-line no-console

@@ -7,12 +7,11 @@ import { Divider } from 'semantic-ui-react'
 
 const PracticeText = props => {
   const textComponent = useRef(null)
-  const { lesson_exercises, pending } = useSelector(({ lessonExercises }) => lessonExercises, shallowEqual)
-  // const { focused, pending } = useSelector(({ lessons }) => lessons, shallowEqual)
+  const { focusing_snippets, pending } = useSelector(({ lessonExercises }) => lessonExercises, shallowEqual)
   
   const [previousHeight, setPreviousHeight] = useState(0)
 
-  if (!lesson_exercises || pending) {
+  if (!focusing_snippets || pending) {
     return (
       <div className="spinner-container" style={{ minHeight: previousHeight }}>
         <Spinner animation="border" variant="primary" size="lg" />
@@ -21,10 +20,10 @@ const PracticeText = props => {
   }
 
   return (
-    lesson_exercises.map(sentence => (
+    focusing_snippets.map(snippet => (
       <div ref={textComponent}>
-        <TextWithFeedback exercise snippet={sentence.sent} mode="practice" {...props} />
-        <Divider />
+        <TextWithFeedback exercise snippet={snippet.sent} mode="practice" {...props} />
+        {/* <Divider /> */}
       </div>
     ))
   )

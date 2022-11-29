@@ -1,9 +1,8 @@
 import callBuilder from '../apiConnection'
 
 export const setPrevious = previous => ({ type: 'SET_PREVIOUS', payload: previous })
-export const addToPrevious = sentence => ({ type: 'ADD_TO_PREVIOUS', sentence })
-export const setFocusedSentence = sentence => ({ type: 'SET_FOCUSED_SENTENCE', sentence })
-export const clearFocusedSentence = () => ({ type: 'CLEAR_FOCUSED_SENTENCE' })
+export const addToPrevious = snippets => ({ type: 'ADD_TO_PREVIOUS_LESSON_SNIPPETS', snippets })
+export const setFocusingSnippets = snippets => ({ type: 'SET_FOCUSING_LESSON_SNIPPETS', snippets })
 
 export const getExerciseLesson = lessonId => {
   const route = `/lesson/${lessonId}/exercise`
@@ -23,6 +22,8 @@ export const postLessonExerciseAnswers = (lessonId, answersObject, compete = fal
 
 const initialState = {
   lesson_exercises: [],
+  focusing_snippets: [],
+  previous_snippets: [],
   session_id: '',
   starttime: null,
   pending: false,
@@ -31,6 +32,11 @@ const initialState = {
 
 export default (state = initialState, action) => {
   switch (action.type) {
+    case 'SET_FOCUSING_LESSON_SNIPPETS':
+      return {
+        ...state,
+        focusing_snippets: action.snippets,
+      }
     case 'GET_EXERCISE_LESSON_ATTEMPT':
       return {
         ...state,
@@ -60,26 +66,6 @@ export default (state = initialState, action) => {
         session_id: action.response.session_id,
         starttime: action.response.starttime,
       }
-    case 'SET_PREVIOUS':
-      return {
-        ...state,
-        previous: action.payload,
-      }
-    case 'ADD_TO_PREVIOUS':
-      return {
-        ...state,
-        previous: state.previous.concat(action.sentence),
-      }
-    case 'SET_FOCUSED_SENTENCE':
-      return {
-        ...state,
-        focused: action.sentence,
-      }
-    case 'CLEAR_FOCUSED_SENTENCE':
-      return {
-        ...state,
-        focused: undefined,
-      }
     case 'GET_LESSON_ANSWERS_ATTEMPT':
       return {
         ...state,
@@ -93,11 +79,24 @@ export default (state = initialState, action) => {
         error: true,
       }
     case 'GET_LESSON_ANSWERS_SUCCESS':
+      let practiced_snippets = action.response.exercises// state.previous_snippets.concat(action.response.exercises)
+      let focusing_snippets = []
+      if (practiced_snippets.length < state.lesson_exercises.length){
+        focusing_snippets = [state.lesson_exercises[practiced_snippets.length]]
+      }
       return {
         ...state,
-        focused: action.response,
+        previous_snippets: practiced_snippets,
+        focusing_snippets: focusing_snippets,
         answersPending: false,
       }
+
+
+    // case 'ADD_TO_PREVIOUS_LESSON_SNIPPETS':
+    //   return {
+    //     ...state,
+    //     previous_snippets: state.previous_snippets.concat(action.snippets),
+    //   }
     default:
       return state
   }

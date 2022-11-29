@@ -41,8 +41,6 @@ const LessonList = () => {
     dispatch(getLessons())
   }, [])
 
-  console.log('lessons', lessons)
-
   useEffect(() => {
     setSorter('title')
   }, [_selected_lesson_tab])
