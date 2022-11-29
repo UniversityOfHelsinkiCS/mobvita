@@ -6,19 +6,32 @@ import { getLessons } from 'Utilities/redux/lessonsReducer'
 import { Divider, Modal, Dropdown } from 'semantic-ui-react'
 import { Button } from 'react-bootstrap'
 
-import { getLessonInstance } from 'Utilities/redux/lessonInstanceReducer'
+import { getLessonInstance, setLessonInstance } from 'Utilities/redux/lessonInstanceReducer'
 
 const SelectLessonModal = ({ open, setOpen, lesson_syllabus_id }) => {
   const history = useHistory()
   const dispatch = useDispatch()
 
-  const { pending, lesson_instance } = useSelector(({ lessonInstance }) => lessonInstance)
+  const { pending, lesson_instance  } = useSelector(({ lessonInstance }) => lessonInstance)
 
   const [lessonSemanticTopic, setlessonSemanticTopic] = useState('All')
 
   useEffect(() => {
     dispatch(getLessonInstance(lesson_syllabus_id))
   }, [lesson_syllabus_id])
+
+  useEffect(() => {
+    setlessonSemanticTopic(lesson_instance['semantic'] ? lesson_instance['semantic'] : 'All')
+  }, [lesson_instance])
+
+  const handleSaveLessonInstance = () => {
+    if (lesson_instance) {
+      lesson_instance['semantic'] = lessonSemanticTopic
+      console.log('lesson_instance', lesson_instance)
+      dispatch(setLessonInstance(lesson_instance?.lesson_id, lesson_instance))
+      setOpen(false)
+    }
+  }
 
   const semantic_topic_options = [
     {
@@ -47,8 +60,9 @@ const SelectLessonModal = ({ open, setOpen, lesson_syllabus_id }) => {
       value: 'Politics',
     },
   ]
+  
 
-  if (!pending && lesson_instance){
+  if (!pending && lesson_instance) {
     return (
       <Modal
         dimmer="inverted"
@@ -62,7 +76,7 @@ const SelectLessonModal = ({ open, setOpen, lesson_syllabus_id }) => {
           </div>
         </Modal.Header>
         <Modal.Content>
-  
+
           <div style={{ marginBottom: '1rem', fontSize: '1.2rem' }}>
             <FormattedMessage id="select-lesson-semantic-topic" />
           </div>
@@ -82,22 +96,28 @@ const SelectLessonModal = ({ open, setOpen, lesson_syllabus_id }) => {
             <FormattedMessage id="lesson-activities" />
           </div>
           {lesson_instance?.activities?.map((activity, index) => (
-            <div>{`${index + 1}. ${activity}`}</div>
+            <div>{`${index + 1}. ${activity.activity}`}</div>
           ))}
-  
+
           {/* <LessonPracticeList
             lessonsPractices={lessonSemanticTopics}
             removePractice={() => { }}
             swapPracticeOrder={() => { }}
           /> */}
           <Divider />
-  
+
+          <div style={{ margin: '.5rem' }}>
+            <Button variant="primary" onClick={() => handleSaveLessonInstance()}>
+              <FormattedMessage id="save-lesson" />
+            </Button>
+          </div>
+
           {/* <Link to={`/lessons/test`}> */}
           {/* <Button variant="primary" disabled={lessonSemanticTopics.length < 1}>
             <FormattedMessage id="create-lesson-btn" />
           </Button> */}
           {/* </Link> */}
-  
+
           {/* {lessonId && (
             <>
               <Divider />
@@ -117,8 +137,6 @@ const SelectLessonModal = ({ open, setOpen, lesson_syllabus_id }) => {
       null
     )
   }
-  
-  
 }
 
 export default SelectLessonModal
