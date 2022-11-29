@@ -148,7 +148,7 @@ const LessonList = () => {
     )
   }
 
-  if (pending || !refreshed) {
+  if (pending || !refreshed || !libraryFilteredLessons) {
     return (
       <div className="cont-tall cont flex-col auto gap-row-sm">
         {libraryControls}
@@ -172,12 +172,7 @@ const LessonList = () => {
             <FormattedMessage id="no-lessons-found" />
           </div>
         ) : (
-          // displayedLessons?.map((lesson, index) => {
-          //   libraryFilteredLessons[index]['_id'] = libraryFilteredLessons['chapter']
-          //   return (
-          //     rowRenderer('', index, {})
-          //   )
-          // })
+
           <Card.Group itemsPerRow={1} doubling data-cy="lesson-items" style={{ marginTop: '.5em' }}>
             <WindowScroller>
               {({ height, isScrolling, onChildScroll, scrollTop }) => (
@@ -187,7 +182,12 @@ const LessonList = () => {
                   isScrolling={isScrolling}
                   onScroll={onChildScroll}
                   rowCount={libraryFilteredLessons.length}
-                  rowHeight={250}
+                  rowHeight = {(index) => {
+                    const lesson = libraryFilteredLessons[index.index]
+                    const topics = lesson?.lesson_metadata ? lesson.lesson_metadata.topics.split(";") : []
+                    return 130 + topics.length * 25;
+                  }}
+                  // rowHeight= {300}
                   rowRenderer={rowRenderer}
                   scrollTop={scrollTop}
                   width={10000}
