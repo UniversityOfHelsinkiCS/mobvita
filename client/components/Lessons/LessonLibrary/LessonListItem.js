@@ -81,33 +81,51 @@ const LessonFunctionsDropdown = ({
     )
 }
 
-const LessonActions = ({lesson}) => {
-    const history = useHistory();
+const LessonActions = ({lesson, setLessonModalOpen}) => {
     const { width } = useWindowDimensions()
     const practiceLink = `/lesson/${lesson.lesson_chapter}/practice`
     const hasPracticed = lesson.lesson_instances !== null & lesson.lesson_instances.length > 0
 
-    if (width >= 640) {
-        return (
-            <div className="lesson-actions">
-                <Link to={practiceLink}>
-                    <Button variant={'primary'}>
-                        <FormattedMessage id={hasPracticed ? "continue-practice" : "start-practice"} />
-                    </Button>
-                </Link>
-            </div>
-        )
-    } else {
-        return (
-            <LessonFunctionsDropdown
-                lesson={lesson}
-                practiceLink={practiceLink}
-            />
-        )
-    }
+    return (
+        <div className="lesson-actions">
+            <Link to={practiceLink}>
+                <Button variant={'primary'}>
+                    <FormattedMessage id={hasPracticed ? "continue-practice" : "start-practice"} />
+                </Button>
+            </Link>
+            <Button variant={'primary'} onClick={() => setLessonModalOpen(true)}>
+                <FormattedMessage id={"lesson-setup"} />
+            </Button>
+        </div>
+    )
+
+    // if (width >= 640) {
+    //     return (
+    //         <div className="lesson-actions">
+    //             <Link to={practiceLink}>
+    //                 <Button variant={'primary'}>
+    //                     <FormattedMessage id={hasPracticed ? "continue-practice" : "start-practice"} />
+    //                 </Button>
+    //             </Link>
+    //             <Button variant={'primary'}>
+    //                 <FormattedMessage 
+    //                     id={"lesson-setup"} 
+    //                     onClick={() => setLessonModalOpen(true)}
+    //                 />
+    //             </Button>
+    //         </div>
+    //     )
+    // } else {
+    //     return (
+    //         <LessonFunctionsDropdown
+    //             lesson={lesson}
+    //             practiceLink={practiceLink}
+    //         />
+    //     )
+    // }
 }
 
-const LessonListItem = ({ lesson }) => {
+const LessonListItem = ({ lesson, setLessonModalOpen }) => {
     const { user: userId } = useSelector(({ user }) => ({ user: user.data.user.oid }))
     const learningLanguage = useSelector(learningLanguageSelector)
 
@@ -121,6 +139,7 @@ const LessonListItem = ({ lesson }) => {
             <Card.Content extra className="lesson-card-actions-cont">
                 <LessonActions
                     lesson={lesson}
+                    setLessonModalOpen={setLessonModalOpen}
                 />
             </Card.Content>
         </Card>

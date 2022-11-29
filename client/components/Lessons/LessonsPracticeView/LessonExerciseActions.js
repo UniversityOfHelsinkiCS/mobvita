@@ -3,15 +3,15 @@ import { useDispatch, useSelector } from 'react-redux'
 import { postLessonExerciseAnswers } from 'Utilities/redux/lessonExercisesReducer'
 import { clearTouchedIds } from 'Utilities/redux/practiceReducer'
 import { FormattedMessage } from 'react-intl'
-import { Button } from 'react-bootstrap'
+import { Spinner } from 'react-bootstrap'
 import { finalConfettiRain } from 'Utilities/common'
 
 const CheckAnswersButton = ({ handleClick, checkAnswersButtonTempDisable }) => {
   const { attempt, isNewSnippet } = useSelector(({ practice }) => practice)
   const { lesson_exercises, pending, focusing_snippets } = useSelector(({ lessonExercises }) => lessonExercises)
 
-  const [ barColor, setBarColor ] = useState('rgb(50, 170, 248)')
-  const [ attemptRatioPercentage, setAttemptRatioPercentage ] = useState(100)
+  const [barColor, setBarColor] = useState('rgb(50, 170, 248)')
+  const [attemptRatioPercentage, setAttemptRatioPercentage] = useState(100)
 
   const getFontStyle = () => {
     if (attemptRatioPercentage > 60) return { color: 'white' }
@@ -67,8 +67,8 @@ const CheckAnswersButton = ({ handleClick, checkAnswersButtonTempDisable }) => {
 
 const LessonExerciseActions = ({ lessonId, exerciseCount }) => {
   const dispatch = useDispatch()
-  const [ checkAnswersButtonTempDisable, setcheckAnswersButtonTempDisable ] = useState(false)
-  const { lesson_exercises, session_id, starttime } = useSelector(({ lessonExercises }) => lessonExercises)
+  const [checkAnswersButtonTempDisable, setcheckAnswersButtonTempDisable] = useState(false)
+  const { lesson_exercises, session_id, starttime, previous_snippets, answersPending } = useSelector(({ lessonExercises }) => lessonExercises)
   const { currentAnswers, correctAnswerIDs, touchedIds, attempt, options, audio } = useSelector(
     ({ practice }) => practice
   )
@@ -123,17 +123,29 @@ const LessonExerciseActions = ({ lessonId, exerciseCount }) => {
     }
   }
 
-  return (
-    <div>
-      <div style={{ display: 'flex', flexDirection: 'column' }}>
-        {/*<Button variant="primary" onClick={checkAnswers}>testing button</Button>*/}
-        <CheckAnswersButton
-          handleClick={checkAnswers}
-          checkAnswersButtonTempDisable={checkAnswersButtonTempDisable}
-        />
-      </div>
-    </div>
-  )
+  if (previous_snippets?.length < lesson_exercises?.length) {
+    if (!answersPending) {
+      return (
+        <div>
+          <div style={{ display: 'flex', flexDirection: 'column' }}>
+            {/*<Button variant="primary" onClick={checkAnswers}>testing button</Button>*/}
+            <CheckAnswersButton
+              handleClick={checkAnswers}
+              checkAnswersButtonTempDisable={checkAnswersButtonTempDisable}
+            />
+          </div>
+        </div>
+      )
+    } else {
+      return (
+        <div className="spinner-container" style={{ minHeight: 0 }}>
+          <Spinner animation="border" variant="primary" size="lg" />
+        </div>
+      )
+    }
+  } else {
+    return null
+  }
 }
 
 export default LessonExerciseActions

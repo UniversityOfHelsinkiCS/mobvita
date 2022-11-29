@@ -15,26 +15,6 @@ const SelectLessonModal = ({ open, setOpen }) => {
   const { lessons } = useSelector(({ lessons }) => lessons)
   const [lessonPractices, setLessonPractices] = useState([])
   const lessonId = lessons[0]?.lesson_id
-  useEffect(() => {
-    dispatch(getLessons())
-  }, [])
-
-  const removePractice = index => {
-    setLessonPractices(lessonPractices.filter((practice, pracIndex) => pracIndex !== index))
-  }
-
-  const addPractice = practice => {
-    setLessonPractices(lessonPractices.concat(practice))
-  }
-  // console.log(' lessons ', lessons)
-
-  const swapPracticeOrder = (a, b) => {
-    const copy = [...lessonPractices]
-    copy[a] = lessonPractices[b]
-    copy[b] = lessonPractices[a]
-
-    setLessonPractices(copy)
-  }
 
   return (
     <Modal
@@ -53,12 +33,12 @@ const SelectLessonModal = ({ open, setOpen }) => {
           <FormattedMessage id="select-lesson-story" />
         </div>
         <Divider />
-        <AddLessonPractice addPractice={addPractice} />
+        <AddLessonPractice addPractice={() => {}} />
         <Divider />
         <LessonPracticeList
           lessonsPractices={lessonPractices}
-          removePractice={removePractice}
-          swapPracticeOrder={swapPracticeOrder}
+          removePractice={() => {}}
+          swapPracticeOrder={() => {}}
         />
         <Divider />
         {/* <Link to={`/lessons/test`}> */}

@@ -11,6 +11,7 @@ import { Placeholder, Card, Select, Icon, Dropdown } from 'semantic-ui-react'
 import { getLessons, setLesson } from 'Utilities/redux/lessonsReducer'
 import { useLearningLanguage } from 'Utilities/common'
 
+import SelectLessonModal from 'Components/Lessons/SelectLessonModal'
 import LessonListItem from 'Components/Lessons/LessonLibrary/LessonListItem'
 import useWindowDimensions from 'Utilities/windowDimensions'
 // import AddStoryModal from 'Components/AddStoryModal'
@@ -26,13 +27,16 @@ const LessonList = () => {
 
   const smallScreenSearchbar = useRef()
   const smallWindow = useWindowDimensions().width < 520
-  let _lesson_sort_criterion = {direction: 'asc', sort_by: 'title'}
+  let _lesson_sort_criterion = { direction: 'asc', sort_by: 'title' }
   let _selected_lesson_tab = 'all_lessons'
-  
+
   const [sorter, setSorter] = useState(_lesson_sort_criterion.sort_by)
   const [sortDirection, setSortDirection] = useState(_lesson_sort_criterion.direction)
   const [smallScreenSearchOpen, setSmallScreenSearchOpen] = useState(false)
   const [displayedLessons, setDisplayedLessons] = useState(lessons)
+  const [lessonModalOpen, setLessonModalOpen] = useState(false)
+
+  console.log('lessonModalOpen', lessonModalOpen)
 
   const dispatch = useDispatch()
 
@@ -56,7 +60,7 @@ const LessonList = () => {
   const sortDropdownOptions = [
     { key: 'title', text: intl.formatMessage({ id: 'sort-by-title-option' }), value: 'title' },
   ]
-  
+
   // HANDLERS 
   const handleSortChange = (_e, option) => {
     setSorter(option.value)
@@ -134,6 +138,7 @@ const LessonList = () => {
       <div key={key} style={{ ...style, paddingRight: '0.5em', paddingLeft: '0.5em' }}>
         <LessonListItem
           lesson={libraryFilteredLessons[index]}
+          setLessonModalOpen={setLessonModalOpen}
         />
       </div>
     )
@@ -152,6 +157,7 @@ const LessonList = () => {
   else {
     return (
       <div className="cont-tall pt-lg cont flex-col auto gap-row-sm ">
+        <SelectLessonModal open={lessonModalOpen} setOpen={setLessonModalOpen} />
         {libraryControls}
         {noResults ? (
           <div className="justify-center mt-lg" style={{ color: 'rgb(112, 114, 120)' }}>
