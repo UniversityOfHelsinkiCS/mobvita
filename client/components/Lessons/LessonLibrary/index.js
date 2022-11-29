@@ -166,13 +166,12 @@ const LessonList = () => {
           setOpen={setLessonModalOpen}
           lesson_syllabus_id={lessonSyllabusId}
         />
-        {libraryControls}
+        {/* {libraryControls} */}
         {noResults ? (
           <div className="justify-center mt-lg" style={{ color: 'rgb(112, 114, 120)' }}>
             <FormattedMessage id="no-lessons-found" />
           </div>
         ) : (
-
           <Card.Group itemsPerRow={1} doubling data-cy="lesson-items" style={{ marginTop: '.5em' }}>
             <WindowScroller>
               {({ height, isScrolling, onChildScroll, scrollTop }) => (
