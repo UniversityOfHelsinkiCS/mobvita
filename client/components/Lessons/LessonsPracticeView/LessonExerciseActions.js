@@ -1,14 +1,14 @@
 import React, { useState, useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { postLessonExerciseAnswers } from 'Utilities/redux/lessonExercisesReducer'
-import { clearTouchedIds } from 'Utilities/redux/practiceReducer'
+import { clearTouchedIds, addToCorrectAnswerIDs } from 'Utilities/redux/practiceReducer'
 import { FormattedMessage } from 'react-intl'
 import { Spinner } from 'react-bootstrap'
-import { finalConfettiRain } from 'Utilities/common'
+import { finalConfettiRain, confettiRain } from 'Utilities/common'
 
 const CheckAnswersButton = ({ handleClick, checkAnswersButtonTempDisable }) => {
   const { attempt, isNewSnippet } = useSelector(({ practice }) => practice)
-  const { lesson_exercises, pending, focusing_snippets } = useSelector(({ lessonExercises }) => lessonExercises)
+  const { lesson_exercises, pending } = useSelector(({ lessonExercises }) => lessonExercises)
 
   const [barColor, setBarColor] = useState('rgb(50, 170, 248)')
   const [attemptRatioPercentage, setAttemptRatioPercentage] = useState(100)
@@ -18,28 +18,28 @@ const CheckAnswersButton = ({ handleClick, checkAnswersButtonTempDisable }) => {
     return { color: 'black', textShadow: '0px 0px 4px #FFF' }
   }
 
-  useEffect(() => {
-    if (!pending) {
-      const max_attempt = 3 //lesson_exercises?.max_attempt)
-      const newAttemptRatioPercentage = 100 - 100 * ((attempt + 1) / max_attempt)
+  // useEffect(() => {
+  //   if (!pending) {
+  //     const max_attempt = 1 //lesson_exercises?.max_attempt)
+  //     const newAttemptRatioPercentage = 100 - 100 * ((attempt + 1) / max_attempt)
 
-      if (typeof newAttemptRatioPercentage !== 'number') setBarColor('rgb(50, 170, 248)')
-      else {
-        if (newAttemptRatioPercentage <= 60) setBarColor('#67b5ed')
-        if (newAttemptRatioPercentage <= 40) setBarColor('#8ebfe2')
-        if (newAttemptRatioPercentage <= 20) setBarColor('#b0c8d8')
-      }
+  //     if (typeof newAttemptRatioPercentage !== 'number') setBarColor('rgb(50, 170, 248)')
+  //     else {
+  //       if (newAttemptRatioPercentage <= 60) setBarColor('#67b5ed')
+  //       if (newAttemptRatioPercentage <= 40) setBarColor('#8ebfe2')
+  //       if (newAttemptRatioPercentage <= 20) setBarColor('#b0c8d8')
+  //     }
 
-      if (max_attempt - attempt === 1) {
-        setAttemptRatioPercentage(1)
-      } else if (newAttemptRatioPercentage <= 100) {
-        setAttemptRatioPercentage(newAttemptRatioPercentage)
-      } else {
-        setAttemptRatioPercentage(100)
-        setBarColor('rgb(50, 170, 248)')
-      }
-    }
-  }, [attempt, isNewSnippet])
+  //     if (max_attempt - attempt === 1) {
+  //       setAttemptRatioPercentage(1)
+  //     } else if (newAttemptRatioPercentage <= 100) {
+  //       setAttemptRatioPercentage(newAttemptRatioPercentage)
+  //     } else {
+  //       setAttemptRatioPercentage(100)
+  //       setBarColor('rgb(50, 170, 248)')
+  //     }
+  //   }
+  // }, [attempt, isNewSnippet])
 
   return (
     <button
@@ -67,8 +67,8 @@ const CheckAnswersButton = ({ handleClick, checkAnswersButtonTempDisable }) => {
 
 const LessonExerciseActions = ({ lessonId, exerciseCount }) => {
   const dispatch = useDispatch()
-  const [checkAnswersButtonTempDisable, setcheckAnswersButtonTempDisable] = useState(false)
-  const { lesson_exercises, session_id, starttime, previous_snippets, answersPending } = useSelector(({ lessonExercises }) => lessonExercises)
+  const [ checkAnswersButtonTempDisable, setcheckAnswersButtonTempDisable ] = useState(false)
+  const { lesson_exercises, session_id, starttime, focusing_snippets, previous_snippets, answersPending } = useSelector(({ lessonExercises }) => lessonExercises)
   const { currentAnswers, correctAnswerIDs, touchedIds, attempt, options, audio } = useSelector(
     ({ practice }) => practice
   )
@@ -117,11 +117,22 @@ const LessonExerciseActions = ({ lessonId, exerciseCount }) => {
     )
 
     if ((!wrongAnswers || wrongAnswers.length < 1) && attempt === 0) {
-      const endDate = Date.now() + 2 * 1000
-      const colors = ['#bb0000', '#ffffff']
-      finalConfettiRain(colors, endDate)
+      confettiRain()
+      // if (snippetid[0] === numSnippets - 1) {
+        // const endDate = Date.now() + 2 * 1000
+        // const colors = ['#bb0000', '#ffffff']
+        // finalConfettiRain(colors, endDate)
+      // }
     }
   }
+
+  useEffect(() => {
+    const testedAndCorrectIDs = focusing_snippets[0]?.sent
+      .filter(w => w.tested && !w.isWrong)
+      .map(w => w.ID.toString())
+
+    dispatch(addToCorrectAnswerIDs(testedAndCorrectIDs))
+  }, [attempt])
 
   if (previous_snippets?.length < lesson_exercises?.length) {
     if (!answersPending) {

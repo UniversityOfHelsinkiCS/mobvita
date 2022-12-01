@@ -6,6 +6,8 @@ import { setAnswers, setTouchedIds } from 'Utilities/redux/practiceReducer'
 import { Segment, Divider } from 'semantic-ui-react'
 import { useParams } from 'react-router'
 
+import AnnotationBox from 'Components/AnnotationBox'
+import DictionaryHelp from 'Components/DictionaryHelp'
 import TextWithFeedback from 'Components/CommonStoryTextComponents/TextWithFeedback'
 import ProgressBar from '../../PracticeView/CurrentSnippet/ProgressBar'
 import useWindowDimensions from 'Utilities/windowDimensions'
@@ -81,7 +83,7 @@ const LessonsPracticeView = () => {
                   'font-size': 'large',
                 }}
               >
-                {!pending && `Lesson ${lesson_instance.syllabus.chapter}`}
+                {!pending && `Lesson ${lesson_instance.syllabus.syllabus_id}`}
               </div>
               <Divider />
               {previous_snippets?.map(snippet => (
@@ -92,6 +94,10 @@ const LessonsPracticeView = () => {
               ))}
               <LessonExercise lesson_instance={lesson_instance} handleInputChange={handleAnswerChange} />
             </Segment>
+          </div>
+          <div className="dictionary-and-annotations-cont">
+            <DictionaryHelp />
+            <AnnotationBox />
           </div>
         </div>
       </div>

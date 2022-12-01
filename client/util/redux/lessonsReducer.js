@@ -50,7 +50,7 @@ export default (state = initialState, action) => {
       return {
         ...state,
         pending: false,
-        lessons: action.response.lessons.sort((a, b) => (a.chapter > b.chapter) ? 1 : -1),
+        lessons: action.response.lessons //.sort((a, b) => (a.lesson_metadata.index < b.lesson_metadata.index) ? 1 : -1),
       }
     case 'GET_EXERCISE_LESSON_ATTEMPT':
       return {

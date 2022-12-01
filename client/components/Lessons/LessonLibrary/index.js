@@ -27,7 +27,7 @@ const LessonList = () => {
 
   const smallScreenSearchbar = useRef()
   const smallWindow = useWindowDimensions().width < 520
-  let _lesson_sort_criterion = { direction: 'asc', sort_by: 'title' }
+  let _lesson_sort_criterion = { direction: 'asc', sort_by: 'syllabus_id' }
   let _selected_lesson_tab = 'all_lessons'
 
   const [sorter, setSorter] = useState(_lesson_sort_criterion.sort_by)
@@ -45,7 +45,7 @@ const LessonList = () => {
   }, [])
 
   useEffect(() => {
-    setSorter('chapter')
+    setSorter('index')
   }, [_selected_lesson_tab])
 
   useEffect(() => {
@@ -57,7 +57,8 @@ const LessonList = () => {
   }, [smallScreenSearchOpen])
 
   const sortDropdownOptions = [
-    { key: 'chapter', text: intl.formatMessage({ id: 'sort-by-title-option' }), value: 'chapter' },
+    { key: 'index', text: intl.formatMessage({ id: 'sort-by-lesson-index-option' }), value: 'index' },
+    { key: 'syllabus_id', text: intl.formatMessage({ id: 'sort-by-lesson-syllabus-id-option' }), value: 'syllabus_id' },
   ]
 
   // HANDLERS 
@@ -126,13 +127,15 @@ const LessonList = () => {
   libraryFilteredLessons.sort((a, b) => {
     let dir = 0
     switch (sorter) {
-      case 'chapter':
-        dir = a.chapter > b.chapter ? 1 : -1
+      case 'index':
+        dir = a.lesson_metadata.index > b.lesson_metadata.index ? 1 : -1
+        break
+      case 'syllabus_id':
+        dir = a.lesson_metadata.syllabus_id > b.lesson_metadata.syllabus_id ? 1 : -1
         break
       default:
         break
     }
-
     const multiplier = sortDirection === 'asc' ? 1 : -1
     return dir * multiplier
   })
@@ -151,7 +154,7 @@ const LessonList = () => {
   if (pending || !refreshed || !libraryFilteredLessons) {
     return (
       <div className="cont-tall cont flex-col auto gap-row-sm">
-        {libraryControls}
+        {/* {libraryControls} */}
         <Placeholder>
           <Placeholder.Line />
         </Placeholder>
