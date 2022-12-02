@@ -42,6 +42,8 @@ export default (state = initialState, action) => {
         numUnreadNews: response.num_unread_news,
         root_hex_coord: response.root_hex_coord,
         cachedStories: response.available_cached_stories,
+        lessons: response.lessons,
+        lesson_semantics: response.lesson_semantics,
         pending: false,
         error: false,
       }

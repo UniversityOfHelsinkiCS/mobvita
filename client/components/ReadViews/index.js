@@ -178,7 +178,7 @@ const ReadViews = ({ match }) => {
             <Dropdown.Item
               text={<FormattedMessage id="practice-grammar-mode" />}
               as={Link}
-              to={`/stories/${id}/practice/`}
+              to={`/stories/${id}/grammar/practice/`}
               icon="pencil alternate"
             />
             <Dropdown.Item

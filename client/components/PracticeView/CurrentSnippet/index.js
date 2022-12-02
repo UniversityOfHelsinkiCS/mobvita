@@ -60,7 +60,7 @@ const CurrentSnippet = ({ storyId, handleInputChange, timer, numSnippets }) => {
   const learningLanguage = useSelector(learningLanguageSelector)
   const history = useHistory()
   const isControlledStory = history.location.pathname.includes('controlled-practice')
-  const exerciseMode = history.location.pathname.includes('listening') ? 'listening' : 'grammar'
+  const exerciseMode = history.location.pathname.includes('listening') ? 'listening' : history.location.pathname.includes('grammar') ? 'grammar' : 'all'
   const sessionId = snippets?.sessionId ?? null
   const [initRender, setInitRender] = useState(false)
   // const [openEncouragement, setOpenEncouragement] = useState(true)

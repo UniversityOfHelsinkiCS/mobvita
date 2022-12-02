@@ -1,60 +1,57 @@
-
-
-import { Button } from 'react-bootstrap'
-import { useHistory } from 'react-router'
 import { useDispatch, useSelector } from 'react-redux'
 import { useIntl, FormattedMessage } from 'react-intl'
 import { List, WindowScroller } from 'react-virtualized'
-import React, { useEffect, useState, useRef } from 'react'
-import { Placeholder, Card, Select, Icon, Dropdown } from 'semantic-ui-react'
+import React, { useEffect, useState } from 'react'
+import { Placeholder, Card, Icon, Dropdown } from 'semantic-ui-react'
 
-import { getLessons } from 'Utilities/redux/lessonsReducer'
 import { useLearningLanguage } from 'Utilities/common'
+import { getMetadata } from 'Utilities/redux/metadataReducer'
+// import { getLessons } from 'Utilities/redux/lessonsReducer'
 
 import SelectLessonModal from 'Components/Lessons/SelectLessonModal'
 import LessonListItem from 'Components/Lessons/LessonLibrary/LessonListItem'
-import useWindowDimensions from 'Utilities/windowDimensions'
+// import useWindowDimensions from 'Utilities/windowDimensions'
 // import AddStoryModal from 'Components/AddStoryModal'
 // import LessonLibrarySearch from './LessonLibrarySearch'
 
 const LessonList = () => {
   const intl = useIntl()
-  // const history = useHistory()
-  // const learningLanguage = useLearningLanguage()
-  // const { oid: userId } = useSelector(({ user }) => user.data.user)
+  const learningLanguage = useLearningLanguage()
   const refreshed = useSelector(({ user }) => user.refreshed)
-  const { pending, lessons } = useSelector(({ lessons }) => lessons)
 
-  const smallScreenSearchbar = useRef()
-  const smallWindow = useWindowDimensions().width < 520
-  let _lesson_sort_criterion = { direction: 'asc', sort_by: 'syllabus_id' }
-  let _selected_lesson_tab = 'all_lessons'
+  const { pending, lessons } = useSelector(({ metadata }) => metadata)
+
+  let _lesson_sort_criterion = { direction: 'asc', sort_by: 'index' }
+  // let _selected_lesson_tab = 'all_lessons'
+  // const smallScreenSearchbar = useRef()
+  // const smallWindow = useWindowDimensions().width < 520
 
   const [sorter, setSorter] = useState(_lesson_sort_criterion.sort_by)
   const [sortDirection, setSortDirection] = useState(_lesson_sort_criterion.direction)
-  const [smallScreenSearchOpen, setSmallScreenSearchOpen] = useState(false)
-  const [displayedLessons, setDisplayedLessons] = useState(lessons)
+  // const [smallScreenSearchOpen, setSmallScreenSearchOpen] = useState(false)
+  const [displayedLessons, setDisplayedLessons] = useState([])
   const [lessonModalOpen, setLessonModalOpen] = useState(false)
   const [lessonSyllabusId, setlessonSyllabusId] = useState(null)
 
   const dispatch = useDispatch()
 
-  // get all lessons from BE
-  useEffect(() => {
-    dispatch(getLessons())
-  }, [])
+  // console.log("lessons", lessons)
 
   useEffect(() => {
-    setSorter('index')
-  }, [_selected_lesson_tab])
+    dispatch(getMetadata(learningLanguage))
+  }, [])
 
   useEffect(() => {
     if (lessons) setDisplayedLessons(lessons)
   }, [lessons])
 
-  useEffect(() => {
-    if (smallScreenSearchbar.current && smallScreenSearchOpen) smallScreenSearchbar.current.focus()
-  }, [smallScreenSearchOpen])
+  // useEffect(() => {
+  //   setSorter('index')
+  // }, [_selected_lesson_tab])
+
+  // useEffect(() => {
+  //   if (smallScreenSearchbar.current && smallScreenSearchOpen) smallScreenSearchbar.current.focus()
+  // }, [smallScreenSearchOpen])
 
   const sortDropdownOptions = [
     { key: 'index', text: intl.formatMessage({ id: 'sort-by-lesson-index-option' }), value: 'index' },
@@ -128,10 +125,10 @@ const LessonList = () => {
     let dir = 0
     switch (sorter) {
       case 'index':
-        dir = a.lesson_metadata.index > b.lesson_metadata.index ? 1 : -1
+        dir = a.index > b.index ? 1 : -1
         break
       case 'syllabus_id':
-        dir = a.lesson_metadata.syllabus_id > b.lesson_metadata.syllabus_id ? 1 : -1
+        dir = a.syllabus_id > b.syllabus_id ? 1 : -1
         break
       default:
         break
@@ -186,7 +183,7 @@ const LessonList = () => {
                   rowCount={libraryFilteredLessons.length}
                   rowHeight = {(index) => {
                     const lesson = libraryFilteredLessons[index.index]
-                    const topics = lesson?.lesson_metadata ? lesson.lesson_metadata.topics.split(";") : []
+                    const topics = lesson ? lesson.topics.split(";") : []
                     return 130 + topics.length * 25;
                   }}
                   // rowHeight= {300}

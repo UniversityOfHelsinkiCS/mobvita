@@ -5,15 +5,17 @@ import { Card, Dropdown, Button as SemanticButton, Icon, Popup } from 'semantic-
 import { Button } from 'react-bootstrap'
 import { Link } from 'react-router-dom'
 import { FormattedMessage } from 'react-intl'
-import useWindowDimensions from 'Utilities/windowDimensions'
 import { getTextStyle, learningLanguageSelector } from 'Utilities/common'
+
 // import ConfirmationWarning from 'Components/ConfirmationWarning'
+// import useWindowDimensions from 'Utilities/windowDimensions'
+
 
 const LessonTitle = ({
     lesson
 }) => {
     const learningLanguage = useSelector(learningLanguageSelector)
-    const topics = lesson.lesson_metadata ? lesson.lesson_metadata.topics.split(";") : []
+    const topics = lesson.topics ? lesson.topics.split(";") : []
     let topic_rows = []
     for (let i = 0; i < topics.length; i++) {
         topic_rows.push(
@@ -37,7 +39,7 @@ const LessonTitle = ({
                     className="story-item-title"
                     style={{ marginBottom: '.5rem', width: '100%', ...getTextStyle(learningLanguage) }}
                 >
-                    {'Lesson ' + lesson.lesson_chapter}
+                    {'Lesson ' + lesson.syllabus_id}
                 </h5>
             </span>
             {topic_rows}
@@ -82,18 +84,17 @@ const LessonFunctionsDropdown = ({
 }
 
 const LessonActions = ({lesson, handleOpenLessonModal}) => {
-    const { width } = useWindowDimensions()
-    const practiceLink = `/lesson/${lesson.lesson_chapter}/practice`
-    const hasPracticed = lesson.lesson_instances !== null & lesson.lesson_instances.length > 0
+    // const { width } = useWindowDimensions()
+    const practiceLink = `/lesson/${lesson.syllabus_id}/practice`
 
     return (
         <div className="lesson-actions">
             <Link to={practiceLink}>
                 <Button variant={'primary'}>
-                    <FormattedMessage id={hasPracticed ? "continue-practice" : "start-practice"} />
+                    <FormattedMessage id={"start-practice"} />
                 </Button>
             </Link>
-            <Button variant={'primary'} onClick={() => handleOpenLessonModal(lesson.lesson_chapter, true)} style={{margin: '0.5rem'}}>
+            <Button variant={'primary'} onClick={() => {handleOpenLessonModal(lesson.syllabus_id, true)}} style={{margin: '0.5rem'}}>
                 <FormattedMessage id={"lesson-setup"} />
             </Button>
         </div>
@@ -128,7 +129,6 @@ const LessonActions = ({lesson, handleOpenLessonModal}) => {
 const LessonListItem = ({ lesson, handleOpenLessonModal }) => {
     // const { user: userId } = useSelector(({ user }) => ({ user: user.data.user.oid }))
     // const learningLanguage = useSelector(learningLanguageSelector)
-
     return (
         <Card fluid key={lesson._id} className={'lesson-list-card'}>
             <Card.Content extra className="lesson-card-title-cont">

@@ -1,10 +1,12 @@
 import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { getLessonInstance } from 'Utilities/redux/lessonInstanceReducer'
+import { useParams } from 'react-router'
+import { Segment, Divider } from 'semantic-ui-react'
+
+import { getLessonActiveInstance } from 'Utilities/redux/lessonInstanceReducer'
+import { clearExerciseState } from 'Utilities/redux/lessonExercisesReducer'
 import { getTextStyle, learningLanguageSelector, getMode } from 'Utilities/common'
 import { setAnswers, setTouchedIds } from 'Utilities/redux/practiceReducer'
-import { Segment, Divider } from 'semantic-ui-react'
-import { useParams } from 'react-router'
 
 import AnnotationBox from 'Components/AnnotationBox'
 import DictionaryHelp from 'Components/DictionaryHelp'
@@ -29,7 +31,8 @@ const LessonsPracticeView = () => {
   const [snippetsTotalNum, setsnippetsTotalNum] = useState(0)
 
   useEffect(() => {
-    dispatch(getLessonInstance(lesson_syllabus_id))
+    dispatch(clearExerciseState())
+    dispatch(getLessonActiveInstance(lesson_syllabus_id))
   }, [])
 
   useEffect(() => {
