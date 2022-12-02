@@ -3,9 +3,10 @@ import { useDispatch, useSelector } from 'react-redux'
 import { useParams } from 'react-router'
 import { Segment, Divider } from 'semantic-ui-react'
 
+import { clearTranslationAction } from 'Utilities/redux/translationReducer'
 import { getLessonActiveInstance } from 'Utilities/redux/lessonInstanceReducer'
 import { clearExerciseState } from 'Utilities/redux/lessonExercisesReducer'
-import { getTextStyle, learningLanguageSelector, getMode } from 'Utilities/common'
+import { getTextStyle, learningLanguageSelector } from 'Utilities/common'
 import { setAnswers, setTouchedIds } from 'Utilities/redux/practiceReducer'
 
 import AnnotationBox from 'Components/AnnotationBox'
@@ -21,7 +22,7 @@ const LessonsPracticeView = () => {
   const learningLanguage = useSelector(learningLanguageSelector)
   const { pending, lesson_instance } = useSelector(({ lessonInstance }) => lessonInstance)
   const { previous_snippets, lesson_exercises } = useSelector(({ lessonExercises }) => lessonExercises)
-  const { currentAnswers, previousAnswers } = useSelector(({ practice }) => practice)
+  const { currentAnswers, previousAnswers, attempt } = useSelector(({ practice }) => practice)
 
   const { lesson_syllabus_id } = useParams()
   const { width } = useWindowDimensions()
@@ -33,6 +34,7 @@ const LessonsPracticeView = () => {
   useEffect(() => {
     dispatch(clearExerciseState())
     dispatch(getLessonActiveInstance(lesson_syllabus_id))
+    dispatch(clearTranslationAction())
   }, [])
 
   useEffect(() => {

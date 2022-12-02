@@ -20,8 +20,6 @@ const SelectLessonModal = ({ open, setOpen, lesson_syllabus_id }) => {
 
   const [lessonSemanticTopic, setlessonSemanticTopic] = useState('All')
   const [semanticOptions, setSemanticOptions] = useState([])
-
-  console.log('lesson_syllabus_id', lesson_syllabus_id)
   
   useEffect(() => {
     dispatch(clearExerciseState())

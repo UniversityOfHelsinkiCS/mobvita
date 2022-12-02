@@ -3,6 +3,7 @@ import callBuilder from '../apiConnection'
 export const clearExerciseState = () => ({ type: 'CLEAR_LESSON_EXERCISE_STATE' })
 export const addToPrevious = snippets => ({ type: 'ADD_TO_PREVIOUS_LESSON_SNIPPETS', snippets })
 export const setFocusingSnippets = snippets => ({ type: 'SET_FOCUSING_LESSON_SNIPPETS', snippets })
+export const setNextSnippet = () => ({ type: 'SET_NEXT_LESSON_SNIPPET' })
 
 export const getExerciseLesson = lessonId => {
   const route = `/lesson/${lessonId}/exercise`
@@ -38,6 +39,15 @@ export default (state = initialState, action) => {
         lesson_exercises: [],
         focusing_snippets: [],
         previous_snippets: [],
+      }
+    case 'SET_NEXT_LESSON_SNIPPET':
+      let next_focusing_snippets = []
+      if (practiced_snippets.length < state.lesson_exercises.length){
+        next_focusing_snippets = [state.lesson_exercises[practiced_snippets.length]]
+      }
+      return {
+        ...state,
+        focusing_snippets: next_focusing_snippets,
       }
 
     case 'SET_FOCUSING_LESSON_SNIPPETS':
@@ -89,7 +99,7 @@ export default (state = initialState, action) => {
         error: true,
       }
     case 'GET_LESSON_ANSWERS_SUCCESS':
-      let practiced_snippets = action.response.exercises// state.previous_snippets.concat(action.response.exercises)
+      let practiced_snippets = state.previous_snippets.concat(action.response.exercises)
       let focusing_snippets = []
       if (practiced_snippets.length < state.lesson_exercises.length){
         focusing_snippets = [state.lesson_exercises[practiced_snippets.length]]

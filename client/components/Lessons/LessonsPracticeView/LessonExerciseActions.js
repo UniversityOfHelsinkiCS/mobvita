@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { postLessonExerciseAnswers } from 'Utilities/redux/lessonExercisesReducer'
-import { clearTouchedIds, addToCorrectAnswerIDs } from 'Utilities/redux/practiceReducer'
+import { clearTouchedIds, addToCorrectAnswerIDs, incrementAttempts } from 'Utilities/redux/practiceReducer'
 import { FormattedMessage } from 'react-intl'
 import { Spinner } from 'react-bootstrap'
 import { finalConfettiRain, confettiRain } from 'Utilities/common'
@@ -20,7 +20,7 @@ const CheckAnswersButton = ({ handleClick, checkAnswersButtonTempDisable }) => {
 
   // useEffect(() => {
   //   if (!pending) {
-  //     const max_attempt = 1 //lesson_exercises?.max_attempt)
+  //     const max_attempt = 3 //lesson_exercises?.max_attempt)
   //     const newAttemptRatioPercentage = 100 - 100 * ((attempt + 1) / max_attempt)
 
   //     if (typeof newAttemptRatioPercentage !== 'number') setBarColor('rgb(50, 170, 248)')
@@ -69,7 +69,7 @@ const LessonExerciseActions = ({ lessonId, exerciseCount }) => {
   const dispatch = useDispatch()
   const [ checkAnswersButtonTempDisable, setcheckAnswersButtonTempDisable ] = useState(false)
   const { lesson_exercises, session_id, starttime, focusing_snippets, previous_snippets, answersPending } = useSelector(({ lessonExercises }) => lessonExercises)
-  const { currentAnswers, correctAnswerIDs, touchedIds, attempt, options, audio } = useSelector(
+  const { currentAnswers, correctAnswerIDs, touchedIds, attempt, options, audio, clearCurrentPractice } = useSelector(
     ({ practice }) => practice
   )
 
@@ -124,6 +124,10 @@ const LessonExerciseActions = ({ lessonId, exerciseCount }) => {
         // finalConfettiRain(colors, endDate)
       // }
     }
+
+    // if (wrongAnswers && wrongAnswers.length > 0) {
+
+    // }
   }
 
   useEffect(() => {

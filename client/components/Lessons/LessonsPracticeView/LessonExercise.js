@@ -6,6 +6,7 @@ import { resetSessionId } from 'Utilities/redux/snippetsReducer'
 import {
   setAnswers,
   clearPractice,
+  clearCurrentPractice,
   addToOptions,
   addToAudio,
   setTouchedIds
@@ -149,6 +150,7 @@ const LessonExercise = ({ lesson_instance, handleInputChange }) => {
 
   useEffect(() => {
     if (focusing_snippets) {
+      dispatch(clearCurrentPractice())
       setInitialAnswers()
     }
   }, [focusing_snippets])
