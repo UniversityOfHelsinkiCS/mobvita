@@ -183,7 +183,7 @@ const LessonList = () => {
                   rowCount={libraryFilteredLessons.length}
                   rowHeight = {(index) => {
                     const lesson = libraryFilteredLessons[index.index]
-                    const topics = lesson ? lesson.topics.split(";") : []
+                    const topics = lesson ? lesson.topics : []
                     return 130 + topics.length * 25;
                   }}
                   // rowHeight= {300}

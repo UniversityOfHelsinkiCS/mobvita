@@ -15,7 +15,7 @@ const LessonTitle = ({
     lesson
 }) => {
     const learningLanguage = useSelector(learningLanguageSelector)
-    const topics = lesson.topics ? lesson.topics.split(";") : []
+    const topics = lesson.topics ? lesson.topics : []
     let topic_rows = []
     for (let i = 0; i < topics.length; i++) {
         topic_rows.push(
@@ -26,7 +26,7 @@ const LessonTitle = ({
                     ...getTextStyle(learningLanguage) 
                 }}
             >
-                {topics[i].charAt(0).toUpperCase() + topics[i].slice(1)}
+                {topics[i].topic.charAt(0).toUpperCase() + topics[i].topic.slice(1)}
             </h6>
         );
     } 
