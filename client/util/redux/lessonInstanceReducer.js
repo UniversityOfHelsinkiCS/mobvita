@@ -1,5 +1,7 @@
 import callBuilder from '../apiConnection'
 
+export const clearLessonInstanceState = () => ({ type: 'CLEAR_LESSON_INSTANCE_STATE' })
+
 
 export const getLessonActiveInstance = lesson_syllabus_id => {
   if (lesson_syllabus_id) {
@@ -38,6 +40,9 @@ const initialState = {
 export default (state = initialState, action) => {
   switch (action.type) {
 
+    case 'CLEAR_LESSON_EXERCISE_STATE':
+      return initialState
+      
     case 'GET_LESSON_ACTIVE_INSTANCE_ATTEMPT':
       return {
         ...state,

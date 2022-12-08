@@ -17,7 +17,7 @@
 import './commands'
 
 Cypress.on('uncaught:exception', (err, runnable) => {
-return false
+    return false
 })
 
 // Alternatively you can use CommonJS syntax:

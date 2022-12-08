@@ -10,6 +10,22 @@ import { getTextStyle, learningLanguageSelector } from 'Utilities/common'
 // import ConfirmationWarning from 'Components/ConfirmationWarning'
 // import useWindowDimensions from 'Utilities/windowDimensions'
 
+const get_lesson_performance = (correct_count, total_count) => {
+    let correct_perc = 0.0
+    if (total_count && total_count !== 0){ 
+        correct_perc =  correct_count / total_count
+    } 
+    return parseFloat(correct_perc).toFixed(2) // * 100
+}
+
+const get_lesson_performance_style = (correct_count, total_count) => {
+    let correct_perc = get_lesson_performance(correct_count, total_count)
+    if (correct_perc >= 0.75) return { 'color': 'green' }
+    if (correct_perc < 0.75 && correct_perc >= 0.5) return { 'color': 'greenyellow' }
+    if (correct_perc < 0.5 && correct_perc >= 0.25) return { 'color': 'orange' }
+    if (correct_perc < 0.25) return { 'color': 'red' }
+    return { 'color': 'black' }
+}
 
 const LessonTitle = ({
     lesson
@@ -18,17 +34,43 @@ const LessonTitle = ({
     const topics = lesson.topics ? lesson.topics : []
     let topic_rows = []
     for (let i = 0; i < topics.length; i++) {
-        topic_rows.push(
-            <h6
-                className="lesson-item-topics"
-                style={{ 
-                    marginBottom: '.5rem', 
-                    ...getTextStyle(learningLanguage) 
-                }}
-            >
-                {topics[i].topic.charAt(0).toUpperCase() + topics[i].topic.slice(1)}
-            </h6>
-        );
+        let topic_concepts = topics[i].topic.split(';')
+
+        for (let k = 0; k < topic_concepts.length; k++) {
+            if (k === 0){
+                topic_rows.push(
+                    <h6
+                        className="lesson-item-topics"
+                        style={{ 
+                            marginBottom: '.5rem', 
+                            display: 'inline-flex',
+                            width: '100%',
+                            ...getTextStyle(learningLanguage) 
+                        }}
+                    >
+                        <div style={{ 'width': '7%', 'max-width': '40px', 'min-width': '35px', ...get_lesson_performance_style(topics[i].correct, topics[i].total)}}>
+                            {get_lesson_performance(topics[i].correct, topics[i].total)}
+                        </div>
+                        <div >{topic_concepts[k].charAt(0).toUpperCase() + topic_concepts[k].slice(1)}</div>
+                    </h6>
+                );
+            } else {
+                topic_rows.push(
+                    <h6
+                        className="lesson-item-topics"
+                        style={{ 
+                            marginBottom: '.5rem', 
+                            display: 'inline-flex',
+                            width: '100%',
+                            ...getTextStyle(learningLanguage) 
+                        }}
+                    >
+                        <div style={{ 'width': '7%', 'max-width': '40px', 'min-width': '35px', ...get_lesson_performance_style(topics[i].correct, topics[i].total)}}>{}</div>
+                        <div>{topic_concepts[k].charAt(0).toUpperCase() + topic_concepts[k].slice(1)}</div>
+                    </h6>
+                );
+            }
+        }
     } 
 
     return (
@@ -42,48 +84,14 @@ const LessonTitle = ({
                     {'Lesson ' + lesson.syllabus_id}
                 </h5>
             </span>
-            {topic_rows}
+            <span style={{ overflow: 'hidden', width: '100%' }}>
+                {topic_rows}
+            </span>
         </div>
     )
 }
 
-const LessonFunctionsDropdown = ({
-    lesson,
-    practiceLink
-}) => {
-    return (
-        <SemanticButton.Group>
-            <SemanticButton
-                as={Link}
-                to={practiceLink}
-                style={{ backgroundColor: 'rgb(50, 170, 248)', color: 'white' }}
-            >
-                <FormattedMessage id="practice" />
-            </SemanticButton>
-            <Dropdown
-                className="button icon"
-                style={{
-                    backgroundColor: 'rgb(50, 170, 248)',
-                    color: 'white',
-                    borderLeft: '2px solid rgb(81, 138, 248)',
-                }}
-                floating
-                trigger={<React.Fragment />}
-            >
-                <Dropdown.Menu className="lesson-item-dropdown">
-                    <Dropdown.Item
-                        text={<FormattedMessage id="practice" />}
-                        as={Link}
-                        to={practiceLink}
-                        icon="pencil alternate"
-                    />
-                </Dropdown.Menu>
-            </Dropdown>
-        </SemanticButton.Group>
-    )
-}
-
-const LessonActions = ({lesson, handleOpenLessonModal}) => {
+const LessonActions = ({ lesson, handleOpenLessonModal }) => {
     // const { width } = useWindowDimensions()
     const practiceLink = `/lesson/${lesson.syllabus_id}/practice`
 

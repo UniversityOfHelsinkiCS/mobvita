@@ -184,7 +184,12 @@ const LessonList = () => {
                   rowHeight = {(index) => {
                     const lesson = libraryFilteredLessons[index.index]
                     const topics = lesson ? lesson.topics : []
-                    return 130 + topics.length * 25;
+                    const concepts = []
+                    topics.forEach((topic, i) => {
+                      let topic_concepts = topic.topic.split(';')
+                      topic_concepts.forEach((topic_concept, k) => {concepts.push(topic_concept)})
+                    })
+                    return 130 + concepts.length * 25 //  + (topics.length - 1) * 5;
                   }}
                   // rowHeight= {300}
                   rowRenderer={rowRenderer}

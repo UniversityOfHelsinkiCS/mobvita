@@ -6,7 +6,7 @@ import { resetSessionId } from 'Utilities/redux/snippetsReducer'
 import {
   setAnswers,
   clearPractice,
-  clearCurrentPractice,
+  clearCurrentAnswers,
   addToOptions,
   addToAudio,
   setTouchedIds
@@ -21,7 +21,7 @@ const LessonExercise = ({ lesson_instance, handleInputChange }) => {
   const learningLanguage = useSelector(learningLanguageSelector)
   const practiceForm = useRef(null)
   
-  const { lesson_exercises, focusing_snippets } = useSelector(({ lessonExercises }) => lessonExercises)
+  const { lesson_exercises, focusing_snippets, current_attempt, max_attempt_per_snippet } = useSelector(({ lessonExercises }) => lessonExercises)
   const [ exerciseCount, setExerciseCount ] = useState(0)
   
   const getExerciseCount = () => {
@@ -150,7 +150,19 @@ const LessonExercise = ({ lesson_instance, handleInputChange }) => {
 
   useEffect(() => {
     if (focusing_snippets) {
-      dispatch(clearCurrentPractice())
+      let has_wrong_answers = false
+      for (let i=0; i < focusing_snippets.length; i++){
+        let _snippet = focusing_snippets[i]
+        _snippet.sent.forEach((e, i) => {
+          if (e.isWrong) { has_wrong_answers = true }
+        }); 
+      }
+
+      if (current_attempt >= max_attempt_per_snippet || !has_wrong_answers){
+        dispatch(clearPractice())
+      } else {
+        dispatch(clearCurrentAnswers())
+      }
       setInitialAnswers()
     }
   }, [focusing_snippets])

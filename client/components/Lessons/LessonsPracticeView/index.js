@@ -4,7 +4,7 @@ import { useParams } from 'react-router'
 import { Segment, Divider } from 'semantic-ui-react'
 
 import { clearTranslationAction } from 'Utilities/redux/translationReducer'
-import { getLessonActiveInstance } from 'Utilities/redux/lessonInstanceReducer'
+import { getLessonActiveInstance, clearLessonInstanceState } from 'Utilities/redux/lessonInstanceReducer'
 import { clearExerciseState } from 'Utilities/redux/lessonExercisesReducer'
 import { getTextStyle, learningLanguageSelector } from 'Utilities/common'
 import { setAnswers, setTouchedIds } from 'Utilities/redux/practiceReducer'
@@ -32,6 +32,7 @@ const LessonsPracticeView = () => {
   const [snippetsTotalNum, setsnippetsTotalNum] = useState(0)
 
   useEffect(() => {
+    dispatch(clearLessonInstanceState())
     dispatch(clearExerciseState())
     dispatch(getLessonActiveInstance(lesson_syllabus_id))
     dispatch(clearTranslationAction())
