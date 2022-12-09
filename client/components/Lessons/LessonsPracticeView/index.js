@@ -12,6 +12,7 @@ import { setAnswers, setTouchedIds } from 'Utilities/redux/practiceReducer'
 import AnnotationBox from 'Components/AnnotationBox'
 import DictionaryHelp from 'Components/DictionaryHelp'
 import TextWithFeedback from 'Components/CommonStoryTextComponents/TextWithFeedback'
+import FeedbackInfoModal from 'Components/CommonStoryTextComponents/FeedbackInfoModal'
 import ProgressBar from '../../PracticeView/CurrentSnippet/ProgressBar'
 import useWindowDimensions from 'Utilities/windowDimensions'
 import LessonExercise from './LessonExercise'
@@ -105,6 +106,7 @@ const LessonsPracticeView = () => {
             <DictionaryHelp />
             <AnnotationBox />
           </div>
+          <FeedbackInfoModal />
         </div>
       </div>
     )

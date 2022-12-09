@@ -771,5 +771,7 @@
     "lesson-setup": "Lesson setup",
     "start-practice": "Practice",
     "select-lesson-semantic-topic": "Choose lession topic",
-    "lesson-activities": "Activities"
+    "lesson-activities": "Activities",
+    "no-available-exercise": "We have no more exercises for this lesson at the moment. Revita will create more exercises shortly — please come back a bit later!",
+    "next-exercise-batch": "Next batch of exercises!"
 }

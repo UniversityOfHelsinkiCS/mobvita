@@ -3,7 +3,7 @@ import * as Sentry from '@sentry/browser'
 
 const userMiddleware = store => next => (action) => {
   const { user } = store.getState()
-  switch (action.type) {
+  switch (action ? action.type : 'UNDEFINED') {
     case 'LOGIN_SUCCESS':
     case 'SAVE_SELF_SUCCESS':
     case 'GET_SELF_SUCCESS':

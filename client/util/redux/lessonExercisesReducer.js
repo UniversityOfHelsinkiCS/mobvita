@@ -51,7 +51,7 @@ const initialState = {
 }
 
 export default (state = initialState, action) => {
-  switch (action.type) {
+  switch (action ? action.type : 'UNDEFINED') {
     case 'SET_ATTEMPT':
       return {
         ...state,

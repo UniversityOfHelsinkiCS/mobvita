@@ -1405,9 +1405,11 @@
     "no-practices-yet": "No practices added yet",
     "custom-feedback-header": "Add hints",
     "practice-all-mode": "Practice all",
-    "continue-practice": "Practice lesson",
-    "lesson-setup": "Lesson setup",
-    "start-practice": "Practice",
+    "continue-practice": "Практика",
+    "lesson-setup": "Настройка урока",
+    "start-practice": "Практика",
     "select-lesson-semantic-topic": "Выбери тему урока",
-    "lesson-activities": "Activities"
+    "lesson-activities": "Упражнения",
+    "no-available-exercise": "На данный момент больше нет упражнений для этого урока. В ближайшее время Revita создаст дополнительные упражнения — пожалуйста, вернитесь чуть позже!",
+    "next-exercise-batch": "Следующая серия упражнений!"
 }

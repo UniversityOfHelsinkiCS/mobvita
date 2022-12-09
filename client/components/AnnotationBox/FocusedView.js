@@ -59,8 +59,8 @@ const FocusedView = ({ focusedSpan }) => {
   }))
   const userHasLoggedIn = user.userName !== 'Anonymous User'
   const mode = getMode()
-  const storyWords = story.paragraph.flat(1)
-  const publicStory = story.public
+  const storyWords = story ? story.paragraph.flat(1) : []
+  const publicStory = story ? story.public : false
 
   const handleEditButtonClick = (text, name, thread_id) => {
     dispatch(setAnnotationFormVisibility(true))
