@@ -5,7 +5,7 @@ import { FormattedMessage } from 'react-intl'
 import { Icon } from 'semantic-ui-react'
 import { Button } from 'react-bootstrap'
 import { confettiRain, finalConfettiRain } from 'Utilities/common'
-import { postAnswers, resetCurrentSnippet } from 'Utilities/redux/snippetsReducer'
+import { postAnswers, resetCurrentSnippet, postLessonSnippetAnswers } from 'Utilities/redux/snippetsReducer'
 import { resetAnnotations } from 'Utilities/redux/annotationsReducer'
 import {
   finishSnippet,
@@ -76,12 +76,13 @@ const CheckAnswersButton = ({ handleClick, checkAnswersButtonTempDisable }) => {
   )
 }
 
-const SnippetActions = ({ storyId, exerciseCount, isControlledStory, exerciseMode, timerValue, numSnippets }) => {
+const SnippetActions = ({ storyId, exerciseCount, isControlledStory, exerciseMode, timerValue, numSnippets, lessonId }) => {
   const [checkAnswersButtonTempDisable, setcheckAnswersButtonTempDisable] = useState(false)
 
-  const { snippets } = useSelector(({ snippets }) => ({ snippets }))
   const dispatch = useDispatch()
   const { id } = useParams()
+
+  const { snippets } = useSelector(({ snippets }) => ({ snippets }))
   const { currentAnswers, correctAnswerIDs, touchedIds, attempt, options, audio } = useSelector(
     ({ practice }) => practice
   )
@@ -89,7 +90,7 @@ const SnippetActions = ({ storyId, exerciseCount, isControlledStory, exerciseMod
   const rightAnswerAmount = useMemo(
     () =>
       snippets.focused &&
-      snippets.focused.practice_snippet.reduce(
+      snippets.focused?.practice_snippet?.reduce(
         (sum, word) => (word.tested && !word.isWrong ? sum + 1 : sum),
         0
       ),
@@ -97,10 +98,7 @@ const SnippetActions = ({ storyId, exerciseCount, isControlledStory, exerciseMod
   )
 
   useEffect(() => {
-    const testedAndCorrectIDs = snippets?.focused?.practice_snippet
-      .filter(w => w.tested && !w.isWrong)
-      .map(w => w.ID.toString())
-
+    const testedAndCorrectIDs = snippets?.focused?.practice_snippet?.filter(w => w.tested && !w.isWrong).map(w => w.ID.toString())
     dispatch(addToCorrectAnswerIDs(testedAndCorrectIDs))
   }, [attempt])
 
@@ -119,7 +117,7 @@ const SnippetActions = ({ storyId, exerciseCount, isControlledStory, exerciseMod
 
     const answersObj = {
       starttime,
-      story_id: storyId,
+      story_id: lessonId ? snippets.focused?.storyid : storyId,
       snippet_id: snippetid,
       touched: touchedIds.length,
       untouched: exerciseCount - touchedIds.length - rightAnswerAmount,
@@ -134,7 +132,11 @@ const SnippetActions = ({ storyId, exerciseCount, isControlledStory, exerciseMod
     }
 
     dispatch(clearTouchedIds())
-    dispatch(postAnswers(storyId, answersObj, false))
+    if (lessonId){
+      dispatch(postLessonSnippetAnswers(lessonId, answersObj, false))
+    } else {
+      dispatch(postAnswers(storyId, answersObj, false))
+    }
 
     const wrongAnswers = Object.keys(filteredCurrentAnswers).filter(
       key =>
@@ -187,7 +189,7 @@ const SnippetActions = ({ storyId, exerciseCount, isControlledStory, exerciseMod
               <FormattedMessage id="go-to-next-snippet" /> <Icon name="level down alternate" />
             </span>
           </Button>
-          {!isControlledStory && (
+          {!isControlledStory && !lessonId && (
             <Button
               variant="secondary"
               size="sm"

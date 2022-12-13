@@ -9,6 +9,7 @@ import {
   resetCurrentSnippet,
   initEloHearts,
   clearEloHearts,
+  getLessonSnippet,
 } from 'Utilities/redux/snippetsReducer'
 import { clearTranslationAction } from 'Utilities/redux/translationReducer'
 import { openEncouragement } from 'Utilities/redux/encouragementsReducer'
@@ -32,6 +33,9 @@ import {
   setPracticeFinished,
 } from 'Utilities/redux/practiceReducer'
 import {
+  
+} from 'Utilities/redux/snippetsReducer'
+import {
   updateSeveralSpanAnnotationStore,
   resetAnnotations,
 } from 'Utilities/redux/annotationsReducer'
@@ -39,7 +43,7 @@ import ExercisesEncouragementModal from 'Components/Encouragements/ExercisesEnco
 import SnippetActions from './SnippetActions'
 import PracticeText from './PracticeText'
 
-const CurrentSnippet = ({ storyId, handleInputChange, timer, numSnippets }) => {
+const CurrentSnippet = ({ storyId, handleInputChange, timer, numSnippets, lessonId }) => {
   const [exerciseCount, setExerciseCount] = useState(0)
   const practiceForm = useRef(null)
   const dispatch = useDispatch()
@@ -85,7 +89,7 @@ const CurrentSnippet = ({ storyId, handleInputChange, timer, numSnippets }) => {
 
   const getExerciseCount = () => {
     let count = 0
-    snippets.focused.practice_snippet.forEach(word => {
+    snippets.focused.practice_snippet?.forEach(word => {
       if (word.id) {
         count++
       }
@@ -94,9 +98,9 @@ const CurrentSnippet = ({ storyId, handleInputChange, timer, numSnippets }) => {
   }
 
   const setInitialAnswers = () => {
-    if (snippets.focused && snippets.focused.storyid === storyId) {
-      const filteredSnippet = snippets.focused.practice_snippet.filter(word => word.id)
-      const initialAnswers = filteredSnippet.reduce((answerObject, currentWord) => {
+    if (snippets.focused && (snippets.focused.storyid === storyId || lessonId !== null)) {
+      const filteredSnippet = snippets.focused?.practice_snippet?.filter(word => word.id)
+      const initialAnswers = filteredSnippet?.reduce((answerObject, currentWord) => {
         const {
           surface,
           id,
@@ -162,12 +166,10 @@ const CurrentSnippet = ({ storyId, handleInputChange, timer, numSnippets }) => {
           },
         }
       }, {})
-      if (Object.keys(initialAnswers).length > 0) dispatch(setAnswers({ ...initialAnswers }))
+      if (initialAnswers && Object.keys(initialAnswers).length > 0) dispatch(setAnswers({ ...initialAnswers }))
       // dispatch(clearEloHearts())
       setExerciseCount(getExerciseCount())
       dispatch(startSnippet())
-
-      console.log(' initial ans ', initialAnswers)
       /*
       if (snippets?.focused?.practice_snippet) {
         snippets.focused.practice_snippet.forEach(word => (
@@ -210,13 +212,14 @@ const CurrentSnippet = ({ storyId, handleInputChange, timer, numSnippets }) => {
     })
 
     dispatch(updateSeveralSpanAnnotationStore(annotationsToInitialize))
-
     dispatch(clearCurrentPractice())
 
     if (snippets.focused.total_num !== currentSnippetId() + 1 || practiceFinished) {
-      dispatch(
-        getNextSnippet(storyId, currentSnippetId(), isControlledStory, sessionId, exerciseMode)
-      )
+      if (lessonId){
+        dispatch(getLessonSnippet(lessonId))
+      } else {
+        dispatch(getNextSnippet(storyId, currentSnippetId(), isControlledStory, sessionId, exerciseMode))
+      }
     } else {
       dispatch(setPracticeFinished(true))
     }
@@ -236,7 +239,11 @@ const CurrentSnippet = ({ storyId, handleInputChange, timer, numSnippets }) => {
   useEffect(() => {
     dispatch(clearPractice())
     dispatch(resetSessionId())
-    dispatch(getCurrentSnippet(storyId, isControlledStory, exerciseMode))
+    if (lessonId){
+      dispatch(getLessonSnippet(lessonId))
+    } else {
+      dispatch(getCurrentSnippet(storyId, isControlledStory, exerciseMode))
+    }
     dispatch(clearTranslationAction())
   }, [])
 
@@ -349,6 +356,7 @@ const CurrentSnippet = ({ storyId, handleInputChange, timer, numSnippets }) => {
               exerciseMode={exerciseMode}
               timerValue={Math.round(timer.getTime() / 1000)}
               numSnippets={numSnippets}
+              lessonId={lessonId}
             />
           </div>
         ) : (

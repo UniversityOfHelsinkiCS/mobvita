@@ -3,6 +3,25 @@ import callBuilder from '../apiConnection'
  * Actions and reducers are in the same file for readability
  */
 
+
+export const resetSnippets = () => ({ type: 'RESET_SNIPPETS' })
+
+export const getLessonSnippet = lessonId => {
+  const route = `/lesson/${lessonId}/exercise`
+  const prefix = 'GET_LESSON_SNIPPET'
+
+  return callBuilder(route, prefix)
+}
+
+export const postLessonSnippetAnswers = (lessonId, answersObject, compete = false) => {
+  const payload = answersObject
+  payload.compete = compete
+  const route = `/lesson/${lessonId}/exercise`
+  const prefix = 'GET_LESSON_SNIPPET_ANSWER'
+
+  return callBuilder(route, prefix, 'post', payload)
+}
+
 const filterPrevious = (previous, snippet) => {
   const restarted = previous.length > 0 && snippet.snippetid[0] === snippet.total_num - 1
   if (!snippet || restarted) return []
@@ -92,6 +111,60 @@ export default (state = { previous: [], pending: false, error: false }, action) 
         pending: false,
         error: false,
       }
+
+    case 'RESET_SNIPPETS':
+      return {
+        ...state,
+        previous: [],
+        focused: undefined,
+      }
+
+    case 'GET_LESSON_SNIPPET_ATTEMPT':
+      return {
+        ...state,
+        pending: true,
+      }
+    case 'GET_LESSON_SNIPPET_FAILURE':
+      return {
+        ...state,
+        pending: false,
+        error: true,
+      }
+    case 'GET_LESSON_SNIPPET_SUCCESS':
+      let focused_snippet = action.response
+      focused_snippet?.practice_snippet.forEach(token => {
+        token['story_id'] = focused_snippet?.storyid
+      })
+      return {
+        ...state,
+        pending: false,
+        focused: focused_snippet,
+        session_id: action.response.session_id,
+        testTime: action.response.test_time,
+        eloHearts: {},
+      }
+      case 'GET_LESSON_SNIPPET_ANSWER_ATTEMPT':
+        return {
+          ...state,
+          answersPending: true,
+        }
+      case 'GET_LESSON_SNIPPET_ANSWER_FAILURE':
+        return {
+          ...state,
+          answersPending: false,
+          pending: false,
+          error: true,
+        }
+      case 'GET_LESSON_SNIPPET_ANSWER_SUCCESS':
+        if (!Array.isArray(action.response.snippetid)){
+          action.response.snippetid = [action.response.snippetid]
+        }
+        return {
+          ...state,
+          focused: action.response,
+          answersPending: false,
+        }
+
     case 'GET_CURRENT_SNIPPET_ATTEMPT':
       return {
         ...state,

@@ -6,6 +6,7 @@ import { resetSessionId } from 'Utilities/redux/snippetsReducer'
 import {
   setAnswers,
   clearPractice,
+  clearCurrentPractice,
   clearCurrentAnswers,
   addToOptions,
   addToAudio,
@@ -160,10 +161,10 @@ const LessonExercise = ({ lesson_instance, handleInputChange }) => {
 
       if (current_attempt >= max_attempt_per_snippet || !has_wrong_answers){
         dispatch(clearPractice())
+        setInitialAnswers()
       } else {
         dispatch(clearCurrentAnswers())
       }
-      setInitialAnswers()
     }
   }, [focusing_snippets])
 

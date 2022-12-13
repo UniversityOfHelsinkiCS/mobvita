@@ -38,7 +38,7 @@ import DebugTestView from './DebugTestView'
 import AnnotationsLibrary from './AnnotationsLibrary'
 import ReferenceView from './ReferenceView'
 import EditStoryView from './EditStoryView'
-import LessonsPracticeView from './Lessons/LessonsPracticeView'
+import LessonPracticeView from './Lessons/LessonPracticeView'
 import LessonLibrary from './Lessons/LessonLibrary'
 
 export default () => {
@@ -95,7 +95,7 @@ export default () => {
             <ProtectedRoute exact path="/welcome" component={HomeView} />
 
             <ProtectedRoute exact path="/lessons/library" component={LessonLibrary} />
-            <ProtectedRoute exact path="/lesson/:lesson_syllabus_id/practice" component={LessonsPracticeView} />
+            <ProtectedRoute exact path="/lesson/:lesson_syllabus_id/practice" component={LessonPracticeView} />
 
             <ProtectedRoute exact path="/library" component={LibraryView} />
             <ProtectedRoute exact path="/library/private" component={LibraryView} />
