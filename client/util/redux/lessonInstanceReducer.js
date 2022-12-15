@@ -7,17 +7,20 @@ export const getLessonActiveInstance = lesson_syllabus_id => {
   if (lesson_syllabus_id) {
     const route = `/lesson/active_instance/${lesson_syllabus_id}`
     const prefix = 'GET_LESSON_ACTIVE_INSTANCE'
-  
     return callBuilder(route, prefix, 'get')
+  } else {
+    return ({ type: 'GET_LESSON_ACTIVE_INSTANCE_FAILURE' })
   }
 }
 
 export const getLessonInstance = (lesson_instance_id) => {
   if (lesson_instance_id){
     let route = `/lesson/${lesson_instance_id}`
-    const prefix = 'GET_LESSON_INSTNACE'
-  
+    const prefix = 'GET_LESSON_INSTANCE'
+
     return callBuilder(route, prefix, 'get')
+  } else {
+    return ({ type: 'GET_LESSON_INSTANCE_FAILURE' })
   }
 }
 
@@ -61,18 +64,18 @@ export default (state = initialState, action) => {
         lesson_instance: action.response.lesson_active_instance,
       }
 
-    case 'GET_LESSON_INSTNACE_ATTEMPT':
+    case 'GET_LESSON_INSTANCE_ATTEMPT':
       return {
         ...state,
         pending: true,
       }
-    case 'GET_LESSON_INSTNACE_FAILURE':
+    case 'GET_LESSON_INSTANCE_FAILURE':
       return {
         ...state,
         pending: false,
         error: true,
       }
-    case 'GET_LESSON_INSTNACE_SUCCESS':
+    case 'GET_LESSON_INSTANCE_SUCCESS':
       return {
         ...state,
         pending: false,

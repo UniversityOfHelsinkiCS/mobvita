@@ -29,7 +29,9 @@ const SelectLessonModal = ({ open, setOpen, lesson_syllabus_id }) => {
   }, [])
 
   useEffect(() => {
-    dispatch(getLessonActiveInstance(lesson_syllabus_id))
+    if (lesson_syllabus_id){
+      dispatch(getLessonActiveInstance(lesson_syllabus_id))
+    }
   }, [lesson_syllabus_id])
 
   useEffect(() => {

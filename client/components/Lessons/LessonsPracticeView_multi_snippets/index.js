@@ -35,7 +35,9 @@ const LessonsPracticeView = () => {
   useEffect(() => {
     dispatch(clearLessonInstanceState())
     dispatch(clearExerciseState())
-    dispatch(getLessonActiveInstance(lesson_syllabus_id))
+    if (lesson_syllabus_id){
+      dispatch(getLessonActiveInstance(lesson_syllabus_id))
+    }
     dispatch(clearTranslationAction())
   }, [])
 

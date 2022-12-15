@@ -65,7 +65,9 @@ const LessonPracticeView = () => {
     dispatch(clearLessonInstanceState())
     dispatch(resetSnippets())
     // dispatch(clearExerciseState())
-    dispatch(getLessonActiveInstance(lesson_syllabus_id))
+    if (lesson_syllabus_id){
+      dispatch(getLessonActiveInstance(lesson_syllabus_id))
+    }
     dispatch(clearTranslationAction())
   }, [])
 
