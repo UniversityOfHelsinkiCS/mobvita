@@ -76,7 +76,7 @@ const CheckAnswersButton = ({ handleClick, checkAnswersButtonTempDisable }) => {
   )
 }
 
-const SnippetActions = ({ storyId, exerciseCount, isControlledStory, exerciseMode, timerValue, numSnippets, lessonId }) => {
+const SnippetActions = ({ storyId, exerciseCount, isControlledStory, exerciseMode, timerValue, numSnippets, lessonId, lessonStartOver }) => {
   const [checkAnswersButtonTempDisable, setcheckAnswersButtonTempDisable] = useState(false)
 
   const dispatch = useDispatch()
@@ -162,9 +162,14 @@ const SnippetActions = ({ storyId, exerciseCount, isControlledStory, exerciseMod
 
   const handleRestart = () => {
     dispatch(clearPractice())
-    dispatch(resetCurrentSnippet(id, isControlledStory, exerciseMode))
-    dispatch(resetAnnotations())
     setcheckAnswersButtonTempDisable(true)
+    if (lessonId){
+      lessonStartOver()
+    } else {
+      dispatch(resetCurrentSnippet(id, isControlledStory, exerciseMode))
+      dispatch(resetAnnotations())
+      setcheckAnswersButtonTempDisable(true)
+    }
     setTimeout(() => {
       setcheckAnswersButtonTempDisable(false)
     }, 5000)
@@ -189,7 +194,7 @@ const SnippetActions = ({ storyId, exerciseCount, isControlledStory, exerciseMod
               <FormattedMessage id="go-to-next-snippet" /> <Icon name="level down alternate" />
             </span>
           </Button>
-          {!isControlledStory && !lessonId && (
+          {!isControlledStory && (
             <Button
               variant="secondary"
               size="sm"

@@ -170,7 +170,6 @@ const SnippetActions = ({ storyId, exerciseCount, playerFinished }) => {
       key => currentAnswers[key].correct === currentAnswers[key].users_answer
     )
 
-    console.log(currentAnswers)
     const totalExercises = Object.keys(currentAnswers).length
     const num_correct = Object.keys(correct).length
 

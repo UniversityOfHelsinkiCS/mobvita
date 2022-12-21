@@ -55,7 +55,6 @@ const SelectLessonModal = ({ open, setOpen, lesson_syllabus_id }) => {
   const handleSaveLessonInstance = () => {
     if (lesson_instance) {
       lesson_instance['semantic'] = lessonSemanticTopic
-      console.log('lesson_instance', lesson_instance)
       dispatch(setLessonInstance(lesson_instance?.lesson_id, lesson_instance))
       setOpen(false)
     }

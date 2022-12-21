@@ -43,7 +43,7 @@ import ExercisesEncouragementModal from 'Components/Encouragements/ExercisesEnco
 import SnippetActions from './SnippetActions'
 import PracticeText from './PracticeText'
 
-const CurrentSnippet = ({ storyId, handleInputChange, timer, numSnippets, lessonId }) => {
+const CurrentSnippet = ({ storyId, handleInputChange, timer, numSnippets, lessonId, lessonStartOver }) => {
   const [exerciseCount, setExerciseCount] = useState(0)
   const practiceForm = useRef(null)
   const dispatch = useDispatch()
@@ -357,6 +357,7 @@ const CurrentSnippet = ({ storyId, handleInputChange, timer, numSnippets, lesson
               timerValue={Math.round(timer.getTime() / 1000)}
               numSnippets={numSnippets}
               lessonId={lessonId}
+              lessonStartOver={lessonStartOver}
             />
           </div>
         ) : (

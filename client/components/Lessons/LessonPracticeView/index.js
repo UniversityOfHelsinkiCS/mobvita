@@ -85,7 +85,7 @@ const LessonPracticeView = () => {
 
   useEffect(() => {
     setCurrentSnippetNum(snippets.previous.length + 1)
-    setSnippetsTotalNum(10) // snippets?.focused?.total_num
+    setSnippetsTotalNum(Math.floor(currentSnippetNum / 10)*10 + 10) // snippets?.focused?.total_num
   }, [snippets.focused])
 
   useEffect(() => {
@@ -109,6 +109,18 @@ const LessonPracticeView = () => {
   useEffect(() => {
     if (!isPaused) timer.start()
   }, [isPaused])
+
+  const startOvertLessonSnippets = () => {
+    console.log("trigger start over")
+    setCurrentSnippetNum(0)
+    setSnippetsTotalNum(10)
+    dispatch(clearLessonInstanceState())
+    dispatch(resetSnippets())
+    if (lesson_syllabus_id){
+      dispatch(getLessonActiveInstance(lesson_syllabus_id))
+    }
+    dispatch(clearTranslationAction())
+  }
 
   const handleAnswerChange = (value, word) => {
     const { surface, id: candidateId, ID, concept, sentence_id, snippet_id } = word
@@ -206,6 +218,7 @@ const LessonPracticeView = () => {
                 // numSnippets={story?.paragraph?.length}
                 numSnippets={10}
                 lessonId={lesson_instance?.lesson_id}
+                lessonStartOver={startOvertLessonSnippets}
               />
               <ScrollArrow />
 
