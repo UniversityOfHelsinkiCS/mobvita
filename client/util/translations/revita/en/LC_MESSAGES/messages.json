@@ -1379,7 +1379,7 @@
     "sort-by-difficulty-option": "Level",
     "story-difficulty": "Level",
     "student-cefr-placeholder": "Current CEFR grade",
-    "genitive-modifier-of": "This is linked to the main word \"{}\"",
+    "genitive-modifier-of": "Is describing \"{}\"",
     "notes-catgory-none": "None",
     "notes-category-none": "None",
     "notes-None": "None",
@@ -1405,8 +1405,9 @@
     "continue-practice": "Practice lesson",
     "lesson-setup": "Lesson setup",
     "start-practice": "Practice",
-    "select-lesson-semantic-topic": "Choose lession topic",
+    "select-lesson-semantic-topic": "Choose lesson topic",
     "lesson-activities": "Activities",
     "no-available-exercise": "We have no more exercises for this lesson at the moment. Revita will create more exercises shortly — please come back a bit later!",
-    "next-exercise-batch": "Next batch of exercises!"
+    "next-exercise-batch": "Next batch of exercises!",
+    "cefr_grade": "CEFR"
 }

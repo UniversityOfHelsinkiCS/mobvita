@@ -31,7 +31,7 @@ const Summary = ({
     if (
       field === intl.formatMessage({ id: 'Email' }) ||
       field === intl.formatMessage({ id: 'username' }) ||
-      field === 'cefr_grade'
+      field === intl.formatMessage({ id: 'cefr_grade' })
     ) {
       return String(value).toLowerCase()
     }
@@ -52,7 +52,7 @@ const Summary = ({
 
     if (field) {
       return summary.sort((a, b) => {
-        if (field === 'cefr_grade') {
+        if (field === intl.formatMessage({ id: 'cefr_grade' })) {
           const convertedA = convertCellValue(a[field][0]?.grade, field)
           const convertedB = convertCellValue(b[field][0]?.grade, field)
 
@@ -128,7 +128,7 @@ const Summary = ({
       student => student?.userName === user?.[intl.formatMessage({ id: 'username' })]
     )
 
-    setCefrHistory(user.cefr_grade)
+    setCefrHistory(user?.[intl.formatMessage({ id: 'cefr_grade' })])
     setStudent(student)
     setContent('progress')
     setFirstFetch(true)
@@ -143,7 +143,7 @@ const Summary = ({
   const filename = `${cleanGroupName}_summary.csv`
 
   const cleanColumnValue = (value, column) => {
-    if (column === 'cefr_grade' && value?.length > 0) {
+    if (column === intl.formatMessage({ id: 'cefr_grade' }) && value?.length > 0) {
       return `${String(skillLevels[value[0].grade])}`
     }
 

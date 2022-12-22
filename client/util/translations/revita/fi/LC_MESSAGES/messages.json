@@ -1408,5 +1408,6 @@
     "select-lesson-semantic-topic": "Valitse oppitunnin aihe",
     "lesson-activities": "Aktiviteetit",
     "no-available-exercise": "Meillä ei ole tällä hetkellä enempää harjoituksia tälle tunnille. Revita luo lisää harjoituksia lähiaikoina – palaa takaisin vähän myöhemmin!",
-    "next-exercise-batch": "Seuraava erä harjoituksia!"
+    "next-exercise-batch": "Seuraava erä harjoituksia!",
+    "cefr_grade": "CEFR"
 }
