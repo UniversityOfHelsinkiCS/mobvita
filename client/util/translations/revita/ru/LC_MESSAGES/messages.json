@@ -1382,7 +1382,7 @@
     "sort-by-difficulty-option": "Сложность",
     "story-difficulty": "Сложность",
     "student-cefr-placeholder": "Выбрать CEFR уровень на сегодня",
-    "genitive-modifier-of": "Связано с главным словом \"{}\"",
+    "genitive-modifier-of": "Описывает \"{}\"",
     "notes-catgory-none": "None",
     "notes-category-none": "None",
     "notes-None": "None",
@@ -1411,5 +1411,6 @@
     "select-lesson-semantic-topic": "Выбери тему урока",
     "lesson-activities": "Упражнения",
     "no-available-exercise": "На данный момент больше нет упражнений для этого урока. В ближайшее время Revita создаст дополнительные упражнения — пожалуйста, вернитесь чуть позже!",
-    "next-exercise-batch": "Следующая серия упражнений!"
+    "next-exercise-batch": "Следующая серия упражнений!",
+    "cefr_grade": "CEFR"
 }

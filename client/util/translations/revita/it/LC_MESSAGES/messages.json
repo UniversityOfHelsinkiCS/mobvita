@@ -1380,7 +1380,7 @@
     "sort-by-difficulty-option": "Difficoltà",
     "story-difficulty": "Difficoltà",
     "student-cefr-placeholder": "Current CEFR grade",
-    "genitive-modifier-of": "Depende da \"{}\"",
+    "genitive-modifier-of": "Descrive \"{}\"",
     "notes-catgory-none": "None",
     "notes-category-none": "None",
     "notes-None": "None",
@@ -1406,8 +1406,9 @@
     "continue-practice": "Pratica la lezione",
     "lesson-setup": "Lesson setup",
     "start-practice": "Practice",
-    "select-lesson-semantic-topic": "Choose lession topic",
+    "select-lesson-semantic-topic": "Choose lesson topic",
     "lesson-activities": "Attività",
     "no-available-exercise": "Al momento non abbiamo più esercizi per questa lezione. Revita creerà altri esercizi a breve: torna un po' più tardi!",
-    "next-exercise-batch": "Prossima serie di esercizi!"
+    "next-exercise-batch": "Prossima serie di esercizi!",
+    "cefr_grade": "CEFR"
 }
