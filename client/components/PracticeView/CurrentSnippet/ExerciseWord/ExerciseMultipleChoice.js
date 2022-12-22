@@ -153,7 +153,7 @@ const ExerciseMultipleChoice = ({ word, handleChange }) => {
   }
 
   const handleFocus = () => {
-    if (hints.length > 0 || frozen_messages.length > 0) {
+    if (hints & hints?.length > 0 || frozen_messages & frozen_messages?.length > 0) {
       setShow(!show)
     }
   }
