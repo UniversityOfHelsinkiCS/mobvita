@@ -184,6 +184,9 @@ const LessonExercise = ({ lesson_instance, handleInputChange }) => {
         story_id,
         snippet_id,
         sentence_id,
+        hintsRequested: currentAnswers[`${ID}-${id}`]?.hintsRequested,
+        requestedHintsList: currentAnswers[`${ID}-${id}`]?.requestedHintsList,
+        penalties: currentAnswers[`${ID}-${id}`]?.penalties,
       },
     }
 

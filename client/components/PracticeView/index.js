@@ -132,9 +132,9 @@ const PracticeView = () => {
         sentence_id,
         snippet_id,
         concept,
-        hintsRequested: currentAnswers[ID]?.hintsRequested,
-        requestedHintsList: currentAnswers[ID]?.requestedHintsList,
-        penalties: currentAnswers[ID]?.penalties,
+        hintsRequested: currentAnswers[`${ID}-${candidateId}`]?.hintsRequested,
+        requestedHintsList: currentAnswers[`${ID}-${candidateId}`]?.requestedHintsList,
+        penalties: currentAnswers[`${ID}-${candidateId}`]?.penalties,
       },
     }
 

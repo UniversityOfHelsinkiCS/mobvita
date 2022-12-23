@@ -91,6 +91,9 @@ const VirtualKeyboard = () => {
         concept,
         sentence_id,
         snippet_id,
+        hintsRequested: currentAnswers[`${ID}-${id}`]?.hintsRequested,
+        requestedHintsList: currentAnswers[`${ID}-${id}`]?.requestedHintsList,
+        penalties: currentAnswers[`${ID}-${id}`]?.penalties,
       },
     }
 

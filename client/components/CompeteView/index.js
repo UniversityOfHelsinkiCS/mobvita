@@ -40,6 +40,7 @@ const CompeteView = ({ match }) => {
   const { width } = useWindowDimensions()
 
   const { isPaused, willPause, timerControls } = useSelector(({ compete }) => compete)
+  const { currentAnswers } = useSelector(({ practice }) => practice)
   const { story, startTime, snippets, pending } = useSelector(({ stories, compete, snippets }) => ({
     snippets,
     story: stories.focused,
@@ -84,7 +85,7 @@ const CompeteView = ({ match }) => {
     dispatch(setTouchedIds(ID))
 
     const newAnswer = {
-      [ID]: {
+      [`${ID}-${id}`]: {
         correct: surface,
         users_answer: value,
         id,
@@ -92,6 +93,9 @@ const CompeteView = ({ match }) => {
         word_id: ID,
         snippet_id,
         sentence_id,
+        hintsRequested: currentAnswers[`${ID}-${id}`]?.hintsRequested,
+        requestedHintsList: currentAnswers[`${ID}-${id}`]?.requestedHintsList,
+        penalties: currentAnswers[`${ID}-${id}`]?.penalties,
       },
     }
     dispatch(setAnswers(newAnswer))

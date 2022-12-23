@@ -42,7 +42,7 @@ const CurrentSnippet = ({ storyId, handleInputChange, setYouWon, finished }) => 
 
   const snippets = useSelector(({ snippets }) => snippets)
   const { answersPending } = snippets
-  const { snippetFinished, isNewSnippet, attempt } = useSelector(({ practice }) => practice)
+  const { snippetFinished, isNewSnippet, attempt, currentAnswers } = useSelector(({ practice }) => practice)
   const { cachedSnippets } = useSelector(({ compete }) => compete)
   const { focused } = useSelector(({ stories }) => stories)
   const learningLanguage = useSelector(learningLanguageSelector)
@@ -245,6 +245,9 @@ const CurrentSnippet = ({ storyId, handleInputChange, setYouWon, finished }) => 
         concept,
         snippet_id,
         sentence_id,
+        hintsRequested: currentAnswers[`${ID}-${id}`]?.hintsRequested,
+        requestedHintsList: currentAnswers[`${ID}-${id}`]?.requestedHintsList,
+        penalties: currentAnswers[`${ID}-${id}`]?.penalties,
       },
     }
     dispatch(setAnswers(newAnswer))

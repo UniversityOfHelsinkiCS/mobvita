@@ -59,6 +59,7 @@ const CurrentSnippet = ({ storyId, handleInputChange, timer, numSnippets, lesson
     willPause,
     isPaused,
     previousAnswers,
+    currentAnswers
   } = useSelector(({ practice }) => practice)
   const userData = useSelector(state => state.user.data.user)
   const learningLanguage = useSelector(learningLanguageSelector)
@@ -318,6 +319,9 @@ const CurrentSnippet = ({ storyId, handleInputChange, timer, numSnippets, lesson
         concept,
         snippet_id,
         sentence_id,
+        hintsRequested: currentAnswers[`${ID}-${id}`]?.hintsRequested,
+        requestedHintsList: currentAnswers[`${ID}-${id}`]?.requestedHintsList,
+        penalties: currentAnswers[`${ID}-${id}`]?.penalties,
       },
     }
     dispatch(setAnswers(newAnswer))
