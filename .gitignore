@@ -71,3 +71,7 @@ cypress/screenshots/
 # others
 divide_rus_construction_rows.py
 requests
+
+# emacs temporary files and backup directories
+\#*
+.-Backup
