@@ -75,7 +75,7 @@ const StudentCEFRModal = ({ open, setOpen, cefrHistory, setCefrHistory, groupId,
             {modified && (
               <>
                 <Button className="interactable" variant="primary" onClick={handleSubmit}>
-                  <FormattedMessage id="submit-changes" />
+                  <FormattedMessage id="submit-changes-CEFR" />
                 </Button>
                 <Button
                   className="interactable"
@@ -83,7 +83,7 @@ const StudentCEFRModal = ({ open, setOpen, cefrHistory, setCefrHistory, groupId,
                   variant="secondary"
                   onClick={undoChanges}
                 >
-                  <FormattedMessage id="undo-changes" />
+                  <FormattedMessage id="undo-changes-CEFR" />
                 </Button>
               </>
             )}
@@ -102,9 +102,9 @@ const StudentCEFRModal = ({ open, setOpen, cefrHistory, setCefrHistory, groupId,
             <Table striped bordered hover size="sm">
               <thead>
                 <tr key="summary-header-row">
-                  <th style={{ textAlign: 'center', verticalAlign: 'middle' }}>Date</th>
-                  <th style={{ textAlign: 'center', verticalAlign: 'middle' }}>Estimator</th>
-                  <th style={{ textAlign: 'center', verticalAlign: 'middle' }}>Grade</th>
+                  <th style={{ textAlign: 'center', verticalAlign: 'middle' }}><FormattedMessage id="date-of-CEFR" /></th>
+                  <th style={{ textAlign: 'center', verticalAlign: 'middle' }}><FormattedMessage id="source-of-CEFR" /></th>
+                  <th style={{ textAlign: 'center', verticalAlign: 'middle' }}><FormattedMessage id="cefr_grade" /></th>
                 </tr>
               </thead>
               <tbody>

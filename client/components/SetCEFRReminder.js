@@ -91,7 +91,7 @@ const SetCEFRReminder = ({ open, setOpen, newUser }) => {
             size="lg"
             onClick={submitSettings}
           >
-            <FormattedMessage id="update-settings" />
+            <FormattedMessage id="Save-CEFR" />
           </Button>
           {hasAdaptiveTests && (
             <>
