@@ -1263,7 +1263,7 @@
     "general-group-summary": "Сводка группы",
     "group-grammar-progress": "Прогресс грамматики",
     "select-cefr-reminder": "Выбери свой уровень CEFR",
-    "update-settings": "Обновить настройки",
+    "update-settings": "Сохранить настройки",
     "show-difficulty-level": "Показать сложность упражнения",
     "story-completed-to-blue-flashcards": "В этом тексте есть {nWords} новых слов, для которых ты не проверял/а перевод — \n<br/>Проверим 5 из них, чтобы получить баллы за <b>все</b> эти слова! →",
     "enable-recommendations": "Включить рекомендации",
@@ -1341,7 +1341,7 @@
     "FEEDBACK-TUA-Temporaalirakenne": "Это конструкция с прошедшим временным значением (Temporaalirakenne)",
     "overview-vocabulary-explanation": "Все слова, с которыми ты работал в текстах до сих пор: освоенные и еще не освоенные",
     "current-cefr-level": "CEFR уровень студента",
-    "view-previous-and-edit": "Редактировать уровни студента",
+    "view-previous-and-edit": "Редактировать уровень студента",
     "timed-practice-toggle": "Учитывать время ответов",
     "timed-practice-explanation": "Время будет учитываться",
     "offer-adaptive-test": "Или пройди короткий тест для определения уровня",
@@ -1367,7 +1367,7 @@
     "upload-daily-story": "Загрузить в личную библиотеку",
     "show-daily-stories-button": "Показать",
     "edit-story": "Редактировать",
-    "submit-changes": "Отправить изменения",
+    "submit-changes": "Сохранить изменения",
     "undo-changes": "Отменить изменения",
     "return-to-library": "Вернуться в библиотеку",
     "save-story": "Сохранить текст",
@@ -1412,5 +1412,10 @@
     "lesson-activities": "Упражнения",
     "no-available-exercise": "На данный момент больше нет упражнений для этого урока. В ближайшее время Revita создаст дополнительные упражнения — пожалуйста, вернитесь чуть позже!",
     "next-exercise-batch": "Следующая серия упражнений!",
-    "cefr_grade": "CEFR"
+    "cefr_grade": "CEFR",
+    "Save-CEFR": "Сохранить CEFR",
+    "date-of-CEFR": "Дата",
+    "source-of-CEFR": "Источник",
+    "submit-changes-CEFR": "Сохранить изменения",
+    "undo-changes-CEFR": "Отменить изменения"
 }

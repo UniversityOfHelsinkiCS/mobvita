@@ -774,5 +774,10 @@
     "lesson-activities": "Activities",
     "no-available-exercise": "We have no more exercises for this lesson at the moment. Revita will create more exercises shortly — please come back a bit later!",
     "next-exercise-batch": "Next batch of exercises!",
-    "cefr_grade": "CEFR"
+    "cefr_grade": "CEFR",
+    "Save-CEFR": "Save CEFR",
+    "date-of-CEFR": "日期",
+    "source-of-CEFR": "Source",
+    "submit-changes-CEFR": "提交改动",
+    "undo-changes-CEFR": "撤销改动"
 }
