@@ -119,6 +119,7 @@ const PracticeView = () => {
 
   const handleAnswerChange = (value, word) => {
     const { surface, id: candidateId, ID, concept, sentence_id, snippet_id } = word
+    const word_cue = currentAnswers[`${ID}-${candidateId}`]?.cue
 
     dispatch(setTouchedIds(ID))
 
@@ -126,6 +127,7 @@ const PracticeView = () => {
       [`${ID}-${candidateId}`]: {
         correct: surface,
         users_answer: value,
+        cue: word_cue,
         word_id: ID,
         id: candidateId,
         story_id: id,

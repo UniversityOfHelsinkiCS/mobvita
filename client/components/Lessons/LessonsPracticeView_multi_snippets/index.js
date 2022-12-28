@@ -48,6 +48,7 @@ const LessonsPracticeView = () => {
 
   const handleAnswerChange = (value, word) => {
     const { surface, id: candidateId, ID, story_id, concept, sentence_id, snippet_id } = word
+    const word_cue = currentAnswers[`${ID}-${candidateId}`]?.cue
 
     setTouchedIds(ID)
 
@@ -55,6 +56,7 @@ const LessonsPracticeView = () => {
       [`${ID}-${candidateId}`]: {
         correct: surface,
         users_answer: value,
+        cue: word_cue,
         word_id: ID,
         id: candidateId,
         story_id,

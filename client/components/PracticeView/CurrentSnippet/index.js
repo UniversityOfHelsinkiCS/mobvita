@@ -122,6 +122,7 @@ const CurrentSnippet = ({ storyId, handleInputChange, timer, numSnippets, lesson
         } else {
           usersAnswer = base || bases
         }
+        let word_cue = usersAnswer
 
         if (choices) {
           dispatch(
@@ -133,6 +134,7 @@ const CurrentSnippet = ({ storyId, handleInputChange, timer, numSnippets, lesson
                 id,
                 word_id: ID,
                 story_id: storyId,
+                cue: word_cue
               },
             })
           )
@@ -148,6 +150,7 @@ const CurrentSnippet = ({ storyId, handleInputChange, timer, numSnippets, lesson
                 id,
                 word_id: ID,
                 story_id: storyId,
+                cue: word_cue
               },
             })
           )
@@ -164,6 +167,7 @@ const CurrentSnippet = ({ storyId, handleInputChange, timer, numSnippets, lesson
             snippet_id,
             story_id: storyId,
             word_id: ID,
+            cue: word_cue
           },
         }
       }, {})
@@ -307,6 +311,7 @@ const CurrentSnippet = ({ storyId, handleInputChange, timer, numSnippets, lesson
   const handleMultiselectChange = (event, word, data) => {
     const { id, ID, surface, concept, snippet_id, sentence_id } = word
     const { value } = data
+    const word_cue = currentAnswers[`${ID}-${id}`]?.cue
 
     dispatch(setTouchedIds(ID))
 
@@ -314,6 +319,7 @@ const CurrentSnippet = ({ storyId, handleInputChange, timer, numSnippets, lesson
       [`${ID}-${id}`]: {
         correct: surface,
         users_answer: value,
+        cue: word_cue,
         id,
         word_id: ID,
         concept,

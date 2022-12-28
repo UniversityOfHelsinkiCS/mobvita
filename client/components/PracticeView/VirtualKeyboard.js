@@ -79,6 +79,7 @@ const VirtualKeyboard = () => {
 
   const handleAnswerChange = (value, word = focusedWord) => {
     const { surface, id, ID, concept, sentence_id, snippet_id } = word
+    const word_cue = currentAnswers[`${ID}-${candidateId}`]?.cue
 
     dispatch(setTouchedIds(ID))
 
@@ -86,6 +87,7 @@ const VirtualKeyboard = () => {
       [`${ID}-${id}`]: {
         correct: surface,
         users_answer: value,
+        cue: word_cue,
         id,
         word_id: ID,
         concept,

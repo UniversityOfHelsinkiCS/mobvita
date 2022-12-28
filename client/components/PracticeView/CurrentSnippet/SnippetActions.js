@@ -11,6 +11,7 @@ import {
   finishSnippet,
   clearTouchedIds,
   clearPractice,
+  setAnswers,
   addToCorrectAnswerIDs,
 } from 'Utilities/redux/practiceReducer'
 
@@ -143,6 +144,15 @@ const SnippetActions = ({ storyId, exerciseCount, isControlledStory, exerciseMod
         filteredCurrentAnswers[key].users_answer.toLowerCase() !==
         filteredCurrentAnswers[key].correct.toLowerCase()
     )
+
+    let update_answers = {}
+    for (const [key, answerObject] of Object.entries(filteredCurrentAnswers)) {
+      if (wrongAnswers.includes(key)){
+        answerObject['cue'] = answerObject['users_answer']
+        update_answers[key] = answerObject
+      }
+    }
+    dispatch(setAnswers(update_answers))
 
     if ((!wrongAnswers || wrongAnswers.length < 1) && attempt === 0) {
       if (snippetid[0] === numSnippets - 1) {

@@ -78,6 +78,7 @@ const LessonExercise = ({ lesson_instance, handleInputChange }) => {
         } else {
           usersAnswer = base || bases
         }
+        let word_cue = userAnswer
 
         if (choices) {
           dispatch(
@@ -89,6 +90,7 @@ const LessonExercise = ({ lesson_instance, handleInputChange }) => {
                 id,
                 word_id: ID,
                 story_id,
+                cue: word_cue
               },
             })
           )
@@ -104,6 +106,7 @@ const LessonExercise = ({ lesson_instance, handleInputChange }) => {
                 id,
                 word_id: ID,
                 story_id,
+                cue: word_cue
               },
             })
           )
@@ -114,6 +117,7 @@ const LessonExercise = ({ lesson_instance, handleInputChange }) => {
           [`${ID}-${id}`]: {
             correct: surface,
             users_answer: usersAnswer,
+            cue: word_cue,
             id,
             concept,
             sentence_id,
@@ -171,6 +175,7 @@ const LessonExercise = ({ lesson_instance, handleInputChange }) => {
   const handleMultiselectChange = (event, word, data) => {
     const { id, ID, surface, concept, snippet_id, story_id, sentence_id } = word
     const { value } = data
+    const word_cue = currentAnswers[`${ID}-${id}`]?.cue
 
     setTouchedIds(ID)
 
@@ -178,6 +183,7 @@ const LessonExercise = ({ lesson_instance, handleInputChange }) => {
       [`${ID}-${id}`]: {
         correct: surface,
         users_answer: value,
+        cue: word_cue,
         id,
         word_id: ID,
         concept,
