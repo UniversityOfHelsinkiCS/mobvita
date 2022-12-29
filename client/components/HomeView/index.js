@@ -227,7 +227,7 @@ const HomeView = () => {
           enable_recmd={enable_recmd}
         />
       )}
-      {!userData.grade && !userIsAnonymous && !userData.is_new_user && (
+      {!userData.is_teacher && !userData.grade && !userIsAnonymous && !userData.is_new_user && (
         <SetCEFRReminder
           open={openReminder}
           setOpen={setOpenReminder}

@@ -13,6 +13,9 @@ const SetCEFRReminder = ({ open, setOpen, newUser }) => {
   const [sliderValue, setSliderValue] = useState(121)
   const [isTeacher, setIsTeacher] = useState(false)
   const { hasAdaptiveTests, pending } = useSelector(({ metadata }) => metadata)
+
+  // const user = useSelector(({ user }) => user.data)
+  // const lastUsedLanguage = user.user.last_used_language
 /*
   const startTour = () => {
     dispatch(sidebarSetOpen(false))
@@ -33,7 +36,6 @@ const SetCEFRReminder = ({ open, setOpen, newUser }) => {
     const rounded = Math.floor(minified / 10)
     dispatch(updateUserGrade(rounded))
     dispatch(updateIsTeacher(isTeacher))
-
     closeModal()
   }
 
@@ -58,7 +60,9 @@ const SetCEFRReminder = ({ open, setOpen, newUser }) => {
               <input
                 type="radio"
                 style={{ marginRight: '.75em' }}
-                onChange={() => setIsTeacher(false)}
+                onChange={() => {
+                  setIsTeacher(false); 
+                }}
                 checked={!isTeacher}
               />
               <FormattedMessage id="user-role-select-student" />
@@ -67,7 +71,9 @@ const SetCEFRReminder = ({ open, setOpen, newUser }) => {
               <input
                 type="radio"
                 style={{ marginRight: '.75em' }}
-                onChange={() => setIsTeacher(true)}
+                onChange={() => {
+                  setIsTeacher(true); 
+                }}
                 checked={isTeacher}
               />
               <FormattedMessage id="user-role-select-teacher" />
@@ -128,6 +134,22 @@ const SetCEFRReminder = ({ open, setOpen, newUser }) => {
                   </>
                 )}
               </>
+            )
+          }
+          {
+            isTeacher && (
+              <div style={{ marginTop: '1em', display: 'flex', 'justify-content': 'center', width: '100%' }}>
+                <Button 
+                  style={{ fontSize: '18px', display: 'flex',  'align-items': 'center', 'justify-content': 'center', width: '100%' }} 
+                  variant="primary" 
+                  onClick={() => {
+                    dispatch(updateIsTeacher(isTeacher));
+                    closeModal()
+                  }}
+                >
+                  <FormattedMessage id="Save" />
+                </Button>
+              </div>
             )
           }
         </div>
