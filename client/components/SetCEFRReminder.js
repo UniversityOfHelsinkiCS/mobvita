@@ -89,14 +89,17 @@ const SetCEFRReminder = ({ open, setOpen, newUser }) => {
                   />
                 </div>
                 <br />
-                <Button
-                  style={{ marginBottom: '1em' }}
-                  variant="primary"
-                  size="lg"
-                  onClick={submitSettings}
-                >
-                  <FormattedMessage id="Save-CEFR" />
-                </Button>
+                <div style={{display: 'flex', 'justify-content': 'center', width: '100%'}}>
+                  <Button
+                    style={{ marginBottom: '1em', display: 'flex',  'align-items': 'center', 'justify-content': 'center', width: '100%' }}
+                    variant="primary"
+                    size="lg"
+                    onClick={submitSettings}
+                  >
+                    <FormattedMessage id="Save-CEFR" />
+                  </Button>
+                </div>
+                
                 {hasAdaptiveTests && (
                   <>
                     <Divider />
@@ -111,9 +114,15 @@ const SetCEFRReminder = ({ open, setOpen, newUser }) => {
                       </h3>
                       &nbsp;
                       <Link to="/adaptive-test">
-                        <Button style={{ fontSize: '18px' }} variant="primary" disabled={isTeacher}>
-                          <FormattedMessage id="adaptive-test-button" />
-                        </Button>
+                        <div style={{display: 'flex', 'justify-content': 'center', width: '100%'}}>
+                          <Button 
+                            style={{ fontSize: '18px', display: 'flex',  'align-items': 'center', 'justify-content': 'center', width: '100%' }} 
+                            variant="primary" 
+                            disabled={isTeacher}
+                          >
+                            <FormattedMessage id="adaptive-test-button" />
+                          </Button>
+                        </div>
                       </Link>
                     </div>
                   </>
