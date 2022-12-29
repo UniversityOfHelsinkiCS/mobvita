@@ -73,47 +73,54 @@ const SetCEFRReminder = ({ open, setOpen, newUser }) => {
               <FormattedMessage id="user-role-select-teacher" />
             </span>
           </div>
-          <hr />
-          <h3 style={{ marginTop: '1em', color: isTeacher ? '#D3D3D3' : '#000000' }}>
-            <FormattedMessage id="select-cefr-reminder" />
-          </h3>
-          <div>
-            <CERFLevelSlider
-              isDisabled={isTeacher}
-              sliderValue={sliderValue}
-              setSliderValue={setSliderValue}
-            />
-          </div>
-          <br />
-          <Button
-            style={{ marginBottom: '1em' }}
-            variant="primary"
-            size="lg"
-            onClick={submitSettings}
-          >
-            <FormattedMessage id="Save-CEFR" />
-          </Button>
-          {hasAdaptiveTests && (
-            <>
-              <Divider />
-              <div
-                style={{
-                  marginTop: '1em',
-                  color: isTeacher ? 'lightgrey' : '#000000',
-                }}
-              >
-                <h3>
-                  <FormattedMessage id="offer-adaptive-test" />
+          {
+            !isTeacher && 
+            (
+              <>
+                <hr />
+                <h3 style={{ marginTop: '1em', color: isTeacher ? '#D3D3D3' : '#000000' }}>
+                  <FormattedMessage id="select-cefr-reminder" />
                 </h3>
-                &nbsp;
-                <Link to="/adaptive-test">
-                  <Button style={{ fontSize: '18px' }} variant="primary" disabled={isTeacher}>
-                    <FormattedMessage id="adaptive-test-button" />
-                  </Button>
-                </Link>
-              </div>
-            </>
-          )}
+                <div>
+                  <CERFLevelSlider
+                    isDisabled={isTeacher}
+                    sliderValue={sliderValue}
+                    setSliderValue={setSliderValue}
+                  />
+                </div>
+                <br />
+                <Button
+                  style={{ marginBottom: '1em' }}
+                  variant="primary"
+                  size="lg"
+                  onClick={submitSettings}
+                >
+                  <FormattedMessage id="Save-CEFR" />
+                </Button>
+                {hasAdaptiveTests && (
+                  <>
+                    <Divider />
+                    <div
+                      style={{
+                        marginTop: '1em',
+                        color: isTeacher ? 'lightgrey' : '#000000',
+                      }}
+                    >
+                      <h3>
+                        <FormattedMessage id="offer-adaptive-test" />
+                      </h3>
+                      &nbsp;
+                      <Link to="/adaptive-test">
+                        <Button style={{ fontSize: '18px' }} variant="primary" disabled={isTeacher}>
+                          <FormattedMessage id="adaptive-test-button" />
+                        </Button>
+                      </Link>
+                    </div>
+                  </>
+                )}
+              </>
+            )
+          }
         </div>
       </Modal.Content>
     </Modal>
