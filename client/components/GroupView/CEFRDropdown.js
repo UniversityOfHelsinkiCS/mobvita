@@ -62,7 +62,7 @@ const CEFRDropdown = ({
 
   return (
     <Dropdown
-      style={{ width: addNew && '280px' }}
+      style={{ width: '200px' }}
       className="interactable"
       text={addNew ? chosenValue : skillLevels[chosenValue]}
       selection

@@ -71,24 +71,7 @@ const StudentCEFRModal = ({ open, setOpen, cefrHistory, setCefrHistory, groupId,
               onClick={closeModal}
             />
           </div>
-          <div className="flex space-between" style={{ paddingBottom: '15px' }}>
-            {modified && (
-              <>
-                <Button className="interactable" variant="primary" onClick={handleSubmit}>
-                  <FormattedMessage id="submit-changes-CEFR" />
-                </Button>
-                <Button
-                  className="interactable"
-                  style={{ marginLeft: '.5rem' }}
-                  variant="secondary"
-                  onClick={undoChanges}
-                >
-                  <FormattedMessage id="undo-changes-CEFR" />
-                </Button>
-              </>
-            )}
-          </div>
-          {showForm && (
+          {/* {showForm && (
             <div style={{ marginBottom: '10px' }}>
               <CEFRDropdown
                 addNew
@@ -97,8 +80,8 @@ const StudentCEFRModal = ({ open, setOpen, cefrHistory, setCefrHistory, groupId,
                 setModified={setModified}
               />
             </div>
-          )}
-          <div style={{ overflow: 'auto', maxHeight: 300 }}>
+          )} */}
+          <div style={{  maxHeight: 300 }}> {/*  overflow: 'auto', */}
             <Table striped bordered hover size="sm">
               <thead>
                 <tr key="summary-header-row">
@@ -108,17 +91,42 @@ const StudentCEFRModal = ({ open, setOpen, cefrHistory, setCefrHistory, groupId,
                 </tr>
               </thead>
               <tbody>
+                {showForm && (
+                  <tr>
+                    <th style={{ verticalAlign: 'middle', fontWeight: '400', padding: '0.75rem' }}>
+                      {moment().format('YYYY/MM/DD')}
+                    </th>
+                    <th style={{ verticalAlign: 'middle', fontWeight: '400', padding: '0.75rem', width: '100px' }}>
+                    </th>
+                    <th style={{ verticalAlign: 'middle', fontWeight: '400', padding: '0.75rem' }}>
+                      <CEFRDropdown
+                        addNew
+                        updatedCEFRHistory={updatedCEFRHistory}
+                        setUpdatedCEFRHistory={setUpdatedCEFRHistory}
+                        setModified={setModified}
+                      />
+                    </th>
+                  </tr>
+                  // <div style={{ marginBottom: '10px' }}>
+                  //   <CEFRDropdown
+                  //     addNew
+                  //     updatedCEFRHistory={updatedCEFRHistory}
+                  //     setUpdatedCEFRHistory={setUpdatedCEFRHistory}
+                  //     setModified={setModified}
+                  //   />
+                  // </div>
+                )} 
                 {updatedCEFRHistory.map((estimate, index) => (
                   <tr>
-                    <th style={{ verticalAlign: 'middle', fontWeight: '400' }}>
+                    <th style={{ verticalAlign: 'middle', fontWeight: '400', padding: '0.75rem' }}>
                       {moment.unix(estimate.timestamp).format('YYYY/MM/DD')}
                     </th>
-                    <th style={{ verticalAlign: 'middle', fontWeight: '400' }}>
+                    <th style={{ verticalAlign: 'middle', fontWeight: '400' , padding: '0.75rem', width: '100px' }}>
                       {estimate.source === 'self_estimation'
                         ? 'Self'
                         : capitalize(estimate.source.replace('_', ' '))}
                     </th>
-                    <th style={{ verticalAlign: 'middle', fontWeight: '400' }}>
+                    <th style={{ verticalAlign: 'middle', fontWeight: '400', padding: '0.75rem' }}>
                       {estimate.source === 'teacher' ? (
                         <CEFRDropdown
                           estimate={estimate}
@@ -131,7 +139,7 @@ const StudentCEFRModal = ({ open, setOpen, cefrHistory, setCefrHistory, groupId,
                         skillLevels[estimate.grade]
                       )}
                     </th>
-                    {estimate.source === 'teacher' && (
+                    {/* {estimate.source === 'teacher' && (
                       <Icon
                         className="interactable"
                         style={{
@@ -145,11 +153,30 @@ const StudentCEFRModal = ({ open, setOpen, cefrHistory, setCefrHistory, groupId,
                         name="close"
                         onClick={() => removeCEFR(index)}
                       />
-                    )}
+                    )} */}
                   </tr>
                 ))}
               </tbody>
             </Table>
+          </div>
+          <div className="flex space-between" style={{ paddingBottom: '15px' }}>
+            <Button 
+              className="interactable" 
+              variant="primary" 
+              onClick={handleSubmit}
+              disabled={!modified}
+            >
+              <FormattedMessage id="submit-changes-CEFR" />
+            </Button>
+            <Button
+              className="interactable"
+              style={{ marginLeft: '.5rem' }}
+              variant="secondary"
+              onClick={undoChanges}
+              disabled={!modified}
+            >
+              <FormattedMessage id="undo-changes-CEFR" />
+            </Button>
           </div>
         </div>
       </Draggable>
