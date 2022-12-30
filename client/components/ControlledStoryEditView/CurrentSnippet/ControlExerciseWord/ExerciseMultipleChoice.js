@@ -7,11 +7,11 @@ const ExerciseMultipleChoice = ({ word, choices, setShowRemoveTooltip }) => {
   const { ID: wordId } = word
 
   useEffect(() => {
-    const temp = choices.sort().map(choice => ({
+    const temp = choices && Array.isArray(choices) ? choices.sort().map(choice => ({
       key: `${word.ID}_${choice}`,
       value: choice,
       text: choice,
-    }))
+    })) : []
     setOptions(temp)
   }, [word])
 
