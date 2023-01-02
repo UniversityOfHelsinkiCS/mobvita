@@ -105,9 +105,18 @@ export default (state = initialState, action) => {
         },
       }
     case 'INCREMENT_ATTEMPTS':
+      let update_current_answers = {}
+      Object.entries(state.currentAnswers).forEach(entry => {
+        let [key, answer] = entry;
+        answer['hintsRequested'] = 0
+        answer['requestedHintsList'] = []
+        answer['penalties'] = []
+        update_current_answers[key] = answer
+      });
       return {
         ...state,
         attempt: state.attempt + 1,
+        currentAnswers: update_current_answers
       }
     case 'SET_OPTIONS':
       return {
