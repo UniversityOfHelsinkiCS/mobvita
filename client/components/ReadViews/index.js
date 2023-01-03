@@ -157,12 +157,19 @@ const ReadViews = ({ match }) => {
   const StoryFunctionsDropdown = () => {
     return (
       <SemanticButton.Group>
-        <SemanticButton
+        {/* <SemanticButton
           as={Link}
           to={`/stories/${id}/practice/`}
           style={{ backgroundColor: 'rgb(50, 170, 248)', color: 'white' }}
         >
           <Icon name="pencil alternate" /><FormattedMessage id="practice-all-mode" />
+        </SemanticButton> */}
+        <SemanticButton
+          as={Link}
+          to={`/stories/${id}/grammar/practice/`}
+          style={{ backgroundColor: 'rgb(50, 170, 248)', color: 'white' }}
+        >
+          <Icon name="pencil alternate" /><FormattedMessage id="practice-grammar-mode" />
         </SemanticButton>
         <Dropdown
           className="button icon"
@@ -176,16 +183,16 @@ const ReadViews = ({ match }) => {
         >
           <Dropdown.Menu className="story-item-dropdown">
             <Dropdown.Item
-              text={<FormattedMessage id="practice-grammar-mode" />}
-              as={Link}
-              to={`/stories/${id}/grammar/practice/`}
-              icon="pencil alternate"
-            />
-            <Dropdown.Item
               text={<FormattedMessage id="practice-listening-mode" />}
               as={Link}
               to={`/stories/${id}/listening/practice/`}
               icon="volume up"
+            />
+            <Dropdown.Item
+              text={<FormattedMessage id="practice-all-mode" />}
+              as={Link}
+              to={`/stories/${id}/practice/`}
+              icon="pencil alternate"
             />
           </Dropdown.Menu>
         </Dropdown>

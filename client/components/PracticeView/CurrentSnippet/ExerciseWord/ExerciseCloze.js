@@ -103,6 +103,7 @@ const ExerciseCloze = ({ word, handleChange }) => {
   }
 
   const handleHintRequest = newHintList => {
+    handleChange(value, word)
     const newRequestNum = preHints.length + 1
     const penalties = newHintList
       ?.filter(hint => hint2penalty[hint])
