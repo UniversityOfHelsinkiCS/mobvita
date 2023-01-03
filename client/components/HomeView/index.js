@@ -114,14 +114,14 @@ const HomeviewButtons = ({
           handleClick={() => history.push('/notes-library')}
         />
       </div>
-      <div>
+      {hiddenFeatures && (
         <HomeviewButton
           imgSrc={images.readingBook}
           altText="reading a book"
           translationKey="lesson-home-btn"
           handleClick={() => history.push('/lessons/library')} // setLessonModalOpen(true)
         />
-      </div>
+      )}
       {hiddenFeatures && (
         <>
           <Button onClick={() => history.push('/test-construction')}>Test construction</Button>

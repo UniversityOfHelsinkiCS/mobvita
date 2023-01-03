@@ -1378,7 +1378,7 @@
     "sort-by-title-option": "Otsikko",
     "sort-by-difficulty-option": "Taso",
     "story-difficulty": "Taso",
-    "student-cefr-placeholder": "Valitse CEFR-arvio tälle päivälle",
+    "student-cefr-placeholder": "Uusi CEFR",
     "genitive-modifier-of": "Liittyy pääsanaan \"{}\"",
     "notes-catgory-none": "Ei mikään",
     "notes-category-none": "Ei mikään",
@@ -1414,5 +1414,7 @@
     "date-of-CEFR": "Pvm",
     "source-of-CEFR": "Lähde",
     "submit-changes-CEFR": "Tallenna",
-    "undo-changes-CEFR": "Peruuta"
+    "undo-changes-CEFR": "Peruuta",
+    "Verb. Case and PostPosition/Preposition government": "Verbi. Rektiot",
+    "Verb. Case and Adposition government": "Verbi. Rektiot"
 }

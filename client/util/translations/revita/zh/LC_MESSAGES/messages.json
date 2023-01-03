@@ -743,7 +743,7 @@
     "part-of-story-covered": "已完成文章的%%",
     "Author": "作者",
     "Teachers": "教师",
-    "student-cefr-placeholder": "Current CEFR grade",
+    "student-cefr-placeholder": "Current",
     "genitive-modifier-of": "与\"{}\"相关",
     "notes-catgory-none": "None",
     "notes-category-none": "None",
@@ -779,5 +779,7 @@
     "date-of-CEFR": "日期",
     "source-of-CEFR": "Source",
     "submit-changes-CEFR": "提交改动",
-    "undo-changes-CEFR": "撤销改动"
+    "undo-changes-CEFR": "撤销改动",
+    "Verb. Case and PostPosition/Preposition government": "动词。格位和前置后置词的支配关系",
+    "Verb. Case and Adposition government": "动词。格位和前置后置词的支配关系"
 }

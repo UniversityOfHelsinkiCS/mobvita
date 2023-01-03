@@ -1381,7 +1381,7 @@
     "sort-by-title-option": "Название",
     "sort-by-difficulty-option": "Сложность",
     "story-difficulty": "Сложность",
-    "student-cefr-placeholder": "Выбрать CEFR уровень на сегодня",
+    "student-cefr-placeholder": "Новый CEFR",
     "genitive-modifier-of": "Описывает \"{}\"",
     "notes-catgory-none": "None",
     "notes-category-none": "None",
@@ -1417,5 +1417,7 @@
     "date-of-CEFR": "Дата",
     "source-of-CEFR": "Источник",
     "submit-changes-CEFR": "Сохранить изменения",
-    "undo-changes-CEFR": "Отменить изменения"
+    "undo-changes-CEFR": "Отменить изменения",
+    "Verb. Case and PostPosition/Preposition government": "Глагол. Управление падежными формами, предлогами, послелогами.",
+    "Verb. Case and Adposition government": "Глагол. Управление падежными формами, предлогами, послелогами."
 }

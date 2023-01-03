@@ -1379,7 +1379,7 @@
     "sort-by-title-option": "Titolo",
     "sort-by-difficulty-option": "Difficoltà",
     "story-difficulty": "Difficoltà",
-    "student-cefr-placeholder": "Inserisci il QCER attuale",
+    "student-cefr-placeholder": "Il QCER nuovo",
     "genitive-modifier-of": "Descrive \"{}\"",
     "notes-catgory-none": "None",
     "notes-category-none": "None",
@@ -1415,5 +1415,7 @@
     "date-of-CEFR": "Data",
     "source-of-CEFR": "Origine",
     "submit-changes-CEFR": "Accettare le modifiche",
-    "undo-changes-CEFR": "Annullare le modifiche"
+    "undo-changes-CEFR": "Annullare le modifiche",
+    "Verb. Case and PostPosition/Preposition government": "Verbo. Reggenza del caso e preposizione/postposizione",
+    "Verb. Case and Adposition government": "Verbo. Reggenza del caso e preposizione/postposizione"
 }

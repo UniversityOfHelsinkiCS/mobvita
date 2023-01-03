@@ -1378,7 +1378,7 @@
     "sort-by-title-option": "Title",
     "sort-by-difficulty-option": "Level",
     "story-difficulty": "Level",
-    "student-cefr-placeholder": "Current CEFR grade",
+    "student-cefr-placeholder": "Current",
     "genitive-modifier-of": "Is describing \"{}\"",
     "notes-catgory-none": "None",
     "notes-category-none": "None",
@@ -1414,5 +1414,7 @@
     "date-of-CEFR": "Date",
     "source-of-CEFR": "Source",
     "submit-changes-CEFR": "Save",
-    "undo-changes-CEFR": "Undo"
+    "undo-changes-CEFR": "Undo",
+    "Verb. Case and PostPosition/Preposition government": "Verb. Case and postposition/preposition government",
+    "Verb. Case and Adposition government": "Verb. Case and Adposition government"
 }
