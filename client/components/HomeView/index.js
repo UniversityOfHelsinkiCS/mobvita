@@ -19,7 +19,7 @@ import EloChart from './EloChart'
 import LeaderboardSummary from './LeaderboardSummary'
 import SelectLessonModal from 'Components/Lessons/SelectLessonModal'
 
-const HomeviewButton = ({ imgSrc, altText, translationKey, handleClick, dataCy, wide }) => {
+const HomeviewButton = ({ imgSrc, altText, translationKey, handleClick, dataCy, wide, beta_feature }) => {
   return (
     <button
       className={`homeview-btn${wide ? ' homeview-btn-wide' : ' homeview-btn-narrow'}`}
@@ -33,6 +33,11 @@ const HomeviewButton = ({ imgSrc, altText, translationKey, handleClick, dataCy, 
       >
         <div className="homeview-btn-text">
           <FormattedMessage id={translationKey} />
+          {beta_feature && (
+            <sup>
+              <b style={{color:'red'}}>&beta;</b>
+            </sup>
+          )}
         </div>
         {!wide && <img src={imgSrc} alt={altText} style={{ maxWidth: '55%', maxHeight: '55%' }} />}
       </div>
@@ -114,14 +119,15 @@ const HomeviewButtons = ({
           handleClick={() => history.push('/notes-library')}
         />
       </div>
-      {hiddenFeatures && (
+      <div>
         <HomeviewButton
           imgSrc={images.readingBook}
           altText="reading a book"
           translationKey="lesson-home-btn"
+          beta_feature={true}
           handleClick={() => history.push('/lessons/library')} // setLessonModalOpen(true)
         />
-      )}
+      </div>
       {hiddenFeatures && (
         <>
           <Button onClick={() => history.push('/test-construction')}>Test construction</Button>

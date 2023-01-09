@@ -201,6 +201,9 @@ const LessonPracticeView = () => {
                 }}
               >
                 {`Lesson ${lesson_instance.syllabus.syllabus_id}`}
+                <sup>
+                  <b style={{color:'red'}}>&beta;</b>
+                </sup>
               </div>
               <Checkbox
                 toggle
