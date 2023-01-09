@@ -31,14 +31,20 @@ const HomeviewButton = ({ imgSrc, altText, translationKey, handleClick, dataCy, 
         className={`align-center ${!wide ? 'flex-col space-between' : 'flex justify-center'}`}
         style={{ height: '100%' }}
       >
-        <div className="homeview-btn-text">
-          <FormattedMessage id={translationKey} />
-          {beta_feature && (
-            <sup>
-              <b style={{color:'red'}}>&beta;</b>
-            </sup>
-          )}
+        <div style={{width: '100%', 'display': 'inline-flex'}}>
+          <div style={{width: '7%'}}></div>
+          <div className="homeview-btn-text" style={{width: '86%'}}>
+            <FormattedMessage id={translationKey} />
+          </div>
+          <div style={{width: '7%'}}>
+            {beta_feature && (
+              <sup>
+                <b style={{color:'red', 'font-size': 'x-large'}}>&beta;</b>
+              </sup>
+            )}
+          </div>
         </div>
+        
         {!wide && <img src={imgSrc} alt={altText} style={{ maxWidth: '55%', maxHeight: '55%' }} />}
       </div>
     </button>
