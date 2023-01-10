@@ -32,17 +32,18 @@ const HomeviewButton = ({ imgSrc, altText, translationKey, handleClick, dataCy, 
         style={{ height: '100%' }}
       >
         <div style={{width: '100%', 'display': 'inline-flex'}}>
-          <div style={{width: '7%'}}></div>
-          <div className="homeview-btn-text" style={{width: '86%'}}>
+          {/* <div style={{width: '7%'}}></div> */}
+          <div className="homeview-btn-text" style={{width: '100%'}}>
             <FormattedMessage id={translationKey} />
-          </div>
-          <div style={{width: '7%'}}>
             {beta_feature && (
               <sup>
-                <b style={{color:'red', 'font-size': 'x-large'}}>&beta;</b>
+                <b style={{color:'red'}}>BETA</b>
               </sup>
             )}
           </div>
+          {/* <div style={{width: '7%'}}>
+            &beta;
+          </div> */}
         </div>
         
         {!wide && <img src={imgSrc} alt={altText} style={{ maxWidth: '55%', maxHeight: '55%' }} />}
