@@ -36,7 +36,13 @@ const SelectLessonModal = ({ open, setOpen, lesson_syllabus_id }) => {
 
   useEffect(() => {
     if (!metadata_pending && lesson_semantics) {
-      let semantic_topic_options = []
+      let semantic_topic_options = [
+        {
+          key: 'all',
+          text: <FormattedMessage id={'all'} />,
+          value: 'all',
+        }
+      ]
       lesson_semantics.forEach(topic => {
         semantic_topic_options.push({
           key: topic,
@@ -90,12 +96,12 @@ const SelectLessonModal = ({ open, setOpen, lesson_syllabus_id }) => {
           </div>
           <Divider />
 
-          <div style={{ marginBottom: '1rem', fontSize: '1.2rem' }}>
+          {/* <div style={{ marginBottom: '1rem', fontSize: '1.2rem' }}>
             <FormattedMessage id="lesson-activities" />
           </div>
           {lesson_instance?.activities?.map((activity, index) => (
             <div>{`${index + 1}. ${activity.activity}`}</div>
-          ))}
+          ))} */}
 
           {/* <LessonPracticeList
             lessonsPractices={lessonSemanticTopics}

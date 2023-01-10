@@ -82,9 +82,9 @@ const LessonTitle = ({
                     style={{ marginBottom: '.5rem', width: '100%', ...getTextStyle(learningLanguage) }}
                 >
                     {'Lesson ' + lesson.syllabus_id}
-                    <sup>
+                    {/* <sup>
                         <b style={{color:'red'}}>&beta;</b>
-                    </sup>
+                    </sup> */}
                 </h5>
             </span>
             <span style={{ overflow: 'hidden', width: '100%' }}>
