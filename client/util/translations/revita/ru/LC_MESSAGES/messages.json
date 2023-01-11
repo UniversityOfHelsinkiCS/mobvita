@@ -1397,14 +1397,14 @@
     "select-lesson-story": "Select a story for the lesson",
     "add-lesson-practice-btn": "Add",
     "remove-lesson-practice-btn": "Remove",
-    "lesson-grammar-practice": "Grammar practice",
-    "lesson-listening-practice": "Listening practice",
-    "lesson-crossword": "Crossword",
-    "lesson-competition": "Competition",
+    "lesson-grammar-practice": "Грамматика",
+    "lesson-listening-practice": "Восприятие на слух",
+    "lesson-crossword": "Кроссворд",
+    "lesson-competition": "Соревнование",
     "create-lesson-btn": "Create lesson",
     "no-practices-yet": "No practices added yet",
-    "custom-feedback-header": "Add hints",
-    "practice-all-mode": "Practice all",
+    "custom-feedback-header": "Добавить подсказки",
+    "practice-all-mode": "Все упражнения",
     "continue-practice": "Практика",
     "lesson-setup": "Настройка урока",
     "start-practice": "Практика",
@@ -1419,5 +1419,6 @@
     "submit-changes-CEFR": "Сохранить изменения",
     "undo-changes-CEFR": "Отменить изменения",
     "Verb. Case and PostPosition/Preposition government": "Глагол. Управление падежными формами, предлогами, послелогами.",
-    "Verb. Case and Adposition government": "Глагол. Управление падежными формами, предлогами, послелогами."
+    "Verb. Case and Adposition government": "Глагол. Управление падежными формами, предлогами, послелогами.",
+    "save-lesson": "Сохранить"
 }

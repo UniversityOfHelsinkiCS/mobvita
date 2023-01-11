@@ -558,8 +558,9 @@ $value in $spacing {
   grid-template-areas:
     "add-new-stories add-new-stories"
     "practice library"
-    "flashcards adaptive-test"
-    "exhaustive-test .";
+    "lesson flashcards"
+    "adaptive-test exhaustive-test"
+    ". .";
 
   @media (min-width: 900px) {
     max-height: 525px;
@@ -569,8 +570,9 @@ $value in $spacing {
     gap: 15px 15px;
     grid-template-areas:
       "add-new-stories add-new-stories add-new-stories"
-      "practice library flashcards"
-      "adaptive-test exhaustive-test .";
+      "practice library lesson"
+      "flashcards adaptive-test exhaustive-test"
+      ". . .";
   }
 }
 
@@ -595,6 +597,10 @@ $value in $spacing {
 
 .flashcards-btn-cont {
   grid-area: flashcards;
+}
+
+.lesson-btn-cont {
+  grid-area: lesson;
 }
 
 .test-btn-cont {

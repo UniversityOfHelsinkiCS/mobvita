@@ -89,6 +89,15 @@ const HomeviewButtons = ({
           dataCy="library-button"
         />
       </div>
+      <div className="lesson-btn-cont">
+        <HomeviewButton 
+          imgSrc={images.readingBook}
+          altText="reading a book"
+          translationKey="lesson-home-btn"
+          beta_feature={true}
+          handleClick={() => history.push('/lessons/library')} // setLessonModalOpen(true)
+        />
+      </div>
       <div className="flashcards-btn-cont tour-flashcards">
         <HomeviewButton
           imgSrc={images.flashcards}
@@ -124,15 +133,6 @@ const HomeviewButtons = ({
           altText="post-it notes"
           translationKey="notes-library"
           handleClick={() => history.push('/notes-library')}
-        />
-      </div>
-      <div>
-        <HomeviewButton
-          imgSrc={images.readingBook}
-          altText="reading a book"
-          translationKey="lesson-home-btn"
-          beta_feature={true}
-          handleClick={() => history.push('/lessons/library')} // setLessonModalOpen(true)
         />
       </div>
       {hiddenFeatures && (
