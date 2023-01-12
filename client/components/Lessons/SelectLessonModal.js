@@ -18,7 +18,7 @@ const SelectLessonModal = ({ open, setOpen, lesson_syllabus_id }) => {
   const { metadata_pending, lesson_semantics  } = useSelector(({ metadata }) => metadata)
   const { pending, lesson_instance  } = useSelector(({ lessonInstance }) => lessonInstance)
 
-  const [lessonSemanticTopic, setlessonSemanticTopic] = useState('All')
+  const [lessonSemanticTopic, setlessonSemanticTopic] = useState('all')
   const [semanticOptions, setSemanticOptions] = useState([])
   
   useEffect(() => {
@@ -55,7 +55,7 @@ const SelectLessonModal = ({ open, setOpen, lesson_syllabus_id }) => {
   }, [lesson_semantics])
 
   useEffect(() => {
-    setlessonSemanticTopic(lesson_instance && lesson_instance?.semantic ? lesson_instance.semantic : 'All')
+    setlessonSemanticTopic(lesson_instance && lesson_instance?.semantic ? lesson_instance.semantic : 'all')
   }, [lesson_instance])
 
   const handleSaveLessonInstance = () => {
@@ -86,7 +86,7 @@ const SelectLessonModal = ({ open, setOpen, lesson_syllabus_id }) => {
           </div>
           <div className="row-flex">
             <Dropdown
-              style={{ width: '220px' }}
+              style={{ width: '220px', marginBottom: '5em' }}
               text={<FormattedMessage id={lessonSemanticTopic} />}
               selection
               fluid
@@ -94,9 +94,9 @@ const SelectLessonModal = ({ open, setOpen, lesson_syllabus_id }) => {
               onChange={(_, { value }) => setlessonSemanticTopic(value)}
             />
           </div>
+          {/* 
           <Divider />
-
-          {/* <div style={{ marginBottom: '1rem', fontSize: '1.2rem' }}>
+          <div style={{ marginBottom: '1rem', fontSize: '1.2rem' }}>
             <FormattedMessage id="lesson-activities" />
           </div>
           {lesson_instance?.activities?.map((activity, index) => (

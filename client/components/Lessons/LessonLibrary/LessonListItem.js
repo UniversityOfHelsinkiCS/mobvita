@@ -4,7 +4,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import { Card, Dropdown, Button as SemanticButton, Icon, Popup } from 'semantic-ui-react'
 import { Button } from 'react-bootstrap'
 import { Link } from 'react-router-dom'
-import { FormattedMessage } from 'react-intl'
+import { useIntl, FormattedMessage } from 'react-intl'
 import { getTextStyle, learningLanguageSelector } from 'Utilities/common'
 
 // import ConfirmationWarning from 'Components/ConfirmationWarning'
@@ -30,6 +30,7 @@ const get_lesson_performance_style = (correct_count, total_count) => {
 const LessonTitle = ({
     lesson
 }) => {
+    const intl = useIntl()
     const learningLanguage = useSelector(learningLanguageSelector)
     const topics = lesson.topics ? lesson.topics : []
     let topic_rows = []
@@ -81,7 +82,7 @@ const LessonTitle = ({
                     className="story-item-title"
                     style={{ marginBottom: '.5rem', width: '100%', ...getTextStyle(learningLanguage) }}
                 >
-                    {'Lesson ' + lesson.syllabus_id}
+                    {intl.formatMessage({ id: 'lesson-dialog-title' }) + ' ' + lesson.syllabus_id}
                     {/* <sup>
                         <b style={{color:'red'}}>&beta;</b>
                     </sup> */}
