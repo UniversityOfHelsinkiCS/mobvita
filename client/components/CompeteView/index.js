@@ -81,7 +81,7 @@ const CompeteView = ({ match }) => {
 
   const handleAnswerChange = (value, word) => {
     const { surface, id, ID, concept, sentence_id, snippet_id } = word
-    const word_cue = currentAnswers[`${ID}-${candidateId}`]?.cue
+    const word_cue = currentAnswers[`${ID}-${id}`]?.cue
 
     dispatch(setTouchedIds(ID))
 
