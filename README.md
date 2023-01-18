@@ -8,7 +8,7 @@ Install node and docker and docker-compose
 
 Run `npm ci`
 
-Run `npm run dev` or `docker-compose up` whichever you prefer
+Run `npm run dev` or `docker-compose up` whichever you prefer (with newer version of Docker `docker compose up`)
 
 Open localhost:8000 on your web browser
 
