@@ -10,6 +10,8 @@ Run `npm ci`
 
 Run `npm run dev` or `docker-compose up` whichever you prefer
 
+Open localhost:8000 on your web browser
+
 # Staging deployment will happen automatically from master branch
 - Production deployment happens automatically from releases
 
