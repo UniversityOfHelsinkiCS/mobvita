@@ -18,14 +18,20 @@ const PracticeText = props => {
     }
   }, [practiceSnippet])
 
-  if (snippets.pending || !practiceSnippet || snippets.answersPending) {
+  if (!practiceSnippet && !snippets.pending) {
+    return (
+      <div className="spinner-container" style={{ minHeight: previousHeight }}>
+      </div>
+    )
+  }
+
+  if (snippets.pending || snippets.answersPending) {
     return (
       <div className="spinner-container" style={{ minHeight: previousHeight }}>
         <Spinner animation="border" variant="primary" size="lg" />
       </div>
     )
   }
-
 
   return (
     <div ref={textComponent}>

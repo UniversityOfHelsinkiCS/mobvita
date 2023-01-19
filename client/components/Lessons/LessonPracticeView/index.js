@@ -51,7 +51,6 @@ const LessonPracticeView = () => {
   const smallScreen = width < 700
   const timedExercise = snippets?.focused?.timed_exercise
   const controlledPractice = mode === 'controlled-practice'
-  const isLesson = history.location.pathname.includes('lesson')
 
   const { controls: timer } = useTimer({
     initialTime: null,

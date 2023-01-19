@@ -9,6 +9,7 @@ export const setNextSnippet = () => ({ type: 'SET_NEXT_LESSON_SNIPPET' })
 export const finishCurrentSnippet = () => ({ type: 'FINISH_CURRENT_SNIPPET'})
 
 export const getExerciseLesson = lessonId => {
+  // not in use
   const route = `/lesson/${lessonId}/exercise`
   const prefix = 'GET_EXERCISE_LESSON'
 
