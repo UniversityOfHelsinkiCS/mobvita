@@ -29,7 +29,7 @@ const HomeviewButton = ({ imgSrc, altText, translationKey, handleClick, dataCy, 
     >
       <div
         className={`align-center ${!wide ? 'flex-col space-between' : 'flex justify-center'}`}
-        style={{ height: '100%' }}
+        Toastify      style={{ height: '100%' }}
       >
         <div style={{width: '100%', 'display': 'inline-flex'}}>
           {/* <div style={{width: '7%'}}></div> */}
@@ -133,6 +133,13 @@ const HomeviewButtons = ({
           altText="post-it notes"
           translationKey="notes-library"
           handleClick={() => history.push('/notes-library')}
+        />
+      </div>
+      <div>
+        <HomeviewButton
+          imgSrc={images.exclamationMark}
+          altText="exlamation mark"
+          translationKey="Recommendations"
         />
       </div>
       {hiddenFeatures && (
