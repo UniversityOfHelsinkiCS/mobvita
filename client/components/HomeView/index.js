@@ -90,7 +90,7 @@ const HomeviewButtons = ({
         />
       </div>
       <div className="lesson-btn-cont">
-        <HomeviewButton 
+        <HomeviewButton
           imgSrc={images.readingBook}
           altText="reading a book"
           translationKey="lesson-home-btn"
@@ -209,6 +209,7 @@ const HomeView = () => {
       setBetaModalOpen(true)
     }
   }, [learningLanguage])
+
   /*
   useEffect(() => {
     if (showDAModal || showWelcomeModal) {
@@ -216,6 +217,7 @@ const HomeView = () => {
     }
   }, [showDAModal, showWelcomeModal])
   */
+
   return (
     <div className="cont-tall cont flex-col auto gap-row-sm pt-lg blue-bg">
       <AddStoryModal open={addStoryModalOpen} setOpen={setAddStoryModalOpen} />
@@ -226,7 +228,7 @@ const HomeView = () => {
         setOpen={setBetaModalOpen}
         language={learningLanguage}
       />
-      {welcomeView ? (
+      {welcomeView &&
         <DefaultActivityModal
           open={showWelcomeModal}
           username={username}
@@ -237,16 +239,7 @@ const HomeView = () => {
           enable_recmd={enable_recmd}
           welcomeBack
         />
-      ) : (
-        <DefaultActivityModal
-          open={showDAModal}
-          storiesCovered={storiesCovered}
-          incompleteStories={incomplete}
-          pending={loading}
-          learningLanguage={learningLanguage}
-          enable_recmd={enable_recmd}
-        />
-      )}
+      }
       {!userData.is_teacher && !userData.grade && !userIsAnonymous && !userData.is_new_user && (
         <SetCEFRReminder
           open={openReminder}
