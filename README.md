@@ -14,7 +14,9 @@ Open localhost:8000 on your web browser
 
 # Testing
 
-Graphic interface: Open app with docker and then run `npm run cypress:open`
+Open app with docker and then run tests:
+
+Graphic interface: `npm run cypress:open`
 
 Command line: `npm run cypress:run`
 
