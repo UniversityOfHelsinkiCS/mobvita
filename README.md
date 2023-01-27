@@ -12,6 +12,10 @@ Run `npm run dev` or `docker-compose up` whichever you prefer (with newer versio
 
 Open localhost:8000 on your web browser
 
+# Testing
+
+Open app with docker and then run `npm run cypress:open`
+
 # Staging deployment will happen automatically from master branch
 - Production deployment happens automatically from releases
 
