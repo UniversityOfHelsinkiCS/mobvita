@@ -44,8 +44,6 @@ const ExerciseCloze = ({ word, handleChange }) => {
   const [filteredHintsList, setFilteredHintsList] = useState([])
   const [preHints, setPreHints] = useState([])
   const [keepOpen, setKeepOpen] = useState(false)
-  const [eloScoreHearts, setEloScoreHearts] = useState([1, 2, 3, 4, 5])
-  const [spentHints, setSpentHints] = useState([])
   const {
     isWrong,
     tested,
@@ -61,6 +59,9 @@ const ExerciseCloze = ({ word, handleChange }) => {
     frozen_messages,
     hint2penalty,
   } = word
+
+  const [eloScoreHearts, setEloScoreHearts] = useState(Array.from({length: hints ? hints.length : 0}, (_, i) => i + 1))
+  const [spentHints, setSpentHints] = useState([])
 
   const target = useRef()
   const dispatch = useDispatch()
@@ -244,9 +245,32 @@ const ExerciseCloze = ({ word, handleChange }) => {
     return false
   }
 
+  let hint_context_box = <div></div>
+  if (eloScoreHearts.length + spentHints.length > 0){
+    hint_context_box = <div className="tooltip-green flex space-between">
+      <Button style={hintButtonVisibility} variant="primary" onMouseDown={handlePreHints}>
+        <FormattedMessage id="ask-for-a-hint" />
+      </Button>
+      <div>
+        {eloScoreHearts.map(heart => (
+          <Icon size="small" name="heart" style={{ marginLeft: '0.25em' }} />
+        ))}
+        {spentHints.map(hint => (
+          <Icon size="small" name="heart outline" style={{ marginLeft: '0.25em' }} />
+        ))}
+      </div>
+    </div>
+  } else {
+    hint_context_box = <div className="tooltip-green flex space-between">
+      <div className="tooltip-hint" style={{ textAlign: 'left' }}>
+        <FormattedMessage id="no-hints-available" />
+      </div>
+    </div>
+  }
+
   const tooltip = (
     <div>
-      <div className="tooltip-green flex space-between">
+      {/* <div className="tooltip-green flex space-between">
         <Button style={hintButtonVisibility} variant="primary" onMouseDown={handlePreHints}>
           <FormattedMessage id="ask-for-a-hint" />
         </Button>
@@ -258,7 +282,8 @@ const ExerciseCloze = ({ word, handleChange }) => {
             <Icon size="small" name="heart outline" style={{ marginLeft: '0.25em' }} />
           ))}
         </div>
-      </div>{' '}
+      </div> */}
+      {hint_context_box} {' '}
       <div className="tooltip-hint" style={{ textAlign: 'left' }} onMouseDown={handleTooltipClick}>
         <ul>
           {frozen_messages?.map(mess => (
