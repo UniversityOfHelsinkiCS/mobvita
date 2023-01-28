@@ -434,34 +434,36 @@ const DefaultActivityModal = ({
                   {recmdList.map(recommendation => recommendation)}
                 </div>
               </div>
-              <div className="flex pt-lg">
-                <Form.Group>
-                  <Form.Check
-                    className="interactable"
-                    style={{ marginTop: '0.15em' }}
-                    type="checkbox"
-                    inline
-                    onChange={updatePreferences}
-                    checked={!enable_recmd}
-                    disabled={userPending}
-                  />
-                </Form.Group>
-                <span style={{ color: '#708090' }}>
-                  <FormattedMessage id="never-show-recommendations" />
-                </span>
-                <Popup
-                  className="interactable"
-                  content={intl.formatMessage({ id: 'disable-recmd-tooltip' })}
-                  trigger={
-                    <Icon
+              {!welcomeBack && (
+                <div className="flex pt-lg">
+                  <Form.Group>
+                    <Form.Check
                       className="interactable"
-                      style={{ marginLeft: '0.5em' }}
-                      name="info circle"
-                      color="grey"
+                      style={{ marginTop: '0.15em' }}
+                      type="checkbox"
+                      inline
+                      onChange={updatePreferences}
+                      checked={!enable_recmd}
+                      disabled={userPending}
                     />
-                  }
-                />
-              </div>
+                  </Form.Group>
+                  <span style={{ color: '#708090' }}>
+                    <FormattedMessage id="never-show-recommendations" />
+                  </span>
+                  <Popup
+                    className="interactable"
+                    content={intl.formatMessage({ id: 'disable-recmd-tooltip' })}
+                    trigger={
+                      <Icon
+                        className="interactable"
+                        style={{ marginLeft: '0.5em' }}
+                        name="info circle"
+                        color="grey"
+                      />
+                    }
+                  />
+                </div>
+              )}
             </div>
           </div>
         </Draggable>

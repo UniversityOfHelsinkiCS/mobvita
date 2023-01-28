@@ -74,7 +74,7 @@ const StoryDetailsModal = ({
           <div className="flex wrap" style={{ gap: '5px' }}>
             <LinkButton
               variant={isTeacher && inGroupLibrary ? 'secondary' : 'primary'}
-              to={`/stories/${story._id}/practice`}
+              to={`/stories/${story._id}/practice-preview`}
               translationId="practice"
             />
             {!enableOnlyPractice && (

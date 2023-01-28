@@ -22,10 +22,11 @@ const ExerciseMultipleChoice = ({ word, handleChange }) => {
   const currentAnswer = useSelector(({ practice }) => practice.currentAnswers[`${word.ID}-${word.id}`])
   // const { eloHearts } = useSelector(({ snippets }) => snippets)
   const { attempt, focusedWord, latestMCTouched } = useSelector(({ practice }) => practice)
-  const [eloScoreHearts, setEloScoreHearts] = useState([1, 2, 3, 4, 5])
-  const [spentHints, setSpentHints] = useState([])
-
   const { tested, isWrong, message, hints, ID: wordId, requested_hints, frozen_messages, hint2penalty } = word
+  
+  const [eloScoreHearts, setEloScoreHearts] = useState(Array.from({length: hints ? hints.length : 0}, (_, i) => i + 1))
+  const [spentHints, setSpentHints] = useState([])
+  
   const value = currentAnswer ? currentAnswer.users_answer : ''
   const hintButtonVisibility =
     (!hints || filteredHintsList.length < 1 || preHints.length - requested_hints?.length < filteredHintsList?.length) &&
@@ -167,9 +168,32 @@ const ExerciseMultipleChoice = ({ word, handleChange }) => {
     return width
   }
 
+  let hint_context_box = <div></div>
+  if (eloScoreHearts.length + spentHints.length > 0){
+    hint_context_box = <div className="tooltip-green flex space-between">
+      <Button style={hintButtonVisibility} variant="primary" onMouseDown={handlePreHints}>
+        <FormattedMessage id="ask-for-a-hint" />
+      </Button>
+      <div>
+        {eloScoreHearts.map(heart => (
+          <Icon size="small" name="heart" style={{ marginLeft: '0.25em' }} />
+        ))}
+        {spentHints.map(hint => (
+          <Icon size="small" name="heart outline" style={{ marginLeft: '0.25em' }} />
+        ))}
+      </div>
+    </div>
+  } else {
+    hint_context_box = <div className="tooltip-green flex space-between">
+      <div className="tooltip-hint" style={{ textAlign: 'left' }}>
+        <FormattedMessage id="no-hints-available" />
+      </div>
+    </div>
+  }
+
   const tooltip = (
     <div onBlur={handleTooltipBlur}>
-      <div className="tooltip-green flex space-between">
+      {/* <div className="tooltip-green flex space-between">
         <Button
           style={hintButtonVisibility}
           variant="primary"
@@ -185,7 +209,8 @@ const ExerciseMultipleChoice = ({ word, handleChange }) => {
             <Icon size="small" name="heart outline" style={{ marginLeft: '0.25em' }} />
           ))}
         </div>
-      </div>{' '}
+      </div> */}
+      {hint_context_box} {' '}{hint_context_box} {' '}
       <div className="tooltip-hint" style={{ textAlign: 'left' }}>
         <ul>
           {frozen_messages?.map(mess => (

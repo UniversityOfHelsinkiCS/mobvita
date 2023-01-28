@@ -24,7 +24,7 @@ const ExerciseHearing = ({ word, handleChange }) => {
   const [lastWord, setLastWord] = useState('')
   const inputRef = createRef(null)
   const { voiceSampleOnCooldown } = useSelector(({ practice }) => practice)
-  const currentAnswer = useSelector(({ practice }) => practice.currentAnswers[word.ID])
+  const currentAnswer = useSelector(({ practice }) => practice.currentAnswers[`${word.ID}-${word.id}`])
   const learningLanguage = useSelector(learningLanguageSelector)
   const { resource_usage } = useSelector(state => state.user.data.user)
   const { grade } = useSelector(state => state.user.data.user)
@@ -39,8 +39,6 @@ const ExerciseHearing = ({ word, handleChange }) => {
     if (word.base !== word.surface) handleChange(word.base, word)
   }
 
-  // console.log('word ', word)
-
   const getExerciseClass = (tested, isWrong) => {
     if (!tested) return 'exercise'
     if (isWrong) return 'exercise wrong'
@@ -50,9 +48,8 @@ const ExerciseHearing = ({ word, handleChange }) => {
   useEffect(() => {
     setClassName(getExerciseClass(tested, isWrong))
     if (tested && isWrong) {
-      giveHint()
+      // giveHint()
       const val = currentAnswer ? currentAnswer.users_answer : ''
-      
       setValue(val)
     }
   }, [tested])
@@ -83,7 +80,6 @@ const ExerciseHearing = ({ word, handleChange }) => {
     }
     dispatch(setFocusedWord(word))
     if (!focusTimeout && !voiceSampleOnCooldown) {
-      console.log('speaking ', word.audio, '  ', voice)
       if (lastWord === ''){
         setCount(count + 1)
         setLastWord(word)
