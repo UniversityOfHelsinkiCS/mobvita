@@ -135,15 +135,13 @@ const HomeviewButtons = ({
           handleClick={() => history.push('/notes-library')}
         />
       </div>
-      <div>
-        <HomeviewButton
-          imgSrc={images.exclamationMark}
-          altText="exlamation mark"
-          translationKey="Recommendations"
-        />
-      </div>
       {hiddenFeatures && (
         <>
+          <HomeviewButton
+            imgSrc={images.exclamationMark}
+            altText="exlamation mark"
+            translationKey="Recommendations"
+          />
           <Button onClick={() => history.push('/test-construction')}>Test construction</Button>
           <Button style={{ padding: '5em' }} onClick={() => history.push('test-debug')}>
             Feedback debugger
