@@ -157,22 +157,28 @@ const ReadViews = ({ match }) => {
   const StoryFunctionsDropdown = () => {
     return (
       <SemanticButton.Group>
-        <SemanticButton
-          as={Link}
+        {/* <SemanticButton
+          // as={Link}
           // to={`/stories/${id}/grammar/practice/`}
           style={{ backgroundColor: 'rgb(50, 170, 248)', color: 'white' }}
         >
           <FormattedMessage id="start-practice" />
-        </SemanticButton>
+        </SemanticButton> */}
         <Dropdown
           className="button icon"
           style={{
             backgroundColor: 'rgb(50, 170, 248)',
             color: 'white',
             borderLeft: '2px solid rgb(81, 138, 248)',
+            display: 'inline-flex'
           }}
           floating
-          trigger={<React.Fragment />}
+          // trigger={<React.Fragment />}
+          trigger={
+            <div style={{paddingRight: '0.5rem'}}>
+              <FormattedMessage id="start-practice" />
+            </div>
+          }
         >
           <Dropdown.Menu className="story-item-dropdown">
             <Dropdown.Item
