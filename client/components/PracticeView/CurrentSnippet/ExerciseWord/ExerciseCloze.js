@@ -68,11 +68,11 @@ const ExerciseCloze = ({ word, handleChange }) => {
   const [emptyHintsList, setEmptyHintsList] = useState(false)
   const voice = voiceLanguages[learningLanguage]
   const hintButtonVisibility =
-    (!hints ||
+    (
+      !hints ||
       (filteredHintsList.length < 1 && !message) ||
-      (preHints.length - requested_hints?.length < filteredHintsList?.length &&
-        preHints.length < 5)) &&
-    !emptyHintsList
+      (preHints.length - requested_hints?.length < filteredHintsList?.length) //  && preHints.length < 5
+    ) && !emptyHintsList
       ? { visibility: 'visible' }
       : { visibility: 'hidden' }
   const handleTooltipWordClick = () => {
