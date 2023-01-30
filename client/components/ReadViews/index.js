@@ -191,13 +191,13 @@ const ReadViews = ({ match }) => {
               text={<FormattedMessage id="practice-listening-mode" />}
               as={Link}
               to={`/stories/${id}/listening/practice/`}
-              icon="volume up"
+              icon="headphones"
             />
             <Dropdown.Item
               text={<FormattedMessage id="practice-all-mode" />}
               as={Link}
               to={`/stories/${id}/practice/`}
-              icon="pencil alternate"
+              icon="bolt"
             />
           </Dropdown.Menu>
         </Dropdown>
