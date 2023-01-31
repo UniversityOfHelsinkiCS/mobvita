@@ -36,11 +36,13 @@ const LessonPracticeView = () => {
   const { width } = useWindowDimensions()
 
   const { show_review_diff } = useSelector(({ user }) => user.data.user)
+  const { lessons } = useSelector(({ metadata }) => metadata)
   const learningLanguage = useSelector(learningLanguageSelector)
   const snippets = useSelector(({ snippets }) => snippets)
   const { pending: lesson_instance_pending, lesson_instance } = useSelector(({ lessonInstance }) => lessonInstance)
   const { isPaused, willPause, practiceFinished, currentAnswers } = useSelector(({ practice }) => practice)
 
+  const [ lessonMetaData, setLessonMetaData ] = useState({})
   const [ startModalOpen, setStartModalOpen ] = useState(false)
   const [ currentSnippetNum, setCurrentSnippetNum ] = useState(1)
   const [ snippetsTotalNum, setSnippetsTotalNum ] = useState(10)
@@ -58,6 +60,29 @@ const LessonPracticeView = () => {
     startImmediately: false,
     timeToUpdate: 100,
   })
+
+  const get_lesson_performance = (correct_count, total_count) => {
+    let correct_perc = 0.0
+    if (total_count && total_count !== 0){ 
+        correct_perc =  correct_count / total_count
+    } 
+    return parseFloat(correct_perc).toFixed(2) // * 100
+  }
+  
+  const get_lesson_performance_style = (correct_count, total_count) => {
+    let correct_perc = get_lesson_performance(correct_count, total_count)
+    if (correct_perc >= 0.75) return { 'color': 'green' }
+    if (correct_perc < 0.75 && correct_perc >= 0.5) return { 'color': 'greenyellow' }
+    if (correct_perc < 0.5 && correct_perc >= 0.25) return { 'color': 'orange' }
+    if (correct_perc < 0.25) return { 'color': 'red' }
+    return { 'color': 'black' }
+  } 
+
+  useEffect(() => { 
+    const filtered_lessons = lessons ? lessons.filter(l => l.syllabus_id === lesson_syllabus_id) : []
+    const practice_lesson = filtered_lessons?.length == 1 ? filtered_lessons[0] : {}
+    setLessonMetaData(practice_lesson)
+  }, [lessons])
 
   useEffect(() => {
     setCurrentSnippetNum(0)
@@ -169,6 +194,48 @@ const LessonPracticeView = () => {
     return Math.round(timer.getTime() / 1000)
   }
 
+  const topics = lessonMetaData.topics ? lessonMetaData.topics : []
+  let topic_rows = []
+  for (let i = 0; i < topics.length; i++) {
+    let topic_concepts = topics[i].topic.split(';')
+    for (let k = 0; k < topic_concepts.length; k++) {
+      if (k === 0){
+        topic_rows.push(
+            <h6
+                className="lesson-item-topics"
+                style={{ 
+                    marginBottom: '.5rem', 
+                    display: 'inline-flex',
+                    width: '100%',
+                    ...getTextStyle(learningLanguage) 
+                }}
+            >
+                <div style={{ 'width': '7%', 'max-width': '40px', 'min-width': '35px', ...get_lesson_performance_style(topics[i].correct, topics[i].total)}}>
+                    {Math.round(get_lesson_performance(topics[i].correct, topics[i].total) * 100) + ' %'}
+                </div>
+                <div >{topic_concepts[k].charAt(0).toUpperCase() + topic_concepts[k].slice(1)}</div>
+            </h6>
+        );
+      } else {
+        topic_rows.push(
+            <h6
+                className="lesson-item-topics"
+                style={{ 
+                    marginBottom: '.5rem', 
+                    display: 'inline-flex',
+                    width: '100%',
+                    ...getTextStyle(learningLanguage) 
+                }}
+            >
+                <div style={{ 'width': '7%', 'max-width': '40px', 'min-width': '35px', ...get_lesson_performance_style(topics[i].correct, topics[i].total)}}>{}</div>
+                <div>{topic_concepts[k].charAt(0).toUpperCase() + topic_concepts[k].slice(1)}</div>
+            </h6>
+        );
+      }
+    }
+  }
+  console.log('lessonMetaData', lessonMetaData)
+
   if (!lesson_instance_pending && lesson_instance && lesson_instance?.lesson_id) {
     return (
       <div className="cont-tall pt-sm flex-col space-between">
@@ -203,6 +270,9 @@ const LessonPracticeView = () => {
                 {/* <sup>
                   <b style={{color:'red'}}>&beta;</b>
                 </sup> */}
+              </div>
+              <div style={{ overflow: 'hidden', width: '100%' }}>
+                {topic_rows}
               </div>
               <Checkbox
                 toggle
