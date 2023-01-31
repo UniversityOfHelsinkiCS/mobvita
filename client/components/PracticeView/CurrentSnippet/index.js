@@ -114,6 +114,7 @@ const CurrentSnippet = ({ storyId, handleInputChange, timer, numSnippets, lesson
           audio,
           sentence_id,
           snippet_id,
+          requested_hints,
         } = currentWord
 
         let usersAnswer
@@ -134,7 +135,8 @@ const CurrentSnippet = ({ storyId, handleInputChange, timer, numSnippets, lesson
                 id,
                 word_id: ID,
                 story_id: storyId,
-                cue: word_cue
+                cue: word_cue,
+                requestedHintsList: requested_hints
               },
             })
           )
@@ -150,7 +152,8 @@ const CurrentSnippet = ({ storyId, handleInputChange, timer, numSnippets, lesson
                 id,
                 word_id: ID,
                 story_id: storyId,
-                cue: word_cue
+                cue: word_cue,
+                requestedHintsList: requested_hints
               },
             })
           )
@@ -167,7 +170,8 @@ const CurrentSnippet = ({ storyId, handleInputChange, timer, numSnippets, lesson
             snippet_id,
             story_id: storyId,
             word_id: ID,
-            cue: word_cue
+            cue: word_cue,
+            requestedHintsList: requested_hints
           },
         }
       }, {})

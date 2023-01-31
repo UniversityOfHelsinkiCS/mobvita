@@ -136,14 +136,14 @@ const PracticeModal = ({ open, setOpen }) => {
     if (jump && filteredStories.length > 0) {
       // console.log(jump)
       // console.log(`/stories/${filteredStories[randomStoryIndex]._id}/practice`)
-      history.push(`/stories/${filteredStories[randomStoryIndex]._id}/practice-preview`)
+      history.push(`/stories/${filteredStories[randomStoryIndex]._id}/preview`) //practice-preview
     }
   }, [filteredStories, randomStoryIndex])
 
   let filteredLink = ''
 
   if (filteredStories.length > 0) {
-    filteredLink = `/stories/${filteredStories[randomStoryIndex]._id}/practice-preview`
+    filteredLink = `/stories/${filteredStories[randomStoryIndex]._id}/preview`
   }
 
   const handleLibraryChange = library => {
