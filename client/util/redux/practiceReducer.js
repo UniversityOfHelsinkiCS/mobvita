@@ -109,7 +109,7 @@ export default (state = initialState, action) => {
       Object.entries(state.currentAnswers).forEach(entry => {
         let [key, answer] = entry;
         answer['hintsRequested'] = 0
-        answer['requestedHintsList'] = []
+        // answer['requestedHintsList'] = []
         answer['penalties'] = []
         update_current_answers[key] = answer
       });

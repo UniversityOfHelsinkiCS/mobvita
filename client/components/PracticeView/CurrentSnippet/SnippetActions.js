@@ -101,6 +101,15 @@ const SnippetActions = ({ storyId, exerciseCount, isControlledStory, exerciseMod
   useEffect(() => {
     const testedAndCorrectIDs = snippets?.focused?.practice_snippet?.filter(w => w.tested && !w.isWrong).map(w => `${w.ID}-${w.id}`)
     dispatch(addToCorrectAnswerIDs(testedAndCorrectIDs))
+
+    let practice_snippet = snippets?.focused?.practice_snippet ? snippets?.focused?.practice_snippet : []
+    let update_answers = {}
+    for (const [key, answerObject] of Object.entries(currentAnswers)) {
+      let word_ID = key.split("-")[0]
+      answerObject['requestedHintsList'] = practice_snippet[word_ID]?.requested_hints
+      update_answers[key] = answerObject
+    }
+    dispatch(setAnswers(update_answers))
   }, [attempt])
 
   const formattedTimerValue = timerValue < 0 ? 0 : timerValue
