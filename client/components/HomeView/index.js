@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react'
 import { useHistory } from 'react-router'
 import { FormattedMessage } from 'react-intl'
 import { images, hiddenFeatures, supportedLearningLanguages } from 'Utilities/common'
-import { useDispatch, useSelector } from 'react-redux'
+import { dispatch,useDispatch, useSelector } from 'react-redux'
 import { getGroups } from 'Utilities/redux/groupsReducer'
 import { getAllStories } from 'Utilities/redux/storiesReducer'
 import { openEncouragement } from 'Utilities/redux/encouragementsReducer'
@@ -58,6 +58,7 @@ const HomeviewButtons = ({
   setLessonModalOpen,
   aTestIsEnabled,
 }) => {
+  const dispatch = useDispatch();
   const history = useHistory()
   const { hasTests, hasAdaptiveTests } = useSelector(({ metadata }) => metadata)
 
@@ -141,6 +142,7 @@ const HomeviewButtons = ({
             imgSrc={images.exclamationMark}
             altText="exlamation mark"
             translationKey="Recommendations"
+            handleClick={() => dispatch(openEncouragement())}
           />
           <Button onClick={() => history.push('/test-construction')}>Test construction</Button>
           <Button style={{ padding: '5em' }} onClick={() => history.push('test-debug')}>
@@ -181,7 +183,8 @@ const HomeView = () => {
   const userIsAnonymous = userData?.email === 'anonymous_email'
   const [openReminder, setOpenReminder] = useState(true)
   const welcomeView = history.location.pathname.endsWith('/welcome')
-  const showDAModal = open && userData?.grade && !userIsAnonymous
+  const homeView = history.location.pathname.endsWith('/home')
+  const showDAModal = open && homeView && userData?.grade && !userIsAnonymous
   const showWelcomeModal =
     open && welcomeView && !userIsAnonymous && !userData.is_new_user && userData.grade
 
@@ -238,6 +241,15 @@ const HomeView = () => {
           welcomeBack
         />
       }
+      <DefaultActivityModal
+          open={showDAModal}
+          username={username}
+          storiesCovered={storiesCovered}
+          incompleteStories={incomplete}
+          pending={loading}
+          learningLanguage={learningLanguage}
+          enable_recmd={enable_recmd}
+        />
       {!userData.is_teacher && !userData.grade && !userIsAnonymous && !userData.is_new_user && (
         <SetCEFRReminder
           open={openReminder}
