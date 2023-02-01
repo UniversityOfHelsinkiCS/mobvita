@@ -49,15 +49,15 @@ const LessonTitle = ({
                             ...getTextStyle(learningLanguage) 
                         }}
                     >
-                        <div>
+                        <div style={{ width: '6%', textAlign: 'right', marginRight: '0.5rem', 'max-width': '25px', 'min-width': '20px', ...get_lesson_performance_style(topics[i].correct, topics[i].total) }}>
+                            {String(Math.round(get_lesson_performance(topics[i].correct, topics[i].total) * 100)).padEnd(3,' ')}
+                        </div>
+                        <div style={{ width: '3%', textAlign: 'center', marginRight: '0.5rem', 'max-width': '10px', 'min-width': '3px', ...get_lesson_performance_style(topics[i].correct, topics[i].total) }}>
+                            {'%'}
+                        </div>
+                        <div style={{ width: '88%' }}>
                             {topic_concepts[k].charAt(0).toUpperCase() + topic_concepts[k].slice(1)}
                         </div>
-                        <div style={{ marginLeft: '0.5rem', ...get_lesson_performance_style(topics[i].correct, topics[i].total) }}>
-                            {'% ' + Math.round(get_lesson_performance(topics[i].correct, topics[i].total) * 100)}
-                        </div>
-                        {/* <div style={{ 'width': '7%', 'max-width': '40px', 'min-width': '35px', ...get_lesson_performance_style(topics[i].correct, topics[i].total)}}>
-                            {Math.round(get_lesson_performance(topics[i].correct, topics[i].total) * 100) + ' %'}
-                        </div> */}
                     </h6>
                 );
             } else {
@@ -71,8 +71,9 @@ const LessonTitle = ({
                             ...getTextStyle(learningLanguage) 
                         }}
                     >
-                        <div>{topic_concepts[k].charAt(0).toUpperCase() + topic_concepts[k].slice(1)}</div>
-                        {/* <div style={{ 'width': '7%', 'max-width': '40px', 'min-width': '35px', ...get_lesson_performance_style(topics[i].correct, topics[i].total)}}>{}</div> */}
+                        <div style={{ width: '6%', textAlign: 'right', marginRight: '0.5rem', 'max-width': '25px', 'min-width': '20px' }}></div>
+                        <div style={{ width: '3%', textAlign: 'center', marginRight: '0.5rem', 'max-width': '10px', 'min-width': '3px' }}></div>
+                        <div style={{ width: '88%' }}>{topic_concepts[k].charAt(0).toUpperCase() + topic_concepts[k].slice(1)}</div>
                     </h6>
                 );
             }
