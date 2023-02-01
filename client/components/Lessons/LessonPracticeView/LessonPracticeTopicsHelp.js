@@ -72,7 +72,6 @@ const LessonPracticeTopicsHelp = (lesson) => {
             }
         }
     }
-    console.log("adad", topic_rows)
 
     if (width >= 1024) {
         return (

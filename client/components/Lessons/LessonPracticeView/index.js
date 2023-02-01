@@ -7,6 +7,7 @@ import { getStoryAction } from 'Utilities/redux/storiesReducer'
 import { clearFocusedSnippet, resetSnippets } from 'Utilities/redux/snippetsReducer'
 import { updateShowReviewDiff } from 'Utilities/redux/userReducer'
 import { Spinner } from 'react-bootstrap'
+import { getMetadata } from 'Utilities/redux/metadataReducer'
 import { setTouchedIds, setAnswers, setWillPause, setIsPaused, } from 'Utilities/redux/practiceReducer'
 import { clearTranslationAction } from 'Utilities/redux/translationReducer'
 import { getLessonActiveInstance, clearLessonInstanceState } from 'Utilities/redux/lessonInstanceReducer'
@@ -67,6 +68,10 @@ const LessonPracticeView = () => {
     const practice_lesson = filtered_lessons?.length == 1 ? filtered_lessons[0] : {}
     setLessonMetaData(practice_lesson)
   }, [lessons])
+
+  useEffect(() => {
+    dispatch(getMetadata(learningLanguage))
+  }, [snippets.focused])
 
   useEffect(() => {
     setCurrentSnippetNum(0)
