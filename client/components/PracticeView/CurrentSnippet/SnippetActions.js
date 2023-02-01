@@ -106,7 +106,7 @@ const SnippetActions = ({ storyId, exerciseCount, isControlledStory, exerciseMod
     let update_answers = {}
     for (const [key, answerObject] of Object.entries(currentAnswers)) {
       let word_ID = key.split("-")[0]
-      answerObject['requestedHintsList'] = practice_snippet[word_ID]?.requested_hints
+      answerObject['requestedHintsList'] = practice_snippet.find(w => w.ID == word_ID)?.requested_hints
       update_answers[key] = answerObject
     }
     dispatch(setAnswers(update_answers))
@@ -115,7 +115,7 @@ const SnippetActions = ({ storyId, exerciseCount, isControlledStory, exerciseMod
   const formattedTimerValue = timerValue < 0 ? 0 : timerValue
 
   const checkAnswers = async lastAttempt => {
-    const { starttime, snippetid } = snippets.focused
+    const { starttime, snippetid, practice_snippet } = snippets.focused
     const { sessionId } = snippets
 
     const filteredCurrentAnswers = Object.keys(currentAnswers)

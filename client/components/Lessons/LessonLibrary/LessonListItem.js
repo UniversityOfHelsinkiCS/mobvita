@@ -49,10 +49,15 @@ const LessonTitle = ({
                             ...getTextStyle(learningLanguage) 
                         }}
                     >
-                        <div style={{ 'width': '7%', 'max-width': '40px', 'min-width': '35px', ...get_lesson_performance_style(topics[i].correct, topics[i].total)}}>
-                            {Math.round(get_lesson_performance(topics[i].correct, topics[i].total) * 100) + ' %'}
+                        <div>
+                            {topic_concepts[k].charAt(0).toUpperCase() + topic_concepts[k].slice(1)}
                         </div>
-                        <div >{topic_concepts[k].charAt(0).toUpperCase() + topic_concepts[k].slice(1)}</div>
+                        <div style={{ marginLeft: '0.5rem', ...get_lesson_performance_style(topics[i].correct, topics[i].total) }}>
+                            {'% ' + Math.round(get_lesson_performance(topics[i].correct, topics[i].total) * 100)}
+                        </div>
+                        {/* <div style={{ 'width': '7%', 'max-width': '40px', 'min-width': '35px', ...get_lesson_performance_style(topics[i].correct, topics[i].total)}}>
+                            {Math.round(get_lesson_performance(topics[i].correct, topics[i].total) * 100) + ' %'}
+                        </div> */}
                     </h6>
                 );
             } else {
@@ -66,8 +71,8 @@ const LessonTitle = ({
                             ...getTextStyle(learningLanguage) 
                         }}
                     >
-                        <div style={{ 'width': '7%', 'max-width': '40px', 'min-width': '35px', ...get_lesson_performance_style(topics[i].correct, topics[i].total)}}>{}</div>
                         <div>{topic_concepts[k].charAt(0).toUpperCase() + topic_concepts[k].slice(1)}</div>
+                        {/* <div style={{ 'width': '7%', 'max-width': '40px', 'min-width': '35px', ...get_lesson_performance_style(topics[i].correct, topics[i].total)}}>{}</div> */}
                     </h6>
                 );
             }
