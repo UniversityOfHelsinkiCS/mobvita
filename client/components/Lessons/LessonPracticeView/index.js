@@ -44,12 +44,12 @@ const LessonPracticeView = () => {
   const { pending: lesson_instance_pending, lesson_instance } = useSelector(({ lessonInstance }) => lessonInstance)
   const { isPaused, willPause, practiceFinished, currentAnswers } = useSelector(({ practice }) => practice)
 
-  const [ lessonMetaData, setLessonMetaData ] = useState({})
-  const [ startModalOpen, setStartModalOpen ] = useState(false)
-  const [ currentSnippetNum, setCurrentSnippetNum ] = useState(1)
-  const [ snippetsTotalNum, setSnippetsTotalNum ] = useState(10)
-  const [ showDifficulty, setShowDifficulty ] = useState(show_review_diff || false)
- 
+  const [lessonMetaData, setLessonMetaData] = useState({})
+  const [startModalOpen, setStartModalOpen] = useState(false)
+  const [currentSnippetNum, setCurrentSnippetNum] = useState(1)
+  const [snippetsTotalNum, setSnippetsTotalNum] = useState(10)
+  const [showDifficulty, setShowDifficulty] = useState(show_review_diff || false)
+
   const mode = getMode()
   const TIMER_START_DELAY = 2000
   const smallScreen = width < 700
@@ -63,7 +63,7 @@ const LessonPracticeView = () => {
     timeToUpdate: 100,
   })
 
-  useEffect(() => { 
+  useEffect(() => {
     const filtered_lessons = lessons ? lessons.filter(l => l.syllabus_id === lesson_syllabus_id) : []
     const practice_lesson = filtered_lessons?.length == 1 ? filtered_lessons[0] : {}
     setLessonMetaData(practice_lesson)
@@ -78,7 +78,7 @@ const LessonPracticeView = () => {
     dispatch(clearLessonInstanceState())
     dispatch(resetSnippets())
     // dispatch(clearExerciseState())
-    if (lesson_syllabus_id){
+    if (lesson_syllabus_id) {
       dispatch(getLessonActiveInstance(lesson_syllabus_id))
     }
     dispatch(clearTranslationAction())
@@ -98,7 +98,7 @@ const LessonPracticeView = () => {
 
   useEffect(() => {
     setCurrentSnippetNum(snippets.previous.length + 1)
-    setSnippetsTotalNum(Math.floor(currentSnippetNum / 10)*10 + 10) // snippets?.focused?.total_num
+    setSnippetsTotalNum(Math.floor(currentSnippetNum / 10) * 10 + 10) // snippets?.focused?.total_num
   }, [snippets.focused])
 
   useEffect(() => {
@@ -127,7 +127,7 @@ const LessonPracticeView = () => {
     setSnippetsTotalNum(10)
     dispatch(clearLessonInstanceState())
     dispatch(resetSnippets())
-    if (lesson_syllabus_id){
+    if (lesson_syllabus_id) {
       dispatch(getLessonActiveInstance(lesson_syllabus_id))
     }
     dispatch(clearTranslationAction())
@@ -223,7 +223,7 @@ const LessonPracticeView = () => {
                 onChange={updateUserReviewDiff}
                 style={{ paddingTop: '.5em', marginLeft: '.5em' }}
               />
-              <PreviousSnippets showDifficulty={showDifficulty} isLesson={true}/>
+              <PreviousSnippets showDifficulty={showDifficulty} isLesson={true} />
               <hr />
               <CurrentSnippet
                 storyId={null}
