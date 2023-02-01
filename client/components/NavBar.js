@@ -95,7 +95,10 @@ export default function NavBar() {
     if (fcShow) {
       dispatch(hideFCIcon())
     }
-    dispatch(openEncouragement())
+    if (check.includes('welcome')) {
+      dispatch(openEncouragement())
+      return
+    }
     dispatch(openFCEncouragement())
   }, [check])
 

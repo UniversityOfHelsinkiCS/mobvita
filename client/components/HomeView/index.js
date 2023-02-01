@@ -218,7 +218,7 @@ const HomeView = () => {
     }
   }, [showDAModal, showWelcomeModal])
   */
-
+  
   return (
     <div className="cont-tall cont flex-col auto gap-row-sm pt-lg blue-bg">
       <AddStoryModal open={addStoryModalOpen} setOpen={setAddStoryModalOpen} />
@@ -242,7 +242,7 @@ const HomeView = () => {
         />
       }
       <DefaultActivityModal
-          open={showDAModal}
+          open = {showDAModal}
           username={username}
           storiesCovered={storiesCovered}
           incompleteStories={incomplete}
