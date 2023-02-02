@@ -27,7 +27,6 @@ import {
 } from 'Utilities/common'
 import { Offline } from 'react-detect-offline'
 import { FormattedMessage, useIntl } from 'react-intl'
-import { Modal, Container, Button, Image, Header } from 'semantic-ui-react'
 import TermsAndConditions from 'Components/StaticContent/TermsAndConditions'
 import EncouragementButton from 'Components/Encouragements/EncouragementButton'
 import ContactUs from './StaticContent/ContactUs'
@@ -63,7 +62,6 @@ export default function NavBar() {
   const signOut = () => {
     dispatch(logout())
     history.push('/')
-    4
   }
 
   const handleTourStart = () => {
