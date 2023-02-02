@@ -27,7 +27,6 @@ import {
 } from 'Utilities/common'
 import { Offline } from 'react-detect-offline'
 import { FormattedMessage, useIntl } from 'react-intl'
-import { Modal, Container, Button, Image, Header } from 'semantic-ui-react'
 import TermsAndConditions from 'Components/StaticContent/TermsAndConditions'
 import EncouragementButton from 'Components/Encouragements/EncouragementButton'
 import ContactUs from './StaticContent/ContactUs'
@@ -63,7 +62,6 @@ export default function NavBar() {
   const signOut = () => {
     dispatch(logout())
     history.push('/')
-    4
   }
 
   const handleTourStart = () => {
@@ -85,10 +83,10 @@ export default function NavBar() {
     return null
   }
 
-  const confirmNewsClick = (event) => {
-    const confirmationMessage = 'You will be redirected to https://www2.helsinki.fi/en/projects/revita-language-learning-and-ai/news'
-    // this is how to get the text from translations:
-    // intl.formatMessage({ id: '' })
+  const confirmNewsClick = (event, url) => {
+    //this will work once I update the translation keys
+    //const confirmationMessage = `${intl.formatMessage({ id: 'news-redirection-message' })}: ${url}`
+    const confirmationMessage = `You will be redirected to: ${url}`
     if (window.confirm(confirmationMessage)) {
       return true
     } else {
@@ -366,7 +364,8 @@ export default function NavBar() {
                 className="navbar-basic-icon"
                 style={{ display: 'table-cell' }}
                 href="https://www2.helsinki.fi/en/projects/revita-language-learning-and-ai/news"
-                onClick={confirmNewsClick}
+                onClick={ event => {confirmNewsClick(event,
+                        'https://www2.helsinki.fi/en/projects/revita-language-learning-and-ai/news')}}
                 target="_blank"
                 rel="noopener noreferrer"
               >
