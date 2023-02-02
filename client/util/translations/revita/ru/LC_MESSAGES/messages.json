@@ -834,7 +834,7 @@
     "Expressions of time, place and manner. PrepositioN_free expressions": "Время, место и способ действия. Безпредложные обороты",
     "Dative subject + adverb: 'мне (стало) плохо/нужно/скучно'": "Субъект в дательном падеже + наречие: \"мне (стало) плохо/нужно/скучно\"",
     "Dative subject + impersonal-reflexive verb: 'мне нравится/кажется/пришлось''": "Субъект в дательном падеже + безличный/возвратный глагол: \"мне нравится/кажется/пришлось”",
-    "Prep+genitive subject + Impersonal verb: 'У меня болит голова/шумит в голове'": "Посессивные конструкции",
+    "Prep+genitive subject + Impersonal verb: 'У меня болит голова/шумит в голове'": "Предлог + субъект в родительном падеже + безличный глагол: \"У меня болит голова/шумит в голове\"",
     "Accusative/ergative subject + Impersonal verb: 'Васю тошнит'": "Субъект + безличный глагол: \"Васю тошнит\"",
     "Dative subject + impersonal verb: 'мне идет/надоело/везет/хватит'": "Субъект в дательном падеже + безличный глагол: \"мне идет/надоело/везет/хватит\"",
     "Dative subject + impersonal-reflexive neg verb: 'ему не поздоровится'": "Субъект в дательном падеже + безличный/возвратный глагол c отрицанием: \"ему не поздоровится\"",
@@ -1338,7 +1338,7 @@
     "word-group-tooltip": "в группе слов <b>{binNum}</b>",
     "x-axis-simple": "проще",
     "x-axis-difficult": "сложнее",
-    "FEEDBACK-TUA-Temporaalirakenne": "Это конструкция с прошедшим временным значением (Temporaalirakenne)",
+    "FEEDBACK-TUA-Temporaalirakenne": "Это конструкция со значением прошедшего времени (Temporaalirakenne)",
     "overview-vocabulary-explanation": "Все слова, с которыми ты работал в текстах до сих пор: освоенные и еще не освоенные",
     "current-cefr-level": "CEFR уровень студента",
     "view-previous-and-edit": "Редактировать уровень студента",
@@ -1421,5 +1421,8 @@
     "Verb. Case and PostPosition/Preposition government": "Глагол. Управление падежными формами, предлогами, послелогами.",
     "Verb. Case and Adposition government": "Глагол. Управление падежными формами, предлогами, послелогами.",
     "save-lesson": "Сохранить",
-    "lesson-dialog-title": "Урок"
+    "lesson-dialog-title": "Урок",
+    "Salva": "Урок",
+    "news-redirection-message": "You will be redirected to",
+    "Recommendations": "Recommendations"
 }

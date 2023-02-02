@@ -1336,7 +1336,7 @@
     "word-group-tooltip": "in gruppo di parole <b>{binNum}</b>",
     "x-axis-simple": "semplici",
     "x-axis-difficult": "i più difficili",
-    "FEEDBACK-TUA-Temporaalirakenne": "Costruzione di tipo \"Temporale\" (Temporaalirakenne)",
+    "FEEDBACK-TUA-Temporaalirakenne": "Costruzione di tipo \"Temporale\", passato (Temporaalirakenne)",
     "overview-vocabulary-explanation": "Panoramica",
     "current-cefr-level": "Il livello QCER corrente dello studente",
     "view-previous-and-edit": "Modifica QCER",
@@ -1419,5 +1419,8 @@
     "Verb. Case and PostPosition/Preposition government": "Verbo. Reggenza del caso e preposizione/postposizione",
     "Verb. Case and Adposition government": "Verbo. Reggenza del caso e preposizione/postposizione",
     "save-lesson": "Salva",
-    "lesson-dialog-title": "Lezione"
+    "lesson-dialog-title": "Lezione",
+    "Salva": "Lezione",
+    "news-redirection-message": "You will be redirected to",
+    "Recommendations": "Recommendations"
 }

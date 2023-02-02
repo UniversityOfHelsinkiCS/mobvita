@@ -1335,7 +1335,7 @@
     "word-group-tooltip": "sanaryhmässä <b>{binNum}</b>",
     "x-axis-simple": "yksinkertaiset",
     "x-axis-difficult": "hankalat",
-    "FEEDBACK-TUA-Temporaalirakenne": "Tämä on \"Temporaalirakenne\"",
+    "FEEDBACK-TUA-Temporaalirakenne": "Tämä on \"Temporaalirakenne\", perfekti",
     "overview-vocabulary-explanation": "Yleiskatsaus",
     "current-cefr-level": "Oppilaan tämänhetkinen CEFR-taso",
     "view-previous-and-edit": "Muokkaa tasoja",
@@ -1418,5 +1418,8 @@
     "Verb. Case and PostPosition/Preposition government": "Verbi. Rektiot",
     "Verb. Case and Adposition government": "Verbi. Rektiot",
     "save-lesson": "Tallenna",
-    "lesson-dialog-title": "Oppitunti"
+    "lesson-dialog-title": "Oppitunti",
+    "Salva": "Oppitunti",
+    "news-redirection-message": "Sinut uudelleenohjataan osoitteeseen",
+    "Recommendations": "Suositukset"
 }

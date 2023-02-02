@@ -835,7 +835,7 @@
     "Expressions of time, place and manner. PrepositioN_free expressions": "Expressions of time, place and manner. Preposition-free expressions",
     "Dative subject + adverb: 'мне (стало) плохо/нужно/скучно'": "Dative subject + adverb: \"мне (стало) плохо/нужно/скучно\"",
     "Dative subject + impersonal-reflexive verb: 'мне нравится/кажется/пришлось''": "Dative subject + impersonal-reflexive verb: \"мне нравится/кажется/пришлось\"",
-    "Prep+genitive subject + Impersonal verb: 'У меня болит голова/шумит в голове'": "Possessive constuctions",
+    "Prep+genitive subject + Impersonal verb: 'У меня болит голова/шумит в голове'": "Prep+genitive subject + Impersonal verb: 'У меня болит голова/шумит в голове'",
     "Accusative/ergative subject + Impersonal verb: 'Васю тошнит'": "Accusative/ergative subject + Impersonal verb: \"Васю тошнит\"",
     "Dative subject + impersonal verb: 'мне идет/надоело/везет/хватит'": "Dative subject + impersonal verb: \"мне идет/надоело/везет/хватит\"",
     "Dative subject + impersonal-reflexive neg verb: 'ему не поздоровится'": "Dative subject + impersonal-reflexive neg verb: \"ему не поздоровится\"",
@@ -1418,5 +1418,8 @@
     "Verb. Case and PostPosition/Preposition government": "Verb. Case and postposition/preposition government",
     "Verb. Case and Adposition government": "Verb. Case and Adposition government",
     "save-lesson": "Save lesson",
-    "lesson-dialog-title": "Lesson"
+    "lesson-dialog-title": "Lesson",
+    "Salva": "Lesson",
+    "news-redirection-message": "You will be redirected to",
+    "Recommendations": "Recommendations"
 }

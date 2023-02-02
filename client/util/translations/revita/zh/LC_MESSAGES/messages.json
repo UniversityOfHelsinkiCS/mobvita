@@ -690,7 +690,7 @@
     "word-group-tooltip": "在单词组 <b>{binNum}</b>",
     "x-axis-simple": "易",
     "x-axis-difficult": "难",
-    "FEEDBACK-TUA-Temporaalirakenne": "这是表达时间的结构(Temporaalirakenne)",
+    "FEEDBACK-TUA-Temporaalirakenne": "这是表达过去时间的结构(Temporaalirakenne)",
     "overview-vocabulary-explanation": "您至今为止已经练习过的所有单词：掌握的和未掌握的",
     "current-cefr-level": "学生当前CEFR等级",
     "view-previous-and-edit": "查看修改成绩",
@@ -783,5 +783,8 @@
     "Verb. Case and PostPosition/Preposition government": "动词。格位和前置后置词的支配关系",
     "Verb. Case and Adposition government": "动词。格位和前置后置词的支配关系",
     "save-lesson": "保存课程",
-    "lesson-dialog-title": "课程"
+    "lesson-dialog-title": "课程",
+    "Salva": "课程",
+    "news-redirection-message": "You will be redirected to",
+    "Recommendations": "Recommendations"
 }

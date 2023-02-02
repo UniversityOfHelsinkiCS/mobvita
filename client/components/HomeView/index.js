@@ -29,7 +29,7 @@ const HomeviewButton = ({ imgSrc, altText, translationKey, handleClick, dataCy, 
     >
       <div
         className={`align-center ${!wide ? 'flex-col space-between' : 'flex justify-center'}`}
-        Toastify      style={{ height: '100%' }}
+        style={{ height: '100%' }}
       >
         <div style={{width: '100%', 'display': 'inline-flex'}}>
           {/* <div style={{width: '7%'}}></div> */}

@@ -84,9 +84,7 @@ export default function NavBar() {
   }
 
   const confirmNewsClick = (event, url) => {
-    //this will work once I update the translation keys
-    //const confirmationMessage = `${intl.formatMessage({ id: 'news-redirection-message' })}: ${url}`
-    const confirmationMessage = `You will be redirected to: ${url}`
+    const confirmationMessage = `${intl.formatMessage({ id: 'news-redirection-message' })}: ${url}`
     if (window.confirm(confirmationMessage)) {
       return true
     } else {
