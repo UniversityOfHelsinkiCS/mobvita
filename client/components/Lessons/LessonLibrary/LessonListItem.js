@@ -49,7 +49,7 @@ const LessonTitle = ({
                             ...getTextStyle(learningLanguage) 
                         }}
                     >
-                        <div style={{ width: '6%', textAlign: 'right', marginRight: '5px', 'max-width': '20px', 'min-width': '20px', ...get_lesson_performance_style(topics[i].correct, topics[i].total) }}>
+                        <div style={{ width: '6%', textAlign: 'right', marginRight: '5px', 'max-width': '25px', 'min-width': '25px', ...get_lesson_performance_style(topics[i].correct, topics[i].total) }}>
                             {String(Math.round(get_lesson_performance(topics[i].correct, topics[i].total) * 100)).padEnd(3,' ')}
                         </div>
                         <div style={{ width: '3%', textAlign: 'center', 'max-width': '20px', 'min-width': '10px', marginRight: '7px', ...get_lesson_performance_style(topics[i].correct, topics[i].total) }}>
@@ -71,7 +71,7 @@ const LessonTitle = ({
                             ...getTextStyle(learningLanguage) 
                         }}
                     >
-                        <div style={{ width: '6%', textAlign: 'right', marginRight: '5px', 'max-width': '20px', 'min-width': '20px' }}></div>
+                        <div style={{ width: '6%', textAlign: 'right', marginRight: '5px', 'max-width': '25px', 'min-width': '25px' }}></div>
                         <div style={{ width: '3%', textAlign: 'center', 'max-width': '20px', 'min-width': '10px', marginRight: '7px' }}></div>
                         <div style={{ width: '88%' }}>{topic_concepts[k].charAt(0).toUpperCase() + topic_concepts[k].slice(1)}</div>
                     </h6>
