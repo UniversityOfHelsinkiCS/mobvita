@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react'
 import { useHistory } from 'react-router'
 import { FormattedMessage } from 'react-intl'
 import { images, hiddenFeatures, supportedLearningLanguages } from 'Utilities/common'
-import { dispatch,useDispatch, useSelector } from 'react-redux'
+import { dispatch, useDispatch, useSelector } from 'react-redux'
 import { getGroups } from 'Utilities/redux/groupsReducer'
 import { getAllStories } from 'Utilities/redux/storiesReducer'
 import { openEncouragement } from 'Utilities/redux/encouragementsReducer'
@@ -31,13 +31,13 @@ const HomeviewButton = ({ imgSrc, altText, translationKey, handleClick, dataCy, 
         className={`align-center ${!wide ? 'flex-col space-between' : 'flex justify-center'}`}
         style={{ height: '100%' }}
       >
-        <div style={{width: '100%', 'display': 'inline-flex'}}>
+        <div style={{ width: '100%', 'display': 'inline-flex' }}>
           {/* <div style={{width: '7%'}}></div> */}
-          <div className="homeview-btn-text" style={{width: '100%'}}>
+          <div className="homeview-btn-text" style={{ width: '100%' }}>
             <FormattedMessage id={translationKey} />
             {beta_feature && (
               <sup>
-                <b style={{color:'red'}}>BETA</b>
+                <b style={{ color: 'red' }}>BETA</b>
               </sup>
             )}
           </div>
@@ -45,7 +45,7 @@ const HomeviewButton = ({ imgSrc, altText, translationKey, handleClick, dataCy, 
             &beta;
           </div> */}
         </div>
-        
+
         {!wide && <img src={imgSrc} alt={altText} style={{ maxWidth: '55%', maxHeight: '55%' }} />}
       </div>
     </button>
@@ -61,6 +61,7 @@ const HomeviewButtons = ({
   const dispatch = useDispatch();
   const history = useHistory()
   const { hasTests, hasAdaptiveTests } = useSelector(({ metadata }) => metadata)
+  const { user } = useSelector(({ user }) => ({ user: user.data }))
 
   return (
     <div className="homeview-btns-cont">
@@ -138,19 +139,23 @@ const HomeviewButtons = ({
       </div>
       {hiddenFeatures && (
         <>
-          <HomeviewButton
-            imgSrc={images.exclamationMark}
-            altText="exlamation mark"
-            translationKey="Recommendations"
-            handleClick={() => dispatch(openEncouragement())}
-          />
+          {user.user.email !== 'anonymous_email' && (
+            <>
+              <HomeviewButton
+                imgSrc={images.exclamationMark}
+                altText="exlamation mark"
+                translationKey="Recommendations"
+                handleClick={() => dispatch(openEncouragement())}
+              />
+            </>
+          )}
           <Button onClick={() => history.push('/test-construction')}>Test construction</Button>
           <Button style={{ padding: '5em' }} onClick={() => history.push('test-debug')}>
             Feedback debugger
           </Button>
         </>
       )}
-    </div>
+    </div >
   )
 }
 
@@ -210,7 +215,7 @@ const HomeView = () => {
       setBetaModalOpen(true)
     }
   }, [learningLanguage])
-  
+
   return (
     <div className="cont-tall cont flex-col auto gap-row-sm pt-lg blue-bg">
       <AddStoryModal open={addStoryModalOpen} setOpen={setAddStoryModalOpen} />
@@ -234,14 +239,14 @@ const HomeView = () => {
         />
       }
       <DefaultActivityModal
-          open = {showDAModal}
-          username={username}
-          storiesCovered={storiesCovered}
-          incompleteStories={incomplete}
-          pending={loading}
-          learningLanguage={learningLanguage}
-          enable_recmd={enable_recmd}
-        />
+        open={showDAModal}
+        username={username}
+        storiesCovered={storiesCovered}
+        incompleteStories={incomplete}
+        pending={loading}
+        learningLanguage={learningLanguage}
+        enable_recmd={enable_recmd}
+      />
       {!userData.is_teacher && !userData.grade && !userIsAnonymous && !userData.is_new_user && (
         <SetCEFRReminder
           open={openReminder}
