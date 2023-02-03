@@ -20,7 +20,7 @@ const LessonPracticeTopicsHelp = (lesson) => {
     const get_lesson_performance_style = (correct_count, total_count) => {
         let correct_perc = get_lesson_performance(correct_count, total_count)
         if (correct_perc >= 0.75) return { 'color': 'green' }
-        if (correct_perc < 0.75 && correct_perc >= 0.5) return { 'color': 'greenyellow' }
+        if (correct_perc < 0.75 && correct_perc >= 0.5) return { 'color': 'limegreen' }
         if (correct_perc < 0.5 && correct_perc >= 0.25) return { 'color': 'orange' }
         if (correct_perc < 0.25) return { 'color': 'red' }
         return { 'color': 'black' }
@@ -40,13 +40,14 @@ const LessonPracticeTopicsHelp = (lesson) => {
                             marginBottom: '.5rem',
                             display: 'inline-flex',
                             width: '100%',
+                            color: 'slategrey',
                             ...getTextStyle(learningLanguage)
                         }}
                     >
-                        <div style={{ width: '6%', textAlign: 'right', marginRight: '0.5rem', 'max-width': '25px', 'min-width': '20px', ...get_lesson_performance_style(topics[i].correct, topics[i].total) }}>
+                        <div style={{ width: '6%', textAlign: 'right', marginRight: '0.3rem', 'max-width': '20px', 'min-width': '20px', ...get_lesson_performance_style(topics[i].correct, topics[i].total) }}>
                             {String(Math.round(get_lesson_performance(topics[i].correct, topics[i].total) * 100)).padEnd(3,' ')}
                         </div>
-                        <div style={{ width: '3%', textAlign: 'center', marginRight: '0.5rem', 'max-width': '10px', 'min-width': '3px', ...get_lesson_performance_style(topics[i].correct, topics[i].total) }}>
+                        <div style={{ width: '3%', textAlign: 'center', 'max-width': '20px', 'min-width': '10px', marginRight: '0.3rem', ...get_lesson_performance_style(topics[i].correct, topics[i].total) }}>
                             {'%'}
                         </div>
                         <div style={{ width: '88%' }}>
@@ -62,11 +63,12 @@ const LessonPracticeTopicsHelp = (lesson) => {
                             marginBottom: '.5rem',
                             display: 'inline-flex',
                             width: '100%',
+                            color: 'slategrey',
                             ...getTextStyle(learningLanguage)
                         }}
                     >
-                        <div style={{ width: '6%', textAlign: 'right', marginRight: '0.5rem', 'max-width': '25px', 'min-width': '20px' }}></div>
-                        <div style={{ width: '3%', textAlign: 'center', marginRight: '0.5rem', 'max-width': '10px', 'min-width': '3px' }}></div>
+                        <div style={{ width: '6%', textAlign: 'right', marginRight: '0.3rem', 'max-width': '20px', 'min-width': '20px' }}></div>
+                        <div style={{ width: '3%', textAlign: 'center', 'max-width': '20px', 'min-width': '10px', marginRight: '0.3rem' }}></div>
                         <div style={{ width: '88%' }}>{topic_concepts[k].charAt(0).toUpperCase() + topic_concepts[k].slice(1)}</div>
                     </h6>
                 );
