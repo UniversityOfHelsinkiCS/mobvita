@@ -210,14 +210,6 @@ const HomeView = () => {
       setBetaModalOpen(true)
     }
   }, [learningLanguage])
-
-  /*
-  useEffect(() => {
-    if (showDAModal || showWelcomeModal) {
-      dispatch(openEncouragement())
-    }
-  }, [showDAModal, showWelcomeModal])
-  */
   
   return (
     <div className="cont-tall cont flex-col auto gap-row-sm pt-lg blue-bg">
