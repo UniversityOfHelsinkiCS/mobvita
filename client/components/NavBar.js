@@ -358,32 +358,27 @@ export default function NavBar() {
                 </>
               )}
 
-              <a
-                className="navbar-basic-icon"
-                style={{ display: 'table-cell' }}
-                href="https://www2.helsinki.fi/en/projects/revita-language-learning-and-ai/news"
-                onClick={ event => {confirmNewsClick(event,
-                        'https://www2.helsinki.fi/en/projects/revita-language-learning-and-ai/news')}}
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                <span
-                  style={{
-                    position: 'relative',
-                    cursor: 'pointer',
-                  }}
-                >
-                  <NavbarIcon imgSrc={images.bellIcon} altText="bell icon" />
-                  {numUnreadNews > 0 ? (
-                    <Popup
-                      position="top right"
-                      content={
-                        <FormattedMessage
-                          id="news-bell-info-popup-text"
-                          values={{ numUnreadNews }}
-                        />
-                      }
-                      trigger={
+              <Popup
+                trigger={
+                  <a
+                    className="navbar-basic-icon"
+                    style={{ display: 'table-cell' }}
+                    href="https://www2.helsinki.fi/en/projects/revita-language-learning-and-ai/news"
+                    onClick={event => {
+                      confirmNewsClick(event,
+                        'https://www2.helsinki.fi/en/projects/revita-language-learning-and-ai/news')
+                    }}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    <span
+                      style={{
+                        position: 'relative',
+                        cursor: 'pointer',
+                      }}
+                    >
+                      <NavbarIcon imgSrc={images.bellIcon} altText="bell icon" />
+                      {numUnreadNews > 0 ? (
                         <Label
                           onClick={handleNewsClick}
                           className="navbar-news-label"
@@ -393,12 +388,20 @@ export default function NavBar() {
                         >
                           <span>{numUnreadNews}</span>
                         </Label>
+                      ) : null
                       }
-                    />
-                  ) : null
-                  }
-                </span>
-              </a>
+                    </span>
+                  </a>
+                }
+                content={
+                  <FormattedMessage
+                    id="news-bell-info-popup-text"
+                    values={{ numUnreadNews }}
+                  />
+                }
+                on='hover'
+                position='bottom right'
+              />
 
               <Link
                 to="/profile/settings"
