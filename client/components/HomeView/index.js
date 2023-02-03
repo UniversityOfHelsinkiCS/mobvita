@@ -73,15 +73,6 @@ const HomeviewButtons = ({
           dataCy="add-story-button"
         />
       </div>
-      <div className="practice-btn-cont tour-practice-now">
-        <HomeviewButton
-          imgSrc={images.dices}
-          altText="two dices"
-          translationKey="practice-now"
-          handleClick={() => setPracticeModalOpen(true)}
-          dataCy="practice-now"
-        />
-      </div>
       <div className="library-btn-cont tour-library">
         <HomeviewButton
           imgSrc={images.library}
@@ -98,6 +89,15 @@ const HomeviewButtons = ({
           translationKey="lesson-home-btn"
           beta_feature={true}
           handleClick={() => history.push('/lessons/library')} // setLessonModalOpen(true)
+        />
+      </div>
+      <div className="practice-btn-cont tour-practice-now">
+        <HomeviewButton
+          imgSrc={images.dices}
+          altText="two dice"
+          translationKey="practice-now"
+          handleClick={() => setPracticeModalOpen(true)}
+          dataCy="practice-now"
         />
       </div>
       <div className="flashcards-btn-cont tour-flashcards">
