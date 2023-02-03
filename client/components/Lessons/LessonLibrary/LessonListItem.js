@@ -49,10 +49,10 @@ const LessonTitle = ({
                             ...getTextStyle(learningLanguage) 
                         }}
                     >
-                        <div style={{ width: '6%', textAlign: 'right', marginRight: '0.3rem', 'max-width': '20px', 'min-width': '20px', ...get_lesson_performance_style(topics[i].correct, topics[i].total) }}>
+                        <div style={{ width: '6%', textAlign: 'right', marginRight: '5px', 'max-width': '20px', 'min-width': '20px', ...get_lesson_performance_style(topics[i].correct, topics[i].total) }}>
                             {String(Math.round(get_lesson_performance(topics[i].correct, topics[i].total) * 100)).padEnd(3,' ')}
                         </div>
-                        <div style={{ width: '3%', textAlign: 'center', 'max-width': '20px', 'min-width': '10px', marginRight: '0.3rem', ...get_lesson_performance_style(topics[i].correct, topics[i].total) }}>
+                        <div style={{ width: '3%', textAlign: 'center', 'max-width': '20px', 'min-width': '10px', marginRight: '7px', ...get_lesson_performance_style(topics[i].correct, topics[i].total) }}>
                             {'%'}
                         </div>
                         <div style={{ width: '88%' }}>
@@ -71,8 +71,8 @@ const LessonTitle = ({
                             ...getTextStyle(learningLanguage) 
                         }}
                     >
-                        <div style={{ width: '6%', textAlign: 'right', marginRight: '0.3rem', 'max-width': '20px', 'min-width': '20px' }}></div>
-                        <div style={{ width: '3%', textAlign: 'center', 'max-width': '20px', 'min-width': '10px', marginRight: '0.3rem' }}></div>
+                        <div style={{ width: '6%', textAlign: 'right', marginRight: '5px', 'max-width': '20px', 'min-width': '20px' }}></div>
+                        <div style={{ width: '3%', textAlign: 'center', 'max-width': '20px', 'min-width': '10px', marginRight: '7px' }}></div>
                         <div style={{ width: '88%' }}>{topic_concepts[k].charAt(0).toUpperCase() + topic_concepts[k].slice(1)}</div>
                     </h6>
                 );
@@ -112,7 +112,7 @@ const LessonActions = ({ lesson, handleOpenLessonModal }) => {
                     <FormattedMessage id={"start-practice"} />
                 </Button>
             </Link>
-            <Button variant={'primary'} onClick={() => {handleOpenLessonModal(lesson.syllabus_id, true)}} style={{margin: '0.3rem'}}>
+            <Button variant={'primary'} onClick={() => {handleOpenLessonModal(lesson.syllabus_id, true)}} style={{margin: '0.5rem'}}>
                 <FormattedMessage id={"lesson-setup"} />
             </Button>
         </div>
