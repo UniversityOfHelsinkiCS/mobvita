@@ -27,6 +27,8 @@ import {
 } from 'Utilities/common'
 import { Offline } from 'react-detect-offline'
 import { FormattedMessage, useIntl } from 'react-intl'
+import { setAnnotationsVisibility } from 'Utilities/redux/annotationsReducer'
+
 import TermsAndConditions from 'Components/StaticContent/TermsAndConditions'
 import EncouragementButton from 'Components/Encouragements/EncouragementButton'
 import ContactUs from './StaticContent/ContactUs'
@@ -199,23 +201,43 @@ export default function NavBar() {
             </div>
           </Nav>
 
-          <Nav>
+          <Nav className="mr-auto">
             <div className="navbar-container">
+              <Navbar.Text 
+                onClick={handleEloClick}
+                onKeyDown={() => dispatch(setAnnotationsVisibility(true))}
+              >
+                {showStoryElo && (
+                  <Popup
+                    position="top center"
+                    content={intl.formatMessage({ id: 'annotations-popup-story-elo' })}
+                    trigger={
+                      <div className="navbar-basic-item">
+                        <Icon name="star outline" style={{ margin: 0, width: '16px' }} /> {storyElo}
+                      </div>
+                    }
+                  />
+                )}
+                {showFlashcardElo && (
+                  <Popup
+                    position="top center"
+                    content={intl.formatMessage({ id: 'annotations-popup-flashcard-elo' })}
+                    trigger={
+                      <div className="navbar-basic-item">
+                        <img src={images.flashcardIcon} alt="three cards" width="16px" /> {flashcardElo}
+                      </div>
+                    }
+                  />
+                )}
+              </Navbar.Text>
+            </div>
+          </Nav>
+
+          <Nav>
+            <div className="navbar-container" style={{width: '90%'}}>
               <Offline className="navbar-basic-item" polling={{ timeout: 20000 }}>
                 <Icon name="broken chain" size="large" style={{ color: '#ff944d' }} />
               </Offline>
-              <Navbar.Text onClick={handleEloClick}>
-                {showStoryElo && (
-                  <div className="navbar-basic-item">
-                    <Icon name="star outline" style={{ margin: 0, width: '16px' }} /> {storyElo}
-                  </div>
-                )}
-                {showFlashcardElo && (
-                  <div className="navbar-basic-item">
-                    <img src={images.flashcardIcon} alt="three cards" width="16px" /> {flashcardElo}
-                  </div>
-                )}
-              </Navbar.Text>
               {show && !encOpen && (
                 <EncouragementButton handleClick={() => dispatch(openEncouragement())} />
               )}
