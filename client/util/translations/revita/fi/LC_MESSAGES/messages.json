@@ -471,7 +471,7 @@
     "practice-a-random-story-with-the-language-of-your-choice": "Harjoittele satunnaista kertomusta valitullasi kielelläsi",
     "practice-a-random-story": "Valitse satunnaisesti",
     "practice-a-random-story-from-N-stories-AFTER": ":sta kertomuksesta",
-    "practice-now": "Harjoittele",
+    "practice-now": "Heittäydy mukaan",
     "this-feature-is-coming-soon": "Tämä ominaisuus tulee pian!",
     "Culture": "Kulttuuri",
     "Politics": "Politiikka",
@@ -1421,5 +1421,7 @@
     "lesson-dialog-title": "Oppitunti",
     "Salva": "Oppitunti",
     "news-redirection-message": "Sinut uudelleenohjataan osoitteeseen",
-    "Recommendations": "Suositukset"
+    "Recommendations": "Suositukset",
+    "explanations-popup-story-elo": "Tämä on tarinaharjoitusten <i>ELO</i>-pisteesi:\nkatso <href a=\"../../../profile/progress\">lisätietoja</a> edistymisestäsi, ja suoritustasi ajan mittaan.",
+    "explanations-popup-flashcard-elo": "Tämä on <i>ELO-pisteesi</i> sanastosta / muistikorteista:\nkatso lisätietoja <href a=\"../../../profile/progress\">edistymisestäsi</a>."
 }

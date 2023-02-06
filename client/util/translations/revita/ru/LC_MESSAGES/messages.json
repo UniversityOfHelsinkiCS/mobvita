@@ -1424,5 +1424,7 @@
     "lesson-dialog-title": "Урок",
     "Salva": "Урок",
     "news-redirection-message": "You will be redirected to",
-    "Recommendations": "Recommendations"
+    "Recommendations": "Recommendations",
+    "explanations-popup-story-elo": "Твои баллы <i>ELO</i> за по упражнениям с текстом:\nсмотри более подробную информацию о твоем <href a=\"\"../../../profile/progress\"\">Прогрессе</a>, с течением времени.",
+    "explanations-popup-flashcard-elo": "Твои баллы <i>ELO</i> по словарному запасу:\nсмотри более подробную информацию о твоем <href a=\"\"../../../profile/progress\"\">Прогрессе</a>."
 }

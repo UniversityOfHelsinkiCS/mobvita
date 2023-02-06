@@ -471,7 +471,7 @@
     "practice-a-random-story-with-the-language-of-your-choice": "",
     "practice-a-random-story": "Pick any of",
     "practice-a-random-story-from-N-stories-AFTER": " stories for practice",
-    "practice-now": "Practice Now",
+    "practice-now": "Dive In",
     "this-feature-is-coming-soon": "",
     "Culture": "Culture",
     "Politics": "Politics",
@@ -875,7 +875,7 @@
     "tour-flashcards-message": "Revita automatically creates flashcards from unfamiliar words that you find inside stories.<br/><br/>You can practice them here!",
     "tour-library-message": "Library contains all stories that you upload, and some sample texts we have pre-loaded for you.",
     "tour-add-content-message": "You can upload <b>any</b> stories of your choice, and use them for practising.<br/>→ They will appear in your private library.",
-    "tour-begin-practicing-message": "Now you can begin practicing!<br /><br />Please register and log in, so Revita can preserve your<ul><li>stories and flashcards,</li><li>settings and preferences,</li><li>skill levels and progress.</li></ul><br /><i>Bon voyage!</i>",
+    "tour-begin-practicing-message": "Now you can begin practicing!<br /><br />To get more information about system features:\n<ul><li>Hover the mouse over the feature, or</li><li>\nCheck online Help</li></ul>\n<br />\nPlease register and log in, so Revita can preserve your\n<ul><li>stories and flashcards,\n</li><li>settings and preferences,\n</li><li>skill levels and progress.\n</li></ul><br /><i>Bon voyage!</i>",
     "end-tour": "End tour",
     "next": "Next",
     "start-tour": "Start Tour",
@@ -1421,5 +1421,7 @@
     "lesson-dialog-title": "Lesson",
     "Salva": "Lesson",
     "news-redirection-message": "You will be redirected to",
-    "Recommendations": "Recommendations"
+    "Recommendations": "Recommendations",
+    "explanations-popup-story-elo": "This is your <i>ELO</i> score for story exercises:\nplease see your <href a=\"../../../profile/progress\">Progress</a> to view more details and your performance over time.",
+    "explanations-popup-flashcard-elo": "This is your <i>ELO</i> score for vocabulary / flashcards:\nplease see your <href a=\"../../../profile/progress\">Progress</a> to view more details."
 }

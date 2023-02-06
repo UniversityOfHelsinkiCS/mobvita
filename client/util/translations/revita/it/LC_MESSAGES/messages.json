@@ -1422,5 +1422,7 @@
     "lesson-dialog-title": "Lezione",
     "Salva": "Lezione",
     "news-redirection-message": "You will be redirected to",
-    "Recommendations": "Recommendations"
+    "Recommendations": "Recommendations",
+    "explanations-popup-story-elo": "This is your <i>ELO</i> score for story exercises:\nplease see your <href a=\"../../../profile/progress\">Progress</a> to view more details and your performance over time.",
+    "explanations-popup-flashcard-elo": "This is your <i>ELO</i> score for vocabulary / flashcards:\nplease see your <href a=\"../../../profile/progress\">Progress</a> to view more details."
 }
