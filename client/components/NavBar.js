@@ -26,7 +26,7 @@ import {
   supportedLearningLanguages,
 } from 'Utilities/common'
 import { Offline } from 'react-detect-offline'
-import { FormattedMessage, useIntl } from 'react-intl'
+import { FormattedMessage, FormattedHTMLMessage, useIntl } from 'react-intl'
 import { setAnnotationsVisibility } from 'Utilities/redux/annotationsReducer'
 
 import TermsAndConditions from 'Components/StaticContent/TermsAndConditions'
@@ -210,7 +210,12 @@ export default function NavBar() {
                 {showStoryElo && (
                   <Popup
                     position="top center"
-                    content={intl.formatMessage({ id: 'explanations-popup-story-elo' })}
+                    // content={intl.formatMessage({ id: 'explanations-popup-story-elo' })}
+                    content={
+                      <FormattedHTMLMessage
+                        id="explanations-popup-story-elo"
+                      />
+                    }
                     trigger={
                       <div className="navbar-basic-item">
                         <Icon name="star outline" style={{ margin: 0, width: '16px' }} /> {storyElo}
@@ -221,7 +226,12 @@ export default function NavBar() {
                 {showFlashcardElo && (
                   <Popup
                     position="top center"
-                    content={intl.formatMessage({ id: 'explanations-popup-flashcard-elo' })}
+                    // content={intl.formatMessage({ id: 'explanations-popup-flashcard-elo' })}
+                    content={
+                      <FormattedHTMLMessage
+                        id="explanations-popup-flashcard-elo"
+                      />
+                    }
                     trigger={
                       <div className="navbar-basic-item">
                         <img src={images.flashcardIcon} alt="three cards" width="16px" /> {flashcardElo}
