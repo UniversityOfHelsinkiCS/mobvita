@@ -929,33 +929,6 @@ const desktopTourSteps = [
     },
   },
   {
-    target: '.tour-practice-now',
-    title: <FormattedMessage id="practice-now" />,
-    content: (
-      <div>
-        <FormattedHTMLMessage id="tour-practice-now-message" />
-      </div>
-    ),
-    placement: 'right',
-    placementBeacon: 'left',
-    disableBeacon: true,
-    hideBackButton: true,
-    showProgress: true,
-  },
-  {
-    target: '.tour-add-new-stories',
-    title: <FormattedMessage id="add-content" />,
-    content: (
-      <div>
-        <FormattedHTMLMessage id="tour-add-content-message" />
-      </div>
-    ),
-    placement: 'top',
-    disableBeacon: true,
-    hideBackButton: true,
-    showProgress: true,
-  },
-  {
     target: '.tour-library',
     title: <FormattedMessage id="Library" />,
     content: (
@@ -984,6 +957,33 @@ const desktopTourSteps = [
     hideBackButton: true,
   },
   {
+    target: '.tour-add-new-stories',
+    title: <FormattedMessage id="add-content" />,
+    content: (
+      <div>
+        <FormattedHTMLMessage id="tour-add-content-message" />
+      </div>
+    ),
+    placement: 'top',
+    disableBeacon: true,
+    hideBackButton: true,
+    showProgress: true,
+  },
+  {
+    target: '.tour-practice-now',
+    title: <FormattedMessage id="practice-now" />,
+    content: (
+      <div>
+        <FormattedHTMLMessage id="tour-practice-now-message" />
+      </div>
+    ),
+    placement: 'right',
+    placementBeacon: 'left',
+    disableBeacon: true,
+    hideBackButton: true,
+    showProgress: true,
+  },
+  {
     target: '.tour-start-finish',
     title: <FormattedMessage id="begin-practicing" />,
     content: (
@@ -1000,6 +1000,8 @@ const desktopTourSteps = [
     hideBackButton: true,
   },
 ]
+
+
 
 const mobileTourSteps = [
   {
