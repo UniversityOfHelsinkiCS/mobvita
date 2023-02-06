@@ -202,7 +202,7 @@ const LessonPracticeView = () => {
                   handlePauseOrResumeClick={handlePauseOrResumeClick}
                 />
               )}
-              <div
+              {/* <div
                 className="lesson-title"
                 style={{
                   ...getTextStyle(learningLanguage, 'title'),
@@ -212,10 +212,7 @@ const LessonPracticeView = () => {
                 }}
               >
                 {`Lesson ${lesson_instance.syllabus.syllabus_id}`}
-                {/* <sup>
-                  <b style={{color:'red'}}>&beta;</b>
-                </sup> */}
-              </div>
+              </div> */}
               <Checkbox
                 toggle
                 label={intl.formatMessage({ id: 'show-difficulty-level' })}

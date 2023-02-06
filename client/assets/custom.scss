@@ -557,8 +557,8 @@ $value in $spacing {
   grid-auto-flow: row;
   grid-template-areas:
     "add-new-stories add-new-stories"
-    "practice library"
-    "lesson flashcards"
+    "library lesson"
+    "practice flashcards"
     "adaptive-test exhaustive-test"
     ". .";
 
@@ -570,7 +570,7 @@ $value in $spacing {
     gap: 15px 15px;
     grid-template-areas:
       "add-new-stories add-new-stories add-new-stories"
-      "practice library lesson"
+      "library lesson practice"
       "flashcards adaptive-test exhaustive-test"
       ". . .";
   }
