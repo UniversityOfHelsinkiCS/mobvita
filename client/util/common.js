@@ -40,6 +40,7 @@ import public1 from 'Assets/images/public.png'
 import group1 from 'Assets/images/group.png'
 import private1 from 'Assets/images/private.png'
 import dices from 'Assets/images/dices.png'
+import diveIn from 'Assets/images/diveIn.png'
 import practice from 'Assets/images/practice.png'
 import adaptiveTest from 'Assets/images/adaptive_test.png'
 import exhaustiveTest from 'Assets/images/exhaustive_test.png'
@@ -131,6 +132,7 @@ export const images = {
   trophy,
   leaderboard,
   dices, // practice now modal ->
+  diveIn, // new practice now modal -> dive in modal
   public1,
   private1,
   group1,

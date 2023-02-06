@@ -210,7 +210,7 @@ export default function NavBar() {
                 {showStoryElo && (
                   <Popup
                     position="top center"
-                    content={intl.formatMessage({ id: 'annotations-popup-story-elo' })}
+                    content={intl.formatMessage({ id: 'explanations-popup-story-elo' })}
                     trigger={
                       <div className="navbar-basic-item">
                         <Icon name="star outline" style={{ margin: 0, width: '16px' }} /> {storyElo}
@@ -221,7 +221,7 @@ export default function NavBar() {
                 {showFlashcardElo && (
                   <Popup
                     position="top center"
-                    content={intl.formatMessage({ id: 'annotations-popup-flashcard-elo' })}
+                    content={intl.formatMessage({ id: 'explanations-popup-flashcard-elo' })}
                     trigger={
                       <div className="navbar-basic-item">
                         <img src={images.flashcardIcon} alt="three cards" width="16px" /> {flashcardElo}

@@ -74,8 +74,10 @@ const HomeviewButtons = ({
       </div>
       <div className="practice-btn-cont tour-practice-now">
         <HomeviewButton
-          imgSrc={images.dices}
-          altText="two dices"
+          // imgSrc={images.dices}
+          // altText="two dices"
+          imgSrc={images.diveIn}
+          altText="dive in"
           translationKey="practice-now"
           handleClick={() => setPracticeModalOpen(true)}
           dataCy="practice-now"
