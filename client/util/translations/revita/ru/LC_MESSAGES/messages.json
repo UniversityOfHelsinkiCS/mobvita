@@ -472,7 +472,7 @@
     "practice-a-random-story-with-the-language-of-your-choice": "Начать практику со случайной историей из общей библиотеки",
     "practice-a-random-story": "Выбрать любую из",
     "practice-a-random-story-from-N-stories-AFTER": " историй для практики",
-    "practice-now": "Практика",
+    "practice-now": "Полное погружение!",
     "this-feature-is-coming-soon": "Эта функция скоро появится!",
     "Culture": "Культура",
     "Politics": "Политика",
@@ -1425,6 +1425,7 @@
     "Salva": "Урок",
     "news-redirection-message": "You will be redirected to",
     "Recommendations": "Recommendations",
-    "explanations-popup-story-elo": "Твои баллы <i>ELO</i> за по упражнениям с текстом:\nсмотри более подробную информацию о твоем <href a=\"\"../../../profile/progress\"\">Прогрессе</a>, с течением времени.",
-    "explanations-popup-flashcard-elo": "Твои баллы <i>ELO</i> по словарному запасу:\nсмотри более подробную информацию о твоем <href a=\"\"../../../profile/progress\"\">Прогрессе</a>."
+    "explanations-popup-story-elo": "Твои баллы <i>ELO</i> за по упражнениям с текстом:\nсмотри более подробную информацию о твоем <a href=\"\"../../../profile/progress\"\">Прогрессе</a>, с течением времени.",
+    "explanations-popup-flashcard-elo": "Твои баллы <i>ELO</i> по словарному запасу:\nсмотри более подробную информацию о твоем <a href=\"\"../../../profile/progress\"\">Прогрессе</a>.",
+    "practice-now-explanation": "Revita выберет для тебя случайную историю для практики — ты можешь выбрать тему текста (или из какой библиотеки)"
 }

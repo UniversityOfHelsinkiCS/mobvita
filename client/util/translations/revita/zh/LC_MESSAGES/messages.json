@@ -787,6 +787,7 @@
     "Salva": "课程",
     "news-redirection-message": "You will be redirected to",
     "Recommendations": "Recommendations",
-    "explanations-popup-story-elo": "This is your <i>ELO</i> score for story exercises:\nplease see your <href a=\"../../../profile/progress\">Progress</a> to view more details and your performance over time.",
-    "explanations-popup-flashcard-elo": "This is your <i>ELO</i> score for vocabulary / flashcards:\nplease see your <href a=\"../../../profile/progress\">Progress</a> to view more details."
+    "explanations-popup-story-elo": "这是你的文章练习<i>ELO</i>：\n请查看你的<a href=\"../../../profile/progress\">进度</a> t以回顾你过去一段时间的练习效果。",
+    "explanations-popup-flashcard-elo": "这是你的词汇 / 单词卡 <i>ELO</i>：\n你可以前往<a href=\"../../../profile/progress\">进度</a>来查看更多细节。",
+    "practice-now-explanation": "Revita will choose a random story for you to practice — you can select its topic (or from which library)"
 }

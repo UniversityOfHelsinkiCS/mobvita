@@ -470,7 +470,7 @@
     "practice-a-random-story-with-the-language-of-your-choice": "Esercitati con una storia casuale",
     "practice-a-random-story": "Esercitati con una storia casuale dalle",
     "practice-a-random-story-from-N-stories-AFTER": " storie",
-    "practice-now": "Mettiti alla prova",
+    "practice-now": "Mettiti alla prova!",
     "this-feature-is-coming-soon": "Questa funzionalità arriverà presto!",
     "Culture": "Cultura",
     "Politics": "Politica",
@@ -1423,6 +1423,7 @@
     "Salva": "Lezione",
     "news-redirection-message": "You will be redirected to",
     "Recommendations": "Recommendations",
-    "explanations-popup-story-elo": "This is your <i>ELO</i> score for story exercises:\nplease see your <href a=\"../../../profile/progress\">Progress</a> to view more details and your performance over time.",
-    "explanations-popup-flashcard-elo": "This is your <i>ELO</i> score for vocabulary / flashcards:\nplease see your <href a=\"../../../profile/progress\">Progress</a> to view more details."
+    "explanations-popup-story-elo": "This is your <i>ELO</i> score for story exercises:\nclick here to see your progress: to view more details and your performance over time.",
+    "explanations-popup-flashcard-elo": "This is your <i>ELO</i> score for vocabulary / flashcards:\nclick here to view more details.",
+    "practice-now-explanation": "Revita will choose a random story for you to practice — you can select its topic (or from which library)"
 }
