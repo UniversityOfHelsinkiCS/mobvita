@@ -6,7 +6,6 @@ import { useSelector } from 'react-redux'
 import { getTextStyle, learningLanguageSelector, getMode } from 'Utilities/common'
 
 const LessonPracticeTopicsHelp = (lesson) => {
-    console.log('lesson', lesson)
     const { width } = useWindowDimensions()
     const learningLanguage = useSelector(learningLanguageSelector)
 

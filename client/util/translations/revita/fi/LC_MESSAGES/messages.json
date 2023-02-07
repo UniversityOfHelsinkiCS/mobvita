@@ -1422,7 +1422,7 @@
     "Salva": "Oppitunti",
     "news-redirection-message": "Sinut uudelleenohjataan osoitteeseen",
     "Recommendations": "Suositukset",
-    "explanations-popup-story-elo": "Tämä on tarinaharjoitusten <i>ELO</i>-pisteesi:\nkatso <a href=\"../../../profile/progress\">lisätietoja</a> edistymisestäsi, ja suoritustasi ajan mittaan.",
-    "explanations-popup-flashcard-elo": "Tämä on <i>ELO-pisteesi</i> sanastosta / muistikorteista:\nkatso lisätietoja <a href=\"../../../profile/progress\">edistymisestäsi</a>.",
+    "explanations-popup-story-elo": "Tämä on tarinaharjoitusten <i>ELO</i>-pisteesi:\nklikkaa katsoaksesi lisätietoja edistymisestäsi, ja suoritustasi ajan mittaan.",
+    "explanations-popup-flashcard-elo": "Tämä on <i>ELO-pisteesi</i> sanastosta / muistikorteista:\nklikkaa katsoaksesi lisätietoja edistymisestäsi.",
     "practice-now-explanation": "Revita valitsee sinulle satunnaisen tarinan harjoitteluun – voit valita sen aiheen (tai mistä kirjastosta)"
 }
