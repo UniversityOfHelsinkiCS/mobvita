@@ -80,14 +80,15 @@ const LessonPracticeTopicsHelp = (lesson) => {
     if (width >= 1024) {
         return (
             <div className="annotations-box">
-                <Segment style={{backgroundColor: 'mintcream'}}>
+                <Segment style={{backgroundColor: 'azure'}}>
                     <div
                         className="lesson-title"
                         style={{
-                        ...getTextStyle(learningLanguage, 'title'),
-                        width: `${'100%'}`,
-                        'font-weight': 'bold',
-                        'font-size': 'large',
+                            ...getTextStyle(learningLanguage, 'title'),
+                            width: `${'100%'}`,
+                            'font-weight': 'bold',
+                            'font-size': 'large',
+                            'margin-bottom': '15px',
                         }}
                     >
                         {`Lesson ${lesson?.lesson?.syllabus_id}`}
