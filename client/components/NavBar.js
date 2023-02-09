@@ -33,6 +33,7 @@ import TermsAndConditions from 'Components/StaticContent/TermsAndConditions'
 import EncouragementButton from 'Components/Encouragements/EncouragementButton'
 import ContactUs from './StaticContent/ContactUs'
 import Tour from './Tour'
+import ProgressTour from './ProgressTour'
 
 const NavbarIcon = ({ imgSrc, altText, extraClass }) => {
   return (
@@ -67,8 +68,18 @@ export default function NavBar() {
   }
 
   const handleTourStart = () => {
-    dispatch(sidebarSetOpen(false))
-    dispatch({ type: 'TOUR_RESTART' })
+
+    if (history.location.pathname.includes('progress')  && hiddenFeatures)
+    {
+      console.log("painoit just start tour nappia kun olit progressissa")
+      dispatch(sidebarSetOpen(false))
+      dispatch({ type: 'PROGRESS_TOUR_RESTART'})
+    } else
+    {
+      dispatch(sidebarSetOpen(false))
+      dispatch({ type: 'TOUR_RESTART' })
+    }
+  
   }
 
   const handleNewsClick = async () => {
@@ -142,6 +153,7 @@ export default function NavBar() {
     <Headroom disableInlineStyles={!smallWindow} style={navBarStyle}>
       <Navbar className={getBackgroundColor()} style={{ paddingLeft: '0.5em' }}>
         <Tour />
+        <ProgressTour />
         <div>
           {smallWindow && (
             <Icon

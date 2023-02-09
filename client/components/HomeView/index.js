@@ -144,7 +144,7 @@ const HomeviewButtons = ({
           {user.user.email !== 'anonymous_email' && (
             <>
               <HomeviewButton
-                imgSrc={images.exclamationMark}
+                imgSrc={images.navbarLogo}
                 altText="exlamation mark"
                 translationKey="Recommendations"
                 handleClick={() => dispatch(openEncouragement())}

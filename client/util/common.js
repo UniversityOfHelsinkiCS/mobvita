@@ -1127,4 +1127,26 @@ const mobileTourSteps = [
   },
 ]
 
+const progressTourSteps = [
+  {
+    target: '.tour-start-finish',
+    title: <FormattedMessage id="welcome" />,
+    content: (
+      <div>
+        <FormattedHTMLMessage id="tour-welcome-message" />
+      </div>
+    ),
+    disableBeacon: true,
+    hideBackButton: true,
+    showProgress: true
+    },
+  {
+    target: '.progress-tour-timeline-button',
+    title: 'Your timeline',
+    content: 'hope this works'
+  }
+]
+
+export const progressTour = progressTourSteps
 export const tourSteps = window.innerWidth >= 700 ? desktopTourSteps : mobileTourSteps
+

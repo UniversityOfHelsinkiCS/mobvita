@@ -20,6 +20,7 @@ import summary from './groupSummaryReducer'
 import encouragement from './encouragementsReducer'
 import practice from './practiceReducer'
 import passwordReset from './passwordResetReducer'
+import progresstour from './progresstourReducer'
 import studentProgress from './groupProgressReducer'
 import studentHistory from './groupHistoryReducer'
 import studentVocabulary from './groupVocabularyReducer'
@@ -62,6 +63,7 @@ const rootReducer = combineReducers({
   summary,
   practice,
   passwordReset,
+  progresstour,
   studentProgress,
   tests,
   exerciseHistory,
