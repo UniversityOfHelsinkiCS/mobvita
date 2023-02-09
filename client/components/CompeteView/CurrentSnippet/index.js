@@ -250,6 +250,7 @@ const CurrentSnippet = ({ storyId, handleInputChange, setYouWon, finished }) => 
       [`${ID}-${id}`]: {
         correct: surface,
         users_answer: value,
+        word_id: ID,
         cue: word_cue,
         id,
         concept,
