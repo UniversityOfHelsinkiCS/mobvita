@@ -2,6 +2,8 @@ import React, { useEffect } from 'react'
 import Draggable from 'react-draggable'
 import { useDispatch, useSelector } from 'react-redux'
 import { uploadCachedStory, getAllStories } from 'Utilities/redux/storiesReducer'
+import { filterOutCachedStory } from 'Utilities/redux/metadataReducer'
+import { setNotification } from 'Utilities/redux/notificationReducer'
 import { Icon } from 'semantic-ui-react'
 import { learningLanguageSelector } from 'Utilities/common'
 import { FormattedMessage } from 'react-intl'
@@ -18,6 +20,12 @@ const DailyStories = ({ cachedStories, bigScreen, open, setOpen }) => {
       return `${title.slice(0, 40)}...`
     }
     return title
+  }
+
+  const uploadDailyStory = story_id => {
+    dispatch(filterOutCachedStory(story_id))
+    dispatch(setNotification('processing-story', 'info'))
+    dispatch(uploadCachedStory(story_id))
   }
 
   useEffect(() => {
@@ -76,7 +84,7 @@ const DailyStories = ({ cachedStories, bigScreen, open, setOpen }) => {
                       <li style={{ marginBottom: '.5em' }}>
                         <Link
                           variant="primary"
-                          onClick={() => dispatch(uploadCachedStory(story._id))}
+                          onClick={()=> uploadDailyStory(story._id)}
                         >
                           <FormattedMessage id="upload-daily-story" />
                         </Link>

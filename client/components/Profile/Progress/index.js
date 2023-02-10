@@ -279,6 +279,7 @@ const Progress = () => {
             >
               <div className="flex align-center" style={{ gap: '.5em' }}>
                 <input
+                  className='progress-tour-timeline-button'
                   type="radio"
                   onChange={() => handleChartChange('progress')}
                   checked={shownChart === 'progress'}

@@ -7,6 +7,8 @@ export const getMetadata = language => {
   return callBuilder(route, prefix, 'get')
 }
 
+export const filterOutCachedStory = story_id => ({ type: 'FILTER_CACHE_STORY', story_id })
+
 export const closeBanner = message => ({ type: 'CLOSE_BANNER', message })
 
 const initialState = {
@@ -46,6 +48,11 @@ export default (state = initialState, action) => {
         lesson_semantics: response.lesson_semantics,
         pending: false,
         error: false,
+      }
+    case 'FILTER_CACHE_STORY':
+      return {
+        ...state,
+        cachedStories: state.cachedStories.filter(story => story._id != action.story_id),
       }
     case 'CLOSE_BANNER':
       return produce(state, draft => {

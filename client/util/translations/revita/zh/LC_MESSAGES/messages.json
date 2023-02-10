@@ -785,9 +785,11 @@
     "save-lesson": "保存课程",
     "lesson-dialog-title": "课程",
     "Salva": "课程",
-    "news-redirection-message": "You will be redirected to",
-    "Recommendations": "Recommendations",
-    "explanations-popup-story-elo": "这是你的文章练习<i>ELO</i>：\n请查看你的进度以回顾你过去一段时间的练习效果。",
-    "explanations-popup-flashcard-elo": "这是你的词汇 / 单词卡 <i>ELO</i>：\n你可以前往进度来查看更多细节。",
-    "practice-now-explanation": "Revita will choose a random story for you to practice — you can select its topic (or from which library)"
+    "news-redirection-message": "您将被转到此页面：",
+    "Recommendations": "日常推荐",
+    "explanations-popup-story-elo": "这是你的文章练习<i>ELO</i>：\n点击此处查看你的进度以回顾你过去一段时间的练习效果。",
+    "explanations-popup-flashcard-elo": "这是你的词汇 / 单词卡 <i>ELO</i>：\n你可以点击此处来查看更多细节。",
+    "practice-now-explanation": "Revita will choose a random story for you to practice — you can select its topic (or from which library)",
+    "tour-progress-message": "This is your progress",
+    "tour-lessons-message": "Here you can take lessons"
 }
