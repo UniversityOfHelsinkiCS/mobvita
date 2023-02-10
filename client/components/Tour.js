@@ -7,10 +7,11 @@ import { updateToNonNewUser } from 'Utilities/redux/userReducer'
 import { startTour, handleNextTourStep, stopTour } from 'Utilities/redux/tourReducer'
 import { FormattedMessage } from 'react-intl'
 import useWindowDimensions from 'Utilities/windowDimensions'
+import { tourSteps } from 'Utilities/common'
 
 const Tour = () => {
   const dispatch = useDispatch()
-  const tourState = useSelector(({ tour }) => tour)
+  const tourState = useSelector(({tour}) => tour)
   const { user } = useSelector(({ user }) => ({ user: user.data }))
   const history = useHistory()
   const location = useLocation()
@@ -34,7 +35,7 @@ const Tour = () => {
 
   const callback = data => {
     const { action, index, type, status } = data
-
+   
     if (
       action === ACTIONS.CLOSE ||
       (status === STATUS.SKIPPED && tourState.run) ||
@@ -45,9 +46,10 @@ const Tour = () => {
     } else if (type === EVENTS.STEP_AFTER || type === EVENTS.TARGET_NOT_FOUND) {
       // desktop
       if (bigScreen) {
-        if (index === 0) {
-          history.push('/home')
-        }
+         if (tourState.steps === tourSteps && !history.location.pathname.includes('/home')) {
+          history.push('/home')  // This statement pushes the use to home page if tour is started
+                                // on a page that doesnt have a tour
+         }
         dispatch(handleNextTourStep(index + (action === ACTIONS.PREV ? -1 : 1)))
 
         // mobile
