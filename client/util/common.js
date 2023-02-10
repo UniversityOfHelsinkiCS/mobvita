@@ -942,6 +942,36 @@ const desktopTourSteps = [
     hideBackButton: true,
     showProgress: true,
   },
+  
+  {
+    target: '.tour-lesson',
+    title: <FormattedMessage id="Lessons" />,
+    content: (
+      <div>
+        <FormattedHTMLMessage id="tour-lessons-message" />
+      </div>
+    ),
+    placement: 'right',
+    placementBeacon: 'left',
+    disableBeacon: true,
+    hideBackButton: true,
+    showProgress: true,
+  },
+  {
+    target: '.tour-progress',
+    title: <FormattedMessage id="Progress" />,
+    content: (
+      <div>
+        <FormattedHTMLMessage id="tour-progress-message" />
+      </div>
+    ),
+    placement: 'right',
+    placementBeacon: 'left',
+    disableBeacon: true,
+    hideBackButton: true,
+    showProgress: true,
+  },
+
   {
     target: '.tour-flashcards',
     title: <FormattedMessage id="Flashcards" />,

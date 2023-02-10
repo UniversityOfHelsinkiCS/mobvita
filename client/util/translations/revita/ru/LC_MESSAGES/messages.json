@@ -1427,5 +1427,7 @@
     "Recommendations": "Recommendations",
     "explanations-popup-story-elo": "Твои баллы <i>ELO</i> за по упражнениям с текстом:\nсмотри более подробную информацию о твоем прогрессе.",
     "explanations-popup-flashcard-elo": "Твои баллы <i>ELO</i> по словарному запасу:\nсмотри более подробную информацию о твоем прогрессе.",
-    "practice-now-explanation": "Revita выберет для тебя случайную историю для практики — ты можешь выбрать тему текста (или из какой библиотеки)"
+    "practice-now-explanation": "Revita выберет для тебя случайную историю для практики — ты можешь выбрать тему текста (или из какой библиотеки)",
+    "tour-progress-message": "This is your progress",
+    "tour-lessons-message": "Here you can take lessons"
 }

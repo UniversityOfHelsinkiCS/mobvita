@@ -82,7 +82,7 @@ const HomeviewButtons = ({
           dataCy="library-button"
         />
       </div>
-      <div className="lesson-btn-cont">
+      <div className="lesson-btn-cont tour-lesson">
         <HomeviewButton
           imgSrc={images.readingBook}
           altText="reading a book"

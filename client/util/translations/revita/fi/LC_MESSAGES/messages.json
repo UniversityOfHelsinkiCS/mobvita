@@ -1424,5 +1424,7 @@
     "Recommendations": "Suositukset",
     "explanations-popup-story-elo": "Tämä on tarinaharjoitusten <i>ELO</i>-pisteesi:\nklikkaa katsoaksesi lisätietoja edistymisestäsi, ja suoritustasi ajan mittaan.",
     "explanations-popup-flashcard-elo": "Tämä on <i>ELO-pisteesi</i> sanastosta / muistikorteista:\nklikkaa katsoaksesi lisätietoja edistymisestäsi.",
-    "practice-now-explanation": "Revita valitsee sinulle satunnaisen tarinan harjoitteluun – voit valita sen aiheen (tai mistä kirjastosta)"
+    "practice-now-explanation": "Revita valitsee sinulle satunnaisen tarinan harjoitteluun – voit valita sen aiheen (tai mistä kirjastosta)",
+    "tour-progress-message": "This is your progress",
+    "tour-lessons-message": "Here you can take lessons"
 }
