@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
-import { Navbar, Nav, NavDropdown } from 'react-bootstrap'
+import { Navbar, Nav, NavDropdown, NavItem } from 'react-bootstrap'
 import Headroom from 'react-headroom'
 import { Icon, Label, Popup } from 'semantic-ui-react'
 import { Link, useHistory } from 'react-router-dom'
@@ -60,29 +60,27 @@ export default function NavBar() {
   }
   const isTeacher = user?.user.is_teacher
   const check = history.location.pathname
-  const isMajorLanguage = supportedLearningLanguages?.major.includes(learningLanguage?.toLowerCase())
+  const isMajorLanguage = supportedLearningLanguages?.major.includes(
+    learningLanguage?.toLowerCase()
+  )
   const signOut = () => {
     dispatch(logout())
     history.push('/')
   }
 
   const handleTourStart = () => {
-
-    if (history.location.pathname.includes('progress')  && hiddenFeatures)
-    {
-      console.log("painoit just start tour nappia kun olit progressissa")
+    if (history.location.pathname.includes('progress') && hiddenFeatures) {
+      console.log('painoit just start tour nappia kun olit progressissa')
       dispatch(sidebarSetOpen(false))
-      dispatch({ type: 'PROGRESS_TOUR_RESTART'})
+      dispatch({ type: 'PROGRESS_TOUR_RESTART' })
     } else if (history.location.pathname.includes('library') && hiddenFeatures) {
-      console.log("You clicked on the tour while in library view")
+      console.log('You clicked on the tour while in library view')
       dispatch(sidebarSetOpen(false))
-      dispatch({ type: 'LIBRARY_TOUR_RESTART'})
-    } else
-    {
+      dispatch({ type: 'LIBRARY_TOUR_RESTART' })
+    } else {
       dispatch(sidebarSetOpen(false))
       dispatch({ type: 'TOUR_RESTART' })
     }
-  
   }
 
   const handleNewsClick = async () => {
@@ -103,9 +101,8 @@ export default function NavBar() {
     const confirmationMessage = `${intl.formatMessage({ id: 'news-redirection-message' })}: ${url}`
     if (window.confirm(confirmationMessage)) {
       return true
-    } else {
-      event.preventDefault()
     }
+    event.preventDefault()
   }
 
   useEffect(() => {
@@ -217,7 +214,7 @@ export default function NavBar() {
 
           <Nav className="mr-auto">
             <div className="navbar-container">
-              <Navbar.Text 
+              <Navbar.Text
                 onClick={handleEloClick}
                 onKeyDown={() => dispatch(setAnnotationsVisibility(true))}
               >
@@ -225,11 +222,7 @@ export default function NavBar() {
                   <Popup
                     position="top center"
                     // content={intl.formatMessage({ id: 'explanations-popup-story-elo' })}
-                    content={
-                      <FormattedHTMLMessage
-                        id="explanations-popup-story-elo"
-                      />
-                    }
+                    content={<FormattedHTMLMessage id="explanations-popup-story-elo" />}
                     trigger={
                       <div className="navbar-basic-item">
                         <Icon name="star outline" style={{ margin: 0, width: '16px' }} /> {storyElo}
@@ -241,14 +234,11 @@ export default function NavBar() {
                   <Popup
                     position="top center"
                     // content={intl.formatMessage({ id: 'explanations-popup-flashcard-elo' })}
-                    content={
-                      <FormattedHTMLMessage
-                        id="explanations-popup-flashcard-elo"
-                      />
-                    }
+                    content={<FormattedHTMLMessage id="explanations-popup-flashcard-elo" />}
                     trigger={
                       <div className="navbar-basic-item">
-                        <img src={images.flashcardIcon} alt="three cards" width="16px" /> {flashcardElo}
+                        <img src={images.flashcardIcon} alt="three cards" width="16px" />{' '}
+                        {flashcardElo}
                       </div>
                     }
                   />
@@ -258,7 +248,7 @@ export default function NavBar() {
           </Nav>
 
           <Nav>
-            <div className="navbar-container" style={{width: '90%'}}>
+            <div className="navbar-container" style={{ width: '90%' }}>
               <Offline className="navbar-basic-item" polling={{ timeout: 20000 }}>
                 <Icon name="broken chain" size="large" style={{ color: '#ff944d' }} />
               </Offline>
@@ -271,6 +261,12 @@ export default function NavBar() {
 
               {!smallWindow && (
                 <>
+                  {hiddenFeatures && (
+                    <NavItem>
+                      <Icon onClick={handleTourStart} name="exclamation" />
+                    </NavItem>
+                  )}
+
                   <NavDropdown
                     className="navbar-dropdown-icon-cont"
                     title={
@@ -411,8 +407,10 @@ export default function NavBar() {
                     style={{ display: 'table-cell' }}
                     href="https://www2.helsinki.fi/en/projects/revita-language-learning-and-ai/news"
                     onClick={event => {
-                      confirmNewsClick(event,
-                        'https://www2.helsinki.fi/en/projects/revita-language-learning-and-ai/news')
+                      confirmNewsClick(
+                        event,
+                        'https://www2.helsinki.fi/en/projects/revita-language-learning-and-ai/news'
+                      )
                     }}
                     target="_blank"
                     rel="noopener noreferrer"
@@ -434,19 +432,15 @@ export default function NavBar() {
                         >
                           <span>{numUnreadNews}</span>
                         </Label>
-                      ) : null
-                      }
+                      ) : null}
                     </span>
                   </a>
                 }
                 content={
-                  <FormattedMessage
-                    id="news-bell-info-popup-text"
-                    values={{ numUnreadNews }}
-                  />
+                  <FormattedMessage id="news-bell-info-popup-text" values={{ numUnreadNews }} />
                 }
-                on='hover'
-                position='bottom right'
+                on="hover"
+                position="bottom right"
               />
 
               <Link
