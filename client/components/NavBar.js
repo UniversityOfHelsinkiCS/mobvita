@@ -33,7 +33,6 @@ import TermsAndConditions from 'Components/StaticContent/TermsAndConditions'
 import EncouragementButton from 'Components/Encouragements/EncouragementButton'
 import ContactUs from './StaticContent/ContactUs'
 import Tour from './Tour'
-import ProgressTour from './ProgressTour'
 
 const NavbarIcon = ({ imgSrc, altText, extraClass }) => {
   return (
@@ -157,7 +156,6 @@ export default function NavBar() {
     <Headroom disableInlineStyles={!smallWindow} style={navBarStyle}>
       <Navbar className={getBackgroundColor()} style={{ paddingLeft: '0.5em' }}>
         <Tour />
-        <ProgressTour />
         <div>
           {smallWindow && (
             <Icon

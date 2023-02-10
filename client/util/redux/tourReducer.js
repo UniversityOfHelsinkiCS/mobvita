@@ -1,4 +1,4 @@
-import { tourSteps, desktopLibraryTourSteps } from 'Utilities/common'
+import { tourSteps, desktopLibraryTourSteps, progressTour } from 'Utilities/common'
 
 const initialState = {
   key: new Date(), // This field makes the tour to re-render it is restarted
@@ -35,6 +35,7 @@ export default (state = initialState, action) => {
     case 'TOUR_RESTART':
       return {
         ...state,
+        steps: tourSteps,
         stepIndex: 0,
         run: true,
         loading: false,
@@ -44,6 +45,15 @@ export default (state = initialState, action) => {
       return {
         ...state,
         steps: desktopLibraryTourSteps,
+        stepIndex: 0,
+        run: true,
+        loading: false,
+        key: new Date(),
+      }
+    case 'PROGRESS_TOUR_RESTART':
+      return {
+        ...state,
+        steps: progressTour,
         stepIndex: 0,
         run: true,
         loading: false,
