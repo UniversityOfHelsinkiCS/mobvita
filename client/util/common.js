@@ -49,6 +49,7 @@ import settingsIcon from 'Assets/images/settings_icon.png'
 import bellIcon from 'Assets/images/bell_icon.png'
 import infoIcon from 'Assets/images/info_icon.png'
 import notesIcon from 'Assets/images/notes.png'
+import lightbulbIcon from 'Assets/images/light-bulb.png'
 // ---
 import addStory from 'Assets/images/add_story.jpg'
 import tests from 'Assets/images/tests.jpg'
@@ -150,6 +151,7 @@ export const images = {
   bellIcon,
   settingsIcon,
   nestIcon,
+  lightbulbIcon,
   balloons,
   fireworks,
   notesIcon,

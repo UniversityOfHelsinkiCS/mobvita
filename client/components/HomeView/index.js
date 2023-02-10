@@ -139,18 +139,18 @@ const HomeviewButtons = ({
           handleClick={() => history.push('/notes-library')}
         />
       </div>
+      {user.user.email !== 'anonymous_email' && (
+        <>
+          <HomeviewButton
+            imgSrc={images.lightbulbIcon}
+            altText="light bulb"
+            translationKey="Recommendations"
+            handleClick={() => dispatch(openEncouragement())}
+          />
+        </>
+      )}
       {hiddenFeatures && (
         <>
-          {user.user.email !== 'anonymous_email' && (
-            <>
-              <HomeviewButton
-                imgSrc={images.navbarLogo}
-                altText="exlamation mark"
-                translationKey="Recommendations"
-                handleClick={() => dispatch(openEncouragement())}
-              />
-            </>
-          )}
           <Button onClick={() => history.push('/test-construction')}>Test construction</Button>
           <Button style={{ padding: '5em' }} onClick={() => history.push('test-debug')}>
             Feedback debugger
