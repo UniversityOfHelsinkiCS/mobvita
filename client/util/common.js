@@ -931,6 +931,19 @@ const desktopTourSteps = [
     },
   },
   {
+    target: '.tour-add-new-stories',
+    title: <FormattedMessage id="add-content" />,
+    content: (
+      <div>
+        <FormattedHTMLMessage id="tour-add-content-message" />
+      </div>
+    ),
+    placement: 'top',
+    disableBeacon: true,
+    hideBackButton: true,
+    showProgress: true,
+  },
+  {
     target: '.tour-library',
     title: <FormattedMessage id="Library" />,
     content: (
@@ -944,7 +957,6 @@ const desktopTourSteps = [
     hideBackButton: true,
     showProgress: true,
   },
-  
   {
     target: '.tour-lesson',
     title: <FormattedMessage id="Lessons" />,
@@ -960,11 +972,11 @@ const desktopTourSteps = [
     showProgress: true,
   },
   {
-    target: '.tour-progress',
-    title: <FormattedMessage id="Progress" />,
+    target: '.tour-practice-now',
+    title: <FormattedMessage id="practice-now" />,
     content: (
       <div>
-        <FormattedHTMLMessage id="tour-progress-message" />
+        <FormattedHTMLMessage id="tour-practice-now-message" />
       </div>
     ),
     placement: 'right',
@@ -973,7 +985,6 @@ const desktopTourSteps = [
     hideBackButton: true,
     showProgress: true,
   },
-
   {
     target: '.tour-flashcards',
     title: <FormattedMessage id="Flashcards" />,
@@ -989,28 +1000,13 @@ const desktopTourSteps = [
     hideBackButton: true,
   },
   {
-    target: '.tour-add-new-stories',
-    title: <FormattedMessage id="add-content" />,
+    target: '.tour-progress',
+    title: <FormattedMessage id="Progress" />,
     content: (
       <div>
-        <FormattedHTMLMessage id="tour-add-content-message" />
+        <FormattedHTMLMessage id="tour-progress-message" />
       </div>
     ),
-    placement: 'top',
-    disableBeacon: true,
-    hideBackButton: true,
-    showProgress: true,
-  },
-  {
-    target: '.tour-practice-now',
-    title: <FormattedMessage id="practice-now" />,
-    content: (
-      <div>
-        <FormattedHTMLMessage id="tour-practice-now-message" />
-      </div>
-    ),
-    placement: 'right',
-    placementBeacon: 'left',
     disableBeacon: true,
     hideBackButton: true,
     showProgress: true,
@@ -1087,20 +1083,6 @@ const mobileTourSteps = [
     },
   },
   {
-    target: '.tour-practice-now',
-    title: <FormattedMessage id="practice-now" />,
-    content: (
-      <div className="tour-mobile-message">
-        <FormattedHTMLMessage id="tour-practice-now-message" />
-      </div>
-    ),
-    placement: 'right',
-    placementBeacon: 'left',
-    disableBeacon: true,
-    hideBackButton: true,
-    showProgress: true,
-  },
-  {
     target: '.tour-add-new-stories',
     title: <FormattedMessage id="add-content" />,
     content: (
@@ -1128,6 +1110,34 @@ const mobileTourSteps = [
     showProgress: true,
   },
   {
+    target: '.tour-lesson',
+    title: <FormattedMessage id="Lessons" />,
+    content: (
+      <div>
+        <FormattedHTMLMessage id="tour-lessons-message" />
+      </div>
+    ),
+    placement: 'right',
+    placementBeacon: 'left',
+    disableBeacon: true,
+    hideBackButton: true,
+    showProgress: true,
+  },
+  {
+    target: '.tour-practice-now',
+    title: <FormattedMessage id="practice-now" />,
+    content: (
+      <div className="tour-mobile-message">
+        <FormattedHTMLMessage id="tour-practice-now-message" />
+      </div>
+    ),
+    placement: 'right',
+    placementBeacon: 'left',
+    disableBeacon: true,
+    hideBackButton: true,
+    showProgress: true,
+  },
+  {
     target: '.tour-flashcards',
     title: <FormattedMessage id="Flashcards" />,
     content: (
@@ -1140,6 +1150,18 @@ const mobileTourSteps = [
     disableBeacon: true,
     showProgress: true,
     hideBackButton: true,
+  },
+  {
+    target: '.tour-progress',
+    title: <FormattedMessage id="Progress" />,
+    content: (
+      <div>
+        <FormattedHTMLMessage id="tour-progress-message" />
+      </div>
+    ),
+    disableBeacon: true,
+    hideBackButton: true,
+    showProgress: true,
   },
   {
     target: '.tour-start-finish',
