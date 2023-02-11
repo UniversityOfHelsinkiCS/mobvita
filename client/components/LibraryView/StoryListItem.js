@@ -189,7 +189,7 @@ const StoryActions = ({
     return (
       <div className="story-actions">
         <Link to={practiceLink}>
-          <Button variant={teacherInGroupView ? 'secondary' : 'primary'}>
+          <Button className='library-tour-practice-button' variant={teacherInGroupView ? 'secondary' : 'primary'}>
             <FormattedMessage id="practice" />
           </Button>
         </Link>
@@ -220,13 +220,14 @@ const StoryActions = ({
         )}
         {inGroupLibrary ? (
           <Link to={`/stories/${story._id}/group/review`}>
-            <Button variant={teacherInGroupView ? 'primary' : reviewButtonVariant}>
+            <Button className='library-tour-review-button' variant={teacherInGroupView ? 'primary' : reviewButtonVariant}>
               <FormattedMessage id="review" />{' '}
             </Button>
           </Link>
         ) : (
           <Link to={`/stories/${story._id}/review`}>
             <Button
+              className='library-tour-review-button'
               variant={reviewButtonVariant}
               disabled={story.percent_cov === 0 || enableOnlyPractice}
             >
@@ -411,6 +412,7 @@ const StoryListItem = ({ story, libraryShown, selectedGroup }) => {
             />
           )}
           <DifficultyStars
+            className='library-tour-difficulty-stars'
             difficulty={story.difficulty}
             style={{ whiteSpace: 'nowrap', marginLeft: '1em' }}
           />

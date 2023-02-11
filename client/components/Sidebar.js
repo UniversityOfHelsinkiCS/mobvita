@@ -13,6 +13,7 @@ import { Button } from 'react-bootstrap'
 import useWindowDimensions from 'Utilities/windowDimensions'
 import ContactUs from './StaticContent/ContactUs'
 import LearningSettingsModal from './LearningSettingsModal'
+import { hiddenFeatures } from 'Utilities/common'
 
 export default function Sidebar({ history }) {
   const dispatch = useDispatch()
@@ -83,8 +84,16 @@ export default function Sidebar({ history }) {
   }
 
   const handleTourStart = () => {
-    dispatch(sidebarSetOpen(false))
-    dispatch({ type: 'TOUR_RESTART' })
+    if (history.location.pathname.includes('progress') && hiddenFeatures) {
+      dispatch(sidebarSetOpen(false))
+      dispatch({ type: 'PROGRESS_TOUR_RESTART' })
+    } else if (history.location.pathname.includes('library') && hiddenFeatures) {
+      dispatch(sidebarSetOpen(false))
+      dispatch({ type: 'LIBRARY_TOUR_RESTART' })
+    } else {
+      dispatch(sidebarSetOpen(false))
+      dispatch({ type: 'TOUR_RESTART' })
+    }
   }
 
   let actualLocale = locale
@@ -287,7 +296,6 @@ export default function Sidebar({ history }) {
                     style={{ marginTop: marginTopButton }}
                     onClick={() => handleTourStart()}
                     as={Link}
-                    to="/home"
                   >
                     <Icon name="info circle" /> <FormattedMessage id="start-tour" />
                   </Button>

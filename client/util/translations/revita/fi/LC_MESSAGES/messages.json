@@ -1123,7 +1123,7 @@
     "topics": "Aiheet",
     "no-topics-available": "Ei aiheita saatavilla",
     "adaptive-test": "Taitotasotesti",
-    "news-bell-info-popup-text": "Sinulla on {numOfUnreadNews} lukematonta viestiä. Klikkaa tästä lukeaksesi ne!",
+    "news-bell-info-popup-text": "Sinulla on {numUnreadNews} lukematonta viestiä. Klikkaa tästä lukeaksesi ne!",
     "test-settings": "Koeasetukset",
     "concepts": "Aiheet",
     "cefr-level": "CEFR-taitotaso",
@@ -1426,5 +1426,11 @@
     "explanations-popup-flashcard-elo": "Tämä on <i>ELO-pisteesi</i> sanastosta / muistikorteista:\nklikkaa katsoaksesi lisätietoja edistymisestäsi.",
     "practice-now-explanation": "Revita valitsee sinulle satunnaisen tarinan harjoitteluun – voit valita sen aiheen (tai mistä kirjastosta)",
     "tour-progress-message": "This is your progress",
-    "tour-lessons-message": "Here you can take lessons"
+    "tour-lessons-message": "Here you can take lessons",
+    "library-tour-story-message": "Tämä on tarinaharjoitus.",
+    "library-tour-stars-message": "Nämä tähdet näyttävät kuinka haastava tarina on. Mitä enemmän tähtiä on, sen haastavampi tarina on.",
+    "library-tour-practice-message": "",
+    "library-tour-review-message": "",
+    "Difficulty stars": "Vaikeusaste tähdet",
+    "Story": "Tarina"
 }

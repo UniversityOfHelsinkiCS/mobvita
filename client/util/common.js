@@ -210,7 +210,7 @@ export const confettiRain = () => {
 }
 
 export const finalConfettiRain = (colors, endDate) => {
-  ;(function frame() {
+  ; (function frame() {
     confetti({
       particleCount: 2,
       angle: 60,
@@ -551,7 +551,7 @@ export const consistsOfOnlyWhitespace = text => {
   return false
 }
 
-export const speak = (surfaceWord, voice, voice_type, resource_usage, nRepeat=0) => {
+export const speak = (surfaceWord, voice, voice_type, resource_usage, nRepeat = 0) => {
   const [source, lang_code, tone] = voice
   window.responsiveVoice.cancel()
   Howler.stop()
@@ -1193,7 +1193,7 @@ const progressTourSteps = [
     disableBeacon: true,
     hideBackButton: true,
     showProgress: true
-    },
+  },
   {
     target: '.progress-tour-timeline-button',
     title: 'Your timeline',
@@ -1201,7 +1201,7 @@ const progressTourSteps = [
   }
 ]
 
-export const desktopLibraryTourSteps = [
+const desktopLibraryTourSteps = [
   {
     target: '.tour-start-finish',
     title: <FormattedMessage id="welcome" />,
@@ -1213,11 +1213,103 @@ export const desktopLibraryTourSteps = [
     disableBeacon: true,
     hideBackButton: true,
     showProgress: true
-    },
-  
+  },
+  {
+    target: '.story-card-title-cont',
+    title: <FormattedMessage id="Story" />,
+    content: (
+      <div>
+        <FormattedHTMLMessage id="library-tour-story-message" />
+      </div>
+    ),
+    placement: 'top',
+    disableBeacon: true,
+    hideBackButton: true,
+    showProgress: true
+  },
+  {
+    target: '.library-tour-difficulty-stars',
+    title: <FormattedMessage id="Difficulty stars" />,
+    content: (
+      <div>
+        <FormattedHTMLMessage id="library-tour-stars-message" />
+      </div>
+    ),
+    disableBeacon: true,
+    hideBackButton: true,
+    showProgress: true,
+    placement: 'top',
+    placementBeacon: 'left'
+  },
+  /*
+  {
+    target: '.library-tour-practice-button',
+    title: 'Practice',
+    content: 'moikka moi',
+    disableBeacon: true,
+    hideBackButton: true,
+    showProgress: true,
+    placement: 'top',
+    placementBeacon: 'left'
+  },
+  {
+    target: '.library-tour-review-button',
+    title: 'Review',
+    content: 'you can review your exercises',
+    disableBeacon: true,
+    hideBackButton: true,
+    showProgress: true,
+    placement: 'top',
+    placementBeacon: 'left'
+  }
+  */
+]
+
+const mobileLibraryTourSteps = [
+  {
+    target: '.tour-start-finish',
+    title: <FormattedMessage id="welcome" />,
+    content: (
+      <div className="tour-mobile-message">
+        <FormattedHTMLMessage id="tour-welcome-message" />
+      </div>
+    ),
+    disableBeacon: true,
+    hideBackButton: true,
+    showProgress: true,
+  },
+  {
+    target: '.story-card-title-cont',
+    title: <FormattedMessage id="Story" />,
+    content: (
+      <div>
+        <FormattedHTMLMessage id="library-tour-story-message" />
+      </div>
+    ),
+    placement: 'top',
+    disableBeacon: true,
+    hideBackButton: true,
+    showProgress: true
+  },
+  {
+    target: '.library-tour-difficulty-stars',
+    title: <FormattedMessage id="Difficulty stars" />,
+    content: (
+      <div>
+        <FormattedHTMLMessage id="library-tour-stars-message" />
+      </div>
+    ),
+    disableBeacon: true,
+    hideBackButton: true,
+    showProgress: true,
+    placement: 'top',
+    placementBeacon: 'left'
+  }
+
 ]
 
 
 export const progressTour = progressTourSteps
 export const tourSteps = window.innerWidth >= 700 ? desktopTourSteps : mobileTourSteps
+export const libraryTourSteps = window.innerWidth >= 700 ? desktopLibraryTourSteps : mobileLibraryTourSteps
 

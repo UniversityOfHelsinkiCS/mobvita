@@ -1427,5 +1427,11 @@
     "explanations-popup-flashcard-elo": "This is your <i>ELO</i> score for vocabulary / flashcards:\nclick here to view more details.",
     "practice-now-explanation": "Revita will choose a random story for you to practice — you can select its topic (or from which library)",
     "tour-progress-message": "This is your progress",
-    "tour-lessons-message": "Here you can take lessons"
+    "tour-lessons-message": "Here you can take lessons",
+    "library-tour-story-message": "This is a story.",
+    "library-tour-stars-message": "These stars show how difficult the story is. The more stars there are the more difficult the story is.",
+    "library-tour-practice-message": "",
+    "library-tour-review-message": "",
+    "Difficulty stars": "Difficulty stars",
+    "Story": "Story"
 }

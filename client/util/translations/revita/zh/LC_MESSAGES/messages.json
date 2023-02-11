@@ -791,5 +791,11 @@
     "explanations-popup-flashcard-elo": "这是你的词汇 / 单词卡 <i>ELO</i>：\n你可以点击此处来查看更多细节。",
     "practice-now-explanation": "Revita will choose a random story for you to practice — you can select its topic (or from which library)",
     "tour-progress-message": "This is your progress",
-    "tour-lessons-message": "Here you can take lessons"
+    "tour-lessons-message": "Here you can take lessons",
+    "library-tour-story-message": "This is a story.",
+    "library-tour-stars-message": "These stars show how difficult the story is. The more stars there are the more difficult the story is.",
+    "library-tour-practice-message": "",
+    "library-tour-review-message": "",
+    "Difficulty stars": "Difficulty stars",
+    "Story": "Story"
 }
