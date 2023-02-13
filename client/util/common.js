@@ -898,7 +898,7 @@ export const translatableLanguages = {
   ],
 }
 
-const desktopTourSteps = [
+const desktopHomeTourSteps = [
   {
     target: '.tour-start-finish',
     title: <FormattedMessage id="welcome" />,
@@ -1031,7 +1031,7 @@ const desktopTourSteps = [
 
 
 
-const mobileTourSteps = [
+const mobileHomeTourSteps = [
   {
     target: '.tour-start-finish',
     title: <FormattedMessage id="welcome" />,
@@ -1310,6 +1310,6 @@ const mobileLibraryTourSteps = [
 
 
 export const progressTour = progressTourSteps
-export const tourSteps = window.innerWidth >= 700 ? desktopTourSteps : mobileTourSteps
+export const homeTourSteps = window.innerWidth >= 700 ? desktopHomeTourSteps : mobileHomeTourSteps
 export const libraryTourSteps = window.innerWidth >= 700 ? desktopLibraryTourSteps : mobileLibraryTourSteps
 
