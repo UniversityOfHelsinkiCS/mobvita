@@ -291,6 +291,7 @@ export default function Sidebar({ history }) {
               <Menu.Item style={{ paddingBottom: '0px' }}>
                 {learningLanguage && (
                   <Button
+                    className='tour-mobile-start-button'
                     variant="secondary"
                     block
                     style={{ marginTop: marginTopButton }}

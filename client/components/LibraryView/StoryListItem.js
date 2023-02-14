@@ -89,7 +89,7 @@ const StoryFunctionsDropdown = ({
   inGroupLibrary,
   enableOnlyPractice,
   storyIndex
-}) => {
+  }) => {
   const dropdownOpen = storyIndex === 0 && useSelector(({ library }) => library.open)
   return (
     <SemanticButton.Group>
@@ -147,6 +147,7 @@ const StoryFunctionsDropdown = ({
               as={Link}
               to={`/stories/${story._id}/review`}
               icon="book"
+              className='library-tour-mobile-review-button'
             />
           )}
           <Dropdown.Item
@@ -175,7 +176,7 @@ const StoryActions = ({
   inGroupLibrary,
   isTeacher,
   storyIndex
-}) => {
+  }) => {
   const { width } = useWindowDimensions()
 
   const showCrosswordsButton = width > 1023
@@ -352,7 +353,7 @@ const StoryListItem = ({ story, libraryShown, selectedGroup, index }) => {
           isControlled={isControlledStory}
           inGroupLibrary={inGroupLibrary}
           isTeacher={inGroupLibrary && currentGroup && currentGroup.is_teaching}
-          storyIndex = {storyIndex}
+          storyIndex={storyIndex}
         />
         <div className="flex align-center" style={{ overflow: 'hidden' }}>
           {showGroupNames && <GroupsSharedTo groups={story.groups} />}

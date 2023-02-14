@@ -73,7 +73,7 @@ const Tour = () => {
         } 
         dispatch(handleNextTourStep(index + (action === ACTIONS.PREV ? -1 : 1)))
 
-      // mobile
+        // mobile
       } else {
         // home tour control
         if (tourState.steps === homeTourSteps) {
@@ -82,9 +82,9 @@ const Tour = () => {
             if (!history.location.pathname.includes('/home')) {
               history.push('/home')
             }
-          } else if (index === 1) {
+          } else if (index === 1 || index === 8) {
             dispatch(sidebarSetOpen(true))
-  
+
             setTimeout(() => {
               dispatch(handleNextTourStep(index + (action === ACTIONS.PREV ? -1 : 1)))
             }, 600)
@@ -96,10 +96,18 @@ const Tour = () => {
         // library tour control
         if (tourState.steps === libraryTourSteps) {
           console.log(index)
-          if (index === 2) {
+          if (index === 3) {
             dispatch(libraryDropdownOpen(true))
           } else {
             dispatch(libraryDropdownOpen(false))
+          }
+
+          if (index === 4) {
+            dispatch(sidebarSetOpen(true))
+
+            setTimeout(() => {
+              dispatch(handleNextTourStep(index + (action === ACTIONS.PREV ? -1 : 1)))
+            }, 600)
           }
         }
 
