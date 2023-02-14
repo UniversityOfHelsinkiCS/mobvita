@@ -1012,11 +1012,11 @@ const desktopHomeTourSteps = [
     showProgress: true,
   },
   {
-    target: '.tour-start-finish',
+    target: '.tour-button',
     title: <FormattedMessage id="begin-practicing" />,
     content: (
       <div>
-        <FormattedHTMLMessage id="tour-begin-practicing-message" />
+          <FormattedHTMLMessage id="tour-begin-practicing-message" />
         <div className="encouragement-picture pt-sm">
           <img src={racingFlag} alt="start" style={{ maxWidth: '25%', maxHeight: '25%' }} />
         </div>
@@ -1164,7 +1164,7 @@ const mobileHomeTourSteps = [
     showProgress: true,
   },
   {
-    target: '.tour-start-finish',
+    target: '.mobile-tour-start',
     title: <FormattedMessage id="begin-practicing" />,
     content: (
       <div className="tour-mobile-message">
@@ -1174,10 +1174,16 @@ const mobileHomeTourSteps = [
         </div>
       </div>
     ),
-    placement: 'top',
-    opacity: 0,
+    placement: 'right',
+    placementBeacon: 'left',
     disableBeacon: true,
     hideBackButton: true,
+    showProgress: true,
+    styles: {
+      options: {
+        zIndex: 10000,
+      },
+    },
   },
 ]
 

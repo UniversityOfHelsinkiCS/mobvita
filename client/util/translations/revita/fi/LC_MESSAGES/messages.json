@@ -875,7 +875,7 @@
     "tour-flashcards-message": "Revita luo automaattisesti sanakortteja kertomuksissa esiintyvistä sinulle vieraista sanoista.<br/><br/>Tästä pääset harjoittelemaan niitä!",
     "tour-library-message": "Täältä löydät kaikki lataamasi kertomukset sekä myös kertomuksia, jotka olemme ladanneet sinulle valmiiksi.",
     "tour-add-content-message": "Voit myös lisätä itse valitsemiasi tekstejä, ja käyttää niitä harjoitteluun.<br/><br/>Vain sinä itse näet lisäämäsi tekstit.",
-    "tour-begin-practicing-message": "Nyt voit aloittaa harjoittelun!<br/><br/>Jos haluat, että Revita muistaa<br/><ul><li>suosikkitekstisi ja itse lisäämäsi tekstit,</li><li>taitotasosi ja edistymisesi,</li></ul>tulee sinun rekisteröityä ja kirjautua sisään.<br/><br/><i>Bon voyage!</i>",
+    "tour-begin-practicing-message": "Nyt voit aloittaa harjoittelun! Klikkaa tästä nähdäksesi esittelykierroksen uudelleen.<br/><br/>Jos haluat, että Revita muistaa<br/><ul><li>suosikkitekstisi ja itse lisäämäsi tekstit,</li><li>taitotasosi ja edistymisesi,</li></ul>tulee sinun rekisteröityä ja kirjautua sisään.<br/><br/><i>Bon voyage!</i>",
     "end-tour": "Lopeta esittelykierros",
     "next": "Seuraava",
     "start-tour": "Esittelykierros",
@@ -1432,5 +1432,6 @@
     "library-tour-practice-message": "Voit harjoitella tarinaa tästä.",
     "library-tour-review-message": "Once you have practiced the story, you can review your answers here.",
     "Difficulty stars": "Vaikeusaste",
-    "Story": "Tarina"
+    "Story": "Tarina",
+    "tour-end-message": "Click here to see the tour again."
 }

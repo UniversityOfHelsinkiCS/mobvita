@@ -61,7 +61,7 @@ const Tour = () => {
             if (!history.location.pathname.includes('/home')) {
               history.push('/home')
             }
-          } else if (index === 1) {
+          } else if (index === 1 || index === 8) {
             dispatch(sidebarSetOpen(true))
   
             setTimeout(() => {
