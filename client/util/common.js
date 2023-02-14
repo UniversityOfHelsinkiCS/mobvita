@@ -1241,11 +1241,14 @@ const desktopLibraryTourSteps = [
     placement: 'top',
     placementBeacon: 'left'
   },
-  /*
   {
     target: '.library-tour-practice-button',
-    title: 'Practice',
-    content: 'moikka moi',
+    title: <FormattedMessage id="practice" />,
+    content: (
+      <div>
+        <FormattedHTMLMessage id="library-tour-practice-message" />
+      </div>
+    ),
     disableBeacon: true,
     hideBackButton: true,
     showProgress: true,
@@ -1254,15 +1257,18 @@ const desktopLibraryTourSteps = [
   },
   {
     target: '.library-tour-review-button',
-    title: 'Review',
-    content: 'you can review your exercises',
+    title: <FormattedMessage id="review" />,
+    content: (
+      <div>
+        <FormattedHTMLMessage id="library-tour-review-message" />
+      </div>
+    ),
     disableBeacon: true,
     hideBackButton: true,
     showProgress: true,
     placement: 'top',
     placementBeacon: 'left'
   }
-  */
 ]
 
 const mobileLibraryTourSteps = [
@@ -1304,8 +1310,21 @@ const mobileLibraryTourSteps = [
     showProgress: true,
     placement: 'top',
     placementBeacon: 'left'
+  },
+  {
+    target: '.library-tour-mobile-practice-button',
+    title: <FormattedMessage id="practice" />,
+    content: (
+      <div>
+        <FormattedHTMLMessage id="library-tour-practice-message" />
+      </div>
+    ),
+    disableBeacon: true,
+    hideBackButton: true,
+    showProgress: true,
+    placement: 'top',
+    placementBeacon: 'left'
   }
-
 ]
 
 

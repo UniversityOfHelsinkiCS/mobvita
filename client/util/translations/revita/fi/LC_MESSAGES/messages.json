@@ -1429,8 +1429,8 @@
     "tour-lessons-message": "Here you can take lessons",
     "library-tour-story-message": "Tämä on tarinaharjoitus.",
     "library-tour-stars-message": "Nämä tähdet näyttävät kuinka haastava tarina on. Mitä enemmän tähtiä on, sen haastavampi tarina on.",
-    "library-tour-practice-message": "",
-    "library-tour-review-message": "",
-    "Difficulty stars": "Vaikeusaste tähdet",
+    "library-tour-practice-message": "Voit harjoitella tarinaa tästä.",
+    "library-tour-review-message": "Once you have practiced the story, you can review your answers here.",
+    "Difficulty stars": "Vaikeusaste",
     "Story": "Tarina"
 }

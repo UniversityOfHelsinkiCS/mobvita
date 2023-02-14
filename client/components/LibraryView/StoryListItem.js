@@ -101,6 +101,7 @@ const StoryFunctionsDropdown = ({
         </SemanticButton>
       ) : (
         <SemanticButton
+          className='library-tour-mobile-practice-button'
           as={Link}
           to={practiceLink}
           style={{ backgroundColor: 'rgb(50, 170, 248)', color: 'white' }}
