@@ -794,8 +794,8 @@
     "tour-lessons-message": "Here you can take lessons",
     "library-tour-story-message": "This is a story.",
     "library-tour-stars-message": "These stars show how difficult the story is. The more stars there are the more difficult the story is.",
-    "library-tour-practice-message": "",
-    "library-tour-review-message": "",
+    "library-tour-practice-message": "You can practice the story here.",
+    "library-tour-review-message": "Once you have practiced the story, you can review your answers here.",
     "Difficulty stars": "Difficulty stars",
     "Story": "Story"
 }
