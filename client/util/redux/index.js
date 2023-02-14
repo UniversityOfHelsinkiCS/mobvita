@@ -41,6 +41,7 @@ import debugFeedback from './feedbackDebuggerReducer'
 import lessons from './lessonsReducer'
 import lessonInstance from './lessonInstanceReducer'
 import lessonExercises from './lessonExercisesReducer'
+import library from './libraryReducer'
 
 const rootReducer = combineReducers({
   stories,
@@ -84,6 +85,7 @@ const rootReducer = combineReducers({
   lessons,
   lessonInstance,
   lessonExercises,
+  library,
 })
 
 export default (state, action) =>
