@@ -53,7 +53,7 @@ const Tour = () => {
         }
         dispatch(handleNextTourStep(index + (action === ACTIONS.PREV ? -1 : 1)))
 
-      // mobile
+        // mobile
       } else {
         // home tour control
         if (tourState.steps === homeTourSteps) {
@@ -64,7 +64,7 @@ const Tour = () => {
             }
           } else if (index === 1) {
             dispatch(sidebarSetOpen(true))
-  
+
             setTimeout(() => {
               dispatch(handleNextTourStep(index + (action === ACTIONS.PREV ? -1 : 1)))
             }, 600)
@@ -76,10 +76,18 @@ const Tour = () => {
         // library tour control
         if (tourState.steps === libraryTourSteps) {
           console.log(index)
-          if (index === 2) {
+          if (index === 3) {
             dispatch(libraryDropdownOpen(true))
           } else {
             dispatch(libraryDropdownOpen(false))
+          }
+
+          if (index === 4) {
+            dispatch(sidebarSetOpen(true))
+
+            setTimeout(() => {
+              dispatch(handleNextTourStep(index + (action === ACTIONS.PREV ? -1 : 1)))
+            }, 600)
           }
         }
 

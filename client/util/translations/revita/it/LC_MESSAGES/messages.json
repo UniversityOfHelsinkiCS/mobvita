@@ -1433,5 +1433,6 @@
     "library-tour-practice-message": "You can practice the story here.",
     "library-tour-review-message": "Once you have practiced the story, you can review your answers here.",
     "Difficulty stars": "Difficulty stars",
-    "Story": "Story"
+    "Story": "Story",
+    "tour-end-message": "Click here to see the tour again."
 }

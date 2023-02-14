@@ -876,7 +876,7 @@
     "tour-flashcards-message": "Revita automatically creates flashcards from unfamiliar words that you find inside stories.<br/><br/>You can practice them here!",
     "tour-library-message": "Library contains all stories that you upload, and some sample texts we have pre-loaded for you.",
     "tour-add-content-message": "You can upload <b>any</b> stories of your choice, and use them for practising.<br/>→ They will appear in your private library.",
-    "tour-begin-practicing-message": "Now you can begin practicing!<br /><br />To get more information about system features:\n<ul><li>Hover the mouse over the feature, or</li><li>\nCheck online Help</li></ul>\n<br />\nPlease register and log in, so Revita can preserve your\n<ul><li>stories and flashcards,\n</li><li>settings and preferences,\n</li><li>skill levels and progress.\n</li></ul><br /><i>Bon voyage!</i>",
+    "tour-begin-practicing-message": "Now you can begin practicing!<br /><br />Click here to take the tour again. For online help check Help under the info icon.</li></ul> <br /><br /> Please register and log in, so Revita can preserve your <ul><li>stories and flashcards, </li><li>settings and preferences, </li><li>skill levels and progress. </li></ul><br /><i>Bon voyage!</i>",
     "end-tour": "End tour",
     "next": "Next",
     "start-tour": "Start Tour",
@@ -1433,5 +1433,6 @@
     "library-tour-practice-message": "You can practice the story here.",
     "library-tour-review-message": "Once you have practiced the story, you can review your answers here.",
     "Difficulty stars": "Difficulty stars",
-    "Story": "Story"
+    "Story": "Story",
+    "tour-end-message": "Click here to see the tour again."
 }

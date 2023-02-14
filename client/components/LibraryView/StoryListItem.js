@@ -147,6 +147,7 @@ const StoryFunctionsDropdown = ({
               as={Link}
               to={`/stories/${story._id}/review`}
               icon="book"
+              className='library-tour-mobile-review-button'
             />
           )}
           <Dropdown.Item
@@ -352,7 +353,7 @@ const StoryListItem = ({ story, libraryShown, selectedGroup, index }) => {
           isControlled={isControlledStory}
           inGroupLibrary={inGroupLibrary}
           isTeacher={inGroupLibrary && currentGroup && currentGroup.is_teaching}
-          storyIndex = {storyIndex}
+          storyIndex={storyIndex}
         />
         <div className="flex align-center" style={{ overflow: 'hidden' }}>
           {showGroupNames && <GroupsSharedTo groups={story.groups} />}

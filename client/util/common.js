@@ -1184,8 +1184,8 @@ const mobileHomeTourSteps = [
 const progressTourSteps = [
   {
     target: '.progress-link',
-    title:'Welcome to the progress page!',
-    content:'This page shows your learning progress on different charts which are visible to you and your registered teacher',
+    title: 'Welcome to the progress page!',
+    content: 'This page shows your learning progress on different charts which are visible to you and your registered teacher',
     disableBeacon: true,
     hideBackButton: true,
     showProgress: true
@@ -1297,11 +1297,21 @@ const desktopLibraryTourSteps = [
         <FormattedHTMLMessage id="library-tour-review-message" />
       </div>
     ),
-    disableBeacon: true,
     hideBackButton: true,
     showProgress: true,
     placement: 'top',
     placementBeacon: 'left'
+  },
+  {
+    target: '.tour-button',
+    title: 'Tour end',
+    content: (
+      <div>
+        <FormattedHTMLMessage id="tour-end-message" />
+      </div>
+    ),
+    disableBeacon: true,
+    hideBackButton: true
   }
 ]
 
@@ -1358,6 +1368,37 @@ const mobileLibraryTourSteps = [
     showProgress: true,
     placement: 'top',
     placementBeacon: 'left'
+  },
+  {
+    target: '.library-tour-mobile-review-button',
+    title: <FormattedMessage id="review" />,
+    content: (
+      <div>
+        <FormattedHTMLMessage id="library-tour-review-message" />
+      </div>
+    ),
+    disableBeacon: true,
+    hideBackButton: true,
+    showProgress: true,
+    placement: 'top',
+    placementBeacon: 'left'
+  },
+  {
+    target: '.tour-mobile-start-button',
+    title: 'Tour end',
+    content: (
+      <div>
+        <FormattedHTMLMessage id="tour-end-message" />
+      </div>
+    ),
+    placement: 'right',
+    hideBackButton: true,
+    placementBeacon: 'left',
+    styles: {
+      options: {
+        zIndex: 10000,
+      },
+    },
   }
 ]
 
