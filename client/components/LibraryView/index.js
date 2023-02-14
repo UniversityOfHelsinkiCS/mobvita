@@ -357,6 +357,7 @@ const StoryList = () => {
           libraryShown={libraries}
           story={libraryFilteredStories[index]}
           selectedGroup={savedGroupSelection}
+          index={index}
         />
       </div>
     )

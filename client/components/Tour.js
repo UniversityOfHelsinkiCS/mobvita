@@ -2,12 +2,13 @@ import React, { useEffect } from 'react'
 import { useLocation, useHistory } from 'react-router-dom'
 import JoyRide, { ACTIONS, EVENTS, STATUS } from 'react-joyride'
 import { sidebarSetOpen } from 'Utilities/redux/sidebarReducer'
+import { libraryDropdownOpen } from 'Utilities/redux/libraryReducer'
 import { useSelector, useDispatch } from 'react-redux'
 import { updateToNonNewUser } from 'Utilities/redux/userReducer'
 import { startTour, handleNextTourStep, stopTour } from 'Utilities/redux/tourReducer'
 import { FormattedMessage } from 'react-intl'
 import useWindowDimensions from 'Utilities/windowDimensions'
-import { homeTourSteps } from 'Utilities/common'
+import { homeTourSteps, libraryTourSteps } from 'Utilities/common'
 
 const Tour = () => {
   const dispatch = useDispatch()
@@ -70,6 +71,15 @@ const Tour = () => {
             return
           } else if (index === 2) {
             dispatch(sidebarSetOpen(false))
+          }
+        }
+        // library tour control
+        if (tourState.steps === libraryTourSteps) {
+          console.log(index)
+          if (index === 2) {
+            dispatch(libraryDropdownOpen(true))
+          } else {
+            dispatch(libraryDropdownOpen(false))
           }
         }
 
