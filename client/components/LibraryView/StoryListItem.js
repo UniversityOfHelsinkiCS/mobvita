@@ -88,7 +88,9 @@ const StoryFunctionsDropdown = ({
   teacherInGroupView,
   inGroupLibrary,
   enableOnlyPractice,
-}) => {
+  storyIndex
+  }) => {
+  const dropdownOpen = storyIndex === 0 && useSelector(({ library }) => library.open)
   return (
     <SemanticButton.Group>
       {teacherInGroupView ? (
@@ -118,6 +120,7 @@ const StoryFunctionsDropdown = ({
         }}
         floating
         trigger={<React.Fragment />}
+        open={dropdownOpen}
       >
         <Dropdown.Menu className="story-item-dropdown">
           {teacherInGroupView && (
@@ -144,6 +147,7 @@ const StoryFunctionsDropdown = ({
               as={Link}
               to={`/stories/${story._id}/review`}
               icon="book"
+              className='library-tour-mobile-review-button'
             />
           )}
           <Dropdown.Item
@@ -171,7 +175,8 @@ const StoryActions = ({
   isControlled,
   inGroupLibrary,
   isTeacher,
-}) => {
+  storyIndex
+  }) => {
   const { width } = useWindowDimensions()
 
   const showCrosswordsButton = width > 1023
@@ -266,6 +271,7 @@ const StoryActions = ({
       teacherInGroupView={teacherInGroupView}
       inGroupLibrary={inGroupLibrary}
       enableOnlyPractice={enableOnlyPractice}
+      storyIndex={storyIndex}
     />
   )
 }
@@ -291,7 +297,7 @@ const GroupsSharedTo = ({ groups }) => {
   )
 }
 
-const StoryListItem = ({ story, libraryShown, selectedGroup }) => {
+const StoryListItem = ({ story, libraryShown, selectedGroup, index }) => {
   const dispatch = useDispatch()
   const [shareModalOpen, setShareModalOpen] = useState(false)
   const [confirmationOpen, setConfirmationOpen] = useState(false)
@@ -309,6 +315,7 @@ const StoryListItem = ({ story, libraryShown, selectedGroup }) => {
   const commentsOnStory = story?.annotation_count > 0
   const deleteStory = () => dispatch(removeStory(story._id))
   const unshareStory = () => dispatch(unshare(selectedGroup, story._id))
+  const storyIndex = index
 
   const handleControlledStoryCancel = async () => {
     await dispatch(cancelControlledStory(story._id))
@@ -346,6 +353,7 @@ const StoryListItem = ({ story, libraryShown, selectedGroup }) => {
           isControlled={isControlledStory}
           inGroupLibrary={inGroupLibrary}
           isTeacher={inGroupLibrary && currentGroup && currentGroup.is_teaching}
+          storyIndex={storyIndex}
         />
         <div className="flex align-center" style={{ overflow: 'hidden' }}>
           {showGroupNames && <GroupsSharedTo groups={story.groups} />}

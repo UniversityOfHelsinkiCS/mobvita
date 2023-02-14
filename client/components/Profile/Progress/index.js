@@ -78,21 +78,11 @@ const Progress = () => {
     pending: conceptsPending,
   } = useSelector(({ metadata }) => metadata)
   const { storyBlueCards } = useSelector(({ flashcards }) => flashcards)
-  const defaultChart = () => {
-    if (flashcardsView) {
-      return 'vocabulary'
-    }
-    if (grammarView) {
-      return 'hex-map'
-    }
-    return 'progress'
-  }
-
   const learningLanguage = useLearningLanguage()
   const dictionaryLanguage = useDictionaryLanguage()
   const { history: testHistory, pending: testPending } = useSelector(({ tests }) => tests)
   const { open } = useSelector(({ encouragement }) => encouragement)
-  const [shownChart, setShownChart] = useState(defaultChart())
+  const shownChart = useSelector( ({progress}) => progress.currentChart)
   // const [notMastered, setNotMastered] = useState([])
   // const [notMasteredBefore, setNotMasteredBefore] = useState([])
   const [firstFetch, setFirstFetch] = useState(true)
@@ -217,14 +207,13 @@ const Progress = () => {
   }, [newerVocabularyData, vocabularyData])
 
   const handleChartChange = newChart => {
-    setShownChart(newChart)
+    dispatch({ type: newChart})
     setGraphType('column mastered')
   }
 
   if (pending || pending === undefined || testPending) return <Spinner />
 
   // console.log('num of words at end ', endWords)
-
   return (
     <div className="cont ps-nm">
       <div className="date-pickers-container">
@@ -274,14 +263,14 @@ const Progress = () => {
           <div className="space-evenly">
             <button
               type="button"
-              onClick={() => handleChartChange('progress')}
+              onClick={() => handleChartChange('SET_TIMELINE_CHART')}
               style={{ border: 'none' }}
             >
               <div className="flex align-center" style={{ gap: '.5em' }}>
                 <input
                   className='progress-tour-timeline-button'
                   type="radio"
-                  onChange={() => handleChartChange('progress')}
+                  onChange={() => handleChartChange('SET_TIMELINE_CHART')}
                   checked={shownChart === 'progress'}
                 />
                 <FormattedMessage id="progress-timeline" />
@@ -289,14 +278,14 @@ const Progress = () => {
             </button>
             <button
               type="button"
-              onClick={() => handleChartChange('vocabulary')}
+              onClick={() => handleChartChange('SET_VOCABULARY_CHART')}
               style={{ border: 'none' }}
             >
               <div className="flex align-center" style={{ gap: '.5em' }}>
                 <input
                   className='progress-tour-vocabulary-button'
                   type="radio"
-                  onChange={() => handleChartChange('vocabulary')}
+                  onChange={() => handleChartChange('SET_VOCABULARY_CHART')}
                   checked={shownChart === 'vocabulary'}
                 />
                 <FormattedMessage id="vocabulary-view" />
@@ -304,14 +293,14 @@ const Progress = () => {
             </button>
             <button
               type="button"
-              onClick={() => handleChartChange('hex-map')}
+              onClick={() => handleChartChange('SET_GRAMMAR_CHART')}
               style={{ border: 'none' }}
             >
               <div className="flex align-center" style={{ gap: '.5em' }}>
                 <input
                   className='progress-tour-grammar-button'
                   type="radio"
-                  onChange={() => handleChartChange('hex-map')}
+                  onChange={() => handleChartChange('SET_GRAMMAR_CHART')}
                   checked={shownChart === 'hex-map'}
                 />
                 <FormattedMessage id="hex-map" />
@@ -319,14 +308,14 @@ const Progress = () => {
             </button>
             <button
               type="button"
-              onClick={() => handleChartChange('exercise-history')}
+              onClick={() => handleChartChange('SET_EXERCISE_HISTORY_CHART')}
               style={{ border: 'none' }}
             >
               <div className="flex align-center" style={{ gap: '.5em' }}>
                 <input
                   className='progress-tour-exercise-history-button'
                   type="radio"
-                  onChange={() => handleChartChange('exercise-history')}
+                  onChange={() => handleChartChange('SET_EXERCISE_HISTORY_CHART')}
                   checked={shownChart === 'exercise-history'}
                 />
                 <FormattedMessage id="exercise-history" />
@@ -334,14 +323,14 @@ const Progress = () => {
             </button>
             <button
               type="button"
-              onClick={() => handleChartChange('test-history')}
+              onClick={() => handleChartChange('SET_TEST_HISTORY_CHART')}
               style={{ border: 'none' }}
             >
               <div className="flex align-center" style={{ gap: '.5em' }}>
                 <input
                   className='progress-tour-test-history-button'
                   type="radio"
-                  onChange={() => handleChartChange('test-history')}
+                  onChange={() => handleChartChange('SET_TEST_HISTORY_CHART')}
                   checked={shownChart === 'test-history'}
                 />
                 <FormattedMessage id="Test History" />
