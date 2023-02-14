@@ -2,13 +2,14 @@ import React, { useEffect } from 'react'
 import { useLocation, useHistory } from 'react-router-dom'
 import JoyRide, { ACTIONS, EVENTS, STATUS } from 'react-joyride'
 import { sidebarSetOpen } from 'Utilities/redux/sidebarReducer'
+import { libraryDropdownOpen } from 'Utilities/redux/libraryReducer'
 import { useSelector, useDispatch } from 'react-redux'
 import { updateToNonNewUser } from 'Utilities/redux/userReducer'
 import { startTour, handleNextTourStep, stopTour } from 'Utilities/redux/tourReducer'
 import { FormattedMessage } from 'react-intl'
 import useWindowDimensions from 'Utilities/windowDimensions'
-import { homeTourSteps, progressTour } from 'Utilities/common'
-import Progress from './Profile/Progress/index.js'
+import { homeTourSteps, libraryTourSteps, progressTour } from 'Utilities/common'
+
 
 const Tour = () => {
   const dispatch = useDispatch()
@@ -53,23 +54,23 @@ const Tour = () => {
         }
 
         // progress tour tour step index related desktop actions
-        if (tourState.steps = progressTour){
-          if (index === 1){
-            <Progress />
+        if (tourState.steps === progressTour){
+          if (index === 0){
+            dispatch( { type: 'SET_TIMELINE_CHART'})
+          }
+          if (index === 2){
+            dispatch( { type: 'SET_VOCABULARY_CHART'})
           }
           if (index === 3){
-            Progress.handleChartChange('vocabulary')
+            dispatch( { type: 'SET_GRAMMAR_CHART'})
           }
           if (index === 4){
-            Progress.handleChartChange('hex-map')
+            dispatch( { type: 'SET_EXERCISE_HISTORY_CHART'})
           }
           if (index === 5){
-            Progress.handleChartChange('exercise-history')
+            dispatch( { type: 'SET_TEST_HISTORY_CHART'})
           }
-          if (index === 6){
-            Progress.handleChartChange('test-history')
-          }
-        }
+        } 
         dispatch(handleNextTourStep(index + (action === ACTIONS.PREV ? -1 : 1)))
 
       // mobile
@@ -90,6 +91,15 @@ const Tour = () => {
             return
           } else if (index === 2) {
             dispatch(sidebarSetOpen(false))
+          }
+        }
+        // library tour control
+        if (tourState.steps === libraryTourSteps) {
+          console.log(index)
+          if (index === 2) {
+            dispatch(libraryDropdownOpen(true))
+          } else {
+            dispatch(libraryDropdownOpen(false))
           }
         }
 

@@ -19,6 +19,7 @@ import metadata from './metadataReducer'
 import summary from './groupSummaryReducer'
 import encouragement from './encouragementsReducer'
 import practice from './practiceReducer'
+import progress from './progressReducer'
 import passwordReset from './passwordResetReducer'
 import studentProgress from './groupProgressReducer'
 import studentHistory from './groupHistoryReducer'
@@ -41,6 +42,7 @@ import debugFeedback from './feedbackDebuggerReducer'
 import lessons from './lessonsReducer'
 import lessonInstance from './lessonInstanceReducer'
 import lessonExercises from './lessonExercisesReducer'
+import library from './libraryReducer'
 
 const rootReducer = combineReducers({
   stories,
@@ -61,6 +63,7 @@ const rootReducer = combineReducers({
   metadata,
   summary,
   practice,
+  progress,
   passwordReset,
   studentProgress,
   tests,
@@ -84,6 +87,7 @@ const rootReducer = combineReducers({
   lessons,
   lessonInstance,
   lessonExercises,
+  library,
 })
 
 export default (state, action) =>
