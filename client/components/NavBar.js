@@ -263,7 +263,7 @@ export default function NavBar() {
                 <>
                   {hiddenFeatures && (
                     <Button className="tour-button">
-                      <img src={images.racingFlag} alt="compass icon" width="21" height="21" onClick={handleTourStart} />
+                      <img src={images.compass} alt="compass icon" width="21" height="21" onClick={handleTourStart} />
                     </Button>
                   )}
 

@@ -1164,7 +1164,7 @@ const mobileHomeTourSteps = [
     showProgress: true,
   },
   {
-    target: '.mobile-tour-start-button',
+    target: '.tour-mobile-start-button',
     title: <FormattedMessage id="begin-practicing" />,
     content: (
       <div className="tour-mobile-message">
