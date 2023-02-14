@@ -7,7 +7,8 @@ import { updateToNonNewUser } from 'Utilities/redux/userReducer'
 import { startTour, handleNextTourStep, stopTour } from 'Utilities/redux/tourReducer'
 import { FormattedMessage } from 'react-intl'
 import useWindowDimensions from 'Utilities/windowDimensions'
-import { homeTourSteps } from 'Utilities/common'
+import { homeTourSteps, progressTour } from 'Utilities/common'
+import Progress from './Profile/Progress/index.js'
 
 const Tour = () => {
   const dispatch = useDispatch()
@@ -49,6 +50,25 @@ const Tour = () => {
         if (tourState.steps === homeTourSteps && !history.location.pathname.includes('/home')) {
           history.push('/home')  // This statement pushes the use to home page if tour is started
           // on a page that doesnt have a tour
+        }
+
+        // progress tour tour step index related desktop actions
+        if (tourState.steps = progressTour){
+          if (index === 1){
+            <Progress />
+          }
+          if (index === 3){
+            Progress.handleChartChange('vocabulary')
+          }
+          if (index === 4){
+            Progress.handleChartChange('hex-map')
+          }
+          if (index === 5){
+            Progress.handleChartChange('exercise-history')
+          }
+          if (index === 6){
+            Progress.handleChartChange('test-history')
+          }
         }
         dispatch(handleNextTourStep(index + (action === ACTIONS.PREV ? -1 : 1)))
 
