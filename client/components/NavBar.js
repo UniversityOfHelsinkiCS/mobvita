@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
-import { Navbar, Nav, NavDropdown, NavItem } from 'react-bootstrap'
+import { Navbar, Nav, NavDropdown, NavItem, Button } from 'react-bootstrap'
 import Headroom from 'react-headroom'
 import { Icon, Label, Popup } from 'semantic-ui-react'
 import { Link, useHistory } from 'react-router-dom'
@@ -262,9 +262,9 @@ export default function NavBar() {
               {!smallWindow && (
                 <>
                   {hiddenFeatures && (
-                    <NavItem>
-                      <Icon onClick={handleTourStart} name="exclamation" />
-                    </NavItem>
+                    <Button className="tour-button">
+                      <img src={images.racingFlag} alt="compass icon" width="21" height="21" onClick={handleTourStart} />
+                    </Button>
                   )}
 
                   <NavDropdown
