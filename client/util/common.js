@@ -1183,21 +1183,55 @@ const mobileHomeTourSteps = [
 
 const progressTourSteps = [
   {
-    target: '.tour-start-finish',
-    title: <FormattedMessage id="welcome" />,
-    content: (
-      <div>
-        <FormattedHTMLMessage id="tour-welcome-message" />
-      </div>
-    ),
+    target: '.progress-link',
+    title:'Welcome to the progress page!',
+    content:'This page shows your learning progress on different charts which are visible to you and your registered teacher',
     disableBeacon: true,
     hideBackButton: true,
     showProgress: true
   },
   {
     target: '.progress-tour-timeline-button',
-    title: 'Your timeline',
-    content: 'hope this works'
+    title: 'Timeline',
+    content: <FormattedHTMLMessage id="timeline-explanation" />,
+    hideBackButton: true,
+    showProgress: true
+  },
+  {
+    target: '.date-pickers-container',
+    title: 'Dates',
+    content: 'Here you can modify the time period shown in the charts',
+    hideBackButton: true,
+    showProgress: true,
+    placement: 'left',
+  },
+  {
+    target: '.progress-tour-vocabulary-button',
+    title: 'Vocabulary Progress',
+    content: <FormattedHTMLMessage id="vocabulary-view-explanation" />,
+    hideBackButton: true,
+    showProgress: true
+  },
+  {
+    target: '.progress-tour-grammar-button',
+    title: 'Grammar Progress',
+    content: <FormattedMessage id="hex-map-explanation" />,
+    hideBackButton: true,
+    showProgress: true
+  },
+  {
+    target: '.progress-tour-exercise-history-button',
+    title: 'Exercise History',
+    content: <FormattedMessage id="exercise-history-explanation" />,
+    hideBackButton: true,
+    showProgress: true
+  },
+  {
+    target: '.progress-tour-test-history-button',
+    title: 'Test History',
+    content: <FormattedMessage id="test-history-explanation" />,
+    hideBackButton: true,
+    showProgress: true
   }
 ]
 

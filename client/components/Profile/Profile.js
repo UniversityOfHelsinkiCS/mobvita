@@ -13,6 +13,7 @@ export default function Profile({ location }) {
   const panes = [
     {
       menuItem: {
+        className: 'progress-link',
         as: Link,
         content: intl.formatMessage({ id: 'Progress' }),
         to: '/profile/progress',

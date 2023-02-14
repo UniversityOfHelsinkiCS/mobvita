@@ -294,6 +294,7 @@ const Progress = () => {
             >
               <div className="flex align-center" style={{ gap: '.5em' }}>
                 <input
+                  className='progress-tour-vocabulary-button'
                   type="radio"
                   onChange={() => handleChartChange('vocabulary')}
                   checked={shownChart === 'vocabulary'}
@@ -308,6 +309,7 @@ const Progress = () => {
             >
               <div className="flex align-center" style={{ gap: '.5em' }}>
                 <input
+                  className='progress-tour-grammar-button'
                   type="radio"
                   onChange={() => handleChartChange('hex-map')}
                   checked={shownChart === 'hex-map'}
@@ -322,6 +324,7 @@ const Progress = () => {
             >
               <div className="flex align-center" style={{ gap: '.5em' }}>
                 <input
+                  className='progress-tour-exercise-history-button'
                   type="radio"
                   onChange={() => handleChartChange('exercise-history')}
                   checked={shownChart === 'exercise-history'}
@@ -336,6 +339,7 @@ const Progress = () => {
             >
               <div className="flex align-center" style={{ gap: '.5em' }}>
                 <input
+                  className='progress-tour-test-history-button'
                   type="radio"
                   onChange={() => handleChartChange('test-history')}
                   checked={shownChart === 'test-history'}
