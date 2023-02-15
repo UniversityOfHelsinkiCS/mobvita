@@ -1240,6 +1240,17 @@ const progressTourSteps = [
     content: <FormattedMessage id="test-history-explanation" />,
     hideBackButton: true,
     showProgress: true
+  },
+  {
+    target: '.tour-button',
+    title: 'Tour end',
+    content: (
+      <div>
+        <FormattedHTMLMessage id="tour-end-message" />
+      </div>
+    ),
+    disableBeacon: true,
+    hideBackButton: true
   }
 ]
 
