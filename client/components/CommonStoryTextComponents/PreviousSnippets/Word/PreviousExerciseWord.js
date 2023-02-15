@@ -215,7 +215,7 @@ const PreviousExerciseWord = ({ word, answer, tiedAnswer, focusedConcept }) => {
       {wordStartsSpan(word) && <sup className="notes-superscript">{getSuperscript(word)}</sup>}
       <span
         className={`${wordClass} ${
-          (wordShouldBeHighlighted(word) || conceptHighlighting) && 'notes-highlighted-word'
+          wordShouldBeHighlighted(word) && 'notes-highlighted-word' || conceptHighlighting && 'concept-highlighted-word'
         }`}
         style={wordColorStyle}
         role="button"
