@@ -1,11 +1,6 @@
 
-
-const defaultChart = () => {
-    return 'progress'
-  }
-
 const initialState = {
-    currentChart: defaultChart()
+    currentChart: 'progress'
 }
 
 export default (state = initialState, action) => {
