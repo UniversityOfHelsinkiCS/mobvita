@@ -120,7 +120,8 @@ const StoryFunctionsDropdown = ({
         }}
         floating
         trigger={<React.Fragment />}
-        open={dropdownOpen}
+        // need to find a a different way to open it during tour...
+        //open={dropdownOpen}
       >
         <Dropdown.Menu className="story-item-dropdown">
           {teacherInGroupView && (
