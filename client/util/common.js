@@ -1254,6 +1254,49 @@ const progressTourSteps = [
   }
 ]
 
+const mobileProgressTourSteps = [
+  {
+    target: '.progress-link',
+    title: 'Welcome to the progress page!',
+    content: 'This page shows your learning progress on different charts which are visible to you and your registered teacher',
+    disableBeacon: true,
+    hideBackButton: true,
+    showProgress: true
+  },
+  {
+    target: '.progress-page-graph-cont',
+    title: 'Timeline',
+    content: <FormattedHTMLMessage id="timeline-explanation" />,
+    hideBackButton: true,
+    showProgress: true
+  },
+  {
+    target: '.date-pickers-container',
+    title: 'Dates',
+    content: 'Here you can modify the time period shown in the charts',
+    hideBackButton: true,
+    showProgress: true,
+    placement: 'left',
+  },
+  {
+    target: '.tour-mobile-start-button',
+    title: 'Tour end',
+    content: (
+      <div>
+        <FormattedHTMLMessage id="tour-end-message" />
+      </div>
+    ),
+    placement: 'right',
+    hideBackButton: true,
+    placementBeacon: 'left',
+    styles: {
+      options: {
+        zIndex: 10000,
+      },
+    },
+  }
+]
+
 const desktopLibraryTourSteps = [
   {
     target: '.tour-start-finish',
@@ -1422,7 +1465,7 @@ const mobileLibraryTourSteps = [
 ]
 
 
-export const progressTour = progressTourSteps
+export const progressTour = window.innerWidth >= 700 ? progressTourSteps : mobileProgressTourSteps
 export const homeTourSteps = window.innerWidth >= 700 ? desktopHomeTourSteps : mobileHomeTourSteps
 export const libraryTourSteps = window.innerWidth >= 700 ? desktopLibraryTourSteps : mobileLibraryTourSteps
 

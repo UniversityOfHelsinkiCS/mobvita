@@ -113,6 +113,16 @@ const Tour = () => {
             }, 600)
           }
         }
+        // progress tour control
+        if (tourState.steps === progressTour) {
+          if (index === 2) {
+            dispatch(sidebarSetOpen(true))
+
+            setTimeout(() => {
+              dispatch(handleNextTourStep(index + (action === ACTIONS.PREV ? -1 : 1)))
+            }, 600)
+          }
+        }
 
         dispatch(handleNextTourStep(index + (action === ACTIONS.PREV ? -1 : 1)))
       }
