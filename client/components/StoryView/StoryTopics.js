@@ -93,7 +93,7 @@ const StoryTopics = ({ conceptCount, focusedConcept, setFocusedConcept }) => {
                 {topTopics.map(topic => (
                   <li className="flex space-between">
                     <span
-                      className={focusedConcept === topic[0] && 'notes-highlighted-word'}
+                      className={focusedConcept === topic[0] && 'concept-highlighted-word'}
                       style={{ cursor: 'pointer' }}
                       onClick={() => handleFocusedConcept(topic[0])}
                     >

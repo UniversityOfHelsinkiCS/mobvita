@@ -70,6 +70,9 @@ const Tour = () => {
           if (index === 5){
             dispatch( { type: 'SET_TEST_HISTORY_CHART'})
           }
+          if (index === 7){
+            dispatch( { type: 'SET_TIMELINE_CHART'})
+          }
         } 
         dispatch(handleNextTourStep(index + (action === ACTIONS.PREV ? -1 : 1)))
 
