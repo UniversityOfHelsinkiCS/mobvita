@@ -191,7 +191,7 @@ const StoryActions = ({
     // : `/stories/${story._id}/practice-preview`
     : `/stories/${story._id}/preview`
 
-  if (width >= 640) {
+  if (width >= 700) {
     return (
       <div className="story-actions">
         <Link to={practiceLink}>
