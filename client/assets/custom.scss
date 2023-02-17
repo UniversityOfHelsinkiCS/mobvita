@@ -975,9 +975,9 @@ $value in $spacing {
 .word-interactive {
   cursor: pointer;
 
-  &:hover {
-    background-color: lightblue;
-  }
+  // &:hover {
+  //   background-color: lightblue;
+  // }
 
   &--exercise {
     // Related to snippet history...
