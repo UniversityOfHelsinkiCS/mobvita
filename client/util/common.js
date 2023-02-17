@@ -74,7 +74,6 @@ import balloons from 'Assets/images/balloons.png'
 import fireworks from 'Assets/images/fireworks.png'
 import encTrophy from 'Assets/images/enc_trophy.png'
 import racingFlag from 'Assets/images/racing_flag.png'
-import compass from 'Assets/images/compass.png'
 import direction from 'Assets/images/direction.png'
 import exclamationMark from 'Assets/images/exclamation.png'
 import magnifyingGlass from 'Assets/images/glass.png'
@@ -159,7 +158,6 @@ export const images = {
   notesIcon,
   encTrophy,
   racingFlag,
-  compass,
   direction,
   exclamationMark,
   magnifyingGlass,
