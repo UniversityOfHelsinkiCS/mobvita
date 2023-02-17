@@ -332,11 +332,9 @@ const ControlledStoryWord = ({ word, snippet, focusedConcept }) => {
             tooltip={editorTooltip}
           >
             <span
-              className={
-                conceptHighlighting
-                  ? 'concept-highlighted-word'
-                  : `${wordClass} ${wordShouldBeHighlighted(word) && 'notes-highlighted-word'}`
-              }
+              className={`${wordClass} ${
+                wordShouldBeHighlighted(word) && 'notes-highlighted-word' || conceptHighlighting && 'concept-highlighted-word'
+              }`}
               role="button"
               onClick={handleActionClick}
               onKeyDown={handleActionClick}
