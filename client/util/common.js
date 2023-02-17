@@ -1018,7 +1018,7 @@ const desktopHomeTourSteps = [
     title: <FormattedMessage id="begin-practicing" />,
     content: (
       <div>
-          <FormattedHTMLMessage id="tour-begin-practicing-message" />
+        <FormattedHTMLMessage id="tour-begin-practicing-message" />
         <div className="encouragement-picture pt-sm">
           <img src={racingFlag} alt="start" style={{ maxWidth: '25%', maxHeight: '25%' }} />
         </div>
@@ -1431,6 +1431,7 @@ const mobileLibraryTourSteps = [
     placement: 'top',
     placementBeacon: 'left'
   },
+  /*
   {
     target: '.library-tour-mobile-review-button',
     title: <FormattedMessage id="review" />,
@@ -1445,6 +1446,7 @@ const mobileLibraryTourSteps = [
     placement: 'top',
     placementBeacon: 'left'
   },
+  */
   {
     target: '.tour-mobile-start-button',
     title: 'Tour end',

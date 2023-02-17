@@ -54,26 +54,26 @@ const Tour = () => {
         }
 
         // progress tour tour step index related desktop actions
-        if (tourState.steps === progressTour){
-          if (index === 0){
-            dispatch( { type: 'SET_TIMELINE_CHART'})
+        if (tourState.steps === progressTour) {
+          if (index === 0) {
+            dispatch({ type: 'SET_TIMELINE_CHART' })
           }
-          if (index === 2){
-            dispatch( { type: 'SET_VOCABULARY_CHART'})
+          if (index === 2) {
+            dispatch({ type: 'SET_VOCABULARY_CHART' })
           }
-          if (index === 3){
-            dispatch( { type: 'SET_GRAMMAR_CHART'})
+          if (index === 3) {
+            dispatch({ type: 'SET_GRAMMAR_CHART' })
           }
-          if (index === 4){
-            dispatch( { type: 'SET_EXERCISE_HISTORY_CHART'})
+          if (index === 4) {
+            dispatch({ type: 'SET_EXERCISE_HISTORY_CHART' })
           }
-          if (index === 5){
-            dispatch( { type: 'SET_TEST_HISTORY_CHART'})
+          if (index === 5) {
+            dispatch({ type: 'SET_TEST_HISTORY_CHART' })
           }
-          if (index === 7){
-            dispatch( { type: 'SET_TIMELINE_CHART'})
+          if (index === 7) {
+            dispatch({ type: 'SET_TIMELINE_CHART' })
           }
-        } 
+        }
         dispatch(handleNextTourStep(index + (action === ACTIONS.PREV ? -1 : 1)))
 
         // mobile
@@ -98,14 +98,8 @@ const Tour = () => {
         }
         // library tour control
         if (tourState.steps === libraryTourSteps) {
-          console.log(index)
-          if (index === 3) {
-            dispatch(libraryDropdownOpen(true))
-          } else {
-            dispatch(libraryDropdownOpen(false))
-          }
 
-          if (index === 4) {
+          if (index === 3) {
             dispatch(sidebarSetOpen(true))
 
             setTimeout(() => {
