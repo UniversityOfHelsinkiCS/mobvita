@@ -97,7 +97,8 @@ const PlainWord = ({ word, annotatingAllowed, focusedConcept, ...props }) => {
           <sup className="notes-superscript">{getSuperscript(word)}</sup>
         )}
         <span
-          className={`word-interactive ${wordShouldBeHighlighted(word) && 'notes-highlighted-word' || conceptHighlighting && 'concept-highlighted-word'}`}
+          className={`word-interactive 
+          ${wordShouldBeHighlighted(word) && 'notes-highlighted-word' || conceptHighlighting && 'concept-highlighted-word' || ''}`}
           role={annotatingAllowed && 'button'}
           tabIndex="-1"
           onClick={() => handleNonRecognizedWordClick(word)}
@@ -174,7 +175,7 @@ const PlainWord = ({ word, annotatingAllowed, focusedConcept, ...props }) => {
         onKeyDown={() => handleWordClick()}
         onClick={() => handleWordClick()}
         className={`word-interactive ${
-          wordShouldBeHighlighted(word) && 'notes-highlighted-word' || conceptHighlighting && 'concept-highlighted-word'
+          wordShouldBeHighlighted(word) && 'notes-highlighted-word' || conceptHighlighting && 'concept-highlighted-word'  || ''
         }`}
         {...props}
       >

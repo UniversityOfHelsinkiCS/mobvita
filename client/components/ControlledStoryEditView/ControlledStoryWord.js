@@ -333,7 +333,7 @@ const ControlledStoryWord = ({ word, snippet, focusedConcept }) => {
           >
             <span
               className={`${wordClass} ${
-                wordShouldBeHighlighted(word) && 'notes-highlighted-word' || conceptHighlighting && 'concept-highlighted-word'
+                wordShouldBeHighlighted(word) && 'notes-highlighted-word' || conceptHighlighting && 'concept-highlighted-word'  || ''
               }`}
               role="button"
               onClick={handleActionClick}
