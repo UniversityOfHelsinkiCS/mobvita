@@ -8,7 +8,7 @@ const StoryTopics = ({ conceptCount, focusedConcept, setFocusedConcept }) => {
   const [topTopics, setTopTopics] = useState([])
   const { width } = useWindowDimensions()
   const [collapsed, setCollapsed] = useState(true)
-  const [sortByFreq, setSortByFreq] = useState(true)
+  const [sortBy, setSortBy] = useState('name')
 
   const handleFocusedConcept = topic => {
     if (topic === focusedConcept) {
@@ -16,6 +16,15 @@ const StoryTopics = ({ conceptCount, focusedConcept, setFocusedConcept }) => {
     } else {
       setFocusedConcept(topic)
     }
+  }
+
+  const sortByName = () => {
+    const keysSorted = Object.entries(conceptCount).sort((a, b) => {
+      if (b[0] === a[0])
+        return b[1].level - a[1].level
+      return b[0] - a[0]
+    })
+    setTopTopics(keysSorted)
   }
 
   const sortByFrequency = () => {
@@ -37,15 +46,17 @@ const StoryTopics = ({ conceptCount, focusedConcept, setFocusedConcept }) => {
   }
 
   useEffect(() => {
-    if (sortByFreq) {
+    if (sortBy == 'freq') {
       sortByFrequency()
-    } else {
+    } else if (sortBy == 'cefr') {
       sortByCefr()
+    } else {
+      sortByName()
     }
-  }, [sortByFreq])
+  }, [sortBy])
 
   useEffect(() => {
-    sortByFrequency()
+    sortByName()
   }, [conceptCount])
 
   if (width >= 1024 && topTopics.length > 0) {
@@ -73,8 +84,17 @@ const StoryTopics = ({ conceptCount, focusedConcept, setFocusedConcept }) => {
                   <input
                     type="radio"
                     style={{ marginRight: '.75em' }}
-                    onChange={() => setSortByFreq(true)}
-                    checked={sortByFreq}
+                    onChange={() => setSortBy('name')}
+                    checked={sortBy=='name'}
+                  />
+                  <FormattedMessage id="Name" />
+                </span>
+                <span style={{ marginRight: '.5em' }}>
+                  <input
+                    type="radio"
+                    style={{ marginRight: '.75em' }}
+                    onChange={() => setSortBy('freq')}
+                    checked={sortBy=='freq'}
                   />
                   <FormattedMessage id="sort-by-concept-freq-short" />
                 </span>
@@ -82,14 +102,14 @@ const StoryTopics = ({ conceptCount, focusedConcept, setFocusedConcept }) => {
                   <input
                     type="radio"
                     style={{ marginRight: '.75em' }}
-                    onChange={() => setSortByFreq(false)}
-                    checked={!sortByFreq}
+                    onChange={() => setSortBy('cefr')}
+                    checked={sortBy=='cefr'}
                   />
                   <FormattedMessage id="sort-by-concept-cefr-short" />
                 </span>
               </div>
               <hr />
-              <ul style={{ overflow: 'auto', maxHeight: 120 }}>
+              <ul style={{ overflow: 'auto', maxHeight: 171 }}>
                 {topTopics.map(topic => (
                   <li className="flex space-between">
                     <span
