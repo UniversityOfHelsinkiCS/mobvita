@@ -214,8 +214,8 @@ const PreviousExerciseWord = ({ word, answer, tiedAnswer, focusedConcept }) => {
     <Tooltip placement="top" tooltipShown={show} trigger="none" tooltip={tooltip}>
       {wordStartsSpan(word) && <sup className="notes-superscript">{getSuperscript(word)}</sup>}
       <span
-        className={`${wordClass} ${
-          wordShouldBeHighlighted(word) && 'notes-highlighted-word' || conceptHighlighting && 'concept-highlighted-word' || ''
+        className={`${wordClass}${
+          wordShouldBeHighlighted(word) && ' notes-highlighted-word' || conceptHighlighting && ' concept-highlighted-word' || ''
         }`}
         style={wordColorStyle}
         role="button"
