@@ -53,8 +53,7 @@ const PreviousExerciseWord = ({ word, answer, tiedAnswer, focusedConcept }) => {
   const [allowTranslating, setAllowTranslating] = useState(true)
   const { grade } = useSelector(state => state.user.data.user)
   const mode = getMode()
-  const conceptHighlighting = word.concepts?.includes(focusedConcept)
-
+  const conceptHighlighting = word.concepts?.includes(focusedConcept) || word.analytic_concepts?.includes(focusedConcept)
   const intl = useIntl()
   const dispatch = useDispatch()
 

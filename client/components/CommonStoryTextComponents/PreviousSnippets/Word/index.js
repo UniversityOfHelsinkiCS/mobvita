@@ -36,13 +36,8 @@ const Word = ({ word, answer, tiedAnswer, snippet, hideDifficulty, focusedConcep
     return <ControlledStoryWord word={word} snippet={snippet} focusedConcept={focusedConcept} />
   }
 
-  // in stag, also highlight words with no exercise concepts in preview mode
-  if (hiddenFeatures && isPreviewMode && word.concepts?.length === 0) {
-    return <PreviousExerciseWord word={word} />
-  }
-
   // preview mode (if concept list is not empty)
-  if (isPreviewMode && word.concepts?.length > 0) {
+  if (isPreviewMode) {
     return <PreviousExerciseWord word={word} focusedConcept={focusedConcept} />
   }
 

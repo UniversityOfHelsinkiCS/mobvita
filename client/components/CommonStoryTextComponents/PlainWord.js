@@ -42,7 +42,7 @@ const PlainWord = ({ word, annotatingAllowed, focusedConcept, ...props }) => {
   const isCompeteMode = history.location.pathname.includes('compete')
   const bigScreen = width >= 1024
   const voice = voiceLanguages[learningLanguage]
-  const conceptHighlighting = word.concepts?.includes(focusedConcept)
+  const conceptHighlighting = word.concepts?.includes(focusedConcept) || word.analytic_concepts?.includes(focusedConcept)
 
   if (surface === '\n\n') {
     return (
