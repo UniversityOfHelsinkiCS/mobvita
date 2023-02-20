@@ -351,13 +351,12 @@ const StoryList = () => {
 
   function rowRenderer({ key, index, style }) {
     return (
-      <div key={key} style={{ ...style, paddingRight: '0.5em', paddingLeft: '0.5em' }}>
+      <div key={key} style={{ ...style, paddingRight: '0.5em', paddingLeft: '0.5em' }} className={'tour-lmao'}>
         <StoryListItem
           key={key}
           libraryShown={libraries}
           story={libraryFilteredStories[index]}
           selectedGroup={savedGroupSelection}
-          index={index}
         />
       </div>
     )

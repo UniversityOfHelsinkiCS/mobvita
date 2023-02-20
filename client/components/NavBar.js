@@ -262,8 +262,8 @@ export default function NavBar() {
               {!smallWindow && (
                 <>
                   {hiddenFeatures && (
-                    <Button className="tour-button">
-                      <img src={images.direction} alt="direction icon" width="21" height="21" onClick={handleTourStart} />
+                    <Button className="tour-button" onClick={handleTourStart}>
+                      <img src={images.direction} alt="direction icon" width="21" height="21" />
                     </Button>
                   )}
 
