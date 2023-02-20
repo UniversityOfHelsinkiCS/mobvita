@@ -9,6 +9,7 @@ import { startTour, handleNextTourStep, stopTour } from 'Utilities/redux/tourRed
 import { FormattedMessage } from 'react-intl'
 import useWindowDimensions from 'Utilities/windowDimensions'
 import { homeTourSteps, libraryTourSteps, progressTour } from 'Utilities/common'
+import windowDimensions from 'Utilities/windowDimensions'
 
 
 const Tour = () => {
@@ -114,7 +115,9 @@ const Tour = () => {
 
             setTimeout(() => {
               dispatch(handleNextTourStep(index + (action === ACTIONS.PREV ? -1 : 1)))
-            }, 600)
+              window.dispatchEvent( new Event('resize'))
+            }, 500)
+          
           }
         }
 

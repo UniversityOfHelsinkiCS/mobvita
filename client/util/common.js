@@ -88,6 +88,7 @@ import { hiddenFeatures } from 'Utilities/common'
 import { Howler } from 'howler'
 import confetti from 'canvas-confetti'
 import { callApi, yandexSpeak, RVSpeak, tacotronSpeak, coquiSpeak } from './apiConnection'
+import StoryTopics from 'Components/StoryView/StoryTopics'
 
 export const images = {
   revitaLogoTransparent,
@@ -1286,14 +1287,9 @@ const mobileProgressTourSteps = [
         <FormattedHTMLMessage id="tour-end-message" />
       </div>
     ),
-    placement: 'right',
-    hideBackButton: true,
+    placement: 'top-end',
     placementBeacon: 'left',
-    styles: {
-      options: {
-        zIndex: 10000,
-      },
-    },
+    hideBackButton: true,
   }
 ]
 
