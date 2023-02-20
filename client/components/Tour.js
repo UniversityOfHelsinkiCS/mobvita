@@ -9,7 +9,7 @@ import { startTour, handleNextTourStep, stopTour } from 'Utilities/redux/tourRed
 import { FormattedMessage } from 'react-intl'
 import useWindowDimensions from 'Utilities/windowDimensions'
 import { homeTourSteps, libraryTourSteps, progressTour } from 'Utilities/common'
-import windowDimensions from 'Utilities/windowDimensions'
+import { finalConfettiRain, confettiRain } from 'Utilities/common'
 
 
 const Tour = () => {
@@ -52,6 +52,12 @@ const Tour = () => {
         if (tourState.steps === homeTourSteps && !history.location.pathname.includes('/home')) {
           history.push('/home')  // This statement pushes the use to home page if tour is started
           // on a page that doesnt have a tour
+        }
+
+        if (tourState.steps === homeTourSteps && index === 1){
+          confettiRain()
+          confettiRain()
+          confettiRain()
         }
 
         // progress tour tour step index related desktop actions
