@@ -1227,58 +1227,66 @@ const mobileHomeTourSteps = [
 const progressTourSteps = [
   {
     target: '.progress-link',
-    title: 'Welcome to the progress page!',
-    content: 'This page shows your learning progress on different charts which are visible to you and your registered teacher',
+    title: <FormattedMessage id="Welcome to the Progress page" />,
+    content: (
+      <div>
+        <FormattedHTMLMessage id="progress-tour-welcome-message" />
+      </div>
+    ),
     disableBeacon: true,
     hideBackButton: true,
     showProgress: true
   },
   {
     target: '.progress-tour-timeline-button',
-    title: 'Timeline',
+    title: <FormattedMessage id="progress-timeline" />,
     content: <FormattedHTMLMessage id="timeline-explanation" />,
     hideBackButton: true,
     showProgress: true
   },
   {
     target: '.date-pickers-container',
-    title: 'Dates',
-    content: 'Here you can modify the time period shown in the charts',
+    title: <FormattedMessage id="Dates" />,
+    content: (
+      <div>
+        <FormattedHTMLMessage id="progress-tour-dates-message" />
+      </div>
+    ),
     hideBackButton: true,
     showProgress: true,
     placement: 'left',
   },
   {
     target: '.progress-tour-vocabulary-button',
-    title: 'Vocabulary Progress',
+    title: <FormattedMessage id="vocabulary-view" />,
     content: <FormattedHTMLMessage id="vocabulary-view-explanation" />,
     hideBackButton: true,
     showProgress: true
   },
   {
     target: '.progress-tour-grammar-button',
-    title: 'Grammar Progress',
+    title: <FormattedMessage id="hex-map" />,
     content: <FormattedMessage id="hex-map-explanation" />,
     hideBackButton: true,
     showProgress: true
   },
   {
     target: '.progress-tour-exercise-history-button',
-    title: 'Exercise History',
+    title: <FormattedMessage id="exercise-history" />,
     content: <FormattedMessage id="exercise-history-explanation" />,
     hideBackButton: true,
     showProgress: true
   },
   {
     target: '.progress-tour-test-history-button',
-    title: 'Test History',
+    title: <FormattedMessage id="Test History" />,
     content: <FormattedMessage id="test-history-explanation" />,
     hideBackButton: true,
     showProgress: true
   },
   {
     target: '.tour-button',
-    title: 'Tour end',
+    title: <FormattedMessage id="Tour end" />,
     content: (
       <div>
         <FormattedHTMLMessage id="tour-end-message" />
@@ -1292,30 +1300,38 @@ const progressTourSteps = [
 const mobileProgressTourSteps = [
   {
     target: '.progress-link',
-    title: 'Welcome to the progress page!',
-    content: 'This page shows your learning progress on different charts which are visible to you and your registered teacher',
+    title: <FormattedMessage id="Welcome to the Progress page" />,
+    content: (
+      <div>
+        <FormattedHTMLMessage id="progress-tour-welcome-message" />
+      </div>
+    ),
     disableBeacon: true,
     hideBackButton: true,
     showProgress: true
   },
   {
     target: '.progress-page-graph-cont',
-    title: 'Timeline',
+    title: <FormattedMessage id="Timeline" />,
     content: <FormattedHTMLMessage id="timeline-explanation" />,
     hideBackButton: true,
     showProgress: true
   },
   {
     target: '.date-pickers-container',
-    title: 'Dates',
-    content: 'Here you can modify the time period shown in the charts',
+    title: <FormattedMessage id="Dates" />,
+    content: (
+      <div>
+        <FormattedHTMLMessage id="progress-tour-dates-message" />
+      </div>
+    ),
     hideBackButton: true,
     showProgress: true,
     placement: 'left',
   },
   {
     target: '.tour-mobile-start-button',
-    title: 'Tour end',
+    title: <FormattedMessage id="Tour end" />,
     content: (
       <div>
         <FormattedHTMLMessage id="tour-end-message" />
@@ -1330,10 +1346,10 @@ const mobileProgressTourSteps = [
 const desktopLibraryTourSteps = [
   {
     target: '.tour-start-finish',
-    title: <FormattedMessage id="welcome" />,
+    title: <FormattedMessage id="Welcome to the Library page" />,
     content: (
       <div>
-        <FormattedHTMLMessage id="tour-welcome-message" />
+        <FormattedHTMLMessage id="library-tour-welcome-message" />
       </div>
     ),
     disableBeacon: true,
@@ -1396,7 +1412,7 @@ const desktopLibraryTourSteps = [
   },
   {
     target: '.tour-button',
-    title: 'Tour end',
+    title: <FormattedMessage id="Tour end" />,
     content: (
       <div>
         <FormattedHTMLMessage id="tour-end-message" />
@@ -1410,10 +1426,10 @@ const desktopLibraryTourSteps = [
 const mobileLibraryTourSteps = [
   {
     target: '.tour-start-finish',
-    title: <FormattedMessage id="welcome" />,
+    title: <FormattedMessage id="Welcome to the Library page" />,
     content: (
-      <div className="tour-mobile-message">
-        <FormattedHTMLMessage id="tour-welcome-message" />
+      <div>
+        <FormattedHTMLMessage id="library-tour-welcome-message" />
       </div>
     ),
     disableBeacon: true,
@@ -1479,7 +1495,7 @@ const mobileLibraryTourSteps = [
   */
   {
     target: '.tour-mobile-start-button',
-    title: 'Tour end',
+    title: <FormattedMessage id="Tour end" />,
     content: (
       <div>
         <FormattedHTMLMessage id="tour-end-message" />

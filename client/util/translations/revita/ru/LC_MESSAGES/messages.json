@@ -1436,5 +1436,13 @@
     "library-tour-review-message": "Once you have practiced the story, you can review your answers here.",
     "Difficulty stars": "Difficulty stars",
     "Story": "Story",
-    "tour-end-message": "Click here to see the tour again."
+    "tour-end-message": "Click here to see the tour again.",
+    "Tour end": "Tour end",
+    "library-page-welcome-message": "Welcome to the library page - here you can see all your stories",
+    "Welcome to the Library page": "Welcome to the Library page!",
+    "library-tour-welcome-message": "Welcome to the library page - here you can see all your stories",
+    "Welcome to the Progress page": "Welcome to the Progress page!",
+    "progress-tour-welcome-message": "This page shows your learning progress on different charts which are visible to you and your registered teacher",
+    "progress-tour-dates-message": "Here you can modify the time period shown in the charts",
+    "Dates": "Dates"
 }
