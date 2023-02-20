@@ -56,7 +56,15 @@ const Tour = () => {
         if (tourState.steps === homeTourSteps && index === 1){
           confettiRain()
           confettiRain()
-          confettiRain()
+          setTimeout(() => {
+            confettiRain()
+          },400)
+          setTimeout(() => {
+            confettiRain()
+          },600)
+          setTimeout(() => {
+            confettiRain()
+          },800) 
         }
 
         // progress tour tour step index related desktop actions
@@ -99,7 +107,20 @@ const Tour = () => {
             }, 600)
             return
           } else if (index === 2) {
+            confettiRain()
+            confettiRain()
+            setTimeout(() => {
+              confettiRain()
+            },400)
+            setTimeout(() => {
+              confettiRain()
+            },600)
+            setTimeout(() => {
+              confettiRain()
+            },800)
             dispatch(sidebarSetOpen(false))
+            
+            
           }
         }
         // library tour control
@@ -142,7 +163,9 @@ const Tour = () => {
         options: {
           arrowColor: 'rgb(50, 170, 248)',
           primaryColor: 'rgb(50, 170, 248)',
+          backgroundColor: 'white',
           zIndex: 1000,
+          textColor: '#004a14',
         },
         buttonNext: {
           backgroundColor: 'rgb(50, 170, 248)',

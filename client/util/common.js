@@ -945,6 +945,23 @@ const desktopHomeTourSteps = [
     disableBeacon: true,
     hideBackButton: true,
     showProgress: true,
+    styles: {
+      tooltipContainer: {
+        textAlign: 'left',
+      },
+      options: {
+        arrowColor: 'rgb(50, 170, 248)',
+        primaryColor: 'rgb(50, 170, 248)',
+        backgroundColor: 'rgb(50, 170, 248',
+        zIndex: 1000,
+        textColor: 'white',
+      },
+      buttonNext: {
+        backgroundColor: 'white',
+        borderRadius: 8,
+        color: 'black'
+      },
+    }
   },
   {
     target: '.tour-library',
@@ -1097,6 +1114,23 @@ const mobileHomeTourSteps = [
     disableBeacon: true,
     hideBackButton: true,
     showProgress: true,
+    styles: {
+      tooltipContainer: {
+        textAlign: 'left',
+      },
+      options: {
+        arrowColor: 'rgb(50, 170, 248)',
+        primaryColor: 'rgb(50, 170, 248)',
+        backgroundColor: 'rgb(50, 170, 248',
+        zIndex: 1000,
+        textColor: 'white',
+      },
+      buttonNext: {
+        backgroundColor: 'white',
+        borderRadius: 8,
+        color: 'black'
+      },
+    }
   },
   {
     target: '.tour-library',
