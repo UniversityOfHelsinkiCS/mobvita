@@ -88,11 +88,9 @@ const StoryFunctionsDropdown = ({
   teacherInGroupView,
   inGroupLibrary,
   enableOnlyPractice,
-  storyIndex
   }) => {
-  const dropdownOpen = storyIndex === 0 && useSelector(({ library }) => library.open)
   return (
-    <SemanticButton.Group>
+    <SemanticButton.Group className='library-tour-mobile-practice-button'>
       {teacherInGroupView ? (
         <SemanticButton
           as={Link}
@@ -103,7 +101,6 @@ const StoryFunctionsDropdown = ({
         </SemanticButton>
       ) : (
         <SemanticButton
-          className='library-tour-mobile-practice-button'
           as={Link}
           to={practiceLink}
           style={{ backgroundColor: 'rgb(50, 170, 248)', color: 'white' }}
@@ -120,8 +117,6 @@ const StoryFunctionsDropdown = ({
         }}
         floating
         trigger={<React.Fragment />}
-        // need to find a a different way to open it during tour...
-        //open={dropdownOpen}
       >
         <Dropdown.Menu className="story-item-dropdown">
           {teacherInGroupView && (
@@ -176,7 +171,6 @@ const StoryActions = ({
   isControlled,
   inGroupLibrary,
   isTeacher,
-  storyIndex
   }) => {
   const { width } = useWindowDimensions()
 
@@ -272,7 +266,6 @@ const StoryActions = ({
       teacherInGroupView={teacherInGroupView}
       inGroupLibrary={inGroupLibrary}
       enableOnlyPractice={enableOnlyPractice}
-      storyIndex={storyIndex}
     />
   )
 }
@@ -298,7 +291,7 @@ const GroupsSharedTo = ({ groups }) => {
   )
 }
 
-const StoryListItem = ({ story, libraryShown, selectedGroup, index }) => {
+const StoryListItem = ({ story, libraryShown, selectedGroup }) => {
   const dispatch = useDispatch()
   const [shareModalOpen, setShareModalOpen] = useState(false)
   const [confirmationOpen, setConfirmationOpen] = useState(false)
@@ -316,7 +309,6 @@ const StoryListItem = ({ story, libraryShown, selectedGroup, index }) => {
   const commentsOnStory = story?.annotation_count > 0
   const deleteStory = () => dispatch(removeStory(story._id))
   const unshareStory = () => dispatch(unshare(selectedGroup, story._id))
-  const storyIndex = index
 
   const handleControlledStoryCancel = async () => {
     await dispatch(cancelControlledStory(story._id))
@@ -333,7 +325,7 @@ const StoryListItem = ({ story, libraryShown, selectedGroup, index }) => {
     : null
 
   return (
-    <Card fluid key={story._id} className={`${isControlledStory ? 'card-controlled-story' : ''}`}>
+    <Card fluid key={story._id} className={`${isControlledStory ? 'card-controlled-story' : ''} tour-story-card`}>
       <Card.Content extra className="story-card-title-cont">
         <StoryTitle
           story={story}
@@ -354,7 +346,6 @@ const StoryListItem = ({ story, libraryShown, selectedGroup, index }) => {
           isControlled={isControlledStory}
           inGroupLibrary={inGroupLibrary}
           isTeacher={inGroupLibrary && currentGroup && currentGroup.is_teaching}
-          storyIndex={storyIndex}
         />
         <div className="flex align-center" style={{ overflow: 'hidden' }}>
           {showGroupNames && <GroupsSharedTo groups={story.groups} />}

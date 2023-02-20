@@ -1307,7 +1307,7 @@ const desktopLibraryTourSteps = [
     showProgress: true
   },
   {
-    target: '.story-card-title-cont',
+    target: '.tour-story-card',
     title: <FormattedMessage id="Story" />,
     content: (
       <div>
@@ -1387,7 +1387,7 @@ const mobileLibraryTourSteps = [
     showProgress: true,
   },
   {
-    target: '.story-card-title-cont',
+    target: '.tour-story-card',
     title: <FormattedMessage id="Story" />,
     content: (
       <div>
