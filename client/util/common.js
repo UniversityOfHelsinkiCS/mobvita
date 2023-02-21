@@ -89,6 +89,7 @@ import { Howler } from 'howler'
 import confetti from 'canvas-confetti'
 import { callApi, yandexSpeak, RVSpeak, tacotronSpeak, coquiSpeak } from './apiConnection'
 import StoryTopics from 'Components/StoryView/StoryTopics'
+import Sparkle from 'react-sparkle'
 
 export const images = {
   revitaLogoTransparent,
@@ -937,7 +938,8 @@ const desktopHomeTourSteps = [
     target: '.tour-add-new-stories',
     title: <FormattedMessage id="add-content" />,
     content: (
-      <div>
+      <div style={{ position: 'realitive' }}>
+        <Sparkle flicker={false} />
         <FormattedHTMLMessage id="tour-add-content-message" />
       </div>
     ),

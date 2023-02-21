@@ -10,7 +10,6 @@ import useWindowDimensions from 'Utilities/windowDimensions'
 import { homeTourSteps, libraryTourSteps, progressTour } from 'Utilities/common'
 import { finalConfettiRain, confettiRain } from 'Utilities/common'
 
-
 const Tour = () => {
   const dispatch = useDispatch()
   const tourState = useSelector(({ tour }) => tour)
