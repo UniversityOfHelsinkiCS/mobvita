@@ -214,7 +214,7 @@ export const confettiRain = () => {
 }
 
 export const finalConfettiRain = (colors, endDate) => {
-  ; (function frame() {
+  ;(function frame() {
     confetti({
       particleCount: 2,
       angle: 60,
@@ -569,7 +569,7 @@ export const speak = (surfaceWord, voice, voice_type, resource_usage, nRepeat = 
     )
       yandexSpeak(surfaceWord, lang_code, tone, voice_type)
     else if (source === 'tacotron2' && Howler.codecs('mp3') && surfaceWord.length > 4)
-      tacotronSpeak(surfaceWord, lang_code, tone, voice_type, 0 - nRepeat * 3 % 6)
+      tacotronSpeak(surfaceWord, lang_code, tone, voice_type, 0 - ((nRepeat * 3) % 6))
     else if (source === 'coqui_ai' && Howler.codecs('mp3') && surfaceWord.length > 4)
       coquiSpeak(surfaceWord, lang_code, tone, voice_type)
     else if (speakFallbackConfig.hasOwnProperty(voice.join('-')))
@@ -635,7 +635,7 @@ export const voiceLanguages = {
   Swedish: ['responsive_voice', 'Swedish', 'Female'],
   Turkish: ['responsive_voice', 'Turkish', 'Female'],
   Chinese: ['responsive_voice', 'Chinese', 'Female'],
-  English: ['responsive_voice', 'US English', 'Female'] //['coqui_ai', 'eng', 'none'],
+  English: ['responsive_voice', 'US English', 'Female'], //['coqui_ai', 'eng', 'none'],
 }
 
 const speakFallbackConfig = {
@@ -961,9 +961,9 @@ const desktopHomeTourSteps = [
       buttonNext: {
         backgroundColor: 'white',
         borderRadius: 8,
-        color: 'black'
+        color: 'black',
       },
-    }
+    },
   },
   {
     target: '.tour-library',
@@ -1051,8 +1051,6 @@ const desktopHomeTourSteps = [
   },
 ]
 
-
-
 const mobileHomeTourSteps = [
   {
     target: '.tour-start-finish',
@@ -1108,7 +1106,8 @@ const mobileHomeTourSteps = [
     target: '.tour-add-new-stories',
     title: <FormattedMessage id="add-content" />,
     content: (
-      <div className="tour-mobile-message">
+      <div className="tour-mobile-message" style={{ position: 'realitive' }}>
+        <Sparkle flicker={false} />
         <FormattedHTMLMessage id="tour-add-content-message" />
       </div>
     ),
@@ -1130,9 +1129,9 @@ const mobileHomeTourSteps = [
       buttonNext: {
         backgroundColor: 'white',
         borderRadius: 8,
-        color: 'black'
+        color: 'black',
       },
-    }
+    },
   },
   {
     target: '.tour-library',
@@ -1237,14 +1236,14 @@ const progressTourSteps = [
     ),
     disableBeacon: true,
     hideBackButton: true,
-    showProgress: true
+    showProgress: true,
   },
   {
     target: '.progress-tour-timeline-button',
     title: <FormattedMessage id="progress-timeline" />,
     content: <FormattedHTMLMessage id="timeline-explanation" />,
     hideBackButton: true,
-    showProgress: true
+    showProgress: true,
   },
   {
     target: '.date-pickers-container',
@@ -1263,28 +1262,28 @@ const progressTourSteps = [
     title: <FormattedMessage id="vocabulary-view" />,
     content: <FormattedHTMLMessage id="vocabulary-view-explanation" />,
     hideBackButton: true,
-    showProgress: true
+    showProgress: true,
   },
   {
     target: '.progress-tour-grammar-button',
     title: <FormattedMessage id="hex-map" />,
     content: <FormattedMessage id="hex-map-explanation" />,
     hideBackButton: true,
-    showProgress: true
+    showProgress: true,
   },
   {
     target: '.progress-tour-exercise-history-button',
     title: <FormattedMessage id="exercise-history" />,
     content: <FormattedMessage id="exercise-history-explanation" />,
     hideBackButton: true,
-    showProgress: true
+    showProgress: true,
   },
   {
     target: '.progress-tour-test-history-button',
     title: <FormattedMessage id="Test History" />,
     content: <FormattedMessage id="test-history-explanation" />,
     hideBackButton: true,
-    showProgress: true
+    showProgress: true,
   },
   {
     target: '.tour-button',
@@ -1295,8 +1294,8 @@ const progressTourSteps = [
       </div>
     ),
     disableBeacon: true,
-    hideBackButton: true
-  }
+    hideBackButton: true,
+  },
 ]
 
 const mobileProgressTourSteps = [
@@ -1310,14 +1309,14 @@ const mobileProgressTourSteps = [
     ),
     disableBeacon: true,
     hideBackButton: true,
-    showProgress: true
+    showProgress: true,
   },
   {
     target: '.progress-page-graph-cont',
     title: <FormattedMessage id="Timeline" />,
     content: <FormattedHTMLMessage id="timeline-explanation" />,
     hideBackButton: true,
-    showProgress: true
+    showProgress: true,
   },
   {
     target: '.date-pickers-container',
@@ -1342,7 +1341,7 @@ const mobileProgressTourSteps = [
     placement: 'top-end',
     placementBeacon: 'left',
     hideBackButton: true,
-  }
+  },
 ]
 
 const desktopLibraryTourSteps = [
@@ -1356,7 +1355,7 @@ const desktopLibraryTourSteps = [
     ),
     disableBeacon: true,
     hideBackButton: true,
-    showProgress: true
+    showProgress: true,
   },
   {
     target: '.tour-story-card',
@@ -1369,7 +1368,7 @@ const desktopLibraryTourSteps = [
     placement: 'top',
     disableBeacon: true,
     hideBackButton: true,
-    showProgress: true
+    showProgress: true,
   },
   {
     target: '.library-tour-difficulty-stars',
@@ -1383,7 +1382,7 @@ const desktopLibraryTourSteps = [
     hideBackButton: true,
     showProgress: true,
     placement: 'top',
-    placementBeacon: 'left'
+    placementBeacon: 'left',
   },
   {
     target: '.library-tour-practice-button',
@@ -1397,7 +1396,7 @@ const desktopLibraryTourSteps = [
     hideBackButton: true,
     showProgress: true,
     placement: 'top',
-    placementBeacon: 'left'
+    placementBeacon: 'left',
   },
   {
     target: '.library-tour-review-button',
@@ -1410,7 +1409,7 @@ const desktopLibraryTourSteps = [
     hideBackButton: true,
     showProgress: true,
     placement: 'top',
-    placementBeacon: 'left'
+    placementBeacon: 'left',
   },
   {
     target: '.tour-button',
@@ -1421,8 +1420,8 @@ const desktopLibraryTourSteps = [
       </div>
     ),
     disableBeacon: true,
-    hideBackButton: true
-  }
+    hideBackButton: true,
+  },
 ]
 
 const mobileLibraryTourSteps = [
@@ -1449,7 +1448,7 @@ const mobileLibraryTourSteps = [
     placement: 'top',
     disableBeacon: true,
     hideBackButton: true,
-    showProgress: true
+    showProgress: true,
   },
   {
     target: '.library-tour-difficulty-stars',
@@ -1463,7 +1462,7 @@ const mobileLibraryTourSteps = [
     hideBackButton: true,
     showProgress: true,
     placement: 'top',
-    placementBeacon: 'left'
+    placementBeacon: 'left',
   },
   {
     target: '.library-tour-mobile-practice-button',
@@ -1477,7 +1476,7 @@ const mobileLibraryTourSteps = [
     hideBackButton: true,
     showProgress: true,
     placement: 'top',
-    placementBeacon: 'left'
+    placementBeacon: 'left',
   },
   /*
   {
@@ -1511,11 +1510,10 @@ const mobileLibraryTourSteps = [
         zIndex: 10000,
       },
     },
-  }
+  },
 ]
-
 
 export const progressTour = window.innerWidth >= 700 ? progressTourSteps : mobileProgressTourSteps
 export const homeTourSteps = window.innerWidth >= 700 ? desktopHomeTourSteps : mobileHomeTourSteps
-export const libraryTourSteps = window.innerWidth >= 700 ? desktopLibraryTourSteps : mobileLibraryTourSteps
-
+export const libraryTourSteps =
+  window.innerWidth >= 700 ? desktopLibraryTourSteps : mobileLibraryTourSteps
