@@ -10,9 +10,6 @@ jobs:
     name: "Sentry"
     needs: build
     runs-on: ubuntu-20.04
-    strategy:
-      matrix:
-        node-version: [10.x]
     env:
       SENTRY_PROJECT: mobvita
       SENTRY_ORG: toska
@@ -21,8 +18,10 @@ jobs:
 
     steps:
       - name: Checkout
-        uses: actions/checkout@v2
-
+        uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
+        with:
+          node-version: 16
       - name: npm ci
         run: npm ci
 
@@ -37,13 +36,10 @@ jobs:
 
   test:
     name: "Run Cypress tests"
-    runs-on: ubuntu-20.04
-    strategy:
-      matrix:
-        node-version: [10.x]  
+    runs-on: ubuntu-20.04  
     steps:
       - name: Checkout
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
 
       - name: npm ci
         run: npm ci
@@ -72,7 +68,7 @@ jobs:
     runs-on: ubuntu-20.04
     steps:
       - name: Checkout
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
       - name: Publish to DockerHub
         uses: docker/build-push-action@v1.1.0
         with:
