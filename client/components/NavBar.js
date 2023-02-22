@@ -52,7 +52,7 @@ export default function NavBar() {
   const { show, open: encOpen, fcShow, fcOpen } = useSelector(({ encouragement }) => encouragement)
   const dispatch = useDispatch()
   const history = useHistory()
-  const smallWindow = useWindowDimensions().width < 730
+  const smallWindow = useWindowDimensions().width < 700
   const intl = useIntl()
   const learningLanguage = useSelector(learningLanguageSelector)
   const handleEloClick = () => {

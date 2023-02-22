@@ -130,6 +130,7 @@ const Tour = () => {
 
             setTimeout(() => {
               dispatch(handleNextTourStep(index + (action === ACTIONS.PREV ? -1 : 1)))
+              window.dispatchEvent( new Event('resize'))
             }, 600)
           }
         }
@@ -156,6 +157,8 @@ const Tour = () => {
       {...tourState}
       callback={callback}
       disableScrolling = {true}
+      hideBackButton = {true}
+      showProgress = {true}
       styles={{
         tooltipContainer: {
           textAlign: 'left',

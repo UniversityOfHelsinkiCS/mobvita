@@ -86,7 +86,7 @@ const Progress = () => {
   // const [notMastered, setNotMastered] = useState([])
   // const [notMasteredBefore, setNotMasteredBefore] = useState([])
   const [firstFetch, setFirstFetch] = useState(true)
-  const bigScreen = useWindowDimension().width >= 650
+  const bigScreen = useWindowDimension().width >= 700
   // const [targetCurve, setTargetCurve] = useState([])
   const [xAxisLength, setXAxisLength] = useState(102)
   const originalEndPoint =
