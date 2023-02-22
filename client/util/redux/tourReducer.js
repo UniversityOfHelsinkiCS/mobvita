@@ -13,6 +13,14 @@ export const startTour = () => ({
   type: 'TOUR_START',
 })
 
+export const startLibraryTour = () => ({
+  type: 'LIBRARY_TOUR_RESTART',
+})
+
+export const startProgressTour = () => ({
+  type: 'PROGRESS_TOUR_RESTART',
+})
+
 export const handleNextTourStep = stepIndex => ({
   type: 'TOUR_NEXT_OR_PREV',
   payload: { stepIndex },

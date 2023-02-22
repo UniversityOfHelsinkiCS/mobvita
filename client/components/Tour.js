@@ -3,12 +3,24 @@ import { useLocation, useHistory } from 'react-router-dom'
 import JoyRide, { ACTIONS, EVENTS, STATUS } from 'react-joyride'
 import { sidebarSetOpen } from 'Utilities/redux/sidebarReducer'
 import { useSelector, useDispatch } from 'react-redux'
-import { updateToNonNewUser } from 'Utilities/redux/userReducer'
-import { startTour, handleNextTourStep, stopTour } from 'Utilities/redux/tourReducer'
+import {
+  updateToNonNewUser,
+  homeTourViewed,
+  libraryTourViewed,
+  progressTourViewed,
+  practiceTourViewed,
+} from 'Utilities/redux/userReducer'
+import {
+  startTour,
+  handleNextTourStep,
+  stopTour,
+  startLibraryTour,
+  startProgressTour,
+} from 'Utilities/redux/tourReducer'
 import { FormattedMessage } from 'react-intl'
 import useWindowDimensions from 'Utilities/windowDimensions'
 import { homeTourSteps, libraryTourSteps, progressTourSteps } from 'Utilities/common'
-import { finalConfettiRain, confettiRain } from 'Utilities/common'
+import { confettiRain } from 'Utilities/common'
 
 const Tour = () => {
   const dispatch = useDispatch()
@@ -20,18 +32,50 @@ const Tour = () => {
   const bigScreen = useWindowDimensions().width >= 700
 
   useEffect(() => {
-    // Auto start the tour if the user is anonymous and hasn't seen it before
-    if (
-      user.user.is_new_user &&
-      history.location.pathname.includes('home')
-    ) {
+    // Auto start the tour of the page if the user is anonymous or hasn't seen it before
+    if (!user.user.has_seen_home_tour && history.location.pathname.endsWith('/home')) {
       dispatch(sidebarSetOpen(false))
       dispatch(startTour())
     }
+    if (!user.user.has_seen_library_tour && history.location.pathname.endsWith('/library')) {
+      dispatch(sidebarSetOpen(false))
+      dispatch(startLibraryTour())
+    }
+    if (!user.user.has_seen_progress_tour && history.location.pathname.endsWith('/progress')) {
+      dispatch(sidebarSetOpen(false))
+      dispatch(startProgressTour())
+    }
+    /*
+    if (!user.user.has_seen_practice_tour && history.location.pathname.endsWith('/????')) {
+      dispatch(sidebarSetOpen(false))
+      dispatch(startPracticeTour())
+    }
+    */
   }, [location])
 
-  const setTourViewed = () => {
-    dispatch(updateToNonNewUser())
+  const setTourViewed = tour => {
+    if (!user.user.has_seen_home_tour && tour === '/home') {
+      dispatch(homeTourViewed())
+    }
+    if (!user.user.has_seen_libray_tour && tour === '/library') {
+      dispatch(libraryTourViewed())
+    }
+    if (!user.user.has_seen_progress_tour && tour === '/profile/progress') {
+      dispatch(progressTourViewed())
+    }
+    /*
+    if (!user.user.has_seen_practice_tour && tour === '???') {
+      dispatch(practiceTourViewed())
+    }
+    */
+    if (
+      user.user.has_seen_home_tour &&
+      user.user.has_seen_libray_tour &&
+      user.user.has_seen_progress_tour &&
+      user.user.has_seen_practice_tour
+    ) {
+      dispatch(updateToNonNewUser())
+    }
   }
 
   const callback = data => {
@@ -42,28 +86,30 @@ const Tour = () => {
       (status === STATUS.SKIPPED && tourState.run) ||
       status === STATUS.FINISHED
     ) {
-      setTourViewed()
+      if (user.user.is_new_user) {
+        setTourViewed(history.location.pathname)
+      }
       dispatch(stopTour())
     } else if (type === EVENTS.STEP_AFTER || type === EVENTS.TARGET_NOT_FOUND) {
       // desktop
       if (bigScreen) {
         if (tourState.steps === homeTourSteps && !history.location.pathname.includes('/home')) {
-          history.push('/home')  // This statement pushes the use to home page if tour is started
+          history.push('/home') // This statement pushes the use to home page if tour is started
           // on a page that doesnt have a tour
         }
 
-        if (tourState.steps === homeTourSteps && index === 1){
+        if (tourState.steps === homeTourSteps && index === 1) {
           confettiRain()
           confettiRain()
           setTimeout(() => {
             confettiRain()
-          },400)
+          }, 400)
           setTimeout(() => {
             confettiRain()
-          },600)
+          }, 600)
           setTimeout(() => {
             confettiRain()
-          },800) 
+          }, 800)
         }
 
         // progress tour tour step index related desktop actions
@@ -110,27 +156,24 @@ const Tour = () => {
             confettiRain()
             setTimeout(() => {
               confettiRain()
-            },400)
+            }, 400)
             setTimeout(() => {
               confettiRain()
-            },600)
+            }, 600)
             setTimeout(() => {
               confettiRain()
-            },800)
+            }, 800)
             dispatch(sidebarSetOpen(false))
-            
-            
           }
         }
         // library tour control
         if (tourState.steps === libraryTourSteps) {
-
           if (index === 3) {
             dispatch(sidebarSetOpen(true))
 
             setTimeout(() => {
               dispatch(handleNextTourStep(index + (action === ACTIONS.PREV ? -1 : 1)))
-              window.dispatchEvent( new Event('resize'))
+              window.dispatchEvent(new Event('resize'))
             }, 600)
           }
         }
@@ -141,9 +184,8 @@ const Tour = () => {
 
             setTimeout(() => {
               dispatch(handleNextTourStep(index + (action === ACTIONS.PREV ? -1 : 1)))
-              window.dispatchEvent( new Event('resize'))
+              window.dispatchEvent(new Event('resize'))
             }, 500)
-          
           }
         }
 
@@ -156,9 +198,9 @@ const Tour = () => {
     <JoyRide
       {...tourState}
       callback={callback}
-      disableScrolling = {true}
-      hideBackButton = {true}
-      showProgress = {true}
+      disableScrolling={true}
+      hideBackButton={true}
+      showProgress={true}
       styles={{
         tooltipContainer: {
           textAlign: 'left',

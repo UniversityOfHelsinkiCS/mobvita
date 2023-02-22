@@ -70,11 +70,9 @@ export default function NavBar() {
 
   const handleTourStart = () => {
     if (history.location.pathname.includes('progress') && hiddenFeatures) {
-      console.log('painoit just start tour nappia kun olit progressissa')
       dispatch(sidebarSetOpen(false))
       dispatch({ type: 'PROGRESS_TOUR_RESTART' })
     } else if (history.location.pathname.includes('library') && hiddenFeatures) {
-      console.log('You clicked on the tour while in library view')
       dispatch(sidebarSetOpen(false))
       dispatch({ type: 'LIBRARY_TOUR_RESTART' })
     } else {
