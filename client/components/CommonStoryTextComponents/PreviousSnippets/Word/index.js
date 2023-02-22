@@ -42,9 +42,9 @@ const Word = ({ word, answer, tiedAnswer, snippet, hideDifficulty, focusedConcep
   }
 
   // session history in practice & compete mode
-  if (!controlledStory && (word.tested || correctAnswerIDs.includes(word.ID.toString()))) {
-    return <PreviousExerciseWord word={word} answer={answer} tiedAnswer={tiedAnswer} />
-  }
+  // if (!controlledStory && (word.tested || correctAnswerIDs.includes(word.ID.toString()))) {
+  //   return <PreviousExerciseWord word={word} answer={answer} tiedAnswer={tiedAnswer} />
+  // }
 
   // review mode (highlight all word objs that have 'wrong' field))
   if ({}.propertyIsEnumerable.call(word, 'wrong')) {
@@ -59,7 +59,7 @@ const Word = ({ word, answer, tiedAnswer, snippet, hideDifficulty, focusedConcep
       <PreviousExerciseWord
         word={word}
         answer={answerObj}
-        tiedAnswer={null}
+        tiedAnswer={tiedAnswer}
         hideDifficulty={hideDifficulty}
         focusedConcept={focusedConcept}
       />
