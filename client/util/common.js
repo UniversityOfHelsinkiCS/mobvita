@@ -1225,7 +1225,7 @@ const mobileHomeTourSteps = [
   },
 ]
 
-const progressTourSteps = [
+const desktopProgressTourSteps = [
   {
     target: '.progress-link',
     title: <FormattedMessage id="Welcome to the Progress page" />,
@@ -1513,7 +1513,7 @@ const mobileLibraryTourSteps = [
   },
 ]
 
-export const progressTour = window.innerWidth >= 700 ? progressTourSteps : mobileProgressTourSteps
+export const progressTourSteps = window.innerWidth >= 700 ? desktopProgressTourSteps : mobileProgressTourSteps
 export const homeTourSteps = window.innerWidth >= 700 ? desktopHomeTourSteps : mobileHomeTourSteps
 export const libraryTourSteps =
   window.innerWidth >= 700 ? desktopLibraryTourSteps : mobileLibraryTourSteps

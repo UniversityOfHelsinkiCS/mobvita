@@ -7,7 +7,7 @@ import { updateToNonNewUser } from 'Utilities/redux/userReducer'
 import { startTour, handleNextTourStep, stopTour } from 'Utilities/redux/tourReducer'
 import { FormattedMessage } from 'react-intl'
 import useWindowDimensions from 'Utilities/windowDimensions'
-import { homeTourSteps, libraryTourSteps, progressTour } from 'Utilities/common'
+import { homeTourSteps, libraryTourSteps, progressTourSteps } from 'Utilities/common'
 import { finalConfettiRain, confettiRain } from 'Utilities/common'
 
 const Tour = () => {
@@ -67,7 +67,7 @@ const Tour = () => {
         }
 
         // progress tour tour step index related desktop actions
-        if (tourState.steps === progressTour) {
+        if (tourState.steps === progressTourSteps) {
           if (index === 0) {
             dispatch({ type: 'SET_TIMELINE_CHART' })
           }
@@ -134,7 +134,7 @@ const Tour = () => {
           }
         }
         // progress tour control
-        if (tourState.steps === progressTour) {
+        if (tourState.steps === progressTourSteps) {
           if (index === 2) {
             dispatch(sidebarSetOpen(true))
 
@@ -155,6 +155,7 @@ const Tour = () => {
     <JoyRide
       {...tourState}
       callback={callback}
+      disableScrolling = {true}
       styles={{
         tooltipContainer: {
           textAlign: 'left',
