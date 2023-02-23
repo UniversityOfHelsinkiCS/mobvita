@@ -32,6 +32,12 @@ const Tour = () => {
   const bigScreen = useWindowDimensions().width >= 700
 
   useEffect(() => {
+    if (!user.user.is_new_user) {
+      dispatch(homeTourViewed())
+      dispatch(libraryTourViewed())
+      dispatch(progressTourViewed())
+      // dispatch(practiceTourViewed())
+    }
     // Auto start the tour of the page if the user is anonymous or hasn't seen it before
     if (!user.user.has_seen_home_tour && history.location.pathname.endsWith('/home')) {
       dispatch(sidebarSetOpen(false))
