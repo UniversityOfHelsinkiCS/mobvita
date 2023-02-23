@@ -1,88 +1,19 @@
-import React, { useEffect } from 'react'
-import { useLocation, useHistory } from 'react-router-dom'
+import React from 'react'
+import { useHistory } from 'react-router-dom'
 import JoyRide, { ACTIONS, EVENTS, STATUS } from 'react-joyride'
 import { sidebarSetOpen } from 'Utilities/redux/sidebarReducer'
 import { useSelector, useDispatch } from 'react-redux'
-import {
-  updateToNonNewUser,
-  homeTourViewed,
-  libraryTourViewed,
-  progressTourViewed,
-  practiceTourViewed,
-} from 'Utilities/redux/userReducer'
-import {
-  startTour,
-  handleNextTourStep,
-  stopTour,
-  startLibraryTour,
-  startProgressTour,
-} from 'Utilities/redux/tourReducer'
+import { handleNextTourStep, stopTour } from 'Utilities/redux/tourReducer'
 import { FormattedMessage } from 'react-intl'
 import useWindowDimensions from 'Utilities/windowDimensions'
-import { homeTourSteps, libraryTourSteps, progressTourSteps } from 'Utilities/common'
-import { confettiRain } from 'Utilities/common'
+import { homeTourSteps, libraryTourSteps, progressTourSteps, confettiRain } from 'Utilities/common'
 
 const Tour = () => {
   const dispatch = useDispatch()
   const tourState = useSelector(({ tour }) => tour)
-  const { user } = useSelector(({ user }) => ({ user: user.data }))
   const history = useHistory()
-  const location = useLocation()
 
   const bigScreen = useWindowDimensions().width >= 700
-
-  useEffect(() => {
-    if (!user.user.is_new_user) {
-      dispatch(homeTourViewed())
-      dispatch(libraryTourViewed())
-      dispatch(progressTourViewed())
-      // dispatch(practiceTourViewed())
-    }
-    // Auto start the tour of the page if the user is anonymous or hasn't seen it before
-    if (!user.user.has_seen_home_tour && history.location.pathname.endsWith('/home')) {
-      dispatch(sidebarSetOpen(false))
-      dispatch(startTour())
-    }
-    if (!user.user.has_seen_library_tour && history.location.pathname.endsWith('/library')) {
-      dispatch(sidebarSetOpen(false))
-      dispatch(startLibraryTour())
-    }
-    if (!user.user.has_seen_progress_tour && history.location.pathname.endsWith('/progress')) {
-      dispatch(sidebarSetOpen(false))
-      dispatch(startProgressTour())
-    }
-    /*
-    if (!user.user.has_seen_practice_tour && history.location.pathname.endsWith('/????')) {
-      dispatch(sidebarSetOpen(false))
-      dispatch(startPracticeTour())
-    }
-    */
-  }, [location])
-
-  const setTourViewed = tour => {
-    if (!user.user.has_seen_home_tour && tour === '/home') {
-      dispatch(homeTourViewed())
-    }
-    if (!user.user.has_seen_libray_tour && tour === '/library') {
-      dispatch(libraryTourViewed())
-    }
-    if (!user.user.has_seen_progress_tour && tour === '/profile/progress') {
-      dispatch(progressTourViewed())
-    }
-    /*
-    if (!user.user.has_seen_practice_tour && tour === '???') {
-      dispatch(practiceTourViewed())
-    }
-    */
-    if (
-      user.user.has_seen_home_tour &&
-      user.user.has_seen_libray_tour &&
-      user.user.has_seen_progress_tour &&
-      user.user.has_seen_practice_tour
-    ) {
-      dispatch(updateToNonNewUser())
-    }
-  }
 
   const callback = data => {
     const { action, index, type, status } = data
@@ -92,9 +23,6 @@ const Tour = () => {
       (status === STATUS.SKIPPED && tourState.run) ||
       status === STATUS.FINISHED
     ) {
-      if (user.user.is_new_user) {
-        setTourViewed(history.location.pathname)
-      }
       dispatch(stopTour())
     } else if (type === EVENTS.STEP_AFTER || type === EVENTS.TARGET_NOT_FOUND) {
       // desktop

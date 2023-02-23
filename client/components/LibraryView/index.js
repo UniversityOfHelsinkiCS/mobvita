@@ -13,10 +13,13 @@ import {
   updateLibrarySelect,
   updateGroupSelect,
   updateSortCriterion,
+  libraryTourViewed
 } from 'Utilities/redux/userReducer'
 import { getAllStories, setLastQuery } from 'Utilities/redux/storiesReducer'
 import useWindowDimensions from 'Utilities/windowDimensions'
 import AddStoryModal from 'Components/AddStoryModal'
+import { sidebarSetOpen } from 'Utilities/redux/sidebarReducer'
+import { startLibraryTour } from 'Utilities/redux/tourReducer'
 import LibrarySearch from './LibrarySearch'
 
 const StoryList = () => {
@@ -28,6 +31,7 @@ const StoryList = () => {
     last_selected_group: savedGroupSelection,
     oid: userId,
   } = useSelector(({ user }) => user.data.user)
+  const { user } = useSelector(({ user }) => ({ user: user.data }))
   const refreshed = useSelector(({ user }) => user.refreshed)
   const { groups, deleteSuccessful } = useSelector(({ groups }) => groups)
   const { pending, data: stories, searchResults, lastQuery } = useSelector(({ stories }) => stories)
@@ -137,6 +141,14 @@ const StoryList = () => {
   const handleGroupChange = (_e, option) => {
     dispatch(updateGroupSelect(option.value))
   }
+
+  useEffect(() => {
+    if (user.user.is_new_user && !user.user.has_seen_library_tour) {
+      dispatch(libraryTourViewed())
+      dispatch(sidebarSetOpen(false))
+      dispatch(startLibraryTour())
+    }
+  }, [])
 
   const handleSearchIconClick = () => {
     if (smallScreenSearchOpen) {

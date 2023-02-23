@@ -13,6 +13,9 @@ import AddStoryModal from 'Components/AddStoryModal'
 import SetCEFRReminder from 'Components/SetCEFRReminder'
 import DefaultActivityModal from 'Components/Encouragements/DefaultActivityModal'
 import BetaLanguageModal from 'Components/BetaLanguageModal'
+import { sidebarSetOpen } from 'Utilities/redux/sidebarReducer'
+import { startTour } from 'Utilities/redux/tourReducer'
+import { homeTourViewed } from 'Utilities/redux/userReducer'
 import MedalSummary from './MedalSummary'
 import PracticeModal from './PracticeModal'
 import EloChart from './EloChart'
@@ -170,6 +173,7 @@ const HomeView = () => {
   const aTestIsEnabled = groups.some(e => e.test_deadline - Date.now() > 0)
   const history = useHistory()
   const userData = useSelector(state => state.user.data.user)
+  const { user } = useSelector(({ user }) => ({ user: user.data }))
   const { username } = userData
   const { enable_recmd } = useSelector(({ user }) => user.data.user)
   const { selected } = useSelector(({ user }) => user)
@@ -217,6 +221,14 @@ const HomeView = () => {
       setBetaModalOpen(true)
     }
   }, [learningLanguage])
+
+  useEffect(() => {
+    if (user.user.is_new_user && !user.user.has_seen_home_tour) {
+      dispatch(homeTourViewed())
+      dispatch(sidebarSetOpen(false))
+      dispatch(startTour())
+    }
+  }, [])
 
   return (
     <div className="cont-tall cont flex-col auto gap-row-sm pt-lg blue-bg">

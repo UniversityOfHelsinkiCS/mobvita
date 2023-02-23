@@ -15,6 +15,9 @@ import {
   openEncouragement,
   showIcon,
 } from 'Utilities/redux/encouragementsReducer'
+import { progressTourViewed } from 'Utilities/redux/userReducer'
+import { sidebarSetOpen } from 'Utilities/redux/sidebarReducer'
+import { startProgressTour } from 'Utilities/redux/tourReducer'
 import ProgressGraph from 'Components/ProgressGraph'
 import Spinner from 'Components/Spinner'
 import { useHistory } from 'react-router-dom'
@@ -46,6 +49,7 @@ const Progress = () => {
   const element = useRef()
   const [graphType, setGraphType] = useState('column mastered')
   const [initComplete, setInitComplete] = useState(false)
+  const { user } = useSelector(({ user }) => ({ user: user.data }))
   const {
     exerciseHistory: exerciseHistoryGraph,
     flashcardHistory,
@@ -82,7 +86,7 @@ const Progress = () => {
   const dictionaryLanguage = useDictionaryLanguage()
   const { history: testHistory, pending: testPending } = useSelector(({ tests }) => tests)
   const { open } = useSelector(({ encouragement }) => encouragement)
-  const shownChart = useSelector( ({progress}) => progress.currentChart)
+  const shownChart = useSelector(({ progress }) => progress.currentChart)
   // const [notMastered, setNotMastered] = useState([])
   // const [notMasteredBefore, setNotMasteredBefore] = useState([])
   const [firstFetch, setFirstFetch] = useState(true)
@@ -95,6 +99,14 @@ const Progress = () => {
           .add(1, 'days')
           .toDate()
       : moment().toDate()
+
+  useEffect(() => {
+    if (user.user.is_new_user && !user.user.has_seen_progress_tour) {
+      dispatch(progressTourViewed())
+      dispatch(sidebarSetOpen(false))
+      dispatch(startProgressTour())
+    }
+  }, [])
 
   const getStartDate = () => {
     const firstPractice = moment(exerciseHistoryGraph[0]?.date).toDate()
@@ -207,7 +219,7 @@ const Progress = () => {
   }, [newerVocabularyData, vocabularyData])
 
   const handleChartChange = newChart => {
-    dispatch({ type: newChart})
+    dispatch({ type: newChart })
     setGraphType('column mastered')
   }
 
@@ -268,7 +280,7 @@ const Progress = () => {
             >
               <div className="flex align-center" style={{ gap: '.5em' }}>
                 <input
-                  className='progress-tour-timeline-button'
+                  className="progress-tour-timeline-button"
                   type="radio"
                   onChange={() => handleChartChange('SET_TIMELINE_CHART')}
                   checked={shownChart === 'progress'}
@@ -283,7 +295,7 @@ const Progress = () => {
             >
               <div className="flex align-center" style={{ gap: '.5em' }}>
                 <input
-                  className='progress-tour-vocabulary-button'
+                  className="progress-tour-vocabulary-button"
                   type="radio"
                   onChange={() => handleChartChange('SET_VOCABULARY_CHART')}
                   checked={shownChart === 'vocabulary'}
@@ -298,7 +310,7 @@ const Progress = () => {
             >
               <div className="flex align-center" style={{ gap: '.5em' }}>
                 <input
-                  className='progress-tour-grammar-button'
+                  className="progress-tour-grammar-button"
                   type="radio"
                   onChange={() => handleChartChange('SET_GRAMMAR_CHART')}
                   checked={shownChart === 'hex-map'}
@@ -313,7 +325,7 @@ const Progress = () => {
             >
               <div className="flex align-center" style={{ gap: '.5em' }}>
                 <input
-                  className='progress-tour-exercise-history-button'
+                  className="progress-tour-exercise-history-button"
                   type="radio"
                   onChange={() => handleChartChange('SET_EXERCISE_HISTORY_CHART')}
                   checked={shownChart === 'exercise-history'}
@@ -328,7 +340,7 @@ const Progress = () => {
             >
               <div className="flex align-center" style={{ gap: '.5em' }}>
                 <input
-                  className='progress-tour-test-history-button'
+                  className="progress-tour-test-history-button"
                   type="radio"
                   onChange={() => handleChartChange('SET_TEST_HISTORY_CHART')}
                   checked={shownChart === 'test-history'}
