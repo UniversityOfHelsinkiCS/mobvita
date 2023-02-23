@@ -228,6 +228,7 @@ export default function Sidebar({ history }) {
                     </Link>
                     <Link to="/library">
                       <Button
+                        className="sidebar-library-button"
                         variant="secondary"
                         style={{ marginTop: marginTopButton }}
                         onClick={() => menuClickWrapper()}

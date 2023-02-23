@@ -188,7 +188,7 @@ export default function NavBar() {
                     </Navbar.Brand>
                   </Link>
                   <Link data-cy="navbar-library-button" to="/library">
-                    <Navbar.Brand className="navbar-text-item">
+                    <Navbar.Brand className="navbar-text-item library-tour-start">
                       <FormattedMessage id="Library" />
                     </Navbar.Brand>
                   </Link>
@@ -290,11 +290,15 @@ export default function NavBar() {
 
                     {user.user.email !== 'anonymous_email' && (
                       <>
-                        <span className="bold" style={{ padding: '1.5em' }}>
+                        <span className="bold user-icon" style={{ padding: '1.5em' }}>
                           {user.user.username}
                         </span>
                         <NavDropdown.Divider />
-                        <NavDropdown.Item as={Link} to="/profile/progress">
+                        <NavDropdown.Item
+                          className="profile-button"
+                          as={Link}
+                          to="/profile/progress"
+                        >
                           <FormattedMessage id="Profile" />
                         </NavDropdown.Item>
                         <NavDropdown.Item data-cy="navbar-logout-button" onClick={signOut}>

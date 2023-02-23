@@ -1305,7 +1305,7 @@ const mobileProgressTourSteps = [
 
 const desktopLibraryTourSteps = [
   {
-    target: '.tour-start-finish',
+    target: '.library-tour-start',
     title: <FormattedMessage id="Welcome to the Library page" />,
     content: (
       <div>
@@ -1376,7 +1376,7 @@ const desktopLibraryTourSteps = [
 
 const mobileLibraryTourSteps = [
   {
-    target: '.tour-start-finish',
+    target: '.library-tour-start',
     title: <FormattedMessage id="Welcome to the Library page" />,
     content: (
       <div>

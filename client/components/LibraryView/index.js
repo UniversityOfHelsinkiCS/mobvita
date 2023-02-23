@@ -13,7 +13,7 @@ import {
   updateLibrarySelect,
   updateGroupSelect,
   updateSortCriterion,
-  libraryTourViewed
+  libraryTourViewed,
 } from 'Utilities/redux/userReducer'
 import { getAllStories, setLastQuery } from 'Utilities/redux/storiesReducer'
 import useWindowDimensions from 'Utilities/windowDimensions'
@@ -160,7 +160,11 @@ const StoryList = () => {
 
   const sortDropdownOptions = [
     { key: 'title', text: intl.formatMessage({ id: 'sort-by-title-option' }), value: 'title' },
-    { key: 'difficulty', text: intl.formatMessage({ id: 'story-difficulty' }), value: 'difficulty' },
+    {
+      key: 'difficulty',
+      text: intl.formatMessage({ id: 'story-difficulty' }),
+      value: 'difficulty',
+    },
     { key: 'progress', text: intl.formatMessage({ id: 'Progress' }), value: 'progress' },
   ]
 
@@ -363,7 +367,11 @@ const StoryList = () => {
 
   function rowRenderer({ key, index, style }) {
     return (
-      <div key={key} style={{ ...style, paddingRight: '0.5em', paddingLeft: '0.5em' }} className={'tour-lmao'}>
+      <div
+        key={key}
+        style={{ ...style, paddingRight: '0.5em', paddingLeft: '0.5em' }}
+        className={'tour-lmao'}
+      >
         <StoryListItem
           key={key}
           libraryShown={libraries}
@@ -375,7 +383,7 @@ const StoryList = () => {
   }
 
   return (
-    <div className="cont-tall pt-lg cont flex-col auto gap-row-sm ">
+    <div className="cont-tall pt-lg cont flex-col auto gap-row-sm library-tour-start">
       {libraryControls}
       {lastQuery && (
         <div className="mt-nm ml-sm gap-col-sm">
