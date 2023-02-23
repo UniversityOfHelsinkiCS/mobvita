@@ -902,6 +902,16 @@ export const translatableLanguages = {
   ],
 }
 
+const tourSign = () => {
+  return (
+    <img
+      src={direction}
+      alt="start"
+      style={{ maxWidth: '20%', maxHeight: '20%', marginTop: '25px', marginLeft: '5px' }}
+    />
+  )
+}
+
 const desktopHomeTourSteps = [
   {
     target: '.tour-start-finish',
@@ -909,6 +919,7 @@ const desktopHomeTourSteps = [
     content: (
       <div>
         <FormattedHTMLMessage id="tour-welcome-message" />
+        <div>{tourSign()}</div>
       </div>
     ),
     disableBeacon: true,
@@ -1023,9 +1034,7 @@ const desktopHomeTourSteps = [
     content: (
       <div>
         <FormattedHTMLMessage id="tour-begin-practicing-message" />
-        <div className="encouragement-picture pt-sm">
-          <img src={racingFlag} alt="start" style={{ maxWidth: '25%', maxHeight: '25%' }} />
-        </div>
+        <div>{tourSign()}</div>
       </div>
     ),
     placement: 'top',
@@ -1041,6 +1050,7 @@ const mobileHomeTourSteps = [
     content: (
       <div className="tour-mobile-message">
         <FormattedHTMLMessage id="tour-welcome-message" />
+        <div>{tourSign()}</div>
       </div>
     ),
     disableBeacon: true,
@@ -1172,9 +1182,7 @@ const mobileHomeTourSteps = [
     content: (
       <div className="tour-mobile-message">
         <FormattedHTMLMessage id="tour-begin-practicing-message" />
-        <div className="encouragement-picture pt-sm">
-          <img src={racingFlag} alt="start" style={{ maxWidth: '25%', maxHeight: '25%' }} />
-        </div>
+        <div>{tourSign()}</div>
       </div>
     ),
     placement: 'right',
@@ -1195,6 +1203,7 @@ const desktopProgressTourSteps = [
     content: (
       <div>
         <FormattedHTMLMessage id="progress-tour-welcome-message" />
+        <div>{tourSign()}</div>
       </div>
     ),
     disableBeacon: true,
@@ -1240,6 +1249,7 @@ const desktopProgressTourSteps = [
     content: (
       <div>
         <FormattedHTMLMessage id="tour-end-message" />
+        <div>{tourSign()}</div>
       </div>
     ),
     disableBeacon: true,
@@ -1253,6 +1263,7 @@ const mobileProgressTourSteps = [
     content: (
       <div>
         <FormattedHTMLMessage id="progress-tour-welcome-message" />
+        <div>{tourSign()}</div>
       </div>
     ),
     disableBeacon: true,
@@ -1278,6 +1289,13 @@ const mobileProgressTourSteps = [
     content: (
       <div>
         <FormattedHTMLMessage id="tour-end-message" />
+        <div>
+          <img
+            src={direction}
+            alt="start"
+            style={{ maxWidth: '20%', maxHeight: '20%', marginTop: '25px', marginLeft: '5px' }}
+          />
+        </div>
       </div>
     ),
     placement: 'top-end',
@@ -1292,6 +1310,7 @@ const desktopLibraryTourSteps = [
     content: (
       <div>
         <FormattedHTMLMessage id="library-tour-welcome-message" />
+        <div>{tourSign()}</div>
       </div>
     ),
     disableBeacon: true,
@@ -1348,6 +1367,7 @@ const desktopLibraryTourSteps = [
     content: (
       <div>
         <FormattedHTMLMessage id="tour-end-message" />
+        <div>{tourSign()}</div>
       </div>
     ),
     disableBeacon: true,
@@ -1361,6 +1381,7 @@ const mobileLibraryTourSteps = [
     content: (
       <div>
         <FormattedHTMLMessage id="library-tour-welcome-message" />
+        <div>{tourSign()}</div>
       </div>
     ),
     disableBeacon: true,
@@ -1420,6 +1441,7 @@ const mobileLibraryTourSteps = [
     content: (
       <div>
         <FormattedHTMLMessage id="tour-end-message" />
+        <div>{tourSign()}</div>
       </div>
     ),
     placement: 'right',
@@ -1432,7 +1454,8 @@ const mobileLibraryTourSteps = [
   },
 ]
 
-export const progressTourSteps = window.innerWidth >= 700 ? desktopProgressTourSteps : mobileProgressTourSteps
+export const progressTourSteps =
+  window.innerWidth >= 700 ? desktopProgressTourSteps : mobileProgressTourSteps
 export const homeTourSteps = window.innerWidth >= 700 ? desktopHomeTourSteps : mobileHomeTourSteps
 export const libraryTourSteps =
   window.innerWidth >= 700 ? desktopLibraryTourSteps : mobileLibraryTourSteps
