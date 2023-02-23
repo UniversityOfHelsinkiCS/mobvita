@@ -66,10 +66,11 @@ export default (state = initialState, action) => {
         error: true,
       }
     case 'POST_NEW_STORY_SUCCESS':
+      let story_id = action.response.story_ids?.length > 0 ? action.response.story_ids[action.response.story_ids.length - 1] : null
       return {
         ...state,
         pending: false,
-        storyId: action.response.story_id,
+        storyId: story_id,
         progress: 0,
         error: false,
         custom: false,
