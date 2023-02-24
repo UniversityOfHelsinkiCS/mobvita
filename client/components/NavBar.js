@@ -75,6 +75,9 @@ export default function NavBar() {
     } else if (history.location.pathname.includes('library') && hiddenFeatures) {
       dispatch(sidebarSetOpen(false))
       dispatch({ type: 'LIBRARY_TOUR_RESTART' })
+    } else if (history.location.pathname.includes('preview') && hiddenFeatures) {
+      dispatch(sidebarSetOpen(false))
+      dispatch({ type: 'PREVIEW_TOUR_RESTART' })
     } else {
       dispatch(sidebarSetOpen(false))
       dispatch({ type: 'TOUR_RESTART' })
