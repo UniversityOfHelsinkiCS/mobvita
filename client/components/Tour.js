@@ -14,9 +14,10 @@ const Tour = () => {
   const history = useHistory()
 
   const bigScreen = useWindowDimensions().width >= 700
-
+  
   const callback = data => {
     const { action, index, type, status } = data
+    console.log(action)
 
     if (
       action === ACTIONS.CLOSE ||
@@ -48,6 +49,7 @@ const Tour = () => {
 
         // progress tour tour step index related desktop actions
         if (tourState.steps === progressTourSteps) {
+          dispatch({ type: 'CLOSE_PROFILE_DROPDOWN'})
           if (index === 0) {
             dispatch({ type: 'SET_TIMELINE_CHART' })
           }

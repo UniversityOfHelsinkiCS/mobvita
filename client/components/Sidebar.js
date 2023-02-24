@@ -85,7 +85,6 @@ export default function Sidebar({ history }) {
 
   const handleTourStart = () => {
     if (history.location.pathname.includes('progress') && hiddenFeatures) {
-      dispatch(sidebarSetOpen(false))
       dispatch({ type: 'PROGRESS_TOUR_RESTART' })
     } else if (history.location.pathname.includes('library') && hiddenFeatures) {
       dispatch(sidebarSetOpen(false))
@@ -217,6 +216,7 @@ export default function Sidebar({ history }) {
                     /> */}
                     <Link to="/profile/progress">
                       <Button
+                        className = 'sidebar-profile-button'
                         data-cy="settings-link"
                         variant="secondary"
                         style={{ marginTop: marginTopButton }}

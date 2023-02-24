@@ -1198,7 +1198,7 @@ const mobileHomeTourSteps = [
 
 const desktopProgressTourSteps = [
   {
-    target: '.progress-link',
+    target: '.profile-button',
     title: <FormattedMessage id="Welcome to the Progress page" />,
     content: (
       <div>
@@ -1258,7 +1258,7 @@ const desktopProgressTourSteps = [
 
 const mobileProgressTourSteps = [
   {
-    target: '.progress-link',
+    target: '.sidebar-profile-button',
     title: <FormattedMessage id="Welcome to the Progress page" />,
     content: (
       <div>
@@ -1267,6 +1267,7 @@ const mobileProgressTourSteps = [
       </div>
     ),
     disableBeacon: true,
+    placement: 'right'
   },
   {
     target: '.progress-page-graph-cont',
