@@ -165,7 +165,7 @@ const ReadViews = ({ match }) => {
           <FormattedMessage id="start-practice" />
         </SemanticButton> */}
         <Dropdown
-          className="button icon"
+          className="button icon preview-tour-button"
           style={{
             backgroundColor: 'rgb(50, 170, 248)',
             color: 'white',
@@ -211,7 +211,7 @@ const ReadViews = ({ match }) => {
         <div>
           <Segment data-cy="readmodes-text" className="cont" style={getTextStyle(learningLanguage)}>
             <Header style={getTextStyle(learningLanguage, 'title')}>
-              <span className="pr-sm">{story.title}</span>
+              <span className="pr-sm preview-tour">{story.title}</span>
               <br />
               {story.url && (
                 <a
@@ -231,6 +231,7 @@ const ReadViews = ({ match }) => {
                 )}
                 {mode === 'preview' && (
                   <Checkbox
+                    className = 'highlight-exercises'
                     toggle
                     label={intl.formatMessage({ id: 'show preview' })}
                     checked={previewToggleOn}

@@ -1,4 +1,4 @@
-import { homeTourSteps, libraryTourSteps, progressTourSteps } from 'Utilities/common'
+import { homeTourSteps, libraryTourSteps, progressTourSteps, previewTourSteps } from 'Utilities/common'
 
 const initialState = {
   key: new Date(), // This field makes the tour to re-render it is restarted
@@ -19,6 +19,10 @@ export const startLibraryTour = () => ({
 
 export const startProgressTour = () => ({
   type: 'PROGRESS_TOUR_RESTART',
+})
+
+export const startPreviewTour = () => ({
+  type: 'PREVIEW_TOUR_RESTART',
 })
 
 export const handleNextTourStep = stepIndex => ({
@@ -62,6 +66,15 @@ export default (state = initialState, action) => {
       return {
         ...state,
         steps: progressTourSteps,
+        stepIndex: 0,
+        run: true,
+        loading: false,
+        key: new Date(),
+      }
+    case 'PREVIEW_TOUR_RESTART':
+      return {
+        ...state,
+        steps: previewTourSteps,
         stepIndex: 0,
         run: true,
         loading: false,

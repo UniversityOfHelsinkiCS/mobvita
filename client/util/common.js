@@ -1454,6 +1454,66 @@ const mobileLibraryTourSteps = [
   },
 ]
 
+const desktopPreviewTourSteps = [
+  {
+    target: '.preview-tour',
+    title: <FormattedMessage id="Tour end" />,
+    content: (
+      <div>
+        <FormattedHTMLMessage id="tour-end-message" />
+        <div></div>
+      </div>
+    ),
+    placement: 'center',
+    disableBeacon: true,
+  },
+  {
+    target: '.story-topics-box',
+    title: <FormattedMessage id="Tour end" />,
+    content: (
+      <div>
+        <FormattedHTMLMessage id="tour-end-message" />
+        <div></div>
+      </div>
+    ),
+    disableBeacon: true,
+  },
+  {
+    target: '.dictionary-help',
+    title: <FormattedMessage id="Tour end" />,
+    content: (
+      <div>
+        <FormattedHTMLMessage id="tour-end-message" />
+        <div></div>
+      </div>
+    ),
+    disableBeacon: true,
+  },
+  {
+    target: '.highlight-exercises',
+    title: <FormattedMessage id="Tour end" />,
+    content: (
+      <div>
+        <FormattedHTMLMessage id="tour-end-message" />
+        <div></div>
+      </div>
+    ),
+    disableBeacon: true,
+  },
+  {
+    target: '.preview-tour-button',
+    title: <FormattedMessage id="Tour end" />,
+    content: (
+      <div>
+        <FormattedHTMLMessage id="tour-end-message" />
+        <div></div>
+      </div>
+    ),
+    disableBeacon: true,
+  },
+]
+
+export const previewTourSteps = desktopPreviewTourSteps
 export const progressTourSteps =
   window.innerWidth >= 700 ? desktopProgressTourSteps : mobileProgressTourSteps
 export const homeTourSteps = window.innerWidth >= 700 ? desktopHomeTourSteps : mobileHomeTourSteps

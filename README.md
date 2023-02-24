@@ -27,7 +27,7 @@ Command line: `npm run cypress:run`
 
 [Product backlog](https://github.com/UniversityOfHelsinkiCS/mobvita/projects/3)
 
-[Current sprint backlog](https://github.com/UniversityOfHelsinkiCS/mobvita/projects/5)
+[Current sprint backlog](https://github.com/UniversityOfHelsinkiCS/mobvita/projects/6)
 
 [Working hours](https://docs.google.com/spreadsheets/d/1pFwN3QlpFcmz6TS2mHt-5RtRQFR7_kwSuSugccWkhJU/edit#gid=0)
 
