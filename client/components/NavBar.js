@@ -167,7 +167,10 @@ export default function NavBar() {
           <Nav className="mr-auto">
             <div className="navbar-container">
               <Link to="/home">
-                <Navbar.Brand className="navbar-revita-logo tour-start-finish">
+                <Navbar.Brand
+                  data-cy="revita-logo"
+                  className="navbar-revita-logo tour-start-finish"
+                >
                   <img
                     src={images.navbarLogo}
                     alt="revita logo"
@@ -188,7 +191,10 @@ export default function NavBar() {
                     </Navbar.Brand>
                   </Link>
                   <Link data-cy="navbar-library-button" to="/library">
-                    <Navbar.Brand className="navbar-text-item library-tour-start">
+                    <Navbar.Brand
+                      data-cy="goto-library"
+                      className="navbar-text-item library-tour-start"
+                    >
                       <FormattedMessage id="Library" />
                     </Navbar.Brand>
                   </Link>

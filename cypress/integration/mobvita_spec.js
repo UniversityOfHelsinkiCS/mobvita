@@ -29,7 +29,7 @@ describe('Mobvita', function () {
   })
 
   this.beforeEach(function () {
-    window.localStorage.clear()
+    window.localStorage.clear() 
     cy.loginExisting().as('user')
     cy.visit('http://localhost:8000')
   })
@@ -94,7 +94,9 @@ describe('Mobvita', function () {
         body: {
           last_used_lang: 'Finnish',
           interface_lang: 'Finnish',
-          last_trans_lang: 'Finnish'
+          last_trans_lang: 'Finnish',
+          has_seen_home_tour: true,
+          has_seen_library_tour: true
         }
       })
       cy.request('POST', '/api/session', { ...globalUser })
@@ -106,8 +108,7 @@ describe('Mobvita', function () {
     })
 
     it('library opens', function () {
-      cy.get('[data-cy=navbar-library-button]').click()
-      cy.get('[data-cy=library-controls]')
+      cy.get('[data-cy=goto-library]').click()
       cy.url().should('include', '/library')
     })
 

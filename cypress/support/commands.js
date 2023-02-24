@@ -76,7 +76,9 @@ Cypress.Commands.add('login', function (transLang = 'English') {
         body: {
           last_used_lang: 'Finnish',
           last_trans_lang: transLang,
-          interface_lang: 'Finnish'
+          interface_lang: 'Finnish',
+          has_seen_home_tour: true,
+          has_seen_library_tour: true
         },
         retryOnNetworkFailure: true
       })
@@ -113,7 +115,7 @@ Cypress.Commands.add('loginRussian', function (transLang = 'English') {
         body: {
           last_used_lang: 'Russian',
           last_trans_lang: transLang,
-          interface_lang: 'Russian'
+          interface_lang: 'Russian',
         },
         retryOnNetworkFailure: true
       })
