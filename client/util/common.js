@@ -214,7 +214,7 @@ export const confettiRain = () => {
 }
 
 export const finalConfettiRain = (colors, endDate) => {
-  ;(function frame() {
+  ; (function frame() {
     confetti({
       particleCount: 2,
       angle: 60,
@@ -1455,20 +1455,15 @@ const mobileLibraryTourSteps = [
   },
 ]
 
-const desktopPreviewTourSteps = [
+const desktopPracticeTourSteps = [
   {
-    target: '.preview-tour',
-    title: <FormattedMessage id="Tour end" />,
-    content: (
-      <div>
-        <FormattedHTMLMessage id="tour-end-message" />
-        <div></div>
-      </div>
-    ),
+    target: '.practice-tour-start',
+    title: 'Welcome',
+    content: 'Welcome to the preview and practice pages.',
     placement: 'center',
     disableBeacon: true,
   },
-  {
+  /*  {
     target: '.story-topics-box',
     title: <FormattedMessage id="Tour end" />,
     content: (
@@ -1478,19 +1473,14 @@ const desktopPreviewTourSteps = [
       </div>
     ),
     disableBeacon: true,
-  },
+  },*/
   {
     target: '.dictionary-help',
-    title: <FormattedMessage id="Tour end" />,
-    content: (
-      <div>
-        <FormattedHTMLMessage id="tour-end-message" />
-        <div></div>
-      </div>
-    ),
+    title: 'Translations',
+    content: 'You can click any word in the text, and the translation of it will show up here.',
     disableBeacon: true,
   },
-  {
+  /*   {
     target: '.highlight-exercises',
     title: <FormattedMessage id="Tour end" />,
     content: (
@@ -1500,21 +1490,16 @@ const desktopPreviewTourSteps = [
       </div>
     ),
     disableBeacon: true,
-  },
+  }, */
   {
-    target: '.preview-tour-button',
-    title: <FormattedMessage id="Tour end" />,
-    content: (
-      <div>
-        <FormattedHTMLMessage id="tour-end-message" />
-        <div></div>
-      </div>
-    ),
+    target: '.practice-tour-start-practice',
+    title: 'Start practicing',
+    content: 'Click here to start practicing the story',
     disableBeacon: true,
   },
 ]
 
-export const previewTourSteps = desktopPreviewTourSteps
+export const practiceTourSteps = desktopPracticeTourSteps
 export const progressTourSteps =
   window.innerWidth >= 700 ? desktopProgressTourSteps : mobileProgressTourSteps
 export const homeTourSteps = window.innerWidth >= 700 ? desktopHomeTourSteps : mobileHomeTourSteps

@@ -69,14 +69,14 @@ export default function NavBar() {
   }
   const showProfileDropdown = useSelector((state) => state.dropdown.showProfileDropdown)
 
-  const handleProfileButtonCLick = () =>{
-    if (showProfileDropdown){
-      dispatch({ type: 'CLOSE_PROFILE_DROPDOWN'})
+  const handleProfileButtonCLick = () => {
+    if (showProfileDropdown) {
+      dispatch({ type: 'CLOSE_PROFILE_DROPDOWN' })
     } else {
-      dispatch({ type: 'SHOW_PROFILE_DROPDOWN'})
+      dispatch({ type: 'SHOW_PROFILE_DROPDOWN' })
     }
   }
-  
+
   const handleTourStart = () => {
     if (history.location.pathname.includes('progress') && hiddenFeatures) {
       dispatch({ type: 'SHOW_PROFILE_DROPDOWN' })
@@ -84,9 +84,11 @@ export default function NavBar() {
     } else if (history.location.pathname.includes('library') && hiddenFeatures) {
       dispatch(sidebarSetOpen(false))
       dispatch({ type: 'LIBRARY_TOUR_RESTART' })
-    } else if (history.location.pathname.includes('preview') && hiddenFeatures) {
+    } else if (history.location.pathname.includes('preview')
+      // || history.location.pathname.includes('practice')
+      && hiddenFeatures) {
       dispatch(sidebarSetOpen(false))
-      dispatch({ type: 'PREVIEW_TOUR_RESTART' })
+      dispatch({ type: 'PRACTICE_TOUR_RESTART' })
     } else {
       dispatch(sidebarSetOpen(false))
       dispatch({ type: 'TOUR_RESTART' })
@@ -285,8 +287,8 @@ export default function NavBar() {
 
                   <NavDropdown
                     className="navbar-dropdown-icon-cont"
-                    onClick = {handleProfileButtonCLick}
-                    show = {showProfileDropdown}
+                    onClick={handleProfileButtonCLick}
+                    show={showProfileDropdown}
                     title={
                       <Icon
                         className="navbar-dropdown-icon"

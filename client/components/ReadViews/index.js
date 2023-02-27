@@ -46,6 +46,7 @@ const ReadViews = ({ match }) => {
     pending: stories.focusedPending,
     locale,
   }))
+  const showPracticeDropdown = useSelector((state) => state.dropdown.showPracticeDropdown)
 
   const bigScreen = width > 700
 
@@ -151,6 +152,14 @@ const ReadViews = ({ match }) => {
     setHideFeedback(!hideFeedback)
   }
 
+  const handlePracticeButtonClick = () => {
+    if (showPracticeDropdown) {
+      dispatch({ type: 'CLOSE_PRACTICE_DROPDOWN' })
+    } else {
+      dispatch({ type: 'SHOW_PRACTICE_DROPDOWN' })
+    }
+  }
+
   // console.log('story ', story.paragraph)
   // console.log('focused ', focusedConcept)
 
@@ -165,7 +174,7 @@ const ReadViews = ({ match }) => {
           <FormattedMessage id="start-practice" />
         </SemanticButton> */}
         <Dropdown
-          className="button icon preview-tour-button"
+          className="button icon practice-tour-practice-button"
           style={{
             backgroundColor: 'rgb(50, 170, 248)',
             color: 'white',
@@ -175,10 +184,12 @@ const ReadViews = ({ match }) => {
           floating
           // trigger={<React.Fragment />}
           trigger={
-            <div style={{paddingRight: '0.5rem'}}>
+            <div style={{ paddingRight: '0.5rem' }}>
               <FormattedMessage id="start-practice" />
             </div>
           }
+          open={showPracticeDropdown}
+          onClick={handlePracticeButtonClick}
         >
           <Dropdown.Menu className="story-item-dropdown">
             <Dropdown.Item
@@ -198,10 +209,11 @@ const ReadViews = ({ match }) => {
               as={Link}
               to={`/stories/${id}/practice/`}
               icon="bolt"
+              className='practice-tour-start-practice'
             />
           </Dropdown.Menu>
-        </Dropdown>
-      </SemanticButton.Group>
+        </Dropdown >
+      </SemanticButton.Group >
     )
   }
 
@@ -211,7 +223,7 @@ const ReadViews = ({ match }) => {
         <div>
           <Segment data-cy="readmodes-text" className="cont" style={getTextStyle(learningLanguage)}>
             <Header style={getTextStyle(learningLanguage, 'title')}>
-              <span className="pr-sm preview-tour">{story.title}</span>
+              <span className="pr-sm practice-tour-start">{story.title}</span>
               <br />
               {story.url && (
                 <a
@@ -231,7 +243,7 @@ const ReadViews = ({ match }) => {
                 )}
                 {mode === 'preview' && (
                   <Checkbox
-                    className = 'highlight-exercises'
+                    className='highlight-exercises'
                     toggle
                     label={intl.formatMessage({ id: 'show preview' })}
                     checked={previewToggleOn}
@@ -239,7 +251,7 @@ const ReadViews = ({ match }) => {
                     style={{ paddingTop: '.5em' }}
                   />
                 )}
-                {!['practice-preview','preview'].includes(mode) && (
+                {!['practice-preview', 'preview'].includes(mode) && (
                   <Checkbox
                     toggle
                     label={intl.formatMessage({ id: 'show-difficulty-level' })}

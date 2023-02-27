@@ -1,20 +1,22 @@
 import React from 'react'
-import { useHistory } from 'react-router-dom'
+import { useHistory, useParams } from 'react-router-dom'
 import JoyRide, { ACTIONS, EVENTS, STATUS } from 'react-joyride'
 import { sidebarSetOpen } from 'Utilities/redux/sidebarReducer'
 import { useSelector, useDispatch } from 'react-redux'
 import { handleNextTourStep, stopTour } from 'Utilities/redux/tourReducer'
 import { FormattedMessage } from 'react-intl'
 import useWindowDimensions from 'Utilities/windowDimensions'
-import { homeTourSteps, libraryTourSteps, progressTourSteps, confettiRain } from 'Utilities/common'
+import { homeTourSteps, libraryTourSteps, progressTourSteps, confettiRain, practiceTourSteps } from 'Utilities/common'
 
 const Tour = () => {
   const dispatch = useDispatch()
   const tourState = useSelector(({ tour }) => tour)
   const history = useHistory()
+  //const { id: storyId } = useParams()
+  //console.log(storyId)
 
   const bigScreen = useWindowDimensions().width >= 700
-  
+
   const callback = data => {
     const { action, index, type, status } = data
     console.log(action)
@@ -33,6 +35,7 @@ const Tour = () => {
           // on a page that doesnt have a tour
         }
 
+        // home tour
         if (tourState.steps === homeTourSteps && index === 1) {
           confettiRain()
           confettiRain()
@@ -49,7 +52,7 @@ const Tour = () => {
 
         // progress tour tour step index related desktop actions
         if (tourState.steps === progressTourSteps) {
-          dispatch({ type: 'CLOSE_PROFILE_DROPDOWN'})
+          dispatch({ type: 'CLOSE_PROFILE_DROPDOWN' })
           if (index === 0) {
             dispatch({ type: 'SET_TIMELINE_CHART' })
           }
@@ -69,6 +72,27 @@ const Tour = () => {
             dispatch({ type: 'SET_TIMELINE_CHART' })
           }
         }
+
+        // practice tour steps
+        if (tourState.steps === practiceTourSteps) {
+          /*
+          if (index === 0) {
+            if (history.location.pathname.includes('/practice')) {
+              //console.log(`id paramas in tour: ${storyId}`)
+              history.push(`/stories/${storyId}/preview`)
+            }
+          }
+          */
+          if (index === 1) {
+            dispatch({ type: 'SHOW_PRACTICE_DROPDOWN' })
+          }
+          if (index === 2) {
+            const currentPath = history.location.pathname
+            const newPath = currentPath.substring(0, currentPath.length - 7)
+            history.push(`${newPath}practice`)
+          }
+        }
+
         dispatch(handleNextTourStep(index + (action === ACTIONS.PREV ? -1 : 1)))
 
         // mobile
