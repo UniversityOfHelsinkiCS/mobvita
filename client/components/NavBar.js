@@ -84,29 +84,13 @@ export default function NavBar() {
     } else if (history.location.pathname.includes('library')) {
       dispatch(sidebarSetOpen(false))
       dispatch({ type: 'LIBRARY_TOUR_RESTART' })
-    } else if (
-      history.location.pathname.includes('preview') ||
-      (history.location.pathname.includes('practice'))
-    ) {
+    } else if (history.location.pathname.includes('preview') && hiddenFeatures) {
       dispatch(sidebarSetOpen(false))
-      if (history.location.pathname.includes('/practice')) {
-        if (history.location.pathname.includes('grammar')) {
-          const currentPath = history.location.pathname
-          const newPath = currentPath.substring(0, currentPath.length - 17)
-          history.push(`${newPath}preview`)
-        } else if (history.location.pathname.includes('listening')) {
-          const currentPath = history.location.pathname
-          const newPath = currentPath.substring(0, currentPath.length - 19)
-          history.push(`${newPath}preview`)
-        } else {
-          const currentPath = history.location.pathname
-          const newPath = currentPath.substring(0, currentPath.length - 9)
-          history.push(`${newPath}preview`)
-        }
-      }
-      setTimeout(() => {
-        dispatch({ type: 'PRACTICE_TOUR_RESTART' })
-      }, 1200)
+      dispatch({ type: 'PRACTICE_TOUR_RESTART' })
+
+    } else if (history.location.pathname.includes('/practice' && hiddenFeatures)){
+      dispatch(sidebarSetOpen(false))
+      dispatch({ type: 'PRACTICE_TOUR_ALTERNATIVE' })
     } else {
       dispatch(sidebarSetOpen(false))
       dispatch({ type: 'TOUR_RESTART' })

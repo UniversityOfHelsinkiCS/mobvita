@@ -1501,6 +1501,16 @@ const desktopPracticeTourSteps = [
     target: '.progress-bar-cont',
     title: 'moi',
     content: 'heh'
+  },
+  {
+    target: '.practice-container',
+    title: 'moi',
+    content: 'heh'
+  },
+  {
+    target: '.attempt-bar',
+    title: 'moi',
+    content: 'heh'
   }
 ]
 

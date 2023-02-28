@@ -80,11 +80,6 @@ const Tour = () => {
             const currentPath = history.location.pathname
             const newPath = currentPath.substring(0, currentPath.length - 7)
             history.push(`${newPath}practice/`)
-
-            //setTimeout(() => {
-            dispatch(handleNextTourStep(index + (action === ACTIONS.PREV ? -1 : 1)))
-            //}, 10000)
-            //return
           }
         }
 
