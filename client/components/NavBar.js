@@ -87,8 +87,7 @@ export default function NavBar() {
     } else if (history.location.pathname.includes('preview') && hiddenFeatures) {
       dispatch(sidebarSetOpen(false))
       dispatch({ type: 'PRACTICE_TOUR_RESTART' })
-
-    } else if (history.location.pathname.includes('/practice' && hiddenFeatures)){
+    } else if (history.location.pathname.includes('/practice') && hiddenFeatures) {
       dispatch(sidebarSetOpen(false))
       dispatch({ type: 'PRACTICE_TOUR_ALTERNATIVE' })
     } else {
