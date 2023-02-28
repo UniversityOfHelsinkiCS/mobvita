@@ -174,9 +174,9 @@ const PlainWord = ({ word, annotatingAllowed, focusedConcept, ...props }) => {
         tabIndex={-1}
         onKeyDown={() => handleWordClick()}
         onClick={() => handleWordClick()}
-        className={`word-interactive${
+        className={`word-interactive mobile-practice-tour-word${
           wordShouldBeHighlighted(word) && ' notes-highlighted-word' || conceptHighlighting && ' concept-highlighted-word'  || ''
-        }`}
+        }` }
         {...props}
       >
         {surface}

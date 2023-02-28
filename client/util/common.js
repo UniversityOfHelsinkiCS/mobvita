@@ -1498,12 +1498,12 @@ const desktopPracticeTourSteps = [
     disableBeacon: true,
   },
   {
-    target: '.progress-bar-cont',
+    target: '.practice-container',
     title: 'moi',
     content: 'heh'
   },
   {
-    target: '.practice-container',
+    target: '.exercise',
     title: 'moi',
     content: 'heh'
   },
@@ -1511,10 +1511,86 @@ const desktopPracticeTourSteps = [
     target: '.attempt-bar',
     title: 'moi',
     content: 'heh'
+  },
+  {
+    target: '.progress-bar-cont',
+    title: 'moi',
+    content: 'heh'
+  },
+  {
+    target: '.tour-button',
+    title: <FormattedMessage id="Tour end" />,
+    content: (
+      <div>
+        <FormattedHTMLMessage id="tour-end-message" />
+        <div>{tourSign()}</div>
+      </div>
+    ),
+    disableBeacon: true,
   }
 ]
 
-export const practiceTourSteps = desktopPracticeTourSteps
+const mobilePracticeTourSteps = [
+  {
+    target: '.practice-tour-start',
+    title: 'Welcome',
+    content: 'Welcome to the preview and practice pages.',
+    placement: 'center',
+    disableBeacon: true,
+  },
+  {
+    target: '.mobile-practice-tour-word',
+    title: 'Translations',
+    content: 'You can click any word in the text, and the translation of it will show up here.',
+    disableBeacon: true,
+  },
+  {
+    target: '.practice-tour-start-practice',
+    title: 'Start practicing',
+    content: 'Click here to start practicing the story',
+    disableBeacon: true,
+  },
+  {
+    target: '.practice-container',
+    title: 'moi',
+    content: 'heh'
+  },
+  {
+    target: '.exercise',
+    title: 'moi',
+    content: 'heh'
+  },
+  {
+    target: '.attempt-bar',
+    title: 'moi',
+    content: 'heh'
+  },
+  {
+    target: '.progress-bar-cont',
+    title: 'moi',
+    content: 'heh'
+  },
+  {
+    target: '.tour-mobile-start-button',
+    title: <FormattedMessage id="Tour end" />,
+    content: (
+      <div>
+        <FormattedHTMLMessage id="tour-end-message" />
+        <div>{tourSign()}</div>
+      </div>
+    ),
+    placement: 'right',
+    placementBeacon: 'left',
+    styles: {
+      options: {
+        zIndex: 10000,
+      },
+    },
+  },
+]
+
+export const practiceTourSteps = 
+  window.innerWidth >= 700 ? desktopPracticeTourSteps : mobilePracticeTourSteps
 export const progressTourSteps =
   window.innerWidth >= 700 ? desktopProgressTourSteps : mobileProgressTourSteps
 export const homeTourSteps = window.innerWidth >= 700 ? desktopHomeTourSteps : mobileHomeTourSteps

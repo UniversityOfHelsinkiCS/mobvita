@@ -84,11 +84,17 @@ export default function Sidebar({ history }) {
   }
 
   const handleTourStart = () => {
-    if (history.location.pathname.includes('progress') && hiddenFeatures) {
+    if (history.location.pathname.includes('progress')) {
       dispatch({ type: 'PROGRESS_TOUR_RESTART' })
-    } else if (history.location.pathname.includes('library') && hiddenFeatures) {
+    } else if (history.location.pathname.includes('library')) {
       dispatch(sidebarSetOpen(false))
       dispatch({ type: 'LIBRARY_TOUR_RESTART' })
+    } else if (history.location.pathname.includes('preview') && hiddenFeatures) {
+      dispatch(sidebarSetOpen(false))
+      dispatch({ type: 'PRACTICE_TOUR_RESTART' })
+    } else if (history.location.pathname.includes('/practice') && hiddenFeatures) {
+      dispatch(sidebarSetOpen(false))
+      dispatch({ type: 'PRACTICE_TOUR_ALTERNATIVE' })
     } else {
       dispatch(sidebarSetOpen(false))
       dispatch({ type: 'TOUR_RESTART' })
