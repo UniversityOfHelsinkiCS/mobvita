@@ -1463,7 +1463,7 @@ const desktopPracticeTourSteps = [
     placement: 'center',
     disableBeacon: true,
   },
-  /*  {
+  {
     target: '.story-topics-box',
     title: <FormattedMessage id="Tour end" />,
     content: (
@@ -1473,7 +1473,7 @@ const desktopPracticeTourSteps = [
       </div>
     ),
     disableBeacon: true,
-  },*/
+  },
   {
     target: '.dictionary-help',
     title: 'Translations',
@@ -1497,6 +1497,11 @@ const desktopPracticeTourSteps = [
     content: 'Click here to start practicing the story',
     disableBeacon: true,
   },
+  {
+    target: '.progress-bar-cont',
+    title: 'moi',
+    content: 'heh'
+  }
 ]
 
 export const practiceTourSteps = desktopPracticeTourSteps

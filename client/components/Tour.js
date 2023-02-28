@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { useHistory, useParams } from 'react-router-dom'
 import JoyRide, { ACTIONS, EVENTS, STATUS } from 'react-joyride'
 import { sidebarSetOpen } from 'Utilities/redux/sidebarReducer'
@@ -12,14 +12,12 @@ const Tour = () => {
   const dispatch = useDispatch()
   const tourState = useSelector(({ tour }) => tour)
   const history = useHistory()
-  //const { id: storyId } = useParams()
-  //console.log(storyId)
 
   const bigScreen = useWindowDimensions().width >= 700
 
   const callback = data => {
     const { action, index, type, status } = data
-    console.log(action)
+    //console.log(action)
 
     if (
       action === ACTIONS.CLOSE ||
@@ -75,21 +73,18 @@ const Tour = () => {
 
         // practice tour steps
         if (tourState.steps === practiceTourSteps) {
-          /*
-          if (index === 0) {
-            if (history.location.pathname.includes('/practice')) {
-              //console.log(`id paramas in tour: ${storyId}`)
-              history.push(`/stories/${storyId}/preview`)
-            }
-          }
-          */
-          if (index === 1) {
+          if (index === 2) {
             dispatch({ type: 'SHOW_PRACTICE_DROPDOWN' })
           }
-          if (index === 2) {
+          if (index === 3) {
             const currentPath = history.location.pathname
             const newPath = currentPath.substring(0, currentPath.length - 7)
-            history.push(`${newPath}practice`)
+            history.push(`${newPath}practice/`)
+
+            //setTimeout(() => {
+            dispatch(handleNextTourStep(index + (action === ACTIONS.PREV ? -1 : 1)))
+            //}, 10000)
+            //return
           }
         }
 

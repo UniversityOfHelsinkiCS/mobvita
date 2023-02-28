@@ -3,7 +3,7 @@ import { useSelector, useDispatch } from 'react-redux'
 import { Navbar, Nav, NavDropdown, NavItem, Button } from 'react-bootstrap'
 import Headroom from 'react-headroom'
 import { Icon, Label, Popup } from 'semantic-ui-react'
-import { Link, useHistory } from 'react-router-dom'
+import { Link, useHistory, useParams } from 'react-router-dom'
 import { logout } from 'Utilities/redux/userReducer'
 import { sidebarSetOpen } from 'Utilities/redux/sidebarReducer'
 import { getMetadata } from 'Utilities/redux/metadataReducer'
@@ -85,10 +85,27 @@ export default function NavBar() {
       dispatch(sidebarSetOpen(false))
       dispatch({ type: 'LIBRARY_TOUR_RESTART' })
     } else if (history.location.pathname.includes('preview')
-      // || history.location.pathname.includes('practice')
+      || history.location.pathname.includes('practice')
       && hiddenFeatures) {
       dispatch(sidebarSetOpen(false))
-      dispatch({ type: 'PRACTICE_TOUR_RESTART' })
+      if (history.location.pathname.includes('/practice')) {
+        if (history.location.pathname.includes('grammar')) {
+          const currentPath = history.location.pathname
+          const newPath = currentPath.substring(0, currentPath.length - 17)
+          history.push(`${newPath}preview`)
+        } else if (history.location.pathname.includes('listening')) {
+          const currentPath = history.location.pathname
+          const newPath = currentPath.substring(0, currentPath.length - 19)
+          history.push(`${newPath}preview`)
+        } else {
+          const currentPath = history.location.pathname
+          const newPath = currentPath.substring(0, currentPath.length - 9)
+          history.push(`${newPath}preview`)
+        }
+      }
+      setTimeout(() => {
+        dispatch({ type: 'PRACTICE_TOUR_RESTART' })
+      }, 1200)
     } else {
       dispatch(sidebarSetOpen(false))
       dispatch({ type: 'TOUR_RESTART' })
