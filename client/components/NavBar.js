@@ -67,7 +67,7 @@ export default function NavBar() {
     dispatch(logout())
     history.push('/')
   }
-  const showProfileDropdown = useSelector((state) => state.dropdown.showProfileDropdown)
+  const showProfileDropdown = useSelector(state => state.dropdown.showProfileDropdown)
 
   const handleProfileButtonCLick = () => {
     if (showProfileDropdown) {
@@ -78,15 +78,16 @@ export default function NavBar() {
   }
 
   const handleTourStart = () => {
-    if (history.location.pathname.includes('progress') && hiddenFeatures) {
+    if (history.location.pathname.includes('progress')) {
       dispatch({ type: 'SHOW_PROFILE_DROPDOWN' })
       dispatch({ type: 'PROGRESS_TOUR_RESTART' })
-    } else if (history.location.pathname.includes('library') && hiddenFeatures) {
+    } else if (history.location.pathname.includes('library')) {
       dispatch(sidebarSetOpen(false))
       dispatch({ type: 'LIBRARY_TOUR_RESTART' })
-    } else if (history.location.pathname.includes('preview')
-      || history.location.pathname.includes('practice')
-      && hiddenFeatures) {
+    } else if (
+      history.location.pathname.includes('preview') ||
+      (history.location.pathname.includes('practice'))
+    ) {
       dispatch(sidebarSetOpen(false))
       if (history.location.pathname.includes('/practice')) {
         if (history.location.pathname.includes('grammar')) {
@@ -296,11 +297,9 @@ export default function NavBar() {
 
               {!smallWindow && (
                 <>
-                  {hiddenFeatures && (
-                    <Button className="tour-button" onClick={handleTourStart}>
-                      <img src={images.direction} alt="direction icon" width="21" height="21" />
-                    </Button>
-                  )}
+                  <Button className="tour-button" onClick={handleTourStart}>
+                    <img src={images.direction} alt="direction icon" width="21" height="21" />
+                  </Button>
 
                   <NavDropdown
                     className="navbar-dropdown-icon-cont"
