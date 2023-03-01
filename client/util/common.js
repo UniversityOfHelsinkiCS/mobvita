@@ -1458,68 +1458,89 @@ const mobileLibraryTourSteps = [
 const desktopPracticeTourSteps = [
   {
     target: '.practice-tour-start',
-    title: 'Welcome',
-    content: 'Welcome to the preview and practice pages.',
+    title: <FormattedMessage id="Welcome to the Practice mode" />,
+    content: (
+      <div>
+        <FormattedHTMLMessage id="practice-tour-welcome-message" />
+        <div>{tourSign()}</div>
+      </div>
+    ),
     placement: 'center',
     disableBeacon: true,
   },
   {
     target: '.story-topics-box',
-    title: <FormattedMessage id="Tour end" />,
+    title: <FormattedMessage id="Story Topics Box" />,
     content: (
       <div>
-        <FormattedHTMLMessage id="tour-end-message" />
-        <div></div>
+        <FormattedHTMLMessage id="practice-tour-topics-message" />
       </div>
     ),
     disableBeacon: true,
   },
   {
     target: '.dictionary-help',
-    title: 'Translations',
-    content: 'You can click any word in the text, and the translation of it will show up here.',
-    disableBeacon: true,
-  },
-  /*   {
-    target: '.highlight-exercises',
-    title: <FormattedMessage id="Tour end" />,
+    title: <FormattedMessage id="Translations" />,
     content: (
       <div>
-        <FormattedHTMLMessage id="tour-end-message" />
-        <div></div>
+        <FormattedHTMLMessage id="practice-tour-translations-message" />
       </div>
     ),
     disableBeacon: true,
-  }, */
+  },
   {
     target: '.practice-tour-start-practice',
-    title: 'Start practicing',
-    content: 'Click here to start practicing the story',
+    title: <FormattedMessage id="Start Practicing" />,
+    content: (
+      <div>
+        <FormattedHTMLMessage id="practice-tour-start-practice-message" />
+      </div>
+    ),
     disableBeacon: true,
   },
   {
     target: '.practice-container',
-    title: 'moi',
-    content: 'heh'
+    title: <FormattedMessage id="Exercises" />,
+    content: (
+      <div>
+        <FormattedHTMLMessage id="practice-tour-exercise-box-message" />
+      </div>
+    ),
+    disableBeacon: true,
   },
   {
     target: '.exercise',
-    title: 'moi',
-    content: 'heh'
+    title: <FormattedMessage id="Exercise" />,
+    content: (
+      <div>
+        <FormattedHTMLMessage id="practice-tour-exercise-message" />
+      </div>
+    ),
+    disableBeacon: true,
   },
   {
     target: '.attempt-bar',
-    title: 'moi',
-    content: 'heh'
+    title: <FormattedMessage id="check-answer" />,
+    content: (
+      <div>
+        <FormattedHTMLMessage id="practice-tour-check-answers-message" />
+      </div>
+    ),
+    disableBeacon: true,
   },
   {
     target: '.progress-bar-cont',
-    title: 'moi',
-    content: 'heh'
+    title: <FormattedMessage id="Progress bar" />,
+    content: (
+      <div>
+        <FormattedHTMLMessage id="practice-tour-progress-message" />
+      </div>
+    ),
+    disableBeacon: true,
   },
   {
     target: '.navbar-basic-item',
-    title: 'ELO score',
+    title: <FormattedMessage id="ELO score" />,
     content: (
       <div>
         <FormattedHTMLMessage id="explanations-popup-story-elo" />
@@ -1542,46 +1563,79 @@ const desktopPracticeTourSteps = [
 const mobilePracticeTourSteps = [
   {
     target: '.practice-tour-start',
-    title: 'Welcome',
-    content: 'Welcome to the preview and practice pages.',
+    title: <FormattedMessage id="Welcome to the Practice mode" />,
+    content: (
+      <div>
+        <FormattedHTMLMessage id="practice-tour-welcome-message" />
+        <div>{tourSign()}</div>
+      </div>
+    ),
     placement: 'center',
     disableBeacon: true,
   },
   {
     target: '.mobile-practice-tour-word',
-    title: 'Translations',
-    content: 'You can click any word in the text, and the translation of it will show up here.',
+    title: <FormattedMessage id="Translations" />,
+    content: (
+      <div>
+        <FormattedHTMLMessage id="practice-tour-mobile-translations-message" />
+      </div>
+    ),
     disableBeacon: true,
   },
   {
     target: '.practice-tour-start-practice',
-    title: 'Start practicing',
-    content: 'Click here to start practicing the story',
+    title: <FormattedMessage id="Start Practicing" />,
+    content: (
+      <div>
+        <FormattedHTMLMessage id="practice-tour-start-practice-message" />
+      </div>
+    ),
     disableBeacon: true,
   },
   {
     target: '.practice-container',
-    title: 'moi',
-    content: 'heh'
+    title: <FormattedMessage id="Exercises" />,
+    content: (
+      <div>
+        <FormattedHTMLMessage id="practice-tour-exercise-box-message" />
+      </div>
+    ),
+    disableBeacon: true,
   },
   {
     target: '.exercise',
-    title: 'moi',
-    content: 'heh'
+    title: <FormattedMessage id="Exercise" />,
+    content: (
+      <div>
+        <FormattedHTMLMessage id="practice-tour-exercise-message" />
+      </div>
+    ),
+    disableBeacon: true,
   },
   {
     target: '.attempt-bar',
-    title: 'moi',
-    content: 'heh'
+    title: <FormattedMessage id="check-answer" />,
+    content: (
+      <div>
+        <FormattedHTMLMessage id="practice-tour-check-answers-message" />
+      </div>
+    ),
+    disableBeacon: true,
   },
   {
     target: '.progress-bar-cont',
-    title: 'moi',
-    content: 'heh'
+    title: <FormattedMessage id="Progress bar" />,
+    content: (
+      <div>
+        <FormattedHTMLMessage id="practice-tour-progress-message" />
+      </div>
+    ),
+    disableBeacon: true,
   },
   {
     target: '.navbar-basic-item',
-    title: 'ELO score',
+    title: <FormattedMessage id="ELO score" />,
     content: (
       <div>
         <FormattedHTMLMessage id="explanations-popup-story-elo" />
