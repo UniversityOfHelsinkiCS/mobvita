@@ -77,7 +77,7 @@ const Tour = () => {
             dispatch({ type: 'SHOW_PRACTICE_DROPDOWN' })
           }
           if (index === 3) {
-            dispatch({ type: 'CLOSE_PRACTICE_DROPDOWN'})
+            dispatch({ type: 'CLOSE_PRACTICE_DROPDOWN' })
             const currentPath = history.location.pathname
             const newPath = currentPath.substring(0, currentPath.length - 7)
             history.push(`${newPath}practice/`)
@@ -145,18 +145,18 @@ const Tour = () => {
             dispatch({ type: 'SHOW_PRACTICE_DROPDOWN' })
           }
           if (index === 2) {
-            dispatch({ type: 'CLOSE_PRACTICE_DROPDOWN'})
+            dispatch({ type: 'CLOSE_PRACTICE_DROPDOWN' })
             const currentPath = history.location.pathname
             const newPath = currentPath.substring(0, currentPath.length - 7)
             history.push(`${newPath}practice/`)
           }
-          if (index === 6) {
+          if (index === 7) {
             dispatch(sidebarSetOpen(true))
 
             setTimeout(() => {
               dispatch(handleNextTourStep(index + (action === ACTIONS.PREV ? -1 : 1)))
               window.dispatchEvent(new Event('resize'))
-            }, 500) 
+            }, 500)
           }
         }
         dispatch(handleNextTourStep(index + (action === ACTIONS.PREV ? -1 : 1)))

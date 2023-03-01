@@ -1518,6 +1518,15 @@ const desktopPracticeTourSteps = [
     content: 'heh'
   },
   {
+    target: '.navbar-basic-item',
+    title: 'ELO score',
+    content: (
+      <div>
+        <FormattedHTMLMessage id="explanations-popup-story-elo" />
+      </div>
+    )
+  },
+  {
     target: '.tour-button',
     title: <FormattedMessage id="Tour end" />,
     content: (
@@ -1571,6 +1580,15 @@ const mobilePracticeTourSteps = [
     content: 'heh'
   },
   {
+    target: '.navbar-basic-item',
+    title: 'ELO score',
+    content: (
+      <div>
+        <FormattedHTMLMessage id="explanations-popup-story-elo" />
+      </div>
+    )
+  },
+  {
     target: '.tour-mobile-start-button',
     title: <FormattedMessage id="Tour end" />,
     content: (
@@ -1589,7 +1607,7 @@ const mobilePracticeTourSteps = [
   },
 ]
 
-export const practiceTourSteps = 
+export const practiceTourSteps =
   window.innerWidth >= 700 ? desktopPracticeTourSteps : mobilePracticeTourSteps
 export const progressTourSteps =
   window.innerWidth >= 700 ? desktopProgressTourSteps : mobileProgressTourSteps

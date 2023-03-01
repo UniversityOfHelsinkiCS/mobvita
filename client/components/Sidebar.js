@@ -94,7 +94,7 @@ export default function Sidebar({ history }) {
       dispatch({ type: 'PRACTICE_TOUR_RESTART' })
     } else if (history.location.pathname.includes('/practice') && hiddenFeatures) {
       dispatch(sidebarSetOpen(false))
-      dispatch({ type: 'PRACTICE_TOUR_ALTERNATIVE' })
+      dispatch({ type: 'PRACTICE_TOUR_MOBILE_ALTERNATIVE' })
     } else {
       dispatch(sidebarSetOpen(false))
       dispatch({ type: 'TOUR_RESTART' })
@@ -222,7 +222,7 @@ export default function Sidebar({ history }) {
                     /> */}
                     <Link to="/profile/progress">
                       <Button
-                        className = 'sidebar-profile-button'
+                        className='sidebar-profile-button'
                         data-cy="settings-link"
                         variant="secondary"
                         style={{ marginTop: marginTopButton }}

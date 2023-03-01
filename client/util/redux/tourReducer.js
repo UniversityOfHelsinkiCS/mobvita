@@ -80,11 +80,20 @@ export default (state = initialState, action) => {
         loading: false,
         key: new Date(),
       }
-      case 'PRACTICE_TOUR_ALTERNATIVE':
+    case 'PRACTICE_TOUR_ALTERNATIVE':
       return {
         ...state,
         steps: practiceTourSteps,
         stepIndex: 4,
+        run: true,
+        loading: false,
+        key: new Date(),
+      }
+    case 'PRACTICE_TOUR_MOBILE_ALTERNATIVE':
+      return {
+        ...state,
+        steps: practiceTourSteps,
+        stepIndex: 3,
         run: true,
         loading: false,
         key: new Date(),
