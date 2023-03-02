@@ -1,6 +1,12 @@
 import callBuilder from 'Utilities/apiConnection'
 import { capitalize, localeCodeToName } from 'Utilities/common'
 
+export const calculateIRTScore = (language) => {
+  const route = '/user/irt_score/' + language
+  const prefix = 'CALCULATE_IRT'
+  return callBuilder(route, prefix, 'get')
+}
+
 export const createRealToken = (email, password) => {
   const route = '/session/'
   const prefix = 'LOGIN'
@@ -398,7 +404,6 @@ export default (state = { data: null, learningLanguageChanged: false }, action) 
         error: false,
       }
     case 'UPDATE_LEARNING_LANGUAGE_SUCCESS':
-      console.log('updating')
       return {
         ...state,
         data: { ...state.data, user: action.response.user },
@@ -516,6 +521,23 @@ export default (state = { data: null, learningLanguageChanged: false }, action) 
         error: false,
         refreshed: true,
         newerVocabularyData: action.response,
+      }
+    case 'CALCULATE_IRT_ATTEMPT':
+      return {
+        ...state,
+        irtCalculationPending: true,
+        error: false,
+      }
+    case 'CALCULATE_IRT_FAILURE':
+      return {
+        ...state,
+        irtCalculationPending: false,
+        error: true,
+      }
+    case 'CALCULATE_IRT_SUCCESS':
+      return {
+        ...state,
+        irtCalculationPending: false,
       }
     default:
       return state

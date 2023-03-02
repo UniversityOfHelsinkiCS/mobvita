@@ -4,7 +4,7 @@ import { Navbar, Nav, NavDropdown, NavItem, Button } from 'react-bootstrap'
 import Headroom from 'react-headroom'
 import { Icon, Label, Popup } from 'semantic-ui-react'
 import { Link, useHistory, useParams } from 'react-router-dom'
-import { logout } from 'Utilities/redux/userReducer'
+import { logout, calculateIRTScore, getSelf } from 'Utilities/redux/userReducer'
 import { sidebarSetOpen } from 'Utilities/redux/sidebarReducer'
 import { getMetadata } from 'Utilities/redux/metadataReducer'
 import {
@@ -47,14 +47,18 @@ const NavbarIcon = ({ imgSrc, altText, extraClass }) => {
 
 export default function NavBar() {
   const { user } = useSelector(({ user }) => ({ user: user.data }))
+  const { irtCalculationPending } = useSelector(({ user }) => user)
   const { numUnreadNews } = useSelector(({ metadata }) => metadata)
-  const open = useSelector(({ sidebar }) => sidebar.open)
+  const { sessionId } = useSelector(({ snippets }) => snippets)
   const { show, open: encOpen, fcShow, fcOpen } = useSelector(({ encouragement }) => encouragement)
+
+  const open = useSelector(({ sidebar }) => sidebar.open)
+  const learningLanguage = useSelector(learningLanguageSelector)
+  
   const dispatch = useDispatch()
   const history = useHistory()
   const smallWindow = useWindowDimensions().width < 700
   const intl = useIntl()
-  const learningLanguage = useSelector(learningLanguageSelector)
   const handleEloClick = () => {
     history.push('/profile/progress')
   }
@@ -119,6 +123,14 @@ export default function NavBar() {
   }
 
   useEffect(() => {
+    dispatch(calculateIRTScore(learningLanguage))
+  }, [sessionId])
+
+  useEffect(() => {
+    if (!irtCalculationPending) dispatch(getSelf())
+  }, [irtCalculationPending])
+
+  useEffect(() => {
     if (check.includes('home') && !user?.user.enable_recmd) {
       dispatch(showIcon())
       dispatch(closeEncouragement())
@@ -149,6 +161,11 @@ export default function NavBar() {
     user && user.user.exercise_history && user.user.exercise_history.length > 0
       ? user.user.exercise_history[user.user.exercise_history.length - 1].score
       : 0
+
+  const irtScore =
+    user && user.user.irt_score_history && user.user.irt_score_history.length > 0
+      ? user.user.irt_score_history[user.user.irt_score_history.length - 1].score
+      : undefined
 
   const flashcardElo =
     user && user.user.flashcard_history && user.user.flashcard_history.length > 0
@@ -244,7 +261,10 @@ export default function NavBar() {
                     content={<FormattedHTMLMessage id="explanations-popup-story-elo" />}
                     trigger={
                       <div className="navbar-basic-item">
-                        <Icon name="star outline" style={{ margin: 0, width: '16px' }} /> {storyElo}
+                        <Icon name="star outline" style={{ margin: 0, width: '16px' }} /> 
+                        {}
+                        {irtScore != undefined ? irtScore : storyElo}
+                        {/* {storyElo} */}
                       </div>
                     }
                   />
