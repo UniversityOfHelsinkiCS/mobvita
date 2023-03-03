@@ -4,7 +4,7 @@ import { Navbar, Nav, NavDropdown, NavItem, Button } from 'react-bootstrap'
 import Headroom from 'react-headroom'
 import { Icon, Label, Popup } from 'semantic-ui-react'
 import { Link, useHistory, useParams } from 'react-router-dom'
-import { logout, calculateIRTScore, getSelf } from 'Utilities/redux/userReducer'
+import { logout, calculateIRTScore, getSelf, setIrtDummyScore } from 'Utilities/redux/userReducer'
 import { sidebarSetOpen } from 'Utilities/redux/sidebarReducer'
 import { getMetadata } from 'Utilities/redux/metadataReducer'
 import {
@@ -47,7 +47,7 @@ const NavbarIcon = ({ imgSrc, altText, extraClass }) => {
 
 export default function NavBar() {
   const { user } = useSelector(({ user }) => ({ user: user.data }))
-  const { irtCalculationPending } = useSelector(({ user }) => user)
+  const { irtCalculationPending, pending: userPending, irt_dummy_score } = useSelector(({ user }) => user)
   const { numUnreadNews } = useSelector(({ metadata }) => metadata)
   const { sessionId } = useSelector(({ snippets }) => snippets)
   const { show, open: encOpen, fcShow, fcOpen } = useSelector(({ encouragement }) => encouragement)
@@ -123,12 +123,23 @@ export default function NavBar() {
   }
 
   useEffect(() => {
+    dispatch(setIrtDummyScore(undefined))
     dispatch(calculateIRTScore(learningLanguage))
   }, [sessionId])
 
   useEffect(() => {
     if (!irtCalculationPending) dispatch(getSelf())
   }, [irtCalculationPending])
+
+  useEffect(() => {
+    if (!userPending && irt_dummy_score == undefined){
+      let irtScore =
+        user && user.user.irt_score_history && user.user.irt_score_history.length > 0
+          ? user.user.irt_score_history[user.user.irt_score_history.length - 1].score
+          : undefined
+      dispatch(setIrtDummyScore(irtScore))
+    } 
+  }, [user])
 
   useEffect(() => {
     if (check.includes('home') && !user?.user.enable_recmd) {
@@ -161,11 +172,6 @@ export default function NavBar() {
     user && user.user.exercise_history && user.user.exercise_history.length > 0
       ? user.user.exercise_history[user.user.exercise_history.length - 1].score
       : 0
-
-  const irtScore =
-    user && user.user.irt_score_history && user.user.irt_score_history.length > 0
-      ? user.user.irt_score_history[user.user.irt_score_history.length - 1].score
-      : undefined
 
   const flashcardElo =
     user && user.user.flashcard_history && user.user.flashcard_history.length > 0
@@ -263,7 +269,7 @@ export default function NavBar() {
                       <div className="navbar-basic-item">
                         <Icon name="star outline" style={{ margin: 0, width: '16px' }} /> 
                         {}
-                        {irtScore != undefined ? irtScore : storyElo}
+                        {irtCalculationPending ? '...' : irt_dummy_score != undefined ? Math.round(irt_dummy_score) : '...'}
                         {/* {storyElo} */}
                       </div>
                     }

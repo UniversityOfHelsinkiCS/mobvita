@@ -14,6 +14,8 @@ import {
   setAnswers,
   addToCorrectAnswerIDs,
 } from 'Utilities/redux/practiceReducer'
+import { setIrtDummyScore } from 'Utilities/redux/userReducer'
+
 
 const CheckAnswersButton = ({ handleClick, checkAnswersButtonTempDisable }) => {
   const { attempt, isNewSnippet } = useSelector(({ practice }) => practice)
@@ -87,6 +89,8 @@ const SnippetActions = ({ storyId, exerciseCount, isControlledStory, exerciseMod
   const { currentAnswers, correctAnswerIDs, touchedIds, attempt, options, audio } = useSelector(
     ({ practice }) => practice
   )
+  const { irt_dummy_score } = useSelector(({ user }) => user)
+
 
   const rightAnswerAmount = useMemo(
     () =>
@@ -162,6 +166,16 @@ const SnippetActions = ({ storyId, exerciseCount, isControlledStory, exerciseMod
       }
     }
     dispatch(setAnswers(update_answers))
+
+    const num_wrong_exercises = wrongAnswers ? wrongAnswers.length : 0
+    const num_correct_exercises = Object.keys(filteredCurrentAnswers).length - num_wrong_exercises
+    if (irt_dummy_score){
+      const dummy_delta = num_correct_exercises - num_wrong_exercises
+      const dummy_score = irt_dummy_score + 1.25*dummy_delta
+      dummy_score = dummy_score < 0 ? 0 : dummy_score
+      dummy_score = dummy_score > 1000 ? 1000 : dummy_score
+      dispatch(setIrtDummyScore(dummy_score))
+    }
 
     if ((!wrongAnswers || wrongAnswers.length < 1) && attempt === 0) {
       if (snippetid[0] === numSnippets - 1) {

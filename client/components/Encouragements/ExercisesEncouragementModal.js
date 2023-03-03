@@ -3,7 +3,7 @@ import { Popup, Icon } from 'semantic-ui-react'
 import Draggable from 'react-draggable'
 import { FormattedHTMLMessage, FormattedMessage, useIntl } from 'react-intl'
 import useWindowDimensions from 'Utilities/windowDimensions'
-import { updateEnableRecmd } from 'Utilities/redux/userReducer'
+import { updateEnableRecmd, calculateIRTScore } from 'Utilities/redux/userReducer'
 import { getStoriesBlueFlashcards, getBlueFlashcards } from 'Utilities/redux/flashcardReducer'
 import { showIcon, closeEncouragement } from 'Utilities/redux/encouragementsReducer'
 import { Link, useParams } from 'react-router-dom'
@@ -256,6 +256,10 @@ const ExercisesEncouragementModal = ({
     dispatch(getBlueFlashcards(learningLanguage, dictionaryLanguage, storyId))
     dispatch(getLeaderboards())
     dispatch(getStoriesBlueFlashcards(learningLanguage, dictionaryLanguage))
+  }, [])
+
+  useEffect(() => {
+    dispatch(calculateIRTScore(learningLanguage))
   }, [])
 
   useEffect(() => {

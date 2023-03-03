@@ -1,6 +1,8 @@
 import callBuilder from 'Utilities/apiConnection'
 import { capitalize, localeCodeToName } from 'Utilities/common'
 
+export const setIrtDummyScore = (dummy_score) => ({ type: 'SET_IRT_DUMMY_SCORE', dummy_score: dummy_score})
+
 export const calculateIRTScore = (language) => {
   const route = '/user/irt_score/' + language
   const prefix = 'CALCULATE_IRT'
@@ -535,9 +537,23 @@ export default (state = { data: null, learningLanguageChanged: false }, action) 
         error: true,
       }
     case 'CALCULATE_IRT_SUCCESS':
+      console.log('action.response', action.response)
+      if (action.response.score){
+        return {
+          ...state,
+          irtCalculationPending: false,
+          irt_dummy_score: action.response.score
+        }
+      } else {
+        return {
+          ...state,
+          irtCalculationPending: false,
+        }
+      } 
+    case 'SET_IRT_DUMMY_SCORE':
       return {
         ...state,
-        irtCalculationPending: false,
+        irt_dummy_score: action.dummy_score,
       }
     default:
       return state
