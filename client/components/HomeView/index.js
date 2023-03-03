@@ -22,7 +22,15 @@ import EloChart from './EloChart'
 import LeaderboardSummary from './LeaderboardSummary'
 import SelectLessonModal from 'Components/Lessons/SelectLessonModal'
 
-const HomeviewButton = ({ imgSrc, altText, translationKey, handleClick, dataCy, wide, beta_feature }) => {
+const HomeviewButton = ({
+  imgSrc,
+  altText,
+  translationKey,
+  handleClick,
+  dataCy,
+  wide,
+  beta_feature,
+}) => {
   return (
     <button
       className={`homeview-btn${wide ? ' homeview-btn-wide' : ' homeview-btn-narrow'}`}
@@ -34,7 +42,7 @@ const HomeviewButton = ({ imgSrc, altText, translationKey, handleClick, dataCy, 
         className={`align-center ${!wide ? 'flex-col space-between' : 'flex justify-center'}`}
         style={{ height: '100%' }}
       >
-        <div style={{ width: '100%', 'display': 'inline-flex' }}>
+        <div style={{ width: '100%', display: 'inline-flex' }}>
           {/* <div style={{width: '7%'}}></div> */}
           <div className="homeview-btn-text" style={{ width: '100%' }}>
             <FormattedMessage id={translationKey} />
@@ -61,7 +69,7 @@ const HomeviewButtons = ({
   setLessonModalOpen,
   aTestIsEnabled,
 }) => {
-  const dispatch = useDispatch();
+  const dispatch = useDispatch()
   const history = useHistory()
   const { hasTests, hasAdaptiveTests } = useSelector(({ metadata }) => metadata)
   const { user } = useSelector(({ user }) => ({ user: user.data }))
@@ -160,7 +168,7 @@ const HomeviewButtons = ({
           </Button>
         </>
       )}
-    </div >
+    </div>
   )
 }
 
@@ -240,7 +248,7 @@ const HomeView = () => {
         setOpen={setBetaModalOpen}
         language={learningLanguage}
       />
-      {welcomeView &&
+      {welcomeView && (
         <DefaultActivityModal
           open={showWelcomeModal}
           username={username}
@@ -251,7 +259,7 @@ const HomeView = () => {
           enable_recmd={enable_recmd}
           welcomeBack
         />
-      }
+      )}
       <DefaultActivityModal
         open={showDAModal}
         username={username}
@@ -285,7 +293,7 @@ const HomeView = () => {
                   gap: '1em',
                 }}
               >
-                <EloChart width="100%" />
+                {!userIsAnonymous && <EloChart width="100%" />}
                 <LeaderboardSummary />
                 <MedalSummary />
               </div>
