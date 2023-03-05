@@ -16,7 +16,11 @@ import useWindowDimensions from 'Utilities/windowDimensions'
 import { getStoryAction, getStudentStoryAction } from 'Utilities/redux/storiesReducer'
 import { clearTranslationAction } from 'Utilities/redux/translationReducer'
 import { resetAnnotations, setAnnotations } from 'Utilities/redux/annotationsReducer'
-import { updateShowReviewDiff, updatePreviewExer } from 'Utilities/redux/userReducer'
+import {
+  updateShowReviewDiff,
+  updatePreviewExer,
+  practiceTourViewed
+} from 'Utilities/redux/userReducer'
 import { learningLanguageSelector, getTextStyle, getMode } from 'Utilities/common'
 import DictionaryHelp from 'Components/DictionaryHelp'
 import AnnotationBox from 'Components/AnnotationBox'
@@ -28,6 +32,8 @@ import { compose } from 'redux'
 import StoryTopics from 'Components/StoryView/StoryTopics'
 import Footer from '../Footer'
 import ScrollArrow from '../ScrollArrow'
+import { startPracticeTour } from 'Utilities/redux/tourReducer'
+import { sidebarSetOpen } from 'Utilities/redux/sidebarReducer'
 
 const ReadViews = ({ match }) => {
   const dispatch = useDispatch()
@@ -105,6 +111,14 @@ const ReadViews = ({ match }) => {
     setCurrentStudent(parsedValue)
     dispatch(getStudentStoryAction(id, currentGroupId, parsedValue._id))
   }
+
+  useEffect(() => {
+    if (user?.user.is_new_user && !user?.user.has_seen_practice_tour) {
+      dispatch(practiceTourViewed())
+      dispatch(sidebarSetOpen(false))
+      dispatch(startPracticeTour())
+    }
+  }, [])
 
   useEffect(() => {
     if (isTeacher) {

@@ -1457,7 +1457,7 @@ const mobileLibraryTourSteps = [
 
 const desktopPracticeTourSteps = [
   {
-    target: '.practice-tour-start',
+    target: '.tour-button',
     title: <FormattedMessage id="Welcome to the Practice mode" />,
     content: (
       <div>
@@ -1562,7 +1562,7 @@ const desktopPracticeTourSteps = [
 
 const mobilePracticeTourSteps = [
   {
-    target: '.practice-tour-start',
+    target: '.tour-start-finish',
     title: <FormattedMessage id="Welcome to the Practice mode" />,
     content: (
       <div>
