@@ -178,6 +178,16 @@ const ReadViews = ({ match }) => {
   // console.log('focused ', focusedConcept)
 
   const StoryFunctionsDropdown = () => {
+
+    // gives the style to to dropdown menu based on is user on mobile
+    const chooseDropdownMenuSide = () => {
+      if (bigScreen) {
+        return null
+      } else {
+        return { right: 'auto', left: 0 }
+      }
+    }
+
     return (
       <SemanticButton.Group>
         {/* <SemanticButton
@@ -205,7 +215,10 @@ const ReadViews = ({ match }) => {
           open={showPracticeDropdown}
           onClick={handlePracticeButtonClick}
         >
-          <Dropdown.Menu className="story-item-dropdown">
+          <Dropdown.Menu
+            className="story-item-dropdown"
+            style={chooseDropdownMenuSide()}
+          >
             <Dropdown.Item
               text={<FormattedMessage id="practice-grammar-mode" />}
               as={Link}
