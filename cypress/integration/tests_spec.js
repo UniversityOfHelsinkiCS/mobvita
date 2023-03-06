@@ -39,8 +39,8 @@ describe('test view', function() {
 
     cy.visit('http://localhost:8000/home')
 
-    cy.get('.react-joyride__spotlight').click()
-    cy.wait(1000)
+    // cy.get('.react-joyride__spotlight').click()
+    // cy.wait(1000)
     //cy.get('.modal > .close').click()
     cy.get('[data-cy=tests-button]').click()
     cy.url().should('include', '/tests')
