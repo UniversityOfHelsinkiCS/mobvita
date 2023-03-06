@@ -46,13 +46,13 @@ const Word = ({ word, answer, tiedAnswer, snippet, hideDifficulty, focusedConcep
   //   return <PreviousExerciseWord word={word} answer={answer} tiedAnswer={tiedAnswer} />
   // }
 
-  // review mode (highlight all word objs that have 'wrong' field))
-  if ({}.propertyIsEnumerable.call(word, 'wrong')) {
+  // review mode (highlight all exercised words)
+  if ({}.propertyIsEnumerable.call(word, 'wrong') || !controlledStory && correctAnswerIDs.includes(word.ID.toString())) {
     // field exists but might be empty
     const answerObj = {
       correct: word.surface,
       concept: word.concept,
-      users_answer: word.wrong,
+      users_answer: word.wrong || word.surface,
       id: word.ID,
     }
     return (

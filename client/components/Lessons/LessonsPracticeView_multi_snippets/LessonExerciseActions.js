@@ -167,7 +167,7 @@ const LessonExerciseActions = ({ lessonId, exerciseCount }) => {
   useEffect(() => {
     const testedAndCorrectIDs = focusing_snippets[0]?.sent
       .filter(w => w.tested && !w.isWrong)
-      .map(w => `${w.ID}-${w.id}`)
+      .map(w => `${w.ID}`)
 
     dispatch(addToCorrectAnswerIDs(testedAndCorrectIDs))
     dispatch(setAttempt(attempt))

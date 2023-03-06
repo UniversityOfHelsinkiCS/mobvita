@@ -125,7 +125,7 @@ const SnippetActions = ({ storyId, exerciseCount, playerFinished }) => {
   useEffect(() => {
     const testedAndCorrectIDs = snippets?.focused?.practice_snippet
       .filter(w => w.tested && !w.isWrong)
-      .map(w => `${w.ID}-${w.id}`)
+      .map(w => `${w.ID}`)
 
     dispatch(addToCorrectAnswerIDs(testedAndCorrectIDs))
   }, [attempt])

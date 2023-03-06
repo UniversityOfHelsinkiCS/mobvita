@@ -103,7 +103,7 @@ const SnippetActions = ({ storyId, exerciseCount, isControlledStory, exerciseMod
   )
 
   useEffect(() => {
-    const testedAndCorrectIDs = snippets?.focused?.practice_snippet?.filter(w => w.tested && !w.isWrong).map(w => `${w.ID}-${w.id}`)
+    const testedAndCorrectIDs = snippets?.focused?.practice_snippet?.filter(w => w.tested && !w.isWrong).map(w => `${w.ID}`)
     dispatch(addToCorrectAnswerIDs(testedAndCorrectIDs))
 
     let practice_snippet = snippets?.focused?.practice_snippet ? snippets?.focused?.practice_snippet : []
