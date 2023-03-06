@@ -293,7 +293,7 @@ const HomeView = () => {
                   gap: '1em',
                 }}
               >
-                {!userIsAnonymous && <EloChart width="100%" />}
+                <EloChart width="100%" />
                 <LeaderboardSummary />
                 <MedalSummary />
               </div>
