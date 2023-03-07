@@ -24,6 +24,56 @@ const TextWithFeedback = ({
 
   const lineColors = ['blue', 'green', 'black', 'purple', 'cyan']
   const { grade } = useSelector(state => state.user.data.user)
+  
+  const getIdxToStyleRange = snippet => {
+    const idx2chunk = {}
+    const idx2pattern = {}
+    
+    if (snippet){
+      const chunkStarts = []
+      const chunkEnds = []
+      const patternBounds = {}
+      for(const word of snippet) {
+        const chunkPosition = word.chunk && word.chunk.split('_')[1]
+        const { pattern, ID } = word
+        if (Number(ID) === NaN) continue
+
+        if (chunkPosition === 'start') {
+          chunkStarts.push(Number(ID))
+        }
+        if (chunkPosition === 'end') {
+          chunkEnds.push(Number(ID))
+        }
+        if (pattern){
+          for  (const [key, value] of Object.entries(pattern))
+            if (value === 'pattern_start') patternBounds[key] = {start: Number(ID)}
+            else if (value === 'pattern_end') patternBounds[key] = {...patternBounds[key], end: Number(ID)}
+        }
+      }
+      
+      for (let i = 0; i < Math.min(chunkStarts.length, chunkEnds.length); i++)
+        for (let j = chunkStarts[i]; j <= chunkEnds[i]; j++)
+          idx2chunk[j] = Array.from({ length: chunkEnds[i] - chunkStarts[i] + 1 }, (_, x) => x + chunkStarts[i])
+        
+      for (const [_, value] of Object.entries(patternBounds))
+        for (let j = value.start; j <= value.end; j++){
+          const coveredIdx = Array.from({ length: value.end - value.start + 1 }, (_, x) => x + value.start)
+          if (Object.keys(idx2pattern).includes(String(j))) idx2pattern[j] = [...idx2pattern[j], ...coveredIdx]
+          else idx2pattern[j] = coveredIdx
+        }
+    }
+    return {idx2chunk, idx2pattern}
+  }
+
+  const getMarkedIdx = idx2style => new Set(snippet?.filter(
+    word => Object.keys(idx2style).includes(String(word.ID)) && 
+    (word.concepts?.includes(focusedConcept) || word.analytic_concepts?.includes(focusedConcept) || mode!=='preview')).map(
+      word => idx2style[word.ID]).flat().map(x => String(x)))
+
+  const {idx2chunk, idx2pattern} = useMemo(() => getIdxToStyleRange(snippet), [snippet])
+  const markedChunks = getMarkedIdx(idx2chunk)
+  const markedPatterns = getMarkedIdx(idx2pattern)
+  
 
   const getSidePadding = exercise => {
     if (inControlStoryEditor) return '5px'
@@ -100,23 +150,18 @@ const TextWithFeedback = ({
     return chunkStyle
   }
 
-  const getExerciseWordComponent = (word, props) => {
-    return inControlStoryEditor ? (
+  const getWordComponent = (word, exercise, props) => {
+    if (inControlStoryEditor && exercise || !inControlStoryEditor && !exercise) return (
       <Word
         hideFeedback={hideFeedback}
         key={word.ID}
         word={word}
         snippet={snippet}
-        {...props}
         focusedConcept={focusedConcept}
+        {...props}
       />
-    ) : (
-      <ExerciseWord key={word.ID} word={word} {...props} />
-    )
-  }
-
-  const getNonExerciseWordComponent = (hideFeedback, word, props) => {
-    return inControlStoryEditor ? (
+    ) 
+    else if (inControlStoryEditor && !exercise) return (
       <ControlWord
         hideFeedback={hideFeedback}
         key={word.ID}
@@ -126,27 +171,16 @@ const TextWithFeedback = ({
         focusedConcept={focusedConcept}
         {...props}
       />
-    ) : (
-      <Word
-        hideFeedback={hideFeedback}
-        key={word.ID}
-        word={word}
-        answer={mode !== 'review' && answers[word.ID]}
-        tiedAnswer={mode !== 'review' && answers[word.tiedTo]}
-        focusedConcept={focusedConcept}
-        {...props}
-      />
+    )
+    else return (
+      <ExerciseWord key={word.ID} word={word} {...props}/>
     )
   }
 
-  const createElement = (word, chunkPosition, hideFeedback) => {
-    let element = exercise
-      ? getExerciseWordComponent(word, props)
-      : getNonExerciseWordComponent(hideFeedback, word, props)
-
-    if (hideFeedback) return element
-
-    if (inChunk) {
+  const createElement = (word, chunkPosition) => {
+    let element = getWordComponent(word, exercise, props)
+    
+    if (markedChunks.has(String(word.ID))) {
       const chunkStyle = createChunkStyle(chunkPosition)
 
       element = (
@@ -155,8 +189,8 @@ const TextWithFeedback = ({
         </span>
       )
     }
-    if (lowestLinePosition === 0 && !inChunk) return element
-    element = createNestedSpan(element, word.ID, 1, lowestLinePosition)
+    if (lowestLinePosition === 0 && !markedChunks.has(word.ID)) return element
+    if (markedPatterns.has(String(word.ID))) element = createNestedSpan(element, word.ID, 1, lowestLinePosition)
     return element
   }
 
@@ -185,14 +219,10 @@ const TextWithFeedback = ({
                 .filter(([, position]) => position === 'pattern_start')
                 .forEach(([id]) => reserveLinePosition(id))
             }
-
-            if (chunkPosition === 'start') {
-              inChunk = true
-              if (word.analytic_chunk) {
-                chunkIsOneVerb = true
-              }
+            if (word.analytic_chunk) {
+              chunkIsOneVerb = true
             }
-            const element = createElement(word, chunkPosition, hideFeedback)
+            const element = createElement(word, chunkPosition)
 
             if (pattern) {
               Object.entries(pattern)
@@ -201,7 +231,6 @@ const TextWithFeedback = ({
             }
 
             if (chunkPosition === 'end') {
-              inChunk = false
               chunkIsOneVerb = false
             }
 
@@ -266,14 +295,11 @@ const TextWithFeedback = ({
             .filter(([, position]) => position === 'pattern_start')
             .forEach(([id]) => reserveLinePosition(id))
         }
-
-        if (chunkPosition === 'start') {
-          inChunk = true
-          if (word.analytic_chunk) {
-            chunkIsOneVerb = true
-          }
+        
+        if (word.analytic_chunk) {
+          chunkIsOneVerb = true
         }
-        const element = createElement(word, chunkPosition, hideFeedback)
+        const element = createElement(word, chunkPosition)
 
         if (pattern) {
           Object.entries(pattern)
@@ -282,7 +308,6 @@ const TextWithFeedback = ({
         }
 
         if (chunkPosition === 'end') {
-          inChunk = false
           chunkIsOneVerb = false
         }
 

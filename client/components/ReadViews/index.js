@@ -362,7 +362,7 @@ const ReadViews = ({ match }) => {
                 <TextWithFeedback
                   hideFeedback={!show_preview_exer}
                   showDifficulty={showDifficulty}
-                  mode="review"
+                  mode={mode}
                   snippet={paragraph}
                   answers={null}
                   focusedConcept={focusedConcept}
