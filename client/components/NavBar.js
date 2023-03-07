@@ -67,6 +67,9 @@ export default function NavBar() {
   const isMajorLanguage = supportedLearningLanguages?.major.includes(
     learningLanguage?.toLowerCase()
   )
+
+  const irt_support_languages = ['Russian']
+
   const signOut = () => {
     dispatch(logout())
     history.push('/')
@@ -269,7 +272,7 @@ export default function NavBar() {
                       <div className="navbar-basic-item">
                         <Icon name="star outline" style={{ margin: 0, width: '16px' }} /> 
                         {}
-                        {irtCalculationPending ? '...' : irt_dummy_score != undefined ? Math.round(irt_dummy_score) : '...'}
+                        {!irt_support_languages.includes(learningLanguage) ? storyElo : irtCalculationPending ? '...' : irt_dummy_score != undefined ? Math.round(irt_dummy_score) : '...'}
                         {/* {storyElo} */}
                       </div>
                     }
