@@ -55,11 +55,10 @@ const TextWithFeedback = ({
         for (let j = chunkStarts[i]; j <= chunkEnds[i]; j++)
           idx2chunk[j] = Array.from({ length: chunkEnds[i] - chunkStarts[i] + 1 }, (_, x) => x + chunkStarts[i])
         
-      for (const [_, value] of Object.entries(patternBounds))
+      for (const [key, value] of Object.entries(patternBounds))
         for (let j = value.start; j <= value.end; j++){
-          const coveredIdx = Array.from({ length: value.end - value.start + 1 }, (_, x) => x + value.start)
-          if (Object.keys(idx2pattern).includes(String(j))) idx2pattern[j] = [...idx2pattern[j], ...coveredIdx]
-          else idx2pattern[j] = coveredIdx
+          if (Object.keys(idx2pattern).includes(String(j))) idx2pattern[j].push(key)
+          else idx2pattern[j] = [key]
         }
     }
     return {idx2chunk, idx2pattern}
@@ -113,15 +112,19 @@ const TextWithFeedback = ({
   }
 
   const reserveLinePosition = patternId => {
-    reservedLinePositions[patternId] = openLinePositions.shift()
-    lowestLinePosition = Math.max(...Object.values(reservedLinePositions))
+    if (markedPatterns.has(patternId)){
+      reservedLinePositions[patternId] = openLinePositions.shift()
+      lowestLinePosition = Math.max(...Object.values(reservedLinePositions))
+    }
   }
 
   const freeLinePosition = patternId => {
-    openLinePositions.push(reservedLinePositions[patternId])
-    openLinePositions.sort()
-    delete reservedLinePositions[patternId]
-    lowestLinePosition = Math.max(...Object.values(reservedLinePositions))
+    if (markedPatterns.has(patternId)){
+      openLinePositions.push(reservedLinePositions[patternId])
+      openLinePositions.sort()
+      delete reservedLinePositions[patternId]
+      lowestLinePosition = Math.max(...Object.values(reservedLinePositions))
+    }
   }
 
   const createChunkStyle = chunkPosition => {
@@ -190,7 +193,7 @@ const TextWithFeedback = ({
       )
     }
     if (lowestLinePosition === 0 && !markedChunks.has(word.ID)) return element
-    if (markedPatterns.has(String(word.ID))) element = createNestedSpan(element, word.ID, 1, lowestLinePosition)
+    element = createNestedSpan(element, word.ID, 1, lowestLinePosition)
     return element
   }
 
