@@ -32,7 +32,7 @@ const TextWithFeedback = ({
     if (snippet){
       const chunkStarts = []
       const chunkEnds = []
-      const patternBounds = {}
+      const patterns = new Set()
       for(const word of snippet) {
         const chunkPosition = word.chunk && word.chunk.split('_')[1]
         const { pattern, ID } = word
@@ -44,22 +44,22 @@ const TextWithFeedback = ({
         if (chunkPosition === 'end') {
           chunkEnds.push(Number(ID))
         }
-        if (pattern){
-          for  (const [key, value] of Object.entries(pattern))
-            if (value === 'pattern_start') patternBounds[key] = {start: Number(ID)}
-            else if (value === 'pattern_end') patternBounds[key] = {...patternBounds[key], end: Number(ID)}
+        const pattern_to_remove = new Set()
+        for  (const [key, value] of Object.entries(pattern || {})){
+          if (value === 'pattern_start') patterns.add(key)
+          if (value === 'pattern_end') pattern_to_remove.add(key)
         }
+        if (patterns.size){
+          if (Object.keys(idx2pattern).includes(String(ID))) idx2pattern[j] = [...idx2pattern[j], ...Array.from(patterns)]
+          else idx2pattern[ID] = Array.from(patterns)
+        }
+        for (const key of pattern_to_remove) patterns.delete(key)
+
       }
       
       for (let i = 0; i < Math.min(chunkStarts.length, chunkEnds.length); i++)
         for (let j = chunkStarts[i]; j <= chunkEnds[i]; j++)
           idx2chunk[j] = Array.from({ length: chunkEnds[i] - chunkStarts[i] + 1 }, (_, x) => x + chunkStarts[i])
-        
-      for (const [key, value] of Object.entries(patternBounds))
-        for (let j = value.start; j <= value.end; j++){
-          if (Object.keys(idx2pattern).includes(String(j))) idx2pattern[j].push(key)
-          else idx2pattern[j] = [key]
-        }
     }
     return {idx2chunk, idx2pattern}
   }
