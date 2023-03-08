@@ -19,21 +19,11 @@ const EloChart = ({ width }) => {
   const weeklyPracticeTimeHistory = useSelector(({ user }) => user.data.user.weekly_times)
   const intl = useIntl()
   const history = useHistory()
-  const { user } = useSelector(({ user }) => ({ user: user.data }))
 
   //if (eloHistory.length === 0) return null
 
   const filteredHistory = []
   const weeks = weeklyPracticeTimeHistory.map(element => element.week).reverse()
-
-  const handleChartClick = () => {
-    if (user.user.email === 'anonymous_email'){
-      return
-    } else {
-      history.push('/profile/progress')
-    }
-    
-  }
 
   if (eloHistory.lenght > 0) {
     exerciseHistory.forEach(e => {
@@ -151,7 +141,7 @@ const EloChart = ({ width }) => {
         alignSelf: 'flex-start',
         padding: '1em .5em 0em .5em',
       }}
-      onClick={handleChartClick}
+      onClick={() => history.push('/profile/progress')}
     >
       <div className="space-evenly pb-sm">
         {showStoryElo && (
