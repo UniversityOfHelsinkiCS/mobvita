@@ -1459,5 +1459,18 @@
     "Progress bar": "Edistymismittari",
     "practice-tour-progress-message": "Tämä näyttää sinulle edistymistäsi tämän kertomuksen parissa, ja sen kuinka paljon sinulla on jäljellä.",
     "ELO score": "Kielioppipisteesi",
-    "explanations-popup-story-irt": "Tämä on tarinaharjoitusten <i>IRT</i>-pisteesi:\nklikkaa katsoaksesi lisätietoja edistymisestäsi, ja suoritustasi ajan mittaan."
+    "explanations-popup-story-irt": "Tämä on tarinaharjoitusten <i>IRT</i>-pisteesi:\nklikkaa katsoaksesi lisätietoja edistymisestäsi, ja suoritustasi ajan mittaan.",
+    "Welcome to the Lessons mode": "Tervetuloa oppitunnit-sivulle!",
+    "Grammar topics": "Aihepiiri",
+    "grammar-topics-message": "Tässä näet kielioppiasiat, joita oppintunti käsittelee.",
+    "Grammar performance": "Grammar performance",
+    "grammar-performance-message": "Tämä prosenttiluku kertoo nykyisen tasosi aihepiirin asioissa.",
+    "Lesson setup": "Oppitunnin asetukset",
+    "lesson-setup-message": "Valitse oppitunnin asetukset täältä.",
+    "Lesson topic": "Oppitunnin aihe",
+    "lesson-topic-message": "Valitse oppitunnin aihepiiri.",
+    "Practice lesson": "Harjoittele kielioppia",
+    "practise-lesson-message": "Klikkaa tästä harjoitellaksesi kielioppia.",
+    "Grammar practice mode": "Kieliopin harjoittelu",
+    "grammar-practice-message": "Oppituntiharjoittelu toimii samoin kuin minkä tahansa tarinan harjoittelu -  tehtävät vain käsittelevät ainoastaan valittua kielioppiaihepiiriiä."
 }

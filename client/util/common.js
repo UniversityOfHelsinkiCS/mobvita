@@ -1663,7 +1663,7 @@ const mobilePracticeTourSteps = [
 const desktopLessonsTourSteps = [
   {
     target: '.cont-tall',
-    title: <FormattedMessage id="Welcome to the Practice mode" />,
+    title: <FormattedMessage id="Welcome to the Lessons mode" />,
     content: (
       <div>
         <FormattedHTMLMessage id="tour-lessons-message" />
@@ -1675,40 +1675,40 @@ const desktopLessonsTourSteps = [
   },
   {
     target: '.lesson-content',
-    title: <FormattedMessage id="Story Topics Box" />,
+    title: <FormattedMessage id="Grammar topics" />,
     content: (
       <div>
-        <FormattedHTMLMessage id="practice-tour-topics-message" />
+        <FormattedHTMLMessage id="grammar-topics-message" />
       </div>
     ),
     disableBeacon: true,
   },
   {
     target: '.lesson-performance',
-    title: <FormattedMessage id="Story Topics Box" />,
+    title: <FormattedMessage id="Grammar performance" />,
     content: (
       <div>
-        <FormattedHTMLMessage id="practice-tour-topics-message" />
+        <FormattedHTMLMessage id="grammar-performance-message" />
       </div>
     ),
     disableBeacon: true,
   },
   {
     target: '.lesson-setup',
-    title: <FormattedMessage id="Story Topics Box" />,
+    title: <FormattedMessage id="Lesson setup" />,
     content: (
       <div>
-        <FormattedHTMLMessage id="practice-tour-topics-message" />
+        <FormattedHTMLMessage id="lesson-setup-message" />
       </div>
     ),
     disableBeacon: true,
   },
   {
     target: '.lesson-practice',
-    title: <FormattedMessage id="Story Topics Box" />,
+    title: <FormattedMessage id="Practice lesson" />,
     content: (
       <div>
-        <FormattedHTMLMessage id="practice-tour-topics-message" />
+        <FormattedHTMLMessage id="practice-lesson-message" />
       </div>
     ),
     disableBeacon: true,

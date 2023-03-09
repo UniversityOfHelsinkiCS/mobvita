@@ -1460,5 +1460,18 @@
     "Progress bar": "Barra di avanzamento",
     "practice-tour-progress-message": "Questo mostra fino a che punto sei nella storia e quanto è rimasto.",
     "ELO score": "Punteggio grammaticale",
-    "explanations-popup-story-irt": "Questo è il tuo punteggio <i>IRT</i> per gli esercizi della storia—fai clic per vedere i tuoi progressi:\nper visualizzare maggiori dettagli e le tue prestazioni nel tempo."
+    "explanations-popup-story-irt": "Questo è il tuo punteggio <i>IRT</i> per gli esercizi della storia—fai clic per vedere i tuoi progressi:\nper visualizzare maggiori dettagli e le tue prestazioni nel tempo.",
+    "Welcome to the Lessons mode": "Welcome to the Lessons page!",
+    "Grammar topics": "Grammar topics",
+    "grammar-topics-message": "These are the grammar topics covered in the lesson",
+    "Grammar performance": "Grammar performance",
+    "grammar-performance-message": "This shows your current perfomance on the topic.",
+    "Lesson setup": "Lesson setup",
+    "lesson-setup-message": "Here you can set up the lesson.",
+    "Lesson topic": "Lesson topic",
+    "lesson-topic-message": "Choose the topic of the lesson.",
+    "Practice lesson": "Practice lesson",
+    "practise-lesson-message": "Click here to practice the lesson.",
+    "Grammar practice mode": "Grammar practice mode",
+    "grammar-practice-message": "This is just like regular practice with stories, except that you get exercises only about the grammar topics of the lesson."
 }
