@@ -3,7 +3,8 @@ import {
   libraryTourSteps,
   progressTourSteps,
   practiceTourSteps,
-  practiceTourStepsAlternative
+  practiceTourStepsAlternative,
+  lessonsTourSteps
 } from 'Utilities/common'
 
 const initialState = {
@@ -29,6 +30,10 @@ export const startProgressTour = () => ({
 
 export const startPracticeTour = () => ({
   type: 'PRACTICE_TOUR_RESTART',
+})
+
+export const startLessonsTour = () => ({
+  type : 'LESSONS_TOUR_RESTART'
 })
 
 export const handleNextTourStep = stepIndex => ({
@@ -93,6 +98,15 @@ export default (state = initialState, action) => {
       return {
         ...state,
         steps: practiceTourStepsAlternative,
+        stepIndex: 0,
+        run: true,
+        loading: false,
+        key: new Date(),
+      }
+      case 'LESSONS_TOUR_RESTART':
+      return {
+        ...state,
+        steps: lessonsTourSteps,
         stepIndex: 0,
         run: true,
         loading: false,

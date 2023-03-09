@@ -12,7 +12,8 @@ import {
   progressTourSteps,
   confettiRain,
   practiceTourSteps,
-  practiceTourStepsAlternative
+  practiceTourStepsAlternative,
+  lessonsTourSteps
 } from 'Utilities/common'
 
 const Tour = () => {
@@ -88,6 +89,13 @@ const Tour = () => {
             const currentPath = history.location.pathname
             const newPath = currentPath.substring(0, currentPath.length - 7)
             history.push(`${newPath}practice/`)
+          }
+        }
+
+        // lessons tour steps
+        if (tourState.steps === lessonsTourSteps) {
+          if (index === 4) {
+            
           }
         }
 

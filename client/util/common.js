@@ -1660,7 +1660,71 @@ const mobilePracticeTourSteps = [
     },
   },
 ]
-
+const desktopLessonsTourSteps = [
+  {
+    target: '.cont-tall',
+    title: <FormattedMessage id="Welcome to the Lessons mode" />,
+    content: (
+      <div>
+        <FormattedHTMLMessage id="tour-lessons-message" />
+        <div>{tourSign()}</div>
+      </div>
+    ),
+    placement: 'center',
+    disableBeacon: true,
+  },
+  {
+    target: '.lesson-content',
+    title: <FormattedMessage id="Grammar topics" />,
+    content: (
+      <div>
+        <FormattedHTMLMessage id="grammar-topics-message" />
+      </div>
+    ),
+    disableBeacon: true,
+  },
+  {
+    target: '.lesson-performance',
+    title: <FormattedMessage id="Grammar performance" />,
+    content: (
+      <div>
+        <FormattedHTMLMessage id="grammar-performance-message" />
+      </div>
+    ),
+    disableBeacon: true,
+  },
+  {
+    target: '.lesson-setup',
+    title: <FormattedMessage id="Lesson setup" />,
+    content: (
+      <div>
+        <FormattedHTMLMessage id="lesson-setup-message" />
+      </div>
+    ),
+    disableBeacon: true,
+  },
+  {
+    target: '.lesson-practice',
+    title: <FormattedMessage id="Practice lesson" />,
+    content: (
+      <div>
+        <FormattedHTMLMessage id="practice-lesson-message" />
+      </div>
+    ),
+    disableBeacon: true,
+  },
+  {
+    target: '.tour-button',
+    title: <FormattedMessage id="Tour end" />,
+    content: (
+      <div>
+        <FormattedHTMLMessage id="tour-end-message" />
+        <div>{tourSign()}</div>
+      </div>
+    ),
+    disableBeacon: true,
+  }
+]
 // Slice the tour steps to only include practice view
 // steps and not preview view steps
 export const practiceTourStepsAlternative =
@@ -1672,3 +1736,5 @@ export const progressTourSteps =
 export const homeTourSteps = window.innerWidth >= 700 ? desktopHomeTourSteps : mobileHomeTourSteps
 export const libraryTourSteps =
   window.innerWidth >= 700 ? desktopLibraryTourSteps : mobileLibraryTourSteps
+export const lessonsTourSteps = desktopLessonsTourSteps
+
