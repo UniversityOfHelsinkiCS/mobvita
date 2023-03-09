@@ -816,12 +816,13 @@
     "practice-tour-translations-message": "When you click any unfamiliar word in the story, its translation will be displayed here.",
     "practice-tour-mobile-translations-message": "When you click any word in the story, its translation will appear at the bottom of the screen.",
     "Start Practicing": "Start Practice",
-    "practice-tour-start-practice-message": "You can practice grammar, or listening, or both at the same time. Next we will go to the Practice Page!",
+    "practice-tour-start-practice-message": "You can practice grammar, or listening, or both at the same time.\n<br/>\nNext we will go to the Practice Page!",
     "Exercises": "Exercises",
     "practice-tour-exercise-box-message": "During practice you will see multiple-choice questions, or fill-in-blank questions, or listening questions.",
     "practice-tour-exercise-message": "When you click on an exercise, you have an option to ask for a hint.",
     "practice-tour-check-answers-message": "When you have done all the exercises in this paragraph, click here to check your answers.",
     "Progress bar": "Progress bar",
     "practice-tour-progress-message": "This shows how far you are in the story, and how much is left.",
-    "ELO score": "ELO score"
+    "ELO score": "Your grammar score",
+    "explanations-popup-story-irt": "这是你的文章练习<i>IRT</i>：\n点击此处查看你的进度以回顾你过去一段时间的练习效果。"
 }
