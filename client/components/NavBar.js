@@ -51,10 +51,12 @@ export default function NavBar() {
   const { numUnreadNews } = useSelector(({ metadata }) => metadata)
   const { sessionId } = useSelector(({ snippets }) => snippets)
   const { show, open: encOpen, fcShow, fcOpen } = useSelector(({ encouragement }) => encouragement)
+  const { focused: story, pending: storyPending } = useSelector(({ stories }) => stories)
 
   const open = useSelector(({ sidebar }) => sidebar.open)
+  const storyLanguage = storyPending==false & story != undefined ? story.language : undefined
   const learningLanguage = useSelector(learningLanguageSelector)
-  
+
   const dispatch = useDispatch()
   const history = useHistory()
   const smallWindow = useWindowDimensions().width < 700
@@ -135,13 +137,13 @@ export default function NavBar() {
   }, [irtCalculationPending])
 
   useEffect(() => {
-    if (!userPending && irt_dummy_score == undefined){
+    if (!userPending && irt_dummy_score == undefined) {
       let irtScore =
         user && user.user.irt_score_history && user.user.irt_score_history.length > 0
           ? user.user.irt_score_history[user.user.irt_score_history.length - 1].score
           : undefined
       dispatch(setIrtDummyScore(irtScore))
-    } 
+    }
   }, [user])
 
   useEffect(() => {
@@ -180,6 +182,27 @@ export default function NavBar() {
     user && user.user.flashcard_history && user.user.flashcard_history.length > 0
       ? user.user.flashcard_history[user.user.flashcard_history.length - 1].score
       : 0
+
+  const get_student_ability_score_component = () => {
+    if (storyLanguage == undefined){
+      return <div/>
+    } else {
+      let ability_score = storyElo
+      if (irt_support_languages.includes(storyLanguage)){
+        ability_score = irtCalculationPending ? '...' : irt_dummy_score != undefined ? Math.round(irt_dummy_score) : '...'
+      }
+      return <Popup
+        position="top center"
+        content={<FormattedHTMLMessage id="explanations-popup-story-elo" />}
+        trigger={
+          <div className="navbar-basic-item">
+            <Icon name="star outline" style={{ margin: 0, width: '16px' }} />
+            {ability_score}
+          </div>
+        }
+      />
+    }
+  }
 
   const navBarStyle = smallWindow ? {} : { position: 'fixed', top: 0, width: '100%', zIndex: '100' }
 
@@ -264,19 +287,20 @@ export default function NavBar() {
                 onKeyDown={() => dispatch(setAnnotationsVisibility(true))}
               >
                 {showStoryElo && (
-                  <Popup
-                    position="top center"
-                    // content={intl.formatMessage({ id: 'explanations-popup-story-elo' })}
-                    content={<FormattedHTMLMessage id="explanations-popup-story-elo" />}
-                    trigger={
-                      <div className="navbar-basic-item">
-                        <Icon name="star outline" style={{ margin: 0, width: '16px' }} /> 
-                        {}
-                        {!irt_support_languages.includes(learningLanguage) ? storyElo : irtCalculationPending ? '...' : irt_dummy_score != undefined ? Math.round(irt_dummy_score) : '...'}
-                        {/* {storyElo} */}
-                      </div>
-                    }
-                  />
+                  get_student_ability_score_component()
+                  // <Popup
+                  //   position="top center"
+                  //   // content={intl.formatMessage({ id: 'explanations-popup-story-elo' })}
+                  //   content={<FormattedHTMLMessage id="explanations-popup-story-elo" />}
+                  //   trigger={
+                  //     <div className="navbar-basic-item">
+                  //       <Icon name="star outline" style={{ margin: 0, width: '16px' }} />
+                  //       {  }
+                  //       {!irt_support_languages.includes(learningLanguage) ? storyElo : irtCalculationPending ? '...' : irt_dummy_score != undefined ? Math.round(irt_dummy_score) : '...'}
+                  //       {/* {storyElo} */}
+                  //     </div>
+                  //   }
+                  // />
                 )}
                 {showFlashcardElo && (
                   <Popup
