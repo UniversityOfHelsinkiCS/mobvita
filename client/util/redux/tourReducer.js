@@ -103,7 +103,7 @@ export default (state = initialState, action) => {
         loading: false,
         key: new Date(),
       }
-      case 'LESSONS_TOUR_RESTART':
+    case 'LESSONS_TOUR_RESTART':
       return {
         ...state,
         steps: lessonsTourSteps,
