@@ -6,7 +6,14 @@ import { useSelector, useDispatch } from 'react-redux'
 import { handleNextTourStep, stopTour } from 'Utilities/redux/tourReducer'
 import { FormattedMessage } from 'react-intl'
 import useWindowDimensions from 'Utilities/windowDimensions'
-import { homeTourSteps, libraryTourSteps, progressTourSteps, confettiRain, practiceTourSteps } from 'Utilities/common'
+import {
+  homeTourSteps,
+  libraryTourSteps,
+  progressTourSteps,
+  confettiRain,
+  practiceTourSteps,
+  practiceTourStepsAlternative
+} from 'Utilities/common'
 
 const Tour = () => {
   const dispatch = useDispatch()
@@ -151,6 +158,17 @@ const Tour = () => {
             history.push(`${newPath}practice/`)
           }
           if (index === 7) {
+            dispatch(sidebarSetOpen(true))
+
+            setTimeout(() => {
+              dispatch(handleNextTourStep(index + (action === ACTIONS.PREV ? -1 : 1)))
+              window.dispatchEvent(new Event('resize'))
+            }, 500)
+          }
+        }
+        // alternative practice tour control (when started in practice view)
+        if (tourState.steps === practiceTourStepsAlternative) {
+          if (index === 4) {
             dispatch(sidebarSetOpen(true))
 
             setTimeout(() => {

@@ -1661,6 +1661,10 @@ const mobilePracticeTourSteps = [
   },
 ]
 
+// Slice the tour steps to only include practice view
+// steps and not preview view steps
+export const practiceTourStepsAlternative =
+  window.innerWidth >= 700 ? desktopPracticeTourSteps.slice(4) : mobilePracticeTourSteps.slice(3)
 export const practiceTourSteps =
   window.innerWidth >= 700 ? desktopPracticeTourSteps : mobilePracticeTourSteps
 export const progressTourSteps =

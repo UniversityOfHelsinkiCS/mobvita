@@ -1,4 +1,10 @@
-import { homeTourSteps, libraryTourSteps, progressTourSteps, practiceTourSteps } from 'Utilities/common'
+import { 
+  homeTourSteps,
+  libraryTourSteps,
+  progressTourSteps,
+  practiceTourSteps,
+  practiceTourStepsAlternative
+} from 'Utilities/common'
 
 const initialState = {
   key: new Date(), // This field makes the tour to re-render it is restarted
@@ -80,20 +86,14 @@ export default (state = initialState, action) => {
         loading: false,
         key: new Date(),
       }
+    // This alternative is used when practice tour is started
+    // in practice view instead of preview view, so that
+    // the progress shown in the tour starts at eg. 1/6 and not 5/10
     case 'PRACTICE_TOUR_ALTERNATIVE':
       return {
         ...state,
-        steps: practiceTourSteps,
-        stepIndex: 4,
-        run: true,
-        loading: false,
-        key: new Date(),
-      }
-    case 'PRACTICE_TOUR_MOBILE_ALTERNATIVE':
-      return {
-        ...state,
-        steps: practiceTourSteps,
-        stepIndex: 3,
+        steps: practiceTourStepsAlternative,
+        stepIndex: 0,
         run: true,
         loading: false,
         key: new Date(),
