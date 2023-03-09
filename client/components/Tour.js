@@ -6,7 +6,7 @@ import { useSelector, useDispatch } from 'react-redux'
 import { handleNextTourStep, stopTour } from 'Utilities/redux/tourReducer'
 import { FormattedMessage } from 'react-intl'
 import useWindowDimensions from 'Utilities/windowDimensions'
-import { homeTourSteps, libraryTourSteps, progressTourSteps, confettiRain, practiceTourSteps } from 'Utilities/common'
+import { homeTourSteps, libraryTourSteps, progressTourSteps, confettiRain, practiceTourSteps, lessonsTourSteps } from 'Utilities/common'
 
 const Tour = () => {
   const dispatch = useDispatch()
@@ -81,6 +81,13 @@ const Tour = () => {
             const currentPath = history.location.pathname
             const newPath = currentPath.substring(0, currentPath.length - 7)
             history.push(`${newPath}practice/`)
+          }
+        }
+
+        // lessons tour steps
+        if (tourState.steps === lessonsTourSteps) {
+          if (index === 4) {
+            
           }
         }
 

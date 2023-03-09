@@ -1660,7 +1660,71 @@ const mobilePracticeTourSteps = [
     },
   },
 ]
-
+const desktopLessonsTourSteps = [
+  {
+    target: '.cont-tall',
+    title: <FormattedMessage id="Welcome to the Practice mode" />,
+    content: (
+      <div>
+        <FormattedHTMLMessage id="tour-lessons-message" />
+        <div>{tourSign()}</div>
+      </div>
+    ),
+    placement: 'center',
+    disableBeacon: true,
+  },
+  {
+    target: '.lesson-content',
+    title: <FormattedMessage id="Story Topics Box" />,
+    content: (
+      <div>
+        <FormattedHTMLMessage id="practice-tour-topics-message" />
+      </div>
+    ),
+    disableBeacon: true,
+  },
+  {
+    target: '.lesson-performance',
+    title: <FormattedMessage id="Story Topics Box" />,
+    content: (
+      <div>
+        <FormattedHTMLMessage id="practice-tour-topics-message" />
+      </div>
+    ),
+    disableBeacon: true,
+  },
+  {
+    target: '.lesson-setup',
+    title: <FormattedMessage id="Story Topics Box" />,
+    content: (
+      <div>
+        <FormattedHTMLMessage id="practice-tour-topics-message" />
+      </div>
+    ),
+    disableBeacon: true,
+  },
+  {
+    target: '.lesson-practice',
+    title: <FormattedMessage id="Story Topics Box" />,
+    content: (
+      <div>
+        <FormattedHTMLMessage id="practice-tour-topics-message" />
+      </div>
+    ),
+    disableBeacon: true,
+  },
+  {
+    target: '.tour-button',
+    title: <FormattedMessage id="Tour end" />,
+    content: (
+      <div>
+        <FormattedHTMLMessage id="tour-end-message" />
+        <div>{tourSign()}</div>
+      </div>
+    ),
+    disableBeacon: true,
+  }
+]
 export const practiceTourSteps =
   window.innerWidth >= 700 ? desktopPracticeTourSteps : mobilePracticeTourSteps
 export const progressTourSteps =
@@ -1668,3 +1732,5 @@ export const progressTourSteps =
 export const homeTourSteps = window.innerWidth >= 700 ? desktopHomeTourSteps : mobileHomeTourSteps
 export const libraryTourSteps =
   window.innerWidth >= 700 ? desktopLibraryTourSteps : mobileLibraryTourSteps
+export const lessonsTourSteps = desktopLessonsTourSteps
+
