@@ -171,9 +171,9 @@ const SnippetActions = ({ storyId, exerciseCount, isControlledStory, exerciseMod
     const num_correct_exercises = Object.keys(filteredCurrentAnswers).length - num_wrong_exercises
     if (irt_dummy_score){
       const dummy_delta = num_correct_exercises - num_wrong_exercises
-      let dummy_score = irt_dummy_score + 1.25*dummy_delta
+      let dummy_score = irt_dummy_score + 0.125*dummy_delta
       dummy_score = dummy_score < 0 ? 0 : dummy_score
-      dummy_score = dummy_score > 1000 ? 1000 : dummy_score
+      dummy_score = dummy_score > 100 ? 100 : dummy_score
       dispatch(setIrtDummyScore(dummy_score))
     }
 

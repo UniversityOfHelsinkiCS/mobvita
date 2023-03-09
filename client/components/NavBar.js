@@ -190,7 +190,7 @@ export default function NavBar() {
       let ability_score = storyElo
       let grammar_score_type = 'elo'
       if (irt_support_languages.includes(storyLanguage)){
-        ability_score = irtCalculationPending ? '...' : irt_dummy_score != undefined ? Math.round(irt_dummy_score) : '...'
+        ability_score = irtCalculationPending ? '...' : irt_dummy_score != undefined ? Math.round(irt_dummy_score * 10)/10 : '...'
         grammar_score_type = 'irt'
       }
       return <Popup
