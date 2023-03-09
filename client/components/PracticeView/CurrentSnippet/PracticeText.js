@@ -22,6 +22,7 @@ const PracticeText = props => {
   if (!practiceSnippet && !snippets.pending) {
     return (
       <div className="spinner-container" style={{ minHeight: previousHeight }}>
+        <Spinner animation="border" variant="primary" size="lg" />
       </div>
     )
   }
