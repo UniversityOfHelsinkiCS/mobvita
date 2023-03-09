@@ -537,7 +537,6 @@ export default (state = { data: null, learningLanguageChanged: false }, action) 
         error: true,
       }
     case 'CALCULATE_IRT_SUCCESS':
-      console.log('action.response', action.response)
       if (action.response.score){
         return {
           ...state,
