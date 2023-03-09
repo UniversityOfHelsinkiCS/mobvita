@@ -188,12 +188,14 @@ export default function NavBar() {
       return <div/>
     } else {
       let ability_score = storyElo
+      let grammar_score_type = 'elo'
       if (irt_support_languages.includes(storyLanguage)){
         ability_score = irtCalculationPending ? '...' : irt_dummy_score != undefined ? Math.round(irt_dummy_score) : '...'
+        grammar_score_type = 'irt'
       }
       return <Popup
         position="top center"
-        content={<FormattedHTMLMessage id="explanations-popup-story-elo" />}
+        content={<FormattedHTMLMessage id={"explanations-popup-story-" + grammar_score_type}/>}
         trigger={
           <div className="navbar-basic-item">
             <Icon name="star outline" style={{ margin: 0, width: '16px' }} />
@@ -306,7 +308,7 @@ export default function NavBar() {
                   <Popup
                     position="top center"
                     // content={intl.formatMessage({ id: 'explanations-popup-flashcard-elo' })}
-                    content={<FormattedHTMLMessage id="explanations-popup-flashcard-elo" />}
+                    content={<FormattedHTMLMessage id="explanations-popup-flashcard-elo" value={{ score_type: 'ELO' }}/>}
                     trigger={
                       <div className="navbar-basic-item">
                         <img src={images.flashcardIcon} alt="three cards" width="16px" />{' '}
