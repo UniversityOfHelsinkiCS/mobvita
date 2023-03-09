@@ -90,6 +90,9 @@ export default function NavBar() {
     if (history.location.pathname.includes('progress')) {
       dispatch({ type: 'SHOW_PROFILE_DROPDOWN' })
       dispatch({ type: 'PROGRESS_TOUR_RESTART' })
+    } else if (history.location.pathname.includes('lessons') && hiddenFeatures) {
+      dispatch(sidebarSetOpen(false))
+      dispatch({ type: 'LESSONS_TOUR_RESTART' })
     } else if (history.location.pathname.includes('library')) {
       dispatch(sidebarSetOpen(false))
       dispatch({ type: 'LIBRARY_TOUR_RESTART' })
