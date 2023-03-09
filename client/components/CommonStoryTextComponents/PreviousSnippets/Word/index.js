@@ -47,7 +47,8 @@ const Word = ({ word, answer, tiedAnswer, snippet, hideDifficulty, focusedConcep
   // }
 
   // review mode (highlight all exercised words)
-  if ({}.propertyIsEnumerable.call(word, 'wrong') || !controlledStory && correctAnswerIDs.includes(word.ID.toString())) {
+  if ({}.propertyIsEnumerable.call(word, 'wrong') || 
+  !controlledStory &&( word.tested || correctAnswerIDs.includes(word.ID.toString()))) {
     // field exists but might be empty
     const answerObj = {
       correct: word.surface,
