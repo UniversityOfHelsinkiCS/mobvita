@@ -113,7 +113,7 @@ const EloChart = ({ width }) => {
           text: intl.formatMessage({ id: 'Week' }),
           align: 'low',
           offset: 8,
-          x: -42,
+          x: -24,
         },
         tickInterval: 1,
       },
