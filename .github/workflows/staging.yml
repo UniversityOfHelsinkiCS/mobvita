@@ -12,7 +12,7 @@ jobs:
     steps:
       - uses: actions/checkout@v3
       - name: 'Run tests'
-        uses: ./.github/actions/test
+        uses: ./.github/actions/run_test
         with:
           spec: cypress/integration/competition_spec.js
   
@@ -22,7 +22,7 @@ jobs:
     steps:
       - uses: actions/checkout@v3
       - name: 'Run tests'
-        uses: ./.github/actions/test
+        uses: ./.github/actions/run_test
         with:
           spec: cypress/integration/dictionary_spec.js
 
@@ -32,7 +32,7 @@ jobs:
     steps:
       - uses: actions/checkout@v3
       - name: 'Run tests'
-        uses: ./.github/actions/test
+        uses: ./.github/actions/run_test
         with:
           spec: cypress/integration/flashcards_spec.js
 
@@ -42,7 +42,7 @@ jobs:
     steps:
       - uses: actions/checkout@v3
       - name: 'Run tests'
-        uses: ./.github/actions/test
+        uses: ./.github/actions/run_test
         with:
           spec: cypress/integration/follow_and_block_spec.js
 
@@ -52,7 +52,7 @@ jobs:
     steps:
       - uses: actions/checkout@v3
       - name: 'Run tests'
-        uses: ./.github/actions/test
+        uses: ./.github/actions/run_test
         with:
           spec: cypress/integration/groups_spec.js
 
@@ -62,7 +62,7 @@ jobs:
     steps:
       - uses: actions/checkout@v3
       - name: 'Run tests'
-        uses: ./.github/actions/test
+        uses: ./.github/actions/run_test
         with:
           spec: cypress/integration/mobvita_spec.js
 
@@ -72,7 +72,7 @@ jobs:
     steps:
       - uses: actions/checkout@v3
       - name: 'Run tests'
-        uses: ./.github/actions/test
+        uses: ./.github/actions/run_test
         with:
           spec: cypress/integration/navbar_spec.js
 
@@ -82,7 +82,7 @@ jobs:
     steps:
       - uses: actions/checkout@v3
       - name: 'Run tests'
-        uses: ./.github/actions/test
+        uses: ./.github/actions/run_test
         with:
           spec: cypress/integration/practice_spec.js
 
@@ -92,7 +92,7 @@ jobs:
     steps:
       - uses: actions/checkout@v3
       - name: 'Run tests'
-        uses: ./.github/actions/test
+        uses: ./.github/actions/run_test
         with:
           spec: cypress/integration/sidebar_spec.js
   
@@ -102,7 +102,7 @@ jobs:
     steps:
       - uses: actions/checkout@v3
       - name: 'Run tests'
-        uses: ./.github/actions/test
+        uses: ./.github/actions/run_test
         with:
           spec: cypress/integration/tests_spec.js
 
@@ -112,7 +112,7 @@ jobs:
     steps:
       - uses: actions/checkout@v3
       - name: 'Run tests'
-        uses: ./.github/actions/test
+        uses: ./.github/actions/run_test
         with:
           spec: cypress/integration/wordnest_spec.js
 
