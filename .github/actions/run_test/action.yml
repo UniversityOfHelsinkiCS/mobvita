@@ -10,12 +10,15 @@ runs:
   using: composite
   steps:
     - name: npm ci
+      shell: bash
       run: npm ci
 
     - name: docker-compose up -d
+      shell: bash
       run: docker-compose up -d
 
     - name: Run cypress tests
+      shell: bash
       run: npm run cypress:run -- --spec ${{ inputs.spec }}
 
     - uses: actions/upload-artifact@v1
