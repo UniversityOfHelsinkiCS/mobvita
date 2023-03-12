@@ -1,0 +1,34 @@
+name: 'Run tests'
+description: 'Runs Cypress tests for individual spec'
+
+inputs:
+  spec:
+    required: true
+    description: 'Path to Cypress file'
+
+runs:
+  using: composite
+  steps:
+    - name: npm ci
+      shell: bash
+      run: npm ci
+
+    - name: docker-compose up -d
+      shell: bash
+      run: docker-compose up -d
+
+    - name: Run cypress tests
+      shell: bash
+      run: npm run cypress:run -- --spec ${{ inputs.spec }}
+
+    - uses: actions/upload-artifact@v1
+      if: failure()
+      with:
+        name: cypress-screenshots
+        path: /home/runner/work/mobvita/mobvita/cypress/screenshots/
+    # Test run video was always captured, so this action uses "always()" condition
+    - uses: actions/upload-artifact@v1
+      if: always()
+      with:
+        name: cypress-videos
+        path: /home/runner/work/mobvita/mobvita/cypress/videos/
