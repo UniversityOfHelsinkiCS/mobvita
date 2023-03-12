@@ -13,19 +13,24 @@ import {
   confettiRain,
   practiceTourSteps,
   practiceTourStepsAlternative,
-  lessonsTourSteps
+  lessonsTourSteps,
 } from 'Utilities/common'
+import SelectLessonModal from 'Components/Lessons/SelectLessonModal'
+import { getLessonActiveInstance } from 'Utilities/redux/lessonInstanceReducer'
 
 const Tour = () => {
   const dispatch = useDispatch()
   const tourState = useSelector(({ tour }) => tour)
   const history = useHistory()
-
   const bigScreen = useWindowDimensions().width >= 700
+
+  const { lessons } = useSelector(({ metadata }) => metadata)
+  const { lesson_semantics } = useSelector(({ metadata }) => metadata)
+  const { lesson_instance } = useSelector(({ lessonInstance }) => lessonInstance)
 
   const callback = data => {
     const { action, index, type, status } = data
-    //console.log(action)
+    // console.log(action)
 
     if (
       action === ACTIONS.CLOSE ||
@@ -94,9 +99,23 @@ const Tour = () => {
 
         // lessons tour steps
         if (tourState.steps === lessonsTourSteps) {
-          if (index === 4) {
-            
+          if (index === 3) {
+            dispatch({ type: 'SHOW_MODAL' })
+            setTimeout(() => {
+              dispatch({ type: 'SHOW_LESSON_TOPIC_DROPDOWN' })
+            }, 600)
           }
+          if (index === 4) {
+            dispatch({ type: 'CLOSE_LESSON_TOPIC_DROPDOWN' })
+            dispatch({ type: 'CLOSE_MODAL' })
+          }
+          /*
+          if (index === 3) {
+            setTimeout(() => {
+              dispatch({type: 'CLOSE_LESSON_TOPIC_DROPDOWN'})
+            }, 2000)
+          }
+          */
         }
 
         dispatch(handleNextTourStep(index + (action === ACTIONS.PREV ? -1 : 1)))
@@ -194,9 +213,9 @@ const Tour = () => {
     <JoyRide
       {...tourState}
       callback={callback}
-      disableScrolling={true}
-      hideBackButton={true}
-      showProgress={true}
+      disableScrolling
+      hideBackButton
+      showProgress
       styles={{
         tooltipContainer: {
           textAlign: 'left',
