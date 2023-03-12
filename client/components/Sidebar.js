@@ -85,7 +85,11 @@ export default function Sidebar({ history }) {
 
   const handleTourStart = () => {
     if (history.location.pathname.includes('progress')) {
-      dispatch({ type: 'PROGRESS_TOUR_RESTART' })
+      if (user.user.email === 'anonymous_email') {
+        dispatch({ type: 'ANONYMOUS_PROGRESS_TOUR_RESTART' })
+      } else {
+        dispatch({ type: 'PROGRESS_TOUR_RESTART' })
+      }
     } else if (history.location.pathname.includes('library')) {
       dispatch(sidebarSetOpen(false))
       dispatch({ type: 'LIBRARY_TOUR_RESTART' })
