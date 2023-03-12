@@ -21,6 +21,7 @@ import PracticeModal from './PracticeModal'
 import EloChart from './EloChart'
 import LeaderboardSummary from './LeaderboardSummary'
 import SelectLessonModal from 'Components/Lessons/SelectLessonModal'
+import Recommender from 'Components/NewEncouragements/Recommender'
 
 const HomeviewButton = ({
   imgSrc,
@@ -248,7 +249,10 @@ const HomeView = () => {
         setOpen={setBetaModalOpen}
         language={learningLanguage}
       />
-      {welcomeView && (
+      {hiddenFeatures && (
+        <Recommender />
+      )}
+      {welcomeView && !hiddenFeatures && (
         <DefaultActivityModal
           open={showWelcomeModal}
           username={username}
@@ -260,6 +264,7 @@ const HomeView = () => {
           welcomeBack
         />
       )}
+      {!hiddenFeatures && (
       <DefaultActivityModal
         open={showDAModal}
         username={username}
@@ -269,6 +274,7 @@ const HomeView = () => {
         learningLanguage={learningLanguage}
         enable_recmd={enable_recmd}
       />
+      )}
       {!userData.is_teacher && !userData.grade && !userIsAnonymous && !userData.is_new_user && (
         <SetCEFRReminder
           open={openReminder}

@@ -1304,6 +1304,34 @@ const mobileProgressTourSteps = [
   },
 ]
 
+const anonymousDesktopProgressTourSteps = [
+  {
+    target: '.navbar-register-button',
+    title: <FormattedMessage id="Welcome to the Progress page" />,
+    content: (
+      <div>
+        <FormattedHTMLMessage id="anonymous-progress-tour-message" />
+      </div>
+    ),
+    disableBeacon: true,
+    placement: 'right'
+  },
+]
+
+const anonymousMobileProgressTourSteps = [
+  {
+    target: '.sidebar-register-button',
+    title: <FormattedMessage id="Welcome to the Progress page" />,
+    content: (
+      <div>
+        <FormattedHTMLMessage id="anonymous-progress-tour-message" />
+      </div>
+    ),
+    disableBeacon: true,
+    placement: 'right'
+  },
+]
+
 const desktopLibraryTourSteps = [
   {
     target: '.library-tour-start',
@@ -1660,6 +1688,7 @@ const mobilePracticeTourSteps = [
     },
   },
 ]
+
 const desktopLessonsTourSteps = [
   {
     target: '.cont-tall',
@@ -1735,6 +1764,7 @@ const desktopLessonsTourSteps = [
     disableBeacon: true,
   }
 ]
+
 // Slice the tour steps to only include practice view
 // steps and not preview view steps
 export const practiceTourStepsAlternative =
@@ -1743,8 +1773,10 @@ export const practiceTourSteps =
   window.innerWidth >= 700 ? desktopPracticeTourSteps : mobilePracticeTourSteps
 export const progressTourSteps =
   window.innerWidth >= 700 ? desktopProgressTourSteps : mobileProgressTourSteps
-export const homeTourSteps = window.innerWidth >= 700 ? desktopHomeTourSteps : mobileHomeTourSteps
+export const anonymousProgressTourSteps =
+  window.innerWidth >= 700 ? anonymousDesktopProgressTourSteps : anonymousMobileProgressTourSteps
+export const homeTourSteps = 
+  window.innerWidth >= 700 ? desktopHomeTourSteps : mobileHomeTourSteps
 export const libraryTourSteps =
   window.innerWidth >= 700 ? desktopLibraryTourSteps : mobileLibraryTourSteps
 export const lessonsTourSteps = desktopLessonsTourSteps
-

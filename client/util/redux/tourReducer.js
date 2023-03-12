@@ -2,6 +2,7 @@ import {
   homeTourSteps,
   libraryTourSteps,
   progressTourSteps,
+  anonymousProgressTourSteps,
   practiceTourSteps,
   practiceTourStepsAlternative,
   lessonsTourSteps
@@ -26,6 +27,10 @@ export const startLibraryTour = () => ({
 
 export const startProgressTour = () => ({
   type: 'PROGRESS_TOUR_RESTART',
+})
+
+export const startAnonymousProgressTour = () => ({
+  type: 'ANONYMOUS_PROGRESS_TOUR_RESTART',
 })
 
 export const startPracticeTour = () => ({
@@ -77,6 +82,15 @@ export default (state = initialState, action) => {
       return {
         ...state,
         steps: progressTourSteps,
+        stepIndex: 0,
+        run: true,
+        loading: false,
+        key: new Date(),
+      }
+      case 'ANONYMOUS_PROGRESS_TOUR_RESTART':
+      return {
+        ...state,
+        steps: anonymousProgressTourSteps,
         stepIndex: 0,
         run: true,
         loading: false,

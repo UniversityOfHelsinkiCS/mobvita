@@ -89,7 +89,12 @@ export default function NavBar() {
   const handleTourStart = () => {
     if (history.location.pathname.includes('progress')) {
       dispatch({ type: 'SHOW_PROFILE_DROPDOWN' })
-      dispatch({ type: 'PROGRESS_TOUR_RESTART' })
+      if (user.user.email === 'anonymous_email') {
+        dispatch({ type: 'ANONYMOUS_PROGRESS_TOUR_RESTART' })
+      } else {
+        dispatch({ type: 'PROGRESS_TOUR_RESTART' })
+      }
+      
     } else if (history.location.pathname.includes('lessons') && hiddenFeatures) {
       dispatch(sidebarSetOpen(false))
       dispatch({ type: 'LESSONS_TOUR_RESTART' })
@@ -357,7 +362,10 @@ export default function NavBar() {
                   >
                     {user.user.email === 'anonymous_email' && (
                       <>
-                        <NavDropdown.Item as={Link} to="/register">
+                        <NavDropdown.Item 
+                        className="navbar-register-button"
+                        as={Link} 
+                        to="/register">
                           <FormattedMessage id="Register" />
                         </NavDropdown.Item>
                         <NavDropdown.Divider />
