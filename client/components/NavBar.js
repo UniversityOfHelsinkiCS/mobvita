@@ -357,7 +357,10 @@ export default function NavBar() {
                   >
                     {user.user.email === 'anonymous_email' && (
                       <>
-                        <NavDropdown.Item as={Link} to="/register">
+                        <NavDropdown.Item 
+                        className="navbar-register-button"
+                        as={Link} 
+                        to="/register">
                           <FormattedMessage id="Register" />
                         </NavDropdown.Item>
                         <NavDropdown.Divider />

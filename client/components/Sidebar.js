@@ -169,7 +169,11 @@ export default function Sidebar({ history }) {
                   <Menu.Item>
                     <div style={{ padding: '0.5em 0em' }}>
                       <Link onClick={() => menuClickWrapper()} to="/register">
-                        <Button block variant="primary">
+                        <Button 
+                          block 
+                          variant="primary"
+                          className="sidebar-register-button"
+                        >
                           <FormattedMessage id="register-to-save-your-progress" />
                         </Button>
                       </Link>
