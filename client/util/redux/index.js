@@ -89,7 +89,8 @@ const rootReducer = combineReducers({
   lessons,
   lessonInstance,
   lessonExercises,
-  dropdown
+  dropdown,
+  topicsBox
 })
 
 export default (state, action) =>
