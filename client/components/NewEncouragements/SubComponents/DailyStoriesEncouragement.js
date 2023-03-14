@@ -1,12 +1,15 @@
-import Button from 'react-bootstrap'
+import React from 'react'
+import { Button } from 'react-bootstrap'
 import { FormattedMessage } from 'react-intl'
+import { images, backgroundColors } from 'Utilities/common'
+
 
 const DailyStoriesEncouragement = ({handleDailyStoriesClick}) => {
     return (
       <div className="pt-md">
         <div
           className="flex enc-message-body"
-          style={{ alignItems: 'center', backgroundColor: backgroundColors[listLen % 3] }}
+          style={{ alignItems: 'center', backgroundColor: backgroundColors[0] }}
         >
           <img
             src={images.library}

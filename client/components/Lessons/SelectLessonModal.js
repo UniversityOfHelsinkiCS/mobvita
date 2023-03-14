@@ -10,17 +10,16 @@ import { getMetadata } from 'Utilities/redux/metadataReducer'
 import { clearExerciseState } from 'Utilities/redux/lessonExercisesReducer'
 import { getLessonActiveInstance, setLessonInstance } from 'Utilities/redux/lessonInstanceReducer'
 
-
-const SelectLessonModal = ({ open, setOpen, lesson_syllabus_id }) => {
+const SelectLessonModal = ({ showModal, handleShowModal, lesson_syllabus_id }) => {
   const dispatch = useDispatch()
   const learningLanguage = useLearningLanguage()
 
-  const { metadata_pending, lesson_semantics  } = useSelector(({ metadata }) => metadata)
-  const { pending, lesson_instance  } = useSelector(({ lessonInstance }) => lessonInstance)
+  const { metadata_pending, lesson_semantics } = useSelector(({ metadata }) => metadata)
+  const { pending, lesson_instance } = useSelector(({ lessonInstance }) => lessonInstance)
 
   const [lessonSemanticTopic, setlessonSemanticTopic] = useState('all')
   const [semanticOptions, setSemanticOptions] = useState([])
-  
+
   useEffect(() => {
     dispatch(clearExerciseState())
     if (!lesson_semantics) {
@@ -29,7 +28,7 @@ const SelectLessonModal = ({ open, setOpen, lesson_syllabus_id }) => {
   }, [])
 
   useEffect(() => {
-    if (lesson_syllabus_id){
+    if (lesson_syllabus_id) {
       dispatch(getLessonActiveInstance(lesson_syllabus_id))
     }
   }, [lesson_syllabus_id])
@@ -41,7 +40,7 @@ const SelectLessonModal = ({ open, setOpen, lesson_syllabus_id }) => {
           key: 'all',
           text: <FormattedMessage id={'all'} />,
           value: 'all',
-        }
+        },
       ]
       lesson_semantics.forEach(topic => {
         semantic_topic_options.push({
@@ -49,29 +48,41 @@ const SelectLessonModal = ({ open, setOpen, lesson_syllabus_id }) => {
           text: <FormattedMessage id={topic} />,
           value: topic,
         })
-      }); 
+      })
       setSemanticOptions(semantic_topic_options)
     }
   }, [lesson_semantics])
 
   useEffect(() => {
-    setlessonSemanticTopic(lesson_instance && lesson_instance?.semantic ? lesson_instance.semantic : 'all')
+    setlessonSemanticTopic(
+      lesson_instance && lesson_instance?.semantic ? lesson_instance.semantic : 'all'
+    )
   }, [lesson_instance])
 
   const handleSaveLessonInstance = () => {
     if (lesson_instance) {
       lesson_instance['semantic'] = lessonSemanticTopic
       dispatch(setLessonInstance(lesson_instance?.lesson_id, lesson_instance))
-      setOpen(false)
+      dispatch(handleShowModal())
+    }
+  }
+
+  const showLessonTopicDropdown = useSelector(state => state.dropdown.showLessonTopicDropdown)
+
+  const handleTopicButtonCLick = () => {
+    if (showLessonTopicDropdown) {
+      dispatch({ type: 'CLOSE_LESSON_TOPIC_DROPDOWN' })
+    } else {
+      dispatch({ type: 'SHOW_LESSON_TOPIC_DROPDOWN' })
     }
   }
 
   if (!pending && lesson_instance) {
     return (
       <Modal
+        open={showModal}
         dimmer="inverted"
-        open={open}
-        onClose={() => setOpen(false)}
+        onClose={() => {handleShowModal()}}
         closeIcon={{ style: { top: '1rem', right: '2.5rem' }, color: 'black', name: 'close' }}
       >
         <Modal.Header>
@@ -79,13 +90,14 @@ const SelectLessonModal = ({ open, setOpen, lesson_syllabus_id }) => {
             <FormattedMessage id="lesson-setup" />
           </div>
         </Modal.Header>
-        <Modal.Content>
-
+        <Modal.Content className="choose-topic">
           <div style={{ marginBottom: '1rem', fontSize: '1.2rem' }}>
             <FormattedMessage id="select-lesson-semantic-topic" />
           </div>
           <div className="row-flex">
             <Dropdown
+              open={showLessonTopicDropdown}
+              onClick={handleTopicButtonCLick}
               style={{ width: '220px', marginBottom: '5em' }}
               text={<FormattedMessage id={lessonSemanticTopic} />}
               selection
@@ -137,9 +149,7 @@ const SelectLessonModal = ({ open, setOpen, lesson_syllabus_id }) => {
       </Modal>
     )
   } else {
-    return (
-      null
-    )
+    return null
   }
 }
 

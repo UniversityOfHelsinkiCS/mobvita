@@ -21,7 +21,7 @@ const LessonList = () => {
 
   const { pending, lessons } = useSelector(({ metadata }) => metadata)
 
-  let _lesson_sort_criterion = { direction: 'asc', sort_by: 'index' }
+  const _lesson_sort_criterion = { direction: 'asc', sort_by: 'index' }
   // let _selected_lesson_tab = 'all_lessons'
   // const smallScreenSearchbar = useRef()
   // const smallWindow = useWindowDimensions().width < 520
@@ -54,11 +54,19 @@ const LessonList = () => {
   // }, [smallScreenSearchOpen])
 
   const sortDropdownOptions = [
-    { key: 'index', text: intl.formatMessage({ id: 'sort-by-lesson-index-option' }), value: 'index' },
-    { key: 'syllabus_id', text: intl.formatMessage({ id: 'sort-by-lesson-syllabus-id-option' }), value: 'syllabus_id' },
+    {
+      key: 'index',
+      text: intl.formatMessage({ id: 'sort-by-lesson-index-option' }),
+      value: 'index',
+    },
+    {
+      key: 'syllabus_id',
+      text: intl.formatMessage({ id: 'sort-by-lesson-syllabus-id-option' }),
+      value: 'syllabus_id',
+    },
   ]
 
-  // HANDLERS 
+  // HANDLERS
   const handleSortChange = (_e, option) => {
     setSorter(option.value)
   }
@@ -67,12 +75,12 @@ const LessonList = () => {
     const newDirection = sortDirection === 'asc' ? 'desc' : 'asc'
     setSortDirection(newDirection)
   }
-
+  /*
   const handleOpenLessonModal = (lesson_syllabus_id, isOpen) => {
     setlessonSyllabusId(lesson_syllabus_id)
     setLessonModalOpen(isOpen)
   }
-
+*/
   const libraryControls = (
     <div data-cy="library-controls" className="library-control">
       <div className="search-and-sort">
@@ -137,16 +145,29 @@ const LessonList = () => {
     return dir * multiplier
   })
 
+  const showModal = useSelector(state => state.modal.showModal)
+
+  const handleShowModal = lesson_syllabus_id => {
+    setlessonSyllabusId(lesson_syllabus_id)
+    if (showModal) {
+      dispatch({ type: 'CLOSE_MODAL' })
+    } else {
+      dispatch({ type: 'SHOW_MODAL' })
+    }
+  }
+
   function rowRenderer({ key, index, style }) {
     return (
-      <div key={key} style={{ ...style, paddingRight: '0.5em', paddingLeft: '0.5em', marginBottom: '0.5em' }}>
-        <LessonListItem
-          lesson={libraryFilteredLessons[index]}
-          handleOpenLessonModal={handleOpenLessonModal}
-        />
+      <div
+        key={key}
+        style={{ ...style, paddingRight: '0.5em', paddingLeft: '0.5em', marginBottom: '0.5em' }}
+      >
+        <LessonListItem lesson={libraryFilteredLessons[index]} handleShowModal={handleShowModal} />
       </div>
     )
   }
+
+  console.log(showModal)
 
   if (pending || !refreshed || !libraryFilteredLessons) {
     return (
@@ -158,51 +179,52 @@ const LessonList = () => {
       </div>
     )
   }
-  else {
-    return (
-      <div className="cont-tall pt-lg cont flex-col auto gap-row-sm ">
-        <SelectLessonModal
-          open={lessonModalOpen}
-          setOpen={setLessonModalOpen}
-          lesson_syllabus_id={lessonSyllabusId}
-        />
-        {/* {libraryControls} */}
-        {noResults ? (
-          <div className="justify-center mt-lg" style={{ color: 'rgb(112, 114, 120)' }}>
-            <FormattedMessage id="no-lessons-found" />
-          </div>
-        ) : (
-          <Card.Group itemsPerRow={1} doubling data-cy="lesson-items" style={{ marginTop: '.5em' }}>
-            <WindowScroller>
-              {({ height, isScrolling, onChildScroll, scrollTop }) => (
-                <List
-                  autoHeight={true}
-                  height={height}
-                  isScrolling={isScrolling}
-                  onScroll={onChildScroll}
-                  rowCount={libraryFilteredLessons.length}
-                  rowHeight = {(index) => {
-                    const lesson = libraryFilteredLessons[index.index]
-                    const topics = lesson ? lesson.topics : []
-                    const concepts = []
-                    topics.forEach((topic, i) => {
-                      let topic_concepts = topic.topic.split(';')
-                      topic_concepts.forEach((topic_concept, k) => {concepts.push(topic_concept)})
+
+  return (
+    <div className="cont-tall pt-lg cont flex-col auto gap-row-sm ">
+      <SelectLessonModal
+        showModal={showModal}
+        handleShowModal={handleShowModal}
+        lesson_syllabus_id={lessonSyllabusId}
+      />
+      {/* {libraryControls} */}
+      {noResults ? (
+        <div className="justify-center mt-lg" style={{ color: 'rgb(112, 114, 120)' }}>
+          <FormattedMessage id="no-lessons-found" />
+        </div>
+      ) : (
+        <Card.Group itemsPerRow={1} doubling data-cy="lesson-items" style={{ marginTop: '.5em' }}>
+          <WindowScroller>
+            {({ height, isScrolling, onChildScroll, scrollTop }) => (
+              <List
+                autoHeight
+                height={height}
+                isScrolling={isScrolling}
+                onScroll={onChildScroll}
+                rowCount={libraryFilteredLessons.length}
+                rowHeight={index => {
+                  const lesson = libraryFilteredLessons[index.index]
+                  const topics = lesson ? lesson.topics : []
+                  const concepts = []
+                  topics.forEach((topic, i) => {
+                    const topic_concepts = topic.topic.split(';')
+                    topic_concepts.forEach((topic_concept, k) => {
+                      concepts.push(topic_concept)
                     })
-                    return 130 + concepts.length * 25 //  + (topics.length - 1) * 5;
-                  }}
-                  // rowHeight= {300}
-                  rowRenderer={rowRenderer}
-                  scrollTop={scrollTop}
-                  width={10000}
-                />
-              )}
-            </WindowScroller>
-          </Card.Group>
-        )}
-      </div>
-    )
-  }
+                  })
+                  return 130 + concepts.length * 25 //  + (topics.length - 1) * 5;
+                }}
+                // rowHeight= {300}
+                rowRenderer={rowRenderer}
+                scrollTop={scrollTop}
+                width={10000}
+              />
+            )}
+          </WindowScroller>
+        </Card.Group>
+      )}
+    </div>
+  )
 }
 
 export default LessonList

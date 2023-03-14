@@ -85,7 +85,14 @@ export default function Sidebar({ history }) {
 
   const handleTourStart = () => {
     if (history.location.pathname.includes('progress')) {
-      dispatch({ type: 'PROGRESS_TOUR_RESTART' })
+      if (user.user.email === 'anonymous_email') {
+        dispatch({ type: 'ANONYMOUS_PROGRESS_TOUR_RESTART' })
+      } else {
+        dispatch({ type: 'PROGRESS_TOUR_RESTART' })
+      }
+    } else if (history.location.pathname.includes('lessons') && hiddenFeatures) {
+      dispatch(sidebarSetOpen(false))
+      dispatch({ type: 'LESSONS_TOUR_RESTART' })
     } else if (history.location.pathname.includes('library')) {
       dispatch(sidebarSetOpen(false))
       dispatch({ type: 'LIBRARY_TOUR_RESTART' })
@@ -169,7 +176,11 @@ export default function Sidebar({ history }) {
                   <Menu.Item>
                     <div style={{ padding: '0.5em 0em' }}>
                       <Link onClick={() => menuClickWrapper()} to="/register">
-                        <Button block variant="primary">
+                        <Button 
+                          block 
+                          variant="primary"
+                          className="sidebar-register-button"
+                        >
                           <FormattedMessage id="register-to-save-your-progress" />
                         </Button>
                       </Link>

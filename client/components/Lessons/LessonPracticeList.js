@@ -52,7 +52,6 @@ const ChangePracticeOrderArrows = ({ index, pracLength, swapPracticeOrder }) => 
     />
   )
 }
-
 const LessonPracticeList = ({ lessonsPractices, removePractice, swapPracticeOrder }) => {
   return (
     <div style={{ marginBottom: '.5rem' }}>
