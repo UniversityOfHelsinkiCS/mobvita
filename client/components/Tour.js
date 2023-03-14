@@ -224,6 +224,18 @@ const Tour = () => {
             dispatch({ type: 'CLOSE_MODAL' })
           }
           if (index === 5) {
+            const lessonId = lessons[0].syllabus_id
+            const currentPath = history.location.pathname
+            const newPath = currentPath.substring(0, currentPath.length - 9)
+            history.push(`${newPath}/${lessonId}/practice`)
+            dispatch(stopTour())
+            setTimeout(() => {
+              dispatch(startTour())
+              dispatch(handleNextTourStep(index + (action === ACTIONS.PREV ? -1 : 1)))
+            }, 1000)
+          }
+          if (index === 6) {
+            history.push('/lessons/library')
             dispatch(sidebarSetOpen(true))
         
             setTimeout(() => {
