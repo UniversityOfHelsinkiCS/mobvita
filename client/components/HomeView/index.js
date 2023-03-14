@@ -249,7 +249,7 @@ const HomeView = () => {
         setOpen={setBetaModalOpen}
         language={learningLanguage}
       />
-      {hiddenFeatures && (
+      {hiddenFeatures && !userIsAnonymous && (
         <Recommender />
       )}
       {welcomeView && !hiddenFeatures && (
