@@ -90,6 +90,7 @@ const rootReducer = combineReducers({
   lessonInstance,
   lessonExercises,
   dropdown,
+  modal,
   topicsBox
 })
 
