@@ -3,7 +3,7 @@ import { useHistory, useParams } from 'react-router-dom'
 import JoyRide, { ACTIONS, EVENTS, STATUS } from 'react-joyride'
 import { sidebarSetOpen } from 'Utilities/redux/sidebarReducer'
 import { useSelector, useDispatch } from 'react-redux'
-import { handleNextTourStep, stopTour } from 'Utilities/redux/tourReducer'
+import { handleNextTourStep, startTour, stopTour } from 'Utilities/redux/tourReducer'
 import { FormattedMessage } from 'react-intl'
 import useWindowDimensions from 'Utilities/windowDimensions'
 import {
@@ -15,8 +15,6 @@ import {
   practiceTourStepsAlternative,
   lessonsTourSteps,
 } from 'Utilities/common'
-import SelectLessonModal from 'Components/Lessons/SelectLessonModal'
-import { getLessonActiveInstance } from 'Utilities/redux/lessonInstanceReducer'
 
 const Tour = () => {
   const dispatch = useDispatch()
@@ -25,8 +23,6 @@ const Tour = () => {
   const bigScreen = useWindowDimensions().width >= 700
 
   const { lessons } = useSelector(({ metadata }) => metadata)
-  const { lesson_semantics } = useSelector(({ metadata }) => metadata)
-  const { lesson_instance } = useSelector(({ lessonInstance }) => lessonInstance)
 
   const callback = data => {
     const { action, index, type, status } = data
@@ -109,13 +105,21 @@ const Tour = () => {
             dispatch({ type: 'CLOSE_LESSON_TOPIC_DROPDOWN' })
             dispatch({ type: 'CLOSE_MODAL' })
           }
-          /*
-          if (index === 3) {
+          if (index === 5) {
+            const lessonId = lessons[0].syllabus_id
+            const currentPath = history.location.pathname
+            const newPath = currentPath.substring(0, currentPath.length - 9)
+            history.push(`${newPath}/${lessonId}/practice`)
+            dispatch(stopTour())
             setTimeout(() => {
-              dispatch({type: 'CLOSE_LESSON_TOPIC_DROPDOWN'})
-            }, 2000)
+              dispatch(startTour())
+              dispatch(handleNextTourStep(index + (action === ACTIONS.PREV ? -1 : 1)))
+            }, 1000)
           }
-          */
+          if (index === 6) {
+            history.push('/lessons/library')
+          }
+
         }
 
         dispatch(handleNextTourStep(index + (action === ACTIONS.PREV ? -1 : 1)))

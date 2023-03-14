@@ -1753,6 +1753,16 @@ const desktopLessonsTourSteps = [
     disableBeacon: true,
   },
   {
+    target: '.practice-container',
+    title: <FormattedMessage id="Lesson exercise" />,
+    content: (
+      <div>
+        <FormattedHTMLMessage id="lesson-exercise-message" />
+      </div>
+    ),
+    disableBeacon: true,
+  },
+  {
     target: '.tour-button',
     title: <FormattedMessage id="Tour end" />,
     content: (

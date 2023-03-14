@@ -856,5 +856,7 @@
     "Dative": "",
     "Instrumental": "",
     "Locative": "",
-    "practice-lesson-message": "点击此处开始练习本课程"
+    "practice-lesson-message": "点击此处开始练习本课程",
+    "Lesson exercise": "Lesson exercise",
+    "lesson-exercise-message": "This is just like regular practice with stories, except that you get exercises only about the grammar topics of the lesson."
 }

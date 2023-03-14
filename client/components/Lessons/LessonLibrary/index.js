@@ -30,7 +30,6 @@ const LessonList = () => {
   const [sortDirection, setSortDirection] = useState(_lesson_sort_criterion.direction)
   // const [smallScreenSearchOpen, setSmallScreenSearchOpen] = useState(false)
   const [displayedLessons, setDisplayedLessons] = useState([])
-  const [lessonModalOpen, setLessonModalOpen] = useState(false)
   const [lessonSyllabusId, setlessonSyllabusId] = useState(null)
 
   const dispatch = useDispatch()
@@ -166,8 +165,6 @@ const LessonList = () => {
       </div>
     )
   }
-
-  console.log(showModal)
 
   if (pending || !refreshed || !libraryFilteredLessons) {
     return (
