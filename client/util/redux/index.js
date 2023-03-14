@@ -44,6 +44,7 @@ import lessonInstance from './lessonInstanceReducer'
 import lessonExercises from './lessonExercisesReducer'
 import dropdown from './dropdownReducer'
 import modal from './modalReducer'
+import topicsBox from './topicsBoxReducer'
 
 const rootReducer = combineReducers({
   stories,
