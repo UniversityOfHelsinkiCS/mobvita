@@ -90,6 +90,9 @@ export default function Sidebar({ history }) {
       } else {
         dispatch({ type: 'PROGRESS_TOUR_RESTART' })
       }
+    } else if (history.location.pathname.includes('lessons') && hiddenFeatures) {
+      dispatch(sidebarSetOpen(false))
+      dispatch({ type: 'LESSONS_TOUR_RESTART' })
     } else if (history.location.pathname.includes('library')) {
       dispatch(sidebarSetOpen(false))
       dispatch({ type: 'LIBRARY_TOUR_RESTART' })

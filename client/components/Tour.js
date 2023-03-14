@@ -82,6 +82,9 @@ const Tour = () => {
 
         // practice tour steps
         if (tourState.steps === practiceTourSteps) {
+          if (index === 0) {
+            dispatch({ type: 'SHOW_TOPICS_BOX'})
+          }
           if (index === 2) {
             dispatch({ type: 'SHOW_PRACTICE_DROPDOWN' })
           }
@@ -202,6 +205,27 @@ const Tour = () => {
           if (index === 4) {
             dispatch(sidebarSetOpen(true))
 
+            setTimeout(() => {
+              dispatch(handleNextTourStep(index + (action === ACTIONS.PREV ? -1 : 1)))
+              window.dispatchEvent(new Event('resize'))
+            }, 500)
+          }
+        }
+        // lessons tour control
+        if (tourState.steps === lessonsTourSteps) {
+          if (index === 3) {
+            dispatch({ type: 'SHOW_MODAL' })
+            setTimeout(() => {
+              dispatch({ type: 'SHOW_LESSON_TOPIC_DROPDOWN' })
+            }, 600)
+          }
+          if (index === 4) {
+            dispatch({ type: 'CLOSE_LESSON_TOPIC_DROPDOWN' })
+            dispatch({ type: 'CLOSE_MODAL' })
+          }
+          if (index === 5) {
+            dispatch(sidebarSetOpen(true))
+        
             setTimeout(() => {
               dispatch(handleNextTourStep(index + (action === ACTIONS.PREV ? -1 : 1)))
               window.dispatchEvent(new Event('resize'))
