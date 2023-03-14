@@ -143,7 +143,7 @@ const StoryList = () => {
   }
 
   useEffect(() => {
-    if (user.user.is_new_user && !user.user.has_seen_library_tour) {
+    if (!user.user.has_seen_library_tour) {
       dispatch(libraryTourViewed())
       dispatch(sidebarSetOpen(false))
       dispatch(startLibraryTour())

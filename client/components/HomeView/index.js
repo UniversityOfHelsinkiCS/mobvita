@@ -232,7 +232,7 @@ const HomeView = () => {
   }, [learningLanguage])
 
   useEffect(() => {
-    if (user.user.is_new_user && !user.user.has_seen_home_tour) {
+    if (!user.user.has_seen_home_tour) {
       dispatch(homeTourViewed())
       dispatch(sidebarSetOpen(false))
       dispatch(startTour())

@@ -10,6 +10,10 @@ import { getMetadata } from 'Utilities/redux/metadataReducer'
 
 import SelectLessonModal from 'Components/Lessons/SelectLessonModal'
 import LessonListItem from 'Components/Lessons/LessonLibrary/LessonListItem'
+
+import { sidebarSetOpen } from 'Utilities/redux/sidebarReducer'
+import { startLessonsTour } from 'Utilities/redux/tourReducer'
+import { lessonsTourViewed } from 'Utilities/redux/userReducer'
 // import useWindowDimensions from 'Utilities/windowDimensions'
 // import AddStoryModal from 'Components/AddStoryModal'
 // import LessonLibrarySearch from './LessonLibrarySearch'
@@ -20,6 +24,7 @@ const LessonList = () => {
   const refreshed = useSelector(({ user }) => user.refreshed)
 
   const { pending, lessons } = useSelector(({ metadata }) => metadata)
+  const { user } = useSelector(({ user }) => ({ user: user.data }))
 
   const _lesson_sort_criterion = { direction: 'asc', sort_by: 'index' }
   // let _selected_lesson_tab = 'all_lessons'
@@ -43,6 +48,20 @@ const LessonList = () => {
   useEffect(() => {
     if (lessons) setDisplayedLessons(lessons)
   }, [lessons])
+
+  useEffect(() => {
+    if (!user.user.has_seen_lesson_tour) {
+      dispatch(lessonsTourViewed())
+      dispatch(sidebarSetOpen(false))
+      dispatch(startLessonsTour())
+    }
+  }, [])
+
+  console.log(`lesson ${user.user.has_seen_lesson_tour}`)
+  console.log(`home ${user.user.has_seen_home_tour}`)
+  console.log(`library ${user.user.has_seen_library_tour}`)
+  console.log(`progress ${user.user.has_seen_progress_tour}`)
+  console.log(`practice ${user.user.has_seen_practice_tour}`)
 
   // useEffect(() => {
   //   setSorter('index')
