@@ -44,6 +44,7 @@ import lessonInstance from './lessonInstanceReducer'
 import lessonExercises from './lessonExercisesReducer'
 import dropdown from './dropdownReducer'
 import modal from './modalReducer'
+import topicsBox from './topicsBoxReducer'
 
 const rootReducer = combineReducers({
   stories,
@@ -89,7 +90,7 @@ const rootReducer = combineReducers({
   lessonInstance,
   lessonExercises,
   dropdown,
-  modal
+  topicsBox
 })
 
 export default (state, action) =>

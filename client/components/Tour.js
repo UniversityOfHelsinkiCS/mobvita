@@ -86,6 +86,9 @@ const Tour = () => {
 
         // practice tour steps
         if (tourState.steps === practiceTourSteps) {
+          if (index === 0) {
+            dispatch({ type: 'SHOW_TOPICS_BOX'})
+          }
           if (index === 2) {
             dispatch({ type: 'SHOW_PRACTICE_DROPDOWN' })
           }
