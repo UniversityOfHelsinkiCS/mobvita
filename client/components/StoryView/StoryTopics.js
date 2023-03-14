@@ -3,18 +3,27 @@ import useWindowDimensions from 'Utilities/windowDimensions'
 import { Icon } from 'semantic-ui-react'
 import { skillLevels } from 'Utilities/common'
 import { FormattedMessage } from 'react-intl'
+import { useSelector, useDispatch } from 'react-redux'
+
 
 const StoryTopics = ({ conceptCount, focusedConcept, setFocusedConcept }) => {
+  const dispatch = useDispatch()
   const [topTopics, setTopTopics] = useState([])
   const { width } = useWindowDimensions()
-  const [collapsed, setCollapsed] = useState(true)
+  const showTopicsBox = useSelector((state) => state.topicsBox.showTopicsBox)
   const [sortBy, setSortBy] = useState('name')
-
   const handleFocusedConcept = topic => {
     if (topic === focusedConcept) {
       setFocusedConcept(null)
     } else {
       setFocusedConcept(topic)
+    }
+  }
+  const handleTopicsBoxClick = () => {
+    if (showTopicsBox) {
+      dispatch({ type: 'CLOSE_TOPICS_BOX' })
+    } else {
+      dispatch({ type: 'SHOW_TOPICS_BOX' })
     }
   }
 
@@ -68,15 +77,16 @@ const StoryTopics = ({ conceptCount, focusedConcept, setFocusedConcept }) => {
               <FormattedMessage id="story-top-topics" />:
             </div>
             <div
-              onClick={() => setCollapsed(!collapsed)}
-              onKeyDown={() => setCollapsed(!collapsed)}
+              onClick={() => {
+                handleTopicsBoxClick()}}
+              onKeyDown={() => {handleTopicsBoxClick()}}
               role="button"
               tabIndex={0}
             >
-              <Icon name={collapsed ? 'angle down' : 'angle up'} size="large" />
+              <Icon name={showTopicsBox ? 'angle down' : 'angle up'} size="large" />
             </div>
           </div>
-          {!collapsed && (
+          {showTopicsBox && (
             <>
               <FormattedMessage id="LABEL-sort-by" />
               <div className="space-evenly" style={{ marginTop: '.5em' }}>
@@ -134,5 +144,6 @@ const StoryTopics = ({ conceptCount, focusedConcept, setFocusedConcept }) => {
 
   return null
 }
+
 
 export default StoryTopics
