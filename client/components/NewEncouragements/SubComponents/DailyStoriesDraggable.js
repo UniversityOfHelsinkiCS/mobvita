@@ -84,7 +84,7 @@ const DailyStoriesDraggable = ({ cachedStories, bigScreen, open, setOpen }) => {
                       <li style={{ marginBottom: '.5em' }}>
                         <Link
                           variant="primary"
-                          onClick={()=> uploadDailyStory(story._id)}
+                          onClick={() => uploadDailyStory(story._id)}
                         >
                           <FormattedMessage id="upload-daily-story" />
                         </Link>
