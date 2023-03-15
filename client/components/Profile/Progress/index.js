@@ -101,10 +101,15 @@ const Progress = () => {
       : moment().toDate()
 
   useEffect(() => {
-    if (user.user.is_new_user && !user.user.has_seen_progress_tour) {
+    if (!user.user.has_seen_progress_tour) {
       dispatch(progressTourViewed())
       dispatch(sidebarSetOpen(false))
-      dispatch(startProgressTour())
+      dispatch({ type: 'SHOW_PROFILE_DROPDOWN' })
+      if (user.user.email === 'anonymous_email') {
+        dispatch({ type: 'ANONYMOUS_PROGRESS_TOUR_RESTART' })
+      } else {
+        dispatch(startProgressTour())
+      }
     }
   }, [])
 

@@ -113,7 +113,7 @@ const ReadViews = ({ match }) => {
   }
 
   useEffect(() => {
-    if (user?.user.is_new_user && !user?.user.has_seen_practice_tour) {
+    if (!user?.user.has_seen_practice_tour) {
       dispatch(practiceTourViewed())
       dispatch(sidebarSetOpen(false))
       dispatch(startPracticeTour())

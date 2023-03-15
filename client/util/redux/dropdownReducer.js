@@ -15,7 +15,6 @@ export default (state = initialState, action) => {
     case 'CLOSE_PRACTICE_DROPDOWN':
       return { ...initialState, showPracticeDropdown: false }
       case 'SHOW_LESSON_TOPIC_DROPDOWN':
-        console.log("click")
         return { ...initialState, showLessonTopicDropdown: true }
     case 'CLOSE_LESSON_TOPIC_DROPDOWN':
         return { ...initialState, showLessonTopicDropdown: false }

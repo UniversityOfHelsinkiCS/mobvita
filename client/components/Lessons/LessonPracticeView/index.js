@@ -8,9 +8,17 @@ import { clearFocusedSnippet, resetSnippets } from 'Utilities/redux/snippetsRedu
 import { updateShowReviewDiff } from 'Utilities/redux/userReducer'
 import { Spinner } from 'react-bootstrap'
 import { getMetadata } from 'Utilities/redux/metadataReducer'
-import { setTouchedIds, setAnswers, setWillPause, setIsPaused, } from 'Utilities/redux/practiceReducer'
+import {
+  setTouchedIds,
+  setAnswers,
+  setWillPause,
+  setIsPaused,
+} from 'Utilities/redux/practiceReducer'
 import { clearTranslationAction } from 'Utilities/redux/translationReducer'
-import { getLessonActiveInstance, clearLessonInstanceState } from 'Utilities/redux/lessonInstanceReducer'
+import {
+  getLessonActiveInstance,
+  clearLessonInstanceState,
+} from 'Utilities/redux/lessonInstanceReducer'
 import { resetAnnotations } from 'Utilities/redux/annotationsReducer'
 import { useTimer } from 'react-compound-timer'
 import useWindowDimensions from 'Utilities/windowDimensions'
@@ -41,8 +49,12 @@ const LessonPracticeView = () => {
   const { lessons } = useSelector(({ metadata }) => metadata)
   const learningLanguage = useSelector(learningLanguageSelector)
   const snippets = useSelector(({ snippets }) => snippets)
-  const { pending: lesson_instance_pending, lesson_instance } = useSelector(({ lessonInstance }) => lessonInstance)
-  const { isPaused, willPause, practiceFinished, currentAnswers } = useSelector(({ practice }) => practice)
+  const { pending: lesson_instance_pending, lesson_instance } = useSelector(
+    ({ lessonInstance }) => lessonInstance
+  )
+  const { isPaused, willPause, practiceFinished, currentAnswers } = useSelector(
+    ({ practice }) => practice
+  )
 
   const [lessonMetaData, setLessonMetaData] = useState({})
   const [startModalOpen, setStartModalOpen] = useState(false)
@@ -64,7 +76,9 @@ const LessonPracticeView = () => {
   })
 
   useEffect(() => {
-    const filtered_lessons = lessons ? lessons.filter(l => l.syllabus_id === lesson_syllabus_id) : []
+    const filtered_lessons = lessons
+      ? lessons.filter(l => l.syllabus_id === lesson_syllabus_id)
+      : []
     const practice_lesson = filtered_lessons?.length == 1 ? filtered_lessons[0] : {}
     setLessonMetaData(practice_lesson)
   }, [lessons])
@@ -187,7 +201,10 @@ const LessonPracticeView = () => {
         <div className="justify-center">
           <div className="cont">
             <Segment>
-              <div className="progress-bar-cont" style={{ top: smallScreen ? '.25em' : '3.25em' }}>
+              <div
+                className="progress-bar-cont"
+                style={{ top: smallScreen ? '.25em' : '3.25em' }}
+              >
                 <ProgressBar
                   snippetProgress={currentSnippetNum}
                   snippetsTotal={snippetsTotalNum}

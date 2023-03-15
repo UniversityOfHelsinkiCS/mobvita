@@ -1753,6 +1753,16 @@ const desktopLessonsTourSteps = [
     disableBeacon: true,
   },
   {
+    target: '.practice-container',
+    title: <FormattedMessage id="Lesson exercise" />,
+    content: (
+      <div>
+        <FormattedHTMLMessage id="lesson-exercise-message" />
+      </div>
+    ),
+    disableBeacon: true,
+  },
+  {
     target: '.tour-button',
     title: <FormattedMessage id="Tour end" />,
     content: (
@@ -1764,7 +1774,6 @@ const desktopLessonsTourSteps = [
     disableBeacon: true,
   }
 ]
-
 const mobileLessonsTourSteps = [
   {
     target: '.cont-tall',
@@ -1829,6 +1838,16 @@ const mobileLessonsTourSteps = [
     disableBeacon: true,
   },
   {
+    target: '.practice-container',
+    title: <FormattedMessage id="Lesson exercise" />,
+    content: (
+      <div>
+        <FormattedHTMLMessage id="lesson-exercise-message" />
+      </div>
+    ),
+    disableBeacon: true,
+  },
+  {
     target: '.tour-mobile-start-button',
     title: <FormattedMessage id="Tour end" />,
     content: (
@@ -1846,7 +1865,6 @@ const mobileLessonsTourSteps = [
     },
   }
 ]
-
 
 // Slice the tour steps to only include practice view
 // steps and not preview view steps

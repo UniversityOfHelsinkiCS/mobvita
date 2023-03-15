@@ -1,4 +1,4 @@
-import React, { useState, useEffect} from 'react'
+import React, { useState, useEffect } from 'react'
 import { Link } from 'react-router-dom'
 import { images, backgroundColors } from 'Utilities/common'
 import { FormattedHTMLMessage, FormattedMessage } from 'react-intl'
@@ -6,16 +6,19 @@ import { useSelector } from 'react-redux'
 
 const LeaderboardEncouragement = () => {
 
-    const { user_rank } = useSelector(({ leaderboard }) => leaderboard.data)
-    const [userRanking, setUserRanking] = useState(null)
+  const { user_rank } = useSelector(({ leaderboard }) => leaderboard.data)
+  const [userRanking, setUserRanking] = useState(null)
 
-    useEffect(() => {
-        if (user_rank < 100) {
-          setUserRanking(user_rank + 1)
-        }
-      }, [user_rank])
+  useEffect(() => {
+    if (user_rank < 100) {
+      setUserRanking(user_rank + 1)
+    }
+  }, [user_rank])
 
-    return(
+
+  return (
+    <div>
+      {userRanking && userRanking <= 10 ? (
         <div className="pt-md">
           <div
             className="flex enc-message-body"
@@ -41,7 +44,8 @@ const LeaderboardEncouragement = () => {
             </div>
           </div>
         </div>
-    )
+      ) : (null)}
+    </div>)
 }
 
 export default LeaderboardEncouragement
