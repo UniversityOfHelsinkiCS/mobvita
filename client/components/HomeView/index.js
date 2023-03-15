@@ -253,7 +253,7 @@ const HomeView = () => {
         setOpen={setBetaModalOpen}
         language={learningLanguage}
       />
-      {TESTING_NEW_ENCOURAGEMENT &&(
+      {TESTING_NEW_ENCOURAGEMENT && (
         <Recommender />
       )}
       {welcomeView && !TESTING_NEW_ENCOURAGEMENT && (
@@ -279,7 +279,7 @@ const HomeView = () => {
           enable_recmd={enable_recmd}
         />
       )}
-      
+
       {!userData.is_teacher && !userData.grade && !userIsAnonymous && !userData.is_new_user && (
         <SetCEFRReminder
           open={openReminder}

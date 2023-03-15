@@ -4,6 +4,7 @@ import DailyStoriesEncouragement from './SubComponents/DailyStoriesEncouragement
 import LeaderboardEncouragement from './SubComponents/LeaderboardEncouragement'
 import TurnOffRecommendations from './SubComponents/TurnOffRecommendations'
 import LatestIncompleteStory from './SubComponents/LatestIncompleteStory'
+import UnseenStoriesInGroup from './SubComponents/UnseenStoriesInGroup'
 import { useSelector, useDispatch } from 'react-redux'
 import useWindowDimensions from 'Utilities/windowDimensions'
 import Draggable from 'react-draggable'
@@ -73,7 +74,8 @@ const Recommender = () => {
             />
             <LeaderboardEncouragement />
             <DailyStoriesEncouragement handleDailyStoriesClick={handleDailyStoriesClick} />
-            <LatestIncompleteStory enable_recmd={enable_recmd}/>
+            <LatestIncompleteStory enable_recmd={enable_recmd} />
+            <UnseenStoriesInGroup />
             <TurnOffRecommendations />
           </div>
         </Draggable>
