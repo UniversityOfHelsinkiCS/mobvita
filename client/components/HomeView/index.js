@@ -239,6 +239,10 @@ const HomeView = () => {
     }
   }, [])
 
+  // Change this to true when developing new encouragement!
+  // REMEMBER TO SWITCH BACK TO FALSE BEFORE PUSHING!!!
+  const TESTING_NEW_ENCOURAGEMENT = false
+
   return (
     <div className="cont-tall cont flex-col auto gap-row-sm pt-lg blue-bg">
       <AddStoryModal open={addStoryModalOpen} setOpen={setAddStoryModalOpen} />
@@ -249,7 +253,10 @@ const HomeView = () => {
         setOpen={setBetaModalOpen}
         language={learningLanguage}
       />
-      {welcomeView && (
+      {TESTING_NEW_ENCOURAGEMENT &&(
+        <Recommender />
+      )}
+      {welcomeView && !TESTING_NEW_ENCOURAGEMENT && (
         <DefaultActivityModal
           open={showWelcomeModal}
           username={username}
@@ -261,15 +268,18 @@ const HomeView = () => {
           welcomeBack
         />
       )}
-      <DefaultActivityModal
-        open={showDAModal}
-        username={username}
-        storiesCovered={storiesCovered}
-        incompleteStories={incomplete}
-        pending={loading}
-        learningLanguage={learningLanguage}
-        enable_recmd={enable_recmd}
-      />
+      {!TESTING_NEW_ENCOURAGEMENT && (
+        <DefaultActivityModal
+          open={showDAModal}
+          username={username}
+          storiesCovered={storiesCovered}
+          incompleteStories={incomplete}
+          pending={loading}
+          learningLanguage={learningLanguage}
+          enable_recmd={enable_recmd}
+        />
+      )}
+      
       {!userData.is_teacher && !userData.grade && !userIsAnonymous && !userData.is_new_user && (
         <SetCEFRReminder
           open={openReminder}
