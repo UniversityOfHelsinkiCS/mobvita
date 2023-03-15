@@ -249,10 +249,7 @@ const HomeView = () => {
         setOpen={setBetaModalOpen}
         language={learningLanguage}
       />
-      {hiddenFeatures && !userIsAnonymous && (
-        <Recommender />
-      )}
-      {welcomeView && !hiddenFeatures && (
+      {welcomeView && (
         <DefaultActivityModal
           open={showWelcomeModal}
           username={username}
@@ -264,7 +261,6 @@ const HomeView = () => {
           welcomeBack
         />
       )}
-      {!hiddenFeatures && (
       <DefaultActivityModal
         open={showDAModal}
         username={username}
@@ -274,7 +270,6 @@ const HomeView = () => {
         learningLanguage={learningLanguage}
         enable_recmd={enable_recmd}
       />
-      )}
       {!userData.is_teacher && !userData.grade && !userIsAnonymous && !userData.is_new_user && (
         <SetCEFRReminder
           open={openReminder}
