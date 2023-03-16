@@ -67,6 +67,7 @@ const LessonExercise = ({ lesson_instance, handleInputChange }) => {
           choices,
           concept,
           audio,
+          audio_wids,
           sentence_id,
           snippet_id,
           story_id,
@@ -101,6 +102,7 @@ const LessonExercise = ({ lesson_instance, handleInputChange }) => {
             addToAudio({
               [`${ID}-${id}`]: {
                 context: audio,
+                audio_wids,
                 snippet_id,
                 sentence_id,
                 id,

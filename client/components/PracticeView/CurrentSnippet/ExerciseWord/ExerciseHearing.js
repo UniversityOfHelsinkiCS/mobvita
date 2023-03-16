@@ -23,11 +23,12 @@ const ExerciseHearing = ({ word, handleChange }) => {
   const [count, setCount] = useState(0)
   const [lastWord, setLastWord] = useState('')
   const inputRef = createRef(null)
-  const { voiceSampleOnCooldown } = useSelector(({ practice }) => practice)
+  const { voiceSampleOnCooldown, focusedWord } = useSelector(({ practice }) => practice)
   const currentAnswer = useSelector(({ practice }) => practice.currentAnswers[`${word.ID}-${word.id}`])
   const learningLanguage = useSelector(learningLanguageSelector)
   const { resource_usage } = useSelector(state => state.user.data.user)
   const { grade } = useSelector(state => state.user.data.user)
+  const listeningHighlighting = focusedWord.audio_wids?.start <= word.ID && word.ID <= focusedWord.audio_wids?.end || word.ID === focusedWord.ID
 
   const dispatch = useDispatch()
 
@@ -169,7 +170,7 @@ const ExerciseHearing = ({ word, handleChange }) => {
           style={{
             width: getTextWidth(word.surface) + 10,
             minWidth: getTextWidth(word.surface) + 10,
-            backgroundColor: getWordColor(word.level, grade, skillLevels),
+            backgroundColor: !listeningHighlighting && getWordColor(word.level, grade, skillLevels) || 'rgba(255, 152, 0, 0.71)',
             marginRight: '2px',
             height: '1.5em',
             lineHeight: 'normal',
