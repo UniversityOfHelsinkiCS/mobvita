@@ -4,10 +4,9 @@ import { images, backgroundColors } from 'Utilities/common'
 import { FormattedMessage } from 'react-intl'
 import { Link } from 'react-router-dom'
 
-
 const LatestIncompleteStory = ({ enable_recmd }) => {
   const { incomplete: incompleteStories } = useSelector(({ incomplete }) => ({
-    incomplete: incomplete.data
+    incomplete: incomplete.data,
   }))
   const [latestIncompleteStory, setLatestIncompleteStory] = useState(null)
 
@@ -29,36 +28,36 @@ const LatestIncompleteStory = ({ enable_recmd }) => {
   }, [incompleteStories])
 
   return (
-      <div>
+    <div>
       {latestIncompleteStory && enable_recmd ? (
-      <div className="pt-md">
-        <div
-          className="flex enc-message-body"
-          style={{ alignItems: 'center', backgroundColor: backgroundColors[0] }}
-        >
-          <img
-            src={images.practice}
-            alt="weight"
-            style={{ maxWidth: '8%', maxHeight: '8%', marginRight: '1em' }}
-          />
-          <div>
-            <FormattedMessage id="continue-last-story-left-in-the-middle" />
-            <br />
-            <ul style={{ paddingLeft: 0 }}>
-              <li style={{ marginTop: '0.5rem', listStylePosition: 'inside' }}>
-                <Link
-                  className="interactable"
-                  to={`/stories/${latestIncompleteStory._id}/practice`}
+        <div className="pt-md">
+          <div
+            className="flex enc-message-body"
+            style={{ alignItems: 'center', backgroundColor: backgroundColors[0] }}
+          >
+            <img
+              src={images.practice}
+              alt="weight"
+              style={{ maxWidth: '8%', maxHeight: '8%', marginRight: '1em' }}
+            />
+            <div>
+              <FormattedMessage id="continue-last-story-left-in-the-middle" />
+              <br />
+              <ul style={{ paddingLeft: 0 }}>
+                <li style={{ marginTop: '0.5rem', listStylePosition: 'inside' }}>
+                  <Link
+                    className="interactable"
+                    to={`/stories/${latestIncompleteStory._id}/practice`}
                   >
                     <i>{latestIncompleteStory.title}</i>
-                </Link>
-              </li>
-            </ul>
+                  </Link>
+                </li>
+              </ul>
+            </div>
           </div>
         </div>
-      </div>)
-       : (null) }
-      </div>
+      ) : null}
+    </div>
   )
 }
 
