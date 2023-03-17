@@ -75,3 +75,6 @@ requests
 # emacs temporary files and backup directories
 \#*
 .-Backup
+
+# webstorm files
+.idea

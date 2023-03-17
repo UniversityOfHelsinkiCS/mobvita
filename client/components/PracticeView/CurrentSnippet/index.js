@@ -115,6 +115,7 @@ const CurrentSnippet = ({ storyId, handleInputChange, timer, numSnippets, lesson
           sentence_id,
           snippet_id,
           requested_hints,
+          audio_wids,
         } = currentWord
 
         let usersAnswer
@@ -147,6 +148,7 @@ const CurrentSnippet = ({ storyId, handleInputChange, timer, numSnippets, lesson
             addToAudio({
               [`${ID}-${id}`]: {
                 context: audio,
+                audio_wids,
                 snippet_id,
                 sentence_id,
                 id,

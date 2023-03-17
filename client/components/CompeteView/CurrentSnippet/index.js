@@ -78,6 +78,7 @@ const CurrentSnippet = ({ storyId, handleInputChange, setYouWon, finished }) => 
           choices,
           concept,
           audio,
+          audio_wids,
           snippet_id,
           sentence_id,
           requested_hints,
@@ -113,6 +114,7 @@ const CurrentSnippet = ({ storyId, handleInputChange, setYouWon, finished }) => 
             addToAudio({
               [`${ID}-${id}`]: {
                 context: audio,
+                audio_wids,
                 word_id: ID,
                 id,
                 story_id: storyId,

@@ -37,12 +37,13 @@ const PlainWord = ({ word, annotatingAllowed, focusedConcept, ...props }) => {
 
   const { grade } = useSelector(state => state.user.data.user)
   const { show_review_diff, show_preview_exer } = useSelector(state => state.user.data.user)
-
+  const { focusedWord } = useSelector(({ practice }) => practice)
   const { lemmas, ID: wordId, surface, inflection_ref: inflectionRef, name_token: isName } = word
   const isCompeteMode = history.location.pathname.includes('compete')
   const bigScreen = width >= 1024
   const voice = voiceLanguages[learningLanguage]
   const conceptHighlighting = word.concepts?.includes(focusedConcept) || word.analytic_concepts?.includes(focusedConcept)
+  const listeningHighlighting = focusedWord.audio_wids?.start <= wordId && wordId <= focusedWord.audio_wids?.end
 
   if (surface === '\n\n') {
     return (
@@ -62,14 +63,17 @@ const PlainWord = ({ word, annotatingAllowed, focusedConcept, ...props }) => {
     return spanAnnotations.find(span => word.ID >= span.startId && word.ID <= span.endId)
   }
 
-  const wordShouldBeHighlighted = word => {
-    return (
+  const wordShouldBeHighlighted = (word, conceptHighlighting, listeningHighlighting) => {
+    if (
       word.ID >= highlightRange?.start &&
       word.ID <= highlightRange?.end &&
       highlightRange.start !== null
-    )
+    ) return 'notes-highlighted-word'
+    else if (conceptHighlighting) return 'concept-highlighted-word'
+    else if (listeningHighlighting) return 'listening-highlighted-word'
+    else return ''
   }
-
+  
   const consistsOfOnlyWhitespace = word => !!word.match(/^\s+$/g)
 
   const handleNonRecognizedWordClick = word => {
@@ -97,8 +101,7 @@ const PlainWord = ({ word, annotatingAllowed, focusedConcept, ...props }) => {
           <sup className="notes-superscript">{getSuperscript(word)}</sup>
         )}
         <span
-          className={`word-interactive${
-            wordShouldBeHighlighted(word) && ' notes-highlighted-word' || conceptHighlighting && ' concept-highlighted-word' || ''}`}
+          className={`word-interactive ${wordShouldBeHighlighted(word, conceptHighlighting, listeningHighlighting)}`}
           role={annotatingAllowed && 'button'}
           tabIndex="-1"
           onClick={() => handleNonRecognizedWordClick(word)}
@@ -174,9 +177,8 @@ const PlainWord = ({ word, annotatingAllowed, focusedConcept, ...props }) => {
         tabIndex={-1}
         onKeyDown={() => handleWordClick()}
         onClick={() => handleWordClick()}
-        className={`word-interactive mobile-practice-tour-word${
-          wordShouldBeHighlighted(word) && ' notes-highlighted-word' || conceptHighlighting && ' concept-highlighted-word'  || ''
-        }` }
+        className={`word-interactive mobile-practice-tour-word ${
+          wordShouldBeHighlighted(word, conceptHighlighting, listeningHighlighting)}` }
         {...props}
       >
         {surface}
