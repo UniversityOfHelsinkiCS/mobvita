@@ -6,6 +6,7 @@ import { Icon } from 'semantic-ui-react'
 import { closeEncouragement } from 'Utilities/redux/encouragementsReducer'
 import { getLeaderboards } from 'Utilities/redux/leaderboardReducer'
 import { getIncompleteStories } from 'Utilities/redux/incompleteStoriesReducer'
+import HomeViewFlashcardEncouragement from 'Components/NewEncouragements/SubComponents/HomeViewFlashcardEncouragement'
 import UnseenStoriesInGroup from './SubComponents/UnseenStoriesInGroup'
 import LatestIncompleteStory from './SubComponents/LatestIncompleteStory'
 import TurnOffRecommendations from './SubComponents/TurnOffRecommendations'
@@ -73,6 +74,7 @@ const Recommender = () => {
             <LeaderboardEncouragement />
             <DailyStoriesEncouragement handleDailyStoriesClick={handleDailyStoriesClick} />
             <LatestIncompleteStory enable_recmd={enable_recmd} />
+            <HomeViewFlashcardEncouragement />
             <UnseenStoriesInGroup />
             <TurnOffRecommendations />
           </div>
