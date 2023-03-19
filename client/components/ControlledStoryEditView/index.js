@@ -220,7 +220,7 @@ const ControlledStoryEditView = ({ match }) => {
             <div>
               {emptySnippets() && (
                 <span style={{ color: '#ff0000', marginBottom: '0.5em' }}>
-                  <FormattedMessage id="empty-snippets-warning" />
+                  <b><FormattedMessage id="empty-snippets-warning" /></b>
                 </span>
               )}
               <Button
