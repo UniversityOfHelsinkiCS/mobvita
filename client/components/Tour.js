@@ -91,6 +91,7 @@ const Tour = () => {
           }
           if (index === 3) {
             dispatch({ type: 'CLOSE_PRACTICE_DROPDOWN' })
+            dispatch({ type: 'CLOSE_TOPICS_BOX'})
             const currentPath = history.location.pathname
             const newPath = currentPath.substring(0, currentPath.length - 7)
             history.push(`${newPath}practice/`)
