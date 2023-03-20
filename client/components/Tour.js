@@ -95,9 +95,11 @@ const Tour = () => {
             const currentPath = history.location.pathname
             const newPath = currentPath.substring(0, currentPath.length - 7)
             history.push(`${newPath}practice/`)
+            setTimeout(() => {
+              window.dispatchEvent(new Event('resize'))
+            }, 4000)
           }
         }
-
         // lessons tour steps
         if (tourState.steps === lessonsTourSteps) {
           if (index === 4) {
