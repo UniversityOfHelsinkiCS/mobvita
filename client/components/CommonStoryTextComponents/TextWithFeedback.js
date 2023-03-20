@@ -160,7 +160,7 @@ const TextWithFeedback = ({
         key={word.ID}
         word={word}
         snippet={snippet}
-        focusedConcept={focusedConcept}
+        focusedConcept={mode!=='review' && focusedConcept || null}
         {...props}
       />
     ) 
@@ -171,7 +171,7 @@ const TextWithFeedback = ({
         word={word}
         answer={mode !== 'review' && answers[word.ID]}
         tiedAnswer={mode !== 'review' && answers[word.tiedTo]}
-        focusedConcept={focusedConcept}
+        focusedConcept={mode!=='review' && focusedConcept || null}
         {...props}
       />
     )
