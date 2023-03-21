@@ -102,6 +102,12 @@ const Tour = () => {
         }
         // lessons tour steps
         if (tourState.steps === lessonsTourSteps) {
+          if (index === 3) {
+            dispatch({ type: 'SHOW_MODAL' })
+            setTimeout(() => {
+              dispatch({ type: 'SHOW_LESSON_TOPIC_DROPDOWN' })
+            }, 600)
+          }
           if (index === 4) {
             dispatch({ type: 'CLOSE_LESSON_TOPIC_DROPDOWN' })
             dispatch({ type: 'CLOSE_MODAL' })

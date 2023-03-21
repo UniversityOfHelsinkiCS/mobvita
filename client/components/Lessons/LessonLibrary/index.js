@@ -57,12 +57,6 @@ const LessonList = () => {
     }
   }, [])
 
-  console.log(`lesson ${user.user.has_seen_lesson_tour}`)
-  console.log(`home ${user.user.has_seen_home_tour}`)
-  console.log(`library ${user.user.has_seen_library_tour}`)
-  console.log(`progress ${user.user.has_seen_progress_tour}`)
-  console.log(`practice ${user.user.has_seen_practice_tour}`)
-
   // useEffect(() => {
   //   setSorter('index')
   // }, [_selected_lesson_tab])
