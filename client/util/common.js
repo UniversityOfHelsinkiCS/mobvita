@@ -214,7 +214,7 @@ export const confettiRain = () => {
 }
 
 export const finalConfettiRain = (colors, endDate) => {
-  ; (function frame() {
+  ;(function frame() {
     confetti({
       particleCount: 2,
       angle: 60,
@@ -1267,7 +1267,7 @@ const mobileProgressTourSteps = [
       </div>
     ),
     disableBeacon: true,
-    placement: 'right'
+    placement: 'right',
   },
   {
     target: '.progress-page-graph-cont',
@@ -1314,7 +1314,7 @@ const anonymousDesktopProgressTourSteps = [
       </div>
     ),
     disableBeacon: true,
-    placement: 'right'
+    placement: 'right',
   },
 ]
 
@@ -1328,7 +1328,7 @@ const anonymousMobileProgressTourSteps = [
       </div>
     ),
     disableBeacon: true,
-    placement: 'right'
+    placement: 'right',
   },
 ]
 
@@ -1573,7 +1573,7 @@ const desktopPracticeTourSteps = [
       <div>
         <FormattedHTMLMessage id="explanations-popup-story-elo" />
       </div>
-    )
+    ),
   },
   {
     target: '.tour-button',
@@ -1585,7 +1585,7 @@ const desktopPracticeTourSteps = [
       </div>
     ),
     disableBeacon: true,
-  }
+  },
 ]
 
 const mobilePracticeTourSteps = [
@@ -1668,7 +1668,7 @@ const mobilePracticeTourSteps = [
       <div>
         <FormattedHTMLMessage id="explanations-popup-story-elo" />
       </div>
-    )
+    ),
   },
   {
     target: '.tour-mobile-start-button',
@@ -1772,7 +1772,7 @@ const desktopLessonsTourSteps = [
       </div>
     ),
     disableBeacon: true,
-  }
+  },
 ]
 const mobileLessonsTourSteps = [
   {
@@ -1863,7 +1863,7 @@ const mobileLessonsTourSteps = [
         zIndex: 10000,
       },
     },
-  }
+  },
 ]
 
 // Slice the tour steps to only include practice view
@@ -1876,8 +1876,7 @@ export const progressTourSteps =
   window.innerWidth >= 700 ? desktopProgressTourSteps : mobileProgressTourSteps
 export const anonymousProgressTourSteps =
   window.innerWidth >= 700 ? anonymousDesktopProgressTourSteps : anonymousMobileProgressTourSteps
-export const homeTourSteps = 
-  window.innerWidth >= 700 ? desktopHomeTourSteps : mobileHomeTourSteps
+export const homeTourSteps = window.innerWidth >= 700 ? desktopHomeTourSteps : mobileHomeTourSteps
 export const libraryTourSteps =
   window.innerWidth >= 700 ? desktopLibraryTourSteps : mobileLibraryTourSteps
 export const lessonsTourSteps =
