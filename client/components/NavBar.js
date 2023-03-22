@@ -70,7 +70,7 @@ export default function NavBar() {
     learningLanguage?.toLowerCase()
   )
 
-  const irt_support_languages = ['Russian']
+  const irt_support_languages = ['Russian', 'Finnish']
 
   const signOut = () => {
     dispatch(logout())
