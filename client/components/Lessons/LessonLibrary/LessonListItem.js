@@ -47,32 +47,35 @@ const LessonTitle = ({ lesson }) => {
               ...getTextStyle(learningLanguage),
             }}
           >
-            <div
-              className="lesson-performance"
-              style={{
-                width: '6%',
-                textAlign: 'right',
-                marginRight: '5px',
-                'max-width': '25px',
-                'min-width': '25px',
-                ...get_lesson_performance_style(topics[i].correct, topics[i].total),
-              }}
-            >
-              {String(
-                Math.round(get_lesson_performance(topics[i].correct, topics[i].total) * 100)
-              ).padEnd(3, ' ')}
-            </div>
-            <div
-              style={{
-                width: '3%',
-                textAlign: 'center',
-                'max-width': '20px',
-                'min-width': '10px',
-                marginRight: '7px',
-                ...get_lesson_performance_style(topics[i].correct, topics[i].total),
-              }}
-            >
-              %
+            <div className="lesson-performance">
+              <span
+                display="inline"
+                float="left"
+                style={{
+                  width: '6%',
+                  textAlign: 'right',
+                  marginRight: '5px',
+                  'max-width': '25px',
+                  'min-width': '25px',
+                  ...get_lesson_performance_style(topics[i].correct, topics[i].total),
+                }}
+              >
+                {String(
+                  Math.round(get_lesson_performance(topics[i].correct, topics[i].total) * 100)
+                ).padEnd(3, ' ')}
+              </span>
+              <span
+                style={{
+                  width: '3%',
+                  textAlign: 'center',
+                  'max-width': '20px',
+                  'min-width': '10px',
+                  marginRight: '7px',
+                  ...get_lesson_performance_style(topics[i].correct, topics[i].total),
+                }}
+              >
+                %
+              </span>
             </div>
             <div className="lesson-content" style={{ width: '88%' }}>
               {topic_concepts[k].charAt(0).toUpperCase() + topic_concepts[k].slice(1)}
