@@ -1198,7 +1198,7 @@ const mobileHomeTourSteps = [
 
 const desktopProgressTourSteps = [
   {
-    target: '.profile-button',
+    target: '.progress-button',
     title: <FormattedMessage id="Welcome to the Progress page" />,
     content: (
       <div>

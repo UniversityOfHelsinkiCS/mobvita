@@ -13,6 +13,15 @@ export default function Profile({ location }) {
   const panes = [
     {
       menuItem: {
+        as: Link,
+        content: intl.formatMessage({ id: 'following' }),
+        to: '/profile/following',
+        key: 'following',
+      },
+      render: () => <Following />,
+    },
+    {
+      menuItem: {
         className: 'progress-link',
         as: Link,
         content: intl.formatMessage({ id: 'Progress' }),
@@ -24,11 +33,11 @@ export default function Profile({ location }) {
     {
       menuItem: {
         as: Link,
-        content: intl.formatMessage({ id: 'following' }),
-        to: '/profile/following',
-        key: 'following',
+        content: intl.formatMessage({ id: 'Account' }),
+        to: '/profile/account',
+        key: 'account',
       },
-      render: () => <Following />,
+      render: () => <Account />,
     },
     {
       menuItem: {
@@ -39,26 +48,17 @@ export default function Profile({ location }) {
       },
       render: () => <Settings />,
     },
-    {
-      menuItem: {
-        as: Link,
-        content: intl.formatMessage({ id: 'Account' }),
-        to: '/profile/account',
-        key: 'account',
-      },
-      render: () => <Account />,
-    },
   ]
 
   let index
   switch (location.pathname) {
-    case '/profile/account':
+    case '/profile/settings':
       index = 3
       break
-    case '/profile/settings':
+    case '/profile/account':
       index = 2
       break
-    case '/profile/following':
+    case '/profile/progress':
       index = 1
       break
     default:

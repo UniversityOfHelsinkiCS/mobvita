@@ -384,9 +384,16 @@ export default function NavBar() {
                         <NavDropdown.Item
                           className="profile-button"
                           as={Link}
-                          to="/profile/progress"
+                          to="/profile/following"
                         >
                           <FormattedMessage id="Profile" />
+                        </NavDropdown.Item>
+                        <NavDropdown.Item
+                          className="progress-button"
+                          as={Link}
+                          to="/profile/progress"
+                        >
+                          <FormattedMessage id="Progress" />
                         </NavDropdown.Item>
                         <NavDropdown.Item data-cy="navbar-logout-button" onClick={signOut}>
                           <FormattedMessage id="sign-out" />
