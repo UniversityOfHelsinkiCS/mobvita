@@ -381,13 +381,15 @@ export default function NavBar() {
                           {user.user.username}
                         </span>
                         <NavDropdown.Divider />
+                        {hiddenFeatures && (
                         <NavDropdown.Item
                           className="profile-button"
                           as={Link}
-                          to="/profile/following"
+                          to="/profile/main"
                         >
                           <FormattedMessage id="Profile" />
                         </NavDropdown.Item>
+                        )}
                         <NavDropdown.Item
                           className="progress-button"
                           as={Link}

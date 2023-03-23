@@ -3,14 +3,16 @@ import { Link } from 'react-router-dom'
 import { Tab } from 'semantic-ui-react'
 import { useIntl } from 'react-intl'
 import Progress from 'Components/Profile/Progress'
+import Main from './Main'
 import Account from './Account'
 import Settings from './Settings'
 import Following from './Following'
+import { hiddenFeatures } from 'Utilities/common'
 
 export default function Profile({ location }) {
   const intl = useIntl()
 
-  const panes = [
+  let panes = [
     {
       menuItem: {
         as: Link,
@@ -50,8 +52,23 @@ export default function Profile({ location }) {
     },
   ]
 
+  if (hiddenFeatures){
+    panes = panes.concat({
+      menuItem: {
+        as: Link,
+        content: intl.formatMessage({ id: 'Profile' }),
+        to: '/profile/main',
+        key: 'main',
+      },
+      render: () => <Main />,
+    })
+  }
+
   let index
   switch (location.pathname) {
+    case '/profile/main':
+      index = 4
+      break
     case '/profile/settings':
       index = 3
       break
