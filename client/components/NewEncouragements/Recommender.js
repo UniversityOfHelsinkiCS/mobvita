@@ -15,6 +15,7 @@ import LeaderboardEncouragement from './SubComponents/LeaderboardEncouragement'
 import DailyStoriesEncouragement from './SubComponents/DailyStoriesEncouragement'
 import DailyStoriesDraggable from './SubComponents/DailyStoriesDraggable'
 import WelcomeBackEncouragement from './SubComponents/WelcomeBackEncouragement'
+import SharedIncompleteStoryInGroup from './SubComponents/SharedIncompleteStoryInGroup'
 
 const Recommender = () => {
   const userData = useSelector(state => state.user.data.user)
@@ -61,24 +62,33 @@ const Recommender = () => {
       <>
         <Draggable cancel=".interactable">
           <div className={bigScreen ? 'draggable-encouragement' : 'draggable-encouragement-mobile'}>
-            <Icon
-              className="interactable"
-              style={{
-                cursor: 'pointer',
-                marginBottom: '.25em',
-              }}
-              size="large"
-              name="close"
-              onClick={handleCloseClick}
-            />
-            <WelcomeBackEncouragement />
-            <LeaderboardEncouragement />
-            <DailyStoriesEncouragement handleDailyStoriesClick={handleDailyStoriesClick} />
-            <LatestIncompleteStory enable_recmd={enable_recmd} />
-            <HomeViewFlashcardEncouragement />
-            <UnseenStoriesInGroup />
-            <ReviewStoriesEncouragement />
-            <TurnOffRecommendations />
+            <div className="col-flex">
+              <div className="flex-reverse">
+                <Icon
+                  className="interactable"
+                  style={{
+                    cursor: 'pointer',
+                    marginBottom: '.25em',
+                  }}
+                  size="large"
+                  name="close"
+                  onClick={handleCloseClick}
+                />
+              </div>
+              <div className="col-flex">
+                <div className="interactable" style={{ overflow: 'auto', maxHeight: 300 }}>
+                  <WelcomeBackEncouragement />
+                  <LeaderboardEncouragement />
+                  <DailyStoriesEncouragement handleDailyStoriesClick={handleDailyStoriesClick} />
+                  <LatestIncompleteStory enable_recmd={enable_recmd} />
+                  <HomeViewFlashcardEncouragement />
+                  <UnseenStoriesInGroup />
+                  <SharedIncompleteStoryInGroup />
+                  <ReviewStoriesEncouragement />
+                  <TurnOffRecommendations />
+                </div>
+              </div>
+            </div>
           </div>
         </Draggable>
         <DailyStoriesDraggable
