@@ -25,34 +25,35 @@ const ReviewStoriesEncouragement = () => {
     }
   }, [incompleteStories])
 
-  if (storiesToReview === []) {
-    return null
-  }
-
   return (
-    <div className="pt-md">
-      <div
-        className="flex enc-message-body"
-        style={{ alignItems: 'center', backgroundColor: backgroundColors[1] }}
-      >
-        <img
-          src={images.magnifyingGlass}
-          alt="magnifying glass"
-          style={{ maxWidth: '8%', maxHeight: '8%', marginRight: '1em' }}
-        />
-        <div>
-          <FormattedMessage id="review-recent-stories" />
-          <ul style={{ paddingLeft: 0 }}>
-            {storiesToReview.map(story => (
-              <li style={{ marginTop: '0.5rem', listStylePosition: 'inside' }}>
-                <Link className="interactable" to={`/stories/${story._id}/review`}>
-                  <i>{story.title}</i>
-                </Link>
-              </li>
-            ))}
-          </ul>
+    <div>
+      {storiesToReview === [] ?
+        null :
+        <div className="pt-md">
+          <div
+            className="flex enc-message-body"
+            style={{ alignItems: 'center', backgroundColor: backgroundColors[1] }}
+          >
+            <img
+              src={images.magnifyingGlass}
+              alt="magnifying glass"
+              style={{ maxWidth: '8%', maxHeight: '8%', marginRight: '1em' }}
+            />
+            <div>
+              <FormattedMessage id="review-recent-stories" />
+              <ul style={{ paddingLeft: 0 }}>
+                {storiesToReview.map(story => (
+                  <li style={{ marginTop: '0.5rem', listStylePosition: 'inside' }}>
+                    <Link className="interactable" to={`/stories/${story._id}/review`}>
+                      <i>{story.title}</i>
+                    </Link>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          </div>
         </div>
-      </div>
+      }
     </div>
   )
 }

@@ -19,6 +19,8 @@ import DailyStoriesEncouragement from './SubComponents/DailyStoriesEncouragement
 import DailyStoriesDraggable from './SubComponents/DailyStoriesDraggable'
 import WelcomeBackEncouragement from './SubComponents/WelcomeBackEncouragement'
 import SharedIncompleteStoryInGroup from './SubComponents/SharedIncompleteStoryInGroup'
+import GrammarReviewExerciseEncouragement from './SubComponents/GrammarReviewExerciseEncouragement'
+import WordsSeenExerciseEncouragement from './SubComponents/WordsSeenExerciseEncouragement'
 
 const Recommender = () => {
   const userData = useSelector(state => state.user.data.user)
