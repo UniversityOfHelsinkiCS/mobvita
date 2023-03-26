@@ -6,23 +6,7 @@ import useWindowDimensions from 'Utilities/windowDimensions'
 import { useSelector } from 'react-redux'
 import { Grid } from 'semantic-ui-react'
 import { FormattedMessage } from 'react-intl'
-import ProgressStats from '../Progress/ProgressStats'
-import moment from 'moment'
-
-/* const ProgressStatistics = () => {
-  const { data } = useSelector(({ user }) => user.data)
-  const { exerciseHistoryGraph } = useSelector(({ user }) => user.data.user.exercise_history)
-  console.log(data);
-  console.log(exerciseHistoryGraph);
-  const startDate = moment(exerciseHistoryGraph[0]?.date).toDate()
-  const endDate = Date().toLocaleString()
-
-  console.log(endDate);
-
-  return (
-    <ProgressStats startDate={startDate} endDate={endDate} />
-  )
-} */
+import ProgressStatistics from './ProgressStatistics'
 
 const UsernameField = () => {
   const { username } = useSelector(({ user }) => user.data.user)
@@ -43,6 +27,7 @@ const DesktopView = () => {
         <Grid.Row>
           <Grid.Column>
             <UsernameField />
+            <ProgressStatistics />
             <EloChart />
             <MedalSummary />
           </Grid.Column>
