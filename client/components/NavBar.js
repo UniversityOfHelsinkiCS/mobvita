@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useRef } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import { Navbar, Nav, NavDropdown, NavItem, Button } from 'react-bootstrap'
 import Headroom from 'react-headroom'
@@ -47,14 +47,18 @@ const NavbarIcon = ({ imgSrc, altText, extraClass }) => {
 
 export default function NavBar() {
   const { user } = useSelector(({ user }) => ({ user: user.data }))
-  const { irtCalculationPending, pending: userPending, irt_dummy_score } = useSelector(({ user }) => user)
+  const {
+    irtCalculationPending,
+    pending: userPending,
+    irt_dummy_score,
+  } = useSelector(({ user }) => user)
   const { numUnreadNews } = useSelector(({ metadata }) => metadata)
   const { sessionId } = useSelector(({ snippets }) => snippets)
   const { show, open: encOpen, fcShow, fcOpen } = useSelector(({ encouragement }) => encouragement)
   const { focused: story, pending: storyPending } = useSelector(({ stories }) => stories)
 
   const open = useSelector(({ sidebar }) => sidebar.open)
-  const storyLanguage = storyPending==false & story != undefined ? story.language : undefined
+  const storyLanguage = (storyPending == false) & (story != undefined) ? story.language : undefined
   const learningLanguage = useSelector(learningLanguageSelector)
 
   const dispatch = useDispatch()
@@ -77,6 +81,7 @@ export default function NavBar() {
     history.push('/')
   }
   const showProfileDropdown = useSelector(state => state.dropdown.showProfileDropdown)
+  const profileDropdownRef = useRef()
 
   const handleProfileButtonCLick = () => {
     if (showProfileDropdown) {
@@ -86,6 +91,17 @@ export default function NavBar() {
     }
   }
 
+  // effect for closing the profile navdropdown when clicked outside of it
+  useEffect(() => {
+    const closeProfileDropdown = event => {
+      if (!profileDropdownRef.current.contains(event.target)) {
+        dispatch({ type: 'CLOSE_PROFILE_DROPDOWN' })
+      }
+    }
+    document.body.addEventListener('click', closeProfileDropdown)
+    return () => document.body.removeEventListener('click', closeProfileDropdown)
+  }, [])
+
   const handleTourStart = () => {
     if (history.location.pathname.includes('progress')) {
       dispatch({ type: 'SHOW_PROFILE_DROPDOWN' })
@@ -94,7 +110,6 @@ export default function NavBar() {
       } else {
         dispatch({ type: 'PROGRESS_TOUR_RESTART' })
       }
-      
     } else if (history.location.pathname.includes('lessons') && hiddenFeatures) {
       dispatch(sidebarSetOpen(false))
       dispatch({ type: 'LESSONS_TOUR_RESTART' })
@@ -146,7 +161,7 @@ export default function NavBar() {
 
   useEffect(() => {
     if (!userPending && irt_dummy_score == undefined) {
-      let irtScore =
+      const irtScore =
         user && user.user.irt_score_history && user.user.irt_score_history.length > 0
           ? user.user.irt_score_history[user.user.irt_score_history.length - 1].score
           : undefined
@@ -192,18 +207,23 @@ export default function NavBar() {
       : 0
 
   const get_student_ability_score_component = () => {
-    if (storyLanguage == undefined){
-      return <div/>
-    } else {
-      let ability_score = storyElo
-      let grammar_score_type = 'elo'
-      if (irt_support_languages.includes(storyLanguage)){
-        ability_score = irtCalculationPending ? '...' : irt_dummy_score != undefined ? Math.round(irt_dummy_score * 10)/10 : '...'
-        grammar_score_type = 'irt'
-      }
-      return <Popup
+    if (storyLanguage == undefined) {
+      return <div />
+    }
+    let ability_score = storyElo
+    let grammar_score_type = 'elo'
+    if (irt_support_languages.includes(storyLanguage)) {
+      ability_score = irtCalculationPending
+        ? '...'
+        : irt_dummy_score != undefined
+        ? Math.round(irt_dummy_score * 10) / 10
+        : '...'
+      grammar_score_type = 'irt'
+    }
+    return (
+      <Popup
         position="top center"
-        content={<FormattedHTMLMessage id={"explanations-popup-story-" + grammar_score_type}/>}
+        content={<FormattedHTMLMessage id={`explanations-popup-story-${grammar_score_type}`} />}
         trigger={
           <div className="navbar-basic-item">
             <Icon name="star outline" style={{ margin: 0, width: '16px' }} />
@@ -211,7 +231,7 @@ export default function NavBar() {
           </div>
         }
       />
-    }
+    )
   }
 
   const navBarStyle = smallWindow ? {} : { position: 'fixed', top: 0, width: '100%', zIndex: '100' }
@@ -296,8 +316,8 @@ export default function NavBar() {
                 onClick={handleEloClick}
                 onKeyDown={() => dispatch(setAnnotationsVisibility(true))}
               >
-                {showStoryElo && (
-                  get_student_ability_score_component()
+                {
+                  showStoryElo && get_student_ability_score_component()
                   // <Popup
                   //   position="top center"
                   //   // content={intl.formatMessage({ id: 'explanations-popup-story-elo' })}
@@ -311,12 +331,17 @@ export default function NavBar() {
                   //     </div>
                   //   }
                   // />
-                )}
+                }
                 {showFlashcardElo && (
                   <Popup
                     position="top center"
                     // content={intl.formatMessage({ id: 'explanations-popup-flashcard-elo' })}
-                    content={<FormattedHTMLMessage id="explanations-popup-flashcard-elo" value={{ score_type: 'ELO' }}/>}
+                    content={
+                      <FormattedHTMLMessage
+                        id="explanations-popup-flashcard-elo"
+                        value={{ score_type: 'ELO' }}
+                      />
+                    }
                     trigger={
                       <div className="navbar-basic-item">
                         <img src={images.flashcardIcon} alt="three cards" width="16px" />{' '}
@@ -349,6 +374,7 @@ export default function NavBar() {
 
                   <NavDropdown
                     className="navbar-dropdown-icon-cont"
+                    ref={profileDropdownRef}
                     onClick={handleProfileButtonCLick}
                     show={showProfileDropdown}
                     title={
@@ -362,10 +388,11 @@ export default function NavBar() {
                   >
                     {user.user.email === 'anonymous_email' && (
                       <>
-                        <NavDropdown.Item 
-                        className="navbar-register-button"
-                        as={Link} 
-                        to="/register">
+                        <NavDropdown.Item
+                          className="navbar-register-button"
+                          as={Link}
+                          to="/register"
+                        >
                           <FormattedMessage id="Register" />
                         </NavDropdown.Item>
                         <NavDropdown.Divider />
@@ -382,13 +409,9 @@ export default function NavBar() {
                         </span>
                         <NavDropdown.Divider />
                         {hiddenFeatures && (
-                        <NavDropdown.Item
-                          className="profile-button"
-                          as={Link}
-                          to="/profile/main"
-                        >
-                          <FormattedMessage id="Profile" />
-                        </NavDropdown.Item>
+                          <NavDropdown.Item className="profile-button" as={Link} to="/profile/main">
+                            <FormattedMessage id="Profile" />
+                          </NavDropdown.Item>
                         )}
                         <NavDropdown.Item
                           className="progress-button"
