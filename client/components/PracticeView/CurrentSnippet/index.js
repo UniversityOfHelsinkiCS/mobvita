@@ -33,7 +33,7 @@ import {
   setPracticeFinished,
 } from 'Utilities/redux/practiceReducer'
 import {
-  
+
 } from 'Utilities/redux/snippetsReducer'
 import {
   updateSeveralSpanAnnotationStore,
@@ -42,6 +42,7 @@ import {
 import ExercisesEncouragementModal from 'Components/Encouragements/ExercisesEncouragementModal'
 import SnippetActions from './SnippetActions'
 import PracticeText from './PracticeText'
+import Recommender from 'Components/NewEncouragements/Recommender'
 
 const CurrentSnippet = ({ storyId, handleInputChange, timer, numSnippets, lessonId, lessonStartOver }) => {
   const [exerciseCount, setExerciseCount] = useState(0)
@@ -226,7 +227,7 @@ const CurrentSnippet = ({ storyId, handleInputChange, timer, numSnippets, lesson
     dispatch(clearCurrentPractice())
 
     if (snippets.focused.total_num !== currentSnippetId() + 1 || practiceFinished) {
-      if (lessonId){
+      if (lessonId) {
         dispatch(getLessonSnippet(lessonId))
       } else {
         dispatch(getNextSnippet(storyId, currentSnippetId(), isControlledStory, sessionId, exerciseMode))
@@ -250,7 +251,7 @@ const CurrentSnippet = ({ storyId, handleInputChange, timer, numSnippets, lesson
   useEffect(() => {
     dispatch(clearPractice())
     dispatch(resetSessionId())
-    if (lessonId){
+    if (lessonId) {
       dispatch(getLessonSnippet(lessonId))
     } else {
       dispatch(getCurrentSnippet(storyId, isControlledStory, exerciseMode))
@@ -350,6 +351,10 @@ const CurrentSnippet = ({ storyId, handleInputChange, timer, numSnippets, lesson
     )
   }
 
+  // Change this to true when developing new encouragement!
+  // REMEMBER TO SWITCH BACK TO FALSE BEFORE PUSHING!!!
+  const TESTING_NEW_ENCOURAGEMENT = false
+
   return (
     <div>
       <form ref={practiceForm}>
@@ -378,14 +383,19 @@ const CurrentSnippet = ({ storyId, handleInputChange, timer, numSnippets, lesson
           </div>
         ) : (
           <div>
-            <ExercisesEncouragementModal
-              open={open}
-              enable_recmd={enable_recmd}
-              storiesCovered={storiesCovered}
-              vocabularySeen={vocabularySeen}
-              incompleteStories={incomplete}
-              loading={loading}
-            />
+            {TESTING_NEW_ENCOURAGEMENT && (
+              <Recommender />
+            )}
+            {!TESTING_NEW_ENCOURAGEMENT && (
+              <ExercisesEncouragementModal
+                open={open}
+                enable_recmd={enable_recmd}
+                storiesCovered={storiesCovered}
+                vocabularySeen={vocabularySeen}
+                incompleteStories={incomplete}
+                loading={loading}
+              />
+            )}
             <Button variant="primary" block onClick={() => startOver()}>
               <FormattedMessage id="restart-story" />
             </Button>

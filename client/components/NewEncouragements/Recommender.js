@@ -21,14 +21,17 @@ import WelcomeBackEncouragement from './SubComponents/WelcomeBackEncouragement'
 import SharedIncompleteStoryInGroup from './SubComponents/SharedIncompleteStoryInGroup'
 import GrammarReviewExerciseEncouragement from './SubComponents/GrammarReviewExerciseEncouragement'
 import WordsSeenExerciseEncouragement from './SubComponents/WordsSeenExerciseEncouragement'
+import StoryCompletedToBluecardsExerciseEncouragement from './SubComponents/StoryCompletedToBluecardsExerciseEncouragement'
+import ExerciseEncouragementHeader from './SubComponents/ExerciseEncouragementHeader'
+import NewWordsInteractedExerciseEncouragement from './SubComponents/NewWordsInteractedExerciseEncouragement'
 
 const Recommender = () => {
   const userData = useSelector(state => state.user.data.user)
-  const { enable_recmd } = userData
   const learningLanguage = userData ? userData.last_used_language : null
   const { cachedStories, pending: metadataPending } = useSelector(({ metadata }) => metadata)
   const { storyBlueCards } = useSelector(({ flashcards }) => flashcards)
   const { open } = useSelector(({ encouragement }) => encouragement)
+  const dictionaryLanguage = useSelector(dictionaryLanguageSelector)
   const [dailyStoriesDraggableIsOpen, setDailyStoriesDraggableIsOpen] = useState(false)
   const bigScreen = useWindowDimensions().width > 700
   const dispatch = useDispatch()
@@ -36,7 +39,7 @@ const Recommender = () => {
   const isInProgressView = history.location.pathname.includes('profile/progress')
   const isInHomeView = history.location.pathname.includes('/home')
   const isInWelcomeView = history.location.pathname.includes('/welcome')
-  const dictionaryLanguage = useSelector(dictionaryLanguageSelector)
+  const isInPracticeView = history.location.pathname.includes('practice')
   // See default_activity_modal row 260
   // This is probably necessary to get the data from BE??
   // Or would it be better to dispatch these in the individual sub components?
@@ -98,13 +101,13 @@ const Recommender = () => {
                       <DailyStoriesEncouragement
                         handleDailyStoriesClick={handleDailyStoriesClick}
                       />
-                      <LatestIncompleteStory enable_recmd={enable_recmd} />
+                      <LatestIncompleteStory />
                       <HomeViewFlashcardEncouragement />
                       <UnseenStoriesInGroup />
                       <SharedIncompleteStoryInGroup />
                       <ReviewStoriesEncouragement />
-                      <TurnOffRecommendations />
                     </div>
+                    <TurnOffRecommendations />
                   </div>
                 </div>
               </div>
@@ -140,8 +143,44 @@ const Recommender = () => {
                   <div className="col-flex">
                     <div className="interactable" style={{ overflow: 'auto', maxHeight: 300 }}>
                       <HomeViewFlashcardEncouragement />
-                      <TurnOffRecommendations />
                     </div>
+                    <TurnOffRecommendations />
+                  </div>
+                </div>
+              </div>
+            </Draggable>
+          </div>
+        ) : isInPracticeView ? (
+          // this is the exercise encouragement draggable
+          //it differs with css from the basic encouragement draggable
+          <div>
+            <Draggable cancel=".interactable">
+              <div
+                className={bigScreen ? 'draggable-ex-encouragement' : 'draggable-ex-encouragement-mobile'}>
+                <div className="col-flex">
+                  <div className="flex">
+                    <ExerciseEncouragementHeader />
+                    <Icon
+                      className="interactable"
+                      style={{
+                        cursor: 'pointer',
+                        marginBottom: '.25em',
+                      }}
+                      size="large"
+                      name="close"
+                      onClick={handleCloseClick}
+                    />
+                  </div>
+                  <div className="col-flex">
+                    <div className="interactable" style={{ overflow: 'auto', maxHeight: 300 }}>
+                      <LeaderboardEncouragement />
+                      <StoryCompletedToBluecardsExerciseEncouragement />
+                      <LatestIncompleteStory />
+                      <WordsSeenExerciseEncouragement />
+                      <NewWordsInteractedExerciseEncouragement />
+                      <GrammarReviewExerciseEncouragement />
+                    </div>
+                    <TurnOffRecommendations />
                   </div>
                 </div>
               </div>

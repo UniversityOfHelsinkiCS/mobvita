@@ -4,7 +4,9 @@ import { images, backgroundColors } from 'Utilities/common'
 import { FormattedMessage } from 'react-intl'
 import { Link } from 'react-router-dom'
 
-const LatestIncompleteStory = ({ enable_recmd }) => {
+const LatestIncompleteStory = () => {
+  const userData = useSelector(state => state.user.data.user)
+  const { enable_recmd } = userData
   const { incomplete: incompleteStories } = useSelector(({ incomplete }) => ({
     incomplete: incomplete.data,
   }))
