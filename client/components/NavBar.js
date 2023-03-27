@@ -90,18 +90,6 @@ export default function NavBar() {
       dispatch({ type: 'SHOW_PROFILE_DROPDOWN' })
     }
   }
-
-  // effect for closing the profile navdropdown when clicked outside of it
-  useEffect(() => {
-    const closeProfileDropdown = event => {
-      if (!profileDropdownRef.current.contains(event.target)) {
-        dispatch({ type: 'CLOSE_PROFILE_DROPDOWN' })
-      }
-    }
-    document.body.addEventListener('click', closeProfileDropdown)
-    return () => document.body.removeEventListener('click', closeProfileDropdown)
-  }, [])
-
   const handleTourStart = () => {
     if (history.location.pathname.includes('progress')) {
       dispatch({ type: 'SHOW_PROFILE_DROPDOWN' })
