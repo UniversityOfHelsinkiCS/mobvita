@@ -44,9 +44,10 @@ const MobileView = () => {
   return (
     <div>
       <UsernameField />
-      <Following />
+      <ProgressStatistics />
       <EloChart width="100%" />
       <MedalSummary />
+      <Following />
     </div>
   )
 }
