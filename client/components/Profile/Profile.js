@@ -75,11 +75,11 @@ export default function Profile({ location }) {
     case '/profile/account':
       index = 2
       break
-    case '/profile/progress':
-      index = 1
+    case '/profile/following':
+      index = 0
       break
     default:
-      index = 0
+      index = 1
   }
 
   return (
