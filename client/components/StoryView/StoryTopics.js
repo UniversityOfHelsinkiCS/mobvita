@@ -83,7 +83,7 @@ const StoryTopics = ({ conceptCount, focusedConcept, setFocusedConcept }) => {
               role="button"
               tabIndex={0}
             >
-              <Icon name={showTopicsBox ? 'angle down' : 'angle up'} size="large" />
+              <Icon name={showTopicsBox ? 'angle up' : 'angle down'} size="large" />
             </div>
           </div>
           {showTopicsBox && (
