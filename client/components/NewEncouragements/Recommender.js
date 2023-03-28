@@ -40,6 +40,7 @@ const Recommender = () => {
   const isInHomeView = history.location.pathname.includes('/home')
   const isInWelcomeView = history.location.pathname.includes('/welcome')
   const isInPracticeView = history.location.pathname.includes('practice')
+  const isInFlashcardsView = history.location.pathname.includes('flashcards')
   // See default_activity_modal row 260
   // This is probably necessary to get the data from BE??
   // Or would it be better to dispatch these in the individual sub components?
@@ -152,7 +153,7 @@ const Recommender = () => {
           </div>
         ) : isInPracticeView ? (
           // this is the exercise encouragement draggable
-          //it differs with css from the basic encouragement draggable
+          // it differs with css from the basic encouragement draggable
           <div>
             <Draggable cancel=".interactable">
               <div
@@ -186,6 +187,19 @@ const Recommender = () => {
               </div>
             </Draggable>
           </div>
+        ) : isInFlashcardsView ? (
+            <div>
+                <Draggable cancel=".interactable">
+                    <div className={bigScreen ? 'draggable-encouragement' : 'draggable-encouragement-mobile'}>
+                        <div>
+                            <div className="interactable" style={{ overflow: 'auto', maxHeight: 300 }}>
+                                flashcards boii
+                            </div>
+                            <TurnOffRecommendations />
+                        </div>
+                    </div>
+                </Draggable>
+            </div>
         ) : null}
       </>
     )
