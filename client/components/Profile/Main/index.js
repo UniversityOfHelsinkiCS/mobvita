@@ -27,7 +27,6 @@ const DesktopView = () => {
         <Grid.Row>
           <Grid.Column>
             <UsernameField />
-            <ProgressStatistics />
             <EloChart />
             <MedalSummary />
           </Grid.Column>
@@ -44,7 +43,6 @@ const MobileView = () => {
   return (
     <div>
       <UsernameField />
-      <ProgressStatistics />
       <EloChart width="100%" />
       <MedalSummary />
       <Following />
