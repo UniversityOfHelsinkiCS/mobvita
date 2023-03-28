@@ -451,7 +451,7 @@ export default function NavBar() {
 
                   <NavDropdown
                     data-cy="navbar-info-dropdown"
-                    className="navbar-dropdown-icon-cont"
+                    className="navbar-dropdown-icon-cont navbar-dropdown-icon-cont-HELP"
                     title={
                       <NavbarIcon
                         imgSrc={images.infoIcon}
