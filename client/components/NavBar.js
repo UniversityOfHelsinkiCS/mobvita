@@ -470,21 +470,17 @@ export default function NavBar() {
                       <FormattedMessage id="about" />
                     </NavDropdown.Item>
                     <NavDropdown.Divider />
-                    <NavDropdown.Item as={Link} to="/help">
-                      <FormattedMessage id="help" />
+                    <NavDropdown.Item
+                      className="navbar-external-link"
+                      href="https://drive.google.com/drive/folders/1vnfFfUd4UCBkbli25krwcKwxExDjWOeY"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                    >
+                      <FormattedMessage id="help" /> & <FormattedMessage id="faq" />
                     </NavDropdown.Item>
                     <NavDropdown.Divider />
                     <NavDropdown.Item className="navbar-external-link" onClick={handleTourStart}>
                       <FormattedMessage id="start-tour" />
-                    </NavDropdown.Item>
-                    <NavDropdown.Divider />
-                    <NavDropdown.Item
-                      className="navbar-external-link"
-                      href="https://www2.helsinki.fi/en/projects/revita-language-learning-and-ai/faq"
-                      target="_blank"
-                      rel="noopener noreferrer"
-                    >
-                      <FormattedMessage id="faq" />
                     </NavDropdown.Item>
                     <NavDropdown.Divider />
                     <ContactUs

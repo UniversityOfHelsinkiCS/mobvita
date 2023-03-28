@@ -114,8 +114,8 @@ const LandingPage = () => {
                   rel="noopener noreferrer"
                 />
                 <Dropdown.Item
-                  text={<FormattedMessage id="faq" />}
-                  href="https://www2.helsinki.fi/en/projects/revita-language-learning-and-ai/faq"
+                  text={intl.formatMessage({ id: 'help' }) + ' & ' + intl.formatMessage({ id: 'faq' })}
+                  href="https://drive.google.com/drive/folders/1vnfFfUd4UCBkbli25krwcKwxExDjWOeY"
                   target="_blank"
                   rel="noopener noreferrer"
                 />
