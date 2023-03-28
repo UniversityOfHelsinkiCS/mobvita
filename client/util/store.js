@@ -29,6 +29,7 @@ const sentryReduxEnhancer = Sentry.createReduxEnhancer({
       tests: state.tests,
       metadata: state.metadata,
       groups: state.groups,
+      practiceHistory: state.practiceHistory
     }
   },
 })

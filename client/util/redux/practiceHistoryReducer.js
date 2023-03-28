@@ -24,13 +24,14 @@ export default (state = initialState, action) => {
         error: false,
       }
     case 'GET_PRACTICE_HISTORY_SUCCESS':
+        console.log(action.response)
       return {
         ...state,
         eloExerciseHistory: action.response.elo_exercise_history,
         exerciseHistory: action.response.exercise_history,
         flashcardHistory: action.response.flashcard_history,
         testHistory: action.response.test_history,
-        streakToday: action.response.is_today_streaked,
+        daysStreaked: action.response.num_streaked_days,
         pending: false,
         error: false,
       }

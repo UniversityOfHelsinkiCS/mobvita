@@ -15,14 +15,12 @@ const EloChart = ({ width }) => {
   const { exerciseHistory } = practiceHistory
   const { flashcardHistory } = practiceHistory
   const { streakToday } = practiceHistory
+  const { daysStreaked } = practiceHistory
 
   useEffect(() => {
     dispatch(getPracticeHistory())
   }, [])
 
-  const daysStreaked = useSelector(({ user }) => user.data.user.num_streaked_days)
-
-  //tarkista tuo weekly practice time uudesta apista
   const eloHistory = exerciseHistory.map(exercise => exercise.score)
   const weeklyPracticeTimeHistory = useSelector(({ user }) => user.data.user.weekly_times)
   const intl = useIntl()
@@ -153,12 +151,7 @@ const EloChart = ({ width }) => {
       <div className="space-evenly pb-sm">
         {hiddenFeatures && (
           <span>
-            <img
-              src={images.flame}
-              alt="flame"
-              width="18px"
-              style={{ marginRight: '0.2em' }}
-            />
+            <img src={images.flame} alt="flame" width="18px" style={{ marginRight: '0.2em' }} />
             {daysStreaked}
           </span>
         )}
