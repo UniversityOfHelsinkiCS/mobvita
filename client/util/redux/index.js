@@ -45,6 +45,7 @@ import lessonExercises from './lessonExercisesReducer'
 import dropdown from './dropdownReducer'
 import modal from './modalReducer'
 import topicsBox from './topicsBoxReducer'
+import practiceHistory from './practiceHistoryReducer'
 
 const rootReducer = combineReducers({
   stories,
@@ -91,7 +92,8 @@ const rootReducer = combineReducers({
   lessonExercises,
   dropdown,
   modal,
-  topicsBox
+  topicsBox,
+  practiceHistory
 })
 
 export default (state, action) =>

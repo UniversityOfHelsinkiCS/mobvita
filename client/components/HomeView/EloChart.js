@@ -1,26 +1,34 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import Highcharts from 'highcharts'
 import HighchartsReact from 'highcharts-react-official'
-import { useSelector, shallowEqual } from 'react-redux'
+import { useSelector, shallowEqual, useDispatch } from 'react-redux'
 import { useHistory } from 'react-router-dom'
 import moment from 'moment-timezone'
 import { useIntl } from 'react-intl'
 import { Icon } from 'semantic-ui-react'
 import { images, hiddenFeatures } from 'Utilities/common'
-
+import { getPracticeHistory } from 'Utilities/redux/practiceHistoryReducer'
 
 const EloChart = ({ width }) => {
-  const { exerciseHistory, flashcardHistory } = useSelector(({ user }) => {
-    const exerciseHistory = user.data.user.exercise_history
-    const flashcardHistory = user.data.user.flashcard_history
-    return { exerciseHistory, flashcardHistory }
-  }, shallowEqual)
+  const dispatch = useDispatch()
+  const practiceHistory = useSelector(state => state.practiceHistory)
+  const { exerciseHistory } = practiceHistory
+  const { flashcardHistory } = practiceHistory
+  const { streakToday } = practiceHistory
+
+  useEffect(() => {
+    dispatch(getPracticeHistory())
+  }, [])
+
+  const daysStreaked = useSelector(({ user }) => user.data.user.num_streaked_days)
+
+  //tarkista tuo weekly practice time uudesta apista
   const eloHistory = exerciseHistory.map(exercise => exercise.score)
   const weeklyPracticeTimeHistory = useSelector(({ user }) => user.data.user.weekly_times)
   const intl = useIntl()
   const history = useHistory()
 
-  //if (eloHistory.length === 0) return null
+  // if (eloHistory.length === 0) return null
 
   const filteredHistory = []
   const weeks = weeklyPracticeTimeHistory.map(element => element.week).reverse()
@@ -38,8 +46,7 @@ const EloChart = ({ width }) => {
   }
   let eloResults = []
   if (exerciseHistory.lenght > 0) {
-    eloResults =
-      exerciseHistory && exerciseHistory.map(e => [moment(e.date).valueOf(), e.score])
+    eloResults = exerciseHistory && exerciseHistory.map(e => [moment(e.date).valueOf(), e.score])
   }
   let flashcardEloResults = []
   if (flashcardHistory.lenght > 0) {
@@ -144,6 +151,17 @@ const EloChart = ({ width }) => {
       onClick={() => history.push('/profile/progress')}
     >
       <div className="space-evenly pb-sm">
+        {hiddenFeatures && (
+          <span>
+            <img
+              src={images.flame}
+              alt="flame"
+              width="18px"
+              style={{ marginRight: '0.2em' }}
+            />
+            {daysStreaked}
+          </span>
+        )}
         {showStoryElo && (
           <span>
             <Icon name="star outline" style={{ margin: 0 }} />{' '}
