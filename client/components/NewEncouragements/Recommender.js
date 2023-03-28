@@ -120,7 +120,7 @@ const Recommender = () => {
                             setOpen={setDailyStoriesDraggableIsOpen}
                         />
                     </div>
-                ) : isInProgressView && storyBlueCards.length > 0 ? (
+                ) : isInProgressView && storyBlueCards && storyBlueCards.length > 0 ? (
                     // when the user goes to vocabulary chart on progress page and has bluecards to show encouragement
                     // this statement cannot be put inside a general draggable, because if the requirements are not met, an empty draggable will be rendered
                     <div>
