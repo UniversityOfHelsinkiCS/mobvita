@@ -7,6 +7,7 @@ import { Link, useHistory, useParams } from 'react-router-dom'
 import { logout, calculateIRTScore, getSelf, setIrtDummyScore } from 'Utilities/redux/userReducer'
 import { sidebarSetOpen } from 'Utilities/redux/sidebarReducer'
 import { getMetadata } from 'Utilities/redux/metadataReducer'
+import { getPracticeHistory } from 'Utilities/redux/practiceHistoryReducer'
 import {
   hideIcon,
   openEncouragement,
@@ -180,9 +181,16 @@ export default function NavBar() {
     dispatch(getMetadata(learningLanguage))
   }, [learningLanguage])
 
+  useEffect(() => {
+    dispatch(getPracticeHistory())
+  }, [])
+
   const showStoryElo = history.location.pathname.includes('practice')
   const showFlashcardElo = hiddenFeatures && history.location.pathname.includes('flashcards')
   const hasChosenLearningLanguage = user?.user?.last_used_language !== null
+
+  const practiceHistory = useSelector(state => state.practiceHistory)
+  const { flashcardHistory } = practiceHistory
 
   const storyElo =
     user && user.user.exercise_history && user.user.exercise_history.length > 0
@@ -190,8 +198,8 @@ export default function NavBar() {
       : 0
 
   const flashcardElo =
-    user && user.user.flashcard_history && user.user.flashcard_history.length > 0
-      ? user.user.flashcard_history[user.user.flashcard_history.length - 1].score
+    user && flashcardHistory && flashcardHistory.length > 0
+      ? flashcardHistory[flashcardHistory.length - 1].score
       : 0
 
   const get_student_ability_score_component = () => {
@@ -299,7 +307,7 @@ export default function NavBar() {
           </Nav>
 
           <Nav className="mr-auto">
-            <div className="navbar-container">
+            <div className="navbar-containeimport { getPracticeHistory } from 'Utilities/redux/practiceReducer'r">
               <Navbar.Text
                 onClick={handleEloClick}
                 onKeyDown={() => dispatch(setAnnotationsVisibility(true))}

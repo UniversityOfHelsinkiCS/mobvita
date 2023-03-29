@@ -2,15 +2,20 @@ import React, { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { learningLanguageSelector } from 'Utilities/common'
 import { getStudentProgress } from 'Utilities/redux/groupProgressReducer'
+import { getPracticeHistory } from 'Utilities/redux/practiceHistoryReducer'
 import { FormattedMessage } from 'react-intl'
 import ProgressGraph from 'Components/ProgressGraph'
 import Spinner from 'Components/Spinner'
 
 const StudentProgress = ({ student, startDate, endDate, group }) => {
-  const { pending, exerciseHistory, flashcardHistory } = useSelector(({ studentProgress }) => {
+  const practiceHistory = useSelector(state => state.practiceHistory)
+  const { flashcardHistory } = practiceHistory
+  //const { exerciseHistory } = practiceHistory
+  //exerciseHistory still uses old statics from user object
+  const { pending, exerciseHistory } = useSelector(({ studentProgress }) => {
     const { progress, pending } = studentProgress
-    const { exercise_history: exerciseHistory, flashcard_history: flashcardHistory } = progress
-    return { pending, exerciseHistory, flashcardHistory }
+    const { exercise_history: exerciseHistory } = progress
+    return { pending, exerciseHistory }
   })
   const learningLanguage = useSelector(learningLanguageSelector)
   const dispatch = useDispatch()
@@ -19,6 +24,10 @@ const StudentProgress = ({ student, startDate, endDate, group }) => {
     if (!student) return
     dispatch(getStudentProgress(student._id, group.group_id, learningLanguage))
   }, [student])
+
+  useEffect(() => {
+    dispatch(getPracticeHistory())
+  }, [])
 
   if (pending) return <Spinner />
 
