@@ -34,7 +34,7 @@ const StreakEncouragement = () => {
               <Link className="interactable" to="/library">
                 <FormattedMessage id="do-snippets" />
               </Link>
-              !
+              .
             </div>
           </div>
         </div>
@@ -77,7 +77,7 @@ const StreakEncouragement = () => {
               <Link className="interactable" to="/library">
                 <FormattedMessage id="do-snippets" />
               </Link>
-              !
+              .
             </div>
           </div>
         </div>

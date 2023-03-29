@@ -27,8 +27,7 @@ const ReviewStoriesEncouragement = () => {
 
   return (
     <div>
-      {storiesToReview === [] ?
-        null :
+      {storiesToReview === [] ? null : (
         <div className="pt-md">
           <div
             className="flex enc-message-body"
@@ -43,7 +42,7 @@ const ReviewStoriesEncouragement = () => {
               <FormattedMessage id="review-recent-stories" />
               <ul style={{ paddingLeft: 0 }}>
                 {storiesToReview.map(story => (
-                  <li style={{ marginTop: '0.5rem', listStylePosition: 'inside' }}>
+                  <li key={story.id} style={{ marginTop: '0.5rem', listStylePosition: 'inside' }}>
                     <Link className="interactable" to={`/stories/${story._id}/review`}>
                       <i>{story.title}</i>
                     </Link>
@@ -53,7 +52,7 @@ const ReviewStoriesEncouragement = () => {
             </div>
           </div>
         </div>
-      }
+      )}
     </div>
   )
 }
