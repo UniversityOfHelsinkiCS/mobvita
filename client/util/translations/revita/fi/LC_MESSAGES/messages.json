@@ -1491,10 +1491,11 @@
     "Dative subject + impersonal-reflexive verb: 'мне нравится/кажется/пришлось'": "Datiivisubjekti ja persoonattomat infinitiivilauseet \"мне нравится/кажется/пришлось",
     "tour-step9-HELP-header": "Ohjeet",
     "tour-step9-HELP-message": "Napsauta <b>Ohje</b>-painiketta nähdäksesi:\n<ul>\n<li>Esittelyvideo,</li>\n<li>Ohjeet,</li>\n<li>FAQ / UKK.</li></ul>",
-    "streak-done": "Your streak is going on strong for <b>{daysStreaked}</b> days!",
-    "streak-undone": "Keep you streak going!",
-    "streak-broken": "Your streak is broken!",
-    "continue-streak": "Continue your streak by doing",
-    "start-streak": "Start your streak by doing",
-    "do-snippets": "10 snippets"
+    "streak-done": "Sinulla on <b>{daysStreaked}</b> päivän harjoitteluputki päällä!",
+    "streak-undone": "Säilytä harjoitteluputkesi!",
+    "streak-broken": "Harjoitteluputkesi katkesi!",
+    "continue-streak": "Jatka tekemällä",
+    "start-streak": "Aloita uusi harjoittelemalla",
+    "do-snippets": "10 tarinaosaa",
+    "do-flashcards": ""
 }

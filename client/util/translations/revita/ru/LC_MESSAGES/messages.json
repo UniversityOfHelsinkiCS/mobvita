@@ -1499,5 +1499,6 @@
     "streak-broken": "Your streak is broken!",
     "continue-streak": "Continue your streak by doing",
     "start-streak": "Start your streak by doing",
-    "do-snippets": "10 snippets"
+    "do-snippets": "10 snippets",
+    "do-flashcards": ""
 }
