@@ -58,7 +58,7 @@ const StoryCompletedToBluecardsExerciseEncouragement = () => {
           <div className="pt-md">
             <div
               className="flex enc-message-body"
-              style={{ alignItems: 'center', backgroundColor: backgroundColors[initList.length % 3] }}
+              style={{ alignItems: 'center', backgroundColor: backgroundColors[1] }}
             >
               <img
                 src={images.flashcards}

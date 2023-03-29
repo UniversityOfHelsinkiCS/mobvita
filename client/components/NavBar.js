@@ -92,7 +92,10 @@ export default function NavBar() {
     }
   }
   const handleTourStart = () => {
-    if (history.location.pathname.includes('progress')) {
+    if (history.location.pathname.includes('profile')) {
+      if (!history.location.pathname.includes('progress')) {
+        history.push('/profile/progress')
+      }
       dispatch({ type: 'SHOW_PROFILE_DROPDOWN' })
       if (user.user.email === 'anonymous_email') {
         dispatch({ type: 'ANONYMOUS_PROGRESS_TOUR_RESTART' })
@@ -212,8 +215,8 @@ export default function NavBar() {
       ability_score = irtCalculationPending
         ? '...'
         : irt_dummy_score != undefined
-        ? Math.round(irt_dummy_score * 10) / 10
-        : '...'
+          ? Math.round(irt_dummy_score * 10) / 10
+          : '...'
       grammar_score_type = 'irt'
     }
     return (
