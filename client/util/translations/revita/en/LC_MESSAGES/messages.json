@@ -1491,5 +1491,11 @@
     "lesson-exercise-message": "This is just like regular practice with stories, except that you get exercises only about the grammar topics of the lesson.",
     "Dative subject + impersonal-reflexive verb: 'мне нравится/кажется/пришлось'": "Dative subject + impersonal-reflexive verb: \"мне нравится/кажется/пришлось\"",
     "tour-step9-HELP-header": "Instructions and Help",
-    "tour-step9-HELP-message": "Click the <b>Help</b> button to see:\n<ul>\n<li>Introduction video,</li>\n<li>Instructions and online help,</li>\n<li>FAQ.</li></ul>"
+    "tour-step9-HELP-message": "Click the <b>Help</b> button to see:\n<ul>\n<li>Introduction video,</li>\n<li>Instructions and online help,</li>\n<li>FAQ.</li></ul>",
+    "streak-done": "Your streak is going on strong for <b>{daysStreaked}</b> days!",
+    "streak-undone": "Keep you streak going!",
+    "streak-broken": "Your streak is broken!",
+    "continue-streak": "Continue your streak by doing",
+    "start-streak": "Start your streak by doing",
+    "do-snippets": "10 snippets"
 }

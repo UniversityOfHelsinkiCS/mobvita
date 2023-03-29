@@ -80,7 +80,9 @@ import magnifyingGlass from 'Assets/images/glass.png'
 import beeHive from 'Assets/images/bee_hive.png'
 import barChart from 'Assets/images/bar_chart.png'
 import readingBook from 'Assets/images/reading-book.png'
+import flameIcon from 'Assets/images/flame_icon.png'
 import flame from 'Assets/images/flame.png'
+import flameColorless from 'Assets/images/flame_colorless.png'
 
 import { useSelector, useDispatch } from 'react-redux'
 import { useHistory } from 'react-router-dom'
@@ -167,10 +169,12 @@ export const images = {
   beeHive,
   barChart,
   readingBook,
-  flame
+  flame,
+  flameColorless,
+  flameIcon
 }
 
-export const backgroundColors = ['lightcyan', 'lightyellow', 'antiquewhite']
+export const backgroundColors = ['lightcyan', 'lightyellow', 'antiquewhite', 'lightPink']
 
 export const getCategoryColor = category => {
   if (category === 'Grammar') {

@@ -862,5 +862,11 @@
     "Dative subject + impersonal-reflexive verb: 'мне нравится/кажется/пришлось'": "主体三格+无人称动词/反身动词：我喜欢/我觉得/我不得不。",
     "begin-practicing": "结束导览",
     "tour-step9-HELP-header": "说明和帮助",
-    "tour-step9-HELP-message": "点击<b>帮助p</b>可以查看:\n<ul>\n<li>视频说明,</li>\n<li>在线帮助和文字说明,</li>\n<li>FAQ</li></ul>"
+    "tour-step9-HELP-message": "点击<b>帮助p</b>可以查看:\n<ul>\n<li>视频说明,</li>\n<li>在线帮助和文字说明,</li>\n<li>FAQ</li></ul>",
+    "streak-done": "Your streak is going on strong for <b>{daysStreaked}</b> days!",
+    "streak-undone": "Keep you streak going!",
+    "streak-broken": "Your streak is broken!",
+    "continue-streak": "Continue your streak by doing",
+    "start-streak": "Start your streak by doing",
+    "do-snippets": "10 snippets"
 }

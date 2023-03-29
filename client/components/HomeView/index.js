@@ -253,9 +253,7 @@ const HomeView = () => {
         setOpen={setBetaModalOpen}
         language={learningLanguage}
       />
-      {TESTING_NEW_ENCOURAGEMENT && (
-        <Recommender />
-      )}
+      {TESTING_NEW_ENCOURAGEMENT && <Recommender />}
       {welcomeView && !TESTING_NEW_ENCOURAGEMENT && (
         <DefaultActivityModal
           open={showWelcomeModal}

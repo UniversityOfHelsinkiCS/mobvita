@@ -11,9 +11,8 @@ import { getPracticeHistory } from 'Utilities/redux/practiceHistoryReducer'
 
 const EloChart = ({ width }) => {
   const dispatch = useDispatch()
-  const practiceHistory = useSelector(state => state.practiceHistory)
-  const { flashcardHistory } = practiceHistory
-  const { daysStreaked } = practiceHistory
+  const { flashcardHistory, daysStreaked } = useSelector(state => state.practiceHistory)
+
   // const { exerciseHistory } = practiceHistory
   // exerciseHistory still uses old statics from user object
   const { exerciseHistory } = useSelector(({ user }) => {
@@ -155,7 +154,7 @@ const EloChart = ({ width }) => {
       <div className="space-evenly pb-sm">
         {hiddenFeatures && (
           <span>
-            <img src={images.flame} alt="flame" width="18px" style={{ marginRight: '0.2em' }} />
+            <img src={images.flameIcon} alt="flame icon" width="18px" style={{ marginRight: '0.2em' }} />
             {daysStreaked}
           </span>
         )}

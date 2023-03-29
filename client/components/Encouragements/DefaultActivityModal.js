@@ -2,7 +2,12 @@ import React, { useEffect, useState } from 'react'
 import { Popup, Icon } from 'semantic-ui-react'
 import { useIntl, FormattedHTMLMessage, FormattedMessage } from 'react-intl'
 import { Link } from 'react-router-dom'
-import { images, dictionaryLanguageSelector, backgroundColors } from 'Utilities/common'
+import {
+  images,
+  dictionaryLanguageSelector,
+  backgroundColors,
+  hiddenFeatures,
+} from 'Utilities/common'
 import { showIcon, closeEncouragement } from 'Utilities/redux/encouragementsReducer'
 import { useDispatch, useSelector } from 'react-redux'
 import useWindowDimensions from 'Utilities/windowDimensions'
@@ -11,8 +16,10 @@ import { updateEnableRecmd } from 'Utilities/redux/userReducer'
 import { getStoriesBlueFlashcards } from 'Utilities/redux/flashcardReducer'
 import { getIncompleteStories } from 'Utilities/redux/incompleteStoriesReducer'
 import { getLeaderboards } from 'Utilities/redux/leaderboardReducer'
+import { getPracticeHistory } from 'Utilities/redux/practiceHistoryReducer'
 import { Form, Button } from 'react-bootstrap'
 import DailyStories from './DailyStories'
+import StreakEncouragement from 'Components/NewEncouragements/SubComponents/StreakEncouragement'
 
 const DefaultActivityModal = ({
   open,
@@ -42,6 +49,8 @@ const DefaultActivityModal = ({
   const { pending: userPending } = useSelector(({ user }) => user)
   const dispatch = useDispatch()
   const bigScreen = width > 700
+  const { streakToday, daysStreaked } = useSelector(state => state.practiceHistory)
+  const streakBroken = daysStreaked === 0 && !streakToday ? true : false
 
   const dailyStoriesEncouragement = listLen => {
     return (
@@ -74,6 +83,79 @@ const DefaultActivityModal = ({
 
   const fillList = () => {
     let initList = []
+    if (!streakToday && !streakBroken && hiddenFeatures) {
+      initList = initList.concat(
+        <div className="pt-md">
+          <div
+            className="flex enc-message-body"
+            style={{ alignItems: 'center', backgroundColor: backgroundColors[3] }}
+          >
+            <img
+              src={images.flameColorless}
+              alt="colorless flame"
+              style={{ maxWidth: '8%', maxHeight: '8%', marginRight: '1em' }}
+            />
+            <div>
+              <FormattedHTMLMessage id="streak-undone" values={{ daysStreaked }} />
+              <br />
+              <FormattedHTMLMessage id="continue-streak" values={{ daysStreaked }} />
+              &nbsp;
+              <Link className="interactable" to="/library">
+                <FormattedMessage id="do-snippets" />
+              </Link>
+              !
+            </div>
+          </div>
+        </div>
+      )
+    }
+
+    if (streakBroken && hiddenFeatures) {
+      initList = initList.concat(
+        <div className="pt-md">
+          <div
+            className="flex enc-message-body"
+            style={{ alignItems: 'center', backgroundColor: backgroundColors[3] }}
+          >
+            <img
+              src={images.flameColorless}
+              alt="colorless flame"
+              style={{ maxWidth: '8%', maxHeight: '8%', marginRight: '1em' }}
+            />
+            <div>
+              <FormattedHTMLMessage id="streak-broken" values={{ daysStreaked }} />
+              <br />
+              <FormattedHTMLMessage id="start-streak" values={{ daysStreaked }} />
+              &nbsp;
+              <Link className="interactable" to="/library">
+                <FormattedMessage id="do-snippets" />
+              </Link>
+              !
+            </div>
+          </div>
+        </div>
+      )
+    }
+
+    if (streakToday && hiddenFeatures) {
+      initList = initList.concat(
+        <div className="pt-md">
+          <div
+            className="flex enc-message-body"
+            style={{ alignItems: 'center', backgroundColor: backgroundColors[0] }}
+          >
+            <img
+              src={images.flame}
+              alt="flame"
+              style={{ maxWidth: '8%', maxHeight: '8%', marginRight: '1em' }}
+            />
+            <div>
+              <FormattedHTMLMessage id="streak-done" values={{ daysStreaked }} />
+            </div>
+          </div>
+        </div>
+      )
+    }
     if (userRanking) {
       initList = initList.concat(
         <div className="pt-md">
@@ -258,6 +340,10 @@ const DefaultActivityModal = ({
   }
 
   useEffect(() => {
+    dispatch(getPracticeHistory())
+  }, [])
+
+  useEffect(() => {
     dispatch(
       getIncompleteStories(learningLanguage, {
         sort_by: 'access',
@@ -373,6 +459,7 @@ const DefaultActivityModal = ({
           open={openDailyStories}
           setOpen={setOpenDailyStories}
         />
+        
         <Draggable cancel=".interactable">
           <div className={bigScreen ? 'draggable-encouragement' : 'draggable-encouragement-mobile'}>
             <div>
