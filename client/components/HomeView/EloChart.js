@@ -156,6 +156,7 @@ const EloChart = ({ width }) => {
         {hiddenFeatures && (
           <span>
             <img src={images.flame} alt="flame" width="18px" style={{ marginRight: '0.2em' }} />
+            {daysStreaked}
           </span>
         )}
         {showStoryElo && (
