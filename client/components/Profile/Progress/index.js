@@ -92,6 +92,7 @@ const Progress = () => {
   const { history: testHistory, pending: testPending } = useSelector(({ tests }) => tests)
   const { open } = useSelector(({ encouragement }) => encouragement)
   const shownChart = useSelector(({ progress }) => progress.currentChart)
+  const isTourOn = useSelector(({ tour }) => tour.run)
   // const [notMastered, setNotMastered] = useState([])
   // const [notMasteredBefore, setNotMasteredBefore] = useState([])
   const [firstFetch, setFirstFetch] = useState(true)
@@ -101,8 +102,8 @@ const Progress = () => {
   const originalEndPoint =
     eloExerciseHistory?.length > 0
       ? moment(eloExerciseHistory[eloExerciseHistory.length - 1]?.date)
-          .add(1, 'days')
-          .toDate()
+        .add(1, 'days')
+        .toDate()
       : moment().toDate()
 
   useEffect(() => {
@@ -167,8 +168,10 @@ const Progress = () => {
       dispatch(hideIcon())
       dispatch(closeEncouragement)
     } else {
-      dispatch(showIcon())
-      dispatch(openEncouragement())
+      if (!isTourOn) {
+        dispatch(showIcon())
+        dispatch(openEncouragement())
+      }
     }
   }, [shownChart])
 
