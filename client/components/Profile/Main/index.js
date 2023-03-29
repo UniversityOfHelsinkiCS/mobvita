@@ -22,17 +22,17 @@ const UsernameField = () => {
 
 const DesktopView = () => {
   return (
-    <div>
+    <div className="cont ps-nm">
       <Grid columns={2}  divided>
         <Grid.Row>
-          <Grid.Column>
+          <Grid.Column className="flex-col gap-row-nm">
             <UsernameField />
             <EloChart />
             <MedalSummary />
           </Grid.Column>
           <Grid.Column>
             <Following />
-            </Grid.Column>
+          </Grid.Column>
         </Grid.Row>
       </Grid>
     </div>
@@ -43,8 +43,10 @@ const MobileView = () => {
   return (
     <div>
       <UsernameField />
-      <EloChart width="100%" />
-      <MedalSummary />
+      <div className="flex-col" style={{ gap: '1.5em', marginBottom: '.5em' }}>
+        <EloChart width="100%" />
+        <MedalSummary />
+      </div>
       <Following />
     </div>
   )
