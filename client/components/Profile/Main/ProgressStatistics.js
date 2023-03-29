@@ -32,11 +32,8 @@ const ProgressStatistics = () => {
     return firstPractice
   }
 
-  const startDate = null
-  const endDate = null
-
   return (
-    <ProgressStats startDate={startDate} endDate={endDate} />
+    <ProgressStats startDate={getStartDate()} endDate={originalEndPoint} />
   )
 } 
 
