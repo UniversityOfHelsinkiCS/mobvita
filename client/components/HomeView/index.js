@@ -241,7 +241,7 @@ const HomeView = () => {
 
   // Change this to true when developing new encouragement!
   // REMEMBER TO SWITCH BACK TO FALSE BEFORE PUSHING!!!
-  const TESTING_NEW_ENCOURAGEMENT = true
+  const TESTING_NEW_ENCOURAGEMENT = false
 
   return (
     <div className="cont-tall cont flex-col auto gap-row-sm pt-lg blue-bg">

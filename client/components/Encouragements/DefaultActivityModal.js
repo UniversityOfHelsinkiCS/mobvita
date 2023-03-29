@@ -98,7 +98,7 @@ const DefaultActivityModal = ({
             <div>
               <FormattedHTMLMessage id="streak-undone" values={{ daysStreaked }} />
               <br />
-              <FormattedHTMLMessage id="continue-streak" values={{ daysStreaked }} />
+              <FormattedMessage id="continue-streak" />
               &nbsp;
               <Link className="interactable" to="/library">
                 <FormattedMessage id="do-snippets" />
@@ -125,7 +125,7 @@ const DefaultActivityModal = ({
             <div>
               <FormattedHTMLMessage id="streak-broken" values={{ daysStreaked }} />
               <br />
-              <FormattedHTMLMessage id="start-streak" values={{ daysStreaked }} />
+              <FormattedMessage id="start-streak" />
               &nbsp;
               <Link className="interactable" to="/library">
                 <FormattedMessage id="do-snippets" />
