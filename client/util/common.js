@@ -220,7 +220,7 @@ export const confettiRain = () => {
 }
 
 export const finalConfettiRain = (colors, endDate) => {
-  ;(function frame() {
+  ; (function frame() {
     confetti({
       particleCount: 2,
       angle: 60,
@@ -1524,6 +1524,7 @@ const desktopPracticeTourSteps = [
       </div>
     ),
     disableBeacon: true,
+    placement: 'left'
   },
   {
     target: '.dictionary-help',
