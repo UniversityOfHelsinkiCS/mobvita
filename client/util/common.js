@@ -1031,6 +1031,19 @@ const desktopHomeTourSteps = [
     disableBeacon: true,
   },
   {
+    target: '.navbar-dropdown-icon-cont-HELP',
+    title: <FormattedMessage id="tour-step9-HELP-header" />,
+    content: (
+      <div>
+        <FormattedHTMLMessage id="tour-step9-HELP-message" />
+        <div>{tourSign()}</div>
+      </div>
+    ),
+    placement: 'top',
+    opacity: 0,
+    disableBeacon: true,
+  },
+  {
     target: '.tour-button',
     title: <FormattedMessage id="begin-practicing" />,
     content: (

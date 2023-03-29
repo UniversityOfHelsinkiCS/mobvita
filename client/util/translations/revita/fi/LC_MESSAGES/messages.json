@@ -870,7 +870,7 @@
     "tour-sidebar-message": "Täältä voit avata sivupalkin. Sieltä löydät useita tärkeitä ja hyödyllisiä valikoita.",
     "tour-learning-language-message": "Tästä voit valita kielen, jota haluat opiskella. Voit vaihtaa sen milloin vain.",
     "add-content": "Lisää omaa sisältöä",
-    "begin-practicing": "Aloita harjoittelu",
+    "begin-practicing": "Loppu",
     "tour-practice-now-message": "Tästä pääset harjoittelemaan kertomuksilla.<br><br>Voit valita kertomuksia eri kategorioista ja kirjastoista tai harjoitella aivan satunnaisella kertomuksella.",
     "tour-flashcards-message": "Revita luo automaattisesti sanakortteja kertomuksissa esiintyvistä sinulle vieraista sanoista.<br/><br/>Tästä pääset harjoittelemaan niitä!",
     "tour-library-message": "Täältä löydät kaikki lataamasi kertomukset sekä myös kertomuksia, jotka olemme ladanneet sinulle valmiiksi.",
@@ -1369,7 +1369,7 @@
     "return-to-library": "Palaa kirjastoon",
     "save-story": "Tallenna tarina",
     "story-updated-toaster": "Tarina päivitetty!",
-    "new-group-story-encouragement": "Uusi tarina on lisätty yhteen ryhmistäsi — näet sen",
+    "new-group-story-encouragement": "Uusi tarina on lisätty ryhmääsi — näet sen",
     "go-to-group-library-link": "ryhmäkirjastossa",
     "beta-language-warning": "Huomioi: {language} on BETA-kieli, jonka kehitys on vielä kesken.",
     "story-title-validation": "Tarinan otsikon on oltava vähintään 3 kirjaimen pituinen",
@@ -1488,5 +1488,7 @@
     "Comitative": "",
     "Lesson exercise": "Oppitunnin harjoittelu",
     "lesson-exercise-message": "Saat harjoiteltavaksi tarinan, jonka kaikki tehtävät liittyvät valittuun kielioppiasiaan.",
-    "Dative subject + impersonal-reflexive verb: 'мне нравится/кажется/пришлось'": "Datiivisubjekti ja persoonattomat infinitiivilauseet \"мне нравится/кажется/пришлось"
+    "Dative subject + impersonal-reflexive verb: 'мне нравится/кажется/пришлось'": "Datiivisubjekti ja persoonattomat infinitiivilauseet \"мне нравится/кажется/пришлось",
+    "tour-step9-HELP-header": "Ohjeet",
+    "tour-step9-HELP-message": "Napsauta <b>Ohje</b>-painiketta nähdäksesi:\n<ul>\n<li>Esittelyvideo,</li>\n<li>Ohjeet,</li>\n<li>FAQ / UKK.</li></ul>"
 }

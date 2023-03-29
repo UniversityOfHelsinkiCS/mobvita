@@ -871,12 +871,12 @@
     "tour-sidebar-message": "Here you can open the <b>sidebar</b>. It contains useful settings and functions.",
     "tour-learning-language-message": "Here you select the language you are learning. You can change it any time.",
     "add-content": "Add your own content",
-    "begin-practicing": "Begin practicing",
+    "begin-practicing": "End of tour",
     "tour-practice-now-message": "Here you can start practicing with a random story.",
     "tour-flashcards-message": "When you click on unfamiliar words you find inside stories, Revita automatically creates flashcards for them.<br/><br/>You can practice these words here!",
     "tour-library-message": "The Library contains stories that you upload, stories from your teacher / class, and sample texts we have pre-loaded for you.",
     "tour-add-content-message": "You can upload <b>any</b> stories of your choice, and use them for practising.<br/>→ They will appear in your private library.",
-    "tour-begin-practicing-message": "Now you can begin practicing!\n<br /><br />Click the Tour icon on other pages—to take a tour of that page.\n<br />For online help check <i>Help</i> under the Info icon.\n<br /><br /> Please register and log in, so Revita can preserve your:\n<ul><li>stories and flashcards,</li>\n<li>settings and preferences,</li>\n<li>skill levels and progress.</li></ul>\n<br /><i>Bon voyage!</i>",
+    "tour-begin-practicing-message": "Now you can begin practicing!\n<br /><br />Click the Tour icon on other pages—to take a tour of that page.\n<br /><br /> Please register and log in, so Revita can preserve your:\n<ul><li>stories and flashcards,</li>\n<li>settings and preferences,</li>\n<li>skill levels and progress.</li></ul>\n<br /><i>Bon voyage!</i>",
     "end-tour": "End tour",
     "next": "Next",
     "start-tour": "Start Tour",
@@ -1370,7 +1370,7 @@
     "return-to-library": "Return to library",
     "save-story": "Save story",
     "story-updated-toaster": "Story updated!",
-    "new-group-story-encouragement": "A new story has been posted in one of your groups — you can see it in the",
+    "new-group-story-encouragement": "A new story has been posted in your group — you can see it in the",
     "go-to-group-library-link": "group library",
     "beta-language-warning": "Please note: {language} is a BETA language under development — it is work in progress!",
     "story-title-validation": "Story title has to be at least 3 characters long",
@@ -1489,5 +1489,7 @@
     "Comitative": "",
     "Lesson exercise": "Lesson exercise",
     "lesson-exercise-message": "This is just like regular practice with stories, except that you get exercises only about the grammar topics of the lesson.",
-    "Dative subject + impersonal-reflexive verb: 'мне нравится/кажется/пришлось'": "Dative subject + impersonal-reflexive verb: \"мне нравится/кажется/пришлось\""
+    "Dative subject + impersonal-reflexive verb: 'мне нравится/кажется/пришлось'": "Dative subject + impersonal-reflexive verb: \"мне нравится/кажется/пришлось\"",
+    "tour-step9-HELP-header": "Instructions and Help",
+    "tour-step9-HELP-message": "Click the <b>Help</b> button to see:\n<ul>\n<li>Introduction video,</li>\n<li>Instructions and online help,</li>\n<li>FAQ.</li></ul>"
 }

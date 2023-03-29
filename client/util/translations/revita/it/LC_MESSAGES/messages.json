@@ -871,7 +871,7 @@
     "tour-sidebar-message": "Qui puoi aprire il menù a comparsa. Contiene delle impostazioni utili.",
     "tour-learning-language-message": "Qui puoi selezionare la lingua che vuoi imparare. Potrai cambiarla in qualsiasi momento.",
     "add-content": "Aggiungi i tuoi materiali",
-    "begin-practicing": "Vai agli esercizi",
+    "begin-practicing": "Fine del Tour",
     "tour-practice-now-message": "Qui puoi iniziare ad allenarti con le storie.",
     "tour-flashcards-message": "Revita creerà automaticamente flashcards dalle parole che non conosci all'interno di una storia.<br/><br/>Potrai esercitarti con loro qui!",
     "tour-library-message": "Qui puoi vedere tutte le storie che hai caricato e alcuni testi di esempio che abbiamo precaricato per te.<br/><br/>Puoi aggiungerne altri tu stesso!",
@@ -1370,7 +1370,7 @@
     "return-to-library": "Ritorna al biblioteca",
     "save-story": "Salva la storia",
     "story-updated-toaster": "Storia aggiornata!",
-    "new-group-story-encouragement": "Una nuova storia è stata aggiunta a uno dei tuoi gruppi: la vedi nella",
+    "new-group-story-encouragement": "Una nuova storia è stata aggiunta a tuo gruppo: la vedi nella",
     "go-to-group-library-link": "biblioteca del gruppo",
     "beta-language-warning": "Nota: {language} è un linguaggio BETA che è ancora in fase di sviluppo.",
     "story-title-validation": "Il titolo della storia deve avere almeno 3 lettere",
@@ -1489,5 +1489,7 @@
     "practice-lesson-message": "Clicca qui per iniziare la lezione.",
     "Lesson exercise": "Lesson exercise",
     "lesson-exercise-message": "This is just like regular practice with stories, except that you get exercises only about the grammar topics of the lesson.",
-    "Dative subject + impersonal-reflexive verb: 'мне нравится/кажется/пришлось'": "Soggetto al dativo + verbo riflessivo impersonale: \"мне нравится/кажется/пришлось"
+    "Dative subject + impersonal-reflexive verb: 'мне нравится/кажется/пришлось'": "Soggetto al dativo + verbo riflessivo impersonale: \"мне нравится/кажется/пришлось",
+    "tour-step9-HELP-header": "Istruzioni e aiuto",
+    "tour-step9-HELP-message": "Fai clic sul pulsante <b>Guida</b> per vedere:\n<ul>\n<li>Video introduttivo,</li>\n<li>Istruzioni dettagliate e aiuto,</li>\n<li>FAQ.</li></ul>"
 }
