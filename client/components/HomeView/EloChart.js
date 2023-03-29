@@ -14,8 +14,8 @@ const EloChart = ({ width }) => {
   const practiceHistory = useSelector(state => state.practiceHistory)
   const { flashcardHistory } = practiceHistory
   const { daysStreaked } = practiceHistory
-  //const { exerciseHistory } = practiceHistory
-  //exerciseHistory still uses old statics from user object
+  // const { exerciseHistory } = practiceHistory
+  // exerciseHistory still uses old statics from user object
   const { exerciseHistory } = useSelector(({ user }) => {
     const exerciseHistory = user.data.user.exercise_history
     return { exerciseHistory }
@@ -156,11 +156,6 @@ const EloChart = ({ width }) => {
         {hiddenFeatures && (
           <span>
             <img src={images.flame} alt="flame" width="18px" style={{ marginRight: '0.2em' }} />
-            {daysStreaked}  const practiceHistory = useSelector(state => state.practiceHistory)
-  const { flashcardHistory } = practiceHistory
-  const { daysStreaked } = practiceHistory
-  //const { exerciseHistory } = practiceHistory
-  //exerciseHistory still uses old statics from user object
           </span>
         )}
         {showStoryElo && (
