@@ -3,22 +3,10 @@ import Following from '../Following'
 import EloChart from 'Components/HomeView/EloChart'
 import MedalSummary from 'Components/HomeView/MedalSummary'
 import useWindowDimensions from 'Utilities/windowDimensions'
-import { useSelector } from 'react-redux'
 import { Grid } from 'semantic-ui-react'
-import { FormattedMessage } from 'react-intl'
 import ProgressStatistics from './ProgressStatistics'
-
-const UsernameField = () => {
-  const { username } = useSelector(({ user }) => user.data.user)
-  return (
-    <>
-      <span className="sm-label">
-        <FormattedMessage id="username" />
-      </span>
-      <p className="account-info-item">{username}</p>
-    </>
-  )
-}
+import ProfileInfo from './ProfileInfo'
+import ProfileStreakInfo from './ProfileStreakInfo'
 
 const DesktopView = () => {
   return (
@@ -26,7 +14,8 @@ const DesktopView = () => {
       <Grid columns={2}  divided>
         <Grid.Row>
           <Grid.Column className="flex-col gap-row-nm">
-            <UsernameField />
+            <ProfileInfo />
+            <ProfileStreakInfo />
             <EloChart />
             <MedalSummary />
           </Grid.Column>
@@ -42,7 +31,7 @@ const DesktopView = () => {
 const MobileView = () => {
   return (
     <div>
-      <UsernameField />
+      <UsernameHeader />
       <div className="flex-col" style={{ gap: '1.5em', marginBottom: '.5em' }}>
         <EloChart width="100%" />
         <MedalSummary />
