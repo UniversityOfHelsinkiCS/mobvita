@@ -1,4 +1,5 @@
 import React, { useEffect, useRef } from 'react'
+import moment from 'moment'
 import { useSelector, useDispatch } from 'react-redux'
 import { Navbar, Nav, NavDropdown, NavItem, Button } from 'react-bootstrap'
 import Headroom from 'react-headroom'
@@ -185,7 +186,9 @@ export default function NavBar() {
   }, [learningLanguage])
 
   useEffect(() => {
-    dispatch(getPracticeHistory())
+    const date_now = moment().toDate()
+    const start_query_date = moment('2021-01-01').toDate()
+    dispatch(getPracticeHistory(start_query_date, date_now))
   }, [])
 
   const showStoryElo = history.location.pathname.includes('practice')

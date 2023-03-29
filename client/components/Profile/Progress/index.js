@@ -51,6 +51,7 @@ const Progress = () => {
   const [graphType, setGraphType] = useState('column mastered')
   const [initComplete, setInitComplete] = useState(false)
 
+  const { exerciseHistory: irtExerciseHistory } = useSelector(({ practiceHistory }) => practiceHistory)
   const { flashcardHistory, eloExerciseHistory, pending } = useSelector(({ practiceHistory }) => {
     const { flashcardHistory } = practiceHistory
     const { eloExerciseHistory } = practiceHistory
@@ -63,7 +64,9 @@ const Progress = () => {
   })
 
   useEffect(() => {
-    dispatch(getPracticeHistory())
+    const date_now = moment().toDate()
+    const start_query_date = moment('2021-01-01').toDate()
+    dispatch(getPracticeHistory(start_query_date, date_now))
   }, [])
 
   const { user } = useSelector(({ user }) => ({ user: user.data }))
@@ -86,6 +89,24 @@ const Progress = () => {
     pending: conceptsPending,
   } = useSelector(({ metadata }) => metadata)
 
+  const getStartDate = () => {
+    const sixMonthsAgo = moment(originalEndPoint).subtract(6, 'months').toDate()
+
+    if (!irtExerciseHistory) {
+      return sixMonthsAgo
+    }
+    const firstPractice = moment(irtExerciseHistory[0]?.date).toDate()
+
+    if (firstPractice < sixMonthsAgo || !irtExerciseHistory) {
+      return sixMonthsAgo
+    }
+
+    return firstPractice
+  }
+
+  const [startDate, setStartDate] = useState(getStartDate)
+  const [endDate, setEndDate] = useState(originalEndPoint)
+
   const { storyBlueCards } = useSelector(({ flashcards }) => flashcards)
   const learningLanguage = useLearningLanguage()
   const dictionaryLanguage = useDictionaryLanguage()
@@ -100,10 +121,10 @@ const Progress = () => {
   // const [targetCurve, setTargetCurve] = useState([])
   const [xAxisLength, setXAxisLength] = useState(102)
   const originalEndPoint =
-    eloExerciseHistory?.length > 0
-      ? moment(eloExerciseHistory[eloExerciseHistory.length - 1]?.date)
-        .add(1, 'days')
-        .toDate()
+    irtExerciseHistory?.length > 0
+      ? moment(irtExerciseHistory[irtExerciseHistory.length - 1]?.date)
+          .add(1, 'days')
+          .toDate()
       : moment().toDate()
 
   useEffect(() => {
@@ -118,24 +139,6 @@ const Progress = () => {
       }
     }
   }, [])
-
-  const getStartDate = () => {
-    const sixMonthsAgo = moment(originalEndPoint).subtract(6, 'months').toDate()
-
-    if (!eloExerciseHistory) {
-      return sixMonthsAgo
-    }
-    const firstPractice = moment(eloExerciseHistory[0]?.date).toDate()
-
-    if (firstPractice < sixMonthsAgo || !eloExerciseHistory) {
-      return sixMonthsAgo
-    }
-
-    return firstPractice
-  }
-
-  const [startDate, setStartDate] = useState(getStartDate)
-  const [endDate, setEndDate] = useState(originalEndPoint)
 
   const filterTestHistoryByDate = () =>
     testHistory?.filter(test => {
@@ -394,7 +397,7 @@ const Progress = () => {
           <ProgressStats startDate={startDate} endDate={endDate} />
           <div className="progress-page-graph-cont">
             <ProgressGraph
-              exerciseHistory={eloExerciseHistory}
+              exerciseHistory={irtExerciseHistory}
               flashcardHistory={flashcardHistory}
               startDate={startDate}
               endDate={endDate}

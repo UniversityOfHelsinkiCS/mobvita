@@ -26,7 +26,7 @@ const StudentProgress = ({ student, startDate, endDate, group }) => {
   }, [student])
 
   useEffect(() => {
-    dispatch(getPracticeHistory())
+    dispatch(getPracticeHistory(startDate, endDate))
   }, [])
 
   if (pending) return <Spinner />

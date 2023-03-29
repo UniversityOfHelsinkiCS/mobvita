@@ -11,28 +11,38 @@ const ProgressGraph = ({ exerciseHistory, flashcardHistory, startDate, endDate }
   const smallScreen = useWindowDimensions().width < 640
 
   const storyData = exerciseHistory && exerciseHistory.map(e => [moment(e.date).valueOf(), e.score])
-  const flashcardData =
-    flashcardHistory && flashcardHistory.map(e => [moment(e.date).valueOf(), e.score])
+  // const flashcardData =
+  //   flashcardHistory && flashcardHistory.map(e => [moment(e.date).valueOf(), e.score])
 
-  const series = [{ name: intl.formatMessage({ id: 'Stories' }), data: storyData }]
+  const series = []
+  series.push({ name: intl.formatMessage({ id: 'Stories' }), data: storyData })
 
-  if (hiddenFeatures) {
-    series.push({
-      name: intl.formatMessage({ id: 'Flashcards' }),
-      data: flashcardData,
-      color: '#dc3545',
-    })
-  }
+  // if (hiddenFeatures) {
+  //   series.push({
+  //     name: intl.formatMessage({ id: 'Flashcards' }),
+  //     data: flashcardData,
+  //     color: '#dc3545',
+  //   })
+  // }
 
   const height = smallScreen ? '75%' : '35%'
 
+  // const elo_levels = {
+  //   1250: 'A1',
+  //   1450: 'A2',
+  //   1650: 'B1',
+  //   1850: 'B2',
+  //   2050: 'C1',
+  //   2250: 'C2',
+  // }
+
   const levels = {
-    1250: 'A1',
-    1450: 'A2',
-    1650: 'B1',
-    1850: 'B2',
-    2050: 'C1',
-    2250: 'C2',
+    9: 'A1',
+    26: 'A2',
+    43: 'B1',
+    60: 'B2',
+    77: 'C1',
+    94: 'C2',
   }
 
   const options = {
