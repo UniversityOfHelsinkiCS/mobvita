@@ -3,11 +3,11 @@ import { useSelector, useDispatch } from 'react-redux'
 import { FormattedMessage, useIntl } from 'react-intl'
 import { useParams, useHistory } from 'react-router-dom'
 import { Segment, Icon, Checkbox } from 'semantic-ui-react'
-import { getStoryAction } from 'Utilities/redux/storiesReducer'
+import { getLessonTopics } from 'Utilities/redux/lessonsReducer'
 import { clearFocusedSnippet, resetSnippets } from 'Utilities/redux/snippetsReducer'
 import { updateShowReviewDiff } from 'Utilities/redux/userReducer'
 import { Spinner } from 'react-bootstrap'
-import { getMetadata } from 'Utilities/redux/metadataReducer'
+
 import {
   setTouchedIds,
   setAnswers,
@@ -16,7 +16,7 @@ import {
 } from 'Utilities/redux/practiceReducer'
 import { clearTranslationAction } from 'Utilities/redux/translationReducer'
 import {
-  getLessonActiveInstance,
+  getLessonInstance,
   clearLessonInstanceState,
 } from 'Utilities/redux/lessonInstanceReducer'
 import { resetAnnotations } from 'Utilities/redux/annotationsReducer'
@@ -42,21 +42,21 @@ const LessonPracticeView = () => {
   const dispatch = useDispatch()
   const history = useHistory()
   const intl = useIntl()
-  const { lesson_syllabus_id } = useParams()
+  
   const { width } = useWindowDimensions()
 
   const { show_review_diff } = useSelector(({ user }) => user.data.user)
-  const { lessons } = useSelector(({ metadata }) => metadata)
+  
   const learningLanguage = useSelector(learningLanguageSelector)
   const snippets = useSelector(({ snippets }) => snippets)
-  const { pending: lesson_instance_pending, lesson_instance } = useSelector(
+  const { pending: lesson_instance_pending, lesson:lesson_instance } = useSelector(
     ({ lessonInstance }) => lessonInstance
   )
   const { isPaused, willPause, practiceFinished, currentAnswers } = useSelector(
     ({ practice }) => practice
   )
-
-  const [lessonMetaData, setLessonMetaData] = useState({})
+  
+  
   const [startModalOpen, setStartModalOpen] = useState(false)
   const [currentSnippetNum, setCurrentSnippetNum] = useState(1)
   const [snippetsTotalNum, setSnippetsTotalNum] = useState(10)
@@ -75,26 +75,16 @@ const LessonPracticeView = () => {
     timeToUpdate: 100,
   })
 
-  useEffect(() => {
-    const filtered_lessons = lessons
-      ? lessons.filter(l => l.syllabus_id === lesson_syllabus_id)
-      : []
-    const practice_lesson = filtered_lessons?.length == 1 ? filtered_lessons[0] : {}
-    setLessonMetaData(practice_lesson)
-  }, [lessons])
+  
 
-  useEffect(() => {
-    dispatch(getMetadata(learningLanguage))
-  }, [snippets.focused])
+ 
 
   useEffect(() => {
     setCurrentSnippetNum(0)
     dispatch(clearLessonInstanceState())
     dispatch(resetSnippets())
     // dispatch(clearExerciseState())
-    if (lesson_syllabus_id) {
-      dispatch(getLessonActiveInstance(lesson_syllabus_id))
-    }
+    dispatch(getLessonInstance())
     dispatch(clearTranslationAction())
   }, [])
 
@@ -141,9 +131,7 @@ const LessonPracticeView = () => {
     setSnippetsTotalNum(10)
     dispatch(clearLessonInstanceState())
     dispatch(resetSnippets())
-    if (lesson_syllabus_id) {
-      dispatch(getLessonActiveInstance(lesson_syllabus_id))
-    }
+    dispatch(getLessonInstance())
     dispatch(clearTranslationAction())
   }
 
@@ -282,7 +270,7 @@ const LessonPracticeView = () => {
             onBackClick={() => history.push('/library')}
           />
           <div className="dictionary-and-annotations-cont">
-            <LessonPracticeTopicsHelp lesson={lessonMetaData} />
+            <LessonPracticeTopicsHelp selectedTopics={lesson_instance.topic_ids} />
             <DictionaryHelp />
             <AnnotationBox />
           </div>

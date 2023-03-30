@@ -145,7 +145,7 @@ const LessonExercise = ({ lesson_instance, handleInputChange }) => {
     dispatch(clearPractice())
     dispatch(resetSessionId())
     dispatch(clearTranslationAction())
-    dispatch(getExerciseLesson(lesson_instance.lesson_id))
+    dispatch(getExerciseLesson())
   }, [])
 
   useEffect(() => {

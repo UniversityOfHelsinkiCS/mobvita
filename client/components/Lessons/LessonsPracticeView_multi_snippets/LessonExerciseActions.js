@@ -74,7 +74,7 @@ const GetNextExerciseBatchButton = () => {
     <button
       data-cy="check-answer"
       type="button"
-      onClick={() => { dispatch(getExerciseLesson(lesson_instance.lesson_id)) }}
+      onClick={() => { dispatch(getExerciseLesson()) }}
       className="check-answers-button"
       disabled={
         pending || !lesson_exercises || !lesson_instance
@@ -149,7 +149,7 @@ const LessonExerciseActions = ({ lessonId, exerciseCount }) => {
     }
 
     dispatch(clearTouchedIds())
-    dispatch(postLessonExerciseAnswers(lessonId, answersObj, false))
+    dispatch(postLessonExerciseAnswers(answersObj, false))
     dispatch(incrementAttempts())
     
     const wrongAnswers = Object.keys(filteredCurrentAnswers).filter(

@@ -10,7 +10,7 @@ export const finishCurrentSnippet = () => ({ type: 'FINISH_CURRENT_SNIPPET'})
 
 export const getExerciseLesson = lessonId => {
   // not in use
-  const route = `/lesson/${lessonId}/exercise`
+  const route = `/lesson/exercise`
   const prefix = 'GET_EXERCISE_LESSON'
 
   return callBuilder(route, prefix)
@@ -19,7 +19,7 @@ export const getExerciseLesson = lessonId => {
 export const postLessonExerciseAnswers = (lessonId, answersObject, compete = false) => {
   const payload = answersObject
   payload.compete = compete
-  const route = `/lesson/${lessonId}/exercise`
+  const route = `/lesson/exercise`
   const prefix = 'GET_LESSON_ANSWERS'
 
   return callBuilder(route, prefix, 'post', payload)

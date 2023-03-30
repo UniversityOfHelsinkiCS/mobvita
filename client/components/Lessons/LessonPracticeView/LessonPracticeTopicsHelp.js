@@ -1,13 +1,22 @@
-import React from 'react'
+import React, { useState, useEffect } from 'react'
 import useWindowDimensions from 'Utilities/windowDimensions'
 import { Segment } from 'semantic-ui-react'
-import { useSelector } from 'react-redux'
-
+import { useSelector, useDispatch } from 'react-redux'
+import { FormattedMessage, useIntl } from 'react-intl'
 import { getTextStyle, learningLanguageSelector, getMode } from 'Utilities/common'
+import { getLessonTopics } from 'Utilities/redux/lessonsReducer'
 
-const LessonPracticeTopicsHelp = (lesson) => {
+const LessonPracticeTopicsHelp = ({selectedTopics}) => {
+    const dispatch = useDispatch()
     const { width } = useWindowDimensions()
     const learningLanguage = useSelector(learningLanguageSelector)
+    const { topics: lessonTopics } = useSelector(({ lessons }) => lessons)
+    const snippets = useSelector(({ snippets }) => snippets)
+    const topics = lessonTopics && selectedTopics ? lessonTopics.filter(l => selectedTopics.includes(l.topic_id)) : []
+    
+    useEffect(() => {
+        dispatch(getLessonTopics())
+      }, [snippets.focused])
 
     const get_lesson_performance = (correct_count, total_count) => {
         let correct_perc = 0.0
@@ -26,7 +35,7 @@ const LessonPracticeTopicsHelp = (lesson) => {
         return { 'color': 'black' }
     }
 
-    const topics = lesson?.lesson?.topics ? lesson?.lesson?.topics : []
+    
     let topic_rows = []
     for (let i = 0; i < topics.length; i++) {
         let topic_concepts = topics[i].topic.split(';')
@@ -90,7 +99,7 @@ const LessonPracticeTopicsHelp = (lesson) => {
                             'margin-bottom': '15px',
                         }}
                     >
-                        {`Lesson ${lesson?.lesson?.syllabus_id}`}
+                        <FormattedMessage id={'topics'} />
                     </div>
                     <span style={{ overflow: 'hidden', width: '100%' }}>
                         {topic_rows}

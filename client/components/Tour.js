@@ -113,10 +113,9 @@ const Tour = () => {
             dispatch({ type: 'CLOSE_MODAL' })
           }
           if (index === 5) {
-            const lessonId = lessons[0].syllabus_id
             const currentPath = history.location.pathname
             const newPath = currentPath.substring(0, currentPath.length - 9)
-            history.push(`${newPath}/${lessonId}/practice`)
+            history.push(`${newPath}/practice`)
             dispatch(stopTour())
             setTimeout(() => {
               dispatch(startTour())
@@ -228,10 +227,9 @@ const Tour = () => {
             dispatch({ type: 'CLOSE_MODAL' })
           }
           if (index === 5) {
-            const lessonId = lessons[0].syllabus_id
             const currentPath = history.location.pathname
             const newPath = currentPath.substring(0, currentPath.length - 9)
-            history.push(`${newPath}/${lessonId}/practice`)
+            history.push(`${newPath}/practice`)
             dispatch(stopTour())
             setTimeout(() => {
               dispatch(startTour())

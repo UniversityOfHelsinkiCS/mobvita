@@ -7,7 +7,7 @@ import callBuilder from '../apiConnection'
 export const resetSnippets = () => ({ type: 'RESET_SNIPPETS' })
 
 export const getLessonSnippet = lessonId => {
-  const route = `/lesson/${lessonId}/exercise`
+  const route = `/lesson/exercise`
   const prefix = 'GET_LESSON_SNIPPET'
 
   return callBuilder(route, prefix)
@@ -16,7 +16,7 @@ export const getLessonSnippet = lessonId => {
 export const postLessonSnippetAnswers = (lessonId, answersObject, compete = false) => {
   const payload = answersObject
   payload.compete = compete
-  const route = `/lesson/${lessonId}/exercise`
+  const route = `/lesson/exercise`
   const prefix = 'GET_LESSON_SNIPPET_ANSWER'
 
   return callBuilder(route, prefix, 'post', payload)

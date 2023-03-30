@@ -2,16 +2,15 @@ import produce from 'immer'
 import callBuilder from '../apiConnection'
 
 
-export const getLessons = () => {
-  const route = '/lesson'
+export const getLessonTopics = () => {
+  const route = '/lesson_topics'
   const prefix = 'GET_LESSONS'
 
   return callBuilder(route, prefix)
 }
 
 const initialState = {
-  lessons: [],
-  lesson_instance: {},
+  topics: [],
   pending: false,
   focused: null,
   error: false,
@@ -34,7 +33,7 @@ export default (state = initialState, action) => {
       return {
         ...state,
         pending: false,
-        lessons: action.response.lessons
+        topics: action.response.topics
       }
     default:
       return state

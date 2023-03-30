@@ -1498,5 +1498,7 @@
     "continue-streak": "Continue your streak by doing",
     "start-streak": "Start your streak by doing",
     "do-snippets": "10 snippets",
-    "do-flashcards": ""
+    "do-flashcards": "",
+    "include-into-lesson": "Include into lesson",
+    "included-in-lesson": "Included in lesson"
 }
