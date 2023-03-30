@@ -20,7 +20,6 @@ import MedalSummary from './MedalSummary'
 import PracticeModal from './PracticeModal'
 import EloChart from './EloChart'
 import LeaderboardSummary from './LeaderboardSummary'
-import SelectLessonModal from 'Components/Lessons/SelectLessonModal'
 import Recommender from 'Components/NewEncouragements/Recommender'
 
 const HomeviewButton = ({
@@ -247,7 +246,6 @@ const HomeView = () => {
     <div className="cont-tall cont flex-col auto gap-row-sm pt-lg blue-bg">
       <AddStoryModal open={addStoryModalOpen} setOpen={setAddStoryModalOpen} />
       <PracticeModal open={practiceModalOpen} setOpen={setPracticeModalOpen} />
-      <SelectLessonModal open={lessonModalOpen} setOpen={setLessonModalOpen} />
       <BetaLanguageModal
         open={betaModalOpen}
         setOpen={setBetaModalOpen}
