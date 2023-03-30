@@ -104,9 +104,6 @@ const Progress = () => {
     return firstPractice
   }
 
-  const [startDate, setStartDate] = useState(getStartDate)
-  const [endDate, setEndDate] = useState(originalEndPoint)
-
   const { storyBlueCards } = useSelector(({ flashcards }) => flashcards)
   const learningLanguage = useLearningLanguage()
   const dictionaryLanguage = useDictionaryLanguage()
@@ -126,6 +123,8 @@ const Progress = () => {
           .add(1, 'days')
           .toDate()
       : moment().toDate()
+  const [startDate, setStartDate] = useState(getStartDate)
+  const [endDate, setEndDate] = useState(originalEndPoint)
 
   useEffect(() => {
     if (!user.user.has_seen_progress_tour) {
