@@ -7,6 +7,7 @@ import { Grid } from 'semantic-ui-react'
 import ProgressStatistics from './ProgressStatistics'
 import ProfileInfo from './ProfileInfo'
 import ProfileStreakInfo from './ProfileStreakInfo'
+import SocialsList from './SocialsList'
 
 const DesktopView = () => {
   return (

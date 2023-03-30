@@ -1,4 +1,4 @@
-import React, { shallowEqual } from 'react'
+import React from 'react'
 import ProgressStats from '../Progress/ProgressStats'
 import moment from 'moment'
 import { useSelector } from 'react-redux'
