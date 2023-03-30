@@ -25,6 +25,10 @@ import WordsSeenExerciseEncouragement from './SubComponents/WordsSeenExerciseEnc
 import StoryCompletedToBluecardsExerciseEncouragement from './SubComponents/StoryCompletedToBluecardsExerciseEncouragement'
 import ExerciseEncouragementHeader from './SubComponents/ExerciseEncouragementHeader'
 import NewWordsInteractedExerciseEncouragement from './SubComponents/NewWordsInteractedExerciseEncouragement'
+import BackToLibraryFromFlashcards from './SubComponents/BackToLibraryFromFlashcards'
+import ListOfRecentStoriesFlashcardsEncouragement from './SubComponents/ListOfRecentStoriesFlashcardsEncouragement'
+import WellDoneFlashcardsHeader from './SubComponents/WellDoneFlashcardsHeader'
+
 
 const Recommender = () => {
   const userData = useSelector(state => state.user.data.user)
@@ -199,7 +203,7 @@ const Recommender = () => {
                 className={bigScreen ? 'draggable-encouragement' : 'draggable-encouragement-mobile'}
               >
                 <div className="col-flex">
-                  <div className="flex-reverse">
+                  <div className='flex-reverse'>
                     <Icon
                       className="interactable"
                       style={{
@@ -211,17 +215,16 @@ const Recommender = () => {
                       onClick={handleCloseClick}
                     />
                   </div>
-                  <div className="col-flex">
-                    <div
-                      className="interactable"
-                      style={{ overflow: 'auto', maxHeight: 300 }}
-                    ></div>
-                    <TurnOffRecommendations />
+                  <WellDoneFlashcardsHeader />
+                  <div className="interactable" style={{ overflow: 'auto', maxHeight: 300 }}>
+                    <ListOfRecentStoriesFlashcardsEncouragement />
+                    <BackToLibraryFromFlashcards />
                   </div>
+                  <TurnOffRecommendations />
                 </div>
               </div>
-            </Draggable>
-          </div>
+            </Draggable >
+          </div >
         ) : null}
       </>
     )
