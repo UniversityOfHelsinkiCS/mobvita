@@ -203,10 +203,9 @@ const HomeView = () => {
   const [openReminder, setOpenReminder] = useState(true)
   const welcomeView = history.location.pathname.endsWith('/welcome')
   const homeView = history.location.pathname.endsWith('/home')
-  const showDAModal = open && homeView && userData?.grade && !userIsAnonymous
+  const showDAModal = open && homeView && !userIsAnonymous
   const showWelcomeModal =
-    open && welcomeView && !userIsAnonymous && !userData.is_new_user && userData.grade
-
+    open && welcomeView && !userIsAnonymous && !userData.is_new_user
   useEffect(() => {
     dispatch(getGroups())
     if (showDAModal && !showWelcomeModal) {
