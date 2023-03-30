@@ -46,6 +46,7 @@ export default (state = initialState, action) => {
         cachedStories: response.available_cached_stories,
         lessons: response.lessons,
         lesson_semantics: response.lesson_semantics,
+        lesson_topics: response.lesson_topics,
         pending: false,
         error: false,
       }

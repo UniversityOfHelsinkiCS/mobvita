@@ -8,7 +8,7 @@ import { Link } from 'react-router-dom'
 import { useLearningLanguage } from 'Utilities/common'
 import { getLessonTopics } from 'Utilities/redux/lessonsReducer'
 import { getLessonInstance, setLessonInstance } from 'Utilities/redux/lessonInstanceReducer'
-
+import { getMetadata } from 'Utilities/redux/metadataReducer'
 import LessonListItem from 'Components/Lessons/LessonLibrary/LessonListItem'
 
 import { sidebarSetOpen } from 'Utilities/redux/sidebarReducer'
@@ -23,7 +23,7 @@ const LessonList = () => {
   const intl = useIntl()
   const learningLanguage = useLearningLanguage()
   const refreshed = useSelector(({ user }) => user.refreshed)
-  const { lesson_semantics } = useSelector(({ metadata }) => metadata)
+  const { pending: metaPending, lesson_semantics, lesson_topics } = useSelector(({ metadata }) => metadata)
   const { pending: topicPending, topics } = useSelector(({ lessons }) => lessons)
   const { pending: lessonPending, lesson  } = useSelector(({ lessonInstance }) => lessonInstance)
   const { user } = useSelector(({ user }) => ({ user: user.data }))
@@ -43,6 +43,12 @@ const LessonList = () => {
   const dispatch = useDispatch()
 
   // console.log("topics", topics)
+
+  useEffect(() => {
+    if (!metaPending) {
+      dispatch(getMetadata(learningLanguage))
+    }
+  }, [learningLanguage])
   
   useEffect(() => {
     dispatch(getLessonInstance())
@@ -121,7 +127,7 @@ const LessonList = () => {
 
 
 
-  const noResults = !topicPending && topics.length === 0
+  const noResults = !metaPending && lesson_topics && lesson_topics.length === 0
 
   topics.sort((a, b) => {
     let dir = 0
@@ -141,21 +147,22 @@ const LessonList = () => {
 
 
   function rowRenderer({ key, index, style }) {
+    const topic = topics && topics[index] || lesson_topics[index]
     return (
       <div
         key={key}
         style={{ ...style, paddingRight: '0.5em', paddingLeft: '0.5em', marginBottom: '0.5em' }}
       >
         <LessonListItem 
-          topic={topics[index]} 
-          selected={selectedTopicIds.includes(topics[index].topic_id)} 
+          topic={topic} 
+          selected={selectedTopicIds && selectedTopicIds.includes(topic.topic_id)} 
           toggleTopic={toggleTopic}
         />
       </div>
     )
   }
 
-  if (topicPending || lessonPending || !refreshed || !topics) {
+  if (metaPending ) {
     return (
       <div className="cont-tall cont flex-col auto gap-row-sm">
         {/* {libraryControls} */}
@@ -176,7 +183,8 @@ const LessonList = () => {
         <>
         <Link to={'/lesson/practice'}>
           <Button size="big"
-            disabled={selectedTopicIds.length === 0 || selectedSemantics.length === 0}
+            disabled={lessonPending || !selectedTopicIds || !selectedSemantics || 
+              selectedTopicIds.length === 0 || selectedSemantics.length === 0}
             style={{
               fontSize: '1.3em',
               fontWeight: 500,
@@ -191,12 +199,12 @@ const LessonList = () => {
         <h5><FormattedMessage id="select-lesson-semantic-topic"/></h5>
         <div className="group-buttons sm">
           {
-            lesson_semantics.map(semantic => (
+            lesson_semantics && lesson_semantics.map(semantic => (
               <Button 
-                variant={selectedSemantics.includes(semantic)? 'primary' : 'outline-primary'}
+                variant={selectedSemantics && selectedSemantics.includes(semantic)? 'primary' : 'outline-primary'}
                 onClick={() => toggleSemantic(semantic)}
               >
-                {selectedSemantics.includes(semantic) && <Icon name="check" />}
+                {selectedSemantics && selectedSemantics.includes(semantic) && <Icon name="check" />}
                 {semantic}
               </Button>
             ))
