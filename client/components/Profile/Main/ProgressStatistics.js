@@ -5,35 +5,15 @@ import { useSelector } from 'react-redux'
 
 const ProgressStatistics = () => {
 
-  const {
-    exerciseHistory: exerciseHistoryGraph
-  } = useSelector(({ user }) => {
-    const exerciseHistory = user.data.user.exercise_history
-    return {
-      exerciseHistory
-    }
-  }, shallowEqual)
+  const exerciseHistory = useSelector(({ user }) => user.data.user.exercise_history)
 
-  const originalEndPoint =
-    exerciseHistoryGraph?.length > 0
-      ? moment(exerciseHistoryGraph[exerciseHistoryGraph.length - 1]?.date)
-          .add(1, 'days')
-          .toDate()
-      : moment().toDate()
+  const endDate = moment().toDate()
 
-  const getStartDate = () => {
-    const firstPractice = moment(exerciseHistoryGraph[0]?.date).toDate()
-    const sixMonthsAgo = moment(originalEndPoint).subtract(6, 'months').toDate()
-
-    if (firstPractice < sixMonthsAgo) {
-      return sixMonthsAgo
-    }
-
-    return firstPractice
-  }
-
+  const startDate =
+    moment(exerciseHistory[0]?.date).toDate()
+  
   return (
-    <ProgressStats startDate={getStartDate()} endDate={originalEndPoint} />
+    <ProgressStats startDate={startDate} endDate={endDate} />
   )
 } 
 
