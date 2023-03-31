@@ -38,11 +38,13 @@ const ProfileStreakInfo = () => {
         {streakBroken && (
           <div>
             <FormattedHTMLMessage id="streak-broken" values={{ daysStreaked }} />
+            <br />
+            <FormattedMessage id="start-streak" />
             &nbsp;
             <Link className="interactable" to="/library">
               <FormattedMessage id="do-snippets" />
             </Link>
-            !
+            .
           </div>
         )} 
         {streakToday && (
