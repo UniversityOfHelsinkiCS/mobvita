@@ -89,6 +89,10 @@ const Progress = () => {
     pending: conceptsPending,
   } = useSelector(({ metadata }) => metadata)
 
+  useEffect(() => {
+    setStartDate(getStartDate)
+  }, [irtExerciseHistory])
+
   const getStartDate = () => {
     const sixMonthsAgo = moment(originalEndPoint).subtract(6, 'months').toDate()
 

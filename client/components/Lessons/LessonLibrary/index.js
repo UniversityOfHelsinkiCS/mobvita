@@ -182,7 +182,7 @@ const LessonList = () => {
       ) : (
         <>
         <Link to={'/lesson/practice'}>
-          <Button size="big"
+          <Button size="big" className='lesson-practice'
             disabled={lessonPending || !selectedTopicIds || !selectedSemantics || 
               selectedTopicIds.length === 0 || selectedSemantics.length === 0}
             style={{
@@ -193,11 +193,12 @@ const LessonList = () => {
               width: '100%',
               border: '2px solid #000',
             }}>
+            {lessonPending && <Icon name="spinner" loading />}
             <FormattedMessage id="start-practice" />
           </Button>
         </Link>
         <h5><FormattedMessage id="select-lesson-semantic-topic"/></h5>
-        <div className="group-buttons sm">
+        <div className="group-buttons sm lesson-setup">
           {
             lesson_semantics && lesson_semantics.map(semantic => (
               <Button 

@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { Popup, Icon } from 'semantic-ui-react'
+import moment from 'moment-timezone'
 import { useIntl, FormattedHTMLMessage, FormattedMessage } from 'react-intl'
 import { Link } from 'react-router-dom'
 import {
@@ -340,7 +341,9 @@ const DefaultActivityModal = ({
   }
 
   useEffect(() => {
-    dispatch(getPracticeHistory())
+    const date_now = moment().toDate()
+    const start_query_date = moment('2021-01-01').toDate()
+    dispatch(getPracticeHistory(start_query_date, date_now))
   }, [])
 
   useEffect(() => {

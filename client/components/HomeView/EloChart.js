@@ -15,16 +15,20 @@ const EloChart = ({ width }) => {
 
   // const { exerciseHistory } = practiceHistory
   // exerciseHistory still uses old statics from user object
-  const { exerciseHistory } = useSelector(({ user }) => {
-    const exerciseHistory = user.data.user.exercise_history
-    return { exerciseHistory }
-  }, shallowEqual)
+  // const { exerciseHistory } = useSelector(({ user }) => {
+  //   const exerciseHistory = user.data.user.exercise_history
+  //   return { exerciseHistory }
+  // }, shallowEqual)
+  const { practiceHistory } = useSelector(practiceHistory => practiceHistory)
 
   useEffect(() => {
-    dispatch(getPracticeHistory())
+    const date_now = moment().toDate()
+    const start_query_date = moment('2021-01-01').toDate()
+    dispatch(getPracticeHistory(start_query_date, date_now))
   }, [])
 
-  const eloHistory = exerciseHistory.map(exercise => exercise.score)
+  const exerciseHistory = practiceHistory.exerciseHistory
+  const eloHistory = practiceHistory.exerciseHistory.map(exercise => exercise.score)
   const weeklyPracticeTimeHistory = useSelector(({ user }) => user.data.user.weekly_times)
   const intl = useIntl()
   const history = useHistory()
