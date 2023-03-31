@@ -8,6 +8,7 @@ import { getAllStories, setStoryUploadUnfinished } from 'Utilities/redux/stories
 import { setNotification } from 'Utilities/redux/notificationReducer'
 import { clearServerError, setServerError } from 'Utilities/redux/serverErrorReducer'
 import { updateFavouriteSites } from 'Utilities/redux/userReducer'
+import { getPracticeHistory } from 'Utilities/redux/practiceHistoryReducer'
 import { useIntl } from 'react-intl'
 import { learningLanguageSelector } from 'Utilities/common'
 import AchievementToast from 'Components/Achievements/AchievementToast'
@@ -42,6 +43,14 @@ export default function Toaster() {
   const learningLanguage = useSelector(learningLanguageSelector)
   const favouriteSites = useSelector(({ user }) => user.data?.user?.favourite_sites)
   const { uploaded } = useSelector(({ stories }) => stories)
+  const { streakToday } = useSelector(state => state.practiceHistory)
+
+  if (!streakToday) {
+    window.localStorage.setItem('streakState', false)
+  }
+  const [streakDone, setStreakDone] = useState(
+    JSON.parse(window.localStorage.getItem('streakState'))
+  )
 
   const handleError = errorMessage => {
     clearInterval(interval)
@@ -61,6 +70,29 @@ export default function Toaster() {
   const handleNewFavouriteSite = () => {
     dispatch(updateFavouriteSites(favouriteSites.concat({ url })))
   }
+
+  useEffect(() => {
+    dispatch(getPracticeHistory())
+  }, [])
+
+  /*
+  STREAK STUFF, NOT FINISHED
+
+  useEffect(() => {
+    if (!streakDone === streakToday) {
+      console.log('moi')
+      toast(intl.formatMessage({ id: 'jee streakki' }), {
+        autoClose: 8000,
+        type: 'success',
+      })
+    }
+    if (streakToday) {
+      setStreakDone(window.localStorage.setItem('streakState', true))
+    }
+    console.log(streakDone)
+  }, [])
+
+  */
 
   useEffect(() => {
     if (controlledPractice.finished) {

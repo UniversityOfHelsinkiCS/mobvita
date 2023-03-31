@@ -43,7 +43,6 @@ import ExercisesEncouragementModal from 'Components/Encouragements/ExercisesEnco
 import SnippetActions from './SnippetActions'
 import PracticeText from './PracticeText'
 import Recommender from 'Components/NewEncouragements/Recommender'
-import StreakEncouragement from 'Components/NewEncouragements/SubComponents/StreakEncouragement'
 
 const CurrentSnippet = ({ storyId, handleInputChange, timer, numSnippets, lessonId, lessonStartOver }) => {
   const [exerciseCount, setExerciseCount] = useState(0)
@@ -395,7 +394,6 @@ const CurrentSnippet = ({ storyId, handleInputChange, timer, numSnippets, lesson
                   vocabularySeen={vocabularySeen}
                   incompleteStories={incomplete}
                   loading={loading} />
-                <StreakEncouragement />
               </>
             )}
             <Button variant="primary" block onClick={() => startOver()}>
