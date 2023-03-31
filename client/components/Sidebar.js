@@ -84,7 +84,10 @@ export default function Sidebar({ history }) {
   }
 
   const handleTourStart = () => {
-    if (history.location.pathname.includes('progress')) {
+    if (history.location.pathname.includes('profile')) {
+      if (!history.location.pathname.includes('progress')) {
+        history.push('/profile/progress')
+      }
       if (user.user.email === 'anonymous_email') {
         dispatch({ type: 'ANONYMOUS_PROGRESS_TOUR_RESTART' })
       } else {
