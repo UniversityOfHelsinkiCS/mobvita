@@ -15,6 +15,7 @@ import {
 } from 'Utilities/redux/flashcardReducer'
 import { getIncompleteStories } from 'Utilities/redux/incompleteStoriesReducer'
 import { closeFCEncouragement, openFCEncouragement } from 'Utilities/redux/encouragementsReducer'
+import { closeEncouragement, openEncouragement } from 'Utilities/redux/encouragementsReducer'
 import { getSelf } from 'Utilities/redux/userReducer'
 import { learningLanguageSelector, dictionaryLanguageSelector } from 'Utilities/common'
 import useWindowDimension from 'Utilities/windowDimensions'
@@ -35,6 +36,7 @@ const Practice = ({ mode, open }) => {
   const [editing, setEditing] = useState(false)
   const [amountAnswered, setAmountAnswered] = useState(0)
   const history = useHistory()
+  const { fcOpen } = useSelector(({ encouragement }) => encouragement)
   const { enable_recmd, vocabulary_seen } = useSelector(({ user }) => user.data.user)
   const learningLanguage = useSelector(learningLanguageSelector)
   const dictionaryLanguage = useSelector(dictionaryLanguageSelector)
@@ -56,7 +58,8 @@ const Practice = ({ mode, open }) => {
 
     let cards
     if (mode === 'article') {
-      cards =
+      cards =// Change this to true when developing new encouragement!
+        // REMEMBER TO SWITCH BACK TO FALSE BEFORE PUSHING!!!
         flashcards.nounCards &&
         flashcards.nounCards.filter(card =>
           ['Feminine', 'Masculine', 'Neuter', 'ut', 'm', 'f', 'nt', 'Fem', 'Neut', 'Masc'].includes(
@@ -73,6 +76,21 @@ const Practice = ({ mode, open }) => {
   const bigScreen = useWindowDimension().width >= 415
   const { storyId } = useParams()
   const dispatch = useDispatch()
+
+  useEffect(() => {
+    dispatch(getStoriesBlueFlashcards(learningLanguage, dictionaryLanguage))
+    if (!pending && !loading) {
+      if (totalAnswers === 0) {
+        dispatch(openEncouragement())
+      }
+      //console.log(`en:${open} fc: ${fcOpen}`)
+      //console.log(`total:${totalAnswers} deck size: ${cards.length}`)
+      if (totalAnswers >= cards.length) {
+        //console.log(`total:${totalAnswers} deck size: ${cards.length}`)
+        dispatch(openFCEncouragement())
+      }
+    }
+  }, [totalAnswers, cards.length])
 
   const inFillin = history.location.pathname.includes('test')
   useEffect(() => {
@@ -276,7 +294,7 @@ const Practice = ({ mode, open }) => {
 
   return (
     <div className="cont grow flex space-evenly">
-      {TESTING_NEW_ENCOURAGEMENT && totalAnswers >= cards.length && (
+      {TESTING_NEW_ENCOURAGEMENT && (
         <Recommender />
       )}
       {!TESTING_NEW_ENCOURAGEMENT && (
