@@ -162,9 +162,11 @@ const HomeviewButtons = ({
       )}
       {hiddenFeatures && (
         <>
-          <Button onClick={() => history.push('/test-construction')}>Test construction</Button>
+          <Button onClick={() => history.push('/test-construction')}>
+            Grammar check
+          </Button>
           <Button style={{ padding: '5em' }} onClick={() => history.push('test-debug')}>
-            Feedback debugger
+            Feedback check
           </Button>
         </>
       )}
