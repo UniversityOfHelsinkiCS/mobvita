@@ -103,6 +103,7 @@ const handleNewVocabulary = (store, newVocabulary) => {
   }
 }
 
+
 /**
  * This is a redux middleware used for tracking api calls
  */
@@ -136,6 +137,7 @@ export const handleRequest = store => next => async action => {
       if (res.data?.num_new_vocabulary) {
         handleNewVocabulary(store, res.data.num_new_vocabulary)
       }
+
       const requestSentAt = new Date()
       window.localStorage.setItem('last_request', requestSentAt)
 

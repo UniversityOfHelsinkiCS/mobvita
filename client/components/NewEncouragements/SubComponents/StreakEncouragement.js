@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
 import { images, backgroundColors } from 'Utilities/common'
 import { FormattedHTMLMessage, FormattedMessage } from 'react-intl'
@@ -11,10 +11,46 @@ const StreakEncouragement = () => {
   const { streakToday, daysStreaked } = useSelector(state => state.practiceHistory)
   const streakBroken = daysStreaked === 0 && !streakToday ? true : false
 
+  const [streakFinished, setStreakFinished] = useState(false)
+
+  if (!streakToday) {
+    window.localStorage.setItem('streakState', false)
+  }
+
+  let streakDone = JSON.parse(window.localStorage.getItem('streakState'))
+
+  if (!streakDone === streakToday) {
+    setStreakFinished(true)
+    console.log("jee")
+  }
+  if (streakToday) {
+    window.localStorage.setItem('streakState',true)
+  }
+  
+
   useEffect(() => {
     dispatch(getPracticeHistory())
   }, [])
 
+  if (streakFinished) {
+    return (
+    <div className="pt-md">
+      <div
+        className="flex enc-message-body"
+        style={{ alignItems: 'center', backgroundColor: backgroundColors[0] }}
+      >
+        <img
+          src={images.flame}
+          alt="flame"
+          style={{ maxWidth: '8%', maxHeight: '8%', marginRight: '1em' }}
+        />
+        <div>
+          <FormattedHTMLMessage id="jippii" values={{ daysStreaked }} />
+        </div>
+      </div>
+    </div>
+  )
+  }
   if (streakBroken) {
     return (
       <div>

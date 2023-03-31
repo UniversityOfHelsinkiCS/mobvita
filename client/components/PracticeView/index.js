@@ -16,7 +16,7 @@ import {
 import { resetAnnotations } from 'Utilities/redux/annotationsReducer'
 import { useTimer } from 'react-compound-timer'
 import useWindowDimensions from 'Utilities/windowDimensions'
-import { getTextStyle, learningLanguageSelector, getMode } from 'Utilities/common'
+import { getTextStyle, learningLanguageSelector, getMode, hiddenFeatures } from 'Utilities/common'
 import CurrentSnippet from 'Components/PracticeView/CurrentSnippet'
 import DictionaryHelp from 'Components/DictionaryHelp'
 import ReportButton from 'Components/ReportButton'

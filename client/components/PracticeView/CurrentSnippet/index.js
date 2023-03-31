@@ -43,6 +43,7 @@ import ExercisesEncouragementModal from 'Components/Encouragements/ExercisesEnco
 import SnippetActions from './SnippetActions'
 import PracticeText from './PracticeText'
 import Recommender from 'Components/NewEncouragements/Recommender'
+import StreakEncouragement from 'Components/NewEncouragements/SubComponents/StreakEncouragement'
 
 const CurrentSnippet = ({ storyId, handleInputChange, timer, numSnippets, lessonId, lessonStartOver }) => {
   const [exerciseCount, setExerciseCount] = useState(0)
@@ -387,14 +388,15 @@ const CurrentSnippet = ({ storyId, handleInputChange, timer, numSnippets, lesson
               <Recommender />
             )}
             {!TESTING_NEW_ENCOURAGEMENT && (
-              <ExercisesEncouragementModal
-                open={open}
-                enable_recmd={enable_recmd}
-                storiesCovered={storiesCovered}
-                vocabularySeen={vocabularySeen}
-                incompleteStories={incomplete}
-                loading={loading}
-              />
+              <><ExercisesEncouragementModal
+                  open={open}
+                  enable_recmd={enable_recmd}
+                  storiesCovered={storiesCovered}
+                  vocabularySeen={vocabularySeen}
+                  incompleteStories={incomplete}
+                  loading={loading} />
+                <StreakEncouragement />
+              </>
             )}
             <Button variant="primary" block onClick={() => startOver()}>
               <FormattedMessage id="restart-story" />
