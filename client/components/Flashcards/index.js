@@ -12,6 +12,7 @@ import FlashcardCreation from './FlashcardCreation'
 import FloatMenu from './FloatMenu'
 import Practice from './Practice'
 import FlashcardList from './FlashcardList'
+import Recommender from 'Components/NewEncouragements/Recommender'
 
 const Flashcards = () => {
   const { open, fcOpen } = useSelector(({ encouragement }) => encouragement)
@@ -24,12 +25,6 @@ const Flashcards = () => {
   const dispatch = useDispatch()
 
   const blueCardsTest = history.location.pathname.includes('test')
-
-  useEffect(() => {
-    dispatch(getStoriesBlueFlashcards(learningLanguage, dictionaryLanguage))
-    dispatch(openEncouragement)
-    dispatch(openFCEncouragement)
-  }, [])
 
   const content = () => {
     switch (mode) {
@@ -46,14 +41,24 @@ const Flashcards = () => {
     }
   }
 
+  // Change this to true when developing new encouragement!
+  // REMEMBER TO SWITCH BACK TO FALSE BEFORE PUSHING!!!
+  const TESTING_NEW_ENCOURAGEMENT = false
+
   return (
     <div className="cont-tall cont pb-nm flex-col auto pt-xl space-between">
       <div className="flex">
         {!blueCardsTest && (
-          <FlashcardsPracticeEncouragement
-            open={open}
-            prevBlueCards={storyBlueCards}
-          />
+          <div>
+            {!TESTING_NEW_ENCOURAGEMENT && (
+              <FlashcardsPracticeEncouragement
+                open={open}
+                prevBlueCards={storyBlueCards}
+              />)
+            }
+            {TESTING_NEW_ENCOURAGEMENT &&
+              (<Recommender />)}
+          </div>
         )}
         {width < 940 ? <FloatMenu /> : <FlashcardMenu />}
         {content()}

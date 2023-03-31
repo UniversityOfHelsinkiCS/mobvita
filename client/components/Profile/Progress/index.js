@@ -30,9 +30,9 @@ import { useLearningLanguage, useDictionaryLanguage, hiddenFeatures } from 'Util
 import useWindowDimension from 'Utilities/windowDimensions'
 import VocabularyGraph from 'Components/VocabularyView/VocabularyGraph'
 import HexagonTest from 'Components/GridHexagon'
-import FlashcardsPracticeEncouragement from 'Components/Encouragements/FlashcardsPracticeEncouragement'
 import ProgressStats from './ProgressStats'
 import { getPracticeHistory } from 'Utilities/redux/practiceHistoryReducer'
+import Recommender from 'Components/NewEncouragements/Recommender'
 
 const PickDate = ({ date, setDate, onCalendarClose }) => (
   <ResponsiveDatePicker
@@ -89,6 +89,10 @@ const Progress = () => {
     pending: conceptsPending,
   } = useSelector(({ metadata }) => metadata)
 
+  useEffect(() => {
+    setStartDate(getStartDate)
+  }, [irtExerciseHistory])
+
   const getStartDate = () => {
     const sixMonthsAgo = moment(originalEndPoint).subtract(6, 'months').toDate()
 
@@ -120,8 +124,8 @@ const Progress = () => {
   const originalEndPoint =
     irtExerciseHistory?.length > 0
       ? moment(irtExerciseHistory[irtExerciseHistory.length - 1]?.date)
-          .add(1, 'days')
-          .toDate()
+        .add(1, 'days')
+        .toDate()
       : moment().toDate()
   const [startDate, setStartDate] = useState(getStartDate)
   const [endDate, setEndDate] = useState(originalEndPoint)
@@ -246,286 +250,288 @@ const Progress = () => {
 
   // console.log('num of words at end ', endWords)
   return (
-    <div className="cont ps-nm">
-      <div className="date-pickers-container">
-        {bigScreen ? (
-          <div className="date-pickers gap-col-sm">
-            <span className="bold">
-              <FormattedMessage id="Showing results for" />
-            </span>
-            <div style={{ marginLeft: '2em' }}>
-              <FormattedMessage id="date-start" />{' '}
-              <PickDate
-                id="start"
-                date={startDate}
-                setDate={setStartDate}
-                onCalendarClose={handlePreviousVocabulary}
-              />
-            </div>
-            <div style={{ marginLeft: '2em' }}>
-              <FormattedMessage id="date-end" />{' '}
-              <PickDate date={endDate} setDate={setEndDate} onCalendarClose={handleVocabulary} />
-            </div>
-          </div>
-        ) : (
-          <>
-            <span className="bold" style={{ fontSize: '1.3em' }}>
-              <FormattedMessage id="Showing results for" />
-            </span>
-            <br />
-            <div className="date-pickers gap-col-sm" style={{ marginTop: '0.5em' }}>
-              <div>
-                <FormattedMessage id="date-start" />
-                <br />
-                <PickDate id="start" date={startDate} setDate={setStartDate} />
-              </div>
-              <div>
-                <FormattedMessage id="date-end" />
-                <br />
-                <PickDate date={endDate} setDate={setEndDate} />
-              </div>
-            </div>
-          </>
-        )}
-      </div>
-      <br />
-      {bigScreen && (
-        <div>
-          <div className="space-evenly">
-            <button
-              type="button"
-              onClick={() => handleChartChange('SET_TIMELINE_CHART')}
-              style={{ border: 'none' }}
-            >
-              <div className="flex align-center" style={{ gap: '.5em' }}>
-                <input
-                  className="progress-tour-timeline-button"
-                  type="radio"
-                  onChange={() => handleChartChange('SET_TIMELINE_CHART')}
-                  checked={shownChart === 'progress'}
+    <div>
+      <Recommender />
+      <div className="cont ps-nm">
+        <div className="date-pickers-container">
+          {bigScreen ? (
+            <div className="date-pickers gap-col-sm">
+              <span className="bold">
+                <FormattedMessage id="Showing results for" />
+              </span>
+              <div style={{ marginLeft: '2em' }}>
+                <FormattedMessage id="date-start" />{' '}
+                <PickDate
+                  id="start"
+                  date={startDate}
+                  setDate={setStartDate}
+                  onCalendarClose={handlePreviousVocabulary}
                 />
+              </div>
+              <div style={{ marginLeft: '2em' }}>
+                <FormattedMessage id="date-end" />{' '}
+                <PickDate date={endDate} setDate={setEndDate} onCalendarClose={handleVocabulary} />
+              </div>
+            </div>
+          ) : (
+            <>
+              <span className="bold" style={{ fontSize: '1.3em' }}>
+                <FormattedMessage id="Showing results for" />
+              </span>
+              <br />
+              <div className="date-pickers gap-col-sm" style={{ marginTop: '0.5em' }}>
+                <div>
+                  <FormattedMessage id="date-start" />
+                  <br />
+                  <PickDate id="start" date={startDate} setDate={setStartDate} />
+                </div>
+                <div>
+                  <FormattedMessage id="date-end" />
+                  <br />
+                  <PickDate date={endDate} setDate={setEndDate} />
+                </div>
+              </div>
+            </>
+          )}
+        </div>
+        <br />
+        {bigScreen && (
+          <div>
+            <div className="space-evenly">
+              <button
+                type="button"
+                onClick={() => handleChartChange('SET_TIMELINE_CHART')}
+                style={{ border: 'none' }}
+              >
+                <div className="flex align-center" style={{ gap: '.5em' }}>
+                  <input
+                    className="progress-tour-timeline-button"
+                    type="radio"
+                    onChange={() => handleChartChange('SET_TIMELINE_CHART')}
+                    checked={shownChart === 'progress'}
+                  />
+                  <FormattedMessage id="progress-timeline" />
+                </div>
+              </button>
+              <button
+                type="button"
+                onClick={() => handleChartChange('SET_VOCABULARY_CHART')}
+                style={{ border: 'none' }}
+              >
+                <div className="flex align-center" style={{ gap: '.5em' }}>
+                  <input
+                    className="progress-tour-vocabulary-button"
+                    type="radio"
+                    onChange={() => handleChartChange('SET_VOCABULARY_CHART')}
+                    checked={shownChart === 'vocabulary'}
+                  />
+                  <FormattedMessage id="vocabulary-view" />
+                </div>
+              </button>
+              <button
+                type="button"
+                onClick={() => handleChartChange('SET_GRAMMAR_CHART')}
+                style={{ border: 'none' }}
+              >
+                <div className="flex align-center" style={{ gap: '.5em' }}>
+                  <input
+                    className="progress-tour-grammar-button"
+                    type="radio"
+                    onChange={() => handleChartChange('SET_GRAMMAR_CHART')}
+                    checked={shownChart === 'hex-map'}
+                  />
+                  <FormattedMessage id="hex-map" />
+                </div>
+              </button>
+              <button
+                type="button"
+                onClick={() => handleChartChange('SET_EXERCISE_HISTORY_CHART')}
+                style={{ border: 'none' }}
+              >
+                <div className="flex align-center" style={{ gap: '.5em' }}>
+                  <input
+                    className="progress-tour-exercise-history-button"
+                    type="radio"
+                    onChange={() => handleChartChange('SET_EXERCISE_HISTORY_CHART')}
+                    checked={shownChart === 'exercise-history'}
+                  />
+                  <FormattedMessage id="exercise-history" />
+                </div>
+              </button>
+              <button
+                type="button"
+                onClick={() => handleChartChange('SET_TEST_HISTORY_CHART')}
+                style={{ border: 'none' }}
+              >
+                <div className="flex align-center" style={{ gap: '.5em' }}>
+                  <input
+                    className="progress-tour-test-history-button"
+                    type="radio"
+                    onChange={() => handleChartChange('SET_TEST_HISTORY_CHART')}
+                    checked={shownChart === 'test-history'}
+                  />
+                  <FormattedMessage id="Test History" />
+                </div>
+              </button>
+            </div>
+            <Divider />
+          </div>
+        )}
+        {shownChart === 'progress' ? (
+          <div>
+            <div className="row-flex align center">
+              <Popup
+                content={
+                  <div>
+                    <FormattedHTMLMessage id="timeline-explanation" />
+                  </div>
+                }
+                trigger={
+                  <Icon
+                    style={{ paddingRight: '0.75em', marginBottom: '0.35em' }}
+                    name="info circle"
+                    color="grey"
+                  />
+                }
+              />
+              <div className="progress-page-header">
                 <FormattedMessage id="progress-timeline" />
               </div>
-            </button>
-            <button
-              type="button"
-              onClick={() => handleChartChange('SET_VOCABULARY_CHART')}
-              style={{ border: 'none' }}
-            >
-              <div className="flex align-center" style={{ gap: '.5em' }}>
-                <input
-                  className="progress-tour-vocabulary-button"
-                  type="radio"
-                  onChange={() => handleChartChange('SET_VOCABULARY_CHART')}
-                  checked={shownChart === 'vocabulary'}
-                />
+            </div>
+            <Divider />
+            <ProgressStats startDate={startDate} endDate={endDate} />
+            <div className="progress-page-graph-cont">
+              <ProgressGraph
+                exerciseHistory={irtExerciseHistory}
+                flashcardHistory={flashcardHistory}
+                startDate={startDate}
+                endDate={endDate}
+              />
+            </div>
+          </div>
+        ) : shownChart === 'vocabulary' ? (
+          <div>
+            <div className="row-flex align center">
+              <Popup
+                content={
+                  <div>
+                    <FormattedHTMLMessage id="vocabulary-view-explanation" />
+                  </div>
+                }
+                trigger={
+                  <Icon
+                    style={{ paddingRight: '0.75em', marginBottom: '0.35em' }}
+                    name="info circle"
+                    color="grey"
+                  />
+                }
+              />
+              <div className="progress-page-header">
                 <FormattedMessage id="vocabulary-view" />
               </div>
-            </button>
-            <button
-              type="button"
-              onClick={() => handleChartChange('SET_GRAMMAR_CHART')}
-              style={{ border: 'none' }}
-            >
-              <div className="flex align-center" style={{ gap: '.5em' }}>
-                <input
-                  className="progress-tour-grammar-button"
-                  type="radio"
-                  onChange={() => handleChartChange('SET_GRAMMAR_CHART')}
-                  checked={shownChart === 'hex-map'}
-                />
-                <FormattedMessage id="hex-map" />
+            </div>
+            <div>
+              <div>
+                <Divider />
+                {initComplete ? (
+                  <div className="progress-page-graph-cont">
+                    <VocabularyGraph
+                      vocabularyData={vocabularyData}
+                      vocabularyPending={vocabularyPending}
+                      newerVocabularyData={newerVocabularyData}
+                      newerVocabularyPending={newerVocabularyPending}
+                      graphType={graphType}
+                      setGraphType={setGraphType}
+                      xAxisLength={xAxisLength}
+                      element={element}
+                    />
+                  </div>
+                ) : (
+                  <div>loading...</div>
+                )}
               </div>
-            </button>
-            <button
-              type="button"
-              onClick={() => handleChartChange('SET_EXERCISE_HISTORY_CHART')}
-              style={{ border: 'none' }}
-            >
-              <div className="flex align-center" style={{ gap: '.5em' }}>
-                <input
-                  className="progress-tour-exercise-history-button"
-                  type="radio"
-                  onChange={() => handleChartChange('SET_EXERCISE_HISTORY_CHART')}
-                  checked={shownChart === 'exercise-history'}
-                />
+            </div>
+          </div>
+        ) : shownChart === 'exercise-history' ? (
+          <div>
+            <div className="row-flex align center">
+              <Popup
+                content={
+                  <div>
+                    <FormattedMessage id="exercise-history-explanation" />
+                  </div>
+                }
+                trigger={
+                  <Icon
+                    style={{ paddingRight: '0.75em', marginBottom: '0.35em' }}
+                    name="info circle"
+                    color="grey"
+                  />
+                }
+              />
+              <div className="progress-page-header">
                 <FormattedMessage id="exercise-history" />
               </div>
-            </button>
-            <button
-              type="button"
-              onClick={() => handleChartChange('SET_TEST_HISTORY_CHART')}
-              style={{ border: 'none' }}
-            >
-              <div className="flex align-center" style={{ gap: '.5em' }}>
-                <input
-                  className="progress-tour-test-history-button"
-                  type="radio"
-                  onChange={() => handleChartChange('SET_TEST_HISTORY_CHART')}
-                  checked={shownChart === 'test-history'}
-                />
+            </div>
+            <Divider />
+            <History history={exerciseHistory} dateFormat="YYYY.MM" />
+          </div>
+        ) : shownChart === 'test-history' ? (
+          <div>
+            <div className="row-flex align center">
+              <Popup
+                content={
+                  <div>
+                    <FormattedMessage id="test-history-explanation" />
+                  </div>
+                }
+                trigger={
+                  <Icon
+                    style={{ paddingRight: '0.75em', marginBottom: '0.35em' }}
+                    name="info circle"
+                    color="grey"
+                  />
+                }
+              />
+              <div className="progress-page-header">
                 <FormattedMessage id="Test History" />
               </div>
-            </button>
-          </div>
-          <Divider />
-        </div>
-      )}
-      {shownChart === 'progress' ? (
-        <div>
-          <div className="row-flex align center">
-            <Popup
-              content={
-                <div>
-                  <FormattedHTMLMessage id="timeline-explanation" />
-                </div>
-              }
-              trigger={
-                <Icon
-                  style={{ paddingRight: '0.75em', marginBottom: '0.35em' }}
-                  name="info circle"
-                  color="grey"
-                />
-              }
-            />
-            <div className="progress-page-header">
-              <FormattedMessage id="progress-timeline" />
             </div>
+            <Divider />
+            <History history={filterTestHistoryByDate()} testView dateFormat="YYYY.MM.DD HH:mm" />
           </div>
-          <Divider />
-          <ProgressStats startDate={startDate} endDate={endDate} />
-          <div className="progress-page-graph-cont">
-            <ProgressGraph
-              exerciseHistory={irtExerciseHistory}
-              flashcardHistory={flashcardHistory}
-              startDate={startDate}
-              endDate={endDate}
-            />
-          </div>
-        </div>
-      ) : shownChart === 'vocabulary' ? (
-        <div>
-          <div className="row-flex align center">
-            <Popup
-              content={
-                <div>
-                  <FormattedHTMLMessage id="vocabulary-view-explanation" />
-                </div>
-              }
-              trigger={
-                <Icon
-                  style={{ paddingRight: '0.75em', marginBottom: '0.35em' }}
-                  name="info circle"
-                  color="grey"
-                />
-              }
-            />
-            <div className="progress-page-header">
-              <FormattedMessage id="vocabulary-view" />
-            </div>
-          </div>
+        ) : (
           <div>
-            <div>
-              <FlashcardsPracticeEncouragement open={open} prevBlueCards={storyBlueCards} />
-              <Divider />
-              {initComplete ? (
-                <div className="progress-page-graph-cont">
-                  <VocabularyGraph
-                    vocabularyData={vocabularyData}
-                    vocabularyPending={vocabularyPending}
-                    newerVocabularyData={newerVocabularyData}
-                    newerVocabularyPending={newerVocabularyPending}
-                    graphType={graphType}
-                    setGraphType={setGraphType}
-                    xAxisLength={xAxisLength}
-                    element={element}
+            <div className="row-flex align center">
+              <Popup
+                content={
+                  <div>
+                    <FormattedMessage id="hex-map-explanation" />
+                  </div>
+                }
+                trigger={
+                  <Icon
+                    style={{ paddingRight: '0.75em', marginBottom: '0.35em' }}
+                    name="info circle"
+                    color="grey"
                   />
-                </div>
-              ) : (
-                <div>loading...</div>
-              )}
+                }
+              />
+              <div className="progress-page-header">
+                <FormattedMessage id="hex-map" />
+              </div>
             </div>
-          </div>
-        </div>
-      ) : shownChart === 'exercise-history' ? (
-        <div>
-          <div className="row-flex align center">
-            <Popup
-              content={
-                <div>
-                  <FormattedMessage id="exercise-history-explanation" />
-                </div>
-              }
-              trigger={
-                <Icon
-                  style={{ paddingRight: '0.75em', marginBottom: '0.35em' }}
-                  name="info circle"
-                  color="grey"
-                />
-              }
+            <Divider />
+            <HexagonTest
+              exerciseHistory={exerciseHistory}
+              pending={historyPending}
+              concepts={concepts}
+              conceptsPending={conceptsPending}
+              root_hex_coord={root_hex_coord}
             />
-            <div className="progress-page-header">
-              <FormattedMessage id="exercise-history" />
-            </div>
           </div>
-          <Divider />
-          <History history={exerciseHistory} dateFormat="YYYY.MM" />
-        </div>
-      ) : shownChart === 'test-history' ? (
-        <div>
-          <div className="row-flex align center">
-            <Popup
-              content={
-                <div>
-                  <FormattedMessage id="test-history-explanation" />
-                </div>
-              }
-              trigger={
-                <Icon
-                  style={{ paddingRight: '0.75em', marginBottom: '0.35em' }}
-                  name="info circle"
-                  color="grey"
-                />
-              }
-            />
-            <div className="progress-page-header">
-              <FormattedMessage id="Test History" />
-            </div>
-          </div>
-          <Divider />
-          <History history={filterTestHistoryByDate()} testView dateFormat="YYYY.MM.DD HH:mm" />
-        </div>
-      ) : (
-        <div>
-          <div className="row-flex align center">
-            <Popup
-              content={
-                <div>
-                  <FormattedMessage id="hex-map-explanation" />
-                </div>
-              }
-              trigger={
-                <Icon
-                  style={{ paddingRight: '0.75em', marginBottom: '0.35em' }}
-                  name="info circle"
-                  color="grey"
-                />
-              }
-            />
-            <div className="progress-page-header">
-              <FormattedMessage id="hex-map" />
-            </div>
-          </div>
-          <Divider />
-          <HexagonTest
-            exerciseHistory={exerciseHistory}
-            pending={historyPending}
-            concepts={concepts}
-            conceptsPending={conceptsPending}
-            root_hex_coord={root_hex_coord}
-          />
-        </div>
-      )}
+        )}
+      </div>
     </div>
   )
 }

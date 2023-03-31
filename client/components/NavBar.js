@@ -178,7 +178,7 @@ export default function NavBar() {
       dispatch(openEncouragement())
       return
     }
-    dispatch(openFCEncouragement())
+    //dispatch(openFCEncouragement())
   }, [check])
 
   useEffect(() => {
