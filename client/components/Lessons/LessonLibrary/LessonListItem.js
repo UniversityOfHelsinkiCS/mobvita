@@ -145,7 +145,7 @@ const LessonListItem = ({ topic, selected, toggleTopic }) => {
       <Card.Content extra className="lesson-card-actions-cont">
         <div className="lesson-actions">
           <Button 
-            className="lesson-practice" 
+            className="choose-topic" 
             variant={selected ? 'primary' : 'outline-primary'}
             onClick={()=> toggleTopic(topic.topic_id)}
           >

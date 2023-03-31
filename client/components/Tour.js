@@ -4,6 +4,7 @@ import JoyRide, { ACTIONS, EVENTS, STATUS } from 'react-joyride'
 import { sidebarSetOpen } from 'Utilities/redux/sidebarReducer'
 import { useSelector, useDispatch } from 'react-redux'
 import { handleNextTourStep, startTour, stopTour } from 'Utilities/redux/tourReducer'
+import { getLessonInstance, setLessonInstance } from 'Utilities/redux/lessonInstanceReducer'
 import { FormattedMessage } from 'react-intl'
 import useWindowDimensions from 'Utilities/windowDimensions'
 import {
@@ -23,8 +24,8 @@ const Tour = () => {
 
   const bigScreen = useWindowDimensions().width >= 700
 
-  const { lessons } = useSelector(({ metadata }) => metadata)
-
+  const { pending: metaPending, lesson_topics } = useSelector(({ metadata }) => metadata)
+  const { pending: lessonPending, lesson  } = useSelector(({ lessonInstance }) => lessonInstance)
   const callback = data => {
     const { action, index, type, status } = data
     //console.log(action)
@@ -102,15 +103,9 @@ const Tour = () => {
         }
         // lessons tour steps
         if (tourState.steps === lessonsTourSteps) {
-          if (index === 3) {
-            dispatch({ type: 'SHOW_MODAL' })
-            setTimeout(() => {
-              dispatch({ type: 'SHOW_LESSON_TOPIC_DROPDOWN' })
-            }, 600)
-          }
           if (index === 4) {
-            dispatch({ type: 'CLOSE_LESSON_TOPIC_DROPDOWN' })
-            dispatch({ type: 'CLOSE_MODAL' })
+            const newTopics = [...lesson.topic_ids, lesson_topics[0].topic_id]
+            dispatch(setLessonInstance({ topic_ids:  newTopics}))
           }
           if (index === 5) {
             const currentPath = history.location.pathname
@@ -216,15 +211,9 @@ const Tour = () => {
         }
         // lessons tour control
         if (tourState.steps === lessonsTourSteps) {
-          if (index === 3) {
-            dispatch({ type: 'SHOW_MODAL' })
-            setTimeout(() => {
-              dispatch({ type: 'SHOW_LESSON_TOPIC_DROPDOWN' })
-            }, 600)
-          }
           if (index === 4) {
-            dispatch({ type: 'CLOSE_LESSON_TOPIC_DROPDOWN' })
-            dispatch({ type: 'CLOSE_MODAL' })
+            const newTopics = [...lesson.topic_ids, lesson_topics[0].topic_id]
+            dispatch(setLessonInstance({ topic_ids:  newTopics}))
           }
           if (index === 5) {
             const currentPath = history.location.pathname
