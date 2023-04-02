@@ -80,17 +80,15 @@ const Practice = ({ mode, open }) => {
   useEffect(() => {
     dispatch(getStoriesBlueFlashcards(learningLanguage, dictionaryLanguage))
     if (!pending && !loading) {
-      if (totalAnswers === 0) {
+      if (totalAnswers === 0 && amountAnswered === 0 && !fcOpen) {
         dispatch(openEncouragement())
       }
-      //console.log(`en:${open} fc: ${fcOpen}`)
-      //console.log(`total:${totalAnswers} deck size: ${cards.length}`)
-      if (totalAnswers >= cards.length) {
-        //console.log(`total:${totalAnswers} deck size: ${cards.length}`)
+      if (amountAnswered >= cards.length) {
         dispatch(openFCEncouragement())
+        setAmountAnswered(0)
       }
     }
-  }, [totalAnswers, cards.length])
+  }, [totalAnswers, cards.length, amountAnswered])
 
   const inFillin = history.location.pathname.includes('test')
   useEffect(() => {

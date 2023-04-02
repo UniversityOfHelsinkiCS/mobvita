@@ -56,8 +56,6 @@ const Flashcards = () => {
                 prevBlueCards={storyBlueCards}
               />)
             }
-            {TESTING_NEW_ENCOURAGEMENT &&
-              (<Recommender />)}
           </div>
         )}
         {width < 940 ? <FloatMenu /> : <FlashcardMenu />}

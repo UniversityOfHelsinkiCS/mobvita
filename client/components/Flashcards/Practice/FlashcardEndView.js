@@ -34,10 +34,10 @@ const FlashcardEndView = ({ handleNewDeck, open }) => {
   const RightArrowPress = useKeyPress('ArrowRight')
   const EnterPress = useKeyPress('Enter')
 
-  if ((RightArrowPress || EnterPress) && !open) {
-    console.log('whats this?')
-    handleNewDeck()
-  }
+  //if ((RightArrowPress || EnterPress) && !open) {
+    //console.log('whats this?')
+   // handleNewDeck()
+  //}
 
   return (
     <div className="flashcard justify-center">

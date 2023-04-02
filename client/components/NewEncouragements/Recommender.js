@@ -28,6 +28,8 @@ import NewWordsInteractedExerciseEncouragement from './SubComponents/PracticeVie
 import BackToLibraryFromFlashcards from './SubComponents/FlashcardView/BackToLibraryFromFlashcards'
 import ListOfRecentStoriesFlashcardsEncouragement from './SubComponents/FlashcardView/ListOfRecentStoriesFlashcardsEncouragement'
 import WellDoneFlashcardsHeader from './SubComponents/FlashcardView/WellDoneFlashcardsHeader'
+import MasteringNewWords
+  from "Components/NewEncouragements/SubComponents/FlashcardView/MasteringNewWords"
 
 
 const Recommender = () => {
@@ -219,6 +221,7 @@ const Recommender = () => {
                 </div>
                 <WellDoneFlashcardsHeader />
                 <div className="interactable" style={{ overflow: 'auto', maxHeight: 300 }}>
+                  <MasteringNewWords />
                   <ListOfRecentStoriesFlashcardsEncouragement />
                   <BackToLibraryFromFlashcards />
                 </div>

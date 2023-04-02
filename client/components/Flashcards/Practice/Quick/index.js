@@ -1,11 +1,14 @@
 import React, { useState, useEffect } from 'react'
 import ReactCardFlip from 'react-card-flip'
 import { Button, Icon } from 'semantic-ui-react'
+import { addToTotal } from 'Utilities/redux/flashcardReducer'
+import { useDispatch } from 'react-redux'
 import Flashcard from '../Flashcard'
 
 const Quick = ({ card, cardNumbering, answerCard }) => {
   const [flipped, setFlipped] = useState(false)
   const [answered, setAnswered] = useState(false)
+  const dispatch = useDispatch()
 
   useEffect(() => {
     setFlipped(false)
