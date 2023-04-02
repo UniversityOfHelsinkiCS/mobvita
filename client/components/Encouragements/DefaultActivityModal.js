@@ -20,7 +20,7 @@ import { getLeaderboards } from 'Utilities/redux/leaderboardReducer'
 import { getPracticeHistory } from 'Utilities/redux/practiceHistoryReducer'
 import { Form, Button } from 'react-bootstrap'
 import DailyStories from './DailyStories'
-import StreakEncouragement from 'Components/NewEncouragements/SubComponents/StreakEncouragement'
+import StreakEncouragement from 'Components/NewEncouragements/SubComponents/HomeView/StreakEncouragement'
 
 const DefaultActivityModal = ({
   open,

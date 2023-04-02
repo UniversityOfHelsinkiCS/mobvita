@@ -9,25 +9,25 @@ import { getIncompleteStories } from 'Utilities/redux/incompleteStoriesReducer'
 import { useHistory } from 'react-router-dom'
 import { getStoriesBlueFlashcards } from 'Utilities/redux/flashcardReducer'
 import { dictionaryLanguageSelector } from 'Utilities/common'
-import HomeViewFlashcardEncouragement from './SubComponents/HomeViewFlashcardEncouragement'
-import ReviewStoriesEncouragement from './SubComponents/ReviewStoriesEncouragement'
-import UnseenStoriesInGroup from './SubComponents/UnseenStoriesInGroup'
-import LatestIncompleteStory from './SubComponents/LatestIncompleteStory'
-import TurnOffRecommendations from './SubComponents/TurnOffRecommendations'
-import LeaderboardEncouragement from './SubComponents/LeaderboardEncouragement'
-import StreakEncouragement from './SubComponents/StreakEncouragement'
-import DailyStoriesEncouragement from './SubComponents/DailyStoriesEncouragement'
-import DailyStoriesDraggable from './SubComponents/DailyStoriesDraggable'
-import WelcomeBackEncouragement from './SubComponents/WelcomeBackEncouragement'
-import SharedIncompleteStoryInGroup from './SubComponents/SharedIncompleteStoryInGroup'
-import GrammarReviewExerciseEncouragement from './SubComponents/GrammarReviewExerciseEncouragement'
-import WordsSeenExerciseEncouragement from './SubComponents/WordsSeenExerciseEncouragement'
-import StoryCompletedToBluecardsExerciseEncouragement from './SubComponents/StoryCompletedToBluecardsExerciseEncouragement'
-import ExerciseEncouragementHeader from './SubComponents/ExerciseEncouragementHeader'
-import NewWordsInteractedExerciseEncouragement from './SubComponents/NewWordsInteractedExerciseEncouragement'
-import BackToLibraryFromFlashcards from './SubComponents/BackToLibraryFromFlashcards'
-import ListOfRecentStoriesFlashcardsEncouragement from './SubComponents/ListOfRecentStoriesFlashcardsEncouragement'
-import WellDoneFlashcardsHeader from './SubComponents/WellDoneFlashcardsHeader'
+import ConfirmBlueCardsEncouragement from './SubComponents/MultiPurpose/ConfirmBlueCardsEncouragement'
+import ReviewStoriesEncouragement from './SubComponents/HomeView/ReviewStoriesEncouragement'
+import UnseenStoriesInGroup from './SubComponents/HomeView/UnseenStoriesInGroup'
+import LatestIncompleteStory from './SubComponents/MultiPurpose/LatestIncompleteStory'
+import TurnOffRecommendations from './SubComponents/MultiPurpose/TurnOffRecommendations'
+import LeaderboardEncouragement from './SubComponents/MultiPurpose/LeaderboardEncouragement'
+import StreakEncouragement from './SubComponents/HomeView/StreakEncouragement'
+import DailyStoriesEncouragement from './SubComponents/HomeView/DailyStoriesEncouragement'
+import DailyStoriesDraggable from './SubComponents/HomeView/DailyStoriesDraggable'
+import WelcomeBackEncouragement from './SubComponents/HomeView/WelcomeBackEncouragement'
+import SharedIncompleteStoryInGroup from './SubComponents/HomeView/SharedIncompleteStoryInGroup'
+import GrammarReviewExerciseEncouragement from './SubComponents/PracticeView/GrammarReviewExerciseEncouragement'
+import WordsSeenExerciseEncouragement from './SubComponents/PracticeView/WordsSeenExerciseEncouragement'
+import StoryCompletedToBluecardsExerciseEncouragement from './SubComponents/PracticeView/StoryCompletedToBluecardsExerciseEncouragement'
+import ExerciseEncouragementHeader from './SubComponents/PracticeView/ExerciseEncouragementHeader'
+import NewWordsInteractedExerciseEncouragement from './SubComponents/PracticeView/NewWordsInteractedExerciseEncouragement'
+import BackToLibraryFromFlashcards from './SubComponents/FlashcardView/BackToLibraryFromFlashcards'
+import ListOfRecentStoriesFlashcardsEncouragement from './SubComponents/FlashcardView/ListOfRecentStoriesFlashcardsEncouragement'
+import WellDoneFlashcardsHeader from './SubComponents/FlashcardView/WellDoneFlashcardsHeader'
 
 
 const Recommender = () => {
@@ -110,7 +110,7 @@ const Recommender = () => {
                       handleDailyStoriesClick={handleDailyStoriesClick}
                     />
                     <LatestIncompleteStory />
-                    <HomeViewFlashcardEncouragement />
+                    <ConfirmBlueCardsEncouragement />
                     <UnseenStoriesInGroup />
                     <SharedIncompleteStoryInGroup />
                     <ReviewStoriesEncouragement />
@@ -151,7 +151,7 @@ const Recommender = () => {
                 </div>
                 <div className="col-flex">
                   <div className="interactable" style={{ overflow: 'auto', maxHeight: 300 }}>
-                    <HomeViewFlashcardEncouragement />
+                    <ConfirmBlueCardsEncouragement />
                   </div>
                   <TurnOffRecommendations />
                 </div>

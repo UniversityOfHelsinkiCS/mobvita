@@ -5,7 +5,7 @@ import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { getStoriesBlueFlashcards } from 'Utilities/redux/flashcardReducer'
 
-const HomeViewFlashcardEncouragement = () => {
+const ConfirmBlueCardsEncouragement = () => {
   const { storyBlueCards } = useSelector(({ flashcards }) => flashcards)
   const userData = useSelector(state => state.user.data.user)
   const learningLanguage = userData ? userData.last_used_language : null
@@ -58,4 +58,4 @@ const HomeViewFlashcardEncouragement = () => {
     </div >
   )
 }
-export default HomeViewFlashcardEncouragement
+export default ConfirmBlueCardsEncouragement
