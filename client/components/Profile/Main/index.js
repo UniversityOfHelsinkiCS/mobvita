@@ -1,9 +1,9 @@
 import React from 'react'
+import { Grid } from 'semantic-ui-react'
 import Following from '../Following'
 import EloChart from 'Components/HomeView/EloChart'
 import MedalSummary from 'Components/HomeView/MedalSummary'
 import useWindowDimensions from 'Utilities/windowDimensions'
-import { Grid } from 'semantic-ui-react'
 import ProgressStatistics from './ProgressStatistics'
 import ProfileInfo from './ProfileInfo'
 import ProfileStreakInfo from './ProfileStreakInfo'
@@ -12,7 +12,7 @@ import SocialsList from './SocialsList'
 const DesktopView = () => {
   return (
     <div className="cont ps-nm">
-      <Grid columns={2}  divided>
+      <Grid columns={2} divided>
         <Grid.Row>
           <Grid.Column className="flex-col gap-row-nm">
             <ProfileInfo />
@@ -48,15 +48,7 @@ const MobileView = () => {
 const Main = () => {
   const { width } = useWindowDimensions()
   const bigScreen = width >= 700
-  return (
-    <>
-    {bigScreen ? (
-      <DesktopView />
-    ) : (
-      <MobileView />
-    )}
-    </>
-  )
+  return <>{bigScreen ? <DesktopView /> : <MobileView />}</>
 }
 
 export default Main

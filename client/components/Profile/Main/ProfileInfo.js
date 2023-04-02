@@ -9,9 +9,7 @@ const ProfileInfo = () => {
       <div className="sm-label">
         <FormattedMessage id="username" />
       </div>
-      <span className="account-info-item">
-        {username}
-      </span>
+      <span className="account-info-item">{username}</span>
     </div>
   )
 }

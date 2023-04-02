@@ -1,11 +1,11 @@
-import { 
+import {
   homeTourSteps,
   libraryTourSteps,
   progressTourSteps,
   anonymousProgressTourSteps,
   practiceTourSteps,
   practiceTourStepsAlternative,
-  lessonsTourSteps
+  lessonsTourSteps,
 } from 'Utilities/common'
 
 const initialState = {
@@ -38,7 +38,7 @@ export const startPracticeTour = () => ({
 })
 
 export const startLessonsTour = () => ({
-  type : 'LESSONS_TOUR_RESTART'
+  type: 'LESSONS_TOUR_RESTART'
 })
 
 export const handleNextTourStep = stepIndex => ({
@@ -87,7 +87,7 @@ export default (state = initialState, action) => {
         loading: false,
         key: new Date(),
       }
-      case 'ANONYMOUS_PROGRESS_TOUR_RESTART':
+    case 'ANONYMOUS_PROGRESS_TOUR_RESTART':
       return {
         ...state,
         steps: anonymousProgressTourSteps,
