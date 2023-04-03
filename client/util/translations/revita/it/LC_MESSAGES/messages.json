@@ -1488,7 +1488,7 @@
     "Comitative": "comitative case",
     "practice-lesson-message": "Clicca qui per iniziare la lezione.",
     "Lesson exercise": "Lesson exercise",
-    "lesson-exercise-message": "This is just like regular practice with stories, except that you get exercises only about the grammar topics of the lesson.",
+    "lesson-exercise-message": "Lessons are like practicing with stories, but all exercises focus <b>only</b> on the selected grammar topics.",
     "Dative subject + impersonal-reflexive verb: 'мне нравится/кажется/пришлось'": "Soggetto al dativo + verbo riflessivo impersonale: \"мне нравится/кажется/пришлось",
     "tour-step9-HELP-header": "Istruzioni e aiuto",
     "tour-step9-HELP-message": "Fai clic sul pulsante <b>Guida</b> per vedere:\n<ul>\n<li>Video introduttivo,</li>\n<li>Istruzioni dettagliate e aiuto,</li>\n<li>FAQ.</li></ul>",
@@ -1499,8 +1499,8 @@
     "start-streak": "Start your streak by doing",
     "do-snippets": "10 snippets",
     "do-flashcards": "",
-    "include-into-lesson": "Include into lesson",
+    "include-into-lesson": "Include in lesson",
     "included-in-lesson": "Included in lesson",
     "Lesson story topic": "Configurazione della lezione",
-    "lesson-story-topic-message": "Qui puoi impostare la lezione: puoi selezionare da quale tipo di storie Revita sceglierà gli esercizi"
+    "lesson-story-topic-message": "Qui puoi impostare la lezione: puoi selezionare da quale tipo di storie Revita sceglierà gli esercizi."
 }

@@ -208,12 +208,14 @@ const LessonList = () => {
             {lesson_semantics &&
               lesson_semantics.map(semantic => (
                 <Button
+                  key={semantic}
                   variant={
                     selectedSemantics && selectedSemantics.includes(semantic)
                       ? 'primary'
                       : 'outline-primary'
                   }
                   onClick={() => toggleSemantic(semantic)}
+                  style={{ margin: '0.5em' }}
                 >
                   {selectedSemantics && selectedSemantics.includes(semantic) && (
                     <Icon name="check" />
