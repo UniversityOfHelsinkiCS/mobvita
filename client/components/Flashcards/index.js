@@ -2,17 +2,13 @@ import React, { useEffect } from 'react'
 import { useParams, useHistory } from 'react-router-dom'
 import { useSelector, useDispatch } from 'react-redux'
 import useWindowDimensions from 'Utilities/windowDimensions'
-import { getStoriesBlueFlashcards } from 'Utilities/redux/flashcardReducer'
 import { learningLanguageSelector, dictionaryLanguageSelector } from 'Utilities/common'
-import { openEncouragement, openFCEncouragement } from 'Utilities/redux/encouragementsReducer'
-import ReportButton from 'Components/ReportButton'
 import FlashcardsPracticeEncouragement from 'Components/Encouragements/FlashcardsPracticeEncouragement'
 import FlashcardMenu from './FlashcardMenu'
 import FlashcardCreation from './FlashcardCreation'
 import FloatMenu from './FloatMenu'
 import Practice from './Practice'
 import FlashcardList from './FlashcardList'
-import Recommender from 'Components/NewEncouragements/Recommender'
 
 const Flashcards = () => {
   const { open, fcOpen } = useSelector(({ encouragement }) => encouragement)

@@ -9,6 +9,7 @@ import { getIncompleteStories } from 'Utilities/redux/incompleteStoriesReducer'
 import { useHistory } from 'react-router-dom'
 import { getStoriesBlueFlashcards } from 'Utilities/redux/flashcardReducer'
 import { dictionaryLanguageSelector } from 'Utilities/common'
+import FlashcardsHeaderChooser from 'Components/NewEncouragements/SubComponents/FlashcardView/FlashcardsHeaderChooser'
 import ConfirmBlueCardsEncouragement from './SubComponents/MultiPurpose/ConfirmBlueCardsEncouragement'
 import ReviewStoriesEncouragement from './SubComponents/HomeView/ReviewStoriesEncouragement'
 import UnseenStoriesInGroup from './SubComponents/HomeView/UnseenStoriesInGroup'
@@ -27,10 +28,6 @@ import ExerciseEncouragementHeader from './SubComponents/PracticeView/ExerciseEn
 import NewWordsInteractedExerciseEncouragement from './SubComponents/PracticeView/NewWordsInteractedExerciseEncouragement'
 import BackToLibraryFromFlashcards from './SubComponents/FlashcardView/BackToLibraryFromFlashcards'
 import ListOfRecentStoriesFlashcardsEncouragement from './SubComponents/FlashcardView/ListOfRecentStoriesFlashcardsEncouragement'
-import WellDoneFlashcardsHeader from './SubComponents/FlashcardView/WellDoneFlashcardsHeader'
-import MasteringNewWords
-  from "Components/NewEncouragements/SubComponents/FlashcardView/MasteringNewWords"
-
 
 const Recommender = () => {
   const userData = useSelector(state => state.user.data.user)
@@ -108,9 +105,7 @@ const Recommender = () => {
                     <WelcomeBackEncouragement />
                     <StreakEncouragement />
                     <LeaderboardEncouragement />
-                    <DailyStoriesEncouragement
-                      handleDailyStoriesClick={handleDailyStoriesClick}
-                    />
+                    <DailyStoriesEncouragement handleDailyStoriesClick={handleDailyStoriesClick} />
                     <LatestIncompleteStory />
                     <ConfirmBlueCardsEncouragement />
                     <UnseenStoriesInGroup />
@@ -129,37 +124,40 @@ const Recommender = () => {
             setOpen={setDailyStoriesDraggableIsOpen}
           />
         </div>
-      ) : (isInProgressView || isInFlashcardsView) && storyBlueCards && storyBlueCards.length > 0 && open ? (
+      ) : open &&
+        storyBlueCards.length > 0 &&
+        storyBlueCards &&
+        (isInProgressView || isInFlashcardsView) ? (
         // when the user goes to vocabulary chart on progress page and has bluecards to show encouragement
         // this statement cannot be put inside a general draggable, because if the requirements are not met, an empty draggable will be rendered
         // also comes up when user enters the flashcards tab
-        <div>
+          <div>
           <Draggable cancel=".interactable">
-            <div
+              <div
               className={bigScreen ? 'draggable-encouragement' : 'draggable-encouragement-mobile'}
             >
               <div className="col-flex">
-                <div className="flex-reverse">
+                  <div className="flex-reverse">
                   <Icon
-                    className="interactable"
-                    style={{
+                      className="interactable"
+                      style={{
                       cursor: 'pointer',
                       marginBottom: '.25em',
                     }}
-                    size="large"
-                    name="close"
-                    onClick={handleCloseClick}
-                  />
+                      size="large"
+                      name="close"
+                      onClick={handleCloseClick}
+                    />
                 </div>
-                <div className="col-flex">
+                  <div className="col-flex">
                   <div className="interactable" style={{ overflow: 'auto', maxHeight: 300 }}>
-                    <ConfirmBlueCardsEncouragement />
-                  </div>
+                      <ConfirmBlueCardsEncouragement />
+                    </div>
                   <TurnOffRecommendations />
                 </div>
-              </div>
+                </div>
             </div>
-          </Draggable>
+            </Draggable>
         </div>
       ) : isInPracticeView && open ? (
         // this is the exercise encouragement draggable
@@ -207,7 +205,7 @@ const Recommender = () => {
               className={bigScreen ? 'draggable-encouragement' : 'draggable-encouragement-mobile'}
             >
               <div className="col-flex">
-                <div className='flex-reverse'>
+                <div className="flex-reverse">
                   <Icon
                     className="interactable"
                     style={{
@@ -219,17 +217,16 @@ const Recommender = () => {
                     onClick={handleCloseClick}
                   />
                 </div>
-                <WellDoneFlashcardsHeader />
+                <FlashcardsHeaderChooser />
                 <div className="interactable" style={{ overflow: 'auto', maxHeight: 300 }}>
-                  <MasteringNewWords />
                   <ListOfRecentStoriesFlashcardsEncouragement />
                   <BackToLibraryFromFlashcards />
                 </div>
                 <TurnOffRecommendations />
               </div>
             </div>
-          </Draggable >
-        </div >
+          </Draggable>
+        </div>
       ) : null}
     </>
   )

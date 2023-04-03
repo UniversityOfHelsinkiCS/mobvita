@@ -48,6 +48,7 @@ const Practice = ({ mode, open }) => {
   const { correctAnswers, totalAnswers, storyBlueCards, storyCardsPending } = useSelector(
     ({ flashcards }) => flashcards
   )
+  const inBlueCardsTest = history.location.pathname.includes('test')
   // console.log('MODE ', mode)
   const { incomplete, loading } = useSelector(({ incomplete }) => ({
     incomplete: incomplete.data,
@@ -80,7 +81,7 @@ const Practice = ({ mode, open }) => {
   useEffect(() => {
     dispatch(getStoriesBlueFlashcards(learningLanguage, dictionaryLanguage))
     if (!pending && !loading) {
-      if (totalAnswers === 0 && amountAnswered === 0 && !fcOpen) {
+      if (totalAnswers === 0 && amountAnswered === 0 && !fcOpen && !inBlueCardsTest) {
         dispatch(openEncouragement())
       }
       if (amountAnswered >= cards.length) {
@@ -90,7 +91,6 @@ const Practice = ({ mode, open }) => {
     }
   }, [totalAnswers, cards.length, amountAnswered])
 
-  const inFillin = history.location.pathname.includes('test')
   useEffect(() => {
     setSwipeIndex(0)
   }, [pending])
@@ -148,7 +148,7 @@ const Practice = ({ mode, open }) => {
   }, [amountAnswered])
 
   useEffect(() => {
-    if (inFillin) {
+    if (inBlueCardsTest) {
       dispatch(getBlueFlashcards(learningLanguage, dictionaryLanguage, storyId))
       setBlueCardsAnswered([])
     } else {
@@ -187,7 +187,7 @@ const Practice = ({ mode, open }) => {
     setBlueCardsAnswered([])
     dispatch(openFCEncouragement)
     console.log('pop')
-    if (!inFillin) {
+    if (!inBlueCardsTest) {
       dispatch(getFlashcards(learningLanguage, dictionaryLanguage, storyId))
     } else {
       dispatch(getBlueFlashcards(learningLanguage, dictionaryLanguage, storyId))
