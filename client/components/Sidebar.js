@@ -257,6 +257,17 @@ export default function Sidebar({ history }) {
                         <Icon name="book" /> <FormattedMessage id="Library" />
                       </Button>
                     </Link>
+                    <Link to="/lessons/library">
+                      <Button
+                        variant="secondary"
+                        style={{ marginTop: marginTopButton }}
+                        onClick={() => menuClickWrapper()}
+                        block
+                      >
+                        <Icon size="small" name="calendar check outline" bordered />{' '}
+                        <FormattedMessage id="Lessons" />
+                      </Button>
+                    </Link>
                     <Link to="/flashcards">
                       <Button
                         variant="secondary"

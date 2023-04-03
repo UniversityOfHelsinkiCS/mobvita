@@ -36,6 +36,7 @@ const LessonTitle = ({ topic }) => {
     if (k === 0) {
       topic_rows.push(
         <h6
+          key={k}
           className="lesson-item-topics"
           style={{
             marginBottom: '.5rem',
@@ -82,6 +83,7 @@ const LessonTitle = ({ topic }) => {
     } else {
       topic_rows.push(
         <h6
+          key={k}
           className="lesson-item-topics"
           style={{
             marginBottom: '.5rem',

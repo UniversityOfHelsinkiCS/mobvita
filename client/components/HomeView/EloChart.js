@@ -12,13 +12,6 @@ import { getPracticeHistory } from 'Utilities/redux/practiceHistoryReducer'
 const EloChart = ({ width }) => {
   const dispatch = useDispatch()
   const { flashcardHistory, daysStreaked } = useSelector(state => state.practiceHistory)
-
-  // const { exerciseHistory } = practiceHistory
-  // exerciseHistory still uses old statics from user object
-  // const { exerciseHistory } = useSelector(({ user }) => {
-  //   const exerciseHistory = user.data.user.exercise_history
-  //   return { exerciseHistory }
-  // }, shallowEqual)
   const { practiceHistory } = useSelector(practiceHistory => practiceHistory)
 
   useEffect(() => {

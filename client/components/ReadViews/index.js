@@ -40,7 +40,7 @@ const ReadViews = ({ match }) => {
   const intl = useIntl()
   const { width } = useWindowDimensions()
   const mode = getMode()
-  console.log(useHistory().location.pathname)
+  // console.log(useHistory().location.pathname)
   const history = useHistory()
   const [showRefreshButton, setShowRefreshButton] = useState(false)
   const [currentStudent, setCurrentStudent] = useState(null)

@@ -8,15 +8,16 @@ import ProgressGraph from 'Components/ProgressGraph'
 import Spinner from 'Components/Spinner'
 
 const StudentProgress = ({ student, startDate, endDate, group }) => {
-  const practiceHistory = useSelector(state => state.practiceHistory)
-  const { exerciseHistory, flashcardHistory, pending } = practiceHistory
-  //const { exerciseHistory } = practiceHistory
+  // const practiceHistory = useSelector(state => state.practiceHistory)
+  // const { exerciseHistory, flashcardHistory, pending } = practiceHistory
+
   //exerciseHistory still uses old statics from user object
-  // const { pending, exerciseHistory } = useSelector(({ studentProgress }) => {
-  //   const { progress, pending } = studentProgress
-  //   const { exercise_history: exerciseHistory } = progress
-  //   return { pending, exerciseHistory }
-  // })
+  const { pending, exerciseHistory } = useSelector(({ studentProgress }) => {
+    const { progress, pending } = studentProgress
+    const { exercise_history: exerciseHistory } = progress
+    return { pending, exerciseHistory }
+  })
+  const flashcardHistory = []
   const learningLanguage = useSelector(learningLanguageSelector)
   const dispatch = useDispatch()
 

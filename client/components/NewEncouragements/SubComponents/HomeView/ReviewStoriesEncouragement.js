@@ -42,7 +42,7 @@ const ReviewStoriesEncouragement = () => {
               <FormattedMessage id="review-recent-stories" />
               <ul style={{ paddingLeft: 0 }}>
                 {storiesToReview.map(story => (
-                  <li key={story.id} style={{ marginTop: '0.5rem', listStylePosition: 'inside' }}>
+                  <li key={story._id} style={{ marginTop: '0.5rem', listStylePosition: 'inside' }}>
                     <Link className="interactable" to={`/stories/${story._id}/review`}>
                       <i>{story.title}</i>
                     </Link>
