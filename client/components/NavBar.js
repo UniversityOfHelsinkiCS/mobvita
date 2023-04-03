@@ -78,6 +78,13 @@ export default function NavBar() {
 
   const irt_support_languages = ['Russian', 'Finnish']
 
+  const showStoryElo = history.location.pathname.includes('practice')
+  const showFlashcardElo = hiddenFeatures && history.location.pathname.includes('flashcards')
+  const hasChosenLearningLanguage = user?.user?.last_used_language !== null
+
+  const practiceHistory = useSelector(state => state.practiceHistory)
+  const { flashcardHistory, exerciseHistory } = practiceHistory
+
   const signOut = () => {
     dispatch(logout())
     history.push('/')
@@ -191,16 +198,11 @@ export default function NavBar() {
     dispatch(getPracticeHistory(start_query_date, date_now))
   }, [])
 
-  const showStoryElo = history.location.pathname.includes('practice')
-  const showFlashcardElo = hiddenFeatures && history.location.pathname.includes('flashcards')
-  const hasChosenLearningLanguage = user?.user?.last_used_language !== null
-
-  const practiceHistory = useSelector(state => state.practiceHistory)
-  const { flashcardHistory, exerciseHistory } = practiceHistory
+  
 
   const storyElo =
-    user && user.user.exercise_history && user.user.exercise_history.length > 0
-      ? user.user.exercise_history[user.user.exercise_history.length - 1].score
+    exerciseHistory && exerciseHistory.length > 0
+      ? exerciseHistory[exerciseHistory.length - 1].score
       : 0
 
   const flashcardElo =
