@@ -294,6 +294,11 @@ export default function NavBar() {
                       <FormattedMessage id="Library" />
                     </Navbar.Brand>
                   </Link>
+                  <Link to="/lessons/library">
+                    <Navbar.Brand className="navbar-text-item">
+                      <FormattedMessage id="Lessons" />
+                    </Navbar.Brand>
+                  </Link>
                   <Link to="/flashcards">
                     <Navbar.Brand className="navbar-text-item">
                       <FormattedMessage id="Flashcards" />
