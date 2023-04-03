@@ -9,7 +9,7 @@ import useWindowDimensions from 'Utilities/windowDimensions'
 const ProgressGraph = ({ exerciseHistory, flashcardHistory, startDate, endDate }) => {
   const intl = useIntl()
   const smallScreen = useWindowDimensions().width < 640
-
+    
   const storyData = exerciseHistory && exerciseHistory.map(e => [moment(e.date).valueOf(), e.score])
   // const flashcardData =
   //   flashcardHistory && flashcardHistory.map(e => [moment(e.date).valueOf(), e.score])
@@ -45,6 +45,19 @@ const ProgressGraph = ({ exerciseHistory, flashcardHistory, startDate, endDate }
     94: 'C2',
   }
 
+  // if (exerciseHistory.length > 0) {
+  //   exerciseHistory.sort((a,b) => a.score - b.score);
+  //   const max_score = exerciseHistory[exerciseHistory.length - 1]['score']
+  //   const min_score = exerciseHistory[0]['score']
+  //   const score_gap = max_score - min_score
+  //   const graph_max_score = max_score + (20 - score_gap)
+  //   const graph_min_score = min_score - (20 - score_gap)
+  // } else {
+  //   const graph_max_score = 100
+  //   const graph_min_score = 0
+  // }
+
+  // console.log('exerciseHistory', exerciseHistory)
   const options = {
     title: { text: '' },
     series,
@@ -53,7 +66,11 @@ const ProgressGraph = ({ exerciseHistory, flashcardHistory, startDate, endDate }
     allowDecimals: false,
     alignTicks: false,
     yAxis: [
-      { title: { text: intl.formatMessage({ id: 'score' }) } },
+      { 
+        title: { text: intl.formatMessage({ id: 'score' }) },
+        min: 0,
+        max: 100,
+      },
       {
         opposite: true,
         linkedTo: 0,

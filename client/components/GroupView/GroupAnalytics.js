@@ -113,7 +113,7 @@ const GroupAnalytics = ({ role }) => {
   }
 
   useEffect(() => {
-    if (cefrHistory.length > 0) {
+    if (cefrHistory != undefined && cefrHistory.length > 0) {
       setCurrentCEFR(skillLevels[cefrHistory[0].grade])
     }
   }, [cefrHistory])
