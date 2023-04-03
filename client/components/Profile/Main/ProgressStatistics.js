@@ -4,7 +4,8 @@ import ProgressStats from '../Progress/ProgressStats'
 import moment from 'moment'
 
 const ProgressStatistics = () => {
-  const exerciseHistory = useSelector(({ user }) => user.data.user.exercise_history)
+  const practiceHistory = useSelector(state => state.practiceHistory)
+  const { exerciseHistory } = practiceHistory
 
   const endDate = moment().toDate()
 
