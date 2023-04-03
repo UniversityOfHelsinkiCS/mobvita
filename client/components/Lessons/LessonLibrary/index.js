@@ -201,7 +201,8 @@ const LessonList = () => {
         <div className="group-buttons sm lesson-setup">
           {
             lesson_semantics && lesson_semantics.map(semantic => (
-              <Button 
+              <Button
+                key={semantic}
                 variant={selectedSemantics && selectedSemantics.includes(semantic)? 'primary' : 'outline-primary'}
                 onClick={() => toggleSemantic(semantic)}
               >
