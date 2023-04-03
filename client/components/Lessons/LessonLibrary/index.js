@@ -23,22 +23,21 @@ const LessonList = () => {
   const intl = useIntl()
   const learningLanguage = useLearningLanguage()
   const refreshed = useSelector(({ user }) => user.refreshed)
-  const { pending: metaPending, lesson_semantics, lesson_topics } = useSelector(({ metadata }) => metadata)
+  const {
+    pending: metaPending,
+    lesson_semantics,
+    lesson_topics,
+  } = useSelector(({ metadata }) => metadata)
   const { pending: topicPending, topics } = useSelector(({ lessons }) => lessons)
-  const { pending: lessonPending, lesson  } = useSelector(({ lessonInstance }) => lessonInstance)
+  const { pending: lessonPending, lesson } = useSelector(({ lessonInstance }) => lessonInstance)
   const { user } = useSelector(({ user }) => ({ user: user.data }))
 
   const _lesson_sort_criterion = { direction: 'asc', sort_by: 'index' }
-  
 
   const [sorter, setSorter] = useState(_lesson_sort_criterion.sort_by)
   const [sortDirection, setSortDirection] = useState(_lesson_sort_criterion.direction)
 
-  const {topic_ids: selectedTopicIds, semantic: selectedSemantics} = lesson
-
-
-  
-
+  const { topic_ids: selectedTopicIds, semantic: selectedSemantics } = lesson
 
   const dispatch = useDispatch()
 
@@ -49,7 +48,7 @@ const LessonList = () => {
       dispatch(getMetadata(learningLanguage))
     }
   }, [learningLanguage])
-  
+
   useEffect(() => {
     dispatch(getLessonInstance())
     dispatch(getLessonTopics())
@@ -60,20 +59,20 @@ const LessonList = () => {
     }
   }, [])
 
-  const toggleTopic = (topicId) => {
+  const toggleTopic = topicId => {
     let newTopics
     if (selectedTopicIds.includes(topicId)) {
-      newTopics = selectedTopicIds.filter((id) => id !== topicId)
+      newTopics = selectedTopicIds.filter(id => id !== topicId)
     } else {
       newTopics = [...selectedTopicIds, topicId]
     }
     dispatch(setLessonInstance({ topic_ids: newTopics }))
   }
 
-  const toggleSemantic = (semantic) => {
+  const toggleSemantic = semantic => {
     let newSemantic
     if (selectedSemantics.includes(semantic)) {
-      newSemantic = selectedSemantics.filter((s) => s !== semantic)
+      newSemantic = selectedSemantics.filter(s => s !== semantic)
     } else {
       newSemantic = [...selectedSemantics, semantic]
     }
@@ -125,8 +124,6 @@ const LessonList = () => {
   //   </div>
   // )
 
-
-
   const noResults = !metaPending && lesson_topics && lesson_topics.length === 0
 
   topics.sort((a, b) => {
@@ -145,24 +142,23 @@ const LessonList = () => {
     return dir * multiplier
   })
 
-
   function rowRenderer({ key, index, style }) {
-    const topic = topics && topics[index] || lesson_topics[index]
+    const topic = (topics && topics[index]) || lesson_topics[index]
     return (
       <div
         key={key}
         style={{ ...style, paddingRight: '0.5em', paddingLeft: '0.5em', marginBottom: '0.5em' }}
       >
-        <LessonListItem 
-          topic={topic} 
-          selected={selectedTopicIds && selectedTopicIds.includes(topic.topic_id)} 
+        <LessonListItem
+          topic={topic}
+          selected={selectedTopicIds && selectedTopicIds.includes(topic.topic_id)}
           toggleTopic={toggleTopic}
         />
       </div>
     )
   }
 
-  if (metaPending ) {
+  if (metaPending) {
     return (
       <div className="cont-tall cont flex-col auto gap-row-sm">
         {/* {libraryControls} */}
@@ -181,54 +177,69 @@ const LessonList = () => {
         </div>
       ) : (
         <>
-        <Link to={'/lesson/practice'}>
-          <Button size="big" className='lesson-practice'
-            disabled={lessonPending || !selectedTopicIds || !selectedSemantics || 
-              selectedTopicIds.length === 0 || selectedSemantics.length === 0}
-            style={{
-              fontSize: '1.3em',
-              fontWeight: 500,
-              margin: '1em 0',
-              padding: '1rem 0',
-              width: '100%',
-              border: '2px solid #000',
-            }}>
-            {lessonPending && <Icon name="spinner" loading />}
-            <FormattedMessage id="start-practice" />
-          </Button>
-        </Link>
-        <h5><FormattedMessage id="select-lesson-semantic-topic"/></h5>
-        <div className="group-buttons sm lesson-setup">
-          {
-            lesson_semantics && lesson_semantics.map(semantic => (
-              <Button 
-                variant={selectedSemantics && selectedSemantics.includes(semantic)? 'primary' : 'outline-primary'}
-                onClick={() => toggleSemantic(semantic)}
-              >
-                {selectedSemantics && selectedSemantics.includes(semantic) && <Icon name="check" />}
-                {semantic}
-              </Button>
-            ))
-          }
-        </div>
-        {/* {libraryControls} */}
-        <Card.Group itemsPerRow={2} doubling data-cy="lesson-items" style={{ marginTop: '.5em' }}>
-          <WindowScroller>
-            {({ height, isScrolling, onChildScroll, scrollTop }) => (
-              <List
-                autoHeight
-                height={height}
-                isScrolling={isScrolling}
-                onScroll={onChildScroll}
-                rowCount={topics.length}
-                rowHeight={155}
-                rowRenderer={rowRenderer}
-                scrollTop={scrollTop}
-                width={10000}
-              />
-            )}
-          </WindowScroller>
-        </Card.Group>
+          <Link to={'/lesson/practice'}>
+            <Button
+              size="big"
+              className="lesson-practice"
+              disabled={
+                lessonPending ||
+                !selectedTopicIds ||
+                !selectedSemantics ||
+                selectedTopicIds.length === 0 ||
+                selectedSemantics.length === 0
+              }
+              style={{
+                fontSize: '1.3em',
+                fontWeight: 500,
+                margin: '1em 0',
+                padding: '1rem 0',
+                width: '100%',
+                border: '2px solid #000',
+              }}
+            >
+              {lessonPending && <Icon name="spinner" loading />}
+              <FormattedMessage id="start-practice" />
+            </Button>
+          </Link>
+          <h5>
+            <FormattedMessage id="select-lesson-semantic-topic" />
+          </h5>
+          <div className="group-buttons sm lesson-story-topic">
+            {lesson_semantics &&
+              lesson_semantics.map(semantic => (
+                <Button
+                  variant={
+                    selectedSemantics && selectedSemantics.includes(semantic)
+                      ? 'primary'
+                      : 'outline-primary'
+                  }
+                  onClick={() => toggleSemantic(semantic)}
+                >
+                  {selectedSemantics && selectedSemantics.includes(semantic) && (
+                    <Icon name="check" />
+                  )}
+                  {semantic}
+                </Button>
+              ))}
+          </div>
+          {/* {libraryControls} */}
+          <Card.Group itemsPerRow={2} doubling data-cy="lesson-items" style={{ marginTop: '.5em' }}>
+            <WindowScroller>
+              {({ height, isScrolling, onChildScroll, scrollTop }) => (
+                <List
+                  autoHeight
+                  height={height}
+                  isScrolling={isScrolling}
+                  onScroll={onChildScroll}
+                  rowCount={topics.length}
+                  rowHeight={155}
+                  rowRenderer={rowRenderer}
+                  scrollTop={scrollTop}
+                  width={10000}
+                />
+              )}
+            </WindowScroller>
+          </Card.Group>
         </>
       )}
     </div>

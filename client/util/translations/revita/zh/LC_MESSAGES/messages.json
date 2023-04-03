@@ -870,5 +870,9 @@
     "start-streak": "Start your streak by doing",
     "do-snippets": "10 snippets",
     "do-flashcards": "",
-    "score": "分数"
+    "score": "分数",
+    "include-into-lesson": "Include into lesson",
+    "included-in-lesson": "Included in lesson",
+    "Lesson story topic": "课程设置",
+    "lesson-story-topic-message": "您可以在此处设置课程"
 }

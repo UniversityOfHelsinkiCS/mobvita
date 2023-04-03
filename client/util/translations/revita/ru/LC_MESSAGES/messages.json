@@ -1500,5 +1500,9 @@
     "continue-streak": "Continue your streak by doing",
     "start-streak": "Start your streak by doing",
     "do-snippets": "10 snippets",
-    "do-flashcards": ""
+    "do-flashcards": "",
+    "include-into-lesson": "Include into lesson",
+    "included-in-lesson": "Included in lesson",
+    "Lesson story topic": "Настройка урока",
+    "lesson-story-topic-message": "Здесь вы можете настроить урок: вы можете выбрать, из каких историй Revita выберет упражнения."
 }

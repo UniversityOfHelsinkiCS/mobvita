@@ -1743,11 +1743,11 @@ const desktopLessonsTourSteps = [
     disableBeacon: true,
   },
   {
-    target: '.lesson-setup',
+    target: '.lesson-story-topic',
     title: <FormattedMessage id="Lesson setup" />,
     content: (
       <div>
-        <FormattedHTMLMessage id="lesson-setup-message" />
+        <FormattedHTMLMessage id="lesson-story-topic-message" />
       </div>
     ),
     disableBeacon: true,
@@ -1777,7 +1777,7 @@ const desktopLessonsTourSteps = [
     title: <FormattedMessage id="Lesson exercise" />,
     content: (
       <div>
-        <FormattedHTMLMessage id="lesson-exercise-message" />
+        <FormattedHTMLMessage id="grammar-practice-message" />
       </div>
     ),
     disableBeacon: true,

@@ -103,7 +103,6 @@ const handleNewVocabulary = (store, newVocabulary) => {
   }
 }
 
-
 /**
  * This is a redux middleware used for tracking api calls
  */
