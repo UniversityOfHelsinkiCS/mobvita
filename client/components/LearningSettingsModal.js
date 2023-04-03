@@ -28,7 +28,6 @@ const LearningSettingsModal = ({ trigger }) => {
     auto_practice_prct: autoPracticePrct,
     practice_prct_mode: practicePrctMode,
     last_selected_group: currentGroupId,
-    exercise_history: exerciseHistory,
   } = useSelector(({ user }) => user.data.user)
 
   // const latestStoryElo = exerciseHistory[exerciseHistory.length - 1]?.score
