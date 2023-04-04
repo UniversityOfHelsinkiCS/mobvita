@@ -67,11 +67,11 @@ export default function Toaster() {
 
   useEffect(() => {
     if (streak === 'just_streaked') {
-      toast(intl.formatMessage({ id: 'streak_just_done' }), {
+      toast(<StreakToast />, {
         transition: Flip,
         type: 'success',
-        className: 'achievement-toast',
-        closeButton: false
+        className: 'streak-toast',
+        closeButton: false,
       })
     }
   }, [streak])
