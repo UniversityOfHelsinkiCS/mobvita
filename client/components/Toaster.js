@@ -62,23 +62,17 @@ export default function Toaster() {
     dispatch(updateFavouriteSites(favouriteSites.concat({ url })))
   }
 
-  // STREAK STUFF, NOT FINISHED
-  /*
-  const streak = window.localStorage.getItem('streak')
+  const { streak } = useSelector(state => state.streak)
 
   useEffect(() => {
     console.log('???')
-    if (streak) {
-      console.log('****')
-      console.log('moi')
-      console.log('****')
-      toast(intl.formatMessage({ id: 'jee streakki' }), {
+    if (streak === 'just_streaked') {
+      toast(intl.formatMessage({ id: 'streak_just_done' }), {
         autoClose: 8000,
         type: 'success',
       })
     }
   }, [streak])
-  */
 
   useEffect(() => {
     if (controlledPractice.finished) {

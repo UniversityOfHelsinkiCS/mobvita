@@ -94,6 +94,11 @@ const handleNewAchievement = (store, newAchievements) => {
   }
 }
 
+const handleStreakState = (store, streakState) => {
+  window.localStorage.setItem('streakState', streakState)
+  store.dispatch({ type: 'SET_STREAK_STATE', streak: streakState })
+}
+
 const handleNewVocabulary = (store, newVocabulary) => {
   if (newVocabulary) {
     store.dispatch({
@@ -136,6 +141,8 @@ export const handleRequest = store => next => async action => {
       if (res.data?.num_new_vocabulary) {
         handleNewVocabulary(store, res.data.num_new_vocabulary)
       }
+
+      handleStreakState(store, res.data.is_today_streaked)
 
       const requestSentAt = new Date()
       window.localStorage.setItem('last_request', requestSentAt)

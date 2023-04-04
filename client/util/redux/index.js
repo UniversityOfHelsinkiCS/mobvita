@@ -46,6 +46,7 @@ import dropdown from './dropdownReducer'
 import modal from './modalReducer'
 import topicsBox from './topicsBoxReducer'
 import practiceHistory from './practiceHistoryReducer'
+import streak from './streakReducer'
 
 const rootReducer = combineReducers({
   stories,
@@ -93,7 +94,8 @@ const rootReducer = combineReducers({
   dropdown,
   modal,
   topicsBox,
-  practiceHistory
+  practiceHistory,
+  streak
 })
 
 export default (state, action) =>
