@@ -127,7 +127,7 @@ const LessonTitle = ({ topic }) => {
           className="story-item-title"
           style={{ marginBottom: '.5rem', width: '100%', ...getTextStyle(learningLanguage) }}
         >
-          {`${intl.formatMessage({ id: 'topics' })} ${topic.topic_id}`}
+          {`${intl.formatMessage({ id: 'topic-singular' })} ${topic.topic_id}`}
           {/* <sup>
                         <b style={{color:'red'}}>&beta;</b>
                     </sup> */}
