@@ -11,6 +11,7 @@ import { updateFavouriteSites } from 'Utilities/redux/userReducer'
 import { useIntl } from 'react-intl'
 import { learningLanguageSelector } from 'Utilities/common'
 import AchievementToast from 'Components/Achievements/AchievementToast'
+import StreakToast from 'Components/Streak/StreakToast'
 
 export default function Toaster() {
   const dispatch = useDispatch()
@@ -65,11 +66,12 @@ export default function Toaster() {
   const { streak } = useSelector(state => state.streak)
 
   useEffect(() => {
-    console.log('???')
     if (streak === 'just_streaked') {
       toast(intl.formatMessage({ id: 'streak_just_done' }), {
-        autoClose: 8000,
+        transition: Flip,
         type: 'success',
+        className: 'achievement-toast',
+        closeButton: false
       })
     }
   }, [streak])
