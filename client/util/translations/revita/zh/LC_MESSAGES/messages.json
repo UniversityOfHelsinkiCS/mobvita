@@ -876,5 +876,6 @@
     "Lesson story topic": "课程设置",
     "lesson-story-topic-message": "您可以在此处设置课程",
     "topic-singular": "主题",
-    "streak_just_done": "今天已经练习达标了！"
+    "streak_just_done": "今天已经练习达标了！",
+    "exclude-all-topics": "清空语法主题"
 }
