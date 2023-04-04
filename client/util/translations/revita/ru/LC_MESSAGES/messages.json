@@ -1506,5 +1506,6 @@
     "Lesson story topic": "Настройка урока",
     "lesson-story-topic-message": "Здесь вы можете настроить урок: темы текстов, из которых Revita будет выбирать упражнения.",
     "topic-singular": "Тема",
-    "streak_just_done": "Streak done for today!"
+    "streak_just_done": "Streak done for today!",
+    "exclude-all-topics": "Remove all grammar topics"
 }
