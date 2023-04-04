@@ -9,7 +9,7 @@ const ProfileStreakInfo = () => {
   const dispatch = useDispatch()
 
   const { streakToday, daysStreaked } = useSelector(state => state.practiceHistory)
-  const streakBroken = daysStreaked === 0 && !streakToday
+  const streakBroken = daysStreaked === 0 && streakToday === 'not_streaked'
 
   useEffect(() => {
     dispatch(getPracticeHistory())
@@ -18,7 +18,7 @@ const ProfileStreakInfo = () => {
   return (
     <div className="pt-md">
       <div className="flex" style={{ alignItems: 'center' }}>
-        {streakToday ? (
+        {streakToday === 'streaked' ? (
           <img
             src={images.flame}
             alt="flame"
@@ -44,14 +44,16 @@ const ProfileStreakInfo = () => {
             .
           </div>
         )}
-        {streakToday && (
+        {streakToday === 'streaked' && (
           <div>
             <FormattedHTMLMessage id="streak-done" values={{ daysStreaked }} />
           </div>
         )}
-        {!streakBroken && !streakToday && (
+        {!streakBroken && streakToday === 'not_streaked' && (
           <div>
             <FormattedHTMLMessage id="streak-undone" values={{ daysStreaked }} />
+            <br />
+            <FormattedMessage id="continue-streak" />
             &nbsp;
             <Link className="interactable" to="/library">
               <FormattedMessage id="do-snippets" />

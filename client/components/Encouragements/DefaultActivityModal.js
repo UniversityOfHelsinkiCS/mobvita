@@ -20,7 +20,6 @@ import { getLeaderboards } from 'Utilities/redux/leaderboardReducer'
 import { getPracticeHistory } from 'Utilities/redux/practiceHistoryReducer'
 import { Form, Button } from 'react-bootstrap'
 import DailyStories from './DailyStories'
-import StreakEncouragement from 'Components/NewEncouragements/SubComponents/HomeView/StreakEncouragement'
 
 const DefaultActivityModal = ({
   open,
@@ -51,7 +50,7 @@ const DefaultActivityModal = ({
   const dispatch = useDispatch()
   const bigScreen = width > 700
   const { streakToday, daysStreaked } = useSelector(state => state.practiceHistory)
-  const streakBroken = daysStreaked === 0 && !streakToday ? true : false
+  const streakBroken = daysStreaked === 0 && streakToday === 'not_streaked' ? true : false
 
   const dailyStoriesEncouragement = listLen => {
     return (
@@ -84,7 +83,7 @@ const DefaultActivityModal = ({
 
   const fillList = () => {
     let initList = []
-    if (!streakToday && !streakBroken && hiddenFeatures) {
+    if (streakToday === 'not_streaked' && !streakBroken && hiddenFeatures) {
       initList = initList.concat(
         <div className="pt-md">
           <div
@@ -138,7 +137,7 @@ const DefaultActivityModal = ({
       )
     }
 
-    if (streakToday && hiddenFeatures) {
+    if (streakToday === 'streaked' && hiddenFeatures) {
       initList = initList.concat(
         <div className="pt-md">
           <div

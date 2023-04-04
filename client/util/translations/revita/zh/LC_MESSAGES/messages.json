@@ -869,10 +869,12 @@
     "continue-streak": "继续您的记录，练习",
     "start-streak": "开始您的新纪录，练习",
     "do-snippets": "10个段落",
-    "do-flashcards": "",
+    "do-flashcards": "a batch of flashcards",
     "score": "分数",
     "include-into-lesson": "加入课程",
     "included-in-lesson": "已加入课程",
     "Lesson story topic": "课程设置",
-    "lesson-story-topic-message": "您可以在此处设置课程"
+    "lesson-story-topic-message": "您可以在此处设置课程",
+    "topic-singular": "主题",
+    "streak_just_done": "Streak done for today!"
 }

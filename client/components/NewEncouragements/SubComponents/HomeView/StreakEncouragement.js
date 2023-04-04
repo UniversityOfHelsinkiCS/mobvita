@@ -9,8 +9,8 @@ const StreakEncouragement = () => {
   const dispatch = useDispatch()
 
   const { streakToday, daysStreaked } = useSelector(state => state.practiceHistory)
-  const streakBroken = daysStreaked === 0 && !streakToday ? true : false
-  
+  const streakBroken = daysStreaked === 0 && streakToday === 'not_streaked' ? true : false
+
   useEffect(() => {
     dispatch(getPracticeHistory())
   }, [])
@@ -46,7 +46,7 @@ const StreakEncouragement = () => {
 
   return (
     <div>
-      {streakToday ? (
+      {streakToday === 'streaked' ? (
         <div className="pt-md">
           <div
             className="flex enc-message-body"
