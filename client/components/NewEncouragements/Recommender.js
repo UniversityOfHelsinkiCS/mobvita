@@ -125,8 +125,8 @@ const Recommender = () => {
           />
         </div>
       ) : open &&
-        storyBlueCards.length > 0 &&
         storyBlueCards &&
+        storyBlueCards.length > 0 &&
         (isInProgressView || isInFlashcardsView) ? (
         // when the user goes to vocabulary chart on progress page and has bluecards to show encouragement
         // this statement cannot be put inside a general draggable, because if the requirements are not met, an empty draggable will be rendered
