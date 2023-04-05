@@ -82,7 +82,7 @@ export default (state = { data: [] }, action) => {
     case 'GET_TRANSLATION_SUCCESS':
       return {
         ...state,
-        data: action.response['responses-json'],
+        data: action.response['responses'],
         pending: false,
         error: false,
       }
@@ -100,7 +100,7 @@ export default (state = { data: [] }, action) => {
         error: false,
       }
     case 'GET_CLUE_TRANSLATION_SUCCESS':
-      if (!action.response['responses-json']) {
+      if (!action.response['responses']) {
         return {
           ...state,
           data: 'no-clue-translation',
@@ -110,7 +110,7 @@ export default (state = { data: [] }, action) => {
       }
       return {
         ...state,
-        data: action.response['responses-json'],
+        data: action.response['responses'],
         pending: false,
         error: false,
       }
