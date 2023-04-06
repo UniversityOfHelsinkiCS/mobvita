@@ -16,11 +16,11 @@ export default function Profile({ location }) {
     {
       menuItem: {
         as: Link,
-        content: intl.formatMessage({ id: 'following' }),
-        to: '/profile/following',
-        key: 'following',
+        content: intl.formatMessage({ id: 'Profile' }),
+        to: '/profile/main',
+        key: 'main',
       },
-      render: () => <Following />,
+      render: () => <Main />,
     },
     {
       menuItem: {
@@ -52,30 +52,15 @@ export default function Profile({ location }) {
     },
   ]
 
-  if (hiddenFeatures){
-    panes = panes.concat({
-      menuItem: {
-        as: Link,
-        content: intl.formatMessage({ id: 'Profile' }),
-        to: '/profile/main',
-        key: 'main',
-      },
-      render: () => <Main />,
-    })
-  }
-
   let index
   switch (location.pathname) {
-    case '/profile/main':
-      index = 4
-      break
     case '/profile/settings':
       index = 3
       break
     case '/profile/account':
       index = 2
       break
-    case '/profile/following':
+    case '/profile/main':
       index = 0
       break
     default:

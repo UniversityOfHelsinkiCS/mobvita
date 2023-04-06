@@ -417,16 +417,18 @@ export default function NavBar() {
                           {user.user.username}
                         </span>
                         <NavDropdown.Divider />
-                        {hiddenFeatures && (
-                          <NavDropdown.Item className="profile-button" as={Link} to="/profile/main">
+                          <NavDropdown.Item
+                            className="profile-button" 
+                            as={Link} 
+                            to="/profile/main"
+                          >
                             <FormattedMessage id="Profile" />
                           </NavDropdown.Item>
-                        )}
-                        <NavDropdown.Item
-                          className="progress-button"
-                          as={Link}
-                          to="/profile/progress"
-                        >
+                          <NavDropdown.Item
+                            className="progress-button"
+                            as={Link}
+                            to="/profile/progress"
+                          >                          
                           <FormattedMessage id="Progress" />
                         </NavDropdown.Item>
                         <NavDropdown.Item data-cy="navbar-logout-button" onClick={signOut}>
