@@ -1,9 +1,28 @@
 import React from 'react'
 import { useIntl } from 'react-intl'
-import { images } from 'Utilities/common'
+import { useHistory } from 'react-router'
+import { images, capitalize } from 'Utilities/common'
 
 const StreakToast = () => {
   const intl = useIntl()
+  const history = useHistory()
+
+  let practiceText = ''
+  const practiceView = history.location.pathname.includes('practice')
+
+  if (practiceView) {
+    practiceText = `${capitalize(
+      intl.formatMessage({
+        id: 'do-snippets',
+      })
+    )}`
+  } else {
+    practiceText = `${capitalize(
+      intl.formatMessage({
+        id: 'do-flashcards',
+      })
+    )}`
+  }
 
   const streakDoneText = `${intl.formatMessage({
     id: 'streak_just_done',
@@ -13,7 +32,13 @@ const StreakToast = () => {
     <div className="flex">
       <img src={images.flame} alt="flame" width="30px" height="30px" />
       <div className="flex-col pl-nm">
-        <span style={{ fontSize: '18px', fontWeight: 550 }}>{streakDoneText}</span>
+        <span style={{ fontSize: '11px', fontWeight: 550 }}>{practiceText}</span>
+        <div>
+          <b>
+            {'  '}
+            <span>{streakDoneText}</span>
+          </b>
+        </div>
       </div>
     </div>
   )
