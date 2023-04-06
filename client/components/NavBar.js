@@ -429,11 +429,11 @@ export default function NavBar() {
                             as={Link}
                             to="/profile/progress"
                           >                          
-                          <FormattedMessage id="Progress" />
-                        </NavDropdown.Item>
-                        <NavDropdown.Item data-cy="navbar-logout-button" onClick={signOut}>
-                          <FormattedMessage id="sign-out" />
-                        </NavDropdown.Item>
+                           <FormattedMessage id="Progress" />
+                          </NavDropdown.Item>
+                          <NavDropdown.Item data-cy="navbar-logout-button" onClick={signOut}>
+                            <FormattedMessage id="sign-out" />
+                          </NavDropdown.Item>
                       </>
                     )}
                   </NavDropdown>
