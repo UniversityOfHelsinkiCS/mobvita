@@ -2,14 +2,14 @@ let globalUser = null
 const users = []
 let randomID = Math.floor(Math.random() * 1000000000)
 
-describe("in 'Following' page", function () {
+describe("in 'profile' page", function () {
     this.beforeAll(function () {
       cy.login()
     })
   
     this.beforeEach(function () {
       cy.loginExisting().as('user')
-      cy.visit('http://localhost:8000/profile/following')
+      cy.visit('http://localhost:8000/profile/main')
     })
   
     this.afterAll(function () {
