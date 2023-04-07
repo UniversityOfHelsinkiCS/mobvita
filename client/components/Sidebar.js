@@ -234,7 +234,7 @@ export default function Sidebar({ history }) {
                         </Button>
                       }
                     /> */}
-                    <Link to="/profile/progress">
+                    <Link to="/profile/main">
                       <Button
                         className='sidebar-profile-button'
                         data-cy="settings-link"
