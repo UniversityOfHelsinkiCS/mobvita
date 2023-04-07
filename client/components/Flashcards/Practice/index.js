@@ -59,8 +59,7 @@ const Practice = ({ mode, open }) => {
 
     let cards
     if (mode === 'article') {
-      cards =// Change this to true when developing new encouragement!
-        // REMEMBER TO SWITCH BACK TO FALSE BEFORE PUSHING!!!
+      cards =
         flashcards.nounCards &&
         flashcards.nounCards.filter(card =>
           ['Feminine', 'Masculine', 'Neuter', 'ut', 'm', 'f', 'nt', 'Fem', 'Neut', 'Masc'].includes(
@@ -80,8 +79,9 @@ const Practice = ({ mode, open }) => {
 
   useEffect(() => {
     dispatch(getStoriesBlueFlashcards(learningLanguage, dictionaryLanguage))
+    const isInQuick = history.location.pathname.includes('quick')
     if (!pending && !loading) {
-      if (totalAnswers === 0 && amountAnswered === 0 && !fcOpen && !inBlueCardsTest) {
+      if (totalAnswers === 0 && amountAnswered === 0 && !fcOpen && !inBlueCardsTest && !isInQuick) {
         dispatch(openEncouragement())
       }
       if (amountAnswered >= cards.length) {
