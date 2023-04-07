@@ -3,13 +3,19 @@ import { useSelector, useDispatch } from 'react-redux'
 import useWindowDimensions from 'Utilities/windowDimensions'
 import Draggable from 'react-draggable'
 import { Icon } from 'semantic-ui-react'
-import { closeEncouragement, closeFCEncouragement, openFCEncouragement } from 'Utilities/redux/encouragementsReducer'
+import { closeEncouragement, closeFCEncouragement } from 'Utilities/redux/encouragementsReducer'
 import { getLeaderboards } from 'Utilities/redux/leaderboardReducer'
 import { getIncompleteStories } from 'Utilities/redux/incompleteStoriesReducer'
 import { useHistory, useParams } from 'react-router-dom'
-import { getStoriesBlueFlashcards, getFlashcards, getBlueFlashcards } from 'Utilities/redux/flashcardReducer'
+import {
+  getStoriesBlueFlashcards,
+  getFlashcards,
+  getBlueFlashcards,
+} from 'Utilities/redux/flashcardReducer'
 import { dictionaryLanguageSelector } from 'Utilities/common'
 import FlashcardsHeaderChooser from 'Components/NewEncouragements/SubComponents/FlashcardView/FlashcardsHeaderChooser'
+import ListOfRecentStoriesFlashcardsEncouragement from 'Components/NewEncouragements/SubComponents/FlashcardView/ListOfRecentStoriesFlashcardsEncouragement'
+import PreviousStoriesBlueFlashcards from 'Components/NewEncouragements/SubComponents/FlashcardView/PreviousStoriesBlueFlashcards'
 import ConfirmBlueCardsEncouragement from './SubComponents/MultiPurpose/ConfirmBlueCardsEncouragement'
 import ReviewStoriesEncouragement from './SubComponents/HomeView/ReviewStoriesEncouragement'
 import UnseenStoriesInGroup from './SubComponents/HomeView/UnseenStoriesInGroup'
@@ -27,14 +33,13 @@ import StoryCompletedToBluecardsExerciseEncouragement from './SubComponents/Prac
 import ExerciseEncouragementHeader from './SubComponents/PracticeView/ExerciseEncouragementHeader'
 import NewWordsInteractedExerciseEncouragement from './SubComponents/PracticeView/NewWordsInteractedExerciseEncouragement'
 import BackToLibraryFromFlashcards from './SubComponents/FlashcardView/BackToLibraryFromFlashcards'
-import ListOfRecentStoriesFlashcardsEncouragement from './SubComponents/FlashcardView/ListOfRecentStoriesFlashcardsEncouragement'
 import TryAnotherBatch from './SubComponents/FlashcardView/TryAnotherBatch'
 
 const Recommender = () => {
   const userData = useSelector(state => state.user.data.user)
   const learningLanguage = userData ? userData.last_used_language : null
   const { cachedStories, pending: metadataPending } = useSelector(({ metadata }) => metadata)
-  const { storyBlueCards } = useSelector(({ flashcards }) => flashcards)
+  const { storyBlueCards, prevStoryBlueCards } = useSelector(({ flashcards }) => flashcards)
   const { open, fcOpen } = useSelector(({ encouragement }) => encouragement)
   const dictionaryLanguage = useSelector(dictionaryLanguageSelector)
   const [dailyStoriesDraggableIsOpen, setDailyStoriesDraggableIsOpen] = useState(false)
@@ -47,7 +52,6 @@ const Recommender = () => {
   const isInPracticeView = history.location.pathname.includes('practice')
   const isInFlashcardsView = history.location.pathname.includes('flashcards')
   const inBlueCardsTest = history.location.pathname.includes('test')
-  const BlueFlashcards = history.location.pathname.includes('fillin')
   const { storyId } = useParams()
 
   // See default_activity_modal row 260
@@ -64,8 +68,8 @@ const Recommender = () => {
   }, [])
 
   const handleNewDeck = () => {
-    //setSwipeIndex(0)
-    //setBlueCardsAnswered([])
+    // setSwipeIndex(0)
+    // setBlueCardsAnswered([])
     dispatch(closeFCEncouragement())
     dispatch(closeEncouragement())
     if (!inBlueCardsTest) {
@@ -92,6 +96,7 @@ const Recommender = () => {
   return (
     <>
       {(isInHomeView || isInWelcomeView) && open ? (
+        // home- and welcomeView related encouragements
         <div>
           <Draggable cancel=".interactable">
             <div
@@ -139,16 +144,15 @@ const Recommender = () => {
         storyBlueCards.length > 0 &&
         (isInProgressView || isInFlashcardsView) ? (
         // when the user goes to vocabulary chart on progress page and has bluecards to show encouragement
-        // this statement cannot be put inside a general draggable, because if the requirements are not met, an empty draggable will be rendered
         // also comes up when user enters the flashcards tab
         <div>
-          <Draggable cancel=".interactable">
+            <Draggable cancel=".interactable">
             <div
-              className={bigScreen ? 'draggable-encouragement' : 'draggable-encouragement-mobile'}
-            >
-              <div className="col-flex">
+                className={bigScreen ? 'draggable-encouragement' : 'draggable-encouragement-mobile'}
+              >
+                <div className="col-flex">
                 <div className="flex-reverse">
-                  <Icon
+                    <Icon
                     className="interactable"
                     style={{
                       cursor: 'pointer',
@@ -158,18 +162,19 @@ const Recommender = () => {
                     name="close"
                     onClick={handleCloseClick}
                   />
-                </div>
+                  </div>
                 <div className="col-flex">
-                  <div className="interactable" style={{ overflow: 'auto', maxHeight: 300 }}>
+                    <div className="interactable" style={{ overflow: 'auto', maxHeight: 300 }}>
                     <ConfirmBlueCardsEncouragement />
                   </div>
-                  <TurnOffRecommendations />
-                </div>
+                    <TurnOffRecommendations />
+                  </div>
               </div>
-            </div>
+              </div>
           </Draggable>
-        </div>
+          </div>
       ) : isInPracticeView && open ? (
+        // practice view related encouragements
         // this is the exercise encouragement draggable
         // it differs with css from the basic encouragement draggable
         <div>
@@ -208,7 +213,8 @@ const Recommender = () => {
             </div>
           </Draggable>
         </div>
-      ) : isInFlashcardsView && fcOpen ? (
+      ) : isInFlashcardsView && !inBlueCardsTest && fcOpen ? (
+        // "normal" flashcard view related encouragements
         <div>
           <Draggable cancel=".interactable">
             <div
@@ -227,13 +233,41 @@ const Recommender = () => {
                     onClick={handleCloseClick}
                   />
                 </div>
-                <FlashcardsHeaderChooser />
+                <FlashcardsHeaderChooser handleNewDeck={handleNewDeck} />
                 <div className="interactable" style={{ overflow: 'auto', maxHeight: 300 }}>
                   <TryAnotherBatch handleNewDeck={handleNewDeck} />
                   <ListOfRecentStoriesFlashcardsEncouragement />
                   <BackToLibraryFromFlashcards />
                 </div>
                 <TurnOffRecommendations />
+              </div>
+            </div>
+          </Draggable>
+        </div>
+      ) : isInFlashcardsView && inBlueCardsTest && fcOpen ? (
+        // bluecards test view related encouragements
+        <div>
+          <Draggable cancel=".interactable">
+            <div
+              className={bigScreen ? 'draggable-encouragement' : 'draggable-encouragement-mobile'}
+            >
+              <div className="col-flex">
+                <div className="flex-reverse">
+                  <Icon
+                    className="interactable"
+                    style={{
+                      cursor: 'pointer',
+                      marginBottom: '.25em',
+                    }}
+                    size="large"
+                    name="close"
+                    onClick={handleCloseClick}
+                  />
+                </div>
+                <FlashcardsHeaderChooser handleNewDeck={handleNewDeck} />
+                <div className="interactable" style={{ overflow: 'auto', maxHeight: 300 }}>
+                  <PreviousStoriesBlueFlashcards />
+                </div>
               </div>
             </div>
           </Draggable>
