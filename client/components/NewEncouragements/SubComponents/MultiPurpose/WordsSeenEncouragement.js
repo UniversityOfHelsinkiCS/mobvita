@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom'
 import { images, backgroundColors } from 'Utilities/common'
 import { useSelector } from 'react-redux'
 
-const WordsSeenExerciseEncouragement = () => {
+const WordsSeenEncouragement = () => {
   const userData = useSelector(state => state.user.data.user)
   const { enable_recmd } = useSelector(({ user }) => user.data.user)
 
@@ -41,4 +41,4 @@ const WordsSeenExerciseEncouragement = () => {
   )
 }
 
-export default WordsSeenExerciseEncouragement
+export default WordsSeenEncouragement

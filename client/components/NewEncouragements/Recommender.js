@@ -28,12 +28,13 @@ import DailyStoriesDraggable from './SubComponents/HomeView/DailyStoriesDraggabl
 import WelcomeBackEncouragement from './SubComponents/HomeView/WelcomeBackEncouragement'
 import SharedIncompleteStoryInGroup from './SubComponents/HomeView/SharedIncompleteStoryInGroup'
 import GrammarReviewExerciseEncouragement from './SubComponents/PracticeView/GrammarReviewExerciseEncouragement'
-import WordsSeenExerciseEncouragement from './SubComponents/PracticeView/WordsSeenExerciseEncouragement'
+import WordsSeenEncouragement from './SubComponents/MultiPurpose/WordsSeenEncouragement'
 import StoryCompletedToBluecardsExerciseEncouragement from './SubComponents/PracticeView/StoryCompletedToBluecardsExerciseEncouragement'
 import ExerciseEncouragementHeader from './SubComponents/PracticeView/ExerciseEncouragementHeader'
 import NewWordsInteractedExerciseEncouragement from './SubComponents/PracticeView/NewWordsInteractedExerciseEncouragement'
 import BackToLibraryFromFlashcards from './SubComponents/FlashcardView/BackToLibraryFromFlashcards'
 import TryAnotherBatch from './SubComponents/FlashcardView/TryAnotherBatch'
+import FlashcardsProgress from './SubComponents/FlashcardView/FlashcardsProgress'
 
 const Recommender = () => {
   const userData = useSelector(state => state.user.data.user)
@@ -146,13 +147,13 @@ const Recommender = () => {
         // when the user goes to vocabulary chart on progress page and has bluecards to show encouragement
         // also comes up when user enters the flashcards tab
         <div>
-            <Draggable cancel=".interactable">
+          <Draggable cancel=".interactable">
             <div
-                className={bigScreen ? 'draggable-encouragement' : 'draggable-encouragement-mobile'}
-              >
-                <div className="col-flex">
+              className={bigScreen ? 'draggable-encouragement' : 'draggable-encouragement-mobile'}
+            >
+              <div className="col-flex">
                 <div className="flex-reverse">
-                    <Icon
+                  <Icon
                     className="interactable"
                     style={{
                       cursor: 'pointer',
@@ -162,17 +163,17 @@ const Recommender = () => {
                     name="close"
                     onClick={handleCloseClick}
                   />
-                  </div>
+                </div>
                 <div className="col-flex">
-                    <div className="interactable" style={{ overflow: 'auto', maxHeight: 300 }}>
+                  <div className="interactable" style={{ overflow: 'auto', maxHeight: 300 }}>
                     <ConfirmBlueCardsEncouragement />
                   </div>
-                    <TurnOffRecommendations />
-                  </div>
+                  <TurnOffRecommendations />
+                </div>
               </div>
-              </div>
+            </div>
           </Draggable>
-          </div>
+        </div>
       ) : isInPracticeView && open ? (
         // practice view related encouragements
         // this is the exercise encouragement draggable
@@ -203,7 +204,7 @@ const Recommender = () => {
                     <LeaderboardEncouragement />
                     <StoryCompletedToBluecardsExerciseEncouragement />
                     <LatestIncompleteStory />
-                    <WordsSeenExerciseEncouragement />
+                    <WordsSeenEncouragement />
                     <NewWordsInteractedExerciseEncouragement />
                     <GrammarReviewExerciseEncouragement />
                   </div>
@@ -267,6 +268,8 @@ const Recommender = () => {
                 <FlashcardsHeaderChooser handleNewDeck={handleNewDeck} />
                 <div className="interactable" style={{ overflow: 'auto', maxHeight: 300 }}>
                   <PreviousStoriesBlueFlashcards />
+                  <WordsSeenEncouragement />
+                  <FlashcardsProgress />
                 </div>
               </div>
             </div>
