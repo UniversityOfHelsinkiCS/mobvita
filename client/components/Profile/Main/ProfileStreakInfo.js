@@ -4,10 +4,10 @@ import { images } from 'Utilities/common'
 import { FormattedHTMLMessage, FormattedMessage } from 'react-intl'
 import { useSelector, useDispatch } from 'react-redux'
 import { getPracticeHistory } from 'Utilities/redux/practiceHistoryReducer'
+import { Icon, Popup } from 'semantic-ui-react'
 
 const ProfileStreakInfo = () => {
   const dispatch = useDispatch()
-
   const { streakToday, daysStreaked } = useSelector(state => state.practiceHistory)
   const streakBroken = daysStreaked === 0 && streakToday === 'not_streaked'
 
@@ -38,10 +38,16 @@ const ProfileStreakInfo = () => {
             <br />
             <FormattedMessage id="start-streak" />
             &nbsp;
-            <Link className="interactable" to="/library">
-              <FormattedMessage id="do-snippets" />
-            </Link>
-            .
+            <Popup
+              content={
+                <Link className="interactable" to="/library">
+                  <FormattedMessage id="do-snippets" />
+                </Link>
+              }
+              trigger={<Icon name="info circle" size="small" color="grey" />}
+              on="click"
+              position="top center"
+            />
           </div>
         )}
         {streakToday === 'streaked' && (
@@ -55,9 +61,16 @@ const ProfileStreakInfo = () => {
             <br />
             <FormattedMessage id="continue-streak" />
             &nbsp;
-            <Link className="interactable" to="/library">
-              <FormattedMessage id="do-snippets" />
-            </Link>
+            <Popup
+              content={
+                <Link className="interactable" to="/library">
+                  <FormattedMessage id="do-snippets" />
+                </Link>
+              }
+              trigger={<Icon name="info circle" size="small" color="grey" />}
+              on="click"
+              position="top center"
+            />
             !
           </div>
         )}
