@@ -9,17 +9,19 @@ const StreakToast = () => {
 
   let practiceText = ''
   const practiceView = history.location.pathname.includes('practice')
+  const flashcardView = history.location.pathname.includes('flashcard')
 
   if (practiceView) {
     practiceText = `${capitalize(
       intl.formatMessage({
-        id: 'do-snippets',
+        id: 'snippets-done',
       })
     )}`
-  } else {
+  }
+  if (flashcardView) {
     practiceText = `${capitalize(
       intl.formatMessage({
-        id: 'do-flashcards',
+        id: 'flashcards-done',
       })
     )}`
   }

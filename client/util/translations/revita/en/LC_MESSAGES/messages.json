@@ -1163,7 +1163,7 @@
     "start": "Start",
     "test-strat-modal-info-content": "<INSERT TEST INFO HERE>",
     "test-start-modal-info-content": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
-    "adaptive-test-info-text": "The Quick Test helps you assess your skill level.  Revita selects questions for you depending on how you do on the previous questions.  The test will have about 40-60 questions, depending on your replies.  Try to answer each question in 30 seconds or less!\n<br/><br/>\nAt the end of the test, you will get a summary of your answers, and an estimate of your CEFR level!",
+    "adaptive-test-info-text": "The Quick Test helps you assess your skill level.  Revita selects questions for you depending on how you do on the previous questions.  The test will have about 50-75 questions, depending on your replies.  Try to answer each question in 30 seconds or less!\n<br/><br/>\nAt the end of the test, you will get a summary of your answers, and an estimate of your CEFR level!",
     "exhaustive-test-info-text": "The Long Test includes questions about topics chosen by the teacher. Try to answer each question within 30 seconds!",
     "controlled-practice-info-text": "Controlled. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco.",
     "controlled-story-info-text": "Controlled. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco.",
@@ -1495,10 +1495,10 @@
     "streak-done": "Your streak is going on strong for <b>{daysStreaked}</b> days!",
     "streak-undone": "Keep you streak going!",
     "streak-broken": "Your streak is interrupted!",
-    "continue-streak": "Continue your streak by doing",
+    "continue-streak": "Ways to continue your streak",
     "start-streak": "Ways to maintain your streak today:",
-    "do-snippets": "10 story snippets",
-    "do-flashcards": "a batch of flashcards",
+    "do-snippets": "do 10 story snippets",
+    "do-flashcards": "do 20 flashcards",
     "include-into-lesson": "Include in lesson",
     "included-in-lesson": "Included",
     "lesson-setup": "Lesson setup",
@@ -1506,5 +1506,7 @@
     "lesson-setup-message": "Here you can choose the topic of the story in the lesson.",
     "topic-singular": "Topic",
     "streak_just_done": "Your streak continues!",
-    "exclude-all-topics": "Remove all grammar topics"
+    "exclude-all-topics": "Remove all grammar topics",
+    "snippets-done": "10 story snippets completed",
+    "flashcards-done": "20 flashcards completed"
 }

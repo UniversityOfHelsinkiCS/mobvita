@@ -465,7 +465,7 @@
     "start": "开始",
     "control-story-info-text": "故事中的练习由老师指定。请在计时结束前回答每一段的练习。回答错误时你将得到额外尝试的时间。",
     "exhaustive-test-info-text": "长测试中包含老师指定主题的问题。每一个问题请在30秒内作答。",
-    "adaptive-test-info-text": "快速测试能帮助你了解你的水平。Revita将根据之前的回答选择40-60个问题。每一个问题请在30秒内作答。<br/><br/>测试结束后将展示结果以及对你CEFR水平的预估。",
+    "adaptive-test-info-text": "快速测试能帮助你了解你的水平。Revita将根据之前的回答选择50-75个问题。每一个问题请在30秒内作答。<br/><br/>测试结束后将展示结果以及对你CEFR水平的预估。",
     "end-tour": "结束导览",
     "tour-sidebar-message": "你可以在这里打开侧边栏，它包含有用的设置和功能。",
     "tour-practice-now-message": "这里你可以开始练习随机故事。",
@@ -877,5 +877,7 @@
     "lesson-story-topic-message": "您可以在此处设置课程",
     "topic-singular": "主题",
     "streak_just_done": "今天已经练习达标了！",
-    "exclude-all-topics": "清空语法主题"
+    "exclude-all-topics": "清空语法主题",
+    "snippets-done": "10 story snippets completed",
+    "flashcards-done": "20 flashcards completed"
 }

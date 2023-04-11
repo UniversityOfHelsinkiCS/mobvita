@@ -1165,7 +1165,7 @@
     "start": "Начать",
     "test-strat-modal-info-content": "<INSERT TEST INFO HERE>",
     "test-start-modal-info-content": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
-    "adaptive-test-info-text": "Быстрый Тест поможет оценить твой уровень.  Ревита подбирает вопросы в зависимости от предыдущих ответов.  Тест состоит примерно из 40-60 вопросов. Постарайся ответить на каждый вопрос не более чем за 30 секунд!\n<br/><br/>\nВ конце Ревита покажет итог теста и предложит оценку твоего уровня CEFR!",
+    "adaptive-test-info-text": "Быстрый Тест поможет оценить твой уровень.  Ревита подбирает вопросы в зависимости от предыдущих ответов.  Тест состоит примерно из 50-75 вопросов. Постарайся ответить на каждый вопрос не более чем за 30 секунд!\n<br/><br/>\nВ конце Ревита покажет итог теста и предложит оценку твоего уровня CEFR!",
     "exhaustive-test-info-text": "Длинный Тест содержит вопросы на темы, выбранные учителем. Постарайся ответить на каждый вопрос не более чем за 30 секунд!",
     "controlled-practice-info-text": "Controlled. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco.",
     "controlled-story-info-text": "Controlled. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco.",
@@ -1507,5 +1507,7 @@
     "lesson-story-topic-message": "Здесь вы можете настроить урок: темы текстов, из которых Revita будет выбирать упражнения.",
     "topic-singular": "Тема",
     "streak_just_done": "Your streak continues!",
-    "exclude-all-topics": "Remove all grammar topics"
+    "exclude-all-topics": "Remove all grammar topics",
+    "snippets-done": "10 story snippets completed",
+    "flashcards-done": "20 flashcards completed"
 }

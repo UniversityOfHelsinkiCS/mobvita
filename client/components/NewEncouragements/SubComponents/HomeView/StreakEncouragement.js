@@ -32,9 +32,13 @@ const StreakEncouragement = () => {
               <FormattedHTMLMessage id="streak-broken" values={{ daysStreaked }} />
               <br />
               <FormattedMessage id="start-streak" />
-              &nbsp;
+              <br />
               <Link className="interactable" to="/library">
                 <FormattedMessage id="do-snippets" />
+              </Link>
+              &nbsp; / &nbsp;
+              <Link className="interactable" to="/flashcards">
+                <FormattedMessage id="do-flashcards" />
               </Link>
               .
             </div>
@@ -77,9 +81,13 @@ const StreakEncouragement = () => {
               <FormattedHTMLMessage id="streak-undone" values={{ daysStreaked }} />
               <br />
               <FormattedMessage id="continue-streak" />
-              &nbsp;
+              <br />
               <Link className="interactable" to="/library">
                 <FormattedMessage id="do-snippets" />
+              </Link>
+              &nbsp; / &nbsp;
+              <Link className="interactable" to="/flashcards">
+                <FormattedMessage id="do-flashcards" />
               </Link>
               .
             </div>
