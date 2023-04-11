@@ -35,6 +35,8 @@ export const sendActivity = (
   learningLanguage,
   num_correct,
   totalExercises,
+  num_snippets,
+  is_completed
 ) => {
   const route = `/stories/${storyId}/competition`
   const prefix = 'SEND_COMPETE_ACTIVITY'
@@ -46,6 +48,8 @@ export const sendActivity = (
     language: learningLanguage,
     num_correct,
     num_total: totalExercises,
+    num_snippets,
+    is_completed
   }
 
   return callBuilder(route, prefix, 'post', payload)

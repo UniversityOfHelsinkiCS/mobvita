@@ -183,7 +183,9 @@ const SnippetActions = ({ storyId, exerciseCount, playerFinished }) => {
           startTime,
           learningLanguage,
           num_correct,
-          totalExercises
+          totalExercises,
+          snippets.focused.total_num,
+          currentSnippetId() == snippets.focused.total_num - 1
         )
       )
     }
