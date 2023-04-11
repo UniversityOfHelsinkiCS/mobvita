@@ -24,7 +24,7 @@ const AdaptiveTest = ({ showingInfo }) => {
     startImmediately: false,
     timeToUpdate: 100,
   })
-
+  const [willStop, setWillStop] = useState(false)
   const [willPause, setWillPause] = useState(false)
   const [displaySpinner, setDisplaySpinner] = useState(false)
   const [paused, setPaused] = useState(false)
@@ -60,7 +60,8 @@ const AdaptiveTest = ({ showingInfo }) => {
         answer,
         duration,
         currentAdaptiveQuestion.question_id,
-        timedTest
+        timedTest,
+        willStop
       )
     )
   }
@@ -140,7 +141,7 @@ const AdaptiveTest = ({ showingInfo }) => {
                 <Icon
                   size="large"
                   name="stop"
-                  onClick={() => dispatch(resetTests())}
+                  onClick={() => setWillStop(true)}
                   style={{ margin: '0.25em' }}
                 />
               </div>
@@ -164,9 +165,14 @@ const AdaptiveTest = ({ showingInfo }) => {
               </div>
             </div>
             <div className="test-question-container">
-              {willPause && (
+              {willPause && !willStop && (
                 <span className="test-info">
                   <FormattedMessage id="pause-after-you-answer-this-question" />
+                </span>
+              )}
+              {willStop && (
+                <span className="test-info">
+                  <FormattedMessage id="quitting-after-this-question" />
                 </span>
               )}
               {paused && (
@@ -174,6 +180,7 @@ const AdaptiveTest = ({ showingInfo }) => {
                   <FormattedHTMLMessage id="paused-click-to-resume" />
                 </div>
               )}
+
               {answerFailure && (
                 <div className="justify-center mt-lg">
                   <Button onClick={handleTestResumeClick}>

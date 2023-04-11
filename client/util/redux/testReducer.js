@@ -73,7 +73,8 @@ export const sendAdaptiveTestAnswer = (
   answer,
   duration,
   questionId,
-  timedTest
+  timedTest,
+  is_stopped
 ) => {
   const route = `/test/${language}/adaptive/answer`
   const prefix = 'ANSWER_ADAPTIVE_TEST_QUESTION'
@@ -83,6 +84,7 @@ export const sendAdaptiveTestAnswer = (
     duration,
     question_id: questionId,
     timed_test: timedTest,
+    is_stopped
   }
   return callBuilder(route, prefix, 'post', payload)
 }
