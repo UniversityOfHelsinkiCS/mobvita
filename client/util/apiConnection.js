@@ -71,13 +71,13 @@ const handleNewAchievement = (store, newAchievements) => {
   const cachedAchievements = JSON.parse(window.localStorage.getItem('newAchievements'))
   const filteredAchievements = cachedAchievements
     ? newAchievements.filter(
-        achievement =>
-          !cachedAchievements.some(
-            cachedAchievement =>
-              cachedAchievement.name === achievement.name &&
-              cachedAchievement.level === achievement.level
-          )
-      )
+      achievement =>
+        !cachedAchievements.some(
+          cachedAchievement =>
+            cachedAchievement.name === achievement.name &&
+            cachedAchievement.level === achievement.level
+        )
+    )
     : newAchievements
 
   if (filteredAchievements.length > 0) {

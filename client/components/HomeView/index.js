@@ -74,6 +74,9 @@ const HomeviewButtons = ({
   const { hasTests, hasAdaptiveTests } = useSelector(({ metadata }) => metadata)
   const { user } = useSelector(({ user }) => ({ user: user.data }))
 
+  const xp = useSelector(({ xp }) => xp)
+  console.log(xp)
+
   return (
     <div className="homeview-btns-cont">
       <div className="add-new-stories-btn-cont tour-add-new-stories">
