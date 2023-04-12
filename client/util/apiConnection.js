@@ -14,7 +14,7 @@ export const callApi = async (url, method = 'get', data, query) => {
   const headers = token ? { Authorization: `Bearer ${token}` } : {}
 
   return getAxios({
-    method,FormattedHTMLMessage
+    method,
     url,
     data,
     headers,
@@ -100,6 +100,7 @@ const handleStreakState = (store, streakState) => {
 }
 
 const handleXP = (store, xp) => {
+
   store.dispatch({ type: 'SET_XP', xp })
 }
 
