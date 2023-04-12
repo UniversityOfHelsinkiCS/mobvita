@@ -14,7 +14,7 @@ export const callApi = async (url, method = 'get', data, query) => {
   const headers = token ? { Authorization: `Bearer ${token}` } : {}
 
   return getAxios({
-    method,
+    method,FormattedHTMLMessage
     url,
     data,
     headers,
@@ -99,6 +99,14 @@ const handleStreakState = (store, streakState) => {
   store.dispatch({ type: 'SET_STREAK_STATE', streak: streakState })
 }
 
+const handleXP = (store, xp) => {
+  store.dispatch({ type: 'SET_XP', xp })
+}
+
+const handleLevel = (store, level) => {
+  store.dispatch({ type: 'SET_LEVEL', level })
+}
+
 const handleNewVocabulary = (store, newVocabulary) => {
   if (newVocabulary) {
     store.dispatch({
@@ -143,6 +151,9 @@ export const handleRequest = store => next => async action => {
       }
 
       handleStreakState(store, res.data.is_today_streaked)
+
+      handleXP(store, res.data.xp_today)
+      handleLevel(store, res.data.level)
 
       const requestSentAt = new Date()
       window.localStorage.setItem('last_request', requestSentAt)

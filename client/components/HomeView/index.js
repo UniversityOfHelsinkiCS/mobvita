@@ -74,6 +74,9 @@ const HomeviewButtons = ({
   const { hasTests, hasAdaptiveTests } = useSelector(({ metadata }) => metadata)
   const { user } = useSelector(({ user }) => ({ user: user.data }))
 
+  const xp = useSelector(({ xp }) => xp)
+  console.log(xp)
+
   return (
     <div className="homeview-btns-cont">
       <div className="add-new-stories-btn-cont tour-add-new-stories">
@@ -162,9 +165,7 @@ const HomeviewButtons = ({
       )}
       {hiddenFeatures && (
         <>
-          <Button onClick={() => history.push('/test-construction')}>
-            Grammar check
-          </Button>
+          <Button onClick={() => history.push('/test-construction')}>Grammar check</Button>
           <Button style={{ padding: '5em' }} onClick={() => history.push('test-debug')}>
             Feedback check
           </Button>
@@ -206,8 +207,7 @@ const HomeView = () => {
   const welcomeView = history.location.pathname.endsWith('/welcome')
   const homeView = history.location.pathname.endsWith('/home')
   const showDAModal = open && homeView && !userIsAnonymous
-  const showWelcomeModal =
-    open && welcomeView && !userIsAnonymous && !userData.is_new_user
+  const showWelcomeModal = open && welcomeView && !userIsAnonymous && !userData.is_new_user
   useEffect(() => {
     dispatch(getGroups())
     if (showDAModal && !showWelcomeModal) {

@@ -47,6 +47,8 @@ import modal from './modalReducer'
 import topicsBox from './topicsBoxReducer'
 import practiceHistory from './practiceHistoryReducer'
 import streak from './streakReducer'
+import xp from './xpReducer'
+import level from './levelReducer'
 
 const rootReducer = combineReducers({
   stories,
@@ -95,7 +97,9 @@ const rootReducer = combineReducers({
   modal,
   topicsBox,
   practiceHistory,
-  streak
+  streak,
+  xp,
+  level
 })
 
 export default (state, action) =>

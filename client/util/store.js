@@ -30,6 +30,9 @@ const sentryReduxEnhancer = Sentry.createReduxEnhancer({
       metadata: state.metadata,
       groups: state.groups,
       practiceHistory: state.practiceHistory,
+      streak: state.streak,
+      xp: state.xp,
+      level: state.level
     }
   },
 })
