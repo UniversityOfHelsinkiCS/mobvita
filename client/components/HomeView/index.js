@@ -75,7 +75,7 @@ const HomeviewButtons = ({
   const { user } = useSelector(({ user }) => ({ user: user.data }))
 
   const xp = useSelector(({ xp }) => xp)
-  console.log(xp)
+  //console.log(xp)
 
   return (
     <div className="homeview-btns-cont">

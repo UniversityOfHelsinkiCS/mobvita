@@ -14,7 +14,7 @@ export const callApi = async (url, method = 'get', data, query) => {
   const headers = token ? { Authorization: `Bearer ${token}` } : {}
 
   return getAxios({
-    method,FormattedHTMLMessage
+    method,
     url,
     data,
     headers,
@@ -71,13 +71,13 @@ const handleNewAchievement = (store, newAchievements) => {
   const cachedAchievements = JSON.parse(window.localStorage.getItem('newAchievements'))
   const filteredAchievements = cachedAchievements
     ? newAchievements.filter(
-        achievement =>
-          !cachedAchievements.some(
-            cachedAchievement =>
-              cachedAchievement.name === achievement.name &&
-              cachedAchievement.level === achievement.level
-          )
-      )
+      achievement =>
+        !cachedAchievements.some(
+          cachedAchievement =>
+            cachedAchievement.name === achievement.name &&
+            cachedAchievement.level === achievement.level
+        )
+    )
     : newAchievements
 
   if (filteredAchievements.length > 0) {
