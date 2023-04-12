@@ -35,17 +35,18 @@ const ProfileStreakInfo = () => {
         {streakBroken && (
           <div>
             <FormattedHTMLMessage id="streak-broken" values={{ daysStreaked }} />
-            <br />
-            <FormattedMessage id="start-streak" />
             &nbsp;
             <Popup
-              content={
-                <Link className="interactable" to="/library">
-                  <FormattedMessage id="do-snippets" />
-                </Link>
-              }
+              content={<>
+              <FormattedMessage id="start-streak" />
+              :
+              <br />
+              <FormattedMessage id="do-snippets" />
+              &nbsp; / &nbsp;
+              <br />
+              <FormattedMessage id="do-flashcards" />
+              </>}
               trigger={<Icon name="info circle" size="small" color="grey" />}
-              on="click"
               position="top center"
             />
           </div>
