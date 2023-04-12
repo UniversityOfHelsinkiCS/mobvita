@@ -7,7 +7,6 @@ import useWindowDimensions from 'Utilities/windowDimensions'
 import ProgressStatistics from './ProgressStatistics'
 import ProfileInfo from './ProfileInfo'
 import ProfileStreakInfo from './ProfileStreakInfo'
-import SocialsList from './SocialsList'
 
 const DesktopView = () => {
   return (

@@ -6,8 +6,6 @@ import Progress from 'Components/Profile/Progress'
 import Main from './Main'
 import Account from './Account'
 import Settings from './Settings'
-import Following from './Following'
-import { hiddenFeatures } from 'Utilities/common'
 
 export default function Profile({ location }) {
   const intl = useIntl()
