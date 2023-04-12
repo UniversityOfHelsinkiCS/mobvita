@@ -110,16 +110,16 @@ export default function NavBar() {
       } else {
         dispatch({ type: 'PROGRESS_TOUR_RESTART' })
       }
-    } else if (history.location.pathname.includes('lessons') && hiddenFeatures) {
+    } else if (history.location.pathname.includes('lessons')) {
       dispatch(sidebarSetOpen(false))
       dispatch({ type: 'LESSONS_TOUR_RESTART' })
     } else if (history.location.pathname.includes('library')) {
       dispatch(sidebarSetOpen(false))
       dispatch({ type: 'LIBRARY_TOUR_RESTART' })
-    } else if (history.location.pathname.includes('preview') && hiddenFeatures) {
+    } else if (history.location.pathname.includes('preview')) {
       dispatch(sidebarSetOpen(false))
       dispatch({ type: 'PRACTICE_TOUR_RESTART' })
-    } else if (history.location.pathname.includes('/practice') && hiddenFeatures) {
+    } else if (history.location.pathname.includes('/practice')) {
       dispatch(sidebarSetOpen(false))
       dispatch({ type: 'PRACTICE_TOUR_ALTERNATIVE' })
     } else {
