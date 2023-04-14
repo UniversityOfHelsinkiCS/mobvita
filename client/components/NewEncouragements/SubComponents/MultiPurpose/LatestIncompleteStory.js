@@ -13,7 +13,7 @@ const LatestIncompleteStory = () => {
   const [latestIncompleteStory, setLatestIncompleteStory] = useState(null)
 
   useEffect(() => {
-    console.log(`incomplete stories: ${incompleteStories}`)
+    //console.log(`incomplete stories: ${incompleteStories}`)
     if (incompleteStories?.length > 0) {
       const listOfLatest = incompleteStories.filter(
         story => story.last_snippet_id !== story.num_snippets - 1

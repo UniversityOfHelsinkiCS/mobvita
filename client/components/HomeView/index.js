@@ -75,7 +75,7 @@ const HomeviewButtons = ({
   const { user } = useSelector(({ user }) => ({ user: user.data }))
 
   const xp = useSelector(({ xp }) => xp)
-  console.log(xp)
+  //console.log(xp)
 
   return (
     <div className="homeview-btns-cont">
@@ -241,7 +241,7 @@ const HomeView = () => {
 
   // Change this to true when developing new encouragement!
   // REMEMBER TO SWITCH BACK TO FALSE BEFORE PUSHING!!!
-  const TESTING_NEW_ENCOURAGEMENT = false
+  const TESTING_NEW_ENCOURAGEMENT = true
 
   return (
     <div className="cont-tall cont flex-col auto gap-row-sm pt-lg blue-bg">
