@@ -7,6 +7,8 @@ import useWindowDimensions from 'Utilities/windowDimensions'
 import ProgressStatistics from './ProgressStatistics'
 import ProfileInfo from './ProfileInfo'
 import ProfileStreakInfo from './ProfileStreakInfo'
+import UserLevelInfo from './UserLevelInfo'
+import { hiddenFeatures } from 'Utilities/common'
 
 const DesktopView = () => {
   return (
@@ -16,6 +18,7 @@ const DesktopView = () => {
           <Grid.Column className="flex-col gap-row-nm">
             <ProfileInfo />
             <ProfileStreakInfo />
+            {hiddenFeatures && <UserLevelInfo />}
             <ProgressStatistics />
             <EloChart />
             <MedalSummary />
