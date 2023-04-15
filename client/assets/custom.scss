@@ -2450,6 +2450,20 @@ label.file-upload-btn {
   color: rgb(112, 114, 120); 
 }
 
+.xp-wrapper {
+  border: 2px solid #ccc;
+  border-radius: 1rem;
+  height: '1.5em',
+}
+
+.xp-wrapper span {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  font-weight: 650;
+  color: #232b2b;
+}
+
 .date-pickers-container {
   padding: 1em;
   border: 1px solid rgb(189, 202, 212);
