@@ -1,36 +1,34 @@
 import React from 'react'
 import { Grid } from 'semantic-ui-react'
-import Following from '../Following'
 import EloChart from 'Components/HomeView/EloChart'
 import MedalSummary from 'Components/HomeView/MedalSummary'
 import useWindowDimensions from 'Utilities/windowDimensions'
+import { hiddenFeatures } from 'Utilities/common'
+import Following from '../Following'
 import ProgressStatistics from './ProgressStatistics'
 import ProfileInfo from './ProfileInfo'
 import ProfileStreakInfo from './ProfileStreakInfo'
 import UserLevelInfo from './UserLevelInfo'
-import { hiddenFeatures } from 'Utilities/common'
 
 const DesktopView = () => {
   return (
     <div className="cont ps-nm">
       <Grid columns={2} divided>
-          <Grid.Column className="flex-col gap-row-nm">
-            <Grid.Row>
-              <Grid.Column>
-                <ProfileInfo />
-              </Grid.Column>
-              <Grid.Column>
-                {hiddenFeatures && <UserLevelInfo />}
-              </Grid.Column>
-            </Grid.Row>
-            <ProfileStreakInfo />
-            <ProgressStatistics />
-            <EloChart />
-            <MedalSummary />
-          </Grid.Column>
-          <Grid.Column>
-            <Following />
-          </Grid.Column>
+        <Grid.Column className="flex-col gap-row-nm">
+          <Grid.Row>
+            <Grid.Column>
+              <ProfileInfo />
+            </Grid.Column>
+            <Grid.Column>{hiddenFeatures && <UserLevelInfo />}</Grid.Column>
+          </Grid.Row>
+          <ProfileStreakInfo />
+          <ProgressStatistics />
+          <EloChart />
+          <MedalSummary />
+        </Grid.Column>
+        <Grid.Column>
+          <Following />
+        </Grid.Column>
       </Grid>
     </div>
   )
