@@ -38,11 +38,9 @@ const XpBar = ({ user }) => {
 const UserLevel = ({ user }) => {
   const { level } = user
   return (
-    <div className="justify-center gap-col-nm pt-lg pb-lg">
-      <div className="stat">
-        <span> your user level is </span>
-        <span>{level}</span>
-      </div>
+    <div className="justify-center gap-col-nm">
+      <div className="bold" as="h2"> Level </div>
+      <div className="level ps-lg">{level}</div>
     </div>
   )
 }
@@ -51,10 +49,10 @@ const UserLevelInfo = () => {
   const user = useSelector(state => state.user.data.user)
 
   return (
-    <>
+    <div className="ps-lg">
       <UserLevel user={user} />
       <XpBar user={user} />
-    </>
+    </div>
   )
 }
 

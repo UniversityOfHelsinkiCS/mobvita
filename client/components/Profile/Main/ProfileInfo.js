@@ -6,10 +6,10 @@ const ProfileInfo = () => {
   const { username } = useSelector(({ user }) => user.data.user)
   return (
     <div>
-      <div className="sm-label">
+      <div className="bold ps-lg" as="h2">
         <FormattedMessage id="username" />
       </div>
-      <span className="account-info-item">{username}</span>
+      <span className="account-info-item ps-lg">{username}</span>
     </div>
   )
 }

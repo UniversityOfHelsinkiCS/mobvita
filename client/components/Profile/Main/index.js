@@ -14,11 +14,16 @@ const DesktopView = () => {
   return (
     <div className="cont ps-nm">
       <Grid columns={2} divided>
-        <Grid.Row>
           <Grid.Column className="flex-col gap-row-nm">
-            <ProfileInfo />
+            <Grid.Row>
+              <Grid.Column>
+                <ProfileInfo />
+              </Grid.Column>
+              <Grid.Column>
+                {hiddenFeatures && <UserLevelInfo />}
+              </Grid.Column>
+            </Grid.Row>
             <ProfileStreakInfo />
-            {hiddenFeatures && <UserLevelInfo />}
             <ProgressStatistics />
             <EloChart />
             <MedalSummary />
@@ -26,7 +31,6 @@ const DesktopView = () => {
           <Grid.Column>
             <Following />
           </Grid.Column>
-        </Grid.Row>
       </Grid>
     </div>
   )
