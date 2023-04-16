@@ -61,20 +61,21 @@ const ProfileStreakInfo = () => {
         {!streakBroken && streakToday === 'not_streaked' && (
           <div>
             <FormattedHTMLMessage id="streak-undone" values={{ daysStreaked }} />
-            <br />
-            <FormattedMessage id="continue-streak" />
-            &nbsp;
             <Popup
               content={
-                <Link className="interactable" to="/library">
+                <>
+                  <FormattedMessage id="continue-streak" />
+                  :
+                  <br />
                   <FormattedMessage id="do-snippets" />
-                </Link>
+                  &nbsp; / &nbsp;
+                  <br />
+                  <FormattedMessage id="do-flashcards" />
+                </>
               }
               trigger={<Icon name="info circle" size="small" color="grey" />}
-              on="click"
               position="top center"
             />
-            !
           </div>
         )}
       </div>
