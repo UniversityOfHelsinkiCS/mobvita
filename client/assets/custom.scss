@@ -2453,15 +2453,14 @@ label.file-upload-btn {
 .xp-wrapper {
   border: 2px solid #ccc;
   border-radius: 1rem;
-  height: '1.5em',
-}
+  height: '1.5em';
+  text-align:center;
 
-.xp-wrapper span {
-  position: absolute;
-  left: 50%;
-  transform: translateX(-50%);
-  font-weight: 650;
+& span {
+  position: relative;
+  font-weight: 500;
   color: #232b2b;
+}
 }
 
 .date-pickers-container {

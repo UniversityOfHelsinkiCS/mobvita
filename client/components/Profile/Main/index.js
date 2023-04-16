@@ -34,12 +34,38 @@ const DesktopView = () => {
   )
 }
 
-const MobileView = () => {
+/* const MobileView = () => {
   return (
     <div>
       <ProfileInfo />
       <ProfileStreakInfo />
+      {hiddenFeatures && <UserLevelInfo />}
       <ProgressStatistics />
+      <div className="flex-col" style={{ gap: '1.5em', marginBottom: '.5em' }}>
+        <EloChart width="100%" />
+        <MedalSummary />
+      </div>
+      <Following />
+    </div>
+  )
+}
+*/
+
+const MobileView = () => {
+  return (
+    <div className="cont ps-nm">
+      <Grid columns={1} divided>
+        <Grid.Column className="flex-col gap-row-nm">
+          <Grid.Row>
+            <Grid.Column><ProfileInfo /></Grid.Column>
+            <Grid.Column>{hiddenFeatures && <UserLevelInfo />}</Grid.Column>
+          </Grid.Row>
+        </Grid.Column>
+      </Grid>
+      <div className="pt-nm">
+        <ProfileStreakInfo />
+        <ProgressStatistics />
+      </div>
       <div className="flex-col" style={{ gap: '1.5em', marginBottom: '.5em' }}>
         <EloChart width="100%" />
         <MedalSummary />

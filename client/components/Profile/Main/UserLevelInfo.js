@@ -10,14 +10,15 @@ const XpBar = ({ user }) => {
 
   return (
     <div className="xp-wrapper">
-      <span>{`${currentLevelXp} / ${requiredXpToNextLevel}`}</span>
       <div
         className="progress-bar progress-bar-striped bg-info"
         style={{ width: `${progressPercentage * 100}%` }}
         aria-valuenow={progressPercentage}
         aria-valuemin="0"
         aria-valuemax="100"
-      />
+      >
+        <span>{`${currentLevelXp} / ${requiredXpToNextLevel}`}</span>
+      </div>
     </div>
   )
 }
