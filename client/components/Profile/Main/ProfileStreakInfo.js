@@ -18,6 +18,7 @@ const ProfileStreakInfo = () => {
   return (
     <div className="pt-md">
       <div className="flex" style={{ alignItems: 'center' }}>
+        <br />
         {streakToday === 'streaked' ? (
           <img
             src={images.flame}
@@ -34,6 +35,7 @@ const ProfileStreakInfo = () => {
 
         {streakBroken && (
           <div>
+            <br />
             <FormattedHTMLMessage id="streak-broken" values={{ daysStreaked }} />
             &nbsp;
             <Popup
@@ -55,6 +57,7 @@ const ProfileStreakInfo = () => {
         )}
         {streakToday === 'streaked' && (
           <div>
+            <br />
             <FormattedHTMLMessage id="streak-done" values={{ daysStreaked }} />
           </div>
         )}

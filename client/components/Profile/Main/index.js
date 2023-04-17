@@ -8,7 +8,8 @@ import Following from '../Following'
 import ProgressStatistics from './ProgressStatistics'
 import ProfileInfo from './ProfileInfo'
 import ProfileStreakInfo from './ProfileStreakInfo'
-import UserLevelInfo from './UserLevelInfo'
+import { UserLevel } from './UserLevelInfo'
+import { XpBar } from './UserLevelInfo'
 
 const DesktopView = () => {
   return (
@@ -17,11 +18,23 @@ const DesktopView = () => {
         <Grid.Column className="flex-col gap-row-nm">
           <Grid.Row>
             <Grid.Column>
-              <ProfileInfo />
+              <div className="prof-info">
+                <ProfileInfo />
+              </div>
+              <div className="streak-info">
+                <ProfileStreakInfo />
+              </div>
             </Grid.Column>
-            <Grid.Column>{hiddenFeatures && <UserLevelInfo />}</Grid.Column>
           </Grid.Row>
-          <ProfileStreakInfo />
+          <Grid.Row>
+            <Grid.Column>
+              <div className="level-info">{hiddenFeatures && <UserLevel />}</div>
+            </Grid.Column>
+            <Grid.Column>
+              <div className="xp-bar">{hiddenFeatures && <XpBar />}</div>
+            </Grid.Column>
+          </Grid.Row>
+
           <ProgressStatistics />
           <EloChart />
           <MedalSummary />
@@ -57,7 +70,9 @@ const MobileView = () => {
       <Grid columns={1} divided>
         <Grid.Column className="flex-col gap-row-nm">
           <Grid.Row>
-            <Grid.Column><ProfileInfo /></Grid.Column>
+            <Grid.Column>
+              <ProfileInfo />
+            </Grid.Column>
             <Grid.Column>{hiddenFeatures && <UserLevelInfo />}</Grid.Column>
           </Grid.Row>
         </Grid.Column>
