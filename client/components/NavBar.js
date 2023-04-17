@@ -89,6 +89,7 @@ export default function NavBar() {
     dispatch(logout())
     history.push('/')
   }
+  const tourOngoing = useSelector(state => state.tour.run)
   const showProfileDropdown = useSelector(state => state.dropdown.showProfileDropdown)
   const profileDropdownRef = useRef()
 
@@ -198,7 +199,7 @@ export default function NavBar() {
     dispatch(getPracticeHistory(start_query_date, date_now))
   }, [])
 
-  
+
 
   const storyElo =
     exerciseHistory && exerciseHistory.length > 0
@@ -380,46 +381,51 @@ export default function NavBar() {
                   <Button className="tour-button" onClick={handleTourStart}>
                     <img src={images.direction} alt="direction icon" width="21" height="21" />
                   </Button>
-
-                  <NavDropdown
-                    className="navbar-dropdown-icon-cont"
-                    ref={profileDropdownRef}
-                    onClick={handleProfileButtonCLick}
-                    show={showProfileDropdown}
-                    title={
-                      <Icon
-                        className="navbar-dropdown-icon"
-                        data-cy="navbar-user-dropdown"
-                        name="user outline"
-                        size="large"
-                      />
-                    }
-                  >
-                    {user.user.email === 'anonymous_email' && (
-                      <>
-                        <NavDropdown.Item
-                          className="navbar-register-button"
-                          as={Link}
-                          to="/register"
-                        >
-                          <FormattedMessage id="Register" />
-                        </NavDropdown.Item>
-                        <NavDropdown.Divider />
-                        <NavDropdown.Item onClick={signOut}>
-                          <FormattedMessage id="Login" />
-                        </NavDropdown.Item>
-                      </>
-                    )}
-
-                    {user.user.email !== 'anonymous_email' && (
-                      <>
-                        <span className="bold user-icon" style={{ padding: '1.5em' }}>
-                          {user.user.username}
-                        </span>
-                        <NavDropdown.Divider />
+                  {/*If tour is ongoing, then render the dropdown
+                    using the manual 'show' variable. These had to be separeted
+                    because during the tour it needs to be opened using the 'show' variable,
+                    but normally we don't want this because that disables the function that 
+                    closes the dropdown when the user clicks elsewhere */}
+                  {tourOngoing && (
+                    <NavDropdown
+                      className="navbar-dropdown-icon-cont"
+                      ref={profileDropdownRef}
+                      onClick={handleProfileButtonCLick}
+                      show={showProfileDropdown}
+                      title={
+                        <Icon
+                          className="navbar-dropdown-icon"
+                          data-cy="navbar-user-dropdown"
+                          name="user outline"
+                          size="large"
+                        />
+                      }
+                    >
+                      {user.user.email === 'anonymous_email' && (
+                        <>
                           <NavDropdown.Item
-                            className="profile-button" 
-                            as={Link} 
+                            className="navbar-register-button"
+                            as={Link}
+                            to="/register"
+                          >
+                            <FormattedMessage id="Register" />
+                          </NavDropdown.Item>
+                          <NavDropdown.Divider />
+                          <NavDropdown.Item onClick={signOut}>
+                            <FormattedMessage id="Login" />
+                          </NavDropdown.Item>
+                        </>
+                      )}
+
+                      {user.user.email !== 'anonymous_email' && (
+                        <>
+                          <span className="bold user-icon" style={{ padding: '1.5em' }}>
+                            {user.user.username}
+                          </span>
+                          <NavDropdown.Divider />
+                          <NavDropdown.Item
+                            className="profile-button"
+                            as={Link}
                             to="/profile/main"
                           >
                             <FormattedMessage id="Profile" />
@@ -428,15 +434,72 @@ export default function NavBar() {
                             className="progress-button"
                             as={Link}
                             to="/profile/progress"
-                          >                          
-                           <FormattedMessage id="Progress" />
+                          >
+                            <FormattedMessage id="Progress" />
                           </NavDropdown.Item>
                           <NavDropdown.Item data-cy="navbar-logout-button" onClick={signOut}>
                             <FormattedMessage id="sign-out" />
                           </NavDropdown.Item>
-                      </>
-                    )}
-                  </NavDropdown>
+                        </>
+                      )}
+                    </NavDropdown>
+                  )}
+                  {!tourOngoing && (
+                    <NavDropdown
+                      className="navbar-dropdown-icon-cont"
+                      ref={profileDropdownRef}
+                      title={
+                        <Icon
+                          className="navbar-dropdown-icon"
+                          data-cy="navbar-user-dropdown"
+                          name="user outline"
+                          size="large"
+                        />
+                      }
+                    >
+                      {user.user.email === 'anonymous_email' && (
+                        <>
+                          <NavDropdown.Item
+                            className="navbar-register-button"
+                            as={Link}
+                            to="/register"
+                          >
+                            <FormattedMessage id="Register" />
+                          </NavDropdown.Item>
+                          <NavDropdown.Divider />
+                          <NavDropdown.Item onClick={signOut}>
+                            <FormattedMessage id="Login" />
+                          </NavDropdown.Item>
+                        </>
+                      )}
+
+                      {user.user.email !== 'anonymous_email' && (
+                        <>
+                          <span className="bold user-icon" style={{ padding: '1.5em' }}>
+                            {user.user.username}
+                          </span>
+                          <NavDropdown.Divider />
+                          <NavDropdown.Item
+                            className="profile-button"
+                            as={Link}
+                            to="/profile/main"
+                          >
+                            <FormattedMessage id="Profile" />
+                          </NavDropdown.Item>
+                          <NavDropdown.Item
+                            className="progress-button"
+                            as={Link}
+                            to="/profile/progress"
+                          >
+                            <FormattedMessage id="Progress" />
+                          </NavDropdown.Item>
+                          <NavDropdown.Item data-cy="navbar-logout-button" onClick={signOut}>
+                            <FormattedMessage id="sign-out" />
+                          </NavDropdown.Item>
+                        </>
+                      )}
+                    </NavDropdown>
+                  )}
 
                   {user && user.user.last_used_language && (
                     <span style={{ position: 'relative', cursor: 'pointer' }}>
