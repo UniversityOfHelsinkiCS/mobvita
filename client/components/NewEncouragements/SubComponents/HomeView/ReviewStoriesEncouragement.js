@@ -1,4 +1,4 @@
-import { backgroundColors, images } from 'Utilities/common'
+import { backgroundColors, images, showAllEncouragements } from "Utilities/common"
 import { FormattedMessage } from 'react-intl'
 import { Link } from 'react-router-dom'
 import React, { useEffect, useState } from 'react'
@@ -27,7 +27,7 @@ const ReviewStoriesEncouragement = () => {
 
   return (
     <div>
-      {storiesToReview === [] ? null : (
+      {storiesToReview.length === 0 && !showAllEncouragements ? null : (
         <div className="pt-md">
           <div
             className="flex enc-message-body"

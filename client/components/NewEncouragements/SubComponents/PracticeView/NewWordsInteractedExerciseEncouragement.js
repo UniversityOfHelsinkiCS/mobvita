@@ -1,7 +1,7 @@
 import React from 'react'
 import { FormattedMessage, FormattedHTMLMessage } from 'react-intl'
 import { Link } from 'react-router-dom'
-import { images, backgroundColors } from 'Utilities/common'
+import { images, backgroundColors, showAllEncouragements } from "Utilities/common"
 import { useSelector } from 'react-redux'
 
 const NewWordsInteractedExerciseEncouragement = () => {
@@ -11,11 +11,11 @@ const NewWordsInteractedExerciseEncouragement = () => {
 
   return (
     <div>
-      {newVocabulary > 0 && enable_recmd ? (
+      {(newVocabulary > 0 && enable_recmd) || showAllEncouragements ? (
         <div className="pt-md">
           <div
             className="flex enc-message-body"
-            style={{ alignItems: 'center', backgroundColor: backgroundColors[0] }}
+            style={{ alignItems: 'center', backgroundColor: backgroundColors[1] }}
           >
             <img
               src={images.barChart}

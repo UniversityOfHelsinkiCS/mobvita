@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react'
 import { Link } from 'react-router-dom'
 import { FormattedHTMLMessage } from 'react-intl'
 import { useSelector } from 'react-redux'
-import { images, backgroundColors } from 'Utilities/common'
+import { images, backgroundColors, showAllEncouragements } from "Utilities/common"
 
 const SharedIncompleteStoryInGroup = () => {
   const [sharedStory, setSharedStory] = useState(null)
@@ -23,7 +23,7 @@ const SharedIncompleteStoryInGroup = () => {
 
   return (
     <div>
-      {sharedStory === null ?
+      {sharedStory === null && !showAllEncouragements ?
         null :
         <div className="pt-md">
           <div
@@ -41,9 +41,9 @@ const SharedIncompleteStoryInGroup = () => {
                 <li style={{ listStylePosition: 'inside' }}>
                   <Link
                     className="interactable"
-                    to={`/stories/${sharedStory._id}/controlled-practice`}
+                    to={`/stories/${sharedStory?._id}/controlled-practice`}
                   >
-                    <i>{sharedStory.title}</i>
+                    <i>{sharedStory?.title}</i>
                   </Link>
                 </li>
               </ul>

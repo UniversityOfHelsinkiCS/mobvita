@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { useSelector } from 'react-redux'
-import { images, backgroundColors } from 'Utilities/common'
+import { images, backgroundColors, showAllEncouragements } from "Utilities/common"
 import { FormattedMessage } from 'react-intl'
 import { Link } from 'react-router-dom'
 
@@ -31,7 +31,7 @@ const LatestIncompleteStory = () => {
 
   return (
     <div>
-      {latestIncompleteStory && enable_recmd ? (
+      {(latestIncompleteStory && enable_recmd) || showAllEncouragements? (
         <div className="pt-md">
           <div
             className="flex enc-message-body"
@@ -49,9 +49,9 @@ const LatestIncompleteStory = () => {
                 <li style={{ marginTop: '0.5rem', listStylePosition: 'inside' }}>
                   <Link
                     className="interactable"
-                    to={`/stories/${latestIncompleteStory._id}/practice`}
+                    to={`/stories/${latestIncompleteStory?._id}/practice`}
                   >
-                    <i>{latestIncompleteStory.title}</i>
+                    <i>{latestIncompleteStory?.title}</i>
                   </Link>
                 </li>
               </ul>

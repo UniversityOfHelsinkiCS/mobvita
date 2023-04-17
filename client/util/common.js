@@ -175,6 +175,7 @@ export const images = {
 }
 
 export const backgroundColors = ['lightcyan', 'lightyellow', 'antiquewhite', 'lightPink']
+export const showAllEncouragements = false
 
 export const getCategoryColor = category => {
   if (category === 'Grammar') {

@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react'
 import { Link } from 'react-router-dom'
 import { FormattedMessage, FormattedHTMLMessage } from 'react-intl'
 import { useSelector } from 'react-redux'
-import { images, backgroundColors } from 'Utilities/common'
+import { images, backgroundColors, showAllEncouragements } from "Utilities/common"
 
 
 const UnseenStoriesInGroup = () => {
@@ -24,7 +24,7 @@ const UnseenStoriesInGroup = () => {
 
   return (
     <div>
-      {unseenInGroup === null ?
+      {unseenInGroup === null && !showAllEncouragements ?
         null :
         <div className="pt-md">
           <div

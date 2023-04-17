@@ -11,7 +11,7 @@ const BackToLibraryFromFlashcards = () => {
         className="flex enc-message-body"
         style={{
           alignItems: 'center',
-          backgroundColor: backgroundColors[0],
+          backgroundColor: backgroundColors[2],
         }}
       >
         <img

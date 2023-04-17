@@ -12,7 +12,7 @@ import {
   getFlashcards,
   getBlueFlashcards,
 } from 'Utilities/redux/flashcardReducer'
-import { dictionaryLanguageSelector } from 'Utilities/common'
+import { dictionaryLanguageSelector, showAllEncouragements } from 'Utilities/common'
 import FlashcardsHeaderChooser from 'Components/NewEncouragements/SubComponents/FlashcardView/FlashcardsHeaderChooser'
 import ListOfRecentStoriesFlashcardsEncouragement from 'Components/NewEncouragements/SubComponents/FlashcardView/ListOfRecentStoriesFlashcardsEncouragement'
 import PreviousStoriesBlueFlashcards from 'Components/NewEncouragements/SubComponents/FlashcardView/PreviousStoriesBlueFlashcards'
@@ -40,7 +40,9 @@ const Recommender = () => {
   const userData = useSelector(state => state.user.data.user)
   const learningLanguage = userData ? userData.last_used_language : null
   const { cachedStories, pending: metadataPending } = useSelector(({ metadata }) => metadata)
-  const { storyBlueCards, prevStoryBlueCards, storyCardsPending } = useSelector(({ flashcards }) => flashcards)
+  const { storyBlueCards, prevStoryBlueCards, storyCardsPending } = useSelector(
+    ({ flashcards }) => flashcards
+  )
   const { open, fcOpen } = useSelector(({ encouragement }) => encouragement)
   const dictionaryLanguage = useSelector(dictionaryLanguageSelector)
   const { loading } = useSelector(({ incomplete }) => ({
@@ -99,188 +101,236 @@ const Recommender = () => {
 
   return (
     <>
-      {loading ?
-        null
-        : (isInHomeView || isInWelcomeView) && open ? (
-          // home- and welcomeView related encouragements
-          <div>
-            <Draggable cancel=".interactable">
-              <div
-                className={bigScreen ? 'draggable-encouragement' : 'draggable-encouragement-mobile'}
-              >
-                <div className="col-flex">
-                  <div className="flex-reverse">
-                    <Icon
-                      className="interactable"
-                      style={{
-                        cursor: 'pointer',
-                        marginBottom: '.25em',
-                      }}
-                      size="large"
-                      name="close"
-                      onClick={handleCloseClick}
-                    />
-                  </div>
-                  <div className="col-flex">
-                    <div className="interactable" style={{ overflow: 'auto', maxHeight: 300 }}>
-                      <WelcomeBackEncouragement />
-                      <StreakEncouragement />
-                      <LeaderboardEncouragement />
-                      <DailyStoriesEncouragement handleDailyStoriesClick={handleDailyStoriesClick} />
-                      <LatestIncompleteStory />
-                      <ConfirmBlueCardsEncouragement />
-                      <UnseenStoriesInGroup />
-                      <SharedIncompleteStoryInGroup />
-                      <ReviewStoriesEncouragement />
-                    </div>
-                    <TurnOffRecommendations />
-                  </div>
+      {loading ? null : showAllEncouragements && open ? (
+        <div>
+          <Draggable cancel=".interactable">
+            <div
+              className={bigScreen ? 'draggable-encouragement' : 'draggable-encouragement-mobile'}
+            >
+              <div className="col-flex">
+                <div className="flex-reverse">
+                  <Icon
+                    className="interactable"
+                    style={{
+                      cursor: 'pointer',
+                      marginBottom: '.25em',
+                    }}
+                    size="large"
+                    name="close"
+                    onClick={handleCloseClick}
+                  />
+                </div>
+                <WelcomeBackEncouragement />
+                <div className="interactable" style={{ overflow: 'auto', maxHeight: 300 }}>
+                  <StreakEncouragement />
+                  <LeaderboardEncouragement />
+                  <DailyStoriesEncouragement handleDailyStoriesClick={handleDailyStoriesClick} />
+                  <LatestIncompleteStory />
+                  <ConfirmBlueCardsEncouragement />
+                  <UnseenStoriesInGroup />
+                  <SharedIncompleteStoryInGroup />
+                  <ReviewStoriesEncouragement />
+                  <p>end of homeview</p>
+                  <LeaderboardEncouragement />
+                  <StoryCompletedToBluecardsExerciseEncouragement />
+                  <LatestIncompleteStory />
+                  <WordsSeenEncouragement />
+                  <NewWordsInteractedExerciseEncouragement />
+                  <GrammarReviewExerciseEncouragement />
+                  <p>end of practise view</p>
+                  <PreviousStoriesBlueFlashcards />
+                  <WordsSeenEncouragement />
+                  <FlashcardsProgress />
+                  <p>end of bluecard test view</p>
+                  <TryAnotherBatch handleNewDeck={handleNewDeck} />
+                  <ListOfRecentStoriesFlashcardsEncouragement />
+                  <BackToLibraryFromFlashcards />
+                  <p>end of normal flashcard view</p>
                 </div>
               </div>
-            </Draggable>
-            <DailyStoriesDraggable
-              cachedStories={cachedStories}
-              bigScreen={bigScreen}
-              open={dailyStoriesDraggableIsOpen}
-              setOpen={setDailyStoriesDraggableIsOpen}
-            />
-          </div>
-        ) : open &&
-          storyBlueCards &&
-          storyBlueCards.length > 0 &&
-          (isInProgressView || isInFlashcardsView) ? (
-          // when the user goes to vocabulary chart on progress page and has bluecards to show encouragement
-          // also comes up when user enters the flashcards tab
-          <div>
-            <Draggable cancel=".interactable">
-              <div
-                className={bigScreen ? 'draggable-encouragement' : 'draggable-encouragement-mobile'}
-              >
-                <div className="col-flex">
-                  <div className="flex-reverse">
-                    <Icon
-                      className="interactable"
-                      style={{
-                        cursor: 'pointer',
-                        marginBottom: '.25em',
-                      }}
-                      size="large"
-                      name="close"
-                      onClick={handleCloseClick}
-                    />
-                  </div>
-                  <div className="col-flex">
-                    <div className="interactable" style={{ overflow: 'auto', maxHeight: 300 }}>
-                      <ConfirmBlueCardsEncouragement />
-                    </div>
-                    <TurnOffRecommendations />
-                  </div>
+            </div>
+          </Draggable>
+        </div>
+      ) : (isInHomeView || isInWelcomeView) && open ? (
+        // home- and welcomeView related encouragements
+        <div>
+          <Draggable cancel=".interactable">
+            <div
+              className={bigScreen ? 'draggable-encouragement' : 'draggable-encouragement-mobile'}
+            >
+              <div className="col-flex">
+                <div className="flex-reverse">
+                  <Icon
+                    className="interactable"
+                    style={{
+                      cursor: 'pointer',
+                      marginBottom: '.25em',
+                    }}
+                    size="large"
+                    name="close"
+                    onClick={handleCloseClick}
+                  />
                 </div>
-              </div>
-            </Draggable>
-          </div>
-        ) : isInPracticeView && open ? (
-          // practice view related encouragements
-          // this is the exercise encouragement draggable
-          // it differs with css from the basic encouragement draggable
-          <div>
-            <Draggable cancel=".interactable">
-              <div
-                className={
-                  bigScreen ? 'draggable-ex-encouragement' : 'draggable-ex-encouragement-mobile'
-                }
-              >
                 <div className="col-flex">
-                  <div className="flex">
-                    <ExerciseEncouragementHeader />
-                    <Icon
-                      className="interactable"
-                      style={{
-                        cursor: 'pointer',
-                        marginBottom: '.25em',
-                      }}
-                      size="large"
-                      name="close"
-                      onClick={handleCloseClick}
-                    />
-                  </div>
-                  <div className="col-flex">
-                    <div className="interactable" style={{ overflow: 'auto', maxHeight: 300 }}>
-                      <LeaderboardEncouragement />
-                      <StoryCompletedToBluecardsExerciseEncouragement />
-                      <LatestIncompleteStory />
-                      <WordsSeenEncouragement />
-                      <NewWordsInteractedExerciseEncouragement />
-                      <GrammarReviewExerciseEncouragement />
-                    </div>
-                    <TurnOffRecommendations />
-                  </div>
-                </div>
-              </div>
-            </Draggable>
-          </div>
-        ) : isInFlashcardsView && !inBlueCardsTest && fcOpen ? (
-          // "normal" flashcard view related encouragements
-          <div>
-            <Draggable cancel=".interactable">
-              <div
-                className={bigScreen ? 'draggable-encouragement' : 'draggable-encouragement-mobile'}
-              >
-                <div className="col-flex">
-                  <div className="flex-reverse">
-                    <Icon
-                      className="interactable"
-                      style={{
-                        cursor: 'pointer',
-                        marginBottom: '.25em',
-                      }}
-                      size="large"
-                      name="close"
-                      onClick={handleCloseClick}
-                    />
-                  </div>
-                  <FlashcardsHeaderChooser handleNewDeck={handleNewDeck} />
                   <div className="interactable" style={{ overflow: 'auto', maxHeight: 300 }}>
-                    <TryAnotherBatch handleNewDeck={handleNewDeck} />
-                    <ListOfRecentStoriesFlashcardsEncouragement />
-                    <BackToLibraryFromFlashcards />
+                    <WelcomeBackEncouragement />
+                    <StreakEncouragement />
+                    <LeaderboardEncouragement />
+                    <DailyStoriesEncouragement handleDailyStoriesClick={handleDailyStoriesClick} />
+                    <LatestIncompleteStory />
+                    <ConfirmBlueCardsEncouragement />
+                    <UnseenStoriesInGroup />
+                    <SharedIncompleteStoryInGroup />
+                    <ReviewStoriesEncouragement />
                   </div>
                   <TurnOffRecommendations />
                 </div>
               </div>
-            </Draggable>
-          </div>
-        ) : isInFlashcardsView && inBlueCardsTest && fcOpen ? (
-          // bluecards test view related encouragements
+            </div>
+          </Draggable>
+          <DailyStoriesDraggable
+            cachedStories={cachedStories}
+            bigScreen={bigScreen}
+            open={dailyStoriesDraggableIsOpen}
+            setOpen={setDailyStoriesDraggableIsOpen}
+          />
+        </div>
+      ) : open &&
+        storyBlueCards &&
+        storyBlueCards.length > 0 &&
+        (isInProgressView || isInFlashcardsView) ? (
+        // when the user goes to vocabulary chart on progress page and has bluecards to show encouragement
+        // also comes up when user enters the flashcards tab
           <div>
-            <Draggable cancel=".interactable">
+          <Draggable cancel=".interactable">
               <div
-                className={bigScreen ? 'draggable-encouragement' : 'draggable-encouragement-mobile'}
-              >
-                <div className="col-flex">
+              className={bigScreen ? 'draggable-encouragement' : 'draggable-encouragement-mobile'}
+            >
+              <div className="col-flex">
                   <div className="flex-reverse">
-                    <Icon
+                  <Icon
                       className="interactable"
                       style={{
-                        cursor: 'pointer',
-                        marginBottom: '.25em',
-                      }}
+                      cursor: 'pointer',
+                      marginBottom: '.25em',
+                    }}
                       size="large"
                       name="close"
                       onClick={handleCloseClick}
                     />
-                  </div>
-                  <FlashcardsHeaderChooser handleNewDeck={handleNewDeck} />
+                </div>
+                  <div className="col-flex">
                   <div className="interactable" style={{ overflow: 'auto', maxHeight: 300 }}>
-                    <PreviousStoriesBlueFlashcards />
+                      <ConfirmBlueCardsEncouragement />
+                    </div>
+                  <TurnOffRecommendations />
+                </div>
+                </div>
+            </div>
+            </Draggable>
+        </div>
+      ) : isInPracticeView && open ? (
+        // practice view related encouragements
+        // this is the exercise encouragement draggable
+        // it differs with css from the basic encouragement draggable
+        <div>
+          <Draggable cancel=".interactable">
+            <div
+              className={
+                bigScreen ? 'draggable-ex-encouragement' : 'draggable-ex-encouragement-mobile'
+              }
+            >
+              <div className="col-flex">
+                <div className="flex">
+                  <ExerciseEncouragementHeader />
+                  <Icon
+                    className="interactable"
+                    style={{
+                      cursor: 'pointer',
+                      marginBottom: '.25em',
+                    }}
+                    size="large"
+                    name="close"
+                    onClick={handleCloseClick}
+                  />
+                </div>
+                <div className="col-flex">
+                  <div className="interactable" style={{ overflow: 'auto', maxHeight: 300 }}>
+                    <LeaderboardEncouragement />
+                    <StoryCompletedToBluecardsExerciseEncouragement />
+                    <LatestIncompleteStory />
                     <WordsSeenEncouragement />
-                    <FlashcardsProgress />
+                    <NewWordsInteractedExerciseEncouragement />
+                    <GrammarReviewExerciseEncouragement />
                   </div>
+                  <TurnOffRecommendations />
                 </div>
               </div>
-            </Draggable>
-          </div>
-        ) : null}
+            </div>
+          </Draggable>
+        </div>
+      ) : isInFlashcardsView && !inBlueCardsTest && fcOpen ? (
+        // "normal" flashcard view related encouragements
+        <div>
+          <Draggable cancel=".interactable">
+            <div
+              className={bigScreen ? 'draggable-encouragement' : 'draggable-encouragement-mobile'}
+            >
+              <div className="col-flex">
+                <div className="flex-reverse">
+                  <Icon
+                    className="interactable"
+                    style={{
+                      cursor: 'pointer',
+                      marginBottom: '.25em',
+                    }}
+                    size="large"
+                    name="close"
+                    onClick={handleCloseClick}
+                  />
+                </div>
+                <FlashcardsHeaderChooser handleNewDeck={handleNewDeck} />
+                <div className="interactable" style={{ overflow: 'auto', maxHeight: 300 }}>
+                  <TryAnotherBatch handleNewDeck={handleNewDeck} />
+                  <ListOfRecentStoriesFlashcardsEncouragement />
+                  <BackToLibraryFromFlashcards />
+                </div>
+                <TurnOffRecommendations />
+              </div>
+            </div>
+          </Draggable>
+        </div>
+      ) : isInFlashcardsView && inBlueCardsTest && fcOpen ? (
+        // bluecards test view related encouragements
+        <div>
+          <Draggable cancel=".interactable">
+            <div
+              className={bigScreen ? 'draggable-encouragement' : 'draggable-encouragement-mobile'}
+            >
+              <div className="col-flex">
+                <div className="flex-reverse">
+                  <Icon
+                    className="interactable"
+                    style={{
+                      cursor: 'pointer',
+                      marginBottom: '.25em',
+                    }}
+                    size="large"
+                    name="close"
+                    onClick={handleCloseClick}
+                  />
+                </div>
+                <FlashcardsHeaderChooser handleNewDeck={handleNewDeck} />
+                <div className="interactable" style={{ overflow: 'auto', maxHeight: 300 }}>
+                  <PreviousStoriesBlueFlashcards />
+                  <WordsSeenEncouragement />
+                  <FlashcardsProgress />
+                </div>
+              </div>
+            </div>
+          </Draggable>
+        </div>
+      ) : null}
     </>
   )
 }

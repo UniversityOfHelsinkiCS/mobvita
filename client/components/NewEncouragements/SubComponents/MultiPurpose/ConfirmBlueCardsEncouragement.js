@@ -1,4 +1,9 @@
-import { backgroundColors, dictionaryLanguageSelector, images } from 'Utilities/common'
+import {
+  backgroundColors,
+  dictionaryLanguageSelector,
+  images,
+  showAllEncouragements
+} from "Utilities/common"
 import { FormattedHTMLMessage, FormattedMessage } from 'react-intl'
 import { Link } from 'react-router-dom'
 import React, { useEffect, useState } from 'react'
@@ -31,7 +36,7 @@ const ConfirmBlueCardsEncouragement = () => {
     history.push(`/flashcards/fillin/test/${prevBlueCards.story_id}`)
   }
 
-  if (!prevBlueCards) {
+  if (!prevBlueCards && !showAllEncouragements) {
     return null
   }
 
@@ -52,8 +57,8 @@ const ConfirmBlueCardsEncouragement = () => {
               <FormattedHTMLMessage
                 id="previous-stories-blue-cards"
                 values={{
-                  nWords: prevBlueCards.num_of_rewardable_words,
-                  story: prevBlueCards.title,
+                  nWords: prevBlueCards?.num_of_rewardable_words,
+                  story: prevBlueCards?.title,
                 }}
               />
               &nbsp;

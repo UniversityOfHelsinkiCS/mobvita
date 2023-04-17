@@ -1,4 +1,4 @@
-import { backgroundColors, images } from 'Utilities/common'
+import { backgroundColors, images, showAllEncouragements } from "Utilities/common"
 import { FormattedHTMLMessage, FormattedMessage } from 'react-intl'
 import { Link, useParams } from 'react-router-dom'
 import React, { useEffect, useState } from 'react'
@@ -31,7 +31,7 @@ const PreviousStoriesBlueFlashcards = () => {
 
   return (
     <div>
-      {prevStoriesBlueCards ? (
+      {prevStoriesBlueCards || showAllEncouragements ? (
         <div className="pt-md">
           <div
             className="flex enc-message-body"
@@ -49,8 +49,8 @@ const PreviousStoriesBlueFlashcards = () => {
               <FormattedHTMLMessage
                 id="previous-stories-blue-cards"
                 values={{
-                  nWords: prevStoriesBlueCards.num_of_rewardable_words,
-                  story: prevStoriesBlueCards.title,
+                  nWords: prevStoriesBlueCards?.num_of_rewardable_words,
+                  story: prevStoriesBlueCards?.title,
                 }}
               />
               &nbsp;

@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import { FormattedMessage, FormattedHTMLMessage } from 'react-intl'
 import { Link, useParams } from 'react-router-dom'
-import { images, backgroundColors } from 'Utilities/common'
+import { images, backgroundColors, showAllEncouragements } from "Utilities/common"
 import { useSelector, useDispatch } from 'react-redux'
 import { dictionaryLanguageSelector } from 'Utilities/common'
 import { getBlueFlashcards } from 'Utilities/redux/flashcardReducer'
@@ -30,7 +30,7 @@ const StoryCompletedToBluecardsExerciseEncouragement = () => {
 
   return (
     <div>
-      {creditableWordsNum >= 5 ? (
+      {creditableWordsNum >= 5 || showAllEncouragements ? (
         <div className="pt-md">
           <div
             className="flex enc-message-body"
@@ -69,14 +69,14 @@ const StoryCompletedToBluecardsExerciseEncouragement = () => {
                 <FormattedHTMLMessage
                   id="previous-stories-blue-cards"
                   values={{
-                    nWords: prevBlueCards.num_of_rewardable_words,
-                    story: prevBlueCards.title,
+                    nWords: prevBlueCards?.num_of_rewardable_words,
+                    story: prevBlueCards?.title,
                   }}
                 />
                 &nbsp;
                 <Link
                   className="interactable"
-                  to={`/flashcards/fillin/test/${prevBlueCards.story_id}`}
+                  to={`/flashcards/fillin/test/${prevBlueCards?.story_id}`}
                 >
                   <FormattedMessage id="flashcards-review" />
                 </Link>

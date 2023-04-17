@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react'
 import { useSelector } from 'react-redux'
 import { FormattedMessage } from 'react-intl'
 import { Link } from 'react-router-dom'
-import { images, backgroundColors } from 'Utilities/common'
+import { images, backgroundColors, showAllEncouragements } from "Utilities/common"
 
 
 const ListOfRecentStoriesFlashcardsEncouragement = () => {
@@ -32,13 +32,13 @@ const ListOfRecentStoriesFlashcardsEncouragement = () => {
 
   return (
     <div>
-      {latestStories.length > 0 ? (
+      {latestStories.length > 0 || showAllEncouragements ? (
         <div className="pt-md">
           <div
             className="flex enc-message-body"
             style={{
               alignItems: 'center',
-              backgroundColor: backgroundColors[2],
+              backgroundColor: backgroundColors[0],
             }}
           >
             <img

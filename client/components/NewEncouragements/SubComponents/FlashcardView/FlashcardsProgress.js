@@ -10,7 +10,7 @@ const FlashcardsProgress = () => {
         className="flex enc-message-body"
         style={{
           alignItems: 'center',
-          backgroundColor: backgroundColors[2],
+          backgroundColor: backgroundColors[1],
         }}
       >
         <img
