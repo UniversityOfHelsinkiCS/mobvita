@@ -1,6 +1,6 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { Route, Switch, Redirect, useLocation } from 'react-router-dom'
-import { useSelector } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { getBackgroundColor } from 'Utilities/common'
 import HomeView from 'Components/HomeView'
 import LibraryView from 'Components/LibraryView'
@@ -22,6 +22,11 @@ import ProtectedRoute from 'Components/AccessControl/ProtectedRoute'
 import CrosswordView from 'Components/CrosswordView'
 import CompeteView from 'Components/CompeteView'
 import GroupView from 'Components/GroupView'
+import {
+  closeEncouragement,
+  closeFCEncouragement,
+  openEncouragement,
+} from 'Utilities/redux/encouragementsReducer'
 import GroupAnalytics from './GroupView/GroupAnalytics'
 import GroupPeople from './GroupView/GroupPeople'
 import Concepts from './Concepts'
@@ -44,7 +49,19 @@ import LessonLibrary from './Lessons/LessonLibrary'
 export default () => {
   const user = useSelector(state => state.user.data)
   const location = useLocation()
+  const dispatch = useDispatch()
 
+  useEffect(() => {
+    // This closes and opens recommendations on page changes
+    dispatch(closeEncouragement())
+    dispatch(closeFCEncouragement())
+    if (
+      location.pathname.includes('welcome') ||
+      (location.pathname.includes('flashcards') && !location.pathname.includes('test'))
+    ) {
+      dispatch(openEncouragement())
+    }
+  }, [location.pathname])
   return (
     <Switch>
       <Route exact path="/">

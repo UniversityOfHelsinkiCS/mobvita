@@ -50,7 +50,7 @@ const ListOfRecentStoriesFlashcardsEncouragement = () => {
               <FormattedMessage id="list-of-recent-stories" />
               <ul style={{ paddingLeft: 0 }}>
                 {latestStories.map(story => (
-                  <li style={{ marginTop: '0.5rem', listStylePosition: 'inside' }}>
+                  <li key={story._id} style={{ marginTop: '0.5rem', listStylePosition: 'inside' }}>
                     <Link className="interactable" to={`/stories/${story._id}/practice`}>
                       <i>{story.title}</i>
                     </Link>
