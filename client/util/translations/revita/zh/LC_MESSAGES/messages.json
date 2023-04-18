@@ -879,5 +879,6 @@
     "streak_just_done": "今天已经练习达标了！",
     "exclude-all-topics": "清空语法主题",
     "snippets-done": "10 story snippets completed",
-    "flashcards-done": "20 flashcards completed"
+    "flashcards-done": "20 flashcards completed",
+    "level": "Level"
 }

@@ -34,7 +34,7 @@ export const UserLevel = () => {
   return (
     <div>
       <div className="bold ps-lg" as="h2">
-        <FormattedMessage id="Level" />
+        <FormattedMessage id="level" />
       </div>
       <span className="account-info-item ps-lg">{level}</span>
     </div>

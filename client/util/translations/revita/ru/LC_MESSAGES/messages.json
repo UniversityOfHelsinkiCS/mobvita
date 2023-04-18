@@ -1509,5 +1509,6 @@
     "streak_just_done": "Your streak continues!",
     "exclude-all-topics": "Remove all grammar topics",
     "snippets-done": "10 story snippets completed",
-    "flashcards-done": "20 flashcards completed"
+    "flashcards-done": "20 flashcards completed",
+    "level": "Level"
 }
