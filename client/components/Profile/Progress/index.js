@@ -299,13 +299,13 @@ const Progress = () => {
           <div>
             <div className="space-evenly">
               <button
+                className='progress-tour-timeline-button'
                 type="button"
                 onClick={() => handleChartChange('SET_TIMELINE_CHART')}
                 style={{ border: 'none' }}
               >
                 <div className="flex align-center" style={{ gap: '.5em' }}>
                   <input
-                    className="progress-tour-timeline-button"
                     type="radio"
                     onChange={() => handleChartChange('SET_TIMELINE_CHART')}
                     checked={shownChart === 'progress'}
@@ -314,13 +314,13 @@ const Progress = () => {
                 </div>
               </button>
               <button
+                className='progress-tour-vocabulary-button'
                 type="button"
                 onClick={() => handleChartChange('SET_VOCABULARY_CHART')}
                 style={{ border: 'none' }}
               >
                 <div className="flex align-center" style={{ gap: '.5em' }}>
                   <input
-                    className="progress-tour-vocabulary-button"
                     type="radio"
                     onChange={() => handleChartChange('SET_VOCABULARY_CHART')}
                     checked={shownChart === 'vocabulary'}
@@ -329,13 +329,13 @@ const Progress = () => {
                 </div>
               </button>
               <button
+                className='progress-tour-grammar-button'
                 type="button"
                 onClick={() => handleChartChange('SET_GRAMMAR_CHART')}
                 style={{ border: 'none' }}
               >
                 <div className="flex align-center" style={{ gap: '.5em' }}>
                   <input
-                    className="progress-tour-grammar-button"
                     type="radio"
                     onChange={() => handleChartChange('SET_GRAMMAR_CHART')}
                     checked={shownChart === 'hex-map'}
@@ -344,13 +344,13 @@ const Progress = () => {
                 </div>
               </button>
               <button
+                className='progress-tour-exercise-history-button'
                 type="button"
                 onClick={() => handleChartChange('SET_EXERCISE_HISTORY_CHART')}
                 style={{ border: 'none' }}
               >
                 <div className="flex align-center" style={{ gap: '.5em' }}>
                   <input
-                    className="progress-tour-exercise-history-button"
                     type="radio"
                     onChange={() => handleChartChange('SET_EXERCISE_HISTORY_CHART')}
                     checked={shownChart === 'exercise-history'}
@@ -359,13 +359,13 @@ const Progress = () => {
                 </div>
               </button>
               <button
+                className='progress-tour-test-history-button'
                 type="button"
                 onClick={() => handleChartChange('SET_TEST_HISTORY_CHART')}
                 style={{ border: 'none' }}
               >
                 <div className="flex align-center" style={{ gap: '.5em' }}>
                   <input
-                    className="progress-tour-test-history-button"
                     type="radio"
                     onChange={() => handleChartChange('SET_TEST_HISTORY_CHART')}
                     checked={shownChart === 'test-history'}
