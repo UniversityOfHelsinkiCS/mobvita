@@ -15,8 +15,8 @@ import {
   hideFCIcon,
   openFCEncouragement,
   showIcon,
-  closeEncouragement,
-} from 'Utilities/redux/encouragementsReducer'
+  closeEncouragement, closeFCEncouragement
+} from "Utilities/redux/encouragementsReducer"
 import { getNews } from 'Utilities/redux/newsReducer'
 import useWindowDimensions from 'Utilities/windowDimensions'
 import {
@@ -169,25 +169,6 @@ export default function NavBar() {
       dispatch(setIrtDummyScore(irtScore))
     }
   }, [user])
-
-  useEffect(() => {
-    if (check.includes('home') && !user?.user.enable_recmd) {
-      dispatch(showIcon())
-      dispatch(closeEncouragement())
-      return
-    }
-    if (show) {
-      dispatch(hideIcon())
-    }
-    if (fcShow) {
-      dispatch(hideFCIcon())
-    }
-    if (check.includes('welcome')) {
-      dispatch(openEncouragement())
-      return
-    }
-    //dispatch(openFCEncouragement())
-  }, [check])
 
   useEffect(() => {
     dispatch(getMetadata(learningLanguage))

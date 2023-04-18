@@ -1754,6 +1754,16 @@ const desktopLessonsTourSteps = [
     disableBeacon: true,
   },
   {
+    target: '.lesson-vocab-diff',
+    title: <FormattedMessage id="Lesson vocab" />,
+    content: (
+      <div>
+        <FormattedHTMLMessage id="lesson-vocab-diff-message" />
+      </div>
+    ),
+    disableBeacon: true,
+  },
+  {
     target: '.choose-topic',
     title: <FormattedMessage id="Lesson topic" />,
     content: (

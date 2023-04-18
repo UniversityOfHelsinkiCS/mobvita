@@ -79,11 +79,7 @@ const Practice = ({ mode, open }) => {
 
   useEffect(() => {
     dispatch(getStoriesBlueFlashcards(learningLanguage, dictionaryLanguage))
-    const isInQuick = history.location.pathname.includes('quick')
     if (!pending && !loading) {
-      if (totalAnswers === 0 && amountAnswered === 0 && !fcOpen && !inBlueCardsTest && !isInQuick) {
-        dispatch(openEncouragement())
-      }
       if (amountAnswered >= cards.length) {
         dispatch(openFCEncouragement())
         setAmountAnswered(0)
