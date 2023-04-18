@@ -165,8 +165,8 @@ const LessonList = () => {
             thumbClassName="exercise-density-slider-thumb"
             trackClassName='exercise-density-slider-track'
             onAfterChange={value => handleSlider(value)}
-            min={1.0}
-            max={3.5}
+            min={0.8}
+            max={3.3}
             step={0.5}
             value={sliderValue}
             disabled={lessonPending}
