@@ -103,11 +103,11 @@ const Tour = () => {
         }
         // lessons tour steps
         if (tourState.steps === lessonsTourSteps) {
-          if (index === 4) {
+          if (index === 5) {
             const newTopics = [...lesson.topic_ids, lesson_topics[0].topic_id]
             dispatch(setLessonInstance({ topic_ids:  newTopics}))
           }
-          if (index === 5) {
+          if (index === 6) {
             const currentPath = history.location.pathname
             const newPath = currentPath.substring(0, currentPath.length - 9)
             history.push(`${newPath}/practice`)
@@ -117,7 +117,7 @@ const Tour = () => {
               dispatch(handleNextTourStep(index + (action === ACTIONS.PREV ? -1 : 1)))
             }, 1000)
           }
-          if (index === 6) {
+          if (index === 7) {
             history.push('/lessons/library')
           }
 
@@ -211,11 +211,11 @@ const Tour = () => {
         }
         // lessons tour control
         if (tourState.steps === lessonsTourSteps) {
-          if (index === 4) {
+          if (index === 5) {
             const newTopics = [...lesson.topic_ids, lesson_topics[0].topic_id]
             dispatch(setLessonInstance({ topic_ids:  newTopics}))
           }
-          if (index === 5) {
+          if (index === 6) {
             const currentPath = history.location.pathname
             const newPath = currentPath.substring(0, currentPath.length - 9)
             history.push(`${newPath}/practice`)
@@ -225,7 +225,7 @@ const Tour = () => {
               dispatch(handleNextTourStep(index + (action === ACTIONS.PREV ? -1 : 1)))
             }, 1000)
           }
-          if (index === 6) {
+          if (index === 7) {
             history.push('/lessons/library')
             dispatch(sidebarSetOpen(true))
         

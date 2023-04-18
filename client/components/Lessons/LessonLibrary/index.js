@@ -3,6 +3,7 @@ import { useIntl, FormattedMessage } from 'react-intl'
 import { List, WindowScroller } from 'react-virtualized'
 import React, { useEffect, useState } from 'react'
 import { Placeholder, Card, Icon, Dropdown } from 'semantic-ui-react'
+import ReactSlider from 'react-slider'
 import { Button } from 'react-bootstrap'
 import { Link } from 'react-router-dom'
 import { useLearningLanguage } from 'Utilities/common'
@@ -37,8 +38,8 @@ const LessonList = () => {
   const [sorter, setSorter] = useState(_lesson_sort_criterion.sort_by)
   const [sortDirection, setSortDirection] = useState(_lesson_sort_criterion.direction)
 
-  const { topic_ids: selectedTopicIds, semantic: selectedSemantics } = lesson
-
+  const { topic_ids: selectedTopicIds, semantic: selectedSemantics, vocab_diff } = lesson
+  const [sliderValue, setSliderValue] = useState(1.5)
   const dispatch = useDispatch()
 
   // console.log("topics", topics)
@@ -59,6 +60,12 @@ const LessonList = () => {
     }
   }, [])
 
+  useEffect(() => {
+    if (!lessonPending) {
+      setSliderValue(vocab_diff)
+    }
+  }, [vocab_diff])
+
   const toggleTopic = topicId => {
     let newTopics
     if (selectedTopicIds.includes(topicId)) {
@@ -77,6 +84,11 @@ const LessonList = () => {
       newSemantic = [...selectedSemantics, semantic]
     }
     dispatch(setLessonInstance({ semantic: newSemantic }))
+  }
+
+  const handleSlider = value => {
+    setSliderValue(value)
+    dispatch(setLessonInstance({ vocab_diff: value }))
   }
 
   // const sortDropdownOptions = [
@@ -133,6 +145,7 @@ const LessonList = () => {
                       : 'outline-primary'
                   }
                   onClick={() => toggleSemantic(semantic)}
+                  disabled={lessonPending}
                   style={{ margin: '0.5em' }}
                 >
                   {selectedSemantics && selectedSemantics.includes(semantic) && (
@@ -143,6 +156,23 @@ const LessonList = () => {
               ))}
           </div>
         </div>
+        <div className="align-center">
+          <h5>
+            <FormattedMessage id="select-lesson-vocab-diff" />
+          </h5>
+          <ReactSlider
+            className="exercise-density-slider lesson-vocab-diff"
+            thumbClassName="exercise-density-slider-thumb"
+            trackClassName='exercise-density-slider-track'
+            onAfterChange={value => handleSlider(value)}
+            min={1.0}
+            max={3.5}
+            step={0.5}
+            value={sliderValue}
+            disabled={lessonPending}
+          />
+        </div>
+        
         <Button 
           variant='primary'
           disabled={

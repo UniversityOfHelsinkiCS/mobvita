@@ -878,6 +878,10 @@
     "topic-singular": "主题",
     "streak_just_done": "今天已经练习达标了！",
     "exclude-all-topics": "清空语法主题",
-    "snippets-done": "10 story snippets completed",
-    "flashcards-done": "20 flashcards completed"
+    "snippets-done": "10个段落已完成",
+    "flashcards-done": "20张单词卡已完成",
+    "level": "等级",
+    "Lesson vocab": "词汇难度",
+    "lesson-vocab-diff-message": "您可以在此调节课程中出现的词汇难度",
+    "select-lesson-vocab-diff": "调节课程词汇难度"
 }
