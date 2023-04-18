@@ -1509,5 +1509,9 @@
     "streak_just_done": "Your streak continues!",
     "exclude-all-topics": "Remove all grammar topics",
     "snippets-done": "10 story snippets completed",
-    "flashcards-done": "20 flashcards completed"
+    "flashcards-done": "20 flashcards completed",
+    "level": "Level",
+    "Lesson vocab": "Vocabulary Difficulty",
+    "lesson-vocab-diff-message": "Here you can decide the difficulty of vovabulary which will appear in the lesson.",
+    "select-lesson-vocab-diff": "Choose lesson vocabulary difficulty"
 }
