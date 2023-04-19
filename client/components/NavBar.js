@@ -55,7 +55,7 @@ export default function NavBar() {
     irt_dummy_score,
   } = useSelector(({ user }) => user)
   const { numUnreadNews } = useSelector(({ metadata }) => metadata)
-  const { sessionId } = useSelector(({ snippets }) => snippets)
+  const { sessionId, answersPending } = useSelector(({ snippets }) => snippets)
   const { show, open: encOpen, fcShow, fcOpen } = useSelector(({ encouragement }) => encouragement)
   const { focused: story, pending: storyPending } = useSelector(({ stories }) => stories)
 
@@ -157,6 +157,13 @@ export default function NavBar() {
   }, [sessionId])
 
   useEffect(() => {
+    if (answersPending == false){
+      dispatch(setIrtDummyScore(undefined))
+      dispatch(calculateIRTScore(learningLanguage))
+    }
+  }, [answersPending])
+
+  useEffect(() => {
     if (!irtCalculationPending) dispatch(getSelf())
   }, [irtCalculationPending])
 
@@ -179,7 +186,6 @@ export default function NavBar() {
     const start_query_date = moment('2021-01-01').toDate()
     dispatch(getPracticeHistory(start_query_date, date_now))
   }, [])
-
 
 
   const storyElo =
