@@ -17,22 +17,18 @@ const DesktopView = () => {
       <Grid columns={2} divided>
         <Grid.Column className="flex-col gap-row-nm">
           <Grid.Row>
-            <Grid.Column>
-              <div className="prof-info">
-                <ProfileInfo />
-              </div>
-              <div className="streak-info">
-                <ProfileStreakInfo />
-              </div>
-            </Grid.Column>
+            <div className="prof-info">
+              <ProfileInfo />
+            </div>
           </Grid.Row>
           <Grid.Row>
-            <Grid.Column>
-              <div className="level-info">{hiddenFeatures && <UserLevel />}</div>
-            </Grid.Column>
+            <Grid.Column>{hiddenFeatures && <UserLevel />}</Grid.Column>
             <Grid.Column>
               <div className="xp-bar">{hiddenFeatures && <XpBar />}</div>
             </Grid.Column>
+          </Grid.Row>
+          <Grid.Row>
+            <ProfileStreakInfo />
           </Grid.Row>
 
           <ProgressStatistics />
