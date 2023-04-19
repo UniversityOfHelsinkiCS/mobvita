@@ -84,7 +84,7 @@ const GroupAnalytics = ({ role }) => {
     const parsedValue = JSON.parse(value)
     const studentSummary = summary?.find(student => student.Email === parsedValue.email)
     setCurrentStudent(parsedValue)
-    setCefrHistory(studentSummary.cefr_grade)
+    setCefrHistory(studentSummary[intl.formatMessage({ id: 'cefr_grade' })])
     setFirstFetch(true)
   }
 
@@ -116,6 +116,7 @@ const GroupAnalytics = ({ role }) => {
     if (cefrHistory != undefined && cefrHistory.length > 0) {
       setCurrentCEFR(skillLevels[cefrHistory[0].grade])
     }
+    else setCurrentCEFR('-')
   }, [cefrHistory])
 
   useEffect(() => {
