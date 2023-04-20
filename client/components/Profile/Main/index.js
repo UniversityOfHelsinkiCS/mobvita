@@ -29,7 +29,6 @@ const DesktopView = () => {
           <Grid.Row>
             <ProfileStreakInfo />
           </Grid.Row>
-
           <ProgressStatistics />
           <EloChart />
           <MedalSummary />
@@ -41,23 +40,6 @@ const DesktopView = () => {
     </div>
   )
 }
-
-/* const MobileView = () => {
-  return (
-    <div>
-      <ProfileInfo />
-      <ProfileStreakInfo />
-      {hiddenFeatures && <UserLevelInfo />}
-      <ProgressStatistics />
-      <div className="flex-col" style={{ gap: '1.5em', marginBottom: '.5em' }}>
-        <EloChart width="100%" />
-        <MedalSummary />
-      </div>
-      <Following />
-    </div>
-  )
-}
-*/
 
 const MobileView = () => {
   return (
