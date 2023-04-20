@@ -20,11 +20,11 @@ const get_lesson_performance = (correct_count, total_count) => {
 
 const get_lesson_performance_style = (correct_count, total_count) => {
   const correct_perc = get_lesson_performance(correct_count, total_count)
-  if (correct_perc >= 0.75) return { color: 'green' }
-  if (correct_perc < 0.75 && correct_perc >= 0.5) return { color: 'limegreen' }
-  if (correct_perc < 0.5 && correct_perc >= 0.25) return { color: 'orange' }
-  if (correct_perc < 0.25) return { color: 'red' }
-  return { color: 'black' }
+  if (correct_perc >= 0.75) return '#0080002e'
+  else if (correct_perc < 0.75 && correct_perc >= 0.5) return '#32cd322e'
+  else if (correct_perc < 0.5 && correct_perc >= 0.25) return '#ffa5002e'
+  else if (correct_perc < 0.25 && correct_perc > 0) return '#ff00002e'
+  else return 'white'
 }
 
 const LessonTitle = ({ topic }) => {
@@ -55,7 +55,7 @@ const LessonTitle = ({ topic }) => {
                 marginRight: '5px',
                 maxWidth: '25px',
                 minWidth: '25px',
-                ...get_lesson_performance_style(topic.correct, topic.total),
+                
               }}
             >
               {String(
@@ -69,7 +69,6 @@ const LessonTitle = ({ topic }) => {
                 maxWidth: '20px',
                 minWidth: '10px',
                 marginRight: '7px',
-                ...get_lesson_performance_style(topic.correct, topic.total),
               }}
             >
               %
@@ -140,7 +139,12 @@ const LessonTitle = ({ topic }) => {
 
 const LessonListItem = ({ topic, selected, toggleTopic }) => {
   return (
-    <Card fluid key={topic._id} className="lesson-list-card">
+    <Card 
+      fluid 
+      key={topic._id} 
+      className="lesson-list-card" 
+      style={{'background-color': get_lesson_performance_style(topic.correct, topic.total)}}
+    >
       <Card.Content extra className="lesson-card-title-cont">
         <LessonTitle topic={topic} />
       </Card.Content>
