@@ -184,7 +184,7 @@ const AdaptiveTest = ({ showingInfo }) => {
               {answerFailure && (
                 <div className="justify-center mt-lg">
                   <Button onClick={handleTestResumeClick}>
-                    <FormattedMessage id="network-error-click-to-resume" />
+                    <FormattedHTMLMessage id="network-error-click-to-resume" />
                   </Button>
                 </div>
               )}
