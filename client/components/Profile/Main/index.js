@@ -1,5 +1,5 @@
 import React from 'react'
-import { Grid, GridColumn } from 'semantic-ui-react'
+import { Grid } from 'semantic-ui-react'
 import EloChart from 'Components/HomeView/EloChart'
 import MedalSummary from 'Components/HomeView/MedalSummary'
 import useWindowDimensions from 'Utilities/windowDimensions'
