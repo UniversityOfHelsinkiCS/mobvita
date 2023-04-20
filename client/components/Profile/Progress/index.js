@@ -400,6 +400,7 @@ const Progress = () => {
             </div>
             <Divider />
             <ProgressStats startDate={startDate} endDate={endDate} />
+            
             <div className="progress-page-graph-cont">
               <ProgressGraph
                 exerciseHistory={irtExerciseHistory}

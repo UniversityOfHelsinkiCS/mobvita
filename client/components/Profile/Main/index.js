@@ -1,9 +1,8 @@
 import React from 'react'
-import { Grid } from 'semantic-ui-react'
+import { Grid, GridColumn } from 'semantic-ui-react'
 import EloChart from 'Components/HomeView/EloChart'
 import MedalSummary from 'Components/HomeView/MedalSummary'
 import useWindowDimensions from 'Utilities/windowDimensions'
-import { hiddenFeatures } from 'Utilities/common'
 import Following from '../Following'
 import ProgressStatistics from './ProgressStatistics'
 import ProfileInfo from './ProfileInfo'
@@ -22,9 +21,9 @@ const DesktopView = () => {
             </div>
           </Grid.Row>
           <Grid.Row>
-            <Grid.Column>{hiddenFeatures && <UserLevel />}</Grid.Column>
+            <Grid.Column><UserLevel /></Grid.Column>
             <Grid.Column>
-              <div className="xp-bar">{hiddenFeatures && <XpBar />}</div>
+              <div className="xp-bar"><XpBar /></div>
             </Grid.Column>
           </Grid.Row>
           <Grid.Row>
@@ -65,11 +64,16 @@ const MobileView = () => {
     <div className="cont ps-nm">
       <Grid columns={1} divided>
         <Grid.Column className="flex-col gap-row-nm">
-          <Grid.Row>
-            <Grid.Column>
+          <Grid.Column>
+           <div className="prof-info">
               <ProfileInfo />
+            </div>
+          </Grid.Column>
+          <Grid.Row className="ps-nm">
+            <Grid.Column><UserLevel /></Grid.Column>
+            <Grid.Column>
+              <div className="xp-bar"><XpBar /></div>
             </Grid.Column>
-            <Grid.Column>{hiddenFeatures && <UserLevelInfo />}</Grid.Column>
           </Grid.Row>
         </Grid.Column>
       </Grid>
