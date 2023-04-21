@@ -298,12 +298,11 @@ const HomeView = () => {
                 className="flex-col"
                 style={{
                   width: '500px',
-                  gap: '1em',
+                  gap: '1.9em',
                 }}
               >
                 <EloChart width="100%" />
                 <LeaderboardSummary />
-                <MedalSummary />
               </div>
             </div>
           </div>
