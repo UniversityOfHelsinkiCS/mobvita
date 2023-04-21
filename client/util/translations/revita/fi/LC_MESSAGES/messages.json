@@ -1168,7 +1168,7 @@
     "controlled-story-info-text": "Controlled. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco.",
     "control-story-info-text": "Tässä harjoituksessa on opettajan valitsemia aukkotehtäviä. Yritä vastata kuhunkin tehtävään ennen kuin ajastin on nollassa. Mikäli tehtäviä tarkastaessa kaikki tehtävät eivät ole oikein, saat lisäaikaa seuraavalle yrityksellesi.",
     "what-language-would-you-like-to-learn": "Mitä kieltä haluaisit opiskella?",
-    "network-error-click-to-resume": "Verkkovirhe. Paina tästä jatkaaksesi testiä",
+    "network-error-click-to-resume": "Verkkovirhe.\n<br/>Paina tästä jatkaaksesi testiä",
     "pay-attention-to-diacritics": "Ole tarkkana tarkkeiden kanssa!  Kirjoitit \"{answer}\", mutta oikea muoto on \"{normalizedCorrect}\".",
     "pay-attention-to-spelling": "Ole tarkkana oikeinkirjoituksen kanssa!  Kirjoitit \"{answer}\", mutta oikea muoto on \"{levenshteinCorrect}\".",
     "showing-results-for": "Tulokset haulle",
@@ -1505,11 +1505,11 @@
     "lesson-setup-message": "Valitse kielioppiaihe osaksi oppituntia.",
     "topic-singular": "Aihe",
     "streak_just_done": "Harjoitteluputkesi jatkuu!",
-    "exclude-all-topics": "Remove all grammar topics",
+    "exclude-all-topics": "Tyhjennä kaikki kielioppiaiheet",
     "snippets-done": "10 tarinaosaa tehty",
     "flashcards-done": "20 muistikorttia selvitetty",
     "level": "Taso",
-    "Lesson vocab": "Vocabulary Difficulty",
-    "lesson-vocab-diff-message": "Here you can decide the difficulty of vovabulary which will appear in the lesson.",
-    "select-lesson-vocab-diff": "Choose lesson vocabulary difficulty"
+    "Lesson vocab": "Sanaston taso",
+    "lesson-vocab-diff-message": "Valitse oppitunnilla käytettävän sanaston vaikeusasteen.",
+    "select-lesson-vocab-diff": "Valitse sanaston vaikeusaste oppitunnille"
 }
