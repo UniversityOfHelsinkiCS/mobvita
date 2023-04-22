@@ -15,8 +15,9 @@ import {
   hideFCIcon,
   openFCEncouragement,
   showIcon,
-  closeEncouragement, closeFCEncouragement
-} from "Utilities/redux/encouragementsReducer"
+  closeEncouragement,
+  closeFCEncouragement,
+} from 'Utilities/redux/encouragementsReducer'
 import { getNews } from 'Utilities/redux/newsReducer'
 import useWindowDimensions from 'Utilities/windowDimensions'
 import {
@@ -157,7 +158,7 @@ export default function NavBar() {
   }, [sessionId])
 
   useEffect(() => {
-    if (answersPending == false){
+    if (answersPending == false) {
       dispatch(setIrtDummyScore(undefined))
       dispatch(calculateIRTScore(learningLanguage))
     }
@@ -187,7 +188,6 @@ export default function NavBar() {
     dispatch(getPracticeHistory(start_query_date, date_now))
   }, [])
 
-
   const storyElo =
     exerciseHistory && exerciseHistory.length > 0
       ? exerciseHistory[exerciseHistory.length - 1].score
@@ -208,8 +208,8 @@ export default function NavBar() {
       ability_score = irtCalculationPending
         ? '...'
         : irt_dummy_score != undefined
-          ? Math.round(irt_dummy_score * 10) / 10
-          : '...'
+        ? Math.round(irt_dummy_score * 10) / 10
+        : '...'
       grammar_score_type = 'irt'
     }
     return (
@@ -352,6 +352,16 @@ export default function NavBar() {
           </Nav>
 
           <Nav>
+            <Link to="/profile/main">
+              <div className="navbar-container" style={{ width: '90%' }}>
+                <Navbar.Brand className="navbar-text-item">
+                  <FormattedMessage id="level" /> {user.user.level}
+                </Navbar.Brand>
+              </div>
+            </Link>
+          </Nav>
+
+          <Nav>
             <div className="navbar-container" style={{ width: '90%' }}>
               <Offline className="navbar-basic-item" polling={{ timeout: 20000 }}>
                 <Icon name="broken chain" size="large" style={{ color: '#ff944d' }} />
@@ -368,7 +378,7 @@ export default function NavBar() {
                   <Button className="tour-button" onClick={handleTourStart}>
                     <img src={images.direction} alt="direction icon" width="21" height="21" />
                   </Button>
-                  {/*If tour is ongoing, then render the dropdown
+                  {/* If tour is ongoing, then render the dropdown
                     using the manual 'show' variable. These had to be separeted
                     because during the tour it needs to be opened using the 'show' variable,
                     but normally we don't want this because that disables the function that 
@@ -410,11 +420,7 @@ export default function NavBar() {
                             {user.user.username}
                           </span>
                           <NavDropdown.Divider />
-                          <NavDropdown.Item
-                            className="profile-button"
-                            as={Link}
-                            to="/profile/main"
-                          >
+                          <NavDropdown.Item className="profile-button" as={Link} to="/profile/main">
                             <FormattedMessage id="Profile" />
                           </NavDropdown.Item>
                           <NavDropdown.Item
@@ -466,11 +472,7 @@ export default function NavBar() {
                             {user.user.username}
                           </span>
                           <NavDropdown.Divider />
-                          <NavDropdown.Item
-                            className="profile-button"
-                            as={Link}
-                            to="/profile/main"
-                          >
+                          <NavDropdown.Item className="profile-button" as={Link} to="/profile/main">
                             <FormattedMessage id="Profile" />
                           </NavDropdown.Item>
                           <NavDropdown.Item
