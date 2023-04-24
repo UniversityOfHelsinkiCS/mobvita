@@ -33,6 +33,8 @@ import HexagonTest from 'Components/GridHexagon'
 import ProgressStats from './ProgressStats'
 import { getPracticeHistory } from 'Utilities/redux/practiceHistoryReducer'
 import Recommender from 'Components/NewEncouragements/Recommender'
+import EloChart from 'Components/HomeView/EloChart'
+import XpProgressGraph from 'Components/XpProgressGraph'
 
 const PickDate = ({ date, setDate, onCalendarClose }) => (
   <ResponsiveDatePicker
@@ -400,7 +402,6 @@ const Progress = () => {
             </div>
             <Divider />
             <ProgressStats startDate={startDate} endDate={endDate} />
-            
             <div className="progress-page-graph-cont">
               <ProgressGraph
                 exerciseHistory={irtExerciseHistory}
@@ -408,6 +409,12 @@ const Progress = () => {
                 startDate={startDate}
                 endDate={endDate}
               />
+              {hiddenFeatures &&
+                <XpProgressGraph
+                  startDate={startDate}
+                  endDate={endDate}
+                />
+              }
             </div>
           </div>
         ) : shownChart === 'vocabulary' ? (

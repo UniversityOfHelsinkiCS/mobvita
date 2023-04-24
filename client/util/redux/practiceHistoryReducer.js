@@ -5,6 +5,7 @@ const initialState = {
   exerciseHistory: [],
   flashcardHistory: [],
   testHistory: [],
+  xpHistory: [],
   streakToday: null,
   daysStreaked: null,
 }
@@ -32,6 +33,7 @@ export default (state = initialState, action) => {
         exerciseHistory: action.response.exercise_history,
         flashcardHistory: action.response.flashcard_history,
         testHistory: action.response.test_history,
+        xpHistory: action.response.xp_history,
         streakToday: action.response.is_today_streaked,
         daysStreaked: action.response.num_streaked_days,
         pending: false,

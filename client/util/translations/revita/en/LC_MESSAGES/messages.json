@@ -1515,5 +1515,6 @@
     "select-lesson-vocab-diff": "Choose difficulty of vocabulary for lesson",
     "just-leveled-up": "You just leveled up!",
     "streak-just-done": "Your streak continues!",
-    "new-level": "Your new level is"
+    "new-level": "Your new level is",
+    "xp-timeline-chart": "XP timeline"
 }

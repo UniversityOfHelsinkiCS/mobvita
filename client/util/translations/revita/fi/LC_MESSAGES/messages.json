@@ -1514,5 +1514,6 @@
     "select-lesson-vocab-diff": "Valitse sanaston vaikeusaste oppitunnille",
     "just-leveled-up": "Saavutit uuden tason!",
     "streak-just-done": "Harjoitteluputkesi jatkuu!",
-    "new-level": "Uusi tasosi on"
+    "new-level": "Uusi tasosi on",
+    "xp-timeline-chart": "XP aikajana"
 }
