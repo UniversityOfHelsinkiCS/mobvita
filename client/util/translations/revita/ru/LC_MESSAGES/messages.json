@@ -1514,5 +1514,7 @@
     "Lesson vocab": "Уровень словарного запаса",
     "lesson-vocab-diff-message": "Выбрать сложность лексики для использования в уроке.",
     "select-lesson-vocab-diff": "Выбери сложность лексики для урока",
-    "just-leveled-up": "You just leveled up! Your new level is"
+    "just-leveled-up": "You just leveled up!",
+    "streak-just-done": "Ударный режим продолжается!",
+    "new-level": "Your new level is"
 }

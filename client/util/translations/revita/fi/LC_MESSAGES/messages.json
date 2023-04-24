@@ -1512,5 +1512,7 @@
     "Lesson vocab": "Sanaston taso",
     "lesson-vocab-diff-message": "Valitse oppitunnilla käytettävän sanaston vaikeusasteen.",
     "select-lesson-vocab-diff": "Valitse sanaston vaikeusaste oppitunnille",
-    "just-leveled-up": "Saavutit uuden tason! Uusi tasosi on"
+    "just-leveled-up": "Saavutit uuden tason!",
+    "streak-just-done": "Harjoitteluputkesi jatkuu!",
+    "new-level": "Uusi tasosi on"
 }

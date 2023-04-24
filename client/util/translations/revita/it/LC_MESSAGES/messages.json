@@ -1504,7 +1504,7 @@
     "Lesson story topic": "Configurazione della lezione",
     "lesson-story-topic-message": "Qui puoi impostare la lezione: puoi selezionare da quale tipo di storie Revita sceglierà gli esercizi.",
     "topic-singular": "Argomento",
-    "streak_just_done": "La tua striscia continua!",
+    "streak-just-done": "La tua striscia continua!",
     "exclude-all-topics": "Cancella tutti gli argomenti grammaticali",
     "snippets-done": "10 frammenti di storia completati",
     "flashcards-done": "20 flashcard completate",
@@ -1512,5 +1512,6 @@
     "Lesson vocab": "Livello di vocabolario",
     "lesson-vocab-diff-message": "Qui puoi scegliere la difficoltà del vocabolario da utilizzare nella lezione.",
     "select-lesson-vocab-diff": "Scegli la difficoltà del vocabolario per la lezione",
-    "just-leveled-up": "You just leveled up! Your new level is"
+    "just-leveled-up": "You just leveled up!",
+    "new-level": "Your new level is"
 }

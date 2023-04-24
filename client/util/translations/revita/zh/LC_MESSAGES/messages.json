@@ -876,7 +876,7 @@
     "Lesson story topic": "课程设置",
     "lesson-story-topic-message": "您可以在此处设置课程",
     "topic-singular": "主题",
-    "streak_just_done": "今天已经练习达标了！",
+    "streak-just-done": "今天已经练习达标了！",
     "exclude-all-topics": "清空语法主题",
     "snippets-done": "10个段落已完成",
     "flashcards-done": "20张单词卡已完成",
@@ -884,5 +884,6 @@
     "Lesson vocab": "词汇难度",
     "lesson-vocab-diff-message": "您可以在此调节课程中出现的词汇难度",
     "select-lesson-vocab-diff": "调节课程词汇难度",
-    "just-leveled-up": "You just leveled up! Your new level is"
+    "just-leveled-up": "You just leveled up!",
+    "new-level": "Your new level is"
 }
