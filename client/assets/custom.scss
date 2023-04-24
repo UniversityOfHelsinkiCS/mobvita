@@ -884,6 +884,11 @@ $value in $spacing {
       margin-left: .5em;
       margin-right: 1em;
     }
+
+    @media (max-width: 1050px) {
+      margin-left: .3em;
+      margin-right: .5em;
+    }
   }
 
   &-basic-icon {
