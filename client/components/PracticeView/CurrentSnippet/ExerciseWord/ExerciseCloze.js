@@ -252,11 +252,11 @@ const ExerciseCloze = ({ word, handleChange }) => {
         <FormattedMessage id="ask-for-a-hint" />
       </Button>
       <div>
-        {eloScoreHearts.map(heart => (
-          <Icon size="small" name="heart" style={{ marginLeft: '0.25em' }} />
-        ))}
         {spentHints.map(hint => (
-          <Icon size="small" name="heart outline" style={{ marginLeft: '0.25em' }} />
+          <Icon size="small" name="lightbulb" style={{ marginLeft: '0.25em' }} />
+        ))}
+        {eloScoreHearts.map(heart => (
+          <Icon size="small" name="lightbulb outline" style={{ marginLeft: '0.25em' }} />
         ))}
       </div>
     </div>
@@ -275,11 +275,11 @@ const ExerciseCloze = ({ word, handleChange }) => {
           <FormattedMessage id="ask-for-a-hint" />
         </Button>
         <div>
-          {eloScoreHearts.map(heart => (
-            <Icon size="small" name="heart" style={{ marginLeft: '0.25em' }} />
-          ))}
           {spentHints.map(hint => (
-            <Icon size="small" name="heart outline" style={{ marginLeft: '0.25em' }} />
+            <Icon size="small" name="lightbulb" style={{ marginLeft: '0.25em' }} />
+          ))}
+          {eloScoreHearts.map(heart => (
+            <Icon size="small" name="lightbulb outline" style={{ marginLeft: '0.25em' }} />
           ))}
         </div>
       </div> */}
