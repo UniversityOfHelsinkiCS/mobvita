@@ -1511,5 +1511,6 @@
     "level": "Livello",
     "Lesson vocab": "Livello di vocabolario",
     "lesson-vocab-diff-message": "Qui puoi scegliere la difficoltà del vocabolario da utilizzare nella lezione.",
-    "select-lesson-vocab-diff": "Scegli la difficoltà del vocabolario per la lezione"
+    "select-lesson-vocab-diff": "Scegli la difficoltà del vocabolario per la lezione",
+    "just-leveled-up": "You just leveled up! Your new level is"
 }
