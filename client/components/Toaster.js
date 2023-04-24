@@ -12,6 +12,7 @@ import { useIntl } from 'react-intl'
 import { learningLanguageSelector } from 'Utilities/common'
 import AchievementToast from 'Components/Achievements/AchievementToast'
 import StreakToast from 'Components/Streak/StreakToast'
+import LevelUpToast from './LevelUpToast'
 
 export default function Toaster() {
   const dispatch = useDispatch()
@@ -75,6 +76,19 @@ export default function Toaster() {
       })
     }
   }, [streak])
+
+  const levelUp = useSelector(state => state.levelUp)
+
+  useEffect(() => {
+    if (levelUp) {
+      toast(<LevelUpToast />, {
+        transition: Flip,
+        type: 'success',
+        className: 'level-up-toast',
+        closeButton: false,
+      })
+    }
+  }, [levelUp])
 
   useEffect(() => {
     if (controlledPractice.finished) {

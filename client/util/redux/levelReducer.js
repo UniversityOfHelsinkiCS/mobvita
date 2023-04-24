@@ -1,4 +1,4 @@
-const initialState = { level: null }
+const initialState = { level: null, levelUp: null }
 
 export default (state = initialState, action) => {
   switch (action.type) {
@@ -9,6 +9,10 @@ export default (state = initialState, action) => {
     case 'CLEAR_LEVEL':
       return {
         initialState,
+      }
+    case 'SET_LEVEL_UP':
+      return {
+        levelUp: action.levelUp,
       }
     default:
       return state

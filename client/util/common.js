@@ -83,6 +83,7 @@ import readingBook from 'Assets/images/reading-book.png'
 import flameIcon from 'Assets/images/flame_icon.png'
 import flame from 'Assets/images/flame.png'
 import flameColorless from 'Assets/images/flame_colorless.png'
+import greenArrow from 'Assets/images/green_arrow.png'
 
 import { useSelector, useDispatch } from 'react-redux'
 import { useHistory } from 'react-router-dom'
@@ -171,7 +172,8 @@ export const images = {
   readingBook,
   flame,
   flameColorless,
-  flameIcon
+  flameIcon,
+  greenArrow,
 }
 
 export const backgroundColors = ['lightcyan', 'lightyellow', 'antiquewhite', 'lightPink']
@@ -221,7 +223,7 @@ export const confettiRain = () => {
 }
 
 export const finalConfettiRain = (colors, endDate) => {
-  ; (function frame() {
+  ;(function frame() {
     confetti({
       particleCount: 2,
       angle: 60,
@@ -1525,7 +1527,7 @@ const desktopPracticeTourSteps = [
       </div>
     ),
     disableBeacon: true,
-    placement: 'left'
+    placement: 'left',
   },
   {
     target: '.dictionary-help',

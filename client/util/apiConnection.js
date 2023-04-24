@@ -71,13 +71,13 @@ const handleNewAchievement = (store, newAchievements) => {
   const cachedAchievements = JSON.parse(window.localStorage.getItem('newAchievements'))
   const filteredAchievements = cachedAchievements
     ? newAchievements.filter(
-      achievement =>
-        !cachedAchievements.some(
-          cachedAchievement =>
-            cachedAchievement.name === achievement.name &&
-            cachedAchievement.level === achievement.level
-        )
-    )
+        achievement =>
+          !cachedAchievements.some(
+            cachedAchievement =>
+              cachedAchievement.name === achievement.name &&
+              cachedAchievement.level === achievement.level
+          )
+      )
     : newAchievements
 
   if (filteredAchievements.length > 0) {
@@ -100,12 +100,12 @@ const handleStreakState = (store, streakState) => {
 }
 
 const handleXP = (store, xp) => {
-
   store.dispatch({ type: 'SET_XP', xp })
 }
 
-const handleLevel = (store, level) => {
+const handleLevel = (store, level, level_up) => {
   store.dispatch({ type: 'SET_LEVEL', level })
+  store.dispatch({ type: 'SET_LEVEL_UP', level_up })
 }
 
 const handleNewVocabulary = (store, newVocabulary) => {
@@ -154,7 +154,7 @@ export const handleRequest = store => next => async action => {
       handleStreakState(store, res.data.is_today_streaked)
 
       handleXP(store, res.data.xp_today)
-      handleLevel(store, res.data.level)
+      handleLevel(store, res.data.level, res.data.level_up)
 
       const requestSentAt = new Date()
       window.localStorage.setItem('last_request', requestSentAt)
