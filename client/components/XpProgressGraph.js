@@ -3,13 +3,12 @@ import Highcharts from 'highcharts'
 import HighchartsReact from 'highcharts-react-official'
 import moment from 'moment'
 import { useIntl } from 'react-intl'
-import { hiddenFeatures } from 'Utilities/common'
 import useWindowDimensions from 'Utilities/windowDimensions'
 import { useSelector } from 'react-redux'
 
 const XpProgressGraph = ({ startDate, endDate }) => {
   const intl = useIntl()
-  const smallScreen = useWindowDimensions().width < 640
+  const smallScreen = useWindowDimensions().width < 700
   const { xpHistory } = useSelector(({ practiceHistory }) => practiceHistory)
 
   let xpSum = 0
@@ -31,7 +30,7 @@ const XpProgressGraph = ({ startDate, endDate }) => {
     yAxis: {
       title: { text: 'XP' },
       min: 0,
-      max: 1000,
+      max: xpSum + 10,
     },
     xAxis: {
       type: 'datetime',
