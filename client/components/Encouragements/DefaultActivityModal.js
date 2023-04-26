@@ -83,7 +83,7 @@ const DefaultActivityModal = ({
 
   const fillList = () => {
     let initList = []
-    if (streakToday === 'not_streaked' && !streakBroken && hiddenFeatures) {
+    if (streakToday === 'not_streaked' && !streakBroken) {
       initList = initList.concat(
         <div className="pt-md">
           <div
@@ -115,7 +115,7 @@ const DefaultActivityModal = ({
       )
     }
 
-    if (streakBroken && hiddenFeatures) {
+    if (streakBroken) {
       initList = initList.concat(
         <div className="pt-md">
           <div
@@ -147,7 +147,7 @@ const DefaultActivityModal = ({
       )
     }
 
-    if (streakToday === 'streaked' && hiddenFeatures) {
+    if (streakToday === 'streaked') {
       initList = initList.concat(
         <div className="pt-md">
           <div
