@@ -18,10 +18,13 @@ runs:
       run: docker-compose up -d
 
     - name: Run cypress tests
-      shell: bash
-      run: npm run cypress:run -- --spec ${{ inputs.spec }}
-
-    - uses: actions/upload-artifact@v1
+      uses: cypress-io/github-action@v4
+      with:
+        browser: chrome
+        spec: ${{ inputs.spec }}
+      env:
+        CYPRESS_baseUrl: http://localhost:8000
+        
       if: failure()
       with:
         name: cypress-screenshots
