@@ -14,7 +14,7 @@ jobs:
       - name: 'Run tests'
         uses: ./.github/actions/run_test
         with:
-          spec: cypress/integration/competition_spec.js
+          spec: cypress/e2e/competition_spec.js
   
   test_dictionary:
     name: "Test dictionary"
@@ -24,7 +24,7 @@ jobs:
       - name: 'Run tests'
         uses: ./.github/actions/run_test
         with:
-          spec: cypress/integration/dictionary_spec.js
+          spec: cypress/e2e/dictionary_spec.js
 
   test_flashcards:
     name: "Test flashcards"
@@ -34,7 +34,7 @@ jobs:
       - name: 'Run tests'
         uses: ./.github/actions/run_test
         with:
-          spec: cypress/integration/flashcards_spec.js
+          spec: cypress/e2e/flashcards_spec.js
 
   test_follow_and_block:
     name: "Test follow and block"
@@ -44,7 +44,7 @@ jobs:
       - name: 'Run tests'
         uses: ./.github/actions/run_test
         with:
-          spec: cypress/integration/follow_and_block_spec.js
+          spec: cypress/e2e/follow_and_block_spec.js
 
   test_groups:
     name: "Test groups"
@@ -54,7 +54,7 @@ jobs:
       - name: 'Run tests'
         uses: ./.github/actions/run_test
         with:
-          spec: cypress/integration/groups_spec.js
+          spec: cypress/e2e/groups_spec.js
 
   test_mobvita:
     name: "Test mobvita"
@@ -64,7 +64,7 @@ jobs:
       - name: 'Run tests'
         uses: ./.github/actions/run_test
         with:
-          spec: cypress/integration/mobvita_spec.js
+          spec: cypress/e2e/mobvita_spec.js
 
   test_navbar:
     name: "Test navbar"
@@ -74,7 +74,7 @@ jobs:
       - name: 'Run tests'
         uses: ./.github/actions/run_test
         with:
-          spec: cypress/integration/navbar_spec.js
+          spec: cypress/e2e/navbar_spec.js
 
   test_practice:
     name: "Test practice"
@@ -84,7 +84,7 @@ jobs:
       - name: 'Run tests'
         uses: ./.github/actions/run_test
         with:
-          spec: cypress/integration/practice_spec.js
+          spec: cypress/e2e/practice_spec.js
 
   test_sidebar:
     name: "Test sidebar"
@@ -94,7 +94,7 @@ jobs:
       - name: 'Run tests'
         uses: ./.github/actions/run_test
         with:
-          spec: cypress/integration/sidebar_spec.js
+          spec: cypress/e2e/sidebar_spec.js
   
   test_tests:
     name: "Test tests"
@@ -104,7 +104,7 @@ jobs:
       - name: 'Run tests'
         uses: ./.github/actions/run_test
         with:
-          spec: cypress/integration/tests_spec.js
+          spec: cypress/e2e/tests_spec.js
 
   test_wordnest:
     name: "Test wordnest"
@@ -114,7 +114,7 @@ jobs:
       - name: 'Run tests'
         uses: ./.github/actions/run_test
         with:
-          spec: cypress/integration/wordnest_spec.js
+          spec: cypress/e2e/wordnest_spec.js
 
   build:
     name: 'Publish to dockerhub'
