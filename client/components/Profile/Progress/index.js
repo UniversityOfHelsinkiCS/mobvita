@@ -53,17 +53,23 @@ const Progress = () => {
   const [graphType, setGraphType] = useState('column mastered')
   const [initComplete, setInitComplete] = useState(false)
 
-  const { exerciseHistory: irtExerciseHistory } = useSelector(({ practiceHistory }) => practiceHistory)
-  const { flashcardHistory, eloExerciseHistory, pending } = useSelector(({ practiceHistory }) => {
-    const { flashcardHistory } = practiceHistory
-    const { eloExerciseHistory } = practiceHistory
-    const { pending } = practiceHistory
-    return {
-      flashcardHistory,
-      eloExerciseHistory,
-      pending,
+  const { exerciseHistory: irtExerciseHistory } = useSelector(
+    ({ practiceHistory }) => practiceHistory
+  )
+  const { flashcardHistory, eloExerciseHistory, xpHistory, pending } = useSelector(
+    ({ practiceHistory }) => {
+      const { flashcardHistory } = practiceHistory
+      const { eloExerciseHistory } = practiceHistory
+      const { xpHistory } = practiceHistory
+      const { pending } = practiceHistory
+      return {
+        flashcardHistory,
+        eloExerciseHistory,
+        xpHistory,
+        pending,
+      }
     }
-  })
+  )
 
   useEffect(() => {
     const date_now = moment().toDate()
@@ -126,8 +132,8 @@ const Progress = () => {
   const originalEndPoint =
     irtExerciseHistory?.length > 0
       ? moment(irtExerciseHistory[irtExerciseHistory.length - 1]?.date)
-        .add(1, 'days')
-        .toDate()
+          .add(1, 'days')
+          .toDate()
       : moment().toDate()
   const [startDate, setStartDate] = useState(getStartDate)
   const [endDate, setEndDate] = useState(originalEndPoint)
@@ -301,7 +307,7 @@ const Progress = () => {
           <div>
             <div className="space-evenly">
               <button
-                className='progress-tour-timeline-button'
+                className="progress-tour-timeline-button"
                 type="button"
                 onClick={() => handleChartChange('SET_TIMELINE_CHART')}
                 style={{ border: 'none' }}
@@ -316,7 +322,7 @@ const Progress = () => {
                 </div>
               </button>
               <button
-                className='progress-tour-vocabulary-button'
+                className="progress-tour-vocabulary-button"
                 type="button"
                 onClick={() => handleChartChange('SET_VOCABULARY_CHART')}
                 style={{ border: 'none' }}
@@ -331,7 +337,7 @@ const Progress = () => {
                 </div>
               </button>
               <button
-                className='progress-tour-grammar-button'
+                className="progress-tour-grammar-button"
                 type="button"
                 onClick={() => handleChartChange('SET_GRAMMAR_CHART')}
                 style={{ border: 'none' }}
@@ -346,7 +352,7 @@ const Progress = () => {
                 </div>
               </button>
               <button
-                className='progress-tour-exercise-history-button'
+                className="progress-tour-exercise-history-button"
                 type="button"
                 onClick={() => handleChartChange('SET_EXERCISE_HISTORY_CHART')}
                 style={{ border: 'none' }}
@@ -361,7 +367,7 @@ const Progress = () => {
                 </div>
               </button>
               <button
-                className='progress-tour-test-history-button'
+                className="progress-tour-test-history-button"
                 type="button"
                 onClick={() => handleChartChange('SET_TEST_HISTORY_CHART')}
                 style={{ border: 'none' }}
@@ -409,12 +415,9 @@ const Progress = () => {
                 startDate={startDate}
                 endDate={endDate}
               />
-              {hiddenFeatures &&
-                <XpProgressGraph
-                  startDate={startDate}
-                  endDate={endDate}
-                />
-              }
+              {hiddenFeatures && (
+                <XpProgressGraph xpHistory={xpHistory} startDate={startDate} endDate={endDate} />
+              )}
             </div>
           </div>
         ) : shownChart === 'vocabulary' ? (
