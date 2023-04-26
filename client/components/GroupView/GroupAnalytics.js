@@ -79,7 +79,7 @@ const GroupAnalytics = ({ role }) => {
     text: `${student?.userName} (${student?.email})`,
     value: JSON.stringify(student), // needs to be string
   }))
-  
+
   const handleStudentChange = value => {
     const parsedValue = JSON.parse(value)
     const studentSummary = summary?.find(student => student.Email === parsedValue.email)
@@ -115,8 +115,7 @@ const GroupAnalytics = ({ role }) => {
   useEffect(() => {
     if (cefrHistory != undefined && cefrHistory.length > 0) {
       setCurrentCEFR(skillLevels[cefrHistory[0].grade])
-    }
-    else setCurrentCEFR('-')
+    } else setCurrentCEFR('-')
   }, [cefrHistory])
 
   useEffect(() => {

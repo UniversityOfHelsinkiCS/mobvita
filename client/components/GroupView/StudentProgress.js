@@ -6,16 +6,19 @@ import { getPracticeHistory } from 'Utilities/redux/practiceHistoryReducer'
 import { FormattedMessage } from 'react-intl'
 import ProgressGraph from 'Components/ProgressGraph'
 import Spinner from 'Components/Spinner'
+import XpProgressGraph from 'Components/XpProgressGraph'
 
 const StudentProgress = ({ student, startDate, endDate, group }) => {
   // const practiceHistory = useSelector(state => state.practiceHistory)
   // const { exerciseHistory, flashcardHistory, pending } = practiceHistory
 
   //exerciseHistory still uses old statics from user object
-  const { pending, exerciseHistory } = useSelector(({ studentProgress }) => {
+  const { pending, exerciseHistory, xpHistory } = useSelector(({ studentProgress }) => {
     const { progress, pending } = studentProgress
+
     const { exercise_history: exerciseHistory } = progress
-    return { pending, exerciseHistory }
+    const { xp_history: xpHistory } = progress
+    return { pending, xpHistory, exerciseHistory }
   })
   const flashcardHistory = []
   const learningLanguage = useSelector(learningLanguageSelector)
@@ -35,12 +38,15 @@ const StudentProgress = ({ student, startDate, endDate, group }) => {
   return (
     <div>
       {student ? (
-        <ProgressGraph
-          exerciseHistory={exerciseHistory}
-          flashcardHistory={flashcardHistory}
-          startDate={startDate}
-          endDate={endDate}
-        />
+        <div>
+          <ProgressGraph
+            exerciseHistory={exerciseHistory}
+            flashcardHistory={flashcardHistory}
+            startDate={startDate}
+            endDate={endDate}
+          />
+          <XpProgressGraph xpHistory={xpHistory} startDate={startDate} endDate={endDate} />
+        </div>
       ) : (
         <div className="group-analytics-no-results">
           <FormattedMessage id="no-students-in-group" />
