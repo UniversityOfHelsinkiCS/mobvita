@@ -25,13 +25,13 @@ runs:
       env:
         CYPRESS_baseUrl: http://localhost:8000
     - name: 'Upload screenshots if tests fail'
-      uses: actions/upload-artifact@v3
+      uses: actions/upload-artifact@v1
       if: failure()
       with:
         name: cypress-screenshots
         path: /home/runner/work/mobvita/mobvita/cypress/screenshots/
     # Test run video was always captured, so this action uses "always()" condition
-    - uses: actions/upload-artifact@v3
+    - uses: actions/upload-artifact@v1
       if: always()
       with:
         name: cypress-videos
