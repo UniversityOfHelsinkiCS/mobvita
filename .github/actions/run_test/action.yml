@@ -23,7 +23,7 @@ runs:
         browser: chrome
         spec: ${{ inputs.spec }}
       env:
-        CYPRESS_baseUrl: http://localhost:1337
+        CYPRESS_baseUrl: http://localhost:8000
     - name: 'Upload screenshots if tests fail'
       uses: actions/upload-artifact@v3
       if: failure()
