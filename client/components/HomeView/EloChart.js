@@ -149,12 +149,16 @@ const EloChart = ({ width }) => {
       onClick={() => history.push('/profile/progress')}
     >
       <div className="space-evenly pb-sm">
-        {hiddenFeatures && (
-          <span>
-            <img src={images.flameIcon} alt="flame icon" width="18px" style={{ marginRight: '0.2em' }} />
-            {daysStreaked}
-          </span>
-        )}
+        <span>
+          <img
+            src={images.flameIcon}
+            alt="flame icon"
+            width="18px"
+            style={{ marginRight: '0.2em' }}
+          />
+          {daysStreaked}
+        </span>
+
         {showStoryElo && (
           <span>
             <Icon name="star outline" style={{ margin: 0 }} />{' '}
