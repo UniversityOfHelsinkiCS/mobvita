@@ -20,10 +20,9 @@ export const XpBar = () => {
           aria-valuenow={progressPercentage}
           aria-valuemin="0"
           aria-valuemax="100"
-        >
-          <span>{`${currentLevelXp} / ${requiredXpToNextLevel}`} </span>
-        </div>
+        />
       </div>
+      <div className="xp-gathered ps-lg">{`${currentLevelXp} / ${requiredXpToNextLevel}`}</div>
     </div>
   )
 }

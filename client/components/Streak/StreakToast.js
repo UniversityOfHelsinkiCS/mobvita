@@ -27,7 +27,7 @@ const StreakToast = () => {
   }
 
   const streakDoneText = `${intl.formatMessage({
-    id: 'streak_just_done',
+    id: 'streak-just-done',
   })}`
 
   return (
