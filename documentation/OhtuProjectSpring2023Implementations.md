@@ -9,6 +9,7 @@ Home page contained a tour explaining shortly actions in the home page and aroun
 -Lessons
 - Practice
 - Progress
+
 When a new user enters a page with an implemented tour for the first time, the tour is shown automatically. Later on the tours can be revisited from a direction icon in the navigation bar.
 
 ### Encouragement refactoring
@@ -24,6 +25,7 @@ An information system for daily streak was implemented in the frontend. User can
 - Elo chart in the page (a flame symbol and number of days streaked)
 - Encouragement pop up in the home page
 - Profile page
+
 Profile page and encouragement pop up also contain information of how to continue or start streaking.
 
 ### XP and levels
