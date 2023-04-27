@@ -58,6 +58,7 @@ const Recommender = () => {
   const isInPracticeView = history.location.pathname.includes('practice')
   const isInFlashcardsView = history.location.pathname.includes('flashcards')
   const inBlueCardsTest = history.location.pathname.includes('test')
+  const inReviewView = history.location.pathname.includes('review')
   const { storyId } = useParams()
 
   // See default_activity_modal row 260
@@ -201,33 +202,33 @@ const Recommender = () => {
         (isInProgressView || isInFlashcardsView) ? (
         // when the user goes to vocabulary chart on progress page and has bluecards to show encouragement
         // also comes up when user enters the flashcards tab
-          <div>
+        <div>
           <Draggable cancel=".interactable">
-              <div
+            <div
               className={bigScreen ? 'draggable-encouragement' : 'draggable-encouragement-mobile'}
             >
               <div className="col-flex">
-                  <div className="flex-reverse">
+                <div className="flex-reverse">
                   <Icon
-                      className="interactable"
-                      style={{
+                    className="interactable"
+                    style={{
                       cursor: 'pointer',
                       marginBottom: '.25em',
                     }}
-                      size="large"
-                      name="close"
-                      onClick={handleCloseClick}
-                    />
+                    size="large"
+                    name="close"
+                    onClick={handleCloseClick}
+                  />
                 </div>
-                  <div className="col-flex">
+                <div className="col-flex">
                   <div className="interactable" style={{ overflow: 'auto', maxHeight: 300 }}>
-                      <ConfirmBlueCardsEncouragement />
-                    </div>
+                    <ConfirmBlueCardsEncouragement />
+                  </div>
                   <TurnOffRecommendations />
                 </div>
-                </div>
+              </div>
             </div>
-            </Draggable>
+          </Draggable>
         </div>
       ) : isInPracticeView && open ? (
         // practice view related encouragements
@@ -289,8 +290,8 @@ const Recommender = () => {
                     onClick={handleCloseClick}
                   />
                 </div>
-                <FlashcardsHeaderChooser handleNewDeck={handleNewDeck} />
                 <div className="interactable" style={{ overflow: 'auto', maxHeight: 300 }}>
+                  <FlashcardsHeaderChooser handleNewDeck={handleNewDeck} />
                   <TryAnotherBatch handleNewDeck={handleNewDeck} />
                   <ListOfRecentStoriesFlashcardsEncouragement />
                   <BackToLibraryFromFlashcards />
@@ -320,12 +321,13 @@ const Recommender = () => {
                     onClick={handleCloseClick}
                   />
                 </div>
-                <FlashcardsHeaderChooser handleNewDeck={handleNewDeck} />
                 <div className="interactable" style={{ overflow: 'auto', maxHeight: 300 }}>
+                  <FlashcardsHeaderChooser handleNewDeck={handleNewDeck} />
                   <PreviousStoriesBlueFlashcards />
                   <WordsSeenEncouragement />
                   <FlashcardsProgress />
                 </div>
+                <TurnOffRecommendations />
               </div>
             </div>
           </Draggable>
