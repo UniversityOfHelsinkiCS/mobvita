@@ -80,7 +80,7 @@ const Practice = ({ mode, open }) => {
   useEffect(() => {
     dispatch(getStoriesBlueFlashcards(learningLanguage, dictionaryLanguage))
     if (!pending && !loading) {
-      if (amountAnswered >= cards.length) {
+      if ( enable_recmd && amountAnswered >= cards.length) {
         dispatch(openFCEncouragement())
         setAmountAnswered(0)
       }
@@ -181,8 +181,9 @@ const Practice = ({ mode, open }) => {
   const handleNewDeck = () => {
     setSwipeIndex(0)
     setBlueCardsAnswered([])
-    dispatch(openFCEncouragement)
-    console.log('pop')
+    if ( enable_recmd ) {
+      dispatch(openFCEncouragement)
+    }
     if (!inBlueCardsTest) {
       dispatch(getFlashcards(learningLanguage, dictionaryLanguage, storyId))
     } else {

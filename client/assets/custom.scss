@@ -704,7 +704,7 @@ $value in $spacing {
   position: absolute;
   top: 50%;
   left: 50%;
-  margin-top: -326px;
+  margin-top: -284px;
   margin-left: -300px;
   background: #FFF;
   z-index: 103;
@@ -719,7 +719,7 @@ $value in $spacing {
   position: absolute;
   top: 50%;
   left: 50%;
-  margin-top: -326px;
+  margin-top: -284px;
   margin-left: -176px;
   background: #FFF;
   z-index: 103;
@@ -3153,4 +3153,9 @@ label.file-upload-btn {
 
   .xp-bar {
     width: 300px;
+  }
+
+  .xp-gathered {
+    display: flex;
+    justify-content: center;
   }

@@ -20,11 +20,11 @@ const get_lesson_performance = (correct_count, total_count) => {
 
 const get_lesson_performance_style = (correct_count, total_count) => {
   const correct_perc = get_lesson_performance(correct_count, total_count)
-  if (correct_perc >= 0.75) return '#0080002e'
-  else if (correct_perc < 0.75 && correct_perc >= 0.5) return '#32cd322e'
-  else if (correct_perc < 0.5 && correct_perc >= 0.25) return '#ffa5002e'
-  else if (correct_perc < 0.25 && correct_perc > 0) return '#ff00002e'
-  else return 'white'
+  if (correct_perc >= 0.75) return '#008000'
+  else if (correct_perc < 0.75 && correct_perc >= 0.5) return '#32cd32'
+  else if (correct_perc < 0.5 && correct_perc >= 0.25) return '#ffa500'
+  else if (correct_perc < 0.25 && correct_perc > 0) return '#ff0000'
+  else return '#000000'
 }
 
 const LessonTitle = ({ topic }) => {
@@ -34,6 +34,7 @@ const LessonTitle = ({ topic }) => {
   const topic_concepts = topic.topic.split(';')
   for (let k = 0; k < topic_concepts.length; k++) {
     if (k === 0) {
+      const color = {color: get_lesson_performance_style(topic.correct, topic.total)}
       topic_rows.push(
         <h6
           key={k}
@@ -55,7 +56,7 @@ const LessonTitle = ({ topic }) => {
                 marginRight: '5px',
                 maxWidth: '25px',
                 minWidth: '25px',
-                
+                ...color
               }}
             >
               {String(
@@ -69,6 +70,7 @@ const LessonTitle = ({ topic }) => {
                 maxWidth: '20px',
                 minWidth: '10px',
                 marginRight: '7px',
+                ...color
               }}
             >
               %
@@ -138,12 +140,15 @@ const LessonTitle = ({ topic }) => {
 }
 
 const LessonListItem = ({ topic, selected, toggleTopic }) => {
+  const correct_perc = get_lesson_performance(topic.correct, topic.total)
+  let backgroundColor = '#ffffff'
+  if (correct_perc >= 0.75) backgroundColor = '#32cd3233'
   return (
     <Card 
       fluid 
       key={topic._id} 
       className="lesson-list-card" 
-      style={{'background-color': get_lesson_performance_style(topic.correct, topic.total)}}
+      style={{'background-color': backgroundColor}}
     >
       <Card.Content extra className="lesson-card-title-cont">
         <LessonTitle topic={topic} />

@@ -4,16 +4,14 @@ import HighchartsReact from 'highcharts-react-official'
 import moment from 'moment'
 import { useIntl } from 'react-intl'
 import useWindowDimensions from 'Utilities/windowDimensions'
-import { useSelector } from 'react-redux'
 
-const XpProgressGraph = ({ startDate, endDate }) => {
+const XpProgressGraph = ({ xpHistory, startDate, endDate }) => {
   const intl = useIntl()
   const smallScreen = useWindowDimensions().width < 700
-  const { xpHistory } = useSelector(({ practiceHistory }) => practiceHistory)
 
   let xpSum = 0
 
-  const xpData = xpHistory && xpHistory.map(e => [moment(e.date).valueOf(), xpSum += e.xp])
+  const xpData = xpHistory && xpHistory.map(e => [moment(e.date).valueOf(), (xpSum += e.xp)])
 
   const series = []
   series.push({ name: 'XP', data: xpData })
@@ -43,7 +41,7 @@ const XpProgressGraph = ({ startDate, endDate }) => {
       series: {
         allowPointSelect: true,
         marker: { enabled: true },
-        color: '#FF530D'
+        color: '#FF530D',
       },
     },
   }
