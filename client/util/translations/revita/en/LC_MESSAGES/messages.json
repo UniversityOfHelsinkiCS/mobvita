@@ -1516,5 +1516,8 @@
     "just-leveled-up": "You just leveled up!",
     "streak-just-done": "Your streak continues!",
     "new-level": "Your new level is",
-    "xp-timeline-chart": "XP timeline"
+    "xp-timeline-chart": "XP timeline",
+    "language-score-level-chart": "Language level timeline",
+    "language-level-chart": "Language level timeline",
+    "language-level-timeline-chart": "Language level timeline"
 }

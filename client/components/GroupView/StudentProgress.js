@@ -39,13 +39,18 @@ const StudentProgress = ({ student, startDate, endDate, group }) => {
     <div>
       {student ? (
         <div>
-          <ProgressGraph
-            exerciseHistory={exerciseHistory}
-            flashcardHistory={flashcardHistory}
-            startDate={startDate}
-            endDate={endDate}
-          />
-          <XpProgressGraph xpHistory={xpHistory} startDate={startDate} endDate={endDate} />
+          <div>
+            <ProgressGraph
+              exerciseHistory={exerciseHistory}
+              flashcardHistory={flashcardHistory}
+              startDate={startDate}
+              endDate={endDate}
+            />
+          </div>
+          <br />
+          <div>
+            <XpProgressGraph xpHistory={xpHistory} startDate={startDate} endDate={endDate} />
+          </div>
         </div>
       ) : (
         <div className="group-analytics-no-results">
