@@ -22,7 +22,7 @@ The encouragement/recommendation system was refactored in the code base. More th
 ### Daily streak
 
 An information system for daily streak was implemented in the frontend. User can maintain their daily streak by doing 10 story snippets or 20 flashcards. After finishing the required tasks, a toaster telling about accomplished streak appears. The state of user's streak can be found in several places:
-- Elo chart in the page (a flame symbol and number of days streaked)
+- Elo chart in the home page (a flame symbol and number of streaked days)
 - Encouragement pop up in the home page
 - Profile page
 
@@ -30,6 +30,6 @@ Profile page and encouragement pop up also contain information of how to continu
 
 ### XP and levels
 
-An information system for user exeperience (XP) and user's level was implementend in the frontend. User can gain XP from doing exercises in the app and leveling up after gaining enough XP. User's current level and how much XP is needed for the next level is visible in the profile page.
+An information system for user's exeperience points (XP) and level was implementend in the frontend. User can gain XP from doing exercises in the app and leveling up after gaining enough XP. User's current level and how much XP is needed for the next level are visible in the profile page.
 
 ### Charts
