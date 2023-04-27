@@ -13,6 +13,7 @@ When a new user enters a page with an implemented tour for the first time, the t
 
 ### Encouragement refactoring
 
+The encouragement/recommendation system was refactored in the code base. More thorough documentation can be found in the documentation folder: [NewRecommendationSystem.md](https://github.com/UniversityOfHelsinkiCS/mobvita/blob/master/documentation/NewRecommendationSystem.md).
 
 ### Profile page
 
