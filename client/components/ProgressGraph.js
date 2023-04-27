@@ -9,7 +9,7 @@ import useWindowDimensions from 'Utilities/windowDimensions'
 const ProgressGraph = ({ exerciseHistory, flashcardHistory, startDate, endDate }) => {
   const intl = useIntl()
   const smallScreen = useWindowDimensions().width < 640
-    
+
   const storyData = exerciseHistory && exerciseHistory.map(e => [moment(e.date).valueOf(), e.score])
   // const flashcardData =
   //   flashcardHistory && flashcardHistory.map(e => [moment(e.date).valueOf(), e.score])
@@ -59,14 +59,14 @@ const ProgressGraph = ({ exerciseHistory, flashcardHistory, startDate, endDate }
 
   // console.log('exerciseHistory', exerciseHistory)
   const options = {
-    title: { text: '' },
+    title: { text: intl.formatMessage({ id: 'language-level-timeline-chart' }) },
     series,
     chart: { height },
     credits: { enabled: false },
     allowDecimals: false,
     alignTicks: false,
     yAxis: [
-      { 
+      {
         title: { text: intl.formatMessage({ id: 'score' }) },
         min: 0,
         max: 100,
