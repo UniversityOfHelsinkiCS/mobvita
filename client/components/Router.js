@@ -48,6 +48,7 @@ import LessonLibrary from './Lessons/LessonLibrary'
 
 export default () => {
   const user = useSelector(state => state.user.data)
+  const { enable_recmd } = useSelector(({ user }) => user.data.user)
   const location = useLocation()
   const dispatch = useDispatch()
 
@@ -56,8 +57,8 @@ export default () => {
     dispatch(closeEncouragement())
     dispatch(closeFCEncouragement())
     if (
-      location.pathname.includes('welcome') ||
-      (location.pathname.includes('flashcards') && !location.pathname.includes('test'))
+      (enable_recmd && location.pathname.includes('welcome')) ||
+      (enable_recmd && location.pathname.includes('flashcards') && !location.pathname.includes('test'))
     ) {
       dispatch(openEncouragement())
     }

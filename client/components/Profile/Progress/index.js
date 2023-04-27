@@ -52,7 +52,7 @@ const Progress = () => {
   const element = useRef()
   const [graphType, setGraphType] = useState('column mastered')
   const [initComplete, setInitComplete] = useState(false)
-
+  const { enable_recmd } = useSelector(({ user }) => user.data.user)
   const { exerciseHistory: irtExerciseHistory } = useSelector(
     ({ practiceHistory }) => practiceHistory
   )
@@ -182,7 +182,7 @@ const Progress = () => {
       dispatch(hideIcon())
       dispatch(closeEncouragement)
     } else {
-      if (!isTourOn) {
+      if (!isTourOn && enable_recmd) {
         dispatch(showIcon())
         dispatch(openEncouragement())
       }

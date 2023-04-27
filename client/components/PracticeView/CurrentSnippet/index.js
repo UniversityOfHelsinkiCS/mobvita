@@ -302,7 +302,7 @@ const CurrentSnippet = ({ storyId, handleInputChange, timer, numSnippets, lesson
   }, [snippets.pending, snippets.previous])
 
   useEffect(() => {
-    if (practiceFinished) {
+    if (practiceFinished && enable_recmd) {
       dispatch(openEncouragement())
     }
   }, [practiceFinished])
