@@ -70,8 +70,9 @@ export default function Toaster() {
     if (streak === 'just_streaked') {
       toast(<StreakToast />, {
         transition: Flip,
-        type: 'success',
+        type: 'warning',
         className: 'streak-toast',
+        position: 'top-center',
         closeButton: false,
       })
     }
@@ -83,8 +84,9 @@ export default function Toaster() {
     if (levelUp) {
       toast(<LevelUpToast />, {
         transition: Flip,
-        type: 'success',
+        type: 'warning',
         className: 'level-up-toast',
+        position: 'top-center',
         closeButton: false,
       })
     }
@@ -226,8 +228,9 @@ export default function Toaster() {
       newAchievements.forEach(achievement =>
         toast(<AchievementToast achievement={achievement} />, {
           transition: Flip,
-          type: 'success',
+          type: 'warning',
           className: 'achievement-toast',
+          position: 'top-center',
           closeButton: false,
         })
       )
