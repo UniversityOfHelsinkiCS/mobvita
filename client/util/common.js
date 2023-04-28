@@ -176,7 +176,13 @@ export const images = {
   greenArrow,
 }
 
-export const backgroundColors = ['lightcyan', 'lightyellow', 'antiquewhite', 'lightPink']
+export const backgroundColors = [
+  'lavender',
+  'lightyellow',
+  'antiquewhite',
+  'lightPink',
+  'lightcyan',
+]
 export const showAllEncouragements = false
 
 export const getCategoryColor = category => {
