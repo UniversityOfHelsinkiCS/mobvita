@@ -39,7 +39,7 @@ const Flashcards = () => {
 
   // Change this to true when developing new encouragement!
   // REMEMBER TO SWITCH BACK TO FALSE BEFORE PUSHING!!!
-  const TESTING_NEW_ENCOURAGEMENT = false
+  const TESTING_NEW_ENCOURAGEMENT = true
 
   return (
     <div className="cont-tall cont pb-nm flex-col auto pt-xl space-between">
@@ -47,11 +47,8 @@ const Flashcards = () => {
         {!blueCardsTest && (
           <div>
             {!TESTING_NEW_ENCOURAGEMENT && (
-              <FlashcardsPracticeEncouragement
-                open={open}
-                prevBlueCards={storyBlueCards}
-              />)
-            }
+              <FlashcardsPracticeEncouragement open={open} prevBlueCards={storyBlueCards} />
+            )}
           </div>
         )}
         {width < 940 ? <FloatMenu /> : <FlashcardMenu />}

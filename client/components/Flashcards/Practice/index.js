@@ -67,7 +67,7 @@ const Practice = ({ mode, open }) => {
           )
         )
     } else {
-      ; ({ cards } = flashcards)
+      ;({ cards } = flashcards)
     }
 
     return { cards, pending, deletePending, sessionId }
@@ -80,7 +80,7 @@ const Practice = ({ mode, open }) => {
   useEffect(() => {
     dispatch(getStoriesBlueFlashcards(learningLanguage, dictionaryLanguage))
     if (!pending && !loading) {
-      if ( enable_recmd && amountAnswered >= cards.length) {
+      if (enable_recmd && amountAnswered >= cards.length) {
         dispatch(openFCEncouragement())
         setAmountAnswered(0)
       }
@@ -181,7 +181,7 @@ const Practice = ({ mode, open }) => {
   const handleNewDeck = () => {
     setSwipeIndex(0)
     setBlueCardsAnswered([])
-    if ( enable_recmd ) {
+    if (enable_recmd) {
       dispatch(openFCEncouragement)
     }
     if (!inBlueCardsTest) {
@@ -285,13 +285,11 @@ const Practice = ({ mode, open }) => {
 
   // Change this to true when developing new encouragement!
   // REMEMBER TO SWITCH BACK TO FALSE BEFORE PUSHING!!!
-  const TESTING_NEW_ENCOURAGEMENT = false
+  const TESTING_NEW_ENCOURAGEMENT = true
 
   return (
     <div className="cont grow flex space-evenly">
-      {TESTING_NEW_ENCOURAGEMENT && (
-        <Recommender />
-      )}
+      {TESTING_NEW_ENCOURAGEMENT && <Recommender />}
       {!TESTING_NEW_ENCOURAGEMENT && (
         <FlashcardsEncouragement
           open={open}
