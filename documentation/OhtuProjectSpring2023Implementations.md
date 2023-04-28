@@ -33,3 +33,7 @@ Profile page and encouragement pop up also contain information of how to continu
 An information system for user's exeperience points (XP) and level was implementend in the frontend. User can gain XP from doing exercises in the app and leveling up after gaining enough XP. User's current level and how much XP is needed for the next level are visible in the profile page.
 
 ### Charts
+
+### Cypress tests 
+
+There are problems with the tests, mainly due to the timeout. We tried to fix the problem by making changes to action.yaml. However, we didn't come up with a solution where the tests would pass every time on the first try.
