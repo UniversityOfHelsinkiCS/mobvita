@@ -26,7 +26,7 @@ import ResponsiveDatePicker from 'Components/ResponsiveDatePicker'
 import History from 'Components/History'
 import { getHistory as getExerciseHistory } from 'Utilities/redux/exerciseHistoryReducer'
 import { getHistory as getTestHistory } from 'Utilities/redux/testReducer'
-import { useLearningLanguage, useDictionaryLanguage, hiddenFeatures } from 'Utilities/common'
+import { useLearningLanguage, useDictionaryLanguage} from 'Utilities/common'
 import useWindowDimension from 'Utilities/windowDimensions'
 import VocabularyGraph from 'Components/VocabularyView/VocabularyGraph'
 import HexagonTest from 'Components/GridHexagon'
@@ -415,9 +415,10 @@ const Progress = () => {
                 startDate={startDate}
                 endDate={endDate}
               />
-              {hiddenFeatures && (
-                <XpProgressGraph xpHistory={xpHistory} startDate={startDate} endDate={endDate} />
-              )}
+            </div>
+            <br />
+            <div>
+              <XpProgressGraph xpHistory={xpHistory} startDate={startDate} endDate={endDate} />
             </div>
           </div>
         ) : shownChart === 'vocabulary' ? (
