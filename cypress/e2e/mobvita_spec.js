@@ -31,7 +31,7 @@ describe('Mobvita', function () {
   this.beforeEach(function () {
     window.localStorage.clear() 
     cy.loginExisting().as('user')
-    cy.visit('http://localhost:8000')
+    cy.visit('http://localhost:8000/home')
   })
   /*
   it('can create a new user, has English as default ui language', function () {
