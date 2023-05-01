@@ -875,6 +875,16 @@ $value in $spacing {
     justify-content: space-between;
   }
 
+  &-level {
+    width: 25px;
+    height: 25px;
+    border: 2px solid #000;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  
   &-revita-logo {
     color: black !important;
     margin-left: 1.5em;

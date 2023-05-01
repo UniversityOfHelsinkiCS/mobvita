@@ -352,13 +352,11 @@ export default function NavBar() {
           </Nav>
 
           <Nav>
-            <Link to="/profile/main">
-              <div className="navbar-container" style={{ width: '90%' }}>
-                <Navbar.Brand className="navbar-text-item">
-                  <FormattedMessage id="level" /> {user.user.level}
+              <Link to="/profile/main" style={{ textDecoration: 'none' }}>
+                <Navbar.Brand className="navbar-level">
+                  {user.user.level}
                 </Navbar.Brand>
-              </div>
-            </Link>
+              </Link>
           </Nav>
 
           <Nav>
