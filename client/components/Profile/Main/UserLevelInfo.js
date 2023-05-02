@@ -12,7 +12,7 @@ export const XpBar = () => {
 
   return (
     <div>
-      <br />
+      <div className="bold" as="h2">XP</div>
       <div className="xp-wrapper">
         <div
           className="progress-bar progress-bar-striped bg-info"
