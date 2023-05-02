@@ -352,11 +352,15 @@ export default function NavBar() {
           </Nav>
 
           <Nav>
-              <Link to="/profile/main" style={{ textDecoration: 'none' }}>
-                <Navbar.Brand className="navbar-level">
-                  {user.user.level}
-                </Navbar.Brand>
-              </Link>
+            <Popup
+              content={<FormattedMessage id="level-navbar" />}
+              trigger={
+                <Link to="/profile/main" style={{ textDecoration: 'none' }}>
+                  <Navbar.Brand className="navbar-level">{user.user.level}</Navbar.Brand>
+                </Link>
+              }
+              position="top center"
+            />
           </Nav>
 
           <Nav>
