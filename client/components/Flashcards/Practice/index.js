@@ -14,16 +14,20 @@ import {
   getStoriesBlueFlashcards,
 } from 'Utilities/redux/flashcardReducer'
 import { getIncompleteStories } from 'Utilities/redux/incompleteStoriesReducer'
-import { closeFCEncouragement, openFCEncouragement } from 'Utilities/redux/encouragementsReducer'
-import { closeEncouragement, openEncouragement } from 'Utilities/redux/encouragementsReducer'
+import {
+  closeFCEncouragement,
+  openFCEncouragement,
+  closeEncouragement,
+  openEncouragement,
+} from 'Utilities/redux/encouragementsReducer'
+
 import { getSelf } from 'Utilities/redux/userReducer'
 import { learningLanguageSelector, dictionaryLanguageSelector } from 'Utilities/common'
 import useWindowDimension from 'Utilities/windowDimensions'
 import Spinner from 'Components/Spinner'
-import FlashcardsEncouragement from 'Components/Encouragements/FlashcardsEncouragement'
+import Recommender from 'Components/NewEncouragements/Recommender'
 import FlashcardEndView from './FlashcardEndView'
 import FlashcardNoCards from './FlashCardNoCards'
-import Recommender from 'Components/NewEncouragements/Recommender'
 
 import Fillin from './Fillin'
 import Article from './Article'
@@ -282,29 +286,9 @@ const Practice = ({ mode, open }) => {
         )
     }
   }
-
-  // Change this to true when developing new encouragement!
-  // REMEMBER TO SWITCH BACK TO FALSE BEFORE PUSHING!!!
-  const TESTING_NEW_ENCOURAGEMENT = true
-
   return (
     <div className="cont grow flex space-evenly">
-      {TESTING_NEW_ENCOURAGEMENT && <Recommender />}
-      {!TESTING_NEW_ENCOURAGEMENT && (
-        <FlashcardsEncouragement
-          open={open}
-          correctAnswers={correctAnswers}
-          deckSize={cards.length}
-          enable_recmd={enable_recmd}
-          handleNewDeck={handleNewDeck}
-          vocabularySeen={vocabulary_seen}
-          latestStories={latestStories}
-          prevBlueCards={prevBlueCards}
-          loading={loading}
-          storyCardsPending={storyCardsPending}
-          totalAnswers={totalAnswers}
-        />
-      )}
+      <Recommender />
       <VirtualizeSwipeableViews
         index={swipeIndex}
         onChangeIndex={handleIndexChange}

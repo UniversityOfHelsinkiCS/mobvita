@@ -7,6 +7,7 @@ import {
   getSelf,
   getPreviousVocabularyData,
   getNewerVocabularyData,
+  progressTourViewed,
 } from 'Utilities/redux/userReducer'
 import { getStoriesBlueFlashcards } from 'Utilities/redux/flashcardReducer'
 import {
@@ -15,26 +16,23 @@ import {
   openEncouragement,
   showIcon,
 } from 'Utilities/redux/encouragementsReducer'
-import { progressTourViewed } from 'Utilities/redux/userReducer'
 import { sidebarSetOpen } from 'Utilities/redux/sidebarReducer'
 import { startProgressTour } from 'Utilities/redux/tourReducer'
 import ProgressGraph from 'Components/ProgressGraph'
 import Spinner from 'Components/Spinner'
-import { useHistory } from 'react-router-dom'
 import { Divider, Icon, Popup } from 'semantic-ui-react'
 import ResponsiveDatePicker from 'Components/ResponsiveDatePicker'
 import History from 'Components/History'
 import { getHistory as getExerciseHistory } from 'Utilities/redux/exerciseHistoryReducer'
 import { getHistory as getTestHistory } from 'Utilities/redux/testReducer'
-import { useLearningLanguage, useDictionaryLanguage} from 'Utilities/common'
+import { useLearningLanguage, useDictionaryLanguage } from 'Utilities/common'
 import useWindowDimension from 'Utilities/windowDimensions'
 import VocabularyGraph from 'Components/VocabularyView/VocabularyGraph'
 import HexagonTest from 'Components/GridHexagon'
-import ProgressStats from './ProgressStats'
 import { getPracticeHistory } from 'Utilities/redux/practiceHistoryReducer'
 import Recommender from 'Components/NewEncouragements/Recommender'
-import EloChart from 'Components/HomeView/EloChart'
 import XpProgressGraph from 'Components/XpProgressGraph'
+import ProgressStats from './ProgressStats'
 
 const PickDate = ({ date, setDate, onCalendarClose }) => (
   <ResponsiveDatePicker
@@ -45,9 +43,6 @@ const PickDate = ({ date, setDate, onCalendarClose }) => (
 )
 
 const Progress = () => {
-  const history = useHistory()
-  const flashcardsView = history.location.pathname.includes('flashcards')
-  const grammarView = history.location.pathname.includes('grammar')
   const dispatch = useDispatch()
   const element = useRef()
   const [graphType, setGraphType] = useState('column mastered')
@@ -56,20 +51,18 @@ const Progress = () => {
   const { exerciseHistory: irtExerciseHistory } = useSelector(
     ({ practiceHistory }) => practiceHistory
   )
-  const { flashcardHistory, eloExerciseHistory, xpHistory, pending } = useSelector(
-    ({ practiceHistory }) => {
-      const { flashcardHistory } = practiceHistory
-      const { eloExerciseHistory } = practiceHistory
-      const { xpHistory } = practiceHistory
-      const { pending } = practiceHistory
-      return {
-        flashcardHistory,
-        eloExerciseHistory,
-        xpHistory,
-        pending,
-      }
+  const { flashcardHistory, xpHistory, pending } = useSelector(({ practiceHistory }) => {
+    const { flashcardHistory } = practiceHistory
+    const { eloExerciseHistory } = practiceHistory
+    const { xpHistory } = practiceHistory
+    const { pending } = practiceHistory
+    return {
+      flashcardHistory,
+      eloExerciseHistory,
+      xpHistory,
+      pending,
     }
-  )
+  })
 
   useEffect(() => {
     const date_now = moment().toDate()
@@ -116,11 +109,9 @@ const Progress = () => {
     return firstPractice
   }
 
-  const { storyBlueCards } = useSelector(({ flashcards }) => flashcards)
   const learningLanguage = useLearningLanguage()
   const dictionaryLanguage = useDictionaryLanguage()
   const { history: testHistory, pending: testPending } = useSelector(({ tests }) => tests)
-  const { open } = useSelector(({ encouragement }) => encouragement)
   const shownChart = useSelector(({ progress }) => progress.currentChart)
   const isTourOn = useSelector(({ tour }) => tour.run)
   // const [notMastered, setNotMastered] = useState([])
@@ -181,11 +172,9 @@ const Progress = () => {
     if (shownChart !== 'vocabulary') {
       dispatch(hideIcon())
       dispatch(closeEncouragement)
-    } else {
-      if (!isTourOn && enable_recmd) {
-        dispatch(showIcon())
-        dispatch(openEncouragement())
-      }
+    } else if (!isTourOn && enable_recmd) {
+      dispatch(showIcon())
+      dispatch(openEncouragement())
     }
   }, [shownChart])
 
