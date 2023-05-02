@@ -33,7 +33,6 @@ import { FormattedMessage, FormattedHTMLMessage, useIntl } from 'react-intl'
 import { setAnnotationsVisibility } from 'Utilities/redux/annotationsReducer'
 
 import TermsAndConditions from 'Components/StaticContent/TermsAndConditions'
-import EncouragementButton from 'Components/Encouragements/EncouragementButton'
 import ContactUs from './StaticContent/ContactUs'
 import Tour from './Tour'
 
@@ -368,13 +367,6 @@ export default function NavBar() {
               <Offline className="navbar-basic-item" polling={{ timeout: 20000 }}>
                 <Icon name="broken chain" size="large" style={{ color: '#ff944d' }} />
               </Offline>
-              {show && !encOpen && (
-                <EncouragementButton handleClick={() => dispatch(openEncouragement())} />
-              )}
-              {fcShow && !fcOpen && (
-                <EncouragementButton handleClick={() => dispatch(openFCEncouragement())} />
-              )}
-
               {!smallWindow && (
                 <>
                   <Button className="tour-button" onClick={handleTourStart}>

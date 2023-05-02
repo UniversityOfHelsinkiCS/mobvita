@@ -7,8 +7,6 @@ import {
   setPrevious,
   resetSessionId,
   resetCurrentSnippet,
-  initEloHearts,
-  clearEloHearts,
   getLessonSnippet,
 } from 'Utilities/redux/snippetsReducer'
 import { clearTranslationAction } from 'Utilities/redux/translationReducer'
@@ -32,15 +30,14 @@ import {
   setIsPaused,
   setPracticeFinished,
 } from 'Utilities/redux/practiceReducer'
-import {} from 'Utilities/redux/snippetsReducer'
+
 import {
   updateSeveralSpanAnnotationStore,
   resetAnnotations,
 } from 'Utilities/redux/annotationsReducer'
-import ExercisesEncouragementModal from 'Components/Encouragements/ExercisesEncouragementModal'
+import Recommender from 'Components/NewEncouragements/Recommender'
 import SnippetActions from './SnippetActions'
 import PracticeText from './PracticeText'
-import Recommender from 'Components/NewEncouragements/Recommender'
 
 const CurrentSnippet = ({
   storyId,
@@ -55,7 +52,6 @@ const CurrentSnippet = ({
   const dispatch = useDispatch()
   const { enable_recmd } = useSelector(({ user }) => user.data.user)
   const snippets = useSelector(({ snippets }) => snippets)
-  const { open } = useSelector(({ encouragement }) => encouragement)
   const answersPending = useSelector(({ snippets }) => snippets.answersPending)
   const {
     practiceFinished,
@@ -64,7 +60,6 @@ const CurrentSnippet = ({
     attempt,
     willPause,
     isPaused,
-    previousAnswers,
     currentAnswers,
   } = useSelector(({ practice }) => practice)
   const userData = useSelector(state => state.user.data.user)
@@ -77,21 +72,10 @@ const CurrentSnippet = ({
     ? 'grammar'
     : 'all'
   const sessionId = snippets?.sessionId ?? null
-  const [initRender, setInitRender] = useState(false)
-  // const [openEncouragement, setOpenEncouragement] = useState(true)
   if (!userData) {
     return
   }
-  const { incomplete, loading } = useSelector(({ incomplete }) => ({
-    incomplete: incomplete.data,
-    loading: incomplete.pending,
-  }))
-
-  const storiesCovered = userData.stories_covered
-  const vocabularySeen = userData.vocabulary_seen
-
   const SECONDS_PER_WRONG_EXERCISE = 20
-
   const currentSnippetId = () => {
     if (!snippets.focused) return -1
     const { snippetid } = snippets.focused
@@ -134,7 +118,7 @@ const CurrentSnippet = ({
         } else {
           usersAnswer = base || bases
         }
-        let word_cue = usersAnswer
+        const word_cue = usersAnswer
 
         if (choices) {
           dispatch(
@@ -363,10 +347,6 @@ const CurrentSnippet = ({
     )
   }
 
-  // Change this to true when developing new encouragement!
-  // REMEMBER TO SWITCH BACK TO FALSE BEFORE PUSHING!!!
-  const TESTING_NEW_ENCOURAGEMENT = true
-
   return (
     <div>
       <form ref={practiceForm}>
@@ -395,19 +375,10 @@ const CurrentSnippet = ({
           </div>
         ) : (
           <div>
-            {TESTING_NEW_ENCOURAGEMENT && <Recommender />}
-            {!TESTING_NEW_ENCOURAGEMENT && (
-              <>
-                <ExercisesEncouragementModal
-                  open={open}
-                  enable_recmd={enable_recmd}
-                  storiesCovered={storiesCovered}
-                  vocabularySeen={vocabularySeen}
-                  incompleteStories={incomplete}
-                  loading={loading}
-                />
-              </>
-            )}
+            <>
+              <Recommender />
+            </>
+
             <Button variant="primary" block onClick={() => startOver()}>
               <FormattedMessage id="restart-story" />
             </Button>
