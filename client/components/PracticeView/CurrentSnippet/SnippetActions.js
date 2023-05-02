@@ -79,7 +79,7 @@ const CheckAnswersButton = ({ handleClick, checkAnswersButtonTempDisable }) => {
   )
 }
 
-const SnippetActions = ({ storyId, exerciseCount, isControlledStory, exerciseMode, timerValue, numSnippets, lessonId, lessonStartOver }) => {
+const SnippetActions = ({ storyId, exerciseCount, isControlledStory, exerciseMode, timerValue, numSnippets, lessonId, groupId, lessonStartOver }) => {
   const [checkAnswersButtonTempDisable, setcheckAnswersButtonTempDisable] = useState(false)
 
   const dispatch = useDispatch()
@@ -132,6 +132,7 @@ const SnippetActions = ({ storyId, exerciseCount, isControlledStory, exerciseMod
     const answersObj = {
       starttime,
       story_id: lessonId ? snippets.focused?.storyid : storyId,
+      group_id: groupId,
       snippet_id: snippetid,
       touched: touchedIds.length,
       untouched: exerciseCount - touchedIds.length - rightAnswerAmount,

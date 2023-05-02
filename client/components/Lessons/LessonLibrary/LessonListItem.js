@@ -139,7 +139,7 @@ const LessonTitle = ({ topic }) => {
   )
 }
 
-const LessonListItem = ({ topic, selected, toggleTopic }) => {
+const LessonListItem = ({ topic, selected, toggleTopic, disabled }) => {
   const correct_perc = get_lesson_performance(topic.correct, topic.total)
   let backgroundColor = '#ffffff'
   if (correct_perc >= 0.75) backgroundColor = '#32cd3233'
@@ -148,7 +148,7 @@ const LessonListItem = ({ topic, selected, toggleTopic }) => {
       fluid 
       key={topic._id} 
       className="lesson-list-card" 
-      style={{'background-color': backgroundColor}}
+      style={{backgroundColor: backgroundColor}}
     >
       <Card.Content extra className="lesson-card-title-cont">
         <LessonTitle topic={topic} />
@@ -159,6 +159,10 @@ const LessonListItem = ({ topic, selected, toggleTopic }) => {
             className="choose-topic" 
             variant={selected ? 'primary' : 'outline-primary'}
             onClick={()=> toggleTopic(topic.topic_id)}
+            disabled={disabled}
+            style={{cursor: !disabled
+              ? 'pointer'
+              : 'not-allowed'}}
           >
               {selected && 
               (<><Icon name="check" /><FormattedMessage id="included-in-lesson" /></>) || 

@@ -67,6 +67,8 @@ const LessonPracticeView = () => {
   const smallScreen = width < 700
   const timedExercise = snippets?.focused?.timed_exercise
   const controlledPractice = mode === 'controlled-practice'
+  const isGroupLesson = history.location.pathname.includes('/group')
+  const { id: groupId } = useParams()
 
   const { controls: timer } = useTimer({
     initialTime: null,
@@ -84,7 +86,10 @@ const LessonPracticeView = () => {
     dispatch(clearLessonInstanceState())
     dispatch(resetSnippets())
     // dispatch(clearExerciseState())
-    dispatch(getLessonInstance())
+    if (isGroupLesson) {
+      dispatch(getLessonInstance(groupId))
+    }
+    else dispatch(getLessonInstance())
     dispatch(clearTranslationAction())
   }, [])
 
@@ -131,7 +136,10 @@ const LessonPracticeView = () => {
     setSnippetsTotalNum(10)
     dispatch(clearLessonInstanceState())
     dispatch(resetSnippets())
-    dispatch(getLessonInstance())
+    if (isGroupLesson) {
+      dispatch(getLessonInstance(groupId))
+    }
+    else dispatch(getLessonInstance())
     dispatch(clearTranslationAction())
   }
 
@@ -234,6 +242,7 @@ const LessonPracticeView = () => {
                 // numSnippets={story?.paragraph?.length}
                 numSnippets={10}
                 lessonId={lesson_instance?.lesson_id}
+                groupId={groupId}
                 lessonStartOver={startOvertLessonSnippets}
               />
               <ScrollArrow />

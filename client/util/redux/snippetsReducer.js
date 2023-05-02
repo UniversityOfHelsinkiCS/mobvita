@@ -6,8 +6,11 @@ import callBuilder from '../apiConnection'
 
 export const resetSnippets = () => ({ type: 'RESET_SNIPPETS' })
 
-export const getLessonSnippet = lessonId => {
-  const route = `/lesson/exercise`
+export const getLessonSnippet = (lessonId, groupId) => {
+  let route = `/lesson/exercise`
+  if (groupId) {
+    route += `?group_id=${groupId}`
+  }
   const prefix = 'GET_LESSON_SNIPPET'
 
   return callBuilder(route, prefix)

@@ -3,10 +3,10 @@ import callBuilder from '../apiConnection'
 export const clearLessonInstanceState = () => ({ type: 'CLEAR_LESSON_INSTANCE_STATE' })
 
 
-export const getLessonInstance = () => {
-  const route = '/lesson'
+export const getLessonInstance = group_id => {
+  let route = '/lesson'
+  if (group_id) route = route + `?group_id=${group_id}`
   const prefix = 'GET_LESSON_INSTANCE'
-
   return callBuilder(route, prefix, 'get')
 }
 
@@ -26,7 +26,7 @@ const initialState = {
 export default (state = initialState, action) => {
   switch (action.type) {
 
-    case 'CLEAR_LESSON_EXERCISE_STATE':
+    case 'CLEAR_LESSON_INSTANCE_STATE':
       return initialState
       
     case 'GET_LESSON_INSTANCE_ATTEMPT':

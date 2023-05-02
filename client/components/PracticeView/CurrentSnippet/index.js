@@ -45,6 +45,7 @@ const CurrentSnippet = ({
   timer,
   numSnippets,
   lessonId,
+  groupId,
   lessonStartOver,
 }) => {
   const [exerciseCount, setExerciseCount] = useState(0)
@@ -222,7 +223,7 @@ const CurrentSnippet = ({
 
     if (snippets.focused.total_num !== currentSnippetId() + 1 || practiceFinished) {
       if (lessonId) {
-        dispatch(getLessonSnippet(lessonId))
+        dispatch(getLessonSnippet(lessonId, groupId))
       } else {
         dispatch(
           getNextSnippet(storyId, currentSnippetId(), isControlledStory, sessionId, exerciseMode)
@@ -248,7 +249,7 @@ const CurrentSnippet = ({
     dispatch(clearPractice())
     dispatch(resetSessionId())
     if (lessonId) {
-      dispatch(getLessonSnippet(lessonId))
+      dispatch(getLessonSnippet(lessonId, groupId))
     } else {
       dispatch(getCurrentSnippet(storyId, isControlledStory, exerciseMode))
     }
@@ -370,6 +371,7 @@ const CurrentSnippet = ({
               timerValue={Math.round(timer.getTime() / 1000)}
               numSnippets={numSnippets}
               lessonId={lessonId}
+              groupId={groupId}
               lessonStartOver={lessonStartOver}
             />
           </div>

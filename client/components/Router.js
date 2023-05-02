@@ -119,6 +119,7 @@ export default () => {
 
             <ProtectedRoute exact path="/lessons/library" component={LessonLibrary} />
             <ProtectedRoute exact path="/lesson/practice" component={LessonPracticeView} />
+            <ProtectedRoute exact path="/lesson/group/:id/practice" component={LessonPracticeView} />
 
             <ProtectedRoute exact path="/library" component={LibraryView} />
             <ProtectedRoute exact path="/library/private" component={LibraryView} />

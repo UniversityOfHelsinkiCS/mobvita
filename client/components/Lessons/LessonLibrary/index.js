@@ -2,14 +2,19 @@ import { useDispatch, useSelector } from 'react-redux'
 import { useIntl, FormattedMessage } from 'react-intl'
 import { List, WindowScroller } from 'react-virtualized'
 import React, { useEffect, useState } from 'react'
-import { Placeholder, Card, Icon, Dropdown } from 'semantic-ui-react'
+import { Placeholder, Card, Icon, Select } from 'semantic-ui-react'
+import LibraryTabs from 'Components/LibraryTabs'
 import ReactSlider from 'react-slider'
 import { Button } from 'react-bootstrap'
 import { Link } from 'react-router-dom'
 import { useLearningLanguage } from 'Utilities/common'
 import { getLessonTopics } from 'Utilities/redux/lessonsReducer'
-import { getLessonInstance, setLessonInstance } from 'Utilities/redux/lessonInstanceReducer'
+import { 
+  getLessonInstance, 
+  setLessonInstance, 
+  clearLessonInstanceState } from 'Utilities/redux/lessonInstanceReducer'
 import { getMetadata } from 'Utilities/redux/metadataReducer'
+import { getGroups } from 'Utilities/redux/groupsReducer'
 import LessonListItem from 'Components/Lessons/LessonLibrary/LessonListItem'
 import { sidebarSetOpen } from 'Utilities/redux/sidebarReducer'
 import { startLessonsTour } from 'Utilities/redux/tourReducer'
@@ -26,6 +31,7 @@ const LessonList = () => {
     last_selected_library: savedLibrarySelection,
     last_selected_group: savedGroupSelection,
     oid: userId,
+    has_seen_lesson_tour,
   } = useSelector(({ user }) => user.data.user)
   const {
     pending: metaPending,
@@ -34,7 +40,9 @@ const LessonList = () => {
   } = useSelector(({ metadata }) => metadata)
   const { pending: topicPending, topics } = useSelector(({ lessons }) => lessons)
   const { pending: lessonPending, lesson } = useSelector(({ lessonInstance }) => lessonInstance)
-  const { user } = useSelector(({ user }) => ({ user: user.data }))
+  
+  const { groups, deleteSuccessful } = useSelector(({ groups }) => groups)
+  const currentGroup = groups.find(g => g.group_id === savedGroupSelection)
 
   const _lesson_sort_criterion = { direction: 'asc', sort_by: 'index' }
   const smallWindow = useWindowDimensions().width < 520
@@ -77,14 +85,24 @@ const LessonList = () => {
   }, [learningLanguage])
 
   useEffect(() => {
-    dispatch(getLessonInstance())
+    
     dispatch(getLessonTopics())
-    if (!user.user.has_seen_lesson_tour) {
+    dispatch(getGroups())
+    if (savedLibrarySelection == 'group' || savedLibrarySelection == 'public') {
+      setLibrary('group')
+      dispatch(getLessonInstance(savedGroupSelection))
+    }
+    else {
+      setLibrary('private')
+      dispatch(getLessonInstance())
+    }
+    if (!has_seen_lesson_tour) {
       dispatch(lessonsTourViewed())
       dispatch(sidebarSetOpen(false))
       dispatch(startLessonsTour())
     }
   }, [])
+
 
   useEffect(() => {
     if (!lessonPending) {
@@ -99,7 +117,9 @@ const LessonList = () => {
     } else {
       newTopics = [...selectedTopicIds, topicId]
     }
-    dispatch(setLessonInstance({ topic_ids: newTopics }))
+    const payload = { topic_ids: newTopics }
+    if (libraries.group) payload.group_id = savedGroupSelection
+    dispatch(setLessonInstance(payload))
   }
 
   const toggleSemantic = semantic => {
@@ -109,59 +129,42 @@ const LessonList = () => {
     } else {
       newSemantic = [...selectedSemantics, semantic]
     }
-    dispatch(setLessonInstance({ semantic: newSemantic }))
+    const payload = { semantic: newSemantic }
+    if (libraries.group) payload.group_id = savedGroupSelection
+    dispatch(setLessonInstance(payload))
   }
 
   const handleSlider = value => {
     setSliderValue(value)
-    dispatch(setLessonInstance({ vocab_diff: value }))
+    const payload = { vocab_diff: value }
+    if (libraries.group) payload.group_id = savedGroupSelection
+    dispatch(setLessonInstance(payload))
   }
 
   const handleLibraryChange = library => {
     dispatch(updateLibrarySelect(library))
     setLibrary(library)
+    dispatch(clearLessonInstanceState())
+    dispatch(getLessonInstance(library == 'group' && savedGroupSelection || null))
   }
 
-  // const sortDropdownOptions = [
-  //   {
-  //     key: 'index',
-  //     text: intl.formatMessage({ id: 'sort-by-lesson-index-option' }),
-  //     value: 'index',
-  //   },
-  //   {
-  //     key: 'syllabus_id',
-  //     text: intl.formatMessage({ id: 'sort-by-lesson-syllabus-id-option' }),
-  //     value: 'syllabus_id',
-  //   },
-  // ]
+  const groupDropdownOptions = groups.map(group => ({
+    key: group.group_id,
+    text: group.groupName,
+    value: group.group_id,
+  }))
 
-  // // HANDLERS
-  // const handleSortChange = (_e, option) => {
-  //   setSorter(option.value)
-  // }
 
-  // const handleDirectionChange = () => {
-  //   const newDirection = sortDirection === 'asc' ? 'desc' : 'asc'
-  //   setSortDirection(newDirection)
-  // }
+  const handleGroupChange = (_e, option) => {
+    dispatch(updateGroupSelect(option.value))
+    dispatch(clearLessonInstanceState())
+    dispatch(getLessonInstance(option.value))
+  }
 
   const libraryControls = (
     <div data-cy="library-controls" className="library-control">
       <div className="search-and-sort" style={{display: !smallWindow && 'flex' || 'block'}}>
         <div className="align-center">
-          {/* <Dropdown
-            value={sorter}
-            options={sortDropdownOptions}
-            onChange={handleSortChange}
-            selection
-          />
-          <Icon
-            style={{ cursor: 'pointer', marginLeft: '0.5em' }}
-            name={sortDirection === 'asc' ? 'caret up' : 'caret down'}
-            size="large"
-            color="grey"
-            onClick={handleDirectionChange}
-          /> */}
           <h5>
             <FormattedMessage id="select-lesson-semantic-topic" />
           </h5>
@@ -176,8 +179,9 @@ const LessonList = () => {
                       : 'outline-primary'
                   }
                   onClick={() => toggleSemantic(semantic)}
-                  disabled={lessonPending}
-                  style={{ margin: '0.5em' }}
+                  disabled={lessonPending || !(libraries.private || currentGroup && currentGroup.is_teaching)}
+                  style={{ margin: '0.5em', cursor: lessonPending || !(libraries.private || currentGroup && currentGroup.is_teaching)
+                  ? 'not-allowed' : 'pointer'}}
                 >
                   {selectedSemantics && selectedSemantics.includes(semantic) && (
                     <Icon name="check" />
@@ -201,7 +205,7 @@ const LessonList = () => {
             max={3.3}
             step={0.5}
             value={sliderValue}
-            disabled={lessonPending}
+            disabled={lessonPending || !(libraries.private || currentGroup && currentGroup.is_teaching)}
           />
           <div className="space-between exercise-density-slider-label-cont bold">
             <span><FormattedMessage id='Easy'/></span>
@@ -214,9 +218,12 @@ const LessonList = () => {
           disabled={
             lessonPending ||
             !selectedTopicIds ||
-            selectedTopicIds.length === 0
+            selectedTopicIds.length === 0 ||
+            !(libraries.private || currentGroup && currentGroup.is_teaching)
           }
-          onClick={()=> dispatch(setLessonInstance({ topic_ids: [] }))}>
+          style={{cursor: lessonPending || !(libraries.private || currentGroup && currentGroup.is_teaching)
+            ? 'not-allowed' : 'pointer'}}
+          onClick={()=> dispatch(setLessonInstance({ topic_ids: [], group_id: libraries.group && savedGroupSelection || null }))}>
           <Icon name="trash alternate" />
           <FormattedMessage id="exclude-all-topics" />
         </Button>
@@ -253,14 +260,15 @@ const LessonList = () => {
           topic={topic}
           selected={selectedTopicIds && selectedTopicIds.includes(topic.topic_id)}
           toggleTopic={toggleTopic}
+          disabled={(!currentGroup || !currentGroup.is_teaching) && !libraries.private}
         />
       </div>
     )
   }
-
+  const link = '/lesson' + (libraries.group ? `/group/${savedGroupSelection}/practice` : '/practice')
   return (
     <div className="cont-tall pt-lg cont flex-col auto gap-row-sm ">
-      <Link to={'/lesson/practice'}>
+      <Link to={link}>
         <Button
           size="big"
           className="lesson-practice"
