@@ -12,7 +12,7 @@ export const XpBar = () => {
 
   return (
     <div>
-      <br />
+      <div className="bold" as="h2">XP</div>
       <div className="xp-wrapper">
         <div
           className="progress-bar progress-bar-striped bg-info"
@@ -20,10 +20,9 @@ export const XpBar = () => {
           aria-valuenow={progressPercentage}
           aria-valuemin="0"
           aria-valuemax="100"
-        >
-          <span>{`${currentLevelXp} / ${requiredXpToNextLevel}`} </span>
-        </div>
+        />
       </div>
+      <div className="xp-gathered ps-lg">{`${currentLevelXp} / ${requiredXpToNextLevel}`}</div>
     </div>
   )
 }

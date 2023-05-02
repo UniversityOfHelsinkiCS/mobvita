@@ -7,8 +7,6 @@ import {
   setPrevious,
   resetSessionId,
   resetCurrentSnippet,
-  initEloHearts,
-  clearEloHearts,
   getLessonSnippet,
 } from 'Utilities/redux/snippetsReducer'
 import { clearTranslationAction } from 'Utilities/redux/translationReducer'
@@ -32,25 +30,28 @@ import {
   setIsPaused,
   setPracticeFinished,
 } from 'Utilities/redux/practiceReducer'
-import {
 
-} from 'Utilities/redux/snippetsReducer'
 import {
   updateSeveralSpanAnnotationStore,
   resetAnnotations,
 } from 'Utilities/redux/annotationsReducer'
-import ExercisesEncouragementModal from 'Components/Encouragements/ExercisesEncouragementModal'
+import Recommender from 'Components/NewEncouragements/Recommender'
 import SnippetActions from './SnippetActions'
 import PracticeText from './PracticeText'
-import Recommender from 'Components/NewEncouragements/Recommender'
 
-const CurrentSnippet = ({ storyId, handleInputChange, timer, numSnippets, lessonId, lessonStartOver }) => {
+const CurrentSnippet = ({
+  storyId,
+  handleInputChange,
+  timer,
+  numSnippets,
+  lessonId,
+  lessonStartOver,
+}) => {
   const [exerciseCount, setExerciseCount] = useState(0)
   const practiceForm = useRef(null)
   const dispatch = useDispatch()
   const { enable_recmd } = useSelector(({ user }) => user.data.user)
   const snippets = useSelector(({ snippets }) => snippets)
-  const { open } = useSelector(({ encouragement }) => encouragement)
   const answersPending = useSelector(({ snippets }) => snippets.answersPending)
   const {
     practiceFinished,
@@ -59,30 +60,22 @@ const CurrentSnippet = ({ storyId, handleInputChange, timer, numSnippets, lesson
     attempt,
     willPause,
     isPaused,
-    previousAnswers,
-    currentAnswers
+    currentAnswers,
   } = useSelector(({ practice }) => practice)
   const userData = useSelector(state => state.user.data.user)
   const learningLanguage = useSelector(learningLanguageSelector)
   const history = useHistory()
   const isControlledStory = history.location.pathname.includes('controlled-practice')
-  const exerciseMode = history.location.pathname.includes('listening') ? 'listening' : history.location.pathname.includes('grammar') ? 'grammar' : 'all'
+  const exerciseMode = history.location.pathname.includes('listening')
+    ? 'listening'
+    : history.location.pathname.includes('grammar')
+    ? 'grammar'
+    : 'all'
   const sessionId = snippets?.sessionId ?? null
-  const [initRender, setInitRender] = useState(false)
-  // const [openEncouragement, setOpenEncouragement] = useState(true)
   if (!userData) {
     return
   }
-  const { incomplete, loading } = useSelector(({ incomplete }) => ({
-    incomplete: incomplete.data,
-    loading: incomplete.pending,
-  }))
-
-  const storiesCovered = userData.stories_covered
-  const vocabularySeen = userData.vocabulary_seen
-
   const SECONDS_PER_WRONG_EXERCISE = 20
-
   const currentSnippetId = () => {
     if (!snippets.focused) return -1
     const { snippetid } = snippets.focused
@@ -125,7 +118,7 @@ const CurrentSnippet = ({ storyId, handleInputChange, timer, numSnippets, lesson
         } else {
           usersAnswer = base || bases
         }
-        let word_cue = usersAnswer
+        const word_cue = usersAnswer
 
         if (choices) {
           dispatch(
@@ -138,7 +131,7 @@ const CurrentSnippet = ({ storyId, handleInputChange, timer, numSnippets, lesson
                 word_id: ID,
                 story_id: storyId,
                 cue: word_cue,
-                requestedHintsList: requested_hints
+                requestedHintsList: requested_hints,
               },
             })
           )
@@ -156,7 +149,7 @@ const CurrentSnippet = ({ storyId, handleInputChange, timer, numSnippets, lesson
                 word_id: ID,
                 story_id: storyId,
                 cue: word_cue,
-                requestedHintsList: requested_hints
+                requestedHintsList: requested_hints,
               },
             })
           )
@@ -174,11 +167,12 @@ const CurrentSnippet = ({ storyId, handleInputChange, timer, numSnippets, lesson
             story_id: storyId,
             word_id: ID,
             cue: word_cue,
-            requestedHintsList: requested_hints
+            requestedHintsList: requested_hints,
           },
         }
       }, {})
-      if (initialAnswers && Object.keys(initialAnswers).length > 0) dispatch(setAnswers({ ...initialAnswers }))
+      if (initialAnswers && Object.keys(initialAnswers).length > 0)
+        dispatch(setAnswers({ ...initialAnswers }))
       // dispatch(clearEloHearts())
       setExerciseCount(getExerciseCount())
       dispatch(startSnippet())
@@ -230,7 +224,9 @@ const CurrentSnippet = ({ storyId, handleInputChange, timer, numSnippets, lesson
       if (lessonId) {
         dispatch(getLessonSnippet(lessonId))
       } else {
-        dispatch(getNextSnippet(storyId, currentSnippetId(), isControlledStory, sessionId, exerciseMode))
+        dispatch(
+          getNextSnippet(storyId, currentSnippetId(), isControlledStory, sessionId, exerciseMode)
+        )
       }
     } else {
       dispatch(setPracticeFinished(true))
@@ -302,7 +298,7 @@ const CurrentSnippet = ({ storyId, handleInputChange, timer, numSnippets, lesson
   }, [snippets.pending, snippets.previous])
 
   useEffect(() => {
-    if (practiceFinished) {
+    if (practiceFinished && enable_recmd) {
       dispatch(openEncouragement())
     }
   }, [practiceFinished])
@@ -351,10 +347,6 @@ const CurrentSnippet = ({ storyId, handleInputChange, timer, numSnippets, lesson
     )
   }
 
-  // Change this to true when developing new encouragement!
-  // REMEMBER TO SWITCH BACK TO FALSE BEFORE PUSHING!!!
-  const TESTING_NEW_ENCOURAGEMENT = false
-
   return (
     <div>
       <form ref={practiceForm}>
@@ -383,19 +375,10 @@ const CurrentSnippet = ({ storyId, handleInputChange, timer, numSnippets, lesson
           </div>
         ) : (
           <div>
-            {TESTING_NEW_ENCOURAGEMENT && (
+            <>
               <Recommender />
-            )}
-            {!TESTING_NEW_ENCOURAGEMENT && (
-              <><ExercisesEncouragementModal
-                  open={open}
-                  enable_recmd={enable_recmd}
-                  storiesCovered={storiesCovered}
-                  vocabularySeen={vocabularySeen}
-                  incompleteStories={incomplete}
-                  loading={loading} />
-              </>
-            )}
+            </>
+
             <Button variant="primary" block onClick={() => startOver()}>
               <FormattedMessage id="restart-story" />
             </Button>

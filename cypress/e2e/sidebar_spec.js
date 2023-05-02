@@ -2,7 +2,7 @@ describe("sidebar is open (only mobile)", function () {
   this.beforeAll(function () {
     cy.login()
     cy.loginExisting().as('user')
-    cy.visit('http://localhost:8000')
+    cy.visit('http://localhost:8000/home')
     cy.wait(500)
 
   })
@@ -10,7 +10,7 @@ describe("sidebar is open (only mobile)", function () {
   this.beforeEach(function () {
     cy.viewport(375, 667) // Set a mobile resolution
     cy.loginExisting().as('user')
-    cy.visit('http://localhost:8000')
+    cy.visit('http://localhost:8000/home')
   })
 
   this.afterAll(function () {
@@ -28,7 +28,7 @@ describe("sidebar is open (only mobile)", function () {
     cy.get('[data-cy=hamburger]').click()
     cy.get('[data-cy=ui-lang-select]').click()
     cy.get('[data-cy=ui-lang-select] > .visible > :nth-child(4)').click()
-
+    cy.wait(500)
     cy.contains('Profilo')
     cy.get('[data-cy=logout]').click()
 

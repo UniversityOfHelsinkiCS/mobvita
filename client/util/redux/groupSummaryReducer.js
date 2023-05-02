@@ -25,6 +25,12 @@ export const getPersonalSummary = (language, startDate, endDate) => {
   return callBuilder(route, prefix, 'get')
 }
 
+export const getPersonalOverallSummary = (language) => {
+  const route = `/user/summary?language=${language}`
+  const prefix = 'GET_PERSONAL_OVERALL_SUMMARY'
+  return callBuilder(route, prefix, 'get')
+}
+
 export const getWeekSummary = groupId => {
   const end = moment().toDate()
   const start = moment().subtract(7, 'days').toDate()
@@ -88,6 +94,13 @@ export default (state = {}, action) => {
         summary: [action.response],
         pending: false,
         error: false,
+      }
+    case 'GET_PERSONAL_OVERALL_SUMMARY_SUCCESS':
+      return {
+        ...state,
+        profile_summary: [action.response],
+        pending: false,
+        error: false
       }
     case 'UPDATE_STUDENT_CEFR_ATTEMPT':
       return {

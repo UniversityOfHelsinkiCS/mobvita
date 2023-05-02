@@ -175,10 +175,10 @@ const ExerciseMultipleChoice = ({ word, handleChange }) => {
         <FormattedMessage id="ask-for-a-hint" />
       </Button>
       <div>
-        {spentHints.map(hint => (
+        {eloScoreHearts.map(heart => (
           <Icon size="small" name="lightbulb" style={{ marginLeft: '0.25em' }} />
         ))}
-        {eloScoreHearts.map(heart => (
+        {spentHints.map(hint => (
           <Icon size="small" name="lightbulb outline" style={{ marginLeft: '0.25em' }} />
         ))}
       </div>
@@ -202,10 +202,10 @@ const ExerciseMultipleChoice = ({ word, handleChange }) => {
           <FormattedMessage id="ask-for-a-hint" />
         </Button>
         <div>
-          {spentHints.map(hint => (
+          {eloScoreHearts.map(heart => (
             <Icon size="small" name="lightbulb" style={{ marginLeft: '0.25em' }} />
           ))}
-          {eloScoreHearts.map(heart => (
+          {spentHints.map(hint => (
             <Icon size="small" name="lightbulb outline" style={{ marginLeft: '0.25em' }} />
           ))}
         </div>

@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react'
 import { useHistory } from 'react-router'
 import { FormattedMessage } from 'react-intl'
 import { images, hiddenFeatures, supportedLearningLanguages } from 'Utilities/common'
-import { dispatch, useDispatch, useSelector } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { getGroups } from 'Utilities/redux/groupsReducer'
 import { getAllStories } from 'Utilities/redux/storiesReducer'
 import { openEncouragement } from 'Utilities/redux/encouragementsReducer'
@@ -11,16 +11,15 @@ import useWindowDimensions from 'Utilities/windowDimensions'
 import Footer from 'Components/Footer'
 import AddStoryModal from 'Components/AddStoryModal'
 import SetCEFRReminder from 'Components/SetCEFRReminder'
-import DefaultActivityModal from 'Components/Encouragements/DefaultActivityModal'
 import BetaLanguageModal from 'Components/BetaLanguageModal'
 import { sidebarSetOpen } from 'Utilities/redux/sidebarReducer'
 import { startTour } from 'Utilities/redux/tourReducer'
 import { homeTourViewed } from 'Utilities/redux/userReducer'
+import Recommender from 'Components/NewEncouragements/Recommender'
 import MedalSummary from './MedalSummary'
 import PracticeModal from './PracticeModal'
 import EloChart from './EloChart'
 import LeaderboardSummary from './LeaderboardSummary'
-import Recommender from 'Components/NewEncouragements/Recommender'
 
 const HomeviewButton = ({
   imgSrc,
@@ -73,10 +72,6 @@ const HomeviewButtons = ({
   const history = useHistory()
   const { hasTests, hasAdaptiveTests } = useSelector(({ metadata }) => metadata)
   const { user } = useSelector(({ user }) => ({ user: user.data }))
-
-  const xp = useSelector(({ xp }) => xp)
-  //console.log(xp)
-
   return (
     <div className="homeview-btns-cont">
       <div className="add-new-stories-btn-cont tour-add-new-stories">
@@ -239,10 +234,6 @@ const HomeView = () => {
     }
   }, [])
 
-  // Change this to true when developing new encouragement!
-  // REMEMBER TO SWITCH BACK TO FALSE BEFORE PUSHING!!!
-  const TESTING_NEW_ENCOURAGEMENT = false
-
   return (
     <div className="cont-tall cont flex-col auto gap-row-sm pt-lg blue-bg">
       <AddStoryModal open={addStoryModalOpen} setOpen={setAddStoryModalOpen} />
@@ -252,30 +243,7 @@ const HomeView = () => {
         setOpen={setBetaModalOpen}
         language={learningLanguage}
       />
-      {TESTING_NEW_ENCOURAGEMENT && <Recommender />}
-      {welcomeView && !TESTING_NEW_ENCOURAGEMENT && (
-        <DefaultActivityModal
-          open={showWelcomeModal}
-          username={username}
-          storiesCovered={storiesCovered}
-          incompleteStories={incomplete}
-          pending={loading}
-          learningLanguage={learningLanguage}
-          enable_recmd={enable_recmd}
-          welcomeBack
-        />
-      )}
-      {!TESTING_NEW_ENCOURAGEMENT && (
-        <DefaultActivityModal
-          open={showDAModal}
-          username={username}
-          storiesCovered={storiesCovered}
-          incompleteStories={incomplete}
-          pending={loading}
-          learningLanguage={learningLanguage}
-          enable_recmd={enable_recmd}
-        />
-      )}
+      <Recommender />
 
       {!userData.is_teacher && !userData.grade && !userIsAnonymous && !userData.is_new_user && (
         <SetCEFRReminder

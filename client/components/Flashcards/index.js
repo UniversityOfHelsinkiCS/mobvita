@@ -1,9 +1,7 @@
-import React, { useEffect } from 'react'
+import React from 'react'
 import { useParams, useHistory } from 'react-router-dom'
-import { useSelector, useDispatch } from 'react-redux'
+import { useSelector } from 'react-redux'
 import useWindowDimensions from 'Utilities/windowDimensions'
-import { learningLanguageSelector, dictionaryLanguageSelector } from 'Utilities/common'
-import FlashcardsPracticeEncouragement from 'Components/Encouragements/FlashcardsPracticeEncouragement'
 import FlashcardMenu from './FlashcardMenu'
 import FlashcardCreation from './FlashcardCreation'
 import FloatMenu from './FloatMenu'
@@ -11,16 +9,10 @@ import Practice from './Practice'
 import FlashcardList from './FlashcardList'
 
 const Flashcards = () => {
-  const { open, fcOpen } = useSelector(({ encouragement }) => encouragement)
-  const { storyBlueCards } = useSelector(({ flashcards }) => flashcards)
+  const { fcOpen } = useSelector(({ encouragement }) => encouragement)
   const history = useHistory()
-  const learningLanguage = useSelector(learningLanguageSelector)
-  const dictionaryLanguage = useSelector(dictionaryLanguageSelector)
   const { width } = useWindowDimensions()
   const { mode } = useParams()
-  const dispatch = useDispatch()
-
-  const blueCardsTest = history.location.pathname.includes('test')
 
   const content = () => {
     switch (mode) {
@@ -37,23 +29,9 @@ const Flashcards = () => {
     }
   }
 
-  // Change this to true when developing new encouragement!
-  // REMEMBER TO SWITCH BACK TO FALSE BEFORE PUSHING!!!
-  const TESTING_NEW_ENCOURAGEMENT = false
-
   return (
     <div className="cont-tall cont pb-nm flex-col auto pt-xl space-between">
       <div className="flex">
-        {!blueCardsTest && (
-          <div>
-            {!TESTING_NEW_ENCOURAGEMENT && (
-              <FlashcardsPracticeEncouragement
-                open={open}
-                prevBlueCards={storyBlueCards}
-              />)
-            }
-          </div>
-        )}
         {width < 940 ? <FloatMenu /> : <FlashcardMenu />}
         {content()}
       </div>

@@ -7,6 +7,7 @@ import {
   getSelf,
   getPreviousVocabularyData,
   getNewerVocabularyData,
+  progressTourViewed,
 } from 'Utilities/redux/userReducer'
 import { getStoriesBlueFlashcards } from 'Utilities/redux/flashcardReducer'
 import {
@@ -15,26 +16,23 @@ import {
   openEncouragement,
   showIcon,
 } from 'Utilities/redux/encouragementsReducer'
-import { progressTourViewed } from 'Utilities/redux/userReducer'
 import { sidebarSetOpen } from 'Utilities/redux/sidebarReducer'
 import { startProgressTour } from 'Utilities/redux/tourReducer'
 import ProgressGraph from 'Components/ProgressGraph'
 import Spinner from 'Components/Spinner'
-import { useHistory } from 'react-router-dom'
 import { Divider, Icon, Popup } from 'semantic-ui-react'
 import ResponsiveDatePicker from 'Components/ResponsiveDatePicker'
 import History from 'Components/History'
 import { getHistory as getExerciseHistory } from 'Utilities/redux/exerciseHistoryReducer'
 import { getHistory as getTestHistory } from 'Utilities/redux/testReducer'
-import { useLearningLanguage, useDictionaryLanguage, hiddenFeatures } from 'Utilities/common'
+import { useLearningLanguage, useDictionaryLanguage } from 'Utilities/common'
 import useWindowDimension from 'Utilities/windowDimensions'
 import VocabularyGraph from 'Components/VocabularyView/VocabularyGraph'
 import HexagonTest from 'Components/GridHexagon'
-import ProgressStats from './ProgressStats'
 import { getPracticeHistory } from 'Utilities/redux/practiceHistoryReducer'
 import Recommender from 'Components/NewEncouragements/Recommender'
-import EloChart from 'Components/HomeView/EloChart'
 import XpProgressGraph from 'Components/XpProgressGraph'
+import ProgressStats from './ProgressStats'
 
 const PickDate = ({ date, setDate, onCalendarClose }) => (
   <ResponsiveDatePicker
@@ -45,22 +43,23 @@ const PickDate = ({ date, setDate, onCalendarClose }) => (
 )
 
 const Progress = () => {
-  const history = useHistory()
-  const flashcardsView = history.location.pathname.includes('flashcards')
-  const grammarView = history.location.pathname.includes('grammar')
   const dispatch = useDispatch()
   const element = useRef()
   const [graphType, setGraphType] = useState('column mastered')
   const [initComplete, setInitComplete] = useState(false)
-
-  const { exerciseHistory: irtExerciseHistory } = useSelector(({ practiceHistory }) => practiceHistory)
-  const { flashcardHistory, eloExerciseHistory, pending } = useSelector(({ practiceHistory }) => {
+  const { enable_recmd } = useSelector(({ user }) => user.data.user)
+  const { exerciseHistory: irtExerciseHistory } = useSelector(
+    ({ practiceHistory }) => practiceHistory
+  )
+  const { flashcardHistory, xpHistory, pending } = useSelector(({ practiceHistory }) => {
     const { flashcardHistory } = practiceHistory
     const { eloExerciseHistory } = practiceHistory
+    const { xpHistory } = practiceHistory
     const { pending } = practiceHistory
     return {
       flashcardHistory,
       eloExerciseHistory,
+      xpHistory,
       pending,
     }
   })
@@ -110,11 +109,9 @@ const Progress = () => {
     return firstPractice
   }
 
-  const { storyBlueCards } = useSelector(({ flashcards }) => flashcards)
   const learningLanguage = useLearningLanguage()
   const dictionaryLanguage = useDictionaryLanguage()
   const { history: testHistory, pending: testPending } = useSelector(({ tests }) => tests)
-  const { open } = useSelector(({ encouragement }) => encouragement)
   const shownChart = useSelector(({ progress }) => progress.currentChart)
   const isTourOn = useSelector(({ tour }) => tour.run)
   // const [notMastered, setNotMastered] = useState([])
@@ -126,8 +123,8 @@ const Progress = () => {
   const originalEndPoint =
     irtExerciseHistory?.length > 0
       ? moment(irtExerciseHistory[irtExerciseHistory.length - 1]?.date)
-        .add(1, 'days')
-        .toDate()
+          .add(1, 'days')
+          .toDate()
       : moment().toDate()
   const [startDate, setStartDate] = useState(getStartDate)
   const [endDate, setEndDate] = useState(originalEndPoint)
@@ -175,11 +172,9 @@ const Progress = () => {
     if (shownChart !== 'vocabulary') {
       dispatch(hideIcon())
       dispatch(closeEncouragement)
-    } else {
-      if (!isTourOn) {
-        dispatch(showIcon())
-        dispatch(openEncouragement())
-      }
+    } else if (!isTourOn && enable_recmd) {
+      dispatch(showIcon())
+      dispatch(openEncouragement())
     }
   }, [shownChart])
 
@@ -301,7 +296,7 @@ const Progress = () => {
           <div>
             <div className="space-evenly">
               <button
-                className='progress-tour-timeline-button'
+                className="progress-tour-timeline-button"
                 type="button"
                 onClick={() => handleChartChange('SET_TIMELINE_CHART')}
                 style={{ border: 'none' }}
@@ -316,7 +311,7 @@ const Progress = () => {
                 </div>
               </button>
               <button
-                className='progress-tour-vocabulary-button'
+                className="progress-tour-vocabulary-button"
                 type="button"
                 onClick={() => handleChartChange('SET_VOCABULARY_CHART')}
                 style={{ border: 'none' }}
@@ -331,7 +326,7 @@ const Progress = () => {
                 </div>
               </button>
               <button
-                className='progress-tour-grammar-button'
+                className="progress-tour-grammar-button"
                 type="button"
                 onClick={() => handleChartChange('SET_GRAMMAR_CHART')}
                 style={{ border: 'none' }}
@@ -346,7 +341,7 @@ const Progress = () => {
                 </div>
               </button>
               <button
-                className='progress-tour-exercise-history-button'
+                className="progress-tour-exercise-history-button"
                 type="button"
                 onClick={() => handleChartChange('SET_EXERCISE_HISTORY_CHART')}
                 style={{ border: 'none' }}
@@ -361,7 +356,7 @@ const Progress = () => {
                 </div>
               </button>
               <button
-                className='progress-tour-test-history-button'
+                className="progress-tour-test-history-button"
                 type="button"
                 onClick={() => handleChartChange('SET_TEST_HISTORY_CHART')}
                 style={{ border: 'none' }}
@@ -409,12 +404,10 @@ const Progress = () => {
                 startDate={startDate}
                 endDate={endDate}
               />
-              {hiddenFeatures &&
-                <XpProgressGraph
-                  startDate={startDate}
-                  endDate={endDate}
-                />
-              }
+            </div>
+            <br />
+            <div>
+              <XpProgressGraph xpHistory={xpHistory} startDate={startDate} endDate={endDate} />
             </div>
           </div>
         ) : shownChart === 'vocabulary' ? (

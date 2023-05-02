@@ -22,7 +22,7 @@ const LeaderboardEncouragement = () => {
         <div className="pt-md">
           <div
             className="flex enc-message-body"
-            style={{ alignItems: 'center', backgroundColor: backgroundColors[1] }}
+            style={{ alignItems: 'center', backgroundColor: backgroundColors[4] }}
           >
             <img
               src={images.encTrophy}

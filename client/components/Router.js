@@ -47,7 +47,11 @@ import LessonPracticeView from './Lessons/LessonPracticeView'
 import LessonLibrary from './Lessons/LessonLibrary'
 
 export default () => {
-  const user = useSelector(state => state.user.data)
+  const userData = useSelector(state => state.user?.data?.user)
+  let enableRecmd = null
+  if (userData) {
+    enableRecmd = userData.enable_recmd
+  }
   const location = useLocation()
   const dispatch = useDispatch()
 
@@ -56,8 +60,10 @@ export default () => {
     dispatch(closeEncouragement())
     dispatch(closeFCEncouragement())
     if (
-      location.pathname.includes('welcome') ||
-      (location.pathname.includes('flashcards') && !location.pathname.includes('test'))
+      (enableRecmd && location.pathname.includes('welcome')) ||
+      (enableRecmd &&
+        location.pathname.includes('flashcards') &&
+        !location.pathname.includes('test'))
     ) {
       dispatch(openEncouragement())
     }
@@ -65,7 +71,7 @@ export default () => {
   return (
     <Switch>
       <Route exact path="/">
-        {user ? <Redirect to="/welcome" /> : <LandingPage />}
+        {userData ? <Redirect to="/welcome" /> : <LandingPage />}
       </Route>
       <Route>
         <NavBar />

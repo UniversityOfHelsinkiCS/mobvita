@@ -1515,5 +1515,8 @@
     "just-leveled-up": "Saavutit uuden tason!",
     "streak-just-done": "Harjoitteluputkesi jatkuu!",
     "new-level": "Uusi tasosi on",
-    "xp-timeline-chart": "XP aikajana"
+    "xp-timeline-chart": "XP-aikajana",
+    "language-score-level-chart": "Kielitason aikajana",
+    "language-level-chart": "Kielitason aikajana",
+    "language-level-timeline-chart": "Kielitason aikajana"
 }

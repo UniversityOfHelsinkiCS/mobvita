@@ -33,7 +33,6 @@ import { FormattedMessage, FormattedHTMLMessage, useIntl } from 'react-intl'
 import { setAnnotationsVisibility } from 'Utilities/redux/annotationsReducer'
 
 import TermsAndConditions from 'Components/StaticContent/TermsAndConditions'
-import EncouragementButton from 'Components/Encouragements/EncouragementButton'
 import ContactUs from './StaticContent/ContactUs'
 import Tour from './Tour'
 
@@ -352,13 +351,15 @@ export default function NavBar() {
           </Nav>
 
           <Nav>
-            <Link to="/profile/main">
-              <div className="navbar-container" style={{ width: '90%' }}>
-                <Navbar.Brand className="navbar-text-item">
-                  <FormattedMessage id="level" /> {user.user.level}
-                </Navbar.Brand>
-              </div>
-            </Link>
+            <Popup
+              content={<FormattedMessage id="level-navbar" />}
+              trigger={
+                <Link to="/profile/main" style={{ textDecoration: 'none' }}>
+                  <Navbar.Brand className="navbar-level">{user.user.level}</Navbar.Brand>
+                </Link>
+              }
+              position="top center"
+            />
           </Nav>
 
           <Nav>
@@ -366,13 +367,6 @@ export default function NavBar() {
               <Offline className="navbar-basic-item" polling={{ timeout: 20000 }}>
                 <Icon name="broken chain" size="large" style={{ color: '#ff944d' }} />
               </Offline>
-              {show && !encOpen && (
-                <EncouragementButton handleClick={() => dispatch(openEncouragement())} />
-              )}
-              {fcShow && !fcOpen && (
-                <EncouragementButton handleClick={() => dispatch(openFCEncouragement())} />
-              )}
-
               {!smallWindow && (
                 <>
                   <Button className="tour-button" onClick={handleTourStart}>

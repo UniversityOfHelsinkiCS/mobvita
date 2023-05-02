@@ -15,7 +15,7 @@ import { sidebarSetOpen } from 'Utilities/redux/sidebarReducer'
 import { startLessonsTour } from 'Utilities/redux/tourReducer'
 import { lessonsTourViewed, updateGroupSelect, updateLibrarySelect } from 'Utilities/redux/userReducer'
 
-// import useWindowDimensions from 'Utilities/windowDimensions'
+import useWindowDimensions from 'Utilities/windowDimensions'
 // import AddStoryModal from 'Components/AddStoryModal'
 // import LessonLibrarySearch from './LessonLibrarySearch'
 
@@ -37,6 +37,7 @@ const LessonList = () => {
   const { user } = useSelector(({ user }) => ({ user: user.data }))
 
   const _lesson_sort_criterion = { direction: 'asc', sort_by: 'index' }
+  const smallWindow = useWindowDimensions().width < 520
 
   const [sorter, setSorter] = useState(_lesson_sort_criterion.sort_by)
   const [sortDirection, setSortDirection] = useState(_lesson_sort_criterion.direction)
@@ -146,7 +147,7 @@ const LessonList = () => {
 
   const libraryControls = (
     <div data-cy="library-controls" className="library-control">
-      <div className="search-and-sort">
+      <div className="search-and-sort" style={{display: !smallWindow && 'flex' || 'block'}}>
         <div className="align-center">
           {/* <Dropdown
             value={sorter}
@@ -190,6 +191,7 @@ const LessonList = () => {
           <h5>
             <FormattedMessage id="select-lesson-vocab-diff" />
           </h5>
+          
           <ReactSlider
             className="exercise-density-slider lesson-vocab-diff"
             thumbClassName="exercise-density-slider-thumb"
@@ -201,6 +203,10 @@ const LessonList = () => {
             value={sliderValue}
             disabled={lessonPending}
           />
+          <div className="space-between exercise-density-slider-label-cont bold">
+            <span><FormattedMessage id='Easy'/></span>
+            <span><FormattedMessage id='Hard'/></span>
+          </div>
         </div>
         
         <Button 

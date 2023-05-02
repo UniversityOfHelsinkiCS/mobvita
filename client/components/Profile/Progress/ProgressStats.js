@@ -1,19 +1,30 @@
 import React, { useEffect } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import { useIntl } from 'react-intl'
-import { getPersonalSummary } from 'Utilities/redux/groupSummaryReducer'
+import { getPersonalSummary, getPersonalOverallSummary } from 'Utilities/redux/groupSummaryReducer'
 import { learningLanguageSelector, images, capitalize } from 'Utilities/common'
 import Spinner from 'Components/Spinner'
+import { useHistory } from 'react-router'
 
 const ProgressStats = ({ startDate, endDate }) => {
   const learningLanguage = useSelector(learningLanguageSelector)
-  const { summary, pending } = useSelector(({ summary }) => summary)
+  const { summary: progress_summary, profile_summary, pending } = useSelector(({ summary }) => summary)
 
   const dispatch = useDispatch()
   const intl = useIntl()
+  const history = useHistory()
+  var summary = progress_summary
+
+  if (history.location.pathname.includes('main')) {
+    summary = profile_summary
+  }
 
   useEffect(() => {
-    dispatch(getPersonalSummary(learningLanguage, startDate, endDate))
+    if (history.location.pathname.includes('main')) {
+      dispatch(getPersonalOverallSummary(learningLanguage))
+    } else {
+      dispatch(getPersonalSummary(learningLanguage, startDate, endDate))
+    }
   }, [startDate, endDate, learningLanguage])
 
   if (!summary || pending) return <Spinner />

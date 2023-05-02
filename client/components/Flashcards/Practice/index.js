@@ -14,16 +14,20 @@ import {
   getStoriesBlueFlashcards,
 } from 'Utilities/redux/flashcardReducer'
 import { getIncompleteStories } from 'Utilities/redux/incompleteStoriesReducer'
-import { closeFCEncouragement, openFCEncouragement } from 'Utilities/redux/encouragementsReducer'
-import { closeEncouragement, openEncouragement } from 'Utilities/redux/encouragementsReducer'
+import {
+  closeFCEncouragement,
+  openFCEncouragement,
+  closeEncouragement,
+  openEncouragement,
+} from 'Utilities/redux/encouragementsReducer'
+
 import { getSelf } from 'Utilities/redux/userReducer'
 import { learningLanguageSelector, dictionaryLanguageSelector } from 'Utilities/common'
 import useWindowDimension from 'Utilities/windowDimensions'
 import Spinner from 'Components/Spinner'
-import FlashcardsEncouragement from 'Components/Encouragements/FlashcardsEncouragement'
+import Recommender from 'Components/NewEncouragements/Recommender'
 import FlashcardEndView from './FlashcardEndView'
 import FlashcardNoCards from './FlashCardNoCards'
-import Recommender from 'Components/NewEncouragements/Recommender'
 
 import Fillin from './Fillin'
 import Article from './Article'
@@ -67,7 +71,7 @@ const Practice = ({ mode, open }) => {
           )
         )
     } else {
-      ; ({ cards } = flashcards)
+      ;({ cards } = flashcards)
     }
 
     return { cards, pending, deletePending, sessionId }
@@ -80,7 +84,7 @@ const Practice = ({ mode, open }) => {
   useEffect(() => {
     dispatch(getStoriesBlueFlashcards(learningLanguage, dictionaryLanguage))
     if (!pending && !loading) {
-      if (amountAnswered >= cards.length) {
+      if (enable_recmd && amountAnswered >= cards.length) {
         dispatch(openFCEncouragement())
         setAmountAnswered(0)
       }
@@ -181,8 +185,9 @@ const Practice = ({ mode, open }) => {
   const handleNewDeck = () => {
     setSwipeIndex(0)
     setBlueCardsAnswered([])
-    dispatch(openFCEncouragement)
-    console.log('pop')
+    if (enable_recmd) {
+      dispatch(openFCEncouragement)
+    }
     if (!inBlueCardsTest) {
       dispatch(getFlashcards(learningLanguage, dictionaryLanguage, storyId))
     } else {
@@ -281,31 +286,9 @@ const Practice = ({ mode, open }) => {
         )
     }
   }
-
-  // Change this to true when developing new encouragement!
-  // REMEMBER TO SWITCH BACK TO FALSE BEFORE PUSHING!!!
-  const TESTING_NEW_ENCOURAGEMENT = false
-
   return (
     <div className="cont grow flex space-evenly">
-      {TESTING_NEW_ENCOURAGEMENT && (
-        <Recommender />
-      )}
-      {!TESTING_NEW_ENCOURAGEMENT && (
-        <FlashcardsEncouragement
-          open={open}
-          correctAnswers={correctAnswers}
-          deckSize={cards.length}
-          enable_recmd={enable_recmd}
-          handleNewDeck={handleNewDeck}
-          vocabularySeen={vocabulary_seen}
-          latestStories={latestStories}
-          prevBlueCards={prevBlueCards}
-          loading={loading}
-          storyCardsPending={storyCardsPending}
-          totalAnswers={totalAnswers}
-        />
-      )}
+      <Recommender />
       <VirtualizeSwipeableViews
         index={swipeIndex}
         onChangeIndex={handleIndexChange}

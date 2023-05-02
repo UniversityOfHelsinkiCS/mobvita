@@ -55,7 +55,7 @@ const StreakEncouragement = () => {
         <div className="pt-md">
           <div
             className="flex enc-message-body"
-            style={{ alignItems: 'center', backgroundColor: backgroundColors[0] }}
+            style={{ alignItems: 'center', backgroundColor: backgroundColors[4] }}
           >
             <img
               src={images.flame}
