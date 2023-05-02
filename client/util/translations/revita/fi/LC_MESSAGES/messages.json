@@ -1518,5 +1518,6 @@
     "xp-timeline-chart": "XP-aikajana",
     "language-score-level-chart": "Kielitason aikajana",
     "language-level-chart": "Kielitason aikajana",
-    "language-level-timeline-chart": "Kielitason aikajana"
+    "language-level-timeline-chart": "Kielitason aikajana",
+    "level-navbar": "Nykyinen tasosi"
 }
