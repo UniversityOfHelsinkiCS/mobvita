@@ -11,10 +11,9 @@ import { getLessonTopics } from 'Utilities/redux/lessonsReducer'
 import { getLessonInstance, setLessonInstance } from 'Utilities/redux/lessonInstanceReducer'
 import { getMetadata } from 'Utilities/redux/metadataReducer'
 import LessonListItem from 'Components/Lessons/LessonLibrary/LessonListItem'
-
 import { sidebarSetOpen } from 'Utilities/redux/sidebarReducer'
 import { startLessonsTour } from 'Utilities/redux/tourReducer'
-import { lessonsTourViewed } from 'Utilities/redux/userReducer'
+import { lessonsTourViewed, updateGroupSelect, updateLibrarySelect } from 'Utilities/redux/userReducer'
 
 // import useWindowDimensions from 'Utilities/windowDimensions'
 // import AddStoryModal from 'Components/AddStoryModal'
@@ -23,7 +22,11 @@ import { lessonsTourViewed } from 'Utilities/redux/userReducer'
 const LessonList = () => {
   const intl = useIntl()
   const learningLanguage = useLearningLanguage()
-  const refreshed = useSelector(({ user }) => user.refreshed)
+  const {
+    last_selected_library: savedLibrarySelection,
+    last_selected_group: savedGroupSelection,
+    oid: userId,
+  } = useSelector(({ user }) => user.data.user)
   const {
     pending: metaPending,
     lesson_semantics,
@@ -40,9 +43,31 @@ const LessonList = () => {
 
   const { topic_ids: selectedTopicIds, semantic: selectedSemantics, vocab_diff } = lesson
   const [sliderValue, setSliderValue] = useState(1.5)
+
+  const [libraries, setLibraries] = useState({
+    private: false,
+    group: false,
+  })
+
   const dispatch = useDispatch()
 
   // console.log("topics", topics)
+
+  const setLibrary = library => {
+    const librariesCopy = {}
+    Object.keys(libraries).forEach(key => {
+      librariesCopy[key] = false
+    })
+
+    setLibraries({ ...librariesCopy, [library]: true })
+  }
+
+
+  useEffect(() => {
+    if (!groups.find(g => g.group_id === savedGroupSelection) && groups[0]) {
+      dispatch(updateGroupSelect(groups[0].group_id))
+    }
+  }, [groups])
 
   useEffect(() => {
     if (!metaPending) {
@@ -89,6 +114,11 @@ const LessonList = () => {
   const handleSlider = value => {
     setSliderValue(value)
     dispatch(setLessonInstance({ vocab_diff: value }))
+  }
+
+  const handleLibraryChange = library => {
+    dispatch(updateLibrarySelect(library))
+    setLibrary(library)
   }
 
   // const sortDropdownOptions = [
@@ -260,6 +290,23 @@ const LessonList = () => {
         </div>
       ) : (
           <>
+            <div className="library-selection">
+              <LibraryTabs
+                values={libraries}
+                additionalClass="wrap-and-grow align-center pt-sm"
+                onClick={handleLibraryChange}
+                reverse
+              />
+              {libraries.group && (
+                <Select
+                  value={savedGroupSelection}
+                  options={groupDropdownOptions}
+                  onChange={handleGroupChange}
+                  disabled={!libraries.group}
+                  style={{ color: '#777', marginTop: '0.5em' }}
+                />
+              )}
+            </div>
             {libraryControls}
             <Card.Group itemsPerRow={1} doubling data-cy="lesson-items" style={{ marginTop: '.5em' }}>
               <WindowScroller>
