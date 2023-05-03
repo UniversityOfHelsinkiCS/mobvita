@@ -890,5 +890,6 @@
     "language-score-level-chart": "Language level timeline",
     "language-level-chart": "Language level timeline",
     "language-level-timeline-chart": "Language level timeline",
-    "level-navbar": "Your current level"
+    "level-navbar": "Your current level",
+    "practiced-time-chart": "Practiced hours per week"
 }

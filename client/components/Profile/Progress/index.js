@@ -25,7 +25,7 @@ import ResponsiveDatePicker from 'Components/ResponsiveDatePicker'
 import History from 'Components/History'
 import { getHistory as getExerciseHistory } from 'Utilities/redux/exerciseHistoryReducer'
 import { getHistory as getTestHistory } from 'Utilities/redux/testReducer'
-import { useLearningLanguage, useDictionaryLanguage } from 'Utilities/common'
+import { useLearningLanguage, useDictionaryLanguage, hiddenFeatures } from 'Utilities/common'
 import useWindowDimension from 'Utilities/windowDimensions'
 import VocabularyGraph from 'Components/VocabularyView/VocabularyGraph'
 import HexagonTest from 'Components/GridHexagon'
@@ -33,6 +33,7 @@ import { getPracticeHistory } from 'Utilities/redux/practiceHistoryReducer'
 import Recommender from 'Components/NewEncouragements/Recommender'
 import XpProgressGraph from 'Components/XpProgressGraph'
 import ProgressStats from './ProgressStats'
+import HoursProgressChart from 'Components/HoursProgressChart'
 
 const PickDate = ({ date, setDate, onCalendarClose }) => (
   <ResponsiveDatePicker
@@ -51,15 +52,17 @@ const Progress = () => {
   const { exerciseHistory: irtExerciseHistory } = useSelector(
     ({ practiceHistory }) => practiceHistory
   )
-  const { flashcardHistory, xpHistory, pending } = useSelector(({ practiceHistory }) => {
+  const { flashcardHistory, xpHistory, practiceTimeHistory, pending } = useSelector(({ practiceHistory }) => {
     const { flashcardHistory } = practiceHistory
     const { eloExerciseHistory } = practiceHistory
     const { xpHistory } = practiceHistory
+    const { practiceTimeHistory } = practiceHistory
     const { pending } = practiceHistory
     return {
       flashcardHistory,
       eloExerciseHistory,
       xpHistory,
+      practiceTimeHistory,
       pending,
     }
   })
@@ -123,8 +126,8 @@ const Progress = () => {
   const originalEndPoint =
     irtExerciseHistory?.length > 0
       ? moment(irtExerciseHistory[irtExerciseHistory.length - 1]?.date)
-          .add(1, 'days')
-          .toDate()
+        .add(1, 'days')
+        .toDate()
       : moment().toDate()
   const [startDate, setStartDate] = useState(getStartDate)
   const [endDate, setEndDate] = useState(originalEndPoint)
@@ -405,8 +408,16 @@ const Progress = () => {
                 endDate={endDate}
               />
             </div>
+            {hiddenFeatures &&
+              <div>
+                <br />
+                <div className='progress-page-graph-cont'>
+                  <HoursProgressChart practiceTimeHistory={practiceTimeHistory} startDate={startDate} endDate={endDate} />
+                </div>
+              </div>
+            }
             <br />
-            <div>
+            <div className='progress-page-graph-cont'>
               <XpProgressGraph xpHistory={xpHistory} startDate={startDate} endDate={endDate} />
             </div>
           </div>
