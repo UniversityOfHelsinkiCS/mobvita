@@ -79,12 +79,12 @@ const ResultModal = ({ cefrLevel, adaptiveTestResults }) => {
             </Table.Row>
           </Table.Body>
         </Table>
-        <div>
+        {cefrLevel && (<div>
           <FormattedMessage id="your-estimated-cefr-level" />:{' '}
           <b>
             <span style={{ fontSize: '1.25em' }}>{cefrLevel}</span>
           </b>
-        </div>
+        </div>)}
       </Modal.Content>
     </Modal>
   )
