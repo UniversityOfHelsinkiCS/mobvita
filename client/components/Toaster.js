@@ -78,7 +78,7 @@ export default function Toaster() {
     }
   }, [streak])
 
-  const levelUp = useSelector(state => state.levelUp)
+  const { levelUp } = useSelector(state => state.levelUp)
 
   useEffect(() => {
     if (levelUp) {

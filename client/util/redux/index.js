@@ -49,6 +49,7 @@ import practiceHistory from './practiceHistoryReducer'
 import streak from './streakReducer'
 import xp from './xpReducer'
 import level from './levelReducer'
+import levelUp from './levelUpReducer'
 
 const rootReducer = combineReducers({
   stories,
@@ -99,7 +100,8 @@ const rootReducer = combineReducers({
   practiceHistory,
   streak,
   xp,
-  level
+  level,
+  levelUp
 })
 
 export default (state, action) =>
