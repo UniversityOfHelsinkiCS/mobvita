@@ -1520,5 +1520,6 @@
     "language-level-chart": "Kielitason aikajana",
     "language-level-timeline-chart": "Kielitason aikajana",
     "level-navbar": "Nykyinen tasosi",
-    "practiced-time-chart": "Harjoitellut tunnit viikoittain"
+    "practiced-time-chart": "Harjoitellut tunnit viikoittain",
+    "practiced-time-chart-tooltip": "Tunnit: {time} Viikko: {week}"
 }

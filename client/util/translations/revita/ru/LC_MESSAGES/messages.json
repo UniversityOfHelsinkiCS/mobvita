@@ -1522,5 +1522,6 @@
     "language-level-chart": "Language level timeline",
     "language-level-timeline-chart": "Language level timeline",
     "level-navbar": "Your current level",
-    "practiced-time-chart": "Practiced hours per week"
+    "practiced-time-chart": "Practiced hours per week",
+    "practiced-time-chart-tooltip": "Hours: {time} Week: {week}"
 }

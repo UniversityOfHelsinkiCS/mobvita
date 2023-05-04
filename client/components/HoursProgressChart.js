@@ -12,16 +12,29 @@ const HoursProgressChart = ({ practiceTimeHistory, startDate, endDate }) => {
 
   const height = smallScreen ? '75%' : '35%'
 
+  const dataFormat = (data) => {
+    return data.map(e => {
+      // check if the year has 53 weeks
+      const numOfWeeksInYear = moment().year(e.year).isoWeeksInYear()
+      if (numOfWeeksInYear === 53 && e.weeks === 53) {
+        e.week = 1
+        e.year++
+      }
+
+      const timestamp = moment().year(e.year).week(e.week).startOf('isoWeek').valueOf()
+      const value = Math.round(e.time * 10) / 10
+      return [timestamp, value]
+    })
+  }
+
   const practicetimes = {
     type: 'column',
     yAxis: 1,
     xAxis: 1,
-    data: practiceTimeHistory && practiceTimeHistory.map(e => [moment(e.week).valueOf(), Math.round(e.time * 10) / 10])
+    data: practiceTimeHistory && dataFormat(practiceTimeHistory)
   }
 
   const series = [practicetimes]
-
-  console.log(practiceTimeHistory)
 
   const options = {
     title: { text: intl.formatMessage({ id: 'practiced-time-chart' }) },
@@ -32,7 +45,7 @@ const HoursProgressChart = ({ practiceTimeHistory, startDate, endDate }) => {
     tooltip: {
       formatter() {
         // eslint-disable-next-line react/no-this-in-sfc
-        return this.y
+        return `${this.y}, ${moment(this.x).format('w/Y')}`
       },
     },
     yAxis: [
@@ -72,9 +85,14 @@ const HoursProgressChart = ({ practiceTimeHistory, startDate, endDate }) => {
           offset: 8,
           x: -24,
         },
-        tickInterval: 1,
-        min: moment(startDate).week().valueOf(),
-        max: moment(endDate).week().valueOf(),
+        type: 'datetime',
+        labels: {
+          formatter: function () {
+            return moment(this.value).format('w/Y');
+          }
+        },
+        min: moment(startDate, 'DD-MM-YYYY').startOf('isoWeek').valueOf(),
+        max: moment(endDate, 'DD-MM-YYYY').startOf('isoWeek').valueOf(),
       },
     ],
     plotOptions: {

@@ -408,6 +408,14 @@ const Progress = () => {
                 endDate={endDate}
               />
             </div>
+            {hiddenFeatures &&
+              <div>
+                <br />
+                <div className='progress-page-graph-cont'>
+                  <HoursProgressChart practiceTimeHistory={practiceTimeHistory} startDate={startDate} endDate={endDate} />
+                </div>
+              </div>
+            }
             <br />
             <div className='progress-page-graph-cont'>
               <XpProgressGraph xpHistory={xpHistory} startDate={startDate} endDate={endDate} />
