@@ -14,6 +14,16 @@ Home page contained a tour explaining shortly actions in the home page and aroun
 When a new user enters a page with an implemented tour for the first time, the tour is shown automatically. 
 Later on the tours can be revisited from a direction icon in the navigation bar.
 
+#### Undone practice tour tasks
+
+There were two tasks related to the practice tour that we were not able to implement. First was to modify the step pointing to the translation box in the preview page - in a way that the translation box would have a translation for some word from the text. This would have required a simulation of clicking a word. The problem with this was that we didn’t have any way of finding a word with guaranteed translation from the text. For example, choosing the first word from the text would not always work because the word might be a proper noun. Also, because the tour works in any text and any language, we couldn’t choose the word beforehand.  
+
+The other task that was left undone was about the practice mode tour step that points to an exercise and tells that by clicking the exercise, user can see a hint. The wish was to get the hint box showing in the tour step. To activate the hint box, it needs information about the word so just clicking the first exercise box would not work without knowing first which word is in it. Because the tour can be asked in any story and the exercises are generated differently each time, we did not find any way we could determine which word the tour should click. 
+
+We thought about an option for these steps, so that the tour would ask the user to click a word or an exercise and after clicking and seeing the translation or the hint box, the tour would continue. We then thought this would be too different from the usual style the tours work, so we ditched this idea.  
+
+Currently the tour just points the first exercise box in practice and the step tells that by clicking this you can see a hint box and in preview mode the tour point to the translation box and tells that by clicking any word you can see its translation here. 
+
 ### Encouragement refactoring
 
 The encouragement/recommendation system was refactored in the code base. More thorough documentation can be found in the documentation folder: [Refactored recommendation system](https://github.com/UniversityOfHelsinkiCS/mobvita/blob/master/documentation/NewRecommendationSystem.md).
