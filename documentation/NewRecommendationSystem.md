@@ -52,10 +52,16 @@ directories contain the recommendation components only related to those sites/vi
 directory contains components that are used in many views.
 
 ### Nice to know
-Till this date the production version still uses the old system and the new system is hidden behind boolean flags
-named TESTING_NEW_ENCOURAGEMENT in different files. Changing these to true activates the new 
-system and disables the old one. In the file common.js there is also a boolean called showAllEncouragements.
+
+In the file common.js there is also a boolean called showAllEncouragements.
 This boolean is meant for development purposes and will render every recommendation
 component inside the recommender, even if they dont meet their requirements to be rendered in.
-In the future it could be beneficial to try to get rid of the boolean "fcopen" for clarity. It is now
+
+Also, in the future it could be beneficial to try to get rid of the boolean "fcopen" for clarity. It is now
 used to differentiate flashcard related recommendations from the others.
+
+### To do
+
+One thing we did not have time to fix about the system is with the bluecards recommendations.
+
+If you do your bluecards and don't write anything on them and just click through them, it doesn't show a recommendation. It should show the same recommendation as if you do them and get some incorrect ones, but now it shows nothing. So that is something that shoul be added.

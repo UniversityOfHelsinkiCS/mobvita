@@ -50,27 +50,17 @@ const HoursProgressChart = ({ practiceTimeHistory, startDate, endDate }) => {
     },
     yAxis: [
       {
-        title: { enabled: false },
         // eslint-disable-next-line
         tickPositioner: function () {
           // eslint-disable-next-line
           return [Math.floor(this.dataMin / 10) * 10, Math.ceil(this.dataMax / 10) * 10]
         },
+        visible: false
       },
       {
         title: {
           text: intl.formatMessage({ id: 'Practiced hours' }),
-          rotation: 0,
-          align: 'high',
-          offset: 32,
-          y: -10,
-          reserveSpace: false,
-          style: {
-            direction: 'rtl',
-            whiteSpace: 'nowrap',
-          },
         },
-        opposite: true,
       },
     ],
     xAxis: [
@@ -81,9 +71,6 @@ const HoursProgressChart = ({ practiceTimeHistory, startDate, endDate }) => {
         visible: true,
         title: {
           text: intl.formatMessage({ id: 'Week' }),
-          align: 'low',
-          offset: 8,
-          x: -24,
         },
         type: 'datetime',
         labels: {

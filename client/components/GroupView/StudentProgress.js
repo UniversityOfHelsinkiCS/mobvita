@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { hiddenFeatures, learningLanguageSelector } from 'Utilities/common'
+import { learningLanguageSelector } from 'Utilities/common'
 import { getStudentProgress } from 'Utilities/redux/groupProgressReducer'
 import { getPracticeHistory } from 'Utilities/redux/practiceHistoryReducer'
 import { FormattedMessage } from 'react-intl'
@@ -49,11 +49,8 @@ const StudentProgress = ({ student, startDate, endDate, group }) => {
               endDate={endDate}
             />
           </div>
-          {hiddenFeatures &&
-            <div>
-              <br />
-              <HoursProgressChart practiceTimeHistory={practiceTimeHistory} startDate={startDate} endDate={endDate} />
-            </div>}
+          <br />
+          <HoursProgressChart practiceTimeHistory={practiceTimeHistory} startDate={startDate} endDate={endDate} />
           <br />
           <div>
             <XpProgressGraph xpHistory={xpHistory} startDate={startDate} endDate={endDate} />
