@@ -31,6 +31,7 @@ const ControlledStoryWord = ({ word, snippet, focusedConcept }) => {
     tested,
     wrong,
     lemmas,
+    translation_lemmas,
     ref,
     explanation,
     ID: wordId,
@@ -191,7 +192,7 @@ const ControlledStoryWord = ({ word, snippet, focusedConcept }) => {
         dispatch(
           getTranslationAction({
             learningLanguage,
-            wordLemmas: lemmas,
+            wordLemmas: translation_lemmas || lemmas,
             dictionaryLanguage,
             storyId,
             wordId,

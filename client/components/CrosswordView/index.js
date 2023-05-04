@@ -111,7 +111,7 @@ const CrosswordView = () => {
   }
 
   const translateClue = clue => {
-    const { lemmas, surface, ID: wordId, clue_direction: direction, clue_number: number } = clue
+    const { lemmas, translation_lemmas, surface, ID: wordId, clue_direction: direction, clue_number: number } = clue
     if (lemmas) {
       dispatch(
         setWords({ surface, lemmas, clue: { number, direction: directionArrow(direction) } })
@@ -119,7 +119,7 @@ const CrosswordView = () => {
       dispatch(
         getClueTranslationAction({
           learningLanguage,
-          wordLemmas: lemmas,
+          wordLemmas: translation_lemmas || lemmas,
           dictionaryLanguage,
           wordId,
           record: 0,

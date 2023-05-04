@@ -15,7 +15,7 @@ import { getTranslationAction, setWords } from 'Utilities/redux/translationReduc
 import Tooltip from 'Components/PracticeView/Tooltip'
 
 const WrongAnswer = ({ word }) => {
-  const { surface, lemmas, ref, ID: wordId, id: storyId, inflection_ref: inflectionRef } = word
+  const { surface, translation_lemmas, lemmas, ref, ID: wordId, id: storyId, inflection_ref: inflectionRef } = word
   const answer = useSelector(({ practice }) => practice.currentAnswers[word.tiedTo || word.ID])
 
   const [show, setShow] = useState(false)
@@ -40,7 +40,7 @@ const WrongAnswer = ({ word }) => {
       dispatch(
         getTranslationAction({
           learningLanguage,
-          wordLemmas: lemmas,
+          wordLemmas: translation_lemmas || lemmas,
           dictionaryLanguage,
           storyId,
           wordId,

@@ -38,7 +38,7 @@ const PlainWord = ({ word, annotatingAllowed, focusedConcept, ...props }) => {
   const { grade } = useSelector(state => state.user.data.user)
   const { show_review_diff, show_preview_exer } = useSelector(state => state.user.data.user)
   const { focusedWord } = useSelector(({ practice }) => practice)
-  const { lemmas, ID: wordId, surface, inflection_ref: inflectionRef, name_token: isName } = word
+  const { translation_lemmas, lemmas, ID: wordId, surface, inflection_ref: inflectionRef, name_token: isName } = word
   const isCompeteMode = history.location.pathname.includes('compete')
   const bigScreen = width >= 1024
   const voice = voiceLanguages[learningLanguage]
@@ -138,7 +138,7 @@ const PlainWord = ({ word, annotatingAllowed, focusedConcept, ...props }) => {
         dispatch(
           getTranslationAction({
             learningLanguage,
-            wordLemmas: lemmas,
+            wordLemmas: translation_lemmas || lemmas,
             dictionaryLanguage,
             storyId,
             wordId,

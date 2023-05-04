@@ -11,7 +11,7 @@ import { getTranslationAction, setWords } from 'Utilities/redux/translationReduc
 import Tooltip from 'Components/PracticeView/Tooltip'
 
 const RightAnswer = ({ word }) => {
-  const { surface, lemmas, ID: wordId, id: storyId, inflection_ref: inflectionRef } = word
+  const { surface, lemmas, translation_lemmas, ID: wordId, id: storyId, inflection_ref: inflectionRef } = word
 
   const { resource_usage, autoSpeak } = useSelector(state => state.user.data.user)
   const dictionaryLanguage = useSelector(dictionaryLanguageSelector)
@@ -31,7 +31,7 @@ const RightAnswer = ({ word }) => {
       dispatch(
         getTranslationAction({
           learningLanguage,
-          wordLemmas: lemmas,
+          wordLemmas: translation_lemmas || lemmas,
           dictionaryLanguage,
           storyId,
           wordId,
