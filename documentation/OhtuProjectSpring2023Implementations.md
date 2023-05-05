@@ -78,8 +78,14 @@ XpToNextLevel = (((currentLevel + 1) * 50 - 25) ** 2 - 625) / 100
 
 ### Charts
 
-A chart for displaying the user's total xp has been added. 
-This component is displayed both on the progress page as well as the groups page.
+We added two charts to the progress page on the timeline page. Both of them are displayed on the progress page for users own page and their teachers can also see these charts in the groups analytics page.
+
+A chart for displaying the user's total XP as a timeline has been added. 
+
+Also a chart displaying student's hours spent in a week has been added to the same page. The chart shows the hours spent in a week, even though the calendar is limited by days. There were many problems with implimenting it, but right now it shows the week number and the year like 52/2023, because when it was only weeks the chart didn't work when the timeline included more than one years.
+
+Both of these charts are done by React Highcharts.
+
 
 ### Cypress tests 
 
