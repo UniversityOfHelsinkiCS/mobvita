@@ -30,12 +30,19 @@ The encouragement/recommendation system was refactored in the code base. More th
 
 ### Profile page
 
+This page is used to communicate information about the user to themselves.
+Since there is a lot of infomation disaplyed in this view, a lot of it should be conveyed concisely to avoid further cluttering.
+
 Some of the components that make up the profile page have been reused from other parts of the app.
 However, there are some functionalities that are only available on the profile page.
 These are:
  - the medals
  - xp bar
  - following and blocking users
+
+Two components have been migrated here from other views:
+1. The component for displaying medals
+2. The component for social interaction, like following and blocking users
 
 ### Daily streak
 
@@ -51,7 +58,23 @@ Profile page and encouragement pop up also contain information of how to continu
 An information system for user's experience points (XP) and level was implementend in the frontend. 
 User can gain XP from doing exercises in the app and leveling up after gaining enough XP. 
 User's current level and how much XP is needed for the next level are visible in the profile page. 
-Upon leveling up the user is notified via a pop-up toaster.
+Upon leveling up the user should be notified via a pop-up toaster, though this is not dunctional at the moment.
+The toaster should pop up when the server responds with a level_up field where the value is true.
+However, the level_up field never returns a true-value and therefore the toaster never activates.
+
+The complete xp required for each level is :
+
+Level = floor((25+sqrt(625+100*XP)) / 50), so that
+
+Level 1 @ 0 points
+
+Level 2 @ 50 points
+
+Level 3 @ 150 points etc.
+
+and therefore XP required for next level is:
+
+XpToNextLevel = (((currentLevel + 1) * 50 - 25) ** 2 - 625) / 100
 
 ### Charts
 
