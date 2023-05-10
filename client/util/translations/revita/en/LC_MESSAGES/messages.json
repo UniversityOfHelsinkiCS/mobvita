@@ -1517,9 +1517,7 @@
     "streak-just-done": "Your streak continues!",
     "new-level": "Your new level is",
     "xp-timeline-chart": "XP timeline",
-    "language-score-level-chart": "Language level timeline",
-    "language-level-chart": "Language level timeline",
-    "language-level-timeline-chart": "Language level timeline",
+    "language-level-timeline-chart": "Language proficiency timeline",
     "level-navbar": "Your current level",
     "practiced-time-chart": "Practiced hours per week",
     "practiced-time-chart-tooltip": "Hours: {time} Week: {week}"

@@ -163,7 +163,7 @@ const LessonList = () => {
 
   const libraryControls = (
     <div data-cy="library-controls" className="library-control">
-      <div className="search-and-sort" style={{display: !smallWindow && 'flex' || 'block'}}>
+      <div className="search-and-sort" style={{display: 'block'}}>
         <div className="align-center">
           <h5>
             <FormattedMessage id="select-lesson-semantic-topic" />
