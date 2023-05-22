@@ -1405,7 +1405,7 @@
     "continue-practice": "Harjoittele",
     "lesson-story-topic": "Muokkaa",
     "start-practice": "Harjoittele",
-    "select-lesson-semantic-topic": "Valitse oppitunnin aihe",
+    "select-lesson-semantic-topic": "Valitse oppitunnin aiheet",
     "lesson-activities": "Aktiviteetit",
     "no-available-exercise": "Meillä ei ole tällä hetkellä enempää harjoituksia tälle tunnille. Revita luo lisää harjoituksia lähiaikoina – palaa takaisin vähän myöhemmin!",
     "next-exercise-batch": "Seuraava erä harjoituksia!",
@@ -1494,10 +1494,10 @@
     "streak-done": "Sinulla on <b>{daysStreaked}</b> päivän harjoitteluputki päällä!",
     "streak-undone": "Säilytä harjoitteluputkesi!",
     "streak-broken": "Harjoitteluputkesi katkesi!",
-    "continue-streak": "Keinoja jatkaa putkeasi",
+    "continue-streak": "Keinoja jatkaa harjoitteluputkeasi",
     "start-streak": "Aloita uusi harjoitteluputki",
-    "do-snippets": "tee 10 tarinaosaa",
-    "do-flashcards": "harjoittele 20 muistikorttia",
+    "do-snippets": "Tee 10 tarinaosaa",
+    "do-flashcards": "Harjoittele 20 muistikorttia",
     "include-into-lesson": "Sisällytä oppitunnille",
     "included-in-lesson": "Sisältyy oppitunnille",
     "lesson-setup": "Muokkaa",
@@ -1517,7 +1517,8 @@
     "new-level": "Uusi tasosi on",
     "xp-timeline-chart": "XP-aikajana",
     "language-level-timeline-chart": "Kielitason aikajana",
-    "level-navbar": "Nykyinen tasosi",
+    "level-navbar": "Nykyinen XP tasosi",
     "practiced-time-chart": "Harjoitellut tunnit viikoittain",
-    "practiced-time-chart-tooltip": "Tunnit: {time} Viikko: {week}"
+    "practiced-time-chart-tooltip": "Tunnit: {time} Viikko: {week}",
+    "encouragements-default-4": "Hieno suoritus!"
 }

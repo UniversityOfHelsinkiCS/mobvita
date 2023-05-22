@@ -890,5 +890,6 @@
     "language-level-timeline-chart": "学习进度",
     "level-navbar": "当前等级",
     "practiced-time-chart": "每周练习时间",
-    "practiced-time-chart-tooltip": "Hours: {time} Week: {week}"
+    "practiced-time-chart-tooltip": "Hours: {time} Week: {week}",
+    "encouragements-default-4": "做得好！"
 }
