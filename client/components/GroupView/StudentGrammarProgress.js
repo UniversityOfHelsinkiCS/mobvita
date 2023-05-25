@@ -10,6 +10,7 @@ const StudentGrammarProgress = ({ summaryView = false, student, startDate, endDa
   const { pending, history } = useSelector(({ studentHistory }) => studentHistory)
   const {
     concepts,
+    lesson_topics,
     root_hex_coord,
     pending: conceptsPending,
   } = useSelector(({ metadata }) => metadata)
@@ -36,7 +37,7 @@ const StudentGrammarProgress = ({ summaryView = false, student, startDate, endDa
     <HexagonTest
       exerciseHistory={history}
       pending={pending}
-      concepts={concepts}
+      concepts={lesson_topics}
       conceptsPending={conceptsPending}
       root_hex_coord={root_hex_coord}
     />

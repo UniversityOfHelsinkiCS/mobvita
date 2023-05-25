@@ -22,21 +22,24 @@ const ConstructionHexagon = ({ name, position, statistics, overallTotal, general
     )
   }
 
-  let stat_total = statistics.total
-  if (stat_total > overallTotal){
-    stat_total = overallTotal
+  let stat_total = statistics != undefined ? stat_total : 0
+  let stat_correct = statistics != undefined ? stat_correct : 0
+
+  let size_stat_total =stat_total
+  if (size_stat_total > overallTotal){
+    size_stat_total = overallTotal
   }
-  const size = Math.floor((stat_total / overallTotal) * 10) + 5
-  const percentageCorrect = Math.round((statistics.correct / statistics.total) * 100)
+  const size = Math.floor((size_stat_total / overallTotal) * 10) + 5  
+  const percentageCorrect = Math.round((stat_correct / stat_total) * 100)
   const score = parseInt(percentageCorrect)
   const colorClass = `score${score}`
 
   const hexagonTooltip = (
     <span>
       <div>{name}</div>
-      {statistics.total > 0 && (
+      {stat_total > 0 && (
         <div>
-          {statistics.correct}/{statistics.total} {intl.formatMessage({ id: 'correct' })}:{' '}
+          {stat_correct}/{stat_total} {intl.formatMessage({ id: 'correct' })}:{' '}
           {percentageCorrect}%
         </div>
       )}
@@ -79,7 +82,7 @@ const HexagonTest = props => {
   if (!props.root_hex_coord || props.exerciseHistory?.length < 1 || !props.exerciseHistory)
     return <div>Not available</div>
 
-  const no_outliner_max = props.exerciseHistory[0].no_oultiner_max
+  const no_outliner_max = 20 // props.exerciseHistory[0].no_oultiner_max
   const accumulatedConcepts = props.exerciseHistory.reduce((acc, elem) => {
     const concepts = Object.entries(elem.concept_statistics)
     for (const [concept, stats] of concepts) {
@@ -144,9 +147,9 @@ const HexagonTest = props => {
                 .filter(concept => concept.hex_coords)
                 .map(hex => (
                   <ConstructionHexagon
-                    name={hex.short_name}
+                    name={hex.topic}
                     position={hex.hex_coords}
-                    statistics={accumulatedConcepts[hex.concept_id]}
+                    statistics={accumulatedConcepts[hex.topic_id]}
                     overallTotal={getBiggestHistoryTotal()}
                     general={hex.hexmap_general}
                     // position={positionOffset(hex.coords)}

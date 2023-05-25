@@ -89,6 +89,7 @@ const Progress = () => {
     }, shallowEqual)
   const {
     concepts,
+    lesson_topics,
     root_hex_coord,
     pending: conceptsPending,
   } = useSelector(({ metadata }) => metadata)
@@ -533,7 +534,7 @@ const Progress = () => {
             <HexagonTest
               exerciseHistory={exerciseHistory}
               pending={historyPending}
-              concepts={concepts}
+              concepts={lesson_topics}
               conceptsPending={conceptsPending}
               root_hex_coord={root_hex_coord}
             />
