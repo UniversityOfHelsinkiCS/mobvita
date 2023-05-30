@@ -23,8 +23,9 @@ const VirtualKeyboard = () => {
   const dispatch = useDispatch()
 
   useEffect(() => {
-    if (!keyboard || !currentAnswers[focusedWord.ID]) return
-    keyboard.setInput(currentAnswers[focusedWord.ID].users_answer)
+    const { id, ID } = focusedWord
+    if (!keyboard || !currentAnswers[`${ID}-${id}`]) return
+    keyboard.setInput(currentAnswers[`${ID}-${id}`].users_answer)
   }, [focusedWord, keyboard, currentAnswers])
 
   const buildActiveModifersString = () =>
