@@ -3,10 +3,12 @@ import { useIntl, FormattedMessage } from 'react-intl'
 import { List, WindowScroller } from 'react-virtualized'
 import React, { useEffect, useState } from 'react'
 import { Placeholder, Card, Icon, Select } from 'semantic-ui-react'
+import ScrollArrow from 'Components/ScrollArrow'
 import LibraryTabs from 'Components/LibraryTabs'
 import ReactSlider from 'react-slider'
 import { Button } from 'react-bootstrap'
 import { Link } from 'react-router-dom'
+import { Stepper, Step } from 'react-form-stepper';
 import { useLearningLanguage } from 'Utilities/common'
 import { getLessonTopics } from 'Utilities/redux/lessonsReducer'
 import { 
@@ -58,9 +60,9 @@ const LessonList = () => {
     group: false,
   })
 
-  const dispatch = useDispatch()
+  const [goStep, setGoStep] = useState(0);
 
-  // console.log("topics", topics)
+  const dispatch = useDispatch()
 
   const setLibrary = library => {
     const librariesCopy = {}
@@ -146,6 +148,7 @@ const LessonList = () => {
     setLibrary(library)
     dispatch(clearLessonInstanceState())
     dispatch(getLessonInstance(library == 'group' && savedGroupSelection || null))
+    setGoStep(0)
   }
 
   const groupDropdownOptions = groups.map(group => ({
@@ -159,60 +162,78 @@ const LessonList = () => {
     dispatch(updateGroupSelect(option.value))
     dispatch(clearLessonInstanceState())
     dispatch(getLessonInstance(option.value))
+    setGoStep(0)
   }
 
-  const libraryControls = (
-    <div data-cy="library-controls" className="library-control">
-      <div className="search-and-sort" style={{display: 'block'}}>
-        <div className="align-center">
-          <h5>
-            <FormattedMessage id="select-lesson-semantic-topic" />
-          </h5>
-          <div className="group-buttons sm lesson-story-topic">
-            {lesson_semantics &&
-              lesson_semantics.map(semantic => (
-                <Button
-                  key={semantic}
-                  variant={
-                    selectedSemantics && selectedSemantics.includes(semantic)
-                      ? 'primary'
-                      : 'outline-primary'
-                  }
-                  onClick={() => toggleSemantic(semantic)}
-                  disabled={lessonPending || !(libraries.private || currentGroup && currentGroup.is_teaching)}
-                  style={{ margin: '0.5em', cursor: lessonPending || !(libraries.private || currentGroup && currentGroup.is_teaching)
-                  ? 'not-allowed' : 'pointer'}}
-                >
-                  {selectedSemantics && selectedSemantics.includes(semantic) && (
-                    <Icon name="check" />
-                  )}
-                  {semantic}
-                </Button>
-              ))}
-          </div>
-        </div>
-        <div className="align-center">
-          <h5>
-            <FormattedMessage id="select-lesson-vocab-diff" />
-          </h5>
-          
-          <ReactSlider
-            className="exercise-density-slider lesson-vocab-diff"
-            thumbClassName="exercise-density-slider-thumb"
-            trackClassName='exercise-density-slider-track'
-            onAfterChange={value => handleSlider(value)}
-            min={0.8}
-            max={3.3}
-            step={0.5}
-            value={sliderValue}
-            disabled={lessonPending || !(libraries.private || currentGroup && currentGroup.is_teaching)}
-          />
-          <div className="space-between exercise-density-slider-label-cont bold">
-            <span><FormattedMessage id='Easy'/></span>
-            <span><FormattedMessage id='Hard'/></span>
-          </div>
-        </div>
-        
+  const lessonSemanticControls = (
+    <div className="align-center">
+      <h5>
+        <FormattedMessage id="select-lesson-semantic-topic" />
+        <Button 
+          style={{ float: 'right', cursor: lessonPending || !(libraries.private || currentGroup && currentGroup.is_teaching)
+            ? 'not-allowed' : 'pointer'}}
+          onClick={() => setGoStep(1)}>
+            Next step
+        </Button>
+      </h5>
+      <div className="group-buttons sm lesson-story-topic">
+        {lesson_semantics &&
+          lesson_semantics.map(semantic => (
+            <Button
+              key={semantic}
+              variant={
+                selectedSemantics && selectedSemantics.includes(semantic)
+                  ? 'primary'
+                  : 'outline-primary'
+              }
+              onClick={() => toggleSemantic(semantic)}
+              disabled={lessonPending || !(libraries.private || currentGroup && currentGroup.is_teaching)}
+              style={{ margin: '0.5em', cursor: lessonPending || !(libraries.private || currentGroup && currentGroup.is_teaching)
+              ? 'not-allowed' : 'pointer'}}
+            >
+              {selectedSemantics && selectedSemantics.includes(semantic) && (
+                <Icon name="check" />
+              )}
+              {semantic}
+            </Button>
+          ))}
+      </div>
+    </div>
+  )
+
+  const lessonVocabularyControls = (
+    <div className="align-center">
+      <h5>
+        <FormattedMessage id="select-lesson-vocab-diff" />
+        <Button 
+          style={{ float: 'right', cursor: lessonPending || !(libraries.private || currentGroup && currentGroup.is_teaching)
+            ? 'not-allowed' : 'pointer'}}
+          onClick={() => setGoStep(2)}>
+            Next step
+        </Button>
+      </h5>
+      
+      <ReactSlider
+        className="exercise-density-slider lesson-vocab-diff"
+        thumbClassName="exercise-density-slider-thumb"
+        trackClassName='exercise-density-slider-track'
+        onAfterChange={value => handleSlider(value)}
+        min={0.8}
+        max={3.3}
+        step={0.5}
+        value={sliderValue}
+        disabled={lessonPending || !(libraries.private || currentGroup && currentGroup.is_teaching)}
+      />
+      <div className="space-between exercise-density-slider-label-cont bold">
+        <span><FormattedMessage id='Easy'/></span>
+        <span><FormattedMessage id='Hard'/></span>
+      </div>
+    </div>
+  )
+
+  const lessonTopicsControls = (
+    <div>
+      <div>
         <Button 
           variant='primary'
           disabled={
@@ -227,9 +248,69 @@ const LessonList = () => {
           <Icon name="trash alternate" />
           <FormattedMessage id="exclude-all-topics" />
         </Button>
+        <Button 
+          disabled={
+            lessonPending ||
+            !selectedTopicIds ||
+            selectedTopicIds.length === 0 ||
+            !(libraries.private || currentGroup && currentGroup.is_teaching)
+          }
+          style={{ float: 'right', cursor: lessonPending || !(libraries.private || currentGroup && currentGroup.is_teaching)
+            ? 'not-allowed' : 'pointer'}}
+          onClick={() => setGoStep(3)}>
+            Next step
+        </Button>
       </div>
+      
+      <Card.Group itemsPerRow={1} doubling data-cy="lesson-items" style={{ marginTop: '.5em' }}>
+        <WindowScroller>
+          {({ height, isScrolling, onChildScroll, scrollTop }) => (
+            <List
+              autoHeight
+              height={height}
+              isScrolling={isScrolling}
+              onScroll={onChildScroll}
+              rowCount={topics.length}
+              rowHeight={index => 130 + topics[index.index].topic.split(';').length * 25}
+              rowRenderer={rowRenderer}
+              scrollTop={scrollTop}
+              width={10000}
+            />
+          )}
+        </WindowScroller>
+      </Card.Group>
+      <ScrollArrow />
     </div>
   )
+
+  const link = '/lesson' + (libraries.group ? `/group/${savedGroupSelection}/practice` : '/practice')
+  const lessonStartControls = (
+    <Link to={link}>
+      <Button
+        size="big"
+        className="lesson-practice"
+        disabled={
+          lessonPending ||
+          !selectedTopicIds ||
+          !selectedSemantics ||
+          selectedTopicIds.length === 0 ||
+          selectedSemantics.length === 0 || noResults
+        }
+        style={{
+          fontSize: '1.3em',
+          fontWeight: 500,
+          margin: '1em 0',
+          padding: '1rem 0',
+          width: '100%',
+          border: '2px solid #000',
+        }}
+      >
+        {lessonPending && <Icon name="spinner" loading />}
+        <FormattedMessage id="start-practice" />
+      </Button>
+    </Link>
+  )
+
 
   const noResults = !metaPending && lesson_topics && lesson_topics.length === 0
 
@@ -265,33 +346,9 @@ const LessonList = () => {
       </div>
     )
   }
-  const link = '/lesson' + (libraries.group ? `/group/${savedGroupSelection}/practice` : '/practice')
+
   return (
     <div className="cont-tall pt-lg cont flex-col auto gap-row-sm ">
-      <Link to={link}>
-        <Button
-          size="big"
-          className="lesson-practice"
-          disabled={
-            lessonPending ||
-            !selectedTopicIds ||
-            !selectedSemantics ||
-            selectedTopicIds.length === 0 ||
-            selectedSemantics.length === 0 || noResults
-          }
-          style={{
-            fontSize: '1.3em',
-            fontWeight: 500,
-            margin: '1em 0',
-            padding: '1rem 0',
-            width: '100%',
-            border: '2px solid #000',
-          }}
-        >
-          {lessonPending && <Icon name="spinner" loading />}
-          <FormattedMessage id="start-practice" />
-        </Button>
-      </Link>
       
       {metaPending ? (
         <Placeholder>
@@ -321,24 +378,62 @@ const LessonList = () => {
                 />
               )}
             </div>
-            {libraryControls}
-            <Card.Group itemsPerRow={1} doubling data-cy="lesson-items" style={{ marginTop: '.5em' }}>
-              <WindowScroller>
-                {({ height, isScrolling, onChildScroll, scrollTop }) => (
-                  <List
-                    autoHeight
-                    height={height}
-                    isScrolling={isScrolling}
-                    onScroll={onChildScroll}
-                    rowCount={topics.length}
-                    rowHeight={index => 130 + topics[index.index].topic.split(';').length * 25}
-                    rowRenderer={rowRenderer}
-                    scrollTop={scrollTop}
-                    width={10000}
-                  />
-                )}
-              </WindowScroller>
-            </Card.Group>
+
+            <Stepper
+              styleConfig={{
+                completedBgColor: '#003366',
+                activeBgColor: '#c6e2ff',
+                inactiveBgColor: '#d2d3d6',
+              }}
+            >
+              <Step 
+                label='1. Select lesson themes' 
+                active={goStep==0} 
+                completed={goStep > 0}
+                onClick={() => setGoStep(0)}
+              />
+              <Step 
+                label='2. Choose difficulty of the vocabulary for lesson' 
+                active={goStep==1} 
+                completed={goStep > 1} 
+                onClick={() => setGoStep(1)}
+              />
+              <Step 
+                label='3. Select lesson topics' 
+                active={goStep==2} 
+                completed={goStep > 2}
+                onClick={() => setGoStep(2)}
+              />
+              <Step 
+                label='4. Start practicing lesson' 
+                active={goStep==3} 
+                completed={goStep > 3}
+                onClick={() => setGoStep(3)}
+              />
+            </Stepper>
+
+            {goStep === 0 && (
+                <div>
+                  {lessonSemanticControls}
+                </div>
+            )}
+            {goStep === 1 && (
+                <div>
+                  {lessonVocabularyControls}
+                </div>
+            )}
+            {goStep === 2 && (
+                <div>
+                  {lessonTopicsControls}
+                </div>
+            )}
+            {goStep === 3 && (
+                <div>
+                  {lessonStartControls}
+                </div>
+            )}
+
+            {/* {libraryControls} */}
           </>
       )}
     </div>

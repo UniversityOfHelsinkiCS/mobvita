@@ -78,6 +78,7 @@
     "react-detect-offline": "^2.4.4",
     "react-dom": "^16.14.0",
     "react-draggable": "^4.4.5",
+    "react-form-stepper": "^2.0.3",
     "react-headroom": "^3.1.1",
     "react-hexgrid": "^1.0.3",
     "react-intl": "^3.6.1",
