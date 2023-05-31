@@ -3,13 +3,18 @@ import { useIntl, FormattedMessage } from 'react-intl'
 import { List, WindowScroller } from 'react-virtualized'
 import React, { useEffect, useState } from 'react'
 import { Placeholder, Card, Icon, Select } from 'semantic-ui-react'
+import { Segment } from 'semantic-ui-react'
+
 import ScrollArrow from 'Components/ScrollArrow'
 import LibraryTabs from 'Components/LibraryTabs'
+import LessonPracticeTopicsHelp from '../LessonPracticeView/LessonPracticeTopicsHelp'
+import LessonPracticeThemeHelp from '../LessonPracticeView/LessonPracticeThemeHelp'
+
 import ReactSlider from 'react-slider'
 import { Button } from 'react-bootstrap'
 import { Link } from 'react-router-dom'
 import { Stepper, Step } from 'react-form-stepper';
-import { useLearningLanguage } from 'Utilities/common'
+import { useLearningLanguage, getTextStyle } from 'Utilities/common'
 import { getLessonTopics } from 'Utilities/redux/lessonsReducer'
 import { 
   getLessonInstance, 
@@ -284,31 +289,37 @@ const LessonList = () => {
   )
 
   const link = '/lesson' + (libraries.group ? `/group/${savedGroupSelection}/practice` : '/practice')
-  const lessonStartControls = (
-    <Link to={link}>
-      <Button
-        size="big"
-        className="lesson-practice"
-        disabled={
-          lessonPending ||
-          !selectedTopicIds ||
-          !selectedSemantics ||
-          selectedTopicIds.length === 0 ||
-          selectedSemantics.length === 0 || noResults
-        }
-        style={{
-          fontSize: '1.3em',
-          fontWeight: 500,
-          margin: '1em 0',
-          padding: '1rem 0',
-          width: '100%',
-          border: '2px solid #000',
-        }}
-      >
-        {lessonPending && <Icon name="spinner" loading />}
-        <FormattedMessage id="start-practice" />
-      </Button>
-    </Link>
+  let lessonStartControls = (
+    <div>
+      <div style={{'display': 'flex'}}>
+        <LessonPracticeThemeHelp selectedThemes={selectedSemantics ? selectedSemantics : []} always_show={true} />
+        <LessonPracticeTopicsHelp selectedTopics={selectedTopicIds} always_show={true} />
+      </div>
+      <Link to={link}>
+        <Button
+          size="big"
+          className="lesson-practice"
+          disabled={
+            lessonPending ||
+            !selectedTopicIds ||
+            !selectedSemantics ||
+            selectedTopicIds.length === 0 ||
+            selectedSemantics.length === 0 || noResults
+          }
+          style={{
+            fontSize: '1.3em',
+            fontWeight: 500,
+            margin: '1em 0',
+            padding: '1rem 0',
+            width: '100%',
+            border: '2px solid #000',
+          }}
+        >
+          {lessonPending && <Icon name="spinner" loading />}
+          <FormattedMessage id="start-practice" />
+        </Button>
+      </Link>
+    </div>
   )
 
 

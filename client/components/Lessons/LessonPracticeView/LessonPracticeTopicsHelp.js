@@ -6,7 +6,7 @@ import { FormattedMessage, useIntl } from 'react-intl'
 import { getTextStyle, learningLanguageSelector, getMode } from 'Utilities/common'
 import { getLessonTopics } from 'Utilities/redux/lessonsReducer'
 
-const LessonPracticeTopicsHelp = ({selectedTopics}) => {
+const LessonPracticeTopicsHelp = ({selectedTopics, always_show=false, }) => {
     const dispatch = useDispatch()
     const { width } = useWindowDimensions()
     const learningLanguage = useSelector(learningLanguageSelector)
@@ -85,10 +85,17 @@ const LessonPracticeTopicsHelp = ({selectedTopics}) => {
         }
     }
 
-    if (width >= 1024) {
+    let segment_style = {
+        backgroundColor: 'azure'
+    }
+    if (always_show){
+        segment_style['height'] = '100%'
+    }
+
+    if (width >= 1024 || always_show) {
         return (
             <div className="annotations-box">
-                <Segment style={{backgroundColor: 'azure'}}>
+                <Segment style={segment_style}>
                     <div
                         className="lesson-title"
                         style={{
