@@ -47,12 +47,12 @@ const ExerciseHearing = ({ word, handleChange }) => {
   }
 
   useEffect(() => {
+    const val = currentAnswer ? currentAnswer.users_answer : ''
+    setValue(val)
+  }, [currentAnswer])
+
+  useEffect(() => {
     setClassName(getExerciseClass(tested, isWrong))
-    if (tested && isWrong) {
-      // giveHint()
-      const val = currentAnswer ? currentAnswer.users_answer : ''
-      setValue(val)
-    }
   }, [tested])
 
   useEffect(() => {

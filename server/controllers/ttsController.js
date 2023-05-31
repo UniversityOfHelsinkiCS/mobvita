@@ -5,11 +5,12 @@ const FormData = require('form-data')
 
 const getYandexTTS = async (req, res) => {
     try{
-        const { text, lang_code, tone } = req.query
+        const { text, lang_code, tone, speed } = req.query
         const form = new FormData()
         form.append('text', text)
         form.append('lang', lang_code)
         form.append('voice', tone)
+        form.append('speed', speed)
         var config = {
             method: 'post',
             url: 'https://tts.api.cloud.yandex.net/speech/v1/tts:synthesize',

@@ -582,7 +582,7 @@ export const speak = (surfaceWord, voice, voice_type, resource_usage, nRepeat = 
       Howler.codecs('opus') &&
       (resource_usage.tts.Yandex?.access ?? true)
     )
-      yandexSpeak(surfaceWord, lang_code, tone, voice_type)
+      yandexSpeak(surfaceWord, lang_code, tone, voice_type, String(1.1 - nRepeat % 3 * 0.2).slice(0,3))
     else if (source === 'tacotron2' && Howler.codecs('mp3') && surfaceWord.length > 4)
       tacotronSpeak(surfaceWord, lang_code, tone, voice_type, 0 - ((nRepeat * 3) % 6))
     else if (source === 'coqui_ai' && Howler.codecs('mp3') && surfaceWord.length > 4)

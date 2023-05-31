@@ -201,7 +201,7 @@ export const tacotronSpeak = (text, lang_code, tone, voice_type, speed) => {
   })
 }
 
-export const yandexSpeak = async (text, lang_code, tone, voice_type) => {
+export const yandexSpeak = async (text, lang_code, tone, voice_type, speed) => {
   const error_func = error_type => (sound_id, e) => {
     recordSpeak(text, voice_type, 'Yandex', lang_code, 0, `${error_type}: ${sound_id}->${e}`)
   }
@@ -209,7 +209,7 @@ export const yandexSpeak = async (text, lang_code, tone, voice_type) => {
     src: [
       `${basePath}api/yandex_tts?text=${encodeURIComponent(
         text
-      )}&tone=${tone}&lang_code=${lang_code}`,
+      )}&tone=${tone}&lang_code=${lang_code}&speed=${speed}`,
     ],
     format: ['opus'],
     autoplay: true,
