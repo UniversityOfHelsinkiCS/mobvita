@@ -22,6 +22,8 @@ import UnseenStoriesInGroup from './SubComponents/HomeView/UnseenStoriesInGroup'
 import LatestIncompleteStory from './SubComponents/MultiPurpose/LatestIncompleteStory'
 import TurnOffRecommendations from './SubComponents/MultiPurpose/TurnOffRecommendations'
 import LeaderboardEncouragement from './SubComponents/MultiPurpose/LeaderboardEncouragement'
+import GoodJobEncouragement from './SubComponents/MultiPurpose/GoodJobEncouragement'
+import RedirectHomeEncouragement from './SubComponents/MultiPurpose/RedirectHomeEncouragement'
 import StreakEncouragement from './SubComponents/HomeView/StreakEncouragement'
 import DailyStoriesEncouragement from './SubComponents/HomeView/DailyStoriesEncouragement'
 import DailyStoriesDraggable from './SubComponents/HomeView/DailyStoriesDraggable'
@@ -147,6 +149,9 @@ const Recommender = () => {
                   <ListOfRecentStoriesFlashcardsEncouragement />
                   <BackToLibraryFromFlashcards />
                   <p>end of normal flashcard view</p>
+                  <GoodJobEncouragement />
+                  <RedirectHomeEncouragement />
+                  <p>end of lesson</p>
                 </div>
               </div>
             </div>
