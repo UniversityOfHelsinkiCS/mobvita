@@ -1521,5 +1521,6 @@
     "level-navbar": "Your current XP level",
     "practiced-time-chart": "Practiced hours per week",
     "practiced-time-chart-tooltip": "Hours: {time} Week: {week}",
-    "encouragements-default-4": "Great job!"
+    "encouragements-default-4": "Great job!",
+    "have-a-break": "Have a break and go to {link} page"
 }

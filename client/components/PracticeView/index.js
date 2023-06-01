@@ -202,13 +202,13 @@ const PracticeView = () => {
                 <FormattedMessage id="Source" />
               </a>
             )}
-            <Checkbox
+            {hiddenFeatures && <Checkbox
               toggle
               label={intl.formatMessage({ id: 'show-difficulty-level' })}
               checked={showDifficulty}
               onChange={updateUserReviewDiff}
               style={{ paddingTop: '.5em', marginLeft: '.5em' }}
-            />
+            />}
             <PreviousSnippets showDifficulty={showDifficulty} />
             <hr />
             <CurrentSnippet
