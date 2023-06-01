@@ -21,7 +21,7 @@ import {
   updatePreviewExer,
   practiceTourViewed
 } from 'Utilities/redux/userReducer'
-import { learningLanguageSelector, getTextStyle, getMode } from 'Utilities/common'
+import { learningLanguageSelector, getTextStyle, getMode, hiddenFeatures } from 'Utilities/common'
 import DictionaryHelp from 'Components/DictionaryHelp'
 import AnnotationBox from 'Components/AnnotationBox'
 import Spinner from 'Components/Spinner'
@@ -278,7 +278,7 @@ const ReadViews = ({ match }) => {
                     style={{ paddingTop: '.5em' }}
                   />
                 )}
-                {!['practice-preview', 'preview'].includes(mode) && (
+                {!['practice-preview', 'preview'].includes(mode) && hiddenFeatures && (
                   <Checkbox
                     toggle
                     label={intl.formatMessage({ id: 'show-difficulty-level' })}
