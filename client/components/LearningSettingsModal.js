@@ -92,6 +92,7 @@ const LearningSettingsModal = ({ trigger }) => {
     const minified = cerfSliderValue / 11
     const rounded = Math.floor(minified / 10)
     dispatch(updateExerciseTemplate(rounded))
+    setOpen(false)
   }
 
   const templateOptions = []
@@ -173,17 +174,7 @@ const LearningSettingsModal = ({ trigger }) => {
             />{' '}
             <FormattedMessage id="choose-settings-template" />:
           </h2>
-          <Button
-            as={practicePrctMode === 'custom' ? Link : Button}
-            to="/concepts"
-            variant="primary"
-            size="lg"
-            onClick={handleCustomSelect}
-            disabled={practicePrctMode !== 'custom'}
-            style={getCustomButtonStyle()}
-          >
-            <FormattedMessage id="custom" />
-          </Button>
+          
         </div>
         <div className="learning-settings-radio-button-cont">
           <div className="learning-settings-radio-button-item">
@@ -195,6 +186,7 @@ const LearningSettingsModal = ({ trigger }) => {
             />
           </div>
           <div className="learning-settings-radio-button-item">
+          <span>
             <Radio
               label={intl.formatMessage({ id: 'use-my-personal-settings' })}
               name="templateSelect"
@@ -202,6 +194,18 @@ const LearningSettingsModal = ({ trigger }) => {
               checked={practicePrctMode === 'custom'}
               onChange={() => handlePersonalOptionClick()}
             />
+            </span><br />
+            <Button
+              as={practicePrctMode === 'custom' ? Link : Button}
+              to="/concepts"
+              variant="primary"
+              // size="lg"
+              onClick={handleCustomSelect}
+              disabled={practicePrctMode !== 'custom'}
+              style={getCustomButtonStyle()}
+            >
+              <FormattedMessage id="custom" />
+            </Button>
           </div>
           <div className="flex-col learning-settings-radio-button-item">
             <span>
