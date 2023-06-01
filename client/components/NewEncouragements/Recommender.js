@@ -61,6 +61,8 @@ const Recommender = () => {
   const isInFlashcardsView = history.location.pathname.includes('flashcards')
   const inBlueCardsTest = history.location.pathname.includes('test')
   const inReviewView = history.location.pathname.includes('review')
+  const inLessonPracticeView = history.location.pathname.includes('lesson/practice')
+  
   const { storyId } = useParams()
 
   // See default_activity_modal row 260
@@ -331,6 +333,35 @@ const Recommender = () => {
                   <PreviousStoriesBlueFlashcards />
                   <WordsSeenEncouragement />
                   <FlashcardsProgress />
+                </div>
+                <TurnOffRecommendations />
+              </div>
+            </div>
+          </Draggable>
+        </div>
+      ) : inLessonPracticeView && fcOpen ? (
+        // lesson practice view related encouragements
+        <div>
+          <Draggable cancel=".interactable">
+            <div
+              className={bigScreen ? 'draggable-encouragement' : 'draggable-encouragement-mobile'}
+            >
+              <div className="col-flex">
+                <div className="flex-reverse">
+                  <Icon
+                    className="interactable"
+                    style={{
+                      cursor: 'pointer',
+                      marginBottom: '.25em',
+                    }}
+                    size="large"
+                    name="close"
+                    onClick={handleCloseClick}
+                  />
+                </div>
+                <div className="interactable" style={{ overflow: 'auto', maxHeight: 300 }}>
+                  <GoodJobEncouragement />
+                  <RedirectHomeEncouragement />
                 </div>
                 <TurnOffRecommendations />
               </div>

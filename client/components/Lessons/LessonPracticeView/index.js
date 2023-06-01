@@ -14,6 +14,9 @@ import {
   setWillPause,
   setIsPaused,
 } from 'Utilities/redux/practiceReducer'
+import {
+  openLPEncouragement,
+} from 'Utilities/redux/encouragementsReducer'
 import { clearTranslationAction } from 'Utilities/redux/translationReducer'
 import {
   getLessonInstance,
@@ -36,6 +39,7 @@ import ProgressBar from 'Components/PracticeView/CurrentSnippet/ProgressBar'
 import PracticeTimer from 'Components/PracticeView/PracticeTimer'
 import Footer from 'Components/Footer'
 import ScrollArrow from 'Components/ScrollArrow'
+import Recommender from 'Components/NewEncouragements/Recommender'
 import LessonPracticeTopicsHelp from './LessonPracticeTopicsHelp'
 
 const LessonPracticeView = () => {
@@ -56,7 +60,6 @@ const LessonPracticeView = () => {
     ({ practice }) => practice
   )
   
-  
   const [startModalOpen, setStartModalOpen] = useState(false)
   const [currentSnippetNum, setCurrentSnippetNum] = useState(1)
   const [snippetsTotalNum, setSnippetsTotalNum] = useState(10)
@@ -76,10 +79,6 @@ const LessonPracticeView = () => {
     startImmediately: false,
     timeToUpdate: 100,
   })
-
-  
-
- 
 
   useEffect(() => {
     setCurrentSnippetNum(0)
@@ -108,6 +107,9 @@ const LessonPracticeView = () => {
   useEffect(() => {
     setCurrentSnippetNum(snippets.previous.length + 1)
     setSnippetsTotalNum(Math.floor(currentSnippetNum / 10) * 10 + 10) // snippets?.focused?.total_num
+    if ((snippets.previous.length % 10 == 0) && (snippets.previous.length >= 10)){
+      dispatch(openLPEncouragement())
+    }
   }, [snippets.focused])
 
   useEffect(() => {
@@ -193,99 +195,102 @@ const LessonPracticeView = () => {
 
   if (!lesson_instance_pending && lesson_instance && lesson_instance?.lesson_id) {
     return (
-      <div className="cont-tall pt-sm flex-col space-between">
-        <div className="justify-center">
-          <div className="cont">
-            <Segment>
-              <div
-                className="progress-bar-cont"
-                style={{ top: smallScreen ? '.25em' : '3.25em' }}
-              >
-                <ProgressBar
-                  snippetProgress={currentSnippetNum}
-                  snippetsTotal={snippetsTotalNum}
-                  progress={(currentSnippetNum / snippetsTotalNum).toFixed(2)}
-                />
-              </div>
-              {timedExercise && (
-                <PracticeTimer
-                  controlledPractice={controlledPractice}
-                  timerContent={getTimerContent()}
-                  showPauseButton={showPauseButton}
-                  handlePauseOrResumeClick={handlePauseOrResumeClick}
-                />
-              )}
-              {/* <div
-                className="lesson-title"
-                style={{
-                  ...getTextStyle(learningLanguage, 'title'),
-                  width: `${'100%'}`,
-                  'font-weight': 'bold',
-                  'font-size': 'large',
-                }}
-              >
-                {`Lesson ${lesson_instance.syllabus.syllabus_id}`}
-              </div> */}
-              <Checkbox
-                toggle
-                label={intl.formatMessage({ id: 'show-difficulty-level' })}
-                checked={showDifficulty}
-                onChange={updateUserReviewDiff}
-                style={{ paddingTop: '.5em', marginLeft: '.5em' }}
-              />
-              <PreviousSnippets showDifficulty={showDifficulty} isLesson={true} />
-              <hr />
-              <CurrentSnippet
-                storyId={null}
-                handleInputChange={handleAnswerChange}
-                timer={timer}
-                // numSnippets={story?.paragraph?.length}
-                numSnippets={10}
-                lessonId={lesson_instance?.lesson_id}
-                groupId={groupId}
-                lessonStartOver={startOvertLessonSnippets}
-              />
-              <ScrollArrow />
-
-              {willPause && !isPaused && (
+      <div>
+        <Recommender />
+        <div className="cont-tall pt-sm flex-col space-between">
+          <div className="justify-center">
+            <div className="cont">
+              <Segment>
                 <div
-                  className="justify-center"
-                  style={{ color: 'rgb(81, 138, 248)', fontWeight: '500' }}
+                  className="progress-bar-cont"
+                  style={{ top: smallScreen ? '.25em' : '3.25em' }}
                 >
-                  <FormattedMessage id="pausing-after-this-snippet" />
+                  <ProgressBar
+                    snippetProgress={currentSnippetNum}
+                    snippetsTotal={snippetsTotalNum}
+                    progress={(currentSnippetNum / snippetsTotalNum).toFixed(2)}
+                  />
+                </div>
+                {timedExercise && (
+                  <PracticeTimer
+                    controlledPractice={controlledPractice}
+                    timerContent={getTimerContent()}
+                    showPauseButton={showPauseButton}
+                    handlePauseOrResumeClick={handlePauseOrResumeClick}
+                  />
+                )}
+                {/* <div
+                  className="lesson-title"
+                  style={{
+                    ...getTextStyle(learningLanguage, 'title'),
+                    width: `${'100%'}`,
+                    'font-weight': 'bold',
+                    'font-size': 'large',
+                  }}
+                >
+                  {`Lesson ${lesson_instance.syllabus.syllabus_id}`}
+                </div> */}
+                <Checkbox
+                  toggle
+                  label={intl.formatMessage({ id: 'show-difficulty-level' })}
+                  checked={showDifficulty}
+                  onChange={updateUserReviewDiff}
+                  style={{ paddingTop: '.5em', marginLeft: '.5em' }}
+                />
+                <PreviousSnippets showDifficulty={showDifficulty} isLesson={true} />
+                <hr />
+                <CurrentSnippet
+                  storyId={null}
+                  handleInputChange={handleAnswerChange}
+                  timer={timer}
+                  // numSnippets={story?.paragraph?.length}
+                  numSnippets={10}
+                  lessonId={lesson_instance?.lesson_id}
+                  groupId={groupId}
+                  lessonStartOver={startOvertLessonSnippets}
+                />
+                <ScrollArrow />
+
+                {willPause && !isPaused && (
+                  <div
+                    className="justify-center"
+                    style={{ color: 'rgb(81, 138, 248)', fontWeight: '500' }}
+                  >
+                    <FormattedMessage id="pausing-after-this-snippet" />
+                  </div>
+                )}
+              </Segment>
+
+              {showVirtualKeyboard && (
+                <div>
+                  <VirtualKeyboard />
                 </div>
               )}
-            </Segment>
-
-            {showVirtualKeyboard && (
-              <div>
-                <VirtualKeyboard />
-              </div>
-            )}
-            {width >= 500 ? (
-              <div className="flex-col align-end">
-                <ReportButton />
-              </div>
-            ) : (
-              <div className="mb-nm">
-                <ReportButton />
-              </div>
-            )}
+              {width >= 500 ? (
+                <div className="flex-col align-end">
+                  <ReportButton />
+                </div>
+              ) : (
+                <div className="mb-nm">
+                  <ReportButton />
+                </div>
+              )}
+            </div>
+            <StartModal
+              open={startModalOpen}
+              setOpen={setStartModalOpen}
+              activity="control-story"
+              onBackClick={() => history.push('/library')}
+            />
+            <div className="dictionary-and-annotations-cont">
+              <LessonPracticeTopicsHelp selectedTopics={lesson_instance.topic_ids} />
+              <DictionaryHelp />
+              <AnnotationBox />
+            </div>
+            <FeedbackInfoModal />
           </div>
-          <StartModal
-            open={startModalOpen}
-            setOpen={setStartModalOpen}
-            activity="control-story"
-            onBackClick={() => history.push('/library')}
-          />
-          <div className="dictionary-and-annotations-cont">
-            <LessonPracticeTopicsHelp selectedTopics={lesson_instance.topic_ids} />
-            <DictionaryHelp />
-            <AnnotationBox />
-          </div>
-          <FeedbackInfoModal />
+          {showFooter && <Footer />}
         </div>
-        {showFooter && <Footer />}
       </div>
     )
   } else {
