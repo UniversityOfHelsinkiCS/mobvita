@@ -891,5 +891,16 @@
     "level-navbar": "当前等级",
     "practiced-time-chart": "每周练习时间",
     "practiced-time-chart-tooltip": "Hours: {time} Week: {week}",
-    "encouragements-default-4": "做得好！"
+    "encouragements-default-4": "做得好！",
+    "show preview-HIDE-FOR-LATER": "高亮练习和难度",
+    "have-a-break": "休息一下回到{link}",
+    "selected-lesson-themes": "Selected Lesson Themes",
+    "1. Select lesson themes": "Select lesson themes",
+    "2. Choose difficulty of the vocabulary for lesson": "Choose level of vocabulary for lesson",
+    "3. Select lesson topics": "Select grammar topics",
+    "4. Start practicing lesson": "Begin practice",
+    "Next step": "Next step",
+    "Easy": "Easy",
+    "Hard": "Hard",
+    "Lessons": "Lessons"
 }
