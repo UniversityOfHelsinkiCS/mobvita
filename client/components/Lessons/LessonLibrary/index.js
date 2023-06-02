@@ -178,7 +178,7 @@ const LessonList = () => {
           style={{ float: 'right', cursor: lessonPending || !(libraries.private || currentGroup && currentGroup.is_teaching)
             ? 'not-allowed' : 'pointer'}}
           onClick={() => setGoStep(1)}>
-            <FormattedMessage id="select-lesson-themes" />
+            <FormattedMessage id="next-step" />
         </Button>
       </h5>
       <div className="group-buttons sm lesson-story-topic">
@@ -214,7 +214,7 @@ const LessonList = () => {
           style={{ float: 'right', cursor: lessonPending || !(libraries.private || currentGroup && currentGroup.is_teaching)
             ? 'not-allowed' : 'pointer'}}
           onClick={() => setGoStep(2)}>
-            <FormattedMessage id="select-lesson-themes" />
+            <FormattedMessage id="next-step" />
         </Button>
       </h5>
       
@@ -263,7 +263,7 @@ const LessonList = () => {
           style={{ float: 'right', cursor: lessonPending || !(libraries.private || currentGroup && currentGroup.is_teaching)
             ? 'not-allowed' : 'pointer'}}
           onClick={() => setGoStep(3)}>
-            <FormattedMessage id="select-lesson-themes" />
+            <FormattedMessage id="next-step" />
         </Button>
       </div>
       
