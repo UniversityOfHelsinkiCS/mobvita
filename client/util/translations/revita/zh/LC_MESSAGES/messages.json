@@ -891,5 +891,16 @@
     "level-navbar": "当前等级",
     "practiced-time-chart": "每周练习时间",
     "practiced-time-chart-tooltip": "Hours: {time} Week: {week}",
-    "encouragements-default-4": "做得好！"
+    "encouragements-default-4": "做得好！",
+    "show preview-HIDE-FOR-LATER": "高亮练习和难度",
+    "have-a-break": "休息一下回到{link}",
+    "selected-lesson-themes": "选择课程主题",
+    "select-lesson-themes": "选择课程主题",
+    "select-lesson-vocab": "选择课程词汇难度",
+    "select-lesson-grammar": "选择语法内容",
+    "start-lesson-practice": "开始练习",
+    "Next step": "下一步",
+    "Easy": "易",
+    "Hard": "难",
+    "Lessons": "Lessons"
 }

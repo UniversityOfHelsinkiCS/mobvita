@@ -398,25 +398,25 @@ const LessonList = () => {
               }}
             >
               <Step 
-                label='1. Select lesson themes' 
+                label={<FormattedMessage id="select-lesson-themes" />} 
                 active={goStep==0} 
                 completed={goStep > 0}
                 onClick={() => setGoStep(0)}
               />
               <Step 
-                label='2. Choose difficulty of the vocabulary for lesson' 
+                label={<FormattedMessage id="select-lesson-vocab" />} 
                 active={goStep==1} 
                 completed={goStep > 1} 
                 onClick={() => setGoStep(1)}
               />
               <Step 
-                label='3. Select lesson topics' 
+                label={<FormattedMessage id="select-lesson-grammar" />} 
                 active={goStep==2} 
                 completed={goStep > 2}
                 onClick={() => setGoStep(2)}
               />
               <Step 
-                label='4. Start practicing lesson' 
+                label={<FormattedMessage id="start-lesson-practice" />}
                 active={goStep==3} 
                 completed={goStep > 3}
                 onClick={() => setGoStep(3)}
