@@ -16,10 +16,11 @@ import { Link } from 'react-router-dom'
 import { Stepper, Step } from 'react-form-stepper';
 import { useLearningLanguage, getTextStyle } from 'Utilities/common'
 import { getLessonTopics } from 'Utilities/redux/lessonsReducer'
-import { 
-  getLessonInstance, 
-  setLessonInstance, 
-  clearLessonInstanceState } from 'Utilities/redux/lessonInstanceReducer'
+import {
+  getLessonInstance,
+  setLessonInstance,
+  clearLessonInstanceState
+} from 'Utilities/redux/lessonInstanceReducer'
 import { getMetadata } from 'Utilities/redux/metadataReducer'
 import { getGroups } from 'Utilities/redux/groupsReducer'
 import LessonListItem from 'Components/Lessons/LessonLibrary/LessonListItem'
@@ -47,7 +48,7 @@ const LessonList = () => {
   } = useSelector(({ metadata }) => metadata)
   const { pending: topicPending, topics } = useSelector(({ lessons }) => lessons)
   const { pending: lessonPending, lesson } = useSelector(({ lessonInstance }) => lessonInstance)
-  
+
   const { groups, deleteSuccessful } = useSelector(({ groups }) => groups)
   const currentGroup = groups.find(g => g.group_id === savedGroupSelection)
 
@@ -92,7 +93,7 @@ const LessonList = () => {
   }, [learningLanguage])
 
   useEffect(() => {
-    
+
     dispatch(getLessonTopics())
     dispatch(getGroups())
     if (savedLibrarySelection == 'group' || savedLibrarySelection == 'public') {
@@ -174,11 +175,13 @@ const LessonList = () => {
     <div className="align-center">
       <h5>
         <FormattedMessage id="select-lesson-semantic-topic" />
-        <Button 
-          style={{ float: 'right', cursor: lessonPending || !(libraries.private || currentGroup && currentGroup.is_teaching)
-            ? 'not-allowed' : 'pointer'}}
+        <Button
+          style={{
+            float: 'right', cursor: lessonPending || !(libraries.private || currentGroup && currentGroup.is_teaching)
+              ? 'not-allowed' : 'pointer'
+          }}
           onClick={() => setGoStep(1)}>
-            <FormattedMessage id="next-step" />
+          <FormattedMessage id="next-step" />
         </Button>
       </h5>
       <div className="group-buttons sm lesson-story-topic">
@@ -193,8 +196,10 @@ const LessonList = () => {
               }
               onClick={() => toggleSemantic(semantic)}
               disabled={lessonPending || !(libraries.private || currentGroup && currentGroup.is_teaching)}
-              style={{ margin: '0.5em', cursor: lessonPending || !(libraries.private || currentGroup && currentGroup.is_teaching)
-              ? 'not-allowed' : 'pointer'}}
+              style={{
+                margin: '0.5em', cursor: lessonPending || !(libraries.private || currentGroup && currentGroup.is_teaching)
+                  ? 'not-allowed' : 'pointer'
+              }}
             >
               {selectedSemantics && selectedSemantics.includes(semantic) && (
                 <Icon name="check" />
@@ -210,14 +215,16 @@ const LessonList = () => {
     <div className="align-center">
       <h5>
         <FormattedMessage id="select-lesson-vocab-diff" />
-        <Button 
-          style={{ float: 'right', cursor: lessonPending || !(libraries.private || currentGroup && currentGroup.is_teaching)
-            ? 'not-allowed' : 'pointer'}}
+        <Button
+          style={{
+            float: 'right', cursor: lessonPending || !(libraries.private || currentGroup && currentGroup.is_teaching)
+              ? 'not-allowed' : 'pointer'
+          }}
           onClick={() => setGoStep(2)}>
-            <FormattedMessage id="next-step" />
+          <FormattedMessage id="next-step" />
         </Button>
       </h5>
-      
+
       <ReactSlider
         className="exercise-density-slider lesson-vocab-diff"
         thumbClassName="exercise-density-slider-thumb"
@@ -230,8 +237,8 @@ const LessonList = () => {
         disabled={lessonPending || !(libraries.private || currentGroup && currentGroup.is_teaching)}
       />
       <div className="space-between exercise-density-slider-label-cont bold">
-        <span><FormattedMessage id='Easy'/></span>
-        <span><FormattedMessage id='Hard'/></span>
+        <span><FormattedMessage id='Easy' /></span>
+        <span><FormattedMessage id='Hard' /></span>
       </div>
     </div>
   )
@@ -239,7 +246,7 @@ const LessonList = () => {
   const lessonTopicsControls = (
     <div>
       <div>
-        <Button 
+        <Button
           variant='primary'
           disabled={
             lessonPending ||
@@ -247,26 +254,30 @@ const LessonList = () => {
             selectedTopicIds.length === 0 ||
             !(libraries.private || currentGroup && currentGroup.is_teaching)
           }
-          style={{cursor: lessonPending || !(libraries.private || currentGroup && currentGroup.is_teaching)
-            ? 'not-allowed' : 'pointer'}}
-          onClick={()=> dispatch(setLessonInstance({ topic_ids: [], group_id: libraries.group && savedGroupSelection || null }))}>
+          style={{
+            cursor: lessonPending || !(libraries.private || currentGroup && currentGroup.is_teaching)
+              ? 'not-allowed' : 'pointer'
+          }}
+          onClick={() => dispatch(setLessonInstance({ topic_ids: [], group_id: libraries.group && savedGroupSelection || null }))}>
           <Icon name="trash alternate" />
           <FormattedMessage id="exclude-all-topics" />
         </Button>
-        <Button 
+        <Button
           disabled={
             lessonPending ||
             !selectedTopicIds ||
             selectedTopicIds.length === 0 ||
             !(libraries.private || currentGroup && currentGroup.is_teaching)
           }
-          style={{ float: 'right', cursor: lessonPending || !(libraries.private || currentGroup && currentGroup.is_teaching)
-            ? 'not-allowed' : 'pointer'}}
+          style={{
+            float: 'right', cursor: lessonPending || !(libraries.private || currentGroup && currentGroup.is_teaching)
+              ? 'not-allowed' : 'pointer'
+          }}
           onClick={() => setGoStep(3)}>
-            <FormattedMessage id="next-step" />
+          <FormattedMessage id="next-step" />
         </Button>
       </div>
-      
+
       <Card.Group itemsPerRow={1} doubling data-cy="lesson-items" style={{ marginTop: '.5em' }}>
         <WindowScroller>
           {({ height, isScrolling, onChildScroll, scrollTop }) => (
@@ -291,7 +302,7 @@ const LessonList = () => {
   const link = '/lesson' + (libraries.group ? `/group/${savedGroupSelection}/practice` : '/practice')
   let lessonStartControls = (
     <div>
-      <div style={{'display': 'flex'}}>
+      <div style={{ 'display': 'flex' }}>
         <LessonPracticeThemeHelp selectedThemes={selectedSemantics ? selectedSemantics : []} always_show={true} />
         <LessonPracticeTopicsHelp selectedTopics={selectedTopicIds} always_show={true} />
       </div>
@@ -342,7 +353,7 @@ const LessonList = () => {
   })
 
   function rowRenderer({ key, index, style }) {
-    const topic = (topics && topics[index]) || lesson_topics[index]
+    const topic = (topics && topics[index]) || lesson_topics.filter(x => x.target).sort((a, b) => { return a.index > b.index ? 1 : -1 })[index]
     return (
       <div
         key={key}
@@ -360,17 +371,17 @@ const LessonList = () => {
 
   return (
     <div className="cont-tall pt-lg cont flex-col auto gap-row-sm ">
-      
+
       {metaPending ? (
         <Placeholder>
           <Placeholder.Line />
         </Placeholder>
-      ) : 
-      noResults ? (
-        <div className="justify-center mt-lg" style={{ color: 'rgb(112, 114, 120)' }}>
-          <FormattedMessage id="no-lessons-found" />
-        </div>
-      ) : (
+      ) :
+        noResults ? (
+          <div className="justify-center mt-lg" style={{ color: 'rgb(112, 114, 120)' }}>
+            <FormattedMessage id="no-lessons-found" />
+          </div>
+        ) : (
           <>
             <div className="library-selection">
               <LibraryTabs
@@ -397,56 +408,56 @@ const LessonList = () => {
                 inactiveBgColor: '#d2d3d6',
               }}
             >
-              <Step 
-                label={<FormattedMessage id="select-lesson-themes" />} 
-                active={goStep==0} 
+              <Step
+                label={<FormattedMessage id="select-lesson-themes" />}
+                active={goStep == 0}
                 completed={goStep > 0}
                 onClick={() => setGoStep(0)}
               />
-              <Step 
-                label={<FormattedMessage id="select-lesson-vocab" />} 
-                active={goStep==1} 
-                completed={goStep > 1} 
+              <Step
+                label={<FormattedMessage id="select-lesson-vocab" />}
+                active={goStep == 1}
+                completed={goStep > 1}
                 onClick={() => setGoStep(1)}
               />
-              <Step 
-                label={<FormattedMessage id="select-lesson-grammar" />} 
-                active={goStep==2} 
+              <Step
+                label={<FormattedMessage id="select-lesson-grammar" />}
+                active={goStep == 2}
                 completed={goStep > 2}
                 onClick={() => setGoStep(2)}
               />
-              <Step 
+              <Step
                 label={<FormattedMessage id="start-lesson-practice" />}
-                active={goStep==3} 
+                active={goStep == 3}
                 completed={goStep > 3}
                 onClick={() => setGoStep(3)}
               />
             </Stepper>
 
             {goStep === 0 && (
-                <div>
-                  {lessonSemanticControls}
-                </div>
+              <div>
+                {lessonSemanticControls}
+              </div>
             )}
             {goStep === 1 && (
-                <div>
-                  {lessonVocabularyControls}
-                </div>
+              <div>
+                {lessonVocabularyControls}
+              </div>
             )}
             {goStep === 2 && (
-                <div>
-                  {lessonTopicsControls}
-                </div>
+              <div>
+                {lessonTopicsControls}
+              </div>
             )}
             {goStep === 3 && (
-                <div>
-                  {lessonStartControls}
-                </div>
+              <div>
+                {lessonStartControls}
+              </div>
             )}
 
             {/* {libraryControls} */}
           </>
-      )}
+        )}
     </div>
   )
 }
