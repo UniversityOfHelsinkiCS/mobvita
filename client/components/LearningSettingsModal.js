@@ -167,9 +167,11 @@ const LearningSettingsModal = ({ trigger }) => {
           <h2 style={{ fontSize: '17px', fontWeight: '550' }}>
             <Popup
               position="top center"
-              content={intl.formatMessage({
-                id: 'choose-settings-template-info',
-              })}
+              content={
+                    <div>
+                        <FormattedHTMLMessage id="choose-settings-template-info" />
+                    </div>
+                }
               trigger={<Icon name="info circle" color="grey" />}
             />{' '}
             <FormattedMessage id="choose-settings-template" />:
