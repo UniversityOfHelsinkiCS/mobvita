@@ -114,7 +114,7 @@ const Lemma = ({
         <div className="flex-col" style={{ alignItems: 'center' }}>
           <Popup
             position="top center"
-            content={<FormattedMessage id="i-know-tooltip" />}
+            content={<FormattedHTMLMessage id="i-know-tooltip" />}
             trigger={
               <Icon
                 name="check"
@@ -125,7 +125,7 @@ const Lemma = ({
           />
           <Popup
             position="top center"
-            content={<FormattedMessage id="i-dont-know-tooltip" />}
+            content={<FormattedHTMLMessage id="i-dont-know-tooltip" />}
             trigger={
               <Icon
                 name="question"
