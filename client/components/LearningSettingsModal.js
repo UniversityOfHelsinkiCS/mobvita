@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import { Modal, Dropdown, Divider, Radio, Popup, Icon } from 'semantic-ui-react'
-import { FormattedMessage, useIntl } from 'react-intl'
+import { FormattedMessage, FormattedHTMLMessage, useIntl } from 'react-intl'
 import { ButtonGroup, Button } from 'react-bootstrap'
 import { getMetadata } from 'Utilities/redux/metadataReducer'
 import { Link } from 'react-router-dom'
@@ -167,11 +167,7 @@ const LearningSettingsModal = ({ trigger }) => {
           <h2 style={{ fontSize: '17px', fontWeight: '550' }}>
             <Popup
               position="top center"
-              content={
-                    <div>
-                        <FormattedHTMLMessage id="choose-settings-template-info" />
-                    </div>
-                }
+              content={<FormattedHTMLMessage id="choose-settings-template-info" />}
               trigger={<Icon name="info circle" color="grey" />}
             />{' '}
             <FormattedMessage id="choose-settings-template" />:

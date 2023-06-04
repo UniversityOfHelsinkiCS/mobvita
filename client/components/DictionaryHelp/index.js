@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { List, Button, Segment, Icon, Popup } from 'semantic-ui-react'
-import { FormattedMessage, useIntl } from 'react-intl'
+import { FormattedMessage, FormattedHTMLMessage, useIntl } from 'react-intl'
 import { updateDictionaryLanguage } from 'Utilities/redux/userReducer'
 import {
   getTranslationAction,
