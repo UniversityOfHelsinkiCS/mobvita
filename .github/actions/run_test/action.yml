@@ -18,14 +18,18 @@ runs:
       run: docker-compose up -d
 
     - name: Run cypress tests
-      uses: cypress-io/github-action@v5
-      with:
-        browser: chrome
-        spec: ${{ inputs.spec }}
-        wait-on: 'http://localhost:8000'
-        wait-on-timeout: 600
-      env:
-        CYPRESS_baseUrl: http://localhost:8000
+      shell: bash
+      run: npm run cypress:run -- --spec ${{ inputs.spec }}
+      # uses: cypress-io/github-action@v5
+      # with:
+      #   browser: chrome
+      #   spec: ${{ inputs.spec }}
+      #   wait-on: 'http://localhost:8000'
+      #   wait-on-timeout: 600
+      # env:
+      #   CYPRESS_baseUrl: http://localhost:8000
+
+        
     - name: 'Upload screenshots if tests fail'
       uses: actions/upload-artifact@v1
       if: failure()
