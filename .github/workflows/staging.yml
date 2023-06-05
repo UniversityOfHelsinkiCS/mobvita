@@ -8,7 +8,7 @@ on:
 jobs:
   test_competition:
     name: "Test competition"
-    runs-on: ubuntu-20.04  
+    runs-on: ubuntu-latest  
     steps:
       - uses: actions/checkout@v3
       - name: 'Run tests'
@@ -18,7 +18,7 @@ jobs:
   
   test_dictionary:
     name: "Test dictionary"
-    runs-on: ubuntu-20.04  
+    runs-on: ubuntu-latest  
     steps:
       - uses: actions/checkout@v3
       - name: 'Run tests'
@@ -28,7 +28,7 @@ jobs:
 
   test_flashcards:
     name: "Test flashcards"
-    runs-on: ubuntu-20.04  
+    runs-on: ubuntu-latest  
     steps:
       - uses: actions/checkout@v3
       - name: 'Run tests'
@@ -38,7 +38,7 @@ jobs:
 
   test_follow_and_block:
     name: "Test follow and block"
-    runs-on: ubuntu-20.04  
+    runs-on: ubuntu-latest  
     steps:
       - uses: actions/checkout@v3
       - name: 'Run tests'
@@ -48,7 +48,7 @@ jobs:
 
   test_groups:
     name: "Test groups"
-    runs-on: ubuntu-20.04  
+    runs-on: ubuntu-latest  
     steps:
       - uses: actions/checkout@v3
       - name: 'Run tests'
@@ -58,7 +58,7 @@ jobs:
 
   test_mobvita:
     name: "Test mobvita"
-    runs-on: ubuntu-20.04  
+    runs-on: ubuntu-latest  
     steps:
       - uses: actions/checkout@v3
       - name: 'Run tests'
@@ -68,7 +68,7 @@ jobs:
 
   test_navbar:
     name: "Test navbar"
-    runs-on: ubuntu-20.04  
+    runs-on: ubuntu-latest  
     steps:
       - uses: actions/checkout@v3
       - name: 'Run tests'
@@ -78,7 +78,7 @@ jobs:
 
   test_practice:
     name: "Test practice"
-    runs-on: ubuntu-20.04  
+    runs-on: ubuntu-latest  
     steps:
       - uses: actions/checkout@v3
       - name: 'Run tests'
@@ -88,7 +88,7 @@ jobs:
 
   test_sidebar:
     name: "Test sidebar"
-    runs-on: ubuntu-20.04  
+    runs-on: ubuntu-latest  
     steps:
       - uses: actions/checkout@v3
       - name: 'Run tests'
@@ -98,7 +98,7 @@ jobs:
   
   test_tests:
     name: "Test tests"
-    runs-on: ubuntu-20.04  
+    runs-on: ubuntu-latest  
     steps:
       - uses: actions/checkout@v3
       - name: 'Run tests'
@@ -108,7 +108,7 @@ jobs:
 
   test_wordnest:
     name: "Test wordnest"
-    runs-on: ubuntu-20.04  
+    runs-on: ubuntu-latest  
     steps:
       - uses: actions/checkout@v3
       - name: 'Run tests'
@@ -130,7 +130,7 @@ jobs:
       - test_sidebar
       - test_tests
       - test_wordnest
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-latest
     steps:
       - name: Checkout
         uses: actions/checkout@v3
@@ -147,7 +147,7 @@ jobs:
   sentry:
     name: "Sentry"
     needs: build
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-latest
     env:
       SENTRY_PROJECT: mobvita
       SENTRY_ORG: toska
