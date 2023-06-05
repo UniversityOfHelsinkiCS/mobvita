@@ -23,7 +23,7 @@ runs:
         browser: chrome
         spec: ${{ inputs.spec }}
         wait-on: 'http://localhost:8000'
-        wait-on-timeout: 180
+        wait-on-timeout: 600
       env:
         CYPRESS_baseUrl: http://localhost:8000
     - name: 'Upload screenshots if tests fail'
