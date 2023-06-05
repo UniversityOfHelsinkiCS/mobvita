@@ -22,7 +22,7 @@ runs:
       with:
         browser: chrome
         spec: ${{ inputs.spec }}
-        wait-on: 'http://localhost:8080'
+        wait-on: 'http://localhost:8000'
         wait-on-timeout: 180
       env:
         CYPRESS_baseUrl: http://localhost:8000
