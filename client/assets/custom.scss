@@ -461,6 +461,10 @@ $value in $spacing {
   height: 0;
 }
 
+.ui.segment{
+  box-shadow: 0px -5px 10px 0px rgba(0, 0, 0, 0.5)
+}
+
 // REACT VIRTUALIZED OVERRIDES:
 .ReactVirtualized__Grid__innerScrollContainer {
   overflow: initial !important;
