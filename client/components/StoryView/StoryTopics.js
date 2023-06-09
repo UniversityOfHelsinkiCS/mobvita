@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import useWindowDimensions from 'Utilities/windowDimensions'
-import { Icon } from 'semantic-ui-react'
+import { Icon, Segment } from 'semantic-ui-react'
 import { skillLevels } from 'Utilities/common'
 import { FormattedMessage } from 'react-intl'
 import { useSelector, useDispatch } from 'react-redux'
@@ -70,7 +70,9 @@ const StoryTopics = ({ conceptCount, focusedConcept, setFocusedConcept }) => {
 
   if (width >= 1024 && topTopics.length > 0) {
     return (
-      <div className="story-topics-box" style={{ padding: '1em' }}>
+      
+      <div className="story-topics-box">
+        <Segment>
         <div style={{ backgroundColor: '#FFFFFF' }}>
           <div className="flex space-between">
             <div style={{ marginBottom: '.5em' }}>
@@ -138,6 +140,7 @@ const StoryTopics = ({ conceptCount, focusedConcept, setFocusedConcept }) => {
             </>
           )}
         </div>
+        </Segment>
       </div>
     )
   }
