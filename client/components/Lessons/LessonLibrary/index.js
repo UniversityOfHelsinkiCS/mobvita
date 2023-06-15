@@ -23,10 +23,11 @@ import {
 } from 'Utilities/redux/lessonInstanceReducer'
 import { getMetadata } from 'Utilities/redux/metadataReducer'
 import { getGroups } from 'Utilities/redux/groupsReducer'
-import LessonListItem from 'Components/Lessons/LessonLibrary/LessonListItem'
 import { sidebarSetOpen } from 'Utilities/redux/sidebarReducer'
 import { startLessonsTour } from 'Utilities/redux/tourReducer'
 import { lessonsTourViewed, updateGroupSelect, updateLibrarySelect } from 'Utilities/redux/userReducer'
+
+import LessonListItem from 'Components/Lessons/LessonLibrary/LessonListItem'
 
 import useWindowDimensions from 'Utilities/windowDimensions'
 // import AddStoryModal from 'Components/AddStoryModal'
@@ -45,6 +46,7 @@ const LessonList = () => {
     pending: metaPending,
     lesson_semantics,
     lesson_topics,
+    lessons,
   } = useSelector(({ metadata }) => metadata)
   const { pending: topicPending, topics } = useSelector(({ lessons }) => lessons)
   const { pending: lessonPending, lesson } = useSelector(({ lessonInstance }) => lessonInstance)
@@ -67,6 +69,14 @@ const LessonList = () => {
   })
 
   const [goStep, setGoStep] = useState(0);
+
+  let lesson2info = {}
+  for (let lesson of lessons) {
+    let { ID } = lesson;
+    if (!lesson2info.hasOwnProperty(ID)) {
+      lesson2info[ID] = lesson;
+    }
+  }
 
   const dispatch = useDispatch()
 
@@ -125,6 +135,27 @@ const LessonList = () => {
     } else {
       newTopics = [...selectedTopicIds, topicId]
     }
+    const payload = { topic_ids: newTopics }
+    if (libraries.group) payload.group_id = savedGroupSelection
+    dispatch(setLessonInstance(payload))
+  }
+
+  const includeLesson = LessonId => {
+    let lessonTopics = lesson_topics.filter(lesson => lesson.lessons.includes(LessonId)).map(topic => topic.topic_id);
+    let newTopics = selectedTopicIds
+    for (let lesson_topic of lessonTopics){
+      if (!selectedTopicIds.includes(lesson_topic)){
+        newTopics = [...newTopics, lesson_topic]
+      }
+    }
+    const payload = { topic_ids: newTopics }
+    if (libraries.group) payload.group_id = savedGroupSelection
+    dispatch(setLessonInstance(payload))
+  }
+
+  const excludeLesson = LessonId => {
+    let lessonTopics = lesson_topics.filter(lesson => lesson.lessons.includes(LessonId)).map(topic => topic.topic_id);
+    let newTopics = selectedTopicIds.filter(id => !lessonTopics.includes(id))
     const payload = { topic_ids: newTopics }
     if (libraries.group) payload.group_id = savedGroupSelection
     dispatch(setLessonInstance(payload))
@@ -286,8 +317,8 @@ const LessonList = () => {
               height={height}
               isScrolling={isScrolling}
               onScroll={onChildScroll}
-              rowCount={topics.length}
-              rowHeight={index => 130 + topics[index.index].topic.split(';').length * 25}
+              rowCount={lessons.length}
+              rowHeight={index => 130 + lessons[index.index].topics.length * 27}
               rowRenderer={rowRenderer}
               scrollTop={scrollTop}
               width={10000}
@@ -352,17 +383,29 @@ const LessonList = () => {
     return dir * multiplier
   })
 
+  const isLessonItemSelected = (lesson_id) => {
+    const lesson_topics = lesson2info.hasOwnProperty(lesson_id) ? lesson2info[lesson_id]['topics'] : []
+    for (let lesson_topic of lesson_topics) {
+      if (selectedTopicIds.includes(lesson_topic)) {
+        return true;
+      }
+    }
+    return false;
+  }
+
   function rowRenderer({ key, index, style }) {
-    const topic = (topics && topics[index]) || lesson_topics.filter(x => x.target).sort((a, b) => { return a.index > b.index ? 1 : -1 })[index]
+    const lesson = lessons && lessons[index]
     return (
       <div
         key={key}
         style={{ ...style, paddingRight: '0.5em', paddingLeft: '0.5em', marginBottom: '0.5em' }}
       >
         <LessonListItem
-          topic={topic}
-          selected={selectedTopicIds && selectedTopicIds.includes(topic.topic_id)}
+          lesson={lesson}
+          selected={isLessonItemSelected(lesson.ID)}
           toggleTopic={toggleTopic}
+          includeLesson={includeLesson}
+          excludeLesson={excludeLesson}
           disabled={(!currentGroup || !currentGroup.is_teaching) && !libraries.private}
         />
       </div>

@@ -11,6 +11,7 @@ export const getLessonInstance = group_id => {
 }
 
 export const setLessonInstance = payload => {
+  // check if the set lesson endpoint is changed
   const route = '/lesson'
   const prefix = 'SET_LESSON_INSTNACE'
   

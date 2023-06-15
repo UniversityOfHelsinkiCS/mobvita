@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import { useHistory } from 'react-router'
 import { useDispatch, useSelector } from 'react-redux'
-import { Card, Dropdown, Button as SemanticButton, Icon, Popup } from 'semantic-ui-react'
+import { Card, Dropdown, Button as SemanticButton, Icon, Popup, Checkbox } from 'semantic-ui-react'
 import { Button } from 'react-bootstrap'
 
 import { useIntl, FormattedMessage } from 'react-intl'
@@ -27,97 +27,97 @@ const get_lesson_performance_style = (correct_count, total_count) => {
   else return '#000000'
 }
 
-const LessonTitle = ({ topic }) => {
+const LessonTitle = ({ lesson, toggleTopic, includeLesson, excludeLesson }) => {
   const intl = useIntl()
   const learningLanguage = useSelector(learningLanguageSelector)
+  const { topics } = useSelector(({ lessons }) => lessons)
+  const { lesson: lesson_instance } = useSelector(({ lessonInstance }) => lessonInstance)
+
+  let topic2info = {}
+  for (let topic of topics) {
+    let { topic_id } = topic;
+    if (!topic2info.hasOwnProperty(topic_id)) {
+      topic2info[topic_id] = topic;
+    }
+  }
+
   const topic_rows = []
-  const topic_concepts = topic.topic.split(';')
-  for (let k = 0; k < topic_concepts.length; k++) {
-    if (k === 0) {
-      const color = {color: get_lesson_performance_style(topic.correct, topic.total)}
-      topic_rows.push(
-        <h6
-          key={k}
-          className="lesson-item-topics"
-          style={{
-            marginBottom: '.5rem',
-            display: 'inline-flex',
-            width: '100%',
-            ...getTextStyle(learningLanguage),
-          }}
-        >
-          <div className="lesson-performance">
-            <span
-              display="inline"
-              float="left"
-              style={{
-                width: '6%',
-                textAlign: 'right',
-                marginRight: '5px',
-                maxWidth: '25px',
-                minWidth: '25px',
-                ...color
-              }}
-            >
-              {String(
-                Math.round(get_lesson_performance(topic.correct, topic.total) * 100)
-              ).padEnd(3, ' ')}
-            </span>
-            <span
-              style={{
-                width: '3%',
-                textAlign: 'center',
-                maxWidth: '20px',
-                minWidth: '10px',
-                marginRight: '7px',
-                ...color
-              }}
-            >
-              %
-            </span>
-          </div>
-          <div className="lesson-content" style={{ width: '88%' }}>
-            {topic_concepts[k].charAt(0).toUpperCase() + topic_concepts[k].slice(1)}
-          </div>
-        </h6>
-      )
-    } else {
-      topic_rows.push(
-        <h6
-          key={k}
-          className="lesson-item-topics"
-          style={{
-            marginBottom: '.5rem',
-            display: 'inline-flex',
-            width: '100%',
-            ...getTextStyle(learningLanguage),
-          }}
-        >
-          <div
+  const lesson_topics = lesson.topics
+  for (let k = 0; k < lesson_topics.length; k++) {
+    const color = {
+      color: get_lesson_performance_style(
+        topic2info[lesson_topics[k]].correct, topic2info[lesson_topics[k]].total)
+    }
+    topic_rows.push(
+      <h6
+        key={k}
+        className="lesson-item-topics"
+        style={{
+          marginBottom: '.5rem',
+          display: 'inline-flex',
+          width: '100%',
+          ...getTextStyle(learningLanguage),
+        }}
+      >
+        <div className="lesson-performance">
+          <span
+            display="inline"
+            float="left"
+            style={{
+              width: '4%',
+              textAlign: 'right',
+              marginRight: '5px',
+              maxWidth: '25px',
+              minWidth: '25px',
+              ...color
+            }}
+          >
+            <Checkbox
+              checked={lesson_instance.topic_ids.includes(lesson_topics[k])}
+              onChange={() => {toggleTopic(lesson_topics[k])}}
+            />
+          </span>
+          <span
+            display="inline"
+            float="left"
             style={{
               width: '6%',
               textAlign: 'right',
               marginRight: '5px',
               maxWidth: '25px',
               minWidth: '25px',
+              'vertical-align': 'top',
+              ...color
             }}
-          />
-          <div
+          >
+            {String(
+              Math.round(
+                get_lesson_performance(
+                  topic2info[lesson_topics[k]].correct, 
+                  topic2info[lesson_topics[k]].total
+                ) * 100
+              )
+            ).padEnd(3, ' ')}
+          </span>
+          <span
             style={{
               width: '3%',
               textAlign: 'center',
               maxWidth: '20px',
               minWidth: '10px',
               marginRight: '7px',
+              'vertical-align': 'top',
+              ...color
             }}
-          />
-          <div style={{ width: '88%' }}>
-            {topic_concepts[k].charAt(0).toUpperCase() + topic_concepts[k].slice(1)}
-          </div>
-        </h6>
-      )
-    }
-    
+          >
+            %
+          </span>
+        </div>
+        <div className="lesson-content" style={{ width: '88%' }}>
+          {lesson_topics[k].charAt(0).toUpperCase() + lesson_topics[k].slice(1)}
+        </div>
+      </h6>
+    )
   }
 
   return (
@@ -128,7 +128,8 @@ const LessonTitle = ({ topic }) => {
           className="story-item-title"
           style={{ marginBottom: '.5rem', width: '100%', ...getTextStyle(learningLanguage) }}
         >
-          {`${intl.formatMessage({ id: 'topic-singular' })} ${topic.topic_id}`}
+          {`${lesson.name}`}
+          {/* {`${intl.formatMessage({ id: 'topic-singular' })} ${lesson.topic_id}`} */}
           {/* <sup>
                         <b style={{color:'red'}}>&beta;</b>
                     </sup> */}
@@ -139,33 +140,64 @@ const LessonTitle = ({ topic }) => {
   )
 }
 
-const LessonListItem = ({ topic, selected, toggleTopic, disabled }) => {
-  const correct_perc = get_lesson_performance(topic.correct, topic.total)
+function calculateLowestScore(topics) {
+  if (topics.length === 0) {
+    return { score: 0, correct: 0, total: 0 }
+  }
+
+  const { score, correct, total } = topics.reduce((lowest, topic) => {
+    const currentScore = topic.correct / topic.total;
+    if (currentScore < lowest.score) {
+      return { score: currentScore, correct: topic.correct, total: topic.total };
+    }
+    return lowest;
+  }, { score: topics[0].correct / topics[0].total, correct: topics[0].correct, total: topics[0].total });
+
+  return { score, correct, total };
+}
+
+const LessonListItem = ({ lesson, selected, toggleTopic, includeLesson, excludeLesson, disabled }) => {
+  const { topics } = useSelector(({ lessons }) => lessons)
+  const { _, lesson_correct, lesson_total } = calculateLowestScore(topics.filter(topic => topic.lessons.includes(lesson.ID)))
+  const correct_perc = get_lesson_performance(lesson_correct, lesson_total)
   let backgroundColor = '#ffffff'
   if (correct_perc >= 0.75) backgroundColor = '#32cd3233'
   return (
-    <Card 
-      fluid 
-      key={topic._id} 
-      className="lesson-list-card" 
-      style={{backgroundColor: backgroundColor}}
+    <Card
+      fluid
+      key={lesson.ID}
+      className="lesson-list-card"
+      style={{ backgroundColor: backgroundColor }}
     >
       <Card.Content extra className="lesson-card-title-cont">
-        <LessonTitle topic={topic} />
+        <LessonTitle 
+          lesson={lesson} 
+          toggleTopic={toggleTopic}
+          includeLesson={includeLesson}
+          excludeLesson={excludeLesson}
+        />
       </Card.Content>
       <Card.Content extra className="lesson-card-actions-cont">
         <div className="lesson-actions">
-          <Button 
-            className="choose-topic" 
+          <Button
+            className="choose-topic"
             variant={selected ? 'primary' : 'outline-primary'}
-            onClick={()=> toggleTopic(topic.topic_id)}
+            onClick={() => {
+              if (selected) {
+                excludeLesson(lesson.ID)
+              } else {
+                includeLesson(lesson.ID)
+              }
+            }}
             disabled={disabled}
-            style={{cursor: !disabled
-              ? 'pointer'
-              : 'not-allowed'}}
+            style={{
+              cursor: !disabled
+                ? 'pointer'
+                : 'not-allowed'
+            }}
           >
-              {selected && 
-              (<><Icon name="check" /><FormattedMessage id="included-in-lesson" /></>) || 
+            {selected &&
+              (<><Icon name="check" /><FormattedMessage id="included-in-lesson" /></>) ||
               <FormattedMessage id="include-into-lesson" />}
           </Button>
         </div>
