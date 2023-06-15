@@ -33,14 +33,14 @@ export default (state = initialState, action) => {
         error: true,
       }
     case 'GET_METADATA_SUCCESS':
-      let lang_lessons = response.lessons
-      if (response & response.lessons & response.lessons.length){
-        for (let idx; idx < lang_lessons.length; idx++){
-          lang_lessons[idx]['topics'] = response.lesson_topics.filter(
-            lessons => lessons.includes(lang_lessons[idx].ID)
-          )
-          console.log(lang_lessons[idx])
+      for (let lesson of response.lessons) {
+        let lessonTopics = [];
+        for (let topic of response.lesson_topics) {
+          if (topic.lessons.includes(lesson.ID) & !lessonTopics.includes(topic.topic_id)) {
+            lessonTopics.push(topic.topic_id);
+          }
         }
+        lesson.topics = lessonTopics;
       }
       
       return {
@@ -54,7 +54,7 @@ export default (state = initialState, action) => {
         numUnreadNews: response.num_unread_news,
         root_hex_coord: response.root_hex_coord,
         cachedStories: response.available_cached_stories,
-        lessons: lang_lessons,
+        lessons: response.lessons,
         lesson_semantics: response.lesson_semantics,
         lesson_topics: response.lesson_topics,
         pending: false,

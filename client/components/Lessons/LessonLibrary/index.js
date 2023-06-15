@@ -23,10 +23,11 @@ import {
 } from 'Utilities/redux/lessonInstanceReducer'
 import { getMetadata } from 'Utilities/redux/metadataReducer'
 import { getGroups } from 'Utilities/redux/groupsReducer'
-import LessonListItem from 'Components/Lessons/LessonLibrary/LessonListItem'
 import { sidebarSetOpen } from 'Utilities/redux/sidebarReducer'
 import { startLessonsTour } from 'Utilities/redux/tourReducer'
 import { lessonsTourViewed, updateGroupSelect, updateLibrarySelect } from 'Utilities/redux/userReducer'
+
+import LessonListItem from 'Components/Lessons/LessonLibrary/LessonListItem'
 
 import useWindowDimensions from 'Utilities/windowDimensions'
 // import AddStoryModal from 'Components/AddStoryModal'
@@ -68,6 +69,14 @@ const LessonList = () => {
   })
 
   const [goStep, setGoStep] = useState(0);
+
+  let lesson2info = {}
+  for (let lesson of lessons) {
+    let { ID } = lesson;
+    if (!lesson2info.hasOwnProperty(ID)) {
+      lesson2info[ID] = lesson;
+    }
+  }
 
   const dispatch = useDispatch()
 
@@ -132,20 +141,20 @@ const LessonList = () => {
   }
 
   const includeLesson = LessonId => {
-    let lessonTopics = lesson_topics.filter(lessons => lessons.includes(LessonId))
-    let newTopics
-    lessonTopics.forEach(lesson_topic => () => {
-      if (!selectedTopicIds.includes(lesson_topic.topic_id)){
-        newTopics = [...selectedTopicIds, lesson_topic.topic_id]
+    let lessonTopics = lesson_topics.filter(lesson => lesson.lessons.includes(LessonId)).map(topic => topic.topic_id);
+    let newTopics = selectedTopicIds
+    for (let lesson_topic of lessonTopics){
+      if (!selectedTopicIds.includes(lesson_topic)){
+        newTopics = [...newTopics, lesson_topic]
       }
-    })
+    }
     const payload = { topic_ids: newTopics }
     if (libraries.group) payload.group_id = savedGroupSelection
     dispatch(setLessonInstance(payload))
   }
 
   const excludeLesson = LessonId => {
-    let lessonTopics = lesson_topics.filter(lessons => lessons.includes(LessonId))
+    let lessonTopics = lesson_topics.filter(lesson => lesson.lessons.includes(LessonId)).map(topic => topic.topic_id);
     let newTopics = selectedTopicIds.filter(id => !lessonTopics.includes(id))
     const payload = { topic_ids: newTopics }
     if (libraries.group) payload.group_id = savedGroupSelection
@@ -309,8 +318,7 @@ const LessonList = () => {
               isScrolling={isScrolling}
               onScroll={onChildScroll}
               rowCount={lessons.length}
-              rowHeight={130}
-              // rowHeight={index => 130 + lessons[index.index].topic.split(';').length * 25}
+              rowHeight={index => 130 + lessons[index.index].topics.length * 27}
               rowRenderer={rowRenderer}
               scrollTop={scrollTop}
               width={10000}
@@ -376,7 +384,13 @@ const LessonList = () => {
   })
 
   const isLessonItemSelected = (lesson_id) => {
-    
+    const lesson_topics = lesson2info.hasOwnProperty(lesson_id) ? lesson2info[lesson_id]['topics'] : []
+    for (let lesson_topic of lesson_topics) {
+      if (selectedTopicIds.includes(lesson_topic)) {
+        return true;
+      }
+    }
+    return false;
   }
 
   function rowRenderer({ key, index, style }) {
@@ -388,7 +402,7 @@ const LessonList = () => {
       >
         <LessonListItem
           lesson={lesson}
-          selected={selectedTopicIds && selectedTopicIds.includes(lesson.topic_id)}
+          selected={isLessonItemSelected(lesson.ID)}
           toggleTopic={toggleTopic}
           includeLesson={includeLesson}
           excludeLesson={excludeLesson}

@@ -60,7 +60,6 @@ export default (state = initialState, action) => {
         error: true,
       }
     case 'SET_LESSON_INSTNACE_SUCCESS':
-      // lesson = { topic_id: { selected_subtopics: [], subtopics: [], ... } }
       return {
         ...state,
         pending: false,
