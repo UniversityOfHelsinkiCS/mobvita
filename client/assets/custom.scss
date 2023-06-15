@@ -462,7 +462,7 @@ $value in $spacing {
 }
 
 .ui.segment{
-  box-shadow: 0px -5px 10px 0px rgba(0, 0, 0, 0.5)
+  box-shadow: 6px 11px 10px 0px rgba(0,0,0,.5);
 }
 
 // REACT VIRTUALIZED OVERRIDES:
@@ -1280,15 +1280,7 @@ $value in $spacing {
   }
 }
 
-.story-topics-box {
-  width: 350px;
-  margin-left: 1em;
-  height: auto;
-  background-color: #FFFFFF;
-  border: 1px solid lightgrey;
-  border-radius: 4px;
-}
-
+.story-topics-box,
 .annotations-box {
   width: 350px;
   margin-left: 1em;
