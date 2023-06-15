@@ -27,14 +27,14 @@ const get_lesson_performance_style = (correct_count, total_count) => {
   else return '#000000'
 }
 
-const LessonTitle = ({ topic }) => {
+const LessonTitle = ({ lesson }) => {
   const intl = useIntl()
   const learningLanguage = useSelector(learningLanguageSelector)
   const topic_rows = []
-  const topic_concepts = topic.topic.split(';')
+  const topic_concepts = lesson.topic.split(';')
   for (let k = 0; k < topic_concepts.length; k++) {
     if (k === 0) {
-      const color = {color: get_lesson_performance_style(topic.correct, topic.total)}
+      const color = {color: get_lesson_performance_style(lesson.correct, lesson.total)}
       topic_rows.push(
         <h6
           key={k}
@@ -60,7 +60,7 @@ const LessonTitle = ({ topic }) => {
               }}
             >
               {String(
-                Math.round(get_lesson_performance(topic.correct, topic.total) * 100)
+                Math.round(get_lesson_performance(lesson.correct, lesson.total) * 100)
               ).padEnd(3, ' ')}
             </span>
             <span
@@ -128,7 +128,7 @@ const LessonTitle = ({ topic }) => {
           className="story-item-title"
           style={{ marginBottom: '.5rem', width: '100%', ...getTextStyle(learningLanguage) }}
         >
-          {`${intl.formatMessage({ id: 'topic-singular' })} ${topic.topic_id}`}
+          {`${intl.formatMessage({ id: 'topic-singular' })} ${lesson.topic_id}`}
           {/* <sup>
                         <b style={{color:'red'}}>&beta;</b>
                     </sup> */}
@@ -139,26 +139,27 @@ const LessonTitle = ({ topic }) => {
   )
 }
 
-const LessonListItem = ({ topic, selected, toggleTopic, disabled }) => {
-  const correct_perc = get_lesson_performance(topic.correct, topic.total)
+const LessonListItem = ({ topic: lesson, selected, toggleTopic, includeLesson, exludeLesson, disabled }) => {
+  const correct_perc = 0.5// get_lesson_performance(topic.correct, topic.total)
   let backgroundColor = '#ffffff'
   if (correct_perc >= 0.75) backgroundColor = '#32cd3233'
+  console.log('LessonListItem topic', lesson)
   return (
     <Card 
       fluid 
-      key={topic._id} 
+      key={lesson.ID} 
       className="lesson-list-card" 
       style={{backgroundColor: backgroundColor}}
     >
       <Card.Content extra className="lesson-card-title-cont">
-        <LessonTitle topic={topic} />
+        <LessonTitle lesson={lesson} />
       </Card.Content>
       <Card.Content extra className="lesson-card-actions-cont">
         <div className="lesson-actions">
           <Button 
             className="choose-topic" 
             variant={selected ? 'primary' : 'outline-primary'}
-            onClick={()=> toggleTopic(topic.topic_id)}
+            onClick={()=> toggleTopic(lesson.ID)}
             disabled={disabled}
             style={{cursor: !disabled
               ? 'pointer'

@@ -45,6 +45,7 @@ const LessonList = () => {
     pending: metaPending,
     lesson_semantics,
     lesson_topics,
+    lessons,
   } = useSelector(({ metadata }) => metadata)
   const { pending: topicPending, topics } = useSelector(({ lessons }) => lessons)
   const { pending: lessonPending, lesson } = useSelector(({ lessonInstance }) => lessonInstance)
@@ -125,6 +126,27 @@ const LessonList = () => {
     } else {
       newTopics = [...selectedTopicIds, topicId]
     }
+    const payload = { topic_ids: newTopics }
+    if (libraries.group) payload.group_id = savedGroupSelection
+    dispatch(setLessonInstance(payload))
+  }
+
+  const includeLesson = LessonId => {
+    let lessonTopics = lesson_topics.filter(lessons => lessons.includes(LessonId))
+    let newTopics
+    lessonTopics.forEach(lesson_topic => () => {
+      if (!selectedTopicIds.includes(lesson_topic.topic_id)){
+        newTopics = [...selectedTopicIds, lesson_topic.topic_id]
+      }
+    })
+    const payload = { topic_ids: newTopics }
+    if (libraries.group) payload.group_id = savedGroupSelection
+    dispatch(setLessonInstance(payload))
+  }
+
+  const excludeLesson = LessonId => {
+    let lessonTopics = lesson_topics.filter(lessons => lessons.includes(LessonId))
+    let newTopics = selectedTopicIds.filter(id => !lessonTopics.includes(id))
     const payload = { topic_ids: newTopics }
     if (libraries.group) payload.group_id = savedGroupSelection
     dispatch(setLessonInstance(payload))
@@ -286,8 +308,9 @@ const LessonList = () => {
               height={height}
               isScrolling={isScrolling}
               onScroll={onChildScroll}
-              rowCount={topics.length}
-              rowHeight={index => 130 + topics[index.index].topic.split(';').length * 25}
+              rowCount={lessons.length}
+              rowHeight={130}
+              // rowHeight={index => 130 + lessons[index.index].topic.split(';').length * 25}
               rowRenderer={rowRenderer}
               scrollTop={scrollTop}
               width={10000}
@@ -352,17 +375,23 @@ const LessonList = () => {
     return dir * multiplier
   })
 
+  const isLessonItemSelected = (lesson_id) => {
+    
+  }
+
   function rowRenderer({ key, index, style }) {
-    const topic = (topics && topics[index]) || lesson_topics.filter(x => x.target).sort((a, b) => { return a.index > b.index ? 1 : -1 })[index]
+    const lesson = lessons && lessons[index]
     return (
       <div
         key={key}
         style={{ ...style, paddingRight: '0.5em', paddingLeft: '0.5em', marginBottom: '0.5em' }}
       >
         <LessonListItem
-          topic={topic}
-          selected={selectedTopicIds && selectedTopicIds.includes(topic.topic_id)}
+          lesson={lesson}
+          selected={selectedTopicIds && selectedTopicIds.includes(lesson.topic_id)}
           toggleTopic={toggleTopic}
+          includeLesson={includeLesson}
+          excludeLesson={excludeLesson}
           disabled={(!currentGroup || !currentGroup.is_teaching) && !libraries.private}
         />
       </div>
