@@ -69,13 +69,15 @@ const LessonList = () => {
 
   const [goStep, setGoStep] = useState(0);
 
-  let lesson2info = {}
-  for (let lesson of lessons) {
-    let { ID } = lesson;
-    if (!lesson2info.hasOwnProperty(ID)) {
-      lesson2info[ID] = lesson;
-    }
-  }
+  const lesson2info = lessons.reduce((accumulator, value) => {
+    return {...accumulator, [value.ID]: value}
+  }, {})
+  // for (let lesson of lessons) {
+  //   let { ID } = lesson;
+  //   if (!lesson2info.hasOwnProperty(ID)) {
+  //     lesson2info[ID] = lesson;
+  //   }
+  // }
 
   const dispatch = useDispatch()
 
@@ -126,6 +128,7 @@ const LessonList = () => {
       setSliderValue(vocab_diff)
     }
   }, [vocab_diff])
+
 
   const toggleTopic = topicId => {
     let newTopics

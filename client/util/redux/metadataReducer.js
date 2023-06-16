@@ -15,6 +15,7 @@ const initialState = {
   pending: false,
   error: false,
   banners: [],
+  lessons: []
 }
 
 export default (state = initialState, action) => {
