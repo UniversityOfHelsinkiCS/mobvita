@@ -386,7 +386,7 @@ const LessonList = () => {
   const isLessonItemSelected = (lesson_id) => {
     const lesson_topics = lesson2info.hasOwnProperty(lesson_id) ? lesson2info[lesson_id]['topics'] : []
     for (let lesson_topic of lesson_topics) {
-      if (selectedTopicIds.includes(lesson_topic)) {
+      if (selectedTopicIds !== undefined & selectedTopicIds.includes(lesson_topic)) {
         return true;
       }
     }
