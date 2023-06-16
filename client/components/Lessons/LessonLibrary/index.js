@@ -72,12 +72,7 @@ const LessonList = () => {
   const lesson2info = lessons.reduce((accumulator, value) => {
     return {...accumulator, [value.ID]: value}
   }, {})
-  // for (let lesson of lessons) {
-  //   let { ID } = lesson;
-  //   if (!lesson2info.hasOwnProperty(ID)) {
-  //     lesson2info[ID] = lesson;
-  //   }
-  // }
+
 
   const dispatch = useDispatch()
 
