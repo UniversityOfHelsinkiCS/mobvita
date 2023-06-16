@@ -68,9 +68,15 @@ const LessonList = () => {
   })
 
   const [goStep, setGoStep] = useState(0);
-  const [lesson2info, setLesson2info] = useState({})
+  // const [lesson2info, setLesson2info] = useState({})
 
-
+  let lesson2info = {}
+  if (lessons && lessons?.length){
+    lessons.forEach((lesson) => {
+      lesson2info[lesson.ID] = lesson;
+    });
+  }
+  
   const dispatch = useDispatch()
 
   const setLibrary = library => {
@@ -81,7 +87,6 @@ const LessonList = () => {
 
     setLibraries({ ...librariesCopy, [library]: true })
   }
-
 
   useEffect(() => {
     if (!groups.find(g => g.group_id === savedGroupSelection) && groups[0]) {
@@ -96,7 +101,6 @@ const LessonList = () => {
   }, [learningLanguage])
 
   useEffect(() => {
-
     dispatch(getLessonTopics())
     dispatch(getGroups())
     if (savedLibrarySelection == 'group' || savedLibrarySelection == 'public') {
@@ -112,8 +116,8 @@ const LessonList = () => {
       dispatch(sidebarSetOpen(false))
       dispatch(startLessonsTour())
     }
-    if (lessons && lessons.length)
-      setLesson2info(lessons.reduce((accumulator, value) => {
+    if (lessons && lessons?.length)
+      setLesson2info(lessons?.reduce((accumulator, value) => {
         return {...accumulator, [value.ID]: value}
       }, {}))
   }, [])
@@ -382,7 +386,7 @@ const LessonList = () => {
   })
 
   const isLessonItemSelected = (lesson_id) => {
-    const lesson_topics = lesson2info.hasOwnProperty(lesson_id) ? lesson2info[lesson_id]['topics'] : []
+    const lesson_topics = lesson2info?.hasOwnProperty(lesson_id) ? lesson2info[lesson_id]['topics'] : []
     for (let lesson_topic of lesson_topics) {
       if (selectedTopicIds !== undefined && selectedTopicIds?.includes(lesson_topic)) {
         return true;
