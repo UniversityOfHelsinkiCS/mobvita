@@ -116,10 +116,6 @@ const LessonList = () => {
       dispatch(sidebarSetOpen(false))
       dispatch(startLessonsTour())
     }
-    if (lessons && lessons?.length)
-      setLesson2info(lessons?.reduce((accumulator, value) => {
-        return {...accumulator, [value.ID]: value}
-      }, {}))
   }, [])
 
 
