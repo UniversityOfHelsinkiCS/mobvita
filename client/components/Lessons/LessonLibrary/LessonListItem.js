@@ -158,8 +158,8 @@ function calculateLowestScore(topics) {
 
 const LessonListItem = ({ lesson, selected, toggleTopic, includeLesson, excludeLesson, disabled }) => {
   const { topics } = useSelector(({ lessons }) => lessons)
-  const { _, lesson_correct, lesson_total } = calculateLowestScore(topics.filter(topic => topic.lessons.includes(lesson.ID)))
-  const correct_perc = get_lesson_performance(lesson_correct, lesson_total)
+  const lowestScore = calculateLowestScore(topics.filter(topic => topic.lessons.includes(lesson.ID)))
+  const correct_perc = get_lesson_performance(lowestScore.correct, lowestScore.total)
   let backgroundColor = '#ffffff'
   if (correct_perc >= 0.75) backgroundColor = '#32cd3233'
   return (
