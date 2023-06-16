@@ -73,7 +73,7 @@ const LessonTitle = ({ lesson, toggleTopic, includeLesson, excludeLesson }) => {
             }}
           >
             <Checkbox
-              checked={lesson_instance.topic_ids.includes(lesson_topics[k])}
+              checked={lesson_instance != undefined && lesson_instance?.topic_ids != undefined && lesson_instance?.topic_ids?.includes(lesson_topics[k])}
               onChange={() => {toggleTopic(lesson_topics[k])}}
             />
           </span>
@@ -140,26 +140,8 @@ const LessonTitle = ({ lesson, toggleTopic, includeLesson, excludeLesson }) => {
   )
 }
 
-function calculateLowestScore(topics) {
-  if (topics.length === 0) {
-    return { score: 0, correct: 0, total: 0 }
-  }
-
-  const { score, correct, total } = topics.reduce((lowest, topic) => {
-    const currentScore = topic.correct / topic.total;
-    if (currentScore < lowest.score) {
-      return { score: currentScore, correct: topic.correct, total: topic.total };
-    }
-    return lowest;
-  }, { score: topics[0].correct / topics[0].total, correct: topics[0].correct, total: topics[0].total });
-
-  return { score, correct, total };
-}
-
 const LessonListItem = ({ lesson, selected, toggleTopic, includeLesson, excludeLesson, disabled }) => {
-  const { topics } = useSelector(({ lessons }) => lessons)
-  const lowestScore = calculateLowestScore(topics.filter(topic => topic.lessons.includes(lesson.ID)))
-  const correct_perc = get_lesson_performance(lowestScore.correct, lowestScore.total)
+  const correct_perc = get_lesson_performance(lesson.correct, lesson.total)
   let backgroundColor = '#ffffff'
   if (correct_perc >= 0.75) backgroundColor = '#32cd3233'
   return (

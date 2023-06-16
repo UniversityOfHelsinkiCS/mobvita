@@ -9,6 +9,7 @@ import ScrollArrow from 'Components/ScrollArrow'
 import LibraryTabs from 'Components/LibraryTabs'
 import LessonPracticeTopicsHelp from '../LessonPracticeView/LessonPracticeTopicsHelp'
 import LessonPracticeThemeHelp from '../LessonPracticeView/LessonPracticeThemeHelp'
+import LessonListItem from 'Components/Lessons/LessonLibrary/LessonListItem'
 
 import ReactSlider from 'react-slider'
 import { Button } from 'react-bootstrap'
@@ -26,8 +27,6 @@ import { getGroups } from 'Utilities/redux/groupsReducer'
 import { sidebarSetOpen } from 'Utilities/redux/sidebarReducer'
 import { startLessonsTour } from 'Utilities/redux/tourReducer'
 import { lessonsTourViewed, updateGroupSelect, updateLibrarySelect } from 'Utilities/redux/userReducer'
-
-import LessonListItem from 'Components/Lessons/LessonLibrary/LessonListItem'
 
 import useWindowDimensions from 'Utilities/windowDimensions'
 // import AddStoryModal from 'Components/AddStoryModal'
@@ -55,7 +54,7 @@ const LessonList = () => {
   const currentGroup = groups.find(g => g.group_id === savedGroupSelection)
 
   const _lesson_sort_criterion = { direction: 'asc', sort_by: 'index' }
-  const smallWindow = useWindowDimensions().width < 520
+  // const smallWindow = useWindowDimensions().width < 520
 
   const [sorter, setSorter] = useState(_lesson_sort_criterion.sort_by)
   const [sortDirection, setSortDirection] = useState(_lesson_sort_criterion.direction)
@@ -386,15 +385,34 @@ const LessonList = () => {
   const isLessonItemSelected = (lesson_id) => {
     const lesson_topics = lesson2info.hasOwnProperty(lesson_id) ? lesson2info[lesson_id]['topics'] : []
     for (let lesson_topic of lesson_topics) {
-      if (selectedTopicIds !== undefined & selectedTopicIds.includes(lesson_topic)) {
+      if (selectedTopicIds !== undefined && selectedTopicIds?.includes(lesson_topic)) {
         return true;
       }
     }
     return false;
   }
 
+  function calculateLowestScore(topics) {
+    if (topics.length === 0) {
+      return { score: 0, correct: 0, total: 0 }
+    }
+  
+    const { score, correct, total } = topics.reduce((lowest, topic) => {
+      const currentScore = topic.correct / topic.total;
+      if (currentScore < lowest.score) {
+        return { score: currentScore, correct: topic.correct, total: topic.total };
+      }
+      return lowest;
+    }, { score: topics[0].correct / topics[0].total, correct: topics[0].correct, total: topics[0].total });
+  
+    return { score, correct, total };
+  }
+
   function rowRenderer({ key, index, style }) {
     const lesson = lessons && lessons[index]
+    const lowestScore = calculateLowestScore(topics.filter(topic => topic.lessons.includes(lesson.ID)))
+    lesson.correct = lowestScore.correct
+    lesson.total = lowestScore.total
     return (
       <div
         key={key}
