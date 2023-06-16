@@ -14,8 +14,7 @@ export const closeBanner = message => ({ type: 'CLOSE_BANNER', message })
 const initialState = {
   pending: false,
   error: false,
-  banners: [],
-  lessons: []
+  banners: []
 }
 
 export default (state = initialState, action) => {

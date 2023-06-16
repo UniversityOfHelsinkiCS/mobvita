@@ -68,10 +68,7 @@ const LessonList = () => {
   })
 
   const [goStep, setGoStep] = useState(0);
-
-  const lesson2info = lessons.reduce((accumulator, value) => {
-    return {...accumulator, [value.ID]: value}
-  }, {})
+  const [lesson2info, setLesson2info] = useState({})
 
 
   const dispatch = useDispatch()
@@ -115,6 +112,10 @@ const LessonList = () => {
       dispatch(sidebarSetOpen(false))
       dispatch(startLessonsTour())
     }
+    if (lessons && lessons.length)
+      setLesson2info(lessons.reduce((accumulator, value) => {
+        return {...accumulator, [value.ID]: value}
+      }, {}))
   }, [])
 
 
