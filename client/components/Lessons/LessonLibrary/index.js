@@ -70,10 +70,13 @@ const LessonList = () => {
   const [goStep, setGoStep] = useState(0);
 
   let lesson2info = {}
-  for (let lesson of lessons) {
-    let { ID } = lesson;
-    if (!lesson2info.hasOwnProperty(ID)) {
-      lesson2info[ID] = lesson;
+  if (lessons != undefined){
+    for (let i = 0; i < lessons.length; i++) {
+      let lesson = lessons[i];
+      let { ID } = lesson;
+      if (!lesson2info.hasOwnProperty(ID)) {
+        lesson2info[ID] = lesson;
+      }
     }
   }
 
