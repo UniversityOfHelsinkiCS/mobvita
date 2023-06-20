@@ -316,7 +316,7 @@ const LessonList = () => {
               isScrolling={isScrolling}
               onScroll={onChildScroll}
               rowCount={lessons.length}
-              rowHeight={index => 135 + lessons[index.index].topics.length * 28}
+              rowHeight={index => 85 + lessons[index.index].topics.length * 28}
               rowRenderer={rowRenderer}
               scrollTop={scrollTop}
               width={10000}

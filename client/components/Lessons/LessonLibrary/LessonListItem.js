@@ -27,7 +27,7 @@ const get_lesson_performance_style = (correct_count, total_count) => {
   else return '#000000'
 }
 
-const LessonTitle = ({ lesson, toggleTopic, includeLesson, excludeLesson }) => {
+const LessonTitle = ({ lesson, selected, disabled, toggleTopic, includeLesson, excludeLesson }) => {
   const intl = useIntl()
   const learningLanguage = useSelector(learningLanguageSelector)
   const { topics } = useSelector(({ lessons }) => lessons)
@@ -124,16 +124,40 @@ const LessonTitle = ({ lesson, toggleTopic, includeLesson, excludeLesson }) => {
     <div>
       <span className="space-between" style={{ overflow: 'hidden', width: '100%' }}>
         <Icon color="grey" name="ellipsis vertical" className="lesson-item-dots" />
-        <h5
-          className="story-item-title"
-          style={{ marginBottom: '.5rem', width: '100%', ...getTextStyle(learningLanguage) }}
-        >
-          {`${lesson.name}`}
-          {/* {`${intl.formatMessage({ id: 'topic-singular' })} ${lesson.topic_id}`} */}
-          {/* <sup>
-                        <b style={{color:'red'}}>&beta;</b>
-                    </sup> */}
-        </h5>
+        <div style={{ marginBottom: '.5rem', marginRight: 'auto' }}>
+          <h5
+            className="story-item-title"
+            style={{ marginBottom: '.5rem', ...getTextStyle(learningLanguage) }}
+          >
+            {`${lesson.name}`}
+            {/* {`${intl.formatMessage({ id: 'topic-singular' })} ${lesson.topic_id}`} */}
+          </h5>
+        </div>
+        <Card.Content extra className="lesson-card-actions-cont">
+          <div className="lesson-actions">
+            <Button
+              className="choose-topic"
+              variant={selected ? 'primary' : 'outline-primary'}
+              onClick={() => {
+                if (selected) {
+                  excludeLesson(lesson.ID)
+                } else {
+                  includeLesson(lesson.ID)
+                }
+              }}
+              disabled={disabled}
+              style={{
+                cursor: !disabled
+                  ? 'pointer'
+                  : 'not-allowed'
+              }}
+            >
+              {selected &&
+                (<><Icon name="check" /><FormattedMessage id="included-in-lesson" /></>) ||
+                <FormattedMessage id="include-into-lesson" />}
+            </Button>
+          </div>
+        </Card.Content>
       </span>
       <span style={{ overflow: 'hidden', width: '100%' }}>{topic_rows}</span>
     </div>
@@ -154,35 +178,12 @@ const LessonListItem = ({ lesson, selected, toggleTopic, includeLesson, excludeL
       <Card.Content extra className="lesson-card-title-cont">
         <LessonTitle 
           lesson={lesson} 
+          selected={selected}
+          disabled={disabled}
           toggleTopic={toggleTopic}
           includeLesson={includeLesson}
           excludeLesson={excludeLesson}
         />
-      </Card.Content>
-      <Card.Content extra className="lesson-card-actions-cont">
-        <div className="lesson-actions">
-          <Button
-            className="choose-topic"
-            variant={selected ? 'primary' : 'outline-primary'}
-            onClick={() => {
-              if (selected) {
-                excludeLesson(lesson.ID)
-              } else {
-                includeLesson(lesson.ID)
-              }
-            }}
-            disabled={disabled}
-            style={{
-              cursor: !disabled
-                ? 'pointer'
-                : 'not-allowed'
-            }}
-          >
-            {selected &&
-              (<><Icon name="check" /><FormattedMessage id="included-in-lesson" /></>) ||
-              <FormattedMessage id="include-into-lesson" />}
-          </Button>
-        </div>
       </Card.Content>
     </Card>
   )
