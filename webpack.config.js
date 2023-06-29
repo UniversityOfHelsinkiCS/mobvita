@@ -96,6 +96,11 @@ module.exports = (env, argv) => {
           test: /\.(png|jpg|gif|svg|eot|ttf|woff|woff2|webp)$/,
           use: ['file-loader'],
         },
+        {
+          include: /node_modules/,
+          test: /\.mjs$/,
+          type: 'javascript/auto'
+        }
       ],
     },
     // optimization: {
