@@ -98,7 +98,7 @@ const LessonExerciseActions = ({ lessonId, exerciseCount }) => {
   const dispatch = useDispatch()
   const [ checkAnswersButtonTempDisable, setcheckAnswersButtonTempDisable ] = useState(false)
   const { lesson_exercises, session_id, starttime, focusing_snippets, previous_snippets, answersPending, pending } = useSelector(({ lessonExercises }) => lessonExercises)
-  const { currentAnswers, correctAnswerIDs, touchedIds, attempt, options, audio, audio_wids } = useSelector(
+  const { currentAnswers, correctAnswerIDs, touchedIds, attempt, options, audio, audio_wids, voice } = useSelector(
     ({ practice }) => practice
   )
 
@@ -141,6 +141,7 @@ const LessonExerciseActions = ({ lessonId, exerciseCount }) => {
       options,
       audio,
       audio_wids,
+      voice,
       answers: filteredCurrentAnswers,
       last_attempt: lastAttempt,
       timer_value: null,

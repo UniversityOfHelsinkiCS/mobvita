@@ -86,9 +86,8 @@ const PreviousExerciseWord = ({ word, answer, tiedAnswer }) => {
       {youAnsweredTooltip && (
         <div>
           {`${intl.formatMessage({ id: 'you-used' })}: `}
-          <span style={getTextStyle(learningLanguage, 'tooltip')}>
-            {youAnsweredTooltip.users_answer}
-          </span>
+          <span dangerouslySetInnerHTML={formatGreenFeedbackText(youAnsweredTooltip.users_answer)}  
+          style={getTextStyle(learningLanguage, 'tooltip')} />
         </div>
       )}
     </div>

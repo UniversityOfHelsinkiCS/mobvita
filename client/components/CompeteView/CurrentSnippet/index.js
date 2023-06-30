@@ -24,6 +24,7 @@ import {
   clearCurrentPractice,
   setTouchedIds,
   addToAudio,
+  addToVoice,
   setPreviousAnswers,
   addToOptions,
   startSnippet,
@@ -75,6 +76,7 @@ const CurrentSnippet = ({ storyId, handleInputChange, setYouWon, finished }) => 
           base,
           bases,
           listen,
+          speak,
           choices,
           concept,
           audio,
@@ -112,6 +114,24 @@ const CurrentSnippet = ({ storyId, handleInputChange, setYouWon, finished }) => 
         if (listen) {
           dispatch(
             addToAudio({
+              [`${ID}-${id}`]: {
+                context: audio,
+                audio_wids,
+                word_id: ID,
+                id,
+                story_id: storyId,
+                snippet_id,
+                sentence_id,
+                cue: word_cue,
+                requestedHintsList: requested_hints
+              },
+            })
+          )
+        }
+
+        if (speak) {
+          dispatch(
+            addToVoice({
               [`${ID}-${id}`]: {
                 context: audio,
                 audio_wids,

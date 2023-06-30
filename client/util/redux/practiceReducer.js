@@ -5,6 +5,7 @@ export const setTouchedIds = id => ({ type: 'SET_TOUCHED_IDS', id })
 export const incrementAttempts = () => ({ type: 'INCREMENT_ATTEMPTS' })
 export const addToOptions = options => ({ type: 'SET_OPTIONS', options })
 export const addToAudio = audio => ({ type: 'SET_AUDIO', audio })
+export const addToVoice = voice => ({ type: 'SET_VOICE', voice })
 export const clearPractice = () => ({ type: 'CLEAR_PRACTICE' })
 export const clearCurrentPractice = () => ({ type: 'CLEAR_CURRENT_PRACTICE' })
 export const clearCurrentAnswers = () => ({ type: 'CLEAR_CURRENT_ANSWERS' })
@@ -38,6 +39,7 @@ const initialState = {
   attempt: 0,
   options: {},
   audio: {},
+  voice: {},
   snippetFinished: false,
   references: null,
   explanation: null,
@@ -128,6 +130,11 @@ export default (state = initialState, action) => {
         ...state,
         audio: { ...state.audio, ...action.audio },
       }
+    case 'SET_VOICE':
+      return {
+        ...state,
+        voice: { ...state.voice, ...action.voice },
+      }
     case 'SET_SNIPPET_STARTED':
       return {
         ...state,
@@ -144,6 +151,7 @@ export default (state = initialState, action) => {
         attempt: initialState.attempt,
         options: initialState.options,
         audio: initialState.audio,
+        voice: initialState.voice,
         snippetFinished: initialState.snippetFinished,
         isNewSnippet: initialState.isNewSnippet,
         hintRequestsNum: {},

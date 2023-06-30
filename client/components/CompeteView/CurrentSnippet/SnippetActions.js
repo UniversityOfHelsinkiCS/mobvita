@@ -105,7 +105,7 @@ const SnippetActions = ({ storyId, exerciseCount, playerFinished }) => {
   const learningLanguage = useLearningLanguage()
   const [checkAnswersButtonTempDisable, setcheckAnswersButtonTempDisable] = useState(false)
   const { cachedSnippets } = useSelector(({ compete }) => compete)
-  const { currentAnswers, correctAnswerIDs, touchedIds, attempt, options, audio, audio_wids } = useSelector(
+  const { currentAnswers, correctAnswerIDs, touchedIds, attempt, options, audio, audio_wids, voice } = useSelector(
     ({ practice }) => practice
   )
   const { snippets } = useSelector(({ snippets }) => ({ snippets }))
@@ -163,6 +163,7 @@ const SnippetActions = ({ storyId, exerciseCount, playerFinished }) => {
       options,
       audio,
       audio_wids,
+      voice,
       answers: filteredCurrentAnswers,
       last_attempt: lastAttempt,
     }
