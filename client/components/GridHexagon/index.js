@@ -99,6 +99,22 @@ const HexagonTest = props => {
     return acc
   }, {})
 
+  const accumulatedTopics = props.exerciseHistory.reduce((acc, elem) => {
+    const topics = Object.entries(elem.topic_statistics)
+    for (const [topic, stats] of topics) {
+      if (!acc[String(topic)]) {
+        acc[String(topic)] = {
+          correct: 0,
+          total: 0,
+        }
+      }
+
+      acc[String(topic)].correct += stats.correct
+      acc[String(topic)].total += stats.total
+    }
+    return acc
+  }, {})
+
   const getBiggestHistoryTotal = () => {
     let biggestValue = 0
     if(typeof no_outliner_max == 'number'){
@@ -149,7 +165,7 @@ const HexagonTest = props => {
                   <ConstructionHexagon
                     name={hex.topic}
                     position={hex.hex_coords}
-                    statistics={accumulatedConcepts[hex.topic_id]}
+                    statistics={accumulatedTopics[hex.topic_id]}
                     overallTotal={getBiggestHistoryTotal()}
                     general={hex.hexmap_general}
                     // position={positionOffset(hex.coords)}
