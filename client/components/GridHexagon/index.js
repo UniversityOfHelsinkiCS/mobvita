@@ -22,8 +22,8 @@ const ConstructionHexagon = ({ name, position, statistics, overallTotal, general
     )
   }
 
-  let stat_total = statistics != undefined ? stat_total : 0
-  let stat_correct = statistics != undefined ? stat_correct : 0
+  let stat_total = statistics != undefined ? statistics.total : 0
+  let stat_correct = statistics != undefined ? statistics.correct : 0
 
   let size_stat_total =stat_total
   if (size_stat_total > overallTotal){
