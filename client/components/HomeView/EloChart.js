@@ -20,8 +20,8 @@ const EloChart = ({ width }) => {
     dispatch(getPracticeHistory(start_query_date, date_now))
   }, [])
 
-  const exerciseHistory = practiceHistory.exerciseHistory
-  const eloHistory = practiceHistory.exerciseHistory.map(exercise => exercise.score)
+  const irtExerciseHistory = practiceHistory.irtExerciseHistory
+  const scoreHistory = practiceHistory.irtExerciseHistory.map(exercise => exercise.score)
   const weeklyPracticeTimeHistory = useSelector(({ user }) => user.data.user.weekly_times)
   const intl = useIntl()
   const history = useHistory()
@@ -31,8 +31,8 @@ const EloChart = ({ width }) => {
   const filteredHistory = []
   const weeks = weeklyPracticeTimeHistory.map(element => element.week).reverse()
 
-  if (eloHistory.lenght > 0) {
-    exerciseHistory.forEach(e => {
+  if (scoreHistory.length > 0) {
+    irtExerciseHistory.forEach(e => {
       const date = new Date(e.date)
       const week = moment(new Date(date)).week()
       const weekday = moment(new Date(date)).isoWeekday()
@@ -42,9 +42,9 @@ const EloChart = ({ width }) => {
       }
     })
   }
-  let eloResults = []
-  if (exerciseHistory.lenght > 0) {
-    eloResults = exerciseHistory && exerciseHistory.map(e => [moment(e.date).valueOf(), e.score])
+  let scoreResults = []
+  if (irtExerciseHistory.lenght > 0) {
+    scoreResults = irtExerciseHistory && irtExerciseHistory.map(e => [moment(e.date).valueOf(), e.score])
   }
   let flashcardEloResults = []
   if (flashcardHistory.lenght > 0) {
@@ -52,8 +52,8 @@ const EloChart = ({ width }) => {
       flashcardHistory && flashcardHistory.map(e => [moment(e.date).valueOf(), e.score])
   }
   // Extend the curve to current day
-  if (eloResults && eloResults[0]) {
-    eloResults.push([moment().valueOf(), eloResults[eloResults.length - 1][1]])
+  if (scoreResults && scoreResults[0]) {
+    scoreResults.push([moment().valueOf(), scoreResults[scoreResults.length - 1][1]])
   }
 
   if (flashcardEloResults && flashcardEloResults[0]) {
@@ -70,7 +70,7 @@ const EloChart = ({ width }) => {
     data: weeklyPracticeTimeHistory.map(element => [element.week, element.practice_time]).reverse(),
   }
 
-  const series = [practicetimes, { data: eloResults }]
+  const series = [practicetimes, { data: scoreResults }]
   if (hiddenFeatures) series.push({ data: flashcardEloResults, color: '#dc3545' })
 
   const options = {
@@ -133,8 +133,8 @@ const EloChart = ({ width }) => {
     },
   }
 
-  const showStoryElo = exerciseHistory && exerciseHistory.length > 0
-  const showFlashcardElo = hiddenFeatures && flashcardHistory?.length > 0
+  const showStoryScore = irtExerciseHistory && irtExerciseHistory.length > 0
+  const showFlashcardScore = hiddenFeatures && flashcardHistory?.length > 0
 
   return (
     <div
@@ -159,13 +159,13 @@ const EloChart = ({ width }) => {
           {daysStreaked}
         </span>
 
-        {showStoryElo && (
+        {showStoryScore && (
           <span>
             <Icon name="star outline" style={{ margin: 0 }} />{' '}
-            {exerciseHistory[exerciseHistory.length - 1].score}
+            {irtExerciseHistory[irtExerciseHistory.length - 1].score}
           </span>
         )}
-        {showFlashcardElo && (
+        {showFlashcardScore && (
           <span>
             <img
               src={images.flashcardIcon}

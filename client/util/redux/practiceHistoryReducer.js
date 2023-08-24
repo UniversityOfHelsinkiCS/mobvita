@@ -31,7 +31,7 @@ export default (state = initialState, action) => {
       return {
         ...state,
         eloExerciseHistory: action.response.elo_exercise_history,
-        exerciseHistory: action.response.exercise_history,
+        irtExerciseHistory: action.response.irt_exercise_history,
         flashcardHistory: action.response.flashcard_history,
         testHistory: action.response.test_history,
         xpHistory: action.response.xp_history,

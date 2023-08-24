@@ -83,7 +83,7 @@ export default function NavBar() {
   const hasChosenLearningLanguage = user?.user?.last_used_language !== null
 
   const practiceHistory = useSelector(state => state.practiceHistory)
-  const { flashcardHistory, exerciseHistory } = practiceHistory
+  const { flashcardHistory, irtExerciseHistory, eloExerciseHistory } = practiceHistory
 
   const signOut = () => {
     dispatch(logout())
@@ -170,8 +170,8 @@ export default function NavBar() {
   useEffect(() => {
     if (!userPending && irt_dummy_score == undefined) {
       const irtScore =
-        exerciseHistory && exerciseHistory.length > 0
-          ? exerciseHistory[exerciseHistory.length - 1].score
+        irtExerciseHistory && irtExerciseHistory.length > 0
+          ? irtExerciseHistory[irtExerciseHistory.length - 1].score
           : undefined
       dispatch(setIrtDummyScore(irtScore))
     }
@@ -187,9 +187,14 @@ export default function NavBar() {
     dispatch(getPracticeHistory(start_query_date, date_now))
   }, [])
 
-  const storyElo =
-    exerciseHistory && exerciseHistory.length > 0
-      ? exerciseHistory[exerciseHistory.length - 1].score
+  const irt_score =
+    irtExerciseHistory && irtExerciseHistory.length > 0
+      ? irtExerciseHistory[irtExerciseHistory.length - 1].score
+      : 0
+
+  const elo_score =
+    eloExerciseHistory && eloExerciseHistory.length > 0
+      ? eloExerciseHistory[eloExerciseHistory.length - 1].score
       : 0
 
   const flashcardElo =
@@ -201,7 +206,7 @@ export default function NavBar() {
     if (storyLanguage == undefined) {
       return <div />
     }
-    let ability_score = storyElo
+    let ability_score = elo_score
     let grammar_score_type = 'elo'
     if (irt_support_languages.includes(storyLanguage)) {
       ability_score = irtCalculationPending

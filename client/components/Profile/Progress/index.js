@@ -49,7 +49,7 @@ const Progress = () => {
   const [graphType, setGraphType] = useState('column mastered')
   const [initComplete, setInitComplete] = useState(false)
   const { enable_recmd } = useSelector(({ user }) => user.data.user)
-  const { exerciseHistory: irtExerciseHistory } = useSelector(
+  const { irtExerciseHistory: irtExerciseHistory } = useSelector(
     ({ practiceHistory }) => practiceHistory
   )
   const { flashcardHistory, xpHistory, practiceTimeHistory, pending } = useSelector(({ practiceHistory }) => {

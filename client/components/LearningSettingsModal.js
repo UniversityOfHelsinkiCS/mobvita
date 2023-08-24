@@ -30,7 +30,6 @@ const LearningSettingsModal = ({ trigger }) => {
     last_selected_group: currentGroupId,
   } = useSelector(({ user }) => user.data.user)
 
-  // const latestStoryElo = exerciseHistory[exerciseHistory.length - 1]?.score
   const currentGroup = groups.find(group => group.group_id === currentGroupId)
   const learningLanguage = useSelector(learningLanguageSelector)
   const [open, setOpen] = useState(false)
