@@ -86,7 +86,7 @@ const SnippetActions = ({ storyId, exerciseCount, isControlledStory, exerciseMod
   const { id } = useParams()
 
   const { snippets } = useSelector(({ snippets }) => ({ snippets }))
-  const { currentAnswers, correctAnswerIDs, touchedIds, attempt, options, audio, audio_wids } = useSelector(
+  const { currentAnswers, correctAnswerIDs, touchedIds, attempt, options, audio, audio_wids, voice } = useSelector(
     ({ practice }) => practice
   )
   const { irt_dummy_score } = useSelector(({ user }) => user)
@@ -140,6 +140,7 @@ const SnippetActions = ({ storyId, exerciseCount, isControlledStory, exerciseMod
       options,
       audio,
       audio_wids,
+      voice,
       answers: filteredCurrentAnswers,
       last_attempt: lastAttempt,
       timer_value: isControlledStory ? formattedTimerValue : null,

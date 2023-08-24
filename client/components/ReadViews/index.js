@@ -231,6 +231,12 @@ const ReadViews = ({ match }) => {
               to={`/stories/${id}/listening/practice/`}
               icon="headphones"
             />
+            {hiddenFeatures && <Dropdown.Item
+              text={<FormattedMessage id="practice-speech-mode" />}
+              as={Link}
+              to={`/stories/${id}/speech/practice/`}
+              icon="microphone"
+            />}
             <Dropdown.Item
               text={<FormattedMessage id="practice-all-mode" />}
               as={Link}

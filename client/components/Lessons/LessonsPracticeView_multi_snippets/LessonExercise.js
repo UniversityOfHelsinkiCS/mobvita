@@ -10,6 +10,7 @@ import {
   clearCurrentAnswers,
   addToOptions,
   addToAudio,
+  addToVoice,
   setTouchedIds
 } from 'Utilities/redux/practiceReducer'
 import { getTextStyle, learningLanguageSelector } from 'Utilities/common'
@@ -64,6 +65,7 @@ const LessonExercise = ({ lesson_instance, handleInputChange }) => {
           base,
           bases,
           listen,
+          speak,
           choices,
           concept,
           audio,
@@ -100,6 +102,23 @@ const LessonExercise = ({ lesson_instance, handleInputChange }) => {
         if (listen) {
           dispatch(
             addToAudio({
+              [`${ID}-${id}`]: {
+                context: audio,
+                audio_wids,
+                snippet_id,
+                sentence_id,
+                id,
+                word_id: ID,
+                story_id,
+                cue: word_cue
+              },
+            })
+          )
+        }
+
+        if (speak) {
+          dispatch(
+            addToVoice({
               [`${ID}-${id}`]: {
                 context: audio,
                 audio_wids,

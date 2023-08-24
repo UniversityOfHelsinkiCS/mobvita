@@ -72,7 +72,7 @@ const WrongAnswer = ({ word }) => {
       {answer && (
         <div>
           {`${intl.formatMessage({ id: 'you-used' })}: `}
-          <span style={getTextStyle(learningLanguage, 'tooltip')}>{answer.users_answer}</span>
+          <span dangerouslySetInnerHTML={formatGreenFeedbackText(answer.users_answer)} style={getTextStyle(learningLanguage, 'tooltip')}/>
         </div>
       )}
     </div>

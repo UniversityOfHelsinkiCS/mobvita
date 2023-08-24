@@ -4,6 +4,7 @@ import { useSelector } from 'react-redux'
 import ExerciseCloze from './ExerciseCloze'
 import ExerciseMultipleChoice from './ExerciseMultipleChoice'
 import ExerciseHearing from './ExerciseHearing'
+import ExerciseSpeaking from './ExerciseSpeaking'
 import RightAnswer from './RightAsnwer'
 import WrongAnswer from './WrongAnswer'
 
@@ -20,6 +21,16 @@ const ExerciseWord = ({ word, handleAnswerChange, handleMultiselectChange, hideD
   if (word.listen) {
     return (
       <ExerciseHearing
+        tabIndex={word.ID}
+        handleChange={handleAnswerChange}
+        key={word.ID}
+        word={word}
+      />
+    )
+  }
+  if (word.speak) {
+    return (
+      <ExerciseSpeaking
         tabIndex={word.ID}
         handleChange={handleAnswerChange}
         key={word.ID}

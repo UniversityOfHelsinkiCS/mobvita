@@ -23,6 +23,7 @@ import {
   clearCurrentPractice,
   setTouchedIds,
   addToAudio,
+  addToVoice,
   setPreviousAnswers,
   addToOptions,
   startSnippet,
@@ -71,6 +72,8 @@ const CurrentSnippet = ({
     ? 'listening'
     : history.location.pathname.includes('grammar')
     ? 'grammar'
+    : history.location.pathname.includes('speech')
+    ? 'speech'
     : 'all'
   const sessionId = snippets?.sessionId ?? null
   if (!userData) {
@@ -104,6 +107,7 @@ const CurrentSnippet = ({
           base,
           bases,
           listen,
+          speak,
           choices,
           concept,
           audio,
@@ -114,7 +118,7 @@ const CurrentSnippet = ({
         } = currentWord
 
         let usersAnswer
-        if (listen || choices) {
+        if (listen || choices || speak) {
           usersAnswer = ''
         } else {
           usersAnswer = base || bases
@@ -155,6 +159,25 @@ const CurrentSnippet = ({
             })
           )
         }
+
+        if (speak) {
+          dispatch(
+            addToVoice({
+              [`${ID}-${id}`]: {
+                context: audio,
+                audio_wids,
+                snippet_id,
+                sentence_id,
+                id,
+                word_id: ID,
+                story_id: storyId,
+                cue: word_cue,
+                requestedHintsList: requested_hints,
+              },
+            })
+          )
+        }
+
 
         return {
           ...answerObject,
