@@ -2,7 +2,8 @@ import callBuilder from 'Utilities/apiConnection'
 import moment from 'moment'
 
 const initialState = {
-  exerciseHistory: [],
+  irtExerciseHistory: [],
+  eloExerciseHistory: [],
   flashcardHistory: [],
   testHistory: [],
   xpHistory: [],
