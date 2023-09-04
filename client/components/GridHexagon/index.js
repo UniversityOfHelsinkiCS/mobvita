@@ -32,10 +32,10 @@ const ConstructionHexagon = ({ name, position, statistics, overallTotal, general
   const size = Math.floor((size_stat_total / overallTotal) * 10) + 5
 
   let colorClass = `scoreNone`
+  let percentageCorrect = 0.0
   if (stat_total > 0){
-    const percentageCorrect = Math.round((stat_correct / stat_total) * 100)
-    const score = parseInt(percentageCorrect)
-    colorClass = `score${score}`
+    percentageCorrect = Math.round((stat_correct / stat_total) * 100)
+    colorClass = `score${parseInt(percentageCorrect)}`
   }
 
   const hexagonTooltip = (
