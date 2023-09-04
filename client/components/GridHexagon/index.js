@@ -25,14 +25,18 @@ const ConstructionHexagon = ({ name, position, statistics, overallTotal, general
   let stat_total = statistics != undefined ? statistics.total : 0
   let stat_correct = statistics != undefined ? statistics.correct : 0
 
-  let size_stat_total =stat_total
+  let size_stat_total = stat_total
   if (size_stat_total > overallTotal){
     size_stat_total = overallTotal
   }
-  const size = Math.floor((size_stat_total / overallTotal) * 10) + 5  
-  const percentageCorrect = Math.round((stat_correct / stat_total) * 100)
-  const score = parseInt(percentageCorrect)
-  const colorClass = `score${score}`
+  const size = Math.floor((size_stat_total / overallTotal) * 10) + 5
+
+  let colorClass = `scoreNone`
+  if (stat_total > 0){
+    const percentageCorrect = Math.round((stat_correct / stat_total) * 100)
+    const score = parseInt(percentageCorrect)
+    colorClass = `score${score}`
+  }
 
   const hexagonTooltip = (
     <span>
@@ -109,11 +113,15 @@ const HexagonTest = props => {
         }
       }
 
+      // acc[String(topic)].correct += stats.correct + 1
       acc[String(topic)].correct += stats.correct
       acc[String(topic)].total += stats.total
     }
     return acc
   }, {})
+
+  // console.log("props.exerciseHistory", props.exerciseHistory)
+  // console.log("accumulatedTopics", accumulatedTopics)
 
   const getBiggestHistoryTotal = () => {
     let biggestValue = 0

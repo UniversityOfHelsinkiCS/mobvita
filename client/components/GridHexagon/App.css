@@ -57,6 +57,7 @@ text.hexagon-root {
   fill: rgb(42, 42, 42);
 }
 
+g.scoreNone g { fill: white }
 g.score0 g { fill: #fc6c85 }
 g.score1 g { fill: #fb6e86 }
 g.score2 g { fill: #fb7188 }
