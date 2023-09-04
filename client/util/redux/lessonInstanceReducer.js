@@ -27,6 +27,14 @@ const initialState = {
 export default (state = initialState, action) => {
   switch (action.type) {
 
+    case 'SET_LESSON_SELECTED_TOPICS':
+      let newLesson = JSON.parse(JSON.stringify(state.lesson));
+      newLesson.topic_ids = action.topic_ids
+      return {
+        ...state,
+        lesson: newLesson,
+      }
+
     case 'CLEAR_LESSON_INSTANCE_STATE':
       return initialState
       

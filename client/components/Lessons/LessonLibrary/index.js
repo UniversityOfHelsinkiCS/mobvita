@@ -125,6 +125,15 @@ const LessonList = () => {
     }
   }, [vocab_diff])
 
+  const finnishSelectingTopics = () => {
+    const payload = { topic_ids: selectedTopicIds }
+    if (libraries.group) payload.group_id = savedGroupSelection
+    dispatch(setLessonInstance(payload))
+  }
+
+  const excludeAllTopics = () => {
+    dispatch({ type: 'SET_LESSON_SELECTED_TOPICS', topic_ids: [] })
+  }
 
   const toggleTopic = topicId => {
     let newTopics
@@ -133,9 +142,12 @@ const LessonList = () => {
     } else {
       newTopics = [...selectedTopicIds, topicId]
     }
-    const payload = { topic_ids: newTopics }
-    if (libraries.group) payload.group_id = savedGroupSelection
-    dispatch(setLessonInstance(payload))
+
+    dispatch({ type: 'SET_LESSON_SELECTED_TOPICS', topic_ids: newTopics })
+
+    // const payload = { topic_ids: newTopics }
+    // if (libraries.group) payload.group_id = savedGroupSelection
+    // dispatch(setLessonInstance(payload))
   }
 
   const includeLesson = LessonId => {
@@ -146,17 +158,23 @@ const LessonList = () => {
         newTopics = [...newTopics, lesson_topic]
       }
     }
-    const payload = { topic_ids: newTopics }
-    if (libraries.group) payload.group_id = savedGroupSelection
-    dispatch(setLessonInstance(payload))
+
+    dispatch({ type: 'SET_LESSON_SELECTED_TOPICS', topic_ids: newTopics })
+
+    // const payload = { topic_ids: newTopics }
+    // if (libraries.group) payload.group_id = savedGroupSelection
+    // dispatch(setLessonInstance(payload))
   }
 
   const excludeLesson = LessonId => {
     let lessonTopics = lesson_topics.filter(lesson => lesson.lessons.includes(LessonId)).map(topic => topic.topic_id);
     let newTopics = selectedTopicIds.filter(id => !lessonTopics.includes(id))
-    const payload = { topic_ids: newTopics }
-    if (libraries.group) payload.group_id = savedGroupSelection
-    dispatch(setLessonInstance(payload))
+
+    dispatch({ type: 'SET_LESSON_SELECTED_TOPICS', topic_ids: newTopics })
+
+    // const payload = { topic_ids: newTopics }
+    // if (libraries.group) payload.group_id = savedGroupSelection
+    // dispatch(setLessonInstance(payload))
   }
 
   const toggleSemantic = semantic => {
@@ -287,7 +305,7 @@ const LessonList = () => {
             cursor: lessonPending || !(libraries.private || currentGroup && currentGroup.is_teaching)
               ? 'not-allowed' : 'pointer'
           }}
-          onClick={() => dispatch(setLessonInstance({ topic_ids: [], group_id: libraries.group && savedGroupSelection || null }))}>
+          onClick={() => excludeAllTopics()}>
           <Icon name="trash alternate" />
           <FormattedMessage id="exclude-all-topics" />
         </Button>
@@ -302,7 +320,10 @@ const LessonList = () => {
             float: 'right', cursor: lessonPending || !(libraries.private || currentGroup && currentGroup.is_teaching)
               ? 'not-allowed' : 'pointer'
           }}
-          onClick={() => setGoStep(3)}>
+          onClick={() => {
+            finnishSelectingTopics()
+            setGoStep(3)
+          }}>
           <FormattedMessage id="next-step" />
         </Button>
       </div>
@@ -409,7 +430,7 @@ const LessonList = () => {
 
   function rowRenderer({ key, index, style }) {
     const lesson = lessons && lessons[index]
-    const lowestScore = calculateLowestScore(topics.filter(topic => topic.lessons.includes(lesson.ID)))
+    const lowestScore = calculateLowestScore(topics.filter(topic => topic.lessons &&  topic.lessons.includes(lesson.ID)))
     lesson.correct = lowestScore.correct
     lesson.total = lowestScore.total
     return (
@@ -472,25 +493,45 @@ const LessonList = () => {
                 label={<FormattedMessage id="select-lesson-themes" />}
                 active={goStep == 0}
                 completed={goStep > 0}
-                onClick={() => setGoStep(0)}
+                onClick={() => {
+                  if (goStep == 2){
+                    finnishSelectingTopics()
+                  }
+                  setGoStep(0)
+                }}
               />
               <Step
                 label={<FormattedMessage id="select-lesson-vocab" />}
                 active={goStep == 1}
                 completed={goStep > 1}
-                onClick={() => setGoStep(1)}
+                onClick={() => {
+                  if (goStep == 2){
+                    finnishSelectingTopics()
+                  }
+                  setGoStep(1)
+                }}
               />
               <Step
                 label={<FormattedMessage id="select-lesson-grammar" />}
                 active={goStep == 2}
                 completed={goStep > 2}
-                onClick={() => setGoStep(2)}
+                onClick={() => {
+                  if (goStep == 2){
+                    finnishSelectingTopics()
+                  }
+                  setGoStep(2)
+                }}
               />
               <Step
                 label={<FormattedMessage id="start-lesson-practice" />}
                 active={goStep == 3}
                 completed={goStep > 3}
-                onClick={() => setGoStep(3)}
+                onClick={() => {
+                  if (goStep == 2){
+                    finnishSelectingTopics()
+                  }
+                  setGoStep(3)
+                }}
               />
             </Stepper>
 
