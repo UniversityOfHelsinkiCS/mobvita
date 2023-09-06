@@ -148,26 +148,22 @@ jobs:
     name: "Sentry"
     needs: build
     runs-on: ubuntu-latest
-    env:
-      SENTRY_PROJECT: mobvita
-      SENTRY_ORG: toska
-      SENTRY_AUTH_TOKEN: ${{ secrets.SENTRY_AUTH_TOKEN }}
-      SENTRY_URL: ${{ secrets.SENTRY_URL }}
-
     steps:
       - name: Checkout
         uses: actions/checkout@v3
-      - uses: actions/setup-node@v3
+      - name: Pull image and create a container
+        run: docker create --name mobvita toska/mobvita:staging
+      - name: Copy assets from the container
+        run: docker cp mobvita:usr/src/app/dist ./app
+      - name: Create Sentry release
+        uses: getsentry/action-release@v1
+        env:
+          SENTRY_URL: https://toska.cs.helsinki.fi/
+          SENTRY_AUTH_TOKEN: ${{ secrets.SENTRY_AUTH_TOKEN }}
+          SENTRY_ORG: toska
+          SENTRY_PROJECT: mobvita
         with:
-          node-version: 16
-      - name: npm ci
-        run: npm ci
-
-      - name: npm run build
-        run: npm run build
-      
-      - name: Make Sentry release
-        run: npm run sentry-cli -- releases new --finalize mobvita@$GITHUB_SHA
-
-      - name: Upload sourcemaps
-        run: npm run sentry-cli -- releases files mobvita@$GITHUB_SHA upload-sourcemaps  --rewrite ./dist/main.js.map
+          environment: staging
+          set_commits: 'skip'
+          sourcemaps: ./app
+          url_prefix: '~/app'
