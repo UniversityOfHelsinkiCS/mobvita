@@ -46,7 +46,8 @@ const LessonTitle = ({ lesson, selected, disabled, toggleTopic, includeLesson, e
   for (let k = 0; k < lesson_topics.length; k++) {
     const color = {
       color: get_lesson_performance_style(
-        topic2info[lesson_topics[k]].correct, topic2info[lesson_topics[k]].total)
+        topic2info[lesson_topics[k]] != undefined ? topic2info[lesson_topics[k]].correct : 0, 
+        topic2info[lesson_topics[k]] != undefined ? topic2info[lesson_topics[k]].total : 0)
     }
     topic_rows.push(
       <h6
