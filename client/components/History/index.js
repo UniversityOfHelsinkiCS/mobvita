@@ -153,7 +153,7 @@ const StoryNameRow = ({ history }) => {
 }
 
 const convertToCefr = value => {
-  if (value <= 0 && value < 11) {
+  if (value >= 0 && value < 11) {
     return skillLevels[value]
   }
   return '-'
