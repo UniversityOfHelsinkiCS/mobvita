@@ -126,7 +126,7 @@ const LessonList = () => {
   }, [vocab_diff])
 
   useEffect(() => {
-    if (!lessonPending && num_visited_exercises) {
+    if (!lessonPending && num_visited_exercises && selectedTopicIds.length && selectedSemantics.length) {
       setGoStep(3)
     }
   }, [num_visited_exercises])
