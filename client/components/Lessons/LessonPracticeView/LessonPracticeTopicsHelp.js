@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import useWindowDimensions from 'Utilities/windowDimensions'
-import { Segment } from 'semantic-ui-react'
+import { Segment, Icon } from 'semantic-ui-react'
 import { useSelector, useDispatch } from 'react-redux'
 import { FormattedMessage, useIntl } from 'react-intl'
 import { getTextStyle, learningLanguageSelector, getMode } from 'Utilities/common'
@@ -14,9 +14,15 @@ const LessonPracticeTopicsHelp = ({selectedTopics, always_show=false, }) => {
     const snippets = useSelector(({ snippets }) => snippets)
     const topics = lessonTopics && selectedTopics ? lessonTopics.filter(l => selectedTopics.includes(l.topic_id)) : []
     
+    const [collapsed, setCollapsed] = useState(!always_show)
+
     useEffect(() => {
         dispatch(getLessonTopics())
-      }, [snippets.focused])
+    }, [snippets.focused])
+
+    const toggleCollapse = () => {
+        setCollapsed(!collapsed)
+    }
 
     const get_lesson_performance = (correct_count, total_count) => {
         let correct_perc = 0.0
@@ -34,7 +40,6 @@ const LessonPracticeTopicsHelp = ({selectedTopics, always_show=false, }) => {
         if (correct_perc < 0.25) return { 'color': 'red' }
         return { 'color': 'black' }
     }
-
     
     let topic_rows = []
     for (let i = 0; i < topics.length; i++) {
@@ -104,17 +109,28 @@ const LessonPracticeTopicsHelp = ({selectedTopics, always_show=false, }) => {
                             'font-weight': 'bold',
                             'font-size': 'large',
                             'margin-bottom': '15px',
+                            display: 'flex',
+                            justifyContent: 'space-between',
+                            alignItems: 'center',
                         }}
                     >
                         <FormattedMessage id={'topics'} />
+                        <Icon
+                            name={collapsed ? 'chevron down' : 'chevron up'}
+                            onClick={toggleCollapse}
+                            style={{ cursor: 'pointer' }}
+                        />
                     </div>
-                    <span style={{ overflow: 'hidden', width: '100%' }}>
-                        {topic_rows}
-                    </span>
+                    
+                    {!collapsed && (
+                        <span style={{ overflow: 'auto', width: '100%' }}>
+                            {topic_rows}
+                        </span>
+                    )}
                 </Segment>
             </div>
         )
-    }
+    } 
 
     return null
 }

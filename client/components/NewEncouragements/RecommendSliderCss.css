@@ -1,0 +1,79 @@
+.slider {
+    /* display: flex; */
+    align-items: center; 
+}
+
+.slider-content {
+    display: flex;
+    align-items: center; 
+}
+  
+.slide-container {
+    flex-grow: 1; 
+    margin: 0 10px; 
+}
+  
+.left-arrow {
+    background: linear-gradient(to right, transparent 0%, transparent 50%, white 50%, white 100%);
+    border: none;
+    outline: none;
+    cursor: pointer;
+    padding: 10px 10px; 
+    margin-right: 10px;
+    transition: background 0.3s; 
+    color: black;
+}
+  
+.left-arrow:hover {
+    background: transparent;
+}
+  
+.right-arrow {
+    background: linear-gradient(to left, transparent 0%, transparent 50%, white 50%, white 100%);
+    border: none;
+    outline: none;
+    cursor: pointer;
+    padding: 10px 10px;
+    margin-left: 10px;
+    transition: background 0.3s; 
+    color: black;
+}
+  
+.right-arrow:hover {
+    background: transparent;
+}
+  
+.slide {
+    opacity: 0;
+    transition-duration: 1s ease;
+}
+  
+.slide.active {
+    opacity: 1;
+    transition-duration: 1s;
+    transform: scale(1.08);
+}
+
+.pagination {
+    display: flex;
+    justify-content: center;
+    margin-top: 10px;
+}
+
+/* Pagination Dot */
+.dot {
+    width: 10px; 
+    height: 10px; 
+    background-color: #ccc; 
+    border-radius: 50%; 
+    display: inline-block;
+    margin: 0 5px; 
+    cursor: pointer;
+    transition: background-color 0.3s ease; 
+}
+  
+  /* Active Dot */
+.dot.active {
+    background-color: #555; 
+}
+  

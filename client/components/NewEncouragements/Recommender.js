@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useRef } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import useWindowDimensions from 'Utilities/windowDimensions'
 import Draggable from 'react-draggable'
@@ -37,6 +37,7 @@ import NewWordsInteractedExerciseEncouragement from './SubComponents/PracticeVie
 import BackToLibraryFromFlashcards from './SubComponents/FlashcardView/BackToLibraryFromFlashcards'
 import TryAnotherBatch from './SubComponents/FlashcardView/TryAnotherBatch'
 import FlashcardsProgress from './SubComponents/FlashcardView/FlashcardsProgress'
+import RecommendSlider from './RecommendSlider'
 
 const Recommender = () => {
   const userData = useSelector(state => state.user.data.user)
@@ -47,9 +48,12 @@ const Recommender = () => {
   )
   const { open, fcOpen } = useSelector(({ encouragement }) => encouragement)
   const dictionaryLanguage = useSelector(dictionaryLanguageSelector)
-  const { loading } = useSelector(({ incomplete }) => ({
+  const { loading, incomplete: incompleteStories } = useSelector(({ incomplete }) => ({
     loading: incomplete.pending,
+    incomplete: incomplete.data,
   }))
+  const { newVocabulary } = useSelector(({ newVocabulary }) => newVocabulary)
+  const { user_rank } = useSelector(({ leaderboard }) => leaderboard.data)
   const [dailyStoriesDraggableIsOpen, setDailyStoriesDraggableIsOpen] = useState(false)
   const bigScreen = useWindowDimensions().width > 700
   const dispatch = useDispatch()
@@ -104,6 +108,31 @@ const Recommender = () => {
     dispatch(closeFCEncouragement())
   }
 
+  const welcomeback_encourage = history.location.pathname.includes('/welcome') ? <WelcomeBackEncouragement /> : undefined;
+
+  const leader_board_encourage = user_rank & user_rank <= 10 ? <LeaderboardEncouragement /> : undefined;
+
+  const daily_stories_encourage = cachedStories?.length > 0 || showAllEncouragements ? 
+    <DailyStoriesEncouragement handleDailyStoriesClick={handleDailyStoriesClick} /> : undefined;
+
+  const latest_incomplete_story = incompleteStories & incompleteStories?.filter(
+    story => story.last_snippet_id !== story.num_snippets - 1
+  ).length > 0 ? <LatestIncompleteStory /> : undefined;
+
+  const words_seen_encourage = userData.vocabulary_seen > 0 ? <WordsSeenEncouragement /> : undefined;
+
+  const new_words_interacted_exercise_encourage = newVocabulary > 0 ? <NewWordsInteractedExerciseEncouragement /> : undefined;
+
+  const prev_stories_blue_cards_encourage = storyBlueCards & storyBlueCards?.find(
+    story => story.story_id !== storyId && story.num_of_rewardable_words >= 5
+  ) ? <PreviousStoriesBlueFlashcards /> : undefined;
+
+  const confirm_blue_card_encourage = storyBlueCards & storyBlueCards?.length > 0 ? <ConfirmBlueCardsEncouragement /> : undefined; 
+
+  const list_of_recent_stories_flashcards_encourage = incompleteStories & incompleteStories?.filter(
+    story => story.last_snippet_id !== story.num_snippets - 1
+  ).length > 0 ? <ListOfRecentStoriesFlashcardsEncouragement /> : undefined;
+
   return (
     <>
       {loading ? null : showAllEncouragements && open ? (
@@ -125,7 +154,33 @@ const Recommender = () => {
                     onClick={handleCloseClick}
                   />
                 </div>
-                <WelcomeBackEncouragement />
+
+                <RecommendSlider slides={[
+                  welcomeback_encourage,
+                  <StreakEncouragement />,
+                  <LeaderboardEncouragement />,
+                  daily_stories_encourage,
+                  latest_incomplete_story,
+                  confirm_blue_card_encourage,
+                  <UnseenStoriesInGroup />,
+                  <SharedIncompleteStoryInGroup />,
+                  <ReviewStoriesEncouragement />,
+                  leader_board_encourage,
+                  <StoryCompletedToBluecardsExerciseEncouragement />,
+                  latest_incomplete_story,
+                  words_seen_encourage,
+                  new_words_interacted_exercise_encourage,
+                  <GrammarReviewExerciseEncouragement />,
+                  prev_stories_blue_cards_encourage,
+                  <FlashcardsProgress />,
+                  <TryAnotherBatch handleNewDeck={handleNewDeck} />,
+                  list_of_recent_stories_flashcards_encourage,
+                  <BackToLibraryFromFlashcards />,
+                  <GoodJobEncouragement />,
+                  <RedirectHomeEncouragement />
+                ]} />
+
+                {/* <WelcomeBackEncouragement />
                 <div className="interactable" style={{ overflow: 'auto', maxHeight: 300 }}>
                   <StreakEncouragement />
                   <LeaderboardEncouragement />
@@ -154,7 +209,7 @@ const Recommender = () => {
                   <GoodJobEncouragement />
                   <RedirectHomeEncouragement />
                   <p>end of lesson</p>
-                </div>
+                </div> */}
               </div>
             </div>
           </Draggable>
@@ -179,20 +234,19 @@ const Recommender = () => {
                     onClick={handleCloseClick}
                   />
                 </div>
-                <div className="col-flex">
-                  <div className="interactable" style={{ overflow: 'auto', maxHeight: 300 }}>
-                    <WelcomeBackEncouragement />
-                    <StreakEncouragement />
-                    <LeaderboardEncouragement />
-                    <DailyStoriesEncouragement handleDailyStoriesClick={handleDailyStoriesClick} />
-                    <LatestIncompleteStory />
-                    <ConfirmBlueCardsEncouragement />
-                    <UnseenStoriesInGroup />
-                    <SharedIncompleteStoryInGroup />
-                    <ReviewStoriesEncouragement />
-                  </div>
-                  <TurnOffRecommendations />
-                </div>
+                
+                <RecommendSlider slides={[
+                    welcomeback_encourage,
+                    <StreakEncouragement />,
+                    <LeaderboardEncouragement />,
+                    daily_stories_encourage,
+                    latest_incomplete_story,
+                    confirm_blue_card_encourage,
+                    <UnseenStoriesInGroup />,
+                    <SharedIncompleteStoryInGroup />,
+                    <ReviewStoriesEncouragement />,
+                ]} />
+                <TurnOffRecommendations />
               </div>
             </div>
           </Draggable>
@@ -227,12 +281,18 @@ const Recommender = () => {
                     onClick={handleCloseClick}
                   />
                 </div>
-                <div className="col-flex">
+
+                <RecommendSlider slides={[
+                    confirm_blue_card_encourage,
+                ]} />
+                <TurnOffRecommendations />
+
+                {/* <div className="col-flex">
                   <div className="interactable" style={{ overflow: 'auto', maxHeight: 300 }}>
                     <ConfirmBlueCardsEncouragement />
                   </div>
                   <TurnOffRecommendations />
-                </div>
+                </div> */}
               </div>
             </div>
           </Draggable>
@@ -262,7 +322,18 @@ const Recommender = () => {
                     onClick={handleCloseClick}
                   />
                 </div>
-                <div className="col-flex">
+
+                <RecommendSlider slides={[
+                    <LeaderboardEncouragement />,
+                    <StoryCompletedToBluecardsExerciseEncouragement />,
+                    latest_incomplete_story,
+                    words_seen_encourage,
+                    new_words_interacted_exercise_encourage,
+                    <GrammarReviewExerciseEncouragement />
+                ]} />
+                <TurnOffRecommendations />
+
+                {/* <div className="col-flex">
                   <div className="interactable" style={{ overflow: 'auto', maxHeight: 300 }}>
                     <LeaderboardEncouragement />
                     <StoryCompletedToBluecardsExerciseEncouragement />
@@ -272,7 +343,7 @@ const Recommender = () => {
                     <GrammarReviewExerciseEncouragement />
                   </div>
                   <TurnOffRecommendations />
-                </div>
+                </div> */}
               </div>
             </div>
           </Draggable>
@@ -297,13 +368,22 @@ const Recommender = () => {
                     onClick={handleCloseClick}
                   />
                 </div>
-                <div className="interactable" style={{ overflow: 'auto', maxHeight: 300 }}>
+
+                <RecommendSlider slides={[
+                    <FlashcardsHeaderChooser handleNewDeck={handleNewDeck} />,
+                    <TryAnotherBatch handleNewDeck={handleNewDeck} />,
+                    list_of_recent_stories_flashcards_encourage,
+                    <BackToLibraryFromFlashcards />
+                ]} />
+                <TurnOffRecommendations />
+
+                {/* <div className="interactable" style={{ overflow: 'auto', maxHeight: 300 }}>
                   <FlashcardsHeaderChooser handleNewDeck={handleNewDeck} />
                   <TryAnotherBatch handleNewDeck={handleNewDeck} />
                   <ListOfRecentStoriesFlashcardsEncouragement />
                   <BackToLibraryFromFlashcards />
                 </div>
-                <TurnOffRecommendations />
+                <TurnOffRecommendations /> */}
               </div>
             </div>
           </Draggable>
@@ -328,13 +408,22 @@ const Recommender = () => {
                     onClick={handleCloseClick}
                   />
                 </div>
-                <div className="interactable" style={{ overflow: 'auto', maxHeight: 300 }}>
+
+                <RecommendSlider slides={[
+                    <FlashcardsHeaderChooser handleNewDeck={handleNewDeck} />,
+                    prev_stories_blue_cards_encourage,
+                    words_seen_encourage,
+                    <FlashcardsProgress />
+                ]} />
+                <TurnOffRecommendations />
+
+                {/* <div className="interactable" style={{ overflow: 'auto', maxHeight: 300 }}>
                   <FlashcardsHeaderChooser handleNewDeck={handleNewDeck} />
                   <PreviousStoriesBlueFlashcards />
                   <WordsSeenEncouragement />
                   <FlashcardsProgress />
                 </div>
-                <TurnOffRecommendations />
+                <TurnOffRecommendations /> */}
               </div>
             </div>
           </Draggable>
@@ -359,11 +448,18 @@ const Recommender = () => {
                     onClick={handleCloseClick}
                   />
                 </div>
-                <div className="interactable" style={{ overflow: 'auto', maxHeight: 300 }}>
+
+                <RecommendSlider slides={[
+                    <GoodJobEncouragement />,
+                    <RedirectHomeEncouragement />
+                ]} />
+                <TurnOffRecommendations />
+
+                {/* <div className="interactable" style={{ overflow: 'auto', maxHeight: 300 }}>
                   <GoodJobEncouragement />
                   <RedirectHomeEncouragement />
                 </div>
-                <TurnOffRecommendations />
+                <TurnOffRecommendations /> */}
               </div>
             </div>
           </Draggable>
