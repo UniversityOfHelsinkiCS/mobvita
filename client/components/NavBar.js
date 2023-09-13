@@ -272,7 +272,6 @@ export default function NavBar() {
                   {hiddenFeatures && <sup> &beta;</sup>}
                 </Navbar.Brand>
               </Link>
-
               {!smallWindow && (
                 <>
                   <Link to="/home">
@@ -310,7 +309,6 @@ export default function NavBar() {
               )}
             </div>
           </Nav>
-
           <Nav className="mr-auto">
             <div className="navbar-containeimport { getPracticeHistory } from 'Utilities/redux/practiceReducer'r">
               <Navbar.Text
@@ -354,7 +352,6 @@ export default function NavBar() {
               </Navbar.Text>
             </div>
           </Nav>
-
           <Nav>
             <Popup
               content={<FormattedMessage id="level-navbar" />}
@@ -366,7 +363,6 @@ export default function NavBar() {
               position="top center"
             />
           </Nav>
-
           <Nav>
             <div className="navbar-container" style={{ width: '90%' }}>
               <Offline className="navbar-basic-item" polling={{ timeout: 20000 }}>
@@ -412,7 +408,6 @@ export default function NavBar() {
                           </NavDropdown.Item>
                         </>
                       )}
-
                       {user.user.email !== 'anonymous_email' && (
                         <>
                           <span className="bold user-icon" style={{ padding: '1.5em' }}>
@@ -464,7 +459,6 @@ export default function NavBar() {
                           </NavDropdown.Item>
                         </>
                       )}
-
                       {user.user.email !== 'anonymous_email' && (
                         <>
                           <span className="bold user-icon" style={{ padding: '1.5em' }}>
@@ -488,7 +482,6 @@ export default function NavBar() {
                       )}
                     </NavDropdown>
                   )}
-
                   {user && user.user.last_used_language && (
                     <span style={{ position: 'relative', cursor: 'pointer' }}>
                       <Link to="/learningLanguage">
@@ -522,7 +515,6 @@ export default function NavBar() {
                       </Link>
                     </span>
                   )}
-
                   <NavDropdown
                     data-cy="navbar-info-dropdown"
                     className="navbar-dropdown-icon-cont navbar-dropdown-icon-cont-HELP"
@@ -542,9 +534,7 @@ export default function NavBar() {
                     >
                       <FormattedMessage id="help" /> & <FormattedMessage id="faq" />
                     </NavDropdown.Item>
-
                     <NavDropdown.Divider />
-
                     <NavDropdown.Item className="navbar-external-link" onClick={handleTourStart}>
                       <FormattedMessage id="start-tour" />
                     </NavDropdown.Item>
@@ -556,9 +546,7 @@ export default function NavBar() {
                         </NavDropdown.Item>
                       }
                     />
-
                     <NavDropdown.Divider />
-
                     <NavDropdown.Item
                       data-cy="navbar-about-button"
                       className="navbar-external-link"
@@ -582,7 +570,6 @@ export default function NavBar() {
                   </NavDropdown>
                 </>
               )}
-
               <Popup
                 trigger={
                   <a
@@ -625,7 +612,6 @@ export default function NavBar() {
                 on="hover"
                 position="bottom right"
               />
-
               <Link
                 to="/profile/settings"
                 data-cy="navbar-settings-button"
