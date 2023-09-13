@@ -59,7 +59,7 @@ const LessonList = () => {
   const [sorter, setSorter] = useState(_lesson_sort_criterion.sort_by)
   const [sortDirection, setSortDirection] = useState(_lesson_sort_criterion.direction)
 
-  const { topic_ids: selectedTopicIds, semantic: selectedSemantics, vocab_diff } = lesson
+  const { topic_ids: selectedTopicIds, semantic: selectedSemantics, vocab_diff, num_visited_exercises } = lesson
   const [sliderValue, setSliderValue] = useState(1.5)
 
   const [libraries, setLibraries] = useState({
@@ -124,6 +124,12 @@ const LessonList = () => {
       setSliderValue(vocab_diff)
     }
   }, [vocab_diff])
+
+  useEffect(() => {
+    if (!lessonPending && num_visited_exercises) {
+      setGoStep(3)
+    }
+  }, [num_visited_exercises])
 
   const finnishSelectingTopics = () => {
     const payload = { topic_ids: selectedTopicIds }
