@@ -535,16 +535,6 @@ export default function NavBar() {
                     }
                   >
                     <NavDropdown.Item
-                      data-cy="navbar-about-button"
-                      className="navbar-external-link"
-                      href="https://www2.helsinki.fi/en/projects/revita-language-learning-and-ai/about-the-project"
-                      target="_blank"
-                      rel="noopener noreferrer"
-                    >
-                      <FormattedMessage id="about" />
-                    </NavDropdown.Item>
-                    <NavDropdown.Divider />
-                    <NavDropdown.Item
                       className="navbar-external-link"
                       href="https://drive.google.com/drive/folders/1vnfFfUd4UCBkbli25krwcKwxExDjWOeY"
                       target="_blank"
@@ -552,7 +542,9 @@ export default function NavBar() {
                     >
                       <FormattedMessage id="help" /> & <FormattedMessage id="faq" />
                     </NavDropdown.Item>
+
                     <NavDropdown.Divider />
+
                     <NavDropdown.Item className="navbar-external-link" onClick={handleTourStart}>
                       <FormattedMessage id="start-tour" />
                     </NavDropdown.Item>
@@ -564,6 +556,18 @@ export default function NavBar() {
                         </NavDropdown.Item>
                       }
                     />
+
+                    <NavDropdown.Divider />
+
+                    <NavDropdown.Item
+                      data-cy="navbar-about-button"
+                      className="navbar-external-link"
+                      href="https://www2.helsinki.fi/en/projects/revita-language-learning-and-ai/about-the-project"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                    >
+                      <FormattedMessage id="about" />
+                    </NavDropdown.Item>
                     <NavDropdown.Divider />
                     <TermsAndConditions
                       trigger={
