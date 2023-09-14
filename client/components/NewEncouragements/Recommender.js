@@ -158,7 +158,7 @@ const Recommender = () => {
                 <RecommendSlider slides={[
                   welcomeback_encourage,
                   <StreakEncouragement />,
-                  <LeaderboardEncouragement />,
+                  leader_board_encourage,
                   daily_stories_encourage,
                   latest_incomplete_story,
                   confirm_blue_card_encourage,
@@ -238,7 +238,7 @@ const Recommender = () => {
                 <RecommendSlider slides={[
                     welcomeback_encourage,
                     <StreakEncouragement />,
-                    <LeaderboardEncouragement />,
+                    leader_board_encourage,
                     daily_stories_encourage,
                     latest_incomplete_story,
                     confirm_blue_card_encourage,
@@ -324,7 +324,7 @@ const Recommender = () => {
                 </div>
 
                 <RecommendSlider slides={[
-                    <LeaderboardEncouragement />,
+                    leader_board_encourage,
                     <StoryCompletedToBluecardsExerciseEncouragement />,
                     latest_incomplete_story,
                     words_seen_encourage,
