@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import moment from 'moment'
 import { useSelector, useDispatch } from 'react-redux'
 import { Navbar, Nav, NavDropdown, NavItem, Button } from 'react-bootstrap'
@@ -27,6 +27,7 @@ import {
   learningLanguageSelector,
   getBackgroundColor,
   supportedLearningLanguages,
+  localeCodeToName
 } from 'Utilities/common'
 import { Offline } from 'react-detect-offline'
 import { FormattedMessage, FormattedHTMLMessage, useIntl } from 'react-intl'
@@ -62,7 +63,7 @@ export default function NavBar() {
   const open = useSelector(({ sidebar }) => sidebar.open)
   const storyLanguage = (storyPending == false) & (story != undefined) ? story.language : undefined
   const learningLanguage = useSelector(learningLanguageSelector)
-
+  const locale = useSelector(({ locale }) => locale)
   const dispatch = useDispatch()
   const history = useHistory()
   const smallWindow = useWindowDimensions().width < 700
@@ -84,6 +85,7 @@ export default function NavBar() {
 
   const practiceHistory = useSelector(state => state.practiceHistory)
   const { flashcardHistory, irtExerciseHistory, eloExerciseHistory } = practiceHistory
+  const [helpLink, setHelpLink] = useState(null)
 
   const signOut = () => {
     dispatch(logout())
@@ -168,17 +170,21 @@ export default function NavBar() {
   }, [irtCalculationPending])
 
   useEffect(() => {
-    if (!userPending && irt_dummy_score == undefined) {
-      const irtScore =
-        irtExerciseHistory && irtExerciseHistory.length > 0
-          ? irtExerciseHistory[irtExerciseHistory.length - 1].score
-          : undefined
-      dispatch(setIrtDummyScore(irtScore))
+    if (!userPending) {
+      if (irt_dummy_score == undefined) {
+        const irtScore =
+          irtExerciseHistory && irtExerciseHistory.length > 0
+            ? irtExerciseHistory[irtExerciseHistory.length - 1].score
+            : undefined
+        dispatch(setIrtDummyScore(irtScore))
+      }
+      setHelpLink(getHelpLink())
     }
   }, [user])
 
   useEffect(() => {
     dispatch(getMetadata(learningLanguage))
+    setHelpLink(getHelpLink())
   }, [learningLanguage])
 
   useEffect(() => {
@@ -186,6 +192,30 @@ export default function NavBar() {
     const start_query_date = moment('2021-01-01').toDate()
     dispatch(getPracticeHistory(start_query_date, date_now))
   }, [])
+
+
+  const getHelpLink = () => {
+    const interface_language = localeCodeToName(locale)
+    if (isTeacher && interface_language == 'Russian' && learningLanguage == 'Finnish') 
+      return 'https://docs.google.com/presentation/d/1MKh8e15yEziO4iJtG2-rovP4nRMciUS8cCSpy4KnsUg/edit?usp=drive_link'
+    else if (isTeacher && interface_language == 'English' && learningLanguage == 'Finnish')
+      return 'https://docs.google.com/presentation/d/16wRAQjgfRIqkXig9JAxkC3Ll1Zoi35P0chjG3KO_cgI/edit?usp=drive_link'
+    else if (isTeacher && interface_language == 'Russian' && learningLanguage == 'Russian')
+      return 'https://docs.google.com/presentation/d/1lORT0jD_UOxzDI7Tar2k_5nyYXSkp8r8Ywa-njpS2uk/edit?usp=drive_link'
+    else if (isTeacher && interface_language == 'Finnish' && learningLanguage == 'Finnish')
+      return 'https://docs.google.com/presentation/d/11zzFn62Xl1dYxA0GSYOjls7cVH7hqZstjha5GOnO1m4/edit?usp=drive_link'
+    else if (!isTeacher && interface_language == 'Chinese' && learningLanguage == 'Russian')
+      return 'https://docs.google.com/presentation/d/1JtCkK1x48ZuC3URpMAJShQwdI9qBel8A35heXuJ7NFs/edit?usp=drive_link'
+    else if (!isTeacher && interface_language == 'Russian' && learningLanguage == 'Finnish')
+      return 'https://docs.google.com/presentation/d/16g-k_DupoDkf814LVjQVy7u7hGsS6Rh255DaWUN0ywQ/edit?usp=drive_link'
+    else if (!isTeacher && interface_language == 'Finnish' && learningLanguage == 'Finnish')
+      return 'https://docs.google.com/presentation/d/1hOOekSdDC3MeIJoWphPDg3xk3LTJ16jsFQ5fJKrhxGQ/edit?usp=drive_link'
+    else if (!isTeacher && interface_language == 'English' && learningLanguage == 'Finnish')
+      return 'https://docs.google.com/presentation/d/1qZ9syaJZVgUXgr0DATDehJl-xefZSA2C6yZnkN6NyiY/edit?usp=drive_link'
+    else if (!isTeacher && interface_language == 'English' && learningLanguage == 'Russian')
+      return 'https://docs.google.com/presentation/d/1OSNXy5cydhqMRqRO4I2csG2DqN70Po1HTW-3DYJMxZ8/edit?usp=drive_link'
+    else return null
+  }
 
   const irt_score =
     irtExerciseHistory && irtExerciseHistory.length > 0
@@ -526,15 +556,19 @@ export default function NavBar() {
                       />
                     }
                   >
-                    <NavDropdown.Item
-                      className="navbar-external-link"
-                      href="https://drive.google.com/drive/folders/1vnfFfUd4UCBkbli25krwcKwxExDjWOeY"
-                      target="_blank"
-                      rel="noopener noreferrer"
-                    >
-                      <FormattedMessage id="help" /> & <FormattedMessage id="faq" />
-                    </NavDropdown.Item>
-                    <NavDropdown.Divider />
+                    {
+                      helpLink && (
+                        <NavDropdown.Item
+                          className="navbar-external-link"
+                          href={helpLink}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                        >
+                          <FormattedMessage id="help" /> & <FormattedMessage id="faq" />
+                        </NavDropdown.Item>
+                      )
+                    }
+                    { helpLink && <NavDropdown.Divider />}
                     <NavDropdown.Item className="navbar-external-link" onClick={handleTourStart}>
                       <FormattedMessage id="start-tour" />
                     </NavDropdown.Item>
