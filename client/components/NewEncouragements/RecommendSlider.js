@@ -7,10 +7,9 @@ const RecommendSlider = ({ slides }) => {
     const [current, setCurrent] = useState(0);
     const [length, setLength] = useState(undefined);
     const [filteredSlides, setFilteredSlides] = useState([]);
-    const [buttonHeight, setButtonHeight] = useState('auto');
+    const [containerHeight, setContainerHeight] = useState('20vh');
 
     const slideContainerRef = useRef(null);
-    setButtonHeight('17vh')
 
     useEffect(() => {
         const filteredSlidesArray = [];
@@ -47,14 +46,22 @@ const RecommendSlider = ({ slides }) => {
     return (
         <section className='slider'>
             <div className='slider-content'>
-                <button className='left-arrow' onClick={prevSlide} style={{ height: buttonHeight }}>
+                <button className='left-arrow' onClick={prevSlide} style={{ height: containerHeight }}>
                     <Icon
                         className='left-arrow'
                         name={'chevron left'}
                         style={{ cursor: 'pointer' }}
                     />
                 </button>
-                <div className='content-container' style={{height: buttonHeight, overflowY: 'auto', overflowX: 'hidden'}}>
+
+                <div className='content-container' style={
+                    {
+                        height: containerHeight, 
+                        overflowY: 'auto', 
+                        overflowX: 'hidden',
+                        width: '100%'
+                    }
+                }>
                     <div className='slide-container' ref={slideContainerRef}>
                         <div className='slide active' key={current}>
                             {filteredSlides[current]}
@@ -62,8 +69,7 @@ const RecommendSlider = ({ slides }) => {
                     </div>
                 </div>
 
-                
-                <button className='right-arrow' onClick={nextSlide} style={{ height: buttonHeight }}>
+                <button className='right-arrow' onClick={nextSlide} style={{ height: containerHeight }}>
                     <Icon
                         className='right-arrow'
                         name={'chevron right'}
