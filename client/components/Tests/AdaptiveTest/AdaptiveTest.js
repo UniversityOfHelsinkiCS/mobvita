@@ -40,7 +40,7 @@ const AdaptiveTest = ({ showingInfo }) => {
 
   const dispatch = useDispatch()
 
-  const checkAnswer = answer => {
+  const checkAnswer = choice => {
     if (!currentAdaptiveQuestion) return
 
     const timeToAnswer = currentAdaptiveQuestion.time
@@ -57,7 +57,7 @@ const AdaptiveTest = ({ showingInfo }) => {
       sendAdaptiveTestAnswer(
         learningLanguage,
         adaptiveTestSessionId,
-        answer,
+        choice.option,
         duration,
         currentAdaptiveQuestion.question_id,
         timedTest,
