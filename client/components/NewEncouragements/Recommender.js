@@ -133,6 +133,10 @@ const Recommender = () => {
     story => story.last_snippet_id !== story.num_snippets - 1
   ).length > 0 ? <ListOfRecentStoriesFlashcardsEncouragement /> : undefined;
 
+  const review_stories_encourage = incompleteStories & incompleteStories?.filter(
+    story => story.last_snippet_id === story.num_snippets - 1
+  ).length > 0 ? <ReviewStoriesEncouragement /> : null;
+
   return (
     <>
       {loading ? null : showAllEncouragements && open ? (
@@ -164,7 +168,7 @@ const Recommender = () => {
                   confirm_blue_card_encourage,
                   <UnseenStoriesInGroup />,
                   <SharedIncompleteStoryInGroup />,
-                  <ReviewStoriesEncouragement />,
+                  review_stories_encourage,
                   leader_board_encourage,
                   <StoryCompletedToBluecardsExerciseEncouragement />,
                   latest_incomplete_story,
@@ -244,7 +248,7 @@ const Recommender = () => {
                     confirm_blue_card_encourage,
                     <UnseenStoriesInGroup />,
                     <SharedIncompleteStoryInGroup />,
-                    <ReviewStoriesEncouragement />,
+                    review_stories_encourage,
                 ]} />
                 <TurnOffRecommendations />
               </div>

@@ -1,4 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react';
+import { Segment, Icon } from 'semantic-ui-react'
+
 import './RecommendSliderCss.css';
 
 const RecommendSlider = ({ slides }) => {
@@ -8,6 +10,7 @@ const RecommendSlider = ({ slides }) => {
     const [buttonHeight, setButtonHeight] = useState('auto');
 
     const slideContainerRef = useRef(null);
+    setButtonHeight('17vh')
 
     useEffect(() => {
         const filteredSlidesArray = [];
@@ -19,10 +22,10 @@ const RecommendSlider = ({ slides }) => {
         setFilteredSlides(filteredSlidesArray);
         setLength(filteredSlidesArray.length);
 
-        if (slideContainerRef.current) {
-            const { height } = slideContainerRef.current.getBoundingClientRect();
-            setButtonHeight(`${height}px`);
-        }
+        // if (slideContainerRef.current) {
+        //     const { height } = slideContainerRef.current.getBoundingClientRect();
+        //     setButtonHeight(`${height}px`);
+        // }
     }, [slides]);
 
     const nextSlide = () => {
@@ -44,13 +47,29 @@ const RecommendSlider = ({ slides }) => {
     return (
         <section className='slider'>
             <div className='slider-content'>
-                <button className='left-arrow' onClick={prevSlide} style={{ height: buttonHeight }}>{"<"}</button>
-                <div className='slide-container' ref={slideContainerRef}>
-                    <div className='slide active' key={current}>
-                        {filteredSlides[current]}
+                <button className='left-arrow' onClick={prevSlide} style={{ height: buttonHeight }}>
+                    <Icon
+                        className='left-arrow'
+                        name={'chevron left'}
+                        style={{ cursor: 'pointer' }}
+                    />
+                </button>
+                <div className='content-container' style={{height: buttonHeight, overflowY: 'auto', overflowX: 'hidden'}}>
+                    <div className='slide-container' ref={slideContainerRef}>
+                        <div className='slide active' key={current}>
+                            {filteredSlides[current]}
+                        </div>
                     </div>
                 </div>
-                <button className='right-arrow' onClick={nextSlide} style={{ height: buttonHeight }}>{">"}</button>
+
+                
+                <button className='right-arrow' onClick={nextSlide} style={{ height: buttonHeight }}>
+                    <Icon
+                        className='right-arrow'
+                        name={'chevron right'}
+                        style={{ cursor: 'pointer' }}
+                    />
+                </button>
             </div>
             <div className='pagination'>
                 {filteredSlides.map((_, index) => (
