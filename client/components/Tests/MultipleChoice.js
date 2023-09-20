@@ -12,12 +12,12 @@ const MultipleChoice = ({ exercise, onAnswer, answerPending }) => {
         <div className="test-question" dangerouslySetInnerHTML={sanitizeHtml(question)} />
       )}
       {choices.map(choice => (
-        <div key={choice}>
+        <div key={choice.option}>
           <Button
             className="test-choice-button"
             onClick={!answerPending ? () => onAnswer(choice) : undefined}
           >
-            <span>{choice}</span>
+            <span>{choice.option}</span>
           </Button>
         </div>
       ))}

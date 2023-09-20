@@ -41,7 +41,7 @@ const ExhaustiveTest = ({ showingInfo }) => {
 
   const dispatch = useDispatch()
 
-  const checkAnswer = answer => {
+  const checkAnswer = choice => {
     if (!currentExhaustiveTestQuestion) return
 
     const timeToAnswer = currentExhaustiveTestQuestion.time
@@ -63,7 +63,7 @@ const ExhaustiveTest = ({ showingInfo }) => {
         {
           type: currentExhaustiveTestQuestion.type,
           question_id: currentExhaustiveTestQuestion.question_id,
-          answer,
+          answer: choice.option,
         },
         duration,
         pauseTimeStamp
