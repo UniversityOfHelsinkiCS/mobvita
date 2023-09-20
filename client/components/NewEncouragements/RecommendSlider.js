@@ -39,6 +39,12 @@ const RecommendSlider = ({ slides }) => {
         }
     };
 
+    const goToSlide = (index) => {
+        if (length != undefined && length > 0 && index >= 0 && index < length){
+            setCurrent(index);
+        }
+    }
+
     if (!Array.isArray(filteredSlides) || slides.length <= 0) {
         return null;
     }
