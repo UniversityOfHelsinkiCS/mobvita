@@ -32,6 +32,8 @@ import useWindowDimensions from 'Utilities/windowDimensions'
 // import AddStoryModal from 'Components/AddStoryModal'
 // import LessonLibrarySearch from './LessonLibrarySearch'
 
+import './LessonLibraryStyles.css';
+
 const LessonList = () => {
   const intl = useIntl()
   const learningLanguage = useLearningLanguage()
@@ -40,6 +42,7 @@ const LessonList = () => {
     last_selected_group: savedGroupSelection,
     oid: userId,
     has_seen_lesson_tour,
+    vocabulary_score,
   } = useSelector(({ user }) => user.data.user)
   const {
     pending: metaPending,
@@ -60,7 +63,7 @@ const LessonList = () => {
   const [sortDirection, setSortDirection] = useState(_lesson_sort_criterion.direction)
 
   const { topic_ids: selectedTopicIds, semantic: selectedSemantics, vocab_diff, num_visited_exercises } = lesson
-  const [sliderValue, setSliderValue] = useState(1.5)
+  const [sliderValue, setSliderValue] = useState(vocabulary_score)
 
   const [libraries, setLibraries] = useState({
     private: false,
@@ -264,6 +267,29 @@ const LessonList = () => {
     </div>
   )
 
+  const getSliderThumbColor = () => {
+    if (sliderValue - vocabulary_score > 0.5 & sliderValue - vocabulary_score <=1.5) {
+      return 'red1-slider'; 
+    }
+    if (sliderValue - vocabulary_score > 1.5 & sliderValue - vocabulary_score <=2.5) {
+      return 'red2-slider'; 
+    }
+    if (sliderValue - vocabulary_score > 2.5) {
+      return 'red3-slider'; 
+    }
+
+    if (sliderValue - vocabulary_score >= -1.5 & sliderValue - vocabulary_score < -0.5) {
+      return 'green1-slider'; 
+    }
+    if (sliderValue - vocabulary_score >= -2.5 & sliderValue - vocabulary_score < -1.5) {
+      return 'green2-slider'; 
+    }
+    if (sliderValue - vocabulary_score < -2.5) {
+      return 'green3-slider'; 
+    }
+    return 'white-slider';
+  };
+  const sliderThumbClassName = `${getSliderThumbColor()} exercise-density-slider-thumb`;
   const lessonVocabularyControls = (
     <div className="align-center">
       <h5>
@@ -278,14 +304,17 @@ const LessonList = () => {
         </Button>
       </h5>
 
+      {/* TODO HERE */}
+
       <ReactSlider
         className="exercise-density-slider lesson-vocab-diff"
-        thumbClassName="exercise-density-slider-thumb"
+        thumbClassName={sliderThumbClassName}
         trackClassName='exercise-density-slider-track'
         onAfterChange={value => handleSlider(value)}
-        min={0.8}
-        max={3.3}
-        step={0.5}
+        snapDragDisabled={true}
+        min={0.8} // 0.8
+        max={3.3} // 3.3
+        step={0.1}
         value={sliderValue}
         disabled={lessonPending || !(libraries.private || currentGroup && currentGroup.is_teaching)}
       />
