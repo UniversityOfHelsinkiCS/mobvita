@@ -200,7 +200,10 @@ const LessonList = () => {
 
   const handleSlider = value => {
     setSliderValue(value)
-    const payload = { vocab_diff: value }
+  }
+
+  const finnishSelectingVocabularyDifficulty = () => {
+    const payload = { vocab_diff: sliderValue }
     if (libraries.group) payload.group_id = savedGroupSelection
     dispatch(setLessonInstance(payload))
   }
@@ -267,24 +270,38 @@ const LessonList = () => {
     </div>
   )
 
+  function roundToNearestHalfInt(number) {
+    const roundedNumber = Math.round(number);
+    if (Math.abs(number - roundedNumber) === 0.5) {
+      return roundedNumber + (number > 0 ? 0.5 : -0.5);
+    }
+    return roundedNumber;
+  }
+
   const getSliderThumbColor = () => {
-    if (sliderValue - vocabulary_score > 0.5 & sliderValue - vocabulary_score <=1.5) {
+    if (sliderValue - vocabulary_score > 0 & sliderValue - vocabulary_score <= 0.5) {
+      return 'red0-slider'; 
+    }
+    if (sliderValue - vocabulary_score > 0.5 & sliderValue - vocabulary_score <= 1.0) {
       return 'red1-slider'; 
     }
-    if (sliderValue - vocabulary_score > 1.5 & sliderValue - vocabulary_score <=2.5) {
+    if (sliderValue - vocabulary_score > 1.0 & sliderValue - vocabulary_score <= 1.5) {
       return 'red2-slider'; 
     }
-    if (sliderValue - vocabulary_score > 2.5) {
+    if (sliderValue - vocabulary_score > 1.5) {
       return 'red3-slider'; 
     }
 
-    if (sliderValue - vocabulary_score >= -1.5 & sliderValue - vocabulary_score < -0.5) {
+    if (sliderValue - vocabulary_score >= -0.5 & sliderValue - vocabulary_score < 0) {
+      return 'green0-slider'; 
+    }
+    if (sliderValue - vocabulary_score >= -1.0 & sliderValue - vocabulary_score < -0.5) {
       return 'green1-slider'; 
     }
-    if (sliderValue - vocabulary_score >= -2.5 & sliderValue - vocabulary_score < -1.5) {
+    if (sliderValue - vocabulary_score >= -1.5 & sliderValue - vocabulary_score < -1.0) {
       return 'green2-slider'; 
     }
-    if (sliderValue - vocabulary_score < -2.5) {
+    if (sliderValue - vocabulary_score < -1.5) {
       return 'green3-slider'; 
     }
     return 'white-slider';
@@ -299,28 +316,42 @@ const LessonList = () => {
             float: 'right', cursor: lessonPending || !(libraries.private || currentGroup && currentGroup.is_teaching)
               ? 'not-allowed' : 'pointer'
           }}
-          onClick={() => setGoStep(2)}>
+          onClick={() => {
+            finnishSelectingVocabularyDifficulty()
+            setGoStep(2)
+          } }>
           <FormattedMessage id="next-step" />
         </Button>
       </h5>
 
-      {/* TODO HERE */}
-
-      <ReactSlider
-        className="exercise-density-slider lesson-vocab-diff"
-        thumbClassName={sliderThumbClassName}
-        trackClassName='exercise-density-slider-track'
-        onAfterChange={value => handleSlider(value)}
-        snapDragDisabled={true}
-        min={0.8} // 0.8
-        max={3.3} // 3.3
-        step={0.1}
-        value={sliderValue}
-        disabled={lessonPending || !(libraries.private || currentGroup && currentGroup.is_teaching)}
-      />
-      <div className="space-between exercise-density-slider-label-cont bold">
-        <span><FormattedMessage id='Easy' /></span>
-        <span><FormattedMessage id='Hard' /></span>
+      <div
+        className="lesson-vocab-slider-container"
+        style={{
+          width: "80%",
+          marginTop: "30px",
+          marginLeft: "auto",
+          marginRight: "auto"
+        }}
+      >
+        <ReactSlider
+          className="exercise-density-slider lesson-vocab-diff"
+          thumbClassName={sliderThumbClassName}
+          trackClassName="exercise-density-slider-track"
+          onAfterChange={value => handleSlider(value)}
+          onSliderClick={value => handleSlider(value)}
+          snapDragDisabled={false}
+          markClassName="personal_vocab_score_mark"
+          marks={[roundToNearestHalfInt(vocabulary_score)]}
+          min={0.8} // 0.8
+          max={3.3} // 3.3
+          step={0.2}
+          value={sliderValue}
+          disabled={lessonPending || !(libraries.private || currentGroup && currentGroup.is_teaching)}
+        />
+        <div className="space-between exercise-density-slider-label-cont bold">
+          <span><FormattedMessage id='Easy' /></span>
+          <span><FormattedMessage id='Hard' /></span>
+        </div>
       </div>
     </div>
   )
@@ -529,6 +560,9 @@ const LessonList = () => {
                 active={goStep == 0}
                 completed={goStep > 0}
                 onClick={() => {
+                  if (goStep == 1){
+                    finnishSelectingVocabularyDifficulty()
+                  }
                   if (goStep == 2){
                     finnishSelectingTopics()
                   }
@@ -540,6 +574,9 @@ const LessonList = () => {
                 active={goStep == 1}
                 completed={goStep > 1}
                 onClick={() => {
+                  if (goStep == 1){
+                    finnishSelectingVocabularyDifficulty()
+                  }
                   if (goStep == 2){
                     finnishSelectingTopics()
                   }
@@ -551,6 +588,9 @@ const LessonList = () => {
                 active={goStep == 2}
                 completed={goStep > 2}
                 onClick={() => {
+                  if (goStep == 1){
+                    finnishSelectingVocabularyDifficulty()
+                  }
                   if (goStep == 2){
                     finnishSelectingTopics()
                   }
@@ -562,6 +602,9 @@ const LessonList = () => {
                 active={goStep == 3}
                 completed={goStep > 3}
                 onClick={() => {
+                  if (goStep == 1){
+                    finnishSelectingVocabularyDifficulty()
+                  }
                   if (goStep == 2){
                     finnishSelectingTopics()
                   }
