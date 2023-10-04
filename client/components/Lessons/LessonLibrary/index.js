@@ -44,6 +44,7 @@ const LessonList = () => {
     has_seen_lesson_tour,
     vocabulary_score,
   } = useSelector(({ user }) => user.data.user)
+  const { teacherView } = useSelector(({ user }) => user.data)
   const {
     pending: metaPending,
     lesson_semantics,
@@ -98,6 +99,11 @@ const LessonList = () => {
   }, [groups])
 
   useEffect(() => {
+    if (teacherView) setLibraries({group: true})
+    else setLibraries({...libraries, private: false})
+  }, [teacherView])
+
+  useEffect(() => {
     if (!metaPending) {
       dispatch(getMetadata(learningLanguage))
     }
@@ -106,7 +112,9 @@ const LessonList = () => {
   useEffect(() => {
     dispatch(getLessonTopics())
     dispatch(getGroups())
-    if (savedLibrarySelection == 'group' || savedLibrarySelection == 'public') {
+    if (teacherView) setLibraries({group: true})
+    else setLibraries({...libraries, private: false})
+    if (savedLibrarySelection == 'group' || savedLibrarySelection == 'public' || teacherView ) {
       setLibrary('group')
       dispatch(getLessonInstance(savedGroupSelection))
     }
@@ -120,19 +128,16 @@ const LessonList = () => {
       dispatch(startLessonsTour())
     }
   }, [])
-
-
+  
   useEffect(() => {
     if (!lessonPending) {
-      setSliderValue(vocab_diff)
+        setSliderValue(vocab_diff)
+        if (selectedTopicIds && selectedSemantics && selectedTopicIds.length && selectedSemantics.length) {
+          setGoStep(3)
+        }
     }
-  }, [vocab_diff])
-
-  useEffect(() => {
-    if (!lessonPending && num_visited_exercises && selectedTopicIds.length && selectedSemantics.length) {
-      setGoStep(3)
-    }
-  }, [num_visited_exercises])
+    
+  }, [lesson])
 
   const finnishSelectingTopics = () => {
     const payload = { topic_ids: selectedTopicIds }
@@ -422,7 +427,7 @@ const LessonList = () => {
         <LessonPracticeThemeHelp selectedThemes={selectedSemantics ? selectedSemantics : []} always_show={true} />
         <LessonPracticeTopicsHelp selectedTopics={selectedTopicIds} always_show={true} />
       </div>
-      <Link to={link}>
+      {!teacherView && (<Link to={link}>
         <Button
           size="big"
           className="lesson-practice"
@@ -445,7 +450,7 @@ const LessonList = () => {
           {lessonPending && <Icon name="spinner" loading />}
           <FormattedMessage id="start-practice" />
         </Button>
-      </Link>
+      </Link>)}
     </div>
   )
 

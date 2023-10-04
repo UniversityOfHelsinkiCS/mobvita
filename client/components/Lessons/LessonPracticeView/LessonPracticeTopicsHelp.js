@@ -10,7 +10,6 @@ const LessonPracticeTopicsHelp = ({selectedTopics, always_show=false, }) => {
     const dispatch = useDispatch()
     const { width } = useWindowDimensions()
     const learningLanguage = useSelector(learningLanguageSelector)
-    const { teacherView } = useSelector(({ user }) => user.data)
     const { topics: lessonTopics } = useSelector(({ lessons }) => lessons)
     const snippets = useSelector(({ snippets }) => snippets)
     const topics = lessonTopics && selectedTopics ? lessonTopics.filter(l => selectedTopics.includes(l.topic_id)) : []
@@ -98,7 +97,7 @@ const LessonPracticeTopicsHelp = ({selectedTopics, always_show=false, }) => {
         segment_style['height'] = '100%'
     }
 
-    if ((width >= 1024 || always_show) && teacherView) {
+    if (width >= 1024 || always_show) {
         return (
             <div className="annotations-box">
                 <Segment style={segment_style}>

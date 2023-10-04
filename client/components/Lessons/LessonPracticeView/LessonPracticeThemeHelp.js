@@ -9,7 +9,6 @@ import { getLessonTopics } from 'Utilities/redux/lessonsReducer'
 const LessonPracticeThemeHelp = ({selectedThemes, always_show=false, }) => {
     const { width } = useWindowDimensions()
     const learningLanguage = useSelector(learningLanguageSelector)
-    const { teacherView } = useSelector(({ user }) => user.data)
     let theme_rows = []
     for (let i = 0; i < selectedThemes.length; i++) {
         theme_rows.push(
@@ -39,7 +38,7 @@ const LessonPracticeThemeHelp = ({selectedThemes, always_show=false, }) => {
         segment_style['height'] = '100%'
     }
 
-    if ((width >= 1024 || always_show) && teacherView) {
+    if (width >= 1024 || always_show) {
         return (
             <div className="annotations-box">
                 <Segment style={segment_style}>
