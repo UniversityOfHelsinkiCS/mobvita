@@ -24,9 +24,8 @@ const StoryTitle = ({
   handleControlledStoryCancel,
 }) => {
   const learningLanguage = useSelector(learningLanguageSelector)
-  const { email: userEmail } = useSelector(({ user }) => user.data.user)
-  const user = useSelector(({ user }) => user.data.user)
-  const isTeacher = inGroupLibrary && currentGroup && currentGroup.is_teaching
+  const {user, teacherView} = useSelector(({ user }) => user.data)
+  const { email: userEmail } = user
   const isTeacherInPrivateLibrary = userTeachesAGroup && libraryShown.private
   const isControlledStory = !!story?.control_story
   const showDeleteButton = libraryShown.private || isTeacher
@@ -59,7 +58,7 @@ const StoryTitle = ({
       showCancelControlStoryButton={showCancelControlStoryButton}
       handleDelete={handleDelete}
       inGroupLibrary={inGroupLibrary}
-      isTeacher={isTeacher}
+      isTeacher={teacherView}
       currentGroup={currentGroup}
       handleControlledStoryCancel={handleControlledStoryCancel}
     />
@@ -86,6 +85,7 @@ const StoryFunctionsDropdown = ({
   story,
   practiceLink,
   teacherInGroupView,
+  isTeacher,
   inGroupLibrary,
   enableOnlyPractice,
   }) => {
@@ -119,7 +119,7 @@ const StoryFunctionsDropdown = ({
         trigger={<React.Fragment />}
       >
         <Dropdown.Menu className="story-item-dropdown">
-          {teacherInGroupView && (
+          {!isTeacher && (
             <Dropdown.Item
               text={<FormattedMessage id="practice" />}
               as={Link}
@@ -127,7 +127,7 @@ const StoryFunctionsDropdown = ({
               icon="pencil alternate"
             />
           )}
-          <Dropdown.Item
+          {/* <Dropdown.Item
             text={<FormattedMessage id="preview" />}
             as={Link}
             to={
@@ -136,7 +136,7 @@ const StoryFunctionsDropdown = ({
                 : `/stories/${story._id}/preview`
             }
             icon="book"
-          />
+          /> */}
           {story.percent_cov > 0 && !teacherInGroupView && (
             <Dropdown.Item
               text={<FormattedMessage id="review" />}
@@ -146,18 +146,18 @@ const StoryFunctionsDropdown = ({
               className='library-tour-mobile-review-button'
             />
           )}
-          <Dropdown.Item
+          {/* {!isTeacher && (<Dropdown.Item
             text={<FormattedMessage id="Flashcards" />}
             as={Link}
             to={`/flashcards/fillin/${story._id}/`}
             icon="lightning"
-          />
-          <Dropdown.Item
+          />)} */}
+          {!isTeacher && (<Dropdown.Item
             text={<FormattedMessage id="compete" />}
             as={Link}
             to={`/stories/${story._id}/compete`}
             icon="clock"
-          />
+          />)}
         </Dropdown.Menu>
       </Dropdown>
     </SemanticButton.Group>
@@ -177,7 +177,7 @@ const StoryActions = ({
   const showCrosswordsButton = width > 1023
   const buttonVariant = enableOnlyPractice ? 'outline-secondary' : 'secondary'
   const uploadUnfinished = story?.uploadUnfinished
-  const teacherInGroupView = isTeacher && inGroupLibrary
+  const teacherInGroupView = isTeacher && inGroupLibrary && currentGroup.is_teaching
   const reviewButtonVariant =
     story.percent_cov === 0 || enableOnlyPractice ? 'outline-secondary' : 'secondary'
 
@@ -187,23 +187,26 @@ const StoryActions = ({
     : `/stories/${story._id}/preview`
 
   if (width >= 700) {
+    console.log(isTeacher)
     return (
       <div className="story-actions">
-        <Link to={practiceLink}>
-          <Button className='library-tour-practice-button' variant={teacherInGroupView ? 'secondary' : 'primary'}>
-            <FormattedMessage id="practice" />
-          </Button>
-        </Link>
+        {!isTeacher && (
+          <Link to={practiceLink}>
+            <Button className='library-tour-practice-button' variant='primary'>
+              <FormattedMessage id="practice" />
+            </Button>
+          </Link>
+        )}
 
-        <Link to={`/flashcards/fillin/${story._id}/`}>
+        {/* <Link to={`/flashcards/fillin/${story._id}/`}>
           <Button
             variant={teacherInGroupView ? 'secondary' : 'primary'}
             disabled={enableOnlyPractice}
           >
             <FormattedMessage id="Flashcards" />
           </Button>
-        </Link>
-        {inGroupLibrary ? (
+        </Link> */}
+        {isTeacher && (inGroupLibrary ? (
           <Link to={`/stories/${story._id}/group/preview`}>
             <Button
               variant={teacherInGroupView ? 'primary' : buttonVariant}
@@ -218,7 +221,7 @@ const StoryActions = ({
               <FormattedMessage id="preview" />
             </Button>
           </Link>
-        )}
+        ))}
         {inGroupLibrary ? (
           <Link to={`/stories/${story._id}/group/review`}>
             <Button className='library-tour-review-button' variant={teacherInGroupView ? 'primary' : reviewButtonVariant}>
@@ -236,16 +239,17 @@ const StoryActions = ({
             </Button>
           </Link>
         )}
-        <Link to={`/stories/${story._id}/compete`}>
+        
+        {!isTeacher && (<Link to={`/stories/${story._id}/compete`}>
           <Button
             variant={uploadUnfinished || teacherInGroupView ? 'outline-secondary' : buttonVariant}
             disabled={enableOnlyPractice || uploadUnfinished || teacherInGroupView}
           >
             <FormattedMessage id="compete" />{' '}
           </Button>
-        </Link>
+        </Link>)}
 
-        {showCrosswordsButton && (
+        {showCrosswordsButton && !isTeacher && (
           <Link to={`/crossword/${story._id}/`}>
             <Button
               variant={uploadUnfinished || teacherInGroupView ? 'outline-secondary' : buttonVariant}
@@ -264,6 +268,7 @@ const StoryActions = ({
       story={story}
       practiceLink={practiceLink}
       teacherInGroupView={teacherInGroupView}
+      isTeacher={isTeacher}
       inGroupLibrary={inGroupLibrary}
       enableOnlyPractice={enableOnlyPractice}
     />
@@ -297,6 +302,7 @@ const StoryListItem = ({ story, libraryShown, selectedGroup }) => {
   const [confirmationOpen, setConfirmationOpen] = useState(false)
   const { groups } = useSelector(({ groups }) => groups)
   const { user: userId } = useSelector(({ user }) => ({ user: user.data.user.oid }))
+  const isTeacher = useSelector(({ user }) => user.data.teacherView)
   const learningLanguage = useSelector(learningLanguageSelector)
   const userTeachesAGroup = groups.some(group => group.is_teaching) // definition of being teacher
   const isControlledStory = !!story?.control_story
@@ -345,7 +351,7 @@ const StoryListItem = ({ story, libraryShown, selectedGroup }) => {
           enableOnlyPractice={enableOnlyPractice}
           isControlled={isControlledStory}
           inGroupLibrary={inGroupLibrary}
-          isTeacher={inGroupLibrary && currentGroup && currentGroup.is_teaching}
+          isTeacher={isTeacher}
         />
         <div className="flex align-center" style={{ overflow: 'hidden' }}>
           {showGroupNames && <GroupsSharedTo groups={story.groups} />}

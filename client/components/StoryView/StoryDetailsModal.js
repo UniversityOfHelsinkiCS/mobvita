@@ -72,18 +72,18 @@ const StoryDetailsModal = ({
       <Modal.Actions>
         <div>
           <div className="flex wrap" style={{ gap: '5px' }}>
-            <LinkButton
+            {!isTeacher && (<LinkButton
               variant={isTeacher && inGroupLibrary ? 'secondary' : 'primary'}
               to={`/stories/${story._id}/preview`}
               translationId="practice"
-            />
+            />)}
             {!enableOnlyPractice && (
               <>
-                <LinkButton
+                {!isTeacher && (<LinkButton
                   variant={isTeacher && inGroupLibrary ? 'secondary' : 'primary'}
                   to={`/flashcards/fillin/${story._id}/`}
                   translationId="Flashcards"
-                />
+                />)}
                 {isTeacher && inGroupLibrary ? (
                   <LinkButton
                     variant="primary"
@@ -113,22 +113,22 @@ const StoryDetailsModal = ({
                     </Button>
                   </Link>
                 )}
-                <Link to={`/stories/${story._id}/compete`}>
+                {!isTeacher && (<Link to={`/stories/${story._id}/compete`}>
                   <Button
                     variant={isTeacher && inGroupLibrary ? 'outline-secondary' : 'secondary'}
                     disabled={enableOnlyPractice || (isTeacher && inGroupLibrary)}
                   >
                     <FormattedMessage id="compete" />
                   </Button>
-                </Link>
-                <Link to={`/crossword/${story._id}`}>
+                </Link>)}
+                {!isTeacher && (<Link to={`/crossword/${story._id}`}>
                   <Button
                     variant={isTeacher && inGroupLibrary ? 'outline-secondary' : 'secondary'}
                     disabled={enableOnlyPractice || (isTeacher && inGroupLibrary)}
                   >
                     <FormattedMessage id="Crossword" />
                   </Button>
-                </Link>
+                </Link>)}
               </>
             )}
           </div>
@@ -141,7 +141,7 @@ const StoryDetailsModal = ({
 
           <div className="flex space-between">
             <div className="flex wrap" style={{ gap: '5px' }}>
-              {showCreateControlStoryButton && (
+              {showCreateControlStoryButton && isTeacher && (
                 <LinkButton
                   to={`/stories/${story._id}/controlled-story-editor`}
                   translationId="create-controlled-story"
@@ -149,7 +149,7 @@ const StoryDetailsModal = ({
                 />
               )}
 
-              {showCancelControlStoryButton && (
+              {showCancelControlStoryButton && isTeacher && (
                 <>
                   <LinkButton
                     to={`/stories/${story._id}/controlled-story-editor`}

@@ -16,6 +16,7 @@ import NoAnnotationsView from './NoAnnotationsView'
 const AnnotationBox = () => {
   const dispatch = useDispatch()
   const { width } = useWindowDimensions()
+  const { teacherView } = useSelector(({ user }) => user.data)
   const { focusedSpan, highlightRange, spanAnnotations, showAnnotations, annotationCandidates } =
     useSelector(({ annotations }) => annotations)
 
@@ -43,7 +44,7 @@ const AnnotationBox = () => {
     return <NoAnnotationsView handleAnnotationBoxCollapse={handleAnnotationBoxCollapse} />
   }
 
-  if (width >= 1024) {
+  if (width >= 1024 && teacherView) {
     return (
       <div className="annotations-box">
         <Segment>
