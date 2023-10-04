@@ -10,11 +10,11 @@ import ProfileStreakInfo from './ProfileStreakInfo'
 import { UserLevel } from './UserLevelInfo'
 import { XpBar } from './UserLevelInfo'
 
-const DesktopView = () => {
+const DesktopView = ({teacherView}) => {
   return (
     <div className="cont ps-nm">
-      <Grid columns={2} divided>
-        <Grid.Column className="flex-col gap-row-nm">
+      <Grid columns={2 - teacherView} divided>
+        {!teacherView && (<Grid.Column className="flex-col gap-row-nm">
           <Grid.Row>
             <div className="prof-info">
               <ProfileInfo />
@@ -32,7 +32,7 @@ const DesktopView = () => {
           <ProgressStatistics />
           <EloChart />
           <MedalSummary />
-        </Grid.Column>
+        </Grid.Column>)}
         <Grid.Column>
           <Following />
         </Grid.Column>
@@ -41,10 +41,10 @@ const DesktopView = () => {
   )
 }
 
-const MobileView = () => {
+const MobileView = ({teacherView}) => {
   return (
     <div className="cont ps-nm">
-      <Grid columns={1} divided>
+      {!teacherView && (<Grid columns={1} divided>
         <Grid.Column className="flex-col gap-row-nm">
           <Grid.Column>
            <div className="prof-info">
@@ -58,24 +58,24 @@ const MobileView = () => {
             </Grid.Column>
           </Grid.Row>
         </Grid.Column>
-      </Grid>
-      <div className="pt-nm">
+      </Grid>)}
+      {!teacherView && (<div className="pt-nm">
         <ProfileStreakInfo />
         <ProgressStatistics />
-      </div>
-      <div className="flex-col" style={{ gap: '1.5em', marginBottom: '.5em' }}>
+      </div>)}
+      {!teacherView && (<div className="flex-col" style={{ gap: '1.5em', marginBottom: '.5em' }}>
         <EloChart width="100%" />
         <MedalSummary />
-      </div>
+      </div>)}
       <Following />
     </div>
   )
 }
 
-const Main = () => {
+const Main = ({teacherView}) => {
   const { width } = useWindowDimensions()
   const bigScreen = width >= 700
-  return <>{bigScreen ? <DesktopView /> : <MobileView />}</>
+  return <>{bigScreen ? <DesktopView teacherView={teacherView} /> : <MobileView teacherView={teacherView} />}</>
 }
 
 export default Main

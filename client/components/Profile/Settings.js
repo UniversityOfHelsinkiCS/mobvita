@@ -26,7 +26,7 @@ const SettingToggle = ({ translationId, ...props }) => {
 }
 
 const Settings = () => {
-  const { user } = useSelector(({ user }) => user.data)
+  const { user, teacherView } = useSelector(({ user }) => user.data)
   const { pending } = useSelector(({ user }) => user)
   const locale = useSelector(({ locale }) => locale)
   const { groups } = useSelector(({ groups }) => groups)
@@ -89,13 +89,13 @@ const Settings = () => {
           style={{ width: '200px' }}
         />
         <Divider />
-        <LearningSettingsModal
+        {!teacherView && (<LearningSettingsModal
           trigger={
             <Button variant="primary" size="lg">
               <FormattedMessage id="learning-settings" />
             </Button>
           }
-        />
+        />)}
       </div>
       <Accordion as={Menu} fluid vertical>
         <div className="const ps-nm bg-settings">
@@ -277,7 +277,7 @@ const Settings = () => {
               }
             />
           </Menu.Item>
-          <Menu.Item className="add-story-accordion-item">
+          {!teacherView && (<Menu.Item className="add-story-accordion-item">
             <Accordion.Title
               active={accordionState === 5}
               content={
@@ -303,8 +303,8 @@ const Settings = () => {
                 </div>
               }
             />
-          </Menu.Item>
-          <Menu.Item className="add-story-accordion-item">
+          </Menu.Item>)}
+          {!teacherView && (<Menu.Item className="add-story-accordion-item">
             <Accordion.Title
               active={accordionState === 6}
               content={
@@ -330,7 +330,7 @@ const Settings = () => {
                 </div>
               }
             />
-          </Menu.Item>
+          </Menu.Item>)}
         </div>
       </Accordion>
     </div>
