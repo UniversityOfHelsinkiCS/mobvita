@@ -88,7 +88,7 @@ const ReadViews = ({ match }) => {
     return studentName
   }
   const ownedStory = oid === story?.owner
-  const isTeacher = user?.user.is_teacher
+  const teacherView = useSelector(({ user }) => user.data.teacherView)
   const studentOptions = currentGroup?.students
     .map(student => ({
       key: student._id,
@@ -121,7 +121,7 @@ const ReadViews = ({ match }) => {
   }, [])
 
   useEffect(() => {
-    if (isTeacher) {
+    if (teacherView) {
       setHideFeedback(false)
     }
     dispatch(getStoryAction(id, mode))
@@ -296,7 +296,7 @@ const ReadViews = ({ match }) => {
               </div>
               {bigScreen ? (
                 <>
-                  {isGroupReview && isTeacher && (
+                  {isGroupReview && teacherView && (
                     <div className="row-flex" style={{ marginLeft: '3em' }}>
                       <span style={{ marginRight: '.5em' }}>
                         <FormattedMessage id="student" />:{' '}
@@ -325,7 +325,7 @@ const ReadViews = ({ match }) => {
                 </>
               ) : (
                 <div>
-                  {isGroupReview && isTeacher && (
+                  {isGroupReview && teacherView && (
                     <div className="row-flex" style={{ marginLeft: '3em' }}>
                       <span style={{ marginRight: '.5em' }}>
                         <FormattedMessage id="student" />:{' '}

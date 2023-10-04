@@ -3,9 +3,14 @@ import moment from 'moment'
 import { useSelector, useDispatch } from 'react-redux'
 import { Navbar, Nav, NavDropdown, NavItem, Button } from 'react-bootstrap'
 import Headroom from 'react-headroom'
-import { Icon, Label, Popup } from 'semantic-ui-react'
+import { Icon, Label, Popup, Checkbox } from 'semantic-ui-react'
 import { Link, useHistory, useParams } from 'react-router-dom'
-import { logout, calculateIRTScore, getSelf, setIrtDummyScore } from 'Utilities/redux/userReducer'
+import { 
+  logout, 
+  calculateIRTScore, 
+  getSelf, 
+  setIrtDummyScore, 
+  teacherSwitchView } from 'Utilities/redux/userReducer'
 import { sidebarSetOpen } from 'Utilities/redux/sidebarReducer'
 import { getMetadata } from 'Utilities/redux/metadataReducer'
 import { getPracticeHistory } from 'Utilities/redux/practiceHistoryReducer'
@@ -72,6 +77,7 @@ export default function NavBar() {
     history.push('/profile/progress')
   }
   const isTeacher = user?.user.is_teacher
+  const teacherView = user?.teacherView
   const check = history.location.pathname
   const isMajorLanguage = supportedLearningLanguages?.major.includes(
     learningLanguage?.toLowerCase()
@@ -382,6 +388,17 @@ export default function NavBar() {
               </Navbar.Text>
             </div>
           </Nav>
+          {isTeacher && (
+            <Nav>
+              <Checkbox
+                // style={{ marginLeft: '6em' }}
+                toggle
+                label={intl.formatMessage({ id: 'teacher-view' })}
+                checked={teacherView}
+                onChange={() => dispatch(teacherSwitchView())}
+              />
+            </Nav>
+          )}
           <Nav>
             <Popup
               content={<FormattedMessage id="level-navbar" />}

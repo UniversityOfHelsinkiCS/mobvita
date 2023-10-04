@@ -153,6 +153,7 @@ export const updateShowReviewDiff = value => saveSelf({ show_review_diff: value 
 export const updatePreviewExer = value => saveSelf({ show_preview_exer: value })
 export const updateEnableRecmd = value => saveSelf({ enable_recmd: value })
 export const updateIsTeacher = value => saveSelf({ is_teacher: value })
+export const teacherSwitchView = () => ({ type: 'TEACHER_SWITCH_VIEW'})
 
 export const updateGroupTemplateSelection = groupId => {
   return saveSelf({ exercise_setting_template: groupId, last_selected_group: groupId })
@@ -223,7 +224,7 @@ export default (state = { data: null, learningLanguageChanged: false }, action) 
     case 'LOGIN_SUCCESS':
       return {
         ...state,
-        data: action.response,
+        data: { ...action.response, teacherView: action.response.user.is_teacher},
         pending: false,
         error: false,
         errorMessage: null,
@@ -554,6 +555,11 @@ export default (state = { data: null, learningLanguageChanged: false }, action) 
       return {
         ...state,
         irt_dummy_score: action.dummy_score,
+      }
+    case 'TEACHER_SWITCH_VIEW':
+      return {
+        ...state,
+        data: { ...state.data, teacherView: state.data.user.is_teacher && !state.data.teacherView },
       }
     default:
       return state

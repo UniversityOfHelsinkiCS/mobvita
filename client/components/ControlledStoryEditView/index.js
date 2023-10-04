@@ -68,7 +68,7 @@ const ControlledStoryEditView = ({ match }) => {
   }, [controlledPractice?.timedExercise])
 
   useEffect(() => {
-    if (user?.user.is_teacher) {
+    if (user?.teacherView) {
       setHideFeedback(false)
     }
     dispatch(getFrozenTokens(id))
