@@ -3,7 +3,7 @@ import React, { useState } from 'react'
 import { Link, useHistory } from 'react-router-dom'
 import { FormattedMessage } from 'react-intl'
 import { Icon, Dropdown, Button as SemanticButton } from 'semantic-ui-react'
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { setGroupTestDeadline, getGroupToken } from 'Utilities/redux/groupsReducer'
 import { updateGroupSelect, updateLibrarySelect } from 'Utilities/redux/userReducer'
 import { getTestQuestions } from 'Utilities/redux/testReducer'
@@ -27,6 +27,7 @@ const GroupFunctions = ({
     group_id: groupId,
     language,
   } = group
+  const teacherView = useSelector(({ user }) => user.data.teacherView)
   const [learningModalGroupId, setLearningModalGroupId] = useState(null)
   const { width } = useWindowDimensions()
   const testEnabled = currTestDeadline - Date.now() > 0
@@ -92,7 +93,7 @@ const GroupFunctions = ({
     <>
       {width >= 640 ? (
         <div className="flex" style={{ gap: '.25em', flexWrap: 'wrap' }}>
-          {isTeaching && !analyticsView && (
+          {isTeaching && !analyticsView && teacherView && (
             <Button
               variant="primary"
               as={Link}
@@ -102,7 +103,7 @@ const GroupFunctions = ({
               <Icon name="chart line" /> <FormattedMessage id="Analytics" />
             </Button>
           )}
-          {isTeaching && (
+          {isTeaching && teacherView && (
             <Button onClick={() => setLearningModalGroupId(groupId)}>
               <Icon name="settings" /> <FormattedMessage id="learning-settings" />
             </Button>
@@ -114,7 +115,7 @@ const GroupFunctions = ({
               groupId={learningModalGroupId}
             />
           )}
-          {isTeaching && (
+          {isTeaching && teacherView && (
             <Button
               data-cy="enable-test-button"
               onClick={handleTestEnableDisableButtonClick}
@@ -123,7 +124,7 @@ const GroupFunctions = ({
               <Icon name="pencil alternate" /> <FormattedMessage id={testButtonTextKey} />
             </Button>
           )}
-          {!conceptsView && isTeaching && (
+          {!conceptsView && isTeaching && teacherView && (
             <Button
               variant="primary"
               as={Link}
@@ -133,15 +134,15 @@ const GroupFunctions = ({
               <Icon name="settings" /> <FormattedMessage id="test-settings" />
             </Button>
           )}
-          <Button onClick={handleStoriesClick}>
+          {isTeaching && teacherView && (<Button onClick={handleStoriesClick}>
             <Icon name="book" /> <FormattedMessage id="Stories" />
-          </Button>
-          {!peopleView && (
+          </Button>)}
+          {!peopleView && isTeaching && teacherView && (
             <Button data-cy="people-button" onClick={handlePeopleClick}>
               <Icon name="user" /> <FormattedMessage id="people" />
             </Button>
           )}
-          {isTeaching && (
+          {isTeaching && teacherView && (
             <Button onClick={handleShowTokenClick}>
               <Icon name="key" /> <FormattedMessage id="show-group-token" />
             </Button>
