@@ -9,7 +9,7 @@ import { getLessonTopics } from 'Utilities/redux/lessonsReducer'
 const LessonPracticeThemeHelp = ({selectedThemes, always_show=false, }) => {
     const { width } = useWindowDimensions()
     const learningLanguage = useSelector(learningLanguageSelector)
-    
+    const { teacherView } = useSelector(({ user }) => user.data)
     let theme_rows = []
     for (let i = 0; i < selectedThemes.length; i++) {
         theme_rows.push(

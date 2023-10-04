@@ -10,6 +10,7 @@ const LessonPracticeTopicsHelp = ({selectedTopics, always_show=false, }) => {
     const dispatch = useDispatch()
     const { width } = useWindowDimensions()
     const learningLanguage = useSelector(learningLanguageSelector)
+    const { teacherView } = useSelector(({ user }) => user.data)
     const { topics: lessonTopics } = useSelector(({ lessons }) => lessons)
     const snippets = useSelector(({ snippets }) => snippets)
     const topics = lessonTopics && selectedTopics ? lessonTopics.filter(l => selectedTopics.includes(l.topic_id)) : []
