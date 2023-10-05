@@ -20,20 +20,18 @@ const StoryTitle = ({
   currentGroup,
   libraryShown,
   setConfirmationOpen,
-  userTeachesAGroup,
   handleControlledStoryCancel,
 }) => {
   const learningLanguage = useSelector(learningLanguageSelector)
   const {user, teacherView} = useSelector(({ user }) => user.data)
   const { email: userEmail } = user
-  const isTeacherInPrivateLibrary = userTeachesAGroup && libraryShown.private
   const isControlledStory = !!story?.control_story
   const showDeleteButton = libraryShown.private || teacherView
   const showShareButton = !story.public && !inGroupLibrary && userEmail !== 'anonymous_email'
   const showCreateControlStoryButton =
-    isTeacherInPrivateLibrary && !isControlledStory && story.user === user?.oid
+    teacherView && !isControlledStory && story.user === user?.oid
   const showCancelControlStoryButton =
-    isTeacherInPrivateLibrary && isControlledStory && story.user === user?.oid
+    teacherView && isControlledStory && story.user === user?.oid
 
   const handleDelete = () => setConfirmationOpen(true)
 
@@ -303,7 +301,6 @@ const StoryListItem = ({ story, libraryShown, selectedGroup }) => {
   const { user: userId } = useSelector(({ user }) => ({ user: user.data.user.oid }))
   const isTeacher = useSelector(({ user }) => user.data.teacherView)
   const learningLanguage = useSelector(learningLanguageSelector)
-  const userTeachesAGroup = groups.some(group => group.is_teaching) // definition of being teacher
   const isControlledStory = !!story?.control_story
   const currentGroup = groups.find(g => g.group_id === selectedGroup)
   const inGroupLibrary = libraryShown.group && !!story.groups
@@ -339,7 +336,6 @@ const StoryListItem = ({ story, libraryShown, selectedGroup }) => {
           inGroupLibrary={inGroupLibrary}
           currentGroup={currentGroup}
           libraryShown={libraryShown}
-          userTeachesAGroup={userTeachesAGroup}
           handleControlledStoryCancel={handleControlledStoryCancel}
         />
       </Card.Content>

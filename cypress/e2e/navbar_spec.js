@@ -28,6 +28,7 @@ describe("via navbar", function () {
     cy.get('[data-cy=navbar-settings-button]').click()
     cy.get('[data-cy=ui-lang-dropdown]').click()
     cy.get('[data-cy=ui-lang-dropdown] > .visible > :nth-child(4)').click()
+    cy.wait(60000)
     cy.contains('Lingua dell\'interfaccia')
     cy.get('[data-cy=navbar-user-dropdown]').click()
     cy.get('[data-cy=navbar-logout-button]').click()

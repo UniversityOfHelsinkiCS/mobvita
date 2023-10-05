@@ -141,7 +141,7 @@ const StoryDetailsModal = ({
 
           <div className="flex space-between">
             <div className="flex wrap" style={{ gap: '5px' }}>
-              {showCreateControlStoryButton && isTeacher && (
+              {showCreateControlStoryButton && (
                 <LinkButton
                   to={`/stories/${story._id}/controlled-story-editor`}
                   translationId="create-controlled-story"
@@ -149,7 +149,7 @@ const StoryDetailsModal = ({
                 />
               )}
 
-              {showCancelControlStoryButton && isTeacher && (
+              {showCancelControlStoryButton && (
                 <>
                   <LinkButton
                     to={`/stories/${story._id}/controlled-story-editor`}

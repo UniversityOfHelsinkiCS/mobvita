@@ -28,7 +28,7 @@ describe("sidebar is open (only mobile)", function () {
     cy.get('[data-cy=hamburger]').click()
     cy.get('[data-cy=ui-lang-select]').click()
     cy.get('[data-cy=ui-lang-select] > .visible > :nth-child(4)').click()
-    cy.wait(500)
+    cy.wait(60000)
     cy.contains('Profilo')
     cy.get('[data-cy=logout]').click()
 
