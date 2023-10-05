@@ -28,7 +28,7 @@ const StoryTitle = ({
   const { email: userEmail } = user
   const isTeacherInPrivateLibrary = userTeachesAGroup && libraryShown.private
   const isControlledStory = !!story?.control_story
-  const showDeleteButton = libraryShown.private || isTeacher
+  const showDeleteButton = libraryShown.private || teacherView
   const showShareButton = !story.public && !inGroupLibrary && userEmail !== 'anonymous_email'
   const showCreateControlStoryButton =
     isTeacherInPrivateLibrary && !isControlledStory && story.user === user?.oid
@@ -187,7 +187,6 @@ const StoryActions = ({
     : `/stories/${story._id}/preview`
 
   if (width >= 700) {
-    console.log(isTeacher)
     return (
       <div className="story-actions">
         {!isTeacher && (

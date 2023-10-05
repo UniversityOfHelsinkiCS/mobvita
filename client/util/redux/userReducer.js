@@ -250,7 +250,7 @@ export default (state = { data: null, learningLanguageChanged: false }, action) 
         data: { 
           ...state.data, 
           user: action.response.user, 
-          teacherView: state.data.teacherView === undefined && action.response.user.is_teacher || state.data.teacherView
+          teacherView: state.data && state.data.teacherView === undefined && action.response.user.is_teacher || state.data.teacherView
         },
         pending: false,
         error: false,
@@ -262,7 +262,7 @@ export default (state = { data: null, learningLanguageChanged: false }, action) 
         data: { 
           ...state.data, 
           user: action.response.user, 
-          teacherView: state.data.teacherView === undefined && action.response.user.is_teacher || state.data.teacherView
+          teacherView: state.data && state.data.teacherView === undefined && action.response.user.is_teacher || state.data.teacherView
         },
         pending: false,
         error: false,
@@ -292,7 +292,7 @@ export default (state = { data: null, learningLanguageChanged: false }, action) 
         data: { 
           ...state.data, 
           user: action.response.user, 
-          teacherView: state.data.teacherView === undefined && action.response.user.is_teacher || state.data.teacherView
+          teacherView: state.data && state.data.teacherView === undefined && action.response.user.is_teacher || state.data.teacherView
         },
         pending: false,
         error: false,
@@ -318,7 +318,7 @@ export default (state = { data: null, learningLanguageChanged: false }, action) 
         data: { 
           ...state.data, 
           user: action.response.user, 
-          teacherView: state.data.teacherView === undefined && action.response.user.is_teacher || state.data.teacherView
+          teacherView: state.data && state.data.teacherView === undefined && action.response.user.is_teacher || state.data.teacherView
         },
         pending: false,
         error: false,
@@ -341,7 +341,7 @@ export default (state = { data: null, learningLanguageChanged: false }, action) 
         data: { 
           ...state.data, 
           user: action.response.user, 
-          teacherView: state.data.teacherView === undefined && action.response.user.is_teacher || state.data.teacherView
+          teacherView: state.data && state.data.teacherView === undefined && action.response.user.is_teacher || state.data.teacherView
         },
         pending: false,
         error: false,
@@ -367,7 +367,7 @@ export default (state = { data: null, learningLanguageChanged: false }, action) 
         data: { 
           ...state.data, 
           user: action.response.user, 
-          teacherView: state.data.teacherView === undefined && action.response.user.is_teacher || state.data.teacherView
+          teacherView: state.data && state.data.teacherView === undefined && action.response.user.is_teacher || state.data.teacherView
         },
         pending: false,
         error: false,
