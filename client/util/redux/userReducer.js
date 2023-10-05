@@ -247,7 +247,11 @@ export default (state = { data: null, learningLanguageChanged: false }, action) 
     case 'GET_SELF_SUCCESS':
       return {
         ...state,
-        data: { ...state.data, user: action.response.user },
+        data: { 
+          ...state.data, 
+          user: action.response.user, 
+          teacherView: state.data.teacherView === undefined && action.response.user.is_teacher || state.data.teacherView
+        },
         pending: false,
         error: false,
         refreshed: true,
@@ -255,7 +259,11 @@ export default (state = { data: null, learningLanguageChanged: false }, action) 
     case 'SAVE_SELF_SUCCESS':
       return {
         ...state,
-        data: { ...state.data, user: action.response.user },
+        data: { 
+          ...state.data, 
+          user: action.response.user, 
+          teacherView: state.data.teacherView === undefined && action.response.user.is_teacher || state.data.teacherView
+        },
         pending: false,
         error: false,
         refreshed: true,
@@ -281,7 +289,11 @@ export default (state = { data: null, learningLanguageChanged: false }, action) 
     case 'FOLLOW_USER_SUCCESS':
       return {
         ...state,
-        data: { ...state.data, user: action.response.user },
+        data: { 
+          ...state.data, 
+          user: action.response.user, 
+          teacherView: state.data.teacherView === undefined && action.response.user.is_teacher || state.data.teacherView
+        },
         pending: false,
         error: false,
         refreshed: true,
@@ -303,7 +315,11 @@ export default (state = { data: null, learningLanguageChanged: false }, action) 
     case 'UNFOLLOW_USER_SUCCESS':
       return {
         ...state,
-        data: { ...state.data, user: action.response.user },
+        data: { 
+          ...state.data, 
+          user: action.response.user, 
+          teacherView: state.data.teacherView === undefined && action.response.user.is_teacher || state.data.teacherView
+        },
         pending: false,
         error: false,
         refreshed: true,
@@ -322,7 +338,11 @@ export default (state = { data: null, learningLanguageChanged: false }, action) 
     case 'BLOCK_USER_SUCCESS':
       return {
         ...state,
-        data: { ...state.data, user: action.response.user },
+        data: { 
+          ...state.data, 
+          user: action.response.user, 
+          teacherView: state.data.teacherView === undefined && action.response.user.is_teacher || state.data.teacherView
+        },
         pending: false,
         error: false,
         refreshed: true,
@@ -344,7 +364,11 @@ export default (state = { data: null, learningLanguageChanged: false }, action) 
     case 'UNBLOCK_USER_SUCCESS':
       return {
         ...state,
-        data: { ...state.data, user: action.response.user },
+        data: { 
+          ...state.data, 
+          user: action.response.user, 
+          teacherView: state.data.teacherView === undefined && action.response.user.is_teacher || state.data.teacherView
+        },
         pending: false,
         error: false,
         refreshed: true,
@@ -410,7 +434,11 @@ export default (state = { data: null, learningLanguageChanged: false }, action) 
     case 'UPDATE_LEARNING_LANGUAGE_SUCCESS':
       return {
         ...state,
-        data: { ...state.data, user: action.response.user },
+        data: { 
+          ...state.data, 
+          user: action.response.user, 
+          teacherView: action.response.user.is_teacher
+        },
         pending: false,
         error: false,
         refreshed: true,

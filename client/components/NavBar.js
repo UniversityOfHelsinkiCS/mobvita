@@ -391,7 +391,7 @@ export default function NavBar() {
           {isTeacher && (
             <Nav>
               <Checkbox
-                // style={{ marginLeft: '6em' }}
+                style={{ marginTop: '1em' }}
                 toggle
                 label={intl.formatMessage({ id: 'teacher-view' })}
                 checked={teacherView}

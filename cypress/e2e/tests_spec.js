@@ -1,6 +1,6 @@
 describe('test view', function() {
   this.beforeAll(function () {
-    cy.loginRussian()
+    cy.login('Russian', true, 'English')
     cy.createUser('teacher')
   })
 
@@ -17,7 +17,7 @@ describe('test view', function() {
 
     cy.visit('http://localhost:8000/groups/teacher')
     cy.get('[data-cy=create-group-button]').click()
-    cy.get('input').eq(0).type('my_test_group')
+    cy.get('[data-cy=group-name]').eq(0).type('my_test_group')
     cy.get('textarea').eq(1).type(this.teacher.email)
     cy.get('textarea').eq(2).type(this.teacher.email)
     cy.get('[type=submit]').click()

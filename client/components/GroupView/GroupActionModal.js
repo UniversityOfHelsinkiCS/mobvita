@@ -56,7 +56,7 @@ const GroupActionModal = ({ trigger, role }) => {
             <span className="sm-label">
               <FormattedMessage id="name-of-group" />
             </span>
-            <FormControl as="input" onChange={e => setGroupName(e.target.value)} />
+            <FormControl data-cy="group-name" as="input" onChange={e => setGroupName(e.target.value)} />
             <span className="sm-label">
               <FormattedMessage id="Description" />
             </span>

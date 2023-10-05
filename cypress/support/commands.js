@@ -53,7 +53,7 @@ function createRandomUser() {
   return
 }
 
-Cypress.Commands.add('login', function (transLang = 'English') {
+Cypress.Commands.add('login', function (learningLang = 'Finnish', is_teacher = false, transLang = 'English') {
   const user = randomCredentials()
   cy.request(
     {
@@ -74,13 +74,25 @@ Cypress.Commands.add('login', function (transLang = 'English') {
           'Authorization': `Bearer ${user.token}`
         },
         body: {
-          last_used_lang: 'Finnish',
+          last_used_lang: learningLang,
           last_trans_lang: transLang,
-          interface_lang: 'Finnish',
+          interface_lang: learningLang,
           has_seen_home_tour: true,
           has_seen_library_tour: true
         },
         retryOnNetworkFailure: true
+      }).then(function (response) {
+        cy.request({
+          method: 'POST',
+          url: 'localhost:8000/api/user',
+          headers: {
+            'Authorization': `Bearer ${user.token}`
+          },
+          body: {
+            is_teacher: is_teacher,
+          },
+          retryOnNetworkFailure: true
+        })
       })
       cy.request('POST', 'localhost:8000/api/session', { ...user })
           .as('user')
@@ -92,42 +104,6 @@ Cypress.Commands.add('login', function (transLang = 'English') {
     return cy.wrap(user)
 })
 
-Cypress.Commands.add('loginRussian', function (transLang = 'English') {
-  const user = randomCredentials()
-  cy.request(
-    {
-      method: 'POST', 
-      url: 'localhost:8000/api/register/test', 
-      body: { ...user },
-      retryOnNetworkFailure: true
-    })
-    .then(function (response) {
-      user.token = response.body.access_token
-      currentUser = user
-      cy.request('POST', 'localhost:8000/api/confirm/test', { ...user })
-      users.push(user)
-      cy.request({
-        method: 'POST',
-        url: 'localhost:8000/api/user',
-        headers: {
-          'Authorization': `Bearer ${user.token}`
-        },
-        body: {
-          last_used_lang: 'Russian',
-          last_trans_lang: transLang,
-          interface_lang: 'Russian',
-        },
-        retryOnNetworkFailure: true
-      })
-      cy.request('POST', 'localhost:8000/api/session', { ...user })
-          .as('user')
-          .then(response => window.localStorage.setItem('user', JSON.stringify(response.body)))
-
-      cy.reload()
-    })
-
-    return cy.wrap(user)
-})
 
 Cypress.Commands.add('loginExisting', function () {
   cy.request('POST', 'localhost:8000/api/session', { ...currentUser })
@@ -136,7 +112,7 @@ Cypress.Commands.add('loginExisting', function () {
   return cy.wrap(currentUser)
 })
 
-Cypress.Commands.add('createUser', function(name) {
+Cypress.Commands.add('createUser', function(name, language, is_teacher = false) {
   const user = randomCredentials()
   cy.request('POST', 'localhost:8000/api/register/test', { ...user })
     .then(function (response) {
@@ -144,6 +120,36 @@ Cypress.Commands.add('createUser', function(name) {
 
       cy.request('POST', 'localhost:8000/api/confirm/test', { ...user })
       users.push(user)
+  }).then(function (response) { 
+    cy.request({
+      method: 'POST',
+      url: 'localhost:8000/api/user',
+      headers: {
+        'Authorization': `Bearer ${user.token}`
+      },
+      body: {
+        last_used_lang: language,
+        last_trans_lang: 'English',
+        interface_lang: language,
+      },
+      retryOnNetworkFailure: true
+    }).then(function (response) {
+      cy.request({
+        method: 'POST',
+        url: 'localhost:8000/api/user',
+        headers: {
+          'Authorization': `Bearer ${user.token}`
+        },
+        body: {
+          is_teacher: is_teacher,
+        },
+        retryOnNetworkFailure: true
+      })
+    })
+    cy.request('POST', 'localhost:8000/api/session', { ...user })
+          .as(name)
+          .then(response => window.localStorage.setItem(name, JSON.stringify(response.body)))
+    cy.reload()
   })
   if (name) {
     savedUsers[name] = user
@@ -153,6 +159,7 @@ Cypress.Commands.add('createUser', function(name) {
 })
 
 Cypress.Commands.add('getUser', function(name) {
+  console.log(savedUsers)
   return cy.wrap(savedUsers[name])
 })
 

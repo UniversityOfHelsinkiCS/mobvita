@@ -1,8 +1,8 @@
 describe("groups", function () {
   this.beforeAll(function () {
-    cy.login()
-    cy.createUser('teacher')
-    cy.createUser('student')
+    cy.login('Finnish', true, 'English')
+    cy.createUser('student', 'Finnish')
+    cy.createUser('teacher', 'Finnish', true)
   })
 
   this.beforeEach(function () {
@@ -18,7 +18,7 @@ describe("groups", function () {
 
   it('new group can be created with students and teachers', function () {
     cy.get('[data-cy=create-group-button]').click()
-    cy.get('input').eq(0).type('my_test_group')
+    cy.get('[data-cy=group-name]').eq(0).type('my_test_group')
     cy.get('textarea').eq(1).type(this.teacher.email)
     cy.get('textarea').eq(2).type(this.student.email)
     cy.get('[type=submit]').click()
