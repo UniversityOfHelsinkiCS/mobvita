@@ -72,100 +72,142 @@ const HomeviewButtons = ({
   const history = useHistory()
   const { hasTests, hasAdaptiveTests } = useSelector(({ metadata }) => metadata)
   const { user } = useSelector(({ user }) => ({ user: user.data }))
+
+  const homeViewButtonsGridClassName = user?.user.is_teacher && user?.teacherView ? "teacher-homeview-btns-cont" : "student-homeview-btns-cont"
+
   return (
-    <div className="homeview-btns-cont">
-      <div className="add-new-stories-btn-cont tour-add-new-stories">
-        <HomeviewButton
-          wide
-          translationKey="add-your-stories"
-          handleClick={() => setAddStoryModalOpen(true)}
-          dataCy="add-story-button"
-        />
-      </div>
-      <div className="library-btn-cont tour-library">
-        <HomeviewButton
-          imgSrc={images.library}
-          altText="two books in a pile"
-          translationKey="Library"
-          handleClick={() => history.push('/library')}
-          dataCy="library-button"
-        />
-      </div>
-      <div className="lesson-btn-cont tour-lesson">
-        <HomeviewButton
-          imgSrc={images.readingBook}
-          altText="reading a book"
-          translationKey="lesson-home-btn"
-          beta_feature={true}
-          handleClick={() => history.push('/lessons/library')} // setLessonModalOpen(true)
-        />
-      </div>
-      <div className="practice-btn-cont tour-practice-now">
-        <HomeviewButton
-          // imgSrc={images.dices}
-          // altText="two dices"
-          imgSrc={images.diveIn}
-          altText="dive in"
-          translationKey="practice-now"
-          handleClick={() => setPracticeModalOpen(true)}
-          dataCy="practice-now"
-        />
-      </div>
-      <div className="flashcards-btn-cont tour-flashcards">
-        <HomeviewButton
-          imgSrc={images.flashcards}
-          altText="three playing cards"
-          translationKey="Flashcards"
-          handleClick={() => history.push('/flashcards')}
-        />
-      </div>
-      {hasAdaptiveTests && (
-        <div className="adaptive-test-btn-cont">
-          <HomeviewButton
-            imgSrc={images.adaptiveTest}
-            altText="a test form with a star on it"
-            translationKey="adaptive-test"
-            handleClick={() => history.push('/adaptive-test')}
-          />
+    <div className="">
+      {(user?.user.is_teacher && user?.teacherView) && (
+        <div className={homeViewButtonsGridClassName}>
+          <div className="add-new-stories-btn-cont tour-add-new-stories">
+            <HomeviewButton
+              wide
+              translationKey="add-your-stories"
+              handleClick={() => setAddStoryModalOpen(true)}
+              dataCy="add-story-button"
+            />
+          </div>
+          <div className="groups-btn-cont tour-groups">
+            <HomeviewButton
+              imgSrc={images.library}
+              altText="two books in a pile"
+              translationKey="Groups"
+              handleClick={() => history.push('/groups/teacher')}
+              dataCy="groups-button"
+            />
+          </div>
+          <div className="library-btn-cont tour-library">
+            <HomeviewButton
+              imgSrc={images.library}
+              altText="two books in a pile"
+              translationKey="Library"
+              handleClick={() => history.push('/library')}
+              dataCy="library-button"
+            />
+          </div>
+          <div className="lesson-btn-cont tour-lesson">
+            <HomeviewButton
+              imgSrc={images.readingBook}
+              altText="reading a book"
+              translationKey="lesson-home-btn"
+              beta_feature={true}
+              handleClick={() => history.push('/lessons/library')}
+            />
+          </div>
+
+          {hiddenFeatures && (
+            <>
+              <Button onClick={() => history.push('/test-construction')}>Grammar check</Button>
+              <Button style={{ padding: '5em' }} onClick={() => history.push('test-debug')}>
+                Feedback check
+              </Button>
+            </>
+          )}
         </div>
       )}
-      {hasTests && aTestIsEnabled && (
-        <div className="test-btn-cont">
-          <HomeviewButton
-            imgSrc={images.exhaustiveTest}
-            altText="a test form with a clock on it"
-            translationKey="Tests"
-            handleClick={() => history.push('/tests')}
-            dataCy="tests-button"
-          />
+
+      {(!user?.user.is_teacher || (user?.user.is_teacher && !user?.teacherView)) && (
+        <div className={homeViewButtonsGridClassName}>
+          <div className="practice-btn-cont tour-practice-now">
+            <HomeviewButton
+              // imgSrc={images.dices}
+              // altText="two dices"
+              imgSrc={images.diveIn}
+              altText="dive in"
+              translationKey="practice-now"
+              handleClick={() => setPracticeModalOpen(true)}
+              dataCy="practice-now"
+            />
+          </div>
+          <div className="lesson-btn-cont tour-lesson">
+            <HomeviewButton
+              imgSrc={images.readingBook}
+              altText="reading a book"
+              translationKey="lesson-home-btn"
+              beta_feature={true}
+              handleClick={() => history.push('/lessons/library')}
+            />
+          </div>
+          <div className="flashcards-btn-cont tour-flashcards">
+            <HomeviewButton
+              imgSrc={images.flashcards}
+              altText="three playing cards"
+              translationKey="Flashcards"
+              handleClick={() => history.push('/flashcards')}
+            />
+          </div>
+
+          {hasAdaptiveTests && (
+            <div className="adaptive-test-btn-cont">
+              <HomeviewButton
+                imgSrc={images.adaptiveTest}
+                altText="a test form with a star on it"
+                translationKey="adaptive-test"
+                handleClick={() => history.push('/adaptive-test')}
+              />
+            </div>
+          )}
+          {hasTests && aTestIsEnabled && (
+            <div className="test-btn-cont">
+              <HomeviewButton
+                imgSrc={images.exhaustiveTest}
+                altText="a test form with a clock on it"
+                translationKey="Tests"
+                handleClick={() => history.push('/tests')}
+                dataCy="tests-button"
+              />
+            </div>
+          )}
+          {user.user.email !== 'anonymous_email' && (
+            <>
+              <HomeviewButton
+                imgSrc={images.lightbulbIcon}
+                altText="light bulb"
+                translationKey="Recommendations"
+                handleClick={() => dispatch(openEncouragement())}
+              />
+            </>
+          )}
+
+          <div>
+            <HomeviewButton
+              imgSrc={images.notesIcon}
+              altText="post-it notes"
+              translationKey="notes-library"
+              handleClick={() => history.push('/notes-library')}
+            />
+          </div>
+
+          {hiddenFeatures && (
+            <>
+              <Button onClick={() => history.push('/test-construction')}>Grammar check</Button>
+              <Button style={{ padding: '5em' }} onClick={() => history.push('test-debug')}>
+                Feedback check
+              </Button>
+            </>
+          )}
         </div>
-      )}
-      <div>
-        <HomeviewButton
-          imgSrc={images.notesIcon}
-          altText="post-it notes"
-          translationKey="notes-library"
-          handleClick={() => history.push('/notes-library')}
-        />
-      </div>
-      {user.user.email !== 'anonymous_email' && (
-        <>
-          <HomeviewButton
-            imgSrc={images.lightbulbIcon}
-            altText="light bulb"
-            translationKey="Recommendations"
-            handleClick={() => dispatch(openEncouragement())}
-          />
-        </>
-      )}
-      {hiddenFeatures && (
-        <>
-          <Button onClick={() => history.push('/test-construction')}>Grammar check</Button>
-          <Button style={{ padding: '5em' }} onClick={() => history.push('test-debug')}>
-            Feedback check
-          </Button>
-        </>
-      )}
+      )}     
     </div>
   )
 }
@@ -234,6 +276,8 @@ const HomeView = () => {
     }
   }, [])
 
+  const homeviewButtonsContainerClassName = user?.user.is_teacher && user?.teacherView ? "pn-nm" : "flex pb-nm"
+
   return (
     <div className="cont-tall cont flex-col auto gap-row-sm pt-lg blue-bg">
       <AddStoryModal open={addStoryModalOpen} setOpen={setAddStoryModalOpen} />
@@ -243,7 +287,10 @@ const HomeView = () => {
         setOpen={setBetaModalOpen}
         language={learningLanguage}
       />
-      <Recommender />
+
+      {(!user?.user.is_teacher || (user?.user.is_teacher && !user?.teacherView)) && (
+        <Recommender />
+      )}
 
       {!userData.is_teacher && !userData.grade && !userIsAnonymous && !userData.is_new_user && (
         <SetCEFRReminder
@@ -255,23 +302,25 @@ const HomeView = () => {
       <div className="grow flex-col">
         {bigScreen ? (
           <div className="grow flex-col space-between gap-row-nm">
-            <div className="flex pb-nm" style={{ gap: '1.5em' }}>
+            <div className={homeviewButtonsContainerClassName} style={{ gap: '1.5em' }}>
               <HomeviewButtons
                 setPracticeModalOpen={setPracticeModalOpen}
                 setAddStoryModalOpen={setAddStoryModalOpen}
                 setLessonModalOpen={setLessonModalOpen}
                 aTestIsEnabled={aTestIsEnabled}
               />
-              <div
-                className="flex-col"
-                style={{
-                  width: '500px',
-                  gap: '1.9em',
-                }}
-              >
-                <EloChart width="100%" />
-                <LeaderboardSummary />
-              </div>
+              {(!user?.user.is_teacher || (user?.user.is_teacher && !user?.teacherView)) && (
+                <div
+                  className="flex-col"
+                  style={{
+                    width: '500px',
+                    gap: '1.9em',
+                  }}
+                >
+                  <EloChart width="100%" />
+                  <LeaderboardSummary />
+                </div>
+              )}
             </div>
           </div>
         ) : (
@@ -281,9 +330,13 @@ const HomeView = () => {
               setAddStoryModalOpen={setAddStoryModalOpen}
               aTestIsEnabled={aTestIsEnabled}
             />
-            <EloChart width="100%" />
-            <LeaderboardSummary />
-            <MedalSummary />
+            {(!user?.user.is_teacher || (user?.user.is_teacher && !user?.teacherView)) && (
+              <>
+                <EloChart width="100%" />
+                <LeaderboardSummary />
+                <MedalSummary />
+              </>
+            )}
           </div>
         )}
         {showFooter && <Footer />}

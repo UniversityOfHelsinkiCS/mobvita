@@ -552,6 +552,57 @@ $value in $spacing {
 }
 
 // Homeview buttons
+.student-homeview-btns-cont {
+  width: 100%;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: 0.4fr 1.3fr 1.3fr 1.3fr;
+  gap: 10px 10px;
+  grid-auto-flow: row;
+  grid-template-areas:
+    "practice lesson"
+    "flashcards notes"
+    "adaptive-test exhaustive-test ."
+    ". . ";
+
+  @media (min-width: 900px) {
+    max-height: 525px;
+    gap: 17px 17px;
+    grid-template-columns: 1fr 1fr 1fr;
+    grid-template-rows: 0.3fr 1fr 1fr;
+    gap: 15px 15px;
+    grid-template-areas:
+      "practice lesson flashcards"
+      "adaptive-test exhaustive-test ."
+      ". . .";
+  }
+}
+
+.teacher-homeview-btns-cont {
+  width: 100%;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: 0.4fr 1.3fr 1.3fr 1.3fr;
+  gap: 10px 10px;
+  grid-auto-flow: row;
+  grid-template-areas:
+    "group library"
+    "lesson ."
+    ". .";
+
+  @media (min-width: 900px) {
+    max-height: 525px;
+    gap: 17px 17px;
+    grid-template-columns: 1fr 1fr 1fr;
+    grid-template-rows: 0.3fr 1fr 1fr;
+    gap: 15px 15px;
+    grid-template-areas:
+      "add-new-stories add-new-stories add-new-stories"
+      "groups library lesson"
+      ". . .";
+  }
+}
+
 .homeview-btns-cont {
   width: 100%;
   display: grid;
@@ -589,6 +640,10 @@ $value in $spacing {
 
 .add-new-stories-btn-cont {
   grid-area: add-new-stories;
+}
+
+.groups-btn-cont {
+  grid-area: groups;
 }
 
 .practice-btn-cont {

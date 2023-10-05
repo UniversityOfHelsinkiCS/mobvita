@@ -15,7 +15,7 @@ const PracticeModalButton = ({ handleClick, name, extraImgSrc, storyNum }) => {
   const imgSrc = extraImgSrc ?? `${name}1`
 
   return (
-    <button data-cy={name} className="practice-now-modal-btn" type="button" onClick={handleClick}>
+    <button style={{ marginRight: "auto" }} data-cy={name} className="practice-now-modal-btn" type="button" onClick={handleClick}>
       <div className="align-center flex-col space-between">
         <div style={{ marginBottom: '1em' }}>
           <FormattedMessage id={capitalize(name)} /> {storyNum && <span> ({storyNum})</span>}
@@ -78,6 +78,8 @@ const PracticeModal = ({ open, setOpen }) => {
 
   // preload practice modal images
   useLayoutEffect(() => {
+    new Image().src = images.library
+
     new Image().src = images.dices
     new Image().src = images.public1
     new Image().src = images.group1
@@ -253,6 +255,19 @@ const PracticeModal = ({ open, setOpen }) => {
                     name={name}
                   />
                 ))}
+            </div>
+          </div>
+
+          <div style={{ width: '100%' }}>
+            <div className="practice-now-modal-label">
+              <FormattedMessage id="check-library" />
+            </div>
+            <div className="practice-now-modal-group-cont" data-cy="practice-library">
+              <PracticeModalButton
+                handleClick={() => history.push('/library')}
+                name="Library"
+                extraImgSrc="library"
+              />
             </div>
           </div>
         </div>
