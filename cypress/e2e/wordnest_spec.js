@@ -2,7 +2,7 @@ describe('wordnest modal', function() {
     const previewURL = "http://localhost:8000/stories/5c082383ff63453c5423f99d/preview"
 
     this.beforeAll(function () {
-      cy.loginRussian()
+      cy.login('Russian')
     })
   
     this.beforeEach(function () {
