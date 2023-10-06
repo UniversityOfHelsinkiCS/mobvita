@@ -267,6 +267,7 @@ const PracticeModal = ({ open, setOpen }) => {
                 handleClick={() => history.push('/library')}
                 name="Library"
                 extraImgSrc="library"
+                dataCy="check-library-button"
               />
             </div>
           </div>

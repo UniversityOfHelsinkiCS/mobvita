@@ -328,11 +328,13 @@ export default function NavBar() {
                       <FormattedMessage id="Lessons" />
                     </Navbar.Brand>
                   </Link>
-                  <Link to="/flashcards">
-                    <Navbar.Brand className="navbar-text-item">
-                      <FormattedMessage id="Flashcards" />
-                    </Navbar.Brand>
-                  </Link>
+                  {(!isTeacher || (isTeacher && !teacherView)) && (
+                    <Link to="/flashcards">
+                      <Navbar.Brand className="navbar-text-item">
+                        <FormattedMessage id="Flashcards" />
+                      </Navbar.Brand>
+                    </Link>
+                  )}
                   <Link
                     data-cy="navbar-groups-button"
                     to={isTeacher ? '/groups/teacher' : '/groups/student'}
@@ -391,7 +393,7 @@ export default function NavBar() {
           {isTeacher && (
             <Nav>
               <Checkbox
-                style={{ marginTop: '1em' }}
+                style={{ marginTop: '0.5em', marginRight: '0.5em' }}
                 toggle
                 label={intl.formatMessage({ id: 'teacher-view' })}
                 checked={teacherView}
@@ -399,17 +401,19 @@ export default function NavBar() {
               />
             </Nav>
           )}
-          <Nav>
-            <Popup
-              content={<FormattedMessage id="level-navbar" />}
-              trigger={
-                <Link to="/profile/main" style={{ textDecoration: 'none' }}>
-                  <Navbar.Brand className="navbar-level">{user.user.level}</Navbar.Brand>
-                </Link>
-              }
-              position="top center"
-            />
-          </Nav>
+          {(!isTeacher || (isTeacher && !teacherView)) && (
+            <Nav>
+              <Popup
+                content={<FormattedMessage id="level-navbar" />}
+                trigger={
+                  <Link to="/profile/main" style={{ textDecoration: 'none' }}>
+                    <Navbar.Brand className="navbar-level">{user.user.level}</Navbar.Brand>
+                  </Link>
+                }
+                position="top center"
+              />
+            </Nav>
+          )}
           <Nav>
             <div className="navbar-container" style={{ width: '90%' }}>
               <Offline className="navbar-basic-item" polling={{ timeout: 20000 }}>
