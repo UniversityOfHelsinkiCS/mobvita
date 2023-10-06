@@ -146,9 +146,9 @@ const Recommender = () => {
     story => story.shared && !story.has_read && story.control_story
   ) ? <SharedIncompleteStoryInGroup /> : null;
 
-  const num_of_rewardable_words = creditableWordsNum >= 5 || (storyBlueCards.filter(
+  const num_of_rewardable_words = creditableWordsNum >= 5 || (storyBlueCards?.filter(
     story => story.story_id !== storyId
-  ).length > 0 && storyBlueCards.filter(
+  ).length > 0 && storyBlueCards?.filter(
     story => story.story_id !== storyId
   )[0]?.num_of_rewardable_words >=5) ? <StoryCompletedToBluecardsExerciseEncouragement /> : null;
 
