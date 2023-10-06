@@ -68,7 +68,15 @@ const RecommendSlider = ({ slides }) => {
                         width: '100%'
                     }
                 }>
-                    <div className='slide-container' ref={slideContainerRef}>
+                    <div 
+                        className='slide-container' 
+                        ref={slideContainerRef} 
+                        style={{
+                            display: "flex",
+                            height: "100%",
+                            alignItems: "center"
+                        }}
+                    >
                         <div className='slide active' key={current}>
                             {filteredSlides[current]}
                         </div>

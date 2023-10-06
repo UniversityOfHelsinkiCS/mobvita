@@ -43,7 +43,7 @@ const Recommender = () => {
   const userData = useSelector(state => state.user.data.user)
   const learningLanguage = userData ? userData.last_used_language : null
   const { cachedStories, pending: metadataPending } = useSelector(({ metadata }) => metadata)
-  const { storyBlueCards, prevStoryBlueCards, storyCardsPending } = useSelector(
+  const { storyBlueCards, creditableWordsNum } = useSelector(
     ({ flashcards }) => flashcards
   )
   const { open, fcOpen } = useSelector(({ encouragement }) => encouragement)
@@ -54,6 +54,7 @@ const Recommender = () => {
   }))
   const { newVocabulary } = useSelector(({ newVocabulary }) => newVocabulary)
   const { user_rank } = useSelector(({ leaderboard }) => leaderboard.data)
+  const stories = useSelector(({ stories }) => stories.data)
   const [dailyStoriesDraggableIsOpen, setDailyStoriesDraggableIsOpen] = useState(false)
   const bigScreen = useWindowDimensions().width > 700
   const dispatch = useDispatch()
@@ -137,6 +138,20 @@ const Recommender = () => {
     story => story.last_snippet_id === story.num_snippets - 1
   ).length > 0 ? <ReviewStoriesEncouragement /> : null;
 
+  const unseen_stories_inGroup_encourage = stories.find(
+    story => story.shared && !story.has_read && story.groups?.length > 0 && !story.control_story
+  ) ? <UnseenStoriesInGroup /> : null;
+
+  const shared_incomplete_story_inGroup_encourage = stories.find(
+    story => story.shared && !story.has_read && story.control_story
+  ) ? <SharedIncompleteStoryInGroup /> : null;
+
+  const num_of_rewardable_words = creditableWordsNum >= 5 || (storyBlueCards.filter(
+    story => story.story_id !== storyId
+  ).length > 0 && storyBlueCards.filter(
+    story => story.story_id !== storyId
+  )[0]?.num_of_rewardable_words >=5) ? <StoryCompletedToBluecardsExerciseEncouragement /> : null;
+
   return (
     <>
       {loading ? null : showAllEncouragements && open ? (
@@ -166,11 +181,11 @@ const Recommender = () => {
                   daily_stories_encourage,
                   latest_incomplete_story,
                   confirm_blue_card_encourage,
-                  <UnseenStoriesInGroup />,
-                  <SharedIncompleteStoryInGroup />,
+                  unseen_stories_inGroup_encourage,
+                  shared_incomplete_story_inGroup_encourage,
                   review_stories_encourage,
                   leader_board_encourage,
-                  <StoryCompletedToBluecardsExerciseEncouragement />,
+                  num_of_rewardable_words,
                   latest_incomplete_story,
                   words_seen_encourage,
                   new_words_interacted_exercise_encourage,
@@ -246,8 +261,8 @@ const Recommender = () => {
                     daily_stories_encourage,
                     latest_incomplete_story,
                     confirm_blue_card_encourage,
-                    <UnseenStoriesInGroup />,
-                    <SharedIncompleteStoryInGroup />,
+                    unseen_stories_inGroup_encourage,
+                    shared_incomplete_story_inGroup_encourage,
                     review_stories_encourage,
                 ]} />
                 <TurnOffRecommendations />
@@ -329,7 +344,7 @@ const Recommender = () => {
 
                 <RecommendSlider slides={[
                     leader_board_encourage,
-                    <StoryCompletedToBluecardsExerciseEncouragement />,
+                    num_of_rewardable_words,
                     latest_incomplete_story,
                     words_seen_encourage,
                     new_words_interacted_exercise_encourage,
