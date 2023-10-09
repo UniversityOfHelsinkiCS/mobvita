@@ -10,7 +10,7 @@ import Settings from './Settings'
 
 export default function Profile({ location }) {
   const intl = useIntl()
-  const { teacherView } = useSelector(({ user }) => user.data)
+  const { is_teacher: teacherView } = useSelector(({ user }) => user.data.user)
   let panes
   let index
   if (!teacherView){

@@ -26,7 +26,8 @@ const SettingToggle = ({ translationId, ...props }) => {
 }
 
 const Settings = () => {
-  const { user, teacherView } = useSelector(({ user }) => user.data)
+  const { user } = useSelector(({ user }) => user.data)
+  const {is_teacher: teacherView} = user
   const { pending } = useSelector(({ user }) => user)
   const locale = useSelector(({ locale }) => locale)
   const { groups } = useSelector(({ groups }) => groups)

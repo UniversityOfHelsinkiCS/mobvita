@@ -27,7 +27,7 @@ const GroupFunctions = ({
     group_id: groupId,
     language,
   } = group
-  const teacherView = useSelector(({ user }) => user.data.teacherView)
+  const teacherView = useSelector(({ user }) => user.data.user.is_teacher)
   const [learningModalGroupId, setLearningModalGroupId] = useState(null)
   const { width } = useWindowDimensions()
   const testEnabled = currTestDeadline - Date.now() > 0

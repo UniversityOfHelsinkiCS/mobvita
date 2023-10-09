@@ -87,6 +87,7 @@ export default function NavBar() {
 
   const showStoryElo = history.location.pathname.includes('practice')
   const showFlashcardElo = hiddenFeatures && history.location.pathname.includes('flashcards')
+  const showTeacherViewSwitch = !history.location.pathname.includes('groups/teacher') && !history.location.pathname.includes('profile')
   const hasChosenLearningLanguage = user?.user?.last_used_language !== null
 
   const practiceHistory = useSelector(state => state.practiceHistory)
@@ -390,7 +391,7 @@ export default function NavBar() {
               </Navbar.Text>
             </div>
           </Nav>
-          {isTeacher && (
+          {isTeacher && showTeacherViewSwitch && (
             <Nav>
               <Checkbox
                 style={{ marginTop: '0.5em', marginRight: '0.5em' }}

@@ -37,14 +37,15 @@ import './LessonLibraryStyles.css';
 const LessonList = () => {
   const intl = useIntl()
   const learningLanguage = useLearningLanguage()
+  const { pending: userPending, data: userData } = useSelector(({ user }) => user)
+  const { teacherView, user } = userData
   const {
     last_selected_library: savedLibrarySelection,
     last_selected_group: savedGroupSelection,
     oid: userId,
     has_seen_lesson_tour,
     vocabulary_score,
-  } = useSelector(({ user }) => user.data.user)
-  const { teacherView } = useSelector(({ user }) => user.data)
+  } = user
   const {
     pending: metaPending,
     lesson_semantics,
@@ -99,9 +100,8 @@ const LessonList = () => {
   }, [groups])
 
   useEffect(() => {
-    if (teacherView) setLibraries({group: true})
-    else setLibraries({...libraries, private: false})
-  }, [teacherView])
+    if (!userPending && teacherView) setLibrary('group')
+  }, [teacherView, userPending])
 
   useEffect(() => {
     if (!metaPending) {
@@ -112,8 +112,7 @@ const LessonList = () => {
   useEffect(() => {
     dispatch(getLessonTopics())
     dispatch(getGroups())
-    if (teacherView) setLibraries({group: true})
-    else setLibraries({...libraries, private: false})
+    if (teacherView) setLibrary('group')
     if (savedLibrarySelection == 'group' || savedLibrarySelection == 'public' || teacherView ) {
       setLibrary('group')
       dispatch(getLessonInstance(savedGroupSelection))
@@ -137,7 +136,7 @@ const LessonList = () => {
         }
     }
     
-  }, [lesson])
+  }, [lessonPending])
 
   const finnishSelectingTopics = () => {
     const payload = { topic_ids: selectedTopicIds }
@@ -537,7 +536,7 @@ const LessonList = () => {
           <>
             <div className="library-selection">
               <LibraryTabs
-                values={libraries}
+                values={Object.fromEntries(Object.entries(libraries).filter(([key]) => key!== 'private' || !teacherView))}
                 additionalClass="wrap-and-grow align-center pt-sm"
                 onClick={handleLibraryChange}
                 reverse
