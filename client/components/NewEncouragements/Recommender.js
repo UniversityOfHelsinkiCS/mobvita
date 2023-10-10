@@ -111,12 +111,12 @@ const Recommender = () => {
 
   const welcomeback_encourage = history.location.pathname.includes('/welcome') ? <WelcomeBackEncouragement /> : undefined;
 
-  const leader_board_encourage = user_rank & user_rank <= 10 ? <LeaderboardEncouragement /> : undefined;
+  const leader_board_encourage = user_rank && user_rank <= 10 ? <LeaderboardEncouragement /> : undefined;
 
   const daily_stories_encourage = cachedStories?.length > 0 || showAllEncouragements ? 
     <DailyStoriesEncouragement handleDailyStoriesClick={handleDailyStoriesClick} /> : undefined;
 
-  const latest_incomplete_story = incompleteStories & incompleteStories?.filter(
+  const latest_incomplete_story = incompleteStories && incompleteStories?.filter(
     story => story.last_snippet_id !== story.num_snippets - 1
   ).length > 0 ? <LatestIncompleteStory /> : undefined;
 
@@ -124,33 +124,33 @@ const Recommender = () => {
 
   const new_words_interacted_exercise_encourage = newVocabulary > 0 ? <NewWordsInteractedExerciseEncouragement /> : undefined;
 
-  const prev_stories_blue_cards_encourage = storyBlueCards & storyBlueCards?.find(
+  const prev_stories_blue_cards_encourage = storyBlueCards && storyBlueCards?.find(
     story => story.story_id !== storyId && story.num_of_rewardable_words >= 5
   ) ? <PreviousStoriesBlueFlashcards /> : undefined;
 
-  const confirm_blue_card_encourage = storyBlueCards & storyBlueCards?.length > 0 ? <ConfirmBlueCardsEncouragement /> : undefined; 
+  const confirm_blue_card_encourage = storyBlueCards && storyBlueCards?.length > 0 ? <ConfirmBlueCardsEncouragement /> : undefined; 
 
-  const list_of_recent_stories_flashcards_encourage = incompleteStories & incompleteStories?.filter(
+  const list_of_recent_stories_flashcards_encourage = incompleteStories && incompleteStories?.filter(
     story => story.last_snippet_id !== story.num_snippets - 1
   ).length > 0 ? <ListOfRecentStoriesFlashcardsEncouragement /> : undefined;
 
-  const review_stories_encourage = incompleteStories & incompleteStories?.filter(
+  const review_stories_encourage = incompleteStories && incompleteStories?.filter(
     story => story.last_snippet_id === story.num_snippets - 1
-  ).length > 0 ? <ReviewStoriesEncouragement /> : null;
+  ).length > 0 ? <ReviewStoriesEncouragement /> : undefined;
 
   const unseen_stories_inGroup_encourage = stories.find(
     story => story.shared && !story.has_read && story.groups?.length > 0 && !story.control_story
-  ) ? <UnseenStoriesInGroup /> : null;
+  ) ? <UnseenStoriesInGroup /> : undefined;
 
   const shared_incomplete_story_inGroup_encourage = stories.find(
     story => story.shared && !story.has_read && story.control_story
-  ) ? <SharedIncompleteStoryInGroup /> : null;
+  ) ? <SharedIncompleteStoryInGroup /> : undefined;
 
-  const num_of_rewardable_words = creditableWordsNum >= 5 || (storyBlueCards.filter(
+  const num_of_rewardable_words = creditableWordsNum >= 5 || (storyBlueCards?.filter(
     story => story.story_id !== storyId
-  ).length > 0 && storyBlueCards.filter(
+  ).length > 0 && storyBlueCards?.filter(
     story => story.story_id !== storyId
-  )[0]?.num_of_rewardable_words >=5) ? <StoryCompletedToBluecardsExerciseEncouragement /> : null;
+  )[0]?.num_of_rewardable_words >=5) ? <StoryCompletedToBluecardsExerciseEncouragement /> : undefined;
 
   return (
     <>

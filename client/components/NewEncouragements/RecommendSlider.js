@@ -1,5 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { Segment, Icon } from 'semantic-ui-react'
+import { Icon } from 'semantic-ui-react';
+
 
 import './RecommendSliderCss.css';
 
@@ -7,7 +8,7 @@ const RecommendSlider = ({ slides }) => {
     const [current, setCurrent] = useState(0);
     const [length, setLength] = useState(undefined);
     const [filteredSlides, setFilteredSlides] = useState([]);
-    const [containerHeight, setContainerHeight] = useState('20vh');
+    const [containerHeight, setContainerHeight] = useState('23vh');
 
     const slideContainerRef = useRef(null);
 
@@ -26,6 +27,7 @@ const RecommendSlider = ({ slides }) => {
         //     setButtonHeight(`${height}px`);
         // }
     }, [slides]);
+
 
     const nextSlide = () => {
         if (length != undefined && length > 0){
@@ -49,59 +51,64 @@ const RecommendSlider = ({ slides }) => {
         return null;
     }
 
-    return (
-        <section className='slider'>
-            <div className='slider-content'>
-                <button className='left-arrow' onClick={prevSlide} style={{ height: containerHeight }}>
-                    <Icon
-                        className='left-arrow'
-                        name={'chevron left'}
-                        style={{ cursor: 'pointer' }}
-                    />
-                </button>
-
-                <div className='content-container' style={
-                    {
-                        height: containerHeight, 
-                        overflowY: 'auto', 
-                        overflowX: 'hidden',
-                        width: '100%'
-                    }
-                }>
-                    <div 
-                        className='slide-container' 
-                        ref={slideContainerRef} 
-                        style={{
-                            display: "flex",
-                            height: "100%",
-                            alignItems: "center"
-                        }}
-                    >
-                        <div className='slide active' key={current}>
-                            {filteredSlides[current]}
+    if (length > 0){
+        return (
+            <section className='slider'>
+                <div className='slider-content'>
+                    <button className='left-arrow' onClick={prevSlide} style={{ height: containerHeight }}>
+                        <Icon
+                            className='left-arrow'
+                            name={'chevron left'}
+                            style={{ cursor: 'pointer' }}
+                        />
+                    </button>
+    
+                    <div className='content-container' style={
+                        {
+                            height: containerHeight, 
+                            overflowY: 'auto', 
+                            overflowX: 'hidden',
+                            width: '100%'
+                        }
+                    }>
+                        <div 
+                            className='slide-container' 
+                            ref={slideContainerRef} 
+                            style={{
+                                display: "flex",
+                                height: "100%",
+                                alignItems: "center"
+                            }}
+                        >
+                            <div className='slide active' key={current}>
+                                {filteredSlides[current]}
+                            </div>
                         </div>
                     </div>
+    
+                    <button className='right-arrow' onClick={nextSlide} style={{ height: containerHeight }}>
+                        <Icon
+                            className='right-arrow'
+                            name={'chevron right'}
+                            style={{ cursor: 'pointer' }}
+                        />
+                    </button>
                 </div>
-
-                <button className='right-arrow' onClick={nextSlide} style={{ height: containerHeight }}>
-                    <Icon
-                        className='right-arrow'
-                        name={'chevron right'}
-                        style={{ cursor: 'pointer' }}
-                    />
-                </button>
-            </div>
-            <div className='pagination'>
-                {filteredSlides.map((_, index) => (
-                <span
-                    key={index}
-                    className={index === current ? 'dot active' : 'dot'}
-                    onClick={() => goToSlide(index)}
-                ></span>
-                ))}
-            </div>
-        </section>
-    );
+                <div className='pagination'>
+                    {filteredSlides.map((_, index) => (
+                    <span
+                        key={index}
+                        className={index === current ? 'dot active' : 'dot'}
+                        onClick={() => goToSlide(index)}
+                    ></span>
+                    ))}
+                </div>
+            </section>
+        );
+    } else {
+        return null
+    }
+    
 };
 
 export default RecommendSlider;
