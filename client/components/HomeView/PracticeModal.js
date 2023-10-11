@@ -258,7 +258,7 @@ const PracticeModal = ({ open, setOpen }) => {
             </div>
           </div>
 
-          <div style={{ width: '100%' }}>
+          {/* <div style={{ width: '100%' }}>
             <div className="practice-now-modal-label">
               <FormattedMessage id="check-library" />
             </div>
@@ -270,7 +270,7 @@ const PracticeModal = ({ open, setOpen }) => {
                 dataCy="check-library-button"
               />
             </div>
-          </div>
+          </div> */}
         </div>
       </Modal.Content>
     </Modal>

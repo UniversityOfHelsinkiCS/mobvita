@@ -89,7 +89,7 @@ const HomeviewButtons = ({
           </div>
           <div className="groups-btn-cont tour-groups">
             <HomeviewButton
-              imgSrc={images.library}
+              imgSrc={images.group1}
               altText="two books in a pile"
               translationKey="Groups"
               handleClick={() => history.push('/groups/teacher')}
