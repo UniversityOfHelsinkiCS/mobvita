@@ -140,7 +140,7 @@ describe('Mobvita', function () {
     */
     describe("stories", function () {
       this.beforeEach(function () {
-        cy.get('[data-cy=practice-now]').click()
+        // cy.get('[data-cy=practice-now]').click()
         cy.get("[data-cy=goto-library]")
           .click()
       })
