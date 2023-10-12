@@ -55,7 +55,12 @@ const RecommendSlider = ({ slides }) => {
         return (
             <section className='slider'>
                 <div className='slider-content'>
-                    <button className='left-arrow' onClick={prevSlide} style={{ height: containerHeight }}>
+                    <button 
+                        className='left-arrow' 
+                        onClick={prevSlide}
+                        onTouchEnd={prevSlide}
+                        style={{ height: containerHeight }}
+                    >
                         <Icon
                             className='left-arrow'
                             name={'chevron left'}
@@ -86,7 +91,12 @@ const RecommendSlider = ({ slides }) => {
                         </div>
                     </div>
     
-                    <button className='right-arrow' onClick={nextSlide} style={{ height: containerHeight }}>
+                    <button 
+                        className='right-arrow' 
+                        onClick={nextSlide} 
+                        onTouchEnd={nextSlide}
+                        style={{ height: containerHeight }}
+                    >
                         <Icon
                             className='right-arrow'
                             name={'chevron right'}
@@ -100,6 +110,7 @@ const RecommendSlider = ({ slides }) => {
                         key={index}
                         className={index === current ? 'dot active' : 'dot'}
                         onClick={() => goToSlide(index)}
+                        onTouchEnd={() => goToSlide(index)}
                     ></span>
                     ))}
                 </div>

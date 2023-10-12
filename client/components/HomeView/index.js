@@ -309,19 +309,19 @@ const HomeView = () => {
                 setLessonModalOpen={setLessonModalOpen}
                 aTestIsEnabled={aTestIsEnabled}
               />
+              {(!user?.user.is_teacher || (user?.user.is_teacher && !user?.teacherView)) && (
+                <div
+                  className="flex-col"
+                  style={{
+                    width: '500px',
+                    gap: '1.9em',
+                  }}
+                >
+                  <EloChart width="100%" />
+                  <LeaderboardSummary />
+                </div>
+              )}
             </div>
-            {(!user?.user.is_teacher || (user?.user.is_teacher && !user?.teacherView)) && (
-              <div
-                className="flex-col"
-                style={{
-                  width: '500px',
-                  gap: '1.9em',
-                }}
-              >
-                <EloChart width="100%" />
-                <LeaderboardSummary />
-              </div>
-            )}
           </div>
         ) : (
           <div className="flex-col" style={{ gap: '1.5em', marginBottom: '.5em' }}>
