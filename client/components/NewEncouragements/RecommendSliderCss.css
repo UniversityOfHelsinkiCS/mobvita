@@ -10,7 +10,7 @@
   
 .slide-container {
     flex-grow: 1; 
-    margin: 0 10px; 
+    /* margin: 0 10px;  */
     padding: 10px
 }
   
@@ -50,6 +50,7 @@
 }
   
 .slide.active {
+    height: 100%;
     opacity: 1;
     transition-duration: 1s;
     transform: scale(1.08);

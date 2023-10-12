@@ -586,9 +586,9 @@ $value in $spacing {
   gap: 10px 10px;
   grid-auto-flow: row;
   grid-template-areas:
-    "group library"
-    "lesson ."
-    ". .";
+    "add-new-stories add-new-stories"
+    "groups library"
+    "lesson .";
 
   @media (min-width: 900px) {
     max-height: 525px;
