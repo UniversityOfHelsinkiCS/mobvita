@@ -562,7 +562,7 @@ $value in $spacing {
   grid-template-areas:
     "practice lesson"
     "flashcards notes"
-    "adaptive-test exhaustive-test ."
+    "adaptive-test exhaustive-test"
     ". . ";
 
   @media (min-width: 900px) {
