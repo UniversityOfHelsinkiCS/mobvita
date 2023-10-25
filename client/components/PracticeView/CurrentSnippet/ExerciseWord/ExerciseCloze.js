@@ -246,9 +246,10 @@ const ExerciseCloze = ({ word, handleChange }) => {
     return false
   }
 
-  let hint_context_box = <div></div>
-  if (eloScoreHearts.length + spentHints.length > 0){
-    hint_context_box = <div className="tooltip-green flex space-between">
+
+  const getHintContent = () => {
+    if (eloScoreHearts.length + spentHints.length > 0){
+      return (<div className="tooltip-green flex space-between">
       <Button style={hintButtonVisibility} variant="primary" onMouseDown={handlePreHints}>
         <FormattedMessage id="ask-for-a-hint" />
       </Button>
@@ -260,13 +261,14 @@ const ExerciseCloze = ({ word, handleChange }) => {
           <Icon size="small" name="lightbulb outline" style={{ marginLeft: '0.25em' }} />
         ))}
       </div>
-    </div>
-  } else {
-    hint_context_box = <div className="tooltip-green flex space-between">
+    </div>)
+    } else {
+      return (<div className="tooltip-green flex space-between">
       <div className="tooltip-hint" style={{ textAlign: 'left' }}>
         <FormattedMessage id="no-hints-available" />
       </div>
-    </div>
+    </div>)
+    }
   }
 
   const tooltip = (
@@ -284,7 +286,7 @@ const ExerciseCloze = ({ word, handleChange }) => {
           ))}
         </div>
       </div> */}
-      {hint_context_box} {' '}
+      {getHintContent()} {' '}
       <div className="tooltip-hint" style={{ textAlign: 'left' }} onMouseDown={handleTooltipClick}>
         <ul>
           {frozen_messages?.map(mess => (

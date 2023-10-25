@@ -29,8 +29,11 @@ const ExerciseMultipleChoice = ({ word, handleChange }) => {
   
   const value = currentAnswer ? currentAnswer.users_answer : ''
   const hintButtonVisibility =
-    (!hints || filteredHintsList.length < 1 || preHints.length - requested_hints?.length < filteredHintsList?.length) &&
-    !emptyHintsList
+  (
+    !hints ||
+    (filteredHintsList.length < 1 && !message) ||
+    (preHints.length - requested_hints?.length < filteredHintsList?.length) //  && preHints.length < 5
+  ) && !emptyHintsList
       ? { visibility: 'visible' }
       : { visibility: 'hidden' }
   const getExerciseClass = (tested, isWrong) => {
@@ -154,7 +157,7 @@ const ExerciseMultipleChoice = ({ word, handleChange }) => {
   }
 
   const handleFocus = () => {
-    if (hints & hints?.length > 0 || frozen_messages & frozen_messages?.length > 0) {
+    if (hints && hints?.length > 0 || frozen_messages && frozen_messages?.length > 0) {
       setShow(!show)
     }
   }
@@ -168,27 +171,28 @@ const ExerciseMultipleChoice = ({ word, handleChange }) => {
     return width
   }
 
-  let hint_context_box = <div></div>
-  if (eloScoreHearts.length + spentHints.length > 0){
-    hint_context_box = <div className="tooltip-green flex space-between">
-      <Button style={hintButtonVisibility} variant="primary" onMouseDown={handlePreHints}>
-        <FormattedMessage id="ask-for-a-hint" />
-      </Button>
-      <div>
-        {eloScoreHearts.map(heart => (
-          <Icon size="small" name="lightbulb" style={{ marginLeft: '0.25em' }} />
-        ))}
-        {spentHints.map(hint => (
-          <Icon size="small" name="lightbulb outline" style={{ marginLeft: '0.25em' }} />
-        ))}
-      </div>
-    </div>
-  } else {
-    hint_context_box = <div className="tooltip-green flex space-between">
-      <div className="tooltip-hint" style={{ textAlign: 'left' }}>
-        <FormattedMessage id="no-hints-available" />
-      </div>
-    </div>
+  const getHintContent = () => {
+    if (eloScoreHearts.length + spentHints.length > 0){
+      return (<div className="tooltip-green flex space-between">
+        <Button style={hintButtonVisibility} variant="primary" onMouseDown={handlePreHints}>
+          <FormattedMessage id="ask-for-a-hint" />
+        </Button>
+        <div>
+          {eloScoreHearts.map(heart => (
+            <Icon size="small" name="lightbulb" style={{ marginLeft: '0.25em' }} />
+          ))}
+          {spentHints.map(hint => (
+            <Icon size="small" name="lightbulb outline" style={{ marginLeft: '0.25em' }} />
+          ))}
+        </div>
+      </div>)
+    } else {
+      return (<div className="tooltip-green flex space-between">
+        <div className="tooltip-hint" style={{ textAlign: 'left' }}>
+          <FormattedMessage id="no-hints-available" />
+        </div>
+      </div>)
+    }
   }
 
   const tooltip = (
@@ -210,7 +214,7 @@ const ExerciseMultipleChoice = ({ word, handleChange }) => {
           ))}
         </div>
       </div> */}
-      {hint_context_box} {' '}{hint_context_box} {' '}
+      {getHintContent()} {' '}
       <div className="tooltip-hint" style={{ textAlign: 'left' }}>
         <ul>
           {frozen_messages?.map(mess => (
