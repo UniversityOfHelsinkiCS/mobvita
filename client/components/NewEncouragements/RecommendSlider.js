@@ -73,6 +73,7 @@ const RecommendSlider = ({ slides }) => {
                             height: containerHeight, 
                             overflowY: 'auto', 
                             overflowX: 'hidden',
+                            paddingLeft: '1em',
                             width: '100%'
                         }
                     }>
