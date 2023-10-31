@@ -67,7 +67,7 @@ const Recommender = () => {
   const inBlueCardsTest = history.location.pathname.includes('test')
   const inReviewView = history.location.pathname.includes('review')
   const inLessonPracticeView = history.location.pathname.includes('lesson/practice')
-  
+
   const { storyId } = useParams()
 
   // See default_activity_modal row 260
@@ -113,7 +113,7 @@ const Recommender = () => {
 
   const leader_board_encourage = user_rank && user_rank <= 10 ? <LeaderboardEncouragement /> : undefined;
 
-  const daily_stories_encourage = cachedStories?.length > 0 || showAllEncouragements ? 
+  const daily_stories_encourage = cachedStories?.length > 0 || showAllEncouragements ?
     <DailyStoriesEncouragement handleDailyStoriesClick={handleDailyStoriesClick} /> : undefined;
 
   const latest_incomplete_story = incompleteStories && incompleteStories?.filter(
@@ -128,7 +128,7 @@ const Recommender = () => {
     story => story.story_id !== storyId && story.num_of_rewardable_words >= 5
   ) ? <PreviousStoriesBlueFlashcards /> : undefined;
 
-  const confirm_blue_card_encourage = storyBlueCards && storyBlueCards?.length > 0 ? <ConfirmBlueCardsEncouragement /> : undefined; 
+  const confirm_blue_card_encourage = storyBlueCards && storyBlueCards?.length > 0 ? <ConfirmBlueCardsEncouragement /> : undefined;
 
   const list_of_recent_stories_flashcards_encourage = incompleteStories && incompleteStories?.filter(
     story => story.last_snippet_id !== story.num_snippets - 1
@@ -150,7 +150,7 @@ const Recommender = () => {
     story => story.story_id !== storyId
   ).length > 0 && storyBlueCards?.filter(
     story => story.story_id !== storyId
-  )[0]?.num_of_rewardable_words >=5) ? <StoryCompletedToBluecardsExerciseEncouragement /> : undefined;
+  )[0]?.num_of_rewardable_words >= 5) ? <StoryCompletedToBluecardsExerciseEncouragement /> : undefined;
 
   return (
     <>
@@ -253,17 +253,17 @@ const Recommender = () => {
                     onClick={handleCloseClick}
                   />
                 </div>
-                
+
                 <RecommendSlider slides={[
-                    welcomeback_encourage,
-                    <StreakEncouragement />,
-                    leader_board_encourage,
-                    daily_stories_encourage,
-                    latest_incomplete_story,
-                    confirm_blue_card_encourage,
-                    unseen_stories_inGroup_encourage,
-                    shared_incomplete_story_inGroup_encourage,
-                    review_stories_encourage,
+                  welcomeback_encourage,
+                  <StreakEncouragement />,
+                  leader_board_encourage,
+                  daily_stories_encourage,
+                  latest_incomplete_story,
+                  confirm_blue_card_encourage,
+                  unseen_stories_inGroup_encourage,
+                  shared_incomplete_story_inGroup_encourage,
+                  review_stories_encourage,
                 ]} />
                 <TurnOffRecommendations />
               </div>
@@ -302,7 +302,7 @@ const Recommender = () => {
                 </div>
 
                 <RecommendSlider slides={[
-                    confirm_blue_card_encourage,
+                  confirm_blue_card_encourage,
                 ]} />
                 <TurnOffRecommendations />
 
@@ -343,12 +343,12 @@ const Recommender = () => {
                 </div>
 
                 <RecommendSlider slides={[
-                    leader_board_encourage,
-                    num_of_rewardable_words,
-                    latest_incomplete_story,
-                    words_seen_encourage,
-                    new_words_interacted_exercise_encourage,
-                    <GrammarReviewExerciseEncouragement />
+                  leader_board_encourage,
+                  num_of_rewardable_words,
+                  latest_incomplete_story,
+                  words_seen_encourage,
+                  new_words_interacted_exercise_encourage,
+                  <GrammarReviewExerciseEncouragement />
                 ]} />
                 <TurnOffRecommendations />
 
@@ -389,10 +389,10 @@ const Recommender = () => {
                 </div>
 
                 <RecommendSlider slides={[
-                    <FlashcardsHeaderChooser handleNewDeck={handleNewDeck} />,
-                    <TryAnotherBatch handleNewDeck={handleNewDeck} />,
-                    list_of_recent_stories_flashcards_encourage,
-                    <BackToLibraryFromFlashcards />
+                  <FlashcardsHeaderChooser handleNewDeck={handleNewDeck} />,
+                  <TryAnotherBatch handleNewDeck={handleNewDeck} />,
+                  list_of_recent_stories_flashcards_encourage,
+                  <BackToLibraryFromFlashcards />
                 ]} />
                 <TurnOffRecommendations />
 
@@ -429,10 +429,10 @@ const Recommender = () => {
                 </div>
 
                 <RecommendSlider slides={[
-                    <FlashcardsHeaderChooser handleNewDeck={handleNewDeck} />,
-                    prev_stories_blue_cards_encourage,
-                    words_seen_encourage,
-                    <FlashcardsProgress />
+                  <FlashcardsHeaderChooser handleNewDeck={handleNewDeck} />,
+                  prev_stories_blue_cards_encourage,
+                  words_seen_encourage,
+                  <FlashcardsProgress />
                 ]} />
                 <TurnOffRecommendations />
 
@@ -469,8 +469,8 @@ const Recommender = () => {
                 </div>
 
                 <RecommendSlider slides={[
-                    <GoodJobEncouragement />,
-                    <RedirectHomeEncouragement />
+                  <GoodJobEncouragement />,
+                  <RedirectHomeEncouragement />
                 ]} />
                 <TurnOffRecommendations />
 

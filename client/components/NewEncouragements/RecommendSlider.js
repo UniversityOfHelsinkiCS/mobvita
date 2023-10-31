@@ -30,19 +30,19 @@ const RecommendSlider = ({ slides }) => {
 
 
     const nextSlide = () => {
-        if (length != undefined && length > 0){
+        if (length != undefined && length > 0) {
             setCurrent(current === length - 1 ? 0 : current + 1);
         }
     };
 
     const prevSlide = () => {
-        if (length != undefined && length > 0){
+        if (length != undefined && length > 0) {
             setCurrent(current === 0 ? length - 1 : current - 1);
         }
     };
 
     const goToSlide = (index) => {
-        if (length != undefined && length > 0 && index >= 0 && index < length){
+        if (length != undefined && length > 0 && index >= 0 && index < length) {
             setCurrent(index);
         }
     }
@@ -51,12 +51,12 @@ const RecommendSlider = ({ slides }) => {
         return null;
     }
 
-    if (length > 0){
+    if (length > 0) {
         return (
             <section className='slider'>
                 <div className='slider-content'>
-                    <button 
-                        className='left-arrow' 
+                    <button
+                        className='left-arrow'
                         onClick={prevSlide}
                         onTouchEnd={prevSlide}
                         style={{ height: containerHeight }}
@@ -67,19 +67,19 @@ const RecommendSlider = ({ slides }) => {
                             style={{ cursor: 'pointer' }}
                         />
                     </button>
-    
+
                     <div className='content-container' style={
                         {
-                            height: containerHeight, 
-                            overflowY: 'auto', 
+                            height: containerHeight,
+                            overflowY: 'auto',
                             overflowX: 'hidden',
                             paddingLeft: '1em',
                             width: '100%'
                         }
                     }>
-                        <div 
-                            className='slide-container' 
-                            ref={slideContainerRef} 
+                        <div
+                            className='slide-container'
+                            ref={slideContainerRef}
                             style={{
                                 display: "flex",
                                 height: "100%",
@@ -91,10 +91,10 @@ const RecommendSlider = ({ slides }) => {
                             </div>
                         </div>
                     </div>
-    
-                    <button 
-                        className='right-arrow' 
-                        onClick={nextSlide} 
+
+                    <button
+                        className='right-arrow'
+                        onClick={nextSlide}
                         onTouchEnd={nextSlide}
                         style={{ height: containerHeight }}
                     >
@@ -107,12 +107,12 @@ const RecommendSlider = ({ slides }) => {
                 </div>
                 <div className='pagination'>
                     {filteredSlides.map((_, index) => (
-                    <span
-                        key={index}
-                        className={index === current ? 'dot active' : 'dot'}
-                        onClick={() => goToSlide(index)}
-                        onTouchEnd={() => goToSlide(index)}
-                    ></span>
+                        <span
+                            key={index}
+                            className={index === current ? 'dot active' : 'dot'}
+                            onClick={() => goToSlide(index)}
+                            onTouchEnd={() => goToSlide(index)}
+                        ></span>
                     ))}
                 </div>
             </section>
@@ -120,7 +120,7 @@ const RecommendSlider = ({ slides }) => {
     } else {
         return null
     }
-    
+
 };
 
 export default RecommendSlider;
