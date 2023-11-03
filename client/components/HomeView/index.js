@@ -313,7 +313,7 @@ const HomeView = () => {
                 <div
                   className="flex-col"
                   style={{
-                    width: '500px',
+                    width: '350px',
                     gap: '1.9em',
                   }}
                 >
