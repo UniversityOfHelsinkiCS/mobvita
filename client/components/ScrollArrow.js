@@ -30,7 +30,7 @@ const ScrollArrow = () => {
       className="scroll-to-top"
       style={{
         display: showScroll ? 'flex' : 'none',
-        width: '85%',
+        width: '50%',
       }}
     >
       <Icon name="arrow circle up" size={iconSize} onClick={scrollTop} />

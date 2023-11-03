@@ -373,7 +373,8 @@ const LessonList = () => {
           }
           style={{
             cursor: lessonPending || !(libraries.private || currentGroup && currentGroup.is_teaching)
-              ? 'not-allowed' : 'pointer'
+              ? 'not-allowed' : 'pointer',
+            marginLeft: '0.5em'
           }}
           onClick={() => excludeAllTopics()}>
           <Icon name="trash alternate" />
@@ -388,7 +389,8 @@ const LessonList = () => {
           }
           style={{
             float: 'right', cursor: lessonPending || !(libraries.private || currentGroup && currentGroup.is_teaching)
-              ? 'not-allowed' : 'pointer'
+              ? 'not-allowed' : 'pointer',
+            marginRight: '0.5em'
           }}
           onClick={() => {
             finnishSelectingTopics()
@@ -415,7 +417,6 @@ const LessonList = () => {
           )}
         </WindowScroller>
       </Card.Group>
-      <ScrollArrow />
     </div>
   )
 
@@ -554,8 +555,8 @@ const LessonList = () => {
 
             <Stepper
               styleConfig={{
-                completedBgColor: '#003366',
-                activeBgColor: '#c6e2ff',
+                completedBgColor: '#c6e2ff',
+                activeBgColor: '#003366',
                 inactiveBgColor: '#d2d3d6',
               }}
             >
@@ -639,6 +640,7 @@ const LessonList = () => {
             )}
 
             {/* {libraryControls} */}
+            <ScrollArrow />
           </>
         )}
     </div>
