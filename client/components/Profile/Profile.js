@@ -10,7 +10,7 @@ import Settings from './Settings'
 
 export default function Profile({ location }) {
   const intl = useIntl()
-  const { is_teacher: teacherView } = useSelector(({ user }) => user.data.user)
+  const { teacherView } = useSelector(({ user }) => user.data)
   let panes
   let index
   if (!teacherView){
@@ -50,7 +50,7 @@ export default function Profile({ location }) {
           to: '/profile/settings',
           key: 'settings',
         },
-        render: () => <Settings />,
+        render: () => <Settings  teacherView={teacherView}  />,
       },
     ]
     switch (location.pathname) {
@@ -93,7 +93,7 @@ export default function Profile({ location }) {
           to: '/profile/settings',
           key: 'settings',
         },
-        render: () => <Settings />,
+        render: () => <Settings  teacherView={teacherView} />,
       },
     ]
     switch (location.pathname) {

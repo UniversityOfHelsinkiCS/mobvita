@@ -25,10 +25,9 @@ const SettingToggle = ({ translationId, ...props }) => {
   return <Checkbox toggle label={intl.formatMessage({ id: translationId })} {...props} />
 }
 
-const Settings = () => {
-  const { user } = useSelector(({ user }) => user.data)
-  const {is_teacher: teacherView} = user
-  const { pending } = useSelector(({ user }) => user)
+const Settings = ({teacherView}) => {
+  const { data, pending } = useSelector(({ user }) => user)
+  const { user } = data
   const locale = useSelector(({ locale }) => locale)
   const { groups } = useSelector(({ groups }) => groups)
   const dispatch = useDispatch()
@@ -147,7 +146,7 @@ const Settings = () => {
               }
             />
           </Menu.Item>
-          <Menu.Item className="add-story-accordion-item">
+          {!teacherView && (<Menu.Item className="add-story-accordion-item">
             <Accordion.Title
               active={accordionState === 2}
               content={
@@ -204,8 +203,8 @@ const Settings = () => {
                 </div>
               }
             />
-          </Menu.Item>
-          <Menu.Item className="add-story-accordion-item">
+          </Menu.Item>)}
+          {!teacherView && (<Menu.Item className="add-story-accordion-item">
             <Accordion.Title
               active={accordionState === 3}
               content={
@@ -236,8 +235,8 @@ const Settings = () => {
                 </div>
               }
             />
-          </Menu.Item>
-          <Menu.Item className="add-story-accordion-item">
+          </Menu.Item>)}
+          {!teacherView && (<Menu.Item className="add-story-accordion-item">
             <Accordion.Title
               active={accordionState === 4}
               content={
@@ -277,7 +276,7 @@ const Settings = () => {
                 </div>
               }
             />
-          </Menu.Item>
+          </Menu.Item>)}
           {!teacherView && (<Menu.Item className="add-story-accordion-item">
             <Accordion.Title
               active={accordionState === 5}
