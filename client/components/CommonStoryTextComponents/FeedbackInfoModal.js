@@ -7,12 +7,28 @@ import { capitalize } from 'Utilities/common'
 
 const BookReference = ({ reference }) => (
   <li>
-    {reference.author && `${reference.author}`}
-    {reference.title && `, ${reference.title}`}
-    {reference.paragraph && `, §. ${reference.paragraph}`}
-    {reference.page && `, p. ${reference.page}`}
+    {reference.url ? (
+      <a href={reference.url}>
+        {reference.title && `${reference.title}, `}
+        {reference.author && `${reference.author}, `}
+        {reference.topic && `${reference.topic}, `}
+        {reference.chapter && `${reference.chapter}`}
+        {reference.paragraph && `, §. ${reference.paragraph}`}
+        {reference.page && `, p. ${reference.page}`}
+      </a>
+    ) : (
+      <span>
+        {reference.title && `${reference.title}, `}
+        {reference.author && `${reference.author}, `}
+        {reference.topic && `${reference.topic}, `}
+        {reference.chapter && `${reference.chapter}`}
+        {reference.paragraph && `, §. ${reference.paragraph}`}
+        {reference.page && `, p. ${reference.page}`}
+      </span>
+    )}
   </li>
-)
+);
+
 
 const UrlReference = ({ reference }) => (
   <li>
