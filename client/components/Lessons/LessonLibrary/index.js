@@ -131,7 +131,7 @@ const LessonList = () => {
   useEffect(() => {
     if (!lessonPending) {
         setSliderValue(vocab_diff)
-        if (selectedTopicIds && selectedSemantics && selectedTopicIds.length && selectedSemantics.length) {
+        if (goStep == 0 && selectedTopicIds && selectedSemantics && selectedTopicIds.length && selectedSemantics.length) {
           setGoStep(3)
         }
     }
