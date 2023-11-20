@@ -194,7 +194,7 @@ const LessonList = () => {
 
   const toggleSemantic = semantic => {
     let newSemantic
-    if (selectedSemantics.includes(semantic)) {
+    if (selectedSemantics & selectedSemantics?.includes(semantic)) {
       newSemantic = selectedSemantics.filter(s => s !== semantic)
     } else {
       newSemantic = [...selectedSemantics, semantic]
