@@ -36,6 +36,8 @@ import './LessonLibraryStyles.css';
 
 const LessonList = () => {
   const intl = useIntl()
+  const { width } = useWindowDimensions()
+  const bigScreen = width >= 700
   const learningLanguage = useLearningLanguage()
   const { pending: userPending, data: userData } = useSelector(({ user }) => user)
   const { teacherView, user } = userData
@@ -311,7 +313,7 @@ const LessonList = () => {
     return 'white-slider';
   };
   const sliderThumbClassName = `${getSliderThumbColor()} exercise-density-slider-thumb`;
-  const lessonVocabularyControls = (
+  const lessonVocabularyControls = bigScreen ? (
     <div className="align-center">
       <h5>
         <FormattedMessage id="select-lesson-vocab-diff" />
@@ -358,7 +360,89 @@ const LessonList = () => {
         </div>
       </div>
     </div>
+  ) : (
+    <div className="align-center">
+      <h5>
+        <FormattedMessage id="select-lesson-vocab-diff" />
+      </h5>
+
+      <div
+        className="lesson-vocab-slider-container"
+        style={{
+          width: "80%",
+          marginTop: "30px",
+          marginLeft: "auto",
+          marginRight: "auto"
+        }}
+      >
+        <ReactSlider
+          className="exercise-density-slider lesson-vocab-diff"
+          thumbClassName={sliderThumbClassName}
+          trackClassName="exercise-density-slider-track"
+          onAfterChange={value => handleSlider(value)}
+          onSliderClick={value => handleSlider(value)}
+          snapDragDisabled={false}
+          markClassName="personal_vocab_score_mark"
+          marks={[roundToNearestHalfInt(vocabulary_score)]}
+          min={0.8} // 0.8
+          max={3.3} // 3.3
+          step={0.2}
+          value={sliderValue}
+          disabled={lessonPending || !(libraries.private || currentGroup && currentGroup.is_teaching)}
+        />
+        <div className="space-between exercise-density-slider-label-cont bold">
+          <span><FormattedMessage id='Easy' /></span>
+          <span><FormattedMessage id='Hard' /></span>
+        </div>
+      </div>
+
+      <Button
+        style={{
+          width: '100%', float: 'right', cursor: lessonPending || !(libraries.private || currentGroup && currentGroup.is_teaching)
+            ? 'not-allowed' : 'pointer'
+        }}
+        onClick={() => {
+          finnishSelectingVocabularyDifficulty()
+          setGoStep(2)
+        } }>
+        <FormattedMessage id="next-step" />
+      </Button>
+    </div>
   )
+
+  const getTextWidth = (text) => {
+    // Create an invisible element to measure the text
+    const measuringElement = document.createElement('span');
+    measuringElement.textContent = text;
+  
+    document.body.appendChild(measuringElement);
+    const width = measuringElement.getBoundingClientRect().width;
+    document.body.removeChild(measuringElement);
+  
+    return width;
+  }
+
+  const get_lesson_row_height = index => {
+    if (bigScreen) {
+      return 85 + lessons[index.index].topics.length * 26;
+    } else {
+      let lesson = lessons[index.index]
+
+      let row_height = 85 + 20 // Separate the Include button in mobile view
+      row_height += 20 * Math.floor(getTextWidth(lesson.name) / 200);
+ 
+      lesson.topics.forEach(function(lesson_topic, index) {
+        const width_span = getTextWidth(lesson_topic) / 219;
+        if (width_span < 1) {
+          row_height += 26
+        } else {
+          row_height += 26 + 18 * Math.floor(width_span);
+        }
+      });
+      console.log(lesson.name, row_height)
+      return row_height
+    }
+  }
 
   const lessonTopicsControls = (
     <div>
@@ -409,7 +493,9 @@ const LessonList = () => {
               isScrolling={isScrolling}
               onScroll={onChildScroll}
               rowCount={lessons.length}
-              rowHeight={index => 85 + lessons[index.index].topics.length * 28}
+              rowHeight={
+                index => get_lesson_row_height(index)
+              }
               rowRenderer={rowRenderer}
               scrollTop={scrollTop}
               width={10000}
