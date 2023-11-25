@@ -175,7 +175,7 @@ const ExhaustiveTest = ({ showingInfo }) => {
                 {exhaustiveTestQuestions.length}
               </div>
             </div>
-            <div className="test-question-container">
+            <div className="test-question-container" style={{ overflowY: "auto" }}>
               {willPause && !willStop && (
                 <span className="test-info">
                   <FormattedMessage id="pause-after-you-answer-this-question" />
