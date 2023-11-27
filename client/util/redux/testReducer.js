@@ -12,6 +12,9 @@ const initialState = {
   currentAdaptiveQuestionIndex: 0,
   adaptiveTestResults: null,
   timedTest: true,
+  currentAnswer: null,
+  feedbacks: [],
+  showFeedbacks: false
 }
 
 const clearLocalStorage = () => {
@@ -123,6 +126,12 @@ export const resetTests = () => {
   return { type: 'RESET_TESTS' }
 }
 
+export const updateTestFeedbacks = (answer, feedbacks, showFeedbacks) => ({
+  type: 'UPDATE_TEST_FEEDBACKS', answer, feedbacks, showFeedbacks 
+})
+
+export const nextTestQuestion = () => ({ type: 'NEXT_TEST_QUESTION' })
+
 export default (state = initialState, action) => {
   const { currentExhaustiveQuestionIndex, currentAdaptiveQuestionIndex, exhaustiveTestQuestions } =
     state
@@ -198,7 +207,16 @@ export default (state = initialState, action) => {
         resumePending: false,
         answerFailure: true,
       }
-
+    
+    case 'NEXT_TEST_QUESTION':
+      return {
+        ...state,
+        currentExhaustiveQuestionIndex: currentExhaustiveQuestionIndex + 1,
+        currentExhaustiveTestQuestion: exhaustiveTestQuestions[currentExhaustiveQuestionIndex + 1],
+        currentAnswer: null,
+        feedbacks: [],
+        showFeedbacks: false
+      }
     case 'ANSWER_TEST_QUESTION_ATTEMPT':
       return {
         ...state,
@@ -207,8 +225,8 @@ export default (state = initialState, action) => {
     case 'ANSWER_TEST_QUESTION_SUCCESS':
       return {
         ...state,
-        currentExhaustiveQuestionIndex: currentExhaustiveQuestionIndex + 1,
-        currentExhaustiveTestQuestion: exhaustiveTestQuestions[currentExhaustiveQuestionIndex + 1],
+        // currentExhaustiveQuestionIndex: currentExhaustiveQuestionIndex + 1,
+        // currentExhaustiveTestQuestion: exhaustiveTestQuestions[currentExhaustiveQuestionIndex + 1],
         answerPending: false,
       }
     case 'ANSWER_TEST_QUESTION_FAILURE':
@@ -268,6 +286,14 @@ export default (state = initialState, action) => {
 
     case 'RESET_TESTS':
       return initialState
+
+    case 'UPDATE_TEST_FEEDBACKS':
+      return {
+        ...state,
+        currentAnswer: action.answer,
+        feedbacks: action.feedbacks,
+        showFeedbacks: action.showFeedbacks
+      }
 
     default:
       return state

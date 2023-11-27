@@ -3,7 +3,12 @@ import { useSelector, useDispatch } from 'react-redux'
 import { useTimer } from 'react-compound-timer'
 import { Icon, Segment } from 'semantic-ui-react'
 import { Spinner } from 'react-bootstrap'
-import { sendExhaustiveTestAnswer, finishExhaustiveTest } from 'Utilities/redux/testReducer'
+import { 
+  sendExhaustiveTestAnswer, 
+  finishExhaustiveTest, 
+  updateTestFeedbacks, 
+  nextTestQuestion 
+} from 'Utilities/redux/testReducer'
 import { learningLanguageSelector } from 'Utilities/common'
 import { FormattedMessage, FormattedHTMLMessage } from 'react-intl'
 import MultipleChoice from '../MultipleChoice'
@@ -69,6 +74,31 @@ const ExhaustiveTest = ({ showingInfo }) => {
         pauseTimeStamp
       )
     )
+
+    if (
+      !choice.is_correct &&
+      currentExhaustiveTestQuestion.question_concept_feedbacks || 
+      (choice.item_feedbacks && Object.keys(choice.item_feedbacks).length !== 0)
+    ) {
+      let mediationFeedbacks = Object.entries(currentExhaustiveTestQuestion.question_concept_feedbacks)
+        .filter(([key]) => key.startsWith('mediation_'))
+        .map(([, value]) => value);
+      if (
+        !choice.is_correct &&
+        choice.item_feedbacks && 
+        currentExhaustiveTestQuestion.concept_id && 
+        choice.item_feedbacks[currentExhaustiveTestQuestion?.concept_id]
+      ) {
+          mediationFeedbacks.push(choice.item_feedbacks[currentExhaustiveTestQuestion?.concept_id])
+      } 
+      let showFeedbacks = true;
+      if (mediationFeedbacks.length == 0){
+        showFeedbacks = false
+      }
+      dispatch(updateTestFeedbacks(choice.option, mediationFeedbacks, showFeedbacks))
+    } else {
+      dispatch(nextTestQuestion())
+    }
   }
 
   useEffect(() => {
