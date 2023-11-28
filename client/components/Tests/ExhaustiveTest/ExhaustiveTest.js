@@ -7,7 +7,8 @@ import {
   sendExhaustiveTestAnswer, 
   finishExhaustiveTest, 
   updateTestFeedbacks, 
-  nextTestQuestion 
+  nextTestQuestion,
+  markAnsweredChoice
 } from 'Utilities/redux/testReducer'
 import { learningLanguageSelector } from 'Utilities/common'
 import { FormattedMessage, FormattedHTMLMessage } from 'react-intl'
@@ -35,6 +36,7 @@ const ExhaustiveTest = ({ showingInfo }) => {
   const [displaySpinner, setDisplaySpinner] = useState(false)
   const [paused, setPaused] = useState(false)
   const {
+    feedbacks,
     currentExhaustiveTestQuestion,
     exhaustiveTestSessionId,
     exhaustiveTestQuestions,
@@ -61,6 +63,7 @@ const ExhaustiveTest = ({ showingInfo }) => {
 
     const pauseTimeStamp = willPause ? new Date() : null
 
+    dispatch(markAnsweredChoice(choice.option))
     dispatch(
       sendExhaustiveTestAnswer(
         learningLanguage,
@@ -75,27 +78,27 @@ const ExhaustiveTest = ({ showingInfo }) => {
       )
     )
 
+    const countNotSelectedChoices = currentExhaustiveTestQuestion.choices.filter(choice => choice.isSelected != true).length;
     if (
       !choice.is_correct &&
-      currentExhaustiveTestQuestion.question_concept_feedbacks || 
-      (choice.item_feedbacks && Object.keys(choice.item_feedbacks).length !== 0)
+      countNotSelectedChoices > 0 &&
+      (currentExhaustiveTestQuestion.question_concept_feedbacks || 
+      (choice.item_feedbacks && Object.keys(choice.item_feedbacks).length !== 0))
     ) {
       let mediationFeedbacks = Object.entries(currentExhaustiveTestQuestion.question_concept_feedbacks)
         .filter(([key]) => key.startsWith('mediation_'))
         .map(([, value]) => value);
-      if (
-        !choice.is_correct &&
-        choice.item_feedbacks && 
-        currentExhaustiveTestQuestion.concept_id && 
-        choice.item_feedbacks[currentExhaustiveTestQuestion?.concept_id]
-      ) {
-          mediationFeedbacks.push(choice.item_feedbacks[currentExhaustiveTestQuestion?.concept_id])
-      } 
-      let showFeedbacks = true;
-      if (mediationFeedbacks.length == 0){
-        showFeedbacks = false
-      }
-      dispatch(updateTestFeedbacks(choice.option, mediationFeedbacks, showFeedbacks))
+      const remainFeedbacks = mediationFeedbacks.filter(feedback => !feedbacks.includes(feedback));
+
+      // if (
+      //   choice.item_feedbacks && 
+      //   currentExhaustiveTestQuestion?.concept_id && 
+      //   choice.item_feedbacks[currentExhaustiveTestQuestion?.concept_id]
+      // ) {
+      //     mediationFeedbacks.push(choice.item_feedbacks[currentExhaustiveTestQuestion?.concept_id])
+      // }
+
+      dispatch(updateTestFeedbacks(choice.option, remainFeedbacks[0]))
     } else {
       dispatch(nextTestQuestion())
     }
@@ -161,6 +164,8 @@ const ExhaustiveTest = ({ showingInfo }) => {
     return null
   }
 
+  const testContainerOverflow = displaySpinner ? { overflow: "hidden" } : { overflowY: "auto" };
+
   return (
     <div className="cont mt-nm">
       <Segment style={{ minHeight: '700px', borderRadius: '20px' }}>
@@ -205,7 +210,7 @@ const ExhaustiveTest = ({ showingInfo }) => {
                 {exhaustiveTestQuestions.length}
               </div>
             </div>
-            <div className="test-question-container" style={{ overflowY: "auto" }}>
+            <div className="test-question-container" style={testContainerOverflow}>
               {willPause && !willStop && (
                 <span className="test-info">
                   <FormattedMessage id="pause-after-you-answer-this-question" />
@@ -231,7 +236,7 @@ const ExhaustiveTest = ({ showingInfo }) => {
                 </div>
               )}
               {displaySpinner && (
-                <div className="test-question-spinner-container">
+                <div className="test-question-spinner-container" style={{ overflow: 'hidden' }}>
                   <Spinner animation="border" variant="info" size="lg" />
                 </div>
               )}

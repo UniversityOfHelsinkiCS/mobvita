@@ -12,9 +12,7 @@ const initialState = {
   currentAdaptiveQuestionIndex: 0,
   adaptiveTestResults: null,
   timedTest: true,
-  currentAnswer: null,
   feedbacks: [],
-  showFeedbacks: false
 }
 
 const clearLocalStorage = () => {
@@ -126,11 +124,13 @@ export const resetTests = () => {
   return { type: 'RESET_TESTS' }
 }
 
-export const updateTestFeedbacks = (answer, feedbacks, showFeedbacks) => ({
-  type: 'UPDATE_TEST_FEEDBACKS', answer, feedbacks, showFeedbacks 
+export const updateTestFeedbacks = (answer, feedbacks) => ({
+  type: 'UPDATE_TEST_FEEDBACKS', answer, feedbacks 
 })
 
 export const nextTestQuestion = () => ({ type: 'NEXT_TEST_QUESTION' })
+
+export const markAnsweredChoice = (answer) => ({ type: 'MARK_ANSWERED_CHOICE', answer })
 
 export default (state = initialState, action) => {
   const { currentExhaustiveQuestionIndex, currentAdaptiveQuestionIndex, exhaustiveTestQuestions } =
@@ -213,9 +213,7 @@ export default (state = initialState, action) => {
         ...state,
         currentExhaustiveQuestionIndex: currentExhaustiveQuestionIndex + 1,
         currentExhaustiveTestQuestion: exhaustiveTestQuestions[currentExhaustiveQuestionIndex + 1],
-        currentAnswer: null,
         feedbacks: [],
-        showFeedbacks: false
       }
     case 'ANSWER_TEST_QUESTION_ATTEMPT':
       return {
@@ -290,10 +288,27 @@ export default (state = initialState, action) => {
     case 'UPDATE_TEST_FEEDBACKS':
       return {
         ...state,
-        currentAnswer: action.answer,
-        feedbacks: action.feedbacks,
-        showFeedbacks: action.showFeedbacks
+        feedbacks: [...state.feedbacks, action.feedbacks],
       }
+
+      case 'MARK_ANSWERED_CHOICE':
+        const updatedChoices = state.currentExhaustiveTestQuestion.choices.map(choice => {
+          if (choice.option === action.answer) {
+            return { ...choice, isSelected: true };
+          } else {
+            return { ...choice };
+          }
+        });
+      
+        const updatedCurrentExhaustiveTestQuestion = {
+          ...state.currentExhaustiveTestQuestion,
+          choices: updatedChoices,
+        };
+      
+        return {
+          ...state,
+          currentExhaustiveTestQuestion: updatedCurrentExhaustiveTestQuestion,
+        };
 
     default:
       return state
