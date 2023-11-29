@@ -74,7 +74,7 @@ const LessonList = () => {
     group: false,
   })
 
-  const [goStep, setGoStep] = useState(0);
+  const [goStep, setGoStep] = useState(-1);
   // const [lesson2info, setLesson2info] = useState({})
 
   let lesson2info = {}
@@ -133,7 +133,7 @@ const LessonList = () => {
   useEffect(() => {
     if (!lessonPending) {
         setSliderValue(vocab_diff)
-        if (goStep == 0 && selectedTopicIds && selectedSemantics && selectedTopicIds.length && selectedSemantics.length) {
+        if (goStep == -1 && selectedTopicIds && selectedSemantics && selectedTopicIds.length && selectedSemantics.length) {
           setGoStep(3)
         }
     }
@@ -159,10 +159,6 @@ const LessonList = () => {
     }
 
     dispatch({ type: 'SET_LESSON_SELECTED_TOPICS', topic_ids: newTopics })
-
-    // const payload = { topic_ids: newTopics }
-    // if (libraries.group) payload.group_id = savedGroupSelection
-    // dispatch(setLessonInstance(payload))
   }
 
   const includeLesson = LessonId => {
@@ -175,10 +171,6 @@ const LessonList = () => {
     }
 
     dispatch({ type: 'SET_LESSON_SELECTED_TOPICS', topic_ids: newTopics })
-
-    // const payload = { topic_ids: newTopics }
-    // if (libraries.group) payload.group_id = savedGroupSelection
-    // dispatch(setLessonInstance(payload))
   }
 
   const excludeLesson = LessonId => {
@@ -186,22 +178,16 @@ const LessonList = () => {
     let newTopics = selectedTopicIds.filter(id => !lessonTopics.includes(id))
 
     dispatch({ type: 'SET_LESSON_SELECTED_TOPICS', topic_ids: newTopics })
+  }
 
-    // const payload = { topic_ids: newTopics }
-    // if (libraries.group) payload.group_id = savedGroupSelection
-    // dispatch(setLessonInstance(payload))
+  const finnishSelectingSemantics = () => {
+    const payload = { semantic: selectedSemantics }
+    if (libraries.group) payload.group_id = savedGroupSelection
+    dispatch(setLessonInstance(payload))
   }
 
   const toggleSemantic = semantic => {
-    let newSemantic
-    if (selectedSemantics & selectedSemantics?.includes(semantic)) {
-      newSemantic = selectedSemantics.filter(s => s !== semantic)
-    } else {
-      newSemantic = [...selectedSemantics, semantic]
-    }
-    const payload = { semantic: newSemantic }
-    if (libraries.group) payload.group_id = savedGroupSelection
-    dispatch(setLessonInstance(payload))
+    dispatch({ type: 'TOGGLE_LESSON_SEMANTIC', semantic: semantic })
   }
 
   const handleSlider = value => {
@@ -245,7 +231,10 @@ const LessonList = () => {
             float: 'right', cursor: lessonPending || !(libraries.private || currentGroup && currentGroup.is_teaching)
               ? 'not-allowed' : 'pointer'
           }}
-          onClick={() => setGoStep(1)}>
+          onClick={() => {
+            finnishSelectingSemantics()
+            setGoStep(1)
+          }}>
           <FormattedMessage id="next-step" />
         </Button>
       </h5>
@@ -704,7 +693,7 @@ const LessonList = () => {
               />
             </Stepper>
 
-            {goStep === 0 && (
+            {(goStep === 0 || goStep === -1) && (
               <div>
                 {lessonSemanticControls}
               </div>

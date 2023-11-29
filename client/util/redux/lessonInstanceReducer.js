@@ -27,6 +27,27 @@ const initialState = {
 export default (state = initialState, action) => {
   switch (action.type) {
 
+    case 'TOGGLE_LESSON_SEMANTIC':
+      const { semantic } = action;
+      if (state.lesson.semantic.includes(semantic)) {
+        return {
+          ...state,
+          lesson: {
+            ...state.lesson,
+            semantic: state.lesson.semantic.filter(item => item !== semantic),
+          },
+        };
+      } else {
+        return {
+          ...state,
+          lesson: {
+            ...state.lesson,
+            semantic: [...state.lesson.semantic, semantic],
+          },
+        };
+      }
+
+
     case 'SET_LESSON_SELECTED_TOPICS':
       let newLesson = JSON.parse(JSON.stringify(state.lesson));
       newLesson.topic_ids = action.topic_ids
