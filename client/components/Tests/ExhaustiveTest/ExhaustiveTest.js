@@ -98,8 +98,11 @@ const ExhaustiveTest = ({ showingInfo }) => {
       // ) {
       //     mediationFeedbacks.push(choice.item_feedbacks[currentExhaustiveTestQuestion?.concept_id])
       // }
-
-      dispatch(updateTestFeedbacks(choice.option, remainFeedbacks[0]))
+      if (remainFeedbacks.length > 0){
+        dispatch(updateTestFeedbacks(choice.option, remainFeedbacks[0]))
+      } else {
+        dispatch(nextTestQuestion())
+      }
     } else {
       dispatch(nextTestQuestion())
     }

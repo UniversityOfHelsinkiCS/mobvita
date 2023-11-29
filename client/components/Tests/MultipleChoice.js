@@ -30,18 +30,21 @@ const MultipleChoice = ({ exercise, onAnswer, answerPending }) => {
         )}
       </div>
 
-      {(
-        Object.keys(feedbacks).map(fb_key => (
-          <div 
-            key={fb_key} 
-            style={{ color: 'red', marginBottom: '0.5em' }} 
-            className="feedback" 
-            dangerouslySetInnerHTML={sanitizeHtml(feedbacks[fb_key])} />
-        ))
-      )}
+      {Object.keys(feedbacks).map((fb_key, index) => (
+        <div 
+          key={fb_key} 
+          style={{
+            color: 'red',
+            marginBottom: '0.5em',
+            borderBottom: index < Object.keys(feedbacks).length - 1 ? '1px solid black' : 'none', 
+            paddingBottom: '0.5em', 
+          }} 
+          className="feedback" 
+          dangerouslySetInnerHTML={sanitizeHtml(feedbacks[fb_key])} />
+      ))}
 
       {choices && (choices
-        .filter(choice => choice?.isSelected != true)
+        // .filter(choice => choice?.isSelected != true)
         .map(choice => (
           <div key={choice?.option}>
             <Button
