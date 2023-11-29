@@ -63,7 +63,6 @@ const ExhaustiveTest = ({ showingInfo }) => {
 
     const pauseTimeStamp = willPause ? new Date() : null
 
-    dispatch(markAnsweredChoice(choice.option))
     dispatch(
       sendExhaustiveTestAnswer(
         learningLanguage,
@@ -72,11 +71,13 @@ const ExhaustiveTest = ({ showingInfo }) => {
           type: currentExhaustiveTestQuestion.type,
           question_id: currentExhaustiveTestQuestion.question_id,
           answer: choice.option,
+          seenFeedbacks: feedbacks,
         },
         duration,
         pauseTimeStamp
       )
     )
+    dispatch(markAnsweredChoice(choice.option))
 
     const countNotSelectedChoices = currentExhaustiveTestQuestion.choices.filter(choice => choice.isSelected != true).length;
     if (
