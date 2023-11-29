@@ -71,11 +71,15 @@ export default (state = initialState, action) => {
         error: true,
       }
     case 'GET_LESSON_INSTANCE_SUCCESS':
+      const uniqueSemantics = Array.from(new Set(action.response.lesson.semantic));
       return {
         ...state,
         pending: false,
-        lesson: action.response.lesson,
-      }
+        lesson: {
+          ...action.response.lesson,
+          semantic: uniqueSemantics,
+        },
+      };
 
     case 'SET_LESSON_INSTNACE_ATTEMPT':
       return {
