@@ -38,6 +38,7 @@ const MultipleChoice = ({ exercise, onAnswer, answerPending }) => {
             marginBottom: '0.5em',
             borderBottom: index < Object.keys(feedbacks).length - 1 ? '1px solid black' : 'none', 
             paddingBottom: '0.5em', 
+            whiteSpace: 'pre-line',
           }} 
           className="feedback" 
           dangerouslySetInnerHTML={sanitizeHtml(feedbacks[fb_key])} />
