@@ -160,7 +160,7 @@ const TextWithFeedback = ({
         key={word.ID}
         word={word}
         snippet={snippet}
-        focusedConcept={mode!=='review' && focusedConcept || null}
+        focusedConcept={focusedConcept}
         {...props}
       />
     ) 
