@@ -226,7 +226,7 @@ const LessonTitle = ({ lesson, selected, disabled, toggleTopic, includeLesson, e
 const LessonListItem = ({ lesson, selected, toggleTopic, includeLesson, excludeLesson, disabled }) => {
   const correct_perc = get_lesson_performance(lesson.correct, lesson.total)
   let backgroundColor = '#ffffff'
-  if (correct_perc >= 0.75) backgroundColor = '#32cd3233'
+  if (correct_perc >= 0.75) backgroundColor = '#E2FFE1'
   return (
     <Card
       fluid

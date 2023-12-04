@@ -576,7 +576,7 @@ const LessonList = () => {
 
   function rowRenderer({ key, index, style }) {
     const lesson = lessons && lessons[index]
-    const lowestScore = calculateLowestScore(topics.filter(topic => topic.lessons &&  topic.lessons.includes(lesson.ID)))
+    const lowestScore = calculateLowestScore(topics.filter(topic => lesson.topics && lesson.topics?.includes(topic.topic_id)))
     lesson.correct = lowestScore.correct
     lesson.total = lowestScore.total
     return (
