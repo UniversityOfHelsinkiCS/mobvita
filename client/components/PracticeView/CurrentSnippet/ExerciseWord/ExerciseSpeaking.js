@@ -203,8 +203,9 @@ const ExerciseSpeaking = ({ word, handleChange }) => {
           onMouseDown={handleMouseDown}
           className={className}
           style={{
-            width: getTextWidth(word.surface) + 10,
-            minWidth: getTextWidth(word.surface) + 10,
+            fontFamily: 'monospace',
+            width: getTextWidth(word.surface, 'monospace') * 1.25 + 20,
+            minWidth: getTextWidth(word.surface, 'monospace') * 1.25 + 20,
             backgroundColor: recorded && 'rgba(152, 255, 0, 0.71)' || 
               !listeningHighlighting && getWordColor(word.level, grade, skillLevels) || 'rgba(255, 152, 0, 0.71)',
             marginRight: '2px',
