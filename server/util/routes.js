@@ -15,6 +15,9 @@ router.get('/revitaStatus', checkRevitaStatus)
 router.get('/fin_tts', getFinTTS)
 router.get('/eng_tts', getEngTTS)
 router.get('/yandex_tts', getYandexTTS)
+
+router.post('/sentTranslate', proxyController.mtProxyPost)
+
 router.get('/', (_req, res) => res.send('welcome to root'))
 
 router.post('/file/*', upload.single('file'), proxyController.proxyFilePost)

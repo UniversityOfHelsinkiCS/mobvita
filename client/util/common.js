@@ -421,6 +421,10 @@ export const learningLanguageLocaleCodes = {
   English: 'en',
 }
 
+export const mtLanguages = [
+  'Finnish-English',
+]
+
 export const betaLanguages = [
   'catalan',
   'chinese',

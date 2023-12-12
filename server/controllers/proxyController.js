@@ -36,4 +36,14 @@ const proxyFilePost = async (req, res) => {
   res.send(response.data)
 }
 
-module.exports = { proxyGet, proxyPost, proxyFilePost }
+const mtProxyPost = async (req, res) => {
+  url = (process.env.MT_URL || 'http://svm-58.cs.helsinki.fi:8888') + '/api/translate'
+  const response = await axios.post(url, req.body, { headers: req.headers, timeout: TIMEOUT })
+  res.send({
+    ...response.data,
+    ...req.body,
+  })    
+}
+
+
+module.exports = { proxyGet, proxyPost, proxyFilePost, mtProxyPost }
