@@ -70,7 +70,7 @@ export const resumeAdaptiveTest = (language, sessionId) => {
 }
 
 export const sendReadingTestAnswer = (language, sessionId, answer) => {
-  const route = `/test/${language}/reading/answer`
+  const route = `/test/${language}/answer`
   const prefix = 'ANSWER_TEST_QUESTION'
   const payload = {
     session_id: sessionId,
@@ -158,13 +158,15 @@ export const updateTestFeedbacks = (answer, feedbacks) => ({
 
 export const nextTestQuestion = () => ({ type: 'NEXT_TEST_QUESTION' })
 
+export const nextReadingTestQuestion = () => ({ type: 'NEXT_READING_TEST_QUESTION' })
+
 export const markAnsweredChoice = (answer) => ({ type: 'MARK_ANSWERED_CHOICE', answer })
 
 export default (state = initialState, action) => {
   const { 
     currentAdaptiveQuestionIndex,
     currentExhaustiveQuestionIndex, exhaustiveTestQuestions,
-    currentReadingQuestionIndex, currentReadingTestQuestion,
+    currentReadingQuestionIndex, readingTestQuestions,
   } = state
   const { response, startingIndex } = action
 
@@ -269,6 +271,13 @@ export default (state = initialState, action) => {
         ...state,
         currentExhaustiveQuestionIndex: currentExhaustiveQuestionIndex + 1,
         currentExhaustiveTestQuestion: exhaustiveTestQuestions[currentExhaustiveQuestionIndex + 1],
+        feedbacks: [],
+      }
+    case 'NEXT_READING_TEST_QUESTION':
+      return {
+        ...state,
+        currentReadingQuestionIndex: currentReadingQuestionIndex + 1,
+        currentReadingTestQuestion: readingTestQuestions[currentReadingQuestionIndex + 1],
         feedbacks: [],
       }
     case 'ANSWER_TEST_QUESTION_ATTEMPT':

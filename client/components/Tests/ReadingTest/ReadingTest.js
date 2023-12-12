@@ -7,7 +7,7 @@ import {
     sendReadingTestAnswer, 
     finishExhaustiveTest, 
     updateTestFeedbacks, 
-    nextTestQuestion,
+    nextReadingTestQuestion,
     markAnsweredChoice
 } from 'Utilities/redux/testReducer'
 import { learningLanguageSelector } from 'Utilities/common'
@@ -51,7 +51,7 @@ const ReadingTest = () => {
   const checkAnswer = choice => {
     if (!currentReadingTestQuestion) return
 
-    // const timeToAnswer = currentExhaustiveTestQuestion.time
+    // const timeToAnswer = currentReadingTestQuestion.time
     // const overTimeInSeconds = Math.round(overtimeTimer.getTime() / 1000)
     // const duration =
     //   timer.getTime() < 0 ? timeToAnswer + overTimeInSeconds : timeToAnswer - timer.getTime() / 1000
@@ -99,10 +99,10 @@ const ReadingTest = () => {
       if (remainFeedbacks.length > 0){
         dispatch(updateTestFeedbacks(choice.option, remainFeedbacks[0]))
       } else {
-        dispatch(nextTestQuestion())
+        dispatch(nextReadingTestQuestion())
       }
     } else {
-      dispatch(nextTestQuestion())
+      dispatch(nextReadingTestQuestion())
     }
   }
 
@@ -121,7 +121,7 @@ const ReadingTest = () => {
     // } 
     else {
     //   timer.setTime(currentReadingTestQuestion.time * 1000)
-      if (currentReadingQuestionIndex !== 0) setDisplaySpinner(true)
+    // if (currentReadingQuestionIndex !== 0) setDisplaySpinner(true)
     //   setTimeout(() => {
     //     timer.start()
     //     setDisplaySpinner(false)
@@ -174,7 +174,7 @@ const ReadingTest = () => {
     <div className="cont mt-nm">
       <Segment style={{ minHeight: '700px', borderRadius: '20px' }}>
         <div className="align-center justify-center">
-          <div
+          {/* <div
             className="flex align-start"
             style={{ position: 'absolute', top: '1em', right: '1em', gap: '.5em' }}
           >
@@ -205,17 +205,17 @@ const ReadingTest = () => {
             >
               {Math.round(timer.getTime() / 1000)}
             </div>
-          </div>
+          </div> */}
 
           <div className="test-container">
             <div className="test-top-info space-between">
               <div>
-                <FormattedHTMLMessage id="question" />: {currentExhaustiveQuestionIndex + 1} /{' '}
-                {exhaustiveTestQuestions.length}
+                <FormattedHTMLMessage id="question" />: {currentReadingQuestionIndex + 1} /{' '}
+                {readingTestQuestions.length}
               </div>
             </div>
             <div className="test-question-container" style={testContainerOverflow}>
-              {willPause && !willStop && (
+              {/* {willPause && !willStop && (
                 <span className="test-info">
                   <FormattedMessage id="pause-after-you-answer-this-question" />
                 </span>
@@ -229,11 +229,11 @@ const ReadingTest = () => {
                 <div className="test-paused-text-cont">
                   <FormattedHTMLMessage id="paused-click-to-resume" />
                 </div>
-              )}
-              {currentExhaustiveTestQuestion && !paused && !answerFailure && !displaySpinner && (
+              )} */}
+              {currentReadingTestQuestion && !paused && !answerFailure && !displaySpinner && (
                 <div>
                   <MultipleChoice
-                    exercise={currentExhaustiveTestQuestion}
+                    exercise={currentReadingTestQuestion}
                     onAnswer={checkAnswer}
                     answerPending={answerPending}
                   />

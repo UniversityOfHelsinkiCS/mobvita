@@ -22,17 +22,15 @@ const ReadingTestView = () => {
   const { readingTestSessionId, report, pending, language, history } = useSelector(
     ({ tests }) => tests
   )
-  const { groups } = useSelector(({ groups }) => groups)
   const bigScreen = useWindowDimension().width >= 650
 
   useEffect(() => {
     dispatch(getReadingTestQuestions(learningLanguage))
   }, [dispatch, learningLanguage])
-
+  
   if (pending) {
     return <Spinner fullHeight />
   }
-
 
   return (
     <div className="cont-tall cont flex-col auto gap-row-sm">
