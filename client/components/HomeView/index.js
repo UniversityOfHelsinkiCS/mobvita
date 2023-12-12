@@ -198,6 +198,16 @@ const HomeviewButtons = ({
             />
           </div>
 
+          <div>
+            <HomeviewButton
+              imgSrc={images.readingBook}
+              altText="reading test"
+              translationKey="reading-test"
+              handleClick={() => history.push('/reading-test')}
+              dataCy="reading-test-button"
+            />
+          </div>
+
           {hiddenFeatures && (
             <>
               <Button onClick={() => history.push('/test-construction')}>Grammar check</Button>

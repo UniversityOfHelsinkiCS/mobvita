@@ -183,15 +183,15 @@ export default (state = initialState, action) => {
         timedTest: state.timedTest,
         pending: true,
         language: action.language,
-        currentReadingQuestionIndex: startingIndex,
       }
     case 'GET_READING_TEST_QUESTIONS_SUCCESS':
       return {
         ...state,
         readingTestQuestions: response.question_list,
-        currentReadingTestQuestion: response.question_list[startingIndex || 0],
+        currentReadingTestQuestion: response.question_list[0],
         readingTestSessionId: response.session_id,
-        currentReadingQuestionIndex: startingIndex || 0,
+        currentReadingQuestionIndex: 0,
+        feedbacks: [],
         pending: false,
       }
     case 'GET_READING_TEST_QUESTIONS_FAILURE':
