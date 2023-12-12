@@ -3,15 +3,23 @@ import callBuilder from '../apiConnection'
 
 const initialState = {
   language: window.localStorage.getItem('testLanguage'),
+
+  readingTestSessionId: null,
+  currentReadingQuestionIndex: 0,
+  currentReadingTestQuestion: null,
+  readingTestQuestions: [],
+
   exhaustiveTestSessionId: null,
   currentExhaustiveQuestionIndex: 0,
   currentExhaustiveTestQuestion: null,
   exhaustiveTestQuestions: [],
-  report: null,
+  
   adaptiveTestSessionId: null,
   currentAdaptiveQuestionIndex: 0,
   adaptiveTestResults: null,
+
   timedTest: true,
+  report: null,
   feedbacks: [],
 }
 
@@ -19,6 +27,14 @@ const clearLocalStorage = () => {
   window.localStorage.removeItem('questions')
   window.localStorage.removeItem('testIndex')
   window.localStorage.removeItem('testLanguage')
+}
+
+export const getReadingTestQuestions = (language) => {
+  const route = `/test/${language}/reading`
+  const prefix = 'GET_READING_TEST_QUESTIONS'
+
+  const call = callBuilder(route, prefix, 'get', undefined, undefined, 'questions')
+  return { ...call, language, startingIndex: 0 }
 }
 
 export const getTestQuestions = (language, groupId, restart = false) => {
@@ -51,6 +67,18 @@ export const resumeAdaptiveTest = (language, sessionId) => {
   const prefix = 'RESUME_ADAPTIVE_TEST'
 
   return callBuilder(route, prefix, 'get')
+}
+
+export const sendReadingTestAnswer = (language, sessionId, answer) => {
+  const route = `/test/${language}/answer`
+  const prefix = 'ANSWER_TEST_QUESTION'
+  const payload = {
+    session_id: sessionId,
+    language,
+    is_completed: false,
+    answers: [answer],
+  }
+  return callBuilder(route, prefix, 'post', payload)
 }
 
 export const sendExhaustiveTestAnswer = (language, sessionId, answer, duration, breakTimestamp) => {
@@ -130,11 +158,16 @@ export const updateTestFeedbacks = (answer, feedbacks) => ({
 
 export const nextTestQuestion = () => ({ type: 'NEXT_TEST_QUESTION' })
 
+export const nextReadingTestQuestion = () => ({ type: 'NEXT_READING_TEST_QUESTION' })
+
 export const markAnsweredChoice = (answer) => ({ type: 'MARK_ANSWERED_CHOICE', answer })
 
 export default (state = initialState, action) => {
-  const { currentExhaustiveQuestionIndex, currentAdaptiveQuestionIndex, exhaustiveTestQuestions } =
-    state
+  const { 
+    currentAdaptiveQuestionIndex,
+    currentExhaustiveQuestionIndex, exhaustiveTestQuestions,
+    currentReadingQuestionIndex, readingTestQuestions,
+  } = state
   const { response, startingIndex } = action
 
   switch (action.type) {
@@ -143,6 +176,31 @@ export default (state = initialState, action) => {
         ...initialState,
         timedTest: action.isTimed,
       }
+
+    case 'GET_READING_TEST_QUESTIONS_ATTEMPT':
+      return {
+        ...initialState,
+        timedTest: state.timedTest,
+        pending: true,
+        language: action.language,
+        currentReadingQuestionIndex: startingIndex,
+      }
+    case 'GET_READING_TEST_QUESTIONS_SUCCESS':
+      return {
+        ...state,
+        readingTestQuestions: response.question_list,
+        currentReadingTestQuestion: response.question_list[startingIndex || 0],
+        readingTestSessionId: response.session_id,
+        currentReadingQuestionIndex: startingIndex || 0,
+        pending: false,
+      }
+    case 'GET_READING_TEST_QUESTIONS_FAILURE':
+      return {
+        ...state,
+        error: true,
+        pending: false,
+      }
+
     case 'GET_TEST_QUESTIONS_ATTEMPT':
       return {
         ...initialState,
@@ -213,6 +271,13 @@ export default (state = initialState, action) => {
         ...state,
         currentExhaustiveQuestionIndex: currentExhaustiveQuestionIndex + 1,
         currentExhaustiveTestQuestion: exhaustiveTestQuestions[currentExhaustiveQuestionIndex + 1],
+        feedbacks: [],
+      }
+    case 'NEXT_READING_TEST_QUESTION':
+      return {
+        ...state,
+        currentReadingQuestionIndex: currentReadingQuestionIndex + 1,
+        currentReadingTestQuestion: readingTestQuestions[currentReadingQuestionIndex + 1],
         feedbacks: [],
       }
     case 'ANSWER_TEST_QUESTION_ATTEMPT':
@@ -292,7 +357,7 @@ export default (state = initialState, action) => {
       }
 
       case 'MARK_ANSWERED_CHOICE':
-        const updatedChoices = state.currentExhaustiveTestQuestion.choices.map(choice => {
+        const updatedChoices = state.currentReadingTestQuestion.choices.map(choice => {
           if (choice.option === action.answer) {
             return { ...choice, isSelected: true };
           } else {
@@ -300,14 +365,14 @@ export default (state = initialState, action) => {
           }
         });
       
-        const updatedCurrentExhaustiveTestQuestion = {
-          ...state.currentExhaustiveTestQuestion,
+        const updatedCurrentReadingTestQuestion = {
+          ...state.currentReadingTestQuestion,
           choices: updatedChoices,
         };
       
         return {
           ...state,
-          currentExhaustiveTestQuestion: updatedCurrentExhaustiveTestQuestion,
+          currentReadingTestQuestion: updatedCurrentReadingTestQuestion,
         };
 
     default:

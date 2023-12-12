@@ -4,6 +4,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import { getBackgroundColor } from 'Utilities/common'
 import HomeView from 'Components/HomeView'
 import LibraryView from 'Components/LibraryView'
+import ReadingTestView from 'Components/Tests/ReadingTest/index'
 import ExhaustiveTestView from 'Components/Tests/ExhaustiveTest/index'
 import AdaptiveTestView from 'Components/Tests/AdaptiveTest/index'
 import ReadViews from 'Components/ReadViews'
@@ -175,6 +176,7 @@ export default () => {
             <ProtectedRoute exact path="/profile/settings" component={Profile} />
             <ProtectedRoute exact path="/profile/following" component={Profile} />
             <ProtectedRoute exact path="/tests" component={ExhaustiveTestView} />
+            <ProtectedRoute exact path="/reading-test" component={ReadingTestView} />
             <ProtectedRoute exact path="/adaptive-test" component={AdaptiveTestView} />
             <ProtectedRoute exact path="/achievements" component={Achievements} />
             <ProtectedRoute exact path="/leaderboard" component={Leaderboard} />
