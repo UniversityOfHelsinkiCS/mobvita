@@ -107,7 +107,7 @@ const ReadingTest = () => {
   }
 
   useEffect(() => {
-    if (!readingTestSessionId || showingInfo) return
+    if (!readingTestSessionId) return
     if (!currentReadingTestQuestion) {
     //   timer.stop()
       dispatch(finishExhaustiveTest(learningLanguage, readingTestSessionId))

@@ -30,7 +30,7 @@ const clearLocalStorage = () => {
 }
 
 export const getReadingTestQuestions = (language) => {
-  const route = `/reading_test/${language}`
+  const route = `/test/${language}/reading`
   const prefix = 'GET_READING_TEST_QUESTIONS'
 
   const call = callBuilder(route, prefix, 'get', undefined, undefined, 'questions')

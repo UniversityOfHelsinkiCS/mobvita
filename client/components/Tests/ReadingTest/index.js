@@ -4,8 +4,8 @@ import { Button } from 'react-bootstrap'
 import { FormattedMessage } from 'react-intl'
 import { useDispatch, useSelector } from 'react-redux'
 import {
-    getReadingTestQuestions,
-    resetTests,
+  getReadingTestQuestions,
+  resetTests,
 } from 'Utilities/redux/testReducer'
 
 import { useLearningLanguage } from 'Utilities/common'
@@ -19,13 +19,15 @@ const ReadingTestView = () => {
   const dispatch = useDispatch()
   const learningLanguage = useLearningLanguage()
   const [sessionToDelete, setSessionToDelete] = useState(false)
-  const { exhaustiveTestSessionId, report, pending, language, history } = useSelector(
+  const { readingTestSessionId, report, pending, language, history } = useSelector(
     ({ tests }) => tests
   )
   const { groups } = useSelector(({ groups }) => groups)
   const bigScreen = useWindowDimension().width >= 650
 
-  dispatch(getReadingTestQuestions(learningLanguage))
+  useEffect(() => {
+    dispatch(getReadingTestQuestions(learningLanguage))
+  }, [dispatch, learningLanguage])
 
   if (pending) {
     return <Spinner fullHeight />
@@ -35,7 +37,7 @@ const ReadingTestView = () => {
   return (
     <div className="cont-tall cont flex-col auto gap-row-sm">
       <div className="grow ps-nm flex-col gap-row-sm">
-        {exhaustiveTestSessionId && <ReadingTest />}
+        {readingTestSessionId && <ReadingTest />}
       </div>
     </div>
   )
