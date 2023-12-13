@@ -1534,5 +1534,7 @@
     "Easy": "Проще",
     "Hard": "Сложнее",
     "Lessons": "Уроки",
-    "next-step": "Далее"
+    "next-step": "Далее",
+    "teacher-view": "Teacher view",
+    "dictionaryhelp-show-context-translation": "Translate sentences"
 }

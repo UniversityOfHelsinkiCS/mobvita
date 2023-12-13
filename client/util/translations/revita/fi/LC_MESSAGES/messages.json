@@ -1529,8 +1529,10 @@
     "select-lesson-grammar": "Valitse kieliopin aiheet",
     "start-lesson-practice": "Aloita harjoittelu",
     "Next step": "Next step",
-    "Easy": "Easy",
-    "Hard": "Hard",
+    "Easy": "Helppo",
+    "Hard": "Vaikea",
     "Lessons": "Oppitunnit",
-    "next-step": "Next step"
+    "next-step": "Seuraava",
+    "teacher-view": "Teacher view",
+    "dictionaryhelp-show-context-translation": "Translate sentences"
 }

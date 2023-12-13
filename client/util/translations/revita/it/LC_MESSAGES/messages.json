@@ -1528,8 +1528,10 @@
     "select-lesson-grammar": "Seleziona gli argomenti di grammatica",
     "start-lesson-practice": "Inizia la pratica",
     "Next step": "Next step",
-    "Easy": "Easy",
-    "Hard": "Hard",
+    "Easy": "Facile",
+    "Hard": "Difficile",
     "Lessons": "Lezioni",
-    "next-step": "Next step"
+    "next-step": "Next step",
+    "teacher-view": "Teacher view",
+    "dictionaryhelp-show-context-translation": "Translate sentences"
 }
