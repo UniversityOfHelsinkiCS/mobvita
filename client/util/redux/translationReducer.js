@@ -59,22 +59,6 @@ export const changeTranslationStageAction = (lemma, lang_learn, lang_target, sta
   stage
 })
 
-export const getSentenceTranslation = (
-  sentence,
-  learningLanguage,
-  dictionaryLanguage,
-) => {
-  const data = {
-    source: sentence,
-    from: learningLanguage,
-    to: dictionaryLanguage,
-  }
-
-  const route = '/sentTranslate'
-  const prefix = 'GET_SENT_TRANSLATION'
-  return callBuilder(route, prefix, 'post', data)
-}
-
 export const clearTranslationAction = () => ({ type: 'CLEAR_TRANSLATION' })
 
 export const setWords = ({ surface, lemmas, clue, maskSymbol }) => {
@@ -92,7 +76,6 @@ export default (state = { data: [] }, action) => {
     case 'GET_TRANSLATION_ATTEMPT':
       return {
         ...state,
-        type: 'word',
         pending: true,
         error: false,
       }
@@ -100,7 +83,6 @@ export default (state = { data: [] }, action) => {
       return {
         ...state,
         data: action.response['responses'],
-        type: 'word',
         pending: false,
         error: false,
       }
@@ -108,37 +90,12 @@ export default (state = { data: [] }, action) => {
       return {
         ...state,
         focused: action.response,
-        type: 'word',
-        pending: false,
-        error: true,
-      }
-    case 'GET_SENT_TRANSLATION_ATTEMPT':
-      return {
-        ...state,
-        type: 'sent',
-        pending: true,
-        error: false,
-      }
-    case 'GET_SENT_TRANSLATION_SUCCESS':
-      return {
-        ...state,
-        data: action.response,
-        type: 'sent',
-        pending: false,
-        error: false,
-      }
-    case 'GET_SENT_TRANSLATION_FAILURE':
-      return {
-        ...state,
-        focused: action.response,
-        type: 'sent',
         pending: false,
         error: true,
       }
     case 'GET_CLUE_TRANSLATION_ATTEMPT':
       return {
         ...state,
-        type: 'word',
         pending: true,
         error: false,
       }
@@ -146,7 +103,6 @@ export default (state = { data: [] }, action) => {
       if (!action.response['responses']) {
         return {
           ...state,
-          type: 'word',
           data: 'no-clue-translation',
           pending: false,
           error: false,
@@ -154,7 +110,6 @@ export default (state = { data: [] }, action) => {
       }
       return {
         ...state,
-        type: 'word',
         data: action.response['responses'],
         pending: false,
         error: false,
@@ -162,7 +117,6 @@ export default (state = { data: [] }, action) => {
     case 'GET_CLUE_TRANSLATION_FAILURE':
       return {
         ...state,
-        type: 'word',
         focused: action.response,
         pending: false,
         error: true,
@@ -170,7 +124,6 @@ export default (state = { data: [] }, action) => {
     case 'SET_WORDS':
       return {
         ...state,
-        type: 'word',
         surfaceWord: action.words.surface,
         lemmas: action.words.lemmas,
         clue: action.clue,
@@ -190,7 +143,6 @@ export default (state = { data: [] }, action) => {
     case 'SET_TRANSLATION_STAGE': {
       return {
         ...state,
-        type: 'word',
         data: state.data.map(
           translated => (translated.lemma !== action.lemma || 
             translated.language_in !== action.lang_learn || 

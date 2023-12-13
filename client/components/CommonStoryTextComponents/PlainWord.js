@@ -10,8 +10,11 @@ import {
   getWordColor,
   skillLevels,
   getMode,
+  learningLanguageLocaleCodes,
+  mtLanguages
 } from 'Utilities/common'
 import { getTranslationAction, setWords } from 'Utilities/redux/translationReducer'
+import { getContextTranslation, clearContextTranslation } from 'Utilities/redux/contextTranslationReducer'
 import {
   setFocusedSpan,
   setHighlightRange,
@@ -38,7 +41,18 @@ const PlainWord = ({ word, annotatingAllowed, focusedConcept, ...props }) => {
   const { grade } = useSelector(state => state.user.data.user)
   const { show_review_diff, show_preview_exer } = useSelector(state => state.user.data.user)
   const { focusedWord } = useSelector(({ practice }) => practice)
-  const { translation_lemmas, lemmas, ID: wordId, surface, inflection_ref: inflectionRef, name_token: isName } = word
+  const { 
+    translation_lemmas, 
+    lemmas, 
+    ID: wordId, 
+    surface, 
+    inflection_ref: inflectionRef, 
+    name_token: isName,
+    sentence_id,
+    snippet_id
+  } = word
+  const {focused: story} = useSelector(({ stories }) => stories)
+  const { type, surfaceWord } = useSelector(({translation}) => translation)
   const isCompeteMode = history.location.pathname.includes('compete')
   const bigScreen = width >= 1024
   const voice = voiceLanguages[learningLanguage]
@@ -115,6 +129,7 @@ const PlainWord = ({ word, annotatingAllowed, focusedConcept, ...props }) => {
 
   const handleWordClick = () => {
     dispatch(setFocusedSpan(null))
+    dispatch(clearContextTranslation())
     if (showAnnotationForm) dispatch(setAnnotationFormVisibility(false))
     if (autoSpeak === 'always' && voice) speak(surface, voice, 'dictionary', resource_usage)
     if (lemmas) {
@@ -146,7 +161,15 @@ const PlainWord = ({ word, annotatingAllowed, focusedConcept, ...props }) => {
             prefLemma,
           })
         )
-
+        if (mtLanguages.includes([learningLanguage, dictionaryLanguage].join('-'))) {
+          const sentence = story.paragraph[snippet_id].filter(
+            s => sentence_id - 1 < s.sentence_id < sentence_id + 1).map(t=>t.surface).join('').replaceAll('\n', ' ').trim()
+          dispatch(
+            getContextTranslation(sentence,
+              learningLanguageLocaleCodes[learningLanguage],
+              learningLanguageLocaleCodes[dictionaryLanguage])
+          )
+        }
         setAllowTranslating(false)
         setTimeout(() => {
           setAllowTranslating(true)

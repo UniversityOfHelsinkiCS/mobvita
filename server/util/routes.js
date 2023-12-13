@@ -16,7 +16,7 @@ router.get('/fin_tts', getFinTTS)
 router.get('/eng_tts', getEngTTS)
 router.get('/yandex_tts', getYandexTTS)
 
-router.post('/sentTranslate', proxyController.mtProxyPost)
+router.post('/ctxTranslate', proxyController.mtProxyPost)
 
 router.get('/', (_req, res) => res.send('welcome to root'))
 

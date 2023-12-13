@@ -1,0 +1,74 @@
+import React, { useState, useEffect } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
+import { FormattedMessage, FormattedHTMLMessage, useIntl } from 'react-intl'
+import { Button, Icon, Popup } from 'semantic-ui-react'
+import { Spinner } from 'react-bootstrap'
+import {
+  useDictionaryLanguage,
+  useLearningLanguage,
+  mtLanguages,
+  learningLanguageLocaleCodes
+} from 'Utilities/common'
+import { getContextTranslation } from 'Utilities/redux/contextTranslationReducer'
+
+const ContextTranslation = ({wordTranslated}) => {
+    const dispatch = useDispatch()
+    const learningLanguage = useLearningLanguage()
+    const dictionaryLanguage = useDictionaryLanguage()
+    const { data, pending } = useSelector(({ contextTranslation }) => contextTranslation)
+    const translatable = mtLanguages.includes([learningLanguage, dictionaryLanguage].join('-'))
+    const [show, setShow] = useState(false)
+
+    useEffect(() => {
+        if (translatable && data){
+            dispatch(getContextTranslation(data.sentence,
+                learningLanguageLocaleCodes[learningLanguage],
+                learningLanguageLocaleCodes[dictionaryLanguage]))
+        }
+    }, [learningLanguage, dictionaryLanguage])
+    useEffect(() => {
+        setShow(false)
+    }, [wordTranslated])
+
+    if (!translatable || !wordTranslated || !pending && !data) return null
+    if (!show && translatable) return (
+        <Popup
+            position="top center"
+            content={<FormattedHTMLMessage id="dictionaryhelp-show-context-translation" />}
+            trigger={
+                <Button 
+                    primary
+                    circular
+                    style={{ float: 'right',  }}
+                    onClick={() => setShow(true)}
+                    // tooltip={intl.formatMessage({ id: 'dictionaryhelp-show-translation-tooltip' })}
+                >
+                    <Icon name="translate" />
+                </Button>
+            }
+        />
+    )
+
+    return (
+        <div className="flex space-between">
+            <div className="flex">
+            { !pending ? (
+                <>
+                    {data.translation}
+                </>
+            ): (
+                <div>
+                    <span>
+                        <FormattedMessage id="dictionaryhelp-loading-please-wait" />
+                        ...{' '}
+                    </span>
+                    <Spinner animation="border" />
+                </div>
+            )}
+            </div>
+        </div>
+    )
+
+}
+
+export default ContextTranslation

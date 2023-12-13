@@ -50,6 +50,7 @@ import streak from './streakReducer'
 import xp from './xpReducer'
 import level from './levelReducer'
 import levelUp from './levelUpReducer'
+import contextTranslation from './contextTranslationReducer'
 
 const rootReducer = combineReducers({
   stories,
@@ -101,7 +102,8 @@ const rootReducer = combineReducers({
   streak,
   xp,
   level,
-  levelUp
+  levelUp,
+  contextTranslation
 })
 
 export default (state, action) =>

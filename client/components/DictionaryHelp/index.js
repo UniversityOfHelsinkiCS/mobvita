@@ -13,132 +13,21 @@ import {
   useDictionaryLanguage,
   useLearningLanguage,
   translatableLanguages,
-  speak,
-  voiceLanguages,
   getTextStyle,
   images,
   flashcardColors,
   hiddenFeatures,
+  mtLanguages
 } from 'Utilities/common'
 import useWindowDimensions from 'Utilities/windowDimensions'
 import { setAnnotationvisibilityMobile } from 'Utilities/redux/annotationsReducer'
 import { Spinner } from 'react-bootstrap'
 import FocusedView from 'Components/AnnotationBox/FocusedView'
 import { recordFlashcardAnswer } from 'Utilities/redux/flashcardReducer'
+import { Speaker, DictionaryButton } from './dictComponents'
+import Lemma from './Lemma'
+import ContextTranslation from './ContextTranslation'
 
-const Speaker = ({ word }) => {
-  const learningLanguage = useLearningLanguage()
-  const voice = voiceLanguages[learningLanguage]
-  const { resource_usage } = useSelector(state => state.user.data.user)
-  const [count, setCount] = useState(0)
-  const [lastWord, setLastWord] = useState('')
-
-  const handleSpeakerClick = () => {
-    speak(word, voice, 'dictionary', resource_usage, count)
-    if (lastWord === ''){
-      setCount(count + 1)
-      setLastWord(word)
-    }
-    else if (word === lastWord) setCount(count + 1)
-    else{
-      setCount(0)
-      setLastWord(word)
-    }
-  }
-
-  if (!voice) return null
-
-  return (
-    <Icon
-      name="volume up"
-      style={{ marginRight: '1rem' }}
-      className="clickable"
-      onClick={handleSpeakerClick}
-    />
-  )
-}
-
-const DictionaryButton = ({ setShow }) => {
-  const dispatch = useDispatch()
-
-  const handleDictionaryButtonClick = () => {
-    setShow(true)
-    dispatch(setAnnotationvisibilityMobile(false))
-  }
-
-  return (
-    <div className="dictionary-button">
-      <Button className="navigationbuttonopen" icon basic onClick={handleDictionaryButtonClick}>
-        <Icon size="large" name="book" data-cy="dictionary-icon" />
-      </Button>
-    </div>
-  )
-}
-
-const Clue = ({ clue }) => (
-  <div style={{ fontWeight: 'bold', color: '#2185D0' }}>
-    <FormattedMessage id="Your clue" />
-    {`: ${clue.number} ${clue.direction}`}
-  </div>
-)
-
-const Lemma = ({
-  lemma,
-  sourceWord,
-  handleSourceWordClick,
-  handleKnowningClick,
-  handleNotKnowningClick,
-  userUrl,
-  inflectionRef,
-  preferred,
-}) => {
-  const learningLanguage = useLearningLanguage()
-  const { maskSymbol } = useSelector(({ translation }) => translation)
-
-  return (
-    <div className="flex space-between" style={getTextStyle(learningLanguage)}>
-      <div className="flex">
-        <Speaker word={lemma} />
-        {maskSymbol || (
-          <a href={userUrl} target="_blank" rel="noopener noreferrer">
-            {lemma}
-          </a>
-        )}
-        {inflectionRef && (
-          <a href={inflectionRef.url} target="_blank" rel="noopener noreferrer" className="flex">
-            <Icon name="external" style={{ marginLeft: '1rem' }} />
-          </a>
-        )}
-      </div>
-      {preferred && (
-        <div className="flex-col" style={{ alignItems: 'center' }}>
-          <Popup
-            position="top center"
-            content={<FormattedHTMLMessage id="i-know-tooltip" />}
-            trigger={
-              <Icon
-                name="check"
-                onClick={handleKnowningClick}
-                style={{ cursor: 'pointer', marginLeft: '2em' }}
-              />
-            }
-          />
-          <Popup
-            position="top center"
-            content={<FormattedHTMLMessage id="i-dont-know-tooltip" />}
-            trigger={
-              <Icon
-                name="question"
-                onClick={handleNotKnowningClick}
-                style={{ cursor: 'pointer', marginLeft: '2em', marginTop: '.75em' }}
-              />
-            }
-          />
-        </div>
-      )}
-    </div>
-  )
-}
 
 const DictionaryHelp = ({ minimized, inWordNestModal }) => {
   const [showHelp, setShow] = useState(false)
@@ -248,7 +137,10 @@ const DictionaryHelp = ({ minimized, inWordNestModal }) => {
           }}
         >
           {clue ? (
-            <Clue clue={clue} />
+            <div style={{ fontWeight: 'bold', color: '#2185D0' }}>
+              <FormattedMessage id="Your clue" />
+              {`: ${clue.number} ${clue.direction}`}
+            </div>
           ) : (
             <Lemma
               lemma={translated.lemma}
@@ -406,7 +298,7 @@ const DictionaryHelp = ({ minimized, inWordNestModal }) => {
           </div>
         )}
 
-        <div className="space-between">
+        <div >
           {!mobileDisplayAnnotations ? (
             <div>
               <div className="space-between pt-sm">
@@ -433,8 +325,11 @@ const DictionaryHelp = ({ minimized, inWordNestModal }) => {
                       open={wordNestModalOpen}
                       setOpen={setWordNestModalOpen}
                     />
-                  )}
+                )}
               </div>
+              {
+                hiddenFeatures && ( <ContextTranslation wordTranslated={!pending && translation}/>)
+              }
             </div>
           ) : (
             <div style={{ width: '100%' }}>
