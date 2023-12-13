@@ -45,5 +45,11 @@ const mtProxyPost = async (req, res) => {
   })    
 }
 
+const mtStatus = async (req, res) => {
+  url = (process.env.MT_URL || 'http://svm-58.cs.helsinki.fi:8888') + '/api/languages'
+  const response = await axios.get(url, { headers: req.headers, timeout: TIMEOUT })
+  res.send(response.data)    
+}
 
-module.exports = { proxyGet, proxyPost, proxyFilePost, mtProxyPost }
+
+module.exports = { proxyGet, proxyPost, proxyFilePost, mtProxyPost, mtStatus }

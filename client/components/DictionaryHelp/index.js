@@ -17,7 +17,7 @@ import {
   images,
   flashcardColors,
   hiddenFeatures,
-  mtLanguages
+  useMTAvailableLanguage
 } from 'Utilities/common'
 import useWindowDimensions from 'Utilities/windowDimensions'
 import { setAnnotationvisibilityMobile } from 'Utilities/redux/annotationsReducer'
@@ -37,6 +37,7 @@ const DictionaryHelp = ({ minimized, inWordNestModal }) => {
   const translationLanguageCode = useSelector(({ user }) => user.data.user.last_trans_language)
   const learningLanguage = useLearningLanguage()
   const dictionaryLanguage = useDictionaryLanguage()
+  const mtLanguages = useMTAvailableLanguage()
   const {
     pending,
     data: translation,

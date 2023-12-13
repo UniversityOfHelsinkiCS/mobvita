@@ -10,7 +10,7 @@ import {
   voiceLanguages,
   hiddenFeatures,
   learningLanguageLocaleCodes,
-  mtLanguages
+  useMTAvailableLanguage
 } from 'Utilities/common'
 import { setReferences, setExplanation } from 'Utilities/redux/practiceReducer'
 import { getTranslationAction, setWords } from 'Utilities/redux/translationReducer'
@@ -53,6 +53,7 @@ const ControlledStoryWord = ({ word, snippet, focusedConcept }) => {
   const controlledPractice = useSelector(({ controlledPractice }) => controlledPractice)
   const { resource_usage, autoSpeak } = useSelector(state => state.user.data.user)
   const dictionaryLanguage = useSelector(dictionaryLanguageSelector)
+  const mtLanguages = useMTAvailableLanguage()
   const { spanAnnotations, highlightRange } = useSelector(({ annotations }) => annotations)
   const { id: storyId } = useParams()
   const { correctAnswerIDs } = useSelector(({ practice }) => practice)

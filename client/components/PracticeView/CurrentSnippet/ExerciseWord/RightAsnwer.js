@@ -7,7 +7,7 @@ import {
   speak,
   formatGreenFeedbackText,
   learningLanguageLocaleCodes,
-  mtLanguages
+  useMTAvailableLanguage
 } from 'Utilities/common'
 import { getTranslationAction, setWords } from 'Utilities/redux/translationReducer'
 import { getContextTranslation } from 'Utilities/redux/contextTranslationReducer'
@@ -28,7 +28,7 @@ const RightAnswer = ({ word }) => {
   const { resource_usage, autoSpeak } = useSelector(state => state.user.data.user)
   const dictionaryLanguage = useSelector(dictionaryLanguageSelector)
   const learningLanguage = useSelector(learningLanguageSelector)
-
+  const mtLanguages = useMTAvailableLanguage()
   const [show, setShow] = useState(false)
 
   const dispatch = useDispatch()

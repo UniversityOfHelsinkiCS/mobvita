@@ -362,6 +362,7 @@ export const dictionaryLanguageSelector = ({ user }) => user.data.user.last_tran
 
 export const useLearningLanguage = () => useSelector(learningLanguageSelector)
 export const useDictionaryLanguage = () => useSelector(dictionaryLanguageSelector)
+export const useMTAvailableLanguage = () => useSelector(({ contextTranslation }) => contextTranslation.avail)
 export const useCurrentUser = () => useSelector(({ user }) => user.data.user)
 
 export const supportedLearningLanguages = {
@@ -420,10 +421,6 @@ export const learningLanguageLocaleCodes = {
   livvi: 'olo',
   English: 'en',
 }
-
-export const mtLanguages = [
-  'Finnish-English',
-]
 
 export const betaLanguages = [
   'catalan',

@@ -11,7 +11,7 @@ import {
   skillLevels,
   getMode,
   learningLanguageLocaleCodes,
-  mtLanguages
+  useMTAvailableLanguage
 } from 'Utilities/common'
 import { getTranslationAction, setWords } from 'Utilities/redux/translationReducer'
 import { getContextTranslation } from 'Utilities/redux/contextTranslationReducer'
@@ -34,6 +34,7 @@ const PlainWord = ({ word, annotatingAllowed, focusedConcept, ...props }) => {
   const { resource_usage, autoSpeak } = useSelector(state => state.user.data.user)
   const learningLanguage = useSelector(learningLanguageSelector)
   const dictionaryLanguage = useSelector(dictionaryLanguageSelector)
+  const mtLanguages = useMTAvailableLanguage()
   const { spanAnnotations, highlightRange, showAnnotationForm } = useSelector(
     ({ annotations }) => annotations
   )

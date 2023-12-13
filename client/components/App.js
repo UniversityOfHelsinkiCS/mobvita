@@ -5,6 +5,7 @@ import { createBrowserHistory } from 'history'
 import { basePath, checkRevitaStatus } from 'Utilities/common'
 import { useDispatch } from 'react-redux'
 import { setServerError } from 'Utilities/redux/serverErrorReducer'
+import { getMTAvailableLanguage } from 'Utilities/redux/contextTranslationReducer'  
 import Toaster from './Toaster'
 import Sidebar from './Sidebar'
 import StoryFetcher from './StoryFetcher'
@@ -17,6 +18,7 @@ const App = () => {
 
   useEffect(() => {
     checkRevitaStatus().then(res => setRevitaStatus(res.data))
+    dispatch(getMTAvailableLanguage())
   }, [])
 
   if (window.gtag) {

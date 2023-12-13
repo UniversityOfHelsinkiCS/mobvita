@@ -6,7 +6,7 @@ import { Spinner } from 'react-bootstrap'
 import {
   useDictionaryLanguage,
   useLearningLanguage,
-  mtLanguages,
+  useMTAvailableLanguage,
   learningLanguageLocaleCodes
 } from 'Utilities/common'
 import { clearContextTranslation, getContextTranslation } from 'Utilities/redux/contextTranslationReducer'
@@ -15,6 +15,7 @@ const ContextTranslation = ({wordTranslated}) => {
     const dispatch = useDispatch()
     const learningLanguage = useLearningLanguage()
     const dictionaryLanguage = useDictionaryLanguage()
+    const mtLanguages = useMTAvailableLanguage()
     const { data, pending } = useSelector(({ contextTranslation }) => contextTranslation)
     const translatable = mtLanguages.includes([learningLanguage, dictionaryLanguage].join('-'))
     const [show, setShow] = useState(false)

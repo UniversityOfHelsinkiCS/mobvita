@@ -15,7 +15,7 @@ import {
   getWordColor,
   skillLevels,
   getMode,
-  mtLanguages,
+  useMTAvailableLanguage,
   learningLanguageLocaleCodes
 } from 'Utilities/common'
 import { setReferences, setExplanation } from 'Utilities/redux/practiceReducer'
@@ -53,6 +53,7 @@ const PreviousExerciseWord = ({ word, answer, tiedAnswer, focusedConcept }) => {
     state => state.user.data.user
   )
   const dictionaryLanguage = useSelector(dictionaryLanguageSelector)
+  const mtLanguages = useMTAvailableLanguage()
   const { spanAnnotations, highlightRange } = useSelector(({ annotations }) => annotations)
   const { id: storyId } = useParams()
   const { correctAnswerIDs } = useSelector(({ practice }) => practice)
