@@ -15,6 +15,7 @@ import { FormattedMessage, useIntl } from 'react-intl'
 import useWindowDimensions from 'Utilities/windowDimensions'
 import { getStoryAction, getStudentStoryAction } from 'Utilities/redux/storiesReducer'
 import { clearTranslationAction } from 'Utilities/redux/translationReducer'
+import { clearContextTranslation } from 'Utilities/redux/contextTranslationReducer'
 import { resetAnnotations, setAnnotations } from 'Utilities/redux/annotationsReducer'
 import {
   updateShowReviewDiff,
@@ -126,6 +127,7 @@ const ReadViews = ({ match }) => {
     }
     dispatch(getStoryAction(id, mode))
     dispatch(clearTranslationAction())
+    dispatch(clearContextTranslation())
     dispatch(resetAnnotations())
   }, [])
 

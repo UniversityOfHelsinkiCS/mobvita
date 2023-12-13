@@ -13,6 +13,8 @@ import {
   formatGreenFeedbackText,
   getWordColor,
   skillLevels,
+  learningLanguageLocaleCodes,
+  mtLanguages
 } from 'Utilities/common'
 import {
   setFocusedWord,
@@ -23,6 +25,7 @@ import {
 } from 'Utilities/redux/practiceReducer'
 import { decreaseEloHearts } from 'Utilities/redux/snippetsReducer'
 import { getTranslationAction, setWords } from 'Utilities/redux/translationReducer'
+import { getContextTranslation } from 'Utilities/redux/contextTranslationReducer'
 import { Icon } from 'semantic-ui-react'
 import { Button } from 'react-bootstrap'
 import Tooltip from 'Components/PracticeView/Tooltip'
@@ -59,8 +62,10 @@ const ExerciseCloze = ({ word, handleChange }) => {
     requested_hints,
     frozen_messages,
     hint2penalty,
+    sentence_id,
+    snippet_id,
   } = word
-
+  const {focused: story} = useSelector(({ stories }) => stories)
   const [eloScoreHearts, setEloScoreHearts] = useState(Array.from({length: hints ? hints.length : 0}, (_, i) => i + 1))
   const [spentHints, setSpentHints] = useState([])
 
@@ -97,6 +102,15 @@ const ExerciseCloze = ({ word, handleChange }) => {
           prefLemma,
         })
       )
+      if (mtLanguages.includes([learningLanguage, dictionaryLanguage].join('-'))) {
+        const sentence = story.paragraph[snippet_id].filter(
+          s => sentence_id - 1 < s.sentence_id < sentence_id + 1).map(t=>t.surface).join('').replaceAll('\n', ' ').trim()
+        dispatch(
+          getContextTranslation(sentence,
+            learningLanguageLocaleCodes[learningLanguage],
+            learningLanguageLocaleCodes[dictionaryLanguage])
+        )
+      }
     }
   }
 

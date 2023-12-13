@@ -18,6 +18,7 @@ import {
   openLPEncouragement,
 } from 'Utilities/redux/encouragementsReducer'
 import { clearTranslationAction } from 'Utilities/redux/translationReducer'
+import { clearContextTranslation } from 'Utilities/redux/contextTranslationReducer'
 import {
   getLessonInstance,
   clearLessonInstanceState,
@@ -90,6 +91,7 @@ const LessonPracticeView = () => {
     }
     else dispatch(getLessonInstance())
     dispatch(clearTranslationAction())
+    dispatch(clearContextTranslation())
   }, [])
 
   useEffect(() => {
@@ -143,6 +145,7 @@ const LessonPracticeView = () => {
     }
     else dispatch(getLessonInstance())
     dispatch(clearTranslationAction())
+    dispatch(clearContextTranslation())
   }
 
   const handleAnswerChange = (value, word) => {

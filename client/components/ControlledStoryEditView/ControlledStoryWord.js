@@ -9,9 +9,12 @@ import {
   speak,
   voiceLanguages,
   hiddenFeatures,
+  learningLanguageLocaleCodes,
+  mtLanguages
 } from 'Utilities/common'
 import { setReferences, setExplanation } from 'Utilities/redux/practiceReducer'
 import { getTranslationAction, setWords } from 'Utilities/redux/translationReducer'
+import { getContextTranslation } from 'Utilities/redux/contextTranslationReducer'
 import { addExercise, removeExercise } from 'Utilities/redux/controlledPracticeReducer'
 import {
   setFocusedSpan,
@@ -36,8 +39,10 @@ const ControlledStoryWord = ({ word, snippet, focusedConcept }) => {
     explanation,
     ID: wordId,
     inflection_ref: inflectionRef,
+    snippet_id,
+    sentence_id,
   } = word
-
+  const {focused: story} = useSelector(({ stories }) => stories)
   const [showValidationMessage, setShowValidationMessage] = useState(false)
   const [showRemoveTooltip, setShowRemoveTooltip] = useState(false)
   const [showEditorTooltip, setShowEditorTooltip] = useState(false)
@@ -200,7 +205,15 @@ const ControlledStoryWord = ({ word, snippet, focusedConcept }) => {
             prefLemma,
           })
         )
-
+        if (mtLanguages.includes([learningLanguage, dictionaryLanguage].join('-'))) {
+          const sentence = story.paragraph[snippet_id].filter(
+            s => sentence_id - 1 < s.sentence_id < sentence_id + 1).map(t=>t.surface).join('').replaceAll('\n', ' ').trim()
+          dispatch(
+            getContextTranslation(sentence,
+              learningLanguageLocaleCodes[learningLanguage],
+              learningLanguageLocaleCodes[dictionaryLanguage])
+          )
+        }
         setAllowTranslating(false)
         setTimeout(() => {
           setAllowTranslating(true)

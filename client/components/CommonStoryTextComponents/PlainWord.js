@@ -14,7 +14,7 @@ import {
   mtLanguages
 } from 'Utilities/common'
 import { getTranslationAction, setWords } from 'Utilities/redux/translationReducer'
-import { getContextTranslation, clearContextTranslation } from 'Utilities/redux/contextTranslationReducer'
+import { getContextTranslation } from 'Utilities/redux/contextTranslationReducer'
 import {
   setFocusedSpan,
   setHighlightRange,
@@ -52,7 +52,6 @@ const PlainWord = ({ word, annotatingAllowed, focusedConcept, ...props }) => {
     snippet_id
   } = word
   const {focused: story} = useSelector(({ stories }) => stories)
-  const { type, surfaceWord } = useSelector(({translation}) => translation)
   const isCompeteMode = history.location.pathname.includes('compete')
   const bigScreen = width >= 1024
   const voice = voiceLanguages[learningLanguage]
@@ -129,7 +128,6 @@ const PlainWord = ({ word, annotatingAllowed, focusedConcept, ...props }) => {
 
   const handleWordClick = () => {
     dispatch(setFocusedSpan(null))
-    dispatch(clearContextTranslation())
     if (showAnnotationForm) dispatch(setAnnotationFormVisibility(false))
     if (autoSpeak === 'always' && voice) speak(surface, voice, 'dictionary', resource_usage)
     if (lemmas) {

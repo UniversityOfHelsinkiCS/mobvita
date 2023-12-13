@@ -10,6 +10,7 @@ import {
   getLessonSnippet,
 } from 'Utilities/redux/snippetsReducer'
 import { clearTranslationAction } from 'Utilities/redux/translationReducer'
+import { clearContextTranslation } from 'Utilities/redux/contextTranslationReducer'
 import { openEncouragement } from 'Utilities/redux/encouragementsReducer'
 import 'react-simple-keyboard/build/css/index.css'
 import { FormattedMessage } from 'react-intl'
@@ -277,6 +278,7 @@ const CurrentSnippet = ({
       dispatch(getCurrentSnippet(storyId, isControlledStory, exerciseMode))
     }
     dispatch(clearTranslationAction())
+    dispatch(clearContextTranslation())
   }, [])
 
   useEffect(() => {

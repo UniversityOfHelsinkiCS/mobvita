@@ -13,6 +13,7 @@ import {
   setIsPaused,
 } from 'Utilities/redux/competitionReducer'
 import { clearTranslationAction } from 'Utilities/redux/translationReducer'
+import { clearContextTranslation } from 'Utilities/redux/contextTranslationReducer'
 import 'react-simple-keyboard/build/css/index.css'
 import { FormattedMessage } from 'react-intl'
 import { getSelf } from 'Utilities/redux/userReducer'
@@ -204,6 +205,7 @@ const CurrentSnippet = ({ storyId, handleInputChange, setYouWon, finished }) => 
     dispatch(clearPractice())
     dispatch(resetCachedSnippets())
     dispatch(clearTranslationAction())
+    dispatch(clearContextTranslation())
 
     const interval = setInterval(() => {
       setSnippetToCacheId(snippetToCacheId => snippetToCacheId + 1)

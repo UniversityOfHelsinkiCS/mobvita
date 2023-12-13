@@ -16,6 +16,7 @@ import {
 import { resetCurrentSnippet } from 'Utilities/redux/snippetsReducer'
 import { getStoryAction } from 'Utilities/redux/storiesReducer'
 import { clearTranslationAction } from 'Utilities/redux/translationReducer'
+import { clearContextTranslation } from 'Utilities/redux/contextTranslationReducer'
 import { setTouchedIds, setAnswers, clearPractice } from 'Utilities/redux/practiceReducer'
 import { getTextStyle, learningLanguageSelector, getMode } from 'Utilities/common'
 
@@ -63,6 +64,7 @@ const CompeteView = ({ match }) => {
       dispatch(clearPractice()),
       dispatch(resetCurrentSnippet(id)),
       dispatch(clearTranslationAction()),
+      dispatch(clearContextTranslation()),
       dispatch(resetCachedSnippets()),
       dispatch(getOpponent(id)),
     ])

@@ -15,9 +15,12 @@ import {
   getWordColor,
   skillLevels,
   getMode,
+  mtLanguages,
+  learningLanguageLocaleCodes
 } from 'Utilities/common'
 import { setReferences, setExplanation } from 'Utilities/redux/practiceReducer'
 import { getTranslationAction, setWords } from 'Utilities/redux/translationReducer'
+import { getContextTranslation } from 'Utilities/redux/contextTranslationReducer'
 import {
   setFocusedSpan,
   setHighlightRange,
@@ -38,8 +41,10 @@ const PreviousExerciseWord = ({ word, answer, tiedAnswer, focusedConcept }) => {
     translation_lemmas,
     ID: wordId,
     inflection_ref: inflectionRef,
+    snippet_id,
+    sentence_id,
   } = word
-
+  const {focused: story} = useSelector(({ stories }) => stories)
   const [show, setShow] = useState(false)
   const history = useHistory()
   const isPreviewMode = history.location.pathname.includes('preview')
@@ -77,7 +82,6 @@ const PreviousExerciseWord = ({ word, answer, tiedAnswer, focusedConcept }) => {
     if (autoSpeak === 'always' && voice) speak(surface, voice, 'dictionary', resource_usage)
     if (lemmas) {
       dispatch(setWords({ surface, lemmas }))
-
       if (allowTranslating) {
         const prefLemma = word.pref_lemma
         dispatch(
@@ -91,7 +95,15 @@ const PreviousExerciseWord = ({ word, answer, tiedAnswer, focusedConcept }) => {
             prefLemma,
           })
         )
-
+        if (mtLanguages.includes([learningLanguage, dictionaryLanguage].join('-'))) {
+          const sentence = story.paragraph[snippet_id].filter(
+            s => sentence_id - 1 < s.sentence_id < sentence_id + 1).map(t=>t.surface).join('').replaceAll('\n', ' ').trim()
+          dispatch(
+            getContextTranslation(sentence,
+              learningLanguageLocaleCodes[learningLanguage],
+              learningLanguageLocaleCodes[dictionaryLanguage])
+          )
+        }
         setAllowTranslating(false)
         setTimeout(() => {
           setAllowTranslating(true)

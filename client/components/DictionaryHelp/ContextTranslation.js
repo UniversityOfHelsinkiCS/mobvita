@@ -9,7 +9,7 @@ import {
   mtLanguages,
   learningLanguageLocaleCodes
 } from 'Utilities/common'
-import { getContextTranslation } from 'Utilities/redux/contextTranslationReducer'
+import { clearContextTranslation, getContextTranslation } from 'Utilities/redux/contextTranslationReducer'
 
 const ContextTranslation = ({wordTranslated}) => {
     const dispatch = useDispatch()
@@ -28,6 +28,7 @@ const ContextTranslation = ({wordTranslated}) => {
     }, [learningLanguage, dictionaryLanguage])
     useEffect(() => {
         setShow(false)
+        if (!wordTranslated) dispatch(clearContextTranslation())
     }, [wordTranslated])
 
     if (!translatable || !wordTranslated || !pending && !data) return null
@@ -39,11 +40,10 @@ const ContextTranslation = ({wordTranslated}) => {
                 <Button 
                     primary
                     circular
-                    style={{ float: 'right',  }}
+                    style={{ float: 'right', padding: '1em' }}
                     onClick={() => setShow(true)}
-                    // tooltip={intl.formatMessage({ id: 'dictionaryhelp-show-translation-tooltip' })}
                 >
-                    <Icon name="translate" />
+                    <Icon name="plus" style={{ margin: 0, fontSize: 'small' }} />
                 </Button>
             }
         />
@@ -53,9 +53,15 @@ const ContextTranslation = ({wordTranslated}) => {
         <div className="flex space-between">
             <div className="flex">
             { !pending ? (
-                <>
+                <p style={{
+                    color: '#555555',
+                    marginBottom: '1em',
+                    padding: '1em',
+                    borderRadius: '15px',
+                    backgroundColor: '#9e9e9e4d'
+                }}>
                     {data.translation}
-                </>
+                </p>
             ): (
                 <div>
                     <span>

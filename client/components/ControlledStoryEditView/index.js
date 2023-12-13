@@ -13,6 +13,7 @@ import {
   resetControlledStory,
 } from 'Utilities/redux/controlledPracticeReducer'
 import { clearTranslationAction } from 'Utilities/redux/translationReducer'
+import { clearContextTranslation } from 'Utilities/redux/contextTranslationReducer'
 import { resetAnnotations, setAnnotations } from 'Utilities/redux/annotationsReducer'
 import { learningLanguageSelector, getTextStyle, getMode } from 'Utilities/common'
 import DictionaryHelp from 'Components/DictionaryHelp'
@@ -74,6 +75,7 @@ const ControlledStoryEditView = ({ match }) => {
     dispatch(getFrozenTokens(id))
     dispatch(getStoryAction(id, 'preview'))
     dispatch(clearTranslationAction())
+    dispatch(clearContextTranslation())
     dispatch(resetAnnotations())
   }, [])
 

@@ -9,13 +9,25 @@ import {
   speak,
   voiceLanguages,
   formatGreenFeedbackText,
+  learningLanguageLocaleCodes,
+  mtLanguages
 } from 'Utilities/common'
 import { setReferences } from 'Utilities/redux/practiceReducer'
 import { getTranslationAction, setWords } from 'Utilities/redux/translationReducer'
+import { getContextTranslation } from 'Utilities/redux/contextTranslationReducer'
 import Tooltip from 'Components/PracticeView/Tooltip'
 
 const WrongAnswer = ({ word }) => {
-  const { surface, translation_lemmas, lemmas, ref, ID: wordId, id: storyId, inflection_ref: inflectionRef } = word
+  const { 
+    surface, 
+    translation_lemmas, 
+    lemmas, 
+    ref, 
+    ID: wordId, 
+    id: storyId, 
+    inflection_ref: inflectionRef 
+  } = word
+  const {focused: story} = useSelector(({ stories }) => stories)
   const answer = useSelector(({ practice }) => practice.currentAnswers[word.tiedTo || word.ID])
 
   const [show, setShow] = useState(false)
@@ -48,6 +60,15 @@ const WrongAnswer = ({ word }) => {
           prefLemma,
         })
       )
+      if (mtLanguages.includes([learningLanguage, dictionaryLanguage].join('-'))) {
+        const sentence = story.paragraph[snippet_id].filter(
+          s => sentence_id - 1 < s.sentence_id < sentence_id + 1).map(t=>t.surface).join('').replaceAll('\n', ' ').trim()
+        dispatch(
+          getContextTranslation(sentence,
+            learningLanguageLocaleCodes[learningLanguage],
+            learningLanguageLocaleCodes[dictionaryLanguage])
+        )
+      }
     }
   }
 

@@ -6,13 +6,25 @@ import {
   voiceLanguages,
   speak,
   formatGreenFeedbackText,
+  learningLanguageLocaleCodes,
+  mtLanguages
 } from 'Utilities/common'
 import { getTranslationAction, setWords } from 'Utilities/redux/translationReducer'
+import { getContextTranslation } from 'Utilities/redux/contextTranslationReducer'
 import Tooltip from 'Components/PracticeView/Tooltip'
 
 const RightAnswer = ({ word }) => {
-  const { surface, lemmas, translation_lemmas, ID: wordId, id: storyId, inflection_ref: inflectionRef } = word
-
+  const { 
+    surface, 
+    lemmas, 
+    translation_lemmas, 
+    ID: wordId, 
+    id: storyId, 
+    inflection_ref: inflectionRef,
+    snippet_id,
+    sentence_id,
+  } = word
+  const {focused: story} = useSelector(({ stories }) => stories)
   const { resource_usage, autoSpeak } = useSelector(state => state.user.data.user)
   const dictionaryLanguage = useSelector(dictionaryLanguageSelector)
   const learningLanguage = useSelector(learningLanguageSelector)
@@ -38,6 +50,15 @@ const RightAnswer = ({ word }) => {
           inflectionRef,
         })
       )
+      if (mtLanguages.includes([learningLanguage, dictionaryLanguage].join('-'))) {
+        const sentence = story.paragraph[snippet_id].filter(
+          s => sentence_id - 1 < s.sentence_id < sentence_id + 1).map(t=>t.surface).join('').replaceAll('\n', ' ').trim()
+        dispatch(
+          getContextTranslation(sentence,
+            learningLanguageLocaleCodes[learningLanguage],
+            learningLanguageLocaleCodes[dictionaryLanguage])
+        )
+      }
     }
   }
 

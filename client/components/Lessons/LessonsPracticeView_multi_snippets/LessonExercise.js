@@ -2,6 +2,7 @@ import React, { useState, useEffect, useRef } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { getExerciseLesson, setFocusingSnippets } from 'Utilities/redux/lessonExercisesReducer'
 import { clearTranslationAction } from 'Utilities/redux/translationReducer'
+import { clearContextTranslation } from 'Utilities/redux/contextTranslationReducer'
 import { resetSessionId } from 'Utilities/redux/snippetsReducer'
 import {
   setAnswers,
@@ -164,6 +165,7 @@ const LessonExercise = ({ lesson_instance, handleInputChange }) => {
     dispatch(clearPractice())
     dispatch(resetSessionId())
     dispatch(clearTranslationAction())
+    dispatch(clearContextTranslation())
     dispatch(getExerciseLesson())
   }, [])
 
