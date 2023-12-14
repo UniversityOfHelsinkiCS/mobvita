@@ -43,11 +43,12 @@ export const getContextTranslation = (
 export const clearContextTranslation = () => ({ type: 'CLEAR_CONTEXT_TRANSLATION' })
 
 
-export default (state = { data: null, avail: [] }, action) => {
+export default (state = { data: null, avail: [], lastTrans: null }, action) => {
   switch (action.type) {
     case 'GET_CONTEXT_TRANSLATION_ATTEMPT':
       return {
         ...state,
+        lastTrans: action.requestSettings.data.source,
         pending: true,
         error: false,
       }
@@ -69,6 +70,7 @@ export default (state = { data: null, avail: [] }, action) => {
       return {
         ...state,
         data: null,
+        lastTrans: null,
       }
     }
     case 'GET_CONTEXT_TRANSLATION_STATUS_ATTEMPT':

@@ -16,21 +16,21 @@ const ContextTranslation = ({wordTranslated}) => {
     const learningLanguage = useLearningLanguage()
     const dictionaryLanguage = useDictionaryLanguage()
     const mtLanguages = useMTAvailableLanguage()
-    const { data, pending } = useSelector(({ contextTranslation }) => contextTranslation)
+    const { data, pending, lastTrans } = useSelector(({ contextTranslation }) => contextTranslation)
     const [translatable, setTranslatable] = useState(mtLanguages.includes([learningLanguage, dictionaryLanguage].join('-'))) 
     const [show, setShow] = useState(false)
 
     useEffect(() => {
-        setTranslatable(mtLanguages.includes([learningLanguage, dictionaryLanguage].join('-')))
-        if (translatable && data){
-            dispatch(getContextTranslation(data.sentence,
+        const updatedTranslatable = mtLanguages.includes([learningLanguage, dictionaryLanguage].join('-'))
+        setTranslatable(updatedTranslatable)
+        if (updatedTranslatable && lastTrans){
+            dispatch(getContextTranslation(lastTrans,
                 learningLanguageLocaleCodes[learningLanguage],
                 learningLanguageLocaleCodes[dictionaryLanguage]))
         }
-    }, [learningLanguage, dictionaryLanguage])
+    }, [dictionaryLanguage])
     useEffect(() => {
         setShow(false)
-        if (!wordTranslated) dispatch(clearContextTranslation())
     }, [wordTranslated])
 
     if (!translatable || !wordTranslated || !pending && !data) return null
