@@ -72,6 +72,8 @@ const HomeviewButtons = ({
   const history = useHistory()
   const { hasTests, hasAdaptiveTests } = useSelector(({ metadata }) => metadata)
   const { user } = useSelector(({ user }) => ({ user: user.data }))
+  const userData = useSelector(state => state.user.data.user)
+  const learningLanguage = userData ? userData.last_used_language : null
 
   const homeViewButtonsGridClassName = user?.user.is_teacher && user?.teacherView ? "teacher-homeview-btns-cont" : "student-homeview-btns-cont"
 
@@ -198,15 +200,17 @@ const HomeviewButtons = ({
             />
           </div>
 
-          <div>
-            <HomeviewButton
-              imgSrc={images.readingBook}
-              altText="reading test"
-              translationKey="reading-test"
-              handleClick={() => history.push('/reading-test')}
-              dataCy="reading-test-button"
-            />
-          </div>
+          {learningLanguage != undefined && learningLanguage == "English" && (
+            <>
+              <HomeviewButton
+                imgSrc={images.readingBook}
+                altText="reading test"
+                translationKey="reading-test"
+                handleClick={() => history.push('/reading-test')}
+                dataCy="reading-test-button"
+              />
+            </>
+          )}
 
           {hiddenFeatures && (
             <>
