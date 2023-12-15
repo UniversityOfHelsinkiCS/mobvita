@@ -16,7 +16,7 @@ const ContextTranslation = ({surfaceWord, wordTranslated}) => {
     const learningLanguage = useLearningLanguage()
     const dictionaryLanguage = useDictionaryLanguage()
     const mtLanguages = useMTAvailableLanguage()
-    const { data, pending, lastTrans, lastTransId } = useSelector(({ contextTranslation }) => contextTranslation)
+    const { data, pending, lastTrans } = useSelector(({ contextTranslation }) => contextTranslation)
     const [translatable, setTranslatable] = useState(mtLanguages.includes([learningLanguage, dictionaryLanguage].join('-'))) 
     const [show, setShow] = useState(false)
 
