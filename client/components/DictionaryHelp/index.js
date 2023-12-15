@@ -328,7 +328,7 @@ const DictionaryHelp = ({ minimized, inWordNestModal }) => {
                 )}
               </div>
               {
-                hiddenFeatures && ( <ContextTranslation wordTranslated={!pending && translation}/>)
+                hiddenFeatures && ( <ContextTranslation surfaceWord={surfaceWord} wordTranslated={!pending && translation}/>)
               }
             </div>
           ) : (

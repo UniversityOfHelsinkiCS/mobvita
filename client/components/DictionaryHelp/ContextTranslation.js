@@ -11,12 +11,12 @@ import {
 } from 'Utilities/common'
 import { clearContextTranslation, getContextTranslation } from 'Utilities/redux/contextTranslationReducer'
 
-const ContextTranslation = ({wordTranslated}) => {
+const ContextTranslation = ({surfaceWord, wordTranslated}) => {
     const dispatch = useDispatch()
     const learningLanguage = useLearningLanguage()
     const dictionaryLanguage = useDictionaryLanguage()
     const mtLanguages = useMTAvailableLanguage()
-    const { data, pending, lastTrans } = useSelector(({ contextTranslation }) => contextTranslation)
+    const { data, pending, lastTrans, lastTransId } = useSelector(({ contextTranslation }) => contextTranslation)
     const [translatable, setTranslatable] = useState(mtLanguages.includes([learningLanguage, dictionaryLanguage].join('-'))) 
     const [show, setShow] = useState(false)
 
@@ -32,6 +32,60 @@ const ContextTranslation = ({wordTranslated}) => {
     useEffect(() => {
         setShow(false)
     }, [wordTranslated])
+
+    const highlightTarget = (translation) => {
+        let target = ''
+        for (let sentId in translation['source-segments']) {
+            const sourceIds = []
+            let p = ''
+            let q = []
+            
+            for(let s in translation['source-segments'][sentId]){
+                const segment = translation['source-segments'][sentId][s]
+                if (segment[0] === '▁' || segment[0].toLowerCase() === segment[0].toUpperCase()) {
+                    if (p.length && p === surfaceWord)
+                        sourceIds.push(...q)
+                    p = segment.replace('▁', '')
+                    q = [s]
+                }
+                else {
+                    p += segment
+                    q.push(s)
+                }
+            }
+            if (p.length && p === surfaceWord)
+                sourceIds.push(...q)
+
+            const targetIds = sourceIds.map(s=>translation['alignment'][sentId][s]).flat()
+            
+            p = ''
+            q = []
+            for(let s in translation['target-segments'][sentId]){
+                const segment = translation['target-segments'][sentId][s]
+                if (segment[0] === '▁' || segment[0].toLowerCase() === segment[0].toUpperCase()) {
+                    if (p.length && targetIds.filter(x=> q.includes(x)).length)
+                        target += '<b>' + p + '</b>'
+                    else
+                        target += p
+                    p = segment.replace('▁', ' ')
+                    q = [s]
+                }
+                else {
+                    p += segment
+                    q.push(s)
+                }
+            }
+            
+            if (p.length && targetIds.filter(x=> q.includes(x)).length)
+                target += '<b>' + p + '</b>'
+            else
+                target += p
+        }
+        
+        
+        return target
+    }
+    
 
     if (!translatable || !wordTranslated || !pending && !data) return null
     if (!show && translatable) return (
@@ -61,9 +115,9 @@ const ContextTranslation = ({wordTranslated}) => {
                     padding: '1em',
                     borderRadius: '15px',
                     backgroundColor: '#9e9e9e4d'
-                }}>
-                    {data.translation}
-                </p>
+                    }}
+                    dangerouslySetInnerHTML={{__html: highlightTarget(data)}} 
+                />
             ): (
                 <div>
                     <span>
