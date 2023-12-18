@@ -12,29 +12,14 @@ import {
 } from 'Utilities/redux/testReducer'
 import { learningLanguageSelector } from 'Utilities/common'
 import { FormattedMessage, FormattedHTMLMessage } from 'react-intl'
-import MultipleChoice from '../MultipleChoice'
+import ReadingTestMC from './ReadingTestMC'
 
 const TIMER_START_DELAY = 3000
 
 const ReadingTest = () => {
-//   const { controls: timer } = useTimer({
-//     initialTime: 30000,
-//     direction: 'backward',
-//     startImmediately: false,
-//     timeToUpdate: 100,
-//   })
-
-//   const { controls: overtimeTimer } = useTimer({
-//     initialTime: 0,
-//     direction: 'forward',
-//     startImmediately: false,
-//     timeToUpdate: 100,
-//   })
-
-//   const [willStop, setWillStop] = useState(false)
-//   const [willPause, setWillPause] = useState(false)
   const [displaySpinner, setDisplaySpinner] = useState(false)
   const [paused, setPaused] = useState(false)
+  const [showFeedbacks, setShowFeedbacks] = useState(false)
   const {
     feedbacks,
     currentReadingTestQuestion,
@@ -50,19 +35,6 @@ const ReadingTest = () => {
 
   const checkAnswer = choice => {
     if (!currentReadingTestQuestion) return
-
-    // const timeToAnswer = currentReadingTestQuestion.time
-    // const overTimeInSeconds = Math.round(overtimeTimer.getTime() / 1000)
-    // const duration =
-    //   timer.getTime() < 0 ? timeToAnswer + overTimeInSeconds : timeToAnswer - timer.getTime() / 1000
-
-    // timer.stop()
-    // timer.reset()
-    // overtimeTimer.stop()
-    // overtimeTimer.reset()
-
-    // const pauseTimeStamp = willPause ? new Date() : null
-
     dispatch(
         sendReadingTestAnswer(
             learningLanguage,
@@ -96,73 +68,33 @@ const ReadingTest = () => {
       // ) {
       //     mediationFeedbacks.push(choice.item_feedbacks[currentReadingTestQuestion?.concept_id])
       // }
+
       if (remainFeedbacks.length > 0){
         dispatch(updateTestFeedbacks(choice.option, remainFeedbacks[0]))
+        setShowFeedbacks(true)
       } else {
         dispatch(nextReadingTestQuestion())
+        setShowFeedbacks(false)
       }
     } else {
       dispatch(nextReadingTestQuestion())
+      setShowFeedbacks(false)
     }
   }
 
   useEffect(() => {
     if (!readingTestSessionId) return
     if (!currentReadingTestQuestion) {
-    //   timer.stop()
       dispatch(finishExhaustiveTest(learningLanguage, readingTestSessionId))
     } 
-    // else if (willStop) {
-    //   timer.stop()
-    //   dispatch(finishExhaustiveTest(learningLanguage, readingTestSessionId))
-    // } else if (willPause) {
-    //   setPaused(true)
-    //   setWillPause(false)
-    // } 
-    else {
-    //   timer.setTime(currentReadingTestQuestion.time * 1000)
-    // if (currentReadingQuestionIndex !== 0) setDisplaySpinner(true)
-    //   setTimeout(() => {
-    //     timer.start()
-    //     setDisplaySpinner(false)
-    //   }, TIMER_START_DELAY)
-    //   window.localStorage.setItem('testIndex', currentReadingQuestionIndex)
-    }
+  }, [currentReadingTestQuestion])
+
+  useEffect(() => {
+    if (!readingTestSessionId) return
   }, [currentReadingTestQuestion])
 
   // Send an empty answer if user leaves test
   useEffect(() => () => checkAnswer(''), [])
-
-//   useEffect(() => {
-//     if (Math.round(timer.getTime() / 1000) === 0) {
-//       overtimeTimer.start()
-//     }
-//   }, [timer.getTime()])
-
-//   const pauseTimer = () => {
-//     if (willPause) {
-//       setWillPause(false)
-//     } else {
-//       setWillPause(true)
-//     }
-//   }
-
-//   useEffect(() => {
-//     if (!showingInfo) timer.start()
-//   }, [showingInfo])
-
-//   const resumeTimer = () => {
-//     setPaused(false)
-//     setTimeout(() => timer.start(), TIMER_START_DELAY)
-//   }
-
-//   const stop = () => {
-//     if (willStop) {
-//       setWillStop(false)
-//     } else {
-//       setWillStop(true)
-//     }
-//   }
 
   if (!currentReadingTestQuestion) {
     return null
@@ -174,40 +106,7 @@ const ReadingTest = () => {
     <div className="cont mt-nm">
       <Segment style={{ minHeight: '700px', borderRadius: '20px' }}>
         <div className="align-center justify-center">
-          {/* <div
-            className="flex align-start"
-            style={{ position: 'absolute', top: '1em', right: '1em', gap: '.5em' }}
-          >
-            <div className="test-controls">
-              <Icon
-                size="large"
-                color={willPause ? 'grey' : 'black'}
-                name={paused ? 'play' : 'pause'}
-                onClick={paused ? resumeTimer : pauseTimer}
-                style={{ margin: '0.25em' }}
-              />
-              <Icon
-                size="large"
-                color={willStop ? 'grey' : 'black'}
-                name="stop"
-                onClick={stop}
-                style={{ margin: '0.25em' }}
-              />
-            </div>
-            <div
-              className="test-counter"
-              style={{
-                fontSize: '2em',
-                fontWeight: 'bold',
-                color: '#212529',
-                padding: 0,
-              }}
-            >
-              {Math.round(timer.getTime() / 1000)}
-            </div>
-          </div> */}
-
-          <div className="test-container">
+          <div className="test-container" style={{width: '90%'}}>
             <div className="test-top-info space-between">
               <div>
                 <FormattedHTMLMessage id="question" />: {currentReadingQuestionIndex + 1} /{' '}
@@ -215,27 +114,14 @@ const ReadingTest = () => {
               </div>
             </div>
             <div className="test-question-container" style={testContainerOverflow}>
-              {/* {willPause && !willStop && (
-                <span className="test-info">
-                  <FormattedMessage id="pause-after-you-answer-this-question" />
-                </span>
-              )}
-              {willStop && (
-                <span className="test-info">
-                  <FormattedMessage id="quitting-after-this-question" />
-                </span>
-              )}
-              {paused && (
-                <div className="test-paused-text-cont">
-                  <FormattedHTMLMessage id="paused-click-to-resume" />
-                </div>
-              )} */}
               {currentReadingTestQuestion && !paused && !answerFailure && !displaySpinner && (
                 <div>
-                  <MultipleChoice
+                  <ReadingTestMC
                     exercise={currentReadingTestQuestion}
                     onAnswer={checkAnswer}
                     answerPending={answerPending}
+                    showFeedbacks={showFeedbacks}
+                    closeFeedbacks={() => {setShowFeedbacks(false)}}
                   />
                 </div>
               )}
