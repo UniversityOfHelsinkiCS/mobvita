@@ -21,6 +21,7 @@ const WrongAnswer = ({ word }) => {
   const { 
     surface, 
     translation_lemmas, 
+    bases,
     lemmas, 
     ref, 
     ID: wordId, 
@@ -54,6 +55,7 @@ const WrongAnswer = ({ word }) => {
         getTranslationAction({
           learningLanguage,
           wordLemmas: translation_lemmas || lemmas,
+          bases,
           dictionaryLanguage,
           storyId,
           wordId,

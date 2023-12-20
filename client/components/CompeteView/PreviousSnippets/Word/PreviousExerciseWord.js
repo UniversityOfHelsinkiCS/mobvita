@@ -25,6 +25,7 @@ const PreviousExerciseWord = ({ word, answer, tiedAnswer }) => {
     wrong,
     lemmas,
     translation_lemmas,
+    bases,
     ref,
     explanation,
     ID: wordId,
@@ -59,6 +60,7 @@ const PreviousExerciseWord = ({ word, answer, tiedAnswer }) => {
         getTranslationAction({
           learningLanguage,
           wordLemmas: translation_lemmas || lemmas,
+          bases,
           dictionaryLanguage,
           storyId,
           wordId,

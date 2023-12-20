@@ -44,6 +44,7 @@ const PlainWord = ({ word, annotatingAllowed, focusedConcept, ...props }) => {
   const { focusedWord } = useSelector(({ practice }) => practice)
   const { 
     translation_lemmas, 
+    bases,
     lemmas, 
     ID: wordId, 
     surface, 
@@ -153,6 +154,7 @@ const PlainWord = ({ word, annotatingAllowed, focusedConcept, ...props }) => {
           getTranslationAction({
             learningLanguage,
             wordLemmas: translation_lemmas || lemmas,
+            bases,
             dictionaryLanguage,
             storyId,
             wordId,

@@ -5,6 +5,7 @@ import callBuilder from '../apiConnection'
 
 export const getTranslationAction = ({
   wordLemmas,
+  bases,
   learningLanguage,
   dictionaryLanguage,
   storyId,
@@ -17,6 +18,7 @@ export const getTranslationAction = ({
     w: wordLemmas,
     lang_learn: learningLanguage,
     lang_target: dictionaryLanguage,
+    bases,
     story_id: storyId,
     word_id: wordId,
     record,

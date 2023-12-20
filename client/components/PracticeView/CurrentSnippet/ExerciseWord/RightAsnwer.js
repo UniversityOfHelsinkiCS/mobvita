@@ -18,6 +18,7 @@ const RightAnswer = ({ word }) => {
     surface, 
     lemmas, 
     translation_lemmas, 
+    bases,
     ID: wordId, 
     id: storyId, 
     inflection_ref: inflectionRef,
@@ -44,6 +45,7 @@ const RightAnswer = ({ word }) => {
         getTranslationAction({
           learningLanguage,
           wordLemmas: translation_lemmas || lemmas,
+          bases,
           dictionaryLanguage,
           storyId,
           wordId,

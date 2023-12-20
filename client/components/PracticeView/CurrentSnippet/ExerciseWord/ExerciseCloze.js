@@ -55,6 +55,7 @@ const ExerciseCloze = ({ word, handleChange }) => {
     explanation,
     lemmas,
     translation_lemmas,
+    bases,
     ID: wordId,
     id: storyId,
     message,
@@ -96,6 +97,7 @@ const ExerciseCloze = ({ word, handleChange }) => {
         getTranslationAction({
           learningLanguage,
           wordLemmas: translation_lemmas || lemmas,
+          bases,
           dictionaryLanguage,
           storyId,
           wordId,
