@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { FormattedMessage, FormattedHTMLMessage, useIntl } from 'react-intl'
 import { Button, Icon, Popup } from 'semantic-ui-react'
+import { lemmatizer } from 'lemmatizer'
 import { Spinner } from 'react-bootstrap'
 import {
   useDictionaryLanguage,
@@ -9,7 +10,7 @@ import {
   useMTAvailableLanguage,
   learningLanguageLocaleCodes
 } from 'Utilities/common'
-import { clearContextTranslation, getContextTranslation } from 'Utilities/redux/contextTranslationReducer'
+import { getContextTranslation } from 'Utilities/redux/contextTranslationReducer'
 
 const ContextTranslation = ({surfaceWord, wordTranslated}) => {
     const dispatch = useDispatch()
@@ -19,6 +20,17 @@ const ContextTranslation = ({surfaceWord, wordTranslated}) => {
     const { data, pending, lastTrans } = useSelector(({ contextTranslation }) => contextTranslation)
     const [translatable, setTranslatable] = useState(mtLanguages.includes([learningLanguage, dictionaryLanguage].join('-'))) 
     const [show, setShow] = useState(false)
+
+    const translated_glosses =  wordTranslated ? wordTranslated.map(
+        translated=>translated.glosses).flat().map(gloss=>gloss.toLowerCase()) : []
+    const glosses = dictionaryLanguage == 'English' ? [
+        ...translated_glosses,
+        ...translated_glosses.map(
+            gloss=>gloss.includes(' ') && [gloss, ...gloss.split(' '), ...gloss.split(' ').map(g=>lemmatizer(g))] || [lemmatizer(gloss)]).flat(),
+    ] : [
+        ...translated_glosses,
+        ...translated_glosses.filter(gloss=>gloss.includes(' ')).map(gloss=>gloss.split(' ')).flat()
+    ]
 
     useEffect(() => {
         const updatedTranslatable = mtLanguages.includes([learningLanguage, dictionaryLanguage].join('-'))
@@ -34,9 +46,11 @@ const ContextTranslation = ({surfaceWord, wordTranslated}) => {
     }, [wordTranslated])
 
     const highlightTarget = (translation) => {
-        let target = ''
+        const targetSents = []
+        const targetSentIds = new Set()
         for (let sentId in translation['source-segments']) {
             const sourceIds = []
+            let target = ''
             let p = ''
             let q = []
             
@@ -63,9 +77,11 @@ const ContextTranslation = ({surfaceWord, wordTranslated}) => {
             for(let s in translation['target-segments'][sentId]){
                 const segment = translation['target-segments'][sentId][s]
                 if (segment[0] === '▁' || segment[0].toLowerCase() === segment[0].toUpperCase()) {
-                    if (p.length && targetIds.filter(x=> q.includes(x)).length)
+                    if (p.trim().length && targetIds.filter(x=> q.includes(x)).length && 
+                        (glosses.includes(p.trim().toLowerCase()) || glosses.includes(lemmatizer(p.trim().toLowerCase())))){
                         target += '<b>' + p + '</b>'
-                    else
+                        targetSentIds.add(sentId)
+                    } else
                         target += p
                     p = segment.replace('▁', ' ')
                     q = [s]
@@ -76,14 +92,21 @@ const ContextTranslation = ({surfaceWord, wordTranslated}) => {
                 }
             }
             
-            if (p.length && targetIds.filter(x=> q.includes(x)).length)
+            if (p.length && targetIds.filter(x=> q.includes(x)).length &&
+                (glosses.includes(p.trim().toLowerCase()) || glosses.includes(lemmatizer(p.trim().toLowerCase())))
+            ){
                 target += '<b>' + p + '</b>'
+                targetSentIds.add(sentId)
+            } 
             else
                 target += p
+            targetSents.push(target.trim())
+        }
+        if (targetSentIds.size){
+            return [...targetSentIds].sort().map(sentId=>targetSents[sentId]).join(' ')
         }
         
-        
-        return target
+        return targetSents.join(' ')
     }
     
 
