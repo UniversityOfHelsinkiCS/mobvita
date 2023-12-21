@@ -13,6 +13,7 @@ import {
 import { learningLanguageSelector } from 'Utilities/common'
 import { FormattedMessage, FormattedHTMLMessage } from 'react-intl'
 import ReadingTestMC from './ReadingTestMC'
+import ReadingTestFeedbacks from './ReadingTestFeedbacks'
 
 const TIMER_START_DELAY = 3000
 
@@ -107,6 +108,10 @@ const ReadingTest = () => {
       <Segment style={{ minHeight: '700px', borderRadius: '20px' }}>
         <div className="align-center justify-center">
           <div className="test-container" style={{width: '90%'}}>
+            <ReadingTestFeedbacks 
+              showFeedbacks={showFeedbacks}
+              closeFeedbacks={() => {setShowFeedbacks(false)}}
+            />
             <div className="test-top-info space-between">
               <div>
                 <FormattedHTMLMessage id="question" />: {currentReadingQuestionIndex + 1} /{' '}
