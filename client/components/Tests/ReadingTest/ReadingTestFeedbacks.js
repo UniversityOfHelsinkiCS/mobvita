@@ -2,6 +2,8 @@ import React, { useState, useEffect } from 'react';
 import Draggable from 'react-draggable';
 import { Icon } from 'semantic-ui-react';
 import { useSelector } from 'react-redux';
+import { sanitizeHtml } from 'Utilities/common';
+
 
 const ReadingTestFeedbacks = ({ showFeedbacks, closeFeedbacks }) => {
     const { feedbacks } = useSelector(({ tests }) => tests);
@@ -45,8 +47,9 @@ const ReadingTestFeedbacks = ({ showFeedbacks, closeFeedbacks }) => {
             <div
                 style={{
                     position: 'absolute',
-                    top: '50%',
-                    left: '50%',
+                    top: '40%',
+                    left: '40%',
+                    width: "65%",
                     transform: 'translate(-50%, -50%)',
                     zIndex: 1000,
                     padding: "1em",
@@ -99,7 +102,17 @@ const ReadingTestFeedbacks = ({ showFeedbacks, closeFeedbacks }) => {
                             }}
                         >
                             <div className='slide active' key={current}>
-                                {filteredSlides[current]}
+                                <div
+                                    style={{
+                                        // color: 'red',
+                                        // marginBottom: '0.5em',
+                                        // borderBottom: index < Object.keys(feedbacks).length - 1 ? '1px solid black' : 'none',
+                                        // paddingBottom: '0.5em',
+                                        whiteSpace: 'pre-line',
+                                    }}
+                                    className="feedback"
+                                    dangerouslySetInnerHTML={sanitizeHtml(filteredSlides[current])}
+                                />
                             </div>
                         </div>
                     </div>
