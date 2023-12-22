@@ -1533,6 +1533,8 @@
     "Hard": "Vaikea",
     "Lessons": "Oppitunnit",
     "next-step": "Seuraava",
-    "teacher-view": "Teacher view",
-    "dictionaryhelp-show-context-translation": "Translate sentences"
+    "teacher-view": "Opettajan näkymä",
+    "dictionaryhelp-show-context-translation": "Käännä konteksti",
+    "teacher-view-explanation": "Teacher view/Student view — allows the teacher to see how the interface looks to the students",
+    "reading-test": "Lukuharjoittelu"
 }

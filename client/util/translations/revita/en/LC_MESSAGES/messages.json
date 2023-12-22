@@ -1535,5 +1535,7 @@
     "Hard": "Hard",
     "next-step": "Next step",
     "teacher-view": "Teacher view",
-    "dictionaryhelp-show-context-translation": "Translate sentences"
+    "dictionaryhelp-show-context-translation": "Translate context",
+    "teacher-view-explanation": "Teacher view/Student view — allows the teacher to see how the interface looks to the students",
+    "reading-test": "Reading Practice"
 }

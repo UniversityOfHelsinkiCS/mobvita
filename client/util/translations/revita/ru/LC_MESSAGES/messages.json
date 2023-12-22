@@ -1535,6 +1535,8 @@
     "Hard": "Сложнее",
     "Lessons": "Уроки",
     "next-step": "Далее",
-    "teacher-view": "Teacher view",
-    "dictionaryhelp-show-context-translation": "Translate sentences"
+    "teacher-view": "Режим учителя",
+    "dictionaryhelp-show-context-translation": "Перевод контекста",
+    "teacher-view-explanation": "Режим учителя/Режим ученика — позволяет учителю увидеть интерфейс Ревиты, доступный ученикам.",
+    "reading-test": "Практика чтения"
 }
