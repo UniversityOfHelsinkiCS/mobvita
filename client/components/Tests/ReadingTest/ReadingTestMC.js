@@ -44,6 +44,7 @@ const ReadingTestMC = ({ exercise, onAnswer, answerPending, showFeedbacks, close
                                     <Button
                                         className="test-choice-button"
                                         onClick={!answerPending ? () => onAnswer(choice) : undefined}
+                                        style={{ whiteSpace: 'pre-line', lineHeight: '1.0', padding: '0.6em' }}
                                     >
                                         <span style={{ fontSize: '0.7em' }}>{choice?.option}</span>
                                     </Button>
