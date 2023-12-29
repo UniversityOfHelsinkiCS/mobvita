@@ -129,7 +129,7 @@ const ReadingTest = () => {
               <Button
                 className="next-reading-question-button"
                 onClick={() => dispatch(nextReadingTestQuestion())}
-                disabled={showFeedbacks}
+                disabled={showFeedbacks || currentReadingQuestionIndex == readingTestQuestions.length - 1}
                 style={{ 
                     whiteSpace: 'pre-line', 
                     lineHeight: '1.0', 

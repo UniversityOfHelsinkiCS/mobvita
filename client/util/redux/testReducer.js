@@ -274,12 +274,15 @@ export default (state = initialState, action) => {
         feedbacks: [],
       }
     case 'NEXT_READING_TEST_QUESTION':
-      return {
-        ...state,
-        currentReadingQuestionIndex: currentReadingQuestionIndex + 1,
-        currentReadingTestQuestion: readingTestQuestions[currentReadingQuestionIndex + 1],
-        feedbacks: [],
+      if (currentReadingQuestionIndex < readingTestQuestions.length - 1){
+        return {
+          ...state,
+          currentReadingQuestionIndex: currentReadingQuestionIndex + 1,
+          currentReadingTestQuestion: readingTestQuestions[currentReadingQuestionIndex + 1],
+          feedbacks: [],
+        }
       }
+      
     case 'ANSWER_TEST_QUESTION_ATTEMPT':
       return {
         ...state,
