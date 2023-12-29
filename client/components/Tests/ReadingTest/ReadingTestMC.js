@@ -3,7 +3,7 @@ import { Button } from 'react-bootstrap';
 import { sanitizeHtml } from 'Utilities/common';
 import useWindowDimensions from 'Utilities/windowDimensions';
 
-const ReadingTestMC = ({ exercise, onAnswer, answerPending, showFeedbacks }) => {
+const ReadingTestMC = ({ exercise, onAnswer, answerPending, showFeedbacks, showCorrect, questionDone }) => {
     const { choices, question, prephrase, test_text } = exercise;
     // const { feedbacks } = useSelector(({ tests }) => tests);
 
@@ -12,7 +12,7 @@ const ReadingTestMC = ({ exercise, onAnswer, answerPending, showFeedbacks }) => 
     return (
         <div style={{ display: 'flex', position: 'relative' }}>
             {/* <Draggable cancel=".interactable"> */}
-                <div style={{ display: bigScreen ? 'flex' : 'block', paddingRight: '0.5em' }}>
+                <div style={{ display: bigScreen ? 'flex' : 'block', paddingRight: '1em' }}>
                     {/* Left Column */}
                     <div style={{ flex: '1', marginRight: '20px' }}>
                         <div className="test-prephrase">{prephrase}</div>
@@ -42,12 +42,18 @@ const ReadingTestMC = ({ exercise, onAnswer, answerPending, showFeedbacks }) => 
                                     <Button
                                         className="test-choice-button"
                                         onClick={!answerPending ? () => onAnswer(choice) : undefined}
-                                        disabled={showFeedbacks}
+                                        disabled={showFeedbacks || choice.isSelected || questionDone}
                                         style={{ 
                                             whiteSpace: 'pre-line', 
                                             lineHeight: '1.0', 
                                             padding: '0.6em',
-                                            backgroundColor: choice.isSelected ? (choice.is_correct ? 'lightgreen' : 'lightcoral') : ''
+                                            backgroundColor: showCorrect && choice.is_correct 
+                                                ? 'lightgreen' 
+                                                : choice.isSelected 
+                                                    ? choice.is_correct
+                                                        ? 'lightgreen' 
+                                                        : 'lightcoral'
+                                                    : ''
                                         }}
                                     >
                                         <span style={{ fontSize: '0.7em' }}>{choice?.option}</span>

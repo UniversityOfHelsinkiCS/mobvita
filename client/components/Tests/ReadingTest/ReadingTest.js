@@ -19,6 +19,9 @@ const TIMER_START_DELAY = 3000
 const ReadingTest = () => {
   const [displaySpinner, setDisplaySpinner] = useState(false)
   const [paused, setPaused] = useState(false)
+
+  const [showCorrect, setShowCorrect] = useState(false)
+  const [questionDone, setquestionDone] = useState(false)
   const [showFeedbacks, setShowFeedbacks] = useState(false)
   const {
     feedbacks,
@@ -33,6 +36,12 @@ const ReadingTest = () => {
 
   const dispatch = useDispatch()
 
+  const nextQuestion = () => {
+    setShowCorrect(false)
+    setquestionDone(false)
+    dispatch(nextReadingTestQuestion())
+  }
+
   const checkAnswer = choice => {
     if (!currentReadingTestQuestion) return
 
@@ -44,8 +53,10 @@ const ReadingTest = () => {
       ? currentReadingTestQuestion.question_concept_feedbacks.synthesis
       : undefined;
     const itemFeedbacks = currentReadingTestQuestion.item_feedbacks
-      ? Object.entries(currentReadingTestQuestion.item_feedbacks).map(([, value]) => value)
-      : [];    
+      ? Object.entries(currentReadingTestQuestion.item_feedbacks)
+        .filter(([, value]) => value !== undefined)
+        .map(([, value]) => value)
+      : [];   
     const mediationFeedbacks = currentReadingTestQuestion.question_concept_feedbacks
       ? Object.entries(currentReadingTestQuestion.question_concept_feedbacks)
           .filter(([key]) => key.startsWith('mediation_'))
@@ -53,7 +64,7 @@ const ReadingTest = () => {
       : [];
 
     if (choice.is_correct == false){
-      if (countNotSelectedChoices > 0){
+      if (countNotSelectedChoices > 2){
         const remainItemFeedbacks = itemFeedbacks.filter(feedback => !feedbacks.includes(feedback));
         const remainMediationFeedbacks = mediationFeedbacks.filter(feedback => !feedbacks.includes(feedback));
         if (remainItemFeedbacks.length > 0){
@@ -63,11 +74,19 @@ const ReadingTest = () => {
             dispatch(updateTestFeedbacks(choice.option, remainMediationFeedbacks[0]))
           } else if (!feedbacks.includes(synthesis_feedback)) {
             dispatch(updateTestFeedbacks(choice.option, synthesis_feedback))
+            setShowCorrect(true)
+            setquestionDone(true)
           }
         }
       } else {
         dispatch(updateTestFeedbacks(choice.option, synthesis_feedback))
+        setShowCorrect(true)
+        setquestionDone(true)
       }
+    }
+
+    if (choice.is_correct){
+      setquestionDone(true)
     }
 
     if (choice.is_correct == true && synthesis_feedback != undefined && !feedbacks.includes(synthesis_feedback)) {
@@ -89,8 +108,15 @@ const ReadingTest = () => {
       )
       dispatch(markAnsweredChoice(choice.option))
     }
-    setShowFeedbacks(true)
   }
+
+  useEffect(() => {
+    if (feedbacks.length == 0){
+      setShowFeedbacks(false)
+    } else {
+      setShowFeedbacks(true)
+    }
+  }, [feedbacks, currentReadingTestQuestion.choices])
 
   useEffect(() => {
     if (!readingTestSessionId) return
@@ -128,7 +154,7 @@ const ReadingTest = () => {
               </div>
               <Button
                 className="next-reading-question-button"
-                onClick={() => dispatch(nextReadingTestQuestion())}
+                onClick={() => nextQuestion()}
                 disabled={showFeedbacks || currentReadingQuestionIndex == readingTestQuestions.length - 1}
                 style={{ 
                     whiteSpace: 'pre-line', 
@@ -149,6 +175,8 @@ const ReadingTest = () => {
                     onAnswer={checkAnswer}
                     answerPending={answerPending}
                     showFeedbacks={showFeedbacks}
+                    showCorrect={showCorrect}
+                    questionDone={questionDone}
                   />
                 </div>
               )}

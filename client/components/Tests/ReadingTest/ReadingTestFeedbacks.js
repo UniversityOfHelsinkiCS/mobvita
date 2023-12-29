@@ -48,8 +48,8 @@ const ReadingTestFeedbacks = ({ showFeedbacks, closeFeedbacks }) => {
                 style={{
                     position: 'absolute',
                     top: '40%',
-                    left: '40%',
-                    width: "65%",
+                    left: '-10%',
+                    width: "60%",
                     transform: 'translate(-50%, -50%)',
                     zIndex: 1000,
                     padding: "1em",
@@ -63,6 +63,7 @@ const ReadingTestFeedbacks = ({ showFeedbacks, closeFeedbacks }) => {
                         className='left-arrow'
                         onClick={prevSlide}
                         onTouchEnd={prevSlide}
+                        disabled={filteredSlides.length==0}
                     >
                         <Icon
                             className='left-arrow'
@@ -73,26 +74,13 @@ const ReadingTestFeedbacks = ({ showFeedbacks, closeFeedbacks }) => {
 
                     <div className='content-container' style={
                         {
-                            overflowY: 'auto',
+                            overflowY: 'hidden',
                             overflowX: 'hidden',
                             paddingLeft: '1em',
+                            paddingRight: '1em',
                             width: '100%'
                         }
                     }>
-                        {/* {Object.keys(feedbacks).map((fb_key, index) => (
-                            <div
-                                key={fb_key}
-                                style={{
-                                    color: 'red',
-                                    marginBottom: '0.5em',
-                                    borderBottom: index < Object.keys(feedbacks).length - 1 ? '1px solid black' : 'none',
-                                    paddingBottom: '0.5em',
-                                    whiteSpace: 'pre-line',
-                                }}
-                                className="feedback"
-                                dangerouslySetInnerHTML={sanitizeHtml(feedbacks[fb_key])}
-                            />
-                        ))} */}
                         <div
                             className='slide-container'
                             style={{
@@ -104,10 +92,6 @@ const ReadingTestFeedbacks = ({ showFeedbacks, closeFeedbacks }) => {
                             <div className='slide active' key={current}>
                                 <div
                                     style={{
-                                        // color: 'red',
-                                        // marginBottom: '0.5em',
-                                        // borderBottom: index < Object.keys(feedbacks).length - 1 ? '1px solid black' : 'none',
-                                        // paddingBottom: '0.5em',
                                         whiteSpace: 'pre-line',
                                     }}
                                     className="feedback"
@@ -121,6 +105,7 @@ const ReadingTestFeedbacks = ({ showFeedbacks, closeFeedbacks }) => {
                         className='right-arrow'
                         onClick={nextSlide}
                         onTouchEnd={nextSlide}
+                        disabled={filteredSlides.length==0}
                     >
                         <Icon
                             className='right-arrow'
@@ -159,7 +144,7 @@ const ReadingTestFeedbacks = ({ showFeedbacks, closeFeedbacks }) => {
 
     return (
         <div style={{ display: 'flex', position: 'relative' }}>
-            {showFeedbacks && renderFeedback()}
+            {showFeedbacks && feedbacks.length > 0 && renderFeedback()}
         </div>
     );
 };
