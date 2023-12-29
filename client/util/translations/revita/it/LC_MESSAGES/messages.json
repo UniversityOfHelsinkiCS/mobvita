@@ -1531,9 +1531,10 @@
     "Easy": "Facile",
     "Hard": "Difficile",
     "Lessons": "Lezioni",
-    "next-step": "Next step",
+    "next-step": "Avanti",
     "teacher-view": "Vista dell’insegnante",
     "dictionaryhelp-show-context-translation": "Traduzione del contesto",
     "teacher-view-explanation": "Teacher view/Student view — allows the teacher to see how the interface looks to the students",
-    "reading-test": "Pratica di lettura"
+    "reading-test": "Pratica di lettura",
+    "next-reading-question": "Avanti"
 }

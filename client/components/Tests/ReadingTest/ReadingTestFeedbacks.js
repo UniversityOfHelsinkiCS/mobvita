@@ -3,6 +3,7 @@ import Draggable from 'react-draggable';
 import { Icon } from 'semantic-ui-react';
 import { useSelector } from 'react-redux';
 import { sanitizeHtml } from 'Utilities/common';
+import useWindowDimensions from 'Utilities/windowDimensions';
 
 
 const ReadingTestFeedbacks = ({ showFeedbacks, closeFeedbacks }) => {
@@ -11,6 +12,7 @@ const ReadingTestFeedbacks = ({ showFeedbacks, closeFeedbacks }) => {
     const [length, setLength] = useState(undefined);
     const [filteredSlides, setFilteredSlides] = useState([]);
 
+    const bigScreen = useWindowDimensions().width >= 700;
 
     useEffect(() => {
         const filteredSlidesArray = [];
@@ -49,7 +51,7 @@ const ReadingTestFeedbacks = ({ showFeedbacks, closeFeedbacks }) => {
                     position: 'absolute',
                     top: '40%',
                     left: '-10%',
-                    width: "60%",
+                    width: bigScreen ? "60%" : "100%",
                     transform: 'translate(-50%, -50%)',
                     zIndex: 1000,
                     padding: "1em",

@@ -1536,5 +1536,6 @@
     "teacher-view": "Opettajan näkymä",
     "dictionaryhelp-show-context-translation": "Käännä konteksti",
     "teacher-view-explanation": "Teacher view/Student view — allows the teacher to see how the interface looks to the students",
-    "reading-test": "Lukuharjoittelu"
+    "reading-test": "Lukuharjoittelu",
+    "next-reading-question": "Seuraava"
 }

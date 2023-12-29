@@ -1537,5 +1537,6 @@
     "teacher-view": "Teacher view",
     "dictionaryhelp-show-context-translation": "Translate context",
     "teacher-view-explanation": "Teacher view/Student view — allows the teacher to see how the interface looks to the students",
-    "reading-test": "Reading Practice"
+    "reading-test": "Reading Practice",
+    "next-reading-question": "Next exercise"
 }

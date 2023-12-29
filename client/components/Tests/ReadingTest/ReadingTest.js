@@ -156,11 +156,11 @@ const ReadingTest = () => {
                 className="next-reading-question-button"
                 onClick={() => nextQuestion()}
                 disabled={showFeedbacks || currentReadingQuestionIndex == readingTestQuestions.length - 1}
-                style={{ 
-                    whiteSpace: 'pre-line', 
-                    lineHeight: '1.0', 
-                    padding: '0.6em',
-                }}
+                // style={{ 
+                //     whiteSpace: 'pre-line', 
+                //     lineHeight: '1.0', 
+                //     padding: '0.6em',
+                // }}
               >
                   <span>
                       <FormattedMessage id="next-reading-question" />
