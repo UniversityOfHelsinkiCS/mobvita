@@ -1,8 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
-import { useTimer } from 'react-compound-timer'
-import { Icon, Segment } from 'semantic-ui-react'
-import { Spinner } from 'react-bootstrap'
+import { Segment } from 'semantic-ui-react'
+import { Spinner, Button } from 'react-bootstrap'
 import { 
     sendReadingTestAnswer, 
     finishExhaustiveTest, 
@@ -36,7 +35,47 @@ const ReadingTest = () => {
 
   const checkAnswer = choice => {
     if (!currentReadingTestQuestion) return
-    dispatch(
+
+    const isSelectedChoice = currentReadingTestQuestion.choices.filter(ch => ch.option == choice.option)?.length
+      ? currentReadingTestQuestion.choices.filter(ch => ch.option == choice.option)[0].isSelected
+      : false;
+    const countNotSelectedChoices = currentReadingTestQuestion.choices.filter(choice => choice.isSelected != true).length;
+    const synthesis_feedback = currentReadingTestQuestion.question_concept_feedbacks && currentReadingTestQuestion.question_concept_feedbacks?.synthesis
+      ? currentReadingTestQuestion.question_concept_feedbacks.synthesis
+      : undefined;
+    const itemFeedbacks = currentReadingTestQuestion.item_feedbacks
+      ? Object.entries(currentReadingTestQuestion.item_feedbacks).map(([, value]) => value)
+      : [];    
+    const mediationFeedbacks = currentReadingTestQuestion.question_concept_feedbacks
+      ? Object.entries(currentReadingTestQuestion.question_concept_feedbacks)
+          .filter(([key]) => key.startsWith('mediation_'))
+          .map(([, value]) => value)
+      : [];
+
+    if (choice.is_correct == false){
+      if (countNotSelectedChoices > 0){
+        const remainItemFeedbacks = itemFeedbacks.filter(feedback => !feedbacks.includes(feedback));
+        const remainMediationFeedbacks = mediationFeedbacks.filter(feedback => !feedbacks.includes(feedback));
+        if (remainItemFeedbacks.length > 0){
+          dispatch(updateTestFeedbacks(choice.option, remainItemFeedbacks[0]))
+        } else { 
+          if (remainMediationFeedbacks.length > 0) {
+            dispatch(updateTestFeedbacks(choice.option, remainMediationFeedbacks[0]))
+          } else if (!feedbacks.includes(synthesis_feedback)) {
+            dispatch(updateTestFeedbacks(choice.option, synthesis_feedback))
+          }
+        }
+      } else {
+        dispatch(updateTestFeedbacks(choice.option, synthesis_feedback))
+      }
+    }
+
+    if (choice.is_correct == true && synthesis_feedback != undefined && !feedbacks.includes(synthesis_feedback)) {
+      dispatch(updateTestFeedbacks(choice.option, synthesis_feedback))
+    }
+    
+    if (!isSelectedChoice){
+      dispatch(
         sendReadingTestAnswer(
             learningLanguage,
             readingTestSessionId,
@@ -47,40 +86,10 @@ const ReadingTest = () => {
                 seenFeedbacks: feedbacks,
             }
         )
-    )
-    dispatch(markAnsweredChoice(choice.option))
-
-    const countNotSelectedChoices = currentReadingTestQuestion.choices.filter(choice => choice.isSelected != true).length;
-    if (
-      !choice.is_correct &&
-      countNotSelectedChoices > 0 &&
-      (currentReadingTestQuestion.question_concept_feedbacks || 
-      (choice.item_feedbacks && Object.keys(choice.item_feedbacks).length !== 0))
-    ) {
-      let mediationFeedbacks = Object.entries(currentReadingTestQuestion.question_concept_feedbacks)
-        .filter(([key]) => key.startsWith('mediation_'))
-        .map(([, value]) => value);
-      const remainFeedbacks = mediationFeedbacks.filter(feedback => !feedbacks.includes(feedback));
-
-      // if (
-      //   choice.item_feedbacks && 
-      //   currentReadingTestQuestion?.concept_id && 
-      //   choice.item_feedbacks[currentReadingTestQuestion?.concept_id]
-      // ) {
-      //     mediationFeedbacks.push(choice.item_feedbacks[currentReadingTestQuestion?.concept_id])
-      // }
-
-      if (remainFeedbacks.length > 0){
-        dispatch(updateTestFeedbacks(choice.option, remainFeedbacks[0]))
-        setShowFeedbacks(true)
-      } else {
-        dispatch(nextReadingTestQuestion())
-        setShowFeedbacks(false)
-      }
-    } else {
-      dispatch(nextReadingTestQuestion())
-      setShowFeedbacks(false)
+      )
+      dispatch(markAnsweredChoice(choice.option))
     }
+    setShowFeedbacks(true)
   }
 
   useEffect(() => {
@@ -112,11 +121,25 @@ const ReadingTest = () => {
               showFeedbacks={showFeedbacks}
               closeFeedbacks={() => {setShowFeedbacks(false)}}
             />
-            <div className="test-top-info space-between">
+            <div className="test-top-info space-between" style={{ marginBottom: '0.2em' }}>
               <div>
                 <FormattedHTMLMessage id="question" />: {currentReadingQuestionIndex + 1} /{' '}
                 {readingTestQuestions.length}
               </div>
+              <Button
+                className="next-reading-question-button"
+                onClick={() => dispatch(nextReadingTestQuestion())}
+                disabled={showFeedbacks}
+                style={{ 
+                    whiteSpace: 'pre-line', 
+                    lineHeight: '1.0', 
+                    padding: '0.6em',
+                }}
+              >
+                  <span>
+                      <FormattedMessage id="next-reading-question" />
+                  </span>
+              </Button>
             </div>
             <div className="test-question-container" style={testContainerOverflow}>
               {currentReadingTestQuestion && !paused && !answerFailure && !displaySpinner && (
@@ -126,7 +149,6 @@ const ReadingTest = () => {
                     onAnswer={checkAnswer}
                     answerPending={answerPending}
                     showFeedbacks={showFeedbacks}
-                    closeFeedbacks={() => {setShowFeedbacks(false)}}
                   />
                 </div>
               )}

@@ -1,11 +1,9 @@
 import React from 'react';
-import Draggable from 'react-draggable';
 import { Button } from 'react-bootstrap';
-import { useSelector } from 'react-redux';
 import { sanitizeHtml } from 'Utilities/common';
 import useWindowDimensions from 'Utilities/windowDimensions';
 
-const ReadingTestMC = ({ exercise, onAnswer, answerPending, showFeedbacks, closeFeedbacks }) => {
+const ReadingTestMC = ({ exercise, onAnswer, answerPending, showFeedbacks }) => {
     const { choices, question, prephrase, test_text } = exercise;
     // const { feedbacks } = useSelector(({ tests }) => tests);
 
@@ -13,8 +11,8 @@ const ReadingTestMC = ({ exercise, onAnswer, answerPending, showFeedbacks, close
 
     return (
         <div style={{ display: 'flex', position: 'relative' }}>
-            <Draggable cancel=".interactable">
-                <div style={{ display: bigScreen ? 'flex' : 'block' }}>
+            {/* <Draggable cancel=".interactable"> */}
+                <div style={{ display: bigScreen ? 'flex' : 'block', paddingRight: '0.5em' }}>
                     {/* Left Column */}
                     <div style={{ flex: '1', marginRight: '20px' }}>
                         <div className="test-prephrase">{prephrase}</div>
@@ -44,7 +42,13 @@ const ReadingTestMC = ({ exercise, onAnswer, answerPending, showFeedbacks, close
                                     <Button
                                         className="test-choice-button"
                                         onClick={!answerPending ? () => onAnswer(choice) : undefined}
-                                        style={{ whiteSpace: 'pre-line', lineHeight: '1.0', padding: '0.6em' }}
+                                        disabled={showFeedbacks}
+                                        style={{ 
+                                            whiteSpace: 'pre-line', 
+                                            lineHeight: '1.0', 
+                                            padding: '0.6em',
+                                            backgroundColor: choice.isSelected ? (choice.is_correct ? 'lightgreen' : 'lightcoral') : ''
+                                        }}
                                     >
                                         <span style={{ fontSize: '0.7em' }}>{choice?.option}</span>
                                     </Button>
@@ -53,9 +57,7 @@ const ReadingTestMC = ({ exercise, onAnswer, answerPending, showFeedbacks, close
                         )}
                     </div>
                 </div>
-            </Draggable>
-
-            {/* {showFeedbacks && renderFeedback()} */}
+            {/* </Draggable> */}
         </div>
     );
 };

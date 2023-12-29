@@ -356,7 +356,8 @@ export default (state = initialState, action) => {
         feedbacks: [...state.feedbacks, action.feedbacks],
       }
 
-      case 'MARK_ANSWERED_CHOICE':
+    case 'MARK_ANSWERED_CHOICE':
+      if (state.currentReadingTestQuestion) {
         const updatedChoices = state.currentReadingTestQuestion.choices.map(choice => {
           if (choice.option === action.answer) {
             return { ...choice, isSelected: true };
@@ -374,7 +375,8 @@ export default (state = initialState, action) => {
           ...state,
           currentReadingTestQuestion: updatedCurrentReadingTestQuestion,
         };
-
+      }
+      
     default:
       return state
   }
