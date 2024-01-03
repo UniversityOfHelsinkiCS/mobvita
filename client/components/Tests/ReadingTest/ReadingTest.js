@@ -67,11 +67,11 @@ const ReadingTest = () => {
       if (countNotSelectedChoices > 2){
         const remainItemFeedbacks = itemFeedbacks.filter(feedback => !feedbacks.includes(feedback));
         const remainMediationFeedbacks = mediationFeedbacks.filter(feedback => !feedbacks.includes(feedback));
-        if (remainItemFeedbacks.length > 0){
-          dispatch(updateTestFeedbacks(choice.option, remainItemFeedbacks[0]))
+        if (remainMediationFeedbacks.length > 0){
+          dispatch(updateTestFeedbacks(choice.option, remainMediationFeedbacks[0]))
         } else { 
-          if (remainMediationFeedbacks.length > 0) {
-            dispatch(updateTestFeedbacks(choice.option, remainMediationFeedbacks[0]))
+          if (remainItemFeedbacks.length > 0) {
+            dispatch(updateTestFeedbacks(choice.option, remainItemFeedbacks[0]))
           } else if (!feedbacks.includes(synthesis_feedback)) {
             dispatch(updateTestFeedbacks(choice.option, synthesis_feedback))
             setShowCorrect(true)
