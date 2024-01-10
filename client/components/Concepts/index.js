@@ -99,7 +99,7 @@ const Concepts = () => {
 
   if (conceptsPending || !concepts || (target === 'groups' && !group)) return <Spinner fullHeight />
 
-  const conceptsToShow = concepts.filter(concept => concept.display_settings === true)
+  const conceptsToShow = concepts.filter(concept => !showTestConcepts && concept.exercise_settings === true || concept.test_settings === true)
   const makeConceptTree = parents =>
     parents
       .sort((a, b) => a['UI-order'] - b['UI-order'])
