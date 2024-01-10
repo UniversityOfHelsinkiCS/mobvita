@@ -908,5 +908,6 @@
     "dictionaryhelp-show-context-translation": "Translate context",
     "teacher-view-explanation": "教师界面",
     "reading-test": "Reading Practice",
-    "next-reading-question": "Next exercise"
+    "next-reading-question": "Next exercise",
+    "reset-lesson-message": "点击之前步骤以重新设置课程"
 }

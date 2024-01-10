@@ -1733,26 +1733,6 @@ const desktopLessonsTourSteps = [
     disableBeacon: true,
   },
   {
-    target: '.lesson-content',
-    title: <FormattedMessage id="Grammar topics" />,
-    content: (
-      <div>
-        <FormattedHTMLMessage id="grammar-topics-message" />
-      </div>
-    ),
-    disableBeacon: true,
-  },
-  {
-    target: '.lesson-performance',
-    title: <FormattedMessage id="Grammar performance" />,
-    content: (
-      <div>
-        <FormattedHTMLMessage id="grammar-performance-message" />
-      </div>
-    ),
-    disableBeacon: true,
-  },
-  {
     target: '.lesson-story-topic',
     title: <FormattedMessage id="Lesson setup" />,
     content: (
@@ -1778,6 +1758,36 @@ const desktopLessonsTourSteps = [
     content: (
       <div>
         <FormattedHTMLMessage id="lesson-topic-message" />
+      </div>
+    ),
+    disableBeacon: true,
+  },
+  {
+    target: '.lesson-content',
+    title: <FormattedMessage id="Grammar topics" />,
+    content: (
+      <div>
+        <FormattedHTMLMessage id="grammar-topics-message" />
+      </div>
+    ),
+    disableBeacon: true,
+  },
+  {
+    target: '.lesson-performance',
+    title: <FormattedMessage id="Grammar performance" />,
+    content: (
+      <div>
+        <FormattedHTMLMessage id="grammar-performance-message" />
+      </div>
+    ),
+    disableBeacon: true,
+  },
+  {
+    target: '.StepperContainer-0-2-1',
+    title: <FormattedMessage id="Reset Lesson" />,
+    content: (
+      <div>
+        <FormattedHTMLMessage id="reset-lesson-message" />
       </div>
     ),
     disableBeacon: true,
@@ -1828,6 +1838,36 @@ const mobileLessonsTourSteps = [
     disableBeacon: true,
   },
   {
+    target: '.lesson-story-topic',
+    title: <FormattedMessage id="Lesson setup" />,
+    content: (
+      <div>
+        <FormattedHTMLMessage id="lesson-story-topic-message" />
+      </div>
+    ),
+    disableBeacon: true,
+  },
+  {
+    target: '.lesson-vocab-diff',
+    title: <FormattedMessage id="Lesson vocab" />,
+    content: (
+      <div>
+        <FormattedHTMLMessage id="lesson-vocab-diff-message" />
+      </div>
+    ),
+    disableBeacon: true,
+  },
+  {
+    target: '.choose-topic',
+    title: <FormattedMessage id="Lesson topic" />,
+    content: (
+      <div>
+        <FormattedHTMLMessage id="lesson-topic-message" />
+      </div>
+    ),
+    disableBeacon: true,
+  },
+  {
     target: '.lesson-content',
     title: <FormattedMessage id="Grammar topics" />,
     content: (
@@ -1848,21 +1888,11 @@ const mobileLessonsTourSteps = [
     disableBeacon: true,
   },
   {
-    target: '.lesson-setup',
-    title: <FormattedMessage id="Lesson setup" />,
+    target: '.StepperContainer-0-2-1',
+    title: <FormattedMessage id="Reset Lesson" />,
     content: (
       <div>
-        <FormattedHTMLMessage id="lesson-setup-message" />
-      </div>
-    ),
-    disableBeacon: true,
-  },
-  {
-    target: '.choose-topic',
-    title: <FormattedMessage id="Lesson topic" />,
-    content: (
-      <div>
-        <FormattedHTMLMessage id="lesson-topic-message" />
+        <FormattedHTMLMessage id="reset-lesson-message" />
       </div>
     ),
     disableBeacon: true,

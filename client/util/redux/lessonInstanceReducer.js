@@ -2,6 +2,8 @@ import callBuilder from '../apiConnection'
 
 export const clearLessonInstanceState = () => ({ type: 'CLEAR_LESSON_INSTANCE_STATE' })
 
+export const setLessonStep = (lessonStep) => ({ type: 'SET_LESSON_STEP', lessonStep })
+export const resetLessonStep = () => ({ type: 'RESET_LESSON_STEP' })
 
 export const getLessonInstance = group_id => {
   let route = '/lesson'
@@ -22,6 +24,7 @@ const initialState = {
   lesson: {},
   pending: false,
   error: false,
+  step: -1,
 }
 
 export default (state = initialState, action) => {
@@ -97,6 +100,17 @@ export default (state = initialState, action) => {
         ...state,
         pending: false,
         lesson: action.response.lesson,
+      }
+    case 'SET_LESSON_STEP':
+      return {
+        ...state,
+        step: action.lessonStep,
+      }
+    
+    case 'RESET_LESSON_STEP':
+      return {
+        ...state,
+        step: -1,
       }
       
     default:

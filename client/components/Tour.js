@@ -4,7 +4,7 @@ import JoyRide, { ACTIONS, EVENTS, STATUS } from 'react-joyride'
 import { sidebarSetOpen } from 'Utilities/redux/sidebarReducer'
 import { useSelector, useDispatch } from 'react-redux'
 import { handleNextTourStep, startTour, stopTour } from 'Utilities/redux/tourReducer'
-import { getLessonInstance, setLessonInstance } from 'Utilities/redux/lessonInstanceReducer'
+import { getLessonInstance, setLessonInstance, setLessonStep } from 'Utilities/redux/lessonInstanceReducer'
 import { FormattedMessage } from 'react-intl'
 import useWindowDimensions from 'Utilities/windowDimensions'
 import {
@@ -103,24 +103,39 @@ const Tour = () => {
         }
         // lessons tour steps
         if (tourState.steps === lessonsTourSteps) {
-          if (index === 5) {
-            const newTopics = [...lesson.topic_ids, lesson_topics[0].topic_id]
-            dispatch(setLessonInstance({ topic_ids:  newTopics}))
-          }
-          if (index === 6) {
-            const currentPath = history.location.pathname
-            const newPath = currentPath.substring(0, currentPath.length - 9)
-            history.push(`${newPath}/practice`)
-            dispatch(stopTour())
-            setTimeout(() => {
-              dispatch(startTour())
-              dispatch(handleNextTourStep(index + (action === ACTIONS.PREV ? -1 : 1)))
-            }, 1000)
-          }
-          if (index === 7) {
-            history.push('/lessons/library')
-          }
+          switch (index) {
+            case 0:
+              const newTopics = [...lesson.topic_ids, lesson_topics[0].topic_id]
+              dispatch(setLessonInstance({ topic_ids:  newTopics}))
+              dispatch(setLessonStep(0))
+              break
+            case 1:
+              dispatch(setLessonStep(1))
+              break
+            case 2:
+              dispatch(setLessonStep(2))
+              break
+            case 5:
+              dispatch(setLessonStep(3))
+              break
+            case 8:
+              const currentPath = history.location.pathname
+              const newPath = currentPath.substring(0, currentPath.length - 9)
+              history.push(`${newPath}/practice`)
+              dispatch(stopTour())
+              setTimeout(() => {
+                dispatch(startTour())
+                dispatch(handleNextTourStep(index + (action === ACTIONS.PREV ? -1 : 1)))
+              }, 1000)
+              break
+            case 9:
+              history.push('/lessons/library')
+              break
 
+            default:
+              console.log('default', index)
+              break
+          }
         }
 
         dispatch(handleNextTourStep(index + (action === ACTIONS.PREV ? -1 : 1)))
@@ -211,28 +226,38 @@ const Tour = () => {
         }
         // lessons tour control
         if (tourState.steps === lessonsTourSteps) {
-          if (index === 5) {
-            const newTopics = [...lesson.topic_ids, lesson_topics[0].topic_id]
-            dispatch(setLessonInstance({ topic_ids:  newTopics}))
-          }
-          if (index === 6) {
-            const currentPath = history.location.pathname
-            const newPath = currentPath.substring(0, currentPath.length - 9)
-            history.push(`${newPath}/practice`)
-            dispatch(stopTour())
-            setTimeout(() => {
-              dispatch(startTour())
-              dispatch(handleNextTourStep(index + (action === ACTIONS.PREV ? -1 : 1)))
-            }, 1000)
-          }
-          if (index === 7) {
-            history.push('/lessons/library')
-            dispatch(sidebarSetOpen(true))
-        
-            setTimeout(() => {
-              dispatch(handleNextTourStep(index + (action === ACTIONS.PREV ? -1 : 1)))
-              window.dispatchEvent(new Event('resize'))
-            }, 500)
+          switch (index) {
+            case 0:
+              const newTopics = [...lesson.topic_ids, lesson_topics[0].topic_id]
+              dispatch(setLessonInstance({ topic_ids:  newTopics}))
+              dispatch(setLessonStep(0))
+              break
+            case 1:
+              dispatch(setLessonStep(1))
+              break
+            case 2:
+              dispatch(setLessonStep(2))
+              break
+            case 5:
+              dispatch(setLessonStep(3))
+              break
+            case 8:
+              const currentPath = history.location.pathname
+              const newPath = currentPath.substring(0, currentPath.length - 9)
+              history.push(`${newPath}/practice`)
+              dispatch(stopTour())
+              setTimeout(() => {
+                dispatch(startTour())
+                dispatch(handleNextTourStep(index + (action === ACTIONS.PREV ? -1 : 1)))
+              }, 1000)
+              break
+            case 9:
+              history.push('/lessons/library')
+              break
+
+            default:
+              console.log('default', index)
+              break
           }
         }
         dispatch(handleNextTourStep(index + (action === ACTIONS.PREV ? -1 : 1)))

@@ -1537,5 +1537,6 @@
     "dictionaryhelp-show-context-translation": "Käännä konteksti",
     "teacher-view-explanation": "Teacher view/Student view — allows the teacher to see how the interface looks to the students",
     "reading-test": "Lukuharjoittelu",
-    "next-reading-question": "Seuraava"
+    "next-reading-question": "Seuraava",
+    "reset-lesson-message": "Click previous steps to re-configure your lesson"
 }

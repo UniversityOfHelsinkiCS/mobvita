@@ -1536,5 +1536,6 @@
     "dictionaryhelp-show-context-translation": "Traduzione del contesto",
     "teacher-view-explanation": "Teacher view/Student view — allows the teacher to see how the interface looks to the students",
     "reading-test": "Pratica di lettura",
-    "next-reading-question": "Avanti"
+    "next-reading-question": "Avanti",
+    "reset-lesson-message": "Click previous steps to re-configure your lesson"
 }

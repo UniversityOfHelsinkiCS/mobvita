@@ -20,7 +20,8 @@ import { getLessonTopics } from 'Utilities/redux/lessonsReducer'
 import {
   getLessonInstance,
   setLessonInstance,
-  clearLessonInstanceState
+  clearLessonInstanceState,
+  setLessonStep,
 } from 'Utilities/redux/lessonInstanceReducer'
 import { getMetadata } from 'Utilities/redux/metadataReducer'
 import { getGroups } from 'Utilities/redux/groupsReducer'
@@ -55,7 +56,7 @@ const LessonList = () => {
     lessons,
   } = useSelector(({ metadata }) => metadata)
   const { pending: topicPending, topics } = useSelector(({ lessons }) => lessons)
-  const { pending: lessonPending, lesson } = useSelector(({ lessonInstance }) => lessonInstance)
+  const { pending: lessonPending, lesson, step: goStep } = useSelector(({ lessonInstance }) => lessonInstance)
 
   const { groups, deleteSuccessful } = useSelector(({ groups }) => groups)
   const currentGroup = groups.find(g => g.group_id === savedGroupSelection)
@@ -74,7 +75,6 @@ const LessonList = () => {
     group: false,
   })
 
-  const [goStep, setGoStep] = useState(-1);
   // const [lesson2info, setLesson2info] = useState({})
 
   let lesson2info = {}
@@ -123,18 +123,19 @@ const LessonList = () => {
       setLibrary('private')
       dispatch(getLessonInstance())
     }
-    if (!has_seen_lesson_tour) {
-      dispatch(lessonsTourViewed())
-      dispatch(sidebarSetOpen(false))
-      dispatch(startLessonsTour())
-    }
   }, [])
   
   useEffect(() => {
     if (!lessonPending) {
         setSliderValue(vocab_diff)
         if (goStep == -1 && selectedTopicIds && selectedSemantics && selectedTopicIds.length && selectedSemantics.length) {
-          setGoStep(3)
+          dispatch(setLessonStep(3))
+        }
+        else if (!has_seen_lesson_tour) {
+          dispatch(setLessonStep(0))
+          dispatch(lessonsTourViewed())
+          dispatch(sidebarSetOpen(false))
+          dispatch(startLessonsTour())
         }
     }
     
@@ -205,7 +206,7 @@ const LessonList = () => {
     setLibrary(library)
     dispatch(clearLessonInstanceState())
     dispatch(getLessonInstance(library == 'group' && savedGroupSelection || null))
-    setGoStep(0)
+    dispatch(setLessonStep(0))
   }
 
   const groupDropdownOptions = groups.map(group => ({
@@ -219,7 +220,7 @@ const LessonList = () => {
     dispatch(updateGroupSelect(option.value))
     dispatch(clearLessonInstanceState())
     dispatch(getLessonInstance(option.value))
-    setGoStep(0)
+    dispatch(setLessonStep(0))
   }
 
   const lessonSemanticControls = (
@@ -233,7 +234,7 @@ const LessonList = () => {
           }}
           onClick={() => {
             finnishSelectingSemantics()
-            setGoStep(1)
+            dispatch(setLessonStep(1))
           }}>
           <FormattedMessage id="next-step" />
         </Button>
@@ -313,7 +314,7 @@ const LessonList = () => {
           }}
           onClick={() => {
             finnishSelectingVocabularyDifficulty()
-            setGoStep(2)
+            dispatch(setLessonStep(2))
           } }>
           <FormattedMessage id="next-step" />
         </Button>
@@ -392,7 +393,7 @@ const LessonList = () => {
         }}
         onClick={() => {
           finnishSelectingVocabularyDifficulty()
-          setGoStep(2)
+          dispatch(setLessonStep(2))
         } }>
         <FormattedMessage id="next-step" />
       </Button>
@@ -467,7 +468,7 @@ const LessonList = () => {
           }}
           onClick={() => {
             finnishSelectingTopics()
-            setGoStep(3)
+            dispatch(setLessonStep(3))
           }}>
           <FormattedMessage id="next-step" />
         </Button>
@@ -646,7 +647,7 @@ const LessonList = () => {
                   if (goStep == 2){
                     finnishSelectingTopics()
                   }
-                  setGoStep(0)
+                  dispatch(setLessonStep(0))
                 }}
               />
               <Step
@@ -660,7 +661,7 @@ const LessonList = () => {
                   if (goStep == 2){
                     finnishSelectingTopics()
                   }
-                  setGoStep(1)
+                  dispatch(setLessonStep(1))
                 }}
               />
               <Step
@@ -674,7 +675,7 @@ const LessonList = () => {
                   if (goStep == 2){
                     finnishSelectingTopics()
                   }
-                  setGoStep(2)
+                  dispatch(setLessonStep(2))
                 }}
               />
               <Step
@@ -688,7 +689,7 @@ const LessonList = () => {
                   if (goStep == 2){
                     finnishSelectingTopics()
                   }
-                  setGoStep(3)
+                  dispatch(setLessonStep(3))
                 }}
               />
             </Stepper>
