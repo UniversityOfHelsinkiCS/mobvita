@@ -1802,16 +1802,16 @@ const desktopLessonsTourSteps = [
     ),
     disableBeacon: true,
   },
-  {
-    target: '.practice-container',
-    title: <FormattedMessage id="Lesson exercise" />,
-    content: (
-      <div>
-        <FormattedHTMLMessage id="grammar-practice-message" />
-      </div>
-    ),
-    disableBeacon: true,
-  },
+  // {
+  //   target: '.practice-container',
+  //   title: <FormattedMessage id="Lesson exercise" />,
+  //   content: (
+  //     <div>
+  //       <FormattedHTMLMessage id="grammar-practice-message" />
+  //     </div>
+  //   ),
+  //   disableBeacon: true,
+  // },
   {
     target: '.tour-button',
     title: <FormattedMessage id="Tour end" />,
@@ -1907,16 +1907,16 @@ const mobileLessonsTourSteps = [
     ),
     disableBeacon: true,
   },
-  {
-    target: '.practice-container',
-    title: <FormattedMessage id="Lesson exercise" />,
-    content: (
-      <div>
-        <FormattedHTMLMessage id="lesson-exercise-message" />
-      </div>
-    ),
-    disableBeacon: true,
-  },
+  // {
+  //   target: '.practice-container',
+  //   title: <FormattedMessage id="Lesson exercise" />,
+  //   content: (
+  //     <div>
+  //       <FormattedHTMLMessage id="lesson-exercise-message" />
+  //     </div>
+  //   ),
+  //   disableBeacon: true,
+  // },
   {
     target: '.tour-mobile-start-button',
     title: <FormattedMessage id="Tour end" />,
