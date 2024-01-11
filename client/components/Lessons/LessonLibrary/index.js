@@ -115,7 +115,7 @@ const LessonList = () => {
     dispatch(getLessonTopics())
     dispatch(getGroups())
     if (teacherView) setLibrary('group')
-    if (savedLibrarySelection == 'group' || savedLibrarySelection == 'public' || teacherView ) {
+    if (has_seen_lesson_tour && (savedLibrarySelection == 'group' || savedLibrarySelection == 'public' || teacherView) ) {
       setLibrary('group')
       dispatch(getLessonInstance(savedGroupSelection))
     }

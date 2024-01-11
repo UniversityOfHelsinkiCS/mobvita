@@ -105,7 +105,7 @@ const Tour = () => {
         if (tourState.steps === lessonsTourSteps) {
           switch (index) {
             case 0:
-              const newTopics = [...lesson.topic_ids, lesson_topics[0].topic_id]
+              const newTopics = [...lesson.topic_ids, lesson_topics.filter(topic=>topic.target?.length>0)[0].topic_id]
               dispatch(setLessonInstance({ topic_ids:  newTopics}))
               dispatch(setLessonStep(0))
               break
