@@ -75,6 +75,9 @@ const LessonList = () => {
     group: false,
   })
 
+  const [searchQuery, setSearchQuery] = useState("");
+  const [filteredLessons, setFilteredLessons] = useState(lessons);
+
   // const [lesson2info, setLesson2info] = useState({})
 
   let lesson2info = {}
@@ -140,6 +143,28 @@ const LessonList = () => {
     }
     
   }, [lessonPending])
+
+  useEffect(() => {
+    // Filter lessons based on search query
+    if (searchQuery){
+      const filtered = lessons.filter(lesson => {
+        const lowercaseSearchQuery = searchQuery.toLowerCase();
+        const nameMatch = lesson.name.toLowerCase().includes(lowercaseSearchQuery);
+        const topicsMatch = lesson.topics.some(topic =>
+          topic.toLowerCase().includes(lowercaseSearchQuery)
+        );
+        return nameMatch || topicsMatch;
+      });
+      
+      setFilteredLessons(filtered);
+    } else {
+      setFilteredLessons(lessons);
+    }
+  }, [lessons, searchQuery]);
+
+  const handleSearchChange = event => {
+    setSearchQuery(event.target.value);
+  };
 
   const finnishSelectingTopics = () => {
     const payload = { topic_ids: selectedTopicIds }
@@ -227,17 +252,6 @@ const LessonList = () => {
     <div className="align-center">
       <h5>
         <FormattedMessage id="select-lesson-semantic-topic" />
-        <Button
-          style={{
-            float: 'right', cursor: lessonPending || !(libraries.private || currentGroup && currentGroup.is_teaching)
-              ? 'not-allowed' : 'pointer'
-          }}
-          onClick={() => {
-            finnishSelectingSemantics()
-            dispatch(setLessonStep(1))
-          }}>
-          <FormattedMessage id="next-step" />
-        </Button>
       </h5>
       <div className="group-buttons sm lesson-story-topic">
         {lesson_semantics &&
@@ -307,17 +321,6 @@ const LessonList = () => {
     <div className="align-center">
       <h5>
         <FormattedMessage id="select-lesson-vocab-diff" />
-        <Button
-          style={{
-            float: 'right', cursor: lessonPending || !(libraries.private || currentGroup && currentGroup.is_teaching)
-              ? 'not-allowed' : 'pointer'
-          }}
-          onClick={() => {
-            finnishSelectingVocabularyDifficulty()
-            dispatch(setLessonStep(2))
-          } }>
-          <FormattedMessage id="next-step" />
-        </Button>
       </h5>
 
       <div
@@ -376,7 +379,7 @@ const LessonList = () => {
           marks={[roundToNearestHalfInt(vocabulary_score)]}
           min={0.8} // 0.8
           max={3.3} // 3.3
-          step={0.2}
+          step={0.02}
           value={sliderValue}
           disabled={lessonPending || !(libraries.private || currentGroup && currentGroup.is_teaching)}
         />
@@ -385,96 +388,106 @@ const LessonList = () => {
           <span><FormattedMessage id='Hard' /></span>
         </div>
       </div>
-
-      <Button
-        style={{
-          width: '100%', float: 'right', cursor: lessonPending || !(libraries.private || currentGroup && currentGroup.is_teaching)
-            ? 'not-allowed' : 'pointer'
-        }}
-        onClick={() => {
-          finnishSelectingVocabularyDifficulty()
-          dispatch(setLessonStep(2))
-        } }>
-        <FormattedMessage id="next-step" />
-      </Button>
     </div>
   )
 
-  const getTextWidth = (text) => {
+  const getTextWidth = (text, class_name, style) => {
     // Create an invisible element to measure the text
     const measuringElement = document.createElement('span');
     measuringElement.textContent = text;
+
+    if (class_name) {
+      measuringElement.className = class_name;
+    }
+  
+    if (style) {
+      Object.assign(measuringElement.style, style);
+    }
   
     document.body.appendChild(measuringElement);
     const width = measuringElement.getBoundingClientRect().width;
     document.body.removeChild(measuringElement);
   
-    return width;
+    return width*2;
   }
 
-  const get_lesson_row_height = index => {
+  const get_lesson_row_height = (index) => {
     if (bigScreen) {
       return 85 + lessons[index.index].topics.length * 26;
     } else {
       let lesson = lessons[index.index]
 
-      let row_height = 85 + 20 // Separate the Include button in mobile view
-      row_height += 20 * Math.floor(getTextWidth(lesson.name) / 200);
+      let row_height = 38 + 34 + 22 // Separate the Include button in mobile view
+      row_height += 22 + 18 * Math.floor(
+        (getTextWidth(
+          lesson.name, "story-item-title", {
+            "overflow-wrap": "break-word",
+            "white-space": "normal",
+            "margin-bottom": ".5rem"
+          }
+        ) + 11) / (0.8*width)
+      );
  
       lesson.topics.forEach(function(lesson_topic, index) {
-        const width_span = getTextWidth(lesson_topic) / 219;
+        const width_span = (getTextWidth(lesson.name, "lesson-content", null) * 1.14) / (0.8*width)
         if (width_span < 1) {
-          row_height += 26
+          row_height += 18
         } else {
-          row_height += 26 + 18 * Math.floor(width_span);
+          row_height += 18 + 14 * Math.floor(width_span);
         }
       });
-      console.log(lesson.name, row_height)
+
       return row_height
     }
   }
 
   const lessonTopicsControls = (
     <div>
-      <div>
+      <div style={{ display: 'flex', alignItems: 'center', marginBottom: '1.0rem' }}>
         <Button
           variant='primary'
           disabled={
             lessonPending ||
             !selectedTopicIds ||
             selectedTopicIds.length === 0 ||
-            !(libraries.private || currentGroup && currentGroup.is_teaching)
+            !(libraries.private || (currentGroup && currentGroup.is_teaching))
           }
           style={{
-            cursor: lessonPending || !(libraries.private || currentGroup && currentGroup.is_teaching)
+            cursor: lessonPending || !(libraries.private || (currentGroup && currentGroup.is_teaching))
               ? 'not-allowed' : 'pointer',
-            marginLeft: '0.5em'
           }}
-          onClick={() => excludeAllTopics()}>
+          onClick={() => excludeAllTopics()}
+        >
           <Icon name="trash alternate" />
           <FormattedMessage id="exclude-all-topics" />
         </Button>
-        <Button
-          disabled={
-            lessonPending ||
-            !selectedTopicIds ||
-            selectedTopicIds.length === 0 ||
-            !(libraries.private || currentGroup && currentGroup.is_teaching)
-          }
+
+        <input
+          type="text"
+          placeholder="Search lessons / topics ..."
+          value={searchQuery}
+          onChange={handleSearchChange}
           style={{
-            float: 'right', cursor: lessonPending || !(libraries.private || currentGroup && currentGroup.is_teaching)
-              ? 'not-allowed' : 'pointer',
-            marginRight: '0.5em'
+            marginLeft: '0.5em',
+            flex: '1', 
+            padding: '5.5px', 
+            borderRadius: '16px',
+            border: '1px solid #ccc', 
+            outline: 'none', 
+            fontSize: '16px',
           }}
-          onClick={() => {
-            finnishSelectingTopics()
-            dispatch(setLessonStep(3))
-          }}>
-          <FormattedMessage id="next-step" />
-        </Button>
+        />
       </div>
 
-      <Card.Group itemsPerRow={1} doubling data-cy="lesson-items" style={{ marginTop: '.5em' }}>
+      {filteredLessons && filteredLessons.map((lesson, index) => (
+        rowRenderer({
+          key: 'lesson-' + index,
+          index: index,
+          style: {}
+        })
+      ))}
+
+      {/* <Card.Group itemsPerRow={1} doubling data-cy="lesson-items" style={{ marginTop: '.5em' }}>
         <WindowScroller>
           {({ height, isScrolling, onChildScroll, scrollTop }) => (
             <List
@@ -482,7 +495,7 @@ const LessonList = () => {
               height={height}
               isScrolling={isScrolling}
               onScroll={onChildScroll}
-              rowCount={lessons.length}
+              rowCount={filteredLessons.length}
               rowHeight={
                 index => get_lesson_row_height(index)
               }
@@ -492,13 +505,16 @@ const LessonList = () => {
             />
           )}
         </WindowScroller>
-      </Card.Group>
+      </Card.Group> */}
     </div>
   )
 
   const link = '/lesson' + (libraries.group ? `/group/${savedGroupSelection}/practice` : '/practice')
   let lessonStartControls = (
     <div>
+      <div style={{ color: 'red', textAlign: 'center', width: '70%' }}>
+        <FormattedMessage id="lessons-ready-for-practice" />
+      </div>
       <div style={{ 'display': 'flex' }}>
         <LessonPracticeThemeHelp selectedThemes={selectedSemantics ? selectedSemantics : []} always_show={true} />
         <LessonPracticeTopicsHelp selectedTopics={selectedTopicIds} always_show={true} />
@@ -549,7 +565,7 @@ const LessonList = () => {
     return dir * multiplier
   })
 
-  const isLessonItemSelected = (lesson_id) => {
+  function isLessonItemSelected(lesson_id) {
     const lesson_topics = lesson2info?.hasOwnProperty(lesson_id) ? lesson2info[lesson_id]['topics'] : []
     for (let lesson_topic of lesson_topics) {
       if (selectedTopicIds !== undefined && selectedTopicIds?.includes(lesson_topic)) {
@@ -576,14 +592,16 @@ const LessonList = () => {
   }
 
   function rowRenderer({ key, index, style }) {
-    const lesson = lessons && lessons[index]
+    const lesson = filteredLessons && filteredLessons[index]
+    if (!lesson) return null
+
     const lowestScore = calculateLowestScore(topics.filter(topic => lesson.topics && lesson.topics?.includes(topic.topic_id)))
     lesson.correct = lowestScore.correct
     lesson.total = lowestScore.total
     return (
       <div
         key={key}
-        style={{ ...style, paddingRight: '0.5em', paddingLeft: '0.5em', marginBottom: '0.5em' }}
+        style={{ ...style, marginBottom: '1.5em' }}
       >
         <LessonListItem
           lesson={lesson}
@@ -629,70 +647,85 @@ const LessonList = () => {
               )}
             </div>
 
-            <Stepper
-              styleConfig={{
-                completedBgColor: '#c6e2ff',
-                activeBgColor: '#003366',
-                inactiveBgColor: '#d2d3d6',
-              }}
-            >
-              <Step
-                label={<FormattedMessage id="select-lesson-themes" />}
-                active={goStep == 0}
-                completed={goStep > 0}
-                onClick={() => {
-                  if (goStep == 1){
-                    finnishSelectingVocabularyDifficulty()
-                  }
-                  if (goStep == 2){
-                    finnishSelectingTopics()
-                  }
-                  dispatch(setLessonStep(0))
+            <div style={{ display: 'flex', flexDirection: 'row', alignItems: 'center', alignSelf: 'center' }}>
+              <Stepper
+                styleConfig={{
+                  completedBgColor: '#c6e2ff',
+                  activeBgColor: '#003366',
+                  inactiveBgColor: '#d2d3d6',
                 }}
-              />
-              <Step
-                label={<FormattedMessage id="select-lesson-vocab" />}
-                active={goStep == 1}
-                completed={goStep > 1}
-                onClick={() => {
-                  if (goStep == 1){
-                    finnishSelectingVocabularyDifficulty()
-                  }
-                  if (goStep == 2){
-                    finnishSelectingTopics()
-                  }
-                  dispatch(setLessonStep(1))
+              >
+                <Step
+                  label={<FormattedMessage id="select-lesson-themes" />}
+                  active={goStep == 0}
+                  completed={goStep > 0}
+                  onClick={() => {
+                    if (goStep == 1){
+                      finnishSelectingVocabularyDifficulty()
+                    }
+                    if (goStep == 2){
+                      finnishSelectingTopics()
+                    }
+                    dispatch(setLessonStep(0))
+                  }}
+                />
+                <Step
+                  label={<FormattedMessage id="select-lesson-vocab" />}
+                  active={goStep == 1}
+                  completed={goStep > 1}
+                  onClick={() => {
+                    if (goStep == 1){
+                      finnishSelectingVocabularyDifficulty()
+                    }
+                    if (goStep == 2){
+                      finnishSelectingTopics()
+                    }
+                    dispatch(setLessonStep(1))
+                  }}
+                />
+                <Step
+                  label={<FormattedMessage id="select-lesson-grammar" />}
+                  active={goStep == 2}
+                  completed={goStep > 2}
+                  onClick={() => {
+                    if (goStep == 1){
+                      finnishSelectingVocabularyDifficulty()
+                    }
+                    if (goStep == 2){
+                      finnishSelectingTopics()
+                    }
+                    dispatch(setLessonStep(2))
+                  }}
+                />
+                <Step
+                  label={<FormattedMessage id="start-lesson-practice" />}
+                  active={goStep == 3}
+                  completed={goStep > 3}
+                  onClick={() => {
+                    if (goStep == 1){
+                      finnishSelectingVocabularyDifficulty()
+                    }
+                    if (goStep == 2){
+                      finnishSelectingTopics()
+                    }
+                    dispatch(setLessonStep(3))
+                  }}
+                />
+              </Stepper>
+
+              <Button
+                style={{
+                  float: 'right', marginBottom: '8%',
+                  cursor: lessonPending || !(libraries.private || currentGroup && currentGroup.is_teaching)
+                    ? 'not-allowed' : 'pointer'
                 }}
-              />
-              <Step
-                label={<FormattedMessage id="select-lesson-grammar" />}
-                active={goStep == 2}
-                completed={goStep > 2}
                 onClick={() => {
-                  if (goStep == 1){
-                    finnishSelectingVocabularyDifficulty()
-                  }
-                  if (goStep == 2){
-                    finnishSelectingTopics()
-                  }
-                  dispatch(setLessonStep(2))
-                }}
-              />
-              <Step
-                label={<FormattedMessage id="start-lesson-practice" />}
-                active={goStep == 3}
-                completed={goStep > 3}
-                onClick={() => {
-                  if (goStep == 1){
-                    finnishSelectingVocabularyDifficulty()
-                  }
-                  if (goStep == 2){
-                    finnishSelectingTopics()
-                  }
-                  dispatch(setLessonStep(3))
-                }}
-              />
-            </Stepper>
+                  finnishSelectingSemantics()
+                  dispatch(setLessonStep(goStep + 1))
+                }}>
+                <FormattedMessage id="next-step" />
+              </Button>
+            </div>
 
             {(goStep === 0 || goStep === -1) && (
               <div>
