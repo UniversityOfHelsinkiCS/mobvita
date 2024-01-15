@@ -719,6 +719,7 @@ const LessonList = () => {
                   cursor: lessonPending || !(libraries.private || currentGroup && currentGroup.is_teaching)
                     ? 'not-allowed' : 'pointer'
                 }}
+                disabled={lessonPending || goStep >= 3}
                 onClick={() => {
                   finnishSelectingSemantics()
                   dispatch(setLessonStep(goStep + 1))
