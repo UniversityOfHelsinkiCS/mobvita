@@ -721,7 +721,15 @@ const LessonList = () => {
                 }}
                 disabled={lessonPending || goStep >= 3}
                 onClick={() => {
-                  finnishSelectingSemantics()
+                  if (goStep == 0){
+                    finnishSelectingSemantics()
+                  }
+                  if (goStep == 1){
+                    finnishSelectingVocabularyDifficulty()
+                  }
+                  if (goStep == 2){
+                    finnishSelectingTopics()
+                  }
                   dispatch(setLessonStep(goStep + 1))
                 }}>
                 <FormattedMessage id="next-step" />
