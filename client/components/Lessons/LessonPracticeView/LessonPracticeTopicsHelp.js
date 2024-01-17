@@ -6,7 +6,7 @@ import { FormattedMessage, useIntl } from 'react-intl'
 import { getTextStyle, learningLanguageSelector, getMode } from 'Utilities/common'
 import { getLessonTopics } from 'Utilities/redux/lessonsReducer'
 
-const LessonPracticeTopicsHelp = ({selectedTopics, always_show=false, }) => {
+const LessonPracticeTopicsHelp = ({selectedTopics, always_show=true, }) => {
     const dispatch = useDispatch()
     const { width } = useWindowDimensions()
     const learningLanguage = useSelector(learningLanguageSelector)
