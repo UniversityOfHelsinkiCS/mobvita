@@ -29,7 +29,7 @@ import {
 } from 'Utilities/redux/annotationsReducer'
 import Tooltip from 'Components/PracticeView/Tooltip'
 
-const PreviousExerciseWord = ({ word, answer, tiedAnswer, focusedConcept }) => {
+const PreviousExerciseWord = ({ word, answer, tiedAnswer, focusedConcept, snippet }) => {
   const {
     surface,
     isWrong,
@@ -45,7 +45,6 @@ const PreviousExerciseWord = ({ word, answer, tiedAnswer, focusedConcept }) => {
     snippet_id,
     sentence_id,
   } = word
-  const {focused: story} = useSelector(({ stories }) => stories)
   const [show, setShow] = useState(false)
   const history = useHistory()
   const isPreviewMode = history.location.pathname.includes('preview')
@@ -99,7 +98,7 @@ const PreviousExerciseWord = ({ word, answer, tiedAnswer, focusedConcept }) => {
           })
         )
         if (mtLanguages.includes([learningLanguage, dictionaryLanguage].join('-'))) {
-          const sentence = story.paragraph[snippet_id].filter(
+          const sentence = snippet.filter(
             s => sentence_id - 1 < s.sentence_id < sentence_id + 1).map(t=>t.surface).join('').replaceAll('\n', ' ').trim()
           dispatch(
             getContextTranslation(sentence,

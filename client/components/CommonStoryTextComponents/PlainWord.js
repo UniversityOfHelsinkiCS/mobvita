@@ -24,7 +24,7 @@ import {
   setAnnotationFormVisibility,
 } from 'Utilities/redux/annotationsReducer'
 
-const PlainWord = ({ word, annotatingAllowed, focusedConcept, ...props }) => {
+const PlainWord = ({ word, snippet, annotatingAllowed, focusedConcept, ...props }) => {
   const history = useHistory()
   const dispatch = useDispatch()
   const { width } = useWindowDimensions()
@@ -53,7 +53,6 @@ const PlainWord = ({ word, annotatingAllowed, focusedConcept, ...props }) => {
     sentence_id,
     snippet_id
   } = word
-  const {focused: story} = useSelector(({ stories }) => stories)
   const isCompeteMode = history.location.pathname.includes('compete')
   const bigScreen = width >= 1024
   const voice = voiceLanguages[learningLanguage]
@@ -163,7 +162,7 @@ const PlainWord = ({ word, annotatingAllowed, focusedConcept, ...props }) => {
           })
         )
         if (mtLanguages.includes([learningLanguage, dictionaryLanguage].join('-'))) {
-          const sentence = story.paragraph[snippet_id].filter(
+          const sentence = snippet.filter(
             s => sentence_id - 1 < s.sentence_id < sentence_id + 1).map(t=>t.surface).join('').replaceAll('\n', ' ').trim()
           dispatch(
             getContextTranslation(sentence,

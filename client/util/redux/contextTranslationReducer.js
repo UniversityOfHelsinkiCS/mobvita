@@ -49,6 +49,7 @@ export default (state = { data: null, avail: [], lastTrans: null }, action) => {
       return {
         ...state,
         lastTrans: action.requestSettings.data.source,
+        data: null,
         pending: true,
         error: false,
       }

@@ -43,7 +43,6 @@ const ControlledStoryWord = ({ word, snippet, focusedConcept }) => {
     snippet_id,
     sentence_id,
   } = word
-  const {focused: story} = useSelector(({ stories }) => stories)
   const [showValidationMessage, setShowValidationMessage] = useState(false)
   const [showRemoveTooltip, setShowRemoveTooltip] = useState(false)
   const [showEditorTooltip, setShowEditorTooltip] = useState(false)
@@ -209,7 +208,7 @@ const ControlledStoryWord = ({ word, snippet, focusedConcept }) => {
           })
         )
         if (mtLanguages.includes([learningLanguage, dictionaryLanguage].join('-'))) {
-          const sentence = story.paragraph[snippet_id].filter(
+          const sentence = snippet.filter(
             s => sentence_id - 1 < s.sentence_id < sentence_id + 1).map(t=>t.surface).join('').replaceAll('\n', ' ').trim()
           dispatch(
             getContextTranslation(sentence,
@@ -389,7 +388,7 @@ const ControlledStoryWord = ({ word, snippet, focusedConcept }) => {
             onKeyDown={handleActionClick}
             tabIndex={-1}
           >
-            <PlainWord word={word} annotatingAllowed />
+            <PlainWord word={word} annotatingAllowed snippet={snippet}/>
           </span>
         </Tooltip>
       </span>

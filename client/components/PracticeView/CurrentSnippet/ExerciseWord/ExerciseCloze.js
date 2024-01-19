@@ -14,7 +14,7 @@ import {
   getWordColor,
   skillLevels,
   learningLanguageLocaleCodes,
-  mtLanguages
+  useMTAvailableLanguage
 } from 'Utilities/common'
 import {
   setFocusedWord,
@@ -30,7 +30,7 @@ import { Icon } from 'semantic-ui-react'
 import { Button } from 'react-bootstrap'
 import Tooltip from 'Components/PracticeView/Tooltip'
 
-const ExerciseCloze = ({ word, handleChange }) => {
+const ExerciseCloze = ({ word, snippet, handleChange }) => {
   const [value, setValue] = useState('')
   const [className, setClassName] = useState('exercise')
   const [touched, setTouched] = useState(false)
@@ -38,6 +38,7 @@ const ExerciseCloze = ({ word, handleChange }) => {
   const { grade } = useSelector(state => state.user.data.user)
   const dictionaryLanguage = useSelector(dictionaryLanguageSelector)
   const learningLanguage = useSelector(learningLanguageSelector)
+  const mtLanguages = useMTAvailableLanguage()
   const { resource_usage, autoSpeak } = useSelector(state => state.user.data.user)
   const currentAnswer = useSelector(
     ({ practice }) => practice.currentAnswers[`${word.ID}-${word.id}`]
@@ -66,7 +67,6 @@ const ExerciseCloze = ({ word, handleChange }) => {
     sentence_id,
     snippet_id,
   } = word
-  const {focused: story} = useSelector(({ stories }) => stories)
   const [eloScoreHearts, setEloScoreHearts] = useState(Array.from({length: hints ? hints.length : 0}, (_, i) => i + 1))
   const [spentHints, setSpentHints] = useState([])
 
@@ -105,7 +105,7 @@ const ExerciseCloze = ({ word, handleChange }) => {
         })
       )
       if (mtLanguages.includes([learningLanguage, dictionaryLanguage].join('-'))) {
-        const sentence = story.paragraph[snippet_id].filter(
+        const sentence = snippet.filter(
           s => sentence_id - 1 < s.sentence_id < sentence_id + 1).map(t=>t.surface).join('').replaceAll('\n', ' ').trim()
         dispatch(
           getContextTranslation(sentence,

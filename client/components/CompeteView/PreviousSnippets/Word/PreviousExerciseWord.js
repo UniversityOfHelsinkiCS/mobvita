@@ -17,7 +17,7 @@ import { getTranslationAction, setWords } from 'Utilities/redux/translationReduc
 import { getContextTranslation } from 'Utilities/redux/contextTranslationReducer'
 import Tooltip from 'Components/PracticeView/Tooltip'
 
-const PreviousExerciseWord = ({ word, answer, tiedAnswer }) => {
+const PreviousExerciseWord = ({ word, answer, tiedAnswer, snippet }) => {
   const {
     surface,
     isWrong,
@@ -69,7 +69,7 @@ const PreviousExerciseWord = ({ word, answer, tiedAnswer }) => {
         })
       )
       if (mtLanguages.includes([learningLanguage, dictionaryLanguage].join('-'))) {
-        const sentence = story.paragraph[snippet_id].filter(
+        const sentence = snippet.filter(
           s => sentence_id - 1 < s.sentence_id < sentence_id + 1).map(t=>t.surface).join('').replaceAll('\n', ' ').trim()
         dispatch(
           getContextTranslation(sentence,

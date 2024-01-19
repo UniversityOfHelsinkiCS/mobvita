@@ -153,7 +153,7 @@ const TextWithFeedback = ({
     return chunkStyle
   }
 
-  const getWordComponent = (word, exercise, props) => {
+  const getWordComponent = (word, exercise, snippet, props) => {
     if (inControlStoryEditor && exercise || !inControlStoryEditor && !exercise) return (
       <Word
         hideFeedback={hideFeedback}
@@ -172,16 +172,17 @@ const TextWithFeedback = ({
         answer={mode !== 'review' && answers[word.ID]}
         tiedAnswer={mode !== 'review' && answers[word.tiedTo]}
         focusedConcept={mode!=='review' && focusedConcept || null}
+        snippet={snippet}
         {...props}
       />
     )
     else return (
-      <ExerciseWord key={word.ID} word={word} {...props}/>
+      <ExerciseWord key={word.ID} word={word} snippet={snippet} {...props}/>
     )
   }
 
-  const createElement = (word, chunkPosition) => {
-    let element = getWordComponent(word, exercise, props)
+  const createElement = (word, snippet, chunkPosition) => {
+    let element = getWordComponent(word, exercise, snippet, props)
     
     if (markedChunks.has(String(word.ID))) {
       const chunkStyle = createChunkStyle(chunkPosition)
@@ -225,7 +226,7 @@ const TextWithFeedback = ({
             if (word.analytic_chunk) {
               chunkIsOneVerb = true
             }
-            const element = createElement(word, chunkPosition)
+            const element = createElement(word, snippet, chunkPosition)
 
             if (pattern) {
               Object.entries(pattern)
@@ -302,7 +303,7 @@ const TextWithFeedback = ({
         if (word.analytic_chunk) {
           chunkIsOneVerb = true
         }
-        const element = createElement(word, chunkPosition)
+        const element = createElement(word, snippet, chunkPosition)
 
         if (pattern) {
           Object.entries(pattern)

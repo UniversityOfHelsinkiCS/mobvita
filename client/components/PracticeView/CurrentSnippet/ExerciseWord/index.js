@@ -8,14 +8,14 @@ import ExerciseSpeaking from './ExerciseSpeaking'
 import RightAnswer from './RightAsnwer'
 import WrongAnswer from './WrongAnswer'
 
-const ExerciseWord = ({ word, handleAnswerChange, handleMultiselectChange, hideDifficulty }) => {
+const ExerciseWord = ({ word, snippet, handleAnswerChange, handleMultiselectChange, hideDifficulty }) => {
   const { attempt, correctAnswerIDs, snippetFinished } = useSelector(({ practice }) => practice)
   if ((word.tested && !word.isWrong) || correctAnswerIDs.includes(word.ID.toString())) {
-    return <RightAnswer word={word} hideDifficulty={hideDifficulty} />
+    return <RightAnswer word={word} snippet={snippet} hideDifficulty={hideDifficulty} />
   }
 
   if (word.surface === '\n\n' || !word.id) {
-    return <PlainWord word={word} />
+    return <PlainWord word={word}  snippet={snippet} />
   }
 
   if (word.listen) {
@@ -49,10 +49,10 @@ const ExerciseWord = ({ word, handleAnswerChange, handleMultiselectChange, hideD
           word={word}
         />
       )
-    return <WrongAnswer word={word} hideDifficulty={hideDifficulty} />
+    return <WrongAnswer word={word} snippet={snippet} hideDifficulty={hideDifficulty} />
   }
   return (
-    <ExerciseCloze tabIndex={word.ID} handleChange={handleAnswerChange} key={word.ID} word={word} />
+    <ExerciseCloze tabIndex={word.ID} snippet={snippet} handleChange={handleAnswerChange} key={word.ID} word={word} />
   )
 }
 

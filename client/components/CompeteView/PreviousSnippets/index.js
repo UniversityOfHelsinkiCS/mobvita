@@ -40,7 +40,7 @@ const PreviousSnippets = () => {
           snippet => !snippetsInPrevious.includes(snippet.snippetid[snippet.snippetid.length - 1])
         )
         .map(snippet =>
-          snippet.practice_snippet.map(word => <PlainWord key={word.ID} word={word} />)
+          snippet.practice_snippet.map(word => <PlainWord key={word.ID} word={word} snippet={focusedSnippet} />)
         ),
     [focusedStory, previous.length === 0]
   )

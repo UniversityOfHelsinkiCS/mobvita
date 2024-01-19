@@ -25,7 +25,7 @@ const Word = ({ word, answer, tiedAnswer, snippet, hideDifficulty, focusedConcep
 
   // "Display feedback" toggle is off
   if (!show_preview_exer && isPreviewMode) {
-    return <PlainWord word={word} annotatingAllowed focusedConcept={focusedConcept} />
+    return <PlainWord word={word} snippet={snippet} annotatingAllowed focusedConcept={focusedConcept} />
   }
 
   if (controlledStory && shouldBeHidden) {
@@ -38,7 +38,7 @@ const Word = ({ word, answer, tiedAnswer, snippet, hideDifficulty, focusedConcep
 
   // preview mode (if concept list is not empty)
   if (isPreviewMode) {
-    return <PreviousExerciseWord word={word} focusedConcept={focusedConcept} />
+    return <PreviousExerciseWord word={word} snippet={snippet} focusedConcept={focusedConcept} />
   }
 
   // session history in practice & compete mode
@@ -63,6 +63,7 @@ const Word = ({ word, answer, tiedAnswer, snippet, hideDifficulty, focusedConcep
         tiedAnswer={tiedAnswer}
         hideDifficulty={hideDifficulty}
         focusedConcept={focusedConcept}
+        snippet={snippet}
       />
     )
   }
@@ -73,6 +74,7 @@ const Word = ({ word, answer, tiedAnswer, snippet, hideDifficulty, focusedConcep
       annotatingAllowed
       hideDifficulty={hideDifficulty}
       focusedConcept={focusedConcept}
+      snippet={snippet}
     />
   )
 }

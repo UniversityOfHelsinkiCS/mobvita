@@ -17,7 +17,7 @@ import { getTranslationAction, setWords } from 'Utilities/redux/translationReduc
 import { getContextTranslation } from 'Utilities/redux/contextTranslationReducer'
 import Tooltip from 'Components/PracticeView/Tooltip'
 
-const WrongAnswer = ({ word }) => {
+const WrongAnswer = ({ word, snippet }) => {
   const { 
     surface, 
     translation_lemmas, 
@@ -28,7 +28,6 @@ const WrongAnswer = ({ word }) => {
     id: storyId, 
     inflection_ref: inflectionRef 
   } = word
-  const {focused: story} = useSelector(({ stories }) => stories)
   const answer = useSelector(({ practice }) => practice.currentAnswers[word.tiedTo || word.ID])
 
   const [show, setShow] = useState(false)
@@ -64,7 +63,7 @@ const WrongAnswer = ({ word }) => {
         })
       )
       if (mtLanguages.includes([learningLanguage, dictionaryLanguage].join('-'))) {
-        const sentence = story.paragraph[snippet_id].filter(
+        const sentence = snippet.filter(
           s => sentence_id - 1 < s.sentence_id < sentence_id + 1).map(t=>t.surface).join('').replaceAll('\n', ' ').trim()
         dispatch(
           getContextTranslation(sentence,

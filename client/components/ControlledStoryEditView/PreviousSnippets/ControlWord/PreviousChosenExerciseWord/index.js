@@ -4,9 +4,9 @@ import ExerciseCloze from './ExerciseCloze'
 import ExerciseMultipleChoice from './ExerciseMultipleChoice'
 import ExerciseHearing from './ExerciseHearing'
 
-const PreviousChosenExerciseWord = ({ word }) => {
+const PreviousChosenExerciseWord = ({ word, snippet }) => {
   if (word.surface === '\n\n' || !word.id) {
-    return <PlainWord word={word} />
+    return <PlainWord word={word} snippet={snippet} />
   }
 
   if (word.listen) {
