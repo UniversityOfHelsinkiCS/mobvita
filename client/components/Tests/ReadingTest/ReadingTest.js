@@ -9,7 +9,7 @@ import {
     nextReadingTestQuestion,
     markAnsweredChoice
 } from 'Utilities/redux/testReducer'
-import { learningLanguageSelector } from 'Utilities/common'
+import { learningLanguageSelector, confettiRain } from 'Utilities/common'
 import { FormattedMessage, FormattedHTMLMessage } from 'react-intl'
 import ReadingTestMC from './ReadingTestMC'
 import ReadingTestFeedbacks from './ReadingTestFeedbacks'
@@ -88,6 +88,7 @@ const ReadingTest = () => {
     if (choice.is_correct){
       if (countNotSelectedChoices >= currentReadingTestQuestion.choices.length - 1){
         dispatch(updateTestFeedbacks(choice.option, ["Correct!"]))
+        confettiRain()
       } else {
         dispatch(updateTestFeedbacks(choice.option, synthesis_feedback))
       }
