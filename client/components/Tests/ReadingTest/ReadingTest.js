@@ -67,11 +67,11 @@ const ReadingTest = () => {
       if (countNotSelectedChoices > 2){
         const remainItemFeedbacks = itemFeedbacks.filter(feedback => !feedbacks.includes(feedback));
         const remainMediationFeedbacks = mediationFeedbacks.filter(feedback => !feedbacks.includes(feedback));
-        if (remainMediationFeedbacks.length > 0){
-          dispatch(updateTestFeedbacks(choice.option, remainMediationFeedbacks[0]))
+        if (remainItemFeedbacks.length > 0){
+          dispatch(updateTestFeedbacks(choice.option, remainItemFeedbacks[0]))
         } else { 
-          if (remainItemFeedbacks.length > 0) {
-            dispatch(updateTestFeedbacks(choice.option, remainItemFeedbacks[0]))
+          if (remainMediationFeedbacks.length > 0) {
+            dispatch(updateTestFeedbacks(choice.option, remainMediationFeedbacks[0]))
           } else if (!feedbacks.includes(synthesis_feedback)) {
             dispatch(updateTestFeedbacks(choice.option, synthesis_feedback))
             setShowCorrect(true)
@@ -83,15 +83,22 @@ const ReadingTest = () => {
         setShowCorrect(true)
         setquestionDone(true)
       }
-    }
+    } 
 
     if (choice.is_correct){
+      if (countNotSelectedChoices >= currentReadingTestQuestion.choices.length - 1){
+        dispatch(updateTestFeedbacks(choice.option, ["Correct!"]))
+      } else {
+        dispatch(updateTestFeedbacks(choice.option, synthesis_feedback))
+      }
+      
+      setShowCorrect(true)
       setquestionDone(true)
     }
 
-    if (choice.is_correct == true && synthesis_feedback != undefined && !feedbacks.includes(synthesis_feedback)) {
-      dispatch(updateTestFeedbacks(choice.option, synthesis_feedback))
-    }
+    // if (choice.is_correct == true && synthesis_feedback != undefined && !feedbacks.includes(synthesis_feedback)) {
+    //   dispatch(updateTestFeedbacks(choice.option, synthesis_feedback))
+    // }
     
     if (!isSelectedChoice){
       dispatch(
