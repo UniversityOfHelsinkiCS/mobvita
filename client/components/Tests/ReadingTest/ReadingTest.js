@@ -86,7 +86,7 @@ const ReadingTest = () => {
     } 
 
     if (choice.is_correct){
-      if (countNotSelectedChoices >= currentReadingTestQuestion.choices.length - 1){
+      if (countNotSelectedChoices >= currentReadingTestQuestion.choices.length){
         dispatch(updateTestFeedbacks(choice.option, ["Correct!"]))
         confettiRain()
       } else {
