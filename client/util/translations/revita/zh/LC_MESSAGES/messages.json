@@ -910,5 +910,6 @@
     "reading-test": "Reading Practice",
     "next-reading-question": "Next exercise",
     "reset-lesson-message": "点击之前步骤以重新设置课程",
-    "Reset Lesson": "重新设置课程"
+    "Reset Lesson": "重新设置课程",
+    "lessons-ready-for-practice": "可以开始课程！"
 }

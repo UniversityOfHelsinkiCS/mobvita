@@ -1406,7 +1406,7 @@
     "practice-all-mode": "Practice all",
     "continue-practice": "Practice lesson",
     "lesson-story-topic": "Lesson setup",
-    "start-practice": "Practice",
+    "start-practice": "Lesson is ready! Begin practice",
     "select-lesson-semantic-topic": "Choose lesson themes",
     "lesson-activities": "Activities",
     "no-available-exercise": "We have no more exercises for this lesson at the moment. Revita will create more exercises shortly — please come back a bit later!",
@@ -1536,9 +1536,10 @@
     "next-step": "Next step",
     "teacher-view": "Teacher view",
     "dictionaryhelp-show-context-translation": "Translate context",
-    "teacher-view-explanation": "Teacher view/Student view — allows the teacher to see how the interface looks to the students",
+    "teacher-view-explanation": "Teacher/Student view — lets the teacher see how the system looks to the student",
     "reading-test": "Reading Practice",
     "next-reading-question": "Next exercise",
-    "reset-lesson-message": "Click previous steps to re-configure your lesson",
-    "Reset Lesson": "Re-configure lesson"
+    "reset-lesson-message": "Click previous steps to configure the lesson",
+    "Reset Lesson": "Configure lesson",
+    "lessons-ready-for-practice": "Lesson is ready for practice!"
 }

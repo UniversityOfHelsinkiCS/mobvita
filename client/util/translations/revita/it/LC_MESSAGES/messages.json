@@ -1534,9 +1534,10 @@
     "next-step": "Avanti",
     "teacher-view": "Vista dell’insegnante",
     "dictionaryhelp-show-context-translation": "Traduzione del contesto",
-    "teacher-view-explanation": "Teacher view/Student view — allows the teacher to see how the interface looks to the students",
+    "teacher-view-explanation": "Teacher/Student view — lets the teacher see how the system looks to the student",
     "reading-test": "Pratica di lettura",
     "next-reading-question": "Avanti",
-    "reset-lesson-message": "Click previous steps to re-configure your lesson",
-    "Reset Lesson": "Re-configure lesson"
+    "reset-lesson-message": "Click previous steps to configure the lesson",
+    "Reset Lesson": "Configure lesson",
+    "lessons-ready-for-practice": "Lezione è pronta per la pratica!"
 }

@@ -1537,9 +1537,10 @@
     "next-step": "Далее",
     "teacher-view": "Режим учителя",
     "dictionaryhelp-show-context-translation": "Перевод контекста",
-    "teacher-view-explanation": "Режим учителя/Режим ученика — позволяет учителю увидеть интерфейс Ревиты, доступный ученикам.",
+    "teacher-view-explanation": "Режим учителя/ученика — позволяет учителю увидеть, как система выглядит для ученика",
     "reading-test": "Практика чтения",
     "next-reading-question": "Следующее упражнение",
-    "reset-lesson-message": "Click previous steps to re-configure your lesson",
-    "Reset Lesson": "Re-configure lesson"
+    "reset-lesson-message": "Click previous steps to configure the lesson",
+    "Reset Lesson": "Configure lesson",
+    "lessons-ready-for-practice": "Урок готов для практики!"
 }
