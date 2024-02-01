@@ -67,6 +67,7 @@ const HomeviewButtons = ({
   setAddStoryModalOpen,
   setLessonModalOpen,
   aTestIsEnabled,
+  aReadingComprehensionEnabled,
 }) => {
   const dispatch = useDispatch()
   const history = useHistory()
@@ -200,7 +201,7 @@ const HomeviewButtons = ({
             />
           </div>
 
-          {learningLanguage != undefined && learningLanguage == "English" && (
+          {learningLanguage != undefined && learningLanguage == "English" && aReadingComprehensionEnabled && (
             <>
               <HomeviewButton
                 imgSrc={images.readingBook}
@@ -233,6 +234,7 @@ const HomeView = () => {
   const dispatch = useDispatch()
   const { groups } = useSelector(({ groups }) => groups)
   const aTestIsEnabled = groups.some(e => e.test_deadline - Date.now() > 0)
+  const aReadingComprehensionEnabled = groups.some(e => e.reading_comprehension)
   const history = useHistory()
   const userData = useSelector(state => state.user.data.user)
   const { user } = useSelector(({ user }) => ({ user: user.data }))
@@ -322,6 +324,7 @@ const HomeView = () => {
                 setAddStoryModalOpen={setAddStoryModalOpen}
                 setLessonModalOpen={setLessonModalOpen}
                 aTestIsEnabled={aTestIsEnabled}
+                aReadingComprehensionEnabled={aReadingComprehensionEnabled}
               />
               {(!user?.user.is_teacher || (user?.user.is_teacher && !user?.teacherView)) && (
                 <div
@@ -343,6 +346,7 @@ const HomeView = () => {
               setPracticeModalOpen={setPracticeModalOpen}
               setAddStoryModalOpen={setAddStoryModalOpen}
               aTestIsEnabled={aTestIsEnabled}
+              aReadingComprehensionEnabled={aReadingComprehensionEnabled}
             />
             {(!user?.user.is_teacher || (user?.user.is_teacher && !user?.teacherView)) && (
               <>

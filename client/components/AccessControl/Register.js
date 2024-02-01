@@ -18,6 +18,7 @@ const Register = () => {
     username: '',
     password: '',
     passwordAgain: '',
+    registrationCode: '',
   })
   const [accepted, setAccepted] = useState(false)
 
@@ -54,7 +55,7 @@ const Register = () => {
   }, [userEmail])
 
   const handleSubmit = () => {
-    const { email, username, password, passwordAgain } = formState
+    const { email, username, password, passwordAgain, registrationCode } = formState
 
     if (password !== passwordAgain) {
       dispatch(setNotification('passwords-do-not-match', 'error'))
@@ -64,6 +65,7 @@ const Register = () => {
         password,
         email,
         interface_language: localeCodeToName(locale),
+        registrationCode
       }
 
       dispatch(registerUser(payload))
@@ -117,6 +119,14 @@ const Register = () => {
             value={formState.passwordAgain}
             onChange={e => handleFormChange(e)}
             placeholder={intl.formatMessage({ id: 'repeat-password' })}
+          />
+          <Form.Input
+            name="registrationCode"
+            error={error}
+            type="registrationCode"
+            value={formState.registrationCode}
+            onChange={e => handleFormChange(e)}
+            placeholder={intl.formatMessage({ id: 'registrationCode' })}
           />
         </Form.Field>
         <hr />
