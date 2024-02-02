@@ -1404,7 +1404,7 @@
     "practice-all-mode": "Harjoittele kumpaakin",
     "continue-practice": "Harjoittele",
     "lesson-story-topic": "Muokkaa",
-    "start-practice": "Harjoittele",
+    "start-practice-story": "Harjoittele",
     "select-lesson-semantic-topic": "Valitse oppitunnin aiheet",
     "lesson-activities": "Aktiviteetit",
     "no-available-exercise": "Meillä ei ole tällä hetkellä enempää harjoituksia tälle tunnille. Revita luo lisää harjoituksia lähiaikoina – palaa takaisin vähän myöhemmin!",
@@ -1540,5 +1540,6 @@
     "next-reading-question": "Seuraava",
     "reset-lesson-message": "Click previous steps to configure the lesson",
     "Reset Lesson": "Configure lesson",
-    "lessons-ready-for-practice": "Oppitunti on valmis harjoitteluun!"
+    "lessons-ready-for-practice": "Oppitunti on valmis harjoitteluun!",
+    "start-practice-lesson": "Lesson is ready!  Begin practice"
 }

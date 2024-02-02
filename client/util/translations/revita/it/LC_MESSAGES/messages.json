@@ -1405,7 +1405,7 @@
     "practice-all-mode": "Tutti i tipi",
     "continue-practice": "Pratica la lezione",
     "lesson-setup": "Lesson setup",
-    "start-practice": "Pratica",
+    "start-practice-story": "Pratica",
     "select-lesson-semantic-topic": "Scegli i temi",
     "lesson-activities": "Attività",
     "no-available-exercise": "Al momento non abbiamo più esercizi per questa lezione. Revita creerà altri esercizi a breve: torna un po' più tardi!",
@@ -1539,5 +1539,6 @@
     "next-reading-question": "Avanti",
     "reset-lesson-message": "Click previous steps to configure the lesson",
     "Reset Lesson": "Configure lesson",
-    "lessons-ready-for-practice": "Lezione è pronta per la pratica!"
+    "lessons-ready-for-practice": "Lezione è pronta per la pratica!",
+    "start-practice-lesson": "Lesson is ready!  Begin practice"
 }

@@ -512,7 +512,7 @@ const LessonList = () => {
   const link = '/lesson' + (libraries.group ? `/group/${savedGroupSelection}/practice` : '/practice')
   let lessonStartControls = (
     <div>
-      <div style={{ color: 'red', textAlign: 'center', width: '70%' }}>
+      <div style={{ color: '#0088CB', textAlign: 'center', width: '70%',  fontWeight: 500, margin: '18px', fontSize: 'large'}}>
         <FormattedMessage id="lessons-ready-for-practice" />
       </div>
       <div style={{ 'display': 'flex' }}>
@@ -540,7 +540,7 @@ const LessonList = () => {
           }}
         >
           {lessonPending && <Icon name="spinner" loading />}
-          <FormattedMessage id="start-practice" />
+          <FormattedMessage id="start-practice-lesson" />
         </Button>
       </Link>)}
     </div>

@@ -197,7 +197,7 @@ const ReadViews = ({ match }) => {
           // to={`/stories/${id}/grammar/practice/`}
           style={{ backgroundColor: 'rgb(50, 170, 248)', color: 'white' }}
         >
-          <FormattedMessage id="start-practice" />
+          <FormattedMessage id="start-practice-story" />
         </SemanticButton> */}
         <Dropdown
           className="button icon practice-tour-practice-button"
@@ -211,7 +211,7 @@ const ReadViews = ({ match }) => {
           // trigger={<React.Fragment />}
           trigger={
             <div style={{ paddingRight: '0.5rem' }}>
-              <FormattedMessage id="start-practice" />
+              <FormattedMessage id="start-practice-story" />
             </div>
           }
           open={showPracticeDropdown}
@@ -244,7 +244,7 @@ const ReadViews = ({ match }) => {
               as={Link}
               to={`/stories/${id}/practice/`}
               icon="bolt"
-              className='practice-tour-start-practice'
+              className='practice-tour-start-practice-story'
             />
           </Dropdown.Menu>
         </Dropdown >

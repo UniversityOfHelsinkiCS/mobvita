@@ -1134,8 +1134,8 @@
     "exhaustive test": "Длинный тест",
     "test-type": "Тип теста",
     "faq": "FAQ",
-    "or-from-category": "категории",
-    "practice-random-story-from-library": "Выбрать историю из...",
+    "or-from-category": "или из категории:",
+    "practice-random-story-from-library": "Выбрать историю из библиотеки:",
     "All-stories": "всех текстов",
     "All-Stories": "всех текстов",
     "click-to-remove-exercise": "Удалить упражнение",
@@ -1407,7 +1407,7 @@
     "practice-all-mode": "Все упражнения",
     "continue-practice": "Практика",
     "lesson-setup": "Настройка урока",
-    "start-practice": "Практика",
+    "start-practice-story": "Практика",
     "select-lesson-semantic-topic": "Выбери темы урока",
     "lesson-activities": "Упражнения",
     "no-available-exercise": "На данный момент больше нет упражнений для этого урока. В ближайшее время Revita создаст дополнительные упражнения — пожалуйста, вернись чуть позже!",
@@ -1542,5 +1542,6 @@
     "next-reading-question": "Следующее упражнение",
     "reset-lesson-message": "Click previous steps to configure the lesson",
     "Reset Lesson": "Configure lesson",
-    "lessons-ready-for-practice": "Урок готов для практики!"
+    "lessons-ready-for-practice": "Урок готов для практики!",
+    "start-practice-lesson": "Lesson is ready!  Begin practice"
 }

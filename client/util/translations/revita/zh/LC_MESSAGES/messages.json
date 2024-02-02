@@ -769,7 +769,7 @@
     "practice-all-mode": "练习所有",
     "continue-practice": "课程联系",
     "lesson-setup": "课程设置",
-    "start-practice": "练习",
+    "start-practice-story": "练习",
     "select-lesson-semantic-topic": "选择课程主题",
     "lesson-activities": "活动",
     "no-available-exercise": "该课程暂无更多练习，Revita稍后会添加更多练习，敬请期待！",
@@ -911,5 +911,6 @@
     "next-reading-question": "Next exercise",
     "reset-lesson-message": "点击之前步骤以重新设置课程",
     "Reset Lesson": "重新设置课程",
-    "lessons-ready-for-practice": "可以开始课程！"
+    "lessons-ready-for-practice": "可以开始课程！",
+    "start-practice-lesson": "Lesson is ready!  Begin practice"
 }
