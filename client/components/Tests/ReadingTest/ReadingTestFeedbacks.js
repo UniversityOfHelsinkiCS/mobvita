@@ -3,7 +3,10 @@ import Draggable from 'react-draggable';
 import { Icon } from 'semantic-ui-react';
 import { useSelector } from 'react-redux';
 import { sanitizeHtml } from 'Utilities/common';
+import { FormattedMessage, useIntl } from 'react-intl'
 import useWindowDimensions from 'Utilities/windowDimensions';
+
+
 
 
 const ReadingTestFeedbacks = ({ showFeedbacks, closeFeedbacks }) => {
@@ -43,6 +46,8 @@ const ReadingTestFeedbacks = ({ showFeedbacks, closeFeedbacks }) => {
             setCurrent(index);
         }
     }
+
+    console.log(filteredSlides)
 
     const renderFeedback = () => (
         <Draggable cancel=".interactable">
@@ -92,6 +97,12 @@ const ReadingTestFeedbacks = ({ showFeedbacks, closeFeedbacks }) => {
                             }}
                         >
                             <div className='slide active' key={current}>
+                                {current === 0 && filteredSlides[current][0] !== "Correct!" && (
+                                    <div style={{ marginBottom: "0.5em" }}>
+                                        <FormattedMessage id="first-time-meta-help-message" />
+                                    </div>
+                                )}
+
                                 <div
                                     style={{
                                         whiteSpace: 'pre-line',

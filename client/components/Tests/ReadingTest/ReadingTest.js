@@ -86,9 +86,10 @@ const ReadingTest = () => {
     } 
 
     if (choice.is_correct){
+      confettiRain(0,0.45,60)
+      confettiRain(1,0.45,120)
       if (countNotSelectedChoices >= currentReadingTestQuestion.choices.length){
         dispatch(updateTestFeedbacks(choice.option, ["Correct!"]))
-        confettiRain()
       } else {
         dispatch(updateTestFeedbacks(choice.option, synthesis_feedback))
       }
@@ -160,20 +161,32 @@ const ReadingTest = () => {
                 <FormattedHTMLMessage id="question" />: {currentReadingQuestionIndex + 1} /{' '}
                 {readingTestQuestions.length}
               </div>
-              <Button
-                className="next-reading-question-button"
-                onClick={() => nextQuestion()}
-                disabled={showFeedbacks || currentReadingQuestionIndex == readingTestQuestions.length - 1}
-                // style={{ 
-                //     whiteSpace: 'pre-line', 
-                //     lineHeight: '1.0', 
-                //     padding: '0.6em',
-                // }}
-              >
+
+              {feedbacks.length > 0 && (
+                <Button
+                  className="show-reading-feedbacks-button"
+                  style={{ marginLeft: 'auto' }}
+                  onClick={() => setShowFeedbacks(true)}
+                  disabled={showFeedbacks}
+                >
                   <span>
-                      <FormattedMessage id="next-reading-question" />
+                    <FormattedMessage id="show-feedback" />
                   </span>
-              </Button>
+                </Button>
+              )}
+
+              {questionDone && (
+                <Button
+                  className="next-reading-question-button"
+                  style={{ marginLeft: '0.5em' }}
+                  onClick={() => nextQuestion()}
+                  disabled={!questionDone || showFeedbacks || currentReadingQuestionIndex === readingTestQuestions.length - 1}
+                >
+                  <span>
+                    <FormattedMessage id="next-reading-question" />
+                  </span>
+                </Button>
+              )}
             </div>
             <div className="test-question-container" style={testContainerOverflow}>
               {currentReadingTestQuestion && !paused && !answerFailure && !displaySpinner && (

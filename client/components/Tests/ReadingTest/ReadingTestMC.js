@@ -41,7 +41,7 @@ const ReadingTestMC = ({ exercise, onAnswer, answerPending, showFeedbacks, showC
                                 <Button
                                     className="test-choice-button"
                                     onClick={!answerPending ? () => onAnswer(choice) : undefined}
-                                    disabled={showFeedbacks || choice.isSelected || questionDone}
+                                    disabled={answerPending || showFeedbacks || choice.isSelected || questionDone}
                                     style={{ 
                                         whiteSpace: 'pre-line', 
                                         lineHeight: '1.0', 

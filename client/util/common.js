@@ -215,18 +215,24 @@ export const skillLevels = [
   'C2+',
 ]
 
-export const confettiRain = () => {
+export const confettiRain = (x = 0.4, y = 0.6, angle = null) => {
   function randomInRange(min, max) {
-    return Math.random() * (max - min) + min
+    return Math.random() * (max - min) + min;
+  }
+
+  if (angle === null) {
+    angle = randomInRange(55, 125);
   }
 
   confetti({
-    angle: randomInRange(55, 125),
+    angle: angle,
     spread: randomInRange(50, 70),
     particleCount: randomInRange(50, 100),
-    origin: { y: 0.6, x: 0.4 },
-  })
-}
+    origin: { x, y },
+  });
+};
+
+
 
 export const finalConfettiRain = (colors, endDate) => {
   ;(function frame() {
