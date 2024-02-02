@@ -1321,7 +1321,7 @@
     "next-card-deck": "Next deck",
     "vocabulary-top-right-tooltip": "",
     "red-bar-explanation": "Practice with more stories to increase this count",
-    "blue-bar-explanation": "Check your \"blue cards\" to move these words to \"green\" → <it>mastered</it> words",
+    "blue-bar-explanation": "Check your \"blue cards\" to move these words to \"green\" → mastered words",
     "green-bar-explanation": "Practice with flashcards to increase this count",
     "red-bar-label": "{nWords} words not mastered ({percent}%)",
     "blue-bar-label": "{nWords} words you <b>probably</b> know ({percent}%)",
@@ -1406,7 +1406,7 @@
     "practice-all-mode": "Practice all",
     "continue-practice": "Practice lesson",
     "lesson-story-topic": "Lesson setup",
-    "start-practice-lesson": "Lesson is ready!  Begin practice",
+    "start-practice-lesson": "Begin practice",
     "select-lesson-semantic-topic": "Choose lesson themes",
     "lesson-activities": "Activities",
     "no-available-exercise": "We have no more exercises for this lesson at the moment. Revita will create more exercises shortly — please come back a bit later!",
@@ -1542,5 +1542,6 @@
     "reset-lesson-message": "Click previous steps to configure the lesson",
     "Reset Lesson": "Configure lesson",
     "lessons-ready-for-practice": "Lesson is ready for practice!",
-    "start-practice-story": "Begin practice"
+    "start-practice-story": "Begin practice",
+    "practice-button-story-mode": "Begin practice!"
 }

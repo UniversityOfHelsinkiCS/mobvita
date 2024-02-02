@@ -1541,5 +1541,6 @@
     "reset-lesson-message": "Click previous steps to configure the lesson",
     "Reset Lesson": "Configure lesson",
     "lessons-ready-for-practice": "Oppitunti on valmis harjoitteluun!",
-    "start-practice-lesson": "Lesson is ready!  Begin practice"
+    "start-practice-lesson": "Aloita harjoittelu",
+    "practice-button-story-mode": "Aloita harjoittelu"
 }

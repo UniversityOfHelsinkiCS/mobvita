@@ -1540,5 +1540,6 @@
     "reset-lesson-message": "Click previous steps to configure the lesson",
     "Reset Lesson": "Configure lesson",
     "lessons-ready-for-practice": "Lezione è pronta per la pratica!",
-    "start-practice-lesson": "Lesson is ready!  Begin practice"
+    "start-practice-lesson": "Inizia la lezione",
+    "practice-button-story-mode": "Inizia la pratica"
 }

@@ -1323,7 +1323,7 @@
     "next-card-deck": "Next deck",
     "vocabulary-top-right-tooltip": "",
     "red-bar-explanation": "Упражняйся с историями, чтобы увеличить число слов",
-    "blue-bar-explanation": "Проверка этих слов с \"синими картами\" переведет их в категорию \"зеленых\" → <it>усвоенных</it> слов",
+    "blue-bar-explanation": "Проверка этих слов с \"синими картами\" переведет их в категорию \"зеленых\" → усвоенных слов",
     "green-bar-explanation": "Тренируйся с флешкартами, чтобы увеличить число слов",
     "red-bar-label": "{nWords}: количество неосвоенных слов ({percent}%)",
     "blue-bar-label": "{nWords}: количество слов, которые ты <b>возможно</b> знаешь ({percent}%)",
@@ -1543,5 +1543,6 @@
     "reset-lesson-message": "Click previous steps to configure the lesson",
     "Reset Lesson": "Configure lesson",
     "lessons-ready-for-practice": "Урок готов для практики!",
-    "start-practice-lesson": "Lesson is ready!  Begin practice"
+    "start-practice-lesson": "Начать урок!",
+    "practice-button-story-mode": "Начать практику!"
 }

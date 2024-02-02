@@ -912,5 +912,6 @@
     "reset-lesson-message": "点击之前步骤以重新设置课程",
     "Reset Lesson": "重新设置课程",
     "lessons-ready-for-practice": "可以开始课程！",
-    "start-practice-lesson": "Lesson is ready!  Begin practice"
+    "start-practice-lesson": "开始练习",
+    "practice-button-story-mode": "Begin practice!"
 }
