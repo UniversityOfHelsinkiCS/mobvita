@@ -66,7 +66,7 @@ const TextWithFeedback = ({
 
   const getMarkedIdx = idx2style => new Set(snippet?.filter(
     word => Object.keys(idx2style).includes(String(word.ID)) && 
-    (word.concepts?.includes(focusedConcept) || word.analytic_concepts?.includes(focusedConcept) || mode!=='preview')).map(
+    (word.concepts?.map(x=>x.topic).includes(focusedConcept) || word.analytic_concepts?.includes(focusedConcept) || mode!=='preview')).map(
       word => idx2style[word.ID]).flat().map(x => String(x)))
 
   const {idx2chunk, idx2pattern} = useMemo(() => getIdxToStyleRange(snippet), [snippet])

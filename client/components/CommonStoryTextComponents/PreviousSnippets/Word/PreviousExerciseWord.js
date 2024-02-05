@@ -60,7 +60,7 @@ const PreviousExerciseWord = ({ word, answer, tiedAnswer, focusedConcept, snippe
   const [allowTranslating, setAllowTranslating] = useState(true)
   const { grade } = useSelector(state => state.user.data.user)
   const mode = getMode()
-  const conceptHighlighting = word.concepts?.includes(focusedConcept) || word.analytic_concepts?.includes(focusedConcept)
+  const conceptHighlighting = word.concepts?.map(x=>x.topic).includes(focusedConcept) || word.analytic_concepts?.includes(focusedConcept)
   const intl = useIntl()
   const dispatch = useDispatch()
 
@@ -216,7 +216,7 @@ const PreviousExerciseWord = ({ word, answer, tiedAnswer, focusedConcept, snippe
           <FormattedMessage id="topics" />:
           <ul className="mb-0">
             {word.concepts.map(concept => (
-              <li>{concept}</li>
+              <li>{concept.topic}</li>
             ))}
           </ul>
         </div>

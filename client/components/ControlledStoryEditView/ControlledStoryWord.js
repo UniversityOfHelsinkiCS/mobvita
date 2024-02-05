@@ -59,7 +59,7 @@ const ControlledStoryWord = ({ word, snippet, focusedConcept }) => {
   const { correctAnswerIDs } = useSelector(({ practice }) => practice)
   const [allowTranslating, setAllowTranslating] = useState(true)
   const dispatch = useDispatch()
-  const conceptHighlighting = word.concepts?.includes(focusedConcept) || word.analytic_concepts?.includes(focusedConcept)
+  const conceptHighlighting = word.concepts?.map(x=>x.topic).includes(focusedConcept) || word.analytic_concepts?.includes(focusedConcept)
   useEffect(() => {
     if (word.analytic && word.is_head) {
       const intersection = snippet.filter(wordInSnippet =>
@@ -268,7 +268,7 @@ const ControlledStoryWord = ({ word, snippet, focusedConcept }) => {
           <FormattedMessage id="topics" />:
           <ul className="mb-0">
             {word.concepts.map(concept => (
-              <li>{concept}</li>
+              <li>{concept.topic}</li>
             ))}
           </ul>
         </div>
