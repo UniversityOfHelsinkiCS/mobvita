@@ -1,17 +1,31 @@
 import React, { useState, useEffect } from 'react'
 import useWindowDimensions from 'Utilities/windowDimensions'
-import { Icon, Segment } from 'semantic-ui-react'
-import { skillLevels } from 'Utilities/common'
+import { Icon, Segment, Checkbox } from 'semantic-ui-react'
+import { skillLevels, hiddenFeatures } from 'Utilities/common'
 import { FormattedMessage } from 'react-intl'
 import { useSelector, useDispatch } from 'react-redux'
+import BatchExercise from 'Components/ControlledStoryEditView/BatchExercise'
 
-
-const StoryTopics = ({ conceptCount, focusedConcept, setFocusedConcept }) => {
+const StoryTopics = ({ conceptCount, focusedConcept, setFocusedConcept, isControlledStoryEditor = false }) => {
   const dispatch = useDispatch()
   const [topTopics, setTopTopics] = useState([])
   const { width } = useWindowDimensions()
   const showTopicsBox = useSelector((state) => state.topicsBox.showTopicsBox)
   const [sortBy, setSortBy] = useState('name')
+  const [exerciseTopics, setExerciseTopics] = useState([])
+  const {toggleExerciseByTopic} = BatchExercise()
+
+
+  const toggleExerciseTopic = (topic) => {
+    if (exerciseTopics.includes(topic)) {
+      setExerciseTopics(exerciseTopics.filter((t) => t !== topic))
+    } else {
+      setExerciseTopics([...exerciseTopics, topic])
+    }
+    toggleExerciseByTopic(topic)
+  }
+
+
   const handleFocusedConcept = topic => {
     if (topic === focusedConcept) {
       setFocusedConcept(null)
@@ -121,7 +135,7 @@ const StoryTopics = ({ conceptCount, focusedConcept, setFocusedConcept }) => {
                 </span>
               </div>
               <hr />
-              <ul style={{ overflow: 'auto', maxHeight: 171 }}>
+              <ul style={{ overflow: 'auto', maxHeight: 171, paddingLeft: 0 }}>
                 {topTopics.map(topic => (
                   <li className="flex space-between">
                     <span
@@ -129,6 +143,12 @@ const StoryTopics = ({ conceptCount, focusedConcept, setFocusedConcept }) => {
                       style={{ cursor: 'pointer' }}
                       onClick={() => handleFocusedConcept(topic[0])}
                     >
+                      {hiddenFeatures && isControlledStoryEditor && <Checkbox
+                        style={{ verticalAlign: 'middle', marginRight: '0.5em' }}
+                        // label={intl.formatMessage({ id: 'teacher-view' })}
+                        checked={exerciseTopics.includes(topic[0])}
+                        onChange={() => toggleExerciseTopic(topic[0])}
+                      />}
                       {topic[0]}
                     </span>
                     <span style={{ marginRight: '.5em' }}>

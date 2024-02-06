@@ -261,6 +261,7 @@ const ControlledStoryEditView = ({ match }) => {
             conceptCount={story.concept_count}
             focusedConcept={focusedConcept}
             setFocusedConcept={setFocusedConcept}
+            isControlledStoryEditor={true}
           />
           <DictionaryHelp />
           <AnnotationBox />

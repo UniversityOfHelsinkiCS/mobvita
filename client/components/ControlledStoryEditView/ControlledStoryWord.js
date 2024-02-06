@@ -89,15 +89,20 @@ const ControlledStoryWord = ({ word, snippet, focusedConcept }) => {
   }, [controlledPractice?.inProgress])
 
   useEffect(() => {
+    let wordFoundInDB = false
+    let wordFoundinFE = false
     if (controlledPractice.reset && controlledPractice.frozen_snippets[word.snippet_id]) {
-      const wordFound = controlledPractice.frozen_snippets[word.snippet_id].find(
+      wordFoundInDB = controlledPractice.frozen_snippets[word.snippet_id].find(
         frozenTokenWord => frozenTokenWord.ID === word.ID
       )
-      if (wordFound) {
-        setChosen(true)
-      }
     }
-  }, [controlledPractice.frozen_snippets, controlledPractice.reset])
+    if (controlledPractice.snippets[word.snippet_id]){
+      wordFoundinFE = controlledPractice.snippets[word.snippet_id].find(
+        frozenTokenWord => frozenTokenWord.ID === word.ID
+      )
+    }
+    setChosen(wordFoundInDB || wordFoundinFE)
+  }, [controlledPractice.frozen_snippets, controlledPractice.reset, Object.values(controlledPractice.snippets).flat(1).length])
 
   const voice = voiceLanguages[learningLanguage]
   let color = ''
@@ -123,11 +128,11 @@ const ControlledStoryWord = ({ word, snippet, focusedConcept }) => {
 
   const choicesMade = tokenizedWord => {
     if (!chosen) {
-      setChosen(true)
+      // setChosen(true)
       setShowExerciseOptionsModal(false)
       dispatch(addExercise(tokenizedWord))
     } else {
-      setChosen(false)
+      // setChosen(false)
       setShowExerciseOptionsModal(false)
       dispatch(removeExercise(tokenizedWord))
     }
