@@ -162,7 +162,7 @@ const LearningSettingsModal = ({ trigger }) => {
         <FormattedMessage id="learning-settings" />
       </Modal.Header>
       <Modal.Content style={{ display: 'flex', flexDirection: 'column' }}>
-        <div className="space-between" style={{ marginBottom: '0.5em' }}>
+        {/* <div className="space-between" style={{ marginBottom: '0.5em' }}>
           <h2 style={{ fontSize: '17px', fontWeight: '550' }}>
             <Popup
               position="top center"
@@ -224,7 +224,7 @@ const LearningSettingsModal = ({ trigger }) => {
               onChange={(e, data) => handleGroupChange(data.value)}
             />
           </div>
-        </div>
+        </div> */}
         {/* 
         <Divider />
         <h2 style={{ fontSize: '17px', fontWeight: '550' }}>
@@ -248,7 +248,7 @@ const LearningSettingsModal = ({ trigger }) => {
         />
         */}
         <>
-          <Divider />
+          {/* <Divider /> */}
           <h2 style={{ fontSize: '17px', fontWeight: '550' }}>
             <Popup
               position="top center"
