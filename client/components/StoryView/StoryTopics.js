@@ -1,10 +1,11 @@
 import React, { useState, useEffect } from 'react'
 import useWindowDimensions from 'Utilities/windowDimensions'
-import { Icon, Segment, Checkbox } from 'semantic-ui-react'
+import { Icon, Segment } from 'semantic-ui-react'
+import { Form } from 'react-bootstrap'
 import { skillLevels, hiddenFeatures } from 'Utilities/common'
 import { FormattedMessage } from 'react-intl'
 import { useSelector, useDispatch } from 'react-redux'
-import BatchExercise from 'Components/ControlledStoryEditView/BatchExercise'
+import BatchExerciseControl from 'Components/ControlledStoryEditView/BatchExerciseControl'
 
 const StoryTopics = ({ conceptCount, focusedConcept, setFocusedConcept, isControlledStoryEditor = false }) => {
   const dispatch = useDispatch()
@@ -12,19 +13,15 @@ const StoryTopics = ({ conceptCount, focusedConcept, setFocusedConcept, isContro
   const { width } = useWindowDimensions()
   const showTopicsBox = useSelector((state) => state.topicsBox.showTopicsBox)
   const [sortBy, setSortBy] = useState('name')
-  const [exerciseTopics, setExerciseTopics] = useState([])
-  const {toggleExerciseByTopic} = BatchExercise()
+  const {addExerciseByTopic, removeExerciseByTopic, exerciseTopicsCount} = BatchExerciseControl()
 
-
-  const toggleExerciseTopic = (topic) => {
-    if (exerciseTopics.includes(topic)) {
-      setExerciseTopics(exerciseTopics.filter((t) => t !== topic))
+  const toggleExerciseTopic = (topic, freq) => {
+    if (exerciseTopicsCount[topic] && exerciseTopicsCount[topic] === freq) {
+      removeExerciseByTopic(topic)
     } else {
-      setExerciseTopics([...exerciseTopics, topic])
+      addExerciseByTopic(topic)
     }
-    toggleExerciseByTopic(topic)
   }
-
 
   const handleFocusedConcept = topic => {
     if (topic === focusedConcept) {
@@ -137,17 +134,23 @@ const StoryTopics = ({ conceptCount, focusedConcept, setFocusedConcept, isContro
               <hr />
               <ul style={{ overflow: 'auto', maxHeight: 171, paddingLeft: 0 }}>
                 {topTopics.map(topic => (
-                  <li className="flex space-between">
+                  <li className="flex space-between" key={topic[0]}>
                     <span
-                      className={focusedConcept === topic[0] && 'concept-highlighted-word'}
+                      className={focusedConcept === topic[0] && 'concept-highlighted-word' || ''}
                       style={{ cursor: 'pointer' }}
                       onClick={() => handleFocusedConcept(topic[0])}
                     >
-                      {hiddenFeatures && isControlledStoryEditor && <Checkbox
+                      {hiddenFeatures && isControlledStoryEditor && <Form.Check
                         style={{ verticalAlign: 'middle', marginRight: '0.5em' }}
+                        type="checkbox"
+                        inline
                         // label={intl.formatMessage({ id: 'teacher-view' })}
-                        checked={exerciseTopics.includes(topic[0])}
-                        onChange={() => toggleExerciseTopic(topic[0])}
+                        checked={exerciseTopicsCount[topic[0]] && exerciseTopicsCount[topic[0]] === topic[1].freq ? true : false}
+                        ref={el => {
+                          if (el) el.indeterminate = exerciseTopicsCount[topic[0]] && (
+                            exerciseTopicsCount[topic[0]] / topic[1].freq !== 1 && exerciseTopicsCount[topic[0]] / topic[1].freq !== 0) ? true : false
+                        }}
+                        onChange={() => toggleExerciseTopic(topic[0], topic[1].freq)}
                       />}
                       {topic[0]}
                     </span>
