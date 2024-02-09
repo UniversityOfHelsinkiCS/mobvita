@@ -4,7 +4,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import { ButtonGroup, ToggleButton, Button } from 'react-bootstrap'
 import { FormattedMessage, useIntl, FormattedHTMLMessage } from 'react-intl'
 import { getSummary, getInitSummary } from 'Utilities/redux/groupSummaryReducer'
-import { learningLanguageSelector, skillLevels } from 'Utilities/common'
+import { learningLanguageSelector, skillLevels, downloadReadingReport } from 'Utilities/common'
 import {
   getStudentVocabulary,
   getPreviousStudentVocabulary,
@@ -203,6 +203,11 @@ const GroupAnalytics = ({ role }) => {
               >
                 <FormattedMessage id="summary" />
               </ToggleButton>
+              {currentGroup?.reading_comprehension && (<Button
+                onClick={()=> downloadReadingReport(currentGroupId, startDate, endDate)}
+              >
+                <FormattedMessage id="download-reading-comprehension-report" />
+              </Button>)}
             </ButtonGroup>
           )}
         </div>

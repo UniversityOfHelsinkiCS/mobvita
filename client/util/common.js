@@ -496,6 +496,17 @@ export const checkRevitaStatus = async () => {
   return result
 }
 
+export const downloadReadingReport = async (groupId, startDate, endDate) => {
+  //TODO: generalize downloading from BE properly
+  const result = await callApi(`/groups/${groupId}/reading_report?start_date=${startDate}&end_date=${endDate}`)
+  const blob = new Blob([result.data], { type: "text/plain" });
+  const url = URL.createObjectURL(blob);
+  const link = document.createElement("a")
+  link.download = "report.tsv"
+  link.href = url
+  link.click()
+}
+
 export const getMode = () => useHistory().location.pathname.split('/').pop()
 
 const defaultAllowed = [
