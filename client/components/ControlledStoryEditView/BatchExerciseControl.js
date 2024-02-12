@@ -7,6 +7,8 @@ import { useParams } from 'react-router-dom'
 const BatchExerciseControl = () => {
   const dispatch = useDispatch()
   const {snippets} = useSelector(({ controlledPractice }) => controlledPractice)
+  const isMultiTokenExercise = token => (token.is_head && 
+    (token.multi_mc && token.multi_mc_concept === token.concept.replace('concept_id: ', '') || token.multi_token))
   const exerciseTokens = Object.values(snippets).flat(1).map(token => token.ID)
   const { story, pending } = useSelector(({ stories, locale }) => ({
     story: stories.focused,
@@ -61,8 +63,14 @@ const BatchExerciseControl = () => {
           if (word.concepts?.map(x=>x.topic).includes(topic)) {
             const concept = word.concepts?.find(x=>x.topic === topic).concept
             const choiceSet = word.choices && word.choices[concept] || []
-            if (snippets[word.snippet_id]?.find(x=>x.ID === word.ID)?.topic !== topic)
-              dispatch(removeExercise(word))
+            const thisToken = snippets[word.snippet_id]?.find(x=>x.ID === word.ID)
+            const headToken = snippets[word.snippet_id]?.find(x=>x.cand_index?.includes(word.ID) && x.is_head)
+            if (thisToken && thisToken.topic !== topic)
+              dispatch(removeExercise(thisToken))
+            if (headToken && headToken.topic !== topic && isMultiTokenExercise(headToken)){
+              const toBeRemoved = headToken.cand_index?.length && headToken.cand_index || [headToken.ID]
+              toBeRemoved.forEach(k => dispatch(removeExercise({ID: k, snippet_id: i})))
+            }
             if (choiceSet?.length > 1) {
               dispatch(addExercise(formatMCExercise(word, choiceSet, concept, topic)))
             } else {
@@ -90,10 +98,12 @@ const BatchExerciseControl = () => {
   const countExerciseTopics = () => {
     const candidate_id = new Set()
     const exerciseTopics = {}
+    const hiddenTokens = Object.values(snippets).flat(1).map(token => isMultiTokenExercise(token) && token.cand_index || []).flat(1)
     for (let i = 0; i < story?.paragraph.length; i++) {
       for (let j = 0; j < story?.paragraph[i].length; j++) {
         const word = story?.paragraph[i][j]
-        if (word.concepts && exerciseTokens.includes(word.ID) && !candidate_id.has(word.candidate_id)) {
+        if (word.concepts && exerciseTokens.includes(word.ID) && !candidate_id.has(word.candidate_id) || 
+            hiddenTokens.includes(word.ID)) {
           candidate_id.add(word.candidate_id || word.id || `custom_${storyId}_${word.ID}`)
           for (let k = 0; k < word.concepts?.length; k++) {
             const topic = word.concepts[k].topic
