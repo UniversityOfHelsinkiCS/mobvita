@@ -338,7 +338,7 @@ const CurrentSnippet = ({
   }
 
   const handleMultiselectChange = (event, word, data) => {
-    const { id, ID, surface, concept, snippet_id, sentence_id } = word
+    const { id, ID, surface, concept, snippet_id, sentence_id, mc_correct } = word
     const { value } = data
     const word_cue = currentAnswers[`${ID}-${id}`]?.cue
 
@@ -346,7 +346,7 @@ const CurrentSnippet = ({
 
     const newAnswer = {
       [`${ID}-${id}`]: {
-        correct: surface,
+        correct: mc_correct || surface,
         users_answer: value,
         cue: word_cue,
         id,
