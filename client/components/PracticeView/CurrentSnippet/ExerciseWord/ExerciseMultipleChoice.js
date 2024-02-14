@@ -22,7 +22,17 @@ const ExerciseMultipleChoice = ({ word, handleChange }) => {
   const currentAnswer = useSelector(({ practice }) => practice.currentAnswers[`${word.ID}-${word.id}`])
   // const { eloHearts } = useSelector(({ snippets }) => snippets)
   const { attempt, focusedWord, latestMCTouched } = useSelector(({ practice }) => practice)
-  const { tested, isWrong, message, hints, ID: wordId, requested_hints, frozen_messages, hint2penalty } = word
+  const { 
+    tested, 
+    isWrong, 
+    message, 
+    hints, 
+    ID: wordId, 
+    ref, 
+    explanation, 
+    requested_hints, 
+    frozen_messages, 
+    hint2penalty } = word
   
   const [eloScoreHearts, setEloScoreHearts] = useState(Array.from({length: hints ? hints.length : 0}, (_, i) => i + 1))
   const [spentHints, setSpentHints] = useState([])
