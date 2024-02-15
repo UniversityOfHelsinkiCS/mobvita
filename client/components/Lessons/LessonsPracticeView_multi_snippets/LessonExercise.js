@@ -196,7 +196,7 @@ const LessonExercise = ({ lesson_instance, handleInputChange }) => {
   }, [focusing_snippets])
 
   const handleMultiselectChange = (event, word, data) => {
-    const { id, ID, surface, concept, snippet_id, story_id, sentence_id, mc_correct } = word
+    const { id, ID, surface, concept, snippet_id, story_id, sentence_id, alter_correct } = word
     const { value } = data
     const word_cue = currentAnswers[`${ID}-${id}`]?.cue
 
@@ -204,7 +204,7 @@ const LessonExercise = ({ lesson_instance, handleInputChange }) => {
 
     const newAnswer = {
       [`${ID}-${id}`]: {
-        correct: mc_correct || surface,
+        correct: alter_correct || surface,
         users_answer: value,
         cue: word_cue,
         id,
