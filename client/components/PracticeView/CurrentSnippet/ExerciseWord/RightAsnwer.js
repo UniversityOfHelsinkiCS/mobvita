@@ -1,6 +1,8 @@
 import React, { useState } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
+import { useIntl } from 'react-intl'
 import {
+  getTextStyle,
   dictionaryLanguageSelector,
   learningLanguageSelector,
   voiceLanguages,
@@ -24,6 +26,9 @@ const RightAnswer = ({ word, snippet }) => {
     inflection_ref: inflectionRef,
     snippet_id,
     sentence_id,
+    mc_correct,
+    wrong,
+    choices,
   } = word
   const { resource_usage, autoSpeak } = useSelector(state => state.user.data.user)
   const dictionaryLanguage = useSelector(dictionaryLanguageSelector)
@@ -31,6 +36,7 @@ const RightAnswer = ({ word, snippet }) => {
   const mtLanguages = useMTAvailableLanguage()
   const [show, setShow] = useState(false)
 
+  const intl = useIntl()
   const dispatch = useDispatch()
 
   const voice = voiceLanguages[learningLanguage]
@@ -65,9 +71,28 @@ const RightAnswer = ({ word, snippet }) => {
 
   const tooltip = (
     <div className="tooltip-green">
-      <div>
-        <span dangerouslySetInnerHTML={formatGreenFeedbackText(word?.message)} />
-      </div>
+      {mc_correct && (
+        <div>
+          <div>
+            <span dangerouslySetInnerHTML={formatGreenFeedbackText(word.frozen_messages[0])} />
+            <ul>
+              {choices.map((choice, i) => (
+                <li key={i}>
+                  <span dangerouslySetInnerHTML={formatGreenFeedbackText(choice)} />
+                </li>
+              ))}
+            </ul>
+          </div>
+          <div>
+            {`${intl.formatMessage({ id: 'you-used' })}: `}
+            <span dangerouslySetInnerHTML={formatGreenFeedbackText(wrong)} style={getTextStyle(learningLanguage, 'tooltip')}/>
+          </div>
+        </div>
+      ) || (
+        <div>
+          <span dangerouslySetInnerHTML={formatGreenFeedbackText(word?.message)} />
+        </div>
+      )}
     </div>
   )
 

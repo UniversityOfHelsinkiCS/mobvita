@@ -51,7 +51,7 @@ const PreviousExerciseWord = ({ word, answer, tiedAnswer, snippet }) => {
   const wordClass = `word-interactive ${color}`
 
   const handleClick = () => {
-    if (word.isWrong) setShow(true)
+    if (word.isWrong || word.mc_correct) setShow(true)
     if (autoSpeak === 'always' && voice) speak(surface, voice, 'dictionary', resource_usage)
     if (lemmas) {
       const prefLemma = word.pref_lemma
@@ -98,6 +98,18 @@ const PreviousExerciseWord = ({ word, answer, tiedAnswer, snippet }) => {
           {explanation && (
             <Icon name="info circle" style={{ alignSelf: 'flex-start', marginLeft: '0.5rem' }} />
           )}
+        </div>
+      )}
+      {word?.mc_correct && (
+        <div>
+          <span dangerouslySetInnerHTML={formatGreenFeedbackText(word.frozen_messages[0])} />
+          <ul>
+            {word.choices.map((choice, i) => (
+              <li key={i}>
+                <span dangerouslySetInnerHTML={formatGreenFeedbackText(choice)} />
+              </li>
+            ))}
+          </ul>
         </div>
       )}
       {youAnsweredTooltip && (

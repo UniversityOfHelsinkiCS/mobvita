@@ -78,7 +78,7 @@ const PreviousExerciseWord = ({ word, answer, tiedAnswer, focusedConcept, snippe
   }
 
   const handleClick = () => {
-    if (word.isWrong) setShow(true)
+    if (word.isWrong || word.mc_correct) setShow(true)
     if (isPreviewMode && word.concepts) setShow(true)
     if (autoSpeak === 'always' && voice) speak(surface, voice, 'dictionary', resource_usage)
     if (lemmas) {
@@ -155,7 +155,7 @@ const PreviousExerciseWord = ({ word, answer, tiedAnswer, focusedConcept, snippe
 
   const wordStartsSpan = word => !!word?.annotation
 
-  const youAnsweredTooltip = answer || tiedAnswer
+  const youAnsweredTooltip = answer || tiedAnswer || word?.mc_correct
 
   const wordColorStyle = {
     backgroundColor: getWordColor(
@@ -187,6 +187,18 @@ const PreviousExerciseWord = ({ word, answer, tiedAnswer, focusedConcept, snippe
           )}
         </div>
           ) */}
+      {word?.mc_correct && !isPreviewMode && (
+        <div>
+          <span dangerouslySetInnerHTML={formatGreenFeedbackText(word.frozen_messages[0])} />
+          <ul>
+            {word.choices.map((choice, i) => (
+              <li key={i}>
+                <span dangerouslySetInnerHTML={formatGreenFeedbackText(choice)} />
+              </li>
+            ))}
+          </ul>
+        </div>
+      )}
       {word.hints?.length > 0 && !isPreviewMode && (
         <div>
           {word.hints.map(hint => (
