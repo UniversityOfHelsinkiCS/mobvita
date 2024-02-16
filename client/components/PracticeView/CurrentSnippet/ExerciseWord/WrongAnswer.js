@@ -26,7 +26,8 @@ const WrongAnswer = ({ word, snippet }) => {
     ref, 
     ID: wordId, 
     id: storyId, 
-    inflection_ref: inflectionRef 
+    inflection_ref: inflectionRef,
+    sentence_id
   } = word
   const answer = useSelector(({ practice }) => practice.currentAnswers[word.tiedTo || word.ID])
 
