@@ -219,31 +219,7 @@ const ControlledStoryEditView = ({ match }) => {
                 <hr />
               </>
             ))}
-            <div>
-              {emptySnippets() && (
-                <span style={{ color: '#ff0000', marginBottom: '0.5em' }}>
-                  <b><FormattedMessage id="empty-snippets-warning" /></b>
-                </span>
-              )}
-              <Button
-                variant="primary"
-                onClick={saveControlledStory}
-                type="button"
-                style={{ width: '100%', marginBottom: '.5em', marginTop: '.5em' }}
-              >
-                <FormattedMessage id="save-controlled-story" />
-              </Button>
-            </div>
-            <Button
-              variant="secondary"
-              size="sm"
-              onClick={handleEditorReset}
-              style={{ marginBottom: '0.5em' }}
-            >
-              <span>
-                <FormattedMessage id="start-over" /> <Icon name="level up alternate" />
-              </span>
-            </Button>
+            
             <ScrollArrow />
           </Segment>
           {width >= 500 ? (
@@ -257,6 +233,35 @@ const ControlledStoryEditView = ({ match }) => {
           )}
         </div>
         <div className="dictionary-and-annotations-cont">
+          <div className="save-edited-story-box">
+            <Segment>
+              <div>
+                {emptySnippets() && (
+                  <span style={{ color: '#ff0000', marginBottom: '0.5em' }}>
+                    <b><FormattedMessage id="empty-snippets-warning" /></b>
+                  </span>
+                )}
+                <Button
+                  variant="primary"
+                  onClick={saveControlledStory}
+                  type="button"
+                  style={{ width: '100%', marginBottom: '.5em', marginTop: '.5em' }}
+                >
+                  <FormattedMessage id="save-controlled-story" />
+                </Button>
+              </div>
+              <Button
+                variant="secondary"
+                size="sm"
+                onClick={handleEditorReset}
+                style={{ marginBottom: '0.5em' }}
+              >
+                <span>
+                  <FormattedMessage id="start-over" /> <Icon name="level up alternate" />
+                </span>
+              </Button>
+            </Segment>
+          </div>
           <StoryTopics
             conceptCount={story.concept_count}
             focusedConcept={focusedConcept}

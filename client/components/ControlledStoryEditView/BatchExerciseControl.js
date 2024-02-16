@@ -39,7 +39,7 @@ const BatchExerciseControl = () => {
   }
 
   const formatMCExercise = (word, choicesSet, concept_id, topic) => {
-    const { audio: removedAudio, audio_wids: removedWids, ...wordRest } = word
+    const { audio: removedAudio, audio_wids: removedWids, alter_correct, mc_correct , ...wordRest } = word
     const generatedID = `custom_${storyId}_${word.ID}`
 
     return {
@@ -50,6 +50,8 @@ const BatchExerciseControl = () => {
         choices: choicesSet,
         concept: `concept_id: ${concept_id}`,
         topic,
+        alter_correct: alter_correct[concept_id],
+        mc_correct: mc_correct[concept_id],
     }
   }
 

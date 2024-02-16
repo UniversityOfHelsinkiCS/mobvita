@@ -156,7 +156,7 @@ const ControlledStoryWord = ({ word, snippet, focusedConcept }) => {
   }
 
   const handleAddMultichoiceExercise = (choicesSet, correct_form, concept_id, feedbackList) => {
-    const { audio: removedAudio, audio_wids: removedWids, ...wordRest } = word
+    const { audio: removedAudio, audio_wids: removedWids, alter_correct, mc_correct , ...wordRest } = word
     const generatedID = `custom_${storyId}_${word.ID}`
 
     if (choicesSet?.length > 1) {
@@ -168,6 +168,8 @@ const ControlledStoryWord = ({ word, snippet, focusedConcept }) => {
         choices: choicesSet,
         concept: `concept_id: ${concept_id}`,
         custom_feedback: feedbackList,
+        alter_correct: alter_correct[concept_id],
+        mc_correct: mc_correct[concept_id],
       }
 
       choicesMade(tokenizedWord)
