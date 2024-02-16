@@ -70,7 +70,7 @@ const RightAnswer = ({ word, snippet }) => {
   }
 
   const tooltip = (
-    <div className="tooltip-green">
+    <div className="tooltip-green" style={{ textAlign: 'left', padding: '15px' }}>
       {mc_correct && (
         <div>
           <div>
@@ -97,7 +97,7 @@ const RightAnswer = ({ word, snippet }) => {
   )
 
   return (
-    <Tooltip placement="top" tooltipShown={show && word.message} trigger="none" tooltip={tooltip}>
+    <Tooltip placement="top" tooltipShown={show && (word.message || mc_correct)} trigger="none" tooltip={tooltip}>
       <span
         className="word-interactice right-text"
         role="button"

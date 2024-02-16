@@ -101,7 +101,7 @@ const PreviousExerciseWord = ({ word, answer, tiedAnswer, snippet }) => {
         </div>
       )}
       {word?.mc_correct && (
-        <div>
+        <div style={{ textAlign: 'left', padding: '15px' }}>
           <span dangerouslySetInnerHTML={formatGreenFeedbackText(word.frozen_messages[0])} />
           <ul>
             {word.choices.map((choice, i) => (
