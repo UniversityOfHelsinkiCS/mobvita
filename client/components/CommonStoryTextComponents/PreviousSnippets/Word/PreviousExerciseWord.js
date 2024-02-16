@@ -155,7 +155,7 @@ const PreviousExerciseWord = ({ word, answer, tiedAnswer, focusedConcept, snippe
 
   const wordStartsSpan = word => !!word?.annotation
 
-  const youAnsweredTooltip = answer || tiedAnswer || word?.mc_correct
+  const youAnsweredTooltip = answer || tiedAnswer
 
   const wordColorStyle = {
     backgroundColor: getWordColor(
