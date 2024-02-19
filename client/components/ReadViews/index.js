@@ -184,7 +184,7 @@ const ReadViews = ({ match }) => {
     // gives the style to to dropdown menu based on is user on mobile
     const chooseDropdownMenuSide = () => {
       if (bigScreen) {
-        return null
+        return { zIndex: 1}
       } else {
         return { right: 'auto', left: 0 }
       }
@@ -221,6 +221,13 @@ const ReadViews = ({ match }) => {
             className="story-item-dropdown"
             style={chooseDropdownMenuSide()}
           >
+            {story.control_story && <Dropdown.Item
+              text={<FormattedMessage id="tailored-practice-mode" />}
+              as={Link}
+              style={{backgroundColor: "rgb(255, 239, 213)"}}
+              to={`/stories/${id}/controlled-practice`}
+              icon="tasks"
+            />}
             <Dropdown.Item
               text={<FormattedMessage id="practice-grammar-mode" />}
               as={Link}
