@@ -8,6 +8,13 @@ import { localeOptions, capitalize, localeNameToCode, images, timerExpired } fro
 import { setLocale } from 'Utilities/redux/localeReducer'
 import { sidebarSetOpen } from 'Utilities/redux/sidebarReducer'
 import { logout, updateLocale } from 'Utilities/redux/userReducer'
+import {
+  startAnonymousProgressTour,
+  startLessonsTour,
+  startLibraryTour,
+  startProgressTour,
+  startPracticeTour,
+} from 'Utilities/redux/tourReducer'
 import TermsAndConditions from 'Components/StaticContent/TermsAndConditions'
 import { Button } from 'react-bootstrap'
 import useWindowDimensions from 'Utilities/windowDimensions'
@@ -89,19 +96,19 @@ export default function Sidebar({ history }) {
         history.push('/profile/progress')
       }
       if (user.user.email === 'anonymous_email') {
-        dispatch({ type: 'ANONYMOUS_PROGRESS_TOUR_RESTART' })
+        dispatch(startAnonymousProgressTour())
       } else {
-        dispatch({ type: 'PROGRESS_TOUR_RESTART' })
+        dispatch(startProgressTour())
       }
     } else if (history.location.pathname.includes('lessons') && hiddenFeatures) {
       dispatch(sidebarSetOpen(false))
-      dispatch({ type: 'LESSONS_TOUR_RESTART' })
+      dispatch(startLessonsTour())
     } else if (history.location.pathname.includes('library')) {
       dispatch(sidebarSetOpen(false))
-      dispatch({ type: 'LIBRARY_TOUR_RESTART' })
+      dispatch(startLibraryTour())
     } else if (history.location.pathname.includes('preview') && hiddenFeatures) {
       dispatch(sidebarSetOpen(false))
-      dispatch({ type: 'PRACTICE_TOUR_RESTART' })
+      dispatch(startPracticeTour())
     } else if (history.location.pathname.includes('/practice') && hiddenFeatures) {
       dispatch(sidebarSetOpen(false))
       dispatch({ type: 'PRACTICE_TOUR_ALTERNATIVE' })

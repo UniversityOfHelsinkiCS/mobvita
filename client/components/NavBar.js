@@ -23,6 +23,13 @@ import {
   closeEncouragement,
   closeFCEncouragement,
 } from 'Utilities/redux/encouragementsReducer'
+import {
+  startAnonymousProgressTour,
+  startLessonsTour,
+  startLibraryTour,
+  startProgressTour,
+  startPracticeTour,
+} from 'Utilities/redux/tourReducer'
 import { getNews } from 'Utilities/redux/newsReducer'
 import useWindowDimensions from 'Utilities/windowDimensions'
 import {
@@ -116,19 +123,19 @@ export default function NavBar() {
       }
       dispatch({ type: 'SHOW_PROFILE_DROPDOWN' })
       if (user.user.email === 'anonymous_email') {
-        dispatch({ type: 'ANONYMOUS_PROGRESS_TOUR_RESTART' })
+        dispatch(startAnonymousProgressTour())
       } else {
-        dispatch({ type: 'PROGRESS_TOUR_RESTART' })
+        dispatch(startProgressTour())
       }
     } else if (history.location.pathname.includes('lessons')) {
       dispatch(sidebarSetOpen(false))
-      dispatch({ type: 'LESSONS_TOUR_RESTART' })
+      dispatch(startLessonsTour())
     } else if (history.location.pathname.includes('library')) {
       dispatch(sidebarSetOpen(false))
-      dispatch({ type: 'LIBRARY_TOUR_RESTART' })
+      dispatch(startLibraryTour())
     } else if (history.location.pathname.includes('preview')) {
       dispatch(sidebarSetOpen(false))
-      dispatch({ type: 'PRACTICE_TOUR_RESTART' })
+      dispatch(startPracticeTour())
     } else if (history.location.pathname.includes('/practice')) {
       dispatch(sidebarSetOpen(false))
       dispatch({ type: 'PRACTICE_TOUR_ALTERNATIVE' })

@@ -48,11 +48,9 @@ const LessonTitle = ({ lesson, selected, disabled, toggleTopic, includeLesson, e
   const topic_rows = []
   const lesson_topics = lesson.topics
   for (let k = 0; k < lesson_topics.length; k++) {
-    const color = {
-      color: get_lesson_performance_style(
-        topic2info[lesson_topics[k]] != undefined ? topic2info[lesson_topics[k]].correct : 0, 
-        topic2info[lesson_topics[k]] != undefined ? topic2info[lesson_topics[k]].total : 0)
-    }
+    const correct = topic2info[lesson_topics[k]] != undefined ? topic2info[lesson_topics[k]].correct : 0
+    const total = topic2info[lesson_topics[k]] != undefined ? topic2info[lesson_topics[k]].total : 0
+    const color = {color: get_lesson_performance_style(correct, total)}
     topic_rows.push(
       <h6
         key={k}
@@ -102,10 +100,7 @@ const LessonTitle = ({ lesson, selected, disabled, toggleTopic, includeLesson, e
           >
             {String(
               Math.round(
-                get_lesson_performance(
-                  topic2info[lesson_topics[k]].correct, 
-                  topic2info[lesson_topics[k]].total
-                ) * 100
+                get_lesson_performance(correct, total) * 100
               )
             ).padEnd(3, ' ')}
           </span>

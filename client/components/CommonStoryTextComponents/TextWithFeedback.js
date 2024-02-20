@@ -250,13 +250,13 @@ const TextWithFeedback = ({
           if (word.surface === ' ') {
             if ((index > 0) & (index < snippet.length) & (snippet.length > 1)) {
               if (
-                (snippet[index - 1].level !== undefined) &
-                (snippet[index - 1].level > grade) &
-                (snippet[index + 1].level !== undefined) &
-                (snippet[index + 1].level > grade) &
+                (snippet[index - 1]?.level !== undefined) &
+                (snippet[index - 1]?.level > grade) &
+                (snippet[index + 1]?.level !== undefined) &
+                (snippet[index + 1]?.level > grade) &
                 !(
-                  (snippet[index - 1].chunk === 'chunk_end') &
-                  (snippet[index + 1].chunk === 'chunk_start')
+                  (snippet[index - 1]?.chunk === 'chunk_end') &
+                  (snippet[index + 1]?.chunk === 'chunk_start')
                 )
               ) {
                 word = {

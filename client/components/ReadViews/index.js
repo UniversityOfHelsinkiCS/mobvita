@@ -184,7 +184,7 @@ const ReadViews = ({ match }) => {
     // gives the style to to dropdown menu based on is user on mobile
     const chooseDropdownMenuSide = () => {
       if (bigScreen) {
-        return { zIndex: 1}
+        return null
       } else {
         return { right: 'auto', left: 0 }
       }
@@ -192,14 +192,13 @@ const ReadViews = ({ match }) => {
 
     return (
       <SemanticButton.Group>
-        {/* <SemanticButton
-          // as={Link}
-          // to={`/stories/${id}/grammar/practice/`}
+        {story.control_story ? (<SemanticButton
+          as={Link}
+          to={`/stories/${id}/controlled-practice`}
           style={{ backgroundColor: 'rgb(50, 170, 248)', color: 'white' }}
         >
-          <FormattedMessage id="start-practice-story" />
-        </SemanticButton> */}
-        <Dropdown
+          <FormattedMessage id="tailored-practice-mode" />
+        </SemanticButton>) : (<Dropdown
           className="button icon practice-tour-practice-button"
           style={{
             backgroundColor: 'rgb(50, 170, 248)',
@@ -221,13 +220,6 @@ const ReadViews = ({ match }) => {
             className="story-item-dropdown"
             style={chooseDropdownMenuSide()}
           >
-            {story.control_story && <Dropdown.Item
-              text={<FormattedMessage id="tailored-practice-mode" />}
-              as={Link}
-              style={{backgroundColor: "rgb(255, 239, 213)"}}
-              to={`/stories/${id}/controlled-practice`}
-              icon="tasks"
-            />}
             <Dropdown.Item
               text={<FormattedMessage id="practice-grammar-mode" />}
               as={Link}
@@ -254,7 +246,7 @@ const ReadViews = ({ match }) => {
               className='practice-tour-start-practice-story'
             />
           </Dropdown.Menu>
-        </Dropdown >
+        </Dropdown >)}
       </SemanticButton.Group >
     )
   }

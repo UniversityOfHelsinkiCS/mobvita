@@ -134,15 +134,19 @@ const LessonList = () => {
         if (goStep == -1 && selectedTopicIds && selectedSemantics && selectedTopicIds.length && selectedSemantics.length) {
           dispatch(setLessonStep(3))
         }
-        else if (!has_seen_lesson_tour) {
-          dispatch(setLessonStep(0))
-          dispatch(lessonsTourViewed())
-          dispatch(sidebarSetOpen(false))
-          dispatch(startLessonsTour())
-        }
     }
     
   }, [lessonPending])
+
+  useEffect(() => {
+    if (!lessonPending && !metaPending && !has_seen_lesson_tour ) {
+      dispatch(setLessonStep(0))
+      dispatch(lessonsTourViewed())
+      dispatch(sidebarSetOpen(false))
+      dispatch(startLessonsTour())
+    }
+    
+  }, [lessonPending, metaPending])
 
   useEffect(() => {
     // Filter lessons based on search query
