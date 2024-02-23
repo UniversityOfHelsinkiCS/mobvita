@@ -141,15 +141,17 @@ const ReadingTest = () => {
       dispatch(markAnsweredChoice(choice.option))
     }
   }
-  
   useEffect(() => {
+    setShowFeedbacks(false)
     if (currentReadingSet !== null && prevReadingSet !== null && currentReadingSet !== prevReadingSet) {
-      if (receivedFeedback > 0) {
-        setShowFeedbacks(false)
+      if (in_experimental_grp && receivedFeedback > 0) {
         setShowSelfReflect(true)
       }
-      setReceivedFeedback(0)
+      if (in_control_grp && receivedFeedback == 0) {
+        setShowSelfReflect(true)
+      }
     }
+    setReceivedFeedback(0)
   }, [currentReadingSet])
 
   useEffect(() => {
@@ -194,6 +196,7 @@ const ReadingTest = () => {
               in_control_grp={in_control_grp}
               in_experimental_grp={in_experimental_grp}
               showSelfReflect={showSelfReflect}
+              receieved_feedback={receivedFeedback}
               submitSelfReflection={submitSelfReflectionResponse}
             />
             <div className="test-top-info space-between" style={{ marginBottom: '0.2em' }}>

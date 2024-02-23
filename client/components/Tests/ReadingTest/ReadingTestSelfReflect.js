@@ -91,7 +91,7 @@ const UsefulSlider = ({ sliderQuestion, sliderValue, setSliderValue, doNotKnow, 
 };
   
 
-const ReadingTestSelfReflect = ({ currentReadingSet, in_control_grp, in_experimental_grp, showSelfReflect, submitSelfReflection }) => {
+const ReadingTestSelfReflect = ({ currentReadingSet, in_control_grp, in_experimental_grp, receieved_feedback, showSelfReflect, submitSelfReflection }) => {
     const [current, setCurrent] = useState(0);
     const bigScreen = useWindowDimensions().width >= 700;
 
@@ -156,7 +156,9 @@ const ReadingTestSelfReflect = ({ currentReadingSet, in_control_grp, in_experime
         submitSelfReflection({
             "open_ended_questions": open_ended_questions_with_responses,
             "feedback_usefulness": endSetSliderValue,
-            "question_set": currentReadingSet
+            "question_set": currentReadingSet,
+            "group_type": in_experimental_grp ? "experimental" : "control",
+            "receieved_feedback": receieved_feedback,
         })
     }
 
