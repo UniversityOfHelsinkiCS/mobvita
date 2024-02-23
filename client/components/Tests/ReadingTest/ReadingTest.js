@@ -13,6 +13,7 @@ import { learningLanguageSelector, confettiRain } from 'Utilities/common'
 import { FormattedMessage, FormattedHTMLMessage } from 'react-intl'
 import ReadingTestMC from './ReadingTestMC'
 import ReadingTestFeedbacks from './ReadingTestFeedbacks'
+import ReadingTestSelfReflect from '././ReadingTestSelfReflect'
 
 const TIMER_START_DELAY = 3000
 
@@ -23,9 +24,12 @@ const ReadingTest = () => {
   const [showCorrect, setShowCorrect] = useState(false)
   const [questionDone, setquestionDone] = useState(false)
   const [showFeedbacks, setShowFeedbacks] = useState(false)
+  const [showSelfReflect, setShowSelfReflect] = useState(false)
   const {
     feedbacks,
     currentReadingTestQuestion,
+    currentReadingSet,
+    prevReadingSet,
     readingTestSessionId,
     readingTestQuestions,
     currentReadingQuestionIndex,
@@ -97,10 +101,6 @@ const ReadingTest = () => {
       setShowCorrect(true)
       setquestionDone(true)
     }
-
-    // if (choice.is_correct == true && synthesis_feedback != undefined && !feedbacks.includes(synthesis_feedback)) {
-    //   dispatch(updateTestFeedbacks(choice.option, synthesis_feedback))
-    // }
     
     if (!isSelectedChoice){
       dispatch(
@@ -118,6 +118,13 @@ const ReadingTest = () => {
       dispatch(markAnsweredChoice(choice.option))
     }
   }
+  
+  useEffect(() => {
+    if (currentReadingSet !== null && prevReadingSet !== null && currentReadingSet !== prevReadingSet) {
+      setShowFeedbacks(false)
+      setShowSelfReflect(true)
+    }
+  }, [currentReadingSet])
 
   useEffect(() => {
     if (feedbacks.length == 0){
@@ -125,7 +132,7 @@ const ReadingTest = () => {
     } else {
       setShowFeedbacks(true)
     }
-  }, [feedbacks, currentReadingTestQuestion.choices])
+  }, [feedbacks, currentReadingTestQuestion?.choices])
 
   useEffect(() => {
     if (!readingTestSessionId) return
@@ -155,6 +162,10 @@ const ReadingTest = () => {
             <ReadingTestFeedbacks 
               showFeedbacks={showFeedbacks}
               closeFeedbacks={() => {setShowFeedbacks(false)}}
+            />
+            <ReadingTestSelfReflect 
+              showSelfReflect={showSelfReflect}
+              closeSelfReflect={() => {setShowSelfReflect(false)}}
             />
             <div className="test-top-info space-between" style={{ marginBottom: '0.2em' }}>
               <div>

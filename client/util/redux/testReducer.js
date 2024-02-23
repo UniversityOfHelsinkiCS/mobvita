@@ -7,6 +7,8 @@ const initialState = {
   readingTestSessionId: null,
   currentReadingQuestionIndex: 0,
   currentReadingTestQuestion: null,
+  currentReadingSet: null,
+  prevReadingSet: null,
   readingTestQuestions: [],
 
   exhaustiveTestSessionId: null,
@@ -166,7 +168,7 @@ export default (state = initialState, action) => {
   const { 
     currentAdaptiveQuestionIndex,
     currentExhaustiveQuestionIndex, exhaustiveTestQuestions,
-    currentReadingQuestionIndex, readingTestQuestions,
+    currentReadingQuestionIndex, readingTestQuestions, currentReadingSet, prevReadingSet
   } = state
   const { response, startingIndex } = action
 
@@ -185,10 +187,13 @@ export default (state = initialState, action) => {
         language: action.language,
       }
     case 'GET_READING_TEST_QUESTIONS_SUCCESS':
+      const sortedQuestions = response.question_list.sort((a, b) => parseInt(a.set) - parseInt(b.set));
       return {
         ...state,
-        readingTestQuestions: response.question_list,
-        currentReadingTestQuestion: response.question_list[0],
+        readingTestQuestions: sortedQuestions,
+        currentReadingTestQuestion: sortedQuestions[0],
+        currentReadingSet: sortedQuestions[0]?.set,
+        prevReadingSet: null,
         readingTestSessionId: response.session_id,
         currentReadingQuestionIndex: 0,
         feedbacks: [],
@@ -279,6 +284,8 @@ export default (state = initialState, action) => {
           ...state,
           currentReadingQuestionIndex: currentReadingQuestionIndex + 1,
           currentReadingTestQuestion: readingTestQuestions[currentReadingQuestionIndex + 1],
+          currentReadingSet: readingTestQuestions[currentReadingQuestionIndex + 1].set,
+          prevReadingSet: readingTestQuestions[currentReadingQuestionIndex].set,
           feedbacks: [],
         }
       }
