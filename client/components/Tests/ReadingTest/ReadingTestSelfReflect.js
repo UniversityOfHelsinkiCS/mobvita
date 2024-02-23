@@ -32,7 +32,7 @@ const OpenEndedQuestion = ({ idx, question, answer, onAnswerChange }) => {
     );
 };
 
-const UsefulSlider = ({ sliderQuestion, sliderValue, setSliderValue, onDontKnow }) => {
+const UsefulSlider = ({ sliderQuestion, sliderValue, setSliderValue, doNotKnow, setDoNotKnow }) => {
     const handleSliderChange = (value) => {
         setSliderValue(value);
     };
@@ -70,31 +70,51 @@ const UsefulSlider = ({ sliderQuestion, sliderValue, setSliderValue, onDontKnow 
                     max={10}
                     step={1}
                     value={sliderValue}
+                    disabled={doNotKnow}
                 />
             </div>
-            <button onClick={onDontKnow} className="btn btn-primary" style={{
-                marginTop: '20px'
-            }}>
-                <FormattedMessage id='do-not-know' />
-            </button>
+            <div style={{ marginTop: '20px' }}>
+                <input 
+                    type="checkbox" 
+                    id="doNotKnowCheckbox" 
+                    className="btn-checkbox" 
+                    value={doNotKnow}
+                    onChange={() => setDoNotKnow(!doNotKnow)}
+                    style={{ marginRight: '0.5em' }}
+                />
+                <label htmlFor="doNotKnowCheckbox" className="btn-label">
+                    <FormattedMessage id='do-not-know' />
+                </label>
+            </div>
         </div>
     );
 };
   
 
-const ReadingTestSelfReflect = ({ showSelfReflect, closeSelfReflect }) => {
+const ReadingTestSelfReflect = ({ currentReadingSet, in_control_grp, in_experimental_grp, showSelfReflect, submitSelfReflection }) => {
     const [current, setCurrent] = useState(0);
     const bigScreen = useWindowDimensions().width >= 700;
 
-    const open_ended_questions = [
-        "Did the feedback in the previous items change the way you read the texts? In what ways?",
-        "Did you get any new ideas about how to answer reading questions?",
-        "How does it feel?  What would you change in the exercises to make it easier to use?"
-    ]
+    let open_ended_questions = []
+    if (in_experimental_grp){
+        open_ended_questions = [
+            "Did the feedback in the previous items change the way you read the texts? In what ways?",
+            "Did you get any new ideas about how to answer reading questions?",
+            "How does it feel?  What would you change in the exercises to make it easier to use?"
+        ]
+    }
+    if (in_control_grp && !in_experimental_grp){
+        open_ended_questions = [
+            "How uncertain were you of your answers?",
+            "What kind of difficulties did you have? ",
+            "What kind of help would you wish for?"
+        ]
+    }
 
-    const [endSetSliderValue, setEndSetSliderValue] = useState(0)
+    const [endSetSliderDoNotKnow, setEndSetSliderDoNotKnow] = useState(false)
+    const [endSetSliderValue, setEndSetSliderValue] = useState(null)
     const [openEndedQuestionAnswers, setOpenEndedQuestionAnswers] = useState(
-        open_ended_questions.map(() => '')
+        open_ended_questions.map(() => null)
     );
 
     const handleAnswerChange = (index, newValue) => {
@@ -103,18 +123,6 @@ const ReadingTestSelfReflect = ({ showSelfReflect, closeSelfReflect }) => {
         setOpenEndedQuestionAnswers(updatedAnswers);
     };
 
-    const endSetUsefulSliderComponent = {
-        component: UsefulSlider,
-        props: {
-            sliderQuestion: "How useful do you think this feedback is now after these tasks?",
-            sliderValue: endSetSliderValue, 
-            setSliderValue: setEndSetSliderValue, 
-            onDontKnow: () => {
-                setEndSetSliderValue(-1);
-                setCurrent(current + 1);
-            }
-        }
-    };
     const self_reflection_questions = open_ended_questions.map((question, index) => {
         return {
             component: OpenEndedQuestion,
@@ -126,7 +134,31 @@ const ReadingTestSelfReflect = ({ showSelfReflect, closeSelfReflect }) => {
             }
         };
     });
-    self_reflection_questions.unshift(endSetUsefulSliderComponent);
+    if (in_experimental_grp){
+        const endSetUsefulSliderComponent = {
+            component: UsefulSlider,
+            props: {
+                sliderQuestion: "How useful do you think this feedback is now after these tasks?",
+                sliderValue: endSetSliderValue, 
+                setSliderValue: setEndSetSliderValue,
+                doNotKnow: endSetSliderDoNotKnow,
+                setDoNotKnow: setEndSetSliderDoNotKnow
+            }
+        };
+        self_reflection_questions.unshift(endSetUsefulSliderComponent);
+    }
+    
+    const submitResponse = () => {
+        const open_ended_questions_with_responses = open_ended_questions.map((question, index) => ({
+            question: question,
+            answer: openEndedQuestionAnswers[index] || ''
+        }));
+        submitSelfReflection({
+            "open_ended_questions": open_ended_questions_with_responses,
+            "feedback_usefulness": endSetSliderValue,
+            "question_set": currentReadingSet
+        })
+    }
 
     const nextSlide = () => {
         if (self_reflection_questions && self_reflection_questions.length > 0) {
@@ -184,14 +216,29 @@ const ReadingTestSelfReflect = ({ showSelfReflect, closeSelfReflect }) => {
                             width: '100%'
                         }
                     }> 
-                        <div className='self-reflection-header'>
-                            <h3 style={{ textAlign: 'center' }}><FormattedMessage id='reading-test-end-set-self-reflection-header' /></h3>
+                        <div className='self-reflection-header' style={{
+                            display: 'flex', 
+                            justifyContent: 'space-between', 
+                            alignItems: 'center'
+                        }}>
+                            <h3 style={{ textAlign: 'left', margin: 0 }}>
+                                <FormattedMessage id='reading-test-end-set-self-reflection-header' />
+                            </h3>
+                            <button 
+                                type="submit" 
+                                className="btn btn-primary" 
+                                onClick={submitResponse}
+                                disabled={!openEndedQuestionAnswers.every(answer => answer !== null && answer.trim() !== '')}
+                            >
+                                <FormattedMessage id='self-reflection-submit' />
+                            </button>
                         </div>
                         <div
                             className='slide-container'
                             style={{
                                 height: "100%",
-                                alignItems: "center"
+                                alignItems: "center",
+                                margin: "10px"
                             }}
                         >
                             <div className='slide active' key={current}>
@@ -230,7 +277,7 @@ const ReadingTestSelfReflect = ({ showSelfReflect, closeSelfReflect }) => {
                 </div>
 
                 
-                <div
+                {/* <div
                     style={{
                         position: 'absolute',
                         top: '10px',
@@ -241,7 +288,7 @@ const ReadingTestSelfReflect = ({ showSelfReflect, closeSelfReflect }) => {
                     onClick={closeSelfReflect}
                 >
                     <Icon name="close" color="black" size="large" />
-                </div>
+                </div> */}
             </div>
         </Draggable>
     );

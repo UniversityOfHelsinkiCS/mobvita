@@ -3,7 +3,7 @@ import { Button } from 'react-bootstrap';
 import { sanitizeHtml } from 'Utilities/common';
 import useWindowDimensions from 'Utilities/windowDimensions';
 
-const ReadingTestMC = ({ exercise, onAnswer, answerPending, showFeedbacks, showCorrect, questionDone }) => {
+const ReadingTestMC = ({ exercise, onAnswer, answerPending, showFeedbacks, showCorrect, showSelfReflect, questionDone }) => {
     const { choices, question, prephrase, test_text } = exercise;
     // const { feedbacks } = useSelector(({ tests }) => tests);
 
@@ -41,7 +41,7 @@ const ReadingTestMC = ({ exercise, onAnswer, answerPending, showFeedbacks, showC
                                 <Button
                                     className="test-choice-button"
                                     onClick={!answerPending ? () => onAnswer(choice) : undefined}
-                                    disabled={answerPending || showFeedbacks || choice.isSelected || questionDone}
+                                    disabled={answerPending || showFeedbacks || showSelfReflect || choice.isSelected || questionDone}
                                     style={{ 
                                         whiteSpace: 'pre-line', 
                                         lineHeight: '1.0', 

@@ -83,6 +83,15 @@ export const sendReadingTestAnswer = (language, sessionId, answer) => {
   return callBuilder(route, prefix, 'post', payload)
 }
 
+export const sendReadingTestQuestionnaireResponses = (reflection_response, language) => {
+  const route = `/questionnaire/${language}`; 
+  const prefix = 'SEND_READING_TEST_QUESTIONNAIRE_RESPONSES';
+  const payload = {
+    reflection_response,
+  };
+  return callBuilder(route, prefix, 'post', payload);
+};
+
 export const sendExhaustiveTestAnswer = (language, sessionId, answer, duration, breakTimestamp) => {
   const route = `/test/${language}/answer`
   const prefix = 'ANSWER_TEST_QUESTION'

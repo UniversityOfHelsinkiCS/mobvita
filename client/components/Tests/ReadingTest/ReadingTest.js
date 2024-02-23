@@ -7,7 +7,8 @@ import {
     finishExhaustiveTest, 
     updateTestFeedbacks, 
     nextReadingTestQuestion,
-    markAnsweredChoice
+    markAnsweredChoice,
+    sendReadingTestQuestionnaireResponses,
 } from 'Utilities/redux/testReducer'
 import { learningLanguageSelector, confettiRain } from 'Utilities/common'
 import { FormattedMessage, FormattedHTMLMessage } from 'react-intl'
@@ -39,6 +40,19 @@ const ReadingTest = () => {
     answerFailure,
   } = useSelector(({ tests }) => tests)
   const learningLanguage = useSelector(learningLanguageSelector)
+  const { groups } = useSelector(({ groups }) => groups)
+
+  let in_experimental_grp = false;
+  let in_control_grp = false;
+
+  groups.forEach(group => {
+    if (group.group_type === "experimental") {
+      in_experimental_grp = true;
+    }
+    if (group.group_type === "control") {
+      in_control_grp = true;
+    }
+  });
 
   const dispatch = useDispatch()
 
@@ -46,6 +60,11 @@ const ReadingTest = () => {
     setShowCorrect(false)
     setquestionDone(false)
     dispatch(nextReadingTestQuestion())
+  }
+
+  const submitSelfReflectionResponse = (response_json) => {
+    dispatch(sendReadingTestQuestionnaireResponses(response_json, learningLanguage))
+    setShowSelfReflect(false)
   }
 
   const checkAnswer = choice => {
@@ -171,8 +190,11 @@ const ReadingTest = () => {
               closeFeedbacks={() => {setShowFeedbacks(false)}}
             />
             <ReadingTestSelfReflect 
+              currentReadingSet={currentReadingSet}
+              in_control_grp={in_control_grp}
+              in_experimental_grp={in_experimental_grp}
               showSelfReflect={showSelfReflect}
-              closeSelfReflect={() => {setShowSelfReflect(false)}}
+              submitSelfReflection={submitSelfReflectionResponse}
             />
             <div className="test-top-info space-between" style={{ marginBottom: '0.2em' }}>
               <div>
@@ -215,6 +237,7 @@ const ReadingTest = () => {
                     answerPending={answerPending}
                     showFeedbacks={showFeedbacks}
                     showCorrect={showCorrect}
+                    showSelfReflect={showSelfReflect}
                     questionDone={questionDone}
                   />
                 </div>

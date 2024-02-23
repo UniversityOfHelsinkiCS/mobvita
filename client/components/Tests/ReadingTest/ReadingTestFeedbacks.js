@@ -47,8 +47,6 @@ const ReadingTestFeedbacks = ({ showFeedbacks, closeFeedbacks }) => {
         }
     }
 
-    console.log(filteredSlides)
-
     const renderFeedback = () => (
         <Draggable cancel=".interactable">
             <div
