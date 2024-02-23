@@ -21,10 +21,12 @@ const ReadingTest = () => {
   const [displaySpinner, setDisplaySpinner] = useState(false)
   const [paused, setPaused] = useState(false)
 
+  const [receivedFeedback, setReceivedFeedback] = useState(0)
   const [showCorrect, setShowCorrect] = useState(false)
   const [questionDone, setquestionDone] = useState(false)
   const [showFeedbacks, setShowFeedbacks] = useState(false)
   const [showSelfReflect, setShowSelfReflect] = useState(false)
+
   const {
     feedbacks,
     currentReadingTestQuestion,
@@ -73,9 +75,11 @@ const ReadingTest = () => {
         const remainMediationFeedbacks = mediationFeedbacks.filter(feedback => !feedbacks.includes(feedback));
         if (remainMediationFeedbacks.length > 0){
           dispatch(updateTestFeedbacks(choice.option, remainMediationFeedbacks[0]))
+          setReceivedFeedback(receivedFeedback + 1)
         } else { 
           if (remainItemFeedbacks.length > 0) {
             dispatch(updateTestFeedbacks(choice.option, remainItemFeedbacks[0]))
+            setReceivedFeedback(receivedFeedback + 1)
           } else if (!feedbacks.includes(synthesis_feedback)) {
             dispatch(updateTestFeedbacks(choice.option, synthesis_feedback))
             setShowCorrect(true)
@@ -121,8 +125,11 @@ const ReadingTest = () => {
   
   useEffect(() => {
     if (currentReadingSet !== null && prevReadingSet !== null && currentReadingSet !== prevReadingSet) {
-      setShowFeedbacks(false)
-      setShowSelfReflect(true)
+      if (receivedFeedback > 0) {
+        setShowFeedbacks(false)
+        setShowSelfReflect(true)
+      }
+      setReceivedFeedback(0)
     }
   }, [currentReadingSet])
 
