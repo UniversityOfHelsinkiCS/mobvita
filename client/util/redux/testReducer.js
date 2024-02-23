@@ -86,9 +86,7 @@ export const sendReadingTestAnswer = (language, sessionId, answer) => {
 export const sendReadingTestQuestionnaireResponses = (reflection_response, language) => {
   const route = `/questionnaire/${language}`; 
   const prefix = 'SEND_READING_TEST_QUESTIONNAIRE_RESPONSES';
-  const payload = {
-    reflection_response,
-  };
+  const payload = reflection_response;
   return callBuilder(route, prefix, 'post', payload);
 };
 
