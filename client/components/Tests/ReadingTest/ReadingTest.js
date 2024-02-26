@@ -36,6 +36,7 @@ const ReadingTest = () => {
     readingTestSessionId,
     readingTestQuestions,
     currentReadingQuestionIndex,
+    currentQuestionIdxinSet,
     answerPending,
     answerFailure,
   } = useSelector(({ tests }) => tests)
@@ -141,13 +142,20 @@ const ReadingTest = () => {
       dispatch(markAnsweredChoice(choice.option))
     }
   }
+  
   useEffect(() => {
     setShowFeedbacks(false)
+    if (in_experimental_grp && currentQuestionIdxinSet === 0 && receivedFeedback > 0) {
+      // Show questionair for experimental group after first question if mediation feedbacks are received
+      setShowSelfReflect(true)
+    }
     if (currentReadingSet !== null && prevReadingSet !== null && currentReadingSet !== prevReadingSet) {
       if (in_experimental_grp && receivedFeedback > 0) {
+        // Show questionair for experimental group after the set if mediation feedbacks are received
         setShowSelfReflect(true)
       }
       if (in_control_grp && receivedFeedback == 0) {
+        // Show questionair for control group after the set if no mediation feedbacks are received
         setShowSelfReflect(true)
       }
     }
@@ -173,7 +181,6 @@ const ReadingTest = () => {
     if (!readingTestSessionId) return
   }, [currentReadingTestQuestion])
 
-  // Send an empty answer if user leaves test
   useEffect(() => () => checkAnswer(''), [])
 
   if (!currentReadingTestQuestion) {
@@ -189,10 +196,16 @@ const ReadingTest = () => {
           <div className="test-container" style={{width: '90%'}}>
             <ReadingTestFeedbacks 
               showFeedbacks={showFeedbacks}
-              closeFeedbacks={() => {setShowFeedbacks(false)}}
+              closeFeedbacks={() => {
+                setShowFeedbacks(false)
+                if (receivedFeedback > 0 && in_experimental_grp && currentQuestionIdxinSet === 0 && questionDone) {
+                  setShowSelfReflect(true)
+                }
+              }}
             />
             <ReadingTestSelfReflect 
               currentReadingSet={currentReadingSet}
+              currentQuestionIdxinSet={currentQuestionIdxinSet}
               in_control_grp={in_control_grp}
               in_experimental_grp={in_experimental_grp}
               showSelfReflect={showSelfReflect}

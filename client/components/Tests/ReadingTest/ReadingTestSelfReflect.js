@@ -91,31 +91,52 @@ const UsefulSlider = ({ sliderQuestion, sliderValue, setSliderValue, doNotKnow, 
 };
   
 
-const ReadingTestSelfReflect = ({ currentReadingSet, in_control_grp, in_experimental_grp, receieved_feedback, showSelfReflect, submitSelfReflection }) => {
+const ReadingTestSelfReflect = ({ currentReadingSet, currentQuestionIdxinSet, in_control_grp, in_experimental_grp, receieved_feedback, showSelfReflect, submitSelfReflection }) => {
     const [current, setCurrent] = useState(0);
-    const bigScreen = useWindowDimensions().width >= 700;
-
-    let open_ended_questions = []
-    if (in_experimental_grp){
-        open_ended_questions = [
-            "Did the feedback in the previous items change the way you read the texts? In what ways?",
-            "Did you get any new ideas about how to answer reading questions?",
-            "How does it feel?  What would you change in the exercises to make it easier to use?"
-        ]
-    }
-    if (in_control_grp && !in_experimental_grp){
-        open_ended_questions = [
-            "How uncertain were you of your answers?",
-            "What kind of difficulties did you have? ",
-            "What kind of help would you wish for?"
-        ]
-    }
-
     const [endSetSliderDoNotKnow, setEndSetSliderDoNotKnow] = useState(false)
     const [endSetSliderValue, setEndSetSliderValue] = useState(null)
-    const [openEndedQuestionAnswers, setOpenEndedQuestionAnswers] = useState(
-        open_ended_questions.map(() => null)
-    );
+
+    const [sliderQuestion, setSliderQuestion] = useState("How useful was this feedback?");
+    const [openEndedQuestions, setOpenEndedQuestions] = useState([]);
+    const [openEndedQuestionAnswers, setOpenEndedQuestionAnswers] = useState([]);
+
+    const bigScreen = useWindowDimensions().width >= 700;
+
+    useEffect(() => {
+        let open_ended_questions = []
+        let sliderQuestion = "How useful was this feedback?"
+        if (in_experimental_grp){
+            if (currentQuestionIdxinSet == 0 && receieved_feedback > 0){
+                open_ended_questions = [
+                    "Did the feedback change the way you approach the task? How?"
+                ]
+                sliderQuestion = "How useful was this feedback?"
+            } 
+            if (currentQuestionIdxinSet != 0 && receieved_feedback > 0){
+                open_ended_questions = [
+                    "Did the feedback in the previous items change the way you read the texts? In what ways?",
+                    "Did you get any new ideas about how to answer reading questions?",
+                    "How does it feel?  What would you change in the exercises to make it easier to use?"
+                ]
+                sliderQuestion = "How useful do you think this feedback is now after these tasks?"
+            }
+        }
+        if (in_control_grp && !in_experimental_grp && receieved_feedback == 0){
+            open_ended_questions = [
+                "How uncertain were you of your answers?",
+                "What kind of difficulties did you have? ",
+                "What kind of help would you wish for?"
+            ]
+        }
+
+        setSliderQuestion(sliderQuestion);
+        setOpenEndedQuestions(open_ended_questions);
+        setOpenEndedQuestionAnswers(open_ended_questions.map(() => null));
+    }, [
+        currentReadingSet, currentQuestionIdxinSet, 
+        in_control_grp, in_experimental_grp, 
+        receieved_feedback, showSelfReflect, submitSelfReflection
+    ]);
 
     const handleAnswerChange = (index, newValue) => {
         const updatedAnswers = [...openEndedQuestionAnswers];
@@ -123,7 +144,7 @@ const ReadingTestSelfReflect = ({ currentReadingSet, in_control_grp, in_experime
         setOpenEndedQuestionAnswers(updatedAnswers);
     };
 
-    const self_reflection_questions = open_ended_questions.map((question, index) => {
+    const self_reflection_questions = openEndedQuestions.map((question, index) => {
         return {
             component: OpenEndedQuestion,
             props: {
@@ -138,7 +159,7 @@ const ReadingTestSelfReflect = ({ currentReadingSet, in_control_grp, in_experime
         const endSetUsefulSliderComponent = {
             component: UsefulSlider,
             props: {
-                sliderQuestion: "How useful do you think this feedback is now after these tasks?",
+                sliderQuestion: sliderQuestion,
                 sliderValue: endSetSliderValue, 
                 setSliderValue: setEndSetSliderValue,
                 doNotKnow: endSetSliderDoNotKnow,
@@ -149,7 +170,7 @@ const ReadingTestSelfReflect = ({ currentReadingSet, in_control_grp, in_experime
     }
     
     const submitResponse = () => {
-        const open_ended_questions_with_responses = open_ended_questions.map((question, index) => ({
+        const open_ended_questions_with_responses = openEndedQuestions.map((question, index) => ({
             question: question,
             answer: openEndedQuestionAnswers[index] || ''
         }));

@@ -8,6 +8,7 @@ const initialState = {
   currentReadingQuestionIndex: 0,
   currentReadingTestQuestion: null,
   currentReadingSet: null,
+  currentQuestionIdxinSet: 0,
   prevReadingSet: null,
   readingTestQuestions: [],
 
@@ -175,7 +176,8 @@ export default (state = initialState, action) => {
   const { 
     currentAdaptiveQuestionIndex,
     currentExhaustiveQuestionIndex, exhaustiveTestQuestions,
-    currentReadingQuestionIndex, readingTestQuestions, currentReadingSet, prevReadingSet
+    currentReadingQuestionIndex, readingTestQuestions, 
+    currentReadingSet, prevReadingSet, currentQuestionIdxinSet
   } = state
   const { response, startingIndex } = action
 
@@ -203,6 +205,7 @@ export default (state = initialState, action) => {
         prevReadingSet: null,
         readingTestSessionId: response.session_id,
         currentReadingQuestionIndex: 0,
+        currentQuestionIdxinSet: 0,
         feedbacks: [],
         pending: false,
       }
@@ -287,12 +290,15 @@ export default (state = initialState, action) => {
       }
     case 'NEXT_READING_TEST_QUESTION':
       if (currentReadingQuestionIndex < readingTestQuestions.length - 1){
+        let _currentReadingSet = readingTestQuestions[currentReadingQuestionIndex + 1].set;
+        let _prevReadingSet = readingTestQuestions[currentReadingQuestionIndex].set;
         return {
           ...state,
           currentReadingQuestionIndex: currentReadingQuestionIndex + 1,
           currentReadingTestQuestion: readingTestQuestions[currentReadingQuestionIndex + 1],
-          currentReadingSet: readingTestQuestions[currentReadingQuestionIndex + 1].set,
-          prevReadingSet: readingTestQuestions[currentReadingQuestionIndex].set,
+          currentReadingSet: _currentReadingSet,
+          prevReadingSet: _prevReadingSet,
+          currentQuestionIdxinSet: _currentReadingSet !== _prevReadingSet ? 0 : currentQuestionIdxinSet + 1,
           feedbacks: [],
         }
       }
