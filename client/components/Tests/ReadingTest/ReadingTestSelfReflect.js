@@ -91,7 +91,7 @@ const UsefulSlider = ({ sliderQuestion, sliderValue, setSliderValue, doNotKnow, 
 };
   
 
-const ReadingTestSelfReflect = ({ currentReadingSet, currentQuestionIdxinSet, in_control_grp, in_experimental_grp, receieved_feedback, showSelfReflect, submitSelfReflection }) => {
+const ReadingTestSelfReflect = ({ currentReadingTestQuestion, prevReadingSet, currentReadingSet, readingSetLength, currentQuestionIdxinSet, questionDone, in_control_grp, in_experimental_grp, receieved_feedback, showSelfReflect, submitSelfReflection }) => {
     const [current, setCurrent] = useState(0);
     const [endSetSliderDoNotKnow, setEndSetSliderDoNotKnow] = useState(false)
     const [endSetSliderValue, setEndSetSliderValue] = useState(null)
@@ -103,30 +103,42 @@ const ReadingTestSelfReflect = ({ currentReadingSet, currentQuestionIdxinSet, in
     const bigScreen = useWindowDimensions().width >= 700;
 
     useEffect(() => {
+        setCurrent(0)
+        setEndSetSliderDoNotKnow(false)
+        setEndSetSliderValue(null)
+        setSliderQuestion("How useful was this feedback?")
+        setOpenEndedQuestions([])
+        setOpenEndedQuestionAnswers([])
+    }, [currentQuestionIdxinSet, questionDone, currentReadingSet, prevReadingSet])
+
+    useEffect(() => {
         let open_ended_questions = []
         let sliderQuestion = "How useful was this feedback?"
         if (in_experimental_grp){
-            if (currentQuestionIdxinSet == 0 && receieved_feedback > 0){
+            if (currentQuestionIdxinSet < readingSetLength - 1 && receieved_feedback > 0 && questionDone){
                 open_ended_questions = [
                     "Did the feedback change the way you approach the task? How?"
                 ]
                 sliderQuestion = "How useful was this feedback?"
             } 
-            if (currentQuestionIdxinSet != 0 && receieved_feedback > 0){
+            else if (prevReadingSet !== currentReadingSet && receieved_feedback > 0) {
                 open_ended_questions = [
                     "Did the feedback in the previous items change the way you read the texts? In what ways?",
                     "Did you get any new ideas about how to answer reading questions?",
                     "How does it feel?  What would you change in the exercises to make it easier to use?"
                 ]
                 sliderQuestion = "How useful do you think this feedback is now after these tasks?"
+            } else {
+                open_ended_questions = []
             }
-        }
-        if (in_control_grp && !in_experimental_grp && receieved_feedback == 0){
+        } else if (in_control_grp && !in_experimental_grp && receieved_feedback == 0){
             open_ended_questions = [
                 "How uncertain were you of your answers?",
                 "What kind of difficulties did you have? ",
                 "What kind of help would you wish for?"
             ]
+        } else {
+            open_ended_questions = []
         }
 
         setSliderQuestion(sliderQuestion);
@@ -177,9 +189,11 @@ const ReadingTestSelfReflect = ({ currentReadingSet, currentQuestionIdxinSet, in
         submitSelfReflection({
             "open_ended_questions": open_ended_questions_with_responses,
             "feedback_usefulness": endSetSliderValue,
-            "question_set": currentReadingSet,
+            "question_set": prevReadingSet,
             "group_type": in_experimental_grp ? "experimental" : "control",
             "receieved_feedback": receieved_feedback,
+            "is_end_set_questionair": currentQuestionIdxinSet === 0,
+            "question_id": currentReadingTestQuestion.question_id,
         })
     }
 
@@ -245,7 +259,7 @@ const ReadingTestSelfReflect = ({ currentReadingSet, currentQuestionIdxinSet, in
                             alignItems: 'center'
                         }}>
                             <h3 style={{ textAlign: 'left', margin: 0 }}>
-                                <FormattedMessage id='reading-test-end-set-self-reflection-header' />
+                                <FormattedMessage id='reading-test-self-reflection-header' />
                             </h3>
                             <button 
                                 type="submit" 
@@ -267,7 +281,7 @@ const ReadingTestSelfReflect = ({ currentReadingSet, currentQuestionIdxinSet, in
                             <div className='slide active' key={current}>
                                 {
                                     React.createElement(
-                                        self_reflection_questions[current].component,
+                                        self_reflection_questions[current]?.component,
                                         { ...self_reflection_questions[current].props, key: current }
                                     )
                                 }

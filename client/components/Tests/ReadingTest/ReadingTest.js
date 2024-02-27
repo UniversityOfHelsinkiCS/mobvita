@@ -6,6 +6,7 @@ import {
     sendReadingTestAnswer, 
     finishExhaustiveTest, 
     updateTestFeedbacks, 
+    updateReadingTestElicitation,
     nextReadingTestQuestion,
     markAnsweredChoice,
     sendReadingTestQuestionnaireResponses,
@@ -15,8 +16,8 @@ import { FormattedMessage, FormattedHTMLMessage } from 'react-intl'
 import ReadingTestMC from './ReadingTestMC'
 import ReadingTestFeedbacks from './ReadingTestFeedbacks'
 import ReadingTestSelfReflect from '././ReadingTestSelfReflect'
+import ReadingTestElicationDialog from '././ReadingTestElicitationDialog'
 
-const TIMER_START_DELAY = 3000
 
 const ReadingTest = () => {
   const [displaySpinner, setDisplaySpinner] = useState(false)
@@ -24,15 +25,24 @@ const ReadingTest = () => {
 
   const [receivedFeedback, setReceivedFeedback] = useState(0)
   const [showCorrect, setShowCorrect] = useState(false)
-  const [questionDone, setquestionDone] = useState(false)
+  const [questionDone, setQuestionDone] = useState(false)
+  const [currentAnswer, setCurrentAnswer] = useState(null)
+
   const [showFeedbacks, setShowFeedbacks] = useState(false)
+
+  const [currentReadingSetLength, setCurrentReadingSetLength] = useState(0)
+  const [firstMediationSelfReflectionDone, setFirstMediationSelfReflectionDone] = useState(false)
   const [showSelfReflect, setShowSelfReflect] = useState(false)
+  
+  const [showElicitDialog, setShowElicitDialog] = useState(false)
+  const [currentElicatedConstruct, setCurrentElicatedConstruct] = useState(null)
 
   const {
     feedbacks,
     currentReadingTestQuestion,
     currentReadingSet,
     prevReadingSet,
+    readingSetLength,
     readingTestSessionId,
     readingTestQuestions,
     currentReadingQuestionIndex,
@@ -59,59 +69,39 @@ const ReadingTest = () => {
 
   const nextQuestion = () => {
     setShowCorrect(false)
-    setquestionDone(false)
+    setQuestionDone(false)
+    setShowFeedbacks(false)
+    setShowElicitDialog(false)
+    setShowSelfReflect(false)
+    setCurrentAnswer(null)
+    setCurrentElicatedConstruct(null)
     dispatch(nextReadingTestQuestion())
   }
 
   const submitSelfReflectionResponse = (response_json) => {
     dispatch(sendReadingTestQuestionnaireResponses(response_json, learningLanguage))
+    if (response_json.is_end_set_questionair !== true){
+      setFirstMediationSelfReflectionDone(true)
+    }
     setShowSelfReflect(false)
+    if (currentReadingSet !== prevReadingSet) {
+      setReceivedFeedback(0)
+    }
+  }
+
+  const submitElication = (eliciated_construct) => {
+    dispatch(updateReadingTestElicitation(eliciated_construct))
+    setCurrentElicatedConstruct(eliciated_construct)
+    setShowElicitDialog(false)
   }
 
   const checkAnswer = choice => {
     if (!currentReadingTestQuestion) return
 
-    const isSelectedChoice = currentReadingTestQuestion.choices.filter(ch => ch.option == choice.option)?.length
-      ? currentReadingTestQuestion.choices.filter(ch => ch.option == choice.option)[0].isSelected
-      : false;
-    const countNotSelectedChoices = currentReadingTestQuestion.choices.filter(choice => choice.isSelected != true).length;
-    const synthesis_feedback = currentReadingTestQuestion.question_concept_feedbacks && currentReadingTestQuestion.question_concept_feedbacks?.synthesis
-      ? currentReadingTestQuestion.question_concept_feedbacks.synthesis
-      : undefined;
-    const itemFeedbacks = currentReadingTestQuestion.item_feedbacks
-      ? Object.entries(currentReadingTestQuestion.item_feedbacks)
-        .filter(([, value]) => value !== undefined)
-        .map(([, value]) => value)
-      : [];   
-    const mediationFeedbacks = currentReadingTestQuestion.question_concept_feedbacks
-      ? Object.entries(currentReadingTestQuestion.question_concept_feedbacks)
-          .filter(([key]) => key.startsWith('mediation_'))
-          .map(([, value]) => value)
-      : [];
+    setCurrentAnswer(choice)
 
-    if (choice.is_correct == false){
-      if (countNotSelectedChoices > 2){
-        const remainItemFeedbacks = itemFeedbacks.filter(feedback => !feedbacks.includes(feedback));
-        const remainMediationFeedbacks = mediationFeedbacks.filter(feedback => !feedbacks.includes(feedback));
-        if (remainMediationFeedbacks.length > 0){
-          dispatch(updateTestFeedbacks(choice.option, remainMediationFeedbacks[0]))
-          setReceivedFeedback(receivedFeedback + 1)
-        } else { 
-          if (remainItemFeedbacks.length > 0) {
-            dispatch(updateTestFeedbacks(choice.option, remainItemFeedbacks[0]))
-            setReceivedFeedback(receivedFeedback + 1)
-          } else if (!feedbacks.includes(synthesis_feedback)) {
-            dispatch(updateTestFeedbacks(choice.option, synthesis_feedback))
-            setShowCorrect(true)
-            setquestionDone(true)
-          }
-        }
-      } else {
-        dispatch(updateTestFeedbacks(choice.option, synthesis_feedback))
-        setShowCorrect(true)
-        setquestionDone(true)
-      }
-    } 
+    const countNotSelectedChoices = currentReadingTestQuestion.choices.filter(choice => choice.isSelected != true).length;
+    const question_concept_feedbacks = currentReadingTestQuestion.question_concept_feedbacks[currentElicatedConstruct]
 
     if (choice.is_correct){
       confettiRain(0,0.45,60)
@@ -119,36 +109,97 @@ const ReadingTest = () => {
       if (countNotSelectedChoices >= currentReadingTestQuestion.choices.length){
         dispatch(updateTestFeedbacks(choice.option, ["Correct!"]))
       } else {
-        dispatch(updateTestFeedbacks(choice.option, synthesis_feedback))
+        if (question_concept_feedbacks && question_concept_feedbacks?.synthesis){
+          dispatch(updateTestFeedbacks(choice.option, question_concept_feedbacks?.synthesis))
+        }
       }
       
       setShowCorrect(true)
-      setquestionDone(true)
+      setQuestionDone(true)
+      setCurrentAnswer(null)
     }
-    
-    if (!isSelectedChoice){
-      dispatch(
-        sendReadingTestAnswer(
-            learningLanguage,
-            readingTestSessionId,
-            {
-                type: currentReadingTestQuestion.type,
-                question_id: currentReadingTestQuestion.question_id,
-                answer: choice.option,
-                seenFeedbacks: feedbacks,
+
+    if (choice.is_correct == false){
+      if (question_concept_feedbacks === undefined || currentReadingTestQuestion.eliciated_construct === undefined){
+        setShowElicitDialog(true)
+      } else {
+        const isSelectedChoice = currentReadingTestQuestion.choices.filter(ch => ch.option == choice.option)?.length
+          ? currentReadingTestQuestion.choices.filter(ch => ch.option == choice.option)[0].isSelected
+          : false;
+        const synthesis_feedback = question_concept_feedbacks && question_concept_feedbacks?.synthesis
+          ? question_concept_feedbacks.synthesis
+          : undefined;
+        const itemFeedbacks = currentReadingTestQuestion.item_feedbacks
+          ? Object.entries(currentReadingTestQuestion.item_feedbacks)
+            .filter(([, value]) => value !== undefined)
+            .map(([, value]) => value)
+          : [];   
+        const mediationFeedbacks = question_concept_feedbacks
+          ? Object.entries(question_concept_feedbacks)
+              .filter(([key]) => key.startsWith('mediation_'))
+              .map(([, value]) => value)
+          : [];
+
+        if (choice.is_correct == false){
+          if (countNotSelectedChoices > 2){
+            const remainItemFeedbacks = itemFeedbacks.filter(feedback => !feedbacks.includes(feedback));
+            const remainMediationFeedbacks = mediationFeedbacks.filter(feedback => !feedbacks.includes(feedback));
+            if (remainMediationFeedbacks.length > 0){
+              dispatch(updateTestFeedbacks(choice.option, remainMediationFeedbacks[0]))
+              setReceivedFeedback(receivedFeedback + 1)
+            } else { 
+              if (remainItemFeedbacks.length > 0) {
+                dispatch(updateTestFeedbacks(choice.option, remainItemFeedbacks[0]))
+                setReceivedFeedback(receivedFeedback + 1)
+              } else if (!feedbacks.includes(synthesis_feedback)) {
+                dispatch(updateTestFeedbacks(choice.option, synthesis_feedback))
+                setShowCorrect(true)
+                setQuestionDone(true)
+              }
             }
-        )
-      )
-      dispatch(markAnsweredChoice(choice.option))
-    }
+          } else {
+            dispatch(updateTestFeedbacks(choice.option, synthesis_feedback))
+            setShowCorrect(true)
+            setQuestionDone(true)
+            setCurrentAnswer(null)
+          }
+        } 
+        
+        if (!isSelectedChoice){
+          dispatch(
+            sendReadingTestAnswer(
+                learningLanguage,
+                readingTestSessionId,
+                {
+                    type: currentReadingTestQuestion.type,
+                    question_id: currentReadingTestQuestion.question_id,
+                    answer: choice.option,
+                    seenFeedbacks: feedbacks,
+                }
+            )
+          )
+          dispatch(markAnsweredChoice(choice.option))
+        }
+      }
+    } 
   }
+
+  useEffect(() => {
+    setCurrentReadingSetLength(readingSetLength)
+  }, [readingSetLength]);
+
+  useEffect(() => {
+    if (currentAnswer) {
+      checkAnswer(currentAnswer)
+    }
+  }, [currentElicatedConstruct]);
   
   useEffect(() => {
     setShowFeedbacks(false)
-    if (in_experimental_grp && currentQuestionIdxinSet === 0 && receivedFeedback > 0) {
-      // Show questionair for experimental group after first question if mediation feedbacks are received
-      setShowSelfReflect(true)
-    }
+    // if (in_experimental_grp && currentQuestionIdxinSet < currentReadingSetLength && receivedFeedback > 0) {
+    //   // Show questionair for experimental group after first mediation completed
+    //   setShowSelfReflect(true)
+    // }
     if (currentReadingSet !== null && prevReadingSet !== null && currentReadingSet !== prevReadingSet) {
       if (in_experimental_grp && receivedFeedback > 0) {
         // Show questionair for experimental group after the set if mediation feedbacks are received
@@ -159,7 +210,7 @@ const ReadingTest = () => {
         setShowSelfReflect(true)
       }
     }
-    setReceivedFeedback(0)
+    setFirstMediationSelfReflectionDone(false)
   }, [currentReadingSet])
 
   useEffect(() => {
@@ -175,10 +226,7 @@ const ReadingTest = () => {
     if (!currentReadingTestQuestion) {
       dispatch(finishExhaustiveTest(learningLanguage, readingTestSessionId))
     } 
-  }, [currentReadingTestQuestion])
-
-  useEffect(() => {
-    if (!readingTestSessionId) return
+    setCurrentElicatedConstruct(currentReadingTestQuestion ? currentReadingTestQuestion.eliciated_construct : null)
   }, [currentReadingTestQuestion])
 
   useEffect(() => () => checkAnswer(''), [])
@@ -188,6 +236,7 @@ const ReadingTest = () => {
   }
 
   const testContainerOverflow = displaySpinner ? { overflow: "hidden" } : { overflowY: "auto" };
+  console.log("firstMediationSelfReflectionDone", firstMediationSelfReflectionDone)
 
   return (
     <div className="cont mt-nm">
@@ -198,19 +247,29 @@ const ReadingTest = () => {
               showFeedbacks={showFeedbacks}
               closeFeedbacks={() => {
                 setShowFeedbacks(false)
-                if (receivedFeedback > 0 && in_experimental_grp && currentQuestionIdxinSet === 0 && questionDone) {
+                if (firstMediationSelfReflectionDone === false && receivedFeedback > 0 && in_experimental_grp && currentQuestionIdxinSet < currentReadingSetLength && questionDone) {
                   setShowSelfReflect(true)
+                  // Show questionair for experimental group after first mediation completed
                 }
               }}
             />
             <ReadingTestSelfReflect 
+              currentReadingTestQuestion={currentReadingTestQuestion}
               currentReadingSet={currentReadingSet}
+              prevReadingSet={prevReadingSet}
+              readingSetLength={currentReadingSetLength}
               currentQuestionIdxinSet={currentQuestionIdxinSet}
+              questionDone={questionDone}
               in_control_grp={in_control_grp}
               in_experimental_grp={in_experimental_grp}
               showSelfReflect={showSelfReflect}
               receieved_feedback={receivedFeedback}
               submitSelfReflection={submitSelfReflectionResponse}
+            />
+            <ReadingTestElicationDialog 
+              question={currentReadingTestQuestion}
+              showElication={showElicitDialog}
+              submitElication={submitElication}
             />
             <div className="test-top-info space-between" style={{ marginBottom: '0.2em' }}>
               <div>

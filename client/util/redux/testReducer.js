@@ -10,6 +10,7 @@ const initialState = {
   currentReadingSet: null,
   currentQuestionIdxinSet: 0,
   prevReadingSet: null,
+  readingSetLength: 0,
   readingTestQuestions: [],
 
   exhaustiveTestSessionId: null,
@@ -166,6 +167,10 @@ export const updateTestFeedbacks = (answer, feedbacks) => ({
   type: 'UPDATE_TEST_FEEDBACKS', answer, feedbacks 
 })
 
+export const updateReadingTestElicitation = (eliciated_construct) => ({
+  type: 'UPDATE_READING_TEST_QUESTION_ELICITATION', eliciated_construct
+})
+
 export const nextTestQuestion = () => ({ type: 'NEXT_TEST_QUESTION' })
 
 export const nextReadingTestQuestion = () => ({ type: 'NEXT_READING_TEST_QUESTION' })
@@ -197,16 +202,22 @@ export default (state = initialState, action) => {
       }
     case 'GET_READING_TEST_QUESTIONS_SUCCESS':
       const sortedQuestions = response.question_list.sort((a, b) => parseInt(a.set) - parseInt(b.set));
+      let currentReadingTestQuestion = sortedQuestions[0];
+      if (currentReadingTestQuestion?.constructs?.length === 1) { 
+        currentReadingTestQuestion.eliciated_construct = currentReadingTestQuestion.constructs[0];
+      }
+      let readingSetLength = sortedQuestions.filter(question => question.set === sortedQuestions[0]?.set).length;
       return {
         ...state,
         readingTestQuestions: sortedQuestions,
-        currentReadingTestQuestion: sortedQuestions[0],
+        currentReadingTestQuestion: currentReadingTestQuestion,
         currentReadingSet: sortedQuestions[0]?.set,
         prevReadingSet: null,
         readingTestSessionId: response.session_id,
         currentReadingQuestionIndex: 0,
         currentQuestionIdxinSet: 0,
         feedbacks: [],
+        readingSetLength: readingSetLength,
         pending: false,
       }
     case 'GET_READING_TEST_QUESTIONS_FAILURE':
@@ -288,18 +299,25 @@ export default (state = initialState, action) => {
         currentExhaustiveTestQuestion: exhaustiveTestQuestions[currentExhaustiveQuestionIndex + 1],
         feedbacks: [],
       }
+
     case 'NEXT_READING_TEST_QUESTION':
       if (currentReadingQuestionIndex < readingTestQuestions.length - 1){
         let _currentReadingSet = readingTestQuestions[currentReadingQuestionIndex + 1].set;
         let _prevReadingSet = readingTestQuestions[currentReadingQuestionIndex].set;
+        let currentReadingTestQuestion = readingTestQuestions[currentReadingQuestionIndex + 1];
+        if (currentReadingTestQuestion?.constructs?.length === 1) { 
+          currentReadingTestQuestion.eliciated_construct = currentReadingTestQuestion.constructs[0];
+        }
+        let readingSetLength = readingTestQuestions.filter(question => question.set === _currentReadingSet).length;
         return {
           ...state,
           currentReadingQuestionIndex: currentReadingQuestionIndex + 1,
-          currentReadingTestQuestion: readingTestQuestions[currentReadingQuestionIndex + 1],
+          currentReadingTestQuestion: currentReadingTestQuestion,
           currentReadingSet: _currentReadingSet,
           prevReadingSet: _prevReadingSet,
           currentQuestionIdxinSet: _currentReadingSet !== _prevReadingSet ? 0 : currentQuestionIdxinSet + 1,
           feedbacks: [],
+          readingSetLength: readingSetLength,
         }
       }
       
@@ -377,6 +395,17 @@ export default (state = initialState, action) => {
       return {
         ...state,
         feedbacks: [...state.feedbacks, action.feedbacks],
+      }
+
+    case 'UPDATE_READING_TEST_QUESTION_ELICITATION':
+      if (state.currentReadingTestQuestion) { 
+        return {
+          ...state,
+          currentReadingTestQuestion: {
+            ...state.currentReadingTestQuestion,
+            eliciated_construct: action.eliciated_construct
+          }
+        }
       }
 
     case 'MARK_ANSWERED_CHOICE':
