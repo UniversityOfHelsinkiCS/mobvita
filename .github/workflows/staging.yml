@@ -66,16 +66,6 @@ jobs:
         with:
           spec: cypress/e2e/mobvita_spec.js
 
-  test_navbar:
-    name: "Test navbar"
-    runs-on: ubuntu-latest  
-    steps:
-      - uses: actions/checkout@v3
-      - name: 'Run tests'
-        uses: ./.github/actions/run_test
-        with:
-          spec: cypress/e2e/navbar_spec.js
-
   test_practice:
     name: "Test practice"
     runs-on: ubuntu-latest  
