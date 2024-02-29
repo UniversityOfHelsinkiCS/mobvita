@@ -17,11 +17,14 @@ import ReadingTestMC from './ReadingTestMC'
 import ReadingTestFeedbacks from './ReadingTestFeedbacks'
 import ReadingTestSelfReflect from '././ReadingTestSelfReflect'
 import ReadingTestElicationDialog from '././ReadingTestElicitationDialog'
+import ReadingTestNextSetDialog from '././ReadingTestNextSetDialog'
 
 
 const ReadingTest = () => {
   const [displaySpinner, setDisplaySpinner] = useState(false)
   const [paused, setPaused] = useState(false)
+
+  const [showNextSetDialog, setShowNextSetDialog] = useState(false)
 
   const [receivedFeedback, setReceivedFeedback] = useState(0)
   const [showCorrect, setShowCorrect] = useState(false)
@@ -83,8 +86,11 @@ const ReadingTest = () => {
     if (response_json.is_end_set_questionair !== true){
       setFirstMediationSelfReflectionDone(true)
     }
+    else {
+      setShowNextSetDialog(true)
+    }
     setShowSelfReflect(false)
-    if (currentReadingSet !== prevReadingSet) {
+    if (currentReadingSet !== prevReadingSet && prevReadingSet !== null && currentReadingSet !== null) {
       setReceivedFeedback(0)
     }
   }
@@ -236,18 +242,19 @@ const ReadingTest = () => {
   }
 
   const testContainerOverflow = displaySpinner ? { overflow: "hidden" } : { overflowY: "auto" };
-  console.log("firstMediationSelfReflectionDone", firstMediationSelfReflectionDone)
 
   return (
     <div className="cont mt-nm">
       <Segment style={{ minHeight: '700px', borderRadius: '20px' }}>
         <div className="align-center justify-center">
           <div className="test-container" style={{width: '90%'}}>
+            <ReadingTestNextSetDialog showNextSetDialog={showNextSetDialog} confirmNextSet={() => setShowNextSetDialog(false)} />
             <ReadingTestFeedbacks 
               showFeedbacks={showFeedbacks}
               closeFeedbacks={() => {
                 setShowFeedbacks(false)
                 if (firstMediationSelfReflectionDone === false && receivedFeedback > 0 && in_experimental_grp && currentQuestionIdxinSet < currentReadingSetLength && questionDone) {
+                  console.log("firstMediationSelfReflectionDone",firstMediationSelfReflectionDone)
                   setShowSelfReflect(true)
                   // Show questionair for experimental group after first mediation completed
                 }

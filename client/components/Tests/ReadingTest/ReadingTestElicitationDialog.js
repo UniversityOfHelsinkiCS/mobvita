@@ -49,7 +49,7 @@ const ReadingTestElicationDialog = ({ question, showElication, submitElication }
                             alignItems: 'center'
                         }}>
                             <h3 style={{ textAlign: 'left', margin: 0, paddingLeft: '10px' }}>
-                                <FormattedMessage id='Which is more of a challenge for you?' />
+                                <FormattedMessage id='experimental-elicitation-question' />
                             </h3>
                         </div>
                         <div

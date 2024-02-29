@@ -1,8 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import Draggable from 'react-draggable';
 import { Icon } from 'semantic-ui-react';
-import { useSelector } from 'react-redux';
-import { sanitizeHtml } from 'Utilities/common';
 import { FormattedMessage, useIntl } from 'react-intl'
 import useWindowDimensions from 'Utilities/windowDimensions';
 
@@ -23,7 +21,7 @@ const OpenEndedQuestion = ({ idx, question, answer, onAnswerChange }) => {
                 onChange={handleInputChange}
                 style={{
                     width: '100%', 
-                    height: '30vh', 
+                    height: '15vh', 
                     fontSize: '16px', 
                     padding: '10px',
                 }}
@@ -93,6 +91,7 @@ const UsefulSlider = ({ sliderQuestion, sliderValue, setSliderValue, doNotKnow, 
 
 const ReadingTestSelfReflect = ({ currentReadingTestQuestion, prevReadingSet, currentReadingSet, readingSetLength, currentQuestionIdxinSet, questionDone, in_control_grp, in_experimental_grp, receieved_feedback, showSelfReflect, submitSelfReflection }) => {
     const [current, setCurrent] = useState(0);
+    const [isEndSetQuestionair, setIsEndSetQuestionair] = useState(false);
     const [endSetSliderDoNotKnow, setEndSetSliderDoNotKnow] = useState(false)
     const [endSetSliderValue, setEndSetSliderValue] = useState(null)
 
@@ -120,6 +119,7 @@ const ReadingTestSelfReflect = ({ currentReadingTestQuestion, prevReadingSet, cu
                     "Did the feedback change the way you approach the task? How?"
                 ]
                 sliderQuestion = "How useful was this feedback?"
+                setIsEndSetQuestionair(false)
             } 
             else if (prevReadingSet !== currentReadingSet && receieved_feedback > 0) {
                 open_ended_questions = [
@@ -128,10 +128,11 @@ const ReadingTestSelfReflect = ({ currentReadingTestQuestion, prevReadingSet, cu
                     "How does it feel?  What would you change in the exercises to make it easier to use?"
                 ]
                 sliderQuestion = "How useful do you think this feedback is now after these tasks?"
+                setIsEndSetQuestionair(true)
             } else {
                 open_ended_questions = []
             }
-        } else if (in_control_grp && !in_experimental_grp && receieved_feedback == 0){
+        } else if (in_control_grp && !in_experimental_grp && receieved_feedback == 0 && prevReadingSet !== currentReadingSet){
             open_ended_questions = [
                 "How uncertain were you of your answers?",
                 "What kind of difficulties did you have? ",
@@ -192,7 +193,7 @@ const ReadingTestSelfReflect = ({ currentReadingTestQuestion, prevReadingSet, cu
             "question_set": prevReadingSet,
             "group_type": in_experimental_grp ? "experimental" : "control",
             "receieved_feedback": receieved_feedback,
-            "is_end_set_questionair": currentQuestionIdxinSet === 0,
+            "is_end_set_questionair": isEndSetQuestionair,
             "question_id": currentReadingTestQuestion.question_id,
         })
     }
