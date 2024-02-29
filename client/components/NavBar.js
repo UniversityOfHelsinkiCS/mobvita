@@ -285,18 +285,14 @@ export default function NavBar() {
     <Headroom disableInlineStyles={!smallWindow} style={navBarStyle}>
       <Navbar className={getBackgroundColor()} style={{ paddingLeft: '0.5em' }}>
         <Tour />
-        <div>
-          {smallWindow && (
-            <Icon
-              name="bars"
-              size="big"
-              onClick={() => dispatch(sidebarSetOpen(!open))}
-              className="sidebar-hamburger tour-sidebar"
-              style={{ color: 'black' }}
-              data-cy="hamburger"
-            />
-          )}
-        </div>
+        <Icon
+          name="bars"
+          size="big"
+          onClick={() => dispatch(sidebarSetOpen(!open))}
+          className="sidebar-hamburger tour-sidebar"
+          style={{ color: 'black' }}
+          data-cy="hamburger"
+        />
         <Navbar.Collapse>
           <Nav className="mr-auto">
             <div className="navbar-container">
@@ -316,67 +312,15 @@ export default function NavBar() {
                   {hiddenFeatures && <sup> &beta;</sup>}
                 </Navbar.Brand>
               </Link>
-              {!smallWindow && (
-                <>
-                  <Link to="/home">
-                    <Navbar.Brand className="navbar-text-item">
-                      <FormattedMessage id="Home" />
-                    </Navbar.Brand>
-                  </Link>
-                  <Link data-cy="navbar-library-button" to="/library">
-                    <Navbar.Brand
-                      data-cy="goto-library"
-                      className="navbar-text-item library-tour-start"
-                    >
-                      <FormattedMessage id="Library" />
-                    </Navbar.Brand>
-                  </Link>
-                  <Link to="/lessons/library">
-                    <Navbar.Brand className="navbar-text-item">
-                      <FormattedMessage id="Lessons" />
-                    </Navbar.Brand>
-                  </Link>
-                  {(!isTeacher || (isTeacher && !teacherView)) && (
-                    <Link to="/flashcards">
-                      <Navbar.Brand className="navbar-text-item">
-                        <FormattedMessage id="Flashcards" />
-                      </Navbar.Brand>
-                    </Link>
-                  )}
-                  <Link
-                    data-cy="navbar-groups-button"
-                    to={isTeacher ? '/groups/teacher' : '/groups/student'}
-                  >
-                    <Navbar.Brand className="navbar-text-item">
-                      <FormattedMessage id="groups" />
-                    </Navbar.Brand>
-                  </Link>
-                </>
-              )}
             </div>
           </Nav>
           <Nav className="mr-auto">
-            <div className="navbar-containeimport { getPracticeHistory } from 'Utilities/redux/practiceReducer'r">
+            <div className="navbar-container">
               <Navbar.Text
                 onClick={handleEloClick}
                 onKeyDown={() => dispatch(setAnnotationsVisibility(true))}
               >
-                {
-                  showStoryElo && get_student_ability_score_component()
-                  // <Popup
-                  //   position="top center"
-                  //   // content={intl.formatMessage({ id: 'explanations-popup-story-elo' })}
-                  //   content={<FormattedHTMLMessage id="explanations-popup-story-elo" />}
-                  //   trigger={
-                  //     <div className="navbar-basic-item">
-                  //       <Icon name="star outline" style={{ margin: 0, width: '16px' }} />
-                  //       {  }
-                  //       {!irt_support_languages.includes(learningLanguage) ? storyElo : irtCalculationPending ? '...' : irt_dummy_score != undefined ? Math.round(irt_dummy_score) : '...'}
-                  //       {/* {storyElo} */}
-                  //     </div>
-                  //   }
-                  // />
-                }
+                { showStoryElo && get_student_ability_score_component() }
                 {showFlashcardElo && (
                   <Popup
                     position="top center"
@@ -400,6 +344,7 @@ export default function NavBar() {
           </Nav>
           {isTeacher && showTeacherViewSwitch && (
             <Nav>
+              <div style={{ marginTop: '0.5em', marginRight: '0.5em' }}><FormattedMessage id="student-view" /></div>
               <Checkbox
                 style={{ marginTop: '0.5em', marginRight: '0.5em' }}
                 toggle
@@ -412,7 +357,7 @@ export default function NavBar() {
           {(!isTeacher || (isTeacher && !teacherView)) && (
             <Nav>
               <Popup
-                content={<FormattedMessage id="level-navbar" />}
+                content={<FormattedMessage id="click-here-to-see-progress-explanation" />}
                 trigger={
                   <Link to="/profile/main" style={{ textDecoration: 'none' }}>
                     <Navbar.Brand className="navbar-level">{user.user.level}</Navbar.Brand>
@@ -428,210 +373,58 @@ export default function NavBar() {
                 <Icon name="broken chain" size="large" style={{ color: '#ff944d' }} />
               </Offline>
               {!smallWindow && (
-                <>
-                  <Button className="tour-button" onClick={handleTourStart}>
-                    <img src={images.direction} alt="direction icon" width="21" height="21" />
-                  </Button>
-                  {/* If tour is ongoing, then render the dropdown
-                    using the manual 'show' variable. These had to be separeted
-                    because during the tour it needs to be opened using the 'show' variable,
-                    but normally we don't want this because that disables the function that 
-                    closes the dropdown when the user clicks elsewhere */}
-                  {tourOngoing && (
-                    <NavDropdown
-                      className="navbar-dropdown-icon-cont"
-                      ref={profileDropdownRef}
-                      onClick={handleProfileButtonCLick}
-                      show={showProfileDropdown}
-                      title={
-                        <Icon
-                          className="navbar-dropdown-icon"
-                          data-cy="navbar-user-dropdown"
-                          name="user outline"
-                          size="large"
-                        />
-                      }
-                    >
-                      {user.user.email === 'anonymous_email' && (
+                <Popup
+                  position="top center"
+                  content={intl.formatMessage({ id: 'click-to-see-TOUR-explanation' })}
+                  trigger={
+                    <Button className="tour-button" onClick={handleTourStart}>
+                      <img src={images.direction} alt="direction icon" width="21" height="21" />
+                    </Button>
+                  }
+                />
+                
+              )}
+              {!smallWindow &&  user && user.user.last_used_language && (
+                <span style={{ position: 'relative', cursor: 'pointer' }}>
+                  <Link to="/learningLanguage">
+                    <Popup
+                      position="top center"
+                      content={intl.formatMessage({ id: 'click-to-change-learning-language-explanation' })}
+                      trigger={
                         <>
-                          <NavDropdown.Item
-                            className="navbar-register-button"
-                            as={Link}
-                            to="/register"
-                          >
-                            <FormattedMessage id="Register" />
-                          </NavDropdown.Item>
-                          <NavDropdown.Divider />
-                          <NavDropdown.Item onClick={signOut}>
-                            <FormattedMessage id="Login" />
-                          </NavDropdown.Item>
-                        </>
-                      )}
-                      {user.user.email !== 'anonymous_email' && (
-                        <>
-                          <span className="bold user-icon" style={{ padding: '1.5em' }}>
-                            {user.user.username}
-                          </span>
-                          <NavDropdown.Divider />
-                          <NavDropdown.Item className="profile-button" as={Link} to="/profile/main">
-                            <FormattedMessage id="Profile" />
-                          </NavDropdown.Item>
-                          <NavDropdown.Item
-                            className="progress-button"
-                            as={Link}
-                            to="/profile/progress"
-                          >
-                            <FormattedMessage id="Progress" />
-                          </NavDropdown.Item>
-                          <NavDropdown.Item data-cy="navbar-logout-button" onClick={signOut}>
-                            <FormattedMessage id="sign-out" />
-                          </NavDropdown.Item>
-                        </>
-                      )}
-                    </NavDropdown>
-                  )}
-                  {!tourOngoing && (
-                    <NavDropdown
-                      className="navbar-dropdown-icon-cont"
-                      ref={profileDropdownRef}
-                      title={
-                        <Icon
-                          className="navbar-dropdown-icon"
-                          data-cy="navbar-user-dropdown"
-                          name="user outline"
-                          size="large"
-                        />
-                      }
-                    >
-                      {user.user.email === 'anonymous_email' && (
-                        <>
-                          <NavDropdown.Item
-                            className="navbar-register-button"
-                            as={Link}
-                            to="/register"
-                          >
-                            <FormattedMessage id="Register" />
-                          </NavDropdown.Item>
-                          <NavDropdown.Divider />
-                          <NavDropdown.Item onClick={signOut}>
-                            <FormattedMessage id="Login" />
-                          </NavDropdown.Item>
-                        </>
-                      )}
-                      {user.user.email !== 'anonymous_email' && (
-                        <>
-                          <span className="bold user-icon" style={{ padding: '1.5em' }}>
-                            {user.user.username}
-                          </span>
-                          <NavDropdown.Divider />
-                          <NavDropdown.Item className="profile-button" as={Link} to="/profile/main">
-                            <FormattedMessage id="Profile" />
-                          </NavDropdown.Item>
-                          <NavDropdown.Item
-                            className="progress-button"
-                            as={Link}
-                            to="/profile/progress"
-                          >
-                            <FormattedMessage id="Progress" />
-                          </NavDropdown.Item>
-                          <NavDropdown.Item data-cy="navbar-logout-button" onClick={signOut}>
-                            <FormattedMessage id="sign-out" />
-                          </NavDropdown.Item>
-                        </>
-                      )}
-                    </NavDropdown>
-                  )}
-                  {user && user.user.last_used_language && (
-                    <span style={{ position: 'relative', cursor: 'pointer' }}>
-                      <Link to="/learningLanguage">
-                        <img
-                          className="tour-navbar-learning-language navbar-basic-icon navbar-flag"
-                          src={getLearningLanguageFlag()}
-                          alt="learningLanguageFlag"
-                        />
-                        {!isMajorLanguage && (
-                          <Popup
-                            position="top right"
-                            content={
-                              <FormattedMessage
-                                id="beta-language-warning"
-                                values={{ language: user.user.last_used_language }}
-                              />
-                            }
-                            trigger={
-                              <Label
-                                onClick={handleNewsClick}
-                                className="navbar-news-label"
-                                color="red"
-                                size="mini"
-                                floating
-                              >
-                                <span>&beta;</span>
-                              </Label>
-                            }
+                          <img
+                            className="tour-navbar-learning-language navbar-basic-icon navbar-flag"
+                            src={getLearningLanguageFlag()}
+                            alt="learningLanguageFlag"
                           />
-                        )}
-                      </Link>
-                    </span>
-                  )}
-                  <NavDropdown
-                    data-cy="navbar-info-dropdown"
-                    className="navbar-dropdown-icon-cont navbar-dropdown-icon-cont-HELP"
-                    title={
-                      <NavbarIcon
-                        imgSrc={images.infoIcon}
-                        altText="info icon"
-                        extraClass="navbar-dropdown-icon"
+                        </>
+                      }
+                    />
+                    
+                    {!isMajorLanguage && (
+                      <Popup
+                        position="top right"
+                        content={
+                          <FormattedMessage
+                            id="beta-language-warning"
+                            values={{ language: user.user.last_used_language }}
+                          />
+                        }
+                        trigger={
+                          <Label
+                            onClick={handleNewsClick}
+                            className="navbar-news-label"
+                            color="red"
+                            size="mini"
+                            floating
+                          >
+                            <span>&beta;</span>
+                          </Label>
+                        }
                       />
-                    }
-                  >
-                    {
-                      helpLink && (
-                        <NavDropdown.Item
-                          className="navbar-external-link"
-                          href={helpLink}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                        >
-                          <FormattedMessage id="help" /> & <FormattedMessage id="faq" />
-                        </NavDropdown.Item>
-                      )
-                    }
-                    { helpLink && <NavDropdown.Divider />}
-                    <NavDropdown.Item className="navbar-external-link" onClick={handleTourStart}>
-                      <FormattedMessage id="start-tour" />
-                    </NavDropdown.Item>
-                    <NavDropdown.Divider />
-                    <ContactUs
-                      trigger={
-                        <NavDropdown.Item>
-                          <FormattedMessage id="contact-us" />
-                        </NavDropdown.Item>
-                      }
-                    />
-                    <NavDropdown.Divider />
-                    <NavDropdown.Item
-                      data-cy="navbar-about-button"
-                      className="navbar-external-link"
-                      href="https://www2.helsinki.fi/en/projects/revita-language-learning-and-ai/about-the-project"
-                      target="_blank"
-                      rel="noopener noreferrer"
-                    >
-                      <FormattedMessage id="about" />
-                    </NavDropdown.Item>
-                    <NavDropdown.Divider />
-                    <TermsAndConditions
-                      trigger={
-                        <NavDropdown.Item data-cy="navbar-tc-button" style={{ fontSize: '0.8em' }}>
-                          <span>
-                            {intl.formatMessage({ id: 'terms-and-conditions' })}
-                            <br /> & {intl.formatMessage({ id: 'privacy-policy' })}
-                          </span>
-                        </NavDropdown.Item>
-                      }
-                    />
-                  </NavDropdown>
-                </>
+                    )}
+                  </Link>
+                </span>
               )}
               <Popup
                 trigger={
@@ -670,18 +463,11 @@ export default function NavBar() {
                   </a>
                 }
                 content={
-                  <FormattedMessage id="news-bell-info-popup-text" values={{ numUnreadNews }} />
+                  <FormattedMessage id="bell-explanation" values={{ numUnreadNews }} />
                 }
                 on="hover"
                 position="bottom right"
               />
-              <Link
-                to="/profile/settings"
-                data-cy="navbar-settings-button"
-                className="navbar-basic-icon"
-              >
-                <NavbarIcon imgSrc={images.settingsIcon} altText="gear icon" />
-              </Link>
             </div>
           </Nav>
         </Navbar.Collapse>
