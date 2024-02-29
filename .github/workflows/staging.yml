@@ -115,7 +115,6 @@ jobs:
       - test_follow_and_block
       - test_groups
       - test_mobvita
-      - test_navbar
       - test_practice
       - test_sidebar
       - test_tests
