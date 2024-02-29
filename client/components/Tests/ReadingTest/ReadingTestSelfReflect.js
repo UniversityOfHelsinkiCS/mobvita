@@ -14,7 +14,7 @@ const OpenEndedQuestion = ({ idx, question, answer, onAnswerChange }) => {
   
     return (
         <div className="open-ended-question" style={{padding: '0.5em'}}>
-            <label style={{ fontWeight: 'bold' }}>{question}</label>
+            <label style={{ fontWeight: 'bold' }}><FormattedMessage id={question} /></label>
             <textarea 
                 id={idx} 
                 value={answer} 
@@ -43,7 +43,7 @@ const UsefulSlider = ({ sliderQuestion, sliderValue, setSliderValue, doNotKnow, 
             alignItems: 'stretch',
             padding: '0.5em'
         }}>
-            <label style={{ fontWeight: 'bold' }}>{sliderQuestion}</label>
+            <label style={{ fontWeight: 'bold' }}><FormattedMessage id={sliderQuestion} /></label>
             <div className="space-between bold" style={{
                 display: 'flex',
                 alignItems: 'end', 
@@ -112,31 +112,31 @@ const ReadingTestSelfReflect = ({ currentReadingTestQuestion, prevReadingSet, cu
 
     useEffect(() => {
         let open_ended_questions = []
-        let sliderQuestion = "How useful was this feedback?"
+        let sliderQuestion = "experimental-after-first-mediation-slider-question"
         if (in_experimental_grp){
             if (currentQuestionIdxinSet < readingSetLength - 1 && receieved_feedback > 0 && questionDone){
                 open_ended_questions = [
-                    "Did the feedback change the way you approach the task? How?"
+                    "experimental-after-first-mediation-open-ended-question"
                 ]
-                sliderQuestion = "How useful was this feedback?"
+                sliderQuestion = "experimental-after-first-mediation-slider-question"
                 setIsEndSetQuestionair(false)
             } 
             else if (prevReadingSet !== currentReadingSet && receieved_feedback > 0) {
                 open_ended_questions = [
-                    "Did the feedback in the previous items change the way you read the texts? In what ways?",
-                    "Did you get any new ideas about how to answer reading questions?",
-                    "How does it feel?  What would you change in the exercises to make it easier to use?"
+                    "experimental-end-of-set-open-ended-question-a",
+                    "experimental-end-of-set-open-ended-question-b",
+                    "experimental-end-of-set-open-ended-question-c"
                 ]
-                sliderQuestion = "How useful do you think this feedback is now after these tasks?"
+                sliderQuestion = "experimental-after-last-item-slider-question"
                 setIsEndSetQuestionair(true)
             } else {
                 open_ended_questions = []
             }
         } else if (in_control_grp && !in_experimental_grp && receieved_feedback == 0 && prevReadingSet !== currentReadingSet){
             open_ended_questions = [
-                "How uncertain were you of your answers?",
-                "What kind of difficulties did you have? ",
-                "What kind of help would you wish for?"
+                "control-end-of-set-open-ended-question-a",
+                "control-end-of-set-open-ended-question-b",
+                "control-end-of-set-open-ended-question-c"
             ]
         } else {
             open_ended_questions = []

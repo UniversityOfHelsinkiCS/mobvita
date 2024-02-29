@@ -1551,9 +1551,9 @@
     "bell-explanation": "Sinulla on {} suositusta odottamassa",
     "download-reading-comprehension-report": "Download the report",
     "self-reflection-submit": "OK",
-    "reading-test-self-reflection-header": "",
+    "reading-test-self-reflection-header": "Vastaa pariin lyhyeen kysymykseen:",
     "elicitation-submit": "OK",
-    "first-time-meta-help-message": "",
+    "first-time-meta-help-message": "Tämä ei ollut paras valinta. Tarjoamme nyt apua ja vinkkejä…",
     "do-not-know": "En tiedä",
     "not-useful-at-all": "Ei hyödyllistä",
     "very-useful": "Erittäin hyödyllistä",
@@ -1571,5 +1571,8 @@
     "control-intro-to-open-ended-questions": "Hyvin tehty! Hienosti onnistuit! Vastaa muutamaan viimeiseen kysymykseen.",
     "control-end-of-set-open-ended-question-a": "Kuinka epävarma olit vastauksistasi?",
     "control-end-of-set-open-ended-question-b": "Millaisia vaikeuksia sinulla oli?",
-    "control-end-of-set-open-ended-question-c": "Millaista apua toivoisit?"
+    "control-end-of-set-open-ended-question-c": "Millaista apua toivoisit?",
+    "elicitation-construct-specific-details-NOT-USED": "En löydä tekstistä oikeaa kohtaa",
+    "elicitation-construct-deducing-vocabulary-NOT-USED": "Joidenkin sanojen merkitystä en ymmärrä",
+    "confirm-next-set": "Confirm"
 }

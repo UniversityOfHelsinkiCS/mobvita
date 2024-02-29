@@ -1553,9 +1553,9 @@
     "bell-explanation": "Вас ожидают {} рекомендаций",
     "download-reading-comprehension-report": "Download the report",
     "self-reflection-submit": "OK",
-    "reading-test-self-reflection-header": "",
+    "reading-test-self-reflection-header": "Пожалуйста, ответь на пару коротких вопросов:",
     "elicitation-submit": "OK",
-    "first-time-meta-help-message": "",
+    "first-time-meta-help-message": "Это не лучший вариант. Мы предложим тебе помощь и подсказки…",
     "do-not-know": "Я не знаю",
     "not-useful-at-all": "Бесполезно",
     "very-useful": "Очень полезно",
@@ -1573,5 +1573,8 @@
     "control-intro-to-open-ended-questions": "Отлично! Пожалуйста, ответь на несколько заключительных вопросов.",
     "control-end-of-set-open-ended-question-a": "Насколько ты был не уверен в своих ответах?",
     "control-end-of-set-open-ended-question-b": "Какие трудности у тебя возникли?",
-    "control-end-of-set-open-ended-question-c": "Какую помощь ты бы хотел получить?"
+    "control-end-of-set-open-ended-question-c": "Какую помощь ты бы хотел получить?",
+    "elicitation-construct-specific-details-NOT-USED": "Не могу найти нужное место в тексте",
+    "elicitation-construct-deducing-vocabulary-NOT-USED": "Не понимаю значения некоторых слов",
+    "confirm-next-set": "Confirm"
 }

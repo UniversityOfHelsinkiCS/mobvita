@@ -1550,9 +1550,9 @@
     "bell-explanation": "Hai {} suggerimenti in attesa",
     "download-reading-comprehension-report": "Download the report",
     "self-reflection-submit": "OK",
-    "reading-test-self-reflection-header": "",
+    "reading-test-self-reflection-header": "Per favore rispondi ad un paio di brevi domande:",
     "elicitation-submit": "OK",
-    "first-time-meta-help-message": "",
+    "first-time-meta-help-message": "This was not the best option. We will now offer some help and hints…",
     "do-not-know": "Non lo so",
     "not-useful-at-all": "Inutile",
     "very-useful": "Molto utile",
@@ -1570,5 +1570,8 @@
     "control-intro-to-open-ended-questions": "Ben fatto! Sei stato bravissimo! Per favore rispondi ad alcune domande finali.",
     "control-end-of-set-open-ended-question-a": "Quanto eri incerto riguardo alle tue risposte?",
     "control-end-of-set-open-ended-question-b": "Che tipo di difficoltà hai avuto?",
-    "control-end-of-set-open-ended-question-c": "Che tipo di aiuto vorresti?"
+    "control-end-of-set-open-ended-question-c": "Che tipo di aiuto vorresti?",
+    "elicitation-construct-specific-details-NOT-USED": "Non trovо il posto giusto nel testo",
+    "elicitation-construct-deducing-vocabulary-NOT-USED": "Non capisco il senso di alcune parole",
+    "confirm-next-set": "Confirm"
 }

@@ -1553,9 +1553,9 @@
     "click-to-change-learning-language-explanation": "Click here to change the language you are learning",
     "bell-explanation": "You have {} recommendations waiting",
     "self-reflection-submit": "OK",
-    "reading-test-self-reflection-header": "",
+    "reading-test-self-reflection-header": "Please answer a couple of short questions:",
     "elicitation-submit": "OK",
-    "first-time-meta-help-message": "",
+    "first-time-meta-help-message": "This was not the best option. We will now offer some help and hints…",
     "do-not-know": "I don't know",
     "not-useful-at-all": "Not useful",
     "very-useful": "Very useful",
@@ -1573,5 +1573,8 @@
     "control-intro-to-open-ended-questions": "Well done! You did great! Please answer a few final questions.",
     "control-end-of-set-open-ended-question-a": "How uncertain were you of your answers?",
     "control-end-of-set-open-ended-question-b": "What kind of difficulties did you have?",
-    "control-end-of-set-open-ended-question-c": "What kind of help would you wish for?"
+    "control-end-of-set-open-ended-question-c": "What kind of help would you wish for?",
+    "elicitation-construct-specific-details-NOT-USED": "I can’t find the right place in the text",
+    "elicitation-construct-deducing-vocabulary-NOT-USED": "I don’t understand the meaning of some words",
+    "confirm-next-set": "Confirm"
 }
