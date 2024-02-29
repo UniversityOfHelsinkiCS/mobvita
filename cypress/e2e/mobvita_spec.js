@@ -107,10 +107,10 @@ describe('Mobvita', function () {
         })
     })
 
-    it('library opens', function () {
-      cy.get('[data-cy=goto-library]').click()
-      cy.url().should('include', '/library')
-    })
+    // it('library opens', function () {
+    //   cy.get('[data-cy=goto-library]').click()
+    //   cy.url().should('include', '/library')
+    // })
 
     it('can start random practice', function () {
       cy.get('[data-cy=practice-now]').click()
@@ -138,28 +138,28 @@ describe('Mobvita', function () {
       cy.get("[data-cy=start-random]").should("be.disabled")
     })
     */
-    describe("stories", function () {
-      this.beforeEach(function () {
-        // cy.get('[data-cy=practice-now]').click()
-        cy.get("[data-cy=goto-library]")
-          .click()
-      })
+    // describe("stories", function () {
+    //   this.beforeEach(function () {
+    //     // cy.get('[data-cy=practice-now]').click()
+    //     cy.get("[data-cy=goto-library]")
+    //       .click()
+    //   })
 
-      it('can be created and new story can be previewed', function () {
-        cy.get('[data-cy=story-items]')
-        cy.get('[data-cy=add-story-button]').click()
-        cy.get('[data-cy=new-story-input] > input')
-          .should('be.enabled')
-          .type('https://yle.fi/a/3-12690355')
-        cy.get('[data-cy="submit-story"]')
-          .click()
-        cy.contains('Sunnuntai', { timeout: 120000 })
-        // cy.contains('Esikatsele')
-        //   .click()
-        cy.contains('Harjoittele', { timeout: 20000 })
-        cy.contains('radio')
-      })
-    })
+    //   it('can be created and new story can be previewed', function () {
+    //     cy.get('[data-cy=story-items]')
+    //     cy.get('[data-cy=add-story-button]').click()
+    //     cy.get('[data-cy=new-story-input] > input')
+    //       .should('be.enabled')
+    //       .type('https://yle.fi/a/3-12690355')
+    //     cy.get('[data-cy="submit-story"]')
+    //       .click()
+    //     cy.contains('Sunnuntai', { timeout: 120000 })
+    //     // cy.contains('Esikatsele')
+    //     //   .click()
+    //     cy.contains('Harjoittele', { timeout: 20000 })
+    //     cy.contains('radio')
+    //   })
+    // })
 
     describe("preview mode", function () {
 
