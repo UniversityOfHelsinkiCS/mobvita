@@ -128,19 +128,14 @@ export default function NavBar() {
         dispatch(startProgressTour())
       }
     } else if (history.location.pathname.includes('lessons')) {
-      dispatch(sidebarSetOpen(false))
       dispatch(startLessonsTour())
     } else if (history.location.pathname.includes('library')) {
-      dispatch(sidebarSetOpen(false))
       dispatch(startLibraryTour())
     } else if (history.location.pathname.includes('preview')) {
-      dispatch(sidebarSetOpen(false))
       dispatch(startPracticeTour())
     } else if (history.location.pathname.includes('/practice')) {
-      dispatch(sidebarSetOpen(false))
       dispatch({ type: 'PRACTICE_TOUR_ALTERNATIVE' })
     } else {
-      dispatch(sidebarSetOpen(false))
       dispatch({ type: 'TOUR_RESTART' })
     }
   }
@@ -463,7 +458,7 @@ export default function NavBar() {
                   </a>
                 }
                 content={
-                  <FormattedMessage id="bell-explanation" values={{ numUnreadNews }} />
+                  <FormattedMessage id="news-bell-info-popup-text" values={{ numUnreadNews }} />
                 }
                 on="hover"
                 position="bottom right"

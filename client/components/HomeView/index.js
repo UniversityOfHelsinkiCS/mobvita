@@ -12,7 +12,6 @@ import Footer from 'Components/Footer'
 import AddStoryModal from 'Components/AddStoryModal'
 import SetCEFRReminder from 'Components/SetCEFRReminder'
 import BetaLanguageModal from 'Components/BetaLanguageModal'
-import { sidebarSetOpen } from 'Utilities/redux/sidebarReducer'
 import { startTour } from 'Utilities/redux/tourReducer'
 import { homeTourViewed } from 'Utilities/redux/userReducer'
 import Recommender from 'Components/NewEncouragements/Recommender'
@@ -287,7 +286,6 @@ const HomeView = () => {
   useEffect(() => {
     if (!user.user.has_seen_home_tour) {
       dispatch(homeTourViewed())
-      dispatch(sidebarSetOpen(false))
       dispatch(startTour())
     }
   }, [])

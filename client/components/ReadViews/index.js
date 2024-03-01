@@ -34,7 +34,7 @@ import StoryTopics from 'Components/StoryView/StoryTopics'
 import Footer from '../Footer'
 import ScrollArrow from '../ScrollArrow'
 import { startPracticeTour } from 'Utilities/redux/tourReducer'
-import { sidebarSetOpen } from 'Utilities/redux/sidebarReducer'
+
 
 const ReadViews = ({ match }) => {
   const dispatch = useDispatch()
@@ -116,7 +116,6 @@ const ReadViews = ({ match }) => {
   useEffect(() => {
     if (!user?.user.has_seen_practice_tour) {
       dispatch(practiceTourViewed())
-      dispatch(sidebarSetOpen(false))
       dispatch(startPracticeTour())
     }
   }, [])

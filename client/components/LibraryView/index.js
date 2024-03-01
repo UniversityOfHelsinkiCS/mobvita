@@ -18,7 +18,6 @@ import {
 import { getAllStories, setLastQuery } from 'Utilities/redux/storiesReducer'
 import useWindowDimensions from 'Utilities/windowDimensions'
 import AddStoryModal from 'Components/AddStoryModal'
-import { sidebarSetOpen } from 'Utilities/redux/sidebarReducer'
 import { startLibraryTour } from 'Utilities/redux/tourReducer'
 import LibrarySearch from './LibrarySearch'
 
@@ -145,7 +144,6 @@ const StoryList = () => {
   useEffect(() => {
     if (!user.user.has_seen_library_tour) {
       dispatch(libraryTourViewed())
-      dispatch(sidebarSetOpen(false))
       dispatch(startLibraryTour())
     }
   }, [])

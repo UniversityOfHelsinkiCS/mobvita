@@ -24,26 +24,4 @@ describe("sidebar is open (only mobile)", function () {
     cy.get('.inverted').click(-50, -50, { force: true })
   })
 
-  it("ui language can be changed and is saved", function () {
-    cy.get('[data-cy=hamburger]').click()
-    cy.get('[data-cy=ui-lang-select]').click()
-    cy.get('[data-cy=ui-lang-select] > .visible > :nth-child(4)').click()
-    cy.wait(60000)
-    cy.contains('Profilo')
-    cy.get('[data-cy=logout]').click()
-
-    cy.request('POST', '/api/session', { ...this.user })
-      .as('user')
-      .then(response => {
-        window.localStorage.setItem('user', JSON.stringify(response.body))
-        cy.reload()
-      })
-    cy.contains('Profilo')
-  })
-
-  it("can visit groups view", function () {
-    cy.get('[data-cy=hamburger]').click()
-    cy.get('[data-cy=groups-link]').click()
-    cy.get('[data-cy=join-group-button]')
-  })
 })

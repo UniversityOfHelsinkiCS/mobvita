@@ -4,7 +4,6 @@ import { useDispatch, useSelector } from 'react-redux'
 import { Divider, Modal } from 'semantic-ui-react'
 import { Button } from 'react-bootstrap'
 import { Link } from 'react-router-dom'
-import { sidebarSetOpen } from 'Utilities/redux/sidebarReducer'
 import { updateUserGrade, updateIsTeacher } from 'Utilities/redux/userReducer'
 import CERFLevelSlider from './CEFRLevelSlider'
 
@@ -16,12 +15,7 @@ const SetCEFRReminder = ({ open, setOpen, newUser }) => {
 
   // const user = useSelector(({ user }) => user.data)
   // const lastUsedLanguage = user.user.last_used_language
-/*
-  const startTour = () => {
-    dispatch(sidebarSetOpen(false))
-    dispatch({ type: 'TOUR_RESTART' })
-  }
-*/
+
   const closeModal = () => {
     setOpen(false)
     /*

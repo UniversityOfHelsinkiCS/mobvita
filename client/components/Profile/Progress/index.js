@@ -16,7 +16,6 @@ import {
   openEncouragement,
   showIcon,
 } from 'Utilities/redux/encouragementsReducer'
-import { sidebarSetOpen } from 'Utilities/redux/sidebarReducer'
 import { startProgressTour } from 'Utilities/redux/tourReducer'
 import ProgressGraph from 'Components/ProgressGraph'
 import Spinner from 'Components/Spinner'
@@ -136,7 +135,6 @@ const Progress = () => {
   useEffect(() => {
     if (!user.user.has_seen_progress_tour) {
       dispatch(progressTourViewed())
-      dispatch(sidebarSetOpen(false))
       dispatch({ type: 'SHOW_PROFILE_DROPDOWN' })
       if (user.user.email === 'anonymous_email') {
         dispatch({ type: 'ANONYMOUS_PROGRESS_TOUR_RESTART' })

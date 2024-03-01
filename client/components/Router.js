@@ -28,6 +28,7 @@ import {
   closeFCEncouragement,
   openEncouragement,
 } from 'Utilities/redux/encouragementsReducer'
+import { sidebarSetOpen } from 'Utilities/redux/sidebarReducer'
 import GroupAnalytics from './GroupView/GroupAnalytics'
 import GroupPeople from './GroupView/GroupPeople'
 import Concepts from './Concepts'
@@ -68,7 +69,13 @@ export default () => {
     ) {
       dispatch(openEncouragement())
     }
+    dispatch(sidebarSetOpen(!(location.pathname.includes('stories') ||
+    location.pathname.includes('compete') ||
+    location.pathname.includes('flashcards') ||
+    location.pathname.includes('crossword') ||
+    location.pathname.includes('test'))))
   }, [location.pathname])
+  
   return (
     <Switch>
       <Route exact path="/">

@@ -1186,6 +1186,9 @@ $value in $spacing {
   height: 20vh;
 }
 
+.ui.sidebar{
+  overflow-y: visible !important;
+}
 .sidebar {
   &-hamburger {
     z-index: 102;

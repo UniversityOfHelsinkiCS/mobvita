@@ -25,7 +25,6 @@ import {
 } from 'Utilities/redux/lessonInstanceReducer'
 import { getMetadata } from 'Utilities/redux/metadataReducer'
 import { getGroups } from 'Utilities/redux/groupsReducer'
-import { sidebarSetOpen } from 'Utilities/redux/sidebarReducer'
 import { startLessonsTour } from 'Utilities/redux/tourReducer'
 import { lessonsTourViewed, updateGroupSelect, updateLibrarySelect } from 'Utilities/redux/userReducer'
 
@@ -142,7 +141,6 @@ const LessonList = () => {
     if (!lessonPending && !metaPending && !has_seen_lesson_tour ) {
       dispatch(setLessonStep(0))
       dispatch(lessonsTourViewed())
-      dispatch(sidebarSetOpen(false))
       dispatch(startLessonsTour())
     }
     

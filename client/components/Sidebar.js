@@ -1,7 +1,16 @@
 import React, { useState, useEffect, useCallback, useRef } from 'react'
 import { Link } from 'react-router-dom'
-import { Sidebar as SemanticSidebar, Menu, Icon, Dropdown, Segment } from 'semantic-ui-react'
+import { 
+  Sidebar as SemanticSidebar, 
+  Menu, 
+  Icon, 
+  Dropdown, 
+  Segment,
+  DropdownItem,
+  DropdownMenu
+} from 'semantic-ui-react'
 import { useDispatch, useSelector } from 'react-redux'
+import { useIntl } from 'react-intl' 
 import { Swipeable } from 'react-swipeable'
 import { FormattedMessage } from 'react-intl'
 import { localeOptions, capitalize, localeNameToCode, images, timerExpired } from 'Utilities/common'
@@ -20,6 +29,7 @@ import { Button } from 'react-bootstrap'
 import useWindowDimensions from 'Utilities/windowDimensions'
 import ContactUs from './StaticContent/ContactUs'
 import LearningSettingsModal from './LearningSettingsModal'
+import PracticeModal from './HomeView/PracticeModal'
 import { hiddenFeatures } from 'Utilities/common'
 
 export default function Sidebar({ history }) {
@@ -30,7 +40,8 @@ export default function Sidebar({ history }) {
   const learningLanguage = user?.user?.last_used_language
   const locale = useSelector(({ locale }) => locale)
   const [localeDropdownOptions, setLocaleDropdownOptions] = useState([])
-
+  const [practiceModalOpen, setPracticeModalOpen] = useState(false)
+  const intl = useIntl()
   const isTeacher = user?.user.is_teacher
 
   const handleLocaleChange = newLocale => {
@@ -54,7 +65,13 @@ export default function Sidebar({ history }) {
   }, [])
 
   useEffect(() => {
-    if (open) document.addEventListener('mousedown', handleOutSideClick, false)
+    const fixed = !(history.location.pathname.includes('stories') ||
+    history.location.pathname.includes('compete') ||
+    history.location.pathname.includes('flashcards') ||
+    history.location.pathname.includes('crossword') ||
+    history.location.pathname.includes('test'))
+    
+    if (open && !fixed) document.addEventListener('mousedown', handleOutSideClick, false)
     else document.removeEventListener('mousedown', handleOutSideClick, false)
   }, [open])
 
@@ -63,33 +80,7 @@ export default function Sidebar({ history }) {
     history.push('/')
   }
 
-  const activityCheckInterval = setInterval(() => {
-    const requestStorage = localStorage.getItem('last_request')
-    const parsedDate = Date.parse(requestStorage)
-
-    const needsRefreshing = timerExpired(parsedDate, 10)
-    if (needsRefreshing) {
-      const requestSentAt = new Date()
-      window.localStorage.setItem('last_request', requestSentAt)
-      history.push('/welcome')
-    }
-  }, 36_000_000)
-
-  const menuClickWrapper = func => {
-    if (func) func()
-
-    dispatch(sidebarSetOpen(false))
-  }
-
-  const getLearningLanguageFlag = () => {
-    const lastUsedLanguage = user.user.last_used_language
-
-    if (lastUsedLanguage) {
-      return images[`flag${capitalize(lastUsedLanguage.split('-').join(''))}`]
-    }
-    return null
-  }
-
+  
   const handleTourStart = () => {
     if (history.location.pathname.includes('profile')) {
       if (!history.location.pathname.includes('progress')) {
@@ -101,10 +92,8 @@ export default function Sidebar({ history }) {
         dispatch(startProgressTour())
       }
     } else if (history.location.pathname.includes('lessons') && hiddenFeatures) {
-      dispatch(sidebarSetOpen(false))
       dispatch(startLessonsTour())
     } else if (history.location.pathname.includes('library')) {
-      dispatch(sidebarSetOpen(false))
       dispatch(startLibraryTour())
     } else if (history.location.pathname.includes('preview') && hiddenFeatures) {
       dispatch(sidebarSetOpen(false))
@@ -113,7 +102,6 @@ export default function Sidebar({ history }) {
       dispatch(sidebarSetOpen(false))
       dispatch({ type: 'PRACTICE_TOUR_ALTERNATIVE' })
     } else {
-      dispatch(sidebarSetOpen(false))
       dispatch({ type: 'TOUR_RESTART' })
     }
   }
@@ -127,273 +115,164 @@ export default function Sidebar({ history }) {
   const smallWindow = useWindowDimensions().width < 640
 
   return (
-    <>
-      <Swipeable
-        className="sidebar-swipeable"
-        onSwipedRight={() => dispatch(sidebarSetOpen(true))}
-        onSwipedLeft={() => dispatch(sidebarSetOpen(false))}
-        trackMouse
-      >
-        <SemanticSidebar as={Menu} animation="push" icon="labeled" vertical visible={open}>
-          <div className="sidebar-content" ref={sidebar}>
-            <div style={{ padding: '0.5em 1em 0em 0.5em', display: 'flex' }}>
-              <Icon
-                name="bars"
-                size="big"
-                onClick={() => menuClickWrapper()}
-                className="sidebar-hamburger"
-                style={{ position: 'fixed', paddingTop: 0 }}
+    <SemanticSidebar as={Menu} animation="push" icon="labeled" vertical visible={open} >
+      <PracticeModal open={practiceModalOpen} setOpen={setPracticeModalOpen} />
+      <div className="sidebar-content" ref={sidebar}>
+        <div style={{ padding: '0.5em 1em 0em 0.5em', display: 'flex' }}>
+          <Icon
+            name="bars"
+            size="big"
+            className="sidebar-hamburger"
+            style={{ position: 'fixed', paddingTop: 0 }}
+          />
+          <div
+            style={{
+              padding: '2.5em 1.5em 1em 1.5em',
+              display: 'flex',
+              flexDirection: 'column',
+              marginRight: 'auto',
+              marginLeft: 'auto',
+            }}
+          >
+            <Link to="/home">
+              <img
+                style={{ width: '15em', margin: '6px auto' }}
+                src={images.logo}
+                alt="revitaLogo"
               />
-              <div
-                style={{
-                  padding: '2.5em 1.5em 1em 1.5em',
-                  display: 'flex',
-                  flexDirection: 'column',
-                  marginRight: 'auto',
-                  marginLeft: 'auto',
-                }}
-              >
-                <Link to="/home" onClick={() => menuClickWrapper()}>
-                  <img
-                    style={{ width: '15em', margin: '6px auto' }}
-                    src={images.logo}
-                    alt="revitaLogo"
-                  />
-                </Link>
-              </div>
-              {user && (
-                <button
-                  type="button"
-                  data-cy="logout"
-                  onClick={() => menuClickWrapper(signOut)}
-                  className="logout-button"
-                >
-                  <span className="padding-right-1">
-                    <FormattedMessage
-                      id={user.user.email === 'anonymous_email' ? 'Login' : 'sign-out'}
-                    />
-                    &nbsp;&nbsp;&nbsp;&nbsp;
-                  </span>
-                  <Icon name="sign out" />
-                </button>
-              )}
-            </div>
-            {!smallWindow && <a className="padding-bottom-1" />}
+            </Link>
+          </div>
+        </div>
+        {!smallWindow && <a className="padding-bottom-1" />}
 
-            {user && (
-              <>
-                {user.user.email === 'anonymous_email' && (
-                  <Menu.Item>
-                    <div style={{ padding: '0.5em 0em' }}>
-                      <Link onClick={() => menuClickWrapper()} to="/register">
-                        <Button 
-                          block 
-                          variant="primary"
-                          className="sidebar-register-button"
-                        >
-                          <FormattedMessage id="register-to-save-your-progress" />
-                        </Button>
-                      </Link>
-                    </div>
-                  </Menu.Item>
-                )}
-
-                <Menu.Item>
-                  <Link to="/learningLanguage" onClick={() => menuClickWrapper()}>
-                    <Button variant="primary" block className="tour-learning-language">
-                      <div
-                        style={{
-                          display: 'flex',
-                          justifyContent: 'space-around',
-                          alignItems: 'center',
-                        }}
-                      >
-                        <span>
-                          <FormattedMessage id="Learning-language" />
-                        </span>
-                        {user && user.user.last_used_language && (
-                          <img
-                            style={{
-                              height: '1.7em',
-                              position: 'absolute',
-                              left: '2em',
-                              border: '1px solid black',
-                              borderRadius: '6px',
-                            }}
-                            src={getLearningLanguageFlag()}
-                            alt="learningLanguageFlag"
-                          />
-                        )}
-                      </div>
-                    </Button>
-                  </Link>
-
-                  <>
-                    {/* <LearningSettingsModal
-                      trigger={
-                        <Button
-                          onClick={() => menuClickWrapper()}
-                          variant="secondary"
-                          block
-                          style={{ marginTop: marginTopButton }}
-                        >
-                          <Icon name="settings" /> <FormattedMessage id="learning-settings" />
-                        </Button>
-                      }
-                    /> */}
-                    <Link to="/profile/main">
-                      <Button
-                        className='sidebar-profile-button'
-                        data-cy="settings-link"
-                        variant="secondary"
-                        style={{ marginTop: marginTopButton }}
-                        onClick={() => menuClickWrapper()}
-                        block
-                      >
-                        <Icon name="user" /> <FormattedMessage id="Profile" />
-                      </Button>
-                    </Link>
-                    <Link to="/library">
-                      <Button
-                        className="sidebar-library-button"
-                        variant="secondary"
-                        style={{ marginTop: marginTopButton }}
-                        onClick={() => menuClickWrapper()}
-                        block
-                      >
-                        <Icon name="book" /> <FormattedMessage id="Library" />
-                      </Button>
-                    </Link>
-                    <Link to="/lessons/library">
-                      <Button
-                        variant="secondary"
-                        style={{ marginTop: marginTopButton }}
-                        onClick={() => menuClickWrapper()}
-                        block
-                      >
-                        <Icon size="small" name="calendar check outline" bordered />{' '}
-                        <FormattedMessage id="Lessons" />
-                      </Button>
-                    </Link>
-                    <Link to="/flashcards">
-                      <Button
-                        variant="secondary"
-                        style={{ marginTop: marginTopButton }}
-                        onClick={() => menuClickWrapper()}
-                        block
-                      >
-                        <Icon size="small" name="question" bordered />{' '}
-                        <FormattedMessage id="Flashcards" />
-                      </Button>
-                    </Link>
-                  </>
-
-                  <Link to={isTeacher ? '/groups/teacher' : '/groups/student'}>
-                    <Button
-                      data-cy="groups-link"
-                      variant="secondary"
-                      style={{ marginTop: marginTopButton }}
-                      onClick={() => menuClickWrapper()}
-                      block
+        {user && (
+          <>
+            {user.user.email === 'anonymous_email' && (
+              <Menu.Item>
+                <div style={{ padding: '0.5em 0em' }}>
+                  <Link  to="/register">
+                    <Button 
+                      block 
+                      variant="primary"
+                      className="sidebar-register-button"
                     >
-                      <Icon name="group" /> <FormattedMessage id="groups" />
+                      <FormattedMessage id="register-to-save-your-progress" />
                     </Button>
                   </Link>
-                </Menu.Item>
-              </>
+                </div>
+              </Menu.Item>
             )}
 
             <Menu.Item>
-              <div style={{ textAlign: 'left', marginTop: marginTopButton, paddingBottom: '3px' }}>
-                <FormattedMessage id="interface-language" />:
-              </div>
-              <Dropdown
-                fluid
-                placeholder="Choose interface language..."
-                value={actualLocale}
-                options={localeDropdownOptions}
-                selection
-                onChange={(e, data) => handleLocaleChange(data.value)}
-                data-cy="ui-lang-select"
-                style={{ color: '#777', marginTop: marginTopButton }}
-              />
-            </Menu.Item>
-            {user && (
-              <div style={{ fontSize: '18px', color: '#777' }}>{`${user.user.username}`}</div>
-            )}
-            <div
-              style={{
-                marginTop: 'auto',
-                color: 'slateGrey',
-              }}
-            >
-              <Menu.Item style={{ paddingBottom: '0px' }}>
-                {learningLanguage && (
-                  <Button
-                    className='tour-mobile-start-button'
-                    variant="secondary"
-                    block
-                    style={{ marginTop: marginTopButton }}
-                    onClick={() => handleTourStart()}
-                    as={Link}
-                  >
-                    <Icon name="info circle" /> <FormattedMessage id="start-tour" />
-                  </Button>
-                )}
+              <>
                 <Button
+                  className='sidebar-profile-button'
+                  data-cy="settings-link"
                   variant="secondary"
-                  block
                   style={{ marginTop: marginTopButton }}
-                  onClick={() => menuClickWrapper()}
-                  as={Link}
-                  to="/help"
+                  onClick={() => setPracticeModalOpen(true)}
+                  block
                 >
-                  <Icon name="help circle" /> <FormattedMessage id="help" />
+                  <Icon name="user" /> <FormattedMessage id="practice-now" />
                 </Button>
-              </Menu.Item>
-            </div>
-            <div style={{ color: 'slateGrey' }}>
-              <Menu.Item
-                style={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-between' }}
-              >
-                <Button
-                  onClick={() => menuClickWrapper()}
-                  data-cy="about-button"
-                  variant="secondary"
-                  href="https://www2.helsinki.fi/en/projects/revita-language-learning-and-ai/about-the-project"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  style={{ flexBasis: '50%', marginRight: '0.5em' }}
-                >
-                  <FormattedMessage id="about" />
-                </Button>
-                <ContactUs
-                  trigger={
-                    <Button
-                      variant="secondary"
-                      onClick={() => menuClickWrapper()}
-                      style={{ flexBasis: '50%', marginRight: '0.5em' }}
-                    >
-                      <FormattedMessage id="contact-us" />
-                    </Button>
-                  }
-                />
-              </Menu.Item>
-              <TermsAndConditions
-                trigger={
-                  <Button data-cy="tc-button" onClick={() => menuClickWrapper()} variant="link">
-                    {' '}
-                    Terms and Conditions, Privacy Policy{' '}
+                <Link to="/library">
+                  <Button
+                    className="sidebar-library-button"
+                    variant="secondary"
+                    style={{ marginTop: marginTopButton }}
+                    
+                    block
+                  >
+                    <Icon name="book" /> <FormattedMessage id="Library" />
                   </Button>
-                }
+                </Link>
+                <Link to="/lessons/library">
+                  <Button
+                    variant="secondary"
+                    style={{ marginTop: marginTopButton }}
+                    
+                    block
+                  >
+                    <Icon size="small" name="calendar check outline" bordered />{' '}
+                    <FormattedMessage id="Lessons" />
+                  </Button>
+                </Link>
+                <Link to="/flashcards">
+                  <Button
+                    variant="secondary"
+                    style={{ marginTop: marginTopButton }}
+                    block
+                  >
+                    <Icon size="small" name="question" bordered />{' '}
+                    <FormattedMessage id="Flashcards" />
+                  </Button>
+                </Link>
+              </>
+
+              
+            </Menu.Item>
+          </>
+        )}
+        {user && (
+          <div style={{ fontSize: '18px', color: '#777' }}>{`${user.user.username}`}</div>
+        )}
+        <div
+          style={{
+            marginTop: 'auto',
+            color: 'slateGrey',
+          }}
+        >
+          <Menu.Item style={{ paddingBottom: '0px' }}>
+          <Dropdown item text='More'>
+            <DropdownMenu>
+              <DropdownItem text={intl.formatMessage({id: 'groups'})} icon='group' as={Link} to={isTeacher ? '/groups/teacher' : '/groups/student'}/>
+              <DropdownItem 
+                text={intl.formatMessage({id: 'Settings'})} 
+                icon='settings' 
+                as={Link} 
+                to={'/profile/settings'}
+                data-cy="navbar-settings-button"
               />
-              {/* eslint-disable no-undef */}
-              <div>{`Built: ${__VERSION__}`}</div>
-              <div>{`${__COMMIT__}`}</div>
-            </div>
-          </div>
-        </SemanticSidebar>
-      </Swipeable>
-    </>
+              <DropdownItem as={Link} to="/profile/main" text={intl.formatMessage({id: 'Profile'})} icon="user outline" />
+              {learningLanguage && (
+                <DropdownItem
+                  className='tour-mobile-start-button'
+                  onClick={() => handleTourStart()}
+                  text={intl.formatMessage({id: 'start-tour'})} icon='info circle'
+                />
+              )}
+              <DropdownItem as={Link} to="/help" text={intl.formatMessage({id: 'help'})} icon='help circle' />
+              <DropdownItem
+                data-cy="about-button"
+                as={Link}
+                to={{pathname: "https://www2.helsinki.fi/en/projects/revita-language-learning-and-ai/about-the-project"}}
+                target="_blank"
+                rel="noopener noreferrer"
+                text={intl.formatMessage({id: 'about'})}
+              />
+              <DropdownItem>
+                <ContactUs trigger={<a><FormattedMessage id="contact-us" /></a>} />
+              </DropdownItem>
+            </DropdownMenu>
+          </Dropdown>
+           
+            
+          </Menu.Item>
+        </div>
+        <div style={{ color: 'slateGrey' }}>
+          <TermsAndConditions
+            trigger={
+              <Button data-cy="tc-button"  variant="link">
+                {' '}
+                Terms and Conditions, Privacy Policy{' '}
+              </Button>
+            }
+          />
+          {/* eslint-disable no-undef */}
+          <div>{`Built: ${__VERSION__}`}</div>
+          <div>{`${__COMMIT__}`}</div>
+        </div>
+      </div>
+    </SemanticSidebar>
   )
 }

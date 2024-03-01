@@ -146,13 +146,10 @@ const Tour = () => {
         // home tour control
         if (tourState.steps === homeTourSteps) {
           if (index === 0) {
-            dispatch(sidebarSetOpen(false))
             if (!history.location.pathname.includes('/home')) {
               history.push('/home')
             }
           } else if (index === 1 || index === 8) {
-            dispatch(sidebarSetOpen(true))
-
             setTimeout(() => {
               dispatch(handleNextTourStep(index + (action === ACTIONS.PREV ? -1 : 1)))
             }, 600)
@@ -169,13 +166,11 @@ const Tour = () => {
             setTimeout(() => {
               confettiRain()
             }, 800)
-            dispatch(sidebarSetOpen(false))
           }
         }
         // library tour control
         if (tourState.steps === libraryTourSteps) {
           if (index === 3) {
-            dispatch(sidebarSetOpen(true))
 
             setTimeout(() => {
               dispatch(handleNextTourStep(index + (action === ACTIONS.PREV ? -1 : 1)))
@@ -186,8 +181,6 @@ const Tour = () => {
         // progress tour control
         if (tourState.steps === progressTourSteps) {
           if (index === 2) {
-            dispatch(sidebarSetOpen(true))
-
             setTimeout(() => {
               dispatch(handleNextTourStep(index + (action === ACTIONS.PREV ? -1 : 1)))
               window.dispatchEvent(new Event('resize'))
@@ -206,7 +199,6 @@ const Tour = () => {
             history.push(`${newPath}practice/`)
           }
           if (index === 7) {
-            dispatch(sidebarSetOpen(true))
 
             setTimeout(() => {
               dispatch(handleNextTourStep(index + (action === ACTIONS.PREV ? -1 : 1)))
@@ -217,8 +209,6 @@ const Tour = () => {
         // alternative practice tour control (when started in practice view)
         if (tourState.steps === practiceTourStepsAlternative) {
           if (index === 4) {
-            dispatch(sidebarSetOpen(true))
-
             setTimeout(() => {
               dispatch(handleNextTourStep(index + (action === ACTIONS.PREV ? -1 : 1)))
               window.dispatchEvent(new Event('resize'))

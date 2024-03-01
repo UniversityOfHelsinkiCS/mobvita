@@ -11,7 +11,6 @@ import {
   updateGroupTemplateSelection,
   updateLearningSettingMode,
 } from 'Utilities/redux/userReducer'
-import { sidebarSetOpen } from 'Utilities/redux/sidebarReducer'
 import { getGroups } from 'Utilities/redux/groupsReducer'
 import { hiddenFeatures, learningLanguageSelector, skillLevels } from 'Utilities/common'
 import CEFRLevelSlider from 'Components/CEFRLevelSlider'
@@ -83,7 +82,6 @@ const LearningSettingsModal = ({ trigger }) => {
   */
   const handleCustomSelect = () => {
     dispatch(updateExerciseTemplate('custom'))
-    dispatch(sidebarSetOpen(false))
     setOpen(false)
   }
 
