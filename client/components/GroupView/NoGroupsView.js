@@ -24,6 +24,7 @@ const NoGroupsView = ({ role }) => {
               className="mt-nm"
               variant="primary"
               size="lg"
+              style={{float: 'right'}}
               onClick={() => history.push('/register')}
             >
               <FormattedMessage id="Register" />
@@ -40,6 +41,7 @@ const NoGroupsView = ({ role }) => {
                   variant="primary"
                   size="lg"
                   data-cy={role === 'student' ? 'join-group-button' : 'create-group-button'}
+                  style={{float: 'right'}}
                 >
                   <FormattedMessage id={role === 'student' ? 'join-a-group' : 'create-new-group'} />
                 </Button>

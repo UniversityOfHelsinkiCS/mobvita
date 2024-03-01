@@ -167,7 +167,7 @@ export default function Sidebar({ history }) {
               <>
                 <Button
                   className='sidebar-profile-button'
-                  data-cy="settings-link"
+                  data-cy="practice-now"
                   variant="secondary"
                   style={{ marginTop: marginTopButton }}
                   onClick={() => setPracticeModalOpen(true)}

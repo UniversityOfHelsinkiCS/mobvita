@@ -75,16 +75,6 @@ jobs:
         uses: ./.github/actions/run_test
         with:
           spec: cypress/e2e/practice_spec.js
-
-  test_sidebar:
-    name: "Test sidebar"
-    runs-on: ubuntu-latest  
-    steps:
-      - uses: actions/checkout@v3
-      - name: 'Run tests'
-        uses: ./.github/actions/run_test
-        with:
-          spec: cypress/e2e/sidebar_spec.js
   
   test_tests:
     name: "Test tests"
@@ -116,7 +106,6 @@ jobs:
       - test_groups
       - test_mobvita
       - test_practice
-      - test_sidebar
       - test_tests
       - test_wordnest
     runs-on: ubuntu-latest

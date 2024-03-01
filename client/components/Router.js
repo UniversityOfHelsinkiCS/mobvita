@@ -73,7 +73,7 @@ export default () => {
     location.pathname.includes('compete') ||
     location.pathname.includes('flashcards') ||
     location.pathname.includes('crossword') ||
-    location.pathname.includes('test'))))
+    location.pathname.includes('test') || !userData)))
   }, [location.pathname])
   
   return (

@@ -276,7 +276,7 @@ const GroupView = () => {
                   <Button
                     data-cy={role === 'teacher' ? 'create-group-button' : 'join-group-button'}
                     size="lg"
-                    style={{ marginTop: '1em', marginBottom: '1em', backgroundColor: '#00B5AD' }}
+                    style={{ marginTop: '1em', marginBottom: '1em', backgroundColor: '#00B5AD', float: 'right'}}
                   >
                     <FormattedMessage
                       id={role === 'teacher' ? 'create-new-group' : 'join-a-group'}
