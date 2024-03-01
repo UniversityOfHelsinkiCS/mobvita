@@ -5,6 +5,7 @@ describe('test view', function() {
   })
 
   this.beforeEach(function () {
+    cy.viewport(1920, 1080)
     cy.loginExisting().as('user')
     cy.getUser('teacher').as('teacher')
   })

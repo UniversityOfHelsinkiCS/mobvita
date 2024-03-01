@@ -29,6 +29,7 @@ describe('Mobvita', function () {
   })
 
   this.beforeEach(function () {
+    cy.viewport(1920, 1080)
     window.localStorage.clear() 
     cy.loginExisting().as('user')
     cy.visit('http://localhost:8000/home')
