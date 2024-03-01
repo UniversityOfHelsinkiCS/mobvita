@@ -57,7 +57,7 @@ const ExerciseMultipleChoice = ({ word, handleChange }) => {
   }, [tested])
 
   useEffect(() => {
-    const temp = word.choices.sort().map(choice => ({
+    const temp = word.choices.map(choice => ({
       key: `${word.ID}_${choice}`,
       value: choice,
       text: choice,
