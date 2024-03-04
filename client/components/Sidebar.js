@@ -69,7 +69,7 @@ export default function Sidebar({ history }) {
     history.location.pathname.includes('compete') ||
     history.location.pathname.includes('flashcards') ||
     history.location.pathname.includes('crossword') ||
-    history.location.pathname.includes('test'))
+    history.location.pathname.includes('test') || smallWindow) 
     
     if (open && !fixed) document.addEventListener('mousedown', handleOutSideClick, false)
     else document.removeEventListener('mousedown', handleOutSideClick, false)
