@@ -65,13 +65,7 @@ export default function Sidebar({ history }) {
   }, [])
 
   useEffect(() => {
-    const fixed = !(history.location.pathname.includes('stories') ||
-    history.location.pathname.includes('compete') ||
-    history.location.pathname.includes('flashcards') ||
-    history.location.pathname.includes('crossword') ||
-    history.location.pathname.includes('test') || smallWindow) 
-    
-    if (open && !fixed) document.addEventListener('mousedown', handleOutSideClick, false)
+    if (open) document.addEventListener('mousedown', handleOutSideClick, false)
     else document.removeEventListener('mousedown', handleOutSideClick, false)
   }, [open])
 
@@ -123,6 +117,7 @@ export default function Sidebar({ history }) {
             name="bars"
             size="big"
             className="sidebar-hamburger"
+            onClick={() => dispatch(sidebarSetOpen(!open))}
             style={{ position: 'fixed', paddingTop: 0 }}
           />
           <div
@@ -224,7 +219,7 @@ export default function Sidebar({ history }) {
         >
           <Menu.Item style={{ paddingBottom: '0px' }}>
           <Dropdown item text='More'>
-            <DropdownMenu>
+            <DropdownMenu style={{minHeight: '18.5em'}}>
               <DropdownItem text={intl.formatMessage({id: 'groups'})} icon='group' as={Link} to={isTeacher ? '/groups/teacher' : '/groups/student'}/>
               <DropdownItem 
                 text={intl.formatMessage({id: 'Settings'})} 

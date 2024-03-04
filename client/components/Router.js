@@ -69,11 +69,7 @@ export default () => {
     ) {
       dispatch(openEncouragement())
     }
-    dispatch(sidebarSetOpen(!(location.pathname.includes('stories') ||
-    location.pathname.includes('compete') ||
-    location.pathname.includes('flashcards') ||
-    location.pathname.includes('crossword') ||
-    location.pathname.includes('test') || !userData)))
+    dispatch(sidebarSetOpen(['/', '/welcome', '/home'].includes(location.pathname) && userData))
   }, [location.pathname])
   
   return (
