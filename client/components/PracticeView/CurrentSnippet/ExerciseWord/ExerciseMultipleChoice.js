@@ -196,7 +196,7 @@ const ExerciseMultipleChoice = ({ word, handleChange }) => {
           ))}
         </div>
       </div>)
-    } else {
+    } else if (!frozen_messages) {
       return (<div className="tooltip-green flex space-between">
         <div className="tooltip-hint" style={{ textAlign: 'left' }}>
           <FormattedMessage id="no-hints-available" />
@@ -241,7 +241,7 @@ const ExerciseMultipleChoice = ({ word, handleChange }) => {
           ))}
         </ul>
       </div>
-      {emptyHintsList && preHints?.length < 1 && (
+      {emptyHintsList && preHints?.length < 1 && !frozen_messages && (
         <div className="tooltip-green">
           <FormattedMessage id="no-hints-available" />
         </div>
