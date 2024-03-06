@@ -575,6 +575,7 @@ $value in $spacing {
       "lesson"
       "flashcards"
       "adaptive-test"
+      "reading-test"
       ".";
   }
   
@@ -629,6 +630,10 @@ $value in $spacing {
 
 .test-btn-cont {
   grid-area: exhaustive-test;
+}
+
+.reading-test-btn-cont {
+  grid-area: reading-test;
 }
 
 .adaptive-test-btn-cont {

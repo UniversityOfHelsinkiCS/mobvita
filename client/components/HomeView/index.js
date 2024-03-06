@@ -82,6 +82,11 @@ const HomeviewButtons = ({
         else if (story) 
           return `/stories/${lastActivity.story_id}/${story.exercise_mode}/practice/`
         else return null
+      
+      case 'lesson':
+        if (lastActivity.group_id) return `/lesson/group/${lastActivity.group_id}/practice`
+        else return `/lesson/practice`
+
       case 'crossword':
         return `/crossword/${lastActivity.story_id}`
 
@@ -207,7 +212,7 @@ const HomeviewButtons = ({
 
 
           {learningLanguage != undefined && learningLanguage == "English" && aReadingComprehensionEnabled && (
-            <div>
+            <div  className="reading-test-btn-cont">
               <HomeviewButton
                 imgSrc={images.readingBook}
                 altText="reading test"
