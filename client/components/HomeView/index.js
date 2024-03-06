@@ -95,7 +95,6 @@ const HomeviewButtons = ({
     }
   }
   const activityLink = assembleActivityLink(lastActivity)
-  console.log('activityLink', activityLink)
   return (
     <div className="" style={{width: '100%'}}>
       {(user?.user.is_teacher && user?.teacherView) && (
