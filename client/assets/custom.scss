@@ -569,6 +569,7 @@ $value in $spacing {
 
   &-student {  
     grid-template-areas:
+      "continue-activity"
       "exhaustive-test"
       "practice"
       "lesson"
@@ -593,6 +594,13 @@ $value in $spacing {
   border-radius: 12px;
   background: #FFF;
   padding: 1rem;
+}
+
+.continue-activity-btn-cont {
+  grid-area: continue-activity;
+}
+.continue-activity-btn-cont > button {
+  background-color: #a5ddff !important;
 }
 
 .add-new-stories-btn-cont {
@@ -825,10 +833,6 @@ $value in $spacing {
   }
 }
 
-.homeview-btn .continue-btn {
-  background-color: #a5ddff;
-}
-
 .attempt-bar {
   background: rgb(50, 170, 248);
 }
@@ -836,7 +840,7 @@ $value in $spacing {
 .homeview-btn:hover,
 .practice-now-modal-btn:hover,
 .attempt-bar:hover {
-  background-color: $btn-highlight-color-primary;
+  background-color: $btn-highlight-color-primary !important;
 }
 
 .practice-now-modal {

@@ -108,6 +108,10 @@ const handleLevel = (store, level, level_up) => {
   store.dispatch({ type: 'SET_LEVEL_UP', level_up })
 }
 
+const handleLastActivity = (store, activity) => {
+  store.dispatch({ type: 'SET_LAST_ACTIVITY', activity })
+}
+
 const handleNewVocabulary = (store, newVocabulary) => {
   if (newVocabulary) {
     store.dispatch({
@@ -152,7 +156,7 @@ export const handleRequest = store => next => async action => {
       }
 
       handleStreakState(store, res.data.is_today_streaked)
-
+      handleLastActivity(store, res.data.last_activity)
       handleXP(store, res.data.xp_today)
       handleLevel(store, res.data.level, res.data.level_up)
 

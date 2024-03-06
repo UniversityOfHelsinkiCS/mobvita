@@ -60,11 +60,37 @@ const HomeviewButtons = ({
   const history = useHistory()
   const { hasTests, hasAdaptiveTests } = useSelector(({ metadata }) => metadata)
   const { user } = useSelector(({ user }) => ({ user: user.data }))
+  const {lastActivity} = useSelector(({activity}) => activity)
+  const {data: stories} = useSelector(({stories}) => stories)
   const userData = useSelector(state => state.user.data.user)
   const learningLanguage = userData ? userData.last_used_language : null
-
+  
   const homeViewButtonsGridClassName = user?.user.is_teacher && user?.teacherView ? "teacher" : "student"
+  
+  const assembleActivityLink = (lastActivity) => {
+    switch (lastActivity && lastActivity.type) {
+      case 'flashcard':
+        return `/flashcards`
+      case 'preview':
+        return `/stories/${lastActivity.story_id}/preview/`
+      case 'review':
+        return `/stories/${lastActivity.story_id}/review/`
+      case 'practice':
+        const story = stories?.find(story => story.id === lastActivity.story_id)
+        if (story.control_story) 
+          return `/stories/${lastActivity.story_id}/controlled-practice/`
+        else if (story) 
+          return `/stories/${lastActivity.story_id}/${story.exercise_mode}/practice/`
+        else return null
+      case 'crossword':
+        return `/crossword/${lastActivity.story_id}`
 
+      default:
+        return null
+    }
+  }
+  const activityLink = assembleActivityLink(lastActivity)
+  console.log('activityLink', activityLink)
   return (
     <div className="" style={{width: '100%'}}>
       {(user?.user.is_teacher && user?.teacherView) && (
@@ -109,6 +135,15 @@ const HomeviewButtons = ({
 
       {(!user?.user.is_teacher || (user?.user.is_teacher && !user?.teacherView)) && (
         <div className={`homeview-btns-cont homeview-btns-cont-${homeViewButtonsGridClassName}`}>
+          {activityLink && (<div className="continue-activity-btn-cont">
+            <HomeviewButton
+              imgSrc={images.notesIcon}
+              altText="Continue"
+              translationKey="continue-activity"
+              handleClick={() => history.push(activityLink)}
+              dataCy="continue-activity-button"
+            />
+          </div>)}
           <div className="practice-btn-cont tour-practice-now">
             <HomeviewButton
               // imgSrc={images.dices}
@@ -159,7 +194,7 @@ const HomeviewButtons = ({
               />
             </div>
           )}
-          {user.user.email !== 'anonymous_email' && (
+          {/* {user.user.email !== 'anonymous_email' && (
             <div>
               <HomeviewButton
                 imgSrc={images.lightbulbIcon}
@@ -168,16 +203,8 @@ const HomeviewButtons = ({
                 handleClick={() => dispatch(openEncouragement())}
               />
             </div>
-          )}
+          )} */}
 
-          <div>
-            <HomeviewButton
-              imgSrc={images.notesIcon}
-              altText="post-it notes"
-              translationKey="notes-library"
-              handleClick={() => history.push('/notes-library')}
-            />
-          </div>
 
           {learningLanguage != undefined && learningLanguage == "English" && aReadingComprehensionEnabled && (
             <div>

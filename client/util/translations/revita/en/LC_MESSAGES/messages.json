@@ -1576,5 +1576,6 @@
     "control-end-of-set-open-ended-question-c": "What kind of help would you wish for?",
     "elicitation-construct-specific-details-NOT-USED": "I can’t find the right place in the text",
     "elicitation-construct-deducing-vocabulary-NOT-USED": "I don’t understand the meaning of some words",
-    "confirm-next-set": "Confirm"
+    "confirm-next-set": "Confirm",
+    "continue-activity": "Continue your activity"
 }

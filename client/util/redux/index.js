@@ -50,6 +50,7 @@ import streak from './streakReducer'
 import xp from './xpReducer'
 import level from './levelReducer'
 import levelUp from './levelUpReducer'
+import activity from './activityReducer'
 import contextTranslation from './contextTranslationReducer'
 
 const rootReducer = combineReducers({
@@ -103,7 +104,8 @@ const rootReducer = combineReducers({
   xp,
   level,
   levelUp,
-  contextTranslation
+  contextTranslation,
+  activity
 })
 
 export default (state, action) =>
