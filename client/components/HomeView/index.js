@@ -31,31 +31,19 @@ const HomeviewButton = ({
 }) => {
   return (
     <button
-      className={`homeview-btn${wide ? ' homeview-btn-wide' : ' homeview-btn-narrow'}`}
+      className={`flex justify-center homeview-btn${wide ? ' homeview-btn-wide' : ' homeview-btn-narrow'}`}
       type="button"
       onClick={handleClick}
       data-cy={dataCy}
     >
-      <div
-        className={`align-center ${!wide ? 'flex-col space-between' : 'flex justify-center'}`}
-        style={{ height: '100%' }}
-      >
-        <div style={{ width: '100%', display: 'inline-flex' }}>
-          {/* <div style={{width: '7%'}}></div> */}
-          <div className="homeview-btn-text" style={{ width: '100%' }}>
-            <FormattedMessage id={translationKey} />
-            {beta_feature && (
-              <sup>
-                <b style={{ color: 'red' }}>BETA</b>
-              </sup>
-            )}
-          </div>
-          {/* <div style={{width: '7%'}}>
-            &beta;
-          </div> */}
-        </div>
-
-        {!wide && <img src={imgSrc} alt={altText} style={{ maxWidth: '55%', maxHeight: '55%' }} />}
+      {!wide && <img src={imgSrc} alt={altText} style={{ maxWidth: '50px', maxHeight: '50px' }}/>}
+      <div className="homeview-btn-text" style={{ width: '100%' }}>
+        <FormattedMessage id={translationKey} />
+        {beta_feature && (
+          <sup>
+            <b style={{ color: 'red' }}>BETA</b>
+          </sup>
+        )}
       </div>
     </button>
   )
@@ -75,12 +63,12 @@ const HomeviewButtons = ({
   const userData = useSelector(state => state.user.data.user)
   const learningLanguage = userData ? userData.last_used_language : null
 
-  const homeViewButtonsGridClassName = user?.user.is_teacher && user?.teacherView ? "teacher-homeview-btns-cont" : "student-homeview-btns-cont"
+  const homeViewButtonsGridClassName = user?.user.is_teacher && user?.teacherView ? "teacher" : "student"
 
   return (
-    <div className="">
+    <div className="" style={{width: '100%'}}>
       {(user?.user.is_teacher && user?.teacherView) && (
-        <div className={homeViewButtonsGridClassName}>
+        <div className={`homeview-btns-cont homeview-btns-cont-${homeViewButtonsGridClassName}`}>
           <div className="add-new-stories-btn-cont tour-add-new-stories">
             <HomeviewButton
               wide
@@ -116,20 +104,11 @@ const HomeviewButtons = ({
               handleClick={() => history.push('/lessons/library')}
             />
           </div>
-
-          {hiddenFeatures && (
-            <>
-              <Button onClick={() => history.push('/test-construction')}>Grammar check</Button>
-              <Button style={{ padding: '5em' }} onClick={() => history.push('test-debug')}>
-                Feedback check
-              </Button>
-            </>
-          )}
         </div>
       )}
 
       {(!user?.user.is_teacher || (user?.user.is_teacher && !user?.teacherView)) && (
-        <div className={homeViewButtonsGridClassName}>
+        <div className={`homeview-btns-cont homeview-btns-cont-${homeViewButtonsGridClassName}`}>
           <div className="practice-btn-cont tour-practice-now">
             <HomeviewButton
               // imgSrc={images.dices}
@@ -181,14 +160,14 @@ const HomeviewButtons = ({
             </div>
           )}
           {user.user.email !== 'anonymous_email' && (
-            <>
+            <div>
               <HomeviewButton
                 imgSrc={images.lightbulbIcon}
                 altText="light bulb"
                 translationKey="Recommendations"
                 handleClick={() => dispatch(openEncouragement())}
               />
-            </>
+            </div>
           )}
 
           <div>
@@ -201,7 +180,7 @@ const HomeviewButtons = ({
           </div>
 
           {learningLanguage != undefined && learningLanguage == "English" && aReadingComprehensionEnabled && (
-            <>
+            <div>
               <HomeviewButton
                 imgSrc={images.readingBook}
                 altText="reading test"
@@ -209,16 +188,7 @@ const HomeviewButtons = ({
                 handleClick={() => history.push('/reading-test')}
                 dataCy="reading-test-button"
               />
-            </>
-          )}
-
-          {hiddenFeatures && (
-            <>
-              <Button onClick={() => history.push('/test-construction')}>Grammar check</Button>
-              <Button style={{ padding: '5em' }} onClick={() => history.push('test-debug')}>
-                Feedback check
-              </Button>
-            </>
+            </div>
           )}
         </div>
       )}     

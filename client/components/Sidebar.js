@@ -202,6 +202,31 @@ export default function Sidebar({ history }) {
                     <FormattedMessage id="Flashcards" />
                   </Button>
                 </Link>
+
+                {hiddenFeatures && (
+                  <>
+                    <Link to="/test-construction">
+                      <Button 
+                        variant="secondary"
+                        style={{ marginTop: marginTopButton }}
+                        block
+                      >
+                        Grammar check
+                      </Button>
+                    </Link>
+                    <Link to="/test-debug">
+                      <Button 
+                        variant="secondary"
+                        style={{ marginTop: marginTopButton }}
+                        block
+                      >
+                        Feedback check
+                      </Button>
+                    </Link>
+                  </>
+                )}
+
+
               </>
 
               

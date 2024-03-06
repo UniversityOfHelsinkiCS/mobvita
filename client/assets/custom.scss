@@ -518,7 +518,7 @@ $value in $spacing {
 }
 
 .blue-bg {
-  background-color: rgb(173, 209, 240) !important;
+  background-color: #E8F3FD !important;
 }
 
 .cont {
@@ -552,84 +552,41 @@ $value in $spacing {
 }
 
 // Homeview buttons
-.student-homeview-btns-cont {
-  width: 100%;
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  grid-template-rows: 0.4fr 1.3fr 1.3fr 1.3fr;
-  gap: 10px 10px;
-  grid-auto-flow: row;
-  grid-template-areas:
-    "practice lesson"
-    "flashcards notes"
-    "adaptive-test exhaustive-test"
-    ". . ";
-
-  @media (min-width: 900px) {
-    max-height: 525px;
-    gap: 17px 17px;
-    grid-template-columns: 1fr 1fr 1fr;
-    grid-template-rows: 0.3fr 1fr 1fr;
-    gap: 15px 15px;
-    grid-template-areas:
-      "practice lesson flashcards"
-      "adaptive-test exhaustive-test ."
-      ". . .";
-  }
-}
-
-.teacher-homeview-btns-cont {
-  width: 100%;
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  grid-template-rows: 0.4fr 1.3fr 1.3fr 1.3fr;
-  gap: 10px 10px;
-  grid-auto-flow: row;
-  grid-template-areas:
-    "add-new-stories add-new-stories"
-    "groups library"
-    "lesson .";
-
-  @media (min-width: 900px) {
-    max-height: 525px;
-    gap: 17px 17px;
-    grid-template-columns: 1fr 1fr 1fr;
-    grid-template-rows: 0.3fr 1fr 1fr;
-    gap: 15px 15px;
-    grid-template-areas:
-      "add-new-stories add-new-stories add-new-stories"
-      "groups library lesson"
-      ". . .";
-  }
-}
-
 .homeview-btns-cont {
   width: 100%;
   display: grid;
   grid-template-columns: 1fr 1fr;
   grid-template-rows: 0.4fr 1.3fr 1.3fr 1.3fr;
-  gap: 10px 10px;
+  gap: 15px 15px;
   grid-auto-flow: row;
-  grid-template-areas:
-    "add-new-stories add-new-stories"
-    "library lesson"
-    "practice flashcards"
-    "adaptive-test exhaustive-test"
-    ". .";
+  grid-template-columns: 100%;
+  grid-template-rows: 0.6fr;
 
   @media (min-width: 900px) {
-    max-height: 525px;
-    gap: 17px 17px;
-    grid-template-columns: 1fr 1fr 1fr;
-    grid-template-rows: 0.3fr 1fr 1fr;
-    gap: 15px 15px;
+    width: 80%;
+    float: right;
+  }
+
+  &-student {  
     grid-template-areas:
-      "add-new-stories add-new-stories add-new-stories"
-      "library lesson practice"
-      "flashcards adaptive-test exhaustive-test"
-      ". . .";
+      "exhaustive-test"
+      "practice"
+      "lesson"
+      "flashcards"
+      "adaptive-test"
+      ".";
+  }
+  
+  &-teacher {
+    grid-template-areas:
+    "add-new-stories"
+    "groups"
+    "library"
+    "lesson"
+    ".";
   }
 }
+
 
 .borders-light-grey {
   border: 2px solid lightgrey;
@@ -846,14 +803,14 @@ $value in $spacing {
 }
 
 .homeview-btn {
-  background: white;
+  background: #32aaf8;
   height: 100%;
   width: 100%;
   border: 2px solid #000;
   border-radius: 12px;
 
   &-narrow {
-    padding: 15px 5px 30px 5px;
+    padding: 15px 5px 20px 25px;
 
   }
 
@@ -866,6 +823,10 @@ $value in $spacing {
     font-size: 1.5em !important;
     font-weight: 500;
   }
+}
+
+.homeview-btn .continue-btn {
+  background-color: #a5ddff;
 }
 
 .attempt-bar {
