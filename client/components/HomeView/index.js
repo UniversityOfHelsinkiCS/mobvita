@@ -77,7 +77,7 @@ const HomeviewButtons = ({
         return `/stories/${lastActivity.story_id}/review/`
       case 'practice':
         const story = stories?.find(story => story.id === lastActivity.story_id)
-        if (story.control_story) 
+        if (story?.control_story) 
           return `/stories/${lastActivity.story_id}/controlled-practice/`
         else if (story) 
           return `/stories/${lastActivity.story_id}/${story.exercise_mode}/practice/`
