@@ -96,11 +96,11 @@ const ReadingTestFeedbacks = ({ showFeedbacks, closeFeedbacks }) => {
                         >
                             <div className='slide active' key={current}>
                                 {current === 0 && filteredSlides[current][0] !== "Correct!" && (
-                                    <div style={{ marginBottom: "0.5em" }}>
+                                    <div style={{ marginBottom: "0.5em", fontStyle: "italic", color: "gray" }}>
                                         <FormattedMessage id="first-time-meta-help-message" />
                                     </div>
                                 )}
-
+                                <hr />
                                 <div
                                     style={{
                                         whiteSpace: 'pre-line',
