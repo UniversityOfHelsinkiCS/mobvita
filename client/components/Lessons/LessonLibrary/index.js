@@ -2,7 +2,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import { useIntl, FormattedMessage } from 'react-intl'
 import { List, WindowScroller } from 'react-virtualized'
 import React, { useEffect, useState } from 'react'
-import { Placeholder, Card, Icon, Select } from 'semantic-ui-react'
+import { Placeholder, Popup, Icon, Select } from 'semantic-ui-react'
 import { Segment } from 'semantic-ui-react'
 
 import ScrollArrow from 'Components/ScrollArrow'
@@ -76,6 +76,7 @@ const LessonList = () => {
 
   const [searchQuery, setSearchQuery] = useState("");
   const [filteredLessons, setFilteredLessons] = useState(lessons);
+  const [customizeLessonConfigs, setCustomizeLessonConfigs] = useState(false);
 
   // const [lesson2info, setLesson2info] = useState({})
 
@@ -393,56 +394,6 @@ const LessonList = () => {
     </div>
   )
 
-  const getTextWidth = (text, class_name, style) => {
-    // Create an invisible element to measure the text
-    const measuringElement = document.createElement('span');
-    measuringElement.textContent = text;
-
-    if (class_name) {
-      measuringElement.className = class_name;
-    }
-  
-    if (style) {
-      Object.assign(measuringElement.style, style);
-    }
-  
-    document.body.appendChild(measuringElement);
-    const width = measuringElement.getBoundingClientRect().width;
-    document.body.removeChild(measuringElement);
-  
-    return width*2;
-  }
-
-  const get_lesson_row_height = (index) => {
-    if (bigScreen) {
-      return 85 + lessons[index.index].topics.length * 26;
-    } else {
-      let lesson = lessons[index.index]
-
-      let row_height = 38 + 34 + 22 // Separate the Include button in mobile view
-      row_height += 22 + 18 * Math.floor(
-        (getTextWidth(
-          lesson.name, "story-item-title", {
-            "overflow-wrap": "break-word",
-            "white-space": "normal",
-            "margin-bottom": ".5rem"
-          }
-        ) + 11) / (0.8*width)
-      );
- 
-      lesson.topics.forEach(function(lesson_topic, index) {
-        const width_span = (getTextWidth(lesson.name, "lesson-content", null) * 1.14) / (0.8*width)
-        if (width_span < 1) {
-          row_height += 18
-        } else {
-          row_height += 18 + 14 * Math.floor(width_span);
-        }
-      });
-
-      return row_height
-    }
-  }
-
   const lessonTopicsControls = (
     <div>
       <div style={{ display: 'flex', alignItems: 'center', marginBottom: '1.0rem' }}>
@@ -511,43 +462,66 @@ const LessonList = () => {
     </div>
   )
 
+  const handleCustomizeLessonCofigCogClick = () => {
+    setCustomizeLessonConfigs(true)
+    dispatch(setLessonStep(0))
+  }
+
   const link = '/lesson' + (libraries.group ? `/group/${savedGroupSelection}/practice` : '/practice')
   let lessonStartControls = (
     <div>
       <div style={{ color: '#0088CB', textAlign: 'center', width: '70%',  fontWeight: 500, margin: '18px', fontSize: 'large'}}>
         <FormattedMessage id="lessons-ready-for-practice" />
+        {!customizeLessonConfigs && (
+          <Popup
+            content={intl.formatMessage({ id: 'customize-lesson-configurations' })}
+            trigger={
+              <Icon 
+                name="cog" 
+                style={{ cursor: 'pointer', marginLeft: '1em' }} 
+                size="small" 
+                onClick={handleCustomizeLessonCofigCogClick}
+              />
+            }
+            inverted // Optional: for inverted (dark) style
+          />
+        )}
       </div>
       <div style={{ 'display': 'flex' }}>
         <LessonPracticeThemeHelp selectedThemes={selectedSemantics ? selectedSemantics : []} always_show={true} />
         <LessonPracticeTopicsHelp selectedTopics={selectedTopicIds} always_show={true} />
       </div>
       {!teacherView && (<Link to={link}>
-        <Button
-          size="big"
-          className="lesson-practice"
-          disabled={
-            lessonPending ||
-            !selectedTopicIds ||
-            !selectedSemantics ||
-            selectedTopicIds.length === 0 ||
-            selectedSemantics.length === 0 || noResults
-          }
-          style={{
-            fontSize: '1.3em',
-            fontWeight: 500,
-            margin: '1em 0',
-            padding: '1rem 0',
-            width: '100%',
-            border: '2px solid #000',
-          }}
-        >
-          {lessonPending && <Icon name="spinner" loading />}
-          <FormattedMessage id="start-practice-lesson" />
-        </Button>
+        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', width: '100%' }}>
+          <Link to={link} style={{ flex: 1 }}>
+            <Button
+              size="big"
+              className="lesson-practice"
+              disabled={
+                lessonPending ||
+                !selectedTopicIds ||
+                !selectedSemantics ||
+                selectedTopicIds.length === 0 ||
+                selectedSemantics.length === 0 ||
+                noResults
+              }
+              style={{
+                fontSize: '1.3em',
+                fontWeight: 500,
+                margin: '1em 0',
+                padding: '1rem 0',
+                width: '100%',
+                border: '2px solid #000',
+              }}
+            >
+              {lessonPending && <Icon name="spinner" loading />}
+              <FormattedMessage id="start-practice-lesson" />
+            </Button>
+          </Link>
+        </div>
       </Link>)}
     </div>
   )
-
 
   const noResults = !metaPending && lesson_topics && lesson_topics.length === 0
 
@@ -649,117 +623,124 @@ const LessonList = () => {
               )}
             </div>
 
-            <div style={{ display: 'flex', flexDirection: 'row', alignItems: 'center', alignSelf: 'center' }}>
-              <Stepper
-                styleConfig={{
-                  completedBgColor: '#c6e2ff',
-                  activeBgColor: '#003366',
-                  inactiveBgColor: '#d2d3d6',
-                }}
-              >
-                <Step
-                  label={<FormattedMessage id="select-lesson-themes" />}
-                  active={goStep == 0}
-                  completed={goStep > 0}
-                  onClick={() => {
-                    if (goStep == 1){
-                      finnishSelectingVocabularyDifficulty()
-                    }
-                    if (goStep == 2){
-                      finnishSelectingTopics()
-                    }
-                    dispatch(setLessonStep(0))
-                  }}
-                />
-                <Step
-                  label={<FormattedMessage id="select-lesson-vocab" />}
-                  active={goStep == 1}
-                  completed={goStep > 1}
-                  onClick={() => {
-                    if (goStep == 1){
-                      finnishSelectingVocabularyDifficulty()
-                    }
-                    if (goStep == 2){
-                      finnishSelectingTopics()
-                    }
-                    dispatch(setLessonStep(1))
-                  }}
-                />
-                <Step
-                  label={<FormattedMessage id="select-lesson-grammar" />}
-                  active={goStep == 2}
-                  completed={goStep > 2}
-                  onClick={() => {
-                    if (goStep == 1){
-                      finnishSelectingVocabularyDifficulty()
-                    }
-                    if (goStep == 2){
-                      finnishSelectingTopics()
-                    }
-                    dispatch(setLessonStep(2))
-                  }}
-                />
-                <Step
-                  label={<FormattedMessage id="start-lesson-practice" />}
-                  active={goStep == 3}
-                  completed={goStep > 3}
-                  onClick={() => {
-                    if (goStep == 1){
-                      finnishSelectingVocabularyDifficulty()
-                    }
-                    if (goStep == 2){
-                      finnishSelectingTopics()
-                    }
-                    dispatch(setLessonStep(3))
-                  }}
-                />
-              </Stepper>
-
-              <Button
-                style={{
-                  float: 'right', marginBottom: '8%',
-                  cursor: lessonPending || !(libraries.private || currentGroup && currentGroup.is_teaching)
-                    ? 'not-allowed' : 'pointer'
-                }}
-                disabled={lessonPending || goStep >= 3}
-                onClick={() => {
-                  if (goStep == 0){
-                    finnishSelectingSemantics()
-                  }
-                  if (goStep == 1){
-                    finnishSelectingVocabularyDifficulty()
-                  }
-                  if (goStep == 2){
-                    finnishSelectingTopics()
-                  }
-                  dispatch(setLessonStep(goStep + 1))
-                }}>
-                <FormattedMessage id="next-step" />
-              </Button>
-            </div>
-
-            {(goStep === 0 || goStep === -1) && (
-              <div>
-                {lessonSemanticControls}
-              </div>
-            )}
-            {goStep === 1 && (
-              <div>
-                {lessonVocabularyControls}
-              </div>
-            )}
-            {goStep === 2 && (
-              <div>
-                {lessonTopicsControls}
-              </div>
-            )}
-            {goStep === 3 && (
+            {!customizeLessonConfigs ? (
               <div>
                 {lessonStartControls}
               </div>
-            )}
+            ) : (
+              <div>
+                <div style={{ display: 'flex', flexDirection: 'row', alignItems: 'center', alignSelf: 'center' }}>
+                  <Stepper
+                    styleConfig={{
+                      completedBgColor: '#c6e2ff',
+                      activeBgColor: '#003366',
+                      inactiveBgColor: '#d2d3d6',
+                    }}
+                  >
+                    <Step
+                      label={<FormattedMessage id="select-lesson-themes" />}
+                      active={goStep == 0}
+                      completed={goStep > 0}
+                      onClick={() => {
+                        if (goStep == 1){
+                          finnishSelectingVocabularyDifficulty()
+                        }
+                        if (goStep == 2){
+                          finnishSelectingTopics()
+                        }
+                        dispatch(setLessonStep(0))
+                      }}
+                    />
+                    <Step
+                      label={<FormattedMessage id="select-lesson-vocab" />}
+                      active={goStep == 1}
+                      completed={goStep > 1}
+                      onClick={() => {
+                        if (goStep == 1){
+                          finnishSelectingVocabularyDifficulty()
+                        }
+                        if (goStep == 2){
+                          finnishSelectingTopics()
+                        }
+                        dispatch(setLessonStep(1))
+                      }}
+                    />
+                    <Step
+                      label={<FormattedMessage id="select-lesson-grammar" />}
+                      active={goStep == 2}
+                      completed={goStep > 2}
+                      onClick={() => {
+                        if (goStep == 1){
+                          finnishSelectingVocabularyDifficulty()
+                        }
+                        if (goStep == 2){
+                          finnishSelectingTopics()
+                        }
+                        dispatch(setLessonStep(2))
+                      }}
+                    />
+                    <Step
+                      label={<FormattedMessage id="start-lesson-practice" />}
+                      active={goStep == 3}
+                      completed={goStep > 3}
+                      onClick={() => {
+                        if (goStep == 1){
+                          finnishSelectingVocabularyDifficulty()
+                        }
+                        if (goStep == 2){
+                          finnishSelectingTopics()
+                        }
+                        dispatch(setLessonStep(3))
+                      }}
+                    />
+                  </Stepper>
 
-            {/* {libraryControls} */}
+                  <Button
+                    style={{
+                      float: 'right', marginBottom: '8%',
+                      cursor: lessonPending || !(libraries.private || currentGroup && currentGroup.is_teaching)
+                        ? 'not-allowed' : 'pointer'
+                    }}
+                    disabled={lessonPending || goStep >= 3}
+                    onClick={() => {
+                      if (goStep == 0){
+                        finnishSelectingSemantics()
+                      }
+                      if (goStep == 1){
+                        finnishSelectingVocabularyDifficulty()
+                      }
+                      if (goStep == 2){
+                        finnishSelectingTopics()
+                      }
+                      dispatch(setLessonStep(goStep + 1))
+                    }}>
+                    <FormattedMessage id="next-step" />
+                  </Button>
+                </div>
+
+                {(goStep === 0 || goStep === -1) && (
+                  <div>
+                    {lessonSemanticControls}
+                  </div>
+                )}
+                {goStep === 1 && (
+                  <div>
+                    {lessonVocabularyControls}
+                  </div>
+                )}
+                {goStep === 2 && (
+                  <div>
+                    {lessonTopicsControls}
+                  </div>
+                )}
+                {goStep === 3 && (
+                  <div>
+                    {lessonStartControls}
+                  </div>
+                )}
+                {/* {libraryControls} */}
+              </div>
+            )}
             <ScrollArrow />
           </>
         )}
