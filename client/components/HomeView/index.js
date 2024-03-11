@@ -37,7 +37,10 @@ const HomeviewButton = ({
       data-cy={dataCy}
     >
       {!wide && <img src={imgSrc} alt={altText} style={{ maxWidth: '50px', maxHeight: '50px' }}/>}
-      <div className="homeview-btn-text" style={{ width: '100%' }}>
+      <div 
+        className="homeview-btn-text flex items-center justify-center" 
+        style={{ width: '100%', height: '100%', alignItems: 'center'}}
+      >
         <FormattedMessage id={translationKey} />
         {beta_feature && (
           <sup>
