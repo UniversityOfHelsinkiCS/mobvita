@@ -142,15 +142,17 @@ const HomeviewButtons = ({
 
       {(!user?.user.is_teacher || (user?.user.is_teacher && !user?.teacherView)) && (
         <div className={`homeview-btns-cont homeview-btns-cont-${homeViewButtonsGridClassName}`}>
-          {activityLink && (<div className="continue-activity-btn-cont">
-            <HomeviewButton
-              imgSrc={images.notesIcon}
-              altText="Continue"
-              translationKey="continue-activity"
-              handleClick={() => history.push(activityLink)}
-              dataCy="continue-activity-button"
-            />
-          </div>)}
+          {activityLink && (
+            <div className="continue-activity-btn-cont">
+              <HomeviewButton
+                imgSrc={images.notesIcon}
+                altText="Continue"
+                translationKey="continue-activity"
+                handleClick={() => history.push(activityLink)}
+                dataCy="continue-activity-button"
+              />
+            </div>
+          )}
           <div className="practice-btn-cont tour-practice-now">
             <HomeviewButton
               // imgSrc={images.dices}

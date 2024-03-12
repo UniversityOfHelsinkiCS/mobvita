@@ -6,6 +6,12 @@ export const setIrtDummyScore = (dummy_score) => ({ type: 'SET_IRT_DUMMY_SCORE',
 export const calculateIRTScore = (language) => {
   const route = '/user/irt_score/' + language
   const prefix = 'CALCULATE_IRT'
+  return callBuilder(route, prefix, 'post')
+}
+
+export const getLatestIRTScore = (language) => {
+  const route = '/user/irt_score/' + language
+  const prefix = 'GET_LATEST_IRT'
   return callBuilder(route, prefix, 'get')
 }
 
@@ -262,7 +268,7 @@ export default (state = { data: null, learningLanguageChanged: false }, action) 
         data: { 
           ...state.data, 
           user: action.response.user, 
-          teacherView: state.data && state.data.teacherView === undefined && action.response.user.is_teacher || state.data && state.data.teacherView || false
+          teacherView: state.data && state.data.teacherView === undefined && action.response.user.is_teacher || state.data.teacherView
         },
         pending: false,
         error: false,
@@ -292,7 +298,7 @@ export default (state = { data: null, learningLanguageChanged: false }, action) 
         data: { 
           ...state.data, 
           user: action.response.user, 
-          teacherView: state.data && state.data.teacherView === undefined && action.response.user.is_teacher || state.data && state.data.teacherView || false
+          teacherView: state.data && state.data.teacherView === undefined && action.response.user.is_teacher || state.data.teacherView
         },
         pending: false,
         error: false,
@@ -318,7 +324,7 @@ export default (state = { data: null, learningLanguageChanged: false }, action) 
         data: { 
           ...state.data, 
           user: action.response.user, 
-          teacherView: state.data && state.data.teacherView === undefined && action.response.user.is_teacher || state.data && state.data.teacherView || false
+          teacherView: state.data && state.data.teacherView === undefined && action.response.user.is_teacher || state.data.teacherView
         },
         pending: false,
         error: false,
@@ -341,7 +347,7 @@ export default (state = { data: null, learningLanguageChanged: false }, action) 
         data: { 
           ...state.data, 
           user: action.response.user, 
-          teacherView: state.data && state.data.teacherView === undefined && action.response.user.is_teacher || state.data && state.data.teacherView || false
+          teacherView: state.data && state.data.teacherView === undefined && action.response.user.is_teacher || state.data.teacherView
         },
         pending: false,
         error: false,
@@ -367,7 +373,7 @@ export default (state = { data: null, learningLanguageChanged: false }, action) 
         data: { 
           ...state.data, 
           user: action.response.user, 
-          teacherView: state.data && state.data.teacherView === undefined && action.response.user.is_teacher || state.data && state.data.teacherView || false
+          teacherView: state.data && state.data.teacherView === undefined && action.response.user.is_teacher || state.data.teacherView
         },
         pending: false,
         error: false,
@@ -567,6 +573,31 @@ export default (state = { data: null, learningLanguageChanged: false }, action) 
         error: true,
       }
     case 'CALCULATE_IRT_SUCCESS':
+      if (action.response.score){
+        return {
+          ...state,
+          irtCalculationPending: false,
+          irt_dummy_score: action.response.score
+        }
+      } else {
+        return {
+          ...state,
+          irtCalculationPending: false,
+        }
+      } 
+    case 'GET_LATEST_IRT_ATTEMPT':
+      return {
+        ...state,
+        irtCalculationPending: true,
+        error: false,
+      }
+    case 'GET_LATEST_IRT_FAILURE':
+      return {
+        ...state,
+        irtCalculationPending: false,
+        error: true,
+      }
+    case 'GET_LATEST_IRT_SUCCESS':
       if (action.response.score){
         return {
           ...state,

@@ -7,6 +7,7 @@ import { Icon, Label, Popup, Checkbox } from 'semantic-ui-react'
 import { Link, useHistory, useParams } from 'react-router-dom'
 import { 
   logout, 
+  getLatestIRTScore,
   calculateIRTScore, 
   getSelf, 
   setIrtDummyScore, 
@@ -164,7 +165,7 @@ export default function NavBar() {
 
   useEffect(() => {
     dispatch(setIrtDummyScore(undefined))
-    dispatch(calculateIRTScore(learningLanguage))
+    dispatch(getLatestIRTScore(learningLanguage))
   }, [sessionId])
 
   useEffect(() => {

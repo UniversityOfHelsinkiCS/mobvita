@@ -570,7 +570,7 @@ $value in $spacing {
   &-student {  
     grid-template-areas:
       "continue-activity"
-      "exhaustive-test"
+      // "exhaustive-test"
       "practice"
       "lesson"
       "flashcards"
@@ -581,11 +581,11 @@ $value in $spacing {
   
   &-teacher {
     grid-template-areas:
-    "add-new-stories"
-    "groups"
-    "library"
-    "lesson"
-    ".";
+      "add-new-stories"
+      "groups"
+      "library"
+      "lesson"
+      ".";
   }
 }
 

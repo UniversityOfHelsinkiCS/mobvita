@@ -36,6 +36,7 @@ export default function Sidebar({ history }) {
   const dispatch = useDispatch()
   const sidebar = useRef()
   const user = useSelector(({ user }) => user.data)
+  // const irtScore = useSelector(({ user }) => user.irt_dummy_score)
   const open = useSelector(({ sidebar }) => sidebar.open)
   const learningLanguage = user?.user?.last_used_language
   const locale = useSelector(({ locale }) => locale)
@@ -107,6 +108,30 @@ export default function Sidebar({ history }) {
   }
 
   const smallWindow = useWindowDimensions().width < 640
+
+  const cefr_num2cefr_str = num => {
+    if (num == null || num === undefined) return '?'
+    if (num < 1) return 'Pre-A1';
+    if (num > 13) return 'C2+';
+  
+    const levels = [
+      'Pre-A1', 
+      'A1',
+      'A1/A2',
+      'A2',
+      'A2/B1',
+      'B1',
+      'B1/B2',
+      'B2',
+      'B2/C1',
+      'C1',
+      'C1/C2',
+      'C2',
+      'C2+'
+    ];
+  
+    return levels[Math.round(num)];
+  };
 
   return (
     <SemanticSidebar as={Menu} animation="push" icon="labeled" vertical visible={open} >
@@ -234,7 +259,10 @@ export default function Sidebar({ history }) {
           </>
         )}
         {user && (
-          <div style={{ fontSize: '18px', color: '#777' }}>{`${user.user.username}`}</div>
+          <div style={{ fontSize: '18px', color: '#777', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+            <div style={{ paddingRight: '5px', width: '50%', textAlign: 'right' }}>{`${user.user.username}`}</div>
+            <div style={{ paddingLeft: '5px', width: '50%', textAlign: 'left' }}>{`${cefr_num2cefr_str(user.user.current_cerf)}`}</div>
+          </div>
         )}
         <div
           style={{
