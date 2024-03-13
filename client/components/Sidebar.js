@@ -75,7 +75,6 @@ export default function Sidebar({ history }) {
     history.push('/')
   }
 
-  
   const handleTourStart = () => {
     if (history.location.pathname.includes('profile')) {
       if (!history.location.pathname.includes('progress')) {
@@ -259,9 +258,9 @@ export default function Sidebar({ history }) {
           </>
         )}
         {user && (
-          <div style={{ fontSize: '18px', color: '#777', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-            <div style={{ paddingRight: '5px', width: '50%', textAlign: 'right' }}>{`${user.user.username}`}</div>
-            <div style={{ paddingLeft: '5px', width: '50%', textAlign: 'left' }}>{`${cefr_num2cefr_str(user.user.current_cerf)}`}</div>
+          <div style={{ fontSize: '18px', color: '#777' }}> 
+            <div style={{ width: '100%', textAlign: 'center' }}>{`${user.user.username}`}</div>
+            <div style={{ width: '100%', textAlign: 'center', color: 'black' }}>{`${cefr_num2cefr_str(user.user.current_cerf)}`}</div>
           </div>
         )}
         <div
@@ -300,6 +299,9 @@ export default function Sidebar({ history }) {
               />
               <DropdownItem>
                 <ContactUs trigger={<a><FormattedMessage id="contact-us" /></a>} />
+              </DropdownItem>
+              <DropdownItem data-cy="logout-button" onClick={signOut}>
+                <FormattedMessage id="sign-out" />
               </DropdownItem>
             </DropdownMenu>
           </Dropdown>
