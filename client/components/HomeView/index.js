@@ -91,11 +91,15 @@ const HomeviewButtons = ({
       case 'flashcard':
         return `/flashcards`
       case 'preview':
-        return `/stories/${lastActivity.story_id}/preview/`
+        if (stories?.find(x => x._id === lastActivity.story_id))
+          return `/stories/${lastActivity.story_id}/preview/`
+        else return null
       case 'review':
-        return `/stories/${lastActivity.story_id}/review/`
+        if (stories?.find(x => x._id === lastActivity.story_id))
+          return `/stories/${lastActivity.story_id}/review/`
+        else return null
       case 'practice':
-        const story = stories?.find(story => story.id === lastActivity.story_id)
+        const story = stories?.find(x => x._id === lastActivity.story_id)
         if (story?.control_story) 
           return `/stories/${lastActivity.story_id}/controlled-practice/`
         else if (story) 
