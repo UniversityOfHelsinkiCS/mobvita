@@ -1576,6 +1576,12 @@
     "control-end-of-set-open-ended-question-c": "What kind of help would you wish for?",
     "elicitation-construct-specific-details-NOT-USED": "I can’t find the right place in the text",
     "elicitation-construct-deducing-vocabulary-NOT-USED": "I don’t understand the meaning of some words",
-    "confirm-next-set": "Confirm",
-    "continue-activity": "Continue your activity"
+    "confirm-next-set": "OK",
+    "continue-activity": "Continue previous activity",
+    "Home-Continue-Activity-EXPLANATION": "Click here to resume where you left off in the previous session",
+    "Home-Dive-In-EXPLANATION": "Here Revita will suggest texts for you to practice with, based on your preferences",
+    "Home-Lessons-EXPLANATION": "Here you will get lessons on many grammar topics, based on many examples selected from various stories.",
+    "Home-Adaptive-Test-EXPLANATION": "Here you can take a quick test — about 50-60 questions — which will produce an estimate of your level of knowledge",
+    "Home-Flashcards-EXPLANATION": "Here you can play with flashcards — to improve your knowledge of vocabulary",
+    "Home-Library-EXPLANATION": "Here is the library of all texts uploaded so far: your own, those uploaded by your teacher, and a small common collection"
 }

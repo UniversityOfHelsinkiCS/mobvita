@@ -1,12 +1,12 @@
 import React, { useState, useEffect } from 'react'
 import { useHistory } from 'react-router'
-import { FormattedMessage } from 'react-intl'
+import { FormattedMessage, useIntl } from 'react-intl'
 import { images, hiddenFeatures, supportedLearningLanguages } from 'Utilities/common'
 import { useDispatch, useSelector } from 'react-redux'
 import { getGroups } from 'Utilities/redux/groupsReducer'
 import { getAllStories } from 'Utilities/redux/storiesReducer'
 import { openEncouragement } from 'Utilities/redux/encouragementsReducer'
-import { Button } from 'react-bootstrap'
+import { Popup } from 'semantic-ui-react'
 import useWindowDimensions from 'Utilities/windowDimensions'
 import Footer from 'Components/Footer'
 import AddStoryModal from 'Components/AddStoryModal'
@@ -28,27 +28,43 @@ const HomeviewButton = ({
   dataCy,
   wide,
   beta_feature,
+  content=null
 }) => {
-  return (
+  const intl = useIntl()
+  const button = (
     <button
-      className={`flex justify-center homeview-btn${wide ? ' homeview-btn-wide' : ' homeview-btn-narrow'}`}
-      type="button"
-      onClick={handleClick}
-      data-cy={dataCy}
+    className={`flex justify-center homeview-btn${wide ? ' homeview-btn-wide' : ' homeview-btn-narrow'}`}
+    type="button"
+    onClick={handleClick}
+    data-cy={dataCy}
+  >
+    {!wide && <img src={imgSrc} alt={altText} style={{ maxWidth: '50px', maxHeight: '50px' }}/>}
+    <div 
+      className="homeview-btn-text flex items-center justify-center" 
+      style={{ width: '100%', height: '100%', alignItems: 'center'}}
     >
-      {!wide && <img src={imgSrc} alt={altText} style={{ maxWidth: '50px', maxHeight: '50px' }}/>}
-      <div 
-        className="homeview-btn-text flex items-center justify-center" 
-        style={{ width: '100%', height: '100%', alignItems: 'center'}}
-      >
-        <FormattedMessage id={translationKey} />
-        {beta_feature && (
-          <sup>
-            <b style={{ color: 'red' }}>BETA</b>
-          </sup>
-        )}
-      </div>
-    </button>
+      <FormattedMessage id={translationKey} />
+      {beta_feature && (
+        <sup>
+          <b style={{ color: 'red' }}>BETA</b>
+        </sup>
+      )}
+    </div>
+  </button>
+  )
+  return (
+    <>
+    {content &&  <Popup
+      position="top center"
+      trigger={button}
+      content={intl.formatMessage({id: content})}
+      basic
+    /> || button
+    }
+    </>
+
+
+    
   )
 }
 
@@ -126,6 +142,7 @@ const HomeviewButtons = ({
               translationKey="Library"
               handleClick={() => history.push('/library')}
               dataCy="library-button"
+              content="Home-Library-EXPLANATION"
             />
           </div>
           <div className="lesson-btn-cont tour-lesson">
@@ -135,6 +152,7 @@ const HomeviewButtons = ({
               translationKey="lesson-home-btn"
               beta_feature={true}
               handleClick={() => history.push('/lessons/library')}
+              content="Home-Lessons-EXPLANATION"
             />
           </div>
         </div>
@@ -150,6 +168,7 @@ const HomeviewButtons = ({
                 translationKey="continue-activity"
                 handleClick={() => history.push(activityLink)}
                 dataCy="continue-activity-button"
+                content="Home-Continue-Activity-EXPLANATION"
               />
             </div>
           )}
@@ -162,6 +181,7 @@ const HomeviewButtons = ({
               translationKey="practice-now"
               handleClick={() => setPracticeModalOpen(true)}
               dataCy="practice-now"
+              content="Home-Dive-In-EXPLANATION"
             />
           </div>
           <div className="lesson-btn-cont tour-lesson">
@@ -171,6 +191,7 @@ const HomeviewButtons = ({
               translationKey="lesson-home-btn"
               beta_feature={true}
               handleClick={() => history.push('/lessons/library')}
+              content="Home-Lessons-EXPLANATION"
             />
           </div>
           <div className="flashcards-btn-cont tour-flashcards">
@@ -179,19 +200,9 @@ const HomeviewButtons = ({
               altText="three playing cards"
               translationKey="Flashcards"
               handleClick={() => history.push('/flashcards')}
+              content="Home-Flashcards-EXPLANATION"
             />
           </div>
-
-          {hasAdaptiveTests && (
-            <div className="adaptive-test-btn-cont">
-              <HomeviewButton
-                imgSrc={images.adaptiveTest}
-                altText="a test form with a star on it"
-                translationKey="adaptive-test"
-                handleClick={() => history.push('/adaptive-test')}
-              />
-            </div>
-          )}
           {hasTests && aTestIsEnabled && (
             <div className="test-btn-cont">
               <HomeviewButton

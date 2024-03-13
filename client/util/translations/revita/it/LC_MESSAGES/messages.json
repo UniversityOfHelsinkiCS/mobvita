@@ -1314,7 +1314,7 @@
     "encouragements-default-3": "Ben fatto!",
     "enc-grammar-progress-1": "Vuoi rivedere i tuoi progressi sulla",
     "enc-grammar-progress-2": "grammatica",
-    "no-hints-available": "Nessun indizio per questa",
+    "no-hints-available": "Spiacenti, nessun suggerimento disponibile",
     "user-settings-options": "Impostazione utente",
     "annotation-name": "Nome della nota (opzionale)",
     "story-top-topics": "Praticare con questa storia ti aiuta di superare questi soggetti",
@@ -1573,5 +1573,12 @@
     "control-end-of-set-open-ended-question-c": "Che tipo di aiuto vorresti?",
     "elicitation-construct-specific-details-NOT-USED": "Non trovо il posto giusto nel testo",
     "elicitation-construct-deducing-vocabulary-NOT-USED": "Non capisco il senso di alcune parole",
-    "confirm-next-set": "Confirm"
+    "confirm-next-set": "OK",
+    "continue-activity": "Continua attività precedente",
+    "Home-Continue-Activity-EXPLANATION": "Clicca qui per riprendere da dove avevi interrotto nella sessione precedente",
+    "Home-Dive-In-EXPLANATION": "Qui Revita ti suggerirà i testi con cui esercitarti, in base alle tue preferenze",
+    "Home-Lessons-EXPLANATION": "Qui riceverai lezioni su molti argomenti di grammatica, sulla base di molti esempi selezionati da varie storie",
+    "Home-Adaptive-Test-EXPLANATION": "Qui puoi sostenere un breve test - 50-60 domande - che produrrà una stima del tuo livello di conoscenza",
+    "Home-Flashcards-EXPLANATION": "Qui puoi giocare con le flashcard per migliorare la tua conoscenza del vocabolario",
+    "Home-Library-EXPLANATION": "Qui la libreria di tutti i testi caricati finora: i tuoi, quelli caricati dal tuo insegnante, e una raccolta comune"
 }

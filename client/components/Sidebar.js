@@ -226,7 +226,16 @@ export default function Sidebar({ history }) {
                     <FormattedMessage id="Flashcards" />
                   </Button>
                 </Link>
-
+                <Link to="/adaptive-test">
+                  <Button
+                    variant="secondary"
+                    style={{ marginTop: marginTopButton }}
+                    block
+                  >
+                    <Icon size="small" name="file alternate outline" bordered />{' '}
+                    <FormattedMessage id="adaptive-test" />
+                  </Button>
+                </Link>
                 {hiddenFeatures && (
                   <>
                     <Link to="/test-construction">
@@ -270,16 +279,20 @@ export default function Sidebar({ history }) {
           }}
         >
           <Menu.Item style={{ paddingBottom: '0px' }}>
-          <Dropdown item text='More'>
+          <Link to="/profile/settings">
+            <Button
+              variant="secondary"
+              style={{ marginBottom: marginTopButton }}
+              block
+              data-cy="navbar-settings-button"
+            >
+              <Icon size="small" name="settings" bordered />{' '}
+              <FormattedMessage id="Settings" />
+            </Button>
+          </Link>
+          <Dropdown item text='More' >
             <DropdownMenu style={{minHeight: '18.5em'}}>
               <DropdownItem text={intl.formatMessage({id: 'groups'})} icon='group' as={Link} to={isTeacher ? '/groups/teacher' : '/groups/student'}/>
-              <DropdownItem 
-                text={intl.formatMessage({id: 'Settings'})} 
-                icon='settings' 
-                as={Link} 
-                to={'/profile/settings'}
-                data-cy="navbar-settings-button"
-              />
               <DropdownItem as={Link} to="/profile/main" text={intl.formatMessage({id: 'Profile'})} icon="user outline" />
               {learningLanguage && (
                 <DropdownItem

@@ -1574,5 +1574,12 @@
     "control-end-of-set-open-ended-question-c": "Millaista apua toivoisit?",
     "elicitation-construct-specific-details-NOT-USED": "En löydä tekstistä oikeaa kohtaa",
     "elicitation-construct-deducing-vocabulary-NOT-USED": "Joidenkin sanojen merkitystä en ymmärrä",
-    "confirm-next-set": "Confirm"
+    "confirm-next-set": "OK",
+    "continue-activity": "Jatka aiempaa toimintaani",
+    "Home-Continue-Activity-EXPLANATION": "Napsauta tätä jatkaaksesi siitä, mihin jäit edellisessä istunnossa",
+    "Home-Dive-In-EXPLANATION": "Täällä Revita ehdottaa tekstejä harjoitteluun mieltymystesi perusteella",
+    "Home-Lessons-EXPLANATION": "Täältä saat oppitunteja monista kieliopin aiheista, jotka perustuvat moniin erilaisista teksteistä valittuihin esimerkkeihin",
+    "Home-Adaptive-Test-EXPLANATION": "Täällä voit suorittaa lyhyen testin – noin 50–60 kysymystä – joka tuottaa arvion tietotasostasi",
+    "Home-Flashcards-EXPLANATION": "Täällä voit pelata muistikorteilla parantaaksesi sanavarastotietoasi",
+    "Home-Library-EXPLANATION": "Tässä on kirjasto kaikista tähän mennessä ladatuista teksteistä: omasi, opettajasi lataamat tekstit, ja pieni yhteinen kokoelma"
 }

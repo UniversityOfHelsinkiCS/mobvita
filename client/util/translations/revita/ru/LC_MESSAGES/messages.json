@@ -1496,7 +1496,7 @@
     "tour-step9-HELP-message": "Пожалуйста, посмотри через эту кнопку:\n<ul>\n<li/>вводное видео,\n<li/>подробные инструкции,\n<li/>FAQ &mdash; часто задаваемые вопросы</ul>",
     "streak-done": "Ты в ударном режиме: <b>{daysStreaked}</b> дней!",
     "streak-undone": "Продолжай работать в ударном режиме!",
-    "streak-broken": "Ударный режим прервался!",
+    "streak-broken": "Ударный режим прерван!",
     "continue-streak": "Продолжай работу в ударном режиме",
     "start-streak": "Вернуться в ударный режим",
     "do-snippets": "Выполни упражнения в 10-и фрагментах из текста",
@@ -1566,7 +1566,7 @@
     "move-to-next-set-of-reading-items": "Теперь переходим к следующему набору заданий. Они немного отличаются от предыдущих.",
     "experimental-after-first-mediation-slider-question": "Насколько полезен был этот отзыв?",
     "experimental-after-first-mediation-open-ended-question": "Изменила ли обратная связь твой подход к задаче? Как?",
-    "experimental-after-last-item-slider-question": "Насколько полезной кажется эта обратная связь, после выполнения этих задач?",
+    "experimental-after-last-item-slider-question": "Насколько полезной кажется эта обратная связь после выполнения этих задач?",
     "experimental-end-of-set-open-ended-question-a": "Повлияла ли обратная связь в предыдущих пунктах на то, как ты читаешь тексты?",
     "experimental-end-of-set-open-ended-question-b": "Появились ли у тебя новые идеи о том, как отвечать на вопросы по чтению?",
     "experimental-end-of-set-open-ended-question-c": "Что бы ты изменил/а в упражнениях, чтобы их было легче использовать?",
@@ -1576,5 +1576,12 @@
     "control-end-of-set-open-ended-question-c": "Какую помощь ты бы хотел получить?",
     "elicitation-construct-specific-details-NOT-USED": "Не могу найти нужное место в тексте",
     "elicitation-construct-deducing-vocabulary-NOT-USED": "Не понимаю значения некоторых слов",
-    "confirm-next-set": "Confirm"
+    "confirm-next-set": "OK",
+    "continue-activity": "Продолжить предыдущие упражнения",
+    "Home-Continue-Activity-EXPLANATION": "Нажми здесь, чтобы продолжить упражнения из твоей предыдущей сессии",
+    "Home-Dive-In-EXPLANATION": "Здесь Revita предложит тебе тексты для практики в зависимости от твоих предпочтений",
+    "Home-Lessons-EXPLANATION": "Здесь ты получишь уроки по грамматическим темам, основанные на примерах, выбранных из различных текстов.",
+    "Home-Adaptive-Test-EXPLANATION": "Здесь ты можешь пройти небольшой тест (50-60 вопросов), который позволит оценить твой уровень знаний",
+    "Home-Flashcards-EXPLANATION": "Здесь ты можешь поработать с карточками — чтобы увеличить свой словарный запас",
+    "Home-Library-EXPLANATION": "Здесь библиотека загруженных на данный момент текстов: твои собственные, загруженные твоим учителем и небольшая общая коллекция"
 }
