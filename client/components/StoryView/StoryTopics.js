@@ -140,7 +140,7 @@ const StoryTopics = ({ conceptCount, focusedConcept, setFocusedConcept, isContro
                       style={{ cursor: 'pointer' }}
                       onClick={() => handleFocusedConcept(topic[0])}
                     >
-                      {hiddenFeatures && isControlledStoryEditor && <Form.Check
+                      {isControlledStoryEditor && <Form.Check
                         style={{ verticalAlign: 'middle', marginRight: '0.5em' }}
                         type="checkbox"
                         inline
