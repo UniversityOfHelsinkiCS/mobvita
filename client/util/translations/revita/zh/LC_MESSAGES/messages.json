@@ -947,10 +947,10 @@
     "elicitation-construct-deducing-vocabulary-NOT-USED": "我不理解一些单词",
     "confirm-next-set": "OK",
     "continue-activity": "继续之前的联系",
-    "Home-Continue-Activity-EXPLANATION": "Click here to resume where you left off in the previous session",
-    "Home-Dive-In-EXPLANATION": "Here Revita will suggest texts for you to practice with, based on your preferences",
-    "Home-Lessons-EXPLANATION": "Here you will get lessons on many grammar topics, based on many examples selected from various stories.",
-    "Home-Adaptive-Test-EXPLANATION": "Here you can take a quick test — about 50-60 questions — which will produce an estimate of your level of knowledge",
-    "Home-Flashcards-EXPLANATION": "Here you can play with flashcards — to improve your knowledge of vocabulary",
-    "Home-Library-EXPLANATION": "Here is the library of all texts uploaded so far: your own, those uploaded by your teacher, and a small common collection"
+    "Home-Continue-Activity-EXPLANATION": "点击此处继续之前的练习",
+    "Home-Dive-In-EXPLANATION": "Revita将会在此处根据您之前的练习随机选择文章进行练习",
+    "Home-Lessons-EXPLANATION": "您可以进入此处开始语法专项练习。练习将从您的文章中挑选",
+    "Home-Adaptive-Test-EXPLANATION": "您可以在此处开始一个快速测试。大约会有50-60题。我们将根据您的测试生成一个成绩",
+    "Home-Flashcards-EXPLANATION": "你可以在此处练习单词卡",
+    "Home-Library-EXPLANATION": "这里是您的图书馆，收藏了您和您的老师们至今为止上传的所有文章，我们还提供一份公共文章合集"
 }
