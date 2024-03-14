@@ -188,8 +188,8 @@ export default function Sidebar({ history }) {
                 <Button
                   className='sidebar-profile-button'
                   // data-cy="practice-now"
-                  variant="primary"
-                  style={{ marginTop: marginTopButton }}
+                  variant="secondary"
+                  style={{ marginTop: marginTopButton, color: 'darkslateblue', borderColor: 'slateblue' }}
                   onClick={() => setPracticeModalOpen(true)}
                   block
                 >
@@ -198,8 +198,8 @@ export default function Sidebar({ history }) {
                 <Link to="/library">
                   <Button
                     className="sidebar-library-button"
-                    variant="primary"
-                    style={{ marginTop: marginTopButton }}
+                    variant="secondary"
+                    style={{ marginTop: marginTopButton, color: 'darkslateblue', borderColor: 'slateblue' }}
                     
                     block
                   >
@@ -208,8 +208,8 @@ export default function Sidebar({ history }) {
                 </Link>
                 <Link to="/lessons/library">
                   <Button
-                    variant="primary"
-                    style={{ marginTop: marginTopButton }}
+                    variant="secondary"
+                    style={{ marginTop: marginTopButton, color: 'darkslateblue', borderColor: 'slateblue' }}
                     
                     block
                   >
@@ -219,8 +219,8 @@ export default function Sidebar({ history }) {
                 </Link>
                 <Link to="/flashcards">
                   <Button
-                    variant="primary"
-                    style={{ marginTop: marginTopButton }}
+                    variant="secondary"
+                    style={{ marginTop: marginTopButton, color: 'darkslateblue', borderColor: 'slateblue' }}
                     block
                   >
                     <Icon size="small" name="question" bordered />{' '}
@@ -229,8 +229,8 @@ export default function Sidebar({ history }) {
                 </Link>
                 <Link to="/adaptive-test">
                   <Button
-                    variant="primary"
-                    style={{ marginTop: marginTopButton }}
+                    variant="secondary"
+                    style={{ marginTop: marginTopButton, color: 'darkslateblue', borderColor: 'slateblue' }}
                     block
                   >
                     <Icon size="small" name="file alternate outline" bordered />{' '}
@@ -241,8 +241,8 @@ export default function Sidebar({ history }) {
                   <>
                     <Link to="/test-construction">
                       <Button 
-                        variant="primary"
-                        style={{ marginTop: marginTopButton }}
+                        variant="secondary"
+                        style={{ marginTop: marginTopButton, color: 'darkslateblue', borderColor: 'slateblue' }}
                         block
                       >
                         Grammar check
@@ -250,8 +250,8 @@ export default function Sidebar({ history }) {
                     </Link>
                     <Link to="/test-debug">
                       <Button 
-                        variant="primary"
-                        style={{ marginTop: marginTopButton }}
+                        variant="secondary"
+                        style={{ marginTop: marginTopButton, color: 'darkslateblue', borderColor: 'slateblue' }}
                         block
                       >
                         Feedback check
@@ -291,8 +291,8 @@ export default function Sidebar({ history }) {
           <Menu.Item style={{ paddingBottom: '0px' }}>
           <Link to="/profile/settings">
             <Button
-              variant="primary"
-              style={{ marginBottom: marginTopButton }}
+              variant="secondary"
+              style={{ marginBottom: marginTopButton, color: 'darkslateblue', borderColor: 'slateblue' }}
               block
               data-cy="navbar-settings-button"
             >
