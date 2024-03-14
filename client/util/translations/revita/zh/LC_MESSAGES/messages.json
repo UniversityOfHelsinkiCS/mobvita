@@ -857,8 +857,8 @@
     "Instrumental": "",
     "Locative": "",
     "practice-lesson-message": "点击此处开始练习本课程",
-    "Lesson exercise": "Lesson exercise",
-    "lesson-exercise-message": "Lessons are like practicing with stories, but all exercises focus <b>only</b> on the selected grammar topics.",
+    "Lesson exercise": "课程练习类似于文章练习，但<b>所有习题只基于所选主题</b>",
+    "lesson-exercise-message": "课程练习类似于文章练习，但<b>所有习题只基于所选主题</b>",
     "Dative subject + impersonal-reflexive verb: 'мне нравится/кажется/пришлось'": "主体三格+无人称动词/反身动词：我喜欢/我觉得/我不得不。",
     "begin-practicing": "结束导览",
     "tour-step9-HELP-header": "说明和帮助",
@@ -902,7 +902,7 @@
     "Next step": "下一步",
     "Easy": "易",
     "Hard": "难",
-    "Lessons": "Lessons",
+    "Lessons": "课程",
     "next-step": "下一步",
     "teacher-view": "教师界面",
     "dictionaryhelp-show-context-translation": "翻译上下文",
@@ -914,7 +914,7 @@
     "lessons-ready-for-practice": "可以开始课程！",
     "start-practice-lesson": "开始练习",
     "practice-button-story-mode": "开始练习",
-    "continue-streak-explanation": "Your streak counts for how many days you practiced without uninterruptions",
+    "continue-streak-explanation": "您连续练习的天数",
     "student-view": "学生界面",
     "click-here-to-see-progress-explanation": "点击此处查看你的进度",
     "click-to-see-TOUR-explanation": "点击此处开始使用教程",
@@ -952,5 +952,7 @@
     "Home-Lessons-EXPLANATION": "您可以进入此处开始语法专项练习。练习将从您的文章中挑选",
     "Home-Adaptive-Test-EXPLANATION": "您可以在此处开始一个快速测试。大约会有50-60题。我们将根据您的测试生成一个成绩",
     "Home-Flashcards-EXPLANATION": "你可以在此处练习单词卡",
-    "Home-Library-EXPLANATION": "这里是您的图书馆，收藏了您和您的老师们至今为止上传的所有文章，我们还提供一份公共文章合集"
+    "Home-Library-EXPLANATION": "这里是您的图书馆，收藏了您和您的老师们至今为止上传的所有文章，我们还提供一份公共文章合集",
+    "following-view-tab": "Following",
+    "Sidebar-user-score-EXPLANATION": "您的当前等级，点击查看进度"
 }

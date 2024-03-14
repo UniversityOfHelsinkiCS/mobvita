@@ -7,7 +7,8 @@ import {
   Dropdown, 
   Segment,
   DropdownItem,
-  DropdownMenu
+  DropdownMenu,
+  Popup
 } from 'semantic-ui-react'
 import { useDispatch, useSelector } from 'react-redux'
 import { useIntl } from 'react-intl' 
@@ -187,7 +188,7 @@ export default function Sidebar({ history }) {
                 <Button
                   className='sidebar-profile-button'
                   // data-cy="practice-now"
-                  variant="secondary"
+                  variant="primary"
                   style={{ marginTop: marginTopButton }}
                   onClick={() => setPracticeModalOpen(true)}
                   block
@@ -197,7 +198,7 @@ export default function Sidebar({ history }) {
                 <Link to="/library">
                   <Button
                     className="sidebar-library-button"
-                    variant="secondary"
+                    variant="primary"
                     style={{ marginTop: marginTopButton }}
                     
                     block
@@ -207,7 +208,7 @@ export default function Sidebar({ history }) {
                 </Link>
                 <Link to="/lessons/library">
                   <Button
-                    variant="secondary"
+                    variant="primary"
                     style={{ marginTop: marginTopButton }}
                     
                     block
@@ -218,7 +219,7 @@ export default function Sidebar({ history }) {
                 </Link>
                 <Link to="/flashcards">
                   <Button
-                    variant="secondary"
+                    variant="primary"
                     style={{ marginTop: marginTopButton }}
                     block
                   >
@@ -228,7 +229,7 @@ export default function Sidebar({ history }) {
                 </Link>
                 <Link to="/adaptive-test">
                   <Button
-                    variant="secondary"
+                    variant="primary"
                     style={{ marginTop: marginTopButton }}
                     block
                   >
@@ -240,7 +241,7 @@ export default function Sidebar({ history }) {
                   <>
                     <Link to="/test-construction">
                       <Button 
-                        variant="secondary"
+                        variant="primary"
                         style={{ marginTop: marginTopButton }}
                         block
                       >
@@ -249,7 +250,7 @@ export default function Sidebar({ history }) {
                     </Link>
                     <Link to="/test-debug">
                       <Button 
-                        variant="secondary"
+                        variant="primary"
                         style={{ marginTop: marginTopButton }}
                         block
                       >
@@ -267,10 +268,19 @@ export default function Sidebar({ history }) {
           </>
         )}
         {user && (
-          <div style={{ fontSize: '18px', color: '#777' }}> 
-            <div style={{ width: '100%', textAlign: 'center' }}>{`${user.user.username}`}</div>
-            <div style={{ width: '100%', textAlign: 'center', color: 'black' }}>{`${cefr_num2cefr_str(user.user.current_cerf)}`}</div>
-          </div>
+          <Popup
+            content={<FormattedMessage id="Sidebar-user-score-EXPLANATION" />}
+            trigger={
+              <Link 
+                to="/profile/progress" 
+                style={{ fontSize: '18px', color: '#777', textDecoration: 'none', marginTop: '50px' }}
+              > 
+                <div style={{ width: '100%', textAlign: 'center' }}>{`${user.user.username}`}</div>
+                <div style={{ width: '100%', textAlign: 'center', color: 'black' }}>{`${cefr_num2cefr_str(user.user.current_cerf)}`}</div>
+              </Link>
+            }
+          />
+          
         )}
         <div
           style={{
@@ -281,7 +291,7 @@ export default function Sidebar({ history }) {
           <Menu.Item style={{ paddingBottom: '0px' }}>
           <Link to="/profile/settings">
             <Button
-              variant="secondary"
+              variant="primary"
               style={{ marginBottom: marginTopButton }}
               block
               data-cy="navbar-settings-button"
