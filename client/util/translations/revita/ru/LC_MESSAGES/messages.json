@@ -1585,5 +1585,10 @@
     "Home-Flashcards-EXPLANATION": "Здесь ты можешь поработать с карточками — чтобы увеличить свой словарный запас",
     "Home-Library-EXPLANATION": "Здесь библиотека загруженных на данный момент текстов: твои собственные, загруженные твоим учителем и небольшая общая коллекция",
     "following-view-tab": "Друзья",
-    "Sidebar-user-score-EXPLANATION": "Твой текущий уровень — нажми, чтобы перейти к просмотру прогресса"
+    "Sidebar-user-score-EXPLANATION": "Твой текущий уровень — нажми, чтобы перейти к просмотру прогресса",
+    "flashcards-go-to-all-cards-EXPLANATION": "You are now working with five special <i>blue</i> cards — to check words you <i>probably</i> know.\n<br/>\nClick here to go back to working with <i>all</i> flashcards.",
+    "flashcards-edit-card-list-EXPLANATION": "",
+    "flashcards-add-cards-EXPLANATION": "",
+    "flashcards-translate-cards-EXPLANATION": "",
+    "flashcards-quick-cards-EXPLANATION": ""
 }

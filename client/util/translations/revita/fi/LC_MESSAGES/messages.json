@@ -465,7 +465,7 @@
     "select-types-of-exercisesto-practice-34b953b387e6c6f6a7d4aa52ddaf177b": "Valitse harjoitustyypit",
     "Home": "Etusivu",
     "Library": "Kirjasto",
-    "all-flashcards": "Kaikki kysymyskortit",
+    "all-flashcards": "Kaikki sanakortit",
     "Tests": "Testit",
     "Comprehension": "Ymmärrys",
     "practice-a-random-story-with-the-language-of-your-choice": "Harjoittele satunnaista kertomusta valitullasi kielelläsi",
@@ -1583,5 +1583,10 @@
     "Home-Flashcards-EXPLANATION": "Täällä voit pelata muistikorteilla parantaaksesi sanavarastotietoasi",
     "Home-Library-EXPLANATION": "Tässä on kirjasto kaikista tähän mennessä ladatuista teksteistä: omasi, opettajasi lataamat tekstit, ja pieni yhteinen kokoelma",
     "following-view-tab": "Ystävät",
-    "Sidebar-user-score-EXPLANATION": "Nykyinen tasosi — siirry edistymisnäkymään napsauttamalla"
+    "Sidebar-user-score-EXPLANATION": "Nykyinen tasosi — siirry edistymisnäkymään napsauttamalla",
+    "flashcards-go-to-all-cards-EXPLANATION": "You are now working with five special <i>blue</i> cards — to check words you <i>probably</i> know.\n<br/>\nClick here to go back to working with <i>all</i> flashcards.",
+    "flashcards-edit-card-list-EXPLANATION": "",
+    "flashcards-add-cards-EXPLANATION": "",
+    "flashcards-translate-cards-EXPLANATION": "",
+    "flashcards-quick-cards-EXPLANATION": ""
 }

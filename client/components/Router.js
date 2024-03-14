@@ -69,7 +69,7 @@ export default () => {
     ) {
       dispatch(openEncouragement())
     }
-    dispatch(sidebarSetOpen(['/', '/welcome', '/home'].includes(location.pathname) && userData))
+    dispatch(sidebarSetOpen(['/', '/welcome', '/home'].includes(location.pathname) && userData !== null && userData !== undefined))
   }, [location.pathname])
   
   return (

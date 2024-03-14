@@ -1582,5 +1582,10 @@
     "Home-Flashcards-EXPLANATION": "Qui puoi giocare con le flashcard per migliorare la tua conoscenza del vocabolario",
     "Home-Library-EXPLANATION": "Qui la libreria di tutti i testi caricati finora: i tuoi, quelli caricati dal tuo insegnante, e una raccolta comune",
     "following-view-tab": "Amici",
-    "Sidebar-user-score-EXPLANATION": "Il tuo livello attuale: fai clic per visualizzare i progressi"
+    "Sidebar-user-score-EXPLANATION": "Il tuo livello attuale: fai clic per visualizzare i progressi",
+    "flashcards-go-to-all-cards-EXPLANATION": "You are now working with five special <i>blue</i> cards — to check words you <i>probably</i> know.\n<br/>\nClick here to go back to working with <i>all</i> flashcards.",
+    "flashcards-edit-card-list-EXPLANATION": "",
+    "flashcards-add-cards-EXPLANATION": "",
+    "flashcards-translate-cards-EXPLANATION": "",
+    "flashcards-quick-cards-EXPLANATION": ""
 }

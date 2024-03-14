@@ -1,20 +1,27 @@
 import React, { useState } from 'react'
 import { useSelector } from 'react-redux'
 import { useHistory, useParams } from 'react-router-dom'
-import { FormattedMessage } from 'react-intl'
-import { Icon } from 'semantic-ui-react'
-import { images } from 'Utilities/common'
+import { FormattedMessage, FormattedHTMLMessage } from 'react-intl'
+import { Icon, Popup } from 'semantic-ui-react'
+import { backgroundColors, images } from 'Utilities/common'
 import SelectLanguage from './SelectLanguage'
 
-const FabOption = ({ handleClick, iconStyle, translationId, children }) => (
-  <button type="button" onClick={handleClick} className="flashcard-fab-option gap-col-nm">
-    <div className="flashcard-fab-icon" style={iconStyle}>
-      {children}
-    </div>
-    <span className="flashcard-fab-text">
-      <FormattedMessage id={translationId} />
-    </span>
-  </button>
+const FabOption = ({ handleClick, iconStyle, translationId, tooltip, children }) => (
+  <Popup
+    content={<FormattedHTMLMessage id={tooltip} />}
+    trigger={
+      <button type="button" onClick={handleClick} className="flashcard-fab-option gap-col-nm">
+        <div className="flashcard-fab-icon" style={iconStyle}>
+          {children}
+        </div>
+        <span className="flashcard-fab-text">
+          <FormattedMessage id={translationId} />
+        </span>
+      </button>
+    }
+    position="top center"
+  />
+  
 )
 
 const CardManagmentOptions = ({ handleOptionClick, handleOptionClickWithStory }) => {
@@ -37,7 +44,12 @@ const CardManagmentOptions = ({ handleOptionClick, handleOptionClickWithStory })
         </span>
       </button>
       {storyId && (
-        <FabOption handleClick={() => handleOptionClick('fillin')} translationId="all-flashcards">
+        <FabOption 
+          handleClick={() => handleOptionClick('fillin')} 
+          translationId="all-flashcards"
+          iconStyle={{backgroundColors: 'lightpink'}}
+          tooltip='flashcards-go-to-all-cards-EXPLANATION'
+        >
           <img
             src={images.flashcardIcon}
             alt="three cards"
@@ -50,6 +62,7 @@ const CardManagmentOptions = ({ handleOptionClick, handleOptionClickWithStory })
         handleClick={() => handleOptionClickWithStory('list')}
         translationId="Flashcard list"
         iconStyle={{ paddingBottom: '0.5em', paddingRight: '0.1em' }}
+        tooltip='flashcards-edit-card-list-EXPLANATION'
       >
         <Icon name="list alternate outline" style={{ margin: 'auto' }} />
       </FabOption>
@@ -57,6 +70,7 @@ const CardManagmentOptions = ({ handleOptionClick, handleOptionClickWithStory })
         handleClick={() => handleOptionClick('new')}
         translationId="add-new-flashcard"
         iconStyle={{ paddingBottom: '0.5em', paddingLeft: '0.1em' }}
+        tooltip='flashcards-add-cards-EXPLANATION'
       >
         <Icon name="edit" style={{ margin: 'auto' }} />
       </FabOption>
@@ -79,6 +93,7 @@ const PracticeModeOptions = ({ handleOptionClickWithStory }) => {
           backgroundColor: 'rgb(199, 206, 234)',
         }}
         translationId="fill-in"
+        tooltip='flashcards-translate-cards-EXPLANATION'
       >
         <Icon name="keyboard outline" style={{ margin: 'auto' }} />
       </FabOption>
@@ -105,6 +120,7 @@ const PracticeModeOptions = ({ handleOptionClickWithStory }) => {
           backgroundColor: 'rgb(253, 253, 150)',
         }}
         translationId="Quick cards"
+        tooltip='flashcards-quick-cards-EXPLANATION'
       >
         <Icon name="lightning" style={{ margin: 'auto' }} />
       </FabOption>

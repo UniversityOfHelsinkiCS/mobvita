@@ -954,5 +954,11 @@
     "Home-Flashcards-EXPLANATION": "你可以在此处练习单词卡",
     "Home-Library-EXPLANATION": "这里是您的图书馆，收藏了您和您的老师们至今为止上传的所有文章，我们还提供一份公共文章合集",
     "following-view-tab": "Following",
-    "Sidebar-user-score-EXPLANATION": "您的当前等级，点击查看进度"
+    "Sidebar-user-score-EXPLANATION": "您的当前等级，点击查看进度",
+    "all-flashcards": "所有单词卡",
+    "flashcards-go-to-all-cards-EXPLANATION": "You are now working with five special <i>blue</i> cards — to check words you <i>probably</i> know.\n<br/>\nClick here to go back to working with <i>all</i> flashcards.",
+    "flashcards-edit-card-list-EXPLANATION": "",
+    "flashcards-add-cards-EXPLANATION": "",
+    "flashcards-translate-cards-EXPLANATION": "",
+    "flashcards-quick-cards-EXPLANATION": ""
 }

@@ -1,18 +1,26 @@
 import React from 'react'
 import { useSelector } from 'react-redux'
-import { FormattedMessage } from 'react-intl'
+import { FormattedMessage, FormattedHTMLMessage } from 'react-intl'
 import { useHistory, useParams } from 'react-router-dom'
-import { Icon } from 'semantic-ui-react'
+import { Icon, Popup } from 'semantic-ui-react'
 import { images } from 'Utilities/common'
 import SelectLanguage from './SelectLanguage'
 
-const MenuItem = ({ handleClick, style, translationId, children }) => (
-  <button type="button" className="flashcard-menu-item" style={style} onClick={handleClick}>
-    {children}
-    <span style={{ whiteSpace: 'nowrap' }}>
-      <FormattedMessage id={translationId} />
-    </span>
-  </button>
+const MenuItem = ({ handleClick, style, translationId, tooltip, children }) => (
+  <Popup
+    content={<FormattedHTMLMessage id={tooltip} />}
+    trigger={
+      <button type="button" className="flashcard-menu-item" style={style} onClick={handleClick}>
+        {children}
+        <span style={{ whiteSpace: 'nowrap' }}>
+          <FormattedMessage id={translationId} />
+        </span>
+      </button>
+    }
+    position="top center"
+  />
+
+
 )
 
 const CardManagmentOptions = ({ handleOptionClick, handleOptionClickWithStory }) => {
@@ -31,9 +39,10 @@ const CardManagmentOptions = ({ handleOptionClick, handleOptionClickWithStory })
           handleClick={() => handleOptionClick('all')}
           translationId="all-flashcards"
           style={{
-            backgroundColor: 'rgb(189, 202, 212)',
+            backgroundColor: 'lightpink',
             border: 'none',
           }}
+          tooltip='flashcards-go-to-all-cards-EXPLANATION'
         >
           <img src={images.flashcardIcon} alt="three cards" width="40px" />
         </MenuItem>
@@ -45,6 +54,7 @@ const CardManagmentOptions = ({ handleOptionClick, handleOptionClickWithStory })
           backgroundColor: 'rgb(131, 215, 181)',
           border: 'none',
         }}
+        tooltip='flashcards-edit-card-list-EXPLANATION'
       >
         <Icon name="list alternate outline" size="big" style={{ paddingLeft: '0.1em' }} />
       </MenuItem>
@@ -56,6 +66,7 @@ const CardManagmentOptions = ({ handleOptionClick, handleOptionClickWithStory })
           borderRadius: '0 0 1em 1em',
           border: 'none',
         }}
+        tooltip='flashcards-add-cards-EXPLANATION'
       >
         <Icon name="edit outline" size="big" style={{ paddingLeft: '0.1em' }} />
       </MenuItem>
@@ -78,6 +89,7 @@ const PracticeModeOptions = ({ handleOptionClickWithStory }) => {
           border: 'none',
           borderRadius: '1em 1em 0 0',
         }}
+        tooltip='flashcards-translate-cards-EXPLANATION'
       >
         <Icon name="keyboard outline" size="big" />
       </MenuItem>
@@ -103,6 +115,7 @@ const PracticeModeOptions = ({ handleOptionClickWithStory }) => {
           border: 'none',
           borderRadius: '0 0 1em 1em',
         }}
+        tooltip='flashcards-quick-cards-EXPLANATION'
       >
         <Icon name="lightning" size="big" />
       </MenuItem>
