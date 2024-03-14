@@ -7,6 +7,7 @@ import Progress from 'Components/Profile/Progress'
 import Main from './Main'
 import Account from './Account'
 import Settings from './Settings'
+import Following from './Following'
 
 export default function Profile({ location }) {
   const intl = useIntl()
@@ -37,6 +38,15 @@ export default function Profile({ location }) {
       {
         menuItem: {
           as: Link,
+          content: intl.formatMessage({ id: 'following' }),
+          to: '/profile/following',
+          key: 'following',
+        },
+        render: () => <Following />,
+      },
+      {
+        menuItem: {
+          as: Link,
           content: intl.formatMessage({ id: 'Account' }),
           to: '/profile/account',
           key: 'account',
@@ -55,9 +65,12 @@ export default function Profile({ location }) {
     ]
     switch (location.pathname) {
       case '/profile/settings':
-        index = 3
+        index = 4
         break
       case '/profile/account':
+        index = 3
+        break
+      case '/profile/following':
         index = 2
         break
       case '/profile/main':
@@ -89,6 +102,15 @@ export default function Profile({ location }) {
       {
         menuItem: {
           as: Link,
+          content: intl.formatMessage({ id: 'following' }),
+          to: '/profile/following',
+          key: 'following',
+        },
+        render: () => <Following />,
+      },
+      {
+        menuItem: {
+          as: Link,
           content: intl.formatMessage({ id: 'Settings' }),
           to: '/profile/settings',
           key: 'settings',
@@ -98,9 +120,12 @@ export default function Profile({ location }) {
     ]
     switch (location.pathname) {
       case '/profile/settings':
-        index = 2
+        index = 3
         break
       case '/profile/account':
+        index = 2
+        break
+      case '/profile/following':
         index = 1
         break
       case '/profile/main':

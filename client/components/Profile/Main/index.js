@@ -3,7 +3,6 @@ import { Grid } from 'semantic-ui-react'
 import EloChart from 'Components/HomeView/EloChart'
 import MedalSummary from 'Components/HomeView/MedalSummary'
 import useWindowDimensions from 'Utilities/windowDimensions'
-import Following from '../Following'
 import ProgressStatistics from './ProgressStatistics'
 import ProfileInfo from './ProfileInfo'
 import ProfileStreakInfo from './ProfileStreakInfo'
@@ -13,7 +12,7 @@ import { XpBar } from './UserLevelInfo'
 const DesktopView = ({teacherView}) => {
   return (
     <div className="cont ps-nm">
-      <Grid columns={2 - teacherView} divided>
+      <Grid columns={2} divided>
         {!teacherView && (<Grid.Column className="flex-col gap-row-nm">
           <Grid.Row>
             <div className="prof-info">
@@ -29,12 +28,11 @@ const DesktopView = ({teacherView}) => {
           <Grid.Row>
             <ProfileStreakInfo />
           </Grid.Row>
+        </Grid.Column>)}
+        <Grid.Column>
           <ProgressStatistics />
           <EloChart />
           <MedalSummary />
-        </Grid.Column>)}
-        <Grid.Column>
-          <Following />
         </Grid.Column>
       </Grid>
     </div>
@@ -67,7 +65,6 @@ const MobileView = ({teacherView}) => {
         <EloChart width="100%" />
         <MedalSummary />
       </div>)}
-      <Following />
     </div>
   )
 }
