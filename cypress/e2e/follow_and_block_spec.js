@@ -9,7 +9,7 @@ describe("in 'profile' page", function () {
   
     this.beforeEach(function () {
       cy.loginExisting().as('user')
-      cy.visit('http://localhost:8000/profile/main')
+      cy.visit('http://localhost:8000/profile/following')
     })
   
     this.afterAll(function () {
