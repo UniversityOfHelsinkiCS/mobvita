@@ -38,7 +38,7 @@ export default function Profile({ location }) {
       {
         menuItem: {
           as: Link,
-          content: intl.formatMessage({ id: 'following' }),
+          content: intl.formatMessage({ id: 'following-view-tab' }),
           to: '/profile/following',
           key: 'following',
         },
@@ -102,7 +102,7 @@ export default function Profile({ location }) {
       {
         menuItem: {
           as: Link,
-          content: intl.formatMessage({ id: 'following' }),
+          content: intl.formatMessage({ id: 'following-view-tab' }),
           to: '/profile/following',
           key: 'following',
         },
