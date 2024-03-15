@@ -956,9 +956,9 @@
     "following-view-tab": "Following",
     "Sidebar-user-score-EXPLANATION": "您的当前等级，点击查看进度",
     "all-flashcards": "所有单词卡",
-    "flashcards-go-to-all-cards-EXPLANATION": "You are now working with five special <i>blue</i> cards — to check words you <i>probably</i> know.\n<br/>\nClick here to go back to working with <i>all</i> flashcards.",
-    "flashcards-edit-card-list-EXPLANATION": "",
-    "flashcards-add-cards-EXPLANATION": "",
-    "flashcards-translate-cards-EXPLANATION": "",
-    "flashcards-quick-cards-EXPLANATION": ""
+    "flashcards-go-to-all-cards-EXPLANATION": "You are now working with five special <i>blue</i> cards — to check words you <i>probably</i> know.\n<br/>\nClick here to go back to working with <i>all</i> your flashcards.",
+    "flashcards-edit-card-list-EXPLANATION": "Here you can review and edit the <i>complete</i> list of your flashcards",
+    "flashcards-add-cards-EXPLANATION": "Here you can add flashcards for any new words you like",
+    "flashcards-translate-cards-EXPLANATION": "Exercise with flashcards: translate words into the language you chose",
+    "flashcards-quick-cards-EXPLANATION": "Quick exercises: I know / I don't know this word"
 }

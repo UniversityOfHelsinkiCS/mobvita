@@ -1123,7 +1123,7 @@
     "preview": "Anteprima",
     "topics": "Argomenti",
     "no-topics-available": "Nessun argomento disponibile",
-    "adaptive-test": "Test adattivo",
+    "adaptive-test": "Test breve",
     "news-bell-info-popup-text": "Hai {numUnreadNews} messaggi non letti. Clicca per vedere le News!",
     "test-settings": "Impostazioni dei test",
     "concepts": "Concetti",
@@ -1583,9 +1583,9 @@
     "Home-Library-EXPLANATION": "Qui la libreria di tutti i testi caricati finora: i tuoi, quelli caricati dal tuo insegnante, e una raccolta comune",
     "following-view-tab": "Amici",
     "Sidebar-user-score-EXPLANATION": "Il tuo livello attuale: fai clic per visualizzare i progressi",
-    "flashcards-go-to-all-cards-EXPLANATION": "You are now working with five special <i>blue</i> cards — to check words you <i>probably</i> know.\n<br/>\nClick here to go back to working with <i>all</i> flashcards.",
-    "flashcards-edit-card-list-EXPLANATION": "",
-    "flashcards-add-cards-EXPLANATION": "",
-    "flashcards-translate-cards-EXPLANATION": "",
-    "flashcards-quick-cards-EXPLANATION": ""
+    "flashcards-go-to-all-cards-EXPLANATION": "Ora stai lavorando con cinque speciali carte <i>blu</i> per controllare le parole che <i>probabilmente</i> conosci.\n<br/>\nClicca qui per tornare a lavorare con <i>tutte</i> le tue flashcard.",
+    "flashcards-edit-card-list-EXPLANATION": "Qui puoi rivedere e modificare l'elenco <i>completo</i> delle tue flashcard",
+    "flashcards-add-cards-EXPLANATION": "Qui puoi aggiungere flashcard per qualsiasi nuova parola che ti piace",
+    "flashcards-translate-cards-EXPLANATION": "Esercitati con le flashcard: traduci le parole nella lingua che hai scelto",
+    "flashcards-quick-cards-EXPLANATION": "Esercizi rapidi: Conosco/Non conosco questa parola"
 }

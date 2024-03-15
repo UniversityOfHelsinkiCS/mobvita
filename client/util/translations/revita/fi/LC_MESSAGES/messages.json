@@ -1122,7 +1122,7 @@
     "preview": "Esikatsele",
     "topics": "Aiheet",
     "no-topics-available": "Ei aiheita saatavilla",
-    "adaptive-test": "Taitotasotesti",
+    "adaptive-test": "Lyhyt Taitotasotesti",
     "news-bell-info-popup-text": "Sinulla on {numUnreadNews} lukematonta viestiä. Klikkaa tästä lukeaksesi ne!",
     "test-settings": "Koeasetukset",
     "concepts": "Aiheet",
@@ -1584,9 +1584,9 @@
     "Home-Library-EXPLANATION": "Tässä on kirjasto kaikista tähän mennessä ladatuista teksteistä: omasi, opettajasi lataamat tekstit, ja pieni yhteinen kokoelma",
     "following-view-tab": "Ystävät",
     "Sidebar-user-score-EXPLANATION": "Nykyinen tasosi — siirry edistymisnäkymään napsauttamalla",
-    "flashcards-go-to-all-cards-EXPLANATION": "You are now working with five special <i>blue</i> cards — to check words you <i>probably</i> know.\n<br/>\nClick here to go back to working with <i>all</i> flashcards.",
-    "flashcards-edit-card-list-EXPLANATION": "",
-    "flashcards-add-cards-EXPLANATION": "",
-    "flashcards-translate-cards-EXPLANATION": "",
-    "flashcards-quick-cards-EXPLANATION": ""
+    "flashcards-go-to-all-cards-EXPLANATION": "Työskentelet nyt viiden erityisen <i>sinisen</i> kortin kanssa – tarkistaaksesi sanat, jotka <i>todennäköisesti</i> tiedät.\n<br/>\nNapsauta tätä palataksesi työskentelemään <i>kaikkien</i> muistikorttiesi kanssa.",
+    "flashcards-edit-card-list-EXPLANATION": "Täällä voit tarkastella ja muokata muistikorttiesi <i>täydellistä</i> luetteloa",
+    "flashcards-add-cards-EXPLANATION": "Täällä voit lisätä muistikortteja uusille sanoille",
+    "flashcards-translate-cards-EXPLANATION": "Harjoittele muistikorteilla: käännä sanat valitsemallesi kielelle",
+    "flashcards-quick-cards-EXPLANATION": "Pikaharjoitukset: Tiedän / en tiedä tätä sanaa"
 }

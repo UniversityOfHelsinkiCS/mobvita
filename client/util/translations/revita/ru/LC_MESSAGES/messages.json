@@ -1125,7 +1125,7 @@
     "preview": "Просмотр",
     "topics": "Темы",
     "no-topics-available": "Темы отсутствуют",
-    "adaptive-test": "Адаптивный тест",
+    "adaptive-test": "Быстрый тест",
     "news-bell-info-popup-text": "{numUnreadNews} новых сообщений в Новостях !",
     "test-settings": "Настройки для тестов",
     "concepts": "Темы",
@@ -1586,9 +1586,9 @@
     "Home-Library-EXPLANATION": "Здесь библиотека загруженных на данный момент текстов: твои собственные, загруженные твоим учителем и небольшая общая коллекция",
     "following-view-tab": "Друзья",
     "Sidebar-user-score-EXPLANATION": "Твой текущий уровень — нажми, чтобы перейти к просмотру прогресса",
-    "flashcards-go-to-all-cards-EXPLANATION": "You are now working with five special <i>blue</i> cards — to check words you <i>probably</i> know.\n<br/>\nClick here to go back to working with <i>all</i> flashcards.",
-    "flashcards-edit-card-list-EXPLANATION": "",
-    "flashcards-add-cards-EXPLANATION": "",
-    "flashcards-translate-cards-EXPLANATION": "",
-    "flashcards-quick-cards-EXPLANATION": ""
+    "flashcards-go-to-all-cards-EXPLANATION": "Сейчас ты работаешь с пятью специальными <i>синими</i> карточками — для проверки слов, которые ты <i>вероятно</i> знаешь.\n<br/>\nНажми здесь, чтобы вернуться к работе со <i>всеми</i> карточками.",
+    "flashcards-edit-card-list-EXPLANATION": "Здесь ты можешь просмотреть и отредактировать <i>полный</i> список твоих карточек",
+    "flashcards-add-cards-EXPLANATION": "Здесь ты можешь добавить карточки с любыми новыми словами",
+    "flashcards-translate-cards-EXPLANATION": "Упражнения с карточками: переведи слова на выбранный язык",
+    "flashcards-quick-cards-EXPLANATION": "Быстрые упражнения: Я знаю/не знаю это слово"
 }
