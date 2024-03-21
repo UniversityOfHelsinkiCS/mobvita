@@ -32,8 +32,8 @@ class GridText extends Component {
             splited_string.push(temp[0] + ':')
             remaining_string = temp.slice(1, temp.length ).join(' ')
         }*/
-        while(remaining_string.includes(' ') && remaining_string.length >= 18){
-            const temp = remaining_string.split(' ')
+        while((remaining_string.includes(' ') || remaining_string.includes('\n')) && remaining_string.length >= 18){
+            const temp = remaining_string.split(/['\s', '\n']/)
             if (temp[0].length < 3  ) {
                 splitted_string.push(temp.slice(0, 2).join(' '))
                 remaining_string = temp.slice(2, temp.length).join(' ')
