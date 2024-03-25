@@ -198,6 +198,16 @@ const HomeviewButtons = ({
               content="Home-Lessons-EXPLANATION"
             />
           </div>
+          <div className="library-btn-cont tour-library">
+            <HomeviewButton
+              imgSrc={images.library}
+              altText="two books in a pile"
+              translationKey="Library"
+              handleClick={() => history.push('/library')}
+              dataCy="library-button"
+              content="Home-Library-EXPLANATION"
+            />
+          </div>
           <div className="flashcards-btn-cont tour-flashcards">
             <HomeviewButton
               imgSrc={images.flashcards}

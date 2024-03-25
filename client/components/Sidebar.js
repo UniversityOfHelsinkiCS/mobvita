@@ -189,7 +189,13 @@ export default function Sidebar({ history }) {
                   className='sidebar-profile-button'
                   // data-cy="practice-now"
                   variant="secondary"
-                  style={{ marginTop: marginTopButton, color: 'darkslateblue', borderColor: 'slateblue' }}
+                  style={{ 
+                    marginTop: marginTopButton, 
+                    color: 'darkslateblue', 
+                    borderColor: 'slateblue', 
+                    fontSize: 'larger', 
+                    fontWeight: 'bold'
+                  }}
                   onClick={() => setPracticeModalOpen(true)}
                   block
                 >
@@ -199,7 +205,13 @@ export default function Sidebar({ history }) {
                   <Button
                     className="sidebar-library-button"
                     variant="secondary"
-                    style={{ marginTop: marginTopButton, color: 'darkslateblue', borderColor: 'slateblue' }}
+                    style={{ 
+                    marginTop: marginTopButton, 
+                    color: 'darkslateblue', 
+                    borderColor: 'slateblue', 
+                    fontSize: 'larger', 
+                    fontWeight: 'bold'
+                  }}
                     
                     block
                   >
@@ -209,7 +221,13 @@ export default function Sidebar({ history }) {
                 <Link to="/lessons/library">
                   <Button
                     variant="secondary"
-                    style={{ marginTop: marginTopButton, color: 'darkslateblue', borderColor: 'slateblue' }}
+                    style={{ 
+                    marginTop: marginTopButton, 
+                    color: 'darkslateblue', 
+                    borderColor: 'slateblue', 
+                    fontSize: 'larger', 
+                    fontWeight: 'bold'
+                  }}
                     
                     block
                   >
@@ -220,7 +238,13 @@ export default function Sidebar({ history }) {
                 <Link to="/flashcards">
                   <Button
                     variant="secondary"
-                    style={{ marginTop: marginTopButton, color: 'darkslateblue', borderColor: 'slateblue' }}
+                    style={{ 
+                    marginTop: marginTopButton, 
+                    color: 'darkslateblue', 
+                    borderColor: 'slateblue', 
+                    fontSize: 'larger', 
+                    fontWeight: 'bold'
+                  }}
                     block
                   >
                     <Icon size="small" name="question" bordered />{' '}
@@ -230,7 +254,13 @@ export default function Sidebar({ history }) {
                 <Link to="/adaptive-test">
                   <Button
                     variant="secondary"
-                    style={{ marginTop: marginTopButton, color: 'darkslateblue', borderColor: 'slateblue' }}
+                    style={{ 
+                    marginTop: marginTopButton, 
+                    color: 'darkslateblue', 
+                    borderColor: 'slateblue', 
+                    fontSize: 'larger', 
+                    fontWeight: 'bold'
+                  }}
                     block
                   >
                     <Icon size="small" name="file alternate outline" bordered />{' '}
@@ -242,7 +272,13 @@ export default function Sidebar({ history }) {
                     <Link to="/test-construction">
                       <Button 
                         variant="secondary"
-                        style={{ marginTop: marginTopButton, color: 'darkslateblue', borderColor: 'slateblue' }}
+                        style={{ 
+                    marginTop: marginTopButton, 
+                    color: 'darkslateblue', 
+                    borderColor: 'slateblue', 
+                    fontSize: 'larger', 
+                    fontWeight: 'bold'
+                  }}
                         block
                       >
                         Grammar check
@@ -251,7 +287,13 @@ export default function Sidebar({ history }) {
                     <Link to="/test-debug">
                       <Button 
                         variant="secondary"
-                        style={{ marginTop: marginTopButton, color: 'darkslateblue', borderColor: 'slateblue' }}
+                        style={{ 
+                    marginTop: marginTopButton, 
+                    color: 'darkslateblue', 
+                    borderColor: 'slateblue', 
+                    fontSize: 'larger', 
+                    fontWeight: 'bold'
+                  }}
                         block
                       >
                         Feedback check
@@ -292,7 +334,13 @@ export default function Sidebar({ history }) {
           <Link to="/profile/settings">
             <Button
               variant="secondary"
-              style={{ marginBottom: marginTopButton, color: 'darkslateblue', borderColor: 'slateblue' }}
+              style={{ 
+                marginBottom: marginTopButton, 
+                color: 'darkslateblue', 
+                borderColor: 'slateblue',
+                fontSize: 'larger',
+                fontWeight: 'bold'
+              }}
               block
               data-cy="navbar-settings-button"
             >
