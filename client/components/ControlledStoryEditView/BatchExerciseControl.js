@@ -8,7 +8,7 @@ const BatchExerciseControl = () => {
   const dispatch = useDispatch()
   const {snippets} = useSelector(({ controlledPractice }) => controlledPractice)
   const isMultiTokenExercise = token => (token.is_head && 
-    (token.multi_mc && token.multi_mc_concept === token.concept.replace('concept_id: ', '') || token.multi_token))
+    (token.multi_mc && token.multi_mc_concept && token.multi_mc_concept === token.concept?.replace('concept_id: ', '') || token.multi_token))
   const exerciseTokens = Object.values(snippets).flat(1).map(token => token.ID)
   const { story, pending } = useSelector(({ stories, locale }) => ({
     story: stories.focused,
@@ -50,8 +50,8 @@ const BatchExerciseControl = () => {
         choices: choicesSet,
         concept: `concept_id: ${concept_id}`,
         topic,
-        alter_correct: alter_correct[concept_id],
-        mc_correct: mc_correct[concept_id],
+        alter_correct: alter_correct && alter_correct[concept_id],
+        mc_correct: mc_correct && mc_correct[concept_id],
     }
   }
 

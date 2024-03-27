@@ -41,7 +41,7 @@ const getHiddenWordIds = frozen_snippets => {
     const tokens = Object.values(frozen_snippets).flat(1).filter(exerciseToken => 
       (exerciseToken.analytic || exerciseToken.multi_token) && 
       exerciseToken.is_head && !exerciseToken.audio || 
-      exerciseToken.multi_mc && exerciseToken.is_head && exerciseToken.choices && 
+      exerciseToken.multi_mc && exerciseToken.is_head && exerciseToken.choices && exerciseToken.multi_mc_concept &&
       exerciseToken.multi_mc_concept === exerciseToken.concept.replace('concept_id: ', ''))
     const headId = tokens.map(token => token.ID)
     return  tokens.map(token => token.cand_index).flat(1).filter(index => !headId.includes(index))
