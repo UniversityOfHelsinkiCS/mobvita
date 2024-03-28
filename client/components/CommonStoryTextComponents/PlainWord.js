@@ -56,7 +56,7 @@ const PlainWord = ({ word, snippet, annotatingAllowed, focusedConcept, ...props 
   const isCompeteMode = history.location.pathname.includes('compete')
   const bigScreen = width >= 1024
   const voice = voiceLanguages[learningLanguage]
-  const conceptHighlighting = word.concepts?.map(x=>x.topic).includes(focusedConcept) || word.analytic_concepts?.includes(focusedConcept)
+  const conceptHighlighting = word.concepts?.map(x=>x.concept).includes(focusedConcept) || word.analytic_concepts?.includes(focusedConcept)
   const listeningHighlighting = focusedWord.audio_wids?.start <= wordId && wordId <= focusedWord.audio_wids?.end
 
   if (surface === '\n\n') {

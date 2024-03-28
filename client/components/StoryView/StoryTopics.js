@@ -13,21 +13,21 @@ const StoryTopics = ({ conceptCount, focusedConcept, setFocusedConcept, isContro
   const { width } = useWindowDimensions()
   const showTopicsBox = useSelector((state) => state.topicsBox.showTopicsBox)
   const [sortBy, setSortBy] = useState('name')
-  const {addExerciseByTopic, removeExerciseByTopic, exerciseTopicsCount} = BatchExerciseControl()
+  const {addExerciseByItem, removeExerciseByItem, exerciseCount} = BatchExerciseControl()
 
-  const toggleExerciseTopic = (topic, freq) => {
-    if (exerciseTopicsCount[topic] && exerciseTopicsCount[topic] === freq) {
-      removeExerciseByTopic(topic)
+  const toggleExerciseTopic = (item, freq) => {
+    if (exerciseCount[item] && exerciseCount[item] === freq) {
+      removeExerciseByItem(item)
     } else {
-      addExerciseByTopic(topic)
+      addExerciseByItem(item)
     }
   }
 
-  const handleFocusedConcept = topic => {
-    if (topic === focusedConcept) {
+  const handleFocusedConcept = item => {
+    if (item === focusedConcept) {
       setFocusedConcept(null)
     } else {
-      setFocusedConcept(topic)
+      setFocusedConcept(item)
     }
   }
   const handleTopicsBoxClick = () => {
@@ -145,10 +145,10 @@ const StoryTopics = ({ conceptCount, focusedConcept, setFocusedConcept, isContro
                         type="checkbox"
                         inline
                         // label={intl.formatMessage({ id: 'teacher-view' })}
-                        checked={exerciseTopicsCount[topic[0]] && exerciseTopicsCount[topic[0]] === topic[1].freq ? true : false}
+                        checked={exerciseCount[topic[0]] && exerciseCount[topic[0]] === topic[1].freq ? true : false}
                         ref={el => {
-                          if (el) el.indeterminate = exerciseTopicsCount[topic[0]] && (
-                            exerciseTopicsCount[topic[0]] / topic[1].freq !== 1 && exerciseTopicsCount[topic[0]] / topic[1].freq !== 0) ? true : false
+                          if (el) el.indeterminate = exerciseCount[topic[0]] && (
+                            exerciseCount[topic[0]] / topic[1].freq !== 1 && exerciseCount[topic[0]] / topic[1].freq !== 0) ? true : false
                         }}
                         onChange={() => toggleExerciseTopic(topic[0], topic[1].freq)}
                       />}
