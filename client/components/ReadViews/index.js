@@ -363,9 +363,10 @@ const ReadViews = ({ match }) => {
               </div>
             )}
             <Divider />
-            {story.paragraph.map(paragraph => (
+            {story.paragraph.map((paragraph, index) => (
               <>
                 <TextWithFeedback
+                  key={index}
                   hideFeedback={!show_preview_exer}
                   showDifficulty={showDifficulty}
                   mode={mode}

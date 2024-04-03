@@ -61,14 +61,14 @@ const PreviousSnippets = (props) => {
           if (index < previous.length - 1){
             return (
               <div className="pt-nm" style={getTextStyle(learningLanguage)}>
-                <TextWithFeedback snippet={snippet} answers={previousAnswers} mode="practice" style={' display: block'} />
+                <TextWithFeedback key={index} snippet={snippet} answers={previousAnswers} mode="practice" style={' display: block'} />
                 <Divider />
               </div>
             )
           } else {
             return (
               <div className="pt-nm" style={getTextStyle(learningLanguage)}>
-                <TextWithFeedback snippet={snippet} answers={previousAnswers} mode="practice" style={' display: block'} />
+                <TextWithFeedback key={index} snippet={snippet} answers={previousAnswers} mode="practice" style={' display: block'} />
               </div>
             )
           }
@@ -76,8 +76,8 @@ const PreviousSnippets = (props) => {
       </div>
     )
   } else {
-    const previousSnippets = previous?.map(snippet => (
-      <TextWithFeedback snippet={snippet} answers={previousAnswers} mode="practice" />
+    const previousSnippets = previous?.map((snippet, index) => (
+      <TextWithFeedback key={index} snippet={snippet} answers={previousAnswers} mode="practice" />
     ))
   
     return (

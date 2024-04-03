@@ -126,46 +126,47 @@ const handleNewVocabulary = (store, newVocabulary) => {
  */
 
 export const handleRequest = store => next => async action => {
-  next(action)
+  if (action) {
+    next(action)
+    const userStorage = localStorage.getItem('user')
+    if (JSON.parse(userStorage)?.timeStamp) {
+      const timeStamp = userStorage ? JSON.parse(userStorage).timeStamp : ''
+      const parsedDate = Date.parse(timeStamp)
 
-  const userStorage = localStorage.getItem('user')
-  if (JSON.parse(userStorage)?.timeStamp) {
-    const timeStamp = userStorage ? JSON.parse(userStorage).timeStamp : ''
-    const parsedDate = Date.parse(timeStamp)
-
-    const isExpired = timerExpired(parsedDate, 24)
-    if (isExpired) {
-      store.dispatch({ type: 'LOGOUT_SUCCESS' })
+      const isExpired = timerExpired(parsedDate, 24)
+      if (isExpired) {
+        store.dispatch({ type: 'LOGOUT_SUCCESS' })
+      }
     }
-  }
 
-  const { requestSettings } = action
-  if (requestSettings) {
-    const { route, method, data, prefix, query, cache } = requestSettings
-    try {
-      const res = await callApi(route, method, data, query)
-      if (cache) {
-        window.localStorage.setItem(cache, JSON.stringify(res.data))
+    const { requestSettings } = action
+    if (requestSettings) {
+      const { route, method, data, prefix, query, cache } = requestSettings
+      try {
+        const res = await callApi(route, method, data, query)
+        if (cache) {
+          window.localStorage.setItem(cache, JSON.stringify(res.data))
+        }
+        if (res.data?.new_achievements?.length > 0) {
+          handleNewAchievement(store, res.data.new_achievements)
+        }
+
+        if (res.data?.num_new_vocabulary) {
+          handleNewVocabulary(store, res.data.num_new_vocabulary)
+        }
+
+        handleStreakState(store, res.data.is_today_streaked)
+        handleLastActivity(store, res.data.last_activity)
+        handleXP(store, res.data.xp_today)
+        handleLevel(store, res.data.level, res.data.level_up)
+
+        const requestSentAt = new Date()
+        window.localStorage.setItem('last_request', requestSentAt)
+
+        store.dispatch({ type: `${prefix}_SUCCESS`, response: res.data, query })
+      } catch (err) {
+        handleError(store, err, prefix, query)
       }
-      if (res.data?.new_achievements?.length > 0) {
-        handleNewAchievement(store, res.data.new_achievements)
-      }
-
-      if (res.data?.num_new_vocabulary) {
-        handleNewVocabulary(store, res.data.num_new_vocabulary)
-      }
-
-      handleStreakState(store, res.data.is_today_streaked)
-      handleLastActivity(store, res.data.last_activity)
-      handleXP(store, res.data.xp_today)
-      handleLevel(store, res.data.level, res.data.level_up)
-
-      const requestSentAt = new Date()
-      window.localStorage.setItem('last_request', requestSentAt)
-
-      store.dispatch({ type: `${prefix}_SUCCESS`, response: res.data, query })
-    } catch (err) {
-      handleError(store, err, prefix, query)
     }
   }
 }

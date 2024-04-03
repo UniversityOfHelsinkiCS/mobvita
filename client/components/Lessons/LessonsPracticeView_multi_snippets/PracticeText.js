@@ -18,9 +18,9 @@ const PracticeText = props => {
   }
 
   return (
-    focusing_snippets.map(snippet => (
+    focusing_snippets.map((snippet, index) => (
       <div ref={textComponent}>
-        <TextWithFeedback exercise snippet={snippet.sent} mode="practice" {...props} />
+        <TextWithFeedback key={index} exercise snippet={snippet.sent} mode="practice" {...props} />
         {/* <Divider /> */}
       </div>
     ))

@@ -228,7 +228,7 @@ const PreviousExerciseWord = ({ word, answer, tiedAnswer, focusedConcept, snippe
           <FormattedMessage id="topics" />:
           <ul className="mb-0">
             {word.concepts.map(concept => (
-              <li>{concept.concept}</li>
+              <li key={concept.concept}>{concept.concept}</li>
             ))}
           </ul>
         </div>

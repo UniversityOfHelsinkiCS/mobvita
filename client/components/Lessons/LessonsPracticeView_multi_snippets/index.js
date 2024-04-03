@@ -97,9 +97,9 @@ const LessonsPracticeView = () => {
                 {!pending && `Lesson ${lesson_instance.syllabus.syllabus_id}`}
               </div>
               <Divider />
-              {previous_snippets?.map(snippet => (
+              {previous_snippets?.map((snippet, index) => (
                 <div className="pt-nm" style={getTextStyle(learningLanguage)}>
-                  <TextWithFeedback snippet={snippet.sent} answers={previousAnswers} mode="practice" style={' display: block'} />
+                  <TextWithFeedback key={index} snippet={snippet.sent} answers={previousAnswers} mode="practice" style={' display: block'} />
                   <Divider />
                 </div>
               ))}

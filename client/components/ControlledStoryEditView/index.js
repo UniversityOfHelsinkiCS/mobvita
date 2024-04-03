@@ -206,7 +206,7 @@ const ControlledStoryEditView = ({ match }) => {
               </div>
             )}
             <Divider />
-            {story.paragraph.map(paragraph => (
+            {story.paragraph.map((paragraph, index) => (
               <>
                 <TextWithFeedback
                   exercise
@@ -215,6 +215,7 @@ const ControlledStoryEditView = ({ match }) => {
                   snippet={paragraph}
                   focusedConcept={focusedConcept}
                   answers={null}
+                  key={index}
                 />
                 <hr />
               </>

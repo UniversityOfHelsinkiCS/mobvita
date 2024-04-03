@@ -51,8 +51,9 @@ const PreviousSnippets = () => {
         .filter(snippet =>
           snippetsInPrevious.includes(snippet.snippetid[snippet.snippetid.length - 1])
         )
-        .map(snippet => (
+        .map((snippet, index) => (
           <TextWithFeedback
+            key={index}
             snippet={snippet.practice_snippet}
             answers={previousAnswers}
             mode="practice"
