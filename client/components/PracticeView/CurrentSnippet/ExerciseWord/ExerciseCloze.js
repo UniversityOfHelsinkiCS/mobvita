@@ -23,7 +23,7 @@ import {
   incrementHintRequests,
   mcExerciseTouched,
 } from 'Utilities/redux/practiceReducer'
-import { decreaseEloHearts } from 'Utilities/redux/snippetsReducer'
+// import { decreaseEloHearts } from 'Utilities/redux/snippetsReducer'
 import { getTranslationAction, setWords } from 'Utilities/redux/translationReducer'
 import { getContextTranslation } from 'Utilities/redux/contextTranslationReducer'
 import { Icon } from 'semantic-ui-react'
@@ -74,14 +74,16 @@ const ExerciseCloze = ({ word, snippet, handleChange }) => {
   const dispatch = useDispatch()
   const [emptyHintsList, setEmptyHintsList] = useState(false)
   const voice = voiceLanguages[learningLanguage]
-  const hintButtonVisibility =
-    (
-      !hints ||
-      (filteredHintsList.length < 1 && !message) ||
-      (preHints.length - requested_hints?.length < filteredHintsList?.length) //  && preHints.length < 5
-    ) && !emptyHintsList
+  const askForHintAvailable = (
+    !hints ||
+    (filteredHintsList.length < 1 && !message) ||
+    (preHints.length - requested_hints?.length < filteredHintsList?.length) //  && preHints.length < 5
+  ) && !emptyHintsList
+
+  const hintButtonVisibility = askForHintAvailable
       ? { visibility: 'visible' }
       : { visibility: 'hidden' }
+
   const handleTooltipWordClick = () => {
     const showAsSurface = exerciseMaskedLanguages.includes(learningLanguage)
       ? word.surface
@@ -148,6 +150,10 @@ const ExerciseCloze = ({ word, snippet, handleChange }) => {
       handleHintRequest(newHintList)
     }
     setKeepOpen(true)
+  }
+
+  const handleAskChatbot = () => {
+
   }
 
   const handleTooltipClick = () => {
@@ -365,6 +371,11 @@ const ExerciseCloze = ({ word, snippet, handleChange }) => {
           <span style={getTextStyle(learningLanguage, 'tooltip')}>{word.base || word.bases} </span>
           → <FormattedMessage id={dictionaryLanguage} />
         </Button>
+        {!askForHintAvailable && (
+          <Button variant="primary" onMouseDown={handleAskChatbot}>
+            <FormattedMessage id="ask-chatbot" />
+          </Button>
+        )}
       </div>
     </div>
   )

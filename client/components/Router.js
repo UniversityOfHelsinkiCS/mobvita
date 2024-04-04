@@ -71,7 +71,7 @@ export default () => {
     }
     dispatch(sidebarSetOpen(['/', '/welcome', '/home'].includes(location.pathname) && userData !== null && userData !== undefined))
   }, [location.pathname])
-  
+
   return (
     <Switch>
       <Route exact path="/">
