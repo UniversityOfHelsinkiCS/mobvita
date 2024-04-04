@@ -1,8 +1,8 @@
 .chatbot {
     position: fixed; 
-    bottom: 20px; 
-    right: 20px; 
-    width: 35vw;
+    bottom: 42px; 
+    right: 3px; 
+    width: 31.6vw;
     max-height: 80%; 
     z-index: 1000; 
     border: 1px solid #ccc;
@@ -30,6 +30,7 @@
 .message {
     display: flex;
     padding: 0.5em;
+    margin-bottom: 0.5em;
     border-radius: 10px;
     max-width: 80%; 
 }
