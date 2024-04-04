@@ -53,7 +53,7 @@ const App = () => {
         <StoryFetcher />
         <Sidebar history={history} />
         <Router />
-        {hiddenFeatures && (
+        {hiddenFeatures && history.location.pathname.includes('practice') && (
           <Chatbot />
         )}
         <Toaster />
