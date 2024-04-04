@@ -3,7 +3,6 @@ import callBuilder from '../apiConnection'
 export const setCurrentMessage = message => ({ type: 'SET_CURRENT_MESSAGE', payload: message });
 
 export const getResponse = (message) => {
-    console.log("message", message)
     const route = `/chatbot`
     const prefix = 'GET_CHATBOT_RESPONSE'
     return callBuilder(route, prefix, 'post', { message })
@@ -28,7 +27,7 @@ export default (state = initialState, action) => {
             return {
                 ...state,
                 isWaitingForResponse: true,
-                messages: [...state.messages, { type: 'user', text: action.message }],
+                messages: [...state.messages, { type: 'user', text: action.requestSettings.data.message }],
             };
         case 'GET_CHATBOT_RESPONSE_FAILURE':
             return {
