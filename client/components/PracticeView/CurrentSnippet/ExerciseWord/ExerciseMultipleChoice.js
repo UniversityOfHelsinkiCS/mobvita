@@ -38,14 +38,16 @@ const ExerciseMultipleChoice = ({ word, handleChange }) => {
   const [spentHints, setSpentHints] = useState([])
   
   const value = currentAnswer ? currentAnswer.users_answer : ''
-  const hintButtonVisibility =
-  (
+  const askForHintAvailable = (
     !hints ||
     (filteredHintsList.length < 1 && !message) ||
     (preHints.length - requested_hints?.length < filteredHintsList?.length) //  && preHints.length < 5
   ) && !emptyHintsList
+
+  const hintButtonVisibility = askForHintAvailable
       ? { visibility: 'visible' }
       : { visibility: 'hidden' }
+
   const getExerciseClass = (tested, isWrong) => {
     if (!tested) return 'exercise-multiple'
     if (isWrong) return 'exercise-multiple wrong'
@@ -159,6 +161,10 @@ const ExerciseMultipleChoice = ({ word, handleChange }) => {
     setKeepOpen(true)
   }
 
+  const handleAskChatbot = () => {
+    
+  }
+
   const handleBlur = () => {
     if (!keepOpen) {
       setShow(false)
@@ -245,6 +251,11 @@ const ExerciseMultipleChoice = ({ word, handleChange }) => {
         <div className="tooltip-green">
           <FormattedMessage id="no-hints-available" />
         </div>
+      )}
+      {!askForHintAvailable && (
+        <Button variant="primary" onMouseDown={handleAskChatbot}>
+          <FormattedMessage id="ask-chatbot" />
+        </Button>
       )}
     </div>
   )
