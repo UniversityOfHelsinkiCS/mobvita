@@ -4,6 +4,7 @@ import { Link, useHistory } from 'react-router-dom'
 import {
   Divider,
   Segment,
+  Popup,
   Icon,
   Header,
   Checkbox,
@@ -178,6 +179,10 @@ const ReadViews = ({ match }) => {
   // console.log('story ', story.paragraph)
   // console.log('focused ', focusedConcept)
 
+  const TODOtoDefine = () => {
+    return null
+  }
+
   const StoryFunctionsDropdown = () => {
 
     // gives the style to to dropdown menu based on is user on mobile
@@ -255,20 +260,36 @@ const ReadViews = ({ match }) => {
       <div className="flex mb-nm">
         <div>
           <Segment data-cy="readmodes-text" className="cont" style={getTextStyle(learningLanguage)}>
-            <Header style={getTextStyle(learningLanguage, 'title')}>
-              <span className="pr-sm practice-tour-start">{story.title}</span>
-              <br />
-              {story.url && (
-                <a
-                  href={story.url}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  style={{ fontSize: '1rem', fontWeight: '300' }}
-                >
-                  <FormattedMessage id="Source" />
-                </a>
-              )}
-            </Header>
+            <div style={{ marginBottom: '30px' }}>
+              <Header className="space-between"
+                      style={getTextStyle(learningLanguage, 'title')}>
+                <div>
+                  <span className="pr-sm practice-tour-start">{story.title}</span>
+                  <br/>
+                  {story.url && (
+                    <a
+                      href={story.url}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      style={{ fontSize: '1rem', fontWeight: '300' }}
+                    >
+                      <FormattedMessage id="Source" />
+                    </a>
+                  )}
+                </div>
+                {!isGroupPreview && !isGroupReview && (
+                  <div>
+                    {ownedStory && mode !== 'practice-preview' && (
+                      <Link to={`/stories/${id}/edit`}>
+                        <Button style={{ marginRight: '.5em' }} variant="secondary">
+                          <Icon name="edit" /> <FormattedMessage id="edit-story" />
+                        </Button>
+                      </Link>
+                    )}
+                  </div>
+                )}
+              </Header>
+            </div>
             <div className={bigScreen && 'space-between'} style={{ alignItems: 'center' }}>
               <div>
                 {mode === 'practice-preview' && (
@@ -311,14 +332,18 @@ const ReadViews = ({ match }) => {
                     </div>
                   )}
                   {!isGroupPreview && !isGroupReview && (
-                    <div>
-                      {ownedStory && mode !== 'practice-preview' && (
-                        <Link to={`/stories/${id}/edit`}>
-                          <Button style={{ marginRight: '.5em' }} variant="secondary">
-                            <Icon name="edit" /> <FormattedMessage id="edit-story" />
-                          </Button>
-                        </Link>
-                      )}
+                    <div className="row-flex" style={{ marginLeft: '3em' }}>
+                      <Popup
+                        content={intl.formatMessage({ id: 'customize-story-practice-EXPLAIN' })}
+                        trigger={
+                          <Icon 
+                            name="cog" size="larger" 
+                            style={{ color: '#0088CB', cursor: 'pointer', marginRight: '12px' }} 
+                            onClick={TODOtoDefine}
+                          />
+                        }
+                        inverted // Optional for inverted dark style
+                      />
                       <StoryFunctionsDropdown />
                     </div>
                   )}

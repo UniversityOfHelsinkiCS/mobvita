@@ -474,16 +474,15 @@ const LessonList = () => {
         <FormattedMessage id="lessons-ready-for-practice" />
         {!customizeLessonConfigs && (
           <Popup
-            content={intl.formatMessage({ id: 'customize-lesson-configurations' })}
+            content={intl.formatMessage({ id: 'customize-lesson-configurations-EXPLAIN' })}
             trigger={
               <Icon 
-                name="cog" 
+                name="cog" // size="small" 
                 style={{ cursor: 'pointer', marginLeft: '1em' }} 
-                size="small" 
                 onClick={handleCustomizeLessonCofigCogClick}
               />
             }
-            inverted // Optional: for inverted (dark) style
+            inverted // Optional for inverted dark style
           />
         )}
       </div>
