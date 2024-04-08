@@ -193,7 +193,7 @@ const Settings = ({teacherView}) => {
                 <div className="flex-col gap-row-nm">
                   <Divider />
                   <SettingToggle
-                    translationId="practice-grammar-mode"
+                    translationId="fill-in-the-blank"
                     checked={user.blank_filling}
                     onChange={() => dispatch(updateBlankFilling(!user.blank_filling))}
                     disabled={pending}
