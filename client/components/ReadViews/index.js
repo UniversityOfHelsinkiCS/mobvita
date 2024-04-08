@@ -10,6 +10,7 @@ import {
   Checkbox,
   Dropdown,
   Button as SemanticButton,
+  Modal
 } from 'semantic-ui-react'
 import { Button } from 'react-bootstrap'
 import { FormattedMessage, useIntl } from 'react-intl'
@@ -21,7 +22,11 @@ import { resetAnnotations, setAnnotations } from 'Utilities/redux/annotationsRed
 import {
   updateShowReviewDiff,
   updatePreviewExer,
-  practiceTourViewed
+  practiceTourViewed,
+  updateBlankFilling,
+  updateAudioTask,
+  updateSpeechTask,
+  updateMultiChoice,
 } from 'Utilities/redux/userReducer'
 import { learningLanguageSelector, getTextStyle, getMode, hiddenFeatures } from 'Utilities/common'
 import DictionaryHelp from 'Components/DictionaryHelp'
@@ -35,7 +40,13 @@ import StoryTopics from 'Components/StoryView/StoryTopics'
 import Footer from '../Footer'
 import ScrollArrow from '../ScrollArrow'
 import { startPracticeTour } from 'Utilities/redux/tourReducer'
+import { set } from 'lodash'
 
+const SettingToggle = ({ translationId, ...props }) => {
+  const intl = useIntl()
+
+  return <Checkbox toggle label={intl.formatMessage({ id: translationId })} {...props} />
+}
 
 const ReadViews = ({ match }) => {
   const dispatch = useDispatch()
@@ -73,11 +84,12 @@ const ReadViews = ({ match }) => {
 
   const [hideFeedback, setHideFeedback] = useState(defineFeedback())
   const [focusedConcept, setFocusedConcept] = useState(null)
-  const user = useSelector(state => state.user.data)
+  const { data: user, pending: userPending } = useSelector(({ user }) => user)
   const { progress, storyId } = useSelector(({ uploadProgress }) => uploadProgress)
   const currentGroupId = useSelector(({ user }) => user.data.user.last_selected_group)
   const { groups: totalGroups, pending: groupsPending } = useSelector(({ groups }) => groups)
   const currentGroup = totalGroups.find(group => group.group_id === currentGroupId)
+  const [open, setOpen] = useState(false)
   const dropDownMenuText = currentStudent
     ? `${currentStudent?.userName} (${currentStudent?.email})`
     : intl.formatMessage({ id: 'group-review-dropdown-placeholder' })
@@ -179,7 +191,6 @@ const ReadViews = ({ match }) => {
   // console.log('story ', story.paragraph)
   // console.log('focused ', focusedConcept)
 
-
   const StoryFunctionsDropdown = () => {
 
     // gives the style to to dropdown menu based on is user on mobile
@@ -207,7 +218,7 @@ const ReadViews = ({ match }) => {
               <Icon 
                 name="cog" size="larger" 
                 style={{ color: '#0088CB', cursor: 'pointer', marginRight: '12px' }} 
-                onClick={() => {history.push('/profile/settings#practice-settings')}}
+                onClick={() => {setOpen(true)}}
               />
             }
             inverted // Optional for inverted dark style
@@ -388,6 +399,46 @@ const ReadViews = ({ match }) => {
         <FeedbackInfoModal />
       </div>
       {showFooter && <Footer />}
+      <Modal
+        size="tiny"
+        open={open}
+        dimmer="inverted"
+        onClose={()=>setOpen(false)}
+        closeIcon={{ style: { top: '1rem', right: '2rem' }, color: 'black', name: 'close' }}
+      >
+        <Modal.Header>
+        <FormattedMessage id="practice-settings" />
+      </Modal.Header>
+        <Modal.Content>
+          <div className="flex-col gap-row-nm">
+            <SettingToggle
+              translationId="fill-in-the-blank"
+              checked={user?.user.blank_filling}
+              onChange={() => dispatch(updateBlankFilling(!user?.user.blank_filling))}
+              disabled={userPending}
+            />
+            <SettingToggle
+              translationId="multiple-choice"
+              checked={user?.user.multi_choice}
+              onChange={() => dispatch(updateMultiChoice(!user?.user.multi_choice))}
+              disabled={userPending}
+            />
+            <SettingToggle
+              translationId="practice-listening-mode"
+              checked={user?.user.task_audio}
+              onChange={() => dispatch(updateAudioTask(!user?.user.task_audio))}
+              disabled={userPending}
+            />
+            {hiddenFeatures && (<SettingToggle
+              translationId="practice-speech-mode"
+              checked={user?.user.task_speech}
+              onChange={() => dispatch(updateSpeechTask(!user?.user.task_speech))}
+              disabled={userPending}
+            />)}
+          </div>
+        </Modal.Content>
+      </Modal>
+
     </div>
   )
 }

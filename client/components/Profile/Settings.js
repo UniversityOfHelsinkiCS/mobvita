@@ -216,7 +216,7 @@ const Settings = ({teacherView}) => {
                     onChange={() => dispatch(updateSpeechTask(!user.task_speech))}
                     disabled={pending}
                   />)}
-
+                  <Divider />
                   <SettingToggle
                     translationId="multiple-chances-when-practicing"
                     checked={user.second_try}
