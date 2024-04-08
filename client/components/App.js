@@ -9,7 +9,7 @@ import { getMTAvailableLanguage } from 'Utilities/redux/contextTranslationReduce
 import Toaster from './Toaster'
 import Sidebar from './Sidebar'
 import StoryFetcher from './StoryFetcher'
-import Chatbot from './ChatBot'
+// import Chatbot from './ChatBot'
 import 'bootstrap/dist/css/bootstrap.min.css'
 
 import { hiddenFeatures } from 'Utilities/common'
@@ -53,9 +53,9 @@ const App = () => {
         <StoryFetcher />
         <Sidebar history={history} />
         <Router />
-        {hiddenFeatures && history.location.pathname.includes('practice') && (
+        {/* {hiddenFeatures && history.location.pathname.includes('practice') && (
           <Chatbot />
-        )}
+        )} */}
         <Toaster />
       </ReactRouter>
     </>
