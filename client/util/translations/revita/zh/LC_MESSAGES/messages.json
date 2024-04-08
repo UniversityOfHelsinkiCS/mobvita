@@ -960,5 +960,8 @@
     "flashcards-edit-card-list-EXPLANATION": "Here you can review and edit the <i>complete</i> list of your flashcards",
     "flashcards-add-cards-EXPLANATION": "Here you can add flashcards for any new words you like",
     "flashcards-translate-cards-EXPLANATION": "Exercise with flashcards: translate words into the language you chose",
-    "flashcards-quick-cards-EXPLANATION": "Quick exercises: I know / I don't know this word"
+    "flashcards-quick-cards-EXPLANATION": "Click here for quick flashcards: no need to translate — answer only \"I know this word\" or  \"I don't know\"",
+    "progress-results-not-available": "Results not available",
+    "customize-lesson-configurations-EXPLAIN": "Click here to configure the lesson: which topics do you want to practice?",
+    "customize-story-practice-EXPLAIN": "Select what you would like to practice..."
 }

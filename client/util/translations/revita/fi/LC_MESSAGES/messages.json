@@ -1577,16 +1577,19 @@
     "confirm-next-set": "OK",
     "continue-activity": "Jatka aiempaa toimintaani",
     "Home-Continue-Activity-EXPLANATION": "Napsauta tätä jatkaaksesi siitä, mihin jäit edellisessä istunnossa",
-    "Home-Dive-In-EXPLANATION": "Täällä Revita ehdottaa tekstejä harjoitteluun mieltymystesi perusteella",
-    "Home-Lessons-EXPLANATION": "Täältä saat oppitunteja monista kieliopin aiheista, jotka perustuvat moniin erilaisista teksteistä valittuihin esimerkkeihin",
+    "Home-Dive-In-EXPLANATION": "Täällä Revita ehdottaa sinulle nopeasti tekstin harjoitteluun — mieltymystesi perusteella",
+    "Home-Lessons-EXPLANATION": "Täältä saat oppitunteja monista kieliopin aiheista — jotka perustuvat erilaisista teksteistä valittuihin esimerkkeihin",
     "Home-Adaptive-Test-EXPLANATION": "Täällä voit suorittaa lyhyen testin – noin 50–60 kysymystä – joka tuottaa arvion tietotasostasi",
     "Home-Flashcards-EXPLANATION": "Täällä voit pelata muistikorteilla parantaaksesi sanavarastotietoasi",
-    "Home-Library-EXPLANATION": "Tässä on kirjasto kaikista tähän mennessä ladatuista teksteistä: omasi, opettajasi lataamat tekstit, ja pieni yhteinen kokoelma",
+    "Home-Library-EXPLANATION": "Napsauta valitaksesi tekstejä kirjastosta:<ul><li><i>Yksityinen:</i> omat tarinasi,</li><li><i>Ryhmä:</i> opettajasi lataamat tarinat ,</li><li><i>Julkinen:</i> yhteinen kokoelma</li></ul>",
     "following-view-tab": "Ystävät",
     "Sidebar-user-score-EXPLANATION": "Nykyinen tasosi — siirry edistymisnäkymään napsauttamalla",
     "flashcards-go-to-all-cards-EXPLANATION": "Työskentelet nyt viiden erityisen <i>sinisen</i> kortin kanssa – tarkistaaksesi sanat, jotka <i>todennäköisesti</i> tiedät.\n<br/>\nNapsauta tätä palataksesi työskentelemään <i>kaikkien</i> muistikorttiesi kanssa.",
     "flashcards-edit-card-list-EXPLANATION": "Täällä voit tarkastella ja muokata muistikorttiesi <i>täydellistä</i> luetteloa",
     "flashcards-add-cards-EXPLANATION": "Täällä voit lisätä muistikortteja uusille sanoille",
     "flashcards-translate-cards-EXPLANATION": "Harjoittele muistikorteilla: käännä sanat valitsemallesi kielelle",
-    "flashcards-quick-cards-EXPLANATION": "Pikaharjoitukset: Tiedän / en tiedä tätä sanaa"
+    "flashcards-quick-cards-EXPLANATION": "Napsauta tätä saadaksesi nopeat muistikortit: ei tarvitse kääntää – vastaa vain \"Tiedän tämän sanan\" tai \"En tiedä\"",
+    "progress-results-not-available": "Tuloksia ei saatavilla",
+    "customize-lesson-configurations-EXPLAIN": "Napsauta tästä määrittääksesi oppitunnin: mitä aiheita haluat harjoitella?",
+    "customize-story-practice-EXPLAIN": "Valitse, mitä haluaisit harjoitella..."
 }

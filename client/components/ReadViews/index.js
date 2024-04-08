@@ -179,9 +179,6 @@ const ReadViews = ({ match }) => {
   // console.log('story ', story.paragraph)
   // console.log('focused ', focusedConcept)
 
-  const TODOtoDefine = () => {
-    return null // TODO
-  }
 
   const StoryFunctionsDropdown = () => {
 
@@ -195,63 +192,37 @@ const ReadViews = ({ match }) => {
     }
 
     return (
-      <SemanticButton.Group>
+      <>
         {story.control_story ? (<SemanticButton
           as={Link}
           to={`/stories/${id}/controlled-practice`}
           style={{ backgroundColor: 'rgb(50, 170, 248)', color: 'white' }}
         >
           <FormattedMessage id="tailored-practice-mode" />
-        </SemanticButton>) : (<Dropdown
-          className="button icon practice-tour-practice-button"
-          style={{
-            backgroundColor: 'rgb(50, 170, 248)',
-            color: 'white',
-            borderLeft: '2px solid rgb(81, 138, 248)',
-            display: 'inline-flex'
-          }}
-          floating
-          // trigger={<React.Fragment />}
-          trigger={
-            <div style={{ paddingRight: '0.5rem' }}>
-              <FormattedMessage id="start-practice-story" />
-            </div>
-          }
-          open={showPracticeDropdown}
-          onClick={handlePracticeButtonClick}
-        >
-          <Dropdown.Menu
-            className="story-item-dropdown"
-            style={chooseDropdownMenuSide()}
+        </SemanticButton>) : (
+          <>
+          <Popup
+            content={intl.formatMessage({ id: 'customize-story-practice-EXPLAIN' })}
+            trigger={
+              <Icon 
+                name="cog" size="larger" 
+                style={{ color: '#0088CB', cursor: 'pointer', marginRight: '12px' }} 
+                onClick={() => {history.push('/profile/settings#practice-settings')}}
+              />
+            }
+            inverted // Optional for inverted dark style
+          />
+          <SemanticButton
+            as={Link}
+            to={`/stories/${id}/practice/`}
+            className='practice-tour-start-practice-story'
+            style={{ backgroundColor: 'rgb(50, 170, 248)', color: 'white' }}
           >
-            <Dropdown.Item
-              text={<FormattedMessage id="practice-grammar-mode" />}
-              as={Link}
-              to={`/stories/${id}/grammar/practice/`}
-              icon="pencil alternate"
-            />
-            <Dropdown.Item
-              text={<FormattedMessage id="practice-listening-mode" />}
-              as={Link}
-              to={`/stories/${id}/listening/practice/`}
-              icon="headphones"
-            />
-            {hiddenFeatures && <Dropdown.Item
-              text={<FormattedMessage id="practice-speech-mode" />}
-              as={Link}
-              to={`/stories/${id}/speech/practice/`}
-              icon="microphone"
-            />}
-            <Dropdown.Item
-              text={<FormattedMessage id="practice-all-mode" />}
-              as={Link}
-              to={`/stories/${id}/practice/`}
-              icon="bolt"
-              className='practice-tour-start-practice-story'
-            />
-          </Dropdown.Menu>
-        </Dropdown >)}
-      </SemanticButton.Group >
+            <FormattedMessage id="start-practice-story" />
+          </SemanticButton>
+          </>
+        )}
+      </>
     )
   }
 
@@ -333,17 +304,6 @@ const ReadViews = ({ match }) => {
                   )}
                   {!isGroupPreview && !isGroupReview && (
                     <div className="row-flex" style={{ marginLeft: '3em' }}>
-                      <Popup
-                        content={intl.formatMessage({ id: 'customize-story-practice-EXPLAIN' })}
-                        trigger={
-                          <Icon 
-                            name="cog" size="larger" 
-                            style={{ color: '#0088CB', cursor: 'pointer', marginRight: '12px' }} 
-                            onClick={TODOtoDefine}
-                          />
-                        }
-                        inverted // Optional for inverted dark style
-                      />
                       <StoryFunctionsDropdown />
                     </div>
                   )}

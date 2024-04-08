@@ -4,10 +4,12 @@ import { FormattedMessage, useIntl } from 'react-intl'
 import { Checkbox, Radio, Dropdown, Menu, Accordion, Divider } from 'semantic-ui-react'
 import { localeNameToCode, localeOptions, hiddenFeatures } from 'Utilities/common'
 import { Button } from 'react-bootstrap'
+import { useLocation } from 'react-router-dom'
 import {
   updateLocale,
   updateBlankFilling,
   updateAudioTask,
+  updateSpeechTask,
   updateSecondTry,
   updateNumberOfFlashcards,
   updateAutoSpeak,
@@ -15,6 +17,7 @@ import {
   updateParticipleExer,
   updateEnableRecmd,
   updateIsTeacher,
+  updateMultiChoice,
 } from 'Utilities/redux/userReducer'
 import { setLocale } from 'Utilities/redux/localeReducer'
 import LearningSettingsModal from '../LearningSettingsModal'
@@ -40,6 +43,32 @@ const Settings = ({teacherView}) => {
   }
   const isTeachingAGroup = groups?.find(g => g.is_teaching)
   const userIsAnonymous = user.email === 'anonymous_email'
+
+  const { hash } = useLocation()
+
+  useEffect(() => {
+    switch(hash) {
+      case '#user-settings-options':
+        setAccordionState(1)
+        break
+      case '#practice-settings':
+        setAccordionState(2)
+        break
+      case '#flashcards':
+        setAccordionState(3)
+        break
+      case '#audio-settings':
+        setAccordionState(4)
+        break
+      case '#privacy':
+        setAccordionState(5)
+        break
+      case '#notification-settings':
+        setAccordionState(6)
+        break
+    }
+  }, [hash])
+
 
   useEffect(() => {
     const temp = localeOptions.map(option => ({
@@ -146,7 +175,7 @@ const Settings = ({teacherView}) => {
               }
             />
           </Menu.Item>
-          {!teacherView && (<Menu.Item className="add-story-accordion-item">
+          <Menu.Item className="add-story-accordion-item">
             <Accordion.Title
               active={accordionState === 2}
               content={
@@ -164,11 +193,30 @@ const Settings = ({teacherView}) => {
                 <div className="flex-col gap-row-nm">
                   <Divider />
                   <SettingToggle
-                    translationId="multiple-choice-quizzes-only"
-                    checked={!user.blank_filling}
+                    translationId="practice-grammar-mode"
+                    checked={user.blank_filling}
                     onChange={() => dispatch(updateBlankFilling(!user.blank_filling))}
                     disabled={pending}
                   />
+                  <SettingToggle
+                    translationId="multiple-choice"
+                    checked={user.multi_choice}
+                    onChange={() => dispatch(updateMultiChoice(!user.multi_choice))}
+                    disabled={pending}
+                  />
+                  <SettingToggle
+                    translationId="practice-listening-mode"
+                    checked={user.task_audio}
+                    onChange={() => dispatch(updateAudioTask(!user.task_audio))}
+                    disabled={pending}
+                  />
+                  {hiddenFeatures && (<SettingToggle
+                    translationId="practice-speech-mode"
+                    checked={user.task_speech}
+                    onChange={() => dispatch(updateSpeechTask(!user.task_speech))}
+                    disabled={pending}
+                  />)}
+
                   <SettingToggle
                     translationId="multiple-chances-when-practicing"
                     checked={user.second_try}
@@ -203,7 +251,7 @@ const Settings = ({teacherView}) => {
                 </div>
               }
             />
-          </Menu.Item>)}
+          </Menu.Item>
           {!teacherView && (<Menu.Item className="add-story-accordion-item">
             <Accordion.Title
               active={accordionState === 3}
