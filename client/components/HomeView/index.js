@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import { useHistory } from 'react-router'
-import { FormattedMessage, useIntl } from 'react-intl'
+import { FormattedMessage, FormattedHTMLMessage, useIntl } from 'react-intl'
 import { images, hiddenFeatures, supportedLearningLanguages } from 'Utilities/common'
 import { useDispatch, useSelector } from 'react-redux'
 import { getGroups } from 'Utilities/redux/groupsReducer'
@@ -20,53 +20,46 @@ import PracticeModal from './PracticeModal'
 import EloChart from './EloChart'
 import LeaderboardSummary from './LeaderboardSummary'
 
-const HomeviewButton = ({
-  imgSrc,
-  altText,
-  translationKey,
-  handleClick,
-  dataCy,
-  wide,
-  beta_feature,
-  content=null
-}) => {
-  const intl = useIntl()
-  const button = (
-    <button
-    className={`flex justify-center homeview-btn${wide ? ' homeview-btn-wide' : ' homeview-btn-narrow'}`}
-    type="button"
-    onClick={handleClick}
-    data-cy={dataCy}
-  >
-    {!wide && <img src={imgSrc} alt={altText} style={{ maxWidth: '50px', maxHeight: '50px' }}/>}
-    <div 
-      className="homeview-btn-text flex items-center justify-center" 
-      style={{ width: '100%', height: '100%', alignItems: 'center'}}
-    >
-      <FormattedMessage id={translationKey} />
-      {beta_feature && (
-        <sup>
-          <b style={{ color: 'red' }}>BETA</b>
-        </sup>
-      )}
-    </div>
-  </button>
-  )
-  return (
-    <>
-    {content &&  <Popup
-      position="top center"
-      trigger={button}
-      content={intl.formatMessage({id: content})}
-      basic
-    /> || button
-    }
-    </>
+const HomeviewButton = ({imgSrc, altText,
+                         translationKey, handleClick,
+                         dataCy, wide, beta_feature, content=null
+                        }) =>
+      {
+        const intl = useIntl()
+        const button = (
+          <button
+            className={`flex justify-center homeview-btn${wide ? ' homeview-btn-wide' : ' homeview-btn-narrow'}`}
+            type="button"
+            onClick={handleClick}
+            data-cy={dataCy}
+          >
+            {!wide && <img src={imgSrc} alt={altText} style={{ maxWidth: '50px', maxHeight: '50px' }}/>}
+            <div 
+              className="homeview-btn-text flex items-center justify-center" 
+              style={{ width: '100%', height: '100%', alignItems: 'center'}}
+            >
+              <FormattedMessage id={translationKey} />
+              {beta_feature && (
+                <sup>
+                  <b style={{ color: 'red' }}>BETA</b>
+                </sup>
+              )}
+            </div>
+          </button>
+        )
+        return (
+          <>
+            {content &&  <Popup
+                           position="top center"
+                           trigger={button}
+                           content={<FormattedHTMLMessage id={content} />}
+                           // was: content={intl.formatMessage({id: content})}
+                           basic
+                         /> || button
+            }
+          </>
+        )}
 
-
-    
-  )
-}
 
 const HomeviewButtons = ({
   setPracticeModalOpen,
