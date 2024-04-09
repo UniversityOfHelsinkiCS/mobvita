@@ -79,6 +79,10 @@ export const updateExerciseSettings = (settings, groupId) => {
   return callBuilder(route, prefix, 'post', payload)
 }
 
+export const updateTempExerciseSettings = (conceptSetting) => (
+  {type: 'SET_GROUP_EXERCISE_CONCEPTS_INTERMEDIATE', conceptSetting}
+)
+
 export const updateExerciseTemplate = (template, groupId) => {
   const route = `/groups/${groupId}`
   const prefix = 'SET_GROUP_EXERCISE_TEMPLATE'
@@ -292,6 +296,12 @@ export default (state = { groups: [], joinPending: false, deleteSuccessful: fals
     case 'SET_GROUP_EXERCISE_CONCEPTS_FAILURE':
       return {
         ...state,
+        pending: false,
+      }
+    case 'SET_GROUP_EXERCISE_CONCEPTS_INTERMEDIATE':
+      return {
+        ...state,
+        group: { ...state.group, exercise_setting: action.conceptSetting },
         pending: false,
       }
     case 'SET_GROUP_EXERCISE_CONCEPTS_SUCCESS':

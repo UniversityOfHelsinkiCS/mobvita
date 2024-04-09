@@ -96,7 +96,6 @@ const GroupFunctions = ({
           {isTeaching && !analyticsView && teacherView && (
             <Button
               variant="primary"
-              as={Link}
               onClick={handleAnalyticsClick}
               style={{ color: 'white' }}
             >
@@ -153,7 +152,6 @@ const GroupFunctions = ({
           <>
             {isTeaching && !analyticsView ? (
               <SemanticButton
-                as={Link}
                 onClick={handleAnalyticsClick}
                 style={{ backgroundColor: 'rgb(50, 170, 248)', color: 'white' }}
               >

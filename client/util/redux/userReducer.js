@@ -73,6 +73,13 @@ export const saveSelf = changes => {
   return callBuilder(route, prefix, 'post', payload)
 }
 
+const saveConceptSetting = changes => {
+  const route = '/user/'
+  const prefix = 'SAVE_USER_CONCEPTS'
+  const payload = changes
+  return callBuilder(route, prefix, 'post', payload)
+}
+
 export const updateLearningLanguage = language => {
   const route = '/user/'
   const prefix = 'UPDATE_LEARNING_LANGUAGE'
@@ -131,7 +138,10 @@ export const dismissBetaLanWarning = () => ({ type: 'DISMISS_BETA_LAN_WARNING' }
 export const updateLocale = locale => saveSelf({ interface_lang: localeCodeToName(locale) })
 export const updateDictionaryLanguage = language =>
   saveSelf({ last_trans_lang: capitalize(language) })
-export const updateExerciseSettings = settings => saveSelf({ exercise_settings: settings })
+export const updateExerciseSettings = settings => saveConceptSetting({ exercise_settings: settings })
+export const updateTempExerciseSettings = (conceptSetting) => (
+  {type: 'SET_USER_CONCEPTS_INTERMEDIATE', conceptSetting}
+)
 export const updateLibrarySelect = library => saveSelf({ last_selected_library: library })
 export const updateGroupSelect = group => saveSelf({ last_selected_group: group })
 export const updateExerciseTemplate = template => saveSelf({ exercise_setting_template: template })
@@ -263,6 +273,22 @@ export default (state = { data: null, learningLanguageChanged: false }, action) 
         error: false,
         refreshed: true,
       }
+    case 'SAVE_USER_CONCEPTS_INTERMEDIATE':
+      return {
+        ...state,
+        data: {
+          ...state.data,
+          user: {
+            ...state.data.user,
+            exercise_setting: action.conceptSetting,
+          }
+        },
+        pending: false,
+        error: false,
+        refreshed: true,
+      }
+    
+    case 'SAVE_USER_CONCEPTS_SUCCESS':
     case 'SAVE_SELF_SUCCESS':
       return {
         ...state,
@@ -275,12 +301,14 @@ export default (state = { data: null, learningLanguageChanged: false }, action) 
         error: false,
         refreshed: true,
       }
+    case 'SAVE_USER_CONCEPTS_ATTEMPT':
     case 'SAVE_SELF_ATTEMPT':
       return {
         ...state,
         pending: true,
         error: false,
       }
+    case 'SAVE_USER_CONCEPTS_FAILURE':
     case 'SAVE_SELF_FAILURE':
       return {
         ...state,
