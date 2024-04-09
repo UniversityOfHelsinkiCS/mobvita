@@ -407,30 +407,30 @@ const ReadViews = ({ match }) => {
         closeIcon={{ style: { top: '1rem', right: '2rem' }, color: 'black', name: 'close' }}
       >
         <Modal.Header>
-        <FormattedMessage id="practice-settings" />
-      </Modal.Header>
+          <FormattedMessage id="practice-settings" />
+        </Modal.Header>
         <Modal.Content>
           <div className="flex-col gap-row-nm">
             <SettingToggle
-              translationId="fill-in-the-blank"
+              translationId="practice-grammar-cloze-exercises"
               checked={user?.user.blank_filling}
               onChange={() => dispatch(updateBlankFilling(!user?.user.blank_filling))}
               disabled={userPending}
             />
             <SettingToggle
-              translationId="multiple-choice"
+              translationId="practice-grammar-MC-exercises"
               checked={user?.user.multi_choice}
               onChange={() => dispatch(updateMultiChoice(!user?.user.multi_choice))}
               disabled={userPending}
             />
             <SettingToggle
-              translationId="practice-listening-mode"
+              translationId="practice-listening-cloze-exercises"
               checked={user?.user.task_audio}
               onChange={() => dispatch(updateAudioTask(!user?.user.task_audio))}
               disabled={userPending}
             />
             {hiddenFeatures && (<SettingToggle
-              translationId="practice-speech-mode"
+              translationId="practice-pronunciation-exercises"
               checked={user?.user.task_speech}
               onChange={() => dispatch(updateSpeechTask(!user?.user.task_speech))}
               disabled={userPending}

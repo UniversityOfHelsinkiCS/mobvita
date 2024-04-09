@@ -193,25 +193,25 @@ const Settings = ({teacherView}) => {
                 <div className="flex-col gap-row-nm">
                   <Divider />
                   <SettingToggle
-                    translationId="fill-in-the-blank"
+                    translationId="practice-grammar-cloze-exercises"
                     checked={user.blank_filling}
                     onChange={() => dispatch(updateBlankFilling(!user.blank_filling))}
                     disabled={pending}
                   />
                   <SettingToggle
-                    translationId="multiple-choice"
+                    translationId="practice-grammar-MC-exercises"
                     checked={user.multi_choice}
                     onChange={() => dispatch(updateMultiChoice(!user.multi_choice))}
                     disabled={pending}
                   />
                   <SettingToggle
-                    translationId="practice-listening-mode"
+                    translationId="practice-listening-cloze-exercises"
                     checked={user.task_audio}
                     onChange={() => dispatch(updateAudioTask(!user.task_audio))}
                     disabled={pending}
                   />
                   {hiddenFeatures && (<SettingToggle
-                    translationId="practice-speech-mode"
+                    translationId="practice-pronunciation-exercises"
                     checked={user.task_speech}
                     onChange={() => dispatch(updateSpeechTask(!user.task_speech))}
                     disabled={pending}
