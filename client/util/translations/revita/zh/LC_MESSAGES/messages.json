@@ -963,5 +963,12 @@
     "flashcards-quick-cards-EXPLANATION": "Click here for quick flashcards: no need to translate — answer only \"I know this word\" or  \"I don't know\"",
     "progress-results-not-available": "Results not available",
     "customize-lesson-configurations-EXPLAIN": "Click here to configure the lesson: which topics do you want to practice?",
-    "customize-story-practice-EXPLAIN": "Select what you would like to practice..."
+    "customize-story-practice-EXPLAIN": "Select what you would like to practice...",
+    "fill-in-the-blank": "填空",
+    "multiple-choice": "选择题",
+    "practice-speech-mode": "Practice pronunciation",
+    "practice-grammar-cloze-exercises": "Practice <b>Grammar</b> — fill-in-the-blank exercises",
+    "practice-grammar-MC-exercises": "Practice <b>Grammar</b> — multiple-choice exercises",
+    "practice-listening-cloze-exercises": "Practice <b>Listening</b> — fill-in-the-blank exercises",
+    "practice-pronunciation-exercises": "Practice <b>Pronunciation</b>"
 }

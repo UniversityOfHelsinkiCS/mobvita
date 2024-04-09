@@ -669,7 +669,7 @@
     },
     "practice-mode-enable-exercise-types-7983e37a4d50e27b3b2bb3673948ac71": "Tipi di esercizi",
     "fill-the-correct-form": "Riempi lo spazio con la forma adatta",
-    "multiple-choice": "Possibilità di risposta tra alcune varianti",
+    "multiple-choice": "Esercizi a risposta multipla",
     "type-the-word-you-hear": "Digita la parola che senti",
     "second-chance-when-practicing-stories": "Secondo tentativo",
     "flashcards-how-many-cards-per-practice-session": "Numero di flashcard per ogni sessione",
@@ -1102,7 +1102,7 @@
     "students-awaiting-confirmation": "Studenti in attesa di conferma:",
     "students-not-registered-in-revita": "Studenti non raggiungibili a queste email:",
     "edit-learning-settings": "Edit learning settings",
-    "practice-settings": "Impostazioni di Allenamento",
+    "practice-settings": "Impostazioni per pratica con i testi",
     "multiple-choice-quizzes-only": "Solo esercizi a risposta multipla",
     "audio-settings": "Preferenze Audio",
     "listening-exercises": "Esercizi di ascolto",
@@ -1580,7 +1580,7 @@
     "Home-Lessons-EXPLANATION": "Qui riceverai lezioni su molti argomenti di grammatica — sulla base di esempi selezionati da varie storie",
     "Home-Adaptive-Test-EXPLANATION": "Qui puoi fare un test rapido — 50-60 domande — che produrrà una stima del tuo livello di conoscenza",
     "Home-Flashcards-EXPLANATION": "Qui puoi giocare con le flashcard per migliorare la tua conoscenza del vocabolario",
-    "Home-Library-EXPLANATION": "Clicca qui per selezionare i testi dalla libreria:<ul><li><i>Privata:</i> le tue storie,</li><li><i>Gruppo:</i> storie caricate dal tuo insegnante ,</li><li><i>Pubblico:</i> una raccolta comune</li></ul>",
+    "Home-Library-EXPLANATION": "Clicca qui per selezionare i testi dalla libreria:<ul><li><i>Privata:</i> le tue storie,</li><li><i>Gruppo:</i> storie caricate dal tuo insegnante,</li><li><i>Pubblico:</i> una raccolta comune</li></ul>",
     "following-view-tab": "Amici",
     "Sidebar-user-score-EXPLANATION": "Il tuo livello attuale: fai clic per visualizzare i progressi",
     "flashcards-go-to-all-cards-EXPLANATION": "Ora stai lavorando con cinque speciali carte <i>blu</i> per controllare le parole che <i>probabilmente</i> conosci.\n<br/>\nClicca qui per tornare a lavorare con <i>tutte</i> le tue flashcard.",
@@ -1590,5 +1590,10 @@
     "flashcards-quick-cards-EXPLANATION": "Clicca qui per flashcard veloci: non c'è bisogno di tradurre – rispondi solo \"Conosco questa parola\" o \"Non la conosco\"",
     "progress-results-not-available": "Risultati non disponibili",
     "customize-lesson-configurations-EXPLAIN": "Clicca qui per configurare la lezione: su quali argomenti vuoi esercitarti?",
-    "customize-story-practice-EXPLAIN": "Seleziona cosa vorresti praticare..."
+    "customize-story-practice-EXPLAIN": "Seleziona cosa vorresti praticare...",
+    "practice-speech-mode": "Practice pronunciation",
+    "practice-grammar-cloze-exercises": "Esercizi con la <b>grammatica</b>: a completamento",
+    "practice-grammar-MC-exercises": "Esercizi con la <b>grammatica</b>: a scelta multipla",
+    "practice-listening-cloze-exercises": "Esercizi nell'<b>ascolto</b>: a completamento",
+    "practice-pronunciation-exercises": "Esercizi sulla <b>pronuncia</b>"
 }

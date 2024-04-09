@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
-import { FormattedMessage, useIntl } from 'react-intl'
+import { FormattedMessage, FormattedHTMLMessage, useIntl } from 'react-intl'
 import { Checkbox, Radio, Dropdown, Menu, Accordion, Divider } from 'semantic-ui-react'
 import { localeNameToCode, localeOptions, hiddenFeatures } from 'Utilities/common'
 import { Button } from 'react-bootstrap'
@@ -23,9 +23,7 @@ import { setLocale } from 'Utilities/redux/localeReducer'
 import LearningSettingsModal from '../LearningSettingsModal'
 
 const SettingToggle = ({ translationId, ...props }) => {
-  const intl = useIntl()
-
-  return <Checkbox toggle label={intl.formatMessage({ id: translationId })} {...props} />
+  return <Checkbox toggle label={{children: <FormattedHTMLMessage id={translationId} />}} {...props} />
 }
 
 const Settings = ({teacherView}) => {

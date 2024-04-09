@@ -117,7 +117,7 @@
     "answer": "",
     "phrase": "",
     "choose-the-best-fitting-word-or-expression": "",
-    "fill-in-the-blank": "",
+    "fill-in-the-blank": "Fill in the blank.",
     "answer-10-or-more-questions-to-receive-feedback": "",
     "Category": "Category",
     "Total": "Total",
@@ -1102,7 +1102,7 @@
     "students-awaiting-confirmation": "Students awaiting confirmation:",
     "students-not-registered-in-revita": "Students who cannot be reached at these email addresses:",
     "edit-learning-settings": "Edit learning settings",
-    "practice-settings": "Practice settings",
+    "practice-settings": "Settings for practice with stories",
     "multiple-choice-quizzes-only": "Multiple-choice quizzes only",
     "audio-settings": "Audio settings",
     "listening-exercises": "Listening exercises",
@@ -1593,5 +1593,9 @@
     "flashcards-quick-cards-EXPLANATION": "Click here for quick flashcards: no need to translate — answer only \"I know this word\" or  \"I don't know\"",
     "progress-results-not-available": "Results not available",
     "customize-lesson-configurations-EXPLAIN": "Click here to configure the lesson: which topics do you want to practice?",
-    "customize-story-practice-EXPLAIN": "Select what you would like to practice..."
+    "customize-story-practice-EXPLAIN": "Select what you would like to practice...",
+    "practice-grammar-cloze-exercises": "Practice <b>Grammar</b> — fill-in-the-blank exercises",
+    "practice-grammar-MC-exercises": "Practice <b>Grammar</b> — multiple-choice exercises",
+    "practice-listening-cloze-exercises": "Practice <b>Listening</b> — fill-in-the-blank exercises",
+    "practice-pronunciation-exercises": "Practice <b>Pronunciation</b>"
 }

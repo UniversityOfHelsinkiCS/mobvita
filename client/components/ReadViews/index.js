@@ -13,7 +13,7 @@ import {
   Modal
 } from 'semantic-ui-react'
 import { Button } from 'react-bootstrap'
-import { FormattedMessage, useIntl } from 'react-intl'
+import { FormattedMessage, FormattedHTMLMessage, useIntl } from 'react-intl'
 import useWindowDimensions from 'Utilities/windowDimensions'
 import { getStoryAction, getStudentStoryAction } from 'Utilities/redux/storiesReducer'
 import { clearTranslationAction } from 'Utilities/redux/translationReducer'
@@ -43,9 +43,7 @@ import { startPracticeTour } from 'Utilities/redux/tourReducer'
 import { set } from 'lodash'
 
 const SettingToggle = ({ translationId, ...props }) => {
-  const intl = useIntl()
-
-  return <Checkbox toggle label={intl.formatMessage({ id: translationId })} {...props} />
+  return <Checkbox toggle label={{children: <FormattedHTMLMessage id={translationId} />}} {...props} />
 }
 
 const ReadViews = ({ match }) => {

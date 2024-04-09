@@ -1101,7 +1101,7 @@
     "students-awaiting-confirmation": "Vahvistusta odottavat opiskelijat:",
     "students-not-registered-in-revita": "Opiskelijat, joita ei tavoiteta näistä sähköpostiosoitteista:",
     "edit-learning-settings": "Muuta opiskeluasetuksia",
-    "practice-settings": "Harjoitteluasetukset",
+    "practice-settings": "Tekstiharjoittelun asetukset",
     "multiple-choice-quizzes-only": "Vain monivalintatehtäviä",
     "audio-settings": "Ääniasetukset",
     "listening-exercises": "Kuunteluharjoitukset",
@@ -1581,7 +1581,7 @@
     "Home-Lessons-EXPLANATION": "Täältä saat oppitunteja monista kieliopin aiheista — jotka perustuvat erilaisista teksteistä valittuihin esimerkkeihin",
     "Home-Adaptive-Test-EXPLANATION": "Täällä voit suorittaa lyhyen testin – noin 50–60 kysymystä – joka tuottaa arvion tietotasostasi",
     "Home-Flashcards-EXPLANATION": "Täällä voit pelata muistikorteilla parantaaksesi sanavarastotietoasi",
-    "Home-Library-EXPLANATION": "Napsauta valitaksesi tekstejä kirjastosta:<ul><li><i>Yksityinen:</i> omat tarinasi,</li><li><i>Ryhmä:</i> opettajasi lataamat tarinat ,</li><li><i>Julkinen:</i> yhteinen kokoelma</li></ul>",
+    "Home-Library-EXPLANATION": "Napsauta valitaksesi tekstejä kirjastosta:<ul><li><i>Yksityinen:</i> omat tarinasi,</li><li><i>Ryhmä:</i> opettajasi lataamat tarinat,</li><li><i>Julkinen:</i> yhteinen kokoelma</li></ul>",
     "following-view-tab": "Ystävät",
     "Sidebar-user-score-EXPLANATION": "Nykyinen tasosi — siirry edistymisnäkymään napsauttamalla",
     "flashcards-go-to-all-cards-EXPLANATION": "Työskentelet nyt viiden erityisen <i>sinisen</i> kortin kanssa – tarkistaaksesi sanat, jotka <i>todennäköisesti</i> tiedät.\n<br/>\nNapsauta tätä palataksesi työskentelemään <i>kaikkien</i> muistikorttiesi kanssa.",
@@ -1591,5 +1591,10 @@
     "flashcards-quick-cards-EXPLANATION": "Napsauta tätä saadaksesi nopeat muistikortit: ei tarvitse kääntää – vastaa vain \"Tiedän tämän sanan\" tai \"En tiedä\"",
     "progress-results-not-available": "Tuloksia ei saatavilla",
     "customize-lesson-configurations-EXPLAIN": "Napsauta tästä määrittääksesi oppitunnin: mitä aiheita haluat harjoitella?",
-    "customize-story-practice-EXPLAIN": "Valitse, mitä haluaisit harjoitella..."
+    "customize-story-practice-EXPLAIN": "Valitse, mitä haluaisit harjoitella...",
+    "practice-speech-mode": "Practice pronunciation",
+    "practice-grammar-cloze-exercises": "Harjoittele <b>Kielioppia</b> – täytä tyhjät kohdat",
+    "practice-grammar-MC-exercises": "Harjoittele <b>Kielioppia</b> – monivalintaharjoituksia",
+    "practice-listening-cloze-exercises": "Harjoittele <b>Kuuntelemista</b> – täytä tyhjät kohdat",
+    "practice-pronunciation-exercises": "Harjoittele <b>ääntämistä</b>"
 }

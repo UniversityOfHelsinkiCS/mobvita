@@ -1104,7 +1104,7 @@
     "students-awaiting-confirmation": "Ученики — ожидаем подтверждения:",
     "students-not-registered-in-revita": "Ученики, с которыми невозможно связаться по этим адресам:",
     "edit-learning-settings": "Edit learning settings",
-    "practice-settings": "Настройки упражнений",
+    "practice-settings": "Настройки для упражнений с текстами",
     "multiple-choice-quizzes-only": "Только упражнения multiple-choice",
     "audio-settings": "Настройки аудио/звука",
     "listening-exercises": "Упражнения на слуховое восприятие",
@@ -1593,5 +1593,10 @@
     "flashcards-quick-cards-EXPLANATION": "Здесь \"скорые\" карточки: переводить не нужно — ответь только «Я знаю это слово» или «Я не знаю»",
     "progress-results-not-available": "Результаты недоступны",
     "customize-lesson-configurations-EXPLAIN": "Нажми здесь, чтобы настроить урок: какие темы ты хочешь тренировать?",
-    "customize-story-practice-EXPLAIN": "Выбери тип упражнений..."
+    "customize-story-practice-EXPLAIN": "Выбери тип упражнений...",
+    "practice-speech-mode": "Practice pronunciation",
+    "practice-grammar-cloze-exercises": "Практика <b>Грамматики</b> — упражнения на заполнение пропусков.",
+    "practice-grammar-MC-exercises": "Практика <b>Грамматики</b> — выбор ответа из нескольких вариантов",
+    "practice-listening-cloze-exercises": "Практика <b>Аудирования</b> — упражнения на заполнение пропусков.",
+    "practice-pronunciation-exercises": "Практика <b>Произношения</b>"
 }
