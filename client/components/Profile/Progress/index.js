@@ -532,7 +532,7 @@ const Progress = () => {
             <HexagonTest
               exerciseHistory={exerciseHistory}
               pending={historyPending}
-              concepts={lesson_topics}
+              concepts={concepts}
               conceptsPending={conceptsPending}
               root_hex_coord={root_hex_coord}
             />

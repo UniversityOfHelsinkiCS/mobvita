@@ -37,7 +37,7 @@ const StudentGrammarProgress = ({ summaryView = false, student, startDate, endDa
     <HexagonTest
       exerciseHistory={history}
       pending={pending}
-      concepts={lesson_topics}
+      concepts={concepts}
       conceptsPending={conceptsPending}
       root_hex_coord={root_hex_coord}
     />
