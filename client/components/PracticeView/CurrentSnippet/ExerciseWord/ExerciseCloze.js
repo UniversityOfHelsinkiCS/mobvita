@@ -24,6 +24,7 @@ import {
   mcExerciseTouched,
 } from 'Utilities/redux/practiceReducer'
 // import { decreaseEloHearts } from 'Utilities/redux/snippetsReducer'
+import { setCurrentContext } from 'Utilities/redux/chatbotReducer'
 import { getTranslationAction, setWords } from 'Utilities/redux/translationReducer'
 import { getContextTranslation } from 'Utilities/redux/contextTranslationReducer'
 import { Icon } from 'semantic-ui-react'
@@ -44,6 +45,8 @@ const ExerciseCloze = ({ word, snippet, handleChange }) => {
     ({ practice }) => practice.currentAnswers[`${word.ID}-${word.id}`]
   )
   const { attempt, focusedWord, latestMCTouched } = useSelector(({ practice }) => practice)
+  const { currentWordId, currentSnippetId  } = useSelector(({ chatbot }) => chatbot)
+  const isCurrentWord = currentWordId === word.ID && currentSnippetId === word.snippet_id;
   // const { eloHearts } = useSelector(({ snippets }) => snippets)
   const [filteredHintsList, setFilteredHintsList] = useState([])
   const [preHints, setPreHints] = useState([])
@@ -152,8 +155,26 @@ const ExerciseCloze = ({ word, snippet, handleChange }) => {
     setKeepOpen(true)
   }
 
-  const handleAskChatbot = () => {
+  const exerciseContext = snippet.reduce((acc, curr) => {
+    if (curr.id) {
+        acc += `<${curr.base}> `;
+    } else {
+        acc += curr.surface;
+    }
+    return acc;
+  }, '');
 
+  const handleAskChatbot = () => {
+    let formattedContext = `Exercise context: ${exerciseContext}`;
+    formattedContext += "\n\nExpected answer: " + word.surface
+    if (preHints.length > 0) {
+      const formattedHints = preHints.map(hint => `- ${hint}`);
+      formattedContext += "\n\nProvided hints:\n" + formattedHints.join("\n");
+    }
+    if (currentAnswer.users_answer){
+      formattedContext += "\n\nStudent's answer: " + currentAnswer.users_answer
+    }
+    dispatch(setCurrentContext(word.base, formattedContext, word.ID, word.snippet_id))
   }
 
   const handleTooltipClick = () => {
@@ -460,6 +481,7 @@ const ExerciseCloze = ({ word, snippet, handleChange }) => {
           height: '1.5em',
           lineHeight: 'normal',
           unicodeBidi: direction,
+          border: isCurrentWord ? '2px solid green' : 'none',
         }}
       />
       {false && word.negation && <sup style={{ color: '#0000FF' }}>(neg)</sup>}

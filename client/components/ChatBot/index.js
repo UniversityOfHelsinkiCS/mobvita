@@ -9,7 +9,7 @@ import { setCurrentMessage, getResponse } from 'Utilities/redux/chatbotReducer'
 
 const Chatbot = () => {
     const dispatch = useDispatch()
-    const { messages, currentMessage, isWaitingForResponse  } = useSelector(({ chatbot }) => chatbot)
+    const { messages, currentMessage, currentWord, currentContext } = useSelector(({ chatbot }) => chatbot)
     const [isCollapsed, setIsCollapsed] = useState(false);
 
     const onChangeCurrentMessage = (value) => {
@@ -19,7 +19,7 @@ const Chatbot = () => {
     const handleMessageSubmit = (event) => {
         event.preventDefault(); 
         if (currentMessage.trim() === '') return;
-        dispatch(getResponse(currentMessage.trim()));
+        dispatch(getResponse(currentMessage.trim(), currentContext.trim()));
         dispatch(setCurrentMessage(""));
     };
 
@@ -38,6 +38,23 @@ const Chatbot = () => {
                                 {message.text}
                             </div>
                         ))}
+                    </div>
+                    {/* Displaying currentWordId and currentSnippetId */}
+                    <div 
+                        className="context-info" 
+                        style={{ 
+                            backgroundColor: 'green',
+                            marginLeft: '0.5em',
+                            marginRight: '0.5em',
+                            paddingLeft: '0.5em',
+                            color: 'white',
+                        }}
+                    >
+                        {currentWord && (
+                            <div className="context-item">
+                                {currentWord}
+                            </div>
+                        )}
                     </div>
                     <form onSubmit={handleMessageSubmit} className="chatbot-input-form">
                         <input 

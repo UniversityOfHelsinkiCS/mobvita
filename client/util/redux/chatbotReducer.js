@@ -1,16 +1,27 @@
 import callBuilder from '../apiConnection'
 
 export const setCurrentMessage = message => ({ type: 'SET_CURRENT_MESSAGE', payload: message });
+export const setCurrentContext = (word, context, wordId, snippetId) => ({ 
+    type: 'SET_CURRENT_CONTEXT', 
+    word: word,
+    context: context,
+    wordId: wordId,
+    snippetId: snippetId
+});
 
-export const getResponse = (message) => {
+export const getResponse = (message, context="") => {
     const route = `/chatbot`
     const prefix = 'GET_CHATBOT_RESPONSE'
-    return callBuilder(route, prefix, 'post', { message })
+    return callBuilder(route, prefix, 'post', { message, context })
 }
 
 const initialState = {
     messages: [],
     currentMessage: '',
+    currentWord: null,
+    currentContext: '',
+    currentWordId: null,
+    currentSnippetId: null,
     isWaitingForResponse: false,
 };
   
@@ -21,6 +32,14 @@ export default (state = initialState, action) => {
             return {
                 ...state,
                 currentMessage: action.payload,
+            };
+        case 'SET_CURRENT_CONTEXT':
+            return {
+                ...state,
+                currentWord: action.word,
+                currentContext: action.context,
+                currentWordId: action.wordId,
+                currentSnippetId: action.snippetId,
             };
 
         case 'GET_CHATBOT_RESPONSE_ATTEMPT':
