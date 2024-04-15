@@ -46,23 +46,26 @@ const Chatbot = () => {
     const toggleCollapse = () => setIsCollapsed(!isCollapsed);
 
     useEffect(() => {
-        let totalRequestedHints = []
-        setEloScoreHearts(Array.from({length: hints ? hints.length : 0}, (_, i) => i + 1))
-        if(currentWord) {
+        if(Object.keys(currentWord).length) {
+            let totalRequestedHints = []
             const { requestedHintsList } = currentAnswers[`${currentWord.ID}-${currentWord.id}`] || {}
             totalRequestedHints = (requestedBEHints || []).concat(requestedHintsList || [])
+            setEloScoreHearts(Array.from({length: hints ? hints.length - totalRequestedHints.length : 0}, (_, i) => i + 1))
             setSpentHints(Array.from({length: requestedHintsList ? requestedHintsList.length : 0}, (_, i) => i + 1))
+
+            if (hintMessage && !hints && !totalRequestedHints) {
+                setPreHints([])
+            } else if (attempt !== 0) {
+                setFilteredHintsList(hints || [])
+                setPreHints(totalRequestedHints)
+            } else {
+                setFilteredHintsList(hints?.filter(hint => hint !== hintMessage))
+                setPreHints(totalRequestedHints)
+            }
+            setRequestedHints(totalRequestedHints)
+
         }
-        if (hintMessage && !hints && !totalRequestedHints) {
-          setPreHints([])
-        } else if (attempt !== 0) {
-          setFilteredHintsList(hints || [])
-          setPreHints(totalRequestedHints)
-        } else {
-          setFilteredHintsList(hints?.filter(hint => hint !== hintMessage))
-          setPreHints(totalRequestedHints)
-        }
-        setRequestedHints(totalRequestedHints)
+        
       }, [currentWord, attempt])
 
     const checkString = hint => {
@@ -175,7 +178,7 @@ const Chatbot = () => {
                 <>
                 
                     {
-                        currentWord && (
+                        Object.keys(currentWord).length > 0 && (
                             <>
                             {getHintContent()}
                             <div className="tooltip-green flex space-between" onMouseDown={handleTooltipClick}>
