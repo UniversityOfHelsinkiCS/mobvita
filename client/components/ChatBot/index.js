@@ -9,7 +9,10 @@ import { setCurrentMessage, getResponse } from 'Utilities/redux/chatbotReducer'
 
 const Chatbot = () => {
     const dispatch = useDispatch()
-    const { messages, currentMessage, currentWord, currentContext } = useSelector(({ chatbot }) => chatbot)
+    const { 
+        messages, currentMessage, 
+        currentWord, currentContext
+     } = useSelector(({ chatbot }) => chatbot)
     const [isCollapsed, setIsCollapsed] = useState(false);
 
     const onChangeCurrentMessage = (value) => {
@@ -39,7 +42,7 @@ const Chatbot = () => {
                             </div>
                         ))}
                     </div>
-                    {/* Displaying currentWordId and currentSnippetId */}
+                    {/* Displaying current context */}
                     <div 
                         className="context-info" 
                         style={{ 

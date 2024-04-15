@@ -481,7 +481,7 @@ const ExerciseCloze = ({ word, snippet, handleChange }) => {
           height: '1.5em',
           lineHeight: 'normal',
           unicodeBidi: direction,
-          border: isCurrentWord ? '2px solid green' : 'none',
+          border: isCurrentWord ? '2px solid green' : '2px solid black',
         }}
       />
       {false && word.negation && <sup style={{ color: '#0000FF' }}>(neg)</sup>}
