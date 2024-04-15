@@ -1,6 +1,5 @@
 import callBuilder from '../apiConnection'
 
-export const setCurrentMessage = message => ({ type: 'SET_CURRENT_MESSAGE', payload: message });
 export const setCurrentContext = (context) => ({ 
     type: 'SET_CURRENT_CONTEXT', 
     context: context,
@@ -14,23 +13,17 @@ export const getResponse = (message, context="") => {
 
 const initialState = {
     messages: [],
-    currentMessage: '',
-    currentContext: '',
+    exerciseContext: '',
     isWaitingForResponse: false,
 };
   
 export default (state = initialState, action) => {
     const { response } = action
     switch (action.type) {
-        case 'SET_CURRENT_MESSAGE':
-            return {
-                ...state,
-                currentMessage: action.payload,
-            };
         case 'SET_CURRENT_CONTEXT':
             return {
                 ...state,
-                currentContext: action.context,
+                exerciseContext: action.context,
             };
 
         case 'GET_CHATBOT_RESPONSE_ATTEMPT':
@@ -43,7 +36,6 @@ export default (state = initialState, action) => {
             return {
                 ...state,
                 isWaitingForResponse: false,
-                currentMessage: '',
             };
         case 'GET_CHATBOT_RESPONSE_SUCCESS':
             return {

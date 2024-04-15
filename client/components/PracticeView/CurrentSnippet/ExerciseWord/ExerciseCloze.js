@@ -48,8 +48,6 @@ const ExerciseCloze = ({ word, snippet, handleChange }) => {
   const { currentWordId, currentSnippetId  } = useSelector(({ chatbot }) => chatbot)
   const isCurrentWord = currentWordId === word.ID && currentSnippetId === word.snippet_id;
   // const { eloHearts } = useSelector(({ snippets }) => snippets)
-  
-  const [preHints, setPreHints] = useState([])
   const [keepOpen, setKeepOpen] = useState(false)
   const {
     isWrong,
@@ -126,19 +124,6 @@ const ExerciseCloze = ({ word, snippet, handleChange }) => {
     }
     return acc;
   }, '');
-
-  const handleAskChatbot = () => {
-    let formattedContext = `Exercise context: ${exerciseContext}`;
-    formattedContext += "\n\nExpected answer: " + word.surface
-    if (preHints.length > 0) {
-      const formattedHints = preHints.map(hint => `- ${hint}`);
-      formattedContext += "\n\nProvided hints:\n" + formattedHints.join("\n");
-    }
-    if (currentAnswer.users_answer){
-      formattedContext += "\n\nStudent's answer: " + currentAnswer.users_answer
-    }
-    dispatch(setCurrentContext(word, formattedContext))
-  }
 
   
 
@@ -224,7 +209,7 @@ const ExerciseCloze = ({ word, snippet, handleChange }) => {
     setShow(!show)
     dispatch(setFocusedWord(word))
     changeElementFont(e.target)
-    handleAskChatbot()
+    dispatch(setCurrentContext(exerciseContext))
   }
 
   const handleMouseDown = e => {

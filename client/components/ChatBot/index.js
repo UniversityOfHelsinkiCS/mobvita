@@ -25,22 +25,30 @@ const Chatbot = () => {
     const [emptyHintsList, setEmptyHintsList] = useState(false)
     const [eloScoreHearts, setEloScoreHearts] = useState(0)
     const [requested_hints, setRequestedHints] = useState([])
+    const [currentMessage, setCurrentMessage] = useState("")
+    const [currentAnswer, setCurrentAnswer] = useState("")
     
-    const { messages, currentMessage } = useSelector(({ chatbot }) => chatbot)
+    const { messages, exerciseContext } = useSelector(({ chatbot }) => chatbot)
     const { attempt, currentAnswers, focusedWord: currentWord } = useSelector(({ practice }) => practice)
     const { message: hintMessage, ref, explanation, hint2penalty, hints, requested_hints: requestedBEHints } = currentWord || {}
 
     const [isCollapsed, setIsCollapsed] = useState(false);
 
-    const onChangeCurrentMessage = (value) => {
-        dispatch(setCurrentMessage(value));
-    }
 
     const handleMessageSubmit = (event) => {
         event.preventDefault(); 
-        if (currentMessage.trim() === '') return;
-        dispatch(getResponse(currentMessage.trim(), currentContext.trim()));
-        dispatch(setCurrentMessage(""));
+        if (exerciseContext.trim() === '') return;
+        let formattedContext = `Exercise context: ${exerciseContext}`;
+        formattedContext += "\n\nExpected answer: " + currentWord.surface
+        if (hints && hints.length > 0) {
+            const formattedHints = hints.map(hint => `- ${hint}`);
+            formattedContext += "\n\nProvided hints:\n" + formattedHints.join("\n");
+        }
+        if (currentAnswer){
+            formattedContext += "\n\nStudent's answer: " + currentAnswer
+        }
+        dispatch(getResponse(currentMessage.trim(), formattedContext.trim()));
+        setCurrentMessage("");
     };
 
     const toggleCollapse = () => setIsCollapsed(!isCollapsed);
@@ -48,11 +56,11 @@ const Chatbot = () => {
     useEffect(() => {
         if(Object.keys(currentWord).length) {
             let totalRequestedHints = []
-            const { requestedHintsList } = currentAnswers[`${currentWord.ID}-${currentWord.id}`] || {}
+            const { requestedHintsList, user_answer } = currentAnswers[`${currentWord.ID}-${currentWord.id}`] || {}
             totalRequestedHints = (requestedBEHints || []).concat(requestedHintsList || [])
             setEloScoreHearts(Array.from({length: hints ? hints.length - totalRequestedHints.length : 0}, (_, i) => i + 1))
             setSpentHints(Array.from({length: requestedHintsList ? requestedHintsList.length : 0}, (_, i) => i + 1))
-
+            setCurrentAnswer(user_answer)
             if (hintMessage && !hints && !totalRequestedHints) {
                 setPreHints([])
             } else if (attempt !== 0) {
@@ -251,7 +259,7 @@ const Chatbot = () => {
                             type="text" 
                             name="userInput" 
                             value={currentMessage} 
-                            onChange={(e) => onChangeCurrentMessage(e.target.value)} 
+                            onChange={(e) => setCurrentMessage(e.target.value)} 
                         />
                         <Button type="submit" primary>
                             <FormattedMessage id="submit-chat-message" defaultMessage="Send" />
