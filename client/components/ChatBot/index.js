@@ -184,7 +184,24 @@ const Chatbot = () => {
             </Button>
             {!isCollapsed && (
                 <>
-                
+                    {/* Displaying current context: BANNER = current exercise LEMMA */}
+                    <div 
+                        className="context-info" 
+                        style={{ 
+                            backgroundColor: 'lightcyan',
+                            marginLeft: '0.5em',
+                            marginRight: '0.5em',
+                            paddingLeft: '0.5em',
+                            color: 'darkblue',
+                        }}
+                    >
+                        {currentWord && (
+                            <div className="context-item">
+                                {currentWord.base}
+                            </div>
+                        )}
+                    </div>
+                  
                     {
                         Object.keys(currentWord).length > 0 && (
                             <>
@@ -236,23 +253,6 @@ const Chatbot = () => {
                                 {message.text}
                             </div>
                         ))}
-                    </div>
-                    {/* Displaying current context */}
-                    <div 
-                        className="context-info" 
-                        style={{ 
-                            backgroundColor: 'green',
-                            marginLeft: '0.5em',
-                            marginRight: '0.5em',
-                            paddingLeft: '0.5em',
-                            color: 'white',
-                        }}
-                    >
-                        {currentWord && (
-                            <div className="context-item">
-                                {currentWord.base}
-                            </div>
-                        )}
                     </div>
                     {eloScoreHearts == 0 ? (<form onSubmit={handleMessageSubmit} className="chatbot-input-form">
                         <input 
