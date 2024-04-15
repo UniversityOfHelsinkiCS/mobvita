@@ -183,13 +183,6 @@ const ExerciseCloze = ({ word, snippet, handleChange }) => {
                 style={{ fontWeight: 'bold', fontStyle: 'italic' }}
                 dangerouslySetInnerHTML={formatGreenFeedbackText(mess)}
               />
-              {ref && showRefIcon(mess) && (
-                <Icon
-                  name="info circle"
-                  style={{ alignSelf: 'flex-start', marginLeft: '0.5rem' }}
-                />
-              )}
-              {explanation && checkString(mess)}
             </span>
           ))}
         </ul>
