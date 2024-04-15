@@ -48,7 +48,7 @@ const ExerciseCloze = ({ word, snippet, handleChange }) => {
   const { currentWordId, currentSnippetId  } = useSelector(({ chatbot }) => chatbot)
   const isCurrentWord = currentWordId === word.ID && currentSnippetId === word.snippet_id;
   // const { eloHearts } = useSelector(({ snippets }) => snippets)
-  const [filteredHintsList, setFilteredHintsList] = useState([])
+  
   const [preHints, setPreHints] = useState([])
   const [keepOpen, setKeepOpen] = useState(false)
   const {
@@ -70,22 +70,14 @@ const ExerciseCloze = ({ word, snippet, handleChange }) => {
     sentence_id,
     snippet_id,
   } = word
-  const [eloScoreHearts, setEloScoreHearts] = useState(Array.from({length: hints ? hints.length : 0}, (_, i) => i + 1))
-  const [spentHints, setSpentHints] = useState([])
+  
+  
 
   const target = useRef()
   const dispatch = useDispatch()
-  const [emptyHintsList, setEmptyHintsList] = useState(false)
+  
   const voice = voiceLanguages[learningLanguage]
-  const askForHintAvailable = (
-    !hints ||
-    (filteredHintsList.length < 1 && !message) ||
-    (preHints.length - requested_hints?.length < filteredHintsList?.length) //  && preHints.length < 5
-  ) && !emptyHintsList
-
-  const hintButtonVisibility = askForHintAvailable
-      ? { visibility: 'visible' }
-      : { visibility: 'hidden' }
+  
 
   const handleTooltipWordClick = () => {
     const showAsSurface = exerciseMaskedLanguages.includes(learningLanguage)
@@ -124,36 +116,7 @@ const ExerciseCloze = ({ word, snippet, handleChange }) => {
   const changeValue = e => {
     setValue(e.target.value)
   }
-
-  const handleHintRequest = newHintList => {
-    handleChange(value, word)
-    const newRequestNum = preHints.length + 1
-    const penalties = newHintList
-      ?.filter(hint => hint2penalty[hint])
-      .map(hint => hint2penalty[hint])
-    dispatch(incrementHintRequests(`${word.ID}-${word.id}`, newRequestNum, newHintList, penalties))
-
-    setSpentHints(spentHints.concat(1))
-    setEloScoreHearts(eloScoreHearts.slice(0, -1))
-  }
-
-  const handlePreHints = () => {
-    if (
-      (!hints && !requested_hints) ||
-      (filteredHintsList.length < 1 && requested_hints.length < 1) ||
-      hints?.length < 1
-    ) {
-      setEmptyHintsList(true)
-      handleHintRequest()
-    } else {
-      const newHintList = preHints.concat(
-        filteredHintsList[preHints.length - requested_hints?.length]
-      )
-      setPreHints(newHintList)
-      handleHintRequest(newHintList)
-    }
-    setKeepOpen(true)
-  }
+  
 
   const exerciseContext = snippet.reduce((acc, curr) => {
     if (curr.id) {
@@ -174,63 +137,16 @@ const ExerciseCloze = ({ word, snippet, handleChange }) => {
     if (currentAnswer.users_answer){
       formattedContext += "\n\nStudent's answer: " + currentAnswer.users_answer
     }
-    dispatch(setCurrentContext(word.base, formattedContext, word.ID, word.snippet_id))
+    dispatch(setCurrentContext(word, formattedContext))
   }
 
-  const handleTooltipClick = () => {
-    if (ref) {
-      const requestedRefs = {}
-      const refKeys = Object.keys(ref)
-      for (let i = 0; i < refKeys.length; i++) {
-        for (let j = 0; j < preHints.length; j++) {
-          if (!requestedRefs[refKeys[i]] && preHints[j].includes(refKeys[i])) {
-            requestedRefs[refKeys[i]] = ref[refKeys[i]]
-          }
-        }
-      }
-      if (Object.keys(requestedRefs).length > 0) {
-        dispatch(setReferences(requestedRefs))
-      }
-    }
-
-    if (explanation) {
-      const requestedExplanations = {}
-      const explKeys = Object.keys(explanation)
-
-      for (let i = 0; i < explKeys.length; i++) {
-        for (let j = 0; j < preHints.length; j++) {
-          if (!requestedExplanations[explKeys[i]] && preHints[j].includes(explKeys[i])) {
-            requestedExplanations[explKeys[i]] = explanation[explKeys[i]]
-          }
-        }
-      }
-      if (Object.keys(requestedExplanations).length > 0) {
-        dispatch(setExplanation(requestedExplanations))
-      }
-    }
-  }
+  
 
   const getExerciseClass = (tested, isWrong) => {
     if (!tested) return 'exercise'
     if (isWrong) return 'exercise wrong cloze'
     return 'exercise correct'
   }
-  /*
-  useEffect(() => {
-    if (eloHearts?.hasOwnProperty(wordId) && eloHearts[wordId] >= 0) {
-      if (eloHearts[wordId] === 0) {
-        setEloScoreHearts([])
-      } else {
-        const currentEloHearts = Array.from(Array(eloHearts[wordId]).keys())
-        setEloScoreHearts(currentEloHearts)
-      }
-
-      const difference = 5 - eloHearts[wordId]
-      const newSpentHearts = Array.from(Array(difference).keys())
-      setSpentHints(newSpentHearts)
-    }
-  }, [eloHearts ? eloHearts[wordId] : eloHearts])
-  */
 
   useEffect(() => {
     const val = currentAnswer ? currentAnswer.users_answer : ''
@@ -241,24 +157,7 @@ const ExerciseCloze = ({ word, snippet, handleChange }) => {
     setClassName(getExerciseClass(tested, isWrong))
   }, [tested])
 
-  useEffect(() => {
-    if (message && !hints && !requested_hints) {
-      setPreHints([])
-    } else if (attempt !== 0) {
-      setFilteredHintsList(hints)
-      setPreHints(requested_hints || [])
-      // dispatch(incrementHintRequests(wordId, requested_hints?.length, filteredHintsList[preHints.length - requested_hints?.length]))
-    } else {
-      setFilteredHintsList(hints?.filter(hint => hint !== message))
-      setPreHints(requested_hints || [])
-      // dispatch(incrementHintRequests(wordId, requested_hints?.length, filteredHintsList[preHints.length - requested_hints?.length]))
-    }
-    /*
-    if (!hints || !hints.length || message && !hints.filter(hint => hint !== message)) {
-      setEmptyHintsList(true)
-    }
-    */
-  }, [message, hints, requested_hints, attempt])
+  
 
   useEffect(() => {
     if (focusedWord !== word) {
@@ -272,67 +171,13 @@ const ExerciseCloze = ({ word, snippet, handleChange }) => {
     }
   }, [latestMCTouched])
 
-  const checkString = hint => {
-    const explanationKey = Object.keys(explanation)[0]
-    if (hint?.includes(explanationKey)) {
-      return <Icon name="info circle" style={{ alignSelf: 'flex-start', marginLeft: '0.5rem' }} />
-    }
-
-    return null
-  }
-
-  const showRefIcon = hint => {
-    if (Object.keys(ref).find(key => hint.includes(key))) {
-      return true
-    }
-
-    return false
-  }
-
-
-  const getHintContent = () => {
-    if (eloScoreHearts.length + spentHints.length > 0){
-      return (<div className="tooltip-green flex space-between">
-      <Button style={hintButtonVisibility} variant="primary" onMouseDown={handlePreHints}>
-        <FormattedMessage id="ask-for-a-hint" />
-      </Button>
-      <div>
-        {eloScoreHearts.map(heart => (
-          <Icon size="small" name="lightbulb" style={{ marginLeft: '0.25em' }} />
-        ))}
-        {spentHints.map(hint => (
-          <Icon size="small" name="lightbulb outline" style={{ marginLeft: '0.25em' }} />
-        ))}
-      </div>
-    </div>)
-    } else {
-      return (<div className="tooltip-green flex space-between">
-      <div className="tooltip-hint" style={{ textAlign: 'left' }}>
-        <FormattedMessage id="no-hints-available" />
-      </div>
-    </div>)
-    }
-  }
 
   const tooltip = (
     <div>
-      {/* <div className="tooltip-green flex space-between">
-        <Button style={hintButtonVisibility} variant="primary" onMouseDown={handlePreHints}>
-          <FormattedMessage id="ask-for-a-hint" />
-        </Button>
-        <div>
-          {eloScoreHearts.map(heart => (
-            <Icon size="small" name="lightbulb" style={{ marginLeft: '0.25em' }} />
-          ))}
-          {spentHints.map(hint => (
-            <Icon size="small" name="lightbulb outline" style={{ marginLeft: '0.25em' }} />
-          ))}
-        </div>
-      </div> */}
-      {getHintContent()} {' '}
-      <div className="tooltip-hint" style={{ textAlign: 'left' }} onMouseDown={handleTooltipClick}>
+      {
+        frozen_messages?.length>0 && (<div className="tooltip-hint" style={{ textAlign: 'left' }}>
         <ul>
-          {frozen_messages?.map(mess => (
+          {frozen_messages.map(mess => (
             <span className="flex">
               <li
                 style={{ fontWeight: 'bold', fontStyle: 'italic' }}
@@ -347,42 +192,9 @@ const ExerciseCloze = ({ word, snippet, handleChange }) => {
               {explanation && checkString(mess)}
             </span>
           ))}
-          {message && attempt === 0 && (
-            <span className="flex">
-              <li dangerouslySetInnerHTML={formatGreenFeedbackText(message)} />
-              {ref && (
-                <Icon
-                  name="info circle"
-                  style={{ alignSelf: 'flex-start', marginLeft: '0.5rem' }}
-                />
-              )}
-              {explanation && (
-                <Icon
-                  name="info circle"
-                  style={{ alignSelf: 'flex-start', marginLeft: '0.5rem' }}
-                />
-              )}
-            </span>
-          )}
-          {preHints?.map(hint => (
-            <span className="flex">
-              <li dangerouslySetInnerHTML={formatGreenFeedbackText(hint)} />
-              {ref && showRefIcon(hint) && (
-                <Icon
-                  name="info circle"
-                  style={{ alignSelf: 'flex-start', marginLeft: '0.5rem' }}
-                />
-              )}
-              {explanation && checkString(hint)}
-            </span>
-          ))}
         </ul>
-      </div>
-      {emptyHintsList && preHints?.length < 1 && (
-        <div className="tooltip-hint" style={{ textAlign: 'left' }}>
-          <FormattedMessage id="no-hints-available" />
-        </div>
-      )}
+        </div>)
+      }
       <div className="tooltip-hint" style={{ display: 'flex', justifyContent: 'center' }}>
         <Button
           variant="primary"
@@ -392,11 +204,6 @@ const ExerciseCloze = ({ word, snippet, handleChange }) => {
           <span style={getTextStyle(learningLanguage, 'tooltip')}>{word.base || word.bases} </span>
           → <FormattedMessage id={dictionaryLanguage} />
         </Button>
-        {!askForHintAvailable && (
-          <Button variant="primary" onMouseDown={handleAskChatbot}>
-            <FormattedMessage id="ask-chatbot" />
-          </Button>
-        )}
       </div>
     </div>
   )
@@ -424,6 +231,7 @@ const ExerciseCloze = ({ word, snippet, handleChange }) => {
     setShow(!show)
     dispatch(setFocusedWord(word))
     changeElementFont(e.target)
+    handleAskChatbot()
   }
 
   const handleMouseDown = e => {
