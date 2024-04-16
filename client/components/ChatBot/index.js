@@ -147,7 +147,7 @@ const Chatbot = () => {
         if (eloScoreHearts.length + spentHints.length > 0){
           return (
             <div className="tooltip-green flex-col align-end">
-              <div className="was-tooltip-green flex space-between">
+              <div className="flex space-between">
                 <div>
                   {eloScoreHearts.map(heart => (
                     <Icon size="small" name="lightbulb" style={{ marginLeft: '0.25em' }} />
@@ -207,11 +207,13 @@ const Chatbot = () => {
                   
                     {/* Display lightbulbs */}
                     {
-                        Object.keys(currentWord).length > 0 && (
-                            <>
-                            {getHintContent()}
-                              <div className="was-tooltip-green message message-bot flex space-between"
-                                   onMouseDown={handleTooltipClick}>
+                        Object.keys(currentWord).length > 0 && getHintContent()
+                    }
+                    <div className="chatbot-messages">
+                        {
+                            Object.keys(currentWord).length > 0 && (spentHints.length > 0 || emptyHintsList) && (
+                            <div className="message message-bot flex space-between"
+                                onMouseDown={handleTooltipClick}>
                             <ul>
                             {hintMessage && attempt === 0 && (
                                 <span className="flex">
@@ -249,10 +251,9 @@ const Chatbot = () => {
                                 </div>
                             )}
                             </div>
-                            </>
-                        )
-                    }
-                    <div className="chatbot-messages">
+                            )
+                        }
+
                         {messages.map((message, index) => (
                             <div key={index} className={`message message-${message.type}`}>
                                 {message.text}
