@@ -146,7 +146,7 @@ const Chatbot = () => {
     const getHintContent = () => {
         if (eloScoreHearts.length + spentHints.length > 0){
           return (
-            <div className="tooltip-green flex-col align-end"">
+            <div className="tooltip-green flex-col align-end">
               <div className="was-tooltip-green flex space-between">
                 <div>
                   {eloScoreHearts.map(heart => (
