@@ -44,6 +44,7 @@ const ExerciseWord = ({ word, snippet, handleAnswerChange, handleMultiselectChan
       return (
         <ExerciseMultipleChoice
           tabIndex={word.ID}
+          snippet={snippet}
           handleChange={handleMultiselectChange}
           key={word.ID}
           word={word}

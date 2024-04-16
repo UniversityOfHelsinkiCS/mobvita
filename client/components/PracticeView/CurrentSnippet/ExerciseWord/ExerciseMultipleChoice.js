@@ -9,7 +9,7 @@ import { setCurrentContext } from 'Utilities/redux/chatbotReducer'
 import { Button } from 'react-bootstrap'
 import Tooltip from 'Components/PracticeView/Tooltip'
 
-const ExerciseMultipleChoice = ({ word, handleChange }) => {
+const ExerciseMultipleChoice = ({ word, snippet, handleChange }) => {
   const dispatch = useDispatch()
   const [className, setClassName] = useState('exercise-multiple')
   const [options, setOptions] = useState([])
