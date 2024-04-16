@@ -12,6 +12,7 @@ import {
 } from 'Utilities/common'
 import { useAudioRecorder } from 'react-audio-voice-recorder'
 import { setFocusedWord, handleVoiceSampleCooldown } from 'Utilities/redux/practiceReducer'
+import { setCurrentContext } from 'Utilities/redux/chatbotReducer'
 import { setNotification } from 'Utilities/redux/notificationReducer'
 import Tooltip from 'Components/PracticeView/Tooltip'
 
@@ -137,6 +138,7 @@ const ExerciseSpeaking = ({ word, handleChange }) => {
     }
     setShow(!show)
     changeElementFont(e.target)
+    dispatch(setCurrentContext(''))
   }
 
   const handleMouseDown = e => {

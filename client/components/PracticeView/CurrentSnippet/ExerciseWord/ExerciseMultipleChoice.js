@@ -16,10 +16,8 @@ const ExerciseMultipleChoice = ({ word, handleChange }) => {
   const [touched, setTouched] = useState(false)
   const [show, setShow] = useState(false)
   const { grade } = useSelector(state => state.user.data.user)
-  const [preHints, setPreHints] = useState([])
   const [keepOpen, setKeepOpen] = useState(false)
-  const [emptyHintsList, setEmptyHintsList] = useState(false)
-  const [filteredHintsList, setFilteredHintsList] = useState([])
+
   const currentAnswer = useSelector(({ practice }) => practice.currentAnswers[`${word.ID}-${word.id}`])
   // const { eloHearts } = useSelector(({ snippets }) => snippets)
   const { attempt, focusedWord, latestMCTouched } = useSelector(({ practice }) => practice)
@@ -35,20 +33,9 @@ const ExerciseMultipleChoice = ({ word, handleChange }) => {
     frozen_messages, 
     hint2penalty } = word
   
-  const [eloScoreHearts, setEloScoreHearts] = useState(Array.from({length: hints ? hints.length : 0}, (_, i) => i + 1))
-  const [spentHints, setSpentHints] = useState([])
   
   const value = currentAnswer ? currentAnswer.users_answer : ''
-  const askForHintAvailable = (
-    !hints ||
-    (filteredHintsList.length < 1 && !message) ||
-    (preHints.length - requested_hints?.length < filteredHintsList?.length) //  && preHints.length < 5
-  ) && !emptyHintsList
-
-  const hintButtonVisibility = askForHintAvailable
-      ? { visibility: 'visible' }
-      : { visibility: 'hidden' }
-
+  
   const getExerciseClass = (tested, isWrong) => {
     if (!tested) return 'exercise-multiple'
     if (isWrong) return 'exercise-multiple wrong'
@@ -67,22 +54,7 @@ const ExerciseMultipleChoice = ({ word, handleChange }) => {
     }))
     setOptions(temp)
   }, [word])
-  /*
-  useEffect(() => {
-    if (eloHearts[wordId] >= 0) {
-      if (eloHearts[wordId] === 0) {
-        setEloScoreHearts([])
-      } else {
-        const currentEloHearts = Array.from(Array(eloHearts[wordId]).keys())
-        setEloScoreHearts(currentEloHearts)
-      }
-
-      const difference = 5 - eloHearts[wordId]
-      const newSpentHearts = Array.from(Array(difference).keys())
-      setSpentHints(newSpentHearts)
-    }
-  }, [eloHearts[wordId]])
-  */
+  
   useEffect(() => {
     if (focusedWord !== word) {
       setShow(false)
@@ -95,24 +67,6 @@ const ExerciseMultipleChoice = ({ word, handleChange }) => {
     }
   }, [latestMCTouched])
 
-  useEffect(() => {
-    if (message && !hints && !requested_hints) {
-      setPreHints([])
-    } else if (attempt !== 0) {
-      setFilteredHintsList(hints)
-      setPreHints(requested_hints || [])
-      // dispatch(incrementHintRequests(wordId, requested_hints?.length, requested_hints))
-    } else {
-      setFilteredHintsList(hints?.filter(hint => hint !== message))
-      setPreHints(requested_hints || [])
-      // dispatch(incrementHintRequests(wordId, requested_hints?.length, requested_hints))
-    }
-    /*
-    if (!hints || !hints.length || message && !hints.filter(hint => hint !== message)) {
-      setEmptyHintsList(true)
-    }
-    */
-  }, [message, hints, requested_hints, attempt])
 
   const maximumLength = word.choices.reduce((maxLength, currLength) => {
     if (currLength.length > maxLength) return currLength.length
@@ -141,26 +95,6 @@ const ExerciseMultipleChoice = ({ word, handleChange }) => {
     handleChange(e, word, data)
   }
 
-  const handleHintRequest = newHintList => {
-    const newRequestNum = preHints.length + 1
-    const penalties = newHintList?.filter(hint=> hint2penalty[hint]).map(hint=> hint2penalty[hint])
-    dispatch(incrementHintRequests(`${word.ID}-${word.id}`, newRequestNum, newHintList, penalties))
-
-    setSpentHints(spentHints.concat(1))
-    setEloScoreHearts(eloScoreHearts.slice(0, -1))
-  }
-
-  const handlePreHints = () => {
-    if (!hints && !requested_hints || filteredHintsList.length < 1 && requested_hints.length < 1) {
-      setEmptyHintsList(true)
-      handleHintRequest()
-    } else {
-      const newHintList = preHints.concat(filteredHintsList[preHints.length - requested_hints?.length])
-      setPreHints(newHintList)
-      handleHintRequest(newHintList)
-    }
-    setKeepOpen(true)
-  }
 
   const exerciseContext = snippet.reduce((acc, curr) => {
     if (curr.id && curr.id == word.id) {
@@ -173,18 +107,6 @@ const ExerciseMultipleChoice = ({ word, handleChange }) => {
     return acc;
   }, '');
 
-  const handleAskChatbot = () => {
-    let formattedContext = `Exercise context: ${exerciseContext}`;
-    formattedContext += "\n\nExpected answer: " + word.surface
-    if (preHints.length > 0) {
-      const formattedHints = preHints.map(hint => `- ${hint}`);
-      formattedContext += "\n\nProvided hints:\n" + formattedHints.join("\n");
-    }
-    if (currentAnswer.users_answer){
-      formattedContext += "\n\nStudent's answer: " + currentAnswer.users_answer
-    }
-    dispatch(setCurrentContext(word.base, formattedContext, word.ID, word.snippet_id))
-  }
 
   const handleBlur = () => {
     if (!keepOpen) {
@@ -197,6 +119,7 @@ const ExerciseMultipleChoice = ({ word, handleChange }) => {
     if (hints && hints?.length > 0 || frozen_messages && frozen_messages?.length > 0) {
       setShow(!show)
     }
+    dispatch(setCurrentContext(exerciseContext))
   }
 
   const getInputWidth = () => {
@@ -208,76 +131,24 @@ const ExerciseMultipleChoice = ({ word, handleChange }) => {
     return width
   }
 
-  const getHintContent = () => {
-    if (eloScoreHearts.length + spentHints.length > 0){
-      return (<div className="tooltip-green flex space-between">
-        <Button style={hintButtonVisibility} variant="primary" onMouseDown={handlePreHints}>
-          <FormattedMessage id="ask-for-a-hint" />
-        </Button>
-        <div>
-          {eloScoreHearts.map(heart => (
-            <Icon size="small" name="lightbulb" style={{ marginLeft: '0.25em' }} />
-          ))}
-          {spentHints.map(hint => (
-            <Icon size="small" name="lightbulb outline" style={{ marginLeft: '0.25em' }} />
-          ))}
-        </div>
-      </div>)
-    } else if (!frozen_messages) {
-      return (<div className="tooltip-green flex space-between">
-        <div className="tooltip-hint" style={{ textAlign: 'left' }}>
-          <FormattedMessage id="no-hints-available" />
-        </div>
-      </div>)
-    }
-  }
+  
 
   const tooltip = (
     <div onBlur={handleTooltipBlur}>
-      {/* <div className="tooltip-green flex space-between">
-        <Button
-          style={hintButtonVisibility}
-          variant="primary"
-          onMouseDown={handlePreHints}
-        >
-          <FormattedMessage id="ask-for-a-hint" />
-        </Button>
-        <div>
-          {eloScoreHearts.map(heart => (
-            <Icon size="small" name="lightbulb" style={{ marginLeft: '0.25em' }} />
-          ))}
-          {spentHints.map(hint => (
-            <Icon size="small" name="lightbulb outline" style={{ marginLeft: '0.25em' }} />
-          ))}
-        </div>
-      </div> */}
-      {getHintContent()} {' '}
-      <div className="tooltip-hint" style={{ textAlign: 'left' }}>
-        <ul>
-          {frozen_messages?.map(mess => (
-            <span className="flex"><li style={{ fontWeight: 'bold', fontStyle: 'italic' }} dangerouslySetInnerHTML={formatGreenFeedbackText(mess)} />{ref && showRefIcon(mess) && (
-              <Icon name="info circle" style={{ alignSelf: 'flex-start', marginLeft: '0.5rem' }} />
-            )}
-            {explanation && (
-              checkString(mess)
-            )}</span>
-          ))}
-          {message && attempt === 0 && <li dangerouslySetInnerHTML={formatGreenFeedbackText(word?.message)} />}
-          {preHints?.map(hint => (
-            <li dangerouslySetInnerHTML={formatGreenFeedbackText(hint)} />
+      {
+        frozen_messages?.length>0 && (<div className="tooltip-hint" style={{ textAlign: 'left' }}>
+        <ul style={{paddingLeft: '20px'}}>
+          {frozen_messages.map(mess => (
+            <span className="flex">
+              <li
+                style={{ fontWeight: 'bold', fontStyle: 'italic' }}
+                dangerouslySetInnerHTML={formatGreenFeedbackText(mess)}
+              />
+            </span>
           ))}
         </ul>
-      </div>
-      {emptyHintsList && preHints?.length < 1 && !frozen_messages && (
-        <div className="tooltip-green">
-          <FormattedMessage id="no-hints-available" />
-        </div>
-      )}
-      {!askForHintAvailable && (
-        <Button variant="primary" onMouseDown={handleAskChatbot}>
-          <FormattedMessage id="ask-chatbot" />
-        </Button>
-      )}
+        </div>)
+      }
     </div>
   )
 

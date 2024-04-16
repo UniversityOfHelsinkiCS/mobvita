@@ -163,7 +163,7 @@ const ExerciseCloze = ({ word, snippet, handleChange }) => {
     <div>
       {
         frozen_messages?.length>0 && (<div className="tooltip-hint" style={{ textAlign: 'left' }}>
-        <ul>
+        <ul style={{paddingLeft: '20px'}}>
           {frozen_messages.map(mess => (
             <span className="flex">
               <li

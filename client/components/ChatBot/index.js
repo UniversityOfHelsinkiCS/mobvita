@@ -23,14 +23,22 @@ const Chatbot = () => {
     const [spentHints, setSpentHints] = useState([])
     const [filteredHintsList, setFilteredHintsList] = useState([])
     const [emptyHintsList, setEmptyHintsList] = useState(false)
-    const [eloScoreHearts, setEloScoreHearts] = useState(0)
+    const [eloScoreHearts, setEloScoreHearts] = useState([])
     const [requested_hints, setRequestedHints] = useState([])
     const [currentMessage, setCurrentMessage] = useState("")
     const [currentAnswer, setCurrentAnswer] = useState("")
     
     const { messages, exerciseContext } = useSelector(({ chatbot }) => chatbot)
     const { attempt, currentAnswers, focusedWord: currentWord } = useSelector(({ practice }) => practice)
-    const { message: hintMessage, ref, explanation, hint2penalty, hints, requested_hints: requestedBEHints } = currentWord || {}
+    const { 
+        message: hintMessage, 
+        ref, 
+        explanation, 
+        hint2penalty, 
+        hints, 
+        listen,
+        requested_hints: requestedBEHints 
+    } = currentWord || {}
 
     const [isCollapsed, setIsCollapsed] = useState(false);
 
@@ -54,7 +62,7 @@ const Chatbot = () => {
     const toggleCollapse = () => setIsCollapsed(!isCollapsed);
 
     useEffect(() => {
-        if(Object.keys(currentWord).length) {
+        if(Object.keys(currentWord).length && !listen) {
             let totalRequestedHints = []
             const { requestedHintsList, user_answer } = currentAnswers[`${currentWord.ID}-${currentWord.id}`] || {}
             totalRequestedHints = (requestedBEHints || []).concat(requestedHintsList || [])
@@ -71,7 +79,12 @@ const Chatbot = () => {
                 setPreHints(totalRequestedHints)
             }
             setRequestedHints(totalRequestedHints)
-
+        } else {
+            setEloScoreHearts([])
+            setSpentHints([])
+            setPreHints([])
+            setFilteredHintsList([])
+            setRequestedHints([])
         }
         
       }, [currentWord, attempt])
