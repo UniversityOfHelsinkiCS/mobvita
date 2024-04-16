@@ -65,7 +65,8 @@ const Chatbot = () => {
         if(Object.keys(currentWord).length && !listen) {
             let totalRequestedHints = []
             const { requestedHintsList, user_answer } = currentAnswers[`${currentWord.ID}-${currentWord.id}`] || {}
-            totalRequestedHints = (requestedBEHints || []).concat(requestedHintsList || [])
+            totalRequestedHints = (requestedBEHints || [])
+            totalRequestedHints = totalRequestedHints.concat((requestedHintsList || []).filter(hint => !totalRequestedHints.includes(hint)))
             setEloScoreHearts(Array.from({length: hints ? hints.length - totalRequestedHints.length : 0}, (_, i) => i + 1))
             setSpentHints(Array.from({length: requestedHintsList ? requestedHintsList.length : 0}, (_, i) => i + 1))
             setCurrentAnswer(user_answer)
