@@ -145,16 +145,19 @@ const Chatbot = () => {
 
     const getHintContent = () => {
         if (eloScoreHearts.length + spentHints.length > 0){
-          return (<div className="tooltip-green flex space-between">
-          <div>
-            {eloScoreHearts.map(heart => (
-              <Icon size="small" name="lightbulb" style={{ marginLeft: '0.25em' }} />
-            ))}
-            {spentHints.map(hint => (
-              <Icon size="small" name="lightbulb outline" style={{ marginLeft: '0.25em' }} />
-            ))}
-          </div>
-        </div>)
+          return (
+            <div className="tooltip-green flex-col align-end"">
+              <div className="was-tooltip-green flex space-between">
+                <div>
+                  {eloScoreHearts.map(heart => (
+                    <Icon size="small" name="lightbulb" style={{ marginLeft: '0.25em' }} />
+                  ))}
+                  {spentHints.map(hint => (
+                    <Icon size="small" name="lightbulb outline" style={{ marginLeft: '0.25em' }} />
+                  ))}
+                </div>
+              </div>
+            </div>)
         } else {
           return (<div className="tooltip-green flex space-between">
           <div className="tooltip-hint" style={{ textAlign: 'left' }}>
@@ -184,7 +187,7 @@ const Chatbot = () => {
             </Button>
             {!isCollapsed && (
                 <>
-                    {/* Displaying current context: BANNER = current exercise LEMMA */}
+                    {/* Display current context: BANNER = current exercise LEMMA */}
                     <div 
                         className="context-info" 
                         style={{ 
@@ -202,11 +205,13 @@ const Chatbot = () => {
                         )}
                     </div>
                   
+                    {/* Display lightbulbs */}
                     {
                         Object.keys(currentWord).length > 0 && (
                             <>
                             {getHintContent()}
-                            <div className="tooltip-green flex space-between" onMouseDown={handleTooltipClick}>
+                              <div className="was-tooltip-green message message-bot flex space-between"
+                                   onMouseDown={handleTooltipClick}>
                             <ul>
                             {hintMessage && attempt === 0 && (
                                 <span className="flex">
