@@ -117,8 +117,10 @@ const ExerciseCloze = ({ word, snippet, handleChange }) => {
   
 
   const exerciseContext = snippet.reduce((acc, curr) => {
-    if (curr.id) {
-        acc += `<${curr.base}> `;
+    if (curr.id && curr.id == word.id) {
+      acc += `<EXERCISE START>${curr.base}<EXERCISE END>`;
+    } else if (curr.id && curr.id != word.id) {
+      acc += `<HIDDEN WORD START>${curr.base}<HIDDEN WORD END>`;
     } else {
         acc += curr.surface;
     }

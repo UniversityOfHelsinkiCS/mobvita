@@ -4,6 +4,7 @@ import { Dropdown, Icon } from 'semantic-ui-react'
 import { FormattedMessage } from 'react-intl'
 import { getTextWidth, formatGreenFeedbackText, getWordColor, skillLevels } from 'Utilities/common'
 import { incrementHintRequests, mcExerciseTouched } from 'Utilities/redux/practiceReducer'
+import { setCurrentContext } from 'Utilities/redux/chatbotReducer'
 // import { decreaseEloHearts } from 'Utilities/redux/snippetsReducer'
 import { Button } from 'react-bootstrap'
 import Tooltip from 'Components/PracticeView/Tooltip'
@@ -161,8 +162,28 @@ const ExerciseMultipleChoice = ({ word, handleChange }) => {
     setKeepOpen(true)
   }
 
+  const exerciseContext = snippet.reduce((acc, curr) => {
+    if (curr.id && curr.id == word.id) {
+      acc += `<EXERCISE START>${curr.base}<EXERCISE END>`;
+    } else if (curr.id && curr.id != word.id) {
+      acc += `<HIDDEN WORD START>${curr.base}<HIDDEN WORD END>`;
+    } else {
+        acc += curr.surface;
+    }
+    return acc;
+  }, '');
+
   const handleAskChatbot = () => {
-    
+    let formattedContext = `Exercise context: ${exerciseContext}`;
+    formattedContext += "\n\nExpected answer: " + word.surface
+    if (preHints.length > 0) {
+      const formattedHints = preHints.map(hint => `- ${hint}`);
+      formattedContext += "\n\nProvided hints:\n" + formattedHints.join("\n");
+    }
+    if (currentAnswer.users_answer){
+      formattedContext += "\n\nStudent's answer: " + currentAnswer.users_answer
+    }
+    dispatch(setCurrentContext(word.base, formattedContext, word.ID, word.snippet_id))
   }
 
   const handleBlur = () => {
