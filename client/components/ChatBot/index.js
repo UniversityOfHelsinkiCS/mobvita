@@ -206,8 +206,6 @@ const Chatbot = () => {
                         className="context-info" 
                         style={{ 
                             backgroundColor: 'lightcyan',
-                            marginLeft: '0.5em',
-                            marginRight: '0.5em',
                             paddingLeft: '0.5em',
                             color: 'darkblue',
                         }}
