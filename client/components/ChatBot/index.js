@@ -188,7 +188,7 @@ const Chatbot = () => {
                             color: 'white',
                         }}
                     >
-                        {currentWord && currentWord.listen === undefined && currentWord.speak === undefined && (
+                        {currentWord && !currentWord.listen && !currentWord.speak && (
                             <div className="context-item flex space-between">
                                 <div style={{whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis', maxWidth: '20em'}}>
                                 {currentWord.choices?.length ? currentWord.choices.join('/') : currentWord.base}
