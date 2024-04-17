@@ -3,7 +3,7 @@ import { useSelector, useDispatch } from 'react-redux'
 import { Dropdown, Icon } from 'semantic-ui-react'
 import { FormattedMessage } from 'react-intl'
 import { getTextWidth, formatGreenFeedbackText, getWordColor, skillLevels } from 'Utilities/common'
-import { incrementHintRequests, mcExerciseTouched } from 'Utilities/redux/practiceReducer'
+import { setFocusedWord, mcExerciseTouched } from 'Utilities/redux/practiceReducer'
 import { setCurrentContext } from 'Utilities/redux/chatbotReducer'
 // import { decreaseEloHearts } from 'Utilities/redux/snippetsReducer'
 import { Button } from 'react-bootstrap'
@@ -119,6 +119,7 @@ const ExerciseMultipleChoice = ({ word, snippet, handleChange }) => {
     if (hints && hints?.length > 0 || frozen_messages && frozen_messages?.length > 0) {
       setShow(!show)
     }
+    dispatch(setFocusedWord(word))
     dispatch(setCurrentContext(exerciseContext))
   }
 

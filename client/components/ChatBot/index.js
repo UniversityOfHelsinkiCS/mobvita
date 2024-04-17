@@ -157,29 +157,7 @@ const Chatbot = () => {
     }
     }
 
-    const getHintContent = () => {
-        if (eloScoreHearts.length + spentHints.length > 0){
-          return (
-            <div className="tooltip-green flex-col align-end">
-              <div className="flex space-between">
-                <div>
-                  {eloScoreHearts.map(heart => (
-                    <Icon size="small" name="lightbulb" style={{ marginLeft: '0.25em' }} />
-                  ))}
-                  {spentHints.map(hint => (
-                    <Icon size="small" name="lightbulb outline" style={{ marginLeft: '0.25em' }} />
-                  ))}
-                </div>
-              </div>
-            </div>)
-        } else {
-          return (<div className="tooltip-green flex space-between">
-          <div className="tooltip-hint" style={{ textAlign: 'left' }}>
-            <FormattedMessage id="no-hints-available" />
-          </div>
-        </div>)
-        }
-      }
+    
 
     const handleHintRequest = newHintList => {
         const newRequestNum = preHints.length + 1
@@ -205,22 +183,33 @@ const Chatbot = () => {
                     <div 
                         className="context-info" 
                         style={{ 
-                            backgroundColor: 'lightcyan',
+                            backgroundColor: 'darkblue',
                             paddingLeft: '0.5em',
-                            color: 'darkblue',
+                            color: 'white',
                         }}
                     >
-                        {currentWord && (
-                            <div className="context-item">
-                                {currentWord.base}
+                        {currentWord && currentWord.listen === undefined && currentWord.speak === undefined && (
+                            <div className="context-item flex space-between">
+                                <div style={{whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis', maxWidth: '20em'}}>
+                                {currentWord.choices?.length ? currentWord.choices.join('/') : currentWord.base}
+                                </div>
+                                {
+                                    /* Display lightbulbs */
+                                    Object.keys(currentWord).length > 0 && (
+                                        <div>
+                                        {eloScoreHearts.map(heart => (
+                                            <Icon size="small" name="lightbulb" style={{ marginLeft: '0.25em' }} />
+                                        ))}
+                                        {spentHints.map(hint => (
+                                        <Icon size="small" name="lightbulb outline" style={{ marginLeft: '0.25em' }} />
+                                        ))}
+                                        </div>
+                                    )
+                                }
                             </div>
                         )}
                     </div>
-                  
-                    {/* Display lightbulbs */}
-                    {
-                        Object.keys(currentWord).length > 0 && getHintContent()
-                    }
+
                     <div className="chatbot-messages">
                         {
                             Object.keys(currentWord).length > 0 && (spentHints.length > 0 || emptyHintsList) && (
