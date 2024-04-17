@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux'
 
 import { Button, Icon } from 'semantic-ui-react';
-import { FormattedMessage } from 'react-intl';
+import { useIntl, FormattedMessage } from 'react-intl';
 import './Chatbot.css';
 import {
     setFocusedWord,
@@ -18,6 +18,7 @@ import { setCurrentMessage, getResponse } from 'Utilities/redux/chatbotReducer'
 import { set } from 'lodash';
 
 const Chatbot = () => {
+    const intl = useIntl()
     const dispatch = useDispatch()
     const [preHints, setPreHints] = useState([])
     const [spentHints, setSpentHints] = useState([])
