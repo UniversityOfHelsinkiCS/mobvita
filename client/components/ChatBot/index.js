@@ -265,6 +265,7 @@ const Chatbot = () => {
                         <input 
                             type="text" 
                             name="userInput" 
+                            placeholder={intl.formatMessage({ id: 'enter-question-to-chatbot' })}
                             value={currentMessage} 
                             onChange={(e) => setCurrentMessage(e.target.value)} 
                         />
