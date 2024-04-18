@@ -1596,5 +1596,7 @@
     "practice-grammar-MC-exercises": "Esercizi con la <b>grammatica</b>: a scelta multipla",
     "practice-listening-cloze-exercises": "Esercizi nell'<b>ascolto</b>: a completamento",
     "practice-pronunciation-exercises": "Esercizi sulla <b>pronuncia</b>",
-    "enter-question-to-chatbot": "Fai una domanda dal chatbot..."
+    "enter-question-to-chatbot": "Fai una domanda dal chatbot...",
+    "chatbox-initial-instruction": "Clicca su un esercizio - poi puoi porre domande qui, se non è chiaro.",
+    "click-to-see-translation": "Click to see the translation"
 }

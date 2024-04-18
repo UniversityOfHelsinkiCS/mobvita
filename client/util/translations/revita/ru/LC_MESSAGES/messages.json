@@ -1599,5 +1599,7 @@
     "practice-grammar-MC-exercises": "Практика <b>Грамматики</b> — выбор ответа из нескольких вариантов",
     "practice-listening-cloze-exercises": "Практика <b>Аудирования</b> — упражнения на заполнение пропусков.",
     "practice-pronunciation-exercises": "Практика <b>Произношения</b>",
-    "enter-question-to-chatbot": "Задай вопрос чат-боту..."
+    "enter-question-to-chatbot": "Задай вопрос чат-боту...",
+    "chatbox-initial-instruction": "Выбери упражнение — здесь можно будет задавать вопросы, если что-либо неясно.",
+    "click-to-see-translation": "Click to see the translation"
 }

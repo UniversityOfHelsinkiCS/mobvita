@@ -28,7 +28,7 @@ import {
 import { setCurrentContext } from 'Utilities/redux/chatbotReducer'
 import { getTranslationAction, setWords } from 'Utilities/redux/translationReducer'
 import { getContextTranslation } from 'Utilities/redux/contextTranslationReducer'
-import { Icon } from 'semantic-ui-react'
+import { Icon, Popup} from 'semantic-ui-react'
 import { Button } from 'react-bootstrap'
 import Tooltip from 'Components/PracticeView/Tooltip'
 
@@ -177,6 +177,9 @@ const ExerciseCloze = ({ word, snippet, handleChange }) => {
         </ul>
         </div>)
       }
+      <div className='tooltip-hint' style={{ display: 'flex', justifyContent: 'center' }}>
+        <FormattedMessage id="click-to-see-translation" />
+      </div>
       <div className="tooltip-hint" style={{ display: 'flex', justifyContent: 'center' }}>
         <Button
           variant="primary"

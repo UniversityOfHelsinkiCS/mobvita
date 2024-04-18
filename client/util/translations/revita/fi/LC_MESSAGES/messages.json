@@ -1597,5 +1597,7 @@
     "practice-grammar-MC-exercises": "Harjoittele <b>Kielioppia</b> – monivalintaharjoituksia",
     "practice-listening-cloze-exercises": "Harjoittele <b>Kuuntelemista</b> – täytä tyhjät kohdat",
     "practice-pronunciation-exercises": "Harjoittele <b>ääntämistä</b>",
-    "enter-question-to-chatbot": "Kysy chatbotilta..."
+    "enter-question-to-chatbot": "Kysy chatbotilta...",
+    "chatbox-initial-instruction": "Napsauta harjoitusta - sitten voit esittää kysymyksiä täällä, jos jotain on epäselvää.",
+    "click-to-see-translation": "Click to see the translation"
 }

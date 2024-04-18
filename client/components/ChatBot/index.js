@@ -38,6 +38,7 @@ const Chatbot = () => {
         hint2penalty, 
         hints, 
         listen,
+        speak,
         requested_hints: requestedBEHints,
         ID: wordId,
         sentence_id,
@@ -46,6 +47,7 @@ const Chatbot = () => {
     } = currentWord || {}
 
     const [isCollapsed, setIsCollapsed] = useState(false);
+    const [validToChat, setValidToChat] = useState(false);
 
 
     const handleMessageSubmit = (event) => {
@@ -68,7 +70,7 @@ const Chatbot = () => {
     const toggleCollapse = () => setIsCollapsed(!isCollapsed);
 
     useEffect(() => {
-        if(Object.keys(currentWord).length && !listen) {
+        if(Object.keys(currentWord).length && !listen && !speak) {
             let totalRequestedHints = []
             const { requestedHintsList, user_answer } = currentAnswers[`${currentWord.ID}-${currentWord.id}`] || {}
             totalRequestedHints = (requestedBEHints || [])
@@ -86,12 +88,14 @@ const Chatbot = () => {
                 setPreHints(totalRequestedHints)
             }
             setRequestedHints(totalRequestedHints)
+            setValidToChat(true)
         } else {
             setEloScoreHearts([])
             setSpentHints([])
             setPreHints([])
             setFilteredHintsList([])
             setRequestedHints([])
+            setValidToChat(false)
         }
         
       }, [currentWord, attempt])
@@ -181,7 +185,7 @@ const Chatbot = () => {
     return (
         <div className="chatbot">
             <Button onClick={toggleCollapse} className="chatbot-toggle">
-                {isCollapsed ? <Icon name="angle up" /> : <Icon name="angle down" />}
+                {isCollapsed ? <Icon name="angle up large" /> : <Icon name="angle down large" />}
             </Button>
             {!isCollapsed && (
                 <>
@@ -194,7 +198,7 @@ const Chatbot = () => {
                             color: 'white',
                         }}
                     >
-                        {currentWord && !currentWord.listen && !currentWord.speak && (
+                        {validToChat && (
                             <div className="context-item flex space-between">
                                 <div style={{whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis', maxWidth: '20em'}}>
                                 {currentWord.choices?.length ? currentWord.choices.join('/') : currentWord.base}
@@ -221,43 +225,45 @@ const Chatbot = () => {
                             Object.keys(currentWord).length > 0 && (spentHints.length > 0 || emptyHintsList) && (
                             <div className="message message-bot flex space-between"
                                 onMouseDown={handleTooltipClick}>
-                            <ul>
-                            {hintMessage && attempt === 0 && (
-                                <span className="flex">
-                                <li dangerouslySetInnerHTML={formatGreenFeedbackText(hintMessage)} />
-                                {ref && (
-                                    <Icon
-                                    name="info circle"
-                                    style={{ alignSelf: 'flex-start', marginLeft: '0.5rem' }}
-                                    />
+                                <ul>
+                                {hintMessage && attempt === 0 && (
+                                    <span className="flex">
+                                    <li dangerouslySetInnerHTML={formatGreenFeedbackText(hintMessage)} />
+                                    {ref && (
+                                        <Icon
+                                        name="info circle"
+                                        style={{ alignSelf: 'flex-start', marginLeft: '0.5rem' }}
+                                        />
+                                    )}
+                                    {explanation && (
+                                        <Icon
+                                        name="info circle"
+                                        style={{ alignSelf: 'flex-start', marginLeft: '0.5rem' }}
+                                        />
+                                    )}
+                                    </span>
                                 )}
-                                {explanation && (
-                                    <Icon
-                                    name="info circle"
-                                    style={{ alignSelf: 'flex-start', marginLeft: '0.5rem' }}
-                                    />
-                                )}
-                                </span>
-                            )}
-                            {preHints?.map(hint => (
-                                <span className="flex">
-                                <li dangerouslySetInnerHTML={formatGreenFeedbackText(hint)} />
-                                {ref && showRefIcon(hint) && (
-                                    <Icon
-                                    name="info circle"
-                                    style={{ alignSelf: 'flex-start', marginLeft: '0.5rem' }}
-                                    />
-                                )}
-                                {explanation && checkString(hint)}
-                                </span>
-                            ))}
-                            </ul>
-                            {emptyHintsList && preHints?.length < 1 && (
-                                <div className="tooltip-hint" style={{ textAlign: 'left' }}>
-                                <FormattedMessage id="no-hints-available" />
-                                </div>
-                            )}
+                                {preHints?.map(hint => (
+                                    <span className="flex">
+                                    <li dangerouslySetInnerHTML={formatGreenFeedbackText(hint)} />
+                                    {ref && showRefIcon(hint) && (
+                                        <Icon
+                                        name="info circle"
+                                        style={{ alignSelf: 'flex-start', marginLeft: '0.5rem' }}
+                                        />
+                                    )}
+                                    {explanation && checkString(hint)}
+                                    </span>
+                                ))}
+                                </ul>
                             </div>
+                            )
+                        }
+                        {
+                            !validToChat && (
+                                <div className="message message-bot flex space-between">
+                                    <FormattedMessage id="chatbox-initial-instruction" />
+                                </div>
                             )
                         }
 
@@ -273,9 +279,10 @@ const Chatbot = () => {
                             name="userInput" 
                             placeholder={intl.formatMessage({ id: 'enter-question-to-chatbot' })}
                             value={currentMessage} 
+                            disabled={!validToChat}
                             onChange={(e) => setCurrentMessage(e.target.value)} 
                         />
-                        <Button type="submit" primary>
+                        <Button type="submit" primary disabled={!validToChat}>
                             <FormattedMessage id="submit-chat-message" defaultMessage="Send" />
                         </Button>
                     </form>): (
