@@ -27,8 +27,12 @@ const Chatbot = () => {
     const [requested_hints, setRequestedHints] = useState([])
     const [currentMessage, setCurrentMessage] = useState("")
     const [currentAnswer, setCurrentAnswer] = useState("")
-    const { id: storyId } = useParams()
-    const { sessionId } = useSelector(({ snippets }) => snippets)
+    // const { id: storyId } = useParams()
+    // const { session_id } = useSelector(({ snippets }) => snippets)
+    const { session_id, storyid } = useSelector(({ snippets }) => ({
+        session_id: snippets.focused?.session_id,
+        storyid: snippets.focused?.storyid
+    }));
     const { messages, exerciseContext } = useSelector(({ chatbot }) => chatbot)
     const { attempt, currentAnswers, focusedWord: currentWord } = useSelector(({ practice }) => practice)
     const { 
@@ -62,8 +66,18 @@ const Chatbot = () => {
         if (currentAnswer){
             formattedContext += "\n\nStudent's answer: " + currentAnswer
         }
-        dispatch(getResponse(sessionId, storyId, snippet_id, sentence_id, wordId,
-            currentMessage.trim(), formattedContext.trim(), surface.trim()));
+        dispatch(
+            getResponse(
+                session_id, 
+                storyid, 
+                snippet_id, 
+                sentence_id, 
+                wordId,
+                currentMessage.trim(), 
+                formattedContext.trim(), 
+                surface.trim()
+            )
+        );
         setCurrentMessage("");
     };
 
