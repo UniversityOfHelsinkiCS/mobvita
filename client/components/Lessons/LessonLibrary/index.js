@@ -254,7 +254,7 @@ const LessonList = () => {
   const lessonSemanticControls = (
     <div className="align-center">
       <h5>
-        <FormattedMessage id="select-lesson-semantic-topic" />
+        <FormattedMessage id="select-lesson-semantic-topic" />:
       </h5>
       <div className="group-buttons sm lesson-story-topic">
         {lesson_semantics &&
@@ -323,7 +323,7 @@ const LessonList = () => {
   const lessonVocabularyControls = bigScreen ? (
     <div className="align-center">
       <h5>
-        <FormattedMessage id="select-lesson-vocab-diff" />
+        <FormattedMessage id="select-lesson-vocab-diff" />:
       </h5>
 
       <div
@@ -359,7 +359,7 @@ const LessonList = () => {
   ) : (
     <div className="align-center">
       <h5>
-        <FormattedMessage id="select-lesson-vocab-diff" />
+        <FormattedMessage id="select-lesson-vocab-diff" />:
       </h5>
 
       <div
@@ -470,7 +470,11 @@ const LessonList = () => {
   const link = '/lesson' + (libraries.group ? `/group/${savedGroupSelection}/practice` : '/practice')
   let lessonStartControls = (
     <div>
-      <div style={{ color: '#0088CB', textAlign: 'center', width: '70%',  fontWeight: 500, margin: '18px', fontSize: 'large'}}>
+      <div style={{
+             color: '#0088CB', textAlign: 'center',
+             width: '70%', fontWeight: 500,
+             margin: '18px', fontSize: 'large'
+           }}>
         <FormattedMessage id="lessons-ready-for-practice" />
         {!customizeLessonConfigs && (
           <Popup
@@ -490,35 +494,37 @@ const LessonList = () => {
         <LessonPracticeThemeHelp selectedThemes={selectedSemantics ? selectedSemantics : []} always_show={true} />
         <LessonPracticeTopicsHelp selectedTopics={selectedTopicIds} always_show={true} />
       </div>
-      {!teacherView && (<Link to={link}>
-        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', width: '100%' }}>
-          <Link to={link} style={{ flex: 1 }}>
-            <Button
-              size="big"
-              className="lesson-practice"
-              disabled={
-                lessonPending ||
-                !selectedTopicIds ||
-                !selectedSemantics ||
-                selectedTopicIds.length === 0 ||
-                selectedSemantics.length === 0 ||
-                noResults
-              }
-              style={{
-                fontSize: '1.3em',
-                fontWeight: 500,
-                margin: '1em 0',
-                padding: '1rem 0',
-                width: '100%',
-                border: '2px solid #000',
-              }}
-            >
-              {lessonPending && <Icon name="spinner" loading />}
-              <FormattedMessage id="start-practice-lesson" />
-            </Button>
-          </Link>
-        </div>
-      </Link>)}
+      {!teacherView &&
+       (<Link to={link}>
+          <div style={{
+                 display: 'flex', alignItems: 'center',
+                 justifyContent: 'space-between', width: '70%', /* was '100%'*/
+                 margin: '18px' /* to match above: id="lessons-ready-for-practice" */
+               }}>
+            <Link to={link} style={{ flex: 1 }}>
+              <Button
+                size="big"
+                className="lesson-practice"
+                disabled={
+                  lessonPending ||
+                    !selectedTopicIds ||
+                    !selectedSemantics ||
+                    selectedTopicIds.length === 0 ||
+                    selectedSemantics.length === 0 ||
+                    noResults
+                }
+                style={{
+                  fontSize: '1.3em', fontWeight: 500,
+                  margin: '1em 0', padding: '1rem 0',
+                  width: '100%', border: '2px solid #000',
+                }}
+              >
+                {lessonPending && <Icon name="spinner" loading />}
+                <FormattedMessage id="start-practice-lesson" />
+              </Button>
+            </Link>
+          </div>
+        </Link>)}
     </div>
   )
 
