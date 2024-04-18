@@ -1382,7 +1382,7 @@
     "sort-by-difficulty-option": "Сложность",
     "story-difficulty": "Сложность",
     "student-cefr-placeholder": "Новый CEFR",
-    "genitive-modifier-of": "Описывает \"{}\"",
+    "genitive-modifier-of": "Это слово / выражение описывает \"{}\"",
     "notes-catgory-none": "None",
     "notes-category-none": "None",
     "notes-None": "None",
@@ -1598,5 +1598,6 @@
     "practice-grammar-cloze-exercises": "Практика <b>Грамматики</b> — упражнения на заполнение пропусков.",
     "practice-grammar-MC-exercises": "Практика <b>Грамматики</b> — выбор ответа из нескольких вариантов",
     "practice-listening-cloze-exercises": "Практика <b>Аудирования</b> — упражнения на заполнение пропусков.",
-    "practice-pronunciation-exercises": "Практика <b>Произношения</b>"
+    "practice-pronunciation-exercises": "Практика <b>Произношения</b>",
+    "enter-question-to-chatbot": "Задай вопрос чат-боту..."
 }

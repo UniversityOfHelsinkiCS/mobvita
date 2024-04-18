@@ -5,10 +5,11 @@ export const setCurrentContext = (context) => ({
     context: context,
 });
 
-export const getResponse = (message, context="") => {
+export const getResponse = (session_id, story_id, snippet_id, sentence_id, word_id, message, context="", surface="") => {
     const route = `/chatbot`
     const prefix = 'GET_CHATBOT_RESPONSE'
-    return callBuilder(route, prefix, 'post', { message, context })
+    const payload = { session_id, story_id, snippet_id, sentence_id, word_id, message, context, surface }
+    return callBuilder(route, prefix, 'post', payload)
 }
 
 const initialState = {

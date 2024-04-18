@@ -980,7 +980,7 @@
     "total-questions": "domande in totale",
     "friends": "Amici",
     "tour-welcome-message-OLD": "Revita ti aiuta ad imparare una nuova lingua, faendoti esercitare su storie scelte da te.<br/><br/> Ora ti mostreremo alcune funzionalità principali.<br/><br/>Iniziamo! (Questo tour durerà circa un minuto) →",
-    "governed-by": "Depende da \"{}\"",
+    "governed-by": "Questa parola o frase depende da \"{}\"",
     "need-to-agree-with": "Deve concordare con \"{}\"",
     "username": "Nome utente",
     "actions": "Azioni",
@@ -1380,7 +1380,7 @@
     "sort-by-difficulty-option": "Difficoltà",
     "story-difficulty": "Difficoltà",
     "student-cefr-placeholder": "Il QCER nuovo",
-    "genitive-modifier-of": "Descrive \"{}\"",
+    "genitive-modifier-of": "Questa parola o frase descrive \"{}\"",
     "notes-catgory-none": "None",
     "notes-category-none": "None",
     "notes-None": "None",
@@ -1595,5 +1595,6 @@
     "practice-grammar-cloze-exercises": "Esercizi con la <b>grammatica</b>: a completamento",
     "practice-grammar-MC-exercises": "Esercizi con la <b>grammatica</b>: a scelta multipla",
     "practice-listening-cloze-exercises": "Esercizi nell'<b>ascolto</b>: a completamento",
-    "practice-pronunciation-exercises": "Esercizi sulla <b>pronuncia</b>"
+    "practice-pronunciation-exercises": "Esercizi sulla <b>pronuncia</b>",
+    "enter-question-to-chatbot": "Fai una domanda dal chatbot..."
 }

@@ -980,8 +980,8 @@
     "total-questions": "questions in total",
     "friends": "Friends",
     "tour-welcome-message-OLD": "Revita helps you learn languages by practicing with stories of your choice.<br/><br/>We will now show you its main features.<br/><br/>(This tour takes 1 minute) →",
-    "governed-by": "Depends on \"{}\"",
-    "need-to-agree-with": "Need to agree with \"{}\"",
+    "governed-by": "This word or phrase depends on \"{}\"",
+    "need-to-agree-with": "This word or phrase should agree with \"{}\"",
     "username": "Username",
     "actions": "Actions",
     "no-blocked-users": "You haven't blocked any users.",
@@ -1381,7 +1381,7 @@
     "sort-by-difficulty-option": "Level",
     "story-difficulty": "Level",
     "student-cefr-placeholder": "Current",
-    "genitive-modifier-of": "Is describing \"{}\"",
+    "genitive-modifier-of": "This word or phrase is describing \"{}\"",
     "notes-catgory-none": "None",
     "notes-category-none": "None",
     "notes-None": "None",
@@ -1597,5 +1597,6 @@
     "practice-grammar-cloze-exercises": "Practice <b>Grammar</b> — fill-in-the-blank exercises",
     "practice-grammar-MC-exercises": "Practice <b>Grammar</b> — multiple-choice exercises",
     "practice-listening-cloze-exercises": "Practice <b>Listening</b> — fill-in-the-blank exercises",
-    "practice-pronunciation-exercises": "Practice <b>Pronunciation</b>"
+    "practice-pronunciation-exercises": "Practice <b>Pronunciation</b>",
+    "enter-question-to-chatbot": "Ask a question from the chatbot ..."
 }

@@ -1379,7 +1379,7 @@
     "sort-by-difficulty-option": "Taso",
     "story-difficulty": "Taso",
     "student-cefr-placeholder": "Uusi CEFR",
-    "genitive-modifier-of": "Liittyy pääsanaan \"{}\"",
+    "genitive-modifier-of": "Tämä sana liittyy pääsanaan \"{}\"",
     "notes-catgory-none": "Ei mikään",
     "notes-category-none": "Ei mikään",
     "notes-None": "Ei mikään",
@@ -1596,5 +1596,6 @@
     "practice-grammar-cloze-exercises": "Harjoittele <b>Kielioppia</b> – täytä tyhjät kohdat",
     "practice-grammar-MC-exercises": "Harjoittele <b>Kielioppia</b> – monivalintaharjoituksia",
     "practice-listening-cloze-exercises": "Harjoittele <b>Kuuntelemista</b> – täytä tyhjät kohdat",
-    "practice-pronunciation-exercises": "Harjoittele <b>ääntämistä</b>"
+    "practice-pronunciation-exercises": "Harjoittele <b>ääntämistä</b>",
+    "enter-question-to-chatbot": "Kysy chatbotilta..."
 }

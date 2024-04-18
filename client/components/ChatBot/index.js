@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux'
-
+import { useParams } from 'react-router-dom'
 import { Button, Icon } from 'semantic-ui-react';
 import { useIntl, FormattedMessage } from 'react-intl';
-import './Chatbot.css';
+import './Chatbot.scss';
 import {
     setFocusedWord,
     setReferences,
@@ -15,7 +15,6 @@ import {
     formatGreenFeedbackText,
   } from 'Utilities/common'
 import { setCurrentMessage, getResponse } from 'Utilities/redux/chatbotReducer' 
-import { set } from 'lodash';
 
 const Chatbot = () => {
     const intl = useIntl()
@@ -28,7 +27,8 @@ const Chatbot = () => {
     const [requested_hints, setRequestedHints] = useState([])
     const [currentMessage, setCurrentMessage] = useState("")
     const [currentAnswer, setCurrentAnswer] = useState("")
-    
+    const { id: storyId } = useParams()
+    const { sessionId } = useSelector(({ snippets }) => snippets)
     const { messages, exerciseContext } = useSelector(({ chatbot }) => chatbot)
     const { attempt, currentAnswers, focusedWord: currentWord } = useSelector(({ practice }) => practice)
     const { 
@@ -38,7 +38,11 @@ const Chatbot = () => {
         hint2penalty, 
         hints, 
         listen,
-        requested_hints: requestedBEHints 
+        requested_hints: requestedBEHints,
+        ID: wordId,
+        sentence_id,
+        snippet_id, 
+        surface,
     } = currentWord || {}
 
     const [isCollapsed, setIsCollapsed] = useState(false);
@@ -46,7 +50,7 @@ const Chatbot = () => {
 
     const handleMessageSubmit = (event) => {
         event.preventDefault(); 
-        if (exerciseContext.trim() === '') return;
+        if (exerciseContext.trim() === '' || currentMessage.trim() === '') return;
         let formattedContext = `Exercise context: ${exerciseContext}`;
         formattedContext += "\n\nExpected answer: " + currentWord.surface
         if (hints && hints.length > 0) {
@@ -56,7 +60,8 @@ const Chatbot = () => {
         if (currentAnswer){
             formattedContext += "\n\nStudent's answer: " + currentAnswer
         }
-        dispatch(getResponse(currentMessage.trim(), formattedContext.trim()));
+        dispatch(getResponse(sessionId, storyId, snippet_id, sentence_id, wordId,
+            currentMessage.trim(), formattedContext.trim(), surface.trim()));
         setCurrentMessage("");
     };
 
@@ -274,7 +279,7 @@ const Chatbot = () => {
                             <FormattedMessage id="submit-chat-message" defaultMessage="Send" />
                         </Button>
                     </form>): (
-                        <Button variant="primary" onMouseDown={handlePreHints}>
+                        <Button primary onMouseDown={handlePreHints}>
                             <FormattedMessage id="ask-for-a-hint" />
                         </Button>
                     )}

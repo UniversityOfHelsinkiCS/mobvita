@@ -12,6 +12,11 @@
     overflow: hidden; 
     display: flex;
     flex-direction: column;
+
+    @media (min-width: 900px) {
+        max-height: 35%;
+        max-width: 60%; 
+    }
 }
 
 .chatbot-toggle {
@@ -33,6 +38,9 @@
     margin-bottom: 0.5em;
     border-radius: 10px;
     max-width: 80%; 
+    @media (min-width: 900px) {
+        max-width: 90%; 
+    }
 }
 
 .message-user {

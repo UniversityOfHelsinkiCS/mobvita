@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import { FormattedMessage, useIntl } from 'react-intl'
+import { useParams } from 'react-router-dom'
 import {
   getTextWidth,
   dictionaryLanguageSelector,
@@ -36,6 +37,7 @@ const ExerciseCloze = ({ word, snippet, handleChange }) => {
   const [className, setClassName] = useState('exercise')
   const [touched, setTouched] = useState(false)
   const [show, setShow] = useState(false)
+  const { id: storyId } = useParams()
   const { grade } = useSelector(state => state.user.data.user)
   const dictionaryLanguage = useSelector(dictionaryLanguageSelector)
   const learningLanguage = useSelector(learningLanguageSelector)
@@ -59,7 +61,7 @@ const ExerciseCloze = ({ word, snippet, handleChange }) => {
     translation_lemmas,
     bases,
     ID: wordId,
-    id: storyId,
+    id,
     message,
     hints,
     requested_hints,
