@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import { Dropdown, Icon } from 'semantic-ui-react'
 import { FormattedMessage } from 'react-intl'
-import { getTextWidth, formatGreenFeedbackText, getWordColor, skillLevels } from 'Utilities/common'
+import { getTextWidth, formatGreenFeedbackText, getWordColor, getMode } from 'Utilities/common'
 import { setFocusedWord, mcExerciseTouched } from 'Utilities/redux/practiceReducer'
 import { setCurrentContext } from 'Utilities/redux/chatbotReducer'
 // import { decreaseEloHearts } from 'Utilities/redux/snippetsReducer'
@@ -15,6 +15,7 @@ const ExerciseMultipleChoice = ({ word, snippet, handleChange }) => {
   const [options, setOptions] = useState([])
   const [touched, setTouched] = useState(false)
   const [show, setShow] = useState(false)
+  const mode = getMode()
   const { show_review_diff, show_preview_exer, grade } = useSelector(state => state.user.data.user)
   const [keepOpen, setKeepOpen] = useState(false)
 

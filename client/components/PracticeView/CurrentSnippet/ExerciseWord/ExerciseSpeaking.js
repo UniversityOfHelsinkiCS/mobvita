@@ -9,6 +9,7 @@ import {
   formatGreenFeedbackText,
   getWordColor,
   skillLevels,
+  getMode
 } from 'Utilities/common'
 import { useAudioRecorder } from 'react-audio-voice-recorder'
 import { setFocusedWord, handleVoiceSampleCooldown } from 'Utilities/redux/practiceReducer'
@@ -30,6 +31,7 @@ const ExerciseSpeaking = ({ word, handleChange }) => {
   const { voiceSampleOnCooldown, focusedWord } = useSelector(({ practice }) => practice)
   const currentAnswer = useSelector(({ practice }) => practice.currentAnswers[`${word.ID}-${word.id}`])
   const learningLanguage = useSelector(learningLanguageSelector)
+  const mode = getMode()
   const { resource_usage, show_review_diff, show_preview_exer, grade } = useSelector(state => state.user.data.user)
   const listeningHighlighting = focusedWord.audio_wids?.start <= word.ID && word.ID <= focusedWord.audio_wids?.end || word.ID === focusedWord.ID
   const {
