@@ -14,6 +14,7 @@ import {
   } from 'Utilities/redux/practiceReducer'
   import {
     formatGreenFeedbackText,
+    hiddenFeatures
   } from 'Utilities/common'
 import { 
     getResponse, 
@@ -292,7 +293,7 @@ const Chatbot = () => {
                             </>
                         )}
                     </div>
-                    {eloScoreHearts == 0 ? (<form onSubmit={handleMessageSubmit} className="chatbot-input-form">
+                    {eloScoreHearts == 0 ? !hiddenFeatures && (<form onSubmit={handleMessageSubmit} className="chatbot-input-form">
                         <input 
                             type="text" 
                             name="userInput" 
