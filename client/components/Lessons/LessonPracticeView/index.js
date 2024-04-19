@@ -291,9 +291,7 @@ const LessonPracticeView = () => {
               <DictionaryHelp />
               <AnnotationBox />
             </div>
-            {hiddenFeatures && (
-              <Chatbot />
-            )}
+            <Chatbot />
             <FeedbackInfoModal />
           </div>
           {showFooter && <Footer />}
