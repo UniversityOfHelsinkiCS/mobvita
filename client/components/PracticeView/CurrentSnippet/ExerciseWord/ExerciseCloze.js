@@ -268,7 +268,7 @@ const ExerciseCloze = ({ word, snippet, handleChange }) => {
         onFocus={handleFocus}
         className={className}
         style={{
-          width: word.surface > word.base ? getTextWidth(word.surface) : getTextWidth(word.base),
+          width: word.surface.length > word.base.length ? getTextWidth(word.surface) : getTextWidth(word.base),
           backgroundColor: getWordColor(word.level, grade, skillLevels),
           marginRight: '2px',
           height: '1.5em',
