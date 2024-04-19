@@ -203,7 +203,7 @@ const Chatbot = () => {
     return (
         <div className="chatbot">
             <Button onClick={toggleCollapse} className="chatbot-toggle">
-                {isCollapsed ? <Icon name="angle up large" /> : <Icon name="angle down large" />}
+                {isCollapsed ? <Icon name="angle up" size='large' /> : <Icon name="angle down" size='large' />}
             </Button>
             {!isCollapsed && (
                 <>
