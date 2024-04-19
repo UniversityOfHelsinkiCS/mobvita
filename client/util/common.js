@@ -507,7 +507,7 @@ export const downloadReadingReport = async (groupId, startDate, endDate) => {
   link.click()
 }
 
-export const getMode = () => useHistory().location.pathname.split('/').pop()
+export const getMode = () => useHistory().location.pathname.split('/').filter(x=>x.length).pop()
 
 const defaultAllowed = [
   'b',

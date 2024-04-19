@@ -9,6 +9,7 @@ import {
   formatGreenFeedbackText,
   getWordColor,
   skillLevels,
+  getMode
 } from 'Utilities/common'
 import { setFocusedWord, handleVoiceSampleCooldown } from 'Utilities/redux/practiceReducer'
 import Tooltip from 'Components/PracticeView/Tooltip'
