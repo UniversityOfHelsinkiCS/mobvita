@@ -37,7 +37,7 @@ const ExerciseCloze = ({ word, snippet, handleChange }) => {
   const [className, setClassName] = useState('exercise')
   const [touched, setTouched] = useState(false)
   const [show, setShow] = useState(false)
-  const { id: storyId } = useParams()
+  const storyId = useSelector(({ snippets }) => snippets.focused?.storyid)
   const { grade } = useSelector(state => state.user.data.user)
   const dictionaryLanguage = useSelector(dictionaryLanguageSelector)
   const learningLanguage = useSelector(learningLanguageSelector)
