@@ -11,7 +11,8 @@ import {
   skillLevels,
   getMode,
   learningLanguageLocaleCodes,
-  useMTAvailableLanguage
+  useMTAvailableLanguage,
+  hiddenFeatures
 } from 'Utilities/common'
 import { getTranslationAction, setWords } from 'Utilities/redux/translationReducer'
 import { getContextTranslation } from 'Utilities/redux/contextTranslationReducer'
@@ -39,8 +40,7 @@ const PlainWord = ({ word, snippet, annotatingAllowed, focusedConcept, ...props 
     ({ annotations }) => annotations
   )
 
-  const { grade } = useSelector(state => state.user.data.user)
-  const { show_review_diff, show_preview_exer } = useSelector(state => state.user.data.user)
+  const { show_review_diff, show_preview_exer, grade } = useSelector(state => state.user.data.user)
   const { focusedWord } = useSelector(({ practice }) => practice)
   const { 
     translation_lemmas, 

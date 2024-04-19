@@ -30,8 +30,7 @@ const ExerciseSpeaking = ({ word, handleChange }) => {
   const { voiceSampleOnCooldown, focusedWord } = useSelector(({ practice }) => practice)
   const currentAnswer = useSelector(({ practice }) => practice.currentAnswers[`${word.ID}-${word.id}`])
   const learningLanguage = useSelector(learningLanguageSelector)
-  const { resource_usage } = useSelector(state => state.user.data.user)
-  const { grade } = useSelector(state => state.user.data.user)
+  const { resource_usage, show_review_diff, show_preview_exer, grade } = useSelector(state => state.user.data.user)
   const listeningHighlighting = focusedWord.audio_wids?.start <= word.ID && word.ID <= focusedWord.audio_wids?.end || word.ID === focusedWord.ID
   const {
     startRecording,
@@ -209,7 +208,8 @@ const ExerciseSpeaking = ({ word, handleChange }) => {
             width: getTextWidth(word.surface, 'monospace') * 1.25 + 20,
             minWidth: getTextWidth(word.surface, 'monospace') * 1.25 + 20,
             backgroundColor: recorded && 'rgba(152, 255, 0, 0.71)' || 
-              !listeningHighlighting && getWordColor(word.level, grade, skillLevels) || 'rgba(255, 152, 0, 0.71)',
+              !listeningHighlighting && getWordColor(
+                word.level, grade, skillLevels, show_review_diff, show_preview_exer, mode) || 'rgba(255, 152, 0, 0.71)',
             marginRight: '2px',
             height: '1.5em',
             lineHeight: 'normal',

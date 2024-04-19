@@ -49,7 +49,7 @@ const PreviousExerciseWord = ({ word, answer, tiedAnswer, focusedConcept, snippe
   const history = useHistory()
   const isPreviewMode = history.location.pathname.includes('preview')
   const learningLanguage = useSelector(learningLanguageSelector)
-  const { resource_usage, autoSpeak, show_review_diff, show_preview_exer } = useSelector(
+  const { resource_usage, autoSpeak, show_review_diff, show_preview_exer, grade } = useSelector(
     state => state.user.data.user
   )
   const dictionaryLanguage = useSelector(dictionaryLanguageSelector)
@@ -58,7 +58,6 @@ const PreviousExerciseWord = ({ word, answer, tiedAnswer, focusedConcept, snippe
   const { id: storyId } = useParams()
   const { correctAnswerIDs } = useSelector(({ practice }) => practice)
   const [allowTranslating, setAllowTranslating] = useState(true)
-  const { grade } = useSelector(state => state.user.data.user)
   const mode = getMode()
   const conceptHighlighting = word.concepts?.map(x=>x.concept).includes(focusedConcept) || word.analytic_concepts?.includes(focusedConcept)
   const intl = useIntl()

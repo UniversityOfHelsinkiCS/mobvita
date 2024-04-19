@@ -15,7 +15,8 @@ import {
   getWordColor,
   skillLevels,
   learningLanguageLocaleCodes,
-  useMTAvailableLanguage
+  useMTAvailableLanguage,
+  getMode,
 } from 'Utilities/common'
 import {
   setFocusedWord,
@@ -38,11 +39,11 @@ const ExerciseCloze = ({ word, snippet, handleChange }) => {
   const [touched, setTouched] = useState(false)
   const [show, setShow] = useState(false)
   const storyId = useSelector(({ snippets }) => snippets.focused?.storyid)
-  const { grade } = useSelector(state => state.user.data.user)
   const dictionaryLanguage = useSelector(dictionaryLanguageSelector)
   const learningLanguage = useSelector(learningLanguageSelector)
   const mtLanguages = useMTAvailableLanguage()
-  const { resource_usage, autoSpeak } = useSelector(state => state.user.data.user)
+  const mode = getMode()
+  const { resource_usage, autoSpeak, show_review_diff, show_preview_exer, grade } = useSelector(state => state.user.data.user)
   const currentAnswer = useSelector(
     ({ practice }) => practice.currentAnswers[`${word.ID}-${word.id}`]
   )
@@ -269,7 +270,14 @@ const ExerciseCloze = ({ word, snippet, handleChange }) => {
         className={className}
         style={{
           width: word.surface?.length > word.base?.length ? getTextWidth(word.surface) : getTextWidth(word.base),
-          backgroundColor: getWordColor(word.level, grade, skillLevels),
+          backgroundColor: getWordColor(
+            word.level,
+            grade,
+            skillLevels,
+            show_review_diff,
+            show_preview_exer,
+            mode
+          ),
           marginRight: '2px',
           height: '1.5em',
           lineHeight: 'normal',

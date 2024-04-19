@@ -15,7 +15,7 @@ const ExerciseMultipleChoice = ({ word, snippet, handleChange }) => {
   const [options, setOptions] = useState([])
   const [touched, setTouched] = useState(false)
   const [show, setShow] = useState(false)
-  const { grade } = useSelector(state => state.user.data.user)
+  const { show_review_diff, show_preview_exer, grade } = useSelector(state => state.user.data.user)
   const [keepOpen, setKeepOpen] = useState(false)
 
   const currentAnswer = useSelector(({ practice }) => practice.currentAnswers[`${word.ID}-${word.id}`])
@@ -178,7 +178,8 @@ const ExerciseMultipleChoice = ({ word, snippet, handleChange }) => {
         style={{
           width: getInputWidth(),
           minWidth: getInputWidth(),
-          backgroundColor: getWordColor(word.level, grade, skillLevels),
+          backgroundColor: getWordColor(
+            word.level, grade, skillLevels, show_review_diff, show_preview_exer, mode),
         }}
         className={`${className}`}
       />
