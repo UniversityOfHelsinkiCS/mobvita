@@ -293,7 +293,7 @@ const Chatbot = () => {
                             </>
                         )}
                     </div>
-                    {eloScoreHearts == 0 ? hiddenFeatures && (<form onSubmit={handleMessageSubmit} className="chatbot-input-form">
+                    {eloScoreHearts == 0 ? (<form onSubmit={handleMessageSubmit} className="chatbot-input-form">
                         <input 
                             type="text" 
                             name="userInput" 
@@ -303,7 +303,7 @@ const Chatbot = () => {
                             onChange={(e) => setCurrentMessage(e.target.value)} 
                         />
                         <Button type="submit" primary disabled={!validToChat || isWaitingForResponse}>
-                            {isWaitingForResponse ? <Spinner animation="border" variant="info" size="sm" /> : <FormattedMessage id="submit-chat-message" defaultMessage="Send" />}
+                            {isWaitingForResponse ? <Spinner animation="border" variant="white" size="sm" /> : <FormattedMessage id="submit-chat-message" defaultMessage="Send" />}
                         </Button>
                     </form>): (
                         <Button primary onMouseDown={handlePreHints}>
