@@ -340,15 +340,23 @@ export default function NavBar() {
           </Nav>
           {isTeacher && showTeacherViewSwitch && (
             <Nav>
-              <div style={{ marginTop: '0.5em', marginRight: '0.5em' }}><FormattedMessage id="student-view" /></div>
-              <Checkbox
-                style={{ marginTop: '0.5em', marginRight: '0.5em' }}
-                toggle
+              <Popup
                 content={<FormattedMessage id="teacher-view-explanation" />}
-                label={intl.formatMessage({ id: 'teacher-view' })}
-                checked={teacherView}
-                onChange={() => dispatch(teacherSwitchView())}
+                trigger={
+                  <div className='flex space-between'>
+                  <div style={{ marginTop: '0.5em', marginRight: '0.5em' }}><FormattedMessage id="student-view" /></div>
+                  <Checkbox
+                    style={{ marginTop: '0.5em', marginRight: '0.5em' }}
+                    toggle
+                    label={intl.formatMessage({ id: 'teacher-view' })}
+                    checked={teacherView}
+                    onChange={() => dispatch(teacherSwitchView())}
+                  />
+                  </div>
+                }
+                position="bottom center"
               />
+              
             </Nav>
           )}
           {(!isTeacher || (isTeacher && !teacherView)) && (
