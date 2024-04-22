@@ -344,6 +344,7 @@ export default function NavBar() {
               <Checkbox
                 style={{ marginTop: '0.5em', marginRight: '0.5em' }}
                 toggle
+                content={<FormattedMessage id="teacher-view-explanation" />}
                 label={intl.formatMessage({ id: 'teacher-view' })}
                 checked={teacherView}
                 onChange={() => dispatch(teacherSwitchView())}
