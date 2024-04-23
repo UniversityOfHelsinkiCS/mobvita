@@ -53,7 +53,11 @@ const FeedbackInfoModal = () => {
               <Divider style={{ width: '50%' }} />
             </div>
             <ul>
-              <li>{explanation[title]}</li>
+              {
+                explanation[title].map((explanation, index) => (
+                  <li key={index}>{explanation}</li>
+                ))
+              }
             </ul>
           </div>
         ))}
