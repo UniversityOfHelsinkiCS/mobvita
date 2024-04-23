@@ -13,7 +13,7 @@ const MenuItem = ({ handleClick, style, translationId, tooltip, children }) => (
       <button type="button" className="flashcard-menu-item" style={style} onClick={handleClick}>
         {children}
         <span style={{ whiteSpace: 'nowrap' }}>
-          <FormattedMessage id={translationId} />
+          <FormattedHTMLMessage id={translationId} />
         </span>
       </button>
     }

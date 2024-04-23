@@ -15,7 +15,7 @@ const FabOption = ({ handleClick, iconStyle, translationId, tooltip, children })
           {children}
         </div>
         <span className="flashcard-fab-text">
-          <FormattedMessage id={translationId} />
+          <FormattedHTMLMessage id={translationId} />
         </span>
       </button>
     }
