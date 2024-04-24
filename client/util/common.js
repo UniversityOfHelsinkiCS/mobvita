@@ -284,6 +284,14 @@ export const capitalize = word => {
   return capitalizedParts.join('-')
 }
 
+// the above capitalize function capitalizes every component separated by -
+// here we capitalize ONLY THE FIRST CHARACTER
+export const capitalize_first_char_only = word => {
+    const p1 = word.slice(0, 1)
+    const p2 = word.slice(1, word.length)
+    return p1.toUpperCase() + p2
+}
+
 // coloring difficulty
 function getRgb(color) {
   const [r, g, b] = color
