@@ -81,7 +81,7 @@ const FeedbackInfoModal = () => {
                 </div>
                 {references[referenceKey].map(ref => {
                   return (
-                    <div key={ref.title}>
+                    <ul key={ref.title}>
                       {ref.url ? (
                         <UrlReference key={`${ref.url}-${ref.title}`} reference={ref} />
                       ) : (
@@ -90,7 +90,7 @@ const FeedbackInfoModal = () => {
                           reference={ref}
                         />
                       )}
-                    </div>
+                    </ul>
                   )
                 })}
               </div>
