@@ -11,11 +11,12 @@ import {
     setExplanation,
     incrementHintRequests,
     mcExerciseTouched,
-  } from 'Utilities/redux/practiceReducer'
-  import {
-    formatGreenFeedbackText,
-    hiddenFeatures
-  } from 'Utilities/common'
+} from 'Utilities/redux/practiceReducer'
+import {
+  cut_and_ellipsis,
+  formatGreenFeedbackText,
+  hiddenFeatures
+} from 'Utilities/common'
 import { 
     getResponse, 
     getConversationHistory 
@@ -220,7 +221,10 @@ const Chatbot = () => {
                         {validToChat && (
                             <div className="context-item flex space-between">
                                 <div style={{whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis', maxWidth: '20em'}}>
-                                {currentWord.choices?.length ? currentWord.choices.join('/') : currentWord.base}
+                                    {/* make sure not too long */
+                                      currentWord.choices?.length
+                                        ? cut_and_ellipsis(currentWord.choices.join('/'),12)
+                                        : currentWord.base}
                                 </div>
                                 {
                                     /* Display lightbulbs */

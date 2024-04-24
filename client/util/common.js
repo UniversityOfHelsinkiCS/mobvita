@@ -292,6 +292,15 @@ export const capitalize_first_char_only = word => {
     return p1.toUpperCase() + p2
 }
 
+// if word is too long: cut it off at N characters, attach ellipsis...
+export const cut_and_ellipsis = (word, n) => {
+  if (word.length < n) return word
+  
+  const p1 = word.slice(0, n)
+  return p1 + "..."
+}
+
+
 // coloring difficulty
 function getRgb(color) {
   const [r, g, b] = color
