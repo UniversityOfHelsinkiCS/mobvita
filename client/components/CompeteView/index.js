@@ -9,10 +9,10 @@ import useWindowDimensions from 'Utilities/windowDimensions'
 import {
   getOpponent,
   competitionStartNow,
-  resetCachedSnippets,
   setWillPause,
   setIsPaused,
 } from 'Utilities/redux/competitionReducer'
+import { resetCachedSnippets } from 'Utilities/redux/cachedSnippetsReducer'
 import { resetCurrentSnippet } from 'Utilities/redux/snippetsReducer'
 import { getStoryAction } from 'Utilities/redux/storiesReducer'
 import { clearTranslationAction } from 'Utilities/redux/translationReducer'
