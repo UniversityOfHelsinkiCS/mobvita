@@ -344,12 +344,11 @@ export default function NavBar() {
                 content={<FormattedMessage id="teacher-view-explanation" />}
                 trigger={
                   <div className='flex space-between'>
-                  <div style={{ marginTop: '0.5em', marginRight: '0.5em' }}><FormattedMessage id="student-view" /></div>
                   <Checkbox
                     style={{ marginTop: '0.5em', marginRight: '0.5em' }}
                     toggle
-                    label={intl.formatMessage({ id: 'teacher-view' })}
-                    checked={teacherView}
+                    label={intl.formatMessage({ id: 'student-view' })}
+                    checked={!teacherView}
                     onChange={() => dispatch(teacherSwitchView())}
                   />
                   </div>
