@@ -70,12 +70,12 @@ const FeedbackInfoModal = () => {
       <>
         <div className="bold header-3 mx-lg">
           <FormattedMessage id="references" />
-          <Divider style={{ width: '50%' }} />
         </div>
         <div className="mb-lg">
           {Object.keys(references).map(referenceKey => {
             return (
               <div key={referenceKey}>
+                <Divider style={{ width: '70%' }} />
                 <div style={{ marginBottom: '.5em', fontWeight: '600' }}>
                   {capitalize(referenceKey)}:
                 </div>
