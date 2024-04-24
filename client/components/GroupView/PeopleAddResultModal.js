@@ -34,7 +34,7 @@ const PeopleAddResultModal = ({ lastAddInfo }) => {
       data-cy="people-add-result-modal"
     >
       <Modal.Header>
-        <FormattedMessage id="summary" />
+        <FormattedMessage id="summary-people-added-to-group" />
       </Modal.Header>
       <Modal.Content style={{ display: 'flex', flexDirection: 'column', margin: '1em' }}>
         <ResultItem
