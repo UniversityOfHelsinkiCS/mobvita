@@ -134,7 +134,7 @@ const FlashcardMenu = () => {
   }
 
   const handleOptionClickWithStory = mode => {
-    history.push(`/flashcards/${mode}${storyUrl}`)
+    history.push(`/flashcards/${mode}/story${storyUrl}`)
   }
 
   return (

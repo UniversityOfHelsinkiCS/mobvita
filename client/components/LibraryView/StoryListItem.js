@@ -147,7 +147,7 @@ const StoryFunctionsDropdown = ({
           {/* {!isTeacher && (<Dropdown.Item
             text={<FormattedMessage id="Flashcards" />}
             as={Link}
-            to={`/flashcards/fillin/${story._id}/`}
+            to={`/flashcards/fillin/story/${story._id}/`}
             icon="lightning"
           />)} */}
           {!isTeacher && (<Dropdown.Item
@@ -195,7 +195,7 @@ const StoryActions = ({
           </Link>
         )}
 
-        {/* <Link to={`/flashcards/fillin/${story._id}/`}>
+        {/* <Link to={`/flashcards/fillin/story/${story._id}/`}>
           <Button
             variant={teacherInGroupView ? 'secondary' : 'primary'}
             disabled={enableOnlyPractice}

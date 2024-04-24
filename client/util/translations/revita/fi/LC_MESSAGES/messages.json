@@ -1602,5 +1602,7 @@
     "click-to-see-translation": "Napsauta nähdäksesi käännöksen:",
     "summary-people-added-to-group": "Osallistujat lisätty ryhmään",
     "no-available-exercise-OLD": "Tälle tunnille ei juuri nyt ole enempää harjoituksia. Revita luo pian lisää harjoituksia – palaa takaisin hetken kuluttua!",
-    "chatbot-response-error": "Tapahtui yhteysongelma, yritä uudelleen 30 sekunnin kuluttua!"
+    "chatbot-response-error": "Tapahtui yhteysongelma, yritä uudelleen 30 sekunnin kuluttua!",
+    "story-blue-cards": "Tarinassa:\n<ul><li><i>{story}</i></li></ul>\nkohtasit {nWords} uutta sanaa, joiden käännöksiä et tarkistanut.  Tarkistetaanpa, että osaat ne varmasti!\n<br/>\nSaat pisteet kaikistä näistä sanoista tarkistamalla <i>sinisistä erikoiskorteista</i> vain viisi!",
+    "story-flashcards": "From story:\\n<ul><li><i>{story}</i></li></ul>"
 }

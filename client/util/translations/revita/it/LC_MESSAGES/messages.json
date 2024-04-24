@@ -1601,5 +1601,7 @@
     "click-to-see-translation": "Clicca per vedere la traduzione:",
     "summary-people-added-to-group": "Persone aggiunte al gruppo",
     "no-available-exercise-OLD": "Al momento non abbiamo più esercizi per questa lezione. Revita creerà altri esercizi a breve: torna un po' più tardi!",
-    "chatbot-response-error": "Un problema di connessione, riprova tra 30 secondi!"
+    "chatbot-response-error": "Un problema di connessione, riprova tra 30 secondi!",
+    "story-blue-cards": "Nella storia:\n<ul><li><i>{story}</i></li></ul>\nhai incontrato {nWords} nuove parole per le quali non hai controllato la traduzione.  Vediamo se li conosci veramente!\n<br/>\nOttieni credito per tutte queste parole \ncontrollando solo 5 delle <i>carte blu</i> di loro!",
+    "story-flashcards": "From story:\\n<ul><li><i>{story}</i></li></ul>"
 }

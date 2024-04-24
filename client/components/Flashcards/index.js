@@ -1,6 +1,7 @@
-import React from 'react'
+import React, {useState} from 'react'
 import { useParams, useHistory } from 'react-router-dom'
 import { useSelector } from 'react-redux'
+import { FormattedMessage, FormattedHTMLMessage, useIntl } from 'react-intl'
 import useWindowDimensions from 'Utilities/windowDimensions'
 import FlashcardMenu from './FlashcardMenu'
 import FlashcardCreation from './FlashcardCreation'
@@ -12,7 +13,10 @@ const Flashcards = () => {
   const { fcOpen } = useSelector(({ encouragement }) => encouragement)
   const history = useHistory()
   const { width } = useWindowDimensions()
-  const { mode } = useParams()
+  const { mode, type, storyId } = useParams()
+  const {num_of_rewardable_words, title} = type === 'test' && useSelector(({ flashcards }) => 
+    flashcards.storyBlueCards?.find(story => story.story_id === storyId)) || useSelector(({ stories }) => 
+    stories.data?.find(story => story._id === storyId)) || {}
 
   const content = () => {
     switch (mode) {
@@ -30,7 +34,29 @@ const Flashcards = () => {
   }
 
   return (
-    <div className="cont-tall cont pb-nm flex-col auto pt-xl space-between">
+    <div className="cont-tall cont pb-nm flex-col auto pt-xl">
+      {
+        title && type==='test' && (
+          <h5 className="flex pb-nm" style={{marginBottom: '2em'}}>
+            <FormattedHTMLMessage
+                id="story-blue-cards"
+                values={{
+                  nWords: num_of_rewardable_words,
+                  story: title,
+                }}
+            /></h5>
+          
+        ) || title && (
+        <h5 className="flex pb-nm" style={{marginBottom: '2em'}}>
+          <FormattedHTMLMessage
+          id="story-flashcards"
+          values={{
+            story: title,
+          }}
+        /></h5>
+        )
+      }
+      
       <div className="flex">
         {width < 940 ? <FloatMenu /> : <FlashcardMenu />}
         {content()}

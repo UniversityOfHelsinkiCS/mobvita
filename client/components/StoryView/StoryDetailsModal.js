@@ -81,7 +81,7 @@ const StoryDetailsModal = ({
               <>
                 {!isTeacher && (<LinkButton
                   variant={isTeacher && inGroupLibrary ? 'secondary' : 'primary'}
-                  to={`/flashcards/fillin/${story._id}/`}
+                  to={`/flashcards/fillin/story/${story._id}/`}
                   translationId="Flashcards"
                 />)}
                 {isTeacher && inGroupLibrary ? (

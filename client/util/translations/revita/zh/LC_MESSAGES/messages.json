@@ -976,5 +976,7 @@
     "click-to-see-translation": "点击查看翻译",
     "summary-people-added-to-group": "People added to group",
     "no-available-exercise-OLD": "该课程暂无更多练习，Revita稍后会添加更多练习，敬请期待！",
-    "chatbot-response-error": "连接超时，请在稍后重试"
+    "chatbot-response-error": "连接超时，请在稍后重试",
+    "story-blue-cards": "您之前遇见了{nWords}个新单词，在练习文章\n<ul><li><i>{story}</i></li></ul>的过程中，您并未要求过这些单词的翻译\n<br/>您可以通过练习这{nWords}个单词获得奖励!\n<br/>让我们来练习其中5个吧 ！",
+    "story-flashcards": "出自：\n<ul><li><i>{story}</i></li></ul>"
 }

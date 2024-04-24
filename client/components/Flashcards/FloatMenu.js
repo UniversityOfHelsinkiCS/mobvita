@@ -146,7 +146,7 @@ const FloatMenu = () => {
   }
 
   const handleOptionClickWithStory = mode => {
-    history.push(`/flashcards/${mode}${storyUrl}`)
+    history.push(`/flashcards/${mode}/story${storyUrl}`)
     setOpen(false)
   }
 
