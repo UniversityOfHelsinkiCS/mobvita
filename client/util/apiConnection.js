@@ -65,6 +65,10 @@ const handleError = (store, error, prefix, query) => {
   } else {
     store.dispatch({ type: `${prefix}_FAILURE`, response: error.response?.data, query })
   }
+
+  if (error?.response?.status === 401) {
+    store.dispatch({ type: 'LOGOUT_SUCCESS' })
+  }
 }
 
 const handleNewAchievement = (store, newAchievements) => {
